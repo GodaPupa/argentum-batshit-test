@@ -643,9 +643,12 @@ from a state-threaded counter (never a UUID), `ReplayReconstructor` rebuilds the
 deltas}` stream the viewer consumes. This is kilobytes per game instead of a masked snapshot + a
 per-frame delta + a full unmasked `GameState` per frame.
 
-Decision ids are minted afresh each run (they are not part of the deterministic state), so a
-recorded `SubmitDecision` is re-bound to the freshly created decision's id during reconstruction;
-the choice payload (entity-id targets/cards) is unchanged, so the outcome is identical.
+Decision IDs now come from the serialized `GameState.nextRoutingId` counter, independently of
+entity allocation and gameplay RNG. Repeating the same execution reproduces those IDs, so current
+`SubmitDecision` records already address the reconstructed decision. Historical recordings used
+random or clock-based IDs; reconstruction retains rebinding for those records while preserving
+the recorded choice payload (entity-id targets/cards). Routing IDs are game-local correlation
+tokens and must not be interpreted as globally unique identifiers or semantic action identity.
 
 #### One store
 
