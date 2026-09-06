@@ -69,12 +69,21 @@ private fun migrateLegacySuspensions(element: JsonElement): JsonElement {
         val frame = value as? JsonObject ?: fail("Legacy continuation at index $index is not an object")
         val type = stringField(frame, "type", "continuation at index $index")
         if (type == SUSPENSION) fail("Legacy state mixes suspension objects with the old pendingDecision representation")
+        // Automatic work has no question association to validate. The old serializer could
+        // omit its default decisionId (for example CycleDrawContinuation's "cycle-draw").
+        if (isAutomatic(frame, type)) {
+            if (pending != null && index == stack.lastIndex) {
+                fail("Legacy pending decision is covered by a non-answer continuation at index $index")
+            }
+            migrated += LegacyStackEntry(stripLegacyFields(frame, type), originalIndex = index)
+            continue
+        }
         val id = stringField(frame, "decisionId", "continuation at index $index")
 
         // The active answer must be the actual top frame. Searching down past automatic work or
         // another answer would accept a state the former response dispatcher could not resume.
         if (pending != null && index == stack.lastIndex) {
-            if (isAutomatic(frame, type) || type == REOPEN) {
+            if (type == REOPEN) {
                 fail("Legacy pending decision is covered by a non-answer continuation at index $index")
             }
             requireMatchingId(pending, id, "active answer at index $index")
@@ -111,9 +120,6 @@ private fun migrateLegacySuspensions(element: JsonElement): JsonElement {
                     originalIndex = index
                 )
             }
-            isAutomatic(frame, type) -> migrated += LegacyStackEntry(
-                stripLegacyFields(frame, type), originalIndex = index
-            )
             else -> migrated += LegacyStackEntry(frame, id, index)
         }
     }

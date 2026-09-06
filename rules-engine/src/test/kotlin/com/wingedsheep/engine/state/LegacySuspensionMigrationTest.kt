@@ -1,5 +1,6 @@
 package com.wingedsheep.engine.state
 
+import com.wingedsheep.engine.core.GameEvent
 import com.wingedsheep.engine.core.GameAction
 import com.wingedsheep.engine.core.PendingDecision
 import com.wingedsheep.engine.core.SubmitDecision
@@ -62,6 +63,52 @@ class LegacySuspensionMigrationTest : ScenarioTestBase() {
                     assertCurrentRoundTrip(state)
                 }
             }
+        }
+
+        test("default-omitting parent cycling snapshot loads and completes its deferred draw") {
+            val fixture = "compact-cycling"
+            val compactJson = Json(json) { encodeDefaults = false }
+            val original = fixtureObject(fixture, "state.json")
+            val manifest = fixtureObject(fixture, "manifest.json")
+            manifest.getValue("sourceRevision").jsonPrimitive.content shouldBe
+                "fba4b704cb213843a1420809e0cf6aee656045c9"
+            manifest.getValue("encodeDefaults") shouldBe JsonPrimitive(false)
+            manifest.getValue("verified") shouldBe JsonPrimitive(true)
+            val oldDraw = fixtureStack(fixture).first().jsonObject
+            oldDraw.getValue("type") shouldBe JsonPrimitive(CORE + "CycleDrawContinuation")
+            oldDraw.containsKey("decisionId") shouldBe false
+
+            val state = json.decodeFromString<GameState>(original.toString())
+            state.nextRoutingId shouldBe original.getValue("nextRoutingId").jsonPrimitive.content.toLong()
+            state.pendingDecision shouldBe json.decodeFromString<PendingDecision>(original.getValue("pendingDecision").toString())
+            val compact = compactJson.parseToJsonElement(compactJson.encodeToString(state)).jsonObject
+            JsonObject(compact - "continuationStack") shouldBe
+                JsonObject(original - "continuationStack" - "pendingDecision")
+            assertCurrentRoundTrip(state)
+
+            val action = json.decodeFromString<List<GameAction>>(fixtureText(fixture, "actions.json")).single()
+            val result = actionProcessor.process(state, action).result
+            result.error shouldBe null
+            result.state shouldBe json.decodeFromString<GameState>(fixtureText(fixture, "after-1.json"))
+            result.events shouldBe json.decodeFromString<List<GameEvent>>(fixtureText(fixture, "events-1.json"))
+            result.state.pendingDecision shouldBe null
+            result.state.continuationStack shouldBe emptyList()
+            result.state.getHand(action.playerId).size shouldBe 1
+            result.state.getLibrary(action.playerId).size shouldBe 1
+        }
+
+        test("legacy active answer still requires its response identity") {
+            val old = fixtureObject("nested-may", "state.json")
+            val stack = fixtureStack("nested-may").toMutableList()
+            stack[stack.lastIndex] = JsonObject(stack.last().jsonObject - "decisionId")
+            expectMalformed(JsonObject(old + ("continuationStack" to JsonArray(stack))))
+        }
+
+        test("legacy mana reopen still requires its saved association identity") {
+            val old = fixtureObject("suspended-mana-window", "state.json")
+            val stack = fixtureStack("suspended-mana-window").toMutableList()
+            stack[1] = JsonObject(stack[1].jsonObject - "decisionId")
+            expectMalformed(JsonObject(old + ("continuationStack" to JsonArray(stack))))
         }
 
         test("legacy repeat decision becomes an answer carrying an automatic loop") {
