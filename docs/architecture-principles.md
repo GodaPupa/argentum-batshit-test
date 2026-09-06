@@ -367,7 +367,6 @@ data class GameState(
     val step: Step = Step.UNTAP,
     val floatingEffects: List<ActiveFloatingEffect> = emptyList(),
     val continuationStack: List<ContinuationFrame> = emptyList(),
-    val pendingDecision: PendingDecision? = null,
     // ... more fields
 )
 ```
@@ -400,8 +399,8 @@ on and carry position checkpoints, with an archived frame stream as the last res
 
 #### Reproducible routing identity
 
-`GameState.newRoutingId()` allocates game-local correlation tokens for pending decisions,
-continuations, delayed triggers, and combat bands. Its serialized `nextRoutingId` counter is
+`GameState.newRoutingId()` allocates game-local correlation tokens for player questions,
+delayed triggers, and combat bands. Fresh questions allocate through `suspendForDecision`. Its serialized `nextRoutingId` counter is
 independent of entity allocation and gameplay RNG. Every caller must carry the returned state
 forward before allocating another token or executing a nested effect. Restoring the same snapshot
 and repeating the same actions reproduces those tokens, including their linked references.
@@ -551,32 +550,41 @@ before falling back to timestamp ordering.
 
 ### 2.4 Reentrant Continuations
 
-**Principle:** When the engine needs player input, it pauses and saves a serializable continuation.
+**Principle:** One serializable suspension owns a question and the operation that consumes its answer.
 
-Many Magic cards require player decisions mid-resolution — "search your library for a card" requires
-the player to browse and choose. The engine cannot block a thread waiting for network input. Instead,
-it pauses by:
-
-1. Setting `GameState.pendingDecision` to describe what input is needed
-2. Pushing a `ContinuationFrame` onto `GameState.continuationStack` that describes how to resume
+An effect supplies its rules-specific question factory and answer data to
+`GameState.suspendForDecision`. This operation allocates the routing ID, associates the question
+with the answer, installs the suspension, and emits `DecisionRequestedEvent`. The factory runs
+immediately; it is not retained in state.
 
 ```kotlin
-sealed interface ContinuationFrame {
-    val decisionId: String
-}
+sealed interface ContinuationFrame
+sealed interface AutomaticContinuation : ContinuationFrame
+sealed interface AnswerContinuation
 
-data class EffectContinuation(
-    override val decisionId: String,
-    val remainingEffects: List<Effect>,
-    val sourceId: EntityId?,
-    val controllerId: EntityId,
-    val storedCollections: Map<String, List<EntityId>>,
-    // ... all context needed to resume
+data class Suspension(
+    val question: PendingDecision,
+    val answer: AnswerContinuation,
 ) : ContinuationFrame
 ```
 
-When the player submits their decision, `ContinuationHandler.resume()` pops the frame, restores
-context, and continues executing the remaining effects.
+`GameState.pendingDecision` is derived from the top suspension. An answer payload cannot be
+pushed independently, and automatic work such as `EffectContinuation` carries no routing ID:
+its position under a suspension supplies its relationship. `ContinuationHandler.resume` checks
+the response against that suspension's question, pops the pair, and dispatches its answer payload.
+
+Creating a question and propagating a pause are separate operations.
+`ExecutionResult.propagatePause` carries an already installed suspension through enclosing
+execution without allocating or emitting another request. Mana-ability execution temporarily
+moves the complete payment suspension into an automatic reopen frame; restoration refreshes
+its menu while preserving the original identity and answer.
+
+New snapshots store the structural representation. `GameStateSerializer` reads older snapshots
+by pairing the active question with its matching top answer, and saved mana questions with their
+lower answer frames. It preserves intervening automatic work, counters, and all gameplay state.
+Malformed legacy stacks fail explicitly rather than inventing an association. New execution may
+allocate fewer routing IDs because automatic work no longer consumes them; recorded choices
+from later old-version execution therefore require routing rebinding when compared across versions.
 
 **Why serializable continuations instead of coroutines or blocked threads?**
 
@@ -1355,7 +1363,6 @@ data class StateUpdate(
     val state: ClientGameState,
     val events: List<ClientEvent>,
     val legalActions: List<LegalActionInfo>,
-    val pendingDecision: PendingDecision? = null,
     val nextStopPoint: String? = null,
     val opponentDecisionStatus: OpponentDecisionStatus? = null,
     // ... more fields

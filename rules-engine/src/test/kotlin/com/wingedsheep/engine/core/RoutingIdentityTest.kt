@@ -23,6 +23,9 @@ import io.kotest.matchers.types.shouldBeInstanceOf
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.JsonArray
+import kotlinx.serialization.json.JsonPrimitive
+import kotlinx.serialization.json.jsonArray
 import kotlinx.serialization.json.jsonObject
 
 /** Routing handles must reproduce without spending gameplay entropy or entity identity. */
@@ -81,19 +84,26 @@ class RoutingIdentityTest : ScenarioTestBase() {
             paused.error shouldBe null
             val oldId = "73b0b4a6-5d8a-4f36-9870-6c63852a1927"
             val oldDecision = paused.state.pendingDecision.shouldBeInstanceOf<YesNoDecision>().copy(id = oldId)
-            val oldContinuation = paused.state.continuationStack.single()
-                .shouldBeInstanceOf<GatedEffectContinuation>().copy(decisionId = oldId)
-            val legacyState = paused.state.copy(
-                pendingDecision = oldDecision,
-                continuationStack = listOf(oldContinuation)
-            )
+            val suspension = paused.state.continuationStack.single().shouldBeInstanceOf<Suspension>()
+            val oldContinuation = suspension.answer.shouldBeInstanceOf<GatedEffectContinuation>()
+            val encoded = json.parseToJsonElement(json.encodeToString(paused.state)).jsonObject
+            val encodedSuspension = encoded.getValue("continuationStack").jsonArray.single().jsonObject
+            // Exercise the actual old wire shape: independent pending question plus answer frame
+            // with a matching UUID, and no routing counter. New state cannot construct that shape.
             val legacy = JsonObject(
-                json.parseToJsonElement(json.encodeToString(legacyState)).jsonObject - "nextRoutingId"
+                (encoded - "nextRoutingId") + mapOf(
+                    "pendingDecision" to JsonObject(
+                        encodedSuspension.getValue("question").jsonObject + ("id" to JsonPrimitive(oldId))
+                    ),
+                    "continuationStack" to JsonArray(listOf(JsonObject(
+                        encodedSuspension.getValue("answer").jsonObject + ("decisionId" to JsonPrimitive(oldId))
+                    ))),
+                )
             )
             val restoredLegacy = json.decodeFromString<GameState>(legacy.toString())
             restoredLegacy.nextRoutingId shouldBe 0L
             restoredLegacy.pendingDecision shouldBe oldDecision
-            restoredLegacy.continuationStack shouldBe listOf(oldContinuation)
+            restoredLegacy.continuationStack shouldBe listOf(Suspension(oldDecision, oldContinuation))
             val oldResponse = SubmitDecision(game.player1Id, YesNoResponse(oldId, true))
             val resumed = actionProcessor.process(restoredLegacy, oldResponse).result
             resumed.error shouldBe null
@@ -101,8 +111,8 @@ class RoutingIdentityTest : ScenarioTestBase() {
             newDecision.id shouldBe "r0"
             newDecision.id shouldNotBe oldId
             resumed.state.nextRoutingId shouldBe 1L
-            resumed.state.rng shouldBe legacyState.rng
-            resumed.state.nextEntityId shouldBe legacyState.nextEntityId
+            resumed.state.rng shouldBe paused.state.rng
+            resumed.state.nextEntityId shouldBe paused.state.nextEntityId
             val stale = actionProcessor.process(resumed.state, oldResponse).result
             stale.error.shouldNotBeNull()
             stale.state shouldBe resumed.state
