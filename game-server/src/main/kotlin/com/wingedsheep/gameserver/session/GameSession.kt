@@ -72,6 +72,16 @@ class GameSession(
     // Lock for synchronizing state modifications to prevent lost updates
     private val stateLock = Any()
 
+    /**
+     * Browser response freshness, separate from replayable engine routing. Undo starts a new
+     * generation even when it restores an identical engine counter. A recovered session gets
+     * a fresh epoch too; reconnecting to this instance keeps outstanding responses valid.
+     * Read and changed only under [stateLock]. Never stored in engine state or replay inputs.
+     */
+    private var liveDecisionEpoch = UUID.randomUUID().toString()
+
+    private fun liveDecisionId(engineId: String): String = "$liveDecisionEpoch:$engineId"
+
     @Volatile
     private var gameState: GameState? = null
         set(value) {
@@ -799,7 +809,31 @@ class GameSession(
     }
 
     /**
-     * Execute a game action.
+     * Execute an action received from a browser. Validate the delivered prompt's generation
+     * before any checkpoint, replay, or idempotency bookkeeping can change, then pass only the
+     * canonical engine response to [executeAction]. Never accept an unwrapped engine ID here.
+     */
+    fun executeClientAction(
+        playerId: EntityId,
+        action: GameAction,
+        messageId: String? = null,
+    ): ActionResult = synchronized(stateLock) {
+        val engineAction = if (action is SubmitDecision) {
+            val pending = gameState?.pendingDecision
+                ?: return ActionResult.Failure("No pending decision")
+            if (action.response.decisionId != liveDecisionId(pending.id)) {
+                return ActionResult.Failure("Decision is no longer current")
+            }
+            action.copy(response = action.response.withDecisionId(pending.id))
+        } else {
+            action
+        }
+        executeAction(playerId, engineAction, messageId)
+    }
+
+    /**
+     * Execute a trusted engine action (including in-process AI responses).
+     * Browser submissions must go through [executeClientAction].
      *
      * Routes the action through the engine's ActionProcessor.
      * Synchronized to prevent lost updates when multiple players act simultaneously.
@@ -923,7 +957,11 @@ class GameSession(
      * Returns either a full [ServerMessage.StateUpdate] (first update or after reconnect)
      * or a [ServerMessage.StateDeltaUpdate] (subsequent updates with only changes).
      */
-    fun createStateUpdate(playerId: EntityId, events: List<GameEvent>): ServerMessage? {
+    fun createStateUpdate(
+        playerId: EntityId,
+        events: List<GameEvent>,
+        useEngineDecisionIds: Boolean = false,
+    ): ServerMessage? = synchronized(stateLock) {
         val state = gameState ?: return null
         val clientState = getClientState(playerId) ?: return null
         val legalActions = getLegalActions(playerId)
@@ -941,7 +979,9 @@ class GameSession(
         // decision to the controller, not the affected player.
         // Enrich with imageUri from card registry since engine doesn't have access to metadata
         val pendingDecision = state.pendingDecision?.takeIf { state.actorFor(it.playerId) == playerId }?.let {
-            decisionEnricher.enrich(it, state, playerId)
+            val enriched = decisionEnricher.enrich(it, state, playerId)
+            // In-process AI simulates against raw engine state; browser clients echo a live ID.
+            if (useEngineDecisionIds) enriched else enriched.withClientRoutingId(liveDecisionId(it.id))
         }
 
         // Calculate next stop point for the Pass button (only if player has priority,
@@ -1188,6 +1228,7 @@ class GameSession(
         }
 
         gameState = checkpoint
+        liveDecisionEpoch = UUID.randomUUID().toString()
         // Roll the replay log back to the actions that produced the restored state, so a later
         // reconstruction replays exactly this history. Yields recorded after the rollback point are
         // dropped too — they were set against actions that no longer exist.

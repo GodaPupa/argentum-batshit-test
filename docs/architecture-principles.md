@@ -408,6 +408,13 @@ and repeating the same actions reproduces those tokens, including their linked r
 Tokens are opaque to consumers: their spelling is neither a game identifier nor an action's
 semantic identity, and separate games or divergent simulation branches can reuse the same token.
 
+Live request freshness belongs to `GameSession`, separately from engine correlation identity.
+Browser-facing decision IDs include a session epoch that rotates on successful undo; the server
+validates that epoch before rebinding a response to its engine ID. Undo restores the exact engine
+checkpoint, and replay records only canonical engine actions. Repeated delivery or reconnect to
+the same session preserves an outstanding live ID; a recovered session issues a fresh epoch.
+In-process AI receives engine IDs so its response simulations still address the raw snapshot.
+
 Snapshots written before this counter existed decode with zero and retain their existing UUID or
 clock-based tokens. Historical action logs may still need decision-ID rebinding; replay should use
 its recorded engine version. This routing guarantee does not remove other sources of identity

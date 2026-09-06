@@ -545,7 +545,7 @@ class GamePlayHandler(
             return
         }
 
-        val result = gameSession.executeAction(playerSession.playerId, message.action, message.messageId)
+        val result = gameSession.executeClientAction(playerSession.playerId, message.action, message.messageId)
         when (result) {
             is GameSession.ActionResult.Success -> {
                 logger.debug("Action executed successfully")
@@ -899,7 +899,10 @@ class GamePlayHandler(
 
         try {
             sessionPlayers.forEach { session ->
-                val update = gameSession.createStateUpdate(session.playerId, allEvents)
+                val update = gameSession.createStateUpdate(
+                    session.playerId, allEvents,
+                    useEngineDecisionIds = session.webSocketSession is AiWebSocketSession,
+                )
                 if (update != null) sender.send(session.webSocketSession, update)
                 else logger.warn("createStateUpdate returned null for player ${session.playerId.value}")
             }

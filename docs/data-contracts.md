@@ -650,6 +650,15 @@ random or clock-based IDs; reconstruction retains rebinding for those records wh
 the recorded choice payload (entity-id targets/cards). Routing IDs are game-local correlation
 tokens and must not be interpreted as globally unique identifiers or semantic action identity.
 
+The live browser protocol wraps each pending decision ID with a session epoch. Clients continue
+to echo the opaque `pendingDecision.id` in `SubmitDecision`; no new envelope field is needed.
+`GameSession.executeClientAction` rejects a cancelled generation before changing game state,
+undo checkpoints, replay inputs, or message-id bookkeeping, then rebinds a valid response to the
+engine ID for execution and recording. Successful undo rotates the epoch without changing the
+restored engine checkpoint. Full and delta updates share the same token while that prompt is
+outstanding, including after reconnect; a new session instance starts a fresh epoch.
+
+
 #### One store
 
 Every replay — finished or still being recorded — is a row in `game_replays`, written by
