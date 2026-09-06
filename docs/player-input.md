@@ -37,8 +37,9 @@ response time. See [data contracts](data-contracts.md) for transport compatibili
 
 ## Saved states
 
-New snapshots serialize question and answer together. The legacy reader pairs an old pending
-question with its matching top answer, and recovers temporarily hidden mana questions from their
-saved reopen frames. It retains gameplay state and counters, rejecting malformed associations
-explicitly. It writes only the new format. See
+Snapshots serialize question and answer together. The previous independent pending-question
+and answer-frame format is unsupported and fails explicitly, including with the server's
+permissive persistence decoder. Deployments that must resume already-saved paused games need
+the companion legacy-reader change. The choice is whether to merge and deploy that companion;
+there is no runtime feature flag. See
 [architecture principles](architecture-principles.md#24-reentrant-continuations) for the boundary.

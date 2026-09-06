@@ -417,8 +417,8 @@ plus the live epoch captured with that update. Its asynchronous callback returns
 the server atomically validates it before execution. An obsolete callback is discarded without
 fallback actions or rejection accounting.
 
-Snapshots written before this counter existed decode with zero and retain their existing UUID or
-clock-based tokens. Historical action logs may still need decision-ID rebinding; replay should use
+Current-format snapshots may retain opaque UUID or clock-based tokens. An omitted routing
+counter defaults to zero; this default does not provide compatibility with older suspension storage. Historical action logs may still need decision-ID rebinding; replay should use
 its recorded engine version. This routing guarantee does not remove other sources of identity
 variation, such as process-global IDs for dynamically constructed abilities.
 
@@ -579,12 +579,16 @@ execution without allocating or emitting another request. Mana-ability execution
 moves the complete payment suspension into an automatic reopen frame; restoration refreshes
 its menu while preserving the original identity and answer.
 
-New snapshots store the structural representation. `GameStateSerializer` reads older snapshots
-by pairing the active question with its matching top answer, and saved mana questions with their
-lower answer frames. It preserves intervening automatic work, counters, and all gameplay state.
-Malformed legacy stacks fail explicitly rather than inventing an association. New execution may
-allocate fewer routing IDs because automatic work no longer consumes them; recorded choices
-from later old-version execution therefore require routing rebinding when compared across versions.
+Snapshots store the structural representation. `GameStateSerializer` rejects the previous
+independent pending-question and answer-frame format, including under the server's
+`ignoreUnknownKeys` persistence decoder. This change alone cannot resume previously saved paused
+games. If a deployment must preserve those games, the companion legacy-reader change must
+accompany it. There is no runtime compatibility switch.
+
+Captured parent execution traces remain regression evidence in current-format fixtures, with
+separate execution-source and representation-conversion revisions. New execution may allocate
+fewer routing IDs because automatic work no longer consumes them; comparisons rebind later
+recorded responses while retaining their player and choice payloads.
 
 **Why serializable continuations instead of coroutines or blocked threads?**
 

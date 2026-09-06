@@ -22,11 +22,6 @@ import io.kotest.matchers.shouldNotBe
 import io.kotest.matchers.types.shouldBeInstanceOf
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.JsonObject
-import kotlinx.serialization.json.JsonArray
-import kotlinx.serialization.json.JsonPrimitive
-import kotlinx.serialization.json.jsonArray
-import kotlinx.serialization.json.jsonObject
 
 /** Routing handles must reproduce without spending gameplay entropy or entity identity. */
 class RoutingIdentityTest : ScenarioTestBase() {
@@ -74,7 +69,7 @@ class RoutingIdentityTest : ScenarioTestBase() {
 
         }
 
-        test("a legacy pending UUID decision resumes before allocating the first new routing handle") {
+        test("a current-format opaque UUID decision resumes before allocating the first routing handle") {
             val game = scenario().withPlayers().build()
             val paused = EffectHandler(cardRegistry = cardRegistry).execute(
                 game.state,
@@ -86,26 +81,16 @@ class RoutingIdentityTest : ScenarioTestBase() {
             val oldDecision = paused.state.pendingDecision.shouldBeInstanceOf<YesNoDecision>().copy(id = oldId)
             val suspension = paused.state.continuationStack.single().shouldBeInstanceOf<Suspension>()
             val oldContinuation = suspension.answer.shouldBeInstanceOf<GatedEffectContinuation>()
-            val encoded = json.parseToJsonElement(json.encodeToString(paused.state)).jsonObject
-            val encodedSuspension = encoded.getValue("continuationStack").jsonArray.single().jsonObject
-            // Exercise the actual old wire shape: independent pending question plus answer frame
-            // with a matching UUID, and no routing counter. New state cannot construct that shape.
-            val legacy = JsonObject(
-                (encoded - "nextRoutingId") + mapOf(
-                    "pendingDecision" to JsonObject(
-                        encodedSuspension.getValue("question").jsonObject + ("id" to JsonPrimitive(oldId))
-                    ),
-                    "continuationStack" to JsonArray(listOf(JsonObject(
-                        encodedSuspension.getValue("answer").jsonObject + ("decisionId" to JsonPrimitive(oldId))
-                    ))),
-                )
+            val current = paused.state.copy(
+                nextRoutingId = 0,
+                continuationStack = listOf(Suspension(oldDecision, oldContinuation))
             )
-            val restoredLegacy = json.decodeFromString<GameState>(legacy.toString())
-            restoredLegacy.nextRoutingId shouldBe 0L
-            restoredLegacy.pendingDecision shouldBe oldDecision
-            restoredLegacy.continuationStack shouldBe listOf(Suspension(oldDecision, oldContinuation))
+            val restored = json.decodeFromString<GameState>(json.encodeToString(current))
+            restored.nextRoutingId shouldBe 0L
+            restored.pendingDecision shouldBe oldDecision
+            restored.continuationStack shouldBe listOf(Suspension(oldDecision, oldContinuation))
             val oldResponse = SubmitDecision(game.player1Id, YesNoResponse(oldId, true))
-            val resumed = actionProcessor.process(restoredLegacy, oldResponse).result
+            val resumed = actionProcessor.process(restored, oldResponse).result
             resumed.error shouldBe null
             val newDecision = resumed.state.pendingDecision.shouldBeInstanceOf<YesNoDecision>()
             newDecision.id shouldBe "r0"

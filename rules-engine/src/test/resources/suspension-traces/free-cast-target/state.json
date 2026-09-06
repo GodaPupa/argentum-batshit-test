@@ -54,18 +54,6 @@
                 "type": "com.wingedsheep.engine.state.components.player.LandDropsComponent",
                 "remaining": 1,
                 "maxPerTurn": 1
-            },
-            "com.wingedsheep.engine.state.components.player.PermanentLeftBattlefieldThisTurnComponent": {
-                "type": "com.wingedsheep.engine.state.components.player.PermanentLeftBattlefieldThisTurnComponent",
-                "count": 1
-            },
-            "com.wingedsheep.engine.state.components.player.ArtifactsDiedThisTurnComponent": {
-                "type": "com.wingedsheep.engine.state.components.player.ArtifactsDiedThisTurnComponent",
-                "count": 1
-            },
-            "com.wingedsheep.engine.state.components.player.PlayerDescendedThisTurnComponent": {
-                "type": "com.wingedsheep.engine.state.components.player.PlayerDescendedThisTurnComponent",
-                "count": 1
             }
         },
         "card-1001": {
@@ -119,9 +107,10 @@
                 "type": "com.wingedsheep.engine.state.components.identity.ControllerComponent",
                 "playerId": "player-1"
             },
-            "com.wingedsheep.engine.state.components.battlefield.GraveyardEntryTurnComponent": {
-                "type": "com.wingedsheep.engine.state.components.battlefield.GraveyardEntryTurnComponent",
-                "turnNumber": 1
+            "com.wingedsheep.engine.state.components.identity.PlayWithoutPayingCostComponent": {
+                "type": "com.wingedsheep.engine.state.components.identity.PlayWithoutPayingCostComponent",
+                "controllerId": "player-1",
+                "permanent": false
             }
         },
         "card-1002": {
@@ -152,52 +141,9 @@
                 "type": "com.wingedsheep.engine.state.components.identity.OwnerComponent",
                 "playerId": "player-2"
             },
-            "com.wingedsheep.engine.state.components.battlefield.TargetedByControllerThisTurnComponent": {
-                "type": "com.wingedsheep.engine.state.components.battlefield.TargetedByControllerThisTurnComponent",
-                "controllerIds": [
-                    "player-1"
-                ]
-            },
-            "com.wingedsheep.engine.state.components.battlefield.LastKnownPermanentComponent": {
-                "type": "com.wingedsheep.engine.state.components.battlefield.LastKnownPermanentComponent",
-                "snapshot": {
-                    "entityId": "card-1002",
-                    "power": null,
-                    "toughness": null,
-                    "subtypes": [],
-                    "supertypes": [],
-                    "controllerId": "player-2",
-                    "counters": {},
-                    "keywords": [],
-                    "lostAllAbilities": false,
-                    "battlefieldEntryTimestamp": null,
-                    "typeLine": "Artifact",
-                    "cardDefinitionId": "Sol Ring",
-                    "name": null,
-                    "copyOfOriginalName": null,
-                    "attachedTo": null,
-                    "wasEquipped": false,
-                    "attachmentIds": [],
-                    "wasEnchanted": false,
-                    "blockingOrBlockedByIds": [],
-                    "wasAttacking": false,
-                    "attackedDefenderId": null,
-                    "wasToken": false,
-                    "createdBy": null,
-                    "wasSuspected": false,
-                    "damageDealtByPlayers": {},
-                    "damageSources": [],
-                    "castX": null,
-                    "wasFaceDown": false
-                }
-            },
-            "com.wingedsheep.engine.state.components.battlefield.GraveyardEntryTurnComponent": {
-                "type": "com.wingedsheep.engine.state.components.battlefield.GraveyardEntryTurnComponent",
-                "turnNumber": 1
-            },
-            "com.wingedsheep.engine.state.components.identity.PutIntoGraveyardThisTurnComponent": {
-                "type": "com.wingedsheep.engine.state.components.identity.PutIntoGraveyardThisTurnComponent",
-                "fromBattlefield": true
+            "com.wingedsheep.engine.state.components.identity.ControllerComponent": {
+                "type": "com.wingedsheep.engine.state.components.identity.ControllerComponent",
+                "playerId": "player-2"
             }
         }
     },
@@ -206,7 +152,9 @@
             "ownerId": "player-1",
             "zoneType": "Hand"
         },
-        [],
+        [
+            "card-1001"
+        ],
         {
             "ownerId": "player-1",
             "zoneType": "Library"
@@ -216,9 +164,7 @@
             "ownerId": "player-1",
             "zoneType": "Graveyard"
         },
-        [
-            "card-1001"
-        ],
+        [],
         {
             "ownerId": "player-1",
             "zoneType": "Battlefield"
@@ -238,14 +184,14 @@
             "ownerId": "player-2",
             "zoneType": "Graveyard"
         },
-        [
-            "card-1002"
-        ],
+        [],
         {
             "ownerId": "player-2",
             "zoneType": "Battlefield"
         },
-        []
+        [
+            "card-1002"
+        ]
     ],
     "departedLinkedExile": {},
     "turnNumber": 1,
@@ -255,14 +201,13 @@
     "priorityPlayerId": "player-1",
     "stack": [],
     "priorityPassedBy": [],
-    "timestamp": 1,
+    "timestamp": 0,
     "turnOrder": [
         "player-1",
         "player-2"
     ],
     "winnerId": null,
     "gameOver": false,
-    "pendingDecision": null,
     "floatingEffects": [],
     "delayedTriggers": [],
     "grantedTriggeredAbilities": [],
@@ -272,27 +217,56 @@
     "grantedReplacementEffects": [],
     "grantedKeywordAbilities": [],
     "globalGrantedTriggeredAbilities": [],
-    "continuationStack": [],
-    "spellsCastThisTurn": 1,
-    "playerSpellsCastThisTurn": {
-        "player-1": 1
-    },
-    "spellsCastThisTurnByPlayer": {
-        "player-1": [
-            {
-                "typeLine": "Instant",
-                "manaValue": 2,
-                "colors": [
-                    "GREEN"
+    "continuationStack": [
+        {
+            "type": "com.wingedsheep.engine.core.Suspension",
+            "question": {
+                "type": "ChooseTargetsDecision",
+                "id": "r0",
+                "playerId": "player-1",
+                "prompt": "Choose targets for Naturalize",
+                "context": {
+                    "sourceId": "card-1001",
+                    "sourceName": "Naturalize",
+                    "phase": "CASTING",
+                    "triggeringEntityId": null,
+                    "inlineOnTrigger": false,
+                    "effectHint": null,
+                    "subjectEntityId": null,
+                    "abilityIdentity": null
+                },
+                "targetRequirements": [
+                    {
+                        "index": 0,
+                        "description": "target",
+                        "minTargets": 1,
+                        "maxTargets": 1,
+                        "sameOwner": false,
+                        "totalManaValueAtMost": null,
+                        "differentNames": false,
+                        "differentControllers": false
+                    }
                 ],
-                "isFaceDown": false,
-                "spentManaSubtypes": [],
-                "sourceEntityId": "card-1001",
-                "castFromZone": "Hand",
-                "name": "Naturalize"
+                "legalTargets": {
+                    "0": [
+                        "card-1002"
+                    ]
+                },
+                "canCancel": false
+            },
+            "answer": {
+                "type": "com.wingedsheep.engine.core.CastFromCollectionTargetsContinuation",
+                "cardId": "card-1001",
+                "casterId": "player-1",
+                "storeCastTo": null,
+                "grantedPermissionId": "e0",
+                "onCastFailure": "LEAVE"
             }
-        ]
-    },
+        }
+    ],
+    "spellsCastThisTurn": 0,
+    "playerSpellsCastThisTurn": {},
+    "spellsCastThisTurnByPlayer": {},
     "dayNight": null,
     "previousTurnActivePlayerId": null,
     "previousTurnActiveTeamSpellCounts": {},
@@ -304,17 +278,13 @@
     "spellWarpedThisTurn": false,
     "damageCantBePreventedThisTurn": false,
     "powerUpRestrictedTurns": [],
-    "nonlandPermanentLeftBattlefieldThisTurn": true,
+    "nonlandPermanentLeftBattlefieldThisTurn": false,
     "activeCounterPlacementModifiers": [],
     "permanentsSacrificedThisTurn": 0,
     "pendingSacrificeIds": [],
     "pendingDiscardCauseControllers": {},
-    "playersWhoCommittedCrimeThisTurn": [
-        "player-1"
-    ],
-    "lastCastSpellColors": [
-        "GREEN"
-    ],
+    "playersWhoCommittedCrimeThisTurn": [],
+    "lastCastSpellColors": null,
     "lastCardDrawnThisTurnByPlayer": {},
     "drawStepStartDrawCountByPlayer": {},
     "format": {
@@ -322,7 +292,32 @@
     },
     "attackMode": "MULTIPLE",
     "commanderDamage": [],
-    "mayPlayPermissions": [],
+    "mayPlayPermissions": [
+        {
+            "id": "e0",
+            "cardIds": [
+                "card-1001"
+            ],
+            "controllerId": "player-1",
+            "sourceId": null,
+            "condition": null,
+            "withAnyManaType": false,
+            "asThoughFlash": false,
+            "landEntersTapped": false,
+            "permanent": false,
+            "expiresAfterTurn": null,
+            "riderLinkId": null,
+            "expiryControllerId": null,
+            "supersededBySameSource": false,
+            "endsWhenSourceUncontrolled": false,
+            "endsWhenSourceLeavesBattlefield": false,
+            "nonLandOnly": false,
+            "castFaceIndex": null,
+            "castColorRestriction": null,
+            "castTransformed": false,
+            "timestamp": 0
+        }
+    ],
     "rng": {
         "state": 1704
     },

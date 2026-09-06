@@ -8,7 +8,7 @@
             },
             "com.wingedsheep.engine.state.components.identity.LifeTotalComponent": {
                 "type": "com.wingedsheep.engine.state.components.identity.LifeTotalComponent",
-                "life": 27
+                "life": 22
             },
             "com.wingedsheep.engine.state.components.player.ManaPoolComponent": {
                 "type": "com.wingedsheep.engine.state.components.player.ManaPoolComponent",
@@ -32,7 +32,7 @@
             },
             "com.wingedsheep.engine.state.components.player.LifeGainedAmountThisTurnComponent": {
                 "type": "com.wingedsheep.engine.state.components.player.LifeGainedAmountThisTurnComponent",
-                "amount": 7
+                "amount": 2
             }
         },
         "player-2": {
@@ -62,6 +62,54 @@
                 "remaining": 1,
                 "maxPerTurn": 1
             }
+        },
+        "card-1001": {
+            "com.wingedsheep.engine.state.components.identity.CardComponent": {
+                "type": "com.wingedsheep.engine.state.components.identity.CardComponent",
+                "cardDefinitionId": "Birds of Paradise",
+                "name": "Birds of Paradise",
+                "manaCost": "{G}",
+                "typeLine": "Creature — Bird",
+                "oracleText": "Flying\n{T}: Add one mana of any color.",
+                "baseStats": {
+                    "power": 0,
+                    "toughness": 1
+                },
+                "baseKeywords": [
+                    "FLYING"
+                ],
+                "baseFlags": [],
+                "colors": [
+                    "GREEN"
+                ],
+                "ownerId": "player-1",
+                "spellEffect": null,
+                "imageUri": null,
+                "backFaceImageUri": null,
+                "printingSetCode": null,
+                "hasNonManaActivatedAbility": false,
+                "hasActivatedAbility": false,
+                "originalSetCode": null,
+                "hasAdventure": false,
+                "isDoubleFaced": false,
+                "manaValueOverride": null
+            },
+            "com.wingedsheep.engine.state.components.identity.OwnerComponent": {
+                "type": "com.wingedsheep.engine.state.components.identity.OwnerComponent",
+                "playerId": "player-1"
+            },
+            "com.wingedsheep.engine.state.components.identity.ControllerComponent": {
+                "type": "com.wingedsheep.engine.state.components.identity.ControllerComponent",
+                "playerId": "player-1"
+            },
+            "com.wingedsheep.engine.state.components.battlefield.TappedComponent": {
+                "type": "com.wingedsheep.engine.state.components.battlefield.TappedComponent"
+            },
+            "com.wingedsheep.engine.state.components.battlefield.HasBecomeTappedComponent": {
+                "type": "com.wingedsheep.engine.state.components.battlefield.HasBecomeTappedComponent",
+                "lastBecameTappedTurn": 1,
+                "timesThisTurn": 1
+            }
         }
     },
     "zones": [
@@ -84,7 +132,9 @@
             "ownerId": "player-1",
             "zoneType": "Battlefield"
         },
-        [],
+        [
+            "card-1001"
+        ],
         {
             "ownerId": "player-2",
             "zoneType": "Hand"
@@ -121,7 +171,6 @@
     ],
     "winnerId": null,
     "gameOver": false,
-    "pendingDecision": null,
     "floatingEffects": [],
     "delayedTriggers": [],
     "grantedTriggeredAbilities": [],
@@ -162,10 +211,10 @@
     "commanderDamage": [],
     "mayPlayPermissions": [],
     "rng": {
-        "state": 1702
+        "state": 1703
     },
     "nextEntityId": 0,
-    "nextRoutingId": 2,
+    "nextRoutingId": 3,
     "yieldsByPlayer": {},
     "activeReplacementChain": null,
     "optionalDamageRedirectChoices": {}

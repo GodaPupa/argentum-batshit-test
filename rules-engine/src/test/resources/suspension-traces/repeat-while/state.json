@@ -8,7 +8,7 @@
             },
             "com.wingedsheep.engine.state.components.identity.LifeTotalComponent": {
                 "type": "com.wingedsheep.engine.state.components.identity.LifeTotalComponent",
-                "life": 20
+                "life": 21
             },
             "com.wingedsheep.engine.state.components.player.ManaPoolComponent": {
                 "type": "com.wingedsheep.engine.state.components.player.ManaPoolComponent",
@@ -26,6 +26,13 @@
                 "type": "com.wingedsheep.engine.state.components.player.LandDropsComponent",
                 "remaining": 1,
                 "maxPerTurn": 1
+            },
+            "com.wingedsheep.engine.state.components.player.LifeGainedThisTurnComponent": {
+                "type": "com.wingedsheep.engine.state.components.player.LifeGainedThisTurnComponent"
+            },
+            "com.wingedsheep.engine.state.components.player.LifeGainedAmountThisTurnComponent": {
+                "type": "com.wingedsheep.engine.state.components.player.LifeGainedAmountThisTurnComponent",
+                "amount": 1
             }
         },
         "player-2": {
@@ -114,25 +121,6 @@
     ],
     "winnerId": null,
     "gameOver": false,
-    "pendingDecision": {
-        "type": "YesNoDecision",
-        "id": "r1",
-        "playerId": "player-1",
-        "prompt": "You may you gain 1 life",
-        "context": {
-            "sourceId": null,
-            "sourceName": null,
-            "phase": "RESOLUTION",
-            "triggeringEntityId": null,
-            "inlineOnTrigger": false,
-            "effectHint": null,
-            "subjectEntityId": null,
-            "abilityIdentity": null
-        },
-        "yesText": "Yes",
-        "noText": "No",
-        "hint": null
-    },
     "floatingEffects": [],
     "delayedTriggers": [],
     "grantedTriggeredAbilities": [],
@@ -145,19 +133,18 @@
     "continuationStack": [
         {
             "type": "com.wingedsheep.engine.core.EffectContinuation",
-            "decisionId": "pending",
             "remainingEffects": [
                 {
                     "type": "GainLife",
                     "amount": {
                         "type": "Fixed",
-                        "amount": 3,
-                        "description": "3"
+                        "amount": 5,
+                        "description": "5"
                     },
                     "target": {
                         "type": "Controller"
                     },
-                    "description": "You gain 3 life"
+                    "description": "You gain 5 life"
                 }
             ],
             "effectContext": {
@@ -245,112 +232,137 @@
             }
         },
         {
-            "type": "com.wingedsheep.engine.core.GatedEffectContinuation",
-            "decisionId": "r1",
-            "gate": {
-                "type": "Gate.MayDecide",
-                "prompt": null,
-                "hint": null,
-                "dynamicHint": null,
-                "sourceRequiredZone": null,
-                "inlineOnTrigger": false,
-                "feasibility": null
+            "type": "com.wingedsheep.engine.core.Suspension",
+            "question": {
+                "type": "YesNoDecision",
+                "id": "r0",
+                "playerId": "player-1",
+                "prompt": "Gain one life again?",
+                "context": {
+                    "sourceId": null,
+                    "sourceName": null,
+                    "phase": "RESOLUTION",
+                    "triggeringEntityId": null,
+                    "inlineOnTrigger": false,
+                    "effectHint": null,
+                    "subjectEntityId": null,
+                    "abilityIdentity": null
+                },
+                "yesText": "Repeat",
+                "noText": "Stop",
+                "hint": null
             },
-            "then": {
-                "type": "GainLife",
-                "amount": {
-                    "type": "Fixed",
-                    "amount": 1,
-                    "description": "1"
-                },
-                "target": {
-                    "type": "Controller"
-                },
-                "description": "You gain 1 life"
-            },
-            "otherwise": null,
-            "effectContext": {
-                "sourceId": null,
-                "controllerId": "player-1",
-                "effectControllerId": null,
-                "granterId": null,
-                "abilityIdentity": null,
-                "activatedAbility": null,
-                "candidatePlayerId": null,
-                "sourceFaceChanges": null,
-                "sourceBattlefieldTimestamp": null,
-                "sourceReferenceLost": false,
-                "targets": [],
-                "alignedTargets": [],
-                "xValue": null,
-                "totalManaSpent": 0,
-                "manaSpentOnXByColor": {},
-                "declaredCostSlot": null,
-                "wasBlightPaid": false,
-                "wasWaterbendPaid": false,
-                "wasSneaked": false,
-                "wasWebSlung": false,
-                "wasMayhem": false,
-                "sacrificedPermanents": [],
-                "discardedAsCostCards": [],
-                "damageDistribution": null,
-                "chosenModes": [],
-                "modeTargetsOrdered": [],
-                "modeTargetRequirements": {},
-                "exiledCardCount": 0,
-                "additionalCostBlightAmount": 0,
-                "tappedPermanents": [],
-                "exiledAsCostCards": [],
-                "exiledAsCostSnapshots": [],
-                "tappedEntitySnapshots": [],
-                "lastKnownSourceCounters": {},
-                "lastKnownSourceSnapshot": null,
-                "lastKnownSourceAttachments": [],
-                "chosenEntitySnapshots": [],
-                "triggerDamageAmount": null,
-                "triggerCounterCount": null,
-                "triggerTotalCounterCount": null,
-                "triggerMinusOneMinusOneCounterCount": null,
-                "triggerLastKnownSubtypes": null,
-                "triggerLastKnownCardTypes": null,
-                "triggeringEntityId": null,
-                "triggeringPlayerId": null,
-                "targetingSourceEntityId": null,
-                "triggerUnattachedFromEntityId": null,
-                "defendingPlayerId": null,
-                "triggerLastKnownPower": null,
-                "triggerLastKnownToughness": null,
-                "triggerDiedBatchTotalPower": null,
-                "enchantedCreatureLastKnownPower": null,
-                "triggerLastKnownCounters": null,
-                "triggerLastKnownDamageDealtByPlayers": null,
-                "triggerLastKnownBlockingOrBlockedByIds": null,
-                "triggerModesChosenCount": null,
-                "triggerManaSpentOnTriggeringSpell": null,
-                "triggerColorsSpentOnTriggeringSpell": null,
-                "triggerManaValueOfTriggeringSpell": null,
-                "triggerXValueOfTriggeringSpell": null,
-                "triggerScryCount": null,
-                "triggerDiscardCount": null,
-                "triggerDiscoverValue": null,
-                "triggerExcessDamageAmount": null,
-                "triggerRecipientToughness": null,
-                "manaColorChoice": null,
-                "chosenColor": null,
-                "chosenCreatureType": null,
-                "opponentDeciderId": null,
-                "castFromZone": null,
-                "affectedEntityId": null,
-                "pipeline": {
-                    "storedCollections": {},
-                    "namedTargets": {},
-                    "chosenValues": {},
-                    "storedNumbers": {},
-                    "storedStringLists": {},
-                    "storedSubtypeGroups": {},
-                    "iterationTarget": null
-                },
-                "resolutionDepth": 1
+            "answer": {
+                "type": "com.wingedsheep.engine.core.RepeatWhileDecisionContinuation",
+                "loop": {
+                    "body": {
+                        "type": "GainLife",
+                        "amount": {
+                            "type": "Fixed",
+                            "amount": 1,
+                            "description": "1"
+                        },
+                        "target": {
+                            "type": "Controller"
+                        },
+                        "description": "You gain 1 life"
+                    },
+                    "repeatCondition": {
+                        "type": "PlayerChooses",
+                        "decider": {
+                            "type": "Controller"
+                        },
+                        "prompt": "Gain one life again?",
+                        "yesText": "Repeat",
+                        "noText": "Stop"
+                    },
+                    "resolvedDeciderId": "player-1",
+                    "sourceName": null,
+                    "effectContext": {
+                        "sourceId": null,
+                        "controllerId": "player-1",
+                        "effectControllerId": null,
+                        "granterId": null,
+                        "abilityIdentity": null,
+                        "activatedAbility": null,
+                        "candidatePlayerId": null,
+                        "sourceFaceChanges": null,
+                        "sourceBattlefieldTimestamp": null,
+                        "sourceReferenceLost": false,
+                        "targets": [],
+                        "alignedTargets": [],
+                        "xValue": null,
+                        "totalManaSpent": 0,
+                        "manaSpentOnXByColor": {},
+                        "declaredCostSlot": null,
+                        "wasBlightPaid": false,
+                        "wasWaterbendPaid": false,
+                        "wasSneaked": false,
+                        "wasWebSlung": false,
+                        "wasMayhem": false,
+                        "sacrificedPermanents": [],
+                        "discardedAsCostCards": [],
+                        "damageDistribution": null,
+                        "chosenModes": [],
+                        "modeTargetsOrdered": [],
+                        "modeTargetRequirements": {},
+                        "exiledCardCount": 0,
+                        "additionalCostBlightAmount": 0,
+                        "tappedPermanents": [],
+                        "exiledAsCostCards": [],
+                        "exiledAsCostSnapshots": [],
+                        "tappedEntitySnapshots": [],
+                        "lastKnownSourceCounters": {},
+                        "lastKnownSourceSnapshot": null,
+                        "lastKnownSourceAttachments": [],
+                        "chosenEntitySnapshots": [],
+                        "triggerDamageAmount": null,
+                        "triggerCounterCount": null,
+                        "triggerTotalCounterCount": null,
+                        "triggerMinusOneMinusOneCounterCount": null,
+                        "triggerLastKnownSubtypes": null,
+                        "triggerLastKnownCardTypes": null,
+                        "triggeringEntityId": null,
+                        "triggeringPlayerId": null,
+                        "targetingSourceEntityId": null,
+                        "triggerUnattachedFromEntityId": null,
+                        "defendingPlayerId": null,
+                        "triggerLastKnownPower": null,
+                        "triggerLastKnownToughness": null,
+                        "triggerDiedBatchTotalPower": null,
+                        "enchantedCreatureLastKnownPower": null,
+                        "triggerLastKnownCounters": null,
+                        "triggerLastKnownDamageDealtByPlayers": null,
+                        "triggerLastKnownBlockingOrBlockedByIds": null,
+                        "triggerModesChosenCount": null,
+                        "triggerManaSpentOnTriggeringSpell": null,
+                        "triggerColorsSpentOnTriggeringSpell": null,
+                        "triggerManaValueOfTriggeringSpell": null,
+                        "triggerXValueOfTriggeringSpell": null,
+                        "triggerScryCount": null,
+                        "triggerDiscardCount": null,
+                        "triggerDiscoverValue": null,
+                        "triggerExcessDamageAmount": null,
+                        "triggerRecipientToughness": null,
+                        "manaColorChoice": null,
+                        "chosenColor": null,
+                        "chosenCreatureType": null,
+                        "opponentDeciderId": null,
+                        "castFromZone": null,
+                        "affectedEntityId": null,
+                        "pipeline": {
+                            "storedCollections": {},
+                            "namedTargets": {},
+                            "chosenValues": {},
+                            "storedNumbers": {},
+                            "storedStringLists": {},
+                            "storedSubtypeGroups": {},
+                            "iterationTarget": null
+                        },
+                        "resolutionDepth": 1
+                    },
+                    "bodyCollections": {}
+                }
             }
         }
     ],
@@ -384,10 +396,10 @@
     "commanderDamage": [],
     "mayPlayPermissions": [],
     "rng": {
-        "state": 1701
+        "state": 1702
     },
     "nextEntityId": 0,
-    "nextRoutingId": 2,
+    "nextRoutingId": 1,
     "yieldsByPlayer": {},
     "activeReplacementChain": null,
     "optionalDamageRedirectChoices": {}
