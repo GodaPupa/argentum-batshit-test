@@ -73,14 +73,14 @@ class GameSession(
     private val stateLock = Any()
 
     /**
-     * Browser response freshness, separate from replayable engine routing. Undo starts a new
+     * Live response freshness, separate from replayable engine routing. Undo starts a new
      * generation even when it restores an identical engine counter. A recovered session gets
      * a fresh epoch too; reconnecting to this instance keeps outstanding responses valid.
      * Read and changed only under [stateLock]. Never stored in engine state or replay inputs.
      */
-    private var liveDecisionEpoch = UUID.randomUUID().toString()
+    private var liveInteractionEpoch = UUID.randomUUID().toString()
 
-    private fun liveDecisionId(engineId: String): String = "$liveDecisionEpoch:$engineId"
+    private fun liveDecisionId(engineId: String): String = "$liveInteractionEpoch:$engineId"
 
     @Volatile
     private var gameState: GameState? = null
@@ -832,8 +832,22 @@ class GameSession(
     }
 
     /**
-     * Execute a trusted engine action (including in-process AI responses).
-     * Browser submissions must go through [executeClientAction].
+     * Apply a delayed AI result only on the live timeline that supplied its snapshot.
+     * Null means obsolete delivery, not an invalid game action: callers must discard it without
+     * fallbacks, rejection accounting, or a broadcast. Validation and execution share the lock.
+     */
+    fun executeAiAction(
+        playerId: EntityId,
+        action: GameAction,
+        interactionEpoch: String?,
+    ): ActionResult? = synchronized(stateLock) {
+        if (interactionEpoch == null || interactionEpoch != liveInteractionEpoch) return null
+        executeAction(playerId, action)
+    }
+
+    /**
+     * Execute an immediate engine action. Browser submissions use [executeClientAction];
+     * asynchronous AI callbacks use [executeAiAction] to validate their originating generation.
      *
      * Routes the action through the engine's ActionProcessor.
      * Synchronized to prevent lost updates when multiple players act simultaneously.
@@ -1024,14 +1038,15 @@ class GameSession(
         lastSentState[playerId] = stateWithLog
         val version = stateVersions.merge(playerId, 1L) { old, inc -> old + inc }!!
 
+        val interactionEpoch = if (useEngineDecisionIds) liveInteractionEpoch else null
         if (previous != null) {
             // Compute delta and send smaller message
             val delta = StateDiffCalculator.computeDelta(previous, stateWithLog)
-            return ServerMessage.StateDeltaUpdate(delta, clientEvents, legalActions, pendingDecision, nextStopPoint, opponentDecisionStatus, stopOverrideInfo, isUndoAvailable(playerId), priorityModeStr, version)
+            return ServerMessage.StateDeltaUpdate(delta, clientEvents, legalActions, pendingDecision, nextStopPoint, opponentDecisionStatus, stopOverrideInfo, isUndoAvailable(playerId), priorityModeStr, version, interactionEpoch)
         }
 
         // First update — send full state
-        return ServerMessage.StateUpdate(stateWithLog, clientEvents, legalActions, pendingDecision, nextStopPoint, opponentDecisionStatus, stopOverrideInfo, isUndoAvailable(playerId), priorityModeStr, version)
+        return ServerMessage.StateUpdate(stateWithLog, clientEvents, legalActions, pendingDecision, nextStopPoint, opponentDecisionStatus, stopOverrideInfo, isUndoAvailable(playerId), priorityModeStr, version, interactionEpoch)
     }
 
     /**
@@ -1228,7 +1243,7 @@ class GameSession(
         }
 
         gameState = checkpoint
-        liveDecisionEpoch = UUID.randomUUID().toString()
+        liveInteractionEpoch = UUID.randomUUID().toString()
         // Roll the replay log back to the actions that produced the restored state, so a later
         // reconstruction replays exactly this history. Yields recorded after the rollback point are
         // dropped too — they were set against actions that no longer exist.
@@ -1517,6 +1532,18 @@ class GameSession(
      */
     fun noteActionRejected(playerId: EntityId): Boolean = synchronized(stateLock) {
         stallGuard.onActionRejected(playerId)
+    }
+
+    /**
+     * Finish AI rejection recovery only on its originating timeline. The rejection count and any
+     * resulting concession are atomic with the epoch check; undo may have occurred since the last
+     * failed fallback. Null tells the caller to discard the obsolete recovery without broadcasting.
+     */
+    fun noteAiActionRejected(playerId: EntityId, interactionEpoch: String?): Boolean? = synchronized(stateLock) {
+        if (interactionEpoch == null || interactionEpoch != liveInteractionEpoch) return null
+        val conceded = noteActionRejected(playerId)
+        if (conceded) playerConcedes(playerId)
+        conceded
     }
 
     /**

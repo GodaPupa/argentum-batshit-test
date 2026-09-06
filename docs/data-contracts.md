@@ -658,6 +658,15 @@ engine ID for execution and recording. Successful undo rotates the epoch without
 restored engine checkpoint. Full and delta updates share the same token while that prompt is
 outstanding, including after reconnect; a new session instance starts a fresh epoch.
 
+In-process AI updates retain raw decision IDs for engine simulations and carry the same live
+generation separately in `interactionEpoch`. Both full and delta updates capture it under the
+session lock. The AI carries that originating value through thinking and approval delays into
+its callback; `GameSession.executeAiAction` validates it atomically with action execution.
+Missing or obsolete generations are discarded before fallback actions, rejection accounting,
+or broadcasts. Fallback execution rechecks the originating generation, and rejection accounting
+plus any resulting concession share one guarded operation, so undo between recovery steps cannot
+apply them to the replacement branch. Replay continues to record only canonical engine IDs.
+
 
 #### One store
 

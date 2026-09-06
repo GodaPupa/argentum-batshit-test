@@ -413,7 +413,10 @@ Browser-facing decision IDs include a session epoch that rotates on successful u
 validates that epoch before rebinding a response to its engine ID. Undo restores the exact engine
 checkpoint, and replay records only canonical engine actions. Repeated delivery or reconnect to
 the same session preserves an outstanding live ID; a recovered session issues a fresh epoch.
-In-process AI receives engine IDs so its response simulations still address the raw snapshot.
+In-process AI receives engine IDs so its response simulations still address the raw snapshot,
+plus the live epoch captured with that update. Its asynchronous callback returns that epoch;
+the server atomically validates it before execution. An obsolete callback is discarded without
+fallback actions or rejection accounting.
 
 Snapshots written before this counter existed decode with zero and retain their existing UUID or
 clock-based tokens. Historical action logs may still need decision-ID rebinding; replay should use
