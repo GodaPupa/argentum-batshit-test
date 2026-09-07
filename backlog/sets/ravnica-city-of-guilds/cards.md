@@ -2,7 +2,7 @@
 
 **Set Size:** 291 cards
 **Release Date:** October 7, 2005
-**Implemented:** 256 / 291
+**Implemented:** 260 / 291
 | Section    | Total | Done |
 |------------|-------|------|
 | White      | 37    | 33   |
@@ -73,7 +73,7 @@
 - [x] Flow of Ideas
 - [x] Followed Footsteps
 - [x] Grayscaled Gharial
-- [ ] Grozoth
+- [x] Grozoth
 - [x] Halcyon Glaze
 - [x] Hunted Phantasm
 - [x] Induce Paranoia
@@ -106,7 +106,7 @@
 - [x] Dark Confidant
 - [x] Darkblast
 - [x] Dimir House Guard
-- [ ] Dimir Machinations
+- [x] Dimir Machinations
 - [x] Disembowel
 - [x] Empty the Catacombs
 - [x] Golgari Thug
@@ -121,13 +121,13 @@
 - [x] Mortipede
 - [x] Necromantic Thirst
 - [ ] Necroplasm
-- [ ] Netherborn Phalanx
+- [x] Netherborn Phalanx
 - [x] Nightmare Void
 - [x] Ribbons of Night
 - [x] Roofstalker Wight
 - [x] Sadistic Augermage
 - [x] Sewerdreg
-- [ ] Shred Memory
+- [x] Shred Memory
 - [ ] Sins of the Past
 - [x] Stinkweed Imp
 - [x] Strands of Undeath
