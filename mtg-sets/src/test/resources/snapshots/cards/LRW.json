@@ -349,6 +349,79 @@
     ]
 }
 
+// Aquitect's Will
+{
+    "name": "Aquitect's Will",
+    "manaCost": "{U}",
+    "typeLine": "Kindred Sorcery — Merfolk",
+    "oracleText": "Put a flood counter on target land. That land is an Island in addition to its other types for as long as it has a flood counter on it. If you control a Merfolk, draw a card.",
+    "script": {
+        "spellEffect": {
+            "type": "Composite",
+            "effects": [
+                {
+                    "type": "AddCounters",
+                    "counterType": "flood",
+                    "count": 1,
+                    "target": {
+                        "type": "BoundVariable",
+                        "name": "target land"
+                    }
+                },
+                {
+                    "type": "AddSubtype",
+                    "subtype": "Island",
+                    "target": {
+                        "type": "BoundVariable",
+                        "name": "target land"
+                    },
+                    "duration": {
+                        "type": "WhileAffectedHasCounter",
+                        "counterType": "flood"
+                    }
+                },
+                {
+                    "type": "Gated",
+                    "gate": {
+                        "type": "Gate.WhenCondition",
+                        "condition": {
+                            "type": "Exists",
+                            "player": "You",
+                            "zone": "Battlefield",
+                            "filter": "Merfolk"
+                        }
+                    },
+                    "then": {
+                        "type": "DrawCards",
+                        "count": {
+                            "type": "Fixed",
+                            "amount": 1
+                        }
+                    }
+                }
+            ]
+        },
+        "targetRequirements": [
+            {
+                "type": "TargetObject",
+                "filter": {
+                    "baseFilter": "land"
+                },
+                "id": "target land"
+            }
+        ]
+    },
+    "metadata": {
+        "collectorNumber": "52",
+        "artist": "Jeff Easley",
+        "flavorText": "There is nowhere on Lorwyn that the Merrow Lanes cannot go.",
+        "imageUri": "https://cards.scryfall.io/normal/front/f/d/fd13d2c1-3db7-4fdc-9321-57c9d6e8c3ae.jpg?1783942906"
+    },
+    "colorIdentityOverride": [
+        "BLUE"
+    ]
+}
+
 // Arbiter of Knollridge
 {
     "name": "Arbiter of Knollridge",
@@ -12294,6 +12367,100 @@
     },
     "colorIdentityOverride": [
         "BLACK"
+    ]
+}
+
+// Scattering Stroke
+{
+    "name": "Scattering Stroke",
+    "manaCost": "{2}{U}{U}",
+    "typeLine": "Instant",
+    "oracleText": "Counter target spell. Clash with an opponent. If you win, at the beginning of your next main phase, you may add an amount of {C} equal to that spell's mana value. (Each clashing player reveals the top card of their library, then puts that card on their choice of the top or bottom. A player wins if their card had a greater mana value.)",
+    "script": {
+        "spellEffect": {
+            "type": "Composite",
+            "effects": [
+                {
+                    "type": "StoreNumber",
+                    "name": "scatteredManaValue",
+                    "amount": {
+                        "type": "EntityProperty",
+                        "entity": "Target",
+                        "numericProperty": "ManaValue"
+                    }
+                },
+                "Counter",
+                {
+                    "type": "Gated",
+                    "gate": {
+                        "type": "Gate.DoAction",
+                        "action": {
+                            "type": "Composite",
+                            "effects": [
+                                {
+                                    "type": "ChooseOpponentForSource",
+                                    "prompt": "Choose an opponent to clash with"
+                                },
+                                "Clash"
+                            ]
+                        },
+                        "successCriterion": {
+                            "type": "SuccessCriterion.CollectionNonEmpty",
+                            "name": "clashWon"
+                        }
+                    },
+                    "then": {
+                        "type": "CreateDelayedTrigger",
+                        "step": "PRECOMBAT_MAIN",
+                        "effect": {
+                            "type": "Gated",
+                            "gate": "Gate.MayDecide",
+                            "then": {
+                                "type": "AddColorlessMana",
+                                "amount": {
+                                    "type": "VariableReference",
+                                    "variableName": "scatteredManaValue"
+                                }
+                            }
+                        },
+                        "fireOnPlayer": {
+                            "type": "PlayerRef",
+                            "player": "You"
+                        }
+                    },
+                    "descriptionOverride": "Clash with an opponent. If you win, create a delayed trigger at the beginning of the next Precombat Main Phase"
+                }
+            ]
+        },
+        "targetRequirements": [
+            {
+                "type": "TargetObject",
+                "filter": {
+                    "baseFilter": {},
+                    "zone": "Stack"
+                },
+                "id": "target spell"
+            }
+        ]
+    },
+    "metadata": {
+        "collectorNumber": "82",
+        "rarity": "UNCOMMON",
+        "artist": "Franz Vohwinkel",
+        "imageUri": "https://cards.scryfall.io/normal/front/c/5/c536c1ce-a012-4d77-ab29-8574be164731.jpg?1783942899",
+        "rulings": [
+            {
+                "date": "2007-10-01",
+                "text": "You decide whether or not to add that much {C} as the delayed triggered ability resolves at the beginning of your next main phase. You don't decide before then."
+            },
+            {
+                "date": "2007-10-01",
+                "text": "You can't add just some of the mana. You either add all the mana or none of it."
+            }
+        ]
+    },
+    "colorIdentityOverride": [
+        "BLUE"
     ]
 }
 

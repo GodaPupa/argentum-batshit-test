@@ -2,7 +2,7 @@
 
 **Set Size:** 286 cards
 **Release Date:** October 12, 2007
-**Implemented:** 257 / 286
+**Implemented:** 259 / 286
 | Section    | Total | Done |
 |------------|-------|------|
 | White      | 49    | 43   |
@@ -72,7 +72,7 @@
 ### Blue
 - [x] Aethersnipe
 - [x] Amoeboid Changeling
-- [ ] Aquitect's Will
+- [x] Aquitect's Will
 - [x] Benthicore
 - [x] Broken Ambitions
 - [ ] Captivating Glance
@@ -102,7 +102,7 @@
 - [x] Ponder
 - [x] Protective Bubble
 - [x] Ringskipper
-- [ ] Scattering Stroke
+- [x] Scattering Stroke
 - [x] Scion of Oona
 - [x] Sentinels of Glen Elendra
 - [x] Shapesharer
