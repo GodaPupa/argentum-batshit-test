@@ -287,6 +287,9 @@ class BreOfClanStoutarmTest : ScenarioTestBase() {
                 withClue("It is not left stranded in exile") {
                     namesInExile(game, 1).contains("Cheap Ogre") shouldBe false
                 }
+                withClue("The land exiled along the way stays in exile (only the nonland moves)") {
+                    namesInExile(game, 1).contains("Forest") shouldBe true
+                }
             }
         }
     }
