@@ -440,7 +440,6 @@ class MiscContinuationResumer(
             state = state,
             pending = continuation.pending,
             keepHeads = response.choice,
-            decisionHandler = decisionHandler
         )
 
         // Still coins left to choose between: park the same frame again with the batch advanced.

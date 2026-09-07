@@ -132,6 +132,33 @@ class LiveActionSubmissionTest : ScenarioTestBase() {
             session.getLastMessageIdsForPersistence() shouldBe beforeIds
             session.isUndoAvailable(owner) shouldBe true
         }
+
+        // GamePlayHandler reaches noteAiActionRejected only after every safe fallback has itself
+        // been rejected, so the undo-between-the-last-fallback-and-the-count race is not reachable
+        // through handleAiAction in a test. Exercise the guard where it lives instead: without it,
+        // an obsolete callback could concede a seat that the restored timeline never asked to act.
+        test("rejection accounting and its concession are refused on an abandoned timeline") {
+            val game = scenario().withPlayers().withCardInHand(1, "Forest").build()
+            val session = newSession(game)
+            val player = game.player1Id
+            val abandoned = epoch(session, player)
+            session.executeClientAction(
+                player,
+                PlayLand(player, game.findCardsInHand(1, "Forest").single()),
+                interactionEpoch = abandoned,
+            ).shouldBeInstanceOf<GameSession.ActionResult.Success>()
+            session.executeUndo(player).shouldBeInstanceOf<GameSession.ActionResult.Success>()
+            val current = epoch(session, player)
+            current shouldNotBe abandoned
+
+            val before = session.getStateForTesting()
+            session.noteAiActionRejected(player, abandoned) shouldBe null
+            session.noteAiActionRejected(player, null) shouldBe null
+            session.getStateForTesting() shouldBe before
+
+            // The same call on the live timeline is accepted and counted.
+            session.noteAiActionRejected(player, current) shouldBe false
+        }
     }
 
     private fun epoch(session: GameSession, player: EntityId): String =

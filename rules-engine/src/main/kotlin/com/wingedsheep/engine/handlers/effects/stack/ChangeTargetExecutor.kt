@@ -27,7 +27,7 @@ import kotlin.reflect.KClass
  * 2. Check it has exactly one target — if not, the effect does nothing
  * 3. Find all legal new targets based on the spell/ability's target requirement
  * 4. Present a selection decision to the controller
- * 5. Push ChangeSpellTargetContinuation ()
+ * 5. Push ChangeSpellTargetContinuation (reused)
  */
 class ChangeTargetExecutor : EffectExecutor<ChangeTargetEffect> {
 
@@ -107,10 +107,8 @@ class ChangeTargetExecutor : EffectExecutor<ChangeTargetEffect> {
         // 5. Push continuation (reuse ChangeSpellTargetContinuation)
 
 
-        val stateWithContinuation = decisionResult.state
-
         return EffectResult.propagatePause(
-            stateWithContinuation,
+            decisionResult.state,
             decisionResult.events
         )
     }

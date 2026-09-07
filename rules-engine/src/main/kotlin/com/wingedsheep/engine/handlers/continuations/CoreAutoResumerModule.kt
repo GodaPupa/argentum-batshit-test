@@ -6,13 +6,13 @@ import com.wingedsheep.engine.handlers.EffectContext
 
 /**
  * Core auto-resumers that process continuations without player input:
- * - PendingTriggersContinuation ()
- * - ForEachContinuation ( any iteration space)
- * - DrawReplacementRemainingDrawsContinuation ()
- * - CycleDrawContinuation ()
- * - TypecycleSearchContinuation ()
- * - EffectContinuation ()
- * - RepeatWhileContinuation ()
+ * - PendingTriggersContinuation (remaining triggers after first pauses)
+ * - ForEachContinuation (remaining ForEach iterations, any iteration space)
+ * - DrawReplacementRemainingDrawsContinuation (remaining draws after bounce)
+ * - CycleDrawContinuation (draw after cycling triggers)
+ * - TypecycleSearchContinuation (search after typecycling triggers)
+ * - EffectContinuation (auto-resume remaining effects)
+ * - RepeatWhileContinuation (ask condition after body)
  */
 class CoreAutoResumerModule(
     private val services: com.wingedsheep.engine.core.EngineServices,

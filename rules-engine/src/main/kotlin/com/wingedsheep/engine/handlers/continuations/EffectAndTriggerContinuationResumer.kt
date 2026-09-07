@@ -15,11 +15,11 @@ import com.wingedsheep.sdk.scripting.targets.withCount
 
 /**
  * Handles core effect and trigger resumption:
- * - EffectContinuation ()
- * - TriggeredAbilityContinuation ()
- * - ResolveSpellContinuation ()
- * - MayAbilityContinuation ()
- * - MayTriggerContinuation ()
+ * - EffectContinuation (composite effect pipelines)
+ * - TriggeredAbilityContinuation (target selection for triggered abilities)
+ * - ResolveSpellContinuation (no-op marker)
+ * - MayAbilityContinuation (yes/no for may effects)
+ * - MayTriggerContinuation (yes/no for may triggers with targets)
  */
 class EffectAndTriggerContinuationResumer(
     private val services: com.wingedsheep.engine.core.EngineServices,

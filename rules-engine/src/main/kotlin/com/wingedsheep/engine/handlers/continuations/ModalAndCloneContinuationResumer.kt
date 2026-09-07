@@ -1519,6 +1519,18 @@ class ModalAndCloneContinuationResumer(
             return checkForMore(created.state, created.events.toList())
         }
 
+        // The token copy can open a question of its own — a printed "choose ... as this enters"
+        // (CR 614.12) or granted riot. Only one suspension may be installed at a time, so the next
+        // host prompt cannot be stacked on top of it; asking anyway trips the guard in
+        // `suspendForDecision`. Report it rather than throwing out of the action processor.
+        // Chaining the remaining prompts underneath that choice needs a continuation of its own.
+        if (created.isPaused) {
+            return ExecutionResult.error(
+                created.state,
+                "Cannot ask for the next Aura token host while the previous copy owes an as-enters choice"
+            )
+        }
+
         // More Aura copies owed — each gets its own host choice.
         val next = com.wingedsheep.engine.handlers.effects.token.AuraTokenHostChooser.pause(
             state = created.state,
@@ -1530,9 +1542,9 @@ class ModalAndCloneContinuationResumer(
             remaining = remaining,
             cardRegistry = services.cardRegistry,
         )
-        val nextDecision = next.pendingDecision
-            ?: return checkForMore(next.state, created.events.toList() + next.events.toList())
-        return ExecutionResult.propagatePause(next.state, created.events.toList())
+        val events = created.events.toList() + next.events.toList()
+        if (next.pendingDecision == null) return checkForMore(next.state, events)
+        return ExecutionResult.propagatePause(next.state, events)
     }
 
     /**

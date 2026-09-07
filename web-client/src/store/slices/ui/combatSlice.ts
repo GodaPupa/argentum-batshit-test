@@ -307,7 +307,9 @@ export const createCombatSlice: SliceCreator<CombatSlice> = (set, get) => ({
   confirmCombat: (interactionEpoch) => {
     if (!interactionEpoch || interactionEpoch !== get().interactionEpoch) return
     const { combatState, playerId, gameState } = get()
-    if (!combatState || !playerId) return
+    // The submission below carries combatState's captured origin, so that is the value that has
+    // to be current — checking only the caller's would let a stale declaration through.
+    if (!combatState || combatState.interactionEpoch !== interactionEpoch || !playerId) return
     // In hotseat the single connection declares for whichever seat the server is asking:
     // the acting seat from the legal action (active player / defending player fallback).
     const actingSeat = combatActingSeat(combatState, playerId, gameState)
@@ -400,7 +402,7 @@ export const createCombatSlice: SliceCreator<CombatSlice> = (set, get) => ({
   cancelCombat: (interactionEpoch) => {
     if (!interactionEpoch || interactionEpoch !== get().interactionEpoch) return
     const { combatState, playerId, gameState } = get()
-    if (!combatState || !playerId) return
+    if (!combatState || combatState.interactionEpoch !== interactionEpoch || !playerId) return
     const actingSeat = combatActingSeat(combatState, playerId, gameState)
 
     if (combatState.mode === 'declareAttackers') {

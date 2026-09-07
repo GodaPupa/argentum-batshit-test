@@ -17,7 +17,6 @@ import com.wingedsheep.engine.core.DecisionPhase
 import com.wingedsheep.engine.core.DecisionResponse
 import com.wingedsheep.engine.core.EngineServices
 import com.wingedsheep.engine.core.ExecutionResult
-import com.wingedsheep.engine.core.GameEvent
 import com.wingedsheep.engine.core.NumberChosenResponse
 import com.wingedsheep.engine.core.SelectCardsDecision
 import com.wingedsheep.engine.core.TargetsResponse

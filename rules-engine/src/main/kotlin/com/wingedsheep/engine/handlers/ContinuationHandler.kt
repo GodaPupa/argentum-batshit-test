@@ -89,11 +89,21 @@ class ContinuationHandler(
         return registry.resume(stateAfterPop, suspension.answer, suspension.question, response, ::checkForMoreContinuations)
     }
 
+    /**
+     * Drain the automatic work a resumer uncovered, then report where execution ended up.
+     *
+     * `pendingDecision` is derived from the stack, so a resumer that installed a suspension and
+     * handed control back here leaves one on top that no auto-resumer will match. Reporting that
+     * as success would hide a live question: the caller runs SBAs and returns priority, the client
+     * is never asked, and the orphaned suspension makes every later `pushContinuation` throw. Read
+     * the state rather than trusting the caller to have propagated the pause itself.
+     */
     private fun checkForMoreContinuations(
         state: GameState,
         events: List<GameEvent>
     ): ExecutionResult {
-        return registry.tryAutoResume(state, events, ::checkForMoreContinuations)
-            ?: ExecutionResult.success(state, events)
+        registry.tryAutoResume(state, events, ::checkForMoreContinuations)?.let { return it }
+        return if (state.pendingDecision != null) ExecutionResult.propagatePause(state, events)
+        else ExecutionResult.success(state, events)
     }
 }

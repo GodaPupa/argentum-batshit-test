@@ -6,7 +6,6 @@ import com.wingedsheep.engine.core.CoinFlipEvent
 import com.wingedsheep.engine.core.DecisionPhase
 import com.wingedsheep.engine.core.GameEvent
 import com.wingedsheep.engine.core.PendingDecision
-import com.wingedsheep.engine.handlers.DecisionHandler
 import com.wingedsheep.engine.registry.CardRegistry
 import com.wingedsheep.engine.state.GameState
 import com.wingedsheep.engine.state.components.identity.CardComponent
@@ -103,7 +102,6 @@ object CoinFlipService {
         count: Int,
         sourceId: EntityId?,
         cardRegistry: CardRegistry,
-        decisionHandler: DecisionHandler
     ): Resolution {
         val sourceName = sourceId?.let { state.getEntity(it)?.get<CardComponent>()?.name } ?: "Unknown"
         val wanted = count.coerceAtLeast(0)
@@ -133,7 +131,6 @@ object CoinFlipService {
             current,
             PendingCoinFlipChoice(batches, emptyList(), flipperId, sourceId, sourceName),
             emptyList(),
-            decisionHandler
         )
     }
 
@@ -145,14 +142,13 @@ object CoinFlipService {
         state: GameState,
         pending: PendingCoinFlipChoice,
         keepHeads: Boolean,
-        decisionHandler: DecisionHandler
     ): Resolution {
         val index = pending.decided.size
         if (index >= pending.batches.size) {
             return Resolution.Resolved(state, pending.decided, emptyList())
         }
         val settled = pending.copy(decided = pending.decided + keepHeads)
-        return advance(state, settled, eventsForBatch(settled, index), decisionHandler)
+        return advance(state, settled, eventsForBatch(settled, index))
     }
 
     /**
@@ -165,7 +161,6 @@ object CoinFlipService {
         state: GameState,
         pending: PendingCoinFlipChoice,
         eventsSoFar: List<GameEvent>,
-        decisionHandler: DecisionHandler
     ): Resolution {
         var settled = pending
         val events = eventsSoFar.toMutableList()

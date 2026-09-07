@@ -89,7 +89,6 @@ class FlipCoinsUntilLossExecutor(
                 count = 1,
                 sourceId = context.sourceId,
                 cardRegistry = cardRegistry,
-                decisionHandler = decisionHandler
             )
 
             return when (resolution) {

@@ -585,14 +585,10 @@ their lower answer frames. It preserves intervening automatic work, counters, an
 malformed associations fail explicitly. The translated state then passes through the current-format
 `GameStateSerializer` rejection check. Writes contain only the current representation.
 
-This companion compatibility change supports deployments that must resume previously saved
-paused games. Deploying the structural suspension change alone rejects that old representation.
-Maintainers can make this review and merge choice independently; there is no runtime switch.
-
-Captured parent execution traces remain regression evidence in current-format fixtures, with
-separate execution-source and representation-conversion revisions. New execution may allocate
-fewer routing IDs because automatic work no longer consumes them; comparisons rebind later
-recorded responses while retaining their player and choice payloads.
+Automatic work no longer consumes a routing ID, so a given line of play allocates fewer of them
+than it did before this change. `rules-engine/src/test/resources/suspension-traces/` holds captured
+executions from the previous engine as regression evidence; comparing against them rebinds later
+recorded responses while keeping their player and choice payloads.
 
 **Why serializable continuations instead of coroutines or blocked threads?**
 
@@ -1371,6 +1367,7 @@ data class StateUpdate(
     val state: ClientGameState,
     val events: List<ClientEvent>,
     val legalActions: List<LegalActionInfo>,
+    val pendingDecision: PendingDecision? = null,
     val nextStopPoint: String? = null,
     val opponentDecisionStatus: OpponentDecisionStatus? = null,
     // ... more fields

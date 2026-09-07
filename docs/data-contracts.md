@@ -669,7 +669,6 @@ use the same live acceptance operation. Missing or obsolete AI deliveries are di
 fallbacks, rejection accounting, or broadcasts. Rejection accounting and any resulting concession
 also check the originating epoch atomically. Replay records only canonical engine actions.
 
-
 #### One store
 
 Every replay — finished or still being recorded — is a row in `game_replays`, written by

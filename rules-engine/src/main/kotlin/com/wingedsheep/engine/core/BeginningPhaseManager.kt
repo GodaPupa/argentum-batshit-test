@@ -193,10 +193,8 @@ class BeginningPhaseManager(
 
 
 
-            val stateWithContinuation = decisionResult.state
-
             return ExecutionResult.propagatePause(
-                stateWithContinuation,
+                decisionResult.state,
                 events + decisionResult.events
             )
         }

@@ -118,12 +118,8 @@ class LegendRuleCheck(
                         ),
                     )
 
-
-
-                    val stateWithContinuation = decisionResult.state
-
                     return ExecutionResult.propagatePause(
-                        stateWithContinuation,
+                        decisionResult.state,
                         decisionResult.events
                     )
                 }

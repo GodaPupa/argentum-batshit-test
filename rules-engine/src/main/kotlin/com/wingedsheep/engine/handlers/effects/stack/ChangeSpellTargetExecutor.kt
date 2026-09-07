@@ -107,10 +107,8 @@ class ChangeSpellTargetExecutor : EffectExecutor<ChangeSpellTargetEffect> {
         // 7. Push continuation
 
 
-        val stateWithContinuation = decisionResult.state
-
         return EffectResult.propagatePause(
-            stateWithContinuation,
+            decisionResult.state,
             decisionResult.events
         )
     }

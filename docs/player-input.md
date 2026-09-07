@@ -43,7 +43,6 @@ from their saved reopen frames. It retains gameplay state and counters, rejects 
 associations, and writes only the current format. Translation passes through the current-format
 rejection check before decoding.
 
-This companion must accompany a deployment that needs to resume already-saved paused games;
-without it, the structural suspension change explicitly rejects the previous representation.
-This is a review and merge choice, with no runtime feature flag. See
-[architecture principles](architecture-principles.md#24-reentrant-continuations) for the boundary.
+Without that reader the engine rejects the previous representation outright rather than guessing,
+so a deployment that must resume already-saved paused games needs it. There is no runtime feature
+flag. See [architecture principles](architecture-principles.md#24-reentrant-continuations).

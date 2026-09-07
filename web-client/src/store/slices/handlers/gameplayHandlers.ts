@@ -2,7 +2,7 @@
  * Handlers for gameplay messages: state updates, mulligan, game lifecycle, and errors.
  */
 import type { MessageHandlers } from '@/network/messageHandlers.ts'
-import { ZoneType } from '@/types'
+import { ErrorCode, ZoneType } from '@/types'
 import type { EntityId } from '@/types'
 import type { ClientGameState, ClientEvent, LegalActionInfo, PendingDecision, OpponentDecisionStatus, PriorityModeValue, Step } from '@/types'
 import { trackEvent, setInGame } from '@/utils/analytics.ts'
@@ -570,6 +570,18 @@ function processStateUpdate(
 
   // Sync priority mode from server echo
   const serverPriorityMode = msg.priorityMode ?? undefined
+
+  // Every gate in the live-submission mechanism fails closed on a null epoch: no action can be
+  // submitted, no pipeline or combat declaration can even start. A board that renders but accepts
+  // nothing is the worst possible failure mode, so say so instead of going quietly inert.
+  if (msg.interactionEpoch == null) {
+    console.error('State update carried no interactionEpoch — this client cannot submit actions.')
+    get().setError({
+      code: ErrorCode.INTERNAL_ERROR,
+      message: 'Lost sync with the server. Reload to keep playing.',
+      timestamp: Date.now(),
+    })
+  }
 
   set((state) => ({
     gameState: resolvedState,

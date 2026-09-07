@@ -167,10 +167,8 @@ class CleanupPhaseManager(
             // Push continuation to handle the response
 
 
-            val stateWithContinuation = decisionResult.state
-
             return ExecutionResult.propagatePause(
-                stateWithContinuation,
+                decisionResult.state,
                 events + decisionResult.events
             )
         }

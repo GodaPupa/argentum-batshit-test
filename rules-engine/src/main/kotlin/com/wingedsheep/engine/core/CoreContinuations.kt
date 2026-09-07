@@ -506,17 +506,6 @@ data class CoinFlipChoiceContinuation(
 ) : AnswerContinuation
 
 /**
- * Phase discriminator for RepeatWhileContinuation.
- */
-@Serializable
-enum class RepeatWhilePhase {
-    /** Pre-pushed before body executes; found in checkForMoreContinuations after body completes */
-    AFTER_BODY,
-    /** Waiting for the player's yes/no decision (PlayerChooses only) */
-    AFTER_DECISION
-}
-
-/**
  * Pre-pushed before executing a `ReflexiveTriggerEffect`'s action half. Auto-resumed after the
  * action completes to emit a [com.wingedsheep.engine.core.ReflexiveAbilityTriggeredEvent] — CR
  * 603.12's "when you do" reflexive triggered ability is a genuinely separate stack object, not

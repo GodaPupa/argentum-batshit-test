@@ -42,7 +42,6 @@ class FlipTwoCoinsExecutor(
             count = 2,
             sourceId = context.sourceId,
             cardRegistry = cardRegistry,
-            decisionHandler = decisionHandler
         )
 
         return when (resolution) {

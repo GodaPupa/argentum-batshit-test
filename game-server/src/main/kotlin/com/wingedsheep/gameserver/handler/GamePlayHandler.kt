@@ -905,7 +905,7 @@ class GamePlayHandler(
             sessionPlayers.forEach { session ->
                 val update = gameSession.createStateUpdate(
                     session.playerId, allEvents,
-                    useEngineDecisionIds = session.webSocketSession is AiWebSocketSession,
+                    useEngineDecisionIds = usesEngineDecisionIds(session),
                 )
                 if (update != null) sender.send(session.webSocketSession, update)
                 else logger.warn("createStateUpdate returned null for player ${session.playerId.value}")
@@ -1185,11 +1185,23 @@ class GamePlayHandler(
         logger.info("Player ${playerSession.playerName} requested state resync")
         // Clear cached state so the next update sends a full StateUpdate instead of a delta
         gameSession.clearLastSentState(playerSession.playerId)
-        val update = gameSession.createStateUpdate(playerSession.playerId, emptyList())
+        val update = gameSession.createStateUpdate(
+            playerSession.playerId, emptyList(),
+            useEngineDecisionIds = usesEngineDecisionIds(playerSession),
+        )
         if (update != null) {
             sender.send(session, update)
         }
     }
+
+    /**
+     * In-process AI simulates responses against the raw engine snapshot, so it gets engine decision
+     * IDs; a browser gets the epoch-prefixed token it must echo back. Every path that delivers a
+     * state update derives this from the recipient — encoding for the wrong transport hands the AI
+     * a token [GameSession.executeAiAction] then rejects, and the seat stops acting in silence.
+     */
+    private fun usesEngineDecisionIds(playerSession: PlayerSession): Boolean =
+        playerSession.webSocketSession is AiWebSocketSession
 
     // =========================================================================
     // AI recovery (rewire AI into GameSessions restored from Redis on startup)

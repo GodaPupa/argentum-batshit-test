@@ -46,7 +46,6 @@ class FlipCoinsExecutor(
             count = effect.count,
             sourceId = context.sourceId,
             cardRegistry = cardRegistry,
-            decisionHandler = decisionHandler
         )
 
         return when (resolution) {

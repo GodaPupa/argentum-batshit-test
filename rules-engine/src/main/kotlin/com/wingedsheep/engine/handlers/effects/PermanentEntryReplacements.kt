@@ -5,7 +5,6 @@ import com.wingedsheep.engine.core.AnswerContinuation
 import com.wingedsheep.engine.core.ChooseColorDecision
 import com.wingedsheep.engine.core.ChooseNumberDecision
 import com.wingedsheep.engine.core.ChooseOptionDecision
-import com.wingedsheep.engine.core.ContinuationFrame
 import com.wingedsheep.engine.core.DecisionContext
 import com.wingedsheep.engine.core.DecisionPhase
 import com.wingedsheep.engine.core.CloneEntersOnBattlefieldContinuation

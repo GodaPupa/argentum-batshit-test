@@ -199,10 +199,8 @@ class PayOrSufferExecutor(
         // Push continuation to handle the response
 
 
-        val stateWithContinuation = decisionResult.state
-
         return EffectResult.propagatePause(
-            stateWithContinuation,
+            decisionResult.state,
             decisionResult.events
         )
     }
@@ -325,10 +323,8 @@ class PayOrSufferExecutor(
         // Push continuation to handle the response
 
 
-        val stateWithContinuation = decisionResult.state
-
         return EffectResult.propagatePause(
-            stateWithContinuation,
+            decisionResult.state,
             decisionResult.events
         )
     }
@@ -454,10 +450,8 @@ class PayOrSufferExecutor(
             answer = continuation
         )
 
-        val stateWithContinuation = decisionResult.state
-
         return EffectResult.propagatePause(
-            stateWithContinuation,
+            decisionResult.state,
             decisionResult.events
         )
     }
@@ -527,10 +521,8 @@ class PayOrSufferExecutor(
             answer = continuation
         )
 
-        val stateWithContinuation = decisionResult.state
-
         return EffectResult.propagatePause(
-            stateWithContinuation,
+            decisionResult.state,
             decisionResult.events
         )
     }
@@ -737,10 +729,8 @@ class PayOrSufferExecutor(
             answer = continuation
         )
 
-        val stateWithContinuation = decisionResult.state
-
         return EffectResult.propagatePause(
-            stateWithContinuation,
+            decisionResult.state,
             decisionResult.events
         )
     }

@@ -142,10 +142,8 @@ class SacrificeExecutor(
             answer = continuation
         )
 
-        val stateWithContinuation = decisionResult.state
-
         return EffectResult.propagatePause(
-            stateWithContinuation,
+            decisionResult.state,
             decisionResult.events
         )
     }

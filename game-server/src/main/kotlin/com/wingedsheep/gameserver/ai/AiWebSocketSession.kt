@@ -48,6 +48,11 @@ class AiWebSocketSession(
      */
     @Volatile var thinkingDelayMs: Long = 500,
     private val onActionReady: (EntityId, GameAction, String?) -> Unit,
+    /**
+     * Mulligan callbacks carry no interaction epoch because mulligan does not go through
+     * `GameSession.executeAction`, so it takes no undo checkpoint and `executeUndo` cannot reach
+     * back into it. Give them an origin the moment that stops being true.
+     */
     private val onMulliganKeep: (EntityId) -> Unit,
     private val onMulliganTake: (EntityId) -> Unit,
     private val onBottomCards: (EntityId, List<EntityId>) -> Unit,
