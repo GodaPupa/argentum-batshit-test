@@ -82,8 +82,15 @@ val BreOfClanStoutarm = card("Bre of Clan Stoutarm") {
                 ),
                 // MV ≤ life gained: you may cast it for free *while this ability resolves* (the
                 // printed ruling — you can't wait to cast it later), so cast inline from exile
-                // rather than granting deferred may-play permission. Declining leaves it in exile.
-                effect = MayEffect(Effects.CastFromCollectionWithoutPayingCost("nonland")),
+                // rather than granting deferred may-play permission. Declining puts it into your
+                // hand, same as the MV > life-gained branch — nothing stays behind in exile.
+                effect = MayEffect(
+                    Effects.CastFromCollectionWithoutPayingCost("nonland"),
+                    otherwise = MoveCollectionEffect(
+                        from = "nonland",
+                        destination = CardDestination.ToZone(Zone.HAND)
+                    )
+                ),
                 // Otherwise (MV > life gained), put the nonland into your hand. The "Otherwise" is
                 // tied to the mana-value comparison, not to declining the cast — cf. Solstice
                 // Revelations' distinct "if you don't cast that card this way" wording.
