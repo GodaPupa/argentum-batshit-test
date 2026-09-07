@@ -14,10 +14,16 @@ import com.wingedsheep.sdk.scripting.targets.TargetObject
  * Instant
  * Exile target creature. Its controller gains life equal to its power.
  *
- * The life gain ([DynamicAmounts.targetPower]) is sequenced before the exile so the
- * targeted creature's power and controller are read while it is still on the
- * battlefield, matching the ruling that last-known power is used if the creature
- * somehow leaves before the life gain would otherwise see it.
+ * The life gain ([DynamicAmounts.targetPower]) is sequenced *before* the exile, inverting
+ * the printed order. This is a workaround, not a rules claim: target references read the
+ * live board only, so a power read taken after the exile falls through to the card's printed
+ * P/T and would ignore counters, Auras and lords. Gaining first reads the projected power and
+ * controller while the creature is still on the battlefield, which is the value CR 608.2h and
+ * the card's ruling ask for. Same house pattern as Crumble.
+ *
+ * The life gained is identical under either order. The one divergence is that a
+ * leaves-the-battlefield trigger observes the post-gain board, which can only matter for a
+ * creature whose power keys off a life total (Serra Ascendant, Serra Avatar).
  */
 val SwordsToPlowshares = card("Swords to Plowshares") {
     manaCost = "{W}"

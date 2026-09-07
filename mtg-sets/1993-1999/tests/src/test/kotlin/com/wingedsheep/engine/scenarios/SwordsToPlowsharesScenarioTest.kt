@@ -11,9 +11,10 @@ import io.kotest.matchers.shouldBe
  *
  * "{W} Instant — Exile target creature. Its controller gains life equal to its power."
  *
- * Grizzly Bears has power 2 and is controlled by player 2; player 1 casts Swords to
- * Plowshares at it, so player 2 (the creature's controller) gains 2 life and the
- * creature is exiled.
+ * The second case is the one that pins the implementation down: an Unholy Strength on the
+ * targeted creature makes its *projected* power (4) differ from its printed power (2), so the
+ * assertion fails if the life gain ever reads base characteristics — which is exactly what
+ * happens if the two effects are re-sequenced into the printed exile-then-gain order.
  */
 class SwordsToPlowsharesScenarioTest : ScenarioTestBase() {
 
@@ -45,6 +46,34 @@ class SwordsToPlowsharesScenarioTest : ScenarioTestBase() {
             }
             withClue("The caster (player 1) should not gain life") {
                 game.getLifeTotal(1) shouldBe 20
+            }
+        }
+
+        test("the life gained is the creature's projected power, not its printed power") {
+            val game = scenario()
+                .withPlayers("Caster", "Defender")
+                .withCardInHand(1, "Swords to Plowshares")
+                .withLandsOnBattlefield(1, "Plains", 1)
+                .withCardOnBattlefield(2, "Grizzly Bears")
+                .withCardAttachedTo(2, "Unholy Strength", "Grizzly Bears")
+                .withActivePlayer(1)
+                .inPhase(Phase.PRECOMBAT_MAIN, Step.PRECOMBAT_MAIN)
+                .build()
+
+            val bears = game.findPermanent("Grizzly Bears")!!
+
+            val cast = game.castSpell(1, "Swords to Plowshares", targetId = bears)
+            withClue("Casting Swords to Plowshares at the enchanted Grizzly Bears should succeed: ${cast.error}") {
+                cast.error shouldBe null
+            }
+            if (game.hasPendingDecision()) game.submitManaSourcesAutoPay()
+            game.resolveStack()
+
+            withClue("The enchanted Grizzly Bears should be exiled") {
+                game.isOnBattlefield("Grizzly Bears") shouldBe false
+            }
+            withClue("Player 2 should gain 4 life — Grizzly Bears' 2 power plus Unholy Strength's +2, not its printed 2") {
+                game.getLifeTotal(2) shouldBe 24
             }
         }
     }
