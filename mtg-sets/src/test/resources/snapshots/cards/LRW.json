@@ -11428,6 +11428,63 @@
     ]
 }
 
+// Pollen Lullaby
+{
+    "name": "Pollen Lullaby",
+    "manaCost": "{1}{W}",
+    "typeLine": "Instant",
+    "oracleText": "Prevent all combat damage that would be dealt this turn. Clash with an opponent. If you win, creatures that player controls don't untap during the player's next untap step. (Each clashing player reveals the top card of their library, then puts that card on their choice of the top or bottom. A player wins if their card had a greater mana value.)",
+    "script": {
+        "spellEffect": {
+            "type": "Composite",
+            "effects": [
+                {
+                    "type": "PreventDamageShield",
+                    "scope": "CombatOnly"
+                },
+                {
+                    "type": "Gated",
+                    "gate": {
+                        "type": "Gate.DoAction",
+                        "action": {
+                            "type": "Composite",
+                            "effects": [
+                                {
+                                    "type": "ChooseOpponentForSource",
+                                    "prompt": "Choose an opponent to clash with"
+                                },
+                                "Clash"
+                            ]
+                        },
+                        "successCriterion": {
+                            "type": "SuccessCriterion.CollectionNonEmpty",
+                            "name": "clashWon"
+                        }
+                    },
+                    "then": {
+                        "type": "SkipUntap",
+                        "target": {
+                            "type": "PlayerRef",
+                            "player": "ChosenOpponent"
+                        },
+                        "affectsLands": false
+                    },
+                    "descriptionOverride": "Clash with an opponent. If you win, creatures the chosen player controls don't untap during their next untap step"
+                }
+            ]
+        }
+    },
+    "metadata": {
+        "collectorNumber": "36",
+        "rarity": "UNCOMMON",
+        "artist": "Warren Mahy",
+        "imageUri": "https://cards.scryfall.io/normal/front/d/e/deb2156a-8a77-4954-b557-1bdaf3ba171a.jpg?1783942910"
+    },
+    "colorIdentityOverride": [
+        "WHITE"
+    ]
+}
+
 // Ponder
 {
     "name": "Ponder",
@@ -11991,6 +12048,75 @@
             }
         ]
     }
+}
+
+// Ringskipper
+{
+    "name": "Ringskipper",
+    "manaCost": "{1}{U}",
+    "typeLine": "Creature — Faerie Wizard",
+    "oracleText": "Flying\nWhen this creature dies, clash with an opponent. If you win, return this card to its owner's hand. (Each clashing player reveals the top card of their library, then puts that card on their choice of the top or bottom. A player wins if their card had a greater mana value.)",
+    "creatureStats": {
+        "power": 1,
+        "toughness": 1
+    },
+    "keywords": [
+        "FLYING"
+    ],
+    "script": {
+        "triggeredAbilities": [
+            {
+                "id": "ability_1",
+                "trigger": {
+                    "type": "ZoneChangeEvent",
+                    "from": "Battlefield",
+                    "to": "Graveyard"
+                },
+                "effect": {
+                    "type": "Gated",
+                    "gate": {
+                        "type": "Gate.DoAction",
+                        "action": {
+                            "type": "Composite",
+                            "effects": [
+                                {
+                                    "type": "ChooseOpponentForSource",
+                                    "prompt": "Choose an opponent to clash with"
+                                },
+                                "Clash"
+                            ]
+                        },
+                        "successCriterion": {
+                            "type": "SuccessCriterion.CollectionNonEmpty",
+                            "name": "clashWon"
+                        }
+                    },
+                    "then": {
+                        "type": "MoveToZone",
+                        "target": "Self",
+                        "destination": "Hand",
+                        "fromZone": "Graveyard"
+                    },
+                    "descriptionOverride": "Clash with an opponent. If you win, return this creature to its owner's hand"
+                },
+                "descriptionOverride": "Clash with an opponent. If you win, return this card to its owner's hand."
+            }
+        ]
+    },
+    "metadata": {
+        "collectorNumber": "81",
+        "artist": "Heather Hudson",
+        "imageUri": "https://cards.scryfall.io/normal/front/7/2/72d3ae1f-5442-4725-a16a-502f13359a85.jpg?1783942899",
+        "rulings": [
+            {
+                "date": "2007-10-01",
+                "text": "If Ringskipper is removed from the graveyard before the ability resolves, you still clash, but nothing will happen if you win."
+            }
+        ]
+    },
+    "colorIdentityOverride": [
+        "BLUE"
+    ]
 }
 
 // Rootgrapple
@@ -15777,6 +15903,84 @@
     },
     "colorIdentityOverride": [
         "GREEN"
+    ]
+}
+
+// Weed Strangle
+{
+    "name": "Weed Strangle",
+    "manaCost": "{3}{B}{B}",
+    "typeLine": "Sorcery",
+    "oracleText": "Destroy target creature. Clash with an opponent. If you win, you gain life equal to that creature's toughness. (Each clashing player reveals the top card of their library, then puts that card on their choice of the top or bottom. A player wins if their card had a greater mana value.)",
+    "script": {
+        "spellEffect": {
+            "type": "Composite",
+            "effects": [
+                {
+                    "type": "StoreNumber",
+                    "name": "strangledToughness",
+                    "amount": {
+                        "type": "EntityProperty",
+                        "entity": "Target",
+                        "numericProperty": "Toughness"
+                    }
+                },
+                {
+                    "type": "MoveToZone",
+                    "target": {
+                        "type": "BoundVariable",
+                        "name": "target creature"
+                    },
+                    "destination": "Graveyard",
+                    "byDestruction": true
+                },
+                {
+                    "type": "Gated",
+                    "gate": {
+                        "type": "Gate.DoAction",
+                        "action": {
+                            "type": "Composite",
+                            "effects": [
+                                {
+                                    "type": "ChooseOpponentForSource",
+                                    "prompt": "Choose an opponent to clash with"
+                                },
+                                "Clash"
+                            ]
+                        },
+                        "successCriterion": {
+                            "type": "SuccessCriterion.CollectionNonEmpty",
+                            "name": "clashWon"
+                        }
+                    },
+                    "then": {
+                        "type": "GainLife",
+                        "amount": {
+                            "type": "VariableReference",
+                            "variableName": "strangledToughness"
+                        }
+                    },
+                    "descriptionOverride": "Clash with an opponent. If you win, you gain the stored strangledToughness life"
+                }
+            ]
+        },
+        "targetRequirements": [
+            {
+                "type": "TargetObject",
+                "filter": {
+                    "baseFilter": "creature"
+                },
+                "id": "target creature"
+            }
+        ]
+    },
+    "metadata": {
+        "collectorNumber": "147",
+        "artist": "Jesper Ejsing",
+        "imageUri": "https://cards.scryfall.io/normal/front/c/1/c1f7fb79-19a8-483a-bf91-e687f7da4e9c.jpg?1783942880"
+    },
+    "colorIdentityOverride": [
+        "BLACK"
     ]
 }
 
