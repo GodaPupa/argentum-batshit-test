@@ -417,6 +417,68 @@
     ]
 }
 
+// Blood Funnel
+{
+    "name": "Blood Funnel",
+    "manaCost": "{1}{B}",
+    "typeLine": "Enchantment",
+    "oracleText": "Noncreature spells you cast cost {2} less to cast.\nWhenever you cast a noncreature spell, counter that spell unless you sacrifice a creature.",
+    "script": {
+        "triggeredAbilities": [
+            {
+                "id": "ability_1",
+                "trigger": {
+                    "type": "SpellCastEvent",
+                    "spellFilter": {
+                        "cardPredicates": [
+                            "IsNoncreature"
+                        ]
+                    }
+                },
+                "binding": "ANY",
+                "effect": {
+                    "type": "PayOrSuffer",
+                    "cost": {
+                        "type": "PayAtom",
+                        "atom": {
+                            "type": "AtomSacrifice",
+                            "filter": "creature"
+                        }
+                    },
+                    "suffer": {
+                        "type": "Counter",
+                        "targetSource": "CounterTargetSource.TriggeringEntity"
+                    },
+                    "consequenceDescription": "counter that spell"
+                },
+                "descriptionOverride": "Whenever you cast a noncreature spell, counter that spell unless you sacrifice a creature."
+            }
+        ],
+        "staticAbilities": [
+            {
+                "type": "ModifySpellCost",
+                "target": {
+                    "type": "YouCast",
+                    "filter": "noncreature"
+                },
+                "modification": {
+                    "type": "ReduceGeneric",
+                    "amount": 2
+                }
+            }
+        ]
+    },
+    "metadata": {
+        "collectorNumber": "77",
+        "rarity": "RARE",
+        "artist": "Thomas M. Baxa",
+        "imageUri": "https://cards.scryfall.io/normal/front/5/f/5f4e8084-4b9e-48e0-bf59-d45543e176f8.jpg?1783943674"
+    },
+    "colorIdentityOverride": [
+        "BLACK"
+    ]
+}
+
 // Bloodbond March
 {
     "name": "Bloodbond March",
@@ -5802,6 +5864,97 @@
     ]
 }
 
+// Golgari Grave-Troll
+{
+    "name": "Golgari Grave-Troll",
+    "manaCost": "{4}{G}",
+    "typeLine": "Creature — Troll Skeleton",
+    "oracleText": "This creature enters with a +1/+1 counter on it for each creature card in your graveyard.\n{1}, Remove a +1/+1 counter from this creature: Regenerate this creature.\nDredge 6 (If you would draw a card, you may mill six cards instead. If you do, return this card from your graveyard to your hand.)",
+    "creatureStats": {
+        "power": 0,
+        "toughness": 0
+    },
+    "keywords": [
+        "DREDGE"
+    ],
+    "keywordAbilities": [
+        {
+            "type": "Dredge",
+            "amount": 6
+        }
+    ],
+    "script": {
+        "activatedAbilities": [
+            {
+                "id": "ability_1",
+                "cost": {
+                    "type": "CostComposite",
+                    "costs": [
+                        {
+                            "type": "CostAtomWrapper",
+                            "atom": {
+                                "type": "AtomMana",
+                                "cost": "{1}"
+                            }
+                        },
+                        {
+                            "type": "CostAtomWrapper",
+                            "atom": {
+                                "type": "AtomRemoveCounters",
+                                "counterType": "+1/+1",
+                                "self": true
+                            }
+                        }
+                    ]
+                },
+                "effect": {
+                    "type": "Regenerate",
+                    "target": "Self"
+                },
+                "descriptionOverride": "{1}, Remove a +1/+1 counter from this creature: Regenerate this creature."
+            }
+        ],
+        "replacementEffects": [
+            {
+                "type": "EntersWithDynamicCounters",
+                "count": {
+                    "type": "Count",
+                    "player": "You",
+                    "zone": "Graveyard",
+                    "filter": "creature"
+                }
+            }
+        ]
+    },
+    "metadata": {
+        "collectorNumber": "167",
+        "rarity": "RARE",
+        "artist": "Greg Hildebrandt",
+        "imageUri": "https://cards.scryfall.io/normal/front/f/6/f61b50e6-2166-435d-bf48-c4a0cff9999c.jpg?1783943637",
+        "rulings": [
+            {
+                "date": "2018-12-07",
+                "text": "Because damage remains marked on a creature until it's removed as the turn ends, nonlethal damage dealt to Golgari Grave-Troll may become lethal if you remove +1/+1 counters from it during that turn. In this case, it dies before you can resolve the activated ability that will regenerate it."
+            },
+            {
+                "date": "2018-12-07",
+                "text": "If you return Golgari Grave-Troll from your graveyard directly to the battlefield, its first ability counts itself."
+            },
+            {
+                "date": "2024-01-12",
+                "text": "You can't attempt to use a dredge ability if you don't have enough cards in your library."
+            },
+            {
+                "date": "2024-01-12",
+                "text": "Dredge can replace any card draw, not only the one during your draw step."
+            }
+        ]
+    },
+    "colorIdentityOverride": [
+        "GREEN"
+    ]
+}
+
 // Golgari Guildmage
 {
     "name": "Golgari Guildmage",
@@ -8717,6 +8870,111 @@
             {
                 "date": "2005-10-01",
                 "text": "The target is chosen just after any creatures dealt lethal damage at the same time that the enchanted creature dealt damage have been put into the graveyard. That might include the enchanted creature itself, if it had trample and was blocked, for example."
+            }
+        ]
+    },
+    "colorIdentityOverride": [
+        "BLACK"
+    ]
+}
+
+// Necroplasm
+{
+    "name": "Necroplasm",
+    "manaCost": "{1}{B}{B}",
+    "typeLine": "Creature — Ooze",
+    "oracleText": "At the beginning of your upkeep, put a +1/+1 counter on this creature.\nAt the beginning of your end step, destroy each creature with mana value equal to the number of +1/+1 counters on this creature.\nDredge 2 (If you would draw a card, you may mill two cards instead. If you do, return this card from your graveyard to your hand.)",
+    "creatureStats": {
+        "power": 1,
+        "toughness": 1
+    },
+    "keywords": [
+        "DREDGE"
+    ],
+    "keywordAbilities": [
+        {
+            "type": "Dredge",
+            "amount": 2
+        }
+    ],
+    "script": {
+        "triggeredAbilities": [
+            {
+                "id": "ability_1",
+                "trigger": {
+                    "type": "StepEvent",
+                    "step": "UPKEEP"
+                },
+                "binding": "ANY",
+                "effect": {
+                    "type": "AddCounters",
+                    "counterType": "+1/+1",
+                    "count": 1,
+                    "target": "Self"
+                },
+                "descriptionOverride": "At the beginning of your upkeep, put a +1/+1 counter on this creature."
+            },
+            {
+                "id": "ability_2",
+                "trigger": {
+                    "type": "StepEvent",
+                    "step": "END"
+                },
+                "binding": "ANY",
+                "effect": {
+                    "type": "Composite",
+                    "effects": [
+                        {
+                            "type": "GatherCards",
+                            "source": {
+                                "type": "BattlefieldMatching",
+                                "filter": {
+                                    "cardPredicates": [
+                                        "IsCreature",
+                                        {
+                                            "type": "ManaValueEqualsDynamic",
+                                            "amount": {
+                                                "type": "EntityProperty",
+                                                "entity": "Source",
+                                                "numericProperty": {
+                                                    "type": "CounterCount",
+                                                    "counterType": "PlusOnePlusOne"
+                                                }
+                                            }
+                                        }
+                                    ]
+                                }
+                            },
+                            "storeAs": "destroyAll_gathered"
+                        },
+                        {
+                            "type": "MoveCollection",
+                            "from": "destroyAll_gathered",
+                            "destination": {
+                                "type": "ToZone",
+                                "zone": "Graveyard"
+                            },
+                            "moveType": "Destroy"
+                        }
+                    ]
+                },
+                "descriptionOverride": "At the beginning of your end step, destroy each creature with mana value equal to the number of +1/+1 counters on this creature."
+            }
+        ]
+    },
+    "metadata": {
+        "collectorNumber": "98",
+        "rarity": "RARE",
+        "artist": "rk post",
+        "imageUri": "https://cards.scryfall.io/normal/front/3/7/372424cf-85b3-4a78-bcf2-0543b0b88c0b.jpg?1783943665",
+        "rulings": [
+            {
+                "date": "2024-01-12",
+                "text": "You can't attempt to use a dredge ability if you don't have enough cards in your library."
+            },
+            {
+                "date": "2024-01-12",
+                "text": "Dredge can replace any card draw, not only the one during your draw step."
             }
         ]
     },
