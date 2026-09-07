@@ -173,6 +173,7 @@ class SacrificeAndPayContinuationResumer(
                     resumePayOrSufferDiscard(state, continuation, response, checkForMore)
                 }
             }
+            PayOrSufferCostType.DISCARD_HAND -> resumePayOrSufferDiscardHand(state, continuation, response, checkForMore)
             PayOrSufferCostType.SACRIFICE -> resumePayOrSufferSacrifice(state, continuation, response, checkForMore)
             PayOrSufferCostType.PAY_LIFE -> resumePayOrSufferPayLife(state, continuation, response, checkForMore)
             PayOrSufferCostType.MILL -> resumePayOrSufferMill(state, continuation, response, checkForMore)
@@ -304,6 +305,33 @@ class SacrificeAndPayContinuationResumer(
             continuation.filter,
             continuation.requiredCount,
             continuation.sourceId
+        )
+        return checkForMore(result.state, result.events.toList())
+    }
+
+    /**
+     * Resume the "unless you discard your hand" yes/no (Perplex).
+     *
+     * Declining runs the suffer effect; accepting empties the hand — including the case where the
+     * hand is already empty, which pays the cost for free rather than failing it.
+     */
+    private fun resumePayOrSufferDiscardHand(
+        state: GameState,
+        continuation: PayOrSufferContinuation,
+        response: DecisionResponse,
+        checkForMore: CheckForMore
+    ): ExecutionResult {
+        if (response !is YesNoResponse) {
+            return ExecutionResult.error(state, "Expected yes/no response for pay or suffer discard hand")
+        }
+
+        if (!response.choice) {
+            return executePayOrSufferConsequence(state, continuation, checkForMore)
+        }
+
+        val result = com.wingedsheep.engine.handlers.effects.player.PayOrSufferExecutor.executeDiscardHand(
+            state,
+            continuation.playerId
         )
         return checkForMore(result.state, result.events.toList())
     }

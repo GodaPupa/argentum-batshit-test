@@ -62,7 +62,9 @@ class CostPaymentContinuationResumer(
             // there is nothing to select), and random discard.
             is CostAtom.Mana, is CostAtom.PayLife, is CostAtom.Mill,
             // Exiling the top N takes no selection either, for the same reason Mill doesn't.
-            is CostAtom.ExileTopOfLibrary ->
+            is CostAtom.ExileTopOfLibrary,
+            // Discarding the whole hand takes no selection — every card goes.
+            is CostAtom.DiscardHand ->
                 resumeYesNo(state, continuation, cost, response, checkForMore)
             is CostAtom.Discard ->
                 if (atom.random) resumeYesNo(state, continuation, cost, response, checkForMore)

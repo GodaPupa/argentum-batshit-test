@@ -1799,6 +1799,9 @@ class CastSpellHandler(
         for (additionalCost in flattenedCosts) {
             when (additionalCost) {
                 is AdditionalCost.Atom -> when (val atom = additionalCost.atom) {
+                    // Nothing to validate: the payer selects nothing (every card goes) and an
+                    // empty hand pays it for free (CR 118.3).
+                    is CostAtom.DiscardHand -> Unit
                     is CostAtom.Sacrifice -> {
                         val sacrificed = action.additionalCostPayment?.sacrificedPermanents ?: emptyList()
                         val filterDesc = atom.filter.description
@@ -2707,6 +2710,18 @@ class CastSpellHandler(
                             for (permId in action.additionalCostPayment.sacrificedPermanents) {
                                 if (currentState.getEntity(permId) == null) continue
                                 currentState = sacrificePermanentAsCost(currentState, permId, action.playerId, events)
+                            }
+                        }
+                        // Every card at once, through the same shared discard path as the counted
+                        // variant below, so madness (CR 702.35a) applies to each of them.
+                        is CostAtom.DiscardHand -> {
+                            val hand = currentState.getZone(ZoneKey(action.playerId, Zone.HAND)).toList()
+                            if (hand.isNotEmpty()) {
+                                discardedAsCostCards.addAll(hand)
+                                val discardResult = com.wingedsheep.engine.handlers.effects.ZoneTransitionService
+                                    .discardCards(currentState, action.playerId, hand)
+                                currentState = discardResult.state
+                                events.addAll(discardResult.events)
                             }
                         }
                         is CostAtom.Discard -> {

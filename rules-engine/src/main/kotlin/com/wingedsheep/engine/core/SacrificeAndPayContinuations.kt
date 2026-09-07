@@ -166,7 +166,13 @@ enum class PayOrSufferCostType {
     REMOVE_COUNTERS,
     PUT_COUNTERS,
     MILL,
-    RETURN_TO_HAND
+    RETURN_TO_HAND,
+
+    /**
+     * Discard your entire hand (Perplex). A yes/no rather than a card selection: the payer picks
+     * nothing, so the only decision is whether to pay at all.
+     */
+    DISCARD_HAND
 }
 
 /**

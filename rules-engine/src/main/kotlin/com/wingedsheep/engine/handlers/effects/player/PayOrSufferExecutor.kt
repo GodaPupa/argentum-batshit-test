@@ -97,6 +97,10 @@ class PayOrSufferExecutor(
             }
             is PayCost.Atom -> when (val atom = cost.atom) {
                 is CostAtom.Discard -> handleDiscardCost(state, effect, context, atom, sourceId, sourceCard.name, payingPlayerId)
+                // Perplex — "counter target spell unless its controller discards their hand".
+                // Nothing is selected, so this is a yes/no like the random-discard variant.
+                is CostAtom.DiscardHand ->
+                    handleDiscardHandCost(state, effect, context, sourceId, sourceCard.name, payingPlayerId)
                 is CostAtom.Sacrifice -> handleSacrificeCost(state, effect, context, atom, sourceId, sourceCard.name, payingPlayerId)
                 is CostAtom.PayLife -> handlePayLifeCost(state, effect, context, atom, sourceId, sourceCard.name, payingPlayerId)
                 is CostAtom.Mana -> handleManaCost(state, effect, context, atom, sourceId, sourceCard.name, payingPlayerId)
@@ -252,6 +256,61 @@ class PayOrSufferExecutor(
             requiredCount = cost.count,
             filter = cost.filter,
             random = true,
+            targets = context.targets,
+            namedTargets = context.pipeline.namedTargets,
+            triggeringEntityId = context.triggeringEntityId,
+            triggeringPlayerId = context.triggeringPlayerId,
+            abilityControllerId = context.controllerId,
+            storedCollections = context.pipeline.storedCollections,
+            iterationEntityId = context.pipeline.iterationTarget
+        )
+
+        return EffectResult.from(state.suspendForDecision(decision, continuation))
+    }
+
+    /**
+     * Handle "unless you discard your hand" (Perplex).
+     *
+     * There is nothing to select — every card in hand goes — so the payer answers a yes/no rather
+     * than a card selection. Unlike the counted [CostAtom.Discard] path there is no "not enough
+     * cards" shortcut into the suffer effect: an empty hand pays this cost for free (CR 118.3), so
+     * the choice is always offered and declining is always possible.
+     */
+    private fun handleDiscardHandCost(
+        state: GameState,
+        effect: PayOrSufferEffect,
+        context: EffectContext,
+        sourceId: EntityId,
+        sourceName: String,
+        controllerId: EntityId
+    ): EffectResult {
+        val prompt = "Discard your hand or ${describeConsequence(effect, sourceName)}"
+
+        val decision = { decisionId: String ->
+            YesNoDecision(
+                id = decisionId,
+                playerId = controllerId,
+                prompt = prompt,
+                context = DecisionContext(
+                    sourceId = sourceId,
+                    sourceName = sourceName,
+                    phase = DecisionPhase.RESOLUTION
+                ),
+                yesText = "Discard hand",
+                noText = "Accept consequence"
+            )
+        }
+
+        val continuation = PayOrSufferContinuation(
+            playerId = controllerId,
+            sourceId = sourceId,
+            objectReferences = context.objectReferences,
+            sourceName = sourceName,
+            costType = PayOrSufferCostType.DISCARD_HAND,
+            sufferEffect = effect.suffer,
+            requiredCount = 0,
+            filter = GameObjectFilter.Any,
+            random = false,
             targets = context.targets,
             namedTargets = context.pipeline.namedTargets,
             triggeringEntityId = context.triggeringEntityId,
@@ -931,6 +990,9 @@ class PayOrSufferExecutor(
             is PayCost.Choice -> cost.options.any { canPayCost(state, playerId, it, sourceId) }
             is PayCost.Atom -> when (val atom = cost.atom) {
                 is CostAtom.Discard -> findValidCardsInHand(state, playerId, atom.filter, sourceId).size >= atom.count
+                // Always payable: an empty hand discards nothing, and a cost of nothing is a cost
+                // you can pay (CR 118.3). Never filtered out, so the choice is always offered.
+                is CostAtom.DiscardHand -> true
                 is CostAtom.Sacrifice -> findValidPermanentsOnBattlefield(
                     state, playerId, atom.filter, selfExclusion(atom.excludeSelf, sourceId), sourceId
                 ).size >= atom.count
@@ -1273,6 +1335,21 @@ class PayOrSufferExecutor(
             // applies to a randomly discarded card too.
             val result = com.wingedsheep.engine.handlers.effects.ZoneTransitionService
                 .discardCards(stateAfterShuffle, playerId, cardsToDiscard)
+
+            return EffectResult.success(result.state, result.events)
+        }
+
+        /**
+         * Pay [CostAtom.DiscardHand]: every card in [playerId]'s hand goes at once, through the
+         * shared discard path so a card-intrinsic discard replacement (madness, CR 702.35a) still
+         * applies. An empty hand is a no-op payment, not a failure.
+         */
+        fun executeDiscardHand(state: GameState, playerId: EntityId): EffectResult {
+            val hand = state.getZone(ZoneKey(playerId, Zone.HAND))
+            if (hand.isEmpty()) return EffectResult.success(state)
+
+            val result = com.wingedsheep.engine.handlers.effects.ZoneTransitionService
+                .discardCards(state, playerId, hand.toList())
 
             return EffectResult.success(result.state, result.events)
         }
