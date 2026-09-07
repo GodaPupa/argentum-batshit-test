@@ -250,6 +250,66 @@
     ]
 }
 
+// Belltower Sphinx
+{
+    "name": "Belltower Sphinx",
+    "manaCost": "{4}{U}",
+    "typeLine": "Creature — Sphinx",
+    "oracleText": "Flying\nWhenever a source deals damage to this creature, that source's controller mills that many cards.",
+    "creatureStats": {
+        "power": 2,
+        "toughness": 5
+    },
+    "keywords": [
+        "FLYING"
+    ],
+    "script": {
+        "triggeredAbilities": [
+            {
+                "id": "ability_1",
+                "trigger": "DamageReceivedEvent",
+                "effect": {
+                    "type": "Composite",
+                    "effects": [
+                        {
+                            "type": "GatherCards",
+                            "source": {
+                                "type": "TopOfLibrary",
+                                "count": {
+                                    "type": "ContextProperty",
+                                    "key": "TRIGGER_DAMAGE_AMOUNT"
+                                },
+                                "player": "ControllerOfTriggeringEntity",
+                                "isMill": true
+                            },
+                            "storeAs": "milled"
+                        },
+                        {
+                            "type": "MoveCollection",
+                            "from": "milled",
+                            "destination": {
+                                "type": "ToZone",
+                                "zone": "Graveyard",
+                                "player": "ControllerOfTriggeringEntity"
+                            }
+                        }
+                    ]
+                },
+                "descriptionOverride": "Whenever a source deals damage to this creature, that source's controller mills that many cards."
+            }
+        ]
+    },
+    "metadata": {
+        "collectorNumber": "38",
+        "rarity": "UNCOMMON",
+        "artist": "Jim Nelson",
+        "imageUri": "https://cards.scryfall.io/normal/front/4/5/452a23a0-62de-4561-b361-9c0de9151129.jpg?1783943691"
+    },
+    "colorIdentityOverride": [
+        "BLUE"
+    ]
+}
+
 // Benevolent Ancestor
 {
     "name": "Benevolent Ancestor",

@@ -3767,6 +3767,19 @@ A resolving nonpermanent spell retains its stack instance through serialized eff
   target of a spell or ability, that spell or ability's controller gains control of that creature")
   = `GiveControlToTargetPlayerEffect(permanent = EffectTarget.TriggeringEntity, newController =
   EffectTarget.PlayerRef(Player.ControllerOfTargetingSource))`.
+- `Player.ControllerOfTriggeringEntity` — the controller of the **triggering entity**: the `Player`
+  half of `EffectTarget.ControllerOfTriggeringEntity`, for the places keyed by `Player` rather than
+  `EffectTarget`. The zone pipelines are exactly those places — `CardSource.TopOfLibrary` and
+  `CardDestination.ToZone` take a `Player`, so `Patterns.Library.mill` / `.exileTop` cannot name the
+  triggering object's controller without it. Not `Player.TriggeringPlayer`, which reads the trigger
+  context's *player* slot and is null whenever the thing that triggered the ability was an object.
+  Resolves through the same ladder as the `EffectTarget` form (projected controller → controller
+  component → last-known controller → owner, CR 608.2h), so a burn spell that has left the stack by
+  the time the trigger resolves still names its caster. Belltower Sphinx ("whenever a source deals
+  damage to this creature, that source's controller mills that many cards") =
+  `Patterns.Library.mill(DynamicAmount.ContextProperty(TRIGGER_DAMAGE_AMOUNT),
+  EffectTarget.ControllerOfTriggeringEntity)`; Mesmeric Orb is the same shape on
+  `Triggers.becomesUntapped`.
 - `Player.ContextPlayer(i)` / `Player.Candidate` / `Player.Any` — positional target, CR 115
   candidate during target-restriction evaluation, and "a player" matching.
 - `EffectTarget.ContextProperty(key)` — value plumbed into `EffectContext` (damage amount, life gained, blight

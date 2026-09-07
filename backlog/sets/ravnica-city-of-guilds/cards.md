@@ -2,7 +2,7 @@
 
 **Set Size:** 291 cards
 **Release Date:** October 7, 2005
-**Implemented:** 265 / 291
+**Implemented:** 266 / 291
 | Section    | Total | Done |
 |------------|-------|------|
 | White      | 37    | 33   |
@@ -58,7 +58,7 @@
 - [x] Wojek Siren
 
 ### Blue
-- [ ] Belltower Sphinx
+- [x] Belltower Sphinx
 - [x] Cerulean Sphinx
 - [x] Compulsive Research
 - [x] Convolute
