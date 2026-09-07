@@ -2,14 +2,14 @@
 
 **Set Size:** 291 cards
 **Release Date:** October 7, 2005
-**Implemented:** 260 / 291
+**Implemented:** 263 / 291
 | Section    | Total | Done |
 |------------|-------|------|
 | White      | 37    | 33   |
-| Blue       | 39    | 33   |
-| Black      | 37    | 27   |
+| Blue       | 39    | 34   |
+| Black      | 37    | 35   |
 | Red        | 39    | 37   |
-| Green      | 37    | 34   |
+| Green      | 37    | 37   |
 | Multicolor | 64    | 54   |
 | Artifact   | 21    | 16   |
 | Land       | 17    | 17   |
@@ -99,7 +99,7 @@
 - [x] Zephyr Spirit
 
 ### Black
-- [ ] Blood Funnel
+- [x] Blood Funnel
 - [x] Brainspoil
 - [x] Carrion Howler
 - [x] Clinging Darkness
@@ -120,7 +120,7 @@
 - [x] Moonlight Bargain
 - [x] Mortipede
 - [x] Necromantic Thirst
-- [ ] Necroplasm
+- [x] Necroplasm
 - [x] Netherborn Phalanx
 - [x] Nightmare Void
 - [x] Ribbons of Night
@@ -193,7 +193,7 @@
 - [x] Fists of Ironwood
 - [x] Gather Courage
 - [x] Golgari Brownscale
-- [ ] Golgari Grave-Troll
+- [x] Golgari Grave-Troll
 - [x] Goliath Spider
 - [x] Greater Mossdog
 - [x] Hunted Troll
