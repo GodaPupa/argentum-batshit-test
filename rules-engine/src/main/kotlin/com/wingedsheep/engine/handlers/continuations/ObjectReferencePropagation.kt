@@ -4,7 +4,11 @@ import com.wingedsheep.engine.core.*
 import com.wingedsheep.engine.handlers.ObjectReferenceEnvironment
 import com.wingedsheep.engine.state.GameState
 
-internal fun ContinuationFrame.objectReferences(): ObjectReferenceEnvironment? = when (this) {
+/**
+ * The references a stored answer carries. Split from the [ContinuationFrame] overload below because
+ * a suspension's answer is not itself a stack frame — reaching it needs the extra hop.
+ */
+internal fun AnswerContinuation.objectReferences(): ObjectReferenceEnvironment? = when (this) {
     is CounterUnlessPaysContinuation -> objectReferences
     is MayPayManaContinuation -> effectContext.objectReferences
     is MayPayManaSelectionContinuation -> effectContext.objectReferences
@@ -37,7 +41,6 @@ internal fun ContinuationFrame.objectReferences(): ObjectReferenceEnvironment? =
     is EachPlayerDiscardsOrLoseLifeContinuation -> objectReferences
     is DrawUpToContinuation -> objectReferences
     is StaticDrawReplacementContinuation -> objectReferences
-    is ChainCopyAfterActionContinuation -> objectReferences
     is ChainCopyDecisionContinuation -> objectReferences
     is ChainCopyCostContinuation -> objectReferences
     is ChainCopyTargetContinuation -> objectReferences
@@ -76,33 +79,44 @@ internal fun ContinuationFrame.objectReferences(): ObjectReferenceEnvironment? =
     is GuessTopCardKindContinuation -> effectContext.objectReferences
     is GuessConditionContinuation -> effectContext.objectReferences
     is ModalContinuation -> objectReferences
-    is ModalPreChosenContinuation -> objectReferences
-    is SpliceTailContinuation -> objectReferences
-    is ModalChosenModeTailContinuation -> objectReferences
     is ModalTargetContinuation -> objectReferences
     is BudgetModalContinuation -> objectReferences
     is CreateTokenCopyOfChosenContinuation -> objectReferences
     is CreateTokenCopyAuraHostContinuation -> context.objectReferences
-    is CreateTokenCopyRemainingContinuation -> context.objectReferences
     is ChooseActionContinuation -> objectReferences
-    is EffectContinuation -> effectContext.objectReferences
     is TriggeredAbilityContinuation -> objectReferences
     is TriggerDamageDistributionContinuation -> objectReferences
-    is GatedActionContinuation -> effectContext.objectReferences
     is MayAbilityContinuation -> effectContext.objectReferences
     is GatedEffectContinuation -> effectContext.objectReferences
     is MayRevealCardFromHandContinuation -> effectContext.objectReferences
     is BeholdContinuation -> effectContext.objectReferences
-    is ForEachContinuation -> effectContext.objectReferences
-    is RepeatWhileContinuation -> effectContext.objectReferences
     is FlipCoinsUntilLossContinuation -> objectReferences
     is CoinFlipChoiceContinuation -> effectContext.objectReferences
-    is ReflexiveTriggerTargetContinuation -> effectContext.objectReferences
     is ConvertCountersToTokensContinuation -> objectReferences
     else -> null
 }
 
-internal fun ContinuationFrame.withObjectReferences(refs: ObjectReferenceEnvironment): ContinuationFrame = when (this) {
+internal fun AutomaticContinuation.objectReferences(): ObjectReferenceEnvironment? = when (this) {
+    is ChainCopyAfterActionContinuation -> objectReferences
+    is ModalPreChosenContinuation -> objectReferences
+    is SpliceTailContinuation -> objectReferences
+    is ModalChosenModeTailContinuation -> objectReferences
+    is CreateTokenCopyRemainingContinuation -> context.objectReferences
+    is EffectContinuation -> effectContext.objectReferences
+    is GatedActionContinuation -> effectContext.objectReferences
+    is ForEachContinuation -> effectContext.objectReferences
+    is RepeatWhileContinuation -> effectContext.objectReferences
+    is ReflexiveTriggerTargetContinuation -> effectContext.objectReferences
+    else -> null
+}
+
+/** Frames on the stack: a suspension keeps its references on the answer it carries. */
+internal fun ContinuationFrame.objectReferences(): ObjectReferenceEnvironment? = when (this) {
+    is Suspension -> answer.objectReferences()
+    is AutomaticContinuation -> objectReferences()
+}
+
+internal fun AnswerContinuation.withObjectReferences(refs: ObjectReferenceEnvironment): AnswerContinuation = when (this) {
     is CounterUnlessPaysContinuation -> copy(objectReferences = refs)
     is MayPayManaContinuation -> copy(effectContext = effectContext.copy(objectReferences = refs))
     is MayPayManaSelectionContinuation -> copy(effectContext = effectContext.copy(objectReferences = refs))
@@ -135,7 +149,6 @@ internal fun ContinuationFrame.withObjectReferences(refs: ObjectReferenceEnviron
     is EachPlayerDiscardsOrLoseLifeContinuation -> copy(objectReferences = refs)
     is DrawUpToContinuation -> copy(objectReferences = refs)
     is StaticDrawReplacementContinuation -> copy(objectReferences = refs)
-    is ChainCopyAfterActionContinuation -> copy(objectReferences = refs)
     is ChainCopyDecisionContinuation -> copy(objectReferences = refs)
     is ChainCopyCostContinuation -> copy(objectReferences = refs)
     is ChainCopyTargetContinuation -> copy(objectReferences = refs)
@@ -174,30 +187,40 @@ internal fun ContinuationFrame.withObjectReferences(refs: ObjectReferenceEnviron
     is GuessTopCardKindContinuation -> copy(effectContext = effectContext.copy(objectReferences = refs))
     is GuessConditionContinuation -> copy(effectContext = effectContext.copy(objectReferences = refs))
     is ModalContinuation -> copy(objectReferences = refs)
-    is ModalPreChosenContinuation -> copy(objectReferences = refs)
-    is SpliceTailContinuation -> copy(objectReferences = refs)
-    is ModalChosenModeTailContinuation -> copy(objectReferences = refs)
     is ModalTargetContinuation -> copy(objectReferences = refs)
     is BudgetModalContinuation -> copy(objectReferences = refs)
     is CreateTokenCopyOfChosenContinuation -> copy(objectReferences = refs)
     is CreateTokenCopyAuraHostContinuation -> copy(context = context.copy(objectReferences = refs))
-    is CreateTokenCopyRemainingContinuation -> copy(context = context.copy(objectReferences = refs))
     is ChooseActionContinuation -> copy(objectReferences = refs)
-    is EffectContinuation -> copy(effectContext = effectContext.copy(objectReferences = refs))
     is TriggeredAbilityContinuation -> copy(objectReferences = refs)
     is TriggerDamageDistributionContinuation -> copy(objectReferences = refs)
-    is GatedActionContinuation -> copy(effectContext = effectContext.copy(objectReferences = refs))
     is MayAbilityContinuation -> copy(effectContext = effectContext.copy(objectReferences = refs))
     is GatedEffectContinuation -> copy(effectContext = effectContext.copy(objectReferences = refs))
     is MayRevealCardFromHandContinuation -> copy(effectContext = effectContext.copy(objectReferences = refs))
     is BeholdContinuation -> copy(effectContext = effectContext.copy(objectReferences = refs))
-    is ForEachContinuation -> copy(effectContext = effectContext.copy(objectReferences = refs))
-    is RepeatWhileContinuation -> copy(effectContext = effectContext.copy(objectReferences = refs))
     is FlipCoinsUntilLossContinuation -> copy(objectReferences = refs)
     is CoinFlipChoiceContinuation -> copy(effectContext = effectContext.copy(objectReferences = refs))
-    is ReflexiveTriggerTargetContinuation -> copy(effectContext = effectContext.copy(objectReferences = refs))
     is ConvertCountersToTokensContinuation -> copy(objectReferences = refs)
     else -> this
+}
+
+internal fun AutomaticContinuation.withObjectReferences(refs: ObjectReferenceEnvironment): AutomaticContinuation = when (this) {
+    is ChainCopyAfterActionContinuation -> copy(objectReferences = refs)
+    is ModalPreChosenContinuation -> copy(objectReferences = refs)
+    is SpliceTailContinuation -> copy(objectReferences = refs)
+    is ModalChosenModeTailContinuation -> copy(objectReferences = refs)
+    is CreateTokenCopyRemainingContinuation -> copy(context = context.copy(objectReferences = refs))
+    is EffectContinuation -> copy(effectContext = effectContext.copy(objectReferences = refs))
+    is GatedActionContinuation -> copy(effectContext = effectContext.copy(objectReferences = refs))
+    is ForEachContinuation -> copy(effectContext = effectContext.copy(objectReferences = refs))
+    is RepeatWhileContinuation -> copy(effectContext = effectContext.copy(objectReferences = refs))
+    is ReflexiveTriggerTargetContinuation -> copy(effectContext = effectContext.copy(objectReferences = refs))
+    else -> this
+}
+
+internal fun ContinuationFrame.withObjectReferences(refs: ObjectReferenceEnvironment): ContinuationFrame = when (this) {
+    is Suspension -> copy(answer = answer.withObjectReferences(refs))
+    is AutomaticContinuation -> withObjectReferences(refs)
 }
 
 /** Update only suspended frames belonging to this resolution, never a nested unrelated ability. */

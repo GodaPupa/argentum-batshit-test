@@ -176,18 +176,7 @@ class CounterEffectExecutor(
         onPaid: com.wingedsheep.sdk.scripting.effects.Effect?,
         context: EffectContext
     ): EffectResult {
-        val decisionResult = decisionHandler.createYesNoDecision(
-            state = state,
-            playerId = payingPlayerId,
-            sourceId = context.sourceId,
-            sourceName = "Counter unless pays",
-            prompt = "Pay $manaCost to prevent your spell from being countered?",
-            yesText = "Pay $manaCost",
-            noText = "Don't pay"
-        )
-
         val continuation = CounterUnlessPaysContinuation(
-            decisionId = decisionResult.pendingDecision!!.id,
             payingPlayerId = payingPlayerId,
             spellEntityId = spellEntityId,
             manaCost = manaCost,
@@ -199,11 +188,19 @@ class CounterEffectExecutor(
             onPaid = onPaid
         )
 
-        val stateWithContinuation = decisionResult.state.pushContinuation(continuation)
+        val decisionResult = decisionHandler.createYesNoDecision(
+            state = state,
+            playerId = payingPlayerId,
+            sourceId = context.sourceId,
+            sourceName = "Counter unless pays",
+            prompt = "Pay $manaCost to prevent your spell from being countered?",
+            yesText = "Pay $manaCost",
+            noText = "Don't pay",
+            answer = continuation
+        )
 
-        return EffectResult.paused(
-            stateWithContinuation,
-            decisionResult.pendingDecision,
+        return EffectResult.propagatePause(
+            decisionResult.state,
             decisionResult.events
         )
     }

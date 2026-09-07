@@ -3,6 +3,8 @@ package com.wingedsheep.engine.scenarios
 import com.wingedsheep.engine.core.DecisionContext
 import com.wingedsheep.engine.core.EffectContinuation
 import com.wingedsheep.engine.core.MayAbilityContinuation
+import com.wingedsheep.engine.core.Suspension
+import com.wingedsheep.engine.core.suspendForDecision
 import com.wingedsheep.engine.core.YesNoDecision
 import com.wingedsheep.engine.core.engineSerializersModule
 import com.wingedsheep.engine.handlers.EffectContext
@@ -71,27 +73,26 @@ class LegacyPausedObjectIdentityTest : FunSpec({
                         listOf(bounce, Effects.GainLife(2)) else listOf(Effects.GainLife(2))
                     val remainingEffects = if (sourceInstructionFrame == "effect")
                         listOf(bounce, Effects.GainLife(3)) else listOf(Effects.GainLife(3))
-                    val decisionId = "historical-entry-decision"
                     var paused = driver.state
                         .pushContinuation(EffectContinuation(
-                            decisionId = "remaining-import-effects",
                             remainingEffects = remainingEffects,
                             effectContext = context
                         ))
-                        .pushContinuation(MayAbilityContinuation(
-                            decisionId = decisionId,
-                            playerId = player,
-                            sourceName = "Grizzly Bears",
-                            effectIfYes = CompositeEffect(yesEffects),
-                            effectIfNo = null,
-                            effectContext = context
-                        ))
-                        .withPendingDecision(YesNoDecision(
-                            id = decisionId,
-                            playerId = player,
-                            prompt = "Continue the saved effect?",
-                            context = DecisionContext(sourceId = source)
-                        ))
+                        .suspendForDecision(
+                            question = { decisionId -> YesNoDecision(
+                                id = decisionId,
+                                playerId = player,
+                                prompt = "Continue the saved effect?",
+                                context = DecisionContext(sourceId = source)
+                            ) },
+                            answer = MayAbilityContinuation(
+                                playerId = player,
+                                sourceName = "Grizzly Bears",
+                                effectIfYes = CompositeEffect(yesEffects),
+                                effectIfNo = null,
+                                effectContext = context
+                            ),
+                        ).newState
                     if (interveningVisit) {
                         paused = paused.moveToZone(source, ZoneKey(player, Zone.BATTLEFIELD), ZoneKey(player, Zone.EXILE))
                             .moveToZone(source, ZoneKey(player, Zone.EXILE), ZoneKey(player, Zone.BATTLEFIELD))
@@ -103,7 +104,8 @@ class LegacyPausedObjectIdentityTest : FunSpec({
                         .initializeObjectIdentities()
                     // The importer can establish a current object; this is not proof of history.
                     imported.objectRef(source) shouldNotBe null
-                    val importedMay = imported.continuationStack.last() as MayAbilityContinuation
+                    val importedMay = (imported.continuationStack.last() as Suspension)
+                        .answer as MayAbilityContinuation
                     importedMay.effectContext.objectReferences.captured shouldBe !legacy
                     driver.replaceState(imported)
 

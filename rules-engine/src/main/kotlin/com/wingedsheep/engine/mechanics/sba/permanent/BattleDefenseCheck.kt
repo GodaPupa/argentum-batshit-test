@@ -87,18 +87,19 @@ class BattleDefenseCheck : StateBasedActionCheck {
                 ?.get<com.wingedsheep.engine.state.components.stack.TriggeredAbilityOnStackComponent>()
                 ?.objectReferences?.origin == current
         }) return true
+        // A stored answer is reached through the suspension that owns it, not off the stack.
         return state.continuationStack.any { frame ->
-            when (frame) {
+            when (val entry: Any = if (frame is com.wingedsheep.engine.core.Suspension) frame.answer else frame) {
                 is com.wingedsheep.engine.core.PendingTriggersContinuation ->
-                    frame.remainingTriggers.any { it.objectReferences.origin == current }
-                is com.wingedsheep.engine.core.TriggeredAbilityContinuation -> frame.objectReferences.origin == current
-                is com.wingedsheep.engine.core.MayTriggerContinuation -> frame.trigger.objectReferences.origin == current
+                    entry.remainingTriggers.any { it.objectReferences.origin == current }
+                is com.wingedsheep.engine.core.TriggeredAbilityContinuation -> entry.objectReferences.origin == current
+                is com.wingedsheep.engine.core.MayTriggerContinuation -> entry.trigger.objectReferences.origin == current
                 is com.wingedsheep.engine.core.BatchMayTriggerContinuation ->
-                    frame.triggers.any { it.objectReferences.origin == current }
-                is com.wingedsheep.engine.core.MayPayManaTriggerContinuation -> frame.trigger.objectReferences.origin == current
-                is com.wingedsheep.engine.core.ManaSourceSelectionContinuation -> frame.trigger.objectReferences.origin == current
-                is com.wingedsheep.engine.core.TriggerModalModeSelectionContinuation -> frame.ability.objectReferences.origin == current
-                is com.wingedsheep.engine.core.TriggerModalTargetSelectionContinuation -> frame.ability.objectReferences.origin == current
+                    entry.triggers.any { it.objectReferences.origin == current }
+                is com.wingedsheep.engine.core.MayPayManaTriggerContinuation -> entry.trigger.objectReferences.origin == current
+                is com.wingedsheep.engine.core.ManaSourceSelectionContinuation -> entry.trigger.objectReferences.origin == current
+                is com.wingedsheep.engine.core.TriggerModalModeSelectionContinuation -> entry.ability.objectReferences.origin == current
+                is com.wingedsheep.engine.core.TriggerModalTargetSelectionContinuation -> entry.ability.objectReferences.origin == current
                 else -> false
             }
         }

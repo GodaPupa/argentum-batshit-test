@@ -250,7 +250,6 @@ class ChainSpellContinuationResumer(
             return checkForMore(state, events)
         }
 
-        val decisionId = java.util.UUID.randomUUID().toString()
 
         val copyCost = effect.copyCost
         val prompt = if (copyCost == null) {
@@ -265,7 +264,7 @@ class ChainSpellContinuationResumer(
             copyCost.description.replaceFirstChar { it.uppercase() } to "Decline"
         }
 
-        val decision = YesNoDecision(
+        val question = { decisionId: String -> YesNoDecision(
             id = decisionId,
             playerId = recipientPlayerId,
             prompt = prompt,
@@ -276,28 +275,18 @@ class ChainSpellContinuationResumer(
             ),
             yesText = yesText,
             noText = noText
-        )
+        ) }
 
         val copyContinuation = ChainCopyDecisionContinuation(
-            decisionId = decisionId,
             effect = effect,
             copyControllerId = recipientPlayerId,
             sourceId = sourceId
         )
 
-        val newState = state.withPendingDecision(decision).pushContinuation(copyContinuation)
-
-        return ExecutionResult.paused(
-            newState,
-            decision,
-            events + listOf(
-                DecisionRequestedEvent(
-                    decisionId = decisionId,
-                    playerId = recipientPlayerId,
-                    decisionType = "YES_NO",
-                    prompt = decision.prompt
-                )
-            )
+        return state.suspendForDecision(
+            question = question,
+            answer = copyContinuation,
+            events = events,
         )
     }
 
@@ -310,8 +299,7 @@ class ChainSpellContinuationResumer(
         prompt: String,
         useTargetingUI: Boolean
     ): ExecutionResult {
-        val decisionId = java.util.UUID.randomUUID().toString()
-        val decision = SelectCardsDecision(
+        val question = { decisionId: String -> SelectCardsDecision(
             id = decisionId,
             playerId = controllerId,
             prompt = prompt,
@@ -324,29 +312,19 @@ class ChainSpellContinuationResumer(
             minSelections = 1,
             maxSelections = 1,
             useTargetingUI = useTargetingUI
-        )
+        ) }
 
         val costContinuation = ChainCopyCostContinuation(
-            decisionId = decisionId,
             effect = effect,
             copyControllerId = controllerId,
             sourceId = sourceId,
             candidateOptions = options
         )
 
-        val newState = state.withPendingDecision(decision).pushContinuation(costContinuation)
-
-        return ExecutionResult.paused(
-            newState,
-            decision,
-            listOf(
-                DecisionRequestedEvent(
-                    decisionId = decisionId,
-                    playerId = controllerId,
-                    decisionType = "SELECT_CARDS",
-                    prompt = decision.prompt
-                )
-            )
+        return state.suspendForDecision(
+            question = question,
+            answer = costContinuation,
+            events = emptyList(),
         )
     }
 
@@ -366,8 +344,7 @@ class ChainSpellContinuationResumer(
             return checkForMore(state, priorEvents)
         }
 
-        val decisionId = java.util.UUID.randomUUID().toString()
-        val decision = SelectCardsDecision(
+        val question = { decisionId: String -> SelectCardsDecision(
             id = decisionId,
             playerId = controllerId,
             prompt = "Choose a target for the copy of ${effect.spellName}",
@@ -380,29 +357,19 @@ class ChainSpellContinuationResumer(
             minSelections = 1,
             maxSelections = 1,
             useTargetingUI = true
-        )
+        ) }
 
         val targetContinuation = ChainCopyTargetContinuation(
-            decisionId = decisionId,
             effect = effect,
             copyControllerId = controllerId,
             sourceId = sourceId,
             candidateTargets = legalTargets
         )
 
-        val newState = state.withPendingDecision(decision).pushContinuation(targetContinuation)
-
-        return ExecutionResult.paused(
-            newState,
-            decision,
-            priorEvents + listOf(
-                DecisionRequestedEvent(
-                    decisionId = decisionId,
-                    playerId = controllerId,
-                    decisionType = "SELECT_CARDS",
-                    prompt = decision.prompt
-                )
-            )
+        return state.suspendForDecision(
+            question = question,
+            answer = targetContinuation,
+            events = priorEvents,
         )
     }
 

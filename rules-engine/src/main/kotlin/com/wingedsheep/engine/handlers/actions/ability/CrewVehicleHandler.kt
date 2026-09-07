@@ -207,9 +207,8 @@ class CrewVehicleHandler(
             val triggerResult = triggerProcessor.processTriggers(currentState, triggers)
 
             if (triggerResult.isPaused) {
-                return ExecutionResult.paused(
+                return ExecutionResult.propagatePause(
                     triggerResult.state.withPriority(action.playerId),
-                    triggerResult.pendingDecision!!,
                     allEvents + triggerResult.events
                 )
             }

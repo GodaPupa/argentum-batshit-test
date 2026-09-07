@@ -31,7 +31,7 @@ class MiscContinuationResumer(
 
     override fun resumers(): List<ContinuationResumer<*>> = listOf(
         resumer(DrawUpToContinuation::class, ::resumeDrawUpTo),
-        resumer(RepeatWhileContinuation::class, ::resumeRepeatWhile),
+        resumer(RepeatWhileDecisionContinuation::class, ::resumeRepeatWhile),
         resumer(FlipCoinsUntilLossContinuation::class, ::resumeFlipCoinsUntilLoss),
         resumer(CoinFlipChoiceContinuation::class, ::resumeCoinFlipChoice),
         resumer(StormCopyTargetContinuation::class, ::resumeStormCopyTarget),
@@ -329,45 +329,38 @@ class MiscContinuationResumer(
 
     private fun resumeRepeatWhile(
         state: GameState,
-        continuation: RepeatWhileContinuation,
+        answer: RepeatWhileDecisionContinuation,
         response: DecisionResponse,
         checkForMore: CheckForMore
     ): ExecutionResult {
-        return when (continuation.phase) {
-            RepeatWhilePhase.AFTER_BODY -> {
-                // Should not be at top of stack during decision resume
-                ExecutionResult.error(state, "RepeatWhileContinuation AFTER_BODY should not be at top of stack during decision resume")
-            }
-            RepeatWhilePhase.AFTER_DECISION -> {
-                if (response !is YesNoResponse) {
-                    return ExecutionResult.error(state, "Expected yes/no response for RepeatWhile")
-                }
-
-                if (!response.choice) {
-                    // Player chose not to repeat — done
-                    return checkForMore(state, emptyList())
-                }
-
-                // Player chose to repeat — execute another iteration
-                val context = continuation.effectContext
-                val result = com.wingedsheep.engine.handlers.effects.composite.RepeatWhileExecutor.executeIteration(
-                    state = state,
-                    body = continuation.body,
-                    repeatCondition = continuation.repeatCondition,
-                    resolvedDeciderId = continuation.resolvedDeciderId,
-                    context = context,
-                    sourceName = continuation.sourceName,
-                    effectExecutor = services.effectExecutorRegistry::execute,
-                    priorEvents = emptyList()
-                )
-
-                if (result.isPaused) {
-                    return result.toExecutionResult()
-                }
-
-                return checkForMore(result.state, result.events.toList())
-            }
+        val continuation = answer.loop
+        if (response !is YesNoResponse) {
+            return ExecutionResult.error(state, "Expected yes/no response for RepeatWhile")
         }
+
+        if (!response.choice) {
+            // Player chose not to repeat — done
+            return checkForMore(state, emptyList())
+        }
+
+        // Player chose to repeat — execute another iteration
+        val context = continuation.effectContext
+        val result = com.wingedsheep.engine.handlers.effects.composite.RepeatWhileExecutor.executeIteration(
+            state = state,
+            body = continuation.body,
+            repeatCondition = continuation.repeatCondition,
+            resolvedDeciderId = continuation.resolvedDeciderId,
+            context = context,
+            sourceName = continuation.sourceName,
+            effectExecutor = services.effectExecutorRegistry::execute,
+            priorEvents = emptyList()
+        )
+
+        if (result.isPaused) {
+            return result.toExecutionResult()
+        }
+
+        return checkForMore(result.state, result.events.toList())
     }
 
     /**
@@ -449,20 +442,14 @@ class MiscContinuationResumer(
             state = state,
             pending = continuation.pending,
             keepHeads = response.choice,
-            decisionHandler = decisionHandler
         )
 
         // Still coins left to choose between: park the same frame again with the batch advanced.
         if (resolution is CoinFlipService.Resolution.NeedsChoice) {
-            return ExecutionResult.paused(
-                resolution.state.pushContinuation(
-                    continuation.copy(
-                        decisionId = resolution.decision.id,
-                        pending = resolution.pending
-                    )
-                ),
-                resolution.decision,
-                resolution.events
+            return resolution.state.suspendForDecision(
+                question = resolution.question,
+                answer = continuation.copy(pending = resolution.pending),
+                events = resolution.events,
             )
         }
 
@@ -534,9 +521,8 @@ class MiscContinuationResumer(
         if (subEffect == null) return checkForMore(state, flipEvents)
         val result = effectRunner.executeRemainingEffects(state, listOf(subEffect), context)
         if (result.isPaused) {
-            return ExecutionResult.paused(
+            return ExecutionResult.propagatePause(
                 result.state,
-                result.pendingDecision!!,
                 flipEvents + result.events
             )
         }
@@ -635,7 +621,6 @@ class MiscContinuationResumer(
         }
 
         // Prompt for next copy's targets
-        val decisionId = "storm-copy-target-${System.nanoTime()}"
         val legalTargetsMap = mutableMapOf<Int, List<EntityId>>()
         for ((index, requirement) in continuation.spellTargetRequirements.withIndex()) {
             val legalTargets = services.targetFinder.findLegalTargets(
@@ -675,7 +660,6 @@ class MiscContinuationResumer(
         }
 
         val nextContinuation = StormCopyTargetContinuation(
-            decisionId = decisionId,
             remainingCopies = remainingAfterThis,
             spellEffect = continuation.spellEffect,
             spellTargetRequirements = continuation.spellTargetRequirements,
@@ -699,7 +683,7 @@ class MiscContinuationResumer(
         val copyLabel = if (totalCopies > 1)
             "copy $copyNumber of $totalCopies of ${continuation.spellName}"
             else "copy of ${continuation.spellName}"
-        val decision = ChooseTargetsDecision(
+        val question = { decisionId: String -> ChooseTargetsDecision(
             id = decisionId,
             playerId = continuation.controllerId,
             prompt = "Choose new targets for $copyLabel",
@@ -710,12 +694,9 @@ class MiscContinuationResumer(
             ),
             targetRequirements = targetReqInfos,
             legalTargets = legalTargetsMap
-        )
+        ) }
 
-        currentState = currentState.withPendingDecision(decision)
-        currentState = currentState.pushContinuation(nextContinuation)
-
-        return ExecutionResult.paused(currentState, decision, allEvents)
+        return currentState.suspendForDecision(question, nextContinuation, allEvents)
     }
 
     private fun resumeStormCopyModalTarget(
@@ -942,7 +923,7 @@ class MiscContinuationResumer(
             is RemoveAnyNumberOfCountersFlow.Outcome.Done ->
                 checkForMore(outcome.state, outcome.events)
             is RemoveAnyNumberOfCountersFlow.Outcome.Prompt ->
-                ExecutionResult.paused(outcome.state, outcome.decision, outcome.events)
+                ExecutionResult.propagatePause(outcome.state, outcome.events)
         }
     }
 
@@ -1038,8 +1019,7 @@ class MiscContinuationResumer(
                 .dropWhile { it.first != nextType }
                 .drop(1)
 
-            val decisionId = java.util.UUID.randomUUID().toString()
-            val decision = ChooseNumberDecision(
+            val question = { decisionId: String -> ChooseNumberDecision(
                 id = decisionId,
                 playerId = continuation.controllerId,
                 prompt = "Move how many $nextType counters from ${continuation.sourceName} onto ${continuation.destinationName}? (0-$nextMax)",
@@ -1050,9 +1030,8 @@ class MiscContinuationResumer(
                 ),
                 minValue = 0,
                 maxValue = nextMax
-            )
+            ) }
             val nextContinuation = MoveChosenCountersToTargetContinuation(
-                decisionId = decisionId,
                 sourceId = continuation.sourceId,
             objectReferences = continuation.objectReferences,
                 destinationId = continuation.destinationId,
@@ -1065,18 +1044,7 @@ class MiscContinuationResumer(
                 drawCardOnMove = continuation.drawCardOnMove,
                 anyMovedSoFar = anyMoved
             )
-            events.add(
-                DecisionRequestedEvent(
-                    decisionId = decisionId,
-                    playerId = continuation.controllerId,
-                    decisionType = "CHOOSE_NUMBER",
-                    prompt = decision.prompt
-                )
-            )
-            val pausedState = newState
-                .withPendingDecision(decision)
-                .pushContinuation(nextContinuation)
-            return ExecutionResult.paused(pausedState, decision, events)
+            return newState.suspendForDecision(question, nextContinuation, events)
         }
 
         // All kinds processed. Draw a card if requested and at least one counter moved.
@@ -1210,9 +1178,8 @@ class MiscContinuationResumer(
             restriction = continuation.restriction
         )
 
-        return ExecutionResult.paused(
+        return ExecutionResult.propagatePause(
             nextResult.state,
-            nextResult.pendingDecision!!,
             listOf(event) + nextResult.events
         )
     }

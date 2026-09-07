@@ -99,7 +99,7 @@ class SiegePendingObjectIdentityTest : FunSpec({
                     effect = Effects.GainLife(1)), siege, siegeCard.name,
                     objectReferences = refs, controllerId = d.player1, triggerContext = TriggerContext())
                 val stackId = EntityId.generate()
-                if (storage == "paused") state = state.pushContinuation(PendingTriggersContinuation("waiting", listOf(trigger)))
+                if (storage == "paused") state = state.pushContinuation(PendingTriggersContinuation(listOf(trigger)))
                 if (storage == "stack") state = state.withEntity(stackId, ComponentContainer.EMPTY.with(
                     TriggeredAbilityOnStackComponent(sourceId = siege, sourceName = siegeCard.name,
                         controllerId = d.player1, effect = Effects.GainLife(1), description = "unrelated trigger",

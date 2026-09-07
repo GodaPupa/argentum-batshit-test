@@ -367,7 +367,6 @@ data class GameState(
     val step: Step = Step.UNTAP,
     val floatingEffects: List<ActiveFloatingEffect> = emptyList(),
     val continuationStack: List<ContinuationFrame> = emptyList(),
-    val pendingDecision: PendingDecision? = null,
     // ... more fields
 )
 ```
@@ -397,6 +396,31 @@ engine*, not across time. Cards are data this pure function folds through, so ed
 what an old input stream re-simulates to. Stored replays therefore pin the card definitions they ran
 on and carry position checkpoints, with an archived frame stream as the last resort — see
 [data-contracts.md](data-contracts.md) → *Compact replays*.
+
+#### Reproducible routing identity
+
+`GameState.newRoutingId()` allocates game-local correlation tokens for player questions,
+delayed triggers, and combat bands. Fresh questions allocate through `suspendForDecision`. Its serialized `nextRoutingId` counter is
+independent of entity allocation and gameplay RNG. Every caller must carry the returned state
+forward before allocating another token or executing a nested effect. Restoring the same snapshot
+and repeating the same actions reproduces those tokens, including their linked references.
+Tokens are opaque to consumers: their spelling is neither a game identifier nor an action's
+semantic identity, and separate games or divergent simulation branches can reuse the same token.
+
+Live request freshness belongs to `GameSession`, separately from engine correlation identity.
+Browser-facing decision IDs include a session epoch that rotates on successful undo; the server
+validates that epoch before rebinding a response to its engine ID. Undo restores the exact engine
+checkpoint, and replay records only canonical engine actions. Repeated delivery or reconnect to
+the same session preserves an outstanding live ID; a recovered session issues a fresh epoch.
+In-process AI receives engine IDs so its response simulations still address the raw snapshot,
+plus the live epoch captured with that update. Its asynchronous callback returns that epoch;
+the server atomically validates it before execution. An obsolete callback is discarded without
+fallback actions or rejection accounting.
+
+Current-format snapshots may retain opaque UUID or clock-based tokens. An omitted routing
+counter defaults to zero; this default does not provide compatibility with older suspension storage. Historical action logs may still need decision-ID rebinding; replay should use
+its recorded engine version. This routing guarantee does not remove other sources of identity
+variation, such as process-global IDs for dynamically constructed abilities.
 
 ### 2.2 Entity-Component-System (ECS)
 
@@ -579,32 +603,45 @@ before falling back to timestamp ordering.
 
 ### 2.4 Reentrant Continuations
 
-**Principle:** When the engine needs player input, it pauses and saves a serializable continuation.
+**Principle:** One serializable suspension owns a question and the operation that consumes its answer.
 
-Many Magic cards require player decisions mid-resolution — "search your library for a card" requires
-the player to browse and choose. The engine cannot block a thread waiting for network input. Instead,
-it pauses by:
-
-1. Setting `GameState.pendingDecision` to describe what input is needed
-2. Pushing a `ContinuationFrame` onto `GameState.continuationStack` that describes how to resume
+An effect supplies its rules-specific question factory and answer data to
+`GameState.suspendForDecision`. This operation allocates the routing ID, associates the question
+with the answer, installs the suspension, and emits `DecisionRequestedEvent`. The factory runs
+immediately; it is not retained in state.
 
 ```kotlin
-sealed interface ContinuationFrame {
-    val decisionId: String
-}
+sealed interface ContinuationFrame
+sealed interface AutomaticContinuation : ContinuationFrame
+sealed interface AnswerContinuation
 
-data class EffectContinuation(
-    override val decisionId: String,
-    val remainingEffects: List<Effect>,
-    val sourceId: EntityId?,
-    val controllerId: EntityId,
-    val storedCollections: Map<String, List<EntityId>>,
-    // ... all context needed to resume
+data class Suspension(
+    val question: PendingDecision,
+    val answer: AnswerContinuation,
 ) : ContinuationFrame
 ```
 
-When the player submits their decision, `ContinuationHandler.resume()` pops the frame, restores
-context, and continues executing the remaining effects.
+`GameState.pendingDecision` is derived from the top suspension. An answer payload cannot be
+pushed independently, and automatic work such as `EffectContinuation` carries no routing ID:
+its position under a suspension supplies its relationship. `ContinuationHandler.resume` checks
+the response against that suspension's question, pops the pair, and dispatches its answer payload.
+
+Creating a question and propagating a pause are separate operations.
+`ExecutionResult.propagatePause` carries an already installed suspension through enclosing
+execution without allocating or emitting another request. Mana-ability execution temporarily
+moves the complete payment suspension into an automatic reopen frame; restoration refreshes
+its menu while preserving the original identity and answer.
+
+Snapshots store the structural representation. `LegacyGameStateSerializer` reads the previous
+format by pairing the active question with its matching top answer and saved mana questions with
+their lower answer frames. It preserves intervening automatic work, counters, and gameplay state;
+malformed associations fail explicitly. The translated state then passes through the current-format
+`GameStateSerializer` rejection check. Writes contain only the current representation.
+
+Automatic work no longer consumes a routing ID, so a given line of play allocates fewer of them
+than it did before this change. `rules-engine/src/test/resources/suspension-traces/` holds captured
+executions from the previous engine as regression evidence; comparing against them rebinds later
+recorded responses while keeping their player and choice payloads.
 
 **Why serializable continuations instead of coroutines or blocked threads?**
 

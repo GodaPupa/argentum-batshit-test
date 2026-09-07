@@ -42,8 +42,8 @@ class CoreAutoResumerModule(
                 continuation.effectContext
             )
             if (result.isPaused) {
-                return@autoResumer ExecutionResult.paused(
-                    result.state, result.pendingDecision!!, events + result.events
+                return@autoResumer ExecutionResult.propagatePause(
+                    result.state, events + result.events
                 )
             }
             val published = exposeCollectionsToNextFrame(result.state, result.updatedCollections)
@@ -130,7 +130,7 @@ class CoreAutoResumerModule(
         autoResumer(EffectContinuation::class, canResume = { it.remainingEffects.isNotEmpty() }) { state, continuation, events, checkForMore ->
             val runResult = effectRunner.executeRemainingEffects(state, continuation.remainingEffects, continuation.effectContext)
             if (runResult.isPaused) {
-                return@autoResumer ExecutionResult.paused(runResult.state, runResult.pendingDecision!!, events + runResult.events)
+                return@autoResumer ExecutionResult.propagatePause(runResult.state, events + runResult.events)
             }
             // A drained composite hands its pipeline storage to the frame beneath — e.g. a DoAction
             // gate scoring SuccessCriterion.CollectionNonEmpty, or a reflexive "when you do" reading
@@ -147,7 +147,7 @@ class CoreAutoResumerModule(
             checkForMore(stateWithCollections, events + runResult.events)
         },
 
-        autoResumer(RepeatWhileContinuation::class, canResume = { it.phase == RepeatWhilePhase.AFTER_BODY }) { state, continuation, events, checkForMore ->
+        autoResumer(RepeatWhileContinuation::class) { state, continuation, events, checkForMore ->
             // The body paused for a decision this pass; its pipeline collections (e.g. `putting`,
             // the land put by Cultivator Colossus) drained into `bodyCollections` via
             // exposeCollectionsToNextFrame. Feed them to the repeat condition as bodyOutputs so a
@@ -267,7 +267,7 @@ class CoreAutoResumerModule(
         // menu and the auto-pay suggestion covers only what the new floating mana doesn't).
         autoResumer(ReopenManaPaymentDecisionContinuation::class) { state, continuation, events, _ ->
             com.wingedsheep.engine.mechanics.mana.ManaPaymentWindow.reopen(
-                state, continuation.decision, events, services.cardRegistry
+                state, continuation.suspension, events, services.cardRegistry
             )
         },
 

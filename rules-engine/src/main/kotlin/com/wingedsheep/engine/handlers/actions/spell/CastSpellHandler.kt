@@ -11,11 +11,11 @@ import com.wingedsheep.engine.core.AdditionalCostSelectionKind
 import com.wingedsheep.engine.core.CastSpellAdditionalCostContinuation
 import com.wingedsheep.engine.core.DecisionContext
 import com.wingedsheep.engine.core.DecisionPhase
-import com.wingedsheep.engine.core.DecisionRequestedEvent
 import com.wingedsheep.engine.core.EngineServices
 import com.wingedsheep.engine.core.SelectCardsDecision
 import com.wingedsheep.sdk.scripting.AdditionalCostPayment
 import com.wingedsheep.engine.core.ExecutionResult
+import com.wingedsheep.engine.core.suspendForDecision
 import com.wingedsheep.engine.core.LifeChangedEvent
 import com.wingedsheep.engine.core.LifeChangeReason
 import com.wingedsheep.engine.core.CardsDiscardedEvent
@@ -4104,9 +4104,8 @@ class CastSpellHandler(
             val triggerResult = triggerProcessor.processTriggers(currentCastState, triggers)
 
             if (triggerResult.isPaused) {
-                return ExecutionResult.paused(
+                return ExecutionResult.propagatePause(
                     triggerResult.state.withPriority(action.playerId),
-                    triggerResult.pendingDecision!!,
                     allEvents + triggerResult.events
                 ).copy(triggersAlreadyProcessed = true)
             }
@@ -4170,22 +4169,7 @@ class CastSpellHandler(
             index to typeToCardIds[type]!!.toList()
         }.toMap()
 
-        val decisionId = java.util.UUID.randomUUID().toString()
-        val decision = ChooseOptionDecision(
-            id = decisionId,
-            playerId = action.playerId,
-            prompt = "Choose a creature type",
-            context = DecisionContext(
-                sourceId = action.cardId,
-                sourceName = sourceName,
-                phase = DecisionPhase.CASTING
-            ),
-            options = sortedTypes,
-            optionCardIds = optionCardIds
-        )
-
         val continuation = CastWithCreatureTypeContinuation(
-            decisionId = decisionId,
             cardId = action.cardId,
             casterId = action.playerId,
             targets = action.targets,
@@ -4195,20 +4179,23 @@ class CastSpellHandler(
             count = 0,
             creatureTypes = sortedTypes
         )
-
-        val pausedState = currentState
-            .pushContinuation(continuation)
-            .withPendingDecision(decision)
-
-        return ExecutionResult.paused(
-            pausedState.withPriority(action.playerId),
-            decision,
-            priorEvents + DecisionRequestedEvent(
-                decisionId = decisionId,
-                playerId = action.playerId,
-                decisionType = "CHOOSE_OPTION",
-                prompt = decision.prompt
-            )
+        return currentState.withPriority(action.playerId).suspendForDecision(
+            question = { decisionId ->
+                ChooseOptionDecision(
+                    id = decisionId,
+                    playerId = action.playerId,
+                    prompt = "Choose a creature type",
+                    context = DecisionContext(
+                        sourceId = action.cardId,
+                        sourceName = sourceName,
+                        phase = DecisionPhase.CASTING
+                    ),
+                    options = sortedTypes,
+                    optionCardIds = optionCardIds
+                )
+            },
+            answer = continuation,
+            events = priorEvents
         )
     }
 
@@ -4368,30 +4355,13 @@ class CastSpellHandler(
         val optionLabels = offerIndices.map { modalEffect.modes[it].description } +
             (if (doneOffered) listOf("Done") else emptyList())
 
-        val decisionId = java.util.UUID.randomUUID().toString()
         val pickNumber = selectedModeIndices.size + 1
         val alreadyPicked = if (selectedModeIndices.isNotEmpty()) {
             val labels = selectedModeIndices.map { modalEffect.modes[it].description }
             "\nAlready picked: ${labels.joinToString("; ")}"
         } else ""
         val prompt = "Choose a mode for $cardName ($pickNumber of ${modalEffect.chooseCount})$alreadyPicked"
-        val decision = ChooseOptionDecision(
-            id = decisionId,
-            playerId = casterId,
-            prompt = prompt,
-            context = DecisionContext(
-                sourceId = cardId,
-                sourceName = cardName,
-                phase = DecisionPhase.CASTING
-            ),
-            options = optionLabels,
-            // Cast-time mode selection must be cancellable (rule 601.2b–c, K1 in plan):
-            // the pause happens before any cost is paid, so aborting is safe.
-            canCancel = true
-        )
-
         val continuation = com.wingedsheep.engine.core.CastModalModeSelectionContinuation(
-            decisionId = decisionId,
             cardId = cardId,
             casterId = casterId,
             baseCastAction = baseCastAction,
@@ -4404,23 +4374,24 @@ class CastSpellHandler(
             selectedModeIndices = selectedModeIndices,
             doneOptionOffered = doneOffered
         )
-
-        val pausedState = state
-            .pushContinuation(continuation)
-            .withPendingDecision(decision)
-            .withPriority(casterId)
-
-        return ExecutionResult.paused(
-            pausedState,
-            decision,
-            listOf(
-                DecisionRequestedEvent(
-                    decisionId = decisionId,
+        return state.withPriority(casterId).suspendForDecision(
+            question = { decisionId ->
+                ChooseOptionDecision(
+                    id = decisionId,
                     playerId = casterId,
-                    decisionType = "CHOOSE_OPTION",
-                    prompt = decision.prompt
+                    prompt = prompt,
+                    context = DecisionContext(
+                        sourceId = cardId,
+                        sourceName = cardName,
+                        phase = DecisionPhase.CASTING
+                    ),
+                    options = optionLabels,
+                    // Cast-time mode selection must be cancellable (rule 601.2b–c, K1 in plan):
+                    // the pause happens before any cost is paid, so aborting is safe.
+                    canCancel = true
                 )
-            )
+            },
+            answer = continuation
         )
     }
 
@@ -4513,7 +4484,6 @@ class CastSpellHandler(
             }
 
             val cardName = state.getEntity(action.cardId)?.get<CardComponent>()?.name ?: "spell"
-            val decisionId = java.util.UUID.randomUUID().toString()
             val verb = when (kind) {
                 AdditionalCostSelectionKind.SACRIFICE -> "sacrifice"
                 AdditionalCostSelectionKind.DISCARD -> "discard"
@@ -4526,42 +4496,30 @@ class CastSpellHandler(
             val useTargetingUI = kind == AdditionalCostSelectionKind.SACRIFICE ||
                 kind == AdditionalCostSelectionKind.TAP ||
                 kind == AdditionalCostSelectionKind.RETURN_TO_HAND
-            val decision = SelectCardsDecision(
-                id = decisionId,
-                playerId = action.playerId,
-                prompt = prompt,
-                context = DecisionContext(
-                    sourceId = action.cardId,
-                    sourceName = cardName,
-                    phase = DecisionPhase.CASTING,
-                ),
-                options = options,
-                minSelections = count,
-                maxSelections = count,
-                useTargetingUI = useTargetingUI,
-            )
             val continuation = CastSpellAdditionalCostContinuation(
-                decisionId = decisionId,
                 cardId = action.cardId,
                 casterId = action.playerId,
                 baseCastAction = action,
                 costKind = kind,
             )
-            val pausedState = state
-                .pushContinuation(continuation)
-                .withPendingDecision(decision)
-                .withPriority(action.playerId)
-            return ExecutionResult.paused(
-                pausedState,
-                decision,
-                listOf(
-                    DecisionRequestedEvent(
-                        decisionId = decisionId,
+            return state.withPriority(action.playerId).suspendForDecision(
+                question = { decisionId ->
+                    SelectCardsDecision(
+                        id = decisionId,
                         playerId = action.playerId,
-                        decisionType = "SELECT_CARDS",
                         prompt = prompt,
+                        context = DecisionContext(
+                            sourceId = action.cardId,
+                            sourceName = cardName,
+                            phase = DecisionPhase.CASTING,
+                        ),
+                        options = options,
+                        minSelections = count,
+                        maxSelections = count,
+                        useTargetingUI = useTargetingUI,
                     )
-                ),
+                },
+                answer = continuation
             )
         }
         return null
@@ -4691,28 +4649,9 @@ class CastSpellHandler(
                 )
             }
 
-            val decisionId = java.util.UUID.randomUUID().toString()
             val pickNumber = ordinal + 1
             val prompt = "Choose targets for $cardName — ${mode.description} ($pickNumber of ${chosenModeIndices.size})"
-            val decision = com.wingedsheep.engine.core.ChooseTargetsDecision(
-                id = decisionId,
-                playerId = casterId,
-                prompt = prompt,
-                context = DecisionContext(
-                    sourceId = cardId,
-                    sourceName = cardName,
-                    phase = DecisionPhase.CASTING,
-                    effectHint = mode.description
-                ),
-                targetRequirements = requirementInfos,
-                legalTargets = legalTargetsMap,
-                // Cast-time per-mode target selection must be cancellable (K2 in plan):
-                // the pause sits before cost payment, so aborting rolls back cleanly.
-                canCancel = true
-            )
-
             val continuation = com.wingedsheep.engine.core.CastModalTargetSelectionContinuation(
-                decisionId = decisionId,
                 cardId = cardId,
                 casterId = casterId,
                 baseCastAction = baseCastAction,
@@ -4721,23 +4660,26 @@ class CastSpellHandler(
                 resolvedModeTargets = targetsAccum,
                 currentOrdinal = ordinal
             )
-
-            val pausedState = state
-                .pushContinuation(continuation)
-                .withPendingDecision(decision)
-                .withPriority(casterId)
-
-            return ExecutionResult.paused(
-                pausedState,
-                decision,
-                listOf(
-                    DecisionRequestedEvent(
-                        decisionId = decisionId,
+            return state.withPriority(casterId).suspendForDecision(
+                question = { decisionId ->
+                    com.wingedsheep.engine.core.ChooseTargetsDecision(
+                        id = decisionId,
                         playerId = casterId,
-                        decisionType = "CHOOSE_TARGETS",
-                        prompt = decision.prompt
+                        prompt = prompt,
+                        context = DecisionContext(
+                            sourceId = cardId,
+                            sourceName = cardName,
+                            phase = DecisionPhase.CASTING,
+                            effectHint = mode.description
+                        ),
+                        targetRequirements = requirementInfos,
+                        legalTargets = legalTargetsMap,
+                        // Cast-time per-mode target selection must be cancellable (K2 in plan):
+                        // the pause sits before cost payment, so aborting rolls back cleanly.
+                        canCancel = true
                     )
-                )
+                },
+                answer = continuation
             )
         }
 

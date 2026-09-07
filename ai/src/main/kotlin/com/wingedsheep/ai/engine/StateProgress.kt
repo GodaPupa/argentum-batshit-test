@@ -104,12 +104,13 @@ object StateProgress {
      * What is stripped, and why none of it is a game fact:
      * - `entities` — read separately by [objectHash], which drops [IGNORED_COMPONENTS].
      * - `rng`, `nextEntityId`, `nextObjectGeneration`, `timestamp` — allocation/resolution bookkeeping.
+     * - `nextRoutingId` — allocates question, delayed-trigger, and band references, not game facts.
      * - Orphan object identities — a completed stack object is not a live game object. Exact
      *   generations of physically present objects remain: a real zone round trip is progress.
      * - `priorityPlayerId`, `priorityPassedBy` — whose turn it is to speak, not what is true. This
      *   is what makes an action's own resolution comparable with the position it started from.
      * - `continuationStack` — counted instead; see [digest].
-     * - `pendingDecision` — the same mid-resolution bookkeeping, and never set on a quiet state.
+     *   Its derived `pendingDecision` disappears with the stack.
      *
      * `projectedState` is a body property rather than a constructor parameter, so it is already out
      * of `hashCode` — and would be redundant anyway, being a pure function of what is left.
@@ -125,11 +126,11 @@ object StateProgress {
             nextObjectGeneration = 0L,
             rng = GameRng(0L),
             nextEntityId = 0L,
+            nextRoutingId = 0L,
             timestamp = 0L,
             priorityPlayerId = null,
             priorityPassedBy = emptySet(),
             continuationStack = emptyList(),
-            pendingDecision = null,
         )
     }
 

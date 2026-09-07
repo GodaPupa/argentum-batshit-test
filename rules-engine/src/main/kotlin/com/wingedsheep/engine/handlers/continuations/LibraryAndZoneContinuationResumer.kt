@@ -287,7 +287,6 @@ class LibraryAndZoneContinuationResumer(
                         controllerId = nextControllerId,
                         destPlayerId = nextControllerId,
                         remainingAuras = nextRemaining,
-                        decisionId = "skip"
                     ),
                     response,
                     checkForMore
@@ -312,7 +311,6 @@ class LibraryAndZoneContinuationResumer(
                             controllerId = nextControllerId,
                             destPlayerId = nextControllerId,
                             remainingAuras = nextRemaining.drop(1),
-                            decisionId = "skip"
                         ),
                         response,
                         checkForMore
@@ -322,7 +320,6 @@ class LibraryAndZoneContinuationResumer(
             }
 
             // Pause for next aura target
-            val decisionId = java.util.UUID.randomUUID().toString()
             val auraName = nextCardComponent.name
             val requirementInfo = TargetRequirementInfo(
                 index = 0,
@@ -330,7 +327,7 @@ class LibraryAndZoneContinuationResumer(
                 minTargets = 1,
                 maxTargets = 1
             )
-            val decision = ChooseTargetsDecision(
+            val question = { decisionId: String -> ChooseTargetsDecision(
                 id = decisionId,
                 playerId = nextControllerId,
                 prompt = "Choose what $auraName enchants",
@@ -341,10 +338,9 @@ class LibraryAndZoneContinuationResumer(
                 ),
                 targetRequirements = listOf(requirementInfo),
                 legalTargets = mapOf(0 to legalTargets)
-            )
+            ) }
 
             val nextContinuation = MoveCollectionAuraTargetContinuation(
-                decisionId = decisionId,
                 auraId = nextAuraId,
                 controllerId = nextControllerId,
                 destPlayerId = nextControllerId,
@@ -355,14 +351,7 @@ class LibraryAndZoneContinuationResumer(
                 underOwnersControl = continuation.underOwnersControl
             )
 
-            val stateWithDecision = newState.withPendingDecision(decision)
-            val stateWithContinuation = stateWithDecision.pushContinuation(nextContinuation)
-
-            return ExecutionResult(
-                state = stateWithContinuation,
-                events = moveEvents,
-                pendingDecision = decision
-            )
+            return newState.suspendForDecision(question, nextContinuation, moveEvents)
         }
 
         return checkForMore(newState, moveEvents)
@@ -590,7 +579,7 @@ class LibraryAndZoneContinuationResumer(
         )
 
         if (result.isPaused) {
-            return ExecutionResult.paused(result.state, result.pendingDecision!!, result.events)
+            return ExecutionResult.propagatePause(result.state, result.events)
         }
 
         // Republish the pipeline's collections alongside the picks so the consumer frame sees both
@@ -865,11 +854,11 @@ class LibraryAndZoneContinuationResumer(
                 grantedPermissionId = permId,
                 onCastFailure = FreeCastFallback.BOTTOM_OF_LIBRARY,
             )
-            val pausedState = stateWithGrant
-                .pushContinuation(targetsContinuation)
-                .withPendingDecision(targetPrep.decision)
-                .withPriority(continuation.playerId)
-            return ExecutionResult.paused(pausedState, targetPrep.decision, bottomEvents + targetPrep.event)
+            return stateWithGrant.withPriority(continuation.playerId).suspendForDecision(
+                question = targetPrep.question,
+                answer = targetsContinuation,
+                events = bottomEvents,
+            )
         }
 
         // Hand priority to the cascade controller for the synthesized cast. The cast
@@ -901,9 +890,8 @@ class LibraryAndZoneContinuationResumer(
             // The cast paused (for target / X / mode selection). The leftover
             // bottoming is already done; let the cast's own continuations finish
             // the cast on resume.
-            return ExecutionResult.paused(
+            return ExecutionResult.propagatePause(
                 castResult.state,
-                castResult.pendingDecision,
                 bottomEvents + castResult.events
             ).copy(triggersAlreadyProcessed = castResult.triggersAlreadyProcessed)
         }
@@ -1015,7 +1003,6 @@ class LibraryAndZoneContinuationResumer(
             )
             stateForCast = stateForCast.pushContinuation(
                 EffectContinuation(
-                    decisionId = "pending",
                     remainingEffects = listOf(continuation.thenEffect),
                     effectContext = thenCtx
                 )
@@ -1027,11 +1014,11 @@ class LibraryAndZoneContinuationResumer(
                 grantedPermissionId = permId,
                 onCastFailure = FreeCastFallback.HAND,
             )
-            val pausedState = stateForCast
-                .pushContinuation(targetsContinuation)
-                .withPendingDecision(targetPrep.decision)
-                .withPriority(continuation.playerId)
-            return ExecutionResult.paused(pausedState, targetPrep.decision, bottomEvents + targetPrep.event)
+            return stateForCast.withPriority(continuation.playerId).suspendForDecision(
+                question = targetPrep.question,
+                answer = targetsContinuation,
+                events = bottomEvents,
+            )
         }
 
         val stateReady = stateForCast.copy(priorityPlayerId = continuation.playerId)
@@ -1059,7 +1046,7 @@ class LibraryAndZoneContinuationResumer(
 
         if (castResult.pendingDecision != null) {
             // The cast paused (targets / X); the pre-pushed follow-up runs when it resumes.
-            return ExecutionResult.paused(castResult.state, castResult.pendingDecision, bottomEvents + castResult.events)
+            return ExecutionResult.propagatePause(castResult.state, bottomEvents + castResult.events)
                 .copy(triggersAlreadyProcessed = castResult.triggersAlreadyProcessed)
         }
 
@@ -1094,7 +1081,7 @@ class LibraryAndZoneContinuationResumer(
         val processed = services.triggerProcessor.processTriggers(result.state, triggers)
         val events = result.events + processed.events
         return if (processed.isPaused) {
-            ExecutionResult.paused(processed.state, processed.pendingDecision!!, events)
+            ExecutionResult.propagatePause(processed.state, events)
                 .copy(triggersAlreadyProcessed = true)
         } else {
             ExecutionResult.success(processed.newState, events)
@@ -1120,7 +1107,7 @@ class LibraryAndZoneContinuationResumer(
         )
         val result = effectRunner.executeRemainingEffects(state, listOf(thenEffect), ctx)
         if (result.isPaused) {
-            return ExecutionResult.paused(result.state, result.pendingDecision!!, leadingEvents + result.events)
+            return ExecutionResult.propagatePause(result.state, leadingEvents + result.events)
         }
         return checkForMore(result.state, leadingEvents + result.events)
     }
@@ -1200,9 +1187,8 @@ class LibraryAndZoneContinuationResumer(
         // doesn't re-scan the SpellCastEvent and double-fire them.
         if (castResult.pendingDecision != null) {
             val exposed = exposeCollectionsToNextFrame(castResult.state, castCollections)
-            return ExecutionResult.paused(
+            return ExecutionResult.propagatePause(
                 exposed,
-                castResult.pendingDecision,
                 castResult.events,
             ).copy(triggersAlreadyProcessed = castResult.triggersAlreadyProcessed)
         }

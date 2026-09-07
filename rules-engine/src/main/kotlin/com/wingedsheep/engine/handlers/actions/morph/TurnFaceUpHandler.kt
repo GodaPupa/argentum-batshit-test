@@ -400,11 +400,12 @@ class TurnFaceUpHandler(
                         action.sourceId,
                         CostPaymentContext(onPaid = flip, objectReferences = com.wingedsheep.engine.handlers.ObjectReferenceEnvironment(
                             captured = true, origin = currentState.objectRef(action.sourceId),
-                            source = currentState.objectRef(action.sourceId), resolutionKey = "morph:${java.util.UUID.randomUUID()}"))
+                            source = currentState.objectRef(action.sourceId),
+                            resolutionKey = "morph:${action.sourceId.value}:${currentState.objectRef(action.sourceId)?.generation}"))
                     )
                 ) {
                     is PaymentResult.Pending ->
-                        ExecutionResult.paused(result.state, result.pendingDecision, events + result.events)
+                        ExecutionResult.propagatePause(result.state, events + result.events)
                     is PaymentResult.Unaffordable ->
                         ExecutionResult.error(currentState, "Cannot pay the morph cost to turn this creature face up")
                     // Selection / yes-no payments never settle synchronously — they always pause first.
@@ -430,7 +431,7 @@ class TurnFaceUpHandler(
                 sourceId = action.sourceId,
                 objectReferences = com.wingedsheep.engine.handlers.ObjectReferenceEnvironment(captured = true,
                     origin = currentState.objectRef(action.sourceId), source = currentState.objectRef(action.sourceId),
-                    resolutionKey = "face-up:${java.util.UUID.randomUUID()}"),
+                    resolutionKey = "face-up:${action.sourceId.value}:${currentState.objectRef(action.sourceId)?.generation}"),
                 controllerId = action.playerId,
             )
             val effectResult = effectExecutorRegistry.execute(currentState, faceUpEffect, effectContext)
@@ -462,9 +463,8 @@ class TurnFaceUpHandler(
             val triggerResult = triggerProcessor.processTriggers(currentState, triggers)
 
             if (triggerResult.isPaused) {
-                return ExecutionResult.paused(
+                return ExecutionResult.propagatePause(
                     triggerResult.state.withPriority(action.playerId),
-                    triggerResult.pendingDecision!!,
                     events + triggerResult.events
                 )
             }

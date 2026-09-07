@@ -329,7 +329,7 @@ class ObjectIdentityTest : FunSpec({
         for (placement in listOf(com.wingedsheep.sdk.scripting.effects.ZonePlacement.Top,
             com.wingedsheep.sdk.scripting.effects.ZonePlacement.Bottom)) {
             val frame = com.wingedsheep.engine.core.MoveCollectionOrderContinuation(
-                decisionId = "identity-order", playerId = owner, sourceId = null, sourceName = null,
+                playerId = owner, sourceId = null, sourceName = null,
                 cards = listOf(cardId, secondId), destinationZone = Zone.LIBRARY,
                 destinationPlayerId = owner, placement = placement)
             val result = resumer.resumeMoveCollectionOrder(initial, frame,
@@ -390,7 +390,8 @@ class ObjectIdentityTest : FunSpec({
         val decoded = json.decodeFromString(GameState.serializer(),
             json.encodeToString(GameState.serializer(), paused.state))
         val movedAgain = ZoneTransitionService.moveToZone(decoded, cardId, Zone.EXILE).state
-        val frame = movedAgain.continuationStack.last() as com.wingedsheep.engine.core.EntersWithChoiceOnBattlefieldContinuation
+        val frame = (movedAgain.continuationStack.last() as com.wingedsheep.engine.core.Suspension)
+            .answer as com.wingedsheep.engine.core.EntersWithChoiceOnBattlefieldContinuation
         frame.entryOldObject shouldBe initial.objectRef(cardId)
         frame.entryNewObject shouldBe entered.objectRef(cardId)
         frame.entryNewObject shouldNotBe movedAgain.objectRef(cardId)
