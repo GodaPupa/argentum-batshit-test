@@ -119,7 +119,7 @@ class SubmitDecisionHandler(
                 }
 
                 val preSbaStackSize = result.state.continuationStack.size
-                val sbaResult = sbaChecker.checkAndApply(result.state)
+                val sbaResult = sbaChecker.checkAndApply(result.state, preSbaTriggers.mapNotNull { it.objectReferences.origin }.toSet())
 
                 // If SBA needs player input (e.g., legend rule), return paused — but first queue
                 // preSbaTriggers beneath the SBA's continuation frames so they fire after the SBA
@@ -215,8 +215,26 @@ class SubmitDecisionHandler(
                     while (untouched < preResumeStack.size && untouched < postStack.size &&
                         preResumeStack[untouched] === postStack[untouched]
                     ) untouched++
-                    val newStack = postStack.subList(0, untouched) + pending +
-                        postStack.subList(untouched, postStack.size)
+                    // An unchanged spell finalizer belongs to this resolution too. Deferred
+                    // triggers must wait below it, so the spell leaves the stack before their
+                    // target choices and so their auto-resumer cannot strand its cleanup.
+                    val finalizerIndex = postStack.indexOfLast { it is FinishResolvingSpellContinuation }
+                    val insertionIndex = if (finalizerIndex >= 0) minOf(untouched, finalizerIndex) else untouched
+                    val preceding = postStack.getOrNull(insertionIndex - 1) as? PendingTriggersContinuation
+                    val newStack = if (preceding != null) {
+                        // A prior pause already deferred a batch at this resolution boundary.
+                        // Keep one batch: its auto-resumer ends continuation draining.
+                        val activeIndex = result.state.turnOrder.indexOf(result.state.activePlayerId).coerceAtLeast(0)
+                        val playerOrder = result.state.turnOrder.drop(activeIndex) + result.state.turnOrder.take(activeIndex)
+                        val combinedTriggers = (preceding.remainingTriggers + deferredTriggers)
+                            .sortedBy { playerOrder.indexOf(it.controllerId) }
+                        postStack.subList(0, insertionIndex - 1) +
+                            preceding.copy(remainingTriggers = combinedTriggers) +
+                            postStack.subList(insertionIndex, postStack.size)
+                    } else {
+                        postStack.subList(0, insertionIndex) + pending +
+                            postStack.subList(insertionIndex, postStack.size)
+                    }
                     return ExecutionResult.paused(
                         result.state.copy(continuationStack = newStack),
                         result.pendingDecision!!,
