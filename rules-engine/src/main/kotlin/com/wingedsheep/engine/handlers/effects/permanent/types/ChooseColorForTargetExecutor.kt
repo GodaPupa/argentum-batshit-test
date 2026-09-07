@@ -29,6 +29,7 @@ class ChooseColorForTargetExecutor(
         val continuation = ChooseColorForTargetContinuation(
             controllerId = context.controllerId,
             sourceId = context.sourceId,
+            objectReferences = context.objectReferences,
             sourceName = sourceName,
             targetEntityId = targetId
         )

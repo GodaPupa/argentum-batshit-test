@@ -51,6 +51,7 @@ class BudgetModalEffectExecutor(
         val continuation = BudgetModalContinuation(
             controllerId = context.controllerId,
             sourceId = context.sourceId,
+            objectReferences = context.objectReferences,
             sourceName = sourceName,
             modes = effect.modes,
             remainingBudget = effect.budget,

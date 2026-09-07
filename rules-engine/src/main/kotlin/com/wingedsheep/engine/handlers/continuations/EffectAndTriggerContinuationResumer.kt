@@ -86,6 +86,7 @@ class EffectAndTriggerContinuationResumer(
                 sourceId = continuation.sourceId,
                 sourceName = continuation.sourceName,
                 sourceBattlefieldTimestamp = continuation.sourceBattlefieldTimestamp,
+                objectReferences = continuation.objectReferences,
                 controllerId = continuation.controllerId,
                 effect = continuation.elseEffect,
                 description = continuation.description,
@@ -132,6 +133,7 @@ class EffectAndTriggerContinuationResumer(
                     it,
                     com.wingedsheep.engine.handlers.EffectContext(
                         sourceId = continuation.sourceId,
+            objectReferences = continuation.objectReferences,
                         controllerId = continuation.controllerId,
                     )
                 )
@@ -145,6 +147,7 @@ class EffectAndTriggerContinuationResumer(
             sourceId = continuation.sourceId,
             sourceName = continuation.sourceName,
             sourceBattlefieldTimestamp = continuation.sourceBattlefieldTimestamp,
+            objectReferences = continuation.objectReferences,
             controllerId = continuation.controllerId,
             effect = continuation.effect,
             description = continuation.description,
@@ -234,6 +237,7 @@ class EffectAndTriggerContinuationResumer(
             sourceId = continuation.sourceId,
             sourceName = continuation.sourceName,
             sourceBattlefieldTimestamp = continuation.sourceBattlefieldTimestamp,
+            objectReferences = continuation.objectReferences,
             controllerId = continuation.controllerId,
             effect = continuation.effect,
             description = continuation.description,
@@ -276,6 +280,7 @@ class EffectAndTriggerContinuationResumer(
             sourceId = continuation.sourceId,
             sourceName = continuation.sourceName,
             sourceBattlefieldTimestamp = continuation.sourceBattlefieldTimestamp,
+            objectReferences = continuation.objectReferences,
             controllerId = continuation.controllerId,
             effect = continuation.effect,
             description = continuation.description,

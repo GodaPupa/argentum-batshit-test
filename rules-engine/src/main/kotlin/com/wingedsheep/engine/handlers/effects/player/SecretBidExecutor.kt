@@ -66,6 +66,7 @@ class SecretBidExecutor(
 
         val continuation = SecretBidContinuation(
             sourceId = context.sourceId,
+            objectReferences = context.objectReferences,
             sourceName = sourceName,
             controllerId = context.controllerId,
             currentPlayerId = playerId,

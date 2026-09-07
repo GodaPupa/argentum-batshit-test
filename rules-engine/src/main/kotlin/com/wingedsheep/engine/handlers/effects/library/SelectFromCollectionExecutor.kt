@@ -489,6 +489,7 @@ class SelectFromCollectionExecutor(
         val continuation = SelectFromCollectionContinuation(
             playerId = playerId,
             sourceId = context.sourceId,
+            objectReferences = context.objectReferences,
             sourceName = sourceName,
             allCards = allCards,
             storeSelected = effect.storeSelected,

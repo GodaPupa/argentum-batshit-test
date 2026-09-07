@@ -28,7 +28,8 @@ data class SacrificeContinuation(
     val sourceName: String?,
     val remainingPlayers: List<EntityId> = emptyList(),
     val filter: GameObjectFilter? = null,
-    val count: Int = 1
+    val count: Int = 1,
+    val objectReferences: com.wingedsheep.engine.handlers.ObjectReferenceEnvironment = com.wingedsheep.engine.handlers.ObjectReferenceEnvironment(),
 ) : AnswerContinuation
 
 /**
@@ -52,7 +53,8 @@ data class ChooseOnePerCategoryContinuation(
     val storedCollections: Map<String, List<EntityId>>,
     val pendingPlayers: List<EntityId>,
     val categoryIndex: Int,
-    val picks: List<EntityId>
+    val picks: List<EntityId>,
+    val objectReferences: com.wingedsheep.engine.handlers.ObjectReferenceEnvironment = com.wingedsheep.engine.handlers.ObjectReferenceEnvironment(),
 ) : AnswerContinuation
 
 /**
@@ -67,7 +69,8 @@ data class ChooseOnePerCategoryContinuation(
 data class ExileMultiZoneContinuation(
     val playerId: EntityId,
     val sourceId: EntityId?,
-    val sourceName: String?
+    val sourceName: String?,
+    val objectReferences: com.wingedsheep.engine.handlers.ObjectReferenceEnvironment = com.wingedsheep.engine.handlers.ObjectReferenceEnvironment(),
 ) : AnswerContinuation
 
 /**
@@ -144,7 +147,8 @@ data class PayOrSufferContinuation(
      * pay with, no prompt) worked while the far more common declined-a-prompt path silently
      * matched nothing.
      */
-    val iterationEntityId: EntityId? = null
+    val iterationEntityId: EntityId? = null,
+    val objectReferences: com.wingedsheep.engine.handlers.ObjectReferenceEnvironment = com.wingedsheep.engine.handlers.ObjectReferenceEnvironment(),
 ) : AnswerContinuation
 
 /**
@@ -198,7 +202,8 @@ data class PayOrSufferChoiceContinuation(
     /** Mirror of [PayOrSufferContinuation.storedCollections] for the multi-option path. */
     val storedCollections: Map<String, List<EntityId>> = emptyMap(),
     /** Mirror of [PayOrSufferContinuation.iterationEntityId] for the multi-option path. */
-    val iterationEntityId: EntityId? = null
+    val iterationEntityId: EntityId? = null,
+    val objectReferences: com.wingedsheep.engine.handlers.ObjectReferenceEnvironment = com.wingedsheep.engine.handlers.ObjectReferenceEnvironment(),
 ) : AnswerContinuation
 
 /**
@@ -244,7 +249,8 @@ data class AnyPlayerMayPayContinuation(
     val storedCollections: Map<String, List<EntityId>> = emptyMap(),
     val triggeringEntityId: EntityId? = null,
     val triggeringPlayerId: EntityId? = null,
-    val iterationTarget: EntityId? = null
+    val iterationTarget: EntityId? = null,
+    val objectReferences: com.wingedsheep.engine.handlers.ObjectReferenceEnvironment = com.wingedsheep.engine.handlers.ObjectReferenceEnvironment(),
 ) : AnswerContinuation
 
 /**
@@ -294,7 +300,8 @@ data class ReturnFromGraveyardContinuation(
     val playerId: EntityId,
     val sourceId: EntityId?,
     val sourceName: String?,
-    val destination: SearchDestination
+    val destination: SearchDestination,
+    val objectReferences: com.wingedsheep.engine.handlers.ObjectReferenceEnvironment = com.wingedsheep.engine.handlers.ObjectReferenceEnvironment(),
 ) : AnswerContinuation
 
 /**

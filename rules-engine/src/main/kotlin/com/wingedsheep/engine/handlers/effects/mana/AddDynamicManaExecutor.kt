@@ -76,6 +76,7 @@ class AddDynamicManaExecutor(
         val continuation = AddDynamicManaContinuation(
             playerId = context.controllerId,
             sourceId = context.sourceId,
+            objectReferences = context.objectReferences,
             sourceName = sourceName,
             totalAmount = amount,
             firstColor = firstColor,

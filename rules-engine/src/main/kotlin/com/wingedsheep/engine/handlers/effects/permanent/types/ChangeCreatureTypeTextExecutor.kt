@@ -96,6 +96,7 @@ class ChangeCreatureTypeTextExecutor(
         val continuation = ChooseReplacementContinuation(
             controllerId = context.controllerId,
             sourceId = context.sourceId,
+            objectReferences = context.objectReferences,
             sourceName = sourceName,
             targetId = targetId,
             fromOptions = fromOptions,

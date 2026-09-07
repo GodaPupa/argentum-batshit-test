@@ -47,7 +47,8 @@ class ChainCopyExecutor(
         val afterActionContinuation = ChainCopyAfterActionContinuation(
             effect = effect,
             recipientPlayerId = recipientPlayerId,
-            sourceId = context.sourceId
+            sourceId = context.sourceId,
+            objectReferences = context.objectReferences
         )
         val stateWithContinuation = state.pushContinuation(afterActionContinuation)
 
@@ -167,7 +168,8 @@ class ChainCopyExecutor(
         val continuation = ChainCopyDecisionContinuation(
             effect = effect,
             copyControllerId = recipientPlayerId,
-            sourceId = context.sourceId
+            sourceId = context.sourceId,
+            objectReferences = context.objectReferences
         )
 
         return EffectResult.from(state.suspendForDecision(decision, continuation, events = events + emptyList()))

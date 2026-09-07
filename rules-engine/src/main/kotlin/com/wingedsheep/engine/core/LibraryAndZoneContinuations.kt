@@ -35,7 +35,8 @@ data class SelectFromCollectionContinuation(
      * drops any extra cards that share a card type with an already-kept selection,
      * routing them into the remainder collection.
      */
-    val restrictions: List<SelectionRestriction> = emptyList()
+    val restrictions: List<SelectionRestriction> = emptyList(),
+    val objectReferences: com.wingedsheep.engine.handlers.ObjectReferenceEnvironment = com.wingedsheep.engine.handlers.ObjectReferenceEnvironment(),
 ) : AnswerContinuation
 
 /**
@@ -60,7 +61,8 @@ data class MoveCollectionOrderContinuation(
     val cards: List<EntityId>,
     val destinationZone: com.wingedsheep.sdk.core.Zone,
     val destinationPlayerId: EntityId,
-    val placement: com.wingedsheep.sdk.scripting.effects.ZonePlacement = com.wingedsheep.sdk.scripting.effects.ZonePlacement.Top
+    val placement: com.wingedsheep.sdk.scripting.effects.ZonePlacement = com.wingedsheep.sdk.scripting.effects.ZonePlacement.Top,
+    val objectReferences: com.wingedsheep.engine.handlers.ObjectReferenceEnvironment = com.wingedsheep.engine.handlers.ObjectReferenceEnvironment(),
 ) : AnswerContinuation
 
 /**
@@ -82,7 +84,8 @@ data class SelectTargetPipelineContinuation(
     val sourceId: EntityId?,
     val sourceName: String?,
     val storeAs: String,
-    val storedCollections: Map<String, List<EntityId>> = emptyMap()
+    val storedCollections: Map<String, List<EntityId>> = emptyMap(),
+    val objectReferences: com.wingedsheep.engine.handlers.ObjectReferenceEnvironment = com.wingedsheep.engine.handlers.ObjectReferenceEnvironment(),
 ) : AnswerContinuation
 
 /**
@@ -104,7 +107,8 @@ data class ChooseOptionPipelineContinuation(
     val sourceId: EntityId?,
     val sourceName: String?,
     val storeAs: String,
-    val options: List<String>
+    val options: List<String>,
+    val objectReferences: com.wingedsheep.engine.handlers.ObjectReferenceEnvironment = com.wingedsheep.engine.handlers.ObjectReferenceEnvironment(),
 ) : AnswerContinuation
 
 /**
@@ -130,7 +134,8 @@ data class NoteCreatureTypePipelineContinuation(
     val sourceName: String?,
     val storeAs: String,
     val options: List<String>,
-    val secret: Boolean = false
+    val secret: Boolean = false,
+    val objectReferences: com.wingedsheep.engine.handlers.ObjectReferenceEnvironment = com.wingedsheep.engine.handlers.ObjectReferenceEnvironment(),
 ) : AnswerContinuation
 
 /**
@@ -158,7 +163,8 @@ data class ChoosePileContinuation(
     val pileBName: String,
     val storeChosenAs: String,
     val storeOtherAs: String,
-    val storedCollections: Map<String, List<EntityId>> = emptyMap()
+    val storedCollections: Map<String, List<EntityId>> = emptyMap(),
+    val objectReferences: com.wingedsheep.engine.handlers.ObjectReferenceEnvironment = com.wingedsheep.engine.handlers.ObjectReferenceEnvironment(),
 ) : AnswerContinuation
 
 /**
@@ -184,7 +190,8 @@ data class MoveCollectionAuraTargetContinuation(
     val sourceId: EntityId?,
     val sourceName: String?,
     /** True when the auras are returning under their owner's control (e.g. Seam Rip's LTB trigger). */
-    val underOwnersControl: Boolean = false
+    val underOwnersControl: Boolean = false,
+    val objectReferences: com.wingedsheep.engine.handlers.ObjectReferenceEnvironment = com.wingedsheep.engine.handlers.ObjectReferenceEnvironment(),
 ) : AnswerContinuation
 
 /**
@@ -219,7 +226,8 @@ data class PutOntoBattlefieldAttachedToChosenContinuation(
 data class PutOnBottomOfLibraryContinuation(
     val playerId: EntityId,
     val sourceId: EntityId?,
-    val sourceName: String?
+    val sourceName: String?,
+    val objectReferences: com.wingedsheep.engine.handlers.ObjectReferenceEnvironment = com.wingedsheep.engine.handlers.ObjectReferenceEnvironment(),
 ) : AnswerContinuation
 
 /**
@@ -244,7 +252,8 @@ data class PutOnTopOrBottomContinuation(
     val sourceId: EntityId?,
     val sourceName: String?,
     val options: List<String>,
-    val positions: List<com.wingedsheep.sdk.scripting.effects.LibraryChoicePosition> = emptyList()
+    val positions: List<com.wingedsheep.sdk.scripting.effects.LibraryChoicePosition> = emptyList(),
+    val objectReferences: com.wingedsheep.engine.handlers.ObjectReferenceEnvironment = com.wingedsheep.engine.handlers.ObjectReferenceEnvironment(),
 ) : AnswerContinuation
 
 /**
@@ -262,7 +271,8 @@ data class PutOnTopOrBottomContinuation(
 data class ReturnFromLinkedExileContinuation(
     val playerId: EntityId,
     val sourceId: EntityId,
-    val eligibleCards: List<EntityId>
+    val eligibleCards: List<EntityId>,
+    val objectReferences: com.wingedsheep.engine.handlers.ObjectReferenceEnvironment = com.wingedsheep.engine.handlers.ObjectReferenceEnvironment(),
 ) : AnswerContinuation
 
 /**
@@ -292,7 +302,8 @@ data class CascadeMayCastContinuation(
     val playerId: EntityId,
     val sourceId: EntityId?,
     val exiledCards: List<EntityId>,
-    val cascadeCardId: EntityId
+    val cascadeCardId: EntityId,
+    val objectReferences: com.wingedsheep.engine.handlers.ObjectReferenceEnvironment = com.wingedsheep.engine.handlers.ObjectReferenceEnvironment(),
 ) : AnswerContinuation
 
 /**
@@ -329,6 +340,7 @@ data class DiscoverMayCastContinuation(
     val discoveredCardId: EntityId,
     val storeDiscoveredAs: String? = null,
     val thenEffect: com.wingedsheep.sdk.scripting.effects.Effect? = null,
+    val objectReferences: com.wingedsheep.engine.handlers.ObjectReferenceEnvironment = com.wingedsheep.engine.handlers.ObjectReferenceEnvironment(),
 ) : AnswerContinuation
 
 /**

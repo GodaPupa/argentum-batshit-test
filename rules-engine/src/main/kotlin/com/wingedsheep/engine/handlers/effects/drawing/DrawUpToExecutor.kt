@@ -58,6 +58,7 @@ class DrawUpToExecutor(
         val continuation = DrawUpToContinuation(
             playerId = playerId,
             sourceId = context.sourceId,
+            objectReferences = context.objectReferences,
             sourceName = sourceName,
             maxCards = actualMax,
             originalMaxCards = effect.maxCards,

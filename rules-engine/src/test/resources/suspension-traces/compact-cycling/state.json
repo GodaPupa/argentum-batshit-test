@@ -347,6 +347,51 @@
     "step": "PRECOMBAT_MAIN",
     "priorityPlayerId": "player-1",
     "stack": [],
+    "objectIdentities": {
+        "card-1005": {
+            "generation": 1,
+            "logicalZone": {
+                "ownerId": "player-1",
+                "zoneType": "Library"
+            }
+        },
+        "card-1006": {
+            "generation": 2,
+            "logicalZone": {
+                "ownerId": "player-1",
+                "zoneType": "Library"
+            }
+        },
+        "card-1003": {
+            "generation": 3,
+            "logicalZone": {
+                "ownerId": "player-1",
+                "zoneType": "Graveyard"
+            }
+        },
+        "card-1001": {
+            "generation": 4,
+            "logicalZone": {
+                "ownerId": "player-1",
+                "zoneType": "Battlefield"
+            }
+        },
+        "card-1002": {
+            "generation": 5,
+            "logicalZone": {
+                "ownerId": "player-1",
+                "zoneType": "Battlefield"
+            }
+        },
+        "card-1004": {
+            "generation": 6,
+            "logicalZone": {
+                "ownerId": "player-1",
+                "zoneType": "Battlefield"
+            }
+        }
+    },
+    "nextObjectGeneration": 7,
     "priorityPassedBy": [],
     "timestamp": 1,
     "turnOrder": [
@@ -535,10 +580,21 @@
                     "sourceId": "card-1001",
                     "sourceName": "Astral Slide",
                     "sourceBattlefieldTimestamp": null,
+                    "objectReferences": {
+                        "captured": false,
+                        "origin": null,
+                        "source": null,
+                        "triggering": null,
+                        "resolutionKey": null,
+                        "permittedMoves": [],
+                        "selfBinding": null
+                    },
                     "controllerId": "player-1",
                     "granterId": null,
                     "triggerContext": {
                         "triggeringEntityId": null,
+                        "triggeringOrigin": null,
+                        "triggeringObject": null,
                         "triggeringBattlefieldTimestamp": null,
                         "triggeringPlayerId": "player-1",
                         "damageAmount": null,

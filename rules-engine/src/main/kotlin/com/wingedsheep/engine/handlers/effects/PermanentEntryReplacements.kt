@@ -200,12 +200,17 @@ object PermanentEntryReplacements {
     ): EffectResult? {
         val cardDefinitionId = state.getEntity(entityId)?.get<CardComponent>()?.cardDefinitionId ?: return null
         val onEnter = onEnterRunEffectFor(cardRegistry.getCard(cardDefinitionId)) ?: return null
+        val enteredRef = state.objectRef(entityId)
         return effectExecutor(
             state,
             onEnter.effect,
             EffectContext(
                 sourceId = entityId,
                 controllerId = controllerId,
+                objectReferences = com.wingedsheep.engine.handlers.ObjectReferenceEnvironment(
+                    captured = true, origin = enteredRef, source = enteredRef,
+                    resolutionKey = "entry:$entityId:${enteredRef?.generation}"
+                ),
                 resolutionDepth = resolutionDepth,
                 xValue = xValue,
             ),
@@ -263,6 +268,8 @@ object PermanentEntryReplacements {
         effect: EntersAsCopy,
         fromZone: Zone?,
         carryEvents: List<GameEvent> = emptyList(),
+        entryOldObject: com.wingedsheep.engine.state.ObjectRef? = null,
+        entryNewObject: com.wingedsheep.engine.state.ObjectRef? = state.objectRef(entityId),
     ): ExecutionResult? {
         val copyFromGraveyard = effect.copyFromZone == Zone.GRAVEYARD
         val candidates = entersAsCopyCandidates(state, entityId, controllerId, effect)
@@ -298,6 +305,8 @@ object PermanentEntryReplacements {
             exileCopiedCard = effect.exileCopiedCard,
             tappedIfCopied = effect.tappedIfCopied,
             additionalCounters = effect.additionalCounters,
+            entryOldObject = entryOldObject,
+            entryNewObject = entryNewObject,
         )
         return state.suspendForDecision(question, continuation, carryEvents)
     }
@@ -329,6 +338,8 @@ object PermanentEntryReplacements {
         cardNameOptions: List<String> = emptyList(),
         syntheticRiot: Boolean = false,
         syntheticRiotRemaining: Int = 0,
+        entryOldObject: com.wingedsheep.engine.state.ObjectRef? = null,
+        entryNewObject: com.wingedsheep.engine.state.ObjectRef? = state.objectRef(entityId),
     ): ExecutionResult? {
         val chooserId = when (choice.chooser) {
             Player.AnOpponent -> state.getOpponents(controllerId).firstOrNull() ?: controllerId
@@ -342,8 +353,16 @@ object PermanentEntryReplacements {
             phase = DecisionPhase.RESOLUTION
         )
 
-        fun pause(question: (String) -> PendingDecision, continuation: AnswerContinuation): ExecutionResult =
-            state.suspendForDecision(question, continuation, carryEvents)
+        // The entry's object identities are captured on the answer, not read when it resumes:
+        // by then the permanent has finished entering and the old object is gone.
+        fun pause(
+            question: (String) -> PendingDecision,
+            continuation: EntersWithChoiceOnBattlefieldContinuation,
+        ): ExecutionResult = state.suspendForDecision(
+            question,
+            continuation.copy(entryOldObject = entryOldObject, entryNewObject = entryNewObject),
+            carryEvents,
+        )
 
         return when (choice.choiceType) {
             ChoiceType.COLOR -> {
@@ -502,7 +521,11 @@ object PermanentEntryReplacements {
                     cardNames = options,
                     fromZone = fromZone
                 )
-                baseState.suspendForDecision(question, continuation, carryEvents + lookEvents)
+                baseState.suspendForDecision(
+                    question,
+                    continuation.copy(entryOldObject = entryOldObject, entryNewObject = entryNewObject),
+                    carryEvents + lookEvents,
+                )
             }
 
             ChoiceType.NUMBER -> {

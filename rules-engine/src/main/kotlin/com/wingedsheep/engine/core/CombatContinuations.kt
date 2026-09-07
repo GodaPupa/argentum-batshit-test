@@ -65,7 +65,8 @@ data class AssignAsUnblockedContinuation(
 data class DistributeDamageContinuation(
     val sourceId: EntityId?,
     val controllerId: EntityId,
-    val targets: List<EntityId>
+    val targets: List<EntityId>,
+    val objectReferences: com.wingedsheep.engine.handlers.ObjectReferenceEnvironment = com.wingedsheep.engine.handlers.ObjectReferenceEnvironment(),
 ) : AnswerContinuation
 
 /**
@@ -107,7 +108,8 @@ data class DeflectDamageSourceChoiceContinuation(
     /** Arbitrary follow-up effect run when the chosen source's damage is prevented (null = pure prevention). */
     val onPrevented: Effect? = null,
     /** When false, the chosen source's damage is not prevented — it still hits, the reaction still fires (Eye for an Eye). */
-    val preventDamage: Boolean = true
+    val preventDamage: Boolean = true,
+    val objectReferences: com.wingedsheep.engine.handlers.ObjectReferenceEnvironment = com.wingedsheep.engine.handlers.ObjectReferenceEnvironment(),
 ) : AnswerContinuation
 
 /**
@@ -151,7 +153,8 @@ data class PreventDamageFromChosenSourceContinuation(
      * When true (with [nextInstanceOnly]), the single-instance shield prevents only *half* the
      * damage, rounded down — Dark Sphere. Ignored otherwise.
      */
-    val halvePreventedDamage: Boolean = false
+    val halvePreventedDamage: Boolean = false,
+    val objectReferences: com.wingedsheep.engine.handlers.ObjectReferenceEnvironment = com.wingedsheep.engine.handlers.ObjectReferenceEnvironment(),
 ) : AnswerContinuation
 
 /**

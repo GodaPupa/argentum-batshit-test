@@ -37,17 +37,19 @@ class ChooseOpponentForSourceExecutor : EffectExecutor<ChooseOpponentForSourceEf
         context: EffectContext
     ): EffectResult {
         val sourceId = context.sourceId ?: return EffectResult.success(state)
-        val source = state.getEntity(sourceId) ?: return EffectResult.success(state)
+        val source = state.getEntity(sourceId)
 
         val opponents = state.getOpponents(context.controllerId)
         if (opponents.isEmpty()) return EffectResult.success(state)
 
         // Sole opponent → forced choice, no prompt.
         if (opponents.size == 1) {
-            val newState = state.updateEntity(sourceId) { container ->
+            val newState = if (source != null && context.objectReferences.isCurrent(context.objectReferences.source, state)) state.updateEntity(sourceId) { container ->
                 container.withCastChoice(ChoiceSlot.OPPONENT, ChoiceValue.EntityChoice(opponents.single()))
-            }
-            return EffectResult.success(newState)
+            } else state
+            return EffectResult.success(newState).copy(updatedCollections = mapOf(
+                com.wingedsheep.engine.handlers.RESOLUTION_CHOSEN_OPPONENT to listOf(opponents.single()),
+            ))
         }
 
         val opponentNames = opponents.map { pid ->
@@ -59,13 +61,14 @@ class ChooseOpponentForSourceExecutor : EffectExecutor<ChooseOpponentForSourceEf
             prompt = effect.prompt,
             context = DecisionContext(
                 sourceId = sourceId,
-                sourceName = source.get<CardComponent>()?.name ?: "Unknown",
+                sourceName = source?.get<CardComponent>()?.name ?: "Unknown",
                 phase = DecisionPhase.RESOLUTION
             ),
             options = opponentNames
         ) }
         val continuation = ChooseOpponentForSourceContinuation(
             sourceId = sourceId,
+            objectReferences = context.objectReferences,
             controllerId = context.controllerId,
             opponentIds = opponents
         )

@@ -135,6 +135,7 @@ class DividedDamageExecutor(
 
         val continuation = DistributeDamageContinuation(
             sourceId = context.sourceId,
+            objectReferences = context.objectReferences,
             controllerId = context.controllerId,
             targets = targets
         )

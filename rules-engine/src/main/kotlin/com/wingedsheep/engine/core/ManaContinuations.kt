@@ -38,7 +38,8 @@ data class CounterUnlessPaysContinuation(
     val sourceName: String?,
     val counterDestination: CounterDestination = CounterDestination.Graveyard,
     val controllerId: EntityId? = null,
-    val onPaid: Effect? = null
+    val onPaid: Effect? = null,
+    val objectReferences: com.wingedsheep.engine.handlers.ObjectReferenceEnvironment = com.wingedsheep.engine.handlers.ObjectReferenceEnvironment(),
 ) : AnswerContinuation
 
 /**
@@ -198,7 +199,8 @@ data class CounterUnlessPaysManaSelectionContinuation(
      * of the generic, via the shared waterbend payment machinery) before paying the remainder with
      * mana sources.
      */
-    val waterbend: Boolean = false
+    val waterbend: Boolean = false,
+    val objectReferences: com.wingedsheep.engine.handlers.ObjectReferenceEnvironment = com.wingedsheep.engine.handlers.ObjectReferenceEnvironment(),
 ) : AnswerContinuation
 
 /**
@@ -460,7 +462,8 @@ data class WardTapPermanentsSubCostContinuation(
      *  components of an enclosing composite ward cost, charged once this mana part is fully paid. */
     val remainingWardParts: List<WardCost> = emptyList(),
     /** See [CounterUnlessPaysManaSelectionContinuation.wardSourceId]. */
-    val wardSourceId: EntityId? = null
+    val wardSourceId: EntityId? = null,
+    val objectReferences: com.wingedsheep.engine.handlers.ObjectReferenceEnvironment = com.wingedsheep.engine.handlers.ObjectReferenceEnvironment(),
 ) : AnswerContinuation
 
 /**
@@ -484,7 +487,8 @@ data class AddDynamicManaContinuation(
     val totalAmount: Int,
     val firstColor: Color,
     val secondColor: Color,
-    val restriction: ManaRestriction? = null
+    val restriction: ManaRestriction? = null,
+    val objectReferences: com.wingedsheep.engine.handlers.ObjectReferenceEnvironment = com.wingedsheep.engine.handlers.ObjectReferenceEnvironment(),
 ) : AnswerContinuation
 
 /**
@@ -505,7 +509,8 @@ data class AddManaPipsContinuation(
     val sourceName: String?,
     val remainingPips: Int,
     val allowedColors: Set<Color>,
-    val restriction: ManaRestriction? = null
+    val restriction: ManaRestriction? = null,
+    val objectReferences: com.wingedsheep.engine.handlers.ObjectReferenceEnvironment = com.wingedsheep.engine.handlers.ObjectReferenceEnvironment(),
 ) : AnswerContinuation
 
 /**

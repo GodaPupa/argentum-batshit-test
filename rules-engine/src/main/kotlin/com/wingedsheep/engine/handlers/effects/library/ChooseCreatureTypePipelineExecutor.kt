@@ -45,6 +45,7 @@ class ChooseCreatureTypePipelineExecutor : EffectExecutor<ChooseCreatureTypeEffe
         val continuation = ChooseOptionPipelineContinuation(
             controllerId = controllerId,
             sourceId = context.sourceId,
+            objectReferences = context.objectReferences,
             sourceName = sourceName,
             storeAs = CHOSEN_CREATURE_TYPE_KEY,
             options = allCreatureTypes

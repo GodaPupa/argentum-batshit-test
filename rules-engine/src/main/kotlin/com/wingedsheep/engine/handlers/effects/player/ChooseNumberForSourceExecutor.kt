@@ -32,12 +32,12 @@ class ChooseNumberForSourceExecutor(
         context: EffectContext
     ): EffectResult {
         val sourceId = context.sourceId ?: return EffectResult.success(state)
-        if (state.getEntity(sourceId) == null) return EffectResult.success(state)
 
         val sourceName = state.getEntity(sourceId)?.get<CardComponent>()?.name ?: "Unknown"
 
         val continuation = ChooseNumberForSourceContinuation(
             sourceId = sourceId,
+            objectReferences = context.objectReferences,
             controllerId = context.controllerId,
             slot = effect.slot
         )

@@ -82,7 +82,7 @@ class MoveCollectionExecutor(
                 if (destPlayerId != null) {
                     val destZoneKey = ZoneKey(destPlayerId, Zone.LIBRARY)
                     val (shuffledLibrary, shuffledState) = state.nextRandom { shuffle(state.getZone(destZoneKey)) }
-                    val newState = shuffledState.copy(zones = shuffledState.zones + (destZoneKey to shuffledLibrary))
+                    val newState = shuffledState.reorderZone(destZoneKey, shuffledLibrary)
                     return EffectResult.success(newState, listOf(LibraryShuffledEvent(destPlayerId)))
                 }
             }
@@ -430,6 +430,7 @@ class MoveCollectionExecutor(
         val continuation = MoveCollectionOrderContinuation(
             playerId = playerId,
             sourceId = context.sourceId,
+            objectReferences = context.objectReferences,
             sourceName = sourceName,
             cards = cards,
             destinationZone = destZone,
@@ -681,7 +682,9 @@ class MoveCollectionExecutor(
                     entityName = cardName,
                     fromZone = fromZone,
                     toZone = Zone.BATTLEFIELD,
-                    ownerId = ownerId
+                    ownerId = ownerId,
+                    oldObject = state.objectRef(auraId),
+                    newObject = newState.objectRef(auraId)
                 )
             )
         }
@@ -862,7 +865,7 @@ class MoveCollectionExecutor(
                 // Strip reveals before shuffling — once shuffled, no one knows positions any more
                 newState = LibraryRevealUtils.clearLibraryReveals(newState, libraryOwnerId)
                 val (shuffledLibrary, shuffledState) = newState.nextRandom { shuffle(newState.getZone(destZoneKey)) }
-                newState = shuffledState.copy(zones = shuffledState.zones + (destZoneKey to shuffledLibrary))
+                newState = shuffledState.reorderZone(destZoneKey, shuffledLibrary)
                 events.add(LibraryShuffledEvent(libraryOwnerId))
             }
         }

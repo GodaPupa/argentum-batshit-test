@@ -40,13 +40,23 @@
         "copyOfOriginalName": null,
         "xValue": null,
         "wasSacrificed": false,
-        "craftMaterial": false
+        "craftMaterial": false,
+        "oldObject": {
+            "entityId": "card-1002",
+            "generation": 2
+        },
+        "newObject": {
+            "entityId": "card-1002",
+            "generation": 4
+        },
+        "transitionCause": "PRIMARY",
+        "requestedDestination": "Graveyard"
     },
     {
         "type": "ZoneChangeEvent",
         "entityId": "card-1001",
         "entityName": "Naturalize",
-        "fromZone": null,
+        "fromZone": "Stack",
         "toZone": "Graveyard",
         "ownerId": "player-1",
         "lastKnown": null,
@@ -54,7 +64,17 @@
         "copyOfOriginalName": null,
         "xValue": null,
         "wasSacrificed": false,
-        "craftMaterial": false
+        "craftMaterial": false,
+        "oldObject": {
+            "entityId": "card-1001",
+            "generation": 3
+        },
+        "newObject": {
+            "entityId": "card-1001",
+            "generation": 5
+        },
+        "transitionCause": "PRIMARY",
+        "requestedDestination": "Graveyard"
     },
     {
         "type": "ResolvedEvent",

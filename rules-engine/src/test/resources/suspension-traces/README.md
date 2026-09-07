@@ -21,3 +21,13 @@ without changing player or choice payload. Cycling also compares the exact event
 list, final hand/library sizes, and drained stack. Current-format roundtrips are
 checked throughout. This preserves before-and-after behavioral evidence whether
 or not runtime support for old snapshots is deployed.
+
+Re-captured on 2026-09-07 when this branch merged `main`'s object-identity feature
+(`objectIdentities`, `nextObjectGeneration`, and `objectReferences` on continuations).
+The recorded `state.json` and `actions.json` are unchanged; the expected `after-N.json`
+were re-derived by replaying those same actions. `events-N.json` was rewritten only where
+the new feature genuinely emits more: the LIBRARY->HAND draw in `compact-cycling`, and the
+HAND->STACK cast plus the stack-origin on the graveyard move in `free-cast-target`. The
+`nested-may`, `repeat-while` and `suspended-mana-window` event lists still match the
+original parent capture byte for byte, which is what shows the suspension change itself
+did not alter behaviour.

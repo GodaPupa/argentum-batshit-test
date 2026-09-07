@@ -67,6 +67,7 @@ class PutOnTopOrBottomOfLibraryExecutor : EffectExecutor<PutOnLibraryPositionOfC
             ownerId = ownerId,
             cardId = targetId,
             sourceId = context.sourceId,
+            objectReferences = context.objectReferences,
             sourceName = sourceName,
             options = options,
             positions = positions

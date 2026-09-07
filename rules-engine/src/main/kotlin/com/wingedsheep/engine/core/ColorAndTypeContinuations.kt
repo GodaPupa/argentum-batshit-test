@@ -90,7 +90,8 @@ data class ChooseColorForTargetContinuation(
     val controllerId: EntityId,
     val sourceId: EntityId?,
     val sourceName: String?,
-    val targetEntityId: EntityId
+    val targetEntityId: EntityId,
+    val objectReferences: com.wingedsheep.engine.handlers.ObjectReferenceEnvironment = com.wingedsheep.engine.handlers.ObjectReferenceEnvironment(),
 ) : AnswerContinuation
 
 /**
@@ -120,7 +121,8 @@ data class ChooseReplacementContinuation(
     val fromOptions: List<String>,
     val toOptions: List<String>,
     val mode: ReplacementMode,
-    val duration: Duration
+    val duration: Duration,
+    val objectReferences: com.wingedsheep.engine.handlers.ObjectReferenceEnvironment = com.wingedsheep.engine.handlers.ObjectReferenceEnvironment(),
 ) : AnswerContinuation
 
 /**
@@ -141,7 +143,8 @@ data class BecomeCreatureTypeContinuation(
     val sourceName: String?,
     val targetId: EntityId,
     val creatureTypes: List<String>,
-    val duration: Duration
+    val duration: Duration,
+    val objectReferences: com.wingedsheep.engine.handlers.ObjectReferenceEnvironment = com.wingedsheep.engine.handlers.ObjectReferenceEnvironment(),
 ) : AnswerContinuation
 
 /**
@@ -164,7 +167,8 @@ data class ChooseCardTypeForProtectionContinuation(
     val sourceName: String?,
     val targetId: EntityId,
     val cardTypes: List<String>,
-    val duration: Duration
+    val duration: Duration,
+    val objectReferences: com.wingedsheep.engine.handlers.ObjectReferenceEnvironment = com.wingedsheep.engine.handlers.ObjectReferenceEnvironment(),
 ) : AnswerContinuation
 
 /**
@@ -191,7 +195,8 @@ data class EachPlayerChoosesCreatureTypeContinuation(
     val remainingPlayers: List<EntityId>,
     val chosenTypes: List<String>,
     val creatureTypes: List<String>,
-    val storeAs: String
+    val storeAs: String,
+    val objectReferences: com.wingedsheep.engine.handlers.ObjectReferenceEnvironment = com.wingedsheep.engine.handlers.ObjectReferenceEnvironment(),
 ) : AnswerContinuation
 
 /**

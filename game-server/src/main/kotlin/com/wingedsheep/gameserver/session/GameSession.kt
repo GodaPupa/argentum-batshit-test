@@ -1793,7 +1793,7 @@ class GameSession(
      */
     fun injectStateForDevScenario(state: GameState) {
         synchronized(stateLock) {
-            gameState = state
+            gameState = state.initializeObjectIdentities()
             players.clear()
         }
     }
@@ -1829,7 +1829,7 @@ class GameSession(
      */
     fun resetStateForDevScenario(state: GameState) {
         synchronized(stateLock) {
-            gameState = state
+            gameState = state.initializeObjectIdentities()
             undoCheckpoint = null
             gameLogs.clear()
             lastProcessedMessageId.clear()
@@ -1926,7 +1926,7 @@ class GameSession(
         sideboardLists: Map<EntityId, List<String>> = emptyMap()
     ) {
         synchronized(stateLock) {
-            gameState = state
+            gameState = state?.initializeObjectIdentities()
             deckLists.clear()
             deckLists.putAll(decks)
             sideboards.clear()

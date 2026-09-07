@@ -178,7 +178,8 @@ class ManaPaymentContinuationResumer(
                 counterDestination = continuation.counterDestination,
                 controllerId = continuation.controllerId,
                 onPaid = continuation.onPaid,
-                sourceId = continuation.sourceId
+                sourceId = continuation.sourceId,
+            objectReferences = continuation.objectReferences
             )
 
             return state.suspendForDecision(

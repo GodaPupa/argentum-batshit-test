@@ -77,6 +77,7 @@ class ChoosePileExecutor : EffectExecutor<ChoosePileEffect> {
         val continuation = ChoosePileContinuation(
             playerId = deciderId,
             sourceId = context.sourceId,
+            objectReferences = context.objectReferences,
             sourceName = sourceName,
             pileAIds = pileA,
             pileBIds = pileB,

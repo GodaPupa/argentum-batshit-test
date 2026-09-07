@@ -203,6 +203,10 @@ sealed interface PendingGameEvent {
             val continuation = StaticDrawReplacementContinuation(
                 drawingPlayerId = playerId,
                 sourceId = sourceEntityId ?: EntityId(""),
+                objectReferences = com.wingedsheep.engine.handlers.ObjectReferenceEnvironment(captured = true,
+                    origin = sourceEntityId?.let(state::objectRef), source = sourceEntityId?.let(state::objectRef),
+                    resolutionKey = "replacement:${gathered.identity}:" +
+                        "${sourceEntityId?.let(state::objectRef)?.generation}"),
                 sourceName = cardName,
                 replacementEffect = replaceEffect.replacementEffect,
                 drawCount = drawsLeft,

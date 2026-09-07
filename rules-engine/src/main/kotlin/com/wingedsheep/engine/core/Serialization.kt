@@ -211,6 +211,7 @@ val engineSerializersModule = SerializersModule {
     // Structural suspension and automatic execution work
     polymorphic(ContinuationFrame::class) {
         subclass(Suspension::class)
+        subclass(FinishResolvingSpellContinuation::class)
         subclass(ReplacementResolveContinuation::class)
         subclass(ModalPreChosenContinuation::class)
         subclass(SpliceTailContinuation::class)
@@ -231,6 +232,7 @@ val engineSerializersModule = SerializersModule {
     }
 
     polymorphic(AutomaticContinuation::class) {
+        subclass(FinishResolvingSpellContinuation::class)
         subclass(ReplacementResolveContinuation::class)
         subclass(ModalPreChosenContinuation::class)
         subclass(SpliceTailContinuation::class)

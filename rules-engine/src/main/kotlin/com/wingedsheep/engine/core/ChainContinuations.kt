@@ -18,7 +18,8 @@ import kotlinx.serialization.Serializable
 data class ChainCopyAfterActionContinuation(
     val effect: ChainCopyEffect,
     val recipientPlayerId: EntityId,
-    val sourceId: EntityId?
+    val sourceId: EntityId?,
+    val objectReferences: com.wingedsheep.engine.handlers.ObjectReferenceEnvironment = com.wingedsheep.engine.handlers.ObjectReferenceEnvironment(),
 ) : AutomaticContinuation
 
 /**
@@ -35,7 +36,8 @@ data class ChainCopyAfterActionContinuation(
 data class ChainCopyDecisionContinuation(
     val effect: ChainCopyEffect,
     val copyControllerId: EntityId,
-    val sourceId: EntityId?
+    val sourceId: EntityId?,
+    val objectReferences: com.wingedsheep.engine.handlers.ObjectReferenceEnvironment = com.wingedsheep.engine.handlers.ObjectReferenceEnvironment(),
 ) : AnswerContinuation
 
 /**
@@ -53,7 +55,8 @@ data class ChainCopyCostContinuation(
     val effect: ChainCopyEffect,
     val copyControllerId: EntityId,
     val sourceId: EntityId?,
-    val candidateOptions: List<EntityId>
+    val candidateOptions: List<EntityId>,
+    val objectReferences: com.wingedsheep.engine.handlers.ObjectReferenceEnvironment = com.wingedsheep.engine.handlers.ObjectReferenceEnvironment(),
 ) : AnswerContinuation
 
 /**
@@ -72,5 +75,6 @@ data class ChainCopyTargetContinuation(
     val effect: ChainCopyEffect,
     val copyControllerId: EntityId,
     val sourceId: EntityId?,
-    val candidateTargets: List<EntityId>
+    val candidateTargets: List<EntityId>,
+    val objectReferences: com.wingedsheep.engine.handlers.ObjectReferenceEnvironment = com.wingedsheep.engine.handlers.ObjectReferenceEnvironment(),
 ) : AnswerContinuation

@@ -1065,7 +1065,9 @@ class TurnManager(
             entityName = card?.name ?: "",
             fromZone = Zone.GRAVEYARD,
             toZone = Zone.EXILE,
-            ownerId = ownerId
+            ownerId = ownerId,
+            oldObject = state.objectRef(sourceId),
+            newObject = movedState.objectRef(sourceId)
         )
         return movedState to listOf(event)
     }

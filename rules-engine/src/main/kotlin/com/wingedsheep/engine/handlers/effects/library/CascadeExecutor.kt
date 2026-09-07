@@ -119,6 +119,7 @@ class CascadeExecutor(
         val continuation = CascadeMayCastContinuation(
             playerId = controllerId,
             sourceId = context.sourceId,
+            objectReferences = context.objectReferences,
             exiledCards = exiledCards.toList(),
             cascadeCardId = cascadeCard
         )

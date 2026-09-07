@@ -75,7 +75,20 @@ class ContinuationResumerRegistry {
     ): ExecutionResult {
         val resumer = resumers[continuation::class] as? ContinuationResumer<AnswerContinuation>
             ?: return ExecutionResult.error(state, "No resumer registered for continuation type: ${continuation::class.simpleName}")
-        return resumer.resume(state, continuation, question, response, checkForMore)
+        val references = continuation.objectReferences()?.copy(captured = true)
+        val propagateThenContinue: CheckForMore = { nextState, events ->
+            val updated = references?.authorize(events)
+            checkForMore(if (updated == null) nextState else propagateObjectReferences(nextState, updated), events)
+        }
+        val result = resumer.resume(
+            state,
+            if (references == null) continuation else continuation.withObjectReferences(references),
+            question,
+            response,
+            propagateThenContinue,
+        )
+        val updated = references?.authorize(result.events)
+        return if (updated == null) result else result.copy(state = propagateObjectReferences(result.newState, updated))
     }
 
     /**
@@ -101,7 +114,12 @@ class ContinuationResumerRegistry {
         if (!resumer.canAutoResume(top)) return null
 
         val (_, stateAfterPop) = state.popContinuation()
-        return resumer.autoResume(stateAfterPop, top, events, checkForMore)
+        val references = top.objectReferences()?.copy(captured = true)
+        val propagateThenContinue: CheckForMore = { nextState, nextEvents ->
+            val updated = references?.authorize(nextEvents.drop(events.size))
+            checkForMore(if (updated == null) nextState else propagateObjectReferences(nextState, updated), nextEvents)
+        }
+        return resumer.autoResume(stateAfterPop, if (references == null) top else top.withObjectReferences(references), events, propagateThenContinue)
     }
 
     /**

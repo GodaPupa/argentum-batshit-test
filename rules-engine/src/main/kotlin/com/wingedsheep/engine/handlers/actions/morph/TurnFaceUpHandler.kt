@@ -398,7 +398,10 @@ class TurnFaceUpHandler(
                         action.playerId,
                         morphCost,
                         action.sourceId,
-                        CostPaymentContext(onPaid = flip)
+                        CostPaymentContext(onPaid = flip, objectReferences = com.wingedsheep.engine.handlers.ObjectReferenceEnvironment(
+                            captured = true, origin = currentState.objectRef(action.sourceId),
+                            source = currentState.objectRef(action.sourceId),
+                            resolutionKey = "morph:${action.sourceId.value}:${currentState.objectRef(action.sourceId)?.generation}"))
                     )
                 ) {
                     is PaymentResult.Pending ->
@@ -426,6 +429,9 @@ class TurnFaceUpHandler(
         if (faceUpEffect != null) {
             val effectContext = com.wingedsheep.engine.handlers.EffectContext(
                 sourceId = action.sourceId,
+                objectReferences = com.wingedsheep.engine.handlers.ObjectReferenceEnvironment(captured = true,
+                    origin = currentState.objectRef(action.sourceId), source = currentState.objectRef(action.sourceId),
+                    resolutionKey = "face-up:${action.sourceId.value}:${currentState.objectRef(action.sourceId)?.generation}"),
                 controllerId = action.playerId,
             )
             val effectResult = effectExecutorRegistry.execute(currentState, faceUpEffect, effectContext)

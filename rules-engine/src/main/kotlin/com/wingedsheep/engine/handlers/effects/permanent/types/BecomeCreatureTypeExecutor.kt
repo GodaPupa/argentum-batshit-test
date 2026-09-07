@@ -71,6 +71,7 @@ class BecomeCreatureTypeExecutor : EffectExecutor<BecomeCreatureTypeEffect> {
         val continuation = BecomeCreatureTypeContinuation(
             controllerId = context.controllerId,
             sourceId = context.sourceId,
+            objectReferences = context.objectReferences,
             sourceName = sourceName,
             targetId = targetId,
             creatureTypes = allCreatureTypes,

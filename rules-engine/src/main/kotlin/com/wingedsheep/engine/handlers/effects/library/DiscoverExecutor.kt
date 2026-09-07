@@ -141,6 +141,7 @@ class DiscoverExecutor(
                 tail,
                 EffectContext(
                     sourceId = context.sourceId,
+            objectReferences = context.objectReferences,
                     controllerId = controllerId,
                     pipeline = PipelineState.EMPTY.copy(storedCollections = discoveredCollections)
                 )
@@ -157,6 +158,7 @@ class DiscoverExecutor(
         val continuation = DiscoverMayCastContinuation(
             playerId = controllerId,
             sourceId = context.sourceId,
+            objectReferences = context.objectReferences,
             exiledCards = exiledCards.toList(),
             discoveredCardId = discoveredCard,
             storeDiscoveredAs = effect.storeDiscoveredAs,

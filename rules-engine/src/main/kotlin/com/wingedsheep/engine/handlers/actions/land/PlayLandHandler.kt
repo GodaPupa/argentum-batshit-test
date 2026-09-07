@@ -284,6 +284,7 @@ class PlayLandHandler(
 
         newState = com.wingedsheep.engine.handlers.effects.BattlefieldEntry
             .place(newState, action.playerId, action.cardId)
+        val enteredObject = newState.objectRef(action.cardId)
 
         // Lands bypass ZoneTransitionService, which is where every other zone-change path
         // stamps EnteredThisTurnComponent (cleared again at the controller's next untap step,
@@ -443,6 +444,8 @@ class PlayLandHandler(
                     fromZone,
                     Zone.BATTLEFIELD,
                     action.playerId,
+                    oldObject = state.objectRef(action.cardId),
+                    newObject = enteredObject,
                 )
                 val onEnterEvents = mutableListOf<com.wingedsheep.engine.core.GameEvent>(zoneChangeEvent)
                 onEnterEvents.addAll(entersWithEvents)
@@ -453,6 +456,10 @@ class PlayLandHandler(
                 val effectContext = EffectContext(
                     sourceId = action.cardId,
                     controllerId = action.playerId,
+                    objectReferences = com.wingedsheep.engine.handlers.ObjectReferenceEnvironment(
+                        captured = true, origin = enteredObject, source = enteredObject,
+                        resolutionKey = "entry:${action.cardId}:${enteredObject?.generation}"
+                    ),
                 )
                 val effectResult = effectExecutor(newState, onEnter.effect, effectContext)
                 if (effectResult.isPaused) {
@@ -513,6 +520,8 @@ class PlayLandHandler(
                         cardComponent = cardComponent,
                         effect = entersAsCopy,
                         fromZone = fromZone,
+                        entryOldObject = state.objectRef(action.cardId),
+                        entryNewObject = enteredObject,
                         carryEvents = listOfNotNull(riderPlayEvent, landPlayedEvent),
                     )
                 if (result != null) return result
@@ -552,7 +561,9 @@ class PlayLandHandler(
                         cardComponent.name,
                         fromZone,
                         Zone.BATTLEFIELD,
-                        action.playerId
+                        action.playerId,
+                        oldObject = state.objectRef(action.cardId),
+                        newObject = enteredObject,
                     )
                     val events = listOf(zoneChangeEvent) + entersWithEvents + listOfNotNull(riderPlayEvent, landPlayedEvent)
                     newState = newState.tick()
@@ -561,7 +572,9 @@ class PlayLandHandler(
                         landId = action.cardId,
                         controllerId = action.playerId,
                         lifeCost = entersTapped.payLifeCost!!,
-                        fromZone = fromZone
+                        fromZone = fromZone,
+                        entryOldObject = state.objectRef(action.cardId),
+                        entryNewObject = enteredObject,
                     )
                     return newState.suspendForDecision(
                         question = { decisionId ->
@@ -638,7 +651,9 @@ class PlayLandHandler(
                     cardComponent.name,
                     fromZone,
                     Zone.BATTLEFIELD,
-                    action.playerId
+                    action.playerId,
+                    oldObject = state.objectRef(action.cardId),
+                    newObject = enteredObject,
                 )
                 val events = listOf(zoneChangeEvent) + entersWithEvents + listOfNotNull(riderPlayEvent, landPlayedEvent)
                 newState = newState.tick()
@@ -654,6 +669,8 @@ class PlayLandHandler(
                         cardComponent = cardComponent,
                         choice = firstChoice,
                         fromZone = fromZone,
+                        entryOldObject = state.objectRef(action.cardId),
+                        entryNewObject = enteredObject,
                         carryEvents = events,
                         cardNameOptions = if (firstChoice.choiceType == ChoiceType.CARD_NAME) {
                             cardRegistry.cardNamesIn(firstChoice.cardNamePool).toList()
@@ -676,7 +693,9 @@ class PlayLandHandler(
             cardComponent.name,
             fromZone,
             Zone.BATTLEFIELD,
-            action.playerId
+            action.playerId,
+            oldObject = state.objectRef(action.cardId),
+            newObject = enteredObject,
         )
 
         val events = listOf(zoneChangeEvent) + entersWithEvents + listOfNotNull(riderPlayEvent, landPlayedEvent)

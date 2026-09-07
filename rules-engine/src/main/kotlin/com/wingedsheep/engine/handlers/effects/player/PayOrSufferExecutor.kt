@@ -167,6 +167,7 @@ class PayOrSufferExecutor(
         val continuation = PayOrSufferContinuation(
             playerId = controllerId,
             sourceId = sourceId,
+            objectReferences = context.objectReferences,
             sourceName = sourceName,
             costType = PayOrSufferCostType.DISCARD,
             sufferEffect = effect.suffer,
@@ -244,6 +245,7 @@ class PayOrSufferExecutor(
         val continuation = PayOrSufferContinuation(
             playerId = controllerId,
             sourceId = sourceId,
+            objectReferences = context.objectReferences,
             sourceName = sourceName,
             costType = PayOrSufferCostType.DISCARD,
             sufferEffect = effect.suffer,
@@ -290,6 +292,7 @@ class PayOrSufferExecutor(
         val continuation = PayOrSufferContinuation(
             playerId = controllerId,
             sourceId = sourceId,
+            objectReferences = context.objectReferences,
             sourceName = sourceName,
             costType = PayOrSufferCostType.SACRIFICE,
             sufferEffect = effect.suffer,
@@ -352,6 +355,7 @@ class PayOrSufferExecutor(
         val continuation = PayOrSufferContinuation(
             playerId = controllerId,
             sourceId = sourceId,
+            objectReferences = context.objectReferences,
             sourceName = sourceName,
             costType = PayOrSufferCostType.PUT_COUNTERS,
             sufferEffect = effect.suffer,
@@ -420,6 +424,7 @@ class PayOrSufferExecutor(
         val continuation = PayOrSufferContinuation(
             playerId = controllerId,
             sourceId = sourceId,
+            objectReferences = context.objectReferences,
             sourceName = sourceName,
             costType = PayOrSufferCostType.TAP,
             sufferEffect = effect.suffer,
@@ -491,6 +496,7 @@ class PayOrSufferExecutor(
         val continuation = PayOrSufferContinuation(
             playerId = controllerId,
             sourceId = sourceId,
+            objectReferences = context.objectReferences,
             sourceName = sourceName,
             costType = PayOrSufferCostType.RETURN_TO_HAND,
             sufferEffect = effect.suffer,
@@ -604,6 +610,7 @@ class PayOrSufferExecutor(
         val continuation = PayOrSufferContinuation(
             playerId = controllerId,
             sourceId = sourceId,
+            objectReferences = context.objectReferences,
             sourceName = sourceName,
             costType = PayOrSufferCostType.MILL,
             sufferEffect = effect.suffer,
@@ -659,6 +666,7 @@ class PayOrSufferExecutor(
         val continuation = PayOrSufferContinuation(
             playerId = controllerId,
             sourceId = sourceId,
+            objectReferences = context.objectReferences,
             sourceName = sourceName,
             costType = PayOrSufferCostType.PAY_LIFE,
             sufferEffect = effect.suffer,
@@ -700,6 +708,7 @@ class PayOrSufferExecutor(
         val continuation = PayOrSufferContinuation(
             playerId = controllerId,
             sourceId = sourceId,
+            objectReferences = context.objectReferences,
             sourceName = sourceName,
             costType = PayOrSufferCostType.EXILE,
             sufferEffect = effect.suffer,
@@ -773,6 +782,7 @@ class PayOrSufferExecutor(
         val continuation = PayOrSufferContinuation(
             playerId = controllerId,
             sourceId = sourceId,
+            objectReferences = context.objectReferences,
             sourceName = sourceName,
             costType = PayOrSufferCostType.MANA,
             sufferEffect = effect.suffer,
@@ -840,6 +850,7 @@ class PayOrSufferExecutor(
         val continuation = PayOrSufferChoiceContinuation(
             playerId = payingPlayerId,
             sourceId = sourceId,
+            objectReferences = context.objectReferences,
             sourceName = sourceName,
             options = availableOptions.map { cost.options[it.first] },
             sufferEffect = effect.suffer,
@@ -878,6 +889,7 @@ class PayOrSufferExecutor(
             cost = PayCost.Atom(cost),
             sourceId = sourceId,
             ctx = CostPaymentContext(
+                objectReferences = context.objectReferences,
                 onDeclined = effect.suffer,
                 targets = context.targets,
                 namedTargets = context.pipeline.namedTargets,
@@ -1147,7 +1159,9 @@ class PayOrSufferExecutor(
                 entityName = permanentName,
                 fromZone = Zone.BATTLEFIELD,
                 toZone = Zone.GRAVEYARD,
-                ownerId = playerId
+                ownerId = playerId,
+                oldObject = state.objectRef(permanentId),
+                newObject = newState.objectRef(permanentId)
             )
         )
 

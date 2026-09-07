@@ -20,7 +20,8 @@ import kotlinx.serialization.Serializable
 data class ChooseNumberForSourceContinuation(
     val sourceId: EntityId,
     val controllerId: EntityId,
-    val slot: ChoiceSlot
+    val slot: ChoiceSlot,
+    val objectReferences: com.wingedsheep.engine.handlers.ObjectReferenceEnvironment = com.wingedsheep.engine.handlers.ObjectReferenceEnvironment(),
 ) : AnswerContinuation
 
 /**
@@ -41,7 +42,8 @@ data class ChooseNumberForSourceContinuation(
 data class ChooseOpponentForSourceContinuation(
     val sourceId: EntityId,
     val controllerId: EntityId,
-    val opponentIds: List<EntityId>
+    val opponentIds: List<EntityId>,
+    val objectReferences: com.wingedsheep.engine.handlers.ObjectReferenceEnvironment = com.wingedsheep.engine.handlers.ObjectReferenceEnvironment(),
 ) : AnswerContinuation
 
 /**
@@ -64,7 +66,8 @@ data class ChooseCardTypeForSourceContinuation(
     val sourceId: EntityId,
     val controllerId: EntityId,
     val slot: ChoiceSlot,
-    val cardTypes: List<String>
+    val cardTypes: List<String>,
+    val objectReferences: com.wingedsheep.engine.handlers.ObjectReferenceEnvironment = com.wingedsheep.engine.handlers.ObjectReferenceEnvironment(),
 ) : AnswerContinuation
 
 /**

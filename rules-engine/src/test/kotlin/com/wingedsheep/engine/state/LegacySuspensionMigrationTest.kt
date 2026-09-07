@@ -40,8 +40,10 @@ class LegacySuspensionMigrationTest : ScenarioTestBase() {
 
                 // The reader changes only suspension representation. Entity state, RNG, counters,
                 // permissions, and all other saved fields are retained exactly on initial load.
+                // Object identity postdates these captures, so decoding supplies its defaults;
+                // dropping those two keys keeps the comparison about what the reader touches.
                 val encoded = encodeState(state)
-                JsonObject(encoded - "continuationStack") shouldBe
+                JsonObject(encoded - "continuationStack" - OBJECT_IDENTITY_FIELDS) shouldBe
                     JsonObject(original - "continuationStack" - "pendingDecision")
                 assertCurrentRoundTrip(state)
 
@@ -82,7 +84,7 @@ class LegacySuspensionMigrationTest : ScenarioTestBase() {
             state.nextRoutingId shouldBe original.getValue("nextRoutingId").jsonPrimitive.content.toLong()
             state.pendingDecision shouldBe json.decodeFromString<PendingDecision>(original.getValue("pendingDecision").toString())
             val compact = compactJson.parseToJsonElement(compactJson.encodeToString(state)).jsonObject
-            JsonObject(compact - "continuationStack") shouldBe
+            JsonObject(compact - "continuationStack" - OBJECT_IDENTITY_FIELDS) shouldBe
                 JsonObject(original - "continuationStack" - "pendingDecision")
             assertCurrentRoundTrip(state)
 
@@ -134,7 +136,11 @@ class LegacySuspensionMigrationTest : ScenarioTestBase() {
             saved.getValue("question") shouldBe JsonObject(
                 original[1].jsonObject.getValue("decision").jsonObject + ("type" to JsonPrimitive("SelectManaSourcesDecision"))
             )
-            saved.getValue("answer") shouldBe JsonObject(original[0].jsonObject - "decisionId")
+            // Every field the legacy frame carried survives untouched. Fields added since the
+            // capture (object identity's, and anything later) decode to their defaults and are
+            // not the reader's doing, so the comparison is restricted to the captured shape.
+            val capturedAnswer = JsonObject(original[0].jsonObject - "decisionId")
+            restrictTo(saved.getValue("answer"), capturedAnswer) shouldBe capturedAnswer
             migrated.last().jsonObject.getValue("question") shouldBe
                 fixtureObject("suspended-mana-window", "state.json").getValue("pendingDecision")
         }
@@ -274,6 +280,15 @@ class LegacySuspensionMigrationTest : ScenarioTestBase() {
         else -> value
     }
 
+    /** [actual] narrowed to the keys [shape] has, at every depth — additions are ignored. */
+    private fun restrictTo(actual: JsonElement, shape: JsonElement): JsonElement = when {
+        actual is JsonObject && shape is JsonObject ->
+            JsonObject(actual.filterKeys { it in shape }.mapValues { restrictTo(it.value, shape.getValue(it.key)) })
+        actual is JsonArray && shape is JsonArray && actual.size == shape.size ->
+            JsonArray(actual.mapIndexed { i, child -> restrictTo(child, shape[i]) })
+        else -> actual
+    }
+
     private fun encodeState(state: GameState): JsonObject = json.parseToJsonElement(json.encodeToString(state)).jsonObject
     private fun encodedStack(state: GameState): JsonArray = encodeState(state).getValue("continuationStack") as JsonArray
     private fun fixtureStack(fixture: String): JsonArray = fixtureObject(fixture, "state.json").getValue("continuationStack") as JsonArray
@@ -283,5 +298,8 @@ class LegacySuspensionMigrationTest : ScenarioTestBase() {
 
     companion object {
         private const val CORE = "com.wingedsheep.engine.core."
+
+        /** Added by object identity, which postdates every captured legacy snapshot. */
+        private val OBJECT_IDENTITY_FIELDS = setOf("objectIdentities", "nextObjectGeneration")
     }
 }

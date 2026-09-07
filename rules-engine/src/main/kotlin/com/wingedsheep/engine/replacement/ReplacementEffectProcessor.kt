@@ -237,7 +237,15 @@ class ReplacementEffectProcessor {
             }
             else -> EffectContext(
                 controllerId = event.affectedPlayerId,
-                sourceId = gathered.sourceEntityId(state)
+                sourceId = gathered.sourceEntityId(state),
+                objectReferences = com.wingedsheep.engine.handlers.ObjectReferenceEnvironment(captured = true,
+                    origin = gathered.sourceEntityId(state)?.let(state::objectRef),
+                    source = gathered.sourceEntityId(state)?.let(state::objectRef),
+                    // One application per (effect identity, source object): `alreadyApplied`
+                    // stops the same identity applying twice to one event, so this is unique
+                    // without a random token — and reproduces on re-execution.
+                    resolutionKey = "replacement:${gathered.identity}:" +
+                        "${gathered.sourceEntityId(state)?.let(state::objectRef)?.generation}")
             )
         }
 

@@ -88,7 +88,8 @@ class ChangeTargetExecutor : EffectExecutor<ChangeTargetEffect> {
         val sourceName = context.sourceId?.let { state.getEntity(it)?.get<CardComponent>()?.name }
         val continuation = ChangeSpellTargetContinuation(
             spellEntityId = targetSpell.spellEntityId,
-            sourceId = context.sourceId
+            sourceId = context.sourceId,
+            objectReferences = context.objectReferences
         )
 
         val decisionResult = decisionHandler.createCardSelectionDecision(
@@ -103,9 +104,6 @@ class ChangeTargetExecutor : EffectExecutor<ChangeTargetEffect> {
             useTargetingUI = true,
             answer = continuation
         )
-
-        // 5. Push continuation (reuse ChangeSpellTargetContinuation)
-
 
         return EffectResult.propagatePause(
             decisionResult.state,
