@@ -507,7 +507,9 @@ and performs the shared cleanup exactly once after those effects finish. It remo
 spell, preserving any other spells cast during resolution above it, and then applies the ordinary
 resolution destination rules. The finalizer checks the original reference directly: if an effect
 already moved the spell, it cannot move a later visit of that card. This finalization identity is
-separate from the effect context's permission to follow its own moves.
+separate from the effect context's permission to follow its own moves. Triggers detected between
+nested choices are deferred beneath this finalizer, even when the finalizer is unchanged by the
+latest response. Their placement and target choices happen after the spell leaves the stack.
 
 Insertion is a movement/creation operation, not a reconstruction API. An already-present destination
 member is idempotent; insertion while still present in its origin is rejected. Pure permutations
