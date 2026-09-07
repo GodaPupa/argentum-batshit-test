@@ -2,7 +2,7 @@
 
 **Set Size:** 291 cards
 **Release Date:** October 7, 2005
-**Implemented:** 263 / 291
+**Implemented:** 265 / 291
 | Section    | Total | Done |
 |------------|-------|------|
 | White      | 37    | 33   |
@@ -228,7 +228,7 @@
 - [x] Centaur Safeguard
 - [ ] Chorus of the Conclave
 - [ ] Circu, Dimir Lobotomist
-- [ ] Clutch of the Undercity
+- [x] Clutch of the Undercity
 - [x] Congregation at Dawn
 - [x] Consult the Necrosages
 - [x] Dark Heart of the Wood
@@ -254,7 +254,7 @@
 - [ ] Master Warcraft
 - [ ] Mindleech Mass
 - [x] Moroii
-- [ ] Perplex
+- [x] Perplex
 - [x] Phytohydra
 - [x] Pollenbright Wings
 - [x] Privileged Position

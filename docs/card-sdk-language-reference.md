@@ -891,6 +891,12 @@ preview — in the turn-face-up handler.)
   (CR 119.4). "...unless you pay 3 life."
 - `Costs.pay.Discard(filter = Any, count = 1, random = false)` — discard cards matching `filter`.
   Random variant prompts a yes/no and the engine picks the discards (Pillaging Horde).
+- `Costs.pay.DiscardHand` — discard your **entire** hand. Nothing is selected (every card goes), so
+  it prompts a yes/no, and it is **always affordable**: an empty hand discards nothing, and a cost
+  of nothing is a cost you can pay (CR 118.3). "Counter target spell unless its controller discards
+  their hand" (Perplex) is `PayOrSufferEffect(cost = Costs.pay.DiscardHand, suffer =
+  Effects.CounterSpell(), player = EffectTarget.TargetController)`. The shared-vocabulary twin of
+  `Costs.DiscardHand`, the activated-ability spelling of the same payable thing.
 - `Costs.pay.Sacrifice(filter = Any, count = 1)` — sacrifice permanents you control matching
   `filter`. **The source is included when it matches** — "sacrifice it unless you sacrifice an
   artifact" on an artifact creature may name that creature. "...unless you sacrifice three Forests"
