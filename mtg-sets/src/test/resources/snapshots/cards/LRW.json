@@ -2190,6 +2190,100 @@
     ]
 }
 
+// Captivating Glance
+{
+    "name": "Captivating Glance",
+    "manaCost": "{2}{U}",
+    "typeLine": "Enchantment — Aura",
+    "oracleText": "Enchant creature\nAt the beginning of your end step, clash with an opponent. If you win, gain control of enchanted creature. Otherwise, that player gains control of enchanted creature. (Each clashing player reveals the top card of their library, then puts that card on their choice of the top or bottom. A player wins if their card had a greater mana value.)",
+    "script": {
+        "triggeredAbilities": [
+            {
+                "id": "ability_1",
+                "trigger": {
+                    "type": "StepEvent",
+                    "step": "END"
+                },
+                "binding": "ANY",
+                "effect": {
+                    "type": "Gated",
+                    "gate": {
+                        "type": "Gate.DoAction",
+                        "action": {
+                            "type": "Composite",
+                            "effects": [
+                                {
+                                    "type": "ChooseOpponentForSource",
+                                    "prompt": "Choose an opponent to clash with"
+                                },
+                                "Clash"
+                            ]
+                        },
+                        "successCriterion": {
+                            "type": "SuccessCriterion.CollectionNonEmpty",
+                            "name": "clashWon"
+                        }
+                    },
+                    "then": {
+                        "type": "GainControl",
+                        "target": "EnchantedCreature"
+                    },
+                    "otherwise": {
+                        "type": "GiveControlToTargetPlayer",
+                        "newController": {
+                            "type": "PlayerRef",
+                            "player": "ChosenOpponent"
+                        }
+                    },
+                    "descriptionOverride": "Clash with an opponent. If you win, gain control of enchanted creature. Otherwise, target opponent gains control of enchanted creature"
+                },
+                "descriptionOverride": "clash with an opponent. If you win, gain control of enchanted creature. Otherwise, that player gains control of enchanted creature."
+            }
+        ],
+        "auraTarget": {
+            "type": "TargetObject",
+            "filter": {
+                "baseFilter": "creature"
+            }
+        }
+    },
+    "metadata": {
+        "collectorNumber": "55",
+        "rarity": "UNCOMMON",
+        "artist": "Dan Dos Santos",
+        "imageUri": "https://cards.scryfall.io/normal/front/6/4/642be353-a46a-4d14-a35a-7716fd552870.jpg?1783942904",
+        "rulings": [
+            {
+                "date": "2007-10-01",
+                "text": "The ability triggers at the end of Captivating Glance's controller's turn. \"You\" refers to the controller of Captivating Glance, not the controller of the enchanted creature."
+            },
+            {
+                "date": "2007-10-01",
+                "text": "The opponent you clash with doesn't have to be the controller of the enchanted creature."
+            },
+            {
+                "date": "2007-10-01",
+                "text": "If you win the clash, you gain control of the enchanted creature. If you don't win the clash, the other player gains control of the enchanted creature (even if that player didn't win the clash either)."
+            },
+            {
+                "date": "2007-10-01",
+                "text": "Captivating Glance's controller never changes as a result of this card."
+            },
+            {
+                "date": "2007-10-01",
+                "text": "Captivating Glance may cause a player to gain control of a creature they already control. This layers a new control effect on that creature, but doing so rarely has any visible effect."
+            },
+            {
+                "date": "2007-10-01",
+                "text": "Captivating Glance's control-change effect continues to apply even if Captivating Glance leaves the battlefield."
+            }
+        ]
+    },
+    "colorIdentityOverride": [
+        "BLUE"
+    ]
+}
+
 // Caterwauling Boggart
 {
     "name": "Caterwauling Boggart",
@@ -5242,6 +5336,72 @@
     },
     "colorIdentityOverride": [
         "BLUE"
+    ]
+}
+
+// Gaddock Teeg
+{
+    "name": "Gaddock Teeg",
+    "manaCost": "{G}{W}",
+    "typeLine": "Legendary Creature — Kithkin Advisor",
+    "oracleText": "Noncreature spells with mana value 4 or greater can't be cast.\nNoncreature spells with {X} in their mana costs can't be cast.",
+    "creatureStats": {
+        "power": 2,
+        "toughness": 2
+    },
+    "script": {
+        "staticAbilities": [
+            {
+                "type": "PlayersCantCastSpells",
+                "affected": "Each",
+                "spellFilter": {
+                    "cardPredicates": [
+                        {
+                            "type": "Not",
+                            "predicate": "IsCreature"
+                        },
+                        {
+                            "type": "ManaValueAtLeast",
+                            "min": 4
+                        }
+                    ]
+                }
+            },
+            {
+                "type": "PlayersCantCastSpells",
+                "affected": "Each",
+                "spellFilter": {
+                    "cardPredicates": [
+                        {
+                            "type": "Not",
+                            "predicate": "IsCreature"
+                        },
+                        "HasXInManaCost"
+                    ]
+                }
+            }
+        ]
+    },
+    "metadata": {
+        "collectorNumber": "248",
+        "rarity": "RARE",
+        "artist": "Greg Staples",
+        "flavorText": "So great is his wisdom and spirit that many who have met him say that they stood before a giant of a man and talked to the wisest of the four winds.",
+        "imageUri": "https://cards.scryfall.io/normal/front/3/2/32c16e1b-f4ce-409f-928a-42c666adac9d.jpg?1783942856",
+        "rulings": [
+            {
+                "date": "2018-12-07",
+                "text": "A spell's mana value is determined only by its mana cost. Alternative costs (including casting a spell \"without paying its mana cost\"), additional costs, and cost reductions don't affect a spell's mana value."
+            },
+            {
+                "date": "2007-10-01",
+                "text": "If one half of a split card has a mana value of 3 or less and doesn't have an {X} in its mana cost, Gaddock Teeg lets you cast that half."
+            }
+        ]
+    },
+    "colorIdentityOverride": [
+        "GREEN",
+        "WHITE"
     ]
 }
 

@@ -2,7 +2,7 @@
 
 **Set Size:** 286 cards
 **Release Date:** October 12, 2007
-**Implemented:** 259 / 286
+**Implemented:** 261 / 286
 | Section    | Total | Done |
 |------------|-------|------|
 | White      | 49    | 43   |
@@ -75,7 +75,7 @@
 - [x] Aquitect's Will
 - [x] Benthicore
 - [x] Broken Ambitions
-- [ ] Captivating Glance
+- [x] Captivating Glance
 - [x] Cryptic Command
 - [x] Deeptread Merrow
 - [x] Drowner of Secrets
@@ -276,7 +276,7 @@
 ### Multicolor
 - [x] Brion Stoutarm
 - [x] Doran, the Siege Tower
-- [ ] Gaddock Teeg
+- [x] Gaddock Teeg
 - [x] Horde of Notions
 - [x] Nath of the Gilt-Leaf
 - [x] Sygg, River Guide
