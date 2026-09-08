@@ -8867,6 +8867,102 @@
     ]
 }
 
+// Mindleech Mass
+{
+    "name": "Mindleech Mass",
+    "manaCost": "{5}{U}{B}{B}",
+    "typeLine": "Creature — Horror",
+    "oracleText": "Trample\nWhenever this creature deals combat damage to a player, you may look at that player's hand. If you do, you may cast a spell from among those cards without paying its mana cost.",
+    "creatureStats": {
+        "power": 6,
+        "toughness": 6
+    },
+    "keywords": [
+        "TRAMPLE"
+    ],
+    "script": {
+        "triggeredAbilities": [
+            {
+                "id": "ability_1",
+                "trigger": {
+                    "type": "DealsDamageEvent",
+                    "damageType": "DamageCombat",
+                    "recipient": "AnyPlayer"
+                },
+                "effect": {
+                    "type": "Gated",
+                    "gate": "Gate.MayDecide",
+                    "then": {
+                        "type": "Composite",
+                        "effects": [
+                            {
+                                "type": "LookAtTargetHand",
+                                "target": {
+                                    "type": "PlayerRef",
+                                    "player": "TriggeringPlayer"
+                                }
+                            },
+                            {
+                                "type": "GatherCards",
+                                "source": {
+                                    "type": "FromZone",
+                                    "zone": "Hand",
+                                    "player": "TriggeringPlayer"
+                                },
+                                "storeAs": "opponentsHand"
+                            },
+                            {
+                                "type": "SelectFromCollection",
+                                "from": "opponentsHand",
+                                "selection": {
+                                    "type": "ChooseUpTo",
+                                    "count": {
+                                        "type": "Fixed",
+                                        "amount": 1
+                                    }
+                                },
+                                "filter": "nonland",
+                                "storeSelected": "spellToCast",
+                                "prompt": "You may cast a nonland card without paying its mana cost",
+                                "selectedLabel": "Cast for free",
+                                "showAllCards": true
+                            },
+                            {
+                                "type": "CastFromCollectionWithoutPayingCost",
+                                "from": "spellToCast"
+                            }
+                        ]
+                    }
+                }
+            }
+        ]
+    },
+    "metadata": {
+        "collectorNumber": "215",
+        "rarity": "RARE",
+        "artist": "Kev Walker",
+        "imageUri": "https://cards.scryfall.io/normal/front/7/c/7cd1ace7-d4fe-4f96-9434-7ab1442bf36f.jpg?1783943617",
+        "rulings": [
+            {
+                "date": "2024-01-12",
+                "text": "If you cast a permanent spell this way, it will enter the battlefield under your control when it resolves. If you cast an instant or sorcery spell this way, that card will be put into its owner's graveyard when it resolves."
+            },
+            {
+                "date": "2024-01-12",
+                "text": "The spell you cast via the triggered ability is cast as part of the resolution of that ability. Timing restrictions based on the card's type are ignored. Other restrictions, such as \"Cast [this spell] only during an opponent's turn,\" are not."
+            },
+            {
+                "date": "2024-01-12",
+                "text": "If you cast a spell without paying its mana cost, you can't choose to cast it for any alternative costs, such as overload costs. You can pay additional costs, such as kicker costs. If the spell has any mandatory additional costs, you must pay those."
+            }
+        ]
+    },
+    "colorIdentityOverride": [
+        "BLUE",
+        "BLACK"
+    ]
+}
+
 // Mindmoil
 {
     "name": "Mindmoil",

@@ -2,7 +2,7 @@
 
 **Set Size:** 291 cards
 **Release Date:** October 7, 2005
-**Implemented:** 271 / 291
+**Implemented:** 272 / 291
 | Section    | Total | Done |
 |------------|-------|------|
 | White      | 37    | 33   |
@@ -10,7 +10,7 @@
 | Black      | 37    | 35   |
 | Red        | 39    | 38   |
 | Green      | 37    | 37   |
-| Multicolor | 64    | 56   |
+| Multicolor | 64    | 57   |
 | Artifact   | 21    | 17   |
 | Land       | 17    | 17   |
 
@@ -252,7 +252,7 @@
 - [x] Loxodon Hierarch
 - [x] Lurking Informant
 - [ ] Master Warcraft
-- [ ] Mindleech Mass
+- [x] Mindleech Mass
 - [x] Moroii
 - [x] Perplex
 - [x] Phytohydra
