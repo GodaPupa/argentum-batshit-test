@@ -2583,6 +2583,156 @@
     ]
 }
 
+// Chandra Nalaar
+{
+    "name": "Chandra Nalaar",
+    "manaCost": "{3}{R}{R}",
+    "typeLine": "Legendary Planeswalker — Chandra",
+    "oracleText": "+1: Chandra Nalaar deals 1 damage to target player or planeswalker.\n−X: Chandra Nalaar deals X damage to target creature.\n−8: Chandra Nalaar deals 10 damage to target player or planeswalker and each creature that player or that planeswalker's controller controls.",
+    "script": {
+        "activatedAbilities": [
+            {
+                "id": "ability_1",
+                "cost": {
+                    "type": "CostLoyalty",
+                    "change": 1
+                },
+                "effect": {
+                    "type": "DealDamage",
+                    "amount": {
+                        "type": "Fixed",
+                        "amount": 1
+                    },
+                    "target": {
+                        "type": "BoundVariable",
+                        "name": "target player or planeswalker"
+                    }
+                },
+                "targetRequirements": [
+                    {
+                        "type": "TargetPlayerOrPlaneswalker",
+                        "id": "target player or planeswalker"
+                    }
+                ],
+                "timing": "SorcerySpeed",
+                "isPlaneswalkerAbility": true
+            },
+            {
+                "id": "ability_2",
+                "cost": "CostLoyaltyX",
+                "effect": {
+                    "type": "DealDamage",
+                    "amount": "XValue",
+                    "target": {
+                        "type": "BoundVariable",
+                        "name": "target creature"
+                    }
+                },
+                "targetRequirements": [
+                    {
+                        "type": "TargetObject",
+                        "filter": {
+                            "baseFilter": "creature"
+                        },
+                        "id": "target creature"
+                    }
+                ],
+                "timing": "SorcerySpeed",
+                "isPlaneswalkerAbility": true
+            },
+            {
+                "id": "ability_3",
+                "cost": {
+                    "type": "CostLoyalty",
+                    "change": -8
+                },
+                "effect": {
+                    "type": "Composite",
+                    "effects": [
+                        {
+                            "type": "DealDamage",
+                            "amount": {
+                                "type": "Fixed",
+                                "amount": 10
+                            },
+                            "target": {
+                                "type": "BoundVariable",
+                                "name": "target player or planeswalker"
+                            }
+                        },
+                        {
+                            "type": "ForEach",
+                            "space": {
+                                "type": "IterationSpace.Group",
+                                "filter": {
+                                    "baseFilter": {
+                                        "anyOf": [
+                                            {
+                                                "cardPredicates": [
+                                                    "IsCreature"
+                                                ],
+                                                "controllerPredicate": {
+                                                    "type": "ControlledByReferencedPlayer",
+                                                    "target": {
+                                                        "type": "BoundVariable",
+                                                        "name": "target player or planeswalker"
+                                                    }
+                                                }
+                                            },
+                                            {
+                                                "cardPredicates": [
+                                                    "IsCreature"
+                                                ],
+                                                "controllerPredicate": {
+                                                    "type": "ControlledByReferencedPlayer",
+                                                    "target": "TargetController"
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "excludeTarget": true
+                                }
+                            },
+                            "body": {
+                                "type": "DealDamage",
+                                "amount": {
+                                    "type": "Fixed",
+                                    "amount": 10
+                                },
+                                "target": "Self"
+                            }
+                        }
+                    ]
+                },
+                "targetRequirements": [
+                    {
+                        "type": "TargetPlayerOrPlaneswalker",
+                        "id": "target player or planeswalker"
+                    }
+                ],
+                "timing": "SorcerySpeed",
+                "isPlaneswalkerAbility": true
+            }
+        ]
+    },
+    "metadata": {
+        "collectorNumber": "159",
+        "rarity": "RARE",
+        "artist": "Aleksi Briclot",
+        "imageUri": "https://cards.scryfall.io/normal/front/3/1/317e7ab7-7639-4877-aae2-3746563f2ec9.jpg?1783942878",
+        "rulings": [
+            {
+                "date": "2007-10-01",
+                "text": "To activate the second ability, you choose a value of X equal to or less than the number of loyalty counters on Chandra Nalaar. You may choose 0. You can’t choose a negative number."
+            }
+        ]
+    },
+    "startingLoyalty": 6,
+    "colorIdentityOverride": [
+        "RED"
+    ]
+}
+
 // Changeling Berserker
 {
     "name": "Changeling Berserker",
