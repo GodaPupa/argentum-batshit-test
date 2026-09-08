@@ -40,10 +40,12 @@ jobs:
         run: ./gradlew classes --stacktrace
 
       - name: Update card snapshots
-        run: ./gradlew :mtg-sets:test --tests "*CardDefinitionSnapshotTest" -DupdateSnapshots=true
+        env:
+          UPDATE_SNAPSHOTS: "1"
+        run: ./gradlew :mtg-sets:cleanTest :mtg-sets:test --tests "*CardDefinitionSnapshotTest"
 
       - name: Show snapshot changes
-        run: git diff -- mtg-sets
+        run: git diff -- mtg-sets/src/test/resources/snapshots/cards/
 
       - name: Commit updated snapshots
         run: |
