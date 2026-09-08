@@ -2,7 +2,7 @@
 
 **Set Size:** 286 cards
 **Release Date:** October 12, 2007
-**Implemented:** 277 / 286
+**Implemented:** 278 / 286
 | Section    | Total | Done |
 |------------|-------|------|
 | White      | 49    | 43   |
@@ -129,7 +129,7 @@
 - [x] Boggart Mob
 - [ ] Cairn Wanderer
 - [x] Colfenor's Plans
-- [ ] Dread
+- [x] Dread
 - [x] Dreamspoiler Witches
 - [x] Exiled Boggart
 - [x] Eyeblight's Ending
