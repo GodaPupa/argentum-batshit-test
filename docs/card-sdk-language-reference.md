@@ -8483,6 +8483,12 @@ copy of it (CR 707.10e). The activated-ability analogue of the spell-level `cant
 - `loyaltyAbility(+N) { ... }` — add loyalty + effect.
 - `loyaltyAbility(-N) { ... }` — remove loyalty + effect.
 - `loyaltyAbility(0) { ... }` — 0-loyalty ability.
+- `loyaltyAbilityX { ... }` — a −X loyalty cost (`AbilityCost.LoyaltyX`). The player chooses
+  X from zero through the source's current loyalty when activating; payment removes that many
+  loyalty counters and the effect reads the locked-in choice with `DynamicAmount.XValue`.
+  Uses the ordinary server X picker and the same sorcery-speed / per-turn loyalty restrictions
+  as fixed costs. Spending all loyalty is legal; the ability still resolves after its source leaves.
+  The client ability menu receives `loyaltyX = true` and renders −X. Chandra Nalaar uses this shape.
 
 ---
 

@@ -2,7 +2,7 @@
 
 **Set Size:** 286 cards
 **Release Date:** October 12, 2007
-**Implemented:** 278 / 286
+**Implemented:** 279 / 286
 | Section    | Total | Done |
 |------------|-------|------|
 | White      | 49    | 43   |
@@ -183,7 +183,7 @@
 - [x] Boggart Sprite-Chaser
 - [x] Caterwauling Boggart
 - [x] Ceaseless Searblades
-- [ ] Chandra Nalaar
+- [x] Chandra Nalaar
 - [x] Changeling Berserker
 - [x] Consuming Bonfire
 - [x] Crush Underfoot
