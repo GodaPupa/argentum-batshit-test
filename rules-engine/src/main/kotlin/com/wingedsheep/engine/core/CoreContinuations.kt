@@ -352,6 +352,30 @@ data class MayTriggerContinuation(
 ) : AnswerContinuation
 
 /**
+ * Resume a triggered ability after its controller picks *which* opponent chooses its
+ * "… of an opponent's choice" target (Mausoleum Turnkey: "return target creature card of an
+ * opponent's choice from your graveyard to your hand").
+ *
+ * The multiplayer-only half of the flow: with a single opponent `TriggerProcessor` pins the decider
+ * outright and never raises this frame, exactly as `ActivateAbilityHandler` does for the activated
+ * twin ([ActivateAbilityOpponentChooserContinuation]). The resumer pins the chosen opponent onto
+ * the trigger and re-enters target selection, so the target decision itself is raised by the one
+ * ordinary code path.
+ *
+ * @property trigger The pending trigger, still unpinned.
+ * @property targetRequirement The trigger's primary target requirement, as `processTargetedTrigger`
+ *   takes it.
+ * @property opponentIds The opponents offered, in the order their names were listed — the response
+ *   is an index into this list.
+ */
+@Serializable
+data class TriggerOpponentChooserContinuation(
+    val trigger: PendingTrigger,
+    val targetRequirement: TargetRequirement,
+    val opponentIds: List<EntityId>
+) : AnswerContinuation
+
+/**
  * Resume after the controller answers a [com.wingedsheep.engine.core.BatchYesNoDecision] raised on
  * behalf of a run of structurally identical optional ("you may … target …") triggers.
  *
