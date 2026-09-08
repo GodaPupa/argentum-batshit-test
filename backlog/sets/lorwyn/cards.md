@@ -2,7 +2,7 @@
 
 **Set Size:** 286 cards
 **Release Date:** October 12, 2007
-**Implemented:** 266 / 286
+**Implemented:** 268 / 286
 | Section    | Total | Done |
 |------------|-------|------|
 | White      | 49    | 43   |
@@ -31,7 +31,7 @@
 - [x] Cloudgoat Ranger
 - [x] Crib Swap
 - [x] Dawnfluke
-- [ ] Entangling Trap
+- [x] Entangling Trap
 - [x] Favor of the Mighty
 - [x] Galepowder Mage
 - [x] Goldmeadow Dodger
@@ -212,7 +212,7 @@
 - [x] Mudbutton Torchrunner
 - [ ] Needle Drop
 - [ ] Nova Chaser
-- [ ] Rebellion of the Flamekin
+- [x] Rebellion of the Flamekin
 - [x] Smokebraider
 - [x] Soulbright Flamekin
 - [x] Stinkdrinker Daredevil

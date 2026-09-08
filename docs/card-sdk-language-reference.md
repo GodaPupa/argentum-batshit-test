@@ -6101,6 +6101,21 @@ Triggers.youCastSpell(
   stack at all. You can win — and be paid for — a clash an opponent initiated. A card whose payoff
   merely *differs* on a win ("… If you won, …" — Entangling Trap) uses `WheneverYouClash` and
   branches inside its effect instead.
+- `Conditions.YouWonTheClash` — the **"if you won"** rider *inside* such an effect (CR 701.30d).
+  True when the clash that fired this trigger was won by the ability's controller; false on a tie,
+  on revealing nothing from an empty library, and for any trigger a clash did not fire. The clash
+  is over by the time the ability resolves, so the outcome travels as trigger context
+  (`ClashedEvent.won` → `TriggerContext.clashWon`) rather than in a pipeline collection — which is
+  also why it survives a mid-resolution pause such as Rebellion of the Flamekin's `Gate.MayPay`.
+  Resolution-only: false under projection.
+
+  Three spellings of "if you win", one per shape — pick by *what* is conditional:
+
+  | Wording | Spelling |
+  |---|---|
+  | "Clash with an opponent. If you win, …" (the card clashes) | `Patterns.Mechanic.clash(ifYouWin, otherwise?)` — reads the `clashWon` pipeline collection |
+  | "Whenever you clash **and win**, …" (whole ability) | `Triggers.WheneverYouClashAndWin` — nothing goes on the stack on a loss |
+  | "Whenever you clash, X. **If you won**, Y." (part of the effect) | `Triggers.WheneverYouClash` + `ConditionalEffect(Conditions.YouWonTheClash, …)` |
 
 ### Scry / Surveil
 
@@ -9823,6 +9838,14 @@ answer it and would silently return `false`.
   they came back as, so the guard fails and the loop stops. Reads
   `TriggerContext.lastKnownCardTypes`, populated from the `ZoneChangeEvent`'s
   `EntitySnapshot.typeLine`.
+- `YouWonTheClash` — the "if you won" rider inside a `Triggers.WheneverYouClash` effect (CR 701.30d).
+  True when the clash that fired this trigger was won by the ability's controller; false on a tie,
+  on revealing nothing from an empty library, and on any trigger a clash did not fire.
+  Resolution-only. Reads `TriggerContext.clashWon`, populated from `ClashedEvent.won` — the clash
+  has already ended when the ability resolves, so there is no pipeline collection to read and the
+  outcome has to travel on the trigger. Entangling Trap ("tap target creature an opponent controls.
+  If you won, that creature doesn't untap …") and Rebellion of the Flamekin. See
+  [Clash](#clash) for which of the three "if you win" spellings a given wording wants.
 - `TargetControlsCreature(target)` — target player has a creature.
 - `TargetControlsLand(target)` — target player has a land.
 - `TargetMatchesFilter(filter, targetIndex = 0)` — the context target matches a `GameObjectFilter`.

@@ -35,7 +35,9 @@ internal fun BridgeBuilder.triggersCostsAndContinuous() {
     // Clash (CR 701.30) — "Whenever you clash" / "Whenever you clash and win"
     // (Triggers.WheneverYouClash / WheneverYouClashAndWin over EventPattern.ClashedEvent). The engine
     // emits one ClashedEvent per *participant*, so both tags resolve for a clash an opponent started,
-    // which is what the Entangling Trap / Sylvan Echoes rulings require.
+    // which is what the Entangling Trap / Sylvan Echoes rulings require. The third spelling — the
+    // "…, If you won, …" rider *inside* a WhenAPlayerClashes effect — is the `Trigger_WonTheClash`
+    // condition, registered next to the Clash effect rows in ZoneMovement.kt.
     supported("WhenAPlayerClashes", "trigger: a player clashes (Triggers.WheneverYouClash)")
     supported("WhenAPlayerClashesAndWins", "trigger: a player clashes and wins (Triggers.WheneverYouClashAndWin)")
     supported("WhenACreatureAttacks", "trigger: attacks")
