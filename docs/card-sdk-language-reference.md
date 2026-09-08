@@ -5125,6 +5125,13 @@ abilities that should do nothing, a "while" filed as an "if" fizzles abilities t
 so `InterveningIfClassificationTest` re-derives the reading from each card's own Oracle text and
 fails the build on a mismatch, over the population where the pairing is unambiguous.
 
+A self-bound `EventPattern.ZoneChangeEvent(to = Zone.GRAVEYARD)` with
+`triggerZone = Zone.GRAVEYARD` models "put into a graveyard from anywhere" (Dread).
+It checks the card after the move, including a battlefield departure that restores abilities
+removed by Lignify. Explicit `from = Zone.BATTLEFIELD` triggers still use the departure snapshot.
+For "shuffle it into its owner's library", compose a graveyard-gated `Effects.Move` to the library
+with `ShuffleLibraryEffect()` so the owner still shuffles if the card has left the graveyard.
+
 **`triggerZones` — which zones the trigger condition functions in (CR 113.6b).** Defaults to
 `setOf(Zone.BATTLEFIELD)`, which CR 113.6 makes the rule for a permanent card's abilities. It is a
 *set* because CR 113.6k lets one ability function from several zones at once. `triggerZone` is the
