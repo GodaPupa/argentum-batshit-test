@@ -11060,6 +11060,13 @@ something other than the source.
   (`ManaCost.coloredSymbolCount`), so they agree symbol-for-symbol and differ only in scope.
   Being `Triggering`-scoped, it is rejected by `SetBaseStatsEffect(reevaluateContinuously = true)`
   like every other context-scoped amount; read off `EntityReference.Source` it is projector-safe.
+- `DynamicAmount.EntityProperty(entity, EntityNumericProperty.DamageDealtThisTurn)` — actual damage
+  dealt by a battlefield permanent or resolving spell this turn, including combat and noncombat
+  damage to any recipient. The tally is bound to the source’s object identity. Prevention
+  and damage replacement effects modify the tally; damage replaced entirely with counters contributes
+  zero. Turn changes make the value read zero and zone changes clear it. For “damage dealt this way”,
+  store the value before the damage and subtract it afterward (Brightflame). The stored baseline and
+  damage history survive resolution decisions, including optional damage redirection.
 - `EntityProperty(entity, EntityNumericProperty.ExcessMarkedDamage)` — the excess damage (CR 120.4a)
   marked on a creature: `max(0, marked − toughness)`, read from post-damage state. Amount-valued twin of
   the `TargetMarkedDamageExceedsToughness` condition. Read it AFTER a deal-damage step in the same

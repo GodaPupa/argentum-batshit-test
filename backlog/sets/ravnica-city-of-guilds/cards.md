@@ -2,7 +2,7 @@
 
 **Set Size:** 291 cards
 **Release Date:** October 7, 2005
-**Implemented:** 272 / 291
+**Implemented:** 273 / 291
 | Section    | Total | Done |
 |------------|-------|------|
 | White      | 37    | 33   |
@@ -224,7 +224,7 @@
 - [x] Boros Guildmage
 - [x] Boros Recruit
 - [x] Boros Swiftblade
-- [ ] Brightflame
+- [x] Brightflame
 - [x] Centaur Safeguard
 - [ ] Chorus of the Conclave
 - [x] Circu, Dimir Lobotomist

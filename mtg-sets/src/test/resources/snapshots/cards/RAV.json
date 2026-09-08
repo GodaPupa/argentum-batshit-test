@@ -1410,6 +1410,128 @@
     ]
 }
 
+// Brightflame
+{
+    "name": "Brightflame",
+    "manaCost": "{X}{R}{R}{W}{W}",
+    "typeLine": "Sorcery",
+    "oracleText": "Radiance — Brightflame deals X damage to target creature and each other creature that shares a color with it. You gain life equal to the damage dealt this way.",
+    "script": {
+        "spellEffect": {
+            "type": "Composite",
+            "effects": [
+                {
+                    "type": "StoreNumber",
+                    "name": "number0",
+                    "amount": {
+                        "type": "EntityProperty",
+                        "entity": "Source",
+                        "numericProperty": "DamageDealtThisTurn"
+                    }
+                },
+                {
+                    "type": "GatherCards",
+                    "source": {
+                        "type": "BattlefieldMatching",
+                        "filter": {
+                            "cardPredicates": [
+                                "IsCreature",
+                                {
+                                    "type": "SharesColorWith",
+                                    "entity": "Target"
+                                }
+                            ]
+                        },
+                        "excludeChosenTargets": true
+                    },
+                    "storeAs": "gathered1"
+                },
+                {
+                    "type": "DealDamage",
+                    "amount": "XValue",
+                    "target": {
+                        "type": "BoundVariable",
+                        "name": "target creature"
+                    }
+                },
+                {
+                    "type": "ForEach",
+                    "space": {
+                        "type": "IterationSpace.Collection",
+                        "collection": "gathered1"
+                    },
+                    "body": {
+                        "type": "DealDamage",
+                        "amount": "XValue",
+                        "target": "Self"
+                    }
+                },
+                {
+                    "type": "GainLife",
+                    "amount": {
+                        "type": "Subtract",
+                        "left": {
+                            "type": "EntityProperty",
+                            "entity": "Source",
+                            "numericProperty": "DamageDealtThisTurn"
+                        },
+                        "right": {
+                            "type": "VariableReference",
+                            "variableName": "number0"
+                        }
+                    }
+                }
+            ]
+        },
+        "targetRequirements": [
+            {
+                "type": "TargetObject",
+                "filter": {
+                    "baseFilter": "creature"
+                },
+                "id": "target creature"
+            }
+        ]
+    },
+    "metadata": {
+        "collectorNumber": "194",
+        "rarity": "RARE",
+        "artist": "Dave Dorman",
+        "flavorText": "\"Let the pyres of the unbelievers light our way.\"\n—Razia",
+        "imageUri": "https://cards.scryfall.io/normal/front/9/a/9a3acf27-5d07-48e6-8e19-a2e6d4cd49d1.jpg?1783943626",
+        "rulings": [
+            {
+                "date": "2005-10-01",
+                "text": "You gain life equal to the total damage dealt by Brightflame to all creatures. You don’t gain life for any damage that was prevented."
+            },
+            {
+                "date": "2005-10-01",
+                "text": "All creatures that share a color are affected, even your own."
+            },
+            {
+                "date": "2005-10-01",
+                "text": "A creature “shares a color” with any creature that is at least one of its colors. For example, a green-white creature shares a color with creatures that are green, white, green-white, red-white, black-green, and so on."
+            },
+            {
+                "date": "2005-10-01",
+                "text": "If it targets a colorless creature, it doesn’t affect any other creatures. A colorless creature shares a color with nothing, not even other colorless creatures."
+            },
+            {
+                "date": "2005-10-01",
+                "text": "You check which creatures share a color with the target when the spell resolves."
+            },
+            {
+                "date": "2005-10-01",
+                "text": "Only one creature is targeted. If that creature leaves the battlefield or otherwise becomes an illegal target, the entire spell doesn’t resolve. No other creatures are affected."
+            }
+        ]
+    },
+    "colorIdentityOverride": [
+        "RED",
+        "WHITE"
+    ]
+}
+
 // Caregiver
 {
     "name": "Caregiver",
