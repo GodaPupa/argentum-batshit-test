@@ -78,6 +78,10 @@ data class TriggeredAbilityContinuation(
     val enchantedCreatureLastKnownPower: Int? = null,
     /** Cards looked at by the scry that fired this trigger (CR 701.22). Null for non-scry triggers. */
     val triggerScryCount: Int? = null,
+    /** Whether this trigger's controller won the clash that fired it (CR 701.30d). Read via
+     *  `Conditions.YouWonTheClash` (Rebellion of the Flamekin, whose {1} gate pauses first). Null
+     *  for non-clash triggers. */
+    val triggerClashWon: Boolean? = null,
     /** Cards discarded in the batch that fired this trigger (CR 603.2c). Read via
      *  `ContextPropertyKey.TRIGGER_DISCARD_COUNT` (Magmakin Artillerist). Null for non-discard triggers. */
     val triggerDiscardCount: Int? = null,
