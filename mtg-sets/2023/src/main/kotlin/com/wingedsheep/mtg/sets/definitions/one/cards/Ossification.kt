@@ -1,5 +1,6 @@
 package com.wingedsheep.mtg.sets.definitions.one.cards
 
+import com.wingedsheep.sdk.core.Zone
 import com.wingedsheep.sdk.dsl.Effects
 import com.wingedsheep.sdk.dsl.Triggers
 import com.wingedsheep.sdk.dsl.card
@@ -19,10 +20,6 @@ import com.wingedsheep.sdk.scripting.targets.TargetPermanent
  * Enchants a *basic* land specifically — [GameObjectFilter.BasicLand] is the supertype check, not
  * `LandWithBasicLandType`, so a shockland or Dryad Arbor is not a legal host.
  *
- * The single printed line is modelled the way [ExileUntilLeaves] pairs are modelled everywhere else
- * (Sheltered by Ghosts, Oblivion Ring): the ETB exile plus a linked leaves-trigger return. That
- * ordering is what the 2023-02-04 ruling describes — if the Aura is gone before the trigger resolves,
- * nothing is exiled.
  */
 val Ossification = card("Ossification") {
     manaCost = "{1}{W}"
@@ -39,12 +36,7 @@ val Ossification = card("Ossification") {
             "creature or planeswalker an opponent controls",
             TargetPermanent(filter = TargetFilter(GameObjectFilter.CreatureOrPlaneswalker.opponentControls())),
         )
-        effect = Effects.ExileUntilLeaves(victim)
-    }
-
-    triggeredAbility {
-        trigger = Triggers.LeavesBattlefield
-        effect = Effects.ReturnLinkedExileUnderOwnersControl()
+        effect = Effects.MoveUntilSourceLeaves(victim, Zone.EXILE)
     }
 
     metadata {
