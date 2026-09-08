@@ -147,6 +147,75 @@
     ]
 }
 
+// Shambling Ghast
+{
+    "name": "Shambling Ghast",
+    "manaCost": "{B}",
+    "typeLine": "Creature — Zombie",
+    "oracleText": "When this creature dies, choose one —\n• Brave the Stench — Target creature an opponent controls gets -1/-1 until end of turn.\n• Search the Body — Create a Treasure token.",
+    "creatureStats": {
+        "power": 1,
+        "toughness": 1
+    },
+    "script": {
+        "triggeredAbilities": [
+            {
+                "id": "ability_1",
+                "trigger": {
+                    "type": "ZoneChangeEvent",
+                    "from": "Battlefield",
+                    "to": "Graveyard"
+                },
+                "effect": {
+                    "type": "Modal",
+                    "modes": [
+                        {
+                            "effect": {
+                                "type": "ModifyStats",
+                                "powerModifier": {
+                                    "type": "Fixed",
+                                    "amount": -1
+                                },
+                                "toughnessModifier": {
+                                    "type": "Fixed",
+                                    "amount": -1
+                                },
+                                "target": {
+                                    "type": "ContextTarget",
+                                    "index": 0
+                                }
+                            },
+                            "targetRequirements": [
+                                {
+                                    "type": "TargetObject",
+                                    "filter": {
+                                        "baseFilter": "creature ctrl:opponent"
+                                    }
+                                }
+                            ],
+                            "description": "Brave the Stench — Target creature an opponent controls gets -1/-1 until end of turn."
+                        },
+                        {
+                            "effect": {
+                                "type": "CreatePredefinedToken",
+                                "tokenType": "Treasure"
+                            },
+                            "description": "Search the Body — Create a Treasure token."
+                        }
+                    ]
+                },
+                "descriptionOverride": "When this creature dies, choose one."
+            }
+        ]
+    },
+    "metadata": {
+        "collectorNumber": "119"
+    },
+    "colorIdentityOverride": [
+        "BLACK"
+    ]
+}
+
 // Vampire Spawn
 {
     "name": "Vampire Spawn",
