@@ -6,7 +6,7 @@ on:
     branches: [ "main" ]
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   test:
@@ -38,22 +38,6 @@ jobs:
 
       - name: Compile Argentum
         run: ./gradlew classes --stacktrace
-
-      - name: Update card snapshots
-        env:
-          UPDATE_SNAPSHOTS: "1"
-        run: ./gradlew :mtg-sets:cleanTest :mtg-sets:test --tests "*CardDefinitionSnapshotTest"
-
-      - name: Show snapshot changes
-        run: git diff -- mtg-sets/src/test/resources/snapshots/cards/
-
-      - name: Commit updated snapshots
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add mtg-sets/src/test/resources/snapshots/cards/
-          git diff --cached --quiet || git commit -m "Update card snapshots"
-          git push
 
       - name: Run engine tests
         run: ./gradlew test --stacktrace
