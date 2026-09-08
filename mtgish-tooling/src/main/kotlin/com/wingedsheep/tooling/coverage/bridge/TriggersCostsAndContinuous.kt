@@ -149,6 +149,16 @@ internal fun BridgeBuilder.triggersCostsAndContinuous() {
     // policy declines — so it leaves the card at SCAFFOLD (like the exploit payoff). The hand-authored
     // Savior of Ollenbock card + its scenario test are ground truth. See the Triggers.trains() /
     // TrainedEvent entries in card-sdk-language-reference.md.
+    // Champion payoff (CR 702.72c) — "when a [quality] is championed with this creature, …" (Mistbind
+    // Clique). Like the exploit and training payoffs above, NOT an engine gap: the shipped
+    // `champion(...)` helper composes the whole mechanic and its success branch emits the
+    // parameterless `EventPattern.ChampionedEvent`, which this trigger keys on via
+    // `Triggers.championedWith()` (SELF binding). Capability-only: the emitter would have to fuse the
+    // paired Champion-keyword rule + this trigger and recover the targeted group-tap payoff, so it
+    // leaves the card at SCAFFOLD. The hand-authored Mistbind Clique + its scenario test are ground
+    // truth. See the Triggers.championedWith() / ChampionedEvent entries in
+    // card-sdk-language-reference.md.
+    supported("WhenAPermanentIsChampionedWithAPermanent", "trigger: a permanent is championed with this permanent (champion payoff — Triggers.championedWith(), ChampionedEvent) — capability only, emitter scaffolds")
     supported("WhenAPermanentTrains", "trigger: this creature trains (training payoff — Triggers.trains(), TrainedEvent) — capability only, emitter scaffolds")
     // "When this permanent leaves the battlefield, …" — the self leaves-the-battlefield trigger
     // (Triggers.LeavesBattlefield). Savior of Ollenbock uses it to return every linked
