@@ -1,0 +1,46 @@
+name: Argentum Validation
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Java 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '9.6.1'
+
+      - name: Make Gradle wrapper executable
+        run: chmod +x gradlew
+
+      - name: Show environment
+        run: |
+          java -version
+          gradle --version
+
+      - name: Compile Argentum
+        run: ./gradlew classes --stacktrace
+
+      - name: Run engine tests
+        run: ./gradlew test --stacktrace
+
+      - name: Run Gym tests
+        run: ./gradlew :gym:test --stacktrace
+
+      - name: Run Gym trainer tests
+        run: ./gradlew :gym-trainer:test --stacktrace
