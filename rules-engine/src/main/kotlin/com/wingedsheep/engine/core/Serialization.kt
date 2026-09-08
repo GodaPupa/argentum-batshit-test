@@ -156,6 +156,7 @@ val engineSerializersModule = SerializersModule {
         subclass(PermanentsSacrificedEvent::class)
         subclass(ExploitedEvent::class)
         subclass(TrainedEvent::class)
+        subclass(ChampionedEvent::class)
         subclass(StatsModifiedEvent::class)
         subclass(TargetReselectedEvent::class)
         subclass(TurnFaceUpEvent::class)

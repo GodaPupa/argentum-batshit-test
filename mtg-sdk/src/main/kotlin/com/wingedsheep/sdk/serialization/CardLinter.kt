@@ -626,7 +626,7 @@ object CardLinter {
             "StoreCardName", "CastFromCollectionWithoutPayingCost", "PlayFromCollectionWithoutPayingCost",
             "CastAnyNumberFromCollectionWithoutPayingCost", "ExileFromStorage",
             "CopyCollectionIntoCollection", "RecordChosenLinkedExile",
-            "PairWithSource",
+            "PairWithSource", "EmitChampionedEvent",
         )) put(type to "from", read(Space.COLLECTION))
         put("ChoosePile" to "pileA", read(Space.COLLECTION))
         put("ChoosePile" to "pileB", read(Space.COLLECTION))

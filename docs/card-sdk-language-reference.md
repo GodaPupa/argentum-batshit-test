@@ -6320,6 +6320,15 @@ Dominant back faces that "stay" instead self-exile on their final chapter, dodgi
   is itself a Food counts its own sacrifice). Pick by the printed article — "one or more" → batch,
   "a" → `YouSacrificeA`, "another" → `YouSacrificeAnother`.
 - `Sacrificed` — source is sacrificed.
+- `EventPattern.ChampionedEvent` — "when a [quality] is championed with this creature" (CR 702.72c;
+  Mistbind Clique). Reach it through `Triggers.championedWith(binding)`. A parameterless pattern whose
+  subject is the **championing** permanent, selected by the ability's `TriggerBinding`: `SELF` is
+  "championed with **this** creature", `OTHER` is "with another permanent you control", `ANY` has no
+  restriction. Emitted by `EmitChampionedEventEffect`, the success branch of the champion ability's own
+  gate, so it fires once per permanent that actually reached exile and never when the choice was
+  declined. It carries no filter for the championed permanent's quality — a champion ability can only
+  exile something matching its own quality, so the printed "a Faerie is championed with this creature"
+  is already guaranteed by the champion clause. See the `Champion` keyword entry for full wiring.
 - `EventPattern.ExploitedEvent(player = Player.You, requireNontokenExploited = false)` — "whenever a creature you control
   exploits a creature" (CR 702.110b; the sacrifice half of the Exploit keyword). Fires once per exploited creature; the
   `exploit()` helper appends `EmitExploitedEventEffect` after the exploit sacrifice, so declining the optional sacrifice
@@ -8772,7 +8781,7 @@ Flying, Menace, Intimidate, Fear, Shadow, Horsemanship, all basic landwalks (Pla
 Strike, Trample, Deathtouch, Lifelink, Vigilance, Reach, Provoke, Defender, Indestructible, Hexproof, Shroud, Haste,
 Flash, Prowess, Flurry, Changeling, Devoid (**not** display-only — see the note above: the engine
 derives `CardDefinition.colors` from it), Convoke, Delve, Improvise, Affinity, Emerge, Storm, Flashback, Harmonize, Mayhem, Disturb, Evoke, Sneak, Ninjutsu, Web-slinging, Impending, Conspire, Casualty, Miracle, Hideaway, Cascade, Plot,
-Offspring, Persist, Undying, Enduring, Ascend, Storied, Start your engines!, Max speed, Wither, Toxic, Eerie, Vivid, Fateful Bite, Exploit, Soulbond, Daybound, Nightbound, … (display-only — engine effect lives in handlers or
+Offspring, Persist, Undying, Enduring, Ascend, Storied, Start your engines!, Max speed, Wither, Toxic, Eerie, Vivid, Fateful Bite, Exploit, Champion, Soulbond, Daybound, Nightbound, … (display-only — engine effect lives in handlers or
 composite abilities).
 
 **Parameterized `KeywordAbility.*`**
@@ -9158,6 +9167,43 @@ composite abilities).
   is a battlefield replacement scoped by its own `appliesTo` pattern — while one is on the battlefield (or the "damage
   can't be prevented this turn" one-shot is active) `DamageUtils.applyDamagePreventionShields` applies no prevention
   shields to the damage instances that pattern names (CR 615.12).
+- `Champion an [object]` — "Champion a Goblin (When this enters, sacrifice it unless you exile another
+  Goblin you control. When this leaves the battlefield, that card returns to the battlefield.)"
+  (CR 702.72, Lorwyn). Display-only keyword (`Keyword.CHAMPION`); wire the behavior with the
+  `card { champion(Subtype.GOBLIN) }` builder helper — or `champion(quality: GameObjectFilter,
+  qualityDescription: String)` for a non-tribal quality, of which `championCreature()` ("champion a
+  creature", the three Changelings) is the only printed one. It adds the keyword plus **two linked
+  triggered abilities** (CR 702.72b / 607.2k), both composed from existing primitives with no new
+  executor:
+  - **enters** — an `IfYouDoEffect` over a Gather → Select → Move pipeline. The quality is chosen,
+    **not targeted** (the printed text has no "target"): `CardSource.BattlefieldMatching(filter =
+    quality.notSourceItself(), player = Player.You)`, then `SelectionMode.ChooseUpTo(1)` with
+    `useTargetingUI = true`, then a move to exile carrying `linkToSource = true` and
+    `storeMovedAs = CHAMPIONED_CARDS`. `ChooseUpTo(1)` **is** the "unless": picking nothing is always
+    legal, and with no eligible permanent the selection resolves with no prompt at all. The gate's
+    criterion is `SuccessCriterion.CollectionNonEmpty(CHAMPIONED_CARDS)` — the cards that actually
+    reached exile, not merely the ones picked — with `otherwise = SacrificeSelfEffect` and
+    `then = EmitChampionedEventEffect()`.
+  - **leaves** — `Triggers.LeavesBattlefield` running `Effects.ReturnLinkedExileUnderOwnersControl()`,
+    which reads the linked-exile pile of the **originating battlefield visit**, so a champion that
+    blinks never returns the other visit's card and never sacrifices for the other visit's obligation.
+  - **the quality is a permanent filter.** "Champion a Goblin" is a bare tribal noun, so per CR 109.2
+    it means a Goblin *permanent* — a Kindred noncreature Goblin is a legal choice. The `Subtype`
+    overload builds `GameObjectFilter.Permanent.withSubtype(subtype)`; narrowing it to `Creature`
+    would silently drop those. `notSourceItself()` supplies "another" and is *visit-aware*.
+  - **two triggers, not an "exile until" replacement.** This is what CR 702.72a says, and it
+    reproduces the printed interaction Fiend Hunter documents: a champion removed before its enters
+    trigger resolves has already run its leaves trigger against an empty pile, and then exiles a
+    permanent that never comes back. The sacrifice is a genuine no-op when the champion is already
+    gone, exactly as the printed instruction behaves.
+  - **CR 702.72c payoff** — `Triggers.championedWith()` (`EventPattern.ChampionedEvent`) is
+    "when a [quality] is championed with this creature" (Mistbind Clique). It fires only when a
+    permanent actually reached exile, so declining the choice taps nothing. The quality is not
+    restated on the trigger: the champion clause above it can only ever exile a matching permanent.
+  Cards: Boggart Mob, Changeling Berserker/Hero/Titan, Mistbind Clique, Nova Chaser, Thoughtweft
+  Trio, Wanderwine Prophets, Wren's Run Packmaster. Pinned by `ChampionKeywordTest` (17 scenarios
+  covering accept/decline/no-candidate, "another", the tribal-vs-creature quality, projected types,
+  owner's-control return, linkage, tokens, trigger ordering, and blinking).
 - `Exploit` — "Exploit (When this creature enters, you may sacrifice a creature.)" (CR 702.110, Dragons of Tarkir;
   reprinted MH1/MH2/VOW/PIP/MH3). Display-only keyword; wire the behavior with the `card { exploit(onExploit, onExploitTargets) }`
   builder helper. It adds the keyword plus one `EntersBattlefield` triggered ability whose effect is a
