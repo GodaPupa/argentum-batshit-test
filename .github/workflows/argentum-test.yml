@@ -36,6 +36,12 @@ jobs:
       - name: Compile Argentum
         run: ./gradlew classes --stacktrace
 
+      - name: Update card snapshots
+        run: ./gradlew :mtg-sets:test --tests "*CardDefinitionSnapshotTest" -DupdateSnapshots=true
+
+      - name: Show snapshot changes
+        run: git diff -- mtg-sets
+
       - name: Run engine tests
         run: ./gradlew test --stacktrace
 
