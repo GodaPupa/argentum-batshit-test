@@ -535,6 +535,17 @@ exist in the cost and charges the life through the shared life-payment service.
   it. A forage that was declined, or one no mode was feasible for, emits nothing: forage has no
   "even if you can't" clause.
 - `Costs.RevealNotedCreatureType` (ability cost) — "Reveal the creature type you chose" (MKM — A Killer Among Us). Publishes the secret creature type this permanent's controller noted with `Effects.SecretlyChooseCreatureType(...)` (§ effects) and hands it to the ability's own effect as `chosenValues["chosenCreatureType"]` — the key `CardPredicate.HasSubtypeFromVariable` reads, so "if target attacking creature token is the chosen type" is an ordinary `Conditions.TargetMatchesFilter(Filters.creature.withSubtypeFromVariable("chosenCreatureType"))` test rather than new vocabulary. Two rules make it more than a formality. **Only the player who made the note can pay it**: for anyone else the cost is unpayable, so a permanent whose control changed hands stops offering the ability at all (the card's own ruling; CR 702.106d's linkage). And the type is **captured at activation, not at resolution** (CR 113.7a) — the same cost usually sacrifices the source, so by the time the ability resolves the permanent and its note are gone. Activated-ability-only: a spell has no source permanent to carry a note, and every other cost context reports it unpayable rather than half-paying it.
+- `Costs.Unattach` (ability cost) — "**Unattach this Equipment**" (RAV — Sunforger). Detaches the
+  ability's source from the permanent it is attached to, without moving it between zones (CR 701.3d).
+  The cost twin of `Effects.UnattachEquipment` (§ effects): the *effect* has existed since Stolen
+  Uniform's rider, the *cost* had not, and it is not a lookalike of any other atom — a sacrifice moves
+  zones, a tap can be restored, this does neither. Its affordability gate is the card's own ruling
+  ("You can't pay the cost of unattaching Sunforger unless Sunforger is attached to a creature"), so
+  the ability is offered as unaffordable while the Equipment sits loose. Payment runs through the same
+  `ZoneMovementUtils.unattachEmittingEvent` chokepoint as the effect, so a `Triggers.becomesUnattached`
+  trigger cannot tell the two apart. Activated-ability-only: a spell on the stack is attached to
+  nothing, so every other cost context reports it unpayable rather than half-paying it. Sunforger is
+  `Costs.Composite(Costs.Mana("{R}{W}"), Costs.Unattach)`.
 - `Costs.CollectEvidence(n)` (ability cost) / `Costs.additional.CollectEvidence(n)` (mandatory
   additional cost) / `card { collectEvidence(n) }` (the optional **linked** cast cost) — Collect
   evidence N (CR 701.59a): "exile any number of cards from your graveyard with total mana value N or
@@ -4070,8 +4081,11 @@ Every `TargetRequirement` carries count semantics (defaults shown):
   object/player it is (the controller chooses *which* opponent in multiplayer per CR 601.6a/602.3a, and
   that pick follows the controller's own choices per CR 601.6b/602.3b). Orthogonal to legality: target-finding and
   validation ignore `chooser` (always relative to the controller); only the announcement layer reads it
-  to route the selection decision. `TargetChooser.Opponent` is honored for **activated abilities**; list
-  the opponent-chosen requirement after the controller-chosen ones. `Targets.AnyChosenByOpponent` is the
+  to route the selection decision. `TargetChooser.Opponent` is honored for **activated and triggered
+  abilities** (Mausoleum Turnkey: "When this creature enters, return target creature card of an
+  opponent's choice from your graveyard to your hand") — both announcement paths pin the deciding
+  opponent before raising the target decision, asking the controller which opponent decides when
+  there is more than one. List the opponent-chosen requirement after the controller-chosen ones. `Targets.AnyChosenByOpponent` is the
   ready-made "any target of an opponent's choice"; `TargetObject` (and so the `TargetCreature` factory)
   carries `chooser` too, for opponent-chosen *permanent* targets — Preacher's "gain control of target
   creature of an opponent's choice they control" is `TargetCreature(filter =
@@ -4096,8 +4110,8 @@ Every `TargetRequirement` carries count semantics (defaults shown):
   requirement list — no printed card splits one trigger's targets between two deciders.
 
   `CardLinter` (§21) fails any card that puts a chooser in a context the engine doesn't route:
-  `Opponent` outside an activated ability, `TriggeringPlayer` / `ControllerOfTriggeringEntity` outside a
-  triggered one. In the wrong context the *controller* would silently choose the target instead.
+  `Opponent` outside an activated *or* triggered ability, `TriggeringPlayer` /
+  `ControllerOfTriggeringEntity` outside a triggered one. In the wrong context the *controller* would silently choose the target instead.
 
 ### Player-target restrictions (`TargetPlayer.restriction` / `TargetOpponent.restriction`)
 
@@ -4314,6 +4328,17 @@ This is the player-arm prerequisite for the planned composable mixed `TargetUnio
   `CastSpellTypesFromTopOfLibrary(GameObjectFilter.Any.sharingCardTypeWithLinkedExile(), maxCastsPerTurn = 1)`.
   The cost-side reading of the same pile is `CostReductionSource.SharedCardTypesWithLinkedExile`
   (Cemetery Prowler).
+- `.sharingNameWithLinkedExile()` — `CardPredicate.SharesNameWithLinkedExile`: **same name** as any card
+  still exiled with the filtering ability's source. The name axis of `.sharingCardTypeWithLinkedExile()`,
+  and pile-wide for the same reason: Circu, Dimir Lobotomist exiles on every blue *and* every black
+  spell you cast, so "a card exiled with Circu" is the whole pile and
+  `.sharingNameWith(EntityReference.LinkedExiledCard())` could only ever name one index of it. Printed
+  names on both sides — neither an exiled card nor a card in a hand or library has a battlefield
+  projection a Layer-3 rename could have touched. An empty pile matches nothing; no source in context
+  fails closed. Circu's third line is
+  `PlayersCantCastSpells(affected = Player.EachOpponent, spellFilter = GameObjectFilter.Any.sharingNameWithLinkedExile())`
+  — and note that a `PlayersCantCastSpells` filter is evaluated with the *granting permanent* as its
+  source, which is what makes any source-relative predicate usable there.
 - `.sharingColorWith(entity)` — `CardPredicate.SharesColorWith(entity)`: shares ≥1 (projected) color with
   a referenced entity (e.g. `EntityReference.Triggering`). Mirror of `.sharingCreatureTypeWith(entity)`.
   Colorless entities share no color (never match). Used by Spreading Plague ("destroy all other creatures
