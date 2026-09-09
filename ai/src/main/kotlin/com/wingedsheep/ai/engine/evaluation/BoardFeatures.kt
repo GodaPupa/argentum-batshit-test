@@ -251,7 +251,16 @@ object BoardPresence : BoardFeature {
         val container = state.getEntity(entityId) ?: return 0.0
 
         if (projected.isCreature(entityId)) {
-            return creatureValue(state, projected, entityId, container, creatureValuation)
+            val body = creatureValue(state, projected, entityId, container, creatureValuation)
+            // Combat stats alone make a 2/2 Guttersnipe and a 1/3 Flamebreather indistinguishable.
+            // A repeatable, publicly printed damage trigger is real board presence even before the
+            // next spell is cast. Price one trigger modestly: enough to order equal bodies, nowhere
+            // near enough to assume hidden cards or replace simulation of an actual lethal line.
+            val engineDamage = intents.forPermanent(container, card.name)
+                .filter { it.repeatable }
+                .maxOfOrNull { it.opponentDamage ?: 0 }
+                ?: 0
+            return body + engineDamage * OPPONENT_DAMAGE_ENGINE_VALUE
         }
 
         // Non-creature permanents
@@ -408,6 +417,9 @@ object BoardPresence : BoardFeature {
 
     /** Board value of one loyalty counter. Only reached with card knowledge on. */
     private const val LOYALTY_VALUE = 0.8
+
+    /** Small prior for one visible resolution of a repeatable face-damage engine. */
+    private const val OPPONENT_DAMAGE_ENGINE_VALUE = 0.35
 
     /**
      * What a creature's **body** is worth — the half of [creatureValue] that reads only stats and
