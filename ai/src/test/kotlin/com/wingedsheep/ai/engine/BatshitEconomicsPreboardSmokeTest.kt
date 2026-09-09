@@ -137,7 +137,10 @@ private fun playLoggedGame(
 ): LoggedSmokeGame {
     val processor = ActionProcessor(registry)
     val initializer = GameInitializer(registry)
-    val batshit = batshitDeck()
+    val batshit75 = batshitDeck()
+    // This run is deliberately preboard. Keep the authoritative 15 encoded above, but do not ask
+    // GameInitializer to resolve sideboard-only cards that can never enter these five games.
+    val batshit = batshit75.copy(sideboard = emptyList())
     val red = monoRedDeck()
     val init = initializer.initializeGame(
         GameConfig(
