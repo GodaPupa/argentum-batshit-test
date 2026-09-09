@@ -31,7 +31,12 @@ import com.wingedsheep.engine.legalactions.LegalAction
 import com.wingedsheep.engine.legalactions.MeaningfulActionFilter
 import com.wingedsheep.engine.state.GameState
 import com.wingedsheep.engine.state.components.identity.CardComponent
+import com.wingedsheep.engine.state.components.stack.AbilityOnStackComponent
+import com.wingedsheep.engine.state.components.stack.ActivatedAbilityOnStackComponent
 import com.wingedsheep.engine.state.components.stack.ChosenTarget
+import com.wingedsheep.engine.state.components.stack.SpellOnStackComponent
+import com.wingedsheep.engine.state.components.stack.TargetsComponent
+import com.wingedsheep.engine.state.components.stack.TriggeredAbilityOnStackComponent
 import com.wingedsheep.sdk.core.Format
 import com.wingedsheep.sdk.core.ManaCost
 import com.wingedsheep.sdk.core.ManaSymbol
@@ -641,12 +646,18 @@ class Strategist(
         val timingReason = (timing as? TimingVerdict.Adjust)?.reason ?: "timing"
         val timingNote =
             if (timingDelta != 0.0) "hold policy $timingReason %+.2f".format(timingDelta) else null
+        val sacrificeWindowDelta = threatenedSacrificeWindow(state, action.action, playerId)
+        val sacrificeWindowNote = sacrificeWindowDelta.takeIf { it != 0.0 }
+            ?.let { "sacrifices an opponent-targeted permanent %+.2f".format(it) }
 
         // Check for card-specific advisor override. Timing is applied outside it, so a per-card
         // advisor still sees the pure board score as its `defaultScore` and a card with both
         // keeps both.
         val advisor = advisorRegistry.getAdvisor(cardName)
-            ?: return AdjustedScore(leafScore + timingDelta, timingNote)
+            ?: return AdjustedScore(
+                leafScore + timingDelta + sacrificeWindowDelta,
+                listOfNotNull(timingNote, sacrificeWindowNote).joinToString("; ").ifEmpty { null },
+            )
         val context = CastContext(
             state = state,
             projected = state.projectedState,
@@ -660,11 +671,48 @@ class Strategist(
         val override = advisor.evaluateCast(context)
         val advisorNote = override?.let { "${advisor::class.simpleName} replaced the board score" }
         return AdjustedScore(
-            (override ?: leafScore) + timingDelta,
-            listOfNotNull(advisorNote, timingNote).joinToString("; ").ifEmpty { null },
+            (override ?: leafScore) + timingDelta + sacrificeWindowDelta,
+            listOfNotNull(advisorNote, timingNote, sacrificeWindowNote)
+                .joinToString("; ").ifEmpty { null },
         )
     }
 
+    /**
+     * Reward converting a permanent that an opposing stack object already targets into an
+     * additional-cost resource. The information is entirely public, and the adjustment is tied to
+     * the payment rather than to a card name: a spell, an activated sacrifice outlet, and any
+     * future equivalent all get the same window.
+     *
+     * Rollout scoring can otherwise average the immediate two-for-one with futures in which the
+     * draw spell is held, even though passing lets the targeted permanent die for nothing in every
+     * branch. Two evaluator points price the card of value recovered by cashing it in.
+     */
+    private fun threatenedSacrificeWindow(
+        state: GameState,
+        action: GameAction,
+        playerId: EntityId,
+    ): Double {
+        val sacrificed = when (action) {
+            is CastSpell -> action.additionalCostPayment?.sacrificedPermanents.orEmpty()
+            is ActivateAbility -> action.costPayment?.sacrificedPermanents.orEmpty()
+            else -> emptyList()
+        }.toSet()
+        if (sacrificed.isEmpty()) return 0.0
+
+        val threatened = state.stack.any { stackId ->
+            val stackObject = state.getEntity(stackId) ?: return@any false
+            val controller = stackObject.get<SpellOnStackComponent>()?.casterId
+                ?: stackObject.get<TriggeredAbilityOnStackComponent>()?.controllerId
+                ?: stackObject.get<ActivatedAbilityOnStackComponent>()?.controllerId
+                ?: stackObject.get<AbilityOnStackComponent>()?.controllerId
+                ?: return@any false
+            if (!state.isOpponentTo(controller, playerId)) return@any false
+            stackObject.get<TargetsComponent>()?.targets.orEmpty()
+                .filterIsInstance<ChosenTarget.Permanent>()
+                .any { it.entityId in sacrificed }
+        }
+        return if (threatened) TARGETED_SACRIFICE_WINDOW else 0.0
+    }
     /**
      * A leaf score after per-card adjustment, plus what did the adjusting.
      *
@@ -1261,6 +1309,9 @@ class Strategist(
 
         /** Payment choices inspected for a one-card discard/sacrifice cost. */
         const val AUTOMATIC_PAYMENT_CANDIDATES = 8
+
+        /** Value recovered by cashing in a permanent an opposing stack object already targets. */
+        const val TARGETED_SACRIFICE_WINDOW = 2.0
 
         /** Where the avatar tops out — the recommended stopping point. See [momirXCandidates]. */
         const val MOMIR_TARGET_X = 8
