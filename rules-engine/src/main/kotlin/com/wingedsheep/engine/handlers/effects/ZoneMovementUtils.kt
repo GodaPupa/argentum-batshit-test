@@ -35,6 +35,7 @@ import com.wingedsheep.engine.state.components.battlefield.CastRecordComponent
 import com.wingedsheep.engine.state.components.battlefield.CraftedFromExiledComponent
 import com.wingedsheep.engine.state.components.battlefield.LinkedExileComponent
 import com.wingedsheep.engine.state.components.battlefield.MayCastFromLinkedExileUsedThisTurnComponent
+import com.wingedsheep.engine.state.components.battlefield.PreparedComponent
 import com.wingedsheep.engine.state.components.battlefield.SummoningSicknessComponent
 import com.wingedsheep.engine.state.components.battlefield.TappedComponent
 import com.wingedsheep.engine.state.components.battlefield.TimestampComponent
@@ -484,6 +485,10 @@ object ZoneMovementUtils {
             .without<com.wingedsheep.engine.state.components.battlefield.CastForImpendingComponent>()
             .without<com.wingedsheep.engine.state.components.battlefield.SuspendedComponent>()
             .without<com.wingedsheep.engine.state.components.battlefield.ParadigmComponent>()
+            // Prepared status and its linked exile copy belong to this battlefield incarnation.
+            // Clearing the link lets the prepare-copy SBA retire it before a returned card enters
+            // as a new object and creates its own prepared spell copy (CR 400.7).
+            .without<PreparedComponent>()
             // Note: CastRecordComponent is NOT stripped here — it needs to persist
             // for intervening-if checks on mana-spent-gated triggers that may still
             // be on the stack when the permanent leaves the battlefield (e.g., evoke).
