@@ -92,7 +92,7 @@ class GoblinGlasswrightScenarioTest : ScenarioTestBase() {
                     .withCardInHand(1, "Not Dead After All")
                     .withCardInHand(1, "Village Rites")
                     .withLandsOnBattlefield(1, "Mountain", 3)
-                    .withLandsOnBattlefield(1, "Swamp", 3)
+                    .withLandsOnBattlefield(1, "Swamp", 2)
                     .withCardInLibrary(1, "Mountain")
                     .withCardInLibrary(1, "Swamp")
                     .withLifeTotal(2, 20)
@@ -154,8 +154,12 @@ class GoblinGlasswrightScenarioTest : ScenarioTestBase() {
                     game.preparedCopies().shouldHaveSize(0)
                     game.handSize(1) shouldBe handBeforeRites - 1
                 }
+                withClue("the Craft Treasure is consumed for Village Rites' black mana") {
+                    game.findPermanent("Treasure") shouldBe null
+                }
 
                 var flamebreatherResolved = false
+                var treasureSacrificeDrainResolved = false
                 var returnResolved = false
                 var wickedRoleDrainResolved = false
                 val verifyReturnedGlasswright = {
@@ -168,7 +172,9 @@ class GoblinGlasswrightScenarioTest : ScenarioTestBase() {
                         game.preparedCopies().single() shouldNotBe firstCopy
                     }
                 }
-                while (!flamebreatherResolved || !returnResolved || !wickedRoleDrainResolved) {
+                while (!flamebreatherResolved || !treasureSacrificeDrainResolved ||
+                    !returnResolved || !wickedRoleDrainResolved
+                ) {
                     when (val source = game.topTriggerSource()) {
                         "Kessig Flamebreather" -> {
                             val lifeBefore = game.getLifeTotal(2)
@@ -179,16 +185,24 @@ class GoblinGlasswrightScenarioTest : ScenarioTestBase() {
 
                         "Mirkwood Bats" -> {
                             if (!returnResolved) {
-                                verifyReturnedGlasswright()
-                                returnResolved = true
+                                withClue("this Bats trigger is from sacrificing the Craft Treasure for mana") {
+                                    treasureSacrificeDrainResolved shouldBe false
+                                    game.findPermanent("Goblin Glasswright") shouldBe null
+                                    game.findPermanent("Wicked Role") shouldBe null
+                                }
+                                val lifeBefore = game.getLifeTotal(2)
+                                game.resolveTop()
+                                game.getLifeTotal(2) shouldBe lifeBefore - 1
+                                treasureSacrificeDrainResolved = true
+                            } else {
+                                withClue("this Bats trigger is from creating the Wicked Role") {
+                                    game.findPermanent("Wicked Role") shouldNotBe null
+                                }
+                                val lifeBefore = game.getLifeTotal(2)
+                                game.resolveTop()
+                                game.getLifeTotal(2) shouldBe lifeBefore - 1
+                                wickedRoleDrainResolved = true
                             }
-                            withClue("this Bats trigger is from creating the Wicked Role") {
-                                game.findPermanent("Wicked Role") shouldNotBe null
-                            }
-                            val lifeBefore = game.getLifeTotal(2)
-                            game.resolveTop()
-                            game.getLifeTotal(2) shouldBe lifeBefore - 1
-                            wickedRoleDrainResolved = true
                         }
 
                         null -> error("expected a triggered ability above Village Rites")
@@ -205,8 +219,8 @@ class GoblinGlasswrightScenarioTest : ScenarioTestBase() {
                     }
                 }
 
-                withClue("all three intervening triggers account for three separate life losses") {
-                    game.getLifeTotal(2) shouldBe 15
+                withClue("Rites' cast, Treasure sacrifice, and Role creation each caused one life loss") {
+                    game.getLifeTotal(2) shouldBe 14
                 }
                 withClue("Village Rites is still waiting below those triggers") {
                     game.topCardName() shouldBe "Village Rites"
