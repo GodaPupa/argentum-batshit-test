@@ -15,6 +15,7 @@ import com.wingedsheep.sdk.core.Zone
 import com.wingedsheep.sdk.model.Deck
 import com.wingedsheep.sdk.model.EntityId
 import io.kotest.core.spec.style.FunSpec
+import io.kotest.matchers.shouldBe
 import io.kotest.matchers.booleans.shouldBeTrue
 import io.kotest.matchers.ints.shouldBeGreaterThan
 import java.nio.file.Files
@@ -33,7 +34,10 @@ class BatshitEconomicsPreboardSmokeTest : FunSpec({
 
     val enabled = System.getProperty("batshitSmoke") == "true"
 
-    test("five seeded preboard Argentum agent self-play games") {
+    test("five seeded preboard Argentum agent self-play games").config(
+        enabled = enabled,
+        timeout = 45.minutes,
+    ) {
         val registry = fullRegistry()
         val seeds = listOf(0xBA75_0001L, 0xBA75_0002L, 0xBA75_0003L, 0xBA75_0004L, 0xBA75_0005L)
         val reports = seeds.mapIndexed { index, seed ->
@@ -64,7 +68,7 @@ class BatshitEconomicsPreboardSmokeTest : FunSpec({
             report.actions shouldBeGreaterThan 0
             report.completed.shouldBeTrue()
         }
-    }.config(enabled = enabled, timeout = 45.minutes)
+    }
 })
 
 private data class LoggedSmokeGame(
@@ -155,8 +159,8 @@ private fun playLoggedGame(
 
     var state = init.state
     val mulliganControllers = mapOf(
-        batshitId to EngineAiPlayerController(registry, batshitId) { state },
-        redId to EngineAiPlayerController(registry, redId) { state },
+        batshitId to EngineAiPlayerController(registry, batshitId, gameStateProvider = { state }),
+        redId to EngineAiPlayerController(registry, redId, gameStateProvider = { state }),
     )
     val log = StringBuilder()
     val playLabel = if (startingPlayerIndex == 0) "Batshit plays; Red draws" else "Red plays; Batshit draws"
