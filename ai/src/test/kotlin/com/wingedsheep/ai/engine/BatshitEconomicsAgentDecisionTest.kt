@@ -71,7 +71,9 @@ class BatshitEconomicsAgentDecisionTest : ScenarioTestBase() {
             game.castSpell(2, "Lightning Bolt", victim).isSuccess.shouldBeTrue()
             game.execute(PassPriority(game.player2Id)).isSuccess.shouldBeTrue()
 
-            val action = ai(game).chooseAction(game.state).shouldBeInstanceOf<CastSpell>()
+            val chosen = ai(game).chooseAction(game.state)
+            println("BATSHIT_RITES_ACTION=$chosen")
+            val action = chosen.shouldBeInstanceOf<CastSpell>()
             cardName(game, action.cardId) shouldBe "Village Rites"
             action.additionalCostPayment?.sacrificedPermanents shouldBe listOf(victim)
         }
@@ -207,6 +209,7 @@ class BatshitEconomicsAgentDecisionTest : ScenarioTestBase() {
                 .build()
 
             val action = ai(game).chooseAction(game.state).shouldBeInstanceOf<CastSpell>()
+            println("BATSHIT_FLAME_TARGET=${cardName(game, chosenTargetId(action)!!)}")
             cardName(game, chosenTargetId(action)!!) shouldBe "Kessig Flamebreather"
         }
     }
