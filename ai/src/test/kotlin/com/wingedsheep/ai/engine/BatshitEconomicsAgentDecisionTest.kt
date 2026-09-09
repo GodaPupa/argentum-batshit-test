@@ -64,6 +64,14 @@ class BatshitEconomicsAgentDecisionTest : ScenarioTestBase() {
                 .withCardOnBattlefield(1, "Shambling Ghast")
                 .withCardInLibrary(1, "Mountain")
                 .withCardInLibrary(1, "Mountain")
+                .withCardInLibrary(1, "Mountain")
+                .withCardInLibrary(1, "Mountain")
+                .withCardInLibrary(1, "Mountain")
+                .withCardInLibrary(1, "Mountain")
+                .withCardInLibrary(1, "Mountain")
+                .withCardInLibrary(1, "Mountain")
+                .withCardInLibrary(1, "Mountain")
+                .withCardInLibrary(1, "Mountain")
                 .withLandsOnBattlefield(2, "Mountain", 1)
                 .withCardInHand(2, "Lightning Bolt")
                 .build()
@@ -71,9 +79,7 @@ class BatshitEconomicsAgentDecisionTest : ScenarioTestBase() {
             game.castSpell(2, "Lightning Bolt", victim).isSuccess.shouldBeTrue()
             game.execute(PassPriority(game.player2Id)).isSuccess.shouldBeTrue()
 
-            val chosen = ai(game).chooseAction(game.state)
-            println("BATSHIT_RITES_ACTION=$chosen")
-            val action = chosen.shouldBeInstanceOf<CastSpell>()
+            val action = ai(game).chooseAction(game.state).shouldBeInstanceOf<CastSpell>()
             cardName(game, action.cardId) shouldBe "Village Rites"
             action.additionalCostPayment?.sacrificedPermanents shouldBe listOf(victim)
         }
@@ -209,7 +215,6 @@ class BatshitEconomicsAgentDecisionTest : ScenarioTestBase() {
                 .build()
 
             val action = ai(game).chooseAction(game.state).shouldBeInstanceOf<CastSpell>()
-            println("BATSHIT_FLAME_TARGET=${cardName(game, chosenTargetId(action)!!)}")
             cardName(game, chosenTargetId(action)!!) shouldBe "Kessig Flamebreather"
         }
     }
