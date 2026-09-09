@@ -81,6 +81,47 @@ private data class LoggedSmokeGame(
     val log: String,
 )
 
+internal class SmokeTriggerTelemetry {
+    var flamebreatherTriggers: Int = 0
+        private set
+    var flamebreatherDamage: Int = 0
+        private set
+    var guttersnipeTriggers: Int = 0
+        private set
+    var guttersnipeDamage: Int = 0
+        private set
+
+    private val unresolvedTriggers = mutableMapOf<String, Int>()
+
+    fun record(event: GameEvent) {
+        when (event) {
+            is AbilityTriggeredEvent -> when (event.sourceName) {
+                "Kessig Flamebreather" -> {
+                    flamebreatherTriggers++
+                    unresolvedTriggers.merge(event.sourceName, 1) { current, added -> current + added }
+                }
+                "Guttersnipe" -> {
+                    guttersnipeTriggers++
+                    unresolvedTriggers.merge(event.sourceName, 1) { current, added -> current + added }
+                }
+                else -> Unit
+            }
+            is DamageDealtEvent -> {
+                val sourceName = event.sourceName ?: return
+                if (event.isCombatDamage || unresolvedTriggers.getOrDefault(sourceName, 0) == 0) return
+
+                when (sourceName) {
+                    "Kessig Flamebreather" -> flamebreatherDamage += event.amount
+                    "Guttersnipe" -> guttersnipeDamage += event.amount
+                    else -> return
+                }
+                unresolvedTriggers[sourceName] = unresolvedTriggers.getValue(sourceName) - 1
+            }
+            else -> Unit
+        }
+    }
+}
+
 private fun fullRegistry(): CardRegistry = CardRegistry().apply {
     // Prepared Craft, Fanatical Offering, Epicure, and NDAA all resolve through named predefined
     // tokens. The production game/gym registries install these explicitly; the smoke harness must
@@ -282,11 +323,8 @@ private fun playLoggedGame(
     var lastMeaningful = "none"
     var glasswrightEntries = 0
     var craftCasts = 0
-    var flameTriggers = 0
     var batsTriggers = 0
-    var guttersnipeTriggers = 0
-    var flameDamage = 0
-    var guttersnipeDamage = 0
+    val triggerTelemetry = SmokeTriggerTelemetry()
     var gorgeTappedEntries = 0
 
     fun life(playerId: EntityId) = state.lifeTotal(playerId)
@@ -358,10 +396,9 @@ private fun playLoggedGame(
                 is AbilityTriggeredEvent -> if (
                     event.sourceName in setOf("Kessig Flamebreather", "Mirkwood Bats", "Guttersnipe", "Shambling Ghast")
                 ) {
+                    triggerTelemetry.record(event)
                     when (event.sourceName) {
-                        "Kessig Flamebreather" -> flameTriggers++
                         "Mirkwood Bats" -> batsTriggers++
-                        "Guttersnipe" -> guttersnipeTriggers++
                     }
                     log.appendLine("  EVENT trigger ${event.sourceName}: ${event.description}")
                 }
@@ -369,8 +406,7 @@ private fun playLoggedGame(
                     log.appendLine("  EVENT ability ${label(event.controllerId)} ${event.sourceName}")
                 }
                 is DamageDealtEvent -> {
-                    if (event.sourceName == "Kessig Flamebreather") flameDamage += event.amount
-                    if (event.sourceName == "Guttersnipe") guttersnipeDamage += event.amount
+                    triggerTelemetry.record(event)
                     if (event.sourceName in setOf(
                             "Kessig Flamebreather", "Guttersnipe", "Lightning Bolt", "Lava Dart",
                             "Fiery Temper", "Fireblast", "Makeshift Munitions", "Voldaren Epicure"
@@ -504,9 +540,15 @@ private fun playLoggedGame(
     log.appendLine("Proximate last meaningful decision: $lastMeaningful")
     log.appendLine("Mulligans Batshit/Red: ${mulliganCounts.getValue(batshitId)}/${mulliganCounts.getValue(redId)}")
     log.appendLine("Glasswright entries/resets: $glasswrightEntries; Craft casts: $craftCasts")
-    log.appendLine("Flamebreather triggers/damage: $flameTriggers/$flameDamage")
+    log.appendLine(
+        "Flamebreather triggers/damage: ${triggerTelemetry.flamebreatherTriggers}/" +
+            triggerTelemetry.flamebreatherDamage
+    )
     log.appendLine("Mirkwood Bats triggers: $batsTriggers")
-    log.appendLine("Guttersnipe triggers/damage: $guttersnipeTriggers/$guttersnipeDamage")
+    log.appendLine(
+        "Guttersnipe triggers/damage: ${triggerTelemetry.guttersnipeTriggers}/" +
+            triggerTelemetry.guttersnipeDamage
+    )
     log.appendLine("Tapped Razortrap Gorge entries: $gorgeTappedEntries")
     log.appendLine("Stranded Batshit Rites/Unearth/NDAA: $strandedBatshit")
     log.appendLine("Surviving Batshit battlefield: $battlefieldBatshit")
