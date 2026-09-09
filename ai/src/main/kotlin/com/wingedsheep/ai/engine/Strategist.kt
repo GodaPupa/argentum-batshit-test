@@ -649,14 +649,18 @@ class Strategist(
         val sacrificeWindowDelta = threatenedSacrificeWindow(state, action.action, playerId)
         val sacrificeWindowNote = sacrificeWindowDelta.takeIf { it != 0.0 }
             ?.let { "sacrifices an opponent-targeted permanent %+.2f".format(it) }
+        val landSacrificeDelta = landSacrificePatience(state, action.action, playerId, cardName)
+        val landSacrificeNote = landSacrificeDelta.takeIf { it != 0.0 }
+            ?.let { "preserves land resources %+.2f".format(it) }
 
         // Check for card-specific advisor override. Timing is applied outside it, so a per-card
         // advisor still sees the pure board score as its `defaultScore` and a card with both
         // keeps both.
         val advisor = advisorRegistry.getAdvisor(cardName)
             ?: return AdjustedScore(
-                leafScore + timingDelta + sacrificeWindowDelta,
-                listOfNotNull(timingNote, sacrificeWindowNote).joinToString("; ").ifEmpty { null },
+                leafScore + timingDelta + sacrificeWindowDelta + landSacrificeDelta,
+                listOfNotNull(timingNote, sacrificeWindowNote, landSacrificeNote)
+                    .joinToString("; ").ifEmpty { null },
             )
         val context = CastContext(
             state = state,
@@ -671,16 +675,57 @@ class Strategist(
         val override = advisor.evaluateCast(context)
         val advisorNote = override?.let { "${advisor::class.simpleName} replaced the board score" }
         return AdjustedScore(
-            (override ?: leafScore) + timingDelta + sacrificeWindowDelta,
-            listOfNotNull(advisorNote, timingNote, sacrificeWindowNote)
+            (override ?: leafScore) + timingDelta + sacrificeWindowDelta + landSacrificeDelta,
+            listOfNotNull(advisorNote, timingNote, sacrificeWindowNote, landSacrificeNote)
                 .joinToString("; ").ifEmpty { null },
         )
     }
 
     /**
+     * Price the irreversible land loss of graveyard/self alternative costs. The ordinary board
+     * evaluator sees fewer lands, but direct damage can still swamp that one-ply loss well before
+     * it matters. Preserve the resource unless the cast closes the game, leaves the opponent in
+     * immediate reach, or removes a visibly high-impact engine.
+     */
+    private fun landSacrificePatience(
+        state: GameState,
+        action: GameAction,
+        playerId: EntityId,
+        cardName: String,
+    ): Double {
+        val cast = action as? CastSpell ?: return 0.0
+        if (cast.alternativeCostType !in setOf(AlternativeCostType.FLASHBACK, AlternativeCostType.SELF_ALTERNATIVE)) {
+            return 0.0
+        }
+        val sacrificedLands = cast.additionalCostPayment?.sacrificedPermanents.orEmpty().count { id ->
+            state.getEntity(id)?.get<CardComponent>()?.typeLine?.isLand == true
+        }
+        if (sacrificedLands == 0) return 0.0
+
+        val damage = intents.forName(cardName)?.removalReach ?: 0
+        val target = cast.targets.singleOrNull()
+        if (target is ChosenTarget.Player && state.isOpponentTo(target.playerId, playerId)) {
+            val life = state.lifeTotal(target.playerId)
+            if (damage >= life || life <= damage + NEAR_LETHAL_REACH) return 0.0
+            if (state.lifeTotal(playerId) <= damage && life <= damage * 2) {
+                return -LAND_SACRIFICE_COST * sacrificedLands / 2.0
+            }
+        }
+        if (target is ChosenTarget.Permanent) {
+            val permanent = state.getEntity(target.entityId)
+            val name = permanent?.get<CardComponent>()?.name
+            val intent = if (permanent != null && name != null) intents.forPermanent(permanent, name) else null
+            if (intent?.repeatable == true && (intent.opponentDamage ?: 0) >= IMPORTANT_ENGINE_DAMAGE) {
+                return 0.0
+            }
+        }
+        return -LAND_SACRIFICE_COST * sacrificedLands
+    }
+
+    /**
      * Reward converting a permanent that an opposing stack object already targets into an
      * additional-cost resource. The information is entirely public, and the adjustment is tied to
-     * the payment rather than to a card name: a spell, an activated sacrifice outlet, and any
+     * the payment rather than to a card name: Village Rites, an activated sacrifice outlet, and any
      * future equivalent all get the same window.
      *
      * Rollout scoring can otherwise average the immediate two-for-one with futures in which the
@@ -713,6 +758,7 @@ class Strategist(
         }
         return if (threatened) TARGETED_SACRIFICE_WINDOW else 0.0
     }
+
     /**
      * A leaf score after per-card adjustment, plus what did the adjusting.
      *
@@ -1312,6 +1358,15 @@ class Strategist(
 
         /** Value recovered by cashing in a permanent an opposing stack object already targets. */
         const val TARGETED_SACRIFICE_WINDOW = 2.0
+
+        /** Per-land opportunity cost for irreversible alternate/flashback payments. */
+        const val LAND_SACRIFICE_COST = 3.0
+
+        /** A burn spell leaving this much reach is close enough to preserve race conversion. */
+        const val NEAR_LETHAL_REACH = 2
+
+        /** Repeatable face damage per trigger that justifies spending land as removal. */
+        const val IMPORTANT_ENGINE_DAMAGE = 2
 
         /** Where the avatar tops out — the recommended stopping point. See [momirXCandidates]. */
         const val MOMIR_TARGET_X = 8

@@ -12,6 +12,9 @@ import com.wingedsheep.engine.state.GameState
 import com.wingedsheep.engine.view.ClientGameState
 import com.wingedsheep.engine.view.LegalActionInfo
 import com.wingedsheep.sdk.core.Format
+import com.wingedsheep.sdk.core.Color
+import com.wingedsheep.sdk.core.ManaCost
+import com.wingedsheep.sdk.core.ManaSymbol
 import com.wingedsheep.sdk.model.EntityId
 import org.slf4j.LoggerFactory
 
@@ -120,9 +123,53 @@ class EngineAiPlayerController(
             cards[entityId]?.typeLine?.contains("Land", ignoreCase = true) == true
         }
 
-        val keep = landCount in 2..5
-        logger.info("Engine AI mulligan: hand={} cards, {} lands → {}", handSize, landCount, if (keep) "KEEP" else "MULLIGAN")
+        val reasonableLandCount = landCount in 2..5
+        val coloredSources = mulliganMessage.hand
+            .mapNotNull(cards::get)
+            .filter { it.typeLine?.contains("Land", ignoreCase = true) == true }
+            .flatMapTo(mutableSetOf(), ::colorsProducedBy)
+        val earlySpells = mulliganMessage.hand
+            .mapNotNull(cards::get)
+            .filterNot { it.typeLine?.contains("Land", ignoreCase = true) == true }
+            .mapNotNull { summary ->
+                summary.manaCost?.let { runCatching { ManaCost.parse(it) }.getOrNull() }
+                    ?.takeIf { it.cmc <= landCount.coerceAtMost(3) }
+                    ?.let { summary to it }
+            }
+        val castableEarly = earlySpells.count { (_, cost) ->
+            cost.symbols.all { symbol ->
+                symbol.colors.isEmpty() || symbol is ManaSymbol.Phyrexian ||
+                    symbol.colors.any { it in coloredSources }
+            }
+        }
+        val coloredMismatch = earlySpells.size - castableEarly
+        // A nominal two-land hand is not functional when nearly all of its cheap plays ask for a
+        // color those lands cannot make. One incidental castable (often a reactive protection
+        // spell) does not turn four stranded early spells into a keep.
+        val colorFunctional = coloredMismatch < 3 || castableEarly >= 2
+        val keep = reasonableLandCount && colorFunctional
+        logger.info(
+            "Engine AI mulligan: hand={} cards, {} lands, {}/{} early spells castable → {}",
+            handSize, landCount, castableEarly, earlySpells.size, if (keep) "KEEP" else "MULLIGAN"
+        )
         return keep
+    }
+
+    private fun colorsProducedBy(card: CardSummary): Set<Color> {
+        val basic = when (card.name) {
+            "Plains" -> setOf(Color.WHITE)
+            "Island" -> setOf(Color.BLUE)
+            "Swamp" -> setOf(Color.BLACK)
+            "Mountain" -> setOf(Color.RED)
+            "Forest" -> setOf(Color.GREEN)
+            else -> emptySet()
+        }
+        val text = card.oracleText.orEmpty()
+        if ("mana of any color" in text.lowercase()) return Color.entries.toSet()
+        val printed = Regex("""\{([WUBRG])}""").findAll(text)
+            .mapNotNull { match -> Color.fromSymbol(match.groupValues[1].single()) }
+            .toSet()
+        return basic + printed
     }
 
     override fun chooseBottomCards(message: BottomCardsInfo): List<EntityId> {
