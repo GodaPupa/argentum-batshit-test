@@ -1,13 +1,16 @@
 package com.wingedsheep.engine.scenarios
 
+import com.wingedsheep.engine.core.ActivateAbility
 import com.wingedsheep.engine.core.CastSpell
 import com.wingedsheep.engine.state.components.battlefield.AttachedToComponent
 import com.wingedsheep.engine.state.components.battlefield.PreparedComponent
 import com.wingedsheep.engine.state.components.battlefield.PreparedSpellCopyComponent
 import com.wingedsheep.engine.state.components.battlefield.TappedComponent
 import com.wingedsheep.engine.state.components.identity.CardComponent
+import com.wingedsheep.engine.state.components.player.ManaPoolComponent
 import com.wingedsheep.engine.state.components.stack.TriggeredAbilityOnStackComponent
 import com.wingedsheep.engine.support.ScenarioTestBase
+import com.wingedsheep.sdk.core.Color
 import com.wingedsheep.sdk.core.Phase
 import com.wingedsheep.sdk.core.Step
 import com.wingedsheep.sdk.model.EntityId
@@ -146,6 +149,27 @@ class GoblinGlasswrightScenarioTest : ScenarioTestBase() {
                     game.state.grantedTriggeredAbilities.any { it.entityId == glasswright } shouldBe true
                 }
 
+                val treasure = game.findPermanent("Treasure")!!
+                val treasureAbility = cardRegistry.getCard("Treasure")!!.script.activatedAbilities.single()
+                game.execute(
+                    ActivateAbility(
+                        playerId = game.player1Id,
+                        sourceId = treasure,
+                        abilityId = treasureAbility.id,
+                        manaColorChoice = Color.BLACK,
+                    )
+                ).error shouldBe null
+                withClue("the Craft Treasure is sacrificed explicitly for Village Rites' black mana") {
+                    game.findPermanent("Treasure") shouldBe null
+                    game.state.getEntity(game.player1Id)?.get<ManaPoolComponent>()?.black shouldBe 1
+                    game.getLifeTotal(2) shouldBe 17
+                    game.topTriggerSource() shouldBe "Mirkwood Bats"
+                }
+                game.resolveTop()
+                withClue("Bats drains exactly one for sacrificing the Treasure") {
+                    game.getLifeTotal(2) shouldBe 16
+                }
+
                 val handBeforeRites = game.handSize(1)
                 val libraryBeforeRites = game.librarySize(1)
                 game.castSpellWithAdditionalSacrifice(1, "Village Rites", "Goblin Glasswright").error shouldBe null
@@ -154,12 +178,8 @@ class GoblinGlasswrightScenarioTest : ScenarioTestBase() {
                     game.preparedCopies().shouldHaveSize(0)
                     game.handSize(1) shouldBe handBeforeRites - 1
                 }
-                withClue("the Craft Treasure is consumed for Village Rites' black mana") {
-                    game.findPermanent("Treasure") shouldBe null
-                }
 
                 var flamebreatherResolved = false
-                var treasureSacrificeDrainResolved = false
                 var returnResolved = false
                 var wickedRoleDrainResolved = false
                 val verifyReturnedGlasswright = {
@@ -172,9 +192,7 @@ class GoblinGlasswrightScenarioTest : ScenarioTestBase() {
                         game.preparedCopies().single() shouldNotBe firstCopy
                     }
                 }
-                while (!flamebreatherResolved || !treasureSacrificeDrainResolved ||
-                    !returnResolved || !wickedRoleDrainResolved
-                ) {
+                while (!flamebreatherResolved || !returnResolved || !wickedRoleDrainResolved) {
                     when (val source = game.topTriggerSource()) {
                         "Kessig Flamebreather" -> {
                             val lifeBefore = game.getLifeTotal(2)
@@ -184,25 +202,14 @@ class GoblinGlasswrightScenarioTest : ScenarioTestBase() {
                         }
 
                         "Mirkwood Bats" -> {
-                            if (!returnResolved) {
-                                withClue("this Bats trigger is from sacrificing the Craft Treasure for mana") {
-                                    treasureSacrificeDrainResolved shouldBe false
-                                    game.findPermanent("Goblin Glasswright") shouldBe null
-                                    game.findPermanent("Wicked Role") shouldBe null
-                                }
-                                val lifeBefore = game.getLifeTotal(2)
-                                game.resolveTop()
-                                game.getLifeTotal(2) shouldBe lifeBefore - 1
-                                treasureSacrificeDrainResolved = true
-                            } else {
-                                withClue("this Bats trigger is from creating the Wicked Role") {
-                                    game.findPermanent("Wicked Role") shouldNotBe null
-                                }
-                                val lifeBefore = game.getLifeTotal(2)
-                                game.resolveTop()
-                                game.getLifeTotal(2) shouldBe lifeBefore - 1
-                                wickedRoleDrainResolved = true
+                            withClue("this Bats trigger is from creating the Wicked Role") {
+                                returnResolved shouldBe true
+                                game.findPermanent("Wicked Role") shouldNotBe null
                             }
+                            val lifeBefore = game.getLifeTotal(2)
+                            game.resolveTop()
+                            game.getLifeTotal(2) shouldBe lifeBefore - 1
+                            wickedRoleDrainResolved = true
                         }
 
                         null -> error("expected a triggered ability above Village Rites")
