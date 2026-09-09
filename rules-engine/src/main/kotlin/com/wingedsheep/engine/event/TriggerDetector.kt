@@ -2433,10 +2433,6 @@ class TriggerDetector(
                     !cardComponent.typeLine.isArtifact
                 is com.wingedsheep.sdk.scripting.predicates.CardPredicate.HasSubtype ->
                     cardComponent.typeLine.hasSubtype(predicate.subtype)
-                is com.wingedsheep.sdk.scripting.predicates.CardPredicate.IsToken ->
-                    entity.has<TokenComponent>()
-                is com.wingedsheep.sdk.scripting.predicates.CardPredicate.IsNontoken ->
-                    !entity.has<TokenComponent>()
                 else -> true
             }
         }
@@ -2913,6 +2909,10 @@ class TriggerDetector(
                     cardComponent.typeLine.isArtifact
                 is com.wingedsheep.sdk.scripting.predicates.CardPredicate.HasSubtype ->
                     cardComponent.typeLine.hasSubtype(predicate.subtype)
+                is com.wingedsheep.sdk.scripting.predicates.CardPredicate.IsToken ->
+                    entity.has<TokenComponent>()
+                is com.wingedsheep.sdk.scripting.predicates.CardPredicate.IsNontoken ->
+                    !entity.has<TokenComponent>()
                 else -> true
             }
         }
