@@ -141,11 +141,18 @@ object CardIntentAnalyzer {
     fun analyzeEffect(effect: Effect): CardIntent {
         val tags = mutableSetOf<IntentTag>()
         var removalReach: Int? = null
+        var opponentDamage: Int? = null
         for (leaf in EffectWalker.leaves(effect)) {
             tags += tagsOf(leaf)
             reachOf(leaf)?.let { removalReach = maxOf(removalReach ?: 0, it) }
+            opponentDamageOf(leaf)?.let { opponentDamage = maxOf(opponentDamage ?: 0, it) }
         }
-        return CardIntent.UNKNOWN.copy(tags = tags, removalReach = removalReach)
+        return CardIntent.UNKNOWN.copy(
+            tags = tags,
+            removalReach = removalReach,
+            opponentDamage = opponentDamage,
+            affectsOpponent = opponentDamage != null,
+        )
     }
 
     /**
@@ -168,6 +175,7 @@ object CardIntentAnalyzer {
         val tags = mutableSetOf<IntentTag>()
         var removalReach: Int? = null
         var cardsDrawn: Int? = null
+        var opponentDamage: Int? = null
         var expiringPump = false
         var pumpToughness = 0
 
@@ -175,6 +183,7 @@ object CardIntentAnalyzer {
             tags += tagsOf(effect)
             reachOf(effect)?.let { removalReach = maxOf(removalReach ?: 0, it) }
             drawsOf(effect)?.let { cardsDrawn = maxOf(cardsDrawn ?: 0, it) }
+            opponentDamageOf(effect)?.let { opponentDamage = maxOf(opponentDamage ?: 0, it) }
             if (isExpiringPump(effect)) {
                 expiringPump = true
                 pumpToughness = maxOf(pumpToughness, expiringToughnessOf(effect))
@@ -209,7 +218,8 @@ object CardIntentAnalyzer {
             speed = speed,
             removalReach = removalReach,
             cardsDrawn = cardsDrawn,
-            affectsOpponent = tags.any { it in OPPONENT_FACING },
+            opponentDamage = opponentDamage,
+            affectsOpponent = opponentDamage != null || tags.any { it in OPPONENT_FACING },
             repeatable = repeatable,
             staticPriorValue = CardIntent.UNKNOWN.staticPriorValue,
             anthemBonus = anthemBonus,
@@ -385,6 +395,14 @@ object CardIntentAnalyzer {
     private fun drawsOf(effect: Effect): Int? = when (effect) {
         is DrawCardsEffect -> fixed(effect.count)
         is DrawUpToEffect -> effect.maxCards
+        else -> null
+    }
+
+    /** Fixed face damage from one resolution; permanent-targeted damage remains removal reach. */
+    private fun opponentDamageOf(effect: Effect): Int? = when (effect) {
+        is DealDamageEffect ->
+            if (!hitsAnotherPermanent(effect.target, insideIteration = false)) fixed(effect.amount) else null
+        is DrainLifeEffect -> fixed(effect.amount)
         else -> null
     }
 
