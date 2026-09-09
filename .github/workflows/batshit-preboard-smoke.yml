@@ -1,0 +1,44 @@
+name: Batshit Preboard Smoke
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Java 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '9.6.1'
+
+      - name: Run five seeded preboard games
+        run: |
+          scripts/test-class BatshitEconomicsPreboardSmokeTest \
+            -DbatshitSmoke=true \
+            --info \
+            --stacktrace | tee batshit-preboard-smoke.log
+
+      - name: Upload full game log
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: batshit-preboard-smoke-log
+          path: |
+            batshit-preboard-smoke.log
+            ai/build/reports/batshit-smoke/preboard.log
+          if-no-files-found: warn
