@@ -705,7 +705,7 @@ class Strategist(
          */
         forceTargetRefinement: Boolean = false,
     ): com.wingedsheep.engine.core.GameAction {
-        val baseAction = withAutomaticPayments(action)
+        val baseAction = withAutomaticPayments(state, action, playerId)
         if (TargetSelection.targetsAlreadyFilled(baseAction) != false) {
             return withSumGatedExilePayment(state, action, baseAction)
         }
@@ -783,7 +783,7 @@ class Strategist(
     ): com.wingedsheep.engine.core.GameAction = withSumGatedExilePayment(
         state, action,
         TargetSelection.fillHeuristically(
-            state, action.copy(action = withAutomaticPayments(action)), playerId,
+            state, action.copy(action = withAutomaticPayments(state, action, playerId)), playerId,
             fillPartialRequirements = useMeaningfulFilter, intents = intents
         ),
     )
@@ -797,7 +797,11 @@ class Strategist(
      * spells and activated abilities. The first candidate is deterministic and already filtered by
      * projected controller/type/counter legality.
      */
-    private fun withAutomaticPayments(action: LegalAction): GameAction {
+    private fun withAutomaticPayments(
+        state: GameState,
+        action: LegalAction,
+        playerId: EntityId,
+    ): GameAction {
         val gameAction = withAutomaticTapForGeneric(action, withAutomaticConvoke(action))
         val info = action.additionalCostInfo ?: return gameAction
         val existing = when (gameAction) {
@@ -805,6 +809,41 @@ class Strategist(
             is ActivateAbility -> gameAction.costPayment
             else -> null
         } ?: AdditionalCostPayment()
+        fun attach(payment: AdditionalCostPayment): GameAction = when (gameAction) {
+            is CastSpell -> gameAction.copy(additionalCostPayment = payment)
+            is ActivateAbility -> gameAction.copy(costPayment = payment)
+            else -> gameAction
+        }
+
+        // A one-card discard or sacrifice can encode most of the line's value: sacrificing the
+        // creature a removal spell is already killing, or discarding a graveyard-recursive card
+        // before the draw that turns it back on. `take(1)` makes both choices depend on incidental
+        // zone order. For untargeted actions, simulate each legal payment and keep the board the
+        // normal evaluator prefers. Targeted actions stay on the bounded legacy path because an
+        // unfilled target would make every payment simulation illegal; their target-refinement pass
+        // still evaluates the completed action afterwards.
+        val strategicPool = when (info.costType) {
+            "DiscardCard" -> info.validDiscardTargets.takeIf { info.discardCount == 1 }
+            "SacrificePermanent" -> info.validSacrificeTargets.takeIf { info.sacrificeCount == 1 }
+            else -> null
+        }
+        if (!action.requiresTargets && strategicPool != null && strategicPool.size > 1) {
+            return strategicPool.take(AUTOMATIC_PAYMENT_CANDIDATES).maxByOrNull { chosen ->
+                val payment = when (info.costType) {
+                    "DiscardCard" -> existing.copy(discardedCards = listOf(chosen))
+                    else -> existing.copy(sacrificedPermanents = listOf(chosen))
+                }
+                simulator.simulate(state, attach(payment)).scoreOrRankLast { leaf ->
+                    evaluator.evaluate(leaf, leaf.projectedState, playerId)
+                }
+            }?.let { chosen ->
+                when (info.costType) {
+                    "DiscardCard" -> attach(existing.copy(discardedCards = listOf(chosen)))
+                    else -> attach(existing.copy(sacrificedPermanents = listOf(chosen)))
+                }
+            } ?: gameAction
+        }
+
         val payment = when (info.costType) {
             "Blight" -> existing.copy(blightTargets = info.validBlightTargets.take(1))
             "Behold" -> existing.copy(beheldCards = info.validBeholdTargets.take(info.beholdCount))
@@ -849,11 +888,7 @@ class Strategist(
             }
             else -> return gameAction
         }
-        return when (gameAction) {
-            is CastSpell -> gameAction.copy(additionalCostPayment = payment)
-            is ActivateAbility -> gameAction.copy(costPayment = payment)
-            else -> gameAction
-        }
+        return attach(payment)
     }
 
     /** The entity a chosen target points at, whichever arm of the union it is. */
@@ -1223,6 +1258,9 @@ class Strategist(
          * 1, so the rescue needs its own floor; this is the legacy cap.
          */
         const val RESCUE_TARGET_CANDIDATES = 8
+
+        /** Payment choices inspected for a one-card discard/sacrifice cost. */
+        const val AUTOMATIC_PAYMENT_CANDIDATES = 8
 
         /** Where the avatar tops out — the recommended stopping point. See [momirXCandidates]. */
         const val MOMIR_TARGET_X = 8
