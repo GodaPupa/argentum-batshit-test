@@ -2,6 +2,9 @@ name: Batshit Preboard Smoke
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - 'smoke/**'
 
 permissions:
   contents: read
