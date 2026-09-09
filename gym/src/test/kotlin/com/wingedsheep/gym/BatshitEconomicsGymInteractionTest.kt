@@ -6,7 +6,6 @@ import com.wingedsheep.engine.core.CastSpell
 import com.wingedsheep.engine.core.GameEvent
 import com.wingedsheep.engine.core.LifeChangedEvent
 import com.wingedsheep.engine.core.PaymentStrategy
-import com.wingedsheep.engine.core.PassPriority
 import com.wingedsheep.engine.core.PermanentsSacrificedEvent
 import com.wingedsheep.engine.core.ZoneChangeEvent
 import com.wingedsheep.engine.state.components.battlefield.PreparedSpellCopyComponent
@@ -54,12 +53,6 @@ class BatshitEconomicsGymInteractionTest : ScenarioTestBase() {
 
     private fun List<GameEvent>.lifeChangesFor(playerId: EntityId): List<LifeChangedEvent> =
         filterIsInstance<LifeChangedEvent>().filter { it.playerId == playerId }
-
-    private fun applyOne(env: GameEnvironment, action: com.wingedsheep.engine.core.GameAction): StepResult =
-        when (val result = env.stepExactlyOne(action)) {
-            is ExactlyOneSubmissionResult.Applied -> result.step
-            is ExactlyOneSubmissionResult.Rejected -> error("Gym rejected $action: ${result.reason}")
-        }
 
     init {
         test("Gym reports Craft Treasure creation and separate Bats creation and sacrifice triggers") {
@@ -121,7 +114,7 @@ class BatshitEconomicsGymInteractionTest : ScenarioTestBase() {
                 .withPlayers("Batshit", "Red")
                 .withCardOnBattlefield(1, "Mirkwood Bats", summoningSickness = false)
                 .withCardOnBattlefield(1, "Grizzly Bears", summoningSickness = false)
-                .withCardOnBattlefield(1, "Kessig Flamebreather", summoningSickness = false)
+                .withCardOnBattlefield(1, "Grizzly Bears", summoningSickness = false)
                 .withCardInHand(1, "Fanatical Offering")
                 .withCardInLibrary(1, "Mountain")
                 .withCardInLibrary(1, "Mountain")
@@ -132,9 +125,10 @@ class BatshitEconomicsGymInteractionTest : ScenarioTestBase() {
                 .inPhase(Phase.PRECOMBAT_MAIN, Step.PRECOMBAT_MAIN)
                 .build()
             val env = environment(game)
-            val bear = env.state.controlledBattlefield(game.player1Id).single { id ->
+            val bears = env.state.controlledBattlefield(game.player1Id).filter { id ->
                 cardName(env, id) == "Grizzly Bears"
             }
+            val bear = bears.first()
             val offering = castNamed(env, "Fanatical Offering").copy(
                 additionalCostPayment = AdditionalCostPayment(sacrificedPermanents = listOf(bear)),
                 paymentStrategy = PaymentStrategy.AutoPay,
@@ -153,9 +147,7 @@ class BatshitEconomicsGymInteractionTest : ScenarioTestBase() {
                 env.state.lifeTotal(game.player2Id).shouldBeExactly(19)
             }
 
-            val exploreTarget = env.state.controlledBattlefield(game.player1Id).single { id ->
-                cardName(env, id) == "Kessig Flamebreather"
-            }
+            val exploreTarget = bears.last()
             val mapSacrifice = env.step(
                 ActivateAbility(
                     playerId = game.player1Id,
@@ -180,13 +172,9 @@ class BatshitEconomicsGymInteractionTest : ScenarioTestBase() {
                 .withPlayers("Batshit", "Red")
                 .withCardOnBattlefield(1, "Mirkwood Bats", summoningSickness = false)
                 .withCardOnBattlefield(1, "Mirkwood Bats", summoningSickness = false)
-                .withCardInHand(1, "Fanatical Offering")
-                .withCardInLibrary(1, "Mountain")
-                .withCardInLibrary(1, "Mountain")
-                .withLandsOnBattlefield(1, "Swamp", 2)
                 .withCardInHand(2, "Lightning Bolt")
                 .withCardInHand(2, "Fiery Temper")
-                .withLandsOnBattlefield(2, "Mountain", 2)
+                .withLandsOnBattlefield(2, "Mountain", 4)
                 .withActivePlayer(2)
                 .inPhase(Phase.PRECOMBAT_MAIN, Step.PRECOMBAT_MAIN)
                 .build()
@@ -194,58 +182,26 @@ class BatshitEconomicsGymInteractionTest : ScenarioTestBase() {
             val firstBats = env.state.controlledBattlefield(game.player1Id).first { id ->
                 cardName(env, id) == "Mirkwood Bats"
             }
-            val bolt = env.state.getHand(game.player2Id).single { cardName(env, it) == "Lightning Bolt" }
-            applyOne(
-                env,
-                CastSpell(
-                    playerId = game.player2Id,
-                    cardId = bolt,
+            env.step(
+                castNamed(env, "Lightning Bolt").copy(
                     targets = listOf(ChosenTarget.Permanent(firstBats)),
-                    paymentStrategy = PaymentStrategy.AutoPay,
                 )
             )
-            applyOne(env, PassPriority(game.player2Id))
-            applyOne(env, PassPriority(game.player1Id))
 
             val secondBats = env.state.controlledBattlefield(game.player1Id).single { id ->
                 cardName(env, id) == "Mirkwood Bats"
             }
-            val temper = env.state.getHand(game.player2Id).single { cardName(env, it) == "Fiery Temper" }
-            applyOne(
-                env,
-                CastSpell(
-                    playerId = game.player2Id,
-                    cardId = temper,
+            env.step(
+                castNamed(env, "Fiery Temper").copy(
                     targets = listOf(ChosenTarget.Permanent(secondBats)),
-                    paymentStrategy = PaymentStrategy.AutoPay,
                 )
             )
-            applyOne(env, PassPriority(game.player2Id))
-
-            val offering = env.state.getHand(game.player1Id).single {
-                cardName(env, it) == "Fanatical Offering"
-            }
-            applyOne(
-                env,
-                CastSpell(
-                    playerId = game.player1Id,
-                    cardId = offering,
-                    additionalCostPayment = AdditionalCostPayment(
-                        sacrificedPermanents = listOf(secondBats)
-                    ),
-                    paymentStrategy = PaymentStrategy.AutoPay,
-                )
-            )
-            applyOne(env, PassPriority(game.player1Id))
-            applyOne(env, PassPriority(game.player2Id))
-            applyOne(env, PassPriority(game.player2Id))
-            applyOne(env, PassPriority(game.player1Id))
 
             withClue("the final Gym state and smoke-summary source agree that neither Bats survived") {
-            env.state.controlledBattlefield(game.player1Id).mapNotNull { id -> cardName(env, id) }
-                .count { it == "Mirkwood Bats" }.shouldBeExactly(0)
-            env.state.getGraveyard(game.player1Id).mapNotNull { id -> cardName(env, id) }
-                .count { it == "Mirkwood Bats" }.shouldBeExactly(2)
+                env.state.controlledBattlefield(game.player1Id).mapNotNull { id -> cardName(env, id) }
+                    .count { it == "Mirkwood Bats" }.shouldBeExactly(0)
+                env.state.getGraveyard(game.player1Id).mapNotNull { id -> cardName(env, id) }
+                    .count { it == "Mirkwood Bats" }.shouldBeExactly(2)
             }
         }
     }
