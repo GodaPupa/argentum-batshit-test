@@ -92,7 +92,7 @@ class GoblinGlasswrightScenarioTest : ScenarioTestBase() {
                     .withCardInHand(1, "Not Dead After All")
                     .withCardInHand(1, "Village Rites")
                     .withLandsOnBattlefield(1, "Mountain", 3)
-                    .withLandsOnBattlefield(1, "Swamp", 2)
+                    .withLandsOnBattlefield(1, "Swamp", 1)
                     .withCardInLibrary(1, "Mountain")
                     .withCardInLibrary(1, "Swamp")
                     .withLifeTotal(2, 20)
