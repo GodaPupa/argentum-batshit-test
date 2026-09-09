@@ -28,14 +28,14 @@ jobs:
       - name: Verify snapshot scope
         shell: bash
         run: |
-          changed="$(git diff --name-only)"
-          expected="$(printf '%s\n' \\
-            mtg-sets/src/test/resources/snapshots/cards/EVE.json \\
-            mtg-sets/src/test/resources/snapshots/cards/KHM.json \\
-            mtg-sets/src/test/resources/snapshots/cards/MBS.json \\
-            mtg-sets/src/test/resources/snapshots/cards/MH1.json \\
-            mtg-sets/src/test/resources/snapshots/cards/MH3.json)"
-          test "$changed" = "$expected"
+          git diff --name-only > /tmp/actual-snapshots
+          printf '%s\n' \
+            mtg-sets/src/test/resources/snapshots/cards/EVE.json \
+            mtg-sets/src/test/resources/snapshots/cards/KHM.json \
+            mtg-sets/src/test/resources/snapshots/cards/MBS.json \
+            mtg-sets/src/test/resources/snapshots/cards/MH1.json \
+            mtg-sets/src/test/resources/snapshots/cards/MH3.json > /tmp/expected-snapshots
+          diff -u /tmp/expected-snapshots /tmp/actual-snapshots
       - name: Commit snapshots
         run: |
           git config user.name github-actions[bot]
