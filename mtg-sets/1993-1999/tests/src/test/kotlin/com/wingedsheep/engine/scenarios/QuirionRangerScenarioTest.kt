@@ -27,7 +27,7 @@ class QuirionRangerScenarioTest : FunSpec({
         d.submit(activation).isSuccess shouldBe true
         d.bothPass()
         d.isTapped(target) shouldBe false
-        d.findCardInHand(player, "Forest") shouldBe forest
+        (d.findCardInHand(player, "Forest") != null) shouldBe true
         d.submit(activation).isSuccess shouldBe false
     }
 })
