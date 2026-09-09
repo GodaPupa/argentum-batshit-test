@@ -3461,3 +3461,85 @@
         "BLUE"
     ]
 }
+
+// Winding Way
+{
+    "name": "Winding Way",
+    "manaCost": "{1}{G}",
+    "typeLine": "Sorcery",
+    "oracleText": "Choose creature or land. Reveal the top four cards of your library. Put all cards of the chosen type revealed this way into your hand and the rest into your graveyard.",
+    "script": {
+        "spellEffect": {
+            "type": "Composite",
+            "effects": [
+                {
+                    "type": "ChooseCardTypeForSource",
+                    "allowedCardTypes": [
+                        "Creature",
+                        "Land"
+                    ],
+                    "prompt": "Choose creature or land"
+                },
+                {
+                    "type": "Composite",
+                    "effects": [
+                        {
+                            "type": "GatherCards",
+                            "source": {
+                                "type": "TopOfLibrary",
+                                "count": {
+                                    "type": "Fixed",
+                                    "amount": 4
+                                }
+                            },
+                            "storeAs": "looked"
+                        },
+                        {
+                            "type": "RevealCollection",
+                            "from": "looked"
+                        },
+                        {
+                            "type": "FilterCollection",
+                            "from": "looked",
+                            "filter": {
+                                "type": "MatchesFilter",
+                                "filter": {
+                                    "cardPredicates": [
+                                        "CardTypeEqualsChosenComponent"
+                                    ]
+                                }
+                            },
+                            "storeMatching": "kept",
+                            "storeNonMatching": "rest"
+                        },
+                        {
+                            "type": "MoveCollection",
+                            "from": "kept",
+                            "destination": {
+                                "type": "ToZone",
+                                "zone": "Hand"
+                            }
+                        },
+                        {
+                            "type": "MoveCollection",
+                            "from": "rest",
+                            "destination": {
+                                "type": "ToZone",
+                                "zone": "Graveyard"
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    "metadata": {
+        "collectorNumber": "193",
+        "artist": "Adam Paquette",
+        "flavorText": "Every path leads to discovery.",
+        "imageUri": "https://cards.scryfall.io/normal/front/4/e/4e5d9776-b6ce-4ad6-8acc-69115ba5de76.jpg?1783933087"
+    },
+    "colorIdentityOverride": [
+        "GREEN"
+    ]
+}

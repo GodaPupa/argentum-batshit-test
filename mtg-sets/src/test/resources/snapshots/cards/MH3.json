@@ -208,6 +208,98 @@
     ]
 }
 
+// Evolution Witness
+{
+    "name": "Evolution Witness",
+    "manaCost": "{2}{G}",
+    "typeLine": "Creature — Elf Shaman Mutant",
+    "oracleText": "{1}{G}: Adapt 2. (If this creature has no +1/+1 counters on it, put two +1/+1 counters on it.)\nWhenever one or more +1/+1 counters are put on this creature, return target permanent card from your graveyard to your hand.",
+    "creatureStats": {
+        "power": 2,
+        "toughness": 1
+    },
+    "script": {
+        "triggeredAbilities": [
+            {
+                "id": "ability_1",
+                "trigger": {
+                    "type": "CountersPlacedEvent",
+                    "counterType": "+1/+1"
+                },
+                "effect": {
+                    "type": "MoveToZone",
+                    "target": {
+                        "type": "BoundVariable",
+                        "name": "target permanent card"
+                    },
+                    "destination": "Hand"
+                },
+                "targetRequirement": {
+                    "type": "TargetObject",
+                    "filter": {
+                        "baseFilter": "permanent own:you",
+                        "zone": "Graveyard"
+                    },
+                    "id": "target permanent card"
+                }
+            }
+        ],
+        "activatedAbilities": [
+            {
+                "id": "ability_2",
+                "cost": {
+                    "type": "CostAtomWrapper",
+                    "atom": {
+                        "type": "AtomMana",
+                        "cost": "{1}{G}"
+                    }
+                },
+                "effect": {
+                    "type": "Gated",
+                    "gate": {
+                        "type": "Gate.WhenCondition",
+                        "condition": {
+                            "type": "Compare",
+                            "left": {
+                                "type": "EntityProperty",
+                                "entity": "Source",
+                                "numericProperty": {
+                                    "type": "CounterCount",
+                                    "counterType": {
+                                        "type": "Named",
+                                        "name": "+1/+1"
+                                    }
+                                }
+                            },
+                            "operator": "LTE",
+                            "right": {
+                                "type": "Fixed",
+                                "amount": 0
+                            }
+                        }
+                    },
+                    "then": {
+                        "type": "AddCounters",
+                        "counterType": "+1/+1",
+                        "count": 2,
+                        "target": "Self"
+                    }
+                },
+                "descriptionOverride": "{1}{G}: Adapt 2"
+            }
+        ]
+    },
+    "metadata": {
+        "collectorNumber": "151",
+        "artist": "Nereida",
+        "flavorText": "She remembers every breakthrough, from the gene's mutation to the new life's propagation.",
+        "imageUri": "https://cards.scryfall.io/normal/front/4/d/4d89283e-9783-4006-9294-4ae0473d2ce6.jpg?1783911262"
+    },
+    "colorIdentityOverride": [
+        "GREEN"
+    ]
+}
+
 // Faithful Watchdog
 {
     "name": "Faithful Watchdog",
