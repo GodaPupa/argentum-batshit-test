@@ -166,11 +166,11 @@ internal fun assertOnlyDeclaredDeckDifference(
 
 class BatshitPairedCounterfactualFrameworkTest : FunSpec({
     test("undeclared card-list differences fail before games run") {
-        val control = batshitDeck()
+        val control = Deck(cards = List(60) { "Fixture Control Card" })
         val undeclaredVariant = control.copy(
             cards = control.cards.toMutableList().also { cards ->
-                cards.remove("Lightning Bolt")
-                cards.add("Mountain")
+                cards.remove("Fixture Control Card")
+                cards.add("Fixture Variant Card")
             },
         )
 
@@ -185,11 +185,11 @@ class BatshitPairedCounterfactualFrameworkTest : FunSpec({
     }
 
     test("exactly declared card-list difference is accepted") {
-        val control = batshitDeck()
+        val control = Deck(cards = List(60) { "Fixture Control Card" })
         val variant = control.copy(
             cards = control.cards.toMutableList().also { cards ->
-                cards.remove("Lightning Bolt")
-                cards.add("Mountain")
+                cards.remove("Fixture Control Card")
+                cards.add("Fixture Variant Card")
             },
         )
 
@@ -198,8 +198,8 @@ class BatshitPairedCounterfactualFrameworkTest : FunSpec({
             control = control,
             variant = variant,
             declaredDifference = DeclaredDeckDifference(
-                mainboardRemoved = mapOf("Lightning Bolt" to 1),
-                mainboardAdded = mapOf("Mountain" to 1),
+                mainboardRemoved = mapOf("Fixture Control Card" to 1),
+                mainboardAdded = mapOf("Fixture Variant Card" to 1),
             ),
         )
     }
