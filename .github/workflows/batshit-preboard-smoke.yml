@@ -27,9 +27,10 @@ jobs:
           gradle-version: '9.6.1'
 
       - name: Run five seeded preboard games
+        env:
+          BATSHIT_SMOKE: "true"
         run: |
           scripts/test-class BatshitEconomicsPreboardSmokeTest \
-            -DbatshitSmoke=true \
             --info \
             --stacktrace | tee batshit-preboard-smoke.log
 
