@@ -419,7 +419,7 @@ object BoardPresence : BoardFeature {
     private const val LOYALTY_VALUE = 0.8
 
     /** Small prior for one visible resolution of a repeatable face-damage engine. */
-    private const val OPPONENT_DAMAGE_ENGINE_VALUE = 0.35
+    private const val OPPONENT_DAMAGE_ENGINE_VALUE = 0.75
 
     /**
      * What a creature's **body** is worth — the half of [creatureValue] that reads only stats and
