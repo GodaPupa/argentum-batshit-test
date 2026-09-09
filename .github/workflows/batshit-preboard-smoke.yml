@@ -30,6 +30,7 @@ jobs:
         env:
           BATSHIT_SMOKE: "true"
         run: |
+          set -o pipefail
           scripts/test-class BatshitEconomicsPreboardSmokeTest \
             --info \
             --stacktrace | tee batshit-preboard-smoke.log
