@@ -28,22 +28,33 @@ import kotlin.time.Duration.Companion.minutes
 
 /**
  * Opt-in, fully logged Argentum-agent smoke run for the frozen Batshit Economics and Mono-Red
- * Madness maindecks. Ordinary validation compiles this harness but does not spend five full games
+ * Madness maindecks. Ordinary validation compiles this harness but does not spend ten full games
  * running it; `.github/workflows/batshit-preboard-smoke.yml` is the explicit entry point.
  *
- * This is observation, not a matchup benchmark. It deliberately runs only five fixed seeds and
+ * This is observation, not a matchup benchmark. This replay branch deliberately runs the frozen ten seeds and
  * makes no aggregate win-rate assertion.
  */
 class BatshitEconomicsPreboardSmokeTest : FunSpec({
 
     val enabled = System.getenv("BATSHIT_SMOKE") == "true"
 
-    test("five seeded preboard Argentum agent self-play games").config(
+    test("ten frozen-seed preboard Argentum agent self-play games").config(
         enabled = enabled,
         timeout = 45.minutes,
     ) {
         val registry = fullRegistry()
-        val seeds = listOf(0xBA75_0001L, 0xBA75_0002L, 0xBA75_0003L, 0xBA75_0004L, 0xBA75_0005L)
+        val seeds = listOf(
+            0x033D_F483_8D71_94AL,
+            0xB97F_CDFE_9799_C87L,
+            0xED3B_5358_E12D_ED3L,
+            0xAB1B_251D_164E_979L,
+            0xA48B_5B90_FAFA_44CL,
+            0x679B_6F9E_EF77_4BCL,
+            0x7663_C65A_87D6_DD5L,
+            0x3A25_48FB_BBB2_DECL,
+            0xF3B7_E43F_3288_345L,
+            0x9066_DF10_204F_D56L,
+        )
         val reports = seeds.mapIndexed { index, seed ->
             playLoggedGame(
                 registry = registry,
@@ -55,7 +66,7 @@ class BatshitEconomicsPreboardSmokeTest : FunSpec({
 
         val output = buildString {
             appendLine("BATSHIT ECONOMICS VS MONO-RED MADNESS")
-            appendLine("Argentum agent self-play — five-game preboard smoke test")
+            appendLine("Argentum agent self-play — frozen ten-seed telemetry replay")
             appendLine("Profile: ${AiProfile.PRODUCTION_CANDIDATE_EXPIRING.id}")
             appendLine("Seeds: ${seeds.joinToString()}")
             appendLine()
@@ -67,7 +78,7 @@ class BatshitEconomicsPreboardSmokeTest : FunSpec({
         Files.writeString(reportPath, output)
         println(output)
 
-        reports.size shouldBe 5
+        reports.size shouldBe 10
         reports.forEach { report ->
             report.actions shouldBeGreaterThan 0
             report.completed.shouldBeTrue()
@@ -189,7 +200,7 @@ private fun playLoggedGame(
     val initializer = GameInitializer(registry)
     val batshit75 = batshitDeck()
     // This run is deliberately preboard. Keep the authoritative 15 encoded above, but do not ask
-    // GameInitializer to resolve sideboard-only cards that can never enter these five games.
+    // GameInitializer to resolve sideboard-only cards that can never enter these ten games.
     val batshit = batshit75.copy(sideboard = emptyList())
     val red = monoRedDeck()
     val init = initializer.initializeGame(
