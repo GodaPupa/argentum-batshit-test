@@ -32,7 +32,7 @@ import kotlin.time.Duration.Companion.minutes
  */
 class BatshitEconomicsPreboardSmokeTest : FunSpec({
 
-    val enabled = System.getProperty("batshitSmoke") == "true"
+    val enabled = System.getenv("BATSHIT_SMOKE") == "true"
 
     test("five seeded preboard Argentum agent self-play games").config(
         enabled = enabled,
