@@ -11,6 +11,7 @@ import com.wingedsheep.engine.handlers.EffectContext
 import com.wingedsheep.engine.mechanics.layers.SerializableModification
 import com.wingedsheep.engine.mechanics.layers.StaticAbilityHandler
 import com.wingedsheep.engine.mechanics.daynight.DayNightService
+import com.wingedsheep.engine.mechanics.stack.PreparationLogic
 import com.wingedsheep.engine.registry.CardRegistry
 import com.wingedsheep.engine.state.ComponentContainer
 import com.wingedsheep.engine.state.GameState
@@ -672,6 +673,19 @@ object ZoneTransitionService {
                 newState = applyBattlefieldEntry(
                     newState, entityId, cardComponent, destControllerId, options, fromZone
                 )
+                // Prepared is an enters-the-battlefield condition, not a cast-resolution-only
+                // condition. Reanimation, blink, and other direct battlefield entries must create
+                // the incarnation's prepared spell copy just like a resolving permanent spell.
+                if (!options.faceDown && ::cardRegistry.isInitialized) {
+                    val cardDef = cardRegistry.getCard(cardComponent.cardDefinitionId)
+                    if (cardDef?.layout == com.wingedsheep.sdk.model.CardLayout.PREPARE &&
+                        cardDef.keywords.contains(com.wingedsheep.sdk.core.Keyword.PREPARED)
+                    ) {
+                        newState = PreparationLogic.makePrepared(
+                            newState, entityId, cardDef, destControllerId
+                        )
+                    }
+                }
                 // Record entry for per-player ETB-by-type tracking (Mechan Shieldmate and similar).
                 // This pipeline records via PermanentEntryTracker.record directly rather than
                 // BattlefieldEntry.place because the read must happen *after* applyBattlefieldEntry
