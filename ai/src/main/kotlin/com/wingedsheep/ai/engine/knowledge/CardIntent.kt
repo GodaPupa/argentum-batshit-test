@@ -245,6 +245,9 @@ enum class IntentTag {
     /** Protects something: hexproof, indestructible, regeneration, damage prevention. */
     PROTECTION,
 
+    /** Grants an expiring dies trigger that returns the protected permanent to the battlefield. */
+    DEATH_RETURN,
+
     /** Taps (or keeps tapped) a permanent — the Icy Manipulator shape. */
     TAPPER,
 

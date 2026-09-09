@@ -2,6 +2,7 @@ package com.wingedsheep.ai.engine.knowledge
 
 import com.wingedsheep.sdk.core.Keyword
 import com.wingedsheep.sdk.core.Zone
+import com.wingedsheep.sdk.dsl.Triggers
 import com.wingedsheep.sdk.model.CardDefinition
 import com.wingedsheep.sdk.model.CardFace
 import com.wingedsheep.sdk.model.CardScript
@@ -306,6 +307,17 @@ object CardIntentAnalyzer {
         is AddManaOfChoiceEffect, is PlayAdditionalLandsEffect -> setOf(IntentTag.RAMP)
 
         is RegenerateEffect, is PreventDamageEffect -> setOf(IntentTag.PROTECTION)
+
+        is GrantTriggeredAbilityEffect -> {
+            val returnsFromDeath = effect.duration == Duration.EndOfTurn &&
+                effect.ability.trigger == Triggers.Dies.event &&
+                effect.ability.binding == Triggers.Dies.binding &&
+                EffectWalker.leaves(effect.ability.effect).any { granted ->
+                    granted is MoveToZoneEffect && granted.fromZone == Zone.GRAVEYARD &&
+                        granted.destination == Zone.BATTLEFIELD
+                }
+            if (returnsFromDeath) setOf(IntentTag.PROTECTION, IntentTag.DEATH_RETURN) else emptySet()
+        }
 
         is GrantKeywordEffect -> keywordTags(effect.keyword)
         is GrantEvasionKeywordEffect -> setOf(IntentTag.EVASION_GRANT)

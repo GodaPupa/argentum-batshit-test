@@ -6,6 +6,8 @@ import com.wingedsheep.engine.core.CastSpell
 import com.wingedsheep.engine.mechanics.layers.ProjectedState
 import com.wingedsheep.engine.state.GameState
 import com.wingedsheep.engine.state.components.battlefield.DamageComponent
+import com.wingedsheep.engine.state.components.combat.AttackingComponent
+import com.wingedsheep.engine.state.components.combat.BlockingComponent
 import com.wingedsheep.engine.state.components.identity.CardComponent
 import com.wingedsheep.engine.state.components.stack.ChosenTarget
 import com.wingedsheep.engine.state.components.stack.TargetsComponent
@@ -109,6 +111,12 @@ class HoldPolicy(
 
         val intent = intents.forName(cardName) ?: return TimingVerdict.Neutral
 
+        if (cast != null && IntentTag.DEATH_RETURN in intent.tags &&
+            !hasCredibleDeathWindow(state, playerId, cast)
+        ) {
+            return TimingVerdict.NoWindow
+        }
+
         val window = windowVerdictFor(state, playerId, intent)
         // A card that accomplishes nothing here is already floored below passing; there is no
         // target trade left to price on top of that.
@@ -119,6 +127,36 @@ class HoldPolicy(
 
         val windowDelta = (window as? TimingVerdict.Adjust)?.delta ?: 0.0
         return TimingVerdict.Adjust(windowDelta - patience, reason = "patience")
+    }
+
+    /**
+     * An end-of-turn death return has value only when its target has a public reason to die now:
+     * opposing interaction already points at it, combat has committed it, or a visible sacrifice
+     * outlet can cash it in. This reads only public state and structural card intent.
+     */
+    private fun hasCredibleDeathWindow(state: GameState, playerId: EntityId, cast: CastSpell): Boolean {
+        val target = cast.targets.singleOrNull() as? ChosenTarget.Permanent ?: return false
+        val targetId = target.entityId
+        val stackThreat = state.stack.any { stackId ->
+            val stackObject = state.getEntity(stackId) ?: return@any false
+            stackObject.get<TargetsComponent>()?.targets.orEmpty()
+                .filterIsInstance<ChosenTarget.Permanent>()
+                .any { it.entityId == targetId }
+        }
+        if (stackThreat) return true
+
+        val committedToCombat = state.getEntity(targetId)?.let { permanent ->
+            permanent.has<AttackingComponent>() || permanent.has<BlockingComponent>()
+        } == true
+        if (committedToCombat) return true
+
+        return state.controlledBattlefield(playerId).any { permanentId ->
+            val permanent = state.getEntity(permanentId) ?: return@any false
+            val name = permanent.get<CardComponent>()?.name ?: return@any false
+            intents.forPermanent(permanent, name).any { intent ->
+                IntentTag.SACRIFICE_OUTLET in intent.tags
+            }
+        }
     }
 
     /**
