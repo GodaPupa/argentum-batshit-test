@@ -418,8 +418,8 @@ object BoardPresence : BoardFeature {
     /** Board value of one loyalty counter. Only reached with card knowledge on. */
     private const val LOYALTY_VALUE = 0.8
 
-    /** Small prior for one visible resolution of a repeatable face-damage engine. */
-    private const val OPPONENT_DAMAGE_ENGINE_VALUE = 0.75
+    /** Board value of one damage per visible resolution of a repeatable face-damage engine. */
+    private const val OPPONENT_DAMAGE_ENGINE_VALUE = 1.5
 
     /**
      * What a creature's **body** is worth — the half of [creatureValue] that reads only stats and
