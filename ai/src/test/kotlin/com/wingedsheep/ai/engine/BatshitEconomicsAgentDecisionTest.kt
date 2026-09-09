@@ -65,7 +65,11 @@ class BatshitEconomicsAgentDecisionTest : ScenarioTestBase() {
                     oracleText = card.oracleText,
                 )
             }
-            val controller = EngineAiPlayerController(cardRegistry, game.player1Id) { game.state }
+            val controller = EngineAiPlayerController(
+                cardRegistry,
+                game.player1Id,
+                gameStateProvider = { game.state },
+            )
 
             controller.decideMulligan(
                 MulliganInfo(
