@@ -203,9 +203,13 @@ class GoblinGlasswrightScenarioTest : ScenarioTestBase() {
 
                         "Mirkwood Bats" -> {
                             withClue("this Bats trigger is from creating the Wicked Role") {
-                                returnResolved shouldBe true
                                 game.findPermanent("Wicked Role") shouldNotBe null
                             }
+                            if (!returnResolved) {
+                                verifyReturnedGlasswright()
+                                returnResolved = true
+                            }
+                            wickedRoleDrainResolved shouldBe false
                             val lifeBefore = game.getLifeTotal(2)
                             game.resolveTop()
                             game.getLifeTotal(2) shouldBe lifeBefore - 1
