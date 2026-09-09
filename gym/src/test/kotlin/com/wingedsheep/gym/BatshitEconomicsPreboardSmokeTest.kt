@@ -95,16 +95,17 @@ internal class SmokeTriggerTelemetry {
 
     fun record(event: GameEvent) {
         when (event) {
-            is AbilityTriggeredEvent -> when (event.sourceName) {
-                "Kessig Flamebreather" -> {
+            is AbilityTriggeredEvent -> when {
+                event.sourceName == "Kessig Flamebreather" &&
+                    event.description == "you casts a noncreature spell, deal 1 damage to each opponent." -> {
                     flamebreatherTriggers++
                     unresolvedTriggers.merge(event.sourceName, 1) { current, added -> current + added }
                 }
-                "Guttersnipe" -> {
+                event.sourceName == "Guttersnipe" &&
+                    event.description == "you casts a instant or sorcery spell, deal 2 damage to each opponent." -> {
                     guttersnipeTriggers++
                     unresolvedTriggers.merge(event.sourceName, 1) { current, added -> current + added }
                 }
-                else -> Unit
             }
             is DamageDealtEvent -> {
                 val sourceName = event.sourceName ?: return

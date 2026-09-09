@@ -30,6 +30,20 @@ class SmokeTriggerTelemetryTest : FunSpec({
         telemetry.flamebreatherDamage shouldBe 1
     }
 
+    test("an unrelated trigger granted to Flamebreather is not counted as its damage trigger") {
+        val telemetry = SmokeTriggerTelemetry()
+
+        telemetry.record(
+            trigger(
+                "Kessig Flamebreather",
+                "When this creature dies, return it to the battlefield tapped under its owner's control.",
+            )
+        )
+
+        telemetry.flamebreatherTriggers shouldBe 0
+        telemetry.flamebreatherDamage shouldBe 0
+    }
+
     test("created trigger is counted when the game ends before its damage resolves") {
         val telemetry = SmokeTriggerTelemetry()
 
@@ -44,11 +58,18 @@ class SmokeTriggerTelemetryTest : FunSpec({
 private val SOURCE = EntityId("source")
 private val PLAYER = EntityId("player")
 
-private fun trigger(sourceName: String) = AbilityTriggeredEvent(
+private fun trigger(
+    sourceName: String,
+    description: String = when (sourceName) {
+        "Kessig Flamebreather" -> "you casts a noncreature spell, deal 1 damage to each opponent."
+        "Guttersnipe" -> "you casts a instant or sorcery spell, deal 2 damage to each opponent."
+        else -> "test trigger"
+    },
+) = AbilityTriggeredEvent(
     sourceId = SOURCE,
     sourceName = sourceName,
     controllerId = PLAYER,
-    description = "test trigger",
+    description = description,
 )
 
 private fun damage(sourceName: String, amount: Int, combat: Boolean) = DamageDealtEvent(
