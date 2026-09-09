@@ -158,6 +158,16 @@ class GoblinGlasswrightScenarioTest : ScenarioTestBase() {
                 var flamebreatherResolved = false
                 var returnResolved = false
                 var wickedRoleDrainResolved = false
+                val verifyReturnedGlasswright = {
+                    withClue("Glasswright returns tapped, wearing Wicked, and prepared afresh") {
+                        game.findPermanent("Goblin Glasswright") shouldBe glasswright
+                        game.state.getEntity(glasswright)?.has<TappedComponent>() shouldBe true
+                        val role = game.findPermanent("Wicked Role")!!
+                        game.state.getEntity(role)?.get<AttachedToComponent>()?.targetId shouldBe glasswright
+                        game.state.getEntity(glasswright)?.get<PreparedComponent>() shouldNotBe null
+                        game.preparedCopies().single() shouldNotBe firstCopy
+                    }
+                }
                 while (!flamebreatherResolved || !returnResolved || !wickedRoleDrainResolved) {
                     when (val source = game.topTriggerSource()) {
                         "Kessig Flamebreather" -> {
@@ -168,8 +178,11 @@ class GoblinGlasswrightScenarioTest : ScenarioTestBase() {
                         }
 
                         "Mirkwood Bats" -> {
+                            if (!returnResolved) {
+                                verifyReturnedGlasswright()
+                                returnResolved = true
+                            }
                             withClue("this Bats trigger is from creating the Wicked Role") {
-                                returnResolved shouldBe true
                                 game.findPermanent("Wicked Role") shouldNotBe null
                             }
                             val lifeBefore = game.getLifeTotal(2)
@@ -186,14 +199,7 @@ class GoblinGlasswrightScenarioTest : ScenarioTestBase() {
                             val lifeBefore = game.getLifeTotal(2)
                             game.resolveTop()
                             game.getLifeTotal(2) shouldBe lifeBefore
-                            withClue("Glasswright returns tapped, wearing Wicked, and prepared afresh") {
-                                game.findPermanent("Goblin Glasswright") shouldBe glasswright
-                                game.state.getEntity(glasswright)?.has<TappedComponent>() shouldBe true
-                                val role = game.findPermanent("Wicked Role")!!
-                                game.state.getEntity(role)?.get<AttachedToComponent>()?.targetId shouldBe glasswright
-                                game.state.getEntity(glasswright)?.get<PreparedComponent>() shouldNotBe null
-                                game.preparedCopies().single() shouldNotBe firstCopy
-                            }
+                            verifyReturnedGlasswright()
                             returnResolved = true
                         }
                     }
