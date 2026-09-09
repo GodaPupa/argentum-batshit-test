@@ -250,6 +250,30 @@ class BatshitEconomicsAgentDecisionTest : ScenarioTestBase() {
             (action is CastSpell && cardName(game, action.cardId) == "Lava Dart") shouldBe false
         }
 
+        test("Red does not flash back Lava Dart to trade a Mountain for an ordinary one-drop") {
+            val game = seeded()
+                .withCardInGraveyard(1, "Lava Dart")
+                .withLandsOnBattlefield(1, "Mountain", 3)
+                .withCardOnBattlefield(2, "Voldaren Epicure", summoningSickness = false)
+                .withLifeTotal(2, 10)
+                .build()
+
+            val action = ai(game).chooseAction(game.state)
+            (action is CastSpell && cardName(game, action.cardId) == "Lava Dart") shouldBe false
+        }
+
+        test("Red does not spend two Mountains on a nonlethal amplified Fireblast") {
+            val game = seeded()
+                .withLandsOnBattlefield(1, "Mountain", 4)
+                .withCardOnBattlefield(1, "Kessig Flamebreather", summoningSickness = false)
+                .withCardInHand(1, "Fireblast")
+                .withLifeTotal(2, 11)
+                .build()
+
+            val action = ai(game).chooseAction(game.state)
+            (action is CastSpell && cardName(game, action.cardId) == "Fireblast") shouldBe false
+        }
+
         test("Batshit holds NDAA without a death line and casts it in response to removal") {
             val idle = seeded()
                 .withLandsOnBattlefield(1, "Swamp", 1)

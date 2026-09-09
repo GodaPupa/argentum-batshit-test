@@ -643,6 +643,17 @@ class Strategist(
             // passing. See [TimingVerdict.NoWindow] for why this is a floor and not a penalty.
             return AdjustedScore(passScore - 1.0, "hold policy: wrong window — floored below passing")
         }
+        if (shouldHoldLandSacrifice(state, action.action, playerId, cardName)) {
+            // A finite discount was not strong enough here: rollout damage and response-window
+            // bonuses could still make Lava Dart spend a Mountain on a one-drop, or Fireblast
+            // spend two Mountains on speculative face damage. This is a timing decision, not a
+            // small material adjustment, so preserve the lands by flooring the candidate below
+            // passing until the cast is lethal, near-lethal, or answers a real engine.
+            return AdjustedScore(
+                passScore - 1.0,
+                "land-sacrifice policy: low-value conversion — floored below passing",
+            )
+        }
         val timingDelta = (timing as? TimingVerdict.Adjust)?.delta ?: 0.0
         val timingReason = (timing as? TimingVerdict.Adjust)?.reason ?: "timing"
         val timingNote =
@@ -650,17 +661,14 @@ class Strategist(
         val sacrificeWindowDelta = threatenedSacrificeWindow(state, action.action, playerId)
         val sacrificeWindowNote = sacrificeWindowDelta.takeIf { it != 0.0 }
             ?.let { "sacrifices an opponent-targeted permanent %+.2f".format(it) }
-        val landSacrificeDelta = landSacrificePatience(state, action.action, playerId, cardName)
-        val landSacrificeNote = landSacrificeDelta.takeIf { it != 0.0 }
-            ?.let { "preserves land resources %+.2f".format(it) }
 
         // Check for card-specific advisor override. Timing is applied outside it, so a per-card
         // advisor still sees the pure board score as its `defaultScore` and a card with both
         // keeps both.
         val advisor = advisorRegistry.getAdvisor(cardName)
             ?: return AdjustedScore(
-                leafScore + timingDelta + sacrificeWindowDelta + landSacrificeDelta,
-                listOfNotNull(timingNote, sacrificeWindowNote, landSacrificeNote)
+                leafScore + timingDelta + sacrificeWindowDelta,
+                listOfNotNull(timingNote, sacrificeWindowNote)
                     .joinToString("; ").ifEmpty { null },
             )
         val context = CastContext(
@@ -676,8 +684,8 @@ class Strategist(
         val override = advisor.evaluateCast(context)
         val advisorNote = override?.let { "${advisor::class.simpleName} replaced the board score" }
         return AdjustedScore(
-            (override ?: leafScore) + timingDelta + sacrificeWindowDelta + landSacrificeDelta,
-            listOfNotNull(advisorNote, timingNote, sacrificeWindowNote, landSacrificeNote)
+            (override ?: leafScore) + timingDelta + sacrificeWindowDelta,
+            listOfNotNull(advisorNote, timingNote, sacrificeWindowNote)
                 .joinToString("; ").ifEmpty { null },
         )
     }
@@ -688,29 +696,26 @@ class Strategist(
      * it matters. Preserve the resource unless the cast closes the game, leaves the opponent in
      * immediate reach, or removes a visibly high-impact engine.
      */
-    private fun landSacrificePatience(
+    private fun shouldHoldLandSacrifice(
         state: GameState,
         action: GameAction,
         playerId: EntityId,
         cardName: String,
-    ): Double {
-        val cast = action as? CastSpell ?: return 0.0
+    ): Boolean {
+        val cast = action as? CastSpell ?: return false
         if (cast.alternativeCostType !in setOf(AlternativeCostType.FLASHBACK, AlternativeCostType.SELF_ALTERNATIVE)) {
-            return 0.0
+            return false
         }
         val sacrificedLands = cast.additionalCostPayment?.sacrificedPermanents.orEmpty().count { id ->
             state.getEntity(id)?.get<CardComponent>()?.typeLine?.isLand == true
         }
-        if (sacrificedLands == 0) return 0.0
+        if (sacrificedLands == 0) return false
 
         val damage = intents.forName(cardName)?.removalReach ?: 0
         val target = cast.targets.singleOrNull()
         if (target is ChosenTarget.Player && state.isOpponentTo(target.playerId, playerId)) {
             val life = state.lifeTotal(target.playerId)
-            if (damage >= life || life <= damage + NEAR_LETHAL_REACH) return 0.0
-            if (state.lifeTotal(playerId) <= damage && life <= damage * 2) {
-                return -LAND_SACRIFICE_COST * sacrificedLands / 2.0
-            }
+            if (damage >= life || life <= damage + NEAR_LETHAL_REACH) return false
         }
         if (target is ChosenTarget.Permanent) {
             val permanent = state.getEntity(target.entityId)
@@ -720,10 +725,10 @@ class Strategist(
                     intent.repeatable && (intent.opponentDamage ?: 0) >= IMPORTANT_ENGINE_DAMAGE
                 }
             if (isImportantEngine) {
-                return 0.0
+                return false
             }
         }
-        return -LAND_SACRIFICE_COST * sacrificedLands
+        return true
     }
 
     /**
@@ -1362,9 +1367,6 @@ class Strategist(
 
         /** Value recovered by cashing in a permanent an opposing stack object already targets. */
         const val TARGETED_SACRIFICE_WINDOW = 2.0
-
-        /** Per-land opportunity cost for irreversible alternate/flashback payments. */
-        const val LAND_SACRIFICE_COST = 3.0
 
         /** A burn spell leaving this much reach is close enough to preserve race conversion. */
         const val NEAR_LETHAL_REACH = 2
