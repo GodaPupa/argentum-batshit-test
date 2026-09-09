@@ -95,7 +95,7 @@ class BatshitEconomicsPreboardSmokeTest : FunSpec({
     }
 })
 
-private fun assertTriggerSummaryMatchesRawEvents(log: String) {
+internal fun assertTriggerSummaryMatchesRawEvents(log: String) {
     fun summary(label: String): Pair<Int, Int> {
         val value = log.lineSequence().first { it.startsWith(label) }.substringAfter(": ")
         return value.substringBefore('/').toInt() to value.substringAfter('/').toInt()
@@ -490,7 +490,7 @@ internal fun playLoggedGame(
                     }
                     if (event.entityName in setOf(
                             "Goblin Glasswright", "Kessig Flamebreather", "Mirkwood Bats", "Guttersnipe",
-                            "Shambling Ghast", "Sneaky Snacker", "Treasure", "Map"
+                            "Shambling Ghast", "Sneaky Snacker", "Treasure", "Blood", "Map"
                         ) && (event.fromZone == Zone.BATTLEFIELD || event.toZone == Zone.BATTLEFIELD)
                     ) {
                         log.appendLine(
