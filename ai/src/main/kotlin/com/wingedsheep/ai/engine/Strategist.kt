@@ -23,6 +23,7 @@ import com.wingedsheep.ai.insight.AiInsightSink
 import com.wingedsheep.ai.insight.CombatPlan
 import com.wingedsheep.ai.insight.CombatPlanTrace
 import com.wingedsheep.engine.core.ActivateAbility
+import com.wingedsheep.engine.core.AlternativeCostType
 import com.wingedsheep.engine.core.CastSpell
 import com.wingedsheep.engine.core.DeclareAttackers
 import com.wingedsheep.engine.core.DeclareBlockers
@@ -714,8 +715,11 @@ class Strategist(
         if (target is ChosenTarget.Permanent) {
             val permanent = state.getEntity(target.entityId)
             val name = permanent?.get<CardComponent>()?.name
-            val intent = if (permanent != null && name != null) intents.forPermanent(permanent, name) else null
-            if (intent?.repeatable == true && (intent.opponentDamage ?: 0) >= IMPORTANT_ENGINE_DAMAGE) {
+            val isImportantEngine = permanent != null && name != null &&
+                intents.forPermanent(permanent, name).any { intent ->
+                    intent.repeatable && (intent.opponentDamage ?: 0) >= IMPORTANT_ENGINE_DAMAGE
+                }
+            if (isImportantEngine) {
                 return 0.0
             }
         }
