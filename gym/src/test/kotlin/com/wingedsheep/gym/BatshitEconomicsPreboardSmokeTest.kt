@@ -124,7 +124,7 @@ private fun assertTriggerSummaryMatchesRawEvents(log: String) {
     )
 }
 
-private data class LoggedSmokeGame(
+internal data class LoggedSmokeGame(
     val completed: Boolean,
     val actions: Int,
     val log: String,
@@ -172,7 +172,7 @@ internal class SmokeTriggerTelemetry {
     }
 }
 
-private fun fullRegistry(): CardRegistry = CardRegistry().apply {
+internal fun fullRegistry(): CardRegistry = CardRegistry().apply {
     // Prepared Craft, Fanatical Offering, Epicure, and NDAA all resolve through named predefined
     // tokens. The production game/gym registries install these explicitly; the smoke harness must
     // do the same or token creation fails during resolution and the trace falsely reports that the
@@ -184,7 +184,7 @@ private fun fullRegistry(): CardRegistry = CardRegistry().apply {
     }
 }
 
-private fun batshitDeck(): Deck = Deck.of(
+internal fun batshitDeck(): Deck = Deck.of(
     "Goblin Glasswright" to 4,
     "Kessig Flamebreather" to 4,
     "Mirkwood Bats" to 3,
@@ -214,7 +214,7 @@ private fun batshitDeck(): Deck = Deck.of(
     },
 )
 
-private fun monoRedDeck(): Deck = Deck.of(
+internal fun monoRedDeck(): Deck = Deck.of(
     "Voldaren Epicure" to 4,
     "Kessig Flamebreather" to 4,
     "Sneaky Snacker" to 4,
@@ -229,15 +229,16 @@ private fun monoRedDeck(): Deck = Deck.of(
     "Mountain" to 19,
 )
 
-private fun playLoggedGame(
+internal fun playLoggedGame(
     registry: CardRegistry,
     gameNumber: Int,
     seed: Long,
     startingPlayerIndex: Int,
+    batshitDeck: Deck = batshitDeck(),
 ): LoggedSmokeGame {
     val processor = ActionProcessor(registry)
     val initializer = GameInitializer(registry)
-    val batshit75 = batshitDeck()
+    val batshit75 = batshitDeck
     // This run is deliberately preboard. Keep the authoritative 15 encoded above, but do not ask
     // GameInitializer to resolve sideboard-only cards that can never enter these 100 games.
     val batshit = batshit75.copy(sideboard = emptyList())
