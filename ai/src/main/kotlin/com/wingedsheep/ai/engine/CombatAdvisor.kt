@@ -4,6 +4,7 @@ import com.wingedsheep.ai.engine.advisor.CardAdvisorRegistry
 import com.wingedsheep.ai.engine.budget.DecisionBudget
 import com.wingedsheep.ai.engine.evaluation.BoardEvaluator
 import com.wingedsheep.ai.engine.evaluation.LifeDifferential
+import com.wingedsheep.ai.engine.knowledge.EffectWalker
 import com.wingedsheep.ai.insight.CombatPlanTrace
 import com.wingedsheep.engine.core.DeclareAttackers
 import com.wingedsheep.engine.core.DeclareBlockers
@@ -18,7 +19,10 @@ import com.wingedsheep.engine.state.components.identity.CardComponent
 import com.wingedsheep.sdk.core.Keyword
 import com.wingedsheep.sdk.core.Phase
 import com.wingedsheep.sdk.core.Step
+import com.wingedsheep.sdk.dsl.Triggers
 import com.wingedsheep.sdk.model.EntityId
+import com.wingedsheep.sdk.scripting.effects.CreatePredefinedTokenEffect
+import com.wingedsheep.sdk.scripting.effects.ScryEffect
 
 /**
  * Specialized advisor for attack and block decisions.
@@ -60,6 +64,9 @@ class CombatAdvisor(
          * constant is what `SearchAllowances.LEGACY` and every sub-NORMAL tier resolve to.
          */
         const val MAX_BLOCK_SIMULATIONS = 10
+        private const val SCRY_DEATH_VALUE = 0.35
+        private const val TREASURE_DEATH_VALUE = 0.75
+        private const val GENERIC_TOKEN_DEATH_VALUE = 0.5
     }
 
     /**
@@ -223,7 +230,7 @@ class CombatAdvisor(
 
             for (attacker in sortedUnblocked) {
                 val available = availableBlockersFor(state, projected, attacker, validBlockers, assignedBlockers)
-                    .sortedBy { CombatMath.creatureValue(state, projected, it) }
+                    .sortedBy { blockingLossValue(state, projected, it) }
                 val cheapest = available.firstOrNull() ?: continue
                 bestMap[cheapest] = listOf(attacker)
                 assignedBlockers.add(cheapest)
@@ -259,7 +266,7 @@ class CombatAdvisor(
                 for (attacker in unblockedAttackers) {
                     val available = availableBlockersFor(state, projected, attacker, validBlockers, assignedBlockers)
                         .filter { CombatMath.creatureValue(state, projected, it) < 2.0 }
-                        .sortedBy { CombatMath.creatureValue(state, projected, it) }
+                        .sortedBy { blockingLossValue(state, projected, it) }
                     val cheapest = available.firstOrNull() ?: continue
                     bestMap[cheapest] = listOf(attacker)
                     assignedBlockers.add(cheapest)
@@ -279,6 +286,37 @@ class CombatAdvisor(
         )
 
         return DeclareBlockers(playerId, affordable)
+    }
+
+    /**
+     * Value actually lost when a chump blocker dies. Visible, mandatory dies payoffs make an
+     * otherwise equivalent body cheaper to spend; this is deliberately limited to compact
+     * payoffs whose value is stable without targets or modal choices.
+     */
+    private fun blockingLossValue(
+        state: GameState,
+        projected: ProjectedState,
+        blockerId: EntityId,
+    ): Double {
+        val body = CombatMath.creatureValue(state, projected, blockerId)
+        val registry = cardRegistry ?: return body
+        val name = state.getEntity(blockerId)?.get<CardComponent>()?.name ?: return body
+        val card = registry.getCard(name) ?: return body
+        val deathValue = card.script.triggeredAbilities
+            .filter { it.trigger == Triggers.Dies.event && it.binding == Triggers.Dies.binding }
+            .sumOf { ability ->
+                EffectWalker.leaves(ability.effect).sumOf { effect ->
+                    when (effect) {
+                        is ScryEffect -> effect.count * SCRY_DEATH_VALUE
+                        is CreatePredefinedTokenEffect -> when (effect.tokenType) {
+                            "Treasure" -> effect.count * TREASURE_DEATH_VALUE
+                            else -> effect.count * GENERIC_TOKEN_DEATH_VALUE
+                        }
+                        else -> 0.0
+                    }
+                }
+            }
+        return body - deathValue
     }
 
     /**

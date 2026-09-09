@@ -922,21 +922,38 @@ class Strategist(
         // creature a removal spell is already killing, or discarding a graveyard-recursive card
         // before the draw that turns it back on. `take(1)` makes both choices depend on incidental
         // zone order. For untargeted actions, simulate each legal payment and keep the board the
-        // normal evaluator prefers. Targeted actions stay on the bounded legacy path because an
-        // unfilled target would make every payment simulation illegal; their target-refinement pass
-        // still evaluates the completed action afterwards.
+        // normal evaluator prefers. For a targeted action, fill one provisional legal target before
+        // comparing payments. The committed-target pass may refine that target afterwards, but the
+        // payment comparison must resolve a legal action so dies triggers and other payment payoffs
+        // are visible. This is especially important for sacrifice outlets whose effect has a target.
         val strategicPool = when (info.costType) {
             "DiscardCard" -> info.validDiscardTargets.takeIf { info.discardCount == 1 }
             "SacrificePermanent" -> info.validSacrificeTargets.takeIf { info.sacrificeCount == 1 }
             else -> null
         }
-        if (!action.requiresTargets && strategicPool != null && strategicPool.size > 1) {
+        if (strategicPool != null && strategicPool.size > 1) {
+            val simulationBase = if (action.requiresTargets) {
+                TargetSelection.fillHeuristically(
+                    state,
+                    action.copy(action = gameAction),
+                    playerId,
+                    fillPartialRequirements = useMeaningfulFilter,
+                    intents = intents,
+                )
+            } else {
+                gameAction
+            }
+            fun attachForSimulation(payment: AdditionalCostPayment): GameAction = when (simulationBase) {
+                is CastSpell -> simulationBase.copy(additionalCostPayment = payment)
+                is ActivateAbility -> simulationBase.copy(costPayment = payment)
+                else -> simulationBase
+            }
             return strategicPool.take(AUTOMATIC_PAYMENT_CANDIDATES).maxByOrNull { chosen ->
                 val payment = when (info.costType) {
                     "DiscardCard" -> existing.copy(discardedCards = listOf(chosen))
                     else -> existing.copy(sacrificedPermanents = listOf(chosen))
                 }
-                simulator.simulate(state, attach(payment)).scoreOrRankLast { leaf ->
+                simulator.simulate(state, attachForSimulation(payment)).scoreOrRankLast { leaf ->
                     evaluator.evaluate(leaf, leaf.projectedState, playerId)
                 }
             }?.let { chosen ->
