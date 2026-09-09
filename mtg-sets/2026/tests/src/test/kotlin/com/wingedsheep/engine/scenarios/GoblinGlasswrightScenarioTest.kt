@@ -165,7 +165,7 @@ class GoblinGlasswrightScenarioTest : ScenarioTestBase() {
                     game.getLifeTotal(2) shouldBe 17
                     game.topTriggerSource() shouldBe "Mirkwood Bats"
                 }
-                game.resolveTop()
+                game.resolveStack()
                 withClue("Bats drains exactly one for sacrificing the Treasure") {
                     game.getLifeTotal(2) shouldBe 16
                 }
