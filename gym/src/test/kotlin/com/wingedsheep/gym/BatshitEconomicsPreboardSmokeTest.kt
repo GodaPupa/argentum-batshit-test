@@ -43,13 +43,19 @@ class BatshitEconomicsPreboardSmokeTest : FunSpec({
         timeout = 45.minutes,
     ) {
         val registry = fullRegistry()
-        val seedPath = Path.of("src", "test", "resources", "batshit-preboard-experiment-v1-seeds.csv")
+        val seedPath = Path.of("src", "test", "resources", "batshit-preboard-experiment-v2-seeds.csv")
         val seeds = Files.readAllLines(seedPath)
             .drop(1)
             .filter(String::isNotBlank)
             .map { line -> line.substringAfterLast(',').toLong() }
         seeds.distinct().size shouldBe 100
-        val previouslyUsedSeeds = setOf(
+        val priorSampleSeeds = Files.readAllLines(
+            Path.of("src", "test", "resources", "batshit-preboard-experiment-v1-seeds.csv")
+        )
+            .drop(1)
+            .filter(String::isNotBlank)
+            .mapTo(mutableSetOf()) { line -> line.substringAfterLast(',').toLong() }
+        val previouslyUsedSeeds = priorSampleSeeds + setOf(
             0xBA75_0001L, 0xBA75_0002L, 0xBA75_0003L, 0xBA75_0004L, 0xBA75_0005L,
             0x033D_F483_8D71_94AL, 0xB97F_CDFE_9799_C87L, 0xED3B_5358_E12D_ED3L,
             0xAB1B_251D_164E_979L, 0xA48B_5B90_FAFA_44CL, 0x679B_6F9E_EF77_4BCL,
@@ -68,7 +74,7 @@ class BatshitEconomicsPreboardSmokeTest : FunSpec({
 
         val output = buildString {
             appendLine("BATSHIT ECONOMICS VS MONO-RED MADNESS")
-            appendLine("Argentum agent self-play — 100-game experimental preboard sample")
+            appendLine("Argentum agent self-play — 100-game independent replication sample #2")
             appendLine("Profile: ${AiProfile.PRODUCTION_CANDIDATE_EXPIRING.id}")
             appendLine("Seeds: ${seeds.joinToString()}")
             appendLine()
