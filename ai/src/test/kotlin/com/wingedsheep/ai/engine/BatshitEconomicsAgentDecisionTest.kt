@@ -1,5 +1,7 @@
 package com.wingedsheep.ai.engine
 
+import com.wingedsheep.ai.llm.CardSummary
+import com.wingedsheep.ai.llm.MulliganInfo
 import com.wingedsheep.engine.core.ActivateAbility
 import com.wingedsheep.engine.core.CastSpell
 import com.wingedsheep.engine.core.PassPriority
@@ -43,6 +45,39 @@ class BatshitEconomicsAgentDecisionTest : ScenarioTestBase() {
     private fun seeded() = scenario().withPlayers().withRngSeed(0xBA75_117L)
 
     init {
+        test("London mulligan rejects two Swamps with four stranded red early spells") {
+            val game = seeded()
+                .withCardInHand(1, "Swamp")
+                .withCardInHand(1, "Swamp")
+                .withCardInHand(1, "Lightning Bolt")
+                .withCardInHand(1, "Goblin Glasswright")
+                .withCardInHand(1, "Voldaren Epicure")
+                .withCardInHand(1, "Makeshift Munitions")
+                .withCardInHand(1, "Not Dead After All")
+                .build()
+            val hand = game.state.getHand(game.player1Id)
+            val summaries = hand.associateWith { id ->
+                val card = game.state.getEntity(id)!!.get<CardComponent>()!!
+                CardSummary(
+                    name = card.name,
+                    manaCost = card.manaCost.toString(),
+                    typeLine = card.typeLine.toString(),
+                    oracleText = card.oracleText,
+                )
+            }
+            val controller = EngineAiPlayerController(cardRegistry, game.player1Id) { game.state }
+
+            controller.decideMulligan(
+                MulliganInfo(
+                    hand = hand,
+                    mulliganCount = 0,
+                    cardsToPutOnBottom = 0,
+                    cards = summaries,
+                    isOnThePlay = true,
+                )
+            ) shouldBe false
+        }
+
         test("Batshit removes Guttersnipe before Flamebreather when the two-damage engine is lethal") {
             val game = seeded()
                 .withLifeTotal(1, 2)
@@ -185,6 +220,56 @@ class BatshitEconomicsAgentDecisionTest : ScenarioTestBase() {
             val action = ai(lethal).chooseAction(lethal.state).shouldBeInstanceOf<CastSpell>()
             cardName(lethal, action.cardId) shouldBe "Fireblast"
             chosenTargetId(action) shouldBe lethal.player2Id
+        }
+
+        test("Red does not convert two Mountains into speculative Fireblast damage") {
+            val game = seeded()
+                .withLandsOnBattlefield(1, "Mountain", 4)
+                .withCardOnBattlefield(1, "Kessig Flamebreather", summoningSickness = false)
+                .withCardInHand(1, "Fireblast")
+                .withLifeTotal(1, 14)
+                .withLifeTotal(2, 14)
+                .build()
+
+            val action = ai(game).chooseAction(game.state)
+            (action is CastSpell && cardName(game, action.cardId) == "Fireblast") shouldBe false
+        }
+
+        test("Red does not flash back an unamplified Lava Dart at high opposing life") {
+            val game = seeded()
+                .withCardInGraveyard(1, "Lava Dart")
+                .withLandsOnBattlefield(1, "Mountain", 1)
+                .withLifeTotal(2, 15)
+                .build()
+
+            val action = ai(game).chooseAction(game.state)
+            (action is CastSpell && cardName(game, action.cardId) == "Lava Dart") shouldBe false
+        }
+
+        test("Batshit holds NDAA without a death line and casts it in response to removal") {
+            val idle = seeded()
+                .withLandsOnBattlefield(1, "Swamp", 1)
+                .withCardInHand(1, "Not Dead After All")
+                .withCardOnBattlefield(1, "Goblin Glasswright")
+                .build()
+            val idleAction = ai(idle).chooseAction(idle.state)
+            (idleAction is CastSpell && cardName(idle, idleAction.cardId) == "Not Dead After All") shouldBe false
+
+            val response = seeded()
+                .withActivePlayer(2)
+                .withLandsOnBattlefield(1, "Swamp", 1)
+                .withCardInHand(1, "Not Dead After All")
+                .withCardOnBattlefield(1, "Goblin Glasswright")
+                .withLandsOnBattlefield(2, "Mountain", 1)
+                .withCardInHand(2, "Lightning Bolt")
+                .build()
+            val glasswright = response.findPermanent("Goblin Glasswright")!!
+            response.castSpell(2, "Lightning Bolt", glasswright).isSuccess.shouldBeTrue()
+            response.execute(PassPriority(response.player2Id)).isSuccess.shouldBeTrue()
+
+            val action = ai(response).chooseAction(response.state).shouldBeInstanceOf<CastSpell>()
+            cardName(response, action.cardId) shouldBe "Not Dead After All"
+            chosenTargetId(action) shouldBe glasswright
         }
 
         test("Red discards Sneaky Snacker when the draw spell will recur it") {
