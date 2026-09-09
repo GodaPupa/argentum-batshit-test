@@ -31,6 +31,12 @@ data class CardIntent(
     val removalReach: Int?,
     /** Cards drawn on a single resolution, or null when the card draws none. */
     val cardsDrawn: Int?,
+    /**
+     * Damage dealt to an opposing player by one resolution, or null when no structurally readable
+     * effect points at an opponent. This is intentionally public-information card text; it never
+     * looks at an opponent's hand to guess how many future triggers will happen.
+     */
+    val opponentDamage: Int? = null,
     /** Whether any recognized effect points at an opponent's stuff rather than our own. */
     val affectsOpponent: Boolean,
     /**
@@ -152,6 +158,7 @@ data class CardIntent(
             speed = Speed.SORCERY,
             removalReach = null,
             cardsDrawn = null,
+            opponentDamage = null,
             affectsOpponent = false,
             repeatable = false,
             staticPriorValue = 0.5,
