@@ -1313,29 +1313,55 @@ class CastFromZoneEnumerator : ActionEnumerator {
             val costString = effectiveCost.toString()
             val canAfford = context.manaSolver.canPay(state, playerId, effectiveCost, precomputedSources = context.availableManaSources)
 
-            // Resolve flashback's bundled additional cost (e.g., Behold three Elementals)
-            val flashbackBeholdInfo = (flashback.additionalCost as? AdditionalCost.Behold)?.let { beholdCost ->
-                val projected = state.projectedState
-                val predicateContext = PredicateContext(controllerId = playerId)
-                val battlefieldMatches = projected.getBattlefieldControlledBy(playerId).filter { permId ->
-                    context.predicateEvaluator.matches(state, projected, permId, beholdCost.filter, predicateContext)
+            // Resolve flashback's bundled non-mana cost. This is part of flashback's alternative
+            // cost (CR 702.34a), so the legal action must expose the same picker ordinary casts do;
+            // otherwise the AI sees Lava Dart as affordable but can only submit it without the
+            // required Mountain sacrifice, and the processor quite correctly rejects it.
+            val flashbackAdditionalInfo = when (val extra = flashback.additionalCost) {
+                is AdditionalCost.Behold -> {
+                    val projected = state.projectedState
+                    val predicateContext = PredicateContext(controllerId = playerId)
+                    val battlefieldMatches = projected.getBattlefieldControlledBy(playerId).filter { permId ->
+                        context.predicateEvaluator.matches(state, projected, permId, extra.filter, predicateContext)
+                    }
+                    val handMatches = state.getZone(ZoneKey(playerId, Zone.HAND)).filter { id ->
+                        context.predicateEvaluator.matches(state, state.projectedState, id, extra.filter, predicateContext)
+                    }
+                    AdditionalCostData(
+                        description = extra.description,
+                        costType = "Behold",
+                        validBeholdTargets = battlefieldMatches + handMatches,
+                        beholdCount = extra.count
+                    )
                 }
-                val handMatches = state.getZone(ZoneKey(playerId, Zone.HAND)).filter { id ->
-                    context.predicateEvaluator.matches(state, state.projectedState, id, beholdCost.filter, predicateContext)
+                is AdditionalCost.Atom -> when (val atom = extra.atom) {
+                    is CostAtom.Sacrifice -> {
+                        val projected = state.projectedState
+                        val predicateContext = PredicateContext(controllerId = playerId)
+                        val matches = projected.getBattlefieldControlledBy(playerId).filter { permanentId ->
+                            context.predicateEvaluator.matches(
+                                state, projected, permanentId, atom.filter, predicateContext
+                            )
+                        }
+                        AdditionalCostData(
+                            description = extra.description,
+                            costType = "SacrificePermanent",
+                            validSacrificeTargets = matches,
+                            sacrificeCount = atom.count,
+                        )
+                    }
+                    else -> null
                 }
-                val validTargets = battlefieldMatches + handMatches
-                val description = beholdCost.description
-                AdditionalCostData(
-                    description = description,
-                    costType = "Behold",
-                    validBeholdTargets = validTargets,
-                    beholdCount = beholdCost.count
-                )
+                else -> null
             }
-            val canPayBehold = flashbackBeholdInfo == null ||
-                flashbackBeholdInfo.validBeholdTargets.size >= flashbackBeholdInfo.beholdCount
+            val canPayAdditional = when (flashbackAdditionalInfo?.costType) {
+                "Behold" -> flashbackAdditionalInfo.validBeholdTargets.size >= flashbackAdditionalInfo.beholdCount
+                "SacrificePermanent" ->
+                    flashbackAdditionalInfo.validSacrificeTargets.size >= flashbackAdditionalInfo.sacrificeCount
+                else -> flashbackAdditionalInfo == null
+            }
 
-            if (!canAfford || !canPayBehold) {
+            if (!canAfford || !canPayAdditional) {
                 result.add(
                     LegalAction(
                         actionType = "CastWithFlashback",
@@ -1343,7 +1369,7 @@ class CastFromZoneEnumerator : ActionEnumerator {
                         action = CastSpell(playerId, cardId, useAlternativeCost = true, alternativeCostType = AlternativeCostType.FLASHBACK),
                         affordable = false,
                         manaCostString = costString,
-                        additionalCostInfo = flashbackBeholdInfo,
+                        additionalCostInfo = flashbackAdditionalInfo,
                         sourceZone = "GRAVEYARD"
                     )
                 )
@@ -1378,7 +1404,7 @@ class CastFromZoneEnumerator : ActionEnumerator {
                             targetDescription = firstReq.description,
                             targetRequirements = if (targetInfos.size > 1) targetInfos else null,
                             manaCostString = costString,
-                            additionalCostInfo = flashbackBeholdInfo,
+                            additionalCostInfo = flashbackAdditionalInfo,
                             autoTapPreview = autoTapPreview,
                             sourceZone = "GRAVEYARD"
                         )
@@ -1391,7 +1417,7 @@ class CastFromZoneEnumerator : ActionEnumerator {
                         description = "Cast ${cardComponent.name} (Flashback)",
                         action = CastSpell(playerId, cardId, useAlternativeCost = true, alternativeCostType = AlternativeCostType.FLASHBACK),
                         manaCostString = costString,
-                        additionalCostInfo = flashbackBeholdInfo,
+                        additionalCostInfo = flashbackAdditionalInfo,
                         autoTapPreview = autoTapPreview,
                         sourceZone = "GRAVEYARD"
                     )
