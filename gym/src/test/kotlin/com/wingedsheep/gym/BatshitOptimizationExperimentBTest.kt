@@ -1,6 +1,7 @@
 package com.wingedsheep.gym
 
 import com.wingedsheep.sdk.model.Deck
+import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.booleans.shouldBeTrue
 import io.kotest.matchers.ints.shouldBeGreaterThan
@@ -23,14 +24,20 @@ class BatshitOptimizationExperimentBTest : FunSpec({
         assertOnlyDeclaredDeckDifference(control, variant, experimentBDifference)
     }
 
-    test("paired raw trace contains complete mana-development inputs") {
-        val trace = playLoggedGame(fullRegistry(), 1, 0xBEEFB002L, 0).log
-        listOf("Kept Batshit:", "Play/draw:", "TURN 1", "Tapped Razortrap Gorge entries:").forEach {
-            trace.contains(it).shouldBeTrue()
+    test("raw trace assertion ignores proximate-decision summary text") {
+        val rawCast = "T2 Batshit cast Kessig Flamebreather"
+        val rawLand = "T1 Batshit play Razortrap Gorge"
+        val trace = buildString {
+            appendLine(rawLand)
+            appendLine(rawCast)
+            appendLine("Proximate last meaningful decision: $rawCast")
         }
-        // Every land and spell play is turn-stamped; Gorge entries additionally report tapped state.
-        trace.lineSequence().filter { it.contains(" play ") }.all { it.startsWith("T") }.shouldBeTrue()
-        trace.lineSequence().filter { it.contains(" cast ") }.all { it.startsWith("T") }.shouldBeTrue()
+
+        rawTurnStampedPlayAndCastLines(trace) shouldBe listOf(rawLand, rawCast)
+        assertRawPlayAndCastLinesAreTurnStamped(trace)
+        shouldThrow<AssertionError> {
+            assertRawPlayAndCastLinesAreTurnStamped("Tbad Batshit cast Kessig Flamebreather")
+        }
     }
 
     test("100 frozen paired seeds for control and Variant B").config(
@@ -59,12 +66,25 @@ class BatshitOptimizationExperimentBTest : FunSpec({
             pair.variant.actions shouldBeGreaterThan 0
             assertTriggerSummaryMatchesRawEvents(pair.control.log)
             assertTriggerSummaryMatchesRawEvents(pair.variant.log)
+            assertRawPlayAndCastLinesAreTurnStamped(pair.control.log)
+            assertRawPlayAndCastLinesAreTurnStamped(pair.variant.log)
         }
         val output = Path.of("build", "reports", "batshit-optimization-b")
         framework.writeArtifacts(results, output)
         Files.copy(seedPath, output.resolve(seedPath.fileName), java.nio.file.StandardCopyOption.REPLACE_EXISTING)
     }
 })
+
+private val rawTurnStampedPlayOrCast = Regex("^T\\d+ (Batshit|Red) (play|cast) ")
+
+internal fun rawTurnStampedPlayAndCastLines(trace: String): List<String> =
+    trace.lineSequence().filter { line ->
+        line.startsWith("T") && (line.contains(" play ") || line.contains(" cast "))
+    }.toList()
+
+internal fun assertRawPlayAndCastLinesAreTurnStamped(trace: String) {
+    rawTurnStampedPlayAndCastLines(trace).all { rawTurnStampedPlayOrCast.containsMatchIn(it) }.shouldBeTrue()
+}
 
 private val experimentBDifference = DeclaredDeckDifference(
     mainboardRemoved = mapOf("Razortrap Gorge" to 1),
