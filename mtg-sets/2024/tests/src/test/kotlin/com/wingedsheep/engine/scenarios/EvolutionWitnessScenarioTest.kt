@@ -1,6 +1,7 @@
 package com.wingedsheep.engine.scenarios
 
 import com.wingedsheep.engine.core.ActivateAbility
+import com.wingedsheep.engine.core.ChooseTargetsDecision
 import com.wingedsheep.engine.state.components.battlefield.CountersComponent
 import com.wingedsheep.engine.support.GameTestDriver
 import com.wingedsheep.engine.support.TestCards
@@ -114,5 +115,32 @@ class EvolutionWitnessScenarioTest : FunSpec({
         d.activateAdapt(player, witness).isSuccess shouldBe true
         d.bothPass()
         d.counters(witness) shouldBe 0
+    }
+
+    test("an Ivy Lane counter on Evolution Witness returns a permanent from the graveyard") {
+        val d = driver()
+        d.initMirrorMatch(Deck.of("Forest" to 40), skipMulligans = true)
+        val player = d.activePlayer!!
+        d.passPriorityUntil(Step.PRECOMBAT_MAIN)
+        val witness = d.putCreatureOnBattlefield(player, "Evolution Witness")
+        d.putCreatureOnBattlefield(player, "Ivy Lane Denizen")
+        val feeder = d.putCardInGraveyard(player, "Carrion Feeder")
+        val greenSpell = d.putCardInHand(player, "Llanowar Elves")
+        d.giveMana(player, Color.GREEN, 1)
+
+        d.castSpell(player, greenSpell).isSuccess shouldBe true
+        var safety = 0
+        while ((d.stackSize > 0 || d.pendingDecision != null) && safety++ < 20) {
+            val decision = d.pendingDecision
+            if (decision is ChooseTargetsDecision) {
+                val legal = decision.legalTargets[0].orEmpty()
+                d.submitTargetSelection(decision.playerId, listOf(if (witness in legal) witness else feeder))
+            } else {
+                d.bothPass()
+            }
+        }
+
+        d.findCardInHand(player, "Carrion Feeder") shouldBe feeder
+        d.counters(witness) shouldBe 1
     }
 })
