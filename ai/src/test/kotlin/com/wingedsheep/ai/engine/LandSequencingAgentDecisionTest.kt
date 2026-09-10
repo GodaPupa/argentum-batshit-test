@@ -15,7 +15,8 @@ class LandSequencingAgentDecisionTest : ScenarioTestBase() {
                 .withRngSeed(0x1A4D_5EEDL)
                 .withCardInHand(1, "Mountain")
                 .withCardInHand(1, "Rootbound Crag")
-                .withCardInHand(1, "Raging Goblin")
+                // A vanilla 1/1 keeps the probe about development, not haste or a named payoff.
+                .withCardInHand(1, "Mons's Goblin Raiders")
                 .withCardInHand(1, "Craw Wurm")
                 .build()
 
