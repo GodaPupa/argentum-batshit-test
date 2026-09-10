@@ -20,11 +20,6 @@ import io.kotest.matchers.collections.shouldContainExactlyInAnyOrder
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.types.shouldBeInstanceOf
 
-private class DeepSacrificeDidNotCast : RuntimeException()
-private class DeepSacrificeChoseWrongSpell : RuntimeException()
-private class DeepSacrificeChoseWrongPermanent : RuntimeException()
-private class DeepSacrificePayoffMissing : RuntimeException()
-
 /** Deterministic readiness probes for the general strategic decisions Grixis Affinity requires. */
 class GrixisAffinityAgentDecisionTest : ScenarioTestBase() {
     private val profile = AiProfile.PRODUCTION_CANDIDATE_EXPIRING
@@ -228,24 +223,16 @@ class GrixisAffinityAgentDecisionTest : ScenarioTestBase() {
             var builder = seeded().withActivePlayer(2).withLifeTotal(1, 2)
                 .withCardInHand(1, "Reckoner's Bargain")
                 .withLandsOnBattlefield(1, "Swamp", 2)
-            repeat(9) { builder = builder.withCardOnBattlefield(1, "Vault of Whispers") }
+            builder = builder.withCardOnBattlefield(1, "Vault of Whispers")
+            repeat(8) { builder = builder.withCardOnBattlefield(1, "Bonesplitter") }
             val game = builder.withCardOnBattlefield(1, "Ichor Wellspring")
                 .withCardInLibrary(1, "Forest").withCardInLibrary(1, "Mountain")
                 .withCardInHand(2, "Lightning Bolt").withLandsOnBattlefield(2, "Mountain", 1).build()
             game.castSpellTargetingPlayer(2, "Lightning Bolt", 1).error shouldBe null
             game.execute(PassPriority(game.player2Id)).error shouldBe null
-            val payoff = CombatAdvisor(
-                GameSimulator(cardRegistry), AIPlayer.defaultEvaluator(), cardRegistry,
-            ).mandatoryDiesPayoff(game.state, game.findPermanent("Ichor Wellspring")!!)
-            if (payoff <= 0.0) throw DeepSacrificePayoffMissing()
-            val action = ai(game).chooseAction(game.state) as? CastSpell
-                ?: throw DeepSacrificeDidNotCast()
-            if (name(game, action.cardId) != "Reckoner's Bargain") {
-                throw DeepSacrificeChoseWrongSpell()
-            }
-            if (name(game, action.additionalCostPayment!!.sacrificedPermanents.single()) != "Ichor Wellspring") {
-                throw DeepSacrificeChoseWrongPermanent()
-            }
+            val action = ai(game).chooseAction(game.state).shouldBeInstanceOf<CastSpell>()
+            name(game, action.cardId) shouldBe "Reckoner's Bargain"
+            name(game, action.additionalCostPayment!!.sacrificedPermanents.single()) shouldBe "Ichor Wellspring"
         }
 
         test("large free affinity threat is deployed while one-mana interaction is held") {
