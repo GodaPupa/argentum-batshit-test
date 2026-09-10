@@ -1,6 +1,7 @@
 package com.wingedsheep.engine.scenarios
 
 import com.wingedsheep.engine.core.PlayLand
+import com.wingedsheep.engine.state.components.battlefield.TappedComponent
 import com.wingedsheep.engine.state.components.identity.CardComponent
 import com.wingedsheep.engine.support.ScenarioTestBase
 import com.wingedsheep.sdk.core.Phase
@@ -16,7 +17,7 @@ class HauntedMireScenarioTest : ScenarioTestBase() {
                 game.state.getEntity(it)?.get<CardComponent>()?.name == "Haunted Mire"
             }
             game.execute(PlayLand(game.player1Id, mire)).error shouldBe null
-            game.isTapped(game.findPermanent("Haunted Mire")!!) shouldBe true
+            game.state.getEntity(game.findPermanent("Haunted Mire")!!)?.has<TappedComponent>() shouldBe true
             val typeLine = game.state.getEntity(game.findPermanent("Haunted Mire")!!)
                 ?.get<CardComponent>()!!.typeLine
             typeLine.subtypes.containsAll(setOf("Swamp", "Forest")) shouldBe true
