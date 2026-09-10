@@ -4,6 +4,7 @@ import com.wingedsheep.engine.core.ActivateAbility
 import com.wingedsheep.engine.core.CardsSelectedResponse
 import com.wingedsheep.engine.core.CastSpell
 import com.wingedsheep.engine.core.DeclareBlockers
+import com.wingedsheep.engine.core.PassPriority
 import com.wingedsheep.engine.core.SelectCardsDecision
 import com.wingedsheep.engine.state.components.identity.CardComponent
 import com.wingedsheep.engine.support.ScenarioTestBase
@@ -69,19 +70,25 @@ class GreedyFreebooterAgentDecisionTest : ScenarioTestBase() {
 
         test("Freebooter death value makes it the preferred Village Rites sacrifice") {
             val game = seeded()
+                .withActivePlayer(2)
                 .withCardOnBattlefield(1, "Voldaren Epicure")
                 .withCardOnBattlefield(1, "Greedy Freebooter")
                 .withCardInHand(1, "Village Rites")
                 .withLandsOnBattlefield(1, "Swamp", 1)
+                .withCardInHand(2, "Lightning Bolt")
+                .withLandsOnBattlefield(2, "Mountain", 1)
                 .withCardInLibrary(1, "Mountain")
                 .withCardInLibrary(1, "Mountain")
                 .withCardInLibrary(1, "Mountain")
                 .build()
+            val victim = game.findPermanent("Greedy Freebooter")!!
+            game.castSpell(2, "Lightning Bolt", victim).isSuccess.shouldBeTrue()
+            game.execute(PassPriority(game.player2Id)).isSuccess.shouldBeTrue()
 
             val action = ai(game).chooseAction(game.state).shouldBeInstanceOf<CastSpell>()
             cardName(game, action.cardId) shouldBe "Village Rites"
             val sacrificed = action.additionalCostPayment!!.sacrificedPermanents.single()
-            cardName(game, sacrificed) shouldBe "Greedy Freebooter"
+            sacrificed shouldBe victim
         }
 
         test("Freebooter death value can make it the preferred combat blocker") {
