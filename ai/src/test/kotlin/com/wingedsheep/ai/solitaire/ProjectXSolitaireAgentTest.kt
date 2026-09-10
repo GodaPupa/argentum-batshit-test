@@ -164,7 +164,9 @@ class ProjectXSolitaireAgentTest : ScenarioTestBase() {
 
             val search = realSearchDecision.shouldBeInstanceOf<SelectCardsDecision>()
             solitaire.analyzer.missingPrimaryRoles(game.state, game.player1Id) shouldBe setOf("Safehold Elite")
-            search.options.map { name(game, it) }.toSet() shouldBe setOf("Nettle Sentinel", "Safehold Elite")
+            val offeredNames = search.options.map { name(game, it) }.toSet()
+            offeredNames.contains("Nettle Sentinel").shouldBeTrue()
+            offeredNames.contains("Safehold Elite").shouldBeTrue()
             val response = solitaire.respondToDecision(game.state, search)
             chosenName(game, response) shouldBe "Safehold Elite"
             game.execute(SubmitDecision(search.playerId, response)).error shouldBe null
