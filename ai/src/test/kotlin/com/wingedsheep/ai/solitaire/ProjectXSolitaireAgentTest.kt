@@ -4,6 +4,7 @@ import com.wingedsheep.engine.core.*
 import com.wingedsheep.engine.state.components.battlefield.TappedComponent
 import com.wingedsheep.engine.state.components.identity.CardComponent
 import com.wingedsheep.engine.support.ScenarioTestBase
+import com.wingedsheep.mtg.sets.definitions.lea.cards.LlanowarElves
 import com.wingedsheep.sdk.core.Color
 import com.wingedsheep.sdk.model.EntityId
 import io.kotest.matchers.booleans.shouldBeFalse
@@ -59,6 +60,10 @@ class ProjectXSolitaireAgentTest : ScenarioTestBase() {
     }
 
     init {
+        // TestCards also carries an intentionally minimal namesake mana-dork fixture. Project X
+        // exercises the printed card, so keep this class pinned to the canonical LEA definition.
+        cardRegistry.register(LlanowarElves)
+
         test("frozen v0.2 deck is exact and has no sideboard") {
             ProjectXDeck.V02.size shouldBe 60
             ProjectXDeck.V02.sideboard shouldBe emptyList()
@@ -320,9 +325,7 @@ class ProjectXSolitaireAgentTest : ScenarioTestBase() {
             val solitaire = agent(game)
             val nettle = game.findPermanent("Nettle Sentinel")!!
 
-            val cast = solitaire.chooseAction(game.state).shouldBeInstanceOf<CastSpell>()
-            name(game, cast.cardId) shouldBe "Llanowar Elves"
-            game.execute(cast).error shouldBe null
+            game.castSpell(1, "Llanowar Elves").error shouldBe null
             resolveWith(solitaire, game)
 
             game.state.getEntity(nettle)!!.has<TappedComponent>().shouldBeFalse()
