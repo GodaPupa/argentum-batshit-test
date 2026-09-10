@@ -49,7 +49,9 @@ class GrixisAffinityAgentDecisionTest : ScenarioTestBase() {
                 .build()
             game.castSpellTargetingPlayer(2, "Lightning Bolt", 1).error shouldBe null
             game.execute(PassPriority(game.player2Id)).error shouldBe null
-            val action = ai(game).chooseAction(game.state).shouldBeInstanceOf<CastSpell>()
+            val chosen = ai(game).chooseAction(game.state)
+            println("deep-sacrifice regression chose $chosen")
+            val action = chosen.shouldBeInstanceOf<CastSpell>()
             name(game, action.cardId) shouldBe "Reckoner's Bargain"
             name(game, action.additionalCostPayment!!.sacrificedPermanents.single()) shouldBe "Ichor Wellspring"
         }
