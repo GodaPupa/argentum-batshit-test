@@ -41,6 +41,8 @@ class ProjectXStateAnalyzer {
     fun outcome(state: GameState, playerId: EntityId): ProjectXOutcome {
         val battlefield = namesIn(state, playerId, Zone.BATTLEFIELD)
         val primary = primaryRoles.all(battlefield::contains) && eliteCanPersist(state, playerId)
+        val secondary = secondaryWitnessLoopAvailable(state, playerId)
+        val unboundedSacrificeLoop = primary || secondary
         val feeder = permanent(state, playerId, CARRION_FEEDER)
         val feederCanAttack = feeder != null &&
             state.isActiveTurnFor(playerId) &&
@@ -50,13 +52,13 @@ class ProjectXStateAnalyzer {
 
         return ProjectXOutcome(
             completeInfiniteEngine = primary,
-            arbitrarilyLargeCarrionFeeder = primary,
-            arbitraryLife = primary && ESSENCE_WARDEN in battlefield,
-            nobleDeterministicLethal = primary && FALKENRATH_NOBLE in battlefield,
+            arbitrarilyLargeCarrionFeeder = unboundedSacrificeLoop,
+            arbitraryLife = unboundedSacrificeLoop && ESSENCE_WARDEN in battlefield,
+            nobleDeterministicLethal = unboundedSacrificeLoop && FALKENRATH_NOBLE in battlefield,
             // A blank goldfish opponent cannot block. This is deliberately separate from Noble:
             // an unbounded power claim is not damage, and summoning sickness/postcombat timing matter.
-            feederCombatLethalThisTurn = primary && feederCanAttack,
-            secondaryWitnessLoop = secondaryWitnessLoopAvailable(state, playerId),
+            feederCombatLethalThisTurn = unboundedSacrificeLoop && feederCanAttack,
+            secondaryWitnessLoop = secondary,
         )
     }
 

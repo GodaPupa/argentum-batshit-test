@@ -302,6 +302,19 @@ class ProjectXSolitaireAgentTest : ScenarioTestBase() {
             outcome.immediateDeterministicLethal.shouldBeFalse()
         }
 
+        test("an unbounded Feeder that can attack is deterministic combat lethal without materializing counters") {
+            val game = scenario().withPlayers()
+                .withCardOnBattlefield(1, "Carrion Feeder")
+                .withCardOnBattlefield(1, "Safehold Elite")
+                .withCardOnBattlefield(1, "Ivy Lane Denizen")
+                .build()
+
+            val outcome = agent(game).outcome(game.state)
+            outcome.arbitrarilyLargeCarrionFeeder.shouldBeTrue()
+            outcome.feederCombatLethalThisTurn.shouldBeTrue()
+            outcome.immediateDeterministicLethal.shouldBeTrue()
+        }
+
         test("Noble lethal is terminal immediately without executing loop iterations") {
             val game = scenario().withPlayers()
                 .withCardOnBattlefield(1, "Carrion Feeder", summoningSickness = true)
@@ -330,16 +343,49 @@ class ProjectXSolitaireAgentTest : ScenarioTestBase() {
                 SecondaryWitnessStep.entries
         }
 
-        test("Feeder preserves Herald and sacrifices Elite when the primary loop is already available") {
+        test("secondary Witness loop propagates to huge Feeder life and Noble lethal outcomes") {
             val game = scenario().withPlayers()
-                .withCardOnBattlefield(1, "Carrion Feeder")
+                .withCardOnBattlefield(1, "Carrion Feeder", summoningSickness = true)
+                .withCardOnBattlefield(1, "Ivy Lane Denizen")
+                .withCardOnBattlefield(1, "Evolution Witness")
+                .withCardOnBattlefield(1, "Birchlore Rangers")
+                .withCardOnBattlefield(1, "Nettle Sentinel")
+                .withCardOnBattlefield(1, "Essence Warden")
+                .withCardOnBattlefield(1, "Falkenrath Noble")
+                .withCardInHand(1, "Quirion Ranger")
+                .build()
+
+            agent(game).outcome(game.state).let {
+                it.completeInfiniteEngine.shouldBeFalse()
+                it.secondaryWitnessLoop.shouldBeTrue()
+                it.arbitrarilyLargeCarrionFeeder.shouldBeTrue()
+                it.arbitraryLife.shouldBeTrue()
+                it.nobleDeterministicLethal.shouldBeTrue()
+            }
+        }
+
+        test("recognized primary loop advances the game instead of physically iterating sacrifices") {
+            val game = scenario().withPlayers()
+                .withCardOnBattlefield(1, "Carrion Feeder", summoningSickness = true)
+                .withCardOnBattlefield(1, "Safehold Elite")
+                .withCardOnBattlefield(1, "Ivy Lane Denizen")
+                .build()
+
+            agent(game).chooseAction(game.state) shouldBe PassPriority(game.player1Id)
+        }
+
+        test("recognized loop preserves its creatures while deploying Noble for immediate lethal") {
+            val game = scenario().withPlayers()
+                .withCardOnBattlefield(1, "Carrion Feeder", summoningSickness = true)
                 .withCardOnBattlefield(1, "Safehold Elite")
                 .withCardOnBattlefield(1, "Ivy Lane Denizen")
                 .withCardOnBattlefield(1, "Wirewood Herald")
+                .withCardInHand(1, "Falkenrath Noble")
+                .withLandsOnBattlefield(1, "Swamp", 4)
                 .build()
 
-            val action = agent(game).chooseAction(game.state).shouldBeInstanceOf<ActivateAbility>()
-            name(game, action.costPayment!!.sacrificedPermanents.single()) shouldBe "Safehold Elite"
+            val action = agent(game).chooseAction(game.state).shouldBeInstanceOf<CastSpell>()
+            name(game, action.cardId) shouldBe "Falkenrath Noble"
         }
     }
 }

@@ -38,15 +38,27 @@ class ProjectXSolitaireAgent(
         val legal = enumerator.enumerate(state, playerId, EnumerationMode.ACTIONS_ONLY)
         if (legal.isEmpty()) return PassPriority(playerId)
 
-        val specialized = legal.asSequence()
+        val materialized = legal.asSequence()
             .filter { it.affordable }
             .map { it to materialize(state, it) }
+            .toList()
+        val specialized = materialized.asSequence()
             .map { (legalAction, action) -> Triple(priority(state, legalAction, action), legalAction, action) }
             .filter { it.first > 0 }
             .maxWithOrNull(compareBy<Triple<Int, LegalAction, GameAction>> { it.first }
                 .thenBy { it.second.description })
 
-        return specialized?.third ?: fallback.chooseFrom(state, legal).action
+        if (specialized != null) return specialized.third
+
+        // Once a sacrifice loop has been proven symbolically, executing it again cannot improve the
+        // deterministic outcome. Keep developing or pass toward the next combat window instead of
+        // burning thousands of identical engine transitions.
+        val nonLoopActions = materialized.filterNot { (_, action) -> redundantLoopIteration(state, action) }
+        return if (nonLoopActions.isNotEmpty()) {
+            fallback.chooseFrom(state, nonLoopActions.map { it.first }).action
+        } else {
+            PassPriority(playerId)
+        }
     }
 
     fun respondToDecision(state: GameState, decision: PendingDecision): DecisionResponse {
@@ -136,11 +148,25 @@ class ProjectXSolitaireAgent(
     ): Int {
         val victim = action.costPayment?.sacrificedPermanents?.singleOrNull()?.let { analyzer.name(state, it) }
         return when {
+            outcome(state).arbitrarilyLargeCarrionFeeder -> 0
             victim == ProjectXStateAnalyzer.SAFEHOLD_ELITE && analyzer.primaryRoles.all(battlefield::contains) -> 9_500
             victim == ProjectXStateAnalyzer.WIREWOOD_HERALD && missing.size == 1 &&
                 missing.single() in analyzer.libraryNames(state, playerId) -> 7_800
             else -> 0
         }
+    }
+
+    private fun redundantLoopIteration(state: GameState, action: GameAction): Boolean {
+        if (!outcome(state).arbitrarilyLargeCarrionFeeder || action !is ActivateAbility) return false
+        if (analyzer.name(state, action.sourceId) != ProjectXStateAnalyzer.CARRION_FEEDER) return false
+        val victim = action.costPayment?.sacrificedPermanents?.singleOrNull() ?: return false
+        return analyzer.name(state, victim) in setOf(
+            ProjectXStateAnalyzer.SAFEHOLD_ELITE,
+            ProjectXStateAnalyzer.WIREWOOD_HERALD,
+            ProjectXStateAnalyzer.NETTLE_SENTINEL,
+            ProjectXStateAnalyzer.BIRCHLORE_RANGERS,
+            ProjectXStateAnalyzer.QUIRION_RANGER,
+        )
     }
 
     private fun materialize(state: GameState, legal: LegalAction): GameAction {
