@@ -132,22 +132,7 @@ class ProjectXSolitaireAgent(
         val battlefield = analyzer.battlefieldNames(state, playerId)
         val hand = analyzer.handNames(state, playerId)
         return when (action) {
-            is CastSpell -> {
-                val name = analyzer.name(state, action.cardId)
-                when {
-                    name == ProjectXStateAnalyzer.FALKENRATH_NOBLE ->
-                        if (analyzer.primaryRoles.all(battlefield::contains)) 10_000 else 900
-                    name == ProjectXStateAnalyzer.ESSENCE_WARDEN ->
-                        if (analyzer.primaryRoles.all(battlefield::contains)) 9_000 else 700
-                    name != null && name in missing -> 8_000 + primaryRoleTieBreak(name)
-                    name == ProjectXStateAnalyzer.LEAD_THE_STAMPEDE -> if (missing.isNotEmpty()) 5_200 else 500
-                    name == ProjectXStateAnalyzer.WINDING_WAY -> if (missing.isNotEmpty() || needsLand(state)) 5_000 else 450
-                    name == ProjectXStateAnalyzer.EVOLUTION_WITNESS ->
-                        if (missing.any(analyzer.graveyardNames(state, playerId)::contains)) 6_500 else 650
-                    name == ProjectXStateAnalyzer.WIREWOOD_HERALD -> if (missing.isNotEmpty()) 5_800 else 600
-                    else -> accelerationPriority(state, action.cardId)
-                }
-            }
+            is CastSpell -> castPriority(state, action.cardId)
 
             is ActivateAbility -> when (analyzer.name(state, action.sourceId)) {
                 ProjectXStateAnalyzer.CARRION_FEEDER -> sacrificePriority(state, action, missing, battlefield)
@@ -157,9 +142,9 @@ class ProjectXSolitaireAgent(
                 ProjectXStateAnalyzer.BIRCHLORE_RANGERS -> when {
                     needsBlackMana(state, hand) -> 7_000
                     analyzer.secondaryWitnessSequence(state, playerId) != null -> 6_900
-                    else -> 0
+                    else -> reusableManaActivationPriority(state, action)
                 }
-                else -> 0
+                else -> reusableManaActivationPriority(state, action)
             }
 
             is PlayLand -> 1_000 + landPriority(state, analyzer.name(state, action.cardId))
@@ -407,6 +392,55 @@ class ProjectXSolitaireAgent(
      * than predictive: the only question is whether adding this source reduces the earliest turn
      * for at least one held spell under identical draw assumptions.
      */
+    /**
+     * Prefer an already-deployed reusable mana creature only when activating it makes a held,
+     * strategically relevant spell newly affordable. The comparison is made through the legal-action
+     * enumerator before and after the real mana ability, so colored requirements and actual payment
+     * rules remain authoritative.
+     */
+    private fun reusableManaActivationPriority(state: GameState, action: ActivateAbility): Int {
+        val source = state.getEntity(action.sourceId)?.get<CardComponent>() ?: return 0
+        if (!source.isCreature || !isReusableCreatureManaSource(source.name)) return 0
+
+        val before = affordableCastIds(state)
+        val simulated = simulator.simulate(state, action)
+        if (simulated is com.wingedsheep.ai.engine.SimulationResult.Illegal ||
+            simulated is com.wingedsheep.ai.engine.SimulationResult.StoppedAtLimit
+        ) return 0
+
+        val newlyAffordable = affordableCastIds(simulated.state) - before
+        val unlockedPriority = newlyAffordable.maxOfOrNull { cardId ->
+            castPriority(state, cardId)
+        } ?: return 0
+        return (unlockedPriority - 1).coerceAtLeast(1)
+    }
+
+    private fun affordableCastIds(state: GameState): Set<EntityId> =
+        enumerator.enumerate(state, playerId, EnumerationMode.ACTIONS_ONLY)
+            .asSequence()
+            .filter(LegalAction::affordable)
+            .mapNotNull { legal -> (legal.action as? CastSpell)?.cardId }
+            .toSet()
+
+    private fun castPriority(state: GameState, cardId: EntityId): Int {
+        val missing = analyzer.missingPrimaryRoles(state, playerId)
+        val battlefield = analyzer.battlefieldNames(state, playerId)
+        val name = analyzer.name(state, cardId)
+        return when {
+            name == ProjectXStateAnalyzer.FALKENRATH_NOBLE ->
+                if (analyzer.primaryRoles.all(battlefield::contains)) 10_000 else 900
+            name == ProjectXStateAnalyzer.ESSENCE_WARDEN ->
+                if (analyzer.primaryRoles.all(battlefield::contains)) 9_000 else 700
+            name != null && name in missing -> 8_000 + primaryRoleTieBreak(name)
+            name == ProjectXStateAnalyzer.LEAD_THE_STAMPEDE -> if (missing.isNotEmpty()) 5_200 else 500
+            name == ProjectXStateAnalyzer.WINDING_WAY -> if (missing.isNotEmpty() || needsLand(state)) 5_000 else 450
+            name == ProjectXStateAnalyzer.EVOLUTION_WITNESS ->
+                if (missing.any(analyzer.graveyardNames(state, playerId)::contains)) 6_500 else 650
+            name == ProjectXStateAnalyzer.WIREWOOD_HERALD -> if (missing.isNotEmpty()) 5_800 else 600
+            else -> accelerationPriority(state, cardId)
+        }
+    }
+
     private fun accelerationPriority(state: GameState, cardId: EntityId): Int {
         val card = state.getEntity(cardId)?.get<CardComponent>() ?: return 0
         if (!card.isCreature || !isReusableCreatureManaSource(card.name)) return 0
