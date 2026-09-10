@@ -116,6 +116,19 @@ class ProjectXGoldfishEndToEndTest : ScenarioTestBase() {
             exercise(3, "Creature") shouldBe "T2:agent=Creature:rules=Creature:hand=[]:grave=[]"
         }
 
+        test("Herald availability reports only legally searchable missing roles") {
+            val game = scenario().withPlayers()
+                .withCardInLibrary(1, "Carrion Feeder")
+                .withCardInLibrary(1, "Safehold Elite")
+                .withCardInLibrary(1, "Ivy Lane Denizen")
+                .build()
+            val analyzer = ProjectXSolitaireAgent(cardRegistry, game.player1Id).analyzer
+
+            isHeraldSearchableRole(game.state, game.player1Id, "Safehold Elite", analyzer).shouldBeTrue()
+            isHeraldSearchableRole(game.state, game.player1Id, "Ivy Lane Denizen", analyzer).shouldBeTrue()
+            isHeraldSearchableRole(game.state, game.player1Id, "Carrion Feeder", analyzer).shouldBeFalse()
+        }
+
         test("bottleneck telemetry separates color, Birchlore, tapland, and total-mana constraints") {
             fun categories(game: TestGame): Set<String> =
                 classifyManaConstraints(

@@ -366,7 +366,7 @@ internal fun runProjectXGoldfish(registry: CardRegistry, seed: Long, gameNumber:
                 if (analyzer.graveyardNames(gameState, projectId).contains(ProjectXStateAnalyzer.WIREWOOD_HERALD)) add("GRAVEYARD")
             }
             if (zones.isNotEmpty()) {
-                val searchable = role in analyzer.libraryNames(gameState, projectId)
+                val searchable = isHeraldSearchableRole(gameState, projectId, role, analyzer)
                 heraldAvailability += HeraldAvailability(
                     turn, role, zones, searchable,
                     searchable && "BATTLEFIELD" in zones &&
@@ -759,6 +759,16 @@ internal fun classifyTerminal(
         events.filterIsInstance<DamageDealtEvent>().any { it.targetIsPlayer && !it.isCombatDamage } ->
         "TRIGGERED_OR_ABILITY_LETHAL"
     else -> "OTHER:${ended.reason}"
+}
+
+/** Whether Wirewood Herald can legally find the named role in this exact library state. */
+internal fun isHeraldSearchableRole(
+    state: GameState,
+    playerId: EntityId,
+    role: String,
+    analyzer: ProjectXStateAnalyzer,
+): Boolean = state.getZone(playerId, Zone.LIBRARY).any { cardId ->
+    analyzer.name(state, cardId) == role && analyzer.isElf(state, cardId)
 }
 
 internal fun classifyManaConstraints(
