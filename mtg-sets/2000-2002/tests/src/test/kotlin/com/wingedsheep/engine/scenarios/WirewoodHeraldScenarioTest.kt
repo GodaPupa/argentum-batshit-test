@@ -3,6 +3,7 @@ package com.wingedsheep.engine.scenarios
 import com.wingedsheep.engine.core.SelectCardsDecision
 import com.wingedsheep.engine.state.components.identity.CardComponent
 import com.wingedsheep.engine.support.ScenarioTestBase
+import com.wingedsheep.sdk.core.Keyword
 import com.wingedsheep.sdk.core.Phase
 import com.wingedsheep.sdk.core.Step
 import io.kotest.matchers.shouldBe
@@ -21,13 +22,13 @@ class WirewoodHeraldScenarioTest : ScenarioTestBase() {
                 game.resolveStack()
                 game.answerYesNo(true)
                 val elf = game.findCardsInLibrary(1, role).single()
-                val typeLine = game.state.getEntity(elf)!!.get<CardComponent>()!!.typeLine
-                check(typeLine.subtypes.any { it.value == "Elf" }) {
-                    "$role runtime type line is $typeLine"
+                val card = game.state.getEntity(elf)!!.get<CardComponent>()!!
+                check(card.typeLine.subtypes.any { it.value == "Elf" } || Keyword.CHANGELING in card.baseKeywords) {
+                    "$role has neither printed Elf type nor Changeling: ${card.typeLine}, ${card.baseKeywords}"
                 }
                 val search = game.state.pendingDecision as SelectCardsDecision
                 check(elf in search.options) {
-                    "$role is in the library with runtime type line $typeLine but Herald offered " +
+                    "$role is an Elf card (${card.typeLine}, ${card.baseKeywords}) but Herald offered " +
                         search.options.map { game.state.getEntity(it)?.get<CardComponent>()?.name }
                 }
                 game.selectCards(listOf(elf)).error shouldBe null
