@@ -23,6 +23,7 @@ import io.kotest.matchers.types.shouldBeInstanceOf
 private class DeepSacrificeDidNotCast : RuntimeException()
 private class DeepSacrificeChoseWrongSpell : RuntimeException()
 private class DeepSacrificeChoseWrongPermanent : RuntimeException()
+private class DeepSacrificePayoffMissing : RuntimeException()
 
 /** Deterministic readiness probes for the general strategic decisions Grixis Affinity requires. */
 class GrixisAffinityAgentDecisionTest : ScenarioTestBase() {
@@ -233,6 +234,10 @@ class GrixisAffinityAgentDecisionTest : ScenarioTestBase() {
                 .withCardInHand(2, "Lightning Bolt").withLandsOnBattlefield(2, "Mountain", 1).build()
             game.castSpellTargetingPlayer(2, "Lightning Bolt", 1).error shouldBe null
             game.execute(PassPriority(game.player2Id)).error shouldBe null
+            val payoff = CombatAdvisor(
+                GameSimulator(cardRegistry), AIPlayer.defaultEvaluator(), cardRegistry,
+            ).mandatoryDiesPayoff(game.state, game.findPermanent("Ichor Wellspring")!!)
+            if (payoff <= 0.0) throw DeepSacrificePayoffMissing()
             val action = ai(game).chooseAction(game.state) as? CastSpell
                 ?: throw DeepSacrificeDidNotCast()
             if (name(game, action.cardId) != "Reckoner's Bargain") {
