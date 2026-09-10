@@ -268,8 +268,12 @@ class ProjectXSolitaireAgentTest : ScenarioTestBase() {
                 .build()
             val solitaire = agent(game)
 
-            val cast = solitaire.chooseAction(game.state).shouldBeInstanceOf<CastSpell>()
-            name(game, cast.cardId) shouldBe "Ivy Lane Denizen"
+            val selected = solitaire.chooseAction(game.state)
+            check(selected is CastSpell) { "Expected Ivy cast with Llanowar payment, selected $selected" }
+            val cast = selected
+            check(name(game, cast.cardId) == "Ivy Lane Denizen") {
+                "Expected Ivy Lane Denizen, selected ${name(game, cast.cardId)}"
+            }
         }
 
         test("Ivy Lane Denizen auto-payment consumes Llanowar mana after three lands") {
@@ -281,8 +285,12 @@ class ProjectXSolitaireAgentTest : ScenarioTestBase() {
             val solitaire = agent(game)
             val elves = game.findPermanent("Llanowar Elves")!!
 
-            val cast = solitaire.chooseAction(game.state).shouldBeInstanceOf<CastSpell>()
-            name(game, cast.cardId) shouldBe "Ivy Lane Denizen"
+            val selected = solitaire.chooseAction(game.state)
+            check(selected is CastSpell) { "Expected Ivy cast with Llanowar payment, selected $selected" }
+            val cast = selected
+            check(name(game, cast.cardId) == "Ivy Lane Denizen") {
+                "Expected Ivy Lane Denizen, selected ${name(game, cast.cardId)}"
+            }
             game.execute(cast).error shouldBe null
             game.state.getEntity(elves)!!.has<TappedComponent>().shouldBeTrue()
         }
