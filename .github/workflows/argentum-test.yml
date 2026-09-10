@@ -47,3 +47,18 @@ jobs:
 
       - name: Run Gym trainer tests
         run: ./gradlew :gym-trainer:test --stacktrace
+
+      - name: Run frozen Project X Goldfish Sample 1
+        env:
+          PROJECT_X_GOLDFISH_SAMPLE_1: "true"
+        run: ./gradlew :gym:test --tests ProjectXGoldfishTest --rerun-tasks --stacktrace
+
+      - name: Upload Project X Goldfish Sample 1
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: project-x-v02-goldfish-sample-1
+          path: |
+            gym/build/reports/project-x-goldfish/project-x-v02-goldfish-sample-1.json
+            gym/build/reports/project-x-goldfish/project-x-v02-goldfish-sample-1.md
+          if-no-files-found: warn

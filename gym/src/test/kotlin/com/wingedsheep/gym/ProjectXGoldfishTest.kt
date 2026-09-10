@@ -37,6 +37,7 @@ import java.nio.file.Path
 import kotlin.time.Duration.Companion.minutes
 
 private const val PROJECT_X_GOLDFISH_ENV = "PROJECT_X_GOLDFISH"
+private const val PROJECT_X_GOLDFISH_SAMPLE_1_ENV = "PROJECT_X_GOLDFISH_SAMPLE_1"
 private const val PROJECT_X_HORIZON = 12
 
 /**
@@ -75,41 +76,61 @@ class ProjectXGoldfishTest : FunSpec({
         enabled = System.getenv(PROJECT_X_GOLDFISH_ENV) == "true",
         timeout = 45.minutes,
     ) {
-        val seedPath = Path.of("src", "test", "resources", "project-x-goldfish-v02-seeds.csv")
-        val seeds = Files.readAllLines(seedPath).drop(1).filter(String::isNotBlank).map { line ->
-            line.substringAfterLast(',').toLong()
-        }
-        seeds.size shouldBe 30
-        seeds.distinct().size shouldBe 30
-        seeds.none(previouslyUsedProjectXOrBatshitSeeds(seedPath)::contains).shouldBeTrue()
+        executeProjectXGoldfishBlock(
+            seedPath = Path.of("src", "test", "resources", "project-x-goldfish-v02-seeds.csv"),
+            sampleName = "Corrected original 30-seed regression replay",
+            reportStem = "project-x-v02-goldfish-30",
+        )
+    }
 
-        val registry = projectXRegistry()
-        val games = seeds.mapIndexed { index, seed -> runProjectXGoldfish(registry, seed, index + 1) }
-        val block = ProjectXGoldfishBlock(
-            deckVersion = "Project X v0.2",
-            horizon = PROJECT_X_HORIZON,
-            seeds = seeds,
-            games = games,
-            summary = summarizeProjectX(games),
+    test("Project X v0.2 Goldfish Sample 1").config(
+        enabled = System.getenv(PROJECT_X_GOLDFISH_SAMPLE_1_ENV) == "true",
+        timeout = 45.minutes,
+    ) {
+        executeProjectXGoldfishBlock(
+            seedPath = Path.of("src", "test", "resources", "project-x-goldfish-sample-1-seeds.csv"),
+            sampleName = "Goldfish Sample #1",
+            reportStem = "project-x-v02-goldfish-sample-1",
         )
-
-        val reportDir = Path.of("build", "reports", "project-x-goldfish")
-        Files.createDirectories(reportDir)
-        Files.writeString(
-            reportDir.resolve("project-x-v02-goldfish-30.json"),
-            Json { prettyPrint = true }.encodeToString(block),
-        )
-        Files.writeString(
-            reportDir.resolve("project-x-v02-goldfish-30.md"),
-            renderProjectXMarkdown(block),
-        )
-        println(renderProjectXMarkdown(block))
-        games.forEach { it.auditErrors shouldBe emptyList() }
     }
 })
 
+private fun executeProjectXGoldfishBlock(seedPath: Path, sampleName: String, reportStem: String) {
+    val seeds = Files.readAllLines(seedPath).drop(1).filter(String::isNotBlank).map { line ->
+        line.substringAfterLast(',').toLong()
+    }
+    seeds.size shouldBe 30
+    seeds.distinct().size shouldBe 30
+    seeds.none(previouslyUsedProjectXOrBatshitSeeds(seedPath)::contains).shouldBeTrue()
+
+    val registry = projectXRegistry()
+    val games = seeds.mapIndexed { index, seed -> runProjectXGoldfish(registry, seed, index + 1) }
+    val block = ProjectXGoldfishBlock(
+        sampleName = sampleName,
+        deckVersion = "Project X v0.2",
+        horizon = PROJECT_X_HORIZON,
+        seeds = seeds,
+        games = games,
+        summary = summarizeProjectX(games),
+    )
+
+    val reportDir = Path.of("build", "reports", "project-x-goldfish")
+    Files.createDirectories(reportDir)
+    Files.writeString(
+        reportDir.resolve("$reportStem.json"),
+        Json { prettyPrint = true }.encodeToString(block),
+    )
+    Files.writeString(
+        reportDir.resolve("$reportStem.md"),
+        renderProjectXMarkdown(block),
+    )
+    println(renderProjectXMarkdown(block))
+    games.forEach { it.auditErrors shouldBe emptyList() }
+}
+
 @Serializable
 internal data class ProjectXGoldfishBlock(
+    val sampleName: String,
     val deckVersion: String,
     val horizon: Int,
     val seeds: List<Long>,
@@ -124,13 +145,20 @@ internal data class ProjectXGoldfishGame(
     val seedHex: String,
     val mulligans: Int,
     val keptHand: List<String>,
+    val openingColorAccess: OpeningColorAccess,
     val t1Development: List<String>,
     val firstMeaningfulDevelopmentTurn: Int?,
+    val actualWinningTurn: Int?,
+    val winningMechanism: String?,
     val engineTurn: Int?,
+    val firstValidatedComboTurn: Int?,
     val hugeFeederTurn: Int?,
     val infiniteLifeTurn: Int?,
+    val nobleDeterministicDrainTurn: Int?,
     val deterministicLethalTurn: Int?,
     val lethalMechanism: String?,
+    val comboAvailableBeforeOrdinaryLethal: Boolean,
+    val ordinaryLethalEndedBeforeComboAssembly: Boolean,
     val winner: String?,
     val gameOverTurn: Int?,
     val terminalMechanism: String?,
@@ -150,12 +178,24 @@ internal data class ProjectXGoldfishGame(
     val leadTheStampede: List<String>,
     val colorStrandedCards: List<String>,
     val taplandTempoEvents: List<String>,
+    val khalniGardenTempoEvents: List<String>,
+    val hauntedMireTempoEvents: List<String>,
     val exactlyOneRoleMissingTurns: List<Int>,
     val functionalWithoutCombo: String,
     val secondaryWitnessLoopTurn: Int?,
     val actions: Int,
     val stopReason: String,
     val auditErrors: List<String>,
+)
+
+@Serializable
+internal data class OpeningColorAccess(
+    val green: Boolean,
+    val black: Boolean,
+    val untappedGreen: Boolean,
+    val untappedBlack: Boolean,
+    val sources: List<String>,
+    val entersTappedSources: List<String>,
 )
 
 @Serializable
@@ -203,6 +243,12 @@ internal data class ManaConstraintTelemetry(
 
 @Serializable
 internal data class ProjectXGoldfishSummary(
+    val actualWinsByT4: Int,
+    val actualWinsByT5: Int,
+    val actualWinsByT6: Int,
+    val medianActualWinningTurn: Double?,
+    val meanActualWinningTurn: Double?,
+    val winningMechanismDistribution: Map<String, Int>,
     val engineByT4: Int,
     val engineByT5: Int,
     val engineByT6: Int,
@@ -211,12 +257,27 @@ internal data class ProjectXGoldfishSummary(
     val lethalByT6: Int,
     val medianEngineTurn: Double?,
     val medianLethalTurn: Double?,
+    val anyInfiniteByT4: Int,
+    val anyInfiniteByT5: Int,
+    val anyInfiniteByT6: Int,
+    val medianComboTurn: Double?,
+    val comboAssemblyGames: Int,
+    val comboAssemblyRate: Double,
+    val comboBeforeGameEndGames: Int,
+    val comboBeforeGameEndRate: Double,
+    val comboBeforeOrdinaryLethalGames: Int,
+    val ordinaryLethalBeforeComboGames: Int,
     val infiniteLifeGames: Int,
+    val nobleDeterministicDrainGames: Int,
+    val hugeFeederGames: Int,
     val hugeFeederWithoutImmediateLethalGames: Int,
     val mulliganGames: Int,
     val totalMulligans: Int,
+    val mulliganGameRate: Double,
     val functionalWithoutComboGames: Int,
+    val functionalWithoutComboRate: Double,
     val exactlyOneRoleMissingGames: Int,
+    val exactlyOneRoleMissingRate: Double,
     val heraldContributionGames: Int,
     val witnessContributionGames: Int,
     val birchloreContributionGames: Int,
@@ -309,6 +370,15 @@ internal fun runProjectXGoldfish(registry: CardRegistry, seed: Long, gameNumber:
     }
 
     val keptHand = state.getHand(projectId).map(::name)
+    val openingSources = keptHand.filter { it in setOf("Forest", "Swamp", "Khalni Garden", "Haunted Mire") }
+    val openingColorAccess = OpeningColorAccess(
+        green = openingSources.any { it in setOf("Forest", "Khalni Garden", "Haunted Mire") },
+        black = openingSources.any { it in setOf("Swamp", "Haunted Mire") },
+        untappedGreen = "Forest" in openingSources,
+        untappedBlack = "Swamp" in openingSources,
+        sources = openingSources,
+        entersTappedSources = openingSources.filter { it in setOf("Khalni Garden", "Haunted Mire") },
+    )
     val environment = GameEnvironment.create(registry).also { it.restore(state, init.playerIds) }
     val agent = ProjectXSolitaireAgent(registry, projectId)
     val blank = com.wingedsheep.ai.engine.AIPlayer.create(registry, blankId)
@@ -347,6 +417,9 @@ internal fun runProjectXGoldfish(registry: CardRegistry, seed: Long, gameNumber:
     var lethalTurn: Int? = null
     var lethalMechanism: String? = null
     var secondaryTurn: Int? = null
+    var primaryRecognitionAction: Int? = null
+    var secondaryRecognitionAction: Int? = null
+    var ordinaryTerminalAction: Int? = null
     var actions = 0
     var lastEngineTurn = -1
     var actionsThisEngineTurn = 0
@@ -388,10 +461,16 @@ internal fun runProjectXGoldfish(registry: CardRegistry, seed: Long, gameNumber:
             stranded += constraints.filter { it.category == "GENUINE_COLOR_UNCASTABLE" }.map { "${it.spell}@T$turn" }
         }
         val outcome = agent.outcome(gameState)
-        if (outcome.completeInfiniteEngine && engineTurn == null) engineTurn = turn
+        if (outcome.completeInfiniteEngine && engineTurn == null) {
+            engineTurn = turn
+            primaryRecognitionAction = actions
+        }
         if (outcome.arbitrarilyLargeCarrionFeeder && hugeTurn == null) hugeTurn = turn
         if (outcome.arbitraryLife && lifeTurn == null) lifeTurn = turn
-        if (outcome.secondaryWitnessLoop && secondaryTurn == null) secondaryTurn = turn
+        if (outcome.secondaryWitnessLoop && secondaryTurn == null) {
+            secondaryTurn = turn
+            secondaryRecognitionAction = actions
+        }
         if (outcome.immediateDeterministicLethal && lethalTurn == null) {
             lethalTurn = turn
             lethalMechanism = if (outcome.nobleDeterministicLethal) "FALKENRATH_NOBLE_DRAIN" else "CARRION_FEEDER_COMBAT"
@@ -587,6 +666,7 @@ internal fun runProjectXGoldfish(registry: CardRegistry, seed: Long, gameNumber:
         events.filterIsInstance<GameEndedEvent>().lastOrNull()?.let { ended ->
             winner = ended.winnerId?.let { id -> state.getEntity(id)?.get<PlayerComponent>()?.name ?: id.toString() }
             gameOverTurn = turn
+            ordinaryTerminalAction = actions + 1
             terminalMechanism = classifyTerminal(events, ended, lethalTurn != null)
         }
         if (acting == projectId && action is PlayLand && actionName in setOf("Khalni Garden", "Haunted Mire")) {
@@ -615,6 +695,20 @@ internal fun runProjectXGoldfish(registry: CardRegistry, seed: Long, gameNumber:
     val battlefieldCreatures = state.controlledBattlefield(projectId).count { id ->
         state.getEntity(id)?.get<CardComponent>()?.isCreature == true
     }
+    val firstComboTurn = listOfNotNull(engineTurn, secondaryTurn).minOrNull()
+    val firstComboAction = listOfNotNull(primaryRecognitionAction, secondaryRecognitionAction).minOrNull()
+    val actualWinningTurn = listOfNotNull(gameOverTurn, lethalTurn).minOrNull()
+    val winningMechanism = when {
+        lethalTurn != null && (gameOverTurn == null || lethalTurn!! <= gameOverTurn!!) ->
+            "DETERMINISTIC_COMBO:${lethalMechanism ?: "UNCLASSIFIED"}"
+        terminalMechanism != null -> terminalMechanism
+        else -> null
+    }
+    if (winner == null && lethalTurn != null) winner = "Project X"
+    val comboBeforeOrdinaryLethal = firstComboAction != null &&
+        (ordinaryTerminalAction == null || firstComboAction!! < ordinaryTerminalAction!!)
+    val ordinaryLethalBeforeCombo = ordinaryTerminalAction != null &&
+        (firstComboAction == null || ordinaryTerminalAction!! < firstComboAction!!)
     val functional = when {
         engineTurn != null -> "PRIMARY_COMBO_ASSEMBLED"
         secondaryTurn != null -> "FUNCTIONAL_SECONDARY_LOOP"
@@ -629,13 +723,20 @@ internal fun runProjectXGoldfish(registry: CardRegistry, seed: Long, gameNumber:
         seedHex = "0x${seed.toULong().toString(16).uppercase()}",
         mulligans = mulligans,
         keptHand = keptHand,
+        openingColorAccess = openingColorAccess,
         t1Development = t1,
         firstMeaningfulDevelopmentTurn = firstMeaningful,
+        actualWinningTurn = actualWinningTurn,
+        winningMechanism = winningMechanism,
         engineTurn = engineTurn,
+        firstValidatedComboTurn = firstComboTurn,
         hugeFeederTurn = hugeTurn,
         infiniteLifeTurn = lifeTurn,
+        nobleDeterministicDrainTurn = if (lethalMechanism == "FALKENRATH_NOBLE_DRAIN") lethalTurn else null,
         deterministicLethalTurn = lethalTurn,
         lethalMechanism = lethalMechanism,
+        comboAvailableBeforeOrdinaryLethal = comboBeforeOrdinaryLethal,
+        ordinaryLethalEndedBeforeComboAssembly = ordinaryLethalBeforeCombo,
         winner = winner,
         gameOverTurn = gameOverTurn,
         terminalMechanism = terminalMechanism,
@@ -658,6 +759,8 @@ internal fun runProjectXGoldfish(registry: CardRegistry, seed: Long, gameNumber:
         leadTheStampede = lead,
         colorStrandedCards = stranded.toList(),
         taplandTempoEvents = taplands,
+        khalniGardenTempoEvents = taplands.filter { it.startsWith("Khalni Garden") },
+        hauntedMireTempoEvents = taplands.filter { it.startsWith("Haunted Mire") },
         exactlyOneRoleMissingTurns = oneMissingTurns.toList(),
         functionalWithoutCombo = functional,
         secondaryWitnessLoopTurn = secondaryTurn,
@@ -860,7 +963,27 @@ internal fun summarizeProjectX(games: List<ProjectXGoldfishGame>): ProjectXGoldf
         val middle = sorted.size / 2
         return if (sorted.size % 2 == 1) sorted[middle].toDouble() else (sorted[middle - 1] + sorted[middle]) / 2.0
     }
+    val actualWinTurns = games.mapNotNull(ProjectXGoldfishGame::actualWinningTurn)
+    val comboTurns = games.mapNotNull(ProjectXGoldfishGame::firstValidatedComboTurn)
+    fun rate(count: Int): Double = count.toDouble() / games.size
+    val comboAssemblyGames = comboTurns.size
+    val comboBeforeGameEndGames = games.count {
+        it.firstValidatedComboTurn != null && it.actualWinningTurn != null &&
+            it.firstValidatedComboTurn <= it.actualWinningTurn
+    }
+    val mulliganGames = games.count { it.mulligans > 0 }
+    val functionalWithoutComboGames = games.count {
+        it.functionalWithoutCombo.startsWith("FUNCTIONAL_WITHOUT") || it.functionalWithoutCombo == "FUNCTIONAL_SECONDARY_LOOP"
+    }
+    val exactlyOneRoleMissingGames = games.count { it.exactlyOneRoleMissingTurns.isNotEmpty() }
     return ProjectXGoldfishSummary(
+        actualWinsByT4 = countBy(4, ProjectXGoldfishGame::actualWinningTurn),
+        actualWinsByT5 = countBy(5, ProjectXGoldfishGame::actualWinningTurn),
+        actualWinsByT6 = countBy(6, ProjectXGoldfishGame::actualWinningTurn),
+        medianActualWinningTurn = median(actualWinTurns),
+        meanActualWinningTurn = actualWinTurns.takeIf { it.isNotEmpty() }?.average(),
+        winningMechanismDistribution = games.mapNotNull(ProjectXGoldfishGame::winningMechanism)
+            .groupingBy { it }.eachCount().toSortedMap(),
         engineByT4 = countBy(4, ProjectXGoldfishGame::engineTurn),
         engineByT5 = countBy(5, ProjectXGoldfishGame::engineTurn),
         engineByT6 = countBy(6, ProjectXGoldfishGame::engineTurn),
@@ -869,14 +992,29 @@ internal fun summarizeProjectX(games: List<ProjectXGoldfishGame>): ProjectXGoldf
         lethalByT6 = countBy(6, ProjectXGoldfishGame::deterministicLethalTurn),
         medianEngineTurn = median(games.mapNotNull(ProjectXGoldfishGame::engineTurn)),
         medianLethalTurn = median(games.mapNotNull(ProjectXGoldfishGame::deterministicLethalTurn)),
+        anyInfiniteByT4 = countBy(4, ProjectXGoldfishGame::firstValidatedComboTurn),
+        anyInfiniteByT5 = countBy(5, ProjectXGoldfishGame::firstValidatedComboTurn),
+        anyInfiniteByT6 = countBy(6, ProjectXGoldfishGame::firstValidatedComboTurn),
+        medianComboTurn = median(comboTurns),
+        comboAssemblyGames = comboAssemblyGames,
+        comboAssemblyRate = rate(comboAssemblyGames),
+        comboBeforeGameEndGames = comboBeforeGameEndGames,
+        comboBeforeGameEndRate = rate(comboBeforeGameEndGames),
+        comboBeforeOrdinaryLethalGames = games.count { it.comboAvailableBeforeOrdinaryLethal },
+        ordinaryLethalBeforeComboGames = games.count { it.ordinaryLethalEndedBeforeComboAssembly },
         infiniteLifeGames = games.count { it.infiniteLifeTurn != null },
+        nobleDeterministicDrainGames = games.count { it.nobleDeterministicDrainTurn != null },
+        hugeFeederGames = games.count { it.hugeFeederTurn != null },
         hugeFeederWithoutImmediateLethalGames = games.count {
             it.hugeFeederTurn != null && (it.deterministicLethalTurn == null || it.hugeFeederTurn < it.deterministicLethalTurn)
         },
-        mulliganGames = games.count { it.mulligans > 0 },
+        mulliganGames = mulliganGames,
         totalMulligans = games.sumOf(ProjectXGoldfishGame::mulligans),
-        functionalWithoutComboGames = games.count { it.functionalWithoutCombo.startsWith("FUNCTIONAL_WITHOUT") || it.functionalWithoutCombo == "FUNCTIONAL_SECONDARY_LOOP" },
-        exactlyOneRoleMissingGames = games.count { it.exactlyOneRoleMissingTurns.isNotEmpty() },
+        mulliganGameRate = rate(mulliganGames),
+        functionalWithoutComboGames = functionalWithoutComboGames,
+        functionalWithoutComboRate = rate(functionalWithoutComboGames),
+        exactlyOneRoleMissingGames = exactlyOneRoleMissingGames,
+        exactlyOneRoleMissingRate = rate(exactlyOneRoleMissingGames),
         heraldContributionGames = games.count { it.heraldTutorTargets.isNotEmpty() },
         witnessContributionGames = games.count { it.witnessRecursionEvents.isNotEmpty() },
         birchloreContributionGames = games.count { it.birchloreManaContribution.isNotEmpty() },
@@ -895,21 +1033,27 @@ internal fun summarizeProjectX(games: List<ProjectXGoldfishGame>): ProjectXGoldf
 
 internal fun renderProjectXMarkdown(block: ProjectXGoldfishBlock): String = buildString {
     val s = block.summary
-    appendLine("# Project X v0.2 — frozen 30-game deterministic goldfish block")
+    appendLine("# Project X v0.2 — ${block.sampleName}")
     appendLine()
     appendLine("Horizon: T${block.horizon}; Project X is on the play; opponent is a no-interaction 60-Plains goldfish.")
     appendLine()
     appendLine("## Summary")
     appendLine()
-    appendLine("- Engine online by T4 / T5 / T6: ${s.engineByT4}/30, ${s.engineByT5}/30, ${s.engineByT6}/30")
-    appendLine("- Deterministic lethal by T4 / T5 / T6: ${s.lethalByT4}/30, ${s.lethalByT5}/30, ${s.lethalByT6}/30")
-    appendLine("- Median engine turn: ${s.medianEngineTurn ?: "not reached"}")
-    appendLine("- Median deterministic lethal turn: ${s.medianLethalTurn ?: "not reached"}")
+    appendLine("- Actual wins by T4 / T5 / T6: ${s.actualWinsByT4}/30, ${s.actualWinsByT5}/30, ${s.actualWinsByT6}/30")
+    appendLine("- Median / mean actual winning turn: ${s.medianActualWinningTurn ?: "not reached"} / ${s.meanActualWinningTurn ?: "not reached"}")
+    appendLine("- Winning mechanisms: ${s.winningMechanismDistribution}")
+    appendLine("- Primary engine online by T4 / T5 / T6: ${s.engineByT4}/30, ${s.engineByT5}/30, ${s.engineByT6}/30")
+    appendLine("- Any validated infinite online by T4 / T5 / T6: ${s.anyInfiniteByT4}/30, ${s.anyInfiniteByT5}/30, ${s.anyInfiniteByT6}/30")
+    appendLine("- Combo assembly / median combo turn: ${s.comboAssemblyGames}/30 (${s.comboAssemblyRate * 100}%) / ${s.medianComboTurn ?: "not reached"}")
+    appendLine("- Combo assembled before game end: ${s.comboBeforeGameEndGames}/30 (${s.comboBeforeGameEndRate * 100}%)")
+    appendLine("- Combo before ordinary lethal / ordinary lethal before combo: ${s.comboBeforeOrdinaryLethalGames}/30 / ${s.ordinaryLethalBeforeComboGames}/30")
+    appendLine("- Deterministic combo lethal by T4 / T5 / T6: ${s.lethalByT4}/30, ${s.lethalByT5}/30, ${s.lethalByT6}/30")
     appendLine("- Infinite life: ${s.infiniteLifeGames}/30")
-    appendLine("- Huge Feeder before/no immediate lethal: ${s.hugeFeederWithoutImmediateLethalGames}/30")
-    appendLine("- Mulligan games / total mulligans: ${s.mulliganGames}/30 / ${s.totalMulligans}")
-    appendLine("- Functional without primary combo: ${s.functionalWithoutComboGames}/30")
-    appendLine("- At least one exactly-one-role-missing turn: ${s.exactlyOneRoleMissingGames}/30")
+    appendLine("- Falkenrath Noble deterministic drain: ${s.nobleDeterministicDrainGames}/30")
+    appendLine("- Huge Feeder / huge Feeder before or without immediate lethal: ${s.hugeFeederGames}/30 / ${s.hugeFeederWithoutImmediateLethalGames}/30")
+    appendLine("- Mulligan games / rate / total mulligans: ${s.mulliganGames}/30 / ${s.mulliganGameRate * 100}% / ${s.totalMulligans}")
+    appendLine("- Functional without primary combo: ${s.functionalWithoutComboGames}/30 (${s.functionalWithoutComboRate * 100}%)")
+    appendLine("- At least one exactly-one-role-missing turn: ${s.exactlyOneRoleMissingGames}/30 (${s.exactlyOneRoleMissingRate * 100}%)")
     appendLine("- Herald / Witness contribution: ${s.heraldContributionGames}/30 / ${s.witnessContributionGames}/30")
     appendLine("- Birchlore / Nettle / Quirion contribution: ${s.birchloreContributionGames}/30 / ${s.nettleContributionGames}/30 / ${s.quirionContributionGames}/30")
     appendLine("- Color / Khalni Garden / Haunted Mire bottleneck games: ${s.colorBottleneckGames}/30 / ${s.khalniGardenTempoGames}/30 / ${s.hauntedMireTempoGames}/30")
@@ -920,16 +1064,19 @@ internal fun renderProjectXMarkdown(block: ProjectXGoldfishBlock): String = buil
     block.games.forEach { game ->
         appendLine("### Game ${game.game} — `${game.seedHex}` (`${game.seed}`)")
         appendLine()
-        appendLine("- Mulligans: ${game.mulligans}; kept: ${game.keptHand}")
+        appendLine("- Mulligans: ${game.mulligans}; kept: ${game.keptHand}; opening colors: ${game.openingColorAccess}")
         appendLine("- T1: ${game.t1Development.ifEmpty { listOf("none") }}; first meaningful: ${game.firstMeaningfulDevelopmentTurn?.let { "T$it" } ?: "none"}")
-        appendLine("- Engine / huge Feeder / infinite life / lethal: ${game.engineTurn?.let { "T$it" } ?: "—"} / ${game.hugeFeederTurn?.let { "T$it" } ?: "—"} / ${game.infiniteLifeTurn?.let { "T$it" } ?: "—"} / ${game.deterministicLethalTurn?.let { "T$it" } ?: "—"} (${game.lethalMechanism ?: "none"})")
+        appendLine("- Actual win: ${game.actualWinningTurn?.let { "T$it" } ?: "—"} (${game.winningMechanism ?: "none"})")
+        appendLine("- Primary / secondary / first combo: ${game.engineTurn?.let { "T$it" } ?: "—"} / ${game.secondaryWitnessLoopTurn?.let { "T$it" } ?: "—"} / ${game.firstValidatedComboTurn?.let { "T$it" } ?: "—"}")
+        appendLine("- Huge Feeder / infinite life / Noble drain / deterministic combo lethal: ${game.hugeFeederTurn?.let { "T$it" } ?: "—"} / ${game.infiniteLifeTurn?.let { "T$it" } ?: "—"} / ${game.nobleDeterministicDrainTurn?.let { "T$it" } ?: "—"} / ${game.deterministicLethalTurn?.let { "T$it" } ?: "—"} (${game.lethalMechanism ?: "none"})")
+        appendLine("- Combo before ordinary lethal: ${game.comboAvailableBeforeOrdinaryLethal}; ordinary lethal before combo: ${game.ordinaryLethalEndedBeforeComboAssembly}")
         appendLine("- Actual terminal: winner=${game.winner ?: "—"}; turn=${game.gameOverTurn?.let { "T$it" } ?: "—"}; mechanism=${game.terminalMechanism ?: "—"}")
         appendLine("- Herald: drawn=${game.herald.drawn}; cast=${game.herald.cast}; battlefield=${game.herald.battlefield}; died=${game.herald.died}; trigger-created=${game.herald.tutorTriggerCreated}; trigger-resolved=${game.herald.tutorTriggerResolved}; targets=${game.herald.tutorTargets}; one-missing=${game.herald.oneRoleMissingAvailability}")
         appendLine("- Witness: ${game.witnessRecursionEvents.ifEmpty { listOf("none") }}")
         appendLine("- Mana — Birchlore: ${game.birchloreManaContribution.ifEmpty { listOf("none") }}; Nettle: ${game.nettleUntapContribution.ifEmpty { listOf("none") }}; Quirion: ${game.quirionManaContribution.ifEmpty { listOf("none") }}")
         appendLine("- Winding Way: ${game.windingWay.ifEmpty { listOf("none") }}")
         appendLine("- Lead the Stampede: ${game.leadTheStampede.ifEmpty { listOf("none") }}")
-        appendLine("- Color stranded: ${game.colorStrandedCards.ifEmpty { listOf("none") }}; taplands: ${game.taplandTempoEvents.ifEmpty { listOf("none") }}")
+        appendLine("- Color stranded: ${game.colorStrandedCards.ifEmpty { listOf("none") }}; Khalni Garden: ${game.khalniGardenTempoEvents.ifEmpty { listOf("none") }}; Haunted Mire: ${game.hauntedMireTempoEvents.ifEmpty { listOf("none") }}")
         appendLine("- Mana constraints: ${game.manaConstraints.ifEmpty { listOf("none") }}")
         appendLine("- Cast attempts: ${game.castAttempts.ifEmpty { listOf("none") }}")
         appendLine("- Exactly one role missing: ${game.exactlyOneRoleMissingTurns}; functional classification: ${game.functionalWithoutCombo}")
