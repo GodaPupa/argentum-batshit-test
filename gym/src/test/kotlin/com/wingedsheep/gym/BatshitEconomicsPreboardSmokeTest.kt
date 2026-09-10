@@ -122,6 +122,18 @@ internal fun assertTriggerSummaryMatchesRawEvents(log: String) {
             "you casts a instant or sorcery spell, deal 2 damage to each opponent.",
         ) to resolvedDamage("Guttersnipe")
     )
+
+    fun batsSummary(): Pair<Int, Int> {
+        val value = log.lineSequence()
+            .first { it.startsWith("Mirkwood Bats creation/sacrifice triggers") }
+            .substringAfter(": ")
+        return value.substringBefore('/').toInt() to value.substringAfter('/').toInt()
+    }
+
+    batsSummary() shouldBe (
+        created("Mirkwood Bats", SmokeBatsTelemetry.TOKEN_CREATION_DESCRIPTION) to
+            created("Mirkwood Bats", SmokeBatsTelemetry.TOKEN_SACRIFICE_DESCRIPTION)
+    )
 }
 
 internal data class LoggedSmokeGame(
@@ -169,6 +181,38 @@ internal class SmokeTriggerTelemetry {
             }
             else -> Unit
         }
+    }
+}
+
+/**
+ * Counts only Mirkwood Bats' two printed token-event triggers.
+ *
+ * Granted abilities use the affected permanent as their displayed source. In particular, Not Dead
+ * After All granting a dies-and-return trigger to Mirkwood Bats produces an
+ * [AbilityTriggeredEvent] whose `sourceName` is also "Mirkwood Bats". Source name alone therefore
+ * cannot identify the Bats ability; the stable ability description is part of its identity here.
+ */
+internal class SmokeBatsTelemetry {
+    var creationTriggers: Int = 0
+        private set
+    var sacrificeTriggers: Int = 0
+        private set
+
+    val totalTriggers: Int get() = creationTriggers + sacrificeTriggers
+
+    fun record(event: GameEvent) {
+        if (event !is AbilityTriggeredEvent || event.sourceName != "Mirkwood Bats") return
+        when (event.description) {
+            TOKEN_CREATION_DESCRIPTION -> creationTriggers++
+            TOKEN_SACRIFICE_DESCRIPTION -> sacrificeTriggers++
+        }
+    }
+
+    companion object {
+        const val TOKEN_CREATION_DESCRIPTION =
+            "one or more tokens would be created under your control, each opponent loses 1 life."
+        const val TOKEN_SACRIFICE_DESCRIPTION =
+            "you sacrifice one or more tokens, each opponent loses 1 life."
     }
 }
 
@@ -374,8 +418,8 @@ internal fun playLoggedGame(
     var lastMeaningful = "none"
     var glasswrightEntries = 0
     var craftCasts = 0
-    var batsTriggers = 0
     val triggerTelemetry = SmokeTriggerTelemetry()
+    val batsTelemetry = SmokeBatsTelemetry()
     var gorgeTappedEntries = 0
 
     fun life(playerId: EntityId) = state.lifeTotal(playerId)
@@ -448,9 +492,7 @@ internal fun playLoggedGame(
                     event.sourceName in setOf("Kessig Flamebreather", "Mirkwood Bats", "Guttersnipe", "Shambling Ghast")
                 ) {
                     triggerTelemetry.record(event)
-                    when (event.sourceName) {
-                        "Mirkwood Bats" -> batsTriggers++
-                    }
+                    batsTelemetry.record(event)
                     log.appendLine(
                         "  EVENT trigger controller=${label(event.controllerId)} " +
                             "${event.sourceName}: ${event.description}"
@@ -598,7 +640,11 @@ internal fun playLoggedGame(
         "Flamebreather triggers/damage: ${triggerTelemetry.flamebreatherTriggers}/" +
             triggerTelemetry.flamebreatherDamage
     )
-    log.appendLine("Mirkwood Bats triggers: $batsTriggers")
+    log.appendLine(
+        "Mirkwood Bats creation/sacrifice triggers: ${batsTelemetry.creationTriggers}/" +
+            batsTelemetry.sacrificeTriggers
+    )
+    log.appendLine("Mirkwood Bats triggers: ${batsTelemetry.totalTriggers}")
     log.appendLine(
         "Guttersnipe triggers/damage: ${triggerTelemetry.guttersnipeTriggers}/" +
             triggerTelemetry.guttersnipeDamage

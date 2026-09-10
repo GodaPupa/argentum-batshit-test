@@ -300,6 +300,39 @@ class BatshitEconomicsAgentDecisionTest : ScenarioTestBase() {
             chosenTargetId(action) shouldBe glasswright
         }
 
+        test("death-return protection rescues a valuable targeted engine on a crowded board") {
+            // Experiment E pair 78's relevant structure: multiple protection copies, a sacrifice
+            // alternative and several legal creatures must not make passing on the targeted engine
+            // look preferable. Names are fixture content; the policy correction is structural.
+            val game = seeded()
+                .withActivePlayer(2)
+                .withLifeTotal(1, 18)
+                .withLifeTotal(2, 13)
+                .withLandsOnBattlefield(1, "Mountain", 2)
+                .withLandsOnBattlefield(1, "Swamp", 2)
+                .withCardInHand(1, "Not Dead After All")
+                .withCardInHand(1, "Not Dead After All")
+                .withCardInHand(1, "Village Rites")
+                .withCardInHand(1, "Mirkwood Bats")
+                .withCardInHand(1, "Mountain")
+                .withCardOnBattlefield(1, "Kessig Flamebreather", summoningSickness = false)
+                .withCardOnBattlefield(1, "Goblin Glasswright", summoningSickness = false)
+                .withCardOnBattlefield(1, "Greedy Freebooter", summoningSickness = false)
+                .withLandsOnBattlefield(2, "Mountain", 6)
+                .withCardOnBattlefield(2, "Kessig Flamebreather", summoningSickness = false)
+                .withCardOnBattlefield(2, "Kessig Flamebreather", summoningSickness = false)
+                .withCardOnBattlefield(2, "Sneaky Snacker", summoningSickness = false)
+                .withCardInHand(2, "Lightning Bolt")
+                .build()
+            val flamebreather = game.findPermanent("Kessig Flamebreather")!!
+            game.castSpell(2, "Lightning Bolt", flamebreather).isSuccess.shouldBeTrue()
+            game.execute(PassPriority(game.player2Id)).isSuccess.shouldBeTrue()
+
+            val action = ai(game).chooseAction(game.state).shouldBeInstanceOf<CastSpell>()
+            cardName(game, action.cardId) shouldBe "Not Dead After All"
+            chosenTargetId(action) shouldBe flamebreather
+        }
+
         test("Red discards Sneaky Snacker when the draw spell will recur it") {
             val game = seeded()
                 .withLandsOnBattlefield(1, "Mountain", 2)

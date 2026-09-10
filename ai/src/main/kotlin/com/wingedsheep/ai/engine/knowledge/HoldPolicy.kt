@@ -10,7 +10,11 @@ import com.wingedsheep.engine.state.components.combat.AttackingComponent
 import com.wingedsheep.engine.state.components.combat.BlockingComponent
 import com.wingedsheep.engine.state.components.identity.CardComponent
 import com.wingedsheep.engine.state.components.stack.ChosenTarget
+import com.wingedsheep.engine.state.components.stack.AbilityOnStackComponent
+import com.wingedsheep.engine.state.components.stack.ActivatedAbilityOnStackComponent
+import com.wingedsheep.engine.state.components.stack.SpellOnStackComponent
 import com.wingedsheep.engine.state.components.stack.TargetsComponent
+import com.wingedsheep.engine.state.components.stack.TriggeredAbilityOnStackComponent
 import com.wingedsheep.sdk.core.Step
 import com.wingedsheep.sdk.model.EntityId
 
@@ -111,10 +115,16 @@ class HoldPolicy(
 
         val intent = intents.forName(cardName) ?: return TimingVerdict.Neutral
 
-        if (cast != null && IntentTag.DEATH_RETURN in intent.tags &&
-            !hasCredibleDeathWindow(state, playerId, cast)
-        ) {
-            return TimingVerdict.NoWindow
+        if (cast != null && IntentTag.DEATH_RETURN in intent.tags) {
+            if (!hasCredibleDeathWindow(state, playerId, cast)) return TimingVerdict.NoWindow
+            // A targeted opposing stack object is the last deterministic chance to turn the
+            // protection spell into a rescue. The resolved leaf already prices which permanent is
+            // preserved; this window bonus prices the card of value that passing certainly loses.
+            // Combat and sacrifice-outlet windows remain neutral because whether the creature
+            // should die there is a strategic choice rather than an opposing forced loss.
+            if (targetedByOpponent(state, playerId, cast)) {
+                return TimingVerdict.Adjust(DEATH_RETURN_RESPONSE_WINDOW)
+            }
         }
 
         val window = windowVerdictFor(state, playerId, intent)
@@ -156,6 +166,23 @@ class HoldPolicy(
             intents.forPermanent(permanent, name).any { intent ->
                 IntentTag.SACRIFICE_OUTLET in intent.tags
             }
+        }
+    }
+
+    /** Whether an opposing spell or ability currently targets this death-return spell's target. */
+    private fun targetedByOpponent(state: GameState, playerId: EntityId, cast: CastSpell): Boolean {
+        val targetId = (cast.targets.singleOrNull() as? ChosenTarget.Permanent)?.entityId ?: return false
+        return state.stack.any { stackId ->
+            val stackObject = state.getEntity(stackId) ?: return@any false
+            val controller = stackObject.get<SpellOnStackComponent>()?.casterId
+                ?: stackObject.get<TriggeredAbilityOnStackComponent>()?.controllerId
+                ?: stackObject.get<ActivatedAbilityOnStackComponent>()?.controllerId
+                ?: stackObject.get<AbilityOnStackComponent>()?.controllerId
+                ?: return@any false
+            state.isOpponentTo(controller, playerId) &&
+                stackObject.get<TargetsComponent>()?.targets.orEmpty()
+                    .filterIsInstance<ChosenTarget.Permanent>()
+                    .any { it.entityId == targetId }
         }
     }
 
@@ -406,6 +433,9 @@ class HoldPolicy(
 
         /** Something on the stack this card can actually answer — see [responseWindowFor]. */
         const val RESPONSE_WINDOW = 1.0
+
+        /** A card of value recovered by answering targeted removal with a death-return effect. */
+        const val DEATH_RETURN_RESPONSE_WINDOW = 2.0
 
         /**
          * Their end step: the last moment holding it is still free. Replaces the blanket

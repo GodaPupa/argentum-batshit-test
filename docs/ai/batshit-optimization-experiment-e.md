@@ -6,7 +6,13 @@ Experiment E compared the frozen Variant C incumbent with exactly one candidate 
 - `+1 Greedy Freebooter`
 
 The permanent original Batshit Economics control was not modified. Variant C remains the
-provisional incumbent. Experiment E is not promoted and was not replicated.
+provisional incumbent. Experiment E is not promoted, is not selected for replication, and its seed
+vector is permanently retired.
+
+The structural finding is that Greedy Freebooter again produced the intended productive-body
+behavior, but removing Unearth #4 materially reduced useful recursion, including Flamebreather,
+Ghast, and Epicure returns. The net paired result was zero. No further Greedy Freebooter
+substitution experiment is authorized at this time.
 
 ## Execution identity
 
