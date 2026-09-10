@@ -8,6 +8,8 @@ import com.wingedsheep.ai.solitaire.ProjectXDeck
 import com.wingedsheep.ai.solitaire.ProjectXSolitaireAgent
 import com.wingedsheep.ai.solitaire.ProjectXStateAnalyzer
 import com.wingedsheep.engine.core.*
+import com.wingedsheep.engine.handlers.PredicateContext
+import com.wingedsheep.engine.handlers.PredicateEvaluator
 import com.wingedsheep.engine.registry.CardRegistry
 import com.wingedsheep.engine.legalactions.EnumerationMode
 import com.wingedsheep.engine.legalactions.LegalActionEnumerator
@@ -20,6 +22,7 @@ import com.wingedsheep.mtg.sets.MtgSetCatalog
 import com.wingedsheep.mtg.sets.tokens.PredefinedTokens
 import com.wingedsheep.sdk.core.Zone
 import com.wingedsheep.sdk.core.Step
+import com.wingedsheep.sdk.scripting.GameObjectFilter
 import com.wingedsheep.sdk.model.Deck
 import com.wingedsheep.sdk.model.EntityId
 import io.kotest.core.spec.style.FunSpec
@@ -366,7 +369,7 @@ internal fun runProjectXGoldfish(registry: CardRegistry, seed: Long, gameNumber:
                 if (analyzer.graveyardNames(gameState, projectId).contains(ProjectXStateAnalyzer.WIREWOOD_HERALD)) add("GRAVEYARD")
             }
             if (zones.isNotEmpty()) {
-                val searchable = isHeraldSearchableRole(gameState, projectId, role, analyzer)
+                val searchable = isHeraldSearchableRole(gameState, projectId, role)
                 heraldAvailability += HeraldAvailability(
                     turn, role, zones, searchable,
                     searchable && "BATTLEFIELD" in zones &&
@@ -766,9 +769,15 @@ internal fun isHeraldSearchableRole(
     state: GameState,
     playerId: EntityId,
     role: String,
-    analyzer: ProjectXStateAnalyzer,
 ): Boolean = state.getZone(playerId, Zone.LIBRARY).any { cardId ->
-    analyzer.name(state, cardId) == role && analyzer.isElf(state, cardId)
+    state.getEntity(cardId)?.get<CardComponent>()?.name == role &&
+        PredicateEvaluator().matches(
+            state,
+            state.projectedState,
+            cardId,
+            GameObjectFilter.Any.withSubtype("Elf"),
+            PredicateContext(controllerId = playerId),
+        )
 }
 
 internal fun classifyManaConstraints(

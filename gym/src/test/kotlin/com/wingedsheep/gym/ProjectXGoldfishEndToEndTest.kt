@@ -122,11 +122,9 @@ class ProjectXGoldfishEndToEndTest : ScenarioTestBase() {
                 .withCardInLibrary(1, "Safehold Elite")
                 .withCardInLibrary(1, "Ivy Lane Denizen")
                 .build()
-            val analyzer = ProjectXSolitaireAgent(cardRegistry, game.player1Id).analyzer
-
-            isHeraldSearchableRole(game.state, game.player1Id, "Safehold Elite", analyzer).shouldBeTrue()
-            isHeraldSearchableRole(game.state, game.player1Id, "Ivy Lane Denizen", analyzer).shouldBeTrue()
-            isHeraldSearchableRole(game.state, game.player1Id, "Carrion Feeder", analyzer).shouldBeFalse()
+            isHeraldSearchableRole(game.state, game.player1Id, "Safehold Elite").shouldBeTrue()
+            isHeraldSearchableRole(game.state, game.player1Id, "Ivy Lane Denizen").shouldBeTrue()
+            isHeraldSearchableRole(game.state, game.player1Id, "Carrion Feeder").shouldBeFalse()
         }
 
         test("bottleneck telemetry separates color, Birchlore, tapland, and total-mana constraints") {
