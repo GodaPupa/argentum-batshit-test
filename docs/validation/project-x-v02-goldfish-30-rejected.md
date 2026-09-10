@@ -1,6 +1,6 @@
 # Project X v0.2 — frozen 30-game deterministic goldfish block
 
-> **Disposition: REJECTED.** Game 14 failed the rules/state audit with an illegal CastSpell action, and no game assembled the primary engine or reached deterministic combo lethal by T12. Preserve this block as diagnostic evidence only; do not use it for optimization.
+> **Disposition: FORMALLY PRESERVED AND REJECTED.** Game 14 failed the rules/state audit with an illegal CastSpell action, and the block's Winding Way, Herald, terminal-state, and mana-bottleneck telemetry was not fit for validation. These exact seeds are retained only as a deterministic regression replay block. None of the aggregate engine, lethal, mulligan, functional, tutor, recursion, or bottleneck results below are admissible Project X performance evidence and none may be used for optimization.
 
 Horizon: T12; Project X is on the play; opponent is a no-interaction 60-Plains goldfish.
 

@@ -11,7 +11,7 @@ permissions:
 jobs:
   test:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 90
 
     steps:
       - name: Checkout repository
@@ -39,8 +39,8 @@ jobs:
       - name: Compile Argentum
         run: ./gradlew classes --stacktrace
 
-      - name: Reproduce Project X rejected Game 14
-        run: ./gradlew :gym:test --tests ProjectXGoldfishTest --stacktrace --info
+      - name: Run focused Project X harness regressions
+        run: ./gradlew :gym:test --tests ProjectXGoldfishEndToEndTest --tests ProjectXGoldfishTest --stacktrace
 
       - name: Run engine tests
         run: ./gradlew test --stacktrace
@@ -53,3 +53,16 @@ jobs:
 
       - name: Run Gym trainer tests
         run: ./gradlew :gym-trainer:test --stacktrace
+
+      - name: Replay frozen Project X regression seeds
+        env:
+          PROJECT_X_GOLDFISH: "true"
+        run: ./gradlew :gym:test --tests ProjectXGoldfishTest --rerun-tasks --stacktrace
+
+      - name: Upload Project X regression replay
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: project-x-v02-regression-replay
+          path: gym/build/reports/project-x-goldfish/
+          if-no-files-found: warn

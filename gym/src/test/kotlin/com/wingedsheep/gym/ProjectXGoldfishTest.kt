@@ -9,13 +9,17 @@ import com.wingedsheep.ai.solitaire.ProjectXSolitaireAgent
 import com.wingedsheep.ai.solitaire.ProjectXStateAnalyzer
 import com.wingedsheep.engine.core.*
 import com.wingedsheep.engine.registry.CardRegistry
+import com.wingedsheep.engine.legalactions.EnumerationMode
+import com.wingedsheep.engine.legalactions.LegalActionEnumerator
 import com.wingedsheep.engine.state.GameState
 import com.wingedsheep.engine.state.components.battlefield.TappedComponent
 import com.wingedsheep.engine.state.components.identity.CardComponent
+import com.wingedsheep.engine.state.components.identity.PlayerComponent
 import com.wingedsheep.engine.state.components.player.MulliganStateComponent
 import com.wingedsheep.mtg.sets.MtgSetCatalog
 import com.wingedsheep.mtg.sets.tokens.PredefinedTokens
 import com.wingedsheep.sdk.core.Zone
+import com.wingedsheep.sdk.core.Step
 import com.wingedsheep.sdk.model.Deck
 import com.wingedsheep.sdk.model.EntityId
 import io.kotest.core.spec.style.FunSpec
@@ -38,10 +42,14 @@ private const val PROJECT_X_HORIZON = 12
  * consuming or replacing the frozen sample.
  */
 class ProjectXGoldfishTest : FunSpec({
-    test("reproduce rejected Game 14 illegal cast").config(timeout = 5.minutes) {
+    test("rejected Game 14 preflights explicit-mana casts instead of submitting an illegal action").config(timeout = 5.minutes) {
         val result = runProjectXGoldfish(projectXRegistry(), 0x2B7B_990F_635F_EBDL, 14)
-        println(Json { prettyPrint = true }.encodeToString(result))
-        result.stopReason shouldBe "ILLEGAL_ACTION"
+        result.auditErrors shouldBe emptyList()
+        (result.stopReason != "ILLEGAL_ACTION").shouldBeTrue()
+        result.castAttempts.any {
+            it.actualAutoPaymentResult.contains("POLICY_PREFLIGHT_REJECTED:Not enough mana to auto-pay")
+        }.shouldBeTrue()
+        result.castAttempts.none { it.actualAutoPaymentResult.startsWith("REJECTED:") }.shouldBeTrue()
     }
 
     test("development goldfish exercises the real engine boundary").config(timeout = 5.minutes) {
@@ -111,6 +119,16 @@ internal data class ProjectXGoldfishGame(
     val infiniteLifeTurn: Int?,
     val deterministicLethalTurn: Int?,
     val lethalMechanism: String?,
+    val winner: String?,
+    val gameOverTurn: Int?,
+    val terminalMechanism: String?,
+    val combatLethal: Boolean,
+    val triggeredAbilityLethal: Boolean,
+    val deterministicComboLethal: Boolean,
+    val otherTerminalState: Boolean,
+    val castAttempts: List<CastAttemptTelemetry>,
+    val herald: HeraldTelemetry,
+    val manaConstraints: List<ManaConstraintTelemetry>,
     val heraldTutorTargets: List<String>,
     val witnessRecursionEvents: List<String>,
     val birchloreManaContribution: List<String>,
@@ -126,6 +144,49 @@ internal data class ProjectXGoldfishGame(
     val actions: Int,
     val stopReason: String,
     val auditErrors: List<String>,
+)
+
+@Serializable
+internal data class CastAttemptTelemetry(
+    val turn: Int,
+    val spell: String,
+    val manaPool: String,
+    val untappedLands: List<String>,
+    val tappedLands: List<String>,
+    val availableBirchloreMana: String,
+    val availableQuirionLines: List<String>,
+    val proposedManaPaymentPlan: String,
+    val actualAutoPaymentResult: String,
+    val preExecutionLegalityReason: String,
+)
+
+@Serializable
+internal data class HeraldAvailability(
+    val turn: Int,
+    val missingRole: String,
+    val heraldZones: List<String>,
+    val missingRoleSearchable: Boolean,
+    val sacrificeLineAvailable: Boolean,
+)
+
+@Serializable
+internal data class HeraldTelemetry(
+    val drawn: List<String>,
+    val cast: List<String>,
+    val battlefield: List<String>,
+    val died: List<String>,
+    val tutorTriggerCreated: List<String>,
+    val tutorTriggerResolved: List<String>,
+    val tutorTargets: List<String>,
+    val oneRoleMissingAvailability: List<HeraldAvailability>,
+)
+
+@Serializable
+internal data class ManaConstraintTelemetry(
+    val turn: Int,
+    val spell: String,
+    val category: String,
+    val detail: String,
 )
 
 @Serializable
@@ -152,12 +213,18 @@ internal data class ProjectXGoldfishSummary(
     val colorBottleneckGames: Int,
     val khalniGardenTempoGames: Int,
     val hauntedMireTempoGames: Int,
+    val intentionallyHeldGames: Int,
+    val birchloreManaAvailableGames: Int,
+    val quirionSequenceAvailableGames: Int,
+    val tappedLandConstraintGames: Int,
+    val insufficientTotalManaGames: Int,
 )
 
-private data class SelectionTelemetry(
+internal data class SelectionTelemetry(
     val name: String,
     val turn: Int,
-    var mode: String? = null,
+    var agentChoice: String? = null,
+    var rulesChoice: String? = null,
     val toHand: MutableList<String> = mutableListOf(),
     val toGraveyard: MutableList<String> = mutableListOf(),
 )
@@ -234,6 +301,7 @@ internal fun runProjectXGoldfish(registry: CardRegistry, seed: Long, gameNumber:
     val agent = ProjectXSolitaireAgent(registry, projectId)
     val blank = com.wingedsheep.ai.engine.AIPlayer.create(registry, blankId)
     val analyzer = agent.analyzer
+    val telemetryEnumerator = LegalActionEnumerator.create(registry)
     val t1 = mutableListOf<String>()
     val heraldTargets = mutableListOf<String>()
     val witnessEvents = mutableListOf<String>()
@@ -246,6 +314,17 @@ internal fun runProjectXGoldfish(registry: CardRegistry, seed: Long, gameNumber:
     val taplands = mutableListOf<String>()
     val oneMissingTurns = sortedSetOf<Int>()
     val audit = mutableListOf<String>()
+    val manaConstraints = linkedSetOf<ManaConstraintTelemetry>()
+    val castAttempts = mutableListOf<CastAttemptTelemetry>()
+    val heraldDrawn = mutableListOf<String>().apply {
+        if (ProjectXStateAnalyzer.WIREWOOD_HERALD in keptHand) add("OPENING_HAND")
+    }
+    val heraldCast = mutableListOf<String>()
+    val heraldBattlefield = linkedSetOf<String>()
+    val heraldDied = mutableListOf<String>()
+    val heraldTriggerCreated = mutableListOf<String>()
+    val heraldTriggerResolved = mutableListOf<String>()
+    val heraldAvailability = linkedSetOf<HeraldAvailability>()
     var selection: SelectionTelemetry? = null
     var pendingWitnessTarget: Pair<Int, String>? = null
     var firstMeaningful: Int? = null
@@ -259,13 +338,42 @@ internal fun runProjectXGoldfish(registry: CardRegistry, seed: Long, gameNumber:
     var lastEngineTurn = -1
     var actionsThisEngineTurn = 0
     var stopReason = "T${PROJECT_X_HORIZON}_HORIZON"
+    var winner: String? = null
+    var gameOverTurn: Int? = null
+    var terminalMechanism: String? = null
 
     fun projectTurn(gameState: GameState): Int = (gameState.turnNumber + 1) / 2
 
     fun observe(gameState: GameState) {
         val turn = projectTurn(gameState)
         if (analyzer.missingPrimaryRoles(gameState, projectId).size == 1) oneMissingTurns += turn
-        stranded += colorStranded(gameState, projectId, analyzer).map { "$it@T$turn" }
+        val missing = analyzer.missingPrimaryRoles(gameState, projectId)
+        if (missing.size == 1) {
+            val role = missing.single()
+            val zones = buildList {
+                if (analyzer.handNames(gameState, projectId).contains(ProjectXStateAnalyzer.WIREWOOD_HERALD)) add("HAND")
+                if (analyzer.battlefieldNames(gameState, projectId).contains(ProjectXStateAnalyzer.WIREWOOD_HERALD)) add("BATTLEFIELD")
+                if (analyzer.graveyardNames(gameState, projectId).contains(ProjectXStateAnalyzer.WIREWOOD_HERALD)) add("GRAVEYARD")
+            }
+            if (zones.isNotEmpty()) {
+                val searchable = role in analyzer.libraryNames(gameState, projectId)
+                heraldAvailability += HeraldAvailability(
+                    turn, role, zones, searchable,
+                    searchable && "BATTLEFIELD" in zones &&
+                        analyzer.battlefieldNames(gameState, projectId).contains(ProjectXStateAnalyzer.CARRION_FEEDER)
+                )
+            }
+        }
+        if (analyzer.battlefieldNames(gameState, projectId).contains(ProjectXStateAnalyzer.WIREWOOD_HERALD)) {
+            heraldBattlefield += "T$turn"
+        }
+        if (gameState.priorityPlayerId == projectId && gameState.pendingDecision == null &&
+            gameState.step in setOf(Step.PRECOMBAT_MAIN, Step.POSTCOMBAT_MAIN)
+        ) {
+            val constraints = classifyManaConstraints(gameState, projectId, analyzer, telemetryEnumerator, turn)
+            manaConstraints += constraints
+            stranded += constraints.filter { it.category == "GENUINE_COLOR_UNCASTABLE" }.map { "${it.spell}@T$turn" }
+        }
         val outcome = agent.outcome(gameState)
         if (outcome.completeInfiniteEngine && engineTurn == null) engineTurn = turn
         if (outcome.arbitrarilyLargeCarrionFeeder && hugeTurn == null) hugeTurn = turn
@@ -312,17 +420,43 @@ internal fun runProjectXGoldfish(registry: CardRegistry, seed: Long, gameNumber:
                         val chosen = (response as TargetsResponse).selectedTargets.values.flatten().firstOrNull()?.let(::name)
                         if (chosen != null) pendingWitnessTarget = turn to chosen
                     }
-                    decision is ChooseModeDecision && decision.context.sourceName == ProjectXStateAnalyzer.WINDING_WAY -> {
-                        val selected = (response as ModesChosenResponse).selectedModes.single()
-                        selection?.mode = decision.modes.first { it.index == selected }.text
+                    decision is ChooseModeDecision && selection?.name == ProjectXStateAnalyzer.WINDING_WAY -> {
+                        selection?.let { recordAgentModeChoice(it, decision, response as ModesChosenResponse) }
+                    }
+                    decision is ChooseOptionDecision && selection?.name == ProjectXStateAnalyzer.WINDING_WAY -> {
+                        selection?.let { recordAgentOptionChoice(it, decision, response as OptionChosenResponse) }
                     }
                 }
             }
             action = SubmitDecision(acting, response)
         } else if (acting == projectId) {
-            action = agent.chooseAction(state)
+            val choice = agent.chooseActionWithDiagnostics(state)
+            choice.rejectedSubmissions.forEach { rejected ->
+                val rejectedCast = rejected.action as? CastSpell ?: return@forEach
+                val attempt = castAttemptBeforeExecution(
+                    state, projectId, rejectedCast, turn, name(rejectedCast.cardId), analyzer,
+                    telemetryEnumerator, ::name
+                ).copy(actualAutoPaymentResult = "POLICY_PREFLIGHT_REJECTED:${rejected.executorReason}")
+                if (castAttempts.none { it.turn == attempt.turn && it.spell == attempt.spell &&
+                        it.actualAutoPaymentResult == attempt.actualAutoPaymentResult
+                    }) castAttempts += attempt
+            }
+            action = choice.action
         } else {
             action = blank.chooseAction(state)
+        }
+
+        if (acting == projectId && decision == null) {
+            val chosenCast = (action as? CastSpell)?.cardId
+            val held = telemetryEnumerator.enumerate(state, projectId, EnumerationMode.FULL)
+                .filter { it.affordable && it.action is CastSpell && (it.action as CastSpell).cardId != chosenCast }
+            held.forEach { legal ->
+                val cardId = (legal.action as CastSpell).cardId
+                manaConstraints += ManaConstraintTelemetry(
+                    turn, name(cardId), "INTENTIONALLY_HELD",
+                    "another legal action was selected while this cast was executable"
+                )
+            }
         }
 
         val actionName = when (action) {
@@ -356,10 +490,23 @@ internal fun runProjectXGoldfish(registry: CardRegistry, seed: Long, gameNumber:
         }
 
         val beforeHuge = agent.outcome(state).arbitrarilyLargeCarrionFeeder
+        val castSnapshot = if (acting == projectId && action is CastSpell) {
+            castAttemptBeforeExecution(
+                state, projectId, action, turn, actionName ?: name(action.cardId), analyzer, telemetryEnumerator, ::name
+            )
+        } else null
         val result = environment.stepExactlyOne(action)
         val step = when (result) {
-            is ExactlyOneSubmissionResult.Applied -> result.step
+            is ExactlyOneSubmissionResult.Applied -> {
+                castSnapshot?.let { castAttempts += it.copy(actualAutoPaymentResult = "APPLIED") }
+                if (acting == projectId && action is SubmitDecision &&
+                    (decision is ChooseModeDecision || decision is ChooseOptionDecision) &&
+                    selection?.name == ProjectXStateAnalyzer.WINDING_WAY
+                ) selection?.let(::acceptRulesModeChoice)
+                result.step
+            }
             is ExactlyOneSubmissionResult.Rejected -> {
+                castSnapshot?.let { castAttempts += it.copy(actualAutoPaymentResult = "REJECTED:${result.reason}") }
                 val pool = state.getEntity(projectId)?.get<com.wingedsheep.engine.state.components.player.ManaPoolComponent>()
                 val battlefield = state.controlledBattlefield(projectId).map { id ->
                     "${name(id)}:${if (state.getEntity(id)?.has<TappedComponent>() == true) "tapped" else "untapped"}"
@@ -375,7 +522,19 @@ internal fun runProjectXGoldfish(registry: CardRegistry, seed: Long, gameNumber:
         events.filterIsInstance<AbilityTriggeredEvent>()
             .filter { it.controllerId == projectId && it.sourceName == ProjectXStateAnalyzer.NETTLE_SENTINEL }
             .forEach { nettle += "T$turn:green-spell untap trigger" }
+        events.filterIsInstance<SpellCastEvent>()
+            .filter { it.casterId == projectId && it.cardName == ProjectXStateAnalyzer.WIREWOOD_HERALD }
+            .forEach { heraldCast += "T$turn" }
+        events.filterIsInstance<AbilityTriggeredEvent>()
+            .filter { it.controllerId == projectId && it.sourceName == ProjectXStateAnalyzer.WIREWOOD_HERALD }
+            .forEach { heraldTriggerCreated += "T$turn:${it.description}" }
         events.filterIsInstance<ZoneChangeEvent>().forEach { event ->
+            if (event.ownerId == projectId && event.entityName == ProjectXStateAnalyzer.WIREWOOD_HERALD) {
+                if (event.fromZone == Zone.LIBRARY && event.toZone == Zone.HAND) heraldDrawn += "T$turn"
+                if (event.fromZone == Zone.BATTLEFIELD && event.toZone == Zone.GRAVEYARD) {
+                    heraldDied += "T$turn:${if (event.wasSacrificed) "sacrificed" else "died"}"
+                }
+            }
             if (event.ownerId == projectId && event.fromZone == Zone.LIBRARY) {
                 when (event.toZone) {
                     Zone.HAND -> selection?.toHand?.add(event.entityName)
@@ -392,12 +551,18 @@ internal fun runProjectXGoldfish(registry: CardRegistry, seed: Long, gameNumber:
             }
         }
         events.filterIsInstance<ResolvedEvent>().forEach { event ->
+            if (event.name.contains(ProjectXStateAnalyzer.WIREWOOD_HERALD)) heraldTriggerResolved += "T$turn:${event.name}"
             val current = selection
             if (current != null && event.name == current.name) {
-                val line = "T${current.turn}:${current.mode ?: "all-creatures"}:hand=${current.toHand}:grave=${current.toGraveyard}"
+                val line = renderSelectionLine(current)
                 if (current.name == ProjectXStateAnalyzer.WINDING_WAY) winding += line else lead += line
                 selection = null
             }
+        }
+        events.filterIsInstance<GameEndedEvent>().lastOrNull()?.let { ended ->
+            winner = ended.winnerId?.let { id -> state.getEntity(id)?.get<PlayerComponent>()?.name ?: id.toString() }
+            gameOverTurn = turn
+            terminalMechanism = classifyTerminal(events, ended, lethalTurn != null)
         }
         if (acting == projectId && action is PlayLand && actionName in setOf("Khalni Garden", "Haunted Mire")) {
             val tapped = step.state.getEntity(action.cardId)?.has<TappedComponent>() == true
@@ -446,6 +611,19 @@ internal fun runProjectXGoldfish(registry: CardRegistry, seed: Long, gameNumber:
         infiniteLifeTurn = lifeTurn,
         deterministicLethalTurn = lethalTurn,
         lethalMechanism = lethalMechanism,
+        winner = winner,
+        gameOverTurn = gameOverTurn,
+        terminalMechanism = terminalMechanism,
+        combatLethal = terminalMechanism == "COMBAT_LETHAL",
+        triggeredAbilityLethal = terminalMechanism == "TRIGGERED_OR_ABILITY_LETHAL",
+        deterministicComboLethal = lethalTurn != null,
+        otherTerminalState = terminalMechanism != null && terminalMechanism !in setOf("COMBAT_LETHAL", "TRIGGERED_OR_ABILITY_LETHAL", "DETERMINISTIC_COMBO_LETHAL"),
+        castAttempts = castAttempts,
+        herald = HeraldTelemetry(
+            heraldDrawn, heraldCast, heraldBattlefield.toList(), heraldDied,
+            heraldTriggerCreated, heraldTriggerResolved, heraldTargets, heraldAvailability.toList()
+        ),
+        manaConstraints = manaConstraints.toList(),
         heraldTutorTargets = heraldTargets,
         witnessRecursionEvents = witnessEvents,
         birchloreManaContribution = birchlore,
@@ -464,34 +642,165 @@ internal fun runProjectXGoldfish(registry: CardRegistry, seed: Long, gameNumber:
     )
 }
 
-private fun colorStranded(
+internal fun recordAgentModeChoice(
+    selection: SelectionTelemetry,
+    decision: ChooseModeDecision,
+    response: ModesChosenResponse,
+) {
+    val selected = response.selectedModes.single()
+    selection.agentChoice = decision.modes.first { it.index == selected }.text
+}
+
+internal fun recordAgentOptionChoice(
+    selection: SelectionTelemetry,
+    decision: ChooseOptionDecision,
+    response: OptionChosenResponse,
+) {
+    selection.agentChoice = decision.options[response.optionIndex]
+}
+
+internal fun acceptRulesModeChoice(selection: SelectionTelemetry) {
+    selection.rulesChoice = selection.agentChoice
+}
+
+internal fun renderSelectionLine(selection: SelectionTelemetry): String {
+    val mode = if (selection.name == ProjectXStateAnalyzer.WINDING_WAY) {
+        "agent=${selection.agentChoice ?: "UNRECORDED"}:rules=${selection.rulesChoice ?: "UNRESOLVED"}"
+    } else "rules=all-creatures"
+    return "T${selection.turn}:$mode:hand=${selection.toHand}:grave=${selection.toGraveyard}"
+}
+
+private fun castAttemptBeforeExecution(
+    state: GameState,
+    playerId: EntityId,
+    action: CastSpell,
+    turn: Int,
+    spell: String,
+    analyzer: ProjectXStateAnalyzer,
+    enumerator: LegalActionEnumerator,
+    name: (EntityId) -> String,
+): CastAttemptTelemetry {
+    val pool = state.getEntity(playerId)
+        ?.get<com.wingedsheep.engine.state.components.player.ManaPoolComponent>()
+    val battlefield = state.controlledBattlefield(playerId)
+    val lands = battlefield.filter { state.getEntity(it)?.get<CardComponent>()?.isLand == true }
+    val (tappedLands, untappedLands) = lands.partition { state.getEntity(it)?.has<TappedComponent>() == true }
+    val untappedElves = battlefield.filter { analyzer.isElf(state, it) && analyzer.isUntapped(state, it) }
+    val birchlore = battlefield.firstOrNull {
+        analyzer.name(state, it) == ProjectXStateAnalyzer.BIRCHLORE_RANGERS
+    }
+    val full = enumerator.enumerate(state, playerId, EnumerationMode.FULL)
+    val castOffer = full.firstOrNull { (it.action as? CastSpell)?.cardId == action.cardId }
+    val quirionLines = full.filter { legal ->
+        val activate = legal.action as? ActivateAbility ?: return@filter false
+        analyzer.name(state, activate.sourceId) == ProjectXStateAnalyzer.QUIRION_RANGER && legal.affordable
+    }.map { it.description }
+    val proposed = when {
+        castOffer?.autoTapPreview != null -> "AUTO_TAP:${castOffer.autoTapPreview.map(name)}"
+        action.paymentStrategy is PaymentStrategy.FromPool -> "FROM_POOL"
+        action.paymentStrategy is PaymentStrategy.Explicit -> "EXPLICIT:${action.paymentStrategy}"
+        else -> "AUTO_PAY:NO_ORDINARY_SOURCE_PLAN"
+    }
+    val legality = when {
+        castOffer == null -> "NO_MATCHING_ENUMERATED_CAST"
+        !castOffer.affordable -> "ENUMERATOR_UNAFFORDABLE"
+        castOffer.autoTapPreview != null -> "AFFORDABLE_WITH_AUTO_TAP_PREVIEW"
+        birchlore != null && untappedElves.size >= 2 ->
+            "AFFORDABLE_VIA_EXPLICIT_BIRCHLORE_MANA; AUTO_PAY_CANNOT_ACTIVATE_IT"
+        else -> "ENUMERATOR_AFFORDABLE; NO_AUTO_TAP_PREVIEW"
+    }
+    return CastAttemptTelemetry(
+        turn = turn,
+        spell = spell,
+        manaPool = "W=${pool?.white ?: 0},U=${pool?.blue ?: 0},B=${pool?.black ?: 0},R=${pool?.red ?: 0},G=${pool?.green ?: 0},C=${pool?.colorless ?: 0}",
+        untappedLands = untappedLands.map(name),
+        tappedLands = tappedLands.map(name),
+        availableBirchloreMana = if (birchlore != null && untappedElves.size >= 2) {
+            "YES:${untappedElves.map(name)}"
+        } else "NO",
+        availableQuirionLines = quirionLines,
+        proposedManaPaymentPlan = proposed,
+        actualAutoPaymentResult = "NOT_EXECUTED",
+        preExecutionLegalityReason = legality,
+    )
+}
+
+internal fun classifyTerminal(
+    events: List<GameEvent>,
+    ended: GameEndedEvent,
+    deterministicComboAlreadyRecognized: Boolean,
+): String = when {
+    events.filterIsInstance<DamageDealtEvent>().any { it.targetIsPlayer && it.isCombatDamage } -> "COMBAT_LETHAL"
+    deterministicComboAlreadyRecognized -> "DETERMINISTIC_COMBO_LETHAL"
+    events.any { it is LifeChangedEvent && it.reason == LifeChangeReason.LIFE_LOSS } ||
+        events.filterIsInstance<DamageDealtEvent>().any { it.targetIsPlayer && !it.isCombatDamage } ->
+        "TRIGGERED_OR_ABILITY_LETHAL"
+    else -> "OTHER:${ended.reason}"
+}
+
+internal fun classifyManaConstraints(
     state: GameState,
     playerId: EntityId,
     analyzer: ProjectXStateAnalyzer,
-): Set<String> {
+    enumerator: LegalActionEnumerator,
+    turn: Int,
+): Set<ManaConstraintTelemetry> {
     val battlefield = state.controlledBattlefield(playerId)
     val untappedNames = battlefield.filter { analyzer.isUntapped(state, it) }.mapNotNull { analyzer.name(state, it) }
+    val tappedLandCount = battlefield.count { id ->
+        state.getEntity(id)?.get<CardComponent>()?.isLand == true && !analyzer.isUntapped(state, id)
+    }
     val birchloreAvailable = battlefield.count { analyzer.isElf(state, it) && analyzer.isUntapped(state, it) } >= 2 &&
         battlefield.any { analyzer.name(state, it) == ProjectXStateAnalyzer.BIRCHLORE_RANGERS }
-    val green = birchloreAvailable || untappedNames.any { it in setOf("Forest", "Khalni Garden", "Haunted Mire") }
-    val black = birchloreAvailable || untappedNames.any { it in setOf("Swamp", "Haunted Mire") }
+    val pool = state.getEntity(playerId)?.get<com.wingedsheep.engine.state.components.player.ManaPoolComponent>()
+    val green = (pool?.green ?: 0) > 0 || birchloreAvailable || untappedNames.any { it in setOf("Forest", "Khalni Garden", "Haunted Mire") }
+    val black = (pool?.black ?: 0) > 0 || birchloreAvailable || untappedNames.any { it in setOf("Swamp", "Haunted Mire") }
     val totalMana = untappedNames.count { it in setOf("Forest", "Swamp", "Khalni Garden", "Haunted Mire") } +
-        if (birchloreAvailable) 1 else 0
-    val requirements = mapOf(
-        "Carrion Feeder" to (1 to 'B'), "Falkenrath Noble" to (4 to 'B'),
-        "Safehold Elite" to (2 to 'G'), "Ivy Lane Denizen" to (4 to 'G'),
-        "Wirewood Herald" to (2 to 'G'), "Evolution Witness" to (3 to 'G'),
-        "Nettle Sentinel" to (1 to 'G'), "Birchlore Rangers" to (1 to 'G'),
-        "Essence Warden" to (1 to 'G'), "Masked Vandal" to (2 to 'G'),
-        "Quirion Ranger" to (1 to 'G'), "Winding Way" to (2 to 'G'),
-        "Lead the Stampede" to (3 to 'G'),
-    )
+        (pool?.total ?: 0) + if (birchloreAvailable) 1 else 0
+    val legal = enumerator.enumerate(state, playerId, EnumerationMode.FULL)
+    val castOffers = legal.mapNotNull { offer ->
+        (offer.action as? CastSpell)?.cardId?.let { it to offer }
+    }.toMap()
+    val quirionAbilityAvailable = legal.any { offer ->
+        val ability = offer.action as? ActivateAbility
+        ability != null && offer.affordable && analyzer.name(state, ability.sourceId) == ProjectXStateAnalyzer.QUIRION_RANGER
+    }
+    val landDropAvailable = (state.getEntity(playerId)
+        ?.get<com.wingedsheep.engine.state.components.player.LandDropsComponent>()?.remaining ?: 0) > 0
+    val quirionAvailable = quirionAbilityAvailable && (landDropAvailable ||
+        (battlefield.any { analyzer.name(state, it) == ProjectXStateAnalyzer.BIRCHLORE_RANGERS } &&
+            battlefield.count { analyzer.isElf(state, it) && analyzer.isUntapped(state, it) } == 1 &&
+            battlefield.any { analyzer.isElf(state, it) && !analyzer.isUntapped(state, it) }))
     return state.getHand(playerId).mapNotNull { id ->
         val cardName = analyzer.name(state, id) ?: return@mapNotNull null
-        val (manaValue, color) = requirements[cardName] ?: return@mapNotNull null
-        if (totalMana >= manaValue && ((color == 'G' && !green) || (color == 'B' && !black))) cardName else null
+        val offer = castOffers[id]
+        if (offer?.affordable == true && offer.autoTapPreview != null) return@mapNotNull null
+        val (manaValue, color) = PROJECT_X_MANA_REQUIREMENTS[cardName] ?: return@mapNotNull null
+        val lacksColor = (color == 'G' && !green) || (color == 'B' && !black)
+        val category = when {
+            birchloreAvailable -> "BIRCHLORE_MANA_AVAILABLE"
+            quirionAvailable -> "QUIRION_SEQUENCE_AVAILABLE"
+            totalMana + tappedLandCount >= manaValue && totalMana < manaValue -> "TAPPED_LAND_TEMPO"
+            totalMana < manaValue -> "INSUFFICIENT_TOTAL_MANA"
+            lacksColor -> "GENUINE_COLOR_UNCASTABLE"
+            else -> "OTHER_PAYMENT_CONSTRAINT"
+        }
+        ManaConstraintTelemetry(
+            turn, cardName, category,
+            "untappedLandMana=$totalMana,tappedLands=$tappedLandCount,green=$green,black=$black"
+        )
     }.toSet()
 }
+
+private val PROJECT_X_MANA_REQUIREMENTS = mapOf(
+    "Carrion Feeder" to (1 to 'B'), "Falkenrath Noble" to (4 to 'B'),
+    "Safehold Elite" to (2 to 'G'), "Ivy Lane Denizen" to (4 to 'G'),
+    "Wirewood Herald" to (2 to 'G'), "Evolution Witness" to (3 to 'G'),
+    "Nettle Sentinel" to (1 to 'G'), "Birchlore Rangers" to (1 to 'G'),
+    "Essence Warden" to (1 to 'G'), "Masked Vandal" to (2 to 'G'),
+    "Quirion Ranger" to (1 to 'G'), "Winding Way" to (2 to 'G'),
+    "Lead the Stampede" to (3 to 'G'),
+)
 
 internal fun summarizeProjectX(games: List<ProjectXGoldfishGame>): ProjectXGoldfishSummary {
     fun countBy(turn: Int, value: (ProjectXGoldfishGame) -> Int?) = games.count { (value(it) ?: Int.MAX_VALUE) <= turn }
@@ -526,6 +835,11 @@ internal fun summarizeProjectX(games: List<ProjectXGoldfishGame>): ProjectXGoldf
         colorBottleneckGames = games.count { it.colorStrandedCards.isNotEmpty() },
         khalniGardenTempoGames = games.count { game -> game.taplandTempoEvents.any { it.startsWith("Khalni Garden") } },
         hauntedMireTempoGames = games.count { game -> game.taplandTempoEvents.any { it.startsWith("Haunted Mire") } },
+        intentionallyHeldGames = games.count { game -> game.manaConstraints.any { it.category == "INTENTIONALLY_HELD" } },
+        birchloreManaAvailableGames = games.count { game -> game.manaConstraints.any { it.category == "BIRCHLORE_MANA_AVAILABLE" } },
+        quirionSequenceAvailableGames = games.count { game -> game.manaConstraints.any { it.category == "QUIRION_SEQUENCE_AVAILABLE" } },
+        tappedLandConstraintGames = games.count { game -> game.manaConstraints.any { it.category == "TAPPED_LAND_TEMPO" } },
+        insufficientTotalManaGames = games.count { game -> game.manaConstraints.any { it.category == "INSUFFICIENT_TOTAL_MANA" } },
     )
 }
 
@@ -549,6 +863,7 @@ internal fun renderProjectXMarkdown(block: ProjectXGoldfishBlock): String = buil
     appendLine("- Herald / Witness contribution: ${s.heraldContributionGames}/30 / ${s.witnessContributionGames}/30")
     appendLine("- Birchlore / Nettle / Quirion contribution: ${s.birchloreContributionGames}/30 / ${s.nettleContributionGames}/30 / ${s.quirionContributionGames}/30")
     appendLine("- Color / Khalni Garden / Haunted Mire bottleneck games: ${s.colorBottleneckGames}/30 / ${s.khalniGardenTempoGames}/30 / ${s.hauntedMireTempoGames}/30")
+    appendLine("- Mana classification games — intentionally held / Birchlore available / Quirion sequence / tapped-land constraint / insufficient total: ${s.intentionallyHeldGames}/30 / ${s.birchloreManaAvailableGames}/30 / ${s.quirionSequenceAvailableGames}/30 / ${s.tappedLandConstraintGames}/30 / ${s.insufficientTotalManaGames}/30")
     appendLine()
     appendLine("## Per-game telemetry")
     appendLine()
@@ -558,11 +873,15 @@ internal fun renderProjectXMarkdown(block: ProjectXGoldfishBlock): String = buil
         appendLine("- Mulligans: ${game.mulligans}; kept: ${game.keptHand}")
         appendLine("- T1: ${game.t1Development.ifEmpty { listOf("none") }}; first meaningful: ${game.firstMeaningfulDevelopmentTurn?.let { "T$it" } ?: "none"}")
         appendLine("- Engine / huge Feeder / infinite life / lethal: ${game.engineTurn?.let { "T$it" } ?: "—"} / ${game.hugeFeederTurn?.let { "T$it" } ?: "—"} / ${game.infiniteLifeTurn?.let { "T$it" } ?: "—"} / ${game.deterministicLethalTurn?.let { "T$it" } ?: "—"} (${game.lethalMechanism ?: "none"})")
-        appendLine("- Herald: ${game.heraldTutorTargets.ifEmpty { listOf("none") }}; Witness: ${game.witnessRecursionEvents.ifEmpty { listOf("none") }}")
+        appendLine("- Actual terminal: winner=${game.winner ?: "—"}; turn=${game.gameOverTurn?.let { "T$it" } ?: "—"}; mechanism=${game.terminalMechanism ?: "—"}")
+        appendLine("- Herald: drawn=${game.herald.drawn}; cast=${game.herald.cast}; battlefield=${game.herald.battlefield}; died=${game.herald.died}; trigger-created=${game.herald.tutorTriggerCreated}; trigger-resolved=${game.herald.tutorTriggerResolved}; targets=${game.herald.tutorTargets}; one-missing=${game.herald.oneRoleMissingAvailability}")
+        appendLine("- Witness: ${game.witnessRecursionEvents.ifEmpty { listOf("none") }}")
         appendLine("- Mana — Birchlore: ${game.birchloreManaContribution.ifEmpty { listOf("none") }}; Nettle: ${game.nettleUntapContribution.ifEmpty { listOf("none") }}; Quirion: ${game.quirionManaContribution.ifEmpty { listOf("none") }}")
         appendLine("- Winding Way: ${game.windingWay.ifEmpty { listOf("none") }}")
         appendLine("- Lead the Stampede: ${game.leadTheStampede.ifEmpty { listOf("none") }}")
         appendLine("- Color stranded: ${game.colorStrandedCards.ifEmpty { listOf("none") }}; taplands: ${game.taplandTempoEvents.ifEmpty { listOf("none") }}")
+        appendLine("- Mana constraints: ${game.manaConstraints.ifEmpty { listOf("none") }}")
+        appendLine("- Cast attempts: ${game.castAttempts.ifEmpty { listOf("none") }}")
         appendLine("- Exactly one role missing: ${game.exactlyOneRoleMissingTurns}; functional classification: ${game.functionalWithoutCombo}")
         appendLine("- Secondary Witness loop: ${game.secondaryWitnessLoopTurn?.let { "T$it" } ?: "—"}; stop: ${game.stopReason}; actions: ${game.actions}; audit: ${game.auditErrors.ifEmpty { listOf("clean") }}")
         appendLine()

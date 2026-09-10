@@ -205,6 +205,21 @@ class ProjectXSolitaireAgentTest : ScenarioTestBase() {
                 .shouldBeInstanceOf<ModesChosenResponse>().selectedModes shouldBe listOf(0)
         }
 
+        test("Winding Way uses the card-type option primitive emitted by the real rules effect") {
+            fun decision(game: TestGame) = ChooseOptionDecision(
+                id = "winding-type", playerId = game.player1Id, prompt = "Choose creature or land",
+                context = DecisionContext(sourceName = "Winding Way"),
+                options = listOf("Creature", "Land"),
+            )
+            val constrained = scenario().withPlayers().withLandsOnBattlefield(1, "Forest", 1).build()
+            val developed = scenario().withPlayers().withLandsOnBattlefield(1, "Forest", 3).build()
+
+            agent(constrained).respondToDecision(constrained.state, decision(constrained))
+                .shouldBeInstanceOf<OptionChosenResponse>().optionIndex shouldBe 1
+            agent(developed).respondToDecision(developed.state, decision(developed))
+                .shouldBeInstanceOf<OptionChosenResponse>().optionIndex shouldBe 0
+        }
+
         test("Lead is cast before generic board value when primary creature roles are missing") {
             val game = scenario().withPlayers()
                 .withLandsOnBattlefield(1, "Forest", 3)

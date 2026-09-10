@@ -1,6 +1,7 @@
 package com.wingedsheep.ai.solitaire
 
 import com.wingedsheep.ai.engine.AIPlayer
+import com.wingedsheep.ai.engine.GameSimulator
 import com.wingedsheep.ai.engine.isOpponentTo
 import com.wingedsheep.engine.core.*
 import com.wingedsheep.engine.legalactions.EnumerationMode
@@ -30,35 +31,44 @@ class ProjectXSolitaireAgent(
     val analyzer: ProjectXStateAnalyzer = ProjectXStateAnalyzer(),
 ) {
     private val enumerator = LegalActionEnumerator.create(cardRegistry)
+    private val simulator = GameSimulator(cardRegistry)
     private val fallback = AIPlayer.create(cardRegistry, playerId)
 
     fun outcome(state: GameState): ProjectXOutcome = analyzer.outcome(state, playerId)
 
-    fun chooseAction(state: GameState): GameAction {
-        val legal = enumerator.enumerate(state, playerId, EnumerationMode.ACTIONS_ONLY)
-        if (legal.isEmpty()) return PassPriority(playerId)
+    fun chooseAction(state: GameState): GameAction = chooseActionWithDiagnostics(state).action
 
-        val materialized = legal.asSequence()
+    fun chooseActionWithDiagnostics(state: GameState): ProjectXActionChoice {
+        val legal = enumerator.enumerate(state, playerId, EnumerationMode.ACTIONS_ONLY)
+        if (legal.isEmpty()) return ProjectXActionChoice(PassPriority(playerId))
+
+        val offered = legal.asSequence()
             .filter { it.affordable }
             .map { it to materialize(state, it) }
             .toList()
+        val validations = offered.map { (offer, action) -> Triple(offer, action, simulator.validateSubmission(state, action)) }
+        val rejected = validations.filter { !it.third.accepted }.map { (offer, action, validation) ->
+            ProjectXRejectedSubmission(action, offer.description, validation.error ?: "executor rejected action")
+        }
+        val materialized = validations.filter { it.third.accepted }.map { it.first to it.second }
         val specialized = materialized.asSequence()
             .map { (legalAction, action) -> Triple(priority(state, legalAction, action), legalAction, action) }
             .filter { it.first > 0 }
             .maxWithOrNull(compareBy<Triple<Int, LegalAction, GameAction>> { it.first }
                 .thenBy { it.second.description })
 
-        if (specialized != null) return specialized.third
+        if (specialized != null) return ProjectXActionChoice(specialized.third, rejected)
 
         // Once a sacrifice loop has been proven symbolically, executing it again cannot improve the
         // deterministic outcome. Keep developing or pass toward the next combat window instead of
         // burning thousands of identical engine transitions.
         val nonLoopActions = materialized.filterNot { (_, action) -> redundantLoopIteration(state, action) }
-        return if (nonLoopActions.isNotEmpty()) {
+        val action = if (nonLoopActions.isNotEmpty()) {
             fallback.chooseFrom(state, nonLoopActions.map { it.first }).action
         } else {
             PassPriority(playerId)
         }
+        return ProjectXActionChoice(action, rejected)
     }
 
     fun respondToDecision(state: GameState, decision: PendingDecision): DecisionResponse {
@@ -69,6 +79,9 @@ class ProjectXSolitaireAgent(
 
             decision is ChooseModeDecision && source == ProjectXStateAnalyzer.WINDING_WAY ->
                 chooseWindingWayMode(state, decision)
+
+            decision is ChooseOptionDecision && source == ProjectXStateAnalyzer.WINDING_WAY ->
+                chooseWindingWayOption(state, decision)
 
             decision is SelectCardsDecision && source == ProjectXStateAnalyzer.LEAD_THE_STAMPEDE ->
                 CardsSelectedResponse(decision.id, decision.options.filter { id ->
@@ -247,12 +260,20 @@ class ProjectXSolitaireAgent(
     }
 
     private fun chooseWindingWayMode(state: GameState, decision: ChooseModeDecision): DecisionResponse {
-        val wantLand = needsLand(state)
-        val desired = if (wantLand) "land" else "creature"
+        val desired = windingWayDesiredType(state)
         val mode = decision.modes.firstOrNull { it.available && it.text.contains(desired, ignoreCase = true) }
             ?: decision.modes.first { it.available }
         return ModesChosenResponse(decision.id, listOf(mode.index))
     }
+
+    private fun chooseWindingWayOption(state: GameState, decision: ChooseOptionDecision): DecisionResponse {
+        val desired = windingWayDesiredType(state)
+        val index = decision.options.indexOfFirst { it.contains(desired, ignoreCase = true) }
+            .takeIf { it >= 0 } ?: 0
+        return OptionChosenResponse(decision.id, index)
+    }
+
+    private fun windingWayDesiredType(state: GameState): String = if (needsLand(state)) "land" else "creature"
 
     private fun chooseIvyTarget(state: GameState, decision: ChooseTargetsDecision): DecisionResponse {
         val legal = decision.targetRequirements.firstOrNull()?.let { decision.legalTargets[it.index] }.orEmpty()
@@ -382,3 +403,14 @@ class ProjectXSolitaireAgent(
         )
     }
 }
+
+data class ProjectXActionChoice(
+    val action: GameAction,
+    val rejectedSubmissions: List<ProjectXRejectedSubmission> = emptyList(),
+)
+
+data class ProjectXRejectedSubmission(
+    val action: GameAction,
+    val legalActionDescription: String,
+    val executorReason: String,
+)
