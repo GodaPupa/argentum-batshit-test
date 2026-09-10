@@ -953,8 +953,13 @@ class Strategist(
                     "DiscardCard" -> existing.copy(discardedCards = listOf(chosen))
                     else -> existing.copy(sacrificedPermanents = listOf(chosen))
                 }
-                simulator.simulate(state, attachForSimulation(payment)).scoreOrRankLast { leaf ->
+                val simulatedScore = simulator.simulate(state, attachForSimulation(payment)).scoreOrRankLast { leaf ->
                     evaluator.evaluate(leaf, leaf.projectedState, playerId)
+                }
+                simulatedScore + if (info.costType == "SacrificePermanent") {
+                    combatAdvisor.mandatoryDiesPayoff(state, chosen)
+                } else {
+                    0.0
                 }
             }.thenBy { chosen ->
                 if (info.costType == "SacrificePermanent") {

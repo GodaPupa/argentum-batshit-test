@@ -299,10 +299,14 @@ class CombatAdvisor(
         blockerId: EntityId,
     ): Double {
         val body = CombatMath.creatureValue(state, projected, blockerId)
-        val registry = cardRegistry ?: return body
-        val name = state.getEntity(blockerId)?.get<CardComponent>()?.name ?: return body
-        val card = registry.getCard(name) ?: return body
-        val deathValue = card.script.triggeredAbilities
+        return body - mandatoryDiesPayoff(state, blockerId)
+    }
+
+    internal fun mandatoryDiesPayoff(state: GameState, permanentId: EntityId): Double {
+        val registry = cardRegistry ?: return 0.0
+        val name = state.getEntity(permanentId)?.get<CardComponent>()?.name ?: return 0.0
+        val card = registry.getCard(name) ?: return 0.0
+        return card.script.triggeredAbilities
             .filter { it.trigger == Triggers.Dies.event && it.binding == Triggers.Dies.binding }
             .sumOf { ability ->
                 EffectWalker.leaves(ability.effect).sumOf { effect ->
@@ -316,7 +320,6 @@ class CombatAdvisor(
                     }
                 }
             }
-        return body - deathValue
     }
 
     /**
