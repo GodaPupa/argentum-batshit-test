@@ -800,10 +800,10 @@ class Strategist(
         action: LegalAction,
         playerId: EntityId,
     ): String? {
-        if (action.action !is ActivateAbility) return null
+        val activation = action.action as? ActivateAbility ?: return null
         val info = TargetSelection.targetInfosFor(action)?.singleOrNull() ?: return null
         if (!TargetSelection.isGraveyardPlayerTarget(action, info)) return null
-        val targetPlayer = action.action.targets.singleOrNull()
+        val targetPlayer = activation.targets.singleOrNull()
             ?.let { it as? ChosenTarget.Player }?.playerId ?: return null
         val graveyardValue = TargetSelection.graveyardTargetValue(state, targetPlayer, playerId, intents)
         val converted = leafState.getZone(playerId, Zone.HAND).size > passState.getZone(playerId, Zone.HAND).size ||
