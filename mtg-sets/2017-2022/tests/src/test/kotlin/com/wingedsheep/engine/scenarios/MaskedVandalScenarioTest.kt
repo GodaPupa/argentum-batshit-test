@@ -31,6 +31,7 @@ class MaskedVandalScenarioTest : ScenarioTestBase() {
                 .withPlayers("Player1", "Player2")
                 .withCardInHand(1, "Masked Vandal")
                 .withCardInGraveyard(1, "Grizzly Bears")
+                .withCardInGraveyard(1, "Llanowar Elves")
                 .withCardOnBattlefield(2, "Sol Ring")
                 .withCardOnBattlefield(2, "Glorious Anthem")
                 .withLandsOnBattlefield(1, "Forest", 2)
@@ -58,6 +59,7 @@ class MaskedVandalScenarioTest : ScenarioTestBase() {
 
             game.isInExile(2, "Sol Ring") shouldBe true
             game.isInExile(1, "Grizzly Bears") shouldBe true
+            game.isInGraveyard(1, "Llanowar Elves") shouldBe true
             game.isOnBattlefield("Glorious Anthem") shouldBe true
         }
 
