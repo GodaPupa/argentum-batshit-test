@@ -572,5 +572,25 @@ class ProjectXSolitaireAgentTest : ScenarioTestBase() {
             val action = agent(game).chooseAction(game.state).shouldBeInstanceOf<CastSpell>()
             name(game, action.cardId) shouldBe "Falkenrath Noble"
         }
+
+        run {
+            val game = scenario().withPlayers()
+                .withCardOnBattlefield(1, "Llanowar Elves", summoningSickness = false)
+                .withCardInHand(1, "Ivy Lane Denizen")
+                .withLandsOnBattlefield(1, "Forest", 3)
+                .build()
+            val first = agent(game).chooseActionWithDiagnostics(game.state)
+            val elves = game.findPermanent("Llanowar Elves")!!
+            val activationError = game.execute(
+                ActivateAbility(game.player1Id, elves, LlanowarElves.activatedAbilities.single().id),
+            ).error
+            val second = agent(game).chooseActionWithDiagnostics(game.state)
+            test(
+                "DIAGNOSTIC initial=${first.action} initialRejected=${first.rejectedSubmissions} " +
+                    "manualActivationError=$activationError post=${second.action} postRejected=${second.rejectedSubmissions}",
+            ) {
+                true.shouldBeTrue()
+            }
+        }
     }
 }
