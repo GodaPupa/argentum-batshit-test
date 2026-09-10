@@ -119,7 +119,7 @@ object TargetSelection {
      * from our graveyard, the immediate denial term can correctly make our own graveyard the best
      * target. Conversely, visible self-recursion makes sweeping our graveyard substantially worse.
      */
-    private fun graveyardTargetValue(
+    internal fun graveyardTargetValue(
         state: GameState,
         targetPlayerId: EntityId,
         playerId: EntityId,
