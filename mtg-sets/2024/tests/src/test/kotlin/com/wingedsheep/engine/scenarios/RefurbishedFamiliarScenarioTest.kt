@@ -1,7 +1,5 @@
 package com.wingedsheep.engine.scenarios
 
-import com.wingedsheep.engine.core.CardsSelectedResponse
-import com.wingedsheep.engine.core.SelectCardsDecision
 import com.wingedsheep.engine.mechanics.mana.CostCalculator
 import com.wingedsheep.engine.support.ScenarioTestBase
 import com.wingedsheep.sdk.core.Phase
@@ -30,9 +28,6 @@ class RefurbishedFamiliarScenarioTest : ScenarioTestBase() {
                 .withCardInHand(2, "Forest").withActivePlayer(1)
                 .inPhase(Phase.PRECOMBAT_MAIN, Step.PRECOMBAT_MAIN).build()
             game.castSpell(1, "Refurbished Familiar").error shouldBe null
-            game.resolveStack()
-            val choice = game.getPendingDecision() as SelectCardsDecision
-            game.submitDecision(CardsSelectedResponse(choice.id, listOf(choice.options.single())))
             game.resolveStack()
             game.handSize(2) shouldBe 0
         }

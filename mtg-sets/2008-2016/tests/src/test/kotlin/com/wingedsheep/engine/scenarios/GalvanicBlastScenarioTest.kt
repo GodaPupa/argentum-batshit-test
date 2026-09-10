@@ -12,7 +12,7 @@ class GalvanicBlastScenarioTest : ScenarioTestBase() {
     private fun game(artifacts: Int): TestGame {
         var builder = scenario().withPlayers("P1", "P2").withCardInHand(1, "Galvanic Blast")
             .withLandsOnBattlefield(1, "Mountain", 1).withCardOnBattlefield(2, "Craw Wurm")
-        listOf("Vault of Whispers", "Great Furnace", "Seat of the Synod").take(artifacts).forEach {
+        listOf("Bonesplitter", "Ichor Wellspring", "Nihil Spellbomb").take(artifacts).forEach {
             builder = builder.withCardOnBattlefield(1, it)
         }
         return builder.withActivePlayer(1).inPhase(Phase.PRECOMBAT_MAIN, Step.PRECOMBAT_MAIN).build()

@@ -11,7 +11,6 @@ import com.wingedsheep.sdk.core.Phase
 import com.wingedsheep.sdk.core.Step
 import com.wingedsheep.sdk.model.Deck
 import com.wingedsheep.sdk.model.EntityId
-import com.wingedsheep.sdk.serialization.CardExporter
 import io.kotest.matchers.collections.shouldContainExactlyInAnyOrder
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.types.shouldBeInstanceOf
@@ -68,12 +67,14 @@ class GrixisAffinityAgentDecisionTest : ScenarioTestBase() {
             name(game, action.cardId) shouldBe "Refurbished Familiar"
         }
 
-        test("Nihil Spellbomb is fired at a stocked opposing graveyard") {
-            val game = seeded().withCardOnBattlefield(1, "Nihil Spellbomb")
-                .withCardInGraveyard(2, "Kessig Flamebreather").withCardInGraveyard(2, "Lava Dart")
-                .withCardInGraveyard(2, "Faithless Looting").withCardInGraveyard(2, "Unearth")
-                .withCardInGraveyard(2, "Grizzly Bears").withCardInGraveyard(2, "Hill Giant")
-                .withCardInGraveyard(2, "Craw Wurm").build()
+        test("Nihil Spellbomb answers an opposing recursion line before it resolves") {
+            val game = seeded().withActivePlayer(2)
+                .withCardOnBattlefield(1, "Nihil Spellbomb")
+                .withCardInHand(2, "Unearth").withCardInGraveyard(2, "Kessig Flamebreather")
+                .withLandsOnBattlefield(2, "Swamp", 1)
+                .inPhase(Phase.PRECOMBAT_MAIN, Step.PRECOMBAT_MAIN).build()
+            game.castSpellTargetingGraveyardCard(2, "Unearth", 2, "Kessig Flamebreather").error shouldBe null
+            game.execute(PassPriority(game.player2Id)).error shouldBe null
             val action = ai(game).chooseAction(game.state).shouldBeInstanceOf<ActivateAbility>()
             name(game, action.sourceId) shouldBe "Nihil Spellbomb"
             action.targets.single().shouldBeInstanceOf<ChosenTarget.Player>().playerId shouldBe game.player2Id
@@ -112,10 +113,6 @@ class GrixisAffinityAgentDecisionTest : ScenarioTestBase() {
                 "Ichor Wellspring" to 4, "Makeshift Munitions" to 1, "Nihil Spellbomb" to 2,
             )
             counts.keys.forEach { cardRegistry.requireCard(it) }
-            listOf(
-                "Refurbished Familiar", "Utrom Monitor", "Galvanic Blast", "Reckoner's Bargain",
-                "Ichor Wellspring", "Nihil Spellbomb",
-            ).forEach { name -> println("AFFINITY_SNAPSHOT_BEGIN:$name\n${CardExporter.exportToJson(cardRegistry.requireCard(name))}\nAFFINITY_SNAPSHOT_END:$name") }
         }
     }
 }
