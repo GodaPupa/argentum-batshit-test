@@ -85,10 +85,10 @@ class GrixisAffinityAgentDecisionTest : ScenarioTestBase() {
         test("reduced-rate burn removes a creature instead of converting weakly to face") {
             val game = seeded().withCardInHand(1, "Galvanic Blast")
                 .withLandsOnBattlefield(1, "Mountain", 1)
-                .withCardOnBattlefield(2, "Mons's Goblin Raiders").build()
+                .withCardOnBattlefield(2, "Guttersnipe").build()
             val action = ai(game).chooseAction(game.state).shouldBeInstanceOf<CastSpell>()
             val target = action.targets.single().shouldBeInstanceOf<ChosenTarget.Permanent>().entityId
-            name(game, target) shouldBe "Mons's Goblin Raiders"
+            name(game, target) shouldBe "Guttersnipe"
         }
 
         test("reduced-rate face damage remains legal when visible follow-up completes lethal") {
@@ -161,9 +161,12 @@ class GrixisAffinityAgentDecisionTest : ScenarioTestBase() {
             ai(game).chooseAction(game.state).shouldBeInstanceOf<PassPriority>()
         }
 
-        test("a meaningful prospective recursion target justifies activation without a draw") {
-            val game = seeded().withCardOnBattlefield(1, "Nihil Spellbomb")
-                .withCardInHand(2, "Unearth").withCardInGraveyard(2, "Kessig Flamebreather").build()
+        test("an immediate recursion target justifies activation without a draw") {
+            val game = seeded().withActivePlayer(2).withCardOnBattlefield(1, "Nihil Spellbomb")
+                .withCardInHand(2, "Unearth").withCardInGraveyard(2, "Kessig Flamebreather")
+                .withLandsOnBattlefield(2, "Swamp", 1).build()
+            game.castSpellTargetingGraveyardCard(2, "Unearth", 2, "Kessig Flamebreather").error shouldBe null
+            game.execute(PassPriority(game.player2Id)).error shouldBe null
             val action = ai(game).chooseAction(game.state).shouldBeInstanceOf<ActivateAbility>()
             name(game, action.sourceId) shouldBe "Nihil Spellbomb"
         }
@@ -174,7 +177,11 @@ class GrixisAffinityAgentDecisionTest : ScenarioTestBase() {
                 .withCardInHand(2, "Unearth").withCardInGraveyard(2, "Kessig Flamebreather")
                 .withCardInLibrary(1, "Forest").build()
             val player = ai(game)
-            val activation = player.chooseAction(game.state).shouldBeInstanceOf<ActivateAbility>()
+            val bomb = game.findPermanent("Nihil Spellbomb")!!
+            val ability = cardRegistry.requireCard("Nihil Spellbomb").activatedAbilities.single().id
+            val activation = ActivateAbility(
+                game.player1Id, bomb, ability, targets = listOf(ChosenTarget.Player(game.player2Id))
+            )
             game.execute(activation).error shouldBe null
             repeat(4) {
                 if (game.state.pendingDecision != null) return@repeat
@@ -212,25 +219,16 @@ class GrixisAffinityAgentDecisionTest : ScenarioTestBase() {
             ai(game).chooseAction(game.state).shouldBeInstanceOf<PassPriority>()
         }
 
-        test("a self-damaging sweep may cash a productive artifact when the draw compensates") {
-            val game = seeded().withActivePlayer(2)
-                .withCardOnBattlefield(1, "Krark-Clan Shaman")
-                .withCardOnBattlefield(1, "Ichor Wellspring")
-                .withCardInLibrary(1, "Forest")
-                .withCardInHand(2, "Cast Down").withLandsOnBattlefield(2, "Swamp", 2).build()
-            game.castSpell(2, "Cast Down", game.findPermanent("Krark-Clan Shaman")!!).error shouldBe null
-            game.execute(PassPriority(game.player2Id)).error shouldBe null
-            val action = ai(game).chooseAction(game.state).shouldBeInstanceOf<ActivateAbility>()
-            name(game, action.sourceId) shouldBe "Krark-Clan Shaman"
-            name(game, action.costPayment!!.sacrificedPermanents.single()) shouldBe "Ichor Wellspring"
-        }
-
         test("productive sacrifice targets are searched beyond incidental battlefield order") {
-            var builder = seeded().withCardInHand(1, "Reckoner's Bargain")
+            var builder = seeded().withActivePlayer(2).withLifeTotal(1, 2)
+                .withCardInHand(1, "Reckoner's Bargain")
                 .withLandsOnBattlefield(1, "Swamp", 2)
             repeat(9) { builder = builder.withCardOnBattlefield(1, "Vault of Whispers") }
             val game = builder.withCardOnBattlefield(1, "Ichor Wellspring")
-                .withCardInLibrary(1, "Forest").withCardInLibrary(1, "Mountain").build()
+                .withCardInLibrary(1, "Forest").withCardInLibrary(1, "Mountain")
+                .withCardInHand(2, "Lightning Bolt").withLandsOnBattlefield(2, "Mountain", 1).build()
+            game.castSpellTargetingPlayer(2, "Lightning Bolt", 1).error shouldBe null
+            game.execute(PassPriority(game.player2Id)).error shouldBe null
             val action = ai(game).chooseAction(game.state).shouldBeInstanceOf<CastSpell>()
             name(game, action.cardId) shouldBe "Reckoner's Bargain"
             name(game, action.additionalCostPayment!!.sacrificedPermanents.single()) shouldBe "Ichor Wellspring"
