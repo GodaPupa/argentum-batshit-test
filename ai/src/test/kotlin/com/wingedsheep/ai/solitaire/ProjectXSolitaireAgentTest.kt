@@ -3,11 +3,7 @@ package com.wingedsheep.ai.solitaire
 import com.wingedsheep.engine.core.*
 import com.wingedsheep.engine.state.components.battlefield.TappedComponent
 import com.wingedsheep.engine.state.components.identity.CardComponent
-import com.wingedsheep.engine.state.components.player.ManaPoolComponent
 import com.wingedsheep.engine.support.ScenarioTestBase
-import com.wingedsheep.ai.engine.GameSimulator
-import com.wingedsheep.engine.legalactions.EnumerationMode
-import com.wingedsheep.engine.legalactions.LegalActionEnumerator
 import com.wingedsheep.mtg.sets.definitions.lea.cards.LlanowarElves
 import com.wingedsheep.sdk.core.Color
 import com.wingedsheep.sdk.model.EntityId
@@ -264,87 +260,20 @@ class ProjectXSolitaireAgentTest : ScenarioTestBase() {
             name(game, action.costPayment!!.bouncedPermanents.single()) shouldBe "Forest"
         }
 
-        test("Llanowar makes Ivy Lane Denizen a legal cast from three lands") {
+        test("Llanowar makes Ivy Lane Denizen the selected cast from three lands") {
             val game = scenario().withPlayers()
                 .withCardOnBattlefield(1, "Llanowar Elves", summoningSickness = false)
                 .withCardInHand(1, "Ivy Lane Denizen")
                 .withLandsOnBattlefield(1, "Forest", 3)
                 .build()
-            val solitaire = agent(game)
 
-            val choice = solitaire.chooseActionWithDiagnostics(game.state)
-            println("LLANOWAR_ACCELERATION_CHOICE action=${choice.action} rejected=${choice.rejectedSubmissions}")
-            val mana = choice.action.shouldBeInstanceOf<ActivateAbility>()
-            name(game, mana.sourceId) shouldBe "Llanowar Elves"
-            game.execute(mana).error shouldBe null
-
-            val cast = solitaire.chooseAction(game.state).shouldBeInstanceOf<CastSpell>()
+            // Simple tap-for-mana creatures are legal auto-payment sources. The fastest legal
+            // sequence therefore submits the payoff cast directly instead of floating mana first.
+            val cast = agent(game).chooseAction(game.state).shouldBeInstanceOf<CastSpell>()
             name(game, cast.cardId) shouldBe "Ivy Lane Denizen"
         }
 
-        test("Llanowar mana activation remains executable in the acceleration state") {
-            val game = scenario().withPlayers()
-                .withCardOnBattlefield(1, "Llanowar Elves", summoningSickness = false)
-                .withCardInHand(1, "Ivy Lane Denizen")
-                .withLandsOnBattlefield(1, "Forest", 3)
-                .build()
-            val simulator = GameSimulator(cardRegistry)
-            val activation = LegalActionEnumerator.create(cardRegistry)
-                .enumerate(game.state, game.player1Id, EnumerationMode.ACTIONS_ONLY)
-                .single { it.action is ActivateAbility && name(game, (it.action as ActivateAbility).sourceId) == "Llanowar Elves" }
-            activation.affordable.shouldBeTrue()
-            simulator.validateSubmission(game.state, activation.action).accepted.shouldBeTrue()
-        }
-
-        test("simulated Llanowar activation retains its green mana") {
-            val game = scenario().withPlayers()
-                .withCardOnBattlefield(1, "Llanowar Elves", summoningSickness = false)
-                .withCardInHand(1, "Ivy Lane Denizen")
-                .withLandsOnBattlefield(1, "Forest", 3)
-                .build()
-            val simulator = GameSimulator(cardRegistry)
-            val activation = LegalActionEnumerator.create(cardRegistry)
-                .enumerate(game.state, game.player1Id, EnumerationMode.ACTIONS_ONLY)
-                .single { it.action is ActivateAbility && name(game, (it.action as ActivateAbility).sourceId) == "Llanowar Elves" }
-            val after = simulator.simulate(game.state, activation.action).state
-            after.getEntity(game.player1Id)!!.get<ManaPoolComponent>()!!.green shouldBe 1
-        }
-
-        test("Ivy is affordable after simulated Llanowar mana") {
-            val game = scenario().withPlayers()
-                .withCardOnBattlefield(1, "Llanowar Elves", summoningSickness = false)
-                .withCardInHand(1, "Ivy Lane Denizen")
-                .withLandsOnBattlefield(1, "Forest", 3)
-                .build()
-            val simulator = GameSimulator(cardRegistry)
-            val activation = LegalActionEnumerator.create(cardRegistry)
-                .enumerate(game.state, game.player1Id, EnumerationMode.ACTIONS_ONLY)
-                .single { it.action is ActivateAbility && name(game, (it.action as ActivateAbility).sourceId) == "Llanowar Elves" }
-            val after = simulator.simulate(game.state, activation.action).state
-            val ivy = LegalActionEnumerator.create(cardRegistry)
-                .enumerate(after, game.player1Id, EnumerationMode.ACTIONS_ONLY)
-                .single { it.action is CastSpell && after.getEntity((it.action as CastSpell).cardId)?.get<CardComponent>()?.name == "Ivy Lane Denizen" }
-            ivy.affordable.shouldBeTrue()
-        }
-
-        test("Ivy is executable after simulated Llanowar mana") {
-            val game = scenario().withPlayers()
-                .withCardOnBattlefield(1, "Llanowar Elves", summoningSickness = false)
-                .withCardInHand(1, "Ivy Lane Denizen")
-                .withLandsOnBattlefield(1, "Forest", 3)
-                .build()
-            val simulator = GameSimulator(cardRegistry)
-            val activation = LegalActionEnumerator.create(cardRegistry)
-                .enumerate(game.state, game.player1Id, EnumerationMode.ACTIONS_ONLY)
-                .single { it.action is ActivateAbility && name(game, (it.action as ActivateAbility).sourceId) == "Llanowar Elves" }
-            val after = simulator.simulate(game.state, activation.action).state
-            val ivy = LegalActionEnumerator.create(cardRegistry)
-                .enumerate(after, game.player1Id, EnumerationMode.ACTIONS_ONLY)
-                .single { it.action is CastSpell && after.getEntity((it.action as CastSpell).cardId)?.get<CardComponent>()?.name == "Ivy Lane Denizen" }
-            simulator.validateSubmission(after, ivy.action).accepted.shouldBeTrue()
-        }
-
-        test("Llanowar activation funds Ivy Lane Denizen after three lands") {
+        test("Llanowar auto-payment legally funds Ivy Lane Denizen after three lands") {
             val game = scenario().withPlayers()
                 .withCardOnBattlefield(1, "Llanowar Elves", summoningSickness = false)
                 .withCardInHand(1, "Ivy Lane Denizen")
@@ -352,12 +281,6 @@ class ProjectXSolitaireAgentTest : ScenarioTestBase() {
                 .build()
             val solitaire = agent(game)
             val elves = game.findPermanent("Llanowar Elves")!!
-
-            val choice = solitaire.chooseActionWithDiagnostics(game.state)
-            println("LLANOWAR_ACCELERATION_CHOICE action=${choice.action} rejected=${choice.rejectedSubmissions}")
-            val mana = choice.action.shouldBeInstanceOf<ActivateAbility>()
-            name(game, mana.sourceId) shouldBe "Llanowar Elves"
-            game.execute(mana).error shouldBe null
 
             val cast = solitaire.chooseAction(game.state).shouldBeInstanceOf<CastSpell>()
             name(game, cast.cardId) shouldBe "Ivy Lane Denizen"

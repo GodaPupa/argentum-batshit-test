@@ -395,7 +395,7 @@ class ProjectXSolitaireAgent(
         action: ActivateAbility,
     ): Int {
         val source = state.getEntity(action.sourceId)?.get<CardComponent>() ?: return 0
-        if (!source.isCreature || !legal.isManaAbility) return 0
+        if (!source.isCreature || !legal.isManaAbility || !isReusableCreatureManaSource(source)) return 0
 
         val before = affordableCastIds(state)
         val simulated = simulator.simulate(state, action)
@@ -440,11 +440,11 @@ class ProjectXSolitaireAgent(
 
     private fun accelerationPriority(state: GameState, cardId: EntityId): Int {
         val card = state.getEntity(cardId)?.get<CardComponent>() ?: return 0
-        if (!card.isCreature || !isReusableCreatureManaSource(card.name)) return 0
+        if (!card.isCreature || !isReusableCreatureManaSource(card)) return 0
 
         val reusableSources = state.controlledBattlefield(playerId).count { permanentId ->
             val permanent = state.getEntity(permanentId)?.get<CardComponent>() ?: return@count false
-            permanent.isLand || (permanent.isCreature && isReusableCreatureManaSource(permanent.name))
+            permanent.isLand || (permanent.isCreature && isReusableCreatureManaSource(permanent))
         }
         val bestTurnGain = state.getHand(playerId).asSequence()
             .filter { it != cardId }
@@ -462,8 +462,8 @@ class ProjectXSolitaireAgent(
         return MAX_ACCELERATION_LOOKAHEAD + 1
     }
 
-    private fun isReusableCreatureManaSource(name: String): Boolean =
-        cardRegistry.getCard(name)?.script?.activatedAbilities?.any { ability ->
+    private fun isReusableCreatureManaSource(card: CardComponent): Boolean =
+        cardRegistry.getCard(card.cardDefinitionId)?.script?.activatedAbilities?.any { ability ->
             ability.isManaAbility && ability.cost.includesSelfTap()
         } == true
 
