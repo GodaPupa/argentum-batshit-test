@@ -19,14 +19,10 @@ import com.wingedsheep.engine.state.components.identity.CardComponent
 import com.wingedsheep.sdk.core.Keyword
 import com.wingedsheep.sdk.core.Phase
 import com.wingedsheep.sdk.core.Step
+import com.wingedsheep.sdk.dsl.Triggers
 import com.wingedsheep.sdk.model.EntityId
 import com.wingedsheep.sdk.scripting.effects.CreatePredefinedTokenEffect
-import com.wingedsheep.sdk.scripting.effects.DrawCardsEffect
 import com.wingedsheep.sdk.scripting.effects.ScryEffect
-import com.wingedsheep.sdk.scripting.EventPattern
-import com.wingedsheep.sdk.scripting.TriggerBinding
-import com.wingedsheep.sdk.scripting.values.DynamicAmount
-import com.wingedsheep.sdk.core.Zone
 
 /**
  * Specialized advisor for attack and block decisions.
@@ -71,7 +67,6 @@ class CombatAdvisor(
         private const val SCRY_DEATH_VALUE = 0.35
         private const val TREASURE_DEATH_VALUE = 0.75
         private const val GENERIC_TOKEN_DEATH_VALUE = 0.5
-        private const val CARD_DEATH_VALUE = 1.0
     }
 
     /**
@@ -312,11 +307,7 @@ class CombatAdvisor(
         val name = state.getEntity(permanentId)?.get<CardComponent>()?.name ?: return 0.0
         val card = registry.getCard(name) ?: return 0.0
         return card.script.triggeredAbilities
-            .filter { ability ->
-                val event = ability.trigger as? EventPattern.ZoneChangeEvent
-                ability.binding == TriggerBinding.SELF &&
-                    event?.from == Zone.BATTLEFIELD && event.to == Zone.GRAVEYARD
-            }
+            .filter { it.trigger == Triggers.Dies.event && it.binding == Triggers.Dies.binding }
             .sumOf { ability ->
                 EffectWalker.leaves(ability.effect).sumOf { effect ->
                     when (effect) {
@@ -325,8 +316,6 @@ class CombatAdvisor(
                             "Treasure" -> effect.count * TREASURE_DEATH_VALUE
                             else -> effect.count * GENERIC_TOKEN_DEATH_VALUE
                         }
-                        is DrawCardsEffect ->
-                            (effect.count as? DynamicAmount.Fixed)?.amount?.times(CARD_DEATH_VALUE) ?: 0.0
                         else -> 0.0
                     }
                 }
