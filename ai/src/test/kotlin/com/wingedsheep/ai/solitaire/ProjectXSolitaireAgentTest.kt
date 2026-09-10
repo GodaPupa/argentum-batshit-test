@@ -253,7 +253,7 @@ class ProjectXSolitaireAgentTest : ScenarioTestBase() {
             name(game, action.costPayment!!.bouncedPermanents.single()) shouldBe "Forest"
         }
 
-        test("Llanowar mana funds Ivy Lane Denizen from three lands") {
+        test("Llanowar makes Ivy Lane Denizen a legal cast from three lands") {
             val game = scenario().withPlayers()
                 .withCardOnBattlefield(1, "Llanowar Elves", summoningSickness = false)
                 .withCardInHand(1, "Ivy Lane Denizen")
@@ -263,8 +263,20 @@ class ProjectXSolitaireAgentTest : ScenarioTestBase() {
 
             val cast = solitaire.chooseAction(game.state).shouldBeInstanceOf<CastSpell>()
             name(game, cast.cardId) shouldBe "Ivy Lane Denizen"
+        }
+
+        test("Ivy Lane Denizen auto-payment consumes Llanowar mana after three lands") {
+            val game = scenario().withPlayers()
+                .withCardOnBattlefield(1, "Llanowar Elves", summoningSickness = false)
+                .withCardInHand(1, "Ivy Lane Denizen")
+                .withLandsOnBattlefield(1, "Forest", 3)
+                .build()
+            val solitaire = agent(game)
+            val elves = game.findPermanent("Llanowar Elves")!!
+
+            val cast = solitaire.chooseAction(game.state).shouldBeInstanceOf<CastSpell>()
             game.execute(cast).error shouldBe null
-            game.state.getEntity(game.findPermanent("Llanowar Elves")!!)!!.has<TappedComponent>().shouldBeTrue()
+            game.state.getEntity(elves)!!.has<TappedComponent>().shouldBeTrue()
         }
 
         test("Llanowar is deployed before a generic one-drop when it accelerates Denizen") {
@@ -290,20 +302,29 @@ class ProjectXSolitaireAgentTest : ScenarioTestBase() {
             name(game, cast.cardId) shouldBe "Nettle Sentinel"
         }
 
-        test("Llanowar color is read from card properties and its cast untaps Nettle") {
+        test("Llanowar is green according to the card properties inspected by the policy") {
+            val game = scenario().withPlayers()
+                .withCardInHand(1, "Llanowar Elves")
+                .build()
+
+            val llanowar = game.state.getHand(game.player1Id).single()
+            game.state.getEntity(llanowar)!!.get<CardComponent>()!!.colors shouldBe setOf(Color.GREEN)
+        }
+
+        test("casting property-green Llanowar creates and resolves Nettle's untap trigger") {
             val game = scenario().withPlayers()
                 .withCardOnBattlefield(1, "Nettle Sentinel", tapped = true)
                 .withCardInHand(1, "Llanowar Elves")
                 .withLandsOnBattlefield(1, "Forest", 1)
                 .build()
             val solitaire = agent(game)
+            val nettle = game.findPermanent("Nettle Sentinel")!!
 
             val cast = solitaire.chooseAction(game.state).shouldBeInstanceOf<CastSpell>()
             name(game, cast.cardId) shouldBe "Llanowar Elves"
             game.execute(cast).error shouldBe null
             resolveWith(solitaire, game)
 
-            val nettle = game.findPermanent("Nettle Sentinel")!!
             game.state.getEntity(nettle)!!.has<TappedComponent>().shouldBeFalse()
         }
 
