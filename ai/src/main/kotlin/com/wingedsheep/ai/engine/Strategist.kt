@@ -10,6 +10,7 @@ import com.wingedsheep.ai.engine.evaluation.BoardPresence
 import com.wingedsheep.ai.engine.evaluation.EvaluationWeights
 import com.wingedsheep.ai.engine.knowledge.HoldPolicy
 import com.wingedsheep.ai.engine.knowledge.IntentCatalog
+import com.wingedsheep.ai.engine.knowledge.IntentTag
 import com.wingedsheep.ai.engine.knowledge.TimingVerdict
 import com.wingedsheep.ai.engine.rollout.CandidateEvaluator
 import com.wingedsheep.ai.engine.rollout.PlayoutPolicy
@@ -32,6 +33,7 @@ import com.wingedsheep.engine.core.PlayLand
 import com.wingedsheep.engine.legalactions.LegalAction
 import com.wingedsheep.engine.legalactions.MeaningfulActionFilter
 import com.wingedsheep.engine.state.GameState
+import com.wingedsheep.engine.state.components.battlefield.DamageComponent
 import com.wingedsheep.engine.state.components.identity.CardComponent
 import com.wingedsheep.engine.state.components.stack.AbilityOnStackComponent
 import com.wingedsheep.engine.state.components.stack.ActivatedAbilityOnStackComponent
@@ -43,6 +45,7 @@ import com.wingedsheep.sdk.core.Format
 import com.wingedsheep.sdk.core.ManaCost
 import com.wingedsheep.sdk.core.ManaSymbol
 import com.wingedsheep.sdk.core.Step
+import com.wingedsheep.sdk.core.Zone
 import com.wingedsheep.sdk.model.EntityId
 import com.wingedsheep.sdk.scripting.AdditionalCostPayment
 import com.wingedsheep.sdk.scripting.AlternativePaymentChoice
@@ -294,6 +297,7 @@ class Strategist(
             // No pass on offer: the "do nothing" reference is the current position itself.
             candidateEvaluator.score(evaluationState, evaluationState, playerId, budget)
         }
+        val passLeafState = if (pass != null) leafStates.first() else evaluationState
 
         // ── Pass 3: per-card timing and advisor adjustments, in raw evaluator units ──
         val firstCandidate = if (pass != null) 1 else 0
@@ -308,6 +312,7 @@ class Strategist(
                     playerId,
                     leafScores[i],
                     passScore,
+                    passLeafState,
                 ),
             )
         }
@@ -660,6 +665,7 @@ class Strategist(
         playerId: EntityId,
         leafScore: Double,
         passScore: Double,
+        passState: GameState,
     ): AdjustedScore {
         val developmentDelta = immediatePermanentDevelopmentAfterLand(leafState, action, playerId)
         val developmentNote = developmentDelta.takeIf { it != 0.0 }
@@ -695,6 +701,15 @@ class Strategist(
                 "land-sacrifice policy: low-value conversion — floored below passing",
             )
         }
+        lowEfficiencyFaceConversion(state, leafState, action.action, playerId, cardName)?.let { reason ->
+            return AdjustedScore(passScore - 1.0, reason)
+        }
+        lowValueGraveyardActivation(state, leafState, passState, action, playerId)?.let { reason ->
+            return AdjustedScore(passScore - 1.0, reason)
+        }
+        selfOnlySweep(state, leafState, passState, action.action, playerId, cardName)?.let { reason ->
+            return AdjustedScore(passScore - 1.0, reason)
+        }
         val timingDelta = (timing as? TimingVerdict.Adjust)?.delta ?: 0.0
         val timingReason = (timing as? TimingVerdict.Adjust)?.reason ?: "timing"
         val timingNote =
@@ -729,6 +744,112 @@ class Strategist(
             listOfNotNull(advisorNote, timingNote, sacrificeWindowNote, developmentNote)
                 .joinToString("; ").ifEmpty { null },
         )
+    }
+
+    /**
+     * Conditional burn should not be converted to the opponent's life total at its inefficient
+     * rate merely because any immediate damage improves a one-ply score.  The policy is structural:
+     * it compares the damage the simulated action actually dealt with the source's readable maximum.
+     * Full-rate damage remains evaluator-controlled, while reduced-rate damage needs lethal or a
+     * visible follow-up sequence that covers the remaining life total.
+     */
+    private fun lowEfficiencyFaceConversion(
+        state: GameState,
+        leafState: GameState,
+        action: GameAction,
+        playerId: EntityId,
+        cardName: String,
+    ): String? {
+        val targetPlayer = when (action) {
+            is CastSpell -> action.targets.singleOrNull() as? ChosenTarget.Player
+            is ActivateAbility -> action.targets.singleOrNull() as? ChosenTarget.Player
+            else -> null
+        }?.playerId ?: return null
+        if (!state.isOpponentTo(targetPlayer, playerId)) return null
+
+        val maximum = intents.forName(cardName)?.opponentDamage ?: return null
+        val dealt = state.lifeTotal(targetPlayer) - leafState.lifeTotal(targetPlayer)
+        if (dealt <= 0 || dealt >= maximum || dealt >= state.lifeTotal(targetPlayer)) return null
+
+        val sourceId = when (action) {
+            is CastSpell -> action.cardId
+            is ActivateAbility -> action.sourceId
+            else -> return null
+        }
+        val visibleFollowUp = state.getZone(playerId, Zone.HAND)
+            .asSequence()
+            .filterNot { it == sourceId }
+            .mapNotNull { state.getEntity(it)?.get<CardComponent>()?.name }
+            .sumOf { intents.forName(it)?.opponentDamage ?: 0 }
+        val lifeAfter = leafState.lifeTotal(targetPlayer)
+        if (visibleFollowUp >= lifeAfter) return null
+
+        return "face-conversion policy: reduced-rate damage lacks credible lethal follow-up — floored below passing"
+    }
+
+    /**
+     * A graveyard sweep that hits no strategically valuable graveyard and produces no immediate
+     * compensation is not a free action: its source may be a future card, sacrifice resource,
+     * affinity discount or metalcraft piece.  Valuable graveyards and actual conversion (draw or
+     * life) remain evaluator-controlled, including correct activations that cannot pay for a draw.
+     */
+    private fun lowValueGraveyardActivation(
+        state: GameState,
+        leafState: GameState,
+        passState: GameState,
+        action: LegalAction,
+        playerId: EntityId,
+    ): String? {
+        if (action.action !is ActivateAbility) return null
+        val info = TargetSelection.targetInfosFor(action)?.singleOrNull() ?: return null
+        if (!TargetSelection.isGraveyardPlayerTarget(action, info)) return null
+        val targetPlayer = action.action.targets.singleOrNull()
+            ?.let { it as? ChosenTarget.Player }?.playerId ?: return null
+        val graveyardValue = TargetSelection.graveyardTargetValue(state, targetPlayer, playerId, intents)
+        val converted = leafState.getZone(playerId, Zone.HAND).size > passState.getZone(playerId, Zone.HAND).size ||
+            leafState.lifeTotal(playerId) > passState.lifeTotal(playerId)
+        if (graveyardValue > MIN_MEANINGFUL_GRAVEYARD_VALUE || converted) return null
+        return "graveyard-resource policy: no meaningful target or immediate conversion — floored below passing"
+    }
+
+    /**
+     * Reject a global damage activation whose simulated board impact reaches only our own
+     * creatures and yields no compensating card/life/permanent resource.  Once an opposing creature
+     * is actually damaged or removed, ordinary board evaluation prices the complete trade — own
+     * losses, productive deaths, the sacrificed permanent, and artifact-count consequences.
+     */
+    private fun selfOnlySweep(
+        state: GameState,
+        leafState: GameState,
+        passState: GameState,
+        action: GameAction,
+        playerId: EntityId,
+        cardName: String,
+    ): String? {
+        if (action !is ActivateAbility || IntentTag.SWEEPER !in (intents.forName(cardName)?.tags ?: return null)) {
+            return null
+        }
+        if (action.costPayment?.sacrificedPermanents.isNullOrEmpty()) return null
+
+        fun damageIn(game: GameState, id: EntityId): Int =
+            game.getEntity(id)?.get<DamageComponent>()?.amount ?: 0
+        val creatures = state.getBattlefield().filter { state.projectedState.isCreature(it) }
+        val opponentAffected = creatures.any { id ->
+            val controller = state.projectedState.getController(id) ?: return@any false
+            state.isOpponentTo(controller, playerId) &&
+                (id !in leafState.getBattlefield() || damageIn(leafState, id) > damageIn(state, id))
+        }
+        if (opponentAffected) return null
+        val ownAffected = creatures.any { id ->
+            state.projectedState.getController(id) == playerId &&
+                (id !in leafState.getBattlefield() || damageIn(leafState, id) > damageIn(state, id))
+        }
+        if (!ownAffected) return null
+        val compensatingValue = leafState.getZone(playerId, Zone.HAND).size > passState.getZone(playerId, Zone.HAND).size ||
+            leafState.lifeTotal(playerId) > passState.lifeTotal(playerId) ||
+            leafState.getBattlefield(playerId).size >= passState.getBattlefield(playerId).size
+        if (compensatingValue) return null
+        return "sweep policy: activation affects only own creatures without compensation — floored below passing"
     }
 
     /**
@@ -1028,7 +1149,12 @@ class Strategist(
                 is ActivateAbility -> simulationBase.copy(costPayment = payment)
                 else -> simulationBase
             }
-            return strategicPool.take(AUTOMATIC_PAYMENT_CANDIDATES).maxWithOrNull(compareBy<EntityId> { chosen ->
+            val searchPool = if (info.costType == "SacrificePermanent") {
+                strategicPool.sortedByDescending { combatAdvisor.mandatoryDiesPayoff(state, it) }
+            } else {
+                strategicPool
+            }
+            return searchPool.take(AUTOMATIC_PAYMENT_CANDIDATES).maxWithOrNull(compareBy<EntityId> { chosen ->
                 val payment = when (info.costType) {
                     "DiscardCard" -> existing.copy(discardedCards = listOf(chosen))
                     else -> existing.copy(sacrificedPermanents = listOf(chosen))
@@ -1481,6 +1607,9 @@ class Strategist(
 
         /** A burn spell leaving this much reach is close enough to preserve race conversion. */
         const val NEAR_LETHAL_REACH = 2
+
+        /** Prospective graveyard value below this is not enough to spend a persistent resource. */
+        const val MIN_MEANINGFUL_GRAVEYARD_VALUE = 0.5
 
         /** Repeatable face damage per trigger that justifies spending land as removal. */
         const val IMPORTANT_ENGINE_DAMAGE = 2
