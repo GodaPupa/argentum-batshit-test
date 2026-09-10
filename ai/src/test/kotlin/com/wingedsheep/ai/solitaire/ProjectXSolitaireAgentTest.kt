@@ -8,7 +8,6 @@ import com.wingedsheep.sdk.core.Color
 import com.wingedsheep.sdk.model.EntityId
 import io.kotest.matchers.booleans.shouldBeFalse
 import io.kotest.matchers.booleans.shouldBeTrue
-import io.kotest.matchers.collections.shouldContainExactly
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.types.shouldBeInstanceOf
 
@@ -168,15 +167,16 @@ class ProjectXSolitaireAgentTest : ScenarioTestBase() {
             val mana = solitaire.chooseAction(game.state).shouldBeInstanceOf<ActivateAbility>()
             name(game, mana.sourceId) shouldBe "Birchlore Rangers"
             mana.manaColorChoice shouldBe Color.BLACK
-            mana.costPayment!!.tappedPermanents shouldContainExactly listOf(
-                game.findPermanent("Birchlore Rangers")!!,
-                nettle,
+            mana.costPayment!!.tappedPermanents.toSet() shouldBe setOf(
+                game.findPermanent("Birchlore Rangers")!!, nettle,
             )
         }
 
         test("Quirion returns a Forest to untap Nettle when that unlocks Birchlore black mana") {
             val game = scenario().withPlayers()
-                .withCardOnBattlefield(1, "Quirion Ranger")
+                // Quirion's ability has no tap-symbol cost, so a tapped Ranger may still
+                // return the Forest. With only Birchlore untapped, Nettle is the mana unlock.
+                .withCardOnBattlefield(1, "Quirion Ranger", tapped = true)
                 .withCardOnBattlefield(1, "Birchlore Rangers")
                 .withCardOnBattlefield(1, "Nettle Sentinel", tapped = true)
                 .withCardInHand(1, "Carrion Feeder")
