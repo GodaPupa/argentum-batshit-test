@@ -2495,61 +2495,66 @@
                     "to": "Battlefield"
                 },
                 "effect": {
-                    "type": "Gated",
-                    "gate": "Gate.MayDecide",
-                    "then": {
-                        "type": "Gated",
-                        "gate": {
-                            "type": "Gate.DoAction",
-                            "action": {
-                                "type": "Composite",
-                                "effects": [
-                                    {
-                                        "type": "GatherCards",
-                                        "source": {
-                                            "type": "FromZone",
-                                            "zone": "Graveyard",
-                                            "filter": "creature"
-                                        },
-                                        "storeAs": "graveyardCreatures"
-                                    },
-                                    {
-                                        "type": "SelectFromCollection",
-                                        "from": "graveyardCreatures",
-                                        "selection": {
-                                            "type": "ChooseExactly",
-                                            "count": {
-                                                "type": "Fixed",
-                                                "amount": 1
+                    "type": "Composite",
+                    "effects": [
+                        {
+                            "type": "Gated",
+                            "gate": "Gate.MayDecide",
+                            "then": {
+                                "type": "Gated",
+                                "gate": {
+                                    "type": "Gate.DoAction",
+                                    "action": {
+                                        "type": "Composite",
+                                        "effects": [
+                                            {
+                                                "type": "GatherCards",
+                                                "source": {
+                                                    "type": "FromZone",
+                                                    "zone": "Graveyard",
+                                                    "filter": "creature"
+                                                },
+                                                "storeAs": "graveyardCreatures"
+                                            },
+                                            {
+                                                "type": "SelectFromCollection",
+                                                "from": "graveyardCreatures",
+                                                "selection": {
+                                                    "type": "ChooseExactly",
+                                                    "count": {
+                                                        "type": "Fixed",
+                                                        "amount": 1
+                                                    }
+                                                },
+                                                "storeSelected": "vandalExileCost",
+                                                "selectedLabel": "Exile"
+                                            },
+                                            {
+                                                "type": "MoveCollection",
+                                                "from": "vandalExileCost",
+                                                "destination": {
+                                                    "type": "ToZone",
+                                                    "zone": "Exile"
+                                                }
                                             }
-                                        },
-                                        "storeSelected": "vandalExileCost",
-                                        "selectedLabel": "Exile"
+                                        ]
                                     },
-                                    {
-                                        "type": "MoveCollection",
-                                        "from": "vandalExileCost",
-                                        "destination": {
-                                            "type": "ToZone",
-                                            "zone": "Exile"
-                                        }
+                                    "successCriterion": {
+                                        "type": "SuccessCriterion.CollectionNonEmpty",
+                                        "name": "vandalExileCost"
                                     }
-                                ]
-                            },
-                            "successCriterion": {
-                                "type": "SuccessCriterion.CollectionNonEmpty",
-                                "name": "vandalExileCost"
+                                },
+                                "then": {
+                                    "type": "MoveToZone",
+                                    "target": {
+                                        "type": "BoundVariable",
+                                        "name": "target artifact or enchantment an opponent controls"
+                                    },
+                                    "destination": "Exile"
+                                }
                             }
-                        },
-                        "then": {
-                            "type": "MoveToZone",
-                            "target": {
-                                "type": "BoundVariable",
-                                "name": "target artifact or enchantment an opponent controls"
-                            },
-                            "destination": "Exile"
                         }
-                    }
+                    ]
                 },
                 "targetRequirement": {
                     "type": "TargetObject",
