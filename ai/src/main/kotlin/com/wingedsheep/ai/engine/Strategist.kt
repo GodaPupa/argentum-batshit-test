@@ -1149,12 +1149,7 @@ class Strategist(
                 is ActivateAbility -> simulationBase.copy(costPayment = payment)
                 else -> simulationBase
             }
-            val searchPool = if (info.costType == "SacrificePermanent") {
-                strategicPool.sortedByDescending { combatAdvisor.mandatoryDiesPayoff(state, it) }
-            } else {
-                strategicPool
-            }
-            return searchPool.take(AUTOMATIC_PAYMENT_CANDIDATES).maxWithOrNull(compareBy<EntityId> { chosen ->
+            return strategicPool.take(AUTOMATIC_PAYMENT_CANDIDATES).maxWithOrNull(compareBy<EntityId> { chosen ->
                 val payment = when (info.costType) {
                     "DiscardCard" -> existing.copy(discardedCards = listOf(chosen))
                     else -> existing.copy(sacrificedPermanents = listOf(chosen))
