@@ -26,9 +26,10 @@ class RefurbishedFamiliarScenarioTest : ScenarioTestBase() {
 
         test("ETB makes an opponent discard when possible") {
             val game = scenario().withPlayers("P1", "P2")
-                .withCardOnBattlefield(1, "Refurbished Familiar")
+                .withCardInHand(1, "Refurbished Familiar").withLandsOnBattlefield(1, "Swamp", 4)
                 .withCardInHand(2, "Forest").withActivePlayer(1)
                 .inPhase(Phase.PRECOMBAT_MAIN, Step.PRECOMBAT_MAIN).build()
+            game.castSpell(1, "Refurbished Familiar").error shouldBe null
             game.resolveStack()
             val choice = game.getPendingDecision() as SelectCardsDecision
             game.submitDecision(CardsSelectedResponse(choice.id, listOf(choice.options.single())))
@@ -38,9 +39,10 @@ class RefurbishedFamiliarScenarioTest : ScenarioTestBase() {
 
         test("ETB draws for an empty-handed opponent") {
             val game = scenario().withPlayers("P1", "P2")
-                .withCardOnBattlefield(1, "Refurbished Familiar")
+                .withCardInHand(1, "Refurbished Familiar").withLandsOnBattlefield(1, "Swamp", 4)
                 .withCardInLibrary(1, "Forest").withActivePlayer(1)
                 .inPhase(Phase.PRECOMBAT_MAIN, Step.PRECOMBAT_MAIN).build()
+            game.castSpell(1, "Refurbished Familiar").error shouldBe null
             game.resolveStack()
             game.handSize(1) shouldBe 1
         }

@@ -30,7 +30,7 @@ class NihilSpellbombScenarioTest : ScenarioTestBase() {
         }
         test("declining black payment still exiles the graveyard") {
             val game = scenario().withPlayers("P1", "P2").withCardOnBattlefield(1, "Nihil Spellbomb")
-                .withCardInGraveyard(2, "Hill Giant").withActivePlayer(1)
+                .withLandsOnBattlefield(1, "Swamp", 1).withCardInGraveyard(2, "Hill Giant").withActivePlayer(1)
                 .inPhase(Phase.PRECOMBAT_MAIN, Step.PRECOMBAT_MAIN).build()
             val bomb = game.findPermanent("Nihil Spellbomb")!!
             val ability = cardRegistry.requireCard("Nihil Spellbomb").activatedAbilities.single().id

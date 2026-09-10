@@ -71,7 +71,9 @@ class GrixisAffinityAgentDecisionTest : ScenarioTestBase() {
         test("Nihil Spellbomb is fired at a stocked opposing graveyard") {
             val game = seeded().withCardOnBattlefield(1, "Nihil Spellbomb")
                 .withCardInGraveyard(2, "Kessig Flamebreather").withCardInGraveyard(2, "Lava Dart")
-                .withCardInGraveyard(2, "Faithless Looting").build()
+                .withCardInGraveyard(2, "Faithless Looting").withCardInGraveyard(2, "Unearth")
+                .withCardInGraveyard(2, "Grizzly Bears").withCardInGraveyard(2, "Hill Giant")
+                .withCardInGraveyard(2, "Craw Wurm").build()
             val action = ai(game).chooseAction(game.state).shouldBeInstanceOf<ActivateAbility>()
             name(game, action.sourceId) shouldBe "Nihil Spellbomb"
             action.targets.single().shouldBeInstanceOf<ChosenTarget.Player>().playerId shouldBe game.player2Id

@@ -8,9 +8,10 @@ import io.kotest.matchers.shouldBe
 class IchorWellspringScenarioTest : ScenarioTestBase() {
     init {
         test("draws on entry") {
-            val game = scenario().withPlayers("P1", "P2").withCardOnBattlefield(1, "Ichor Wellspring")
-                .withCardInLibrary(1, "Forest").withActivePlayer(1)
+            val game = scenario().withPlayers("P1", "P2").withCardInHand(1, "Ichor Wellspring")
+                .withLandsOnBattlefield(1, "Swamp", 2).withCardInLibrary(1, "Forest").withActivePlayer(1)
                 .inPhase(Phase.PRECOMBAT_MAIN, Step.PRECOMBAT_MAIN).build()
+            game.castSpell(1, "Ichor Wellspring").error shouldBe null
             game.resolveStack(); game.handSize(1) shouldBe 1
         }
         test("draws again when sacrificed into the graveyard") {
