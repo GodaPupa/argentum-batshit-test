@@ -11,6 +11,7 @@ import com.wingedsheep.sdk.core.Phase
 import com.wingedsheep.sdk.core.Step
 import com.wingedsheep.sdk.model.Deck
 import com.wingedsheep.sdk.model.EntityId
+import com.wingedsheep.sdk.serialization.CardExporter
 import io.kotest.matchers.collections.shouldContainExactlyInAnyOrder
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.types.shouldBeInstanceOf
@@ -31,16 +32,16 @@ class GrixisAffinityAgentDecisionTest : ScenarioTestBase() {
             name(game, action.cardId) shouldBe "Great Furnace"
         }
 
-        test("Bargain protects artifact count by sacrificing productive Wellspring instead of an artifact land") {
+        test("Bargain answers lethal burn by sacrificing productive Wellspring instead of an artifact land") {
             val game = seeded().withActivePlayer(2)
+                .withLifeTotal(1, 2)
                 .withCardOnBattlefield(1, "Ichor Wellspring").withCardOnBattlefield(1, "Vault of Whispers")
                 .withCardOnBattlefield(1, "Great Furnace").withCardInHand(1, "Reckoner's Bargain")
                 .withLandsOnBattlefield(1, "Swamp", 2)
-                .withCardInHand(2, "Disenchant").withLandsOnBattlefield(2, "Plains", 2)
+                .withCardInHand(2, "Lightning Bolt").withLandsOnBattlefield(2, "Mountain", 1)
                 .withCardInLibrary(1, "Forest").withCardInLibrary(1, "Mountain").withCardInLibrary(1, "Island")
                 .build()
-            val target = game.findPermanent("Ichor Wellspring")!!
-            game.castSpell(2, "Disenchant", target).error shouldBe null
+            game.castSpellTargetingPlayer(2, "Lightning Bolt", 1).error shouldBe null
             game.execute(PassPriority(game.player2Id)).error shouldBe null
             val action = ai(game).chooseAction(game.state).shouldBeInstanceOf<CastSpell>()
             name(game, action.cardId) shouldBe "Reckoner's Bargain"
@@ -69,7 +70,7 @@ class GrixisAffinityAgentDecisionTest : ScenarioTestBase() {
 
         test("Nihil Spellbomb is fired at a stocked opposing graveyard") {
             val game = seeded().withCardOnBattlefield(1, "Nihil Spellbomb")
-                .withCardInGraveyard(2, "Flamebreather").withCardInGraveyard(2, "Lava Dart")
+                .withCardInGraveyard(2, "Kessig Flamebreather").withCardInGraveyard(2, "Lava Dart")
                 .withCardInGraveyard(2, "Faithless Looting").build()
             val action = ai(game).chooseAction(game.state).shouldBeInstanceOf<ActivateAbility>()
             name(game, action.sourceId) shouldBe "Nihil Spellbomb"
@@ -109,6 +110,10 @@ class GrixisAffinityAgentDecisionTest : ScenarioTestBase() {
                 "Ichor Wellspring" to 4, "Makeshift Munitions" to 1, "Nihil Spellbomb" to 2,
             )
             counts.keys.forEach { cardRegistry.requireCard(it) }
+            listOf(
+                "Refurbished Familiar", "Utrom Monitor", "Galvanic Blast", "Reckoner's Bargain",
+                "Ichor Wellspring", "Nihil Spellbomb",
+            ).forEach { name -> println("AFFINITY_SNAPSHOT_BEGIN:$name\n${CardExporter.exportToJson(cardRegistry.requireCard(name))}\nAFFINITY_SNAPSHOT_END:$name") }
         }
     }
 }
