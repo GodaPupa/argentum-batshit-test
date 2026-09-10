@@ -384,10 +384,12 @@ class ProjectXSolitaireAgent(
     }
 
     /**
-     * Prefer an already-deployed reusable mana creature only when activating it makes a held,
-     * strategically relevant spell newly affordable. The comparison is made through the legal-action
-     * enumerator before and after the real mana ability, so colored requirements and actual payment
-     * rules remain authoritative.
+     * Prefer an already-deployed reusable mana creature only when the real post-activation state
+     * contains an executable, strategically relevant cast. A cast already executable in the current
+     * state keeps its full priority and therefore outranks this enabling action by one point; the
+     * mana action wins only when the cast cannot yet be submitted. Colored requirements and actual
+     * payment rules remain authoritative because both states are checked through the legal-action
+     * enumerator and executor validation.
      */
     private fun reusableManaActivationPriority(
         state: GameState,
@@ -397,14 +399,12 @@ class ProjectXSolitaireAgent(
         val source = state.getEntity(action.sourceId)?.get<CardComponent>() ?: return 0
         if (!source.isCreature || !legal.isManaAbility || !isReusableCreatureManaSource(source)) return 0
 
-        val before = affordableCastIds(state)
         val simulated = simulator.simulate(state, action)
         if (simulated is com.wingedsheep.ai.engine.SimulationResult.Illegal ||
             simulated is com.wingedsheep.ai.engine.SimulationResult.StoppedAtLimit
         ) return 0
 
-        val newlyAffordable = affordableCastIds(simulated.state) - before
-        val unlockedPriority = newlyAffordable.maxOfOrNull { cardId ->
+        val unlockedPriority = affordableCastIds(simulated.state).maxOfOrNull { cardId ->
             castPriority(state, cardId)
         } ?: return 0
         return (unlockedPriority - 1).coerceAtLeast(1)
