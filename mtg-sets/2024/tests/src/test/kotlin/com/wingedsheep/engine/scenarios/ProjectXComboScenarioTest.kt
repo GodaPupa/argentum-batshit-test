@@ -6,7 +6,9 @@ import com.wingedsheep.engine.state.components.battlefield.CountersComponent
 import com.wingedsheep.engine.support.GameTestDriver
 import com.wingedsheep.engine.support.TestCards
 import com.wingedsheep.mtg.sets.definitions.scg.cards.CarrionFeeder
+import com.wingedsheep.mtg.sets.definitions.shm.cards.SafeholdElite
 import com.wingedsheep.sdk.core.CounterType
+import com.wingedsheep.sdk.core.Color
 import com.wingedsheep.sdk.core.Step
 import com.wingedsheep.sdk.model.Deck
 import com.wingedsheep.sdk.model.EntityId
@@ -16,7 +18,10 @@ import io.kotest.matchers.shouldBe
 
 /** Deterministic rules proofs for the Project X sacrifice engine. */
 class ProjectXComboScenarioTest : FunSpec({
-    fun driver(): GameTestDriver = GameTestDriver().apply { registerCards(TestCards.all) }
+    fun driver(): GameTestDriver = GameTestDriver().apply {
+        registerCards(TestCards.all)
+        registerCard(SafeholdElite)
+    }
 
     fun GameTestDriver.counter(id: EntityId, type: CounterType): Int =
         state.getEntity(id)?.get<CountersComponent>()?.getCount(type) ?: 0
@@ -104,5 +109,23 @@ class ProjectXComboScenarioTest : FunSpec({
             elite = d.findPermanent(player, "Safehold Elite")!!
         }
         d.getLifeTotal(player) shouldBe life + 3
+    }
+
+    test("Wirewood Herald can tutor the canonical Safehold Elite Elf role") {
+        val d = driver()
+        d.initMirrorMatch(Deck.of("Forest" to 40), skipMulligans = true)
+        val player = d.activePlayer!!
+        d.passPriorityUntil(Step.PRECOMBAT_MAIN)
+        val herald = d.putCreatureOnBattlefield(player, "Wirewood Herald")
+        val elite = d.putCardOnTopOfLibrary(player, "Safehold Elite")
+        val bolt = d.putCardInHand(player, "Lightning Bolt")
+        d.giveMana(player, Color.RED, 1)
+        d.castSpell(player, bolt, listOf(herald)).isSuccess shouldBe true
+        d.bothPass()
+        d.bothPass()
+        d.submitYesNo(player, true)
+        d.submitCardSelection(player, listOf(elite))
+        d.bothPass()
+        (d.findCardInHand(player, "Safehold Elite") != null) shouldBe true
     }
 })
