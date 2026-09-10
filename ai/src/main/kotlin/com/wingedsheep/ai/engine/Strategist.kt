@@ -1154,15 +1154,7 @@ class Strategist(
             } else {
                 strategicPool
             }
-            val candidates = if (info.costType == "SacrificePermanent") {
-                // Battlefield order must never hide a productive sacrifice target. Sacrifice
-                // pools are naturally bounded by the permanents in play, and their death value,
-                // mana value, and artifact-count consequences can differ materially.
-                searchPool
-            } else {
-                searchPool.take(AUTOMATIC_PAYMENT_CANDIDATES)
-            }
-            return candidates.maxWithOrNull(compareBy<EntityId> { chosen ->
+            return searchPool.take(AUTOMATIC_PAYMENT_CANDIDATES).maxWithOrNull(compareBy<EntityId> { chosen ->
                 val payment = when (info.costType) {
                     "DiscardCard" -> existing.copy(discardedCards = listOf(chosen))
                     else -> existing.copy(sacrificedPermanents = listOf(chosen))
