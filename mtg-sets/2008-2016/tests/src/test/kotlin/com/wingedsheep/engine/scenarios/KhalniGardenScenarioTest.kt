@@ -19,7 +19,7 @@ class KhalniGardenScenarioTest : ScenarioTestBase() {
             game.execute(PlayLand(game.player1Id, garden)).error shouldBe null
             game.state.getEntity(game.findPermanent("Khalni Garden")!!)?.has<TappedComponent>() shouldBe true
             game.resolveStack()
-            (game.findPermanent("Plant") != null) shouldBe true
+            (game.findPermanent("Plant Token") != null) shouldBe true
         }
     }
 }
