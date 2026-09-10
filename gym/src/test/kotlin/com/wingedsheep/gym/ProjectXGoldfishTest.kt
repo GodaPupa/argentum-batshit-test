@@ -38,6 +38,12 @@ private const val PROJECT_X_HORIZON = 12
  * consuming or replacing the frozen sample.
  */
 class ProjectXGoldfishTest : FunSpec({
+    test("reproduce rejected Game 14 illegal cast").config(timeout = 5.minutes) {
+        val result = runProjectXGoldfish(projectXRegistry(), 0x2B7B_990F_635F_EBDL, 14)
+        println(Json { prettyPrint = true }.encodeToString(result))
+        result.stopReason shouldBe "ILLEGAL_ACTION"
+    }
+
     test("development goldfish exercises the real engine boundary").config(timeout = 5.minutes) {
         val result = runProjectXGoldfish(projectXRegistry(), 0x5058_4445_5600_0001L, 1)
         result.actions shouldBeGreaterThan 0
@@ -354,7 +360,12 @@ internal fun runProjectXGoldfish(registry: CardRegistry, seed: Long, gameNumber:
         val step = when (result) {
             is ExactlyOneSubmissionResult.Applied -> result.step
             is ExactlyOneSubmissionResult.Rejected -> {
-                audit += "illegal action ${action::class.simpleName}: ${result.reason}"
+                val pool = state.getEntity(projectId)?.get<com.wingedsheep.engine.state.components.player.ManaPoolComponent>()
+                val battlefield = state.controlledBattlefield(projectId).map { id ->
+                    "${name(id)}:${if (state.getEntity(id)?.has<TappedComponent>() == true) "tapped" else "untapped"}"
+                }
+                audit += "illegal action ${action::class.simpleName} ${actionName ?: "unknown"}: ${result.reason}; " +
+                    "pool=$pool; battlefield=$battlefield"
                 stopReason = "ILLEGAL_ACTION"
                 break
             }
