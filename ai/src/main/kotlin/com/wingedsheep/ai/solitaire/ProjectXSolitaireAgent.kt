@@ -384,15 +384,6 @@ class ProjectXSolitaireAgent(
     }
 
     /**
-     * Reward a creature mana source only when its extra reusable mana moves a spell in hand to an
-     * earlier future turn. This is deliberately derived from card definitions and mana values:
-     * the solitaire policy does not need to know the accelerator's or payoff's printed name.
-     *
-     * The forecast assumes one land drop per future turn for both lines. It is comparative rather
-     * than predictive: the only question is whether adding this source reduces the earliest turn
-     * for at least one held spell under identical draw assumptions.
-     */
-    /**
      * Prefer an already-deployed reusable mana creature only when activating it makes a held,
      * strategically relevant spell newly affordable. The comparison is made through the legal-action
      * enumerator before and after the real mana ability, so colored requirements and actual payment
@@ -419,7 +410,9 @@ class ProjectXSolitaireAgent(
         enumerator.enumerate(state, playerId, EnumerationMode.ACTIONS_ONLY)
             .asSequence()
             .filter(LegalAction::affordable)
-            .mapNotNull { legal -> (legal.action as? CastSpell)?.cardId }
+            .mapNotNull { legal -> legal.action as? CastSpell }
+            .filter { simulator.validateSubmission(state, it).accepted }
+            .map(CastSpell::cardId)
             .toSet()
 
     private fun castPriority(state: GameState, cardId: EntityId): Int {
