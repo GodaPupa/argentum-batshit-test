@@ -39,8 +39,13 @@ jobs:
       - name: Compile Argentum
         run: ./gradlew classes --stacktrace
 
-      - name: Run Ivy Lane Denizen scenario first
-        run: scripts/test-class IvyLaneDenizenScenarioTest --stacktrace
-
-      - name: Run Masked Vandal scenario second
-        run: scripts/test-class MaskedVandalScenarioTest --stacktrace
+      - name: Run both Project X diagnostics independently
+        run: |
+          set +e
+          scripts/test-class IvyLaneDenizenScenarioTest --stacktrace --info
+          ivy_status=$?
+          scripts/test-class MaskedVandalScenarioTest --stacktrace --info
+          vandal_status=$?
+          if [ "$ivy_status" -ne 0 ] || [ "$vandal_status" -ne 0 ]; then
+            exit 1
+          fi
