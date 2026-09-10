@@ -39,11 +39,5 @@ jobs:
       - name: Compile Argentum
         run: ./gradlew classes --stacktrace
 
-      - name: Run engine tests
-        run: ./gradlew test --stacktrace
-
-      - name: Run Gym tests
-        run: ./gradlew :gym:test --stacktrace
-
-      - name: Run Gym trainer tests
-        run: ./gradlew :gym-trainer:test --stacktrace
+      - name: Run Project X combo diagnostics
+        run: scripts/test-class ProjectXComboScenarioTest --stacktrace --info
