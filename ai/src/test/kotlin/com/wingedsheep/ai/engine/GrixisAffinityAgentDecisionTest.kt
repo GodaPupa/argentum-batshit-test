@@ -4,6 +4,8 @@ import com.wingedsheep.engine.core.ActivateAbility
 import com.wingedsheep.engine.core.CastSpell
 import com.wingedsheep.engine.core.PassPriority
 import com.wingedsheep.engine.core.PlayLand
+import com.wingedsheep.engine.core.YesNoDecision
+import com.wingedsheep.engine.core.YesNoResponse
 import com.wingedsheep.engine.state.components.stack.ChosenTarget
 import com.wingedsheep.engine.state.components.identity.CardComponent
 import com.wingedsheep.engine.support.ScenarioTestBase
@@ -64,6 +66,39 @@ class GrixisAffinityAgentDecisionTest : ScenarioTestBase() {
             name(game, target) shouldBe "Craw Wurm"
         }
 
+        test("reduced-rate face damage is held at a high life total") {
+            val game = seeded().withCardInHand(1, "Galvanic Blast")
+                .withLandsOnBattlefield(1, "Mountain", 1).build()
+            ai(game).chooseAction(game.state).shouldBeInstanceOf<PassPriority>()
+        }
+
+        test("full-rate face damage is used when it completes lethal") {
+            val game = seeded().withLifeTotal(2, 4).withCardInHand(1, "Galvanic Blast")
+                .withLandsOnBattlefield(1, "Mountain", 1)
+                .withCardOnBattlefield(1, "Bonesplitter")
+                .withCardOnBattlefield(1, "Ornithopter")
+                .withCardOnBattlefield(1, "Vault of Whispers").build()
+            val action = ai(game).chooseAction(game.state).shouldBeInstanceOf<CastSpell>()
+            action.targets.single().shouldBeInstanceOf<ChosenTarget.Player>().playerId shouldBe game.player2Id
+        }
+
+        test("reduced-rate burn removes a creature instead of converting weakly to face") {
+            val game = seeded().withCardInHand(1, "Galvanic Blast")
+                .withLandsOnBattlefield(1, "Mountain", 1)
+                .withCardOnBattlefield(2, "Mons's Goblin Raiders").build()
+            val action = ai(game).chooseAction(game.state).shouldBeInstanceOf<CastSpell>()
+            val target = action.targets.single().shouldBeInstanceOf<ChosenTarget.Permanent>().entityId
+            name(game, target) shouldBe "Mons's Goblin Raiders"
+        }
+
+        test("reduced-rate face damage remains legal when visible follow-up completes lethal") {
+            val game = seeded().withLifeTotal(2, 4)
+                .withCardInHand(1, "Galvanic Blast").withCardInHand(1, "Galvanic Blast")
+                .withLandsOnBattlefield(1, "Mountain", 1).build()
+            val action = ai(game).chooseAction(game.state).shouldBeInstanceOf<CastSpell>()
+            action.targets.single().shouldBeInstanceOf<ChosenTarget.Player>().playerId shouldBe game.player2Id
+        }
+
         test("cheap Refurbished Familiar is deployed while its discard trigger has value") {
             val game = seeded().withCardInHand(1, "Refurbished Familiar").withLandsOnBattlefield(1, "Swamp", 1)
                 .withCardOnBattlefield(1, "Vault of Whispers").withCardOnBattlefield(1, "Great Furnace")
@@ -121,6 +156,44 @@ class GrixisAffinityAgentDecisionTest : ScenarioTestBase() {
             action.targets.single().shouldBeInstanceOf<ChosenTarget.Player>().playerId shouldBe game.player1Id
         }
 
+        test("an empty graveyard is not enough reason to spend a graveyard artifact") {
+            val game = seeded().withCardOnBattlefield(1, "Nihil Spellbomb").build()
+            ai(game).chooseAction(game.state).shouldBeInstanceOf<PassPriority>()
+        }
+
+        test("a meaningful prospective recursion target justifies activation without a draw") {
+            val game = seeded().withCardOnBattlefield(1, "Nihil Spellbomb")
+                .withCardInHand(2, "Unearth").withCardInGraveyard(2, "Kessig Flamebreather").build()
+            val action = ai(game).chooseAction(game.state).shouldBeInstanceOf<ActivateAbility>()
+            name(game, action.sourceId) shouldBe "Nihil Spellbomb"
+        }
+
+        test("graveyard activation pays black for the conditional draw when available") {
+            val game = seeded().withCardOnBattlefield(1, "Nihil Spellbomb")
+                .withLandsOnBattlefield(1, "Swamp", 1)
+                .withCardInHand(2, "Unearth").withCardInGraveyard(2, "Kessig Flamebreather")
+                .withCardInLibrary(1, "Forest").build()
+            val player = ai(game)
+            val activation = player.chooseAction(game.state).shouldBeInstanceOf<ActivateAbility>()
+            game.execute(activation).error shouldBe null
+            repeat(4) {
+                if (game.state.pendingDecision != null) return@repeat
+                val priority = game.state.priorityPlayerId ?: return@repeat
+                game.execute(PassPriority(priority)).error shouldBe null
+            }
+            val decision = game.state.pendingDecision.shouldBeInstanceOf<YesNoDecision>()
+            val response = player.respondToDecision(game.state, decision).shouldBeInstanceOf<YesNoResponse>()
+            response.choice shouldBe true
+        }
+
+        test("graveyard artifact is preserved when sacrificing it would break metalcraft") {
+            val game = seeded().withCardOnBattlefield(1, "Nihil Spellbomb")
+                .withCardOnBattlefield(1, "Bonesplitter").withCardOnBattlefield(1, "Vault of Whispers")
+                .withCardInHand(1, "Galvanic Blast").withLandsOnBattlefield(1, "Mountain", 1).build()
+            val action = ai(game).chooseAction(game.state)
+            (action is ActivateAbility && name(game, action.sourceId) == "Nihil Spellbomb") shouldBe false
+        }
+
         test("Krark-Clan Shaman cashes in Wellspring for a profitable sweep") {
             val game = seeded().withCardOnBattlefield(1, "Krark-Clan Shaman")
                 .withCardOnBattlefield(1, "Ichor Wellspring")
@@ -130,6 +203,37 @@ class GrixisAffinityAgentDecisionTest : ScenarioTestBase() {
             val action = ai(game).chooseAction(game.state).shouldBeInstanceOf<ActivateAbility>()
             name(game, action.sourceId) shouldBe "Krark-Clan Shaman"
             name(game, action.costPayment!!.sacrificedPermanents.single()) shouldBe "Ichor Wellspring"
+        }
+
+        test("a sweep that damages only its controller's creatures is held") {
+            val game = seeded().withCardOnBattlefield(1, "Krark-Clan Shaman")
+                .withCardOnBattlefield(1, "Vault of Whispers")
+                .withCardOnBattlefield(1, "Mons's Goblin Raiders").build()
+            ai(game).chooseAction(game.state).shouldBeInstanceOf<PassPriority>()
+        }
+
+        test("a self-damaging sweep may cash a productive artifact when the draw compensates") {
+            val game = seeded().withActivePlayer(2)
+                .withCardOnBattlefield(1, "Krark-Clan Shaman")
+                .withCardOnBattlefield(1, "Ichor Wellspring")
+                .withCardInLibrary(1, "Forest")
+                .withCardInHand(2, "Cast Down").withLandsOnBattlefield(2, "Swamp", 2).build()
+            game.castSpell(2, "Cast Down", game.findPermanent("Krark-Clan Shaman")!!).error shouldBe null
+            game.execute(PassPriority(game.player2Id)).error shouldBe null
+            val action = ai(game).chooseAction(game.state).shouldBeInstanceOf<ActivateAbility>()
+            name(game, action.sourceId) shouldBe "Krark-Clan Shaman"
+            name(game, action.costPayment!!.sacrificedPermanents.single()) shouldBe "Ichor Wellspring"
+        }
+
+        test("productive sacrifice targets are searched beyond incidental battlefield order") {
+            var builder = seeded().withCardInHand(1, "Reckoner's Bargain")
+                .withLandsOnBattlefield(1, "Swamp", 2)
+            repeat(9) { builder = builder.withCardOnBattlefield(1, "Vault of Whispers") }
+            val game = builder.withCardOnBattlefield(1, "Ichor Wellspring")
+                .withCardInLibrary(1, "Forest").withCardInLibrary(1, "Mountain").build()
+            val action = ai(game).chooseAction(game.state).shouldBeInstanceOf<CastSpell>()
+            name(game, action.cardId) shouldBe "Reckoner's Bargain"
+            name(game, action.additionalCostPayment!!.sacrificedPermanents.single()) shouldBe "Ichor Wellspring"
         }
 
         test("large free affinity threat is deployed while one-mana interaction is held") {
