@@ -60,6 +60,14 @@ class ProjectXGoldfishTest : FunSpec({
         result.t1Development.isNotEmpty().shouldBeTrue()
     }
 
+    test("Herald death uses the real collection search path and records its tutor lifecycle").config(timeout = 5.minutes) {
+        val result = runProjectXGoldfish(projectXRegistry(), 0x8DAF_02FC_42EE_3A2L, 1)
+        result.auditErrors shouldBe emptyList()
+        result.herald.tutorTriggerCreated.isNotEmpty().shouldBeTrue()
+        result.herald.tutorTriggerResolved.isNotEmpty().shouldBeTrue()
+        result.herald.tutorTargets.isNotEmpty().shouldBeTrue()
+    }
+
     test("frozen 30-seed Project X v0.2 goldfish block").config(
         enabled = System.getenv(PROJECT_X_GOLDFISH_ENV) == "true",
         timeout = 45.minutes,
@@ -328,6 +336,7 @@ internal fun runProjectXGoldfish(registry: CardRegistry, seed: Long, gameNumber:
     val heraldAvailability = linkedSetOf<HeraldAvailability>()
     var selection: SelectionTelemetry? = null
     var pendingWitnessTarget: Pair<Int, String>? = null
+    var pendingHeraldSearch: Pair<Int, List<String>>? = null
     var firstMeaningful: Int? = null
     var engineTurn: Int? = null
     var hugeTurn: Int? = null
@@ -415,7 +424,11 @@ internal fun runProjectXGoldfish(registry: CardRegistry, seed: Long, gameNumber:
                 when {
                     decision is SearchLibraryDecision && decision.context.sourceName == ProjectXStateAnalyzer.WIREWOOD_HERALD -> {
                         val chosen = (response as CardsSelectedResponse).selectedCards.map(::name)
-                        heraldTargets += chosen.map { "$it@T$turn" }
+                        pendingHeraldSearch = turn to chosen
+                    }
+                    decision is SelectCardsDecision && decision.context.sourceName == ProjectXStateAnalyzer.WIREWOOD_HERALD -> {
+                        val chosen = (response as CardsSelectedResponse).selectedCards.map(::name)
+                        pendingHeraldSearch = turn to chosen
                     }
                     decision is ChooseTargetsDecision && decision.context.sourceName == ProjectXStateAnalyzer.EVOLUTION_WITNESS -> {
                         val chosen = (response as TargetsResponse).selectedTargets.values.flatten().firstOrNull()?.let(::name)
@@ -552,7 +565,12 @@ internal fun runProjectXGoldfish(registry: CardRegistry, seed: Long, gameNumber:
             }
         }
         events.filterIsInstance<ResolvedEvent>().forEach { event ->
-            if (event.name.contains(ProjectXStateAnalyzer.WIREWOOD_HERALD)) heraldTriggerResolved += "T$turn:${event.name}"
+            val heraldSearch = pendingHeraldSearch
+            if (heraldSearch != null && event.name.contains(ProjectXStateAnalyzer.WIREWOOD_HERALD)) {
+                heraldTriggerResolved += "T${heraldSearch.first}:${event.name}"
+                heraldTargets += heraldSearch.second.map { "$it@T${heraldSearch.first}" }
+                pendingHeraldSearch = null
+            }
             val current = selection
             if (current != null && event.name == current.name) {
                 val line = renderSelectionLine(current)

@@ -75,7 +75,19 @@ class ProjectXSolitaireAgent(
         val source = decision.context.sourceName
         return when {
             decision is SearchLibraryDecision && source == ProjectXStateAnalyzer.WIREWOOD_HERALD ->
-                chooseHeraldTutor(state, decision)
+                CardsSelectedResponse(
+                    decision.id,
+                    chooseHeraldTutor(state, decision.options) { decision.cards[it]?.name }
+                        .take(decision.maxSelections),
+                )
+
+            decision is SelectCardsDecision && source == ProjectXStateAnalyzer.WIREWOOD_HERALD ->
+                CardsSelectedResponse(
+                    decision.id,
+                    chooseHeraldTutor(state, decision.options) { id ->
+                        decision.cardInfo?.get(id)?.name ?: analyzer.name(state, id)
+                    }.take(decision.maxSelections),
+                )
 
             decision is ChooseModeDecision && source == ProjectXStateAnalyzer.WINDING_WAY ->
                 chooseWindingWayMode(state, decision)
@@ -244,10 +256,14 @@ class ProjectXSolitaireAgent(
         return candidates.sortedWith(compareBy(::preservationCost).thenBy { analyzer.name(state, it) }).take(count)
     }
 
-    private fun chooseHeraldTutor(state: GameState, decision: SearchLibraryDecision): DecisionResponse {
+    private fun chooseHeraldTutor(
+        state: GameState,
+        options: List<EntityId>,
+        cardName: (EntityId) -> String?,
+    ): List<EntityId> {
         val missing = analyzer.missingPrimaryRoles(state, playerId)
         val graveyard = analyzer.graveyardNames(state, playerId)
-        fun score(id: EntityId): Int = when (val name = decision.cards[id]?.name) {
+        fun score(id: EntityId): Int = when (val name = cardName(id)) {
             missing.singleOrNull() -> 10_000
             ProjectXStateAnalyzer.ESSENCE_WARDEN -> if (outcome(state).completeInfiniteEngine) 9_000 else 200
             ProjectXStateAnalyzer.EVOLUTION_WITNESS -> if (missing.any(graveyard::contains)) 8_500 else 300
@@ -255,8 +271,7 @@ class ProjectXSolitaireAgent(
             ProjectXStateAnalyzer.IVY_LANE_DENIZEN -> if (name in missing) 8_000 else 400
             else -> 0
         }
-        val chosen = decision.options.maxByOrNull(::score)
-        return CardsSelectedResponse(decision.id, listOfNotNull(chosen).take(decision.maxSelections))
+        return listOfNotNull(options.maxByOrNull(::score))
     }
 
     private fun chooseWindingWayMode(state: GameState, decision: ChooseModeDecision): DecisionResponse {

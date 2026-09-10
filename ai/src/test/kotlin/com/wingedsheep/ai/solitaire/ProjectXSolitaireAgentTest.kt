@@ -131,6 +131,41 @@ class ProjectXSolitaireAgentTest : ScenarioTestBase() {
             name(game, action.costPayment!!.sacrificedPermanents.single()) shouldBe "Wirewood Herald"
         }
 
+        test("real Herald death pipeline tutors the missing role through SelectCardsDecision") {
+            val game = scenario().withPlayers()
+                .withCardOnBattlefield(1, "Carrion Feeder")
+                .withCardOnBattlefield(1, "Ivy Lane Denizen")
+                .withCardOnBattlefield(1, "Wirewood Herald")
+                .withCardInLibrary(1, "Nettle Sentinel")
+                .withCardInLibrary(1, "Safehold Elite")
+                .build()
+            val solitaire = agent(game)
+
+            val sacrifice = solitaire.chooseAction(game.state).shouldBeInstanceOf<ActivateAbility>()
+            name(game, sacrifice.costPayment!!.sacrificedPermanents.single()) shouldBe "Wirewood Herald"
+            game.execute(sacrifice).error shouldBe null
+
+            var sawRealSearchDecision = false
+            var transitions = 0
+            while ((game.state.pendingDecision != null || game.state.stack.isNotEmpty()) && transitions++ < 80) {
+                val decision = game.state.pendingDecision
+                if (decision is SelectCardsDecision &&
+                    decision.context.sourceName == ProjectXStateAnalyzer.WIREWOOD_HERALD
+                ) sawRealSearchDecision = true
+                val result = if (decision != null) {
+                    game.execute(SubmitDecision(decision.playerId, solitaire.respondToDecision(game.state, decision)))
+                } else {
+                    game.execute(PassPriority(game.state.priorityPlayerId!!))
+                }
+                result.error shouldBe null
+            }
+
+            (transitions < 80).shouldBeTrue()
+            sawRealSearchDecision.shouldBeTrue()
+            game.isInHand(1, "Safehold Elite") shouldBe true
+            game.isInHand(1, "Nettle Sentinel") shouldBe false
+        }
+
         test("Birchlore taps the available Elf pair and makes black for Carrion Feeder") {
             val game = scenario().withPlayers()
                 .withCardOnBattlefield(1, "Birchlore Rangers")
