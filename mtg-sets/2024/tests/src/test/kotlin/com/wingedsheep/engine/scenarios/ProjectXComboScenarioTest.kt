@@ -13,7 +13,6 @@ import com.wingedsheep.sdk.core.Step
 import com.wingedsheep.sdk.model.Deck
 import com.wingedsheep.sdk.model.EntityId
 import com.wingedsheep.sdk.scripting.AdditionalCostPayment
-import io.kotest.assertions.withClue
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
 
@@ -85,13 +84,9 @@ class ProjectXComboScenarioTest : FunSpec({
 
         repeat(3) {
             val sacrifice = d.sacrificeToFeeder(player, feeder, elite)
-            withClue(
-                "iteration=$it error=${sacrifice.error} playerLife=${d.getLifeTotal(player)} " +
-                    "opponentLife=${d.getLifeTotal(opponent)} stack=${d.stackSize} " +
-                    "pending=${d.pendingDecision?.javaClass?.simpleName}",
-            ) {
-                sacrifice.isSuccess shouldBe true
-            }
+            // Paying the sacrifice cost creates Noble's targeted death trigger, so the accepted
+            // command pauses for that target rather than returning a terminal success result.
+            sacrifice.error shouldBe null
             d.finishCycle(player, opponent)
             if (it < 2) elite = d.findPermanent(player, "Safehold Elite")!!
         }
