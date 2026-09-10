@@ -3,7 +3,7 @@ name: Argentum Validation
 on:
   workflow_dispatch:
   push:
-    branches: [ "main", "mayhem/project-x" ]
+    branches: [ "main" ]
 
 permissions:
   contents: read
@@ -11,7 +11,7 @@ permissions:
 jobs:
   test:
     runs-on: ubuntu-latest
-    timeout-minutes: 90
+    timeout-minutes: 30
 
     steps:
       - name: Checkout repository
@@ -39,33 +39,11 @@ jobs:
       - name: Compile Argentum
         run: ./gradlew classes --stacktrace
 
-      - name: Run focused Project X harness regressions
-        run: |
-          ./gradlew :ai:test --tests ProjectXSolitaireAgentTest \
-            :mtg-sets:2000-2002:tests:test --tests WirewoodHeraldScenarioTest \
-            :gym:test --tests ProjectXGoldfishEndToEndTest --tests ProjectXGoldfishTest --stacktrace
-
       - name: Run engine tests
         run: ./gradlew test --stacktrace
 
       - name: Run Gym tests
         run: ./gradlew :gym:test --stacktrace
 
-
-
-
       - name: Run Gym trainer tests
         run: ./gradlew :gym-trainer:test --stacktrace
-
-      - name: Replay frozen Project X regression seeds
-        env:
-          PROJECT_X_GOLDFISH: "true"
-        run: ./gradlew :gym:test --tests ProjectXGoldfishTest --rerun-tasks --stacktrace
-
-      - name: Upload Project X regression replay
-        if: always()
-        uses: actions/upload-artifact@v7
-        with:
-          name: project-x-v02-regression-replay
-          path: gym/build/reports/project-x-goldfish/
-          if-no-files-found: warn
