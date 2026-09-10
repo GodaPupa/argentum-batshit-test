@@ -9,6 +9,7 @@ import com.wingedsheep.engine.core.LifeChangedEvent
 import com.wingedsheep.engine.core.ChooseOptionDecision
 import com.wingedsheep.engine.core.DecisionContext
 import com.wingedsheep.engine.core.OptionChosenResponse
+import com.wingedsheep.engine.core.CastSpell
 import com.wingedsheep.engine.support.ScenarioTestBase
 import com.wingedsheep.engine.legalactions.LegalActionEnumerator
 import io.kotest.matchers.booleans.shouldBeFalse
@@ -125,6 +126,25 @@ class ProjectXGoldfishEndToEndTest : ScenarioTestBase() {
             isHeraldSearchableRole(game.state, game.player1Id, "Safehold Elite").shouldBeTrue()
             isHeraldSearchableRole(game.state, game.player1Id, "Ivy Lane Denizen").shouldBeTrue()
             isHeraldSearchableRole(game.state, game.player1Id, "Carrion Feeder").shouldBeFalse()
+        }
+
+        test("cast telemetry correlates the exact Birchlore cast variant") {
+            val game = scenario().withPlayers()
+                .withCardInHand(1, "Birchlore Rangers")
+                .withLandsOnBattlefield(1, "Forest", 1)
+                .build()
+            val enumerator = LegalActionEnumerator.create(cardRegistry)
+            val offers = enumerator.enumerate(game.state, game.player1Id)
+                .filter { (it.action as? CastSpell)?.cardId == game.findCardsInHand(1, "Birchlore Rangers").single() }
+            val faceUp = offers.single { it.affordable }
+            val analyzer = ProjectXSolitaireAgent(cardRegistry, game.player1Id).analyzer
+            val trace = castAttemptBeforeExecution(
+                game.state, game.player1Id, faceUp.action as CastSpell, 1, "Birchlore Rangers",
+                analyzer, enumerator,
+            ) { id -> analyzer.name(game.state, id) ?: id.toString() }
+
+            trace.preExecutionLegalityReason shouldBe "AFFORDABLE_WITH_AUTO_TAP_PREVIEW"
+            trace.proposedManaPaymentPlan shouldBe "AUTO_TAP:[Forest]"
         }
 
         test("bottleneck telemetry separates color, Birchlore, tapland, and total-mana constraints") {

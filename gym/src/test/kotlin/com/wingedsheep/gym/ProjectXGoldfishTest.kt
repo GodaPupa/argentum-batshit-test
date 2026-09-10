@@ -695,7 +695,7 @@ internal fun renderSelectionLine(selection: SelectionTelemetry): String {
     return "T${selection.turn}:$mode:hand=${selection.toHand}:grave=${selection.toGraveyard}"
 }
 
-private fun castAttemptBeforeExecution(
+internal fun castAttemptBeforeExecution(
     state: GameState,
     playerId: EntityId,
     action: CastSpell,
@@ -715,7 +715,10 @@ private fun castAttemptBeforeExecution(
         analyzer.name(state, it) == ProjectXStateAnalyzer.BIRCHLORE_RANGERS
     }
     val full = enumerator.enumerate(state, playerId, EnumerationMode.FULL)
-    val castOffer = full.firstOrNull { (it.action as? CastSpell)?.cardId == action.cardId }
+    // One card can expose several CastSpell variants (notably Birchlore Rangers face up or as a
+    // morph). Correlate the exact submitted action; matching only the entity ID can attach another
+    // variant's cost and auto-tap plan to the trace.
+    val castOffer = full.firstOrNull { it.action == action }
     val autoTapPreview = castOffer?.autoTapPreview
     val quirionLines = full.filter { legal ->
         val activate = legal.action as? ActivateAbility ?: return@filter false
