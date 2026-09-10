@@ -333,6 +333,29 @@ class ProjectXSolitaireAgentTest : ScenarioTestBase() {
             action?.let { name(game, it.sourceId) } shouldBe "Forest"
         }
 
+        test("diagnostic choice after Llanowar activation is a cast") {
+            val game = scenario().withPlayers()
+                .withCardOnBattlefield(1, "Llanowar Elves", summoningSickness = false)
+                .withCardInHand(1, "Ivy Lane Denizen")
+                .withLandsOnBattlefield(1, "Forest", 3)
+                .build()
+            val elves = game.findPermanent("Llanowar Elves")!!
+            game.execute(ActivateAbility(game.player1Id, elves, LlanowarElves.activatedAbilities.single().id)).error shouldBe null
+            (agent(game).chooseAction(game.state) is CastSpell).shouldBeTrue()
+        }
+
+        test("diagnostic choice after Llanowar activation is a Forest activation") {
+            val game = scenario().withPlayers()
+                .withCardOnBattlefield(1, "Llanowar Elves", summoningSickness = false)
+                .withCardInHand(1, "Ivy Lane Denizen")
+                .withLandsOnBattlefield(1, "Forest", 3)
+                .build()
+            val elves = game.findPermanent("Llanowar Elves")!!
+            game.execute(ActivateAbility(game.player1Id, elves, LlanowarElves.activatedAbilities.single().id)).error shouldBe null
+            val action = agent(game).chooseAction(game.state) as? ActivateAbility
+            action?.let { name(game, it.sourceId) } shouldBe "Forest"
+        }
+
         test("Llanowar is deployed before a generic one-drop when it accelerates Denizen") {
             val game = scenario().withPlayers()
                 .withCardInHand(1, "Llanowar Elves")
