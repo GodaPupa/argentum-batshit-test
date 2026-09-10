@@ -138,7 +138,7 @@ class ProjectXGoldfishEndToEndTest : ScenarioTestBase() {
             categories(birchlore) shouldBe setOf("BIRCHLORE_MANA_AVAILABLE")
 
             val quirion = scenario().withPlayers()
-                .withCardOnBattlefield(1, "Quirion Ranger")
+                .withCardOnBattlefield(1, "Quirion Ranger", tapped = true)
                 .withCardOnBattlefield(1, "Birchlore Rangers")
                 .withCardOnBattlefield(1, "Nettle Sentinel", tapped = true)
                 .withCardOnBattlefield(1, "Forest")
@@ -149,7 +149,7 @@ class ProjectXGoldfishEndToEndTest : ScenarioTestBase() {
             val tapland = scenario().withPlayers()
                 .withCardInHand(1, "Safehold Elite")
                 .withCardOnBattlefield(1, "Forest")
-                .withCardOnBattlefield(1, "Forest", tapped = true)
+                .withCardOnBattlefield(1, "Khalni Garden", tapped = true)
                 .build()
             categories(tapland) shouldBe setOf("TAPPED_LAND_TEMPO")
 

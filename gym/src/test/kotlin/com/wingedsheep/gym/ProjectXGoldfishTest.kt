@@ -447,7 +447,7 @@ internal fun runProjectXGoldfish(registry: CardRegistry, seed: Long, gameNumber:
             action = blank.chooseAction(state)
         }
 
-        if (acting == projectId && decision == null) {
+        if (acting == projectId && decision == null && action is PassPriority && state.stack.isEmpty()) {
             val chosenCast = (action as? CastSpell)?.cardId
             val held = telemetryEnumerator.enumerate(state, projectId, EnumerationMode.FULL)
                 .filter { it.affordable && it.action is CastSpell && (it.action as CastSpell).cardId != chosenCast }
@@ -749,8 +749,11 @@ internal fun classifyManaConstraints(
 ): Set<ManaConstraintTelemetry> {
     val battlefield = state.controlledBattlefield(playerId)
     val untappedNames = battlefield.filter { analyzer.isUntapped(state, it) }.mapNotNull { analyzer.name(state, it) }
-    val tappedLandCount = battlefield.count { id ->
-        state.getEntity(id)?.get<CardComponent>()?.isLand == true && !analyzer.isUntapped(state, id)
+    val tappedTempoLandCount = battlefield.count { id ->
+        analyzer.name(state, id) in setOf("Khalni Garden", "Haunted Mire") && !analyzer.isUntapped(state, id)
+    }
+    val tappedForest = battlefield.any { id ->
+        analyzer.name(state, id) == "Forest" && !analyzer.isUntapped(state, id)
     }
     val birchloreAvailable = battlefield.count { analyzer.isElf(state, it) && analyzer.isUntapped(state, it) } >= 2 &&
         battlefield.any { analyzer.name(state, it) == ProjectXStateAnalyzer.BIRCHLORE_RANGERS }
@@ -769,7 +772,7 @@ internal fun classifyManaConstraints(
     }
     val landDropAvailable = (state.getEntity(playerId)
         ?.get<com.wingedsheep.engine.state.components.player.LandDropsComponent>()?.remaining ?: 0) > 0
-    val quirionAvailable = quirionAbilityAvailable && (landDropAvailable ||
+    val quirionAvailable = quirionAbilityAvailable && ((landDropAvailable && tappedForest) ||
         (battlefield.any { analyzer.name(state, it) == ProjectXStateAnalyzer.BIRCHLORE_RANGERS } &&
             battlefield.count { analyzer.isElf(state, it) && analyzer.isUntapped(state, it) } == 1 &&
             battlefield.any { analyzer.isElf(state, it) && !analyzer.isUntapped(state, it) }))
@@ -782,14 +785,14 @@ internal fun classifyManaConstraints(
         val category = when {
             birchloreAvailable -> "BIRCHLORE_MANA_AVAILABLE"
             quirionAvailable -> "QUIRION_SEQUENCE_AVAILABLE"
-            totalMana + tappedLandCount >= manaValue && totalMana < manaValue -> "TAPPED_LAND_TEMPO"
+            totalMana + tappedTempoLandCount >= manaValue && totalMana < manaValue -> "TAPPED_LAND_TEMPO"
             totalMana < manaValue -> "INSUFFICIENT_TOTAL_MANA"
             lacksColor -> "GENUINE_COLOR_UNCASTABLE"
             else -> "OTHER_PAYMENT_CONSTRAINT"
         }
         ManaConstraintTelemetry(
             turn, cardName, category,
-            "untappedLandMana=$totalMana,tappedLands=$tappedLandCount,green=$green,black=$black"
+            "availableMana=$totalMana,tappedTaplands=$tappedTempoLandCount,green=$green,black=$black"
         )
     }.toSet()
 }
