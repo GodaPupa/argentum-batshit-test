@@ -42,7 +42,7 @@ class IvyLaneDenizenScenarioTest : FunSpec({
         d.castLlanowarElves(player)
 
         val decision = d.pendingDecision.shouldBeInstanceOf<ChooseTargetsDecision>()
-        (bears in decision.legalTargets.flatten()) shouldBe true
+        (bears in decision.legalTargets.values.flatten()) shouldBe true
         d.submitTargetSelection(decision.playerId, listOf(bears)).isSuccess shouldBe true
         d.bothPass()
 
