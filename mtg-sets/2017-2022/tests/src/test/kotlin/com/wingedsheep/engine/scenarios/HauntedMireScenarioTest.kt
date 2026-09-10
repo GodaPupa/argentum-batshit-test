@@ -18,9 +18,8 @@ class HauntedMireScenarioTest : ScenarioTestBase() {
             }
             game.execute(PlayLand(game.player1Id, mire)).error shouldBe null
             game.state.getEntity(game.findPermanent("Haunted Mire")!!)?.has<TappedComponent>() shouldBe true
-            val typeLine = game.state.getEntity(game.findPermanent("Haunted Mire")!!)
-                ?.get<CardComponent>()!!.typeLine
-            typeLine.subtypes.containsAll(setOf("Swamp", "Forest")) shouldBe true
+            val subtypes = game.state.projectedState.getSubtypes(game.findPermanent("Haunted Mire")!!)
+            subtypes.containsAll(setOf("Swamp", "Forest")) shouldBe true
         }
     }
 }
