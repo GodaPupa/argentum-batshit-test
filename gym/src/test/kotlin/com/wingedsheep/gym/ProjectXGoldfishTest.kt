@@ -18,6 +18,9 @@ import com.wingedsheep.engine.state.components.battlefield.TappedComponent
 import com.wingedsheep.engine.state.components.identity.CardComponent
 import com.wingedsheep.engine.state.components.identity.PlayerComponent
 import com.wingedsheep.engine.state.components.player.MulliganStateComponent
+import com.wingedsheep.engine.state.components.player.ManaPoolComponent
+import com.wingedsheep.engine.state.components.stack.ActivatedAbilityOnStackComponent
+import com.wingedsheep.engine.state.components.stack.TriggeredAbilityOnStackComponent
 import com.wingedsheep.mtg.sets.MtgSetCatalog
 import com.wingedsheep.mtg.sets.tokens.PredefinedTokens
 import com.wingedsheep.sdk.core.Zone
@@ -39,6 +42,7 @@ import kotlin.time.Duration.Companion.minutes
 private const val PROJECT_X_GOLDFISH_ENV = "PROJECT_X_GOLDFISH"
 private const val PROJECT_X_GOLDFISH_SAMPLE_1_ENV = "PROJECT_X_GOLDFISH_SAMPLE_1"
 private const val PROJECT_X_GOLDFISH_SAMPLE_2_ENV = "PROJECT_X_GOLDFISH_SAMPLE_2"
+private const val PROJECT_X_OPTIMIZATION_A_ENV = "PROJECT_X_OPTIMIZATION_A"
 private const val PROJECT_X_HORIZON = 12
 
 /**
@@ -105,7 +109,65 @@ class ProjectXGoldfishTest : FunSpec({
             reportStem = "project-x-v02-goldfish-sample-2",
         )
     }
+
+    test("Project X Optimization Experiment A paired block").config(
+        enabled = System.getenv(PROJECT_X_OPTIMIZATION_A_ENV) == "true",
+        timeout = 90.minutes,
+    ) {
+        executeProjectXOptimizationA(
+            Path.of("src", "test", "resources", "project-x-optimization-a-seeds.csv")
+        )
+    }
 })
+
+private fun executeProjectXOptimizationA(seedPath: Path) {
+    assertOnlyDeclaredDeckDifference(
+        ProjectXDeck.V02,
+        ProjectXDeck.EXPERIMENT_A,
+        DeclaredDeckDifference(
+            mainboardRemoved = mapOf("Falkenrath Noble" to 1, "Masked Vandal" to 1),
+            mainboardAdded = mapOf("Llanowar Elves" to 2),
+        ),
+    )
+    val seeds = Files.readAllLines(seedPath).drop(1).filter(String::isNotBlank).map { line ->
+        line.substringAfterLast(',').toLong()
+    }
+    seeds.size shouldBe 30
+    seeds.distinct().size shouldBe 30
+    seeds.none(previouslyUsedProjectXOrBatshitSeeds(seedPath)::contains).shouldBeTrue()
+
+    val registry = projectXRegistry()
+    val pairs = seeds.mapIndexed { index, seed ->
+        val control = runProjectXGoldfish(registry, seed, index + 1, ProjectXDeck.V02)
+        val variant = runProjectXGoldfish(registry, seed, index + 1, ProjectXDeck.EXPERIMENT_A)
+        ProjectXOptimizationPair(
+            pair = index + 1,
+            seed = seed,
+            control = control,
+            variant = variant,
+            delta = pairedDelta(control, variant),
+        )
+    }
+    pairs.flatMap { it.control.auditErrors + it.variant.auditErrors } shouldBe emptyList()
+    val block = ProjectXOptimizationBlock(
+        experiment = "Project X Optimization Experiment A",
+        declaredChanges = listOf("-1 Falkenrath Noble", "-1 Masked Vandal", "+2 Llanowar Elves"),
+        seeds = seeds,
+        pairs = pairs,
+        controlSummary = summarizeProjectX(pairs.map(ProjectXOptimizationPair::control)),
+        variantSummary = summarizeProjectX(pairs.map(ProjectXOptimizationPair::variant)),
+    )
+    val reportDir = Path.of("build", "reports", "project-x-goldfish")
+    Files.createDirectories(reportDir)
+    Files.writeString(
+        reportDir.resolve("project-x-optimization-a.json"),
+        Json { prettyPrint = true }.encodeToString(block),
+    )
+    Files.writeString(
+        reportDir.resolve("project-x-optimization-a.md"),
+        renderProjectXOptimizationMarkdown(block),
+    )
+}
 
 private fun executeProjectXGoldfishBlock(seedPath: Path, sampleName: String, reportStem: String) {
     val seeds = Files.readAllLines(seedPath).drop(1).filter(String::isNotBlank).map { line ->
@@ -151,6 +213,43 @@ internal data class ProjectXGoldfishBlock(
 )
 
 @Serializable
+internal data class ProjectXOptimizationBlock(
+    val experiment: String,
+    val declaredChanges: List<String>,
+    val seeds: List<Long>,
+    val pairs: List<ProjectXOptimizationPair>,
+    val controlSummary: ProjectXGoldfishSummary,
+    val variantSummary: ProjectXGoldfishSummary,
+)
+
+@Serializable
+internal data class ProjectXOptimizationPair(
+    val pair: Int,
+    val seed: Long,
+    val control: ProjectXGoldfishGame,
+    val variant: ProjectXGoldfishGame,
+    val delta: ProjectXPairedDelta,
+)
+
+@Serializable
+internal data class ProjectXPairedDelta(
+    /** Variant turn minus control turn; a negative value is earlier. */
+    val firstIvyCastTurn: Int?,
+    val exactlyThreeManaIvyStalls: Int,
+    val primaryEngineTurn: Int?,
+    val primaryEngineStateChange: String,
+    val anyInfiniteTurn: Int?,
+    val anyInfiniteStateChange: String,
+    val comboBeforeCombatLethalChanged: String,
+    val actualWinTurn: Int?,
+    val witnessRecursions: Int,
+    val nobleAvailableTurns: Int,
+    val noblePayoffMissingTurns: Int,
+    val combatDamage: Int,
+    val maximumCreatureBoard: Int,
+)
+
+@Serializable
 internal data class ProjectXGoldfishGame(
     val game: Int,
     val seed: Long,
@@ -183,6 +282,15 @@ internal data class ProjectXGoldfishGame(
     val manaConstraints: List<ManaConstraintTelemetry>,
     val heraldTutorTargets: List<String>,
     val witnessRecursionEvents: List<String>,
+    val witness: WitnessTelemetry,
+    val llanowar: LlanowarTelemetry,
+    val firstIvyCastTurn: Int?,
+    val ivyThreeManaStallTurns: List<Int>,
+    val nobleCastTurns: List<Int>,
+    val nobleAvailableTurns: List<Int>,
+    val noblePayoffMissingTurns: List<Int>,
+    val combatDamageDealt: Int,
+    val maximumCreatureBoard: Int,
     val birchloreManaContribution: List<String>,
     val nettleUntapContribution: List<String>,
     val quirionManaContribution: List<String>,
@@ -263,6 +371,54 @@ internal data class PrimaryRoleShortState(
 )
 
 @Serializable
+internal data class WitnessCounterTelemetry(
+    val turn: Int,
+    val amount: Int,
+    val counterSource: String,
+)
+
+@Serializable
+internal data class WitnessTriggerTelemetry(
+    val turn: Int,
+    val counterSource: String,
+    val description: String,
+)
+
+@Serializable
+internal data class WitnessRecursionTelemetry(
+    val turn: Int,
+    val entityId: String,
+    val permanent: String,
+    val counterSource: String,
+    var deployedTurn: Int? = null,
+)
+
+@Serializable
+internal data class WitnessTelemetry(
+    val casts: List<Int>,
+    val adaptActivations: List<Int>,
+    val countersPlaced: List<WitnessCounterTelemetry>,
+    val counterTriggers: List<WitnessTriggerTelemetry>,
+    val successfulRecursions: List<WitnessRecursionTelemetry>,
+)
+
+@Serializable
+internal data class LlanowarActivationTelemetry(
+    val turn: Int,
+    val entityId: String,
+    val manaBefore: String,
+    val manaAfter: String,
+    val newlyAffordableSpells: List<String>,
+)
+
+@Serializable
+internal data class LlanowarTelemetry(
+    val casts: List<Int>,
+    val activations: List<LlanowarActivationTelemetry>,
+    val fundedSpells: List<String>,
+)
+
+@Serializable
 internal data class ProjectXGoldfishSummary(
     val actualWinsByT4: Int,
     val actualWinsByT5: Int,
@@ -325,12 +481,31 @@ internal data class SelectionTelemetry(
     val toGraveyard: MutableList<String> = mutableListOf(),
 )
 
-internal fun runProjectXGoldfish(registry: CardRegistry, seed: Long, gameNumber: Int): ProjectXGoldfishGame {
+private data class PendingWitnessTarget(
+    val turn: Int,
+    val entityId: EntityId,
+    val permanent: String,
+    val counterSource: String,
+)
+
+private data class PendingLlanowarActivation(
+    val turn: Int,
+    val sourceId: EntityId,
+    val manaBefore: String,
+    val affordableCastIdsBefore: Set<EntityId>,
+)
+
+internal fun runProjectXGoldfish(
+    registry: CardRegistry,
+    seed: Long,
+    gameNumber: Int,
+    deck: Deck = ProjectXDeck.V02,
+): ProjectXGoldfishGame {
     val processor = ActionProcessor(registry)
     val init = GameInitializer(registry).initializeGame(
         GameConfig(
             players = listOf(
-                PlayerConfig("Project X", ProjectXDeck.V02),
+                PlayerConfig("Project X", deck),
                 PlayerConfig("Blank Goldfish", Deck.of("Plains" to 60)),
             ),
             skipMulligans = false,
@@ -410,6 +585,17 @@ internal fun runProjectXGoldfish(registry: CardRegistry, seed: Long, gameNumber:
     val t1 = mutableListOf<String>()
     val heraldTargets = mutableListOf<String>()
     val witnessEvents = mutableListOf<String>()
+    val witnessCasts = mutableListOf<Int>()
+    val witnessAdaptActivations = mutableListOf<Int>()
+    val witnessCounters = mutableListOf<WitnessCounterTelemetry>()
+    val witnessCounterTriggers = mutableListOf<WitnessTriggerTelemetry>()
+    val witnessRecursions = mutableListOf<WitnessRecursionTelemetry>()
+    val pendingWitnessCounterSources = ArrayDeque<String>()
+    val pendingWitnessTriggerSources = ArrayDeque<String>()
+    val llanowarCasts = mutableListOf<Int>()
+    val llanowarActivations = mutableListOf<LlanowarActivationTelemetry>()
+    val llanowarFundedSpells = mutableListOf<String>()
+    val pendingLlanowarFundedCandidates = mutableMapOf<EntityId, Int>()
     val birchlore = mutableListOf<String>()
     val nettle = mutableListOf<String>()
     val quirion = mutableListOf<String>()
@@ -417,6 +603,9 @@ internal fun runProjectXGoldfish(registry: CardRegistry, seed: Long, gameNumber:
     val lead = mutableListOf<String>()
     val stranded = linkedSetOf<String>()
     val taplands = mutableListOf<String>()
+    val nobleCastTurns = mutableListOf<Int>()
+    val nobleAvailableTurns = sortedSetOf<Int>()
+    val noblePayoffMissingTurns = sortedSetOf<Int>()
     val oneMissingTurns = sortedSetOf<Int>()
     val roleShortStates = linkedSetOf<PrimaryRoleShortState>()
     val audit = mutableListOf<String>()
@@ -438,8 +627,10 @@ internal fun runProjectXGoldfish(registry: CardRegistry, seed: Long, gameNumber:
     val primaryRoleDeparture = mutableMapOf<String, String>()
     val primaryRoleAttackers = mutableSetOf<EntityId>()
     var selection: SelectionTelemetry? = null
-    var pendingWitnessTarget: Pair<Int, String>? = null
+    var pendingWitnessTarget: PendingWitnessTarget? = null
+    var pendingLlanowarActivation: PendingLlanowarActivation? = null
     var pendingHeraldSearch: Pair<Int, List<String>>? = null
+    var firstIvyCastTurn: Int? = null
     var firstMeaningful: Int? = null
     var engineTurn: Int? = null
     var hugeTurn: Int? = null
@@ -457,11 +648,42 @@ internal fun runProjectXGoldfish(registry: CardRegistry, seed: Long, gameNumber:
     var winner: String? = null
     var gameOverTurn: Int? = null
     var terminalMechanism: String? = null
+    var combatDamageDealt = 0
+    var maximumCreatureBoard = 0
 
     fun projectTurn(gameState: GameState): Int = (gameState.turnNumber + 1) / 2
 
+    fun manaPool(gameState: GameState): String =
+        gameState.getEntity(projectId)?.get<ManaPoolComponent>()?.toString() ?: "unavailable"
+
+    fun affordableCastIds(gameState: GameState): Set<EntityId> =
+        telemetryEnumerator.enumerate(gameState, projectId, EnumerationMode.FULL)
+            .filter { it.affordable && it.action is CastSpell }
+            .map { (it.action as CastSpell).cardId }
+            .toSet()
+
+    fun resolvingSourceName(gameState: GameState): String? {
+        val top = gameState.stack.lastOrNull()?.let(gameState::getEntity) ?: return null
+        return top.get<ActivatedAbilityOnStackComponent>()?.sourceName
+            ?: top.get<TriggeredAbilityOnStackComponent>()?.sourceName
+    }
+
     fun observe(gameState: GameState) {
         val turn = projectTurn(gameState)
+        val handNames = analyzer.handNames(gameState, projectId)
+        val battlefieldNames = analyzer.battlefieldNames(gameState, projectId)
+        if (ProjectXStateAnalyzer.FALKENRATH_NOBLE in handNames ||
+            ProjectXStateAnalyzer.FALKENRATH_NOBLE in battlefieldNames
+        ) nobleAvailableTurns += turn
+        if (agent.outcome(gameState).completeInfiniteEngine &&
+            ProjectXStateAnalyzer.FALKENRATH_NOBLE !in battlefieldNames
+        ) noblePayoffMissingTurns += turn
+        maximumCreatureBoard = maxOf(
+            maximumCreatureBoard,
+            gameState.controlledBattlefield(projectId).count { id ->
+                gameState.getEntity(id)?.get<CardComponent>()?.isCreature == true
+            },
+        )
         if (analyzer.missingPrimaryRoles(gameState, projectId).size == 1) oneMissingTurns += turn
         val missing = analyzer.missingPrimaryRoles(gameState, projectId)
         if (missing.size == 1) {
@@ -550,8 +772,15 @@ internal fun runProjectXGoldfish(registry: CardRegistry, seed: Long, gameNumber:
                         pendingHeraldSearch = turn to chosen
                     }
                     decision is ChooseTargetsDecision && decision.context.sourceName == ProjectXStateAnalyzer.EVOLUTION_WITNESS -> {
-                        val chosen = (response as TargetsResponse).selectedTargets.values.flatten().firstOrNull()?.let(::name)
-                        if (chosen != null) pendingWitnessTarget = turn to chosen
+                        val chosenId = (response as TargetsResponse).selectedTargets.values.flatten().firstOrNull()
+                        if (chosenId != null) {
+                            pendingWitnessTarget = PendingWitnessTarget(
+                                turn = turn,
+                                entityId = chosenId,
+                                permanent = name(chosenId),
+                                counterSource = pendingWitnessTriggerSources.removeLastOrNull() ?: "UNKNOWN",
+                            )
+                        }
                     }
                     decision is ChooseModeDecision && selection?.name == ProjectXStateAnalyzer.WINDING_WAY -> {
                         selection?.let { recordAgentModeChoice(it, decision, response as ModesChosenResponse) }
@@ -597,6 +826,16 @@ internal fun runProjectXGoldfish(registry: CardRegistry, seed: Long, gameNumber:
             is PlayLand -> name(action.cardId)
             is ActivateAbility -> name(action.sourceId)
             else -> null
+        }
+        pendingLlanowarFundedCandidates.entries.removeIf { it.value != turn }
+        val resolvingSource = resolvingSourceName(state)
+        if (acting == projectId && action is ActivateAbility && actionName == "Llanowar Elves") {
+            pendingLlanowarActivation = PendingLlanowarActivation(
+                turn = turn,
+                sourceId = action.sourceId,
+                manaBefore = manaPool(state),
+                affordableCastIdsBefore = affordableCastIds(state),
+            )
         }
         if (acting == projectId && action !is PassPriority && action !is SubmitDecision) {
             val description = when (action) {
@@ -663,6 +902,61 @@ internal fun runProjectXGoldfish(registry: CardRegistry, seed: Long, gameNumber:
         }
         actions++
         val events = step.events
+        events.filterIsInstance<SpellCastEvent>()
+            .filter { it.casterId == projectId }
+            .forEach { event ->
+                when (event.cardName) {
+                    ProjectXStateAnalyzer.EVOLUTION_WITNESS -> witnessCasts += turn
+                    ProjectXStateAnalyzer.IVY_LANE_DENIZEN -> if (firstIvyCastTurn == null) firstIvyCastTurn = turn
+                    ProjectXStateAnalyzer.FALKENRATH_NOBLE -> nobleCastTurns += turn
+                    "Llanowar Elves" -> llanowarCasts += turn
+                }
+                pendingLlanowarFundedCandidates.remove(event.spellEntityId)?.let { activationTurn ->
+                    llanowarFundedSpells += "${event.cardName}@T$turn:enabled-by-activation-T$activationTurn"
+                }
+            }
+        combatDamageDealt += events.filterIsInstance<DamageDealtEvent>()
+            .filter { it.sourceId != null && it.targetId == blankId && it.isCombatDamage }
+            .sumOf(DamageDealtEvent::amount)
+        events.filterIsInstance<AbilityActivatedEvent>()
+            .filter { it.controllerId == projectId && it.sourceName == ProjectXStateAnalyzer.EVOLUTION_WITNESS }
+            .forEach { witnessAdaptActivations += turn }
+        if (acting == projectId && action is CastSpell) {
+            events.filterIsInstance<AbilityActivatedEvent>()
+                .filter { it.controllerId == projectId && it.sourceName == "Llanowar Elves" && it.isManaAbility }
+                .forEach { event ->
+                    llanowarActivations += LlanowarActivationTelemetry(
+                        turn = turn,
+                        entityId = event.sourceId.toString(),
+                        manaBefore = castSnapshot?.manaPool ?: manaPool(state),
+                        manaAfter = manaPool(step.state),
+                        newlyAffordableSpells = listOf(actionName ?: name(action.cardId)),
+                    )
+                    llanowarFundedSpells += "${actionName ?: name(action.cardId)}@T$turn:auto-tap"
+                }
+        }
+        events.filterIsInstance<CountersAddedEvent>()
+            .filter {
+                it.entityName == ProjectXStateAnalyzer.EVOLUTION_WITNESS &&
+                    (it.counterType == "+1/+1" || it.counterType == com.wingedsheep.sdk.core.CounterType.PLUS_ONE_PLUS_ONE.name)
+            }
+            .forEach { event ->
+                val counterSource = when (resolvingSource) {
+                    ProjectXStateAnalyzer.EVOLUTION_WITNESS -> "ADAPT"
+                    ProjectXStateAnalyzer.IVY_LANE_DENIZEN -> "IVY_LANE_DENIZEN"
+                    null -> "UNKNOWN"
+                    else -> "OTHER:$resolvingSource"
+                }
+                witnessCounters += WitnessCounterTelemetry(turn, event.amount, counterSource)
+                pendingWitnessCounterSources.addLast(counterSource)
+            }
+        events.filterIsInstance<AbilityTriggeredEvent>()
+            .filter { it.controllerId == projectId && it.sourceName == ProjectXStateAnalyzer.EVOLUTION_WITNESS }
+            .forEach { event ->
+                val counterSource = pendingWitnessCounterSources.removeLastOrNull() ?: "UNKNOWN"
+                witnessCounterTriggers += WitnessTriggerTelemetry(turn, counterSource, event.description)
+                pendingWitnessTriggerSources.addLast(counterSource)
+            }
         events.filterIsInstance<AbilityTriggeredEvent>()
             .filter { it.controllerId == projectId && it.sourceName == ProjectXStateAnalyzer.NETTLE_SENTINEL }
             .forEach { nettle += "T$turn:green-spell untap trigger" }
@@ -697,12 +991,40 @@ internal fun runProjectXGoldfish(registry: CardRegistry, seed: Long, gameNumber:
                 }
             }
             val witness = pendingWitnessTarget
-            if (witness != null && event.ownerId == projectId && event.entityName == witness.second &&
+            if (witness != null && event.ownerId == projectId && event.entityId == witness.entityId &&
                 event.fromZone == Zone.GRAVEYARD && event.toZone == Zone.HAND
             ) {
-                witnessEvents += "${event.entityName}@T${witness.first}"
+                witnessEvents += "${event.entityName}@T${witness.turn}"
+                witnessRecursions += WitnessRecursionTelemetry(
+                    turn = witness.turn,
+                    entityId = event.entityId.toString(),
+                    permanent = event.entityName,
+                    counterSource = witness.counterSource,
+                )
                 pendingWitnessTarget = null
             }
+            if (event.ownerId == projectId && event.toZone == Zone.BATTLEFIELD) {
+                witnessRecursions.lastOrNull { it.entityId == event.entityId.toString() && it.deployedTurn == null }
+                    ?.deployedTurn = turn
+            }
+        }
+        pendingLlanowarActivation?.takeIf { pending ->
+            events.any { event ->
+                event is AbilityActivatedEvent && event.controllerId == projectId &&
+                    event.sourceId == pending.sourceId && event.sourceName == "Llanowar Elves"
+            }
+        }?.let { pending ->
+            val afterAffordable = affordableCastIds(step.state)
+            val newlyAffordable = afterAffordable - pending.affordableCastIdsBefore
+            newlyAffordable.forEach { pendingLlanowarFundedCandidates[it] = turn }
+            llanowarActivations += LlanowarActivationTelemetry(
+                turn = turn,
+                entityId = pending.sourceId.toString(),
+                manaBefore = pending.manaBefore,
+                manaAfter = manaPool(step.state),
+                newlyAffordableSpells = newlyAffordable.map(::name).sorted(),
+            )
+            pendingLlanowarActivation = null
         }
         events.filterIsInstance<AttackersDeclaredEvent>()
             .filter { it.attackingPlayerId == projectId }
@@ -745,6 +1067,12 @@ internal fun runProjectXGoldfish(registry: CardRegistry, seed: Long, gameNumber:
     if (lifeTurn != null && hugeTurn == null) audit += "infinite life without an unbounded loop"
     if (lethalMechanism == "FALKENRATH_NOBLE_DRAIN" && hugeTurn == null) audit += "Noble lethal without a death loop"
     if (engineTurn != null && hugeTurn == null) audit += "primary engine without huge Feeder classification"
+    if (witnessCounterTriggers.any { it.counterSource == "UNKNOWN" || it.counterSource.startsWith("OTHER:") }) {
+        audit += "Evolution Witness counter-trigger source was not attributable"
+    }
+    if (witnessRecursions.size != witnessEvents.size) {
+        audit += "structured and legacy Evolution Witness recursion counts disagree"
+    }
 
     val battlefieldCreatures = state.controlledBattlefield(projectId).count { id ->
         state.getEntity(id)?.get<CardComponent>()?.isCreature == true
@@ -778,6 +1106,21 @@ internal fun runProjectXGoldfish(registry: CardRegistry, seed: Long, gameNumber:
         roleShortStates.removeIf { it.turn == snapshot.turn && it.missingRole == snapshot.missingRole }
         roleShortStates += snapshot
     }
+    val ivyThreeManaStallTurns = manaConstraints.asSequence()
+        .filter {
+            it.spell == ProjectXStateAnalyzer.IVY_LANE_DENIZEN &&
+                it.category == "INSUFFICIENT_TOTAL_MANA" &&
+                "green=true" in it.detail
+        }
+        .mapNotNull { constraint ->
+            Regex("availableMana=(\\d+)").find(constraint.detail)?.groupValues?.get(1)?.toIntOrNull()
+                ?.let { constraint.turn to it }
+        }
+        .groupBy({ it.first }, { it.second })
+        .filterValues { observed -> observed.maxOrNull() == 3 }
+        .keys
+        .filter { turn -> firstIvyCastTurn == null || turn < firstIvyCastTurn!! }
+        .sorted()
 
     return ProjectXGoldfishGame(
         game = gameNumber,
@@ -814,6 +1157,25 @@ internal fun runProjectXGoldfish(registry: CardRegistry, seed: Long, gameNumber:
         manaConstraints = manaConstraints.toList(),
         heraldTutorTargets = heraldTargets,
         witnessRecursionEvents = witnessEvents,
+        witness = WitnessTelemetry(
+            casts = witnessCasts,
+            adaptActivations = witnessAdaptActivations,
+            countersPlaced = witnessCounters,
+            counterTriggers = witnessCounterTriggers,
+            successfulRecursions = witnessRecursions,
+        ),
+        llanowar = LlanowarTelemetry(
+            casts = llanowarCasts,
+            activations = llanowarActivations,
+            fundedSpells = llanowarFundedSpells,
+        ),
+        firstIvyCastTurn = firstIvyCastTurn,
+        ivyThreeManaStallTurns = ivyThreeManaStallTurns,
+        nobleCastTurns = nobleCastTurns,
+        nobleAvailableTurns = nobleAvailableTurns.toList(),
+        noblePayoffMissingTurns = noblePayoffMissingTurns.toList(),
+        combatDamageDealt = combatDamageDealt,
+        maximumCreatureBoard = maximumCreatureBoard,
         birchloreManaContribution = birchlore,
         nettleUntapContribution = nettle,
         quirionManaContribution = quirion,
@@ -1057,6 +1419,7 @@ private val PROJECT_X_MANA_REQUIREMENTS = mapOf(
     "Safehold Elite" to (2 to 'G'), "Ivy Lane Denizen" to (4 to 'G'),
     "Wirewood Herald" to (2 to 'G'), "Evolution Witness" to (3 to 'G'),
     "Nettle Sentinel" to (1 to 'G'), "Birchlore Rangers" to (1 to 'G'),
+    "Llanowar Elves" to (1 to 'G'),
     "Essence Warden" to (1 to 'G'), "Masked Vandal" to (2 to 'G'),
     "Quirion Ranger" to (1 to 'G'), "Winding Way" to (2 to 'G'),
     "Lead the Stampede" to (3 to 'G'),
@@ -1189,7 +1552,12 @@ internal fun renderProjectXMarkdown(block: ProjectXGoldfishBlock): String = buil
         appendLine("- Combo before ordinary lethal: ${game.comboAvailableBeforeOrdinaryLethal}; ordinary lethal before combo: ${game.ordinaryLethalEndedBeforeComboAssembly}")
         appendLine("- Actual terminal: winner=${game.winner ?: "—"}; turn=${game.gameOverTurn?.let { "T$it" } ?: "—"}; mechanism=${game.terminalMechanism ?: "—"}")
         appendLine("- Herald: drawn=${game.herald.drawn}; cast=${game.herald.cast}; battlefield=${game.herald.battlefield}; died=${game.herald.died}; trigger-created=${game.herald.tutorTriggerCreated}; trigger-resolved=${game.herald.tutorTriggerResolved}; targets=${game.herald.tutorTargets}; one-missing=${game.herald.oneRoleMissingAvailability}")
-        appendLine("- Witness: ${game.witnessRecursionEvents.ifEmpty { listOf("none") }}")
+        appendLine("- Witness legacy returns: ${game.witnessRecursionEvents.ifEmpty { listOf("none") }}")
+        appendLine("- Witness detail: ${game.witness}")
+        appendLine("- Llanowar: ${game.llanowar}")
+        appendLine("- First Ivy cast: ${game.firstIvyCastTurn?.let { "T$it" } ?: "—"}; exactly-three-mana Ivy stalls: ${game.ivyThreeManaStallTurns}")
+        appendLine("- Noble: cast=${game.nobleCastTurns}; available=${game.nobleAvailableTurns}; primary-engine-without-Noble=${game.noblePayoffMissingTurns}")
+        appendLine("- Fair board: combat damage=${game.combatDamageDealt}; maximum creatures=${game.maximumCreatureBoard}")
         appendLine("- Mana — Birchlore: ${game.birchloreManaContribution.ifEmpty { listOf("none") }}; Nettle: ${game.nettleUntapContribution.ifEmpty { listOf("none") }}; Quirion: ${game.quirionManaContribution.ifEmpty { listOf("none") }}")
         appendLine("- Winding Way: ${game.windingWay.ifEmpty { listOf("none") }}")
         appendLine("- Lead the Stampede: ${game.leadTheStampede.ifEmpty { listOf("none") }}")
@@ -1201,6 +1569,55 @@ internal fun renderProjectXMarkdown(block: ProjectXGoldfishBlock): String = buil
         appendLine("- Secondary Witness loop: ${game.secondaryWitnessLoopTurn?.let { "T$it" } ?: "—"}; stop: ${game.stopReason}; actions: ${game.actions}; audit: ${game.auditErrors.ifEmpty { listOf("clean") }}")
         appendLine()
     }
+}
+
+private fun pairedDelta(
+    control: ProjectXGoldfishGame,
+    variant: ProjectXGoldfishGame,
+): ProjectXPairedDelta {
+    fun turnDelta(controlTurn: Int?, variantTurn: Int?): Int? =
+        if (controlTurn != null && variantTurn != null) variantTurn - controlTurn else null
+    fun stateChange(controlTurn: Int?, variantTurn: Int?): String =
+        "${controlTurn?.let { "T$it" } ?: "NONE"}->${variantTurn?.let { "T$it" } ?: "NONE"}"
+    val controlInfinite = control.firstValidatedComboTurn
+    val variantInfinite = variant.firstValidatedComboTurn
+    return ProjectXPairedDelta(
+        firstIvyCastTurn = turnDelta(control.firstIvyCastTurn, variant.firstIvyCastTurn),
+        exactlyThreeManaIvyStalls = variant.ivyThreeManaStallTurns.size - control.ivyThreeManaStallTurns.size,
+        primaryEngineTurn = turnDelta(control.engineTurn, variant.engineTurn),
+        primaryEngineStateChange = stateChange(control.engineTurn, variant.engineTurn),
+        anyInfiniteTurn = turnDelta(controlInfinite, variantInfinite),
+        anyInfiniteStateChange = stateChange(controlInfinite, variantInfinite),
+        comboBeforeCombatLethalChanged =
+            "${control.comboAvailableBeforeOrdinaryLethal}->${variant.comboAvailableBeforeOrdinaryLethal}",
+        actualWinTurn = turnDelta(control.actualWinningTurn, variant.actualWinningTurn),
+        witnessRecursions = variant.witness.successfulRecursions.size - control.witness.successfulRecursions.size,
+        nobleAvailableTurns = variant.nobleAvailableTurns.size - control.nobleAvailableTurns.size,
+        noblePayoffMissingTurns = variant.noblePayoffMissingTurns.size - control.noblePayoffMissingTurns.size,
+        combatDamage = variant.combatDamageDealt - control.combatDamageDealt,
+        maximumCreatureBoard = variant.maximumCreatureBoard - control.maximumCreatureBoard,
+    )
+}
+
+private fun renderProjectXOptimizationMarkdown(block: ProjectXOptimizationBlock): String = buildString {
+    appendLine("# ${block.experiment}")
+    appendLine()
+    appendLine("Declared changes: ${block.declaredChanges.joinToString()}")
+    appendLine("Each pair uses the same seed, starting-player assignment, mulligan policy, engine, and solitaire policy.")
+    appendLine("Turn deltas are variant minus control; negative is earlier.")
+    appendLine()
+    appendLine("## Paired primary outcomes")
+    appendLine()
+    appendLine("| Pair | Seed | Ivy delta | 3-mana stalls | Primary state | Any-infinite state | Combo-before-lethal | Win delta | Witness returns | Noble availability |")
+    appendLine("|---:|---:|---:|---:|---|---|---|---:|---:|---:|")
+    block.pairs.forEach { pair ->
+        val d = pair.delta
+        appendLine("| ${pair.pair} | ${pair.seed} | ${d.firstIvyCastTurn ?: "N/A"} | ${d.exactlyThreeManaIvyStalls} | ${d.primaryEngineStateChange} | ${d.anyInfiniteStateChange} | ${d.comboBeforeCombatLethalChanged} | ${d.actualWinTurn ?: "N/A"} | ${d.witnessRecursions} | ${d.nobleAvailableTurns} |")
+    }
+    appendLine()
+    appendLine("Control summary: ${block.controlSummary}")
+    appendLine()
+    appendLine("Variant summary: ${block.variantSummary}")
 }
 
 private fun projectXRegistry(): CardRegistry = CardRegistry().apply {

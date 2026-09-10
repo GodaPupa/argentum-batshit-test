@@ -23,4 +23,25 @@ object ProjectXDeck {
         "Khalni Garden" to 1,
         "Haunted Mire" to 1,
     )
+
+    /** Optimization Experiment A; the frozen v0.2 control remains unchanged. */
+    val EXPERIMENT_A: Deck = Deck.of(
+        "Carrion Feeder" to 4,
+        "Safehold Elite" to 4,
+        "Ivy Lane Denizen" to 4,
+        "Wirewood Herald" to 4,
+        "Evolution Witness" to 4,
+        "Nettle Sentinel" to 4,
+        "Birchlore Rangers" to 4,
+        "Falkenrath Noble" to 1,
+        "Essence Warden" to 1,
+        "Quirion Ranger" to 2,
+        "Llanowar Elves" to 2,
+        "Winding Way" to 4,
+        "Lead the Stampede" to 4,
+        "Forest" to 9,
+        "Swamp" to 7,
+        "Khalni Garden" to 1,
+        "Haunted Mire" to 1,
+    )
 }

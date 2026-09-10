@@ -72,6 +72,21 @@ class ProjectXSolitaireAgentTest : ScenarioTestBase() {
             )
         }
 
+        test("Experiment A changes only one Noble and one Vandal into two Llanowar Elves") {
+            ProjectXDeck.EXPERIMENT_A.size shouldBe 60
+            ProjectXDeck.EXPERIMENT_A.sideboard shouldBe emptyList()
+            val control = ProjectXDeck.V02.cards.groupingBy { it }.eachCount()
+            val variant = ProjectXDeck.EXPERIMENT_A.cards.groupingBy { it }.eachCount()
+
+            variant shouldBe control.toMutableMap().apply {
+                this["Falkenrath Noble"] = 1
+                remove("Masked Vandal")
+                this["Llanowar Elves"] = 2
+            }
+            variant["Evolution Witness"] shouldBe 4
+            variant["Falkenrath Noble"] shouldBe 1
+        }
+
         test("Herald tutors a missing Safehold Elite over generic Elf value") {
             val game = scenario().withPlayers()
                 .withCardOnBattlefield(1, "Carrion Feeder")
@@ -236,6 +251,75 @@ class ProjectXSolitaireAgentTest : ScenarioTestBase() {
             val target = action.targets.single().shouldBeInstanceOf<com.wingedsheep.engine.state.components.stack.ChosenTarget.Permanent>()
             name(game, target.entityId) shouldBe "Nettle Sentinel"
             name(game, action.costPayment!!.bouncedPermanents.single()) shouldBe "Forest"
+        }
+
+        test("Llanowar mana funds Ivy Lane Denizen from three lands") {
+            val game = scenario().withPlayers()
+                .withCardOnBattlefield(1, "Llanowar Elves", summoningSickness = false)
+                .withCardInHand(1, "Ivy Lane Denizen")
+                .withLandsOnBattlefield(1, "Forest", 3)
+                .build()
+            val solitaire = agent(game)
+
+            val cast = solitaire.chooseAction(game.state).shouldBeInstanceOf<CastSpell>()
+            name(game, cast.cardId) shouldBe "Ivy Lane Denizen"
+            game.execute(cast).error shouldBe null
+            game.state.getEntity(game.findPermanent("Llanowar Elves")!!)!!.has<TappedComponent>().shouldBeTrue()
+        }
+
+        test("Llanowar is deployed before a generic one-drop when it accelerates Denizen") {
+            val game = scenario().withPlayers()
+                .withCardInHand(1, "Llanowar Elves")
+                .withCardInHand(1, "Nettle Sentinel")
+                .withCardInHand(1, "Ivy Lane Denizen")
+                .withLandsOnBattlefield(1, "Forest", 1)
+                .build()
+
+            val cast = agent(game).chooseAction(game.state).shouldBeInstanceOf<CastSpell>()
+            name(game, cast.cardId) shouldBe "Llanowar Elves"
+        }
+
+        test("a generic one-drop remains preferred when acceleration does not improve a future cast") {
+            val game = scenario().withPlayers()
+                .withCardInHand(1, "Llanowar Elves")
+                .withCardInHand(1, "Nettle Sentinel")
+                .withLandsOnBattlefield(1, "Forest", 1)
+                .build()
+
+            val cast = agent(game).chooseAction(game.state).shouldBeInstanceOf<CastSpell>()
+            name(game, cast.cardId) shouldBe "Nettle Sentinel"
+        }
+
+        test("Llanowar color is read from card properties and its cast untaps Nettle") {
+            val game = scenario().withPlayers()
+                .withCardOnBattlefield(1, "Nettle Sentinel", tapped = true)
+                .withCardInHand(1, "Llanowar Elves")
+                .withLandsOnBattlefield(1, "Forest", 1)
+                .build()
+            val solitaire = agent(game)
+
+            val cast = solitaire.chooseAction(game.state).shouldBeInstanceOf<CastSpell>()
+            name(game, cast.cardId) shouldBe "Llanowar Elves"
+            game.execute(cast).error shouldBe null
+            resolveWith(solitaire, game)
+
+            val nettle = game.findPermanent("Nettle Sentinel")!!
+            game.state.getEntity(nettle)!!.has<TappedComponent>().shouldBeFalse()
+        }
+
+        test("Birchlore tap selection accounts for Nettle untapping after an actual green spell") {
+            val game = scenario().withPlayers()
+                .withCardOnBattlefield(1, "Birchlore Rangers")
+                .withCardOnBattlefield(1, "Nettle Sentinel")
+                .withCardOnBattlefield(1, "Wirewood Herald")
+                .withCardInHand(1, "Carrion Feeder")
+                .withCardInHand(1, "Llanowar Elves")
+                .build()
+
+            val action = agent(game).chooseAction(game.state).shouldBeInstanceOf<ActivateAbility>()
+            name(game, action.sourceId) shouldBe "Birchlore Rangers"
+            action.costPayment!!.tappedPermanents.map { name(game, it) }.toSet() shouldBe
+                setOf("Birchlore Rangers", "Nettle Sentinel")
         }
 
         test("Winding Way selects land when mana constrained and creature when developing roles") {

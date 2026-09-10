@@ -10,6 +10,7 @@ import com.wingedsheep.engine.legalactions.LegalActionEnumerator
 import com.wingedsheep.engine.registry.CardRegistry
 import com.wingedsheep.engine.state.GameState
 import com.wingedsheep.engine.state.components.battlefield.CountersComponent
+import com.wingedsheep.engine.state.components.identity.CardComponent
 import com.wingedsheep.engine.state.components.player.ManaPoolComponent
 import com.wingedsheep.engine.state.components.stack.ChosenTarget
 import com.wingedsheep.sdk.core.Color
@@ -17,6 +18,7 @@ import com.wingedsheep.sdk.core.CounterType
 import com.wingedsheep.sdk.core.Zone
 import com.wingedsheep.sdk.model.EntityId
 import com.wingedsheep.sdk.scripting.AdditionalCostPayment
+import com.wingedsheep.sdk.scripting.AbilityCost
 
 /**
  * Goal-directed controller for a no-interaction Project X goldfish.
@@ -143,7 +145,7 @@ class ProjectXSolitaireAgent(
                     name == ProjectXStateAnalyzer.EVOLUTION_WITNESS ->
                         if (missing.any(analyzer.graveyardNames(state, playerId)::contains)) 6_500 else 650
                     name == ProjectXStateAnalyzer.WIREWOOD_HERALD -> if (missing.isNotEmpty()) 5_800 else 600
-                    else -> 0
+                    else -> accelerationPriority(state, action.cardId)
                 }
             }
 
@@ -245,7 +247,7 @@ class ProjectXSolitaireAgent(
     private fun chooseElvesToTap(state: GameState, candidates: List<EntityId>, count: Int): List<EntityId> {
         fun preservationCost(id: EntityId): Int = when (analyzer.name(state, id)) {
             ProjectXStateAnalyzer.NETTLE_SENTINEL ->
-                if (analyzer.handNames(state, playerId).any(::isGreenSpellName)) 0 else 30
+                if (state.getHand(playerId).any { isGreenSpell(state, it) }) 0 else 30
             ProjectXStateAnalyzer.BIRCHLORE_RANGERS -> 10
             ProjectXStateAnalyzer.WIREWOOD_HERALD -> 15
             ProjectXStateAnalyzer.SAFEHOLD_ELITE,
@@ -396,25 +398,62 @@ class ProjectXSolitaireAgent(
         else -> 0
     }
 
-    private fun isGreenSpellName(name: String): Boolean = name in GREEN_SPELLS
+    /**
+     * Reward a creature mana source only when its extra reusable mana moves a spell in hand to an
+     * earlier future turn. This is deliberately derived from card definitions and mana values:
+     * the solitaire policy does not need to know the accelerator's or payoff's printed name.
+     *
+     * The forecast assumes one land drop per future turn for both lines. It is comparative rather
+     * than predictive: the only question is whether adding this source reduces the earliest turn
+     * for at least one held spell under identical draw assumptions.
+     */
+    private fun accelerationPriority(state: GameState, cardId: EntityId): Int {
+        val card = state.getEntity(cardId)?.get<CardComponent>() ?: return 0
+        if (!card.isCreature || !isReusableCreatureManaSource(card.name)) return 0
+
+        val reusableSources = state.controlledBattlefield(playerId).count { permanentId ->
+            val permanent = state.getEntity(permanentId)?.get<CardComponent>() ?: return@count false
+            permanent.isLand || (permanent.isCreature && isReusableCreatureManaSource(permanent.name))
+        }
+        val bestTurnGain = state.getHand(playerId).asSequence()
+            .filter { it != cardId }
+            .mapNotNull { state.getEntity(it)?.get<CardComponent>() }
+            .filterNot { it.isLand || it.manaValue == 0 }
+            .maxOfOrNull { futureCastTurn(it.manaValue, reusableSources) - futureCastTurn(it.manaValue, reusableSources + 1) }
+            ?: 0
+        return if (bestTurnGain > 0) 750 + bestTurnGain * 100 else 0
+    }
+
+    private fun futureCastTurn(manaValue: Int, reusableSources: Int): Int {
+        for (turnsFromNow in 1..MAX_ACCELERATION_LOOKAHEAD) {
+            if (reusableSources + turnsFromNow >= manaValue) return turnsFromNow
+        }
+        return MAX_ACCELERATION_LOOKAHEAD + 1
+    }
+
+    private fun isReusableCreatureManaSource(name: String): Boolean =
+        cardRegistry.getCard(name)?.script?.activatedAbilities?.any { ability ->
+            ability.isManaAbility && ability.cost.includesSelfTap()
+        } == true
+
+    private fun AbilityCost.includesSelfTap(): Boolean = when (this) {
+        AbilityCost.Tap -> true
+        is AbilityCost.Composite -> costs.any { it.includesSelfTap() }
+        else -> false
+    }
+
+    private fun isGreenSpell(state: GameState, cardId: EntityId): Boolean =
+        state.getEntity(cardId)?.get<CardComponent>()?.let { card ->
+            !card.isLand && Color.GREEN in card.colors
+        } == true
 
     companion object {
+        private const val MAX_ACCELERATION_LOOKAHEAD = 8
+
         private val ALWAYS_ACCEPT_SOURCES = setOf(
             ProjectXStateAnalyzer.WIREWOOD_HERALD,
             ProjectXStateAnalyzer.NETTLE_SENTINEL,
             ProjectXStateAnalyzer.EVOLUTION_WITNESS,
-        )
-
-        private val GREEN_SPELLS = setOf(
-            ProjectXStateAnalyzer.SAFEHOLD_ELITE,
-            ProjectXStateAnalyzer.IVY_LANE_DENIZEN,
-            ProjectXStateAnalyzer.WIREWOOD_HERALD,
-            ProjectXStateAnalyzer.EVOLUTION_WITNESS,
-            ProjectXStateAnalyzer.NETTLE_SENTINEL,
-            ProjectXStateAnalyzer.BIRCHLORE_RANGERS,
-            ProjectXStateAnalyzer.ESSENCE_WARDEN,
-            ProjectXStateAnalyzer.QUIRION_RANGER,
-            "Masked Vandal",
         )
     }
 }
