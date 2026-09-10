@@ -230,7 +230,7 @@ class CombatAdvisor(
 
             for (attacker in sortedUnblocked) {
                 val available = availableBlockersFor(state, projected, attacker, validBlockers, assignedBlockers)
-                    .sortedBy { blockingLossValue(state, projected, it) }
+                    .sortedBy { sacrificeLossValue(state, projected, it) }
                 val cheapest = available.firstOrNull() ?: continue
                 bestMap[cheapest] = listOf(attacker)
                 assignedBlockers.add(cheapest)
@@ -266,7 +266,7 @@ class CombatAdvisor(
                 for (attacker in unblockedAttackers) {
                     val available = availableBlockersFor(state, projected, attacker, validBlockers, assignedBlockers)
                         .filter { CombatMath.creatureValue(state, projected, it) < 2.0 }
-                        .sortedBy { blockingLossValue(state, projected, it) }
+                        .sortedBy { sacrificeLossValue(state, projected, it) }
                     val cheapest = available.firstOrNull() ?: continue
                     bestMap[cheapest] = listOf(attacker)
                     assignedBlockers.add(cheapest)
@@ -293,7 +293,7 @@ class CombatAdvisor(
      * otherwise equivalent body cheaper to spend; this is deliberately limited to compact
      * payoffs whose value is stable without targets or modal choices.
      */
-    private fun blockingLossValue(
+    internal fun sacrificeLossValue(
         state: GameState,
         projected: ProjectedState,
         blockerId: EntityId,

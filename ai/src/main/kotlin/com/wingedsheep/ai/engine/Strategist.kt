@@ -948,7 +948,7 @@ class Strategist(
                 is ActivateAbility -> simulationBase.copy(costPayment = payment)
                 else -> simulationBase
             }
-            return strategicPool.take(AUTOMATIC_PAYMENT_CANDIDATES).maxByOrNull { chosen ->
+            return strategicPool.take(AUTOMATIC_PAYMENT_CANDIDATES).maxWithOrNull(compareBy<EntityId> { chosen ->
                 val payment = when (info.costType) {
                     "DiscardCard" -> existing.copy(discardedCards = listOf(chosen))
                     else -> existing.copy(sacrificedPermanents = listOf(chosen))
@@ -956,7 +956,13 @@ class Strategist(
                 simulator.simulate(state, attachForSimulation(payment)).scoreOrRankLast { leaf ->
                     evaluator.evaluate(leaf, leaf.projectedState, playerId)
                 }
-            }?.let { chosen ->
+            }.thenBy { chosen ->
+                if (info.costType == "SacrificePermanent") {
+                    -combatAdvisor.sacrificeLossValue(state, state.projectedState, chosen)
+                } else {
+                    0.0
+                }
+            })?.let { chosen ->
                 when (info.costType) {
                     "DiscardCard" -> attach(existing.copy(discardedCards = listOf(chosen)))
                     else -> attach(existing.copy(sacrificedPermanents = listOf(chosen)))
