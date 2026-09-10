@@ -85,7 +85,7 @@ class ProjectXSolitaireAgent(
                 CardsSelectedResponse(
                     decision.id,
                     chooseHeraldTutor(state, decision.options) { id ->
-                        decision.cardInfo?.get(id)?.name ?: analyzer.name(state, id)
+                        analyzer.name(state, id) ?: decision.cardInfo?.get(id)?.name
                     }.take(decision.maxSelections),
                 )
 
