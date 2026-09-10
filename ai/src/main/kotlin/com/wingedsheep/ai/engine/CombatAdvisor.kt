@@ -22,7 +22,9 @@ import com.wingedsheep.sdk.core.Step
 import com.wingedsheep.sdk.dsl.Triggers
 import com.wingedsheep.sdk.model.EntityId
 import com.wingedsheep.sdk.scripting.effects.CreatePredefinedTokenEffect
+import com.wingedsheep.sdk.scripting.effects.DrawCardsEffect
 import com.wingedsheep.sdk.scripting.effects.ScryEffect
+import com.wingedsheep.sdk.scripting.values.DynamicAmount
 
 /**
  * Specialized advisor for attack and block decisions.
@@ -67,6 +69,7 @@ class CombatAdvisor(
         private const val SCRY_DEATH_VALUE = 0.35
         private const val TREASURE_DEATH_VALUE = 0.75
         private const val GENERIC_TOKEN_DEATH_VALUE = 0.5
+        private const val CARD_DEATH_VALUE = 1.0
     }
 
     /**
@@ -316,6 +319,8 @@ class CombatAdvisor(
                             "Treasure" -> effect.count * TREASURE_DEATH_VALUE
                             else -> effect.count * GENERIC_TOKEN_DEATH_VALUE
                         }
+                        is DrawCardsEffect ->
+                            (effect.count as? DynamicAmount.Fixed)?.amount?.times(CARD_DEATH_VALUE) ?: 0.0
                         else -> 0.0
                     }
                 }
