@@ -39,6 +39,9 @@ jobs:
       - name: Compile Argentum
         run: ./gradlew classes --stacktrace
 
+      - name: Reproduce Project X rejected Game 14
+        run: ./gradlew :gym:test --tests ProjectXGoldfishTest --stacktrace --info
+
       - name: Run engine tests
         run: ./gradlew test --stacktrace
 
