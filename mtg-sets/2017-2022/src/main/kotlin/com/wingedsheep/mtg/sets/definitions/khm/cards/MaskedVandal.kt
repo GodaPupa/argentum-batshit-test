@@ -37,26 +37,32 @@ val MaskedVandal = card("Masked Vandal") {
             "target artifact or enchantment an opponent controls",
             TargetObject(filter = TargetFilter.ArtifactOrEnchantment.opponentControls()),
         )
-        effect = MayEffect(
-            IfYouDoEffect(
-                action = Effects.Composite(
-                    GatherCardsEffect(
-                        source = CardSource.FromZone(Zone.GRAVEYARD, filter = GameObjectFilter.Creature),
-                        storeAs = "graveyardCreatures",
+        // Keep the consent gate inside a composite so the trigger's mandatory target is chosen
+        // when the ability is put on the stack. A top-level MayEffect is deliberately handled by
+        // TriggerProcessor as "ask first, then target", which is not this card's Oracle ordering:
+        // its target exists regardless of whether the controller pays the optional graveyard action.
+        effect = Effects.Composite(
+            MayEffect(
+                IfYouDoEffect(
+                    action = Effects.Composite(
+                        GatherCardsEffect(
+                            source = CardSource.FromZone(Zone.GRAVEYARD, filter = GameObjectFilter.Creature),
+                            storeAs = "graveyardCreatures",
+                        ),
+                        SelectFromCollectionEffect(
+                            from = "graveyardCreatures",
+                            selection = SelectionMode.ChooseExactly(DynamicAmount.Fixed(1)),
+                            storeSelected = "vandalExileCost",
+                            selectedLabel = "Exile",
+                        ),
+                        MoveCollectionEffect(
+                            from = "vandalExileCost",
+                            destination = CardDestination.ToZone(Zone.EXILE),
+                        ),
                     ),
-                    SelectFromCollectionEffect(
-                        from = "graveyardCreatures",
-                        selection = SelectionMode.ChooseExactly(DynamicAmount.Fixed(1)),
-                        storeSelected = "vandalExileCost",
-                        selectedLabel = "Exile",
-                    ),
-                    MoveCollectionEffect(
-                        from = "vandalExileCost",
-                        destination = CardDestination.ToZone(Zone.EXILE),
-                    ),
+                    ifYouDo = Effects.Exile(victim),
+                    successCriterion = SuccessCriterion.CollectionNonEmpty("vandalExileCost"),
                 ),
-                ifYouDo = Effects.Exile(victim),
-                successCriterion = SuccessCriterion.CollectionNonEmpty("vandalExileCost"),
             ),
         )
     }
