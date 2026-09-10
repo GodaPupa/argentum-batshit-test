@@ -28,6 +28,7 @@ import com.wingedsheep.engine.core.CastSpell
 import com.wingedsheep.engine.core.DeclareAttackers
 import com.wingedsheep.engine.core.DeclareBlockers
 import com.wingedsheep.engine.core.GameAction
+import com.wingedsheep.engine.core.PlayLand
 import com.wingedsheep.engine.legalactions.LegalAction
 import com.wingedsheep.engine.legalactions.MeaningfulActionFilter
 import com.wingedsheep.engine.state.GameState
@@ -93,6 +94,8 @@ class Strategist(
      * behaviour.
      */
     private val intents: IntentCatalog = IntentCatalog.NONE,
+    /** Use the live land-sequencing policy's exact same-turn development check. */
+    private val sequenceLandsByUsableMana: Boolean = false,
     /** [AiProfile.combatTricksWaitForBlocks] — passed straight through to [HoldPolicy]. */
     private val combatTricksWaitForBlocks: Boolean = false,
     /**
@@ -287,7 +290,18 @@ class Strategist(
         // ── Pass 3: per-card timing and advisor adjustments, in raw evaluator units ──
         val firstCandidate = if (pass != null) 1 else 0
         val adjusted = (firstCandidate until leaves.size).map { i ->
-            Triple(leaves[i], leafScores[i], adjustScore(evaluationState, leaves[i], playerId, leafScores[i], passScore))
+            Triple(
+                leaves[i],
+                leafScores[i],
+                adjustScore(
+                    evaluationState,
+                    leafStates[i],
+                    leaves[i],
+                    playerId,
+                    leafScores[i],
+                    passScore,
+                ),
+            )
         }
         val scored = adjusted.map { (action, _, adjustment) -> action to adjustment.score }
 
@@ -619,12 +633,17 @@ class Strategist(
      */
     private fun adjustScore(
         state: GameState,
+        leafState: GameState,
         action: LegalAction,
         playerId: EntityId,
         leafScore: Double,
         passScore: Double,
     ): AdjustedScore {
-        val cardName = resolveCardName(state, action) ?: return AdjustedScore(leafScore)
+        val developmentDelta = immediatePermanentDevelopmentAfterLand(leafState, action, playerId)
+        val developmentNote = developmentDelta.takeIf { it != 0.0 }
+            ?.let { "land preserves immediate permanent development +%.2f".format(it) }
+        val cardName = resolveCardName(state, action)
+            ?: return AdjustedScore(leafScore + developmentDelta, developmentNote)
 
         // Phase 6: what the board looks like after this resolves is only half the question; the
         // other half is whether this was the window — and, for removal, whether this was the target
@@ -667,8 +686,8 @@ class Strategist(
         // keeps both.
         val advisor = advisorRegistry.getAdvisor(cardName)
             ?: return AdjustedScore(
-                leafScore + timingDelta + sacrificeWindowDelta,
-                listOfNotNull(timingNote, sacrificeWindowNote)
+                leafScore + timingDelta + sacrificeWindowDelta + developmentDelta,
+                listOfNotNull(timingNote, sacrificeWindowNote, developmentNote)
                     .joinToString("; ").ifEmpty { null },
             )
         val context = CastContext(
@@ -684,10 +703,40 @@ class Strategist(
         val override = advisor.evaluateCast(context)
         val advisorNote = override?.let { "${advisor::class.simpleName} replaced the board score" }
         return AdjustedScore(
-            (override ?: leafScore) + timingDelta + sacrificeWindowDelta,
-            listOfNotNull(advisorNote, timingNote, sacrificeWindowNote)
+            (override ?: leafScore) + timingDelta + sacrificeWindowDelta + developmentDelta,
+            listOfNotNull(advisorNote, timingNote, sacrificeWindowNote, developmentNote)
                 .joinToString("; ").ifEmpty { null },
         )
+    }
+
+    /**
+     * A land drop can be worth more than the leaf immediately shows when it leaves enough usable
+     * mana to deploy a permanent in the same main phase. Rollouts normally discover that second
+     * action, but averaging can wash out the tempo distinction between an untapped source and a
+     * land that enters tapped. Preserve a modest option value for the exact legal follow-up.
+     *
+     * This asks the engine for legal actions in the post-land state and applies the ordinary
+     * meaningful-action filter. It therefore depends on neither a land name nor a spell name, and
+     * respects colours, conditional tapped clauses, costs, timing and targets. The adjustment is a
+     * preference rather than a floor: a genuinely stronger line may still outweigh it.
+     */
+    private fun immediatePermanentDevelopmentAfterLand(
+        leafState: GameState,
+        action: LegalAction,
+        playerId: EntityId,
+    ): Double {
+        if (!sequenceLandsByUsableMana || action.action !is PlayLand || leafState.priorityPlayerId != playerId) {
+            return 0.0
+        }
+        val hasDevelopment = MeaningfulActionFilter
+            .filterMeaningful(simulator.getLegalActions(leafState, playerId))
+            .any { followUp ->
+                if (!followUp.affordable) return@any false
+                val cast = followUp.action as? CastSpell ?: return@any false
+                val card = leafState.getEntity(cast.cardId)?.get<CardComponent>() ?: return@any false
+                card.isPermanent
+            }
+        return if (hasDevelopment) IMMEDIATE_PERMANENT_DEVELOPMENT else 0.0
     }
 
     /**
@@ -1395,6 +1444,9 @@ class Strategist(
 
         /** Value recovered by cashing in a permanent an opposing stack object already targets. */
         const val TARGETED_SACRIFICE_WINDOW = 2.0
+
+        /** Modest option value for a land drop that keeps a same-turn permanent deployment live. */
+        const val IMMEDIATE_PERMANENT_DEVELOPMENT = 1.0
 
         /** A burn spell leaving this much reach is close enough to preserve race conversion. */
         const val NEAR_LETHAL_REACH = 2
