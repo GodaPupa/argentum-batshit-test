@@ -1,6 +1,7 @@
 package com.wingedsheep.engine.scenarios
 
 import com.wingedsheep.engine.core.PlayLand
+import com.wingedsheep.engine.state.components.battlefield.TappedComponent
 import com.wingedsheep.engine.state.components.identity.CardComponent
 import com.wingedsheep.engine.support.ScenarioTestBase
 import com.wingedsheep.sdk.core.Phase
@@ -16,7 +17,7 @@ class KhalniGardenScenarioTest : ScenarioTestBase() {
                 game.state.getEntity(it)?.get<CardComponent>()?.name == "Khalni Garden"
             }
             game.execute(PlayLand(game.player1Id, garden)).error shouldBe null
-            game.isTapped(game.findPermanent("Khalni Garden")!!) shouldBe true
+            game.state.getEntity(game.findPermanent("Khalni Garden")!!)?.has<TappedComponent>() shouldBe true
             game.resolveStack()
             game.findPermanent("Plant") != null shouldBe true
         }
