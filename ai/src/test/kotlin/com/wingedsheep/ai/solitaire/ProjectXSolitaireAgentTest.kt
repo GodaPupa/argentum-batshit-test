@@ -268,7 +268,9 @@ class ProjectXSolitaireAgentTest : ScenarioTestBase() {
                 .build()
             val solitaire = agent(game)
 
-            val mana = solitaire.chooseAction(game.state).shouldBeInstanceOf<ActivateAbility>()
+            val choice = solitaire.chooseActionWithDiagnostics(game.state)
+            println("LLANOWAR_ACCELERATION_CHOICE action=${choice.action} rejected=${choice.rejectedSubmissions}")
+            val mana = choice.action.shouldBeInstanceOf<ActivateAbility>()
             name(game, mana.sourceId) shouldBe "Llanowar Elves"
             game.execute(mana).error shouldBe null
 
@@ -285,7 +287,9 @@ class ProjectXSolitaireAgentTest : ScenarioTestBase() {
             val solitaire = agent(game)
             val elves = game.findPermanent("Llanowar Elves")!!
 
-            val mana = solitaire.chooseAction(game.state).shouldBeInstanceOf<ActivateAbility>()
+            val choice = solitaire.chooseActionWithDiagnostics(game.state)
+            println("LLANOWAR_ACCELERATION_CHOICE action=${choice.action} rejected=${choice.rejectedSubmissions}")
+            val mana = choice.action.shouldBeInstanceOf<ActivateAbility>()
             name(game, mana.sourceId) shouldBe "Llanowar Elves"
             game.execute(mana).error shouldBe null
 
