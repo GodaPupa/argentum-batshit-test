@@ -222,6 +222,14 @@ class Strategist(
             } else {
                 passSimulation.state
             }
+            // When simply passing lets the already-pending stack resolve to an unambiguous win,
+            // spending another card or permanent cannot improve that outcome. This is deliberately
+            // based on simulation of the actual stack, not card names or a damage-only shortcut:
+            // spells, triggers and activated abilities all qualify, while a counter/protection
+            // object above the lethal prevents the terminal winning leaf and leaves responses live.
+            if (pendingStackGuaranteesWin(evaluationState, passSimulation, playerId)) {
+                return pass
+            }
         }
         for (action in affordable) {
             searched++
@@ -491,6 +499,20 @@ class Strategist(
         if (digest in positionsActedFrom) return
         positionsActedFrom.addLast(digest)
         if (positionsActedFrom.size > POSITION_MEMORY) positionsActedFrom.removeFirst()
+    }
+
+    private fun pendingStackGuaranteesWin(
+        before: GameState,
+        passSimulation: SimulationResult,
+        playerId: EntityId,
+    ): Boolean {
+        if (before.stack.isEmpty() || passSimulation !is SimulationResult.Terminal) return false
+        val after = passSimulation.state
+        if (!after.gameOver || after.lifeTotal(playerId) <= 0) return false
+        val opponentsBeforeResolution = before.getOpponents(playerId)
+        return opponentsBeforeResolution.isNotEmpty() && opponentsBeforeResolution.all { opponentId ->
+            after.lifeTotal(opponentId) <= 0 || opponentId !in after.activePlayers
+        }
     }
 
     /**
@@ -877,7 +899,9 @@ class Strategist(
             } else {
                 info.validTargets
             }
-            val selectedId = available.maxByOrNull { TargetSelection.rank(state, it, playerId, intents) }
+            val selectedId = available.maxByOrNull {
+                TargetSelection.rankForAction(state, action, info, it, playerId, intents)
+            }
                 ?: return heuristicTargets(state, action, playerId)
             chosenTargets += TargetSelection.toChosenTarget(state, info, selectedId, playerId)
             chosenIds += selectedId
@@ -896,10 +920,17 @@ class Strategist(
             // alternative is dropping an ability that may well have had a productive target.
             if (budget.expired() && !forceTargetRefinement) break
             val info = targetInfos[i]
+            // A graveyard sweep's value lives in the graveyards and visible recursion, neither of
+            // which the generic board evaluator represents faithfully. Keep the dedicated target
+            // valuation's choice instead of letting a post-resolution graveyard-size feature
+            // overwrite it during target simulation.
+            if (TargetSelection.isGraveyardPlayerTarget(action, info)) continue
             val priorIds = chosenTargetIds.take(i).toSet()
             val candidates = info.validTargets
                 .filterNot { info.mustDifferFromEarlier && it in priorIds }
-                .sortedByDescending { TargetSelection.rank(state, it, playerId, intents) }
+                .sortedByDescending {
+                    TargetSelection.rankForAction(state, action, info, it, playerId, intents)
+                }
                 .take(targetCandidates)
             if (candidates.size <= 1) continue
             val best = candidates.maxByOrNull { candidate ->

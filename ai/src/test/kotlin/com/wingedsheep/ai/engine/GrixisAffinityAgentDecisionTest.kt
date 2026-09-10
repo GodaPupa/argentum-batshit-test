@@ -11,6 +11,9 @@ import com.wingedsheep.sdk.core.Phase
 import com.wingedsheep.sdk.core.Step
 import com.wingedsheep.sdk.model.Deck
 import com.wingedsheep.sdk.model.EntityId
+import com.wingedsheep.sdk.dsl.Effects
+import com.wingedsheep.sdk.dsl.Targets
+import com.wingedsheep.sdk.dsl.card
 import io.kotest.matchers.collections.shouldContainExactlyInAnyOrder
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.types.shouldBeInstanceOf
@@ -23,6 +26,8 @@ class GrixisAffinityAgentDecisionTest : ScenarioTestBase() {
     private fun seeded() = scenario().withPlayers().withRngSeed(0xAFF1_9177L)
 
     init {
+        cardRegistry.register(listOf(GRAVEYARD_THEFT_PROBE))
+
         test("untapped artifact land that enables interaction precedes a tapped bridge") {
             val game = seeded().withCardInHand(1, "Great Furnace")
                 .withCardInHand(1, "Drossforge Bridge").withCardInHand(1, "Galvanic Blast")
@@ -80,6 +85,42 @@ class GrixisAffinityAgentDecisionTest : ScenarioTestBase() {
             action.targets.single().shouldBeInstanceOf<ChosenTarget.Player>().playerId shouldBe game.player2Id
         }
 
+        test("Game 6 structure targets the opposing recursion graveyard rather than Affinity's own") {
+            val game = seeded().withActivePlayer(2)
+                .withCardOnBattlefield(1, "Nihil Spellbomb")
+                .withCardInGraveyard(1, "Ichor Wellspring")
+                .withCardInGraveyard(1, "Refurbished Familiar")
+                .withCardInHand(2, "Unearth")
+                .withCardInGraveyard(2, "Kessig Flamebreather")
+                .withCardInGraveyard(2, "Shambling Ghast")
+                .withLandsOnBattlefield(2, "Swamp", 1)
+                .inPhase(Phase.PRECOMBAT_MAIN, Step.PRECOMBAT_MAIN).build()
+
+            game.castSpellTargetingGraveyardCard(2, "Unearth", 2, "Kessig Flamebreather").error shouldBe null
+            game.execute(PassPriority(game.player2Id)).error shouldBe null
+
+            val action = ai(game).chooseAction(game.state).shouldBeInstanceOf<ActivateAbility>()
+            name(game, action.sourceId) shouldBe "Nihil Spellbomb"
+            action.targets.single().shouldBeInstanceOf<ChosenTarget.Player>().playerId shouldBe game.player2Id
+        }
+
+        test("graveyard hate correctly targets its controller when that denies opposing graveyard theft") {
+            val game = seeded().withActivePlayer(2)
+                .withCardOnBattlefield(1, "Nihil Spellbomb")
+                .withCardInGraveyard(1, "Kessig Flamebreather")
+                .withCardInHand(2, GRAVEYARD_THEFT_PROBE.name)
+                .withLandsOnBattlefield(2, "Swamp", 1)
+                .inPhase(Phase.PRECOMBAT_MAIN, Step.PRECOMBAT_MAIN).build()
+            game.castSpellTargetingGraveyardCard(
+                2, GRAVEYARD_THEFT_PROBE.name, 1, "Kessig Flamebreather"
+            ).error shouldBe null
+            game.execute(PassPriority(game.player2Id)).error shouldBe null
+
+            val action = ai(game).chooseAction(game.state).shouldBeInstanceOf<ActivateAbility>()
+            name(game, action.sourceId) shouldBe "Nihil Spellbomb"
+            action.targets.single().shouldBeInstanceOf<ChosenTarget.Player>().playerId shouldBe game.player1Id
+        }
+
         test("Krark-Clan Shaman cashes in Wellspring for a profitable sweep") {
             val game = seeded().withCardOnBattlefield(1, "Krark-Clan Shaman")
                 .withCardOnBattlefield(1, "Ichor Wellspring")
@@ -114,6 +155,15 @@ class GrixisAffinityAgentDecisionTest : ScenarioTestBase() {
             )
             counts.keys.forEach { cardRegistry.requireCard(it) }
         }
+    }
+}
+
+private val GRAVEYARD_THEFT_PROBE = card("Graveyard Theft Probe") {
+    manaCost = "{B}"
+    typeLine = "Sorcery"
+    spell {
+        val stolen = target("target creature card in a graveyard", Targets.CreatureCardInGraveyard)
+        effect = Effects.PutOntoBattlefieldUnderYourControl(stolen)
     }
 }
 
