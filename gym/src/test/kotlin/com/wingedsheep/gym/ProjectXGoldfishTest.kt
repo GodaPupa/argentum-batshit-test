@@ -59,7 +59,6 @@ class ProjectXGoldfishTest : FunSpec({
 
         val registry = projectXRegistry()
         val games = seeds.mapIndexed { index, seed -> runProjectXGoldfish(registry, seed, index + 1) }
-        games.forEach { it.auditErrors shouldBe emptyList() }
         val block = ProjectXGoldfishBlock(
             deckVersion = "Project X v0.2",
             horizon = PROJECT_X_HORIZON,
@@ -79,6 +78,7 @@ class ProjectXGoldfishTest : FunSpec({
             renderProjectXMarkdown(block),
         )
         println(renderProjectXMarkdown(block))
+        games.forEach { it.auditErrors shouldBe emptyList() }
     }
 })
 
