@@ -86,7 +86,7 @@ class BatshitGrixisAffinitySmokeTest : FunSpec({
     }
 })
 
-private data class AffinitySmokeSeedRow(
+internal data class AffinitySmokeSeedRow(
     val game: Int,
     val assignment: String,
     val hexSeed: String,
@@ -140,7 +140,7 @@ private val PERMANENT_DEVELOPMENT = setOf(
     "Refurbished Familiar", "Utrom Monitor", "Blood Fountain", "Ichor Wellspring", "Nihil Spellbomb",
 )
 
-private data class AffinitySmokeSummary(
+internal data class AffinitySmokeSummary(
     val game: Int,
     val seed: Long,
     val hexSeed: String,
@@ -233,7 +233,7 @@ private data class AffinitySmokeSummary(
     }
 }
 
-private fun assertAffinityCostTelemetry(log: String) {
+internal fun assertAffinityCostTelemetry(log: String) {
     val pattern = Regex(
         "affinity\\[artifacts=(\\d+),printedGeneric=(\\d+),effectiveGeneric=(\\d+),effectiveCmc=(\\d+)]"
     )
@@ -247,7 +247,7 @@ private fun assertAffinityCostTelemetry(log: String) {
     }
 }
 
-private fun assertGalvanicBlastTelemetry(log: String) {
+internal fun assertGalvanicBlastTelemetry(log: String) {
     val pattern = Regex("EVENT damage Galvanic Blast (\\d+) -> .* controllerArtifacts=(\\d+)")
     log.lineSequence().filter { "EVENT damage Galvanic Blast" in it }.forEach { line ->
         val match = pattern.find(line) ?: error("Malformed Galvanic Blast telemetry: $line")
