@@ -1,0 +1,161 @@
+# Legions (LGN) - Card Checklist
+
+**Set Size:** 145 cards
+**Release Date:** February 3, 2003
+**Implemented:** 145 / 145
+
+| Color      | Count |
+|------------|-------|
+| White      | 29/29 |
+| Blue       | 29/29 |
+| Black      | 29/29 |
+| Red        | 29/29 |
+| Green      | 29/29 |
+
+---
+
+- [x] Akroma, Angel of Wrath
+- [x] Akroma's Devoted
+- [x] Aphetto Exterminator
+- [x] Aven Envoy
+- [x] Aven Redeemer
+- [x] Aven Warhawk
+- [x] Bane of the Living
+- [x] Beacon of Destiny
+- [x] Berserk Murlodont
+- [x] Blade Sliver
+- [x] Blood Celebrant
+- [x] Bloodstoke Howler
+- [x] Branchsnap Lorian
+- [x] Brontotherium
+- [x] Brood Sliver
+- [x] Caller of the Claw
+- [x] Canopy Crawler
+- [x] Celestial Gatekeeper
+- [x] Cephalid Pathmage
+- [x] Chromeshell Crab
+- [x] Clickslither
+- [x] Cloudreach Cavalry
+- [x] Corpse Harvester
+- [x] Covert Operative
+- [x] Crested Craghorn
+- [x] Crookclaw Elder
+- [x] Crypt Sliver
+- [x] Dark Supplicant
+- [x] Daru Mender
+- [x] Daru Sanctifier
+- [x] Daru Stinger
+- [x] Deathmark Prelate
+- [x] Defender of the Order
+- [x] Defiant Elf
+- [x] Deftblade Elite
+- [x] Dermoplasm
+- [x] Dreamborn Muse
+- [x] Drinker of Sorrow
+- [x] Dripping Dead
+- [x] Earthblighter
+- [x] Echo Tracer
+- [x] Elvish Soultiller
+- [x] Embalmed Brawler
+- [x] Enormous Baloth
+- [x] Essence Sliver
+- [x] Feral Throwback
+- [x] Flamewave Invoker
+- [x] Frenetic Raptor
+- [x] Fugitive Wizard
+- [x] Gempalm Avenger
+- [x] Gempalm Incinerator
+- [x] Gempalm Polluter
+- [x] Gempalm Sorcerer
+- [x] Gempalm Strider
+- [x] Ghastly Remains
+- [x] Glintwing Invoker
+- [x] Glowering Rogon
+- [x] Glowrider
+- [x] Goblin Assassin
+- [x] Goblin Clearcutter
+- [x] Goblin Dynamo
+- [x] Goblin Firebug
+- [x] Goblin Goon
+- [x] Goblin Grappler
+- [x] Goblin Lookout
+- [x] Goblin Turncoat
+- [x] Graveborn Muse
+- [x] Havoc Demon
+- [x] Hollow Specter
+- [x] Hundroog
+- [x] Hunter Sliver
+- [x] Imperial Hellkite
+- [x] Infernal Caretaker
+- [x] Keeneye Aven
+- [x] Keeper of the Nine Gales
+- [x] Kilnmouth Dragon
+- [x] Krosan Cloudscraper
+- [x] Krosan Vorine
+- [x] Lavaborn Muse
+- [x] Liege of the Axe
+- [x] Lowland Tracker
+- [x] Macetail Hystrodon
+- [x] Magma Sliver
+- [x] Master of the Veil
+- [x] Merchant of Secrets
+- [x] Mistform Seaswift
+- [x] Mistform Sliver
+- [x] Mistform Ultimus
+- [x] Mistform Wakecaster
+- [x] Nantuko Vigilante
+- [x] Needleshot Gourna
+- [x] Noxious Ghoul
+- [x] Patron of the Wild
+- [x] Phage the Untouchable
+- [x] Planar Guide
+- [x] Plated Sliver
+- [x] Primal Whisperer
+- [x] Primoc Escapee
+- [x] Quick Sliver
+- [x] Ridgetop Raptor
+- [x] Riptide Director
+- [x] Riptide Mangler
+- [x] Rockshard Elemental
+- [x] Root Sliver
+- [x] Scion of Darkness
+- [x] Seedborn Muse
+- [x] Shaleskin Plower
+- [x] Shifting Sliver
+- [x] Skinthinner
+- [x] Skirk Alarmist
+- [x] Skirk Drill Sergeant
+- [x] Skirk Marauder
+- [x] Skirk Outrider
+- [x] Smokespew Invoker
+- [x] Sootfeather Flock
+- [x] Spectral Sliver
+- [x] Starlight Invoker
+- [x] Stoic Champion
+- [x] Stonewood Invoker
+- [x] Sunstrike Legionnaire
+- [x] Swooping Talon
+- [x] Synapse Sliver
+- [x] Timberwatch Elf
+- [x] Totem Speaker
+- [x] Toxin Sliver
+- [x] Tribal Forcemage
+- [x] Unstable Hulk
+- [x] Vexing Beetle
+- [x] Vile Deacon
+- [x] Voidmage Apprentice
+- [x] Wall of Deceit
+- [x] Wall of Hope
+- [x] Warbreak Trumpeter
+- [x] Ward Sliver
+- [x] Warped Researcher
+- [x] Weaver of Lies
+- [x] Whipgrass Entangler
+- [x] White Knight
+- [x] Willbender
+- [x] Windborn Muse
+- [x] Wingbeat Warrior
+- [x] Wirewood Channeler
+- [x] Wirewood Hivemaster
+- [x] Withered Wretch
+- [x] Zombie Brute

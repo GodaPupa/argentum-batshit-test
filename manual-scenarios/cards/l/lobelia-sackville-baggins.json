@@ -1,0 +1,37 @@
+{
+  "_comment": "Lobelia Sackville-Baggins (LTR, {2}{B} flash menace legendary 2/3). ETB target = a creature card in an opponent's graveyard put there from the battlefield this turn (Gap 20). Treasure count = the exiled card's power (exercises CreatePredefinedTokenEffect.dynamicCount). Flow: cast Bitter Downfall ({3}{B} instant) targeting opponent's Snarling Warg (3/4) — Warg dies and lands in opponent's graveyard with the Gap 20 marker set. Flash in Lobelia ({2}{B}) → ETB pauses to target the Warg → Warg exiled → THREE Treasure tokens enter under your control (X = Warg's printed power 3).",
+  "player1Name": "You",
+  "player2Name": "Opponent",
+  "aiPlayer": 2,
+  "player1": {
+    "lifeTotal": 20,
+    "hand": ["Bitter Downfall", "Lobelia Sackville-Baggins"],
+    "battlefield": [
+      {"name": "Swamp"},
+      {"name": "Swamp"},
+      {"name": "Swamp"},
+      {"name": "Swamp"},
+      {"name": "Swamp"},
+      {"name": "Plains"},
+      {"name": "Plains"}
+    ],
+    "graveyard": [],
+    "library": ["Swamp", "Swamp", "Swamp", "Swamp"]
+  },
+  "player2": {
+    "lifeTotal": 20,
+    "hand": [],
+    "battlefield": [
+      {"name": "Snarling Warg"}
+    ],
+    "graveyard": [],
+    "library": ["Forest", "Forest", "Forest", "Forest"]
+  },
+  "phase": "PRECOMBAT_MAIN",
+  "activePlayer": 1,
+  "priorityPlayer": 1,
+  "player1StopAtSteps": [],
+  "player2StopAtSteps": [],
+  "player1OpponentStopAtSteps": [],
+  "player2OpponentStopAtSteps": []
+}

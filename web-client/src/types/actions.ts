@@ -1,0 +1,464 @@
+import { EntityId } from './entities'
+
+/**
+ * Game actions that can be submitted to the server.
+ * Matches backend GameAction.kt sealed hierarchy.
+ *
+ * Note: The client typically receives pre-built actions from the server
+ * in the legalActions list and submits them back unchanged.
+ */
+export type GameAction =
+  | PassPriorityAction
+  | CastSpellAction
+  | ActivateAbilityAction
+  | CycleCardAction
+  | TypecycleCardAction
+  | PlotCardAction
+  | SuspendCardFromHandAction
+  | CrewVehicleAction
+  | SaddleMountAction
+  | PlayLandAction
+  | TurnFaceUpAction
+  | DeclareAttackersAction
+  | DeclareBlockersAction
+  | OrderBlockersAction
+  | ChooseManaColorAction
+  | SubmitDecisionAction
+  | TakeMulliganAction
+  | KeepHandAction
+  | BottomCardsAction
+  | ConcedeAction
+  | UnlockRoomDoorAction
+
+// =============================================================================
+// Priority Actions
+// =============================================================================
+
+export interface PassPriorityAction {
+  readonly type: 'PassPriority'
+  readonly playerId: EntityId
+}
+
+// =============================================================================
+// Spell Actions
+// =============================================================================
+
+/**
+ * Polymorphic target types matching server's sealed interface.
+ * The 'type' field is the class discriminator for kotlinx.serialization.
+ */
+export type ChosenTarget =
+  | { readonly type: 'Player'; readonly playerId: EntityId }
+  | { readonly type: 'Permanent'; readonly entityId: EntityId }
+  | { readonly type: 'Card'; readonly cardId: EntityId; readonly ownerId: EntityId; readonly zone: string }
+  | { readonly type: 'Spell'; readonly spellEntityId: EntityId }
+
+export interface AdditionalCostPayment {
+  readonly sacrificedPermanents?: readonly EntityId[]
+  readonly discardedCards?: readonly EntityId[]
+  readonly lifePaid?: number
+  readonly exiledCards?: readonly EntityId[]
+  readonly beheldCards?: readonly EntityId[]
+  /**
+   * Cards revealed from hand for a reveal-from-hand additional cost. They stay in hand
+   * (CR 701.20b); its own field rather than `beheldCards` because behold also accepts a
+   * battlefield permanent (CR 701.4a) and a reveal never does.
+   */
+  readonly revealedCards?: readonly EntityId[]
+  readonly tappedPermanents?: readonly EntityId[]
+  readonly bouncedPermanents?: readonly EntityId[]
+  readonly counterRemovals?: Readonly<Record<EntityId, number>>
+  /**
+   * Typed counter-removal entries — each entry removes `count` counters of
+   * `counterType` from `entityId`. Preferred over the legacy `counterRemovals`
+   * map (engine still accepts that as a fallback for older clients).
+   */
+  readonly distributedCounterRemovals?: ReadonlyArray<{
+    entityId: EntityId
+    counterType: string
+    count: number
+  }>
+  readonly blightTargets?: readonly EntityId[]
+  /** X chosen for `AdditionalCost.BlightVariable` (e.g., Soul Immolation). */
+  readonly blightAmount?: number
+  /** X chosen for `AdditionalCost.PayXLife` (e.g., Vicious Rivalry). */
+  readonly payXLifeAmount?: number
+  /**
+   * Permanents chosen for a variable-count permanent cost — the payer decides how many
+   * (`CostAtom.VariablePermanents`). Carries the creatures tapped to pay a Teamwork N cost
+   * (CR 702.194a).
+   */
+  readonly variableCostPermanents?: readonly EntityId[]
+}
+
+export interface AlternativePaymentChoice {
+  readonly delvedCards: readonly EntityId[]
+  readonly convokedCreatures: Record<EntityId, ConvokePayment>
+  /** Single creature tapped for Harmonize, reducing the generic cost by its power. */
+  readonly harmonizeCreature?: EntityId | null
+  /**
+   * Untapped permanents tapped for a tap-for-generic payment (improvise CR 702.126 / waterbend),
+   * each paying {1} generic.
+   */
+  readonly tapForGenericPermanents?: readonly EntityId[]
+}
+
+export interface ConvokePayment {
+  readonly color?: string | null
+}
+
+export interface CastSpellAction {
+  readonly type: 'CastSpell'
+  readonly playerId: EntityId
+  readonly cardId: EntityId
+  readonly targets?: readonly ChosenTarget[]
+  readonly xValue?: number | null
+  readonly paymentStrategy?: PaymentStrategy
+  readonly additionalCostPayment?: AdditionalCostPayment
+  /** Alternative payment choices (Delve, Convoke) */
+  readonly alternativePayment?: AlternativePaymentChoice
+  /** Whether to cast this card face-down (for Morph creatures) */
+  readonly castFaceDown?: boolean
+  /** Whether the spell is being cast for an alternative cost (impending, evoke, flashback, …) */
+  readonly useAlternativeCost?: boolean
+  /**
+   * Which alternative cost was chosen, when `useAlternativeCost` is set. Matches the server's
+   * `AlternativeCostType` enum (e.g. "IMPENDING", "EVOKE", "CLEAVE", "GRANTED",
+   * "SELF_ALTERNATIVE", "MIRACLE"). Used by the action menu to identify the impending cast option.
+   */
+  readonly alternativeCostType?: string
+  /**
+   * Which optional additional cost this cast declares (the server's `ChoiceSlot` name — "KICKED"
+   * for kicker/multikicker/offspring, "BARGAINED" for bargain), or absent when none. The server
+   * stamps it on the cast variant it offers; the client only echoes it back.
+   */
+  readonly declaredCostSlot?: string
+  /**
+   * Whether the spell's optional waterbend additional cost was elected (Avatar: The Last
+   * Airbender). Set by the server on the paid cast variant; preserved through the pipeline so the
+   * resolving effect can branch on `WaterbendWasPaid`.
+   */
+  readonly wasWaterbendPaid?: boolean
+  /**
+   * The opponent promised this spell's gift additional cost (Bloomburrow gift — CR 702.174a), or
+   * absent when the gift wasn't promised. The server emits a `CastWithGift` variant of the normal
+   * cast per opponent; the client just plays the variant the player picked.
+   */
+  readonly giftRecipient?: EntityId
+  /**
+   * Cards revealed from hand and spliced onto this spell (CR 702.47a), in the order their text is
+   * added. The server emits a `CastWithSplice` variant per splice card in hand whose quality the spell
+   * carries, already priced with that card's splice cost; the client just plays the variant the player
+   * picked and echoes this back. The spliced cards stay in hand — only their text joins the spell.
+   *
+   * A spliced card's own targets are appended after the main spell's in `targets`, so the normal
+   * targeting flow fills them in with no special handling.
+   */
+  readonly splicedCardIds?: readonly EntityId[]
+  /** Pre-chosen damage distribution for DividedDamageEffect spells (target ID -> damage amount) */
+  readonly damageDistribution?: Record<EntityId, number>
+  /**
+   * Chosen modal mode indices (rule 700.2). Ordered; the same index may repeat when the
+   * spell's ModalEffect has `allowRepeat = true` (Escalate/Spree).
+   */
+  readonly chosenModes?: readonly number[]
+  /** Per-mode target bindings, aligned 1:1 with `chosenModes`. */
+  readonly modeTargetsOrdered?: readonly (readonly ChosenTarget[])[]
+  /** Per-mode DividedDamageEffect allocations (future). */
+  readonly modeDamageDistribution?: Record<number, Record<EntityId, number>>
+  /** Creatures tapped to pay Conspire's optional additional cost (two distinct IDs) */
+  readonly conspiredCreatures?: readonly EntityId[]
+  /** Creature sacrificed to pay Casualty's optional additional cost (one ID, power >= threshold) */
+  readonly casualtyCreature?: EntityId
+  /**
+   * For split-layout cards (Rooms, etc.): index into the card's `cardFaces` of the face being
+   * cast. Required for SPLIT cards; null/omitted for normal single-face cards.
+   */
+  readonly faceIndex?: number | null
+}
+
+export type PaymentStrategy =
+  | { readonly type: 'AutoPay' }
+  | { readonly type: 'FromPool' }
+  | {
+      readonly type: 'Explicit'
+      readonly manaAbilitiesToActivate: readonly EntityId[]
+      /** Multiset of Phyrexian pip colors paid with 2 life each. */
+      readonly phyrexianLifePayments?: readonly string[]
+    }
+
+// =============================================================================
+// Ability Actions
+// =============================================================================
+
+export interface ActivateAbilityAction {
+  readonly type: 'ActivateAbility'
+  readonly playerId: EntityId
+  readonly sourceId: EntityId
+  readonly abilityId: string
+  readonly targets?: readonly ChosenTarget[]
+  /** Payment choices for ability costs (sacrifice, etc.) */
+  readonly costPayment?: AdditionalCostPayment
+  /** Color chosen for "add one mana of any color" abilities */
+  readonly manaColorChoice?: string
+  /** Value of X for X-cost activated abilities */
+  readonly xValue?: number | null
+  /** Number of times to repeat this activation (for batch activation) */
+  readonly repeatCount?: number
+  readonly paymentStrategy?: PaymentStrategy
+  /** Alternative payment choices (e.g., convoke for abilities like Heirloom Epic) */
+  readonly alternativePayment?: AlternativePaymentChoice
+  /**
+   * Pre-chosen damage distribution for a "N damage divided as you choose" ability
+   * (target ID -> damage amount). Chosen as the ability is activated, not at resolution, so
+   * removal in response can't let the player re-divide (Chandra, Flameshaper's −4).
+   */
+  readonly damageDistribution?: Record<EntityId, number>
+}
+
+// =============================================================================
+// Cycling Actions
+// =============================================================================
+
+export interface CycleCardAction {
+  readonly type: 'CycleCard'
+  readonly playerId: EntityId
+  readonly cardId: EntityId
+  readonly paymentStrategy?: PaymentStrategy
+  /**
+   * Chosen X for an `{X}` cycling cost (Webstrike Elite's "Cycling {X}{G}{G}"), set by the
+   * xSelection pipeline phase. Omitted for ordinary cycling — and if omitted on an X cost, the
+   * engine raises its own ChooseNumber decision rather than defaulting X to 0.
+   */
+  readonly xValue?: number
+}
+
+export interface TypecycleCardAction {
+  readonly type: 'TypecycleCard'
+  readonly playerId: EntityId
+  readonly cardId: EntityId
+  readonly paymentStrategy?: PaymentStrategy
+}
+
+/**
+ * Plot a card from hand (CR 718, Outlaws of Thunder Junction).
+ * Sorcery-speed special action — pays the printed plot cost and exiles the card.
+ * The plotted card becomes castable for free from exile on a later turn.
+ */
+export interface PlotCardAction {
+  readonly type: 'PlotCard'
+  readonly playerId: EntityId
+  readonly cardId: EntityId
+  readonly paymentStrategy?: PaymentStrategy
+}
+
+/**
+ * Suspend a card from hand (CR 702.62, Time Spiral).
+ * Special action — pays the printed suspend cost and exiles the card with time counters.
+ * It counts down at the owner's upkeep and is cast for free when the last is removed.
+ */
+export interface SuspendCardFromHandAction {
+  readonly type: 'SuspendCardFromHand'
+  readonly playerId: EntityId
+  readonly cardId: EntityId
+  readonly paymentStrategy?: PaymentStrategy
+}
+
+// =============================================================================
+// Crew Actions
+// =============================================================================
+
+export interface CrewVehicleAction {
+  readonly type: 'CrewVehicle'
+  readonly playerId: EntityId
+  readonly vehicleId: EntityId
+  readonly crewCreatures: readonly EntityId[]
+}
+
+// =============================================================================
+// Saddle Actions
+// =============================================================================
+
+export interface SaddleMountAction {
+  readonly type: 'SaddleMount'
+  readonly playerId: EntityId
+  readonly mountId: EntityId
+  readonly saddleCreatures: readonly EntityId[]
+}
+
+// =============================================================================
+// Morph Actions
+// =============================================================================
+
+export interface TurnFaceUpAction {
+  readonly type: 'TurnFaceUp'
+  readonly playerId: EntityId
+  readonly sourceId: EntityId
+  readonly paymentStrategy?: PaymentStrategy
+  readonly costTargetIds?: readonly EntityId[]
+  readonly xValue?: number | null
+}
+
+// =============================================================================
+// Land Actions
+// =============================================================================
+
+export interface PlayLandAction {
+  readonly type: 'PlayLand'
+  readonly playerId: EntityId
+  readonly cardId: EntityId
+  /**
+   * Play a modal double-faced card as its back face (CR 712.12 — the Zendikar Rising Pathway
+   * cycle). The server sends one PlayLand action per land face; this is the flag that tells them
+   * apart. Absent for every ordinary land.
+   */
+  readonly asBackFace?: boolean
+}
+
+// =============================================================================
+// Combat Actions
+// =============================================================================
+
+export interface DeclareAttackersAction {
+  readonly type: 'DeclareAttackers'
+  readonly playerId: EntityId
+  readonly attackers: Record<EntityId, EntityId>  // attacker -> defending player
+  // Banding bands (CR 702.22): each set is one band of attacker IDs. Deserialized directly
+  // into the engine's DeclareAttackers.bands; omitted when no bands were formed.
+  readonly bands?: readonly (readonly EntityId[])[]
+}
+
+export interface DeclareBlockersAction {
+  readonly type: 'DeclareBlockers'
+  readonly playerId: EntityId
+  readonly blockers: Record<EntityId, readonly EntityId[]>  // blocker -> attackers
+}
+
+export interface OrderBlockersAction {
+  readonly type: 'OrderBlockers'
+  readonly playerId: EntityId
+  readonly attackerId: EntityId
+  readonly orderedBlockers: readonly EntityId[]
+}
+
+// =============================================================================
+// Decision Actions
+// =============================================================================
+
+export interface ChooseManaColorAction {
+  readonly type: 'ChooseManaColor'
+  readonly playerId: EntityId
+  readonly color: string
+}
+
+export interface DecisionResponse {
+  readonly decisionId: string
+  readonly selectedEntityIds?: readonly EntityId[]
+  readonly selectedIndex?: number
+  readonly confirmed?: boolean
+}
+
+export interface SubmitDecisionAction {
+  readonly type: 'SubmitDecision'
+  readonly playerId: EntityId
+  readonly response: DecisionResponse
+}
+
+// =============================================================================
+// Mulligan Actions
+// =============================================================================
+
+export interface TakeMulliganAction {
+  readonly type: 'TakeMulligan'
+  readonly playerId: EntityId
+}
+
+export interface KeepHandAction {
+  readonly type: 'KeepHand'
+  readonly playerId: EntityId
+}
+
+export interface BottomCardsAction {
+  readonly type: 'BottomCards'
+  readonly playerId: EntityId
+  readonly cardIds: readonly EntityId[]
+}
+
+// =============================================================================
+// Room Actions (CR 709.5e — special action, not the stack)
+// =============================================================================
+
+export interface UnlockRoomDoorAction {
+  readonly type: 'UnlockRoomDoor'
+  readonly playerId: EntityId
+  readonly roomId: EntityId
+  /**
+   * Face id of the locked door being unlocked. Backend `RoomFaceId` is a `@JvmInline value class`
+   * around a String, so kotlinx-serialization encodes it transparently as a JSON string.
+   * Currently the face's printed name (e.g., "Ritual Chamber").
+   */
+  readonly faceId: string
+  readonly paymentStrategy?: PaymentStrategy
+}
+
+// =============================================================================
+// Concession
+// =============================================================================
+
+export interface ConcedeAction {
+  readonly type: 'Concede'
+  readonly playerId: EntityId
+}
+
+// =============================================================================
+// Helper Functions
+// =============================================================================
+
+/**
+ * Get the action type for display.
+ */
+export function getActionDisplayName(action: GameAction): string {
+  return action.type
+}
+
+/**
+ * Check if an action requires target selection.
+ */
+export function actionRequiresTargets(action: GameAction): boolean {
+  if (action.type === 'CastSpell') {
+    return (action.targets?.length ?? 0) > 0
+  }
+  return false
+}
+
+/**
+ * Get the entity ID that this action primarily affects.
+ */
+export function getActionSubject(action: GameAction): EntityId | null {
+  switch (action.type) {
+    case 'PlayLand':
+      return action.cardId
+    case 'CastSpell':
+      return action.cardId
+    case 'CycleCard':
+      return action.cardId
+    case 'TypecycleCard':
+      return action.cardId
+    case 'PlotCard':
+      return action.cardId
+    case 'SuspendCardFromHand':
+      return action.cardId
+    case 'ActivateAbility':
+      return action.sourceId
+    case 'TurnFaceUp':
+      return action.sourceId
+    case 'CrewVehicle':
+      return action.vehicleId
+    case 'SaddleMount':
+      return action.mountId
+    case 'UnlockRoomDoor':
+      return action.roomId
+    default:
+      return null
+  }
+}

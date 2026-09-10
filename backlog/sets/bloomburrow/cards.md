@@ -1,0 +1,285 @@
+# Bloomburrow (BLB) - Card Checklist
+
+**Set Size:** 266 cards
+**Release Date:** August 2, 2024
+**Implemented:** 266 / 266
+
+| Color      | Total | Done |
+|------------|-------|------|
+| White      | 40    | 40   |
+| Blue       | 41    | 41   |
+| Black      | 40    | 40   |
+| Red        | 41    | 41   |
+| Green      | 41    | 41   |
+| Multicolor | 39    | 39   |
+| Colorless  | 9     | 9    |
+| Land       | 15    | 15   |
+
+---
+
+- [x] Agate Assault
+- [x] Agate-Blade Assassin
+- [x] Alania's Pathmaker
+- [x] Alania, Divergent Storm
+- [x] Artist's Talent
+- [x] Azure Beastbinder
+- [x] Bakersbane Duo
+- [x] Bandit's Talent
+- [x] Banishing Light
+- [x] Bark-Knuckle Boxer
+- [x] Barkform Harvester
+- [x] Baylen, the Haymaker
+- [x] Bellowing Crier
+- [x] Beza, the Bounding Spring
+- [x] Blacksmith's Talent
+- [x] Blooming Blast
+- [x] Bonebind Orator
+- [x] Bonecache Overseer
+- [x] Brambleguard Captain
+- [x] Brambleguard Veteran
+- [x] Brave-Kin Duo
+- [x] Brazen Collector
+- [x] Brightblade Stoat
+- [x] Builder's Talent
+- [x] Bumbleflower's Sharepot
+- [x] Burrowguard Mentor
+- [x] Bushy Bodyguard
+- [x] Byway Barterer
+- [x] Cache Grab
+- [x] Calamitous Tide
+- [x] Camellia, the Seedmiser
+- [x] Caretaker's Talent
+- [x] Carrot Cake
+- [x] Cindering Cutthroat
+- [x] Clement, the Worrywort
+- [x] Clifftop Lookout
+- [x] Coiling Rebirth
+- [x] Conduct Electricity
+- [x] Consumed by Greed
+- [x] Corpseberry Cultivator
+- [x] Coruscation Mage
+- [x] Cruelclaw's Heist
+- [x] Crumb and Get It
+- [x] Curious Forager
+- [x] Daggerfang Duo
+- [x] Daring Waverider
+- [x] Darkstar Augur
+- [x] Dawn's Truce
+- [x] Dazzling Denial
+- [x] Dewdrop Cure
+- [x] Dire Downdraft
+- [x] Diresight
+- [x] Dour Port-Mage
+- [x] Downwind Ambusher
+- [x] Dragonhawk, Fate's Tempest
+- [x] Dreamdew Entrancer
+- [x] Driftgloom Coyote
+- [x] Druid of the Spade
+- [x] Early Winter
+- [x] Eddymurk Crab
+- [x] Eluge, the Shoreless Sea
+- [x] Emberheart Challenger
+- [x] Essence Channeler
+- [x] Fabled Passage
+- [x] Feather of Flight
+- [x] Fecund Greenshell
+- [x] Feed the Cycle
+- [x] Fell
+- [x] Festival of Embers
+- [x] Finch Formation
+- [x] Finneas, Ace Archer
+- [x] Fireglass Mentor
+- [x] Flamecache Gecko
+- [x] Flowerfoot Swordmaster
+- [x] For the Common Good
+- [x] Forest
+- [x] Fountainport
+- [x] Fountainport Bell
+- [x] Frilled Sparkshooter
+- [x] Galewind Moose
+- [x] Gev, Scaled Scorch
+- [x] Glarb, Calamity's Augur
+- [x] Glidedive Duo
+- [x] Gossip's Talent
+- [x] Harnesser of Storms
+- [x] Harvestrite Host
+- [x] Hazardroot Herbalist
+- [x] Hazel's Nocturne
+- [x] Head of the Homestead
+- [x] Heaped Harvest
+- [x] Heartfire Hero
+- [x] Hearthborn Battler
+- [x] Heirloom Epic
+- [x] Helga, Skittish Seer
+- [x] Hidden Grotto
+- [x] High Stride
+- [x] Hired Claw
+- [x] Hivespine Wolverine
+- [x] Hoarder's Overflow
+- [x] Honored Dreyleader
+- [x] Hop to It
+- [x] Hugs, Grisly Guardian
+- [x] Hunter's Talent
+- [x] Huskburster Swarm
+- [x] Innkeeper's Talent
+- [x] Into the Flood Maw
+- [x] Intrepid Rabbit
+- [x] Iridescent Vinelasher
+- [x] Island
+- [x] Jackdaw Savior
+- [x] Jolly Gerbils
+- [x] Junkblade Bruiser
+- [x] Kastral, the Windcrested
+- [x] Keen-Eyed Curator
+- [x] Kindlespark Duo
+- [x] Kitnap
+- [x] Kitsa, Otterball Elite
+- [x] Knightfisher
+- [x] Lifecreed Duo
+- [x] Lightshell Duo
+- [x] Lilypad Village
+- [x] Lilysplash Mentor
+- [x] Long River Lurker
+- [x] Long River's Pull
+- [x] Longstalk Brawl
+- [x] Lumra, Bellow of the Woods
+- [x] Lunar Convocation
+- [x] Lupinflower Village
+- [x] Mabel's Mettle
+- [x] Mabel, Heir to Cragflame
+- [x] Maha, Its Feathers Night
+- [x] Manifold Mouse
+- [x] Might of the Meek
+- [x] Mind Drill Assailant
+- [x] Mind Spiral
+- [x] Mindwhisker
+- [x] Mistbreath Elder
+- [x] Mockingbird
+- [x] Moonrise Cleric
+- [x] Moonstone Harbinger
+- [x] Mountain
+- [x] Mouse Trapper
+- [x] Mudflat Village
+- [x] Muerra, Trash Tactician
+- [x] Nettle Guard
+- [x] Nightwhorl Hermit
+- [x] Nocturnal Hunger
+- [x] Oakhollow Village
+- [x] Osteomancer Adept
+- [x] Otterball Antics
+- [x] Overprotect
+- [x] Parting Gust
+- [x] Patchwork Banner
+- [x] Pawpatch Formation
+- [x] Pawpatch Recruit
+- [x] Pearl of Wisdom
+- [x] Peerless Recycling
+- [x] Persistent Marshstalker
+- [x] Pileated Provisioner
+- [x] Plains
+- [x] Playful Shove
+- [x] Plumecreed Escort
+- [x] Plumecreed Mentor
+- [x] Polliwallop
+- [x] Pond Prophet
+- [x] Portent of Calamity
+- [x] Psychic Whorl
+- [x] Quaketusk Boar
+- [x] Rabbit Response
+- [x] Rabid Gnaw
+- [x] Raccoon Rallier
+- [x] Ral, Crackling Wit
+- [x] Ravine Raider
+- [x] Repel Calamity
+- [x] Reptilian Recruiter
+- [x] Rockface Village
+- [x] Rottenmouth Viper
+- [x] Roughshod Duo
+- [x] Run Away Together
+- [x] Rust-Shield Rampager
+- [x] Ruthless Negotiation
+- [x] Salvation Swan
+- [x] Savor
+- [x] Sazacap's Brew
+- [x] Scales of Shale
+- [x] Scavenger's Talent
+- [x] Scrapshooter
+- [x] Season of Gathering
+- [x] Season of Loss
+- [x] Season of Weaving
+- [x] Season of the Bold
+- [x] Season of the Burrow
+- [x] Seasoned Warrenguard
+- [x] Seedglaive Mentor
+- [x] Seedpod Squire
+- [x] Shore Up
+- [x] Shoreline Looter
+- [x] Short Bow
+- [x] Shrike Force
+- [x] Sinister Monolith
+- [x] Skyskipper Duo
+- [x] Sonar Strike
+- [x] Spellgyre
+- [x] Splash Lasher
+- [x] Splash Portal
+- [x] Star Charter
+- [x] Starfall Invocation
+- [x] Starforged Sword
+- [x] Stargaze
+- [x] Starlit Soothsayer
+- [x] Starscape Cleric
+- [x] Starseer Mentor
+- [x] Steampath Charger
+- [x] Stickytongue Sentinel
+- [x] Stocking the Pantry
+- [x] Stormcatch Mentor
+- [x] Stormchaser's Talent
+- [x] Stormsplitter
+- [x] Sugar Coat
+- [x] Sunshower Druid
+- [x] Sunspine Lynx
+- [x] Swamp
+- [x] Take Out the Trash
+- [x] Tangle Tumbler
+- [x] Teapot Slinger
+- [x] Tempest Angler
+- [x] Tender Wildguide
+- [x] The Infamous Cruelclaw
+- [x] Thistledown Players
+- [x] Thornplate Intimidator
+- [x] Thornvault Forager
+- [x] Thought Shucker
+- [x] Thought-Stalker Warlock
+- [x] Three Tree City
+- [x] Three Tree Mascot
+- [x] Three Tree Rootweaver
+- [x] Three Tree Scribe
+- [x] Thundertrap Trainer
+- [x] Tidecaller Mentor
+- [x] Treeguard Duo
+- [x] Treetop Sentries
+- [x] Uncharted Haven
+- [x] Valley Flamecaller
+- [x] Valley Floodcaller
+- [x] Valley Mightcaller
+- [x] Valley Questcaller
+- [x] Valley Rally
+- [x] Valley Rotcaller
+- [x] Veteran Guardmouse
+- [x] Vinereap Mentor
+- [x] Vren, the Relentless
+- [x] Wandertale Mentor
+- [x] War Squeak
+- [x] Warren Elder
+- [x] Warren Warleader
+- [x] Waterspout Warden
+- [x] Wax-Wane Witness
+- [x] Wear Down
+- [x] Whiskerquill Scribe
+- [x] Whiskervale Forerunner
+- [x] Wick's Patrol
+- [x] Wick, the Whorled Mind
+- [x] Wildfire Howl
+- [x] Wishing Well
+- [x] Ygra, Eater of All
+- [x] Zoraline, Cosmos Caller

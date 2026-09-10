@@ -1,0 +1,321 @@
+// Armored Wolf-Rider
+{
+    "name": "Armored Wolf-Rider",
+    "manaCost": "{3}{G}{W}",
+    "typeLine": "Creature — Elf Knight",
+    "creatureStats": {
+        "power": 4,
+        "toughness": 6
+    },
+    "metadata": {
+        "collectorNumber": "52",
+        "artist": "Matt Stewart",
+        "flavorText": "Wolf-riders of Selesnya apprentice from a young age. Each rider raises a wolf pup from birth to serve as a mount, hoping that one day the two will share the honor of guarding the Great Concourse.",
+        "imageUri": "https://cards.scryfall.io/normal/front/e/4/e43d959f-6055-4578-a69a-0ec93e993e21.jpg?1783940033"
+    },
+    "colorIdentityOverride": [
+        "WHITE",
+        "GREEN"
+    ]
+}
+
+// Bane Alley Blackguard
+{
+    "name": "Bane Alley Blackguard",
+    "manaCost": "{1}{B}",
+    "typeLine": "Creature — Human Rogue",
+    "creatureStats": {
+        "power": 1,
+        "toughness": 3
+    },
+    "metadata": {
+        "collectorNumber": "21",
+        "artist": "Mike Bierek",
+        "flavorText": "\"I'm in the field of procurement, and business is good. The guilds want all kinds of maps and relics these days, though what they want them for I'm not quite sure.\"",
+        "imageUri": "https://cards.scryfall.io/normal/front/1/5/15fcad03-4567-4f96-976e-01a07d8ab050.jpg?1783940040"
+    },
+    "colorIdentityOverride": [
+        "BLACK"
+    ]
+}
+
+// Clear a Path
+{
+    "name": "Clear a Path",
+    "manaCost": "{R}",
+    "typeLine": "Sorcery",
+    "oracleText": "Destroy target creature with defender.",
+    "script": {
+        "spellEffect": {
+            "type": "MoveToZone",
+            "target": {
+                "type": "BoundVariable",
+                "name": "target creature with defender"
+            },
+            "destination": "Graveyard",
+            "byDestruction": true
+        },
+        "targetRequirements": [
+            {
+                "type": "TargetObject",
+                "filter": {
+                    "baseFilter": "creature kw:defender"
+                },
+                "id": "target creature with defender"
+            }
+        ]
+    },
+    "metadata": {
+        "collectorNumber": "32",
+        "artist": "Karl Kopinski",
+        "flavorText": "\"Why do guards always look surprised when we bash them?\" asked Ruric. \"I think they expect a bribe,\" said Thar.",
+        "imageUri": "https://cards.scryfall.io/normal/front/8/a/8a8f904b-a9a3-4bae-9284-4e9cbe7592ee.jpg?1783940038"
+    },
+    "colorIdentityOverride": [
+        "RED"
+    ]
+}
+
+// Kraul Warrior
+{
+    "name": "Kraul Warrior",
+    "manaCost": "{1}{G}",
+    "typeLine": "Creature — Insect Warrior",
+    "oracleText": "{5}{G}: This creature gets +3/+3 until end of turn.",
+    "creatureStats": {
+        "power": 2,
+        "toughness": 2
+    },
+    "script": {
+        "activatedAbilities": [
+            {
+                "id": "ability_1",
+                "cost": {
+                    "type": "CostAtomWrapper",
+                    "atom": {
+                        "type": "AtomMana",
+                        "cost": "{5}{G}"
+                    }
+                },
+                "effect": {
+                    "type": "ModifyStats",
+                    "powerModifier": {
+                        "type": "Fixed",
+                        "amount": 3
+                    },
+                    "toughnessModifier": {
+                        "type": "Fixed",
+                        "amount": 3
+                    },
+                    "target": "Self"
+                }
+            }
+        ]
+    },
+    "metadata": {
+        "collectorNumber": "42",
+        "artist": "David Rapoza",
+        "flavorText": "The insectile kraul lurk in the tunnels below street level. Many are loyal to the Golgari Swarm, but others follow their own esoteric caste system.",
+        "imageUri": "https://cards.scryfall.io/normal/front/f/7/f71da8cc-8773-4dcb-aca8-50a000142218.jpg?1783940036"
+    },
+    "colorIdentityOverride": [
+        "GREEN"
+    ]
+}
+
+// Maze's End
+{
+    "name": "Maze's End",
+    "manaCost": "",
+    "typeLine": "Land",
+    "oracleText": "This land enters tapped.\n{T}: Add {C}.\n{3}, {T}, Return this land to its owner's hand: Search your library for a Gate card, put it onto the battlefield, then shuffle. If you control ten or more Gates with different names, you win the game.",
+    "script": {
+        "activatedAbilities": [
+            {
+                "id": "ability_1",
+                "cost": "CostTap",
+                "effect": {
+                    "type": "AddColorlessMana",
+                    "amount": {
+                        "type": "Fixed",
+                        "amount": 1
+                    }
+                },
+                "timing": "ManaAbility",
+                "isManaAbility": true
+            },
+            {
+                "id": "ability_2",
+                "cost": {
+                    "type": "CostComposite",
+                    "costs": [
+                        {
+                            "type": "CostAtomWrapper",
+                            "atom": {
+                                "type": "AtomMana",
+                                "cost": "{3}"
+                            }
+                        },
+                        "CostTap",
+                        "CostReturnSelfToHand"
+                    ]
+                },
+                "effect": {
+                    "type": "Composite",
+                    "effects": [
+                        {
+                            "type": "Composite",
+                            "effects": [
+                                {
+                                    "type": "GatherCards",
+                                    "source": {
+                                        "type": "FromZone",
+                                        "zone": "Library",
+                                        "filter": "land Gate"
+                                    },
+                                    "storeAs": "searchable"
+                                },
+                                {
+                                    "type": "SelectFromCollection",
+                                    "from": "searchable",
+                                    "selection": {
+                                        "type": "ChooseUpTo",
+                                        "count": {
+                                            "type": "Fixed",
+                                            "amount": 1
+                                        }
+                                    },
+                                    "storeSelected": "found"
+                                },
+                                {
+                                    "type": "MoveCollection",
+                                    "from": "found",
+                                    "destination": {
+                                        "type": "ToZone",
+                                        "zone": "Battlefield"
+                                    }
+                                },
+                                "ShuffleLibrary",
+                                "EmitLibrarySearchedEvent"
+                            ]
+                        },
+                        {
+                            "type": "Gated",
+                            "gate": {
+                                "type": "Gate.WhenCondition",
+                                "condition": {
+                                    "type": "Compare",
+                                    "left": {
+                                        "type": "AggregateBattlefield",
+                                        "player": "You",
+                                        "filter": "land Gate",
+                                        "aggregation": "DISTINCT_NAMES"
+                                    },
+                                    "operator": "GTE",
+                                    "right": {
+                                        "type": "Fixed",
+                                        "amount": 10
+                                    }
+                                }
+                            },
+                            "then": "WinGame"
+                        }
+                    ]
+                }
+            }
+        ],
+        "replacementEffects": [
+            "EntersTapped"
+        ]
+    },
+    "metadata": {
+        "collectorNumber": "152",
+        "rarity": "MYTHIC",
+        "artist": "Cliff Childs",
+        "imageUri": "https://cards.scryfall.io/normal/front/4/0/401f7042-24fd-42a0-ae7c-e6b7de1aa446.jpg?1783940010",
+        "rulings": [
+            {
+                "date": "2013-04-15",
+                "text": "Returning Maze's End to its owner's hand is part of the cost to activate its last ability. Once that ability is announced, players can't respond to it until after you've paid its activation cost and returned Maze's End to hand."
+            },
+            {
+                "date": "2013-04-15",
+                "text": "When the last ability of Maze's End resolves, you'll search for a Gate and put it onto the battlefield before checking to see if you win the game. This check will happen even if you don't put a Gate onto the battlefield this way. This check will happen only as the ability resolves, not at other times."
+            },
+            {
+                "date": "2013-04-15",
+                "text": "Putting a Gate onto the battlefield with Maze's End doesn't count as the one land you can play during your turn. If it's your turn, you can play Maze's End or a different land card from your hand after its ability has resolved."
+            },
+            {
+                "date": "2013-04-15",
+                "text": "Controlling multiple Gates with the same name has no effect on your ability to win the game with Maze's End. The excess Gates are simply ignored."
+            }
+        ]
+    }
+}
+
+// Murmuring Phantasm
+{
+    "name": "Murmuring Phantasm",
+    "manaCost": "{1}{U}",
+    "typeLine": "Creature — Spirit",
+    "oracleText": "Defender",
+    "creatureStats": {
+        "power": 0,
+        "toughness": 5
+    },
+    "keywords": [
+        "DEFENDER"
+    ],
+    "metadata": {
+        "collectorNumber": "15",
+        "artist": "Peter Mohrbacher",
+        "flavorText": "\"The most insidious thing in the world is nonsense that sounds just plausible enough to listen to.\"\n—Lazav",
+        "imageUri": "https://cards.scryfall.io/normal/front/9/7/9752644c-7c43-429e-a79c-1239b9a0bc8a.jpg?1783940041"
+    },
+    "colorIdentityOverride": [
+        "BLUE"
+    ]
+}
+
+// Unflinching Courage
+{
+    "name": "Unflinching Courage",
+    "manaCost": "{1}{G}{W}",
+    "typeLine": "Enchantment — Aura",
+    "oracleText": "Enchant creature\nEnchanted creature gets +2/+2 and has trample and lifelink. (Damage dealt by the creature also causes its controller to gain that much life.)",
+    "script": {
+        "staticAbilities": [
+            {
+                "type": "ModifyStats",
+                "powerBonus": 2,
+                "toughnessBonus": 2
+            },
+            {
+                "type": "GrantKeyword",
+                "keyword": "TRAMPLE"
+            },
+            {
+                "type": "GrantKeyword",
+                "keyword": "LIFELINK"
+            }
+        ],
+        "auraTarget": {
+            "type": "TargetObject",
+            "filter": {
+                "baseFilter": "creature"
+            }
+        }
+    },
+    "metadata": {
+        "collectorNumber": "111",
+        "rarity": "UNCOMMON",
+        "artist": "Mike Bierek",
+        "flavorText": "As Trostani's influence grew, vitality spread through the Conclave—much to the other guilds' dismay.",
+        "imageUri": "https://cards.scryfall.io/normal/front/3/5/35952c24-d728-4ec6-b0d1-b8183a18554a.jpg"
+    },
+    "colorIdentityOverride": [
+        "WHITE",
+        "GREEN"
+    ]
+}

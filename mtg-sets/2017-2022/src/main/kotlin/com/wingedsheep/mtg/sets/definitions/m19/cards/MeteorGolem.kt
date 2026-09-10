@@ -1,0 +1,40 @@
+package com.wingedsheep.mtg.sets.definitions.m19.cards
+
+import com.wingedsheep.sdk.core.Zone
+import com.wingedsheep.sdk.dsl.Effects
+import com.wingedsheep.sdk.dsl.Triggers
+import com.wingedsheep.sdk.dsl.card
+import com.wingedsheep.sdk.model.Rarity
+import com.wingedsheep.sdk.scripting.filters.unified.TargetFilter
+import com.wingedsheep.sdk.scripting.targets.TargetPermanent
+
+
+/**
+ * Meteor Golem
+ * {7}
+ * Artifact Creature — Golem
+ * 3/3
+ * When this creature enters, destroy target nonland permanent an opponent controls.
+ */
+val MeteorGolem = card("Meteor Golem") {
+    manaCost = "{7}"
+    colorIdentity = ""
+    typeLine = "Artifact Creature — Golem"
+    oracleText = "When this creature enters, destroy target nonland permanent an opponent controls."
+    power = 3
+    toughness = 3
+    triggeredAbility {
+        trigger = Triggers.EntersBattlefield
+        // "an opponent controls" is part of the printed text, not flavour: without it the golem
+        // can be pointed at your own board, and the engine would offer those as legal targets.
+        val t = target("target", TargetPermanent(filter = TargetFilter.NonlandPermanentOpponentControls))
+        effect = Effects.Move(t, Zone.GRAVEYARD, byDestruction = true)
+    }
+    metadata {
+        rarity = Rarity.UNCOMMON
+        collectorNumber = "241"
+        artist = "Lake Hurwitz"
+        flavorText = "The impact sent the soldiers scattering—then something came out of the crater."
+        imageUri = "https://cards.scryfall.io/normal/front/1/b/1bdb0b15-d651-4730-8be9-d0e01145311b.jpg"
+    }
+}

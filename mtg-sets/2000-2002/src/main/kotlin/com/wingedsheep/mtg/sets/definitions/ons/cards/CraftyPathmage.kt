@@ -1,0 +1,38 @@
+package com.wingedsheep.mtg.sets.definitions.ons.cards
+
+import com.wingedsheep.sdk.core.AbilityFlag
+import com.wingedsheep.sdk.dsl.Costs
+import com.wingedsheep.sdk.dsl.Targets
+import com.wingedsheep.sdk.dsl.card
+import com.wingedsheep.sdk.model.Rarity
+import com.wingedsheep.sdk.scripting.effects.GrantKeywordEffect
+
+/**
+ * Crafty Pathmage
+ * {2}{U}
+ * Creature — Human Wizard
+ * 1/1
+ * {T}: Target creature with power 2 or less can't be blocked this turn.
+ */
+val CraftyPathmage = card("Crafty Pathmage") {
+    manaCost = "{2}{U}"
+    colorIdentity = "U"
+    typeLine = "Creature — Human Wizard"
+    power = 1
+    toughness = 1
+    oracleText = "{T}: Target creature with power 2 or less can't be blocked this turn."
+
+    activatedAbility {
+        cost = Costs.Tap
+        val t = target("target", Targets.CreatureWithPowerAtMost(2))
+        effect = GrantKeywordEffect(AbilityFlag.CANT_BE_BLOCKED.name, t)
+    }
+
+    metadata {
+        rarity = Rarity.COMMON
+        collectorNumber = "77"
+        artist = "Wayne England"
+        flavorText = "\"If you want to get from here to there without being seen, I'm the one to call.\""
+        imageUri = "https://cards.scryfall.io/normal/front/c/5/c5d91378-f831-40ef-a79b-b044af1470e0.jpg?1562941736"
+    }
+}

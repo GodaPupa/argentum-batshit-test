@@ -1,0 +1,51 @@
+package com.wingedsheep.mtg.sets.definitions.ons.cards
+
+import com.wingedsheep.sdk.core.Keyword
+import com.wingedsheep.sdk.dsl.Targets
+import com.wingedsheep.sdk.dsl.card
+import com.wingedsheep.sdk.model.Rarity
+import com.wingedsheep.sdk.scripting.targets.EffectTarget
+import com.wingedsheep.sdk.scripting.effects.GrantKeywordEffect
+import com.wingedsheep.sdk.scripting.filters.unified.GroupFilter
+import com.wingedsheep.sdk.scripting.KeywordAbility
+import com.wingedsheep.sdk.scripting.effects.MayEffect
+import com.wingedsheep.sdk.dsl.Triggers
+import com.wingedsheep.sdk.dsl.Effects
+
+/**
+ * Dirge of Dread
+ * {2}{B}
+ * Sorcery
+ * All creatures gain fear until end of turn.
+ * Cycling {1}{B}
+ * When you cycle Dirge of Dread, you may have target creature gain fear until end of turn.
+ */
+val DirgeOfDread = card("Dirge of Dread") {
+    manaCost = "{2}{B}"
+    colorIdentity = "B"
+    typeLine = "Sorcery"
+    oracleText = "All creatures gain fear until end of turn.\nCycling {1}{B}\nWhen you cycle Dirge of Dread, you may have target creature gain fear until end of turn."
+
+    spell {
+        effect = Effects.ForEachInGroup(
+            filter = GroupFilter.AllCreatures,
+            effect = GrantKeywordEffect(Keyword.FEAR, EffectTarget.Self)
+        )
+    }
+
+    keywordAbility(KeywordAbility.cycling("{1}{B}"))
+
+    triggeredAbility {
+        trigger = Triggers.YouCycleThis
+        val t = target("target", Targets.Creature)
+        effect = MayEffect(GrantKeywordEffect(Keyword.FEAR, t))
+    }
+
+    metadata {
+        rarity = Rarity.COMMON
+        collectorNumber = "138"
+        artist = "Heather Hudson"
+        flavorText = "It puts the \"fun\" in \"funeral.\""
+        imageUri = "https://cards.scryfall.io/normal/front/8/4/8496e9c2-4c13-4307-bda7-b88512a21a6a.jpg?1562926208"
+    }
+}

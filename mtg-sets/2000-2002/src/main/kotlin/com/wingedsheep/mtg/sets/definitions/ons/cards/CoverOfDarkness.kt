@@ -1,0 +1,36 @@
+package com.wingedsheep.mtg.sets.definitions.ons.cards
+
+import com.wingedsheep.sdk.core.Keyword
+import com.wingedsheep.sdk.dsl.card
+import com.wingedsheep.sdk.model.Rarity
+import com.wingedsheep.sdk.scripting.ChoiceType
+import com.wingedsheep.sdk.scripting.EntersWithChoice
+import com.wingedsheep.sdk.scripting.GrantKeyword
+import com.wingedsheep.sdk.scripting.filters.unified.GroupFilter
+
+/**
+ * Cover of Darkness
+ * {1}{B}
+ * Enchantment
+ * As Cover of Darkness enters the battlefield, choose a creature type.
+ * Creatures of the chosen type have fear.
+ */
+val CoverOfDarkness = card("Cover of Darkness") {
+    manaCost = "{1}{B}"
+    colorIdentity = "B"
+    typeLine = "Enchantment"
+    oracleText = "As Cover of Darkness enters the battlefield, choose a creature type.\nCreatures of the chosen type have fear."
+
+    replacementEffect(EntersWithChoice(ChoiceType.CREATURE_TYPE))
+
+    staticAbility {
+        ability = GrantKeyword(Keyword.FEAR, GroupFilter.ChosenSubtypeCreatures())
+    }
+
+    metadata {
+        rarity = Rarity.RARE
+        collectorNumber = "133"
+        artist = "Kev Walker"
+        imageUri = "https://cards.scryfall.io/normal/front/0/d/0d6d7d88-d82b-40f4-bf57-ec5d7c480689.jpg?1562898088"
+    }
+}

@@ -1,0 +1,50 @@
+name: Batshit Preboard Smoke
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - 'smoke/**'
+
+permissions:
+  contents: read
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Java 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '9.6.1'
+
+      - name: Run 100 frozen-seed preboard games
+        env:
+          BATSHIT_SMOKE: "true"
+        run: |
+          set -o pipefail
+          scripts/test-class BatshitEconomicsPreboardSmokeTest \
+            --info \
+            --stacktrace | tee batshit-preboard-smoke.log
+
+      - name: Upload full game log
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: batshit-preboard-smoke-log
+          path: |
+            batshit-preboard-smoke.log
+            gym/build/reports/batshit-smoke/preboard.log
+            gym/src/test/resources/batshit-preboard-experiment-v2-seeds.csv
+          if-no-files-found: warn

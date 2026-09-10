@@ -1,0 +1,633 @@
+package com.wingedsheep.engine.handlers.continuations
+
+import com.wingedsheep.engine.core.*
+import com.wingedsheep.engine.state.GameState
+import com.wingedsheep.engine.state.components.identity.CardComponent
+import com.wingedsheep.engine.state.components.stack.ChosenTarget
+import com.wingedsheep.engine.state.components.stack.TriggeredAbilityOnStackComponent
+import com.wingedsheep.sdk.scripting.effects.CompositeEffect
+import com.wingedsheep.sdk.scripting.effects.DividedDamageEffect
+import com.wingedsheep.engine.handlers.effects.composite.asMayDecide
+import com.wingedsheep.sdk.scripting.effects.Effect
+import com.wingedsheep.sdk.scripting.effects.Gate
+import com.wingedsheep.sdk.scripting.targets.TargetRequirement
+import com.wingedsheep.sdk.scripting.targets.withCount
+
+/**
+ * Handles core effect and trigger resumption:
+ * - EffectContinuation (composite effect pipelines)
+ * - TriggeredAbilityContinuation (target selection for triggered abilities)
+ * - ResolveSpellContinuation (no-op marker)
+ * - MayAbilityContinuation (yes/no for may effects)
+ * - MayTriggerContinuation (yes/no for may triggers with targets)
+ */
+class EffectAndTriggerContinuationResumer(
+    private val services: com.wingedsheep.engine.core.EngineServices,
+    private val effectRunner: EffectContinuationRunner
+) : ContinuationResumerModule {
+
+    override fun resumers(): List<ContinuationResumer<*>> = listOf(
+        resumer(TriggeredAbilityContinuation::class, ::resumeTriggeredAbility),
+        resumer(TriggerDamageDistributionContinuation::class, ::resumeTriggerDamageDistribution),
+        resumer(ResolveSpellContinuation::class) { state, _, _, _ ->
+            ExecutionResult.success(state)
+        },
+        resumer(MayAbilityContinuation::class, ::resumeMayAbility),
+        resumer(GatedEffectContinuation::class, ::resumeGatedEffect),
+        resumer(MayRevealCardFromHandContinuation::class, ::resumeMayRevealCardFromHand),
+        resumer(BeholdContinuation::class, ::resumeBehold),
+        resumer(MayTriggerContinuation::class, ::resumeMayTrigger),
+        resumer(TriggerOpponentChooserContinuation::class, ::resumeTriggerOpponentChooser),
+        resumer(BatchMayTriggerContinuation::class, ::resumeBatchMayTrigger)
+    )
+
+
+
+    private fun resumeTriggeredAbility(
+        state: GameState,
+        continuation: TriggeredAbilityContinuation,
+        response: DecisionResponse,
+        checkForMore: CheckForMore
+    ): ExecutionResult {
+        if (response !is TargetsResponse) {
+            return ExecutionResult.error(state, "Expected target selection response for triggered ability")
+        }
+
+        // Build the chosen-targets list in requirement-slot order, keeping it PARALLEL to the
+        // requirements that actually received a target. A declined "up to one" slot (empty list)
+        // drops out of BOTH lists together, so a later target never shifts forward into an earlier
+        // requirement's position. Without this, exiling only a creature with Don & Leo, Problem
+        // Solvers (declining the "up to one artifact" slot) validated the creature against the
+        // artifact requirement at resolution and fizzled with "all targets invalid" (CR 608.2b).
+        //
+        // Each kept requirement is also narrowed (`withCount`) to the number of targets actually
+        // chosen for its slot: the downstream index walks (StackResolver.getRequirementForTargetIndex,
+        // EffectContext.buildNamedTargets) advance by `count`, so a partially filled "up to two"
+        // slot left at its declared max would absorb the next slot's target into its own range and
+        // validate it against the wrong filter.
+        val orderedSlots = response.selectedTargets.entries.sortedBy { it.key }
+        val selectedTargets = mutableListOf<ChosenTarget>()
+        val alignedRequirements = mutableListOf<TargetRequirement>()
+        for ((slotIndex, targetIds) in orderedSlots) {
+            if (targetIds.isEmpty()) continue
+            targetIds.forEach { entityId -> selectedTargets.add(entityIdToChosenTarget(state, entityId)) }
+            continuation.targetRequirements.getOrNull(slotIndex)
+                ?.let { alignedRequirements.add(it.withCount(targetIds.size)) }
+        }
+
+        // Zero-target resolution path. Two cases:
+        //  - `elseEffect != null`: the ability has explicit "...; otherwise, X" wording —
+        //    swap to that effect (Conditional/elseEffect pattern).
+        //  - `elseEffect == null`: the player declined an "up to N" optional target. The
+        //    ability still resolves with no targets; non-target portions of the effect
+        //    (e.g. Samwise's "Then the Ring tempts you" sibling) MUST still execute.
+        //    Fall through to the regular put-on-stack path with `selectedTargets = []`.
+        if (selectedTargets.isEmpty() && continuation.elseEffect != null) {
+            val elseComponent = TriggeredAbilityOnStackComponent(
+                sourceId = continuation.sourceId,
+                sourceName = continuation.sourceName,
+                sourceBattlefieldTimestamp = continuation.sourceBattlefieldTimestamp,
+                objectReferences = continuation.objectReferences,
+                controllerId = continuation.controllerId,
+                effect = continuation.elseEffect,
+                description = continuation.description,
+                abilityIdentity = continuation.abilityIdentity,
+                triggerDamageAmount = continuation.triggerDamageAmount,
+                triggeringEntityId = continuation.triggeringEntityId,
+                triggeringPlayerId = continuation.triggeringPlayerId,
+                triggerCounterCount = continuation.triggerCounterCount,
+                triggerTotalCounterCount = continuation.triggerTotalCounterCount,
+                triggerLastKnownCounters = continuation.triggerLastKnownCounters,
+                triggerLastKnownSubtypes = continuation.triggerLastKnownSubtypes,
+                triggerLastKnownCardTypes = continuation.triggerLastKnownCardTypes,
+                triggerLastKnownDamageDealtByPlayers = continuation.triggerLastKnownDamageDealtByPlayers,
+                triggerLastKnownBlockingOrBlockedByIds = continuation.triggerLastKnownBlockingOrBlockedByIds,
+                lastKnownPower = continuation.lastKnownPower,
+                lastKnownToughness = continuation.lastKnownToughness,
+                diedBatchTotalPower = continuation.diedBatchTotalPower,
+                triggerScryCount = continuation.triggerScryCount,
+                triggerClashWon = continuation.triggerClashWon,
+                triggerDiscardCount = continuation.triggerDiscardCount,
+                triggerDiscoverValue = continuation.triggerDiscoverValue,
+                triggerExcessDamageAmount = continuation.triggerExcessDamageAmount,
+                triggerRecipientToughness = continuation.triggerRecipientToughness,
+                triggerManaSpentOnTriggeringSpell = continuation.triggerManaSpentOnTriggeringSpell,
+                triggerColorsSpentOnTriggeringSpell = continuation.triggerColorsSpentOnTriggeringSpell,
+                triggerManaValueOfTriggeringSpell = continuation.triggerManaValueOfTriggeringSpell,
+                triggerXValueOfTriggeringSpell = continuation.triggerXValueOfTriggeringSpell,
+                xValue = continuation.xValue,
+                carriedPipeline = continuation.carriedPipeline,
+                interveningIf = continuation.interveningIf
+            )
+            val stackResult = services.stackResolver.putTriggeredAbility(state, elseComponent, emptyList())
+            if (!stackResult.isSuccess) return stackResult
+            return checkForMore(stackResult.newState, stackResult.events.toList())
+        }
+
+        // Check if this is a DividedDamageEffect with multiple targets — need distribution.
+        // A dynamicTotal (e.g. Ureni — "X = lands you control") is evaluated now, as the ability
+        // goes on the stack, so the player divides the correct amount among the chosen targets.
+        val effect = continuation.effect
+        if (effect is DividedDamageEffect && selectedTargets.size > 1) {
+            val total = effect.dynamicTotal?.let {
+                com.wingedsheep.engine.handlers.DynamicAmountEvaluator().evaluate(
+                    state,
+                    it,
+                    com.wingedsheep.engine.handlers.EffectContext(
+                        sourceId = continuation.sourceId,
+            objectReferences = continuation.objectReferences,
+                        controllerId = continuation.controllerId,
+                    )
+                )
+            } ?: effect.totalDamage
+            return createTriggerDamageDistributionDecision(
+                state, continuation, selectedTargets, total, checkForMore
+            )
+        }
+
+        val abilityComponent = TriggeredAbilityOnStackComponent(
+            sourceId = continuation.sourceId,
+            sourceName = continuation.sourceName,
+            sourceBattlefieldTimestamp = continuation.sourceBattlefieldTimestamp,
+            objectReferences = continuation.objectReferences,
+            controllerId = continuation.controllerId,
+            effect = continuation.effect,
+            description = continuation.description,
+            abilityIdentity = continuation.abilityIdentity,
+            triggerDamageAmount = continuation.triggerDamageAmount,
+            triggeringEntityId = continuation.triggeringEntityId,
+            triggeringPlayerId = continuation.triggeringPlayerId,
+            triggerCounterCount = continuation.triggerCounterCount,
+            triggerTotalCounterCount = continuation.triggerTotalCounterCount,
+            triggerLastKnownCounters = continuation.triggerLastKnownCounters,
+            triggerLastKnownSubtypes = continuation.triggerLastKnownSubtypes,
+            triggerLastKnownCardTypes = continuation.triggerLastKnownCardTypes,
+            triggerLastKnownDamageDealtByPlayers = continuation.triggerLastKnownDamageDealtByPlayers,
+            triggerLastKnownBlockingOrBlockedByIds = continuation.triggerLastKnownBlockingOrBlockedByIds,
+            lastKnownPower = continuation.lastKnownPower,
+            lastKnownToughness = continuation.lastKnownToughness,
+            diedBatchTotalPower = continuation.diedBatchTotalPower,
+            triggerModesChosenCount = continuation.triggerModesChosenCount,
+            enchantedCreatureLastKnownPower = continuation.enchantedCreatureLastKnownPower,
+            triggerScryCount = continuation.triggerScryCount,
+            triggerClashWon = continuation.triggerClashWon,
+            triggerDiscardCount = continuation.triggerDiscardCount,
+            triggerDiscoverValue = continuation.triggerDiscoverValue,
+            triggerExcessDamageAmount = continuation.triggerExcessDamageAmount,
+            triggerRecipientToughness = continuation.triggerRecipientToughness,
+            triggerManaSpentOnTriggeringSpell = continuation.triggerManaSpentOnTriggeringSpell,
+            triggerColorsSpentOnTriggeringSpell = continuation.triggerColorsSpentOnTriggeringSpell,
+            triggerManaValueOfTriggeringSpell = continuation.triggerManaValueOfTriggeringSpell,
+            triggerXValueOfTriggeringSpell = continuation.triggerXValueOfTriggeringSpell,
+            xValue = continuation.xValue,
+            carriedPipeline = continuation.carriedPipeline,
+            // A batch trigger's captured objects survive the target-selection pause, so a payoff
+            // that says "from among them" still finds them (CR 603.2c) — Kaya, Spirits' Justice
+            // is a batch trigger that also targets.
+            capturedEntityIds = continuation.capturedEntityIds,
+            interveningIf = continuation.interveningIf
+        )
+
+        val stackResult = services.stackResolver.putTriggeredAbility(
+            state, abilityComponent, selectedTargets, alignedRequirements
+        )
+
+        if (!stackResult.isSuccess) {
+            return stackResult
+        }
+
+        return checkForMore(stackResult.newState, stackResult.events.toList())
+    }
+
+    /**
+     * After targets are selected for a triggered ability with DividedDamageEffect,
+     * pause to ask how to distribute damage among the chosen targets.
+     */
+    private fun createTriggerDamageDistributionDecision(
+        state: GameState,
+        continuation: TriggeredAbilityContinuation,
+        selectedTargets: List<com.wingedsheep.engine.state.components.stack.ChosenTarget>,
+        totalDamage: Int,
+        checkForMore: CheckForMore
+    ): ExecutionResult {
+        val sourceName = continuation.sourceId.let { sourceId ->
+            state.getEntity(sourceId)?.get<CardComponent>()?.name
+        } ?: continuation.sourceName
+
+        val targetEntityIds = selectedTargets.map { target ->
+            when (target) {
+                is com.wingedsheep.engine.state.components.stack.ChosenTarget.Player -> target.playerId
+                is com.wingedsheep.engine.state.components.stack.ChosenTarget.Permanent -> target.entityId
+                is com.wingedsheep.engine.state.components.stack.ChosenTarget.Card -> target.cardId
+                is com.wingedsheep.engine.state.components.stack.ChosenTarget.Spell -> target.spellEntityId
+            }
+        }
+        val question = { decisionId: String -> DistributeDecision(
+            id = decisionId,
+            playerId = continuation.controllerId,
+            prompt = "Divide $totalDamage damage among ${selectedTargets.size} targets",
+            context = DecisionContext(
+                sourceId = continuation.sourceId,
+                sourceName = sourceName,
+                phase = DecisionPhase.CASTING
+            ),
+            totalAmount = totalDamage,
+            targets = targetEntityIds,
+            minPerTarget = 1
+        ) }
+
+        val distributionContinuation = TriggerDamageDistributionContinuation(
+            sourceId = continuation.sourceId,
+            sourceName = continuation.sourceName,
+            sourceBattlefieldTimestamp = continuation.sourceBattlefieldTimestamp,
+            objectReferences = continuation.objectReferences,
+            controllerId = continuation.controllerId,
+            effect = continuation.effect,
+            description = continuation.description,
+            abilityIdentity = continuation.abilityIdentity,
+            triggerDamageAmount = continuation.triggerDamageAmount,
+            triggeringEntityId = continuation.triggeringEntityId,
+            triggeringPlayerId = continuation.triggeringPlayerId,
+            triggerCounterCount = continuation.triggerCounterCount,
+            triggerTotalCounterCount = continuation.triggerTotalCounterCount,
+            triggerLastKnownCounters = continuation.triggerLastKnownCounters,
+            triggerLastKnownSubtypes = continuation.triggerLastKnownSubtypes,
+            triggerLastKnownCardTypes = continuation.triggerLastKnownCardTypes,
+            triggerLastKnownDamageDealtByPlayers = continuation.triggerLastKnownDamageDealtByPlayers,
+            triggerLastKnownBlockingOrBlockedByIds = continuation.triggerLastKnownBlockingOrBlockedByIds,
+            selectedTargets = selectedTargets,
+            targetRequirements = continuation.targetRequirements,
+            totalDamage = totalDamage,
+            capturedEntityIds = continuation.capturedEntityIds,
+            interveningIf = continuation.interveningIf
+        )
+
+        return state.suspendForDecision(question, distributionContinuation, emptyList())
+    }
+
+    /**
+     * Resume after player distributes damage for a triggered ability's DividedDamageEffect.
+     * Put the ability on the stack with the distribution locked in.
+     */
+    private fun resumeTriggerDamageDistribution(
+        state: GameState,
+        continuation: TriggerDamageDistributionContinuation,
+        response: DecisionResponse,
+        checkForMore: CheckForMore
+    ): ExecutionResult {
+        if (response !is DistributionResponse) {
+            return ExecutionResult.error(state, "Expected distribution response for triggered ability damage")
+        }
+
+        val abilityComponent = TriggeredAbilityOnStackComponent(
+            sourceId = continuation.sourceId,
+            sourceName = continuation.sourceName,
+            sourceBattlefieldTimestamp = continuation.sourceBattlefieldTimestamp,
+            objectReferences = continuation.objectReferences,
+            controllerId = continuation.controllerId,
+            effect = continuation.effect,
+            description = continuation.description,
+            abilityIdentity = continuation.abilityIdentity,
+            triggerDamageAmount = continuation.triggerDamageAmount,
+            triggeringEntityId = continuation.triggeringEntityId,
+            triggeringPlayerId = continuation.triggeringPlayerId,
+            triggerCounterCount = continuation.triggerCounterCount,
+            triggerTotalCounterCount = continuation.triggerTotalCounterCount,
+            triggerLastKnownCounters = continuation.triggerLastKnownCounters,
+            triggerLastKnownSubtypes = continuation.triggerLastKnownSubtypes,
+            triggerLastKnownCardTypes = continuation.triggerLastKnownCardTypes,
+            triggerLastKnownDamageDealtByPlayers = continuation.triggerLastKnownDamageDealtByPlayers,
+            triggerLastKnownBlockingOrBlockedByIds = continuation.triggerLastKnownBlockingOrBlockedByIds,
+            lastKnownPower = continuation.lastKnownPower,
+            lastKnownToughness = continuation.lastKnownToughness,
+            damageDistribution = response.distribution,
+            capturedEntityIds = continuation.capturedEntityIds,
+            interveningIf = continuation.interveningIf
+        )
+
+        val stackResult = services.stackResolver.putTriggeredAbility(
+            state, abilityComponent, continuation.selectedTargets, continuation.targetRequirements
+        )
+
+        if (!stackResult.isSuccess) {
+            return stackResult
+        }
+
+        return checkForMore(stackResult.newState, stackResult.events.toList())
+    }
+
+    /**
+     * Resume a trigger after its controller picked which opponent chooses its "… of an opponent's
+     * choice" target (Mausoleum Turnkey). Raised only with two or more opponents; with one, the
+     * processor pins the decider without asking.
+     *
+     * The answer is pinned onto the trigger and target selection is re-entered, so the target
+     * decision itself is built by the same `processTargetedTrigger` path a trigger with no chooser
+     * takes — the pin is the only difference. Cancelling drops the trigger rather than silently
+     * handing the choice back to the controller: nothing has been paid or moved, and the trigger
+     * has not yet reached the stack.
+     */
+    private fun resumeTriggerOpponentChooser(
+        state: GameState,
+        continuation: TriggerOpponentChooserContinuation,
+        response: DecisionResponse,
+        checkForMore: CheckForMore
+    ): ExecutionResult {
+        if (response is CancelDecisionResponse) {
+            return checkForMore(state, emptyList())
+        }
+        if (response !is OptionChosenResponse) {
+            return ExecutionResult.error(state, "Expected option response for trigger opponent chooser")
+        }
+        val deciderId = continuation.opponentIds.getOrNull(response.optionIndex)
+            ?: return ExecutionResult.error(state, "Invalid opponent choice for trigger target")
+
+        val result = services.triggerProcessor.processTargetedTrigger(
+            state,
+            continuation.trigger.copy(opponentTargetChooserId = deciderId),
+            continuation.targetRequirement
+        )
+
+        if (result.isPaused || !result.isSuccess) return result
+        return checkForMore(result.newState, result.events.toList())
+    }
+
+    private fun resumeMayTrigger(
+        state: GameState,
+        continuation: MayTriggerContinuation,
+        response: DecisionResponse,
+        checkForMore: CheckForMore
+    ): ExecutionResult {
+        if (response !is YesNoResponse) {
+            return ExecutionResult.error(state, "Expected yes/no response for may trigger")
+        }
+
+        if (!response.choice) {
+            return checkForMore(state, emptyList())
+        }
+
+        val trigger = continuation.trigger
+        val innerEffect = trigger.ability.effect.asMayDecide()?.then
+            ?: return ExecutionResult.error(state, "May trigger continuation resumed on a non-may effect")
+
+        val unwrappedAbility = trigger.ability.copy(effect = innerEffect)
+        val unwrappedTrigger = trigger.copy(ability = unwrappedAbility)
+
+        val result = services.triggerProcessor.processTargetedTrigger(state, unwrappedTrigger, continuation.targetRequirement)
+
+        if (result.isPaused) {
+            return result
+        }
+
+        if (!result.isSuccess) {
+            return result
+        }
+
+        return checkForMore(result.newState, result.events.toList())
+    }
+
+    /**
+     * Resume a [BatchMayTriggerContinuation] after the controller answers the batched may-question.
+     * Fans the single [BatchYesNoResponse] back out over the run (see the continuation's docs):
+     *
+     *  - apply-to-all + no  → drop the entire run.
+     *  - apply-to-all + yes → unwrap the may-gate on every trigger and process them as ordinary
+     *    targeted triggers (each picks its own target via the existing per-trigger machinery).
+     *  - peel-off           → resolve the first trigger per [BatchYesNoResponse.choice] and re-run
+     *    the rest (which re-batch if still ≥ 2), enabling "this one, then ask me about the rest".
+     *
+     * Triggers after the run already wait in a [PendingTriggersContinuation] beneath this frame, so
+     * any path that ends in `checkForMore` resumes them in order.
+     */
+    private fun resumeBatchMayTrigger(
+        state: GameState,
+        continuation: BatchMayTriggerContinuation,
+        response: DecisionResponse,
+        checkForMore: CheckForMore
+    ): ExecutionResult {
+        if (response !is BatchYesNoResponse) {
+            return ExecutionResult.error(state, "Expected batch yes/no response for may trigger")
+        }
+
+        val run = continuation.triggers
+
+        if (response.applyToAll) {
+            if (!response.choice) {
+                // No to all — the whole run declines; trailing triggers handled by the frame beneath.
+                return checkForMore(state, emptyList())
+            }
+            // Yes to all — unwrap each may and let the standard pipeline target them one by one.
+            val unwrapped = run.mapNotNull(::unwrapMayTrigger)
+            val result = services.triggerProcessor.processTriggers(state, unwrapped)
+            if (result.isPaused || !result.isSuccess) return result
+            return checkForMore(result.newState, result.events.toList())
+        }
+
+        // Peel one instance off; queue the rest so they re-batch/ask after it resolves.
+        val first = run.first()
+        val rest = run.drop(1)
+        var workingState = state
+        if (rest.isNotEmpty()) {
+            workingState = workingState.pushContinuation(
+                PendingTriggersContinuation(
+                    remainingTriggers = rest
+                )
+            )
+        }
+
+        if (!response.choice) {
+            // No to this one — drop it; the rest (and trailing triggers) resume beneath.
+            return checkForMore(workingState, emptyList())
+        }
+
+        val unwrapped = unwrapMayTrigger(first)
+            ?: return ExecutionResult.error(state, "Batch may continuation resumed on a non-may trigger")
+        val result = services.triggerProcessor.processTriggers(workingState, listOf(unwrapped))
+        if (result.isPaused || !result.isSuccess) return result
+        return checkForMore(result.newState, result.events.toList())
+    }
+
+    /**
+     * Strip the bare "may" gate off a trigger, returning a copy whose effect is the inner payoff so
+     * the standard targeted-trigger path handles it. Mirrors [resumeMayTrigger]. Null if the trigger
+     * is not a lowered may (should not happen for a batched trigger).
+     */
+    private fun unwrapMayTrigger(
+        trigger: com.wingedsheep.engine.event.PendingTrigger
+    ): com.wingedsheep.engine.event.PendingTrigger? {
+        val inner = trigger.ability.effect.asMayDecide()?.then ?: return null
+        return trigger.copy(ability = trigger.ability.copy(effect = inner))
+    }
+
+    private fun resumeMayAbility(
+        state: GameState,
+        continuation: MayAbilityContinuation,
+        response: DecisionResponse,
+        checkForMore: CheckForMore
+    ): ExecutionResult {
+        if (response !is YesNoResponse) {
+            return ExecutionResult.error(state, "Expected yes/no response for may ability")
+        }
+
+        val context = continuation.effectContext
+        val effectToExecute = if (response.choice) {
+            continuation.effectIfYes
+        } else {
+            continuation.effectIfNo
+        }
+
+        if (effectToExecute == null) {
+            return checkForMore(state, emptyList())
+        }
+
+        val result = services.effectExecutorRegistry.execute(state, effectToExecute, context).toExecutionResult()
+
+        if (result.isPaused) {
+            return result
+        }
+
+        return checkForMore(result.state, result.events.toList())
+    }
+
+    /**
+     * Resume a [GatedEffect] after its gate's yes/no decision. The canonical unwind:
+     * on "yes", run [GatedEffectContinuation.then] — for [Gate.MayPay], pay the cost first
+     * (a `stopOnError` composite so an unpayable cost aborts the payoff, mirroring the former
+     * OptionalCost behavior); on "no", run [GatedEffectContinuation.otherwise]. The locked
+     * targets travel in the continuation's [EffectContext], so a targeted `then` resolves
+     * against its trigger-time target.
+     */
+    private fun resumeGatedEffect(
+        state: GameState,
+        continuation: GatedEffectContinuation,
+        response: DecisionResponse,
+        checkForMore: CheckForMore
+    ): ExecutionResult {
+        if (response !is YesNoResponse) {
+            return ExecutionResult.error(state, "Expected yes/no response for gated effect")
+        }
+
+        val effectToExecute: Effect? = if (response.choice) {
+            when (val gate = continuation.gate) {
+                is Gate.MayDecide -> continuation.then
+                is Gate.MayPay ->
+                    CompositeEffect(listOf(gate.cost, continuation.then), stopOnError = true)
+                // WhenCondition, DoAction, MayPayX and OnceEachTurn never push this (yes/no)
+                // continuation — the first and fourth resolve synchronously in the executor, the
+                // second via the action-drain GatedActionContinuation, the third via the
+                // number-chooser MayPayXContinuation — so these branches are unreachable, present
+                // only for exhaustiveness.
+                is Gate.WhenCondition -> continuation.then
+                is Gate.DoAction -> continuation.then
+                is Gate.MayPayX -> continuation.then
+                is Gate.OnceEachTurn -> continuation.then
+            }
+        } else {
+            continuation.otherwise
+        }
+
+        if (effectToExecute == null) {
+            return checkForMore(state, emptyList())
+        }
+
+        val branchResult = services.effectExecutorRegistry
+            .execute(state, effectToExecute, continuation.effectContext)
+        val result = branchResult.toExecutionResult()
+
+        if (result.isPaused) {
+            return result
+        }
+
+        // The branch's pipeline storage belongs to the frame beneath, exactly as a drained composite's
+        // does in [resumeEffect]. A gate sits *inside* a composite ("you may discard your hand. Draw X
+        // cards, where X is the number of cards discarded this way" — Balin, Loremaster), so the
+        // later siblings are the readers of whatever the `then` branch gathered. Dropping it here made
+        // the same card work or not depending on whether the may-question happened to be asked: an
+        // auto-answered or skipped gate runs `then` synchronously and keeps its storage, while a
+        // prompted one lost it and the sibling read an unset variable as 0.
+        val stateWithCollections = exposeCollectionsToNextFrame(
+            result.state,
+            continuation.effectContext.pipeline.storedCollections + branchResult.updatedCollections,
+            continuation.effectContext.pipeline.storedNumbers + branchResult.updatedStoredNumbers,
+            continuation.effectContext.pipeline.chosenValues + branchResult.updatedChosenValues,
+        )
+
+        // Preserve `triggersAlreadyProcessed` across the continuation drain: if the gated effect ran
+        // a nested cast that already stacked its cast-triggers (Vaan casting an opponent's card via
+        // MayEffect), SubmitDecisionHandler must not re-detect the same SpellCastEvent.
+        return checkForMore(stateWithCollections, result.events.toList())
+            .copy(triggersAlreadyProcessed = result.triggersAlreadyProcessed)
+    }
+
+    private fun resumeMayRevealCardFromHand(
+        state: GameState,
+        continuation: MayRevealCardFromHandContinuation,
+        response: DecisionResponse,
+        checkForMore: CheckForMore
+    ): ExecutionResult {
+        if (response !is CardsSelectedResponse) {
+            return ExecutionResult.error(state, "Expected card selection response for may-reveal-from-hand")
+        }
+
+        val chosenCardId = response.selectedCards.firstOrNull()
+
+        if (chosenCardId == null) {
+            // Player declined to reveal — fall through to the "otherwise" branch.
+            val otherwise = continuation.otherwise
+                ?: return checkForMore(state, emptyList())
+            val result = services.effectExecutorRegistry
+                .execute(state, otherwise, continuation.effectContext)
+                .toExecutionResult()
+            return if (result.isPaused) result
+            else checkForMore(result.state, result.events.toList())
+        }
+
+        // Player picked a card — emit the public reveal. The reveal itself is the
+        // entire payoff of the MayReveal atom; any rider effect lives in `otherwise`.
+        val (revealedState, revealEvent) = com.wingedsheep.engine.handlers.effects.composite
+            .MayRevealCardFromHandEffectExecutor.emitReveal(
+                state, continuation.revealerId, chosenCardId, continuation.sourceName,
+            )
+        return checkForMore(revealedState, listOf(revealEvent))
+    }
+
+    private fun resumeBehold(
+        state: GameState,
+        continuation: BeholdContinuation,
+        response: DecisionResponse,
+        checkForMore: CheckForMore
+    ): ExecutionResult {
+        if (response !is CardsSelectedResponse) {
+            return ExecutionResult.error(state, "Expected card selection response for behold")
+        }
+
+        val chosenId = response.selectedCards.firstOrNull()
+        if (chosenId == null) {
+            // Player declined to behold — the "if you do" payoff doesn't run.
+            return checkForMore(state, emptyList())
+        }
+
+        // If the beheld object was a card in hand, reveal it publicly. Battlefield permanents
+        // are chosen, not revealed.
+        var currentState = state
+        val events = mutableListOf<GameEvent>()
+        if (chosenId in continuation.handOptionIds) {
+            val (revealedState, revealEvent) = com.wingedsheep.engine.handlers.effects.composite
+                .MayRevealCardFromHandEffectExecutor.emitReveal(
+                    currentState, continuation.beholderId, chosenId, continuation.sourceName,
+                )
+            currentState = revealedState
+            events += revealEvent
+        }
+
+        val ifBeheld = continuation.ifBeheld
+            ?: return checkForMore(currentState, events)
+
+        val result = services.effectExecutorRegistry
+            .execute(currentState, ifBeheld, continuation.effectContext)
+            .toExecutionResult()
+        if (result.isPaused) return result
+        return checkForMore(result.state, events + result.events.toList())
+    }
+
+}

@@ -1,0 +1,936 @@
+package com.wingedsheep.tooling.coverage.emitter
+
+import com.wingedsheep.tooling.coverage.Assign
+import com.wingedsheep.tooling.coverage.Block
+import com.wingedsheep.tooling.coverage.Call
+import com.wingedsheep.tooling.coverage.Dsl
+import com.wingedsheep.tooling.coverage.Eval
+import com.wingedsheep.tooling.coverage.Lit
+import com.wingedsheep.tooling.coverage.Stmt
+import com.wingedsheep.tooling.coverage.Sub
+import com.wingedsheep.tooling.coverage.arg
+import com.wingedsheep.tooling.coverage.asArr
+import com.wingedsheep.tooling.coverage.asInt
+import com.wingedsheep.tooling.coverage.asStr
+import com.wingedsheep.tooling.coverage.field
+import com.wingedsheep.tooling.coverage.call
+import com.wingedsheep.tooling.coverage.compact
+import com.wingedsheep.tooling.coverage.dot
+import com.wingedsheep.tooling.coverage.firstArgWordTagged
+import com.wingedsheep.tooling.coverage.firstWordAtKey
+import com.wingedsheep.tooling.coverage.hasTag
+import com.wingedsheep.tooling.coverage.jsonContains
+import com.wingedsheep.tooling.coverage.nodesTagged
+import com.wingedsheep.tooling.coverage.pascalToUpperSnake
+import com.wingedsheep.tooling.coverage.strField
+import com.wingedsheep.tooling.coverage.subtypes
+import kotlinx.serialization.json.JsonArray
+import kotlinx.serialization.json.JsonElement
+import kotlinx.serialization.json.JsonObject
+
+/** `staticAbility { ability = <ability> }` as one card-body statement. */
+internal fun staticAbilityStmt(ability: Dsl): Stmt = Sub(Block("staticAbility", listOf(Assign("ability", ability))))
+
+/** `staticAbility { condition = <cond>; ability = <ability> }` — a threshold-gated static ability row. */
+internal fun gatedStaticAbilityStmt(cond: String, ability: Dsl): Stmt =
+    Sub(Block("staticAbility", listOf(Assign("condition", Lit(cond)), Assign("ability", ability))))
+
+/**
+ * Station `{N+}[abilities][P/T]` symbol that animates the permanent into a creature (CR 721.2b,
+ * mtgish `StationChargedAnimate`): "As long as this permanent has N or more charge counters, it has
+ * [abilities] and is a creature with base power/toughness [P/T]." Renders one threshold-gated
+ * `staticAbility { }` row per granted ability — `GrantCardType("CREATURE", …)` for the animate, plus a
+ * `GrantKeyword(...)` per listed keyword — each gated on
+ * `Conditions.SourceCounterCountAtLeast(Counters.CHARGE, N)`. The base P/T (args[2]) is the card's
+ * printed power/toughness, already emitted on the card, so it needs no separate row.
+ *
+ * Only *bare keyword* abilities render. A threshold that grants a triggered or activated ability (or any
+ * parameterized ability) declines to a scaffold — "decline→SCAFFOLD, don't widen". The sibling
+ * `StationCharged` symbol (a non-animating threshold gating an activated/triggered ability) is likewise
+ * left to scaffold via the dispatcher's default branch.
+ */
+internal fun EmitCtx.stationAnimateBlock(rule: JsonObject): List<Stmt>? {
+    val args = rule["args"] as? JsonArray ?: return scaffoldStation()
+    // The threshold N rides as a raw integer in the `ValueOrBigger` range node's args (`{N+}` symbol).
+    val n = (args.getOrNull(0) as? JsonObject)
+        ?.takeIf { it.strField("_GameRange") == "ValueOrBigger" }
+        ?.get("args").asInt() ?: return scaffoldStation()
+    val abilityRules = (args.getOrNull(1) as? JsonArray)?.filterIsInstance<JsonObject>() ?: emptyList()
+    val cond = "Conditions.SourceCounterCountAtLeast(Counters.CHARGE, $n)"
+    val stmts = mutableListOf<Stmt>()
+    stmts.add(gatedStaticAbilityStmt(cond, call("GrantCardType", arg("\"CREATURE\""), arg("GroupFilter.source()"))))
+    for (ar in abilityRules) {
+        val rn = ar.strField("_Rule") ?: return scaffoldStation()
+        if (ar["args"] != null) return scaffoldStation() // parameterized / non-keyword ability
+        val kw = pascalToUpperSnake(rn).takeIf { it in keywords } ?: return scaffoldStation()
+        stmts.add(gatedStaticAbilityStmt(cond, call("GrantKeyword", arg("Keyword.$kw.name"), arg("GroupFilter.source()"))))
+    }
+    return stmts
+}
+
+private fun EmitCtx.scaffoldStation(): List<Stmt>? { reasons.add("StationChargedAnimate"); return null }
+
+/**
+ * PermanentRuleEffect → `flags()` / `staticAbility { ability = ... }`. These classes live outside the
+ * effects registry, so the capability gate is vacuous for them; the generated static is best-effort
+ * and (like every draft) flagged for rules-text review.
+ */
+internal fun EmitCtx.staticBlock(rule: JsonObject): List<Stmt>? {
+    val rules = mutableListOf<JsonObject>()
+    fun collect(n: JsonElement?) {
+        when (n) {
+            is JsonObject -> { if (n.strField("_PermanentRule") != null) rules.add(n); n.values.forEach { collect(it) } }
+            is JsonArray -> n.forEach { collect(it) }
+            else -> {}
+        }
+    }
+    collect(rule)
+    if (rules.isEmpty()) { reasons.add("PermanentRuleEffect"); return null }
+    // "Enchanted creature attacks each combat if able" (Furor of the Bitten): the rule's subject is the
+    // aura's HostPermanent, not the card itself. The self-scoped renders below (flags(), the default
+    // GroupFilter.source() statics) would apply the rule to the AURA — a silent no-op. Render the
+    // attached-creature scope for the rules whose StaticAbility takes a GroupFilter; decline the rest.
+    val hostSubject = jsonContains((rule["args"] as? JsonArray)?.getOrNull(0), "_Permanent", "HostPermanent")
+    if (hostSubject) {
+        val stmts = mutableListOf<Stmt>()
+        for (r in rules) {
+            val ability = when (r.strField("_PermanentRule")!!) {
+                "MustAttack" -> call("MustAttack", arg(call("GroupFilter.attachedCreature")))
+                "CantBlock" -> call("CantBlock", arg(call("GroupFilter.attachedCreature")))
+                "CantBeBlockedExceptByDefenders" -> {
+                    val blockerFilter = cantBeBlockedExceptByFilter(r)
+                        ?: run { reasons.add("PermanentRuleEffect"); return null }
+                    call(
+                        "CantBeBlockedExceptBy",
+                        arg("blockerFilter", blockerFilter),
+                        arg("filter", call("GroupFilter.attachedCreature"))
+                    )
+                }
+                else -> { reasons.add("PermanentRuleEffect"); return null }
+            }
+            stmts.add(staticAbilityStmt(ability))
+        }
+        return stmts
+    }
+    val stmts = mutableListOf<Stmt>()
+    var crewSaddleModifier: Int? = null
+    for (r in rules) {
+        val name = r.strField("_PermanentRule")!!
+        if (name == "CrewsVehiclesAsThoughPowerWereGreater" ||
+            name == "SaddlesMountsAsThoughPowerWereGreater"
+        ) {
+            val modifier = (r["args"] as? JsonObject)
+                ?.takeIf { it.strField("_GameNumber") == "Integer" }
+                ?.get("args")
+                .asInt()
+                ?: run { reasons.add(name); return null }
+            if (crewSaddleModifier == modifier) continue
+            if (crewSaddleModifier != null) {
+                reasons.add("CrewSaddleContribution")
+                return null
+            }
+            crewSaddleModifier = modifier
+        }
+        if (name == "CantBeBlocked") {
+            stmts.add(Eval(call("flags", arg("AbilityFlag.CANT_BE_BLOCKED")))); continue
+        }
+        if (name == "MayChooseNotToUntapDuringUntap") {
+            stmts.add(Eval(call("flags", arg("AbilityFlag.MAY_NOT_UNTAP")))); continue
+        }
+        val ability = staticAbilityExpr(name, r) ?: run { reasons.add(name); return null }
+        stmts.add(staticAbilityStmt(ability))
+    }
+    return stmts
+}
+
+/**
+ * A static `EachPermanentLayerEffect` "lord" rule -> one `staticAbility { ability = ... }` per static
+ * layer effect: AdjustPT -> `ModifyStats(powerBonus, toughnessBonus, filter)`, AddAbility{kw} ->
+ * `GrantKeyword(Keyword.X, filter)`. The affected group is a GroupFilter (a fixed creature subtype with
+ * excludeSelf for "other …", or `GroupFilter.ChosenSubtypeCreatures()` for "creatures of the chosen
+ * type"). Anything we can't render exactly scaffolds.
+ */
+internal fun EmitCtx.staticLordBlock(rule: JsonObject, condition: String? = null): List<Stmt>? {
+    val args = rule["args"] as? JsonArray
+    val layerEffects = (args?.getOrNull(1) as? JsonArray)?.filterIsInstance<JsonObject>()
+    if (args == null || layerEffects.isNullOrEmpty()) { reasons.add("EachPermanentLayerEffect"); return null }
+    val group = lordGroupFilterExpr(args.getOrNull(0)) ?: run { reasons.add("EachPermanentLayerEffect"); return null }
+    fun emit(ability: Dsl): Stmt = if (condition != null) gatedStaticAbilityStmt(condition, ability) else staticAbilityStmt(ability)
+    val stmts = mutableListOf<Stmt>()
+    for (le in layerEffects) {
+        val ability: Dsl = when (le.strField("_StaticLayerEffect")) {
+            "AdjustPT" -> {
+                val pt = le["args"] as? JsonArray ?: return scaffoldLord()
+                if (pt.size != 2) return scaffoldLord()
+                call("ModifyStats", arg("powerBonus", "${pt[0].asInt()}"), arg("toughnessBonus", "${pt[1].asInt()}"), arg("filter", group))
+            }
+            "AddAbility" -> {
+                val granted = (le["args"] as? JsonArray)?.getOrNull(0) as? JsonObject
+                // "All Slivers have '{cost}: …'" (the Tempest sliver cycle, Crypt/Magma/Spectral Sliver):
+                // the granted ability is a full activated ability, rendered as GrantActivatedAbility over
+                // the affected group. Anything the inner ability can't render exactly scaffolds.
+                if (granted?.strField("_Rule") in setOf("Activated", "ActivatedWithModifiers")) {
+                    val inner = grantedActivatedAbilityExpr(granted!!) ?: return scaffoldLord()
+                    call("GrantActivatedAbility", arg("ability", inner), arg("filter", group))
+                } else {
+                    // "Other Merfolk have islandwalk" (Lord of Atlantis / Goblin King): the granted ability is a
+                    // Landwalk rule carrying a land subtype, not a plain keyword — recover the *WALK keyword.
+                    val kw = if (granted?.strField("_Rule") == "Landwalk") {
+                        val lw = mutableSetOf<String>()
+                        findLandwalkKeywords(granted, keywords, lw)
+                        lw.singleOrNull() ?: return scaffoldLord()
+                    } else {
+                        keywordOf(le) ?: return scaffoldLord()
+                    }
+                    // "Other creatures you control have prowess" — prowess is a triggered-ability keyword
+                    // the engine derives from an explicit +1/+1 trigger, so a GrantKeyword grant would add
+                    // the display tag but never the pump. Granting it faithfully needs a GrantTriggeredAbility
+                    // of the prowess trigger, which this generic AddAbility path doesn't model — decline to a
+                    // scaffold (per "decline→SCAFFOLD, don't widen") rather than emit a confidently-wrong lord.
+                    if (kw == "PROWESS") return scaffoldLord()
+                    // Ward always carries a cost (ward {N}, ward—pay life, …); a bare GrantKeyword(WARD)
+                    // silently drops it, granting a no-op ward. Faithfully granting it needs
+                    // GrantWard(WardCost.…), which this generic AddAbility lord path doesn't model — decline
+                    // to a scaffold (per "decline→SCAFFOLD, don't widen") rather than emit a costless ward.
+                    if (kw == "WARD") return scaffoldLord()
+                    call("GrantKeyword", arg("Keyword.$kw"), arg(group))
+                }
+            }
+            else -> return scaffoldLord()
+        }
+        stmts.add(emit(ability))
+    }
+    return stmts
+}
+
+private fun EmitCtx.scaffoldLord(): List<Stmt>? { reasons.add("EachPermanentLayerEffect"); return null }
+
+/**
+ * An `AbilitiesTriggerAnAdditionalTime` rule -> `staticAbility { ability = AdditionalSourceTriggers(
+ * sourceFilter = <filter>, excludeSelf = true) }`. Models "If a triggered ability of a [filter] you
+ * control triggers, that ability triggers an additional time" (Annie Joins Up's legendary-creature
+ * doubler, Twinflame Travelers' Elemental doubler — CR 603.2d).
+ *
+ * The affected ability set is `AbilityOfAPermanent` whose permanent matches a [gameObjectFilterExpr]
+ * filter (e.g. `And[IsSupertype Legendary, IsCardtype Creature, ControlledByAPlayer You]` ->
+ * `GameObjectFilter.Creature.legendary().youControl()`). `excludeSelf = true` matches both the SDK
+ * default and the "another …" wording; the filter renderer declines (-> SCAFFOLD) on any restriction it
+ * can't render exactly, so no constraint is silently dropped.
+ */
+internal fun EmitCtx.additionalSourceTriggersBlock(rule: JsonObject): List<Stmt>? {
+    val abilitySet = rule["args"] as? JsonObject ?: run { reasons.add("AbilitiesTriggerAnAdditionalTime"); return null }
+    // Only the "a triggered ability of a permanent (matching a filter)" shape renders.
+    if (abilitySet.strField("_Abilities") != "AbilityOfAPermanent") { reasons.add("AbilitiesTriggerAnAdditionalTime"); return null }
+    val filterNode = abilitySet["args"]
+    val filterDsl = gameObjectFilterExpr(filterNode) ?: run { reasons.add("AbilitiesTriggerAnAdditionalTime"); return null }
+    val ability = call(
+        "AdditionalSourceTriggers",
+        arg("sourceFilter", filterDsl),
+        arg("excludeSelf", "true"),
+    )
+    return listOf(staticAbilityStmt(ability))
+}
+
+/**
+ * One half of a printed "+a/+b for each …" pair, as the SDK spells the three numbers.
+ *
+ * Zero is `Fixed(0)` rather than `Multiply(count, 0)`: the printed half says nothing is added, not
+ * that a count is multiplied by nothing, and every hand-written card in the family (Nim Lasher,
+ * Deadeye Plunderers, Akiri) writes the constant. Emitting the product was a rendering bug rather
+ * than an approximation — it reads back as a different model for text that means the same thing,
+ * which is what Argentum Assay's differential caught on Guidelight Synergist.
+ */
+private fun scaledBonus(count: Dsl, multiplier: Int): Dsl = when (multiplier) {
+    0 -> call("DynamicAmount.Fixed", arg("0"))
+    1 -> count
+    else -> call("DynamicAmount.Multiply", arg(count), arg("$multiplier"))
+}
+
+/**
+ * A self-buff `PermanentLayerEffect(ThisPermanent, [AdjustPTForEach])` -> one
+ * `staticAbility { ability = GrantDynamicStatsEffect(filter = GroupFilter.source(), powerBonus = …,
+ * toughnessBonus = …) }`. `AdjustPTForEach`'s args are `[powerMult, toughnessMult, countNode]`:
+ * "this creature gets +powerMult/+toughnessMult for each [countNode]". The per-permanent count is
+ * rendered as `DynamicAmounts.battlefield(Player.You, …).count()` — the `AggregateBattlefield`
+ * spelling, which the hand-written corpus writes 603 times against the equivalent
+ * `Count(Player.You, Zone.BATTLEFIELD, …)`'s 49 and which Argentum Assay therefore treats as
+ * canonical for a battlefield tally. A multiplier other than 1 wraps the count in
+ * `DynamicAmount.Multiply`; **a multiplier of 0 is `DynamicAmount.Fixed(0)`, not a multiply by
+ * zero** — "+1/+0" has no multiplication in the half that is zero, and the product spelling is a
+ * model no hand-written card carries.
+ *
+ * Only the You-controlled-battlefield count shape renders; any other count scope, a non-AdjustPTForEach
+ * layer effect, or a filter the count path can't express exactly returns null so the card scaffolds
+ * rather than emit a wrong buff. ("Crusading Knight" — Swamps your *opponents* control — therefore still
+ * scaffolds here; the You case is the common Outlaws Desert pattern.)
+ */
+private fun EmitCtx.selfDynamicStatsBlock(rule: JsonObject): List<Stmt>? {
+    val args = rule["args"] as? JsonArray ?: return null
+    val layerEffects = (args.getOrNull(1) as? JsonArray)?.filterIsInstance<JsonObject>() ?: return null
+    if (layerEffects.isEmpty()) return null
+    val stmts = mutableListOf<Stmt>()
+    for (le in layerEffects) {
+        if (le.strField("_StaticLayerEffect") != "AdjustPTForEach") return null
+        val pt = le["args"] as? JsonArray ?: return null
+        if (pt.size != 3) return null
+        val powerMult = pt[0].asInt() ?: return null
+        val toughnessMult = pt[1].asInt() ?: return null
+        val countNode = pt[2] as? JsonObject ?: return null
+
+        // "This creature gets +powerMult/+toughnessMult for each card in your hand" (Stingerback
+        // Terror: -1/-1 per card). The hand tally is a resolution-time `DynamicAmount.Count` over the
+        // You hand, via the `DynamicAmounts.cardsInYourHand()` facade. Only the You scope renders.
+        if (countNode.strField("_GameNumber") == "TheNumberOfCardsInPlayersHand") {
+            if (!jsonContains(countNode, "_Player", "You")) return null
+            val handCount: Dsl = call("DynamicAmounts.cardsInYourHand")
+            fun handBonus(mult: Int): Dsl = scaledBonus(handCount, mult)
+            stmts.add(
+                staticAbilityStmt(
+                    call(
+                        "GrantDynamicStatsEffect",
+                        arg("filter", call("GroupFilter.source")),
+                        arg("powerBonus", handBonus(powerMult)),
+                        arg("toughnessBonus", handBonus(toughnessMult)),
+                    )
+                )
+            )
+            continue
+        }
+
+        // The count must be a You-controlled battlefield tally; decline anything else (opponent /
+        // each-player scope, or a filter the count path widens) so we never misrender the buff.
+        if (countNode.strField("_GameNumber") != "TheNumberOfPermanentsOnTheBattlefield") return null
+        if (!jsonContains(countNode, "_Player", "You")) return null
+        // Reject the predicates the land/type count filter path can't render faithfully (it silently
+        // widens to GameObjectFilter.Any) — mirror dynamicAmountExpr's guards.
+        val blob = compact(countNode)
+        if ("IsArtifactType" in blob || "SharesACreatureTypeWithPermanent" in blob) return null
+        if (countNode.firstArgWordTagged("IsEnchantmentType") != null &&
+            countNode.firstArgWordTagged("IsCreatureType") == null) return null
+        val subtype = countNode.firstArgWordTagged("IsCreatureType")
+        val filter = if (subtype != null) Lit("GameObjectFilter.Creature").dot("withSubtype", arg(subtypeArg(subtype)))
+                     else landSearchFilterExpr(countNode)
+        val count: Dsl = call("DynamicAmounts.battlefield", arg("Player.You"), arg(filter)).dot("count")
+        fun bonus(mult: Int): Dsl = scaledBonus(count, mult)
+        stmts.add(
+            staticAbilityStmt(
+                call(
+                    "GrantDynamicStatsEffect",
+                    arg("filter", call("GroupFilter.source")),
+                    arg("powerBonus", bonus(powerMult)),
+                    arg("toughnessBonus", bonus(toughnessMult)),
+                )
+            )
+        )
+    }
+    return stmts
+}
+
+/**
+ * An `Activated` / `ActivatedWithModifiers` rule granted to a group ("All Slivers have '{cost}: …'") ->
+ * an `ActivatedAbility(id = AbilityId.generate(), cost = …, [timing = …], effect = …, [targetRequirement
+ * = …])` constructor expression for wrapping in `GrantActivatedAbility`. Reuses the same cost / target /
+ * effect recovery as the card-body [activatedBlock], but in expression form: a chosen target becomes
+ * `targetRequirement = <node>` and the effect references `EffectTarget.ContextTarget(0)` (the granted
+ * ability has no card-body `target(...)` local to bind). Mana grants are flagged as mana abilities. The
+ * only activation modifier rendered is `ActivateOnlyAsASorcery` -> `timing = TimingRule.SorcerySpeed`;
+ * any other modifier scaffolds.
+ */
+internal fun EmitCtx.grantedActivatedAbilityExpr(rule: JsonObject): Dsl? {
+    val costNode = (rule["args"] as? JsonArray)?.firstOrNull() as? JsonObject
+    val cost = costNode?.let { abilityCostDsl(it) } ?: return null
+    val (targets, actions) = extractEnvelope(rule)
+    if (actions == null) return null
+    if (targets != null && targets.size > 1) return null
+    // A chosen target becomes the ability's targetRequirement; the effect then refers to it via
+    // ContextTarget(0) (the granted ability has no bound `t` local).
+    val targetNode = targets?.firstOrNull()?.let { targetExpr(it, actions) ?: return null }
+    val tvar = if (targetNode != null) "EffectTarget.ContextTarget(0)" else null
+    val effect = renderEffectList(actions, tvar) ?: return null
+    val timing = grantedActivationTiming(rule) ?: return null
+
+    val args = mutableListOf(
+        arg("id", "AbilityId.generate()"),
+        arg("cost", cost),
+    )
+    args.add(arg("effect", effect))
+    if (targetNode != null) args.add(arg("targetRequirement", targetNode))
+    if (isManaAbility(tvar, actions)) {
+        args.add(arg("isManaAbility", "true"))
+        args.add(arg("timing", "TimingRule.ManaAbility"))
+    } else if (timing.isNotEmpty()) {
+        args.add(arg("timing", timing))
+    }
+    return Call("ActivatedAbility", args)
+}
+
+/** The `timing = …` value for a granted activated ability: "" (omit, default instant speed) for a plain
+ *  `Activated` rule, `TimingRule.SorcerySpeed` for an `ActivatedWithModifiers` carrying ONLY the
+ *  `ActivateOnlyAsASorcery` modifier (Mindwhip Sliver); null (-> SCAFFOLD) for any other modifier. */
+private fun EmitCtx.grantedActivationTiming(rule: JsonObject): String? {
+    if (rule.strField("_Rule") != "ActivatedWithModifiers") return ""
+    val modifiers = (rule["args"] as? JsonArray).orEmpty()
+        .filterIsInstance<JsonObject>().filter { it.strField("_ActivateModifier") != null }
+    if (modifiers.isEmpty()) return ""
+    if (modifiers.all { it.strField("_ActivateModifier") == "ActivateOnlyAsASorcery" }) return "TimingRule.SorcerySpeed"
+    return null
+}
+
+/**
+ * `EnchantPermanent` -> the card-level `auraTarget = Targets.X` line. The enchant restriction is a
+ * cardtype filter ("Enchant creature / land / artifact / enchantment"); anything more specific than a
+ * bare cardtype (e.g. "enchant tapped creature") scaffolds rather than emit an inexact restriction.
+ */
+internal fun EmitCtx.auraTargetBlock(rule: JsonObject): List<Stmt>? {
+    val filter = rule["args"] as? JsonObject ?: run { reasons.add("EnchantPermanent"); return null }
+    // "Enchant creature / land / artifact / enchantment": a single card-type restriction.
+    if (filter.strField("_Permanents") == "IsCardtype") {
+        val target = when (filter["args"].asStr()) {
+            "Creature" -> "Targets.Creature"
+            "Land" -> "Targets.Land"
+            "Artifact" -> "Targets.Artifact"
+            "Enchantment" -> "Targets.Enchantment"
+            else -> { reasons.add("EnchantPermanent"); return null }
+        }
+        return listOf(Assign("auraTarget", Lit(target)))
+    }
+    // "Enchant artifact or creature you control" (Moonlit Meditation): a card-type Or AND-ed with a
+    // you-control restriction. Only shapes with an exact SDK TargetFilter render; any other combination
+    // declines to a scaffold.
+    auraYouControlTarget(filter)?.let { return listOf(Assign("auraTarget", Lit(it))) }
+    reasons.add("EnchantPermanent")
+    return null
+}
+
+/** `And(Or(<types>), ControlledBy You)` -> a you-control `TargetPermanent(...)` expr, or null
+ *  (-> SCAFFOLD). Currently only "artifact or creature you control" maps to an exact SDK filter. */
+private fun auraYouControlTarget(filter: JsonObject): String? {
+    if (filter.strField("_Permanents") != "And") return null
+    val args = (filter["args"] as? JsonArray)?.filterIsInstance<JsonObject>() ?: return null
+    if (args.size != 2) return null
+    if (args.none { jsonContains(it, "_Permanents", "ControlledByAPlayer") && jsonContains(it, "_Player", "You") }) return null
+    val typeNode = args.firstOrNull { it.strField("_Permanents") == "Or" } ?: return null
+    val types = (typeNode["args"] as? JsonArray)
+        ?.mapNotNull { (it as? JsonObject)?.takeIf { o -> o.strField("_Permanents") == "IsCardtype" }?.get("args").asStr() }
+        ?.toSet() ?: return null
+    return when (types) {
+        setOf("Artifact", "Creature") -> "TargetPermanent(TargetFilter.CreatureOrArtifact.youControl())"
+        else -> null
+    }
+}
+
+/**
+ * A static `PermanentLayerEffect` whose target is the aura's `HostPermanent` (the enchanted permanent)
+ * -> one `staticAbility { ability = ... }` per layer effect, applied to the enchanted permanent (no
+ * filter, the aura-static default): AdjustPT -> `ModifyStats(p, t)`, AddAbility{kw} ->
+ * `GrantKeyword(Keyword.X)`, AddAbility{protection-from-color} -> `GrantProtection(Color.X)` (the Ward
+ * cycle). A layer effect we can't render exactly scaffolds.
+ */
+internal fun EmitCtx.staticHostBlock(rule: JsonObject): List<Stmt>? {
+    val args = rule["args"] as? JsonArray
+    // "This creature gets +X/+Y for each [permanents you control]" (Outcaster Greenblade, Crusading
+    // Knight): a self-targeting layer effect whose subject is ThisPermanent, not an aura's host. Route
+    // to the dynamic self-buff renderer; only the AdjustPTForEach shape renders there, everything else
+    // falls through to the scaffold below.
+    if (jsonContains(args?.getOrNull(0), "_Permanent", "ThisPermanent")) {
+        selfDynamicStatsBlock(rule)?.let { return it }
+    }
+    if (args == null || !jsonContains(args.getOrNull(0), "_Permanent", "HostPermanent")) {
+        reasons.add("PermanentLayerEffect"); return null
+    }
+    val layerEffects = (args.getOrNull(1) as? JsonArray)?.filterIsInstance<JsonObject>()
+    if (layerEffects.isNullOrEmpty()) { reasons.add("PermanentLayerEffect"); return null }
+
+    // "Becomes a whole new creature" shape (Witness Protection, Retro-Mutation, Unable to
+    // Scream, Sugar Coat): SetCardtype + any of SetCreatureType/SetColor/SetName bundle into
+    // one TransformPermanent (Layers 3/4/5); SetPT and LosesAllAbilities render as their own
+    // siblings (Layers 7b/6). Anchored on SetCardtype so a plain AdjustPT/AddAbility aura (the
+    // common case) is untouched and falls through to the per-effect loop below.
+    val identityStmts = transformIdentityBlock(layerEffects)
+    val remaining = if (identityStmts != null) {
+        layerEffects.filterNot { it.strField("_StaticLayerEffect") in IDENTITY_LAYER_TAGS }
+    } else {
+        layerEffects
+    }
+
+    val stmts = mutableListOf<Stmt>()
+    identityStmts?.let(stmts::addAll)
+    for (le in remaining) {
+        val abilities: List<Dsl> = when (le.strField("_StaticLayerEffect")) {
+            "AdjustPT" -> {
+                val pt = le["args"] as? JsonArray
+                if (pt?.size != 2) { reasons.add("PermanentLayerEffect"); return null }
+                listOf(call("ModifyStats", arg("${pt[0].asInt()}"), arg("${pt[1].asInt()}")))
+            }
+            "AddAbility" -> {
+                val granted = (le["args"] as? JsonArray)?.getOrNull(0) as? JsonObject
+                // "Enchanted creature has protection from <color>": the Ward cycle uses a
+                // `ProtectionAndDoesntRemovePermanents` rule, the Crowns a plain `Protection` rule.
+                if (granted?.strField("_Rule") in setOf("Protection", "ProtectionAndDoesntRemovePermanents")) {
+                    // "Protection from <color>" -> GrantProtection(Color.X); "protection from
+                    // <card type>(s)" (e.g. instants and sorceries — Sword of Wealth and Power) ->
+                    // one GrantProtectionFromCardType(CardType.X) per type. A protection scope we
+                    // can't render exactly (e.g. from a subtype, or "from everything") scaffolds.
+                    val colors = protectionGrantColors(granted!!)
+                    if (colors != null) {
+                        colors.map { call("GrantProtection", arg("Color.$it")) }
+                    } else {
+                        val cardTypes = protectionGrantCardTypes(granted)
+                            ?: run { reasons.add("PermanentLayerEffect"); return null }
+                        cardTypes.map { call("GrantProtectionFromCardType", arg("CardType.$it")) }
+                    }
+                } else if (granted?.strField("_Rule") == "Ward") {
+                    // "Equipped/enchanted creature has ward {N}" (Lavaspur Boots) — render GrantWard carrying
+                    // the cost, never a bare GrantKeyword(WARD) which would drop it. Only a mana ward cost
+                    // renders; life/discard/sacrifice ward costs aren't modeled here, so scaffold.
+                    val costNode = granted["args"] as? JsonObject
+                    if (costNode?.strField("_Cost") != "PayMana") { reasons.add("PermanentLayerEffect"); return null }
+                    listOf(call("GrantWard", arg("WardCost.Mana(\"${renderMana(costNode["args"])}\")")))
+                } else if (granted?.strField("_Rule") in setOf("Activated", "ActivatedWithModifiers", "TriggerA", "TriggerI")) {
+                    // "Enchanted creature has '{1}, Sacrifice a permanent: … gains flying …'" (Lunarch
+                    // Mantle): the host gains a whole ACTIVATED ability, not a keyword. keywordOf would dig
+                    // into the nested effect and wrongly extract the inner "flying", flattening a
+                    // pay-and-sacrifice ability into a permanent static keyword grant. No aura-grants-
+                    // activated-ability rendering exists on this surface, so decline (-> SCAFFOLD).
+                    reasons.add("PermanentLayerEffect"); return null
+                } else {
+                    val kw = keywordOf(le) ?: run { reasons.add("PermanentLayerEffect"); return null }
+                    // Prowess grants need the +1/+1 trigger, not just the keyword tag (see staticLordBlock) —
+                    // scaffold rather than emit a no-op GrantKeyword grant on the enchanted creature.
+                    if (kw == "PROWESS") { reasons.add("PermanentLayerEffect"); return null }
+                    listOf(call("GrantKeyword", arg("Keyword.$kw")))
+                }
+            }
+            "SetController" -> {
+                // "you control enchanted permanent" (Control Magic, Steal Artifact). Only controller=You
+                // maps to the parameterless ControlEnchantedPermanent; any other player scaffolds.
+                if (!jsonContains(le["args"], "_Player", "You")) { reasons.add("PermanentLayerEffect"); return null }
+                listOf(Lit("ControlEnchantedPermanent"))
+            }
+            "SetLandType" -> {
+                // "Enchanted land is an Island" (Sea's Claim) — replace the host land's subtypes.
+                val landType = le["args"].asStr() ?: run { reasons.add("PermanentLayerEffect"); return null }
+                listOf(call("SetEnchantedLandType", arg("\"${ktStr(landType)}\"")))
+            }
+            else -> { reasons.add("PermanentLayerEffect"); return null }
+        }
+        abilities.forEach { stmts.add(staticAbilityStmt(it)) }
+    }
+    return stmts
+}
+
+/** `_StaticLayerEffect` tags consumed by [transformIdentityBlock] when it fires — excluded from the
+ *  per-effect loop in [staticHostBlock] so they aren't double-rendered (or double-declined). */
+private val IDENTITY_LAYER_TAGS = setOf("SetCardtype", "SetCreatureType", "SetColor", "SetName", "SetPT", "LosesAllAbilities")
+
+/**
+ * "Becomes a whole new creature" bundle — Witness Protection's
+ * `[LosesAllAbilities, SetColor, SetCreatureType, SetCardtype, SetPT, SetName]`, or any subset
+ * anchored on `SetCardtype` (Retro-Mutation has no `SetColor`/`SetName`; Unable to Scream has no
+ * `SetColor`/`SetName`/`LosesAllAbilities` removed-on-purpose shape). Lowers to the same static
+ * stack `add-card` hand-authors for this family:
+ *  - `SetCardtype`/`SetCreatureType`/`SetColor`/`SetName` merge into one `TransformPermanent`
+ *    (Layers 3/4/5 — the SDK bundles them in a single facade, see
+ *    `com.wingedsheep.sdk.scripting.TransformPermanent`).
+ *  - `SetPT` -> its own `SetBasePowerToughnessStatic(p, t)` (Layer 7b).
+ *  - `LosesAllAbilities` -> its own `LoseAllAbilities()` (Layer 6).
+ *
+ * Returns null (the anchor is absent, or a present tag's shape isn't recognized) so the caller
+ * falls back to the per-effect loop, which declines any of these tags individually — i.e. an
+ * unrecognized variant still scaffolds rather than rendering a lossy partial transform.
+ */
+private fun transformIdentityBlock(layerEffects: List<JsonObject>): List<Stmt>? {
+    val byTag = layerEffects.associateBy { it.strField("_StaticLayerEffect") }
+    val cardTypeNode = byTag["SetCardtype"] ?: return null
+    val cardType = cardTypeNode["args"].asStr() ?: return null
+    if (cardType.uppercase() != "CREATURE") return null
+
+    val setSubtypes = byTag["SetCreatureType"]?.let { node ->
+        node["args"].asStr()?.let { setOf(it) } ?: return null
+    } ?: emptySet()
+
+    val setColors = byTag["SetColor"]?.let { node ->
+        val colorList = node["args"] as? JsonObject ?: return null
+        if (colorList.strField("_SettableColor") != "SimpleColorList") return null
+        val colors = (colorList["args"] as? JsonArray)?.mapNotNull { it.asStr()?.uppercase() }
+        if (colors.isNullOrEmpty()) return null
+        colors.toSet()
+    }
+
+    val setName = byTag["SetName"]?.let { it["args"].asStr() ?: return null }
+
+    val transformArgs = mutableListOf(arg("setCardTypes", Lit("setOf(\"CREATURE\")")))
+    if (setSubtypes.isNotEmpty()) {
+        transformArgs.add(arg("setSubtypes", Lit("setOf(${setSubtypes.joinToString(", ") { "\"${ktStr(it)}\"" }})")))
+    }
+    if (setColors != null) {
+        transformArgs.add(arg("setColors", Lit("setOf(${setColors.joinToString(", ") { "Color.$it" }})")))
+    }
+    if (setName != null) {
+        transformArgs.add(arg("setName", Lit("\"${ktStr(setName)}\"")))
+    }
+
+    val stmts = mutableListOf<Stmt>(staticAbilityStmt(call("TransformPermanent", *transformArgs.toTypedArray())))
+
+    byTag["SetPT"]?.let { node ->
+        val pt = (node["args"] as? JsonObject)?.get("args") as? JsonArray
+        if (pt?.size != 2) return null
+        stmts.add(staticAbilityStmt(call("SetBasePowerToughnessStatic", arg("${pt[0].asInt()}"), arg("${pt[1].asInt()}"))))
+    }
+
+    if (byTag.containsKey("LosesAllAbilities")) {
+        stmts.add(staticAbilityStmt(call("LoseAllAbilities")))
+    }
+
+    return stmts
+}
+
+/** The colors of a host protection grant ("enchanted creature has protection from <color>" — the Ward
+ *  cycle's `ProtectionAndDoesntRemovePermanents` or the Crowns' plain `Protection`), uppercased for
+ *  `Color.X`; null for a non-color protection scope (from a type/quality) or none, which scaffolds.
+ *  Works regardless of whether the grant wraps its `_Protectable` in an array (Ward) or directly (Crown). */
+internal fun protectionGrantColors(granted: JsonObject): List<String>? {
+    if (!jsonContains(granted, "_Protectable", "FromColor")) return null
+    val colors = Regex(""""_Color":\s*"(\w+)"""").findAll(compact(granted)).map { it.groupValues[1].uppercase() }.toList()
+    return colors.ifEmpty { null }
+}
+
+/** The card types of a host "protection from <card type>(s)" grant (`_Protectable` = `FromTypes`,
+ *  e.g. "protection from instants and from sorceries" — Sword of Wealth and Power), uppercased for
+ *  `CardType.X`; null when the scope isn't a card-type protection, which scaffolds. Only the card
+ *  types the SDK `CardType` enum names are recovered (a `_Cards`/`IsCardtype` whose value isn't one
+ *  of those returns null so the card scaffolds rather than emitting an invalid enum). */
+internal fun protectionGrantCardTypes(granted: JsonObject): List<String>? {
+    if (!jsonContains(granted, "_Protectable", "FromTypes")) return null
+    val known = setOf(
+        "ARTIFACT", "BATTLE", "CREATURE", "ENCHANTMENT", "INSTANT",
+        "LAND", "PLANESWALKER", "SORCERY", "KINDRED", "TRIBAL"
+    )
+    val types = Regex(""""_Cards"\s*:\s*"IsCardtype"\s*,\s*"args"\s*:\s*"(\w+)"""")
+        .findAll(compact(granted)).map { it.groupValues[1].uppercase() }.toList()
+    if (types.isEmpty() || types.any { it !in known }) return null
+    return types
+}
+
+/** The affected-group GroupFilter for a lord: chosen-creature-type variable -> the named helper,
+ *  otherwise the generic group-filter recovery (fixed subtype, excludeSelf for "other"). */
+private fun EmitCtx.lordGroupFilterExpr(filterNode: JsonElement?): Dsl? {
+    if (jsonContains(filterNode, "_CreatureTypeVariable", "TheChosenCreatureType") ||
+        jsonContains(filterNode, "_Permanents", "IsCreatureTypeVariable")) {
+        return call("GroupFilter.ChosenSubtypeCreatures")
+    }
+    return groupFilterExpr(filterNode)
+}
+
+internal fun EmitCtx.staticAbilityExpr(ruleName: String, ruleNode: JsonObject): Dsl? {
+    when (ruleName) {
+        "CrewsVehiclesAsThoughPowerWereGreater",
+        "SaddlesMountsAsThoughPowerWereGreater" -> {
+            val modifier = (ruleNode["args"] as? JsonObject)
+                ?.takeIf { it.strField("_GameNumber") == "Integer" }
+                ?.get("args")
+                .asInt()
+            if (modifier == null) return null
+            return call("CrewSaddleContribution", arg("modifier", "$modifier"))
+        }
+        "CantBlock" -> return call("CantBlock")
+        "CantBeBlockedByMoreThanOne" -> return call("CantBeBlockedByMoreThan", arg("maxBlockers", "1"))
+        "CanBlockOnly" -> {
+            val kw = keywordOf(ruleNode)
+            val bf = if (kw != null) "GameObjectFilter.Creature.withKeyword(Keyword.$kw)" else "GameObjectFilter.Creature"
+            return call("CanOnlyBlockCreaturesWith", arg("blockerFilter", bf))
+        }
+        "CantBeBlockedByDefenders" -> {
+            // mtgish "Defenders" means blockers generally; the rule's args carry the blocker restriction,
+            // so this is "can't be blocked BY [filtered creatures]" (Fleet-Footed Monk: power ≥ 2; Sacred
+            // Knight: black and/or red). Render the blocker filter generically; scaffold if it can't be
+            // expressed faithfully. (Distinct from CantBeBlockedExceptByDefenders, which RESTRICTS blockers.)
+            // gameObjectFilterDsl silently ignores predicates it can't render, so scaffold on any shape it
+            // doesn't cover (e.g. ToughnessIs) rather than emit a blocker filter missing a restriction.
+            if (Regex("\"(ToughnessIs|HasKeyword|ManaValueIs|HasSubtypeFrom)\"").containsMatchIn(compact(ruleNode))) return null
+            val filter = gameObjectFilterExpr(ruleNode["args"]) ?: return null
+            return call("CantBeBlockedBy", arg("blockerFilter", filter))
+        }
+        "CantBeBlockedExceptByDefenders" -> {
+            val bf = cantBeBlockedExceptByFilter(ruleNode) ?: return null
+            return call("CantBeBlockedExceptBy", arg("blockerFilter", bf))
+        }
+        "CantAttackUnlessDefendingPlayer" -> {  // Deep-Sea Serpent: defender must control an Island
+            val subs = subtypes(ruleNode)
+            if (subs.isEmpty()) return null
+            return call("CantAttackUnless", arg(call("Conditions.DefendingPlayerControlsLandType", arg("\"${subs[0]}\""))))
+        }
+        "MustBlockAttacker" -> return call("MustBlock")
+        // "This creature must be blocked if able" (Fear of Being Hunted) — the unconditional
+        // MustBeBlocked static (allCreatures = false: at least one able blocker must block it).
+        "MustBeBlocked" -> return call("MustBeBlocked")
+        "MustAttackPlayer" -> return call("MustAttack")
+        // "This creature attacks each combat if able" (Dauthi Slayer, Juggernaut) — the unfiltered
+        // self MustAttack, distinct from MustAttackPlayer which carries a forced defender.
+        "MustAttack" -> return call("MustAttack")
+        "CanBlockAnyNumberOfCreatures" -> return call("CanBlockAnyNumber")
+    }
+    return null
+}
+
+/**
+ * The blocker filter for a `CantBeBlockedExceptByDefenders` rule — the creatures that may STILL block
+ * (the rule restricts blockers down to these). Renders the "defender" oracle idiom, a single creature
+ * subtype, or a single keyword restriction ("except by creatures with haste"); declines (null) on any
+ * compound / unrecognised shape so the card scaffolds rather than emitting a too-broad "except by any
+ * creature". Shared by the static [com.wingedsheep.sdk.scripting.CantBeBlockedExceptBy] ability and the
+ * floating one-shot `Effects.GrantCantBeBlockedExceptBy` grant (`CreatePermanentRuleEffectUntil`).
+ */
+internal fun EmitCtx.cantBeBlockedExceptByFilter(ruleNode: JsonObject): String? {
+    // A compound blocker restriction ("except by Walls and/or creatures with flying" — Elven Riders)
+    // unions a creature subtype with a keyword/type clause via an Or/And node. This surface renders only
+    // flat single-clause shapes; the nested IsCreatureType / HasAbility scans below would each grab one
+    // branch and silently drop the other (emitting "except by Walls", dropping the flyers). Decline so
+    // the card scaffolds rather than emitting a confidently-wrong, too-narrow blocker filter.
+    if ((ruleNode["args"] as? JsonObject)?.strField("_Permanents") in setOf("Or", "And")) return null
+    if (oracleText?.contains("defender", ignoreCase = true) == true)
+        return "GameObjectFilter.Creature.withKeyword(Keyword.DEFENDER)"
+    // "except by [creature subtype]" (Invisibility: except by Walls). The rule names the *only* legal
+    // blockers, so it must render CantBeBlockedExceptBy with that subtype — a bare CantBeBlockedBy would
+    // invert the meaning (removing those blockers rather than restricting to them).
+    ruleNode.firstArgWordTagged("IsCreatureType")?.let {
+        return "GameObjectFilter.Creature.withSubtype(${subtypeArg(it)})"
+    }
+    // "except by creatures with <keyword>" (Resilient Roadrunner: haste). Render only the clean
+    // "Creature + one known keyword" shape; any extra predicate (color / power / mana value / subtype /
+    // a second or negated ability) declines so we never silently drop a restriction.
+    val hasAbilities = ruleNode.nodesTagged("HasAbility")
+    if (hasAbilities.size == 1 && ruleNode.nodesTagged("DoesntHaveAbility").isEmpty()) {
+        val foreign = listOf(
+            "IsColor", "IsNonColor", "PowerIs", "ToughnessIs", "ManaValueIs",
+            "IsTapped", "IsUntapped", "IsAttacking", "IsBlocking", "HasACounterOfType"
+        )
+        if (foreign.any { ruleNode.hasTag(it) }) return null
+        val kw = pascalToUpperSnake(hasAbilities[0].firstWordAtKey("_CheckHasable") ?: return null)
+        if (kw !in keywords) return null  // unknown ability -> decline, don't widen the filter
+        return "GameObjectFilter.Creature.withKeyword(Keyword.$kw)"
+    }
+    return null
+}
+
+/**
+ * A top-level `PlayerEffect(You, [...])` rule -> one `staticAbility { ability = ... }` per recognised
+ * player-static. Only shapes with an exact controller-scoped StaticAbility render; anything else (the
+ * top-of-library / cost-reduction player statics) scaffolds rather than guess. Currently: "you have
+ * shroud" (True Believer); "creature spells you cast cost {N} less to cast" (Honest Rutstein).
+ */
+internal fun EmitCtx.playerEffectBlock(rule: JsonObject): List<Stmt>? {
+    val args = rule["args"] as? JsonArray
+    val player = args?.getOrNull(0)
+    val effects = (args?.getOrNull(1) as? JsonArray)?.filterIsInstance<JsonObject>()
+    if (player == null || effects.isNullOrEmpty() || !jsonContains(player, "_Player", "You")) {
+        reasons.add("PlayerEffect"); return null
+    }
+    val stmts = mutableListOf<Stmt>()
+    for (e in effects) {
+        val ability = when (e.strField("_PlayerEffect")) {
+            "Shroud" -> Lit("GrantShroudToController")
+            // "[Filtered] spells you cast cost {N} less to cast" (Honest Rutstein: creature spells;
+            // Doc Aurlock: cast from your graveyard or from exile). Renders only a single bare generic
+            // reduction over a spell filter / zone set we can name exactly; a colored/dynamic
+            // reduction or a filter we can't express declines -> SCAFFOLD.
+            "DecreaseSpellCost" -> decreaseSpellCostAbility(e) ?: run { reasons.add("PlayerEffect"); return null }
+            // "Plotting cards from your hand costs {N} less" (Doc Aurlock) -> ModifyPlotCost.
+            "DecreasePlotFromHandCost" ->
+                decreasePlotFromHandCostAbility(e) ?: run { reasons.add("PlayerEffect"); return null }
+            // "You can't cast more than N spell(s) each turn" (Yawgmoth's Agenda) — controller-scoped.
+            "CantCastMoreThanNumberSpellsEachTurn" ->
+                spellCountRestrictionAbility(e, eachPlayer = false) ?: run { reasons.add("PlayerEffect"); return null }
+            else -> { reasons.add("PlayerEffect"); return null }
+        }
+        stmts.add(staticAbilityStmt(ability))
+    }
+    return stmts
+}
+
+/**
+ * A top-level `EachPlayerEffect(AnyPlayer, [...])` rule -> one `staticAbility { ability = ... }` per
+ * recognised global, every-player static. Currently only "each player can't cast more than N spell(s)
+ * each turn" (High Noon) renders -> `RestrictSpellsCastPerTurn(maxPerTurn = N, eachPlayer = true)`;
+ * any other player-scope or player-effect declines -> SCAFFOLD rather than guess. The player scope must
+ * be `AnyPlayer` (every player) — a narrower scope (e.g. opponents only) has no exact StaticAbility yet.
+ */
+internal fun EmitCtx.eachPlayerEffectBlock(rule: JsonObject): List<Stmt>? {
+    val args = rule["args"] as? JsonArray
+    val player = args?.getOrNull(0) as? JsonObject
+    val effects = (args?.getOrNull(1) as? JsonArray)?.filterIsInstance<JsonObject>()
+    if (player == null || effects.isNullOrEmpty() || !jsonContains(player, "_Players", "AnyPlayer")) {
+        reasons.add("EachPlayerEffect"); return null
+    }
+    val stmts = mutableListOf<Stmt>()
+    for (e in effects) {
+        val ability = when (e.strField("_PlayerEffect")) {
+            "CantCastMoreThanNumberSpellsEachTurn" ->
+                spellCountRestrictionAbility(e, eachPlayer = true) ?: run { reasons.add("EachPlayerEffect"); return null }
+            else -> { reasons.add("EachPlayerEffect"); return null }
+        }
+        stmts.add(staticAbilityStmt(ability))
+    }
+    return stmts
+}
+
+/**
+ * A `CantCastMoreThanNumberSpellsEachTurn([Integer N], [<spell filter>])` player-static ->
+ * `RestrictSpellsCastPerTurn(maxPerTurn = N, eachPlayer = <scope>)`. Only the unfiltered "any spell"
+ * shape renders — the SDK's `RestrictSpellsCastPerTurn` caps spell *count* across all spell types, so a
+ * filtered cap (a hypothetical "no more than one creature spell") would be a lossy render and declines
+ * (returns null -> SCAFFOLD). The count must be a top-level Integer.
+ */
+private fun EmitCtx.spellCountRestrictionAbility(effect: JsonObject, eachPlayer: Boolean): Dsl? {
+    val a = effect["args"].asArr ?: return null
+    val count = (a.getOrNull(0) as? JsonObject)?.takeIf { it.strField("_GameNumber") == "Integer" }?.field("args").asInt()
+        ?: return null
+    val spells = a.getOrNull(1) as? JsonObject ?: return null
+    if (!jsonContains(spells, "_Spells", "AnySpell")) return null
+    val parts = mutableListOf(arg("maxPerTurn", "$count"))
+    if (eachPlayer) parts.add(arg("eachPlayer", "true"))
+    return Call("RestrictSpellsCastPerTurn", parts)
+}
+
+/**
+ * A `DecreaseSpellCost(<spell filter>, [<reduction symbols>])` player-static -> `ModifySpellCost(
+ * target = SpellCostTarget.YouCast(<filter>), modification = CostModification.ReduceGeneric(N))`. Only a
+ * single bare generic reduction over a spell filter we can name exactly (creature spells / any spell)
+ * renders; any colored symbol, a multi-symbol reduction, or an unrenderable filter returns null. */
+private fun EmitCtx.decreaseSpellCostAbility(effect: JsonObject): Dsl? {
+    val a = effect["args"].asArr ?: return null
+    val spells = a.getOrNull(0) as? JsonObject
+
+    val symbols = (a.getOrNull(1) as? JsonArray)?.filterIsInstance<JsonObject>() ?: return null
+    if (symbols.size != 1 || symbols[0].strField("_CostReductionSymbol") != "CostReduceGeneric") return null
+    val amount = symbols[0]["args"].asInt() ?: return null
+
+    // A "cast from your graveyard or from exile" spell filter maps to the zone-scoped
+    // SpellCostTarget.YouCastFromZones (Doc Aurlock). Recognised exactly; anything else declines.
+    castFromZonesSet(spells)?.let { zonesExpr ->
+        return call(
+            "ModifySpellCost",
+            arg("target", call("SpellCostTarget.YouCastFromZones", arg(zonesExpr))),
+            arg("modification", call("CostModification.ReduceGeneric", arg("$amount"))),
+        )
+    }
+
+    val spellFilter = when (spells) {
+        null -> "GameObjectFilter.Any"
+        else -> when {
+            jsonContains(spells, "_Spells", "AnySpell") -> "GameObjectFilter.Any"
+            spells.strField("_Spells") == "IsCardtype" && spells.field("args").asStr() == "Creature" -> "GameObjectFilter.Creature"
+            else -> return null
+        }
+    }
+    return call(
+        "ModifySpellCost",
+        arg("target", call("SpellCostTarget.YouCast", arg(spellFilter))),
+        arg("modification", call("CostModification.ReduceGeneric", arg("$amount"))),
+    )
+}
+
+/**
+ * Recognise the spell-zone filter `Or[WasCastFromAPlayersGraveyard(You), WasCastFromExile]`
+ * (in either order) and render it as a `setOf(Zone.GRAVEYARD, Zone.EXILE)` expression for
+ * [SpellCostTarget.YouCastFromZones]. Returns null for any other spell filter so the caller falls
+ * back to the plain `YouCast` shape or declines. Only the exact graveyard+exile pair is handled —
+ * the single shape that appears today (Doc Aurlock); a partial/other zone set declines rather than
+ * guess.
+ */
+private fun castFromZonesSet(spells: JsonObject?): String? {
+    if (spells == null) return null
+    val branches = when {
+        spells.strField("_Spells") == "Or" -> (spells["args"] as? JsonArray)?.filterIsInstance<JsonObject>()
+        else -> listOf(spells)
+    } ?: return null
+    val zones = mutableSetOf<String>()
+    for (b in branches) {
+        when (b.strField("_Spells")) {
+            "WasCastFromAPlayersGraveyard" -> zones.add("Zone.GRAVEYARD")
+            "WasCastFromExile" -> zones.add("Zone.EXILE")
+            else -> return null
+        }
+    }
+    if (zones != setOf("Zone.GRAVEYARD", "Zone.EXILE")) return null
+    return "setOf(Zone.GRAVEYARD, Zone.EXILE)"
+}
+
+/**
+ * A `DecreasePlotFromHandCost([<reduction symbols>])` player-static ->
+ * `ModifyPlotCost(target = PlotCostTarget.YouPlotFromHand, modification = CostModification.ReduceGeneric(N))`.
+ * Only a single bare generic reduction renders (Doc Aurlock: "Plotting cards from your hand costs
+ * {2} less"); a colored/multi-symbol reduction declines -> SCAFFOLD.
+ */
+private fun EmitCtx.decreasePlotFromHandCostAbility(effect: JsonObject): Dsl? {
+    val symbols = (effect["args"] as? JsonArray)?.filterIsInstance<JsonObject>() ?: return null
+    if (symbols.size != 1 || symbols[0].strField("_CostReductionSymbol") != "CostReduceGeneric") return null
+    val amount = symbols[0]["args"].asInt() ?: return null
+    return call(
+        "ModifyPlotCost",
+        arg("target", "PlotCostTarget.YouPlotFromHand"),
+        arg("modification", call("CostModification.ReduceGeneric", arg("$amount"))),
+    )
+}
+
+/**
+ * Torpor Orb: `PermanentsEnteringTheBattlefieldDontCauseAbilitiesToTrigger(IsCardtype <type>)` ->
+ * `staticAbility { ability = SuppressEntersTriggers(GameObjectFilter.<Type>) }`. Only a single bare
+ * `IsCardtype` permanent filter renders to an exact `GameObjectFilter` type val; any richer filter
+ * (subtype, color, an `Or` union, …) declines (-> SCAFFOLD) rather than emit an inexact lock.
+ */
+internal fun EmitCtx.suppressEntersTriggersBlock(rule: JsonObject): List<Stmt>? {
+    val filter = rule["args"] as? JsonObject ?: run { reasons.add("PermanentsEnteringTheBattlefieldDontCauseAbilitiesToTrigger"); return null }
+    if (filter.strField("_Permanents") != "IsCardtype") {
+        reasons.add("PermanentsEnteringTheBattlefieldDontCauseAbilitiesToTrigger"); return null
+    }
+    val type = when (filter["args"].asStr()) {
+        "Creature" -> "GameObjectFilter.Creature"
+        "Artifact" -> "GameObjectFilter.Artifact"
+        "Enchantment" -> "GameObjectFilter.Enchantment"
+        "Land" -> "GameObjectFilter.Land"
+        "Planeswalker" -> "GameObjectFilter.Planeswalker"
+        else -> { reasons.add("PermanentsEnteringTheBattlefieldDontCauseAbilitiesToTrigger"); return null }
+    }
+    return listOf(staticAbilityStmt(call("SuppressEntersTriggers", arg(Lit(type)))))
+}
+
+/**
+ * Rest in Peace's static clause:
+ *   `ReplaceWouldPutIntoGraveyard(WouldPutACardOrTokenInAPlayersGraveyardFromAnywhere(AnyCard,
+ *    AnyPlayer), [ExileItInstead])`
+ * -> `replacementEffect(RedirectZoneChange(newDestination = Zone.EXILE, appliesTo =
+ *    EventPattern.ZoneChangeEvent(filter = GameObjectFilter.Any, to = Zone.GRAVEYARD)))`.
+ *
+ * Only the fully unrestricted shape — any card/token, any player, from anywhere, replaced by
+ * "exile it instead" — renders. A filtered card set, a single-player scope, a from-zone restriction,
+ * or a replacement other than `ExileItInstead` declines (-> SCAFFOLD) rather than drop the constraint.
+ */
+internal fun EmitCtx.replaceWouldPutIntoGraveyardBlock(rule: JsonObject): List<Stmt>? {
+    fun decline(): List<Stmt>? { reasons.add("ReplaceWouldPutIntoGraveyard"); return null }
+    val args = rule["args"].asArr ?: return decline()
+    val event = args.getOrNull(0) as? JsonObject ?: return decline()
+    if (event.strField("_ReplacableEventWouldPutIntoGraveyard")
+        != "WouldPutACardOrTokenInAPlayersGraveyardFromAnywhere"
+    ) return decline()
+    val eventArgs = event["args"].asArr ?: return decline()
+    val cards = eventArgs.getOrNull(0) as? JsonObject ?: return decline()
+    val players = eventArgs.getOrNull(1) as? JsonObject ?: return decline()
+    if (!jsonContains(cards, "_Cards", "AnyCard")) return decline()
+    if (!jsonContains(players, "_Players", "AnyPlayer")) return decline()
+    val replacements = (args.getOrNull(1) as? JsonArray)?.filterIsInstance<JsonObject>() ?: return decline()
+    val only = replacements.singleOrNull() ?: return decline()
+    if (only.strField("_ReplacementActionWouldPutIntoGraveyard") != "ExileItInstead") return decline()
+    return listOf(Eval(call(
+        "replacementEffect",
+        arg(call(
+            "RedirectZoneChange",
+            arg("newDestination", "Zone.EXILE"),
+            arg("appliesTo", call(
+                "EventPattern.ZoneChangeEvent",
+                arg("filter", "GameObjectFilter.Any"),
+                arg("to", "Zone.GRAVEYARD"),
+            )),
+        )),
+    )))
+}

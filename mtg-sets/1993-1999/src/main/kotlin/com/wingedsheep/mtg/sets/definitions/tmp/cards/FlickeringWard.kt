@@ -1,0 +1,60 @@
+package com.wingedsheep.mtg.sets.definitions.tmp.cards
+
+import com.wingedsheep.sdk.scripting.targets.EffectTarget
+import com.wingedsheep.sdk.dsl.Costs
+import com.wingedsheep.sdk.dsl.Effects
+import com.wingedsheep.sdk.dsl.Targets
+import com.wingedsheep.sdk.dsl.card
+import com.wingedsheep.sdk.model.Rarity
+import com.wingedsheep.sdk.scripting.ChoiceType
+import com.wingedsheep.sdk.scripting.EntersWithChoice
+import com.wingedsheep.sdk.scripting.GrantProtectionFromChosenColorToGroup
+import com.wingedsheep.sdk.scripting.filters.unified.GroupFilter
+
+/**
+ * Flickering Ward
+ * {W}
+ * Enchantment — Aura
+ * Enchant creature
+ * As this Aura enters, choose a color.
+ * Enchanted creature has protection from the chosen color. This effect
+ * doesn't remove this Aura.
+ * {W}: Return this Aura to its owner's hand.
+ *
+ * The self-exempt clause ("This effect doesn't remove this Aura") is currently
+ * moot in the engine: UnattachedAurasCheck only sends Auras to the graveyard
+ * when the attached target is missing, not when it's an illegal attachment per
+ * Rule 704.5n (color protection). If 704.5n is ever wired up, this clause will
+ * need explicit support.
+ */
+val FlickeringWard = card("Flickering Ward") {
+    manaCost = "{W}"
+    colorIdentity = "W"
+    typeLine = "Enchantment — Aura"
+    oracleText = "Enchant creature\n" +
+        "As this Aura enters, choose a color.\n" +
+        "Enchanted creature has protection from the chosen color. This effect doesn't remove this Aura.\n" +
+        "{W}: Return this Aura to its owner's hand."
+
+    auraTarget = Targets.Creature
+
+    replacementEffect(EntersWithChoice(ChoiceType.COLOR))
+
+    staticAbility {
+        ability = GrantProtectionFromChosenColorToGroup(
+            filter = GroupFilter.attachedCreature()
+        )
+    }
+
+    activatedAbility {
+        cost = Costs.Mana("{W}")
+        effect = Effects.ReturnToHand(EffectTarget.Self)
+    }
+
+    metadata {
+        rarity = Rarity.UNCOMMON
+        collectorNumber = "19"
+        artist = "Greg Simanson"
+        imageUri = "https://cards.scryfall.io/normal/front/d/4/d4d2b011-bb0d-463c-bf2a-04b6650771a3.jpg?1562056865"
+    }
+}

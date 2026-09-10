@@ -1,0 +1,49 @@
+package com.wingedsheep.mtg.sets.definitions.mh1.cards
+
+import com.wingedsheep.sdk.core.Keyword
+import com.wingedsheep.sdk.core.Zone
+import com.wingedsheep.sdk.dsl.Triggers
+import com.wingedsheep.sdk.dsl.card
+import com.wingedsheep.sdk.model.Rarity
+import com.wingedsheep.sdk.scripting.filters.unified.TargetFilter
+import com.wingedsheep.sdk.scripting.targets.TargetObject
+import com.wingedsheep.sdk.dsl.Effects
+
+/**
+ * Graveshifter
+ * {3}{B}
+ * Creature — Shapeshifter
+ * 2/2
+ *
+ * Changeling (This card is every creature type.)
+ * When this creature enters, you may return target creature card from your graveyard to your hand.
+ */
+val Graveshifter = card("Graveshifter") {
+    manaCost = "{3}{B}"
+    colorIdentity = "B"
+    typeLine = "Creature — Shapeshifter"
+    power = 2
+    toughness = 2
+    oracleText = "Changeling (This card is every creature type.)\n" +
+        "When this creature enters, you may return target creature card from your graveyard to your hand."
+
+    keywords(Keyword.CHANGELING)
+
+    triggeredAbility {
+        trigger = Triggers.EntersBattlefield
+        optional = true
+        val creature = target(
+            "target creature card from your graveyard",
+            TargetObject(filter = TargetFilter.CreatureInYourGraveyard)
+        )
+        effect = Effects.Move(creature, Zone.HAND)
+    }
+
+    metadata {
+        rarity = Rarity.UNCOMMON
+        collectorNumber = "94"
+        artist = "Jakub Kasper"
+        flavorText = "\"Why throw away a perfectly good identity?\""
+        imageUri = "https://cards.scryfall.io/normal/front/1/2/128c516b-7eb1-4f81-8b54-428bd0649d92.jpg"
+    }
+}

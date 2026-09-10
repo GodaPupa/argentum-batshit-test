@@ -1,0 +1,50 @@
+package com.wingedsheep.mtg.sets.definitions.ons.cards
+
+import com.wingedsheep.sdk.core.AbilityFlag
+import com.wingedsheep.sdk.dsl.Costs
+import com.wingedsheep.sdk.dsl.card
+import com.wingedsheep.sdk.model.Rarity
+import com.wingedsheep.sdk.scripting.Duration
+import com.wingedsheep.sdk.scripting.ChoiceType
+import com.wingedsheep.sdk.scripting.EntersWithChoice
+import com.wingedsheep.sdk.scripting.effects.GainControlEffect
+import com.wingedsheep.sdk.scripting.GameObjectFilter
+import com.wingedsheep.sdk.scripting.filters.unified.TargetFilter
+import com.wingedsheep.sdk.scripting.targets.TargetCreature
+
+/**
+ * Callous Oppressor
+ * {1}{U}{U}
+ * Creature — Cephalid
+ * 1/2
+ * You may choose not to untap Callous Oppressor during your untap step.
+ * As Callous Oppressor enters the battlefield, an opponent chooses a creature type.
+ * {T}: Gain control of target creature that isn't of the chosen type for as long as
+ * Callous Oppressor remains tapped.
+ */
+val CallousOppressor = card("Callous Oppressor") {
+    manaCost = "{1}{U}{U}"
+    colorIdentity = "U"
+    typeLine = "Creature — Cephalid"
+    power = 1
+    toughness = 2
+    oracleText = "You may choose not to untap Callous Oppressor during your untap step.\nAs Callous Oppressor enters the battlefield, an opponent chooses a creature type.\n{T}: Gain control of target creature that isn't of the chosen type for as long as Callous Oppressor remains tapped."
+
+    flags(AbilityFlag.MAY_NOT_UNTAP)
+    replacementEffect(EntersWithChoice(ChoiceType.CREATURE_TYPE, chooser = com.wingedsheep.sdk.scripting.references.Player.AnOpponent))
+
+    activatedAbility {
+        cost = Costs.Tap
+        val t = target("target", TargetCreature(
+            filter = TargetFilter(GameObjectFilter.Creature.notOfSourceChosenType())
+        ))
+        effect = GainControlEffect(t, Duration.WhileSourceTapped())
+    }
+
+    metadata {
+        rarity = Rarity.RARE
+        collectorNumber = "72"
+        artist = "Todd Lockwood"
+        imageUri = "https://cards.scryfall.io/normal/front/b/3/b3dd3ce7-e0e3-4412-9983-ff933584f59b.jpg?1562937464"
+    }
+}

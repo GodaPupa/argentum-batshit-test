@@ -1,0 +1,40 @@
+package com.wingedsheep.mtg.sets.definitions.ons.cards
+
+import com.wingedsheep.sdk.dsl.card
+import com.wingedsheep.sdk.model.Rarity
+import com.wingedsheep.sdk.scripting.AbilityCost
+import com.wingedsheep.sdk.scripting.effects.DealDamageEffect
+import com.wingedsheep.sdk.scripting.filters.unified.TargetFilter
+import com.wingedsheep.sdk.scripting.targets.TargetPermanent
+
+/**
+ * Gravel Slinger
+ * {3}{W}
+ * Creature — Human Soldier
+ * 1/3
+ * {T}: Gravel Slinger deals 1 damage to target attacking or blocking creature.
+ * Morph {1}{W}
+ */
+val GravelSlinger = card("Gravel Slinger") {
+    manaCost = "{3}{W}"
+    colorIdentity = "W"
+    typeLine = "Creature — Human Soldier"
+    power = 1
+    toughness = 3
+    oracleText = "{T}: Gravel Slinger deals 1 damage to target attacking or blocking creature.\nMorph {1}{W}"
+
+    activatedAbility {
+        cost = AbilityCost.Tap
+        val t = target("target", TargetPermanent(filter = TargetFilter.AttackingOrBlockingCreature))
+        effect = DealDamageEffect(1, t)
+    }
+
+    morph = "{1}{W}"
+
+    metadata {
+        rarity = Rarity.COMMON
+        collectorNumber = "33"
+        artist = "Kev Walker"
+        imageUri = "https://cards.scryfall.io/normal/front/8/7/87551307-6b5f-4f12-aa1f-4beebefad3b3.jpg?1562926972"
+    }
+}

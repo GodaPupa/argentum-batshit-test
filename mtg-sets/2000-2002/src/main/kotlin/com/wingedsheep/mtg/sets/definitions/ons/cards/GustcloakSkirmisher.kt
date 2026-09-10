@@ -1,0 +1,42 @@
+package com.wingedsheep.mtg.sets.definitions.ons.cards
+
+import com.wingedsheep.sdk.core.Keyword
+import com.wingedsheep.sdk.dsl.Effects
+import com.wingedsheep.sdk.dsl.Triggers
+import com.wingedsheep.sdk.dsl.card
+import com.wingedsheep.sdk.model.Rarity
+import com.wingedsheep.sdk.scripting.targets.EffectTarget
+import com.wingedsheep.sdk.scripting.effects.MayEffect
+
+/**
+ * Gustcloak Skirmisher
+ * {3}{W}
+ * Creature — Bird Soldier
+ * 2/3
+ * Flying
+ * Whenever Gustcloak Skirmisher becomes blocked, you may untap it and remove it from combat.
+ */
+val GustcloakSkirmisher = card("Gustcloak Skirmisher") {
+    manaCost = "{3}{W}"
+    colorIdentity = "W"
+    typeLine = "Creature — Bird Soldier"
+    power = 2
+    toughness = 3
+    oracleText = "Flying\nWhenever Gustcloak Skirmisher becomes blocked, you may untap it and remove it from combat."
+    keywords(Keyword.FLYING)
+
+    triggeredAbility {
+        trigger = Triggers.BecomesBlocked
+        effect = MayEffect(
+            Effects.Untap(EffectTarget.Self) then Effects.RemoveFromCombat(EffectTarget.Self)
+        )
+    }
+
+    metadata {
+        rarity = Rarity.UNCOMMON
+        collectorNumber = "38"
+        artist = "Dan Frazier"
+        flavorText = "\"They're trained in the art of pressing their luck.\""
+        imageUri = "https://cards.scryfall.io/normal/front/c/b/cbbff06c-5f92-4320-8b70-df3c8344f600.jpg?1562943121"
+    }
+}

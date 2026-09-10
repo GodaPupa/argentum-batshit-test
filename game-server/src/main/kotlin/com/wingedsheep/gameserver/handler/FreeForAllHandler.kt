@@ -1,0 +1,489 @@
+package com.wingedsheep.gameserver.handler
+
+import com.wingedsheep.engine.limited.BoosterGenerator
+import com.wingedsheep.engine.registry.CardRegistry
+import com.wingedsheep.gameserver.config.GameProperties
+import com.wingedsheep.gameserver.deck.EasterEggDeckInjector
+import com.wingedsheep.gameserver.lobby.TournamentLobby
+import com.wingedsheep.gameserver.protocol.ErrorCode
+import com.wingedsheep.gameserver.protocol.ServerMessage
+import com.wingedsheep.gameserver.repository.GameRepository
+import com.wingedsheep.gameserver.session.GameSession
+import com.wingedsheep.gameserver.session.PlayerIdentity
+import com.wingedsheep.gameserver.session.PlayerSession
+import com.wingedsheep.sdk.model.EntityId
+import org.slf4j.LoggerFactory
+import org.springframework.stereotype.Component
+import org.springframework.web.socket.WebSocketSession
+
+/**
+ * Free-for-All lobby mode (multiplayer.md Phase 4): instead of pairing lobby players into
+ * 2-player bracket matches, one N-player [GameSession] seats every lobby player (2-6). The
+ * format axis (sealed / draft / premade decks) is untouched — this handler only replaces the
+ * "what happens once decks are in" half that [TournamentMatchHandler] covers for bracket mode.
+ *
+ * Lifecycle: all decks submitted → [maybeStartGame] seats everyone in one session → game runs to
+ * completion (mid-game eliminations continue the game, CR 800.4a) → [handleGameComplete] reports
+ * standings as the elimination order → players ready up ([handleReadyForNextGame]) → a new game
+ * starts with the same pod ("play again"). No [com.wingedsheep.gameserver.tournament.TournamentManager]
+ * is ever created for an FFA lobby.
+ */
+@Component
+class FreeForAllHandler(
+    private val ctx: LobbySharedContext,
+    private val cardRegistry: CardRegistry,
+    private val printingRegistry: com.wingedsheep.engine.registry.PrintingRegistry,
+    private val tokenArtRegistry: com.wingedsheep.engine.registry.TokenArtRegistry,
+    private val gamePlayHandler: GamePlayHandler,
+    private val gameProperties: GameProperties,
+    private val gameRepository: GameRepository,
+) {
+    private val logger = LoggerFactory.getLogger(FreeForAllHandler::class.java)
+
+    /**
+     * Start one Free-for-All game seating every lobby player, if the pod is ready: no game
+     * already running, and every player has a submitted deck. Returns true if a game started.
+     * Callers must hold the lobby's round lock.
+     */
+    fun maybeStartGame(lobby: TournamentLobby): Boolean {
+        if (!lobby.isFreeForAll) return false
+        if (lobby.ffaGameSessionId != null) return false
+        if (lobby.playerCount < 2) return false
+        // Two-Headed Giant needs a full pod — exactly four players for two teams of two (CR 810).
+        if (lobby.isTwoHeadedGiant && lobby.playerCount != 4) return false
+        // Team vs. Team needs an even pod of at least four so it splits into two equal teams
+        // (2v2 / 3v3 / 4v4 — CR 808.1).
+        if (lobby.isTeamVsTeam && (lobby.playerCount < 4 || lobby.playerCount % 2 != 0)) return false
+        if (!lobby.allDecksSubmitted()) return false
+
+        val playerStates = lobby.players.values.toList()
+
+        // Commander rules come off the lobby's Rules axis; the wire deck list counts the commander,
+        // the engine's library excludes it. Mirrors TournamentMatchHandler.startSingleMatch.
+        val usesCommanders = lobby.usesCommanderRules
+        // The one Rules × Table conflict. The lobby's own gates reject it earlier; this is the
+        // defence in depth, reading the same statement rather than restating it.
+        lobby.rulesTableConflict?.let { conflict ->
+            logger.warn("FFA lobby ${lobby.lobbyId}: $conflict")
+            return false
+        }
+        if (usesCommanders) {
+            val missing = playerStates.filter { it.commander == null }
+            if (missing.isNotEmpty()) {
+                logger.warn(
+                    "FFA lobby ${lobby.lobbyId}: cannot start commander-shape game — missing commander for " +
+                        missing.joinToString(", ") { it.identity.playerName }
+                )
+                return false
+            }
+        }
+
+        val gameSession = GameSession(
+            cardRegistry = cardRegistry,
+            useHandSmoother = gameProperties.handSmoother.enabled,
+            debugMode = gameProperties.debugMode,
+            printingRegistry = printingRegistry,
+            tokenArtRegistry = tokenArtRegistry,
+            maxPlayers = playerStates.size,
+        )
+        // A pod runs at CommanderPreset.POD's 40 life (TournamentLobby.effectiveCommanderPreset) —
+        // the host's Brawl/Commander tuning is a 1v1 knob, and applying its 25/30 to a table where
+        // damage arrives from three opponents ended pods before they started. Where the *deck* came
+        // from still decides which shape applies: a brought deck is paper Commander (the engine's
+        // 100/40/21 defaults), a generated pool is the lobby's 60-card limited configuration.
+        val commanderFormat = when {
+            !usesCommanders -> null
+            lobby.format == com.wingedsheep.gameserver.lobby.TournamentFormat.PREMADE_DECKS ->
+                com.wingedsheep.sdk.core.Format.Commander()
+            else -> lobby.effectiveCommanderPreset.toFormat().copy(deckSize = lobby.deckSizeMin)
+        }
+        // CR 802 / 803 — the lobby's chosen attack rule applies to this multiplayer game.
+        gameSession.attackMode = lobby.attackMode
+
+        // Team games (2HG — CR 810; Team vs. Team — CR 808): run under the team format and split the
+        // pod into two even teams — random by default (re-rolled each game), or the host's manual
+        // assignment. Team indices reference the add-player order below (same order used for the
+        // partition); GameInitializer seats teammates adjacently (CR 805.1 / 808.2). GameSession.teams
+        // flows into GameConfig.teams, which stamps a TeamComponent on each seat. The format's
+        // capability flags then decide what the team shares: 2HG shares life/turns/combat, Team vs.
+        // Team shares nothing but opponent-grouping and the last-team-standing win.
+        if (lobby.isTeamGame) {
+            gameSession.engineFormat = if (lobby.isTwoHeadedGiant) {
+                com.wingedsheep.sdk.core.Format.TwoHeadedGiant()
+            } else if (commanderFormat != null) {
+                com.wingedsheep.sdk.core.Format.TeamVsTeam(
+                    startingLife = commanderFormat.startingLife,
+                    startingHandSize = commanderFormat.startingHandSize,
+                    commanderDamageThreshold = commanderFormat.commanderDamageThreshold,
+                    deckSize = commanderFormat.deckSize,
+                    alwaysDivertToCommand = commanderFormat.alwaysDivertToCommand,
+                )
+            } else {
+                com.wingedsheep.sdk.core.Format.TeamVsTeam()
+            }
+            gameSession.teams = com.wingedsheep.gameserver.lobby.EvenTeams.partition(
+                orderedPlayerIds = playerStates.map { it.identity.playerId },
+                randomTeams = lobby.randomTeams,
+                manualAssignment = lobby.teamAssignments,
+            )
+        } else if (commanderFormat != null) {
+            gameSession.engineFormat = commanderFormat
+        }
+
+        for (playerState in playerStates) {
+            val identity = playerState.identity
+            val baseDeck = BoosterGenerator.withBasicLandArt(
+                lobby.getSubmittedDeck(identity.playerId) ?: return false,
+                lobby.basicLands
+            )
+            val deckWithEgg = EasterEggDeckInjector.maybeInjectEasterEggs(
+                identity.playerName, baseDeck, gameProperties.easterEggs.enabled
+            )
+            val commander = if (usesCommanders) playerState.commander else null
+            val unpinnedDeck = if (commander != null) stripCommanderFromCards(deckWithEgg, commander) else deckWithEgg
+            val poolPrintings = playerState.cardPool + lobby.basicLands.values
+            val deck = BoosterGenerator.withCardArt(unpinnedDeck, poolPrintings)
+
+            val playerSession = identity.toPlayerSession()
+            gameSession.addPlayer(
+                playerSession, deck, commanderCardName = commander,
+                sideboard = BoosterGenerator.withCardArt(
+                    lobby.getSubmittedSideboard(identity.playerId), poolPrintings,
+                ),
+            )
+            gameSession.setPlayerPersistenceInfo(
+                playerSession.playerId, playerSession.playerName, identity.token,
+                isAi = identity.isAi, aiModelOverride = identity.aiModelOverride
+            )
+        }
+
+        // Point every AI seat at this game before it starts. Without this the AI sits at the table
+        // holding the no-op callbacks `createAiIdentity` gave it and never acts — the pod stalls on
+        // its priority. The engine AI itself is pod- and team-aware (`Sides` folds over every
+        // opposing side and reads Two-Headed Giant's pooled life), so a seat is all it needs.
+        wireAiSeats(gameSession, lobby, playerStates.map { it.identity.playerId })
+
+        gameSession.publicSpectate = lobby.isPublic
+        gameRepository.save(gameSession)
+        gameRepository.linkToLobby(gameSession.sessionId, lobby.lobbyId)
+        lobby.ffaGameSessionId = gameSession.sessionId
+        lobby.clearReadyState()
+
+        val gameNumber = lobby.ffaGamesPlayed + 1
+        logger.info(
+            "Starting FFA game $gameNumber for lobby ${lobby.lobbyId} " +
+                "(${playerStates.size} players: ${playerStates.joinToString(", ") { it.identity.playerName }})"
+        )
+
+        for (playerState in playerStates) {
+            val identity = playerState.identity
+            ctx.cleanUpSpectatingState(identity)
+            identity.currentGameSessionId = gameSession.sessionId
+            val ws = identity.webSocketSession
+            if (ws != null) {
+                ctx.sessionRegistry.getPlayerSession(ws.id)?.currentGameSessionId = gameSession.sessionId
+                if (ws.isOpen) {
+                    ctx.sender.send(ws, ServerMessage.FreeForAllGameStarting(
+                        lobbyId = lobby.lobbyId,
+                        gameSessionId = gameSession.sessionId,
+                        gameNumber = gameNumber,
+                        players = gameSession.seatInfos(identity.playerId),
+                    ))
+                }
+            }
+        }
+        for ((_, spectatorIdentity) in lobby.spectators) {
+            val ws = spectatorIdentity.webSocketSession
+            if (ws != null && ws.isOpen) {
+                ctx.sender.send(ws, ServerMessage.FreeForAllGameStarting(
+                    lobbyId = lobby.lobbyId,
+                    gameSessionId = gameSession.sessionId,
+                    gameNumber = gameNumber,
+                    players = gameSession.seatInfos(),
+                ))
+            }
+        }
+
+        gamePlayHandler.startGame(gameSession)
+        ctx.lobbyRepository.saveLobby(lobby)
+        return true
+    }
+
+    /**
+     * Give every AI seat in [seatedPlayerIds] a live session bound to [gameSession].
+     *
+     * The bracket counterpart is the loop in [TournamentMatchHandler.startSingleMatch], and the two
+     * halves are both load-bearing: `wireAiForGame` swaps the identity's no-op callbacks for ones
+     * that feed this game, and [GameSession.replacePlayerSession] repoints the seat at the session
+     * that wiring just created — the [PlayerSession] added above still holds the stale one.
+     *
+     * Unlike the bracket, a pod can seat several AI at once; [com.wingedsheep.gameserver.ai.AiGameManager]
+     * tracks them per seat rather than per game so they don't evict each other.
+     */
+    private fun wireAiSeats(gameSession: GameSession, lobby: TournamentLobby, seatedPlayerIds: List<EntityId>) {
+        for (playerId in seatedPlayerIds) {
+            if (!ctx.aiGameManager.isAiPlayer(playerId)) continue
+
+            ctx.aiGameManager.wireAiForGame(
+                gameSession = gameSession,
+                aiPlayerId = playerId,
+                deckList = lobby.getSubmittedDeck(playerId),
+                onActionReady = { aiPlayerId, action, interactionEpoch ->
+                    gamePlayHandler.handleAiAction(gameSession, aiPlayerId, action, interactionEpoch)
+                },
+                onMulliganKeep = { aiPlayerId ->
+                    gamePlayHandler.handleAiMulliganKeep(gameSession, aiPlayerId)
+                },
+                onMulliganTake = { aiPlayerId ->
+                    gamePlayHandler.handleAiMulliganTake(gameSession, aiPlayerId)
+                },
+                onBottomCards = { aiPlayerId, cardIds ->
+                    gamePlayHandler.handleAiBottomCards(gameSession, aiPlayerId, cardIds)
+                },
+            )
+
+            val identity = lobby.players[playerId]?.identity ?: continue
+            val ws = identity.webSocketSession ?: continue
+            gameSession.replacePlayerSession(playerId, PlayerSession(
+                webSocketSession = ws,
+                playerId = playerId,
+                playerName = identity.playerName,
+                currentGameSessionId = gameSession.sessionId,
+            ))
+        }
+    }
+
+    /**
+     * Mark every AI seat ready for the next pod game.
+     *
+     * "Play again" waits on [TournamentLobby.areAllPlayersReady], which counts every connected
+     * seat — and an AI is always connected. Nothing routes a ready-up to an AI session, so without
+     * this a pod containing one could never start its second game. The bracket solves the same
+     * problem in [TournamentMatchHandler.autoReadyAiPlayers]; a pod has no rounds or pairings to
+     * consult, so readiness here is unconditional.
+     */
+    fun autoReadyAiSeats(lobby: TournamentLobby) {
+        for (playerId in lobby.players.keys) {
+            if (ctx.aiGameManager.isAiPlayer(playerId)) lobby.markPlayerReady(playerId)
+        }
+    }
+
+    /**
+     * The FFA game finished. Standings = elimination order, winner first ([GameSession.getEliminationOrder]
+     * reversed; a player never eliminated but not the winner — a simultaneous-loss draw — slots in
+     * after the winner). Broadcasts [ServerMessage.FreeForAllGameComplete]; the lobby stays
+     * TOURNAMENT_ACTIVE so the pod can ready up and play again.
+     *
+     * Invoked from [GamePlayHandler.handleGameOver] via the match-result callback, which has
+     * already cleared the players' `currentGameSessionId` and looked up the lobby link.
+     */
+    fun handleGameComplete(lobbyId: String, gameSessionId: String, winnerId: EntityId?) {
+        val lock = ctx.roundLocks.computeIfAbsent(lobbyId) { Any() }
+        synchronized(lock) {
+            val lobby = ctx.lobbyRepository.findLobbyById(lobbyId) ?: return
+            if (lobby.ffaGameSessionId != gameSessionId) return
+
+            val gameSession = gameRepository.findById(gameSessionId)
+            val standings = buildStandings(lobby, gameSession, winnerId)
+
+            lobby.ffaGameSessionId = null
+            lobby.ffaGamesPlayed += 1
+            lobby.ffaLastStandings = standings
+            lobby.clearReadyState()
+            // The AI seats are ready the moment the pod is between games; only the humans are asked.
+            autoReadyAiSeats(lobby)
+            ctx.lobbyRepository.saveLobby(lobby)
+
+            logger.info(
+                "FFA game $gameSessionId complete for lobby $lobbyId: " +
+                    standings.joinToString(", ") { "${it.placement}. ${it.playerName}" }
+            )
+
+            val message = ServerMessage.FreeForAllGameComplete(
+                lobbyId = lobbyId,
+                standings = standings,
+                gamesPlayed = lobby.ffaGamesPlayed,
+            )
+            broadcastToLobby(lobby, message)
+        }
+    }
+
+    /**
+     * "Play again": mark the player ready; when every connected player is ready (and all decks
+     * are still submitted) a new game starts with the same pod.
+     */
+    fun handleReadyForNextGame(session: WebSocketSession, identity: PlayerIdentity, lobby: TournamentLobby) {
+        if (lobby.isSpectator(identity.playerId)) {
+            ctx.sender.sendError(session, ErrorCode.INVALID_ACTION, "Spectators cannot ready up")
+            return
+        }
+        val lock = ctx.roundLocks.computeIfAbsent(lobby.lobbyId) { Any() }
+        synchronized(lock) {
+            if (lobby.ffaGameSessionId != null) {
+                ctx.sender.sendError(session, ErrorCode.INVALID_ACTION, "A game is already in progress")
+                return
+            }
+            if (!lobby.markPlayerReady(identity.playerId)) return
+
+            logger.info("Player ${identity.playerName} ready for next FFA game in lobby ${lobby.lobbyId}")
+            broadcastReadyStatus(lobby, identity)
+            ctx.lobbyRepository.saveLobby(lobby)
+
+            if (lobby.areAllPlayersReady()) {
+                maybeStartGame(lobby)
+            }
+        }
+    }
+
+    /**
+     * A player permanently left the lobby (explicit leave or disconnect-abandon). If they are
+     * seated in the running FFA game, concede their seat — the game continues for the rest
+     * (CR 800.4a); in a 2-player pod this ends it (the degenerate case).
+     */
+    fun handlePlayerLeft(lobby: TournamentLobby, playerId: EntityId) {
+        val gameSessionId = lobby.ffaGameSessionId ?: return
+        val gameSession = gameRepository.findById(gameSessionId) ?: return
+        if (gameSession.getPlayerSession(playerId) == null) return
+        if (gameSession.isGameOver()) return
+
+        logger.info("FFA lobby ${lobby.lobbyId}: conceding departed player $playerId from game $gameSessionId")
+        gamePlayHandler.concedeSeat(gameSession, playerId)
+    }
+
+    /**
+     * Restore FFA lobby state for a player reconnecting while the lobby is TOURNAMENT_ACTIVE —
+     * the FFA-mode counterpart of LobbyHandler.sendTournamentActiveState. Rejoins a running game
+     * if one exists; otherwise re-sends the latest standings + ready status.
+     */
+    fun sendReconnectionState(
+        session: WebSocketSession,
+        identity: PlayerIdentity,
+        playerSession: PlayerSession?,
+        lobby: TournamentLobby,
+    ) {
+        val gameSessionId = lobby.ffaGameSessionId
+        val gameSession = gameSessionId?.let { gameRepository.findById(it) }
+
+        if (gameSession != null && gameSession.isStarted && !gameSession.isGameOver() &&
+            gameSession.getPlayerSession(identity.playerId) != null && playerSession != null
+        ) {
+            identity.currentGameSessionId = gameSessionId
+            playerSession.currentGameSessionId = gameSessionId
+            ctx.sender.send(session, ServerMessage.FreeForAllGameStarting(
+                lobbyId = lobby.lobbyId,
+                gameSessionId = gameSessionId,
+                gameNumber = lobby.ffaGamesPlayed + 1,
+                players = gameSession.seatInfos(identity.playerId),
+            ))
+            // Reseat in one step rather than remove-then-add: a pod's games run long enough that
+            // mid-game reconnects are routine, and each one must not cost the seat its decklist.
+            gameSession.associatePlayer(playerSession)
+            when {
+                gameSession.isAwaitingBottomCards(identity.playerId) -> {
+                    val hand = gameSession.getHand(identity.playerId)
+                    val cardsToBottom = gameSession.getCardsToBottom(identity.playerId)
+                    ctx.sender.send(session, ServerMessage.ChooseBottomCards(hand, cardsToBottom))
+                }
+                gameSession.isMulliganPhase && !gameSession.hasMulliganComplete(identity.playerId) -> {
+                    ctx.sender.send(session, gameSession.getMulliganDecision(identity.playerId))
+                }
+                gameSession.isMulliganPhase -> {
+                    ctx.sender.send(session, ServerMessage.WaitingForOpponentMulligan)
+                }
+                else -> {
+                    gameSession.clearLastSentState(identity.playerId)
+                    gamePlayHandler.broadcastStateUpdate(gameSession, emptyList())
+                }
+            }
+            return
+        }
+
+        // Between games: re-send last standings (if any) and the current ready roster.
+        val standings = lobby.ffaLastStandings
+        if (standings != null) {
+            ctx.sender.send(session, ServerMessage.FreeForAllGameComplete(
+                lobbyId = lobby.lobbyId,
+                standings = standings,
+                gamesPlayed = lobby.ffaGamesPlayed,
+            ))
+        }
+        val readyPlayerIds = lobby.getReadyPlayerIds()
+        if (readyPlayerIds.isNotEmpty()) {
+            val connectedCount = lobby.players.values.count { it.identity.isConnected }
+            ctx.sender.send(session, ServerMessage.PlayerReadyForRound(
+                lobbyId = lobby.lobbyId,
+                playerId = identity.playerId.value,
+                playerName = identity.playerName,
+                readyPlayerIds = readyPlayerIds.map { it.value },
+                totalConnectedPlayers = connectedCount,
+            ))
+        }
+    }
+
+    private fun broadcastReadyStatus(lobby: TournamentLobby, identity: PlayerIdentity) {
+        val connectedPlayers = lobby.players.values.filter { it.identity.isConnected }
+        val message = ServerMessage.PlayerReadyForRound(
+            lobbyId = lobby.lobbyId,
+            playerId = identity.playerId.value,
+            playerName = identity.playerName,
+            readyPlayerIds = lobby.getReadyPlayerIds().map { it.value },
+            totalConnectedPlayers = connectedPlayers.size,
+        )
+        broadcastToLobby(lobby, message)
+    }
+
+    private fun broadcastToLobby(lobby: TournamentLobby, message: ServerMessage) {
+        lobby.players.forEach { (_, playerState) ->
+            val ws = playerState.identity.webSocketSession
+            if (ws != null && ws.isOpen) ctx.sender.send(ws, message)
+        }
+        lobby.spectators.forEach { (_, spectatorIdentity) ->
+            val ws = spectatorIdentity.webSocketSession
+            if (ws != null && ws.isOpen) ctx.sender.send(ws, message)
+        }
+    }
+
+    /**
+     * Placement order: winner first, then any never-eliminated non-winners (simultaneous-loss
+     * draws), then the eliminated players latest-first. Falls back to lobby seat order if the
+     * session is already gone (defensive — the result callback runs before session removal).
+     */
+    private fun buildStandings(
+        lobby: TournamentLobby,
+        gameSession: GameSession?,
+        winnerId: EntityId?,
+    ): List<ServerMessage.FfaStandingInfo> {
+        val seatedIds = gameSession?.getPlayers()?.map { it.playerId }
+            ?: lobby.players.keys.toList()
+        val eliminated = gameSession?.getEliminationOrder() ?: emptyList()
+        // A team wins together (CR 810.8a): every winning seat is placed first, in seat order,
+        // never the representative alone with their partner filed among the survivors.
+        val winners = gameSession?.getWinnerIds()?.takeIf { it.isNotEmpty() } ?: listOfNotNull(winnerId)
+
+        val placementOrder = buildList {
+            addAll(winners)
+            addAll(seatedIds.filter { it !in winners && it !in eliminated })
+            addAll(eliminated.reversed().filter { it !in winners })
+        }
+
+        return placementOrder.mapIndexed { index, playerId ->
+            val identity = lobby.players[playerId]?.identity
+            ServerMessage.FfaStandingInfo(
+                playerId = playerId.value,
+                playerName = identity?.playerName
+                    ?: gameSession?.getPlayerSession(playerId)?.playerName
+                    ?: "Unknown",
+                placement = index + 1,
+                isConnected = identity?.isConnected ?: false,
+            )
+        }
+    }
+
+    /** Mirrors TournamentMatchHandler.stripCommanderFromCards — wire decks count the commander, the library doesn't. */
+    private fun stripCommanderFromCards(deckList: Map<String, Int>, commander: String): Map<String, Int> {
+        val current = deckList[commander] ?: return deckList
+        val next = deckList.toMutableMap()
+        if (current <= 1) next.remove(commander) else next[commander] = current - 1
+        return next
+    }
+}

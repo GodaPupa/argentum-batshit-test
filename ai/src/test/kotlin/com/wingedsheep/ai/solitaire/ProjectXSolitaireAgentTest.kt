@@ -1,0 +1,345 @@
+package com.wingedsheep.ai.solitaire
+
+import com.wingedsheep.engine.core.*
+import com.wingedsheep.engine.state.components.battlefield.TappedComponent
+import com.wingedsheep.engine.state.components.identity.CardComponent
+import com.wingedsheep.engine.support.ScenarioTestBase
+import com.wingedsheep.sdk.core.Color
+import com.wingedsheep.sdk.model.EntityId
+import io.kotest.matchers.booleans.shouldBeFalse
+import io.kotest.matchers.booleans.shouldBeTrue
+import io.kotest.matchers.shouldBe
+import io.kotest.matchers.types.shouldBeInstanceOf
+
+/** Deterministic readiness gate for the Project X v0.2 solitaire policy. */
+class ProjectXSolitaireAgentTest : ScenarioTestBase() {
+    private fun agent(game: TestGame) = ProjectXSolitaireAgent(cardRegistry, game.player1Id)
+
+    private fun name(game: TestGame, id: EntityId): String? =
+        game.state.getEntity(id)?.get<CardComponent>()?.name
+
+    private fun libraryIds(game: TestGame): List<EntityId> = game.state.getLibrary(game.player1Id)
+
+    private fun searchDecision(game: TestGame): SearchLibraryDecision {
+        val options = libraryIds(game)
+        val info = options.associateWith { id ->
+            val card = game.state.getEntity(id)!!.get<CardComponent>()!!
+            SearchCardInfo(card.name, card.manaCost.toString(), card.typeLine.toString())
+        }
+        return SearchLibraryDecision(
+            id = "herald-search",
+            playerId = game.player1Id,
+            prompt = "Search for an Elf",
+            context = DecisionContext(sourceName = ProjectXStateAnalyzer.WIREWOOD_HERALD),
+            options = options,
+            minSelections = 0,
+            maxSelections = 1,
+            cards = info,
+            filterDescription = "Elf card",
+        )
+    }
+
+    private fun chosenName(game: TestGame, response: DecisionResponse): String? {
+        val selected = response.shouldBeInstanceOf<CardsSelectedResponse>().selectedCards.single()
+        return name(game, selected)
+    }
+
+    private fun resolveWith(agent: ProjectXSolitaireAgent, game: TestGame, limit: Int = 80) {
+        repeat(limit) {
+            if (game.state.pendingDecision == null && game.state.stack.isEmpty()) return
+            val decision = game.state.pendingDecision
+            val result = if (decision != null) {
+                game.execute(SubmitDecision(decision.playerId, agent.respondToDecision(game.state, decision)))
+            } else {
+                game.execute(PassPriority(game.state.priorityPlayerId!!))
+            }
+            result.error shouldBe null
+        }
+        error("Project X resolution did not become quiet within $limit transitions")
+    }
+
+    init {
+        test("frozen v0.2 deck is exact and has no sideboard") {
+            ProjectXDeck.V02.size shouldBe 60
+            ProjectXDeck.V02.sideboard shouldBe emptyList()
+            ProjectXDeck.V02.cards.groupingBy { it }.eachCount() shouldBe linkedMapOf(
+                "Carrion Feeder" to 4, "Safehold Elite" to 4, "Ivy Lane Denizen" to 4,
+                "Wirewood Herald" to 4, "Evolution Witness" to 4, "Nettle Sentinel" to 4,
+                "Birchlore Rangers" to 4, "Falkenrath Noble" to 2, "Essence Warden" to 1,
+                "Masked Vandal" to 1, "Quirion Ranger" to 2, "Winding Way" to 4,
+                "Lead the Stampede" to 4, "Forest" to 9, "Swamp" to 7,
+                "Khalni Garden" to 1, "Haunted Mire" to 1,
+            )
+        }
+
+        test("Herald tutors a missing Safehold Elite over generic Elf value") {
+            val game = scenario().withPlayers()
+                .withCardOnBattlefield(1, "Carrion Feeder")
+                .withCardOnBattlefield(1, "Ivy Lane Denizen")
+                .withCardInLibrary(1, "Nettle Sentinel")
+                .withCardInLibrary(1, "Safehold Elite")
+                .build()
+
+            chosenName(game, agent(game).respondToDecision(game.state, searchDecision(game))) shouldBe "Safehold Elite"
+        }
+
+        test("Herald tutors a missing Ivy Lane Denizen over generic Elf value") {
+            val game = scenario().withPlayers()
+                .withCardOnBattlefield(1, "Carrion Feeder")
+                .withCardOnBattlefield(1, "Safehold Elite")
+                .withCardInLibrary(1, "Nettle Sentinel")
+                .withCardInLibrary(1, "Ivy Lane Denizen")
+                .build()
+
+            chosenName(game, agent(game).respondToDecision(game.state, searchDecision(game))) shouldBe "Ivy Lane Denizen"
+        }
+
+        test("Herald toolbox finds Essence Warden when the primary engine is complete") {
+            val game = scenario().withPlayers()
+                .withCardOnBattlefield(1, "Carrion Feeder", summoningSickness = true)
+                .withCardOnBattlefield(1, "Safehold Elite")
+                .withCardOnBattlefield(1, "Ivy Lane Denizen")
+                .withCardInLibrary(1, "Nettle Sentinel")
+                .withCardInLibrary(1, "Essence Warden")
+                .build()
+
+            chosenName(game, agent(game).respondToDecision(game.state, searchDecision(game))) shouldBe "Essence Warden"
+        }
+
+        test("Herald toolbox finds Evolution Witness when a primary permanent needs recursion") {
+            val game = scenario().withPlayers()
+                .withCardOnBattlefield(1, "Carrion Feeder")
+                .withCardOnBattlefield(1, "Ivy Lane Denizen")
+                .withCardInGraveyard(1, "Safehold Elite")
+                .withCardInLibrary(1, "Nettle Sentinel")
+                .withCardInLibrary(1, "Evolution Witness")
+                .build()
+
+            chosenName(game, agent(game).respondToDecision(game.state, searchDecision(game))) shouldBe "Evolution Witness"
+        }
+
+        test("Feeder sacrifices Herald when the tutor closes the only missing primary role") {
+            val game = scenario().withPlayers()
+                .withCardOnBattlefield(1, "Carrion Feeder")
+                .withCardOnBattlefield(1, "Ivy Lane Denizen")
+                .withCardOnBattlefield(1, "Wirewood Herald")
+                .withCardInLibrary(1, "Safehold Elite")
+                .build()
+
+            val action = agent(game).chooseAction(game.state).shouldBeInstanceOf<ActivateAbility>()
+            name(game, action.sourceId) shouldBe "Carrion Feeder"
+            name(game, action.costPayment!!.sacrificedPermanents.single()) shouldBe "Wirewood Herald"
+        }
+
+        test("Birchlore taps the available Elf pair and makes black for Carrion Feeder") {
+            val game = scenario().withPlayers()
+                .withCardOnBattlefield(1, "Birchlore Rangers")
+                .withCardOnBattlefield(1, "Nettle Sentinel")
+                .withCardInHand(1, "Carrion Feeder")
+                .build()
+
+            val action = agent(game).chooseAction(game.state).shouldBeInstanceOf<ActivateAbility>()
+            name(game, action.sourceId) shouldBe "Birchlore Rangers"
+            action.manaColorChoice shouldBe Color.BLACK
+            action.costPayment!!.tappedPermanents.map { name(game, it) }.toSet() shouldBe
+                setOf("Birchlore Rangers", "Nettle Sentinel")
+        }
+
+        test("Nettle untap after a green spell is usable by the next Birchlore activation") {
+            val game = scenario().withPlayers()
+                .withCardOnBattlefield(1, "Birchlore Rangers")
+                .withCardOnBattlefield(1, "Nettle Sentinel", tapped = true)
+                .withCardInHand(1, "Winding Way")
+                .withCardInHand(1, "Carrion Feeder")
+                .withLandsOnBattlefield(1, "Forest", 2)
+                .withCardInLibrary(1, "Forest")
+                .withCardInLibrary(1, "Safehold Elite")
+                .build()
+            val solitaire = agent(game)
+
+            val cast = solitaire.chooseAction(game.state).shouldBeInstanceOf<CastSpell>()
+            name(game, cast.cardId) shouldBe "Winding Way"
+            game.execute(cast).error shouldBe null
+            resolveWith(solitaire, game)
+            val nettle = game.findPermanent("Nettle Sentinel")!!
+            game.state.getEntity(nettle)!!.has<TappedComponent>().shouldBeFalse()
+
+            val mana = solitaire.chooseAction(game.state).shouldBeInstanceOf<ActivateAbility>()
+            name(game, mana.sourceId) shouldBe "Birchlore Rangers"
+            mana.manaColorChoice shouldBe Color.BLACK
+            mana.costPayment!!.tappedPermanents.toSet() shouldBe setOf(
+                game.findPermanent("Birchlore Rangers")!!, nettle,
+            )
+        }
+
+        test("Quirion returns a Forest to untap Nettle when that unlocks Birchlore black mana") {
+            val game = scenario().withPlayers()
+                // Quirion's ability has no tap-symbol cost, so a tapped Ranger may still
+                // return the Forest. With only Birchlore untapped, Nettle is the mana unlock.
+                .withCardOnBattlefield(1, "Quirion Ranger", tapped = true)
+                .withCardOnBattlefield(1, "Birchlore Rangers")
+                .withCardOnBattlefield(1, "Nettle Sentinel", tapped = true)
+                .withCardInHand(1, "Carrion Feeder")
+                .withLandsOnBattlefield(1, "Forest", 1)
+                .build()
+
+            val action = agent(game).chooseAction(game.state).shouldBeInstanceOf<ActivateAbility>()
+            name(game, action.sourceId) shouldBe "Quirion Ranger"
+            val target = action.targets.single().shouldBeInstanceOf<com.wingedsheep.engine.state.components.stack.ChosenTarget.Permanent>()
+            name(game, target.entityId) shouldBe "Nettle Sentinel"
+            name(game, action.costPayment!!.bouncedPermanents.single()) shouldBe "Forest"
+        }
+
+        test("Winding Way selects land when mana constrained and creature when developing roles") {
+            fun decision(game: TestGame) = ChooseModeDecision(
+                id = "winding-mode", playerId = game.player1Id, prompt = "Choose creature or land",
+                context = DecisionContext(sourceName = "Winding Way"),
+                modes = listOf(ModeOption(0, "Creature"), ModeOption(1, "Land")),
+            )
+            val constrained = scenario().withPlayers().withLandsOnBattlefield(1, "Forest", 1).build()
+            val developed = scenario().withPlayers().withLandsOnBattlefield(1, "Forest", 3).build()
+
+            agent(constrained).respondToDecision(constrained.state, decision(constrained))
+                .shouldBeInstanceOf<ModesChosenResponse>().selectedModes shouldBe listOf(1)
+            agent(developed).respondToDecision(developed.state, decision(developed))
+                .shouldBeInstanceOf<ModesChosenResponse>().selectedModes shouldBe listOf(0)
+        }
+
+        test("Lead is cast before generic board value when primary creature roles are missing") {
+            val game = scenario().withPlayers()
+                .withLandsOnBattlefield(1, "Forest", 3)
+                .withCardInHand(1, "Lead the Stampede")
+                .withCardInHand(1, "Nettle Sentinel")
+                .build()
+
+            val action = agent(game).chooseAction(game.state).shouldBeInstanceOf<CastSpell>()
+            name(game, action.cardId) shouldBe "Lead the Stampede"
+        }
+
+        test("Lead keeps every offered creature and no land") {
+            val game = scenario().withPlayers()
+                .withCardInLibrary(1, "Safehold Elite")
+                .withCardInLibrary(1, "Ivy Lane Denizen")
+                .withCardInLibrary(1, "Forest")
+                .build()
+            val options = libraryIds(game)
+            val decision = SelectCardsDecision(
+                id = "lead-select", playerId = game.player1Id, prompt = "Put creatures into your hand",
+                context = DecisionContext(sourceName = "Lead the Stampede"), options = options,
+                minSelections = 0, maxSelections = 5,
+            )
+
+            val selected = agent(game).respondToDecision(game.state, decision)
+                .shouldBeInstanceOf<CardsSelectedResponse>().selectedCards
+            selected.map { name(game, it) }.toSet() shouldBe setOf("Safehold Elite", "Ivy Lane Denizen")
+        }
+
+        test("Evolution Witness adapts and returns the missing permanent role") {
+            val game = scenario().withPlayers()
+                .withCardOnBattlefield(1, "Carrion Feeder")
+                .withCardOnBattlefield(1, "Ivy Lane Denizen")
+                .withCardOnBattlefield(1, "Evolution Witness")
+                .withCardInGraveyard(1, "Safehold Elite")
+                .withLandsOnBattlefield(1, "Forest", 2)
+                .build()
+            val solitaire = agent(game)
+
+            val adapt = solitaire.chooseAction(game.state).shouldBeInstanceOf<ActivateAbility>()
+            name(game, adapt.sourceId) shouldBe "Evolution Witness"
+            game.execute(adapt).error shouldBe null
+            resolveWith(solitaire, game)
+            game.state.getHand(game.player1Id).map { name(game, it) } shouldBe listOf("Safehold Elite")
+        }
+
+        test("primary loop is recognized symbolically as an infinite engine and unbounded Feeder") {
+            val game = scenario().withPlayers()
+                .withCardOnBattlefield(1, "Carrion Feeder", summoningSickness = true)
+                .withCardOnBattlefield(1, "Safehold Elite")
+                .withCardOnBattlefield(1, "Ivy Lane Denizen")
+                .build()
+
+            val outcome = agent(game).outcome(game.state)
+            outcome.completeInfiniteEngine.shouldBeTrue()
+            outcome.arbitrarilyLargeCarrionFeeder.shouldBeTrue()
+            outcome.arbitraryLife.shouldBeFalse()
+            outcome.nobleDeterministicLethal.shouldBeFalse()
+        }
+
+        test("outcomes distinguish arbitrary life from immediate Noble lethal") {
+            val life = scenario().withPlayers()
+                .withCardOnBattlefield(1, "Carrion Feeder", summoningSickness = true)
+                .withCardOnBattlefield(1, "Safehold Elite")
+                .withCardOnBattlefield(1, "Ivy Lane Denizen")
+                .withCardOnBattlefield(1, "Essence Warden")
+                .build()
+            val lethal = scenario().withPlayers()
+                .withCardOnBattlefield(1, "Carrion Feeder", summoningSickness = true)
+                .withCardOnBattlefield(1, "Safehold Elite")
+                .withCardOnBattlefield(1, "Ivy Lane Denizen")
+                .withCardOnBattlefield(1, "Falkenrath Noble")
+                .build()
+
+            agent(life).outcome(life.state).let {
+                it.arbitraryLife.shouldBeTrue()
+                it.immediateDeterministicLethal.shouldBeFalse()
+            }
+            agent(lethal).outcome(lethal.state).let {
+                it.nobleDeterministicLethal.shouldBeTrue()
+                it.immediateDeterministicLethal.shouldBeTrue()
+            }
+        }
+
+        test("summoning-sick unbounded Feeder is not classified as immediate combat lethal") {
+            val game = scenario().withPlayers()
+                .withCardOnBattlefield(1, "Carrion Feeder", summoningSickness = true)
+                .withCardOnBattlefield(1, "Safehold Elite")
+                .withCardOnBattlefield(1, "Ivy Lane Denizen")
+                .build()
+
+            val outcome = agent(game).outcome(game.state)
+            outcome.arbitrarilyLargeCarrionFeeder.shouldBeTrue()
+            outcome.feederCombatLethalThisTurn.shouldBeFalse()
+            outcome.immediateDeterministicLethal.shouldBeFalse()
+        }
+
+        test("Noble lethal is terminal immediately without executing loop iterations") {
+            val game = scenario().withPlayers()
+                .withCardOnBattlefield(1, "Carrion Feeder", summoningSickness = true)
+                .withCardOnBattlefield(1, "Safehold Elite")
+                .withCardOnBattlefield(1, "Ivy Lane Denizen")
+                .withCardOnBattlefield(1, "Falkenrath Noble")
+                .build()
+
+            agent(game).outcome(game.state).nobleDeterministicLethal.shouldBeTrue()
+            game.state.stack shouldBe emptyList()
+        }
+
+        test("secondary Witness loop is recognized with its rules-correct priority sequence") {
+            val game = scenario().withPlayers()
+                .withCardOnBattlefield(1, "Carrion Feeder")
+                .withCardOnBattlefield(1, "Ivy Lane Denizen")
+                .withCardOnBattlefield(1, "Evolution Witness")
+                .withCardOnBattlefield(1, "Birchlore Rangers")
+                .withCardOnBattlefield(1, "Nettle Sentinel")
+                .withCardInHand(1, "Quirion Ranger")
+                .build()
+
+            val solitaire = agent(game)
+            solitaire.outcome(game.state).secondaryWitnessLoop.shouldBeTrue()
+            solitaire.analyzer.secondaryWitnessSequence(game.state, game.player1Id) shouldBe
+                SecondaryWitnessStep.entries
+        }
+
+        test("Feeder preserves Herald and sacrifices Elite when the primary loop is already available") {
+            val game = scenario().withPlayers()
+                .withCardOnBattlefield(1, "Carrion Feeder")
+                .withCardOnBattlefield(1, "Safehold Elite")
+                .withCardOnBattlefield(1, "Ivy Lane Denizen")
+                .withCardOnBattlefield(1, "Wirewood Herald")
+                .build()
+
+            val action = agent(game).chooseAction(game.state).shouldBeInstanceOf<ActivateAbility>()
+            name(game, action.costPayment!!.sacrificedPermanents.single()) shouldBe "Safehold Elite"
+        }
+    }
+}

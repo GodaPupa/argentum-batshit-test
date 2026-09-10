@@ -1,0 +1,288 @@
+// Alloy Myr
+{
+    "name": "Alloy Myr",
+    "manaCost": "{3}",
+    "typeLine": "Artifact Creature — Myr",
+    "oracleText": "{T}: Add one mana of any color.",
+    "creatureStats": {
+        "power": 2,
+        "toughness": 2
+    },
+    "script": {
+        "activatedAbilities": [
+            {
+                "id": "ability_1",
+                "cost": "CostTap",
+                "effect": "AddManaOfChoice",
+                "timing": "ManaAbility",
+                "isManaAbility": true
+            }
+        ]
+    },
+    "metadata": {
+        "collectorNumber": "129",
+        "rarity": "UNCOMMON",
+        "artist": "Matt Cavotta",
+        "flavorText": "With or without witnesses, the suns continued their prismatic dance.",
+        "imageUri": "https://cards.scryfall.io/normal/front/a/b/abd3350b-89fb-40b4-a942-28e0c8c274aa.jpg?1783941297"
+    },
+    "colorIdentityOverride": []
+}
+
+// Deceiver Exarch
+{
+    "name": "Deceiver Exarch",
+    "manaCost": "{2}{U}",
+    "typeLine": "Creature — Phyrexian Cleric",
+    "oracleText": "Flash (You may cast this spell any time you could cast an instant.)\nWhen this creature enters, choose one —\n• Untap target permanent you control.\n• Tap target permanent an opponent controls.",
+    "creatureStats": {
+        "power": 1,
+        "toughness": 4
+    },
+    "keywords": [
+        "FLASH"
+    ],
+    "script": {
+        "triggeredAbilities": [
+            {
+                "id": "ability_1",
+                "trigger": {
+                    "type": "ZoneChangeEvent",
+                    "to": "Battlefield"
+                },
+                "effect": {
+                    "type": "Modal",
+                    "modes": [
+                        {
+                            "effect": {
+                                "type": "TapUntap",
+                                "target": {
+                                    "type": "ContextTarget",
+                                    "index": 0
+                                },
+                                "tap": false
+                            },
+                            "targetRequirements": [
+                                {
+                                    "type": "TargetObject",
+                                    "filter": {
+                                        "baseFilter": "permanent ctrl:you"
+                                    }
+                                }
+                            ],
+                            "description": "Untap target permanent you control."
+                        },
+                        {
+                            "effect": {
+                                "type": "TapUntap",
+                                "target": {
+                                    "type": "ContextTarget",
+                                    "index": 0
+                                }
+                            },
+                            "targetRequirements": [
+                                {
+                                    "type": "TargetObject",
+                                    "filter": {
+                                        "baseFilter": "permanent ctrl:opponent"
+                                    }
+                                }
+                            ],
+                            "description": "Tap target permanent an opponent controls."
+                        }
+                    ]
+                },
+                "descriptionOverride": "When this creature enters, choose one — Untap target permanent you control; or tap target permanent an opponent controls."
+            }
+        ]
+    },
+    "metadata": {
+        "collectorNumber": "33",
+        "rarity": "UNCOMMON",
+        "artist": "Izzy",
+        "imageUri": "https://cards.scryfall.io/normal/front/1/f/1f123ad6-fe84-4fed-9c0f-6b41921e9c26.jpg"
+    },
+    "colorIdentityOverride": [
+        "BLUE"
+    ]
+}
+
+// Dismember
+{
+    "name": "Dismember",
+    "manaCost": "{1}{B/P}{B/P}",
+    "typeLine": "Instant",
+    "oracleText": "Target creature gets -5/-5 until end of turn.",
+    "script": {
+        "spellEffect": {
+            "type": "ModifyStats",
+            "powerModifier": {
+                "type": "Fixed",
+                "amount": -5
+            },
+            "toughnessModifier": {
+                "type": "Fixed",
+                "amount": -5
+            },
+            "target": {
+                "type": "BoundVariable",
+                "name": "target"
+            }
+        },
+        "targetRequirements": [
+            {
+                "type": "TargetObject",
+                "filter": {
+                    "baseFilter": "creature"
+                },
+                "id": "target"
+            }
+        ]
+    },
+    "metadata": {
+        "collectorNumber": "57",
+        "rarity": "UNCOMMON",
+        "artist": "Terese Nielsen",
+        "flavorText": "\"You serve Phyrexia. Your pieces would better serve Phyrexia elsewhere.\"\n—Azax-Azog, the Demon Thane",
+        "imageUri": "https://cards.scryfall.io/normal/front/0/6/064dfdeb-485f-473e-9fa0-8fdb7638cdc6.jpg?1783941314",
+        "rulings": [
+            {
+                "date": "2024-06-07",
+                "text": "A Phyrexian mana symbol contributes 1 toward the mana value of a card, even if life is paid for it. Specifically, Dismember's mana value is always 3."
+            }
+        ]
+    },
+    "colorIdentityOverride": [
+        "BLACK"
+    ]
+}
+
+// Flameborn Viron
+{
+    "name": "Flameborn Viron",
+    "manaCost": "{4}{R}{R}",
+    "typeLine": "Creature — Phyrexian Insect",
+    "creatureStats": {
+        "power": 6,
+        "toughness": 4
+    },
+    "metadata": {
+        "collectorNumber": "83",
+        "artist": "Svetlin Velinov",
+        "flavorText": "\"Large or small, all will toil for the Great Work.\"\n—Decree of Urabrask",
+        "imageUri": "https://cards.scryfall.io/normal/front/9/6/9601ea62-a609-4bc5-a2f0-f7615b4dd5fa.jpg?1783941308"
+    },
+    "colorIdentityOverride": [
+        "RED"
+    ]
+}
+
+// Loxodon Convert
+{
+    "name": "Loxodon Convert",
+    "manaCost": "{3}{W}",
+    "typeLine": "Creature — Phyrexian Elephant Soldier",
+    "creatureStats": {
+        "power": 4,
+        "toughness": 2
+    },
+    "metadata": {
+        "collectorNumber": "14",
+        "artist": "Adrian Smith",
+        "flavorText": "Just one drop of the glistening oil can eventually stain even a soul as stalwart as a loxodon's beyond redemption.",
+        "imageUri": "https://cards.scryfall.io/normal/front/0/0/00c050c3-4f50-4bb6-8477-6737887ca10d.jpg?1783941325"
+    },
+    "colorIdentityOverride": [
+        "WHITE"
+    ]
+}
+
+// Pristine Talisman
+{
+    "name": "Pristine Talisman",
+    "manaCost": "{3}",
+    "typeLine": "Artifact",
+    "oracleText": "{T}: Add {C}. You gain 1 life.",
+    "script": {
+        "activatedAbilities": [
+            {
+                "id": "ability_1",
+                "cost": "CostTap",
+                "effect": {
+                    "type": "Composite",
+                    "effects": [
+                        {
+                            "type": "AddColorlessMana",
+                            "amount": {
+                                "type": "Fixed",
+                                "amount": 1
+                            }
+                        },
+                        {
+                            "type": "GainLife",
+                            "amount": {
+                                "type": "Fixed",
+                                "amount": 1
+                            }
+                        }
+                    ]
+                },
+                "timing": "ManaAbility",
+                "isManaAbility": true
+            }
+        ]
+    },
+    "metadata": {
+        "collectorNumber": "151",
+        "artist": "Matt Cavotta",
+        "flavorText": "\"Tools and artisans can be destroyed, but the act of creation is inviolate.\"\n—Elspeth Tirel",
+        "imageUri": "https://cards.scryfall.io/normal/front/b/3/b31d96cf-7276-46c4-ad17-d6a5c85f1315.jpg",
+        "rulings": [
+            {
+                "date": "2011-06-01",
+                "text": "Pristine Talisman has a mana ability. Its ability doesn't use the stack and can't be responded to."
+            }
+        ]
+    },
+    "colorIdentityOverride": []
+}
+
+// Rotted Hystrix
+{
+    "name": "Rotted Hystrix",
+    "manaCost": "{4}{G}",
+    "typeLine": "Creature — Phyrexian Beast",
+    "creatureStats": {
+        "power": 3,
+        "toughness": 6
+    },
+    "metadata": {
+        "collectorNumber": "120",
+        "artist": "Dave Allsop",
+        "flavorText": "Vorinclex had no grand plan. The oil did its own work, evolving creatures into worthy predators.",
+        "imageUri": "https://cards.scryfall.io/normal/front/7/b/7bcae97d-468a-4e16-bfed-d2946f64784c.jpg?1783941299"
+    },
+    "colorIdentityOverride": [
+        "GREEN"
+    ]
+}
+
+// Torpor Orb
+{
+    "name": "Torpor Orb",
+    "manaCost": "{2}",
+    "typeLine": "Artifact",
+    "oracleText": "Creatures entering don't cause abilities to trigger.",
+    "script": {
+        "staticAbilities": [
+            "SuppressEntersTriggers"
+        ]
+    },
+    "metadata": {
+        "collectorNumber": "162",
+        "rarity": "RARE",
+        "artist": "Svetlin Velinov",
+        "flavorText": "\"Phyrexia is certainly dangerous, but I have to admire some of its innovations.\"\n—Tezzeret",
+        "imageUri": "https://cards.scryfall.io/normal/front/9/5/953610f6-ea96-4e71-969f-50ecac09c091.jpg?1722108794"
+    }
+}

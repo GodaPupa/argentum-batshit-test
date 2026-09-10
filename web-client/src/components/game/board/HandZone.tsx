@@ -1,0 +1,348 @@
+import { useState } from 'react'
+import { useZoneCards, useZone } from '@/store/selectors.ts'
+import type { ZoneId, ClientCard } from '@/types'
+import { calculateFittingCardWidth } from '@/hooks/useResponsive.ts'
+import { useResponsiveContext } from './shared'
+import { styles } from './styles'
+import { GameCard } from '../card'
+import { CARD_BACK_IMAGE_URL } from '@/utils/cardImages.ts'
+
+/**
+ * Row of cards (hand or other horizontal zone).
+ * Cards in hand are NOT grouped - each card is shown individually.
+ */
+/**
+ * How far a [HandFan] lets its cards spill past the edge it hangs from, in px — applied twice
+ * (once as the box's negative margin, once as the cards' own negative edge offset), so a fan
+ * paints `2 × HAND_FAN_EDGE_MARGIN` beyond the box it is placed in. Exported because a fan
+ * rendered inside a fixed band has to reserve that overhang; see `useCellHandMetrics`.
+ */
+export const HAND_FAN_EDGE_MARGIN = 15
+
+export function CardRow({
+  zoneId,
+  faceDown = false,
+  interactive = false,
+  small = false,
+  inverted = false,
+  ghostCards = [],
+  fitWidth,
+  maxCardWidth,
+  fan = false,
+}: {
+  zoneId: ZoneId
+  faceDown?: boolean
+  interactive?: boolean
+  small?: boolean
+  inverted?: boolean
+  ghostCards?: readonly ClientCard[]
+  /**
+   * Fit the fan into this width instead of the viewport, and don't shift it toward the game
+   * log — a hand rendered *inside* a multiplayer strip cell is centered on its own cell, not
+   * on the screen. Undefined for the full-width hands (yours at the bottom, the viewed
+   * opponent's at the top), which keep the viewport-relative sizing.
+   */
+  fitWidth?: number
+  /**
+   * Cap the card width here instead of at the responsive small/normal width. A strip cell's
+   * hand has to give most of its cell back to the board, so it renders deliberately smaller
+   * than a fan that fits the width would.
+   */
+  maxCardWidth?: number
+  /**
+   * Render as a fan even when the built-in rules wouldn't. Those rules key off face-down-ness
+   * and interactivity, which between them miss a face-up hand you may read but not play from —
+   * a Two-Headed Giant ally's (CR 810.5). It's still a hand and should look like one.
+   */
+  fan?: boolean
+}) {
+  const cards = useZoneCards(zoneId)
+  const zone = useZone(zoneId)
+  const responsive = useResponsiveContext()
+
+  // For hidden zones (like opponent's hand), use zone size to show face-down placeholders
+  // If some cards are revealed, show them face-up plus placeholders for unrevealed cards
+  const zoneSize = zone?.size ?? 0
+  const unrevealedCount = faceDown ? Math.max(0, zoneSize - cards.length) : 0
+  const showPlaceholders = faceDown && cards.length === 0 && zoneSize > 0
+
+  // Show empty message only if no cards at all (no revealed, no placeholders, no ghost cards)
+  if (cards.length === 0 && !showPlaceholders && unrevealedCount === 0 && ghostCards.length === 0) {
+    return <div style={{ ...styles.emptyZone, fontSize: responsive.fontSize.small }}>No cards</div>
+  }
+
+  // Calculate available width for the hand (viewport - padding - reserved sides).
+  // Desktop reserves the zone-pile column on both sides. On phones the piles
+  // sit above the hand row and the game log is hidden (see GameBoard), so the
+  // left side is nearly free — but the player's own hand must still clear the
+  // pass/auto button cluster in the bottom-right corner. Reserving
+  // asymmetrically shifts the fan left into the space the log used to take.
+  const isOwnHand = interactive && !faceDown
+  const leftReserve = responsive.isMobile ? 8 : responsive.pileWidth + 20 // pile + margin
+  const rightReserve = responsive.isMobile
+    ? (isOwnHand ? 110 : 8)
+    : responsive.pileWidth + 20
+  const availableWidth =
+    fitWidth ??
+    (responsive.viewportWidth - (responsive.containerPadding * 2) - leftReserve - rightReserve)
+  // Centering the fan with this much right margin places it exactly between
+  // the reserves (left edge ≥ leftReserve, right edge clear of the buttons).
+  // A cell-scoped fan is already centered on its cell, so it never shifts.
+  const fanShift = fitWidth != null ? 0 : rightReserve - leftReserve
+
+  // Calculate card width that fits all cards (revealed + unrevealed + ghost)
+  const totalCardCount = (faceDown ? zoneSize : cards.length) + ghostCards.length
+  const cardCount = showPlaceholders ? zoneSize : totalCardCount
+  const baseWidth = maxCardWidth ?? (small ? responsive.smallCardWidth : responsive.cardWidth)
+  const minWidth = Math.min(small ? 30 : 45, baseWidth)
+  const fittingWidth = calculateFittingCardWidth(
+    cardCount,
+    availableWidth,
+    responsive.cardGap,
+    baseWidth,
+    minWidth
+  )
+
+  // For hands (player or opponent), create a fan effect
+  // - Player's own hand: interactive, face-up
+  // - Opponent's hand: face-down, inverted (top of screen)
+  // - Spectator bottom hand: face-down, not inverted (bottom of screen)
+  const isPlayerHand = interactive && !faceDown
+  const isOpponentHand = faceDown && inverted
+  const isSpectatorBottomHand = faceDown && !inverted && !interactive
+  const cardHeight = Math.round(fittingWidth * 1.4)
+
+  // For opponent's hand: show revealed cards face-up, plus placeholders for unrevealed cards
+  const hasRevealedCards = faceDown && cards.length > 0
+  const shouldShowFan = fan || isPlayerHand || isOpponentHand || isSpectatorBottomHand
+
+  if (shouldShowFan && (cards.length > 0 || showPlaceholders || unrevealedCount > 0 || ghostCards.length > 0)) {
+    return (
+      <HandFan
+        cards={cards}
+        placeholderCount={showPlaceholders ? zoneSize : unrevealedCount}
+        fittingWidth={fittingWidth}
+        cardHeight={cardHeight}
+        cardGap={responsive.cardGap}
+        faceDown={faceDown && !hasRevealedCards}
+        revealedCards={hasRevealedCards}
+        interactive={interactive}
+        small={small}
+        inverted={inverted}
+        ghostCards={ghostCards}
+        shiftLeft={fanShift}
+      />
+    )
+  }
+
+  // Render face-down placeholders for hidden zones (non-fan layout)
+  if (showPlaceholders) {
+    const cardRatio = 1.4
+    const height = Math.round(fittingWidth * cardRatio)
+    return (
+      <div style={{ ...styles.cardRow, gap: responsive.cardGap, padding: responsive.cardGap }}>
+        {Array.from({ length: zoneSize }).map((_, index) => (
+          <div
+            key={`placeholder-${index}`}
+            style={{
+              ...styles.card,
+              width: fittingWidth,
+              height,
+              borderRadius: responsive.isMobile ? 4 : 8,
+              border: '2px solid #333',
+              boxShadow: '0 2px 8px rgba(0,0,0,0.5)',
+            }}
+          >
+            <img
+              src={CARD_BACK_IMAGE_URL}
+              alt="Card back"
+              style={styles.cardImage}
+            />
+          </div>
+        ))}
+      </div>
+    )
+  }
+
+  // Render each card individually (no grouping for hand)
+  return (
+    <div style={{ ...styles.cardRow, gap: responsive.cardGap, padding: responsive.cardGap }}>
+      {cards.map((card) => (
+        <GameCard
+          key={card.id}
+          card={card}
+          count={1}
+          faceDown={faceDown}
+          interactive={interactive}
+          small={small}
+          overrideWidth={fittingWidth}
+          inHand={interactive && !faceDown}
+        />
+      ))}
+    </div>
+  )
+}
+
+/**
+ * Hand display with fan/arc effect - cards slightly overlap and rotate like held cards.
+ */
+export function HandFan({
+  cards,
+  placeholderCount = 0,
+  fittingWidth,
+  cardHeight,
+  faceDown,
+  revealedCards = false,
+  interactive,
+  small,
+  inverted = false,
+  ghostCards = [],
+  shiftLeft = 0,
+}: {
+  cards: readonly ClientCard[]
+  placeholderCount?: number
+  fittingWidth: number
+  cardHeight: number
+  cardGap: number
+  faceDown: boolean
+  revealedCards?: boolean
+  interactive: boolean
+  small: boolean
+  inverted?: boolean
+  ghostCards?: readonly ClientCard[]
+  /** Extra right margin: with flex centering, shifts the fan left by half this. */
+  shiftLeft?: number
+}) {
+  const [, setHoveredIndex] = useState<number | null>(null)
+
+  // When we have revealed cards in opponent's hand, show both revealed cards AND placeholders
+  const baseCardCount = revealedCards
+    ? cards.length + placeholderCount
+    : (placeholderCount > 0 ? placeholderCount : cards.length)
+  const cardCount = baseCardCount + ghostCards.length
+
+  // Scale fan parameters based on card count
+  // Fewer cards = more spread, more cards = tighter fan
+  const maxRotation = Math.min(12, 40 / Math.max(cardCount, 1)) // Max rotation at edges (degrees)
+  const maxVerticalOffset = Math.min(15, 45 / Math.max(cardCount, 1)) // Max rise at center (pixels)
+
+  // Calculate overlap - more overlap with more cards, but keep it readable
+  const overlapFactor = Math.max(0.5, 0.85 - (cardCount * 0.025))
+  const cardSpacing = fittingWidth * overlapFactor
+
+  // Total width of the hand fan
+  const totalWidth = cardSpacing * (cardCount - 1) + fittingWidth
+
+  // Allow cards to extend slightly beyond the visible area to save vertical space
+  const edgeMargin = -HAND_FAN_EDGE_MARGIN
+
+  // For inverted fan, flip the arc and rotation direction
+  const rotationMultiplier = inverted ? -1 : 1
+
+  // Create array of items to render
+  // - If revealedCards: show revealed cards face-up + placeholders for unrevealed
+  // - If placeholderCount > 0 and no revealed cards: all placeholders
+  // - Otherwise: show cards normally
+  const baseItems = revealedCards
+    ? [
+        ...cards.map((card, index) => ({ type: 'card' as const, card, index, showFaceUp: true, isGhost: false })),
+        ...Array.from({ length: placeholderCount }, (_, i) => ({ type: 'placeholder' as const, index: cards.length + i })),
+      ]
+    : placeholderCount > 0
+      ? Array.from({ length: placeholderCount }, (_, i) => ({ type: 'placeholder' as const, index: i }))
+      : cards.map((card, index) => ({ type: 'card' as const, card, index, showFaceUp: false, isGhost: false }))
+
+  // Append ghost cards (graveyard cards with legal activated abilities)
+  const ghostItems = ghostCards.map((card, i) => ({
+    type: 'card' as const,
+    card,
+    index: baseItems.length + i,
+    showFaceUp: true,
+    isGhost: true,
+  }))
+  const items = [...baseItems, ...ghostItems]
+
+  return (
+    <div
+      style={{
+        position: 'relative',
+        width: totalWidth,
+        height: cardHeight + maxVerticalOffset + 40, // Extra space for hover lift
+        marginBottom: inverted ? 0 : edgeMargin,
+        marginTop: inverted ? edgeMargin : 0,
+        marginRight: shiftLeft > 0 ? shiftLeft : undefined,
+      }}
+    >
+      {items.map((item, index) => {
+        // Calculate position from center (-1 to 1)
+        const centerOffset = cardCount > 1
+          ? (index - (cardCount - 1) / 2) / ((cardCount - 1) / 2)
+          : 0
+
+        // Calculate rotation (edges rotate away from center)
+        const rotation = centerOffset * maxRotation * rotationMultiplier
+
+        // Calculate vertical offset (arc shape - center cards are higher/lower)
+        const verticalOffset = (1 - Math.abs(centerOffset) ** 1.5) * maxVerticalOffset
+
+        // Calculate horizontal position
+        const left = index * cardSpacing
+
+        // Z-index: center cards on top
+        const zIndex = 50 - Math.abs(index - Math.floor(cardCount / 2))
+
+        const key = item.type === 'card' ? item.card.id : `placeholder-${item.index}`
+
+        return (
+          <div
+            key={key}
+            style={{
+              position: 'absolute',
+              left,
+              ...(inverted
+                ? { top: edgeMargin, transform: `translateY(${verticalOffset}px) rotate(${rotation}deg)` }
+                : { bottom: edgeMargin, transform: `translateY(${-verticalOffset}px) rotate(${rotation}deg)` }
+              ),
+              transformOrigin: inverted ? 'top center' : 'bottom center',
+              zIndex,
+              transition: 'transform 0.12s ease-out, left 0.12s ease-out',
+              cursor: interactive ? 'pointer' : 'default',
+            }}
+            onMouseEnter={() => !inverted && setHoveredIndex(index)}
+            onMouseLeave={() => !inverted && setHoveredIndex(null)}
+          >
+            {item.type === 'card' ? (
+              <GameCard
+                card={item.card}
+                count={1}
+                faceDown={faceDown && !item.showFaceUp}
+                interactive={interactive}
+                small={small}
+                overrideWidth={fittingWidth}
+                inHand={interactive && !faceDown}
+                isGhost={item.isGhost}
+              />
+            ) : (
+              <div
+                style={{
+                  width: fittingWidth,
+                  height: cardHeight,
+                  borderRadius: 6,
+                  border: '2px solid #333',
+                  boxShadow: '0 2px 8px rgba(0,0,0,0.5)',
+                  overflow: 'hidden',
+                }}
+              >
+                <img
+                  src={CARD_BACK_IMAGE_URL}
+                  alt="Card back"
+                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                />
+              </div>
+            )}
+          </div>
+        )
+      })}
+    </div>
+  )
+}

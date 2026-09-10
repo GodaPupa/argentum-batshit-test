@@ -1,0 +1,20 @@
+# Local development overrides — activated via spring.profiles.active=local
+# Defaults to Ollama for AI. Start with: just ollama-up && just ollama-pull qwen3.6-plus
+
+game:
+  debug-mode: true
+  sets:
+    enabled:
+      BLB: true
+      EOE: true
+      ECL: true
+  ai:
+    mode: engine
+    base-url: ${GAME_AI_BASE_URL:http://localhost:11434/v1}
+    api-key: ${GAME_AI_API_KEY:ollama}
+    model: ${GAME_AI_MODEL:qwen/qwen3.6-plus:free}
+    timeout-ms: ${GAME_AI_TIMEOUT_MS:120000}
+    # Always build AI sealed decks with the deterministic heuristic builder (skips the LLM).
+    heuristic-deckbuilding: ${GAME_AI_HEURISTIC_DECKBUILDING:true}
+    # Browse what the AI considered, and export a position + its ratings, while playing against it.
+    insight-enabled: ${GAME_AI_INSIGHT_ENABLED:true}

@@ -1,0 +1,24 @@
+package com.wingedsheep.mtg.sets.definitions.spm.cards
+
+import com.wingedsheep.sdk.dsl.Effects
+import com.wingedsheep.sdk.dsl.card
+import com.wingedsheep.sdk.model.Rarity
+
+val RomanticRendezvous = card("Romantic Rendezvous") {
+    manaCost = "{1}{R}"
+    colorIdentity = "R"
+    typeLine = "Sorcery"
+    oracleText = "Discard a card, then draw two cards."
+
+    spell {
+        effect = Effects.Discard() then Effects.DrawCards(2)
+    }
+
+    metadata {
+        rarity = Rarity.COMMON
+        collectorNumber = "86"
+        artist = "Nereida"
+        flavorText = "\"Face it, tiger. You just hit the jackpot!\"\n—Mary Jane Watson"
+        imageUri = "https://cards.scryfall.io/normal/front/3/8/38120361-153f-414e-8a45-f86bb2e35a17.jpg?1757377322"
+    }
+}

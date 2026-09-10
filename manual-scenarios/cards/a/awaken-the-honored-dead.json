@@ -1,0 +1,34 @@
+{
+  "player1Name": "Alice",
+  "player2Name": "Bob",
+  "player1": {
+    "lifeTotal": 20,
+    "hand": ["Awaken the Honored Dead", "Forest"],
+    "battlefield": [
+      {"name": "Swamp"},
+      {"name": "Forest"},
+      {"name": "Island"}
+    ],
+    "graveyard": ["Grizzly Bears", "Mountain"],
+    "library": ["Island", "Swamp", "Forest", "Plains", "Island", "Swamp", "Forest", "Plains"]
+  },
+  "player2": {
+    "lifeTotal": 20,
+    "hand": [],
+    "battlefield": [
+      {"name": "Hill Giant"},
+      {"name": "Grizzly Bears"},
+      {"name": "Forest"}
+    ],
+    "graveyard": [],
+    "library": ["Mountain", "Forest", "Mountain", "Forest", "Mountain"]
+  },
+  "phase": "PRECOMBAT_MAIN",
+  "step": "PRECOMBAT_MAIN",
+  "activePlayer": 1,
+  "priorityPlayer": 1,
+  "player1StopAtSteps": ["UPKEEP", "DRAW"],
+  "player2StopAtSteps": [],
+  "player1OpponentStopAtSteps": [],
+  "player2OpponentStopAtSteps": []
+}

@@ -1,0 +1,43 @@
+package com.wingedsheep.mtg.sets.definitions.scg.cards
+
+import com.wingedsheep.sdk.core.Counters
+import com.wingedsheep.sdk.core.Keyword
+import com.wingedsheep.sdk.dsl.Effects
+import com.wingedsheep.sdk.dsl.card
+import com.wingedsheep.sdk.model.Rarity
+import com.wingedsheep.sdk.scripting.targets.EffectTarget
+import com.wingedsheep.sdk.scripting.EventPattern.TurnFaceUpEvent
+import com.wingedsheep.sdk.scripting.TriggerBinding
+import com.wingedsheep.sdk.scripting.TriggerSpec
+
+/**
+ * Aven Farseer
+ * {1}{W}
+ * Creature — Bird Soldier
+ * 1/1
+ * Flying
+ * Whenever a permanent is turned face up, put a +1/+1 counter on this creature.
+ */
+val AvenFarseer = card("Aven Farseer") {
+    manaCost = "{1}{W}"
+    colorIdentity = "W"
+    typeLine = "Creature — Bird Soldier"
+    power = 1
+    toughness = 1
+    oracleText = "Flying\nWhenever a permanent is turned face up, put a +1/+1 counter on this creature."
+
+    keywords(Keyword.FLYING)
+
+    triggeredAbility {
+        trigger = TriggerSpec(TurnFaceUpEvent, TriggerBinding.ANY)
+        effect = Effects.AddCounters(Counters.PLUS_ONE_PLUS_ONE, 1, EffectTarget.Self)
+    }
+
+    metadata {
+        rarity = Rarity.COMMON
+        collectorNumber = "3"
+        artist = "Luca Zontini"
+        flavorText = "Those trained in the ways of the morph serve as the Order's spies and scouts."
+        imageUri = "https://cards.scryfall.io/normal/front/4/7/47854e89-4d22-4eb6-a77d-6f04407bd2e5.jpg?1562528498"
+    }
+}

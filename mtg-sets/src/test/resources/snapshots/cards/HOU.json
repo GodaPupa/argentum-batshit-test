@@ -1,0 +1,482 @@
+// Abrade
+{
+    "name": "Abrade",
+    "manaCost": "{1}{R}",
+    "typeLine": "Instant",
+    "oracleText": "Choose one —\n• Abrade deals 3 damage to target creature.\n• Destroy target artifact.",
+    "script": {
+        "spellEffect": {
+            "type": "Modal",
+            "modes": [
+                {
+                    "effect": {
+                        "type": "DealDamage",
+                        "amount": {
+                            "type": "Fixed",
+                            "amount": 3
+                        },
+                        "target": {
+                            "type": "BoundVariable",
+                            "name": "target"
+                        }
+                    },
+                    "targetRequirements": [
+                        {
+                            "type": "TargetObject",
+                            "filter": {
+                                "baseFilter": "creature"
+                            },
+                            "id": "target"
+                        }
+                    ],
+                    "description": "Abrade deals 3 damage to target creature"
+                },
+                {
+                    "effect": {
+                        "type": "MoveToZone",
+                        "target": {
+                            "type": "BoundVariable",
+                            "name": "target"
+                        },
+                        "destination": "Graveyard",
+                        "byDestruction": true
+                    },
+                    "targetRequirements": [
+                        {
+                            "type": "TargetObject",
+                            "filter": {
+                                "baseFilter": "artifact"
+                            },
+                            "id": "target"
+                        }
+                    ],
+                    "description": "Destroy target artifact"
+                }
+            ]
+        }
+    },
+    "metadata": {
+        "collectorNumber": "83",
+        "rarity": "UNCOMMON",
+        "artist": "Jonas De Ro",
+        "flavorText": "The desert is a voracious beast, devouring both flesh and stone.",
+        "imageUri": "https://cards.scryfall.io/normal/front/8/4/84319dfb-eaf7-4b98-8c4f-30f5e779591b.jpg"
+    },
+    "colorIdentityOverride": [
+        "RED"
+    ]
+}
+
+// Crash Through
+{
+    "name": "Crash Through",
+    "manaCost": "{R}",
+    "typeLine": "Sorcery",
+    "oracleText": "Creatures you control gain trample until end of turn. (Each of those creatures can deal excess combat damage to the player or planeswalker it's attacking.)\nDraw a card.",
+    "script": {
+        "spellEffect": {
+            "type": "Composite",
+            "effects": [
+                {
+                    "type": "ForEach",
+                    "space": {
+                        "type": "IterationSpace.Group",
+                        "filter": {
+                            "baseFilter": "creature ctrl:you"
+                        }
+                    },
+                    "body": {
+                        "type": "GrantKeyword",
+                        "keyword": "TRAMPLE",
+                        "target": "Self"
+                    }
+                },
+                {
+                    "type": "DrawCards",
+                    "count": {
+                        "type": "Fixed",
+                        "amount": 1
+                    }
+                }
+            ]
+        }
+    },
+    "metadata": {
+        "collectorNumber": "88",
+        "artist": "Izzy",
+        "flavorText": "\"We have to get out of the city, Djeru. All of us! Gather as many as you can.\"\n—Samut, former Tah-crop initiate",
+        "imageUri": "https://cards.scryfall.io/normal/front/4/b/4bdaba76-b98d-4699-9a5f-e59285b09552.jpg"
+    },
+    "colorIdentityOverride": [
+        "RED"
+    ]
+}
+
+// Defiant Khenra
+{
+    "name": "Defiant Khenra",
+    "manaCost": "{1}{R}",
+    "typeLine": "Creature — Jackal Warrior",
+    "creatureStats": {
+        "power": 2,
+        "toughness": 2
+    },
+    "metadata": {
+        "collectorNumber": "89",
+        "artist": "David Palumbo",
+        "flavorText": "There were those who saw the death of the gods and the city's collapse as a final test of worth. Some believed it meant the God-Pharaoh had been killed. Only a few realized they had been deceived.",
+        "imageUri": "https://cards.scryfall.io/normal/front/6/7/67e3983d-b1ed-46a9-9ab0-96c4d0d77050.jpg?1783936030"
+    },
+    "colorIdentityOverride": [
+        "RED"
+    ]
+}
+
+// Desert of the Mindful
+{
+    "name": "Desert of the Mindful",
+    "manaCost": "",
+    "typeLine": "Land — Desert",
+    "oracleText": "This land enters tapped.\n{T}: Add {U}.\nCycling {1}{U} ({1}{U}, Discard this card: Draw a card.)",
+    "keywordAbilities": [
+        {
+            "type": "Cycling",
+            "cost": "{1}{U}"
+        }
+    ],
+    "script": {
+        "activatedAbilities": [
+            {
+                "id": "ability_1",
+                "cost": "CostTap",
+                "effect": {
+                    "type": "AddMana",
+                    "color": "BLUE"
+                },
+                "timing": "ManaAbility",
+                "isManaAbility": true
+            }
+        ],
+        "replacementEffects": [
+            "EntersTapped"
+        ]
+    },
+    "metadata": {
+        "collectorNumber": "173",
+        "artist": "Christine Choi",
+        "imageUri": "https://cards.scryfall.io/normal/front/9/1/91b92d87-776c-490f-9ff1-234e47145df8.jpg?1783935997",
+        "rulings": [
+            {
+                "date": "2017-04-18",
+                "text": "Desert is a land subtype with no special meaning. It doesn't grant the land an intrinsic mana ability. Other cards may care about which lands are Deserts."
+            }
+        ]
+    },
+    "colorIdentityOverride": [
+        "BLUE"
+    ]
+}
+
+// Dutiful Servants
+{
+    "name": "Dutiful Servants",
+    "manaCost": "{3}{W}",
+    "typeLine": "Creature — Zombie",
+    "creatureStats": {
+        "power": 2,
+        "toughness": 5
+    },
+    "metadata": {
+        "collectorNumber": "12",
+        "artist": "Volkan Baǵa",
+        "flavorText": "Buildings crumbled and monuments fell. The river bled and the sky wept tears of fire. All the while, servants silently continued their work, oblivious to it all.",
+        "imageUri": "https://cards.scryfall.io/normal/front/7/6/7684db4c-6eff-4da1-a410-48d707fb5bf1.jpg?1783936063"
+    },
+    "colorIdentityOverride": [
+        "WHITE"
+    ]
+}
+
+// Feral Prowler
+{
+    "name": "Feral Prowler",
+    "manaCost": "{1}{G}",
+    "typeLine": "Creature — Cat",
+    "oracleText": "When this creature dies, draw a card.",
+    "creatureStats": {
+        "power": 1,
+        "toughness": 3
+    },
+    "script": {
+        "triggeredAbilities": [
+            {
+                "id": "ability_1",
+                "trigger": {
+                    "type": "ZoneChangeEvent",
+                    "from": "Battlefield",
+                    "to": "Graveyard"
+                },
+                "effect": {
+                    "type": "DrawCards",
+                    "count": {
+                        "type": "Fixed",
+                        "amount": 1
+                    }
+                },
+                "descriptionOverride": "When this creature dies, draw a card."
+            }
+        ]
+    },
+    "metadata": {
+        "collectorNumber": "115",
+        "artist": "Ben Wootten",
+        "flavorText": "Once favored companions, many cats were left to fend for themselves.",
+        "imageUri": "https://cards.scryfall.io/normal/front/b/a/ba0431ad-185a-4917-b994-e58dd9850f5e.jpg?1783936020"
+    },
+    "colorIdentityOverride": [
+        "GREEN"
+    ]
+}
+
+// Firebrand Archer
+{
+    "name": "Firebrand Archer",
+    "manaCost": "{1}{R}",
+    "typeLine": "Creature — Human Archer",
+    "oracleText": "Whenever you cast a noncreature spell, this creature deals 1 damage to each opponent.",
+    "creatureStats": {
+        "power": 2,
+        "toughness": 1
+    },
+    "script": {
+        "triggeredAbilities": [
+            {
+                "id": "ability_1",
+                "trigger": {
+                    "type": "SpellCastEvent",
+                    "spellFilter": {
+                        "cardPredicates": [
+                            "IsNoncreature"
+                        ]
+                    }
+                },
+                "binding": "ANY",
+                "effect": {
+                    "type": "DealDamage",
+                    "amount": {
+                        "type": "Fixed",
+                        "amount": 1
+                    },
+                    "target": {
+                        "type": "PlayerRef",
+                        "player": "EachOpponent"
+                    }
+                }
+            }
+        ]
+    },
+    "metadata": {
+        "collectorNumber": "92",
+        "artist": "John Stanko",
+        "flavorText": "A word of vengeance, and her arrows awaken in flame.",
+        "imageUri": "https://cards.scryfall.io/normal/front/6/d/6ddc6b73-298b-4afa-990a-63706e77dd9f.jpg"
+    },
+    "colorIdentityOverride": [
+        "RED"
+    ]
+}
+
+// Gift of Strength
+{
+    "name": "Gift of Strength",
+    "manaCost": "{1}{G}",
+    "typeLine": "Instant",
+    "oracleText": "Target creature gets +3/+3 and gains reach until end of turn.",
+    "script": {
+        "spellEffect": {
+            "type": "Composite",
+            "effects": [
+                {
+                    "type": "ModifyStats",
+                    "powerModifier": {
+                        "type": "Fixed",
+                        "amount": 3
+                    },
+                    "toughnessModifier": {
+                        "type": "Fixed",
+                        "amount": 3
+                    },
+                    "target": {
+                        "type": "BoundVariable",
+                        "name": "target"
+                    }
+                },
+                {
+                    "type": "GrantKeyword",
+                    "keyword": "REACH",
+                    "target": {
+                        "type": "BoundVariable",
+                        "name": "target"
+                    }
+                }
+            ]
+        },
+        "targetRequirements": [
+            {
+                "type": "TargetObject",
+                "filter": {
+                    "baseFilter": "creature"
+                },
+                "id": "target"
+            }
+        ]
+    },
+    "metadata": {
+        "collectorNumber": "117",
+        "artist": "Kieran Yanner",
+        "flavorText": "\"What greater testament can there be to Rhonas's lessons?\"",
+        "imageUri": "https://cards.scryfall.io/normal/front/3/b/3b779620-6bac-445e-a6fe-6d770c0a9c70.jpg"
+    },
+    "colorIdentityOverride": [
+        "GREEN"
+    ]
+}
+
+// Harrier Naga
+{
+    "name": "Harrier Naga",
+    "manaCost": "{2}{G}",
+    "typeLine": "Creature — Snake Warrior",
+    "creatureStats": {
+        "power": 3,
+        "toughness": 3
+    },
+    "metadata": {
+        "collectorNumber": "118",
+        "artist": "Filip Burburan",
+        "flavorText": "She trusts that the potent poisons of her darts will reach the enemy before the enemy reaches her.",
+        "imageUri": "https://cards.scryfall.io/normal/front/b/c/bcdc68c9-f5f3-4c5b-80df-85508cf15f84.jpg?1783936019"
+    },
+    "colorIdentityOverride": [
+        "GREEN"
+    ]
+}
+
+// Overcome
+{
+    "name": "Overcome",
+    "manaCost": "{3}{G}{G}",
+    "typeLine": "Sorcery",
+    "oracleText": "Creatures you control get +2/+2 and gain trample until end of turn. (Each of those creatures can deal excess combat damage to the player or planeswalker it's attacking.)",
+    "script": {
+        "spellEffect": {
+            "type": "ForEach",
+            "space": {
+                "type": "IterationSpace.Group",
+                "filter": {
+                    "baseFilter": "creature ctrl:you"
+                }
+            },
+            "body": {
+                "type": "Composite",
+                "effects": [
+                    {
+                        "type": "ModifyStats",
+                        "powerModifier": {
+                            "type": "Fixed",
+                            "amount": 2
+                        },
+                        "toughnessModifier": {
+                            "type": "Fixed",
+                            "amount": 2
+                        },
+                        "target": "Self"
+                    },
+                    {
+                        "type": "GrantKeyword",
+                        "keyword": "TRAMPLE",
+                        "target": "Self"
+                    }
+                ]
+            }
+        }
+    },
+    "metadata": {
+        "collectorNumber": "125",
+        "rarity": "UNCOMMON",
+        "artist": "Craig J Spearing",
+        "flavorText": "\"Forward! Until the horizon is ours!\" —Khemses, charioteer",
+        "imageUri": "https://cards.scryfall.io/normal/front/d/1/d1dc2427-685a-4739-8b92-e60f134d4adb.jpg?1783936018",
+        "rulings": [
+            {
+                "date": "2019-07-12",
+                "text": "Overcome affects only creatures you control at the time it resolves. Creatures you begin to control later in the turn won't get +2/+2 or gain trample."
+            }
+        ]
+    },
+    "colorIdentityOverride": [
+        "GREEN"
+    ]
+}
+
+// Quarry Beetle
+{
+    "name": "Quarry Beetle",
+    "manaCost": "{4}{G}",
+    "typeLine": "Creature — Insect",
+    "oracleText": "When this creature enters, you may return target land card from your graveyard to the battlefield.",
+    "creatureStats": {
+        "power": 4,
+        "toughness": 5
+    },
+    "script": {
+        "triggeredAbilities": [
+            {
+                "id": "ability_1",
+                "trigger": {
+                    "type": "ZoneChangeEvent",
+                    "to": "Battlefield"
+                },
+                "effect": {
+                    "type": "Gated",
+                    "gate": "Gate.MayDecide",
+                    "then": {
+                        "type": "MoveToZone",
+                        "target": {
+                            "type": "BoundVariable",
+                            "name": "target"
+                        },
+                        "destination": "Battlefield",
+                        "fromZone": "Graveyard"
+                    },
+                    "descriptionOverride": "When this creature enters, you may return target land card from your graveyard to the battlefield."
+                },
+                "targetRequirement": {
+                    "type": "TargetObject",
+                    "filter": {
+                        "baseFilter": "land own:you",
+                        "zone": "Graveyard"
+                    },
+                    "id": "target"
+                },
+                "descriptionOverride": "When this creature enters, you may return target land card from your graveyard to the battlefield."
+            }
+        ]
+    },
+    "metadata": {
+        "collectorNumber": "127",
+        "rarity": "UNCOMMON",
+        "artist": "Mike Burns",
+        "flavorText": "\"The ruin of the past is the topsoil of the future.\" —Sokar, former Nef-crop initiate",
+        "imageUri": "https://cards.scryfall.io/normal/front/6/9/69e11478-bfc7-4bcc-b65c-dc2d4449e99f.jpg?1783936016",
+        "rulings": [
+            {
+                "date": "2017-07-14",
+                "text": "Quarry Beetle's ability doesn't count as playing a land. It can return a land card to the battlefield even if you've already played as many lands as able this turn."
+            }
+        ]
+    },
+    "colorIdentityOverride": [
+        "GREEN"
+    ]
+}

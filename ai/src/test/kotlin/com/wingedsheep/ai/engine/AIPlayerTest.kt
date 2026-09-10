@@ -1,0 +1,619 @@
+package com.wingedsheep.ai.engine
+
+import com.wingedsheep.ai.engine.evaluation.*
+import com.wingedsheep.engine.core.*
+import com.wingedsheep.engine.registry.CardRegistry
+import com.wingedsheep.engine.state.GameState
+import com.wingedsheep.engine.state.components.identity.LifeTotalComponent
+import com.wingedsheep.engine.state.components.stack.ChosenTarget
+import com.wingedsheep.sdk.model.EntityId
+import com.wingedsheep.engine.support.GameTestDriver
+import com.wingedsheep.engine.support.TestCards
+import com.wingedsheep.mtg.sets.MtgSetCatalog
+import com.wingedsheep.sdk.core.Phase
+import com.wingedsheep.sdk.dsl.Costs
+import com.wingedsheep.sdk.dsl.Effects
+import com.wingedsheep.sdk.dsl.Targets
+import com.wingedsheep.sdk.dsl.card
+import com.wingedsheep.sdk.model.Deck
+import io.kotest.core.spec.style.FunSpec
+import io.kotest.matchers.booleans.shouldBeTrue
+import io.kotest.matchers.collections.shouldNotBeEmpty
+import io.kotest.matchers.comparables.shouldBeGreaterThan
+import io.kotest.matchers.ints.shouldBeGreaterThan
+import io.kotest.matchers.nulls.shouldNotBeNull
+import io.kotest.matchers.shouldBe
+import io.kotest.matchers.types.shouldBeInstanceOf
+
+class AIPlayerTest : FunSpec({
+
+    fun createCardRegistry(): CardRegistry {
+        val registry = CardRegistry()
+        for (set in MtgSetCatalog.all) {
+            registry.register(set.cards)
+            registry.register(set.basicLands)
+        }
+        return registry
+    }
+
+    fun initGame(registry: CardRegistry, deck: Deck): Pair<GameState, ActionProcessor> {
+        val initializer = GameInitializer(registry)
+        val result = initializer.initializeGame(
+            GameConfig(
+                players = listOf(
+                    PlayerConfig("AI Player", deck),
+                    PlayerConfig("Opponent", deck)
+                ),
+                skipMulligans = true,
+                startingPlayerIndex = 0
+            )
+        )
+        return Pair(result.state, ActionProcessor(registry))
+    }
+
+    test("AI can evaluate board state") {
+        val registry = createCardRegistry()
+        val (state, _) = initGame(registry, Deck.of("Mountain" to 17, "Raging Goblin" to 3))
+
+        val evaluator = AIPlayer.defaultEvaluator()
+        val playerId = state.turnOrder[0]
+        val score = evaluator.evaluate(state, state.projectedState, playerId)
+        score.isFinite().shouldBeTrue()
+    }
+
+    test("AI can choose an action from legal actions") {
+        val registry = createCardRegistry()
+        val (state, _) = initGame(registry, Deck.of("Mountain" to 17, "Raging Goblin" to 3))
+
+        val ai = AIPlayer.create(registry, state.turnOrder[0])
+        val action = ai.chooseAction(state)
+        action.shouldNotBeNull()
+    }
+
+    test("AI plays lands and creatures over multiple turns") {
+        val registry = createCardRegistry()
+        val deck = Deck.of("Mountain" to 14, "Raging Goblin" to 3, "Hill Giant" to 3)
+        val (initialState, processor) = initGame(registry, deck)
+
+        val p1 = initialState.turnOrder[0]
+        val p2 = initialState.turnOrder[1]
+        val ai1 = AIPlayer.create(registry, p1)
+        val ai2 = AIPlayer.create(registry, p2)
+
+        // Run the game for a few turns
+        var state: GameState = initialState
+        var safety = 0
+        while (state.turnNumber < 3 && !state.gameOver && safety < 200) {
+            val nextState: GameState? = when (state.priorityPlayerId) {
+                p1 -> ai1.playPriorityWindow(state, processor)
+                p2 -> ai2.playPriorityWindow(state, processor)
+                else -> {
+                    val d = state.pendingDecision
+                    if (d != null) {
+                        val ai = if (d.playerId == p1) ai1 else ai2
+                        val r = processor.process(state, SubmitDecision(d.playerId, ai.respondToDecision(state, d))).result
+                        if (r.error != null) null else r.state
+                    } else null
+                }
+            }
+            if (nextState == null) break
+            state = nextState
+            safety++
+        }
+
+        // After a few turns, both players should have permanents on the battlefield
+        state.turnNumber shouldBeGreaterThan 0
+        state.getBattlefield().size shouldBeGreaterThan 0
+    }
+
+    test("AI plays a full priority window without errors") {
+        val registry = createCardRegistry()
+        val (state, processor) = initGame(registry, Deck.of("Mountain" to 17, "Raging Goblin" to 3))
+
+        val ai = AIPlayer.create(registry, state.turnOrder[0])
+        val finalState = ai.playPriorityWindow(state, processor)
+        finalState.shouldNotBeNull()
+        // Just verify the AI didn't crash — it may not be in main phase yet
+    }
+
+    test("simulator produces valid results") {
+        val registry = createCardRegistry()
+        val (state, _) = initGame(registry, Deck.of("Mountain" to 17, "Raging Goblin" to 3))
+
+        val simulator = GameSimulator(registry)
+        val actions = simulator.getLegalActions(state, state.turnOrder[0])
+        actions.size shouldBeGreaterThan 0
+
+        for (action in actions.filter { it.affordable }) {
+            val result = simulator.simulate(state, action.action)
+            when (result) {
+                is SimulationResult.Terminal -> result.state.shouldNotBeNull()
+                is SimulationResult.NeedsDecision -> result.decision.shouldNotBeNull()
+                is SimulationResult.Illegal -> {}
+                is SimulationResult.StoppedAtLimit ->
+                    error("Ordinary legal-action simulation exhausted its automatic transition limit")
+            }
+        }
+    }
+
+    test("two AI players can play a full game") {
+        val registry = createCardRegistry()
+        val deck = Deck.of("Mountain" to 14, "Raging Goblin" to 3, "Hill Giant" to 3)
+        val (initialState, processor) = initGame(registry, deck)
+
+        val p1 = initialState.turnOrder[0]
+        val p2 = initialState.turnOrder[1]
+        val ai1 = AIPlayer.create(registry, p1)
+        val ai2 = AIPlayer.create(registry, p2)
+
+        var state: GameState = initialState
+        var turns = 0
+        val maxTurns = 50
+
+        while (!state.gameOver && turns < maxTurns) {
+            val nextState: GameState? = when (state.priorityPlayerId) {
+                p1 -> ai1.playPriorityWindow(state, processor)
+                p2 -> ai2.playPriorityWindow(state, processor)
+                else -> {
+                    val decision = state.pendingDecision
+                    if (decision != null) {
+                        val ai = if (decision.playerId == p1) ai1 else ai2
+                        val response = ai.respondToDecision(state, decision)
+                        val result = processor.process(state, SubmitDecision(decision.playerId, response)).result
+                        if (result.error != null) null else result.state
+                    } else null
+                }
+            }
+            if (nextState == null) break
+            state = nextState
+
+            if (state.turnNumber > turns) {
+                turns = state.turnNumber
+            }
+        }
+
+        turns shouldBeGreaterThan 0
+
+        val p1Life = state.getEntity(p1)?.get<LifeTotalComponent>()?.life ?: 20
+        val p2Life = state.getEntity(p2)?.get<LifeTotalComponent>()?.life ?: 20
+        (p1Life < 20 || p2Life < 20 || state.gameOver).shouldBeTrue()
+    }
+
+    test("simulating CastSpell resolves the spell onto the battlefield") {
+        val registry = createCardRegistry()
+        val deck = Deck.of("Mountain" to 17, "Raging Goblin" to 3)
+        val (initialState, processor) = initGame(registry, deck)
+
+        val p1 = initialState.turnOrder[0]
+        val ai1 = AIPlayer.create(registry, p1)
+        val ai2 = AIPlayer.create(registry, initialState.turnOrder[1])
+
+        // Advance to main phase
+        var state: GameState = initialState
+        var safety = 0
+        while (state.phase != Phase.PRECOMBAT_MAIN && safety < 50 && !state.gameOver) {
+            val nextState: GameState? = when (state.priorityPlayerId) {
+                p1 -> ai1.playPriorityWindow(state, processor)
+                else -> ai2.playPriorityWindow(state, processor)
+            }
+            if (nextState == null) break
+            state = nextState
+            safety++
+        }
+
+        // Now in main phase — play a land first
+        if (state.phase == Phase.PRECOMBAT_MAIN && state.priorityPlayerId == p1) {
+            val simulator = GameSimulator(registry)
+            val evaluator = AIPlayer.defaultEvaluator()
+            val actions = simulator.getLegalActions(state, p1)
+
+            // Play a land
+            val landAction = actions.find { it.actionType == "PlayLand" }
+            if (landAction != null) {
+                val result = processor.process(state, landAction.action).result
+                state = result.state
+            }
+
+            // Re-enumerate after land play
+            val actionsAfterLand = simulator.getLegalActions(state, p1)
+            val castCreature = actionsAfterLand.find {
+                it.actionType == "CastSpell" && it.description.contains("Raging Goblin", ignoreCase = true)
+            }
+            val pass = actionsAfterLand.find { it.actionType == "PassPriority" }
+
+            if (castCreature != null && pass != null) {
+                // Simulate both and compare
+                val castResult = simulator.simulate(state, castCreature.action)
+                val passResult = simulator.simulate(state, pass.action)
+
+                // After casting, the creature should be on the battlefield (stack resolved)
+                val creaturesAfterCast = castResult.state.getBattlefield(p1).count { entityId ->
+                    castResult.state.projectedState.isCreature(entityId)
+                }
+                creaturesAfterCast shouldBeGreaterThan 0
+
+                // The stack should be empty (spell resolved)
+                castResult.state.stack.size shouldBe 0
+
+                // Cast score should be strictly better than pass score
+                val castScore = evaluator.evaluate(castResult.state, castResult.state.projectedState, p1)
+                val passScore = evaluator.evaluate(passResult.state, passResult.state.projectedState, p1)
+                castScore shouldBeGreaterThan passScore
+            }
+        }
+    }
+
+    test("AI chooses to cast creature over passing in main phase") {
+        val registry = createCardRegistry()
+        val deck = Deck.of("Mountain" to 10, "Raging Goblin" to 10)
+        val (initialState, processor) = initGame(registry, deck)
+
+        val p1 = initialState.turnOrder[0]
+        val ai1 = AIPlayer.create(registry, p1)
+        val ai2 = AIPlayer.create(registry, initialState.turnOrder[1])
+
+        // Advance to main phase and play a land
+        var state: GameState = initialState
+        var safety = 0
+        while ((state.phase != Phase.PRECOMBAT_MAIN || state.priorityPlayerId != p1) && safety < 50 && !state.gameOver) {
+            val next: GameState? = when (state.priorityPlayerId) {
+                p1 -> ai1.playPriorityWindow(state, processor)
+                else -> ai2.playPriorityWindow(state, processor)
+            }
+            if (next == null) break
+            state = next
+            safety++
+        }
+
+        if (state.phase == Phase.PRECOMBAT_MAIN && state.priorityPlayerId == p1) {
+            // Play a land first
+            val simulator = GameSimulator(registry)
+            val landAction = simulator.getLegalActions(state, p1).find { it.actionType == "PlayLand" }
+            if (landAction != null) {
+                state = processor.process(state, landAction.action).result.state
+            }
+
+            // Now the AI should choose to cast Raging Goblin (not pass)
+            val hasCastableCreature = simulator.getLegalActions(state, p1).any {
+                it.actionType == "CastSpell" && it.affordable
+            }
+            if (state.priorityPlayerId == p1 && hasCastableCreature) {
+                val simulator = GameSimulator(registry)
+                val evaluator = AIPlayer.defaultEvaluator()
+                val actions = simulator.getLegalActions(state, p1)
+
+                // Debug: print all actions and their scores
+                val pass = actions.find { it.actionType == "PassPriority" }
+                val passResult = if (pass != null) simulator.simulate(state, pass.action) else null
+                val passScore = if (passResult != null) {
+                    passResult.scoreOrRankLast { evaluator.evaluate(it, it.projectedState, p1) }
+                } else 0.0
+
+                println("=== AI ACTION SCORES ===")
+                println("Pass score: $passScore")
+                for (a in actions.filter { it.affordable && it.actionType != "PassPriority" && !it.isManaAbility }) {
+                    val result = simulator.simulate(state, a.action)
+                    val score = result.scoreOrRankLast { evaluator.evaluate(it, it.projectedState, p1) }
+                    val resultType = when (result) {
+                        is SimulationResult.Terminal -> "Terminal(stack=${result.state.stack.size})"
+                        is SimulationResult.NeedsDecision -> "NeedsDecision(${result.decision::class.simpleName})"
+                        is SimulationResult.Illegal -> "Illegal(${result.reason})"
+                        is SimulationResult.StoppedAtLimit ->
+                            "StoppedAtLimit(${result.automaticTransitions}/${result.limit})"
+                    }
+                    println("  ${a.actionType}(${a.description}): score=$score, result=$resultType")
+                }
+
+                val action = ai1.chooseAction(state)
+                println("AI CHOSE: ${action::class.simpleName}")
+                (action is CastSpell).shouldBeTrue()
+            }
+        }
+    }
+
+    test("board evaluator scores winning state highest") {
+        val registry = createCardRegistry()
+        val (state, _) = initGame(registry, Deck.of("Mountain" to 20))
+
+        val playerId = state.turnOrder[0]
+        val evaluator = AIPlayer.defaultEvaluator()
+
+        val wonState = state.copy(gameOver = true, winnerId = playerId)
+        val lostState = state.copy(gameOver = true, winnerId = state.turnOrder[1])
+
+        val wonScore = evaluator.evaluate(wonState, wonState.projectedState, playerId)
+        val lostScore = evaluator.evaluate(lostState, lostState.projectedState, playerId)
+
+        wonScore shouldBeGreaterThan lostScore
+        wonScore shouldBeGreaterThan 0.0
+        (lostScore < 0.0).shouldBeTrue()
+    }
+
+    // Regression: the AI used to send autoPay=true unconditionally for
+    // SelectManaSourcesDecision. When the only mana available required sacrificing
+    // a Treasure, the engine's solver returned no solution, the resumer raised
+    // "Cannot pay mana cost with auto-pay", and the same decision was re-prompted
+    // forever — freezing the AI in a live game.
+    test("AI does not loop on SelectManaSourcesDecision when only Treasures can pay") {
+        val registry = createCardRegistry()
+        val (state, _) = initGame(registry, Deck.of("Mountain" to 17, "Raging Goblin" to 3))
+        val playerId = state.turnOrder[0]
+
+        val simulator = GameSimulator(registry)
+        val responder = DecisionResponder(simulator, AIPlayer.defaultEvaluator())
+        val treasureId = state.turnOrder[1] // dummy entity id; the responder never dereferences it
+
+        val treasureSource = ManaSourceOption(
+            entityId = treasureId,
+            name = "Treasure",
+            producesColors = com.wingedsheep.sdk.core.Color.entries.toSet(),
+            producesColorless = false,
+            requiresSacrifice = true
+        )
+
+        // canDecline=true (may-pay) → AI should decline rather than autoPay.
+        val mayPayDecision = SelectManaSourcesDecision(
+            id = "d1",
+            playerId = playerId,
+            prompt = "Pay {1}",
+            context = DecisionContext(sourceId = null, sourceName = "Test", phase = DecisionPhase.RESOLUTION),
+            availableSources = listOf(treasureSource),
+            requiredCost = "{1}",
+            autoPaySuggestion = emptyList(),
+            canDecline = true
+        )
+        val mayPayResponse = responder.respond(state, mayPayDecision, playerId) as ManaSourcesSelectedResponse
+        mayPayResponse.autoPay shouldBe false
+        mayPayResponse.selectedSources shouldBe emptyList()
+
+        // canDecline=false (ward / counter-unless-pays) → AI must select the
+        // Treasure manually so the resumer can sacrifice it for mana.
+        val wardDecision = mayPayDecision.copy(id = "d2", canDecline = false)
+        val wardResponse = responder.respond(state, wardDecision, playerId) as ManaSourcesSelectedResponse
+        wardResponse.autoPay shouldBe false
+        wardResponse.selectedSources shouldBe listOf(treasureId)
+
+        // When the engine did find an auto-pay solution, autoPay=true is still used.
+        val autoPayable = mayPayDecision.copy(id = "d3", autoPaySuggestion = listOf(treasureId))
+        val autoPayResponse = responder.respond(state, autoPayable, playerId) as ManaSourcesSelectedResponse
+        autoPayResponse.autoPay shouldBe true
+    }
+
+    // Regression: a targeted *activated* ability (e.g. "{T}: deal 2 damage to target creature")
+    // must come back from the AI with its target filled. Previously the strategist only filled
+    // targets for CastSpell, so a chosen ActivateAbility was submitted with no target, rejected by
+    // the engine ("requires a target"), and re-picked forever — an infinite loop.
+    test("AI fills the target for a targeted activated ability instead of looping") {
+        val pinger = card("Test Pinger") {
+            manaCost = "{2}"
+            typeLine = "Creature — Wizard"
+            power = 1
+            toughness = 1
+            activatedAbility {
+                cost = Costs.Tap
+                val t = target("target creature", Targets.Creature)
+                effect = Effects.DealDamage(2, t)
+            }
+        }
+        val bear = card("Test Bear") {
+            manaCost = "{1}{G}"
+            typeLine = "Creature — Bear"
+            power = 2
+            toughness = 2
+        }
+
+        val driver = GameTestDriver()
+        driver.registerCards(TestCards.all + listOf(pinger, bear))
+        driver.initMirrorMatch(deck = Deck.of("Forest" to 40), startingLife = 20)
+        val aiId = driver.activePlayer!!
+        val opp = driver.getOpponent(aiId)
+
+        val myPinger = driver.putCreatureOnBattlefield(aiId, "Test Pinger")
+        driver.removeSummoningSickness(myPinger)
+        driver.putCreatureOnBattlefield(opp, "Test Bear")
+        driver.passPriorityUntil(Phase.PRECOMBAT_MAIN)
+
+        val ai = AIPlayer.create(driver.cardRegistry, aiId)
+        val simulator = GameSimulator(driver.cardRegistry)
+        val legalActions = simulator.getLegalActions(driver.state, aiId)
+        val activate = legalActions.find { it.actionType == "ActivateAbility" && it.requiresTargets }
+        activate.shouldNotBeNull()
+        val pass = legalActions.find { it.actionType == "PassPriority" }
+        pass.shouldNotBeNull()
+
+        // Killing the opponent's 2/2 for a single tap clearly beats passing, so the AI picks the
+        // ability — and with the fix it carries a valid creature target.
+        val chosen = ai.chooseFrom(driver.state, listOf(activate, pass)).action
+        (chosen is ActivateAbility).shouldBeTrue()
+        (chosen as ActivateAbility).targets.shouldNotBeEmpty()
+
+        // The decisive anti-loop guarantee: the AI's chosen action is actually legal.
+        driver.submit(chosen).isSuccess shouldBe true
+    }
+
+    // Regression: given two "target creature can't block" abilities and two opponent blockers,
+    // the AI used to aim BOTH at the same creature. Activated-ability targets are filled by a
+    // static heuristic (highest board value); while the first ability is still ON THE STACK the
+    // first blocker looks just as valuable as the second, so the heuristic re-picked it. The
+    // committed target now goes through simulation — which resolves the pending ability — and
+    // BoardPresence prices a creature that already can't block lower, so neutralizing a second,
+    // still-able blocker strictly wins. This reproduces the hard case: the first ability is left
+    // unresolved on the stack when the second one's target is chosen.
+    test("AI targets a distinct blocker with a second can't-block ability") {
+        val stopper = card("Test Stopper") {
+            manaCost = "{1}"
+            typeLine = "Creature — Wizard"
+            power = 1
+            toughness = 1
+            activatedAbility {
+                cost = Costs.Tap
+                val t = target("target creature", Targets.Creature)
+                effect = Effects.CantBlock(t)
+            }
+        }
+        // Big blockers so neutralizing one is clearly worth a tap — keeps the AI activating
+        // (rather than passing) in the main phase, isolating the target-choice behavior we test.
+        val ogre = card("Test Ogre") {
+            manaCost = "{4}{G}"
+            typeLine = "Creature — Ogre"
+            power = 5
+            toughness = 5
+        }
+
+        val driver = GameTestDriver()
+        driver.registerCards(TestCards.all + listOf(stopper, ogre))
+        driver.initMirrorMatch(deck = Deck.of("Forest" to 40), startingLife = 20)
+        val aiId = driver.activePlayer!!
+        val opp = driver.getOpponent(aiId)
+
+        val stopper1 = driver.putCreatureOnBattlefield(aiId, "Test Stopper")
+        val stopper2 = driver.putCreatureOnBattlefield(aiId, "Test Stopper")
+        driver.removeSummoningSickness(stopper1)
+        driver.removeSummoningSickness(stopper2)
+        val ogreA = driver.putCreatureOnBattlefield(opp, "Test Ogre")
+        val ogreB = driver.putCreatureOnBattlefield(opp, "Test Ogre")
+        driver.passPriorityUntil(Phase.PRECOMBAT_MAIN)
+
+        val simulator = GameSimulator(driver.cardRegistry)
+        val ai = AIPlayer.create(driver.cardRegistry, aiId)
+
+        fun targetOf(action: GameAction): EntityId {
+            (action is ActivateAbility).shouldBeTrue() // AI should activate the stopper, not pass
+            return ((action as ActivateAbility).targets.single() as ChosenTarget.Permanent).entityId
+        }
+
+        // First activation: the AI picks one blocker. Leave it UNRESOLVED on the stack.
+        val act1 = simulator.getLegalActions(driver.state, aiId)
+            .first { (it.action as? ActivateAbility)?.sourceId == stopper1 }
+        val pass = simulator.getLegalActions(driver.state, aiId).first { it.actionType == "PassPriority" }
+        val chosen1 = ai.chooseFrom(driver.state, listOf(act1, pass)).action
+        val firstTarget = targetOf(chosen1)
+        (firstTarget == ogreA || firstTarget == ogreB).shouldBeTrue()
+        driver.submitSuccess(chosen1)
+        // The first ability is on the stack but has not resolved — bearA/bearB can both still block.
+        driver.state.stack.shouldNotBeEmpty()
+        driver.state.projectedState.cantBlock(firstTarget) shouldBe false
+
+        // Second activation while the first is still pending: the AI must hit the OTHER blocker.
+        val act2 = simulator.getLegalActions(driver.state, aiId)
+            .first { (it.action as? ActivateAbility)?.sourceId == stopper2 }
+        val pass2 = simulator.getLegalActions(driver.state, aiId).first { it.actionType == "PassPriority" }
+        val chosen2 = ai.chooseFrom(driver.state, listOf(act2, pass2)).action
+        val secondTarget = targetOf(chosen2)
+        (secondTarget != firstTarget).shouldBeTrue()
+    }
+
+    // Regression: a spell that targets "a spell on the stack" (Reprieve, a counterspell, …) is a
+    // SINGLE-requirement targeted spell, so the enumerator surfaces it with `targetRequirements =
+    // null` and only a flat `validTargets` list — i.e. with no target zone. The strategist's
+    // single-target path then defaulted every entity to a `ChosenTarget.Permanent`, so the cast
+    // was submitted with a Permanent target, rejected by the engine ("Target must be a spell on
+    // the stack"), and re-picked forever. The fix consults `state.isSpellOnStack` and wraps a
+    // stack target as a `ChosenTarget.Spell`.
+    test("AI casts a 'target spell' instant with a Spell target instead of looping") {
+        val bounceSpell = card("Test Spell Bounce") {
+            manaCost = "{1}{W}"
+            typeLine = "Instant"
+            spell {
+                target("target spell", Targets.Spell)
+                effect = Effects.ReturnSpellToOwnersHand() then Effects.DrawCards(1)
+            }
+        }
+        val creature = card("Test Ogre Mage") {
+            manaCost = "{2}{R}"
+            typeLine = "Creature — Ogre"
+            power = 4
+            toughness = 4
+        }
+
+        val driver = GameTestDriver()
+        driver.registerCards(TestCards.all + listOf(bounceSpell, creature))
+        driver.initMirrorMatch(deck = Deck.of("Forest" to 40), startingLife = 20)
+        // Opponent is the active player; the AI responds to the opponent's creature spell.
+        val opp = driver.activePlayer!!
+        val aiId = driver.getOpponent(opp)
+
+        driver.passPriorityUntil(Phase.PRECOMBAT_MAIN)
+
+        // Opponent puts a creature spell on the stack, then passes so the AI gets priority
+        // with the spell still unresolved.
+        val creatureCard = driver.putCardInHand(opp, "Test Ogre Mage")
+        driver.giveMana(opp, com.wingedsheep.sdk.core.Color.RED, 1)
+        driver.giveColorlessMana(opp, 2)
+        driver.castSpell(opp, creatureCard).isSuccess shouldBe true
+        driver.passPriority(opp)
+        driver.state.stack.shouldNotBeEmpty()
+
+        // Arm the AI: the bounce spell in hand plus the mana to cast it.
+        val bounceCard = driver.putCardInHand(aiId, "Test Spell Bounce")
+        driver.giveMana(aiId, com.wingedsheep.sdk.core.Color.WHITE, 1)
+        driver.giveColorlessMana(aiId, 1)
+
+        val simulator = GameSimulator(driver.cardRegistry)
+        val legalActions = simulator.getLegalActions(driver.state, aiId)
+
+        // The single-target "target spell" cast must be offered (there IS a legal target on the
+        // stack) and must NOT carry the multi-requirement metadata — this is exactly the shape
+        // that produced the bug.
+        val cast = legalActions.find {
+            it.actionType == "CastSpell" && it.requiresTargets &&
+                it.description.contains("Test Spell Bounce")
+        }
+        cast.shouldNotBeNull()
+        cast.targetRequirements shouldBe null
+        cast.validTargets.shouldNotBeNull()
+
+        val ai = AIPlayer.create(driver.cardRegistry, aiId)
+        val pass = legalActions.first { it.actionType == "PassPriority" }
+        val chosen = ai.chooseFrom(driver.state, listOf(cast, pass)).action
+
+        // The AI must have wrapped the stack entity as a Spell target, not a Permanent.
+        (chosen is CastSpell).shouldBeTrue()
+        val targets = (chosen as CastSpell).targets
+        targets.shouldNotBeEmpty()
+        targets.single().shouldBeInstanceOf<ChosenTarget.Spell>()
+
+        // The decisive anti-loop guarantee: the chosen action is actually legal and accepted.
+        driver.submit(chosen).isSuccess shouldBe true
+    }
+
+    // Guard against over-correction: a no-target spell and an "up to one target" spell must
+    // still be castable when there is nothing (or nobody) to target. The fix only touched how a
+    // chosen stack entity is wrapped; it must not gate these casts away.
+    test("AI still casts a no-target spell and an 'up to one target' spell with no targets") {
+        val plainDraw = card("Test Cantrip") {
+            manaCost = "{1}"
+            typeLine = "Sorcery"
+            spell { effect = Effects.DrawCards(1) }
+        }
+        val upToOne = card("Test Optional Bolt") {
+            manaCost = "{R}"
+            typeLine = "Sorcery"
+            spell {
+                val t = target("up to one target creature", Targets.UpToCreatures(1))
+                effect = Effects.DealDamage(2, t)
+            }
+        }
+
+        val driver = GameTestDriver()
+        driver.registerCards(TestCards.all + listOf(plainDraw, upToOne))
+        driver.initMirrorMatch(deck = Deck.of("Forest" to 40), startingLife = 20)
+        val aiId = driver.activePlayer!!
+        driver.passPriorityUntil(Phase.PRECOMBAT_MAIN)
+
+        driver.putCardInHand(aiId, "Test Cantrip")
+        driver.putCardInHand(aiId, "Test Optional Bolt")
+        driver.giveColorlessMana(aiId, 1)
+        driver.giveMana(aiId, com.wingedsheep.sdk.core.Color.RED, 1)
+
+        val simulator = GameSimulator(driver.cardRegistry)
+        // No creatures exist anywhere, so "up to one target creature" has zero candidates — but
+        // because minTargets == 0 the cast is still legal (CR 601.2c only blocks a cast whose
+        // target requirement has NO legal target AND requires at least one).
+        val actions = simulator.getLegalActions(driver.state, aiId)
+        actions.any { it.actionType == "CastSpell" && it.description.contains("Test Cantrip") }
+            .shouldBeTrue()
+        actions.any { it.actionType == "CastSpell" && it.description.contains("Test Optional Bolt") }
+            .shouldBeTrue()
+    }
+})

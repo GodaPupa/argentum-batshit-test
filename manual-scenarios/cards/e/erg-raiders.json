@@ -1,0 +1,41 @@
+{
+  "_description": "Erg Raiders end-step self-damage trigger. Alice controls an Erg Raiders (2/3, B) that has been on the battlefield since last turn — no summoning sickness, did NOT enter this turn, and Alice does NOT attack with it. At the beginning of Alice's end step, the triggered ability fires: 'if this creature didn't attack this turn, it deals 2 damage to you unless it came under your control this turn.' Verify Alice's life drops from 20 → 18. Scenario starts in POSTCOMBAT_MAIN (combat already skipped) and stops at the END step so you can see the trigger go on the stack and resolve. To test the negative cases, you can either (a) attack with Erg Raiders during DECLARE_ATTACKERS — set phase to PRECOMBAT_MAIN and add player1StopAtSteps: ['DECLARE_ATTACKERS'], or (b) mark Erg Raiders as freshly entered — these are covered in ErgRaidersScenarioTest.kt.",
+  "player1Name": "Alice",
+  "player2Name": "Bob",
+  "player1": {
+    "lifeTotal": 20,
+    "hand": ["Erg Raiders"],
+    "battlefield": [
+      {"name": "Erg Raiders", "summoningSickness": false},
+      {"name": "Swamp"},
+      {"name": "Swamp"}
+    ],
+    "graveyard": [],
+    "library": [
+      "Swamp",
+      "Swamp",
+      "Swamp"
+    ]
+  },
+  "player2": {
+    "lifeTotal": 20,
+    "hand": [],
+    "battlefield": [
+      {"name": "Plains"},
+      {"name": "Plains"}
+    ],
+    "graveyard": [],
+    "library": [
+      "Plains",
+      "Plains",
+      "Plains"
+    ]
+  },
+  "phase": "POSTCOMBAT_MAIN",
+  "activePlayer": 1,
+  "priorityPlayer": 1,
+  "player1StopAtSteps": [],
+  "player2StopAtSteps": [],
+  "player1OpponentStopAtSteps": [],
+  "player2OpponentStopAtSteps": []
+}

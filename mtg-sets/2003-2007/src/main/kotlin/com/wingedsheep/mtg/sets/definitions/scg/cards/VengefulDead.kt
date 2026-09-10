@@ -1,0 +1,57 @@
+package com.wingedsheep.mtg.sets.definitions.scg.cards
+
+import com.wingedsheep.sdk.core.Subtype
+import com.wingedsheep.sdk.core.Zone
+import com.wingedsheep.sdk.dsl.Triggers
+import com.wingedsheep.sdk.dsl.card
+import com.wingedsheep.sdk.model.Rarity
+import com.wingedsheep.sdk.scripting.targets.EffectTarget
+import com.wingedsheep.sdk.scripting.references.Player
+import com.wingedsheep.sdk.scripting.effects.LoseLifeEffect
+import com.wingedsheep.sdk.scripting.EventPattern.ZoneChangeEvent
+import com.wingedsheep.sdk.scripting.GameObjectFilter
+import com.wingedsheep.sdk.scripting.TriggerBinding
+import com.wingedsheep.sdk.scripting.TriggerSpec
+
+/**
+ * Vengeful Dead
+ * {3}{B}
+ * Creature — Zombie
+ * 3/2
+ * Whenever Vengeful Dead or another Zombie dies, each opponent loses 1 life.
+ */
+val VengefulDead = card("Vengeful Dead") {
+    manaCost = "{3}{B}"
+    colorIdentity = "B"
+    typeLine = "Creature — Zombie"
+    power = 3
+    toughness = 2
+    oracleText = "Whenever Vengeful Dead or another Zombie dies, each opponent loses 1 life."
+
+    // When Vengeful Dead itself dies
+    triggeredAbility {
+        trigger = Triggers.Dies
+        effect = LoseLifeEffect(1, EffectTarget.PlayerRef(Player.EachOpponent))
+    }
+
+    // When another Zombie dies (any controller)
+    triggeredAbility {
+        trigger = TriggerSpec(
+            ZoneChangeEvent(
+                filter = GameObjectFilter.Creature.withSubtype(Subtype("Zombie")),
+                from = Zone.BATTLEFIELD,
+                to = Zone.GRAVEYARD
+            ),
+            TriggerBinding.OTHER
+        )
+        effect = LoseLifeEffect(1, EffectTarget.PlayerRef(Player.EachOpponent))
+    }
+
+    metadata {
+        rarity = Rarity.COMMON
+        collectorNumber = "80"
+        artist = "Alex Horley-Orlandelli"
+        flavorText = "Those who don't learn from their deaths are destined to repeat them."
+        imageUri = "https://cards.scryfall.io/normal/front/7/c/7c11c11d-9809-4031-8cbc-21aef07d7f1f.jpg?1562531178"
+    }
+}

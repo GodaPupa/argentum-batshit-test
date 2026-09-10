@@ -1,0 +1,33 @@
+{
+  "_comment": "Samwise the Stouthearted (LTR, {1}{W} flash legendary 2/1). ETB target = a permanent card in your graveyard put there from the battlefield this turn (Gap 20). Flow: activate Cirith Ungol Patrol sacrificing Mirkwood Spider → Spider lands in your graveyard with the Gap 20 marker set; then flash in Samwise → ETB pauses to target the Spider → Spider returns to your hand → the Ring tempts you.",
+  "player1Name": "You",
+  "player2Name": "Opponent",
+  "aiPlayer": 2,
+  "player1": {
+    "lifeTotal": 20,
+    "hand": ["Samwise the Stouthearted"],
+    "battlefield": [
+      {"name": "Plains"},
+      {"name": "Plains"},
+      {"name": "Swamp"},
+      {"name": "Cirith Ungol Patrol"},
+      {"name": "Mirkwood Spider"}
+    ],
+    "graveyard": [],
+    "library": ["Plains", "Plains", "Plains", "Plains"]
+  },
+  "player2": {
+    "lifeTotal": 20,
+    "hand": [],
+    "battlefield": [],
+    "graveyard": [],
+    "library": ["Forest", "Forest", "Forest", "Forest"]
+  },
+  "phase": "PRECOMBAT_MAIN",
+  "activePlayer": 1,
+  "priorityPlayer": 1,
+  "player1StopAtSteps": [],
+  "player2StopAtSteps": [],
+  "player1OpponentStopAtSteps": [],
+  "player2OpponentStopAtSteps": []
+}

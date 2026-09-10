@@ -1,0 +1,149 @@
+server:
+  port: 8080
+  # Gzip HTTP responses. The replay endpoints reconstruct the full snapshot+delta stream on demand,
+  # which for a long game is ~1MB of highly repetitive JSON (the same card objects, rulings, and both
+  # players' full blocks repeat every frame) — it compresses ~90%. Only applies when the client sends
+  # Accept-Encoding: gzip (all browsers do) and the body exceeds min-response-size; small responses and
+  # the WebSocket path are untouched.
+  compression:
+    enabled: true
+    mime-types: application/json,application/octet-stream,text/plain,text/html,text/css,application/javascript
+    min-response-size: 2KB
+
+app:
+  # Build identity, stamped onto every recorded replay so one that later fails to re-simulate can be
+  # traced to the build that recorded it. The Dockerfile sets this from the deploy's git sha.
+  version: ${APP_VERSION:dev}
+
+spring:
+  application:
+    name: argentum-game-server
+  # Accounts/persistence is OPT-IN. By default we exclude the DataSource + Flyway auto-config so the
+  # server (and the test/e2e context) boots with no database at all. Spring Data JDBC and Flyway are
+  # both @ConditionalOnBean(DataSource), so excluding DataSourceAutoConfiguration cascade-disables
+  # them too (and avoids Spring Data JDBC's startup DB dialect probe).
+  #
+  # To ENABLE accounts: set ACCOUNTS_ENABLED=true, clear the exclude list (ACCOUNTS_AUTOCONFIG_EXCLUDE=),
+  # and point ACCOUNTS_DB_* at a Postgres instance. See docs/accounts-and-persistence.md.
+  autoconfigure:
+    exclude: ${ACCOUNTS_AUTOCONFIG_EXCLUDE:org.springframework.boot.jdbc.autoconfigure.DataSourceAutoConfiguration,org.springframework.boot.flyway.autoconfigure.FlywayAutoConfiguration}
+  datasource:
+    url: ${ACCOUNTS_DB_URL:}
+    username: ${ACCOUNTS_DB_USER:}
+    password: ${ACCOUNTS_DB_PASSWORD:}
+  flyway:
+    enabled: ${ACCOUNTS_ENABLED:false}
+    locations: classpath:db/migration
+  mail:
+    # Mailgun SMTP by default; override host/credentials for any provider. Unused when accounts are
+    # disabled or when no username is set (the magic link is logged to the console instead).
+    # Port 2525 (not 587) by default: many cloud hosts (Scaleway, GCP, …) block outbound 25/465/587
+    # to curb spam, and Mailgun listens on 2525 for exactly this case. Override MAIL_PORT if needed.
+    host: ${MAIL_HOST:smtp.mailgun.org}
+    port: ${MAIL_PORT:2525}
+    username: ${MAIL_USERNAME:}
+    password: ${MAIL_PASSWORD:}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+          # Bound every phase of the SMTP exchange so an unreachable mail host fails fast instead of
+          # hanging the sender thread (JavaMail defaults to no timeout / -1 = wait indefinitely).
+          connectiontimeout: ${MAIL_CONNECT_TIMEOUT_MS:10000}
+          timeout: ${MAIL_READ_TIMEOUT_MS:10000}
+          writetimeout: ${MAIL_WRITE_TIMEOUT_MS:10000}
+
+accounts:
+  # Master switch for the whole accounts/persistence/auth subsystem.
+  enabled: ${ACCOUNTS_ENABLED:false}
+  auth:
+    # HMAC secret for signing auth tokens. If blank, a random secret is generated at startup
+    # (tokens then don't survive a restart) — set ACCOUNTS_AUTH_SECRET in production.
+    secret: ${ACCOUNTS_AUTH_SECRET:}
+    # How long an issued auth token stays valid.
+    token-ttl-hours: ${ACCOUNTS_AUTH_TOKEN_TTL_HOURS:720}
+    # How long a magic-link login token stays valid.
+    login-token-ttl-minutes: ${ACCOUNTS_LOGIN_TOKEN_TTL_MINUTES:15}
+    # Public base URL the magic link points at (the client's origin).
+    base-url: ${APP_BASE_URL:http://localhost:5173}
+    # From address on the magic-link email.
+    from-email: ${ACCOUNTS_FROM_EMAIL:no-reply@wingedsheep.com}
+
+cache:
+  redis:
+    enabled: ${CACHE_REDIS_ENABLED:false}
+    host: ${REDIS_HOST:localhost}
+    port: ${REDIS_PORT:6379}
+    ttl-minutes: ${REDIS_TTL_MINUTES:1440}
+    key-prefix: "argentum:"
+
+game:
+  debug-mode: ${GAME_DEBUG_MODE:false}
+  replay:
+    # Cap on the archived viewer stream stored alongside a replay's input log — the fallback that
+    # keeps old replays watchable after the engine changes (see ReplayPresentation). Measured on the
+    # gzipped form, which is ~160 KB for a full game, so 4 MB only bites on something pathological
+    # (a mill-loop stalemate, an AI grinding 400 turns). 0 disables archiving entirely.
+    presentation-max-stored-bytes: ${GAME_REPLAY_PRESENTATION_MAX_STORED_BYTES:4194304}
+  dev-endpoints:
+    # Enable development endpoints for manual testing. NEVER enable in production.
+    enabled: ${GAME_DEV_ENDPOINTS_ENABLED:false}
+  hand-smoother:
+    # MTGA-style hand smoothing for opening hands. Selects the best of N candidate hands.
+    enabled: ${GAME_HAND_SMOOTHER_ENABLED:true}
+    candidates: ${GAME_HAND_SMOOTHER_CANDIDATES:3}
+  sets:
+    # All sets are enabled by default. Codes listed in disabled-by-default are
+    # off unless overridden in the enabled map. Set codes are uppercase (POR,
+    # ONS, DOM, EOE, etc.); see MtgSetCatalog for the full list.
+    # disabled-by-default and enabled default to empty (see GameProperties);
+    # do not declare them as empty literals ([] / {}) — Spring Boot's binder
+    # flattens an empty collection to an empty-string property that fails to
+    # bind to the Map/Set target. Override them in a profile (see
+    # application-local.yml) when you actually need entries.
+  easter-eggs:
+    # Name-based joke cards slipped into a player's deck (EasterEggDeckInjector). Off by default so
+    # production stays clean — the deploy passes no GAME_EASTER_EGGS_ENABLED, so a redeploy can't
+    # switch them back on. Local dev opts in via .env.
+    enabled: ${GAME_EASTER_EGGS_ENABLED:false}
+  tournament:
+    # Decide AI-vs-AI bracket matches by simulation instead of playing them out. A round-robin with
+    # one human and N AI seats spends most of its CPU on games nobody is in; simulating them keeps the
+    # standings moving for a fraction of the cost. Set to false to play every match (e.g. on a box
+    # where the AI games are being spectated). An all-AI bracket (the AI Sandbox) is never simulated
+    # whatever this says — it exists to be watched.
+    simulate-ai-matches: ${GAME_TOURNAMENT_SIMULATE_AI_MATCHES:true}
+  admin:
+    # Password for admin replay feature. Feature is disabled if not set.
+    password: ${GAME_ADMIN_PASSWORD:}
+  ai:
+    enabled: ${GAME_AI_ENABLED:true}
+    # AI mode: "engine" (built-in, no API key needed), "llm" (requires API key), or the mode
+    # of a registered AiControllerProvider. Anything else fails startup rather than silently
+    # disabling the AI.
+    mode: ${GAME_AI_MODE:engine}
+    base-url: ${GAME_AI_BASE_URL:https://openrouter.ai/api/v1}
+    api-key: ${GAME_AI_API_KEY:${OPENROUTER_API_KEY:}}
+    model: ${GAME_AI_MODEL:qwen/qwen3.6-plus:free}
+    deckbuilding-model: ${GAME_AI_DECKBUILDING_MODEL:}
+    open-router-api-key: ${OPENROUTER_API_KEY:}
+    # When true, AI sealed decks always use the deterministic heuristic builder (skips the LLM).
+    heuristic-deckbuilding: ${GAME_AI_HEURISTIC_DECKBUILDING:false}
+    # Local testing mode: record the engine AI's candidate actions + scores and serve them from
+    # /api/dev/ai-insight. Off in production — recording retains a GameState per decision.
+    insight-enabled: ${GAME_AI_INSIGHT_ENABLED:false}
+
+# Swagger UI - only enabled when dev endpoints are enabled
+springdoc:
+  api-docs:
+    enabled: ${GAME_DEV_ENDPOINTS_ENABLED:false}
+  swagger-ui:
+    enabled: ${GAME_DEV_ENDPOINTS_ENABLED:false}
+    path: /swagger-ui.html
+
+logging:
+  level:
+    com.wingedsheep.gameserver: DEBUG
+    org.springframework.web.socket: DEBUG

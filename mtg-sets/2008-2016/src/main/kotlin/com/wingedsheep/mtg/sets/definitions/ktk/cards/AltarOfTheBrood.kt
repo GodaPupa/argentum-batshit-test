@@ -1,0 +1,42 @@
+package com.wingedsheep.mtg.sets.definitions.ktk.cards
+
+import com.wingedsheep.sdk.dsl.Triggers
+import com.wingedsheep.sdk.dsl.card
+import com.wingedsheep.sdk.dsl.Patterns
+import com.wingedsheep.sdk.model.Rarity
+import com.wingedsheep.sdk.scripting.GameObjectFilter
+import com.wingedsheep.sdk.scripting.TriggerBinding
+import com.wingedsheep.sdk.scripting.targets.EffectTarget
+import com.wingedsheep.sdk.scripting.references.Player
+
+/**
+ * Altar of the Brood
+ * {1}
+ * Artifact
+ * Whenever another permanent you control enters, each opponent mills a card.
+ */
+val AltarOfTheBrood = card("Altar of the Brood") {
+    manaCost = "{1}"
+    colorIdentity = ""
+    typeLine = "Artifact"
+    oracleText = "Whenever another permanent you control enters, each opponent mills a card."
+
+    triggeredAbility {
+        trigger = Triggers.entersBattlefield(
+            filter = GameObjectFilter.Permanent.youControl(),
+            binding = TriggerBinding.OTHER,
+        )
+        // `Patterns.Library.mill` takes the miller directly, so "each opponent mills a card" is the
+        // recipe with `Player.EachOpponent` rather than a `ForEachPlayer` wrapped around a
+        // controller-scoped mill — the spelling Aether Syphon, Flotsam // Jetsam and Saruman use.
+        effect = Patterns.Library.mill(1, EffectTarget.PlayerRef(Player.EachOpponent))
+    }
+
+    metadata {
+        rarity = Rarity.RARE
+        collectorNumber = "216"
+        artist = "Erica Yang"
+        flavorText = "Supplicants offer flesh and silver, flowers and blood. The altar takes what it will, eyes gleaming with unspoken promises."
+        imageUri = "https://cards.scryfall.io/normal/front/8/d/8d59d264-87ee-4305-bffb-110549331a82.jpg?1562790137"
+    }
+}

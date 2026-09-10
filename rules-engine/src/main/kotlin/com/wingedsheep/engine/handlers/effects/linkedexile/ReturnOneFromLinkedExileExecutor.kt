@@ -1,0 +1,176 @@
+package com.wingedsheep.engine.handlers.effects.linkedexile
+
+import com.wingedsheep.engine.core.*
+import com.wingedsheep.engine.handlers.EffectContext
+import com.wingedsheep.engine.handlers.effects.EffectExecutor
+import com.wingedsheep.engine.state.GameState
+import com.wingedsheep.engine.state.components.battlefield.LinkedExileComponent
+import com.wingedsheep.engine.state.components.identity.CardComponent
+import com.wingedsheep.engine.state.components.identity.OwnerComponent
+import com.wingedsheep.sdk.core.Zone
+import com.wingedsheep.sdk.model.EntityId
+import com.wingedsheep.sdk.scripting.effects.ReturnOneFromLinkedExileEffect
+import kotlin.reflect.KClass
+
+/**
+ * Executor for ReturnOneFromLinkedExileEffect.
+ *
+ * At the beginning of each player's upkeep, the active player returns one of their
+ * owned exiled cards (from the source's LinkedExileComponent) to the battlefield.
+ *
+ * If there are multiple eligible cards, creates a SelectCardsDecision for the player.
+ * If exactly one, auto-returns it. If none for this player, does nothing.
+ * If no cards remain in the linked exile at all, removes the global triggered ability.
+ */
+class ReturnOneFromLinkedExileExecutor : EffectExecutor<ReturnOneFromLinkedExileEffect> {
+
+    override val effectType: KClass<ReturnOneFromLinkedExileEffect> = ReturnOneFromLinkedExileEffect::class
+
+    override fun execute(
+        state: GameState,
+        effect: ReturnOneFromLinkedExileEffect,
+        context: EffectContext
+    ): EffectResult {
+        val sourceId = context.sourceId
+            ?: return EffectResult.success(state)
+
+        // Read the LinkedExileComponent from the source entity
+        val sourceContainer = state.getEntity(sourceId)
+            ?: return EffectResult.success(state)
+        val linkedExile = sourceContainer.get<LinkedExileComponent>()
+            ?: return EffectResult.success(state)
+
+        // Find which linked cards are still in exile
+        val allLinkedCards = linkedExile.exiledIds.filter { entityId ->
+            state.zones.any { (zone, cards) -> zone.zoneType == Zone.EXILE && entityId in cards }
+        }
+
+        // If no cards remain in exile, remove the global triggered ability
+        if (allLinkedCards.isEmpty()) {
+            val newState = removeGlobalAbilityForSource(state, sourceId)
+            return EffectResult.success(newState)
+        }
+
+        // The active player (whose upkeep it is) is the triggering entity
+        val activePlayerId = context.triggeringEntityId
+            ?: return EffectResult.success(state)
+
+        // Find cards owned by the active player
+        val playerCards = allLinkedCards.filter { entityId ->
+            val container = state.getEntity(entityId)
+            val ownerId = container?.get<OwnerComponent>()?.playerId
+                ?: container?.get<CardComponent>()?.ownerId
+            ownerId == activePlayerId
+        }
+
+        if (playerCards.isEmpty()) {
+            return EffectResult.success(state)
+        }
+
+        if (playerCards.size == 1) {
+            return returnCardToBattlefield(state, playerCards.first(), sourceId)
+        }
+
+        // Multiple eligible cards — create a decision
+
+        val cardInfoMap = playerCards.associateWith { cardId ->
+            val container = state.getEntity(cardId)
+            val cardComponent = container?.get<CardComponent>()
+            SearchCardInfo(
+                name = cardComponent?.name ?: "Unknown",
+                manaCost = cardComponent?.manaCost?.toString() ?: "",
+                typeLine = cardComponent?.typeLine?.toString() ?: "",
+                imageUri = null
+            )
+        }
+
+        val sourceName = sourceContainer.get<CardComponent>()?.name ?: "Unknown"
+
+        val decision = { decisionId: String -> SelectCardsDecision(
+            id = decisionId,
+            playerId = activePlayerId,
+            prompt = "Choose a card to return to the battlefield",
+            context = DecisionContext(
+                sourceId = sourceId,
+                sourceName = sourceName,
+                phase = DecisionPhase.RESOLUTION
+            ),
+            options = playerCards,
+            minSelections = 1,
+            maxSelections = 1,
+            ordered = false,
+            cardInfo = cardInfoMap
+        ) }
+
+        val continuation = ReturnFromLinkedExileContinuation(
+            playerId = activePlayerId,
+            sourceId = sourceId,
+            eligibleCards = playerCards
+        )
+
+        return EffectResult.from(state.suspendForDecision(decision, continuation))
+    }
+
+    companion object {
+        fun returnCardToBattlefield(
+            state: GameState,
+            cardId: EntityId,
+            sourceId: EntityId
+        ): EffectResult {
+            val container = state.getEntity(cardId)
+                ?: return EffectResult.success(state)
+            val cardComponent = container.get<CardComponent>()
+                ?: return EffectResult.success(state)
+
+            val ownerId = container.get<OwnerComponent>()?.playerId
+                ?: cardComponent.ownerId
+                ?: return EffectResult.success(state)
+
+            val currentZone = state.zones.entries.find { (_, cards) -> cardId in cards }?.key
+                ?: return EffectResult.success(state)
+
+            var newState = state.removeFromZone(currentZone, cardId)
+            // The origin-zone stamp is only meaningful while the object sits in exile, and this
+            // path reuses the entity id — drop it so the resulting permanent doesn't carry one.
+            newState = newState.updateEntity(cardId) {
+                it.without<com.wingedsheep.engine.state.components.identity.ExiledFromZoneComponent>()
+            }
+            newState = com.wingedsheep.engine.handlers.effects.BattlefieldEntry
+                .place(newState, ownerId, cardId)
+
+            val events = listOf(
+                ZoneChangeEvent(
+                    entityId = cardId,
+                    entityName = cardComponent.name,
+                    fromZone = Zone.EXILE,
+                    toZone = Zone.BATTLEFIELD,
+                    ownerId = ownerId,
+                    oldObject = state.objectRef(cardId),
+                    newObject = newState.objectRef(cardId)
+                )
+            )
+
+            // Check if any linked cards remain in exile; if not, remove the global ability
+            val sourceContainer = newState.getEntity(sourceId)
+            val linkedExile = sourceContainer?.get<LinkedExileComponent>()
+            if (linkedExile != null) {
+                val remaining = linkedExile.exiledIds.filter { entityId ->
+                    newState.zones.any { (zone, cards) -> zone.zoneType == Zone.EXILE && entityId in cards }
+                }
+                if (remaining.isEmpty()) {
+                    newState = removeGlobalAbilityForSource(newState, sourceId)
+                }
+            }
+
+            return EffectResult.success(newState, events)
+        }
+
+        fun removeGlobalAbilityForSource(state: GameState, sourceId: EntityId): GameState {
+            val filtered = state.globalGrantedTriggeredAbilities.filter { global ->
+                global.sourceId != sourceId ||
+                    global.ability.effect !is ReturnOneFromLinkedExileEffect
+            }
+            return state.copy(globalGrantedTriggeredAbilities = filtered)
+        }
+    }
+}

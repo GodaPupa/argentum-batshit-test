@@ -1,0 +1,123 @@
+package com.wingedsheep.gameserver.persistence
+
+import com.wingedsheep.gameserver.ai.AiGameManager
+import com.wingedsheep.gameserver.repository.RedisGameRepository
+import com.wingedsheep.gameserver.repository.RedisLobbyRepository
+import com.wingedsheep.gameserver.session.PlayerIdentity
+import com.wingedsheep.gameserver.session.SessionRegistry
+import jakarta.annotation.PostConstruct
+import org.slf4j.LoggerFactory
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
+import org.springframework.stereotype.Service
+
+/**
+ * Service responsible for recovering game sessions and lobbies from Redis on startup.
+ *
+ * When Redis caching is enabled, this service loads all persisted sessions
+ * and registers the player identities (without WebSocket connections).
+ * Players reconnect and re-associate with their identities via their tokens.
+ */
+@Service
+@ConditionalOnProperty(name = ["cache.redis.enabled"], havingValue = "true")
+class SessionRecoveryService(
+    private val redisGameRepository: RedisGameRepository,
+    private val redisLobbyRepository: RedisLobbyRepository,
+    private val sessionRegistry: SessionRegistry,
+    private val aiGameManager: AiGameManager
+) {
+    private val logger = LoggerFactory.getLogger(SessionRecoveryService::class.java)
+
+    @PostConstruct
+    fun recoverSessions() {
+        logger.info("Starting session recovery from Redis...")
+
+        var gamesRecovered = 0
+        var lobbiesRecovered = 0
+        var tournamentsRecovered = 0
+        var playersRecovered = 0
+
+        // Recover game sessions
+        val gameSessions = redisGameRepository.loadAllFromRedis()
+        for ((_, identities) in gameSessions) {
+            for (identity in identities) {
+                registerIdentityIfNew(identity)
+                playersRecovered++
+            }
+            gamesRecovered++
+        }
+
+        // Recover lobbies
+        val lobbies = redisLobbyRepository.loadAllLobbiesFromRedis()
+        for ((_, identities) in lobbies) {
+            for (identity in identities) {
+                registerIdentityIfNew(identity)
+                playersRecovered++
+            }
+            lobbiesRecovered++
+        }
+
+        // Recover tournaments
+        val tournaments = redisLobbyRepository.loadAllTournamentsFromRedis()
+        tournamentsRecovered = tournaments.size
+
+        // Rehydrate AI identities — recreates their virtual WebSocket session and
+        // re-registers them with AiGameManager so isConnected, isAiPlayer, etc. work.
+        val aiCount = sessionRegistry.getAllIdentities().count { it.isAi }
+        sessionRegistry.getAllIdentities().filter { it.isAi }.forEach { identity ->
+            aiGameManager.rehydrateAiIdentity(identity)
+        }
+
+        logger.info(
+            "Session recovery complete: " +
+                "$gamesRecovered games, " +
+                "$lobbiesRecovered lobbies, " +
+                "$tournamentsRecovered tournaments, " +
+                "$playersRecovered player identities, " +
+                "$aiCount AI players rehydrated"
+        )
+    }
+
+    /**
+     * Register a player identity if one doesn't already exist with that token.
+     * If the token already exists, merge any additional context (lobbyId, spectatingGameId)
+     * from the new identity into the existing one. This handles the case where
+     * game session recovery and lobby recovery each provide partial state.
+     *
+     * Restored identities have no WebSocket connection - they reconnect later.
+     */
+    private fun registerIdentityIfNew(identity: PlayerIdentity) {
+        val existing = sessionRegistry.getIdentityByToken(identity.token)
+        if (existing == null) {
+            // Register identity without WebSocket session
+            // The player will reconnect and their WebSocket will be associated then
+            sessionRegistry.preRegisterIdentity(identity)
+            logger.info(
+                "Recovered player identity: {} ({}) with token {} for game {} lobby {}",
+                identity.playerName,
+                identity.playerId.value,
+                identity.token.take(8) + "...",
+                identity.currentGameSessionId,
+                identity.currentLobbyId
+            )
+        } else {
+            // Merge state from another recovery source (e.g., lobby recovery augmenting game recovery)
+            if (identity.currentLobbyId != null && existing.currentLobbyId == null) {
+                existing.currentLobbyId = identity.currentLobbyId
+            }
+            if (identity.currentGameSessionId != null && existing.currentGameSessionId == null) {
+                existing.currentGameSessionId = identity.currentGameSessionId
+            }
+            if (identity.currentSpectatingGameId != null && existing.currentSpectatingGameId == null) {
+                existing.currentSpectatingGameId = identity.currentSpectatingGameId
+            }
+            logger.info(
+                "Merged player identity: {} ({}) — game={}, lobby={}, spectating={}",
+                existing.playerName,
+                existing.playerId.value,
+                existing.currentGameSessionId,
+                existing.currentLobbyId,
+                existing.currentSpectatingGameId
+            )
+        }
+    }
+}

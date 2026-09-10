@@ -1,0 +1,193 @@
+/**
+ * Keyword ability icon mappings using mana-font CSS classes.
+ * Uses the Arena ability icon set from the mana-font package.
+ * Class format: "ms ms-ability-{name}" rendered via <i> elements.
+ *
+ * Keywords without a mana-font glyph fall back to a local SVG via `keywordSvgIcon`.
+ */
+import persistSvgUrl from './persist.svg'
+import bandingSvgUrl from './banding.svg'
+import flankingSvgUrl from './flanking.svg'
+import questCounterSvgUrl from '../counters/quest.svg'
+import hourglassCounterSvgUrl from '../counters/hourglass.svg'
+
+/** Maps engine keyword names to local SVG URLs (used when mana-font has no glyph). */
+export const keywordSvgIcon: Record<string, string> = {
+  PERSIST: persistSvgUrl,
+  BANDING: bandingSvgUrl,
+  FLANKING: flankingSvgUrl,
+}
+
+/** Maps engine CounterType names to local SVG URLs (used when mana-font has no glyph or we prefer custom art). */
+export const counterSvgIcon: Record<string, string> = {
+  QUEST: questCounterSvgUrl,
+  HOURGLASS: hourglassCounterSvgUrl,
+}
+
+/** Maps engine keyword names to mana-font ability class suffixes */
+export const keywordManaClass: Record<string, string> = {
+  FLYING: 'ability-flying',
+  REACH: 'ability-reach',
+  TRAMPLE: 'ability-trample',
+  FIRST_STRIKE: 'ability-first-strike',
+  DOUBLE_STRIKE: 'ability-double-strike',
+  DEATHTOUCH: 'ability-deathtouch',
+  LIFELINK: 'ability-lifelink',
+  VIGILANCE: 'ability-vigilance',
+  HASTE: 'ability-haste',
+  HEXPROOF: 'ability-hexproof',
+  SHROUD: 'ability-shroud',
+  INDESTRUCTIBLE: 'ability-indestructible',
+  DEFENDER: 'ability-defender',
+  MENACE: 'ability-menace',
+  FEAR: 'ability-fear',
+  FLASH: 'ability-flash',
+  PROWESS: 'ability-prowess',
+  WARD: 'ability-ward',
+  INTIMIDATE: 'ability-intimidate',
+  // Landwalk (CR 702.14). Evasion the player has to be able to see: it decides whether an attacker
+  // can be blocked at all, and cards grant and strip it (Scarwood Hag does both), so a badge that
+  // appears and disappears is the only on-card signal that anything happened.
+  SWAMPWALK: 'ability-swampwalk',
+  FORESTWALK: 'ability-forestwalk',
+  ISLANDWALK: 'ability-islandwalk',
+  MOUNTAINWALK: 'ability-mountainwalk',
+  PLAINSWALK: 'ability-plainswalk',
+  // mana-font has no glyph for these two, so they share the generic land symbol; the badge's
+  // tooltip names which landwalk it is.
+  DESERTWALK: 'land',
+  NONBASIC_LANDWALK: 'land',
+  INFECT: 'ability-infect',
+  MORPH: 'ability-morph',
+  PROTECTION: 'ability-protection',
+  WITHER: 'ability-infect',
+  TOXIC: 'ability-toxic',
+  CANT_BE_BLOCKED: 'ability-unblockable',
+  CHANGELING: 'ability-changeling',
+  EXPLOIT: 'ability-exploit',
+  TRAINING: 'ability-training',
+  /** Suspect status (CR 701.60). Rendered via the synthetic SUSPECTED pseudo-keyword from
+   *  ProjectedState.isSuspected — the status itself isn't a keyword, but reusing this
+   *  icon table keeps the badge rendering uniform. */
+  SUSPECTED: 'ability-suspect',
+  /** Solved designation (CR 719.3b). Same synthetic-pseudo-keyword trick as SUSPECTED, from
+   *  ClientCard.isSolved — it marks a Case whose "Solved —" abilities are switched on. */
+  SOLVED: 'ability-case-solved',
+  /** Renowned designation (CR 702.112b). Same synthetic-pseudo-keyword trick as SUSPECTED, from
+   *  ClientCard.isRenowned — it marks a creature whose renown has already resolved, so renown
+   *  can't trigger again and its "as long as this creature is renowned" payoffs are live. */
+  RENOWNED: 'ability-renowned',
+}
+
+export const displayableKeywords = new Set([
+  'FLYING', 'REACH', 'TRAMPLE',
+  'FIRST_STRIKE', 'DOUBLE_STRIKE', 'DEATHTOUCH',
+  'LIFELINK', 'VIGILANCE', 'HASTE', 'HEXPROOF',
+  'SHROUD', 'INDESTRUCTIBLE', 'DEFENDER', 'MENACE', 'FEAR',
+  'PROWESS', 'WARD', 'INTIMIDATE', 'INFECT',
+  'SWAMPWALK', 'FORESTWALK', 'ISLANDWALK', 'MOUNTAINWALK', 'PLAINSWALK',
+  'DESERTWALK', 'NONBASIC_LANDWALK',
+  'WITHER', 'TOXIC', 'CANT_BE_BLOCKED', 'CHANGELING',
+  'PERSIST', 'BANDING', 'FLANKING', 'EXPLOIT', 'TRAINING',
+])
+
+/** Maps engine CounterType to mana-font counter class suffixes */
+export const counterManaClass: Record<string, string> = {
+  PLUS_ONE_PLUS_ONE: 'counter-plus',
+  MINUS_ONE_MINUS_ONE: 'counter-minus',
+  PLUS_ONE_PLUS_ZERO: 'counter-plus',
+  PLUS_ZERO_PLUS_ONE: 'counter-plus',
+  PLUS_TWO_PLUS_ZERO: 'counter-plus',
+  PLUS_ZERO_PLUS_TWO: 'counter-plus',
+  MINUS_ONE_MINUS_ZERO: 'counter-minus',
+  PLUS_ONE_PLUS_TWO: 'counter-plus',
+  PLUS_TWO_PLUS_TWO: 'counter-plus',
+  MINUS_TWO_MINUS_TWO: 'counter-minus',
+  MINUS_ZERO_MINUS_ONE: 'counter-minus',
+  LOYALTY: 'counter-loyalty',
+  CHARGE: 'counter-charge',
+  GEM: 'counter-charge',
+  GOLD: 'counter-gold',
+  PLAGUE: 'counter-skull',
+  TRAP: 'counter-arrow',
+  DEPLETION: 'counter-void',
+  LORE: 'counter-lore',
+  STUN: 'counter-bolt',
+  SHIELD: 'counter-shield',
+  FINALITY: 'counter-finality',
+  SUPPLY: 'counter-brick',
+  FLYING: 'ability-flying',
+  FIRST_STRIKE: 'ability-first-strike',
+  DOUBLE_STRIKE: 'ability-double-strike',
+  VIGILANCE: 'ability-vigilance',
+  LIFELINK: 'ability-lifelink',
+  INDESTRUCTIBLE: 'ability-indestructible',
+  DEATHTOUCH: 'ability-deathtouch',
+  TRAMPLE: 'ability-trample',
+  HEXPROOF: 'ability-hexproof',
+  HASTE: 'ability-haste',
+  MENACE: 'ability-menace',
+  STASH: 'counter-charge',
+  CROAK: 'counter-charge',
+  BLIGHT: 'counter-skull',
+  COIN: 'counter-charge',
+  FLOOD: 'counter-flood',
+  CHORUS: 'counter-charge',
+  DREAM: 'counter-charge',
+  QUEST: 'counter-lore',
+  GROWTH: 'counter-charge',
+  TIME: 'counter-time',
+  FEATHER: 'counter-charge',
+  DECAYED: 'ability-decayed',
+  HOPE: 'counter-charge',
+  VERSE: 'counter-verse',
+  INFLUENCE: 'counter-devotion',
+  BURDEN: 'counter-doom',
+  LOOT: 'counter-charge',
+  WIND: 'counter-vortex',
+  NEST: 'counter-fungus',
+  PAGE: 'counter-lore',
+  HOOFPRINT: 'counter-arrow',
+  MANNEQUIN: 'counter-charge',
+  REV: 'counter-bolt',
+  BLOODSTAIN: 'counter-skull',
+  BLOOD: 'counter-blood',
+  SOUL: 'counter-doom',
+  DIVINITY: 'counter-devotion',
+  POSSESSION: 'counter-devotion',
+  LANDMARK: 'counter-charge',
+  DREAD: 'counter-doom',
+  INCUBATION: 'counter-slime',
+  FELLOWSHIP: 'counter-devotion',
+  BAIT: 'counter-fungus',
+  BORE: 'counter-mining',
+  POINT: 'counter-charge',
+  WISH: 'counter-charge',
+  REVIVAL: 'counter-charge',
+  INGENUITY: 'counter-charge',
+  FILM: 'counter-charge',
+  ICE: 'counter-flood',
+  OMEN: 'counter-scream',
+  HARNESS: 'counter-devotion',
+  PLAN: 'counter-lore',
+  INVASION: 'counter-charge',
+  UNLOCK: 'counter-charge',
+  HONE: 'counter-arrow',
+  STORAGE: 'counter-brick',
+  HUNGER: 'counter-doom',
+  DOOM: 'counter-doom',
+  FIRE: 'counter-bolt',
+  CONQUEROR: 'counter-devotion',
+  NET: 'counter-fungus',
+  SILVER: 'counter-charge',
+  FATE: 'counter-shield',
+  AIM: 'counter-arrow',
+  // Spore counters are the Fungus mechanic's own, so they get the font's fungus glyph. Sharing a
+  // glyph with another type (as SILVER does with CHARGE) is fine — the badge tooltip disambiguates.
+  SPORE: 'counter-fungus',
+  TIDE: 'counter-flood',
+  JAVELIN: 'counter-arrow',
+  CREDIT: 'counter-gold',
+  CUBE: 'counter-charge',
+  JUDGMENT: 'counter-shield',
+}

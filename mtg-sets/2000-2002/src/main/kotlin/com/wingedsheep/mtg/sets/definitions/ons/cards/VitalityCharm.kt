@@ -1,0 +1,62 @@
+package com.wingedsheep.mtg.sets.definitions.ons.cards
+
+import com.wingedsheep.sdk.core.Color
+import com.wingedsheep.sdk.core.Keyword
+import com.wingedsheep.sdk.dsl.Effects
+import com.wingedsheep.sdk.dsl.card
+import com.wingedsheep.sdk.model.Rarity
+import com.wingedsheep.sdk.scripting.effects.CreateTokenEffect
+import com.wingedsheep.sdk.scripting.effects.RegenerateEffect
+import com.wingedsheep.sdk.scripting.filters.unified.TargetFilter
+import com.wingedsheep.sdk.scripting.targets.TargetCreature
+import com.wingedsheep.sdk.scripting.targets.TargetPermanent
+
+/**
+ * Vitality Charm
+ * {G}
+ * Instant
+ * Choose one —
+ * • Create a 1/1 green Insect creature token.
+ * • Target creature gets +1/+1 and gains trample until end of turn.
+ * • Regenerate target Beast.
+ *
+ * Modeling note: "Beast" is a bare tribal noun, so the third mode names every *permanent* of that
+ * type rather than only a creature; the adjectival "Beast creature" is what would narrow it.
+ */
+val VitalityCharm = card("Vitality Charm") {
+    manaCost = "{G}"
+    colorIdentity = "G"
+    typeLine = "Instant"
+    oracleText = "Choose one —\n• Create a 1/1 green Insect creature token.\n• Target creature gets +1/+1 and gains trample until end of turn.\n• Regenerate target Beast."
+
+    spell {
+        modal(chooseCount = 1) {
+            mode("Create a 1/1 green Insect creature token") {
+                effect = CreateTokenEffect(
+                    power = 1,
+                    toughness = 1,
+                    colors = setOf(Color.GREEN),
+                    creatureTypes = setOf("Insect"),
+                    imageUri = "https://cards.scryfall.io/normal/front/a/a/aa47df37-f246-4f80-a944-008cdf347dad.jpg?1561757793"
+                )
+            }
+            mode("Target creature gets +1/+1 and gains trample until end of turn") {
+                val t = target("target", TargetCreature())
+                effect = Effects.ModifyStats(1, 1, t)
+                    .then(Effects.GrantKeyword(Keyword.TRAMPLE, t))
+            }
+            mode("Regenerate target Beast") {
+                val t = target("target", TargetPermanent(filter = TargetFilter.Permanent.withSubtype("Beast")))
+                effect = RegenerateEffect(t)
+            }
+        }
+    }
+
+    metadata {
+        rarity = Rarity.COMMON
+        collectorNumber = "296"
+        artist = "David Martin"
+        flavorText = "\"We are nothing without the spirits of the wild.\"\n—Kamahl, druid acolyte"
+        imageUri = "https://cards.scryfall.io/normal/front/e/1/e1abae21-ed8f-4e21-b227-f721b840c11f.jpg?1562940084"
+    }
+}

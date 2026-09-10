@@ -1,0 +1,901 @@
+package com.wingedsheep.engine.event
+
+import com.wingedsheep.engine.mechanics.SoulbondPairing
+import com.wingedsheep.engine.mechanics.battle.Battles
+import com.wingedsheep.engine.mechanics.durations.GrantDurationGate
+import com.wingedsheep.engine.registry.CardRegistry
+import com.wingedsheep.engine.handlers.ConditionEvaluator
+import com.wingedsheep.engine.handlers.EffectContext
+import com.wingedsheep.engine.handlers.PredicateContext
+import com.wingedsheep.engine.handlers.PredicateEvaluator
+import com.wingedsheep.engine.state.GameState
+import com.wingedsheep.engine.state.components.battlefield.SuppressesWardForGroupComponent
+import com.wingedsheep.engine.state.components.battlefield.ParadigmComponent
+import com.wingedsheep.engine.state.components.battlefield.SuspendedComponent
+import com.wingedsheep.engine.state.components.identity.CardComponent
+import com.wingedsheep.engine.state.components.identity.FaceDownComponent
+import com.wingedsheep.engine.state.components.identity.FaceDownModeComponent
+import com.wingedsheep.engine.state.components.identity.RingBearerComponent
+import com.wingedsheep.engine.state.components.battlefield.AttachmentsComponent
+import com.wingedsheep.engine.state.components.battlefield.ClassLevelComponent
+import com.wingedsheep.engine.state.components.identity.RoomComponent
+import com.wingedsheep.engine.state.components.player.TheRingComponent
+import com.wingedsheep.engine.state.components.identity.TextReplacementComponent
+import com.wingedsheep.sdk.model.EntityId
+import com.wingedsheep.sdk.scripting.AbilityId
+import com.wingedsheep.sdk.scripting.ConditionalStaticAbility
+import com.wingedsheep.sdk.scripting.EventPattern
+import com.wingedsheep.sdk.scripting.GameObjectFilter
+import com.wingedsheep.sdk.scripting.GrantTriggeredAbility
+import com.wingedsheep.sdk.scripting.GrantWard
+import com.wingedsheep.sdk.scripting.KeywordAbility
+import com.wingedsheep.sdk.scripting.TriggerBinding
+import com.wingedsheep.sdk.scripting.TriggeredAbility
+import com.wingedsheep.sdk.scripting.effects.WardCost
+import com.wingedsheep.sdk.scripting.effects.WardCounterEffect
+import com.wingedsheep.sdk.scripting.filters.unified.Scope
+import com.wingedsheep.sdk.scripting.predicates.ControllerPredicate
+import com.wingedsheep.sdk.scripting.predicates.evaluateWith
+
+/**
+ * Resolves triggered abilities for entities by checking the AbilityRegistry,
+ * CardRegistry, granted abilities, and static-granted abilities.
+ */
+class TriggerAbilityResolver(
+    private val cardRegistry: CardRegistry,
+    private val abilityRegistry: AbilityRegistry
+) {
+    private val predicateEvaluator = PredicateEvaluator()
+
+    /**
+     * Get triggered abilities for a card, checking both the AbilityRegistry
+     * and falling back to the CardRegistry for card definitions.
+     *
+     * If the entity has a TextReplacementComponent (from Artificial Evolution etc.),
+     * creature type references in triggers and effects are transformed accordingly.
+     */
+    fun getTriggeredAbilities(
+        entityId: EntityId,
+        cardDefinitionId: String,
+        state: GameState,
+        statics: BattlefieldStaticsIndex = BattlefieldStaticsIndex.build(state, cardRegistry),
+    ): List<TriggeredAbility> {
+        // First check the AbilityRegistry (for manually registered abilities)
+        val registryAbilities = abilityRegistry.getTriggeredAbilities(entityId, cardDefinitionId)
+        val base = if (registryAbilities.isNotEmpty()) {
+            registryAbilities
+        } else {
+            // Fall back to looking up from CardRegistry, including class-level-gated abilities
+            val cardDef = cardRegistry.getCard(cardDefinitionId)
+            val classLevel = state.getEntity(entityId)?.get<ClassLevelComponent>()?.currentLevel
+            val topLevel = cardDef?.script?.effectiveTriggeredAbilities(classLevel) ?: emptyList()
+            val roomAbilities = getRoomFaceTriggeredAbilities(entityId, cardDef, state)
+            if (roomAbilities.isEmpty()) topLevel else topLevel + roomAbilities
+        }
+
+        // Merge in any temporarily granted triggered abilities (e.g., from Commando Raid).
+        // [GrantDurationGate] is the per-read half of a "for as long as …" grant: Makeshift
+        // Mannequin's sacrifice rider lasts only while the mannequin counter is there, and the
+        // counter can leave between two state-based-action passes. The one-way latch that stops a
+        // re-added counter resurrecting the grant lives in EndedDurationExpiryCheck.
+        val grantedAbilities = buildList {
+            for (grant in state.grantedTriggeredAbilities) {
+                if (grant.entityId == entityId &&
+                    GrantDurationGate.holds(state, grant.entityId, grant.sourceId, grant.duration)
+                ) {
+                    add(grant.ability)
+                }
+            }
+        }
+
+        // Merge in triggered abilities granted by static abilities on other permanents
+        // (e.g., Hunter Sliver granting provoke to all Slivers)
+        // The index includes every battlefield/soulbond provider this scan can use.
+        val staticGrantedAbilities = if (statics.triggerGrantProviders.isEmpty()) emptyList()
+            else getStaticGrantedTriggeredAbilities(entityId, state)
+        val attachedGrantedAbilities = getAttachedGrantedTriggeredAbilities(entityId, state, statics)
+        // "This creature has '<triggered ability>' [as long as …]" — a Scope.Self GrantTriggeredAbility
+        // on the permanent's own definition, optionally gated by a ConditionalStaticAbility.
+        val selfGrantedAbilities =
+            if (state.projectedState.hasLostAllAbilities(entityId)) emptyList()
+            else getSelfGrantedTriggeredAbilities(entityId, state)
+
+        // Generate ward triggered abilities from intrinsic keyword abilities and GrantWard
+        val wardAbilities = getWardTriggeredAbilities(entityId, cardDefinitionId, state, statics)
+
+        // Flanking (CR 702.25) is a keyword-derived triggered ability, synthesized for any
+        // creature that has the keyword (intrinsic or granted).
+        val flankingAbilities = getFlankingTriggeredAbilities(entityId, state)
+
+        val ringBearerAbilities = getRingBearerAbilities(entityId, state)
+
+        // A suspended card (CR 702.62) gains the owner's-upkeep countdown-and-cast ability
+        // while it carries the marker. Component-driven, so it works for an arbitrary card
+        // with no printed suspend (e.g. a spell exiled by Taigam, Master Opportunist).
+        val suspendAbilities = getSuspendTriggeredAbilities(entityId, state)
+        val paradigmAbilities = getParadigmTriggeredAbilities(entityId, state)
+
+        // Every Siege on the battlefield has the defeat trigger (CR 310.12b), printed on none of
+        // them. Derived from the projected subtypes, so a permanent that becomes a Siege gains it
+        // and one that stops being a Siege loses it.
+        val siegeAbilities = getSiegeDefeatAbilities(entityId, state)
+
+        // Vanishing N (CR 702.62) — the upkeep countdown and the last-counter sacrifice are
+        // intrinsic to the keyword, printed on no card as separate lines. Derived from the
+        // projected keywords, so granted vanishing works and "loses all abilities" strips it.
+        val vanishingAbilities = getVanishingTriggeredAbilities(entityId, state)
+
+        // Fabricate N (CR 702.123) — the enters-the-battlefield choice is intrinsic to the keyword,
+        // printed on no card as a separate line. Same derivation shape as vanishing.
+        val fabricateAbilities = getFabricateTriggeredAbilities(entityId, cardDefinitionId, state)
+
+        // Renown N (CR 702.112) — the combat-damage trigger is intrinsic to the keyword, printed
+        // on no card as a separate line. Same derivation shape as fabricate: the projected keyword
+        // gates it, the printed KeywordAbility.Numeric supplies N.
+        val renownAbilities = getRenownTriggeredAbilities(entityId, cardDefinitionId, state)
+
+        val allGranted = buildList {
+            addAll(grantedAbilities)
+            addAll(staticGrantedAbilities)
+            addAll(attachedGrantedAbilities)
+            addAll(selfGrantedAbilities)
+            addAll(wardAbilities)
+            addAll(flankingAbilities)
+            addAll(ringBearerAbilities)
+            addAll(suspendAbilities)
+            addAll(paradigmAbilities)
+            addAll(siegeAbilities)
+            addAll(vanishingAbilities)
+            addAll(fabricateAbilities)
+            addAll(renownAbilities)
+        }
+        val combined = if (allGranted.isNotEmpty()) base + allGranted else base
+
+        // Apply text replacement if the entity has one
+        val textReplacement = state.getEntity(entityId)?.get<TextReplacementComponent>()
+        return if (textReplacement != null) {
+            combined.map { it.applyTextReplacement(textReplacement) }
+        } else {
+            combined
+        }
+    }
+
+    /**
+     * Grant [com.wingedsheep.sdk.scripting.Suspend.countdownAbility] to any card carrying the
+     * [SuspendedComponent] marker. The ability functions only in exile (`activeZones == {EXILE}`),
+     * so it is inert anywhere else and harmless to return universally.
+     */
+    private fun getSuspendTriggeredAbilities(entityId: EntityId, state: GameState): List<TriggeredAbility> =
+        if (state.getEntity(entityId)?.has<SuspendedComponent>() == true) {
+            listOf(com.wingedsheep.sdk.scripting.Suspend.countdownAbility)
+        } else {
+            emptyList()
+        }
+
+    /**
+     * Grant [com.wingedsheep.sdk.scripting.Sieges.defeatAbility] to every Siege on the battlefield
+     * (CR 310.12b) — the "when it's defeated, exile it, then you may cast it transformed" half of
+     * the reminder text, which no Siege actually prints.
+     *
+     * Keyed off [Battles.isSiege], i.e. the *projected* card types and subtypes, so it follows a
+     * type-changing effect in both directions. A permanent that has lost all abilities keeps it:
+     * the defeat trigger is an intrinsic ability of the battle type, not of the card, so a Siege
+     * turned into an ability-less permanent that is still a Siege is still defeated when its last
+     * defense counter comes off.
+     */
+    private fun getSiegeDefeatAbilities(entityId: EntityId, state: GameState): List<TriggeredAbility> =
+        if (Battles.isSiege(state, entityId)) {
+            listOf(com.wingedsheep.sdk.scripting.Sieges.defeatAbility)
+        } else {
+            emptyList()
+        }
+
+    /**
+     * Grant [com.wingedsheep.sdk.scripting.Paradigm.recastAbility] to any card carrying the
+     * [ParadigmComponent] marker. The ability functions only in exile (`activeZones == {EXILE}`), so
+     * it is inert anywhere else and harmless to return universally.
+     */
+    private fun getParadigmTriggeredAbilities(entityId: EntityId, state: GameState): List<TriggeredAbility> =
+        if (state.getEntity(entityId)?.has<ParadigmComponent>() == true) {
+            listOf(com.wingedsheep.sdk.scripting.Paradigm.recastAbility)
+        } else {
+            emptyList()
+        }
+
+    /**
+     * Get triggered abilities granted by static abilities on battlefield permanents.
+     * E.g., Hunter Sliver grants provoke to all Sliver creatures via
+     * GrantTriggeredAbility.
+     *
+     * Scans all battlefield permanents for this static ability type, checks if the
+     * target entity matches the filter using its projected card data.
+     */
+    private fun getStaticGrantedTriggeredAbilities(entityId: EntityId, state: GameState): List<TriggeredAbility> {
+        val registry = cardRegistry
+        val targetContainer = state.getEntity(entityId) ?: return emptyList()
+        val targetCard = targetContainer.get<CardComponent>() ?: return emptyList()
+        val projected = state.projectedState
+        val targetControllerId = projected.getController(entityId)
+
+        val result = mutableListOf<TriggeredAbility>()
+
+        for (permanentId in state.getBattlefield()) {
+            val container = state.getEntity(permanentId) ?: continue
+            val card = container.get<CardComponent>() ?: continue
+            // Skip face-down permanents — they have no abilities
+            if (container.has<FaceDownComponent>()) continue
+
+            val sourceControllerId = projected.getController(permanentId) ?: continue
+
+            val cardDef = registry.getCard(card.cardDefinitionId) ?: continue
+            for (ability in cardDef.staticAbilities) {
+                if (ability !is GrantTriggeredAbility) continue
+                // Mirrors the fast provider path: the soulbond-pair scope carries its own
+                // membership test and skips the filter/controller checks below.
+                if (ability.filter.scope is Scope.SoulbondPair) {
+                    if (SoulbondPairing.isInPairOf(state, permanentId, entityId)) result.add(ability.ability)
+                    continue
+                }
+                if (ability.filter.scope !is Scope.Battlefield) continue
+
+                // Check if the target entity matches the filter's card predicates
+                val filter = ability.filter.baseFilter
+                val matchesAll = filter.cardPredicates.all { predicate ->
+                    when (predicate) {
+                        is com.wingedsheep.sdk.scripting.predicates.CardPredicate.IsCreature ->
+                            targetCard.typeLine.isCreature
+                        is com.wingedsheep.sdk.scripting.predicates.CardPredicate.HasSubtype ->
+                            targetCard.typeLine.hasSubtype(predicate.subtype)
+                        else -> true
+                    }
+                }
+                if (!matchesAll) continue
+
+                // Check controller predicate relative to the source permanent's controller
+                val controllerMatch = filter.controllerPredicate?.evaluateWith { leaf ->
+                    when (leaf) {
+                        is ControllerPredicate.ControlledByYou -> targetControllerId == sourceControllerId
+                        is ControllerPredicate.ControlledByOpponent -> targetControllerId != null && targetControllerId != sourceControllerId
+                        else -> null // leaf kinds this fast path can't evaluate don't constrain
+                    }
+                } ?: true
+                if (controllerMatch) {
+                    result.add(ability.ability)
+                }
+            }
+        }
+
+        return result
+    }
+
+    /**
+     * Variant of getTriggeredAbilities that uses pre-computed grant providers
+     * instead of scanning the battlefield for GrantTriggeredAbility.
+     * Reduces O(N^2) to O(N*P) where P = number of grant providers (typically 0-2).
+     */
+    fun getTriggeredAbilitiesWithProviders(
+        entityId: EntityId,
+        cardDefinitionId: String,
+        state: GameState,
+        grantProviders: List<TriggerIndex.GrantProviderEntry>,
+        statics: BattlefieldStaticsIndex = BattlefieldStaticsIndex.build(state, cardRegistry),
+    ): List<TriggeredAbility> {
+        // If the entity has lost all abilities (e.g., Deep Freeze), suppress its own triggered abilities
+        val hasLostAbilities = state.projectedState.hasLostAllAbilities(entityId)
+
+        val base = if (hasLostAbilities) {
+            emptyList()
+        } else {
+            val registryAbilities = abilityRegistry.getTriggeredAbilities(entityId, cardDefinitionId)
+            if (registryAbilities.isNotEmpty()) {
+                registryAbilities
+            } else {
+                val cardDef = cardRegistry.getCard(cardDefinitionId)
+                val classLevel = state.getEntity(entityId)?.get<ClassLevelComponent>()?.currentLevel
+                val topLevel = cardDef?.script?.effectiveTriggeredAbilities(classLevel) ?: emptyList()
+                val roomAbilities = getRoomFaceTriggeredAbilities(entityId, cardDef, state)
+                if (roomAbilities.isEmpty()) topLevel else topLevel + roomAbilities
+            }
+        }
+
+        // Same per-read "for as long as …" gate as the other lookup path above.
+        val grantedAbilities = buildList {
+            for (grant in state.grantedTriggeredAbilities) {
+                if (grant.entityId == entityId &&
+                    GrantDurationGate.holds(state, grant.entityId, grant.sourceId, grant.duration)
+                ) {
+                    add(grant.ability)
+                }
+            }
+        }
+
+        val staticGrantedAbilities = if (grantProviders.isNotEmpty()) {
+            getStaticGrantedFromProviders(entityId, state, grantProviders)
+        } else {
+            emptyList()
+        }
+        val attachedGrantedAbilities = getAttachedGrantedTriggeredAbilities(entityId, state, statics)
+        // "This creature has '<triggered ability>' [as long as …]" — a Scope.Self
+        // GrantTriggeredAbility on the permanent's own definition (Fire Nation Cadets installs
+        // firebendingAttackTrigger(2) this way while a Lesson is in the graveyard).
+        val selfGrantedAbilities = if (hasLostAbilities) emptyList()
+            else getSelfGrantedTriggeredAbilities(entityId, state)
+
+        // Generate ward triggered abilities from intrinsic keyword abilities and GrantWard
+        val wardAbilities = if (hasLostAbilities) emptyList()
+            else getWardTriggeredAbilities(entityId, cardDefinitionId, state, statics)
+
+        // Flanking (CR 702.25) — keyword-derived triggered ability. Projected keyword check
+        // already accounts for lost-all-abilities, but guard for symmetry with the other grants.
+        val flankingAbilities = if (hasLostAbilities) emptyList()
+            else getFlankingTriggeredAbilities(entityId, state)
+
+        // The Ring emblem's abilities belong to the emblem (a player object), not the creature, so
+        // they survive "loses all abilities" effects on the Ring-bearer (CR 701.54c).
+        val ringBearerAbilities = getRingBearerAbilities(entityId, state)
+
+        val suspendAbilities = getSuspendTriggeredAbilities(entityId, state)
+        val paradigmAbilities = getParadigmTriggeredAbilities(entityId, state)
+
+        // Every Siege on the battlefield has the defeat trigger (CR 310.12b), printed on none of
+        // them. Derived from the projected subtypes, so a permanent that becomes a Siege gains it
+        // and one that stops being a Siege loses it.
+        val siegeAbilities = getSiegeDefeatAbilities(entityId, state)
+
+        // Vanishing N (CR 702.62) — the upkeep countdown and the last-counter sacrifice are
+        // intrinsic to the keyword, printed on no card as separate lines. Derived from the
+        // projected keywords, so granted vanishing works and "loses all abilities" strips it.
+        val vanishingAbilities = getVanishingTriggeredAbilities(entityId, state)
+
+        // Fabricate N (CR 702.123) — the enters-the-battlefield choice is intrinsic to the keyword,
+        // printed on no card as a separate line. Same derivation shape as vanishing.
+        val fabricateAbilities = getFabricateTriggeredAbilities(entityId, cardDefinitionId, state)
+
+        // Renown N (CR 702.112) — the combat-damage trigger is intrinsic to the keyword, printed
+        // on no card as a separate line. Same derivation shape as fabricate: the projected keyword
+        // gates it, the printed KeywordAbility.Numeric supplies N.
+        val renownAbilities = getRenownTriggeredAbilities(entityId, cardDefinitionId, state)
+
+        val allGranted = buildList {
+            addAll(grantedAbilities)
+            addAll(staticGrantedAbilities)
+            addAll(attachedGrantedAbilities)
+            addAll(selfGrantedAbilities)
+            addAll(wardAbilities)
+            addAll(flankingAbilities)
+            addAll(ringBearerAbilities)
+            addAll(suspendAbilities)
+            addAll(paradigmAbilities)
+            addAll(siegeAbilities)
+            addAll(vanishingAbilities)
+            addAll(fabricateAbilities)
+            addAll(renownAbilities)
+        }
+        val combined = if (allGranted.isNotEmpty()) base + allGranted else base
+
+        val textReplacement = state.getEntity(entityId)?.get<TextReplacementComponent>()
+        return if (textReplacement != null) {
+            combined.map { it.applyTextReplacement(textReplacement) }
+        } else {
+            combined
+        }
+    }
+
+    /**
+     * The Ring emblem's cumulative triggered abilities (CR 701.54c) for [entityId] when it is a
+     * player's Ring-bearer. "Is your Ring-bearer" requires the creature to be under that owner's
+     * control (CR 701.54e), so a Ring-bearer that changed controllers contributes nothing. The
+     * subset of abilities is gated by the owner's tempt count (see [TheRingAbilities]).
+     */
+    private fun getRingBearerAbilities(entityId: EntityId, state: GameState): List<TriggeredAbility> {
+        val bearer = state.getEntity(entityId)?.get<RingBearerComponent>() ?: return emptyList()
+        // CR 701.54e: read the *projected* controller — a Ring-bearer stolen by a control-changing
+        // effect is no longer "your Ring-bearer," so it stops contributing the emblem's abilities.
+        if (state.projectedState.getController(entityId) != bearer.ownerId) return emptyList()
+        val temptCount = state.getEntity(bearer.ownerId)?.get<TheRingComponent>()?.temptCount ?: return emptyList()
+        return TheRingAbilities.abilitiesFor(temptCount)
+    }
+
+    /**
+     * Fast lookup of static-granted triggered abilities using pre-computed providers.
+     */
+    private fun getStaticGrantedFromProviders(
+        entityId: EntityId,
+        state: GameState,
+        grantProviders: List<TriggerIndex.GrantProviderEntry>
+    ): List<TriggeredAbility> {
+        val targetContainer = state.getEntity(entityId) ?: return emptyList()
+        val targetCard = targetContainer.get<CardComponent>() ?: return emptyList()
+        val projected = state.projectedState
+        val targetControllerId = projected.getController(entityId)
+
+        return buildList {
+            for (entry in grantProviders) {
+                // CR 702.95b's "both creatures" — the scope IS the membership test, so it replaces
+                // the filter/controller checks below rather than adding to them (an unpaired source
+                // reaches nobody, which is what makes "as long as this creature is paired" need no
+                // condition of its own).
+                if (entry.grant.filter.scope is Scope.SoulbondPair) {
+                    if (SoulbondPairing.isInPairOf(state, entry.sourceEntityId, entityId)) {
+                        add(entry.grant.ability)
+                    }
+                    continue
+                }
+                // "Other creatures you control have …" — the granting permanent must not grant
+                // the ability to itself. The slow path honors excludeSelf; the fast provider
+                // path previously omitted it, so the source double-triggered (e.g. Bria,
+                // Riptide Rogue got prowess twice).
+                if (entry.grant.filter.excludeSelf && entityId == entry.sourceEntityId) continue
+                val filter = entry.grant.filter.baseFilter
+                val matchesAll = filter.cardPredicates.all { predicate ->
+                    when (predicate) {
+                        is com.wingedsheep.sdk.scripting.predicates.CardPredicate.IsCreature ->
+                            targetCard.typeLine.isCreature
+                        is com.wingedsheep.sdk.scripting.predicates.CardPredicate.HasSubtype ->
+                            targetCard.typeLine.hasSubtype(predicate.subtype)
+                        else -> true
+                    }
+                }
+                if (!matchesAll) continue
+
+                // Check controller predicate relative to the source permanent's controller
+                val controllerMatch = filter.controllerPredicate?.evaluateWith { leaf ->
+                    when (leaf) {
+                        is ControllerPredicate.ControlledByYou -> targetControllerId == entry.sourceControllerId
+                        is ControllerPredicate.ControlledByOpponent -> targetControllerId != null && targetControllerId != entry.sourceControllerId
+                        else -> null // leaf kinds this fast path can't evaluate don't constrain
+                    }
+                } ?: true
+                if (controllerMatch) add(entry.grant.ability)
+            }
+        }
+    }
+
+    /**
+     * Triggered abilities granted by Auras/Equipment attached to this entity.
+     */
+    /**
+     * The permanents whose `GrantTriggeredAbility` static granted the triggered ability [abilityId]
+     * to [entityId], in attachment (reverse-index) order — empty when [abilityId] is one of
+     * [entityId]'s own printed abilities. Populates
+     * [com.wingedsheep.engine.handlers.EffectContext.granterId] so a granted ability can reference
+     * its granter (CR 201.5a) — e.g. Dire Blunderbuss's "sacrifice an artifact other than Dire
+     * Blunderbuss". Only inspects the entity's own attachments (the Equipment/Aura grant case) via
+     * the maintained [AttachmentsComponent] reverse index, so it is O(1) for the un-attached
+     * majority and never scans the whole battlefield.
+     *
+     * Returns a *list* rather than a single id so two identical granters attached to the same
+     * creature (two copies of the same Equipment, granting the same `abilityId`) can be told apart:
+     * the caller matches the N fired triggers 1:1 onto these N granters instead of collapsing them
+     * onto whichever attachment happens to come first.
+     */
+    fun resolveGranterIds(state: GameState, entityId: EntityId, abilityId: AbilityId): List<EntityId> {
+        val attachments = state.getEntity(entityId)?.get<AttachmentsComponent>()?.attachedIds ?: return emptyList()
+        val granters = mutableListOf<EntityId>()
+        for (attachmentId in attachments) {
+            val container = state.getEntity(attachmentId) ?: continue
+            if (container.has<FaceDownComponent>()) continue
+            val cardDefId = container.get<CardComponent>()?.cardDefinitionId ?: continue
+            val cardDef = cardRegistry.getCard(cardDefId) ?: continue
+            val classLevel = container.get<ClassLevelComponent>()?.currentLevel
+            for (ability in cardDef.script.effectiveStaticAbilities(classLevel)) {
+                val grant = when (ability) {
+                    is GrantTriggeredAbility -> ability
+                    is ConditionalStaticAbility -> ability.ability as? GrantTriggeredAbility
+                    else -> null
+                } ?: continue
+                if (grant.filter.scope !is Scope.AttachedTo) continue
+                if (grant.ability.id == abilityId) {
+                    granters.add(attachmentId)
+                    break
+                }
+            }
+        }
+        return granters
+    }
+
+    private fun getAttachedGrantedTriggeredAbilities(
+        entityId: EntityId,
+        state: GameState,
+        statics: BattlefieldStaticsIndex
+    ): List<TriggeredAbility> {
+        val result = mutableListOf<TriggeredAbility>()
+
+        for (permanentId in statics.attachmentsOn(entityId)) {
+            val container = state.getEntity(permanentId) ?: continue
+
+            val card = container.get<CardComponent>() ?: continue
+            if (container.has<FaceDownComponent>()) continue
+
+            val sourceDef = cardRegistry.getCard(card.cardDefinitionId) ?: continue
+            val classLevel = container.get<ClassLevelComponent>()?.currentLevel
+            val allStaticAbilities = sourceDef.script.effectiveStaticAbilities(classLevel)
+
+            for (ability in allStaticAbilities) {
+                when (ability) {
+                    is GrantTriggeredAbility ->
+                        if (ability.filter.scope is Scope.AttachedTo) result.add(ability.ability)
+
+                    // "As long as enchanted permanent is X, it has '<triggered ability>'" —
+                    // a conditional grant (e.g. Essence Leak). Only contribute the granted ability
+                    // while the gating condition holds, evaluated with the Aura as the source so
+                    // EnchantedPermanentMatches resolves the attached permanent.
+                    is ConditionalStaticAbility -> {
+                        val grant = ability.ability as? GrantTriggeredAbility ?: continue
+                        if (grant.filter.scope !is Scope.AttachedTo) continue
+                        val controllerId = state.projectedState.getController(permanentId) ?: continue
+                        val context = EffectContext(
+                            sourceId = permanentId,
+                            controllerId = controllerId,
+                        )
+                        if (ConditionEvaluator().evaluate(state, ability.condition, context)) {
+                            result.add(grant.ability)
+                        }
+                    }
+
+                    else -> {}
+                }
+            }
+        }
+
+        return result
+    }
+
+    /**
+     * Triggered abilities a permanent grants to *itself* through a [Scope.Self]
+     * [GrantTriggeredAbility] static ability on its own definition — i.e. "this creature has
+     * '<triggered ability>'". When the grant is wrapped in a [ConditionalStaticAbility]
+     * ("… as long as <condition>"), the ability is contributed only while the gating condition
+     * holds, evaluated with this permanent as the source. Fire Nation Cadets uses this to carry
+     * [firebendingAttackTrigger] only while a Lesson card is in its controller's graveyard.
+     *
+     * Unlike [getStaticGrantedTriggeredAbilities] (battlefield-scoped lord/sliver grants) and
+     * [getAttachedGrantedTriggeredAbilities] (Aura/Equipment grants), this reads the source's own
+     * static abilities and toggles with the condition each time triggers are computed, so the grant
+     * appears and disappears live as the condition changes.
+     */
+    private fun getSelfGrantedTriggeredAbilities(entityId: EntityId, state: GameState): List<TriggeredAbility> {
+        val container = state.getEntity(entityId) ?: return emptyList()
+        if (container.has<FaceDownComponent>()) return emptyList()
+        val card = container.get<CardComponent>() ?: return emptyList()
+        val cardDef = cardRegistry.getCard(card.cardDefinitionId) ?: return emptyList()
+        val classLevel = container.get<ClassLevelComponent>()?.currentLevel
+        val staticAbilities = cardDef.script.effectiveStaticAbilities(classLevel)
+        if (staticAbilities.isEmpty()) return emptyList()
+
+        val result = mutableListOf<TriggeredAbility>()
+        for (ability in staticAbilities) {
+            when (ability) {
+                is GrantTriggeredAbility ->
+                    if (ability.filter.scope is Scope.Self) result.add(ability.ability)
+
+                is ConditionalStaticAbility -> {
+                    val grant = ability.ability as? GrantTriggeredAbility ?: continue
+                    if (grant.filter.scope !is Scope.Self) continue
+                    val controllerId = state.projectedState.getController(entityId) ?: continue
+                    val context = EffectContext(sourceId = entityId, controllerId = controllerId)
+                    if (ConditionEvaluator().evaluate(state, ability.condition, context)) {
+                        result.add(grant.ability)
+                    }
+                }
+
+                // "This permanent has all activated and triggered abilities of the last chosen card
+                // exiled with it" (Koh, the Face Stealer): the chosen card's triggered abilities fire
+                // from this permanent, so it gains e.g. the chosen creature's attack/ETB/dies triggers.
+                is com.wingedsheep.sdk.scripting.HasAbilitiesOfChosenLinkedExiledCard ->
+                    if (ability.grantTriggered) {
+                        result.addAll(
+                            com.wingedsheep.engine.legalactions.utils.chosenLinkedExiledTriggeredAbilities(
+                                state, entityId, cardRegistry
+                            )
+                        )
+                    }
+
+                else -> {}
+            }
+        }
+        return result
+    }
+
+    /**
+     * Generate ward triggered abilities for an entity.
+     *
+     * Checks two sources:
+     * 1. Intrinsic ward — normally from the card's keywordAbilities (KeywordAbility.Ward), but for
+     *    a *face-down* permanent from its [FaceDownModeComponent] instead: CR 708.2 says a
+     *    face-down permanent has no characteristics beyond those listed by the rules that made it
+     *    face down, so the printed card's ward is suppressed, and disguise (CR 702.168a) / cloak
+     *    (CR 701.58a) contribute ward {2} of their own.
+     * 2. Ward granted by GrantWard static abilities on other permanents — these are external
+     *    continuous effects rather than characteristics of the object, so they keep applying to a
+     *    face-down permanent.
+     *
+     * Each found ward produces a TriggeredAbility that fires on BecomesTargetEvent
+     * by an opponent, with a WardCounterEffect for the appropriate cost.
+     *
+     * Public because [TriggerDetector] indexes face-down permanents through this method alone:
+     * ward is the only triggered-ability family a face-down permanent can have.
+     */
+    fun getWardTriggeredAbilities(
+        entityId: EntityId,
+        cardDefinitionId: String,
+        state: GameState,
+        statics: BattlefieldStaticsIndex = BattlefieldStaticsIndex.build(state, cardRegistry)
+    ): List<TriggeredAbility> {
+        val result = mutableListOf<TriggeredAbility>()
+
+        val targetContainer = state.getEntity(entityId) ?: return result
+        val targetCard = targetContainer.get<CardComponent>() ?: return result
+        val projected = state.projectedState
+        val targetControllerId = projected.getController(entityId)
+
+        // Check suppression before generating any ward triggers — suppresses both intrinsic
+        // and granted ward (Nowhere to Run: "Ward abilities of those creatures don't trigger.")
+        if (isWardSuppressed(entityId, state, projected, statics)) return result
+
+        // 1. Intrinsic ward — from the face-down characteristic-defining effect while face down,
+        // from the card definition otherwise.
+        if (targetContainer.has<FaceDownComponent>()) {
+            targetContainer.get<FaceDownModeComponent>()?.mode?.faceDownWard?.let {
+                result.add(createWardTriggeredAbility(it, "facedown"))
+            }
+        } else {
+            val cardDef = cardRegistry.getCard(cardDefinitionId)
+            if (cardDef != null) {
+                for (ka in cardDef.keywordAbilities) {
+                    if (ka is KeywordAbility.Ward) {
+                        result.add(createWardTriggeredAbility(ka.cost, "intrinsic"))
+                    }
+                }
+            }
+        }
+
+        // 2. Ward granted by battlefield-scoped GrantWard static abilities. The grants themselves
+        // were collected in one battlefield walk (see BattlefieldStaticsIndex); all that is left
+        // per entity is matching it against each grant's filter.
+        for (provider in statics.wardGrantProviders) {
+            val ability = provider.grant
+            val permanentId = provider.sourceId
+            val sourceControllerId = provider.sourceControllerId
+
+            // Use the generic filter resolver to check if entity matches
+            val filter = ability.filter.baseFilter
+            val matchesAll = filter.cardPredicates.all { predicate ->
+                when (predicate) {
+                    is com.wingedsheep.sdk.scripting.predicates.CardPredicate.IsCreature ->
+                        projected.isCreature(entityId)
+                    is com.wingedsheep.sdk.scripting.predicates.CardPredicate.IsPermanent -> true // On battlefield = permanent
+                    is com.wingedsheep.sdk.scripting.predicates.CardPredicate.HasSubtype ->
+                        targetCard.typeLine.hasSubtype(predicate.subtype)
+                    else -> true
+                }
+            }
+            if (!matchesAll) continue
+
+            // Check state predicates
+            val matchesState = filter.statePredicates.all { predicate ->
+                predicateEvaluator.matchesStatePredicate(state, entityId, predicate)
+            }
+            if (!matchesState) continue
+
+            // Check controller predicate
+            val controllerMatch = filter.controllerPredicate?.evaluateWith { leaf ->
+                when (leaf) {
+                    is ControllerPredicate.ControlledByYou -> targetControllerId == sourceControllerId
+                    is ControllerPredicate.ControlledByOpponent -> targetControllerId != null && targetControllerId != sourceControllerId
+                    else -> null // leaf kinds this fast path can't evaluate don't constrain
+                }
+            } ?: true
+            if (!controllerMatch) continue
+
+            // Check excludeSelf
+            if (ability.filter.excludeSelf && entityId == permanentId) continue
+
+            result.add(createWardTriggeredAbility(ability.cost, "granted_${permanentId.value}"))
+        }
+
+        // 3. Ward granted by attach-scoped GrantWard static abilities (Auras/Equipment)
+        for (permanentId in statics.attachmentsOn(entityId)) {
+            val container = state.getEntity(permanentId) ?: continue
+
+            val card = container.get<CardComponent>() ?: continue
+            if (container.has<FaceDownComponent>()) continue
+
+            val sourceDef = cardRegistry.getCard(card.cardDefinitionId) ?: continue
+            val classLevel = container.get<ClassLevelComponent>()?.currentLevel
+            val allStaticAbilities = sourceDef.script.effectiveStaticAbilities(classLevel)
+
+            for (ability in allStaticAbilities) {
+                val ward = when (ability) {
+                    is GrantWard -> if (ability.filter.scope is Scope.AttachedTo) ability else continue
+                    is ConditionalStaticAbility -> {
+                        val conditionalWard = ability.ability as? GrantWard ?: continue
+                        if (conditionalWard.filter.scope !is Scope.AttachedTo) continue
+                        val controllerId = state.projectedState.getController(permanentId) ?: continue
+                        val context = EffectContext(
+                            sourceId = permanentId,
+                            controllerId = controllerId,
+                        )
+                        if (ConditionEvaluator().evaluate(state, ability.condition, context)) conditionalWard else continue
+                    }
+                    else -> continue
+                }
+                result.add(createWardTriggeredAbility(ward.cost, "attached_${permanentId.value}"))
+            }
+        }
+
+        return result
+    }
+
+    /**
+     * Triggered abilities contributed by *unlocked* faces of a Room permanent (CR 709.5).
+     *
+     * Locked halves are suppressed: their script's triggered abilities don't appear in the
+     * permanent's effective ability set. As soon as a face is unlocked (via cast-time ETB
+     * or the unlock special action), that face's abilities become active.
+     *
+     * Excludes "When you unlock this door" abilities ([EventPattern.DoorUnlockedEvent] triggers):
+     * those are detected separately by [com.wingedsheep.engine.event.TriggerDetector.detectDoorUnlockedTriggers]
+     * because the matcher is face-aware (only the unlocked face's "when you unlock this door"
+     * fires, not other already-unlocked faces').
+     */
+    private fun getRoomFaceTriggeredAbilities(
+        entityId: EntityId,
+        cardDef: com.wingedsheep.sdk.model.CardDefinition?,
+        state: GameState
+    ): List<TriggeredAbility> {
+        if (cardDef == null) return emptyList()
+        val room = state.getEntity(entityId)?.get<RoomComponent>() ?: return emptyList()
+        if (room.unlocked.isEmpty()) return emptyList()
+        val result = mutableListOf<TriggeredAbility>()
+        for (face in cardDef.cardFaces) {
+            val faceId = com.wingedsheep.engine.state.components.identity.RoomFaceId(face.name)
+            if (faceId !in room.unlocked) continue
+            for (ability in face.script.effectiveTriggeredAbilities(null)) {
+                if (ability.trigger is EventPattern.DoorUnlockedEvent) continue
+                result.add(ability)
+            }
+        }
+        return result
+    }
+
+    /**
+     * Flanking (CR 702.25b) as a keyword-derived triggered ability. Any creature that has
+     * [Keyword.FLANKING] — intrinsically printed or granted — gets the synthesized
+     * [com.wingedsheep.sdk.scripting.Flanking.blockedByNonFlankerTrigger], the same way ward and
+     * suspend abilities are derived rather than authored per card. The projected keyword check
+     * respects "loses all abilities" (the keyword is stripped in projection) and any effect that
+     * grants flanking. The trigger's own "becomes blocked by a creature without flanking" filter
+     * excludes flanking blockers (CR 702.25c).
+     */
+    private fun getFlankingTriggeredAbilities(entityId: EntityId, state: GameState): List<TriggeredAbility> =
+        if (state.projectedState.hasKeyword(entityId, com.wingedsheep.sdk.core.Keyword.FLANKING)) {
+            listOf(com.wingedsheep.sdk.scripting.Flanking.blockedByNonFlankerTrigger)
+        } else {
+            emptyList()
+        }
+
+    /**
+     * Vanishing N (CR 702.62) as two keyword-derived triggered abilities: the upkeep countdown
+     * (702.62b) and the last-time-counter sacrifice (702.62c). A vanishing card prints one keyword
+     * line and a reminder, never these two abilities, so the engine supplies them — the same shape
+     * as flanking, ward and the Siege defeat trigger.
+     *
+     * Keyed on the *projected* keyword, which buys three things at once: a token created "with
+     * vanishing 3" and a creature that *gains* vanishing both count down, and a permanent that has
+     * lost all abilities stops counting down (the keyword is stripped in projection) — matching
+     * CR 702.62, where all three vanishing abilities are abilities of the permanent.
+     *
+     * The N-carrying half — "enters with N time counters" — is not here: it is a replacement
+     * effect applied at entry from the printed [com.wingedsheep.sdk.scripting.KeywordAbility.Numeric],
+     * see `EntersWithReplacements`.
+     */
+    private fun getVanishingTriggeredAbilities(entityId: EntityId, state: GameState): List<TriggeredAbility> =
+        if (state.projectedState.hasKeyword(entityId, com.wingedsheep.sdk.core.Keyword.VANISHING)) {
+            listOf(
+                com.wingedsheep.sdk.scripting.Vanishing.upkeepCountdown,
+                com.wingedsheep.sdk.scripting.Vanishing.lastCounterSacrifice,
+            )
+        } else {
+            emptyList()
+        }
+
+    /**
+     * Fabricate N (CR 702.123) as the keyword-derived enters-the-battlefield ability it is. A
+     * fabricate card prints one keyword line and a reminder, never the ability itself, so the
+     * engine supplies it — the same shape as vanishing, flanking, ward and the Siege defeat
+     * trigger. See [com.wingedsheep.sdk.scripting.Fabricate] for the modal shape and why CR
+     * 702.123a's "you may … if you don't …" is modeled as the reminder line's choose-one.
+     *
+     * **Two sources, deliberately.** The *gate* is the projected keyword, so a permanent that has
+     * lost all abilities has no fabricate trigger; the *parameter* is the printed
+     * [KeywordAbility.Numeric], because a projected keyword set carries no N. Nothing in the corpus
+     * grants fabricate to a permanent that doesn't print it, so the two never disagree.
+     *
+     * **One trigger per printed instance**, not one per summed N — CR 702.123b: *"If a permanent
+     * has multiple instances of fabricate, each triggers separately."*
+     */
+    private fun getFabricateTriggeredAbilities(
+        entityId: EntityId,
+        cardDefinitionId: String,
+        state: GameState,
+    ): List<TriggeredAbility> {
+        if (!state.projectedState.hasKeyword(entityId, com.wingedsheep.sdk.core.Keyword.FABRICATE)) {
+            return emptyList()
+        }
+        val cardDef = cardRegistry.getCard(cardDefinitionId) ?: return emptyList()
+        return com.wingedsheep.sdk.scripting.Fabricate.printedCounts(cardDef)
+            .mapIndexed { instance, n ->
+                com.wingedsheep.sdk.scripting.Fabricate.etbChoice(n, instance)
+            }
+    }
+
+    /**
+     * Renown N (CR 702.112) as the keyword-derived triggered ability it is. A renown card prints
+     * one keyword line and a reminder, never the ability itself, so the engine supplies it — the
+     * same shape as fabricate, vanishing, flanking, ward and the Siege defeat trigger. See
+     * [com.wingedsheep.sdk.scripting.Renown] for why "if it isn't renowned" is an intervening-`if`
+     * rather than a check inside the effect.
+     *
+     * **Two sources, deliberately**, exactly as fabricate: the *gate* is the projected keyword, so
+     * a creature that has lost all abilities has no renown trigger; the *parameter* is the printed
+     * [KeywordAbility.Numeric], because a projected keyword set carries no N. The one card that
+     * grants renown (Aragorn, Hornburg Hero) is not in the corpus, and a granted renown has no N
+     * to read — the same limitation vanishing's granted case has for its entry counters.
+     *
+     * **One trigger per printed instance**, not one per summed N — CR 702.112c: *"If a creature
+     * has multiple instances of renown, each triggers separately."* The first to resolve makes the
+     * creature renowned and the rest find their intervening-`if` false.
+     */
+    private fun getRenownTriggeredAbilities(
+        entityId: EntityId,
+        cardDefinitionId: String,
+        state: GameState,
+    ): List<TriggeredAbility> {
+        if (!state.projectedState.hasKeyword(entityId, com.wingedsheep.sdk.core.Keyword.RENOWN)) {
+            return emptyList()
+        }
+        val cardDef = cardRegistry.getCard(cardDefinitionId) ?: return emptyList()
+        return com.wingedsheep.sdk.scripting.Renown.printedCounts(cardDef)
+            .mapIndexed { instance, n ->
+                com.wingedsheep.sdk.scripting.Renown.combatDamageTrigger(n, instance)
+            }
+    }
+
+    private fun createWardTriggeredAbility(cost: WardCost, source: String): TriggeredAbility {
+        return TriggeredAbility(
+            id = AbilityId("ward_$source"),
+            trigger = EventPattern.BecomesTargetEvent(byOpponent = true),
+            binding = TriggerBinding.SELF,
+            effect = WardCounterEffect(cost)
+        )
+    }
+
+    /**
+     * Returns true if any permanent on the battlefield suppresses ward triggers for [entityId]
+     * (e.g. Nowhere to Run). The [GroupFilter] stored on [SuppressesWardForGroupComponent] is
+     * evaluated with the suppressor's controller as the "you" context — for a filter like
+     * `AllCreaturesOpponentsControl` that already restricts matches to creatures the
+     * suppressor's opponents control, so no additional opponent check is needed here.
+     */
+    private fun isWardSuppressed(
+        entityId: EntityId,
+        state: GameState,
+        projected: com.wingedsheep.engine.mechanics.layers.ProjectedState,
+        statics: BattlefieldStaticsIndex
+    ): Boolean {
+        return statics.wardSuppressors.any { suppressor ->
+            val suppressorId = suppressor.sourceId
+            val ctx = PredicateContext(controllerId = suppressor.sourceControllerId, sourceId = suppressorId)
+            suppressor.component.filters.any { groupFilter ->
+                when {
+                    groupFilter.scope !is com.wingedsheep.sdk.scripting.filters.unified.Scope.Battlefield -> false
+                    groupFilter.excludeSelf && entityId == suppressorId -> false
+                    else -> predicateEvaluator.matches(
+                        state, projected, entityId, groupFilter.baseFilter, ctx
+                    )
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,44 @@
+{
+  "_description": "Synthesizer Labship full ability sweep. Setup: Alice has Synthesizer Labship preloaded with 7 charge counters (one Station shy of 9+), a 2/2 Glory Seeker to feed into Station, and a Lander token that can be the target of the 2+ trigger. Sequence: (1) Sorcery-speed: Activate Station, tap Glory Seeker — Synthesizer gets 2 more charge counters, total 9 → becomes an artifact creature with flying and vigilance. (2) Enter combat — 2+ trigger fires, target the Lander; the Lander becomes a 2/2 artifact creature with flying until end of turn. (3) Attack with both Synthesizer (4/4 flying, vigilance) and Lander (2/2 flying). Use BEGIN_COMBAT stop step to observe the trigger before declare attackers.",
+  "player1Name": "Alice",
+  "player2Name": "Bob",
+  "player1": {
+    "lifeTotal": 20,
+    "hand": [],
+    "battlefield": [
+      {"name": "Synthesizer Labship", "summoningSickness": false, "counters": {"CHARGE": 7}},
+      {"name": "Juggernaut", "summoningSickness": false},
+      {"name": "Glory Seeker", "summoningSickness": false},
+      {"name": "Lander", "summoningSickness": false},
+      {"name": "Island"},
+      {"name": "Island"}
+    ],
+    "graveyard": [],
+    "library": [
+      "Island",
+      "Island",
+      "Plains"
+    ]
+  },
+  "player2": {
+    "lifeTotal": 20,
+    "hand": [],
+    "battlefield": [
+      {"name": "Glory Seeker"},
+      {"name": "Plains"},
+      {"name": "Plains"}
+    ],
+    "graveyard": [],
+    "library": [
+      "Plains",
+      "Plains"
+    ]
+  },
+  "phase": "PRECOMBAT_MAIN",
+  "activePlayer": 1,
+  "priorityPlayer": 1,
+  "player1StopAtSteps": ["BEGIN_COMBAT"],
+  "player2StopAtSteps": [],
+  "player1OpponentStopAtSteps": [],
+  "player2OpponentStopAtSteps": []
+}

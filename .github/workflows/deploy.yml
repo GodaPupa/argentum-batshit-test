@@ -1,0 +1,114 @@
+name: Deploy
+
+on:
+  workflow_dispatch:
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Log in to the Container registry
+        uses: docker/login-action@v4
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Downcase Image Name
+        run: |
+          echo "IMAGE_REPO=${REGISTRY}/${IMAGE_NAME,,}" >> $GITHUB_ENV
+
+      - name: Build and push Backend
+        uses: docker/build-push-action@v7
+        with:
+          context: .
+          file: ./game-server/Dockerfile
+          push: true
+          tags: ${{ env.IMAGE_REPO }}/backend:latest
+          build-args: |
+            COMMIT_HASH=${{ github.sha }}
+
+      - name: Build and push Frontend
+        uses: docker/build-push-action@v7
+        with:
+          context: ./web-client
+          push: true
+          tags: ${{ env.IMAGE_REPO }}/frontend:latest
+          build-args: |
+            COMMIT_HASH=${{ github.sha }}
+
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+
+    environment:
+      name: production
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Copy docker-compose to server
+        uses: appleboy/scp-action@v1
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          source: "docker-compose.yml"
+          target: ${{ secrets.DEPLOY_PATH }}
+
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            REGISTRY="ghcr.io"
+            IMAGE_REPO_LOWER=$(echo "${{ github.repository }}" | tr '[:upper:]' '[:lower:]')
+            FULL_IMAGE_REPO="$REGISTRY/$IMAGE_REPO_LOWER"
+
+            echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+            cd ${{ secrets.DEPLOY_PATH }}
+
+            echo "IMAGE_REPO=$FULL_IMAGE_REPO" > .env
+            echo "APP_DOMAIN=${{ secrets.APP_DOMAIN }}" >> .env
+            echo "PROJECT_NAME=${{ secrets.PROJECT_NAME }}" >> .env
+            echo "CACHE_REDIS_ENABLED=true" >> .env
+            echo "CACHE_REDIS_TTL_MINUTES=1440" >> .env
+            echo "GAME_ADMIN_PASSWORD=${{ secrets.GAME_ADMIN_PASSWORD }}" >> .env
+            echo "GAME_AI_ENABLED=true" >> .env
+            echo "OPENROUTER_API_KEY=${{ secrets.OPENROUTER_API_KEY }}" >> .env
+
+            # --- Accounts / persistence (opt-in) ---
+            # Always write the DB password so the Postgres volume initialises with the real password
+            # from first boot. Changing it after the volume exists requires recreating the volume.
+            echo "ACCOUNTS_DB_PASSWORD=${{ secrets.ACCOUNTS_DB_PASSWORD }}" >> .env
+            if [ "${{ secrets.ACCOUNTS_ENABLED }}" = "true" ]; then
+              echo "ACCOUNTS_ENABLED=true" >> .env
+              # Clear the exclude so the DataSource + Flyway auto-config activates.
+              echo "ACCOUNTS_AUTOCONFIG_EXCLUDE=" >> .env
+              echo "ACCOUNTS_AUTH_SECRET=${{ secrets.ACCOUNTS_AUTH_SECRET }}" >> .env
+              echo "ACCOUNTS_FROM_EMAIL=${{ secrets.ACCOUNTS_FROM_EMAIL }}" >> .env
+              echo "MAIL_HOST=${{ secrets.MAIL_HOST }}" >> .env
+              echo "MAIL_PORT=${{ secrets.MAIL_PORT }}" >> .env
+              echo "MAIL_USERNAME=${{ secrets.MAIL_USERNAME }}" >> .env
+              echo "MAIL_PASSWORD=${{ secrets.MAIL_PASSWORD }}" >> .env
+            fi
+
+            docker compose pull
+            docker compose up -d --force-recreate --remove-orphans
+            docker image prune -f

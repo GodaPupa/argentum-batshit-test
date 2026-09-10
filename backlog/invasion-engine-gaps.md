@@ -1,0 +1,883 @@
+# Invasion — Engine Gap Analysis
+
+> **✅ COMPLETE — 335 / 335 implemented (100%).** As of May 2026 every Invasion card is
+> implemented; `scripts/card-status --set INV` reports 0 missing. The final two cards were
+> Spinal Embrace (cast-only-during-combat steal + delayed end-step sacrifice) and Temporal
+> Distortion (hourglass counter / doesn't-untap). The gap analysis below is retained for
+> historical reference.
+
+Cross-reference of the (then-)remaining unimplemented Invasion cards against the engine's
+actual capabilities (SDK reference + source verification, May 2026). Generated to scope what
+must be built before the set could be completed.
+
+**Status (historical):** 91 / 335 implemented (27%) at time of writing — up from 59 / 335 (18%),
+after gaps #1–#17 (incl. Blind Seer, Backlash, Agonizing Demise, Tsabo Tavoc, Traveler's Cloak,
+Pledge of Loyalty, Mages' Contest, Crystal Spray) and the cards they unlocked.
+Card list comes from `scripts/card-status --list --set INV`.
+
+## Bottom line
+
+The **vast majority** of remaining cards are buildable today. Invasion's defining mechanics are
+all supported:
+
+- **Kicker / Kicker {X} / Kicker {cost}** — `KeywordAbility.kicker(...)` (Agonizing Demise, Kavu Titan, Urza's Rage, Verdeloth, …)
+- **Domain** — `DynamicAmounts.domain()` / `Conditions.BasicLandTypesAtLeast` (Tribal Flames, Kavu Scout, Wandering Stream, Ordered Migration, Worldly Counsel, Strength of Unity, Exotic Curse, Power Armor, Collapsing Borders, Wayfaring Giant)
+- **Split cards** — `CardLayout.SPLIT` (Assault//Battery, Pain//Suffering, Spite//Malice, Stand//Deliver, Wax//Wane)
+- **Coin flips** — `FlipCoinExecutor` (Chaotic Strike)
+- **Cast-only-during-combat / after-blockers** — `CastRestriction.OnlyDuringPhase/Step` (Cauldron Dance, Spinal Embrace, Chaotic Strike)
+- **"Doesn't untap" static** — `DOESNT_UNTAP` keyword static (Shackles, Juntu Stakes, Tsabo's Web; Temporal Distortion via counter)
+- **Dynamic +X/+X statics** — `GrantDynamicStatsEffect` (Crusading Knight, Marauding Knight, Sparring Golem, Kavu Scout, Wayfaring Giant, Power Armor)
+- **CDA P/T** — `dynamicPower`/`dynamicToughness` (Molimo, Yavimaya Kavu)
+- **Protection from a subtype** — `ProtectionScope.Subtype` (Shoreline Raider)
+- **Multicolored predicate** — `CardPredicate.IsMulticolored` (Urza's Filter, Rewards of Diversity filter)
+- **Permanent gain-control / exchange-control** — `Duration.Permanent` / `ExchangeControlEffect` (Empress Galina, Phyrexian Infiltrator, Spinal Embrace)
+- **Color-change permanents** — `ChangeColor` / `BecomeAllColors` (Tidal Visionary, Rainbow Crow, Kavu Chameleon, Metathran Transport, Sway of Illusion, Ancient Kavu, Defiling Tears, Alloy Golem)
+- Counter spells/abilities, reanimation + mass reanimation (Bringer shape), prevent-damage shields, choose-a-number, search/reveal/mill/scry pipelines, mana rocks/taplands/sac-lands/cameos.
+
+What follows are the **genuine gaps** — elements no current SDK primitive expresses. ~21 distinct
+elements, concentrated in ~35 cards. The remaining majority are implementable now.
+
+---
+
+## Gaps by theme
+
+### Conditions / state checks
+
+1. **"[Specific color] is the most common color among all permanents (or tied)" as a self-static gate.**
+   `Conditions.TargetSharesMostCommonColor` exists but is *target*-relative. Needs a self-gating
+   `ColorIsMostCommon(color)` condition.
+   → **Goham, Halam, Ruham, Sulam, Zanam Djinn** (5 cards — one shared primitive unlocks all)
+
+2. **"Control a permanent/creature of each color" (five-color condition).**
+   → **Coalition Victory**, **Spirit of Resistance**
+
+### Triggers
+
+3. **"Whenever a player taps a land for mana" trigger + mana-production replacement.** No
+   tapped-for-mana trigger, no "produces a different color instead" replacement.
+   → **Fertile Ground**, **Overabundance**, **Pulse of Llanowar** (one shared primitive)
+
+4. **Opponent / any-player cast triggers.** `SpellCastEvent` has a `player` field, but no DSL sugar
+   exposes it and detector support for `Player.Each/Opponent` on casts is unverified (only
+   `Player.You` constants/factory exist).
+   → **Pure Reflection** ("whenever a player casts a creature spell"), **Rewards of Diversity**
+   ("whenever an opponent casts a multicolored spell")
+
+5. **"Shares a color with the triggering creature" filter** for ETB group effects.
+   → **Spreading Plague**
+
+6. **Triggered/activated abilities that function from the graveyard.**
+   → **Pyre Zombie** ("at the beginning of your upkeep, if this card is in your graveyard…")
+
+### Damage prevention / replacement
+
+7. **Damage-amount-modifying / conditional replacements** not currently expressible:
+   - **Divine Presence** — cap any 4+ damage to 3
+   - **Callous Giant** — prevent damage only when amount ≤ 3 (threshold all-or-nothing)
+   - **Well-Laid Plans** — prevent damage between two creatures if they share a color
+   - **Harsh Judgment** — redirect chosen-color instant/sorcery damage to its controller
+   - **Protective Sphere** — prevent damage from a source sharing a color with the *mana spent on the activation cost*
+   - **Spirit of Resistance** — prevent all damage to you (also needs the five-color condition, #2)
+
+### Costs / X-spend
+
+8. **"Spend only [color] mana on X" + tracking how much of a color was spent.**
+   → **Soul Burn** (spend only B/R; life gain capped by {B} spent), **Atalya, Samite Master**
+   (spend only white on X)
+
+9. **Discard as an activation cost** (no `Costs.Discard`).
+   → **Meteor Storm** ("Discard two cards at random:")
+
+### Choices / targeting
+
+10. **"Name a card" choice + name-matching search/reveal filter.**
+    → **Desperate Research**, **Lobotomy**
+
+11. **Color-change applied to a spell on the stack** (current color-change is permanent-only).
+    → **Blind Seer**, **Crystal Spray**
+
+12. **Damage by/to "the controller of a target permanent"** (no `EffectTarget` for a target's controller).
+    → **Backlash**, **Agonizing Demise** (kicked)
+
+13. **Protection from a supertype + targeting by supertype (legendary).** `ProtectionScope` covers
+    color/cardtype/subtype but not supertype; no legendary target predicate.
+    → **Tsabo Tavoc** (protection from legendary creatures; destroy target legendary creature)
+
+14. **Chosen-type landwalk grant** (`EntersWithChoice(BASIC_LAND_TYPE)` exists, but no "grant
+    landwalk of the chosen type" modification).
+    → **Traveler's Cloak**
+
+15. **Dynamic multi-color protection from a board-computed color set.**
+    → **Pledge of Loyalty** ("protection from the colors of permanents you control")
+
+### Bespoke / one-off engines
+
+16. **Life-bidding / auction.** → **Mages' Contest**
+17. **Text-changing effects** (replace color word / land type). → **Crystal Spray**
+18. **Color-relational cast restriction.** → **Mana Maze** ("can't cast spells sharing a color with the most recently cast spell")
+19. **Target-changing-on-reveal engine.** → **Psychic Battle**
+20. **"Play with the top card of your library revealed"** passive static. → **Goblin Spy** (minor)
+
+### Partially supported (primitive exists, payoff control-flow is new)
+
+21. **Pile-separation cycle.** `SeparatePermanentsIntoPilesEffect` / `factOrFiction` cover the
+    Fact-or-Fiction shape (reveal → opponent splits → you choose). These cards need "*each player*
+    separates their *own* permanents → an opponent chooses → only the chosen pile can attack/block
+    this turn" (a continuous restriction on a chosen set):
+    → **Bend or Break**, **Fight or Flight**, **Stand or Fall**, **Death or Glory**, **Global Ruin**
+
+---
+
+## Implementation plans
+
+Each plan below was written after verifying the actual SDK against source (May 2026). The single
+most important correction from that verification: **several "gaps" are already buildable today** — the
+primitives exist, they just weren't found during the first pass. Those are called out explicitly so we
+don't build anything twice.
+
+The guiding principle throughout (per `docs/architecture-principles.md` §1.5 and the team's standing
+feedback): **extend the composable vocabulary — filters, conditions, dynamic amounts, effect-targets,
+replacement variants — never add a card-specific executor.** A good gap fix unlocks a *family* of
+cards, not one.
+
+### Already buildable — no engine work (close these first)
+
+| # | Card(s) | Why it already works |
+|---|---------|----------------------|
+| #6 | **Pyre Zombie** | ✅ **Implemented** (`inv/cards/PyreZombie.kt`). Graveyard-functional upkeep trigger via `triggerZone = Zone.GRAVEYARD` + `MayPayManaEffect({1}{B}{B}, ReturnToHand(Self))` (same shape as Onslaught's Gigapede); sac ability = `Costs.Composite(Mana({1}{R}{R}), SacrificeSelf)` → `DealDamage(2, Targets.Any)`. The `triggeredAbility { }` builder already surfaces `triggerZone`; `TriggerDetector` scans graveyard cards (`TriggerDetector.kt:359-405`). No engine work. |
+| #12 | **Backlash**, **Agonizing Demise** (kicked) | `EffectTarget.TargetController` already exists (`EffectTarget.kt:57-62`), plus `ControllerOfTriggeringEntity`. Backlash = `DealDamage(amount = DynamicAmounts.targetPower(0), target = EffectTarget.TargetController)`; Agonizing Demise riders on `Conditions.WasKicked`. |
+| #20 | **Goblin Spy** | ✅ **Implemented** (`inv/cards/GoblinSpy.kt`). Added sibling `RevealTopOfLibrary` data object (public reveal, no play permission) and united the `ClientStateTransformer` public-reveal path so it fires for `PlayFromTopOfLibrary` **or** `RevealTopOfLibrary`; cast/play-from-top permission stays keyed on `PlayFromTopOfLibrary`. See gap #20 below. |
+| #2 (half) | **Coalition Victory** | ✅ **Implemented** (`inv/cards/CoalitionVictory.kt`). "A creature of each color" = `Compare(DynamicAmounts.colorsAmongPermanents(Player.You, GameObjectFilter.Creature), GTE, Fixed(5))` (a single 5-color creature satisfies it — matches the official ruling, and `Aggregation.DISTINCT_COLORS` caps at 5). "A land of each basic land type" = `Conditions.BasicLandTypesAtLeast(5)`. Combined with `Conditions.All(...)` inside a `ConditionalEffect` → `Effects.WinGame()`. No new primitive. |
+| #4 (runtime) | **Rewards of Diversity**, **Pure Reflection** (trigger half) | `SpellCastEvent(player = Player.Opponent / Player.Each)` is already matched at runtime (`TriggerMatcher.matchesPlayer`, lines 668-675). Rewards of Diversity = trigger on `Player.Opponent` + multicolored filter, payoff to `Player.TriggeringPlayer`. Only ergonomic gap: facade constants (see #4 below). |
+
+---
+
+### #1 — `ColorIsMostCommon(color)` self-condition · 5 djinns ✅ DONE
+
+> **Implemented (primitive + all 5 cards).** `Condition.ColorIsMostCommon(color)` +
+> `Conditions.ColorIsMostCommon(color)` facade; `ConditionEvaluator` shares a
+> `mostCommonColors(state, projected)` helper with `TargetSharesMostCommonColor` and evaluates the
+> new condition dual-mode (resolution + projection). Covered by `ColorIsMostCommonTest`. All five
+> djinns authored in `definitions/inv/cards/` (Goham/Halam/Ruham/Sulam/Zanam), each as a
+> `ConditionalStaticAbility(ModifyStats(-2,-2, source()), Conditions.ColorIsMostCommon(<color>))`.
+
+
+**What exists.** `ConditionEvaluator.evaluateTargetSharesMostCommonColor()`
+(`ConditionEvaluator.kt:647-674`) already tallies every color across every battlefield permanent
+(via projected colors), finds the max tally, and builds the tied "most common" set. It's just
+*target*-relative.
+
+**Plan.**
+1. Extract the tally→maxCount→`mostCommonColors: Set<Color>` computation into a private helper
+   `mostCommonColors(state, projected): Set<Color>` in `ConditionEvaluator`.
+2. Add `Condition.ColorIsMostCommon(val color: Color)` in `BattlefieldConditions.kt`. Evaluate as
+   `color in mostCommonColors(...)`. It is board-derived only (no targets / no kicker / no triggering
+   entity), so it works unchanged in **both** the `Resolution` and `Projection`
+   `ConditionEvaluationContext` paths — which is required, since the djinns use it as a
+   `ConditionalStaticAbility`.
+3. `Conditions.ColorIsMostCommon(color)` facade method.
+
+**Composition.** Each djinn → `ConditionalStaticAbility(condition = Conditions.ColorIsMostCommon(<color>), ability = <its bonus>)`.
+
+**Leverage.** One condition unlocks all 5 djinns (Goham/Halam/Ruham/Sulam/Zanam). Reusable for any
+"as long as [color] is the most common color" card.
+
+---
+
+### #2 — Five-color "of each color" condition · Coalition Victory, Spirit of Resistance
+
+**What exists.** `DynamicAmounts.colorsAmongPermanents(player, filter)` (DISTINCT_COLORS, caps at 5)
+and `DynamicAmounts.domain(player)` (DISTINCT_BASIC_LAND_SUBTYPES). Both already do the counting.
+
+**Status.** ✅ **Coalition Victory implemented** (`inv/cards/CoalitionVictory.kt`, scenario test
+`CoalitionVictoryScenarioTest`) — pure composition, no engine change. **Spirit of Resistance still
+blocked on #7** (it needs a continuous "prevent all damage to you" static; the five-color condition
+half is ready).
+
+**Plan.** No new primitive — **compose**.
+- Coalition Victory: see the "already buildable" table above.
+- Spirit of Resistance: condition = `Compare(colorsAmongPermanents(Player.You), GTE, Fixed(5))`,
+  gating a `PreventDamage` static (the prevention itself is covered under #7). Build as
+  `ConditionalStaticAbility(condition, ability = <prevent all damage to you>)`.
+
+Optional ergonomics: add `Conditions.ControlPermanentOfEachColor(filter = Any)` and
+`Conditions.ControlLandOfEachBasicType()` as thin facade wrappers over the two `Compare`s, since the
+shape will recur (Crystalline Crawler, Cromat, Dega/Ana-type cards). Pure sugar, no engine change.
+
+---
+
+### #3 — Tapped-for-mana event · Fertile Ground, Overabundance, Pulse of Llanowar ✅ DONE
+
+> **Implemented.** All three cards authored + scenario-tested (`InvasionTappedForManaTest`).
+> SDK: `GameEvent.LandTappedForMana` + `Triggers.AnyPlayerTapsLandForMana`/`landTappedForMana(...)`;
+> `AdditionalManaOnTap.anyColor` (Fertile Ground's choose-any-color bonus); `AdditionalManaOnSourceTap.rider`
+> (Overabundance's "deals 1 damage" inline rider); new `ReplaceLandManaColor(filter)` static (Pulse of
+> Llanowar). Engine: emits `LandTappedForManaEvent` on the manual mana-ability path + `TriggerMatcher`
+> case; `TappedForManaBonusResolver` + `ChooseAnyColorTapBonusContinuation` drive Fertile Ground's per-tap
+> color choice (resolution-time pause); `ReplaceLandManaColor` swaps a matched land's base mana effect for
+> "add one mana of any color" in the handler and treats it as a five-color source in `ManaSolver`; the
+> any-color tap bonus is modeled as a flexible `BonusManaEntry` in the solver. **Known limitation
+> (intentional, matches existing engine behavior for City of Brass etc.):** automatic cost payment adds the
+> mirror/replacement/bonus *mana* via the solver but does **not** fire the `LandTappedForMana` event or
+> non-mana riders (Overabundance's damage) — those only resolve on a manual tap.
+
+**What exists.** `MiscStaticAbilities.TappedForManaGrant` / `TappedForManaGrantFromFilter` already
+intercept mana-ability resolution and **add** extra mana inline (no stack), which is exactly the
+shape of a triggered mana ability (CR 605). Runtime emits `ManaAddedEvent` but there is no
+*tapped-a-land-for-mana* SDK trigger and no "produce different mana instead" replacement.
+
+Card-by-card:
+- **Fertile Ground** ("…adds an additional one mana of any color") → **already `TappedForManaGrant`**.
+  Buildable today as an Aura with that static. Verify and close.
+- **Overabundance** ("…adds one mana of any type that land produced. Overabundance deals 1 damage to
+  that player") → additive grant **plus a non-mana rider** (the damage). Still a triggered mana
+  ability, so it must resolve inline during mana production.
+- **Pulse of Llanowar** ("…adds one mana of any color **instead**") → mana-production **replacement**,
+  not additive.
+
+**Plan.** Introduce one canonical event and reuse the existing inline intercept:
+1. Add SDK `GameEvent.LandTappedForMana(player: Player = Player.Each, landFilter: GameObjectFilter)`
+   and emit a `LandTappedForManaEvent(tapperId, landId)` from the mana-ability resolution path
+   (where `ManaAddedEvent` is produced).
+2. For the **rider** case (Overabundance), extend the tapped-for-mana intercept so the static can
+   carry an optional inline `rider: Effect` resolved during mana production (deal 1 damage to the
+   tapper). Keep it inline — it is not a stack ability.
+3. For the **replacement** case (Pulse), add a `ManaProductionReplacement` variant: "when a land
+   matching `filter` is tapped for mana, its controller adds one mana of any color it could produce
+   instead." This slots beside the existing `LandTappedForTwoOrMoreMana` (Damping Sphere) intercept,
+   which is the precedent for modifying mana-ability output.
+
+**Leverage.** The `LandTappedForMana` event + inline-rider + mana-replacement trio is broadly reusable
+(Mana Flare, Heartbeat of Spring, Power Surge-likes). Medium effort, concentrated in the mana path.
+
+---
+
+### #4 — Opponent / any-player cast-trigger sugar · Rewards of Diversity, Pure Reflection ✅ DONE
+
+> **Implemented (facade + both cards).** `Triggers.AnyPlayerCastsSpell`, `Triggers.OpponentCastsSpell`,
+> `Triggers.anyPlayerCasts(spellFilter)`, `Triggers.opponentCasts(spellFilter)` added to `Triggers.kt`.
+> **Rewards of Diversity** (`opponentCasts(Multicolored)`) and **Pure Reflection**
+> (`anyPlayerCasts(Creature)` → destroy existing Reflections, create X/X token under the caster's
+> control) authored in `definitions/inv/cards/` and auto-registered. Covered by
+> `RewardsOfDiversityScenarioTest` (incl. the `Player.Opponent`-scoping negative case) and
+> `PureReflectionScenarioTest`.
+
+**What exists.** Already wired at runtime (`TriggerMatcher.matchesPlayer`). Only the `Triggers` facade
+lacks constants; cards can construct `SpellCastEvent(player = …)` directly today.
+
+**Plan.** Pure ergonomics — add to `Triggers.kt`:
+- `Triggers.AnyPlayerCastsSpell`, `Triggers.OpponentCastsSpell`
+- `fun anyPlayerCasts(spellFilter)`, `fun opponentCasts(spellFilter)`
+
+Then **Rewards of Diversity** = `opponentCasts(multicolored)` → `GainLife(2, Player.You)` +
+`LoseLife(2, Player.TriggeringPlayer)`. **Pure Reflection's** trigger = `anyPlayerCasts(creature)`
+(its self-token-copy payoff is a separate, existing token-copy effect). Low effort, high reuse.
+
+---
+
+### #5 — `SharesColorWith` filter · Spreading Plague ✅ DONE
+
+> **Implemented (primitive + card).** `CardPredicate.SharesColorWith(entity)` +
+> `GameObjectFilter.sharingColorWith(entity)`, evaluated via projected colors in `PredicateEvaluator`
+> (colorless → no match). Plus a reusable `excludeTriggering` flag on `CardSource.BattlefieldMatching`
+> threaded through `destroyAllPipeline` / `Effects.DestroyAll(…, excludeTriggering = true)` so "all
+> *other* … with it" triggers spare the triggering creature. Spreading Plague authored in
+> `definitions/inv/cards/SpreadingPlague.kt`; covered by `SpreadingPlagueScenarioTest`.
+
+**What exists.** `CardPredicate.SharesCreatureTypeWith(entity)` +
+`GameObjectFilter.sharingCreatureTypeWith(entity)` (`ObjectFilter.kt:335`). No color analogue.
+
+**Plan.** Mirror the creature-type pair exactly:
+1. `CardPredicate.SharesColorWith(val entity: EntityReference)`.
+2. `GameObjectFilter.sharingColorWith(entity)` builder.
+3. Evaluate in `PredicateEvaluator` using **projected** colors
+   (`projected.getColors(candidate)` ∩ `projected.getColors(entity)` non-empty) — projection is
+   mandatory here (color-changing effects).
+
+**Composition.** Spreading Plague = ETB trigger (binding `ANY`, any creature) →
+`Destroy(GroupRef(GameObjectFilter.Creature.sharingColorWith(EntityReference.Triggering).excludeSelf))`.
+
+**Leverage.** Reusable for every "shares a color with" card (Standardize, Circle of Solace targeting,
+Dega-style payoffs).
+
+---
+
+### #6 — Graveyard-functional ability · Pyre Zombie ✅ DONE
+
+> **Implemented** (`inv/cards/PyreZombie.kt`, pure card authoring — no engine change). The
+> `triggeredAbility { }` builder already exposes `triggerZone` (→ `TriggeredAbility.activeZone`), and
+> `TriggerDetector` scans graveyard cards for step triggers with `activeZone == GRAVEYARD`
+> (`TriggerDetector.kt:359-405`, controller = card owner). Upkeep recursion =
+> `triggerZone = Zone.GRAVEYARD` + `MayPayManaEffect(ManaCost.parse("{1}{B}{B}"),
+> Effects.ReturnToHand(EffectTarget.Self))`. Sac ability =
+> `Costs.Composite(Costs.Mana("{1}{R}{R}"), Costs.SacrificeSelf)` → `Effects.DealDamage(2, Targets.Any)`.
+
+`activeZone = Zone.GRAVEYARD` + intervening-`if` is fully wired (`TriggerDetector.kt:359-405`;
+controller resolves to the card's **owner** for graveyard cards). The `MayPayManaEffect`
+("you may pay {1}{B}{B}. If you do, return it to your hand") and graveyard `triggerZone` setter both
+already existed (Gigapede precedent), so no engine work was required.
+
+---
+
+### #7 — Conditional / amount-relational damage replacements · 6 cards ✅ MOSTLY DONE
+
+> **Implemented (5 of 6 cards; Protective Sphere deferred to #8).** New SDK vocabulary, no per-card
+> executors: `AmountFilter` (`Any`/`AtMost`/`AtLeast`/`Exactly`) on `GameEvent.DamageEvent`; `CapDamage`
+> replacement; `PreventDamage.restrictions: List<Condition>` (condition-gated prevention, mirrors
+> `ModifyLifeLoss.restrictions`); relational `CardPredicate.SharesColorWithRecipient` +
+> `GameObjectFilter.sharingColorWithRecipient()`; `CardPredicate.SharesChosenColorWithSource` +
+> `sharingChosenColorWithSource()`; `EffectTarget.ControllerOfDamageSource`. Engine: `AmountFilter`,
+> the relational source predicate, and `restrictions` are honored in `DamageUtils.applyStaticDamageReduction`;
+> `CapDamage` in `applyStaticDamageAmplification`; the previously-dead `RedirectDamage` replacement is now
+> applied as a continuous static via a new `findStaticDamageRedirect` scan in `dealDamageToTarget`
+> (each source applies once per event, loop-guarded by `appliedRedirects`). All paths shared by combat
+> and noncombat damage. Cards authored in `definitions/inv/cards/`: **Callous Giant** (AmountFilter),
+> **Divine Presence** (CapDamage), **Well-Laid Plans** (SharesColorWithRecipient), **Spirit of
+> Resistance** (#2 five-color condition + restrictions), **Harsh Judgment** (RedirectDamage +
+> ControllerOfDamageSource + chosen-color predicate). Covered by per-card scenario tests
+> (`CallousGiantTest`, `DivinePresenceTest`, `WellLaidPlansTest`, `SpiritOfResistanceTest`,
+> `HarshJudgmentTest`).
+>
+> **Protective Sphere remains blocked on #8** — it prevents damage from a source sharing a color with
+> *the mana spent on the activation cost*, which needs per-color mana-spent tracking (gap #8). The
+> reusable hook is ready: store the spent color as the prevention's chosen color and reuse the
+> chosen-color source predicate.
+
+This is the largest gap and the place where it's most tempting to write six bespoke executors. The
+elegant path is to **enrich the existing `appliesTo` filter vocabulary** so the existing
+`PreventDamage` / `RedirectDamage` replacements cover most cases, then add exactly one new "cap"
+variant.
+
+**What exists.** `ReplacementEffect.PreventDamage(amount?)`, `RedirectDamage(target)`, `DoubleDamage`,
+`ModifyDamageAmount(modifier)`, all filtered by `GameEvent.DamageEvent(recipient, source, damageType)`
+with `RecipientFilter` / `SourceFilter (HasColor, Matching, …)` / `DamageType`. The 7-stage
+`dealDamageToTarget()` pipeline (`DamageUtils.kt:72-260`) already evaluates these. Floating
+`PreventAllDamageTo` etc. also exist.
+
+**Plan — three additions, no per-card executors:**
+
+1. **Amount filter on `DamageEvent`.** Add `amount: AmountFilter = Any` with
+   `AmountAtMost(n) / AmountAtLeast(n) / Exactly(n)` (`EventFilters.kt`). The pipeline checks it before
+   applying a matching prevention.
+   - **Callous Giant** ("prevent damage if it's 3 or less") → `PreventDamage(amount = null,
+     appliesTo = DamageEvent(recipient = Self, amount = AmountAtMost(3)))`. Pure reuse.
+
+2. **`CapDamage(maxAmount, appliesTo)`** replacement (the one genuinely new variant — capping isn't
+   prevent or modify). Mirrors `PreventDamage`'s structure.
+   - **Divine Presence** ("4+ damage to a permanent or player → 3 instead") →
+     `CapDamage(maxAmount = 3, appliesTo = DamageEvent(recipient = AnyPlayerOrPermanent))`.
+
+3. **Relational + chosen-color source filters** (`SourceFilter`):
+   - `SourceFilter.SharesColorWithRecipient` → **Well-Laid Plans** ("prevent damage a creature would
+     deal to another creature if they share a color"): `PreventDamage(null, DamageEvent(
+     recipient = AnyCreature, source = Creature + SharesColorWithRecipient))`.
+   - `SourceFilter.HasChosenColor` (reads the replacement source's `ChosenColorComponent`) →
+     **Harsh Judgment** ("the next time a source of your choice of the chosen color would deal
+     damage…redirect to its controller"): `RedirectDamage(target = ControllerOfDamageSource,
+     appliesTo = DamageEvent(source = HasChosenColor + instant/sorcery `Matching`))`. Requires one
+     new `EffectTarget`: **`ControllerOfDamageSource`** (the controller of the current damage's
+     source) — a natural sibling of the existing `TargetController` family.
+   - **Protective Sphere** ("prevent damage from a source of the color of mana spent to activate")
+     reuses `SourceFilter.HasChosenColor` — the activation stores the spent mana color as the chosen
+     color on the created prevention effect (ties into #8's per-color tracking).
+
+4. **Spirit of Resistance** ("prevent all damage to you") = `PreventDamage(amount = null,
+   appliesTo = DamageEvent(recipient = You))` gated by the five-color `ConditionalStaticAbility` from
+   #2. Already expressible once it's wrapped in the condition.
+
+**Leverage.** `AmountFilter` and the relational `SourceFilter`s are reused by triggers too (they share
+the `GameEvent` pattern system per §2.7), so this enriches the whole event vocabulary, not just damage
+prevention.
+
+---
+
+### #8 — Color-restricted X-spend + per-color mana tracking · Soul Burn, Atalya ✅ DONE
+
+> **Implemented (primitive + both cards).** `xManaRestriction: Set<Color>` on `CardScript` (spell) and
+> `ActivatedAbility`, surfaced through the `spell { }` / `activatedAbility { }` DSL. The mana solver
+> grew an `xManaRestriction` parameter + dedicated restricted-X pass (`ManaSolution.xRestrictedManaSpent`
+> reports the per-color X allocation); `CastPaymentProcessor` and `ActivateAbilityHandler` restrict the
+> floating-mana X loops to the allowed colors (colorless disallowed) and `canPay` only counts allowed-color
+> pool mana toward X. Per-color mana spent on X is stored on `SpellOnStackComponent.manaSpentOnXByColor`,
+> plumbed into `EffectContext`, and read by the new `DynamicAmount.ManaSpentOnX(color)`. **Soul Burn**
+> ({X}{2}{B}, `xManaRestriction = {BLACK, RED}`, life = `Effects.GainLife(DynamicAmount.ManaSpentOnX(BLACK))`)
+> and **Atalya, Samite Master** (modal `{X},{T}` ability, `xManaRestriction = {WHITE}`) authored in
+> `definitions/inv/cards/`. Covered by `SoulBurnAndAtalyaXManaTest`. **Scoping note:** Soul Burn implements
+> the original Invasion life-gain wording (life = black spent on X); the modern Oracle's secondary caps
+> (damage dealt / target's life / loyalty / toughness) are omitted as edge-case-only refinements.
+
+**What exists.** Per-color spent buckets (`manaSpentWhite…`) live on `SpellOnStackComponent`
+(`StackComponents.kt:47-52`) but are **not** exposed to `EffectContext` (only the
+`totalManaSpent` sum is). There is no color restriction on X payment.
+
+**Plan — two pieces:**
+1. **Expose per-color spent.** Plumb the six buckets into `EffectContext` (as
+   `manaSpentByColor: Map<Color, Int>`) and add `DynamicAmount.ManaSpentOfColor(color)` reading it
+   (sibling of the existing `TotalManaSpent`).
+   - **Soul Burn**: damage = `XValue`; "gain life equal to the black mana spent" =
+     `GainLife(DynamicAmount.ManaSpentOfColor(Color.BLACK))`.
+2. **Restrict which colors pay X.** Add `Spell.xManaRestriction: Set<Color>` honored by the
+   `ManaSolver` / `CastPaymentProcessor` when paying the X (generic) portion only.
+   - **Atalya** activated ability and **Soul Burn** ("spend only B and/or R on X") set the restriction.
+
+**Leverage.** `ManaSpentOfColor` is reusable for any "for each [color] spent" payoff; the X-restriction
+covers the small family of "spend only [color] on X" spells.
+
+---
+
+### #9 — Discard (incl. at random) as a cost · Meteor Storm ✅ DONE
+
+> **Implemented (primitive + card).** `AbilityCost.Discard` grew `count: Int = 1` and
+> `atRandom: Boolean = false`; facades `Costs.Discard(filter, count, atRandom)` and
+> `Costs.DiscardAtRandom(count, filter)`. When `atRandom`, `CostHandler.payAbilityCost` picks the
+> discarded cards itself (`eligible.shuffled().take(count)`, the same unseeded pattern as
+> `PayOrSufferExecutor.executeRandomDiscard`) — no player selection; otherwise the player's
+> `discardChoices` (first `count`) are discarded via `ZoneTransitionService.discardCards`. Both the
+> standalone and composite `AbilityCost.Discard` arms of `ActivatedAbilityEnumerator` now gate on
+> `targets.size >= count` and skip the discard-selection `AdditionalCostData` when `atRandom` (it
+> surfaces `discardCount = cost.count` otherwise). The payability check widened from `isNotEmpty()` to
+> `size >= count`. **Meteor Storm** authored in `definitions/inv/cards/MeteorStorm.kt` ({R}{G}
+> Enchantment; `Costs.Composite(Mana("{2}{R}{G}"), DiscardAtRandom(2))` → `DealDamage(4, any target)`).
+> Covered by `MeteorStormDiscardCostTest`.
+>
+> **Scoping note:** the `AdditionalCost.DiscardCards` "for symmetry" `atRandom` tweak was intentionally
+> skipped — no card in the set needs random discard as a *spell* additional cost, and adding an
+> unhonored field would mislead. Revisit when such a card appears.
+
+**What existed.** `AbilityCost.Discard(filter)` (single, chosen) and `AdditionalCost.DiscardCards(count,
+filter)`. No "at random" and `AbilityCost.Discard` had no count. Cost is a distinct family from Effects,
+so widening it (rather than composing) was the right call here.
+
+**Leverage.** Random discard recurs (Browbeat-likes, Wheel-of-Fortune riders). Small, contained.
+
+---
+
+### #10 — "Name a card" choice + name-matching filter · Desperate Research, Lobotomy ✅ DONE
+
+> **Implemented (primitives + both cards).** Two halves of the "name a card" family, no per-card
+> executors. **Naming half:** `OptionType.CARD_NAME` (options = `CardRegistry.allCardNames()` sorted —
+> the existing `ChooseOptionDecision` renders it as a searchable list, so no client change and no
+> free-text entry) surfaced via `Effects.ChooseCardName(storeAs, prompt?, excludeBasicLandNames?)`;
+> `ChooseOptionPipelineExecutor` now takes the registry. **Capture half:** `Effects.StoreCardName(from,
+> storeAs)` + `StoreCardNameExecutor` record the name of a chosen card into `chosenValues` — threaded
+> through a new `EffectResult.updatedChosenValues` channel merged by `CompositeEffectExecutor` and
+> `EffectContinuationRunner`. **Matching:** `CardPredicate.NameEqualsChosen(variableName)` +
+> `GameObjectFilter.namedFromVariable(variableName)` (case-insensitive; fails closed in
+> static/projection — wired into `PredicateEvaluator`, `AffectsFilterResolver`, `CostCalculator`).
+> Cards authored in `definitions/inv/cards/`: **Desperate Research** (`ChooseCardName` → reveal top 7 →
+> `SelectFromCollection(All, namedFromVariable)` matches to hand, rest exiled) and **Lobotomy**
+> (`RevealHand` → choose a non-basic-land card → `StoreCardName` → gather all same-named across
+> graveyard/hand/library → exile → shuffle). Covered by `DesperateResearchTest` + `LobotomyTest`.
+> **Scoping note:** Lobotomy's oracle wording is "choose a card from the revealed hand" (capture-name
+> half), not a typed name; the doc's original framing of both as free naming was corrected.
+
+**What existed.** Only `CardPredicate.NameEquals(static)`. No `CARD_NAME` option type, no choose-a-name
+effect.
+
+**Leverage.** Unlocks the whole "name a card" family (Pithing Needle is a different axis, but Cranial
+Extraction, Memoricide, Sadistic Sacrament all follow this exact shape); `StoreCardName` /
+`NameEqualsChosen` also serve any "choose a card, then act on cards with that name" effect.
+
+---
+
+### #11 — Color-change applied to a spell on the stack · Blind Seer ✅ DONE (Crystal Spray deferred to #17)
+
+> **Implemented (Blind Seer; engine + card).** Two surgical engine changes let a Layer-5 color change
+> apply to a spell on the stack: (1) `ChangeColorExecutor` (and the new chosen-color sibling) accept a
+> target on the **stack** as well as the battlefield; (2) `StateProjector.collectContinuousEffects` keeps
+> a floating effect's affected entity when it is on the stack (previously battlefield-only), so the recolor
+> projects onto the spell. `EffectApplicator.applyEffect` already `getOrPut`s the entity, so the spell's
+> `projectedState.getColors(spellId)` reads the new color during resolution (driving color-matching checks
+> like protection); an un-recolored stack spell still has no projection entry and falls back to its base
+> `CardComponent` colors. New atomic `Effects.ChangeColorToChosen(target, duration)` +
+> `ChangeColorToChosenExecutor` reads `EffectContext.chosenColor`, composing with the existing single-color
+> `Effects.ChooseColorThen`. **Blind Seer** authored in `definitions/inv/cards/BlindSeer.kt`
+> (`{1}{U}: Target spell or permanent becomes the color of your choice until end of turn`, via
+> `TargetSpellOrPermanent`), covered by `BlindSeerTest` (recolor a permanent + recolor a spell on the stack).
+>
+> **Scoping correction:** the gap doc framed Blind Seer as "the color **or colors** of your choice"; the
+> actual Oracle text is a *single* color, until end of turn, so it reuses the existing single-color choice
+> (no multi-select decision needed). **Crystal Spray is a text-changing card (#17), not a color change** —
+> it stays deferred to that gap; the stack-object color projection built here is the reusable prerequisite
+> for any future "target spell becomes [color]" card.
+
+**What existed.** `ChangeColorEffect` exists but `ChangeColorExecutor` (`:28-29`) silently fizzled if the
+target wasn't on the battlefield, and color projection ran only over the battlefield.
+
+**Leverage.** Stack-object color projection is the prerequisite for any "target spell becomes [color]"
+card; pairs with #17 for Crystal Spray.
+
+---
+
+### #12 — Damage to a target's controller · Backlash, Agonizing Demise
+
+**Already buildable** (see table). Use `EffectTarget.TargetController`. No engine work.
+
+---
+
+### #13 — Protection from a supertype + legendary targeting · Tsabo Tavoc ✅ DONE
+
+> **Implemented (primitive + card).** New `ProtectionScope.Supertype(supertype)` variant +
+> `KeywordAbility.protectionFromSupertype(...)` facade; `ProtectionComponent` grew a `supertypes` set,
+> extracted in `GameInitializer`, `ScenarioTestBase`, and `DevScenarioController`. `StateProjector`
+> synthesizes `PROTECTION_FROM_SUPERTYPE_<X>` keywords; `ProjectedState.getSupertypes()` isolates
+> supertypes from the combined projected type set. All four protection pillars consult it: targeting
+> (`TargetValidator.checkProtectionFromSupertype`), blocking (`BlockEvasionRules.ProtectionFromSupertypeRule`,
+> registered in `defaultBlockEvasionRules`), and combat damage (`CombatDamagePipeline.ProtectionModifier`'s
+> `protectedBySupertype`). "Destroy target legendary creature" reuses the existing
+> `TargetObject(TargetFilter(baseFilter = GameObjectFilter.Creature.legendary()))` — no new targeting
+> primitive. **Tsabo Tavoc** authored in `definitions/inv/cards/TsaboTavoc.kt` (protection from legendary
+> creatures via `protectionFromSupertype("Legendary")`, combat-damage sacrifice trigger, {T} destroy-legendary
+> ability). Covered by `TsaboTavocScenarioTest`. **Scoping note:** `ProtectionScope.Supertype` is a pure
+> supertype-quality check; the engine treats "legendary creatures" as "legendary" since every protection-relevant
+> source (blocker / combat-damage source / ability source) is a creature in practice.
+
+**What exists.** `ProtectionScope` covers Color/Colors/CardType/Subtype/Everything/EachOpponent but not
+supertype. `CardPredicate.IsLegendary` exists (filter only).
+
+**Plan.**
+1. **Targeting** "destroy target legendary creature" is already buildable:
+   `TargetObject(GameObjectFilter.Creature.legendary())`.
+2. Add `ProtectionScope.Supertype(val supertype: String)`. Wire it exactly like the existing scopes:
+   `KeywordAbility.Protection` text + `StateProjector` synthesizes
+   `PROTECTION_FROM_SUPERTYPE_LEGENDARY`, and the combat/damage/target protection checks consult the
+   projected supertype.
+
+**Leverage.** "Protection from legendary creatures" is rare but the scope addition is trivial and
+mirrors the established pattern.
+
+---
+
+### #14 — Landwalk of a chosen basic land type · Traveler's Cloak ✅ DONE
+
+> **Implemented (primitive + card).** SDK `GrantLandwalkOfChosenType(filter = attachedCreature())`
+> static ability (the chosen-value counterpart to `GrantKeyword`, mirroring
+> `SetEnchantedLandTypeFromChosen`). Engine: `StaticAbilityHandler` converts it to a new Layer-6
+> `Modification.GrantLandwalkFromChosen`; `EffectApplicator` reads the source's
+> `ChosenLandTypeComponent` at apply-time and grants the matching landwalk keyword
+> (Plains→Plainswalk, Island→Islandwalk, Swamp→Swampwalk, Mountain→Mountainwalk, Forest→Forestwalk).
+> No new "parameterized landwalk" keyword — reuses the existing five landwalk keywords and the
+> `EntersWithChoice(BASIC_LAND_TYPE)` / `ChosenLandTypeComponent` machinery. **Traveler's Cloak**
+> authored in `definitions/inv/cards/TravelersCloak.kt` (`EntersWithChoice(BASIC_LAND_TYPE)` +
+> ETB `DrawCards(1)` + `GrantLandwalkOfChosenType()`); covered by `TravelersCloakScenarioTest`.
+> **Scoping note:** the card's oracle says "choose a land type"; the engine models landwalk only for
+> the five basic land types (the only ones with a landwalk keyword), so the entry choice is
+> restricted to `BASIC_LAND_TYPE` — the practical universe of the ability.
+
+**What existed.** Landwalk is a fixed 5-keyword enum; `EntersWithChoice(BASIC_LAND_TYPE)` writes a
+chosen-type component.
+
+**Plan.** Because basic-land-type → landwalk keyword is a fixed 5-way mapping
+(Forest→Forestwalk, …), add a static ability `GrantLandwalkOfChosenType` that, at projection, reads
+the source's chosen-basic-land-type component, maps it to the matching existing `Keyword`, and grants
+it to the enchanted creature. Reuses the existing landwalk keywords and chosen-type machinery — no new
+"parameterized landwalk" keyword needed.
+
+**Composition.** Traveler's Cloak = Aura with `EntersWithChoice(BASIC_LAND_TYPE)` +
+`staticAbility { ability = GrantLandwalkOfChosenType() }` (default `attachedCreature()` filter).
+
+---
+
+### #15 — Dynamic multi-color protection from a board-computed set · Pledge of Loyalty ✅ DONE
+
+> **Implemented (primitive + card).** New SDK static ability
+> `GrantProtectionFromControlledColors(filter = attachedCreature())` (in `ProtectionStaticAbilities.kt`)
+> → engine `Modification.GrantProtectionFromControlledColors` (Layer 6 / ABILITY). At apply-time
+> `EffectApplicator` collects the **projected** colors of every battlefield permanent controlled by the
+> source's **projected** controller and adds `PROTECTION_FROM_<COLOR>` to each affected entity — so the
+> set is board-derived, reflects Layer-5 color changes, and a colorless permanent contributes nothing.
+> Downstream targeting/blocking/combat checks are unchanged (they already consume the synthesized
+> per-color keywords). **Pledge of Loyalty** authored in `definitions/inv/cards/PledgeOfLoyalty.kt`
+> (`{1}{W}` Aura, `staticAbility { ability = GrantProtectionFromControlledColors() }`). Covered by
+> `PledgeOfLoyaltyTest` (enchant-an-opponent's-creature proves "you" = Aura controller; adding a
+> colored permanent updates the set dynamically).
+>
+> **Scoping corrections.** (1) The original plan proposed an *innate* `ProtectionScope.DynamicColors`
+> wired into `StateProjector`'s base-keyword synthesis. That's the wrong model — Pledge is an Aura that
+> *grants* protection to the enchanted creature, so this belongs in the `GrantProtection`/
+> `GrantHexproofFromOwnColorsToGroup` static-ability family, not the per-card `ProtectionComponent`
+> path. (2) The printed "This effect doesn't remove this Aura" clause is a no-op here: `UnattachedAurasCheck`
+> (704.5n) only detaches an Aura whose object is gone or that is unattached, never one whose enchanted
+> object gained protection from the Aura's color — so no exception logic is needed.
+
+**What existed.** `ProtectionScope.Colors(Set<Color>)` is a fixed set; protection is synthesized as
+per-color keywords at projection (`StateProjector.kt:100-102`). `GrantHexproofFromOwnColorsToGroup`
+was the precedent for a projection-time, board-derived keyword grant.
+
+**Leverage.** Reusable for any "protection from the colors of permanents you control" card.
+
+---
+
+### #16 — Life-bidding / auction · Mages' Contest ✅ DONE
+
+> **Implemented (primitive + card).** New SDK `LifeAuctionEffect(onCasterWins)` + `Effects.LifeAuction(onWin)`
+> facade — an open life-bidding auction between the caster and the controller of a `TargetSpell`. Engine:
+> `LifeAuctionExecutor` sets up the auction (caster opens at a bid of 1; the spell's controller is asked
+> first), and shared `LifeAuctionLogic` (used by both the executor and the new `resumeLifeAuction` resumer)
+> drives the alternating bid using **existing** decisions — a `YesNoDecision` ("top the high bid?") then a
+> `ChooseNumberDecision` for the amount (min = highBid+1, capped at the bidder's life) — so no new decision
+> type and no web-client work. When a player passes, the high bidder loses that much life (routed through
+> `LoseLifeEffect` so life-loss replacements apply), and `onCasterWins` runs **only if the caster won**,
+> against the original targets (so `Effects.CounterSpell()` counters the bid-over spell). State carried on
+> `LifeAuctionContinuation` (+ `LifeAuctionStage`). **Mages' Contest** authored in
+> `definitions/inv/cards/MagesContest.kt` (`{1}{R}{R}`, `TargetSpell()` + `Effects.LifeAuction(Effects.CounterSpell())`).
+> Covered by `MagesContestTest` (pass → counter; outbid → spell resolves).
+>
+> **Scoping corrections vs. the original plan.** (1) The payoff is **not** "controlled by the winner" — the
+> spell is countered only when *you* (the caster) win; if the spell's controller outbids, it resolves. So the
+> effect carries `onCasterWins`, not a winner-bound payoff. (2) No `BidLifeDecision` was added — composing the
+> existing `YesNo` + `ChooseNumber` decisions covers the two-participant auction with clearer UX and zero
+> cross-module plumbing. The general N-player APNAP loop was unnecessary: Mages' Contest has exactly two
+> bidders who strictly alternate.
+
+---
+
+### #17 — Text-changing (color word / land-type word) · Crystal Spray ✅ DONE
+
+> **Implemented (primitive + card + UX).** `Effects.ChangeWordInText(target, duration)` +
+> `ChangeWordInTextEffect`; the player picks a color word or basic land type and a same-category
+> replacement at resolution (executor → `ChooseFromWord`/`ChooseToWord` continuations →
+> `WordChangeChoiceContinuationResumer`), recorded as a `TextReplacement(from, to, category, duration)`
+> on the target's `TextReplacementComponent`. The `TextReplacer` SDK interface grew `replaceColor`;
+> `CardPredicate.HasColor`/`NotColor` now rewrite their color. `StateProjector.applyTextReplacements`
+> rewrites basic-land subtypes (creature-type path generalized to land types) and
+> `PROTECTION_FROM_<COLOR>` keywords; `CleanupPhaseManager` strips `EndOfTurn` replacements.
+> **Crystal Spray** (`{2}{U}` Instant, `ChangeWordInText(target).then(DrawCards(1))`) authored in
+> `definitions/inv/cards/CrystalSpray.kt`; covered by `CrystalSprayTest` (Forest→Island taps blue,
+> end-of-turn revert, protection-from-color rewrite).
+>
+> **The key architectural insight:** basic-land mana is derived from the **projected** type line
+> (`IntrinsicManaAbilities.forEntity` reads projected subtypes, and intrinsic abilities *replace* the
+> card's declared mana ability), so a Forest→Island subtype rewrite makes the land tap for `{U}` with
+> **zero mana-code changes** — mana, landwalk, and type checks all follow the projection.
+>
+> **Scoping corrections vs. the original plan.** (1) Real Oracle is `{2}{U}` Instant, "**until end of
+> turn**" + immediate "Draw a card" (no delayed trigger) — not the indefinite/`{1}{U}` framing above.
+> (2) No `WordCategory` parameter on the effect: the category is inferred from the chosen word, and the
+> `TextReplacementCategory` enum already existed. (3) Color/land-type words inside a *resolving spell's*
+> structured effect text (e.g. "destroy target red creature" while the spell resolves) and oracle
+> reminder text remain the **flagged long tail** — the implemented projection covers permanents
+> (subtypes, mana, protection, color filters), which is the practical universe; targeting a stack spell
+> is legal but its projection effect is limited to color.
+>
+> **UX (per follow-up feedback).** The choose-word/choose-type flow was reworked and the same
+> treatment retrofitted to **Artificial Evolution** (`ChangeCreatureTypeText`), which players found
+> confusing. (1) FROM and TO are now **one screen** — a single `ChooseReplacementDecision`
+> (+`ReplacementChosenResponse`) carrying both lists, rendered by `ChooseReplacementDecisionUI` with a
+> live "from → to" preview, replacing the old two sequential `ChooseOptionDecision`s. (2) Words/types
+> **actually present on the target** sort first and are labeled "On <card>" (one pre-selected), so
+> players stop picking a FROM that isn't there (a silent no-op). For creature types "present" means a
+> subtype **or a type named in the card's rules text** — e.g. "Beast" in Wirewood Savage's trigger,
+> which the trigger resolver rewrites (covered by `TextChangeRelevanceTest`). (3) Crystal Spray's TO
+> list is category-constrained (`allowedToByFrom`: color↔color, land↔land) and shows inline mana pips
+> (reusing the mana-symbol SVGs via a new `optionPip` lookup, kept separate from the Siege tile layout).
+
+**What existed.** Only `ChangeCreatureTypeTextEffect` (Layer 3, via `TextReplacementComponent`).
+
+---
+
+### #18 — Color-relational cast restriction · Mana Maze ✅ DONE
+
+> **Implemented (primitive + card).** New SDK `data object CantCastSpellsSharingColorWithLastCast`
+> (global static ability) backed by `GameState.lastCastSpellColors: Set<Color>?` — the colors of the
+> spell most recently cast this turn, written in `CastSpellHandler` alongside the existing
+> `spellsCastThisTurnByPlayer` record and cleared each turn in `TurnManager.startTurn()`. The check
+> lives in `CastPermissionUtils.sharesColorWithMostRecentCast(state, spellCardId)` (true only when some
+> battlefield permanent has the static, a colored spell was cast earlier this turn, and the candidate's
+> colors overlap that set) and is enforced both authoritatively in `CastSpellHandler.validate` and in
+> the hand-cast `CastSpellEnumerator` so legal actions stay correct. Never blocks the first spell of the
+> turn; a colorless spell shares no color (always castable) and casting one lifts the restriction. **Mana
+> Maze** (`{1}{U}` Enchantment) authored in `definitions/inv/cards/ManaMaze.kt`; covered by
+> `ManaMazeScenarioTest` (first-spell, same-color block, differently-colored allow, colorless lift).
+>
+> **Scoping note:** the restriction reads the candidate's base `CardComponent.colors` (matching how
+> `lastCastSpellColors` is recorded). Color-changing a card in hand is not a real concern; a recolored
+> *spell on the stack* still records its base colors as "most recently cast", which is the practical
+> universe.
+
+---
+
+### #19 — Reveal-and-compare target swap · Psychic Battle ✅ DONE
+
+> **Implemented (new trigger + two reusable atoms; Psychic Battle is pure composition).** The card's
+> real Oracle text is *"Whenever a player chooses one or more targets, each player reveals the top
+> card of their library. The player who reveals the card with the greatest mana value may change the
+> target or targets. … (a tie leaves them unchanged)."* Three pieces, no card-specific executor:
+>
+> 1. **Trigger.** New `GameEvent.TargetsChosenEvent(player)` (SDK) + `Triggers.AnyPlayerChoosesTargets`.
+>    The engine emits `TargetsChosenEvent(chooserId, stackObjectId, …)` once per spell / activated
+>    ability / triggered ability that goes on the stack with ≥1 target (the three `StackResolver` put
+>    paths, beside the existing `CommitCrimeEvent`). Wired through `TriggerContext` (triggering entity =
+>    the stack object), `TriggerMatcher`, `TriggerIndex` (`CHOOSE_TARGETS` category), `Serialization`,
+>    and `ClientEvent` (internal → `null`). It mirrors the once-per-object `CommitCrimeEvent` shape.
+> 2. **The reveal + compare reuses existing pipeline atoms** — no new reveal/argmax executor. Each
+>    player reveals their top card via the existing `GatherCards(CardSource.TopOfLibrary(1, Player.Each),
+>    revealed = true)`, and the greatest-mana-value card is found by the existing `FilterCollection` with
+>    a new **generic** `CollectionFilter.GreatestManaValue` (sibling of `GreatestPower`; keeps all ties,
+>    so a tie yields several survivors). Empty libraries simply contribute no card (CR ruling).
+> 3. **`Effects.ChangeTriggeringObjectTargets(chooser)`** — the one genuinely-new atom: the player named
+>    by `chooser` (`RetargetChooser.Controller`, or `RetargetChooser.OwnerOfStored(name)` = the owner of
+>    the *single* card in a pipeline collection) may change the triggering object's targets — the
+>    player-chosen, multi-target counterpart of `ReselectTargetRandomly`. Reselection runs slot-by-slot
+>    via `TargetFinder.findLegalTargets` (legality judged from the *spell's* controller), keeping the
+>    current target as a "keep" option. `OwnerOfStored` resolves to nobody unless exactly one card
+>    survives — so a tie (≥2 survivors) or all-empty board is a no-op. Backed by `ContestedRetargetLogic`
+>    + `ContestedRetargetContinuation`.
+>
+> **Psychic Battle** is pure composition:
+> `triggeredAbility { trigger = AnyPlayerChoosesTargets; effect = Composite(
+> GatherCards(TopOfLibrary(1, Player.Each), revealed = true, storeAs = "revealed"),
+> FilterCollection("revealed", GreatestManaValue, storeMatching = "w"),
+> ChangeTriggeringObjectTargets(OwnerOfStored("w"))) }`. Because targets are changed in place (not
+> re-chosen via a put-on-stack), no fresh `TargetsChosenEvent` is emitted, so Psychic Battle never
+> re-triggers itself (matching the printed errata clause). Covered by `PsychicBattleTest` (winner
+> redirects the spell; tie leaves it unchanged; empty library is skipped so the lone revealer wins).
+>
+> **Scoping note:** copies of spells (`putSpellCopy`) do not emit `TargetsChosenEvent` — choosing new
+> targets for a copy is a rare edge and is left out to keep the change bounded; the three primary
+> targeting paths cover the practical universe.
+
+**What existed.** `ChangeTargetEffect` / `ChangeSpellTargetEffect` / `ReselectTargetRandomlyEffect`
+(`StackEffects.kt`) changed a *targeted* spell's single target; there was no "whenever a player chooses
+targets" trigger and no way to route a retarget decision to a *computed* player. The reveal + argmax
+is built from the **existing** `GatherCards`/`FilterCollection` pipeline plus one generic
+`CollectionFilter.GreatestManaValue`; the only genuinely-new effect is `ChangeTriggeringObjectTargets`
+(the irreducible "[chooser] may change the triggering object's targets" control flow). All three new
+pieces — the trigger, the collection filter, and the retarget effect — are reusable, not card-specific.
+
+---
+
+### #20 — Play with top card revealed · Goblin Spy ✅ DONE
+
+> **Implemented (primitive + card).** New SDK `data object RevealTopOfLibrary` — the public-reveal-only
+> sibling of `PlayFromTopOfLibrary` (reveals the controller's top card to all players, grants no play
+> permission). The two abilities were *united* on the visibility path: `ClientStateTransformer`'s public
+> top-card reveal now fires for a player controlling **either** `PlayFromTopOfLibrary` **or**
+> `RevealTopOfLibrary` (one shared `revealsTopOfLibraryPublicly` predicate), while the cast/play-from-top
+> permission paths stay keyed on `PlayFromTopOfLibrary` alone. **Goblin Spy** ({R} 1/1 Goblin Rogue)
+> authored in `definitions/inv/cards/GoblinSpy.kt` as a single `staticAbility { ability = RevealTopOfLibrary }`.
+> Covered by `GoblinSpyTest` (opponent sees the top card; no reveal source → hidden; reveal grants no
+> cast-from-top permission). Documented in the SDK reference's new "Top-of-library reveal & play" subsection.
+
+---
+
+### #21 — "Each player separates; an opponent chooses a pile" + chosen-pile restriction · 5 cards ✅ DONE
+
+> **Implemented (all 5 cards).** The verification corrected the gap's premise: two of the three proposed
+> "additions" already existed. **`CardSource.ControlledPermanents(player, filter)`** gathers a player's
+> permanents (proposed addition #1 — already present), and a full **`ForEachPlayerEffect`** combinator
+> (executor + `ForEachPlayerContinuation` + auto-resumer) already iterates players running a pausing
+> sub-pipeline (proposed addition #2 — already present). The only fix it needed: `ForEachPlayerExecutor`
+> now recomputes `opponentId` for each per-player context, so `Chooser.Opponent` / `Player.Opponent`
+> inside the loop resolve to the *iterated* player's opponent (Bend or Break: an opponent of each
+> separating player chooses that player's pile).
+>
+> Proposed addition #3 (a chosen-pile restriction) was built as **one generic, broadly-reusable atom**
+> instead of a `GroupFilter.InStoredCollection` variant (which can't work — a `dynamicGroupFilter` is
+> re-evaluated at projection with no pipeline access, so the chosen pile would be lost): new
+> **`ForEachInCollectionEffect(collection, effect)`** runs a sub-effect once per entity in a stored
+> collection with `iterationTarget` set — the collection-based sibling of `ForEachInGroupEffect`. The
+> "only the chosen pile can attack/block" payoff then *composes* from existing atoms:
+> `ForEachInCollection(nonChosenPile, Effects.CantAttack(EffectTarget.Self))` snapshots a per-creature
+> can't-attack/can't-block floating effect (creatures entering after the split are unaffected). For
+> Global Ruin a new **`SelectionRestriction.OnePerBasicLandType`** (cap + resumer trim + decision flag)
+> keeps one land per basic type and rejects typeless lands.
+>
+> Cards authored in `definitions/inv/cards/`, each composed from the pile primitives (Gather → Select →
+> ChoosePile → Move/Tap/restrict), covered by per-card scenario tests in `game-server`
+> (`DeathOrGloryScenarioTest`, `BendOrBreakScenarioTest`, `GlobalRuinScenarioTest`,
+> `FightOrFlightScenarioTest`, `StandOrFallScenarioTest`):
+> - **Death or Glory** — pure pile composition over the graveyard (opponent picks the exiled pile; the
+>   other returns to the battlefield). No engine change.
+> - **Bend or Break** — `ForEachPlayer(Each)`: each player separates their nontoken lands, an opponent
+>   destroys one pile (`MoveCollection(Destroy)`), the other is tapped (`TapUntapCollection`).
+> - **Global Ruin** — `ForEachPlayer(Each)` + `SelectFromCollection(OnePerBasicLandType)` →
+>   `MoveCollection(Sacrifice)` of the remainder.
+> - **Fight or Flight** — `Triggers.phase(BEGIN_COMBAT, EachOpponent)`; you split the active player's
+>   creatures, they pick the attacking pile, the rest get `CantAttack` via `ForEachInCollection`.
+> - **Stand or Fall** — `Triggers.BeginCombat` + `ForEachPlayer(EachOpponent)`; you (the source's
+>   controller, via `Chooser.SourceController`) split each defender's creatures, they pick the blocking
+>   pile, the rest get `CantBlock`.
+>
+> **Scoping note:** per-player iteration runs separate → choose → resolve in turn order (the engine is
+> two-player in practice, where the printed simultaneity of the destroys is moot).
+
+**What exists.** `ChoosePileEffect` (binary chooser, `Chooser.Opponent` supported) +
+`SelectFromCollectionEffect` partition + the `factOrFiction` pattern. `CantAttackGroupEffect` /
+`CantBlockGroupEffect` apply turn-duration restrictions via a `dynamicGroupFilter`.
+`SeparatePermanentsIntoPilesEffect` is self-separate-**self**-choose only.
+
+The five cards (Bend or Break, Fight or Flight, Stand or Fall, Death or Glory, Global Ruin) share one
+shape: *one player separates a set into two piles → a chooser picks a pile → a directed effect hits the
+chosen vs. other pile.* The existing pile primitives already cover the **partition + choose** step
+(set `Chooser.Opponent`). Three additions close the rest:
+
+1. **Gather-controlled-permanents `CardSource`.** A source that collects "permanents `<player>`
+   controls matching `<filter>`" into a named collection, feeding the partition. (Bend or Break: lands;
+   Fight or Flight: defender's creatures; Death or Glory: exiled creatures.)
+2. **`ForEachPlayer` combinator** over the pile pipeline — for the "*each* player separates their own,
+   an opponent chooses" cards (Bend or Break, Global Ruin). Reuses `Player.Each`/APNAP iteration.
+3. **`GroupFilter.InStoredCollection(name)`** so a continuous restriction can target the *chosen pile*
+   specifically (snapshotting entity IDs at resolution). Fight or Flight = `CantBlockGroupEffect(filter
+   = creatures NOT InStoredCollection("chosenPile"))`.
+
+Sacrifice/return variants (Bend or Break, Stand or Fall, Death or Glory, Global Ruin) then compose as
+`gather → SelectFromCollection(chooser = separator) → ChoosePile(chooser = Opponent) →
+Sacrifice/MoveCollection(chosenPile)`. No new pile *engine*, just the source + iterator + stored-group
+filter.
+
+**Leverage.** These three primitives also unlock Tempt-with-Discovery-style and Varchild-style
+"separate / choose a pile" cards across other sets.
+
+---
+
+### #22 — "[Effect] unless any player pays N life" punisher · Aether Rift ⛔ NOT DONE
+
+**What exists.** `AnyPlayerMayPayEffect(cost, consequence)` runs `consequence` **when a player pays**,
+and its executor (`AnyPlayerMayPayExecutor` + `AnyPlayerMayPayContinuation` resumer) only supports
+`PayCost.Sacrifice`. `PayOrSufferEffect` supports `PayLife` but is **single-player** (the controller),
+not "any player". Neither expresses the *inverted* "the consequence happens **unless** some player pays".
+
+**The gap (two parts).**
+1. **Inverted branch** — a consequence that fires only when *no* player paid (add an `ifNoOnePaid`
+   branch to `AnyPlayerMayPayEffect`, mirroring `OptionalCostEffect.ifNotPaid`).
+2. **`PayCost.PayLife` support in the any-player path** — the executor/continuation hard-code the
+   sacrifice flow (card-selection decision); a life-payment path needs a yes/no decision per player in
+   APNAP order plus the life deduction (the logic already exists in
+   `SacrificeAndPayContinuationResumer.resumePayOrSufferPayLife`, but for the single-player effect).
+
+→ **Aether Rift** ("…return it from your graveyard to the battlefield **unless any player pays 5
+life**"). Skipped this PR — it's a multi-file engine change (executor + continuation + resumer + an
+inverted branch) rather than card authoring. The rest of the card (upkeep trigger → discard a card at
+random → gate on "discarded a creature card") is all buildable today
+(`Triggers.YourUpkeep` + a `GatherCards(HAND) → SelectFromCollection(Random, 1) → MoveCollection(GRAVEYARD)`
+discard pipeline + `ConditionalOnCollectionEffect`); only the punisher tail is blocked.
+
+**Leverage.** "[do X] unless any player pays [life/mana]" is a recurring punisher idiom (Tariff,
+Falter-likes, many older reanimators), so the inverted branch + `PayLife` any-player support unlock a
+family, not just Aether Rift.
+
+---
+
+## Suggested build order (highest leverage first)
+
+0. **Close the already-buildable cards** (#6 ✅, #12, #20 ✅, Coalition Victory ✅, Rewards of Diversity ✅) —
+   pure card authoring plus ≤2 trivial surfacing tweaks (graveyard `activeZone` setter, public
+   `RevealTopOfLibrary`, opponent-cast facade constants).
+1. **`ColorIsMostCommon` self-condition** (#1) — 5 djinns from one condition.
+2. **Opponent/any-player cast facade** (#4) ✅ — runtime-wired; facade added, Rewards of Diversity + Pure Reflection done.
+3. **`SharesColorWith` filter** (#5) — one predicate, reusable family.
+4. **Per-color mana tracking + X restriction** (#8) — unlocks Soul Burn / Atalya and feeds #7's
+   Protective Sphere.
+5. **Damage-replacement vocabulary** (#7) ✅ — `AmountFilter`, relational/chosen-color predicates,
+   `CapDamage`, `PreventDamage.restrictions`, `RedirectDamage` (now wired), `ControllerOfDamageSource`;
+   unlocked 5 cards and enriched the shared event system. Protective Sphere still waits on #8.
+6. **Tapped-for-mana event + rider + replacement** (#3) — 3 cards, reusable mana hooks.
+7. **Name-a-card choice + filter** (#10) ✅ — `OptionType.CARD_NAME` / `Effects.ChooseCardName` +
+   `StoreCardName` (capture-from-chosen-card) + `NameEqualsChosen` filter; Desperate Research + Lobotomy done.
+8. **Pile-separation trio** (#21) ✅ — 5 cards; the gather + per-player primitives already existed, so it
+   reduced to one `opponentId` fix, a generic `ForEachInCollection` atom, and `OnePerBasicLandType`.
+9. Scope additions: protection supertype (#13 ✅), dynamic-color protection (#15 ✅), chosen-type
+   landwalk (#14 ✅), discard-at-random cost (#9 ✅) — small, independent.
+10. Bespoke / heavier: stack color-change (#11 ✅), life auction (#16 ✅), text-changing (#17 ✅),
+    Mana Maze restriction (#18 ✅), reveal-and-compare (#19 ✅).

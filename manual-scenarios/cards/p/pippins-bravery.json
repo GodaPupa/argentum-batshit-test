@@ -1,0 +1,37 @@
+{
+  "_comment": "Pippin's Bravery (LTR, {G} instant): 'You may sacrifice a Food. If you do, target creature gets +4/+4 until end of turn. Otherwise, that creature gets +2/+2 until end of turn.' Flow: cast Pippin's Bravery ({G}) targeting your Grizzly Bears (2/2). You control a Food, so on resolution you're prompted to choose a Food to sacrifice (up to 1) — choose it for +4/+4 (Bears -> 6/6, Food sacrificed) or choose none for +2/+2 (Bears -> 4/4). Remove the Food to test the no-Food path: there's nothing to choose, so no prompt appears and the target still gets +2/+2.",
+  "player1Name": "You",
+  "player2Name": "Opponent",
+  "player1": {
+    "lifeTotal": 20,
+    "hand": ["Pippin's Bravery", "Pippin's Bravery"],
+    "battlefield": [
+      {"name": "Grizzly Bears"},
+      {"name": "Food"},
+      {"name": "Forest"},
+      {"name": "Forest"},
+      {"name": "Forest"}
+    ],
+    "graveyard": [],
+    "library": ["Forest", "Forest", "Forest"]
+  },
+  "player2": {
+    "lifeTotal": 20,
+    "hand": [],
+    "battlefield": [
+      {"name": "Forest"},
+      {"name": "Forest"}
+    ],
+    "graveyard": [],
+    "library": ["Forest", "Mountain", "Island"]
+  },
+  "phase": "PRECOMBAT_MAIN",
+  "step": "PRECOMBAT_MAIN",
+  "activePlayer": 1,
+  "priorityPlayer": 1,
+  "player1StopAtSteps": [],
+  "player2StopAtSteps": [],
+  "player1OpponentStopAtSteps": [],
+  "player2OpponentStopAtSteps": [],
+  "mode": "SELF"
+}

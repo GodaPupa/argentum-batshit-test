@@ -1,0 +1,129 @@
+# MageZero Coverage
+
+Cards we need to implement for [MageZero](https://github.com/WillWroble/MageZero) to run its
+training workloads on Argentum. MageZero is an AlphaZero-shaped MTG RL project that currently
+runs on XMage; `gym-trainer` was designed to fit its shape, so getting its three test decks
+playable is the concrete coverage target.
+
+## Training decks
+
+Referenced from `configs/game.yml` (`player_a.deckPath` / `player_b.deckPath`) and the
+MageZero README. `.dck` files are not checked into the MageZero repo — the canonical
+source is Moxfield.
+
+| Deck | Role | Format | Source |
+|------|------|--------|--------|
+| **UWTempo** | Primary RL training mirror | Modern | https://moxfield.com/decks/Bl76TS_q6E-HZ4G-s9_dlQ |
+| **Standard-MonoU** | Secondary RL training deck | Modern (mono-blue) | https://moxfield.com/decks/Okxs-whgSkapj5kIXUgMPg |
+| **Standard-MonoB** | Minimax opponent pool | Modern (mono-black) | https://moxfield.com/decks/R3zCVSK78kWyOwzAUyHUJg |
+
+The README also mentions MonoG / MonoR / MonoW starter decks shipped in `xmage/decks/` as
+additional baseline opponents. Those deck lists aren't public; start with the three above.
+
+## Coverage summary
+
+**Implemented** (11 / 44 unique cards): Kitsa, Otterball Elite · Iridescent Vinelasher ·
+Malcolm, Alluring Scoundrel · Negate · Consider · Chrome Host Seedshark ·
+Hullbreaker Horror · Deep-Cavern Bat · Realm of Koh · Island · Swamp.
+
+**Missing** (33 unique cards — 3 creatures + 1 planeswalker + 12 instants + 1 sorcery +
+4 enchantments + 5 nonbasic lands + 7 more creatures). One card (Cecil, Dark Knight) and
+one enchantment (Unholy Annex) are double-faced / modal DFCs and depend on DFC support.
+
+## UWTempo (60 cards)
+
+### Creatures (14)
+- [x] Malcolm, Alluring Scoundrel ×4 *(Lost Caverns of Ixalan)*
+- [x] Skrelv, Defector Mite ×4
+- [x] Sleep-Cursed Faerie ×2
+- [x] Kitsa, Otterball Elite ×4 *(Bloomburrow)*
+
+### Instants (14)
+- [x] Bounce Off ×4
+- [x] Negate ×2 *(Foundations)*
+- [x] No More Lies ×4
+- [x] Soul Partition ×2
+- [x] Spell Pierce ×2
+
+### Enchantments (10)
+- [x] Combat Research ×4
+- [x] Shardmage's Rescue ×2
+- [x] Sheltered by Ghosts ×4
+
+### Lands (22)
+- [x] Adarkar Wastes ×4
+- [x] Floodfarm Verge ×3
+- [x] Meticulous Archive ×4
+- [x] Seachrome Coast ×4
+- [x] Island ×7
+
+## Standard-MonoU (60 cards)
+
+### Planeswalkers (1)
+- [x] Teferi, Temporal Pilgrim ×1
+
+### Creatures (10)
+- [x] Chrome Host Seedshark ×1 *(March of the Machine)*
+- [x] Haughty Djinn ×4
+- [x] Hullbreaker Horror ×2 *(Innistrad: Crimson Vow)*
+- [x] Tolarian Terror ×3
+
+### Sorceries (1)
+- [x] Blue Sun's Twilight ×1
+
+### Instants (25)
+- [x] Consider ×4 *(Innistrad: Midnight Hunt)*
+- [x] Dissipate ×4 *(Innistrad: Midnight Hunt)*
+- [x] Essence Scatter ×2
+- [x] Fading Hope ×4
+- [x] Flow of Knowledge ×2
+- [x] Impulse ×2
+- [x] Memory Deluge ×1
+- [x] Negate ×2 *(shared with UWTempo)*
+- [x] Spell Pierce ×2 *(shared with UWTempo)*
+- [x] Thirst for Discovery ×2
+
+### Lands (23)
+- [x] Island ×23
+
+## Standard-MonoB (60 cards)
+
+### Creatures (30)
+- [x] Bloodletter of Aclazotz ×4 *(Lost Caverns of Ixalan)*
+- [x] Cecil, Dark Knight // Cecil, Redeemed Paladin ×3 *(DFC — requires DFC support)*
+- [x] Deep-Cavern Bat ×4 *(Lost Caverns of Ixalan)*
+- [x] Forsaken Miner ×4 *(Outlaws of Thunder Junction)*
+- [x] Gatekeeper of Malakir ×4
+- [x] Mai, Scornful Striker ×3
+- [x] Unstoppable Slasher ×4
+- [x] Iridescent Vinelasher ×4 *(Bloomburrow)*
+
+### Instants (2)
+- [x] Shoot the Sheriff ×2 *(Outlaws of Thunder Junction)*
+
+### Enchantments (4)
+- [x] Unholy Annex // Ritual Chamber ×4 *(split-layout Room — Phase 1–5 of Rooms mechanic)*
+
+### Lands (24)
+- [x] Realm of Koh ×4 *(Avatar: The Last Airbender)*
+- [x] Soulstone Sanctuary ×2
+- [x] Swamp ×18
+
+## Mechanic gaps to watch
+
+A handful of these cards pull in mechanics that may not yet exist engine-side and will
+dominate the implementation cost:
+
+- **Double-faced cards (DFC)** — Cecil (creature DFC), Unholy Annex (room DFC)
+- **Rooms (Duskmourn)** — Unholy Annex // Ritual Chamber
+- **Prowess / spell-count triggers** — Haughty Djinn, Kitsa, Otterball Elite (already in)
+- **Delirium** — Thirst for Discovery
+- **Convoke / Toxic / Backup** — Skrelv, Defector Mite (toxic + pump)
+- **Stun counters** — Sleep-Cursed Faerie, Unstoppable Slasher, No More Lies
+- **Exile-with-play-it (Oblivion Ring family)** — Sheltered by Ghosts, Soul Partition
+- **Modal dual lands / fastlands / checklands / slowlands** — Adarkar Wastes (checkland-ish
+  painland), Seachrome Coast (fastland), Floodfarm Verge (slowland), Meticulous Archive
+  (surveil land), Realm of Koh / Soulstone Sanctuary (lesson/channel-style utility lands)
+
+Checking these against existing mechanics support should happen before scheduling the
+first batch of card implementations.

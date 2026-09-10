@@ -1,0 +1,185 @@
+package com.wingedsheep.engine.scenarios
+
+import com.wingedsheep.engine.core.ChooseTargetsDecision
+import com.wingedsheep.engine.core.YesNoDecision
+import com.wingedsheep.engine.mechanics.layers.StateProjector
+import com.wingedsheep.engine.support.GameTestDriver
+import com.wingedsheep.engine.support.TestCards
+import com.wingedsheep.mtg.sets.definitions.ons.cards.EntrailsFeaster
+import com.wingedsheep.sdk.core.Step
+import com.wingedsheep.sdk.model.Deck
+import com.wingedsheep.sdk.model.EntityId
+import io.kotest.core.spec.style.FunSpec
+import io.kotest.matchers.shouldBe
+import io.kotest.matchers.types.shouldBeInstanceOf
+
+/**
+ * Tests for Entrails Feaster:
+ * {B}
+ * Creature — Zombie Cat
+ * 1/1
+ * At the beginning of your upkeep, you may exile a creature card from a graveyard.
+ * If you do, put a +1/+1 counter on Entrails Feaster.
+ * If you don't, tap Entrails Feaster.
+ */
+class EntrailsFeasterTest : FunSpec({
+
+    val projector = StateProjector()
+
+    fun createDriver(): GameTestDriver {
+        val driver = GameTestDriver()
+        driver.registerCards(TestCards.all)
+        return driver
+    }
+
+    fun advanceToPlayerUpkeep(driver: GameTestDriver, targetPlayer: EntityId) {
+        driver.passPriorityUntil(Step.DRAW, maxPasses = 200)
+        if (driver.activePlayer == targetPlayer) {
+            driver.passPriorityUntil(Step.DRAW, maxPasses = 200)
+        }
+        driver.passPriorityUntil(Step.UPKEEP, maxPasses = 200)
+        driver.currentStep shouldBe Step.UPKEEP
+        driver.activePlayer shouldBe targetPlayer
+    }
+
+    test("exile creature from graveyard - gets +1/+1 counter") {
+        val driver = createDriver()
+        driver.initMirrorMatch(
+            deck = Deck.of("Swamp" to 40),
+            startingLife = 20
+        )
+
+        val activePlayer = driver.activePlayer!!
+        driver.passPriorityUntil(Step.PRECOMBAT_MAIN)
+
+        // Put Entrails Feaster on the battlefield
+        val feaster = driver.putCreatureOnBattlefield(activePlayer, "Entrails Feaster")
+
+        // Put a creature card in graveyard
+        val creature = driver.putCardInGraveyard(activePlayer, "Grizzly Bears")
+
+        // Advance to the controller's upkeep
+        advanceToPlayerUpkeep(driver, activePlayer)
+
+        // The trigger targets, and its "you may … If you don't, …" is answered as it *resolves*
+        // (CR 603.3d picks targets on announcement; the consent gate's own executor asks later).
+        driver.pendingDecision.shouldBeInstanceOf<ChooseTargetsDecision>()
+        driver.submitTargetSelection(activePlayer, listOf(creature))
+
+        // Resolve the trigger, accepting the may
+        driver.bothPass()
+        driver.pendingDecision.shouldBeInstanceOf<YesNoDecision>()
+        driver.submitYesNo(activePlayer, true)
+
+        // Creature should be exiled
+        driver.state.getGraveyard(activePlayer).contains(creature) shouldBe false
+        driver.state.getExile(activePlayer).contains(creature) shouldBe true
+
+        // Feaster should be 2/2 (1/1 base + 1 +1/+1 counter)
+        projector.getProjectedPower(driver.state, feaster) shouldBe 2
+        projector.getProjectedToughness(driver.state, feaster) shouldBe 2
+
+        // Feaster should NOT be tapped
+        driver.isTapped(feaster) shouldBe false
+    }
+
+    test("decline to exile - gets tapped") {
+        val driver = createDriver()
+        driver.initMirrorMatch(
+            deck = Deck.of("Swamp" to 40),
+            startingLife = 20
+        )
+
+        val activePlayer = driver.activePlayer!!
+        driver.passPriorityUntil(Step.PRECOMBAT_MAIN)
+
+        val feaster = driver.putCreatureOnBattlefield(activePlayer, "Entrails Feaster")
+        val creature = driver.putCardInGraveyard(activePlayer, "Grizzly Bears")
+
+        advanceToPlayerUpkeep(driver, activePlayer)
+
+        // The target is mandatory ("a creature card" is modelled as a target), so it is chosen on
+        // announcement whether or not the exile happens; the decline is the may-question below.
+        driver.pendingDecision.shouldBeInstanceOf<ChooseTargetsDecision>()
+        driver.submitTargetSelection(activePlayer, listOf(creature))
+
+        // Decline at resolution; the gate's `otherwise` — the printed "If you don't, …" — taps.
+        driver.bothPass()
+        driver.pendingDecision.shouldBeInstanceOf<YesNoDecision>()
+        driver.submitYesNo(activePlayer, false)
+
+        // Feaster should be tapped
+        driver.isTapped(feaster) shouldBe true
+
+        // Feaster should still be 1/1
+        projector.getProjectedPower(driver.state, feaster) shouldBe 1
+        projector.getProjectedToughness(driver.state, feaster) shouldBe 1
+    }
+
+    test("no creature cards in any graveyard - gets tapped automatically") {
+        val driver = createDriver()
+        driver.initMirrorMatch(
+            deck = Deck.of("Swamp" to 40),
+            startingLife = 20
+        )
+
+        val activePlayer = driver.activePlayer!!
+        driver.passPriorityUntil(Step.PRECOMBAT_MAIN)
+
+        val feaster = driver.putCreatureOnBattlefield(activePlayer, "Entrails Feaster")
+
+        // No creatures in any graveyard
+        advanceToPlayerUpkeep(driver, activePlayer)
+
+        // The else effect should be put on stack automatically (no legal targets)
+        // Resolve it
+        driver.bothPass()
+
+        // Feaster should be tapped
+        driver.isTapped(feaster) shouldBe true
+
+        // Feaster should still be 1/1
+        projector.getProjectedPower(driver.state, feaster) shouldBe 1
+        projector.getProjectedToughness(driver.state, feaster) shouldBe 1
+    }
+
+    test("can exile creature from opponent's graveyard") {
+        val driver = createDriver()
+        driver.initMirrorMatch(
+            deck = Deck.of("Swamp" to 40),
+            startingLife = 20
+        )
+
+        val activePlayer = driver.activePlayer!!
+        val opponent = driver.getOpponent(activePlayer)
+        driver.passPriorityUntil(Step.PRECOMBAT_MAIN)
+
+        val feaster = driver.putCreatureOnBattlefield(activePlayer, "Entrails Feaster")
+
+        // Put creature in opponent's graveyard
+        val oppCreature = driver.putCardInGraveyard(opponent, "Grizzly Bears")
+
+        advanceToPlayerUpkeep(driver, activePlayer)
+
+        // Trigger fires
+        driver.pendingDecision.shouldBeInstanceOf<ChooseTargetsDecision>()
+
+        val targetDecision = driver.pendingDecision as ChooseTargetsDecision
+        val legalTargets = targetDecision.legalTargets[0] ?: emptyList()
+
+        // Opponent's creature should be a legal target (any graveyard, not just yours)
+        legalTargets.contains(oppCreature) shouldBe true
+
+        // Exile it
+        driver.submitTargetSelection(activePlayer, listOf(oppCreature))
+        driver.bothPass()
+        driver.submitYesNo(activePlayer, true)
+
+        // Creature should be exiled from opponent's graveyard
+        driver.state.getGraveyard(opponent).contains(oppCreature) shouldBe false
+
+        // Feaster should be 2/2
+        projector.getProjectedPower(driver.state, feaster) shouldBe 2
+        projector.getProjectedToughness(driver.state, feaster) shouldBe 2
+    }
+})

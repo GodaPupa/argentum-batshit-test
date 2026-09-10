@@ -1,0 +1,36 @@
+{
+  "player1Name": "Alice",
+  "player2Name": "Bob",
+  "player1": {
+    "lifeTotal": 20,
+    "hand": ["Syr Vondam, Sunstar Exemplar"],
+    "battlefield": [
+      {"name": "Syr Vondam, Sunstar Exemplar", "counters": {"PLUS_ONE_PLUS_ONE": 2}},
+      {"name": "Grizzly Bears"},
+      {"name": "Plains"},
+      {"name": "Plains"},
+      {"name": "Swamp"},
+      {"name": "Swamp"}
+    ],
+    "graveyard": [],
+    "library": ["Plains", "Swamp"]
+  },
+  "player2": {
+    "lifeTotal": 20,
+    "hand": ["Crib Swap"],
+    "battlefield": [
+      {"name": "Hill Giant"},
+      {"name": "Glory Seeker"},
+      {"name": "Eusocial Engineering"},
+      {"name": "Plains"},
+      {"name": "Plains"}
+    ],
+    "graveyard": [],
+    "library": ["Plains", "Plains"]
+  },
+  "phase": "PRECOMBAT_MAIN",
+  "activePlayer": 1,
+  "priorityPlayer": 1,
+  "player1StopAtSteps": [],
+  "player2StopAtSteps": ["DECLARE_BLOCKERS"]
+}

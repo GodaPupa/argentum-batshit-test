@@ -1,0 +1,41 @@
+{
+  "_description": "Edge Rover Reach + dies trigger. Bob is the active player and attacks with Snapping Drake (3/2 flying). Alice's Edge Rover (2/2 reach) blocks the Drake — testing that Reach lets a non-flier block a flier. Combat damage: 3 from Drake kills Edge Rover; 2 from Edge Rover kills the Drake. When Edge Rover dies, its trigger fires and each player creates a Lander token. Verify (1) Edge Rover legally blocks the flying Drake, (2) both die in combat damage, (3) one Lander appears on Alice's battlefield AND one on Bob's battlefield.",
+  "player1Name": "Alice",
+  "player2Name": "Bob",
+  "player1": {
+    "lifeTotal": 20,
+    "hand": [],
+    "battlefield": [
+      {"name": "Edge Rover", "summoningSickness": false},
+      {"name": "Forest"},
+      {"name": "Forest"}
+    ],
+    "graveyard": [],
+    "library": [
+      "Forest",
+      "Forest",
+      "Plains"
+    ]
+  },
+  "player2": {
+    "lifeTotal": 20,
+    "hand": [],
+    "battlefield": [
+      {"name": "Snapping Drake", "summoningSickness": false},
+      {"name": "Island"},
+      {"name": "Island"}
+    ],
+    "graveyard": [],
+    "library": [
+      "Island",
+      "Island"
+    ]
+  },
+  "phase": "PRECOMBAT_MAIN",
+  "activePlayer": 2,
+  "priorityPlayer": 2,
+  "player1StopAtSteps": [],
+  "player2StopAtSteps": [],
+  "player1OpponentStopAtSteps": [],
+  "player2OpponentStopAtSteps": []
+}

@@ -1,0 +1,33 @@
+{
+  "player1Name": "Alice",
+  "player2Name": "Bob",
+  "player1": {
+    "lifeTotal": 20,
+    "hand": ["Desert Nomads"],
+    "battlefield": [
+      {"name": "Mountain"},
+      {"name": "Mountain"},
+      {"name": "Mountain"},
+      {"name": "Desert Nomads"}
+    ],
+    "graveyard": [],
+    "library": ["Mountain", "Mountain"]
+  },
+  "player2": {
+    "lifeTotal": 20,
+    "hand": [],
+    "battlefield": [
+      {"name": "Desert"},
+      {"name": "Moorish Cavalry"}
+    ],
+    "graveyard": [],
+    "library": ["Mountain", "Mountain"]
+  },
+  "phase": "PRECOMBAT_MAIN",
+  "activePlayer": 1,
+  "priorityPlayer": 1,
+  "player1StopAtSteps": ["DECLARE_BLOCKERS", "END_COMBAT"],
+  "player2StopAtSteps": ["DECLARE_BLOCKERS", "END_COMBAT"],
+  "player1OpponentStopAtSteps": ["DECLARE_BLOCKERS", "END_COMBAT"],
+  "player2OpponentStopAtSteps": ["DECLARE_BLOCKERS", "END_COMBAT"]
+}

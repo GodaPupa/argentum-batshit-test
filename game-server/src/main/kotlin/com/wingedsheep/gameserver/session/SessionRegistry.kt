@@ -1,0 +1,124 @@
+package com.wingedsheep.gameserver.session
+
+import org.slf4j.LoggerFactory
+import org.springframework.beans.factory.DisposableBean
+import org.springframework.stereotype.Component
+import org.springframework.web.socket.WebSocketSession
+import java.util.concurrent.ConcurrentHashMap
+import java.util.concurrent.Executors
+import java.util.concurrent.ScheduledExecutorService
+import java.util.concurrent.ScheduledFuture
+import java.util.concurrent.TimeUnit
+
+@Component
+class SessionRegistry : DisposableBean {
+
+    private val logger = LoggerFactory.getLogger(SessionRegistry::class.java)
+
+    /** Player identities indexed by token */
+    private val playerIdentities = ConcurrentHashMap<String, PlayerIdentity>()
+
+    /** WebSocket session ID → player token */
+    private val wsToToken = ConcurrentHashMap<String, String>()
+
+    /** Legacy player sessions indexed by WebSocket session ID */
+    private val playerSessions = ConcurrentHashMap<String, PlayerSession>()
+
+    /** Per-session locks for thread-safe WebSocket writes */
+    private val sessionLocks = ConcurrentHashMap<String, Any>()
+
+    /**
+     * Scheduler for disconnect grace period timers.
+     *
+     * Uses **daemon** threads so a lingering scheduler can never keep a JVM alive. Under a normal
+     * Spring lifecycle [destroy] shuts it down, but `@SpringBootTest` contexts are cached and closed
+     * by a JVM shutdown hook — and a shutdown hook only fires once the JVM is already exiting. With
+     * non-daemon threads the scheduler would itself block that exit, so the hook that would stop it
+     * never runs and the (Gradle test-worker) JVM hangs forever. Daemon threads break that deadlock.
+     */
+    val disconnectScheduler: ScheduledExecutorService =
+        Executors.newScheduledThreadPool(2) { runnable ->
+            Thread(runnable, "session-disconnect-scheduler").apply { isDaemon = true }
+        }
+
+    /** Grace period before treating a disconnect as abandonment */
+    val disconnectGracePeriodMinutes = 5L
+
+    /** Grace period for tournament players before treating as abandonment */
+    val tournamentDisconnectGracePeriodMinutes = 5L
+
+    fun register(identity: PlayerIdentity, session: WebSocketSession, playerSession: PlayerSession) {
+        identity.webSocketSession = session
+        playerIdentities[identity.token] = identity
+        wsToToken[session.id] = identity.token
+        playerSessions[session.id] = playerSession
+    }
+
+    fun getIdentityByToken(token: String): PlayerIdentity? = playerIdentities[token]
+
+    fun forEachIdentity(action: (token: String, identity: PlayerIdentity) -> Unit) {
+        playerIdentities.forEach { (token, identity) -> action(token, identity) }
+    }
+
+    fun getIdentityByWsId(wsId: String): PlayerIdentity? {
+        val token = wsToToken[wsId] ?: return null
+        return playerIdentities[token]
+    }
+
+    fun getTokenByWsId(wsId: String): String? = wsToToken[wsId]
+
+    fun getPlayerSession(wsId: String): PlayerSession? = playerSessions[wsId]
+
+    fun mapWsToToken(wsId: String, token: String) {
+        wsToToken[wsId] = token
+    }
+
+    fun setPlayerSession(wsId: String, playerSession: PlayerSession) {
+        playerSessions[wsId] = playerSession
+    }
+
+    fun removeByWsId(wsId: String): Pair<String?, PlayerSession?> {
+        sessionLocks.remove(wsId)
+        val token = wsToToken.remove(wsId)
+        val playerSession = playerSessions.remove(wsId)
+        return token to playerSession
+    }
+
+    fun removeIdentity(token: String): PlayerIdentity? = playerIdentities.remove(token)
+
+    fun getAllIdentities(): Collection<PlayerIdentity> = playerIdentities.values
+
+    fun getSessionLock(wsId: String): Any = sessionLocks.computeIfAbsent(wsId) { Any() }
+
+    /**
+     * Pre-register a player identity for dev scenario testing.
+     * The identity will be associated with a WebSocket session when the player connects.
+     *
+     * Cancels any disconnect timers from a previous identity with the same token to prevent
+     * a stale timer from removing the newly registered identity (race condition when E2E tests
+     * reuse the same static tokens sequentially).
+     */
+    fun preRegisterIdentity(identity: PlayerIdentity) {
+        val existing = playerIdentities.put(identity.token, identity)
+        if (existing != null) {
+            existing.disconnectTimer?.cancel(false)
+            existing.disconnectTimer = null
+            existing.gameDisconnectTimer?.cancel(false)
+            existing.gameDisconnectTimer = null
+            existing.disconnectExpiresAt = null
+        }
+    }
+
+    fun removeOldWsMapping(token: String) {
+        val oldWsId = wsToToken.entries.find { it.value == token }?.key
+        if (oldWsId != null) {
+            playerSessions.remove(oldWsId)
+            wsToToken.remove(oldWsId)
+            sessionLocks.remove(oldWsId)
+        }
+    }
+
+    override fun destroy() {
+        disconnectScheduler.shutdownNow()
+    }
+}

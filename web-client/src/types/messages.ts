@@ -1,0 +1,3208 @@
+import { ErrorCode, GameOverReason } from './enums'
+import { EntityId } from './entities'
+import { GameAction } from './actions'
+import { ClientEvent } from './events'
+import { ClientGameState, ClientCard, ClientZone, ClientPlayer, ClientCombatState, ClientCommanderDamage, ClientDeckCard, ClientRestrictedManaEntry } from './gameState'
+
+// ============================================================================
+// Server Messages (received from server)
+// ============================================================================
+
+/**
+ * Messages sent from server to client.
+ * Matches backend ServerMessage.kt
+ */
+export type ServerMessage =
+  | ConnectedMessage
+  | ReconnectedMessage
+  | GameCreatedMessage
+  | GameStartedMessage
+  | GameCancelledMessage
+  | StateUpdateMessage
+  | StateDeltaUpdateMessage
+  | MulliganDecisionMessage
+  | ChooseBottomCardsMessage
+  | MulliganCompleteMessage
+  | WaitingForOpponentMulliganMessage
+  | GameOverMessage
+  | ErrorMessage
+  // Sealed Draft Messages
+  | SealedGameCreatedMessage
+  | SealedPoolGeneratedMessage
+  | OpponentDeckSubmittedMessage
+  | WaitingForOpponentMessage
+  | DeckSubmittedMessage
+  // Lobby Messages
+  | LobbyCreatedMessage
+  | LobbyUpdateMessage
+  | LobbyStoppedMessage
+  // Draft Messages
+  | DraftPackReceivedMessage
+  | DraftPickMadeMessage
+  | DraftPickConfirmedMessage
+  | DraftCompleteMessage
+  | DraftTimerUpdateMessage
+  // Winston Draft Messages
+  | WinstonDraftStateMessage
+  // Grid Draft Messages
+  | GridDraftStateMessage
+  // Tournament Messages
+  | TournamentStartedMessage
+  | TournamentMatchStartingMessage
+  | TournamentByeMessage
+  | RoundCompleteMessage
+  | MatchCompleteMessage
+  | PlayerReadyForRoundMessage
+  | TournamentCompleteMessage
+  | TournamentResumedMessage
+  // Free-for-All Messages
+  | FreeForAllGameStartingMessage
+  | FreeForAllGameCompleteMessage
+  | PlayerEliminatedMessage
+  // Spectating Messages
+  | ActiveMatchesMessage
+  | SpectatorStateUpdateMessage
+  | SpectatingStartedMessage
+  | SpectatingStoppedMessage
+  | SpectatorCountChangedMessage
+  // Combat UI Messages
+  | OpponentAttackerTargetsMessage
+  | OpponentBlockerAssignmentsMessage
+  // Disconnect Messages
+  | OpponentDisconnectedMessage
+  | OpponentReconnectedMessage
+  | TournamentPlayerDisconnectedMessage
+  | TournamentPlayerReconnectedMessage
+  // Quick Game Lobby Messages
+  | QuickGameLobbyStateMessage
+  | QuickGameLobbyClosedMessage
+  // Presence
+  | OnlinePlayersCountMessage
+  // Friends
+  | FriendPresenceMessage
+  | FriendRequestReceivedMessage
+  // Liveness
+  | PongMessage
+  // Session takeover
+  | SessionReplacedMessage
+
+/**
+ * Connection confirmed with assigned player ID.
+ */
+export interface ConnectedMessage {
+  readonly type: 'connected'
+  readonly playerId: string
+  readonly token: string
+  readonly aiEnabled?: boolean
+  readonly availableSets?: readonly AvailableSet[]
+}
+
+/**
+ * Reconnection confirmed — previous session restored.
+ */
+export interface ReconnectedMessage {
+  readonly type: 'reconnected'
+  readonly playerId: string
+  readonly token: string
+  readonly context: 'lobby' | 'drafting' | 'deckBuilding' | 'game' | 'tournament' | null
+  readonly contextId: string | null
+  readonly aiEnabled?: boolean
+  readonly availableSets?: readonly AvailableSet[]
+}
+
+/**
+ * Game created successfully, waiting for opponent.
+ */
+export interface GameCreatedMessage {
+  readonly type: 'gameCreated'
+  readonly sessionId: string
+}
+
+/**
+ * One seat in a game, from the recipient's perspective. The seat list is the N-player source of
+ * truth; a 2-player game is the degenerate case (one `isYou` seat + one opponent).
+ */
+export interface PlayerSeatInfo {
+  readonly playerId: string
+  readonly name: string
+  readonly seatIndex: number
+  readonly isYou: boolean
+  readonly isAi: boolean
+  /**
+   * Team membership for a team variant (Two-Headed Giant — CR 810; Team vs. Team — CR 808): seats
+   * sharing a `teamIndex` are teammates. Null/undefined in non-team games. Only sent in this
+   * game-start roster, so the client persists the seat→team map for the whole game.
+   */
+  readonly teamIndex?: number | null
+  /**
+   * True when teammates share one life total (2HG). False for Team vs. Team, where teammates each
+   * have their own life. Game-level (the same on every seat); lets the rail choose a shared-life
+   * team header vs. per-player life.
+   */
+  readonly teamSharedLife?: boolean
+  /**
+   * True when the team takes one shared turn and holds priority as a unit (CR 805 / 810.2), so any
+   * member may act while their team has priority (CR 805.5a). False for Team vs. Team's individual
+   * turns (CR 808.4). Game-level, like `teamSharedLife`.
+   */
+  readonly teamSharedTurns?: boolean
+}
+
+/**
+ * Game is starting. Carries the full seat roster (turn order) from this recipient's perspective;
+ * derive "the opponent(s)" from the non-`isYou` seats.
+ */
+export interface GameStartedMessage {
+  readonly type: 'gameStarted'
+  readonly players: readonly PlayerSeatInfo[]
+}
+
+/**
+ * Game was cancelled before it started (by the creator).
+ */
+export interface GameCancelledMessage {
+  readonly type: 'gameCancelled'
+}
+
+/**
+ * Summary of opponent's pending decision (masked for privacy).
+ * Sent to the non-deciding player so they know the opponent is making a choice.
+ */
+export interface OpponentDecisionStatus {
+  /** The seat actually deciding (lets an N-player pod show whose spinner). */
+  readonly playerId: string
+  readonly decisionType: string
+  readonly displayText: string
+  readonly sourceName?: string | null
+}
+
+/**
+ * Game state update after an action is executed.
+ */
+/**
+ * Per-step stop overrides echoed back from the server.
+ */
+export interface StopOverrideInfo {
+  readonly myTurnStops: readonly string[]
+  readonly opponentTurnStops: readonly string[]
+}
+
+/**
+ * Game state update after an action is executed.
+ */
+export interface StateUpdateMessage {
+  readonly type: 'stateUpdate'
+  readonly state: ClientGameState
+  readonly events: readonly ClientEvent[]
+  readonly legalActions: readonly LegalActionInfo[]
+  /** Pending decision that requires player input (e.g., discard to hand size) */
+  readonly pendingDecision?: PendingDecision
+  /** Where passing priority will take the player (e.g., "Combat", "End Step", "My turn") */
+  readonly nextStopPoint?: string | null
+  /** Summary of opponent's pending decision (null if opponent has no decision) */
+  readonly opponentDecisionStatus?: OpponentDecisionStatus | null
+  /** Per-step stop overrides echoed back for client sync */
+  readonly stopOverrides?: StopOverrideInfo | null
+  /** Whether the player can undo their last action */
+  readonly undoAvailable?: boolean
+  /** Current priority mode for this player (auto, stops, fullControl) */
+  readonly priorityMode?: PriorityModeValue | null
+  /** Monotonically increasing version — used to detect missed messages */
+  readonly stateVersion?: number
+  /** Live timeline on which actions in this snapshot originate. */
+  readonly interactionEpoch?: string | null
+}
+
+/**
+ * Info about a mana source available for pre-cast selection.
+ */
+export interface ManaSourceInfo {
+  readonly entityId: EntityId
+  readonly name: string
+  readonly imageUri?: string | null
+  readonly producesColors?: readonly string[]
+  readonly producesColorless?: boolean
+  readonly manaAmount?: number
+}
+
+/**
+ * Delta representation of a ClientGameState change.
+ * Only changed fields are populated. Null/undefined fields mean "unchanged".
+ */
+export interface StateDelta {
+  /** Cards added since last update */
+  readonly addedCards?: Readonly<Record<EntityId, ClientCard>> | null
+  /** Card IDs removed since last update */
+  readonly removedCardIds?: readonly EntityId[] | null
+  /** Cards whose data changed since last update */
+  readonly updatedCards?: Readonly<Record<EntityId, ClientCard>> | null
+  /** Zones whose contents changed */
+  readonly updatedZones?: readonly ClientZone[] | null
+  /** Player info — always included */
+  readonly players: readonly ClientPlayer[]
+  /** Scalars — only if changed */
+  readonly currentPhase?: ClientGameState['currentPhase'] | null
+  readonly currentStep?: ClientGameState['currentStep'] | null
+  readonly activePlayerId?: EntityId | null
+  readonly priorityPlayerId?: EntityId | null
+  readonly turnNumber?: number | null
+  readonly isGameOver?: boolean | null
+  readonly winnerId?: EntityId | null
+  /** Day/night designation (CR 731). Null means unchanged — the game never returns to neither. */
+  readonly dayNight?: ClientGameState['dayNight'] | null
+  /** Combat state changes */
+  readonly combat?: ClientCombatState | null
+  readonly combatCleared?: boolean | null
+  /** New game log entries (append to existing) */
+  readonly newLogEntries?: readonly import('./events').ClientEvent[] | null
+  /** Hijack indicators — always overwritten on apply (Mindslaver-style) */
+  readonly youAreHijacking?: EntityId | null
+  readonly youAreHijackedBy?: EntityId | null
+  /** Hotseat indicator — always overwritten on apply */
+  readonly hotseat?: boolean | null
+  /** The viewer's decklist, present only when a `remaining` count moved (draw, mill, tutor). */
+  readonly deck?: readonly ClientDeckCard[] | null
+}
+
+/**
+ * Delta game state update — sends only changes since the last state update.
+ */
+export interface StateDeltaUpdateMessage {
+  readonly type: 'stateDeltaUpdate'
+  readonly delta: StateDelta
+  readonly events: readonly ClientEvent[]
+  readonly legalActions: readonly LegalActionInfo[]
+  readonly pendingDecision?: PendingDecision
+  readonly nextStopPoint?: string | null
+  readonly opponentDecisionStatus?: OpponentDecisionStatus | null
+  readonly stopOverrides?: StopOverrideInfo | null
+  readonly undoAvailable?: boolean
+  readonly priorityMode?: PriorityModeValue | null
+  /** Monotonically increasing version — used to detect missed messages */
+  readonly stateVersion?: number
+  /** Live timeline on which actions in this snapshot originate. */
+  readonly interactionEpoch?: string | null
+}
+
+// ============================================================================
+// Pending Decision Types
+// ============================================================================
+
+/**
+ * Base interface for pending decisions.
+ */
+export interface PendingDecisionBase {
+  readonly id: string
+  readonly playerId: EntityId
+  readonly prompt: string
+  readonly context: DecisionContext
+}
+
+/**
+ * Context information about the decision.
+ */
+export interface DecisionContext {
+  readonly phase: DecisionPhase
+  readonly sourceId?: EntityId
+  readonly sourceName?: string
+  /** The entity that triggered this decision (e.g., the blocked creature for combat triggers) */
+  readonly triggeringEntityId?: EntityId
+  /** If true, render yes/no inline on the triggering entity card (e.g., Dragon auras) */
+  readonly inlineOnTrigger?: boolean
+  /** Resolved effect description (e.g., "-6/-6 until end of turn") */
+  readonly effectHint?: string
+  /**
+   * The permanent this prompt is *about*, when one effect asks the same question once per object
+   * (Killing Wave: "pay X life or sacrifice it", once per creature). Resolve it through
+   * `gameState.cards` — the server sends only the id, so masking still applies.
+   */
+  readonly subjectEntityId?: EntityId
+}
+
+/**
+ * Phase/reason for the decision.
+ */
+export type DecisionPhase =
+  | 'CASTING'
+  | 'RESOLUTION'
+  | 'STATE_BASED'
+  | 'COMBAT'
+  | 'TRIGGER'
+
+/**
+ * Player must select cards from a list.
+ *
+ * For hidden cards (e.g., opponent's library during Cruel Fate), the cardInfo
+ * field provides information about the cards since they're not in gameState.cards.
+ */
+export interface SelectCardsDecision extends PendingDecisionBase {
+  readonly type: 'SelectCardsDecision'
+  readonly options: readonly EntityId[]
+  readonly minSelections: number
+  readonly maxSelections: number
+  readonly ordered: boolean
+  /** Card info for hidden cards (null/undefined if cards are visible in gameState) */
+  readonly cardInfo?: Record<EntityId, SearchCardInfo> | null
+  /** If true, use targeting UI (click on board) instead of modal overlay */
+  readonly useTargetingUI?: boolean
+  /** Label describing where selected cards go (e.g., "Put on bottom") */
+  readonly selectedLabel?: string | null
+  /** Label describing where non-selected cards go (e.g., "Put on top") */
+  readonly remainderLabel?: string | null
+  /** Cards shown to the player but not selectable (used for "look at" effects) */
+  readonly nonSelectableOptions?: readonly EntityId[]
+  /** When true, at most one card of each card type may be selected */
+  readonly onePerCardType?: boolean
+  /** When true, at most one card of each colour may be selected (colourless unconstrained) */
+  readonly onePerColor?: boolean
+  /**
+   * When true, at most one land of each basic land type may be selected (a kept land claims
+   * every basic type it has); a land with no basic land type can't be selected (Global Ruin).
+   */
+  readonly onePerBasicLandType?: boolean
+  /**
+   * When true, at most one card of each (printed) power may be selected; a card with no fixed
+   * power can't be selected at all (Rip, Spawn Hunter). The server enforces this; the UI
+   * disables cards sharing an already-claimed power.
+   */
+  readonly onePerPower?: boolean
+  /**
+   * The colour budget for [onePerColor] when restricted to the chooser's permanent colours
+   * (e.g., Sanar's Vivid trigger). One pip per colour name (e.g., ["WHITE","BLUE"]). When
+   * undefined or empty, the UI shows the generic five-colour list.
+   */
+  readonly availableColors?: readonly string[] | null
+  /**
+   * Maximum total mana value across selected cards (Scout for Survivors). When set, the
+   * UI tracks the running total and disables cards whose mana value would push it over.
+   */
+  readonly maxTotalManaValue?: number | null
+  /**
+   * Minimum total mana value across selected cards — collect evidence N (CR 701.59a). The mirror
+   * of `maxTotalManaValue`: the UI tracks the running total and keeps Confirm disabled until it
+   * reaches this floor. Card count is unconstrained; only the sum matters. An empty selection is
+   * exempt so an optional collection can still be declined.
+   */
+  readonly minTotalManaValue?: number | null
+  /**
+   * Maximum total (projected) power across selected creatures (Destined Confrontation). When
+   * set, the UI tracks the running total and disables creatures whose power would push it over.
+   */
+  readonly maxTotalPower?: number | null
+  /** Conditional lower minimums for choices like "select two unless one matches this subset". */
+  readonly conditionalMinimums?: readonly ConditionalSelectionMinimum[]
+}
+
+export interface ConditionalSelectionMinimum {
+  readonly requiredSelections: number
+  readonly minimumSelections: number
+  readonly matchingOptions: readonly EntityId[]
+  readonly requiredMatches: number
+  readonly description?: string | null
+}
+
+/**
+ * Player must make a yes/no decision.
+ */
+export interface YesNoDecision extends PendingDecisionBase {
+  readonly type: 'YesNoDecision'
+  readonly yesText: string
+  readonly noText: string
+  /** Optional hint text shown below the prompt (e.g., keyword reminder text) */
+  readonly hint?: string
+}
+
+/**
+ * Player must choose targets.
+ */
+export interface ChooseTargetsDecision extends PendingDecisionBase {
+  readonly type: 'ChooseTargetsDecision'
+  readonly targetRequirements: readonly TargetRequirementInfo[]
+  readonly legalTargets: Record<number, readonly EntityId[]>
+  readonly canCancel?: boolean
+}
+
+export interface TargetRequirementInfo {
+  readonly index: number
+  readonly minTargets: number
+  readonly maxTargets: number
+  readonly description: string
+  /** When true, every chosen card target must be owned by the same player ("from a single graveyard"). */
+  readonly sameOwner?: boolean
+  /**
+   * When set, the combined mana value of the chosen card targets may not exceed this cap
+   * ("any number of target creature cards with total mana value X or less" — Fire Lord Sozin).
+   * Already resolved to a concrete number server-side.
+   */
+  readonly totalManaValueAtMost?: number | null
+}
+
+/**
+ * Information about a card available for selection during library search.
+ * This is embedded in the decision because library cards are normally hidden.
+ */
+export interface SearchCardInfo {
+  readonly name: string
+  readonly manaCost: string
+  readonly typeLine: string
+  readonly imageUri: string | null
+  /** Colour names for cards backed by hidden zone info (e.g. ["WHITE","BLUE"]); empty for colourless. */
+  readonly colors?: readonly string[]
+  /** Printed (base) power, when fixed; null/undefined for cards with no fixed power. */
+  readonly power?: number | null
+}
+
+/**
+ * Player must select cards from their library.
+ *
+ * Unlike SelectCardsDecision, this includes embedded card info because
+ * library contents are normally hidden from the client.
+ */
+export interface SearchLibraryDecision extends PendingDecisionBase {
+  readonly type: 'SearchLibraryDecision'
+  readonly options: readonly EntityId[]
+  readonly minSelections: number
+  readonly maxSelections: number
+  readonly cards: Record<EntityId, SearchCardInfo>
+  readonly filterDescription: string
+}
+
+/**
+ * Player must reorder cards from the top of their library.
+ *
+ * Used for "look at the top N cards and put them back in any order" effects
+ * like Omen. The client displays the cards with drag-and-drop reordering,
+ * with a clear indication of which end is the top of the library.
+ */
+export interface ReorderLibraryDecision extends PendingDecisionBase {
+  readonly type: 'ReorderLibraryDecision'
+  readonly cards: readonly EntityId[]
+  readonly cardInfo: Record<EntityId, SearchCardInfo>
+}
+
+/**
+ * Player must order objects (e.g., damage assignment order for blockers).
+ *
+ * Used when an attacker is blocked by multiple creatures and the attacking
+ * player must declare the order in which blockers receive damage.
+ */
+export interface OrderObjectsDecision extends PendingDecisionBase {
+  readonly type: 'OrderObjectsDecision'
+  readonly objects: readonly EntityId[]
+  readonly cardInfo?: Record<EntityId, SearchCardInfo>
+}
+
+/**
+ * Player must choose a number (e.g., how many cards to draw).
+ */
+export interface ChooseNumberDecision extends PendingDecisionBase {
+  readonly type: 'ChooseNumberDecision'
+  readonly minValue: number
+  readonly maxValue: number
+}
+
+/**
+ * Player must choose from a list of string options (e.g., creature types).
+ * Used by effects like Artificial Evolution.
+ */
+/**
+ * Optional per-option metadata aligned positionally with the options list.
+ * The frontend uses `iconKey` to render visual choices and `description` to
+ * show reminder text alongside the label. `id` is a stable machine-readable
+ * identifier the engine assigns when relevant (e.g. named-mode entry choices).
+ */
+export interface OptionMetadata {
+  readonly id?: string | null
+  readonly description?: string | null
+  readonly iconKey?: string | null
+}
+
+export interface ChooseOptionDecision extends PendingDecisionBase {
+  readonly type: 'ChooseOptionDecision'
+  readonly options: readonly string[]
+  readonly defaultSearch?: string | null
+  /** Maps option index to entity IDs of cards associated with that option (for preview) */
+  readonly optionCardIds?: Record<number, readonly EntityId[]> | null
+  /**
+   * Optional per-option metadata, aligned positionally with `options`. Empty
+   * means no metadata; otherwise the same length as `options`.
+   */
+  readonly optionMetadata?: readonly OptionMetadata[]
+  /** Whether the player may abort this decision (e.g., cast-time modal mode pick before any cost is paid). */
+  readonly canCancel?: boolean
+}
+
+/**
+ * Pick a text-change replacement in one screen: a FROM word and a TO word shown as "from → to".
+ * Used by Crystal Spray / Artificial Evolution.
+ */
+export interface ChooseReplacementDecision extends PendingDecisionBase {
+  readonly type: 'ChooseReplacementDecision'
+  readonly fromOptions: readonly string[]
+  readonly toOptions: readonly string[]
+  readonly fromMetadata?: readonly OptionMetadata[]
+  readonly toMetadata?: readonly OptionMetadata[]
+  /**
+   * Index-aligned to `fromOptions`: entry i lists the `toOptions` indices allowed when FROM option i
+   * is chosen. Empty outer list => every TO allowed for any FROM (Artificial Evolution).
+   */
+  readonly allowedToByFrom?: readonly (readonly number[])[]
+  readonly defaultFromIndex?: number | null
+}
+
+/**
+ * Player must distribute an amount (e.g., damage) among targets.
+ * Used for effects like Forked Lightning that deal divided damage.
+ */
+export interface DistributeDecision extends PendingDecisionBase {
+  readonly type: 'DistributeDecision'
+  readonly totalAmount: number
+  readonly targets: readonly EntityId[]
+  readonly minPerTarget: number
+  readonly maxPerTarget?: Record<EntityId, number>
+  readonly allowPartial?: boolean
+}
+
+/**
+ * Player must choose a color (e.g., protection from color of your choice).
+ */
+export interface ChooseColorDecision extends PendingDecisionBase {
+  readonly type: 'ChooseColorDecision'
+  readonly availableColors: readonly string[]
+}
+
+/**
+ * Information about a mana source available for manual selection.
+ */
+export interface ManaSourceOption {
+  readonly entityId: EntityId
+  readonly name: string
+  readonly producesColors: readonly string[]
+  readonly producesColorless: boolean
+  /**
+   * Selecting this source sacrifices the permanent in addition to tapping it
+   * (e.g. Treasure tokens — "{T}, Sacrifice this artifact: Add one mana of any color").
+   * Auto-pay never picks these; manual selection performs the sacrifice explicitly.
+   */
+  readonly requiresSacrifice?: boolean
+  /** How much mana one activation adds (Gilded Lotus: 3). Absent on older servers — read as 1. */
+  readonly manaAmount?: number
+}
+
+/**
+ * An untapped artifact or creature that can be tapped to pay {1} of a Waterbend cost
+ * (Avatar-set alternative payment: tap artifacts/creatures you control, each paying {1}).
+ */
+export interface WaterbendPermanentChoice {
+  readonly entityId: EntityId
+  readonly name: string
+  readonly isCreature: boolean
+}
+
+/**
+ * Player must select mana sources to pay a cost.
+ * Includes an "Auto Pay" shortcut.
+ */
+export interface SelectManaSourcesDecision extends PendingDecisionBase {
+  readonly type: 'SelectManaSourcesDecision'
+  readonly availableSources: readonly ManaSourceOption[]
+  readonly requiredCost: string
+  readonly autoPaySuggestion: readonly EntityId[]
+  readonly canDecline?: boolean
+  /**
+   * Untapped artifacts/creatures that may be tapped to pay {1} each toward the cost via
+   * Waterbend (e.g. Ward—Waterbend). Empty for ordinary mana-only costs.
+   */
+  readonly waterbendPermanents?: readonly WaterbendPermanentChoice[]
+}
+
+/**
+ * Player must assign combat damage from an attacker to blockers (and defending player for trample).
+ * Used when a creature with trample or multiple blockers needs manual damage assignment.
+ */
+export interface AssignDamageDecision extends PendingDecisionBase {
+  readonly type: 'AssignDamageDecision'
+  readonly attackerId: EntityId
+  readonly availablePower: number
+  readonly orderedTargets: readonly EntityId[]
+  readonly defenderId: EntityId | null
+  readonly minimumAssignments: Record<EntityId, number>
+  readonly defaultAssignments: Record<EntityId, number>
+  readonly hasTrample: boolean
+  readonly hasDeathtouch: boolean
+}
+
+/**
+ * Direction of a {@link DamageEdge} on the combat resolution board.
+ */
+export type DamageEdgeDirection =
+  | 'ATTACKER_TO_BLOCKER'
+  | 'BLOCKER_TO_ATTACKER'
+  | 'ATTACKER_TO_PLAYER'
+  | 'ATTACKER_TO_PLANESWALKER'
+  | 'ATTACKER_TO_BATTLE'
+
+/**
+ * One directed damage assignment on the combat resolution board. Pre-filled with the
+ * engine-computed default {@link amount}; editable within `[0, maximum]` by {@link editableBy}.
+ */
+export interface DamageEdge {
+  readonly id: string
+  readonly sourceId: EntityId
+  readonly targetId: EntityId
+  readonly direction: DamageEdgeDirection
+  readonly amount: number
+  readonly maximum: number
+  /** True lethal need for the target from this source (deathtouch -> 1, else toughness - marked). */
+  readonly lethal: number
+  /** Whether this edge participates in CR 510.1c assignment-order gating (banding lifts it). */
+  readonly orderConstrained: boolean
+  /** Trample overflow edge to a player / planeswalker / battle (CR 702.19b lethal-first). */
+  readonly isTrampleDrain: boolean
+  /** Which player may modify this edge (banding flips it to the opponent). */
+  readonly editableBy: EntityId
+}
+
+export interface ResolutionAttacker {
+  readonly id: EntityId
+  readonly name: string
+  readonly power: number
+  readonly toughness: number
+  readonly hasTrample: boolean
+  readonly hasDeathtouch: boolean
+  readonly hasFirstStrike: boolean
+  readonly hasDoubleStrike: boolean
+  readonly dealsDamageThisStep: boolean
+  readonly bandId: string | null
+  readonly attackedDefenderId: EntityId
+  readonly blockedByIds: readonly EntityId[]
+  readonly markedDamage: number
+}
+
+export interface ResolutionBlocker {
+  readonly id: EntityId
+  readonly name: string
+  readonly power: number
+  readonly toughness: number
+  readonly hasDeathtouch: boolean
+  readonly hasFirstStrike: boolean
+  readonly hasDoubleStrike: boolean
+  readonly dealsDamageThisStep: boolean
+  readonly blockedAttackerIds: readonly EntityId[]
+  readonly orderedAttackers: readonly EntityId[]
+  readonly markedDamage: number
+}
+
+export type ResolutionTargetKind = 'PLAYER' | 'PLANESWALKER' | 'BATTLE'
+
+export interface ResolutionDefender {
+  readonly id: EntityId
+  readonly kind: ResolutionTargetKind
+  readonly name: string
+  readonly lifeOrLoyaltyOrDefense: number | null
+}
+
+/**
+ * The combat-damage resolution board (CR 510 / 702.22) — a bipartite damage graph the chooser
+ * confirms or re-divides. Replaces the per-attacker AssignDamageDecision + blocker-ordering pre-step.
+ */
+export interface CombatResolutionDecision extends PendingDecisionBase {
+  readonly type: 'CombatResolutionDecision'
+  readonly firstStrike: boolean
+  readonly attackers: readonly ResolutionAttacker[]
+  readonly blockers: readonly ResolutionBlocker[]
+  readonly defenders: readonly ResolutionDefender[]
+  readonly edges: readonly DamageEdge[]
+  /** For the two-actor banding case: the other player who owns the inverted edges. */
+  readonly coChooserId?: EntityId | null
+}
+
+/**
+ * Player must split cards into piles (e.g., Surveil, Fact or Fiction).
+ * Each card is assigned to one of the labeled piles.
+ */
+export interface SplitPilesDecision extends PendingDecisionBase {
+  readonly type: 'SplitPilesDecision'
+  readonly cards: readonly EntityId[]
+  readonly numberOfPiles: number
+  readonly pileLabels: readonly string[]
+  readonly cardInfo?: Record<EntityId, SearchCardInfo> | null
+}
+
+/**
+ * A single mode in a budget modal decision.
+ */
+export interface BudgetModeOption {
+  readonly cost: number
+  readonly description: string
+}
+
+/**
+ * Player must choose modes from a budget-based modal spell (Bloomburrow Season cycle).
+ * Each mode has a pawprint cost, and the player has a budget to spend.
+ * The same mode can be chosen multiple times if budget allows.
+ */
+export interface BudgetModalDecision extends PendingDecisionBase {
+  readonly type: 'BudgetModalDecision'
+  readonly budget: number
+  readonly modes: readonly BudgetModeOption[]
+}
+
+/**
+ * One yes/no raised for a run of N identical optional ("you may …") triggers, answered once
+ * instead of N times. The response carries both the yes/no `choice` and `applyToAll`:
+ * apply-to-all resolves the whole run; otherwise it peels one instance and the batch re-raises for
+ * the rest. See `backlog/stack-collapse-and-batch-decisions.md` §B.
+ */
+export interface BatchYesNoDecision extends PendingDecisionBase {
+  readonly type: 'BatchYesNoDecision'
+  /** How many identical instances one "to all" answer covers (≥ 2). */
+  readonly count: number
+  readonly yesText: string
+  readonly noText: string
+}
+
+/**
+ * Union of all pending decision types.
+ */
+export type PendingDecision =
+  | SelectCardsDecision
+  | YesNoDecision
+  | BatchYesNoDecision
+  | ChooseTargetsDecision
+  | SearchLibraryDecision
+  | ReorderLibraryDecision
+  | OrderObjectsDecision
+  | ChooseNumberDecision
+  | ChooseOptionDecision
+  | ChooseReplacementDecision
+  | BudgetModalDecision
+  | DistributeDecision
+  | ChooseColorDecision
+  | SelectManaSourcesDecision
+  | AssignDamageDecision
+  | CombatResolutionDecision
+  | SplitPilesDecision
+
+/**
+ * Information about a single target requirement for legal actions.
+ * Includes valid targets so the client knows which entities can be selected.
+ */
+export interface LegalActionTargetInfo {
+  readonly index: number
+  readonly description: string
+  readonly minTargets: number
+  readonly maxTargets: number
+  readonly validTargets: readonly EntityId[]
+  /** The zone these targets are in (e.g., "Graveyard" for graveyard targets). Null for battlefield targets. */
+  readonly targetZone?: string
+  /**
+   * True when this requirement filters by "mana value X or less" — the client must
+   * intersect [validTargets] with `card.manaValue <= chosenX` after X selection,
+   * since the server enumerates targets permissively before X is bound.
+   */
+  readonly xConstrainsManaValue?: boolean
+  /**
+   * True when this requirement filters by "mana value X" *exactly* (Likeness Looter, Rydia,
+   * Summoner of Mist) — the client must intersect [validTargets] with `card.manaValue === chosenX`
+   * after X selection, since the server enumerates targets permissively before X is bound.
+   */
+  readonly xConstrainsManaValueExactly?: boolean
+  /**
+   * True when this requirement filters by "power X" (Ent-Draught Basin) — the client must
+   * intersect [validTargets] with `card.power === chosenX` after X selection, since the
+   * server enumerates targets permissively before X is bound.
+   */
+  readonly xConstrainsPower?: boolean
+  /**
+   * True when this requirement's max-count scales with the chosen X
+   * (TargetObject.dynamicMaxCount == XValue server-side). The client must clamp
+   * selectable targets to the X chosen at cast time.
+   */
+  readonly xConstrainsCount?: boolean
+}
+
+/**
+ * Information about a legal action the player can take.
+ */
+export interface LegalActionInfo {
+  /** Client-attached snapshot origin; preserved while targets and payments are selected. */
+  readonly interactionEpoch?: string | null
+  readonly actionType: string
+  readonly description: string
+  readonly action: GameAction
+  /** Valid target IDs if this action requires targeting */
+  readonly validTargets?: readonly EntityId[]
+  /** Whether this action requires selecting targets before submission */
+  readonly requiresTargets?: boolean
+  /** Maximum number of targets (default 1) */
+  readonly targetCount?: number
+  /** Minimum number of targets required (default = targetCount) */
+  readonly minTargets?: number
+  /** Description of the target requirement */
+  readonly targetDescription?: string
+  /** Multiple target requirements for spells with multiple distinct targets */
+  readonly targetRequirements?: readonly LegalActionTargetInfo[]
+  /**
+   * True when the (single) target requirement filters by "mana value X or less".
+   * For multi-requirement spells, see the per-requirement
+   * [LegalActionTargetInfo.xConstrainsManaValue]. The client must re-filter
+   * [validTargets] by the chosen X after X selection.
+   */
+  readonly xConstrainsTargetManaValue?: boolean
+  /**
+   * True when the (single) target requirement filters by "mana value X" *exactly*
+   * (Likeness Looter). The client must narrow [validTargets] to cards whose mana value equals
+   * the chosen X. For multi-requirement abilities, see the per-requirement
+   * [LegalActionTargetInfo.xConstrainsManaValueExactly].
+   */
+  readonly xConstrainsTargetManaValueExactly?: boolean
+  /**
+   * True when the (single) target requirement filters by "power X" (Ent-Draught Basin).
+   * The client must re-filter [validTargets] to creatures whose power equals the chosen X
+   * after X selection. For multi-requirement abilities, see the per-requirement
+   * [LegalActionTargetInfo.xConstrainsPower].
+   */
+  readonly xConstrainsTargetPower?: boolean
+  /**
+   * True when the (single) target requirement's max-count scales with the chosen X
+   * (e.g. Builder's Bane: "Destroy X target artifacts"). The client must clamp the
+   * targeting overlay's max selection to the X chosen at cast time. For multi-
+   * requirement spells, see the per-requirement [LegalActionTargetInfo.xConstrainsCount].
+   */
+  readonly xConstrainsTargetCount?: boolean
+  /** Valid attacker IDs for DeclareAttackers action */
+  readonly validAttackers?: readonly EntityId[]
+  /** Creature IDs that must attack this combat (from MustAttack, Taunt, etc.) */
+  readonly mandatoryAttackers?: readonly EntityId[]
+  /** Valid attack targets: opponent planeswalker IDs that can be attacked */
+  readonly validAttackTargets?: readonly EntityId[]
+  /** Valid blocker IDs for DeclareBlockers action */
+  readonly validBlockers?: readonly EntityId[]
+  /** Whether this spell has X in its mana cost */
+  readonly hasXCost?: boolean
+  /** Maximum X value the player can afford (null if not X cost spell) */
+  readonly maxAffordableX?: number
+  /** Minimum X value (usually 0) */
+  readonly minX?: number
+  /** Whether this is a mana ability (doesn't highlight card as playable) */
+  readonly isManaAbility?: boolean
+  /** Whether this action can currently be afforded/executed (default true) */
+  readonly isAffordable?: boolean
+  /** Additional cost info (sacrifice, etc.) */
+  readonly additionalCostInfo?: AdditionalCostInfo
+  /** Whether this spell has Convoke */
+  readonly hasConvoke?: boolean
+  /** Creatures that can be tapped to help pay for Convoke */
+  readonly validConvokeCreatures?: readonly ConvokeCreatureInfo[]
+  /**
+   * Whether this ability/spell offers a tap-for-generic payment — tap untapped permanents you
+   * control, each paying {1} of the generic in the cost. Improvise (CR 702.126, artifacts only)
+   * and Waterbend (artifacts or creatures) both arrive this way; `tapForGenericLabel` says which.
+   */
+  readonly hasTapForGeneric?: boolean
+  /** Permanents that can be tapped to help pay, each for {1} generic */
+  readonly validTapForGenericPermanents?: readonly TapForGenericPermanentInfo[]
+  /**
+   * Tap cap for a spell-level waterbend cost — at most this many permanents may be tapped (one
+   * per generic in the waterbend {N}). Absent when the cap is just the generic in the cost:
+   * improvise, an ability waterbend, and the "waterbend {X}" shape (cap = the chosen xValue).
+   */
+  readonly tapForGenericAmount?: number
+  /** Player-facing verb for the tap payment — `"improvise"` / `"waterbend"`. */
+  readonly tapForGenericLabel?: string
+  /** Whether this spell has Delve */
+  readonly hasDelve?: boolean
+  /** Cards in graveyard that can be exiled for Delve */
+  readonly validDelveCards?: readonly DelveCardInfo[]
+  /** Minimum number of cards to exile via Delve to afford this spell */
+  readonly minDelveNeeded?: number
+  /** Whether this is a Harmonize cast (from the graveyard; optionally tap one creature) */
+  readonly hasHarmonize?: boolean
+  /** Creatures that can be tapped to reduce the generic harmonize cost by their power */
+  readonly validHarmonizeCreatures?: readonly HarmonizeCreatureInfo[]
+  /** The spell's mana cost string for Convoke/Delve UI display */
+  readonly manaCostString?: string
+  /**
+   * The cheapest [manaCostString] can end up being once this action's own alternative payments are
+   * spent to the maximum — convoke taps, delve exiles, waterbend taps, a harmonize tap. Absent when
+   * nothing can move the cost.
+   *
+   * For those keywords `manaCostString` is the *pre-reduction* price, so showing it alone advertises
+   * a number the player never pays. The pair is rendered as a span ("{5}{G} → as low as {G}"). The
+   * server computes it because each keyword's reduction is a rule — convoke matches colors, delve
+   * and waterbend are generic-only, harmonize taps one creature.
+   */
+  readonly minimumManaCostString?: string
+  /**
+   * Mana this spell adds to its own cost per target beyond the first — Officious Interrogation
+   * ("This spell costs {W}{U} more to cast for each target beyond the first") sends `'{W}{U}'`.
+   * Absent for every spell that doesn't tax itself per target.
+   *
+   * When set, `manaCostString` is only the one-target minimum, so targeting has to be settled
+   * before the player can sensibly pick mana sources by hand: `computePhases` orders `targeting`
+   * ahead of `manaSource`, and `startManaSelection` scales the cost it charges by the targets
+   * actually picked.
+   */
+  readonly manaCostPerExtraTarget?: string
+  /** Whether this spell requires damage distribution at cast time (for DividedDamageEffect) */
+  readonly requiresDamageDistribution?: boolean
+  /** Total damage to distribute for DividedDamageEffect spells */
+  readonly totalDamageToDistribute?: number
+  /** Minimum damage per target (usually 1 per MTG rules) */
+  readonly minDamagePerTarget?: number
+  /** Preview of which lands/sources would be auto-tapped if this spell is cast (for UI highlighting) */
+  readonly autoTapPreview?: readonly EntityId[]
+  /** Available mana sources for pre-cast selection */
+  readonly availableManaSources?: readonly ManaSourceInfo[]
+  /**
+   * Floating restricted ("spend this mana only to …") mana that the server has determined is
+   * eligible to pay for *this* action — one entry per mana unit. Sent alongside
+   * `availableManaSources`. The client must count these as spendable when it does its own cost
+   * math (convoke / waterbend / harmonize bars); it cannot judge eligibility itself, since the
+   * mana pool payload carries only a human-readable restriction string.
+   */
+  readonly eligibleRestrictedMana?: readonly ClientRestrictedManaEntry[]
+  /** Whether this ability produces mana of any color and needs a color choice from the player */
+  readonly requiresManaColorChoice?: boolean
+  /**
+   * Restricted set of producible color names ("WHITE", "BLUE", "BLACK", "RED", "GREEN")
+   * for color-constrained abilities (Mox Amber, Fellwar Stone, Reflecting Pool).
+   * Undefined means all five colors are valid (Gilded Lotus, Birds of Paradise).
+   * The picker must hide colors not present in this list.
+   */
+  readonly availableManaColors?: readonly string[]
+  /** Source zone if this action is from a non-hand zone (e.g., "LIBRARY" for Future Sight) */
+  readonly sourceZone?: string
+  /**
+   * True when this cast puts the card on the stack **back face up** (CR 712.8c) — a disturb cast
+   * (CR 702.146a). The card is sitting in its zone printed *front* face up, so the offer must be
+   * rendered from the card's `backFace*` fields, not from its own name/art/text. Server-decided:
+   * which face a cast uses is a rules question, never one the client derives from a keyword.
+   */
+  readonly castsTransformed?: boolean
+  /** Max block counts for blockers that can block more than one attacker */
+  readonly blockerMaxBlockCounts?: Readonly<Record<EntityId, number>>
+  /** Pre-computed mandatory blocker→attacker assignments from Provoke / MustBeBlockedByAll */
+  readonly mandatoryBlockerAssignments?: Readonly<Record<EntityId, readonly EntityId[]>>
+  /** Maximum times this ability can be activated in a batch (for repeat-eligible self-targeting abilities) */
+  readonly maxRepeatableActivations?: number
+  /** Whether this action requires a "tap creatures with total power N" selection (Crew N / Saddle N) */
+  readonly tapForPower?: boolean
+  /** The total power requirement (N in "Crew N" / "Saddle N") */
+  readonly tapForPowerRequired?: number
+  /** Creatures that can be tapped to pay this requirement */
+  readonly tapForPowerCreatures?: readonly TapForPowerCreatureInfo[]
+  /**
+   * Cast-time enumeration for a choose-N modal spell (Spree / "choose one or more").
+   * Present on `CastSpellModal` actions. The client renders a single mode-selection panel
+   * from this payload, then submits `CastSpell` with `chosenModes` populated (targets are
+   * picked afterward on the battlefield, server-driven).
+   */
+  readonly modalEnumeration?: ModalLegalEnumerationInfo
+}
+
+/**
+ * Cast-time enumeration payload for a choose-N modal spell. Mirrors the backend
+ * `ModalLegalEnumerationInfo` (rules 700.2).
+ */
+export interface ModalLegalEnumerationInfo {
+  /** Maximum number of modes the player may choose. */
+  readonly chooseCount: number
+  /** Minimum number of modes that must be chosen (≥ 1 for Spree). */
+  readonly minChooseCount: number
+  /** When true, the same mode may be chosen more than once (Escalate-style repeat). */
+  readonly allowRepeat: boolean
+  /** Additional mana paid for every selected mode beyond the first (Escalate). */
+  readonly additionalManaCostPerExtraMode?: string
+  /**
+   * Non-mana escalate (CR 702.120a — Collective Brutality's "discard a card"): the cost of **one**
+   * extra mode. Its counts are per extra mode, so the picker multiplies them by
+   * `chosenModes.length - 1`. `chooseCount` is already capped by what the caster can pay.
+   */
+  readonly additionalCostPerExtraMode?: AdditionalCostInfo
+  /** One entry per declared mode, in printed order. */
+  readonly modes: readonly ModalEnumerationModeInfo[]
+  /** Mode indices that cannot currently be chosen (no legal target / unaffordable). */
+  readonly unavailableIndices: readonly number[]
+}
+
+/** A single mode offered for cast-time selection on a choose-N modal spell. */
+export interface ModalEnumerationModeInfo {
+  /** Printed mode index (0-based). */
+  readonly index: number
+  /** Rendered mode text, e.g. "+ {2} — Put two +1/+1 counters on target creature." */
+  readonly description: string
+  /** False when the mode has no legal target or the caster cannot pay its cost. */
+  readonly available: boolean
+  /** Extra mana this mode adds to the spell's cost, if any (e.g. "{2}"). */
+  readonly additionalManaCost?: string
+  /** Per-mode non-mana additional cost info when the mode overrides card-level costs. */
+  readonly additionalCostInfo?: AdditionalCostInfo
+  /** Target slots for this mode; empty if the mode has none. */
+  readonly targetRequirements?: readonly LegalActionTargetInfo[]
+}
+
+/**
+ * Information about a creature that can be tapped to pay a "tap creatures with total power N"
+ * cost — shared by Crew N (Vehicles) and Saddle N (Mounts).
+ */
+export interface TapForPowerCreatureInfo {
+  readonly entityId: EntityId
+  readonly name: string
+  /** Projected power of this creature */
+  readonly power: number
+  /** Whether the server says this creature could legally attack right now (CR 508.1a). Paying with
+   * it taps it, so it drops out of combat — the auto-pick spends creatures that couldn't attack
+   * anyway first, and the HUD flags the ones that could. */
+  readonly canAttack?: boolean
+}
+
+/**
+ * Information about a creature that can be tapped for Convoke.
+ */
+export interface ConvokeCreatureInfo {
+  readonly entityId: EntityId
+  readonly name: string
+  /** Colors this creature can pay (based on its colors) */
+  readonly colors: readonly string[]
+}
+
+/**
+ * Information about a permanent that can be tapped for a tap-for-generic payment (improvise /
+ * waterbend). Generic-only,
+ * so no color is carried. [isCreature] distinguishes creatures from artifacts for UI only.
+ */
+export interface TapForGenericPermanentInfo {
+  readonly entityId: EntityId
+  readonly name: string
+  readonly isCreature: boolean
+}
+
+/**
+ * Information about a creature that can be tapped for Harmonize. [power] is the amount of
+ * generic mana the harmonize cost is reduced by if this creature is tapped.
+ */
+export interface HarmonizeCreatureInfo {
+  readonly entityId: EntityId
+  readonly name: string
+  /** Projected power of this creature */
+  readonly power: number
+}
+
+/**
+ * Information about a card in graveyard that can be exiled for Delve.
+ */
+export interface DelveCardInfo {
+  readonly entityId: EntityId
+  readonly name: string
+  readonly imageUri?: string | null
+}
+
+/**
+ * Information about additional costs for a spell.
+ */
+export interface AdditionalCostInfo {
+  readonly description: string
+  readonly costType: string
+  readonly validSacrificeTargets?: readonly EntityId[]
+  readonly sacrificeCount?: number
+  /**
+   * Emerge (CR 702.119): the mana cost that remains after sacrificing each candidate, keyed by
+   * that candidate. Emerge is the only cost whose mana half depends on which permanent pays its
+   * non-mana half, so `manaCostString` alone can't say what a given choice costs — and the client
+   * must never re-derive it, since the generic-only reduction is a rule. Absent/empty for every
+   * other sacrifice cost, whose mana is fixed regardless of the choice.
+   */
+  readonly costAfterSacrifice?: Readonly<Record<EntityId, string>>
+  readonly validTapTargets?: readonly EntityId[]
+  readonly tapCount?: number
+  /**
+   * Station-style multi-select shortcut (CR 702.184a). When > 1, this single-creature tap cost
+   * belongs to a no-target, stacking ability that may be activated several times in one gesture:
+   * select 1..tapBatchMaxActivations distinct creatures and one activation per creature is queued
+   * (repeatCount = number selected). 1 / absent means the normal "tap exactly tapCount" behaviour.
+   */
+  readonly tapBatchMaxActivations?: number
+  readonly validDiscardTargets?: readonly EntityId[]
+  readonly discardCount?: number
+  /**
+   * Cards in your hand that could pay a reveal-from-hand additional cost ("reveal an Elf card from
+   * your hand or pay {3}"), and how many to pick. Distinct from `validBeholdTargets` because
+   * behold also offers battlefield permanents (CR 701.4a); a reveal never does. Picks are
+   * submitted as `additionalCostPayment.revealedCards` — the cards stay in hand (CR 701.20b).
+   */
+  readonly validRevealTargets?: readonly EntityId[]
+  readonly revealCount?: number
+  readonly validBounceTargets?: readonly EntityId[]
+  readonly bounceCount?: number
+  readonly validExileTargets?: readonly EntityId[]
+  readonly exileMinCount?: number
+  readonly exileMaxCount?: number
+  /**
+   * Floor on the summed *measure* of the exiled cards, with the per-card weights the sum is taken
+   * over and the name of one unit for the tally. Set for the graveyard exile costs whose
+   * constraint is a total rather than a count — `costType === 'CollectEvidence'` (CR 701.59a,
+   * mana value) and `'ExileForTotal'` (Baron Helmut Zemo's "fifteen or more black mana symbols
+   * among their mana costs") — where `exileMinCount` / `exileMaxCount` merely bound the selection
+   * at 1 and the whole graveyard.
+   *
+   * The client never computes a weight: the server ships them (a pip total is a reading of the
+   * printed cost the client can't do, and sending mana values too keeps this one code path).
+   */
+  readonly exileMinTotalWeight?: number
+  readonly exileCardWeights?: Readonly<Record<EntityId, number>>
+  readonly exileWeightUnit?: string
+  /**
+   * What each legal target would add to `exileMinTotalWeight` — present only for a cost whose
+   * threshold is priced off the spell's targets rather than printed (Urgent Necropsy's "collect
+   * evidence X, where X is the total mana value of the permanents this spell targets").
+   *
+   * Its presence says the threshold isn't final and the picker has to wait: `exileMinTotalWeight`
+   * carries only the part already known, and the real floor is that plus these weights summed over
+   * whatever the caster targets. So the cost-payment step runs *after* the targeting step for this
+   * cost — the same deferral `manaCostPerExtraTarget` already does for mana sources. Like every
+   * other weight here, the numbers are the server's, not the client's.
+   */
+  readonly exileWeightPerTarget?: Readonly<Record<EntityId, number>>
+  readonly validBeholdTargets?: readonly EntityId[]
+  readonly beholdCount?: number
+  readonly counterRemovalCreatures?: readonly CounterRemovalCreatureInfo[]
+  readonly validBlightTargets?: readonly EntityId[]
+  readonly blightAmount?: number
+  /** For BlightVariable: cap on X (greatest toughness among creatures you control). */
+  readonly blightVariableMaxX?: number
+  /** For PayXLife: cap on X (your current life total). */
+  readonly payXLifeMaxX?: number
+  /**
+   * Fixed total counters to remove across creatures you control for
+   * `RemoveCountersFromYourCreatures` costs (e.g. Dawnhand Dissident's cast cost).
+   */
+  readonly distributedCounterRemovalTotal?: number
+  /**
+   * Combined battlefield + graveyard candidate pool for an `AbilityCost.Craft` sub-cost
+   * (CR 702.167a-b). The activator picks `craftMinCount`+ of these to exile alongside the
+   * source. Battlefield candidates are permanents the activator controls matching the
+   * Craft filter; graveyard candidates are cards in their graveyard matching the same
+   * filter. Chosen IDs are submitted as `ActivateAbility.costPayment.exiledCards`.
+   */
+  readonly validCraftMaterials?: readonly EntityId[]
+  readonly craftMinCount?: number
+  /** Cap on material count for exact-count crafts ("Craft with artifact"); absent = unbounded. */
+  readonly craftMaxCount?: number
+  /**
+   * `TapForTotalPower` cost (Teamwork N, CR 702.194a): the creatures that may be tapped and their
+   * server-computed (projected) power. How *many* are chosen is free — the constraint is that
+   * their total power reaches `tapForPowerRequired`. Chosen ids are submitted as
+   * `additionalCostPayment.variableCostPermanents`.
+   */
+  readonly tapForPowerCreatures?: readonly TapForPowerCreatureInfo[]
+  /** Total power the `tapForPowerCreatures` selection must reach. */
+  readonly tapForPowerRequired?: number
+}
+
+export interface CounterRemovalCreatureInfo {
+  readonly entityId: EntityId
+  readonly name: string
+  readonly availableCounters: number
+  /**
+   * Counter-type breakdown so the UI can render per-type +/- rows when a
+   * creature carries more than one type. Keys are canonical counter-type
+   * symbols (e.g. "+1/+1", "-1/-1", "stun"); values sum to `availableCounters`.
+   */
+  readonly availableCountersByType?: Readonly<Record<string, number>>
+  readonly imageUri?: string | null
+}
+
+/**
+ * Card info for mulligan display.
+ */
+export interface MulliganCardInfo {
+  readonly name: string
+  readonly imageUri: string | null
+}
+
+/**
+ * Mulligan decision required.
+ */
+export interface MulliganDecisionMessage {
+  readonly type: 'mulliganDecision'
+  readonly hand: readonly EntityId[]
+  readonly mulliganCount: number
+  readonly cardsToPutOnBottom: number
+  readonly cards: Record<EntityId, MulliganCardInfo>
+  readonly isOnThePlay: boolean
+}
+
+/**
+ * Player must choose cards to put on bottom of library.
+ */
+export interface ChooseBottomCardsMessage {
+  readonly type: 'chooseBottomCards'
+  readonly hand: readonly EntityId[]
+  readonly cardsToPutOnBottom: number
+}
+
+/**
+ * Mulligan phase is complete and the game is starting.
+ */
+export interface MulliganCompleteMessage {
+  readonly type: 'mulliganComplete'
+  readonly finalHandSize: number
+}
+
+/**
+ * Waiting for opponent to complete their mulligan.
+ */
+export interface WaitingForOpponentMulliganMessage {
+  readonly type: 'waitingForOpponentMulligan'
+}
+
+/**
+ * Game has ended.
+ */
+export interface GameOverMessage {
+  readonly type: 'gameOver'
+  /** One representative of the winning side; kept for readers that predate teams. */
+  readonly winnerId: EntityId | null
+  /** Every seat that won — the whole winning team in Two-Headed Giant (CR 810.8a). Empty for a draw. */
+  readonly winnerIds?: readonly EntityId[]
+  readonly reason: GameOverReason
+  readonly message?: string
+  readonly gameId?: string
+}
+
+/**
+ * Error response from the server.
+ */
+export interface ErrorMessage {
+  readonly type: 'error'
+  readonly code: ErrorCode
+  readonly message: string
+}
+
+// ============================================================================
+// Sealed Draft Server Messages
+// ============================================================================
+
+/**
+ * An official ruling for a sealed card.
+ */
+export interface SealedRuling {
+  readonly date: string
+  readonly text: string
+}
+
+/**
+ * Card information for sealed deck building UI.
+ */
+export interface SealedCardInfo {
+  readonly name: string
+  readonly manaCost: string | null
+  readonly typeLine: string
+  readonly rarity: string
+  readonly imageUri: string | null
+  readonly power?: number | null
+  readonly toughness?: number | null
+  readonly oracleText?: string | null
+  readonly rulings?: readonly SealedRuling[]
+  readonly isDoubleFaced?: boolean
+  readonly backFaceName?: string | null
+  readonly backFaceTypeLine?: string | null
+  readonly backFaceOracleText?: string | null
+  readonly backFaceImageUri?: string | null
+  /**
+   * Color identity (CR 903.4) — uppercase color names ("WHITE", "BLUE", …). Drives the
+   * sealed/draft deckbuilder's color filter chips and archetype matcher. The server stamps
+   * this from the authoritative Scryfall override when one exists.
+   */
+  readonly colorIdentity?: readonly string[]
+  /**
+   * Specific printing this pool card was opened/drafted as — Scryfall's unique
+   * `(setCode, collectorNumber)` key. Lets the deckbuilder save a drafted/sealed deck
+   * to the library while preserving the exact printing the player drafted, instead of
+   * falling back to the card's default printing. Absent for test cards lacking metadata.
+   */
+  readonly setCode?: string | null
+  readonly collectorNumber?: string | null
+  /**
+   * Printed layout code ('NORMAL', 'SPLIT', 'ADVENTURE', …). Kept for anything needing the raw
+   * layout; orientation is {@link isLandscape}'s job.
+   */
+  readonly layout?: string
+
+  /**
+   * True when this card's image is printed sideways and the hover preview must rotate it 90°.
+   * Straight from `CardDefinition.isLandscapePrint` — split layouts and battles (CR 310), the
+   * latter being `TRANSFORM` and so invisible to a `layout === 'SPLIT'` check.
+   */
+  readonly isLandscape?: boolean
+}
+
+/**
+ * Sealed game created successfully, waiting for opponent.
+ */
+export interface SealedGameCreatedMessage {
+  readonly type: 'sealedGameCreated'
+  readonly sessionId: string
+  readonly setCodes: readonly string[]
+  readonly setNames: readonly string[]
+}
+
+/**
+ * Sealed pool has been generated for the player.
+ */
+export interface SealedPoolGeneratedMessage {
+  readonly type: 'sealedPoolGenerated'
+  readonly setCodes: readonly string[]
+  readonly setNames: readonly string[]
+  readonly cardPool: readonly SealedCardInfo[]
+  readonly basicLands: readonly SealedCardInfo[]
+  /**
+   * Cube Pool Play: `cardPool` is the entire cube and copies are unlimited (bounded only by the
+   * 4-of cap), so adding a card must not consume it from the pool.
+   */
+  readonly poolPlay?: boolean
+}
+
+/**
+ * Opponent has submitted their sealed deck.
+ */
+export interface OpponentDeckSubmittedMessage {
+  readonly type: 'opponentDeckSubmitted'
+}
+
+/**
+ * Waiting for opponent to submit their deck.
+ */
+export interface WaitingForOpponentMessage {
+  readonly type: 'waitingForOpponent'
+}
+
+/**
+ * Deck submission was successful.
+ */
+export interface DeckSubmittedMessage {
+  readonly type: 'deckSubmitted'
+  readonly deckSize: number
+}
+
+// ============================================================================
+// Lobby Server Messages
+// ============================================================================
+
+export interface LobbyPlayerInfo {
+  readonly playerId: string
+  readonly playerName: string
+  readonly isHost: boolean
+  readonly isConnected: boolean
+  readonly deckSubmitted: boolean
+  readonly isAi: boolean
+  /** For an AI seat: what the host chose for it to play. Null on a human seat. */
+  readonly aiDeck?: AiDeckSpecView | null
+}
+
+export interface AvailableSet {
+  readonly code: string
+  readonly name: string
+  /**
+   * True when the set isn't fully implemented for sealed/draft (not sealed-supported, or flagged
+   * incomplete). The lobby set picker hides partial sets behind a default-off toggle.
+   */
+  readonly partial?: boolean
+  /**
+   * True for extension sets (bonus sheets like The Big Score): fully implemented but too thin to
+   * play alone — only selectable together with at least one regular set.
+   */
+  readonly extensionSet?: boolean
+  readonly block?: string
+  readonly implementedCount?: number
+  /** Set release date in ISO `YYYY-MM-DD` form, or undefined if unknown. */
+  readonly releaseDate?: string
+  readonly products?: readonly { readonly id: string; readonly cardCount: number }[]
+}
+
+export interface LobbySettings {
+  readonly setCodes: readonly string[]
+  readonly setNames: readonly string[]
+  readonly availableSets: readonly AvailableSet[]
+  readonly format: TournamentFormat
+  readonly boosterCount: number
+  readonly boosterDistribution: Readonly<Record<string, number>>  // Per-set booster counts
+  readonly maxPlayers: number
+  readonly pickTimeSeconds: number
+  readonly picksPerRound: number  // Draft only: 1 or 2 (Pick 2 mode)
+  readonly gamesPerMatch: number
+  readonly isPublic: boolean
+  /** Optional deck-construction format restriction (Standard/Modern/Commander/...). */
+  readonly deckFormat?: DeckFormat | null
+  /**
+   * Rules axis — the one field that answers "does this game run Commander rules?". Optional only for
+   * a server older than the axis; `rulesFromLobbySettings` falls back to inferring it.
+   */
+  readonly rules?: GameRules
+  /** Commander Draft/Sealed only — minimum deck size enforced by the validator (default 60). */
+  readonly deckSizeMin: number
+  /** Commander Draft/Sealed only — when true, drafted/sealed decks may include duplicates. */
+  readonly allowDuplicates: boolean
+  /**
+   * Commander Draft/Sealed only — the host's 1v1 preset ('BRAWL' = 25 life / 16 cmdr damage;
+   * 'COMMANDER' = 30/21). A multiplayer table overrides it with 'POD' (40/21) at game start.
+   */
+  readonly commanderPreset: CommanderPreset
+  /** When true, each booster mixes cards from the union of all selected sets. */
+  readonly chaosBoosters: boolean
+  /** Optional non-booster product ids selected per set code. */
+  readonly includedSetProducts: Readonly<Record<string, readonly string[]>>
+  /** Host ban list — oracle card names excluded from generated boosters (sorted). */
+  readonly bannedCardNames: readonly string[]
+  /** Per-lobby cube summary. Undefined means catalogued sets are the pack source. */
+  readonly cubeName?: string | null
+  readonly cubeCardCount?: number | null
+  /**
+   * Cube Pool Play: no draft — every player deckbuilds from the whole cube, copies limited only by
+   * the 4-of cap. Cube Sealed lobbies only.
+   */
+  readonly cubePoolPlay?: boolean
+  readonly packSize?: number | null
+  /** Master switch for in-app AI assistance (Suggest Pick / Auto-build). */
+  readonly aiAssistEnabled: boolean
+  /** Lobby mode axis: bracket of 2-player matches vs one multiplayer Free-for-All game. */
+  readonly gameMode: LobbyGameMode
+  /** Free-for-All attack rule (CR 802/803). Only meaningful when gameMode is FREE_FOR_ALL. */
+  readonly attackMode: AttackMode
+  /** Two-Headed Giant: true = random teams each game (default); false = host-set teams. */
+  readonly randomTeams: boolean
+  /** Two-Headed Giant manual team assignment: playerId -> team index (0/1). Empty = unset. */
+  readonly teamAssignments: Readonly<Record<string, number>>
+  /** Ranked toggle (host-controlled); only meaningful when [rankedEligible]. */
+  readonly ranked?: boolean
+  /** Whether ranked may be enabled: a TOURNAMENT-mode bracket (1v1 matches). */
+  readonly rankedEligible?: boolean
+}
+
+export type LobbyGameMode = 'TOURNAMENT' | 'FREE_FOR_ALL' | 'TWO_HEADED_GIANT' | 'TEAM_VS_TEAM'
+
+/**
+ * Free-for-All attack rule (CR 802/803): 'MULTIPLE' = attack any opponent; 'LEFT'/'RIGHT' =
+ * attack only the neighbour in that seat direction. Two-player games behave identically for all.
+ */
+export type AttackMode = 'MULTIPLE' | 'LEFT' | 'RIGHT'
+
+export type TournamentFormat =
+  | 'SEALED'
+  | 'DRAFT'
+  | 'WINSTON_DRAFT'
+  | 'GRID_DRAFT'
+  | 'COMMANDER_DRAFT'
+  | 'COMMANDER_SEALED'
+  | 'PREMADE_DECKS'
+
+/**
+ * Commander life / commander-damage tuning — mirrors `CommanderPreset` in `mtg-sdk/.../core/Format.kt`.
+ * `BRAWL` and `COMMANDER` are the 1v1 choices a host makes; `POD` is what every multiplayer table
+ * plays at regardless (see `effectiveCommanderPreset` in `components/lobby/axes.ts`).
+ */
+export type CommanderPreset = 'BRAWL' | 'COMMANDER' | 'POD'
+
+/**
+ * Which rules a lobby's games run under — mirrors `GameRules` in `mtg-sdk/.../core/Format.kt`.
+ *
+ * Its own axis, independent of `DeckFormat` (what may go in a deck), of where the cards came from
+ * (`TournamentFormat`), and of the table. This is the one field to read when asking "does this game
+ * run Commander rules?"; see `rulesFromLobbySettings` in `components/lobby/axes.ts`.
+ */
+export type GameRules = 'STANDARD' | 'COMMANDER'
+
+export interface LobbyCreatedMessage {
+  readonly type: 'lobbyCreated'
+  readonly lobbyId: string
+}
+
+export interface LobbyUpdateMessage {
+  readonly type: 'lobbyUpdate'
+  readonly lobbyId: string
+  readonly state: string
+  readonly players: readonly LobbyPlayerInfo[]
+  readonly settings: LobbySettings
+  readonly isHost: boolean
+}
+
+/**
+ * Lobby was stopped/disbanded by the host.
+ */
+export interface LobbyStoppedMessage {
+  readonly type: 'lobbyStopped'
+}
+
+// ============================================================================
+// Draft Server Messages
+// ============================================================================
+
+/**
+ * Player received a pack to draft from.
+ */
+export interface DraftPackReceivedMessage {
+  readonly type: 'draftPackReceived'
+  readonly packNumber: number
+  readonly pickNumber: number
+  readonly cards: readonly SealedCardInfo[]
+  readonly timeRemainingSeconds: number
+  readonly passDirection: 'LEFT' | 'RIGHT'
+  readonly picksPerRound: number  // Cards to pick this round (1 or 2)
+  readonly pickedCards?: readonly SealedCardInfo[]  // Cards already picked (for reconnect)
+  readonly queuedPacks?: number  // Number of additional packs queued behind this one
+}
+
+/**
+ * A player made a pick (broadcast to all).
+ */
+export interface DraftPickMadeMessage {
+  readonly type: 'draftPickMade'
+  readonly playerId: string
+  readonly playerName: string
+  readonly playerPackCounts: Readonly<Record<string, number>>  // playerName → total packs held
+}
+
+/**
+ * Confirmation that your pick was accepted.
+ */
+export interface DraftPickConfirmedMessage {
+  readonly type: 'draftPickConfirmed'
+  readonly cardNames: readonly string[]
+  readonly totalPicked: number
+}
+
+/**
+ * Draft is complete, transitioning to deck building.
+ */
+export interface DraftCompleteMessage {
+  readonly type: 'draftComplete'
+  readonly pickedCards: readonly SealedCardInfo[]
+  readonly basicLands: readonly SealedCardInfo[]
+}
+
+/**
+ * Timer update during draft.
+ */
+export interface DraftTimerUpdateMessage {
+  readonly type: 'draftTimerUpdate'
+  readonly secondsRemaining: number
+}
+
+// ============================================================================
+// Winston Draft Server Messages
+// ============================================================================
+
+/**
+ * Winston Draft state update - sent to both players after each action.
+ */
+export interface WinstonDraftStateMessage {
+  readonly type: 'winstonDraftState'
+  readonly activePlayerName: string
+  readonly isYourTurn: boolean
+  readonly currentPileIndex: number
+  readonly pileSizes: readonly number[]
+  readonly mainDeckRemaining: number
+  readonly currentPileCards: readonly SealedCardInfo[] | null
+  readonly pickedCards: readonly SealedCardInfo[]
+  readonly totalPickedByOpponent: number
+  readonly knownOpponentCards: readonly SealedCardInfo[]
+  readonly unknownOpponentCardCount: number
+  readonly lastAction: string | null
+  readonly timeRemainingSeconds: number
+  readonly lastPickedCards: readonly SealedCardInfo[]
+}
+
+// ============================================================================
+// Grid Draft Server Messages
+// ============================================================================
+
+/**
+ * Grid draft state update.
+ */
+export interface GridDraftStateMessage {
+  readonly type: 'gridDraftState'
+  /** 9 elements (row-major), null = empty slot */
+  readonly grid: readonly (SealedCardInfo | null)[]
+  readonly activePlayerName: string
+  readonly isYourTurn: boolean
+  readonly mainDeckRemaining: number
+  readonly pickedCards: readonly SealedCardInfo[]
+  readonly totalPickedByOthers: Record<string, number>
+  readonly pickedCardsByOthers: Record<string, readonly SealedCardInfo[]>
+  readonly lastAction: string | null
+  readonly timeRemainingSeconds: number
+  /** Available row/column selections (e.g., ["ROW_0", "COL_1"]) */
+  readonly availableSelections: readonly string[]
+  /** Player names in pick order */
+  readonly playerOrder: readonly string[]
+  /** Index of current picker in playerOrder */
+  readonly currentPickerIndex: number
+  /** Current grid number (1-based) */
+  readonly gridNumber: number
+  readonly lastPickedCards: readonly SealedCardInfo[]
+}
+
+// ============================================================================
+// Tournament Server Messages
+// ============================================================================
+
+export interface PlayerStandingInfo {
+  readonly playerId: string
+  readonly playerName: string
+  readonly wins: number
+  readonly losses: number
+  readonly draws: number
+  readonly points: number
+  readonly isConnected: boolean
+  readonly gamesWon?: number
+  readonly gamesLost?: number
+  readonly lifeDifferential?: number
+  /** Opponents' match-win % (0..1), first tiebreaker after match points. */
+  readonly omwPercent?: number
+  /** This player's own game-win % (0..1), second tiebreaker. */
+  readonly gwPercent?: number
+  /** Opponents' game-win % (0..1), third tiebreaker. */
+  readonly ogwPercent?: number
+  readonly rank?: number
+  /** Tiebreaker reason: "OMW", "GW", "OGW", "TIED", or null if separated on match points. */
+  readonly tiebreakerReason?: string | null
+}
+
+export interface MatchResultInfo {
+  readonly player1Name: string
+  readonly player2Name: string
+  readonly player1Id: string
+  readonly player2Id: string | null
+  readonly winnerId: string | null
+  readonly isDraw: boolean
+  readonly isBye: boolean
+  /** True when the server decided this AI-vs-AI match without playing it. No game, so no replay. */
+  readonly isSimulated?: boolean
+}
+
+export interface TournamentStartedMessage {
+  readonly type: 'tournamentStarted'
+  readonly lobbyId: string
+  readonly totalRounds: number
+  readonly standings: readonly PlayerStandingInfo[]
+  /** Name of first opponent (null if BYE) */
+  readonly nextOpponentName?: string | null
+  /** True if player has a BYE in the first round */
+  readonly nextRoundHasBye?: boolean
+}
+
+export interface TournamentMatchStartingMessage {
+  readonly type: 'tournamentMatchStarting'
+  readonly lobbyId: string
+  readonly round: number
+  readonly gameSessionId: string
+  readonly opponentName: string
+}
+
+export interface TournamentByeMessage {
+  readonly type: 'tournamentBye'
+  readonly lobbyId: string
+  readonly round: number
+}
+
+export interface RoundCompleteMessage {
+  readonly type: 'roundComplete'
+  readonly lobbyId: string
+  readonly round: number
+  readonly results: readonly MatchResultInfo[]
+  readonly standings: readonly PlayerStandingInfo[]
+  /** Name of next opponent (null if BYE or tournament complete) */
+  readonly nextOpponentName?: string | null
+  /** True if player has a BYE in the next round */
+  readonly nextRoundHasBye?: boolean
+  /** True if the tournament is complete (no more rounds) */
+  readonly isTournamentComplete?: boolean
+}
+
+export interface MatchCompleteMessage {
+  readonly type: 'matchComplete'
+  readonly lobbyId: string
+  readonly round: number
+  readonly results: readonly MatchResultInfo[]
+  readonly standings: readonly PlayerStandingInfo[]
+  /** Name of next opponent (null if BYE or tournament complete) */
+  readonly nextOpponentName?: string | null
+  /** True if player has a BYE in the next round */
+  readonly nextRoundHasBye?: boolean
+  /** True if the tournament is complete (no more rounds) */
+  readonly isTournamentComplete?: boolean
+  /**
+   * True when every match in `round` is finished. False means we finished early and `round` is still
+   * running, so the overlay must keep naming it instead of advertising the next one; a `roundComplete`
+   * message for the same round still follows. Named for `round`, not for the tournament's current
+   * round — eager starting lets a later round's match finish while an earlier one is still current.
+   */
+  readonly roundComplete?: boolean
+}
+
+export interface PlayerReadyForRoundMessage {
+  readonly type: 'playerReadyForRound'
+  readonly lobbyId: string
+  /** The player whose ready flag just went up; absent when this is a plain snapshot re-broadcast. */
+  readonly playerId?: string | null
+  /** Name of `playerId`; absent on a snapshot re-broadcast. */
+  readonly playerName?: string | null
+  /** The authoritative ready set — replace the local copy with this, never merge into it. */
+  readonly readyPlayerIds: readonly string[]
+  readonly totalConnectedPlayers: number
+}
+
+export interface TournamentCompleteMessage {
+  readonly type: 'tournamentComplete'
+  readonly lobbyId: string
+  readonly finalStandings: readonly PlayerStandingInfo[]
+}
+
+export interface TournamentResumedMessage {
+  readonly type: 'tournamentResumed'
+  readonly lobbyId: string
+  readonly totalRounds: number
+  readonly standings: readonly PlayerStandingInfo[]
+  readonly nextOpponentName?: string | null
+  readonly nextRoundHasBye?: boolean
+}
+
+// ============================================================================
+// Free-for-All Mode Messages
+// ============================================================================
+
+/** One player's final placement in a Free-for-All game (1 = winner). */
+export interface FfaStandingInfo {
+  readonly playerId: string
+  readonly playerName: string
+  readonly placement: number
+  readonly isConnected: boolean
+}
+
+/** A Free-for-All game is starting — the FFA counterpart of `tournamentMatchStarting`. */
+export interface FreeForAllGameStartingMessage {
+  readonly type: 'freeForAllGameStarting'
+  readonly lobbyId: string
+  readonly gameSessionId: string
+  readonly gameNumber: number
+  readonly players: readonly PlayerSeatInfo[]
+}
+
+/** A Free-for-All game finished; standings are the elimination order (winner first). */
+export interface FreeForAllGameCompleteMessage {
+  readonly type: 'freeForAllGameComplete'
+  readonly lobbyId: string
+  readonly standings: readonly FfaStandingInfo[]
+  readonly gamesPlayed: number
+}
+
+/**
+ * Personal notice: you were eliminated from a multiplayer game that continues without you
+ * (e.g. you conceded a 4-player pod). The game-wide `gameOver` only arrives when the whole
+ * game ends.
+ */
+export interface PlayerEliminatedMessage {
+  readonly type: 'playerEliminated'
+  readonly gameId: string
+  readonly reason: GameOverReason
+}
+
+// ============================================================================
+// Spectating Messages
+// ============================================================================
+
+export interface ActiveMatchInfo {
+  readonly gameSessionId: string
+  readonly player1Name: string
+  readonly player2Name: string
+  readonly player1Life: number
+  readonly player2Life: number
+}
+
+export interface ActiveMatchesMessage {
+  readonly type: 'activeMatches'
+  readonly lobbyId: string
+  readonly round: number
+  readonly matches: readonly ActiveMatchInfo[]
+  readonly standings: readonly PlayerStandingInfo[]
+}
+
+export interface SpectatorCardInfo {
+  readonly entityId: string
+  readonly name: string
+  readonly imageUri: string | null
+  readonly isTapped: boolean
+  readonly power: number | null
+  readonly toughness: number | null
+  readonly damage: number
+  readonly cardTypes: readonly string[]
+  readonly isAttacking: boolean
+  readonly targets: readonly SpectatorTarget[]
+}
+
+export type SpectatorTarget =
+  | { readonly type: 'Player'; readonly playerId: string }
+  | { readonly type: 'Permanent'; readonly entityId: string }
+  | { readonly type: 'Spell'; readonly spellEntityId: string }
+
+export interface SpectatorAttacker {
+  readonly creatureId: string
+  readonly blockedBy: readonly string[]
+}
+
+export interface SpectatorCombatState {
+  readonly attackingPlayerId: string
+  readonly defendingPlayerId: string
+  readonly attackers: readonly SpectatorAttacker[]
+}
+
+export interface SpectatorPlayerState {
+  readonly playerId: string
+  readonly playerName: string
+  readonly life: number
+  readonly poisonCounters: number
+  readonly handSize: number
+  readonly librarySize: number
+  readonly battlefield: readonly SpectatorCardInfo[]
+  readonly graveyard: readonly SpectatorCardInfo[]
+  readonly stack: readonly SpectatorCardInfo[]
+  /** Per-commander commander-damage tallies; empty outside Commander format. */
+  readonly commanderDamage?: readonly ClientCommanderDamage[]
+}
+
+/**
+ * Summary of a pending decision for spectators.
+ * Includes player name since spectators need to know who is deciding.
+ */
+export interface SpectatorDecisionStatus {
+  readonly playerName: string
+  readonly playerId: string
+  readonly decisionType: string
+  readonly displayText: string
+  readonly sourceName?: string | null
+}
+
+export interface SpectatorStateUpdateMessage {
+  readonly type: 'spectatorStateUpdate'
+  readonly gameSessionId: string
+  /** Full ClientGameState for reusing GameBoard component (both hands masked) */
+  readonly gameState?: ClientGameState | null
+  /** N-player seat roster (turn order). The per-player board state lives in `gameState`. */
+  readonly players?: readonly PlayerSeatInfo[]
+  /** Player 1's entity ID (legacy 2-player projection = first seat) */
+  readonly player1Id?: string | null
+  /** Player 2's entity ID */
+  readonly player2Id?: string | null
+  /** Player 1 name */
+  readonly player1Name?: string | null
+  /** Player 2 name */
+  readonly player2Name?: string | null
+  // Legacy fields for backward compatibility
+  readonly player1: SpectatorPlayerState
+  readonly player2: SpectatorPlayerState
+  readonly currentPhase: string
+  readonly activePlayerId: string | null
+  readonly priorityPlayerId: string | null
+  readonly combat: SpectatorCombatState | null
+  /** Pending decision status (null if no decision in progress) */
+  readonly decisionStatus?: SpectatorDecisionStatus | null
+}
+
+export interface SpectatingStartedMessage {
+  readonly type: 'spectatingStarted'
+  readonly gameSessionId: string
+  readonly player1Name: string
+  readonly player2Name: string
+}
+
+export interface SpectatingStoppedMessage {
+  readonly type: 'spectatingStopped'
+}
+
+/**
+ * Number of active spectators on a game session has changed.
+ * Sent to both players in the game (not to spectators themselves).
+ */
+export interface SpectatorCountChangedMessage {
+  readonly type: 'spectatorCountChanged'
+  readonly gameSessionId: string
+  readonly count: number
+  /** Names of currently-active spectators, for hover/tooltip display. */
+  readonly spectatorNames?: readonly string[]
+}
+
+// ============================================================================
+// Combat UI Messages
+// ============================================================================
+
+/**
+ * Opponent's tentative attacker targets during declare attackers phase.
+ * Sent to the defending player in real-time.
+ */
+export interface OpponentAttackerTargetsMessage {
+  readonly type: 'opponentAttackerTargets'
+  /** List of selected attacker creature IDs */
+  readonly selectedAttackers: readonly EntityId[]
+  /** Map of attacker creature ID to target entity ID (player or planeswalker) */
+  readonly attackerTargets: Record<EntityId, EntityId>
+}
+
+/**
+ * Opponent's tentative blocker assignments during declare blockers phase.
+ * Sent to the attacking player in real-time.
+ */
+export interface OpponentBlockerAssignmentsMessage {
+  readonly type: 'opponentBlockerAssignments'
+  /** Map of blocker creature ID to attacker creature IDs */
+  readonly assignments: Record<EntityId, EntityId[]>
+}
+
+/**
+ * Opponent has disconnected. A countdown timer is running and they will
+ * auto-concede if they don't reconnect in time.
+ */
+export interface OpponentDisconnectedMessage {
+  readonly type: 'opponentDisconnected'
+  readonly secondsRemaining: number
+}
+
+/**
+ * Opponent has reconnected. Cancels the disconnect countdown.
+ */
+export interface OpponentReconnectedMessage {
+  readonly type: 'opponentReconnected'
+}
+
+/**
+ * A tournament player has disconnected. Shown to all players in the lobby.
+ */
+export interface TournamentPlayerDisconnectedMessage {
+  readonly type: 'tournamentPlayerDisconnected'
+  readonly playerId: string
+  readonly playerName: string
+  readonly secondsRemaining: number
+}
+
+/**
+ * A disconnected tournament player has reconnected.
+ */
+export interface TournamentPlayerReconnectedMessage {
+  readonly type: 'tournamentPlayerReconnected'
+  readonly playerId: string
+  readonly playerName: string
+}
+
+// ============================================================================
+// Client Messages (sent to server)
+// ============================================================================
+
+/**
+ * Messages sent from client to server.
+ * Matches backend ClientMessage.kt
+ */
+export type ClientMessage =
+  | ConnectMessage
+  | CreateGameMessage
+  | JoinGameMessage
+  | SubmitActionMessage
+  | KeepHandMessage
+  | MulliganMessage
+  | ClientChooseBottomCardsMessage
+  | ConcedeMessage
+  | CancelGameMessage
+  // Sealed Draft Messages
+  | CreateSealedGameMessage
+  | JoinSealedGameMessage
+  | SubmitSealedDeckMessage
+  // Lobby Messages
+  | CreateTournamentLobbyMessage
+  | JoinLobbyMessage
+  | StartTournamentLobbyMessage
+  | MakePickMessage
+  | WinstonTakePileMessage
+  | WinstonSkipPileMessage
+  | GridDraftPickMessage
+  | LeaveLobbyMessage
+  | AddAiToLobbyMessage
+  | RemoveAiFromLobbyMessage
+  | SetLobbyAiDeckMessage
+  | StopLobbyMessage
+  | UnsubmitDeckMessage
+  | UpdateLobbySettingsMessage
+  // Tournament Messages
+  | ReadyForNextRoundMessage
+  | AddExtraRoundMessage
+  | SpectateGameMessage
+  | StopSpectatingMessage
+  | AddDisconnectTimeMessage
+  | KickPlayerMessage
+  // Combat UI Messages
+  | UpdateAttackerTargetsMessage
+  | UpdateBlockerAssignmentsMessage
+  // Game Settings Messages
+  | SetFullControlMessage
+  | SetPriorityModeMessage
+  | SetStopOverridesMessage
+  | SetAbilityYieldMessage
+  | ClearAbilityYieldMessage
+  | ClearAllYieldsMessage
+  // Undo
+  | RequestUndoMessage
+  // Resync
+  | RequestResyncMessage
+  // Liveness
+  | PingMessage
+  // Quick Game Lobby Messages
+  | CreateQuickGameLobbyMessage
+  | JoinQuickGameLobbyMessage
+  | LeaveQuickGameLobbyMessage
+  | SubmitQuickGameLobbyDeckMessage
+  | SetQuickGameLobbyReadyMessage
+  | SetQuickGameLobbySetCodeMessage
+  | SetQuickGameLobbyPublicMessage
+  | SetQuickGameLobbyRankedMessage
+  | SetQuickGameAiDeckMessage
+  | AddQuickGameAiMessage
+  | RemoveQuickGameAiMessage
+  | SetQuickGameLobbyFormatMessage
+
+/**
+ * Connect to the server with a player name.
+ */
+export interface ConnectMessage {
+  readonly type: 'connect'
+  readonly playerName: string
+  readonly token?: string
+  /** Durable account auth token (magic-link login). When valid, links this session to the account. */
+  readonly authToken?: string
+}
+
+/**
+ * Reference to a specific printing of a card. Pairs `(setCode, collectorNumber)`,
+ * which Scryfall guarantees as unique. Used by the deckbuilder picker to pin a
+ * specific print's art when multiple printings of the same card exist. Mirrors
+ * `com.wingedsheep.sdk.model.PrintingRef` on the server.
+ */
+export interface PrintingRef {
+  readonly setCode: string
+  readonly collectorNumber: string
+}
+
+/**
+ * One card in a deck-submission payload, optionally pinned to a specific [PrintingRef].
+ * Mirrors `com.wingedsheep.gameserver.protocol.DeckEntryDTO`. When the rich `cardEntries`
+ * list is non-empty on a deck-carrying message, the server treats it as authoritative
+ * over `deckList`. When `printing` is undefined the server resolves the card's default
+ * printing — identical to the legacy name-only path.
+ */
+export interface DeckEntry {
+  readonly name: string
+  readonly printing?: PrintingRef
+}
+
+/**
+ * Create a new game with a deck list.
+ */
+export interface CreateGameMessage {
+  readonly type: 'createGame'
+  readonly deckList: Record<string, number>
+  readonly vsAi?: boolean
+  readonly setCode?: string
+  /** Rich entries with optional pinned printings. See [DeckEntry]. */
+  readonly cardEntries?: readonly DeckEntry[]
+  /** Constructed sideboard ("outside the game", CR 100.4a), card name → count. Wish target. */
+  readonly sideboard?: Record<string, number>
+}
+
+/**
+ * Join an existing game with a session ID and deck list.
+ */
+export interface JoinGameMessage {
+  readonly type: 'joinGame'
+  readonly sessionId: string
+  readonly deckList: Record<string, number>
+  readonly cardEntries?: readonly DeckEntry[]
+  /** Constructed sideboard, card name → count. See [CreateGameMessage.sideboard]. */
+  readonly sideboard?: Record<string, number>
+}
+
+/**
+ * Submit a game action for execution.
+ */
+export interface SubmitActionMessage {
+  readonly type: 'submitAction'
+  readonly action: GameAction
+  readonly interactionEpoch: string
+}
+
+/**
+ * Keep the current opening hand.
+ */
+export interface KeepHandMessage {
+  readonly type: 'keepHand'
+}
+
+/**
+ * Mulligan: shuffle hand back and draw a new hand.
+ */
+export interface MulliganMessage {
+  readonly type: 'mulligan'
+}
+
+/**
+ * Choose which cards to put on the bottom of the library.
+ */
+export interface ClientChooseBottomCardsMessage {
+  readonly type: 'chooseBottomCards'
+  readonly cardIds: readonly EntityId[]
+}
+
+/**
+ * Concede the current game.
+ */
+export interface ConcedeMessage {
+  readonly type: 'concede'
+}
+
+/**
+ * Cancel a game that hasn't started yet (waiting for opponent).
+ */
+export interface CancelGameMessage {
+  readonly type: 'cancelGame'
+}
+
+// ============================================================================
+// Sealed Draft Client Messages
+// ============================================================================
+
+/**
+ * Create a new sealed game with a specific set.
+ */
+export interface CreateSealedGameMessage {
+  readonly type: 'createSealedGame'
+  readonly setCode: string
+}
+
+/**
+ * Join an existing sealed game session.
+ */
+export interface JoinSealedGameMessage {
+  readonly type: 'joinSealedGame'
+  readonly sessionId: string
+}
+
+/**
+ * Submit the built deck for a sealed game or a tournament lobby (Premade Decks format).
+ * `commander` is honored only when the tournament lobby's deckFormat is commander-shape;
+ * for non-commander formats it's ignored. The card name MUST appear in `deckList` — the
+ * server validator and engine both rely on this invariant.
+ */
+export interface SubmitSealedDeckMessage {
+  readonly type: 'submitSealedDeck'
+  readonly deckList: Record<string, number>
+  readonly commander?: string | null
+  /** Rich entries with optional pinned printings. See [DeckEntry]. */
+  readonly cardEntries?: readonly DeckEntry[]
+  /** Optional pinned printing for the commander. Ignored when `commander` is null. */
+  readonly commanderPrinting?: PrintingRef
+  /**
+   * Constructed sideboard ("outside the game", CR 100.4a), card name → count. Used for
+   * constructed/premade lobbies; ignored for Limited lobbies, which derive the sideboard as
+   * pool − maindeck server-side (CR 100.4b).
+   */
+  readonly sideboard?: Record<string, number>
+}
+
+// ============================================================================
+// Type Guards
+// ============================================================================
+
+export function isConnectedMessage(msg: ServerMessage): msg is ConnectedMessage {
+  return msg.type === 'connected'
+}
+
+export function isGameCreatedMessage(msg: ServerMessage): msg is GameCreatedMessage {
+  return msg.type === 'gameCreated'
+}
+
+export function isGameStartedMessage(msg: ServerMessage): msg is GameStartedMessage {
+  return msg.type === 'gameStarted'
+}
+
+export function isGameCancelledMessage(msg: ServerMessage): msg is GameCancelledMessage {
+  return msg.type === 'gameCancelled'
+}
+
+export function isStateUpdateMessage(msg: ServerMessage): msg is StateUpdateMessage {
+  return msg.type === 'stateUpdate'
+}
+
+export function isStateDeltaUpdateMessage(msg: ServerMessage): msg is StateDeltaUpdateMessage {
+  return msg.type === 'stateDeltaUpdate'
+}
+
+export function isMulliganDecisionMessage(msg: ServerMessage): msg is MulliganDecisionMessage {
+  return msg.type === 'mulliganDecision'
+}
+
+export function isChooseBottomCardsMessage(msg: ServerMessage): msg is ChooseBottomCardsMessage {
+  return msg.type === 'chooseBottomCards'
+}
+
+export function isMulliganCompleteMessage(msg: ServerMessage): msg is MulliganCompleteMessage {
+  return msg.type === 'mulliganComplete'
+}
+
+export function isWaitingForOpponentMulliganMessage(msg: ServerMessage): msg is WaitingForOpponentMulliganMessage {
+  return msg.type === 'waitingForOpponentMulligan'
+}
+
+export function isGameOverMessage(msg: ServerMessage): msg is GameOverMessage {
+  return msg.type === 'gameOver'
+}
+
+export function isErrorMessage(msg: ServerMessage): msg is ErrorMessage {
+  return msg.type === 'error'
+}
+
+// Sealed Draft Type Guards
+export function isSealedGameCreatedMessage(msg: ServerMessage): msg is SealedGameCreatedMessage {
+  return msg.type === 'sealedGameCreated'
+}
+
+export function isSealedPoolGeneratedMessage(msg: ServerMessage): msg is SealedPoolGeneratedMessage {
+  return msg.type === 'sealedPoolGenerated'
+}
+
+export function isOpponentDeckSubmittedMessage(msg: ServerMessage): msg is OpponentDeckSubmittedMessage {
+  return msg.type === 'opponentDeckSubmitted'
+}
+
+export function isWaitingForOpponentMessage(msg: ServerMessage): msg is WaitingForOpponentMessage {
+  return msg.type === 'waitingForOpponent'
+}
+
+export function isDeckSubmittedMessage(msg: ServerMessage): msg is DeckSubmittedMessage {
+  return msg.type === 'deckSubmitted'
+}
+
+// ============================================================================
+// Message Factories
+// ============================================================================
+
+export function createConnectMessage(
+  playerName: string,
+  token?: string,
+  authToken?: string,
+): ConnectMessage {
+  return {
+    type: 'connect',
+    playerName,
+    ...(token ? { token } : {}),
+    ...(authToken ? { authToken } : {}),
+  }
+}
+
+export function createCreateGameMessage(
+  deckList: Record<string, number>,
+  vsAi?: boolean,
+  setCode?: string,
+  cardEntries?: readonly DeckEntry[],
+  sideboard?: Record<string, number>,
+): CreateGameMessage {
+  const msg: CreateGameMessage = {
+    type: 'createGame',
+    deckList,
+    ...(vsAi ? { vsAi } : {}),
+    ...(setCode ? { setCode } : {}),
+    ...(cardEntries && cardEntries.length > 0 ? { cardEntries } : {}),
+    ...(sideboard && Object.keys(sideboard).length > 0 ? { sideboard } : {}),
+  }
+  return msg
+}
+
+export function createJoinGameMessage(
+  sessionId: string,
+  deckList: Record<string, number>,
+  cardEntries?: readonly DeckEntry[],
+  sideboard?: Record<string, number>,
+): JoinGameMessage {
+  return {
+    type: 'joinGame',
+    sessionId,
+    deckList,
+    ...(cardEntries && cardEntries.length > 0 ? { cardEntries } : {}),
+    ...(sideboard && Object.keys(sideboard).length > 0 ? { sideboard } : {}),
+  }
+}
+
+export function createSubmitActionMessage(action: GameAction, interactionEpoch: string): SubmitActionMessage {
+  return { type: 'submitAction', action, interactionEpoch }
+}
+
+export function createKeepHandMessage(): KeepHandMessage {
+  return { type: 'keepHand' }
+}
+
+export function createMulliganMessage(): MulliganMessage {
+  return { type: 'mulligan' }
+}
+
+export function createChooseBottomCardsMessage(cardIds: readonly EntityId[]): ClientChooseBottomCardsMessage {
+  return { type: 'chooseBottomCards', cardIds }
+}
+
+export function createConcedeMessage(): ConcedeMessage {
+  return { type: 'concede' }
+}
+
+export function createCancelGameMessage(): CancelGameMessage {
+  return { type: 'cancelGame' }
+}
+
+// Sealed Draft Message Factories
+export function createCreateSealedGameMessage(setCode: string): CreateSealedGameMessage {
+  return { type: 'createSealedGame', setCode }
+}
+
+export function createJoinSealedGameMessage(sessionId: string): JoinSealedGameMessage {
+  return { type: 'joinSealedGame', sessionId }
+}
+
+export function createSubmitSealedDeckMessage(
+  deckList: Record<string, number>,
+  commander?: string | null,
+  cardEntries?: readonly DeckEntry[],
+  commanderPrinting?: PrintingRef,
+  sideboard?: Record<string, number>,
+): SubmitSealedDeckMessage {
+  return {
+    type: 'submitSealedDeck',
+    deckList,
+    ...(commander ? { commander } : {}),
+    ...(cardEntries && cardEntries.length > 0 ? { cardEntries } : {}),
+    ...(commanderPrinting ? { commanderPrinting } : {}),
+    ...(sideboard && Object.keys(sideboard).length > 0 ? { sideboard } : {}),
+  }
+}
+
+// ============================================================================
+// Lobby Client Messages
+// ============================================================================
+
+export interface CreateTournamentLobbyMessage {
+  readonly type: 'createTournamentLobby'
+  readonly setCodes: readonly string[]
+  readonly format: TournamentFormat
+  readonly boosterCount: number
+  readonly maxPlayers: number
+  readonly pickTimeSeconds: number
+  readonly isPublic: boolean
+  /** Lobby mode axis. Omit for the default bracket tournament. */
+  readonly gameMode?: LobbyGameMode
+  /** Rules axis. Omit and the server derives it from `format` (a Commander pack shape ⇒ Commander). */
+  readonly rules?: GameRules
+}
+
+export interface JoinLobbyMessage {
+  readonly type: 'joinLobby'
+  readonly lobbyId: string
+}
+
+export interface StartTournamentLobbyMessage {
+  readonly type: 'startTournamentLobby'
+}
+
+export interface MakePickMessage {
+  readonly type: 'makePick'
+  readonly cardNames: readonly string[]
+}
+
+export interface WinstonTakePileMessage {
+  readonly type: 'winstonTakePile'
+}
+
+export interface WinstonSkipPileMessage {
+  readonly type: 'winstonSkipPile'
+}
+
+export interface GridDraftPickMessage {
+  readonly type: 'gridDraftPick'
+  readonly selection: string
+}
+
+export interface LeaveLobbyMessage {
+  readonly type: 'leaveLobby'
+}
+
+export interface AddAiToLobbyMessage {
+  readonly type: 'addAiToLobby'
+}
+
+export interface RemoveAiFromLobbyMessage {
+  readonly type: 'removeAiFromLobby'
+  readonly playerId: string
+}
+
+/** Host picks what one AI seat plays — the per-seat twin of `setQuickGameAiDeck`. */
+export interface SetLobbyAiDeckMessage {
+  readonly type: 'setLobbyAiDeck'
+  readonly playerId: string
+  readonly spec: AiDeckSpec
+}
+
+export interface StopLobbyMessage {
+  readonly type: 'stopLobby'
+}
+
+export interface UnsubmitDeckMessage {
+  readonly type: 'unsubmitDeck'
+}
+
+export interface UpdateLobbySettingsMessage {
+  readonly type: 'updateLobbySettings'
+  readonly setCodes?: readonly string[]
+  readonly format?: TournamentFormat
+  readonly boosterCount?: number
+  readonly boosterDistribution?: Readonly<Record<string, number>>
+  readonly maxPlayers?: number
+  readonly gamesPerMatch?: number
+  readonly pickTimeSeconds?: number
+  readonly picksPerRound?: number
+  readonly isPublic?: boolean
+  /** Deck-construction format. Empty string (or 'NONE') clears the restriction. */
+  readonly deckFormat?: DeckFormat | '' | null
+  /**
+   * Rules axis. Omit to leave it alone — except that a message switching `format` to a Commander
+   * pack shape, or setting commander-shaped `deckFormat`, defaults it to 'COMMANDER' server-side.
+   */
+  readonly rules?: GameRules
+  /** Commander Draft/Sealed only — minimum deck size (default 60). */
+  readonly deckSizeMin?: number
+  /** Commander Draft/Sealed only — singleton toggle (default true = duplicates allowed). */
+  readonly allowDuplicates?: boolean
+  /** Commander Draft/Sealed only — 'BRAWL' or 'COMMANDER'. */
+  readonly commanderPreset?: CommanderPreset
+  /** Toggle Chaos boosters: each pack pulls from the union of selected sets. */
+  readonly chaosBoosters?: boolean
+  /** Optional non-booster product ids selected per set code. */
+  readonly includedSetProducts?: Readonly<Record<string, readonly string[]>>
+  /** Replace the host ban list (full list, not a delta). Omit to leave unchanged. */
+  readonly bannedCardNames?: readonly string[]
+  /** Full cube list; duplicate names represent duplicate physical cards. Empty clears cube mode. */
+  readonly cubeCards?: readonly string[]
+  readonly cubeName?: string
+  readonly packSize?: number
+  readonly cubeBasicLandSetCode?: string
+  /** Cube Sealed only: skip the draft and let everyone build from the whole cube. */
+  readonly cubePoolPlay?: boolean
+  /** Master switch for in-app AI assistance (Suggest Pick / Auto-build). Omit to leave unchanged. */
+  readonly aiAssistEnabled?: boolean
+  /** Lobby mode axis ('TOURNAMENT' / 'FREE_FOR_ALL'). Omit to leave unchanged. */
+  readonly gameMode?: LobbyGameMode
+  /** Free-for-All attack rule ('MULTIPLE' / 'LEFT' / 'RIGHT'). Omit to leave unchanged. */
+  readonly attackMode?: AttackMode
+  /** Two-Headed Giant: true = random teams, false = host-set teams. Omit to leave unchanged. */
+  readonly randomTeams?: boolean
+  /** Two-Headed Giant team assignment: playerId -> team index (0/1). Full map; omit to leave unchanged. */
+  readonly teamAssignments?: Readonly<Record<string, number>>
+  /** Toggle ranked play (TOURNAMENT mode only). Omit to leave unchanged. */
+  readonly ranked?: boolean
+}
+
+// Tournament Client Messages
+
+export interface ReadyForNextRoundMessage {
+  readonly type: 'readyForNextRound'
+}
+
+export interface AddExtraRoundMessage {
+  readonly type: 'addExtraRound'
+}
+
+export interface SpectateGameMessage {
+  readonly type: 'spectateGame'
+  readonly gameSessionId: string
+}
+
+export interface StopSpectatingMessage {
+  readonly type: 'stopSpectating'
+}
+
+export interface AddDisconnectTimeMessage {
+  readonly type: 'addDisconnectTime'
+  readonly playerId: string
+}
+
+export interface KickPlayerMessage {
+  readonly type: 'kickPlayer'
+  readonly playerId: string
+}
+
+// Combat UI Client Messages
+
+/**
+ * Update tentative attacker targets during declare attackers phase.
+ * Sent in real-time as the attacking player assigns targets.
+ */
+export interface UpdateAttackerTargetsMessage {
+  readonly type: 'updateAttackerTargets'
+  readonly selectedAttackers: readonly EntityId[]
+  readonly attackerTargets: Record<EntityId, EntityId>
+}
+
+/**
+ * Update tentative blocker assignments during declare blockers phase.
+ * Sent in real-time as the defending player assigns blockers.
+ */
+export interface UpdateBlockerAssignmentsMessage {
+  readonly type: 'updateBlockerAssignments'
+  /** Map of blocker creature ID to attacker creature IDs */
+  readonly assignments: Record<EntityId, EntityId[]>
+}
+
+// Game Settings Client Messages
+
+/**
+ * Toggle full control mode for the current game.
+ * When enabled, auto-pass is disabled and player receives priority at every possible point.
+ */
+export interface SetFullControlMessage {
+  readonly type: 'setFullControl'
+  readonly enabled: boolean
+}
+
+/**
+ * Set priority mode for the current game.
+ * Values: "auto", "stops", "fullControl"
+ */
+export interface SetPriorityModeMessage {
+  readonly type: 'setPriorityMode'
+  readonly mode: PriorityModeValue
+}
+
+export type PriorityModeValue = 'auto' | 'stops' | 'fullControl'
+
+/**
+ * Set per-step stop overrides for the current game.
+ * When a stop is set for a step, auto-pass will not skip that step.
+ */
+export interface SetStopOverridesMessage {
+  readonly type: 'setStopOverrides'
+  readonly myTurnStops: readonly string[]
+  readonly opponentTurnStops: readonly string[]
+}
+
+/**
+ * A persistent per-ability yield kind (MTGO right-click yields). Serialized as the engine
+ * YieldKind enum name.
+ */
+export type YieldKind =
+  | 'YIELD_UNTIL_END_OF_TURN'
+  | 'YIELD_WHOLE_GAME'
+  | 'ALWAYS_ANSWER_YES'
+  | 'ALWAYS_ANSWER_NO'
+
+/**
+ * Set a persistent yield on an ability, keyed by its AbilityIdentity (cardDefinitionId + abilityId).
+ */
+export interface SetAbilityYieldMessage {
+  readonly type: 'setAbilityYield'
+  readonly cardDefinitionId: string
+  readonly abilityId: string
+  readonly kind: YieldKind
+}
+
+/** Revoke every yield held against one ability. */
+export interface ClearAbilityYieldMessage {
+  readonly type: 'clearAbilityYield'
+  readonly cardDefinitionId: string
+  readonly abilityId: string
+}
+
+/** Clear all of the player's yields. */
+export interface ClearAllYieldsMessage {
+  readonly type: 'clearAllYields'
+}
+
+/**
+ * Request to undo the last non-respondable action.
+ */
+export interface RequestUndoMessage {
+  readonly type: 'requestUndo'
+}
+
+/**
+ * Request a full state resync from the server.
+ * Sent when the client detects it may have missed messages (tab backgrounded, version gap).
+ */
+export interface RequestResyncMessage {
+  readonly type: 'requestResync'
+}
+
+/**
+ * Connection liveness probe. The server always answers with a pong, regardless of
+ * authentication or game state. Sent when a backgrounded tab becomes visible again,
+ * to detect half-open sockets (e.g. after OS sleep).
+ */
+export interface PingMessage {
+  readonly type: 'ping'
+}
+
+// Lobby Message Factories
+export function createCreateTournamentLobbyMessage(
+  setCodes: readonly string[],
+  format: TournamentFormat = 'SEALED',
+  boosterCount: number = 6,
+  maxPlayers: number = 8,
+  pickTimeSeconds: number = 45,
+  isPublic: boolean = false,
+  gameMode: LobbyGameMode = 'TOURNAMENT',
+  rules: GameRules = 'STANDARD'
+): CreateTournamentLobbyMessage {
+  return { type: 'createTournamentLobby', setCodes, format, boosterCount, maxPlayers, pickTimeSeconds, isPublic, gameMode, rules }
+}
+
+// Backwards compatibility alias
+export function createCreateSealedLobbyMessage(
+  setCode: string,
+  boosterCount: number = 6,
+  maxPlayers: number = 8
+): CreateTournamentLobbyMessage {
+  return createCreateTournamentLobbyMessage([setCode], 'SEALED', boosterCount, maxPlayers, 45)
+}
+
+export function createJoinLobbyMessage(lobbyId: string): JoinLobbyMessage {
+  return { type: 'joinLobby', lobbyId }
+}
+
+export function createStartTournamentLobbyMessage(): StartTournamentLobbyMessage {
+  return { type: 'startTournamentLobby' }
+}
+
+// Backwards compatibility alias
+export function createStartSealedLobbyMessage(): StartTournamentLobbyMessage {
+  return createStartTournamentLobbyMessage()
+}
+
+export function createMakePickMessage(cardNames: string[]): MakePickMessage {
+  return { type: 'makePick', cardNames }
+}
+
+export function createWinstonTakePileMessage(): WinstonTakePileMessage {
+  return { type: 'winstonTakePile' }
+}
+
+export function createWinstonSkipPileMessage(): WinstonSkipPileMessage {
+  return { type: 'winstonSkipPile' }
+}
+
+export function createGridDraftPickMessage(selection: string): GridDraftPickMessage {
+  return { type: 'gridDraftPick', selection }
+}
+
+export function createLeaveLobbyMessage(): LeaveLobbyMessage {
+  return { type: 'leaveLobby' }
+}
+
+export function createAddAiToLobbyMessage(): AddAiToLobbyMessage {
+  return { type: 'addAiToLobby' }
+}
+
+export function createRemoveAiFromLobbyMessage(playerId: string): RemoveAiFromLobbyMessage {
+  return { type: 'removeAiFromLobby', playerId }
+}
+
+export function createSetLobbyAiDeckMessage(playerId: string, spec: AiDeckSpec): SetLobbyAiDeckMessage {
+  return { type: 'setLobbyAiDeck', playerId, spec }
+}
+
+export function createStopLobbyMessage(): StopLobbyMessage {
+  return { type: 'stopLobby' }
+}
+
+export function createUnsubmitDeckMessage(): UnsubmitDeckMessage {
+  return { type: 'unsubmitDeck' }
+}
+
+export function createUpdateLobbySettingsMessage(
+  settings: {
+    setCodes?: readonly string[]
+    format?: TournamentFormat
+    boosterCount?: number
+    boosterDistribution?: Readonly<Record<string, number>>
+    maxPlayers?: number
+    gamesPerMatch?: number
+    pickTimeSeconds?: number
+    picksPerRound?: number
+    isPublic?: boolean
+    deckFormat?: DeckFormat | '' | null
+    rules?: GameRules
+    chaosBoosters?: boolean
+    includedSetProducts?: Readonly<Record<string, readonly string[]>>
+    bannedCardNames?: readonly string[]
+    cubeCards?: readonly string[]
+    cubeName?: string
+    packSize?: number
+    cubeBasicLandSetCode?: string
+    cubePoolPlay?: boolean
+    aiAssistEnabled?: boolean
+    gameMode?: LobbyGameMode
+    attackMode?: AttackMode
+    randomTeams?: boolean
+    teamAssignments?: Readonly<Record<string, number>>
+    ranked?: boolean
+  }
+): UpdateLobbySettingsMessage {
+  return { type: 'updateLobbySettings', ...settings }
+}
+
+export function createReadyForNextRoundMessage(): ReadyForNextRoundMessage {
+  return { type: 'readyForNextRound' }
+}
+
+export function createAddExtraRoundMessage(): AddExtraRoundMessage {
+  return { type: 'addExtraRound' }
+}
+
+export function createSpectateGameMessage(gameSessionId: string): SpectateGameMessage {
+  return { type: 'spectateGame', gameSessionId }
+}
+
+export function createStopSpectatingMessage(): StopSpectatingMessage {
+  return { type: 'stopSpectating' }
+}
+
+export function createAddDisconnectTimeMessage(playerId: string): AddDisconnectTimeMessage {
+  return { type: 'addDisconnectTime', playerId }
+}
+
+export function createKickPlayerMessage(playerId: string): KickPlayerMessage {
+  return { type: 'kickPlayer', playerId }
+}
+
+export function createUpdateAttackerTargetsMessage(
+  selectedAttackers: readonly EntityId[],
+  attackerTargets: Record<EntityId, EntityId>
+): UpdateAttackerTargetsMessage {
+  return { type: 'updateAttackerTargets', selectedAttackers, attackerTargets }
+}
+
+export function createUpdateBlockerAssignmentsMessage(
+  assignments: Record<EntityId, EntityId[]>
+): UpdateBlockerAssignmentsMessage {
+  return { type: 'updateBlockerAssignments', assignments }
+}
+
+// Game Settings Message Factories
+
+export function createSetFullControlMessage(enabled: boolean): SetFullControlMessage {
+  return { type: 'setFullControl', enabled }
+}
+
+export function createSetPriorityModeMessage(mode: PriorityModeValue): SetPriorityModeMessage {
+  return { type: 'setPriorityMode', mode }
+}
+
+export function createSetStopOverridesMessage(myTurnStops: readonly string[], opponentTurnStops: readonly string[]): SetStopOverridesMessage {
+  return { type: 'setStopOverrides', myTurnStops, opponentTurnStops }
+}
+
+export function createSetAbilityYieldMessage(
+  cardDefinitionId: string,
+  abilityId: string,
+  kind: YieldKind,
+): SetAbilityYieldMessage {
+  return { type: 'setAbilityYield', cardDefinitionId, abilityId, kind }
+}
+
+export function createClearAbilityYieldMessage(
+  cardDefinitionId: string,
+  abilityId: string,
+): ClearAbilityYieldMessage {
+  return { type: 'clearAbilityYield', cardDefinitionId, abilityId }
+}
+
+export function createClearAllYieldsMessage(): ClearAllYieldsMessage {
+  return { type: 'clearAllYields' }
+}
+
+export function createRequestUndoMessage(): RequestUndoMessage {
+  return { type: 'requestUndo' }
+}
+
+export function createRequestResyncMessage(): RequestResyncMessage {
+  return { type: 'requestResync' }
+}
+
+// Draft Type Guards
+export function isDraftPackReceivedMessage(msg: ServerMessage): msg is DraftPackReceivedMessage {
+  return msg.type === 'draftPackReceived'
+}
+
+export function isDraftPickMadeMessage(msg: ServerMessage): msg is DraftPickMadeMessage {
+  return msg.type === 'draftPickMade'
+}
+
+export function isDraftPickConfirmedMessage(msg: ServerMessage): msg is DraftPickConfirmedMessage {
+  return msg.type === 'draftPickConfirmed'
+}
+
+export function isDraftCompleteMessage(msg: ServerMessage): msg is DraftCompleteMessage {
+  return msg.type === 'draftComplete'
+}
+
+export function isDraftTimerUpdateMessage(msg: ServerMessage): msg is DraftTimerUpdateMessage {
+  return msg.type === 'draftTimerUpdate'
+}
+
+// Winston Draft Type Guards
+export function isWinstonDraftStateMessage(msg: ServerMessage): msg is WinstonDraftStateMessage {
+  return msg.type === 'winstonDraftState'
+}
+
+// Grid Draft Type Guards
+export function isGridDraftStateMessage(msg: ServerMessage): msg is GridDraftStateMessage {
+  return msg.type === 'gridDraftState'
+}
+
+// Lobby/Tournament Type Guards
+export function isReconnectedMessage(msg: ServerMessage): msg is ReconnectedMessage {
+  return msg.type === 'reconnected'
+}
+
+export function isLobbyCreatedMessage(msg: ServerMessage): msg is LobbyCreatedMessage {
+  return msg.type === 'lobbyCreated'
+}
+
+export function isLobbyUpdateMessage(msg: ServerMessage): msg is LobbyUpdateMessage {
+  return msg.type === 'lobbyUpdate'
+}
+
+export function isLobbyStoppedMessage(msg: ServerMessage): msg is LobbyStoppedMessage {
+  return msg.type === 'lobbyStopped'
+}
+
+export function isTournamentStartedMessage(msg: ServerMessage): msg is TournamentStartedMessage {
+  return msg.type === 'tournamentStarted'
+}
+
+export function isTournamentMatchStartingMessage(msg: ServerMessage): msg is TournamentMatchStartingMessage {
+  return msg.type === 'tournamentMatchStarting'
+}
+
+export function isTournamentByeMessage(msg: ServerMessage): msg is TournamentByeMessage {
+  return msg.type === 'tournamentBye'
+}
+
+export function isRoundCompleteMessage(msg: ServerMessage): msg is RoundCompleteMessage {
+  return msg.type === 'roundComplete'
+}
+
+export function isMatchCompleteMessage(msg: ServerMessage): msg is MatchCompleteMessage {
+  return msg.type === 'matchComplete'
+}
+
+export function isTournamentCompleteMessage(msg: ServerMessage): msg is TournamentCompleteMessage {
+  return msg.type === 'tournamentComplete'
+}
+
+export function isTournamentResumedMessage(msg: ServerMessage): msg is TournamentResumedMessage {
+  return msg.type === 'tournamentResumed'
+}
+
+// Spectating Type Guards
+export function isActiveMatchesMessage(msg: ServerMessage): msg is ActiveMatchesMessage {
+  return msg.type === 'activeMatches'
+}
+
+export function isSpectatorStateUpdateMessage(msg: ServerMessage): msg is SpectatorStateUpdateMessage {
+  return msg.type === 'spectatorStateUpdate'
+}
+
+export function isSpectatingStartedMessage(msg: ServerMessage): msg is SpectatingStartedMessage {
+  return msg.type === 'spectatingStarted'
+}
+
+export function isSpectatingStoppedMessage(msg: ServerMessage): msg is SpectatingStoppedMessage {
+  return msg.type === 'spectatingStopped'
+}
+
+// ============================================================================
+// Quick Game Lobby
+// ============================================================================
+
+export interface QuickGameLobbyPlayerView {
+  readonly playerId: string
+  readonly playerName: string
+  readonly isAi: boolean
+  readonly ready: boolean
+  readonly deckSelected: boolean
+  readonly deckCardCount: number
+  /** Display label only — opponent's actual deck list is never sent. */
+  readonly deckLabel: string
+  /** Per-player set choice for Random pools; null = "any set". */
+  readonly setCode: string | null
+  /** All sets used to build a Random deck; empty means any set. */
+  readonly setCodes?: readonly string[]
+}
+
+export type DeckFormat =
+  | 'STANDARD'
+  | 'PIONEER'
+  | 'MODERN'
+  | 'LEGACY'
+  | 'VINTAGE'
+  | 'COMMANDER'
+  | 'BRAWL'
+  | 'STANDARD_BRAWL'
+  | 'PAUPER'
+  | 'PREMODERN'
+
+export interface QuickGameLobbyStateMessage {
+  readonly type: 'quickGameLobbyState'
+  readonly lobbyId: string
+  readonly vsAi: boolean
+  readonly setCode: string | null
+  readonly players: readonly QuickGameLobbyPlayerView[]
+  readonly youPlayerId: string
+  readonly canStart: boolean
+  readonly isPublic: boolean
+  readonly format?: DeckFormat | null
+  /** Rules axis, derived from `format` on this lobby kind. Absent on a server older than the axis. */
+  readonly rules?: GameRules
+  /** True for a Momir Basic lobby: no deckbuilding, set scopes the creature pool. */
+  readonly momirBasic?: boolean
+  /** Ranked toggle (host-controlled); only meaningful when [rankedEligible]. */
+  readonly ranked?: boolean
+  /** Whether ranked is offered for this lobby: a standard 1v1 human-vs-human lobby. */
+  readonly rankedEligible?: boolean
+  /** What the AI seat will play. Present only in a vs-AI lobby. See [AiDeckSpecView]. */
+  readonly aiDeck?: AiDeckSpecView | null
+}
+
+/**
+ * What the host has chosen for the AI opponent's deck.
+ *
+ * `auto` — the server picks: a sealed pool mirroring your set, or a format-legal constructed deck
+ * when the lobby carries a deck-format restriction.
+ * `sets` — the server builds the AI a deck from [setCodes].
+ * `deck` — the AI plays an exact list the host supplied (example deck / saved deck / pasted).
+ */
+export type AiDeckSpec =
+  | { readonly type: 'auto' }
+  | { readonly type: 'sets'; readonly setCodes: readonly string[] }
+  | {
+      readonly type: 'deck'
+      readonly deckList: Record<string, number>
+      readonly label?: string
+      readonly commander?: string | null
+    }
+
+/**
+ * The lobby-broadcast summary of an [AiDeckSpec]. The decklist behind a `deck` choice never rides
+ * the lobby broadcast — only its label and card count — so this is a summary, not the spec.
+ */
+export interface AiDeckSpecView {
+  readonly kind: 'auto' | 'sets' | 'deck'
+  readonly setCodes?: readonly string[]
+  readonly label?: string | null
+  readonly cardCount?: number
+  readonly commander?: string | null
+}
+
+export interface SetQuickGameAiDeckMessage {
+  readonly type: 'setQuickGameAiDeck'
+  readonly spec: AiDeckSpec
+}
+
+export interface AddQuickGameAiMessage {
+  readonly type: 'addQuickGameAi'
+}
+
+export interface RemoveQuickGameAiMessage {
+  readonly type: 'removeQuickGameAi'
+}
+
+export interface QuickGameLobbyClosedMessage {
+  readonly type: 'quickGameLobbyClosed'
+  readonly reason: string
+}
+
+export interface OnlinePlayersCountMessage {
+  readonly type: 'onlinePlayersCount'
+  readonly count: number
+}
+
+/** A friend's visible online status changed (connected, disconnected, or toggled their visibility). */
+export interface FriendPresenceMessage {
+  readonly type: 'friendPresence'
+  readonly accountId: string
+  readonly online: boolean
+}
+
+/** Someone sent you a friend request — pushed live so the incoming list / badge updates at once. */
+export interface FriendRequestReceivedMessage {
+  readonly type: 'friendRequestReceived'
+  readonly fromAccountId: string
+  readonly fromName: string
+}
+
+/**
+ * Reply to a ping liveness probe — always sent, regardless of auth or game state.
+ */
+export interface PongMessage {
+  readonly type: 'pong'
+}
+
+/**
+ * This socket's identity just authenticated from a different socket (the player opened
+ * the game in another tab or device). The server closes this socket right after sending;
+ * the client must stop auto-reconnecting — taking the session back is an explicit user
+ * action (the "Use here" button).
+ */
+export interface SessionReplacedMessage {
+  readonly type: 'sessionReplaced'
+}
+
+export interface CreateQuickGameLobbyMessage {
+  readonly type: 'createQuickGameLobby'
+  readonly vsAi?: boolean
+  readonly setCode?: string
+  readonly isPublic?: boolean
+  readonly format?: DeckFormat
+  /** Create a Momir Basic lobby: fixed 60-basic decks, avatar in the command zone, set scopes the creature pool. */
+  readonly momirBasic?: boolean
+  /** Request a ranked lobby (honored only for a standard 1v1 human-vs-human lobby). */
+  readonly ranked?: boolean
+}
+
+export interface JoinQuickGameLobbyMessage {
+  readonly type: 'joinQuickGameLobby'
+  readonly lobbyId: string
+}
+
+export interface LeaveQuickGameLobbyMessage {
+  readonly type: 'leaveQuickGameLobby'
+}
+
+export interface SubmitQuickGameLobbyDeckMessage {
+  readonly type: 'submitQuickGameLobbyDeck'
+  readonly deckList: Record<string, number>
+  /** Designated commander card name for commander-shape lobby formats. */
+  readonly commander?: string
+  /** Rich entries with optional pinned printings. See [DeckEntry]. */
+  readonly cardEntries?: readonly DeckEntry[]
+  /** Optional pinned printing for the commander. Ignored when `commander` is null. */
+  readonly commanderPrinting?: PrintingRef
+  /**
+   * Constructed sideboard ("outside the game", CR 400.11a), card name → count. Omitted for a
+   * random pool, whose sideboard the server derives from the pool instead.
+   */
+  readonly sideboard?: Record<string, number>
+}
+
+export interface SetQuickGameLobbyReadyMessage {
+  readonly type: 'setQuickGameLobbyReady'
+  readonly ready: boolean
+}
+
+export interface SetQuickGameLobbySetCodeMessage {
+  readonly type: 'setQuickGameLobbySetCode'
+  readonly setCode?: string | null
+  readonly setCodes: readonly string[]
+}
+
+export interface SetQuickGameLobbyPublicMessage {
+  readonly type: 'setQuickGameLobbyPublic'
+  readonly isPublic: boolean
+}
+
+export interface SetQuickGameLobbyFormatMessage {
+  readonly type: 'setQuickGameLobbyFormat'
+  readonly format: DeckFormat | null
+  /** True selects the Momir Basic custom format (mutually exclusive with `format`). */
+  readonly momirBasic?: boolean
+}
+
+export interface SetQuickGameLobbyRankedMessage {
+  readonly type: 'setQuickGameLobbyRanked'
+  readonly ranked: boolean
+}
+
+export function createCreateQuickGameLobbyMessage(
+  vsAi?: boolean,
+  setCode?: string,
+  isPublic?: boolean,
+  format?: DeckFormat,
+  momirBasic?: boolean,
+  ranked?: boolean,
+): CreateQuickGameLobbyMessage {
+  return {
+    type: 'createQuickGameLobby',
+    ...(vsAi ? { vsAi } : {}),
+    ...(setCode ? { setCode } : {}),
+    ...(isPublic ? { isPublic } : {}),
+    ...(format ? { format } : {}),
+    ...(momirBasic ? { momirBasic } : {}),
+    ...(ranked ? { ranked } : {}),
+  }
+}
+export function createJoinQuickGameLobbyMessage(lobbyId: string): JoinQuickGameLobbyMessage {
+  return { type: 'joinQuickGameLobby', lobbyId }
+}
+export function createLeaveQuickGameLobbyMessage(): LeaveQuickGameLobbyMessage {
+  return { type: 'leaveQuickGameLobby' }
+}
+export function createSubmitQuickGameLobbyDeckMessage(
+  deckList: Record<string, number>,
+  commander?: string | null,
+  cardEntries?: readonly DeckEntry[],
+  commanderPrinting?: PrintingRef,
+  sideboard?: Record<string, number>,
+): SubmitQuickGameLobbyDeckMessage {
+  return {
+    type: 'submitQuickGameLobbyDeck',
+    deckList,
+    ...(commander ? { commander } : {}),
+    ...(cardEntries && cardEntries.length > 0 ? { cardEntries } : {}),
+    ...(commanderPrinting ? { commanderPrinting } : {}),
+    ...(sideboard && Object.keys(sideboard).length > 0 ? { sideboard } : {}),
+  }
+}
+export function createSetQuickGameLobbyReadyMessage(ready: boolean): SetQuickGameLobbyReadyMessage {
+  return { type: 'setQuickGameLobbyReady', ready }
+}
+export function createSetQuickGameLobbySetCodeMessage(setCodes: readonly string[]): SetQuickGameLobbySetCodeMessage {
+  return { type: 'setQuickGameLobbySetCode', setCodes }
+}
+export function createSetQuickGameLobbyPublicMessage(isPublic: boolean): SetQuickGameLobbyPublicMessage {
+  return { type: 'setQuickGameLobbyPublic', isPublic }
+}
+export function createSetQuickGameAiDeckMessage(spec: AiDeckSpec): SetQuickGameAiDeckMessage {
+  return { type: 'setQuickGameAiDeck', spec }
+}
+export function createAddQuickGameAiMessage(): AddQuickGameAiMessage {
+  return { type: 'addQuickGameAi' }
+}
+export function createRemoveQuickGameAiMessage(): RemoveQuickGameAiMessage {
+  return { type: 'removeQuickGameAi' }
+}
+export function createSetQuickGameLobbyRankedMessage(ranked: boolean): SetQuickGameLobbyRankedMessage {
+  return { type: 'setQuickGameLobbyRanked', ranked }
+}
+export function createSetQuickGameLobbyFormatMessage(
+  format: DeckFormat | null,
+  momirBasic?: boolean,
+): SetQuickGameLobbyFormatMessage {
+  return { type: 'setQuickGameLobbyFormat', format, ...(momirBasic ? { momirBasic } : {}) }
+}
+
+export function isQuickGameLobbyStateMessage(msg: ServerMessage): msg is QuickGameLobbyStateMessage {
+  return msg.type === 'quickGameLobbyState'
+}
+export function isQuickGameLobbyClosedMessage(msg: ServerMessage): msg is QuickGameLobbyClosedMessage {
+  return msg.type === 'quickGameLobbyClosed'
+}

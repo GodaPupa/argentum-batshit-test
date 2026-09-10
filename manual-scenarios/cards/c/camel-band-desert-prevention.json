@@ -1,0 +1,37 @@
+{
+  "player1Name": "Alice (Camel Band)",
+  "player2Name": "Bob (Desert)",
+  "player1": {
+    "lifeTotal": 20,
+    "hand": [],
+    "battlefield": [
+      {"name": "Camel"},
+      {"name": "War Elephant"},
+      {"name": "Moorish Cavalry"},
+      {"name": "Plains"},
+      {"name": "Plains"}
+    ],
+    "graveyard": [],
+    "library": ["Plains", "Plains", "Plains"]
+  },
+  "player2": {
+    "lifeTotal": 20,
+    "hand": [],
+    "battlefield": [
+      {"name": "Desert"},
+      {"name": "Desert"},
+      {"name": "Desert"},
+      {"name": "Desert"},
+      {"name": "Plains"}
+    ],
+    "graveyard": [],
+    "library": ["Plains", "Plains", "Plains"]
+  },
+  "phase": "PRECOMBAT_MAIN",
+  "activePlayer": 1,
+  "priorityPlayer": 1,
+  "player1StopAtSteps": [],
+  "player2StopAtSteps": ["DECLARE_ATTACKERS", "END_COMBAT"],
+  "player1OpponentStopAtSteps": [],
+  "player2OpponentStopAtSteps": ["DECLARE_ATTACKERS", "END_COMBAT"]
+}

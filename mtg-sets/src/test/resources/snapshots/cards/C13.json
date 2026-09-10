@@ -1,0 +1,61 @@
+// Angel of Finality
+{
+    "name": "Angel of Finality",
+    "manaCost": "{3}{W}",
+    "typeLine": "Creature — Angel",
+    "oracleText": "Flying\nWhen this creature enters, exile target player's graveyard.",
+    "creatureStats": {
+        "power": 3,
+        "toughness": 4
+    },
+    "keywords": [
+        "FLYING"
+    ],
+    "script": {
+        "triggeredAbilities": [
+            {
+                "id": "ability_1",
+                "trigger": {
+                    "type": "ZoneChangeEvent",
+                    "to": "Battlefield"
+                },
+                "effect": {
+                    "type": "Composite",
+                    "effects": [
+                        {
+                            "type": "GatherCards",
+                            "source": {
+                                "type": "FromZone",
+                                "zone": "Graveyard",
+                                "player": "TargetPlayer"
+                            },
+                            "storeAs": "targetGraveyard"
+                        },
+                        {
+                            "type": "MoveCollection",
+                            "from": "targetGraveyard",
+                            "destination": {
+                                "type": "ToZone",
+                                "zone": "Exile"
+                            }
+                        }
+                    ]
+                },
+                "targetRequirement": {
+                    "type": "TargetPlayer",
+                    "id": "target player"
+                }
+            }
+        ]
+    },
+    "metadata": {
+        "collectorNumber": "4",
+        "rarity": "RARE",
+        "artist": "Howard Lyon",
+        "flavorText": "\"Better the dead depart utterly than be enslaved.\"",
+        "imageUri": "https://cards.scryfall.io/normal/front/b/d/bd3c34c9-2072-4ebb-93ef-34173015bfb8.jpg?1783939693"
+    },
+    "colorIdentityOverride": [
+        "WHITE"
+    ]
+}

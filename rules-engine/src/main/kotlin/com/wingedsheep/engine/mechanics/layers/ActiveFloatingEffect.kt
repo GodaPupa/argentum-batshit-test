@@ -1,0 +1,849 @@
+package com.wingedsheep.engine.mechanics.layers
+
+import com.wingedsheep.engine.handlers.EffectContext
+import com.wingedsheep.engine.handlers.PipelineState
+import com.wingedsheep.engine.state.GameState
+import com.wingedsheep.engine.state.components.stack.ChosenTarget
+import com.wingedsheep.sdk.model.EntityId
+import com.wingedsheep.sdk.scripting.Duration
+import com.wingedsheep.sdk.scripting.effects.RedirectScope
+import com.wingedsheep.sdk.scripting.values.DynamicAmount
+import com.wingedsheep.sdk.scripting.effects.Effect
+import com.wingedsheep.sdk.scripting.GameObjectFilter
+import com.wingedsheep.sdk.scripting.conditions.Condition
+import com.wingedsheep.sdk.scripting.filters.unified.GroupFilter
+import com.wingedsheep.engine.replacement.ReplacementEffectProcessor
+import com.wingedsheep.sdk.scripting.EventPattern
+import com.wingedsheep.sdk.scripting.ReplacementEffect
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+
+/**
+ * Represents a "floating" continuous effect that exists independently of permanents.
+ *
+ * Floating effects are created by spells and abilities that resolve and create
+ * temporary modifications (like Giant Growth giving +3/+3 until end of turn).
+ *
+ * Unlike static abilities (which are tied to permanents), floating effects:
+ * - Exist in the game state independently
+ * - Have a duration that determines when they expire
+ * - Are cleaned up during the cleanup step (for EndOfTurn) or other appropriate times
+ *
+ * ## Example
+ * When Giant Growth resolves targeting a creature:
+ * 1. The spell moves to graveyard
+ * 2. An ActiveFloatingEffect is created with Duration.EndOfTurn
+ * 3. StateProjector reads this effect and applies +3/+3
+ * 4. At cleanup, TurnManager removes effects with EndOfTurn duration
+ */
+@Serializable
+data class ActiveFloatingEffect(
+    /** Unique identifier for this floating effect */
+    val id: EntityId,
+
+    /** The continuous effect data (layer, modification, affected entities) */
+    val effect: FloatingEffectData,
+
+    /** How long this effect lasts */
+    val duration: Duration,
+
+    /** The source that created this effect (for tracking/display) */
+    val sourceId: EntityId?,
+
+    /** The source's name (for UI display) */
+    val sourceName: String? = null,
+
+    /** Who controls this effect (for "your creatures" type effects) */
+    val controllerId: EntityId,
+
+    /** Timestamp when this effect was created (for ordering) */
+    val timestamp: Long,
+
+    /**
+     * Turn-number **floor** for a turn-keyed duration: the effect is dropped at the cleanup of the
+     * first turn its [controllerId] takes with `turnNumber >= expiresAfterTurn`. Set only for
+     * [Duration.EndOfYourNextTurn] (see its KDoc for the rationale); `null` for every other
+     * duration, which has its own expiry hook.
+     */
+    val expiresAfterTurn: Int? = null
+)
+
+/**
+ * Data for a floating continuous effect.
+ *
+ * This is separate from ContinuousEffectData because floating effects
+ * store their affected entities directly (resolved at creation time)
+ * rather than using a filter that's re-evaluated.
+ */
+@Serializable
+data class FloatingEffectData(
+    /** Which layer this effect applies in */
+    val layer: Layer,
+
+    /** Sublayer for layer 7 (P/T) effects */
+    val sublayer: Sublayer? = null,
+
+    /** What modification this effect makes */
+    val modification: SerializableModification,
+
+    /** The specific entities this effect applies to (resolved at creation) */
+    val affectedEntities: Set<EntityId>,
+
+    /**
+     * Optional dynamic filter for resolving affected entities at projection time.
+     * When set, the StateProjector re-evaluates which entities match on every projection
+     * instead of using the locked-in [affectedEntities] set. This is required for
+     * rule-modifying effects like "creatures can't block this turn" (Rule 611.2c)
+     * which apply to all matching objects, including those entering later.
+     */
+    val dynamicGroupFilter: GroupFilter? = null,
+
+    /**
+     * Optional condition gating whether this effect is *live* on a given projection — the floating
+     * sibling of [ContinuousEffectData.sourceCondition], and it flows into the same
+     * `ContinuousEffect.sourceCondition` so `EffectApplicator` evaluates both through one code path.
+     *
+     * This is not a gate on whether the effect was created: the effect exists and expires with its
+     * [ActiveFloatingEffect.duration] as usual, but each projection re-asks the condition and skips
+     * the modification while it is false. That is what a *quoted conditional ability handed out by
+     * a durational effect* needs — Restless Spire's animate ability grants "During your turn, this
+     * creature has first strike", which must go dark on an opponent's turn and if another player
+     * gains control of the land, then come back if the situation reverses.
+     *
+     * Deliberately not part of the `Duration.While…` family: those latch off permanently once their
+     * gate fails (CR 611.2b, enforced by `EndedDurationExpiryCheck`), which is right for "for as
+     * long as" durations and wrong for a conditional clause inside a granted ability.
+     *
+     * "You" resolves to the *source's* projected controller (`ConditionEvaluationContext.Projection`
+     * reads `sourceValues.controllerId`), and Layer 2 has already run by the time any later layer's
+     * modification is applied, so a control change is visible to the condition.
+     */
+    val sourceCondition: Condition? = null
+)
+
+/**
+ * Serializable version of Modification for floating effects.
+ *
+ * This mirrors the Modification sealed interface but is serializable
+ * for storage in GameState.
+ */
+@Serializable
+sealed interface SerializableModification {
+    /**
+     * Build an [EffectContext] from this modification's stored data (targets, X value,
+     * named targets, source id), or `null` if this modification type carries no such data.
+     *
+     * Used by [ReplacementEffectProcessor] to reconstruct
+     * an execution context from a floating-effect shield without knowing the concrete subclass.
+     */
+    fun toEffectContext(controllerId: EntityId): EffectContext? = null
+
+    /**
+     * The permanent/card entity that created this floating-effect shield, if any.
+     * Override in concrete subtypes that carry a source entity reference, so
+     * [GatheredReplacement.sourceEntityId] can resolve the source without
+     * per-subtype casts.
+     */
+    val sourceEntityId: EntityId? get() = null
+
+    /**
+     * Convert this floating-effect shield modification into an SDK [ReplacementEffect]
+     * for matching and outcome processing by the [ReplacementEffectProcessor].
+     *
+     * Returns `null` (default) for modifications that do not represent replacement-effect
+     * shields. Override in concrete subtypes that store a replacement behavior.
+     *
+     * @param controllerId The controller of the floating effect
+     */
+    fun toReplacementEffect(controllerId: EntityId): ReplacementEffect? = null
+
+    @Serializable
+    data class SetPowerToughness(val power: Int, val toughness: Int) : SerializableModification
+
+    @Serializable
+    data class SetPower(val power: Int) : SerializableModification
+
+    @Serializable
+    data class SetToughness(val toughness: Int) : SerializableModification
+
+    /**
+     * Dynamic base power/toughness *setting* — Layer 7b (SET_VALUES), evaluated per affected entity
+     * at projection time. Mirrors [Modification.SetPowerToughnessDynamic] for floating effects, so
+     * a one-shot animate (e.g. Titania's Song's "this effect continues until end of turn" linger)
+     * can set base P/T to a value computed from each animated permanent (its mana value, via
+     * `EntityProperty(EntityReference.AffectedEntity, EntityNumericProperty.ManaValue)`).
+     *
+     * Also the shape a `SetBaseStatsEffect(reevaluateContinuously = true)` resolves into, which is
+     * why [power] and [toughness] are independently nullable: "gains 'this creature's base *power*
+     * is equal to the number of cards in your hand'" sets power only and leaves toughness printed.
+     * The stat that is set keeps tracking the game state for the effect's whole duration, unlike the
+     * fixed [SetPower]/[SetToughness]/[SetPowerToughness] siblings, which freeze a number.
+     */
+    @Serializable
+    data class SetPowerToughnessDynamic(
+        val power: DynamicAmount?,
+        val toughness: DynamicAmount?
+    ) : SerializableModification
+
+    @Serializable
+    data class ModifyPowerToughness(val powerMod: Int, val toughnessMod: Int) : SerializableModification
+
+    @Serializable
+    data object SwitchPowerToughness : SerializableModification
+
+    @Serializable
+    data class GrantKeyword(val keyword: String) : SerializableModification
+
+    @Serializable
+    data class RemoveKeyword(val keyword: String) : SerializableModification
+
+    @Serializable
+    data class ChangeColor(val colors: Set<String>) : SerializableModification
+
+    @Serializable
+    data class AddColor(val colors: Set<String>) : SerializableModification
+
+    // The JSON field must not be named "type": the game-server persistence Json uses
+    // classDiscriminator = "type", and kotlinx.serialization refuses to encode a polymorphic
+    // class whose own property collides with the discriminator (JsonEncodingException the
+    // first time a BecomeCreature/AddCardType floating effect is saved).
+    @Serializable
+    data class AddType(@SerialName("cardType") val type: String) : SerializableModification
+
+    @Serializable
+    data class RemoveType(@SerialName("cardType") val type: String) : SerializableModification
+
+    @Serializable
+    data class ChangeController(val newControllerId: EntityId) : SerializableModification
+
+    /**
+     * Combat restriction: this creature must be blocked by all creatures able to block it.
+     * Used by Alluring Scent, Taunting Elf, and similar Lure effects.
+     */
+    @Serializable
+    data object MustBeBlockedByAll : SerializableModification
+
+    /**
+     * Combat restriction: at least one creature must block this creature if able.
+     * Used by Gaea's Protector and similar "must be blocked if able" effects.
+     * Unlike MustBeBlockedByAll, only one blocker is required, not all.
+     */
+    @Serializable
+    data object MustBeBlockedIfAble : SerializableModification
+
+    /**
+     * Combat restriction: a specific creature must block a specific attacker if able.
+     * Used by Provoke. The affectedEntities contains the blocker; attackerId is the attacker.
+     */
+    @Serializable
+    data class MustBlockSpecificAttacker(val attackerId: EntityId) : SerializableModification
+
+    /**
+     * Combat restriction: a specific creature can't block a specific attacker (Screeching Griffin's
+     * "target creature can't block this creature this turn"). The mirror of
+     * [MustBlockSpecificAttacker]: affectedEntities holds the blocker, [attackerId] the one attacker
+     * it may not block. Unlike [SetCantBlock] the blocker is otherwise free to block, so this is
+     * enforced pairwise by `CantBlockSpecificAttackerRule` rather than projected onto the blocker.
+     */
+    @Serializable
+    data class CantBlockSpecificAttacker(val attackerId: EntityId) : SerializableModification
+
+    /**
+     * Damage prevention: prevent all combat damage that would be dealt to a player
+     * by attacking creatures this turn.
+     * Used by Deep Wood and similar effects.
+     */
+    @Serializable
+    data object PreventDamageFromAttackingCreatures : SerializableModification
+
+    /**
+     * Damage prevention: prevent all combat damage that would be dealt this turn.
+     * Used by Leery Fogbeast and similar effects.
+     */
+    @Serializable
+    data object PreventAllCombatDamage : SerializableModification
+
+    /**
+     * Blocking restriction: creature can only be blocked by creatures matching [blockerFilter]
+     * (floating, one-shot variant). The dynamic counterpart to the static
+     * [com.wingedsheep.sdk.scripting.CantBeBlockedExceptBy] ability — unlike
+     * [CantBeBlockedExceptByColor] it maps to a real Layer.ABILITY [Modification.CantBeBlockedExceptBy]
+     * so the existing `CantBeBlockedExceptByRule` enforces it through projected state.
+     * Used by Resilient Roadrunner's "{3}: can't be blocked except by creatures with haste".
+     */
+    @Serializable
+    data class CantBeBlockedExceptBy(val blockerFilter: GameObjectFilter) : SerializableModification
+
+    /**
+     * Blocking restriction: creature can only be blocked by creatures of a specific color.
+     * Used by Dread Charge and similar effects.
+     */
+    @Serializable
+    data class CantBeBlockedExceptByColor(val color: String) : SerializableModification
+
+    /**
+     * Blocking restriction: creature can't be blocked by creatures of a specific color.
+     * Used by Skrelv, Defector Mite and similar effects.
+     */
+    @Serializable
+    data class CantBeBlockedByColor(val color: String) : SerializableModification
+
+    /**
+     * Attack/block tax: creature can't attack or block unless its controller pays
+     * {manaCostPer} for each creature of the specified type on the battlefield.
+     * Used by Whipgrass Entangler and similar effects.
+     * Checked directly by CombatManager during attack/block declaration.
+     */
+    @Serializable
+    data class AttackBlockTaxPerCreatureType(
+        val creatureType: String,
+        val manaCostPer: String
+    ) : SerializableModification
+
+    /**
+     * Damage reflection: when an attacking creature deals combat damage to the protected player,
+     * it deals that much damage to its controller.
+     * Used by Harsh Justice.
+     */
+    @Serializable
+    data class ReflectCombatDamage(val protectedPlayerId: String) : SerializableModification
+
+    /**
+     * Grant protection from a specific color.
+     * Used by Akroma's Blessing and similar effects.
+     */
+    @Serializable
+    data class GrantProtectionFromColor(val color: String) : SerializableModification
+
+    /**
+     * Grant protection from a card type (e.g. "protection from creatures").
+     * [cardType] is the uppercase card-type name (CREATURE, ARTIFACT, ...).
+     * Used by Pippin, Guard of the Citadel.
+     */
+    @Serializable
+    data class GrantProtectionFromCardType(val cardType: String) : SerializableModification
+
+    /**
+     * Damage prevention shield: prevent the next X damage that would be dealt to target creature/player.
+     * Used by Battlefield Medic and similar effects.
+     * The shield is consumed as damage is dealt and removed when fully used or at end of turn.
+     */
+    @Serializable
+    data class PreventNextDamage(
+        val remainingAmount: Int,
+        /** If set, only prevents damage from this specific source (used for CR 615.7 prevention distribution) */
+        val onlyFromSource: EntityId? = null
+    ) : SerializableModification
+
+    /**
+     * Damage prevention: prevent all damage that would be dealt to the affected entities.
+     * With [combatOnly] set, only combat damage is prevented ("prevent all combat damage
+     * that would be dealt to it this turn" — Fleeting Flight).
+     */
+    @Serializable
+    data class PreventAllDamageTo(val combatOnly: Boolean = false) : SerializableModification
+
+    /**
+     * Regeneration shield: the next time the target permanent would be destroyed this turn,
+     * instead tap it, remove all damage, and remove it from combat.
+     * Used by Boneknitter and similar effects.
+     */
+    @Serializable
+    data object RegenerationShield : SerializableModification
+
+    /**
+     * Remove-damage destruction shield (Pyramids): the next time the target permanent
+     * would be destroyed this turn, remove all damage marked on it instead. Unlike a
+     * regeneration shield, the permanent is NOT tapped and is NOT removed from combat —
+     * the only side-effect of the replacement is clearing marked damage.
+     *
+     * Consumed once on its first triggered destruction; expires at end of turn.
+     */
+    @Serializable
+    data object RemoveDamageShield : SerializableModification
+
+    /**
+     * Marks a permanent as unable to be regenerated this turn.
+     * Used by Smother, Cruel Revival, Wrath of God (noRegenerate), etc.
+     */
+    @Serializable
+    data object CantBeRegenerated : SerializableModification
+
+    /**
+     * Replace all creature subtypes with the given set of subtypes.
+     * Used by Trickery Charm: "Target creature becomes the creature type of your choice until end of turn."
+     */
+    @Serializable
+    data class SetCreatureSubtypes(val subtypes: Set<String>) : SerializableModification
+
+    /**
+     * Add a creature subtype in addition to existing types.
+     * Used by Amoeboid Changeling, Conspiracy, etc.
+     */
+    @Serializable
+    data class AddSubtype(val subtype: String) : SerializableModification
+
+    /**
+     * Set a permanent's basic land subtypes, replacing all existing land subtypes
+     * (Rule 305.7). The one-shot counterpart to the [SetEnchantedLandType] static
+     * ability. Used by "target land becomes the basic land type of your choice"
+     * effects (e.g., Dream Thrush).
+     */
+    @Serializable
+    data class SetBasicLandTypes(val subtypes: Set<String>) : SerializableModification
+
+    /**
+     * Overwrite the object's name (Layer 3, TEXT). Per CR 612.8 the object "loses any names it
+     * had and has only the specified name". One-shot floating counterpart to the
+     * [com.wingedsheep.sdk.scripting.TransformPermanent] static ability's `setName` — used by
+     * resolved effects that permanently rename a permanent as part of a transform, e.g. The
+     * Irencrag becoming "Everflame, Heroes' Legacy".
+     */
+    @Serializable
+    data class SetName(val name: String) : SerializableModification
+
+    /**
+     * Replace ALL card types with the given set, leaving supertypes and subtypes intact
+     * (Layer 4). One-shot floating counterpart to the [com.wingedsheep.sdk.scripting.TransformPermanent]
+     * static ability's `setCardTypes`. Used by "becomes a [type] and loses all other card
+     * types" effects on a returned permanent — e.g. Vraska, the Silencer turning a dead
+     * creature into a Treasure artifact.
+     */
+    @Serializable
+    data class SetCardTypes(val types: Set<String>) : SerializableModification
+
+    /**
+     * Replace ALL subtypes with the given set (Layer 4). One-shot floating counterpart to
+     * [com.wingedsheep.sdk.scripting.TransformPermanent]'s `setSubtypes`. Pair with
+     * [SetCardTypes] for "becomes a colorless Treasure artifact" (Vraska, the Silencer).
+     */
+    @Serializable
+    data class SetAllSubtypes(val subtypes: Set<String>) : SerializableModification
+
+    /**
+     * Add every creature type in addition to existing types, without granting the
+     * Changeling keyword. Used by cards like Stalactite Dagger that say "is all
+     * creature types" but don't print the Changeling keyword.
+     */
+    @Serializable
+    data object AddAllCreatureTypes : SerializableModification
+
+    /**
+     * Attack restriction: creature can't attack this turn.
+     * Used by CantAttackGroupEffect and similar effects.
+     */
+    @Serializable
+    data object SetCantAttack : SerializableModification
+
+    /**
+     * Blocking restriction: creature can't block this turn.
+     * Used by Wave of Indifference and similar effects.
+     */
+    @Serializable
+    data object SetCantBlock : SerializableModification
+
+    /**
+     * Blocking requirement: creature blocks this turn if able (Culvert Ambusher).
+     *
+     * Floating counterpart of the static [com.wingedsheep.sdk.scripting.MustBlock] (Grand Melee);
+     * both project onto the same `ProjectedState.mustBlock`, which `BlockPhaseManager` reads when
+     * validating declared blockers. A requirement, not a guarantee — a creature that can't legally
+     * block any attacker is simply excused (CR 509.1c).
+     */
+    @Serializable
+    data object SetMustBlock : SerializableModification
+
+    /**
+     * "It can't be turned face up." Used by Unable to Scream while it enchants a face-down
+     * creature. Projected onto the affected permanent; [TurnFaceUpHandler] reads it.
+     */
+    @Serializable
+    data object SetCantBeTurnedFaceUp : SerializableModification
+
+    /**
+     * Suspect status: marks a permanent as suspected.
+     * Applied atomically with GrantKeyword(MENACE) and SetCantBlock by SuspectEffectHandler.
+     * Stored as a distinct modification so future cards can query the status independently.
+     */
+    @Serializable
+    data object SetSuspected : SerializableModification
+
+    /**
+     * Damage prevention: prevent all damage that affected creature(s) would deal this turn.
+     * Used by Chain of Silence and similar effects.
+     * The affected entities are the creatures whose damage is prevented.
+     */
+    @Serializable
+    data object PreventAllDamageDealtBy : SerializableModification
+
+    /**
+     * Damage redirection shield: while active, damage that would be dealt to any of the affected
+     * entities this turn is redirected to the specified target instead. Used by Glarecaster and
+     * similar effects. When the shield is used up depends on [amount] and [scope]:
+     * - `amount != null` — a capacity shield (CR 615.7); decremented as it redirects, removed at 0.
+     * - `amount == null` — removal is governed by [scope]: after one instance ([RedirectScope.NEXT_INSTANCE]),
+     *   after a whole simultaneous batch like a combat damage step ([RedirectScope.NEXT_BATCH], CR 510.2),
+     *   or never until its duration expires ([RedirectScope.CONTINUOUS]).
+     */
+    @Serializable
+    data class RedirectNextDamage(
+        val redirectToId: EntityId,
+        /** If set, only redirect up to this many damage. Null = redirect all (Glarecaster). */
+        val amount: Int? = null,
+        val scope: RedirectScope = RedirectScope.NEXT_INSTANCE,
+        /**
+         * When true the shield protects **every creature** rather than a fixed list of entities —
+         * Blood of the Martyr's "if damage would be dealt to any creature". Checked against
+         * projected state at damage time, so a creature that entered after the shield was created
+         * is covered and a player never is. An empty `affectedEntities` otherwise means "anything",
+         * players included, which is not what this wants.
+         */
+        val creaturesOnly: Boolean = false,
+        /**
+         * "**you may** have that damage dealt to you instead" (Blood of the Martyr). The shield's
+         * controller is asked per damage instance before that damage is dealt; the answers live in
+         * [com.wingedsheep.engine.state.GameState.optionalDamageRedirectChoices] and are consumed by
+         * [com.wingedsheep.engine.handlers.effects.DamageUtils.checkDamageRedirection]. An
+         * unanswered instance is treated as **declined**, so a damage path that hasn't run the
+         * choice pre-pass never redirects on the controller's behalf.
+         */
+        val optional: Boolean = false
+    ) : SerializableModification
+
+    /**
+     * Unified draw replacement shield: the next time the affected player would draw a card
+     * this turn, execute the stored [replacementEffect] instead.
+     * Used by the entire "Words of" cycle (Words of Worship, Wind, War, Waste, Wilding).
+     * The shield is consumed after the first draw replacement and removed.
+     *
+     * @property replacementEffect The effect to execute instead of the draw
+     * @property targets Targets chosen at activation time (e.g., Words of War's damage target)
+     * @property namedTargets Named targets chosen at activation time (for BoundVariable resolution)
+     * @property sourceId The source permanent that created this shield
+     * @property sourceName The source's name (for UI display)
+     */
+    @Serializable
+    data class ReplaceDrawWithEffect(
+        val replacementEffect: Effect,
+        val targets: List<ChosenTarget> = emptyList(),
+        val namedTargets: Map<String, ChosenTarget> = emptyMap(),
+        val sourceId: EntityId? = null,
+        val sourceName: String? = null,
+        /**
+         * The {X} chosen when the replacement was set up, captured so the replacement effect can
+         * still read `DynamicAmount.XValue` at draw time — the original activation context is gone
+         * by then (Aladdin's Lamp: "look at the top X cards"). Null when no X was involved.
+         */
+        val xValue: Int? = null
+    ) : SerializableModification {
+        override val sourceEntityId: EntityId? get() = sourceId
+
+        override fun toEffectContext(controllerId: EntityId): EffectContext = EffectContext(
+            controllerId = controllerId,
+            sourceId = sourceId,
+            targets = targets,
+            xValue = xValue,
+            pipeline = PipelineState(namedTargets = namedTargets)
+        )
+
+        override fun toReplacementEffect(controllerId: EntityId): ReplacementEffect =
+            com.wingedsheep.sdk.scripting.ReplaceDrawWithEffect(
+                replacementEffect = replacementEffect,
+                appliesTo = EventPattern.DrawEvent()
+            )
+    }
+
+    /**
+     * Damage prevention shield: the next time a creature of the specified type would deal
+     * damage to the affected player this turn, prevent that damage.
+     * Used by Circle of Solace and similar effects.
+     * The shield is consumed after preventing one damage instance and removed.
+     */
+    @Serializable
+    data class PreventNextDamageFromCreatureType(
+        val creatureType: String
+    ) : SerializableModification
+
+    /**
+     * Death replacement: if the affected creature would die this turn, exile it instead.
+     * Used by Carbonize and similar effects.
+     */
+    @Serializable
+    data object ExileOnDeath : SerializableModification
+
+    /**
+     * Death trigger: when the affected creature dies this turn, exile its controller's graveyard.
+     * Used by Burn Away and similar effects.
+     */
+    @Serializable
+    data object ExileControllerGraveyardOnDeath : SerializableModification
+
+    /**
+     * Damage prevention: prevent all combat damage that creatures matching the filter would deal this turn.
+     * Used by Frontline Strategist and similar effects.
+     * The filter is stored so that creature type is checked at the time damage would be dealt.
+     */
+    @Serializable
+    data class PreventCombatDamageFromGroup(
+        val filter: GameObjectFilter
+    ) : SerializableModification
+
+    /**
+     * Damage prevention: prevent **all** damage that would be dealt to every permanent matching
+     * [filter] this turn ("prevent all damage that would be dealt to creatures you control this
+     * turn", Summon: Alexander). The recipient-side counterpart of [PreventCombatDamageFromGroup]:
+     * the filter is stored and re-evaluated at the moment damage would be dealt, with the floating
+     * effect's controller as the "you" reference, so newly-controlled permanents are protected too.
+     * When [combatOnly] is true only combat damage is prevented.
+     *
+     * [includesController] extends the recipient set to the shield's controller — the "you and" in
+     * "prevent all damage that would be dealt to you and creatures you control this turn"; a player
+     * is not a permanent so it can never match [filter]. A null [filter] with [includesController]
+     * set is the controller-only shield ("… that would be dealt to you this turn by creatures with
+     * flying", Scarecrow): no permanent is protected, only the player.
+     * [sourceFilter], when non-null, additionally
+     * restricts the shield to damage whose *source* matches it ("… by creatures"), evaluated against
+     * projected state at damage time just like [filter].
+     */
+    @Serializable
+    data class PreventAllDamageToGroup(
+        val filter: GameObjectFilter? = null,
+        val combatOnly: Boolean = false,
+        val includesController: Boolean = false,
+        val sourceFilter: GameObjectFilter? = null
+    ) : SerializableModification
+
+    /**
+     * Damage prevention: prevent all combat damage that would be dealt to and dealt by
+     * the affected creature this turn.
+     * Used by Deftblade Elite and similar effects.
+     */
+    @Serializable
+    data object PreventCombatDamageToAndBy : SerializableModification
+
+    /**
+     * Combat damage redirection: the next time the affected creature would deal combat damage
+     * this turn, that damage is dealt to its controller instead.
+     * Used by Goblin Psychopath and similar effects.
+     * The shield is consumed after the first combat damage event.
+     */
+    @Serializable
+    data object RedirectCombatDamageToController : SerializableModification
+
+    /**
+     * Remove all abilities from the affected creature(s).
+     * Used by Merfolk Trickster and similar effects.
+     */
+    @Serializable
+    data object RemoveAllAbilities : SerializableModification
+
+    /**
+     * Single-instance prevention shield tied to a source: the next time [damageSourceId]
+     * would deal damage to an affected entity this turn, prevent that damage. An empty affected
+     * set means any recipient, for source-facing effects such as Awe Strike. The shield is
+     * consumed after preventing one damage instance and emits a
+     * [com.wingedsheep.engine.core.DamagePreventedEvent] carrying [linkId], which fires the linked
+     * "when damage is prevented this way, …" delayed triggered ability on the stack (Deflecting Palm,
+     * New Way Forward). The payoff is that ordinary triggered ability — not baked into the shield.
+     *
+     * @property damageSourceId The chosen source whose damage will be prevented
+     * @property linkId The id of the delayed triggered ability that fires when this shield prevents damage
+     */
+    @Serializable
+    data class PreventNextDamageFromSourceShield(
+        val damageSourceId: EntityId,
+        val linkId: String,
+        /**
+         * When false, the chosen source's damage is not actually prevented — it is still dealt in
+         * full — but the shield is still consumed and its linked reaction still fires with the
+         * captured amount (Eye for an Eye). Defaults to true (ordinary deflection).
+         */
+        val preventDamage: Boolean = true
+    ) : SerializableModification
+
+    /**
+     * Damage prevention shield tied to a single chosen source: prevent all damage that the
+     * source [damageSourceId] would deal to the affected entities this turn (not consumed —
+     * it persists for the full turn). Used by Samite Ministration.
+     *
+     * @property damageSourceId The chosen source whose damage is prevented
+     * @property gainLifeFromColors If non-empty, whenever damage from a source of one of these
+     *   colors (enum names, e.g. "BLACK", "RED") is prevented by this shield, the affected player
+     *   gains that much life.
+     */
+    @Serializable
+    data class PreventAllDamageFromSource(
+        val damageSourceId: EntityId,
+        val gainLifeFromColors: Set<String> = emptySet()
+    ) : SerializableModification
+
+    /**
+     * Single-instance prevention shield tied to a chosen source: the next time [damageSourceId]
+     * would deal damage to the affected entities this turn, prevent that damage (the whole
+     * instance, any amount), then the shield is consumed. The Circle of Protection family —
+     * "the next time a [quality] source of your choice would deal damage to you this turn, prevent
+     * that damage" (Circle of Protection: Artifacts). Distinct from [PreventAllDamageFromSource]
+     * (persists all turn) and from [PreventNextDamage] (caps a fixed amount across instances).
+     *
+     * @property damageSourceId The chosen source whose next damage instance is prevented
+     * @property halveRoundedDown When true, only *half* the instance is prevented, rounded down
+     *   (Dark Sphere: "prevent half that damage, rounded down") — the rest is dealt, and the shield
+     *   is consumed either way. A 1-damage instance therefore prevents nothing and still spends the
+     *   shield, which is what the printed card does.
+     */
+    @Serializable
+    data class PreventNextDamageInstanceFromSource(
+        val damageSourceId: EntityId,
+        val halveRoundedDown: Boolean = false
+    ) : SerializableModification
+
+    /**
+     * Turn-duration noncombat-damage amplification (CR 616): every source the effect's controller
+     * controls deals [bonus] additional noncombat damage to any permanent or player this turn.
+     * Combat damage is unaffected; there is no opponent restriction. Read directly during damage
+     * resolution by `DamageUtils.applyStaticDamageAmplification` (not a layer modification). The
+     * effect's [ActiveFloatingEffect.controllerId] identifies whose sources benefit. Installed by
+     * Taii Wakeen, Perfect Shot's "{X}, {T}" ability with [bonus] = the X paid.
+     */
+    @Serializable
+    data class AmplifyNoncombatDamage(val bonus: Int) : SerializableModification
+
+    /**
+     * Duration-bounded damage-doubling scoped to a single player (CR 616): all damage — any source,
+     * combat or noncombat — that would be dealt to [playerId] or to any permanent [playerId] controls
+     * is doubled. Read directly during damage resolution by `DamageUtils.applyStaticDamageAmplification`
+     * (not a layer modification). The effect's [ActiveFloatingEffect.controllerId] identifies whose
+     * turn ends it (so `Duration.UntilYourNextTurn` expires it after that player's untap step); it is
+     * independent of the source that installed it, which may have since left the battlefield.
+     * Installed by Lightning, Army of One's "Stagger" trigger with [playerId] = the just-damaged player.
+     */
+    @Serializable
+    data class DoubleDamageToPlayer(val playerId: EntityId) : SerializableModification
+
+    /**
+     * Display-only card-image override: while this floating effect is active, the affected
+     * permanent is rendered with [imageUri] instead of its own art. Purely cosmetic — it maps to
+     * [Modification.NoOp] and so changes no projected characteristic; it is read directly by
+     * `ClientStateTransformer` (via `GameState.imageOverrideFor`) when building the client DTO.
+     * Installed with a [Duration] (e.g. by `BecomeCreatureEffect.imageUri`) so it reverts together
+     * with the animate that created it. Used by Fractalize to show the Fractal token's art on the
+     * creature it animates.
+     */
+    @Serializable
+    data class OverrideImage(val imageUri: String) : SerializableModification
+}
+
+/**
+ * The displayed-image override currently in force for [entityId], or `null` if none. Scans the
+ * active floating effects for [SerializableModification.OverrideImage] modifications affecting the
+ * entity and returns the most recent one (highest timestamp wins, mirroring layer-effect ordering).
+ * Because overrides live as floating effects, they expire automatically with their [Duration]
+ * during cleanup — there is no separate revert path. Read by `ClientStateTransformer`.
+ */
+fun GameState.imageOverrideFor(entityId: EntityId): String? =
+    floatingEffects
+        .filter { entityId in it.effect.affectedEntities && it.effect.modification is SerializableModification.OverrideImage }
+        .maxByOrNull { it.timestamp }
+        ?.let { (it.effect.modification as SerializableModification.OverrideImage).imageUri }
+
+/**
+ * Convert SerializableModification to Modification for the projector.
+ */
+fun SerializableModification.toModification(): Modification = when (this) {
+    is SerializableModification.SetPowerToughness -> Modification.SetPowerToughness(power, toughness)
+    is SerializableModification.SetPowerToughnessDynamic -> Modification.SetPowerToughnessDynamic(power, toughness)
+    is SerializableModification.SetPower -> Modification.SetPower(power)
+    is SerializableModification.SetToughness -> Modification.SetToughness(toughness)
+    is SerializableModification.ModifyPowerToughness -> Modification.ModifyPowerToughness(powerMod, toughnessMod)
+    is SerializableModification.SwitchPowerToughness -> Modification.SwitchPowerToughness(EntityId(""))
+    is SerializableModification.GrantKeyword -> Modification.GrantKeyword(keyword)
+    is SerializableModification.RemoveKeyword -> Modification.RemoveKeyword(keyword)
+    is SerializableModification.ChangeColor -> Modification.ChangeColor(colors)
+    is SerializableModification.AddColor -> Modification.AddColor(colors)
+    is SerializableModification.AddType -> Modification.AddType(type)
+    is SerializableModification.RemoveType -> Modification.RemoveType(type)
+    is SerializableModification.ChangeController -> Modification.ChangeController(newControllerId)
+    // MustBeBlockedByAll / MustBeBlockedIfAble don't map to a layer modification - checked by CombatManager directly
+    is SerializableModification.MustBeBlockedByAll -> Modification.NoOp
+    is SerializableModification.MustBeBlockedIfAble -> Modification.NoOp
+    is SerializableModification.MustBlockSpecificAttacker -> Modification.NoOp
+    // CantBlockSpecificAttacker is pairwise, so it can't be a per-blocker projected flag —
+    // CantBlockSpecificAttackerRule reads the floating effect directly at block declaration.
+    is SerializableModification.CantBlockSpecificAttacker -> Modification.NoOp
+    // PreventDamageFromAttackingCreatures doesn't map to a layer modification - it's checked by CombatManager directly
+    is SerializableModification.PreventDamageFromAttackingCreatures -> Modification.NoOp
+    // CantBeBlockedExceptBy maps to the real Layer.ABILITY modification, so it flows through the
+    // projector into `cantBeBlockedExceptByFilters` and is enforced by CantBeBlockedExceptByRule.
+    is SerializableModification.CantBeBlockedExceptBy -> Modification.CantBeBlockedExceptBy(blockerFilter)
+    // CantBeBlockedExceptByColor doesn't map to a layer modification - it's checked by CombatManager directly
+    is SerializableModification.CantBeBlockedExceptByColor -> Modification.NoOp
+    // CantBeBlockedByColor doesn't map to a layer modification - it's checked by CombatManager directly
+    is SerializableModification.CantBeBlockedByColor -> Modification.NoOp
+    // AttackBlockTaxPerCreatureType doesn't map to a layer modification - it's checked by CombatManager directly
+    is SerializableModification.AttackBlockTaxPerCreatureType -> Modification.NoOp
+    // ReflectCombatDamage doesn't map to a layer modification - it's checked by CombatManager directly
+    is SerializableModification.ReflectCombatDamage -> Modification.NoOp
+    is SerializableModification.GrantProtectionFromColor -> Modification.GrantProtectionFromColor(color)
+    is SerializableModification.GrantProtectionFromCardType -> Modification.GrantProtectionFromCardType(cardType)
+    // PreventNextDamage doesn't map to a layer modification - it's checked during damage resolution directly
+    is SerializableModification.PreventNextDamage -> Modification.NoOp
+    // PreventAllDamageTo doesn't map to a layer modification - it's checked during damage resolution directly
+    is SerializableModification.PreventAllDamageTo -> Modification.NoOp
+    // RegenerationShield doesn't map to a layer modification - it's checked during destruction
+    is SerializableModification.RegenerationShield -> Modification.NoOp
+    // RemoveDamageShield doesn't map to a layer modification - it's checked during destruction
+    is SerializableModification.RemoveDamageShield -> Modification.NoOp
+    // CantBeRegenerated doesn't map to a layer modification - it's checked during destruction
+    is SerializableModification.CantBeRegenerated -> Modification.NoOp
+    // PreventAllCombatDamage doesn't map to a layer modification - it's checked by CombatManager directly
+    is SerializableModification.PreventAllCombatDamage -> Modification.NoOp
+    is SerializableModification.SetCreatureSubtypes -> Modification.SetCreatureSubtypes(subtypes)
+    is SerializableModification.AddSubtype -> Modification.AddSubtype(subtype)
+    is SerializableModification.SetName -> Modification.SetName(name)
+    is SerializableModification.SetCardTypes -> Modification.SetCardTypes(types)
+    is SerializableModification.SetAllSubtypes -> Modification.SetAllSubtypes(subtypes)
+    is SerializableModification.SetBasicLandTypes -> Modification.SetBasicLandTypes(subtypes)
+    is SerializableModification.AddAllCreatureTypes -> Modification.AddAllCreatureTypes
+    // SetCantAttack maps to the layer modification for "can't attack" projection
+    is SerializableModification.SetCantAttack -> Modification.SetCantAttack
+    is SerializableModification.SetCantBeTurnedFaceUp -> Modification.SetCantBeTurnedFaceUp
+    // SetCantBlock maps to the layer modification for "can't block" projection
+    is SerializableModification.SetCantBlock -> Modification.SetCantBlock
+    // SetMustBlock maps to the layer modification for the "must block" requirement projection
+    is SerializableModification.SetMustBlock -> Modification.SetMustBlock
+    // SetSuspected maps to the layer modification for the "suspected" status projection
+    is SerializableModification.SetSuspected -> Modification.SetSuspected
+    // PreventAllDamageDealtBy doesn't map to a layer modification - it's checked during damage resolution directly
+    is SerializableModification.PreventAllDamageDealtBy -> Modification.NoOp
+    // RedirectNextDamage doesn't map to a layer modification - it's checked during damage resolution directly
+    is SerializableModification.RedirectNextDamage -> Modification.NoOp
+    // ReplaceDrawWithEffect doesn't map to a layer modification - it's checked during draw execution directly
+    is SerializableModification.ReplaceDrawWithEffect -> Modification.NoOp
+    // PreventNextDamageFromCreatureType doesn't map to a layer modification - it's checked during damage resolution directly
+    is SerializableModification.PreventNextDamageFromCreatureType -> Modification.NoOp
+    // ExileOnDeath doesn't map to a layer modification - it's checked during SBA creature death
+    is SerializableModification.ExileOnDeath -> Modification.NoOp
+    // ExileControllerGraveyardOnDeath doesn't map to a layer modification - it's checked during SBA creature death
+    is SerializableModification.ExileControllerGraveyardOnDeath -> Modification.NoOp
+    // PreventCombatDamageFromGroup doesn't map to a layer modification - it's checked by CombatManager directly
+    is SerializableModification.PreventCombatDamageFromGroup -> Modification.NoOp
+    // PreventAllDamageToGroup doesn't map to a layer modification - it's checked during damage resolution directly
+    is SerializableModification.PreventAllDamageToGroup -> Modification.NoOp
+    // PreventCombatDamageToAndBy doesn't map to a layer modification - it's checked by CombatManager directly
+    is SerializableModification.PreventCombatDamageToAndBy -> Modification.NoOp
+    // RedirectCombatDamageToController doesn't map to a layer modification - it's checked by CombatManager directly
+    is SerializableModification.RedirectCombatDamageToController -> Modification.NoOp
+    // PreventNextDamageFromSourceShield doesn't map to a layer modification - it's checked during damage resolution directly
+    is SerializableModification.PreventNextDamageFromSourceShield -> Modification.NoOp
+    // PreventAllDamageFromSource doesn't map to a layer modification - it's checked during damage resolution directly
+    is SerializableModification.PreventAllDamageFromSource -> Modification.NoOp
+    // PreventNextDamageInstanceFromSource is checked during damage resolution directly (no layer mod)
+    is SerializableModification.PreventNextDamageInstanceFromSource -> Modification.NoOp
+    // AmplifyNoncombatDamage doesn't map to a layer modification - it's read during damage resolution directly
+    is SerializableModification.AmplifyNoncombatDamage -> Modification.NoOp
+    // DoubleDamageToPlayer doesn't map to a layer modification - it's read during damage resolution directly
+    is SerializableModification.DoubleDamageToPlayer -> Modification.NoOp
+    // OverrideImage is display-only - it changes no characteristic, read directly by ClientStateTransformer
+    is SerializableModification.OverrideImage -> Modification.NoOp
+    is SerializableModification.RemoveAllAbilities -> Modification.RemoveAllAbilities
+}

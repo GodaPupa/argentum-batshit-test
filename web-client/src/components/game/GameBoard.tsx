@@ -1,0 +1,2546 @@
+import { useMemo, useCallback, useRef, useEffect } from 'react'
+import { useGameStore } from '@/store/gameStore'
+import { useInteraction } from '@/hooks/useInteraction'
+import { useViewingPlayer, useOpponent, useOpponents, useViewedOpponent, useStackCards, selectPriorityMode, useGhostCards, useBattlefieldCards, selectTeamMap, useIdentityColor, useViewerTeamIndex, useIsAlly, identitySeatColor, selectViewingPlayerId, useEliminatedBottomSeatId, useViewerEliminated, useIsSharedLifeTeamGame, useTeamLabelFor, useTeammateNames, useTeamHasPriority, useIsMyTeamTurn, useIsSharedTurnTeamGame, turnQueueHintFor } from '@/store/selectors'
+import { useMultiplayerView, useCombatDefenderFocus } from '@/hooks/useMultiplayerView'
+import { OpponentRail, railReservedWidth } from './OpponentRail'
+import { hand, getNextStep, StepShortNames } from '@/types'
+import type { EntityId } from '@/types'
+import { StepStrip } from '../ui/StepStrip'
+import { ManaPool } from '../ui/ManaPool'
+import { ActionMenu } from '../ui/ActionMenu'
+import { CombatArrows } from '../combat/CombatArrows'
+import { TargetingArrows } from '../targeting/TargetingArrows'
+import { SoulbondBonds } from './SoulbondBonds'
+import { DraggedCardOverlay } from './DraggedCardOverlay'
+import { GameLog } from './GameLog'
+import { ActiveYieldsPanel } from './ActiveYieldsPanel'
+import { AiInsightPanel } from './AiInsightPanel'
+import { DrawAnimations } from '../animations/DrawAnimations'
+import { DamageAnimations } from '../animations/DamageAnimations'
+import { RevealAnimations } from '../animations/RevealAnimations'
+import { CoinFlipAnimations } from '../animations/CoinFlipAnimations'
+import { TargetReselectedAnimations } from '../animations/TargetReselectedAnimations'
+import { useResponsive } from '@/hooks/useResponsive'
+import { ManaSymbol } from '../ui/ManaSymbols'
+
+// Import extracted components
+import { Battlefield, CardRow, CommandZone, OpponentBoardArea, BoardNamePlate, CollapsedBoardTab, COLLAPSED_TAB_WIDTH, CELL_PLATE_BAND, useCellHandMetrics, StackDisplay, ZonePile, ResponsiveContext } from './board'
+import { RenderProfiler } from '@/utils/renderProfiler'
+import { PooledBattlefieldLayoutContext } from './board/shared'
+import { useBoardGroups } from './board/useBoardGroups'
+import { usePooledBattlefieldLayout } from './board/usePooledBattlefieldLayout'
+import { CardPreview } from './card'
+import { TargetingOverlay, ManaColorSelectionOverlay, LifeDisplay, ActiveEffectsBadges, SpeedGauge, DayNightBadge, ConcedeButton, FullscreenButton, SpectatorCountBadge, TeamLifeBanner, EliminationNotice } from './overlay'
+import { HelpDrawer, HelpDrawerButton } from '../help/HelpDrawer'
+import { markLearnSignal } from '@/learn/signals'
+import { styles } from './board/styles'
+
+/**
+ * Props for GameBoard component.
+ */
+interface GameBoardProps {
+  /** When true, disables all interactions (for spectator view) */
+  spectatorMode?: boolean
+  /** Top offset in pixels for fixed elements (to account for headers) */
+  topOffset?: number
+}
+
+/**
+ * 2D Game board layout - MTG Arena style.
+ * This is the main orchestrator component that composes all game UI elements.
+ */
+export function GameBoard({ spectatorMode = false, topOffset = 0 }: GameBoardProps) {
+  const playerGameState = useGameStore((state) => state.gameState)
+  const spectatingState = useGameStore((state) => state.spectatingState)
+  const sessionId = useGameStore((state) => state.sessionId)
+  const playerId = useGameStore((state) => state.playerId)
+  const submitAction = useGameStore((state) => state.submitAction)
+  const interactionEpoch = useGameStore((state) => state.interactionEpoch)
+  const combatState = useGameStore((state) => state.combatState)
+  const confirmCombat = useGameStore((state) => state.confirmCombat)
+  const clearAttackers = useGameStore((state) => state.clearAttackers)
+  const clearBlockerAssignments = useGameStore((state) => state.clearBlockerAssignments)
+  const attackWithAll = useGameStore((state) => state.attackWithAll)
+  const priorityMode = useGameStore(selectPriorityMode)
+  const nextStopPoint = useGameStore((state) => state.nextStopPoint)
+  const serverPriorityMode = useGameStore((state) => state.priorityMode)
+  const cyclePriorityMode = useGameStore((state) => state.cyclePriorityMode)
+  const opponentDecisionStatus = useGameStore((state) => state.opponentDecisionStatus)
+  const stopOverrides = useGameStore((state) => state.stopOverrides)
+  const toggleStopOverride = useGameStore((state) => state.toggleStopOverride)
+  const targetingState = useGameStore((state) => state.targetingState)
+  const distributeState = useGameStore((state) => state.distributeState)
+  const confirmDistribute = useGameStore((state) => state.confirmDistribute)
+  const counterDistributionState = useGameStore((state) => state.counterDistributionState)
+  const confirmCounterDistribution = useGameStore((state) => state.confirmCounterDistribution)
+  const cancelCounterDistribution = useGameStore((state) => state.cancelCounterDistribution)
+  const undoAvailable = useGameStore((state) => state.undoAvailable)
+  const requestUndo = useGameStore((state) => state.requestUndo)
+  const autoTapEnabled = useGameStore((state) => state.autoTapEnabled)
+  const toggleAutoTap = useGameStore((state) => state.toggleAutoTap)
+  const delveSelectionState = useGameStore((state) => state.delveSelectionState)
+  const tapForPowerSelectionState = useGameStore((state) => state.tapForPowerSelectionState)
+  const manaSelectionState = useGameStore((state) => state.manaSelectionState)
+  // A multi-phase cast/activation in progress (convoke, waterbend, harmonize, targeting, …). While
+  // one is mid-flight the player must finish or cancel it, not pass priority / move to combat.
+  const pipelineState = useGameStore((state) => state.pipelineState)
+  // Lobby settings — only for phrasing the attack-restriction banner ("attack left/right").
+  // The actual legality always comes from the server's validAttackTargets.
+  const lobbyState = useGameStore((state) => state.lobbyState)
+  const cancelManaSelection = useGameStore((state) => state.cancelManaSelection)
+  const { executeAction } = useInteraction()
+
+  // In spectator mode, use spectatingState.gameState
+  const gameState = spectatorMode ? spectatingState?.gameState : playerGameState
+
+  // Multiplayer (3-4 player) view state. In a 2-player game none of this renders —
+  // no rail, no board strip, no extra top offset — so the layout is unchanged.
+  const opponents = useOpponents()
+  const viewedOpponent = useViewedOpponent()
+  const isMulti = (gameState?.players.length ?? 0) > 2
+  // The multiplayer player rail is now a floating top-left column (under the fullscreen button),
+  // not a reserved full-width band — so it no longer pushes the board down.
+  const effectiveTopOffset = topOffset
+  useMultiplayerView(isMulti, opponents)
+  // Multiplayer camera extensions: the all-boards table overview (toggle / key 0) with
+  // MTGO-style per-board collapse, the eliminated-spectator layout, and the combat
+  // defender-focus split (combat between two *other* players shows attacker and defender
+  // side by side).
+  const overviewModeOn = useGameStore((state) => state.overviewMode)
+  const collapsedSeats = useGameStore((state) => state.collapsedSeats)
+  const toggleSeatCollapsed = useGameStore((state) => state.toggleSeatCollapsed)
+  const viewerEliminated = useViewerEliminated()
+  const eliminatedBottomSeatId = useEliminatedBottomSeatId()
+  const setEliminatedBottomSeat = useGameStore((state) => state.setEliminatedBottomSeat)
+  const returnToMenu = useGameStore((state) => state.returnToMenu)
+  const viewingPlayer = useViewingPlayer()
+  // Eliminated-spectator layout: the local player is out of a multiplayer game that plays on —
+  // their own board is dead and all action UI hides, so they watch the surviving seats spread
+  // across the table like any other spectator. Keyed off the roster (see `isViewerEliminated`)
+  // rather than the "Keep watching" click, so the table re-seats itself however the seat died,
+  // not just on a concession.
+  const isEliminatedSpectator = isMulti && !spectatorMode && viewerEliminated
+  // The viewer has no board of their own in this game: a spectator/replay stream, or a player
+  // who was eliminated and kept watching. Nothing in the bottom half is theirs — it belongs to
+  // a survivor — so no cell there is interactive and their own hand never renders.
+  const viewerIsObserver = spectatorMode || isEliminatedSpectator
+  // Eliminated spectator's bottom seat: the living player whose board takes over the bottom
+  // half of the table (see `useEliminatedBottomSeatId` for the pick/default). Their board
+  // leaves the opponent strip while it sits down here.
+  const eliminatedBottomSeat = useMemo(() => {
+    if (!isEliminatedSpectator || !eliminatedBottomSeatId) return null
+    return gameState?.players.find((pp) => pp.playerId === eliminatedBottomSeatId) ?? null
+  }, [isEliminatedSpectator, eliminatedBottomSeatId, gameState])
+  // Opponents still in the game — the seats an eliminated spectator can watch from.
+  const survivors = useMemo(() => opponents.filter((o) => !o.hasLost), [opponents])
+  // In a Two-Headed Giant game the orb/edge tints follow the *team* hue (both teammates share
+  // it); otherwise they keep the per-seat hue. The team map is empty in every non-team game.
+  const teamMap = useGameStore(selectTeamMap)
+  const viewerTeam = useViewerTeamIndex()
+  // Two-Headed Giant (CR 805.5): does the viewer's *team* hold priority? False whenever the format
+  // doesn't share team turns, so every other game reads exactly as before.
+  const teamHoldsPriority = useTeamHasPriority(playerId ?? null)
+  // ...and is it the viewer's *team's* turn (CR 805.4)? Also false outside a shared-turns format.
+  const teamActiveTurn = useIsMyTeamTurn()
+  const sharedTurnTeamGame = useIsSharedTurnTeamGame()
+  // The teammate currently on the baton. Read off the priority holder rather than "the ally",
+  // because the ally seat is suppressed while this client is the one driving it (hotseat) — and
+  // that is exactly a case where naming who is acting matters most.
+  const batonHolderName = useGameStore(
+    (state) =>
+      state.gameState?.players.find((p) => p.playerId === state.gameState?.priorityPlayerId)?.name ??
+      null,
+  )
+  // The badge below stays mounted through the fade-out, so keep the last name it showed —
+  // otherwise the text collapses to the bare "Team priority" the instant priority leaves the
+  // team, which reads as a second, different message flashing by.
+  const lastBatonNameRef = useRef<string | null>(null)
+  if (batonHolderName) lastBatonNameRef.current = batonHolderName
+  const batonLabelName = batonHolderName ?? lastBatonNameRef.current
+  const isTeamGame = viewerTeam != null && Object.keys(teamMap).length > 0
+  // The seat anchoring the bottom row: you when playing, the spectator's chosen/first seat, or —
+  // for an eliminated spectator, whose own board left the game with them — the survivor sitting
+  // on their side of the table.
+  const viewingSeatId = useGameStore(selectViewingPlayerId)
+  const anchorId = eliminatedBottomSeat?.playerId ?? viewingSeatId
+  // "Show the whole table" — the unified overview: two rows of boards. A team game splits by team
+  // (your team on the bottom row, the enemy team on top); a free-for-all balances the seats evenly
+  // with the anchor on the bottom (e.g. 6 players → 3 top / 3 bottom rather than 5 crammed on top).
+  // The classic single-opponent sliding camera is what you get when this is off. An eliminated
+  // spectator gets the same two rows — the survivors face each other across the table instead of
+  // all crowding the top half.
+  const twoRowActive = isMulti && overviewModeOn
+  const twoRow = useMemo(() => {
+    const empty = { top: [] as EntityId[], bottom: [] as EntityId[] }
+    if (!twoRowActive || !gameState) return empty
+    const living = gameState.players.filter((p) => !p.hasLost)
+    if (isTeamGame && viewerTeam != null) {
+      // The anchor joins the bottom row even when it isn't on the viewer's team — an eliminated
+      // spectator whose whole team is gone still watches from behind a survivor's board.
+      const bottom = living.filter(
+        (p) => teamMap[p.playerId] === viewerTeam || p.playerId === anchorId,
+      )
+      const bottomIds = new Set(bottom.map((p) => p.playerId))
+      return {
+        bottom: bottom.map((p) => p.playerId),
+        top: living.filter((p) => !bottomIds.has(p.playerId)).map((p) => p.playerId),
+      }
+    }
+    // Free-for-all: anchor first on the bottom, the rest split evenly — the top row takes the odd
+    // one so the bottom (which holds your interactive board when playing) is never more crowded.
+    const anchorFirst = [
+      ...living.filter((p) => p.playerId === anchorId),
+      ...living.filter((p) => p.playerId !== anchorId),
+    ]
+    const bottomCount = Math.max(1, Math.floor(living.length / 2))
+    return {
+      bottom: anchorFirst.slice(0, bottomCount).map((p) => p.playerId),
+      top: anchorFirst.slice(bottomCount).map((p) => p.playerId),
+    }
+  }, [twoRowActive, gameState, isTeamGame, viewerTeam, teamMap, anchorId])
+  const bottomRowIds = twoRow.bottom
+  const topRowIds = twoRow.top
+  // Camera pool = opponents not pulled down to the bottom row (so no board renders in both halves).
+  const stripOpponents = useMemo(
+    () =>
+      opponents.filter(
+        (o) => !o.hasLost && o.playerId !== eliminatedBottomSeat?.playerId && !bottomRowIds.includes(o.playerId),
+      ),
+    [opponents, eliminatedBottomSeat, bottomRowIds],
+  )
+  const viewedStripIndex = Math.max(
+    0,
+    stripOpponents.findIndex((o) => o.playerId === viewedOpponent?.playerId),
+  )
+  const defenderFocusIds = useCombatDefenderFocus(isMulti && !spectatorMode)
+  const viewedSeatColor = useIdentityColor(viewedOpponent?.playerId ?? null)
+  const stripTouchX = useRef<number | null>(null)
+
+  // Card counts per battlefield zone — used by useResponsive to decide when wrapping
+  // will occur and shrink cards so the wrapped rows fit vertically. In multiplayer
+  // the viewed opponent's board drives the shared sizing (each off-screen
+  // Battlefield measures its own slot independently anyway).
+  const battlefieldCards = useBattlefieldCards(isMulti ? viewedOpponent?.playerId ?? null : null)
+  const zoneRowCounts = useMemo(
+    () => [
+      battlefieldCards.playerCreatures.length + battlefieldCards.playerPlaneswalkers.length,
+      battlefieldCards.playerLands.length + battlefieldCards.playerOther.length,
+      battlefieldCards.opponentCreatures.length + battlefieldCards.opponentPlaneswalkers.length,
+      battlefieldCards.opponentLands.length + battlefieldCards.opponentOther.length,
+    ],
+    [battlefieldCards]
+  )
+
+  const responsive = useResponsive(effectiveTopOffset, zoneRowCounts)
+
+  // Every multiplayer game opens on the all-boards table overview — with three or more seats the
+  // one-board sliding camera hides most of what's happening, and seeing the whole table is the
+  // point of a pod. One-shot *per game*, so someone who focuses a single board (rail-chip click /
+  // keys 1-9 / key 0) isn't yanked back out of it, while the next game still starts on the
+  // overview. Desktop only — GameBoard degrades the overview to the single-board camera on phones
+  // anyway.
+  const overviewDefaultKey = spectatorMode ? spectatingState?.gameSessionId ?? null : sessionId
+  const defaultedOverviewFor = useRef<string | null>(null)
+  useEffect(() => {
+    if (!isMulti || responsive.isMobile || !overviewDefaultKey) return
+    if (defaultedOverviewFor.current === overviewDefaultKey) return
+    defaultedOverviewFor.current = overviewDefaultKey
+    const store = useGameStore.getState()
+    if (!store.overviewMode) store.toggleOverviewMode()
+  }, [isMulti, responsive.isMobile, overviewDefaultKey])
+
+  // Grid row 1: keeps the battlefield clear of the fixed/absolute opponent hand.
+  const oppHandReservation =
+    responsive.smallCardHeight + effectiveTopOffset + responsive.opponentHandBattlefieldGap
+  // Grid row 5: keeps the battlefield clear of the fixed player hand.
+  const playerHandReservation =
+    (spectatorMode ? responsive.smallCardHeight : responsive.cardHeight) + responsive.handBattlefieldGap
+
+  // Two-player battlefield sizing, solved for both players together: one card
+  // width, and each battlefield the slot height its rows need (a lands-only
+  // board hands height to a crowded one). The grid rows 2/4 take these heights
+  // as weights below. Multiplayer strips size per cell instead (null here).
+  // See docs/plans/battlefield-sparse-layout.md.
+  const opponentRowRef = useRef<HTMLDivElement>(null)
+  const playerRowRef = useRef<HTMLDivElement>(null)
+  const playerSlotRef = useRef<HTMLDivElement>(null)
+  const playerBoard = useBoardGroups(false)
+  const opponentBoard = useBoardGroups(true)
+  const pooledLayout = usePooledBattlefieldLayout({
+    enabled: !isMulti,
+    opponentRowRef,
+    playerRowRef,
+    slotRef: playerSlotRef,
+    player: playerBoard.stats,
+    opponent: opponentBoard.stats,
+    base: responsive,
+  })
+  // fr weights: the browser hands the rows' actual remainder out in this ratio, so
+  // a measurement a few px off can't overflow the way fixed px tracks would.
+  const opponentRowWeight = pooledLayout ? Math.max(1, Math.round(pooledLayout.opponentHeight)) : 1
+  const playerRowWeight = pooledLayout ? Math.max(1, Math.round(pooledLayout.playerHeight)) : 1
+
+  // Confirm mana selection: if pipeline is active, advance it; otherwise build
+  // modified LegalActionInfo with Explicit payment and route through executeAction
+  const handleConfirmManaSelection = useCallback(() => {
+    if (!manaSelectionState) return
+    useGameStore.getState().confirmManaSelection(interactionEpoch, manaSelectionState, executeAction)
+  }, [interactionEpoch, manaSelectionState, executeAction])
+
+  const opponent = useOpponent()
+  const stackCards = useStackCards()
+  const ghostCards = useGhostCards(playerId ?? null)
+
+  // Table overview: every living opponent's board shares the strip. Entering the
+  // eliminated-spectator layout turns it on; a chip click focuses one board again.
+  const overviewActive = isMulti && overviewModeOn
+  // Which opponent boards share the strip this frame. One (the viewed board, sliding
+  // camera) normally; all living opponents in the overview; the viewed board plus the
+  // defending seats during combat between two other players.
+  const visibleStripIds = useMemo<readonly EntityId[]>(() => {
+    if (!isMulti) return []
+    const single = viewedOpponent ? [viewedOpponent.playerId] : []
+    // Phones: the shared-strip views split into ~33% cells that are unusable in
+    // portrait — keep the focused one-board camera only.
+    if (responsive.isMobile) return single
+    // Two-row "show table": the top row is the enemy team / the balanced top half.
+    if (twoRowActive) return topRowIds
+    if (overviewActive) return stripOpponents.map((o) => o.playerId)
+    if (!viewedOpponent) return []
+    const stripIds = new Set(stripOpponents.map((o) => o.playerId))
+    const extras = defenderFocusIds.filter((id) => id !== viewedOpponent.playerId && stripIds.has(id))
+    if (extras.length === 0) return single
+    // Keep strip (turn) order so boards don't jump when defenders change.
+    const visible = new Set([viewedOpponent.playerId, ...extras])
+    return stripOpponents.filter((o) => visible.has(o.playerId)).map((o) => o.playerId)
+  }, [isMulti, responsive.isMobile, twoRowActive, topRowIds, overviewActive, stripOpponents, viewedOpponent, defenderFocusIds])
+  const multiView = visibleStripIds.length > 1
+  // MTGO-style per-board collapse — table overview only; the focused camera and the
+  // combat defender-focus split ignore it (their board sets are already deliberate).
+  const collapsedStripIds = useMemo<readonly EntityId[]>(
+    () => (overviewActive && multiView ? visibleStripIds.filter((id) => collapsedSeats.includes(id)) : []),
+    [overviewActive, multiView, visibleStripIds, collapsedSeats],
+  )
+  // Boards whose cards + plate are actually on screen: the shared-strip cells minus the
+  // collapsed ones. Drives which rail chips drop their player anchors.
+  const expandedStripIds = useMemo<readonly EntityId[]>(
+    () => visibleStripIds.filter((id) => !collapsedStripIds.includes(id)),
+    [visibleStripIds, collapsedStripIds],
+  )
+  // In a shared-strip view the strip renders the visible cells in turn order (expanded
+  // boards splitting the width, collapsed boards as narrow tabs), then the hidden *and*
+  // collapsed full boards at full width, overflowing off-screen to the right — so card
+  // anchors on boards without an expanded cell keep resolving to rail chips.
+  const visibleStripCells = useMemo(
+    () => stripOpponents.filter((o) => visibleStripIds.includes(o.playerId)),
+    [stripOpponents, visibleStripIds],
+  )
+  const offscreenStripBoards = useMemo(
+    () =>
+      stripOpponents.filter(
+        (o) => !visibleStripIds.includes(o.playerId) || collapsedStripIds.includes(o.playerId),
+      ),
+    [stripOpponents, visibleStripIds, collapsedStripIds],
+  )
+  // Expanded cells share the width left over by the collapsed tabs.
+  const expandedCellBasis =
+    collapsedStripIds.length > 0
+      ? `calc((100% - ${collapsedStripIds.length * COLLAPSED_TAB_WIDTH}px) / ${Math.max(1, expandedStripIds.length)})`
+      : `${100 / Math.max(1, expandedStripIds.length)}%`
+  // Mindslaver-style hijack indicators (Phase 2C). Spectators don't get the UX promotions.
+  const youAreHijacking = !spectatorMode ? (gameState?.youAreHijacking ?? null) : null
+  const youAreHijackedBy = !spectatorMode ? (gameState?.youAreHijackedBy ?? null) : null
+  // Single-client hotseat (play against yourself): this connection controls every seat.
+  // When the seat currently to act is an opponent row, reuse the hijack rendering to
+  // make that row interactive and dim our own — the board emphasis flips between seats
+  // as priority alternates, like pass-and-play.
+  const hotseat = !spectatorMode && (gameState?.hotseat ?? false)
+  // The opponent seat (if any) this client is currently driving: the Mindslaver
+  // victim, or — in hotseat — whichever opponent seat holds priority.
+  const hijackControlledOpponentId =
+    youAreHijacking ??
+    (hotseat &&
+    gameState?.priorityPlayerId &&
+    viewingPlayer &&
+    gameState.priorityPlayerId !== viewingPlayer.playerId
+      ? gameState.priorityPlayerId
+      : null)
+  const isHijacking = hijackControlledOpponentId !== null
+  const isHijacked = !!youAreHijackedBy
+  // Soft purple wash for the battlefield row currently under hijack control. We avoid
+  // a hard outline (which clipped at the zone-pile column on the right) — instead a
+  // gradient + subtle inset glow give a "tinted surface" feel that respects the
+  // existing layout boundaries.
+  const hijackedSurfaceStyle: React.CSSProperties = {
+    background: 'linear-gradient(180deg, rgba(124, 58, 237, 0.10) 0%, rgba(76, 29, 149, 0.04) 60%, rgba(76, 29, 149, 0.0) 100%)',
+    borderRadius: 10,
+    boxShadow: 'inset 0 0 0 1px rgba(168, 85, 247, 0.28), inset 0 0 24px rgba(168, 85, 247, 0.12)',
+    transition: 'background 0.2s, box-shadow 0.2s',
+  }
+  // For spectator mode, we need to find players differently since playerId won't match
+  const spectatorPlayer1 = spectatorMode && gameState
+    ? gameState.players.find(p => p.playerId === spectatingState?.player1Id) ?? gameState.players[0]
+    : null
+  const spectatorPlayer2 = spectatorMode && gameState
+    ? gameState.players.find(p => p.playerId === spectatingState?.player2Id) ?? gameState.players[1]
+    : null
+
+  // In spectator mode, use player1 as "bottom" player and player2 as "top" (opponent).
+  // In multiplayer the viewed slot holds whichever opponent the camera is on.
+  const effectiveViewingPlayer = spectatorMode ? spectatorPlayer1 : viewingPlayer
+  const effectiveOpponent = isMulti
+    ? viewedOpponent
+    : spectatorMode
+      ? spectatorPlayer2
+      : opponent
+
+  // The viewing player's own seat-identity color. In multiplayer "you" are tinted with the same
+  // seat color everyone else sees for you (and that the rail's self chip uses), instead of the
+  // fixed 2-player blue.
+  const selfSeatColor = useIdentityColor(effectiveViewingPlayer?.playerId ?? null)
+
+  // The seat anchoring the bottom HUD (right life orb + bottom half of the board): the
+  // eliminated spectator's chosen living seat when one is set, else the viewing player.
+  const bottomHudPlayer = eliminatedBottomSeat ?? effectiveViewingPlayer
+  const bottomHudSeatColor = useIdentityColor(bottomHudPlayer?.playerId ?? null)
+
+  // Two-Headed Giant (CR 810): teammates share one life total, so the center HUD stops being
+  // "you vs. the viewed opponent" and reads team-vs-team — each orb labelled with its team and
+  // carrying that team's single life. Every other place that would repeat the same number (the
+  // rail chips, the board name plates) drops it, so the total appears exactly once per team.
+  // An observer has no "your team" to be relative to, so they keep the per-player HUD.
+  const sharedLifeTeam = useIsSharedLifeTeamGame()
+  const teamCenterOrbs = sharedLifeTeam && !viewerIsObserver
+  // ...and the left-hand orb becomes the *enemy team's*, not the viewed board's. Your ally's
+  // board sits on the table beside yours, so the camera's nominal opponent is frequently a
+  // teammate — and two orbs both reading "Your Team 30" is precisely the duplicate this HUD
+  // exists to remove. The enemy team's first living seat in turn order stands for the team: it
+  // carries the shared total, the team hue, and (see `centerOrbOpponentId` below) the team's
+  // share of the player anchors.
+  const centerOrbOpponent = useMemo(() => {
+    if (!teamCenterOrbs || !gameState || viewerTeam == null) return effectiveOpponent
+    return (
+      gameState.players.find((p) => !p.hasLost && teamMap[p.playerId] !== viewerTeam) ??
+      effectiveOpponent
+    )
+  }, [teamCenterOrbs, gameState, viewerTeam, teamMap, effectiveOpponent])
+  // Exactly one element per player carries that player's anchors, and for whoever the left orb
+  // is showing, it's the orb — so their board plate and rail chip both stand down.
+  const centerOrbOpponentId = centerOrbOpponent?.playerId ?? null
+  const centerOrbSeatColor = useIdentityColor(centerOrbOpponentId)
+  const centerOrbIsAlly = useIsAlly(centerOrbOpponentId)
+  const opponentTeamLabel = useTeamLabelFor(centerOrbOpponentId)
+  const opponentTeamMembers = useTeammateNames(centerOrbOpponentId)
+  const bottomTeamLabel = useTeamLabelFor(bottomHudPlayer?.playerId ?? null)
+  const bottomTeamMembers = useTeammateNames(bottomHudPlayer?.playerId ?? null)
+
+  // Two-Headed Giant: the two teams' seats, in turn order. A team's shared life is pinned to that
+  // team's own edge of the table ([TeamLifeBanner]) rather than sitting in the center band, so the
+  // total is next to the boards it keeps alive — and the two plates beneath it become the visible
+  // heads of the team, which is also where CR 805.10b's per-creature defender pick happens.
+  const teamBannerSeats = useMemo(() => {
+    if (!teamCenterOrbs || !gameState || viewerTeam == null) return null
+    const mine: EntityId[] = []
+    const theirs: EntityId[] = []
+    for (const p of gameState.players) {
+      const t = teamMap[p.playerId]
+      if (t == null) continue
+      ;(t === viewerTeam ? mine : theirs).push(p.playerId)
+    }
+    return mine.length > 0 && theirs.length > 0 ? { mine, theirs } : null
+  }, [teamCenterOrbs, gameState, viewerTeam, teamMap])
+  // With the banners up, a team game's life total lives at the edges and the center HUD keeps only
+  // the step strip. Every plate then carries its own player's anchors again — there is no orb
+  // standing in for a seat any more.
+  const teamBannersActive = teamBannerSeats != null
+  // The center-left orb stands in for one opponent only while that opponent has no plate of their
+  // own — the sliding camera. On the two-row table every board's plate already carries its name,
+  // life and anchors, so the orb would print the same number sixty pixels above the plate: the
+  // duplicate the team banners exist to remove, just in a free-for-all. Every plate then carries
+  // its own player's anchors, exactly as with the banners up.
+  const centerOrbStandsIn = !teamBannersActive && !twoRowActive
+  // The one ally seat whose hand you may read (CR 810.5). Null outside a shared-life team game,
+  // while spectating, and for the (unsupported today) team of one.
+  const allySeat = useMemo(() => {
+    if (!teamBannerSeats || !playerId || !gameState) return null
+    const id = teamBannerSeats.mine.find((m) => m !== playerId)
+    if (!id) return null
+    return gameState.players.find((p) => p.playerId === id) ?? null
+  }, [teamBannerSeats, playerId, gameState])
+  // Hotseat (and a Mindslaver-style hijack) puts this client in the ally's seat. Their hand stays
+  // lifted where it always is — beside yours — and becomes the interactive one there, rather than
+  // snapping back into their cell, where a bottom-row hand lands mid-screen.
+  const allyIsDriven = allySeat != null && hijackControlledOpponentId === allySeat.playerId
+  // Widths for the paired bottom hands. Your own fan is sized from the *viewport* everywhere else,
+  // so a second fan beside it can only avoid overlapping by both of them being given explicit
+  // widths out of one shared budget — the same budget CardRow would have used on its own (the
+  // viewport minus the container padding and the two zone-pile columns).
+  const teamHandRow = useMemo(() => {
+    if (!allySeat || spectatorMode || isEliminatedSpectator) return null
+    const gap = responsive.isMobile ? 8 : 20
+    // The bottom-left corner is the game-log / AI-insight button cluster. A single centered fan
+    // clears it on its own (it is far narrower than the space); a *pair* does not, so the row
+    // gives that corner back and re-centers itself on what is left. Without this the ally fan
+    // lands straight on top of the buttons.
+    const cornerReserve = responsive.isMobile ? 0 : 190
+    const pairWidth =
+      responsive.viewportWidth -
+      responsive.containerPadding * 2 -
+      (responsive.pileWidth + 20) * 2 -
+      cornerReserve -
+      gap
+    if (pairWidth < 280) return null
+    // A third of the pair, capped: your hand is the one you play from and keeps the lion's share.
+    const allyWidth = Math.min(300, Math.round(pairWidth * 0.32))
+    return { gap, allyWidth, ownWidth: pairWidth - allyWidth, shiftRight: cornerReserve / 2 }
+  }, [allySeat, spectatorMode, isEliminatedSpectator, responsive])
+
+  // Team-split bottom half: the viewer's whole team in turn order with the anchor seat *last* —
+  // i.e. bottom-right, directly under the right-hand life orb and the zone piles that are
+  // already right-aligned, so "your stuff" occupies one corner of the table instead of being
+  // split across it. When playing, the anchor is your interactive board; when spectating it's
+  // just the bottom-anchored seat. Teammate cells reuse the overview cell + per-board collapse.
+  const bottomRowOrdered = useMemo(() => {
+    if (!twoRowActive || !gameState) return []
+    return gameState.players
+      .filter((p) => bottomRowIds.includes(p.playerId))
+      .sort((a, b) => (a.playerId === anchorId ? 1 : b.playerId === anchorId ? -1 : 0))
+  }, [twoRowActive, gameState, bottomRowIds, anchorId])
+  // The bottom half becomes a multi-board strip only when it holds more than the anchor (team
+  // games; 4+ player free-for-alls). A lone anchor keeps the classic single bottom board — but
+  // only when it really is the anchor: the single-board paths below draw the anchor's board, so
+  // a lone *non-anchor* seat (a viewer parked on a seat that has since died) has to go through
+  // the strip or its board would never render at all.
+  const bottomStripActive =
+    twoRowActive &&
+    (bottomRowOrdered.length > 1 ||
+      (bottomRowOrdered.length === 1 && bottomRowOrdered[0]?.playerId !== anchorId))
+  // Any bottom board may collapse to a tab — except your own interactive board when *playing*
+  // (there's no collapse control on it, and folding the board you act from makes no sense). An
+  // observer's anchor seat is just another board, so it stays collapsible.
+  const bottomCollapsedIds = useMemo(
+    () =>
+      bottomRowOrdered
+        .filter(
+          (p) =>
+            collapsedSeats.includes(p.playerId) &&
+            !(!viewerIsObserver && p.playerId === anchorId),
+        )
+        .map((p) => p.playerId),
+    [bottomRowOrdered, collapsedSeats, anchorId, viewerIsObserver],
+  )
+  const bottomExpandedCount = Math.max(1, bottomRowOrdered.length - bottomCollapsedIds.length)
+  const bottomCellBasis =
+    bottomCollapsedIds.length > 0
+      ? `calc((100% - ${bottomCollapsedIds.length * COLLAPSED_TAB_WIDTH}px) / ${bottomExpandedCount})`
+      : `${100 / bottomExpandedCount}%`
+  // Exactly one element per player carries that player's card/life anchors. A rail chip hands
+  // them over whenever the seat's own board is on screen: an expanded cell in the top strip, an
+  // expanded cell in the bottom row, or the eliminated spectator's bottom board.
+  const anchorVisibleBoardIds = useMemo<readonly EntityId[]>(() => {
+    // A strip board's plate only exists in a shared-strip view; with the sliding camera the sole
+    // visible board has no plate at all, so its anchors live on the center orb — and only if the
+    // orb is actually pointed at it.
+    const ids = multiView ? [...expandedStripIds] : []
+    if (eliminatedBottomSeat) ids.push(eliminatedBottomSeat.playerId)
+    if (bottomStripActive) {
+      for (const p of bottomRowOrdered) {
+        if (!bottomCollapsedIds.includes(p.playerId) && !ids.includes(p.playerId)) {
+          ids.push(p.playerId)
+        }
+      }
+    }
+    // With the sliding camera the center orb stands in for one opponent, so it carries their
+    // anchors wherever their own board doesn't. With the banners up, or on the two-row table,
+    // nothing stands in for a seat — every visible plate is its own player's anchor.
+    if (centerOrbStandsIn && centerOrbOpponentId && !ids.includes(centerOrbOpponentId)) {
+      ids.push(centerOrbOpponentId)
+    }
+    return ids
+  }, [
+    centerOrbStandsIn,
+    multiView,
+    expandedStripIds,
+    eliminatedBottomSeat,
+    bottomStripActive,
+    bottomRowOrdered,
+    bottomCollapsedIds,
+    centerOrbOpponentId,
+  ])
+
+  // Compute mana selection progress using most-constrained-first matching
+  const manaProgress = useMemo(() => {
+    if (!manaSelectionState) return null
+
+    // Parse mana cost into requirements
+    const symbols = manaSelectionState.manaCost.match(/\{([^}]+)\}/g)
+    if (!symbols) return { satisfied: 0, total: 0, entries: [] }
+
+    // Build list of unfulfilled requirements: colored pips + generic pips
+    const coloredReqs: string[] = []
+    let genericCount = 0
+    for (const [pipIndex, match] of symbols.entries()) {
+      const inner = match.slice(1, -1)
+      if (inner.endsWith('/P')) {
+        if (!manaSelectionState.phyrexianLifePipIndices.includes(pipIndex)) {
+          coloredReqs.push(inner.split('/')[0]!)
+        }
+        continue
+      }
+      const num = parseInt(inner, 10)
+      if (!isNaN(num)) {
+        genericCount += num
+      } else if (inner !== 'X') {
+        coloredReqs.push(inner)
+      }
+    }
+    if (manaSelectionState.xValue > 0) {
+      genericCount += manaSelectionState.xValue
+    }
+    // A Harmonize creature-tap reduces the generic mana to pay by its power
+    // (printed {N} first, then the generic {X}); reflect it so the HUD shows the
+    // real owed cost rather than the pre-tap {X} amount.
+    if (manaSelectionState.harmonizeReduction > 0) {
+      genericCount = Math.max(0, genericCount - manaSelectionState.harmonizeReduction)
+    }
+    const total = coloredReqs.length + genericCount
+
+    // Build source list: each source has the set of colors it can pay
+    // A source that produces {W, B, G} can satisfy W, B, or G colored reqs, or 1 generic
+    // Multi-mana sources (e.g., Gilded Lotus producing 3) contribute multiple entries
+    const sources: { colors: readonly string[] }[] = []
+    for (const id of manaSelectionState.selectedSources) {
+      const colors = manaSelectionState.sourceColors[id] ?? []
+      const manaAmount = manaSelectionState.sourceManaAmounts?.[id] ?? 1
+      for (let i = 0; i < manaAmount; i++) {
+        sources.push({ colors: colors.length > 0 ? colors : ['C'] })
+      }
+    }
+
+    // Most-constrained-first: assign sources with fewest color options first
+    // This prevents flexible sources from "wasting" on requirements that
+    // less flexible sources could have covered
+    const sortedSources = [...sources].sort((a, b) => a.colors.length - b.colors.length)
+
+    // Track remaining colored requirements as a mutable count map
+    const remainingColorReqs: Record<string, number> = {}
+    for (const c of coloredReqs) {
+      remainingColorReqs[c] = (remainingColorReqs[c] ?? 0) + 1
+    }
+    let remainingGeneric = genericCount
+    const colorSatisfied: Record<string, number> = {}
+    let satisfied = 0
+
+    // Floating mana already in the pool counts toward the cost — the engine pays
+    // from the pool before tapping sources (CastPaymentProcessor.autoPay), so the
+    // confirmation panel needs to credit it too. Without this, a player who taps
+    // a Plains pre-cast sees "0/1" white owed even though their pool already has it.
+    const floatingPool = viewingPlayer?.manaPool
+    if (floatingPool) {
+      const poolByPip: Record<string, number> = {
+        W: floatingPool.white,
+        U: floatingPool.blue,
+        B: floatingPool.black,
+        R: floatingPool.red,
+        G: floatingPool.green,
+        C: floatingPool.colorless,
+      }
+      // Restricted ("spend this mana only to …") mana counts too, but only the units the server
+      // judged eligible for this action — Ashling, Rimebound's MV4+ mana on an MV4+ spell.
+      for (const entry of manaSelectionState.actionInfo.eligibleRestrictedMana ?? []) {
+        const pip = entry.color ?? 'C'
+        if (pip in poolByPip) poolByPip[pip]!++
+      }
+      // Spend exact-color pool first against colored pips
+      for (const pip of Object.keys(poolByPip)) {
+        while ((poolByPip[pip] ?? 0) > 0 && (remainingColorReqs[pip] ?? 0) > 0) {
+          remainingColorReqs[pip]!--
+          colorSatisfied[pip] = (colorSatisfied[pip] ?? 0) + 1
+          poolByPip[pip]!--
+          satisfied++
+        }
+      }
+      // Anything left in the pool covers generic
+      for (const pip of Object.keys(poolByPip)) {
+        while ((poolByPip[pip] ?? 0) > 0 && remainingGeneric > 0) {
+          remainingGeneric--
+          colorSatisfied['1'] = (colorSatisfied['1'] ?? 0) + 1
+          poolByPip[pip]!--
+          satisfied++
+        }
+      }
+    }
+
+    for (const source of sortedSources) {
+      // Try to assign to a colored requirement this source can pay
+      let assigned = false
+      for (const color of source.colors) {
+        if ((remainingColorReqs[color] ?? 0) > 0) {
+          remainingColorReqs[color]!--
+          colorSatisfied[color] = (colorSatisfied[color] ?? 0) + 1
+          satisfied++
+          assigned = true
+          break
+        }
+      }
+      // If no colored requirement matched, assign to generic
+      if (!assigned && remainingGeneric > 0) {
+        remainingGeneric--
+        colorSatisfied['1'] = (colorSatisfied['1'] ?? 0) + 1
+        satisfied++
+      }
+    }
+
+    // Build per-color requirement counts for display
+    const colorRequired: Record<string, number> = {}
+    for (const c of coloredReqs) {
+      colorRequired[c] = (colorRequired[c] ?? 0) + 1
+    }
+    if (genericCount > 0) colorRequired['1'] = genericCount
+
+    // Sort: colored first, generic last
+    const entries = Object.entries(colorRequired).sort(([a], [b]) => {
+      if (a === '1' && b !== '1') return 1
+      if (a !== '1' && b === '1') return -1
+      return a.localeCompare(b)
+    })
+
+    return { satisfied, total, entries, colorSatisfied }
+  }, [manaSelectionState, viewingPlayer?.manaPool])
+
+  // ⚠ Every hook must sit ABOVE this line. This is the component's only early return, and it fires
+  // whenever the store has no game state yet — which is exactly how a replay or spectator surface
+  // mounts the board, before frame 0 lands. A hook below here would run on the second render and
+  // not the first, and React aborts the tree with "Rendered more hooks than during the previous
+  // render". `manaProgress` used to be below it, and `ReplayPlayer` only avoided the crash by
+  // gating the mount; the guard belongs here so the next caller doesn't have to know that.
+  if (!gameState || (!spectatorMode && (!playerId || !viewingPlayer))) {
+    return null
+  }
+
+  // In spectator mode: disable all interaction. In hotseat the single connection controls
+  // whichever seat holds priority, so it can always act on a live priority window.
+  const hasPriority = spectatorMode
+    ? false
+    : hotseat
+      ? gameState.priorityPlayerId != null
+      : (gameState.priorityPlayerId === viewingPlayer?.playerId ||
+        // Two-Headed Giant (CR 805.5): a *team* holds priority, so your ally's window is yours
+        // too — this is what lets you answer what your partner just did instead of waiting for
+        // the baton to come round. False in every format that doesn't share team turns.
+        teamHoldsPriority ||
+        // Mindslaver-style hijack: this client drives the controlled opponent, so it holds
+        // priority whenever that opponent does (enables Pass, casting, ability activation).
+        (youAreHijacking != null && gameState.priorityPlayerId === youAreHijacking))
+  const canAct = hasPriority && !opponentDecisionStatus
+  /**
+   * Two-Headed Giant: pair your hand with your ally's in one centered row at the bottom of the
+   * screen. Outside a team game (and while spectating) this hands the fan straight back and the
+   * hand keeps its own `position: fixed` centering, unchanged.
+   */
+  const wrapInTeamHandRow = (ownHand: React.ReactNode): React.ReactNode => {
+    if (!teamHandRow || !allySeat) return ownHand
+    return (
+      <div
+        style={{
+          position: 'fixed',
+          bottom: 0,
+          left: '50%',
+          transform: `translateX(calc(-50% + ${teamHandRow.shiftRight}px))`,
+          zIndex: 50,
+          display: 'flex',
+          alignItems: 'flex-end',
+          gap: teamHandRow.gap,
+        }}
+      >
+        <AllyHandFan player={allySeat} width={teamHandRow.allyWidth} interactive={allyIsDriven} />
+        {ownHand}
+      </div>
+    )
+  }
+  const isMyTurn = spectatorMode
+    ? false
+    : (gameState.activePlayerId === viewingPlayer?.playerId ||
+      // Two-Headed Giant (CR 805.4): a team takes one turn, so your ally's turn is yours — you
+      // may play a land and act at sorcery speed on it, and you declare your own attackers.
+      teamActiveTurn ||
+      // During a hijack of the opponent's turn, treat it as "my turn" so the active-player
+      // controls (combat declaration, sorcery-speed plays) light up for the driving client.
+      (youAreHijacking != null && gameState.activePlayerId === youAreHijacking))
+  // Multiplayer: how far off your next turn is, in living seats — "You're next" / "You in 2". The
+  // rail lists the table in turn order, but counting chips is the player's job today. Two-Headed
+  // Giant takes one shared turn per team (CR 805.4), where a per-seat count would mislead, so none
+  // there; Team vs. Team takes individual turns (CR 808.4) and keeps it.
+  const turnQueueHint = !isMulti || sharedTurnTeamGame || spectatorMode || isMyTurn
+    ? undefined
+    : turnQueueHintFor(gameState.players, gameState.activePlayerId, viewingPlayer?.playerId)
+  const isInCombatMode = spectatorMode ? false : (combatState !== null)
+  const isInDistributeMode = !spectatorMode && distributeState !== null
+  const distributeTotalAllocated = distributeState
+    ? Object.values(distributeState.distribution).reduce((sum, v) => sum + v, 0)
+    : 0
+  const distributeRemaining = distributeState ? distributeState.totalAmount - distributeTotalAllocated : 0
+  const isInCounterDistMode = !spectatorMode && counterDistributionState !== null
+  const isInManaSelectionMode = !spectatorMode && manaSelectionState !== null
+
+  // Attack restriction ("can only attack left/right", 2HG, …): during declare-attackers,
+  // some living non-ally opponent is not a legal attack target. Drives the explainer
+  // banner; the rail chips independently dim the unattackable seats. Teammates are
+  // excluded — "you can't attack your ally" needs no banner.
+  const attackRestriction = (() => {
+    if (!isMulti || spectatorMode || combatState?.mode !== 'declareAttackers' || !gameState) return null
+    // Candidates are relative to the *acting* seat — normally the viewing player, but a
+    // hotseat/hijack declaration acts for another seat, whose own chip must not read as
+    // "restricted" and whose enemies differ.
+    const actingSeat = combatState.actingSeat ?? viewingPlayer?.playerId ?? null
+    const actingTeam = actingSeat != null ? teamMap[actingSeat] : undefined
+    const enemies = gameState.players.filter(
+      (p) =>
+        !p.hasLost &&
+        p.playerId !== actingSeat &&
+        !(actingTeam != null && teamMap[p.playerId] === actingTeam),
+    )
+    const attackable = enemies.filter((o) => combatState.validAttackTargets.includes(o.playerId))
+    const restricted = enemies.filter((o) => !combatState.validAttackTargets.includes(o.playerId))
+    if (attackable.length === 0 || restricted.length === 0) return null
+    const lobbyMode =
+      lobbyState?.settings.gameMode === 'FREE_FOR_ALL' ? lobbyState.settings.attackMode : undefined
+    const direction = lobbyMode === 'LEFT' ? 'left' : lobbyMode === 'RIGHT' ? 'right' : null
+    return { attackable, direction }
+  })()
+  const defenderPopupVisible =
+    !spectatorMode &&
+    isMulti &&
+    combatState?.mode === 'declareAttackers' &&
+    combatState.selectedAttackers.some((id) => !combatState.attackerTargets[id])
+
+  const counterTotalAllocated = counterDistributionState
+    ? Object.values(counterDistributionState.distribution).reduce<number>(
+        (sum, byType) => sum + Object.values(byType).reduce<number>((s, v) => s + v, 0),
+        0,
+      )
+    : 0
+  // No "remaining" concept — X is determined by total allocated
+
+  // Compute pass button label - prefer server-computed nextStopPoint, fall back to naive logic
+  const getPassButtonLabel = () => {
+    if (nextStopPoint) {
+      return nextStopPoint
+    }
+    // Fallback for full control mode (server sends null)
+    if (stackCards.length > 0) {
+      return 'Resolve'
+    }
+    // On opponent's turn, just show "Pass" — we're yielding priority, not driving the turn
+    if (!isMyTurn) {
+      return 'Pass'
+    }
+    const nextStep = getNextStep(gameState.currentStep)
+    if (nextStep) {
+      if (nextStep === 'END') {
+        return 'End Turn'
+      }
+      return `Pass to ${StepShortNames[nextStep]}`
+    }
+    return 'Pass'
+  }
+
+  // Get pass button colors based on priority mode
+  const getPassButtonStyle = (): React.CSSProperties => {
+    const hasStack = stackCards.length > 0
+    if (hasStack) {
+      // Resolve - keep orange
+      return {
+        backgroundColor: '#c76e00',
+        borderColor: '#e08000',
+      }
+    }
+    if (priorityMode === 'ownTurn') {
+      // Own turn - blue/cyan
+      return {
+        backgroundColor: '#1976d2',
+        borderColor: '#4fc3f7',
+      }
+    }
+    // Responding - amber/gold
+    return {
+      backgroundColor: '#f57c00',
+      borderColor: '#ffc107',
+    }
+  }
+
+  return (
+    <RenderProfiler id="GameBoard">
+    <ResponsiveContext.Provider value={responsive}>
+    <PooledBattlefieldLayoutContext.Provider value={pooledLayout}>
+    <div style={{
+      ...styles.container,
+      padding: `0 ${responsive.containerPadding}px`,
+      // Hand reservation rows (1 and 5) keep the battlefield rows from sliding
+      // under the position:fixed hand overlays. Rows 2 and 4 are weighted by
+      // what each battlefield needs (pooled solve above; equal until measured)
+      // — both players still render at one card width.
+      // Eliminated spectator: a survivor's board takes over their dead bottom half, so the
+      // rows stay spectator-shaped (small face-down hand at the bottom). Only when no living
+      // seat is left to sit there (the game is effectively over) do rows 4-5 collapse and the
+      // freed space flow to the opponent strip (row 2, then the only remaining 1fr).
+      gridTemplateRows: isEliminatedSpectator
+        ? eliminatedBottomSeat
+          ? `${oppHandReservation}px minmax(0, 1fr) auto minmax(0, 1fr) ${
+              responsive.smallCardHeight + responsive.handBattlefieldGap
+            }px`
+          : `${oppHandReservation}px minmax(0, 1fr) auto 0px 0px`
+        : `${oppHandReservation}px minmax(0, ${opponentRowWeight}fr) auto minmax(0, ${playerRowWeight}fr) ${playerHandReservation}px`,
+    }}>
+      {/* Fullscreen button (top-left) */}
+      <FullscreenButton />
+
+      {/* Spectator-count indicator (top-left, next to fullscreen) - only for players */}
+      {!spectatorMode && <SpectatorCountBadge />}
+
+      {/* Concede button (top-right) - hidden in spectator mode. Stays live for the
+          affected player even when the rest of the UI is disabled by hijack. An
+          eliminated spectator has nothing to concede — they get a Leave button. */}
+      {!spectatorMode && !isEliminatedSpectator && <ConcedeButton />}
+      {isEliminatedSpectator && (
+        <>
+          <button
+            onClick={returnToMenu}
+            title="Leave the game and return to the menu"
+            style={{
+              position: 'fixed',
+              top: responsive.isMobile ? 8 : 12,
+              right: responsive.isMobile ? 8 : 12,
+              zIndex: 120,
+              height: 28,
+              padding: '0 12px',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: 6,
+              borderRadius: 6,
+              border: '1px solid #555',
+              background: 'rgba(18, 18, 26, 0.85)',
+              color: '#ccc',
+              fontSize: 12,
+              fontWeight: 600,
+              cursor: 'pointer',
+            }}
+          >
+            Leave Game
+          </button>
+          {/* Spectating banner — top center, in the chrome row between the Fullscreen
+              and Leave Game buttons (the bottom of the screen belongs to the step strip
+              or the bottom board). It also carries the bottom-seat picker: which survivor
+              sits on your (now vacant) side of the table. Only shown while there's more
+              than one survivor to choose between. */}
+          <div
+            role="status"
+            style={{
+              position: 'fixed',
+              top: responsive.isMobile ? 8 : 12,
+              left: '50%',
+              transform: 'translateX(-50%)',
+              zIndex: 90,
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: 8,
+              padding: '5px 14px',
+              borderRadius: 999,
+              border: '1px solid #3a3a44',
+              background: 'rgba(10, 12, 20, 0.9)',
+              color: '#9fb0d0',
+              fontSize: 12,
+              fontWeight: 600,
+              whiteSpace: 'nowrap',
+              userSelect: 'none',
+            }}
+          >
+            <span aria-hidden>💀</span>
+            You've been eliminated — spectating
+            {survivors.length > 1 && (
+              <>
+            <span aria-hidden style={{ width: 1, height: 14, background: '#3a3a44' }} />
+            <span style={{ color: '#7c8aa8', fontWeight: 600 }}>Bottom seat:</span>
+            {survivors.map((o) => {
+              const idx = gameState.players.findIndex((p) => p.playerId === o.playerId)
+              const seat = identitySeatColor(teamMap, o.playerId, idx)
+              const active = eliminatedBottomSeat?.playerId === o.playerId
+              return (
+                <button
+                  key={o.playerId}
+                  onClick={() => setEliminatedBottomSeat(o.playerId)}
+                  title={`Watch from behind ${o.name}'s board (bottom half of the table)`}
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: 5,
+                    height: 22,
+                    padding: '0 9px',
+                    borderRadius: 999,
+                    border: `${active ? 2 : 1}px solid ${active ? seat.bright : seat.base}`,
+                    background: active ? seat.soft : 'rgba(10, 12, 20, 0.85)',
+                    color: seat.bright,
+                    fontSize: 11,
+                    fontWeight: 700,
+                    cursor: 'pointer',
+                    whiteSpace: 'nowrap',
+                  }}
+                >
+                  <span aria-hidden style={{
+                    width: 7,
+                    height: 7,
+                    borderRadius: '50%',
+                    background: seat.base,
+                    boxShadow: `0 0 4px ${seat.base}`,
+                  }} />
+                  {o.name}
+                </button>
+              )
+            })}
+              </>
+            )}
+          </div>
+        </>
+      )}
+
+
+      {/* Opponent half. 2-player: today's exact markup (fixed hand at the top +
+          board area on grid row 2), via OpponentBoardArea's grid layout.
+          Multiplayer: an always-visible opponent rail + a horizontally sliding
+          strip of full-size boards, one per living opponent, in turn order. */}
+      {!isMulti && effectiveOpponent && (
+        <OpponentBoardArea
+          opponent={effectiveOpponent}
+          layout="grid"
+          topOffset={effectiveTopOffset}
+          spectatorMode={spectatorMode}
+          isHijacking={isHijacking}
+          hijackedSurfaceStyle={hijackedSurfaceStyle}
+          areaRef={opponentRowRef}
+        />
+      )}
+      {isMulti && (
+        <>
+          <OpponentRail
+            spectatorMode={spectatorMode}
+            visibleBoardIds={anchorVisibleBoardIds}
+            topOffset={effectiveTopOffset}
+          />
+          <div
+            data-opponent-strip
+            style={{
+              gridRow: '1 / 3',
+              position: 'relative',
+              overflow: 'hidden',
+              minHeight: 0,
+              minWidth: 0,
+              // Shared-strip views: keep the leftmost board clear of the fixed rail
+              // column, and every cell's top (name plates, zone piles) clear of the
+              // Fullscreen/Concede button row (single view centers one full-width
+              // board below the hand reservation, so no clash there).
+              paddingLeft: multiView ? railReservedWidth(responsive) : 0,
+              // The 48px clears the Fullscreen / Concede button row, which only occupies the two
+              // top *corners*. A team table has just two enemy cells, and their plates sit at the
+              // quarter marks with the shared-life banner between them — none of the three is in a
+              // corner, so the band is dead space and the enemy boards can have it. The per-cell
+              // collapse control does live in a corner, so it keeps the old offset via
+              // `controlsTop` rather than riding up with the plate.
+              paddingTop: multiView ? (teamBannersActive ? TEAM_STRIP_TOP : 48) : 0,
+              boxSizing: 'border-box',
+            }}
+            onTouchStart={(e) => {
+              stripTouchX.current = e.touches[0]?.clientX ?? null
+            }}
+            onTouchEnd={(e) => {
+              const start = stripTouchX.current
+              stripTouchX.current = null
+              // Swiping between boards only applies to the one-board sliding camera.
+              if (multiView) return
+              const end = e.changedTouches[0]?.clientX ?? null
+              if (start == null || end == null) return
+              const store = useGameStore.getState()
+              // A swipe must not fight an in-progress card drag.
+              if (store.draggingCardId || store.draggingAttackerId || store.draggingBlockerId) return
+              const dx = end - start
+              if (Math.abs(dx) < 48) return
+              const next = stripOpponents[viewedStripIndex + (dx < 0 ? 1 : -1)]
+              if (next) store.viewOpponent(next.playerId)
+            }}
+          >
+            {/* The enemy team's shared life, pinned to the far edge above their two boards
+                (CR 810.4). It carries no anchors and no click target — the plates below it are the
+                heads, and CR 805.10b makes each attacker name one of them. */}
+            {teamBannerSeats && multiView && (
+              <TeamLifeBanner teamMemberIds={teamBannerSeats.theirs} anchor="top" isEnemyTeam />
+            )}
+            <div
+              style={{
+                display: 'flex',
+                width: '100%',
+                height: '100%',
+                transform: multiView ? 'none' : `translateX(-${viewedStripIndex * 100}%)`,
+                transition: 'transform 220ms cubic-bezier(0.4, 0, 0.2, 1)',
+              }}
+            >
+              {(() => {
+                const renderStripBoard = (o: (typeof stripOpponents)[number], expandedCell: boolean) => {
+                  // Two-Headed Giant: your teammate's board is an ally (face-up hand + marker).
+                  const oIsAlly = viewerTeam != null && teamMap[o.playerId] === viewerTeam
+                  return (
+                    <OpponentBoardArea
+                      key={o.playerId}
+                      opponent={o}
+                      layout="strip"
+                      topOffset={effectiveTopOffset}
+                      handReservation={oppHandReservation}
+                      // Shared-strip views: expanded cells split the width left over by
+                      // the collapsed tabs; hidden/collapsed full boards keep full width
+                      // and overflow off-screen (see offscreenStripBoards).
+                      stripBasis={multiView && expandedCell ? expandedCellBasis : '100%'}
+                      hideHand={multiView}
+                      // In a Two-Headed Giant table the only hand worth a fan is your ally's, and
+                      // that one renders beside your own. An enemy's face-down arc says nothing a
+                      // count doesn't, so it gives its height back to the battlefields.
+                      cellHand={teamBannersActive && !oIsAlly ? 'count' : 'fan'}
+                      {...(teamBannersActive ? { controlsTop: 48 - TEAM_STRIP_TOP + 6 } : {})}
+                      // The center-HUD orb's player keeps their anchors on that orb; every other
+                      // expanded board's plate takes over from its rail chip. Normally that's the
+                      // viewed board, but a Two-Headed Giant HUD points its orb at the enemy team
+                      // instead (see `centerOrbOpponent`).
+                      plateCarriesAnchors={
+                        multiView && expandedCell && (!centerOrbStandsIn || o.playerId !== centerOrbOpponentId)
+                      }
+                      // With every board on screen the useful highlight is whose turn it is,
+                      // not which cell the camera nominally tracks.
+                      {...(multiView && expandedCell && o.playerId === gameState.activePlayerId
+                        ? { activeTurnRingColor: identitySeatColor(teamMap, o.playerId, gameState.players.findIndex((p) => p.playerId === o.playerId)).base }
+                        : {})}
+                      // Fold-away control — table overview only; the combat split and the
+                      // focused camera keep their deliberate board sets.
+                      {...(overviewActive && multiView && expandedCell
+                        ? { onToggleCollapse: () => toggleSeatCollapsed(o.playerId) }
+                        : {})}
+                      spectatorMode={spectatorMode}
+                      isHijacking={hijackControlledOpponentId === o.playerId}
+                      hijackedSurfaceStyle={hijackedSurfaceStyle}
+                      isAlly={oIsAlly}
+                      {...(oIsAlly && viewerTeam != null ? { allyColor: selfSeatColor.base } : {})}
+                    />
+                  )
+                }
+                if (!multiView) return stripOpponents.map((o) => renderStripBoard(o, false))
+                return (
+                  <>
+                    {visibleStripCells.map((o) =>
+                      collapsedStripIds.includes(o.playerId) ? (
+                        <CollapsedBoardTab
+                          key={`${o.playerId}-collapsed-tab`}
+                          player={o}
+                          onExpand={() => toggleSeatCollapsed(o.playerId)}
+                        />
+                      ) : (
+                        renderStripBoard(o, true)
+                      ),
+                    )}
+                    {offscreenStripBoards.map((o) => renderStripBoard(o, false))}
+                  </>
+                )
+              })()}
+            </div>
+            {/* Seat-colored edge flash on board arrival */}
+            {!multiView && viewedOpponent && (
+              <div
+                key={viewedOpponent.playerId}
+                aria-hidden
+                style={{
+                  position: 'absolute',
+                  inset: 0,
+                  pointerEvents: 'none',
+                  borderRadius: 10,
+                  boxShadow: `inset 0 0 0 2px ${viewedSeatColor.base}, inset 0 0 26px ${viewedSeatColor.soft}`,
+                  opacity: 0,
+                  animation: 'seatEdgeFlash 700ms ease-out',
+                }}
+              />
+            )}
+          </div>
+        </>
+      )}
+
+      {/* Spectator mode: floating opponent name label (2-player only — the rail
+          carries opponent identity in multiplayer) */}
+      {spectatorMode && !isMulti && effectiveOpponent && (
+        <div
+          style={{
+            ...styles.spectatorNameLabel,
+            position: 'fixed',
+            top: effectiveTopOffset + responsive.smallCardHeight + responsive.opponentHandBattlefieldGap + 8,
+            left: 16,
+          }}
+        >
+          {effectiveOpponent.name}
+        </div>
+      )}
+
+      {/* Center - Life totals, phase indicator, and stack.
+          Grid row 2 — a reserved partition that the opponent/player areas
+          can't cross. The outer flex row mirrors `playerRowWithZones` (main
+          area + zone pile spacer) so the step strip aligns with the cards
+          above/below rather than the viewport. */}
+      <div style={{
+        gridRow: 3,
+        display: 'flex',
+        alignItems: 'center',
+        gap: 32,
+        width: '100%',
+      }}>
+      <div style={{
+        ...styles.centerArea,
+        flex: 1,
+        minWidth: 0,
+        width: 'auto',
+        columnGap: responsive.isMobile ? 6 : 16,
+      }}>
+        {/* Opponent life (left side). In multiplayer this is the *viewed*
+            opponent's orb, seat-tinted to match their rail chip — a full-size
+            targeting click target in the familiar spot (the chip carries the
+            anchors for the other, off-screen opponents). */}
+        <div style={{ ...styles.centerLifeSection, ...styles.centerLifeSectionLeft }}>
+          {centerOrbOpponent && (
+            <>
+              {/* Two-Headed Giant: the team's shared total is pinned to the team's own edge of the
+                  table ([TeamLifeBanner]), so the center band keeps only the step strip and the
+                  per-player badges. Printing the same number here as well is the duplicate the
+                  banners exist to remove. */}
+              {centerOrbStandsIn && <LifeDisplay
+                life={centerOrbOpponent.life}
+                playerId={centerOrbOpponent.playerId}
+                playerName={centerOrbOpponent.name}
+                // An eliminated spectator has no opponents left to speak of — their orbs read
+                // spectator-shaped (no "OPPONENT" role tag, no targeting click), like the
+                // bottom-seat orb already does.
+                spectatorMode={viewerIsObserver}
+                poisonCounters={centerOrbOpponent.poisonCounters}
+                energyCounters={centerOrbOpponent.energyCounters ?? 0}
+                commanderDamage={centerOrbOpponent.commanderDamage ?? []}
+                handSize={centerOrbOpponent.handSize}
+                maxHandSize={centerOrbOpponent.maxHandSize}
+                {...(isMulti ? { seatColor: centerOrbSeatColor.base } : {})}
+                {...(centerOrbIsAlly ? { isAlly: true } : {})}
+                {...(teamCenterOrbs
+                  ? { teamName: opponentTeamLabel, teamMembers: opponentTeamMembers }
+                  : {})}
+              />}
+              <SpeedGauge speed={centerOrbOpponent.speed ?? 0} />
+              {!responsive.isMobile && <ActiveEffectsBadges effects={centerOrbOpponent.activeEffects} />}
+              {!responsive.isMobile && centerOrbOpponent.manaPool && <ManaPool manaPool={centerOrbOpponent.manaPool} />}
+            </>
+          )}
+        </div>
+
+        {/* Step strip (center) — wrapped so the Mindslaver-style hijack indicator
+            can sit directly above it inside the center HUD. */}
+        <div style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          gap: 4,
+          minWidth: 0,
+        }}>
+        {(isHijacking || isHijacked || hotseat) && (() => {
+          const text = hotseat
+            ? `Hotseat — acting as ${gameState.players.find((p) => p.playerId === gameState.priorityPlayerId)?.name ?? 'active player'}`
+            : (() => {
+                const otherId = youAreHijacking ?? youAreHijackedBy
+                const otherName = gameState.players.find((p) => p.playerId === otherId)?.name ?? 'opponent'
+                return isHijacking ? `Controlling ${otherName}'s turn` : `${otherName} controls your turn`
+              })()
+          return (
+            <div
+              role="status"
+              aria-live="polite"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 6,
+                padding: '3px 10px',
+                borderRadius: 999,
+                background: 'rgba(76, 29, 149, 0.55)',
+                color: '#f3e8ff',
+                fontSize: 11,
+                fontWeight: 600,
+                letterSpacing: '0.04em',
+                textTransform: 'uppercase',
+                border: '1px solid rgba(168, 85, 247, 0.6)',
+                boxShadow: '0 0 10px rgba(168, 85, 247, 0.25)',
+                whiteSpace: 'nowrap',
+                userSelect: 'none',
+              }}
+            >
+              <span aria-hidden style={{ fontSize: 11 }}>🔒</span>
+              <span>{text}</span>
+            </div>
+          )
+        })()}
+        {/* Two-Headed Giant: your team holds priority, your partner is on the baton (CR 805.5).
+            Without this the window looks like someone else's turn to speak, and the whole point of
+            team priority — answering what your partner just did, before the table moves on — goes
+            unused. */}
+        {sharedTurnTeamGame && !spectatorMode && (
+          <div
+            role="status"
+            aria-live="polite"
+            aria-hidden={!teamHoldsPriority}
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: 6,
+              padding: '3px 10px',
+              borderRadius: 999,
+              background: `color-mix(in srgb, ${selfSeatColor.base} 26%, rgba(8, 11, 18, 0.9))`,
+              color: '#eaf6ff',
+              fontSize: 11,
+              fontWeight: 600,
+              letterSpacing: '0.04em',
+              textTransform: 'uppercase',
+              border: `1px solid ${selfSeatColor.base}`,
+              whiteSpace: 'nowrap',
+              userSelect: 'none',
+              // The baton moves between teammates constantly, so this badge blinks on and off
+              // several times a turn. Mounting and unmounting it did that *in flow*: the centre
+              // HUD grew and shrank by a row each time and the step strip (plus everything
+              // aligned to it) jumped. Inside a shared-turn team game the slot is therefore
+              // always present and only its opacity changes — the layout never moves. Outside
+              // one the whole block still renders nothing at all.
+              opacity: teamHoldsPriority ? 1 : 0,
+              transform: teamHoldsPriority ? 'translateY(0)' : 'translateY(-2px)',
+              transition: 'opacity 180ms ease, transform 180ms ease',
+              pointerEvents: 'none',
+            }}
+          >
+            <span aria-hidden style={{ fontSize: 11 }}>🤝</span>
+            <span>
+              Team priority
+              {batonLabelName ? ` — ${batonLabelName} is acting` : ''}
+            </span>
+          </div>
+        )}
+        {/* Game-level day/night designation (CR 731) — one badge for the whole table, not per-player.
+            Renders nothing until a designation exists, so most games never show it. */}
+        <DayNightBadge designation={gameState.dayNight} />
+        <StepStrip
+          phase={gameState.currentPhase}
+          step={gameState.currentStep}
+          turnNumber={gameState.turnNumber}
+          isActivePlayer={isMyTurn}
+          hasPriority={hasPriority}
+          priorityMode={priorityMode}
+          // Name the active seat in a pod: "Opponent's Turn" says nothing at a four-seat table.
+          // While responding the strip keeps saying so — the name is on the rail's turn ring.
+          activePlayerName={spectatorMode || (isMulti && !isMyTurn && priorityMode !== 'responding')
+            ? gameState.players.find(p => p.playerId === gameState.activePlayerId)?.name
+            : undefined
+          }
+          turnQueueHint={turnQueueHint}
+          activeSide={
+            spectatorMode
+              ? (gameState.activePlayerId === effectiveViewingPlayer?.playerId ? 'bottom' : 'top')
+              : (isMyTurn || (eliminatedBottomSeat != null && gameState.activePlayerId === eliminatedBottomSeat.playerId)
+                  ? 'bottom'
+                  : 'top')
+          }
+          stopOverrides={stopOverrides}
+          onToggleStop={toggleStopOverride}
+          isSpectator={spectatorMode}
+        />
+        </div>
+
+        {/* Player life (right side) — the eliminated spectator's chosen bottom seat
+            takes this orb over (their board fills the bottom half). */}
+        <div style={{ ...styles.centerLifeSection, ...styles.centerLifeSectionRight }}>
+          {bottomHudPlayer && (
+            <>
+              {/* When another seat is anchored here (eliminated spectator), the orb is
+                  spectator-shaped: no "You" role tag, no player-click handling. */}
+              {!teamBannersActive && <LifeDisplay life={bottomHudPlayer.life} isPlayer playerId={bottomHudPlayer.playerId} playerName={bottomHudPlayer.name} spectatorMode={spectatorMode || eliminatedBottomSeat != null} poisonCounters={bottomHudPlayer.poisonCounters} energyCounters={bottomHudPlayer.energyCounters ?? 0} commanderDamage={bottomHudPlayer.commanderDamage ?? []} handSize={bottomHudPlayer.handSize} maxHandSize={bottomHudPlayer.maxHandSize} {...(isMulti ? { seatColor: bottomHudSeatColor.base } : {})} {...(teamCenterOrbs ? { teamName: bottomTeamLabel, teamMembers: bottomTeamMembers } : {})} />}
+              <SpeedGauge speed={bottomHudPlayer.speed ?? 0} />
+              {!responsive.isMobile && <ActiveEffectsBadges effects={bottomHudPlayer.activeEffects} />}
+              {!responsive.isMobile && bottomHudPlayer.manaPool && <ManaPool manaPool={bottomHudPlayer.manaPool} />}
+            </>
+          )}
+        </div>
+      </div>
+        {/* Spacer matching the battlefield's ZonePile column so the centered
+            content aligns with the cards above/below rather than the viewport.
+            Matches ZonePile's `minWidth: pileWidth + 10` (see ZonePiles.tsx) so
+            the centerArea never slides under the pile column — otherwise the
+            step-strip glow / player life orb visibly overlap the deck/graveyard
+            /exile that intrude into this row via their vertical margin offsets. */}
+        <div style={{ width: responsive.pileWidth + 10, flexShrink: 0 }} aria-hidden />
+      </div>
+
+      {/* Stack display - floating on the left side */}
+      <StackDisplay />
+
+
+      {/* Player area (grid row 4) — player-hand reservation lives in row 5,
+          so no padding here. Equal-height with row 2 → symmetric cards.
+          Collapsed (row is 0px) for an eliminated spectator with nobody left to watch —
+          their own permanents left the game with them. */}
+      {/* Eliminated spectator whose bottom half holds a single survivor's board (a 3-player
+          game after one death, or a focused camera): that board fills the bottom half,
+          rendered read-only the way spectating renders a bottom seat. When the bottom row
+          holds several seats the strip below takes over. */}
+      {isEliminatedSpectator && eliminatedBottomSeat && !bottomStripActive && (
+        <div style={{ ...styles.playerArea, position: 'relative' }}>
+          {/* Same active-turn ring the strip cells carry, so the highlight keeps meaning
+              "whose turn it is" on the bottom half too. */}
+          {eliminatedBottomSeat.playerId === gameState.activePlayerId && (
+            <div
+              aria-hidden
+              style={{
+                position: 'absolute',
+                inset: 2,
+                pointerEvents: 'none',
+                borderRadius: 10,
+                boxShadow: `inset 0 0 0 2px ${bottomHudSeatColor.base}55, inset 0 0 18px ${bottomHudSeatColor.base}22`,
+              }}
+            />
+          )}
+          <div style={styles.playerRowWithZones}>
+            <CommandZone player={eliminatedBottomSeat} />
+            <div style={styles.playerMainArea}>
+              <Battlefield isOpponent={false} playerId={eliminatedBottomSeat.playerId} spectatorMode />
+            </div>
+            <ZonePile player={eliminatedBottomSeat} />
+          </div>
+        </div>
+      )}
+      {isEliminatedSpectator && eliminatedBottomSeat && !bottomStripActive && (
+        <div
+          data-zone="hand"
+          style={{
+            position: 'fixed',
+            bottom: 0,
+            left: '50%',
+            transform: 'translateX(-50%)',
+            zIndex: 50,
+          }}
+        >
+          <CardRow zoneId={hand(eliminatedBottomSeat.playerId)} faceDown small />
+        </div>
+      )}
+
+      {/* Show-table bottom row: the viewer's team (team game) or the balanced bottom half (FFA)
+          shares the bottom as a multi-board strip, mirroring the top row. Your own board (when
+          playing) keeps its interactive battlefield + fixed hand; every other seat — including
+          every seat for an observer — renders as an overview cell (lands toward the bottom edge)
+          with per-board collapse. Otherwise the classic single bottom board.
+
+          Rows: an observer has no hand of their own down here, so the strip takes row 5 as well
+          (the mirror of the top strip claiming row 1 once opponent hands are hidden). A *playing*
+          viewer's fixed hand fan still paints in row 5 — the strip must stop above it, or the
+          bottom boards size themselves into that band and their land row runs off the screen. */}
+      {bottomStripActive ? (
+        <div
+          data-team-strip="bottom"
+          style={{
+            gridRow: viewerIsObserver ? '4 / 6' : '4 / 5',
+            position: 'relative',
+            display: 'flex',
+            overflow: 'hidden',
+            minHeight: 0,
+            minWidth: 0,
+            paddingLeft: railReservedWidth(responsive),
+            boxSizing: 'border-box',
+          }}
+        >
+          {/* Your team's shared life, pinned to your own edge below your two boards. */}
+          {teamBannerSeats && (
+            <TeamLifeBanner teamMemberIds={teamBannerSeats.mine} anchor="bottom" isEnemyTeam={false} />
+          )}
+          {bottomRowOrdered.map((p) => {
+            // Only a *playing* viewer has an interactive board down here; an observer's anchor
+            // seat (spectator stream, eliminated player) is somebody else's board.
+            const isAnchorSelf = !viewerIsObserver && p.playerId === anchorId
+            if (bottomCollapsedIds.includes(p.playerId)) {
+              return (
+                <CollapsedBoardTab key={`${p.playerId}-collapsed`} player={p} onExpand={() => toggleSeatCollapsed(p.playerId)} />
+              )
+            }
+            if (isAnchorSelf) {
+              return (
+                <SelfBottomCell
+                  key={p.playerId}
+                  player={p}
+                  basis={bottomCellBasis}
+                  isActiveTurn={p.playerId === gameState.activePlayerId}
+                  ringColor={selfSeatColor.base}
+                  // Two-Headed Giant: your own board is the other head of the team, so it grows a
+                  // name plate at the bottom edge beside your ally's and the shared-life banner.
+                  showPlate={teamBannersActive}
+                  spectatorMode={spectatorMode}
+                  {...(isHijacked ? { hijackedSurfaceStyle } : {})}
+                />
+              )
+            }
+            return (
+              <OpponentBoardArea
+                key={p.playerId}
+                opponent={p}
+                layout="strip"
+                topOffset={0}
+                handReservation={oppHandReservation}
+                stripBasis={bottomCellBasis}
+                hideHand
+                bottomHalf
+                // Two-Headed Giant: this cell is your ally's, so its plate joins the shared
+                // team-life banner at the bottom edge, and its hand — which you may read
+                // (CR 810.5) — is lifted out to render full-size beside your own.
+                plateAtBottom={teamBannersActive}
+                cellHand={teamBannersActive ? 'none' : 'fan'}
+                liftHand={teamBannersActive}
+                plateCarriesAnchors={
+                  p.playerId !== bottomHudPlayer?.playerId &&
+                  (!centerOrbStandsIn || p.playerId !== centerOrbOpponentId)
+                }
+                onToggleCollapse={() => toggleSeatCollapsed(p.playerId)}
+                // Same active-turn ring as the top row — the highlight has to mean the same
+                // thing on both halves of the table.
+                {...(p.playerId === gameState.activePlayerId
+                  ? { activeTurnRingColor: identitySeatColor(teamMap, p.playerId, gameState.players.findIndex((q) => q.playerId === p.playerId)).base }
+                  : {})}
+                // `bottomHalf` orients the board as a bottom-side board, which would also make
+                // it interactive — so an observer's bottom cells must render read-only.
+                spectatorMode={viewerIsObserver}
+                isHijacking={hijackControlledOpponentId === p.playerId}
+                hijackedSurfaceStyle={hijackedSurfaceStyle}
+                isAlly={isTeamGame && !spectatorMode}
+                {...(isTeamGame && !spectatorMode ? { allyColor: selfSeatColor.base } : {})}
+              />
+            )
+          })}
+        </div>
+      ) : isEliminatedSpectator ? null : (
+        <div ref={playerRowRef} style={styles.playerArea}>
+          <div style={styles.playerRowWithZones}>
+            {/* Player command zone (left side) — Commander format only; renders nothing otherwise. */}
+            {effectiveViewingPlayer && <CommandZone player={effectiveViewingPlayer} />}
+
+            <div ref={playerSlotRef} style={{
+              ...styles.playerMainArea,
+              ...(isHijacked ? hijackedSurfaceStyle : null),
+            }}>
+              {/* Player battlefield - creatures first (closer to center), then lands */}
+              <Battlefield isOpponent={false} spectatorMode={spectatorMode} />
+
+            </div>
+
+            {/* Player deck/graveyard (right side) */}
+            {effectiveViewingPlayer && <ZonePile player={effectiveViewingPlayer} />}
+          </div>
+        </div>
+      )}
+
+      {/* Spectator mode: floating player name label for bottom player */}
+      {spectatorMode && effectiveViewingPlayer && !bottomStripActive && (
+        <div
+          style={{
+            ...styles.spectatorNameLabel,
+            position: 'fixed',
+            bottom: responsive.smallCardHeight + responsive.handBattlefieldGap + 8,
+            left: 16,
+          }}
+        >
+          {effectiveViewingPlayer.name}
+        </div>
+      )}
+
+      {/* Player hand - fixed at bottom of screen (gone for an eliminated spectator, and for a
+          spectator team-split where the bottom cells hide hands like the overview). A playing
+          team-split keeps it — it's your interactive hand.
+
+          Two-Headed Giant: your ally's hand is open to you (CR 810.5) and is the thing you read to
+          coordinate, so it is lifted out of their board cell and rendered as a second fan beside
+          yours. `teamHandRow` centers the pair, which is what keeps your own fan — sized from the
+          viewport everywhere else — from overlapping it. Ally on the left, you on the right,
+          matching the boards directly above them. */}
+      {!isEliminatedSpectator && !(bottomStripActive && spectatorMode) && wrapInTeamHandRow(<div
+        key="own-hand"
+        data-zone="hand"
+        data-hijack-controlled={isHijacked || undefined}
+        data-hijack-dim={(isHijacking && !isHijacked) || undefined}
+        style={{
+          ...(teamHandRow
+            ? { position: 'relative', width: teamHandRow.ownWidth, display: 'flex', justifyContent: 'center' }
+            : { position: 'fixed', bottom: 0, left: '50%', transform: 'translateX(-50%)' }),
+          zIndex: 50,
+          padding: isHijacked ? 6 : 0,
+          borderRadius: isHijacked ? 12 : 0,
+          outline: isHijacked ? '2px solid #a855f7' : 'none',
+          outlineOffset: isHijacked ? -2 : 0,
+          boxShadow: isHijacked ? '0 0 14px rgba(168, 85, 247, 0.35)' : 'none',
+          background: isHijacked ? 'rgba(76, 29, 149, 0.18)' : 'transparent',
+          // Affected player's hand is inert during hijack — let clicks fall through. The hand is
+          // also inert while a cast/activation pipeline is in progress (e.g. paying a waterbend or
+          // mana cost): you must finish or cancel the current cast before starting another.
+          pointerEvents: (isHijacked || pipelineState != null) ? 'none' : undefined,
+          // Controller can still see their own hand but cannot act with it during V's turn.
+          opacity: isHijacking ? 0.6 : (pipelineState != null ? 0.6 : 1),
+          filter: isHijacking ? 'saturate(0.6)' : 'none',
+          transition: 'box-shadow 0.2s, outline-color 0.2s, opacity 0.2s',
+        }}
+      >
+        {isHijacked && (
+          <div
+            style={{
+              position: 'absolute',
+              left: 8,
+              top: -10,
+              background: '#4c1d95',
+              color: 'white',
+              fontSize: 10,
+              fontWeight: 600,
+              padding: '2px 8px',
+              borderRadius: 999,
+              border: '1px solid #a855f7',
+              boxShadow: '0 1px 4px rgba(0,0,0,0.4)',
+              whiteSpace: 'nowrap',
+              pointerEvents: 'none',
+              zIndex: 60,
+            }}
+          >
+            🔒 Opponent controls
+          </div>
+        )}
+        {spectatorMode && effectiveViewingPlayer ? (
+          <CardRow
+            zoneId={hand(effectiveViewingPlayer.playerId)}
+            faceDown
+            small
+          />
+        ) : playerId ? (
+          <CardRow
+            zoneId={hand(playerId)}
+            faceDown={false}
+            // Inert during hijack and while a cast/activation pipeline is in progress (e.g. paying
+            // a waterbend or mana cost) — the CardRow re-enables pointer events on its cards, so the
+            // wrapper's pointerEvents:none isn't enough; gate interactivity at the component level.
+            interactive={!isHijacked && pipelineState == null}
+            ghostCards={isHijacked ? [] : ghostCards}
+            {...(teamHandRow ? { fitWidth: teamHandRow.ownWidth } : {})}
+          />
+        ) : null}
+      </div>)}
+
+      {/* Floating pass/resolve button plus the undo / auto-tap / priority-mode / help row above it
+          (bottom-right) — always present, the pass disabled when unavailable. One column so the
+          pass button and the icon row above it end up exactly the same width; the row's intrinsic
+          width wins whenever the priority-mode label ("Full Control") makes it the wider of the two. */}
+      {!spectatorMode && !isEliminatedSpectator && viewingPlayer && !isInManaSelectionMode && !isInCounterDistMode && (() => {
+        const passEnabled = canAct && !isHijacked && !isInCombatMode && !isInDistributeMode && !isInCounterDistMode && !isInManaSelectionMode && !delveSelectionState && !tapForPowerSelectionState && !targetingState && !pipelineState
+        return (
+          <div style={{
+            position: 'fixed',
+            bottom: 16,
+            right: 16,
+            zIndex: 100,
+            display: 'flex',
+            flexDirection: 'column',
+            // On phones the pass button is label-sized, so right-align instead of stretching it.
+            alignItems: responsive.isMobile ? 'flex-end' : 'stretch',
+            gap: responsive.isMobile ? 6 : 8,
+          }}>
+            <div
+              // `data-learn` marks are anchors for the Learn-to-Play coach's spotlight — see
+              // `learn/spots.ts`. Attributes only; they change nothing about layout or behaviour.
+              data-learn="controls"
+              style={{
+                display: 'flex',
+                gap: 4,
+                alignItems: 'stretch',
+                justifyContent: 'flex-end',
+              }}
+            >
+              <button
+                data-learn="undo"
+                onClick={() => {
+                  markLearnSignal('undoUsed')
+                  requestUndo()
+                }}
+                disabled={!undoAvailable}
+                title="Undo"
+                style={{
+                  ...styles.floatingBarButton,
+                  color: undoAvailable ? '#d4a017' : '#555',
+                  border: undoAvailable ? '1px solid #8b7000' : '1px solid #333',
+                  opacity: undoAvailable ? 1 : 0.4,
+                  cursor: undoAvailable ? 'pointer' : 'default',
+                }}
+              >
+                <i className="ms ms-untap" style={{ fontSize: 14 }} />
+              </button>
+              <button
+                onClick={toggleAutoTap}
+                title={
+                  autoTapEnabled
+                    ? 'Auto Tap: Lands are tapped automatically. Click to switch to manual mana selection.'
+                    : 'Manual Tap: You choose which lands to tap. Click to switch to auto tap.'
+                }
+                style={{
+                  ...styles.floatingBarButton,
+                  backgroundColor: autoTapEnabled ? 'rgba(40, 40, 40, 0.8)' : 'rgba(245, 158, 11, 0.9)',
+                  color: autoTapEnabled ? '#999' : '#000',
+                  border: autoTapEnabled ? '1px solid #555' : '1px solid #f59e0b',
+                  cursor: 'pointer',
+                  transition: 'all 0.2s',
+                }}
+              >
+                <i className="ms ms-land" style={{ fontSize: 14 }} />
+              </button>
+              <button
+                data-learn="priority-mode"
+                onClick={cyclePriorityMode}
+                title={
+                  serverPriorityMode === 'fullControl'
+                    ? 'Full Control: You receive priority at every step. Click to switch to Auto.'
+                    : serverPriorityMode === 'stops'
+                    ? 'Stops: Pauses on opponent spells/abilities and combat damage. Click to switch to Full Control.'
+                    : 'Auto: Smart auto-passing. Click to switch to Stops.'
+                }
+                style={{
+                  ...styles.floatingBarButton,
+                  width: 'auto',
+                  padding: '0 8px',
+                  backgroundColor:
+                    serverPriorityMode === 'fullControl' ? 'rgba(79, 195, 247, 0.9)' :
+                    serverPriorityMode === 'stops' ? 'rgba(245, 158, 11, 0.9)' :
+                    'rgba(40, 40, 40, 0.8)',
+                  color:
+                    serverPriorityMode === 'fullControl' ? '#000' :
+                    serverPriorityMode === 'stops' ? '#000' :
+                    '#999',
+                  border:
+                    serverPriorityMode === 'fullControl' ? '1px solid #4fc3f7' :
+                    serverPriorityMode === 'stops' ? '1px solid #f59e0b' :
+                    '1px solid #555',
+                  cursor: 'pointer',
+                  transition: 'all 0.2s',
+                }}
+              >
+                {serverPriorityMode === 'fullControl' ? 'Full Control' :
+                 serverPriorityMode === 'stops' ? 'Stops' :
+                 'Auto'}
+              </button>
+              {/* The in-game help entry. Opens a drawer rather than navigating — leaving `/` would
+                  unmount the app and drop the WebSocket. */}
+              <HelpDrawerButton />
+            </div>
+            <button
+              data-learn="pass"
+              disabled={!passEnabled}
+              onClick={() => {
+                submitAction({
+                  type: 'PassPriority',
+                  // In hotseat, pass for whichever seat currently holds priority. During a
+                  // Mindslaver-style hijack, pass for the controlled opponent (whose priority
+                  // window this is), not our own seat.
+                  playerId: hotseat
+                    ? (gameState.priorityPlayerId ?? viewingPlayer.playerId)
+                    : (youAreHijacking != null && gameState.priorityPlayerId === youAreHijacking
+                      ? youAreHijacking
+                      : viewingPlayer.playerId),
+                }, interactionEpoch)
+              }}
+              style={{
+                ...styles.floatingBarButton,
+                ...(passEnabled ? getPassButtonStyle() : {}),
+                // On phones the desktop-sized button dwarfs the other
+                // controls and covers the hand — let the label size it.
+                // On desktop it stretches to the column, with 170 as the floor.
+                width: responsive.isMobile ? 'auto' : '100%',
+                minWidth: responsive.isMobile ? 'auto' : 170,
+                height: responsive.isMobile ? 28 : 42,
+                padding: responsive.isMobile ? '0 10px' : '0 24px',
+                color: passEnabled ? 'white' : '#555',
+                fontWeight: 600,
+                fontSize: responsive.isMobile ? 12 : responsive.fontSize.normal,
+                border: passEnabled ? `1px solid ${getPassButtonStyle().borderColor}` : '1px solid #333',
+                transition: 'background-color 0.2s, border-color 0.2s',
+                opacity: passEnabled ? 1 : 0.4,
+                cursor: passEnabled ? 'pointer' : 'default',
+              }}
+            >
+              {(() => {
+                const label = passEnabled ? getPassButtonLabel() : 'Pass'
+                // "Pass to Attackers" is too wide for a phone — "→ Attackers"
+                // carries the same meaning in half the space.
+                return responsive.isMobile ? label.replace(/^Pass to /, '→ ') : label
+              })()}
+            </button>
+          </div>
+        )
+      })()}
+
+      {isMulti && <EliminationNotice topOffset={effectiveTopOffset} />}
+
+      {/* Attack-restriction explainer — "attack left/right" (CR 803.1) and similar
+          restrictions are invisible on the board itself, so say exactly who can be
+          attacked. Sits above the defender popup / combat buttons. */}
+      {attackRestriction && (
+        <div
+          role="status"
+          style={{
+            position: 'fixed',
+            bottom: defenderPopupVisible ? 196 : 110,
+            right: 16,
+            zIndex: 108,
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: 6,
+            padding: '5px 12px',
+            borderRadius: 999,
+            border: '1px solid rgba(239, 83, 80, 0.55)',
+            background: 'rgba(26, 10, 10, 0.92)',
+            color: '#ffb3b3',
+            fontSize: responsive.isMobile ? 11 : 12,
+            fontWeight: 600,
+            whiteSpace: 'nowrap',
+            userSelect: 'none',
+          }}
+        >
+          <span aria-hidden>⚔</span>
+          <span>
+            {attackRestriction.direction ? `Attack ${attackRestriction.direction} — you can only attack ` : 'You can only attack '}
+            {attackRestriction.attackable.map((o, i) => {
+              const idx = gameState.players.findIndex((p) => p.playerId === o.playerId)
+              const seat = identitySeatColor(teamMap, o.playerId, idx)
+              return (
+                <span key={o.playerId}>
+                  {i > 0 ? ', ' : ''}
+                  <span style={{ color: seat.bright, fontWeight: 800 }}>{o.name}</span>
+                </span>
+              )
+            })}
+          </span>
+        </div>
+      )}
+
+      {/* Multiplayer defender pick — pops on the first attacker selection until a
+          defender is chosen; assignment then turns sticky (rail-chip clicks
+          override per attacker). Confirm stays disabled while any selected
+          attacker has no defender, so attacks are never silently misdirected. */}
+      {!spectatorMode && isMulti && combatState?.mode === 'declareAttackers' &&
+        combatState.selectedAttackers.some((id) => !combatState.attackerTargets[id]) && (() => {
+          const unassignedCount = combatState.selectedAttackers.filter((id) => !combatState.attackerTargets[id]).length
+          // Only offer players the engine says are legal attack targets — in Two-Headed Giant
+          // that excludes your own teammate (you can't attack your own team).
+          const living = opponents.filter(
+            (o) => !o.hasLost && combatState.validAttackTargets.includes(o.playerId),
+          )
+          return (
+            <div style={{
+              position: 'fixed',
+              bottom: 110,
+              right: 16,
+              zIndex: 110,
+              display: 'flex',
+              flexDirection: 'column',
+              gap: 6,
+              alignItems: 'flex-end',
+            }}>
+              <div style={{
+                background: 'rgba(0, 0, 0, 0.9)',
+                border: '1px solid #ef5350',
+                borderRadius: 8,
+                padding: '6px 12px',
+                color: '#ffb3b3',
+                fontSize: responsive.isMobile ? 11 : 12,
+                fontWeight: 600,
+              }}>
+                Attack which player?{combatState.selectedAttackers.length > 1 ? ` (${unassignedCount} unassigned)` : ''}
+              </div>
+              <div style={{ display: 'flex', gap: 6 }}>
+                {living.map((o) => {
+                  const idx = gameState.players.findIndex((p) => p.playerId === o.playerId)
+                  const seat = identitySeatColor(teamMap, o.playerId, idx)
+                  return (
+                    <button
+                      key={o.playerId}
+                      onClick={() => useGameStore.getState().assignDefenderToSelectedAttackers(o.playerId)}
+                      style={{
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: 6,
+                        height: 30,
+                        padding: '0 12px',
+                        borderRadius: 999,
+                        border: `2px solid ${seat.base}`,
+                        background: 'rgba(10, 12, 20, 0.92)',
+                        color: seat.bright,
+                        fontSize: responsive.isMobile ? 11 : 12,
+                        fontWeight: 700,
+                        cursor: 'pointer',
+                        whiteSpace: 'nowrap',
+                      }}
+                    >
+                      <span aria-hidden style={{
+                        width: 9,
+                        height: 9,
+                        borderRadius: '50%',
+                        background: seat.base,
+                        boxShadow: `0 0 5px ${seat.base}`,
+                      }} />
+                      {o.name}
+                    </button>
+                  )
+                })}
+              </div>
+            </div>
+          )
+        })()}
+
+      {/* Combat buttons (bottom-right) */}
+      {isInCombatMode && combatState?.mode === 'declareAttackers' && (
+        <div data-learn="combat-buttons" style={styles.combatButtonContainer}>
+          {combatState.selectedAttackers.length === 0 ? (
+            <>
+              <button
+                onClick={attackWithAll}
+                disabled={combatState.validCreatures.length === 0}
+                style={{
+                  ...styles.floatingBarButton,
+                  ...styles.combatActionButton,
+                  backgroundColor: '#c62828',
+                  border: '1px solid #ef5350',
+                  opacity: combatState.validCreatures.length === 0 ? 0.5 : 1,
+                }}
+              >
+                Attack All
+              </button>
+              <button
+                onClick={() => confirmCombat(interactionEpoch)}
+                style={{
+                  ...styles.floatingBarButton,
+                  ...styles.combatPassButton,
+                }}
+              >
+                Skip Attacking
+              </button>
+            </>
+          ) : (
+            <>
+              {(() => {
+                // Multiplayer: every attacker needs an explicit defender first.
+                const awaitingDefender = isMulti &&
+                  combatState.selectedAttackers.some((id) => !combatState.attackerTargets[id])
+                return (
+                  <button
+                    onClick={() => confirmCombat(interactionEpoch)}
+                    disabled={awaitingDefender}
+                    title={awaitingDefender ? 'Choose a defender for every attacker first' : undefined}
+                    style={{
+                      ...styles.floatingBarButton,
+                      ...styles.combatActionButton,
+                      backgroundColor: '#c62828',
+                      border: '1px solid #ef5350',
+                      opacity: awaitingDefender ? 0.5 : 1,
+                      cursor: awaitingDefender ? 'not-allowed' : 'pointer',
+                    }}
+                  >
+                    Attack with {combatState.selectedAttackers.length}
+                  </button>
+                )
+              })()}
+              <button
+                onClick={clearAttackers}
+                style={{
+                  ...styles.floatingBarButton,
+                  ...styles.combatActionButton,
+                  backgroundColor: '#424242',
+                  border: '1px solid #757575',
+                }}
+              >
+                Clear Attackers
+              </button>
+            </>
+          )}
+        </div>
+      )}
+
+      {isInCombatMode && combatState?.mode === 'declareBlockers' && (
+        <div data-learn="combat-buttons" style={styles.combatButtonContainer}>
+          {Object.keys(combatState.blockerAssignments).length === 0 ? (
+            <>
+              <button
+                onClick={() => confirmCombat(interactionEpoch)}
+                style={{
+                  ...styles.floatingBarButton,
+                  ...styles.combatPassButton,
+                }}
+              >
+                No Blocks
+              </button>
+            </>
+          ) : (
+            <>
+              <button
+                onClick={() => confirmCombat(interactionEpoch)}
+                style={{
+                  ...styles.floatingBarButton,
+                  ...styles.combatActionButton,
+                  backgroundColor: '#c62828',
+                  border: '1px solid #ef5350',
+                }}
+              >
+                Confirm Blocks
+              </button>
+              <button
+                onClick={clearBlockerAssignments}
+                style={{
+                  ...styles.floatingBarButton,
+                  ...styles.combatActionButton,
+                  backgroundColor: '#424242',
+                  border: '1px solid #757575',
+                }}
+              >
+                Clear Blockers
+              </button>
+            </>
+          )}
+        </div>
+      )}
+
+
+      {/* Floating distribute bar (bottom-right) */}
+      {isInDistributeMode && distributeState && (
+        <div style={{
+          ...styles.combatButtonContainer,
+          flexDirection: 'column',
+          gap: 8,
+          alignItems: 'flex-end',
+        }}>
+          {(() => {
+            const isPartial = distributeState.allowPartial === true
+            const isPrevention = distributeState.prompt.toLowerCase().includes('prevention')
+            const isCounters = distributeState.prompt.toLowerCase().includes('counter')
+            const noun = isCounters ? 'counters' : isPrevention ? 'prevention' : 'damage'
+            const confirmLabel = isCounters ? 'Confirm' : isPrevention ? 'Confirm Prevention' : 'Confirm Damage'
+            const canConfirm = isPartial ? true : distributeRemaining === 0
+            const isComplete = distributeRemaining === 0
+            return (
+              <>
+                <div style={{
+                  backgroundColor: isComplete ? 'rgba(22, 163, 74, 0.9)' : isPartial ? 'rgba(59, 130, 246, 0.9)' : 'rgba(220, 38, 38, 0.9)',
+                  padding: responsive.isMobile ? '6px 12px' : '8px 16px',
+                  borderRadius: 6,
+                  border: isComplete ? '1px solid #4ade80' : isPartial ? '1px solid #60a5fa' : '1px solid #f87171',
+                  textAlign: 'center',
+                }}>
+                  <div style={{
+                    color: 'white',
+                    fontSize: responsive.fontSize.small,
+                    fontWeight: 600,
+                  }}>
+                    {isComplete
+                      ? `All ${noun} allocated`
+                      : `${distributeRemaining} ${noun} remaining`}
+                  </div>
+                  <div style={{
+                    color: 'rgba(255, 255, 255, 0.7)',
+                    fontSize: responsive.isMobile ? 10 : 11,
+                    marginTop: 2,
+                  }}>
+                    {distributeState.prompt}
+                  </div>
+                </div>
+                <button
+                  onClick={() => confirmDistribute(distributeState.decisionId)}
+                  disabled={!canConfirm}
+                  style={{
+                    ...styles.combatButton,
+                    ...(canConfirm ? styles.combatButtonPrimary : {}),
+                    backgroundColor: canConfirm ? '#16a34a' : '#333',
+                    color: canConfirm ? 'white' : '#666',
+                    cursor: canConfirm ? 'pointer' : 'not-allowed',
+                    borderColor: canConfirm ? '#4ade80' : '#555',
+                  }}
+                >
+                  {confirmLabel}
+                </button>
+              </>
+            )
+          })()}
+        </div>
+      )}
+
+      {/* Floating counter distribution panel (bottom-right) */}
+      {isInCounterDistMode && counterDistributionState && (() => {
+        const requiredTotal = counterDistributionState.requiredTotal
+        const canConfirm = requiredTotal != null
+          ? counterTotalAllocated === requiredTotal
+          : counterTotalAllocated > 0
+        const hasFixedTotal = requiredTotal != null
+        const progressPct = hasFixedTotal
+          ? Math.min(100, (counterTotalAllocated / requiredTotal) * 100)
+          : 0
+        const subtext = counterDistributionState.description
+          ?? 'Remove +1/+1 counters from your creatures'
+        const panelWidth = responsive.isMobile ? 220 : 240
+        return (
+          <div style={{
+            position: 'fixed',
+            bottom: 16,
+            right: 16,
+            width: panelWidth,
+            zIndex: 110,
+            display: 'flex',
+            flexDirection: 'column',
+            backgroundColor: 'rgba(17, 24, 39, 0.92)',
+            border: '1px solid rgba(255, 255, 255, 0.1)',
+            borderRadius: 8,
+            boxShadow: '0 6px 18px rgba(0, 0, 0, 0.35)',
+            overflow: 'hidden',
+            fontFamily: 'inherit',
+          }}>
+            {/* Body */}
+            <div style={{ padding: '10px 12px' }}>
+              <div style={{
+                color: '#cbd5e1',
+                fontSize: responsive.isMobile ? 11 : 12,
+                lineHeight: 1.35,
+                marginBottom: 8,
+              }}>
+                {subtext}
+              </div>
+
+              <div style={{
+                display: 'flex',
+                alignItems: 'baseline',
+                justifyContent: 'space-between',
+                marginBottom: hasFixedTotal ? 5 : 0,
+              }}>
+                <span style={{
+                  color: '#94a3b8',
+                  fontSize: 10,
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.05em',
+                  fontWeight: 600,
+                }}>
+                  {hasFixedTotal ? 'Allocated' : 'X'}
+                </span>
+                <span style={{
+                  color: canConfirm ? '#86efac' : '#fbbf24',
+                  fontSize: responsive.isMobile ? 13 : 14,
+                  fontWeight: 700,
+                  fontVariantNumeric: 'tabular-nums',
+                }}>
+                  {hasFixedTotal
+                    ? `${counterTotalAllocated} / ${requiredTotal}`
+                    : counterTotalAllocated}
+                </span>
+              </div>
+
+              {hasFixedTotal && (
+                <div style={{
+                  height: 3,
+                  backgroundColor: 'rgba(255, 255, 255, 0.06)',
+                  borderRadius: 2,
+                  overflow: 'hidden',
+                }}>
+                  <div style={{
+                    width: `${progressPct}%`,
+                    height: '100%',
+                    backgroundColor: canConfirm ? '#22c55e' : '#f59e0b',
+                    transition: 'width 0.15s ease-out, background-color 0.15s',
+                  }} />
+                </div>
+              )}
+            </div>
+
+            {/* Footer actions */}
+            <div style={{
+              display: 'flex',
+              gap: 6,
+              padding: '8px 12px',
+              borderTop: '1px solid rgba(255, 255, 255, 0.06)',
+              backgroundColor: 'rgba(0, 0, 0, 0.2)',
+            }}>
+              <button
+                onClick={() => cancelCounterDistribution(interactionEpoch)}
+                style={{
+                  flex: 1,
+                  height: 30,
+                  padding: '0 10px',
+                  backgroundColor: 'transparent',
+                  color: '#94a3b8',
+                  border: '1px solid rgba(255, 255, 255, 0.12)',
+                  borderRadius: 5,
+                  fontWeight: 500,
+                  fontSize: responsive.isMobile ? 12 : 13,
+                  cursor: 'pointer',
+                  transition: 'background-color 0.15s, color 0.15s',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.04)'
+                  e.currentTarget.style.color = '#cbd5e1'
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.backgroundColor = 'transparent'
+                  e.currentTarget.style.color = '#94a3b8'
+                }}
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => confirmCounterDistribution(interactionEpoch)}
+                disabled={!canConfirm}
+                style={{
+                  flex: 1,
+                  height: 30,
+                  padding: '0 10px',
+                  backgroundColor: canConfirm ? 'rgba(22, 163, 74, 0.9)' : 'transparent',
+                  color: canConfirm ? 'white' : '#64748b',
+                  border: `1px solid ${canConfirm ? '#4ade80' : 'rgba(255, 255, 255, 0.08)'}`,
+                  borderRadius: 5,
+                  fontWeight: 600,
+                  fontSize: responsive.isMobile ? 12 : 13,
+                  cursor: canConfirm ? 'pointer' : 'not-allowed',
+                  transition: 'background-color 0.15s, border-color 0.15s',
+                }}
+              >
+                Confirm
+              </button>
+            </div>
+          </div>
+        )
+      })()}
+
+      {/* Action menu for selected card - hidden in spectator mode */}
+      {!spectatorMode && <ActionMenu />}
+
+      {/* Targeting overlay for spell/ability target selection */}
+      {!spectatorMode && <TargetingOverlay key={interactionEpoch} />}
+
+      {/* Mana color selection overlay */}
+      {!spectatorMode && <ManaColorSelectionOverlay key={interactionEpoch} />}
+
+      {/* Combat arrows for blocker assignments - rendered by SpectatorGameBoard in spectator mode to avoid stacking context issues */}
+      {!spectatorMode && <CombatArrows />}
+
+      {/* Targeting arrows for spells on the stack */}
+      <TargetingArrows />
+
+      {/* Soulbond pair bonds (CR 702.95b) — ambient, so it sits under the combat/targeting arrows */}
+      <SoulbondBonds />
+
+      {/* Dragged card overlay - hidden in spectator mode */}
+      {!spectatorMode && <DraggedCardOverlay />}
+      <CardPreview />
+      {/* Hidden on phones (portrait): the bottom-left toggle steals the little
+          horizontal space the hand has, and the expanded panel is unusable at
+          that size anyway. */}
+      {!spectatorMode && !responsive.isMobile && <GameLog />}
+      {!spectatorMode && <ActiveYieldsPanel />}
+      {/* Hidden on phones for the same reason as the log: its toggle sits in the
+          bottom-left corner, directly on top of the hand, and the expanded panel
+          is a 520px table that a phone can't show. */}
+      {!spectatorMode && !responsive.isMobile && <AiInsightPanel />}
+
+      {/* Draw animations */}
+      <DrawAnimations />
+
+      {/* Damage animations */}
+      <DamageAnimations />
+
+      {/* Morph reveal animations */}
+      <RevealAnimations />
+
+      {/* Coin flip animations */}
+      <CoinFlipAnimations />
+
+      {/* Target reselection animations (Grip of Chaos, etc.) */}
+      <TargetReselectedAnimations />
+
+      {/* Mana selection controls (bottom-right, replaces pass button during mana selection mode) */}
+      {isInManaSelectionMode && manaSelectionState && (
+        <div style={{
+          position: 'fixed',
+          bottom: 16,
+          right: 16,
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 8,
+          alignItems: 'flex-end',
+          zIndex: 100,
+        }}>
+          {manaSelectionState.manaCost.match(/\{([^}]+)\}/g)?.some((symbol) => symbol.includes('/P')) && (
+            <div style={{
+              backgroundColor: 'rgba(0, 0, 0, 0.9)',
+              border: '1px solid rgba(239, 68, 68, 0.45)',
+              borderRadius: 8,
+              padding: '10px 12px',
+              display: 'flex',
+              gap: 8,
+              alignItems: 'center',
+            }}>
+              <span style={{ color: '#ddd', fontSize: responsive.fontSize.small }}>Pay with life:</span>
+              {manaSelectionState.manaCost.match(/\{([^}]+)\}/g)!.map((symbol, pipIndex) => {
+                if (!symbol.includes('/P')) return null
+                const selected = manaSelectionState.phyrexianLifePipIndices.includes(pipIndex)
+                const canSelect = selected || ((manaSelectionState.phyrexianLifePipIndices.length + 1) * 2 <= (viewingPlayer?.life ?? 0))
+                return (
+                  <button
+                    key={pipIndex}
+                    type="button"
+                    disabled={!canSelect}
+                    onClick={() => useGameStore.getState().togglePhyrexianLifePayment(pipIndex)}
+                    style={{
+                      padding: '5px 8px',
+                      borderRadius: 6,
+                      border: `1px solid ${selected ? '#ef4444' : '#666'}`,
+                      background: selected ? 'rgba(127, 29, 29, 0.9)' : 'rgba(40, 40, 40, 0.9)',
+                      color: selected ? '#fecaca' : '#ddd',
+                      cursor: canSelect ? 'pointer' : 'not-allowed',
+                    }}
+                  >
+                    <ManaSymbol symbol={symbol.slice(1, -1)} size={18} /> {selected ? '2 life' : 'mana'}
+                  </button>
+                )
+              })}
+            </div>
+          )}
+          {/* Mana progress indicator */}
+          {manaProgress && (
+            <div style={{
+              backgroundColor: 'rgba(0, 0, 0, 0.9)',
+              border: `1px solid ${manaProgress.satisfied >= manaProgress.total ? 'rgba(74, 222, 128, 0.5)' : 'rgba(255, 255, 255, 0.2)'}`,
+              borderRadius: 8,
+              padding: responsive.isMobile ? '8px 12px' : '10px 16px',
+              display: 'flex',
+              alignItems: 'center',
+              gap: 10,
+            }}>
+              {manaProgress.entries.map(([symbol, required]) => {
+                const fulfilled = manaProgress.colorSatisfied?.[symbol] ?? 0
+                return (
+                  <div key={symbol} style={{ display: 'flex', alignItems: 'center', gap: 3 }}>
+                    <ManaSymbol symbol={symbol} size={18} />
+                    <span style={{
+                      color: fulfilled >= required ? '#4ade80' : fulfilled > 0 ? '#fbbf24' : '#888',
+                      fontWeight: 600,
+                      fontSize: responsive.fontSize.normal,
+                    }}>
+                      {fulfilled}/{required}
+                    </span>
+                  </div>
+                )
+              })}
+              <span style={{
+                color: manaProgress.satisfied >= manaProgress.total ? '#4ade80' : '#888',
+                fontSize: responsive.fontSize.small,
+                marginLeft: 4,
+              }}>
+                ({manaProgress.satisfied}/{manaProgress.total})
+              </span>
+            </div>
+          )}
+          {/* Confirm / Cancel buttons */}
+          <div style={{ display: 'flex', gap: 8 }}>
+            <button
+              onClick={() => cancelManaSelection(interactionEpoch)}
+              style={{
+                padding: responsive.isMobile ? '10px 20px' : '12px 24px',
+                fontSize: responsive.fontSize.normal,
+                fontWeight: 600,
+                backgroundColor: 'rgba(40, 40, 40, 0.9)',
+                color: '#ccc',
+                border: '2px solid #555',
+                borderRadius: 8,
+                cursor: 'pointer',
+              }}
+            >
+              Cancel
+            </button>
+            <button
+              onClick={handleConfirmManaSelection}
+              style={{
+                padding: responsive.isMobile ? '10px 20px' : '12px 24px',
+                fontSize: responsive.fontSize.normal,
+                fontWeight: 600,
+                backgroundColor: 'rgba(22, 101, 52, 0.9)',
+                color: '#4ade80',
+                border: '2px solid #4ade80',
+                borderRadius: 8,
+                cursor: 'pointer',
+              }}
+            >
+              Confirm
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
+    <HelpDrawer />
+    </PooledBattlefieldLayoutContext.Provider>
+    </ResponsiveContext.Provider>
+    </RenderProfiler>
+  )
+}
+
+
+/**
+ * Your Two-Headed Giant ally's hand, face-up beside your own at the bottom of the screen.
+ *
+ * CR 810.5 lets teammates review each other's hands, and coordinating a team turn is mostly a
+ * conversation about what the two of you are holding — so this is the one other hand on the table
+ * worth reading rather than counting. It renders at a readable scale next to yours instead of
+ * shrunk into their board cell, but stays inert: "teammates can't manipulate each other's cards",
+ * so only its controller ever plays from it.
+ *
+ * It carries no label of its own. It sits directly under their board cell, whose name plate — the
+ * ally-side head of the shared-life banner — already names them and marks them as your ally; a
+ * second caption right below it was the same fact printed twice.
+ */
+/**
+ * Top padding of the opponent strip in a Two-Headed Giant table — see the `paddingTop` comment at
+ * the strip. Small enough that the enemy plates, their hands and their boards all sit near the top
+ * edge where they belong; the corner controls compensate with `controlsTop`.
+ */
+const TEAM_STRIP_TOP = 10
+
+function AllyHandFan({
+  player,
+  width,
+  interactive = false,
+}: {
+  player: import('@/types').ClientPlayer
+  width: number
+  /**
+   * This client is currently driving that seat (hotseat / Mindslaver), so the lifted fan *is* the
+   * playable one. It stays here rather than snapping back into their board cell: a bottom-row
+   * cell draws its hand at the cell's top, which is the middle of the screen.
+   */
+  interactive?: boolean
+}) {
+  return (
+    <div
+      data-zone="ally-hand"
+      data-hijack-controlled={interactive || undefined}
+      aria-label={`${player.name}'s hand`}
+      title={
+        interactive
+          ? `${player.name}'s hand — you are playing this seat`
+          : `${player.name}'s hand — visible to you (CR 810.5), but only they can play from it`
+      }
+      style={{
+        width,
+        display: 'flex',
+        justifyContent: 'center',
+        ...(interactive
+          ? {
+              borderRadius: 12,
+              outline: '2px solid #a855f7',
+              outlineOffset: -2,
+              background: 'rgba(76, 29, 149, 0.18)',
+            }
+          : null),
+        // A hand fan is drawn to bleed past the edge it hangs from, which is right for the one you
+        // play from (you only ever need its top half) and wrong for one you are reading. Lift the
+        // ally's clear of the screen edge so whole cards are visible; there is nothing below it.
+        marginBottom: 26,
+        // Readable, not playable (CR 810.5) — clicks fall through to whatever is behind it. The
+        // exception is a seat this client is driving, which is the one hand here you may act with.
+        ...(interactive ? null : { pointerEvents: 'none' as const }),
+        userSelect: 'none',
+      }}
+    >
+      <CardRow
+        zoneId={hand(player.playerId)}
+        faceDown={false}
+        fan
+        interactive={interactive}
+        fitWidth={width}
+        maxCardWidth={interactive ? 96 : 72}
+      />
+    </div>
+  )
+}
+
+/**
+ * The viewing player's own board as a cell of the team-split bottom row. Its hand is the
+ * full-width interactive fan pinned to the bottom of the screen, not a cell hand — so instead
+ * of a hand it reserves the same band its neighbours use for their plate + cell fan, which is
+ * the only thing keeping all the bottom battlefields on one line. [useCellHandMetrics] measures
+ * this cell, so the reservation tracks the neighbours even as boards collapse and the cells
+ * resize.
+ */
+function SelfBottomCell({
+  player,
+  basis,
+  isActiveTurn,
+  ringColor,
+  showPlate = false,
+  spectatorMode,
+  hijackedSurfaceStyle,
+}: {
+  player: import('@/types').ClientPlayer
+  basis: string
+  isActiveTurn: boolean
+  ringColor: string
+  /**
+   * Two-Headed Giant: render this cell's own name plate, hung from the bottom edge. Your board
+   * normally needs no plate — the whole bottom half is yours and the life orb names you — but in a
+   * team game the plates *are* the two heads of the shared-life banner, so yours has to be there
+   * for the pair to read as a team. It also gives your seat's card anchors a home down here.
+   */
+  showPlate?: boolean
+  spectatorMode: boolean
+  hijackedSurfaceStyle?: React.CSSProperties
+}) {
+  const { cellRef, handBand } = useCellHandMetrics()
+  return (
+    <div
+      ref={cellRef}
+      style={{
+        flex: `0 0 ${basis}`,
+        minWidth: basis,
+        height: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+        overflow: 'hidden',
+        position: 'relative',
+      }}
+    >
+      {/* Your own cell carries the same active-turn ring as every other board. */}
+      {isActiveTurn && (
+        <div
+          aria-hidden
+          style={{
+            position: 'absolute',
+            inset: 2,
+            pointerEvents: 'none',
+            borderRadius: 10,
+            boxShadow: `inset 0 0 0 2px ${ringColor}55, inset 0 0 18px ${ringColor}22`,
+          }}
+        />
+      )}
+      {showPlate && (
+        <BoardNamePlate player={player} carriesAnchors top={6} anchor="bottom" />
+      )}
+      {/* Reservation band mirrors the other cells' name-plate + cell-hand bands so all bottom
+          boards line up. With the plate at the bottom edge (team game) the band goes there too —
+          your ally's cell reserves its own the same way. */}
+      {!showPlate && <div style={{ height: CELL_PLATE_BAND + handBand, flexShrink: 0 }} aria-hidden />}
+      <div style={{ ...styles.playerRowWithZones, alignItems: 'flex-start', flex: 1 }}>
+        <CommandZone player={player} />
+        <div style={{ ...styles.playerMainArea, ...(hijackedSurfaceStyle ?? null) }}>
+          <Battlefield isOpponent={false} spectatorMode={spectatorMode} />
+        </div>
+        <ZonePile player={player} />
+      </div>
+      {showPlate && <div style={{ height: CELL_PLATE_BAND, flexShrink: 0 }} aria-hidden />}
+    </div>
+  )
+}

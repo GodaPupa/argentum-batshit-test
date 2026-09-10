@@ -1,0 +1,57 @@
+package com.wingedsheep.mtg.sets.definitions.ons.cards
+
+import com.wingedsheep.sdk.core.Counters
+import com.wingedsheep.sdk.core.Keyword
+import com.wingedsheep.sdk.dsl.Effects
+import com.wingedsheep.sdk.dsl.Triggers
+import com.wingedsheep.sdk.dsl.card
+import com.wingedsheep.sdk.model.Rarity
+import com.wingedsheep.sdk.scripting.conditions.YouControlSource
+import com.wingedsheep.sdk.scripting.effects.ConditionalEffect
+import com.wingedsheep.sdk.scripting.effects.SecretBidEffect
+import com.wingedsheep.sdk.scripting.targets.EffectTarget
+import com.wingedsheep.sdk.scripting.values.DynamicAmount
+
+/**
+ * Menacing Ogre
+ * {3}{R}{R}
+ * Creature — Ogre
+ * 3/3
+ * Trample, haste
+ * When Menacing Ogre enters the battlefield, each player secretly chooses a number.
+ * Then those numbers are revealed. Each player with the highest number loses that much
+ * life. If you are one of those players, put two +1/+1 counters on Menacing Ogre.
+ */
+val MenacingOgre = card("Menacing Ogre") {
+    manaCost = "{3}{R}{R}"
+    colorIdentity = "R"
+    typeLine = "Creature — Ogre"
+    power = 3
+    toughness = 3
+    oracleText = "Trample, haste\nWhen Menacing Ogre enters, each player secretly chooses a number. Then those numbers are revealed. Each player with the highest number loses that much life. If you are one of those players, put two +1/+1 counters on Menacing Ogre."
+
+    keywords(Keyword.TRAMPLE, Keyword.HASTE)
+
+    triggeredAbility {
+        trigger = Triggers.EntersBattlefield
+        effect = SecretBidEffect(
+            highestBidderEffect = Effects.Composite(listOf(
+                // Each highest bidder loses life equal to their bid
+                Effects.LoseLife(DynamicAmount.XValue, EffectTarget.Controller),
+                // If the controller is among them, put counters on this creature
+                ConditionalEffect(
+                    condition = YouControlSource,
+                    effect = Effects.AddCounters(Counters.PLUS_ONE_PLUS_ONE, 2, EffectTarget.Self)
+                )
+            ))
+        )
+    }
+
+    metadata {
+        rarity = Rarity.RARE
+        collectorNumber = "219"
+        artist = "Pete Venters"
+        flavorText = "The Skirk Ridge goblins had never seen an ogre before. They would never see one again."
+        imageUri = "https://cards.scryfall.io/normal/front/5/3/5360a871-6932-45b2-bc94-1bd414e38906.jpg?1562914555"
+    }
+}

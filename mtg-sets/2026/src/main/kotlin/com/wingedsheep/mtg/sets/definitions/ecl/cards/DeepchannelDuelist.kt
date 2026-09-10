@@ -1,0 +1,55 @@
+package com.wingedsheep.mtg.sets.definitions.ecl.cards
+
+import com.wingedsheep.sdk.dsl.Effects
+import com.wingedsheep.sdk.dsl.Triggers
+import com.wingedsheep.sdk.dsl.card
+import com.wingedsheep.sdk.model.Rarity
+import com.wingedsheep.sdk.scripting.GameObjectFilter
+import com.wingedsheep.sdk.scripting.ModifyStats
+import com.wingedsheep.sdk.scripting.filters.unified.GroupFilter
+import com.wingedsheep.sdk.scripting.filters.unified.TargetFilter
+import com.wingedsheep.sdk.scripting.targets.TargetObject
+
+/**
+ * Deepchannel Duelist
+ * {W}{U}
+ * Creature — Merfolk Soldier
+ * 2/2
+ *
+ * At the beginning of your end step, untap target Merfolk you control.
+ * Other Merfolk you control get +1/+1.
+ */
+val DeepchannelDuelist = card("Deepchannel Duelist") {
+    manaCost = "{W}{U}"
+    colorIdentity = "WU"
+    typeLine = "Creature — Merfolk Soldier"
+    power = 2
+    toughness = 2
+    oracleText = "At the beginning of your end step, untap target Merfolk you control.\nOther Merfolk you control get +1/+1."
+
+    triggeredAbility {
+        trigger = Triggers.YourEndStep
+        // "target Merfolk" is a Merfolk **permanent**, not a Merfolk creature — the reading the
+        // differential settled corpus-wide, and the one this card's own static already uses.
+        val merfolk = target("merfolk", TargetObject(
+            filter = TargetFilter(GameObjectFilter.Permanent.withSubtype("Merfolk").youControl())
+        ))
+        effect = Effects.Untap(merfolk)
+    }
+
+    staticAbility {
+        ability = ModifyStats(
+            powerBonus = 1,
+            toughnessBonus = 1,
+            filter = GroupFilter(GameObjectFilter.Permanent.withSubtype("Merfolk").youControl(), excludeSelf = true)
+        )
+    }
+
+    metadata {
+        rarity = Rarity.UNCOMMON
+        collectorNumber = "213"
+        artist = "Richard Kane Ferguson"
+        flavorText = "\"Bargain with ruthless cunning, and when all else fails, make sure you fight with the same.\""
+        imageUri = "https://cards.scryfall.io/normal/front/1/b/1b742172-7118-45e7-9945-62bd77d94e85.jpg?1767957310"
+    }
+}

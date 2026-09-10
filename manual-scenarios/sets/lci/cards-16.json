@@ -1,0 +1,56 @@
+{
+  "player1Name": "Alice",
+  "player2Name": "Bob",
+  "player1": {
+    "lifeTotal": 20,
+    "hand": [
+      "Spelunking",
+      "Squirming Emergence",
+      "Stalactite Stalker",
+      "Stinging Cave Crawler",
+      "Subterranean Schooner",
+      "Hidden Necropolis"
+    ],
+    "battlefield": [
+      {"name": "Forest"},
+      {"name": "Forest"},
+      {"name": "Forest"},
+      {"name": "Forest"},
+      {"name": "Swamp"},
+      {"name": "Swamp"},
+      {"name": "Swamp"},
+      {"name": "Swamp"},
+      {"name": "Swamp"},
+      {"name": "Swamp"},
+      {"name": "Island"},
+      {"name": "Island"},
+      {"name": "Brazen Blademaster"}
+    ],
+    "graveyard": [
+      "Cenote Scout",
+      "Deep-Cavern Bat",
+      "Belligerent Yearling",
+      "Diamond Pick-Axe",
+      "Armored Kincaller"
+    ],
+    "library": ["Forest", "Cenote Scout", "Swamp", "Island", "Grizzly Bears", "Forest"]
+  },
+  "player2": {
+    "lifeTotal": 20,
+    "hand": ["Grizzly Bears", "Island", "Swamp"],
+    "battlefield": [
+      {"name": "Grizzly Bears"},
+      {"name": "Basking Capybara"}
+    ],
+    "graveyard": [],
+    "library": ["Mountain", "Swamp", "Island", "Forest", "Mountain", "Swamp"]
+  },
+  "phase": "PRECOMBAT_MAIN",
+  "activePlayer": 1,
+  "priorityPlayer": 1,
+  "player1StopAtSteps": ["END"],
+  "player2StopAtSteps": [],
+  "player1OpponentStopAtSteps": [],
+  "player2OpponentStopAtSteps": [],
+  "mode": "SELF"
+}

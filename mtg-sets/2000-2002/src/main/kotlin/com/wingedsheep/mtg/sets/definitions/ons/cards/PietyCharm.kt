@@ -1,0 +1,59 @@
+package com.wingedsheep.mtg.sets.definitions.ons.cards
+
+import com.wingedsheep.sdk.core.Keyword
+import com.wingedsheep.sdk.core.Zone
+import com.wingedsheep.sdk.dsl.Effects
+import com.wingedsheep.sdk.dsl.card
+import com.wingedsheep.sdk.model.Rarity
+import com.wingedsheep.sdk.scripting.effects.GrantKeywordEffect
+import com.wingedsheep.sdk.scripting.targets.EffectTarget
+import com.wingedsheep.sdk.scripting.filters.unified.GroupFilter
+import com.wingedsheep.sdk.scripting.filters.unified.TargetFilter
+import com.wingedsheep.sdk.scripting.targets.TargetCreature
+import com.wingedsheep.sdk.scripting.targets.TargetPermanent
+
+/**
+ * Piety Charm
+ * {W}
+ * Instant
+ * Choose one —
+ * • Destroy target Aura attached to a creature.
+ * • Target Soldier creature gets +2/+2 until end of turn.
+ * • Creatures you control gain vigilance until end of turn.
+ */
+val PietyCharm = card("Piety Charm") {
+    manaCost = "{W}"
+    colorIdentity = "W"
+    typeLine = "Instant"
+    oracleText = "Choose one \u2014\n\u2022 Destroy target Aura attached to a creature.\n\u2022 Target Soldier creature gets +2/+2 until end of turn.\n\u2022 Creatures you control gain vigilance until end of turn."
+
+    spell {
+        modal(chooseCount = 1) {
+            mode("Destroy target Aura attached to a creature") {
+                val t = target("target", TargetPermanent(filter = TargetFilter.Enchantment.withSubtype("Aura")))
+                effect = Effects.Move(
+                    target = t,
+                    destination = Zone.GRAVEYARD,
+                    byDestruction = true
+                )
+            }
+            mode("Target Soldier creature gets +2/+2 until end of turn") {
+                val t = target("target", TargetCreature(filter = TargetFilter.Creature.withSubtype("Soldier")))
+                effect = Effects.ModifyStats(2, 2, t)
+            }
+            mode("Creatures you control gain vigilance until end of turn") {
+                effect = Effects.ForEachInGroup(
+                    filter = GroupFilter.AllCreaturesYouControl,
+                    effect = GrantKeywordEffect(Keyword.VIGILANCE, EffectTarget.Self)
+                )
+            }
+        }
+    }
+
+    metadata {
+        rarity = Rarity.COMMON
+        collectorNumber = "49"
+        artist = "David Martin"
+        imageUri = "https://cards.scryfall.io/normal/front/1/b/1bc2da43-c0e1-4fbf-b309-a75e105c29c1.jpg?1562901548"
+    }
+}

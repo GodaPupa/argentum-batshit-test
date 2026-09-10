@@ -1,0 +1,8 @@
+# CardLintTest allowlist — intentional exceptions to the structural card lint (CardLinter).
+#
+# One entry per line: <ErrorTypeSimpleName>|<Card Name>
+#   e.g.  UnresolvedPipelineRead|Some Card
+#
+# Entries here suppress an ERROR-severity finding for that card. Stale entries (no longer
+# matching any finding) fail the build, so this file can only shrink. Add an entry only with
+# a comment explaining why the pattern is legal.

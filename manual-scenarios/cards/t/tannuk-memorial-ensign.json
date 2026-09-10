@@ -1,0 +1,42 @@
+{
+  "_description": "Tannuk, Memorial Ensign landfall test. Sequence: (1) Activate Lander token ({2},{T}, sacrifice it) to fetch a Forest from library — first landfall trigger: 1 damage to Bob. (2) Play Forest from hand as normal land play — second landfall trigger: 1 damage to Bob again + Alice draws a card. Demonstrates both the ping and the 'second time this ability has resolved this turn' draw.",
+  "player1Name": "Alice",
+  "player2Name": "Bob",
+  "player1": {
+    "lifeTotal": 20,
+    "hand": ["Forest"],
+    "battlefield": [
+      {"name": "Tannuk, Memorial Ensign", "summoningSickness": false},
+      {"name": "Mountain"},
+      {"name": "Mountain"},
+      {"name": "Lander"}
+    ],
+    "graveyard": [],
+    "library": [
+      "Forest",
+      "Mountain",
+      "Mountain"
+    ]
+  },
+  "player2": {
+    "lifeTotal": 20,
+    "hand": [],
+    "battlefield": [
+      {"name": "Glory Seeker"},
+      {"name": "Plains"},
+      {"name": "Plains"}
+    ],
+    "graveyard": [],
+    "library": [
+      "Plains",
+      "Plains"
+    ]
+  },
+  "phase": "PRECOMBAT_MAIN",
+  "activePlayer": 1,
+  "priorityPlayer": 1,
+  "player1StopAtSteps": [],
+  "player2StopAtSteps": [],
+  "player1OpponentStopAtSteps": [],
+  "player2OpponentStopAtSteps": []
+}

@@ -1,0 +1,51 @@
+package com.wingedsheep.mtg.sets.definitions.ktk.cards
+
+import com.wingedsheep.sdk.dsl.Conditions
+
+import com.wingedsheep.sdk.dsl.Targets
+import com.wingedsheep.sdk.dsl.Triggers
+import com.wingedsheep.sdk.dsl.card
+import com.wingedsheep.sdk.core.Zone
+import com.wingedsheep.sdk.model.Rarity
+import com.wingedsheep.sdk.scripting.GameObjectFilter
+import com.wingedsheep.sdk.scripting.filters.unified.TargetFilter
+import com.wingedsheep.sdk.scripting.targets.TargetObject
+import com.wingedsheep.sdk.dsl.Effects
+
+/**
+ * Timely Hordemate
+ * {3}{W}
+ * Creature — Human Warrior
+ * 3/2
+ * Raid — When Timely Hordemate enters, if you attacked this turn, return target creature card
+ * with mana value 2 or less from your graveyard to the battlefield.
+ */
+val TimelyHordemate = card("Timely Hordemate") {
+    manaCost = "{3}{W}"
+    colorIdentity = "W"
+    typeLine = "Creature — Human Warrior"
+    power = 3
+    toughness = 2
+    oracleText = "Raid — When Timely Hordemate enters, if you attacked this turn, return target creature card with mana value 2 or less from your graveyard to the battlefield."
+
+    triggeredAbility {
+        trigger = Triggers.EntersBattlefield
+        interveningIf = Conditions.YouAttackedThisTurn
+        val t = target(
+            "target", TargetObject(
+                filter = TargetFilter(
+                    GameObjectFilter.Creature.manaValueAtMost(2).ownedByYou(),
+                    zone = Zone.GRAVEYARD
+                )
+            )
+        )
+        effect = Effects.Move(t, Zone.BATTLEFIELD)
+    }
+
+    metadata {
+        rarity = Rarity.UNCOMMON
+        collectorNumber = "27"
+        artist = "Steve Prescott"
+        imageUri = "https://cards.scryfall.io/normal/front/d/c/dcb3c08e-b591-421a-898a-533021cbabd2.jpg?1562794596"
+    }
+}

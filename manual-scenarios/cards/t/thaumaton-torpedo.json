@@ -1,0 +1,39 @@
+{
+  "_description": "Thaumaton Torpedo cost-reduction test. Alice has Thaumaton Torpedo + Wedgelight Rammer (already stationed with 9 charge counters, so it's an artifact creature with flying/first strike) and 6 Plains. Sequence: (1) Move to combat, declare Wedgelight Rammer as attacker against Bob. (2) Continue through combat to postcombat main. (3) Activate Thaumaton Torpedo — because Alice attacked with a Spacecraft this turn, the activation cost is reduced from {6} to {3}. Pay {3} + {T} + sacrifice, target Glory Seeker; Glory Seeker is destroyed. Without the Spacecraft attack the cost would be {6}, so Alice would not have enough untapped lands.",
+  "player1Name": "Alice",
+  "player2Name": "Bob",
+  "player1": {
+    "lifeTotal": 20,
+    "hand": [],
+    "battlefield": [
+      {"name": "Thaumaton Torpedo", "summoningSickness": false},
+      {"name": "Wedgelight Rammer", "summoningSickness": false, "counters": {"CHARGE": 9}},
+      {"name": "Plains"},
+      {"name": "Plains"},
+      {"name": "Plains"},
+      {"name": "Plains"},
+      {"name": "Plains"},
+      {"name": "Plains"}
+    ],
+    "graveyard": [],
+    "library": ["Plains", "Plains", "Plains"]
+  },
+  "player2": {
+    "lifeTotal": 20,
+    "hand": [],
+    "battlefield": [
+      {"name": "Glory Seeker"},
+      {"name": "Plains"},
+      {"name": "Plains"}
+    ],
+    "graveyard": [],
+    "library": ["Plains", "Plains", "Plains"]
+  },
+  "phase": "PRECOMBAT_MAIN",
+  "activePlayer": 1,
+  "priorityPlayer": 1,
+  "player1StopAtSteps": ["DECLARE_ATTACKERS", "POSTCOMBAT_MAIN"],
+  "player2StopAtSteps": [],
+  "player1OpponentStopAtSteps": [],
+  "player2OpponentStopAtSteps": []
+}

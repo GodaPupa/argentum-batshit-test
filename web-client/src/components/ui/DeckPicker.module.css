@@ -1,0 +1,186 @@
+/* DeckPicker — layout for the tabbed deck builder used by quick-game and (later) tournament Custom Decks. */
+
+/* No width cap of its own: both call sites are panels inside the lobby card, which is already
+   capped at `--screen-card-w`. The 540px it used to carry was a second, narrower answer to the same
+   question, so the picker sat short of its own panel's right edge once the card grew. */
+.picker {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  width: 100%;
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-md);
+  padding: var(--space-3);
+}
+
+.tabs {
+  display: flex;
+  gap: 2px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.tab {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  padding: var(--space-2) var(--space-3);
+  cursor: pointer;
+  font-size: 0.85rem;
+  border-bottom: 2px solid transparent;
+  transition: color 0.1s, border-color 0.1s;
+}
+
+.tab:hover:not(:disabled) {
+  color: var(--text-primary);
+}
+
+.tabActive {
+  color: var(--text-primary);
+  border-bottom-color: var(--accent-primary, #6aa3ff);
+}
+
+.tab:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.panel {
+  min-height: 220px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+/* Deck gallery — the shared full-art <DeckTile/> grid used by the "My Decks" and
+ * "Examples" tabs. Two columns at the picker's 540px cap.
+ *
+ * The scroll cap lives on the wrapper, never on the grid itself: a grid that *is* the
+ * scroll container has a definite block size, and its `auto` rows then get squashed to
+ * fit it — the tiles' `aspect-ratio` height overflows its row and every tile's caption
+ * lands on the row below. Keeping the grid content-sized avoids that. */
+.deckGridScroll {
+  max-height: 360px;
+  overflow-y: auto;
+  /* Room for the tiles' hover lift + shadow, which the scroll container would clip. */
+  padding: 3px 2px;
+}
+
+.deckGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: var(--space-2);
+  align-content: start;
+}
+
+.textarea {
+  width: 100%;
+  min-height: 220px;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-sm);
+  padding: var(--space-2);
+  color: var(--text-primary);
+  font-family: var(--font-mono, monospace);
+  font-size: 0.85rem;
+  resize: vertical;
+}
+
+.helperText {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+/* Wraps the shared <DeckSummary/> so it gets the same divider the inline summary used to have. */
+.summaryWrapper {
+  padding-top: var(--space-2);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.actionsRow {
+  display: flex;
+  gap: var(--space-2);
+  align-items: center;
+}
+
+/* ── Random tab ─────────────────────────────────────────────────────────────
+ * The only tab whose answer is "nothing to do", and therefore the only one that could be mistaken
+ * for a panel that failed to load: it was one grey line of helper text in a 220px box. Saying what
+ * the server is going to do — and giving the set, the one thing there *is* to decide, a row of its
+ * own — makes it read as a choice that landed rather than an empty screen.
+ */
+.randomCard {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  text-align: center;
+  padding: var(--space-3);
+  border: 1px dashed rgba(255, 255, 255, 0.14);
+  border-radius: var(--radius-sm);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.randomDie {
+  font-size: 1.75rem;
+  line-height: 1;
+}
+
+.randomTitle {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.randomBody {
+  margin: 0;
+  max-width: 42ch;
+  font-size: 0.8rem;
+  line-height: 1.5;
+  color: var(--text-muted);
+}
+
+/* Label plus the shared SetSelector. Top-aligned rather than centred because the selector is a
+ * column (chips over its own button) that grows downwards as sets are added. */
+.randomSetRow {
+  display: flex;
+  gap: var(--space-3);
+  align-items: flex-start;
+  align-self: stretch;
+  margin-top: var(--space-1);
+  padding-top: var(--space-3);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.randomSetRow > label {
+  padding-top: 6px;
+}
+
+.nameInput {
+  flex: 1;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-sm);
+  padding: var(--space-1) var(--space-2);
+  color: var(--text-primary);
+  font-size: 0.85rem;
+}
+
+.saveButton {
+  background: var(--accent-primary, #6aa3ff);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: var(--space-1) var(--space-3);
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+
+.saveButton:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}

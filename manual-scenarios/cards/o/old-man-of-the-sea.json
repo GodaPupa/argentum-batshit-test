@@ -1,0 +1,53 @@
+{
+  "player1Name": "Alice",
+  "player2Name": "Bob",
+  "player1": {
+    "lifeTotal": 20,
+    "hand": ["Grub's Command", "Aggressive Urge"],
+    "battlefield": [
+      {"name": "Old Man of the Sea"},
+      {"name": "Surly Farrier"},
+      {"name": "Swamp"},
+      {"name": "Forest"},
+      {"name": "Mountain"},
+      {"name": "Island"},
+      {"name": "Island"},
+      {"name": "Island"}
+    ],
+    "graveyard": [],
+    "library": [
+      "Island",
+      "Island",
+      "Island",
+      "Island"
+    ]
+  },
+  "player2": {
+    "lifeTotal": 20,
+    "hand": ["Wingspan Stride", "Aggressive Urge"],
+    "battlefield": [
+      {"name": "Bird Maiden"},
+      {"name": "Elvish Warrior"},
+      {"name": "Hasran Ogress"},
+      {"name": "Bird Maiden", "counters": {"PLUS_ONE_PLUS_ONE": 2}},
+      {"name": "Mountain"},
+      {"name": "Forest"},
+      {"name": "Island"},
+      {"name": "Island"}
+    ],
+    "graveyard": [],
+    "library": [
+      "Island",
+      "Island",
+      "Island",
+      "Island"
+    ]
+  },
+  "phase": "PRECOMBAT_MAIN",
+  "activePlayer": 1,
+  "priorityPlayer": 1,
+  "player1StopAtSteps": ["UNTAP"],
+  "player2StopAtSteps": [],
+  "player1OpponentStopAtSteps": [],
+  "player2OpponentStopAtSteps": []
+}

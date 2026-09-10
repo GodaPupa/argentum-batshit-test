@@ -1,0 +1,148 @@
+/**
+ * Responsive CSS overrides for Argentum Engine web client.
+ * Adjusts CSS variables at different breakpoints.
+ */
+
+/* =========================================================================
+ * Mobile (<640px)
+ * ========================================================================= */
+@media (max-width: 639px) {
+  :root {
+    /* Typography */
+    --font-xs: 8px;
+    --font-sm: 9px;
+    --font-md: 11px;
+    --font-lg: 14px;
+    --font-xl: 18px;
+    --font-2xl: 22px;
+    --font-3xl: 26px;
+
+    /* Spacing */
+    --space-container: var(--space-1);
+    --space-section: var(--space-1);
+    --space-card-gap: 2px;
+
+    /* Border radius */
+    --radius-card: var(--radius-md);
+  }
+}
+
+/* =========================================================================
+ * Tablet (640px - 1023px)
+ * ========================================================================= */
+@media (min-width: 640px) and (max-width: 1023px) {
+  :root {
+    /* Typography */
+    --font-xs: 9px;
+    --font-sm: 10px;
+    --font-md: 12px;
+    --font-lg: 16px;
+    --font-xl: 24px;
+    --font-2xl: 28px;
+    --font-3xl: 32px;
+
+    /* Spacing */
+    --space-container: var(--space-3);
+    --space-section: var(--space-2);
+    --space-card-gap: 6px;
+
+    /* Border radius */
+    --radius-card: var(--radius-lg);
+  }
+}
+
+/* =========================================================================
+ * Desktop (>=1024px)
+ * ========================================================================= */
+@media (min-width: 1024px) {
+  :root {
+    /* Typography - uses default values from variables.css */
+
+    /* Spacing */
+    --space-container: var(--space-4);
+    --space-section: var(--space-2);
+    --space-card-gap: 8px;
+
+    /* Border radius */
+    --radius-card: var(--radius-xl);
+  }
+}
+
+/* =========================================================================
+ * Compact Height (<700px)
+ * For screens that are wide but short
+ * ========================================================================= */
+@media (max-height: 699px) {
+  :root {
+    /* Reduce spacing for tight vertical layouts */
+    --space-section: var(--space-1);
+  }
+}
+
+/* =========================================================================
+ * Behold pulse — gold ring briefly animating a permanent that was beheld
+ * (i.e. chosen as part of an additional cost by a Kithkin/Elf/etc. spell).
+ * ========================================================================= */
+@keyframes beholdPulse {
+  from { box-shadow: 0 0 10px rgba(234, 179, 8, 0.55), 0 0 18px rgba(234, 179, 8, 0.25); }
+  to   { box-shadow: 0 0 20px rgba(234, 179, 8, 0.95), 0 0 40px rgba(234, 179, 8, 0.55); }
+}
+
+@keyframes beholdLabelFade {
+  from { opacity: 0; transform: translate(-50%, -4px); }
+  to   { opacity: 1; transform: translate(-50%, 0); }
+}
+
+/* =========================================================================
+ * Warp (CR 702.185, Edge of Eternities) — a permanent cast for its warp cost
+ * sits on the battlefield until it's exiled at the next end step. The cue reads
+ * as the card being pulled out of phase with reality: a slowly rotating
+ * violet/cyan cosmic ring around its edge plus a soft breathing halo.
+ * ========================================================================= */
+@keyframes warpRingSpin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+@keyframes warpHaloPulse {
+  0%, 100% { box-shadow: 0 0 6px 1px rgba(126, 92, 232, 0.45), 0 0 15px 3px rgba(72, 200, 232, 0.22); }
+  50%      { box-shadow: 0 0 12px 3px rgba(158, 116, 255, 0.78), 0 0 28px 7px rgba(88, 220, 255, 0.42); }
+}
+
+@keyframes warpBadgeShimmer {
+  from { background-position: 0% 50%; }
+  to   { background-position: 200% 50%; }
+}
+
+/* =========================================================================
+ * Utility classes for responsive visibility
+ * ========================================================================= */
+.hide-mobile {
+  display: none;
+}
+
+.hide-tablet {
+  display: block;
+}
+
+.hide-desktop {
+  display: block;
+}
+
+@media (min-width: 640px) {
+  .hide-mobile {
+    display: block;
+  }
+  .hide-tablet {
+    display: none;
+  }
+}
+
+@media (min-width: 1024px) {
+  .hide-tablet {
+    display: block;
+  }
+  .hide-desktop {
+    display: none;
+  }
+}

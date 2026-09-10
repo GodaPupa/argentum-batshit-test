@@ -1,0 +1,326 @@
+// Eager Cadet
+{
+    "name": "Eager Cadet",
+    "manaCost": "{W}",
+    "typeLine": "Creature — Human Soldier",
+    "creatureStats": {
+        "power": 1,
+        "toughness": 1
+    },
+    "metadata": {
+        "collectorNumber": "15",
+        "artist": "Scott M. Fischer",
+        "flavorText": "The enthusiasm of the young, sharpened by the discipline of a soldier.",
+        "imageUri": "https://cards.scryfall.io/normal/front/d/1/d1e1ce2f-d8af-4fd0-975e-9d910d12b883.jpg"
+    },
+    "colorIdentityOverride": [
+        "WHITE"
+    ]
+}
+
+// Goblin Chariot
+{
+    "name": "Goblin Chariot",
+    "manaCost": "{2}{R}",
+    "typeLine": "Creature — Goblin Warrior",
+    "oracleText": "Haste (This creature can attack and {T} as soon as it comes under your control.)",
+    "creatureStats": {
+        "power": 2,
+        "toughness": 2
+    },
+    "keywords": [
+        "HASTE"
+    ],
+    "metadata": {
+        "collectorNumber": "99",
+        "artist": "Pete Venters",
+        "flavorText": "They have to replace the wheels, they have to replace the boar, and sometimes they have to replace the goblin.",
+        "imageUri": "https://cards.scryfall.io/normal/front/9/c/9ca11a7e-17f8-419f-9ba8-1bcaa3860f8b.jpg"
+    },
+    "colorIdentityOverride": [
+        "RED"
+    ]
+}
+
+// Goblin Commando
+{
+    "name": "Goblin Commando",
+    "manaCost": "{4}{R}",
+    "typeLine": "Creature — Goblin",
+    "oracleText": "When this creature enters, it deals 2 damage to target creature.",
+    "creatureStats": {
+        "power": 2,
+        "toughness": 2
+    },
+    "script": {
+        "triggeredAbilities": [
+            {
+                "id": "ability_1",
+                "trigger": {
+                    "type": "ZoneChangeEvent",
+                    "to": "Battlefield"
+                },
+                "effect": {
+                    "type": "DealDamage",
+                    "amount": {
+                        "type": "Fixed",
+                        "amount": 2
+                    },
+                    "target": {
+                        "type": "BoundVariable",
+                        "name": "target creature"
+                    }
+                },
+                "targetRequirement": {
+                    "type": "TargetObject",
+                    "filter": {
+                        "baseFilter": "creature"
+                    },
+                    "id": "target creature"
+                },
+                "descriptionOverride": "When this creature enters, it deals 2 damage to target creature."
+            }
+        ]
+    },
+    "metadata": {
+        "collectorNumber": "100",
+        "rarity": "UNCOMMON",
+        "artist": "Todd Lockwood",
+        "flavorText": "With a commando around, somebody's gonna get hurt.",
+        "imageUri": "https://cards.scryfall.io/normal/front/d/a/da90043b-0e67-4a68-b6fb-0ca53ca7defc.jpg?1783946030"
+    },
+    "colorIdentityOverride": [
+        "RED"
+    ]
+}
+
+// Sea Eagle
+{
+    "name": "Sea Eagle",
+    "manaCost": "{1}{U}",
+    "typeLine": "Creature — Bird",
+    "oracleText": "Flying",
+    "creatureStats": {
+        "power": 1,
+        "toughness": 1
+    },
+    "keywords": [
+        "FLYING"
+    ],
+    "metadata": {
+        "collectorNumber": "50",
+        "artist": "Anthony S. Waters",
+        "flavorText": "Where air meets water, fish meets talon.",
+        "imageUri": "https://cards.scryfall.io/normal/front/1/b/1bddb733-2100-42f8-8ea1-a55d516c5958.jpg"
+    },
+    "colorIdentityOverride": [
+        "BLUE"
+    ]
+}
+
+// Silverback Ape
+{
+    "name": "Silverback Ape",
+    "manaCost": "{3}{G}{G}",
+    "typeLine": "Creature — Ape",
+    "creatureStats": {
+        "power": 5,
+        "toughness": 5
+    },
+    "metadata": {
+        "collectorNumber": "141",
+        "rarity": "UNCOMMON",
+        "artist": "Ron Spears",
+        "flavorText": "His true majesty is not in his silver, but in his size.",
+        "imageUri": "https://cards.scryfall.io/normal/front/d/a/da253fa8-d6ab-4f02-b3ac-d2b6ad48ded8.jpg"
+    },
+    "colorIdentityOverride": [
+        "GREEN"
+    ]
+}
+
+// Squall
+{
+    "name": "Squall",
+    "manaCost": "{2}{G}",
+    "typeLine": "Sorcery",
+    "oracleText": "Squall deals 2 damage to each creature with flying.",
+    "script": {
+        "spellEffect": {
+            "type": "ForEach",
+            "space": {
+                "type": "IterationSpace.Group",
+                "filter": {
+                    "baseFilter": "creature kw:flying"
+                }
+            },
+            "body": {
+                "type": "DealDamage",
+                "amount": {
+                    "type": "Fixed",
+                    "amount": 2
+                },
+                "target": "Self"
+            }
+        }
+    },
+    "metadata": {
+        "collectorNumber": "143",
+        "artist": "Carl Critchlow",
+        "flavorText": "\"To-night the winds begin to rise . . . The rooks are blown about the skies . . . .\"\n—Alfred, Lord Tennyson, *In Memoriam*",
+        "imageUri": "https://cards.scryfall.io/normal/front/6/3/63c1b2f6-e47f-4f18-a94a-1d08eb009ef3.jpg"
+    },
+    "colorIdentityOverride": [
+        "GREEN"
+    ]
+}
+
+// Thunder Dragon
+{
+    "name": "Thunder Dragon",
+    "manaCost": "{5}{R}{R}",
+    "typeLine": "Creature — Dragon",
+    "oracleText": "Flying\nWhen this creature enters, it deals 3 damage to each creature without flying.",
+    "creatureStats": {
+        "power": 5,
+        "toughness": 5
+    },
+    "keywords": [
+        "FLYING"
+    ],
+    "script": {
+        "triggeredAbilities": [
+            {
+                "id": "ability_1",
+                "trigger": {
+                    "type": "ZoneChangeEvent",
+                    "to": "Battlefield"
+                },
+                "effect": {
+                    "type": "ForEach",
+                    "space": {
+                        "type": "IterationSpace.Group",
+                        "filter": {
+                            "baseFilter": {
+                                "cardPredicates": [
+                                    "IsCreature",
+                                    {
+                                        "type": "NotKeyword",
+                                        "keyword": "FLYING"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "body": {
+                        "type": "DealDamage",
+                        "amount": {
+                            "type": "Fixed",
+                            "amount": 3
+                        },
+                        "target": "Self"
+                    }
+                },
+                "descriptionOverride": "When this creature enters, it deals 3 damage to each creature without flying."
+            }
+        ]
+    },
+    "metadata": {
+        "collectorNumber": "119",
+        "rarity": "RARE",
+        "artist": "Dana Knutson",
+        "imageUri": "https://cards.scryfall.io/normal/front/7/e/7e9b06a8-c3f3-4174-b992-7da7ca163990.jpg?1783946025"
+    },
+    "colorIdentityOverride": [
+        "RED"
+    ]
+}
+
+// Tidings
+{
+    "name": "Tidings",
+    "manaCost": "{3}{U}{U}",
+    "typeLine": "Sorcery",
+    "oracleText": "Draw four cards.",
+    "script": {
+        "spellEffect": {
+            "type": "DrawCards",
+            "count": {
+                "type": "Fixed",
+                "amount": 4
+            }
+        }
+    },
+    "metadata": {
+        "collectorNumber": "54",
+        "rarity": "UNCOMMON",
+        "artist": "Pete Venters",
+        "flavorText": "\"Many wearing rapiers are afraid of goose-quills.\"\n—William Shakespeare, Hamlet",
+        "imageUri": "https://cards.scryfall.io/normal/front/7/f/7fcb93dc-503e-45fa-99da-1597a8a0ab4e.jpg"
+    },
+    "colorIdentityOverride": [
+        "BLUE"
+    ]
+}
+
+// Trained Orgg
+{
+    "name": "Trained Orgg",
+    "manaCost": "{6}{R}",
+    "typeLine": "Creature — Orgg",
+    "creatureStats": {
+        "power": 6,
+        "toughness": 6
+    },
+    "metadata": {
+        "collectorNumber": "120",
+        "rarity": "RARE",
+        "artist": "Eric Peterson",
+        "flavorText": "All orggs know how to kill; training teaches them *what* to kill.",
+        "imageUri": "https://cards.scryfall.io/normal/front/4/2/425540b0-c826-4814-b0df-032264b1c237.jpg?1783946025"
+    },
+    "colorIdentityOverride": [
+        "RED"
+    ]
+}
+
+// Vizzerdrix
+{
+    "name": "Vizzerdrix",
+    "manaCost": "{6}{U}",
+    "typeLine": "Creature — Rabbit Beast",
+    "creatureStats": {
+        "power": 6,
+        "toughness": 6
+    },
+    "metadata": {
+        "collectorNumber": "59",
+        "rarity": "RARE",
+        "artist": "Eric Peterson",
+        "flavorText": "Its swamp cousin may be meaner, but the vizzerdrix is much bigger.",
+        "imageUri": "https://cards.scryfall.io/normal/front/2/5/25711022-7270-4335-a48b-9f2b8275ceeb.jpg"
+    },
+    "colorIdentityOverride": [
+        "BLUE"
+    ]
+}
+
+// Willow Elf
+{
+    "name": "Willow Elf",
+    "manaCost": "{G}",
+    "typeLine": "Creature — Elf",
+    "creatureStats": {
+        "power": 1,
+        "toughness": 1
+    },
+    "metadata": {
+        "collectorNumber": "152",
+        "artist": "DiTerlizzi",
+        "flavorText": "The forest lives in the elf as the elf lives in the forest.",
+        "imageUri": "https://cards.scryfall.io/normal/front/b/8/b8f0750c-1cce-4088-a848-f11fe3694d89.jpg?1783946018"
+    },
+    "colorIdentityOverride": [
+        "GREEN"
+    ]
+}

@@ -1,0 +1,64 @@
+{
+  "_description": "Test bench for the four EOE 'small' cards added on the eoe-small branch (Territorial Bruntar, Terrasymbiosis, Xu-Ifit Osteoharmonist, Pull Through the Weft). Alice opens with all three permanents already on the battlefield (not summoning sick), two Biosynthic Bursts in hand to drive Terrasymbiosis, plus Bombard for opt-in killing of the reanimated Skeleton and enough Forests to cast everything. Suggested test sequence: (1) Play the Forest from hand — Territorial Bruntar's landfall walks the library, exiles the top Forest then the Bombard (the first nonland), and grants may-play on Bombard for the turn. (2) Cast Biosynthic Burst targeting Xu-Ifit (or any creature you control) — the +1/+1 counter fires Terrasymbiosis's 'whenever you put one or more +1/+1 counters on a creature you control, you may draw that many cards', netting one card. Cast the SECOND Biosynthic Burst — the +1/+1 counter still lands but Terrasymbiosis stays silent because the trigger is gated 'only once each turn'. (3) Tap Xu-Ifit, targeting Festering Goblin in the graveyard — it returns as a Skeleton with no abilities; cast the impulse-granted Bombard at it to confirm the printed 'When this creature dies, target creature gets -1/-1 until end of turn' trigger does NOT fire. (4) Cast Pull Through the Weft ({3}{G}{G}) — pick up to two nonland permanent cards (Galvanizing Sawship + Festering Goblin if not already reanimated, or just the Sawship) for your hand, and up to two lands (Mountain + Forest) for the battlefield tapped. Each land entering re-triggers Bruntar's landfall, demonstrating the chain.",
+  "player1Name": "Alice",
+  "player2Name": "Bob",
+  "player1": {
+    "lifeTotal": 20,
+    "hand": [
+      "Pull Through the Weft",
+      "Forest",
+      "Biosynthic Burst",
+      "Biosynthic Burst",
+      "Synchronized Charge"
+    ],
+    "battlefield": [
+      {"name": "Territorial Bruntar", "summoningSickness": false},
+      {"name": "Terrasymbiosis"},
+      {"name": "Xu-Ifit, Osteoharmonist", "summoningSickness": false},
+      {"name": "Mountain"},
+      {"name": "Forest"},
+      {"name": "Forest"},
+      {"name": "Forest"},
+      {"name": "Forest"},
+      {"name": "Forest"},
+      {"name": "Forest"},
+      {"name": "Forest"},
+      {"name": "Forest"}
+    ],
+    "graveyard": [
+      "Festering Goblin",
+      "Galvanizing Sawship",
+      "Forest",
+      "Mountain"
+    ],
+    "library": [
+      "Forest",
+      "Bombard",
+      "Grizzly Bears",
+      "Llanowar Elves",
+      "Cosmogoyf"
+    ]
+  },
+  "player2": {
+    "lifeTotal": 20,
+    "hand": [],
+    "battlefield": [
+      {"name": "Glory Seeker"},
+      {"name": "Plains"},
+      {"name": "Plains"}
+    ],
+    "graveyard": [],
+    "library": [
+      "Plains",
+      "Plains",
+      "Plains"
+    ]
+  },
+  "phase": "PRECOMBAT_MAIN",
+  "activePlayer": 1,
+  "priorityPlayer": 1,
+  "player1StopAtSteps": [],
+  "player2StopAtSteps": [],
+  "player1OpponentStopAtSteps": [],
+  "player2OpponentStopAtSteps": []
+}

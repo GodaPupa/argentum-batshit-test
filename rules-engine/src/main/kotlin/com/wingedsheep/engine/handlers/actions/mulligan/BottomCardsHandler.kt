@@ -1,0 +1,61 @@
+package com.wingedsheep.engine.handlers.actions.mulligan
+
+import com.wingedsheep.engine.core.BottomCards
+import com.wingedsheep.engine.core.ExecutionResult
+import com.wingedsheep.engine.core.TurnManager
+import com.wingedsheep.engine.handlers.MulliganHandler
+import com.wingedsheep.engine.core.EngineServices
+import com.wingedsheep.engine.handlers.actions.ActionHandler
+import com.wingedsheep.engine.state.GameState
+import com.wingedsheep.engine.state.components.player.MulliganStateComponent
+import kotlin.reflect.KClass
+
+/**
+ * Handler for the BottomCards action.
+ *
+ * After keeping a mulligan hand, players must put a number of cards
+ * equal to their mulligans on the bottom of their library (London mulligan).
+ * Once bottoming is complete (and the other player has also kept/bottomed),
+ * [MulliganHandler.tryAdvancePastMulliganPhase] runs the CR 103.6 leyline phase
+ * and advances to turn 1.
+ */
+class BottomCardsHandler(
+    private val mulliganHandler: MulliganHandler,
+    private val turnManager: TurnManager
+) : ActionHandler<BottomCards> {
+    override val actionType: KClass<BottomCards> = BottomCards::class
+
+    override fun validate(state: GameState, action: BottomCards): String? {
+        val mullState = state.getEntity(action.playerId)?.get<MulliganStateComponent>()
+            ?: return "Player mulligan state not found"
+
+        if (!mullState.hasKept) {
+            return "You have not kept your hand yet"
+        }
+
+        if (action.cardIds.size != mullState.cardsToBottom) {
+            return "Must put exactly ${mullState.cardsToBottom} cards on bottom, got ${action.cardIds.size}"
+        }
+
+        // Validate cards are in hand
+        val hand = state.getHand(action.playerId).toSet()
+        val invalidCards = action.cardIds.filter { it !in hand }
+        if (invalidCards.isNotEmpty()) {
+            return "Cards not in hand: $invalidCards"
+        }
+
+        return null
+    }
+
+    override fun execute(state: GameState, action: BottomCards): ExecutionResult {
+        val result = mulliganHandler.handleBottomCards(state, action)
+        if (!result.isSuccess) return result
+        return mulliganHandler.tryAdvancePastMulliganPhase(result.newState, result.events, turnManager)
+    }
+
+    companion object {
+        fun create(services: EngineServices): BottomCardsHandler {
+            return BottomCardsHandler(services.mulliganHandler, services.turnManager)
+        }
+    }
+}

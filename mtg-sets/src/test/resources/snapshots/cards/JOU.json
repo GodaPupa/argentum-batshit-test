@@ -1,0 +1,579 @@
+// Banishing Light
+{
+    "name": "Banishing Light",
+    "manaCost": "{2}{W}",
+    "typeLine": "Enchantment",
+    "oracleText": "When this enchantment enters, exile target nonland permanent an opponent controls until this enchantment leaves the battlefield.",
+    "script": {
+        "triggeredAbilities": [
+            {
+                "id": "ability_1",
+                "trigger": {
+                    "type": "ZoneChangeEvent",
+                    "to": "Battlefield"
+                },
+                "effect": {
+                    "type": "ExileUntilLeaves",
+                    "target": {
+                        "type": "BoundVariable",
+                        "name": "target"
+                    }
+                },
+                "targetRequirement": {
+                    "type": "TargetObject",
+                    "filter": {
+                        "baseFilter": "nonland permanent ctrl:opponent"
+                    },
+                    "id": "target"
+                }
+            },
+            {
+                "id": "ability_2",
+                "trigger": {
+                    "type": "ZoneChangeEvent",
+                    "from": "Battlefield"
+                },
+                "effect": {
+                    "type": "Composite",
+                    "effects": [
+                        {
+                            "type": "GatherCards",
+                            "source": "FromLinkedExile",
+                            "storeAs": "linked_return"
+                        },
+                        {
+                            "type": "MoveCollection",
+                            "from": "linked_return",
+                            "destination": {
+                                "type": "ToZone",
+                                "zone": "Battlefield"
+                            },
+                            "underOwnersControl": true
+                        }
+                    ]
+                }
+            }
+        ]
+    },
+    "metadata": {
+        "collectorNumber": "5",
+        "rarity": "UNCOMMON",
+        "artist": "Willian Murai",
+        "imageUri": "https://cards.scryfall.io/normal/front/f/b/fbaa4800-30cc-4a80-a6cc-9a24ada9eb40.jpg"
+    },
+    "colorIdentityOverride": [
+        "WHITE"
+    ]
+}
+
+// Dictate of Kruphix
+{
+    "name": "Dictate of Kruphix",
+    "manaCost": "{1}{U}{U}",
+    "typeLine": "Enchantment",
+    "oracleText": "Flash (You may cast this spell any time you could cast an instant.)\nAt the beginning of each player's draw step, that player draws an additional card.",
+    "keywords": [
+        "FLASH"
+    ],
+    "script": {
+        "triggeredAbilities": [
+            {
+                "id": "ability_1",
+                "trigger": {
+                    "type": "StepEvent",
+                    "step": "DRAW",
+                    "player": "Each"
+                },
+                "binding": "ANY",
+                "effect": {
+                    "type": "DrawCards",
+                    "count": {
+                        "type": "Fixed",
+                        "amount": 1
+                    },
+                    "target": {
+                        "type": "PlayerRef",
+                        "player": "TriggeringPlayer"
+                    }
+                }
+            }
+        ]
+    },
+    "metadata": {
+        "collectorNumber": "37",
+        "rarity": "RARE",
+        "artist": "Daarken",
+        "flavorText": "\"Knowledge is cruel. It will break your heart and test your allegiances. Are you certain you want this curse?\"",
+        "imageUri": "https://cards.scryfall.io/normal/front/e/8/e8e7916c-f39a-48a0-a47d-7e83ebf028fa.jpg?1782713429"
+    },
+    "colorIdentityOverride": [
+        "BLUE"
+    ]
+}
+
+// Eagle of the Watch
+{
+    "name": "Eagle of the Watch",
+    "manaCost": "{2}{W}",
+    "typeLine": "Creature — Bird",
+    "oracleText": "Flying, vigilance",
+    "creatureStats": {
+        "power": 2,
+        "toughness": 1
+    },
+    "keywords": [
+        "FLYING",
+        "VIGILANCE"
+    ],
+    "metadata": {
+        "collectorNumber": "9",
+        "artist": "Scott Murphy",
+        "flavorText": "\"Even from miles away, I could see our eagles circling. That's when I gave the command to pick up the pace. I knew we were needed at home.\"\n—Kanlos, Akroan captain",
+        "imageUri": "https://cards.scryfall.io/normal/front/d/c/dc4b6fb1-dc06-48f4-aae2-aa8bbb573548.jpg"
+    },
+    "colorIdentityOverride": [
+        "WHITE"
+    ]
+}
+
+// Flurry of Horns
+{
+    "name": "Flurry of Horns",
+    "manaCost": "{4}{R}",
+    "typeLine": "Sorcery",
+    "oracleText": "Create two 2/3 red Minotaur creature tokens with haste.",
+    "script": {
+        "spellEffect": {
+            "type": "CreateToken",
+            "count": {
+                "type": "Fixed",
+                "amount": 2
+            },
+            "power": 2,
+            "toughness": 3,
+            "colors": [
+                "RED"
+            ],
+            "creatureTypes": [
+                "Minotaur"
+            ],
+            "keywords": [
+                "HASTE"
+            ]
+        }
+    },
+    "metadata": {
+        "collectorNumber": "96",
+        "artist": "Phill Simmer",
+        "flavorText": "A minotaur does not distinguish between human, satyr, and triton. They are all meat.",
+        "imageUri": "https://cards.scryfall.io/normal/front/3/3/333ff270-4bc7-48ee-9738-f8c70b8a7e40.jpg?1783939424"
+    },
+    "colorIdentityOverride": [
+        "RED"
+    ]
+}
+
+// Gold-Forged Sentinel
+{
+    "name": "Gold-Forged Sentinel",
+    "manaCost": "{6}",
+    "typeLine": "Artifact Creature — Chimera",
+    "oracleText": "Flying",
+    "creatureStats": {
+        "power": 4,
+        "toughness": 4
+    },
+    "keywords": [
+        "FLYING"
+    ],
+    "metadata": {
+        "collectorNumber": "161",
+        "rarity": "UNCOMMON",
+        "artist": "James Zapata",
+        "flavorText": "Blessed by the gods. Coveted by mortals. Beholden to neither.",
+        "imageUri": "https://cards.scryfall.io/normal/front/4/e/4e154012-5922-45d1-8e20-d2a2b1de0785.jpg"
+    }
+}
+
+// Heroes' Bane
+{
+    "name": "Heroes' Bane",
+    "manaCost": "{3}{G}{G}",
+    "typeLine": "Creature — Hydra",
+    "oracleText": "This creature enters with four +1/+1 counters on it.\n{2}{G}{G}: Put X +1/+1 counters on this creature, where X is its power.",
+    "creatureStats": {
+        "power": 0,
+        "toughness": 0
+    },
+    "script": {
+        "activatedAbilities": [
+            {
+                "id": "ability_1",
+                "cost": {
+                    "type": "CostAtomWrapper",
+                    "atom": {
+                        "type": "AtomMana",
+                        "cost": "{2}{G}{G}"
+                    }
+                },
+                "effect": {
+                    "type": "AddDynamicCounters",
+                    "counterType": "+1/+1",
+                    "amount": {
+                        "type": "EntityProperty",
+                        "entity": "Source",
+                        "numericProperty": "Power"
+                    },
+                    "target": "Self"
+                }
+            }
+        ],
+        "replacementEffects": [
+            {
+                "type": "EntersWithCounters",
+                "count": 4,
+                "selfOnly": true
+            }
+        ]
+    },
+    "metadata": {
+        "collectorNumber": "126",
+        "rarity": "RARE",
+        "artist": "Raymond Swanland",
+        "flavorText": "Travelers' tales claim that hydras bite off their own heads to make themselves deadlier.",
+        "imageUri": "https://cards.scryfall.io/normal/front/3/8/380e82f6-30ee-49c5-b5a2-85c5cf3e9bb1.jpg"
+    },
+    "colorIdentityOverride": [
+        "GREEN"
+    ]
+}
+
+// Lightning Diadem
+{
+    "name": "Lightning Diadem",
+    "manaCost": "{5}{R}",
+    "typeLine": "Enchantment — Aura",
+    "oracleText": "Enchant creature\nWhen this Aura enters, it deals 2 damage to any target.\nEnchanted creature gets +2/+2.",
+    "script": {
+        "triggeredAbilities": [
+            {
+                "id": "ability_1",
+                "trigger": {
+                    "type": "ZoneChangeEvent",
+                    "to": "Battlefield"
+                },
+                "effect": {
+                    "type": "DealDamage",
+                    "amount": {
+                        "type": "Fixed",
+                        "amount": 2
+                    },
+                    "target": {
+                        "type": "BoundVariable",
+                        "name": "any target"
+                    }
+                },
+                "targetRequirement": {
+                    "type": "AnyTarget",
+                    "id": "any target"
+                },
+                "descriptionOverride": "When this Aura enters, it deals 2 damage to any target."
+            }
+        ],
+        "staticAbilities": [
+            {
+                "type": "ModifyStats",
+                "powerBonus": 2,
+                "toughnessBonus": 2
+            }
+        ],
+        "auraTarget": {
+            "type": "TargetObject",
+            "filter": {
+                "baseFilter": "creature"
+            }
+        }
+    },
+    "metadata": {
+        "collectorNumber": "102",
+        "artist": "Ryan Alexander Lee",
+        "flavorText": "\"I fight for Keranos and for mortals. I see no contradiction.\"",
+        "imageUri": "https://cards.scryfall.io/normal/front/4/c/4ce3f1c6-2e6f-4087-8619-a01fdcc6d4a3.jpg?1783939422"
+    },
+    "colorIdentityOverride": [
+        "RED"
+    ]
+}
+
+// Mana Confluence
+{
+    "name": "Mana Confluence",
+    "manaCost": "",
+    "typeLine": "Land",
+    "oracleText": "{T}, Pay 1 life: Add one mana of any color.",
+    "script": {
+        "activatedAbilities": [
+            {
+                "id": "ability_1",
+                "cost": {
+                    "type": "CostComposite",
+                    "costs": [
+                        "CostTap",
+                        {
+                            "type": "CostAtomWrapper",
+                            "atom": {
+                                "type": "AtomPayLife",
+                                "amount": 1
+                            }
+                        }
+                    ]
+                },
+                "effect": "AddManaOfChoice",
+                "timing": "ManaAbility",
+                "isManaAbility": true
+            }
+        ]
+    },
+    "metadata": {
+        "collectorNumber": "163",
+        "rarity": "RARE",
+        "artist": "Richard Wright",
+        "flavorText": "Five rivers encircle Theros, flowing with waters more ancient than the world itself.",
+        "imageUri": "https://cards.scryfall.io/normal/front/5/0/504a69eb-3c2d-4bb1-b117-252b15acf0c2.jpg"
+    },
+    "colorIdentityOverride": []
+}
+
+// Oreskos Swiftclaw
+{
+    "name": "Oreskos Swiftclaw",
+    "manaCost": "{1}{W}",
+    "typeLine": "Creature — Cat Warrior",
+    "creatureStats": {
+        "power": 3,
+        "toughness": 1
+    },
+    "metadata": {
+        "collectorNumber": "20",
+        "artist": "James Ryman",
+        "flavorText": "After the Battle of Pharagax Bridge, the Champion spent many months among the leonin of Oreskos. She found that they were quick to take offense, not because they were thin-skinned, but because they were always eager for a fight.\n—*The Theriad*",
+        "imageUri": "https://cards.scryfall.io/normal/front/0/3/03c67b91-7f05-44b1-9e99-3e2094434f6a.jpg?1783939456"
+    },
+    "colorIdentityOverride": [
+        "WHITE"
+    ]
+}
+
+// Pensive Minotaur
+{
+    "name": "Pensive Minotaur",
+    "manaCost": "{2}{R}",
+    "typeLine": "Creature — Minotaur Warrior",
+    "creatureStats": {
+        "power": 2,
+        "toughness": 3
+    },
+    "metadata": {
+        "collectorNumber": "105",
+        "artist": "Svetlin Velinov",
+        "flavorText": "The Champion and her companions marched through the night, but the battle was over before they arrived. In the middle of the carnage sat a solitary minotaur, lost in what seemed to the Champion to be thought.\n—*The Theriad*",
+        "imageUri": "https://cards.scryfall.io/normal/front/9/0/902b462a-a552-42d4-91f0-bd33cd9cb719.jpg?1783939421"
+    },
+    "colorIdentityOverride": [
+        "RED"
+    ]
+}
+
+// Rotted Hulk
+{
+    "name": "Rotted Hulk",
+    "manaCost": "{3}{B}",
+    "typeLine": "Creature — Elemental",
+    "creatureStats": {
+        "power": 2,
+        "toughness": 5
+    },
+    "metadata": {
+        "collectorNumber": "81",
+        "artist": "Raymond Swanland",
+        "flavorText": "The hulk rose from the sea and loomed over the Champion. Pinned beneath the twisting, rotted planks of wood was the body of Kaliaros, the helmsman of her former crew, and beside him the captain, Photine.\n—*The Theriad*",
+        "imageUri": "https://cards.scryfall.io/normal/front/1/0/1066644a-ac62-4809-805c-607c645613c5.jpg?1783939431"
+    },
+    "colorIdentityOverride": [
+        "BLACK"
+    ]
+}
+
+// Sigiled Starfish
+{
+    "name": "Sigiled Starfish",
+    "manaCost": "{1}{U}",
+    "typeLine": "Creature — Starfish",
+    "oracleText": "{T}: Scry 1. (Look at the top card of your library. You may put that card on the bottom.)",
+    "creatureStats": {
+        "power": 0,
+        "toughness": 3
+    },
+    "script": {
+        "activatedAbilities": [
+            {
+                "id": "ability_1",
+                "cost": "CostTap",
+                "effect": {
+                    "type": "Scry",
+                    "count": 1
+                },
+                "descriptionOverride": "{T}: Scry 1."
+            }
+        ]
+    },
+    "metadata": {
+        "collectorNumber": "52",
+        "artist": "Nils Hamm",
+        "flavorText": "Kruphix hid the most dire prophecies about humankind where humans would never find them and tritons wouldn't care to read them.",
+        "imageUri": "https://cards.scryfall.io/normal/front/8/5/85a61f99-44f8-4a2b-b7f2-7899a694552d.jpg?1783939442"
+    },
+    "colorIdentityOverride": [
+        "BLUE"
+    ]
+}
+
+// Temple of Epiphany
+{
+    "name": "Temple of Epiphany",
+    "manaCost": "",
+    "typeLine": "Land",
+    "oracleText": "This land enters tapped.\nWhen this land enters, scry 1. (Look at the top card of your library. You may put that card on the bottom.)\n{T}: Add {U} or {R}.",
+    "script": {
+        "triggeredAbilities": [
+            {
+                "id": "ability_1",
+                "trigger": {
+                    "type": "ZoneChangeEvent",
+                    "to": "Battlefield"
+                },
+                "effect": {
+                    "type": "Scry",
+                    "count": 1
+                }
+            }
+        ],
+        "activatedAbilities": [
+            {
+                "id": "ability_2",
+                "cost": "CostTap",
+                "effect": {
+                    "type": "AddMana",
+                    "color": "BLUE"
+                },
+                "timing": "ManaAbility",
+                "isManaAbility": true
+            },
+            {
+                "id": "ability_3",
+                "cost": "CostTap",
+                "effect": {
+                    "type": "AddMana",
+                    "color": "RED"
+                },
+                "timing": "ManaAbility",
+                "isManaAbility": true
+            }
+        ],
+        "replacementEffects": [
+            "EntersTapped"
+        ]
+    },
+    "metadata": {
+        "collectorNumber": "164",
+        "rarity": "RARE",
+        "artist": "Noah Bradley",
+        "imageUri": "https://cards.scryfall.io/normal/front/b/8/b882c6bf-b795-49fe-8242-a928aadb6f13.jpg"
+    },
+    "colorIdentityOverride": [
+        "BLUE",
+        "RED"
+    ]
+}
+
+// Temple of Malady
+{
+    "name": "Temple of Malady",
+    "manaCost": "",
+    "typeLine": "Land",
+    "oracleText": "This land enters tapped.\nWhen this land enters, scry 1. (Look at the top card of your library. You may put that card on the bottom.)\n{T}: Add {B} or {G}.",
+    "script": {
+        "triggeredAbilities": [
+            {
+                "id": "ability_1",
+                "trigger": {
+                    "type": "ZoneChangeEvent",
+                    "to": "Battlefield"
+                },
+                "effect": {
+                    "type": "Scry",
+                    "count": 1
+                }
+            }
+        ],
+        "activatedAbilities": [
+            {
+                "id": "ability_2",
+                "cost": "CostTap",
+                "effect": {
+                    "type": "AddMana",
+                    "color": "BLACK"
+                },
+                "timing": "ManaAbility",
+                "isManaAbility": true
+            },
+            {
+                "id": "ability_3",
+                "cost": "CostTap",
+                "effect": {
+                    "type": "AddMana",
+                    "color": "GREEN"
+                },
+                "timing": "ManaAbility",
+                "isManaAbility": true
+            }
+        ],
+        "replacementEffects": [
+            "EntersTapped"
+        ]
+    },
+    "metadata": {
+        "collectorNumber": "165",
+        "rarity": "RARE",
+        "artist": "James Paick",
+        "imageUri": "https://cards.scryfall.io/normal/front/f/3/f30220f1-1992-4b5c-9e13-1762fb673155.jpg"
+    },
+    "colorIdentityOverride": [
+        "BLACK",
+        "GREEN"
+    ]
+}
+
+// Triton Shorestalker
+{
+    "name": "Triton Shorestalker",
+    "manaCost": "{U}",
+    "typeLine": "Creature — Merfolk Rogue",
+    "oracleText": "This creature can't be blocked.",
+    "creatureStats": {
+        "power": 1,
+        "toughness": 1
+    },
+    "flags": [
+        "CANT_BE_BLOCKED"
+    ],
+    "metadata": {
+        "collectorNumber": "56",
+        "artist": "Svetlin Velinov",
+        "flavorText": "\"Who will miss you, drywalker? A wife? A child? Perhaps they will blame the sea for your fate, and teach future generations to stay far away from it.\"",
+        "imageUri": "https://cards.scryfall.io/normal/front/8/8/881c554e-2324-41e2-89f1-db9f4017bc31.jpg?1783939440"
+    },
+    "colorIdentityOverride": [
+        "BLUE"
+    ]
+}

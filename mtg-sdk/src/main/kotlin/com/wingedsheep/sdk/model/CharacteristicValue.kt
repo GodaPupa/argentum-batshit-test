@@ -1,0 +1,94 @@
+package com.wingedsheep.sdk.model
+
+import com.wingedsheep.sdk.scripting.values.DynamicAmount
+import com.wingedsheep.sdk.serialization.CharacteristicValueSerializer
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+
+/**
+ * Represents a characteristic value that can be either fixed or dynamic.
+ *
+ * This supports characteristic-defining abilities (CDAs) like Tarmogoyf's
+ * power/toughness that depend on game state.
+ *
+ * Usage:
+ * ```kotlin
+ * // Fixed value (most creatures)
+ * CharacteristicValue.Fixed(3)
+ *
+ * // Dynamic value (Tarmogoyf)
+ * CharacteristicValue.Dynamic(DynamicAmount.AggregateZone(Player.Each, Zone.GRAVEYARD, aggregation = Aggregation.DISTINCT_TYPES))
+ *
+ * // Dynamic with offset (Tarmogoyf's toughness = * + 1)
+ * CharacteristicValue.DynamicWithOffset(DynamicAmount.AggregateZone(Player.Each, Zone.GRAVEYARD, aggregation = Aggregation.DISTINCT_TYPES), 1)
+ * ```
+ */
+@Serializable(with = CharacteristicValueSerializer::class)
+sealed interface CharacteristicValue {
+    val description: String
+
+    /**
+     * A fixed integer value.
+     * Example: A 2/2 creature has Fixed(2) for both power and toughness.
+     */
+    @SerialName("FixedValue")
+    @Serializable
+    data class Fixed(val value: Int) : CharacteristicValue {
+        override val description: String = value.toString()
+    }
+
+    /**
+     * A dynamic value determined by game state.
+     * Example: Tarmogoyf's power is Dynamic(CardTypesInAllGraveyards).
+     */
+    @SerialName("DynamicValue")
+    @Serializable
+    data class Dynamic(val source: DynamicAmount) : CharacteristicValue {
+        override val description: String = "*"
+    }
+
+    /**
+     * A dynamic value with a fixed offset.
+     * Example: Tarmogoyf's toughness is DynamicWithOffset(CardTypesInAllGraveyards, 1) = *+1.
+     */
+    @SerialName("DynamicWithOffsetValue")
+    @Serializable
+    data class DynamicWithOffset(
+        val source: DynamicAmount,
+        val offset: Int
+    ) : CharacteristicValue {
+        override val description: String = when {
+            offset > 0 -> "*+$offset"
+            offset < 0 -> "*$offset"
+            else -> "*"
+        }
+    }
+
+    companion object {
+        /**
+         * Create a fixed characteristic value.
+         */
+        fun of(value: Int): CharacteristicValue = Fixed(value)
+
+        /**
+         * Create a dynamic characteristic value.
+         */
+        fun dynamic(source: DynamicAmount): CharacteristicValue = Dynamic(source)
+
+        /**
+         * Create a dynamic characteristic value with offset.
+         */
+        fun dynamic(source: DynamicAmount, offset: Int): CharacteristicValue =
+            if (offset == 0) Dynamic(source) else DynamicWithOffset(source, offset)
+    }
+}
+
+/**
+ * Operator for adding offset to CharacteristicValue.
+ * Example: CharacteristicValue.dynamic(source) + 1
+ */
+operator fun CharacteristicValue.plus(offset: Int): CharacteristicValue = when (this) {
+    is CharacteristicValue.Fixed -> CharacteristicValue.Fixed(value + offset)
+    is CharacteristicValue.Dynamic -> CharacteristicValue.DynamicWithOffset(source, offset)
+    is CharacteristicValue.DynamicWithOffset -> CharacteristicValue.DynamicWithOffset(source, this.offset + offset)
+}

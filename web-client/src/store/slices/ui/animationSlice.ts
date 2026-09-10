@@ -1,0 +1,289 @@
+/**
+ * Animation sub-slice — handles card selection, hover, all 5 animation types,
+ * revealed cards/hand, match intro, and auto-tap preview.
+ */
+import type {
+  SliceCreator,
+  EntityId,
+  DrawAnimation,
+  DamageAnimation,
+  RevealAnimation,
+  CoinFlipAnimation,
+  TargetReselectedAnimation,
+  MatchIntro,
+} from '../types'
+
+const BEHOLD_PULSE_FLOOR_MS = 2000
+
+/**
+ * Pointer movement over a card fires `mousemove` far faster than the screen refreshes — a
+ * single sweep across the battlefield used to push ~60 writes into the store, and *every*
+ * write runs every subscriber's selector (each battlefield card holds dozens) before the
+ * preview can repaint once. The preview only ever needs the cursor's latest position, so
+ * writes are coalesced to one per animation frame: intermediate positions are dropped
+ * rather than queued, which is both cheaper and exactly as correct.
+ */
+let pendingHoverPosition: { x: number; y: number } | null = null
+let hoverPositionFrame: number | null = null
+
+function cancelPendingHoverPosition(): void {
+  if (hoverPositionFrame !== null) {
+    cancelAnimationFrame(hoverPositionFrame)
+    hoverPositionFrame = null
+  }
+  pendingHoverPosition = null
+}
+
+export interface AnimationSliceState {
+  selectedCardId: EntityId | null
+  hoveredCardId: EntityId | null
+  hoverPosition: { x: number; y: number } | null
+  autoTapPreview: readonly EntityId[] | null
+  revealedHandCardIds: readonly EntityId[] | null
+  revealedCardsInfo: {
+    cardIds: readonly EntityId[]
+    cardNames: readonly string[]
+    imageUris: readonly (string | null)[]
+    source: string | null
+    isYourReveal: boolean
+    /**
+     * Per-card revealer attribution (parallel to cardIds), present when one effect reveals
+     * cards from more than one player at once (e.g. Psychic Battle: each player reveals their
+     * top card). `true` = revealed by the viewing player, `false` = by an opponent. Absent for
+     * single-player reveals, which use [isYourReveal] for the whole group.
+     */
+    cardOwnerIsYours?: readonly boolean[]
+    fromZone?: string | null
+    toZone?: string | null
+  } | null
+  drawAnimations: readonly DrawAnimation[]
+  damageAnimations: readonly DamageAnimation[]
+  revealAnimations: readonly RevealAnimation[]
+  coinFlipAnimations: readonly CoinFlipAnimation[]
+  targetReselectedAnimations: readonly TargetReselectedAnimation[]
+  beholdPulses: readonly { cardId: EntityId; sourceName: string; floorUntil: number }[]
+  matchIntro: MatchIntro | null
+}
+
+export interface AnimationSliceActions {
+  selectCard: (cardId: EntityId | null) => void
+  hoverCard: (cardId: EntityId | null, position?: { x: number; y: number }) => void
+  updateHoverPosition: (position: { x: number; y: number }) => void
+  setAutoTapPreview: (preview: readonly EntityId[] | null) => void
+  showRevealedHand: (cardIds: readonly EntityId[]) => void
+  dismissRevealedHand: () => void
+  showRevealedCards: (cardIds: readonly EntityId[], cardNames: readonly string[], imageUris: readonly (string | null)[], source: string | null, isYourReveal: boolean, fromZone?: string | null, toZone?: string | null) => void
+  dismissRevealedCards: () => void
+  addDrawAnimation: (animation: DrawAnimation) => void
+  removeDrawAnimation: (id: string) => void
+  addDamageAnimation: (animation: DamageAnimation) => void
+  removeDamageAnimation: (id: string) => void
+  addRevealAnimation: (animation: RevealAnimation) => void
+  removeRevealAnimation: (id: string) => void
+  addCoinFlipAnimation: (animation: CoinFlipAnimation) => void
+  removeCoinFlipAnimation: (id: string) => void
+  addTargetReselectedAnimation: (animation: TargetReselectedAnimation) => void
+  removeTargetReselectedAnimation: (id: string) => void
+  addBeholdPulse: (cardId: EntityId, sourceName: string) => void
+  reconcileBeholdPulses: (stackItemNames: readonly string[]) => void
+  setMatchIntro: (intro: MatchIntro) => void
+  clearMatchIntro: () => void
+}
+
+export type AnimationSlice = AnimationSliceState & AnimationSliceActions
+
+export const createAnimationSlice: SliceCreator<AnimationSlice> = (set, get) => ({
+  selectedCardId: null,
+  hoveredCardId: null,
+  hoverPosition: null,
+  autoTapPreview: null,
+  revealedHandCardIds: null,
+  revealedCardsInfo: null,
+  drawAnimations: [],
+  damageAnimations: [],
+  revealAnimations: [],
+  coinFlipAnimations: [],
+  targetReselectedAnimations: [],
+  beholdPulses: [],
+  matchIntro: null,
+
+  // Card selection actions
+  selectCard: (cardId) => {
+    // Opening a card's action menu drops any hover preview: the pointer is still over the card
+    // that was clicked, and the preview would sit on top of the menu's buttons.
+    set(cardId ? { selectedCardId: cardId, hoveredCardId: null, autoTapPreview: null } : { selectedCardId: cardId })
+  },
+
+  hoverCard: (cardId, position) => {
+    let autoTapPreview: readonly EntityId[] | null = null
+    if (cardId) {
+      const { legalActions, pendingDecision } = get()
+      if (!pendingDecision) {
+        const castAction = legalActions.find(
+          (a) => a.action.type === 'CastSpell' && a.action.cardId === cardId
+        )
+        if (castAction?.autoTapPreview) {
+          autoTapPreview = castAction.autoTapPreview
+        } else {
+          const turnFaceUpAction = legalActions.find(
+            (a) => a.action.type === 'TurnFaceUp' && a.action.sourceId === cardId
+          )
+          if (turnFaceUpAction?.autoTapPreview) {
+            autoTapPreview = turnFaceUpAction.autoTapPreview
+          }
+        }
+      }
+    }
+    // Entering (or leaving) a card is a real change of *what* is previewed — apply it now, and
+    // drop any coalesced move still queued for the card we just left so it can't land after.
+    cancelPendingHoverPosition()
+    set({ hoveredCardId: cardId, hoverPosition: position ?? null, autoTapPreview })
+  },
+
+  updateHoverPosition: (position) => {
+    pendingHoverPosition = position
+    if (hoverPositionFrame !== null) return
+    hoverPositionFrame = requestAnimationFrame(() => {
+      hoverPositionFrame = null
+      const next = pendingHoverPosition
+      pendingHoverPosition = null
+      // Only meaningful while something is still hovered — a mouseleave that landed in the
+      // same frame has already cleared the preview, and re-arming it would flash it back.
+      if (next && get().hoveredCardId !== null) set({ hoverPosition: next })
+    })
+  },
+
+  setAutoTapPreview: (preview) => {
+    set({ autoTapPreview: preview })
+  },
+
+  // Revealed cards actions
+  showRevealedHand: (cardIds) => {
+    set({ revealedHandCardIds: cardIds })
+  },
+
+  dismissRevealedHand: () => {
+    set({ revealedHandCardIds: null })
+  },
+
+  showRevealedCards: (cardIds, cardNames, imageUris, source, isYourReveal, fromZone, toZone) => {
+    set({
+      revealedCardsInfo: {
+        cardIds,
+        cardNames,
+        imageUris,
+        source,
+        isYourReveal,
+        ...(fromZone !== undefined ? { fromZone } : {}),
+        ...(toZone !== undefined ? { toZone } : {}),
+      },
+    })
+  },
+
+  dismissRevealedCards: () => {
+    set({ revealedCardsInfo: null })
+  },
+
+  // Animation actions
+  addDrawAnimation: (animation) => {
+    set((state) => ({
+      drawAnimations: [...state.drawAnimations, animation],
+    }))
+  },
+
+  removeDrawAnimation: (id) => {
+    set((state) => ({
+      drawAnimations: state.drawAnimations.filter((a) => a.id !== id),
+    }))
+  },
+
+  addDamageAnimation: (animation) => {
+    set((state) => ({
+      damageAnimations: [...state.damageAnimations, animation],
+    }))
+  },
+
+  removeDamageAnimation: (id) => {
+    set((state) => ({
+      damageAnimations: state.damageAnimations.filter((a) => a.id !== id),
+    }))
+  },
+
+  addRevealAnimation: (animation) => {
+    set((state) => ({
+      revealAnimations: [...state.revealAnimations, animation],
+    }))
+  },
+
+  removeRevealAnimation: (id) => {
+    set((state) => ({
+      revealAnimations: state.revealAnimations.filter((a) => a.id !== id),
+    }))
+  },
+
+  addCoinFlipAnimation: (animation) => {
+    set((state) => ({
+      coinFlipAnimations: [...state.coinFlipAnimations, animation],
+    }))
+  },
+
+  removeCoinFlipAnimation: (id) => {
+    set((state) => ({
+      coinFlipAnimations: state.coinFlipAnimations.filter((a) => a.id !== id),
+    }))
+  },
+
+  addTargetReselectedAnimation: (animation) => {
+    set((state) => ({
+      targetReselectedAnimations: [...state.targetReselectedAnimations, animation],
+    }))
+  },
+
+  removeTargetReselectedAnimation: (id) => {
+    set((state) => ({
+      targetReselectedAnimations: state.targetReselectedAnimations.filter((a) => a.id !== id),
+    }))
+  },
+
+  addBeholdPulse: (cardId, sourceName) => {
+    const floorUntil = Date.now() + BEHOLD_PULSE_FLOOR_MS
+    set((state) => (
+      state.beholdPulses.some((p) => p.cardId === cardId && p.sourceName === sourceName)
+        ? state
+        : { beholdPulses: [...state.beholdPulses, { cardId, sourceName, floorUntil }] }
+    ))
+    // If the beholding spell auto-resolves before the next state update, the stack
+    // will no longer contain the source when reconcile runs. Reschedule a reconcile
+    // after the floor elapses so the pulse stays visible for at least BEHOLD_PULSE_FLOOR_MS.
+    setTimeout(() => {
+      const gameState = get().gameState
+      if (!gameState) {
+        get().reconcileBeholdPulses([])
+        return
+      }
+      const stackZone = gameState.zones.find((z) => z.zoneId.zoneType === 'Stack')
+      const stackItemNames = (stackZone?.cardIds ?? [])
+        .map((id) => gameState.cards[id]?.name)
+        .filter((n): n is string => typeof n === 'string')
+      get().reconcileBeholdPulses(stackItemNames)
+    }, BEHOLD_PULSE_FLOOR_MS + 50)
+  },
+
+  reconcileBeholdPulses: (stackItemNames) => {
+    set((state) => {
+      if (state.beholdPulses.length === 0) return state
+      const names = new Set(stackItemNames)
+      const now = Date.now()
+      const kept = state.beholdPulses.filter((p) => names.has(p.sourceName) || p.floorUntil > now)
+      return kept.length === state.beholdPulses.length ? state : { beholdPulses: kept }
+    })
+  },
+
+  setMatchIntro: (intro) => {
+    set({ matchIntro: intro })
+  },
+
+  clearMatchIntro: () => {
+    set({ matchIntro: null })
+  },
+})

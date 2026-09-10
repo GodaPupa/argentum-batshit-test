@@ -1,0 +1,280 @@
+// Command Tower
+{
+    "name": "Command Tower",
+    "manaCost": "",
+    "typeLine": "Land",
+    "oracleText": "{T}: Add one mana of any color in your commander's color identity.",
+    "script": {
+        "activatedAbilities": [
+            {
+                "id": "ability_1",
+                "cost": "CostTap",
+                "effect": {
+                    "type": "AddManaOfChoice",
+                    "colorSet": "ManaColorSet.CommanderIdentity"
+                },
+                "timing": "ManaAbility",
+                "isManaAbility": true
+            }
+        ]
+    },
+    "metadata": {
+        "collectorNumber": "269",
+        "artist": "Ryan Yee",
+        "flavorText": "When defeat is near and guidance is scarce, all eyes look in one direction.",
+        "imageUri": "https://cards.scryfall.io/normal/front/4/6/46982091-cc78-4171-8b3d-d07592684728.jpg?1592714567",
+        "rulings": [
+            {
+                "date": "2020-11-10",
+                "text": "If your commander is a card that has no colors in its color identity, Command Tower's ability produces no mana. It doesn't produce {C}."
+            },
+            {
+                "date": "2020-11-10",
+                "text": "If you have two commanders, the ability adds one mana of any color in their combined color identities."
+            },
+            {
+                "date": "2020-11-10",
+                "text": "If you don't have a commander, Command Tower's ability produces no mana."
+            }
+        ]
+    },
+    "colorIdentityOverride": []
+}
+
+// Hornet Queen
+{
+    "name": "Hornet Queen",
+    "manaCost": "{4}{G}{G}{G}",
+    "typeLine": "Creature — Insect",
+    "oracleText": "Flying, deathtouch\nWhen this creature enters, create four 1/1 green Insect creature tokens with flying and deathtouch.",
+    "creatureStats": {
+        "power": 2,
+        "toughness": 2
+    },
+    "keywords": [
+        "FLYING",
+        "DEATHTOUCH"
+    ],
+    "script": {
+        "triggeredAbilities": [
+            {
+                "id": "ability_1",
+                "trigger": {
+                    "type": "ZoneChangeEvent",
+                    "to": "Battlefield"
+                },
+                "effect": {
+                    "type": "CreateToken",
+                    "count": {
+                        "type": "Fixed",
+                        "amount": 4
+                    },
+                    "power": 1,
+                    "toughness": 1,
+                    "colors": [
+                        "GREEN"
+                    ],
+                    "creatureTypes": [
+                        "Insect"
+                    ],
+                    "keywords": [
+                        "FLYING",
+                        "DEATHTOUCH"
+                    ]
+                },
+                "descriptionOverride": "When this creature enters, create four 1/1 green Insect creature tokens with flying and deathtouch."
+            }
+        ]
+    },
+    "metadata": {
+        "collectorNumber": "159",
+        "rarity": "RARE",
+        "artist": "Martina Pilcerova",
+        "imageUri": "https://cards.scryfall.io/normal/front/7/1/714cd47b-88f6-448d-9242-481935565250.jpg?1783941193"
+    },
+    "colorIdentityOverride": [
+        "GREEN"
+    ]
+}
+
+// Kaalia of the Vast
+{
+    "name": "Kaalia of the Vast",
+    "manaCost": "{1}{R}{W}{B}",
+    "typeLine": "Legendary Creature — Human Cleric",
+    "oracleText": "Flying\nWhenever Kaalia of the Vast attacks an opponent, you may put an Angel, Demon, or Dragon creature card from your hand onto the battlefield tapped and attacking that opponent.",
+    "creatureStats": {
+        "power": 2,
+        "toughness": 2
+    },
+    "keywords": [
+        "FLYING"
+    ],
+    "script": {
+        "triggeredAbilities": [
+            {
+                "id": "ability_1",
+                "trigger": {
+                    "type": "AttackEvent",
+                    "requires": [
+                        "AttacksDefenderIsPlayer"
+                    ]
+                },
+                "effect": {
+                    "type": "Composite",
+                    "effects": [
+                        {
+                            "type": "GatherCards",
+                            "source": {
+                                "type": "FromZone",
+                                "zone": "Hand",
+                                "filter": "creature Angel|Demon|Dragon"
+                            },
+                            "storeAs": "put_candidates"
+                        },
+                        {
+                            "type": "SelectFromCollection",
+                            "from": "put_candidates",
+                            "selection": {
+                                "type": "ChooseUpTo",
+                                "count": {
+                                    "type": "Fixed",
+                                    "amount": 1
+                                }
+                            },
+                            "storeSelected": "putting"
+                        },
+                        {
+                            "type": "MoveCollection",
+                            "from": "putting",
+                            "destination": {
+                                "type": "ToZone",
+                                "zone": "Battlefield",
+                                "placement": "TappedAndAttacking"
+                            }
+                        }
+                    ]
+                }
+            }
+        ]
+    },
+    "metadata": {
+        "collectorNumber": "206",
+        "rarity": "MYTHIC",
+        "artist": "Michael Komarck",
+        "flavorText": "I'll have my revenge if I have to call on every force from above and below.",
+        "imageUri": "https://cards.scryfall.io/normal/front/4/b/4b71d89b-7ba4-406f-8736-ac62b9864f21.jpg?1782715001",
+        "rulings": [
+            {
+                "date": "2020-08-07",
+                "text": "Kaalia of the Vast's ability triggers only if it attacks a player. It won't trigger if it attacks a planeswalker."
+            },
+            {
+                "date": "2024-06-07",
+                "text": "Kaalia of the Vast's ability doesn't trigger if it attacks a planeswalker or battle."
+            },
+            {
+                "date": "2020-08-07",
+                "text": "The creature card is put onto the battlefield tapped and attacking the player Kaalia is attacking. It wasn't declared as an attacking creature, so abilities that trigger whenever a creature attacks won't trigger."
+            },
+            {
+                "date": "2020-08-07",
+                "text": "The creature is attacking, but it was never declared as an attacker. This means that any \"whenever this creature attacks\" abilities of that creature won't trigger."
+            },
+            {
+                "date": "2020-08-07",
+                "text": "Because the creature is put onto the battlefield attacking, it's never been declared as an attacker. Effects that care about attacking creatures being declared won't apply."
+            }
+        ]
+    },
+    "colorIdentityOverride": [
+        "BLACK",
+        "RED",
+        "WHITE"
+    ]
+}
+
+// Scavenging Ooze
+{
+    "name": "Scavenging Ooze",
+    "manaCost": "{1}{G}",
+    "typeLine": "Creature — Ooze",
+    "oracleText": "{G}: Exile target card from a graveyard. If it was a creature card, put a +1/+1 counter on this creature and you gain 1 life.",
+    "creatureStats": {
+        "power": 2,
+        "toughness": 2
+    },
+    "script": {
+        "activatedAbilities": [
+            {
+                "id": "ability_1",
+                "cost": {
+                    "type": "CostAtomWrapper",
+                    "atom": {
+                        "type": "AtomMana",
+                        "cost": "{G}"
+                    }
+                },
+                "effect": {
+                    "type": "Composite",
+                    "effects": [
+                        {
+                            "type": "MoveToZone",
+                            "target": {
+                                "type": "BoundVariable",
+                                "name": "target card in a graveyard"
+                            },
+                            "destination": "Exile"
+                        },
+                        {
+                            "type": "Gated",
+                            "gate": {
+                                "type": "Gate.WhenCondition",
+                                "condition": "TargetIsCreatureCard"
+                            },
+                            "then": {
+                                "type": "Composite",
+                                "effects": [
+                                    {
+                                        "type": "AddCounters",
+                                        "counterType": "+1/+1",
+                                        "count": 1,
+                                        "target": "Self"
+                                    },
+                                    {
+                                        "type": "GainLife",
+                                        "amount": {
+                                            "type": "Fixed",
+                                            "amount": 1
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                },
+                "targetRequirements": [
+                    {
+                        "type": "TargetObject",
+                        "filter": {
+                            "baseFilter": {},
+                            "zone": "Graveyard"
+                        },
+                        "id": "target card in a graveyard"
+                    }
+                ],
+                "descriptionOverride": "{G}: Exile target card from a graveyard. If it was a creature card, put a +1/+1 counter on this creature and you gain 1 life."
+            }
+        ]
+    },
+    "metadata": {
+        "collectorNumber": "170",
+        "rarity": "RARE",
+        "artist": "Austin Hsu",
+        "flavorText": "In nature, not a single bone or scrap of flesh goes to waste.",
+        "imageUri": "https://cards.scryfall.io/normal/front/3/7/371ceb58-f498-4616-a7f0-eb118fe2e4ff.jpg?1782715022"
+    },
+    "colorIdentityOverride": [
+        "GREEN"
+    ]
+}

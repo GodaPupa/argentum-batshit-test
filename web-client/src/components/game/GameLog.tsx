@@ -1,0 +1,183 @@
+import { useGameStore, type LogEntry } from '@/store/gameStore.ts'
+import { identitySeatColor, selectTeamMap } from '@/store/selectors.ts'
+import type { EntityId } from '@/types'
+import { markLearnSignal } from '@/learn/signals'
+import React, { useState, useRef, useEffect } from 'react'
+
+/**
+ * Collapsible game log panel showing accumulated events.
+ */
+export function GameLog() {
+  const eventLog = useGameStore((state) => state.eventLog)
+  const playerId = useGameStore((state) => state.playerId)
+  // Multiplayer: log entries take the actor's seat color ("who did that?" is the
+  // dominant question in a pod). 2-player keeps the classic cyan/orange split.
+  const players = useGameStore((state) => state.gameState?.players)
+  const teamMap = useGameStore(selectTeamMap)
+  const isMulti = (players?.length ?? 0) > 2
+  // Identity colour, not raw seat colour: in a Two-Headed Giant game the rail, orbs and plates
+  // paint team hues, and the log has to agree with them or "who did that" reads wrong.
+  const seatColorFor = (entryPlayerId: EntityId | null): string | null => {
+    if (!isMulti || !players || !entryPlayerId || entryPlayerId === playerId) return null
+    const idx = players.findIndex((p) => p.playerId === entryPlayerId)
+    return idx >= 0 ? identitySeatColor(teamMap, entryPlayerId, idx).base : null
+  }
+  const [expanded, setExpanded] = useState(false)
+  const scrollRef = useRef<HTMLDivElement>(null)
+
+  // Auto-scroll to bottom when new entries arrive
+  useEffect(() => {
+    if (expanded && scrollRef.current) {
+      scrollRef.current.scrollTop = scrollRef.current.scrollHeight
+    }
+  }, [eventLog.length, expanded])
+
+  if (!expanded) {
+    return (
+      <button
+        data-learn="log"
+        onClick={() => {
+          setExpanded(true)
+          markLearnSignal('logOpened')
+        }}
+        style={styles.toggleButton}
+      >
+        Log ({eventLog.length})
+      </button>
+    )
+  }
+
+  return (
+    <div style={styles.panel}>
+      <div style={styles.header}>
+        <span style={styles.headerTitle}>Game Log</span>
+        <button onClick={() => setExpanded(false)} style={styles.closeButton}>
+          &times;
+        </button>
+      </div>
+      <div ref={scrollRef} style={styles.entries}>
+        {eventLog.length === 0 && (
+          <div style={styles.empty}>No events yet</div>
+        )}
+        {eventLog.map((entry, i) => (
+          <LogEntryRow
+            key={i}
+            entry={entry}
+            isPlayer={entry.playerId === playerId}
+            seatColor={seatColorFor(entry.playerId)}
+          />
+        ))}
+      </div>
+    </div>
+  )
+}
+
+function LogEntryRow({ entry, isPlayer, seatColor }: { entry: LogEntry; isPlayer: boolean; seatColor: string | null }) {
+  if (entry.type === 'turn') {
+    return (
+      <div style={styles.turnSeparator}>
+        {entry.description}
+      </div>
+    )
+  }
+
+  // A system line *about* a seat ("Bob has been eliminated") keeps that seat's colour in a pod —
+  // it is the one log line where "who" matters most, and it was the only one that couldn't have it.
+  const color = entry.type === 'system'
+    ? seatColor ?? '#999'
+    : entry.playerId === null
+      ? '#888'
+      : isPlayer
+        ? '#5bc0de'
+        : seatColor ?? '#e07050'
+
+  return (
+    <div style={{ ...styles.entry, color }}>
+      {entry.description}
+    </div>
+  )
+}
+
+const styles: Record<string, React.CSSProperties> = {
+  toggleButton: {
+    position: 'fixed',
+    bottom: 12,
+    left: 12,
+    zIndex: 500,
+    padding: '6px 12px',
+    fontSize: 12,
+    backgroundColor: 'rgba(20, 20, 40, 0.85)',
+    color: '#aaa',
+    border: '1px solid #444',
+    borderRadius: 6,
+    cursor: 'pointer',
+  },
+  panel: {
+    position: 'fixed',
+    bottom: 12,
+    left: 12,
+    zIndex: 500,
+    width: 'min(320px, calc(100vw - 24px))',
+    maxHeight: 300,
+    display: 'flex',
+    flexDirection: 'column',
+    backgroundColor: 'rgba(10, 10, 25, 0.92)',
+    border: '1px solid #333',
+    borderRadius: 8,
+    overflow: 'hidden',
+  },
+  header: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: '6px 10px',
+    borderBottom: '1px solid #333',
+  },
+  headerTitle: {
+    color: '#aaa',
+    fontSize: 12,
+    fontWeight: 600,
+    textTransform: 'uppercase',
+    letterSpacing: 1,
+  },
+  closeButton: {
+    background: 'none',
+    border: 'none',
+    color: '#888',
+    fontSize: 18,
+    cursor: 'pointer',
+    padding: '0 4px',
+    lineHeight: 1,
+  },
+  entries: {
+    flex: 1,
+    overflowY: 'auto',
+    padding: '4px 8px',
+    maxHeight: 260,
+  },
+  empty: {
+    color: '#555',
+    fontSize: 12,
+    padding: 8,
+    textAlign: 'center',
+  },
+  entry: {
+    fontSize: 12,
+    padding: '2px 0',
+    lineHeight: 1.4,
+    borderBottom: '1px solid rgba(255,255,255,0.04)',
+  },
+  turnSeparator: {
+    fontSize: 11,
+    padding: '6px 0 4px',
+    lineHeight: 1.4,
+    textAlign: 'center',
+    color: 'rgba(255,255,255,0.5)',
+    fontWeight: 600,
+    borderBottom: '1px solid rgba(255,255,255,0.1)',
+    borderTop: '1px solid rgba(255,255,255,0.1)',
+    backgroundColor: 'rgba(255,255,255,0.04)',
+    marginTop: 2,
+    marginBottom: 2,
+  },
+}

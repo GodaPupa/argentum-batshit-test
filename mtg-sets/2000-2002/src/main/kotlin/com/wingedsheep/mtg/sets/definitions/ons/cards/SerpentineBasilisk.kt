@@ -1,0 +1,44 @@
+package com.wingedsheep.mtg.sets.definitions.ons.cards
+
+import com.wingedsheep.sdk.dsl.Effects
+import com.wingedsheep.sdk.dsl.Triggers
+import com.wingedsheep.sdk.dsl.card
+import com.wingedsheep.sdk.model.Rarity
+import com.wingedsheep.sdk.scripting.effects.CreateDelayedTriggerEffect
+import com.wingedsheep.sdk.scripting.targets.EffectTarget
+import com.wingedsheep.sdk.core.Step
+
+/**
+ * Serpentine Basilisk
+ * {2}{G}{G}
+ * Creature — Basilisk
+ * 2/3
+ * Whenever Serpentine Basilisk deals combat damage to a creature,
+ * destroy that creature at end of combat.
+ * Morph {1}{G}{G}
+ */
+val SerpentineBasilisk = card("Serpentine Basilisk") {
+    manaCost = "{2}{G}{G}"
+    colorIdentity = "G"
+    typeLine = "Creature — Basilisk"
+    power = 2
+    toughness = 3
+    oracleText = "Whenever Serpentine Basilisk deals combat damage to a creature, destroy that creature at end of combat.\nMorph {1}{G}{G}"
+
+    triggeredAbility {
+        trigger = Triggers.DealsCombatDamageToCreature
+        effect = CreateDelayedTriggerEffect(
+                step = Step.END_COMBAT,
+                effect = Effects.Destroy(EffectTarget.TriggeringEntity)
+            )
+    }
+
+    morph = "{1}{G}{G}"
+
+    metadata {
+        rarity = Rarity.UNCOMMON
+        collectorNumber = "280"
+        artist = "Franz Vohwinkel"
+        imageUri = "https://cards.scryfall.io/normal/front/4/0/4052a5af-20b2-4817-8c94-78d488ee220f.jpg?1562936568"
+    }
+}

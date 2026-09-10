@@ -1,0 +1,81 @@
+package com.wingedsheep.engine.handlers.effects.composite
+
+import com.wingedsheep.engine.core.EffectResult
+import com.wingedsheep.engine.handlers.DecisionHandler
+import com.wingedsheep.engine.handlers.EffectContext
+import com.wingedsheep.engine.handlers.TargetFinder
+import com.wingedsheep.engine.handlers.effects.EffectExecutor
+import com.wingedsheep.engine.handlers.effects.ExecutorModule
+import com.wingedsheep.engine.state.GameState
+import com.wingedsheep.sdk.scripting.effects.Effect
+
+/**
+ * Module providing composite effect executors.
+ *
+ * These executors require a reference to the parent registry's execute function
+ * to handle recursive effect execution. The module uses deferred initialization
+ * to break the circular dependency.
+ */
+class CompositeExecutors(
+    private val cardRegistry: com.wingedsheep.engine.registry.CardRegistry,
+    private val targetFinder: TargetFinder = TargetFinder(),
+    private val decisionHandler: DecisionHandler = DecisionHandler()
+) : ExecutorModule {
+    private lateinit var effectExecutor: (GameState, Effect, EffectContext) -> EffectResult
+
+    private val compositeEffectExecutor by lazy { CompositeEffectExecutor(effectExecutor) }
+    private val createDelayedTriggerExecutor by lazy { CreateDelayedTriggerExecutor() }
+    private val forEachExecutor by lazy { ForEachExecutor(effectExecutor) }
+    private val forEachCapturedControllerExecutor by lazy { ForEachCapturedControllerExecutor(effectExecutor) }
+    private val mayRevealCardFromHandEffectExecutor by lazy { MayRevealCardFromHandEffectExecutor(effectExecutor) }
+    private val beholdEffectExecutor by lazy { BeholdEffectExecutor(effectExecutor) }
+    private val budgetModalEffectExecutor by lazy { BudgetModalEffectExecutor(effectExecutor) }
+    private val modalEffectExecutor by lazy { ModalEffectExecutor(effectExecutor) }
+    private val gatedEffectExecutor by lazy { GatedEffectExecutor(cardRegistry, effectExecutor) }
+    private val payManaCostExecutor by lazy { PayManaCostExecutor(cardRegistry) }
+    private val payDynamicManaCostExecutor by lazy { PayDynamicManaCostExecutor(cardRegistry) }
+    private val payManaCostRepeatedlyExecutor by lazy { PayManaCostRepeatedlyExecutor(cardRegistry, decisionHandler) }
+    private val reflexiveTriggerEffectExecutor by lazy { ReflexiveTriggerEffectExecutor(effectExecutor, targetFinder, decisionHandler, cardRegistry) }
+    private val flipCoinExecutor by lazy { FlipCoinExecutor(cardRegistry, effectExecutor, decisionHandler) }
+    private val repeatWhileExecutor by lazy { RepeatWhileExecutor(effectExecutor) }
+    private val conditionalOnCollectionExecutor by lazy { ConditionalOnCollectionExecutor(effectExecutor) }
+    private val flipTwoCoinsExecutor by lazy { FlipTwoCoinsExecutor(cardRegistry, effectExecutor, decisionHandler) }
+    private val flipCoinsExecutor by lazy { FlipCoinsExecutor(cardRegistry, decisionHandler) }
+    private val flipCoinsUntilLossExecutor by lazy { FlipCoinsUntilLossExecutor(cardRegistry, decisionHandler) }
+    private val chooseActionEffectExecutor by lazy { ChooseActionEffectExecutor(effectExecutor) }
+    private val repeatDynamicTimesExecutor by lazy { RepeatDynamicTimesExecutor(effectExecutor) }
+    private val chooseNumberThenExecutor by lazy { ChooseNumberThenExecutor(decisionHandler) }
+
+    /**
+     * Initialize the module with the parent registry's execute function.
+     * Must be called before executors() is accessed.
+     */
+    fun initialize(executor: (GameState, Effect, EffectContext) -> EffectResult) {
+        this.effectExecutor = executor
+    }
+
+    override fun executors(): List<EffectExecutor<*>> = listOf(
+        budgetModalEffectExecutor,
+        chooseActionEffectExecutor,
+        compositeEffectExecutor,
+        createDelayedTriggerExecutor,
+        forEachExecutor,
+        forEachCapturedControllerExecutor,
+        mayRevealCardFromHandEffectExecutor,
+        beholdEffectExecutor,
+        modalEffectExecutor,
+        gatedEffectExecutor,
+        payManaCostExecutor,
+        payDynamicManaCostExecutor,
+        payManaCostRepeatedlyExecutor,
+        reflexiveTriggerEffectExecutor,
+        flipCoinExecutor,
+        flipTwoCoinsExecutor,
+        flipCoinsExecutor,
+        flipCoinsUntilLossExecutor,
+        repeatWhileExecutor,
+        repeatDynamicTimesExecutor,
+        conditionalOnCollectionExecutor,
+        chooseNumberThenExecutor
+    )
+}

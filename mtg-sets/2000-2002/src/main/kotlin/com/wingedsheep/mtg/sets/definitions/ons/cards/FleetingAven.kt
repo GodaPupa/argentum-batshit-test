@@ -1,0 +1,41 @@
+package com.wingedsheep.mtg.sets.definitions.ons.cards
+
+import com.wingedsheep.sdk.core.Keyword
+import com.wingedsheep.sdk.core.Zone
+import com.wingedsheep.sdk.dsl.card
+import com.wingedsheep.sdk.model.Rarity
+import com.wingedsheep.sdk.scripting.targets.EffectTarget
+import com.wingedsheep.sdk.dsl.Triggers
+import com.wingedsheep.sdk.dsl.Effects
+
+/**
+ * Fleeting Aven
+ * {1}{U}{U}
+ * Creature — Bird Wizard
+ * 2/2
+ * Flying
+ * Whenever a player cycles a card, return Fleeting Aven to its owner's hand.
+ */
+val FleetingAven = card("Fleeting Aven") {
+    manaCost = "{1}{U}{U}"
+    colorIdentity = "U"
+    typeLine = "Creature — Bird Wizard"
+    power = 2
+    toughness = 2
+    oracleText = "Flying\nWhenever a player cycles a card, return Fleeting Aven to its owner's hand."
+
+    keywords(Keyword.FLYING)
+
+    triggeredAbility {
+        trigger = Triggers.AnyPlayerCycles
+        effect = Effects.Move(EffectTarget.Self, Zone.HAND)
+    }
+
+    metadata {
+        rarity = Rarity.UNCOMMON
+        collectorNumber = "83"
+        artist = "Gary Ruddell"
+        flavorText = "\"Don't become so enthralled with magic that you forget you can fly without it.\"\n—Mystic elder"
+        imageUri = "https://cards.scryfall.io/normal/front/2/4/246a2758-0096-43b9-8193-d6ae5b41b6e6.jpg"
+    }
+}

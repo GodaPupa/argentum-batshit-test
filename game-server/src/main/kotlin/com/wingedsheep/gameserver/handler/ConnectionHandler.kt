@@ -1,0 +1,738 @@
+package com.wingedsheep.gameserver.handler
+
+import com.wingedsheep.gameserver.ai.AiGameManager
+import com.wingedsheep.gameserver.auth.AuthSupport
+import com.wingedsheep.gameserver.auth.MagicLinkService
+import com.wingedsheep.gameserver.friends.FriendPresenceBroadcaster
+import org.springframework.beans.factory.ObjectProvider
+import com.wingedsheep.gameserver.lobby.LobbyState
+import com.wingedsheep.gameserver.protocol.ClientMessage
+import com.wingedsheep.gameserver.protocol.ErrorCode
+import com.wingedsheep.gameserver.protocol.GameOverReason
+import com.wingedsheep.gameserver.protocol.ServerMessage
+import com.wingedsheep.gameserver.repository.GameRepository
+import com.wingedsheep.gameserver.repository.LobbyRepository
+import com.wingedsheep.engine.limited.BoosterGenerator
+import com.wingedsheep.gameserver.session.PlayerIdentity
+import com.wingedsheep.gameserver.session.PlayerSession
+import com.wingedsheep.gameserver.session.SessionRegistry
+import com.wingedsheep.sdk.model.EntityId
+import org.slf4j.LoggerFactory
+import org.springframework.stereotype.Component
+import org.springframework.web.socket.CloseStatus
+import org.springframework.web.socket.WebSocketSession
+import java.util.UUID
+import java.util.concurrent.TimeUnit
+
+@Component
+class ConnectionHandler(
+    private val sessionRegistry: SessionRegistry,
+    private val gameRepository: GameRepository,
+    private val lobbyRepository: LobbyRepository,
+    private val sender: MessageSender,
+    private val aiGameManager: AiGameManager,
+    private val boosterGenerator: BoosterGenerator,
+    private val tournamentResultSink: com.wingedsheep.gameserver.stats.TournamentResultSink,
+    // Present only when accounts are enabled; resolved lazily so this handler stays usable without it.
+    private val authSupport: ObjectProvider<AuthSupport>,
+    private val magicLinkService: ObjectProvider<MagicLinkService>,
+    private val friendPresenceBroadcaster: ObjectProvider<FriendPresenceBroadcaster>,
+) {
+    private val logger = LoggerFactory.getLogger(ConnectionHandler::class.java)
+
+    /** Resolve the durable account id from a connect message's auth token, or null if absent/invalid. */
+    private fun resolveAccountUserId(authToken: String?): UUID? =
+        authToken?.let { authSupport.ifAvailable?.userOrNull(it)?.userId }
+
+    /**
+     * Link the signed-in account (if any) behind [authToken] to [identity]: stamp its [userId] and
+     * adopt the account's current profile display name as the identity's player name. The server is
+     * authoritative over the display name for signed-in players — the client-sent name is only a
+     * fallback for guests — so games use the name the player set on their profile, not a stale name
+     * carried over from a guest session. No-op when accounts are disabled or the token is
+     * absent/invalid (guest play keeps its connect name).
+     */
+    private fun linkAccount(identity: PlayerIdentity, authToken: String?) {
+        val userId = resolveAccountUserId(authToken) ?: return
+        identity.userId = userId
+        magicLinkService.ifAvailable?.findUser(userId)?.displayName
+            ?.takeIf { it.isNotBlank() }
+            ?.let { identity.playerName = it }
+    }
+
+    /** Tell a signed-in identity's friends that its visible-online state changed (no-op for guests). */
+    private fun broadcastFriendPresence(identity: PlayerIdentity) {
+        identity.userId?.let { friendPresenceBroadcaster.ifAvailable?.broadcastOwnPresence(it) }
+    }
+
+    /** Client IP captured by [RemoteIpHandshakeInterceptor] into the handshake session attributes. */
+    private fun clientIpOf(session: WebSocketSession): String? =
+        session.attributes[com.wingedsheep.gameserver.websocket.RemoteIpHandshakeInterceptor.CLIENT_IP_ATTR] as? String
+
+    private fun buildAvailableSetsList() = boosterGenerator.availableSets.values.map { config ->
+        ServerMessage.AvailableSet(
+            code = config.setCode,
+            name = config.setName,
+            partial = !config.fullyImplemented,
+            extensionSet = config.extensionSet,
+            block = config.block,
+            implementedCount = config.distinctCardCount,
+            releaseDate = config.releaseDate,
+            products = config.extraCardsByProduct.map { (id, cards) ->
+                ServerMessage.SetProduct(id, cards.size)
+            },
+        )
+    }
+
+    fun handleConnect(session: WebSocketSession, message: ClientMessage.Connect) {
+        if (sessionRegistry.getPlayerSession(session.id) != null) {
+            sender.sendError(session, ErrorCode.ALREADY_CONNECTED, "Already connected")
+            return
+        }
+
+        val token = message.token
+        logger.info("Connect request from ${message.playerName}, token: ${token?.take(8) ?: "none"}...")
+        if (token != null) {
+            val existingIdentity = sessionRegistry.getIdentityByToken(token)
+            logger.info("Token lookup result: ${if (existingIdentity != null) "found identity for ${existingIdentity.playerName}" else "no identity found"}")
+            if (existingIdentity != null) {
+                // Re-link the account in case the player signed in (or changed their display name)
+                // since their last connect — this also refreshes the identity's name from the profile.
+                linkAccount(existingIdentity, message.authToken)
+                // Refresh the IP — the player may be reconnecting from a different network.
+                clientIpOf(session)?.let { existingIdentity.clientIp = it }
+                handleReconnect(session, existingIdentity)
+                return
+            }
+        }
+
+        val playerId = EntityId.generate()
+        val identity = PlayerIdentity(
+            playerId = playerId,
+            playerName = message.playerName
+        ).apply {
+            // Adopt the signed-in account's profile name (if any) before the identity is used for a
+            // game; falls back to the client-sent name for guests.
+            linkAccount(this, message.authToken)
+            clientIp = clientIpOf(session)
+        }
+
+        val playerSession = PlayerSession(
+            webSocketSession = session,
+            playerId = playerId,
+            playerName = identity.playerName
+        )
+
+        sessionRegistry.register(identity, session, playerSession)
+
+        logger.info("Player connected: ${identity.playerName} (${playerId.value}), token: ${identity.token}")
+        sender.send(session, ServerMessage.Connected(
+            playerId.value,
+            identity.token,
+            aiEnabled = aiGameManager.isEnabled,
+            availableSets = buildAvailableSetsList()
+        ))
+        broadcastOnlinePlayersCount()
+        broadcastFriendPresence(identity)
+    }
+
+    private fun broadcastOnlinePlayersCount() {
+        val identities = sessionRegistry.getAllIdentities()
+        val count = identities.count { !it.isAi && it.webSocketSession?.isOpen == true }
+        val msg = ServerMessage.OnlinePlayersCount(count)
+        identities.forEach { identity ->
+            if (identity.isAi) return@forEach
+            val ws = identity.webSocketSession
+            if (ws != null && ws.isOpen) sender.send(ws, msg)
+        }
+    }
+
+    private fun handleReconnect(session: WebSocketSession, identity: PlayerIdentity) {
+        logger.info("Player reconnecting: ${identity.playerName} (${identity.playerId.value})")
+
+        identity.disconnectTimer?.cancel(false)
+        identity.disconnectTimer = null
+        val wasDisconnectedFromTournament = identity.disconnectExpiresAt != null
+        identity.disconnectExpiresAt = null
+
+        // Broadcast reconnection to tournament lobby
+        if (wasDisconnectedFromTournament) {
+            val lobbyId = identity.currentLobbyId
+            if (lobbyId != null) {
+                val lobby = lobbyRepository.findLobbyById(lobbyId)
+                if (lobby != null) {
+                    val msg = ServerMessage.TournamentPlayerReconnected(
+                        playerId = identity.playerId.value,
+                        playerName = identity.playerName
+                    )
+                    lobby.players.forEach { (_, playerState) ->
+                        val ws = playerState.identity.webSocketSession
+                        if (ws != null && ws.isOpen) sender.send(ws, msg)
+                    }
+                    for ((_, spectatorIdentity) in lobby.spectators) {
+                        val ws = spectatorIdentity.webSocketSession
+                        if (ws != null && ws.isOpen) sender.send(ws, msg)
+                    }
+                }
+            }
+        }
+
+        // Cancel in-game disconnect timer and notify every other seat — opponents and, in a team
+        // game, the returning player's partner (2-player = the one opponent)
+        if (identity.gameDisconnectTimer != null) {
+            identity.gameDisconnectTimer?.cancel(false)
+            identity.gameDisconnectTimer = null
+
+            val gameSessionId = identity.currentGameSessionId
+            if (gameSessionId != null) {
+                val gameSession = gameRepository.findById(gameSessionId)
+                if (gameSession != null) {
+                    gameSession.getOtherPlayerIds(identity.playerId).forEach { opponentId ->
+                        val opponentSession = gameSession.getPlayerSession(opponentId)
+                        if (opponentSession?.isConnected == true) {
+                            sender.send(opponentSession.webSocketSession, ServerMessage.OpponentReconnected)
+                        }
+                    }
+                }
+            }
+        }
+
+        // If the identity is still attached to a different live socket (same player opened
+        // another tab/device), tell that socket it lost the session and close it. Without
+        // this the old tab silently loses its mapping and every message it sends gets a
+        // confusing NOT_CONNECTED error — or worse, fights this socket for the session.
+        val replacedWs = identity.webSocketSession
+        sessionRegistry.removeOldWsMapping(identity.token)
+
+        identity.webSocketSession = session
+        sessionRegistry.mapWsToToken(session.id, identity.token)
+
+        if (replacedWs != null && replacedWs.id != session.id && replacedWs.isOpen) {
+            logger.info("Session for ${identity.playerName} replaced by a new connection; notifying old socket ${replacedWs.id}")
+            sender.send(replacedWs, ServerMessage.SessionReplaced)
+            runCatching { replacedWs.close(CloseStatus.NORMAL) }
+        }
+
+        val playerSession = PlayerSession(
+            webSocketSession = session,
+            playerId = identity.playerId,
+            playerName = identity.playerName,
+            currentGameSessionId = identity.currentGameSessionId
+        )
+        sessionRegistry.setPlayerSession(session.id, playerSession)
+
+        val context: String?
+        val contextId: String?
+        val lobbyId = identity.currentLobbyId
+        val gameSessionId = identity.currentGameSessionId
+        val quickLobbyId = identity.currentQuickGameLobbyId
+
+        when {
+            lobbyId != null -> {
+                val lobby = lobbyRepository.findLobbyById(lobbyId)
+                when {
+                    lobby == null -> { context = null; contextId = null }
+                    lobby.state == LobbyState.WAITING_FOR_PLAYERS -> { context = "lobby"; contextId = lobbyId }
+                    lobby.state == LobbyState.DRAFTING -> { context = "drafting"; contextId = lobbyId }
+                    lobby.state == LobbyState.DECK_BUILDING -> { context = "deckBuilding"; contextId = lobbyId }
+                    lobby.state == LobbyState.TOURNAMENT_ACTIVE -> { context = "tournament"; contextId = lobbyId }
+                    lobby.state == LobbyState.TOURNAMENT_COMPLETE -> { context = "tournament"; contextId = lobbyId }
+                    else -> { context = null; contextId = null }
+                }
+            }
+            gameSessionId != null && gameRepository.findById(gameSessionId) != null -> {
+                context = "game"; contextId = gameSessionId
+            }
+            else -> { context = null; contextId = null }
+        }
+
+        logger.info("Sending Reconnected message: context=$context, contextId=$contextId, gameSessionId=${identity.currentGameSessionId}")
+        sender.send(session, ServerMessage.Reconnected(
+            playerId = identity.playerId.value,
+            token = identity.token,
+            context = context,
+            contextId = contextId,
+            aiEnabled = aiGameManager.isEnabled,
+            availableSets = buildAvailableSetsList()
+        ))
+        broadcastOnlinePlayersCount()
+        broadcastFriendPresence(identity)
+
+        // Quick-game lobby reconnect is independent of the main context: even if the player has
+        // a stale `currentGameSessionId` or no other context, we still want to put them back in
+        // their lobby. The callback short-circuits with QuickGameLobbyClosed if the lobby is gone.
+        if (quickLobbyId != null && context == null) {
+            quickGameLobbyReconnectCallback?.invoke(session, identity.playerId, quickLobbyId)
+        }
+
+        when (context) {
+            "lobby", "drafting", "deckBuilding", "tournament" -> {
+                lobbyReconnectCallback?.invoke(session, identity, playerSession, lobbyId!!)
+            }
+            "game" -> {
+                val gameSession = gameRepository.findById(gameSessionId!!)
+                logger.info("Reconnecting to game: found=${gameSession != null}, isStarted=${gameSession?.isStarted}, seats=${gameSession?.getPlayers()?.map { it.playerId.value }}")
+                if (gameSession != null) {
+                    // Swap the live socket into the seat this player already has. Don't un-seat them
+                    // first — that would hand back their deck and sideboard mid-game.
+                    gameSession.associatePlayer(playerSession)
+
+                    // Re-sync the spectator-count badge for the reconnecting player.
+                    // Spectator joins/leaves only push to currently-connected players, so a
+                    // mid-game reconnect would otherwise see count = 0 until the next change.
+                    sender.send(session, gameSession.spectatorCountMessage())
+
+                    if (gameSession.isStarted) {
+                        when {
+                            // Player needs to choose cards to put on bottom
+                            gameSession.isAwaitingBottomCards(identity.playerId) -> {
+                                val hand = gameSession.getHand(identity.playerId)
+                                val cardsToBottom = gameSession.getCardsToBottom(identity.playerId)
+                                sender.send(session, ServerMessage.ChooseBottomCards(hand, cardsToBottom))
+                            }
+                            // Player hasn't made mulligan decision yet
+                            gameSession.isMulliganPhase && !gameSession.hasMulliganComplete(identity.playerId) -> {
+                                val decision = gameSession.getMulliganDecision(identity.playerId)
+                                sender.send(session, decision)
+                            }
+                            // Player finished but opponent still in mulligan
+                            gameSession.isMulliganPhase -> {
+                                sender.send(session, ServerMessage.WaitingForOpponentMulligan)
+                            }
+                            // Normal game in progress
+                            else -> {
+                                // Clear delta cache so reconnecting player gets full state
+                                gameSession.clearLastSentState(identity.playerId)
+                                // Use broadcastStateUpdate to trigger auto-pass loop for both players
+                                logger.info("Sending state update for game $gameSessionId")
+                                broadcastStateUpdateCallback?.invoke(gameSession, emptyList())
+                            }
+                        }
+                    } else {
+                        logger.info("Game not started yet, not sending state update")
+                    }
+                }
+            }
+        }
+    }
+
+    fun handleDisconnect(session: WebSocketSession) {
+        val (token, playerSession) = sessionRegistry.removeByWsId(session.id)
+
+        if (token != null) {
+            val identity = sessionRegistry.getIdentityByToken(token)
+            if (identity != null) {
+                // If the identity was replaced by preRegisterIdentity (e.g., new E2E scenario
+                // with the same token), the playerId will differ. Skip disconnect logic to avoid
+                // setting timers on the new identity.
+                if (playerSession != null && identity.playerId != playerSession.playerId) {
+                    logger.info("Identity for token ${token.take(8)} was replaced (different player), ignoring stale disconnect")
+                    return
+                }
+
+                // If the player has already reconnected with a new WebSocket session,
+                // this disconnect is stale (from the old session). Skip disconnect logic
+                // to avoid overwriting the new session and starting spurious timers.
+                val currentWs = identity.webSocketSession
+                if (currentWs != null && currentWs.id != session.id && currentWs.isOpen) {
+                    logger.info("Player ${identity.playerName} already reconnected on a new session, ignoring stale disconnect for ${session.id}")
+                    return
+                }
+
+                // Use longer grace period for tournament players
+                val lobbyId = identity.currentLobbyId
+                val lobby = if (lobbyId != null) lobbyRepository.findLobbyById(lobbyId) else null
+                val isInTournament = lobby?.state == LobbyState.TOURNAMENT_ACTIVE
+                val gracePeriodMinutes = if (isInTournament) {
+                    sessionRegistry.tournamentDisconnectGracePeriodMinutes
+                } else {
+                    sessionRegistry.disconnectGracePeriodMinutes
+                }
+
+                logger.info("Player disconnected: ${identity.playerName} (starting ${gracePeriodMinutes}m grace period, tournament=$isInTournament)")
+                // Only clear the WebSocket session if it still matches the disconnecting session.
+                // If handleReconnect already swapped in a new session, don't overwrite it.
+                if (identity.webSocketSession == null || identity.webSocketSession?.id == session.id) {
+                    identity.webSocketSession = null
+                    broadcastOnlinePlayersCount()
+                    broadcastFriendPresence(identity)
+                } else {
+                    logger.info("Player ${identity.playerName} reconnected during disconnect processing (session changed), ignoring stale disconnect")
+                    return
+                }
+
+                val gracePeriodSeconds = gracePeriodMinutes * 60
+                identity.disconnectExpiresAt = System.currentTimeMillis() + gracePeriodSeconds * 1000
+                identity.disconnectTimer = sessionRegistry.disconnectScheduler.schedule({
+                    handleDisconnectTimeout(token)
+                }, gracePeriodMinutes, TimeUnit.MINUTES)
+
+                // Broadcast to tournament lobby so other players can see disconnect + add time
+                if (isInTournament) {
+                    val msg = ServerMessage.TournamentPlayerDisconnected(
+                        playerId = identity.playerId.value,
+                        playerName = identity.playerName,
+                        secondsRemaining = gracePeriodSeconds.toInt()
+                    )
+                    lobby.players.forEach { (_, playerState) ->
+                        val ws = playerState.identity.webSocketSession
+                        if (ws != null && ws.isOpen) sender.send(ws, msg)
+                    }
+                    for ((_, spectatorIdentity) in lobby.spectators) {
+                        val ws = spectatorIdentity.webSocketSession
+                        if (ws != null && ws.isOpen) sender.send(ws, msg)
+                    }
+                }
+
+                // Start 2-minute in-game auto-concede timer and notify opponent
+                val gameSessionId = identity.currentGameSessionId
+                if (gameSessionId != null) {
+                    val gameSession = gameRepository.findById(gameSessionId)
+                    if (gameSession != null && !gameSession.isGameOver()) {
+                        // Notify every other seat that this one dropped — a Two-Headed Giant partner
+                        // needs to know at least as much as an opponent does, since their team
+                        // forfeits with them if the timer runs out (2-player = the one opponent)
+                        gameSession.getOtherPlayerIds(identity.playerId).forEach { opponentId ->
+                            val opponentSession = gameSession.getPlayerSession(opponentId)
+                            if (opponentSession?.isConnected == true) {
+                                sender.send(opponentSession.webSocketSession,
+                                    ServerMessage.OpponentDisconnected(secondsRemaining = GAME_DISCONNECT_SECONDS))
+                            }
+                        }
+
+                        identity.gameDisconnectTimer = sessionRegistry.disconnectScheduler.schedule({
+                            handleGameDisconnectTimeout(token)
+                        }, GAME_DISCONNECT_SECONDS.toLong(), TimeUnit.SECONDS)
+                    }
+                }
+
+                if (lobby != null) broadcastLobbyUpdate(lobby)
+                return
+            }
+        }
+
+        if (playerSession != null) {
+            logger.info("Player disconnected (no identity): ${playerSession.playerName}")
+            legacyHandleDisconnect(playerSession)
+        }
+    }
+
+    private fun handleDisconnectTimeout(token: String) {
+        // Re-check connectivity before removing — handles race where player reconnected
+        // after the disconnect timer was scheduled but before handleReconnect cancelled it.
+        val preCheckIdentity = sessionRegistry.getIdentityByToken(token)
+        if (preCheckIdentity?.isConnected == true) {
+            logger.info("Disconnect timeout for ${preCheckIdentity.playerName} — player is connected, skipping abandonment")
+            return
+        }
+        // If the identity's disconnect timer was cleared (e.g. by preRegisterIdentity replacing
+        // the old identity), this timer is stale — skip to avoid removing a newer identity.
+        if (preCheckIdentity != null && preCheckIdentity.disconnectExpiresAt == null) {
+            logger.info("Disconnect timeout for token $token — identity was replaced (no disconnectExpiresAt), skipping")
+            return
+        }
+
+        val identity = sessionRegistry.removeIdentity(token) ?: return
+
+        logger.info("Disconnect timeout for ${identity.playerName} — treating as abandonment")
+
+        val lobbyId = identity.currentLobbyId
+        if (lobbyId != null) {
+            val lobby = lobbyRepository.findLobbyById(lobbyId)
+            if (lobby != null) {
+                when (lobby.state) {
+                    LobbyState.WAITING_FOR_PLAYERS, LobbyState.DRAFTING, LobbyState.DECK_BUILDING -> {
+                        lobby.removePlayer(identity.playerId)
+                        // `removePlayer` only really removes while WAITING_FOR_PLAYERS; during a draft
+                        // or deck building it keeps the seat so the player can rejoin. A bracket can
+                        // already exist by then (it is created early, for matchups), so when the seat
+                        // *is* gone its scheduled matches have to be forfeited — otherwise nothing can
+                        // ever start them and they block every opponent behind them.
+                        if (!lobby.players.containsKey(identity.playerId)) {
+                            handleAbandonCallback?.invoke(lobbyId, identity.playerId)
+                        }
+                        if (lobby.playerCount == 0) {
+                            tournamentResultSink.recordAbandoned(lobbyId)
+                            lobbyRepository.removeLobby(lobbyId)
+                            lobbyRepository.removeTournament(lobbyId)
+                        } else {
+                            broadcastLobbyUpdate(lobby)
+                        }
+                    }
+                    LobbyState.TOURNAMENT_ACTIVE -> {
+                        // Handle abandon under the per-lobby lock to avoid racing
+                        // with handleReadyForNextRound and handleRoundComplete
+                        handleAbandonCallback?.invoke(lobbyId, identity.playerId)
+                    }
+                    LobbyState.TOURNAMENT_COMPLETE -> {}
+                }
+            }
+        }
+
+        val gameSessionId = identity.currentGameSessionId
+        if (gameSessionId != null) {
+            val gameSession = gameRepository.findById(gameSessionId)
+            if (gameSession != null) {
+                if (gameSession.getOpponentIds(identity.playerId).isNotEmpty()) {
+                    forfeitFromGame(gameSession, identity.playerId)
+                } else {
+                    gameRepository.remove(gameSessionId)
+                }
+            }
+        }
+    }
+
+    /**
+     * Forfeit [playerId] from [gameSession] on disconnect abandonment. Concedes the seat; if that
+     * ends the game (≤1 player remains, CR 104.2a) it is finalized, otherwise the game continues
+     * for the remaining seats (CR 800.4a) and we rebroadcast so they see the seat leave. In a
+     * 2-player game this always ends it — the degenerate case.
+     */
+    private fun forfeitFromGame(
+        gameSession: com.wingedsheep.gameserver.session.GameSession,
+        playerId: EntityId,
+    ) {
+        gameSession.playerConcedes(playerId)
+        if (gameSession.isGameOver()) {
+            handleGameOverCallback?.invoke(gameSession, GameOverReason.DISCONNECTION)
+        } else {
+            broadcastStateUpdateCallback?.invoke(gameSession, emptyList())
+        }
+    }
+
+    /**
+     * Handles the in-game 2-minute disconnect timer expiring.
+     * Forces the disconnected player to concede.
+     */
+    private fun handleGameDisconnectTimeout(token: String) {
+        val identity = sessionRegistry.getIdentityByToken(token) ?: return
+        identity.gameDisconnectTimer = null
+
+        // Only concede if still disconnected and still in a game.
+        // Check both the identity's WebSocket AND the game session's player session,
+        // to guard against a race where handleDisconnect overwrote the identity's
+        // webSocketSession after handleReconnect had already restored it.
+        if (identity.isConnected) return
+        val gameSessionId = identity.currentGameSessionId ?: return
+        val gameSession = gameRepository.findById(gameSessionId) ?: return
+        if (gameSession.isGameOver()) return
+        val playerSession = gameSession.getPlayerSession(identity.playerId)
+        if (playerSession?.isConnected == true) {
+            logger.info("Game disconnect timeout for ${identity.playerName} — player is connected in game session, skipping auto-concede")
+            return
+        }
+
+        logger.info("Game disconnect timeout for ${identity.playerName} — auto-conceding")
+        forfeitFromGame(gameSession, identity.playerId)
+    }
+
+    /**
+     * Handle a request from a tournament player to add 5 minutes to a disconnected
+     * player's timer, giving them more time to reconnect.
+     */
+    fun handleAddDisconnectTime(session: WebSocketSession, message: ClientMessage.AddDisconnectTime) {
+        val targetPlayerId = EntityId(message.playerId)
+
+        // Find the disconnected player's identity by scanning tokens
+        var targetIdentity: PlayerIdentity? = null
+        var targetToken: String? = null
+        sessionRegistry.forEachIdentity { token, identity ->
+            if (identity.playerId == targetPlayerId && identity.disconnectExpiresAt != null) {
+                targetIdentity = identity
+                targetToken = token
+            }
+        }
+
+        val identity = targetIdentity ?: return
+        val token = targetToken ?: return
+
+        // Cancel old timer
+        identity.disconnectTimer?.cancel(false)
+
+        // Extend by 5 minutes
+        val addedMs = ADD_DISCONNECT_TIME_SECONDS * 1000L
+        val newExpiresAt = (identity.disconnectExpiresAt ?: System.currentTimeMillis()) + addedMs
+        identity.disconnectExpiresAt = newExpiresAt
+        val remainingMs = newExpiresAt - System.currentTimeMillis()
+        val remainingSeconds = (remainingMs / 1000).coerceAtLeast(0).toInt()
+
+        // Schedule new timer
+        identity.disconnectTimer = sessionRegistry.disconnectScheduler.schedule({
+            handleDisconnectTimeout(token)
+        }, remainingMs, TimeUnit.MILLISECONDS)
+
+        logger.info("Added ${ADD_DISCONNECT_TIME_SECONDS}s to disconnect timer for ${identity.playerName} (${remainingSeconds}s remaining)")
+
+        // Broadcast updated timer to lobby
+        val lobbyId = identity.currentLobbyId ?: return
+        val lobby = lobbyRepository.findLobbyById(lobbyId) ?: return
+
+        val msg = ServerMessage.TournamentPlayerDisconnected(
+            playerId = identity.playerId.value,
+            playerName = identity.playerName,
+            secondsRemaining = remainingSeconds
+        )
+        lobby.players.forEach { (_, playerState) ->
+            val ws = playerState.identity.webSocketSession
+            if (ws != null && ws.isOpen) sender.send(ws, msg)
+        }
+        for ((_, spectatorIdentity) in lobby.spectators) {
+            val ws = spectatorIdentity.webSocketSession
+            if (ws != null && ws.isOpen) sender.send(ws, msg)
+        }
+    }
+
+    /**
+     * Handle a request to kick a disconnected tournament player.
+     * Only allowed after the player has been disconnected for 2+ minutes.
+     */
+    fun handleKickPlayer(session: WebSocketSession, message: ClientMessage.KickPlayer) {
+        val targetPlayerId = EntityId(message.playerId)
+
+        var targetIdentity: PlayerIdentity? = null
+        var targetToken: String? = null
+        sessionRegistry.forEachIdentity { token, identity ->
+            if (identity.playerId == targetPlayerId && identity.disconnectExpiresAt != null) {
+                targetIdentity = identity
+                targetToken = token
+            }
+        }
+
+        val identity = targetIdentity ?: return
+        val token = targetToken ?: return
+
+        // Check minimum disconnect time (2 minutes)
+        val disconnectedAt = identity.disconnectExpiresAt?.let { expiresAt ->
+            // Original disconnect time = expiresAt - original grace period
+            // But we can't know the original grace. Instead, track elapsed time differently.
+            // Since we store disconnectExpiresAt, just check: has enough time passed?
+            val lobbyId = identity.currentLobbyId
+            val lobby = if (lobbyId != null) lobbyRepository.findLobbyById(lobbyId) else null
+            val isInTournament = lobby?.state == LobbyState.TOURNAMENT_ACTIVE
+            val originalGracePeriodMs = (if (isInTournament) sessionRegistry.tournamentDisconnectGracePeriodMinutes else sessionRegistry.disconnectGracePeriodMinutes) * 60 * 1000
+            val remainingMs = expiresAt - System.currentTimeMillis()
+            val elapsedMs = originalGracePeriodMs - remainingMs
+            elapsedMs
+        } ?: return
+
+        if (disconnectedAt < KICK_MINIMUM_DISCONNECT_SECONDS * 1000L) {
+            sender.sendError(session, ErrorCode.INVALID_ACTION, "Player must be disconnected for at least 2 minutes before kicking")
+            return
+        }
+
+        logger.info("Player ${identity.playerName} kicked from tournament by vote")
+
+        // Cancel existing timers and immediately trigger timeout
+        identity.disconnectTimer?.cancel(false)
+        identity.disconnectTimer = null
+        identity.gameDisconnectTimer?.cancel(false)
+        identity.gameDisconnectTimer = null
+
+        handleDisconnectTimeout(token)
+    }
+
+    private fun legacyHandleDisconnect(playerSession: PlayerSession) {
+        val gameSessionId = playerSession.currentGameSessionId ?: return
+
+        val gameSession = gameRepository.findById(gameSessionId)
+        if (gameSession != null) {
+            // Anonymous (no-identity) disconnect path — these games are always 2-player.
+            val opponentId = gameSession.getOpponentIds(playerSession.playerId).firstOrNull()
+            if (opponentId != null) {
+                val opponentSession = gameSession.getPlayerSession(opponentId)
+                if (opponentSession?.isConnected == true) {
+                    sender.send(
+                        opponentSession.webSocketSession,
+                        ServerMessage.GameOver(opponentId, GameOverReason.DISCONNECTION, winnerIds = listOf(opponentId))
+                    )
+                }
+            }
+            gameRepository.remove(gameSessionId)
+        }
+
+        val sealedSession = lobbyRepository.findSealedSessionById(gameSessionId)
+        if (sealedSession != null) {
+            val opponentId = sealedSession.getOpponentId(playerSession.playerId)
+            if (opponentId != null) {
+                val opponentPlayerSession = sealedSession.getPlayerSession(opponentId)
+                if (opponentPlayerSession?.isConnected == true) {
+                    sender.send(
+                        opponentPlayerSession.webSocketSession,
+                        ServerMessage.Error(ErrorCode.GAME_NOT_FOUND, "Opponent disconnected")
+                    )
+                }
+            }
+            lobbyRepository.removeSealedSession(gameSessionId)
+        }
+    }
+
+    private fun broadcastLobbyUpdate(lobby: com.wingedsheep.gameserver.lobby.TournamentLobby) {
+        lobby.players.forEach { (playerId, playerState) ->
+            val ws = playerState.identity.webSocketSession
+            if (ws != null && ws.isOpen) {
+                sender.send(ws, lobby.buildLobbyUpdate(playerId))
+            }
+        }
+    }
+
+    // Callbacks set by GameWebSocketHandler to avoid circular dependencies
+    var handleGameOverCallback: ((com.wingedsheep.gameserver.session.GameSession, GameOverReason) -> Unit)? = null
+    var broadcastStateUpdateCallback: ((com.wingedsheep.gameserver.session.GameSession, List<com.wingedsheep.engine.core.GameEvent>) -> Unit)? = null
+    var sendActiveMatchesToPlayerCallback: ((PlayerIdentity, WebSocketSession) -> Unit)? = null
+    var handleAbandonCallback: ((String, EntityId) -> Unit)? = null
+    var restoreSpectatingCallback: ((PlayerIdentity, PlayerSession, WebSocketSession, String) -> Unit)? = null
+    var lobbyReconnectCallback: ((WebSocketSession, PlayerIdentity, PlayerSession, String) -> Unit)? = null
+    var quickGameLobbyReconnectCallback: ((WebSocketSession, EntityId, String) -> Unit)? = null
+
+    companion object {
+        /** Time in seconds before a disconnected player auto-concedes their game */
+        const val GAME_DISCONNECT_SECONDS = 120
+
+        /** Time in seconds added per "Add Time" click */
+        const val ADD_DISCONNECT_TIME_SECONDS = 60
+
+        /** Minimum seconds a player must be disconnected before they can be kicked */
+        const val KICK_MINIMUM_DISCONNECT_SECONDS = 120
+
+        /**
+         * Mana cost string for the sealed/draft deckbuilder. A split card (Rooms, fused split
+         * cards) has no single printed cost — its top-level [CardDefinition.manaCost] is empty —
+         * so we join each face's cost with " // " (e.g. "{U} // {4}{U}"). The client renders that
+         * with a slash separator, and its mana-curve / land-suggestion logic sums the pips across
+         * both halves (a split card's mana value while not on the stack is the combined mana value
+         * of its halves). Null when the card has no printed cost at all (e.g. lands).
+         */
+        private fun sealedManaCost(card: com.wingedsheep.sdk.model.CardDefinition): String? {
+            if (card.layout == com.wingedsheep.sdk.model.CardLayout.SPLIT && card.cardFaces.isNotEmpty()) {
+                return card.cardFaces.joinToString(" // ") { it.manaCost.toString() }
+                    .takeIf { it.isNotBlank() }
+            }
+            return if (card.manaCost.symbols.isEmpty()) null else card.manaCost.toString()
+        }
+
+        fun cardToSealedCardInfo(card: com.wingedsheep.sdk.model.CardDefinition): ServerMessage.SealedCardInfo {
+            val backFace = card.backFace
+            return ServerMessage.SealedCardInfo(
+                name = card.name,
+                manaCost = sealedManaCost(card),
+                typeLine = card.typeLine.toString(),
+                rarity = card.metadata.rarity.name,
+                imageUri = card.metadata.imageUri,
+                power = card.creatureStats?.basePower,
+                toughness = card.creatureStats?.baseToughness,
+                oracleText = if (card.oracleText.isBlank()) null else card.oracleText,
+                rulings = card.metadata.rulings.map { ServerMessage.SealedRuling(it.date, it.text) },
+                isDoubleFaced = backFace != null,
+                backFaceName = backFace?.name,
+                backFaceTypeLine = backFace?.typeLine?.toString(),
+                backFaceOracleText = backFace?.oracleText?.takeIf { it.isNotBlank() },
+                backFaceImageUri = backFace?.metadata?.imageUri,
+                colorIdentity = card.colorIdentity.map { it.name },
+                setCode = card.setCode,
+                collectorNumber = card.metadata.collectorNumber,
+                layout = card.layout.name,
+                isLandscape = card.isLandscapePrint
+            )
+        }
+    }
+}

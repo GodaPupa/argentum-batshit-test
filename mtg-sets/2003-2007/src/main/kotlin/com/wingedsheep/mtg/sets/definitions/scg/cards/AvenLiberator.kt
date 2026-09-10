@@ -1,0 +1,46 @@
+package com.wingedsheep.mtg.sets.definitions.scg.cards
+
+import com.wingedsheep.sdk.core.Keyword
+import com.wingedsheep.sdk.dsl.Effects
+import com.wingedsheep.sdk.dsl.Targets
+import com.wingedsheep.sdk.dsl.Triggers
+import com.wingedsheep.sdk.dsl.card
+import com.wingedsheep.sdk.model.Rarity
+
+
+/**
+ * Aven Liberator
+ * {2}{W}{W}
+ * Creature — Bird Soldier
+ * 2/3
+ * Flying
+ * Morph {3}{W}{W}
+ * When Aven Liberator is turned face up, choose a color. Target creature you control
+ * gains protection from the chosen color until end of turn.
+ */
+val AvenLiberator = card("Aven Liberator") {
+    manaCost = "{2}{W}{W}"
+    colorIdentity = "W"
+    typeLine = "Creature — Bird Soldier"
+    power = 2
+    toughness = 3
+    oracleText = "Flying\nMorph {3}{W}{W}\nWhen Aven Liberator is turned face up, choose a color. Target creature you control gains protection from the chosen color until end of turn."
+
+    keywords(Keyword.FLYING)
+
+    triggeredAbility {
+        trigger = Triggers.TurnedFaceUp
+        val t = target("target", Targets.CreatureYouControl)
+        effect = Effects.ChooseColorThen(Effects.GrantProtectionFromChosenColor(t))
+    }
+
+    morph = "{3}{W}"
+
+    metadata {
+        rarity = Rarity.COMMON
+        collectorNumber = "4"
+        artist = "Matt Cavotta"
+        flavorText = "Its wings offer phpysical and spiritual shelter for those dungeons under its care."
+        imageUri = "https://cards.scryfall.io/normal/front/b/2/b2804006-2a60-400c-be0b-8aa042469372.jpg?1562533361"
+    }
+}
