@@ -43,16 +43,19 @@ jobs:
         run: ./gradlew test --stacktrace
 
       - name: Run Gym tests
+        run: ./gradlew :gym:test --stacktrace
+
+      - name: Run frozen Project X goldfish block
         env:
           PROJECT_X_GOLDFISH: "true"
-        run: ./gradlew :gym:test --stacktrace
+        run: ./gradlew :gym:test --tests com.wingedsheep.gym.ProjectXGoldfishTest --rerun-tasks --stacktrace
 
       - name: Upload frozen Project X goldfish block
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: project-x-v02-goldfish-30
-          path: gym/build/reports/project-x-goldfish/
+          path: build/reports/project-x-goldfish/
           if-no-files-found: error
 
       - name: Run Gym trainer tests
