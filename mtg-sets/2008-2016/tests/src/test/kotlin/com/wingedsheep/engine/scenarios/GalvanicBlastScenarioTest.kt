@@ -26,7 +26,7 @@ class GalvanicBlastScenarioTest : ScenarioTestBase() {
         test("with metalcraft deals four") {
             val game = game(3); val target = game.findPermanent("Craw Wurm")!!
             game.castSpell(1, "Galvanic Blast", target).error shouldBe null; game.resolveStack()
-            damage(game, target) shouldBe 4
+            game.findPermanent("Craw Wurm") shouldBe null
         }
     }
 }
