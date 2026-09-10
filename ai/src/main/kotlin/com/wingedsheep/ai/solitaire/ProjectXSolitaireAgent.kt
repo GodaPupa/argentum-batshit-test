@@ -422,13 +422,14 @@ class ProjectXSolitaireAgent(
     private fun castPriority(state: GameState, cardId: EntityId): Int {
         val missing = analyzer.missingPrimaryRoles(state, playerId)
         val battlefield = analyzer.battlefieldNames(state, playerId)
+        val undeployedPrimary = analyzer.primaryRoles - battlefield
         val name = analyzer.name(state, cardId)
         return when {
             name == ProjectXStateAnalyzer.FALKENRATH_NOBLE ->
                 if (analyzer.primaryRoles.all(battlefield::contains)) 10_000 else 900
             name == ProjectXStateAnalyzer.ESSENCE_WARDEN ->
                 if (analyzer.primaryRoles.all(battlefield::contains)) 9_000 else 700
-            name != null && name in missing -> 8_000 + primaryRoleTieBreak(name)
+            name != null && name in undeployedPrimary -> 8_000 + primaryRoleTieBreak(name)
             name == ProjectXStateAnalyzer.LEAD_THE_STAMPEDE -> if (missing.isNotEmpty()) 5_200 else 500
             name == ProjectXStateAnalyzer.WINDING_WAY -> if (missing.isNotEmpty() || needsLand(state)) 5_000 else 450
             name == ProjectXStateAnalyzer.EVOLUTION_WITNESS ->
