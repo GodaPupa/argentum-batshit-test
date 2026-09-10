@@ -3,7 +3,7 @@ name: Argentum Validation
 on:
   workflow_dispatch:
   push:
-    branches: [ "main", "mayhem/project-x" ]
+    branches: [ "main" ]
 
 permissions:
   contents: read
@@ -45,18 +45,6 @@ jobs:
       - name: Run Gym tests
         run: ./gradlew :gym:test --stacktrace
 
-      - name: Run frozen Project X goldfish block
-        env:
-          PROJECT_X_GOLDFISH: "true"
-        run: ./gradlew :gym:test --tests com.wingedsheep.gym.ProjectXGoldfishTest --rerun-tasks --stacktrace
-
-      - name: Upload frozen Project X goldfish block
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: project-x-v02-goldfish-30
-          path: build/reports/project-x-goldfish/
-          if-no-files-found: error
 
       - name: Run Gym trainer tests
         run: ./gradlew :gym-trainer:test --stacktrace
