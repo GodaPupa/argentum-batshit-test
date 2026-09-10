@@ -27,13 +27,15 @@ class BatshitOptimizationExperimentBTest : FunSpec({
     test("raw trace assertion ignores proximate-decision summary text") {
         val rawCast = "T2 Batshit cast Kessig Flamebreather"
         val rawLand = "T1 Batshit play Razortrap Gorge"
+        val affinityCast = "T3 Affinity cast Myr Enforcer"
         val trace = buildString {
             appendLine(rawLand)
             appendLine(rawCast)
+            appendLine(affinityCast)
             appendLine("Proximate last meaningful decision: $rawCast")
         }
 
-        rawTurnStampedPlayAndCastLines(trace) shouldBe listOf(rawLand, rawCast)
+        rawTurnStampedPlayAndCastLines(trace) shouldBe listOf(rawLand, rawCast, affinityCast)
         assertRawPlayAndCastLinesAreTurnStamped(trace)
         shouldThrow<AssertionError> {
             assertRawPlayAndCastLinesAreTurnStamped("Tbad Batshit cast Kessig Flamebreather")
@@ -75,7 +77,7 @@ class BatshitOptimizationExperimentBTest : FunSpec({
     }
 })
 
-private val rawTurnStampedPlayOrCast = Regex("^T\\d+ (Batshit|Red) (play|cast) ")
+private val rawTurnStampedPlayOrCast = Regex("^T\\d+ \\S+ (play|cast) ")
 
 internal fun rawTurnStampedPlayAndCastLines(trace: String): List<String> =
     trace.lineSequence().filter { line ->

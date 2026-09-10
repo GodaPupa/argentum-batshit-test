@@ -63,16 +63,6 @@ class BatshitGrixisAffinitySmokeTest : FunSpec({
             )
         }
 
-        reports.size shouldBe 10
-        reports.forEach { report ->
-            report.completed.shouldBeTrue()
-            report.actions shouldBeGreaterThan 0
-            assertTriggerSummaryMatchesRawEvents(report.log)
-            assertRawPlayAndCastLinesAreTurnStamped(report.log)
-            assertAffinityCostTelemetry(report.log)
-            assertGalvanicBlastTelemetry(report.log)
-        }
-
         val summaries = reports.mapIndexed { index, report ->
             AffinitySmokeSummary.from(index + 1, rows[index], report)
         }
@@ -83,6 +73,16 @@ class BatshitGrixisAffinitySmokeTest : FunSpec({
         Files.writeString(output.resolve("games.jsonl"), summaries.joinToString("\n") { it.toJson() } + "\n")
         Files.writeString(output.resolve("smoke-report.md"), buildHumanReport(rows, summaries))
         println(buildHumanReport(rows, summaries))
+
+        reports.size shouldBe 10
+        reports.forEach { report ->
+            report.completed.shouldBeTrue()
+            report.actions shouldBeGreaterThan 0
+            assertTriggerSummaryMatchesRawEvents(report.log)
+            assertRawPlayAndCastLinesAreTurnStamped(report.log)
+            assertAffinityCostTelemetry(report.log)
+            assertGalvanicBlastTelemetry(report.log)
+        }
     }
 })
 
