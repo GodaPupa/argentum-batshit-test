@@ -142,9 +142,9 @@ class ProjectXSolitaireAgent(
                 ProjectXStateAnalyzer.BIRCHLORE_RANGERS -> when {
                     needsBlackMana(state, hand) -> 7_000
                     analyzer.secondaryWitnessSequence(state, playerId) != null -> 6_900
-                    else -> reusableManaActivationPriority(state, action)
+                    else -> reusableManaActivationPriority(state, legal, action)
                 }
-                else -> reusableManaActivationPriority(state, action)
+                else -> reusableManaActivationPriority(state, legal, action)
             }
 
             is PlayLand -> 1_000 + landPriority(state, analyzer.name(state, action.cardId))
@@ -389,9 +389,13 @@ class ProjectXSolitaireAgent(
      * enumerator before and after the real mana ability, so colored requirements and actual payment
      * rules remain authoritative.
      */
-    private fun reusableManaActivationPriority(state: GameState, action: ActivateAbility): Int {
+    private fun reusableManaActivationPriority(
+        state: GameState,
+        legal: LegalAction,
+        action: ActivateAbility,
+    ): Int {
         val source = state.getEntity(action.sourceId)?.get<CardComponent>() ?: return 0
-        if (!source.isCreature || !isReusableCreatureManaSource(source.name)) return 0
+        if (!source.isCreature || !legal.isManaAbility) return 0
 
         val before = affordableCastIds(state)
         val simulated = simulator.simulate(state, action)
