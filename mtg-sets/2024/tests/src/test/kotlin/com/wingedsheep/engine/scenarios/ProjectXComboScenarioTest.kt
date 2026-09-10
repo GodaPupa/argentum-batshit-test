@@ -34,6 +34,9 @@ class ProjectXComboScenarioTest : FunSpec({
     fun GameTestDriver.finishCycle(player: EntityId, opponent: EntityId) {
         var safety = 0
         while ((stackSize > 0 || pendingDecision != null) && safety++ < 30) {
+            // A lethal Noble trigger ends the game immediately; remaining stack objects do not
+            // resolve and no player can take another priority action.
+            if (getLifeTotal(player) <= 0 || getLifeTotal(opponent) <= 0) break
             val decision = pendingDecision
             if (decision is ChooseTargetsDecision) {
                 val elite = findPermanent(player, "Safehold Elite")
