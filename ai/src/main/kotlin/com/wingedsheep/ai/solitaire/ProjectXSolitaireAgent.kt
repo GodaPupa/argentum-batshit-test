@@ -1,6 +1,7 @@
 package com.wingedsheep.ai.solitaire
 
 import com.wingedsheep.ai.engine.AIPlayer
+import com.wingedsheep.ai.engine.isOpponentTo
 import com.wingedsheep.engine.core.*
 import com.wingedsheep.engine.legalactions.EnumerationMode
 import com.wingedsheep.engine.legalactions.LegalAction
