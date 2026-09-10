@@ -30,7 +30,29 @@ class IvyLaneDenizenScenarioTest : FunSpec({
         val elves = putCardInHand(player, "Llanowar Elves")
         giveMana(player, Color.GREEN, 1)
         castSpell(player, elves).isSuccess shouldBe true
-        bothPass()
+        val firstPriorityPlayer = state.priorityPlayerId!!
+        try {
+            passPriority(firstPriorityPlayer).isSuccess shouldBe true
+        } catch (cause: IllegalStateException) {
+            throw AssertionError(
+                "Ivy diagnostic: first pass failed; priority=$firstPriorityPlayer, " +
+                    "step=${state.step}, stackSize=$stackSize, pendingDecision=$pendingDecision, " +
+                    "bears=${findPermanent(player, \"Grizzly Bears\")}, ivy=${findPermanent(player, \"Ivy Lane Denizen\")}",
+                cause
+            )
+        }
+
+        val secondPriorityPlayer = state.priorityPlayerId!!
+        try {
+            passPriority(secondPriorityPlayer).isSuccess shouldBe true
+        } catch (cause: IllegalStateException) {
+            throw AssertionError(
+                "Ivy diagnostic: second pass/resolution failed; priority=$secondPriorityPlayer, " +
+                    "step=${state.step}, stackSize=$stackSize, pendingDecision=$pendingDecision, " +
+                    "bears=${findPermanent(player, \"Grizzly Bears\")}, ivy=${findPermanent(player, \"Ivy Lane Denizen\")}",
+                cause
+            )
+        }
     }
 
     test("another green creature entering creates a targeted counter trigger") {
