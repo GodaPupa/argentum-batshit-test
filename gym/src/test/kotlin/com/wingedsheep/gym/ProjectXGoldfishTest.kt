@@ -47,7 +47,8 @@ class ProjectXGoldfishTest : FunSpec({
         result.auditErrors shouldBe emptyList()
         (result.stopReason != "ILLEGAL_ACTION").shouldBeTrue()
         result.castAttempts.any {
-            it.actualAutoPaymentResult.contains("POLICY_PREFLIGHT_REJECTED:Not enough mana to auto-pay")
+            it.spell == "Falkenrath Noble" &&
+                it.actualAutoPaymentResult.contains("POLICY_PREFLIGHT_REJECTED:Not enough mana to auto-pay")
         }.shouldBeTrue()
         result.castAttempts.none { it.actualAutoPaymentResult.startsWith("REJECTED:") }.shouldBeTrue()
     }
@@ -691,12 +692,13 @@ private fun castAttemptBeforeExecution(
     }
     val full = enumerator.enumerate(state, playerId, EnumerationMode.FULL)
     val castOffer = full.firstOrNull { (it.action as? CastSpell)?.cardId == action.cardId }
+    val autoTapPreview = castOffer?.autoTapPreview
     val quirionLines = full.filter { legal ->
         val activate = legal.action as? ActivateAbility ?: return@filter false
         analyzer.name(state, activate.sourceId) == ProjectXStateAnalyzer.QUIRION_RANGER && legal.affordable
     }.map { it.description }
     val proposed = when {
-        castOffer?.autoTapPreview != null -> "AUTO_TAP:${castOffer.autoTapPreview.map(name)}"
+        autoTapPreview != null -> "AUTO_TAP:${autoTapPreview.map(name)}"
         action.paymentStrategy is PaymentStrategy.FromPool -> "FROM_POOL"
         action.paymentStrategy is PaymentStrategy.Explicit -> "EXPLICIT:${action.paymentStrategy}"
         else -> "AUTO_PAY:NO_ORDINARY_SOURCE_PLAN"
