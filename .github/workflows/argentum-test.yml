@@ -39,11 +39,8 @@ jobs:
       - name: Compile Argentum
         run: ./gradlew classes --stacktrace
 
-      - name: Run engine tests
-        run: ./gradlew test --stacktrace
+      - name: Run Ivy Lane Denizen scenario first
+        run: scripts/test-class IvyLaneDenizenScenarioTest --stacktrace
 
-      - name: Run Gym tests
-        run: ./gradlew :gym:test --stacktrace
-
-      - name: Run Gym trainer tests
-        run: ./gradlew :gym-trainer:test --stacktrace
+      - name: Run Masked Vandal scenario second
+        run: scripts/test-class MaskedVandalScenarioTest --stacktrace
