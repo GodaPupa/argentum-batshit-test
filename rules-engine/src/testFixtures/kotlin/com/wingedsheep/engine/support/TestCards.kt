@@ -735,8 +735,6 @@ object TestCards {
         StokeBrillianceToken,
         // Enchantments
         TestEnchantment,
-        // Persist
-        SafeholdElite,
         // Double-faced cards
         TestDfcFront,
         // Transform test helper
