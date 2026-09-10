@@ -32,24 +32,30 @@ class IvyLaneDenizenScenarioTest : FunSpec({
         castSpell(player, elves).isSuccess shouldBe true
         val firstPriorityPlayer = state.priorityPlayerId!!
         try {
-            passPriority(firstPriorityPlayer).isSuccess shouldBe true
-        } catch (cause: IllegalStateException) {
+            val result = passPriority(firstPriorityPlayer)
+            if (result.error != null) throw AssertionError("First pass returned ${result.error}")
+        } catch (cause: Throwable) {
+            val bears = findPermanent(player, "Grizzly Bears")
+            val ivy = findPermanent(player, "Ivy Lane Denizen")
             throw AssertionError(
                 "Ivy diagnostic: first pass failed; priority=$firstPriorityPlayer, " +
                     "step=${state.step}, stackSize=$stackSize, pendingDecision=$pendingDecision, " +
-                    "bears=${findPermanent(player, \"Grizzly Bears\")}, ivy=${findPermanent(player, \"Ivy Lane Denizen\")}",
+                    "bears=$bears, ivy=$ivy",
                 cause
             )
         }
 
         val secondPriorityPlayer = state.priorityPlayerId!!
         try {
-            passPriority(secondPriorityPlayer).isSuccess shouldBe true
-        } catch (cause: IllegalStateException) {
+            val result = passPriority(secondPriorityPlayer)
+            if (result.error != null) throw AssertionError("Second pass returned ${result.error}")
+        } catch (cause: Throwable) {
+            val bears = findPermanent(player, "Grizzly Bears")
+            val ivy = findPermanent(player, "Ivy Lane Denizen")
             throw AssertionError(
                 "Ivy diagnostic: second pass/resolution failed; priority=$secondPriorityPlayer, " +
                     "step=${state.step}, stackSize=$stackSize, pendingDecision=$pendingDecision, " +
-                    "bears=${findPermanent(player, \"Grizzly Bears\")}, ivy=${findPermanent(player, \"Ivy Lane Denizen\")}",
+                    "bears=$bears, ivy=$ivy",
                 cause
             )
         }
