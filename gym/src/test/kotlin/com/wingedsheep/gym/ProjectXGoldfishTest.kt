@@ -55,6 +55,7 @@ class ProjectXGoldfishTest : FunSpec({
         }
         seeds.size shouldBe 30
         seeds.distinct().size shouldBe 30
+        seeds.none(previouslyUsedProjectXOrBatshitSeeds(seedPath)::contains).shouldBeTrue()
 
         val registry = projectXRegistry()
         val games = seeds.mapIndexed { index, seed -> runProjectXGoldfish(registry, seed, index + 1) }
@@ -563,4 +564,26 @@ private fun projectXRegistry(): CardRegistry = CardRegistry().apply {
         register(set.cards)
         register(set.basicLands)
     }
+}
+
+private fun previouslyUsedProjectXOrBatshitSeeds(current: Path): Set<Long> {
+    val csvSeeds = Files.list(current.parent).use { paths ->
+        paths.filter { path ->
+            path != current && path.fileName.toString().contains("seed", ignoreCase = true) &&
+                path.fileName.toString().endsWith(".csv")
+        }.toList().flatMap { path ->
+            Files.readAllLines(path).drop(1).filter(String::isNotBlank).map { it.substringAfterLast(',').toLong() }
+        }.toSet()
+    }
+    val developmentRegressionAndSmokeSeeds = setOf(
+        // Project X harness-development seed. It is permanently excluded from the final block.
+        0x5058_4445_5600_0001L,
+        // Batshit development/regression/smoke seeds that predate the frozen CSV vectors.
+        0xBA75_0001L, 0xBA75_0002L, 0xBA75_0003L, 0xBA75_0004L, 0xBA75_0005L,
+        0x033D_F483_8D71_94AL, 0x0B97_FCDF_E979_9C87L, 0x0ED3_B535_8E12_DED3L,
+        0x0AB1_B251_D164_E979L, 0x0A48_B5B9_0FAF_A44CL, 0x0679_B6F9_EEF7_74BCL,
+        0x0766_3C65_A87D_6DD5L, 0x03A2_548F_BBB2_DECL, 0x0F3B_7E43_F328_8345L,
+        0x0906_6DF1_0204_FD56L,
+    )
+    return csvSeeds + developmentRegressionAndSmokeSeeds
 }
