@@ -513,6 +513,15 @@ internal fun runProjectXGoldfish(registry: CardRegistry, seed: Long, gameNumber:
         val step = when (result) {
             is ExactlyOneSubmissionResult.Applied -> {
                 castSnapshot?.let { castAttempts += it.copy(actualAutoPaymentResult = "APPLIED") }
+                if (acting == projectId && action is SubmitDecision && pendingHeraldSearch != null &&
+                    ((decision is SearchLibraryDecision || decision is SelectCardsDecision) &&
+                        decision.context.sourceName == ProjectXStateAnalyzer.WIREWOOD_HERALD)
+                ) {
+                    val heraldSearch = pendingHeraldSearch!!
+                    heraldTriggerResolved += "T${heraldSearch.first}:search selection accepted"
+                    heraldTargets += heraldSearch.second.map { "$it@T${heraldSearch.first}" }
+                    pendingHeraldSearch = null
+                }
                 if (acting == projectId && action is SubmitDecision &&
                     (decision is ChooseModeDecision || decision is ChooseOptionDecision) &&
                     selection?.name == ProjectXStateAnalyzer.WINDING_WAY
@@ -565,12 +574,6 @@ internal fun runProjectXGoldfish(registry: CardRegistry, seed: Long, gameNumber:
             }
         }
         events.filterIsInstance<ResolvedEvent>().forEach { event ->
-            val heraldSearch = pendingHeraldSearch
-            if (heraldSearch != null && event.name.contains(ProjectXStateAnalyzer.WIREWOOD_HERALD)) {
-                heraldTriggerResolved += "T${heraldSearch.first}:${event.name}"
-                heraldTargets += heraldSearch.second.map { "$it@T${heraldSearch.first}" }
-                pendingHeraldSearch = null
-            }
             val current = selection
             if (current != null && event.name == current.name) {
                 val line = renderSelectionLine(current)
