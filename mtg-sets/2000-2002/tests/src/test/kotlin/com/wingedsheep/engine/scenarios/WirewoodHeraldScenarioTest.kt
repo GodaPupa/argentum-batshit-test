@@ -7,7 +7,7 @@ import io.kotest.matchers.shouldBe
 
 class WirewoodHeraldScenarioTest : ScenarioTestBase() {
     init {
-        listOf("Ivy Lane Denizen", "Evolution Witness", "Nettle Sentinel",
+        listOf("Safehold Elite", "Ivy Lane Denizen", "Evolution Witness", "Nettle Sentinel",
             "Birchlore Rangers", "Essence Warden", "Masked Vandal", "Quirion Ranger").forEach { role ->
             test("dying may tutor the Project X Elf role $role") {
                 val game = scenario().withPlayers("Player1", "Player2")
