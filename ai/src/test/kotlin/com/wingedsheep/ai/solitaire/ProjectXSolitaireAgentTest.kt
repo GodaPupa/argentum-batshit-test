@@ -268,11 +268,15 @@ class ProjectXSolitaireAgentTest : ScenarioTestBase() {
                 .build()
             val solitaire = agent(game)
 
+            val mana = solitaire.chooseAction(game.state).shouldBeInstanceOf<ActivateAbility>()
+            name(game, mana.sourceId) shouldBe "Llanowar Elves"
+            game.execute(mana).error shouldBe null
+
             val cast = solitaire.chooseAction(game.state).shouldBeInstanceOf<CastSpell>()
             name(game, cast.cardId) shouldBe "Ivy Lane Denizen"
         }
 
-        test("Ivy Lane Denizen auto-payment consumes Llanowar mana after three lands") {
+        test("Llanowar activation funds Ivy Lane Denizen after three lands") {
             val game = scenario().withPlayers()
                 .withCardOnBattlefield(1, "Llanowar Elves", summoningSickness = false)
                 .withCardInHand(1, "Ivy Lane Denizen")
@@ -280,6 +284,11 @@ class ProjectXSolitaireAgentTest : ScenarioTestBase() {
                 .build()
             val solitaire = agent(game)
             val elves = game.findPermanent("Llanowar Elves")!!
+
+            val mana = solitaire.chooseAction(game.state).shouldBeInstanceOf<ActivateAbility>()
+            name(game, mana.sourceId) shouldBe "Llanowar Elves"
+            game.execute(mana).error shouldBe null
+            game.state.getEntity(elves)!!.has<TappedComponent>().shouldBeTrue()
 
             val cast = solitaire.chooseAction(game.state).shouldBeInstanceOf<CastSpell>()
             game.execute(cast).error shouldBe null
@@ -327,10 +336,13 @@ class ProjectXSolitaireAgentTest : ScenarioTestBase() {
             val solitaire = agent(game)
             val nettle = game.findPermanent("Nettle Sentinel")!!
 
-            game.castSpell(1, "Llanowar Elves").error shouldBe null
+            val castResult = game.castSpell(1, "Llanowar Elves")
+            check(castResult.error == null) { "Canonical Llanowar cast failed: ${castResult.error}" }
             resolveWith(solitaire, game)
 
-            game.state.getEntity(nettle)!!.has<TappedComponent>().shouldBeFalse()
+            check(!game.state.getEntity(nettle)!!.has<TappedComponent>()) {
+                "Nettle Sentinel remained tapped after resolving a green Llanowar spell"
+            }
         }
 
         test("Birchlore tap selection accounts for Nettle untapping after an actual green spell") {
