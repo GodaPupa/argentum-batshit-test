@@ -54,7 +54,9 @@ class ProjectXSolitaireAgentTest : ScenarioTestBase() {
             } else {
                 game.execute(PassPriority(game.state.priorityPlayerId!!))
             }
-            result.error shouldBe null
+            check(result.error == null) {
+                "Project X resolution transition failed: action=${result.events}; error=${result.error}"
+            }
         }
         error("Project X resolution did not become quiet within $limit transitions")
     }
