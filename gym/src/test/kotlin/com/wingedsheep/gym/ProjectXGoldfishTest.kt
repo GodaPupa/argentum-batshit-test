@@ -728,12 +728,14 @@ internal fun castAttemptBeforeExecution(
         autoTapPreview != null -> "AUTO_TAP:${autoTapPreview.map(name)}"
         action.paymentStrategy is PaymentStrategy.FromPool -> "FROM_POOL"
         action.paymentStrategy is PaymentStrategy.Explicit -> "EXPLICIT:${action.paymentStrategy}"
+        (pool?.total ?: 0) > 0 -> "AUTO_PAY:EXISTING_POOL"
         else -> "AUTO_PAY:NO_ORDINARY_SOURCE_PLAN"
     }
     val legality = when {
         castOffer == null -> "NO_MATCHING_ENUMERATED_CAST"
         !castOffer.affordable -> "ENUMERATOR_UNAFFORDABLE"
         castOffer.autoTapPreview != null -> "AFFORDABLE_WITH_AUTO_TAP_PREVIEW"
+        (pool?.total ?: 0) > 0 -> "AFFORDABLE_FROM_EXISTING_POOL"
         birchlore != null && untappedElves.size >= 2 ->
             "AFFORDABLE_VIA_EXPLICIT_BIRCHLORE_MANA; AUTO_PAY_CANNOT_ACTIVATE_IT"
         else -> "ENUMERATOR_AFFORDABLE; NO_AUTO_TAP_PREVIEW"

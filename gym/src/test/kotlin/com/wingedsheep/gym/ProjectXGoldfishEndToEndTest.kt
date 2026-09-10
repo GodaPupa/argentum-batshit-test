@@ -12,6 +12,7 @@ import com.wingedsheep.engine.core.OptionChosenResponse
 import com.wingedsheep.engine.core.CastSpell
 import com.wingedsheep.engine.support.ScenarioTestBase
 import com.wingedsheep.engine.legalactions.LegalActionEnumerator
+import com.wingedsheep.engine.state.components.player.ManaPoolComponent
 import io.kotest.matchers.booleans.shouldBeFalse
 import io.kotest.matchers.booleans.shouldBeTrue
 import io.kotest.matchers.shouldBe
@@ -145,6 +146,26 @@ class ProjectXGoldfishEndToEndTest : ScenarioTestBase() {
 
             trace.preExecutionLegalityReason shouldBe "AFFORDABLE_WITH_AUTO_TAP_PREVIEW"
             trace.proposedManaPaymentPlan shouldBe "AUTO_TAP:[Forest]"
+        }
+
+        test("cast telemetry identifies payment from an existing mana pool") {
+            val game = scenario().withPlayers()
+                .withCardInHand(1, "Carrion Feeder")
+                .build()
+            game.state = game.state.updateEntity(game.player1Id) { entity ->
+                entity.with(ManaPoolComponent(black = 1))
+            }
+            val enumerator = LegalActionEnumerator.create(cardRegistry)
+            val offer = enumerator.enumerate(game.state, game.player1Id)
+                .single { (it.action as? CastSpell)?.cardId == game.findCardsInHand(1, "Carrion Feeder").single() }
+            val analyzer = ProjectXSolitaireAgent(cardRegistry, game.player1Id).analyzer
+            val trace = castAttemptBeforeExecution(
+                game.state, game.player1Id, offer.action as CastSpell, 1, "Carrion Feeder",
+                analyzer, enumerator,
+            ) { id -> analyzer.name(game.state, id) ?: id.toString() }
+
+            trace.preExecutionLegalityReason shouldBe "AFFORDABLE_FROM_EXISTING_POOL"
+            trace.proposedManaPaymentPlan shouldBe "AUTO_PAY:EXISTING_POOL"
         }
 
         test("bottleneck telemetry separates color, Birchlore, tapland, and total-mana constraints") {
