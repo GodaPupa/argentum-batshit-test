@@ -20,6 +20,10 @@ import io.kotest.matchers.collections.shouldContainExactlyInAnyOrder
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.types.shouldBeInstanceOf
 
+private class DeepSacrificeDidNotCast : RuntimeException()
+private class DeepSacrificeChoseWrongSpell : RuntimeException()
+private class DeepSacrificeChoseWrongPermanent : RuntimeException()
+
 /** Deterministic readiness probes for the general strategic decisions Grixis Affinity requires. */
 class GrixisAffinityAgentDecisionTest : ScenarioTestBase() {
     private val profile = AiProfile.PRODUCTION_CANDIDATE_EXPIRING
@@ -229,9 +233,14 @@ class GrixisAffinityAgentDecisionTest : ScenarioTestBase() {
                 .withCardInHand(2, "Lightning Bolt").withLandsOnBattlefield(2, "Mountain", 1).build()
             game.castSpellTargetingPlayer(2, "Lightning Bolt", 1).error shouldBe null
             game.execute(PassPriority(game.player2Id)).error shouldBe null
-            val action = ai(game).chooseAction(game.state).shouldBeInstanceOf<CastSpell>()
-            name(game, action.cardId) shouldBe "Reckoner's Bargain"
-            name(game, action.additionalCostPayment!!.sacrificedPermanents.single()) shouldBe "Ichor Wellspring"
+            val action = ai(game).chooseAction(game.state) as? CastSpell
+                ?: throw DeepSacrificeDidNotCast()
+            if (name(game, action.cardId) != "Reckoner's Bargain") {
+                throw DeepSacrificeChoseWrongSpell()
+            }
+            if (name(game, action.additionalCostPayment!!.sacrificedPermanents.single()) != "Ichor Wellspring") {
+                throw DeepSacrificeChoseWrongPermanent()
+            }
         }
 
         test("large free affinity threat is deployed while one-mana interaction is held") {
