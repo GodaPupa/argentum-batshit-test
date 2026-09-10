@@ -4,6 +4,8 @@
 
 Project X Goldfish Sample #1 is formally **accepted as performance evidence** for the frozen Project X v0.2 deck and validated solitaire laboratory.
 
+Sample #1's 30 seeds are permanently retired from all future performance and optimization testing. They remain preserved only as this accepted Sample #1 evidence.
+
 The corrected original 30-seed replay remains accepted strictly as regression validation, and those 30 seeds are permanently retired from performance sampling. Sample #1 used a completely new frozen vector. No game was rerun, replaced, excluded, or substituted, and no deck or policy change occurred during the block.
 
 - Accepted laboratory tip: `a3c205f3a67d7dc3038d24633289831943d9710a`

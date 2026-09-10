@@ -38,6 +38,7 @@ import kotlin.time.Duration.Companion.minutes
 
 private const val PROJECT_X_GOLDFISH_ENV = "PROJECT_X_GOLDFISH"
 private const val PROJECT_X_GOLDFISH_SAMPLE_1_ENV = "PROJECT_X_GOLDFISH_SAMPLE_1"
+private const val PROJECT_X_GOLDFISH_SAMPLE_2_ENV = "PROJECT_X_GOLDFISH_SAMPLE_2"
 private const val PROJECT_X_HORIZON = 12
 
 /**
@@ -91,6 +92,17 @@ class ProjectXGoldfishTest : FunSpec({
             seedPath = Path.of("src", "test", "resources", "project-x-goldfish-sample-1-seeds.csv"),
             sampleName = "Goldfish Sample #1",
             reportStem = "project-x-v02-goldfish-sample-1",
+        )
+    }
+
+    test("Project X v0.2 Goldfish Sample 2").config(
+        enabled = System.getenv(PROJECT_X_GOLDFISH_SAMPLE_2_ENV) == "true",
+        timeout = 45.minutes,
+    ) {
+        executeProjectXGoldfishBlock(
+            seedPath = Path.of("src", "test", "resources", "project-x-goldfish-sample-2-seeds.csv"),
+            sampleName = "Goldfish Sample #2",
+            reportStem = "project-x-v02-goldfish-sample-2",
         )
     }
 })
@@ -181,6 +193,7 @@ internal data class ProjectXGoldfishGame(
     val khalniGardenTempoEvents: List<String>,
     val hauntedMireTempoEvents: List<String>,
     val exactlyOneRoleMissingTurns: List<Int>,
+    val primaryRoleShortStates: List<PrimaryRoleShortState>,
     val functionalWithoutCombo: String,
     val secondaryWitnessLoopTurn: Int?,
     val actions: Int,
@@ -242,6 +255,14 @@ internal data class ManaConstraintTelemetry(
 )
 
 @Serializable
+internal data class PrimaryRoleShortState(
+    val turn: Int,
+    val missingRole: String,
+    val zones: List<String>,
+    val attributions: List<String>,
+)
+
+@Serializable
 internal data class ProjectXGoldfishSummary(
     val actualWinsByT4: Int,
     val actualWinsByT5: Int,
@@ -278,6 +299,8 @@ internal data class ProjectXGoldfishSummary(
     val functionalWithoutComboRate: Double,
     val exactlyOneRoleMissingGames: Int,
     val exactlyOneRoleMissingRate: Double,
+    val roleShortGamesByMissingRole: Map<String, Int>,
+    val roleShortGamesByAttribution: Map<String, Int>,
     val heraldContributionGames: Int,
     val witnessContributionGames: Int,
     val birchloreContributionGames: Int,
@@ -395,6 +418,7 @@ internal fun runProjectXGoldfish(registry: CardRegistry, seed: Long, gameNumber:
     val stranded = linkedSetOf<String>()
     val taplands = mutableListOf<String>()
     val oneMissingTurns = sortedSetOf<Int>()
+    val roleShortStates = linkedSetOf<PrimaryRoleShortState>()
     val audit = mutableListOf<String>()
     val manaConstraints = linkedSetOf<ManaConstraintTelemetry>()
     val castAttempts = mutableListOf<CastAttemptTelemetry>()
@@ -407,6 +431,12 @@ internal fun runProjectXGoldfish(registry: CardRegistry, seed: Long, gameNumber:
     val heraldTriggerCreated = mutableListOf<String>()
     val heraldTriggerResolved = mutableListOf<String>()
     val heraldAvailability = linkedSetOf<HeraldAvailability>()
+    val primaryRolesSeen = mutableSetOf<String>().apply {
+        addAll(keptHand.filter { it in analyzer.primaryRoles })
+    }
+    val primaryRolesTutored = mutableSetOf<String>()
+    val primaryRoleDeparture = mutableMapOf<String, String>()
+    val primaryRoleAttackers = mutableSetOf<EntityId>()
     var selection: SelectionTelemetry? = null
     var pendingWitnessTarget: Pair<Int, String>? = null
     var pendingHeraldSearch: Pair<Int, List<String>>? = null
@@ -459,6 +489,13 @@ internal fun runProjectXGoldfish(registry: CardRegistry, seed: Long, gameNumber:
             val constraints = classifyManaConstraints(gameState, projectId, analyzer, telemetryEnumerator, turn)
             manaConstraints += constraints
             stranded += constraints.filter { it.category == "GENUINE_COLOR_UNCASTABLE" }.map { "${it.spell}@T$turn" }
+        }
+        classifyPrimaryRoleShortState(
+            gameState, projectId, analyzer, turn, manaConstraints,
+            primaryRolesSeen, primaryRolesTutored, primaryRoleDeparture,
+        )?.let { snapshot ->
+            roleShortStates.removeIf { it.turn == snapshot.turn && it.missingRole == snapshot.missingRole }
+            roleShortStates += snapshot
         }
         val outcome = agent.outcome(gameState)
         if (outcome.completeInfiniteEngine && engineTurn == null) {
@@ -602,6 +639,8 @@ internal fun runProjectXGoldfish(registry: CardRegistry, seed: Long, gameNumber:
                     val heraldSearch = pendingHeraldSearch!!
                     heraldTriggerResolved += "T${heraldSearch.first}:search selection accepted"
                     heraldTargets += heraldSearch.second.map { "$it@T${heraldSearch.first}" }
+                    primaryRolesTutored += heraldSearch.second.filter { it in analyzer.primaryRoles }
+                    primaryRolesSeen += heraldSearch.second.filter { it in analyzer.primaryRoles }
                     pendingHeraldSearch = null
                 }
                 if (acting == projectId && action is SubmitDecision &&
@@ -634,6 +673,16 @@ internal fun runProjectXGoldfish(registry: CardRegistry, seed: Long, gameNumber:
             .filter { it.controllerId == projectId && it.sourceName == ProjectXStateAnalyzer.WIREWOOD_HERALD }
             .forEach { heraldTriggerCreated += "T$turn:${it.description}" }
         events.filterIsInstance<ZoneChangeEvent>().forEach { event ->
+            if (event.ownerId == projectId && event.entityName in analyzer.primaryRoles) {
+                if (event.toZone in setOf(Zone.HAND, Zone.BATTLEFIELD)) primaryRolesSeen += event.entityName
+                if (event.fromZone == Zone.BATTLEFIELD && event.toZone != Zone.BATTLEFIELD) {
+                    primaryRoleDeparture[event.entityName] = when {
+                        event.wasSacrificed -> "SACRIFICED"
+                        event.entityId in primaryRoleAttackers -> "USED_IN_COMBAT"
+                        else -> "OTHERWISE_LEFT_BATTLEFIELD"
+                    }
+                }
+            }
             if (event.ownerId == projectId && event.entityName == ProjectXStateAnalyzer.WIREWOOD_HERALD) {
                 if (event.fromZone == Zone.LIBRARY && event.toZone == Zone.HAND) heraldDrawn += "T$turn"
                 if (event.fromZone == Zone.BATTLEFIELD && event.toZone == Zone.GRAVEYARD) {
@@ -655,6 +704,11 @@ internal fun runProjectXGoldfish(registry: CardRegistry, seed: Long, gameNumber:
                 pendingWitnessTarget = null
             }
         }
+        events.filterIsInstance<AttackersDeclaredEvent>()
+            .filter { it.attackingPlayerId == projectId }
+            .forEach { event ->
+                primaryRoleAttackers += event.attackers.filter { id -> name(id) in analyzer.primaryRoles }
+            }
         events.filterIsInstance<ResolvedEvent>().forEach { event ->
             val current = selection
             if (current != null && event.name == current.name) {
@@ -716,6 +770,14 @@ internal fun runProjectXGoldfish(registry: CardRegistry, seed: Long, gameNumber:
             heraldTargets.isNotEmpty() || witnessEvents.isNotEmpty() -> "FUNCTIONAL_WITHOUT_PRIMARY_COMBO"
         else -> "NONFUNCTIONAL_WITHOUT_COMBO"
     }
+    classifyPrimaryRoleShortState(
+        state, projectId, analyzer, projectTurn(state), manaConstraints,
+        primaryRolesSeen, primaryRolesTutored, primaryRoleDeparture,
+        gameEnded = state.gameOver,
+    )?.let { snapshot ->
+        roleShortStates.removeIf { it.turn == snapshot.turn && it.missingRole == snapshot.missingRole }
+        roleShortStates += snapshot
+    }
 
     return ProjectXGoldfishGame(
         game = gameNumber,
@@ -762,6 +824,7 @@ internal fun runProjectXGoldfish(registry: CardRegistry, seed: Long, gameNumber:
         khalniGardenTempoEvents = taplands.filter { it.startsWith("Khalni Garden") },
         hauntedMireTempoEvents = taplands.filter { it.startsWith("Haunted Mire") },
         exactlyOneRoleMissingTurns = oneMissingTurns.toList(),
+        primaryRoleShortStates = roleShortStates.toList(),
         functionalWithoutCombo = functional,
         secondaryWitnessLoopTurn = secondaryTurn,
         actions = actions,
@@ -945,6 +1008,50 @@ internal fun classifyManaConstraints(
     }.toSet()
 }
 
+/**
+ * A battlefield-assembly view that complements (and does not redefine) the historical
+ * hand-or-battlefield exactly-one-role-missing metric used by Sample #1.
+ */
+internal fun classifyPrimaryRoleShortState(
+    state: GameState,
+    playerId: EntityId,
+    analyzer: ProjectXStateAnalyzer,
+    turn: Int,
+    constraints: Collection<ManaConstraintTelemetry>,
+    seenRoles: Set<String>,
+    tutoredRoles: Set<String>,
+    departureReasons: Map<String, String>,
+    gameEnded: Boolean = false,
+): PrimaryRoleShortState? {
+    val missing = analyzer.primaryRoles - analyzer.battlefieldNames(state, playerId)
+    if (missing.size != 1) return null
+    val role = missing.single()
+    val zones = buildList {
+        if (role in analyzer.handNames(state, playerId)) add("HAND")
+        if (role in analyzer.libraryNames(state, playerId)) add("LIBRARY")
+        if (role in analyzer.graveyardNames(state, playerId)) add("GRAVEYARD")
+        if (state.getZone(playerId, Zone.EXILE).any { analyzer.name(state, it) == role }) add("EXILE")
+        if (state.stack.any { analyzer.name(state, it) == role }) add("STACK")
+    }
+    val roleConstraints = constraints.filter { it.turn == turn && it.spell == role }
+    val attributions = buildList {
+        if ("HAND" in zones && role in tutoredRoles) add("TUTORED_BUT_NOT_YET_CAST")
+        if ("HAND" in zones && roleConstraints.any {
+                it.category in setOf(
+                    "GENUINE_COLOR_UNCASTABLE", "BIRCHLORE_MANA_AVAILABLE",
+                    "QUIRION_SEQUENCE_AVAILABLE", "TAPPED_LAND_TEMPO",
+                    "INSUFFICIENT_TOTAL_MANA", "OTHER_PAYMENT_CONSTRAINT",
+                )
+            }
+        ) add("MANA_CONSTRAINED")
+        departureReasons[role]?.let(::add)
+        if ("LIBRARY" in zones && role !in seenRoles) add("NEVER_DRAWN")
+        if (gameEnded && "HAND" in zones) add("GAME_ENDED_BEFORE_DEPLOYMENT")
+        if (isEmpty()) add("OTHER_UNDEPLOYED_OR_TRANSIENT")
+    }.distinct()
+    return PrimaryRoleShortState(turn, role, zones, attributions)
+}
+
 private val PROJECT_X_MANA_REQUIREMENTS = mapOf(
     "Carrion Feeder" to (1 to 'B'), "Falkenrath Noble" to (4 to 'B'),
     "Safehold Elite" to (2 to 'G'), "Ivy Lane Denizen" to (4 to 'G'),
@@ -976,6 +1083,12 @@ internal fun summarizeProjectX(games: List<ProjectXGoldfishGame>): ProjectXGoldf
         it.functionalWithoutCombo.startsWith("FUNCTIONAL_WITHOUT") || it.functionalWithoutCombo == "FUNCTIONAL_SECONDARY_LOOP"
     }
     val exactlyOneRoleMissingGames = games.count { it.exactlyOneRoleMissingTurns.isNotEmpty() }
+    val roleShortGamesByMissingRole = ProjectXStateAnalyzer().primaryRoles.associateWith { role ->
+        games.count { game -> game.primaryRoleShortStates.any { it.missingRole == role } }
+    }.toSortedMap()
+    val roleShortGamesByAttribution = games.flatMap { game ->
+        game.primaryRoleShortStates.flatMap(PrimaryRoleShortState::attributions).distinct()
+    }.groupingBy { it }.eachCount().toSortedMap()
     return ProjectXGoldfishSummary(
         actualWinsByT4 = countBy(4, ProjectXGoldfishGame::actualWinningTurn),
         actualWinsByT5 = countBy(5, ProjectXGoldfishGame::actualWinningTurn),
@@ -1015,6 +1128,8 @@ internal fun summarizeProjectX(games: List<ProjectXGoldfishGame>): ProjectXGoldf
         functionalWithoutComboRate = rate(functionalWithoutComboGames),
         exactlyOneRoleMissingGames = exactlyOneRoleMissingGames,
         exactlyOneRoleMissingRate = rate(exactlyOneRoleMissingGames),
+        roleShortGamesByMissingRole = roleShortGamesByMissingRole,
+        roleShortGamesByAttribution = roleShortGamesByAttribution,
         heraldContributionGames = games.count { it.heraldTutorTargets.isNotEmpty() },
         witnessContributionGames = games.count { it.witnessRecursionEvents.isNotEmpty() },
         birchloreContributionGames = games.count { it.birchloreManaContribution.isNotEmpty() },
@@ -1054,6 +1169,8 @@ internal fun renderProjectXMarkdown(block: ProjectXGoldfishBlock): String = buil
     appendLine("- Mulligan games / rate / total mulligans: ${s.mulliganGames}/30 / ${s.mulliganGameRate * 100}% / ${s.totalMulligans}")
     appendLine("- Functional without primary combo: ${s.functionalWithoutComboGames}/30 (${s.functionalWithoutComboRate * 100}%)")
     appendLine("- At least one exactly-one-role-missing turn: ${s.exactlyOneRoleMissingGames}/30 (${s.exactlyOneRoleMissingRate * 100}%)")
+    appendLine("- Battlefield one-role-short games by missing role: ${s.roleShortGamesByMissingRole}")
+    appendLine("- Battlefield one-role-short games by determinable attribution: ${s.roleShortGamesByAttribution}")
     appendLine("- Herald / Witness contribution: ${s.heraldContributionGames}/30 / ${s.witnessContributionGames}/30")
     appendLine("- Birchlore / Nettle / Quirion contribution: ${s.birchloreContributionGames}/30 / ${s.nettleContributionGames}/30 / ${s.quirionContributionGames}/30")
     appendLine("- Color / Khalni Garden / Haunted Mire bottleneck games: ${s.colorBottleneckGames}/30 / ${s.khalniGardenTempoGames}/30 / ${s.hauntedMireTempoGames}/30")
@@ -1080,6 +1197,7 @@ internal fun renderProjectXMarkdown(block: ProjectXGoldfishBlock): String = buil
         appendLine("- Mana constraints: ${game.manaConstraints.ifEmpty { listOf("none") }}")
         appendLine("- Cast attempts: ${game.castAttempts.ifEmpty { listOf("none") }}")
         appendLine("- Exactly one role missing: ${game.exactlyOneRoleMissingTurns}; functional classification: ${game.functionalWithoutCombo}")
+        appendLine("- Battlefield one-role-short states: ${game.primaryRoleShortStates.ifEmpty { listOf("none") }}")
         appendLine("- Secondary Witness loop: ${game.secondaryWitnessLoopTurn?.let { "T$it" } ?: "—"}; stop: ${game.stopReason}; actions: ${game.actions}; audit: ${game.auditErrors.ifEmpty { listOf("clean") }}")
         appendLine()
     }

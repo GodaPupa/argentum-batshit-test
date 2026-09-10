@@ -208,5 +208,48 @@ class ProjectXGoldfishEndToEndTest : ScenarioTestBase() {
             val total = scenario().withPlayers().withCardInHand(1, "Winding Way").build()
             categories(total) shouldBe setOf("INSUFFICIENT_TOTAL_MANA")
         }
+
+        test("one-role-short telemetry names the role and preserves determinable causes") {
+            val neverDrawn = scenario().withPlayers()
+                .withCardOnBattlefield(1, "Carrion Feeder")
+                .withCardOnBattlefield(1, "Safehold Elite")
+                .withCardInLibrary(1, "Ivy Lane Denizen")
+                .build()
+            val analyzer = ProjectXSolitaireAgent(cardRegistry, neverDrawn.player1Id).analyzer
+            classifyPrimaryRoleShortState(
+                neverDrawn.state, neverDrawn.player1Id, analyzer, 3, emptyList(),
+                emptySet(), emptySet(), emptyMap(),
+            ) shouldBe PrimaryRoleShortState(
+                3, "Ivy Lane Denizen", listOf("LIBRARY"), listOf("NEVER_DRAWN")
+            )
+
+            val tutoredButConstrained = scenario().withPlayers()
+                .withCardOnBattlefield(1, "Carrion Feeder")
+                .withCardOnBattlefield(1, "Safehold Elite")
+                .withCardInHand(1, "Ivy Lane Denizen")
+                .build()
+            val constrainedAnalyzer = ProjectXSolitaireAgent(cardRegistry, tutoredButConstrained.player1Id).analyzer
+            classifyPrimaryRoleShortState(
+                tutoredButConstrained.state, tutoredButConstrained.player1Id, constrainedAnalyzer, 4,
+                listOf(ManaConstraintTelemetry(4, "Ivy Lane Denizen", "INSUFFICIENT_TOTAL_MANA", "test")),
+                setOf("Ivy Lane Denizen"), setOf("Ivy Lane Denizen"), emptyMap(), gameEnded = true,
+            ) shouldBe PrimaryRoleShortState(
+                4, "Ivy Lane Denizen", listOf("HAND"),
+                listOf("TUTORED_BUT_NOT_YET_CAST", "MANA_CONSTRAINED", "GAME_ENDED_BEFORE_DEPLOYMENT")
+            )
+
+            val sacrificed = scenario().withPlayers()
+                .withCardOnBattlefield(1, "Safehold Elite")
+                .withCardOnBattlefield(1, "Ivy Lane Denizen")
+                .withCardInGraveyard(1, "Carrion Feeder")
+                .build()
+            val sacrificedAnalyzer = ProjectXSolitaireAgent(cardRegistry, sacrificed.player1Id).analyzer
+            classifyPrimaryRoleShortState(
+                sacrificed.state, sacrificed.player1Id, sacrificedAnalyzer, 5, emptyList(),
+                setOf("Carrion Feeder"), emptySet(), mapOf("Carrion Feeder" to "SACRIFICED"),
+            ) shouldBe PrimaryRoleShortState(
+                5, "Carrion Feeder", listOf("GRAVEYARD"), listOf("SACRIFICED")
+            )
+        }
     }
 }
