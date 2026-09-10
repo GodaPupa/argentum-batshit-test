@@ -458,7 +458,7 @@ private fun colorStranded(
     analyzer: ProjectXStateAnalyzer,
 ): Set<String> {
     val battlefield = state.controlledBattlefield(playerId)
-    val untappedNames = battlefield.filter(analyzer::isUntapped).mapNotNull { analyzer.name(state, it) }
+    val untappedNames = battlefield.filter { analyzer.isUntapped(state, it) }.mapNotNull { analyzer.name(state, it) }
     val birchloreAvailable = battlefield.count { analyzer.isElf(state, it) && analyzer.isUntapped(state, it) } >= 2 &&
         battlefield.any { analyzer.name(state, it) == ProjectXStateAnalyzer.BIRCHLORE_RANGERS }
     val green = birchloreAvailable || untappedNames.any { it in setOf("Forest", "Khalni Garden", "Haunted Mire") }
