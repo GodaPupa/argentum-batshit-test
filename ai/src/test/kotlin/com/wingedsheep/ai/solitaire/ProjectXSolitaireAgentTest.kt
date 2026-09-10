@@ -145,13 +145,15 @@ class ProjectXSolitaireAgentTest : ScenarioTestBase() {
             name(game, sacrifice.costPayment!!.sacrificedPermanents.single()) shouldBe "Wirewood Herald"
             game.execute(sacrifice).error shouldBe null
 
-            var sawRealSearchDecision = false
-            var transitions = 0
-            while ((game.state.pendingDecision != null || game.state.stack.isNotEmpty()) && transitions++ < 80) {
+            var realSearchDecision: SelectCardsDecision? = null
+            for (transition in 0 until 80) {
                 val decision = game.state.pendingDecision
                 if (decision is SelectCardsDecision &&
                     decision.context.sourceName == ProjectXStateAnalyzer.WIREWOOD_HERALD
-                ) sawRealSearchDecision = true
+                ) {
+                    realSearchDecision = decision
+                    break
+                }
                 val result = if (decision != null) {
                     game.execute(SubmitDecision(decision.playerId, solitaire.respondToDecision(game.state, decision)))
                 } else {
@@ -160,8 +162,11 @@ class ProjectXSolitaireAgentTest : ScenarioTestBase() {
                 result.error shouldBe null
             }
 
-            (transitions < 80).shouldBeTrue()
-            sawRealSearchDecision.shouldBeTrue()
+            val search = realSearchDecision.shouldBeInstanceOf<SelectCardsDecision>()
+            val response = solitaire.respondToDecision(game.state, search)
+            chosenName(game, response) shouldBe "Safehold Elite"
+            game.execute(SubmitDecision(search.playerId, response)).error shouldBe null
+            resolveWith(solitaire, game)
             game.isInHand(1, "Safehold Elite") shouldBe true
             game.isInHand(1, "Nettle Sentinel") shouldBe false
         }
