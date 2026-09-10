@@ -1,6 +1,7 @@
 package com.wingedsheep.ai.engine.knowledge
 
 import com.wingedsheep.ai.engine.evaluation.EvaluationWeights
+import com.wingedsheep.ai.engine.isOpponentTo
 import com.wingedsheep.engine.core.ActivateAbility
 import com.wingedsheep.engine.core.CastSpell
 import com.wingedsheep.engine.mechanics.layers.ProjectedState
