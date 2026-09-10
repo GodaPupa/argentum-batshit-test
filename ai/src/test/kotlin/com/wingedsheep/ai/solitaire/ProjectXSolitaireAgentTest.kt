@@ -268,15 +268,15 @@ class ProjectXSolitaireAgentTest : ScenarioTestBase() {
                 .build()
             val solitaire = agent(game)
 
-            val selected = solitaire.chooseAction(game.state)
-            check(selected is CastSpell) { "Expected Ivy cast with Llanowar payment, selected $selected" }
-            val cast = selected
-            check(name(game, cast.cardId) == "Ivy Lane Denizen") {
-                "Expected Ivy Lane Denizen, selected ${name(game, cast.cardId)}"
-            }
+            val mana = solitaire.chooseAction(game.state).shouldBeInstanceOf<ActivateAbility>()
+            name(game, mana.sourceId) shouldBe "Llanowar Elves"
+            game.execute(mana).error shouldBe null
+
+            val cast = solitaire.chooseAction(game.state).shouldBeInstanceOf<CastSpell>()
+            name(game, cast.cardId) shouldBe "Ivy Lane Denizen"
         }
 
-        test("Ivy Lane Denizen auto-payment consumes Llanowar mana after three lands") {
+        test("Llanowar activation funds Ivy Lane Denizen after three lands") {
             val game = scenario().withPlayers()
                 .withCardOnBattlefield(1, "Llanowar Elves", summoningSickness = false)
                 .withCardInHand(1, "Ivy Lane Denizen")
@@ -285,12 +285,12 @@ class ProjectXSolitaireAgentTest : ScenarioTestBase() {
             val solitaire = agent(game)
             val elves = game.findPermanent("Llanowar Elves")!!
 
-            val selected = solitaire.chooseAction(game.state)
-            check(selected is CastSpell) { "Expected Ivy cast with Llanowar payment, selected $selected" }
-            val cast = selected
-            check(name(game, cast.cardId) == "Ivy Lane Denizen") {
-                "Expected Ivy Lane Denizen, selected ${name(game, cast.cardId)}"
-            }
+            val mana = solitaire.chooseAction(game.state).shouldBeInstanceOf<ActivateAbility>()
+            name(game, mana.sourceId) shouldBe "Llanowar Elves"
+            game.execute(mana).error shouldBe null
+
+            val cast = solitaire.chooseAction(game.state).shouldBeInstanceOf<CastSpell>()
+            name(game, cast.cardId) shouldBe "Ivy Lane Denizen"
             game.execute(cast).error shouldBe null
             game.state.getEntity(elves)!!.has<TappedComponent>().shouldBeTrue()
         }
