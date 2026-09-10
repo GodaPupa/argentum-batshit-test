@@ -44,7 +44,7 @@ class MaskedVandalScenarioTest : ScenarioTestBase() {
             game.resolveStack()
 
             val targetDecision = game.getPendingDecision().shouldBeInstanceOf<ChooseTargetsDecision>()
-            val legalTargets = targetDecision.legalTargets.flatten()
+            val legalTargets = targetDecision.legalTargets.values.flatten()
             (artifact in legalTargets) shouldBe true
             (enchantment in legalTargets) shouldBe true
             game.selectTargets(listOf(artifact)).error shouldBe null
