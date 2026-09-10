@@ -40,7 +40,10 @@ jobs:
         run: ./gradlew classes --stacktrace
 
       - name: Run focused Project X harness regressions
-        run: ./gradlew :gym:test --tests ProjectXGoldfishEndToEndTest --tests ProjectXGoldfishTest --stacktrace
+        run: |
+          ./gradlew :ai:test --tests ProjectXSolitaireAgentTest \
+            :mtg-sets:2000-2002:tests:test --tests WirewoodHeraldScenarioTest \
+            :gym:test --tests ProjectXGoldfishEndToEndTest --tests ProjectXGoldfishTest --stacktrace
 
       - name: Run engine tests
         run: ./gradlew test --stacktrace
