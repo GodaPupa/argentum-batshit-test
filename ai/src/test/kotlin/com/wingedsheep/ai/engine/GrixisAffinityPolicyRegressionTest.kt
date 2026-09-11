@@ -29,6 +29,21 @@ class GrixisAffinityPolicyRegressionTest : ScenarioTestBase() {
             ai(game).chooseAction(game.state).shouldBeInstanceOf<PassPriority>()
         }
 
+        test("below-ceiling conditional burn stays held while another spell is pending at a healthy life total") {
+            val game = seeded().withActivePlayer(2).withLifeTotal(2, 20)
+                .withCardInHand(1, "Galvanic Blast")
+                .withLandsOnBattlefield(1, "Mountain", 1)
+                .withCardInHand(2, "Unearth")
+                .withCardInGraveyard(2, "Kessig Flamebreather")
+                .withLandsOnBattlefield(2, "Swamp", 1)
+                .build()
+
+            game.castSpellTargetingGraveyardCard(2, "Unearth", 2, "Kessig Flamebreather").error shouldBe null
+            game.execute(PassPriority(game.player2Id)).error shouldBe null
+
+            ai(game).chooseAction(game.state).shouldBeInstanceOf<PassPriority>()
+        }
+
         test("reduced-rate conditional burn remains legal when conservative visible reach is lethal") {
             val game = seeded().withLifeTotal(2, 4)
                 .withCardInHand(1, "Galvanic Blast").withCardInHand(1, "Galvanic Blast")
@@ -44,6 +59,15 @@ class GrixisAffinityPolicyRegressionTest : ScenarioTestBase() {
             val game = seeded().withCardOnBattlefield(1, "Nihil Spellbomb")
                 .withCardInGraveyard(2, "Kessig Flamebreather")
                 .withCardInGraveyard(2, "Shambling Ghast")
+                .build()
+
+            ai(game).chooseAction(game.state).shouldBeInstanceOf<PassPriority>()
+        }
+
+        test("a recursion spell sitting inert in the graveyard does not justify Spellbomb") {
+            val game = seeded().withCardOnBattlefield(1, "Nihil Spellbomb")
+                .withCardInGraveyard(2, "Mountain")
+                .withCardInGraveyard(2, "Unearth")
                 .build()
 
             ai(game).chooseAction(game.state).shouldBeInstanceOf<PassPriority>()
