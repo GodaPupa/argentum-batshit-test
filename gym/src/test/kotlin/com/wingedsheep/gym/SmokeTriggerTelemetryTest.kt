@@ -53,6 +53,34 @@ class SmokeTriggerTelemetryTest : FunSpec({
         telemetry.guttersnipeTriggers shouldBe 1
         telemetry.guttersnipeDamage shouldBe 0
     }
+
+    test("Bats summary counts genuine token creation and sacrifice triggers") {
+        val telemetry = SmokeBatsTelemetry()
+
+        telemetry.record(trigger("Mirkwood Bats", SmokeBatsTelemetry.TOKEN_CREATION_DESCRIPTION))
+        telemetry.record(trigger("Mirkwood Bats", SmokeBatsTelemetry.TOKEN_SACRIFICE_DESCRIPTION))
+
+        telemetry.creationTriggers shouldBe 1
+        telemetry.sacrificeTriggers shouldBe 1
+        telemetry.totalTriggers shouldBe 2
+    }
+
+    test("Bats summary excludes NDAA rescue and other granted triggers") {
+        val telemetry = SmokeBatsTelemetry()
+
+        telemetry.record(
+            trigger(
+                "Mirkwood Bats",
+                "When this creature dies, return it to the battlefield tapped under its owner's " +
+                    "control, then create a Wicked Role token attached to it.",
+            )
+        )
+        telemetry.record(trigger("Mirkwood Bats", "an unrelated granted trigger"))
+
+        telemetry.creationTriggers shouldBe 0
+        telemetry.sacrificeTriggers shouldBe 0
+        telemetry.totalTriggers shouldBe 0
+    }
 })
 
 private val SOURCE = EntityId("source")
