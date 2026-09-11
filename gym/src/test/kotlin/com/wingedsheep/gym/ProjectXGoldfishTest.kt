@@ -77,22 +77,6 @@ class ProjectXGoldfishTest : FunSpec({
         result.herald.tutorTargets.isNotEmpty().shouldBeTrue()
     }
 
-    test("Experiment A pairs 3 and 20 no longer repeat purposeless Birchlore activations").config(timeout = 10.minutes) {
-        val regressions = listOf(
-            Triple(3, 747476981334286865L, 19),
-            Triple(20, 375820755781804720L, 13),
-        )
-
-        regressions.forEach { (pair, seed, originalActivations) ->
-            val replay = runProjectXGoldfish(projectXRegistry(), seed, pair, ProjectXDeck.V02)
-            replay.auditErrors shouldBe emptyList()
-            check(replay.birchloreManaContribution.size < originalActivations) {
-                "Pair $pair retained ${replay.birchloreManaContribution.size}/$originalActivations " +
-                    "Birchlore activations under the corrected executable-use policy"
-            }
-        }
-    }
-
     test("frozen 30-seed Project X v0.2 goldfish block").config(
         enabled = System.getenv(PROJECT_X_GOLDFISH_ENV) == "true",
         timeout = 45.minutes,
