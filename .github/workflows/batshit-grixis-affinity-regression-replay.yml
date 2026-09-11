@@ -1,4 +1,4 @@
-name: Frozen Grixis Affinity Regression Replay
+name: Argentum Validation — Grixis Policy Candidate
 
 on:
   push:
@@ -11,41 +11,38 @@ permissions:
   contents: read
 
 jobs:
-  replay:
-    if: github.event_name == 'workflow_dispatch' || github.event.head_commit.message == 'Launch frozen Grixis Affinity regression replay'
+  validation:
+    if: github.event_name == 'workflow_dispatch' || github.event.head_commit.message == 'Validate residual Affinity policy candidate'
     runs-on: ubuntu-latest
-    timeout-minutes: 240
+    timeout-minutes: 30
     steps:
-      - name: Checkout exact validated policy candidate
-        uses: actions/checkout@v6
+      - name: Checkout exact policy candidate
+        uses: actions/checkout@v4
         with:
-          ref: e4b7921488674ae51335e710fe25275f485bba7d
+          ref: a326db872c0f6ebf44524db1c0477883fce2b054
       - name: Verify exact checkout
         run: |
-          test "$(git rev-parse HEAD)" = "e4b7921488674ae51335e710fe25275f485bba7d"
-      - uses: actions/setup-java@v5
+          test "$(git rev-parse HEAD)" = "a326db872c0f6ebf44524db1c0477883fce2b054"
+      - name: Set up Java 21
+        uses: actions/setup-java@v4
         with:
           distribution: temurin
-          java-version: 21
-      - uses: gradle/actions/setup-gradle@v6
-      - name: Run exact frozen 100-seed preboard harness
-        env:
-          BATSHIT_GRIXIS_AFFINITY_SAMPLE_1: "true"
-        run: |
-          set -o pipefail
-          scripts/test-class BatshitGrixisAffinitySampleOneTest --info --stacktrace \
-            | tee batshit-grixis-affinity-sample-1.log
-      - name: Upload frozen vector, raw traces, and reports
-        if: always()
-        uses: actions/upload-artifact@v7
+          java-version: '21'
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
         with:
-          name: batshit-grixis-affinity-regression-replay
-          path: |
-            batshit-grixis-affinity-sample-1.log
-            gym/build/reports/batshit-grixis-affinity-sample-1/raw-traces.log
-            gym/build/reports/batshit-grixis-affinity-sample-1/games.jsonl
-            gym/build/reports/batshit-grixis-affinity-sample-1/summary.json
-            gym/build/reports/batshit-grixis-affinity-sample-1/sample-report.md
-            gym/build/reports/batshit-grixis-affinity-sample-1/batshit-grixis-affinity-sample-1-seeds.csv
-            gym/src/test/resources/batshit-grixis-affinity-sample-1-seeds.csv
-          if-no-files-found: error
+          gradle-version: '9.6.1'
+      - name: Make Gradle wrapper executable
+        run: chmod +x gradlew
+      - name: Show environment
+        run: |
+          java -version
+          gradle --version
+      - name: Compile Argentum
+        run: ./gradlew classes --stacktrace
+      - name: Run engine tests
+        run: ./gradlew test --stacktrace
+      - name: Run Gym tests
+        run: ./gradlew :gym:test --stacktrace
+      - name: Run Gym trainer tests
+        run: ./gradlew :gym-trainer:test --stacktrace
