@@ -17,6 +17,11 @@ import kotlin.time.Duration.Companion.minutes
 class BatshitGrixisAffinitySampleOneTest : FunSpec({
     val enabled = System.getenv("BATSHIT_GRIXIS_AFFINITY_SAMPLE_1") == "true"
 
+    test("human sample report slash-pair parser ignores trailing fields") {
+        parseSlashPair("0/0; Craft casts: 0") shouldBe (0 to 0)
+        parseSlashPair("12/9") shouldBe (12 to 9)
+    }
+
     test("Sample 1 decks, assignments, and new seed vector are frozen") {
         val batshit = variantC(batshitDeck())
         batshit.cards.size shouldBe 60
@@ -121,6 +126,11 @@ private fun rawSampleReport(rows: List<SampleOneSeedRow>, reports: List<LoggedSm
     reports.forEach { append(it.log) }
 }
 
+private fun parseSlashPair(value: String): Pair<Int, Int> {
+    val pair = value.substringBefore(';')
+    return pair.substringBefore('/').trim().toInt() to pair.substringAfter('/').trim().toInt()
+}
+
 private fun humanSampleReport(
     rows: List<SampleOneSeedRow>,
     summaries: List<AffinitySmokeSummary>,
@@ -140,7 +150,7 @@ private fun humanSampleReport(
         .sortedBy { it.key.toString() }.joinToString { "${it.key}:${it.value}" }.ifEmpty { "none" }
     fun summaryPair(prefix: String): Pair<Int, Int> = reports.map { report ->
         val value = report.log.lineSequence().first { it.startsWith(prefix) }.substringAfter(": ")
-        value.substringBefore('/').toInt() to value.substringAfter('/').toInt()
+        parseSlashPair(value)
     }.fold(0 to 0) { total, value -> total.first + value.first to total.second + value.second }
     fun targets(action: String) = allLines.filter { it.startsWith("T") && action in it && "targets=[" in it }
         .map { it.substringAfter("targets=[").substringBefore(']') }
@@ -154,7 +164,7 @@ private fun humanSampleReport(
 
     val glasswright = reports.map { report ->
         val value = report.log.lineSequence().first { it.startsWith("Glasswright entries/resets:") }.substringAfter(": ")
-        value.substringBefore('/').toInt() to value.substringAfter('/').toInt()
+        parseSlashPair(value)
     }.fold(0 to 0) { a, b -> a.first + b.first to a.second + b.second }
     val flame = summaryPair("Flamebreather triggers/damage:")
     val bats = summaryPair("Mirkwood Bats creation/sacrifice triggers:")
