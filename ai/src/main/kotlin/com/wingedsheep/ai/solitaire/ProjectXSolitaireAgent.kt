@@ -64,7 +64,10 @@ class ProjectXSolitaireAgent(
         // Once a sacrifice loop has been proven symbolically, executing it again cannot improve the
         // deterministic outcome. Keep developing or pass toward the next combat window instead of
         // burning thousands of identical engine transitions.
-        val nonLoopActions = materialized.filterNot { (_, action) -> redundantLoopIteration(state, action) }
+        val nonLoopActions = materialized.filterNot { (legalAction, action) ->
+            redundantLoopIteration(state, action) ||
+                purposelessCreatureManaActivation(state, legalAction, action)
+        }
         val action = if (nonLoopActions.isNotEmpty()) {
             fallback.chooseFrom(state, nonLoopActions.map { it.first }).action
         } else {
@@ -130,7 +133,6 @@ class ProjectXSolitaireAgent(
     private fun priority(state: GameState, legal: LegalAction, action: GameAction): Int {
         val missing = analyzer.missingPrimaryRoles(state, playerId)
         val battlefield = analyzer.battlefieldNames(state, playerId)
-        val hand = analyzer.handNames(state, playerId)
         return when (action) {
             is CastSpell -> castPriority(state, action.cardId)
 
@@ -139,12 +141,7 @@ class ProjectXSolitaireAgent(
                 ProjectXStateAnalyzer.EVOLUTION_WITNESS ->
                     if (missing.any(analyzer.graveyardNames(state, playerId)::contains) && witnessCanAdapt(state, action.sourceId)) 7_200 else 0
                 ProjectXStateAnalyzer.QUIRION_RANGER -> if (quirionUnlocksMana(state)) 6_800 else 0
-                ProjectXStateAnalyzer.BIRCHLORE_RANGERS -> when {
-                    needsBlackMana(state, hand) -> 7_000
-                    analyzer.secondaryWitnessSequence(state, playerId) != null -> 6_900
-                    else -> reusableManaActivationPriority(state, legal, action)
-                }
-                else -> reusableManaActivationPriority(state, legal, action)
+                else -> creatureManaActivationPriority(state, legal, action)
             }
 
             is PlayLand -> 1_000 + landPriority(state, analyzer.name(state, action.cardId))
@@ -184,6 +181,18 @@ class ProjectXSolitaireAgent(
     private fun materialize(state: GameState, legal: LegalAction): GameAction {
         val action = legal.action
         if (action !is ActivateAbility) return action
+        val candidates = materializeActivationCandidates(state, legal)
+        if (candidates.size == 1) return candidates.single()
+        return candidates.maxWithOrNull(
+            compareBy<ActivateAbility> { unlockedCastPriority(state, it) }
+                .thenBy { it.manaColorChoice?.let { color -> coloredManaDemandScore(state, color) } ?: 0 }
+                .thenBy { if (it.manaColorChoice == Color.GREEN) 1 else 0 }
+                .thenByDescending { it.manaColorChoice?.name.orEmpty() },
+        ) ?: action
+    }
+
+    private fun materializeActivationCandidates(state: GameState, legal: LegalAction): List<ActivateAbility> {
+        val action = legal.action as? ActivateAbility ?: return emptyList()
         var payment = action.costPayment ?: AdditionalCostPayment()
         legal.additionalCostInfo?.let { info ->
             when (info.costType) {
@@ -207,10 +216,11 @@ class ProjectXSolitaireAgent(
                 listOfNotNull(chosen?.let { ChosenTarget.Permanent(it) })
             }
         } else action.targets
-        val color = if (legal.requiresManaColorChoice) {
-            preferredManaColor(state, legal.availableManaColors?.toSet() ?: Color.entries.toSet())
-        } else action.manaColorChoice
-        return action.copy(costPayment = payment, targets = targets, manaColorChoice = color)
+        val prepared = action.copy(costPayment = payment, targets = targets)
+        if (!legal.requiresManaColorChoice) return listOf(prepared)
+        return (legal.availableManaColors?.toSet() ?: Color.entries.toSet())
+            .sortedBy { it.name }
+            .map { prepared.copy(manaColorChoice = it) }
     }
 
     private fun chooseSacrifice(state: GameState, candidates: List<EntityId>): List<EntityId> {
@@ -324,19 +334,24 @@ class ProjectXSolitaireAgent(
     }
 
     private fun preferredManaColor(state: GameState, available: Set<Color>): Color {
-        val hand = analyzer.handNames(state, playerId)
-        return when {
-            Color.BLACK in available && needsBlackMana(state, hand) -> Color.BLACK
-            Color.GREEN in available -> Color.GREEN
-            else -> available.sortedBy { it.name }.first()
-        }
+        return available.maxWithOrNull(
+            compareBy<Color> { coloredManaDemandScore(state, it) }
+                .thenBy { if (it == Color.GREEN) 1 else 0 }
+                .thenByDescending { it.name },
+        ) ?: error("A mana color decision must offer at least one color")
     }
 
-    private fun needsBlackMana(state: GameState, hand: Set<String>): Boolean {
-        val blackInPool = state.getEntity(playerId)?.get<ManaPoolComponent>()?.black ?: 0
-        if (blackInPool > 0) return false
-        return ProjectXStateAnalyzer.CARRION_FEEDER in hand || ProjectXStateAnalyzer.FALKENRATH_NOBLE in hand
+    private fun coloredManaDemandScore(state: GameState, color: Color): Int {
+        val pool = state.getEntity(playerId)?.get<ManaPoolComponent>() ?: ManaPoolComponent()
+        return state.getHand(playerId).maxOfOrNull { cardId ->
+            val card = state.getEntity(cardId)?.get<CardComponent>() ?: return@maxOfOrNull 0
+            val unmet = ((card.manaCost.colorCount[color] ?: 0) - pool.getAmount(color)).coerceAtLeast(0)
+            if (unmet == 0) 0 else unmet * 100 + castPriority(state, cardId).coerceAtLeast(1)
+        } ?: 0
     }
+
+    private fun needsColorMana(state: GameState, color: Color): Boolean =
+        coloredManaDemandScore(state, color) > 0
 
     private fun needsLand(state: GameState): Boolean {
         val lands = state.controlledBattlefield(playerId).count { id ->
@@ -352,7 +367,21 @@ class ProjectXSolitaireAgent(
         val nettle = analyzer.permanent(state, playerId, ProjectXStateAnalyzer.NETTLE_SENTINEL)
         if (nettle == null || analyzer.isUntapped(state, nettle)) return false
         val untappedElves = state.controlledBattlefield(playerId).count { analyzer.isElf(state, it) && analyzer.isUntapped(state, it) }
-        return untappedElves >= 1 && needsBlackMana(state, analyzer.handNames(state, playerId))
+        if (untappedElves < 1) return false
+
+        val pool = state.getEntity(playerId)?.get<ManaPoolComponent>() ?: ManaPoolComponent()
+        val floating = pool.white + pool.blue + pool.black + pool.red + pool.green + pool.colorless
+        val untappedLands = state.controlledBattlefield(playerId).count { id ->
+            state.getEntity(id)?.get<CardComponent>()?.isLand == true && analyzer.isUntapped(state, id)
+        }
+        // Returning a Forest consumes one land, then the restored Elf pair can supply one mana of
+        // whichever color the executable spell actually needs.
+        val projectedTotal = floating + (untappedLands - 1).coerceAtLeast(0) + 1
+        return state.getHand(playerId).any { cardId ->
+            val card = state.getEntity(cardId)?.get<CardComponent>() ?: return@any false
+            !card.isLand && card.manaValue <= projectedTotal &&
+                card.manaCost.colors.any { needsColorMana(state, it) }
+        }
     }
 
     private fun quirionTargetScore(state: GameState, id: EntityId): Int = when {
@@ -366,11 +395,10 @@ class ProjectXSolitaireAgent(
         (state.getEntity(witness)?.get<CountersComponent>()?.getCount(CounterType.PLUS_ONE_PLUS_ONE) ?: 0) == 0
 
     private fun landPriority(state: GameState, name: String?): Int {
-        val hand = analyzer.handNames(state, playerId)
         return when (name) {
-            "Swamp" -> if (needsBlackMana(state, hand)) 40 else 20
+            "Swamp" -> if (needsColorMana(state, Color.BLACK)) 40 else 20
             "Forest" -> 35
-            "Haunted Mire" -> if (needsBlackMana(state, hand)) 25 else 5
+            "Haunted Mire" -> if (needsColorMana(state, Color.BLACK)) 25 else 5
             "Khalni Garden" -> 10
             else -> 0
         }
@@ -383,31 +411,80 @@ class ProjectXSolitaireAgent(
         else -> 0
     }
 
-    /**
-     * Prefer an already-deployed reusable mana creature only when the real post-activation state
-     * contains an executable, strategically relevant cast. A cast already executable in the current
-     * state keeps its full priority and therefore outranks this enabling action by one point; the
-     * mana action wins only when the cast cannot yet be submitted. Colored requirements and actual
-     * payment rules remain authoritative because both states are checked through the legal-action
-     * enumerator and executor validation.
-     */
-    private fun reusableManaActivationPriority(
+    /** Prefer a creature mana ability only when its actual post-payment line reaches a new cast. */
+    private fun creatureManaActivationPriority(
         state: GameState,
         legal: LegalAction,
         action: ActivateAbility,
     ): Int {
         val source = state.getEntity(action.sourceId)?.get<CardComponent>() ?: return 0
-        if (!source.isCreature || !legal.isManaAbility || !isReusableCreatureManaSource(source)) return 0
+        if (!source.isCreature || !legal.isManaAbility) return 0
+
+        return unlockedCastPriority(state, action)
+    }
+
+    private fun purposelessCreatureManaActivation(
+        state: GameState,
+        legal: LegalAction,
+        action: GameAction,
+    ): Boolean {
+        if (action !is ActivateAbility) return false
+        val source = state.getEntity(action.sourceId)?.get<CardComponent>() ?: return false
+        return source.isCreature && legal.isManaAbility && unlockedCastPriority(state, action) == 0
+    }
+
+    /**
+     * Score only casts that become executable because of this exact activation and mana-color
+     * choice, optionally followed by a short sequence of other legal creature-mana activations.
+     * Merely increasing the pool, or matching a colored card somewhere in hand, is not a strategic
+     * use. Every intermediate action is simulated and every destination cast passes executor
+     * validation, keeping the policy aligned with real auto-payment rather than approximate counts.
+     */
+    private fun unlockedCastPriority(state: GameState, action: ActivateAbility): Int {
+        val before = affordableCastIds(state)
 
         val simulated = simulator.simulate(state, action)
         if (simulated is com.wingedsheep.ai.engine.SimulationResult.Illegal ||
             simulated is com.wingedsheep.ai.engine.SimulationResult.StoppedAtLimit
         ) return 0
 
-        val unlockedPriority = affordableCastIds(simulated.state).maxOfOrNull { cardId ->
-            castPriority(state, cardId)
-        } ?: return 0
-        return (unlockedPriority - 1).coerceAtLeast(1)
+        val unlockedPriority = reachableCastPriority(
+            state = simulated.state,
+            originallyAffordable = before,
+            remainingManaActivations = MAX_MANA_ACTIVATION_LOOKAHEAD - 1,
+        )
+        return (unlockedPriority - 1).coerceAtLeast(0)
+    }
+
+    private fun reachableCastPriority(
+        state: GameState,
+        originallyAffordable: Set<EntityId>,
+        remainingManaActivations: Int,
+    ): Int {
+        val immediate = (affordableCastIds(state) - originallyAffordable).maxOfOrNull { cardId ->
+            castPriority(state, cardId).coerceAtLeast(CONCRETE_CAST_USE_PRIORITY)
+        } ?: 0
+        if (remainingManaActivations == 0) return immediate
+
+        val continued = enumerator.enumerate(state, playerId, EnumerationMode.ACTIONS_ONLY)
+            .asSequence()
+            .filter { it.affordable && it.isManaAbility }
+            .filter { legal ->
+                val activation = legal.action as? ActivateAbility ?: return@filter false
+                state.getEntity(activation.sourceId)?.get<CardComponent>()?.isCreature == true
+            }
+            .flatMap { legal -> materializeActivationCandidates(state, legal).asSequence() }
+            .mapNotNull { activation ->
+                val simulated = simulator.simulate(state, activation)
+                if (simulated is com.wingedsheep.ai.engine.SimulationResult.Illegal ||
+                    simulated is com.wingedsheep.ai.engine.SimulationResult.StoppedAtLimit
+                ) null else simulated.state
+            }
+            .maxOfOrNull { next ->
+                (reachableCastPriority(next, originallyAffordable, remainingManaActivations - 1) - 1)
+                    .coerceAtLeast(0)
+            } ?: 0
+        return maxOf(immediate, continued)
     }
 
     private fun affordableCastIds(state: GameState): Set<EntityId> =
@@ -481,6 +558,8 @@ class ProjectXSolitaireAgent(
 
     companion object {
         private const val MAX_ACCELERATION_LOOKAHEAD = 8
+        private const val MAX_MANA_ACTIVATION_LOOKAHEAD = 4
+        private const val CONCRETE_CAST_USE_PRIORITY = 100
 
         private val ALWAYS_ACCEPT_SOURCES = setOf(
             ProjectXStateAnalyzer.WIREWOOD_HERALD,
