@@ -17,6 +17,8 @@ import com.wingedsheep.sdk.core.Keyword
 import com.wingedsheep.sdk.core.Zone
 import com.wingedsheep.sdk.model.EntityId
 
+private const val SCRY_BOTTOM_THRESHOLD = 1.0
+
 /**
  * Handles all [PendingDecision] types by evaluating possible responses
  * and picking the one that leads to the best board state.
@@ -234,7 +236,15 @@ class DecisionResponder(
         val isChooseToKeep = prompt.contains("put") && prompt.contains("hand")
 
         return when {
-            isDiscard || isScryBottom -> {
+            isScryBottom -> {
+                // Scry asks which cards to put on the bottom, and its selection is normally
+                // "up to N".  The empty selection is meaningful: it keeps every looked-at card
+                // on top.  Do not force the minimum to one as discard-like decisions do; bottom
+                // only cards whose contextual value is low enough that replacing the draw is
+                // preferable.
+                CardsSelectedResponse(decision.id, scryBottomSelection(state, decision, playerId))
+            }
+            isDiscard -> {
                 // Pick cards we want LEAST (to discard / put on bottom)
                 val ranked = rankCardsContextual(state, options, playerId, wantToKeep = false)
                 CardsSelectedResponse(decision.id, minimumLegalSelection(decision, ranked))
@@ -277,7 +287,7 @@ class DecisionResponder(
         decision: SelectCardsDecision,
         ranked: List<EntityId>,
     ): List<EntityId> {
-        val ordinaryCount = decision.minSelections.coerceAtLeast(1).coerceAtMost(decision.maxSelections)
+        val ordinaryCount = decision.minSelections.coerceAtLeast(0).coerceAtMost(decision.maxSelections)
         val reduced = decision.conditionalMinimums
             .sortedBy { it.minimumSelections }
             .firstNotNullOfOrNull { condition ->
@@ -288,6 +298,40 @@ class DecisionResponder(
                 matches + ranked.filterNot(matches::contains).take(count - matches.size)
             }
         return reduced ?: ranked.take(ordinaryCount)
+    }
+
+    /**
+     * Choose the low-value cards to bottom for a scry-style optional selection.
+     *
+     * The threshold is deliberately conservative.  A flooded land is replaceable, while any
+     * castable spell or a land needed for development stays on top.  For scry N this applies the
+     * same decision independently to each visible card and still honours a non-zero minimum if a
+     * future effect uses the same labels with a mandatory selection.
+     */
+    private fun scryBottomSelection(
+        state: GameState,
+        decision: SelectCardsDecision,
+        playerId: EntityId,
+    ): List<EntityId> {
+        val projected = state.projectedState
+        val myLands = projected.getBattlefieldControlledBy(playerId).count { entityId ->
+            state.getEntity(entityId)?.get<CardComponent>()?.isLand == true
+        }
+        val myCreatures = projected.getBattlefieldControlledBy(playerId).count { projected.isCreature(it) }
+        val handSize = state.getZone(playerId, Zone.HAND).size
+        val ranked = decision.options.sortedBy { entityId ->
+            state.getEntity(entityId)?.get<CardComponent>()?.let {
+                contextualCardScore(it, myLands, myCreatures, handSize)
+            } ?: Double.NEGATIVE_INFINITY
+        }
+        val required = ranked.take(decision.minSelections)
+        val optional = ranked.drop(required.size)
+            .filter { entityId ->
+                state.getEntity(entityId)?.get<CardComponent>()?.let {
+                    contextualCardScore(it, myLands, myCreatures, handSize) <= SCRY_BOTTOM_THRESHOLD
+                } ?: true
+            }
+        return (required + optional).distinct().take(decision.maxSelections)
     }
 
     // ── Yes / No ─────────────────────────────────────────────────────────

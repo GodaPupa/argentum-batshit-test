@@ -28,6 +28,7 @@ import com.wingedsheep.engine.core.CastSpell
 import com.wingedsheep.engine.core.DeclareAttackers
 import com.wingedsheep.engine.core.DeclareBlockers
 import com.wingedsheep.engine.core.GameAction
+import com.wingedsheep.engine.core.PlayLand
 import com.wingedsheep.engine.legalactions.LegalAction
 import com.wingedsheep.engine.legalactions.MeaningfulActionFilter
 import com.wingedsheep.engine.state.GameState
@@ -93,6 +94,8 @@ class Strategist(
      * behaviour.
      */
     private val intents: IntentCatalog = IntentCatalog.NONE,
+    /** Use the live land-sequencing policy's exact same-turn development check. */
+    private val sequenceLandsByUsableMana: Boolean = false,
     /** [AiProfile.combatTricksWaitForBlocks] — passed straight through to [HoldPolicy]. */
     private val combatTricksWaitForBlocks: Boolean = false,
     /**
@@ -287,7 +290,18 @@ class Strategist(
         // ── Pass 3: per-card timing and advisor adjustments, in raw evaluator units ──
         val firstCandidate = if (pass != null) 1 else 0
         val adjusted = (firstCandidate until leaves.size).map { i ->
-            Triple(leaves[i], leafScores[i], adjustScore(evaluationState, leaves[i], playerId, leafScores[i], passScore))
+            Triple(
+                leaves[i],
+                leafScores[i],
+                adjustScore(
+                    evaluationState,
+                    leafStates[i],
+                    leaves[i],
+                    playerId,
+                    leafScores[i],
+                    passScore,
+                ),
+            )
         }
         val scored = adjusted.map { (action, _, adjustment) -> action to adjustment.score }
 
@@ -619,12 +633,17 @@ class Strategist(
      */
     private fun adjustScore(
         state: GameState,
+        leafState: GameState,
         action: LegalAction,
         playerId: EntityId,
         leafScore: Double,
         passScore: Double,
     ): AdjustedScore {
-        val cardName = resolveCardName(state, action) ?: return AdjustedScore(leafScore)
+        val developmentDelta = immediatePermanentDevelopmentAfterLand(leafState, action, playerId)
+        val developmentNote = developmentDelta.takeIf { it != 0.0 }
+            ?.let { "land preserves immediate permanent development +%.2f".format(it) }
+        val cardName = resolveCardName(state, action)
+            ?: return AdjustedScore(leafScore + developmentDelta, developmentNote)
 
         // Phase 6: what the board looks like after this resolves is only half the question; the
         // other half is whether this was the window — and, for removal, whether this was the target
@@ -667,8 +686,8 @@ class Strategist(
         // keeps both.
         val advisor = advisorRegistry.getAdvisor(cardName)
             ?: return AdjustedScore(
-                leafScore + timingDelta + sacrificeWindowDelta,
-                listOfNotNull(timingNote, sacrificeWindowNote)
+                leafScore + timingDelta + sacrificeWindowDelta + developmentDelta,
+                listOfNotNull(timingNote, sacrificeWindowNote, developmentNote)
                     .joinToString("; ").ifEmpty { null },
             )
         val context = CastContext(
@@ -684,10 +703,40 @@ class Strategist(
         val override = advisor.evaluateCast(context)
         val advisorNote = override?.let { "${advisor::class.simpleName} replaced the board score" }
         return AdjustedScore(
-            (override ?: leafScore) + timingDelta + sacrificeWindowDelta,
-            listOfNotNull(advisorNote, timingNote, sacrificeWindowNote)
+            (override ?: leafScore) + timingDelta + sacrificeWindowDelta + developmentDelta,
+            listOfNotNull(advisorNote, timingNote, sacrificeWindowNote, developmentNote)
                 .joinToString("; ").ifEmpty { null },
         )
+    }
+
+    /**
+     * A land drop can be worth more than the leaf immediately shows when it leaves enough usable
+     * mana to deploy a permanent in the same main phase. Rollouts normally discover that second
+     * action, but averaging can wash out the tempo distinction between an untapped source and a
+     * land that enters tapped. Preserve a modest option value for the exact legal follow-up.
+     *
+     * This asks the engine for legal actions in the post-land state and applies the ordinary
+     * meaningful-action filter. It therefore depends on neither a land name nor a spell name, and
+     * respects colours, conditional tapped clauses, costs, timing and targets. The adjustment is a
+     * preference rather than a floor: a genuinely stronger line may still outweigh it.
+     */
+    private fun immediatePermanentDevelopmentAfterLand(
+        leafState: GameState,
+        action: LegalAction,
+        playerId: EntityId,
+    ): Double {
+        if (!sequenceLandsByUsableMana || action.action !is PlayLand || leafState.priorityPlayerId != playerId) {
+            return 0.0
+        }
+        val hasDevelopment = MeaningfulActionFilter
+            .filterMeaningful(simulator.getLegalActions(leafState, playerId))
+            .any { followUp ->
+                if (!followUp.affordable) return@any false
+                val cast = followUp.action as? CastSpell ?: return@any false
+                val card = leafState.getEntity(cast.cardId)?.get<CardComponent>() ?: return@any false
+                card.isPermanent
+            }
+        return if (hasDevelopment) IMMEDIATE_PERMANENT_DEVELOPMENT else 0.0
     }
 
     /**
@@ -922,24 +971,52 @@ class Strategist(
         // creature a removal spell is already killing, or discarding a graveyard-recursive card
         // before the draw that turns it back on. `take(1)` makes both choices depend on incidental
         // zone order. For untargeted actions, simulate each legal payment and keep the board the
-        // normal evaluator prefers. Targeted actions stay on the bounded legacy path because an
-        // unfilled target would make every payment simulation illegal; their target-refinement pass
-        // still evaluates the completed action afterwards.
+        // normal evaluator prefers. For a targeted action, fill one provisional legal target before
+        // comparing payments. The committed-target pass may refine that target afterwards, but the
+        // payment comparison must resolve a legal action so dies triggers and other payment payoffs
+        // are visible. This is especially important for sacrifice outlets whose effect has a target.
         val strategicPool = when (info.costType) {
             "DiscardCard" -> info.validDiscardTargets.takeIf { info.discardCount == 1 }
             "SacrificePermanent" -> info.validSacrificeTargets.takeIf { info.sacrificeCount == 1 }
             else -> null
         }
-        if (!action.requiresTargets && strategicPool != null && strategicPool.size > 1) {
-            return strategicPool.take(AUTOMATIC_PAYMENT_CANDIDATES).maxByOrNull { chosen ->
+        if (strategicPool != null && strategicPool.size > 1) {
+            val simulationBase = if (action.requiresTargets) {
+                TargetSelection.fillHeuristically(
+                    state,
+                    action.copy(action = gameAction),
+                    playerId,
+                    fillPartialRequirements = useMeaningfulFilter,
+                    intents = intents,
+                )
+            } else {
+                gameAction
+            }
+            fun attachForSimulation(payment: AdditionalCostPayment): GameAction = when (simulationBase) {
+                is CastSpell -> simulationBase.copy(additionalCostPayment = payment)
+                is ActivateAbility -> simulationBase.copy(costPayment = payment)
+                else -> simulationBase
+            }
+            return strategicPool.take(AUTOMATIC_PAYMENT_CANDIDATES).maxWithOrNull(compareBy<EntityId> { chosen ->
                 val payment = when (info.costType) {
                     "DiscardCard" -> existing.copy(discardedCards = listOf(chosen))
                     else -> existing.copy(sacrificedPermanents = listOf(chosen))
                 }
-                simulator.simulate(state, attach(payment)).scoreOrRankLast { leaf ->
+                val simulatedScore = simulator.simulate(state, attachForSimulation(payment)).scoreOrRankLast { leaf ->
                     evaluator.evaluate(leaf, leaf.projectedState, playerId)
                 }
-            }?.let { chosen ->
+                simulatedScore + if (info.costType == "SacrificePermanent") {
+                    combatAdvisor.mandatoryDiesPayoff(state, chosen)
+                } else {
+                    0.0
+                }
+            }.thenBy { chosen ->
+                if (info.costType == "SacrificePermanent") {
+                    -combatAdvisor.sacrificeLossValue(state, state.projectedState, chosen)
+                } else {
+                    0.0
+                }
+            })?.let { chosen ->
                 when (info.costType) {
                     "DiscardCard" -> attach(existing.copy(discardedCards = listOf(chosen)))
                     else -> attach(existing.copy(sacrificedPermanents = listOf(chosen)))
@@ -1367,6 +1444,9 @@ class Strategist(
 
         /** Value recovered by cashing in a permanent an opposing stack object already targets. */
         const val TARGETED_SACRIFICE_WINDOW = 2.0
+
+        /** Modest option value for a land drop that keeps a same-turn permanent deployment live. */
+        const val IMMEDIATE_PERMANENT_DEVELOPMENT = 1.0
 
         /** A burn spell leaving this much reach is close enough to preserve race conversion. */
         const val NEAR_LETHAL_REACH = 2
