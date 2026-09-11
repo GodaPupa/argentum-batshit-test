@@ -1,0 +1,37 @@
+name: Batshit Optimization Experiment E
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - 'optimization/experiment-e'
+
+permissions:
+  contents: read
+
+jobs:
+  paired-experiment:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: 21
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Run Experiment E paired games
+        env:
+          BATSHIT_OPTIMIZATION_E: "true"
+        run: scripts/test-class BatshitOptimizationExperimentETest --info --stacktrace
+      - name: Upload Experiment E artifacts
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: batshit-optimization-experiment-e
+          path: |
+            gym/build/reports/batshit-optimization-e/paired-results.log
+            gym/build/reports/batshit-optimization-e/paired-results.jsonl
+            gym/build/reports/batshit-optimization-e/batshit-optimization-e-seeds.csv
+            gym/src/test/resources/batshit-optimization-e-seeds.csv
+          if-no-files-found: error

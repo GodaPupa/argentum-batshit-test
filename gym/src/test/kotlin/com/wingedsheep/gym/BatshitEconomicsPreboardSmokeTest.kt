@@ -8,6 +8,7 @@ import com.wingedsheep.ai.llm.CardSummary
 import com.wingedsheep.ai.llm.MulliganInfo
 import com.wingedsheep.engine.core.*
 import com.wingedsheep.engine.registry.CardRegistry
+import com.wingedsheep.engine.mechanics.mana.CostCalculator
 import com.wingedsheep.engine.state.GameState
 import com.wingedsheep.engine.state.components.battlefield.PreparedSpellCopyComponent
 import com.wingedsheep.engine.state.components.battlefield.TappedComponent
@@ -28,22 +29,41 @@ import kotlin.time.Duration.Companion.minutes
 
 /**
  * Opt-in, fully logged Argentum-agent smoke run for the frozen Batshit Economics and Mono-Red
- * Madness maindecks. Ordinary validation compiles this harness but does not spend five full games
+ * Madness maindecks. Ordinary validation compiles this harness but does not spend 100 full games
  * running it; `.github/workflows/batshit-preboard-smoke.yml` is the explicit entry point.
  *
- * This is observation, not a matchup benchmark. It deliberately runs only five fixed seeds and
+ * This is observation, not a real-world matchup benchmark. It deliberately runs 100 fixed seeds and
  * makes no aggregate win-rate assertion.
  */
 class BatshitEconomicsPreboardSmokeTest : FunSpec({
 
     val enabled = System.getenv("BATSHIT_SMOKE") == "true"
 
-    test("five seeded preboard Argentum agent self-play games").config(
+    test("100 frozen-seed preboard Argentum agent self-play games").config(
         enabled = enabled,
         timeout = 45.minutes,
     ) {
         val registry = fullRegistry()
-        val seeds = listOf(0xBA75_0001L, 0xBA75_0002L, 0xBA75_0003L, 0xBA75_0004L, 0xBA75_0005L)
+        val seedPath = Path.of("src", "test", "resources", "batshit-preboard-experiment-v2-seeds.csv")
+        val seeds = Files.readAllLines(seedPath)
+            .drop(1)
+            .filter(String::isNotBlank)
+            .map { line -> line.substringAfterLast(',').toLong() }
+        seeds.distinct().size shouldBe 100
+        val priorSampleSeeds = Files.readAllLines(
+            Path.of("src", "test", "resources", "batshit-preboard-experiment-v1-seeds.csv")
+        )
+            .drop(1)
+            .filter(String::isNotBlank)
+            .mapTo(mutableSetOf()) { line -> line.substringAfterLast(',').toLong() }
+        val previouslyUsedSeeds = priorSampleSeeds + setOf(
+            0xBA75_0001L, 0xBA75_0002L, 0xBA75_0003L, 0xBA75_0004L, 0xBA75_0005L,
+            0x033D_F483_8D71_94AL, 0xB97F_CDFE_9799_C87L, 0xED3B_5358_E12D_ED3L,
+            0xAB1B_251D_164E_979L, 0xA48B_5B90_FAFA_44CL, 0x679B_6F9E_EF77_4BCL,
+            0x7663_C65A_87D6_DD5L, 0x3A25_48FB_BBB2_DECL, 0xF3B7_E43F_3288_345L,
+            0x9066_DF10_204F_D56L,
+        )
+        seeds.none(previouslyUsedSeeds::contains).shouldBeTrue()
         val reports = seeds.mapIndexed { index, seed ->
             playLoggedGame(
                 registry = registry,
@@ -55,7 +75,7 @@ class BatshitEconomicsPreboardSmokeTest : FunSpec({
 
         val output = buildString {
             appendLine("BATSHIT ECONOMICS VS MONO-RED MADNESS")
-            appendLine("Argentum agent self-play — five-game preboard smoke test")
+            appendLine("Argentum agent self-play — 100-game independent replication sample #2")
             appendLine("Profile: ${AiProfile.PRODUCTION_CANDIDATE_EXPIRING.id}")
             appendLine("Seeds: ${seeds.joinToString()}")
             appendLine()
@@ -67,18 +87,66 @@ class BatshitEconomicsPreboardSmokeTest : FunSpec({
         Files.writeString(reportPath, output)
         println(output)
 
-        reports.size shouldBe 5
+        reports.size shouldBe 100
         reports.forEach { report ->
             report.actions shouldBeGreaterThan 0
             report.completed.shouldBeTrue()
+            assertTriggerSummaryMatchesRawEvents(report.log)
         }
     }
 })
 
-private data class LoggedSmokeGame(
+internal fun assertTriggerSummaryMatchesRawEvents(log: String) {
+    fun summary(label: String): Pair<Int, Int> {
+        val value = log.lineSequence().first { it.startsWith(label) }.substringAfter(": ")
+        return value.substringBefore('/').toInt() to value.substringAfter('/').toInt()
+    }
+
+    fun created(source: String, description: String) = log.lineSequence().count {
+        it.contains("EVENT trigger controller=") &&
+            it.contains("$source: $description")
+    }
+
+    fun resolvedDamage(source: String) = log.lineSequence()
+        .filter { it.contains("EVENT damage $source ") && !it.endsWith("(combat)") }
+        .sumOf { it.substringAfter("EVENT damage $source ").substringBefore(' ').toInt() }
+
+    summary("Flamebreather triggers/damage") shouldBe (
+        created(
+            "Kessig Flamebreather",
+            "you casts a noncreature spell, deal 1 damage to each opponent.",
+        ) to resolvedDamage("Kessig Flamebreather")
+    )
+    summary("Guttersnipe triggers/damage") shouldBe (
+        created(
+            "Guttersnipe",
+            "you casts a instant or sorcery spell, deal 2 damage to each opponent.",
+        ) to resolvedDamage("Guttersnipe")
+    )
+
+    fun batsSummary(): Pair<Int, Int> {
+        val value = log.lineSequence()
+            .first { it.startsWith("Mirkwood Bats creation/sacrifice triggers") }
+            .substringAfter(": ")
+        return value.substringBefore('/').toInt() to value.substringAfter('/').toInt()
+    }
+
+    batsSummary() shouldBe (
+        created("Mirkwood Bats", SmokeBatsTelemetry.TOKEN_CREATION_DESCRIPTION) to
+            created("Mirkwood Bats", SmokeBatsTelemetry.TOKEN_SACRIFICE_DESCRIPTION)
+    )
+}
+
+internal data class LoggedSmokeGame(
     val completed: Boolean,
     val actions: Int,
     val log: String,
+    val winner: String = "none",
+    val endingTurn: Int = 0,
+    val batshitLife: Int = 0,
+    val opponentLife: Int = 0,
+    val batshitMulligans: Int = 0,
+    val opponentMulligans: Int = 0,
 )
 
 internal class SmokeTriggerTelemetry {
@@ -123,7 +191,39 @@ internal class SmokeTriggerTelemetry {
     }
 }
 
-private fun fullRegistry(): CardRegistry = CardRegistry().apply {
+/**
+ * Counts only Mirkwood Bats' two printed token-event triggers.
+ *
+ * Granted abilities use the affected permanent as their displayed source. In particular, Not Dead
+ * After All granting a dies-and-return trigger to Mirkwood Bats produces an
+ * [AbilityTriggeredEvent] whose `sourceName` is also "Mirkwood Bats". Source name alone therefore
+ * cannot identify the Bats ability; the stable ability description is part of its identity here.
+ */
+internal class SmokeBatsTelemetry {
+    var creationTriggers: Int = 0
+        private set
+    var sacrificeTriggers: Int = 0
+        private set
+
+    val totalTriggers: Int get() = creationTriggers + sacrificeTriggers
+
+    fun record(event: GameEvent) {
+        if (event !is AbilityTriggeredEvent || event.sourceName != "Mirkwood Bats") return
+        when (event.description) {
+            TOKEN_CREATION_DESCRIPTION -> creationTriggers++
+            TOKEN_SACRIFICE_DESCRIPTION -> sacrificeTriggers++
+        }
+    }
+
+    companion object {
+        const val TOKEN_CREATION_DESCRIPTION =
+            "one or more tokens would be created under your control, each opponent loses 1 life."
+        const val TOKEN_SACRIFICE_DESCRIPTION =
+            "you sacrifice one or more tokens, each opponent loses 1 life."
+    }
+}
+
+internal fun fullRegistry(): CardRegistry = CardRegistry().apply {
     // Prepared Craft, Fanatical Offering, Epicure, and NDAA all resolve through named predefined
     // tokens. The production game/gym registries install these explicitly; the smoke harness must
     // do the same or token creation fails during resolution and the trace falsely reports that the
@@ -135,7 +235,7 @@ private fun fullRegistry(): CardRegistry = CardRegistry().apply {
     }
 }
 
-private fun batshitDeck(): Deck = Deck.of(
+internal fun batshitDeck(): Deck = Deck.of(
     "Goblin Glasswright" to 4,
     "Kessig Flamebreather" to 4,
     "Mirkwood Bats" to 3,
@@ -165,7 +265,7 @@ private fun batshitDeck(): Deck = Deck.of(
     },
 )
 
-private fun monoRedDeck(): Deck = Deck.of(
+internal fun monoRedDeck(): Deck = Deck.of(
     "Voldaren Epicure" to 4,
     "Kessig Flamebreather" to 4,
     "Sneaky Snacker" to 4,
@@ -180,24 +280,28 @@ private fun monoRedDeck(): Deck = Deck.of(
     "Mountain" to 19,
 )
 
-private fun playLoggedGame(
+internal fun playLoggedGame(
     registry: CardRegistry,
     gameNumber: Int,
     seed: Long,
     startingPlayerIndex: Int,
+    batshitDeck: Deck = batshitDeck(),
+    opponentDeck: Deck = monoRedDeck(),
+    opponentName: String = "Mono-Red Madness",
+    opponentLabel: String = "Red",
 ): LoggedSmokeGame {
     val processor = ActionProcessor(registry)
     val initializer = GameInitializer(registry)
-    val batshit75 = batshitDeck()
+    val batshit75 = batshitDeck
     // This run is deliberately preboard. Keep the authoritative 15 encoded above, but do not ask
-    // GameInitializer to resolve sideboard-only cards that can never enter these five games.
+    // GameInitializer to resolve sideboard-only cards that can never enter these 100 games.
     val batshit = batshit75.copy(sideboard = emptyList())
-    val red = monoRedDeck()
+    val red = opponentDeck
     val init = initializer.initializeGame(
         GameConfig(
             players = listOf(
                 PlayerConfig("Batshit Economics", batshit),
-                PlayerConfig("Mono-Red Madness", red),
+                PlayerConfig(opponentName, red),
             ),
             skipMulligans = false,
             useHandSmoother = false,
@@ -208,7 +312,7 @@ private fun playLoggedGame(
 
     val batshitId = init.playerIds[0]
     val redId = init.playerIds[1]
-    val names = mapOf(batshitId to "Batshit", redId to "Red")
+    val names = mapOf(batshitId to "Batshit", redId to opponentLabel)
     fun label(id: EntityId?) = names[id] ?: id?.toString() ?: "none"
 
     var state = init.state
@@ -217,7 +321,11 @@ private fun playLoggedGame(
         redId to EngineAiPlayerController(registry, redId, gameStateProvider = { state }),
     )
     val log = StringBuilder()
-    val playLabel = if (startingPlayerIndex == 0) "Batshit plays; Red draws" else "Red plays; Batshit draws"
+    val playLabel = if (startingPlayerIndex == 0) {
+        "Batshit plays; $opponentLabel draws"
+    } else {
+        "$opponentLabel plays; Batshit draws"
+    }
     log.appendLine("=== GAME $gameNumber ===")
     log.appendLine("Seed: $seed (0x${seed.toString(16).uppercase()})")
     log.appendLine("Play/draw: $playLabel")
@@ -289,7 +397,7 @@ private fun playLoggedGame(
     }
 
     log.appendLine("Kept Batshit: ${handNames(batshitId)}")
-    log.appendLine("Kept Red: ${handNames(redId)}")
+    log.appendLine("Kept $opponentLabel: ${handNames(redId)}")
 
     // All post-mulligan play goes through the same stateful Gym boundary used by agent clients.
     // stepExactlyOne preserves real priority (the opposing agent still gets every response window)
@@ -323,10 +431,28 @@ private fun playLoggedGame(
     var endReason = "unfinished"
     var lastMeaningful = "none"
     var glasswrightEntries = 0
+    var glasswrightResets = 0
     var craftCasts = 0
-    var batsTriggers = 0
     val triggerTelemetry = SmokeTriggerTelemetry()
+    val batsTelemetry = SmokeBatsTelemetry()
     var gorgeTappedEntries = 0
+    val costCalculator = CostCalculator(registry)
+
+    fun artifactCount(gameState: GameState, playerId: EntityId): Int =
+        gameState.controlledBattlefield(playerId).count { entityId ->
+            gameState.projectedState.hasType(entityId, "ARTIFACT")
+        }
+
+    fun manaAccess(gameState: GameState, playerId: EntityId): String {
+        val untapped = gameState.controlledBattlefield(playerId).filter { entityId ->
+            gameState.getEntity(entityId)?.get<TappedComponent>() == null
+        }.mapNotNull { entityId -> gameState.getEntity(entityId)?.get<CardComponent>()?.name }
+        fun has(vararg names: String) = untapped.any { it in names }
+        return "U=${has("Seat of the Synod", "Mistvault Bridge", "Silverbluff Bridge")}," +
+            "B=${has("Swamp", "Vault of Whispers", "Drossforge Bridge", "Mistvault Bridge")}," +
+            "R=${has("Great Furnace", "Drossforge Bridge", "Silverbluff Bridge")}" +
+            "; untapped=$untapped"
+    }
 
     fun life(playerId: EntityId) = state.lifeTotal(playerId)
 
@@ -358,6 +484,19 @@ private fun playLoggedGame(
                 if (sacrifices != null) append(" sacrifice=$sacrifices")
                 if (discards != null) append(" discard=$discards")
                 if (action.alternativeCostType != null) append(" via=${action.alternativeCostType}")
+                if (name in setOf("Refurbished Familiar", "Utrom Monitor", "Myr Enforcer")) {
+                    val definition = registry.requireCard(name)
+                    val effective = costCalculator.calculateEffectiveCost(state, definition, action.playerId)
+                    append(
+                        " affinity[artifacts=${artifactCount(state, action.playerId)}," +
+                            "printedGeneric=${definition.manaCost.genericAmount}," +
+                            "effectiveGeneric=${effective.genericAmount},effectiveCmc=${effective.cmc}]"
+                    )
+                }
+                if (name == "Galvanic Blast") {
+                    val artifacts = artifactCount(state, action.playerId)
+                    append(" metalcraft[artifacts=$artifacts,active=${artifacts >= 3}]")
+                }
             }
         }
         is ActivateAbility -> {
@@ -386,45 +525,55 @@ private fun playLoggedGame(
     }
 
     fun logEvents(events: List<GameEvent>, resultingState: GameState) {
+        val resolvedNames = events.filterIsInstance<ResolvedEvent>().mapTo(mutableSetOf()) { it.name }
         events.forEach { event ->
             when (event) {
                 is SpellCastEvent -> log.appendLine(
                     "  EVENT spell ${label(event.casterId)} ${event.cardName}" +
                         (event.targetNames.takeIf { it.isNotEmpty() }?.let { " -> $it" } ?: "") +
                         (event.castFromZone?.let { " from=$it" } ?: "") +
-                        (event.alternativeCost?.let { " via=$it" } ?: "")
+                        (event.alternativeCost?.let { " via=$it" } ?: "") +
+                        " manaSpent=${event.totalManaSpent} artifacts=${artifactCount(resultingState, event.casterId)}"
                 )
-                is AbilityTriggeredEvent -> if (
-                    event.sourceName in setOf("Kessig Flamebreather", "Mirkwood Bats", "Guttersnipe", "Shambling Ghast")
-                ) {
+                is AbilityTriggeredEvent -> {
                     triggerTelemetry.record(event)
-                    when (event.sourceName) {
-                        "Mirkwood Bats" -> batsTriggers++
-                    }
-                    log.appendLine("  EVENT trigger ${event.sourceName}: ${event.description}")
+                    batsTelemetry.record(event)
+                    log.appendLine(
+                        "  EVENT trigger controller=${label(event.controllerId)} " +
+                            "${event.sourceName}: ${event.description}"
+                    )
                 }
-                is AbilityActivatedEvent -> if (event.sourceName == "Makeshift Munitions" || event.sourceName == "Treasure") {
+                is AbilityActivatedEvent -> {
                     log.appendLine("  EVENT ability ${label(event.controllerId)} ${event.sourceName}")
                 }
                 is DamageDealtEvent -> {
                     triggerTelemetry.record(event)
-                    if (event.sourceName in setOf(
-                            "Kessig Flamebreather", "Guttersnipe", "Lightning Bolt", "Lava Dart",
-                            "Fiery Temper", "Fireblast", "Makeshift Munitions", "Voldaren Epicure"
-                        ) || event.isCombatDamage
-                    ) {
-                        log.appendLine(
-                            "  EVENT damage ${event.sourceName ?: "unknown"} ${event.amount} -> " +
-                                (event.targetName ?: label(event.targetId)) +
-                                if (event.isCombatDamage) " (combat)" else ""
-                        )
-                    }
+                    log.appendLine(
+                        "  EVENT damage ${event.sourceName ?: "unknown"} ${event.amount} -> " +
+                            (event.targetName ?: label(event.targetId)) +
+                            (if (event.isCombatDamage) " (combat)" else "") +
+                            (if (event.sourceName == "Galvanic Blast") {
+                                " controllerArtifacts=${artifactCount(resultingState, redId)}"
+                            } else "")
+                    )
                 }
-                is LifeChangedEvent -> log.appendLine(
-                    "  EVENT life ${label(event.playerId)} ${event.oldLife}->${event.newLife} ${event.reason}"
-                )
+                is LifeChangedEvent -> {
+                    val inferredSource = when {
+                        event.reason == LifeChangeReason.LIFE_LOSS && "Mirkwood Bats" in resolvedNames ->
+                            " source=Mirkwood Bats"
+                        event.reason == LifeChangeReason.LIFE_GAIN && "Reckoner's Bargain" in resolvedNames ->
+                            " source=Reckoner's Bargain"
+                        else -> ""
+                    }
+                    log.appendLine(
+                        "  EVENT life ${label(event.playerId)} ${event.oldLife}->${event.newLife} ${event.reason}$inferredSource"
+                    )
+                }
                 is CardsDiscardedEvent -> log.appendLine(
                     "  EVENT discard ${label(event.playerId)} ${event.cardNames}"
+                )
+                is CardsDrawnEvent -> log.appendLine(
+                    "  EVENT draw ${label(event.playerId)} ${event.count} ${event.cardNames}"
                 )
                 is PermanentsSacrificedEvent -> log.appendLine(
                     "  EVENT sacrifice ${label(event.playerId)} ${event.permanentNames}"
@@ -435,11 +584,10 @@ private fun playLoggedGame(
                         val prepared = preparedCopies(resultingState, event.ownerId)
                         log.appendLine("  EVENT Glasswright battlefield incarnation #$glasswrightEntries; preparedCopies=$prepared")
                     }
-                    if (event.entityName in setOf(
-                            "Goblin Glasswright", "Kessig Flamebreather", "Mirkwood Bats", "Guttersnipe",
-                            "Shambling Ghast", "Sneaky Snacker", "Treasure", "Map"
-                        ) && (event.fromZone == Zone.BATTLEFIELD || event.toZone == Zone.BATTLEFIELD)
-                    ) {
+                    if (event.entityName == "Goblin Glasswright" && event.fromZone == Zone.BATTLEFIELD) {
+                        glasswrightResets++
+                    }
+                    if (event.fromZone == Zone.BATTLEFIELD || event.toZone == Zone.BATTLEFIELD) {
                         log.appendLine(
                             "  EVENT zone ${event.entityName} ${event.fromZone}->${event.toZone}" +
                                 if (event.wasSacrificed) " sacrificed" else ""
@@ -447,6 +595,15 @@ private fun playLoggedGame(
                     }
                 }
                 is GameEndedEvent -> endReason = event.reason.name
+                is ResolvedEvent -> log.appendLine("  EVENT resolved ${event.name}")
+                is ManaAddedEvent -> log.appendLine(
+                    "  EVENT mana+ ${label(event.playerId)} source=${event.sourceName} " +
+                        "WUBRGC=${event.white}/${event.blue}/${event.black}/${event.red}/${event.green}/${event.colorless}"
+                )
+                is ManaSpentEvent -> log.appendLine(
+                    "  EVENT mana- ${label(event.playerId)} reason=${event.reason} " +
+                        "WUBRGC=${event.white}/${event.blue}/${event.black}/${event.red}/${event.green}/${event.colorless}"
+                )
                 else -> Unit
             }
         }
@@ -462,6 +619,12 @@ private fun playLoggedGame(
                 "TURN ${state.turnNumber} active=${label(state.activePlayerId)} " +
                     "life(B/R)=${life(batshitId)}/${life(redId)} " +
                     "hand(B/R)=${state.getHand(batshitId).size}/${state.getHand(redId).size}"
+            )
+            log.appendLine(
+                "  BOARD Batshit artifacts=${artifactCount(state, batshitId)} access=${manaAccess(state, batshitId)}"
+            )
+            log.appendLine(
+                "  BOARD $opponentLabel artifacts=${artifactCount(state, redId)} access=${manaAccess(state, redId)}"
             )
         }
         actionsOnTurn++
@@ -521,7 +684,7 @@ private fun playLoggedGame(
     }
     val winner = when (state.winnerId) {
         batshitId -> "Batshit Economics"
-        redId -> "Mono-Red Madness"
+        redId -> opponentName
         else -> "none"
     }
     val tracked = setOf("Village Rites", "Unearth", "Not Dead After All")
@@ -536,16 +699,20 @@ private fun playLoggedGame(
     log.appendLine("--- RESULT GAME $gameNumber ---")
     log.appendLine("Winner: $winner")
     log.appendLine("Ending turn: ${state.turnNumber}")
-    log.appendLine("Final life Batshit/Red: ${life(batshitId)}/${life(redId)}")
+    log.appendLine("Final life Batshit/$opponentLabel: ${life(batshitId)}/${life(redId)}")
     log.appendLine("End reason: $endReason")
     log.appendLine("Proximate last meaningful decision: $lastMeaningful")
-    log.appendLine("Mulligans Batshit/Red: ${mulliganCounts.getValue(batshitId)}/${mulliganCounts.getValue(redId)}")
-    log.appendLine("Glasswright entries/resets: $glasswrightEntries; Craft casts: $craftCasts")
+    log.appendLine("Mulligans Batshit/$opponentLabel: ${mulliganCounts.getValue(batshitId)}/${mulliganCounts.getValue(redId)}")
+    log.appendLine("Glasswright entries/resets: $glasswrightEntries/$glasswrightResets; Craft casts: $craftCasts")
     log.appendLine(
         "Flamebreather triggers/damage: ${triggerTelemetry.flamebreatherTriggers}/" +
             triggerTelemetry.flamebreatherDamage
     )
-    log.appendLine("Mirkwood Bats triggers: $batsTriggers")
+    log.appendLine(
+        "Mirkwood Bats creation/sacrifice triggers: ${batsTelemetry.creationTriggers}/" +
+            batsTelemetry.sacrificeTriggers
+    )
+    log.appendLine("Mirkwood Bats triggers: ${batsTelemetry.totalTriggers}")
     log.appendLine(
         "Guttersnipe triggers/damage: ${triggerTelemetry.guttersnipeTriggers}/" +
             triggerTelemetry.guttersnipeDamage
@@ -553,9 +720,19 @@ private fun playLoggedGame(
     log.appendLine("Tapped Razortrap Gorge entries: $gorgeTappedEntries")
     log.appendLine("Stranded Batshit Rites/Unearth/NDAA: $strandedBatshit")
     log.appendLine("Surviving Batshit battlefield: $battlefieldBatshit")
-    log.appendLine("Surviving Red battlefield: $battlefieldRed")
+    log.appendLine("Surviving $opponentLabel battlefield: $battlefieldRed")
     log.appendLine("Actions: $actions")
     log.appendLine()
 
-    return LoggedSmokeGame(state.gameOver, actions, log.toString())
+    return LoggedSmokeGame(
+        completed = state.gameOver,
+        actions = actions,
+        log = log.toString(),
+        winner = winner,
+        endingTurn = state.turnNumber,
+        batshitLife = life(batshitId),
+        opponentLife = life(redId),
+        batshitMulligans = mulliganCounts.getValue(batshitId),
+        opponentMulligans = mulliganCounts.getValue(redId),
+    )
 }

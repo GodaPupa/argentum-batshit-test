@@ -1,0 +1,37 @@
+name: Batshit Optimization Experiment C
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - 'optimization/experiment-c'
+
+permissions:
+  contents: read
+
+jobs:
+  paired-experiment:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: 21
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Run Experiment C paired games
+        env:
+          BATSHIT_OPTIMIZATION_C: "true"
+        run: scripts/test-class BatshitOptimizationExperimentCTest --info --stacktrace
+      - name: Upload Experiment C artifacts
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: batshit-optimization-experiment-c
+          path: |
+            gym/build/reports/batshit-optimization-c/paired-results.log
+            gym/build/reports/batshit-optimization-c/paired-results.jsonl
+            gym/build/reports/batshit-optimization-c/batshit-optimization-c-seeds.csv
+            gym/src/test/resources/batshit-optimization-c-seeds.csv
+          if-no-files-found: warn
