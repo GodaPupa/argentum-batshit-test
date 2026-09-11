@@ -49,10 +49,11 @@ class GrixisAffinityPolicyRegressionTest : ScenarioTestBase() {
             ai(game).chooseAction(game.state).shouldBeInstanceOf<PassPriority>()
         }
 
-        test("visible recursion still makes an opposing creature graveyard worth a Spellbomb") {
+        test("visible executable recursion still makes an opposing creature graveyard worth a Spellbomb") {
             val game = seeded().withCardOnBattlefield(1, "Nihil Spellbomb")
                 .withCardInHand(2, "Unearth")
                 .withCardInGraveyard(2, "Kessig Flamebreather")
+                .withLandsOnBattlefield(2, "Swamp", 1)
                 .build()
 
             val action = ai(game).chooseAction(game.state).shouldBeInstanceOf<ActivateAbility>()
