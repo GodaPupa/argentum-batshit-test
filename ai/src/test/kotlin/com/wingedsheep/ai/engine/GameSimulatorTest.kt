@@ -141,6 +141,18 @@ class GameSimulatorTest : FunSpec({
         illegal.reason shouldContain "priority"
     }
 
+    test("submission validation checks the fully materialized action without advancing live state") {
+        val fixture = boltFixture()
+        val simulator = GameSimulator(fixture.registry)
+        val before = fixture.driver.state
+
+        simulator.validateSubmission(before, fixture.cast).accepted.shouldBeTrue()
+        val rejected = simulator.validateSubmission(before, PassPriority(fixture.opponent))
+        rejected.accepted.shouldBeFalse()
+        rejected.error shouldContain "priority"
+        fixture.driver.state shouldBe before
+    }
+
     // ── The live-play contract: a limit stop costs a candidate, never the decision ──
     //
     // The AI is a heuristic that ranks candidates. If a limit stop propagated out of `chooseAction`

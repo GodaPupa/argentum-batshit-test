@@ -49,6 +49,7 @@ import com.wingedsheep.engine.state.components.stack.SpellOnStackComponent
 import com.wingedsheep.engine.state.components.stack.TriggeredAbilityOnStackComponent
 import com.wingedsheep.sdk.core.Keyword
 import com.wingedsheep.sdk.core.Subtype
+import com.wingedsheep.sdk.core.Zone
 import com.wingedsheep.sdk.model.EntityId
 import com.wingedsheep.sdk.scripting.predicates.CardPredicate
 import com.wingedsheep.sdk.scripting.predicates.ControllerPredicate
@@ -265,8 +266,8 @@ class PredicateEvaluator {
     }
 
     /**
-     * Whether an object with **no battlefield projection entry** (a spell on the stack, a card in
-     * hand/library/graveyard/exile) effectively has [subtype]. Honors its printed subtypes,
+     * Whether a nonbattlefield object (a spell on the stack, a card in hand/library/graveyard/exile)
+     * effectively has [subtype]. Honors its printed subtypes,
      * Changeling (all creature types in all zones, Rule 702.73), and cross-zone "is the chosen
      * type" grants (Conspiracy / Leyline of Transformation — see
      * [ProjectedState.crossZoneGrantedSubtypes]). Battlefield permanents never reach this helper;
@@ -284,6 +285,28 @@ class PredicateEvaluator {
             projected.crossZoneGrantedSubtypes(state, entityId).any { it.equals(subtype.value, ignoreCase = true) }
 
     /**
+     * Battlefield objects use their layer-projected subtypes. Cards elsewhere use printed
+     * characteristics plus cross-zone grants even if a partial projection entry exists while an
+     * effect is resolving. Face-down objects have no subtype characteristics in either case.
+     */
+    private fun matchesEffectiveSubtype(
+        state: GameState,
+        projected: ProjectedState,
+        entityId: EntityId,
+        card: CardComponent,
+        projectedValues: ProjectedValues?,
+        subtype: Subtype,
+    ): Boolean {
+        if (projectedValues?.isFaceDown == true) return false
+        return if (state.logicalZone(entityId)?.zoneType == Zone.BATTLEFIELD) {
+            projectedValues?.subtypes?.any { it.equals(subtype.value, ignoreCase = true) }
+                ?: matchesBaseSubtype(state, projected, entityId, card, subtype)
+        } else {
+            matchesBaseSubtype(state, projected, entityId, card, subtype)
+        }
+    }
+
+    /**
      * The creature/other subtypes an object effectively has for "shares a type with" / chosen-type
      * comparisons. Battlefield permanents use their projected subtype set (empty if face down,
      * Rule 708.2); non-battlefield objects use their printed subtypes plus any cross-zone "is the
@@ -298,7 +321,7 @@ class PredicateEvaluator {
         card: CardComponent,
         projectedValues: ProjectedValues?
     ): Set<String> {
-        if (projectedValues != null) {
+        if (projectedValues != null && state.logicalZone(entityId)?.zoneType == Zone.BATTLEFIELD) {
             return if (projectedValues.isFaceDown) emptySet() else projectedValues.subtypes
         }
         return card.typeLine.subtypes.map { it.value }.toSet() +
@@ -483,30 +506,14 @@ class PredicateEvaluator {
             // Subtype predicates - use projected subtypes when available (for text-changing effects)
             // Face-down creatures have no subtypes (Rule 708.2)
             is CardPredicate.HasSubtype -> {
-                if (projectedValues?.isFaceDown == true) {
-                    false
-                } else {
-                    projectedValues?.subtypes?.any { it.equals(predicate.subtype.value, ignoreCase = true) }
-                        ?: matchesBaseSubtype(state, projected, entityId, card, predicate.subtype)
-                }
+                matchesEffectiveSubtype(state, projected, entityId, card, projectedValues, predicate.subtype)
             }
             is CardPredicate.NotSubtype -> {
-                if (projectedValues?.isFaceDown == true) {
-                    true  // Face-down has no subtypes
-                } else {
-                    val hasSubtype = projectedValues?.subtypes?.any { it.equals(predicate.subtype.value, ignoreCase = true) }
-                        ?: matchesBaseSubtype(state, projected, entityId, card, predicate.subtype)
-                    !hasSubtype
-                }
+                !matchesEffectiveSubtype(state, projected, entityId, card, projectedValues, predicate.subtype)
             }
             is CardPredicate.HasAnyOfSubtypes -> {
-                if (projectedValues?.isFaceDown == true) {
-                    false
-                } else {
-                    predicate.subtypes.any { subtype ->
-                        projectedValues?.subtypes?.any { it.equals(subtype.value, ignoreCase = true) }
-                            ?: matchesBaseSubtype(state, projected, entityId, card, subtype)
-                    }
+                predicate.subtypes.any { subtype ->
+                    matchesEffectiveSubtype(state, projected, entityId, card, projectedValues, subtype)
                 }
             }
             is CardPredicate.HasBasicLandType -> {

@@ -75,6 +75,58 @@
     ]
 }
 
+// Nettle Sentinel
+{
+    "name": "Nettle Sentinel",
+    "manaCost": "{G}",
+    "typeLine": "Creature — Elf Warrior",
+    "oracleText": "This creature doesn't untap during your untap step.\nWhenever you cast a green spell, you may untap this creature.",
+    "creatureStats": {
+        "power": 2,
+        "toughness": 2
+    },
+    "flags": [
+        "DOESNT_UNTAP"
+    ],
+    "script": {
+        "triggeredAbilities": [
+            {
+                "id": "ability_1",
+                "trigger": {
+                    "type": "SpellCastEvent",
+                    "spellFilter": {
+                        "cardPredicates": [
+                            {
+                                "type": "HasColor",
+                                "color": "GREEN"
+                            }
+                        ]
+                    }
+                },
+                "binding": "ANY",
+                "effect": {
+                    "type": "Gated",
+                    "gate": "Gate.MayDecide",
+                    "then": {
+                        "type": "TapUntap",
+                        "target": "Self",
+                        "tap": false
+                    }
+                }
+            }
+        ]
+    },
+    "metadata": {
+        "collectorNumber": "71",
+        "artist": "Kev Walker",
+        "flavorText": "Though Shadowmoor's monster-haunted wilds beckon, she never leaves her post.",
+        "imageUri": "https://cards.scryfall.io/normal/front/f/9/f9f21681-fd36-4106-8395-3153599a08a6.jpg?1783942679"
+    },
+    "colorIdentityOverride": [
+        "GREEN"
+    ]
+}
+
 // Scarecrone
 {
     "name": "Scarecrone",

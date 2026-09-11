@@ -110,6 +110,19 @@ class GameSimulator(
     }
 
     /**
+     * Checks whether a fully materialized action can be submitted at this exact state boundary.
+     *
+     * Legal-action affordability deliberately includes explicit mana abilities (for example,
+     * tapping two Elves to Birchlore Rangers), while [PaymentStrategy.AutoPay] deliberately does
+     * not activate those abilities. Automatic players therefore need this final check after
+     * filling targets and additional costs, before ranking a raw legal-action offer as executable.
+     */
+    fun validateSubmission(state: GameState, action: GameAction): ActionSubmissionValidation {
+        val result = processor.process(state, action).result
+        return ActionSubmissionValidation(result.error == null, result.error)
+    }
+
+    /**
      * Simulate each legal action (1-ply) and return scored outcomes.
      * Actions that require targets are simulated with each valid target.
      */
@@ -280,6 +293,11 @@ class GameSimulator(
         const val DEFAULT_MAX_AUTOMATIC_TRANSITIONS = 100
     }
 }
+
+data class ActionSubmissionValidation(
+    val accepted: Boolean,
+    val error: String? = null,
+)
 
 /**
  * A legal action paired with its simulated outcome.
