@@ -27,5 +27,9 @@ class CardAdvisorRegistry {
         }
     }
 
-    fun getAdvisor(cardName: String): CardAdvisor? = advisors[cardName]
+    /**
+     * Named advisors keep precedence. Cards without one still pass through the small structural
+     * resource-discipline layer, which returns null for shapes it does not recognize.
+     */
+    fun getAdvisor(cardName: String): CardAdvisor? = advisors[cardName] ?: ResourceDisciplineAdvisor
 }

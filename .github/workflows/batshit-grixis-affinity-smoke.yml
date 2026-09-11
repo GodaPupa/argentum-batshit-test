@@ -1,0 +1,42 @@
+name: Batshit vs Grixis Affinity Smoke
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - 'affinity/grixis-smoke-10'
+
+permissions:
+  contents: read
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: 21
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Run ten frozen-seed preboard games
+        env:
+          BATSHIT_GRIXIS_AFFINITY_SMOKE: "true"
+        run: |
+          set -o pipefail
+          scripts/test-class BatshitGrixisAffinitySmokeTest --info --stacktrace \
+            | tee batshit-grixis-affinity-smoke.log
+      - name: Upload frozen vector, raw traces, and reports
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: batshit-grixis-affinity-smoke-10
+          path: |
+            batshit-grixis-affinity-smoke.log
+            gym/build/reports/batshit-grixis-affinity-smoke/raw-traces.log
+            gym/build/reports/batshit-grixis-affinity-smoke/games.jsonl
+            gym/build/reports/batshit-grixis-affinity-smoke/smoke-report.md
+            gym/build/reports/batshit-grixis-affinity-smoke/batshit-grixis-affinity-smoke-seeds.csv
+            gym/src/test/resources/batshit-grixis-affinity-smoke-seeds.csv
+          if-no-files-found: error

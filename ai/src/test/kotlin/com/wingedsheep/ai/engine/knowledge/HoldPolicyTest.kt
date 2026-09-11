@@ -50,6 +50,33 @@ class HoldPolicyTest : ScenarioTestBase() {
                 .shouldBeInstanceOf<TimingVerdict.Adjust>()
         }
 
+        test("death-return protection receives a rescue window against opposing targeted removal") {
+            val game = scenario()
+                .withPlayers()
+                .withActivePlayer(2)
+                .withLandsOnBattlefield(2, "Mountain", 1)
+                .withCardInHand(2, "Lightning Bolt")
+                .withLandsOnBattlefield(1, "Swamp", 1)
+                .withCardInHand(1, "Not Dead After All")
+                .withCardOnBattlefield(1, "Kessig Flamebreather")
+                .build()
+            val flamebreather = game.findPermanent("Kessig Flamebreather")!!
+            game.castSpell(2, "Lightning Bolt", flamebreather)
+            val ndaa = game.findCardsInHand(1, "Not Dead After All").single()
+            val policy = HoldPolicy(IntentCatalog.of(cardRegistry))
+
+            policy.verdictFor(
+                game.state,
+                game.player1Id,
+                "Not Dead After All",
+                cast = com.wingedsheep.engine.core.CastSpell(
+                    game.player1Id,
+                    ndaa,
+                    targets = listOf(com.wingedsheep.engine.state.components.stack.ChosenTarget.Permanent(flamebreather)),
+                ),
+            ).shouldBeInstanceOf<TimingVerdict.Adjust>()
+        }
+
         test("a trick answers nothing on a creature that already survives the damage") {
             // Three damage, four toughness: the deadline is real and the card is irrelevant to it.
             val game = scenario()

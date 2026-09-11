@@ -2,6 +2,7 @@ package com.wingedsheep.ai.engine
 
 import com.wingedsheep.ai.engine.evaluation.BoardPresence
 import com.wingedsheep.ai.engine.knowledge.IntentCatalog
+import com.wingedsheep.ai.engine.knowledge.IntentTag
 import com.wingedsheep.engine.core.ActivateAbility
 import com.wingedsheep.engine.core.CastSpell
 import com.wingedsheep.engine.core.GameAction
@@ -78,6 +79,127 @@ object TargetSelection {
     }
 
     /**
+     * Rank one target in the context of the action that will affect it.
+     *
+     * A player target normally carries almost no semantic information. Graveyard sweeps are the
+     * important exception: treating "target player" as a bare opponent/self choice lets leaf
+     * evaluation prefer exiling the activating player's graveyard even while the opponent has a
+     * live recursion engine. Keep the general permanent/player ranking above, but replace the
+     * player score when the action text says that the selected player's graveyard is affected.
+     */
+    fun rankForAction(
+        state: GameState,
+        action: LegalAction,
+        info: TargetInfo,
+        entityId: EntityId,
+        playerId: EntityId,
+        intents: IntentCatalog = IntentCatalog.NONE,
+    ): Double {
+        val isPlayer = state.getEntity(entityId)?.get<PlayerComponent>() != null
+        if (isPlayer && isGraveyardPlayerTarget(action, info)) {
+            return graveyardTargetValue(state, entityId, playerId, intents)
+        }
+        return rank(state, entityId, playerId, intents)
+    }
+
+    fun isGraveyardPlayerTarget(action: LegalAction, info: TargetInfo): Boolean {
+        val text = "${action.description} ${action.targetDescription.orEmpty()} ${info.description}".lowercase()
+        return "graveyard" in text && ("target player" in text || "player's graveyard" in text)
+    }
+
+    /**
+     * Benefit to [playerId] of exiling [targetPlayerId]'s graveyard.
+     *
+     * The score has two deliberately separate parts:
+     *  - immediate stack value: deny an opponent's pending use of a card in that graveyard, or
+     *    avoid erasing our own pending use;
+     *  - prospective value: only concrete visible graveyard use. Generic creatures/cards are not
+     *    speculative value on their own; they become valuable when visible recursion can use them,
+     *    or when the card itself has text that functions from the graveyard.
+     *
+     * This is not an "always target the opponent" rule. If an opponent is currently taking a card
+     * from our graveyard, the immediate denial term can correctly make our own graveyard the best
+     * target. Conversely, visible self-recursion makes sweeping our graveyard substantially worse.
+     */
+    internal fun graveyardTargetValue(
+        state: GameState,
+        targetPlayerId: EntityId,
+        playerId: EntityId,
+        intents: IntentCatalog,
+    ): Double {
+        val graveyard = state.getGraveyard(targetPlayerId)
+        val graveyardSet = graveyard.toSet()
+        val ownerIsOpponent = state.isOpponentTo(targetPlayerId, playerId)
+
+        var immediate = 0.0
+        state.stack.forEach { stackId ->
+            val stackObject = state.getEntity(stackId) ?: return@forEach
+            val controller = stackObject.get<com.wingedsheep.engine.state.components.stack.SpellOnStackComponent>()
+                ?.casterId
+                ?: stackObject.get<com.wingedsheep.engine.state.components.stack.TriggeredAbilityOnStackComponent>()
+                    ?.controllerId
+                ?: stackObject.get<com.wingedsheep.engine.state.components.stack.ActivatedAbilityOnStackComponent>()
+                    ?.controllerId
+                ?: stackObject.get<com.wingedsheep.engine.state.components.stack.AbilityOnStackComponent>()
+                    ?.controllerId
+                ?: return@forEach
+            val usesThisGraveyard = stackObject.get<com.wingedsheep.engine.state.components.stack.TargetsComponent>()
+                ?.targets.orEmpty().any { target ->
+                    target is ChosenTarget.Card && target.cardId in graveyardSet
+                }
+            if (usesThisGraveyard) {
+                immediate += if (state.isOpponentTo(controller, playerId)) 20.0 else -20.0
+            }
+        }
+
+        val visibleResources = state.getHand(targetPlayerId) + state.getBattlefield(targetPlayerId)
+        val recursionCapability = visibleResources.sumOf { id ->
+            val card = state.getEntity(id)?.get<CardComponent>() ?: return@sumOf 0.0
+            val intent = intents.forName(card.name)
+            when {
+                intent != null && (IntentTag.RECURSION in intent || IntentTag.DEATH_RETURN in intent) -> 2.0
+                hasConcreteGraveyardUseText(card) -> 0.5
+                else -> 0.0
+            }
+        }.coerceAtMost(4.0)
+
+        val intrinsicUtility = graveyard.sumOf { id ->
+            val card = state.getEntity(id)?.get<CardComponent>() ?: return@sumOf 0.0
+            if (functionsFromOwnGraveyard(card)) 2.0 else 0.0
+        }
+        val recursionTargets = if (recursionCapability > 0.0) {
+            graveyard.sumOf { id ->
+                val card = state.getEntity(id)?.get<CardComponent>() ?: return@sumOf 0.0
+                if (card.typeLine.isCreature) 1.0 else 0.0
+            } * recursionCapability
+        } else {
+            0.0
+        }
+        val prospective = intrinsicUtility + recursionTargets
+        return immediate + if (ownerIsOpponent) prospective else -prospective
+    }
+
+    private fun hasConcreteGraveyardUseText(card: CardComponent): Boolean {
+        val text = card.oracleText.lowercase()
+        return "graveyard" in text && (
+            "return target" in text ||
+                "cast target" in text ||
+                "play target" in text ||
+                "cards in your graveyard" in text ||
+                "card in your graveyard" in text
+            )
+    }
+
+    private fun functionsFromOwnGraveyard(card: CardComponent): Boolean {
+        val text = card.oracleText.lowercase()
+        val name = card.name.lowercase()
+        return listOf("flashback", "escape", "jump-start", "retrace", "disturb").any { it in text } ||
+            "you may cast this card from your graveyard" in text ||
+            ("$name is in your graveyard" in text && "return" in text) ||
+            "return $name from your graveyard" in text
+    }
+
+    /**
      * For spells/abilities that require target selection, fill in heuristic
      * targets so the action can actually resolve.
      *
@@ -85,7 +207,7 @@ object TargetSelection {
      * opponent creature (or lowest-value own creature, depending on context).
      * Single-target spells: pick the best target by creature value.
      *
-     * This is the cheap path — one heuristic target per requirement, no simulation. The action the
+     * This is the cheap path — one heuristic choice per requirement, no simulation. The action the
      * Strategist actually commits routes through `chooseCommittedTargets`, which refines it.
      */
     fun fillHeuristically(
@@ -128,7 +250,7 @@ object TargetSelection {
             // (or the engine) to reject. Either beats `first()` on an empty list, which is what this
             // used to do — an `?: available.first()` that could only ever run when `available` was
             // empty, and so could only ever throw.
-            val selectedId = available.maxByOrNull { rank(state, it, playerId, intents) }
+            val selectedId = available.maxByOrNull { rankForAction(state, action, info, it, playerId, intents) }
                 ?: return if (targetInfos.drop(index).all { it.minTargets == 0 }) {
                     applyTargets(baseAction, chosenTargets)
                 } else {
@@ -162,7 +284,7 @@ object TargetSelection {
                     info.validTargets
                 }
                 if (available.isEmpty() && info.minTargets == 0) continue
-                val selectedId = available.maxByOrNull { rank(state, it, playerId, intents) }
+                val selectedId = available.maxByOrNull { rankForAction(state, action, info, it, playerId, intents) }
                     ?: return cast
                 chosen += toChosenTarget(state, info, selectedId, playerId)
                 chosenIds += selectedId

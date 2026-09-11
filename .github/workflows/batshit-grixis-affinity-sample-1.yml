@@ -1,0 +1,43 @@
+name: Grixis Affinity Preboard Sample 1
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - 'affinity/grixis-preboard-sample-1'
+
+permissions:
+  contents: read
+
+jobs:
+  sample:
+    runs-on: ubuntu-latest
+    timeout-minutes: 240
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: 21
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Run 100 frozen-seed preboard games
+        env:
+          BATSHIT_GRIXIS_AFFINITY_SAMPLE_1: "true"
+        run: |
+          set -o pipefail
+          scripts/test-class BatshitGrixisAffinitySampleOneTest --info --stacktrace \
+            | tee batshit-grixis-affinity-sample-1.log
+      - name: Upload frozen vector, raw traces, and reports
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: batshit-grixis-affinity-preboard-sample-1
+          path: |
+            batshit-grixis-affinity-sample-1.log
+            gym/build/reports/batshit-grixis-affinity-sample-1/raw-traces.log
+            gym/build/reports/batshit-grixis-affinity-sample-1/games.jsonl
+            gym/build/reports/batshit-grixis-affinity-sample-1/summary.json
+            gym/build/reports/batshit-grixis-affinity-sample-1/sample-report.md
+            gym/build/reports/batshit-grixis-affinity-sample-1/batshit-grixis-affinity-sample-1-seeds.csv
+            gym/src/test/resources/batshit-grixis-affinity-sample-1-seeds.csv
+          if-no-files-found: error
