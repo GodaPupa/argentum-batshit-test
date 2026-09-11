@@ -3,7 +3,7 @@ name: Argentum Validation
 on:
   workflow_dispatch:
   push:
-    branches: [ "main" ]
+    branches: [ "main", "mayhem/project-x" ]
 
 permissions:
   contents: read
@@ -11,7 +11,7 @@ permissions:
 jobs:
   test:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 120
 
     steps:
       - name: Checkout repository
@@ -47,3 +47,19 @@ jobs:
 
       - name: Run Gym trainer tests
         run: ./gradlew :gym-trainer:test --stacktrace
+
+      - name: Run frozen Project X Optimization Experiment A
+        if: github.ref == 'refs/heads/mayhem/project-x'
+        env:
+          PROJECT_X_OPTIMIZATION_A: "true"
+        run: ./gradlew :gym:test --tests ProjectXGoldfishTest --rerun-tasks --stacktrace
+
+      - name: Upload Project X Optimization Experiment A
+        if: always() && github.ref == 'refs/heads/mayhem/project-x'
+        uses: actions/upload-artifact@v7
+        with:
+          name: project-x-optimization-a
+          path: |
+            gym/build/reports/project-x-goldfish/project-x-optimization-a.json
+            gym/build/reports/project-x-goldfish/project-x-optimization-a.md
+          if-no-files-found: error
