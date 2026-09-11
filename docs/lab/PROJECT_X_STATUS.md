@@ -61,11 +61,13 @@ All four Evolution Witness remain. Variant A has not been promoted.
 
 ## Current blocker
 
-No gameplay, rules, mana-legality, or agent-policy blocker was found. One reporting qualification remains: the redundant `successfulRecursions.counterSource` field has event-queue lag. Canonical counter-placement and Witness-trigger telemetry remains complete and source-attributed, so Experiment A source totals are reconstructable without replay. Do not use the embedded per-recursion source label as authoritative until corrected in a future telemetry-only task.
+The existing-artifact Birchlore audit demonstrated a general solitaire mana-activation policy defect. Birchlore receives elevated priority whenever Carrion Feeder or Falkenrath Noble is in hand, even when producing black does not unlock an executable spell or immediate combo line. Pairs 3 and 20 account for all 32 net Birchlore-event difference; most of those activations did not fund a cast. The current `birchloreManaContribution` label also conflates successful activation with productive mana contribution.
+
+The separate Witness reporting qualification remains: the redundant `successfulRecursions.counterSource` field has event-queue lag. Canonical counter-placement and Witness-trigger telemetry remains complete and source-attributed.
 
 ## Next authorized action
 
-Stop after preserving and reporting Experiment A. Do not promote Variant A, generate another seed vector, test other accelerators or Giant's Boulder, optimize the deck, or begin matchup self-play without new approval.
+Await approval for a general reusable-mana policy correction and focused regression coverage before replication. No replication seed vector has been generated. Do not promote Variant A, generate replication seeds, test other accelerators or Giant's Boulder, optimize the deck, or begin matchup self-play before that gate is resolved.
 
 ## Relevant general Argentum changes
 
