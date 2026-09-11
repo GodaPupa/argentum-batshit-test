@@ -2,7 +2,7 @@ name: CI
 
 on:
   push:
-    branches: [ "main", "mayhem/project-x" ]
+    branches: [ "main" ]
   pull_request:
     # Run on all pull requests (create and update)
     types: [opened, synchronize, reopened]
