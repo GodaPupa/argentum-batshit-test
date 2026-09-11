@@ -215,6 +215,56 @@ class ProjectXSolitaireAgentTest : ScenarioTestBase() {
                 setOf("Birchlore Rangers", "Nettle Sentinel")
         }
 
+        test("Birchlore does not float black merely because an uncastable black spell is in hand") {
+            val game = scenario().withPlayers()
+                .withCardOnBattlefield(1, "Birchlore Rangers")
+                .withCardOnBattlefield(1, "Nettle Sentinel")
+                .withCardInHand(1, "Falkenrath Noble")
+                .build()
+
+            agent(game).chooseAction(game.state).shouldBeInstanceOf<PassPriority>()
+        }
+
+        test("Birchlore advances a Denizen cast only when the activation makes it executable") {
+            val game = scenario().withPlayers()
+                .withCardOnBattlefield(1, "Birchlore Rangers")
+                .withCardOnBattlefield(1, "Nettle Sentinel")
+                .withCardInHand(1, "Ivy Lane Denizen")
+                .withLandsOnBattlefield(1, "Forest", 3)
+                .build()
+
+            val action = agent(game).chooseAction(game.state).shouldBeInstanceOf<ActivateAbility>()
+            name(game, action.sourceId) shouldBe "Birchlore Rangers"
+            action.manaColorChoice shouldBe Color.GREEN
+        }
+
+        test("Birchlore mana remains available for a generic executable spell use") {
+            val game = scenario().withPlayers()
+                .withCardOnBattlefield(1, "Birchlore Rangers")
+                .withCardOnBattlefield(1, "Nettle Sentinel")
+                .withCardInHand(1, "Lead the Stampede")
+                .withLandsOnBattlefield(1, "Forest", 2)
+                .build()
+
+            val action = agent(game).chooseAction(game.state).shouldBeInstanceOf<ActivateAbility>()
+            name(game, action.sourceId) shouldBe "Birchlore Rangers"
+            action.manaColorChoice shouldBe Color.GREEN
+        }
+
+        test("Birchlore preserves higher-value combo Elves when expendable Elves can pay") {
+            val game = scenario().withPlayers()
+                .withCardOnBattlefield(1, "Birchlore Rangers")
+                .withCardOnBattlefield(1, "Nettle Sentinel")
+                .withCardOnBattlefield(1, "Safehold Elite")
+                .withCardOnBattlefield(1, "Ivy Lane Denizen")
+                .withCardInHand(1, "Carrion Feeder")
+                .build()
+
+            val action = agent(game).chooseAction(game.state).shouldBeInstanceOf<ActivateAbility>()
+            action.costPayment!!.tappedPermanents.map { name(game, it) }.toSet() shouldBe
+                setOf("Birchlore Rangers", "Nettle Sentinel")
+        }
+
         test("Nettle untap after a green spell is usable by the next Birchlore activation") {
             val game = scenario().withPlayers()
                 .withCardOnBattlefield(1, "Birchlore Rangers")
