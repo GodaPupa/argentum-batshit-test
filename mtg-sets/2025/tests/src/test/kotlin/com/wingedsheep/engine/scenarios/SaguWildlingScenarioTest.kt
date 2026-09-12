@@ -1,5 +1,6 @@
 package com.wingedsheep.engine.scenarios
 
+import com.wingedsheep.engine.core.CastSpell
 import com.wingedsheep.engine.support.ScenarioTestBase
 import com.wingedsheep.sdk.core.Phase
 import com.wingedsheep.sdk.core.Step
@@ -33,6 +34,27 @@ class SaguWildlingScenarioTest : ScenarioTestBase() {
                 withClue("Controller should have gained 3 life (20 -> 23)") {
                     game.getLifeTotal(1) shouldBe 23
                 }
+            }
+
+            test("Roost Seek is cast as an Omen, finds a basic land, and shuffles itself back") {
+                val game = scenario()
+                    .withPlayers("Player", "Opponent")
+                    .withCardInHand(1, "Sagu Wildling")
+                    .withCardInLibrary(1, "Swamp")
+                    .withLandsOnBattlefield(1, "Forest", 1)
+                    .withActivePlayer(1)
+                    .inPhase(Phase.PRECOMBAT_MAIN, Step.PRECOMBAT_MAIN)
+                    .build()
+
+                val omenCast = game.getLegalActions(1)
+                    .mapNotNull { it.action as? CastSpell }
+                    .single { it.faceIndex == 0 }
+                game.execute(omenCast).error shouldBe null
+                game.resolveStack()
+
+                game.isInHand(1, "Swamp") shouldBe true
+                game.findCardsInLibrary(1, "Sagu Wildling").size shouldBe 1
+                game.isInExile(1, "Sagu Wildling") shouldBe false
             }
         }
     }
