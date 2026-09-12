@@ -11,6 +11,7 @@ import com.wingedsheep.engine.state.components.stack.TriggeredAbilityOnStackComp
 import com.wingedsheep.sdk.model.CardDefinition
 import com.wingedsheep.sdk.scripting.AbilityId
 import com.wingedsheep.sdk.scripting.ActivatedAbility
+import com.wingedsheep.sdk.scripting.KeywordAbility
 import com.wingedsheep.sdk.scripting.effects.Effect
 
 /**
@@ -57,6 +58,24 @@ class IntentCatalog private constructor(private val registry: CardRegistry?) {
         val definition = registry?.getCard(cardName) ?: return null
         val face = definition.cardFaces.find { it.name == faceName } ?: return null
         return CardIntentAnalyzer.analyzeFace(definition, face)
+    }
+
+    /** The intent of a cast face identified by the engine's stable card-face index. */
+    fun forFaceIndex(cardName: String, faceIndex: Int): CardIntent? {
+        val definition = registry?.getCard(cardName) ?: return null
+        val face = definition.cardFaces.getOrNull(faceIndex) ?: return null
+        return CardIntentAnalyzer.analyzeFace(definition, face)
+    }
+
+    /** Whether the card's typed cycling search names a basic land type (or all basic lands). */
+    fun hasLandTypecycling(cardName: String): Boolean {
+        val definition = registry?.getCard(cardName) ?: return false
+        return definition.keywordAbilities.filterIsInstance<KeywordAbility.Cycling>().any { cycling ->
+            cycling.searchFilter != null && (
+                cycling.searchFilter == com.wingedsheep.sdk.scripting.GameObjectFilter.BasicLand ||
+                    cycling.displayPrefix.removeSuffix("cycling") in BASIC_LAND_TYPES
+                )
+        }
     }
 
     /**
@@ -144,6 +163,8 @@ class IntentCatalog private constructor(private val registry: CardRegistry?) {
     fun forEffect(effect: Effect): CardIntent = CardIntentAnalyzer.analyzeEffect(effect)
 
     companion object {
+        private val BASIC_LAND_TYPES = setOf("Plains", "Island", "Swamp", "Mountain", "Forest")
+
         /** The off position: no registry, no answers, pre-Phase-6 behaviour everywhere. */
         val NONE = IntentCatalog(null)
 

@@ -206,6 +206,12 @@ enum class IntentTag {
     /** Searches a library. */
     TUTOR,
 
+    /** Searches a library specifically for a land card. */
+    LAND_TUTOR,
+
+    /** Has a structurally explicit improved effect when its controller gained life this turn. */
+    LIFEGAIN_ENHANCED,
+
     /** Produces mana, or puts extra lands onto the battlefield. */
     RAMP,
 

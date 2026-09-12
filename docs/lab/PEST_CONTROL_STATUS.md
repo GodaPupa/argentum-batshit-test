@@ -1,10 +1,10 @@
 # Project Pest Control — Status
 
-- Status: rules-complete / agent-validation gate
+- Status: rules-complete / deterministic agent validation complete; goldfish-readiness gate
 - Laboratory: Project Pest Control
 - Branch: `pest-control/lab`
 - Validated base: `47882cd645caf126afee6cf13a65909806fa40ab`
-- Rules-complete head: `ca14dac508e2ef9c01567a986134e8156931a8e6`
+- Accepted rules-complete remote head: `b08d8fad6e6709db4834e8e956e6853152efb3b5`
 - Control version: Pest Control v1.0 (permanent, immutable)
 - Candidate status: proposed Tier-1 architecture only; not approved, constructed, or run
 
@@ -12,9 +12,51 @@
 
 This document and `docs/experiments/pest-control/` belong exclusively to Project Pest Control.
 Batshit Economics/Affinity, `mayhem/project-x`, and their seed vectors and experiment protocols are
-read-only dependencies and are outside this laboratory's write and workflow scope. No production
-engine, Gym, or agent behavior was changed. No deck seed was generated and no Pest Control game,
-goldfish, matchup self-play, or optimization run was performed.
+read-only dependencies and are outside this laboratory's write and workflow scope. No deck seed was
+generated and no Pest Control game, goldfish, matchup self-play, or optimization run was performed.
+
+## Phase 3 deterministic agent-validation result
+
+Thirty-seven deterministic positions now validate the requested Pest Control strategy surface
+through the live production-candidate agent and rules engine. They are board-state probes, not deck
+construction, seeds, goldfish games, matchup samples, or optimization data.
+
+Existing generic policy passed unchanged for supported Blood Researcher/Pest Mascot deployment,
+survival-first Weather the Storm, refusing irrelevant Storm inflation, Blight-Priest drain lethal,
+Carrier Thrall blocking, all four Bone Shards sacrifice/discard comparisons, removal target value,
+hexproof/ward use of Chainer's Edict, flashback, removal patience, ordinary-cost Snuff Out at low
+life, race-sensitive Snuff Out, productive Carrier Thrall death, Follow the Lumarets setup and
+immediate normal-mode use, late-game Ent/Wildling casting, non-lifegain winning lines, and general
+pending-lethal recognition.
+
+The deterministic coverage also demonstrated genuine general gaps, corrected without card-name
+heuristics:
+
+- positive +1/+1-counter effects now advertise a lasting `PUMP` payoff to structural intent;
+- life-gain-enhanced selection and basic-land tutor faces have explicit structural intent tags;
+- land typecycling is recognized from the cycling mechanic's search metadata, independently from
+  an Omen face;
+- useful pre-Storm spells receive bounded option value for the additional event and visible
+  repeatable counter/drain payoffs, while a spell that is already worse than passing receives none;
+- a non-mana alternative cost receives bounded tempo value only when the preserved mana makes a
+  relevant follow-up executable;
+- early land-tutor/typecycle actions receive bounded development value, while feasible late-game
+  bodies retain their normal board value;
+- sacrifice-for-mana actions are considered only when their resulting mana unlocks an executable
+  spell, and are not used when the spell is already executable or no productive use exists;
+- targeted protection is held until opposing targeting or committed combat creates a credible
+  window; and
+- `SacrificeSelf` mana abilities now expose their irreversible payment in generic legal-action
+  metadata, making the existing meaningful-action policy usable for Scions, Spawn, Treasure-like
+  resources, and future equivalents.
+
+**SHARED ARGENTUM CHANGE: yes.** The changes above are general intent, sequencing, protection-window,
+and legal-action metadata corrections. No Pest Control card-name heuristic, Gym change, seed vector,
+or opponent policy was added. No requested strategic behavior remains unresolved at this gate.
+
+The frozen Pest Control v1.0 main deck and sideboard blocks below remain byte-for-byte identical to
+the accepted rules-complete head. The proposed Tier-1 challenger remains audit-only and has not been
+constructed.
 
 ## Phase 2 rules-complete result
 
@@ -81,18 +123,26 @@ creation facade. No Gym or agent-policy behavior was changed.
 - Focused card and Pest interaction scenarios: green.
 - Card-definition golden snapshots: regenerated through the authoritative exporter and green,
   including JSON round trips.
-- Full CI: run 187 on `ca14dac508e2ef9c01567a986134e8156931a8e6` is green across frontend,
-  engine, old/recent scenarios, server, content, tools, and the aggregate backend gate.
+- Full CI: run 188 on accepted remote head `b08d8fad6e6709db4834e8e956e6853152efb3b5`
+  is the authoritative green validation for the rules-complete gate.
 - Argentum Validation workflow-equivalent local run: compilation completed; all Pest-relevant,
   engine, AI, and Gym tests reached in the run were green. The monolithic `test` task was ultimately
   red only because this container forbids Byte Buddy's dynamic self-attachment used by unrelated
   server mocking tests; the same server suite is green in CI run 187. A separate local `:gym:test`
   completed green. The GitHub connection available to this laboratory does not expose
   `workflow_dispatch`, so the named workflow itself could not be dispatched on this non-main branch.
+- Phase 3 focused validation: 37 Pest agent decisions, the full structural-intent analyzer suite,
+  and the generic mana-ability enumerator suite are green.
+- Phase 3 full local engine and AI suites: green. The monolithic offline `test` entry point cannot
+  construct `:mtg-search:testRuntimeClasspath` in this container because its cache lacks Byte Buddy
+  1.10.9 and kotlinx-serialization-core 1.9.0. Separately, this container forbids Byte Buddy dynamic
+  self-attachment in the unrelated server mocking tests. Neither environment limitation is being
+  accommodated by production changes or altered test semantics. Remote CI remains the authoritative
+  full-matrix gate for Phase 3.
 
-The laboratory stops here. The next permitted activity is deterministic validation of existing
-generic agent choices. Challenger construction, deck materialization, seeds, gameplay sampling,
-goldfishing, matchup self-play, and optimization still require later explicit approval.
+The laboratory stops at the goldfish-readiness gate. The first untouched control goldfish baseline
+requires later explicit approval. Challenger construction, deck materialization, seeds, gameplay
+sampling, goldfishing, matchup self-play, and optimization remain prohibited in this phase.
 
 ## 1. Branch and base
 
