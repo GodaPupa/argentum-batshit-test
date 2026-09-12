@@ -1,19 +1,98 @@
-# Project Pest Control — Phase 1 Status
+# Project Pest Control — Status
 
-- Status: feasibility/card audit only
+- Status: rules-complete / agent-validation gate
 - Laboratory: Project Pest Control
 - Branch: `pest-control/lab`
 - Validated base: `47882cd645caf126afee6cf13a65909806fa40ab`
+- Rules-complete head: `ca14dac508e2ef9c01567a986134e8156931a8e6`
 - Control version: Pest Control v1.0 (permanent, immutable)
-- Candidate status: proposed Tier-1 architecture only; not approved or implemented
+- Candidate status: proposed Tier-1 architecture only; not approved, constructed, or run
 
 ## Laboratory boundary
 
 This document and `docs/experiments/pest-control/` belong exclusively to Project Pest Control.
 Batshit Economics/Affinity, `mayhem/project-x`, and their seed vectors and experiment protocols are
 read-only dependencies and are outside this laboratory's write and workflow scope. No production
-engine, Gym, or agent behavior was changed during this audit. No deck seed was generated and no
-game, goldfish, matchup self-play, or optimization run was performed.
+engine, Gym, or agent behavior was changed. No deck seed was generated and no Pest Control game,
+goldfish, matchup self-play, or optimization run was performed.
+
+## Phase 2 rules-complete result
+
+The approved shared addition is complete: `PredefinedTokens.EldraziScion` is the authoritative,
+reusable 1/1 colorless Creature — Eldrazi Scion definition with the mana ability “Sacrifice this
+creature: Add `{C}`.” `Effects.CreateEldraziScion` provides fixed- and dynamic-count creation
+facades. Generic SDK and rules-engine tests pin its characteristics, colorlessness, creature types,
+cost payment, zone departure, ordinary use of the resulting mana, and visibility of both creature-
+entry and death events to normal triggers.
+
+The eight previously missing cards are individually implemented and registered:
+
+| Card | Implemented rules | Focused proof |
+|---|---|---|
+| Carrier Thrall | Dies trigger creates exactly one predefined Eldrazi Scion | Direct death/token scenario plus Pest engine integration |
+| Bone Shards | Choose sacrifice or discard as an additional cost; destroy target creature or planeswalker | Both additional-cost branches |
+| Nature's Claim | Destroy target artifact or enchantment; its controller gains 4 | Target removal and controller life gain |
+| Snuff Out | Conditional `{0}` alternative cost while controlling a Swamp, pay 4 life, nonblack-creature restriction, no regeneration | Alternative-cost cast and life payment |
+| Suffocating Fumes | Opposing creatures get -1/-1 until end of turn; cycling `{2}` | One-sided characteristic change; cycling supplied by the shared primitive |
+| Pulse of Murasa | Return target creature or land card from a graveyard to its owner's hand; gain 6 | Graveyard return and life gain |
+| Nihil Spellbomb | Tap/sacrifice to exile target player's graveyard; battlefield-to-graveyard `{B}` may-pay draw trigger | Graveyard exile, sacrifice, optional mana payment, and draw |
+| Masked Vandal | Changeling; ETB may exile a creature card from your graveyard to exile an opponent's artifact/enchantment | Targeting, optional graveyard payment, both exile movements |
+
+The generated/approximate markers were removed only after human review of Chainer's Edict,
+Marauding Blight-Priest, and Unearth. Chainer's Edict now uses canonical target-player sacrifice
+wording and its flashback path is directly tested. Marauding Blight-Priest's one trigger per life-
+gain event is directly tested. Unearth's existing return scenario remains green after review.
+
+Sagu Wildling was corrected from an Adventure approximation to the existing Omen primitive. Its
+Roost Seek face now searches for a basic land and shuffles the card into its owner's library. It is
+not modeled as landcycling. Generous Ent's actual Forestcycling is directly tested.
+
+## Deterministic Pest Control interactions
+
+The rules suite now proves:
+
+1. Essence Warden creates one life-gain event for each qualifying creature entry, including an
+   opponent's entry.
+2. Bogwater Lumaret creates life-gain events only for qualifying entries under its controller.
+3. Blood Researcher receives exactly one +1/+1 counter per separate life-gain event.
+4. Pest Mascot follows its implemented Oracle text and receives one +1/+1 counter per separate
+   life-gain event.
+5. Multiple Wardens and Lumarets create independent triggers, not an aggregated gain.
+6. Weather the Storm's original and Storm copies resolve into separate gain-3 events; each produces
+   independent Researcher, Mascot, and Blight-Priest triggers.
+7. Marauding Blight-Priest produces one opponent-life-loss trigger per qualifying gain event.
+8. Carrier Thrall creates exactly one Scion on death, and that Scion's entry participates normally
+   in the Warden/Lumaret engine.
+9. Sacrificing the Scion removes it, produces usable `{C}`, and creates no false life-gain event.
+10. Follow the Lumarets' existing direct scenario distinguishes its normal maximum-one behavior from
+    its life-gained-this-turn maximum-two behavior.
+11. Bone Shards separately validates sacrifice and discard additional costs.
+12. Chainer's Edict validates sacrifice and flashback, including exile after flashback resolution.
+13. Snuff Out validates its alternative cost and four-life payment.
+14. Generous Ent validates actual Forestcycling.
+15. Sagu Wildling validates actual Roost Seek/Omen resolution and shuffle-back behavior.
+
+No new production rules-engine primitive was needed beyond the approved reusable Scion token and
+creation facade. No Gym or agent-policy behavior was changed.
+
+## Validation record
+
+- Focused Scion SDK/rules tests: green.
+- Focused card and Pest interaction scenarios: green.
+- Card-definition golden snapshots: regenerated through the authoritative exporter and green,
+  including JSON round trips.
+- Full CI: run 187 on `ca14dac508e2ef9c01567a986134e8156931a8e6` is green across frontend,
+  engine, old/recent scenarios, server, content, tools, and the aggregate backend gate.
+- Argentum Validation workflow-equivalent local run: compilation completed; all Pest-relevant,
+  engine, AI, and Gym tests reached in the run were green. The monolithic `test` task was ultimately
+  red only because this container forbids Byte Buddy's dynamic self-attachment used by unrelated
+  server mocking tests; the same server suite is green in CI run 187. A separate local `:gym:test`
+  completed green. The GitHub connection available to this laboratory does not expose
+  `workflow_dispatch`, so the named workflow itself could not be dispatched on this non-main branch.
+
+The laboratory stops here. The next permitted activity is deterministic validation of existing
+generic agent choices. Challenger construction, deck materialization, seeds, gameplay sampling,
+goldfishing, matchup self-play, and optimization still require later explicit approval.
 
 ## 1. Branch and base
 
@@ -95,6 +174,12 @@ Sideboard
 2 Tamiyo's Safekeeping
 2 Weather the Storm
 ```
+
+## Phase 1 audit record (superseded)
+
+Sections 3–7 below preserve the accepted Phase 1 audit as a historical record. Their “missing” and
+“recommended” labels describe the pre-implementation state and are superseded by the Phase 2 result
+and validation record above.
 
 ## 3. Card coverage
 
