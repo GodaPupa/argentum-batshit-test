@@ -1,6 +1,8 @@
 package com.wingedsheep.engine.scenarios
 
 import com.wingedsheep.engine.core.CastSpell
+import com.wingedsheep.engine.core.CardsSelectedResponse
+import com.wingedsheep.engine.core.SelectCardsDecision
 import com.wingedsheep.engine.support.ScenarioTestBase
 import com.wingedsheep.sdk.core.Phase
 import com.wingedsheep.sdk.core.Step
@@ -50,6 +52,11 @@ class SaguWildlingScenarioTest : ScenarioTestBase() {
                     .mapNotNull { it.action as? CastSpell }
                     .single { it.faceIndex == 0 }
                 game.execute(omenCast).error shouldBe null
+                game.resolveStack()
+
+                val search = game.getPendingDecision() as SelectCardsDecision
+                val swamp = search.options.single()
+                game.submitDecision(CardsSelectedResponse(search.id, listOf(swamp))).error shouldBe null
                 game.resolveStack()
 
                 game.isInHand(1, "Swamp") shouldBe true

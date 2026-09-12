@@ -17,12 +17,12 @@ class PulseOfMurasaScenarioTest : ScenarioTestBase() {
                 .inPhase(Phase.PRECOMBAT_MAIN, Step.PRECOMBAT_MAIN)
                 .build()
 
-            val life = game.lifeTotal(1)
+            val life = game.getLifeTotal(1)
             game.castSpellTargetingGraveyardCard(1, "Pulse of Murasa", 2, "Grizzly Bears").error shouldBe null
             game.resolveStack()
 
             game.isInHand(2, "Grizzly Bears") shouldBe true
-            game.lifeTotal(1) shouldBe life + 6
+            game.getLifeTotal(1) shouldBe life + 6
         }
     }
 }

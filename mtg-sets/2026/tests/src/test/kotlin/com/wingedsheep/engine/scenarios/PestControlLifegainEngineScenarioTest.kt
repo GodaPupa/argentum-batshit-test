@@ -1,7 +1,7 @@
 package com.wingedsheep.engine.scenarios
 
 import com.wingedsheep.engine.core.ActivateAbility
-import com.wingedsheep.engine.state.components.identity.CountersComponent
+import com.wingedsheep.engine.state.components.battlefield.CountersComponent
 import com.wingedsheep.engine.state.components.player.ManaPoolComponent
 import com.wingedsheep.engine.support.ScenarioTestBase
 import com.wingedsheep.sdk.core.CounterType
@@ -13,7 +13,7 @@ import io.kotest.matchers.shouldBe
 class PestControlLifegainEngineScenarioTest : ScenarioTestBase() {
     private fun counters(game: TestGame, entity: com.wingedsheep.sdk.model.EntityId): Int =
         game.state.getEntity(entity)?.get<CountersComponent>()
-            ?.counters?.get(CounterType.PLUS_ONE_PLUS_ONE) ?: 0
+            ?.getCount(CounterType.PLUS_ONE_PLUS_ONE) ?: 0
 
     init {
         test("Warden and Lumaret create separate events for Researcher Mascot and Blight-Priest") {
@@ -32,15 +32,15 @@ class PestControlLifegainEngineScenarioTest : ScenarioTestBase() {
 
             val researcher = game.findPermanent("Blood Researcher")!!
             val mascot = game.findPermanent("Pest Mascot")!!
-            val life = game.lifeTotal(1)
-            val opponentLife = game.lifeTotal(2)
+            val life = game.getLifeTotal(1)
+            val opponentLife = game.getLifeTotal(2)
             game.castSpell(1, "Carrier Thrall").error shouldBe null
             game.resolveStack()
 
-            game.lifeTotal(1) shouldBe life + 2
+            game.getLifeTotal(1) shouldBe life + 2
             counters(game, researcher) shouldBe 2
             counters(game, mascot) shouldBe 2
-            game.lifeTotal(2) shouldBe opponentLife - 2
+            game.getLifeTotal(2) shouldBe opponentLife - 2
         }
 
         test("multiple Wardens and Lumarets produce four independent life-gain events") {
@@ -57,11 +57,11 @@ class PestControlLifegainEngineScenarioTest : ScenarioTestBase() {
                 .build()
 
             val researcher = game.findPermanent("Blood Researcher")!!
-            val life = game.lifeTotal(1)
+            val life = game.getLifeTotal(1)
             game.castSpell(1, "Ornithopter").error shouldBe null
             game.resolveStack()
 
-            game.lifeTotal(1) shouldBe life + 4
+            game.getLifeTotal(1) shouldBe life + 4
             counters(game, researcher) shouldBe 4
         }
 
@@ -75,10 +75,10 @@ class PestControlLifegainEngineScenarioTest : ScenarioTestBase() {
                 .inPhase(Phase.PRECOMBAT_MAIN, Step.PRECOMBAT_MAIN)
                 .build()
 
-            val life = game.lifeTotal(1)
+            val life = game.getLifeTotal(1)
             game.castSpell(2, "Ornithopter").error shouldBe null
             game.resolveStack()
-            game.lifeTotal(1) shouldBe life + 1
+            game.getLifeTotal(1) shouldBe life + 1
         }
 
         test("each Weather the Storm copy is a separate life-gain event") {
@@ -101,16 +101,16 @@ class PestControlLifegainEngineScenarioTest : ScenarioTestBase() {
             game.resolveStack()
             val researcher = game.findPermanent("Blood Researcher")!!
             val mascot = game.findPermanent("Pest Mascot")!!
-            val life = game.lifeTotal(1)
-            val opponentLife = game.lifeTotal(2)
+            val life = game.getLifeTotal(1)
+            val opponentLife = game.getLifeTotal(2)
 
             game.castSpell(1, "Weather the Storm").error shouldBe null
             game.resolveStack()
 
-            game.lifeTotal(1) shouldBe life + 9
+            game.getLifeTotal(1) shouldBe life + 9
             counters(game, researcher) shouldBe 3
             counters(game, mascot) shouldBe 3
-            game.lifeTotal(2) shouldBe opponentLife - 3
+            game.getLifeTotal(2) shouldBe opponentLife - 3
         }
 
         test("Carrier death makes one Scion whose entry gains life, but its mana sacrifice does not") {
@@ -128,13 +128,13 @@ class PestControlLifegainEngineScenarioTest : ScenarioTestBase() {
 
             val thrall = game.findPermanent("Carrier Thrall")!!
             val researcher = game.findPermanent("Blood Researcher")!!
-            val life = game.lifeTotal(1)
+            val life = game.getLifeTotal(1)
             game.castSpell(1, "Lightning Bolt", thrall).error shouldBe null
             game.resolveStack()
 
             val scion = game.findPermanent("Eldrazi Scion")!!
             game.findPermanents("Eldrazi Scion").size shouldBe 1
-            game.lifeTotal(1) shouldBe life + 2
+            game.getLifeTotal(1) shouldBe life + 2
             counters(game, researcher) shouldBe 2
 
             val scionAbility = cardRegistry.getCard("Eldrazi Scion")!!.activatedAbilities.single().id
@@ -142,7 +142,7 @@ class PestControlLifegainEngineScenarioTest : ScenarioTestBase() {
             game.resolveStack()
 
             game.findPermanent("Eldrazi Scion") shouldBe null
-            game.lifeTotal(1) shouldBe life + 2
+            game.getLifeTotal(1) shouldBe life + 2
             game.state.getEntity(game.player1Id)?.get<ManaPoolComponent>()?.colorless shouldBe 1
         }
     }

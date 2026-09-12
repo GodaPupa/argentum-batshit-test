@@ -2526,6 +2526,50 @@
     ]
 }
 
+// Suffocating Fumes
+{
+    "name": "Suffocating Fumes",
+    "manaCost": "{2}{B}",
+    "typeLine": "Instant",
+    "oracleText": "Creatures your opponents control get -1/-1 until end of turn.\nCycling {2} ({2}, Discard this card: Draw a card.)",
+    "keywordAbilities": [
+        {
+            "type": "Cycling",
+            "cost": "{2}"
+        }
+    ],
+    "script": {
+        "spellEffect": {
+            "type": "ForEach",
+            "space": {
+                "type": "IterationSpace.Group",
+                "filter": {
+                    "baseFilter": "creature ctrl:opponent"
+                }
+            },
+            "body": {
+                "type": "ModifyStats",
+                "powerModifier": {
+                    "type": "Fixed",
+                    "amount": -1
+                },
+                "toughnessModifier": {
+                    "type": "Fixed",
+                    "amount": -1
+                },
+                "target": "Self"
+            }
+        }
+    },
+    "metadata": {
+        "collectorNumber": "100",
+        "artist": "Lake Hurwitz"
+    },
+    "colorIdentityOverride": [
+        "BLACK"
+    ]
+}
+
 // Survivors' Bond
 {
     "name": "Survivors' Bond",

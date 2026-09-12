@@ -18,8 +18,13 @@ class SuffocatingFumesScenarioTest : ScenarioTestBase() {
                 .inPhase(Phase.PRECOMBAT_MAIN, Step.PRECOMBAT_MAIN)
                 .build()
 
-            val mine = game.findPermanent(1, "Grizzly Bears")!!
-            val theirs = game.findPermanent(2, "Grizzly Bears")!!
+            val bears = game.findPermanents("Grizzly Bears")
+            val mine = bears.single {
+                game.state.projectedState.getController(it) == game.player1Id
+            }
+            val theirs = bears.single {
+                game.state.projectedState.getController(it) == game.player2Id
+            }
             game.castSpell(1, "Suffocating Fumes").error shouldBe null
             game.resolveStack()
 

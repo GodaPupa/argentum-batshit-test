@@ -18,12 +18,12 @@ class NaturesClaimScenarioTest : ScenarioTestBase() {
                 .build()
 
             val ring = game.findPermanent("Sol Ring")!!
-            val life = game.lifeTotal(2)
+            val life = game.getLifeTotal(2)
             game.castSpell(1, "Nature's Claim", ring).error shouldBe null
             game.resolveStack()
 
             game.isInGraveyard(2, "Sol Ring") shouldBe true
-            game.lifeTotal(2) shouldBe life + 4
+            game.getLifeTotal(2) shouldBe life + 4
         }
     }
 }

@@ -17,11 +17,11 @@ class MaraudingBlightPriestScenarioTest : ScenarioTestBase() {
                 .inPhase(Phase.PRECOMBAT_MAIN, Step.PRECOMBAT_MAIN)
                 .build()
 
-            val opponentLife = game.lifeTotal(2)
+            val opponentLife = game.getLifeTotal(2)
             game.castSpell(1, "Weather the Storm").error shouldBe null
             game.resolveStack()
 
-            game.lifeTotal(2) shouldBe opponentLife - 1
+            game.getLifeTotal(2) shouldBe opponentLife - 1
         }
     }
 }
