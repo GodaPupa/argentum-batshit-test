@@ -97,10 +97,10 @@ class EldraziScionScenarioTest : FunSpec({
         game.submitSuccess(ActivateAbility(playerId = player, sourceId = scion, abilityId = abilityId))
 
         game.findPermanent(player, "Eldrazi Scion") shouldBe null
-        game.state.getEntity(scion) shouldBe null
         game.state.getEntity(player)?.get<ManaPoolComponent>()?.colorless shouldBe 1
 
         game.resolveAll()
+        game.state.getEntity(scion) shouldBe null
         game.getLifeTotal(player) shouldBe lifeBefore + 1
 
         game.castSpell(player, sink).error shouldBe null
