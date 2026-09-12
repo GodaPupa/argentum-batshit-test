@@ -15,6 +15,8 @@ replacements.
   Pest Control, Batshit, Affinity, Project X, development, regression, smoke, performance, and
   optimization seed material
 - Execution status at freeze: not started
+- Final execution status: executed exactly once; all 30 games completed; sample rejected by audit
+  and not accepted as a baseline
 
 The authoritative vector is
 `gym/src/test/resources/pest-control-v10-goldfish-sample-1-seeds.csv`.
@@ -23,3 +25,7 @@ This is a development/engine goldfish, not matchup evidence. Opponent-dependent 
 stranded against the blank solitaire opponent must be reported separately from genuinely
 nonfunctional hands. The sample is invalidated by any clear rules/state, telemetry, mana-legality,
 terminal-reporting, or agent-policy defect.
+
+The post-run audit found four empty-board Chainer's Edict casts, one Scion mana sacrifice with no
+funded spell recorded, and an invalid pre-land-drop/repeated-snapshot bottleneck metric. The frozen
+vector must not be rerun, replaced, or repaired in place.

@@ -1,10 +1,11 @@
 # Project Pest Control — Status
 
-- Status: rules-complete / deterministic agent validation complete; goldfish-readiness gate
+- Status: Goldfish Sample #1 executed once and rejected by audit; investigation gate
 - Laboratory: Project Pest Control
 - Branch: `pest-control/lab`
 - Validated base: `47882cd645caf126afee6cf13a65909806fa40ab`
 - Accepted rules-complete remote head: `b08d8fad6e6709db4834e8e956e6853152efb3b5`
+- Accepted Phase 3 remote head: `8dd4a429e0799b60e7449c214a540dd8414b1f1c`
 - Control version: Pest Control v1.0 (permanent, immutable)
 - Candidate status: proposed Tier-1 architecture only; not approved, constructed, or run
 
@@ -12,8 +13,36 @@
 
 This document and `docs/experiments/pest-control/` belong exclusively to Project Pest Control.
 Batshit Economics/Affinity, `mayhem/project-x`, and their seed vectors and experiment protocols are
-read-only dependencies and are outside this laboratory's write and workflow scope. No deck seed was
-generated and no Pest Control game, goldfish, matchup self-play, or optimization run was performed.
+read-only dependencies and are outside this laboratory's write and workflow scope. The only new
+seeds and gameplay run are the explicitly authorized Pest Control v1.0 Goldfish Sample #1 described
+below. No challenger construction, opponent self-play, optimization, or Sample #2 was performed.
+
+## Goldfish Sample #1 audit result
+
+The exact frozen 30-seed vector was executed once, in order, without rerolls, replacements,
+exclusions, deck changes, policy changes, or seed substitutions. The run completed all 30 games,
+but **Sample #1 is rejected and is not a Pest Control performance/engine baseline**.
+
+Three independent audit blockers were found:
+
+1. The solitaire agent cast Chainer's Edict into an empty opposing battlefield in games 9, 13, 19,
+   and 27. This is a genuine general agent-policy defect, not ordinary interaction stranded in hand.
+2. In game 25, a Carrier Thrall Scion was sacrificed for mana, but no spell recorded that Scion as
+   a mana source. This is an unresolved agent-sanity or mana-provenance telemetry defect.
+3. The generated “genuine mana bottleneck” metric samples pre-land-drop and repeated priority
+   states. It therefore reports false positives (including missing green with a Forest in the kept
+   hand) and cannot support the requested bottleneck aggregate.
+
+The rules/state portions that can be audited from the run were internally consistent: 142 separate
+life-gain events gained 234 life; Researcher recorded 41 triggers and 41 counters; Mascot recorded
+71 triggers and 71 counters; all 23 Weather casts had the expected Storm-copy count; four Carrier
+Thrall deaths created four Scions; all 30 terminals were engine-reported combat lethal. These facts
+do not cure the invalidating defects above.
+
+The complete rejected-run record is preserved under `docs/experiments/pest-control/`. The seed
+vector must not be rerun or repaired in place. Investigation and any smallest general correction
+require a separately authorized phase. The permanent control remains exact and the challenger
+remains audit-only and unconstructed.
 
 ## Phase 3 deterministic agent-validation result
 
