@@ -137,8 +137,10 @@ creation facade. No Gym or agent-policy behavior was changed.
   construct `:mtg-search:testRuntimeClasspath` in this container because its cache lacks Byte Buddy
   1.10.9 and kotlinx-serialization-core 1.9.0. Separately, this container forbids Byte Buddy dynamic
   self-attachment in the unrelated server mocking tests. Neither environment limitation is being
-  accommodated by production changes or altered test semantics. Remote CI remains the authoritative
-  full-matrix gate for Phase 3.
+  accommodated by production changes or altered test semantics.
+- Phase 3 full CI: run 189 on implementation commit
+  `7ba1c8568ca68e64c6e0230fa90cad7d560a9417` is the authoritative green full-matrix gate. Frontend,
+  engine, all scenario partitions, tools, server, content, and the aggregate backend job passed.
 
 The laboratory stops at the goldfish-readiness gate. The first untouched control goldfish baseline
 requires later explicit approval. Challenger construction, deck materialization, seeds, gameplay
