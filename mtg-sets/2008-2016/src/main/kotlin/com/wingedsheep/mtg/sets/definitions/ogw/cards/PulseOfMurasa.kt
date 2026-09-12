@@ -18,8 +18,10 @@ val PulseOfMurasa = card("Pulse of Murasa") {
         val card = target(
             "target creature or land card in a graveyard",
             TargetObject(
-                filter = TargetFilter(GameObjectFilter.Creature or GameObjectFilter.Land),
-                zone = Zone.GRAVEYARD,
+                filter = TargetFilter(
+                    GameObjectFilter.Creature or GameObjectFilter.Land,
+                    zone = Zone.GRAVEYARD,
+                ),
             ),
         )
         effect = Effects.ReturnToHand(card).then(Effects.GainLife(6))
