@@ -55,6 +55,7 @@ private const val PEST_SAMPLE_2_TAKE_4_SEED_SHA256 = "9f53ae30fd233bc8a980163aff
 private const val PEST_SAMPLE_2_TAKE_5_SEED_SHA256 = "4e239b8b76df587ec3e14f05f564a288480de42abcd681670c7330323631c1f0"
 private const val PEST_SAMPLE_2_TAKE_6_SEED_SHA256 = "79659bf0a8823c94e288b2df46f246385d02dba236ce3b70f9a4c6dc477eb79b"
 private const val PEST_SAMPLE_2_TAKE_7_SEED_SHA256 = "af294f8238ba796082333994450f6f98d9a5b371e166591ba17c60de76aa7488"
+private const val PEST_SAMPLE_2_TAKE_8_SEED_SHA256 = "d20e57b5e588546911d6f16b63d274651038bd49b53580f27f9a208448859f2f"
 private const val PEST_CONTROL_V10_SHA256 = "7be61a66e2c7654428043d56b411afb4d406f02dfcc4eb7f15a62295d4e906f5"
 
 /** SHARED ARGENTUM CHANGE: yes — mandatory audit fields are never default-elided. */
@@ -79,6 +80,7 @@ class PestControlGoldfishTest : FunSpec({
         val sample2Take5 = readSample2Take5PestSeeds()
         val sample2Take6 = readSample2Take6PestSeeds()
         val sample2Take7 = readSample2Take7PestSeeds()
+        val sample2Take8 = readSample2Take8PestSeeds()
         pestControlDeckSha256() shouldBe PEST_CONTROL_V10_SHA256
         retired.size shouldBe 30
         retired.distinct().size shouldBe 30
@@ -167,6 +169,20 @@ class PestControlGoldfishTest : FunSpec({
         sample2Take7.intersect(sample2Take5.toSet()) shouldBe emptySet()
         sample2Take7.intersect(sample2Take6.toSet()) shouldBe emptySet()
         seedVectorSha256(sample2Take7) shouldBe PEST_SAMPLE_2_TAKE_7_SEED_SHA256
+        sample2Take8.size shouldBe 30
+        sample2Take8.distinct().size shouldBe 30
+        sample2Take8.intersect(retired.toSet()) shouldBe emptySet()
+        sample2Take8.intersect(fresh.toSet()) shouldBe emptySet()
+        sample2Take8.intersect(performance.toSet()) shouldBe emptySet()
+        sample2Take8.intersect(untouched.toSet()) shouldBe emptySet()
+        sample2Take8.intersect(sample2.toSet()) shouldBe emptySet()
+        sample2Take8.intersect(sample2Take2.toSet()) shouldBe emptySet()
+        sample2Take8.intersect(sample2Take3.toSet()) shouldBe emptySet()
+        sample2Take8.intersect(sample2Take4.toSet()) shouldBe emptySet()
+        sample2Take8.intersect(sample2Take5.toSet()) shouldBe emptySet()
+        sample2Take8.intersect(sample2Take6.toSet()) shouldBe emptySet()
+        sample2Take8.intersect(sample2Take7.toSet()) shouldBe emptySet()
+        seedVectorSha256(sample2Take8) shouldBe PEST_SAMPLE_2_TAKE_8_SEED_SHA256
     }
 
     test("reproduce rejected Pest Control Game 25 Scion provenance").config(
@@ -519,6 +535,41 @@ class PestControlGoldfishTest : FunSpec({
         println(markdown)
         games.flatMap(PestGoldfishGame::auditErrors) shouldBe emptyList()
     }
+
+    test("Pest Control v1.0 Goldfish Sample 2 Take 8 independent replication").config(
+        enabled = false, // Frozen and unexecuted; gameplay requires separate explicit authorization.
+        timeout = 60.minutes,
+    ) {
+        val seeds = readSample2Take8PestSeeds()
+        val registry = pestRegistry()
+        val games = seeds.mapIndexed { index, seed ->
+            runPestGoldfish(registry, seed, index + 1).let { game ->
+                game.copy(auditErrors = game.auditErrors + pestAuditCompletenessErrors(game))
+            }
+        }
+        val block = PestGoldfishBlock(
+            deckVersion = "Pest Control v1.0",
+            agentProfile = AiProfile.PRODUCTION_CANDIDATE_EXPIRING.id,
+            horizon = PEST_GOLDFISH_HORIZON,
+            seeds = seeds,
+            games = games,
+            summary = summarizePest(games),
+        )
+        val reportDir = Path.of("..", "docs", "experiments", "pest-control")
+        Files.createDirectories(reportDir)
+        Files.writeString(
+            reportDir.resolve("goldfish-sample-2-take-8-raw.json"),
+            PEST_ARTIFACT_JSON.encodeToString(block),
+        )
+        val markdown = renderPestMarkdown(
+            block,
+            freshPerformanceSample = true,
+            sampleLabel = "Goldfish Sample #2 — Take 8 Independent Replication",
+        )
+        Files.writeString(reportDir.resolve("goldfish-sample-2-take-8-report.md"), markdown)
+        println(markdown)
+        games.flatMap(PestGoldfishGame::auditErrors) shouldBe emptyList()
+    }
 })
 
 private val PEST_CONTROL_V10 = linkedMapOf(
@@ -582,6 +633,10 @@ private fun readSample2Take6PestSeeds(): List<Long> = Files.readAllLines(
 
 private fun readSample2Take7PestSeeds(): List<Long> = Files.readAllLines(
     Path.of("src", "test", "resources", "pest-control-v10-goldfish-sample-2-take-7-seeds.csv")
+).drop(1).filter(String::isNotBlank).map { it.split(',')[1].toLong() }
+
+private fun readSample2Take8PestSeeds(): List<Long> = Files.readAllLines(
+    Path.of("src", "test", "resources", "pest-control-v10-goldfish-sample-2-take-8-seeds.csv")
 ).drop(1).filter(String::isNotBlank).map { it.split(',')[1].toLong() }
 
 private fun seedVectorSha256(seeds: List<Long>): String = MessageDigest.getInstance("SHA-256")

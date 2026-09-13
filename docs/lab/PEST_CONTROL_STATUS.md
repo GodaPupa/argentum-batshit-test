@@ -1,6 +1,6 @@
 # Project Pest Control — Status
 
-- Status: Sample #2 Take 7 rejected and permanently retired; duplicate-focal sequencing and production-equivalent observability correction green; stopped at Sample #2 Take 8 seed-readiness gate
+- Status: Sample #2 Take 8 vector frozen and unexecuted; gameplay requires separate explicit authorization after the exact freeze head is remotely green
 - Laboratory: Project Pest Control
 - Branch: `pest-control/lab`
 - Validated base: `47882cd645caf126afee6cf13a65909806fa40ab`
@@ -23,10 +23,34 @@
   `6cbe6ea11bdc5c0f286f7763b35db45d198bc58a` (CI #240)
 - Sample #2 Take 7 ordered seed-value SHA-256:
   `af294f8238ba796082333994450f6f98d9a5b371e166591ba17c60de76aa7488`
+- Sample #2 Take 8 ordered seed-value SHA-256:
+  `d20e57b5e588546911d6f16b63d274651038bd49b53580f27f9a208448859f2f`
 - Control version: Pest Control v1.0 (permanent, immutable)
 - Candidate status: proposed Tier-1 architecture only; not approved, constructed, or run
 
 ## Goldfish Sample #2 independent replication authorization
+
+### Sample #2 Take 8 seed freeze
+
+Starting from exact validated head `c6b41a560d139a1f17f8ac1a68fd75cd29bf2ae8`, one new Take 8
+vector was deterministically derived and frozen before any gameplay. It contains exactly 30 unique
+seeds. Its ordered-vector SHA-256 is
+`d20e57b5e588546911d6f16b63d274651038bd49b53580f27f9a208448859f2f`, its seed CSV SHA-256 is
+`02dca916c2d4b6d5b921517f6dadc97c5bb4b515c25daf72a0ffe9f6cc32c45f`, and the permanent-control
+SHA-256 remains `7be61a66e2c7654428043d56b411afb4d406f02dfcc4eb7f15a62295d4e906f5`.
+
+After refreshing all available local, remote, and pull-request refs, a read-only audit covered 41
+refs, 25 distinct tip trees, 676,917 path instances, 27,314 unique blobs, and 240 unique
+seed-category blobs. It produced a 2,063-value normalized positive-`Long` exclusion set containing
+every known Pest Control, Batshit Economics, and Project X development, scenario, smoke, regression,
+replay, performance, optimization, replication, rejected, retired, and previously frozen seed. Take
+8 has zero overlap with that set and every prior Pest vector.
+
+The complete derivation, ordered vector, collision scope, hashes, and immutable execution contract
+are recorded in `docs/experiments/pest-control/goldfish-sample-2-take-8-seed-freeze.md`. The Take 8
+runner is hard-disabled, every prior Pest runner remains disabled, and no Batshit or Project X runner
+is part of this readiness gate. Zero seeds and zero games executed. Gameplay requires separate
+explicit authorization after this exact freeze head passes remote CI.
 
 ### Sample #2 Take 7 disposition
 
@@ -86,8 +110,9 @@ telemetry, and artifact-contract regressions passed. Complete AI, Gym, rules-eng
 suites passed locally; all Pest gameplay runners were skipped. CI #240 passed the complete remote
 matrix. No Pest seed or gameplay vector executed. Take 7 and every earlier rejected vector remain
 retired and hard-disabled; Sample #1 remains the sole accepted performance evidence; the permanent
-control and audit-only challenger are unchanged. No Take 8 seed exists, and seed generation requires
-separate explicit authorization.
+control and audit-only challenger are unchanged. At that correction gate, no Take 8 seed existed and
+seed generation still required separate explicit authorization; the subsequent authorized freeze is
+recorded above.
 
 ### Sample #2 Take 6 seed-readiness gate
 
