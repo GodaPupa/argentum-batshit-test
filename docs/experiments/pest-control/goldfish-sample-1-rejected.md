@@ -1,6 +1,6 @@
 # Pest Control v1.0 — Goldfish Sample #1
 
-Development/engine goldfish only; not matchup evidence. Frozen vector, no rerolls or exclusions.
+Permanently rejected performance sample. Frozen regression-only vector; no rerolls or exclusions.
 
 ## Audit verdict: rejected
 
@@ -21,7 +21,10 @@ is not the first Pest Control v1.0 baseline**.
 Auditable rules/state checks passed: 142 separate life-gain events, 234 total life, Researcher
 41 triggers/41 counters, Mascot 71 triggers/71 counters, 23 Weather casts with zero Storm-copy
 mismatches, four Thrall deaths/four Scions, and 30 engine-reported combat-lethal terminals. The
-seed vector must not be rerun or repaired in place.
+vector must never be used for optimization or future performance inference. Its sole authorized
+reuse is the correction replay requested after this rejection; after a clean replay it is retired.
+
+Seed file SHA-256: `87d8624e407286bfa9b1c9d4629fd29163ae8bbec4b98ab51ace7f9c9e1d764f`.
 
 ## Aggregate
 

@@ -236,6 +236,17 @@ class PestControlAgentDecisionTest : ScenarioTestBase() {
             (game.findPermanent("Eldrazi Scion") != null).shouldBeTrue()
         }
 
+        test("does not sacrifice a Scion to unlock a strategically null sacrifice spell") {
+            val game = seeded()
+                .withLandsOnBattlefield(1, "Swamp", 1)
+                .withCardOnBattlefield(1, "Eldrazi Scion", isToken = true)
+                .withCardInHand(1, "Chainer's Edict")
+                .build()
+
+            ai(game).chooseAction(game.state).shouldBeInstanceOf<PassPriority>()
+            (game.findPermanent("Eldrazi Scion") != null).shouldBeTrue()
+        }
+
         test("Bone Shards sacrifices disposable Carrier Thrall instead of an engine creature") {
             val game = seeded()
                 .withLandsOnBattlefield(1, "Swamp", 1)
@@ -326,6 +337,35 @@ class PestControlAgentDecisionTest : ScenarioTestBase() {
 
             val action = ai(game).chooseAction(game.state).shouldBeInstanceOf<CastSpell>()
             sourceName(game, action) shouldBe "Chainer's Edict"
+        }
+
+        test("holds a legal forced-sacrifice spell against an empty opposing battlefield") {
+            val game = seeded()
+                .withLandsOnBattlefield(1, "Swamp", 2)
+                .withCardInHand(1, "Chainer's Edict")
+                .build()
+
+            ai(game).chooseAction(game.state).shouldBeInstanceOf<PassPriority>()
+        }
+
+        test("a forced-sacrifice spell has normal value when the opponent controls a creature") {
+            val game = seeded()
+                .withLandsOnBattlefield(1, "Swamp", 2)
+                .withCardInHand(1, "Chainer's Edict")
+                .withCardOnBattlefield(2, "Grizzly Bears")
+                .build()
+
+            val action = ai(game).chooseAction(game.state).shouldBeInstanceOf<CastSpell>()
+            sourceName(game, action) shouldBe "Chainer's Edict"
+        }
+
+        test("holds a legal but strategically null forced-sacrifice flashback") {
+            val game = seeded()
+                .withLandsOnBattlefield(1, "Swamp", 7)
+                .withCardInGraveyard(1, "Chainer's Edict")
+                .build()
+
+            ai(game).chooseAction(game.state).shouldBeInstanceOf<PassPriority>()
         }
 
         test("Chainer's Edict avoids an unpaid ward that would defeat targeted removal") {

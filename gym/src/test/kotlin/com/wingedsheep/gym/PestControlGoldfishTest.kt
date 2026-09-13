@@ -7,8 +7,6 @@ import com.wingedsheep.ai.llm.BottomCardsInfo
 import com.wingedsheep.ai.llm.CardSummary
 import com.wingedsheep.ai.llm.MulliganInfo
 import com.wingedsheep.engine.core.*
-import com.wingedsheep.engine.legalactions.EnumerationMode
-import com.wingedsheep.engine.legalactions.LegalActionEnumerator
 import com.wingedsheep.engine.registry.CardRegistry
 import com.wingedsheep.engine.state.GameState
 import com.wingedsheep.engine.state.components.battlefield.TappedComponent
@@ -20,7 +18,11 @@ import com.wingedsheep.engine.state.components.stack.ActivatedAbilityOnStackComp
 import com.wingedsheep.engine.state.components.stack.TriggeredAbilityOnStackComponent
 import com.wingedsheep.mtg.sets.MtgSetCatalog
 import com.wingedsheep.mtg.sets.tokens.PredefinedTokens
-import com.wingedsheep.sdk.core.Color
+import com.wingedsheep.gym.telemetry.ActionableManaBottleneck
+import com.wingedsheep.gym.telemetry.ActionableManaBottleneckTracker
+import com.wingedsheep.gym.telemetry.ManaConstraint
+import com.wingedsheep.gym.telemetry.SacrificeManaTrace
+import com.wingedsheep.gym.telemetry.SacrificeManaUse
 import com.wingedsheep.sdk.core.Step
 import com.wingedsheep.sdk.core.Zone
 import com.wingedsheep.sdk.model.Deck
@@ -35,7 +37,8 @@ import java.nio.file.Files
 import java.nio.file.Path
 import kotlin.time.Duration.Companion.minutes
 
-private const val PEST_GOLDFISH_ENV = "PEST_CONTROL_GOLDFISH_SAMPLE_1"
+private const val PEST_GOLDFISH_ENV = "PEST_CONTROL_GOLDFISH_SAMPLE_1_REGRESSION"
+private const val PEST_GAME_25_ENV = "PEST_CONTROL_GOLDFISH_GAME_25_DIAGNOSTIC"
 private const val PEST_GOLDFISH_HORIZON = 20
 
 /** Pest Control-owned development goldfish. It is opt-in and never runs in ordinary CI. */
@@ -47,7 +50,15 @@ class PestControlGoldfishTest : FunSpec({
         seeds.distinct().size shouldBe 30
     }
 
-    test("Pest Control v1.0 Goldfish Sample 1").config(
+    test("reproduce rejected Pest Control Game 25 Scion provenance").config(
+        enabled = System.getenv(PEST_GAME_25_ENV) == "true",
+        timeout = 10.minutes,
+    ) {
+        val game = runPestGoldfish(pestRegistry(), readPestSeeds()[24], 25)
+        println(Json { prettyPrint = true }.encodeToString(game))
+    }
+
+    test("Pest Control v1.0 rejected Sample 1 regression replay").config(
         enabled = System.getenv(PEST_GOLDFISH_ENV) == "true",
         timeout = 60.minutes,
     ) {
@@ -67,11 +78,11 @@ class PestControlGoldfishTest : FunSpec({
         val reportDir = Path.of("build", "reports", "pest-control-goldfish")
         Files.createDirectories(reportDir)
         Files.writeString(
-            reportDir.resolve("pest-control-v10-goldfish-sample-1.json"),
+            reportDir.resolve("pest-control-v10-goldfish-sample-1-regression-replay.json"),
             Json { prettyPrint = true }.encodeToString(block),
         )
         val markdown = renderPestMarkdown(block)
-        Files.writeString(reportDir.resolve("pest-control-v10-goldfish-sample-1.md"), markdown)
+        Files.writeString(reportDir.resolve("pest-control-v10-goldfish-sample-1-regression-replay.md"), markdown)
         println(markdown)
         games.flatMap(PestGoldfishGame::auditErrors) shouldBe emptyList()
     }
@@ -181,6 +192,7 @@ internal data class PestGoldfishGame(
     val scionsCreated: Int,
     val scionsSacrificedForMana: Int,
     val scionFundedSpells: List<String>,
+    val scionManaUses: List<SacrificeManaUse>,
     val fierceWitchstalkerCastTurns: List<Int>,
     val generousEntCycleTurns: List<Int>,
     val generousEntCastTurns: List<Int>,
@@ -199,7 +211,7 @@ internal data class PestGoldfishGame(
     val largestCreatureBattlefield: Int,
     val largestPermanentBattlefield: Int,
     val solitaireStrandedInteraction: List<String>,
-    val genuineManaBottlenecks: List<String>,
+    val genuineManaBottlenecks: List<ActionableManaBottleneck>,
     val jungleHollowTempoEvents: List<String>,
     val coexistence: PestCoexistence,
     val functionalState: String,
@@ -243,6 +255,7 @@ internal data class PestGoldfishSummary(
     val followEnhancedRate: Double?,
     val manaBottleneckGames: Int,
     val manaBottleneckObservations: Int,
+    val manaConstraintDistribution: Map<String, Int>,
     val hollowTempoGames: Int,
     val hollowTempoEvents: Int,
     val solitaireInteractionConstrainedGames: Int,
@@ -340,7 +353,8 @@ internal fun runPestGoldfish(registry: CardRegistry, seed: Long, gameNumber: Int
     val environment = GameEnvironment.create(registry).also { it.restore(state, init.playerIds) }
     val pest = AIPlayer.create(registry, pestId, AiProfile.PRODUCTION_CANDIDATE_EXPIRING)
     val blank = AIPlayer.create(registry, blankId, AiProfile.PRODUCTION_CANDIDATE_EXPIRING)
-    val enumerator = LegalActionEnumerator.create(registry)
+    val bottleneckTracker = ActionableManaBottleneckTracker(registry)
+    val sacrificeManaTrace = SacrificeManaTrace()
     val t1 = mutableListOf<String>()
     val wardenCasts = mutableListOf<Int>()
     val researcherCasts = mutableListOf<Int>()
@@ -353,11 +367,9 @@ internal fun runPestGoldfish(registry: CardRegistry, seed: Long, gameNumber: Int
     val weathers = mutableListOf<MutableWeather>()
     val lifeEvents = mutableListOf<PestLifeEvent>()
     val stranded = linkedSetOf<String>()
-    val bottlenecks = linkedSetOf<String>()
+    val bottlenecks = mutableListOf<ActionableManaBottleneck>()
     val hollows = mutableListOf<String>()
     val audit = mutableListOf<String>()
-    val scionManaSourceIds = mutableSetOf<EntityId>()
-    val scionFunded = mutableListOf<String>()
     var thrallDeaths = 0
     var scionsCreated = 0
     var scionActivations = 0
@@ -435,24 +447,7 @@ internal fun runPestGoldfish(registry: CardRegistry, seed: Long, gameNumber: Int
                     .filterKeys { it in SOLITAIRE_INTERACTION }
                     .forEach { (card, count) -> stranded += "$card x$count@T$turn:NO_OPPONENT_CREATURE" }
             }
-            val legal = enumerator.enumerate(gameState, pestId, EnumerationMode.FULL)
-            val affordableCastIds = legal.filter { it.affordable && it.action is CastSpell }
-                .map { (it.action as CastSpell).cardId }.toSet()
-            val landNames = battlefieldNames(gameState).filter { it in setOf("Forest", "Swamp", "Jungle Hollow") }
-            val hasGreen = landNames.any { it == "Forest" || it == "Jungle Hollow" }
-            val hasBlack = landNames.any { it == "Swamp" || it == "Jungle Hollow" }
-            gameState.getHand(pestId).forEach { id ->
-                val card = gameState.getEntity(id)?.get<CardComponent>() ?: return@forEach
-                if (card.isLand || card.name in SOLITAIRE_INTERACTION || id in affordableCastIds) return@forEach
-                val missing = buildList {
-                    if (Color.GREEN in card.manaCost.colors && !hasGreen) add("GREEN")
-                    if (Color.BLACK in card.manaCost.colors && !hasBlack) add("BLACK")
-                }
-                when {
-                    missing.isNotEmpty() -> bottlenecks += "${card.name}@T$turn:MISSING_${missing.joinToString("_")}_SOURCE"
-                    landNames.size < card.manaValue -> bottlenecks += "${card.name}@T$turn:TOTAL_MANA_${landNames.size}_OF_${card.manaValue}"
-                }
-            }
+            bottlenecks += bottleneckTracker.observe(gameState, pestId, turn)
         }
     }
 
@@ -528,17 +523,12 @@ internal fun runPestGoldfish(registry: CardRegistry, seed: Long, gameNumber: Int
         }
         actions++
         val events = step.events
+        sacrificeManaTrace.observe(state, step.state, events, pestId, turn)
         events.filterIsInstance<AbilityActivatedEvent>()
             .filter { it.controllerId == pestId && it.sourceName == "Eldrazi Scion" && it.isManaAbility }
             .forEach { event ->
                 scionActivations++
-                scionManaSourceIds += event.sourceId
             }
-        events.filterIsInstance<SpellCastEvent>().filter { it.casterId == pestId }.forEach { event ->
-            if (event.spentManaSourceIds.any(scionManaSourceIds::contains)) {
-                scionFunded += "${event.cardName}@T$turn"
-            }
-        }
         events.filterIsInstance<SpellCopiedEvent>().filter { it.controllerId == pestId && it.cardName == "Weather the Storm" }
             .forEach {
                 weathers.firstOrNull { weather -> weather.observedCopies < weather.expectedCopies }?.observedCopies =
@@ -618,6 +608,14 @@ internal fun runPestGoldfish(registry: CardRegistry, seed: Long, gameNumber: Int
     if (scionActivations != scionSacrifices || scionActivations != scionManaEvents) {
         audit += "Scion mana lifecycle activations=$scionActivations sacrifices=$scionSacrifices manaEvents=$scionManaEvents"
     }
+    val scionManaUses = sacrificeManaTrace.snapshot().filter { it.sourceName == "Eldrazi Scion" }
+    scionManaUses.filter { it.manaProduced != it.manaConsumed + it.unusedMana }.forEach {
+        audit += "Scion mana provenance does not balance for ${it.sourceId}: produced=${it.manaProduced} consumed=${it.manaConsumed} unused=${it.unusedMana}"
+    }
+    scionManaUses.filter { it.unusedMana > 0 }.forEach {
+        audit += "Scion ${it.sourceId} sacrificed for ${it.unusedMana} unused mana on T${it.activationTurn}"
+    }
+    val scionFunded = scionManaUses.flatMap(SacrificeManaUse::fundedActions)
     val totalLife = lifeEvents.sumOf(PestLifeEvent::amount)
     if (state.lifeTotal(pestId) != 20 + totalLife) {
         audit += "life accounting final=${state.lifeTotal(pestId)} expected=${20 + totalLife}"
@@ -659,6 +657,7 @@ internal fun runPestGoldfish(registry: CardRegistry, seed: Long, gameNumber: Int
         scionsCreated,
         scionActivations,
         scionFunded,
+        scionManaUses,
         witchCasts,
         entCycles,
         entCasts,
@@ -744,6 +743,8 @@ internal fun summarizePest(games: List<PestGoldfishGame>): PestGoldfishSummary {
         followEnhancedRate = follows.size.takeIf { it > 0 }?.let { enhanced.toDouble() / it },
         manaBottleneckGames = games.count { it.genuineManaBottlenecks.isNotEmpty() },
         manaBottleneckObservations = games.sumOf { it.genuineManaBottlenecks.size },
+        manaConstraintDistribution = games.flatMap(PestGoldfishGame::genuineManaBottlenecks)
+            .groupingBy { it.constraint.name }.eachCount().toSortedMap(),
         hollowTempoGames = games.count { it.jungleHollowTempoEvents.isNotEmpty() },
         hollowTempoEvents = games.sumOf { it.jungleHollowTempoEvents.size },
         solitaireInteractionConstrainedGames = games.count { it.solitaireStrandedInteraction.isNotEmpty() },
@@ -754,9 +755,9 @@ internal fun summarizePest(games: List<PestGoldfishGame>): PestGoldfishSummary {
 
 internal fun renderPestMarkdown(block: PestGoldfishBlock): String = buildString {
     val s = block.summary
-    appendLine("# Pest Control v1.0 — Goldfish Sample #1")
+    appendLine("# Pest Control v1.0 — Rejected Sample #1 Regression Replay")
     appendLine()
-    appendLine("Development/engine goldfish only; not matchup evidence. Frozen vector, no rerolls or exclusions.")
+    appendLine("Regression evidence only. This retired vector is rejected for performance/baseline inference and optimization.")
     appendLine()
     appendLine("## Aggregate")
     appendLine()
@@ -772,7 +773,7 @@ internal fun renderPestMarkdown(block: PestGoldfishBlock): String = buildString 
     appendLine("- Carrier deaths / Scions / mana sacrifices: ${s.carrierDeaths}/${s.scionsCreated}/${s.scionsSacrificedForMana}; funded: ${s.scionFundedSpells}")
     appendLine("- Ent cycles / creature casts: ${s.entCycles}/${s.entCreatureCasts}; cycling rate: ${s.entCyclingRate?.let(::pct) ?: "n/a"}")
     appendLine("- Follow normal / enhanced: ${s.followNormalCasts}/${s.followEnhancedCasts}; enhanced rate: ${s.followEnhancedRate?.let(::pct) ?: "n/a"}")
-    appendLine("- Mana bottlenecks: ${s.manaBottleneckGames} games, ${s.manaBottleneckObservations} observations")
+    appendLine("- Actionable mana bottlenecks: ${s.manaBottleneckGames} games, ${s.manaBottleneckObservations} observations; constraints: ${s.manaConstraintDistribution}")
     appendLine("- Jungle Hollow tempo: ${s.hollowTempoGames} games, ${s.hollowTempoEvents} tapped-entry events")
     appendLine("- Solitaire-stranded interaction: ${s.solitaireInteractionConstrainedGames} games, ${s.strandedInteractionObservations} observations")
     appendLine("- Functional states: ${s.functionalStateDistribution}")
@@ -798,6 +799,7 @@ internal fun renderPestMarkdown(block: PestGoldfishBlock): String = buildString 
         appendLine("- Kept hand: ${g.opening.keptHand}; mulligans: ${g.mulligans}; T1: ${g.t1Development}")
         appendLine("- Warden/Researcher/Mascot casts: ${g.essenceWardenCastTurns}/${g.bloodResearcherCastTurns}/${g.pestMascotCastTurns}")
         appendLine("- Carrier casts/deaths; Scions created/sacrificed/funded: ${g.carrierThrallCastTurns}/${g.carrierThrallDeaths}; ${g.scionsCreated}/${g.scionsSacrificedForMana}/${g.scionFundedSpells}")
+        appendLine("- Scion mana provenance: ${g.scionManaUses}")
         appendLine("- Witchstalker: ${g.fierceWitchstalkerCastTurns}; Ent cycle/cast: ${g.generousEntCycleTurns}/${g.generousEntCastTurns}")
         appendLine("- Follow: ${g.followCasts}; Weather: ${g.weatherCasts}")
         appendLine("- Lifegain: ${g.lifeEvents}; Researcher triggers/counters: ${g.researcherCounterTriggers}/${g.researcherCountersAdded}; Mascot: ${g.mascotCounterTriggers}/${g.mascotCountersAdded}")

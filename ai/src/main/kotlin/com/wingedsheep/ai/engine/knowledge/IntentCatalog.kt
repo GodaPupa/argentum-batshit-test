@@ -13,6 +13,7 @@ import com.wingedsheep.sdk.scripting.AbilityId
 import com.wingedsheep.sdk.scripting.ActivatedAbility
 import com.wingedsheep.sdk.scripting.KeywordAbility
 import com.wingedsheep.sdk.scripting.effects.Effect
+import com.wingedsheep.sdk.scripting.effects.ForceSacrificeEffect
 
 /**
  * Card-name → [CardIntent] lookup, and the switch that turns Phase 6 on.
@@ -76,6 +77,21 @@ class IntentCatalog private constructor(private val registry: CardRegistry?) {
                     cycling.displayPrefix.removeSuffix("cycling") in BASIC_LAND_TYPES
                 )
         }
+    }
+
+    /**
+     * Whether the selected spell face's entire resolvable effect is an opponent/player-directed
+     * forced sacrifice. This is deliberately structural and strict: a spell that also draws,
+     * drains, creates a permanent, or has any unrecognized additional leaf answers false, so a
+     * caller never suppresses a separate concrete benefit merely because an edict is present.
+     */
+    fun isPureForcedSacrificeSpell(cardName: String, faceIndex: Int? = null): Boolean {
+        val definition = registry?.getCard(cardName) ?: return false
+        val effect = faceIndex?.let { definition.cardFaces.getOrNull(it)?.script?.spellEffect }
+            ?: definition.script.spellEffect
+            ?: return false
+        val leaves = EffectWalker.leaves(effect)
+        return leaves.isNotEmpty() && leaves.all { it is ForceSacrificeEffect }
     }
 
     /**

@@ -676,6 +676,23 @@ class Strategist(
                 "land-sacrifice policy: low-value conversion — floored below passing",
             )
         }
+        if (shouldHoldNullForcedSacrifice(state, leafState, action.action, playerId, cardName)) {
+            // An edict without a sacrifice is legal, but a pure one has bought no strategic
+            // result. Keep legality in the engine and value the result here, below passing.
+            return AdjustedScore(
+                passScore - 1.0,
+                "forced-sacrifice policy: no opposing permanent was sacrificed — floored below passing",
+            )
+        }
+        if (isSacrificeManaAction(action) && unlockedProductiveCastIds(state, leafState, playerId).isEmpty()) {
+            // Sacrificing a permanent is an irreversible strategic cost, even when the ability is
+            // a mana ability. Require an immediate, newly executable productive use rather than
+            // consuming the body merely because mana can be generated.
+            return AdjustedScore(
+                passScore - 1.0,
+                "sacrifice-mana policy: no productive use unlocked — floored below passing",
+            )
+        }
         val timingDelta = (timing as? TimingVerdict.Adjust)?.delta ?: 0.0
         val timingReason = (timing as? TimingVerdict.Adjust)?.reason ?: "timing"
         val timingNote =
@@ -716,6 +733,79 @@ class Strategist(
             listOfNotNull(advisorNote, timingNote, sacrificeWindowNote, sequencingNote)
                 .joinToString("; ").ifEmpty { null },
         )
+    }
+
+    /**
+     * A pure forced-sacrifice spell is strategically null when its targeted opponent's
+     * battlefield is unchanged after full simulation. The test is intentionally about the
+     * resolved result, not whether casting was legal: player-targeted edicts remain executable,
+     * while the agent declines to spend one into an empty or otherwise non-sacrificing board.
+     *
+     * Strictly pure spells only. [IntentCatalog.isPureForcedSacrificeSpell] declines when any
+     * additional effect exists, preserving casts whose draw/drain/token rider is useful even when
+     * the sacrifice portion does nothing.
+     */
+    private fun shouldHoldNullForcedSacrifice(
+        state: GameState,
+        leafState: GameState,
+        action: GameAction,
+        playerId: EntityId,
+        cardName: String,
+    ): Boolean {
+        val cast = action as? CastSpell ?: return false
+        if (!intents.isPureForcedSacrificeSpell(cardName, cast.faceIndex)) return false
+
+        val explicitOpponents = cast.targets.filterIsInstance<ChosenTarget.Player>()
+            .map(ChosenTarget.Player::playerId)
+            .filter { state.isOpponentTo(it, playerId) }
+            .toSet()
+        // Some internal planning leaves player selection implicit. A pure forced-sacrifice spell
+        // still has no useful result when every opponent's battlefield is unchanged.
+        val affectedOpponents = explicitOpponents.ifEmpty {
+            state.turnOrder.filter { state.isOpponentTo(it, playerId) }.toSet()
+        }
+        if (affectedOpponents.isEmpty()) return false
+
+        return affectedOpponents.all { opponentId ->
+            state.controlledBattlefield(opponentId).toSet() ==
+                leafState.controlledBattlefield(opponentId).toSet()
+        }
+    }
+
+    private fun isSacrificeManaAction(action: LegalAction): Boolean =
+        action.isManaAbility && action.additionalCostInfo?.costType == "SacrificePermanent"
+
+    /** Casts made newly executable by the leaf, excluding legal-but-strategically-null effects. */
+    private fun unlockedProductiveCastIds(
+        state: GameState,
+        leafState: GameState,
+        playerId: EntityId,
+    ): Set<EntityId> {
+        fun executable(position: GameState): Set<EntityId> {
+            val baseline = evaluator.evaluate(position, position.projectedState, playerId)
+            return simulator.getLegalActions(position, playerId).asSequence()
+                .filter { it.affordable && it.action is CastSpell }
+                .mapNotNull { next ->
+                    val cast = next.action as CastSpell
+                    val filled = heuristicTargets(position, next, playerId)
+                    val result = simulator.simulate(position, filled)
+                    if (result is SimulationResult.Illegal || result is SimulationResult.StoppedAtLimit) {
+                        return@mapNotNull null
+                    }
+                    // Executability alone is not a plan. If the resolved leaf is no better than
+                    // retaining priority, the generated mana has no concrete productive consumer.
+                    if (evaluator.evaluate(result.state, result.state.projectedState, playerId) <= baseline) {
+                        return@mapNotNull null
+                    }
+                    val cardName = resolveCardName(position, next) ?: return@mapNotNull cast.cardId
+                    cast.cardId.takeUnless {
+                        shouldHoldNullForcedSacrifice(position, result.state, filled, playerId, cardName)
+                    }
+                }
+                .toSet()
+        }
+
+        return executable(leafState) - executable(state)
     }
 
     /**
@@ -790,22 +880,10 @@ class Strategist(
             }
         }
 
-        if (action.isManaAbility && action.additionalCostInfo?.costType == "SacrificePermanent") {
-            fun executableCastIds(position: GameState): Set<EntityId> =
-                simulator.getLegalActions(position, playerId).asSequence()
-                    .filter { it.affordable && it.action is CastSpell }
-                    .mapNotNull { next ->
-                        val castAction = next.action as CastSpell
-                        val filled = heuristicTargets(position, next, playerId)
-                        val result = simulator.simulate(position, filled)
-                        castAction.cardId.takeUnless {
-                            result is SimulationResult.Illegal || result is SimulationResult.StoppedAtLimit
-                        }
-                    }
-                    .toSet()
-            val before = executableCastIds(state)
-            val unlocked = executableCastIds(leafState).any { it !in before }
-            if (unlocked) delta += SACRIFICE_MANA_UNLOCK_VALUE
+        if (isSacrificeManaAction(action)) {
+            if (unlockedProductiveCastIds(state, leafState, playerId).isNotEmpty()) {
+                delta += SACRIFICE_MANA_UNLOCK_VALUE
+            }
         }
 
         val landsBefore = state.getHand(playerId).count { id ->

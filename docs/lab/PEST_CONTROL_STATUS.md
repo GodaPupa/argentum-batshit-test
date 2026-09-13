@@ -1,6 +1,6 @@
 # Project Pest Control — Status
 
-- Status: Goldfish Sample #1 executed once and rejected by audit; investigation gate
+- Status: rejected Sample #1 preserved as a regression-only vector; correction validation in progress
 - Laboratory: Project Pest Control
 - Branch: `pest-control/lab`
 - Validated base: `47882cd645caf126afee6cf13a65909806fa40ab`
@@ -17,7 +17,35 @@ read-only dependencies and are outside this laboratory's write and workflow scop
 seeds and gameplay run are the explicitly authorized Pest Control v1.0 Goldfish Sample #1 described
 below. No challenger construction, opponent self-play, optimization, or Sample #2 was performed.
 
-## Goldfish Sample #1 audit result
+## Rejected Sample #1 disposition and correction scope
+
+Goldfish Sample #1 is formally and permanently rejected as performance, baseline, matchup, or
+optimization evidence. Its exact 30-seed vector (SHA-256
+`87d8624e407286bfa9b1c9d4629fd29163ae8bbec4b98ab51ace7f9c9e1d764f`) is frozen solely for the
+one authorized correction replay and thereafter retired. It must never be used to tune the deck or
+agent, select changes, or infer future Pest Control performance.
+
+Three narrowly scoped general corrections are under validation:
+
+- pure opponent-directed forced-sacrifice spells are held when their resolved result sacrifices no
+  opposing permanent;
+- sacrifice-for-mana permanents require a newly executable follow-up whose resolved state is
+  strategically productive, and generic provenance records source, activation, production,
+  consumption, funded action, and unused mana; and
+- actionable mana telemetry waits until legal land play has been considered, uses the authoritative
+  mana solver (including sacrifice sources), separates total/color/tapland constraints, excludes
+  strategically irrelevant interaction, and deduplicates a card's unresolved constraint.
+
+**SHARED ARGENTUM CHANGE: yes.** These are generic agent-policy and Gym telemetry corrections. No
+Pest Control card-name heuristic or deck change is involved.
+
+Game 25 provenance was resolved before the correction: its Scion was sacrificed on turn 13,
+produced one colorless mana, consumed zero mana, funded no action, and expired with one unused mana.
+The corrected isolated reproduction preserves the Scion and reports no activation or provenance
+error. The exact 30-game regression replay remains gated on focused tests, full CI, and Argentum
+Validation.
+
+## Goldfish Sample #1 original audit result
 
 The exact frozen 30-seed vector was executed once, in order, without rerolls, replacements,
 exclusions, deck changes, policy changes, or seed substitutions. The run completed all 30 games,
@@ -39,10 +67,9 @@ life-gain events gained 234 life; Researcher recorded 41 triggers and 41 counter
 Thrall deaths created four Scions; all 30 terminals were engine-reported combat lethal. These facts
 do not cure the invalidating defects above.
 
-The complete rejected-run record is preserved under `docs/experiments/pest-control/`. The seed
-vector must not be rerun or repaired in place. Investigation and any smallest general correction
-require a separately authorized phase. The permanent control remains exact and the challenger
-remains audit-only and unconstructed.
+The complete rejected-run record is preserved under `docs/experiments/pest-control/`. The vector is
+not a performance sample; only the explicitly authorized correction replay may execute it again.
+The permanent control remains exact and the challenger remains audit-only and unconstructed.
 
 ## Phase 3 deterministic agent-validation result
 
