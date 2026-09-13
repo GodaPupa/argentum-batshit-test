@@ -126,6 +126,13 @@ class IntentCatalog private constructor(private val registry: CardRegistry?) {
         return leaves.isNotEmpty() && leaves.all { it is GainLifeEffect }
     }
 
+    /** Whether the selected printed activated ability does nothing except gain life. */
+    fun isPureLifeGainAbility(cardName: String, abilityId: AbilityId): Boolean {
+        val effect = activatedAbility(cardName, abilityId)?.effect ?: return false
+        val leaves = EffectWalker.leaves(effect)
+        return leaves.isNotEmpty() && leaves.all { it is GainLifeEffect }
+    }
+
     /**
      * Whether every available spell mode is solely a targeted answer to a permanent. Modal spells
      * are inspected mode-by-mode because the whole-card intent walk deliberately treats a modal

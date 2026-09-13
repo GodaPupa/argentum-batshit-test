@@ -213,6 +213,74 @@ class PestControlAgentDecisionTest : ScenarioTestBase() {
             withClue(report) { sourceName(game, action) shouldBe "Weather the Storm" }
         }
 
+        test("commits an enabling life event into the materially enhanced follow-up") {
+            val game = seeded()
+                .withLifeTotal(1, 29)
+                .withLandsOnBattlefield(1, "Forest", 4)
+                .withCardInHand(1, "Weather the Storm")
+                .withCardInHand(1, "Follow the Lumarets")
+                .withCardInLibrary(1, "Forest")
+                .withCardInLibrary(1, "Swamp")
+                .withCardInLibrary(1, "Blood Researcher")
+                .withCardInLibrary(1, "Pest Mascot")
+                .build()
+            val player = ai(game)
+
+            val first = player.chooseAction(game.state).shouldBeInstanceOf<CastSpell>()
+            sourceName(game, first) shouldBe "Weather the Storm"
+            game.execute(first)
+            game.resolveStack()
+
+            val (second, report) = chooseWithReport(game)
+            val follow = withClue(report) { second.shouldBeInstanceOf<CastSpell>() }
+            withClue(report) { sourceName(game, follow) shouldBe "Follow the Lumarets" }
+        }
+
+        test("continues an enabled follow-up instead of spending another pure lifegain resource") {
+            val game = seeded()
+                .withLifeTotal(1, 32)
+                .withLandsOnBattlefield(1, "Forest", 2)
+                .withCardInHand(1, "Follow the Lumarets")
+                .withCardOnBattlefield(1, "Food", isToken = true)
+                .withCardInLibrary(1, "Forest")
+                .withCardInLibrary(1, "Swamp")
+                .withCardInLibrary(1, "Blood Researcher")
+                .withCardInLibrary(1, "Pest Mascot")
+                .build()
+            game.markLifeGainedThisTurn()
+
+            val (chosen, report) = chooseWithReport(game)
+            val follow = withClue(report) { chosen.shouldBeInstanceOf<CastSpell>() }
+            withClue(report) { sourceName(game, follow) shouldBe "Follow the Lumarets" }
+        }
+
+        test("does not consume a pure activated lifegain resource when life has no concrete utility") {
+            val game = seeded()
+                .withLifeTotal(1, 29)
+                .withLandsOnBattlefield(1, "Forest", 2)
+                .withCardOnBattlefield(1, "Food", isToken = true)
+                .build()
+
+            val (chosen, report) = chooseWithReport(game)
+            withClue(report) { chosen.shouldBeInstanceOf<PassPriority>() }
+        }
+
+        test("casts the normal follow-up when a pure life event cannot be sequenced profitably first") {
+            val game = seeded()
+                .withLifeTotal(1, 20)
+                .withLandsOnBattlefield(1, "Forest", 2)
+                .withCardInHand(1, "Weather the Storm")
+                .withCardInHand(1, "Follow the Lumarets")
+                .withCardInLibrary(1, "Forest")
+                .withCardInLibrary(1, "Swamp")
+                .withCardInLibrary(1, "Blood Researcher")
+                .build()
+
+            val (chosen, report) = chooseWithReport(game)
+            val follow = withClue(report) { chosen.shouldBeInstanceOf<CastSpell>() }
+            withClue(report) { sourceName(game, follow) shouldBe "Follow the Lumarets" }
+        }
+
         test("does not suppress a lifegain spell with a concrete recursion rider") {
             val game = seeded()
                 .withLifeTotal(1, 20)

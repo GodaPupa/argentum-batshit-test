@@ -37,5 +37,11 @@ That vector executed once from green preflight head `9f3f3c1cc8270c3bbd55b8017c0
 The automated audit was clean, but Game 15 exposed a strategically null Storm-0 Weather cast and a
 missed next-turn Weather-before-Follow enhanced line. The entire performance sample is rejected and
 preserved without exclusions in `goldfish-sample-1-performance-rejected.{md,json}`; the controlling
-manual audit is `goldfish-sample-1-performance-audit-rejected.md`. No correction or replay is
-authorized automatically.
+manual audit is `goldfish-sample-1-performance-audit-rejected.md`. Its vector is permanently
+disqualified from performance/baseline evidence.
+
+The separately authorized focused correction is documented in
+`game-15-lifegain-policy-correction.md`. It extends the general null-lifegain resource policy to
+structurally pure activated abilities and validates the complete Weather/Food/Follow decision chain.
+It does not authorize or perform a replay, a replacement vector, challenger construction,
+optimization, Sample #2, or opponent self-play.

@@ -1,6 +1,6 @@
 # Project Pest Control — Status
 
-- Status: fresh performance Sample #1 rejected; preserved intact; investigation approval required
+- Status: Game 15 general lifegain-resource correction implemented; same-seed replay requires separate authorization
 - Laboratory: Project Pest Control
 - Branch: `pest-control/lab`
 - Validated base: `47882cd645caf126afee6cf13a65909806fa40ab`
@@ -157,6 +157,47 @@ meaningful deployment reached 6/14/27 games by T1/T2/T3; all 30 modeled terminal
 Mascot recorded 60/60 and 77/77 trigger/counter totals; 27 Weather casts had exact Storm-copy counts
 (`0`: 12, `1`: 15); four Thrall deaths created four Scions; no Scion was sacrificed for mana; and the
 functional-state classifier reported 26 engine-functional and four fair-creature-functional games.
+
+The rejection is formally accepted at remote head
+`23da31d777e3e1cd45f9655295565f2fd1a59662`. The complete 30-seed vector (SHA-256
+`c674ee12b4a3ebce6584d8d2c0c285a57f2400519e99fd08be058d76c3ad7513`) is permanently
+disqualified from performance/baseline evidence. It may not be used for sampling, optimization,
+performance inference, or variant comparison. No game was rerun, removed, replaced, or repaired,
+and no replacement vector was generated.
+
+### Game 15 lifegain-resource correction
+
+The deterministic reproduction separated Game 15's three linked decisions without executing its
+retired seed: a high-life pure lifegain spell with no survival need or event payoff; a subsequent
+pure lifegain activation after life had already been gained; and an executable life-event into an
+enhanced life-gained-this-turn follow-up.
+
+The complete root cause was a scope mismatch in the general null-lifegain policy. Pure lifegain
+spells were classified structurally and held unless survival, a visible repeatable payoff, or an
+affordable enhanced follow-up made the event concrete. Printed activated abilities bypassed that
+classification entirely, so sacrificing a Food for three strategically irrelevant life points
+could outrank passing and interrupt the already-enabled Follow line. The next greedy decision then
+saw the enhanced line only after the enabling event had been wasted; Game 15 later took normal
+Follow instead of the independently available materially superior Weather-to-enhanced-Follow line.
+
+The correction adds a strict structural pure-lifegain classifier for printed activated abilities
+and routes both casts and activations through the same general utility gate. A pure lifegain
+resource is held below passing when it has no survival role, visible repeatable event payoff, or
+executable enhanced follow-up. Abilities and spells with another effect leaf remain outside this
+hold rule. Existing general sequencing continues to prefer an enabling life event followed by the
+enhanced spell when that two-action line is executable, while normal Follow remains correct when
+the enabler cannot profitably precede it. The survival, payoff-driven Storm-0, useful Storm setup,
+and anti-junk-Storm cases remain green.
+
+**SHARED ARGENTUM CHANGE: yes.** This is a general effect/resource policy correction in the AI
+intent catalog and strategist. No card-name, Game 15, or Pest Control heuristic was added. No rules,
+engine, Gym, telemetry, mulligan, deck, Weather, Follow, or card-definition behavior changed.
+
+Focused deterministic coverage is green for the four new Game 15 chain scenarios and the existing
+high-life hold, survival Weather, payoff-driven Weather, useful Storm setup, and anti-junk-Storm
+regressions. The structural intent suite and complete AI test suite are green locally. The rejected
+vector has not been replayed, and a same-seed regression replay is ready only for separate explicit
+authorization after full CI is green.
 
 ## Rejected Sample #1 disposition and correction scope
 

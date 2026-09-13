@@ -59,6 +59,15 @@ class CardIntentAnalyzerTest : ScenarioTestBase() {
             catalog.isPureLifeGainSpell("Pulse of Murasa") shouldBe false
         }
 
+        test("pure lifegain activated abilities are identified structurally") {
+            val catalog = IntentCatalog.of(cardRegistry)
+            val food = cardRegistry.requireCard("Food").script.activatedAbilities.single()
+            val clue = cardRegistry.requireCard("Clue").script.activatedAbilities.single()
+
+            catalog.isPureLifeGainAbility("Food", food.id) shouldBe true
+            catalog.isPureLifeGainAbility("Clue", clue.id) shouldBe false
+        }
+
         test("a life-gain-enhanced selection spell exposes the conditional mode structurally") {
             val intent = intentOf("Follow the Lumarets")
             intent.tags shouldContain IntentTag.LIFEGAIN_ENHANCED

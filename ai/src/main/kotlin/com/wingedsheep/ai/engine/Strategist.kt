@@ -784,7 +784,7 @@ class Strategist(
     private fun isSacrificeManaAction(action: LegalAction): Boolean =
         action.isManaAbility && action.additionalCostInfo?.costType == "SacrificePermanent"
 
-    /** Hold a pure life-only spell until life or a visible event consumer makes it concrete. */
+    /** Hold a pure life-only resource until life or a visible event consumer makes it concrete. */
     private fun shouldHoldNullLifeGain(
         state: GameState,
         leafState: GameState,
@@ -792,8 +792,12 @@ class Strategist(
         playerId: EntityId,
         cardName: String,
     ): Boolean {
-        val cast = action as? CastSpell ?: return false
-        if (!intents.isPureLifeGainSpell(cardName, cast.faceIndex)) return false
+        val isPureLifeGain = when (action) {
+            is CastSpell -> intents.isPureLifeGainSpell(cardName, action.faceIndex)
+            is ActivateAbility -> intents.isPureLifeGainAbility(cardName, action.abilityId)
+            else -> false
+        }
+        if (!isPureLifeGain) return false
         if (visibleRepeatablePayoffCount(state, playerId) > 0) return false
         if (lifeGainNeededForSurvival(state, playerId)) return false
         if (unlocksLifeGainEnhancedFollowUp(state, leafState, playerId)) return false

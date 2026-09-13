@@ -9,6 +9,12 @@ invariants passed, but manual agent-sanity review found a clear Weather/Follow p
 describe the rejected execution and are not Pest Control baseline, optimization, matchup, or variant
 comparison evidence.
 
+This disposition was formally accepted at remote head
+`23da31d777e3e1cd45f9655295565f2fd1a59662`. The entire vector is permanently disqualified from
+performance/baseline evidence and may never be used for sampling, optimization, performance
+inference, or variant comparison. It was not replayed, partially replaced, or repaired during the
+subsequently authorized Game 15 investigation.
+
 - Seed-vector SHA-256: `c674ee12b4a3ebce6584d8d2c0c285a57f2400519e99fd08be058d76c3ad7513`
 - Raw JSON SHA-256: `845abd2307e4f771c5c31acf6ce44ffe6d4ae6a0e5436e335cfc22ae2c4fe68b`
 - Generated Markdown SHA-256: `b54352f146924866db663e7c571ee1eaa7e4cbaef2f0c7fd239d26e8abdd5aaa`
@@ -30,9 +36,10 @@ Follow the Lumarets in hand, it cast Follow in normal mode instead of using Weat
 enhanced mode. This is a clear residual strategic-policy defect under the accepted Weather/Follow
 requirements and invalidates the entire sample.
 
-No corrective work or replay is authorized by this audit. Investigation requires a separate
-approval. `SHARED ARGENTUM CHANGE: yes` remains the record for the already accepted Weather-policy
-correction at `8a13f2d8f9322b85ba6c52de571c591fea966a31`; this rejected execution introduced no change.
+The separately authorized focused investigation and general correction are documented in
+`game-15-lifegain-policy-correction.md`. That authorization did not permit a replay or replacement
+sample. `SHARED ARGENTUM CHANGE: yes` records the resulting general policy correction; this rejected
+execution itself introduced no change.
 
 ## Rejected-run descriptive metrics
 
@@ -84,4 +91,4 @@ empty-board behavior, Ent actions, per-card bottleneck deduplication, mana legal
 terminal reports were internally consistent.
 
 The rules/state and telemetry evidence is clean, but the Game 15 policy defect controls disposition:
-Goldfish Sample #1 is rejected and the laboratory stops pending separately authorized investigation.
+Goldfish Sample #1 remains permanently rejected. Its correction does not rehabilitate this execution.
