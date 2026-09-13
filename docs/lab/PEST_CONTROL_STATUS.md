@@ -1,6 +1,6 @@
 # Project Pest Control — Status
 
-- Status: Goldfish Sample #2 independent vector frozen; pre-execution validation
+- Status: Goldfish Sample #2 rejected; stopped pending separate direction
 - Laboratory: Project Pest Control
 - Branch: `pest-control/lab`
 - Validated base: `47882cd645caf126afee6cf13a65909806fa40ab`
@@ -27,6 +27,28 @@ Sample #2 uses the exact Sample #1 deck, agent, engine, telemetry, mulligan beha
 acceptance criteria. Mana-role classification will be derived post-execution only from safely
 observable bottleneck card names; it does not change telemetry or gameplay. No Sample #2 game had
 been executed when this freeze was recorded.
+
+### Goldfish Sample #2 disposition
+
+Preflight CI run 213 was fully green at frozen head
+`4dcf6f122bda469017611a9afdaf60c597e37d01`. All 30 seeds then executed exactly once in frozen order
+without a reroll, replacement, exclusion, replay, or deck/policy/telemetry change. Automated
+rules/state invariants reported zero errors, but manual review found blocking defects in Games 16 and
+28:
+
+- Game 16 cast Weather at Storm 0 before a legal land-plus-Carrier sequence that would have made
+  Storm 1 and produced another Mascot trigger. The pre-Weather candidate field also failed to account
+  for the legal land play, making this a telemetry defect as well as a policy failure.
+- Game 28 activated Food at 21 life with no payoff or survival need and failed to use it for an
+  available same-turn enhanced Follow; on the next turn it cast Follow normally despite an executable
+  land, Weather, enhanced Follow, and Carrier line.
+
+Therefore Sample #2 is **formally rejected**. Its vector is permanently retired and hard-disabled.
+The raw block, human report, and rejection audit are preserved under
+`docs/experiments/pest-control/goldfish-sample-2-*`. No Sample #2 performance inference, mana-role
+aggregate, or pooled 60-game report was produced. No correction, replacement sample, Sample #3,
+challenger construction, optimization, or opponent self-play was started. Pest Control v1.0 remains
+exact.
 
 ## New untouched Goldfish Sample #1 authorization
 
