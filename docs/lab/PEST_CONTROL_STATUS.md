@@ -1,6 +1,6 @@
 # Project Pest Control — Status
 
-- Status: Sample #2 Take 2 correction remotely green; at Take 3 seed-readiness gate
+- Status: Sample #2 Take 3 vector frozen before execution
 - Laboratory: Project Pest Control
 - Branch: `pest-control/lab`
 - Validated base: `47882cd645caf126afee6cf13a65909806fa40ab`
@@ -15,6 +15,29 @@
 - Candidate status: proposed Tier-1 architecture only; not approved, constructed, or run
 
 ## Goldfish Sample #2 independent replication authorization
+
+### Sample #2 Take 3 authorization and freeze
+
+The Sample #2 Take 2 correction gate is formally accepted: implementation
+`14bea9a1f0c67be74aae8f48704186e2277de1b1` is green in CI #220, and final documentation head
+`99be2946c20c3a10f17b9e2a9d1c0c86809a877f` is green in CI #221. Take 2 remains rejected at
+`2b770b353a3d3ec387e9c5607c938cbaa2007eaf`; its full vector remains permanently retired and
+hard-disabled.
+
+After explicit authorization, a new ordered 30-seed Take 3 vector was deterministically derived and
+frozen before Game 1. A read-only collision audit covered all 40 available local, remote, and
+pull-request refs (25 distinct tip trees), 1,694 seed-category path instances, 171 unique relevant
+blobs, 216,475 seed/category-bearing lines, and 1,704 normalized positive-`Long` values. Overlap is
+zero. The vector SHA-256 is
+`341fc7936a8a415d19d198662d1f6f2b2120ecb70d055a3a7a6fb76dd1ec8c47`; its derivation and immutable
+execution contract are recorded in
+`docs/experiments/pest-control/goldfish-sample-2-take-3-seed-freeze.md`.
+
+Take 3 uses exactly the current validated Pest Control v1.0 laboratory configuration and complete
+Sample #1 metric set. It must execute once in frozen order and be rejected in full for any clear
+rules/state, telemetry, mana-provenance, sequencing, or agent-policy defect. At this freeze point no
+Take 3 game has executed. Sample #1 remains the sole accepted performance/engine sample, and the
+challenger remains audit-only and unconstructed.
 
 ### Sample #2 Take 2 authorization and freeze
 
@@ -95,8 +118,9 @@ remotely validated.
 Sample #1 is still the sole accepted performance/engine evidence. The original rejected Sample #2
 and Take 2 vectors remain permanently retired/hard-disabled. Pest Control v1.0 remains exact and the
 challenger remains audit-only and unconstructed. The project is ready to receive a separate explicit
-authorization for a completely new Take 3 vector; no Take 3 seed generation is authorized by this
-status record and none has begun.
+authorization for a completely new Take 3 vector. At the time this correction-gate entry was written,
+no Take 3 seed generation had been authorized or begun; the later authorization and freeze are
+recorded above.
 
 Goldfish Sample #1 is formally accepted at
 `4ccd4f097ade866a8eb3eff42e897229cd34e29f` and its vector is permanently retired and
