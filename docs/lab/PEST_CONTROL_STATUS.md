@@ -1,6 +1,6 @@
 # Project Pest Control — Status
 
-- Status: fresh Sample #1 rejected; general Weather-policy correction green; awaiting replay approval
+- Status: corrected fresh-vector regression replay clean; vector permanently retired; fresh-sample-ready
 - Laboratory: Project Pest Control
 - Branch: `pest-control/lab`
 - Validated base: `47882cd645caf126afee6cf13a65909806fa40ab`
@@ -72,7 +72,8 @@ Focused deterministic coverage proves:
 **SHARED ARGENTUM CHANGE: yes.** This is a general effect/result and trigger-property policy. The
 permanent v1.0 list, mulligan policy, Weather rules, Follow rules, telemetry, engine, Gym, and card
 definitions are unchanged. The rejected fresh vector has not been replayed, replaced, or used for
-performance inference; a replay or new sample requires separate authorization after validation.
+performance inference during the correction. Its one authorized regression replay is documented
+below; any new sample requires separate authorization.
 
 Focused validation passed all 46 Pest Control agent decisions plus the full structural-intent
 analyzer suite. The full local AI suite is green. The frozen-deck/vector test passed with all three
@@ -82,6 +83,31 @@ kotlinx-serialization-core 1.9.0 artifacts; no accommodation was made. Remote CI
 green on implementation head `6c13b8fd100040d60a0a0b33b66d7b484281e9d7`, including frontend,
 engine, every scenario partition, content, tools, server, and the aggregate backend gate. The named
 Argentum Validation workflow remains unavailable on this non-main branch without manual dispatch.
+
+## Corrected fresh-vector regression gate
+
+After explicit authorization, the exact rejected fresh Sample #1 vector was replayed once from
+accepted Weather-policy head `1528ad2906e2b8e85b50f9672efb964622739f71`. All 30 seeds ran once,
+unchanged and in their original CSV order. The vector checksum remained
+`50d831076ff08c5df70aaa21e6edf7deaf9c269eeb74f0b5f9981b8be51caad8`.
+
+All automated invariants and the manual suspicious-decision audit are clean. Every Weather had a
+visible Researcher/Mascot payoff or enabled enhanced Follow; all Storm copies and separate life events
+matched; the original null Weather behavior in Games 1, 21, 22, and 23 did not recur. Chainer's Edict
+and Bone Shards remained held against the empty opponent, Thrall/Scion and Warden event counts matched,
+Researcher/Mascot triggers equaled counters, Scion provenance balanced, actionable bottlenecks were
+relevant and deduplicated, Follow modes and Ent decisions were legal, and every game had clean mana
+and terminal reporting. The detailed cast-by-cast audit is preserved in
+`docs/experiments/pest-control/goldfish-sample-1-fresh-regression-replay-accepted.md`.
+
+The corrected replay is **accepted only as regression-validation evidence**. The original fresh
+Goldfish Sample #1 remains permanently rejected as performance/baseline evidence, and neither run's
+aggregates may support performance or variant inference. The exact vector is permanently retired and
+must never be executed again, optimized against, sampled, or compared. No replacement Sample #1 was
+generated.
+
+**SHARED ARGENTUM CHANGE: yes.** This records the already accepted general Weather-policy correction;
+the replay introduced no new policy, engine, Gym, telemetry, card, or deck change.
 
 Descriptive rejected-run facts, retained for diagnosis only: 9/30 games mulliganed (11 total);
 meaningful deployment reached 6/14/27 games by T1/T2/T3; all 30 modeled terminals were combat lethal

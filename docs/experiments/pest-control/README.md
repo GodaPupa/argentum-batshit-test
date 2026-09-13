@@ -20,6 +20,9 @@ rejected and preserved intact in `goldfish-sample-1-fresh-rejected.md` and `.jso
 engine aggregates are accepted as baseline evidence.
 
 The approved general Weather-policy correction is documented in
-`goldfish-sample-1-weather-policy-correction.md`. It does not authorize challenger construction,
-opponent self-play, another fresh Sample #1, Sample #2, replay, or optimization. The permanent Pest
-Control v1.0 control in `docs/lab/PEST_CONTROL_STATUS.md` must not be silently changed.
+`goldfish-sample-1-weather-policy-correction.md`. Its one authorized exact-order replay is clean and
+preserved separately as `goldfish-sample-1-fresh-regression-replay-accepted.{md,json}`. The replay is
+regression evidence only; the original remains rejected as performance evidence and this vector is
+permanently retired. This does not authorize challenger construction, opponent self-play, another
+fresh Sample #1, Sample #2, further replay, or optimization. The permanent Pest Control v1.0 control
+in `docs/lab/PEST_CONTROL_STATUS.md` must not be silently changed.

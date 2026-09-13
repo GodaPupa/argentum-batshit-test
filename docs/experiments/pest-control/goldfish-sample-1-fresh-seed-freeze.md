@@ -19,6 +19,9 @@ changes are permitted.
   Batshit/Affinity, Project X, development, regression, smoke, performance, and optimization material
 - Execution status: executed exactly once in frozen order from preflight head
   `1ecb976cb41c369edf195681e4c9d80ddf7e894f`; formally rejected by manual audit
+- Regression status: replayed exactly once in frozen order from accepted Weather-policy head
+  `1528ad2906e2b8e85b50f9672efb964622739f71`; clean and accepted only as regression-validation
+  evidence; vector permanently retired
 
 The authoritative vector is
 `gym/src/test/resources/pest-control-v10-goldfish-sample-1-fresh-seeds.csv`.
@@ -31,4 +34,6 @@ entire sample without removing affected games.
 The single execution completed all 30 games, but manual audit found strategically null Weather casts
 with no payoff or survival pressure. The complete vector is therefore rejected as performance/baseline
 evidence and remains frozen for investigation only. It must not be rerolled, optimized against, used
-for variant comparison, or silently repaired by removing games.
+for variant comparison, or silently repaired by removing games. Its one authorized corrected replay
+is preserved separately; the vector must never be executed again or rehabilitated as a performance
+sample.
