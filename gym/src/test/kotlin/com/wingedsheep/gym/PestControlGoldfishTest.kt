@@ -163,7 +163,7 @@ class PestControlGoldfishTest : FunSpec({
     }
 
     test("Pest Control v1.0 Goldfish Sample 1 untouched performance vector").config(
-        enabled = System.getenv("PEST_CONTROL_GOLDFISH_SAMPLE_1_UNTOUCHED") == "true",
+        enabled = false, // Accepted Sample #1; frozen vector must never be executed again.
         timeout = 60.minutes,
     ) {
         val seeds = readUntouchedPestSeeds()

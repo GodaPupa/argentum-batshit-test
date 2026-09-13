@@ -1,6 +1,6 @@
 # Project Pest Control — Status
 
-- Status: new untouched Goldfish Sample #1 vector frozen; pre-execution validation
+- Status: Goldfish Sample #1 accepted; stopped before Sample #2 or opponent self-play
 - Laboratory: Project Pest Control
 - Branch: `pest-control/lab`
 - Validated base: `47882cd645caf126afee6cf13a65909806fa40ab`
@@ -29,6 +29,20 @@ availability, survival pressure, pending stack sources, mana-plausible useful pr
 and pure-lifegain activations at decision time. This does not change engine, Gym production, agent
 policy, cards, deck composition, mulligans, or gameplay semantics. No game had been executed when
 this freeze was recorded.
+
+### New untouched Goldfish Sample #1 result
+
+Preflight CI run 211 was fully green at frozen remote head
+`4e47607c435e280a4531b1d977fb176955bc8742`. The 30 frozen seeds then ran exactly once in order with
+no reroll, replacement, exclusion, replay, or deck/policy/telemetry change. All automated invariants
+reported zero errors, and manual review of every Weather, Food, Follow, removal, Thrall/Scion, Ent,
+mana-bottleneck, and terminal decision found no clear defect.
+
+The sample is **formally accepted as Pest Control v1.0 development/engine goldfish performance
+evidence**, not matchup evidence. Complete raw JSON, the human-readable per-game report, and the
+acceptance audit are preserved under `docs/experiments/pest-control/goldfish-sample-1-untouched-*`.
+The vector is now hard-disabled and no Sample #2, challenger construction, optimization, or opponent
+self-play was started. Pest Control v1.0 remains byte-for-byte exact.
 
 ## Laboratory boundary
 
