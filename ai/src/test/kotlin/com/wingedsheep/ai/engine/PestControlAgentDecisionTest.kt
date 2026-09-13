@@ -14,6 +14,7 @@ import com.wingedsheep.engine.state.components.stack.ChosenTarget
 import com.wingedsheep.engine.support.ScenarioTestBase
 import com.wingedsheep.sdk.model.EntityId
 import com.wingedsheep.sdk.core.Phase
+import com.wingedsheep.sdk.core.Step
 import io.kotest.assertions.withClue
 import io.kotest.matchers.booleans.shouldBeFalse
 import io.kotest.matchers.booleans.shouldBeTrue
@@ -201,6 +202,84 @@ class PestControlAgentDecisionTest : ScenarioTestBase() {
             }
             sourceName(game, weather) shouldBe "Weather the Storm"
             game.state.spellsCastThisTurn shouldBe 1
+        }
+
+        test("Game 18 reconstruction deploys a land-unlocked payoff before lifegain") {
+            val game = seeded()
+                .withTurnNumber(6)
+                .withLifeTotal(1, 22)
+                .withLandsOnBattlefield(1, "Forest", 1)
+                .withLandsOnBattlefield(1, "Swamp", 2)
+                .withLandsOnBattlefield(1, "Forest", 1)
+                .withCardInHand(1, "Swamp")
+                .withCardInHand(1, "Blood Researcher")
+                .withCardInHand(1, "Weather the Storm")
+                .withCardInHand(1, "Chainer's Edict")
+                .withCardInHand(1, "Chainer's Edict")
+                .withCardOnBattlefield(1, "Essence Warden")
+                .withCardOnBattlefield(1, "Carrier Thrall")
+                .withCardOnBattlefield(1, "Follow the Lumarets")
+                .withCardOnBattlefield(1, "Blood Researcher")
+                .build()
+            game.state = game.state.copy(phase = Phase.POSTCOMBAT_MAIN, step = Step.POSTCOMBAT_MAIN)
+            val player = ai(game)
+
+            val captured = mutableListOf<com.wingedsheep.ai.insight.AiDecisionInsight>()
+            val traced = AIPlayer.create(
+                cardRegistry, game.player1Id, profile,
+                insightSink = { _, insight -> captured += insight },
+            )
+            val first = traced.chooseAction(game.state)
+            val land = withClue("first action=${sourceName(game, first) ?: first::class.simpleName}") {
+                first.shouldBeInstanceOf<PlayLand>()
+            }
+            withClue(captured.lastOrNull()) {
+                captured.last().options.single { it.label.contains("Weather the Storm") }.note
+                    .orEmpty() shouldContain "land play unlocks a superior same-turn line"
+            }
+            cardName(game, land.cardId) shouldBe "Swamp"
+            game.execute(land).error shouldBe null
+
+            val setup = player.chooseAction(game.state).shouldBeInstanceOf<CastSpell>()
+            sourceName(game, setup) shouldBe "Blood Researcher"
+            game.execute(setup).error shouldBe null
+            game.resolveStack()
+
+            val weather = player.chooseAction(game.state).shouldBeInstanceOf<CastSpell>()
+            sourceName(game, weather) shouldBe "Weather the Storm"
+        }
+
+        test("land-unlocked damage payoff is deployed before the event it converts") {
+            val game = seeded()
+                .withLandsOnBattlefield(1, "Forest", 2)
+                .withLandsOnBattlefield(1, "Swamp", 2)
+                .withCardInHand(1, "Swamp")
+                .withCardInHand(1, "Marauding Blight-Priest")
+                .withCardInHand(1, "Weather the Storm")
+                .build()
+            val player = ai(game)
+
+            val land = player.chooseAction(game.state).shouldBeInstanceOf<PlayLand>()
+            game.execute(land).error shouldBe null
+            val payoff = player.chooseAction(game.state).shouldBeInstanceOf<CastSpell>()
+            sourceName(game, payoff) shouldBe "Marauding Blight-Priest"
+        }
+
+        test("payoff deployment is not preferred when it consumes mana required by lifegain") {
+            val game = seeded()
+                .withLandsOnBattlefield(1, "Forest", 1)
+                .withLandsOnBattlefield(1, "Swamp", 2)
+                .withCardInHand(1, "Swamp")
+                .withCardInHand(1, "Blood Researcher")
+                .withCardInHand(1, "Weather the Storm")
+                .withCardOnBattlefield(1, "Blood Researcher")
+                .build()
+
+            val (_, insights) = chooseWithInsights(game)
+            withClue(insights.lastOrNull()) {
+                insights.last().options.single { it.label.contains("Weather the Storm") }.note
+                    .orEmpty().contains("land play unlocks a superior same-turn line") shouldBe false
+            }
         }
 
         test("land-unlocked Storm setup does not delay lifegain required for survival") {

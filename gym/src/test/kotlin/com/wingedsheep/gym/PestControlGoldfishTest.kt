@@ -802,11 +802,30 @@ internal fun pestAuditCompletenessErrors(game: PestGoldfishGame): List<String> =
             if (!stillUnexecutable && evaluation.comparisonLineEvaluated.isEmpty()) {
                 fail(evaluationSubject, "complete comparison line is absent")
             }
+            if (!stillUnexecutable && evaluation.comparisonSteps.map { it.action } != evaluation.comparisonLineEvaluated) {
+                fail(evaluationSubject, "source-specific comparison steps are absent or incomplete")
+            }
             if (evaluation.steps.isEmpty()) fail(evaluationSubject, "structured action steps are absent")
             if (evaluation.reason.isBlank()) fail(evaluationSubject, "classification reason is absent")
             if (!stillUnexecutable) {
                 if (evaluation.completedLineScore?.isFinite() != true) fail(evaluationSubject, "completed-line score is absent")
                 if (evaluation.reorderedLineScore?.isFinite() != true) fail(evaluationSubject, "actual/reordered-line score is absent")
+                if (evaluation.additionalImmediatePayoffValue?.isFinite() != true) {
+                    fail(evaluationSubject, "payoff delta is absent")
+                }
+                if (evaluation.setupFirstResourcesAfter == null) {
+                    fail(evaluationSubject, "setup-first resource result is absent")
+                }
+                if (evaluation.focalFirstResourcesAfter == null) {
+                    fail(evaluationSubject, "focal-first resource result is absent")
+                }
+                val setupResources = requireNotNull(evaluation.setupFirstResourcesAfter)
+                val focalResources = requireNotNull(evaluation.focalFirstResourcesAfter)
+                if (evaluation.completeResourcesEquivalent == null) {
+                    fail(evaluationSubject, "resource equality/difference result is absent")
+                }
+                validateResources("$evaluationSubject setup-first result", setupResources)
+                validateResources("$evaluationSubject focal-first result", focalResources)
             }
             evaluation.steps.forEachIndexed { stepIndex, step ->
                 val stepSubject = "$evaluationSubject step ${stepIndex + 1}"

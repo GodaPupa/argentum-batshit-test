@@ -78,9 +78,23 @@ class PestControlArtifactContractTest : ScenarioTestBase() {
             serializedEvaluations.forEach { evaluation ->
                 evaluation.keys.shouldContainAll(
                     "setupPrefix", "completeSetupContinuation", "actualLineTaken",
-                    "counterfactualLineEvaluated", "comparisonLineEvaluated", "materiallySuperior",
+                    "counterfactualLineEvaluated", "comparisonLineEvaluated", "comparisonSteps",
+                    "materiallySuperior",
+                    "activePayoffsBeforeDeployment", "activePayoffsAfterDeployment",
+                    "additionalImmediatePayoffValue", "setupFirstResourcesAfter",
+                    "focalFirstResourcesAfter", "completeResourcesEquivalent",
                 )
             }
+            val payoffSequence = serializedEvaluations.single {
+                it["relevantAction"].toString() == "\"Blood Researcher\""
+            }
+            payoffSequence["proposedLandPlay"].toString() shouldBe "\"Swamp\""
+            payoffSequence["counterfactualLineEvaluated"]!!.jsonArray.map { it.toString().trim('"') } shouldBe
+                listOf("play Swamp", "cast Blood Researcher", "cast Weather the Storm")
+            payoffSequence["comparisonLineEvaluated"]!!.jsonArray.map { it.toString().trim('"') } shouldBe
+                listOf("cast Weather the Storm", "play Swamp", "cast Blood Researcher")
+            payoffSequence["additionalImmediatePayoffValue"].toString() shouldBe "1.0"
+            payoffSequence["completeResourcesEquivalent"].toString() shouldBe "true"
             val boneStep = serializedEvaluations.flatMap { it["steps"]!!.jsonArray.map { step -> step.jsonObject } }
                 .single { it["action"].toString() == "\"cast Bone Shards\"" }
             boneStep["targetDetails"]!!.jsonArray.single().jsonObject["name"].toString() shouldBe "\"Blood Artist\""
@@ -118,7 +132,7 @@ class PestControlArtifactContractTest : ScenarioTestBase() {
         )
         val landUnlocked = evaluation(
             listOf(PreSpellSetupClassification.LAND_UNLOCKED, PreSpellSetupClassification.GENUINE_MISSED_SUPERIOR_SEQUENCE),
-            listOf("play Forest", "cast Setup"), superior = true,
+            listOf("play Swamp", "cast Blood Researcher"), superior = true,
         )
         val still = evaluation(
             listOf(PreSpellSetupClassification.STILL_UNEXECUTABLE_AFTER_LAND),
@@ -180,7 +194,8 @@ class PestControlArtifactContractTest : ScenarioTestBase() {
         val continuation = if (complete) prefix + "cast Weather the Storm" else emptyList()
         return PreSpellSetupEvaluation(
             turn = 7,
-            relevantAction = if (targeted) "Bone Shards" else "Setup",
+            relevantAction = if (targeted) "Bone Shards" else
+                prefix.last().removePrefix("cast ").removePrefix("play "),
             proposedLandPlay = land,
             landEntersTapped = land?.let { it == "Jungle Hollow" },
             classifications = classifications,
@@ -191,8 +206,27 @@ class PestControlArtifactContractTest : ScenarioTestBase() {
             actualLineTaken = listOf("cast Weather the Storm"),
             counterfactualLineEvaluated = continuation,
             comparisonLineEvaluated = if (complete) listOf("cast Weather the Storm") + prefix else emptyList(),
+            comparisonSteps = if (complete) {
+                (listOf("cast Weather the Storm") + prefix).map { action ->
+                    SetupActionAudit(
+                        action = action,
+                        cardId = EntityId("comparison-${action.hashCode()}"),
+                        manaCost = "{1}".takeIf { action.startsWith("cast ") },
+                        coloredRequirements = "{1}".takeIf { action.startsWith("cast ") },
+                        paymentSources = resource.manaSources.takeIf { action.startsWith("cast ") }.orEmpty(),
+                        resourcesBefore = resource,
+                        resourcesAfter = resource,
+                    )
+                }
+            } else emptyList(),
             completedLineScore = 10.0.takeIf { complete },
             reorderedLineScore = (if (superior) 9.0 else 10.0).takeIf { complete },
+            activePayoffsBeforeDeployment = listOf("Blood Researcher"),
+            activePayoffsAfterDeployment = listOf("Blood Researcher", "Blood Researcher"),
+            additionalImmediatePayoffValue = (if (superior) 1.0 else 0.0).takeIf { complete },
+            setupFirstResourcesAfter = resource.takeIf { complete },
+            focalFirstResourcesAfter = resource.takeIf { complete },
+            completeResourcesEquivalent = true.takeIf { complete },
             materiallySuperior = superior,
             reason = if (complete) "synthetic complete comparison" else "synthetic unexecutable continuation",
         )
@@ -252,8 +286,8 @@ class PestControlArtifactContractTest : ScenarioTestBase() {
                 survivalRequired = false,
                 pendingStackSources = emptyList(),
                 currentlyExecutablePreWeatherSpells = listOf("Setup", "Bone Shards"),
-                spellsExecutableAfterLegalLandPlay = listOf(LandUnlockedSpell("Forest", "Setup")),
-                bestValidatedPreWeatherSetupSequence = listOf("play Forest", "cast Setup", "cast Weather the Storm"),
+                spellsExecutableAfterLegalLandPlay = listOf(LandUnlockedSpell("Swamp", "Blood Researcher")),
+                bestValidatedPreWeatherSetupSequence = listOf("play Swamp", "cast Blood Researcher", "cast Weather the Storm"),
                 weatherCastBeforeSuperiorSetup = true,
                 usefulSpellCastLaterThisTurn = null,
                 stillUnexecutableAfterLegalLandPlay = listOf(LandUnlockedSpell("Jungle Hollow", "Setup")),

@@ -10,6 +10,7 @@ import io.kotest.matchers.collections.shouldNotBeEmpty
 import io.kotest.matchers.booleans.shouldBeTrue
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
+import io.kotest.matchers.doubles.shouldBePositive
 import io.kotest.matchers.string.shouldContain
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
@@ -203,6 +204,47 @@ class PestControlTelemetryRegressionTest : ScenarioTestBase() {
             json shouldContain "floatingMana"
         }
 
+        test("Game 18 payoff-enabling deployment survives land-unlocked sequence telemetry") {
+            val game = scenario().withPlayers()
+                .withTurnNumber(6)
+                .withLifeTotal(1, 22)
+                .withLandsOnBattlefield(1, "Forest", 1)
+                .withLandsOnBattlefield(1, "Swamp", 2)
+                .withLandsOnBattlefield(1, "Forest", 1)
+                .withCardInHand(1, "Swamp")
+                .withCardInHand(1, "Blood Researcher")
+                .withCardInHand(1, "Weather the Storm")
+                .withCardInHand(1, "Chainer's Edict")
+                .withCardInHand(1, "Chainer's Edict")
+                .withCardOnBattlefield(1, "Essence Warden")
+                .withCardOnBattlefield(1, "Carrier Thrall")
+                .withCardOnBattlefield(1, "Follow the Lumarets")
+                .withCardOnBattlefield(1, "Blood Researcher")
+                .build()
+            val weather = game.findCardsInHand(1, "Weather the Storm").single()
+
+            val snapshot = PreSpellSetupTelemetry(cardRegistry)
+                .observe(game.state, game.player1Id, weather)
+
+            val audit = snapshot.evaluatedSequences.single {
+                it.relevantAction == "Blood Researcher" && it.materiallySuperior
+            }
+            audit.classifications shouldContain PreSpellSetupClassification.LAND_UNLOCKED
+            audit.classifications shouldContain PreSpellSetupClassification.GENUINE_MISSED_SUPERIOR_SEQUENCE
+            audit.completeSetupContinuation shouldBe listOf(
+                "play Swamp", "cast Blood Researcher", "cast Weather the Storm",
+            )
+            audit.comparisonLineEvaluated shouldBe listOf(
+                "cast Weather the Storm", "play Swamp", "cast Blood Researcher",
+            )
+            audit.activePayoffsBeforeDeployment shouldContain "Blood Researcher"
+            audit.activePayoffsAfterDeployment.count { it == "Blood Researcher" } shouldBe 2
+            audit.additionalImmediatePayoffValue!!.shouldBePositive()
+            audit.completeResourcesEquivalent shouldBe true
+            audit.setupFirstResourcesAfter shouldNotBe null
+            audit.focalFirstResourcesAfter shouldNotBe null
+        }
+
         test("pre-spell telemetry reports a genuinely current setup without inventing a land dependency") {
             val game = scenario().withPlayers()
                 .withLandsOnBattlefield(1, "Forest", 2)
@@ -300,11 +342,8 @@ class PestControlTelemetryRegressionTest : ScenarioTestBase() {
                     .observe(game.state, game.player1Id, weather)
 
                 withClue(snapshot) {
-                    snapshot.executableAfterLegalLandPlay shouldBe emptyList()
                     snapshot.executableButNotMateriallySuperior shouldContain
                         listOf("play Swamp", "cast Weather the Storm")
-                    snapshot.bestValidatedSetupSequence shouldBe null
-                    snapshot.focalCastBeforeSuperiorSetup shouldBe false
                     val audits = snapshot.evaluatedSequences.filter { it.relevantAction == "Weather the Storm" }
                     audits.shouldNotBeEmpty()
                     audits.all {

@@ -33,11 +33,13 @@ import com.wingedsheep.engine.core.DeclareAttackers
 import com.wingedsheep.engine.core.DeclareBlockers
 import com.wingedsheep.engine.core.GameAction
 import com.wingedsheep.engine.core.PlayLand
+import com.wingedsheep.engine.core.PaymentStrategy
 import com.wingedsheep.engine.core.TypecycleCard
 import com.wingedsheep.engine.legalactions.LegalAction
 import com.wingedsheep.engine.legalactions.MeaningfulActionFilter
 import com.wingedsheep.engine.state.GameState
 import com.wingedsheep.engine.state.components.identity.CardComponent
+import com.wingedsheep.engine.state.components.battlefield.TappedComponent
 import com.wingedsheep.engine.state.components.player.LifeGainedThisTurnComponent
 import com.wingedsheep.engine.state.components.stack.AbilityOnStackComponent
 import com.wingedsheep.engine.state.components.stack.ActivatedAbilityOnStackComponent
@@ -1149,7 +1151,7 @@ class Strategist(
 
         val landPlay = action.action as? PlayLand
         if (landPlay != null) {
-            val setup = bestLandUnlockedStormSetup(state, playerId)
+            val setup = bestLandUnlockedPayoffSequence(state, playerId)
             if (setup != null && setup.landId == landPlay.cardId) {
                 delta += (setup.projectedScore - leafScore).coerceAtLeast(0.0)
             }
@@ -1251,33 +1253,32 @@ class Strategist(
 
     /**
      * Validate one bounded main-phase line that the ordinary one-ply candidate set cannot see:
-     * land, productive spell, then a still-payable Storm spell. Both spells are run through the
-     * real simulator, and the line must beat immediate Storm by a material evaluator margin.
+     * land, deployment/setup, then an immediate event-producing spell. The comparator uses the
+     * same land and cards in focal-first order, so a deployment is preferred only when having it
+     * present for the pending event creates material value rather than merely adding Storm count.
+     *
+     * Explicit mana-source variants are authoritative here. An auto-payment that spends the only
+     * source needed by the second spell must not erase a complete legal same-turn sequence.
+     *
+     * SHARED ARGENTUM CHANGE: yes
      */
-    private fun bestLandUnlockedStormSetup(
+    private fun bestLandUnlockedPayoffSequence(
         state: GameState,
         playerId: EntityId,
-    ): LandUnlockedStormSetup? {
+    ): LandUnlockedPayoffSequence? {
         if (!state.isActiveTurnFor(playerId) || state.step !in setOf(Step.PRECOMBAT_MAIN, Step.POSTCOMBAT_MAIN)) {
             return null
         }
-        if (visibleRepeatablePayoffCount(state, playerId) == 0) return null
 
         val legalNow = simulator.getLegalActions(state, playerId)
-        val immediateStorms = legalNow.filter { it.affordable && isStormCast(state, it) }
-        if (immediateStorms.isEmpty()) return null
-        if (immediateStorms.any { storm ->
-                val name = resolveCardName(state, storm) ?: return@any false
-                val cast = storm.action as CastSpell
+        val immediateEvents = legalNow.filter { isImmediateEventCast(state, it) }
+        if (immediateEvents.isEmpty()) return null
+        if (immediateEvents.any { focal ->
+                val name = resolveCardName(state, focal) ?: return@any false
+                val cast = focal.action as CastSpell
                 intents.isPureLifeGainSpell(name, cast.faceIndex) && lifeGainNeededForSurvival(state, playerId)
             }
         ) return null
-
-        val immediateBest = immediateStorms.maxOfOrNull { storm ->
-            simulator.simulate(state, heuristicTargets(state, storm, playerId)).scoreOrRankLast { leaf ->
-                evaluator.evaluate(leaf, leaf.projectedState, playerId)
-            }
-        } ?: return null
 
         return legalNow.asSequence().mapNotNull { landAction ->
             val land = landAction.action as? PlayLand ?: return@mapNotNull null
@@ -1286,36 +1287,93 @@ class Strategist(
                 return@mapNotNull null
             }
             val landState = landResult.state
-            val landScore = evaluator.evaluate(landState, landState.projectedState, playerId)
             simulator.getLegalActions(landState, playerId).asSequence().mapNotNull { setup ->
-                if (!setup.affordable || setup.action !is CastSpell || isStormCast(landState, setup)) {
+                if (setup.action !is CastSpell) {
                     return@mapNotNull null
                 }
-                val setupResult = simulator.simulate(landState, heuristicTargets(landState, setup, playerId))
-                if (setupResult is SimulationResult.Illegal || setupResult is SimulationResult.StoppedAtLimit) {
-                    return@mapNotNull null
-                }
-                val setupState = setupResult.state
-                val setupScore = evaluator.evaluate(setupState, setupState.projectedState, playerId)
-                if (setupScore <= landScore + MATERIAL_SEQUENCE_MARGIN) return@mapNotNull null
+                val setupId = (setup.action as CastSpell).cardId
+                castStatesWithSourceChoices(landState, setup, playerId).asSequence().flatMap { setupState ->
+                    simulator.getLegalActions(setupState, playerId).asSequence().filter { focal ->
+                        val focalCast = focal.action as? CastSpell
+                        focalCast != null && focalCast.cardId != setupId &&
+                            isImmediateEventCast(setupState, focal) &&
+                            immediateEvents.any { (it.action as CastSpell).cardId == focalCast.cardId }
+                    }.flatMap { focal ->
+                        val focalId = (focal.action as CastSpell).cardId
+                        castStatesWithSourceChoices(setupState, focal, playerId).asSequence().mapNotNull { completed ->
+                            val setupFirstScore = evaluator.evaluate(completed, completed.projectedState, playerId)
+                            val focalFirstScore = focalFirstCompleteScore(
+                                state, playerId, focalId, land.cardId, setupId,
+                            ) ?: return@mapNotNull null
+                            if (setupFirstScore <= focalFirstScore + MATERIAL_SEQUENCE_MARGIN) return@mapNotNull null
+                            LandUnlockedPayoffSequence(
+                                land.cardId, setupId, focalId, setupFirstScore, focalFirstScore,
+                            )
+                        }
+                    }
+                }.maxByOrNull(LandUnlockedPayoffSequence::projectedScore)
+            }.maxByOrNull(LandUnlockedPayoffSequence::projectedScore)
+        }.maxByOrNull(LandUnlockedPayoffSequence::projectedScore)
+    }
 
-                val storm = simulator.getLegalActions(setupState, playerId)
-                    .firstOrNull { it.affordable && isStormCast(setupState, it) }
-                    ?: return@mapNotNull null
-                val finalResult = simulator.simulate(setupState, heuristicTargets(setupState, storm, playerId))
-                if (finalResult is SimulationResult.Illegal || finalResult is SimulationResult.StoppedAtLimit) {
-                    return@mapNotNull null
+    private fun isImmediateEventCast(state: GameState, legal: LegalAction): Boolean {
+        val cast = legal.action as? CastSpell ?: return false
+        val name = state.getEntity(cast.cardId)?.get<CardComponent>()?.name ?: return false
+        val intent = intents.forCast(name, cast) ?: return false
+        return intent.tags.any { it in IMMEDIATE_EVENT_TAGS } || (intent.opponentDamage ?: 0) > 0
+    }
+
+    private fun focalFirstCompleteScore(
+        state: GameState,
+        playerId: EntityId,
+        focalId: EntityId,
+        landId: EntityId,
+        setupId: EntityId,
+    ): Double? = simulator.getLegalActions(state, playerId).asSequence()
+        .filter { (it.action as? CastSpell)?.cardId == focalId }
+        .flatMap { castStatesWithSourceChoices(state, it, playerId).asSequence() }
+        .mapNotNull { afterFocal ->
+            val land = simulator.getLegalActions(afterFocal, playerId)
+                .firstOrNull { (it.action as? PlayLand)?.cardId == landId } ?: return@mapNotNull null
+            val afterLand = simulator.simulate(afterFocal, land.action)
+            if (afterLand is SimulationResult.Illegal || afterLand is SimulationResult.StoppedAtLimit) return@mapNotNull null
+            simulator.getLegalActions(afterLand.state, playerId).asSequence()
+                .filter { (it.action as? CastSpell)?.cardId == setupId }
+                .flatMap { castStatesWithSourceChoices(afterLand.state, it, playerId).asSequence() }
+                .maxOfOrNull { evaluator.evaluate(it, it.projectedState, playerId) }
+        }.maxOrNull()
+
+    private fun castStatesWithSourceChoices(
+        state: GameState,
+        legal: LegalAction,
+        playerId: EntityId,
+    ): List<GameState> {
+        val selected = heuristicTargets(state, legal, playerId) as? CastSpell ?: return emptyList()
+        val sources = state.projectedState.getBattlefieldControlledBy(playerId).filter { id ->
+            state.projectedState.hasType(id, "LAND") && state.getEntity(id)?.has<TappedComponent>() != true
+        }
+        val manaValue = legal.manaCostString?.let { ManaCost.parse(it).cmc } ?: sources.size
+        val actions = buildList {
+            add(selected)
+            fun choose(start: Int, remaining: Int, chosen: MutableList<EntityId>) {
+                if (remaining == 0) {
+                    add(selected.copy(paymentStrategy = PaymentStrategy.Explicit(chosen.toList())))
+                    return
                 }
-                val finalScore = evaluator.evaluate(finalResult.state, finalResult.state.projectedState, playerId)
-                if (finalScore <= immediateBest + MATERIAL_SEQUENCE_MARGIN) return@mapNotNull null
-                LandUnlockedStormSetup(
-                    land.cardId,
-                    (setup.action as CastSpell).cardId,
-                    (storm.action as CastSpell).cardId,
-                    finalScore,
-                )
-            }.maxByOrNull(LandUnlockedStormSetup::projectedScore)
-        }.maxByOrNull(LandUnlockedStormSetup::projectedScore)
+                for (index in start..sources.size - remaining) {
+                    chosen += sources[index]
+                    choose(index + 1, remaining - 1, chosen)
+                    chosen.removeAt(chosen.lastIndex)
+                }
+            }
+            if (manaValue in 1..sources.size) choose(0, manaValue, mutableListOf())
+        }
+        return actions.distinct().mapNotNull { action ->
+            when (val result = simulator.simulate(state, action)) {
+                is SimulationResult.Illegal, is SimulationResult.StoppedAtLimit -> null
+                else -> result.state
+            }
+        }
     }
 
     /** Land first, then establish and consume a same-turn expiring condition. */
@@ -1409,8 +1467,8 @@ class Strategist(
         playerId: EntityId,
     ): Boolean {
         val cast = action as? CastSpell ?: return false
-        val stormSetup = bestLandUnlockedStormSetup(state, playerId)
-        if (stormSetup != null && cast.cardId in setOf(stormSetup.setupCardId, stormSetup.stormCardId)) {
+        val payoffSequence = bestLandUnlockedPayoffSequence(state, playerId)
+        if (payoffSequence != null && cast.cardId in setOf(payoffSequence.setupCardId, payoffSequence.focalCardId)) {
             return true
         }
         val expiringLine = bestLandUnlockedExpiringConditionLine(state, playerId)
@@ -2135,6 +2193,12 @@ class Strategist(
         /** Payment choices inspected for a one-card discard/sacrifice cost. */
         const val AUTOMATIC_PAYMENT_CANDIDATES = 8
 
+        val IMMEDIATE_EVENT_TAGS = setOf(
+            IntentTag.LIFEGAIN,
+            IntentTag.DRAW,
+            IntentTag.TOKEN_MAKER,
+        )
+
         /** Establishing a visible event engine before its next creature enters. */
         const val TRIGGER_ENGINE_SETUP_VALUE = 4.0
 
@@ -2209,11 +2273,12 @@ class Strategist(
         val faceIndex: Int?,
     )
 
-    private data class LandUnlockedStormSetup(
+    private data class LandUnlockedPayoffSequence(
         val landId: EntityId,
         val setupCardId: EntityId,
-        val stormCardId: EntityId,
+        val focalCardId: EntityId,
         val projectedScore: Double,
+        val comparisonScore: Double,
     )
 
     private data class LandUnlockedExpiringConditionLine(
@@ -2223,4 +2288,5 @@ class Strategist(
         val downstreamCardId: EntityId?,
         val projectedScore: Double,
     )
+
 }
