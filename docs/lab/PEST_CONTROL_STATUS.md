@@ -7,6 +7,7 @@
 - Accepted rules-complete remote head: `b08d8fad6e6709db4834e8e956e6853152efb3b5`
 - Accepted Phase 3 remote head: `8dd4a429e0799b60e7449c214a540dd8414b1f1c`
 - Accepted Weather regression replay remote head: `8a13f2d8f9322b85ba6c52de571c591fea966a31`
+- Game 16/Game 28 correction implementation head: `dd0572ab61c6a2dd3d2e76a578999c2fa822b2c0`
 - Control version: Pest Control v1.0 (permanent, immutable)
 - Candidate status: proposed Tier-1 architecture only; not approved, constructed, or run
 
