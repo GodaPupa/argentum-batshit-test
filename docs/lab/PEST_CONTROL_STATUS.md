@@ -1,6 +1,6 @@
 # Project Pest Control — Status
 
-- Status: Sample #2 Take 5 formally rejected; stopped at policy-correction authorization gate
+- Status: Sample #2 Take 5 modal-removal correction remotely green; stopped at Sample #2 Take 6 seed-readiness gate
 - Laboratory: Project Pest Control
 - Branch: `pest-control/lab`
 - Validated base: `47882cd645caf126afee6cf13a65909806fa40ab`
@@ -15,10 +15,46 @@
   `e316117ee71b30b170e241c8eb110bf8d4d20117` (CI #224)
 - Sample #2 Take 4 observability implementation head:
   `860d2f72b63bac460b90a04a1cc561bbb40ac9a9` (CI #228)
+- Sample #2 Take 5 modal-removal policy implementation head:
+  `6385a6e79f6bef5ce527129de560131a4dc7d68e` (CI #232)
 - Control version: Pest Control v1.0 (permanent, immutable)
 - Candidate status: proposed Tier-1 architecture only; not approved, constructed, or run
 
 ## Goldfish Sample #2 independent replication authorization
+
+### Sample #2 Take 6 seed-readiness gate
+
+The Take 5 modal-removal policy correction is accepted as remotely green. Implementation
+`6385a6e79f6bef5ce527129de560131a4dc7d68e` passed CI #232. **SHARED ARGENTUM CHANGE: yes.**
+
+The bypass was in production action classification: the strategist used the deliberately broad,
+historically frozen whole-card intent fold, which treats `ModalEffect` interiors as opaque. A
+concrete targeted-removal cast nested in a chosen mode therefore reached simulation and complete
+friendly-removal observability, but not the established fair-trade hold policy. Production
+classification now inspects the concrete cast's selected semantic effect branch, adds only
+targeted-answer intent tags, and leaves whole-card rating and unrelated modal choices unchanged.
+Top-level and selected modal targeted removal consequently receive the same general policy.
+
+Deterministic reconstructions preserve the complete additional-cost and resulting-state valuation.
+Game 2-, 26-, and 28-equivalent structures now apply the existing margin and reject below-margin
+Carrier death lines, including sacrifice of the target itself, discarded-interaction opportunity
+cost, and incidental Scion/lifegain value. A Game 23-equivalent productive line still clears the
+margin and remains selectable; the productive Cast Down control remains selectable as well. An
+opposing valuable target remains preferred, passing remains preferred when no line clears the bar,
+and a selected non-removal mode is not misclassified from an unchosen removal mode.
+
+The final-JSON artifact contract remains green and now requires the nested modal-removal audit to
+serialize `policyApplied=true` with its complete target, additional cost, pass/hold, fair-trade, and
+selection data. Focused action-intent, Take 5 reconstruction, friendly-removal, artifact-contract,
+sequencing, Bone Shards/Pest scenario, and frozen-control/vector tests passed locally; the complete
+AI suite passed. Every retired gameplay runner was skipped. No retired seed or Pest seed vector was
+executed.
+
+Take 5 remains rejected in full. Its vector SHA-256
+`4e239b8b76df587ec3e14f05f564a288480de42abcd681670c7330323631c1f0` remains permanently retired
+and hard-disabled. Sample #1 remains the sole accepted Pest Control performance/engine sample,
+Pest Control v1.0 remains exact, and the challenger remains audit-only and unconstructed. No Take 6
+seed has been generated; new seed generation requires separate explicit authorization.
 
 ### Sample #2 Take 5 authorization and freeze
 
