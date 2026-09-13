@@ -687,7 +687,7 @@ class Strategist(
         val cast = action.action as? CastSpell
         val card = cast?.let { state.getEntity(it.cardId)?.get<CardComponent>() }
         val intent = cast?.let { spell ->
-            spell.faceIndex?.let { intents.forFaceIndex(cardName, it) } ?: intents.forName(cardName)
+            intents.forCast(cardName, spell)
         }
         val shouldHoldFriendlyRemoval = cast != null && card != null && intent != null &&
             SelfRemovalValuation.shouldHold(

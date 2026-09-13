@@ -1,5 +1,6 @@
 package com.wingedsheep.ai.engine.knowledge
 
+import com.wingedsheep.engine.core.CastSpell
 import com.wingedsheep.engine.registry.CardRegistry
 import com.wingedsheep.engine.state.ComponentContainer
 import com.wingedsheep.engine.state.components.identity.CardComponent
@@ -75,6 +76,36 @@ class IntentCatalog private constructor(private val registry: CardRegistry?) {
         val definition = registry?.getCard(cardName) ?: return null
         val face = definition.cardFaces.getOrNull(faceIndex) ?: return null
         return CardIntentAnalyzer.analyzeFace(definition, face)
+    }
+
+    /**
+     * The intent of the concrete spell action after its structural choices have been made.
+     *
+     * SHARED ARGENTUM CHANGE: yes
+     *
+     * Whole-card analysis deliberately leaves modal interiors opaque because widening that fold
+     * would change historical card ratings. Production action policy has a narrower question: what
+     * does this chosen cast do? For a modal root, inspect only the selected modes; for an ordinary
+     * spell, inspect its root. Only targeted-answer tags are added, so unrelated modal choices do
+     * not acquire removal policy and no other card-intent policy is silently widened.
+     */
+    fun forCast(cardName: String, cast: CastSpell): CardIntent? {
+        val definition = registry?.getCard(cardName) ?: return null
+        val face = cast.faceIndex?.let { definition.cardFaces.getOrNull(it) ?: return null }
+        val script = face?.script ?: definition.script
+        val base = face?.let { CardIntentAnalyzer.analyzeFace(definition, it) }
+            ?: CardIntentAnalyzer.analyze(definition)
+        val root = script.spellEffect ?: return base
+        val concreteEffects = if (root is ModalEffect) {
+            if (cast.chosenModes.isEmpty()) emptyList()
+            else cast.chosenModes.mapNotNull(root.modes::getOrNull).map { it.effect }
+        } else {
+            listOf(root)
+        }
+        val actionAnswerTags = concreteEffects
+            .flatMap(CardIntentAnalyzer::actionEffectTags)
+            .filterTo(mutableSetOf()) { it in ACTION_TARGETED_ANSWER_TAGS }
+        return base.copy(tags = base.tags + actionAnswerTags)
     }
 
     /** Whether the card's typed cycling search names a basic land type (or all basic lands). */
@@ -296,6 +327,12 @@ class IntentCatalog private constructor(private val registry: CardRegistry?) {
     fun forEffect(effect: Effect): CardIntent = CardIntentAnalyzer.analyzeEffect(effect)
 
     companion object {
+        private val ACTION_TARGETED_ANSWER_TAGS = setOf(
+            IntentTag.REMOVAL,
+            IntentTag.EXILE_REMOVAL,
+            IntentTag.NEUTRALIZE,
+            IntentTag.FIGHT,
+        )
         private val BASIC_LAND_TYPES = setOf("Plains", "Island", "Swamp", "Mountain", "Forest")
 
         /** The off position: no registry, no answers, pre-Phase-6 behaviour everywhere. */

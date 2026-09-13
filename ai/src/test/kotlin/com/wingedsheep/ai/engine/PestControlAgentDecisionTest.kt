@@ -696,6 +696,7 @@ class PestControlAgentDecisionTest : ScenarioTestBase() {
 
             val action = ai(game).chooseAction(game.state).shouldBeInstanceOf<CastSpell>()
             sourceName(game, action) shouldBe "Bone Shards"
+            cardName(game, chosenPermanent(action)!!) shouldBe "Craw Wurm"
             action.additionalCostPayment?.sacrificedPermanents shouldBe listOf(thrall)
         }
 
@@ -774,7 +775,92 @@ class PestControlAgentDecisionTest : ScenarioTestBase() {
             audit.passHoldValue.isFinite().shouldBeTrue()
             audit.friendlyTargetAlternatives.any { it.name == "Carrier Thrall" }.shouldBeTrue()
             audit.selectionReason shouldContain "selected"
-            audit.policyApplied.shouldBeFalse()
+            audit.policyApplied.shouldBeTrue()
+        }
+
+        test("Take 5 Game 2 structure rejects targeting and sacrificing the same Carrier below margin") {
+            val game = seeded()
+                .withTurnNumber(9)
+                .withLandsOnBattlefield(1, "Swamp", 1)
+                .withCardInHand(1, "Bone Shards")
+                .withCardOnBattlefield(1, "Carrier Thrall")
+                .build()
+            val carrier = game.findPermanent("Carrier Thrall")!!
+
+            val (chosen, insights) = chooseWithInsights(game)
+            chosen.shouldBeInstanceOf<PassPriority>()
+            val audit = insights.last().options.mapNotNull { it.friendlyRemovalAudit }
+                .first { candidate ->
+                    candidate.targetId == carrier && candidate.additionalCosts.any { cost ->
+                        cost.kind == "sacrifice" && cost.entities.any { it.id == carrier }
+                    }
+                }
+            audit.policyApplied.shouldBeTrue()
+            audit.resourcesCreated.any { it.name == "Eldrazi Scion" }.shouldBeTrue()
+            audit.fairTradeSurplus.shouldBeNegative()
+            audit.policyDisposition shouldContain "reject"
+        }
+
+        test("Take 5 Game 26 structure charges discarded interaction and rejects the line below margin") {
+            val game = seeded()
+                .withTurnNumber(13)
+                .withLandsOnBattlefield(1, "Swamp", 1)
+                .withCardInHand(1, "Bone Shards")
+                .withCardInHand(1, "Cast Down")
+                .withCardOnBattlefield(1, "Carrier Thrall")
+                .build()
+
+            val (chosen, insights) = chooseWithInsights(game)
+            chosen.shouldBeInstanceOf<PassPriority>()
+            val audit = insights.last().options.mapNotNull { it.friendlyRemovalAudit }
+                .first { candidate -> candidate.additionalCosts.any { cost ->
+                    cost.kind == "discard" && cost.entities.any { it.name == "Cast Down" }
+                } }
+            audit.policyApplied.shouldBeTrue()
+            audit.fairTradeSurplus.shouldBeNegative()
+            audit.policyDisposition shouldContain "reject"
+        }
+
+        test("Take 5 Game 28 structure rejects minimal incidental Carrier death value") {
+            val game = seeded()
+                .withTurnNumber(13)
+                .withLandsOnBattlefield(1, "Swamp", 1)
+                .withCardInHand(1, "Bone Shards")
+                .withCardOnBattlefield(1, "Carrier Thrall")
+                .withCardOnBattlefield(1, "Essence Warden")
+                .build()
+
+            val (chosen, insights) = chooseWithInsights(game)
+            chosen.shouldBeInstanceOf<PassPriority>()
+            val audit = insights.last().options.mapNotNull { it.friendlyRemovalAudit }
+                .first { it.resourcesCreated.any { resource -> resource.name == "Eldrazi Scion" } }
+            audit.policyApplied.shouldBeTrue()
+            audit.immediateEngineEffects.any { it.startsWith("life ") }.shouldBeTrue()
+            audit.fairTradeSurplus.shouldBeNegative()
+            audit.policyDisposition shouldContain "reject"
+        }
+
+        test("Take 5 Game 23 structure preserves productive modal friendly removal above margin") {
+            val game = seeded()
+                .withTurnNumber(17)
+                .withLandsOnBattlefield(1, "Swamp", 1)
+                .withCardInHand(1, "Bone Shards")
+                .withCardInHand(1, "Forest")
+                .withCardOnBattlefield(1, "Carrier Thrall")
+                .withCardOnBattlefield(1, "Essence Warden")
+                .withCardOnBattlefield(1, "Essence Warden")
+                .withCardOnBattlefield(1, "Blood Researcher")
+                .withCardOnBattlefield(1, "Pest Mascot")
+                .build()
+
+            val (chosen, insights) = chooseWithInsights(game)
+            val action = chosen.shouldBeInstanceOf<CastSpell>()
+            sourceName(game, action) shouldBe "Bone Shards"
+            val audit = insights.last().options.mapNotNull { it.friendlyRemovalAudit }.single { it.selected }
+            audit.policyApplied.shouldBeTrue()
+            audit.fairTradeSurplus.shouldBePositive()
+            audit.policyDisposition shouldContain "allow"
+            audit.resourcesCreated.any { it.name == "Eldrazi Scion" }.shouldBeTrue()
         }
 
         test("Cast Down targets the highest-value legal nonlegendary threat") {

@@ -1,5 +1,6 @@
 package com.wingedsheep.ai.engine.knowledge
 
+import com.wingedsheep.engine.core.CastSpell
 import com.wingedsheep.engine.state.ComponentContainer
 import com.wingedsheep.engine.state.components.identity.RoomComponent
 import com.wingedsheep.engine.state.components.identity.RoomFace
@@ -7,6 +8,7 @@ import com.wingedsheep.engine.state.components.identity.RoomFaceId
 import com.wingedsheep.engine.support.ScenarioTestBase
 import com.wingedsheep.mtg.sets.definitions.dsk.cards.UnholyAnnexRitualChamber
 import com.wingedsheep.mtg.sets.definitions.woe.cards.VirtueOfLoyalty
+import com.wingedsheep.sdk.model.EntityId
 import io.kotest.assertions.withClue
 import io.kotest.matchers.collections.shouldBeEmpty
 import io.kotest.matchers.collections.shouldContain
@@ -40,6 +42,37 @@ class CardIntentAnalyzerTest : ScenarioTestBase() {
     )
 
     init {
+        test("concrete top-level and selected modal removal receive equivalent action intent") {
+            val catalog = IntentCatalog.of(cardRegistry)
+            val castDown = catalog.forCast(
+                "Cast Down",
+                CastSpell(EntityId("player"), EntityId("cast-down")),
+            )!!
+            val boneShards = catalog.forCast(
+                "Bone Shards",
+                CastSpell(EntityId("player"), EntityId("bone-shards"), chosenModes = listOf(0)),
+            )!!
+
+            castDown.tags shouldContain IntentTag.REMOVAL
+            boneShards.tags shouldContain IntentTag.REMOVAL
+            intentOf("Bone Shards").tags shouldNotContain IntentTag.REMOVAL
+        }
+
+        test("a selected non-removal mode is not classified from an unchosen removal mode") {
+            val catalog = IntentCatalog.of(cardRegistry)
+            val gainLife = catalog.forCast(
+                "Light of Hope",
+                CastSpell(EntityId("player"), EntityId("light-of-hope"), chosenModes = listOf(0)),
+            )!!
+            val destroyEnchantment = catalog.forCast(
+                "Light of Hope",
+                CastSpell(EntityId("player"), EntityId("light-of-hope"), chosenModes = listOf(1)),
+            )!!
+
+            gainLife.tags shouldNotContain IntentTag.REMOVAL
+            destroyEnchantment.tags shouldContain IntentTag.REMOVAL
+        }
+
         test("a repeatable +1/+1-counter trigger advertises a lasting payoff") {
             val intent = intentOf("Blood Researcher")
             intent.tags shouldContain IntentTag.PUMP

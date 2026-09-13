@@ -69,7 +69,7 @@ class PestControlArtifactContractTest : ScenarioTestBase() {
             removal["lifePaid"].toString() shouldBe "0"
             removal["opposingTargetAlternatives"] shouldBe JsonArray(emptyList())
             removal["preventionBenefit"].toString() shouldBe "null"
-            removal["policyApplied"].toString() shouldBe "false"
+            removal["policyApplied"].toString() shouldBe "true"
 
             val weather = decoded.games().single().jsonObject["weatherCasts"]!!.jsonArray.single().jsonObject
             val serializedEvaluations = weather["evaluatedSetupSequences"]!!.jsonArray.map { it.jsonObject }

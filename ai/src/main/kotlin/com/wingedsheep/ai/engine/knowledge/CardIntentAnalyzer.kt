@@ -99,6 +99,34 @@ object CardIntentAnalyzer {
     internal fun effectTags(effect: Effect): Set<IntentTag> =
         EffectWalker.leaves(effect).flatMap(::tagsOf).toSet()
 
+    /**
+     * Structural tags for a concrete action's effect, including semantic wrappers that the broad
+     * whole-card fold intentionally leaves opaque for historical rating compatibility.
+     *
+     * SHARED ARGENTUM CHANGE: yes
+     *
+     * This is action classification, not card rating. Once a mode has been chosen, a targeted
+     * removal effect inside that mode is the same production-policy input as the identical effect
+     * at the spell root. Descending here keeps [EffectWalker] and all sealed-deck ratings frozen.
+     */
+    internal fun actionEffectTags(effect: Effect): Set<IntentTag> =
+        EffectWalker.fold(effect, object : EffectWalker.Fold<Set<IntentTag>> {
+            override fun leaf(effect: Effect): Set<IntentTag> = when (effect) {
+                is ModalEffect -> effect.modes.flatMap { actionEffectTags(it.effect) }.toSet()
+                else -> tagsOf(effect)
+            }
+
+            override fun composite(parts: List<Set<IntentTag>>): Set<IntentTag> =
+                parts.flatten().toSet()
+
+            override fun conditional(
+                thenValue: Set<IntentTag>,
+                elseValue: Set<IntentTag>?,
+            ): Set<IntentTag> = thenValue + elseValue.orEmpty()
+
+            override fun may(thenValue: Set<IntentTag>): Set<IntentTag> = thenValue
+        })
+
     private val cardCache = ConcurrentHashMap<String, CardIntent>()
     private val selfCache = ConcurrentHashMap<String, CardIntent>()
     private val faceCache = ConcurrentHashMap<FaceKey, CardIntent>()
