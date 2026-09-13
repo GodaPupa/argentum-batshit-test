@@ -1,6 +1,6 @@
 # Project Pest Control — Status
 
-- Status: regression gate accepted; 30-seed vector permanently retired; fresh-sample-ready
+- Status: regression gate accepted; fresh Goldfish Sample #1 executed once and rejected by audit
 - Laboratory: Project Pest Control
 - Branch: `pest-control/lab`
 - Validated base: `47882cd645caf126afee6cf13a65909806fa40ab`
@@ -13,9 +13,44 @@
 
 This document and `docs/experiments/pest-control/` belong exclusively to Project Pest Control.
 Batshit Economics/Affinity, `mayhem/project-x`, and their seed vectors and experiment protocols are
-read-only dependencies and are outside this laboratory's write and workflow scope. The only seed
-vector executed is the explicitly authorized Pest Control v1.0 Sample #1 regression vector described
-below. No challenger construction, opponent self-play, optimization, or Sample #2 was performed.
+read-only dependencies and are outside this laboratory's write and workflow scope. Only explicitly
+authorized Pest Control vectors have been executed: the permanently retired regression vector and the
+separately frozen fresh Sample #1 vector described below. No challenger construction, opponent
+self-play, optimization, or Sample #2 was performed.
+
+## Fresh Goldfish Sample #1 disposition
+
+The accepted regression gate is `27b82421d34cf2e61b7eb106b59ed2809bb50013`. Before fresh execution,
+30 new deterministic seeds were derived and frozen with vector SHA-256
+`50d831076ff08c5df70aaa21e6edf7deaf9c269eeb74f0b5f9981b8be51caad8`. A read-only audit of all 27
+available remote refs inspected 50,553 seed-related lines/files and excluded 1,711 numeric seed values;
+the new vector had zero overlap. The exact deck assertion, seed checksum, focused Pest tests, and full
+CI run 200 were green at preflight head `1ecb976cb41c369edf195681e4c9d80ddf7e894f`.
+
+The vector then ran exactly once, in order, with no rerolls, replacements, exclusions, substitutions,
+deck changes, policy changes, or telemetry changes. All 30 engine games completed and the automatic
+audit reported no rules/state, mana-provenance, trigger/counter, Storm-copy, Thrall/Scion, mana-legality,
+or terminal inconsistency. Manual agent-sanity audit nevertheless found a clear policy defect:
+
+- Games 1, 21, and 23 cast Weather the Storm at Storm 0 with no Researcher/Mascot payoff, no opposing
+  pressure, and no survival need. Game 21 did so at 35 life.
+- Game 22 cast two Weather copies (Storm 0 then Storm 1) with no payoff or opposing pressure.
+- These casts only increased life in a blank-opponent environment. They violate the validated general
+  requirements not to maximize life automatically or spend Weather merely because it is executable.
+
+Therefore the entire fresh Sample #1 is **formally rejected**. None of its win clock, engine rates, or
+other aggregates are accepted as Pest Control baseline, matchup, optimization, or variant-comparison
+evidence. All 30 games are preserved intact in
+`docs/experiments/pest-control/goldfish-sample-1-fresh-rejected.{md,json}`; no affected game was removed,
+rerun, or replaced. No correction, replay, new vector, Sample #2, challenger construction, optimization,
+or opponent self-play is authorized by this finding.
+
+Descriptive rejected-run facts, retained for diagnosis only: 9/30 games mulliganed (11 total);
+meaningful deployment reached 6/14/27 games by T1/T2/T3; all 30 modeled terminals were combat lethal
+(median T7; 0/2/9/21 by T4/T5/T6/T7); 140 separate lifegain events gained 250 life; Researcher and
+Mascot recorded 60/60 and 77/77 trigger/counter totals; 27 Weather casts had exact Storm-copy counts
+(`0`: 12, `1`: 15); four Thrall deaths created four Scions; no Scion was sacrificed for mana; and the
+functional-state classifier reported 26 engine-functional and four fair-creature-functional games.
 
 ## Rejected Sample #1 disposition and correction scope
 

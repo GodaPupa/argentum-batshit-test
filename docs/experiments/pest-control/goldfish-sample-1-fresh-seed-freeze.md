@@ -17,7 +17,8 @@ changes are permitted.
 - Overlap audit: zero numeric matches after inspecting 27 fetched remote refs, 50,553
   seed-related lines/files, and 1,711 distinct available numeric seed values across Pest Control,
   Batshit/Affinity, Project X, development, regression, smoke, performance, and optimization material
-- Execution status: not started
+- Execution status: executed exactly once in frozen order from preflight head
+  `1ecb976cb41c369edf195681e4c9d80ddf7e894f`; formally rejected by manual audit
 
 The authoritative vector is
 `gym/src/test/resources/pest-control-v10-goldfish-sample-1-fresh-seeds.csv`.
@@ -26,3 +27,8 @@ This is development/engine goldfish evidence, not matchup evidence. A clear rule
 mana-provenance, mana-legality, terminal-reporting, Weather/Follow sequencing, payoff-accounting,
 Thrall/Scion lifecycle, Ent-decision, actionable-bottleneck, or solitaire-agent defect rejects the
 entire sample without removing affected games.
+
+The single execution completed all 30 games, but manual audit found strategically null Weather casts
+with no payoff or survival pressure. The complete vector is therefore rejected as performance/baseline
+evidence and remains frozen for investigation only. It must not be rerolled, optimized against, used
+for variant comparison, or silently repaired by removing games.
