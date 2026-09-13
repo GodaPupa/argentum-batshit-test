@@ -4877,6 +4877,79 @@
     ]
 }
 
+// Snuff Out
+{
+    "name": "Snuff Out",
+    "manaCost": "{3}{B}",
+    "typeLine": "Instant",
+    "oracleText": "If you control a Swamp, you may pay 4 life rather than pay this spell's mana cost.\nDestroy target nonblack creature. It can't be regenerated.",
+    "script": {
+        "spellEffect": {
+            "type": "Composite",
+            "effects": [
+                {
+                    "type": "CantBeRegenerated",
+                    "target": {
+                        "type": "BoundVariable",
+                        "name": "target nonblack creature"
+                    }
+                },
+                {
+                    "type": "MoveToZone",
+                    "target": {
+                        "type": "BoundVariable",
+                        "name": "target nonblack creature"
+                    },
+                    "destination": "Graveyard",
+                    "byDestruction": true
+                }
+            ]
+        },
+        "targetRequirements": [
+            {
+                "type": "TargetObject",
+                "filter": {
+                    "baseFilter": {
+                        "cardPredicates": [
+                            "IsCreature",
+                            {
+                                "type": "NotColor",
+                                "color": "BLACK"
+                            }
+                        ]
+                    }
+                },
+                "id": "target nonblack creature"
+            }
+        ],
+        "selfAlternativeCost": {
+            "manaCost": "{0}",
+            "additionalCosts": [
+                {
+                    "type": "AdditionalAtom",
+                    "atom": {
+                        "type": "AtomPayLife",
+                        "amount": 4
+                    }
+                }
+            ],
+            "condition": {
+                "type": "Exists",
+                "player": "You",
+                "zone": "Battlefield",
+                "filter": "land Swamp"
+            }
+        }
+    },
+    "metadata": {
+        "collectorNumber": "162",
+        "artist": "Mike Ploog"
+    },
+    "colorIdentityOverride": [
+        "BLACK"
+    ]
+}
+
 // Soothing Balm
 {
     "name": "Soothing Balm",

@@ -484,6 +484,74 @@
     ]
 }
 
+// Bone Shards
+{
+    "name": "Bone Shards",
+    "manaCost": "{B}",
+    "typeLine": "Sorcery",
+    "oracleText": "As an additional cost to cast this spell, sacrifice a creature or discard a card.\nDestroy target creature or planeswalker.",
+    "script": {
+        "spellEffect": {
+            "type": "Modal",
+            "modes": [
+                {
+                    "effect": {
+                        "type": "MoveToZone",
+                        "target": {
+                            "type": "ContextTarget",
+                            "index": 0
+                        },
+                        "destination": "Graveyard",
+                        "byDestruction": true
+                    },
+                    "targetRequirements": [
+                        "TargetCreatureOrPlaneswalker"
+                    ],
+                    "description": "Sacrifice a creature — destroy target creature or planeswalker",
+                    "additionalCosts": [
+                        {
+                            "type": "AdditionalAtom",
+                            "atom": {
+                                "type": "AtomSacrifice",
+                                "filter": "creature"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "effect": {
+                        "type": "MoveToZone",
+                        "target": {
+                            "type": "ContextTarget",
+                            "index": 0
+                        },
+                        "destination": "Graveyard",
+                        "byDestruction": true
+                    },
+                    "targetRequirements": [
+                        "TargetCreatureOrPlaneswalker"
+                    ],
+                    "description": "Discard a card — destroy target creature or planeswalker",
+                    "additionalCosts": [
+                        {
+                            "type": "AdditionalAtom",
+                            "atom": "AtomDiscard"
+                        }
+                    ]
+                }
+            ],
+            "countsAsModalSpell": false
+        }
+    },
+    "metadata": {
+        "collectorNumber": "76",
+        "artist": "Tommy Arnold"
+    },
+    "colorIdentityOverride": [
+        "BLACK"
+    ]
+}
+
 // Cabal Initiate
 {
     "name": "Cabal Initiate",

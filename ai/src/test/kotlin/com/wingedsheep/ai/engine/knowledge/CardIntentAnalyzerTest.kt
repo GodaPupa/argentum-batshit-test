@@ -40,6 +40,28 @@ class CardIntentAnalyzerTest : ScenarioTestBase() {
     )
 
     init {
+        test("a repeatable +1/+1-counter trigger advertises a lasting payoff") {
+            val intent = intentOf("Blood Researcher")
+            intent.tags shouldContain IntentTag.PUMP
+            intent.repeatable shouldBe true
+        }
+
+        test("a life-gain-enhanced selection spell exposes the conditional mode structurally") {
+            val intent = intentOf("Follow the Lumarets")
+            intent.tags shouldContain IntentTag.LIFEGAIN_ENHANCED
+            intent.tags shouldNotContain IntentTag.LAND_TUTOR
+        }
+
+        test("a basic-land tutor face is distinct from land typecycling") {
+            val sagu = cardRegistry.requireCard("Sagu Wildling")
+            val omen = CardIntentAnalyzer.analyzeFace(sagu, sagu.cardFaces.single())
+            omen.tags shouldContain IntentTag.LAND_TUTOR
+
+            val catalog = IntentCatalog.of(cardRegistry)
+            catalog.hasLandTypecycling("Generous Ent") shouldBe true
+            catalog.hasLandTypecycling("Sagu Wildling") shouldBe false
+        }
+
         test("a repeatable tapper reads as a repeatable tapper") {
             val intent = intentOf("Icy Manipulator")
             intent.tags shouldContain IntentTag.TAPPER

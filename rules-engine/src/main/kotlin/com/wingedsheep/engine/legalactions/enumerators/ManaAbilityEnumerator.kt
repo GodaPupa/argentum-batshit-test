@@ -154,6 +154,7 @@ class ManaAbilityEnumerator : ActionEnumerator {
                 var tapCost: CostAtom.TapPermanents? = null
                 var sacrificeTargets: List<EntityId>? = null
                 var sacrificeCost: CostAtom.Sacrifice? = null
+                var sacrificesSelf = false
                 var affordable = true
 
                 when (effectiveCost) {
@@ -162,6 +163,10 @@ class ManaAbilityEnumerator : ActionEnumerator {
                     }
                     is AbilityCost.TapAttachedCreature -> {
                         if (!context.costUtils.canPayTapAttachedCreatureCost(state, entityId)) affordable = false
+                    }
+                    is AbilityCost.SacrificeSelf -> {
+                        sacrificesSelf = true
+                        sacrificeTargets = listOf(entityId)
                     }
                     is AbilityCost.Atom -> when (val atom = effectiveCost.atom) {
                         is CostAtom.TapPermanents -> {
@@ -284,6 +289,7 @@ class ManaAbilityEnumerator : ActionEnumerator {
                                     }
                                 }
                                 is AbilityCost.SacrificeSelf -> {
+                                    sacrificesSelf = true
                                     sacrificeTargets = listOf(entityId)
                                 }
                                 is AbilityCost.TapAttachedCreature -> {
@@ -329,12 +335,13 @@ class ManaAbilityEnumerator : ActionEnumerator {
                         validTapTargets = tapTargets,
                         tapCount = tapCost.count
                     )
-                } else if (sacrificeTargets != null && sacrificeCost != null) {
+                } else if (sacrificeTargets != null && (sacrificeCost != null || sacrificesSelf)) {
                     AdditionalCostData(
-                        description = sacrificeCost.description.replaceFirstChar { it.uppercase() },
+                        description = sacrificeCost?.description?.replaceFirstChar { it.uppercase() }
+                            ?: AbilityCost.SacrificeSelf.description,
                         costType = "SacrificePermanent",
                         validSacrificeTargets = sacrificeTargets,
-                        sacrificeCount = sacrificeCost.count
+                        sacrificeCount = sacrificeCost?.count ?: 1,
                     )
                 } else null
 

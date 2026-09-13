@@ -1,7 +1,9 @@
 package com.wingedsheep.ai.engine.knowledge
 
 import com.wingedsheep.sdk.core.Keyword
+import com.wingedsheep.sdk.core.Counters
 import com.wingedsheep.sdk.core.Zone
+import com.wingedsheep.sdk.dsl.Conditions
 import com.wingedsheep.sdk.dsl.Triggers
 import com.wingedsheep.sdk.model.CardDefinition
 import com.wingedsheep.sdk.model.CardFace
@@ -11,6 +13,7 @@ import com.wingedsheep.sdk.scripting.CantAttack
 import com.wingedsheep.sdk.scripting.CantBlock
 import com.wingedsheep.sdk.scripting.Duration
 import com.wingedsheep.sdk.scripting.EventPattern
+import com.wingedsheep.sdk.scripting.GameObjectFilter
 import com.wingedsheep.sdk.scripting.EntersTapped
 import com.wingedsheep.sdk.scripting.GrantDynamicStatsEffect
 import com.wingedsheep.sdk.scripting.GrantKeyword
@@ -90,6 +93,10 @@ import java.util.concurrent.ConcurrentHashMap
  * hold for them to stay apart.
  */
 object CardIntentAnalyzer {
+
+    /** Structural tags for one effect tree, without changing whole-card intent analysis. */
+    internal fun effectTags(effect: Effect): Set<IntentTag> =
+        EffectWalker.leaves(effect).flatMap(::tagsOf).toSet()
 
     private val cardCache = ConcurrentHashMap<String, CardIntent>()
     private val selfCache = ConcurrentHashMap<String, CardIntent>()
@@ -294,6 +301,19 @@ object CardIntentAnalyzer {
             }
         }
 
+        // A permanent +1/+1 counter is the same strategic role as a lasting positive stat
+        // modification. Keeping this structural lets every grow-on-event creature advertise its
+        // payoff without teaching the strategist any card names.
+        is AddCountersEffect ->
+            if (effect.counterType == Counters.PLUS_ONE_PLUS_ONE && effect.count > 0) {
+                setOf(IntentTag.PUMP)
+            } else {
+                emptySet()
+            }
+
+        is AddDynamicCountersEffect ->
+            if (effect.counterType == Counters.PLUS_ONE_PLUS_ONE) setOf(IntentTag.PUMP) else emptySet()
+
         is TapUntapEffect -> if (effect.tap) setOf(IntentTag.TAPPER) else emptySet()
         is TapUntapCollectionEffect -> if (effect.tap) setOf(IntentTag.TAPPER) else emptySet()
 
@@ -322,9 +342,26 @@ object CardIntentAnalyzer {
         is GrantKeywordEffect -> keywordTags(effect.keyword)
         is GrantEvasionKeywordEffect -> setOf(IntentTag.EVASION_GRANT)
 
-        is GatherCardsEffect ->
-            if ((effect.source as? CardSource.FromZone)?.zone == Zone.LIBRARY) setOf(IntentTag.TUTOR)
-            else emptySet()
+        is GatherCardsEffect -> {
+            val source = effect.source as? CardSource.FromZone
+            if (source?.zone != Zone.LIBRARY) {
+                emptySet()
+            } else if (source.filter == GameObjectFilter.BasicLand) {
+                setOf(IntentTag.TUTOR, IntentTag.LAND_TUTOR)
+            } else {
+                setOf(IntentTag.TUTOR)
+            }
+        }
+
+        is SelectFromCollectionEffect -> {
+            val count = (effect.selection as? SelectionMode.ChooseUpTo)?.count
+            val condition = (count as? DynamicAmount.Conditional)?.condition
+            if (condition == Conditions.YouGainedLifeThisTurn) {
+                setOf(IntentTag.LIFEGAIN_ENHANCED)
+            } else {
+                emptySet()
+            }
+        }
 
         is EachPlayerDiscardsOrLoseLifeEffect -> setOf(IntentTag.DISCARD)
         is ReturnSameNamedFromGraveyardEffect -> setOf(IntentTag.RECURSION)

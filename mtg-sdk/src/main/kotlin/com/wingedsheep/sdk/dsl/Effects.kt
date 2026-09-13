@@ -2812,6 +2812,16 @@ object Effects {
         CreatePredefinedTokenEffect("Eldrazi Spawn", count, controller, imageUri = imageUri)
 
     /**
+     * Create 1/1 colorless Eldrazi Scion creature tokens.
+     * "Sacrifice this creature: Add {C}."
+     *
+     * @param count Number of tokens to create
+     * @param controller Who controls the tokens (null = effect controller)
+     */
+    fun CreateEldraziScion(count: Int = 1, controller: EffectTarget? = null, imageUri: String? = null): Effect =
+        CreatePredefinedTokenEffect("Eldrazi Scion", count, controller, imageUri = imageUri)
+
+    /**
      * Create N 1/1 black and green Pest creature tokens with "When this creature dies, you gain 1
      * life." — Strixhaven's Witherbloom token (`PredefinedTokens.Pest`).
      *
@@ -2831,6 +2841,21 @@ object Effects {
         imageUri: String? = null
     ): Effect = CreatePredefinedTokenEffect(
         tokenType = "Eldrazi Spawn",
+        controller = controller,
+        dynamicCount = count,
+        imageUri = imageUri
+    )
+
+    /**
+     * Create a dynamic number of 1/1 colorless Eldrazi Scion creature tokens.
+     * The count is evaluated at resolution time.
+     */
+    fun CreateEldraziScion(
+        count: DynamicAmount,
+        controller: EffectTarget? = null,
+        imageUri: String? = null
+    ): Effect = CreatePredefinedTokenEffect(
+        tokenType = "Eldrazi Scion",
         controller = controller,
         dynamicCount = count,
         imageUri = imageUri

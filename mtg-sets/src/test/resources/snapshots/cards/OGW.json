@@ -411,6 +411,53 @@
     ]
 }
 
+// Pulse of Murasa
+{
+    "name": "Pulse of Murasa",
+    "manaCost": "{2}{G}",
+    "typeLine": "Instant",
+    "oracleText": "Return target creature or land card from a graveyard to its owner's hand. You gain 6 life.",
+    "script": {
+        "spellEffect": {
+            "type": "Composite",
+            "effects": [
+                {
+                    "type": "MoveToZone",
+                    "target": {
+                        "type": "BoundVariable",
+                        "name": "target creature or land card in a graveyard"
+                    },
+                    "destination": "Hand"
+                },
+                {
+                    "type": "GainLife",
+                    "amount": {
+                        "type": "Fixed",
+                        "amount": 6
+                    }
+                }
+            ]
+        },
+        "targetRequirements": [
+            {
+                "type": "TargetObject",
+                "filter": {
+                    "baseFilter": "creature|land",
+                    "zone": "Graveyard"
+                },
+                "id": "target creature or land card in a graveyard"
+            }
+        ]
+    },
+    "metadata": {
+        "collectorNumber": "141",
+        "artist": "Matt Stewart"
+    },
+    "colorIdentityOverride": [
+        "GREEN"
+    ]
+}
+
 // Sphinx of the Final Word
 {
     "name": "Sphinx of the Final Word",

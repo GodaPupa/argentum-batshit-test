@@ -10,6 +10,7 @@ import com.wingedsheep.ai.engine.evaluation.BoardPresence
 import com.wingedsheep.ai.engine.evaluation.EvaluationWeights
 import com.wingedsheep.ai.engine.knowledge.HoldPolicy
 import com.wingedsheep.ai.engine.knowledge.IntentCatalog
+import com.wingedsheep.ai.engine.knowledge.IntentTag
 import com.wingedsheep.ai.engine.knowledge.TimingVerdict
 import com.wingedsheep.ai.engine.rollout.CandidateEvaluator
 import com.wingedsheep.ai.engine.rollout.PlayoutPolicy
@@ -25,13 +26,16 @@ import com.wingedsheep.ai.insight.CombatPlanTrace
 import com.wingedsheep.engine.core.ActivateAbility
 import com.wingedsheep.engine.core.AlternativeCostType
 import com.wingedsheep.engine.core.CastSpell
+import com.wingedsheep.engine.core.CycleCard
 import com.wingedsheep.engine.core.DeclareAttackers
 import com.wingedsheep.engine.core.DeclareBlockers
 import com.wingedsheep.engine.core.GameAction
+import com.wingedsheep.engine.core.TypecycleCard
 import com.wingedsheep.engine.legalactions.LegalAction
 import com.wingedsheep.engine.legalactions.MeaningfulActionFilter
 import com.wingedsheep.engine.state.GameState
 import com.wingedsheep.engine.state.components.identity.CardComponent
+import com.wingedsheep.engine.state.components.player.LifeGainedThisTurnComponent
 import com.wingedsheep.engine.state.components.stack.AbilityOnStackComponent
 import com.wingedsheep.engine.state.components.stack.ActivatedAbilityOnStackComponent
 import com.wingedsheep.engine.state.components.stack.ChosenTarget
@@ -287,7 +291,18 @@ class Strategist(
         // ── Pass 3: per-card timing and advisor adjustments, in raw evaluator units ──
         val firstCandidate = if (pass != null) 1 else 0
         val adjusted = (firstCandidate until leaves.size).map { i ->
-            Triple(leaves[i], leafScores[i], adjustScore(evaluationState, leaves[i], playerId, leafScores[i], passScore))
+            Triple(
+                leaves[i],
+                leafScores[i],
+                adjustScore(
+                    evaluationState,
+                    leafStates[i],
+                    leaves[i],
+                    playerId,
+                    leafScores[i],
+                    passScore,
+                ),
+            )
         }
         val scored = adjusted.map { (action, _, adjustment) -> action to adjustment.score }
 
@@ -487,9 +502,15 @@ class Strategist(
      */
     private fun candidatesFrom(legalActions: List<LegalAction>): List<LegalAction> =
         if (useMeaningfulFilter) {
-            MeaningfulActionFilter.filterMeaningful(legalActions).filter { it.affordable && !it.isManaAbility }
+            // The meaningful filter already removes ordinary mana abilities while retaining a
+            // sacrifice-for-mana action whose irreversible cost makes it a strategic choice.
+            MeaningfulActionFilter.filterMeaningful(legalActions).filter { it.affordable }
         } else {
-            legalActions.filter { it.affordable && !it.isManaAbility && it.actionType != "PassPriority" }
+            legalActions.filter {
+                it.affordable &&
+                    (!it.isManaAbility || it.additionalCostInfo?.costType == "SacrificePermanent") &&
+                    it.actionType != "PassPriority"
+            }
         }
 
     private fun handleCombatDeclaration(
@@ -619,6 +640,7 @@ class Strategist(
      */
     private fun adjustScore(
         state: GameState,
+        leafState: GameState,
         action: LegalAction,
         playerId: EntityId,
         leafScore: Double,
@@ -654,6 +676,23 @@ class Strategist(
                 "land-sacrifice policy: low-value conversion — floored below passing",
             )
         }
+        if (shouldHoldNullForcedSacrifice(state, leafState, action.action, playerId, cardName)) {
+            // An edict without a sacrifice is legal, but a pure one has bought no strategic
+            // result. Keep legality in the engine and value the result here, below passing.
+            return AdjustedScore(
+                passScore - 1.0,
+                "forced-sacrifice policy: no opposing permanent was sacrificed — floored below passing",
+            )
+        }
+        if (isSacrificeManaAction(action) && unlockedProductiveCastIds(state, leafState, playerId).isEmpty()) {
+            // Sacrificing a permanent is an irreversible strategic cost, even when the ability is
+            // a mana ability. Require an immediate, newly executable productive use rather than
+            // consuming the body merely because mana can be generated.
+            return AdjustedScore(
+                passScore - 1.0,
+                "sacrifice-mana policy: no productive use unlocked — floored below passing",
+            )
+        }
         val timingDelta = (timing as? TimingVerdict.Adjust)?.delta ?: 0.0
         val timingReason = (timing as? TimingVerdict.Adjust)?.reason ?: "timing"
         val timingNote =
@@ -665,10 +704,16 @@ class Strategist(
         // Check for card-specific advisor override. Timing is applied outside it, so a per-card
         // advisor still sees the pure board score as its `defaultScore` and a card with both
         // keeps both.
+        val sequencing = strategicSequencingAdjustment(
+            state, leafState, action, playerId, leafScore, passScore,
+        )
+        val sequencingNote = sequencing.takeIf { it != 0.0 }
+            ?.let { "structural sequencing %+.2f".format(it) }
+
         val advisor = advisorRegistry.getAdvisor(cardName)
             ?: return AdjustedScore(
-                leafScore + timingDelta + sacrificeWindowDelta,
-                listOfNotNull(timingNote, sacrificeWindowNote)
+                leafScore + timingDelta + sacrificeWindowDelta + sequencing,
+                listOfNotNull(timingNote, sacrificeWindowNote, sequencingNote)
                     .joinToString("; ").ifEmpty { null },
             )
         val context = CastContext(
@@ -684,11 +729,225 @@ class Strategist(
         val override = advisor.evaluateCast(context)
         val advisorNote = override?.let { "${advisor::class.simpleName} replaced the board score" }
         return AdjustedScore(
-            (override ?: leafScore) + timingDelta + sacrificeWindowDelta,
-            listOfNotNull(advisorNote, timingNote, sacrificeWindowNote)
+            (override ?: leafScore) + timingDelta + sacrificeWindowDelta + sequencing,
+            listOfNotNull(advisorNote, timingNote, sacrificeWindowNote, sequencingNote)
                 .joinToString("; ").ifEmpty { null },
         )
     }
+
+    /**
+     * A pure forced-sacrifice spell is strategically null when its targeted opponent's
+     * battlefield is unchanged after full simulation. The test is intentionally about the
+     * resolved result, not whether casting was legal: player-targeted edicts remain executable,
+     * while the agent declines to spend one into an empty or otherwise non-sacrificing board.
+     *
+     * Strictly pure spells only. [IntentCatalog.isPureForcedSacrificeSpell] declines when any
+     * additional effect exists, preserving casts whose draw/drain/token rider is useful even when
+     * the sacrifice portion does nothing.
+     */
+    private fun shouldHoldNullForcedSacrifice(
+        state: GameState,
+        leafState: GameState,
+        action: GameAction,
+        playerId: EntityId,
+        cardName: String,
+    ): Boolean {
+        val cast = action as? CastSpell ?: return false
+        if (!intents.isPureForcedSacrificeSpell(cardName, cast.faceIndex)) return false
+
+        val explicitOpponents = cast.targets.filterIsInstance<ChosenTarget.Player>()
+            .map(ChosenTarget.Player::playerId)
+            .filter { state.isOpponentTo(it, playerId) }
+            .toSet()
+        // Some internal planning leaves player selection implicit. A pure forced-sacrifice spell
+        // still has no useful result when every opponent's battlefield is unchanged.
+        val affectedOpponents = explicitOpponents.ifEmpty {
+            state.turnOrder.filter { state.isOpponentTo(it, playerId) }.toSet()
+        }
+        if (affectedOpponents.isEmpty()) return false
+
+        return affectedOpponents.all { opponentId ->
+            state.controlledBattlefield(opponentId).toSet() ==
+                leafState.controlledBattlefield(opponentId).toSet()
+        }
+    }
+
+    private fun isSacrificeManaAction(action: LegalAction): Boolean =
+        action.isManaAbility && action.additionalCostInfo?.costType == "SacrificePermanent"
+
+    /** Casts made newly executable by the leaf, excluding legal-but-strategically-null effects. */
+    private fun unlockedProductiveCastIds(
+        state: GameState,
+        leafState: GameState,
+        playerId: EntityId,
+    ): Set<EntityId> {
+        fun executable(position: GameState): Set<EntityId> {
+            val baseline = evaluator.evaluate(position, position.projectedState, playerId)
+            return simulator.getLegalActions(position, playerId).asSequence()
+                .filter { it.affordable && it.action is CastSpell }
+                .mapNotNull { next ->
+                    val cast = next.action as CastSpell
+                    val filled = heuristicTargets(position, next, playerId)
+                    val result = simulator.simulate(position, filled)
+                    if (result is SimulationResult.Illegal || result is SimulationResult.StoppedAtLimit) {
+                        return@mapNotNull null
+                    }
+                    // Executability alone is not a plan. If the resolved leaf is no better than
+                    // retaining priority, the generated mana has no concrete productive consumer.
+                    if (evaluator.evaluate(result.state, result.state.projectedState, playerId) <= baseline) {
+                        return@mapNotNull null
+                    }
+                    val cardName = resolveCardName(position, next) ?: return@mapNotNull cast.cardId
+                    cast.cardId.takeUnless {
+                        shouldHoldNullForcedSacrifice(position, result.state, filled, playerId, cardName)
+                    }
+                }
+                .toSet()
+        }
+
+        return executable(leafState) - executable(state)
+    }
+
+    /**
+     * Small, structural option-value terms for actions whose payoff sits one priority decision
+     * beyond the ordinary leaf. The normal evaluator still decides whether the action itself is
+     * useful; these terms only break blind one-ply ties that the next legal-action set can prove.
+     *
+     * No card names are involved:
+     *
+     *  * a repeatable life-gain permanent is worth establishing before another creature when a
+     *    visible repeatable counter/drain payoff is already in play;
+     *  * a useful spell is worth sequencing before a still-affordable Storm spell;
+     *  * a sacrifice mana ability is worth using when it unlocks a spell that was not affordable;
+     *  * turning a spell into a land in hand has bounded early-game mana-development value.
+     */
+    private fun strategicSequencingAdjustment(
+        state: GameState,
+        leafState: GameState,
+        action: LegalAction,
+        playerId: EntityId,
+        leafScore: Double,
+        passScore: Double,
+    ): Double {
+        var delta = 0.0
+        val cast = action.action as? CastSpell
+        val cardName = resolveCardName(state, action)
+        val intent = cardName?.let(intents::forName)
+
+        if (cast != null && intent != null && intent.repeatable && IntentTag.LIFEGAIN in intent.tags) {
+            val hasCreatureFollowUp = leafState.getHand(playerId).any { id ->
+                leafState.getEntity(id)?.get<CardComponent>()?.isCreature == true
+            }
+            val hasVisiblePayoff = state.controlledBattlefield(playerId).any { id ->
+                val permanent = state.getEntity(id) ?: return@any false
+                val name = permanent.get<CardComponent>()?.name ?: return@any false
+                intents.forPermanent(permanent, name).any { payoff ->
+                    payoff.repeatable &&
+                        (IntentTag.PUMP in payoff.tags || (payoff.opponentDamage ?: 0) > 0)
+                }
+            }
+            if (hasCreatureFollowUp && hasVisiblePayoff) delta += TRIGGER_ENGINE_SETUP_VALUE
+        }
+
+        if (cast != null && leafScore > passScore) {
+            val stormFollowUp = simulator.getLegalActions(leafState, playerId).any { next ->
+                if (!next.affordable) return@any false
+                val nextCast = next.action as? CastSpell ?: return@any false
+                leafState.getEntity(nextCast.cardId)?.get<CardComponent>()
+                    ?.baseKeywords?.contains(com.wingedsheep.sdk.core.Keyword.STORM) == true
+            }
+            if (stormFollowUp) {
+                val payoffCount = visibleRepeatablePayoffCount(state, playerId)
+                delta += STORM_SETUP_VALUE + payoffCount * STORM_PAYOFF_EVENT_VALUE
+            }
+        }
+
+        // Alternative costs trade one resource for tempo. Reward that tempo only when the leaf
+        // proves the preserved mana immediately enables a meaningful spell; the normal evaluator
+        // still prices the life/card/permanent paid, so an idle "free" cast gets no encouragement.
+        if (cast?.alternativeCostType == AlternativeCostType.SELF_ALTERNATIVE) {
+            val bestFollowUpManaValue = simulator.getLegalActions(leafState, playerId)
+                .asSequence()
+                .filter { it.affordable && it.action is CastSpell }
+                .mapNotNull { next ->
+                    val nextCast = next.action as CastSpell
+                    leafState.getEntity(nextCast.cardId)?.get<CardComponent>()?.manaValue
+                }
+                .maxOrNull()
+            if (bestFollowUpManaValue != null) {
+                delta += (bestFollowUpManaValue * ALTERNATIVE_COST_TEMPO_PER_MANA)
+                    .coerceAtMost(ALTERNATIVE_COST_TEMPO_CAP)
+            }
+        }
+
+        if (isSacrificeManaAction(action)) {
+            if (unlockedProductiveCastIds(state, leafState, playerId).isNotEmpty()) {
+                delta += SACRIFICE_MANA_UNLOCK_VALUE
+            }
+        }
+
+        val landsBefore = state.getHand(playerId).count { id ->
+            state.getEntity(id)?.get<CardComponent>()?.isLand == true
+        }
+        val landsAfter = leafState.getHand(playerId).count { id ->
+            leafState.getEntity(id)?.get<CardComponent>()?.isLand == true
+        }
+        val landsInPlay = state.projectedState.getBattlefieldControlledBy(playerId)
+            .count { state.projectedState.hasType(it, "LAND") }
+        if (landsAfter > landsBefore) {
+            delta += when {
+                landsInPlay <= 2 -> EARLY_LAND_DEVELOPMENT_VALUE
+                landsInPlay <= 4 -> MIDGAME_LAND_DEVELOPMENT_VALUE
+                else -> 0.0
+            }
+        }
+
+        // A typecycle is a typed tutor even when the simulation's optional search has not yet
+        // exposed the selected card at this scoring boundary. At an actual land shortage the
+        // common land-type cycle has immediate option value; late game receives none.
+        if (action.action is TypecycleCard && cardName != null &&
+            intents.hasLandTypecycling(cardName) && landsInPlay <= 2 && landsBefore == 0
+        ) {
+            delta += EARLY_LAND_DEVELOPMENT_VALUE
+        }
+
+        // Omen/Adventure/split faces are read independently from the permanent face. A cheap tutor
+        // face is a distinct mana-development option in an early shortage, without borrowing the
+        // typecycling assumption or teaching the policy a card name.
+        val faceIntent = cast?.faceIndex?.let { index ->
+            cardName?.let { name -> intents.forFaceIndex(name, index) }
+        }
+        if (faceIntent != null && IntentTag.LAND_TUTOR in faceIntent.tags &&
+            landsInPlay <= 2 && landsBefore == 0
+        ) {
+            delta += EARLY_LAND_DEVELOPMENT_VALUE
+        }
+
+        if (cast != null && intent != null && IntentTag.LIFEGAIN_ENHANCED in intent.tags &&
+            state.getEntity(playerId)?.has<LifeGainedThisTurnComponent>() == true
+        ) {
+            delta += LIFEGAIN_ENHANCED_VALUE
+        }
+
+        // A tutor that replaces itself is neutral card flow; one that resolves into more than one
+        // card has real immediate card-advantage value that a pass rollout can otherwise defer.
+        if (cast != null && intent != null && IntentTag.TUTOR in intent.tags) {
+            val cardsRecovered = leafState.getHand(playerId).size - state.getHand(playerId).size + 1
+            if (cardsRecovered > 1) delta += (cardsRecovered - 1) * TUTOR_CARD_ADVANTAGE_VALUE
+        }
+
+        return delta
+    }
+
+    private fun visibleRepeatablePayoffCount(state: GameState, playerId: EntityId): Int =
+        state.controlledBattlefield(playerId).count { id ->
+            val permanent = state.getEntity(id) ?: return@count false
+            val name = permanent.get<CardComponent>()?.name ?: return@count false
+            intents.forPermanent(permanent, name).any { payoff ->
+                payoff.repeatable &&
+                    (IntentTag.PUMP in payoff.tags || (payoff.opponentDamage ?: 0) > 0)
+            }
+        }
 
     /**
      * Price the irreversible land loss of graveyard/self alternative costs. The ordinary board
@@ -1346,6 +1605,8 @@ class Strategist(
         val entityId = when (val gameAction = action.action) {
             is CastSpell -> gameAction.cardId
             is ActivateAbility -> gameAction.sourceId
+            is CycleCard -> gameAction.cardId
+            is TypecycleCard -> gameAction.cardId
             else -> return null
         }
         return state.getEntity(entityId)?.get<CardComponent>()?.name
@@ -1364,6 +1625,36 @@ class Strategist(
 
         /** Payment choices inspected for a one-card discard/sacrifice cost. */
         const val AUTOMATIC_PAYMENT_CANDIDATES = 8
+
+        /** Establishing a visible event engine before its next creature enters. */
+        const val TRIGGER_ENGINE_SETUP_VALUE = 4.0
+
+        /** One useful spell now buys one additional Storm copy on the proven follow-up. */
+        const val STORM_SETUP_VALUE = 2.0
+
+        /** Extra value of each visible repeatable payoff receiving the additional Storm event. */
+        const val STORM_PAYOFF_EVENT_VALUE = 2.0
+
+        /** Option value of a sacrifice mana action that makes a previously unavailable spell legal. */
+        const val SACRIFICE_MANA_UNLOCK_VALUE = 3.0
+
+        /** Bounded value of converting a hand card into a needed early land. */
+        const val EARLY_LAND_DEVELOPMENT_VALUE = 5.0
+
+        /** The same conversion after the early shortage, where another land is less urgent. */
+        const val MIDGAME_LAND_DEVELOPMENT_VALUE = 0.75
+
+        /** One extra card beyond replacing the tutor itself. */
+        const val TUTOR_CARD_ADVANTAGE_VALUE = 1.0
+
+        /** Immediate option value of a structurally explicit life-gained-this-turn enhancement. */
+        const val LIFEGAIN_ENHANCED_VALUE = 1.0
+
+        /** Tempo value per mana of a spell enabled by paying a non-mana alternative cost. */
+        const val ALTERNATIVE_COST_TEMPO_PER_MANA = 0.85
+
+        /** Keeps preserved-mana option value bounded even for unusually expensive follow-ups. */
+        const val ALTERNATIVE_COST_TEMPO_CAP = 5.5
 
         /** Value recovered by cashing in a permanent an opposing stack object already targets. */
         const val TARGETED_SACRIFICE_WINDOW = 2.0
