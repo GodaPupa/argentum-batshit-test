@@ -8,6 +8,7 @@ import io.kotest.assertions.withClue
 import io.kotest.matchers.collections.shouldContain
 import io.kotest.matchers.collections.shouldNotBeEmpty
 import io.kotest.matchers.booleans.shouldBeTrue
+import io.kotest.matchers.booleans.shouldBeFalse
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
 import io.kotest.matchers.doubles.shouldBePositive
@@ -318,6 +319,98 @@ class PestControlTelemetryRegressionTest : ScenarioTestBase() {
                 setup.additionalCostMode shouldBe setup.additionalCosts.single().kind
                 setup.additionalCosts.single().entities.shouldNotBeEmpty()
                 setup.resourcesAfter shouldNotBe null
+            }
+        }
+
+        test("production hold gates exclude below-margin friendly removal from superior setup") {
+            val game = scenario().withPlayers()
+                .withLandsOnBattlefield(1, "Forest", 2)
+                .withLandsOnBattlefield(1, "Swamp", 2)
+                .withCardInHand(1, "Cast Down")
+                .withCardInHand(1, "Weather the Storm")
+                .withCardOnBattlefield(1, "Carrier Thrall")
+                .build()
+            val weather = game.findCardsInHand(1, "Weather the Storm").single()
+
+            val snapshot = PreSpellSetupTelemetry(cardRegistry)
+                .observe(game.state, game.player1Id, weather)
+            val audits = snapshot.evaluatedSequences.filter { it.relevantAction == "Cast Down" }
+
+            withClue(snapshot) {
+                audits.shouldNotBeEmpty()
+                audits.all { !it.productionAdmissible && !it.materiallySuperior }.shouldBeTrue()
+                audits.all { it.productionRejectionOrHoldReason?.contains("removal policy") == true }
+                    .shouldBeTrue()
+            }
+        }
+
+        test("null forced sacrifice is serialized as production-inadmissible setup") {
+            val game = scenario().withPlayers()
+                .withLandsOnBattlefield(1, "Forest", 2)
+                .withLandsOnBattlefield(1, "Swamp", 2)
+                .withCardInHand(1, "Chainer's Edict")
+                .withCardInHand(1, "Weather the Storm")
+                .build()
+            val weather = game.findCardsInHand(1, "Weather the Storm").single()
+
+            val snapshot = PreSpellSetupTelemetry(cardRegistry)
+                .observe(game.state, game.player1Id, weather)
+            val audit = snapshot.evaluatedSequences.single { it.relevantAction == "Chainer's Edict" }
+
+            audit.productionAdmissible.shouldBeFalse()
+            audit.materiallySuperior.shouldBeFalse()
+            audit.productionRejectionOrHoldReason shouldContain "no opposing permanent was sacrificed"
+        }
+
+        test("productive opposing removal remains production-admissible setup") {
+            val game = scenario().withPlayers()
+                .withLandsOnBattlefield(1, "Forest", 2)
+                .withLandsOnBattlefield(1, "Swamp", 2)
+                .withCardInHand(1, "Cast Down")
+                .withCardInHand(1, "Weather the Storm")
+                .withCardOnBattlefield(2, "Hill Giant")
+                .build()
+            val weather = game.findCardsInHand(1, "Weather the Storm").single()
+
+            val snapshot = PreSpellSetupTelemetry(cardRegistry)
+                .observe(game.state, game.player1Id, weather)
+            val audits = snapshot.evaluatedSequences.filter { it.relevantAction == "Cast Down" }
+
+            withClue(snapshot) {
+                audits.shouldNotBeEmpty()
+                audits.any { it.productionAdmissible }.shouldBeTrue()
+            }
+        }
+
+        test("Weather into enhanced Follow is compared over the complete production-adjusted horizon") {
+            val game = scenario().withPlayers()
+                .withLandsOnBattlefield(1, "Forest", 3)
+                .withLandsOnBattlefield(1, "Swamp", 2)
+                .withCardInHand(1, "Follow the Lumarets")
+                .withCardInHand(1, "Weather the Storm")
+                .withCardInLibrary(1, "Forest")
+                .withCardInLibrary(1, "Swamp")
+                .withCardInLibrary(1, "Blood Researcher")
+                .withCardInLibrary(1, "Pest Mascot")
+                .build()
+            val weather = game.findCardsInHand(1, "Weather the Storm").single()
+
+            val snapshot = PreSpellSetupTelemetry(cardRegistry)
+                .observe(game.state, game.player1Id, weather)
+            val audit = snapshot.evaluatedSequences.single { it.relevantAction == "Follow the Lumarets" }
+
+            withClue(audit) {
+                audit.productionAdmissible.shouldBeFalse()
+                audit.productionRejectionOrHoldReason shouldContain "expiring-condition line"
+                audit.materiallySuperior.shouldBeFalse()
+                audit.completeSetupContinuation shouldBe listOf(
+                    "cast Follow the Lumarets", "cast Weather the Storm",
+                )
+                audit.comparisonLineEvaluated shouldBe listOf(
+                    "cast Weather the Storm", "cast Follow the Lumarets",
+                )
+                audit.continuationHorizon shouldBe 2
+                audit.completeComparedContinuation shouldBe audit.comparisonLineEvaluated
             }
         }
 

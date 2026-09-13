@@ -862,6 +862,30 @@ internal fun pestAuditCompletenessErrors(game: PestGoldfishGame): List<String> =
             if (evaluation.steps.isEmpty()) fail(evaluationSubject, "structured action steps are absent")
             if (evaluation.reason.isBlank()) fail(evaluationSubject, "classification reason is absent")
             if (!stillUnexecutable) {
+                if (!evaluation.productionAdmissible && evaluation.productionRejectionOrHoldReason.isNullOrBlank()) {
+                    fail(evaluationSubject, "production rejection/hold reason is absent")
+                }
+                if (evaluation.productionAdmissible && evaluation.productionRejectionOrHoldReason != null) {
+                    fail(evaluationSubject, "production-admissible action carries a rejection/hold reason")
+                }
+                if (evaluation.staticBoardValue?.isFinite() != true) {
+                    fail(evaluationSubject, "production static-board value is absent")
+                }
+                if (!evaluation.strategicSequencingAdjustment.isFinite()) {
+                    fail(evaluationSubject, "production sequencing adjustment is absent")
+                }
+                if (evaluation.adjustedValue?.isFinite() != true) {
+                    fail(evaluationSubject, "production adjusted value is absent")
+                }
+                if (evaluation.passValue?.isFinite() != true) {
+                    fail(evaluationSubject, "production pass value is absent")
+                }
+                if (evaluation.continuationHorizon <= 0) {
+                    fail(evaluationSubject, "complete continuation horizon is absent")
+                }
+                if (evaluation.completeComparedContinuation != evaluation.comparisonLineEvaluated) {
+                    fail(evaluationSubject, "complete compared continuation disagrees with comparison line")
+                }
                 if (evaluation.completedLineScore?.isFinite() != true) fail(evaluationSubject, "completed-line score is absent")
                 if (evaluation.reorderedLineScore?.isFinite() != true) fail(evaluationSubject, "actual/reordered-line score is absent")
                 if (evaluation.additionalImmediatePayoffValue?.isFinite() != true) {
@@ -887,6 +911,21 @@ internal fun pestAuditCompletenessErrors(game: PestGoldfishGame): List<String> =
                 validateResources("$stepSubject before", step.resourcesBefore)
                 step.resourcesAfter?.let { validateResources("$stepSubject after", it) }
                 if (step.action.startsWith("cast ")) {
+                    val identity = step.semanticActionIdentity
+                    if (!stillUnexecutable && identity == null) {
+                        fail(stepSubject, "semantic action identity is absent")
+                    }
+                    if (identity != null) {
+                        if (identity.actionType.isBlank() || identity.cardDefinitionId.isBlank()) {
+                            fail(stepSubject, "semantic action identity is incomplete")
+                        }
+                        if (identity.targets != step.targets) {
+                            fail(stepSubject, "semantic target identity disagrees with concrete targets")
+                        }
+                        if (identity.additionalCostMode != step.additionalCostMode) {
+                            fail(stepSubject, "semantic additional-cost identity disagrees with payment")
+                        }
+                    }
                     if (step.manaCost.isNullOrBlank()) fail(stepSubject, "mana cost is absent")
                     if (step.coloredRequirements.isNullOrBlank()) fail(stepSubject, "colored requirements are absent")
                     val payable = step.paymentSources.isNotEmpty() || step.resourcesBefore.floatingMana.values.sum() > 0

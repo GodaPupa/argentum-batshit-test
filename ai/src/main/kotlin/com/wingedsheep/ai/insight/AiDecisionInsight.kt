@@ -82,6 +82,14 @@ data class AiActionOption(
     val baseline: Boolean = false,
     /** Why an option was dropped, or what adjusted its score. */
     val note: String? = null,
+    /** Whether the concrete option survived production's strategic hold floors. */
+    val productionAdmissible: Boolean = true,
+    /** Exact production hold/floor reason when [productionAdmissible] is false. */
+    val productionRejectionReason: String? = null,
+    /** Structural sequencing term production applied on top of the candidate leaf. */
+    val strategicSequencingAdjustment: Double = 0.0,
+    /** Portion specifically pricing an immediately committed expiring-condition follow-up. */
+    val expiringConditionSequencingAdjustment: Double = 0.0,
     /** Complete policy-side accounting when this option removes a friendly permanent. */
     val friendlyRemovalAudit: FriendlyRemovalAudit? = null,
     /**

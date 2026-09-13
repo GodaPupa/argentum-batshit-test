@@ -12,6 +12,7 @@ import com.wingedsheep.gym.telemetry.SetupAdditionalCostAudit
 import com.wingedsheep.gym.telemetry.SetupEntityAudit
 import com.wingedsheep.gym.telemetry.SetupManaSource
 import com.wingedsheep.gym.telemetry.SetupResourceState
+import com.wingedsheep.gym.telemetry.SetupSemanticActionIdentity
 import com.wingedsheep.sdk.model.EntityId
 import io.kotest.assertions.withClue
 import io.kotest.matchers.booleans.shouldBeTrue
@@ -83,6 +84,9 @@ class PestControlArtifactContractTest : ScenarioTestBase() {
                     "activePayoffsBeforeDeployment", "activePayoffsAfterDeployment",
                     "additionalImmediatePayoffValue", "setupFirstResourcesAfter",
                     "focalFirstResourcesAfter", "completeResourcesEquivalent",
+                    "productionAdmissible", "productionRejectionOrHoldReason",
+                    "staticBoardValue", "strategicSequencingAdjustment", "adjustedValue",
+                    "passValue", "continuationHorizon", "completeComparedContinuation",
                 )
             }
             val payoffSequence = serializedEvaluations.single {
@@ -95,11 +99,30 @@ class PestControlArtifactContractTest : ScenarioTestBase() {
                 listOf("cast Weather the Storm", "play Swamp", "cast Blood Researcher")
             payoffSequence["additionalImmediatePayoffValue"].toString() shouldBe "1.0"
             payoffSequence["completeResourcesEquivalent"].toString() shouldBe "true"
+            payoffSequence["productionAdmissible"].toString() shouldBe "true"
+            payoffSequence["productionRejectionOrHoldReason"].toString() shouldBe "null"
+            payoffSequence["strategicSequencingAdjustment"].toString() shouldBe "0.0"
+            payoffSequence["continuationHorizon"].toString() shouldBe "2"
+            payoffSequence["completeComparedContinuation"] shouldBe payoffSequence["comparisonLineEvaluated"]
             val boneStep = serializedEvaluations.flatMap { it["steps"]!!.jsonArray.map { step -> step.jsonObject } }
                 .single { it["action"].toString() == "\"cast Bone Shards\"" }
+            val boneEvaluation = serializedEvaluations.single {
+                it["relevantAction"].toString() == "\"Bone Shards\""
+            }
+            boneEvaluation["productionAdmissible"].toString() shouldBe "false"
+            boneEvaluation["productionRejectionOrHoldReason"].toString() shouldBe
+                "\"removal policy: synthetic below-margin friendly target\""
             boneStep["targetDetails"]!!.jsonArray.single().jsonObject["name"].toString() shouldBe "\"Blood Artist\""
             boneStep["additionalCosts"]!!.jsonArray.single().jsonObject["entities"]!!.jsonArray
                 .single().jsonObject["name"].toString() shouldBe "\"Carrier Thrall\""
+            boneStep["semanticActionIdentity"]!!.jsonObject.keys.shouldContainAll(
+                "actionType", "cardDefinitionId", "castFaceIndex", "sourceZone", "controllerId",
+                "chosenModes", "targets", "xValue", "alternativeCost", "additionalCostMode",
+                "paymentRequirement",
+            )
+            boneStep["semanticActionIdentity"]!!.jsonObject["castFaceIndex"].toString() shouldBe "null"
+            boneStep["semanticActionIdentity"]!!.jsonObject["chosenModes"] shouldBe JsonArray(emptyList())
+            boneStep["semanticActionIdentity"]!!.jsonObject["xValue"].toString() shouldBe "null"
         }
     }
 
@@ -140,7 +163,7 @@ class PestControlArtifactContractTest : ScenarioTestBase() {
         )
         val targeted = evaluation(
             listOf(PreSpellSetupClassification.CURRENTLY_EXECUTABLE, PreSpellSetupClassification.EXECUTABLE_BUT_NOT_MATERIALLY_SUPERIOR),
-            listOf("cast Bone Shards"), superior = false, targeted = true,
+            listOf("cast Bone Shards"), superior = false, targeted = true, admissible = false,
         )
         return listOf(current, landUnlocked, still, targeted)
     }
@@ -151,6 +174,7 @@ class PestControlArtifactContractTest : ScenarioTestBase() {
         superior: Boolean,
         complete: Boolean = true,
         targeted: Boolean = false,
+        admissible: Boolean = true,
     ): PreSpellSetupEvaluation {
         val land = prefix.firstOrNull()?.takeIf { it.startsWith("play ") }?.removePrefix("play ")
         val resource = resources()
@@ -160,6 +184,19 @@ class PestControlArtifactContractTest : ScenarioTestBase() {
                 targeted -> SetupActionAudit(
                     action = action,
                     cardId = EntityId("removal"),
+                    semanticActionIdentity = SetupSemanticActionIdentity(
+                        actionType = "CastSpell",
+                        cardDefinitionId = "synthetic-bone-shards",
+                        castFaceIndex = null,
+                        sourceZone = "HAND",
+                        controllerId = EntityId("player-1"),
+                        chosenModes = emptyList(),
+                        targets = listOf(EntityId("target")),
+                        xValue = null,
+                        alternativeCost = null,
+                        additionalCostMode = "sacrifice",
+                        paymentRequirement = "{B}",
+                    ),
                     manaCost = "{B}",
                     coloredRequirements = "{B}",
                     targets = listOf(EntityId("target")),
@@ -173,6 +210,7 @@ class PestControlArtifactContractTest : ScenarioTestBase() {
                 else -> SetupActionAudit(
                     action = action,
                     cardId = EntityId("setup"),
+                    semanticActionIdentity = syntheticCastIdentity(action, "synthetic-setup"),
                     manaCost = "{1}",
                     coloredRequirements = "{1}",
                     paymentSources = resource.manaSources,
@@ -184,6 +222,9 @@ class PestControlArtifactContractTest : ScenarioTestBase() {
             SetupActionAudit(
                 action = "cast Weather the Storm",
                 cardId = EntityId("weather"),
+                semanticActionIdentity = syntheticCastIdentity(
+                    "cast Weather the Storm", "synthetic-weather", payment = "{1}{G}",
+                ),
                 manaCost = "{1}{G}",
                 coloredRequirements = "{1}{G}",
                 paymentSources = resource.manaSources,
@@ -211,6 +252,8 @@ class PestControlArtifactContractTest : ScenarioTestBase() {
                     SetupActionAudit(
                         action = action,
                         cardId = EntityId("comparison-${action.hashCode()}"),
+                        semanticActionIdentity = syntheticCastIdentity(action, "synthetic-${action.hashCode()}")
+                            .takeIf { action.startsWith("cast ") },
                         manaCost = "{1}".takeIf { action.startsWith("cast ") },
                         coloredRequirements = "{1}".takeIf { action.startsWith("cast ") },
                         paymentSources = resource.manaSources.takeIf { action.startsWith("cast ") }.orEmpty(),
@@ -228,9 +271,34 @@ class PestControlArtifactContractTest : ScenarioTestBase() {
             focalFirstResourcesAfter = resource.takeIf { complete },
             completeResourcesEquivalent = true.takeIf { complete },
             materiallySuperior = superior,
+            productionAdmissible = complete && admissible,
+            productionRejectionOrHoldReason = when {
+                !complete -> "production hold: synthetic unexecutable action"
+                !admissible -> "removal policy: synthetic below-margin friendly target"
+                else -> null
+            },
+            staticBoardValue = 0.0.takeIf { complete },
+            strategicSequencingAdjustment = 0.0,
+            adjustedValue = 0.0.takeIf { complete },
+            passValue = 0.0.takeIf { complete },
+            continuationHorizon = continuation.count { it.startsWith("cast ") },
+            completeComparedContinuation = if (complete) listOf("cast Weather the Storm") + prefix else emptyList(),
             reason = if (complete) "synthetic complete comparison" else "synthetic unexecutable continuation",
         )
     }
+
+    private fun syntheticCastIdentity(
+        action: String,
+        definition: String,
+        payment: String = "{1}",
+    ) = SetupSemanticActionIdentity(
+        actionType = "CastSpell",
+        cardDefinitionId = definition,
+        sourceZone = "HAND",
+        controllerId = EntityId("player-1"),
+        additionalCostMode = "none",
+        paymentRequirement = payment,
+    )
 
     private fun resources() = SetupResourceState(
         manaSources = listOf(SetupManaSource(EntityId("mana"), "Forest", tapped = false)),

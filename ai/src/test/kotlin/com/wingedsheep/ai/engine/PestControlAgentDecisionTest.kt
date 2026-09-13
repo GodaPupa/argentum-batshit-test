@@ -249,6 +249,32 @@ class PestControlAgentDecisionTest : ScenarioTestBase() {
             sourceName(game, weather) shouldBe "Weather the Storm"
         }
 
+        test("semantically equivalent focal copies receive the same land-unlocked deferral") {
+            val game = seeded()
+                .withTurnNumber(6)
+                .withLandsOnBattlefield(1, "Forest", 2)
+                .withLandsOnBattlefield(1, "Swamp", 2)
+                .withCardInHand(1, "Swamp")
+                .withCardInHand(1, "Blood Researcher")
+                .withCardInHand(1, "Weather the Storm")
+                .withCardInHand(1, "Weather the Storm")
+                .withCardOnBattlefield(1, "Blood Researcher")
+                .build()
+            game.state = game.state.copy(phase = Phase.POSTCOMBAT_MAIN, step = Step.POSTCOMBAT_MAIN)
+
+            val (chosen, insights) = chooseWithInsights(game)
+            chosen.shouldBeInstanceOf<PlayLand>()
+            chosen.cardId shouldBe game.findCardsInHand(1, "Swamp").single()
+            val weatherOptions = insights.last().options.filter { it.label.contains("Weather the Storm") }
+            weatherOptions.size shouldBe 2
+            weatherOptions.forEach { option ->
+                withClue(option) {
+                    option.note.orEmpty() shouldContain
+                        "land play unlocks a superior same-turn line"
+                }
+            }
+        }
+
         test("land-unlocked damage payoff is deployed before the event it converts") {
             val game = seeded()
                 .withLandsOnBattlefield(1, "Forest", 2)

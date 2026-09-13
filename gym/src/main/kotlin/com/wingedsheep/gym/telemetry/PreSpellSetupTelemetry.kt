@@ -1,10 +1,12 @@
 package com.wingedsheep.gym.telemetry
 
 import com.wingedsheep.ai.engine.AIPlayer
+import com.wingedsheep.ai.engine.AiProfile
 import com.wingedsheep.ai.engine.GameSimulator
 import com.wingedsheep.ai.engine.SimulationResult
 import com.wingedsheep.ai.engine.TargetSelection
 import com.wingedsheep.ai.engine.knowledge.IntentCatalog
+import com.wingedsheep.ai.insight.AiDecisionInsight
 import com.wingedsheep.engine.core.CastSpell
 import com.wingedsheep.engine.core.PaymentStrategy
 import com.wingedsheep.engine.core.PlayLand
@@ -70,6 +72,7 @@ data class SetupResourceState(
 data class SetupActionAudit(
     val action: String,
     val cardId: EntityId? = null,
+    val semanticActionIdentity: SetupSemanticActionIdentity? = null,
     val manaCost: String? = null,
     val coloredRequirements: String? = null,
     val targets: List<EntityId> = emptyList(),
@@ -79,6 +82,21 @@ data class SetupActionAudit(
     val paymentSources: List<SetupManaSource> = emptyList(),
     val resourcesBefore: SetupResourceState,
     val resourcesAfter: SetupResourceState? = null,
+)
+
+@Serializable
+data class SetupSemanticActionIdentity(
+    val actionType: String,
+    val cardDefinitionId: String,
+    val castFaceIndex: Int? = null,
+    val sourceZone: String? = null,
+    val controllerId: EntityId,
+    val chosenModes: List<Int> = emptyList(),
+    val targets: List<EntityId> = emptyList(),
+    val xValue: Int? = null,
+    val alternativeCost: String? = null,
+    val additionalCostMode: String = "none",
+    val paymentRequirement: String? = null,
 )
 
 @Serializable
@@ -112,6 +130,14 @@ data class PreSpellSetupEvaluation(
     val focalFirstResourcesAfter: SetupResourceState? = null,
     val completeResourcesEquivalent: Boolean? = null,
     val materiallySuperior: Boolean,
+    val productionAdmissible: Boolean = false,
+    val productionRejectionOrHoldReason: String? = null,
+    val staticBoardValue: Double? = null,
+    val strategicSequencingAdjustment: Double = 0.0,
+    val adjustedValue: Double? = null,
+    val passValue: Double? = null,
+    val continuationHorizon: Int = 0,
+    val completeComparedContinuation: List<String> = emptyList(),
     val reason: String,
 )
 
@@ -175,12 +201,17 @@ class PreSpellSetupTelemetry(private val registry: CardRegistry) {
             }
         }
         val assessed = (current + afterLand).map { line ->
-            line.copy(reordered = reorderedLine(state, playerId, focalCardId, line))
+            val reordered = reorderedLine(state, playerId, focalCardId, line)
+            val continuation = reordered?.let {
+                commonProductionContinuation(line.focal.state, it.state, playerId)
+            }
+            line.copy(reordered = reordered, continuation = continuation)
         }
         val superior = assessed.filter { line ->
-            line.reordered != null && line.completedScore > line.reordered.score + MATERIAL_MARGIN
+            line.production.productionAdmissible && line.reordered != null &&
+                line.setupFirstAdjustedScore > line.focalFirstAdjustedScore + MATERIAL_MARGIN
         }
-        val best = superior.maxByOrNull(SetupLine::completedScore)
+        val best = superior.maxByOrNull(SetupLine::setupFirstAdjustedScore)
         val nonSuperior = assessed.filterNot(superior::contains)
 
         return PreSpellSetupSnapshot(
@@ -211,17 +242,25 @@ class PreSpellSetupTelemetry(private val registry: CardRegistry) {
         landOutcome: LandOutcome? = null,
     ): List<SetupLine> {
         val baseline = score(state, playerId)
-        return simulator.getLegalActions(state, playerId).mapNotNull { legal ->
-            val cast = legal.action as? CastSpell ?: return@mapNotNull null
+        return productionCastCandidates(state, playerId).mapNotNull { production ->
+            val legal = production.legal
+            val cast = production.action
             if (cast.cardId == focalCardId) return@mapNotNull null
-            val setupStates = castStates(state, playerId, legal)
-            val setupUseful = setupStates.any { score(it.state, playerId) > baseline + MATERIAL_MARGIN }
+            val setupStates = productionCastOutcomes(state, production)
+            val setupUseful = production.productionAdmissible &&
+                setupStates.any { score(it.state, playerId) > baseline + MATERIAL_MARGIN }
             val completed = setupStates.flatMap { setup ->
-                castStates(setup.state, playerId, focalCardId).map { focal -> setup to focal }
+                productionCastCandidates(setup.state, playerId)
+                    // The focal action is the observed production action. Its sequencing deferral
+                    // is the very fact this counterfactual explains, so it remains simulatable even
+                    // when the current production gate would now hold it for this setup-first line.
+                    .filter { it.action.cardId == focalCardId }
+                    .flatMap { focal -> productionCastOutcomes(setup.state, focal).map { setup to it } }
             }.maxByOrNull { (_, focal) -> score(focal.state, playerId) }
                 ?: return@mapNotNull null
             SetupLine(landName, landCardId, cast.cardId, name(state, cast.cardId),
-                score(completed.second.state, playerId), setupUseful, state, landOutcome, completed.first, completed.second)
+                score(completed.second.state, playerId), setupUseful, state, landOutcome,
+                completed.first, completed.second, production)
         }
     }
 
@@ -237,7 +276,10 @@ class PreSpellSetupTelemetry(private val registry: CardRegistry) {
         focalCardId: EntityId,
         line: SetupLine,
     ): ReorderedLine? {
-        return castStates(state, playerId, focalCardId).mapNotNull { focal ->
+        return productionCastCandidates(state, playerId)
+            .filter { it.action.cardId == focalCardId }
+            .mapNotNull { focalCandidate ->
+            productionCastOutcomes(state, focalCandidate).mapNotNull { focal ->
             val afterFocal = focal.state
             val landOutcome = line.landCardId?.let { landId ->
                 val land = simulator.getLegalActions(afterFocal, playerId).firstOrNull { candidate ->
@@ -252,11 +294,120 @@ class PreSpellSetupTelemetry(private val registry: CardRegistry) {
                 if (continuation.cardId != line.setupCardId) {
                     return@mapNotNull null
                 }
-                castStates(afterLand, playerId, candidate).map { setup ->
-                    ReorderedLine(score(setup.state, playerId), setup.state, focal, landOutcome, setup)
-                }.maxByOrNull(ReorderedLine::score)
+                productionCastCandidates(afterLand, playerId)
+                    // A production-rejected setup can still be simulated on both sides of the
+                    // audit comparison. Its rejection remains authoritative and prevents a
+                    // superior classification; retaining the legal shadow result keeps the two
+                    // bounded continuations equally complete and explains the held action.
+                    .filter { it.action.cardId == continuation.cardId }
+                    .flatMap { setupCandidate ->
+                        productionCastOutcomes(afterLand, setupCandidate).map { setup ->
+                            ReorderedLine(
+                                score(setup.state, playerId), setup.state, focal, landOutcome, setup,
+                                focalCandidate,
+                            )
+                        }
+                    }.maxByOrNull(ReorderedLine::score)
+            }.maxByOrNull(ReorderedLine::score)
             }.maxByOrNull(ReorderedLine::score)
         }.maxByOrNull(ReorderedLine::score)
+    }
+
+    /**
+     * Ask a fresh production strategist to assess this exact priority position, then expose its
+     * already-materialized cast candidates to the shadow telemetry. Fresh strategy state prevents
+     * observation from inheriting or mutating the live player's commitments or progress memory.
+     *
+     * SHARED ARGENTUM CHANGE: yes
+     */
+    private fun productionCastCandidates(
+        state: GameState,
+        playerId: EntityId,
+    ): List<ProductionCastCandidate> {
+        var captured: AiDecisionInsight? = null
+        val legalActions = simulator.getLegalActions(state, playerId)
+        AIPlayer.create(
+            registry,
+            playerId,
+            AiProfile.PRODUCTION_CANDIDATE_EXPIRING,
+            insightSink = { _, insight -> captured = insight },
+        ).chooseFrom(state, legalActions)
+        val insight = captured ?: return emptyList()
+        return insight.options.mapNotNull { option ->
+            val cast = option.action as? CastSpell ?: return@mapNotNull null
+            val legal = legalActions.firstOrNull { candidate ->
+                val candidateCast = candidate.action as? CastSpell
+                candidateCast?.cardId == cast.cardId && candidateCast.faceIndex == cast.faceIndex &&
+                    candidateCast.chosenModes == cast.chosenModes
+            } ?: return@mapNotNull null
+            ProductionCastCandidate(
+                legal = legal,
+                action = cast,
+                productionAdmissible = option.productionAdmissible,
+                rejectionReason = option.productionRejectionReason,
+                staticBoardValue = option.rawScore ?: option.score,
+                sequencingAdjustment = option.strategicSequencingAdjustment,
+                expiringConditionSequencingAdjustment = option.expiringConditionSequencingAdjustment,
+                adjustedValue = option.score,
+                passValue = insight.baselineScore,
+                chosen = option.chosen,
+            )
+        }
+    }
+
+    private fun productionCastOutcomes(
+        state: GameState,
+        candidate: ProductionCastCandidate,
+    ): List<CastOutcome> {
+        val lands = state.projectedState.getBattlefieldControlledBy(candidate.action.playerId).filter { id ->
+            state.projectedState.hasType(id, "LAND") && state.getEntity(id)?.has<TappedComponent>() != true
+        }
+        val manaValue = candidate.legal.manaCostString
+            ?.let { com.wingedsheep.sdk.core.ManaCost.parse(it).cmc } ?: lands.size
+        val actions = buildList {
+            add(candidate.action)
+            fun choose(start: Int, remaining: Int, chosen: MutableList<EntityId>) {
+                if (remaining == 0) {
+                    add(candidate.action.copy(paymentStrategy = PaymentStrategy.Explicit(chosen.toList())))
+                    return
+                }
+                for (index in start..lands.size - remaining) {
+                    chosen += lands[index]
+                    choose(index + 1, remaining - 1, chosen)
+                    chosen.removeAt(chosen.lastIndex)
+                }
+            }
+            for (size in 1..minOf(lands.size, manaValue + 1)) choose(0, size, mutableListOf())
+        }
+        return actions.distinct().mapNotNull { action ->
+            simulator.simulate(state, action).usableState()?.let {
+                CastOutcome(action, candidate.legal.manaCostString, state, it)
+            }
+        }
+    }
+
+    /** One further action is retained only when the same concrete card remains production-
+     * admissible in both orders. That gives both sides an equivalent three-action horizon without
+     * inventing a continuation that one ordering cannot legally take. */
+    private fun commonProductionContinuation(
+        setupFirstState: GameState,
+        focalFirstState: GameState,
+        playerId: EntityId,
+    ): CommonContinuation? {
+        val setupFirst = productionCastCandidates(setupFirstState, playerId)
+            .filter(ProductionCastCandidate::productionAdmissible)
+        val focalFirst = productionCastCandidates(focalFirstState, playerId)
+            .filter(ProductionCastCandidate::productionAdmissible)
+        return setupFirst.asSequence().mapNotNull { first ->
+            val second = focalFirst.firstOrNull { it.action.cardId == first.action.cardId } ?: return@mapNotNull null
+            val firstOutcome = productionCastOutcomes(setupFirstState, first)
+                .maxByOrNull { score(it.state, playerId) } ?: return@mapNotNull null
+            val secondOutcome = productionCastOutcomes(focalFirstState, second)
+                .maxByOrNull { score(it.state, playerId) } ?: return@mapNotNull null
+            CommonContinuation(firstOutcome, secondOutcome, first, second)
+        }.maxByOrNull { pair ->
+            score(pair.setupFirst.state, playerId) + score(pair.focalFirst.state, playerId)
+        }
     }
 
     /** Explore legal explicit source choices as well as auto-pay so telemetry tests feasibility,
@@ -392,18 +543,31 @@ class PreSpellSetupTelemetry(private val registry: CardRegistry) {
             }
             add(actionAudit("cast ${line.spellName}", line.setup, line.setupStart))
             add(actionAudit("cast $focalName", line.focal, line.setup.state))
+            line.continuation?.let { continuation ->
+                add(actionAudit(
+                    "cast ${name(continuation.setupFirst.before, continuation.setupFirst.action.cardId)}",
+                    continuation.setupFirst,
+                    continuation.setupFirst.before,
+                ))
+            }
         }
+        val setupFirstLine = describe(line, focalName) + line.continuation?.let {
+            "cast ${name(it.setupFirst.before, it.setupFirst.action.cardId)}"
+        }.orEmpty().let { if (it.isEmpty()) emptyList() else listOf(it) }
+        val focalFirstLine = listOf("cast $focalName") + describe(line) + line.continuation?.let {
+            "cast ${name(it.focalFirst.before, it.focalFirst.action.cardId)}"
+        }.orEmpty().let { if (it.isEmpty()) emptyList() else listOf(it) }
         return PreSpellSetupEvaluation(
             relevantAction = line.spellName,
             proposedLandPlay = line.landName,
             landEntersTapped = line.land?.after?.getEntity(line.land.id)?.has<TappedComponent>(),
             classifications = classifications,
             setupPrefix = describe(line),
-            completeSetupContinuation = describe(line, focalName),
-            proposedActionOrder = describe(line, focalName),
+            completeSetupContinuation = setupFirstLine,
+            proposedActionOrder = setupFirstLine,
             steps = steps,
-            counterfactualLineEvaluated = describe(line, focalName),
-            comparisonLineEvaluated = listOf("cast $focalName") + describe(line),
+            counterfactualLineEvaluated = setupFirstLine,
+            comparisonLineEvaluated = focalFirstLine,
             comparisonSteps = line.reordered?.let { reordered ->
                 buildList {
                     add(actionAudit("cast $focalName", reordered.focal, line.setupStart))
@@ -415,21 +579,42 @@ class PreSpellSetupTelemetry(private val registry: CardRegistry) {
                         ))
                     }
                     add(actionAudit("cast ${line.spellName}", reordered.setup, reordered.setup.before))
+                    line.continuation?.let { continuation ->
+                        add(actionAudit(
+                            "cast ${name(continuation.focalFirst.before, continuation.focalFirst.action.cardId)}",
+                            continuation.focalFirst,
+                            continuation.focalFirst.before,
+                        ))
+                    }
                 }
             }.orEmpty(),
-            completedLineScore = line.completedScore,
-            reorderedLineScore = line.reordered?.score,
+            completedLineScore = line.setupFirstAdjustedScore,
+            reorderedLineScore = line.reordered?.let { line.focalFirstAdjustedScore },
             activePayoffsBeforeDeployment = activePayoffs(line.setupStart, line.setup.action.playerId),
             activePayoffsAfterDeployment = activePayoffs(line.setup.state, line.setup.action.playerId),
-            additionalImmediatePayoffValue = line.reordered?.let { line.completedScore - it.score },
-            setupFirstResourcesAfter = resources(line.focal.state, line.setup.action.playerId),
-            focalFirstResourcesAfter = line.reordered?.let { resources(it.state, line.setup.action.playerId) },
+            additionalImmediatePayoffValue = line.reordered?.let {
+                line.setupFirstAdjustedScore - line.focalFirstAdjustedScore
+            },
+            setupFirstResourcesAfter = resources(line.setupFirstFinalState, line.setup.action.playerId),
+            focalFirstResourcesAfter = line.reordered?.let { resources(line.focalFirstFinalState, line.setup.action.playerId) },
             completeResourcesEquivalent = line.reordered?.let {
-                equivalentResources(line.focal.state, it.state, line.setup.action.playerId)
+                equivalentResources(line.setupFirstFinalState, line.focalFirstFinalState, line.setup.action.playerId)
             },
             materiallySuperior = superior,
-            reason = if (superior) "complete setup-first line exceeds focal-first continuation by more than $MATERIAL_MARGIN" else
-                "complete setup-first line does not materially exceed the focal-first continuation",
+            productionAdmissible = line.production.productionAdmissible,
+            productionRejectionOrHoldReason = line.production.rejectionReason,
+            staticBoardValue = line.production.staticBoardValue,
+            strategicSequencingAdjustment = line.production.sequencingAdjustment,
+            adjustedValue = line.production.adjustedValue,
+            passValue = line.production.passValue,
+            continuationHorizon = maxOf(setupFirstLine.count { it.startsWith("cast ") }, focalFirstLine.count { it.startsWith("cast ") }),
+            completeComparedContinuation = focalFirstLine,
+            reason = when {
+                !line.production.productionAdmissible ->
+                    "setup rejected by production: ${line.production.rejectionReason ?: "unspecified hold"}"
+                superior -> "production-admissible complete setup-first line exceeds the equivalently bounded focal-first continuation by more than $MATERIAL_MARGIN"
+                else -> "production-admissible complete setup-first line does not materially exceed the production-adjusted focal-first continuation"
+            },
         )
     }
 
@@ -476,6 +661,7 @@ class PreSpellSetupTelemetry(private val registry: CardRegistry) {
         return SetupActionAudit(
             action = label,
             cardId = outcome.action.cardId,
+            semanticActionIdentity = semanticIdentity(before, outcome),
             manaCost = outcome.manaCost,
             coloredRequirements = outcome.manaCost,
             targets = targets,
@@ -485,6 +671,33 @@ class PreSpellSetupTelemetry(private val registry: CardRegistry) {
             paymentSources = sources,
             resourcesBefore = resources(before, outcome.action.playerId),
             resourcesAfter = resources(outcome.state, outcome.action.playerId),
+        )
+    }
+
+    private fun semanticIdentity(state: GameState, outcome: CastOutcome): SetupSemanticActionIdentity {
+        val card = state.getEntity(outcome.action.cardId)?.get<CardComponent>()
+        val targets = outcome.action.targets.mapNotNull {
+            (it as? com.wingedsheep.engine.state.components.stack.ChosenTarget.Permanent)?.entityId
+        }
+        val costs = additionalCosts(state, outcome.action.additionalCostPayment)
+        return SetupSemanticActionIdentity(
+            actionType = "CastSpell",
+            cardDefinitionId = card?.cardDefinitionId ?: outcome.action.cardId.toString(),
+            castFaceIndex = outcome.action.faceIndex,
+            sourceZone = when (outcome.action.cardId) {
+                in state.getHand(outcome.action.playerId) -> "HAND"
+                in state.getGraveyard(outcome.action.playerId) -> "GRAVEYARD"
+                in state.getExile(outcome.action.playerId) -> "EXILE"
+                else -> null
+            },
+            controllerId = outcome.action.playerId,
+            chosenModes = outcome.action.chosenModes,
+            targets = targets,
+            xValue = outcome.action.xValue,
+            alternativeCost = outcome.action.alternativeCostType?.name
+                ?: outcome.action.alternativePayment?.toString(),
+            additionalCostMode = costs.firstOrNull()?.kind ?: "none",
+            paymentRequirement = outcome.manaCost,
         )
     }
 
@@ -573,14 +786,46 @@ class PreSpellSetupTelemetry(private val registry: CardRegistry) {
         val land: LandOutcome?,
         val setup: CastOutcome,
         val focal: CastOutcome,
+        val production: ProductionCastCandidate,
         val reordered: ReorderedLine? = null,
-    )
+        val continuation: CommonContinuation? = null,
+    ) {
+        val setupFirstFinalState: GameState get() = continuation?.setupFirst?.state ?: focal.state
+        val focalFirstFinalState: GameState get() = continuation?.focalFirst?.state ?: requireNotNull(reordered).state
+        val setupFirstAdjustedScore: Double get() =
+            scoreOf(setupFirstFinalState) + production.expiringConditionSequencingAdjustment
+        val focalFirstAdjustedScore: Double get() =
+            scoreOf(focalFirstFinalState) +
+                (reordered?.production?.expiringConditionSequencingAdjustment ?: 0.0)
+
+        private fun scoreOf(position: GameState): Double =
+            AIPlayer.defaultEvaluator().evaluate(position, position.projectedState, setup.action.playerId)
+    }
     private data class ReorderedLine(
         val score: Double,
         val state: GameState,
         val focal: CastOutcome,
         val land: LandOutcome?,
         val setup: CastOutcome,
+        val production: ProductionCastCandidate,
+    )
+    private data class ProductionCastCandidate(
+        val legal: com.wingedsheep.engine.legalactions.LegalAction,
+        val action: CastSpell,
+        val productionAdmissible: Boolean,
+        val rejectionReason: String?,
+        val staticBoardValue: Double?,
+        val sequencingAdjustment: Double,
+        val expiringConditionSequencingAdjustment: Double,
+        val adjustedValue: Double?,
+        val passValue: Double,
+        val chosen: Boolean,
+    )
+    private data class CommonContinuation(
+        val setupFirst: CastOutcome,
+        val focalFirst: CastOutcome,
+        val setupFirstProduction: ProductionCastCandidate,
+        val focalFirstProduction: ProductionCastCandidate,
     )
     private data class LandOutcome(val before: GameState, val after: GameState, val name: String, val id: EntityId)
     private data class CastOutcome(val action: CastSpell, val manaCost: String?, val before: GameState, val state: GameState)

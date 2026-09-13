@@ -418,6 +418,10 @@ class Strategist(
                 advantage = adjustment.score - adjustedPassScore,
                 chosen = action === chosenAction,
                 note = adjustment.note,
+                productionAdmissible = adjustment.productionAdmissible,
+                productionRejectionReason = adjustment.productionRejectionReason,
+                strategicSequencingAdjustment = adjustment.sequencingAdjustment,
+                expiringConditionSequencingAdjustment = adjustment.expiringConditionSequencingAdjustment,
                 friendlyRemovalAudit = adjustment.friendlyRemovalAudit?.copy(
                     selected = action === chosenAction,
                     selectionReason = when {
@@ -703,8 +707,29 @@ class Strategist(
                 leafScore, passScore, boardPresenceWeight,
             )
         } else null
-        fun adjusted(score: Double, note: String? = null) =
-            AdjustedScore(score, note, friendlyRemovalAudit)
+        // Compute the pure sequencing term even for a candidate that a later production hold gate
+        // rejects. The floor remains authoritative; retaining the otherwise-applicable term merely
+        // lets observational counterfactuals compare equivalent complete lines.
+        val sequencing = strategicSequencingAdjustment(
+            state, leafState, action, playerId, leafScore, passScore,
+        )
+        val expiringConditionSequencing = lifeGainEnhancedSequencingAdjustment(
+            state, leafState, action, playerId, leafScore,
+        )
+        fun adjusted(
+            score: Double,
+            note: String? = null,
+            productionAdmissible: Boolean = true,
+            sequencingAdjustment: Double = sequencing,
+        ) = AdjustedScore(
+            score = score,
+            note = note,
+            friendlyRemovalAudit = friendlyRemovalAudit,
+            productionAdmissible = productionAdmissible,
+            productionRejectionReason = note.takeUnless { productionAdmissible },
+            sequencingAdjustment = sequencingAdjustment,
+            expiringConditionSequencingAdjustment = expiringConditionSequencing,
+        )
 
         // Phase 6: what the board looks like after this resolves is only half the question; the
         // other half is whether this was the window — and, for removal, whether this was the target
@@ -721,7 +746,7 @@ class Strategist(
         if (timing is TimingVerdict.NoWindow) {
             // The card does nothing here, so nothing the simulation reports should make it beat
             // passing. See [TimingVerdict.NoWindow] for why this is a floor and not a penalty.
-            return adjusted(passScore - 1.0, "hold policy: wrong window — floored below passing")
+            return adjusted(passScore - 1.0, "hold policy: wrong window — floored below passing", false)
         }
         if (shouldHoldLandSacrifice(state, action.action, playerId, cardName)) {
             // A finite discount was not strong enough here: rollout damage and response-window
@@ -732,6 +757,7 @@ class Strategist(
             return adjusted(
                 passScore - 1.0,
                 "land-sacrifice policy: low-value conversion — floored below passing",
+                false,
             )
         }
         if (shouldHoldNullForcedSacrifice(state, leafState, action.action, playerId, cardName)) {
@@ -740,24 +766,28 @@ class Strategist(
             return adjusted(
                 passScore - 1.0,
                 "forced-sacrifice policy: no opposing permanent was sacrificed — floored below passing",
+                false,
             )
         }
         if (holdRemovalForBetterTargets && shouldHoldFriendlyRemoval) {
             return adjusted(
                 passScore - 1.0,
                 "removal policy: friendly target lacks sufficient concrete downstream value",
+                false,
             )
         }
-        if (shouldDeferForLandUnlockedSequence(state, action.action, playerId)) {
+        if (shouldDeferForLandUnlockedSequence(state, action, playerId)) {
             return adjusted(
                 passScore - 1.0,
                 "sequencing policy: legal land play unlocks a superior same-turn line",
+                false,
             )
         }
         if (shouldDeferForExecutableExpiringConditionSequence(state, action.action, playerId)) {
             return adjusted(
                 passScore - 1.0,
                 "sequencing policy: executable expiring-condition line should begin with its enabler",
+                false,
             )
         }
         if (shouldHoldNullLifeGain(state, leafState, action.action, playerId, cardName)) {
@@ -767,6 +797,7 @@ class Strategist(
             return adjusted(
                 passScore - 1.0,
                 "lifegain policy: no pressure or concrete payoff — floored below passing",
+                false,
             )
         }
         if (isSacrificeManaAction(action) && unlockedProductiveCastIds(state, leafState, playerId).isEmpty()) {
@@ -776,6 +807,7 @@ class Strategist(
             return adjusted(
                 passScore - 1.0,
                 "sacrifice-mana policy: no productive use unlocked — floored below passing",
+                false,
             )
         }
         val timingDelta = (timing as? TimingVerdict.Adjust)?.delta ?: 0.0
@@ -789,9 +821,6 @@ class Strategist(
         // Check for card-specific advisor override. Timing is applied outside it, so a per-card
         // advisor still sees the pure board score as its `defaultScore` and a card with both
         // keeps both.
-        val sequencing = strategicSequencingAdjustment(
-            state, leafState, action, playerId, leafScore, passScore,
-        )
         val sequencingNote = sequencing.takeIf { it != 0.0 }
             ?.let { "structural sequencing %+.2f".format(it) }
 
@@ -800,6 +829,7 @@ class Strategist(
                 leafScore + timingDelta + sacrificeWindowDelta + sequencing,
                 listOfNotNull(timingNote, sacrificeWindowNote, sequencingNote)
                     .joinToString("; ").ifEmpty { null },
+                sequencingAdjustment = sequencing,
             )
         val context = CastContext(
             state = state,
@@ -817,6 +847,7 @@ class Strategist(
             (override ?: leafScore) + timingDelta + sacrificeWindowDelta + sequencing,
             listOfNotNull(advisorNote, timingNote, sacrificeWindowNote, sequencingNote)
                 .joinToString("; ").ifEmpty { null },
+            sequencingAdjustment = sequencing,
         )
     }
 
@@ -1141,13 +1172,7 @@ class Strategist(
             if (hasCreatureFollowUp && hasVisiblePayoff) delta += TRIGGER_ENGINE_SETUP_VALUE
         }
 
-        if (cast != null && intent != null && IntentTag.LIFEGAIN in intent.tags) {
-            val followUp = bestLifeGainEnhancedFollowUp(state, leafState, playerId)
-            if (followUp != null) {
-                delta += (followUp.projectedScore - leafScore).coerceAtLeast(0.0) +
-                    LIFEGAIN_FOLLOW_UP_UNLOCK_VALUE
-            }
-        }
+        delta += lifeGainEnhancedSequencingAdjustment(state, leafState, action, playerId, leafScore)
 
         val landPlay = action.action as? PlayLand
         if (landPlay != null) {
@@ -1249,6 +1274,22 @@ class Strategist(
         }
 
         return delta
+    }
+
+    private fun lifeGainEnhancedSequencingAdjustment(
+        state: GameState,
+        leafState: GameState,
+        action: LegalAction,
+        playerId: EntityId,
+        leafScore: Double,
+    ): Double {
+        val cast = action.action as? CastSpell ?: return 0.0
+        val cardName = resolveCardName(state, action) ?: return 0.0
+        val intent = intents.forCast(cardName, cast) ?: return 0.0
+        if (IntentTag.LIFEGAIN !in intent.tags) return 0.0
+        val followUp = bestLifeGainEnhancedFollowUp(state, leafState, playerId) ?: return 0.0
+        return (followUp.projectedScore - leafScore).coerceAtLeast(0.0) +
+            LIFEGAIN_FOLLOW_UP_UNLOCK_VALUE
     }
 
     /**
@@ -1463,13 +1504,18 @@ class Strategist(
 
     private fun shouldDeferForLandUnlockedSequence(
         state: GameState,
-        action: GameAction,
+        action: LegalAction,
         playerId: EntityId,
     ): Boolean {
-        val cast = action as? CastSpell ?: return false
+        val cast = action.action as? CastSpell ?: return false
         val payoffSequence = bestLandUnlockedPayoffSequence(state, playerId)
-        if (payoffSequence != null && cast.cardId in setOf(payoffSequence.setupCardId, payoffSequence.focalCardId)) {
-            return true
+        if (payoffSequence != null) {
+            if (cast.cardId == payoffSequence.setupCardId) return true
+            val selectedFocal = simulator.getLegalActions(state, playerId)
+                .firstOrNull { (it.action as? CastSpell)?.cardId == payoffSequence.focalCardId }
+            if (selectedFocal != null && CastActionSemanticIdentity.equivalent(state, action, selectedFocal)) {
+                return true
+            }
         }
         val expiringLine = bestLandUnlockedExpiringConditionLine(state, playerId)
         return expiringLine != null && cast.cardId in setOfNotNull(
@@ -1600,6 +1646,10 @@ class Strategist(
         val score: Double,
         val note: String? = null,
         val friendlyRemovalAudit: FriendlyRemovalAudit? = null,
+        val productionAdmissible: Boolean = true,
+        val productionRejectionReason: String? = null,
+        val sequencingAdjustment: Double = 0.0,
+        val expiringConditionSequencingAdjustment: Double = 0.0,
     )
 
     /**
