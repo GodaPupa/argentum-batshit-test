@@ -1,6 +1,6 @@
 # Project Pest Control — Status
 
-- Status: Sample #2 Take 4 vector frozen before execution
+- Status: Sample #2 Take 4 formally rejected; stopped at correction-authorization gate
 - Laboratory: Project Pest Control
 - Branch: `pest-control/lab`
 - Validated base: `47882cd645caf126afee6cf13a65909806fa40ab`
@@ -42,6 +42,32 @@ friendly-removal evaluation or execution. The sample must execute once in frozen
 in full for any clear rules/state, telemetry, observability, mana-provenance, sequencing, or agent-
 policy defect. At this freeze point no Take 4 game has executed. Sample #1 remains the sole accepted
 performance/engine sample, and the challenger remains audit-only and unconstructed.
+
+#### Sample #2 Take 4 disposition
+
+Freeze head `0e5966c5069f8b8b71f8557aceaeaecd0920c0c3` passed CI #226 before Game 1. One forced opt-in
+invocation then executed all 30 seeds exactly once in frozen order. The vector order and SHA-256
+matched the committed freeze, and no reroll, replay, replacement, exclusion, substitution, or mid-
+sample change occurred.
+
+Take 4 is **formally rejected in full**. Games 8, 18, and 23 executed Bone Shards, but the artifact
+contains no selected friendly-removal audit for those completed actions; their targets, additional-
+cost choices, pass/hold comparisons, alternatives, resulting boards, and net selection reasons are
+therefore unavailable. The predeclared completeness checker also produced five false failures because
+it compared abbreviated non-superior setup prefixes with full proposed setup-plus-Weather sequences.
+Game 23's targeted Bone Shards was not considered by the pre-Weather sequencing detector, and the
+missing target/cost data prevents conclusive counterfactual classification. These are observability
+and audit-coverage defects, not demonstrated gameplay-policy failures.
+
+The complete Take 4 vector is permanently retired and hard-disabled. It may never be replayed,
+rehabilitated, replaced, compared against, optimized against, or reused. Its losslessly compressed raw
+JSON artifact, generated report, and complete rejection audit are preserved under
+`docs/experiments/pest-control/` as `goldfish-sample-2-take-4-raw.json.gz`,
+`goldfish-sample-2-take-4-report.md`, and
+`goldfish-sample-2-take-4-rejection-audit.md`. Quarantined aggregates are not
+performance evidence and no pooled 60-game analysis is admissible. Sample #1 remains the sole accepted
+Pest Control performance/engine sample; Pest Control v1.0 remains exact; the challenger remains audit-
+only and unconstructed. No corrective implementation is authorized by this disposition.
 
 ### Sample #2 Take 3 authorization and freeze
 
