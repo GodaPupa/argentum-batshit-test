@@ -32,3 +32,10 @@ After formal acceptance of that Weather regression replay at
 was authorized. Its 30 completely new seeds, collision audit, immutable execution constraints, and
 pre-execution state are recorded in `goldfish-sample-1-performance-seed-freeze.md`. This authorization
 does not permit challenger construction, optimization, Sample #2, or opponent self-play.
+
+That vector executed once from green preflight head `9f3f3c1cc8270c3bbd55b8017c0935dbbee7771f`.
+The automated audit was clean, but Game 15 exposed a strategically null Storm-0 Weather cast and a
+missed next-turn Weather-before-Follow enhanced line. The entire performance sample is rejected and
+preserved without exclusions in `goldfish-sample-1-performance-rejected.{md,json}`; the controlling
+manual audit is `goldfish-sample-1-performance-audit-rejected.md`. No correction or replay is
+authorized automatically.

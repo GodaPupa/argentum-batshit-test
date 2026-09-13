@@ -20,7 +20,8 @@ changes, or mid-sample corrections are permitted.
   seed-related lines/file contents, 1,019 seed-path instances, and 2,495 distinct available numeric
   values across all fetched Pest Control, Batshit/Affinity, Project X, development, regression,
   smoke, performance, and optimization material
-- Execution status: not started
+- Execution status: executed exactly once from green preflight head
+  `9f3f3c1cc8270c3bbd55b8017c0935dbbee7771f`; entire sample rejected by manual agent-sanity audit
 
 The authoritative vector is
 `gym/src/test/resources/pest-control-v10-goldfish-sample-1-performance-seeds.csv`.
@@ -32,3 +33,8 @@ defect rejects the entire sample without removing or replacing any game.
 
 Both earlier Pest vectors remain permanently retired. This new vector has a separate identity and
 must not rehabilitate either rejected execution or its regression replay as performance evidence.
+
+The execution produced all 30 games and passed automated invariants, but Game 15 exposed a clear
+Weather/Follow policy defect. The sample is rejected in full and preserved in
+`goldfish-sample-1-performance-{rejected,audit-rejected}.{json,md}` as applicable. It must not be used
+as performance evidence. No replay or corrective change is authorized automatically.

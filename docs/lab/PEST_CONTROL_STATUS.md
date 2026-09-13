@@ -1,6 +1,6 @@
 # Project Pest Control — Status
 
-- Status: Weather regression replay accepted; new Sample #1 performance vector frozen; preflight pending
+- Status: fresh performance Sample #1 rejected; preserved intact; investigation approval required
 - Laboratory: Project Pest Control
 - Branch: `pest-control/lab`
 - Validated base: `47882cd645caf126afee6cf13a65909806fa40ab`
@@ -129,7 +129,27 @@ all-three-coexistence, Weather/payoff, and counterfactual-Warden totals. The cou
 only creature entries while Researcher/Mascot is present and no Essence Warden is present, and
 reports potential Researcher and Mascot counters separately. This is descriptive test telemetry
 only; no engine, production agent, deck, mulligan, card, Weather, Follow, or gameplay policy changed.
-Execution remains blocked until the frozen vector and telemetry pass preflight validation.
+Execution remained blocked until the frozen vector and telemetry passed preflight validation.
+
+### Fresh performance Sample #1 result
+
+Preflight CI run 205 was fully green at `9f3f3c1cc8270c3bbd55b8017c0935dbbee7771f`. The frozen vector
+then executed exactly once, in order, without a reroll, replacement, exclusion, substitution, or
+deck/policy/telemetry change. All 30 games completed and all automated rules/state, Storm-copy,
+lifegain-event, counter, Thrall/Scion, provenance, mana-legality, and terminal invariants passed.
+
+Manual audit found a clear residual agent-policy defect in Game 15: the agent cast Weather at Storm 0
+and 21 life with no payoff, survival pressure, or same-turn enhanced Follow, then spent Food for more
+irrelevant life. On turn 6 it had another Weather, Follow, and four lands but cast normal Follow
+without first enabling the enhanced mode. The entire sample is therefore **rejected** and none of its
+clock or engine aggregates are accepted as baseline, optimization, matchup, or variant evidence.
+
+The complete raw JSON and human report are preserved as
+`docs/experiments/pest-control/goldfish-sample-1-performance-rejected.{json,md}`. The manual audit and
+descriptive rejected-run metrics are in
+`docs/experiments/pest-control/goldfish-sample-1-performance-audit-rejected.md`. No game was removed
+or replayed, and no correction was made. A separate approval is required before investigation or any
+same-seed validation. The permanent v1.0 list remains exact and the challenger remains unconstructed.
 
 Descriptive rejected-run facts, retained for diagnosis only: 9/30 games mulliganed (11 total);
 meaningful deployment reached 6/14/27 games by T1/T2/T3; all 30 modeled terminals were combat lethal
