@@ -24,6 +24,7 @@ import com.wingedsheep.gym.telemetry.ActionableManaBottleneck
 import com.wingedsheep.gym.telemetry.ActionableManaBottleneckTracker
 import com.wingedsheep.gym.telemetry.ManaConstraint
 import com.wingedsheep.gym.telemetry.LandUnlockedSpell
+import com.wingedsheep.gym.telemetry.PreSpellSetupClassification
 import com.wingedsheep.gym.telemetry.PreSpellSetupTelemetry
 import com.wingedsheep.gym.telemetry.PreSpellSetupEvaluation
 import com.wingedsheep.gym.telemetry.SacrificeManaTrace
@@ -50,6 +51,7 @@ private const val PEST_UNTOUCHED_SEED_SHA256 = "f7012b5807621453692699055c90037b
 private const val PEST_SAMPLE_2_SEED_SHA256 = "1e4247fceaa9a7d2f438ab8fa29733782f624cbcde383ec858153de1367e522d"
 private const val PEST_SAMPLE_2_TAKE_2_SEED_SHA256 = "1db3fb1fcf4b969d9229bb2a060491a556ff5e1c8c80d327caf37698ca1c3cb7"
 private const val PEST_SAMPLE_2_TAKE_3_SEED_SHA256 = "341fc7936a8a415d19d198662d1f6f2b2120ecb70d055a3a7a6fb76dd1ec8c47"
+private const val PEST_SAMPLE_2_TAKE_4_SEED_SHA256 = "9f53ae30fd233bc8a980163aff9a7df1d6b41095356072e520a2cad16f97a7ad"
 
 /** Pest Control-owned development goldfish. It is opt-in and never runs in ordinary CI. */
 class PestControlGoldfishTest : FunSpec({
@@ -62,6 +64,7 @@ class PestControlGoldfishTest : FunSpec({
         val sample2 = readSample2PestSeeds()
         val sample2Take2 = readSample2Take2PestSeeds()
         val sample2Take3 = readSample2Take3PestSeeds()
+        val sample2Take4 = readSample2Take4PestSeeds()
         retired.size shouldBe 30
         retired.distinct().size shouldBe 30
         fresh.size shouldBe 30
@@ -103,6 +106,16 @@ class PestControlGoldfishTest : FunSpec({
         sample2Take3.intersect(sample2.toSet()) shouldBe emptySet()
         sample2Take3.intersect(sample2Take2.toSet()) shouldBe emptySet()
         seedVectorSha256(sample2Take3) shouldBe PEST_SAMPLE_2_TAKE_3_SEED_SHA256
+        sample2Take4.size shouldBe 30
+        sample2Take4.distinct().size shouldBe 30
+        sample2Take4.intersect(retired.toSet()) shouldBe emptySet()
+        sample2Take4.intersect(fresh.toSet()) shouldBe emptySet()
+        sample2Take4.intersect(performance.toSet()) shouldBe emptySet()
+        sample2Take4.intersect(untouched.toSet()) shouldBe emptySet()
+        sample2Take4.intersect(sample2.toSet()) shouldBe emptySet()
+        sample2Take4.intersect(sample2Take2.toSet()) shouldBe emptySet()
+        sample2Take4.intersect(sample2Take3.toSet()) shouldBe emptySet()
+        seedVectorSha256(sample2Take4) shouldBe PEST_SAMPLE_2_TAKE_4_SEED_SHA256
     }
 
     test("reproduce rejected Pest Control Game 25 Scion provenance").config(
@@ -315,6 +328,41 @@ class PestControlGoldfishTest : FunSpec({
         println(markdown)
         games.flatMap(PestGoldfishGame::auditErrors) shouldBe emptyList()
     }
+
+    test("Pest Control v1.0 Goldfish Sample 2 Take 4 independent replication").config(
+        enabled = System.getenv("RUN_PEST_SAMPLE_2_TAKE_4") == "1",
+        timeout = 60.minutes,
+    ) {
+        val seeds = readSample2Take4PestSeeds()
+        val registry = pestRegistry()
+        val games = seeds.mapIndexed { index, seed ->
+            runPestGoldfish(registry, seed, index + 1).let { game ->
+                game.copy(auditErrors = game.auditErrors + pestAuditCompletenessErrors(game))
+            }
+        }
+        val block = PestGoldfishBlock(
+            deckVersion = "Pest Control v1.0",
+            agentProfile = AiProfile.PRODUCTION_CANDIDATE_EXPIRING.id,
+            horizon = PEST_GOLDFISH_HORIZON,
+            seeds = seeds,
+            games = games,
+            summary = summarizePest(games),
+        )
+        val reportDir = Path.of("..", "docs", "experiments", "pest-control")
+        Files.createDirectories(reportDir)
+        Files.writeString(
+            reportDir.resolve("goldfish-sample-2-take-4-raw.json"),
+            Json { prettyPrint = true }.encodeToString(block),
+        )
+        val markdown = renderPestMarkdown(
+            block,
+            freshPerformanceSample = true,
+            sampleLabel = "Goldfish Sample #2 — Take 4 Independent Replication",
+        )
+        Files.writeString(reportDir.resolve("goldfish-sample-2-take-4-report.md"), markdown)
+        println(markdown)
+        games.flatMap(PestGoldfishGame::auditErrors) shouldBe emptyList()
+    }
 })
 
 private val PEST_CONTROL_V10 = linkedMapOf(
@@ -362,6 +410,10 @@ private fun readSample2Take2PestSeeds(): List<Long> = Files.readAllLines(
 
 private fun readSample2Take3PestSeeds(): List<Long> = Files.readAllLines(
     Path.of("src", "test", "resources", "pest-control-v10-goldfish-sample-2-take-3-seeds.csv")
+).drop(1).filter(String::isNotBlank).map { it.split(',')[1].toLong() }
+
+private fun readSample2Take4PestSeeds(): List<Long> = Files.readAllLines(
+    Path.of("src", "test", "resources", "pest-control-v10-goldfish-sample-2-take-4-seeds.csv")
 ).drop(1).filter(String::isNotBlank).map { it.split(',')[1].toLong() }
 
 private fun seedVectorSha256(seeds: List<Long>): String = MessageDigest.getInstance("SHA-256")
@@ -527,6 +579,156 @@ internal data class PestGoldfishGame(
     val stopReason: String,
     val auditErrors: List<String>,
 )
+
+/**
+ * Take 4's predeclared observability gate. It validates the semantic completeness of every
+ * sequencing evaluation and friendly-removal valuation before any gameplay result is interpreted.
+ */
+internal fun pestAuditCompletenessErrors(game: PestGoldfishGame): List<String> = buildList {
+    fun fail(subject: String, detail: String) {
+        add("audit completeness Game ${game.game} $subject: $detail")
+    }
+
+    fun validateResources(subject: String, resources: com.wingedsheep.gym.telemetry.SetupResourceState) {
+        val colors = setOf("white", "blue", "black", "red", "green", "colorless")
+        if (resources.floatingMana.keys != colors) fail(subject, "floating-mana colors are incomplete")
+        if (resources.floatingMana.values.any { it < 0 }) fail(subject, "floating mana contains a negative value")
+        if (resources.untappedManaSourceCount != resources.manaSources.count { !it.tapped }) {
+            fail(subject, "untapped mana-source count does not match source records")
+        }
+        if (resources.manaSources.any { it.name.isBlank() }) fail(subject, "mana source lacks an identity")
+        if (resources.handSize < 0 || resources.spellsCastThisTurn < 0) fail(subject, "resource count is negative")
+    }
+
+    game.weatherCasts.forEachIndexed { weatherIndex, weather ->
+        val subject = "Weather ${weatherIndex + 1} on T${weather.turn}"
+        val evaluations = weather.evaluatedSetupSequences
+        weather.currentlyExecutablePreWeatherSpells.forEach { action ->
+            if (evaluations.none {
+                    it.relevantAction == action &&
+                        PreSpellSetupClassification.CURRENTLY_EXECUTABLE in it.classifications
+                }) fail(subject, "currently-executable action '$action' lacks a structured evaluation")
+        }
+        weather.spellsExecutableAfterLegalLandPlay.forEach { opportunity ->
+            if (evaluations.none {
+                    it.relevantAction == opportunity.spell && it.proposedLandPlay == opportunity.land &&
+                        PreSpellSetupClassification.LAND_UNLOCKED in it.classifications &&
+                        PreSpellSetupClassification.GENUINE_MISSED_SUPERIOR_SEQUENCE in it.classifications
+                }) fail(subject, "land-unlocked action '${opportunity.land} -> ${opportunity.spell}' lacks a structured evaluation")
+        }
+        weather.stillUnexecutableAfterLegalLandPlay.forEach { opportunity ->
+            if (evaluations.none {
+                    it.relevantAction == opportunity.spell && it.proposedLandPlay == opportunity.land &&
+                        it.classifications == listOf(PreSpellSetupClassification.STILL_UNEXECUTABLE_AFTER_LAND)
+                }) fail(subject, "still-unexecutable action '${opportunity.land} -> ${opportunity.spell}' lacks a structured evaluation")
+        }
+        weather.executableButNotMateriallySuperior.forEach { sequence ->
+            if (evaluations.none {
+                    it.proposedActionOrder == sequence &&
+                        PreSpellSetupClassification.EXECUTABLE_BUT_NOT_MATERIALLY_SUPERIOR in it.classifications
+                }) fail(subject, "non-superior sequence '$sequence' lacks a structured evaluation")
+        }
+        weather.bestValidatedPreWeatherSetupSequence?.let { sequence ->
+            if (evaluations.none {
+                    it.proposedActionOrder == sequence &&
+                        PreSpellSetupClassification.GENUINE_MISSED_SUPERIOR_SEQUENCE in it.classifications
+                }) fail(subject, "best missed-superior sequence lacks a structured evaluation")
+        }
+
+        evaluations.forEachIndexed { evaluationIndex, evaluation ->
+            val evaluationSubject = "$subject evaluation ${evaluationIndex + 1}"
+            if (evaluation.turn != weather.turn) fail(evaluationSubject, "turn is absent or inconsistent")
+            if (evaluation.relevantAction.isBlank()) fail(evaluationSubject, "relevant action is absent")
+            if (evaluation.classifications.isEmpty() || evaluation.classifications.distinct().size != evaluation.classifications.size) {
+                fail(evaluationSubject, "classification is absent or duplicated")
+            }
+            val positionClasses = evaluation.classifications.count {
+                it in setOf(
+                    PreSpellSetupClassification.CURRENTLY_EXECUTABLE,
+                    PreSpellSetupClassification.LAND_UNLOCKED,
+                    PreSpellSetupClassification.STILL_UNEXECUTABLE_AFTER_LAND,
+                )
+            }
+            if (positionClasses != 1) fail(evaluationSubject, "does not preserve exactly one executability classification")
+            val stillUnexecutable = PreSpellSetupClassification.STILL_UNEXECUTABLE_AFTER_LAND in evaluation.classifications
+            val superiorityClasses = evaluation.classifications.count {
+                it in setOf(
+                    PreSpellSetupClassification.EXECUTABLE_BUT_NOT_MATERIALLY_SUPERIOR,
+                    PreSpellSetupClassification.GENUINE_MISSED_SUPERIOR_SEQUENCE,
+                )
+            }
+            if (superiorityClasses != if (stillUnexecutable) 0 else 1) {
+                fail(evaluationSubject, "material-superiority classification is incomplete")
+            }
+            if (evaluation.materiallySuperior !=
+                (PreSpellSetupClassification.GENUINE_MISSED_SUPERIOR_SEQUENCE in evaluation.classifications)
+            ) fail(evaluationSubject, "material-superiority result disagrees with classification")
+            if (PreSpellSetupClassification.LAND_UNLOCKED in evaluation.classifications || stillUnexecutable) {
+                if (evaluation.proposedLandPlay.isNullOrBlank()) fail(evaluationSubject, "proposed land is absent")
+                if (evaluation.landEntersTapped == null) fail(evaluationSubject, "land tapped/untapped result is absent")
+            }
+            if (evaluation.proposedActionOrder.isEmpty()) fail(evaluationSubject, "proposed action order is absent")
+            if (evaluation.actualLineTaken.isEmpty()) fail(evaluationSubject, "actual line is absent")
+            if (evaluation.counterfactualLineEvaluated.isEmpty()) fail(evaluationSubject, "counterfactual line is absent")
+            if (evaluation.steps.isEmpty()) fail(evaluationSubject, "structured action steps are absent")
+            if (evaluation.reason.isBlank()) fail(evaluationSubject, "classification reason is absent")
+            if (!stillUnexecutable) {
+                if (evaluation.completedLineScore?.isFinite() != true) fail(evaluationSubject, "completed-line score is absent")
+                if (evaluation.reorderedLineScore?.isFinite() != true) fail(evaluationSubject, "actual/reordered-line score is absent")
+            }
+            evaluation.steps.forEachIndexed { stepIndex, step ->
+                val stepSubject = "$evaluationSubject step ${stepIndex + 1}"
+                if (step.action.isBlank()) fail(stepSubject, "action is absent")
+                validateResources("$stepSubject before", step.resourcesBefore)
+                step.resourcesAfter?.let { validateResources("$stepSubject after", it) }
+                if (step.action.startsWith("cast ")) {
+                    if (step.manaCost.isNullOrBlank()) fail(stepSubject, "mana cost is absent")
+                    if (step.coloredRequirements.isNullOrBlank()) fail(stepSubject, "colored requirements are absent")
+                    val payable = step.paymentSources.isNotEmpty() || step.resourcesBefore.floatingMana.values.sum() > 0
+                    if (!stillUnexecutable && !payable) fail(stepSubject, "source-specific payment plan is absent")
+                    if (!stillUnexecutable && step.resourcesAfter == null) fail(stepSubject, "remaining resources are absent")
+                }
+            }
+        }
+    }
+
+    game.friendlyRemovalAudits.forEachIndexed { auditIndex, audit ->
+        val subject = "friendly-removal evaluation ${auditIndex + 1} on engine turn ${audit.turnNumber}"
+        if (audit.removalAction.isBlank()) fail(subject, "removal action is absent")
+        if (audit.targetName.isBlank()) fail(subject, "target identity is absent")
+        if (audit.manaCost.isNullOrBlank()) fail(subject, "mana cost is absent")
+        if (audit.manaSources.any { it.name.isBlank() }) fail(subject, "mana-source identity is absent")
+        if (audit.lifePaid < 0) fail(subject, "life cost is invalid")
+        audit.additionalCosts.forEach { cost ->
+            if (cost.kind.isBlank()) fail(subject, "additional-cost kind is absent")
+            if (cost.entities.isEmpty() && cost.amount == null) fail(subject, "additional-cost payment is absent")
+            if (cost.entities.any { it.name.isBlank() }) fail(subject, "additional-cost entity identity is absent")
+        }
+        val values = listOf(
+            audit.targetBattlefieldValueBefore,
+            audit.removalResourceValueConsumed,
+            audit.futureInteractionOpportunityCost,
+            audit.resultingBoardValue,
+            audit.passHoldValue,
+            audit.resolvedLineValue,
+            audit.netVersusHold,
+            audit.requiredFairTradeMargin,
+            audit.fairTradeSurplus,
+        )
+        if (values.any { !it.isFinite() }) fail(subject, "valuation contains a non-finite value")
+        if (audit.removalResourceValueConsumed < 0.0 || audit.futureInteractionOpportunityCost < 0.0) {
+            fail(subject, "resource or future-interaction cost is invalid")
+        }
+        if (audit.deathTriggersCreated.any(String::isBlank)) fail(subject, "death-trigger identity is absent")
+        if (audit.resourcesCreated.any { it.name.isBlank() }) fail(subject, "created-resource identity is absent")
+        if (audit.immediateEngineEffects.any(String::isBlank)) fail(subject, "engine-effect identity is absent")
+        if (audit.opposingTargetAlternatives.any { it.name.isBlank() || it.controllerId == null || it.battlefieldValue == null }) {
+            fail(subject, "opposing-target alternative is incomplete")
+        }
+        if (audit.policyDisposition.isBlank()) fail(subject, "fair-trade disposition is absent")
+        if (audit.selectionReason.isNullOrBlank()) fail(subject, "selection/rejection reason is absent")
+    }
+}
 
 @Serializable
 internal data class PestGoldfishSummary(

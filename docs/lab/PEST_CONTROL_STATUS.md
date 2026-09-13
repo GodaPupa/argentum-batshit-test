@@ -1,6 +1,6 @@
 # Project Pest Control — Status
 
-- Status: Sample #2 Take 3 observability correction remotely green; stopped at Sample #2 Take 4 seed-readiness gate
+- Status: Sample #2 Take 4 vector frozen before execution
 - Laboratory: Project Pest Control
 - Branch: `pest-control/lab`
 - Validated base: `47882cd645caf126afee6cf13a65909806fa40ab`
@@ -17,6 +17,31 @@
 - Candidate status: proposed Tier-1 architecture only; not approved, constructed, or run
 
 ## Goldfish Sample #2 independent replication authorization
+
+### Sample #2 Take 4 authorization and freeze
+
+The Take 3 observability correction gate is formally accepted. Implementation
+`e316117ee71b30b170e241c8eb110bf8d4d20117` is green in CI #224 and final documentation head
+`aeb0df41c25c762acd37f2abf301f612fa7c2c28` is green in CI #225. Take 3 remains rejected permanently;
+its full vector is retired and hard-disabled, and Games 13 and 14 remain historically unclassifiable
+rather than policy failures.
+
+After explicit authorization, a new ordered 30-seed Take 4 vector was deterministically derived and
+frozen before Game 1. A read-only collision audit covered all 40 fetched local, remote, and pull-
+request refs (24 distinct tip trees), 548 seed-category path instances, 103 unique seed-category
+blobs, 73,693 seed/category-bearing lines, and 1,692 normalized positive `Long` values. Overlap is
+zero. The vector SHA-256 is
+`9f53ae30fd233bc8a980163aff9a7df1d6b41095356072e520a2cad16f97a7ad`; its derivation, audit scope,
+and immutable execution contract are recorded in
+`docs/experiments/pest-control/goldfish-sample-2-take-4-seed-freeze.md`.
+
+Take 4 uses exactly the validated Pest Control v1.0 laboratory configuration, Sample #1 metric set,
+and complete Take 3 observability schema. Before gameplay can be interpreted, the machine-readable
+artifact must pass a predeclared completeness gate covering every sequencing evaluation and every
+friendly-removal evaluation or execution. The sample must execute once in frozen order and is rejected
+in full for any clear rules/state, telemetry, observability, mana-provenance, sequencing, or agent-
+policy defect. At this freeze point no Take 4 game has executed. Sample #1 remains the sole accepted
+performance/engine sample, and the challenger remains audit-only and unconstructed.
 
 ### Sample #2 Take 3 authorization and freeze
 
