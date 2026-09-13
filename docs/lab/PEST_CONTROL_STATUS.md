@@ -1,6 +1,6 @@
 # Project Pest Control — Status
 
-- Status: Sample #2 Take 6 vector frozen and unexecuted; awaiting remote-green freeze validation before Game 1
+- Status: Sample #2 Take 6 formally rejected; blocked on separate authorization for Game 18 sequencing/telemetry correction
 - Laboratory: Project Pest Control
 - Branch: `pest-control/lab`
 - Validated base: `47882cd645caf126afee6cf13a65909806fa40ab`
@@ -38,8 +38,24 @@ overlap with every known Pest Control, Batshit Economics, and Project X seed vec
 derivation, ordered vector, hashes, and immutable execution contract are recorded in
 `docs/experiments/pest-control/goldfish-sample-2-take-6-seed-freeze.md`.
 
-No Take 6 game has executed. The frozen-vector/permanent-control guard and the freeze commit must be
-green locally and remotely before the single authorized gameplay invocation.
+Freeze commit `eeb8321d5f0f1dc84cf206a2767ffaaec134ca54` passed CI #234. One preliminary invocation
+failed during Kotlin test compilation and executed zero games. After a clean disabled-state rebuild,
+the single gameplay invocation executed all 30 seeds exactly once in frozen order.
+
+Take 6 is **formally rejected in full**. Game 18 cast Weather, then played an untapped Swamp, then
+cast Blood Researcher. Its preserved land history proves that land → Researcher → Weather was fully
+executable for the same five mana and would have put an additional relevant counter on the second
+Researcher. The detector nevertheless serialized no evaluated candidate, no land-unlocked spell,
+and no missed-superior flag, while separately recording the later Researcher cast. This is a clear
+land-drop sequencing and telemetry defect. No correction is authorized or included.
+
+The Take 6 vector and ordered SHA-256
+`79659bf0a8823c94e288b2df46f246385d02dba236ce3b70f9a4c6dc477eb79b` are permanently retired and
+hard-disabled. The raw artifact and report are quarantined audit history, not performance evidence;
+no pooled analysis is admissible. Complete execution and audit details are in
+`docs/experiments/pest-control/goldfish-sample-2-take-6-rejection-audit.md`. Sample #1 remains the
+sole accepted Pest performance/engine sample. No replacement vector may be generated without new
+authorization.
 
 The Take 5 modal-removal policy correction is accepted as remotely green. Implementation
 `6385a6e79f6bef5ce527129de560131a4dc7d68e` passed CI #232. **SHARED ARGENTUM CHANGE: yes.**

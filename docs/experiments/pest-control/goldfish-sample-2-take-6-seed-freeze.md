@@ -1,7 +1,7 @@
 # Pest Control v1.0 — Goldfish Sample #2 Take 6 Seed Freeze
 
-Status: frozen before Game 1 and unexecuted. This independent replication vector belongs only to
-Project Pest Control.
+Status: executed exactly once and formally rejected. The vector is permanently retired and
+hard-disabled. This independent replication vector belongs only to Project Pest Control.
 
 - Accepted modal-removal implementation: `6385a6e79f6bef5ce527129de560131a4dc7d68e` (CI #232 green)
 - Final validated modal-removal head: `054d606faeca830c3910f52804b0e5c6ba9a05a0` (CI #233 green)
@@ -42,3 +42,19 @@ observability, mana-provenance, sequencing, or agent-policy defect rejects the f
 Sample #1 remains the sole accepted Pest Control performance/engine sample. Every rejected Sample #2
 vector through Take 5 remains permanently retired and hard-disabled. Pest Control v1.0 remains exact,
 and the challenger remains audit-only and unconstructed.
+
+## Post-execution disposition
+
+Freeze head `eeb8321d5f0f1dc84cf206a2767ffaaec134ca54` passed CI #234 before Game 1. One preliminary
+invocation failed during Kotlin test compilation and executed zero games. After a clean disabled-
+state rebuild, the single gameplay invocation executed all 30 seeds exactly once in frozen order.
+
+Take 6 is formally rejected for a land-drop-aware Weather sequencing defect in Game 18. The trace
+proves that the agent could execute land → Blood Researcher → Weather with the same five mana it
+actually used for Weather → land → Blood Researcher, but neither the detector nor policy recognized
+the superior setup-first line. Details are preserved in
+`goldfish-sample-2-take-6-rejection-audit.md`.
+
+The vector may never be replayed, rehabilitated, replaced, compared against, optimized against, or
+reused. Its losslessly compressed raw artifact and human report are quarantined historical records,
+not performance evidence.

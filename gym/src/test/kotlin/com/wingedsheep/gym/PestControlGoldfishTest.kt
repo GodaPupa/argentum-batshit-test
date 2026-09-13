@@ -436,7 +436,7 @@ class PestControlGoldfishTest : FunSpec({
     }
 
     test("Pest Control v1.0 Goldfish Sample 2 Take 6 independent replication").config(
-        enabled = false, // Frozen but unexecuted; enable only for the single authorized invocation after remote-green freeze validation.
+        enabled = false, // Take 6 executed exactly once; vector is permanently retired and must never be replayed.
         timeout = 60.minutes,
     ) {
         val seeds = readSample2Take6PestSeeds()
