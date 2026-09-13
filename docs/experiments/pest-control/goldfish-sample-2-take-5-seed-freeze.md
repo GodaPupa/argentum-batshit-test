@@ -1,7 +1,7 @@
 # Pest Control v1.0 — Goldfish Sample #2 Take 5 Seed Freeze
 
-Status: frozen before Game 1; unexecuted. This independent replication vector belongs only to
-Project Pest Control.
+Status: executed exactly once and formally rejected. The vector is permanently retired and
+hard-disabled. This independent replication vector belongs only to Project Pest Control.
 
 - Accepted observability implementation: `860d2f72b63bac460b90a04a1cc561bbb40ac9a9` (CI #228 green)
 - Final validated observability head: `5152f50b463889c9282c7bf1ea0d6a8484fdeb0e` (CI #229 green)
@@ -37,3 +37,18 @@ observability, mana-provenance, sequencing, or agent-policy defect, rejects the 
 Sample #1 remains the sole accepted Pest Control performance/engine sample. Every rejected Sample #2
 vector through Take 4 remains permanently retired and hard-disabled. Pest Control v1.0 remains exact,
 and the challenger remains audit-only and unconstructed.
+
+## Post-execution disposition
+
+Freeze head `b5ea795833de919f6f94ed314cce6cd8c15dd17a` passed CI #230 before Game 1. One preliminary
+invocation failed during test compilation and executed zero games. After a clean disabled-state
+recompile, the single gameplay invocation executed all 30 seeds exactly once in frozen order.
+
+Take 5 is formally rejected for a general removal-policy coverage defect. Games 2, 26, and 28 used
+Bone Shards on a friendly Carrier Thrall while the modal wrapper prevented the established friendly-
+removal fair-trade policy from applying; each selected audit has negative fair-trade surplus. Details
+are preserved in `goldfish-sample-2-take-5-rejection-audit.md`.
+
+The vector may never be replayed, rehabilitated, replaced, compared against, optimized against, or
+reused. Its losslessly compressed raw artifact and human report are quarantined historical records,
+not performance evidence.

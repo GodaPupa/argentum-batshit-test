@@ -1,6 +1,6 @@
 # Project Pest Control — Status
 
-- Status: Sample #2 Take 5 vector frozen and unexecuted; stopped at pre-execution validation gate
+- Status: Sample #2 Take 5 formally rejected; stopped at policy-correction authorization gate
 - Laboratory: Project Pest Control
 - Branch: `pest-control/lab`
 - Validated base: `47882cd645caf126afee6cf13a65909806fa40ab`
@@ -49,6 +49,39 @@ At this freeze point no Take 5 game has executed. The vector and permanent-contr
 locally and the freeze head must be remotely green before the single authorized execution. Sample #1
 remains the sole accepted performance/engine sample, Pest Control v1.0 remains exact, and the
 challenger remains audit-only and unconstructed.
+
+#### Sample #2 Take 5 disposition
+
+Freeze head `b5ea795833de919f6f94ed314cce6cd8c15dd17a` passed CI #230 before Game 1. A first local
+invocation stopped during Kotlin test compilation and consumed zero seeds. After the identical
+disabled freeze state recompiled green, one forced opt-in invocation executed every seed exactly once
+in frozen CSV order. No seed was rerun, replaced, excluded, or substituted, and no deck, policy,
+telemetry, or mid-sample change occurred.
+
+The audit-completeness gate passed before performance interpretation. The final JSON has the exact
+frozen order and vector hash, zero built-in audit errors, complete structured sequencing records, and
+a selected friendly-removal audit corresponding to each of the five executed friendly removals.
+Rules/state, mana, Weather/Storm, Follow conditions, trigger/counter accounting, Carrier/Scion
+provenance, Ent decisions, bottleneck records, and terminal records are internally clean.
+
+Take 5 is nevertheless **formally rejected in full** for a demonstrated general removal-policy
+coverage defect. Bone Shards' removal effect remains unclassified inside its modal wrapper, so its
+friendly-removal candidates record `policyApplied=false`. Games 2, 26, and 28 selected self-removal
+despite fair-trade surpluses of approximately `-1.155`, `-0.919`, and `-2.074`. Those lines did not
+clear the existing margin for the destroyed permanent, removal resource, mana/additional cost, and
+future interaction. Game 23's Bone Shards line had positive surplus and is not independently judged
+bad; Game 9's Cast Down line applied the policy and cleared its margin. The complete diagnosis is in
+`docs/experiments/pest-control/goldfish-sample-2-take-5-rejection-audit.md`. No policy correction is
+authorized or included.
+
+The Take 5 vector and SHA-256
+`4e239b8b76df587ec3e14f05f564a288480de42abcd681670c7330323631c1f0` are now permanently retired
+and hard-disabled. They may never be replayed, rehabilitated, replaced, compared against, optimized
+against, or reused. The losslessly compressed raw artifact and complete human report are preserved
+under `docs/experiments/pest-control/`; their aggregates are quarantined and are not performance
+evidence. No pooled Sample #1 + Take 5 analysis is admissible. Sample #1 remains the sole accepted
+Pest Control performance/engine sample, Pest Control v1.0 remains exact, and the challenger remains
+audit-only and unconstructed.
 
 ### Sample #2 Take 4 authorization and freeze
 

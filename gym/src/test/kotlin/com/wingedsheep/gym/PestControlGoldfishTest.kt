@@ -385,7 +385,7 @@ class PestControlGoldfishTest : FunSpec({
     }
 
     test("Pest Control v1.0 Goldfish Sample 2 Take 5 independent replication").config(
-        enabled = false, // Frozen pre-execution; enable exactly once only after the freeze head is remotely green.
+        enabled = false, // Take 5 executed exactly once; vector is permanently retired and must never be replayed.
         timeout = 60.minutes,
     ) {
         val seeds = readSample2Take5PestSeeds()
