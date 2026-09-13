@@ -1,6 +1,6 @@
 # Project Pest Control — Status
 
-- Status: Sample #2 Take 7 vector frozen and unexecuted; gameplay requires separate explicit authorization after the freeze head is remotely green
+- Status: Sample #2 Take 7 executed exactly once and rejected in full; vector permanently retired and hard-disabled; stopped pending separate authorization
 - Laboratory: Project Pest Control
 - Branch: `pest-control/lab`
 - Validated base: `47882cd645caf126afee6cf13a65909806fa40ab`
@@ -25,6 +25,33 @@
 - Candidate status: proposed Tier-1 architecture only; not approved, constructed, or run
 
 ## Goldfish Sample #2 independent replication authorization
+
+### Sample #2 Take 7 disposition
+
+Freeze commit `1b80acf203facb0eed3a4ae1ae165a786d1a7253` passed CI #238. From an otherwise clean
+checkout of that exact head, one authorized invocation executed all 30 Take 7 seeds exactly once in
+the committed CSV order. The ordered seed-value SHA-256 remained
+`af294f8238ba796082333994450f6f98d9a5b371e166591ba17c60de76aa7488`, and the permanent-control
+SHA-256 remained `7be61a66e2c7654428043d56b411afb4d406f02dfcc4eb7f15a62295d4e906f5`.
+
+Artifact completeness passed: the final JSON contains 30 distinct completed games in exact order,
+normal engine terminal records, all mandatory sequencing and removal fields (including explicit
+zero/false/empty/null/default values), and a selected `policyApplied=true` record for every executed
+friendly removal. Weather copy accounting, Follow conditions, Researcher/Mascot counters,
+Carrier/Scion provenance, mana/bottleneck telemetry, and terminal records were internally consistent.
+
+Take 7 is **rejected in full**. Ten complete-sequence audits across Games 7, 13, 15, 16, 18, 19,
+22, and 30 found production casting Weather before a validated materially superior setup-first line.
+The affected setup actions were Follow the Lumarets, Cast Down, Chainer's Edict, or Bone Shards;
+Game 30 also preserved the legal land-unlocked Forest → Bone Shards → Weather line. This is a
+clear production-policy/validated-telemetry disagreement under the predeclared whole-block standard.
+No correction is authorized or included, and no pooled analysis is admissible.
+
+The vector is permanently retired and hard-disabled and may never be replayed, rehabilitated,
+replaced, compared against, optimized against, or reused. The raw artifact, report, and detailed
+manual audit are preserved under `docs/experiments/pest-control/`. Sample #1 remains the sole
+accepted Pest Control performance/engine evidence; Pest Control v1.0 remains exact; the challenger
+remains audit-only and unconstructed.
 
 ### Sample #2 Take 6 seed-readiness gate
 
@@ -96,11 +123,9 @@ double-Weather, and Follow regressions passed. The complete AI, Gym/Pest, rules-
 scenario suites passed locally; CI #236 passed the complete remote matrix. All retired Pest gameplay
 runners remained skipped, and no retired seed or Pest gameplay vector executed.
 
-The project is stopped at the Sample #2 Take 7 seed-readiness gate. No Take 7 vector exists or has
-been generated. Pest Control v1.0 remains exact, Sample #1 remains the sole accepted performance/
-engine evidence, and the challenger remains audit-only and unconstructed. Further seed generation,
-gameplay, optimization, challenger construction, and opponent self-play require separate explicit
-authorization.
+At completion of this historical correction gate, the project was stopped at the Sample #2 Take 7
+seed-readiness gate and no Take 7 vector yet existed. Subsequent Take 7 freeze and execution history
+is recorded in the current disposition above.
 
 The Take 5 modal-removal policy correction is accepted as remotely green. Implementation
 `6385a6e79f6bef5ce527129de560131a4dc7d68e` passed CI #232. **SHARED ARGENTUM CHANGE: yes.**

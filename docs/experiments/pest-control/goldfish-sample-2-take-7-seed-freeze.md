@@ -1,7 +1,8 @@
 # Pest Control v1.0 — Goldfish Sample #2 Take 7 Seed Freeze
 
-Status: frozen and unexecuted. This independent replication vector belongs only to Project Pest
-Control. Gameplay requires separate explicit authorization after the freeze head is remotely green.
+Status: executed exactly once and permanently retired. This independent replication vector belongs
+only to Project Pest Control and must never be replayed, rehabilitated, replaced, compared against,
+or reused.
 
 - Accepted same-turn sequencing/telemetry implementation:
   `2cbfa7cd4c94fc6007288a27e2427183e9a158a8` (CI #236 green)
@@ -41,3 +42,23 @@ Sample #1 remains the sole accepted Pest Control performance/engine sample. Ever
 vector through Take 6 remains permanently retired and hard-disabled. Pest Control v1.0 remains exact,
 and the challenger remains audit-only and unconstructed. No Pest gameplay vector executed during
 this seed-readiness and freeze phase.
+
+## One-time execution disposition
+
+Freeze commit `1b80acf203facb0eed3a4ae1ae165a786d1a7253` passed CI #238 before execution. One
+authorized invocation executed all 30 seeds exactly once in frozen CSV order. No invocation failed
+before or during gameplay, no seed was replayed, and no replacement, exclusion, substitution,
+reorder, deck, policy, telemetry, schema, mulligan, horizon, or execution-condition change occurred.
+
+The final artifact contains the exact 30-seed order and ordered-vector SHA-256, 30 distinct completed
+games, 30 normal engine terminal records, complete required JSON fields, and selected policy audits
+for every executed friendly removal. The complete audit nevertheless found ten clear same-turn
+sequencing failures across Games 7, 13, 15, 16, 18, 19, 22, and 30. In each case the validated
+complete-sequence comparison marked a setup-before-Weather line materially superior while production
+selected Weather first. Under the predeclared whole-block standard, Take 7 is rejected in full and
+its descriptive aggregates are quarantined provisional results, not performance evidence.
+
+The complete execution and audit record is
+`docs/experiments/pest-control/goldfish-sample-2-take-7-rejection-audit.md`. The losslessly compressed
+raw JSON and generated human report are preserved beside it. Sample #1 remains the sole accepted
+Pest Control performance/engine sample.
