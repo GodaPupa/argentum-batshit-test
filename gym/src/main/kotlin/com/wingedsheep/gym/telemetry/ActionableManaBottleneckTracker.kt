@@ -5,6 +5,9 @@ import com.wingedsheep.ai.engine.SimulationResult
 import com.wingedsheep.ai.engine.knowledge.IntentCatalog
 import com.wingedsheep.ai.engine.knowledge.IntentTag
 import com.wingedsheep.engine.core.PlayLand
+import com.wingedsheep.engine.core.CastSpell
+import com.wingedsheep.engine.handlers.PredicateContext
+import com.wingedsheep.engine.handlers.effects.BattlefieldFilterUtils
 import com.wingedsheep.engine.mechanics.mana.ManaSolver
 import com.wingedsheep.engine.registry.CardRegistry
 import com.wingedsheep.engine.state.GameState
@@ -47,7 +50,9 @@ class ActionableManaBottleneckTracker(private val registry: CardRegistry) {
 
         for (cardId in state.getZone(playerId, Zone.HAND)) {
             val card = state.getEntity(cardId)?.get<CardComponent>() ?: continue
-            if (card.isLand || card.manaCost.isEmpty() || !isStrategicallyRelevant(state, playerId, card)) continue
+            if (card.isLand || card.manaCost.isEmpty() ||
+                !isStrategicallyRelevant(state, playerId, cardId, card)
+            ) continue
             if (candidateStates.any { solver.canPay(it, playerId, card.manaCost) }) continue
 
             val taplandState = landStates.firstOrNull { possible ->
@@ -81,14 +86,34 @@ class ActionableManaBottleneckTracker(private val registry: CardRegistry) {
             PossibleLandState(result.state, play.cardId)
         }
 
-    private fun isStrategicallyRelevant(state: GameState, playerId: EntityId, card: CardComponent): Boolean {
+    private fun isStrategicallyRelevant(
+        state: GameState,
+        playerId: EntityId,
+        cardId: EntityId,
+        card: CardComponent,
+    ): Boolean {
         if (card.isPermanent) return true
+        val opponents = state.turnOrder.filter { state.isOpponentOf(it, playerId) }
+        intents.pureForcedSacrificeEffects(card.name)?.let { effects ->
+            return effects.any { effect ->
+                opponents.any { opponentId ->
+                    BattlefieldFilterUtils.findMatchingOnBattlefield(
+                        state,
+                        effect.filter.youControl(),
+                        PredicateContext(controllerId = opponentId, sourceId = cardId),
+                    ).isNotEmpty()
+                }
+            }
+        }
         val intent = intents.forName(card.name) ?: return true
         val answerTags = setOf(IntentTag.REMOVAL, IntentTag.EXILE_REMOVAL, IntentTag.NEUTRALIZE, IntentTag.FIGHT)
         val isPureAnswer = intent.tags.isNotEmpty() && intent.tags.all { it in answerTags }
         if (!isPureAnswer) return true
-        return state.turnOrder.filter { state.isOpponentOf(it, playerId) }
-            .any { state.controlledBattlefield(it).isNotEmpty() }
+        val opposingPermanents = opponents.flatMap(state::controlledBattlefield).toSet()
+        return simulator.getLegalActions(state, playerId).any { legal ->
+            val cast = legal.action as? CastSpell ?: return@any false
+            cast.cardId == cardId && legal.validTargets.orEmpty().any(opposingPermanents::contains)
+        }
     }
 
     private data class PossibleLandState(val state: GameState, val playedLandId: EntityId?)

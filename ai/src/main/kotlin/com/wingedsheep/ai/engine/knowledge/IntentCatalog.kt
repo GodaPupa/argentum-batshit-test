@@ -86,12 +86,21 @@ class IntentCatalog private constructor(private val registry: CardRegistry?) {
      * caller never suppresses a separate concrete benefit merely because an edict is present.
      */
     fun isPureForcedSacrificeSpell(cardName: String, faceIndex: Int? = null): Boolean {
-        val definition = registry?.getCard(cardName) ?: return false
+        return pureForcedSacrificeEffects(cardName, faceIndex) != null
+    }
+
+    /** The selected face's forced-sacrifice leaves, or null when any other effect is present. */
+    fun pureForcedSacrificeEffects(
+        cardName: String,
+        faceIndex: Int? = null,
+    ): List<ForceSacrificeEffect>? {
+        val definition = registry?.getCard(cardName) ?: return null
         val effect = faceIndex?.let { definition.cardFaces.getOrNull(it)?.script?.spellEffect }
             ?: definition.script.spellEffect
-            ?: return false
+            ?: return null
         val leaves = EffectWalker.leaves(effect)
-        return leaves.isNotEmpty() && leaves.all { it is ForceSacrificeEffect }
+        if (leaves.isEmpty() || leaves.any { it !is ForceSacrificeEffect }) return null
+        return leaves.filterIsInstance<ForceSacrificeEffect>()
     }
 
     /**
