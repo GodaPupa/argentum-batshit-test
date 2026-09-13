@@ -22,6 +22,7 @@ import com.wingedsheep.ai.insight.AiDecisionInsight
 import com.wingedsheep.ai.insight.AiDecisionKind
 import com.wingedsheep.ai.insight.AiInsightLabels
 import com.wingedsheep.ai.insight.AiInsightSink
+import com.wingedsheep.ai.insight.FriendlyRemovalAudit
 import com.wingedsheep.ai.insight.CombatPlan
 import com.wingedsheep.ai.insight.CombatPlanTrace
 import com.wingedsheep.engine.core.ActivateAbility
@@ -218,6 +219,7 @@ class Strategist(
         // the real option it is rather than as a separately-computed threshold.
         val leaves = mutableListOf<LegalAction>()
         val leafStates = mutableListOf<GameState>()
+        val leafEvents = mutableListOf<List<com.wingedsheep.engine.core.GameEvent>>()
         // Local testing mode only: the candidates that never reached scoring. Reading the panel
         // without them makes the AI look like it never considered a play it in fact discarded.
         val dropped = if (insightSink != null) mutableListOf<AiActionOption>() else null
@@ -233,6 +235,7 @@ class Strategist(
             } else {
                 passSimulation.state
             }
+            leafEvents += passSimulation.events
         }
         for (action in affordable) {
             searched++
@@ -257,6 +260,7 @@ class Strategist(
             if (usable) {
                 leaves += action.copy(action = materialized)
                 leafStates += simulation.state
+                leafEvents += simulation.events
             } else {
                 val illegal = simulation is SimulationResult.Illegal
                 dropped?.add(
@@ -311,6 +315,7 @@ class Strategist(
                     playerId,
                     leafScores[i],
                     passScore,
+                    leafEvents[i],
                 ),
             )
         }
@@ -411,6 +416,15 @@ class Strategist(
                 advantage = adjustment.score - adjustedPassScore,
                 chosen = action === chosenAction,
                 note = adjustment.note,
+                friendlyRemovalAudit = adjustment.friendlyRemovalAudit?.copy(
+                    selected = action === chosenAction,
+                    selectionReason = when {
+                        action === chosenAction -> "selected: highest adjusted option above passing"
+                        adjustment.friendlyRemovalAudit.policyDisposition.startsWith("reject") ->
+                            adjustment.friendlyRemovalAudit.policyDisposition
+                        else -> "not selected: another option or holding had greater adjusted value"
+                    },
+                ),
                 action = action.action,
             )
         }
@@ -667,8 +681,28 @@ class Strategist(
         playerId: EntityId,
         leafScore: Double,
         passScore: Double,
+        leafEvents: List<com.wingedsheep.engine.core.GameEvent>,
     ): AdjustedScore {
         val cardName = resolveCardName(state, action) ?: return AdjustedScore(leafScore)
+        val cast = action.action as? CastSpell
+        val card = cast?.let { state.getEntity(it.cardId)?.get<CardComponent>() }
+        val intent = cast?.let { spell ->
+            spell.faceIndex?.let { intents.forFaceIndex(cardName, it) } ?: intents.forName(cardName)
+        }
+        val shouldHoldFriendlyRemoval = cast != null && card != null && intent != null &&
+            SelfRemovalValuation.shouldHold(
+                state, leafState, playerId, intent, card, cast, leafScore, passScore,
+                boardPresenceWeight,
+            )
+        val friendlyRemovalAudit = if (insightSink != null && cast != null && card != null && intent != null) {
+            SelfRemovalValuation.assess(
+                state, leafState, leafEvents, playerId, intent, card, cast, action.manaCostString,
+                action.validTargets,
+                leafScore, passScore, boardPresenceWeight,
+            )
+        } else null
+        fun adjusted(score: Double, note: String? = null) =
+            AdjustedScore(score, note, friendlyRemovalAudit)
 
         // Phase 6: what the board looks like after this resolves is only half the question; the
         // other half is whether this was the window — and, for removal, whether this was the target
@@ -685,7 +719,7 @@ class Strategist(
         if (timing is TimingVerdict.NoWindow) {
             // The card does nothing here, so nothing the simulation reports should make it beat
             // passing. See [TimingVerdict.NoWindow] for why this is a floor and not a penalty.
-            return AdjustedScore(passScore - 1.0, "hold policy: wrong window — floored below passing")
+            return adjusted(passScore - 1.0, "hold policy: wrong window — floored below passing")
         }
         if (shouldHoldLandSacrifice(state, action.action, playerId, cardName)) {
             // A finite discount was not strong enough here: rollout damage and response-window
@@ -693,7 +727,7 @@ class Strategist(
             // spend two Mountains on speculative face damage. This is a timing decision, not a
             // small material adjustment, so preserve the lands by flooring the candidate below
             // passing until the cast is lethal, near-lethal, or answers a real engine.
-            return AdjustedScore(
+            return adjusted(
                 passScore - 1.0,
                 "land-sacrifice policy: low-value conversion — floored below passing",
             )
@@ -701,35 +735,25 @@ class Strategist(
         if (shouldHoldNullForcedSacrifice(state, leafState, action.action, playerId, cardName)) {
             // An edict without a sacrifice is legal, but a pure one has bought no strategic
             // result. Keep legality in the engine and value the result here, below passing.
-            return AdjustedScore(
+            return adjusted(
                 passScore - 1.0,
                 "forced-sacrifice policy: no opposing permanent was sacrificed — floored below passing",
             )
         }
-        val cast = action.action as? CastSpell
-        val card = cast?.let { state.getEntity(it.cardId)?.get<CardComponent>() }
-        val intent = cast?.let { spell ->
-            spell.faceIndex?.let { intents.forFaceIndex(cardName, it) } ?: intents.forName(cardName)
-        }
-        if (holdRemovalForBetterTargets && cast != null && card != null && intent != null &&
-            SelfRemovalValuation.shouldHold(
-                state, leafState, playerId, intent, card, cast, leafScore, passScore,
-                boardPresenceWeight,
-            )
-        ) {
-            return AdjustedScore(
+        if (holdRemovalForBetterTargets && shouldHoldFriendlyRemoval) {
+            return adjusted(
                 passScore - 1.0,
                 "removal policy: friendly target lacks sufficient concrete downstream value",
             )
         }
         if (shouldDeferForLandUnlockedSequence(state, action.action, playerId)) {
-            return AdjustedScore(
+            return adjusted(
                 passScore - 1.0,
                 "sequencing policy: legal land play unlocks a superior same-turn line",
             )
         }
         if (shouldDeferForExecutableExpiringConditionSequence(state, action.action, playerId)) {
-            return AdjustedScore(
+            return adjusted(
                 passScore - 1.0,
                 "sequencing policy: executable expiring-condition line should begin with its enabler",
             )
@@ -738,7 +762,7 @@ class Strategist(
             // Raw life has board-score value even when no game object can currently exploit it.
             // A pure gain spell with no pressure, payoff, or enabled follow-up is therefore a
             // legal but strategically null resource conversion, and should remain in hand.
-            return AdjustedScore(
+            return adjusted(
                 passScore - 1.0,
                 "lifegain policy: no pressure or concrete payoff — floored below passing",
             )
@@ -747,7 +771,7 @@ class Strategist(
             // Sacrificing a permanent is an irreversible strategic cost, even when the ability is
             // a mana ability. Require an immediate, newly executable productive use rather than
             // consuming the body merely because mana can be generated.
-            return AdjustedScore(
+            return adjusted(
                 passScore - 1.0,
                 "sacrifice-mana policy: no productive use unlocked — floored below passing",
             )
@@ -770,7 +794,7 @@ class Strategist(
             ?.let { "structural sequencing %+.2f".format(it) }
 
         val advisor = advisorRegistry.getAdvisor(cardName)
-            ?: return AdjustedScore(
+            ?: return adjusted(
                 leafScore + timingDelta + sacrificeWindowDelta + sequencing,
                 listOfNotNull(timingNote, sacrificeWindowNote, sequencingNote)
                     .joinToString("; ").ifEmpty { null },
@@ -787,7 +811,7 @@ class Strategist(
         )
         val override = advisor.evaluateCast(context)
         val advisorNote = override?.let { "${advisor::class.simpleName} replaced the board score" }
-        return AdjustedScore(
+        return adjusted(
             (override ?: leafScore) + timingDelta + sacrificeWindowDelta + sequencing,
             listOfNotNull(advisorNote, timingNote, sacrificeWindowNote, sequencingNote)
                 .joinToString("; ").ifEmpty { null },
@@ -1514,7 +1538,11 @@ class Strategist(
      * The [note] exists for the local testing mode: a candidate the AI passed over despite a strong
      * board score is only explicable if the panel can say *which* policy floored it.
      */
-    private data class AdjustedScore(val score: Double, val note: String? = null)
+    private data class AdjustedScore(
+        val score: Double,
+        val note: String? = null,
+        val friendlyRemovalAudit: FriendlyRemovalAudit? = null,
+    )
 
     /**
      * Pick the targets the AI actually commits to for a chosen targeted action, by simulation

@@ -6,6 +6,7 @@ import com.wingedsheep.ai.engine.EngineAiPlayerController
 import com.wingedsheep.ai.llm.BottomCardsInfo
 import com.wingedsheep.ai.llm.CardSummary
 import com.wingedsheep.ai.llm.MulliganInfo
+import com.wingedsheep.ai.insight.FriendlyRemovalAudit
 import com.wingedsheep.engine.core.*
 import com.wingedsheep.engine.registry.CardRegistry
 import com.wingedsheep.engine.mechanics.mana.ManaSolver
@@ -24,6 +25,7 @@ import com.wingedsheep.gym.telemetry.ActionableManaBottleneckTracker
 import com.wingedsheep.gym.telemetry.ManaConstraint
 import com.wingedsheep.gym.telemetry.LandUnlockedSpell
 import com.wingedsheep.gym.telemetry.PreSpellSetupTelemetry
+import com.wingedsheep.gym.telemetry.PreSpellSetupEvaluation
 import com.wingedsheep.gym.telemetry.SacrificeManaTrace
 import com.wingedsheep.gym.telemetry.SacrificeManaUse
 import com.wingedsheep.sdk.core.Step
@@ -415,6 +417,9 @@ internal data class PestWeatherCast(
     val bestValidatedPreWeatherSetupSequence: List<String>?,
     val weatherCastBeforeSuperiorSetup: Boolean,
     val usefulSpellCastLaterThisTurn: String?,
+    val stillUnexecutableAfterLegalLandPlay: List<LandUnlockedSpell> = emptyList(),
+    val executableButNotMateriallySuperior: List<List<String>> = emptyList(),
+    val evaluatedSetupSequences: List<PreSpellSetupEvaluation> = emptyList(),
 )
 
 @Serializable
@@ -495,6 +500,7 @@ internal data class PestGoldfishGame(
     val generousEntCastTurns: List<Int>,
     val followCasts: List<PestFollowCast>,
     val weatherCasts: List<PestWeatherCast>,
+    val friendlyRemovalAudits: List<FriendlyRemovalAudit> = emptyList(),
     val pureLifeGainActivations: List<PestPureLifeGainActivation>,
     val turnActions: List<PestTurnAction>,
     val creatureEntries: List<PestCreatureEntry>,
@@ -622,6 +628,9 @@ private data class MutableWeather(
     val spellsExecutableAfterLegalLandPlay: List<LandUnlockedSpell>,
     val bestValidatedPreWeatherSetupSequence: List<String>?,
     val weatherCastBeforeSuperiorSetup: Boolean,
+    val stillUnexecutableAfterLegalLandPlay: List<LandUnlockedSpell>,
+    val executableButNotMateriallySuperior: List<List<String>>,
+    val evaluatedSetupSequences: List<PreSpellSetupEvaluation>,
     val actionIndex: Int,
     var observedCopies: Int = 0,
 )
@@ -707,7 +716,13 @@ internal fun runPestGoldfish(registry: CardRegistry, seed: Long, gameNumber: Int
     )
 
     val environment = GameEnvironment.create(registry).also { it.restore(state, init.playerIds) }
-    val pest = AIPlayer.create(registry, pestId, AiProfile.PRODUCTION_CANDIDATE_EXPIRING)
+    val friendlyRemovalAudits = mutableListOf<FriendlyRemovalAudit>()
+    val pest = AIPlayer.create(
+        registry, pestId, AiProfile.PRODUCTION_CANDIDATE_EXPIRING,
+        insightSink = { _, insight ->
+            insight.options.mapNotNullTo(friendlyRemovalAudits) { it.friendlyRemovalAudit }
+        },
+    )
     val blank = AIPlayer.create(registry, blankId, AiProfile.PRODUCTION_CANDIDATE_EXPIRING)
     val bottleneckTracker = ActionableManaBottleneckTracker(registry)
     val sacrificeManaTrace = SacrificeManaTrace()
@@ -921,6 +936,15 @@ internal fun runPestGoldfish(registry: CardRegistry, seed: Long, gameNumber: Int
                         spellsExecutableAfterLegalLandPlay = setup.executableAfterLegalLandPlay,
                         bestValidatedPreWeatherSetupSequence = setup.bestValidatedSetupSequence,
                         weatherCastBeforeSuperiorSetup = setup.focalCastBeforeSuperiorSetup,
+                        stillUnexecutableAfterLegalLandPlay = setup.stillUnexecutableAfterLegalLandPlay,
+                        executableButNotMateriallySuperior = setup.executableButNotMateriallySuperior,
+                        evaluatedSetupSequences = setup.evaluatedSequences.map { evaluation ->
+                            evaluation.copy(
+                                turn = turn,
+                                actualLineTaken = turnActions.dropLast(1).filter { it.turn == turn }
+                                    .map(PestTurnAction::description) + "cast Weather the Storm",
+                            )
+                        },
                         actionIndex = turnActions.lastIndex,
                     )
                 }
@@ -1087,6 +1111,9 @@ internal fun runPestGoldfish(registry: CardRegistry, seed: Long, gameNumber: Int
             weather.bestValidatedPreWeatherSetupSequence,
             weather.weatherCastBeforeSuperiorSetup,
             usefulLater,
+            weather.stillUnexecutableAfterLegalLandPlay,
+            weather.executableButNotMateriallySuperior,
+            weather.evaluatedSetupSequences,
         )
     }
     val totalLife = lifeEvents.sumOf(PestLifeEvent::amount)
@@ -1136,6 +1163,7 @@ internal fun runPestGoldfish(registry: CardRegistry, seed: Long, gameNumber: Int
         entCasts,
         follows,
         weatherCasts,
+        friendlyRemovalAudits,
         pureLifeGainActivations,
         turnActions,
         creatureEntries,

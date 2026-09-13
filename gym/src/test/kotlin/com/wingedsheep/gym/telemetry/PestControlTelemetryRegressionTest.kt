@@ -6,7 +6,12 @@ import com.wingedsheep.engine.support.ScenarioTestBase
 import com.wingedsheep.mtg.sets.tokens.PredefinedTokens
 import io.kotest.assertions.withClue
 import io.kotest.matchers.collections.shouldContain
+import io.kotest.matchers.collections.shouldNotBeEmpty
+import io.kotest.matchers.booleans.shouldBeTrue
 import io.kotest.matchers.shouldBe
+import io.kotest.matchers.string.shouldContain
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 
 class PestControlTelemetryRegressionTest : ScenarioTestBase() {
     init {
@@ -179,6 +184,22 @@ class PestControlTelemetryRegressionTest : ScenarioTestBase() {
                 "cast Weather the Storm",
             )
             snapshot.focalCastBeforeSuperiorSetup shouldBe true
+            val audit = snapshot.evaluatedSequences.single {
+                it.relevantAction == "Carrier Thrall" && it.materiallySuperior
+            }
+            audit.classifications shouldContain PreSpellSetupClassification.LAND_UNLOCKED
+            audit.classifications shouldContain PreSpellSetupClassification.GENUINE_MISSED_SUPERIOR_SEQUENCE
+            audit.landEntersTapped shouldBe false
+            audit.steps.map(SetupActionAudit::action) shouldBe listOf(
+                "play Swamp", "cast Carrier Thrall", "cast Weather the Storm",
+            )
+            audit.steps.drop(1).all { it.manaCost != null && it.resourcesAfter != null }.shouldBeTrue()
+            audit.steps.flatMap(SetupActionAudit::paymentSources).isNotEmpty().shouldBeTrue()
+            val json = Json.encodeToString(snapshot)
+            json shouldContain "evaluatedSequences"
+            json shouldContain "GENUINE_MISSED_SUPERIOR_SEQUENCE"
+            json shouldContain "paymentSources"
+            json shouldContain "floatingMana"
         }
 
         test("pre-spell telemetry reports a genuinely current setup without inventing a land dependency") {
@@ -200,6 +221,8 @@ class PestControlTelemetryRegressionTest : ScenarioTestBase() {
                 "cast Carrier Thrall",
                 "cast Weather the Storm",
             )
+            snapshot.evaluatedSequences.single { it.materiallySuperior }.classifications shouldContain
+                PreSpellSetupClassification.CURRENTLY_EXECUTABLE
         }
 
         test("pre-spell telemetry separates a present sequence that a tapped land still cannot fund") {
@@ -219,6 +242,12 @@ class PestControlTelemetryRegressionTest : ScenarioTestBase() {
                 LandUnlockedSpell("Jungle Hollow", "Carrier Thrall"),
             )
             snapshot.focalCastBeforeSuperiorSetup shouldBe false
+            val audit = snapshot.evaluatedSequences.single {
+                PreSpellSetupClassification.STILL_UNEXECUTABLE_AFTER_LAND in it.classifications
+            }
+            audit.landEntersTapped shouldBe true
+            audit.materiallySuperior shouldBe false
+            audit.steps.last().resourcesAfter shouldBe null
         }
 
         listOf(
@@ -247,6 +276,12 @@ class PestControlTelemetryRegressionTest : ScenarioTestBase() {
                         listOf("play Swamp", "cast Weather the Storm")
                     snapshot.bestValidatedSetupSequence shouldBe null
                     snapshot.focalCastBeforeSuperiorSetup shouldBe false
+                    val audits = snapshot.evaluatedSequences.filter { it.relevantAction == "Weather the Storm" }
+                    audits.shouldNotBeEmpty()
+                    audits.all {
+                        PreSpellSetupClassification.EXECUTABLE_BUT_NOT_MATERIALLY_SUPERIOR in it.classifications &&
+                            !it.materiallySuperior
+                    }.shouldBeTrue()
                 }
             }
         }

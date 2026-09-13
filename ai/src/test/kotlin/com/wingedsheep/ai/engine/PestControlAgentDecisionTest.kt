@@ -18,8 +18,13 @@ import io.kotest.assertions.withClue
 import io.kotest.matchers.booleans.shouldBeFalse
 import io.kotest.matchers.booleans.shouldBeTrue
 import io.kotest.matchers.shouldBe
+import io.kotest.matchers.shouldNotBe
+import io.kotest.matchers.doubles.shouldBeNegative
+import io.kotest.matchers.doubles.shouldBePositive
 import io.kotest.matchers.string.shouldContain
 import io.kotest.matchers.types.shouldBeInstanceOf
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 
 /**
  * Deterministic decision probes for Project Pest Control's rules-complete card pool.
@@ -39,15 +44,20 @@ class PestControlAgentDecisionTest : ScenarioTestBase() {
 
     /** Capture the production decision's own ranking so a failed strategic probe is diagnostic. */
     private fun chooseWithReport(game: TestGame): Pair<GameAction, String> {
+        val (action, captured) = chooseWithInsights(game)
+        val report = captured.lastOrNull()?.options.orEmpty().joinToString(" | ") { option ->
+            "${option.label}: score=${option.score}, raw=${option.rawScore}, note=${option.note}"
+        }.ifEmpty { "no Strategist insight was captured" }
+        return action to report
+    }
+
+    private fun chooseWithInsights(game: TestGame): Pair<GameAction, List<com.wingedsheep.ai.insight.AiDecisionInsight>> {
         val captured = mutableListOf<com.wingedsheep.ai.insight.AiDecisionInsight>()
         val action = AIPlayer.create(
             cardRegistry, game.player1Id, profile,
             insightSink = { _, insight -> captured += insight },
         ).chooseAction(game.state)
-        val report = captured.lastOrNull()?.options.orEmpty().joinToString(" | ") { option ->
-            "${option.label}: score=${option.score}, raw=${option.rawScore}, note=${option.note}"
-        }.ifEmpty { "no Strategist insight was captured" }
-        return action to report
+        return action to captured
     }
 
     private fun cardName(game: TestGame, id: EntityId): String? =
@@ -765,6 +775,20 @@ class PestControlAgentDecisionTest : ScenarioTestBase() {
             val (chosen, report) = chooseWithReport(game)
             withClue(report) { chosen.shouldBeInstanceOf<PassPriority>() }
             report shouldContain "friendly target lacks sufficient concrete downstream value"
+
+            val (_, insights) = chooseWithInsights(game)
+            val audit = insights.last().options.mapNotNull { it.friendlyRemovalAudit }.first()
+            audit.targetName shouldBe "Carrier Thrall"
+            audit.targetControllerId shouldBe game.player1Id
+            audit.targetBattlefieldValueBefore.shouldBePositive()
+            audit.passHoldValue.isFinite().shouldBeTrue()
+            audit.netVersusHold.isFinite().shouldBeTrue()
+            audit.policyDisposition shouldContain "reject"
+            audit.selectionReason shouldContain "reject"
+            val json = Json.encodeToString(insights.last())
+            json shouldContain "friendlyRemovalAudit"
+            json shouldContain "targetBattlefieldValueBefore"
+            json shouldContain "requiredFairTradeMargin"
         }
 
         test("Game 29 reconstruction holds removal when a friendly death has no converted value") {
@@ -822,6 +846,49 @@ class PestControlAgentDecisionTest : ScenarioTestBase() {
             val (chosen, report) = chooseWithReport(game)
             val action = withClue(report) { chosen.shouldBeInstanceOf<CastSpell>() }
             withClue(report) { chosenPermanent(action) shouldBe carrier }
+
+            val (_, insights) = chooseWithInsights(game)
+            val audit = insights.last().options.mapNotNull { it.friendlyRemovalAudit }.first { it.selected }
+            audit.deathTriggersCreated.isNotEmpty().shouldBeTrue()
+            audit.resourcesCreated.any { it.name == "Eldrazi Scion" }.shouldBeTrue()
+            audit.resourceTransitionBenefit.shouldBeTrue()
+            audit.fairTradeSurplus.shouldBePositive()
+        }
+
+        test("deterministic lethal self-removal remains available and is fully audited") {
+            val game = seeded()
+                .withTurnNumber(15)
+                .withLandsOnBattlefield(1, "Swamp", 2)
+                .withCardInHand(1, "Cast Down")
+                .withCardOnBattlefield(1, "Grizzly Bears")
+                .withCardOnBattlefield(1, "Blood Artist")
+                .withLifeTotal(2, 1)
+                .build()
+
+            val (_, insights) = chooseWithInsights(game)
+            val lethal = insights.last().options.mapNotNull { it.friendlyRemovalAudit }
+                .firstOrNull { it.deterministicLethal }
+            withClue(insights.last()) { lethal shouldNotBe null }
+            lethal!!.policyDisposition shouldContain "deterministic lethal"
+        }
+
+        test("friendly removal records additional resource costs that erase death value") {
+            val game = seeded()
+                .withTurnNumber(15)
+                .withLandsOnBattlefield(1, "Swamp", 2)
+                .withCardInHand(1, "Cast Down")
+                .withCardOnBattlefield(1, "Carrier Thrall")
+                .withCardOnBattlefield(1, "Essence Warden")
+                .build()
+
+            val (_, insights) = chooseWithInsights(game)
+            val audits = insights.last().options.mapNotNull { it.friendlyRemovalAudit }
+            val costly = audits.firstOrNull { it.resourcesCreated.any { resource -> resource.name == "Eldrazi Scion" } }
+            withClue(insights.last()) { costly shouldNotBe null }
+            costly!!.policyDisposition shouldContain "reject"
+            costly.manaCost shouldBe "{1}{B}"
+            costly.manaSources.size shouldBe 2
+            costly.fairTradeSurplus.shouldBeNegative()
         }
 
         test("Chainer's Edict answers hexproof when targeted removal cannot") {

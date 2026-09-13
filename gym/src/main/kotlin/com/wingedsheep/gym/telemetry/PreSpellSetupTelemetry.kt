@@ -10,6 +10,8 @@ import com.wingedsheep.engine.registry.CardRegistry
 import com.wingedsheep.engine.state.GameState
 import com.wingedsheep.engine.state.components.battlefield.TappedComponent
 import com.wingedsheep.engine.state.components.identity.CardComponent
+import com.wingedsheep.engine.state.components.player.LifeGainedThisTurnComponent
+import com.wingedsheep.engine.state.components.player.ManaPoolComponent
 import com.wingedsheep.sdk.model.EntityId
 import kotlinx.serialization.Serializable
 
@@ -17,6 +19,63 @@ import kotlinx.serialization.Serializable
 data class LandUnlockedSpell(
     val land: String,
     val spell: String,
+)
+
+@Serializable
+enum class PreSpellSetupClassification {
+    CURRENTLY_EXECUTABLE,
+    LAND_UNLOCKED,
+    STILL_UNEXECUTABLE_AFTER_LAND,
+    EXECUTABLE_BUT_NOT_MATERIALLY_SUPERIOR,
+    GENUINE_MISSED_SUPERIOR_SEQUENCE,
+}
+
+// SHARED ARGENTUM CHANGE: yes — generic counterfactual sequencing audit vocabulary.
+
+@Serializable
+data class SetupManaSource(
+    val id: EntityId,
+    val name: String,
+    val tapped: Boolean,
+)
+
+@Serializable
+data class SetupResourceState(
+    val manaSources: List<SetupManaSource>,
+    val untappedManaSourceCount: Int,
+    val floatingMana: Map<String, Int>,
+    val handSize: Int,
+    val spellsCastThisTurn: Int,
+    val temporaryConditions: List<String>,
+)
+
+@Serializable
+data class SetupActionAudit(
+    val action: String,
+    val cardId: EntityId? = null,
+    val manaCost: String? = null,
+    val coloredRequirements: String? = null,
+    val targets: List<EntityId> = emptyList(),
+    val paymentSources: List<SetupManaSource> = emptyList(),
+    val resourcesBefore: SetupResourceState,
+    val resourcesAfter: SetupResourceState? = null,
+)
+
+@Serializable
+data class PreSpellSetupEvaluation(
+    val turn: Int? = null,
+    val relevantAction: String,
+    val proposedLandPlay: String? = null,
+    val landEntersTapped: Boolean? = null,
+    val classifications: List<PreSpellSetupClassification>,
+    val proposedActionOrder: List<String>,
+    val steps: List<SetupActionAudit>,
+    val actualLineTaken: List<String> = emptyList(),
+    val counterfactualLineEvaluated: List<String>,
+    val completedLineScore: Double? = null,
+    val reorderedLineScore: Double? = null,
+    val materiallySuperior: Boolean,
+    val reason: String,
 )
 
 /** Actionable setup information captured immediately before a focal spell is cast. */
@@ -28,6 +87,7 @@ data class PreSpellSetupSnapshot(
     val executableButNotMateriallySuperior: List<List<String>> = emptyList(),
     val bestValidatedSetupSequence: List<String>?,
     val focalCastBeforeSuperiorSetup: Boolean,
+    val evaluatedSequences: List<PreSpellSetupEvaluation> = emptyList(),
 )
 
 /**
@@ -49,19 +109,19 @@ class PreSpellSetupTelemetry(private val registry: CardRegistry) {
             val result = simulator.simulate(state, play)
             val landState = result.usableState() ?: return@mapNotNull null
             val landName = name(state, play.cardId)
-            Triple(landState, landName, play.cardId)
+            LandOutcome(state, landState, landName, play.cardId)
         }
-        val afterLand = landStates.flatMap { (landState, landName, landId) ->
-            setupLines(landState, playerId, focalCardId, landName, landId)
+        val afterLand = landStates.flatMap { land ->
+            setupLines(land.after, playerId, focalCardId, land.name, land.id, land)
         }
-        val stillUnexecutable = landStates.flatMap { (landState, landName, _) ->
-            simulator.getLegalActions(landState, playerId).mapNotNull { legal ->
+        val stillUnexecutable = landStates.flatMap { land ->
+            simulator.getLegalActions(land.after, playerId).mapNotNull { legal ->
                 val cast = legal.action as? CastSpell ?: return@mapNotNull null
                 if (legal.requiresTargets || cast.cardId == focalCardId) return@mapNotNull null
-                val complete = castStates(landState, playerId, cast.cardId).any { setupState ->
-                    castStates(setupState, playerId, focalCardId).isNotEmpty()
+                val complete = castStates(land.after, playerId, cast.cardId).any { setup ->
+                    castStates(setup.state, playerId, focalCardId).isNotEmpty()
                 }
-                LandUnlockedSpell(landName, name(landState, cast.cardId)).takeUnless { complete }
+                StillLine(land, cast, legal.manaCostString, name(land.after, cast.cardId)).takeUnless { complete }
             }
         }
         val assessed = (current + afterLand).map { line ->
@@ -80,13 +140,15 @@ class PreSpellSetupTelemetry(private val registry: CardRegistry) {
                 .filter { it.landName != null && it.setupCardId !in currentlyCompletableIds }
                 .map { LandUnlockedSpell(requireNotNull(it.landName), it.spellName) }
                 .distinct().sortedWith(compareBy(LandUnlockedSpell::land, LandUnlockedSpell::spell)),
-            stillUnexecutableAfterLegalLandPlay = stillUnexecutable.distinct()
+            stillUnexecutableAfterLegalLandPlay = stillUnexecutable.map { LandUnlockedSpell(it.land.name, it.spellName) }.distinct()
                 .sortedWith(compareBy(LandUnlockedSpell::land, LandUnlockedSpell::spell)),
             executableButNotMateriallySuperior = nonSuperior.map(::describe).distinct().sortedBy { it.joinToString() },
             bestValidatedSetupSequence = best?.let { line ->
                 describe(line, name(state, focalCardId))
             },
             focalCastBeforeSuperiorSetup = best != null,
+            evaluatedSequences = assessed.map { line -> evaluation(line, line in superior, name(state, focalCardId)) } +
+                stillUnexecutable.map { evaluation(it) },
         )
     }
 
@@ -96,18 +158,20 @@ class PreSpellSetupTelemetry(private val registry: CardRegistry) {
         focalCardId: EntityId,
         landName: String?,
         landCardId: EntityId? = null,
+        landOutcome: LandOutcome? = null,
     ): List<SetupLine> {
         val baseline = score(state, playerId)
         return simulator.getLegalActions(state, playerId).mapNotNull { legal ->
             val cast = legal.action as? CastSpell ?: return@mapNotNull null
             if (!legal.affordable || legal.requiresTargets || cast.cardId == focalCardId) return@mapNotNull null
             val setupStates = castStates(state, playerId, cast.cardId)
-            val setupUseful = setupStates.any { score(it, playerId) > baseline + MATERIAL_MARGIN }
-            val completedScore = setupStates.asSequence()
-                .flatMap { setupState -> castStates(setupState, playerId, focalCardId).asSequence() }
-                .maxOfOrNull { score(it, playerId) }
+            val setupUseful = setupStates.any { score(it.state, playerId) > baseline + MATERIAL_MARGIN }
+            val completed = setupStates.flatMap { setup ->
+                castStates(setup.state, playerId, focalCardId).map { focal -> setup to focal }
+            }.maxByOrNull { (_, focal) -> score(focal.state, playerId) }
                 ?: return@mapNotNull null
-            SetupLine(landName, landCardId, cast.cardId, name(state, cast.cardId), completedScore, setupUseful)
+            SetupLine(landName, landCardId, cast.cardId, name(state, cast.cardId),
+                score(completed.second.state, playerId), setupUseful, state, landOutcome, completed.first, completed.second)
         }
     }
 
@@ -123,7 +187,8 @@ class PreSpellSetupTelemetry(private val registry: CardRegistry) {
         focalCardId: EntityId,
         line: SetupLine,
     ): Double {
-        return castStates(state, playerId, focalCardId).maxOfOrNull { afterFocal ->
+        return castStates(state, playerId, focalCardId).maxOfOrNull { focal ->
+            val afterFocal = focal.state
             val afterLand = line.landCardId?.let { landId ->
                 val land = simulator.getLegalActions(afterFocal, playerId).firstOrNull { candidate ->
                     (candidate.action as? PlayLand)?.cardId == landId
@@ -136,7 +201,7 @@ class PreSpellSetupTelemetry(private val registry: CardRegistry) {
                 if (!candidate.affordable || candidate.requiresTargets || continuation.cardId == focalCardId) {
                     return@mapNotNull null
                 }
-                castStates(afterLand, playerId, continuation.cardId).maxOfOrNull { score(it, playerId) }
+                castStates(afterLand, playerId, continuation.cardId).maxOfOrNull { score(it.state, playerId) }
             }
             continuationScores.maxOrNull() ?: score(afterLand, playerId)
         } ?: Double.NEGATIVE_INFINITY
@@ -145,7 +210,7 @@ class PreSpellSetupTelemetry(private val registry: CardRegistry) {
     /** Explore legal explicit source choices as well as auto-pay so telemetry tests feasibility,
      * not an auto-tapper's incidental choice of which otherwise-equivalent land supplies generic
      * mana. Invalid color/source selections are rejected by the authoritative simulator. */
-    private fun castStates(state: GameState, playerId: EntityId, cardId: EntityId): List<GameState> {
+    private fun castStates(state: GameState, playerId: EntityId, cardId: EntityId): List<CastOutcome> {
         val legal = simulator.getLegalActions(state, playerId).firstOrNull { candidate ->
             val cast = candidate.action as? CastSpell
             candidate.affordable && cast?.cardId == cardId
@@ -173,8 +238,89 @@ class PreSpellSetupTelemetry(private val registry: CardRegistry) {
             }
             for (size in 1..maxSources) combinations(0, size, mutableListOf())
         }
-        return actions.mapNotNull { simulator.simulate(state, it).usableState() }
+        return actions.mapNotNull { action ->
+            simulator.simulate(state, action).usableState()?.let { CastOutcome(action, legal.manaCostString, state, it) }
+        }
     }
+
+    private fun evaluation(line: SetupLine, superior: Boolean, focalName: String): PreSpellSetupEvaluation {
+        val classifications = buildList {
+            add(if (line.landName == null) PreSpellSetupClassification.CURRENTLY_EXECUTABLE else PreSpellSetupClassification.LAND_UNLOCKED)
+            add(if (superior) PreSpellSetupClassification.GENUINE_MISSED_SUPERIOR_SEQUENCE else
+                PreSpellSetupClassification.EXECUTABLE_BUT_NOT_MATERIALLY_SUPERIOR)
+        }
+        val steps = buildList {
+            line.land?.let { land ->
+                add(SetupActionAudit("play ${land.name}", land.id, resourcesBefore = resources(land.before, line.setup.action.playerId), resourcesAfter = resources(land.after, line.setup.action.playerId)))
+            }
+            add(actionAudit("cast ${line.spellName}", line.setup, line.setupStart))
+            add(actionAudit("cast $focalName", line.focal, line.setup.state))
+        }
+        return PreSpellSetupEvaluation(
+            relevantAction = line.spellName,
+            proposedLandPlay = line.landName,
+            landEntersTapped = line.land?.after?.getEntity(line.land.id)?.has<TappedComponent>(),
+            classifications = classifications,
+            proposedActionOrder = describe(line, focalName),
+            steps = steps,
+            counterfactualLineEvaluated = listOf("cast $focalName") + describe(line),
+            completedLineScore = line.completedScore,
+            reorderedLineScore = line.reorderedScore,
+            materiallySuperior = superior,
+            reason = if (superior) "complete setup-first line exceeds focal-first continuation by more than $MATERIAL_MARGIN" else
+                "complete setup-first line does not materially exceed the focal-first continuation",
+        )
+    }
+
+    private fun evaluation(line: StillLine): PreSpellSetupEvaluation = PreSpellSetupEvaluation(
+        relevantAction = line.spellName,
+        proposedLandPlay = line.land.name,
+        landEntersTapped = line.land.after.getEntity(line.land.id)?.has<TappedComponent>(),
+        classifications = listOf(PreSpellSetupClassification.STILL_UNEXECUTABLE_AFTER_LAND),
+        proposedActionOrder = listOf("play ${line.land.name}", "cast ${line.spellName}"),
+        steps = listOf(
+            SetupActionAudit("play ${line.land.name}", line.land.id, resourcesBefore = resources(line.land.before, line.cast.playerId), resourcesAfter = resources(line.land.after, line.cast.playerId)),
+            SetupActionAudit("cast ${line.spellName}", line.cast.cardId, line.manaCost, line.manaCost,
+                line.cast.targets.mapNotNull { (it as? com.wingedsheep.engine.state.components.stack.ChosenTarget.Permanent)?.entityId },
+                resourcesBefore = resources(line.land.after, line.cast.playerId)),
+        ),
+        counterfactualLineEvaluated = listOf("play ${line.land.name}", "cast ${line.spellName}"),
+        materiallySuperior = false,
+        reason = "spell or complete continuation remains unexecutable after the legal land play",
+    )
+
+    private fun actionAudit(label: String, outcome: CastOutcome, before: GameState): SetupActionAudit {
+        val explicit = (outcome.action.paymentStrategy as? PaymentStrategy.Explicit)?.manaAbilitiesToActivate.orEmpty()
+        val inferred = before.projectedState.getBattlefieldControlledBy(outcome.action.playerId).filter { id ->
+            before.getEntity(id)?.has<TappedComponent>() != true && outcome.state.getEntity(id)?.has<TappedComponent>() == true
+        }
+        val sources = (explicit.ifEmpty { inferred }).map { manaSource(before, it) }
+        return SetupActionAudit(label, outcome.action.cardId, outcome.manaCost, outcome.manaCost,
+            outcome.action.targets.mapNotNull { (it as? com.wingedsheep.engine.state.components.stack.ChosenTarget.Permanent)?.entityId },
+            sources, resources(before, outcome.action.playerId), resources(outcome.state, outcome.action.playerId))
+    }
+
+    private fun resources(state: GameState, playerId: EntityId): SetupResourceState {
+        val sources = state.projectedState.getBattlefieldControlledBy(playerId)
+            .filter { state.projectedState.hasType(it, "LAND") }.map { manaSource(state, it) }
+        val pool = state.getEntity(playerId)?.get<ManaPoolComponent>() ?: ManaPoolComponent()
+        return SetupResourceState(
+        manaSources = sources,
+        untappedManaSourceCount = sources.count { !it.tapped },
+        floatingMana = linkedMapOf(
+            "white" to pool.white, "blue" to pool.blue, "black" to pool.black,
+            "red" to pool.red, "green" to pool.green, "colorless" to pool.colorless,
+        ),
+        handSize = state.getHand(playerId).size,
+        spellsCastThisTurn = state.spellsCastThisTurn,
+        temporaryConditions = buildList {
+            if (state.getEntity(playerId)?.has<LifeGainedThisTurnComponent>() == true) add("life-gained-this-turn")
+            if (state.spellsCastThisTurn > 0) add("spells-cast-this-turn=${state.spellsCastThisTurn}")
+        },
+        )
+    }
+
+    private fun manaSource(state: GameState, id: EntityId) = SetupManaSource(id, name(state, id), state.getEntity(id)?.has<TappedComponent>() == true)
 
     private fun describe(line: SetupLine, focalName: String? = null): List<String> =
         listOfNotNull(
@@ -201,8 +347,15 @@ class PreSpellSetupTelemetry(private val registry: CardRegistry) {
         val spellName: String,
         val completedScore: Double,
         val setupUseful: Boolean,
+        val setupStart: GameState,
+        val land: LandOutcome?,
+        val setup: CastOutcome,
+        val focal: CastOutcome,
         val reorderedScore: Double = Double.NEGATIVE_INFINITY,
     )
+    private data class LandOutcome(val before: GameState, val after: GameState, val name: String, val id: EntityId)
+    private data class CastOutcome(val action: CastSpell, val manaCost: String?, val before: GameState, val state: GameState)
+    private data class StillLine(val land: LandOutcome, val cast: CastSpell, val manaCost: String?, val spellName: String)
 
     private companion object {
         const val MATERIAL_MARGIN = 0.1
