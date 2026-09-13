@@ -18,6 +18,7 @@ import io.kotest.assertions.withClue
 import io.kotest.matchers.booleans.shouldBeFalse
 import io.kotest.matchers.booleans.shouldBeTrue
 import io.kotest.matchers.shouldBe
+import io.kotest.matchers.string.shouldContain
 import io.kotest.matchers.types.shouldBeInstanceOf
 
 /**
@@ -750,6 +751,77 @@ class PestControlAgentDecisionTest : ScenarioTestBase() {
 
             val action = ai(game).chooseAction(game.state).shouldBeInstanceOf<CastSpell>()
             cardName(game, chosenPermanent(action)!!) shouldBe "Craw Wurm"
+        }
+
+        test("Game 9 reconstruction holds removal rather than replacing an unsupported friendly death") {
+            val game = seeded()
+                .withTurnNumber(15)
+                .withLandsOnBattlefield(1, "Swamp", 2)
+                .withCardInHand(1, "Cast Down")
+                .withCardOnBattlefield(1, "Carrier Thrall", summoningSickness = false)
+                .withCardOnBattlefield(1, "Blood Researcher", summoningSickness = false)
+                .build()
+
+            val (chosen, report) = chooseWithReport(game)
+            withClue(report) { chosen.shouldBeInstanceOf<PassPriority>() }
+            report shouldContain "friendly target lacks sufficient concrete downstream value"
+        }
+
+        test("Game 29 reconstruction holds removal when a friendly death has no converted value") {
+            val game = seeded()
+                .withTurnNumber(15)
+                .withLandsOnBattlefield(1, "Swamp", 2)
+                .withCardInHand(1, "Cast Down")
+                .withCardOnBattlefield(1, "Carrier Thrall", summoningSickness = false)
+                .withCardOnBattlefield(1, "Blood Researcher", summoningSickness = false)
+                .withCardOnBattlefield(1, "Pest Mascot", summoningSickness = false)
+                .build()
+
+            val (chosen, report) = chooseWithReport(game)
+            withClue(report) { chosen.shouldBeInstanceOf<PassPriority>() }
+            report shouldContain "friendly target lacks sufficient concrete downstream value"
+        }
+
+        test("ordinary opposing high-value target remains preferable to a friendly death") {
+            val game = seeded()
+                .withLandsOnBattlefield(1, "Swamp", 2)
+                .withCardInHand(1, "Cast Down")
+                .withCardOnBattlefield(1, "Carrier Thrall")
+                .withCardOnBattlefield(2, "Craw Wurm")
+                .build()
+
+            val action = ai(game).chooseAction(game.state).shouldBeInstanceOf<CastSpell>()
+            cardName(game, chosenPermanent(action)!!) shouldBe "Craw Wurm"
+        }
+
+        test("holds removal when neither a small opposing target nor a friendly death clears the value bar") {
+            val game = seeded()
+                .withLandsOnBattlefield(1, "Swamp", 2)
+                .withCardInHand(1, "Cast Down")
+                .withCardOnBattlefield(1, "Carrier Thrall")
+                .withCardOnBattlefield(2, "Mons's Goblin Raiders")
+                .build()
+
+            val (chosen, report) = chooseWithReport(game)
+            withClue(report) { chosen.shouldBeInstanceOf<PassPriority>() }
+        }
+
+        test("productive friendly death remains available when its converted engine value is superior") {
+            val game = seeded()
+                .withTurnNumber(15)
+                .withLandsOnBattlefield(1, "Swamp", 2)
+                .withCardInHand(1, "Cast Down")
+                .withCardOnBattlefield(1, "Carrier Thrall")
+                .withCardOnBattlefield(1, "Essence Warden")
+                .withCardOnBattlefield(1, "Essence Warden")
+                .withCardOnBattlefield(1, "Blood Researcher")
+                .withCardOnBattlefield(1, "Pest Mascot")
+                .build()
+            val carrier = game.findPermanent("Carrier Thrall")!!
+
+            val (chosen, report) = chooseWithReport(game)
+            val action = withClue(report) { chosen.shouldBeInstanceOf<CastSpell>() }
+            withClue(report) { chosenPermanent(action) shouldBe carrier }
         }
 
         test("Chainer's Edict answers hexproof when targeted removal cannot") {

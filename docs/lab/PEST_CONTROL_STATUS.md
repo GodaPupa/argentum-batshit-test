@@ -1,6 +1,6 @@
 # Project Pest Control — Status
 
-- Status: Sample #2 Take 2 rejected; its vector is permanently retired/hard-disabled
+- Status: Sample #2 Take 2 rejected and permanently retired; focused correction validation pending
 - Laboratory: Project Pest Control
 - Branch: `pest-control/lab`
 - Validated base: `47882cd645caf126afee6cf13a65909806fa40ab`
@@ -63,6 +63,31 @@ Quarantined aggregates are retained only for historical completeness; no Sample 
 inference or pooled 60-game comparison is admissible. Sample #1 remains the sole accepted Pest Control
 performance/engine sample. No correction, replacement vector, Sample #3, challenger construction,
 optimization, or opponent self-play has begun.
+
+#### Sample #2 Take 2 focused correction gate
+
+**SHARED ARGENTUM CHANGE: yes.** The authorized Games 1/8/30 telemetry and Games 9/29 removal-policy
+corrections use only preserved traces and deterministic scenario construction. No retired vector was
+executed. The implementation is described in
+`docs/experiments/pest-control/sample-2-take-2-corrections.md`.
+
+The land/setup detector now validates complete source-paid sequences and compares a setup-first line
+against the best same-length focal-first continuation. This rejects the three outcome-equivalent
+`land → Weather → Weather` classifications while preserving the genuinely order-sensitive Game 16
+`land → relevant spell → Weather` detection. Telemetry separates currently executable, land-unlocked,
+still-unexecutable-after-land, executable-but-not-superior, and genuine missed-superior states.
+
+General one-card removal valuation now requires a friendly-targeted removal leaf to exceed preserving
+the permanent, removal option, mana, and future interaction by a concrete positive margin. It is not a
+self-target ban: deterministic lethal and demonstrably superior death-trigger/resource/engine
+transitions remain available. Deterministic reconstructions cover both rejected terminal decisions,
+ordinary opposing-target preference, holding when neither target is worthwhile, and productive
+Carrier/Scion-style death conversion.
+
+Local focused telemetry and agent tests, both Pest rules/engine scenario classes, the frozen baseline
+guard, and the complete AI suite are green. Remote full-CI validation remains the current gate.
+Sample #1 is still the sole accepted performance/engine evidence. Take 3 seed generation is not
+authorized and must not begin while this gate is pending.
 
 Goldfish Sample #1 is formally accepted at
 `4ccd4f097ade866a8eb3eff42e897229cd34e29f` and its vector is permanently retired and

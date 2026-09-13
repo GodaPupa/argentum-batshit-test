@@ -4,6 +4,8 @@ import com.wingedsheep.engine.core.ActivateAbility
 import com.wingedsheep.engine.state.components.player.ManaPoolComponent
 import com.wingedsheep.engine.support.ScenarioTestBase
 import com.wingedsheep.mtg.sets.tokens.PredefinedTokens
+import io.kotest.assertions.withClue
+import io.kotest.matchers.collections.shouldContain
 import io.kotest.matchers.shouldBe
 
 class PestControlTelemetryRegressionTest : ScenarioTestBase() {
@@ -198,6 +200,55 @@ class PestControlTelemetryRegressionTest : ScenarioTestBase() {
                 "cast Carrier Thrall",
                 "cast Weather the Storm",
             )
+        }
+
+        test("pre-spell telemetry separates a present sequence that a tapped land still cannot fund") {
+            val game = scenario().withPlayers()
+                .withLandsOnBattlefield(1, "Forest", 1)
+                .withLandsOnBattlefield(1, "Swamp", 1)
+                .withCardInHand(1, "Jungle Hollow")
+                .withCardInHand(1, "Carrier Thrall")
+                .withCardInHand(1, "Weather the Storm")
+                .build()
+            val weather = game.findCardsInHand(1, "Weather the Storm").single()
+
+            val snapshot = PreSpellSetupTelemetry(cardRegistry)
+                .observe(game.state, game.player1Id, weather)
+
+            snapshot.stillUnexecutableAfterLegalLandPlay shouldBe listOf(
+                LandUnlockedSpell("Jungle Hollow", "Carrier Thrall"),
+            )
+            snapshot.focalCastBeforeSuperiorSetup shouldBe false
+        }
+
+        listOf(
+            "Game 1 shape" to listOf("Carrier Thrall", "Follow the Lumarets"),
+            "Game 8 shape" to listOf("Blood Researcher", "Bone Shards"),
+            "Game 30 shape" to listOf("Fierce Witchstalker"),
+        ).forEach { (label, extraCards) ->
+            test("pre-spell telemetry rejects the equivalent double-Weather ordering from $label") {
+                var builder = scenario().withPlayers()
+                    .withLandsOnBattlefield(1, "Forest", 2)
+                    .withLandsOnBattlefield(1, "Swamp", 1)
+                    .withCardInHand(1, "Swamp")
+                    .withCardInHand(1, "Weather the Storm")
+                    .withCardInHand(1, "Weather the Storm")
+                    .withCardOnBattlefield(1, "Pest Mascot")
+                extraCards.forEach { builder = builder.withCardInHand(1, it) }
+                val game = builder.build()
+                val weather = game.findCardsInHand(1, "Weather the Storm").first()
+
+                val snapshot = PreSpellSetupTelemetry(cardRegistry)
+                    .observe(game.state, game.player1Id, weather)
+
+                withClue(snapshot) {
+                    snapshot.executableAfterLegalLandPlay shouldBe emptyList()
+                    snapshot.executableButNotMateriallySuperior shouldContain
+                        listOf("play Swamp", "cast Weather the Storm")
+                    snapshot.bestValidatedSetupSequence shouldBe null
+                    snapshot.focalCastBeforeSuperiorSetup shouldBe false
+                }
+            }
         }
     }
 }

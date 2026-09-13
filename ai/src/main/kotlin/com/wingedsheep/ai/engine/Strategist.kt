@@ -11,6 +11,7 @@ import com.wingedsheep.ai.engine.evaluation.EvaluationWeights
 import com.wingedsheep.ai.engine.knowledge.HoldPolicy
 import com.wingedsheep.ai.engine.knowledge.IntentCatalog
 import com.wingedsheep.ai.engine.knowledge.IntentTag
+import com.wingedsheep.ai.engine.knowledge.SelfRemovalValuation
 import com.wingedsheep.ai.engine.knowledge.TimingVerdict
 import com.wingedsheep.ai.engine.rollout.CandidateEvaluator
 import com.wingedsheep.ai.engine.rollout.PlayoutPolicy
@@ -703,6 +704,22 @@ class Strategist(
             return AdjustedScore(
                 passScore - 1.0,
                 "forced-sacrifice policy: no opposing permanent was sacrificed — floored below passing",
+            )
+        }
+        val cast = action.action as? CastSpell
+        val card = cast?.let { state.getEntity(it.cardId)?.get<CardComponent>() }
+        val intent = cast?.let { spell ->
+            spell.faceIndex?.let { intents.forFaceIndex(cardName, it) } ?: intents.forName(cardName)
+        }
+        if (holdRemovalForBetterTargets && cast != null && card != null && intent != null &&
+            SelfRemovalValuation.shouldHold(
+                state, leafState, playerId, intent, card, cast, leafScore, passScore,
+                boardPresenceWeight,
+            )
+        ) {
+            return AdjustedScore(
+                passScore - 1.0,
+                "removal policy: friendly target lacks sufficient concrete downstream value",
             )
         }
         if (shouldDeferForLandUnlockedSequence(state, action.action, playerId)) {
