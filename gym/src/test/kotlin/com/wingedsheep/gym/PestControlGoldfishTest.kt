@@ -35,19 +35,27 @@ import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import java.nio.file.Files
 import java.nio.file.Path
+import java.security.MessageDigest
 import kotlin.time.Duration.Companion.minutes
 
 private const val PEST_GOLDFISH_ENV = "PEST_CONTROL_GOLDFISH_SAMPLE_1_REGRESSION"
+private const val PEST_FRESH_GOLDFISH_ENV = "PEST_CONTROL_GOLDFISH_SAMPLE_1_FRESH"
 private const val PEST_GAME_25_ENV = "PEST_CONTROL_GOLDFISH_GAME_25_DIAGNOSTIC"
 private const val PEST_GOLDFISH_HORIZON = 20
+private const val PEST_FRESH_SEED_SHA256 = "50d831076ff08c5df70aaa21e6edf7deaf9c269eeb74f0b5f9981b8be51caad8"
 
 /** Pest Control-owned development goldfish. It is opt-in and never runs in ordinary CI. */
 class PestControlGoldfishTest : FunSpec({
     test("frozen Pest Control v1.0 and Sample 1 seed vector are exact") {
         pestControlDeck().cards.groupingBy { it }.eachCount() shouldBe PEST_CONTROL_V10
-        val seeds = readPestSeeds()
-        seeds.size shouldBe 30
-        seeds.distinct().size shouldBe 30
+        val retired = readPestSeeds()
+        val fresh = readFreshPestSeeds()
+        retired.size shouldBe 30
+        retired.distinct().size shouldBe 30
+        fresh.size shouldBe 30
+        fresh.distinct().size shouldBe 30
+        fresh.intersect(retired.toSet()) shouldBe emptySet()
+        seedVectorSha256(fresh) shouldBe PEST_FRESH_SEED_SHA256
     }
 
     test("reproduce rejected Pest Control Game 25 Scion provenance").config(
@@ -86,6 +94,33 @@ class PestControlGoldfishTest : FunSpec({
         println(markdown)
         games.flatMap(PestGoldfishGame::auditErrors) shouldBe emptyList()
     }
+
+    test("Pest Control v1.0 fresh Goldfish Sample 1").config(
+        enabled = System.getenv(PEST_FRESH_GOLDFISH_ENV) == "true",
+        timeout = 60.minutes,
+    ) {
+        val seeds = readFreshPestSeeds()
+        val registry = pestRegistry()
+        val games = seeds.mapIndexed { index, seed -> runPestGoldfish(registry, seed, index + 1) }
+        val block = PestGoldfishBlock(
+            deckVersion = "Pest Control v1.0",
+            agentProfile = AiProfile.PRODUCTION_CANDIDATE_EXPIRING.id,
+            horizon = PEST_GOLDFISH_HORIZON,
+            seeds = seeds,
+            games = games,
+            summary = summarizePest(games),
+        )
+        val reportDir = Path.of("build", "reports", "pest-control-goldfish")
+        Files.createDirectories(reportDir)
+        Files.writeString(
+            reportDir.resolve("pest-control-v10-goldfish-sample-1-fresh.json"),
+            Json { prettyPrint = true }.encodeToString(block),
+        )
+        val markdown = renderPestMarkdown(block, freshPerformanceSample = true)
+        Files.writeString(reportDir.resolve("pest-control-v10-goldfish-sample-1-fresh.md"), markdown)
+        println(markdown)
+        games.flatMap(PestGoldfishGame::auditErrors) shouldBe emptyList()
+    }
 })
 
 private val PEST_CONTROL_V10 = linkedMapOf(
@@ -110,6 +145,14 @@ private fun pestControlDeck(): Deck = Deck.of(*PEST_CONTROL_V10.map { it.key to 
 private fun readPestSeeds(): List<Long> = Files.readAllLines(
     Path.of("src", "test", "resources", "pest-control-v10-goldfish-sample-1-seeds.csv")
 ).drop(1).filter(String::isNotBlank).map { it.substringAfterLast(',').toLong() }
+
+private fun readFreshPestSeeds(): List<Long> = Files.readAllLines(
+    Path.of("src", "test", "resources", "pest-control-v10-goldfish-sample-1-fresh-seeds.csv")
+).drop(1).filter(String::isNotBlank).map { it.split(',')[1].toLong() }
+
+private fun seedVectorSha256(seeds: List<Long>): String = MessageDigest.getInstance("SHA-256")
+    .digest((seeds.joinToString("\n") + "\n").toByteArray())
+    .joinToString("") { "%02x".format(it) }
 
 private fun pestRegistry(): CardRegistry = CardRegistry().apply {
     register(PredefinedTokens.allTokens)
@@ -146,6 +189,9 @@ internal data class PestWeatherCast(
     val stormCount: Int,
     val expectedCopies: Int,
     val observedCopies: Int,
+    val lifeBeforeCast: Int,
+    val actionsBeforeCastThisTurn: List<String>,
+    val usefulSpellCastLaterThisTurn: String?,
 )
 
 @Serializable
@@ -161,6 +207,20 @@ internal data class PestLifeEvent(
 internal data class PestFollowCast(
     val turn: Int,
     val mode: String,
+    val lifeEventsBeforeCastThisTurn: Int,
+    val actionsBeforeCastThisTurn: List<String>,
+)
+
+@Serializable
+internal data class PestTurnAction(val turn: Int, val description: String)
+
+@Serializable
+internal data class PestCreatureEntry(
+    val turn: Int,
+    val creature: String,
+    val wardensAlreadyPresent: Int,
+    val researchersPresent: Int,
+    val mascotsPresent: Int,
 )
 
 @Serializable
@@ -198,6 +258,10 @@ internal data class PestGoldfishGame(
     val generousEntCastTurns: List<Int>,
     val followCasts: List<PestFollowCast>,
     val weatherCasts: List<PestWeatherCast>,
+    val turnActions: List<PestTurnAction>,
+    val creatureEntries: List<PestCreatureEntry>,
+    val payoffWithoutWardenTurns: List<Int>,
+    val wardenWithoutPayoffTurns: List<Int>,
     val lifeEvents: List<PestLifeEvent>,
     val totalLifeGained: Int,
     val researcherCounterTriggers: Int,
@@ -258,15 +322,30 @@ internal data class PestGoldfishSummary(
     val manaConstraintDistribution: Map<String, Int>,
     val hollowTempoGames: Int,
     val hollowTempoEvents: Int,
+    val hollowProximateDelayGames: Int,
+    val hollowProximateDelayEvents: Int,
     val solitaireInteractionConstrainedGames: Int,
     val strandedInteractionObservations: Int,
     val functionalStateDistribution: Map<String, Int>,
+    val lifeEventsWithPayoffPresent: Int,
+    val payoffWithoutWardenGames: Int,
+    val payoffWithoutWardenTurns: Int,
+    val wardenWithoutPayoffGames: Int,
+    val wardenWithoutPayoffTurns: Int,
+    val additionalWardenOpportunityGames: Int,
+    val additionalWardenOpportunityEntries: Int,
+    val weatherStormZeroCasts: Int,
+    val weatherStormZeroWithLaterUsefulSpell: Int,
+    val followNormalWithoutPriorLifeGain: Int,
 )
 
 private data class MutableWeather(
     val turn: Int,
     val stormCount: Int,
     val expectedCopies: Int,
+    val lifeBeforeCast: Int,
+    val actionsBeforeCastThisTurn: List<String>,
+    val actionIndex: Int,
     var observedCopies: Int = 0,
 )
 
@@ -365,6 +444,10 @@ internal fun runPestGoldfish(registry: CardRegistry, seed: Long, gameNumber: Int
     val entCasts = mutableListOf<Int>()
     val follows = mutableListOf<PestFollowCast>()
     val weathers = mutableListOf<MutableWeather>()
+    val turnActions = mutableListOf<PestTurnAction>()
+    val creatureEntries = mutableListOf<PestCreatureEntry>()
+    val payoffWithoutWardenTurns = linkedSetOf<Int>()
+    val wardenWithoutPayoffTurns = linkedSetOf<Int>()
     val lifeEvents = mutableListOf<PestLifeEvent>()
     val stranded = linkedSetOf<String>()
     val bottlenecks = mutableListOf<ActionableManaBottleneck>()
@@ -416,6 +499,9 @@ internal fun runPestGoldfish(registry: CardRegistry, seed: Long, gameNumber: Int
         val hasWarden = "Essence Warden" in names
         val hasResearcher = "Blood Researcher" in names
         val hasMascot = "Pest Mascot" in names
+        val presenceTurn = pestTurn(gameState)
+        if ((hasResearcher || hasMascot) && !hasWarden) payoffWithoutWardenTurns += presenceTurn
+        if (hasWarden && !hasResearcher && !hasMascot) wardenWithoutPayoffTurns += presenceTurn
         wardenResearcher = wardenResearcher || (hasWarden && hasResearcher)
         wardenMascot = wardenMascot || (hasWarden && hasMascot)
         researcherMascot = researcherMascot || (hasResearcher && hasMascot)
@@ -492,6 +578,7 @@ internal fun runPestGoldfish(registry: CardRegistry, seed: Long, gameNumber: Int
                 else -> action::class.simpleName ?: "action"
             }
             if (turn == 1) t1 += description
+            turnActions += PestTurnAction(turn, description)
             if (action is CastSpell) when (actionName) {
                 "Essence Warden" -> wardenCasts += turn
                 "Blood Researcher" -> researcherCasts += turn
@@ -502,8 +589,18 @@ internal fun runPestGoldfish(registry: CardRegistry, seed: Long, gameNumber: Int
                 "Follow the Lumarets" -> follows += PestFollowCast(
                     turn,
                     if (state.getEntity(pestId)?.has<LifeGainedThisTurnComponent>() == true) "ENHANCED" else "NORMAL",
+                    lifeEvents.count { it.turn == turn },
+                    turnActions.dropLast(1).filter { it.turn == turn }.map(PestTurnAction::description),
                 )
-                "Weather the Storm" -> weathers += MutableWeather(turn, state.spellsCastThisTurn, state.spellsCastThisTurn)
+                "Weather the Storm" -> weathers += MutableWeather(
+                    turn = turn,
+                    stormCount = state.spellsCastThisTurn,
+                    expectedCopies = state.spellsCastThisTurn,
+                    lifeBeforeCast = state.lifeTotal(pestId),
+                    actionsBeforeCastThisTurn = turnActions.dropLast(1)
+                        .filter { it.turn == turn }.map(PestTurnAction::description),
+                    actionIndex = turnActions.lastIndex,
+                )
                 "Chainer's Edict" -> if (state.controlledBattlefield(blankId).none {
                         state.getEntity(it)?.get<CardComponent>()?.isCreature == true
                     }) audit += "agent cast Chainer's Edict into an empty opposing battlefield on T$turn"
@@ -569,6 +666,17 @@ internal fun runPestGoldfish(registry: CardRegistry, seed: Long, gameNumber: Int
             if (event.fromZone == Zone.BATTLEFIELD && event.entityName == "Eldrazi Scion" && event.wasSacrificed) scionSacrifices++
             if (event.toZone == Zone.BATTLEFIELD) {
                 val card = step.state.getEntity(event.entityId)?.get<CardComponent>()
+                if (card?.isCreature == true) {
+                    val namesAfter = battlefieldNames(step.state)
+                    creatureEntries += PestCreatureEntry(
+                        turn = turn,
+                        creature = event.entityName,
+                        wardensAlreadyPresent = namesAfter.count { it == "Essence Warden" } -
+                            if (event.entityName == "Essence Warden") 1 else 0,
+                        researchersPresent = namesAfter.count { it == "Blood Researcher" },
+                        mascotsPresent = namesAfter.count { it == "Pest Mascot" },
+                    )
+                }
                 if (card?.isPermanent == true && !card.isLand && firstPermanent == null) firstPermanent = turn
             }
         }
@@ -616,6 +724,22 @@ internal fun runPestGoldfish(registry: CardRegistry, seed: Long, gameNumber: Int
         audit += "Scion ${it.sourceId} sacrificed for ${it.unusedMana} unused mana on T${it.activationTurn}"
     }
     val scionFunded = scionManaUses.flatMap(SacrificeManaUse::fundedActions)
+    val weatherCasts = weathers.map { weather ->
+        val usefulLater = turnActions.drop(weather.actionIndex + 1)
+            .firstOrNull { later ->
+                later.turn == weather.turn && later.description.startsWith("cast ") &&
+                    later.description.removePrefix("cast ") !in SOLITAIRE_INTERACTION + "Weather the Storm"
+            }?.description
+        PestWeatherCast(
+            weather.turn,
+            weather.stormCount,
+            weather.expectedCopies,
+            weather.observedCopies,
+            weather.lifeBeforeCast,
+            weather.actionsBeforeCastThisTurn,
+            usefulLater,
+        )
+    }
     val totalLife = lifeEvents.sumOf(PestLifeEvent::amount)
     if (state.lifeTotal(pestId) != 20 + totalLife) {
         audit += "life accounting final=${state.lifeTotal(pestId)} expected=${20 + totalLife}"
@@ -662,7 +786,11 @@ internal fun runPestGoldfish(registry: CardRegistry, seed: Long, gameNumber: Int
         entCycles,
         entCasts,
         follows,
-        weathers.map { PestWeatherCast(it.turn, it.stormCount, it.expectedCopies, it.observedCopies) },
+        weatherCasts,
+        turnActions,
+        creatureEntries,
+        payoffWithoutWardenTurns.toList(),
+        wardenWithoutPayoffTurns.toList(),
         lifeEvents,
         totalLife,
         researcherTriggers,
@@ -702,6 +830,16 @@ internal fun summarizePest(games: List<PestGoldfishGame>): PestGoldfishSummary {
     val follows = games.flatMap(PestGoldfishGame::followCasts)
     val enhanced = follows.count { it.mode == "ENHANCED" }
     val coexist = games.count { it.coexistence.wardenResearcher || it.coexistence.wardenMascot }
+    fun hollowTurns(game: PestGoldfishGame): Set<Int> = game.jungleHollowTempoEvents.mapNotNull { event ->
+        event.substringAfter("@T", "").substringBefore(':').toIntOrNull()
+    }.toSet()
+    fun hollowDelays(game: PestGoldfishGame): Int {
+        val turns = hollowTurns(game)
+        return game.genuineManaBottlenecks.count { it.constraint == ManaConstraint.TAPLAND && it.turn in turns }
+    }
+    fun additionalWardenOpportunities(game: PestGoldfishGame): Int = game.creatureEntries.count {
+        it.researchersPresent + it.mascotsPresent > 0
+    }
     return PestGoldfishSummary(
         games = games.size,
         mulliganGames = games.count { it.mulligans > 0 },
@@ -747,17 +885,43 @@ internal fun summarizePest(games: List<PestGoldfishGame>): PestGoldfishSummary {
             .groupingBy { it.constraint.name }.eachCount().toSortedMap(),
         hollowTempoGames = games.count { it.jungleHollowTempoEvents.isNotEmpty() },
         hollowTempoEvents = games.sumOf { it.jungleHollowTempoEvents.size },
+        hollowProximateDelayGames = games.count { hollowDelays(it) > 0 },
+        hollowProximateDelayEvents = games.sumOf(::hollowDelays),
         solitaireInteractionConstrainedGames = games.count { it.solitaireStrandedInteraction.isNotEmpty() },
         strandedInteractionObservations = games.sumOf { it.solitaireStrandedInteraction.size },
         functionalStateDistribution = games.groupingBy(PestGoldfishGame::functionalState).eachCount().toSortedMap(),
+        lifeEventsWithPayoffPresent = games.sumOf { game ->
+            game.lifeEvents.count { it.researcherPresent || it.mascotPresent }
+        },
+        payoffWithoutWardenGames = games.count { it.payoffWithoutWardenTurns.isNotEmpty() },
+        payoffWithoutWardenTurns = games.sumOf { it.payoffWithoutWardenTurns.size },
+        wardenWithoutPayoffGames = games.count { it.wardenWithoutPayoffTurns.isNotEmpty() },
+        wardenWithoutPayoffTurns = games.sumOf { it.wardenWithoutPayoffTurns.size },
+        additionalWardenOpportunityGames = games.count { additionalWardenOpportunities(it) > 0 },
+        additionalWardenOpportunityEntries = games.sumOf(::additionalWardenOpportunities),
+        weatherStormZeroCasts = weather.count { it.stormCount == 0 },
+        weatherStormZeroWithLaterUsefulSpell = weather.count {
+            it.stormCount == 0 && it.usefulSpellCastLaterThisTurn != null
+        },
+        followNormalWithoutPriorLifeGain = follows.count {
+            it.mode == "NORMAL" && it.lifeEventsBeforeCastThisTurn == 0
+        },
     )
 }
 
-internal fun renderPestMarkdown(block: PestGoldfishBlock): String = buildString {
+internal fun renderPestMarkdown(block: PestGoldfishBlock, freshPerformanceSample: Boolean = false): String = buildString {
     val s = block.summary
-    appendLine("# Pest Control v1.0 — Rejected Sample #1 Regression Replay")
+    appendLine(if (freshPerformanceSample) {
+        "# Pest Control v1.0 — Goldfish Sample #1 Fresh Performance Baseline"
+    } else {
+        "# Pest Control v1.0 — Rejected Sample #1 Regression Replay"
+    })
     appendLine()
-    appendLine("Regression evidence only. This retired vector is rejected for performance/baseline inference and optimization.")
+    appendLine(if (freshPerformanceSample) {
+        "Development/engine goldfish evidence only; this is not matchup evidence."
+    } else {
+        "Regression evidence only. This retired vector is rejected for performance/baseline inference and optimization."
+    })
     appendLine()
     appendLine("## Aggregate")
     appendLine()
@@ -775,8 +939,14 @@ internal fun renderPestMarkdown(block: PestGoldfishBlock): String = buildString 
     appendLine("- Follow normal / enhanced: ${s.followNormalCasts}/${s.followEnhancedCasts}; enhanced rate: ${s.followEnhancedRate?.let(::pct) ?: "n/a"}")
     appendLine("- Actionable mana bottlenecks: ${s.manaBottleneckGames} games, ${s.manaBottleneckObservations} observations; constraints: ${s.manaConstraintDistribution}")
     appendLine("- Jungle Hollow tempo: ${s.hollowTempoGames} games, ${s.hollowTempoEvents} tapped-entry events")
+    appendLine("- Jungle Hollow proximate deployment delays: ${s.hollowProximateDelayGames} games, ${s.hollowProximateDelayEvents} events")
     appendLine("- Solitaire-stranded interaction: ${s.solitaireInteractionConstrainedGames} games, ${s.strandedInteractionObservations} observations")
     appendLine("- Functional states: ${s.functionalStateDistribution}")
+    appendLine("- Lifegain events with Researcher/Mascot present: ${s.lifeEventsWithPayoffPresent}")
+    appendLine("- Payoff without Warden: ${s.payoffWithoutWardenGames} games / ${s.payoffWithoutWardenTurns} turns; Warden without payoff: ${s.wardenWithoutPayoffGames} games / ${s.wardenWithoutPayoffTurns} turns")
+    appendLine("- Additional-Warden opportunities: ${s.additionalWardenOpportunityGames} games / ${s.additionalWardenOpportunityEntries} qualifying creature entries")
+    appendLine("- Weather at Storm 0: ${s.weatherStormZeroCasts}; with a useful spell demonstrably cast later that turn: ${s.weatherStormZeroWithLaterUsefulSpell}")
+    appendLine("- Normal Follow casts with no earlier lifegain event that turn: ${s.followNormalWithoutPriorLifeGain}")
     appendLine()
     appendLine("## Games")
     appendLine()
@@ -802,8 +972,11 @@ internal fun renderPestMarkdown(block: PestGoldfishBlock): String = buildString 
         appendLine("- Scion mana provenance: ${g.scionManaUses}")
         appendLine("- Witchstalker: ${g.fierceWitchstalkerCastTurns}; Ent cycle/cast: ${g.generousEntCycleTurns}/${g.generousEntCastTurns}")
         appendLine("- Follow: ${g.followCasts}; Weather: ${g.weatherCasts}")
+        appendLine("- Turn actions: ${g.turnActions}")
+        appendLine("- Creature entries: ${g.creatureEntries}")
         appendLine("- Lifegain: ${g.lifeEvents}; Researcher triggers/counters: ${g.researcherCounterTriggers}/${g.researcherCountersAdded}; Mascot: ${g.mascotCounterTriggers}/${g.mascotCountersAdded}")
-        appendLine("- Coexistence: ${g.coexistence}; Hollow: ${g.jungleHollowTempoEvents}")
+        appendLine("- Coexistence: ${g.coexistence}; payoff-no-Warden turns: ${g.payoffWithoutWardenTurns}; Warden-no-payoff turns: ${g.wardenWithoutPayoffTurns}")
+        appendLine("- Hollow: ${g.jungleHollowTempoEvents}")
         appendLine("- Solitaire-stranded interaction: ${g.solitaireStrandedInteraction}")
         appendLine("- Genuine mana bottlenecks: ${g.genuineManaBottlenecks}")
         appendLine("- Terminal: ${g.actualWinningTurn?.let { "T$it" } ?: "none by horizon"} / ${g.terminalMechanism}; stop=${g.stopReason}; actions=${g.actions}")
