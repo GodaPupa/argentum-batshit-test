@@ -1,6 +1,6 @@
 # Project Pest Control — Status
 
-- Status: Sample #2 Take 5 modal-removal correction remotely green; stopped at Sample #2 Take 6 seed-readiness gate
+- Status: Sample #2 Take 6 vector frozen and unexecuted; awaiting remote-green freeze validation before Game 1
 - Laboratory: Project Pest Control
 - Branch: `pest-control/lab`
 - Validated base: `47882cd645caf126afee6cf13a65909806fa40ab`
@@ -23,6 +23,23 @@
 ## Goldfish Sample #2 independent replication authorization
 
 ### Sample #2 Take 6 seed-readiness gate
+
+The hard pre-seed gates passed against the exact accepted implementation: the final serialized
+`PestGoldfishBlock` artifact contract is green, the nested/modal targeted-removal regression reaches
+the general friendly-removal policy and serializes `policyApplied=true`, and the permanent-control/
+retired-vector guard is green with every gameplay runner skipped.
+
+Only after those gates passed, the complete new 30-seed Take 6 vector was derived and frozen before
+Game 1. Its ordered seed-value SHA-256 is
+`79659bf0a8823c94e288b2df46f246385d02dba236ce3b70f9a4c6dc477eb79b`; the exact permanent-control
+hash is `7be61a66e2c7654428043d56b411afb4d406f02dfcc4eb7f15a62295d4e906f5`. A read-only audit of all
+40 repository refs (26 distinct trees) produced a 1,903-value exclusion set and confirmed zero
+overlap with every known Pest Control, Batshit Economics, and Project X seed vector. The full
+derivation, ordered vector, hashes, and immutable execution contract are recorded in
+`docs/experiments/pest-control/goldfish-sample-2-take-6-seed-freeze.md`.
+
+No Take 6 game has executed. The frozen-vector/permanent-control guard and the freeze commit must be
+green locally and remotely before the single authorized gameplay invocation.
 
 The Take 5 modal-removal policy correction is accepted as remotely green. Implementation
 `6385a6e79f6bef5ce527129de560131a4dc7d68e` passed CI #232. **SHARED ARGENTUM CHANGE: yes.**
