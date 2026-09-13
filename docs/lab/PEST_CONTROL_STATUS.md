@@ -1,6 +1,6 @@
 # Project Pest Control — Status
 
-- Status: Sample #2 Take 7 executed exactly once and rejected in full; vector permanently retired and hard-disabled; stopped pending separate authorization
+- Status: Sample #2 Take 7 rejected and permanently retired; duplicate-focal sequencing and production-equivalent observability correction green; stopped at Sample #2 Take 8 seed-readiness gate
 - Laboratory: Project Pest Control
 - Branch: `pest-control/lab`
 - Validated base: `47882cd645caf126afee6cf13a65909806fa40ab`
@@ -19,6 +19,8 @@
   `6385a6e79f6bef5ce527129de560131a4dc7d68e` (CI #232)
 - Sample #2 Take 6 same-turn sequencing/telemetry implementation head:
   `2cbfa7cd4c94fc6007288a27e2427183e9a158a8` (CI #236)
+- Take 7 sequencing/observability correction implementation head:
+  `6cbe6ea11bdc5c0f286f7763b35db45d198bc58a` (CI #240)
 - Sample #2 Take 7 ordered seed-value SHA-256:
   `af294f8238ba796082333994450f6f98d9a5b371e166591ba17c60de76aa7488`
 - Control version: Pest Control v1.0 (permanent, immutable)
@@ -52,6 +54,40 @@ replaced, compared against, optimized against, or reused. The raw artifact, repo
 manual audit are preserved under `docs/experiments/pest-control/`. Sample #1 remains the sole
 accepted Pest Control performance/engine evidence; Pest Control v1.0 remains exact; the challenger
 remains audit-only and unconstructed.
+
+#### Take 7 duplicate-focal and sequencing-observability correction gate
+
+**SHARED ARGENTUM CHANGE: yes.** Implementation
+`6cbe6ea11bdc5c0f286f7763b35db45d198bc58a` is remotely green in CI #240.
+
+Production's land-unlocked deferral previously matched only the physical card ID selected by its
+bounded planner. With two otherwise interchangeable copies of the focal action, the unselected copy
+bypassed the deferral and could be cast before the validated land-first line. Deferral now compares
+complete semantic cast identity: card definition/face, controller and source zone, modes, targets,
+X, alternative and additional costs, resolved payment requirement, timing/permission metadata, and
+copy-specific legality/outcome distinctions. Only physical source identity and the interchangeable
+choice of legal mana sources are ignored for this comparison; exact entity IDs remain authoritative
+for legality, payment, execution, zone movement, and telemetry. The two-copy reconstruction now
+selects the exact legal land action, while non-equivalent cards, modes, targets, costs, permissions,
+and outcomes remain distinct. No other demonstrated production behavior changed.
+
+`PreSpellSetupTelemetry` remains observational and does not select actions. Its shadow comparisons
+now consume fresh production materializations, production hold/admissibility results, and the same
+relevant sequencing adjustments. Below-margin friendly removal, null forced sacrifice, strategically
+null Storm setup, and premature expiring-condition follow-ups cannot become missed-superior setup.
+Productive removal and genuine Game 16 and Take 6 Game 18 setup-first lines remain eligible. Both
+orders use equivalent bounded same-turn horizons with explicit legal mana-source plans. Structured
+records preserve physical and semantic identities, production admissibility/rejection reason,
+static and adjusted values, pass value, continuation horizon, and complete comparison lines.
+
+The hard final-JSON contract requires those fields—including zero, false, empty, and null values—to
+survive round-trip serialization. Focused duplicate-copy, sequencing, self/modal-removal, null-action,
+telemetry, and artifact-contract regressions passed. Complete AI, Gym, rules-engine, and card-scenario
+suites passed locally; all Pest gameplay runners were skipped. CI #240 passed the complete remote
+matrix. No Pest seed or gameplay vector executed. Take 7 and every earlier rejected vector remain
+retired and hard-disabled; Sample #1 remains the sole accepted performance evidence; the permanent
+control and audit-only challenger are unchanged. No Take 8 seed exists, and seed generation requires
+separate explicit authorization.
 
 ### Sample #2 Take 6 seed-readiness gate
 
