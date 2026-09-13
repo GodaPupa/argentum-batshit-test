@@ -242,7 +242,7 @@ class PestControlGoldfishTest : FunSpec({
     }
 
     test("Pest Control v1.0 Goldfish Sample 2 Take 2 independent replication").config(
-        enabled = System.getenv("RUN_PEST_SAMPLE_2_TAKE_2") == "1",
+        enabled = false, // Rejected Take 2; vector is permanently retired from execution.
         timeout = 60.minutes,
     ) {
         val seeds = readSample2Take2PestSeeds()

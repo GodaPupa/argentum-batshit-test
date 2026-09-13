@@ -1,6 +1,6 @@
 # Project Pest Control — Status
 
-- Status: Game 16/Game 28 correction remotely green; Sample #2 Take 2 vector frozen before execution
+- Status: Sample #2 Take 2 rejected; its vector is permanently retired/hard-disabled
 - Laboratory: Project Pest Control
 - Branch: `pest-control/lab`
 - Validated base: `47882cd645caf126afee6cf13a65909806fa40ab`
@@ -38,6 +38,31 @@ freeze, no Take 2 game had executed. The previously rejected Sample #2 and its c
 30-seed vector remain permanently retired and hard-disabled; they are not replayed, rehabilitated,
 compared, or reused. Pest Control v1.0 remains exact, and the challenger remains audit-only and
 unconstructed.
+
+#### Sample #2 Take 2 disposition
+
+The immutable freeze is remotely green in CI #218 at exact head
+`8be1f0ba160a0c817595356f4c9f5391ed570889`. All 30 seeds then executed exactly once in frozen order.
+Two setup invocations ran zero games (one Gradle up-to-date no-op and one pre-test infrastructure
+failure); the single gameplay invocation completed the full block. There was no reroll, replay,
+replacement, exclusion, seed substitution, deck/policy/telemetry change, or mid-sample correction.
+
+The sample is **formally rejected in full**. The automatic audit produced three errors in Games 1, 8,
+and 30: it labeled `play Swamp → Weather → Weather` superior to the executed
+`Weather → play Swamp → Weather`, although a basic land is not a spell and both orders have identical
+Storm, mana, trigger, hand, and battlefield outcomes. This is a clear false-positive sequencing-
+telemetry defect. Manual review also found unproductive self-removal in Games 9 and 29: each used Cast
+Down on its own Carrier Thrall with no opponent creature, Warden trigger, same-turn Scion mana use, or
+Storm setup.
+
+The exact Take 2 vector is now permanently retired and hard-disabled. It may never be replayed,
+rehabilitated, compared, sampled, optimized against, or reused. Its raw block, generated report, and
+all-30 rejection audit are preserved as
+`docs/experiments/pest-control/goldfish-sample-2-take-2-{raw.json,report.md,rejection-audit.md}`.
+Quarantined aggregates are retained only for historical completeness; no Sample #2 performance
+inference or pooled 60-game comparison is admissible. Sample #1 remains the sole accepted Pest Control
+performance/engine sample. No correction, replacement vector, Sample #3, challenger construction,
+optimization, or opponent self-play has begun.
 
 Goldfish Sample #1 is formally accepted at
 `4ccd4f097ade866a8eb3eff42e897229cd34e29f` and its vector is permanently retired and
