@@ -22,6 +22,8 @@ import com.wingedsheep.mtg.sets.tokens.PredefinedTokens
 import com.wingedsheep.gym.telemetry.ActionableManaBottleneck
 import com.wingedsheep.gym.telemetry.ActionableManaBottleneckTracker
 import com.wingedsheep.gym.telemetry.ManaConstraint
+import com.wingedsheep.gym.telemetry.LandUnlockedSpell
+import com.wingedsheep.gym.telemetry.PreSpellSetupTelemetry
 import com.wingedsheep.gym.telemetry.SacrificeManaTrace
 import com.wingedsheep.gym.telemetry.SacrificeManaUse
 import com.wingedsheep.sdk.core.Step
@@ -317,7 +319,10 @@ internal data class PestWeatherCast(
     val followAvailable: Boolean,
     val survivalRequired: Boolean,
     val pendingStackSources: List<String>,
-    val manaPlausibleUsefulPrecedingSpells: List<String>,
+    val currentlyExecutablePreWeatherSpells: List<String>,
+    val spellsExecutableAfterLegalLandPlay: List<LandUnlockedSpell>,
+    val bestValidatedPreWeatherSetupSequence: List<String>?,
+    val weatherCastBeforeSuperiorSetup: Boolean,
     val usefulSpellCastLaterThisTurn: String?,
 )
 
@@ -522,7 +527,10 @@ private data class MutableWeather(
     val followAvailable: Boolean,
     val survivalRequired: Boolean,
     val pendingStackSources: List<String>,
-    val manaPlausibleUsefulPrecedingSpells: List<String>,
+    val currentlyExecutablePreWeatherSpells: List<String>,
+    val spellsExecutableAfterLegalLandPlay: List<LandUnlockedSpell>,
+    val bestValidatedPreWeatherSetupSequence: List<String>?,
+    val weatherCastBeforeSuperiorSetup: Boolean,
     val actionIndex: Int,
     var observedCopies: Int = 0,
 )
@@ -612,6 +620,7 @@ internal fun runPestGoldfish(registry: CardRegistry, seed: Long, gameNumber: Int
     val blank = AIPlayer.create(registry, blankId, AiProfile.PRODUCTION_CANDIDATE_EXPIRING)
     val bottleneckTracker = ActionableManaBottleneckTracker(registry)
     val sacrificeManaTrace = SacrificeManaTrace()
+    val preSpellSetupTelemetry = PreSpellSetupTelemetry(registry)
     val manaSolver = ManaSolver(registry)
     val t1 = mutableListOf<String>()
     val wardenCasts = mutableListOf<Int>()
@@ -802,13 +811,7 @@ internal fun runPestGoldfish(registry: CardRegistry, seed: Long, gameNumber: Int
                 "Weather the Storm" -> {
                     val battlefield = battlefieldNames(state)
                     val available = manaSolver.getAvailableManaCount(state, pestId)
-                    val plausiblePreceding = state.getHand(pestId).mapNotNull { id ->
-                        val card = state.getEntity(id)?.get<CardComponent>() ?: return@mapNotNull null
-                        card.name.takeIf {
-                            !card.isLand && card.name != "Weather the Storm" &&
-                                card.name !in SOLITAIRE_INTERACTION && card.manaValue + 2 <= available
-                        }
-                    }
+                    val setup = preSpellSetupTelemetry.observe(state, pestId, action.cardId)
                     weathers += MutableWeather(
                         turn = turn,
                         stormCount = state.spellsCastThisTurn,
@@ -823,7 +826,10 @@ internal fun runPestGoldfish(registry: CardRegistry, seed: Long, gameNumber: Int
                         followAvailable = state.getHand(pestId).any { name(state, it) == "Follow the Lumarets" },
                         survivalRequired = survivalRequiresLife(state),
                         pendingStackSources = stackSourceNames(state),
-                        manaPlausibleUsefulPrecedingSpells = plausiblePreceding,
+                        currentlyExecutablePreWeatherSpells = setup.currentlyExecutableBeforeFocal,
+                        spellsExecutableAfterLegalLandPlay = setup.executableAfterLegalLandPlay,
+                        bestValidatedPreWeatherSetupSequence = setup.bestValidatedSetupSequence,
+                        weatherCastBeforeSuperiorSetup = setup.focalCastBeforeSuperiorSetup,
                         actionIndex = turnActions.lastIndex,
                     )
                 }
@@ -947,6 +953,9 @@ internal fun runPestGoldfish(registry: CardRegistry, seed: Long, gameNumber: Int
         if (weather.observedCopies != weather.expectedCopies) {
             audit += "Weather ${index + 1} on T${weather.turn}: expected ${weather.expectedCopies} Storm copies, observed ${weather.observedCopies}"
         }
+        if (weather.weatherCastBeforeSuperiorSetup) {
+            audit += "Weather ${index + 1} on T${weather.turn}: cast before validated setup ${weather.bestValidatedPreWeatherSetupSequence}"
+        }
     }
     if (researcherTriggers != researcherCounters) audit += "Researcher triggers $researcherTriggers != counters $researcherCounters"
     if (mascotTriggers != mascotCounters) audit += "Mascot triggers $mascotTriggers != counters $mascotCounters"
@@ -982,7 +991,10 @@ internal fun runPestGoldfish(registry: CardRegistry, seed: Long, gameNumber: Int
             weather.followAvailable,
             weather.survivalRequired,
             weather.pendingStackSources,
-            weather.manaPlausibleUsefulPrecedingSpells,
+            weather.currentlyExecutablePreWeatherSpells,
+            weather.spellsExecutableAfterLegalLandPlay,
+            weather.bestValidatedPreWeatherSetupSequence,
+            weather.weatherCastBeforeSuperiorSetup,
             usefulLater,
         )
     }

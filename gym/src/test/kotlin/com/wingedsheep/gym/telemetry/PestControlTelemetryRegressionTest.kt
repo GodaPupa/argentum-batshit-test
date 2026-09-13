@@ -152,5 +152,52 @@ class PestControlTelemetryRegressionTest : ScenarioTestBase() {
             use.fundedActions shouldBe emptyList()
             use.unusedMana shouldBe 1
         }
+
+        test("pre-spell telemetry distinguishes a land-unlocked setup from a currently executable one") {
+            val game = scenario().withPlayers()
+                .withLandsOnBattlefield(1, "Forest", 2)
+                .withLandsOnBattlefield(1, "Swamp", 1)
+                .withCardInHand(1, "Swamp")
+                .withCardInHand(1, "Carrier Thrall")
+                .withCardInHand(1, "Weather the Storm")
+                .withCardOnBattlefield(1, "Pest Mascot")
+                .build()
+            val weather = game.findCardsInHand(1, "Weather the Storm").single()
+
+            val snapshot = PreSpellSetupTelemetry(cardRegistry)
+                .observe(game.state, game.player1Id, weather)
+
+            snapshot.currentlyExecutableBeforeFocal shouldBe emptyList()
+            snapshot.executableAfterLegalLandPlay shouldBe listOf(
+                LandUnlockedSpell("Swamp", "Carrier Thrall"),
+            )
+            snapshot.bestValidatedSetupSequence shouldBe listOf(
+                "play Swamp",
+                "cast Carrier Thrall",
+                "cast Weather the Storm",
+            )
+            snapshot.focalCastBeforeSuperiorSetup shouldBe true
+        }
+
+        test("pre-spell telemetry reports a genuinely current setup without inventing a land dependency") {
+            val game = scenario().withPlayers()
+                .withLandsOnBattlefield(1, "Forest", 2)
+                .withLandsOnBattlefield(1, "Swamp", 2)
+                .withCardInHand(1, "Carrier Thrall")
+                .withCardInHand(1, "Weather the Storm")
+                .withCardOnBattlefield(1, "Pest Mascot")
+                .build()
+            val weather = game.findCardsInHand(1, "Weather the Storm").single()
+
+            val snapshot = PreSpellSetupTelemetry(cardRegistry)
+                .observe(game.state, game.player1Id, weather)
+
+            snapshot.currentlyExecutableBeforeFocal shouldBe listOf("Carrier Thrall")
+            snapshot.executableAfterLegalLandPlay shouldBe emptyList()
+            snapshot.bestValidatedSetupSequence shouldBe listOf(
+                "cast Carrier Thrall",
+                "cast Weather the Storm",
+            )
+        }
     }
 }

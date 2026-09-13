@@ -1,6 +1,6 @@
 # Project Pest Control — Status
 
-- Status: Goldfish Sample #2 rejected; stopped pending separate direction
+- Status: Game 16/Game 28 deterministic policy correction green locally; fresh Sample #1 seed-readiness gate
 - Laboratory: Project Pest Control
 - Branch: `pest-control/lab`
 - Validated base: `47882cd645caf126afee6cf13a65909806fa40ab`
@@ -49,6 +49,70 @@ The raw block, human report, and rejection audit are preserved under
 aggregate, or pooled 60-game report was produced. No correction, replacement sample, Sample #3,
 challenger construction, optimization, or opponent self-play was started. Pest Control v1.0 remains
 exact.
+
+### Game 16/Game 28 sequencing correction
+
+The Sample #2 rejection is formally accepted at remote head
+`8b4e4d04ab4d8d9701795554b447f049137c9fa1`. Its complete 30-seed vector is permanently retired and
+hard-disabled: it may never be executed, replayed, rehabilitated, replaced, sampled, optimized
+against, used for performance inference, or used for variant comparison. Sample #1 remains the only
+accepted Pest Control performance/engine sample.
+
+Deterministic reconstructions from the preserved Game 16 and Game 28 traces exposed two related,
+general one-ply planning gaps:
+
+- Game 16: Storm setup inspection considered only spells executable before the land drop. The legal
+  land action, the productive spell it unlocked, the resulting Storm count/payoff events, and the
+  remaining mana were therefore absent from both policy comparison and telemetry.
+- Game 28: a pure-lifegain resource could receive value for making a temporary
+  life-gained-this-turn condition true without committing to consume that condition in the same
+  turn. A combat shortcut or the next greedy decision could strand the paid-for condition, and the
+  planner could not see a land-unlocked resource-to-enhanced-consumer-to-follow-up line.
+
+The correction adds bounded, simulator-backed same-turn comparison for two general action shapes:
+
+1. legal land play, materially productive spell, then a still-payable Storm spell; and
+2. legal land play where needed, pure condition-establishing action, materially enhanced consumer,
+   then an optional productive follow-up.
+
+The planner compares each completed line with the immediately available alternative, refuses setup
+whose cost outweighs its Storm/payoff benefit, preserves immediate survival actions, and does not
+count strategically null spells as setup. Once a resource is spent solely to establish an expiring
+condition, the proven consumer is retained across stack resolution and selected during the valid
+turn window. The condition enabler is held when the enhanced mode has no material value or cannot be
+consumed before expiry. This uses action types, structural effect intents, stack/turn state, actual
+mana availability, and simulated state value; it contains no Pest Control, Game 16/Game 28, Weather,
+Carrier Thrall, Swamp, Food, Follow, or Mascot name heuristic.
+
+Pest-owned pre-Weather telemetry now distinguishes spells executable before the focal cast from
+spells unlocked by a legal land play. It records the best fully validated setup sequence and flags a
+focal cast made before a materially superior sequence. This replaces the earlier hand/mana estimate
+that could not see land-unlocked actions.
+
+Deterministic regressions prove:
+
+- the Game 16 shape selects land, productive spell, then Storm and observes Storm 1;
+- survival still selects immediate lifegain;
+- a land drop does not justify a strategically null Storm-building spell;
+- an expensive setup is rejected when its cost exceeds the extra Storm/payoff value;
+- a profitable pure-lifegain-to-enhanced-consumer line is completed in the same turn;
+- the enabler is held when the temporary condition would expire unused or adds no material value;
+- the Game 28 shape completes land, lifegain, enhanced consumer, then the useful follow-up; and
+- telemetry separately reports current setup, land-unlocked setup, and the superior completed line.
+
+**SHARED ARGENTUM CHANGE: yes.** The planner correction is general. The telemetry change is confined
+to Pest-owned observation/reporting and does not alter gameplay semantics. Focused Pest agent tests
+(64), the full AI suite (649 tests; 11 existing skips), Pest telemetry regressions (12), and the
+frozen-deck/vector guard are green locally. Every retired Pest execution test remained skipped; no
+Pest Control seed was executed. The complete project compilation and Gym trainer suite are also
+green. As previously documented, the monolithic offline `test` graph is blocked during dependency
+resolution because this container lacks cached Byte Buddy 1.10.9 and kotlinx-serialization-core
+1.9.0 artifacts for `:mtg-search:test`; no production or test-semantic accommodation was made.
+Authoritative remote full-CI validation is recorded here after the implementation commit is pushed.
+
+The permanent Pest Control v1.0 deck remains exact. The challenger remains audit-only and
+unconstructed. No replacement vector, optimization, or opponent self-play has begun. The laboratory
+stops at the fresh Sample #1 seed-readiness gate.
 
 ## New untouched Goldfish Sample #1 authorization
 

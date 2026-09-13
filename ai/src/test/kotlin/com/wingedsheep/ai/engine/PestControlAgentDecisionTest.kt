@@ -6,6 +6,7 @@ import com.wingedsheep.engine.core.CastSpell
 import com.wingedsheep.engine.core.DeclareBlockers
 import com.wingedsheep.engine.core.GameAction
 import com.wingedsheep.engine.core.PassPriority
+import com.wingedsheep.engine.core.PlayLand
 import com.wingedsheep.engine.core.TypecycleCard
 import com.wingedsheep.engine.state.components.identity.CardComponent
 import com.wingedsheep.engine.state.components.player.LifeGainedThisTurnComponent
@@ -69,6 +70,15 @@ class PestControlAgentDecisionTest : ScenarioTestBase() {
     private fun TestGame.castPendingWeather() {
         castSpell(1, "Weather the Storm").error shouldBe null
         state.stack.isNotEmpty().shouldBeTrue()
+    }
+
+    private fun TestGame.resolveStackWith(player: AIPlayer) {
+        resolveStack()
+        while (state.pendingDecision != null) {
+            val decision = requireNotNull(state.pendingDecision)
+            submitDecision(player.respondToDecision(state, decision)).error shouldBe null
+            resolveStack()
+        }
     }
 
     init {
@@ -149,6 +159,82 @@ class PestControlAgentDecisionTest : ScenarioTestBase() {
             val (chosen, report) = chooseWithReport(game)
             val action = withClue(report) { chosen.shouldBeInstanceOf<CastSpell>() }
             withClue(report) { sourceName(game, action) shouldBe "Essence Warden" }
+        }
+
+        test("Game 16 reconstruction plays a land to unlock a productive spell before Weather") {
+            val game = seeded()
+                .withLandsOnBattlefield(1, "Forest", 2)
+                .withLandsOnBattlefield(1, "Swamp", 1)
+                .withCardInHand(1, "Swamp")
+                .withCardInHand(1, "Carrier Thrall")
+                .withCardInHand(1, "Weather the Storm")
+                .withCardOnBattlefield(1, "Pest Mascot")
+                .build()
+            val player = ai(game)
+
+            val first = player.chooseAction(game.state)
+            val land = withClue("first action=${sourceName(game, first) ?: first::class.simpleName}") {
+                first.shouldBeInstanceOf<PlayLand>()
+            }
+            cardName(game, land.cardId) shouldBe "Swamp"
+            game.execute(land).error shouldBe null
+
+            val setup = player.chooseAction(game.state).shouldBeInstanceOf<CastSpell>()
+            sourceName(game, setup) shouldBe "Carrier Thrall"
+            game.execute(setup).error shouldBe null
+            game.resolveStack()
+
+            val weatherChoice = player.chooseAction(game.state)
+            val weather = withClue("after land=${sourceName(game, weatherChoice) ?: weatherChoice}") {
+                weatherChoice.shouldBeInstanceOf<CastSpell>()
+            }
+            sourceName(game, weather) shouldBe "Weather the Storm"
+            game.state.spellsCastThisTurn shouldBe 1
+        }
+
+        test("land-unlocked Storm setup does not delay lifegain required for survival") {
+            val game = seeded()
+                .withLifeTotal(1, 2)
+                .withLandsOnBattlefield(1, "Forest", 2)
+                .withLandsOnBattlefield(1, "Swamp", 1)
+                .withCardInHand(1, "Swamp")
+                .withCardInHand(1, "Carrier Thrall")
+                .withCardInHand(1, "Weather the Storm")
+                .withCardOnBattlefield(1, "Pest Mascot")
+                .withCardOnBattlefield(2, "Craw Wurm")
+                .build()
+
+            val action = ai(game).chooseAction(game.state).shouldBeInstanceOf<CastSpell>()
+            sourceName(game, action) shouldBe "Weather the Storm"
+        }
+
+        test("land drop does not turn a strategically null spell into Storm setup") {
+            val game = seeded()
+                .withLandsOnBattlefield(1, "Forest", 2)
+                .withLandsOnBattlefield(1, "Swamp", 1)
+                .withCardInHand(1, "Swamp")
+                .withCardInHand(1, "Duress")
+                .withCardInHand(1, "Weather the Storm")
+                .withCardOnBattlefield(1, "Pest Mascot")
+                .build()
+
+            val chosen = ai(game).chooseAction(game.state)
+            (chosen is CastSpell && sourceName(game, chosen) == "Duress").shouldBeFalse()
+        }
+
+        test("land-unlocked setup is rejected when its strategic cost exceeds the Storm benefit") {
+            val game = seeded()
+                .withLandsOnBattlefield(1, "Forest", 1)
+                .withLandsOnBattlefield(1, "Swamp", 1)
+                .withCardInHand(1, "Swamp")
+                .withCardInHand(1, "Bone Shards")
+                .withCardInHand(1, "Weather the Storm")
+                .withCardOnBattlefield(1, "Pest Mascot")
+                .withCardOnBattlefield(2, "Mons's Goblin Raiders")
+                .build()
+
+            val chosen = ai(game).chooseAction(game.state)
+            (chosen is CastSpell && sourceName(game, chosen) == "Bone Shards").shouldBeFalse()
         }
 
         test("does not spend an irrelevant spell only to increase Storm") {
@@ -370,6 +456,97 @@ class PestControlAgentDecisionTest : ScenarioTestBase() {
             val (chosen, report) = chooseWithReport(game)
             val activation = withClue(report) { chosen.shouldBeInstanceOf<ActivateAbility>() }
             withClue(report) { sourceName(game, activation) shouldBe "Food" }
+        }
+
+        test("executes Food into enhanced Follow in the same turn when the line is profitable") {
+            val game = seeded()
+                .withLifeTotal(1, 21)
+                .withLandsOnBattlefield(1, "Forest", 4)
+                .withCardInHand(1, "Follow the Lumarets")
+                .withCardOnBattlefield(1, "Food", isToken = true)
+                .withCardInLibrary(1, "Forest")
+                .withCardInLibrary(1, "Swamp")
+                .withCardInLibrary(1, "Blood Researcher")
+                .withCardInLibrary(1, "Pest Mascot")
+                .build()
+            val player = ai(game)
+
+            val resource = player.chooseAction(game.state).shouldBeInstanceOf<ActivateAbility>()
+            sourceName(game, resource) shouldBe "Food"
+            game.execute(resource).error shouldBe null
+            game.resolveStack()
+
+            val followChoice = player.chooseAction(game.state)
+            val follow = withClue("after Food=${sourceName(game, followChoice) ?: followChoice}") {
+                followChoice.shouldBeInstanceOf<CastSpell>()
+            }
+            sourceName(game, follow) shouldBe "Follow the Lumarets"
+        }
+
+        test("holds a pure lifegain resource when its temporary condition would expire unused") {
+            val game = seeded()
+                .withLifeTotal(1, 21)
+                .withLandsOnBattlefield(1, "Forest", 3)
+                .withCardInHand(1, "Follow the Lumarets")
+                .withCardOnBattlefield(1, "Food", isToken = true)
+                .withCardInLibrary(1, "Forest")
+                .withCardInLibrary(1, "Swamp")
+                .withCardInLibrary(1, "Blood Researcher")
+                .build()
+
+            val chosen = ai(game).chooseAction(game.state)
+            (chosen is ActivateAbility && sourceName(game, chosen) == "Food").shouldBeFalse()
+        }
+
+        test("does not spend lifegain when an executable enhanced mode adds no material value") {
+            val game = seeded()
+                .withLifeTotal(1, 21)
+                .withLandsOnBattlefield(1, "Forest", 4)
+                .withCardInHand(1, "Follow the Lumarets")
+                .withCardOnBattlefield(1, "Food", isToken = true)
+                .build()
+
+            val chosen = ai(game).chooseAction(game.state)
+            (chosen is ActivateAbility && sourceName(game, chosen) == "Food").shouldBeFalse()
+        }
+
+        test("Game 28 reconstruction completes land Weather enhanced Follow and useful follow-up") {
+            val game = seeded()
+                .withLifeTotal(1, 24)
+                .withLandsOnBattlefield(1, "Forest", 3)
+                .withLandsOnBattlefield(1, "Swamp", 2)
+                .withCardInHand(1, "Swamp")
+                .withCardInHand(1, "Weather the Storm")
+                .withCardInHand(1, "Follow the Lumarets")
+                .withCardInHand(1, "Carrier Thrall")
+                .withCardInLibrary(1, "Forest")
+                .withCardInLibrary(1, "Swamp")
+                .withCardInLibrary(1, "Blood Researcher")
+                .withCardInLibrary(1, "Pest Mascot")
+                .build()
+            val player = ai(game)
+
+            val first = player.chooseAction(game.state)
+            val land = withClue("first action=${sourceName(game, first) ?: first::class.simpleName}") {
+                first.shouldBeInstanceOf<PlayLand>()
+            }
+            game.execute(land).error shouldBe null
+
+            val weather = player.chooseAction(game.state).shouldBeInstanceOf<CastSpell>()
+            sourceName(game, weather) shouldBe "Weather the Storm"
+            game.execute(weather).error shouldBe null
+            game.resolveStack()
+
+            val follow = player.chooseAction(game.state).shouldBeInstanceOf<CastSpell>()
+            sourceName(game, follow) shouldBe "Follow the Lumarets"
+            game.execute(follow).error shouldBe null
+            game.resolveStackWith(player)
+
+            val carrierChoice = player.chooseAction(game.state)
+            val carrier = withClue("after Follow=${sourceName(game, carrierChoice) ?: carrierChoice}") {
+                carrierChoice.shouldBeInstanceOf<CastSpell>()
+            }
+            sourceName(game, carrier) shouldBe "Carrier Thrall"
         }
 
         test("does not treat pending lifegain as guaranteed while an opponent can disrupt it") {

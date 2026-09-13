@@ -30,6 +30,7 @@ import com.wingedsheep.engine.core.CycleCard
 import com.wingedsheep.engine.core.DeclareAttackers
 import com.wingedsheep.engine.core.DeclareBlockers
 import com.wingedsheep.engine.core.GameAction
+import com.wingedsheep.engine.core.PlayLand
 import com.wingedsheep.engine.core.TypecycleCard
 import com.wingedsheep.engine.legalactions.LegalAction
 import com.wingedsheep.engine.legalactions.MeaningfulActionFilter
@@ -159,6 +160,13 @@ class Strategist(
      */
     private val positionsActedFrom = ArrayDeque<Long>()
 
+    /**
+     * A resource that exists only to establish an expiring condition is not a complete plan. Keep
+     * the proven consumer across the intervening stack resolution so a combat-step shortcut cannot
+     * let the condition expire after its cost has already been paid.
+     */
+    private var expiringConditionCommitment: ExpiringConditionCommitment? = null
+
     fun chooseAction(
         state: GameState,
         legalActions: List<LegalAction>,
@@ -166,6 +174,7 @@ class Strategist(
     ): LegalAction {
         val startNanos = if (insightSink != null) System.nanoTime() else 0L
         val evaluationState = stateSampler?.invoke(state, playerId) ?: state
+        committedExpiringConditionFollowUp(evaluationState, legalActions, playerId)?.let { return it }
         // Combat declaration steps need the CombatAdvisor to fill in attacker/blocker maps
         // even when there's only one legal action (which is the common case — the enumerator
         // returns a single DeclareAttackers/DeclareBlockers with an empty default map).
@@ -330,6 +339,18 @@ class Strategist(
             best.first
         } else {
             pass ?: legalActions.first()
+        }
+
+        if (takeAction) {
+            val chosenIndex = leaves.indexOf(best.first)
+            if (chosenIndex >= 0) {
+                rememberExpiringConditionFollowUp(
+                    evaluationState,
+                    leafStates[chosenIndex],
+                    best.first,
+                    playerId,
+                )
+            }
         }
 
         if (insightSink != null) {
@@ -684,6 +705,18 @@ class Strategist(
                 "forced-sacrifice policy: no opposing permanent was sacrificed — floored below passing",
             )
         }
+        if (shouldDeferForLandUnlockedSequence(state, action.action, playerId)) {
+            return AdjustedScore(
+                passScore - 1.0,
+                "sequencing policy: legal land play unlocks a superior same-turn line",
+            )
+        }
+        if (shouldDeferForExecutableExpiringConditionSequence(state, action.action, playerId)) {
+            return AdjustedScore(
+                passScore - 1.0,
+                "sequencing policy: executable expiring-condition line should begin with its enabler",
+            )
+        }
         if (shouldHoldNullLifeGain(state, leafState, action.action, playerId, cardName)) {
             // Raw life has board-score value even when no game object can currently exploit it.
             // A pure gain spell with no pressure, payoff, or enabled follow-up is therefore a
@@ -801,7 +834,7 @@ class Strategist(
         val pendingLifeGain = pendingGuaranteedLifeGain(state, playerId)
         if (visibleRepeatablePayoffCount(state, playerId) > 0) return false
         if (lifeGainNeededForSurvival(state, playerId, pendingLifeGain)) return false
-        if (unlocksLifeGainEnhancedFollowUp(state, leafState, playerId, pendingLifeGain)) return false
+        if (bestLifeGainEnhancedFollowUp(state, leafState, playerId, pendingLifeGain) != null) return false
         return true
     }
 
@@ -860,24 +893,135 @@ class Strategist(
         }.sum()
     }
 
-    /** The life event changed a currently affordable spell from normal to enhanced. */
-    private fun unlocksLifeGainEnhancedFollowUp(
+    /**
+     * The life event changed a currently executable spell from normal to enhanced, and the whole
+     * resource-plus-consumer line is materially better than either stopping after the resource or
+     * casting the consumer normally. This couples an expiring condition to its use inside the
+     * valid window instead of valuing a theoretical option that the next decision may abandon.
+     */
+    private fun bestLifeGainEnhancedFollowUp(
         state: GameState,
         leafState: GameState,
         playerId: EntityId,
         pendingGuaranteedLifeGain: Int = pendingGuaranteedLifeGain(state, playerId),
-    ): Boolean {
-        if (state.getEntity(playerId)?.has<LifeGainedThisTurnComponent>() == true) return false
-        if (pendingGuaranteedLifeGain > 0) return false
-        if (leafState.getEntity(playerId)?.has<LifeGainedThisTurnComponent>() != true) return false
-        return simulator.getLegalActions(leafState, playerId).any { next ->
-            if (!next.affordable) return@any false
-            val nextCast = next.action as? CastSpell ?: return@any false
-            val nextName = leafState.getEntity(nextCast.cardId)?.get<CardComponent>()?.name ?: return@any false
+    ): ExpiringConditionFollowUp? {
+        if (state.getEntity(playerId)?.has<LifeGainedThisTurnComponent>() == true) return null
+        if (pendingGuaranteedLifeGain > 0) return null
+        if (leafState.getEntity(playerId)?.has<LifeGainedThisTurnComponent>() != true) return null
+
+        val resourceOnlyScore = evaluator.evaluate(leafState, leafState.projectedState, playerId)
+        return simulator.getLegalActions(leafState, playerId).asSequence().mapNotNull { next ->
+            if (!next.affordable) return@mapNotNull null
+            val nextCast = next.action as? CastSpell ?: return@mapNotNull null
+            val nextName = leafState.getEntity(nextCast.cardId)?.get<CardComponent>()?.name ?: return@mapNotNull null
             val nextIntent = nextCast.faceIndex?.let { intents.forFaceIndex(nextName, it) }
                 ?: intents.forName(nextName)
-            nextIntent != null && IntentTag.LIFEGAIN_ENHANCED in nextIntent.tags
+            if (nextIntent == null || IntentTag.LIFEGAIN_ENHANCED !in nextIntent.tags) return@mapNotNull null
+
+            val enhancedAction = heuristicTargets(leafState, next, playerId)
+            val enhanced = simulator.simulate(leafState, enhancedAction)
+            if (enhanced is SimulationResult.Illegal || enhanced is SimulationResult.StoppedAtLimit) {
+                return@mapNotNull null
+            }
+            val enhancedScore = evaluator.evaluate(enhanced.state, enhanced.state.projectedState, playerId)
+            val downstream = simulator.getLegalActions(enhanced.state, playerId).asSequence()
+                .filter { it.affordable && it.action is CastSpell }
+                .mapNotNull { downstream ->
+                    val result = simulator.simulate(
+                        enhanced.state,
+                        heuristicTargets(enhanced.state, downstream, playerId),
+                    )
+                    if (result is SimulationResult.Illegal || result is SimulationResult.StoppedAtLimit) {
+                        return@mapNotNull null
+                    }
+                    (downstream.action as CastSpell).cardId to
+                        evaluator.evaluate(result.state, result.state.projectedState, playerId)
+                }
+                .maxByOrNull { it.second }
+
+            val normalState = simulator.getLegalActions(state, playerId).asSequence()
+                .filter { it.affordable }
+                .firstOrNull { direct ->
+                    val directCast = direct.action as? CastSpell
+                    directCast?.cardId == nextCast.cardId && directCast.faceIndex == nextCast.faceIndex
+                }
+                ?.let { direct -> simulator.simulate(state, heuristicTargets(state, direct, playerId)) }
+                ?.takeUnless { it is SimulationResult.Illegal || it is SimulationResult.StoppedAtLimit }
+                ?.state
+            val normalScore = normalState?.let { evaluator.evaluate(it, it.projectedState, playerId) }
+                ?: Double.NEGATIVE_INFINITY
+            val enhancedCardsRecovered = enhanced.state.getHand(playerId).size - leafState.getHand(playerId).size + 1
+            val normalCardsRecovered = normalState?.let {
+                it.getHand(playerId).size - state.getHand(playerId).size + 1
+            } ?: 0
+            // LIFEGAIN_ENHANCED is currently emitted only for a conditional library-selection
+            // count. Compare the cards actually recovered, not raw life-weighted board score.
+            val materiallyEnhanced = enhancedCardsRecovered > normalCardsRecovered
+            if (normalScore.isFinite() && !materiallyEnhanced) {
+                return@mapNotNull null
+            }
+            val alternative = maxOf(resourceOnlyScore, normalScore)
+            val projected = maxOf(
+                enhancedScore,
+                downstream?.second ?: Double.NEGATIVE_INFINITY,
+                alternative + EXPIRING_CONDITION_CONSUMPTION_VALUE,
+            )
+            ExpiringConditionFollowUp(
+                nextCast.cardId,
+                nextCast.faceIndex,
+                downstream?.first,
+                projected,
+            )
+        }.maxByOrNull(ExpiringConditionFollowUp::projectedScore)
+    }
+
+    private fun committedExpiringConditionFollowUp(
+        state: GameState,
+        legalActions: List<LegalAction>,
+        playerId: EntityId,
+    ): LegalAction? {
+        val commitment = expiringConditionCommitment ?: return null
+        if (commitment.playerId != playerId || commitment.turn != state.turnNumber) {
+            expiringConditionCommitment = null
+            return null
         }
+        if (state.getEntity(playerId)?.has<LifeGainedThisTurnComponent>() != true) {
+            if (state.stack.isEmpty()) expiringConditionCommitment = null
+            return null
+        }
+        val followUp = legalActions.firstOrNull { legal ->
+            if (!legal.affordable) return@firstOrNull false
+            val cast = legal.action as? CastSpell ?: return@firstOrNull false
+            cast.cardId == commitment.cardId && cast.faceIndex == commitment.faceIndex
+        }
+        if (followUp == null) {
+            if (state.stack.isEmpty()) expiringConditionCommitment = null
+            return null
+        }
+        expiringConditionCommitment = null
+        return followUp.copy(action = chooseCommittedTargets(state, followUp, playerId))
+    }
+
+    private fun rememberExpiringConditionFollowUp(
+        state: GameState,
+        leafState: GameState,
+        action: LegalAction,
+        playerId: EntityId,
+    ) {
+        val cardName = resolveCardName(state, action) ?: return
+        val pureLifeGain = when (val gameAction = action.action) {
+            is CastSpell -> intents.isPureLifeGainSpell(cardName, gameAction.faceIndex)
+            is ActivateAbility -> intents.isPureLifeGainAbility(cardName, gameAction.abilityId)
+            else -> false
+        }
+        if (!pureLifeGain) return
+        val followUp = bestLifeGainEnhancedFollowUp(state, leafState, playerId) ?: return
+        expiringConditionCommitment = ExpiringConditionCommitment(
+            playerId,
+            state.turnNumber,
+            followUp.cardId,
+            followUp.faceIndex,
+        )
     }
 
     /** Casts made newly executable by the leaf, excluding legal-but-strategically-null effects. */
@@ -954,10 +1098,24 @@ class Strategist(
             if (hasCreatureFollowUp && hasVisiblePayoff) delta += TRIGGER_ENGINE_SETUP_VALUE
         }
 
-        if (cast != null && intent != null && IntentTag.LIFEGAIN in intent.tags &&
-            unlocksLifeGainEnhancedFollowUp(state, leafState, playerId)
-        ) {
-            delta += LIFEGAIN_FOLLOW_UP_UNLOCK_VALUE
+        if (cast != null && intent != null && IntentTag.LIFEGAIN in intent.tags) {
+            val followUp = bestLifeGainEnhancedFollowUp(state, leafState, playerId)
+            if (followUp != null) {
+                delta += (followUp.projectedScore - leafScore).coerceAtLeast(0.0) +
+                    LIFEGAIN_FOLLOW_UP_UNLOCK_VALUE
+            }
+        }
+
+        val landPlay = action.action as? PlayLand
+        if (landPlay != null) {
+            val setup = bestLandUnlockedStormSetup(state, playerId)
+            if (setup != null && setup.landId == landPlay.cardId) {
+                delta += (setup.projectedScore - leafScore).coerceAtLeast(0.0)
+            }
+            val expiringLine = bestLandUnlockedExpiringConditionLine(state, playerId)
+            if (expiringLine != null && expiringLine.landId == landPlay.cardId) {
+                delta += (expiringLine.projectedScore - leafScore).coerceAtLeast(0.0)
+            }
         }
 
         if (cast != null && leafScore > passScore) {
@@ -1048,6 +1206,202 @@ class Strategist(
         }
 
         return delta
+    }
+
+    /**
+     * Validate one bounded main-phase line that the ordinary one-ply candidate set cannot see:
+     * land, productive spell, then a still-payable Storm spell. Both spells are run through the
+     * real simulator, and the line must beat immediate Storm by a material evaluator margin.
+     */
+    private fun bestLandUnlockedStormSetup(
+        state: GameState,
+        playerId: EntityId,
+    ): LandUnlockedStormSetup? {
+        if (!state.isActiveTurnFor(playerId) || state.step !in setOf(Step.PRECOMBAT_MAIN, Step.POSTCOMBAT_MAIN)) {
+            return null
+        }
+        if (visibleRepeatablePayoffCount(state, playerId) == 0) return null
+
+        val legalNow = simulator.getLegalActions(state, playerId)
+        val immediateStorms = legalNow.filter { it.affordable && isStormCast(state, it) }
+        if (immediateStorms.isEmpty()) return null
+        if (immediateStorms.any { storm ->
+                val name = resolveCardName(state, storm) ?: return@any false
+                val cast = storm.action as CastSpell
+                intents.isPureLifeGainSpell(name, cast.faceIndex) && lifeGainNeededForSurvival(state, playerId)
+            }
+        ) return null
+
+        val immediateBest = immediateStorms.maxOfOrNull { storm ->
+            simulator.simulate(state, heuristicTargets(state, storm, playerId)).scoreOrRankLast { leaf ->
+                evaluator.evaluate(leaf, leaf.projectedState, playerId)
+            }
+        } ?: return null
+
+        return legalNow.asSequence().mapNotNull { landAction ->
+            val land = landAction.action as? PlayLand ?: return@mapNotNull null
+            val landResult = simulator.simulate(state, land)
+            if (landResult is SimulationResult.Illegal || landResult is SimulationResult.StoppedAtLimit) {
+                return@mapNotNull null
+            }
+            val landState = landResult.state
+            val landScore = evaluator.evaluate(landState, landState.projectedState, playerId)
+            simulator.getLegalActions(landState, playerId).asSequence().mapNotNull { setup ->
+                if (!setup.affordable || setup.action !is CastSpell || isStormCast(landState, setup)) {
+                    return@mapNotNull null
+                }
+                val setupResult = simulator.simulate(landState, heuristicTargets(landState, setup, playerId))
+                if (setupResult is SimulationResult.Illegal || setupResult is SimulationResult.StoppedAtLimit) {
+                    return@mapNotNull null
+                }
+                val setupState = setupResult.state
+                val setupScore = evaluator.evaluate(setupState, setupState.projectedState, playerId)
+                if (setupScore <= landScore + MATERIAL_SEQUENCE_MARGIN) return@mapNotNull null
+
+                val storm = simulator.getLegalActions(setupState, playerId)
+                    .firstOrNull { it.affordable && isStormCast(setupState, it) }
+                    ?: return@mapNotNull null
+                val finalResult = simulator.simulate(setupState, heuristicTargets(setupState, storm, playerId))
+                if (finalResult is SimulationResult.Illegal || finalResult is SimulationResult.StoppedAtLimit) {
+                    return@mapNotNull null
+                }
+                val finalScore = evaluator.evaluate(finalResult.state, finalResult.state.projectedState, playerId)
+                if (finalScore <= immediateBest + MATERIAL_SEQUENCE_MARGIN) return@mapNotNull null
+                LandUnlockedStormSetup(
+                    land.cardId,
+                    (setup.action as CastSpell).cardId,
+                    (storm.action as CastSpell).cardId,
+                    finalScore,
+                )
+            }.maxByOrNull(LandUnlockedStormSetup::projectedScore)
+        }.maxByOrNull(LandUnlockedStormSetup::projectedScore)
+    }
+
+    /** Land first, then establish and consume a same-turn expiring condition. */
+    private fun bestLandUnlockedExpiringConditionLine(
+        state: GameState,
+        playerId: EntityId,
+    ): LandUnlockedExpiringConditionLine? {
+        if (!state.isActiveTurnFor(playerId) || state.step !in setOf(Step.PRECOMBAT_MAIN, Step.POSTCOMBAT_MAIN)) {
+            return null
+        }
+        if (lifeGainNeededForSurvival(state, playerId)) return null
+        return simulator.getLegalActions(state, playerId).asSequence().mapNotNull { landAction ->
+            val land = landAction.action as? PlayLand ?: return@mapNotNull null
+            val landResult = simulator.simulate(state, land)
+            if (landResult is SimulationResult.Illegal || landResult is SimulationResult.StoppedAtLimit) {
+                return@mapNotNull null
+            }
+            val landState = landResult.state
+            simulator.getLegalActions(landState, playerId).asSequence().mapNotNull { resource ->
+                if (!resource.affordable) return@mapNotNull null
+                val resourceName = resolveCardName(landState, resource) ?: return@mapNotNull null
+                val pureLifeGain = when (val gameAction = resource.action) {
+                    is CastSpell -> intents.isPureLifeGainSpell(resourceName, gameAction.faceIndex)
+                    is ActivateAbility -> intents.isPureLifeGainAbility(resourceName, gameAction.abilityId)
+                    else -> false
+                }
+                if (!pureLifeGain) return@mapNotNull null
+                val resourceResult = simulator.simulate(
+                    landState,
+                    heuristicTargets(landState, resource, playerId),
+                )
+                if (resourceResult is SimulationResult.Illegal || resourceResult is SimulationResult.StoppedAtLimit) {
+                    return@mapNotNull null
+                }
+                val followUp = bestLifeGainEnhancedFollowUp(
+                    landState,
+                    resourceResult.state,
+                    playerId,
+                ) ?: return@mapNotNull null
+                val resourceCardId = when (val gameAction = resource.action) {
+                    is CastSpell -> gameAction.cardId
+                    is ActivateAbility -> gameAction.sourceId
+                    else -> return@mapNotNull null
+                }
+                val followAction = simulator.getLegalActions(resourceResult.state, playerId)
+                    .firstOrNull { legal ->
+                        val cast = legal.action as? CastSpell
+                        legal.affordable && cast?.cardId == followUp.cardId && cast.faceIndex == followUp.faceIndex
+                    }
+                val followResult = followAction?.let { legal ->
+                    simulator.simulate(resourceResult.state, heuristicTargets(resourceResult.state, legal, playerId))
+                }
+                val afterFollow = followResult?.takeUnless {
+                    it is SimulationResult.Illegal || it is SimulationResult.StoppedAtLimit
+                }?.state
+                val afterFollowScore = afterFollow?.let {
+                    evaluator.evaluate(it, it.projectedState, playerId)
+                } ?: followUp.projectedScore
+                val downstreamCardId = afterFollow?.let { position ->
+                    simulator.getLegalActions(position, playerId).asSequence().mapNotNull { next ->
+                        if (!next.affordable || next.action !is CastSpell) return@mapNotNull null
+                        val result = simulator.simulate(position, heuristicTargets(position, next, playerId))
+                        if (result is SimulationResult.Illegal || result is SimulationResult.StoppedAtLimit) {
+                            return@mapNotNull null
+                        }
+                        val score = evaluator.evaluate(result.state, result.state.projectedState, playerId)
+                        val id = (next.action as CastSpell).cardId
+                        (id to score).takeIf { score > afterFollowScore + MATERIAL_SEQUENCE_MARGIN }
+                    }.maxByOrNull { it.second }?.first
+                }
+                LandUnlockedExpiringConditionLine(
+                    land.cardId,
+                    resourceCardId,
+                    followUp.cardId,
+                    downstreamCardId,
+                    afterFollowScore,
+                )
+            }.maxByOrNull(LandUnlockedExpiringConditionLine::projectedScore)
+        }.maxByOrNull(LandUnlockedExpiringConditionLine::projectedScore)
+    }
+
+    private fun isStormCast(state: GameState, action: LegalAction): Boolean {
+        val cast = action.action as? CastSpell ?: return false
+        return state.getEntity(cast.cardId)?.get<CardComponent>()?.baseKeywords
+            ?.contains(com.wingedsheep.sdk.core.Keyword.STORM) == true
+    }
+
+    private fun shouldDeferForLandUnlockedSequence(
+        state: GameState,
+        action: GameAction,
+        playerId: EntityId,
+    ): Boolean {
+        val cast = action as? CastSpell ?: return false
+        val stormSetup = bestLandUnlockedStormSetup(state, playerId)
+        if (stormSetup != null && cast.cardId in setOf(stormSetup.setupCardId, stormSetup.stormCardId)) {
+            return true
+        }
+        val expiringLine = bestLandUnlockedExpiringConditionLine(state, playerId)
+        return expiringLine != null && cast.cardId in setOfNotNull(
+            expiringLine.resourceCardId,
+            expiringLine.followUpCardId,
+            expiringLine.downstreamCardId,
+        )
+    }
+
+    private fun shouldDeferForExecutableExpiringConditionSequence(
+        state: GameState,
+        action: GameAction,
+        playerId: EntityId,
+    ): Boolean {
+        val cast = action as? CastSpell ?: return false
+        val line = simulator.getLegalActions(state, playerId).asSequence().mapNotNull { resource ->
+            if (!resource.affordable) return@mapNotNull null
+            val name = resolveCardName(state, resource) ?: return@mapNotNull null
+            val pureLifeGain = when (val gameAction = resource.action) {
+                is CastSpell -> intents.isPureLifeGainSpell(name, gameAction.faceIndex)
+                is ActivateAbility -> intents.isPureLifeGainAbility(name, gameAction.abilityId)
+                else -> false
+            }
+            if (!pureLifeGain) return@mapNotNull null
+            val result = simulator.simulate(state, heuristicTargets(state, resource, playerId))
+            if (result is SimulationResult.Illegal || result is SimulationResult.StoppedAtLimit) {
+                return@mapNotNull null
+            }
+            bestLifeGainEnhancedFollowUp(state, result.state, playerId)
+        }.maxByOrNull(ExpiringConditionFollowUp::projectedScore) ?: return false
+        return cast.cardId == line.cardId || cast.cardId == line.downstreamCardId
     }
 
     private fun visibleRepeatablePayoffCount(state: GameState, playerId: EntityId): Int =
@@ -1763,6 +2117,12 @@ class Strategist(
         /** Break a pass tie when this life event newly enables a concrete enhanced spell. */
         const val LIFEGAIN_FOLLOW_UP_UNLOCK_VALUE = 0.5
 
+        /** Structural value of consuming a newly established condition before it expires. */
+        const val EXPIRING_CONDITION_CONSUMPTION_VALUE = 2.0
+
+        /** A compound line must clear noise in the static evaluator before it can borrow future value. */
+        const val MATERIAL_SEQUENCE_MARGIN = 0.10
+
         /** Tempo value per mana of a spell enabled by paying a non-mana alternative cost. */
         const val ALTERNATIVE_COST_TEMPO_PER_MANA = 0.85
 
@@ -1789,4 +2149,33 @@ class Strategist(
 
         const val MOMIR_AVATAR_NAME = "Momir Vig, Simic Visionary"
     }
+
+    private data class ExpiringConditionFollowUp(
+        val cardId: EntityId,
+        val faceIndex: Int?,
+        val downstreamCardId: EntityId?,
+        val projectedScore: Double,
+    )
+
+    private data class ExpiringConditionCommitment(
+        val playerId: EntityId,
+        val turn: Int,
+        val cardId: EntityId,
+        val faceIndex: Int?,
+    )
+
+    private data class LandUnlockedStormSetup(
+        val landId: EntityId,
+        val setupCardId: EntityId,
+        val stormCardId: EntityId,
+        val projectedScore: Double,
+    )
+
+    private data class LandUnlockedExpiringConditionLine(
+        val landId: EntityId,
+        val resourceCardId: EntityId,
+        val followUpCardId: EntityId,
+        val downstreamCardId: EntityId?,
+        val projectedScore: Double,
+    )
 }
