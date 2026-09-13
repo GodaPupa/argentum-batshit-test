@@ -1,6 +1,6 @@
 # Project Pest Control — Status
 
-- Status: Game 18 same-turn sequencing/telemetry correction remotely green; stopped at Sample #2 Take 7 seed-readiness gate
+- Status: Sample #2 Take 7 vector frozen and unexecuted; gameplay requires separate explicit authorization after the freeze head is remotely green
 - Laboratory: Project Pest Control
 - Branch: `pest-control/lab`
 - Validated base: `47882cd645caf126afee6cf13a65909806fa40ab`
@@ -19,6 +19,8 @@
   `6385a6e79f6bef5ce527129de560131a4dc7d68e` (CI #232)
 - Sample #2 Take 6 same-turn sequencing/telemetry implementation head:
   `2cbfa7cd4c94fc6007288a27e2427183e9a158a8` (CI #236)
+- Sample #2 Take 7 ordered seed-value SHA-256:
+  `af294f8238ba796082333994450f6f98d9a5b371e166591ba17c60de76aa7488`
 - Control version: Pest Control v1.0 (permanent, immutable)
 - Candidate status: proposed Tier-1 architecture only; not approved, constructed, or run
 
