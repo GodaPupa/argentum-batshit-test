@@ -50,7 +50,17 @@ Weather the Storm from rider-bearing Pulse of Murasa.
 
 ## Gate
 
-No seed execution is part of this correction gate. After focused tests, full CI, and Argentum
-Validation are green, the laboratory stops awaiting separate authorization. It does not construct the
-challenger, optimize v1.0, run opponent self-play, generate Sample #2, or automatically replay either
-rejected vector.
+No seed execution is part of this correction gate. All 46 focused Pest Control agent decisions, the
+full structural-intent analyzer suite, and the full local AI suite passed. The exact frozen-deck/vector
+assertion passed while every opt-in goldfish execution was skipped. Remote CI run 202 is fully green
+on implementation head `6c13b8fd100040d60a0a0b33b66d7b484281e9d7` across frontend, engine,
+all scenario partitions, content, tools, server, and the aggregate backend gate.
+
+The named Argentum Validation workflow is configured for `main` pushes or manual dispatch and could
+not be dispatched through the available branch connection. Its monolithic local task graph is blocked
+before test execution because this offline container lacks Byte Buddy 1.10.9 and
+kotlinx-serialization-core 1.9.0. Production code and test semantics were not changed for that
+container-specific limitation; the clean remote CI environment is authoritative.
+
+The laboratory stops awaiting separate authorization. It does not construct the challenger, optimize
+v1.0, run opponent self-play, generate Sample #2, or automatically replay either rejected vector.

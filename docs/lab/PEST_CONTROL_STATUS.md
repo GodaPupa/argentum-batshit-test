@@ -1,6 +1,6 @@
 # Project Pest Control — Status
 
-- Status: fresh Sample #1 rejected; approved general Weather-policy correction under validation
+- Status: fresh Sample #1 rejected; general Weather-policy correction green; awaiting replay approval
 - Laboratory: Project Pest Control
 - Branch: `pest-control/lab`
 - Validated base: `47882cd645caf126afee6cf13a65909806fa40ab`
@@ -73,6 +73,15 @@ Focused deterministic coverage proves:
 permanent v1.0 list, mulligan policy, Weather rules, Follow rules, telemetry, engine, Gym, and card
 definitions are unchanged. The rejected fresh vector has not been replayed, replaced, or used for
 performance inference; a replay or new sample requires separate authorization after validation.
+
+Focused validation passed all 46 Pest Control agent decisions plus the full structural-intent
+analyzer suite. The full local AI suite is green. The frozen-deck/vector test passed with all three
+opt-in goldfish executions skipped. The monolithic offline local `test` entry point remains blocked
+before execution by the previously documented missing Byte Buddy 1.10.9 and
+kotlinx-serialization-core 1.9.0 artifacts; no accommodation was made. Remote CI run 202 is fully
+green on implementation head `6c13b8fd100040d60a0a0b33b66d7b484281e9d7`, including frontend,
+engine, every scenario partition, content, tools, server, and the aggregate backend gate. The named
+Argentum Validation workflow remains unavailable on this non-main branch without manual dispatch.
 
 Descriptive rejected-run facts, retained for diagnosis only: 9/30 games mulliganed (11 total);
 meaningful deployment reached 6/14/27 games by T1/T2/T3; all 30 modeled terminals were combat lethal
