@@ -1,6 +1,6 @@
 # Project Pest Control — Status
 
-- Status: Sample #2 Take 4 formally rejected; stopped at correction-authorization gate
+- Status: Sample #2 Take 4 observability gate green; stopped at Sample #2 Take 5 seed-readiness gate
 - Laboratory: Project Pest Control
 - Branch: `pest-control/lab`
 - Validated base: `47882cd645caf126afee6cf13a65909806fa40ab`
@@ -13,6 +13,8 @@
   `14bea9a1f0c67be74aae8f48704186e2277de1b1` (CI #220)
 - Sample #2 Take 3 observability implementation head:
   `e316117ee71b30b170e241c8eb110bf8d4d20117` (CI #224)
+- Sample #2 Take 4 observability implementation head:
+  `860d2f72b63bac460b90a04a1cc561bbb40ac9a9` (CI #228)
 - Control version: Pest Control v1.0 (permanent, immutable)
 - Candidate status: proposed Tier-1 architecture only; not approved, constructed, or run
 
@@ -68,6 +70,56 @@ JSON artifact, generated report, and complete rejection audit are preserved unde
 performance evidence and no pooled 60-game analysis is admissible. Sample #1 remains the sole accepted
 Pest Control performance/engine sample; Pest Control v1.0 remains exact; the challenger remains audit-
 only and unconstructed. No corrective implementation is authorized by this disposition.
+
+#### Sample #2 Take 4 observability correction gate
+
+**SHARED ARGENTUM CHANGE: yes.** Implementation
+`860d2f72b63bac460b90a04a1cc561bbb40ac9a9` is remotely green in CI #228. The detailed correction
+record is `docs/experiments/pest-control/sample-2-take-4-observability-corrections.md`.
+
+Bone Shards candidates were already concrete targeted casts with an additional-cost payment when
+scored, but the general intent fold did not classify the removal effect nested in its modal wrapper.
+The friendly-removal audit therefore returned before inspecting the resolved target, payment, and
+events. The audit path now recognizes a concrete friendly-targeted removal outcome independently of
+that broad intent tag and records whether the production removal policy itself was applied. The
+production hold/targeting policy is unchanged.
+
+The final Pest JSON writer now emits defaults and nulls explicitly. Friendly-removal records preserve
+the selected target, target/controller/value, mana and additional-cost mode/payment identities,
+removal and future-interaction costs, friendly and opposing alternatives, pass value, triggers and
+created resources, complete resulting friendly board, engine/lethal/prevention/resource-transition
+effects, net/fair-trade comparison, policy applicability, and selection/rejection reason. Executed
+friendly removal must have a selected audit record.
+
+Sequencing telemetry now materializes only authoritative legal target and additional-cost
+combinations and can evaluate a complete targeted/modal setup-to-Weather continuation. It serializes
+the setup prefix separately from the complete setup continuation, actual line, complete
+counterfactual, and complete comparison line. The completeness gate compares equivalent
+representations, eliminating the five Take 4 prefix-versus-continuation false failures while
+preserving all five classifications and the genuine Game-16-style regression.
+
+A hard pre-sample artifact-contract test constructs deterministic synthetic decisions and all five
+sequencing classifications, writes the exact final `PestGoldfishBlock` JSON, reparses it, and proves
+that target/cost identities, selected audits, complete sequences, pass/fair-trade comparisons, and
+zero, false, empty, null, and default-valued fields survive. No future seed freeze or generation is
+permitted unless this exact contract is green in CI and seed generation is separately authorized.
+
+The preserved Take 4 artifact lacks the target, additional-cost identity, pass comparison, complete
+alternatives, resulting board, and selection reason needed to reconstruct Games 8, 18, or 23 exactly.
+They remain permanently unclassifiable historical actions, not policy failures. Deterministic
+synthetic coverage demonstrated an auditable, productive Carrier-death line that creates a Scion and
+deterministic lethal; it did not demonstrate a new production gameplay-policy defect. No policy was
+changed.
+
+Focused schema/artifact-contract, sequencing, and removal-agent regressions; the complete AI suite;
+Pest rules/engine scenarios; and frozen-control/vector guards are green. CI #228 is green across the
+full runnable matrix. Every retired Pest runner remained disabled, and no retired seed or Pest seed
+vector executed during correction or validation.
+
+The project is stopped at the Sample #2 Take 5 seed-readiness gate. No Take 5 vector exists or has
+been generated. Pest Control v1.0 remains exact; Sample #1 remains the sole accepted performance/
+engine evidence; the challenger remains audit-only and unconstructed; and gameplay, optimization,
+opponent self-play, and Sample #3 remain prohibited.
 
 ### Sample #2 Take 3 authorization and freeze
 
