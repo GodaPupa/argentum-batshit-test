@@ -1,6 +1,6 @@
 # Project Pest Control — Status
 
-- Status: Sample #2 Take 4 observability gate green; stopped at Sample #2 Take 5 seed-readiness gate
+- Status: Sample #2 Take 5 vector frozen and unexecuted; stopped at pre-execution validation gate
 - Laboratory: Project Pest Control
 - Branch: `pest-control/lab`
 - Validated base: `47882cd645caf126afee6cf13a65909806fa40ab`
@@ -19,6 +19,36 @@
 - Candidate status: proposed Tier-1 architecture only; not approved, constructed, or run
 
 ## Goldfish Sample #2 independent replication authorization
+
+### Sample #2 Take 5 authorization and freeze
+
+The Take 4 observability-correction gate is formally accepted. Implementation
+`860d2f72b63bac460b90a04a1cc561bbb40ac9a9` is green in CI #228 and final head
+`5152f50b463889c9282c7bf1ea0d6a8484fdeb0e` is green in CI #229. Take 4 remains rejected
+permanently; its complete vector and SHA-256
+`9f53ae30fd233bc8a980163aff9a7df1d6b41095356072e520a2cad16f97a7ad` remain retired and
+hard-disabled. Games 8, 18, and 23 remain permanently unclassifiable historical actions, not policy
+failures.
+
+Before seed generation, the hard final-JSON artifact contract passed on exact current implementation
+head `5152f50b463889c9282c7bf1ea0d6a8484fdeb0e`. It generated the actual final artifact and proved
+all five sequencing classifications, prefixes and complete continuations, actual/counterfactual
+lines, target/controller and modal/additional-cost identities, pass/hold and fair-trade values,
+selection status/reason, selected executed-friendly-removal audits, and mandatory zero/false/empty/
+null/default fields survive final serialization.
+
+After that green prerequisite, a new 30-seed vector was deterministically derived and frozen before
+Game 1. All 40 refreshed refs (24 distinct trees) were audited read-only across 2,486 seed-category
+path instances, 219 unique seed-category blobs, and 27,208 text blobs, producing an exclusion set of
+1,899 normalized positive `Long` values. Overlap is zero. The vector SHA-256 is
+`4e239b8b76df587ec3e14f05f564a288480de42abcd681670c7330323631c1f0`; its derivation, complete
+vector path, audit scope, and immutable contract are recorded in
+`docs/experiments/pest-control/goldfish-sample-2-take-5-seed-freeze.md`.
+
+At this freeze point no Take 5 game has executed. The vector and permanent-control guards must pass
+locally and the freeze head must be remotely green before the single authorized execution. Sample #1
+remains the sole accepted performance/engine sample, Pest Control v1.0 remains exact, and the
+challenger remains audit-only and unconstructed.
 
 ### Sample #2 Take 4 authorization and freeze
 

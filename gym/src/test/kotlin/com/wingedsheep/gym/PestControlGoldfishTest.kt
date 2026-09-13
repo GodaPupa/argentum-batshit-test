@@ -52,6 +52,7 @@ private const val PEST_SAMPLE_2_SEED_SHA256 = "1e4247fceaa9a7d2f438ab8fa29733782
 private const val PEST_SAMPLE_2_TAKE_2_SEED_SHA256 = "1db3fb1fcf4b969d9229bb2a060491a556ff5e1c8c80d327caf37698ca1c3cb7"
 private const val PEST_SAMPLE_2_TAKE_3_SEED_SHA256 = "341fc7936a8a415d19d198662d1f6f2b2120ecb70d055a3a7a6fb76dd1ec8c47"
 private const val PEST_SAMPLE_2_TAKE_4_SEED_SHA256 = "9f53ae30fd233bc8a980163aff9a7df1d6b41095356072e520a2cad16f97a7ad"
+private const val PEST_SAMPLE_2_TAKE_5_SEED_SHA256 = "4e239b8b76df587ec3e14f05f564a288480de42abcd681670c7330323631c1f0"
 
 /** SHARED ARGENTUM CHANGE: yes — mandatory audit fields are never default-elided. */
 internal val PEST_ARTIFACT_JSON = Json {
@@ -72,6 +73,7 @@ class PestControlGoldfishTest : FunSpec({
         val sample2Take2 = readSample2Take2PestSeeds()
         val sample2Take3 = readSample2Take3PestSeeds()
         val sample2Take4 = readSample2Take4PestSeeds()
+        val sample2Take5 = readSample2Take5PestSeeds()
         retired.size shouldBe 30
         retired.distinct().size shouldBe 30
         fresh.size shouldBe 30
@@ -123,6 +125,17 @@ class PestControlGoldfishTest : FunSpec({
         sample2Take4.intersect(sample2Take2.toSet()) shouldBe emptySet()
         sample2Take4.intersect(sample2Take3.toSet()) shouldBe emptySet()
         seedVectorSha256(sample2Take4) shouldBe PEST_SAMPLE_2_TAKE_4_SEED_SHA256
+        sample2Take5.size shouldBe 30
+        sample2Take5.distinct().size shouldBe 30
+        sample2Take5.intersect(retired.toSet()) shouldBe emptySet()
+        sample2Take5.intersect(fresh.toSet()) shouldBe emptySet()
+        sample2Take5.intersect(performance.toSet()) shouldBe emptySet()
+        sample2Take5.intersect(untouched.toSet()) shouldBe emptySet()
+        sample2Take5.intersect(sample2.toSet()) shouldBe emptySet()
+        sample2Take5.intersect(sample2Take2.toSet()) shouldBe emptySet()
+        sample2Take5.intersect(sample2Take3.toSet()) shouldBe emptySet()
+        sample2Take5.intersect(sample2Take4.toSet()) shouldBe emptySet()
+        seedVectorSha256(sample2Take5) shouldBe PEST_SAMPLE_2_TAKE_5_SEED_SHA256
     }
 
     test("reproduce rejected Pest Control Game 25 Scion provenance").config(
@@ -370,6 +383,41 @@ class PestControlGoldfishTest : FunSpec({
         println(markdown)
         games.flatMap(PestGoldfishGame::auditErrors) shouldBe emptyList()
     }
+
+    test("Pest Control v1.0 Goldfish Sample 2 Take 5 independent replication").config(
+        enabled = false, // Frozen pre-execution; enable exactly once only after the freeze head is remotely green.
+        timeout = 60.minutes,
+    ) {
+        val seeds = readSample2Take5PestSeeds()
+        val registry = pestRegistry()
+        val games = seeds.mapIndexed { index, seed ->
+            runPestGoldfish(registry, seed, index + 1).let { game ->
+                game.copy(auditErrors = game.auditErrors + pestAuditCompletenessErrors(game))
+            }
+        }
+        val block = PestGoldfishBlock(
+            deckVersion = "Pest Control v1.0",
+            agentProfile = AiProfile.PRODUCTION_CANDIDATE_EXPIRING.id,
+            horizon = PEST_GOLDFISH_HORIZON,
+            seeds = seeds,
+            games = games,
+            summary = summarizePest(games),
+        )
+        val reportDir = Path.of("..", "docs", "experiments", "pest-control")
+        Files.createDirectories(reportDir)
+        Files.writeString(
+            reportDir.resolve("goldfish-sample-2-take-5-raw.json"),
+            PEST_ARTIFACT_JSON.encodeToString(block),
+        )
+        val markdown = renderPestMarkdown(
+            block,
+            freshPerformanceSample = true,
+            sampleLabel = "Goldfish Sample #2 — Take 5 Independent Replication",
+        )
+        Files.writeString(reportDir.resolve("goldfish-sample-2-take-5-report.md"), markdown)
+        println(markdown)
+        games.flatMap(PestGoldfishGame::auditErrors) shouldBe emptyList()
+    }
 })
 
 private val PEST_CONTROL_V10 = linkedMapOf(
@@ -421,6 +469,10 @@ private fun readSample2Take3PestSeeds(): List<Long> = Files.readAllLines(
 
 private fun readSample2Take4PestSeeds(): List<Long> = Files.readAllLines(
     Path.of("src", "test", "resources", "pest-control-v10-goldfish-sample-2-take-4-seeds.csv")
+).drop(1).filter(String::isNotBlank).map { it.split(',')[1].toLong() }
+
+private fun readSample2Take5PestSeeds(): List<Long> = Files.readAllLines(
+    Path.of("src", "test", "resources", "pest-control-v10-goldfish-sample-2-take-5-seeds.csv")
 ).drop(1).filter(String::isNotBlank).map { it.split(',')[1].toLong() }
 
 private fun seedVectorSha256(seeds: List<Long>): String = MessageDigest.getInstance("SHA-256")
