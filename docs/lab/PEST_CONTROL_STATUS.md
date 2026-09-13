@@ -1,6 +1,6 @@
 # Project Pest Control — Status
 
-- Status: Goldfish Sample #1 accepted; stopped before Sample #2 or opponent self-play
+- Status: Goldfish Sample #2 independent vector frozen; pre-execution validation
 - Laboratory: Project Pest Control
 - Branch: `pest-control/lab`
 - Validated base: `47882cd645caf126afee6cf13a65909806fa40ab`
@@ -9,6 +9,24 @@
 - Accepted Weather regression replay remote head: `8a13f2d8f9322b85ba6c52de571c591fea966a31`
 - Control version: Pest Control v1.0 (permanent, immutable)
 - Candidate status: proposed Tier-1 architecture only; not approved, constructed, or run
+
+## Goldfish Sample #2 independent replication authorization
+
+Goldfish Sample #1 is formally accepted at
+`4ccd4f097ade866a8eb3eff42e897229cd34e29f` and its vector is permanently retired and
+hard-disabled. Pest Control v1.0 remains exact; the challenger remains audit-only and unconstructed.
+
+An independent 30-seed Sample #2 vector was generated after a read-only audit of all 28 available
+refs and 1,500 normalized seed-like values. It has zero overlap with every visible Pest Control,
+Batshit, and Project X seed. The ordered vector was frozen before Game 1 with SHA-256
+`1e4247fceaa9a7d2f438ab8fa29733782f624cbcde383ec858153de1367e522d`; the derivation and immutable
+execution contract are preserved in
+`docs/experiments/pest-control/goldfish-sample-2-seed-freeze.md`.
+
+Sample #2 uses the exact Sample #1 deck, agent, engine, telemetry, mulligan behavior, horizon, and
+acceptance criteria. Mana-role classification will be derived post-execution only from safely
+observable bottleneck card names; it does not change telemetry or gameplay. No Sample #2 game had
+been executed when this freeze was recorded.
 
 ## New untouched Goldfish Sample #1 authorization
 

@@ -43,6 +43,7 @@ private const val PEST_GOLDFISH_HORIZON = 20
 private const val PEST_FRESH_SEED_SHA256 = "50d831076ff08c5df70aaa21e6edf7deaf9c269eeb74f0b5f9981b8be51caad8"
 private const val PEST_PERFORMANCE_SEED_SHA256 = "c674ee12b4a3ebce6584d8d2c0c285a57f2400519e99fd08be058d76c3ad7513"
 private const val PEST_UNTOUCHED_SEED_SHA256 = "f7012b5807621453692699055c90037bcf44526b4bc59edb37205c221aff9365"
+private const val PEST_SAMPLE_2_SEED_SHA256 = "1e4247fceaa9a7d2f438ab8fa29733782f624cbcde383ec858153de1367e522d"
 
 /** Pest Control-owned development goldfish. It is opt-in and never runs in ordinary CI. */
 class PestControlGoldfishTest : FunSpec({
@@ -52,6 +53,7 @@ class PestControlGoldfishTest : FunSpec({
         val fresh = readFreshPestSeeds()
         val performance = readPerformancePestSeeds()
         val untouched = readUntouchedPestSeeds()
+        val sample2 = readSample2PestSeeds()
         retired.size shouldBe 30
         retired.distinct().size shouldBe 30
         fresh.size shouldBe 30
@@ -69,6 +71,13 @@ class PestControlGoldfishTest : FunSpec({
         untouched.intersect(fresh.toSet()) shouldBe emptySet()
         untouched.intersect(performance.toSet()) shouldBe emptySet()
         seedVectorSha256(untouched) shouldBe PEST_UNTOUCHED_SEED_SHA256
+        sample2.size shouldBe 30
+        sample2.distinct().size shouldBe 30
+        sample2.intersect(retired.toSet()) shouldBe emptySet()
+        sample2.intersect(fresh.toSet()) shouldBe emptySet()
+        sample2.intersect(performance.toSet()) shouldBe emptySet()
+        sample2.intersect(untouched.toSet()) shouldBe emptySet()
+        seedVectorSha256(sample2) shouldBe PEST_SAMPLE_2_SEED_SHA256
     }
 
     test("reproduce rejected Pest Control Game 25 Scion provenance").config(
@@ -188,6 +197,37 @@ class PestControlGoldfishTest : FunSpec({
         println(markdown)
         games.flatMap(PestGoldfishGame::auditErrors) shouldBe emptyList()
     }
+
+    test("Pest Control v1.0 Goldfish Sample 2 independent replication").config(
+        enabled = System.getenv("PEST_CONTROL_GOLDFISH_SAMPLE_2") == "true",
+        timeout = 60.minutes,
+    ) {
+        val seeds = readSample2PestSeeds()
+        val registry = pestRegistry()
+        val games = seeds.mapIndexed { index, seed -> runPestGoldfish(registry, seed, index + 1) }
+        val block = PestGoldfishBlock(
+            deckVersion = "Pest Control v1.0",
+            agentProfile = AiProfile.PRODUCTION_CANDIDATE_EXPIRING.id,
+            horizon = PEST_GOLDFISH_HORIZON,
+            seeds = seeds,
+            games = games,
+            summary = summarizePest(games),
+        )
+        val reportDir = Path.of("..", "docs", "experiments", "pest-control")
+        Files.createDirectories(reportDir)
+        Files.writeString(
+            reportDir.resolve("goldfish-sample-2-raw.json"),
+            Json { prettyPrint = true }.encodeToString(block),
+        )
+        val markdown = renderPestMarkdown(
+            block,
+            freshPerformanceSample = true,
+            sampleLabel = "Goldfish Sample #2 — Independent Replication",
+        )
+        Files.writeString(reportDir.resolve("goldfish-sample-2-report.md"), markdown)
+        println(markdown)
+        games.flatMap(PestGoldfishGame::auditErrors) shouldBe emptyList()
+    }
 })
 
 private val PEST_CONTROL_V10 = linkedMapOf(
@@ -223,6 +263,10 @@ private fun readPerformancePestSeeds(): List<Long> = Files.readAllLines(
 
 private fun readUntouchedPestSeeds(): List<Long> = Files.readAllLines(
     Path.of("src", "test", "resources", "pest-control-v10-goldfish-sample-1-untouched-seeds.csv")
+).drop(1).filter(String::isNotBlank).map { it.split(',')[1].toLong() }
+
+private fun readSample2PestSeeds(): List<Long> = Files.readAllLines(
+    Path.of("src", "test", "resources", "pest-control-v10-goldfish-sample-2-seeds.csv")
 ).drop(1).filter(String::isNotBlank).map { it.split(',')[1].toLong() }
 
 private fun seedVectorSha256(seeds: List<Long>): String = MessageDigest.getInstance("SHA-256")
@@ -1129,10 +1173,14 @@ internal fun summarizePest(games: List<PestGoldfishGame>): PestGoldfishSummary {
     )
 }
 
-internal fun renderPestMarkdown(block: PestGoldfishBlock, freshPerformanceSample: Boolean = false): String = buildString {
+internal fun renderPestMarkdown(
+    block: PestGoldfishBlock,
+    freshPerformanceSample: Boolean = false,
+    sampleLabel: String = "Goldfish Sample #1 Fresh Performance Baseline",
+): String = buildString {
     val s = block.summary
     appendLine(if (freshPerformanceSample) {
-        "# Pest Control v1.0 — Goldfish Sample #1 Fresh Performance Baseline"
+        "# Pest Control v1.0 — $sampleLabel"
     } else {
         "# Pest Control v1.0 — Rejected Sample #1 Regression Replay"
     })
