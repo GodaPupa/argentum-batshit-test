@@ -1,6 +1,6 @@
 # Project Pest Control — Status
 
-- Status: rejected Sample #1 preserved as a regression-only vector; correction validation in progress
+- Status: Sample #1 rejected; correction replay invalidated; explicit rerun approval required
 - Laboratory: Project Pest Control
 - Branch: `pest-control/lab`
 - Validated base: `47882cd645caf126afee6cf13a65909806fa40ab`
@@ -13,19 +13,19 @@
 
 This document and `docs/experiments/pest-control/` belong exclusively to Project Pest Control.
 Batshit Economics/Affinity, `mayhem/project-x`, and their seed vectors and experiment protocols are
-read-only dependencies and are outside this laboratory's write and workflow scope. The only new
-seeds and gameplay run are the explicitly authorized Pest Control v1.0 Goldfish Sample #1 described
+read-only dependencies and are outside this laboratory's write and workflow scope. The only seed
+vector executed is the explicitly authorized Pest Control v1.0 Sample #1 regression vector described
 below. No challenger construction, opponent self-play, optimization, or Sample #2 was performed.
 
 ## Rejected Sample #1 disposition and correction scope
 
 Goldfish Sample #1 is formally and permanently rejected as performance, baseline, matchup, or
 optimization evidence. Its exact 30-seed vector (SHA-256
-`87d8624e407286bfa9b1c9d4629fd29163ae8bbec4b98ab51ace7f9c9e1d764f`) is frozen solely for the
-one authorized correction replay and thereafter retired. It must never be used to tune the deck or
-agent, select changes, or infer future Pest Control performance.
+`87d8624e407286bfa9b1c9d4629fd29163ae8bbec4b98ab51ace7f9c9e1d764f`) is frozen solely as a
+regression vector. It must never be used to tune the deck or agent, select changes, or infer future
+Pest Control performance.
 
-Three narrowly scoped general corrections are under validation:
+Three narrowly scoped general corrections are implemented and validated:
 
 - pure opponent-directed forced-sacrifice spells are held when their resolved result sacrifices no
   opposing permanent;
@@ -42,8 +42,30 @@ Pest Control card-name heuristic or deck change is involved.
 Game 25 provenance was resolved before the correction: its Scion was sacrificed on turn 13,
 produced one colorless mana, consumed zero mana, funded no action, and expired with one unused mana.
 The corrected isolated reproduction preserves the Scion and reports no activation or provenance
-error. The exact 30-game regression replay remains gated on focused tests, full CI, and Argentum
-Validation.
+error.
+
+## Correction replay audit: invalidated
+
+Two exact-order replay attempts used the same frozen vector, without rerolls, replacements,
+exclusions, deck changes, or seed substitutions. Both are invalid regression evidence and none of
+their performance or engine aggregates may be used:
+
+1. The first attempt exposed opponent-dependent removal being counted as actionable against the
+   blank opponent merely because it controlled a land.
+2. After that relevance fix and green CI run 195, the second attempt held Chainer's Edict in games
+   9, 13, 19, and 27 and preserved the Game 25 Scion, but manual audit found 21 false Bone Shards
+   bottlenecks. Bone Shards' nonmodal `ModalEffect` cost fork is intentionally opaque to the
+   historical whole-card intent scorer, so telemetry had failed to inspect its removal modes.
+
+The follow-up correction reads every mode structurally, uses the authoritative target finder to
+require a legal opposing permanent, and leaves historical card scoring unchanged. Ten focused Gym
+telemetry regressions now cover both the null and valid-target modal-removal cases, along with the
+requested land, total-mana, color, tapland, Scion-mana, provenance, and deduplication cases. CI run
+196 is fully green on remote correction head `c7f84ad8799b21a5b651492073273d0682e48465`.
+
+No replay was run after this final correction. The regression gate is therefore not accepted, the
+seeds are not yet retired, and the laboratory is not at fresh-sample readiness. Another execution
+of the vector requires explicit approval.
 
 ## Goldfish Sample #1 original audit result
 
@@ -197,10 +219,19 @@ creation facade. No Gym or agent-policy behavior was changed.
 - Phase 3 full CI: run 189 on implementation commit
   `7ba1c8568ca68e64c6e0230fa90cad7d560a9417` is the authoritative green full-matrix gate. Frontend,
   engine, all scenario partitions, tools, server, content, and the aggregate backend job passed.
+- Pest correction focused validation: all 41 deterministic agent decisions and all 10 actionable
+  mana/provenance telemetry regressions are green.
+- Pest correction full CI: run 196 on remote head
+  `c7f84ad8799b21a5b651492073273d0682e48465` is fully green across frontend, engine, all scenario
+  partitions, content, tools, server, and the aggregate backend gate.
+- The named Argentum Validation workflow cannot be dispatched on this non-main branch through the
+  available GitHub connection. Its exact local task graph is blocked before execution because this
+  offline container lacks Byte Buddy 1.10.9 and kotlinx-serialization-core 1.9.0. No production code
+  or test semantics were changed to accommodate that environment limitation; CI run 196 supplies
+  the authoritative clean dependency environment and full backend coverage.
 
-The laboratory stops at the goldfish-readiness gate. The first untouched control goldfish baseline
-requires later explicit approval. Challenger construction, deck materialization, seeds, gameplay
-sampling, goldfishing, matchup self-play, and optimization remain prohibited in this phase.
+The laboratory stops before the regression-acceptance and fresh-sample-readiness gates. Challenger
+construction, new seeds, gameplay sampling, matchup self-play, and optimization remain prohibited.
 
 ## 1. Branch and base
 
