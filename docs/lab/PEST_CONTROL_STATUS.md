@@ -1,6 +1,6 @@
 # Project Pest Control — Status
 
-- Status: Sample #2 Take 6 formally rejected; blocked on separate authorization for Game 18 sequencing/telemetry correction
+- Status: Game 18 same-turn sequencing/telemetry correction remotely green; stopped at Sample #2 Take 7 seed-readiness gate
 - Laboratory: Project Pest Control
 - Branch: `pest-control/lab`
 - Validated base: `47882cd645caf126afee6cf13a65909806fa40ab`
@@ -17,6 +17,8 @@
   `860d2f72b63bac460b90a04a1cc561bbb40ac9a9` (CI #228)
 - Sample #2 Take 5 modal-removal policy implementation head:
   `6385a6e79f6bef5ce527129de560131a4dc7d68e` (CI #232)
+- Sample #2 Take 6 same-turn sequencing/telemetry implementation head:
+  `2cbfa7cd4c94fc6007288a27e2427183e9a158a8` (CI #236)
 - Control version: Pest Control v1.0 (permanent, immutable)
 - Candidate status: proposed Tier-1 architecture only; not approved, constructed, or run
 
@@ -55,6 +57,47 @@ hard-disabled. The raw artifact and report are quarantined audit history, not pe
 no pooled analysis is admissible. Complete execution and audit details are in
 `docs/experiments/pest-control/goldfish-sample-2-take-6-rejection-audit.md`. Sample #1 remains the
 sole accepted Pest performance/engine sample. No replacement vector may be generated without new
+authorization.
+
+#### Sample #2 Take 6 Game 18 correction gate
+
+**SHARED ARGENTUM CHANGE: yes.** Implementation
+`2cbfa7cd4c94fc6007288a27e2427183e9a158a8` is remotely green in CI #236.
+
+The planner's bounded same-turn search was Storm-specific and depended on an incidental automatic
+mana-source choice. It could therefore miss a legal complete line when the first spell's automatic
+payment consumed a color needed by the second, and it did not generally compare deploying a new
+immediate payoff before an event against taking the event first. Production sequencing now inspects
+immediate event-producing actions structurally, explores authoritative explicit mana-source choices,
+and compares the same land and cards in the complete setup-first and focal-first orders. It prefers
+setup first only when the full line is executable and exceeds the existing materiality margin;
+survival, resource conflicts, irrelevant deployments, temporary-condition loss, and future-capability
+costs remain valid reasons to take the focal action first.
+
+The deterministic Game 18 reconstruction now chooses Swamp → Blood Researcher → Weather rather than
+Weather → Swamp → Researcher. A separate counter/payoff conversion probe also deploys a newly
+land-unlocked lifegain payoff before the event, while an insufficient-mana reconstruction declines
+the reorder. Game 16 land → relevant spell → Weather, Games 1/8/30 equivalent double-Weather
+non-superiority, temporary-condition/Follow sequencing, and targeted/modal and friendly-removal
+behavior remain green.
+
+Sequencing telemetry no longer accepts an automatic payment as the only feasibility answer and no
+longer compares the proposed setup with a different focal-first continuation. Every complete
+evaluation now preserves both source-specific action sequences, active payoffs before and after the
+deployment, the immediate payoff-value delta, both final resource states, and whether those resources
+are equivalent. The hard final-JSON contract requires the full Game-18-style land, deployment,
+orders, payoff delta, resource comparison, classification, and superiority result while retaining all
+modal/friendly-removal requirements.
+
+Focused Game 18, sequencing, telemetry, artifact-contract, modal/friendly-removal, Game 16,
+double-Weather, and Follow regressions passed. The complete AI, Gym/Pest, rules-engine, and card-
+scenario suites passed locally; CI #236 passed the complete remote matrix. All retired Pest gameplay
+runners remained skipped, and no retired seed or Pest gameplay vector executed.
+
+The project is stopped at the Sample #2 Take 7 seed-readiness gate. No Take 7 vector exists or has
+been generated. Pest Control v1.0 remains exact, Sample #1 remains the sole accepted performance/
+engine evidence, and the challenger remains audit-only and unconstructed. Further seed generation,
+gameplay, optimization, challenger construction, and opponent self-play require separate explicit
 authorization.
 
 The Take 5 modal-removal policy correction is accepted as remotely green. Implementation
