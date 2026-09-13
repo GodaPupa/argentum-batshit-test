@@ -1,6 +1,6 @@
 # Project Pest Control — Status
 
-- Status: Sample #1 rejected; correction replay invalidated; explicit rerun approval required
+- Status: regression gate accepted; 30-seed vector permanently retired; fresh-sample-ready
 - Laboratory: Project Pest Control
 - Branch: `pest-control/lab`
 - Validated base: `47882cd645caf126afee6cf13a65909806fa40ab`
@@ -44,7 +44,7 @@ produced one colorless mana, consumed zero mana, funded no action, and expired w
 The corrected isolated reproduction preserves the Scion and reports no activation or provenance
 error.
 
-## Correction replay audit: invalidated
+## Correction replay audit and final regression gate
 
 Two exact-order replay attempts used the same frozen vector, without rerolls, replacements,
 exclusions, deck changes, or seed substitutions. Both are invalid regression evidence and none of
@@ -63,9 +63,28 @@ telemetry regressions now cover both the null and valid-target modal-removal cas
 requested land, total-mana, color, tapland, Scion-mana, provenance, and deduplication cases. CI run
 196 is fully green on remote correction head `c7f84ad8799b21a5b651492073273d0682e48465`.
 
-No replay was run after this final correction. The regression gate is therefore not accepted, the
-seeds are not yet retired, and the laboratory is not at fresh-sample readiness. Another execution
-of the vector requires explicit approval.
+After explicit renewed authorization, the final replay ran all 30 seeds unchanged and in their
+original order from the fully green correction head. Every game passed the harness audit and the
+manual cross-check found no rules/state, telemetry, mana-legality, terminal, or agent-sanity error:
+
+- Chainer's Edict remained held in games 9, 13, 19, and 27;
+- Game 25 created one Scion and preserved it, with no mana activation or provenance record;
+- no opponent-dependent interaction appeared as an actionable mana bottleneck and no bottleneck
+  key was counted twice;
+- every Weather copy count matched its Storm count and every original/copy produced its own
+  three-life event;
+- Researcher and Mascot trigger totals exactly matched their counters added, including independent
+  fan-out when multiple payoff permanents were present;
+- every Carrier Thrall death created exactly one Scion, with all Scion provenance balanced;
+- Follow used only its engine-reported normal or enhanced mode, Ent actions were legal, all life
+  events had a positive amount and known source, and every terminal was engine-reported; and
+- the replay contained all 30 distinct frozen seeds in the exact CSV order.
+
+The corrected replay is accepted solely as regression-validation evidence. Goldfish Sample #1
+remains permanently rejected for performance, baseline, matchup, and optimization purposes. The
+30-seed vector is now permanently retired and must never be executed again or used for optimization
+or future performance inference. The laboratory is ready for a separately authorized fresh Sample
+#1, but no fresh seeds or games were generated automatically.
 
 ## Goldfish Sample #1 original audit result
 
@@ -230,8 +249,8 @@ creation facade. No Gym or agent-policy behavior was changed.
   or test semantics were changed to accommodate that environment limitation; CI run 196 supplies
   the authoritative clean dependency environment and full backend coverage.
 
-The laboratory stops before the regression-acceptance and fresh-sample-readiness gates. Challenger
-construction, new seeds, gameplay sampling, matchup self-play, and optimization remain prohibited.
+The laboratory stops at the fresh-sample-readiness gate. Challenger construction, new seeds,
+gameplay sampling, matchup self-play, and optimization remain prohibited pending separate approval.
 
 ## 1. Branch and base
 

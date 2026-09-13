@@ -1,8 +1,8 @@
 # Pest Control v1.0 — Goldfish Sample #1 seed freeze
 
-These 30 seeds were frozen before execution for Pest Control v1.0 Goldfish Sample #1. They must be
-executed exactly once, in the listed order, with no rerolls, substitutions, exclusions, or
-replacements.
+These 30 seeds were frozen before execution for Pest Control v1.0 Goldfish Sample #1. They are now
+permanently retired regression-validation seeds. They must never be executed again, optimized
+against, or used for future performance inference.
 
 - Accepted laboratory tip: `8dd4a429e0799b60e7449c214a540dd8414b1f1c`
 - Shared Argentum change at the accepted Phase 3 gate: **yes**
@@ -15,8 +15,8 @@ replacements.
   Pest Control, Batshit, Affinity, Project X, development, regression, smoke, performance, and
   optimization seed material
 - Execution status at freeze: not started
-- Final execution status: executed exactly once; all 30 games completed; sample rejected by audit
-  and not accepted as a baseline
+- Final execution status: original performance sample permanently rejected; final corrected replay
+  accepted solely as regression evidence; vector permanently retired
 
 The authoritative vector is
 `gym/src/test/resources/pest-control-v10-goldfish-sample-1-seeds.csv`.
@@ -26,6 +26,9 @@ stranded against the blank solitaire opponent must be reported separately from g
 nonfunctional hands. The sample is invalidated by any clear rules/state, telemetry, mana-legality,
 terminal-reporting, or agent-policy defect.
 
-The post-run audit found four empty-board Chainer's Edict casts, one Scion mana sacrifice with no
-funded spell recorded, and an invalid pre-land-drop/repeated-snapshot bottleneck metric. The frozen
-vector must not be rerun, replaced, or repaired in place.
+The original post-run audit found four empty-board Chainer's Edict casts, one Scion mana sacrifice
+with no funded spell, and an invalid pre-land-drop/repeated-snapshot bottleneck metric. Two interim
+replays exposed and invalidated additional interaction-relevance telemetry. After the final generic
+modal-removal correction and green CI, an explicitly authorized exact-order replay passed all 30
+games. Its regression audit is preserved in `goldfish-sample-1-regression-accepted.md`. The vector
+is retired and must not be rerun, replaced, or repurposed.
