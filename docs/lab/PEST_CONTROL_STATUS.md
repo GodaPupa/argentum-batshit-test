@@ -1,11 +1,12 @@
 # Project Pest Control — Status
 
-- Status: corrected fresh-vector regression replay clean; vector permanently retired; fresh-sample-ready
+- Status: Weather regression replay accepted; new Sample #1 performance vector frozen; preflight pending
 - Laboratory: Project Pest Control
 - Branch: `pest-control/lab`
 - Validated base: `47882cd645caf126afee6cf13a65909806fa40ab`
 - Accepted rules-complete remote head: `b08d8fad6e6709db4834e8e956e6853152efb3b5`
 - Accepted Phase 3 remote head: `8dd4a429e0799b60e7449c214a540dd8414b1f1c`
+- Accepted Weather regression replay remote head: `8a13f2d8f9322b85ba6c52de571c591fea966a31`
 - Control version: Pest Control v1.0 (permanent, immutable)
 - Candidate status: proposed Tier-1 architecture only; not approved, constructed, or run
 
@@ -108,6 +109,27 @@ generated.
 
 **SHARED ARGENTUM CHANGE: yes.** This records the already accepted general Weather-policy correction;
 the replay introduced no new policy, engine, Gym, telemetry, card, or deck change.
+
+## Fresh performance Sample #1 authorization and freeze
+
+The corrected same-seed Weather replay is formally accepted as clean at remote head
+`8a13f2d8f9322b85ba6c52de571c591fea966a31`. **SHARED ARGENTUM CHANGE: yes.** Its exact seed vector
+is permanently retired and must never be reused for performance, optimization, variant comparison,
+or sampling.
+
+A new, separately identified 30-seed performance vector was derived and frozen before execution.
+Its SHA-256 is `c674ee12b4a3ebce6584d8d2c0c285a57f2400519e99fd08be058d76c3ad7513`.
+A read-only audit of 28 local/remote refs inspected 135,029 seed-related lines/file contents, 1,019
+seed-path instances, and 2,495 distinct numeric values; overlap was zero. The vector, derivation,
+scope, and immutable execution contract are preserved in
+`docs/experiments/pest-control/goldfish-sample-1-performance-seed-freeze.md`.
+
+Before freezing, Pest-owned report telemetry was extended to expose opening-color, counter,
+all-three-coexistence, Weather/payoff, and counterfactual-Warden totals. The counterfactual now counts
+only creature entries while Researcher/Mascot is present and no Essence Warden is present, and
+reports potential Researcher and Mascot counters separately. This is descriptive test telemetry
+only; no engine, production agent, deck, mulligan, card, Weather, Follow, or gameplay policy changed.
+Execution remains blocked until the frozen vector and telemetry pass preflight validation.
 
 Descriptive rejected-run facts, retained for diagnosis only: 9/30 games mulliganed (11 total);
 meaningful deployment reached 6/14/27 games by T1/T2/T3; all 30 modeled terminals were combat lethal

@@ -26,3 +26,9 @@ regression evidence only; the original remains rejected as performance evidence 
 permanently retired. This does not authorize challenger construction, opponent self-play, another
 fresh Sample #1, Sample #2, further replay, or optimization. The permanent Pest Control v1.0 control
 in `docs/lab/PEST_CONTROL_STATUS.md` must not be silently changed.
+
+After formal acceptance of that Weather regression replay at
+`8a13f2d8f9322b85ba6c52de571c591fea966a31`, a separately identified fresh performance Sample #1
+was authorized. Its 30 completely new seeds, collision audit, immutable execution constraints, and
+pre-execution state are recorded in `goldfish-sample-1-performance-seed-freeze.md`. This authorization
+does not permit challenger construction, optimization, Sample #2, or opponent self-play.

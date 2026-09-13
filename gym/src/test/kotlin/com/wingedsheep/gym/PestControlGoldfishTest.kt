@@ -39,11 +39,10 @@ import java.nio.file.Path
 import java.security.MessageDigest
 import kotlin.time.Duration.Companion.minutes
 
-private const val PEST_GOLDFISH_ENV = "PEST_CONTROL_GOLDFISH_SAMPLE_1_REGRESSION"
-private const val PEST_FRESH_GOLDFISH_ENV = "PEST_CONTROL_GOLDFISH_SAMPLE_1_FRESH"
-private const val PEST_GAME_25_ENV = "PEST_CONTROL_GOLDFISH_GAME_25_DIAGNOSTIC"
+private const val PEST_PERFORMANCE_GOLDFISH_ENV = "PEST_CONTROL_GOLDFISH_SAMPLE_1_PERFORMANCE"
 private const val PEST_GOLDFISH_HORIZON = 20
 private const val PEST_FRESH_SEED_SHA256 = "50d831076ff08c5df70aaa21e6edf7deaf9c269eeb74f0b5f9981b8be51caad8"
+private const val PEST_PERFORMANCE_SEED_SHA256 = "c674ee12b4a3ebce6584d8d2c0c285a57f2400519e99fd08be058d76c3ad7513"
 
 /** Pest Control-owned development goldfish. It is opt-in and never runs in ordinary CI. */
 class PestControlGoldfishTest : FunSpec({
@@ -51,16 +50,22 @@ class PestControlGoldfishTest : FunSpec({
         pestControlDeck().cards.groupingBy { it }.eachCount() shouldBe PEST_CONTROL_V10
         val retired = readPestSeeds()
         val fresh = readFreshPestSeeds()
+        val performance = readPerformancePestSeeds()
         retired.size shouldBe 30
         retired.distinct().size shouldBe 30
         fresh.size shouldBe 30
         fresh.distinct().size shouldBe 30
         fresh.intersect(retired.toSet()) shouldBe emptySet()
         seedVectorSha256(fresh) shouldBe PEST_FRESH_SEED_SHA256
+        performance.size shouldBe 30
+        performance.distinct().size shouldBe 30
+        performance.intersect(retired.toSet()) shouldBe emptySet()
+        performance.intersect(fresh.toSet()) shouldBe emptySet()
+        seedVectorSha256(performance) shouldBe PEST_PERFORMANCE_SEED_SHA256
     }
 
     test("reproduce rejected Pest Control Game 25 Scion provenance").config(
-        enabled = System.getenv(PEST_GAME_25_ENV) == "true",
+        enabled = false, // Permanently retired vector; preserved as historical executable documentation only.
         timeout = 10.minutes,
     ) {
         val game = runPestGoldfish(pestRegistry(), readPestSeeds()[24], 25)
@@ -68,7 +73,7 @@ class PestControlGoldfishTest : FunSpec({
     }
 
     test("Pest Control v1.0 rejected Sample 1 regression replay").config(
-        enabled = System.getenv(PEST_GOLDFISH_ENV) == "true",
+        enabled = false, // Permanently retired vector; must never be replayed.
         timeout = 60.minutes,
     ) {
         val seeds = readPestSeeds()
@@ -97,7 +102,7 @@ class PestControlGoldfishTest : FunSpec({
     }
 
     test("Pest Control v1.0 fresh Goldfish Sample 1").config(
-        enabled = System.getenv(PEST_FRESH_GOLDFISH_ENV) == "true",
+        enabled = false, // Rejected execution and accepted replay are both preserved; vector is retired.
         timeout = 60.minutes,
     ) {
         val seeds = readFreshPestSeeds()
@@ -119,6 +124,33 @@ class PestControlGoldfishTest : FunSpec({
         )
         val markdown = renderPestMarkdown(block, freshPerformanceSample = true)
         Files.writeString(reportDir.resolve("pest-control-v10-goldfish-sample-1-fresh.md"), markdown)
+        println(markdown)
+        games.flatMap(PestGoldfishGame::auditErrors) shouldBe emptyList()
+    }
+
+    test("Pest Control v1.0 Goldfish Sample 1 fresh performance sample").config(
+        enabled = System.getenv(PEST_PERFORMANCE_GOLDFISH_ENV) == "true",
+        timeout = 60.minutes,
+    ) {
+        val seeds = readPerformancePestSeeds()
+        val registry = pestRegistry()
+        val games = seeds.mapIndexed { index, seed -> runPestGoldfish(registry, seed, index + 1) }
+        val block = PestGoldfishBlock(
+            deckVersion = "Pest Control v1.0",
+            agentProfile = AiProfile.PRODUCTION_CANDIDATE_EXPIRING.id,
+            horizon = PEST_GOLDFISH_HORIZON,
+            seeds = seeds,
+            games = games,
+            summary = summarizePest(games),
+        )
+        val reportDir = Path.of("build", "reports", "pest-control-goldfish")
+        Files.createDirectories(reportDir)
+        Files.writeString(
+            reportDir.resolve("pest-control-v10-goldfish-sample-1-performance.json"),
+            Json { prettyPrint = true }.encodeToString(block),
+        )
+        val markdown = renderPestMarkdown(block, freshPerformanceSample = true)
+        Files.writeString(reportDir.resolve("pest-control-v10-goldfish-sample-1-performance.md"), markdown)
         println(markdown)
         games.flatMap(PestGoldfishGame::auditErrors) shouldBe emptyList()
     }
@@ -149,6 +181,10 @@ private fun readPestSeeds(): List<Long> = Files.readAllLines(
 
 private fun readFreshPestSeeds(): List<Long> = Files.readAllLines(
     Path.of("src", "test", "resources", "pest-control-v10-goldfish-sample-1-fresh-seeds.csv")
+).drop(1).filter(String::isNotBlank).map { it.split(',')[1].toLong() }
+
+private fun readPerformancePestSeeds(): List<Long> = Files.readAllLines(
+    Path.of("src", "test", "resources", "pest-control-v10-goldfish-sample-1-performance-seeds.csv")
 ).drop(1).filter(String::isNotBlank).map { it.split(',')[1].toLong() }
 
 private fun seedVectorSha256(seeds: List<Long>): String = MessageDigest.getInstance("SHA-256")
@@ -291,6 +327,7 @@ internal data class PestGoldfishGame(
 @Serializable
 internal data class PestGoldfishSummary(
     val games: Int,
+    val openingColorAccessDistribution: Map<String, Int>,
     val mulliganGames: Int,
     val totalMulligans: Int,
     val mulliganRate: Double,
@@ -304,13 +341,21 @@ internal data class PestGoldfishSummary(
     val winsByT5: Int,
     val winsByT6: Int,
     val winsByT7: Int,
+    val totalLifeEvents: Int,
+    val totalLifeGained: Int,
     val averageLifeEvents: Double,
     val averageLifeGained: Double,
+    val researcherCounterTriggers: Int,
+    val researcherCountersAdded: Int,
+    val mascotCounterTriggers: Int,
+    val mascotCountersAdded: Int,
     val weatherStormCountDistribution: Map<Int, Int>,
     val researcherMaximumSizeDistribution: Map<String, Int>,
     val mascotMaximumSizeDistribution: Map<String, Int>,
     val enginePayoffCoexistenceGames: Int,
     val enginePayoffCoexistenceRate: Double,
+    val allThreeCoexistenceGames: Int,
+    val payoffWhenWeatherResolvedGames: Int,
     val carrierDeaths: Int,
     val scionsCreated: Int,
     val scionsSacrificedForMana: Int,
@@ -338,10 +383,29 @@ internal data class PestGoldfishSummary(
     val wardenWithoutPayoffTurns: Int,
     val additionalWardenOpportunityGames: Int,
     val additionalWardenOpportunityEntries: Int,
+    val additionalWardenPotentialResearcherCounters: Int,
+    val additionalWardenPotentialMascotCounters: Int,
     val weatherStormZeroCasts: Int,
     val weatherStormZeroWithLaterUsefulSpell: Int,
     val followNormalWithoutPriorLifeGain: Int,
 )
+
+internal data class PestWardenOpportunity(
+    val entries: Int,
+    val potentialResearcherCounters: Int,
+    val potentialMascotCounters: Int,
+)
+
+internal fun wardenCounterfactualOpportunity(entries: List<PestCreatureEntry>): PestWardenOpportunity {
+    val qualifying = entries.filter {
+        it.wardensAlreadyPresent == 0 && it.researchersPresent + it.mascotsPresent > 0
+    }
+    return PestWardenOpportunity(
+        entries = qualifying.size,
+        potentialResearcherCounters = qualifying.sumOf(PestCreatureEntry::researchersPresent),
+        potentialMascotCounters = qualifying.sumOf(PestCreatureEntry::mascotsPresent),
+    )
+}
 
 private data class MutableWeather(
     val turn: Int,
@@ -849,11 +913,16 @@ internal fun summarizePest(games: List<PestGoldfishGame>): PestGoldfishSummary {
         val turns = hollowTurns(game)
         return game.genuineManaBottlenecks.count { it.constraint == ManaConstraint.TAPLAND && it.turn in turns }
     }
-    fun additionalWardenOpportunities(game: PestGoldfishGame): Int = game.creatureEntries.count {
-        it.researchersPresent + it.mascotsPresent > 0
+    fun openingAccess(game: PestGoldfishGame): String = when {
+        game.opening.green && game.opening.black -> "GREEN_AND_BLACK"
+        game.opening.green -> "GREEN_ONLY"
+        game.opening.black -> "BLACK_ONLY"
+        else -> "NEITHER"
     }
+    val wardenOpportunities = games.associateWith { wardenCounterfactualOpportunity(it.creatureEntries) }
     return PestGoldfishSummary(
         games = games.size,
+        openingColorAccessDistribution = games.groupingBy(::openingAccess).eachCount().toSortedMap(),
         mulliganGames = games.count { it.mulligans > 0 },
         totalMulligans = games.sumOf(PestGoldfishGame::mulligans),
         mulliganRate = rate(games.count { it.mulligans > 0 }),
@@ -869,8 +938,14 @@ internal fun summarizePest(games: List<PestGoldfishGame>): PestGoldfishSummary {
         winsByT5 = games.count { (it.actualWinningTurn ?: Int.MAX_VALUE) <= 5 },
         winsByT6 = games.count { (it.actualWinningTurn ?: Int.MAX_VALUE) <= 6 },
         winsByT7 = games.count { (it.actualWinningTurn ?: Int.MAX_VALUE) <= 7 },
+        totalLifeEvents = games.sumOf { it.lifeEvents.size },
+        totalLifeGained = games.sumOf(PestGoldfishGame::totalLifeGained),
         averageLifeEvents = games.map { it.lifeEvents.size }.average(),
         averageLifeGained = games.map(PestGoldfishGame::totalLifeGained).average(),
+        researcherCounterTriggers = games.sumOf(PestGoldfishGame::researcherCounterTriggers),
+        researcherCountersAdded = games.sumOf(PestGoldfishGame::researcherCountersAdded),
+        mascotCounterTriggers = games.sumOf(PestGoldfishGame::mascotCounterTriggers),
+        mascotCountersAdded = games.sumOf(PestGoldfishGame::mascotCountersAdded),
         weatherStormCountDistribution = weather.groupingBy(PestWeatherCast::stormCount).eachCount().toSortedMap(),
         researcherMaximumSizeDistribution = games.filter { it.maximumResearcherPower != null }.groupingBy {
             "${it.maximumResearcherPower}/${it.maximumResearcherToughness}"
@@ -880,6 +955,8 @@ internal fun summarizePest(games: List<PestGoldfishGame>): PestGoldfishSummary {
         }.eachCount().toSortedMap(),
         enginePayoffCoexistenceGames = coexist,
         enginePayoffCoexistenceRate = rate(coexist),
+        allThreeCoexistenceGames = games.count { it.coexistence.wardenResearcherMascot },
+        payoffWhenWeatherResolvedGames = games.count { it.coexistence.payoffWhenWeatherResolved },
         carrierDeaths = games.sumOf(PestGoldfishGame::carrierThrallDeaths),
         scionsCreated = games.sumOf(PestGoldfishGame::scionsCreated),
         scionsSacrificedForMana = games.sumOf(PestGoldfishGame::scionsSacrificedForMana),
@@ -909,8 +986,12 @@ internal fun summarizePest(games: List<PestGoldfishGame>): PestGoldfishSummary {
         payoffWithoutWardenTurns = games.sumOf { it.payoffWithoutWardenTurns.size },
         wardenWithoutPayoffGames = games.count { it.wardenWithoutPayoffTurns.isNotEmpty() },
         wardenWithoutPayoffTurns = games.sumOf { it.wardenWithoutPayoffTurns.size },
-        additionalWardenOpportunityGames = games.count { additionalWardenOpportunities(it) > 0 },
-        additionalWardenOpportunityEntries = games.sumOf(::additionalWardenOpportunities),
+        additionalWardenOpportunityGames = wardenOpportunities.values.count { it.entries > 0 },
+        additionalWardenOpportunityEntries = wardenOpportunities.values.sumOf(PestWardenOpportunity::entries),
+        additionalWardenPotentialResearcherCounters = wardenOpportunities.values
+            .sumOf(PestWardenOpportunity::potentialResearcherCounters),
+        additionalWardenPotentialMascotCounters = wardenOpportunities.values
+            .sumOf(PestWardenOpportunity::potentialMascotCounters),
         weatherStormZeroCasts = weather.count { it.stormCount == 0 },
         weatherStormZeroWithLaterUsefulSpell = weather.count {
             it.stormCount == 0 && it.usefulSpellCastLaterThisTurn != null
@@ -937,15 +1018,18 @@ internal fun renderPestMarkdown(block: PestGoldfishBlock, freshPerformanceSample
     appendLine()
     appendLine("## Aggregate")
     appendLine()
+    appendLine("- Opening color access: ${s.openingColorAccessDistribution}")
     appendLine("- Games: ${s.games}; mulligan games: ${s.mulliganGames} (${pct(s.mulliganRate)}), total mulligans: ${s.totalMulligans}")
     appendLine("- Meaningful permanent development by T1/T2/T3: ${s.meaningfulDevelopmentByT1}/${s.meaningfulDevelopmentByT2}/${s.meaningfulDevelopmentByT3}")
     appendLine("- Median first Warden: ${s.medianFirstWarden ?: "n/a"}; median first payoff: ${s.medianFirstPayoff ?: "n/a"}")
     appendLine("- Median actual win: ${s.medianActualWinningTurn ?: "n/a"}; wins by T4/T5/T6/T7: ${s.winsByT4}/${s.winsByT5}/${s.winsByT6}/${s.winsByT7}")
-    appendLine("- Average separate lifegain events: ${"%.2f".format(s.averageLifeEvents)}; average life gained: ${"%.2f".format(s.averageLifeGained)}")
+    appendLine("- Separate lifegain events: ${s.totalLifeEvents} total, ${"%.2f".format(s.averageLifeEvents)} average; life gained: ${s.totalLifeGained} total, ${"%.2f".format(s.averageLifeGained)} average")
+    appendLine("- Researcher triggers/counters: ${s.researcherCounterTriggers}/${s.researcherCountersAdded}; Mascot triggers/counters: ${s.mascotCounterTriggers}/${s.mascotCountersAdded}")
     appendLine("- Weather Storm counts: ${s.weatherStormCountDistribution}")
     appendLine("- Maximum Researcher sizes: ${s.researcherMaximumSizeDistribution}")
     appendLine("- Maximum Mascot sizes: ${s.mascotMaximumSizeDistribution}")
     appendLine("- Warden + payoff coexistence: ${s.enginePayoffCoexistenceGames}/${s.games} (${pct(s.enginePayoffCoexistenceRate)})")
+    appendLine("- Warden + Researcher + Mascot coexistence: ${s.allThreeCoexistenceGames}/${s.games}; payoff present when Weather resolved: ${s.payoffWhenWeatherResolvedGames}/${s.games}")
     appendLine("- Carrier deaths / Scions / mana sacrifices: ${s.carrierDeaths}/${s.scionsCreated}/${s.scionsSacrificedForMana}; funded: ${s.scionFundedSpells}")
     appendLine("- Ent cycles / creature casts: ${s.entCycles}/${s.entCreatureCasts}; cycling rate: ${s.entCyclingRate?.let(::pct) ?: "n/a"}")
     appendLine("- Follow normal / enhanced: ${s.followNormalCasts}/${s.followEnhancedCasts}; enhanced rate: ${s.followEnhancedRate?.let(::pct) ?: "n/a"}")
@@ -956,7 +1040,7 @@ internal fun renderPestMarkdown(block: PestGoldfishBlock, freshPerformanceSample
     appendLine("- Functional states: ${s.functionalStateDistribution}")
     appendLine("- Lifegain events with Researcher/Mascot present: ${s.lifeEventsWithPayoffPresent}")
     appendLine("- Payoff without Warden: ${s.payoffWithoutWardenGames} games / ${s.payoffWithoutWardenTurns} turns; Warden without payoff: ${s.wardenWithoutPayoffGames} games / ${s.wardenWithoutPayoffTurns} turns")
-    appendLine("- Additional-Warden opportunities: ${s.additionalWardenOpportunityGames} games / ${s.additionalWardenOpportunityEntries} qualifying creature entries")
+    appendLine("- Additional-Warden opportunities while payoff present and Warden absent: ${s.additionalWardenOpportunityGames} games / ${s.additionalWardenOpportunityEntries} qualifying creature entries; potential Researcher/Mascot counters forgone: ${s.additionalWardenPotentialResearcherCounters}/${s.additionalWardenPotentialMascotCounters}")
     appendLine("- Weather at Storm 0: ${s.weatherStormZeroCasts}; with a useful spell demonstrably cast later that turn: ${s.weatherStormZeroWithLaterUsefulSpell}")
     appendLine("- Normal Follow casts with no earlier lifegain event that turn: ${s.followNormalWithoutPriorLifeGain}")
     appendLine()
