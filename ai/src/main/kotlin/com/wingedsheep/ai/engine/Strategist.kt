@@ -798,9 +798,10 @@ class Strategist(
             else -> false
         }
         if (!isPureLifeGain) return false
+        val pendingLifeGain = pendingGuaranteedLifeGain(state, playerId)
         if (visibleRepeatablePayoffCount(state, playerId) > 0) return false
-        if (lifeGainNeededForSurvival(state, playerId)) return false
-        if (unlocksLifeGainEnhancedFollowUp(state, leafState, playerId)) return false
+        if (lifeGainNeededForSurvival(state, playerId, pendingLifeGain)) return false
+        if (unlocksLifeGainEnhancedFollowUp(state, leafState, playerId, pendingLifeGain)) return false
         return true
     }
 
@@ -809,13 +810,54 @@ class Strategist(
      * power because it can untap or lose summoning sickness before the next attack; overestimating
      * pressure merely preserves an emergency lifegain option and is safer than suppressing one.
      */
-    private fun lifeGainNeededForSurvival(state: GameState, playerId: EntityId): Boolean {
+    private fun lifeGainNeededForSurvival(
+        state: GameState,
+        playerId: EntityId,
+        pendingGuaranteedLifeGain: Int = 0,
+    ): Boolean {
         val opposingPower = state.turnOrder.asSequence()
             .filter { state.isOpponentTo(it, playerId) }
             .flatMap { state.controlledBattlefield(it).asSequence() }
             .filter { state.getEntity(it)?.get<CardComponent>()?.isCreature == true }
             .sumOf { (state.projectedState.getPower(it) ?: 0).coerceAtLeast(0) }
-        return opposingPower >= state.lifeTotal(playerId)
+        return opposingPower >= state.lifeTotal(playerId) + pendingGuaranteedLifeGain
+    }
+
+    /**
+     * Life already certain from controlled stack objects, after conservative disruption checks.
+     * Hidden card identities are never inspected: an opponent with any card in hand means the
+     * pending object is not treated as guaranteed. A visible counter-capable permanent or opposing
+     * counter object on the stack likewise prevents certainty. This intentionally under-claims;
+     * it is used only to suppress a redundant resource expenditure.
+     */
+    private fun pendingGuaranteedLifeGain(state: GameState, playerId: EntityId): Int {
+        if (state.stack.isEmpty()) return 0
+        val opponents = state.turnOrder.filter { state.isOpponentTo(it, playerId) }
+        if (opponents.any { state.getHand(it).isNotEmpty() }) return 0
+        if (opponents.any { opponentId ->
+                state.controlledBattlefield(opponentId).any { permanentId ->
+                    val permanent = state.getEntity(permanentId) ?: return@any false
+                    val name = permanent.get<CardComponent>()?.name ?: return@any false
+                    intents.forPermanent(permanent, name).any { IntentTag.COUNTERSPELL in it.tags }
+                }
+            }
+        ) return 0
+
+        return state.stack.mapIndexedNotNull { index, stackId ->
+            val stackObject = state.getEntity(stackId) ?: return@mapIndexedNotNull null
+            val amount = intents.guaranteedControllerLifeGain(stackObject, playerId)
+                ?: return@mapIndexedNotNull null
+            val hasOpposingCounterAbove = state.stack.drop(index + 1).any { laterId ->
+                val later = state.getEntity(laterId) ?: return@any false
+                val controller = later.get<SpellOnStackComponent>()?.casterId
+                    ?: later.get<TriggeredAbilityOnStackComponent>()?.controllerId
+                    ?: later.get<ActivatedAbilityOnStackComponent>()?.controllerId
+                    ?: later.get<AbilityOnStackComponent>()?.controllerId
+                controller != null && state.isOpponentTo(controller, playerId) &&
+                    intents.forStackObject(later)?.tags?.contains(IntentTag.COUNTERSPELL) == true
+            }
+            amount.takeUnless { hasOpposingCounterAbove }
+        }.sum()
     }
 
     /** The life event changed a currently affordable spell from normal to enhanced. */
@@ -823,8 +865,10 @@ class Strategist(
         state: GameState,
         leafState: GameState,
         playerId: EntityId,
+        pendingGuaranteedLifeGain: Int = pendingGuaranteedLifeGain(state, playerId),
     ): Boolean {
         if (state.getEntity(playerId)?.has<LifeGainedThisTurnComponent>() == true) return false
+        if (pendingGuaranteedLifeGain > 0) return false
         if (leafState.getEntity(playerId)?.has<LifeGainedThisTurnComponent>() != true) return false
         return simulator.getLegalActions(leafState, playerId).any { next ->
             if (!next.affordable) return@any false

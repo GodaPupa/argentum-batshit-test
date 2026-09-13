@@ -39,7 +39,6 @@ import java.nio.file.Path
 import java.security.MessageDigest
 import kotlin.time.Duration.Companion.minutes
 
-private const val PEST_PERFORMANCE_GOLDFISH_ENV = "PEST_CONTROL_GOLDFISH_SAMPLE_1_PERFORMANCE"
 private const val PEST_GOLDFISH_HORIZON = 20
 private const val PEST_FRESH_SEED_SHA256 = "50d831076ff08c5df70aaa21e6edf7deaf9c269eeb74f0b5f9981b8be51caad8"
 private const val PEST_PERFORMANCE_SEED_SHA256 = "c674ee12b4a3ebce6584d8d2c0c285a57f2400519e99fd08be058d76c3ad7513"
@@ -129,7 +128,7 @@ class PestControlGoldfishTest : FunSpec({
     }
 
     test("Pest Control v1.0 Goldfish Sample 1 fresh performance sample").config(
-        enabled = System.getenv(PEST_PERFORMANCE_GOLDFISH_ENV) == "true",
+        enabled = false, // Rejected original and replay; vector is permanently retired from execution.
         timeout = 60.minutes,
     ) {
         val seeds = readPerformancePestSeeds()

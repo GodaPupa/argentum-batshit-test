@@ -65,6 +65,12 @@ class PestControlAgentDecisionTest : ScenarioTestBase() {
         state = state.updateEntity(player1Id) { it.with(LifeGainedThisTurnComponent) }
     }
 
+    /** Deterministic stack setup only; no laboratory seed or gameplay runner is involved. */
+    private fun TestGame.castPendingWeather() {
+        castSpell(1, "Weather the Storm").error shouldBe null
+        state.stack.isNotEmpty().shouldBeTrue()
+    }
+
     init {
         test("deploys Essence Warden before the creature whose entry supplies value") {
             val game = seeded()
@@ -292,6 +298,113 @@ class PestControlAgentDecisionTest : ScenarioTestBase() {
             val (chosen, report) = chooseWithReport(game)
             val action = withClue(report) { chosen.shouldBeInstanceOf<CastSpell>() }
             withClue(report) { sourceName(game, action) shouldBe "Pulse of Murasa" }
+        }
+
+        test("Game 8 reconstruction holds redundant Food while pending Weather guarantees enhanced Follow") {
+            val game = seeded()
+                .withLifeTotal(1, 21)
+                .withLandsOnBattlefield(1, "Forest", 6)
+                .withCardInHand(1, "Weather the Storm")
+                .withCardInHand(1, "Follow the Lumarets")
+                .withCardOnBattlefield(1, "Food", isToken = true)
+                .withCardInLibrary(1, "Forest")
+                .withCardInLibrary(1, "Swamp")
+                .withCardInLibrary(1, "Blood Researcher")
+                .withCardInLibrary(1, "Pest Mascot")
+                .build()
+            game.castPendingWeather()
+
+            val (response, responseReport) = chooseWithReport(game)
+            withClue(responseReport) { response.shouldBeInstanceOf<PassPriority>() }
+            (game.findPermanent("Food") != null).shouldBeTrue()
+
+            game.execute(response).error shouldBe null
+            game.resolveStack()
+            val (followUp, followReport) = chooseWithReport(game)
+            val follow = withClue(followReport) { followUp.shouldBeInstanceOf<CastSpell>() }
+            withClue(followReport) { sourceName(game, follow) shouldBe "Follow the Lumarets" }
+            (game.findPermanent("Food") != null).shouldBeTrue()
+        }
+
+        test("uses additional lifegain when a pending gain is insufficient for survival") {
+            val game = seeded()
+                .withLifeTotal(1, 1)
+                .withLandsOnBattlefield(1, "Forest", 4)
+                .withCardInHand(1, "Weather the Storm")
+                .withCardOnBattlefield(1, "Food", isToken = true)
+                .withCardOnBattlefield(2, "Craw Wurm")
+                .build()
+            game.castPendingWeather()
+
+            val (chosen, report) = chooseWithReport(game)
+            val activation = withClue(report) { chosen.shouldBeInstanceOf<ActivateAbility>() }
+            withClue(report) { sourceName(game, activation) shouldBe "Food" }
+        }
+
+        test("allows additional lifegain over pending gain when a repeatable payoff consumes each event") {
+            val game = seeded()
+                .withLifeTotal(1, 20)
+                .withLandsOnBattlefield(1, "Forest", 4)
+                .withCardInHand(1, "Weather the Storm")
+                .withCardOnBattlefield(1, "Food", isToken = true)
+                .withCardOnBattlefield(1, "Blood Researcher")
+                .build()
+            game.castPendingWeather()
+
+            val (chosen, report) = chooseWithReport(game)
+            val activation = withClue(report) { chosen.shouldBeInstanceOf<ActivateAbility>() }
+            withClue(report) { sourceName(game, activation) shouldBe "Food" }
+        }
+
+        test("uses Food to enable enhanced Follow when no lifegain is pending") {
+            val game = seeded()
+                .withLifeTotal(1, 20)
+                .withLandsOnBattlefield(1, "Forest", 4)
+                .withCardInHand(1, "Follow the Lumarets")
+                .withCardOnBattlefield(1, "Food", isToken = true)
+                .withCardInLibrary(1, "Forest")
+                .withCardInLibrary(1, "Swamp")
+                .withCardInLibrary(1, "Blood Researcher")
+                .build()
+
+            val (chosen, report) = chooseWithReport(game)
+            val activation = withClue(report) { chosen.shouldBeInstanceOf<ActivateAbility>() }
+            withClue(report) { sourceName(game, activation) shouldBe "Food" }
+        }
+
+        test("does not treat pending lifegain as guaranteed while an opponent can disrupt it") {
+            val game = seeded()
+                .withLifeTotal(1, 20)
+                .withLandsOnBattlefield(1, "Forest", 6)
+                .withLandsOnBattlefield(2, "Island", 2)
+                .withCardInHand(1, "Weather the Storm")
+                .withCardInHand(1, "Follow the Lumarets")
+                .withCardInHand(2, "Counterspell")
+                .withCardOnBattlefield(1, "Food", isToken = true)
+                .withCardInLibrary(1, "Forest")
+                .withCardInLibrary(1, "Swamp")
+                .withCardInLibrary(1, "Blood Researcher")
+                .build()
+            game.castPendingWeather()
+
+            val (chosen, report) = chooseWithReport(game)
+            val activation = withClue(report) { chosen.shouldBeInstanceOf<ActivateAbility>() }
+            withClue(report) { sourceName(game, activation) shouldBe "Food" }
+        }
+
+        test("does not suppress an independently valuable non-lifegain resource action") {
+            val game = seeded()
+                .withLifeTotal(2, 1)
+                .withLandsOnBattlefield(1, "Forest", 3)
+                .withCardInHand(1, "Weather the Storm")
+                .withCardOnBattlefield(1, "Makeshift Munitions")
+                .withCardOnBattlefield(1, "Eldrazi Scion", isToken = true)
+                .build()
+            game.castPendingWeather()
+
+            val (chosen, report) = chooseWithReport(game)
+            val activation = withClue(report) { chosen.shouldBeInstanceOf<ActivateAbility>() }
+            withClue(report) { sourceName(game, activation) shouldBe "Makeshift Munitions" }
         }
 
         test("values Weather's separate Storm events as lethal Blight-Priest drains") {

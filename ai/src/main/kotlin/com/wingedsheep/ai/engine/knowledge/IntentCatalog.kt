@@ -7,7 +7,9 @@ import com.wingedsheep.engine.state.components.identity.RoomComponent
 import com.wingedsheep.engine.state.components.identity.RoomFaceId
 import com.wingedsheep.engine.state.components.stack.AbilityOnStackComponent
 import com.wingedsheep.engine.state.components.stack.ActivatedAbilityOnStackComponent
+import com.wingedsheep.engine.state.components.stack.SpellOnStackComponent
 import com.wingedsheep.engine.state.components.stack.TriggeredAbilityOnStackComponent
+import com.wingedsheep.sdk.model.EntityId
 import com.wingedsheep.sdk.model.CardDefinition
 import com.wingedsheep.sdk.scripting.AbilityId
 import com.wingedsheep.sdk.scripting.ActivatedAbility
@@ -17,8 +19,10 @@ import com.wingedsheep.sdk.scripting.effects.ForceSacrificeEffect
 import com.wingedsheep.sdk.scripting.effects.GainLifeEffect
 import com.wingedsheep.sdk.scripting.effects.ModalEffect
 import com.wingedsheep.sdk.scripting.targets.TargetCreatureOrPlaneswalker
+import com.wingedsheep.sdk.scripting.targets.EffectTarget
 import com.wingedsheep.sdk.scripting.targets.TargetObject
 import com.wingedsheep.sdk.scripting.targets.TargetRequirement
+import com.wingedsheep.sdk.scripting.values.DynamicAmount
 
 /**
  * Card-name → [CardIntent] lookup, and the switch that turns Phase 6 on.
@@ -131,6 +135,49 @@ class IntentCatalog private constructor(private val registry: CardRegistry?) {
         val effect = activatedAbility(cardName, abilityId)?.effect ?: return false
         val leaves = EffectWalker.leaves(effect)
         return leaves.isNotEmpty() && leaves.all { it is GainLifeEffect }
+    }
+
+    /**
+     * Fixed life that this stack object is guaranteed to give [playerId] when it resolves.
+     *
+     * This is deliberately stricter than an intent lookup. Conditional, optional, dynamic,
+     * targeted, or mixed effects answer null: callers use this to avoid spending another resource
+     * on a condition that is already certain, so a false positive would be much worse than a false
+     * negative. Spell copies carry their prepared effect on [CardComponent], while abilities carry
+     * the exact effect that was put on the stack.
+     */
+    fun guaranteedControllerLifeGain(
+        container: ComponentContainer,
+        playerId: EntityId,
+    ): Int? {
+        val controllerId = container.get<SpellOnStackComponent>()?.casterId
+            ?: container.get<TriggeredAbilityOnStackComponent>()?.controllerId
+            ?: container.get<ActivatedAbilityOnStackComponent>()?.controllerId
+            ?: container.get<AbilityOnStackComponent>()?.controllerId
+            ?: return null
+        if (controllerId != playerId) return null
+
+        val effect = container.get<TriggeredAbilityOnStackComponent>()?.effect
+            ?: container.get<ActivatedAbilityOnStackComponent>()?.effect
+            ?: container.get<AbilityOnStackComponent>()?.effect
+            ?: container.get<CardComponent>()?.spellEffect
+            ?: return null
+
+        return EffectWalker.fold(effect, object : EffectWalker.Fold<Int?> {
+            override fun leaf(effect: Effect): Int? {
+                val gain = effect as? GainLifeEffect ?: return null
+                if (gain.target != EffectTarget.Controller) return null
+                return (gain.amount as? DynamicAmount.Fixed)?.amount?.takeIf { it > 0 }
+            }
+
+            override fun composite(parts: List<Int?>): Int? =
+                parts.takeIf { it.isNotEmpty() && it.all { part -> part != null } }
+                    ?.sumOf { it!! }
+
+            override fun conditional(thenValue: Int?, elseValue: Int?): Int? = null
+
+            override fun may(thenValue: Int?): Int? = null
+        })
     }
 
     /**
