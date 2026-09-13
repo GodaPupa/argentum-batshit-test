@@ -8,6 +8,7 @@ import com.wingedsheep.ai.llm.CardSummary
 import com.wingedsheep.ai.llm.MulliganInfo
 import com.wingedsheep.engine.core.*
 import com.wingedsheep.engine.registry.CardRegistry
+import com.wingedsheep.engine.mechanics.mana.ManaSolver
 import com.wingedsheep.engine.state.GameState
 import com.wingedsheep.engine.state.components.battlefield.TappedComponent
 import com.wingedsheep.engine.state.components.identity.CardComponent
@@ -190,6 +191,8 @@ internal data class PestWeatherCast(
     val expectedCopies: Int,
     val observedCopies: Int,
     val lifeBeforeCast: Int,
+    val availableManaBeforeCast: Int,
+    val handBeforeCast: List<String>,
     val actionsBeforeCastThisTurn: List<String>,
     val usefulSpellCastLaterThisTurn: String?,
 )
@@ -208,6 +211,7 @@ internal data class PestFollowCast(
     val turn: Int,
     val mode: String,
     val lifeEventsBeforeCastThisTurn: Int,
+    val handBeforeCast: List<String>,
     val actionsBeforeCastThisTurn: List<String>,
 )
 
@@ -344,6 +348,8 @@ private data class MutableWeather(
     val stormCount: Int,
     val expectedCopies: Int,
     val lifeBeforeCast: Int,
+    val availableManaBeforeCast: Int,
+    val handBeforeCast: List<String>,
     val actionsBeforeCastThisTurn: List<String>,
     val actionIndex: Int,
     var observedCopies: Int = 0,
@@ -434,6 +440,7 @@ internal fun runPestGoldfish(registry: CardRegistry, seed: Long, gameNumber: Int
     val blank = AIPlayer.create(registry, blankId, AiProfile.PRODUCTION_CANDIDATE_EXPIRING)
     val bottleneckTracker = ActionableManaBottleneckTracker(registry)
     val sacrificeManaTrace = SacrificeManaTrace()
+    val manaSolver = ManaSolver(registry)
     val t1 = mutableListOf<String>()
     val wardenCasts = mutableListOf<Int>()
     val researcherCasts = mutableListOf<Int>()
@@ -590,6 +597,7 @@ internal fun runPestGoldfish(registry: CardRegistry, seed: Long, gameNumber: Int
                     turn,
                     if (state.getEntity(pestId)?.has<LifeGainedThisTurnComponent>() == true) "ENHANCED" else "NORMAL",
                     lifeEvents.count { it.turn == turn },
+                    state.getHand(pestId).map { name(state, it) },
                     turnActions.dropLast(1).filter { it.turn == turn }.map(PestTurnAction::description),
                 )
                 "Weather the Storm" -> weathers += MutableWeather(
@@ -597,6 +605,8 @@ internal fun runPestGoldfish(registry: CardRegistry, seed: Long, gameNumber: Int
                     stormCount = state.spellsCastThisTurn,
                     expectedCopies = state.spellsCastThisTurn,
                     lifeBeforeCast = state.lifeTotal(pestId),
+                    availableManaBeforeCast = manaSolver.getAvailableManaCount(state, pestId),
+                    handBeforeCast = state.getHand(pestId).map { name(state, it) },
                     actionsBeforeCastThisTurn = turnActions.dropLast(1)
                         .filter { it.turn == turn }.map(PestTurnAction::description),
                     actionIndex = turnActions.lastIndex,
@@ -736,6 +746,8 @@ internal fun runPestGoldfish(registry: CardRegistry, seed: Long, gameNumber: Int
             weather.expectedCopies,
             weather.observedCopies,
             weather.lifeBeforeCast,
+            weather.availableManaBeforeCast,
+            weather.handBeforeCast,
             weather.actionsBeforeCastThisTurn,
             usefulLater,
         )
