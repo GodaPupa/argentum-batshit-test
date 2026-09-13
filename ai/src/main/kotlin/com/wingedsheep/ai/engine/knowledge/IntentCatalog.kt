@@ -14,6 +14,10 @@ import com.wingedsheep.sdk.scripting.ActivatedAbility
 import com.wingedsheep.sdk.scripting.KeywordAbility
 import com.wingedsheep.sdk.scripting.effects.Effect
 import com.wingedsheep.sdk.scripting.effects.ForceSacrificeEffect
+import com.wingedsheep.sdk.scripting.effects.ModalEffect
+import com.wingedsheep.sdk.scripting.targets.TargetCreatureOrPlaneswalker
+import com.wingedsheep.sdk.scripting.targets.TargetObject
+import com.wingedsheep.sdk.scripting.targets.TargetRequirement
 
 /**
  * Card-name → [CardIntent] lookup, and the switch that turns Phase 6 on.
@@ -101,6 +105,37 @@ class IntentCatalog private constructor(private val registry: CardRegistry?) {
         val leaves = EffectWalker.leaves(effect)
         if (leaves.isEmpty() || leaves.any { it !is ForceSacrificeEffect }) return null
         return leaves.filterIsInstance<ForceSacrificeEffect>()
+    }
+
+    /**
+     * Whether every available spell mode is solely a targeted answer to a permanent. Modal spells
+     * are inspected mode-by-mode because the whole-card intent walk deliberately treats a modal
+     * root as opaque for historical scoring compatibility.
+     */
+    fun isPureTargetedAnswerSpell(cardName: String, faceIndex: Int? = null): Boolean =
+        pureTargetedAnswerRequirements(cardName, faceIndex) != null
+
+    /** Target requirements for every pure answer mode, or null when any mode has another purpose. */
+    fun pureTargetedAnswerRequirements(
+        cardName: String,
+        faceIndex: Int? = null,
+    ): List<TargetRequirement>? {
+        val definition = registry?.getCard(cardName) ?: return null
+        val script = faceIndex?.let { definition.cardFaces.getOrNull(it)?.script } ?: definition.script
+        val effect = script.spellEffect ?: return null
+        val branches = if (effect is ModalEffect) {
+            effect.modes.map { mode -> mode.effect to mode.targetRequirements }
+        } else {
+            listOf(effect to script.targetRequirements)
+        }
+        val answerTags = setOf(IntentTag.REMOVAL, IntentTag.EXILE_REMOVAL, IntentTag.NEUTRALIZE, IntentTag.FIGHT)
+        if (branches.isEmpty() || !branches.all { (branchEffect, requirements) ->
+            requirements.any { it is TargetObject || it is TargetCreatureOrPlaneswalker } &&
+                CardIntentAnalyzer.effectTags(branchEffect).let { tags ->
+                    tags.isNotEmpty() && tags.all { it in answerTags }
+                }
+        }) return null
+        return branches.flatMap { it.second }
     }
 
     /**

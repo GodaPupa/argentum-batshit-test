@@ -3,10 +3,10 @@ package com.wingedsheep.gym.telemetry
 import com.wingedsheep.ai.engine.GameSimulator
 import com.wingedsheep.ai.engine.SimulationResult
 import com.wingedsheep.ai.engine.knowledge.IntentCatalog
-import com.wingedsheep.ai.engine.knowledge.IntentTag
 import com.wingedsheep.engine.core.PlayLand
-import com.wingedsheep.engine.core.CastSpell
 import com.wingedsheep.engine.handlers.PredicateContext
+import com.wingedsheep.engine.handlers.TargetFinder
+import com.wingedsheep.engine.handlers.TargetingSourceType
 import com.wingedsheep.engine.handlers.effects.BattlefieldFilterUtils
 import com.wingedsheep.engine.mechanics.mana.ManaSolver
 import com.wingedsheep.engine.registry.CardRegistry
@@ -38,6 +38,7 @@ data class ActionableManaBottleneck(
 class ActionableManaBottleneckTracker(private val registry: CardRegistry) {
     private val solver = ManaSolver(registry)
     private val simulator = GameSimulator(registry)
+    private val targetFinder = TargetFinder()
     private val intents = IntentCatalog.of(registry)
     private val seen = mutableSetOf<Pair<EntityId, ManaConstraint>>()
 
@@ -105,15 +106,19 @@ class ActionableManaBottleneckTracker(private val registry: CardRegistry) {
                 }
             }
         }
-        val intent = intents.forName(card.name) ?: return true
-        val answerTags = setOf(IntentTag.REMOVAL, IntentTag.EXILE_REMOVAL, IntentTag.NEUTRALIZE, IntentTag.FIGHT)
-        val isPureAnswer = intent.tags.isNotEmpty() && intent.tags.all { it in answerTags }
-        if (!isPureAnswer) return true
         val opposingPermanents = opponents.flatMap(state::controlledBattlefield).toSet()
-        return simulator.getLegalActions(state, playerId).any { legal ->
-            val cast = legal.action as? CastSpell ?: return@any false
-            cast.cardId == cardId && legal.validTargets.orEmpty().any(opposingPermanents::contains)
+        intents.pureTargetedAnswerRequirements(card.name)?.let { requirements ->
+            return requirements.any { requirement ->
+                targetFinder.findLegalTargets(
+                    state,
+                    requirement,
+                    playerId,
+                    cardId,
+                    targetingSourceType = TargetingSourceType.SPELL,
+                ).any(opposingPermanents::contains)
+            }
         }
+        return true
     }
 
     private data class PossibleLandState(val state: GameState, val playedLandId: EntityId?)

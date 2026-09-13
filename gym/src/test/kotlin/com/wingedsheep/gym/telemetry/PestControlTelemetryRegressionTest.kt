@@ -78,7 +78,6 @@ class PestControlTelemetryRegressionTest : ScenarioTestBase() {
 
         test("opponent-dependent interaction without a relevant opposing permanent is not a bottleneck") {
             val game = scenario().withPlayers()
-                .withLandsOnBattlefield(1, "Swamp", 1)
                 .withCardInHand(1, "Chainer's Edict")
                 .withCardInHand(1, "Cast Down")
                 .withCardInHand(1, "Bone Shards")
@@ -87,6 +86,20 @@ class PestControlTelemetryRegressionTest : ScenarioTestBase() {
 
             ActionableManaBottleneckTracker(cardRegistry)
                 .observe(game.state, game.player1Id, turn = 2) shouldBe emptyList()
+        }
+
+        test("modal targeted interaction with a valid opposing target reports a color shortage") {
+            val game = scenario().withPlayers()
+                .withCardInHand(1, "Forest")
+                .withCardInHand(1, "Forest")
+                .withCardInHand(1, "Bone Shards")
+                .withCardOnBattlefield(2, "Hill Giant")
+                .build()
+
+            val bottleneck = ActionableManaBottleneckTracker(cardRegistry)
+                .observe(game.state, game.player1Id, turn = 2).single()
+            bottleneck.cardName shouldBe "Bone Shards"
+            bottleneck.constraint shouldBe ManaConstraint.COLOR
         }
 
         test("sacrifice-mana trace attributes production consumption and the funded spell") {

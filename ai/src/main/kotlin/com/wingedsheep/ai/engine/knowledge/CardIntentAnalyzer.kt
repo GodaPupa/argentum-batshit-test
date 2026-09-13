@@ -94,6 +94,10 @@ import java.util.concurrent.ConcurrentHashMap
  */
 object CardIntentAnalyzer {
 
+    /** Structural tags for one effect tree, without changing whole-card intent analysis. */
+    internal fun effectTags(effect: Effect): Set<IntentTag> =
+        EffectWalker.leaves(effect).flatMap(::tagsOf).toSet()
+
     private val cardCache = ConcurrentHashMap<String, CardIntent>()
     private val selfCache = ConcurrentHashMap<String, CardIntent>()
     private val faceCache = ConcurrentHashMap<FaceKey, CardIntent>()
