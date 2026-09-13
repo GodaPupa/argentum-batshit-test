@@ -1,6 +1,6 @@
 # Project Pest Control — Status
 
-- Status: Game 15 general lifegain-resource correction implemented; same-seed replay requires separate authorization
+- Status: Game 15 same-seed regression replay rejected; further execution blocked pending approval
 - Laboratory: Project Pest Control
 - Branch: `pest-control/lab`
 - Validated base: `47882cd645caf126afee6cf13a65909806fa40ab`
@@ -198,6 +198,47 @@ high-life hold, survival Weather, payoff-driven Weather, useful Storm setup, and
 regressions. The structural intent suite and complete AI test suite are green locally. The rejected
 vector has not been replayed, and a same-seed regression replay is ready only for separate explicit
 authorization after full CI is green.
+
+### Game 15 same-seed regression replay
+
+The separately authorized replay executed all 30 performance-sample seeds exactly once, unchanged
+and in their original order, from corrected-policy remote head
+`132ffbc83473c950a74cff7800f9e8085a7c6e50`. No reroll, replacement, exclusion, deck change, seed
+change, telemetry change, or policy change occurred during execution. The first opt-in command was
+reported `UP-TO-DATE` by Gradle and executed no games; the subsequent forced task was the sole actual
+replay execution.
+
+Game 15's original chain is corrected. Its turn-five Storm-0 Weather at high life now has the
+concrete purpose of enabling Follow the Lumarets, which is cast immediately in enhanced mode. Food
+is not activated, and the original null Weather/Food/later-normal-Follow sequence does not recur.
+
+The replay is nevertheless **rejected in full**. Game 8 casts Weather at Storm 0 with no
+Researcher/Mascot or survival need, then activates Food while Weather is still pending, and finally
+casts enhanced Follow. The LIFO resolution order records Food's life event before Weather's. The
+Food event has no payoff and cannot improve Follow beyond the enhancement already guaranteed by the
+pending Weather, so it is a strategically null resource expenditure. The corrected policy observes
+resolved life-gained-this-turn state but does not account for a guaranteed pending life event on the
+stack when valuing another pure-lifegain activation.
+
+All automated rules/state and telemetry invariants passed, and the remainder of the manual audit
+found no additional clear defect. Every Weather copy and separate life event matched; all other
+Weather and pure-lifegain decisions had a visible payoff, enabled Follow, or represented useful
+Storm sequencing. Normal Follow decisions were either not profitably preceded by Weather or
+preserved Weather for a later payoff line. Edict and Bone Shards stayed unspent against the empty
+opponent; Researcher/Mascot trigger-to-counter accounting, Thrall-to-Scion creation, Scion
+provenance, actionable bottleneck deduplication, Ent decisions, mana legality, and terminal reports
+were internally consistent.
+
+The rejected original and rejected replay are preserved separately. Replay artifacts:
+
+- `goldfish-sample-1-performance-regression-replay-rejected.json`
+- `goldfish-sample-1-performance-regression-replay-rejected.md`
+- `goldfish-sample-1-performance-regression-replay-audit-rejected.md`
+
+The vector is now permanently retired from any further execution. It remains disqualified from
+sampling, optimization, performance inference, baseline evidence, and variant comparison. This
+replay does not make the laboratory ready for a new Sample #1 vector; further correction or
+execution requires separate authorization.
 
 ## Rejected Sample #1 disposition and correction scope
 

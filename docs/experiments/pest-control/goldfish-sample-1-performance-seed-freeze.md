@@ -37,4 +37,8 @@ must not rehabilitate either rejected execution or its regression replay as perf
 The execution produced all 30 games and passed automated invariants, but Game 15 exposed a clear
 Weather/Follow policy defect. The sample is rejected in full and preserved in
 `goldfish-sample-1-performance-{rejected,audit-rejected}.{json,md}` as applicable. It must not be used
-as performance evidence. No replay or corrective change is authorized automatically.
+as performance evidence. The one separately authorized corrected-policy replay is also rejected,
+because Game 8 spent a redundant Food activation while Weather was pending before enhanced Follow.
+That replay is preserved separately under `goldfish-sample-1-performance-regression-replay-*`. The
+vector is now permanently retired from all further execution; no replay or corrective change is
+authorized automatically.

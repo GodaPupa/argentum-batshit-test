@@ -43,5 +43,10 @@ disqualified from performance/baseline evidence.
 The separately authorized focused correction is documented in
 `game-15-lifegain-policy-correction.md`. It extends the general null-lifegain resource policy to
 structurally pure activated abilities and validates the complete Weather/Food/Follow decision chain.
-It does not authorize or perform a replay, a replacement vector, challenger construction,
-optimization, Sample #2, or opponent self-play.
+Its separately authorized same-seed replay is preserved as
+`goldfish-sample-1-performance-regression-replay-rejected.{json,md}` with the controlling audit in
+`goldfish-sample-1-performance-regression-replay-audit-rejected.md`. Game 15 was corrected, but Game
+8 exposed a pending-stack form of redundant pure lifegain, so the replay is rejected. The vector is
+permanently retired from any further execution and remains unusable for performance, optimization,
+sampling, or comparison. No replacement vector, challenger construction, optimization, Sample #2,
+or opponent self-play is authorized.
