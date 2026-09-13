@@ -112,6 +112,8 @@ data class FriendlyRemovalAudit(
     val manaCost: String?,
     val manaSources: List<AuditEntity> = emptyList(),
     val lifePaid: Int = 0,
+    /** Concrete additional-cost branch chosen for the action, or `none`. */
+    val additionalCostMode: String = "none",
     val additionalCosts: List<AuditCost> = emptyList(),
     val removalResourceValueConsumed: Double,
     val futureInteractionOpportunityCost: Double,
@@ -124,10 +126,15 @@ data class FriendlyRemovalAudit(
     val resourceTransitionBenefit: Boolean,
     val passHoldValue: Double,
     val opposingTargetAlternatives: List<AuditEntity> = emptyList(),
+    val friendlyTargetAlternatives: List<AuditEntity> = emptyList(),
+    /** The caster's complete battlefield after the simulated line resolves. */
+    val resultingBoardState: List<AuditEntity> = emptyList(),
     val resolvedLineValue: Double,
     val netVersusHold: Double,
     val requiredFairTradeMargin: Double,
     val fairTradeSurplus: Double,
+    /** Whether the production removal-hold policy recognized and gated this candidate. */
+    val policyApplied: Boolean = true,
     val policyDisposition: String,
     val selected: Boolean = false,
     val selectionReason: String? = null,

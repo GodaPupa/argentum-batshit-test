@@ -46,7 +46,7 @@ object SelfRemovalValuation {
         passScore: Double,
         boardPresenceWeight: Double,
     ): FriendlyRemovalAudit? {
-        if (card.isCreature || intent.tags.none { it in ONE_CARD_REMOVAL }) return null
+        if (card.isCreature) return null
         val permanentTargets = cast.targets.filterIsInstance<ChosenTarget.Permanent>().map { it.entityId }
         val friendly = permanentTargets.filter { state.projectedState.getController(it) == playerId }
         val opposing = permanentTargets.filter { target ->
@@ -55,11 +55,21 @@ object SelfRemovalValuation {
         if (friendly.size != 1 || opposing.isNotEmpty()) return null
 
         val targetId = friendly.single()
+        val policyRecognizedRemoval = intent.tags.any { it in ONE_CARD_REMOVAL }
+        // Some targeted/modal actions are fully materialized and simulated even when the broad
+        // card-intent fold does not classify the wrapper that contains their removal effect. Audit
+        // the concrete resolved outcome independently: this is observability only. `shouldHold`
+        // below still receives the unchanged intent and therefore remains the production policy.
+        val targetActuallyRemoved = events.filterIsInstance<ZoneChangeEvent>().any {
+            it.entityId == targetId && it.fromZone == Zone.BATTLEFIELD && it.toZone != Zone.BATTLEFIELD
+        }
+        val lineWinsGame = leafState.gameOver && leafState.winnerId == playerId
+        if (!policyRecognizedRemoval && !targetActuallyRemoved && !lineWinsGame) return null
         val target = entity(state, targetId)
         val requiredMargin = boardPresenceWeight *
             Patience.FAIR_TRADE_VALUE_PER_MANA * card.manaValue.coerceAtLeast(1)
-        val lethal = leafState.gameOver && leafState.winnerId == playerId
-        val shouldHold = shouldHold(
+        val lethal = lineWinsGame
+        val shouldHold = policyRecognizedRemoval && shouldHold(
             state, leafState, playerId, intent, card, cast, leafScore, passScore, boardPresenceWeight,
         )
         val explicitPaymentIds = (cast.paymentStrategy as? PaymentStrategy.Explicit)
@@ -112,6 +122,12 @@ object SelfRemovalValuation {
         val alternatives = legalTargetIds.orEmpty()
             .filter { id -> state.projectedState.getController(id)?.let { state.isOpponentTo(it, playerId) } == true }
             .map { entity(state, it) }
+        val friendlyAlternatives = legalTargetIds.orEmpty()
+            .filter { it != targetId && state.projectedState.getController(it) == playerId }
+            .map { entity(state, it) }
+        val boardStateAfter = leafState.projectedState.getBattlefieldControlledBy(playerId).map {
+            entity(leafState, it)
+        }
         return FriendlyRemovalAudit(
             turnNumber = state.turnNumber,
             removalAction = "cast ${card.name}",
@@ -122,6 +138,7 @@ object SelfRemovalValuation {
             manaCost = manaCost,
             manaSources = paymentIds.map { entity(state, it) },
             lifePaid = (additional?.lifePaid ?: 0) + cast.graveyardLifeCost,
+            additionalCostMode = costs.firstOrNull()?.kind ?: "none",
             additionalCosts = costs,
             removalResourceValueConsumed = card.manaValue.toDouble(),
             futureInteractionOpportunityCost = requiredMargin,
@@ -133,12 +150,19 @@ object SelfRemovalValuation {
             resourceTransitionBenefit = created.isNotEmpty() || events.any { it is ManaAddedEvent },
             passHoldValue = passScore,
             opposingTargetAlternatives = alternatives,
+            friendlyTargetAlternatives = friendlyAlternatives,
+            resultingBoardState = boardStateAfter,
             resolvedLineValue = leafScore,
             netVersusHold = leafScore - passScore,
             requiredFairTradeMargin = requiredMargin,
             fairTradeSurplus = leafScore - passScore - requiredMargin,
-            policyDisposition = if (shouldHold) "reject: downstream value does not clear fair-trade margin" else
-                if (lethal) "allow: deterministic lethal" else "allow: downstream value clears fair-trade margin",
+            policyApplied = policyRecognizedRemoval,
+            policyDisposition = when {
+                !policyRecognizedRemoval -> "not applied: targeted-removal intent was not classified"
+                shouldHold -> "reject: downstream value does not clear fair-trade margin"
+                lethal -> "allow: deterministic lethal"
+                else -> "allow: downstream value clears fair-trade margin"
+            },
         )
     }
 

@@ -9,6 +9,7 @@ import io.kotest.matchers.collections.shouldContain
 import io.kotest.matchers.collections.shouldNotBeEmpty
 import io.kotest.matchers.booleans.shouldBeTrue
 import io.kotest.matchers.shouldBe
+import io.kotest.matchers.shouldNotBe
 import io.kotest.matchers.string.shouldContain
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
@@ -248,6 +249,34 @@ class PestControlTelemetryRegressionTest : ScenarioTestBase() {
             audit.landEntersTapped shouldBe true
             audit.materiallySuperior shouldBe false
             audit.steps.last().resourcesAfter shouldBe null
+        }
+
+        test("targeted additional-cost setup preserves a concrete target and payment through Weather") {
+            val game = scenario().withPlayers()
+                .withLandsOnBattlefield(1, "Forest", 2)
+                .withLandsOnBattlefield(1, "Swamp", 1)
+                .withCardInHand(1, "Bone Shards")
+                .withCardInHand(1, "Weather the Storm")
+                .withCardInHand(1, "Forest")
+                .withCardOnBattlefield(1, "Carrier Thrall")
+                .withCardOnBattlefield(1, "Blood Artist")
+                .build()
+            val weather = game.findCardsInHand(1, "Weather the Storm").single()
+
+            val snapshot = PreSpellSetupTelemetry(cardRegistry)
+                .observe(game.state, game.player1Id, weather)
+
+            val evaluations = snapshot.evaluatedSequences.filter { it.relevantAction == "Bone Shards" }
+            evaluations.shouldNotBeEmpty()
+            val setup = evaluations.maxBy { it.completedLineScore ?: Double.NEGATIVE_INFINITY }
+                .steps.single { it.action == "cast Bone Shards" }
+            withClue(snapshot) {
+                setup.targetDetails.shouldNotBeEmpty()
+                setup.targetDetails.map { it.id } shouldBe setup.targets
+                setup.additionalCostMode shouldBe setup.additionalCosts.single().kind
+                setup.additionalCosts.single().entities.shouldNotBeEmpty()
+                setup.resourcesAfter shouldNotBe null
+            }
         }
 
         listOf(

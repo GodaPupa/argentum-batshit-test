@@ -751,6 +751,32 @@ class PestControlAgentDecisionTest : ScenarioTestBase() {
             game.getLifeTotal(1) shouldBe 22
         }
 
+        test("selected modal additional-cost friendly removal carries a complete audit") {
+            val game = seeded()
+                .withTurnNumber(15)
+                .withLandsOnBattlefield(1, "Swamp", 1)
+                .withCardInHand(1, "Bone Shards")
+                .withCardInHand(1, "Forest")
+                .withCardOnBattlefield(1, "Carrier Thrall")
+                .withCardOnBattlefield(1, "Blood Artist")
+                .withLifeTotal(2, 1)
+                .build()
+
+            val (chosen, insights) = chooseWithInsights(game)
+            val action = chosen.shouldBeInstanceOf<CastSpell>()
+            sourceName(game, action) shouldBe "Bone Shards"
+            val audit = insights.last().options.mapNotNull { it.friendlyRemovalAudit }.single { it.selected }
+            audit.removalAction shouldBe "cast Bone Shards"
+            audit.targetName shouldBe "Blood Artist"
+            audit.additionalCostMode shouldBe "sacrifice"
+            audit.additionalCosts.single().entities.single().name shouldBe "Carrier Thrall"
+            audit.deterministicLethal.shouldBeTrue()
+            audit.passHoldValue.isFinite().shouldBeTrue()
+            audit.friendlyTargetAlternatives.any { it.name == "Carrier Thrall" }.shouldBeTrue()
+            audit.selectionReason shouldContain "selected"
+            audit.policyApplied.shouldBeFalse()
+        }
+
         test("Cast Down targets the highest-value legal nonlegendary threat") {
             val game = seeded()
                 .withLandsOnBattlefield(1, "Swamp", 2)

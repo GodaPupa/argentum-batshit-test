@@ -53,6 +53,13 @@ private const val PEST_SAMPLE_2_TAKE_2_SEED_SHA256 = "1db3fb1fcf4b969d9229bb2a06
 private const val PEST_SAMPLE_2_TAKE_3_SEED_SHA256 = "341fc7936a8a415d19d198662d1f6f2b2120ecb70d055a3a7a6fb76dd1ec8c47"
 private const val PEST_SAMPLE_2_TAKE_4_SEED_SHA256 = "9f53ae30fd233bc8a980163aff9a7df1d6b41095356072e520a2cad16f97a7ad"
 
+/** SHARED ARGENTUM CHANGE: yes — mandatory audit fields are never default-elided. */
+internal val PEST_ARTIFACT_JSON = Json {
+    prettyPrint = true
+    encodeDefaults = true
+    explicitNulls = true
+}
+
 /** Pest Control-owned development goldfish. It is opt-in and never runs in ordinary CI. */
 class PestControlGoldfishTest : FunSpec({
     test("frozen Pest Control v1.0 and Sample 1 seed vector are exact") {
@@ -123,7 +130,7 @@ class PestControlGoldfishTest : FunSpec({
         timeout = 10.minutes,
     ) {
         val game = runPestGoldfish(pestRegistry(), readPestSeeds()[24], 25)
-        println(Json { prettyPrint = true }.encodeToString(game))
+        println(PEST_ARTIFACT_JSON.encodeToString(game))
     }
 
     test("Pest Control v1.0 rejected Sample 1 regression replay").config(
@@ -147,7 +154,7 @@ class PestControlGoldfishTest : FunSpec({
         Files.createDirectories(reportDir)
         Files.writeString(
             reportDir.resolve("pest-control-v10-goldfish-sample-1-regression-replay.json"),
-            Json { prettyPrint = true }.encodeToString(block),
+            PEST_ARTIFACT_JSON.encodeToString(block),
         )
         val markdown = renderPestMarkdown(block)
         Files.writeString(reportDir.resolve("pest-control-v10-goldfish-sample-1-regression-replay.md"), markdown)
@@ -174,7 +181,7 @@ class PestControlGoldfishTest : FunSpec({
         Files.createDirectories(reportDir)
         Files.writeString(
             reportDir.resolve("pest-control-v10-goldfish-sample-1-fresh.json"),
-            Json { prettyPrint = true }.encodeToString(block),
+            PEST_ARTIFACT_JSON.encodeToString(block),
         )
         val markdown = renderPestMarkdown(block, freshPerformanceSample = true)
         Files.writeString(reportDir.resolve("pest-control-v10-goldfish-sample-1-fresh.md"), markdown)
@@ -201,7 +208,7 @@ class PestControlGoldfishTest : FunSpec({
         Files.createDirectories(reportDir)
         Files.writeString(
             reportDir.resolve("pest-control-v10-goldfish-sample-1-performance.json"),
-            Json { prettyPrint = true }.encodeToString(block),
+            PEST_ARTIFACT_JSON.encodeToString(block),
         )
         val markdown = renderPestMarkdown(block, freshPerformanceSample = true)
         Files.writeString(reportDir.resolve("pest-control-v10-goldfish-sample-1-performance.md"), markdown)
@@ -228,7 +235,7 @@ class PestControlGoldfishTest : FunSpec({
         Files.createDirectories(reportDir)
         Files.writeString(
             reportDir.resolve("goldfish-sample-1-untouched-raw.json"),
-            Json { prettyPrint = true }.encodeToString(block),
+            PEST_ARTIFACT_JSON.encodeToString(block),
         )
         val markdown = renderPestMarkdown(block, freshPerformanceSample = true)
         Files.writeString(reportDir.resolve("goldfish-sample-1-untouched-report.md"), markdown)
@@ -255,7 +262,7 @@ class PestControlGoldfishTest : FunSpec({
         Files.createDirectories(reportDir)
         Files.writeString(
             reportDir.resolve("goldfish-sample-2-raw.json"),
-            Json { prettyPrint = true }.encodeToString(block),
+            PEST_ARTIFACT_JSON.encodeToString(block),
         )
         val markdown = renderPestMarkdown(
             block,
@@ -286,7 +293,7 @@ class PestControlGoldfishTest : FunSpec({
         Files.createDirectories(reportDir)
         Files.writeString(
             reportDir.resolve("goldfish-sample-2-take-2-raw.json"),
-            Json { prettyPrint = true }.encodeToString(block),
+            PEST_ARTIFACT_JSON.encodeToString(block),
         )
         val markdown = renderPestMarkdown(
             block,
@@ -317,7 +324,7 @@ class PestControlGoldfishTest : FunSpec({
         Files.createDirectories(reportDir)
         Files.writeString(
             reportDir.resolve("goldfish-sample-2-take-3-raw.json"),
-            Json { prettyPrint = true }.encodeToString(block),
+            PEST_ARTIFACT_JSON.encodeToString(block),
         )
         val markdown = renderPestMarkdown(
             block,
@@ -352,7 +359,7 @@ class PestControlGoldfishTest : FunSpec({
         Files.createDirectories(reportDir)
         Files.writeString(
             reportDir.resolve("goldfish-sample-2-take-4-raw.json"),
-            Json { prettyPrint = true }.encodeToString(block),
+            PEST_ARTIFACT_JSON.encodeToString(block),
         )
         val markdown = renderPestMarkdown(
             block,
@@ -624,13 +631,13 @@ internal fun pestAuditCompletenessErrors(game: PestGoldfishGame): List<String> =
         }
         weather.executableButNotMateriallySuperior.forEach { sequence ->
             if (evaluations.none {
-                    it.proposedActionOrder == sequence &&
+                    it.setupPrefix == sequence &&
                         PreSpellSetupClassification.EXECUTABLE_BUT_NOT_MATERIALLY_SUPERIOR in it.classifications
                 }) fail(subject, "non-superior sequence '$sequence' lacks a structured evaluation")
         }
         weather.bestValidatedPreWeatherSetupSequence?.let { sequence ->
             if (evaluations.none {
-                    it.proposedActionOrder == sequence &&
+                    it.completeSetupContinuation == sequence &&
                         PreSpellSetupClassification.GENUINE_MISSED_SUPERIOR_SEQUENCE in it.classifications
                 }) fail(subject, "best missed-superior sequence lacks a structured evaluation")
         }
@@ -667,9 +674,23 @@ internal fun pestAuditCompletenessErrors(game: PestGoldfishGame): List<String> =
                 if (evaluation.proposedLandPlay.isNullOrBlank()) fail(evaluationSubject, "proposed land is absent")
                 if (evaluation.landEntersTapped == null) fail(evaluationSubject, "land tapped/untapped result is absent")
             }
-            if (evaluation.proposedActionOrder.isEmpty()) fail(evaluationSubject, "proposed action order is absent")
+            if (evaluation.setupPrefix.isEmpty()) fail(evaluationSubject, "setup prefix is absent")
+            if (evaluation.proposedActionOrder != if (stillUnexecutable) evaluation.setupPrefix else evaluation.completeSetupContinuation) {
+                fail(evaluationSubject, "proposed action order does not identify its equivalent complete sequence")
+            }
+            if (!stillUnexecutable && evaluation.completeSetupContinuation.isEmpty()) {
+                fail(evaluationSubject, "complete setup continuation is absent")
+            }
+            if (stillUnexecutable && evaluation.completeSetupContinuation.isNotEmpty()) {
+                fail(evaluationSubject, "unexecutable setup invents a complete continuation")
+            }
             if (evaluation.actualLineTaken.isEmpty()) fail(evaluationSubject, "actual line is absent")
-            if (evaluation.counterfactualLineEvaluated.isEmpty()) fail(evaluationSubject, "counterfactual line is absent")
+            if (!stillUnexecutable && evaluation.counterfactualLineEvaluated != evaluation.completeSetupContinuation) {
+                fail(evaluationSubject, "counterfactual is not the complete setup continuation")
+            }
+            if (!stillUnexecutable && evaluation.comparisonLineEvaluated.isEmpty()) {
+                fail(evaluationSubject, "complete comparison line is absent")
+            }
             if (evaluation.steps.isEmpty()) fail(evaluationSubject, "structured action steps are absent")
             if (evaluation.reason.isBlank()) fail(evaluationSubject, "classification reason is absent")
             if (!stillUnexecutable) {
@@ -687,6 +708,17 @@ internal fun pestAuditCompletenessErrors(game: PestGoldfishGame): List<String> =
                     val payable = step.paymentSources.isNotEmpty() || step.resourcesBefore.floatingMana.values.sum() > 0
                     if (!stillUnexecutable && !payable) fail(stepSubject, "source-specific payment plan is absent")
                     if (!stillUnexecutable && step.resourcesAfter == null) fail(stepSubject, "remaining resources are absent")
+                    if (step.targets.size != step.targetDetails.size ||
+                        step.targetDetails.map { it.id } != step.targets
+                    ) fail(stepSubject, "target identities are incomplete")
+                    if (step.additionalCostMode == "none" && step.additionalCosts.isNotEmpty()) {
+                        fail(stepSubject, "additional-cost mode disagrees with payment")
+                    }
+                    step.additionalCosts.forEach { cost ->
+                        if (cost.kind.isBlank()) fail(stepSubject, "additional-cost kind is absent")
+                        if (cost.entities.isEmpty() && cost.amount == null) fail(stepSubject, "additional-cost payment is absent")
+                        if (cost.entities.any { it.name.isBlank() }) fail(stepSubject, "additional-cost identity is absent")
+                    }
                 }
             }
         }
@@ -699,6 +731,7 @@ internal fun pestAuditCompletenessErrors(game: PestGoldfishGame): List<String> =
         if (audit.manaCost.isNullOrBlank()) fail(subject, "mana cost is absent")
         if (audit.manaSources.any { it.name.isBlank() }) fail(subject, "mana-source identity is absent")
         if (audit.lifePaid < 0) fail(subject, "life cost is invalid")
+        if (audit.additionalCostMode.isBlank()) fail(subject, "additional-cost mode is absent")
         audit.additionalCosts.forEach { cost ->
             if (cost.kind.isBlank()) fail(subject, "additional-cost kind is absent")
             if (cost.entities.isEmpty() && cost.amount == null) fail(subject, "additional-cost payment is absent")
@@ -724,6 +757,12 @@ internal fun pestAuditCompletenessErrors(game: PestGoldfishGame): List<String> =
         if (audit.immediateEngineEffects.any(String::isBlank)) fail(subject, "engine-effect identity is absent")
         if (audit.opposingTargetAlternatives.any { it.name.isBlank() || it.controllerId == null || it.battlefieldValue == null }) {
             fail(subject, "opposing-target alternative is incomplete")
+        }
+        if (audit.friendlyTargetAlternatives.any { it.name.isBlank() || it.controllerId == null || it.battlefieldValue == null }) {
+            fail(subject, "friendly-target alternative is incomplete")
+        }
+        if (audit.resultingBoardState.any { it.name.isBlank() || it.controllerId == null || it.battlefieldValue == null }) {
+            fail(subject, "resulting board state is incomplete")
         }
         if (audit.policyDisposition.isBlank()) fail(subject, "fair-trade disposition is absent")
         if (audit.selectionReason.isNullOrBlank()) fail(subject, "selection/rejection reason is absent")
