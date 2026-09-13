@@ -26,6 +26,7 @@ import com.wingedsheep.sdk.scripting.effects.*
 import com.wingedsheep.sdk.scripting.filters.unified.GroupFilter
 import com.wingedsheep.sdk.scripting.filters.unified.Scope
 import com.wingedsheep.sdk.scripting.predicates.ControllerPredicate
+import com.wingedsheep.sdk.scripting.references.Player
 import com.wingedsheep.sdk.scripting.targets.EffectTarget
 import com.wingedsheep.sdk.scripting.targets.TargetObject
 import com.wingedsheep.sdk.scripting.targets.TargetRequirement
@@ -208,6 +209,13 @@ object CardIntentAnalyzer {
         if (activated.any { it.isManaAbility }) tags += IntentTag.RAMP
         if (activated.any { !it.isManaAbility && sacrificesOthers(it.cost) }) {
             tags += IntentTag.SACRIFICE_OUTLET
+        }
+        if (scripts.flatMap { it.triggeredAbilities }.any { ability ->
+                val trigger = ability.trigger as? EventPattern.LifeGainEvent
+                trigger?.player == Player.You
+            }
+        ) {
+            tags += IntentTag.LIFEGAIN_PAYOFF
         }
         // An Aura/Equipment whose whole point is the creature it sits on is a pump, not an anthem.
         if (scripts.any { it.isAura && it.staticAbilities.any { static -> static is ModifyStats } }) {

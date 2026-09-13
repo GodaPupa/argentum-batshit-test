@@ -14,6 +14,7 @@ import com.wingedsheep.sdk.scripting.ActivatedAbility
 import com.wingedsheep.sdk.scripting.KeywordAbility
 import com.wingedsheep.sdk.scripting.effects.Effect
 import com.wingedsheep.sdk.scripting.effects.ForceSacrificeEffect
+import com.wingedsheep.sdk.scripting.effects.GainLifeEffect
 import com.wingedsheep.sdk.scripting.effects.ModalEffect
 import com.wingedsheep.sdk.scripting.targets.TargetCreatureOrPlaneswalker
 import com.wingedsheep.sdk.scripting.targets.TargetObject
@@ -105,6 +106,24 @@ class IntentCatalog private constructor(private val registry: CardRegistry?) {
         val leaves = EffectWalker.leaves(effect)
         if (leaves.isEmpty() || leaves.any { it !is ForceSacrificeEffect }) return null
         return leaves.filterIsInstance<ForceSacrificeEffect>()
+    }
+
+    /**
+     * Whether the selected spell face does nothing except gain life for its controller.
+     *
+     * Strict by design: draw, recursion, token creation, drain, or an unrecognized rider makes the
+     * answer false. Keyword machinery such as Storm is outside the resolving effect tree and does
+     * not change what each individual resolution accomplishes.
+     */
+    fun isPureLifeGainSpell(cardName: String, faceIndex: Int? = null): Boolean {
+        val definition = registry?.getCard(cardName) ?: return false
+        val effect = if (faceIndex == null) {
+            definition.script.spellEffect
+        } else {
+            definition.cardFaces.getOrNull(faceIndex)?.script?.spellEffect
+        } ?: return false
+        val leaves = EffectWalker.leaves(effect)
+        return leaves.isNotEmpty() && leaves.all { it is GainLifeEffect }
     }
 
     /**

@@ -43,7 +43,20 @@ class CardIntentAnalyzerTest : ScenarioTestBase() {
         test("a repeatable +1/+1-counter trigger advertises a lasting payoff") {
             val intent = intentOf("Blood Researcher")
             intent.tags shouldContain IntentTag.PUMP
+            intent.tags shouldContain IntentTag.LIFEGAIN_PAYOFF
             intent.repeatable shouldBe true
+        }
+
+        test("different controller-lifegain triggers share the general payoff tag") {
+            intentOf("Pest Mascot").tags shouldContain IntentTag.LIFEGAIN_PAYOFF
+            intentOf("Marauding Blight-Priest").tags shouldContain IntentTag.LIFEGAIN_PAYOFF
+            intentOf("Essence Warden").tags shouldNotContain IntentTag.LIFEGAIN_PAYOFF
+        }
+
+        test("pure lifegain excludes spells with a concrete non-life rider") {
+            val catalog = IntentCatalog.of(cardRegistry)
+            catalog.isPureLifeGainSpell("Weather the Storm") shouldBe true
+            catalog.isPureLifeGainSpell("Pulse of Murasa") shouldBe false
         }
 
         test("a life-gain-enhanced selection spell exposes the conditional mode structurally") {

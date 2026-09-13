@@ -684,6 +684,15 @@ class Strategist(
                 "forced-sacrifice policy: no opposing permanent was sacrificed — floored below passing",
             )
         }
+        if (shouldHoldNullLifeGain(state, leafState, action.action, playerId, cardName)) {
+            // Raw life has board-score value even when no game object can currently exploit it.
+            // A pure gain spell with no pressure, payoff, or enabled follow-up is therefore a
+            // legal but strategically null resource conversion, and should remain in hand.
+            return AdjustedScore(
+                passScore - 1.0,
+                "lifegain policy: no pressure or concrete payoff — floored below passing",
+            )
+        }
         if (isSacrificeManaAction(action) && unlockedProductiveCastIds(state, leafState, playerId).isEmpty()) {
             // Sacrificing a permanent is an irreversible strategic cost, even when the ability is
             // a mana ability. Require an immediate, newly executable productive use rather than
@@ -775,6 +784,54 @@ class Strategist(
     private fun isSacrificeManaAction(action: LegalAction): Boolean =
         action.isManaAbility && action.additionalCostInfo?.costType == "SacrificePermanent"
 
+    /** Hold a pure life-only spell until life or a visible event consumer makes it concrete. */
+    private fun shouldHoldNullLifeGain(
+        state: GameState,
+        leafState: GameState,
+        action: GameAction,
+        playerId: EntityId,
+        cardName: String,
+    ): Boolean {
+        val cast = action as? CastSpell ?: return false
+        if (!intents.isPureLifeGainSpell(cardName, cast.faceIndex)) return false
+        if (visibleRepeatablePayoffCount(state, playerId) > 0) return false
+        if (lifeGainNeededForSurvival(state, playerId)) return false
+        if (unlocksLifeGainEnhancedFollowUp(state, leafState, playerId)) return false
+        return true
+    }
+
+    /**
+     * Conservative public-board survival test. Every opposing creature is counted at its projected
+     * power because it can untap or lose summoning sickness before the next attack; overestimating
+     * pressure merely preserves an emergency lifegain option and is safer than suppressing one.
+     */
+    private fun lifeGainNeededForSurvival(state: GameState, playerId: EntityId): Boolean {
+        val opposingPower = state.turnOrder.asSequence()
+            .filter { state.isOpponentTo(it, playerId) }
+            .flatMap { state.controlledBattlefield(it).asSequence() }
+            .filter { state.getEntity(it)?.get<CardComponent>()?.isCreature == true }
+            .sumOf { (state.projectedState.getPower(it) ?: 0).coerceAtLeast(0) }
+        return opposingPower >= state.lifeTotal(playerId)
+    }
+
+    /** The life event changed a currently affordable spell from normal to enhanced. */
+    private fun unlocksLifeGainEnhancedFollowUp(
+        state: GameState,
+        leafState: GameState,
+        playerId: EntityId,
+    ): Boolean {
+        if (state.getEntity(playerId)?.has<LifeGainedThisTurnComponent>() == true) return false
+        if (leafState.getEntity(playerId)?.has<LifeGainedThisTurnComponent>() != true) return false
+        return simulator.getLegalActions(leafState, playerId).any { next ->
+            if (!next.affordable) return@any false
+            val nextCast = next.action as? CastSpell ?: return@any false
+            val nextName = leafState.getEntity(nextCast.cardId)?.get<CardComponent>()?.name ?: return@any false
+            val nextIntent = nextCast.faceIndex?.let { intents.forFaceIndex(nextName, it) }
+                ?: intents.forName(nextName)
+            nextIntent != null && IntentTag.LIFEGAIN_ENHANCED in nextIntent.tags
+        }
+    }
+
     /** Casts made newly executable by the leaf, excluding legal-but-strategically-null effects. */
     private fun unlockedProductiveCastIds(
         state: GameState,
@@ -847,6 +904,12 @@ class Strategist(
                 }
             }
             if (hasCreatureFollowUp && hasVisiblePayoff) delta += TRIGGER_ENGINE_SETUP_VALUE
+        }
+
+        if (cast != null && intent != null && IntentTag.LIFEGAIN in intent.tags &&
+            unlocksLifeGainEnhancedFollowUp(state, leafState, playerId)
+        ) {
+            delta += LIFEGAIN_FOLLOW_UP_UNLOCK_VALUE
         }
 
         if (cast != null && leafScore > passScore) {
@@ -944,8 +1007,7 @@ class Strategist(
             val permanent = state.getEntity(id) ?: return@count false
             val name = permanent.get<CardComponent>()?.name ?: return@count false
             intents.forPermanent(permanent, name).any { payoff ->
-                payoff.repeatable &&
-                    (IntentTag.PUMP in payoff.tags || (payoff.opponentDamage ?: 0) > 0)
+                payoff.repeatable && IntentTag.LIFEGAIN_PAYOFF in payoff.tags
             }
         }
 
@@ -1649,6 +1711,9 @@ class Strategist(
 
         /** Immediate option value of a structurally explicit life-gained-this-turn enhancement. */
         const val LIFEGAIN_ENHANCED_VALUE = 1.0
+
+        /** Break a pass tie when this life event newly enables a concrete enhanced spell. */
+        const val LIFEGAIN_FOLLOW_UP_UNLOCK_VALUE = 0.5
 
         /** Tempo value per mana of a spell enabled by paying a non-mana alternative cost. */
         const val ALTERNATIVE_COST_TEMPO_PER_MANA = 0.85

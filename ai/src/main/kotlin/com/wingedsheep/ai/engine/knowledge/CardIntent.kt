@@ -239,6 +239,9 @@ enum class IntentTag {
     /** Gains life. */
     LIFEGAIN,
 
+    /** A permanent trigger consumes its controller's life-gain events as repeatable value. */
+    LIFEGAIN_PAYOFF,
+
     /** Makes a player discard. */
     DISCARD,
 

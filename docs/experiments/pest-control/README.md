@@ -19,6 +19,7 @@ Weather the Storm casts with no payoff and no survival pressure. The entire fres
 rejected and preserved intact in `goldfish-sample-1-fresh-rejected.md` and `.json`; none of its clock or
 engine aggregates are accepted as baseline evidence.
 
-This does not authorize challenger construction, opponent self-play, another fresh Sample #1, Sample
-#2, policy correction, replay, or optimization. The permanent Pest Control v1.0 control in
-`docs/lab/PEST_CONTROL_STATUS.md` must not be silently changed.
+The approved general Weather-policy correction is documented in
+`goldfish-sample-1-weather-policy-correction.md`. It does not authorize challenger construction,
+opponent self-play, another fresh Sample #1, Sample #2, replay, or optimization. The permanent Pest
+Control v1.0 control in `docs/lab/PEST_CONTROL_STATUS.md` must not be silently changed.

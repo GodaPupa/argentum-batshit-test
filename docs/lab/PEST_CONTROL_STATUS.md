@@ -1,6 +1,6 @@
 # Project Pest Control — Status
 
-- Status: regression gate accepted; fresh Goldfish Sample #1 executed once and rejected by audit
+- Status: fresh Sample #1 rejected; approved general Weather-policy correction under validation
 - Laboratory: Project Pest Control
 - Branch: `pest-control/lab`
 - Validated base: `47882cd645caf126afee6cf13a65909806fa40ab`
@@ -42,8 +42,37 @@ Therefore the entire fresh Sample #1 is **formally rejected**. None of its win c
 other aggregates are accepted as Pest Control baseline, matchup, optimization, or variant-comparison
 evidence. All 30 games are preserved intact in
 `docs/experiments/pest-control/goldfish-sample-1-fresh-rejected.{md,json}`; no affected game was removed,
-rerun, or replaced. No correction, replay, new vector, Sample #2, challenger construction, optimization,
-or opponent self-play is authorized by this finding.
+rerun, or replaced. The subsequent approved correction does not authorize replay, a new vector,
+Sample #2, challenger construction, optimization, or opponent self-play.
+
+## Fresh Sample #1 Weather-policy correction
+
+The rejected games exposed a general one-ply valuation gap: raw life increased the board score even
+when a pure lifegain spell had no opposing pressure, visible life-event payoff, or executable enhanced
+follow-up. The correction classifies pure lifegain structurally from the resolving effect tree and
+floors such legal-but-null casts below passing. It preserves casting when life is needed against
+visible lethal pressure, when a permanent listens to its controller's lifegain events, or when the
+event makes an affordable life-gained-this-turn spell meaningfully better. Spells with any concrete
+non-life rider are excluded from the hold policy.
+
+Payoff recognition is likewise structural: repeatable permanents triggered by their controller
+gaining life receive a general intent tag. This covers Blood Researcher, Pest Mascot, and Marauding
+Blight-Priest despite their different results, and does not tag Essence Warden merely because it
+produces life. No Pest Control or card-name heuristic was introduced.
+
+Focused deterministic coverage proves:
+
+- pure lifegain is held with no pressure/payoff, including low-life and nonzero-Storm states;
+- emergency Weather remains cast under visible lethal pressure;
+- Weather remains cast for a visible Researcher/Mascot/Blight-Priest event payoff;
+- lifegain may precede an executable enhanced Follow the Lumarets;
+- Pulse of Murasa remains usable for its concrete recursion rider; and
+- the existing Storm sequencing, independent-event, and deterministic-lethal cases remain green.
+
+**SHARED ARGENTUM CHANGE: yes.** This is a general effect/result and trigger-property policy. The
+permanent v1.0 list, mulligan policy, Weather rules, Follow rules, telemetry, engine, Gym, and card
+definitions are unchanged. The rejected fresh vector has not been replayed, replaced, or used for
+performance inference; a replay or new sample requires separate authorization after validation.
 
 Descriptive rejected-run facts, retained for diagnosis only: 9/30 games mulliganed (11 total);
 meaningful deployment reached 6/14/27 games by T1/T2/T3; all 30 modeled terminals were combat lethal

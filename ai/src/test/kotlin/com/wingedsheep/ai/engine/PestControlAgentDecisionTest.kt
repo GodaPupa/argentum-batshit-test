@@ -159,6 +159,73 @@ class PestControlAgentDecisionTest : ScenarioTestBase() {
             sourceName(game, action) shouldBe "Weather the Storm"
         }
 
+        test("holds pure lifegain with no pressure or payoff even at low life") {
+            val game = seeded()
+                .withLifeTotal(1, 2)
+                .withLandsOnBattlefield(1, "Forest", 2)
+                .withCardInHand(1, "Weather the Storm")
+                .build()
+
+            val (chosen, report) = chooseWithReport(game)
+            withClue(report) { chosen.shouldBeInstanceOf<PassPriority>() }
+        }
+
+        test("holds redundant Storm lifegain when no event payoff or threat exists") {
+            val game = seeded()
+                .withLifeTotal(1, 20)
+                .withLandsOnBattlefield(1, "Forest", 2)
+                .withCardInHand(1, "Weather the Storm")
+                .build()
+            game.state = game.state.copy(
+                spellsCastThisTurn = 1,
+                playerSpellsCastThisTurn = mapOf(game.player1Id to 1),
+            )
+
+            val (chosen, report) = chooseWithReport(game)
+            withClue(report) { chosen.shouldBeInstanceOf<PassPriority>() }
+        }
+
+        test("casts pure lifegain when a visible payoff converts the event") {
+            val game = seeded()
+                .withLifeTotal(1, 20)
+                .withLandsOnBattlefield(1, "Forest", 2)
+                .withCardInHand(1, "Weather the Storm")
+                .withCardOnBattlefield(1, "Blood Researcher")
+                .build()
+
+            val (chosen, report) = chooseWithReport(game)
+            val action = withClue(report) { chosen.shouldBeInstanceOf<CastSpell>() }
+            withClue(report) { sourceName(game, action) shouldBe "Weather the Storm" }
+        }
+
+        test("casts pure lifegain when it unlocks an executable enhanced follow-up") {
+            val game = seeded()
+                .withLifeTotal(1, 20)
+                .withLandsOnBattlefield(1, "Forest", 4)
+                .withCardInHand(1, "Weather the Storm")
+                .withCardInHand(1, "Follow the Lumarets")
+                .withCardInLibrary(1, "Forest")
+                .withCardInLibrary(1, "Blood Researcher")
+                .build()
+
+            val (chosen, report) = chooseWithReport(game)
+            val action = withClue(report) { chosen.shouldBeInstanceOf<CastSpell>() }
+            withClue(report) { sourceName(game, action) shouldBe "Weather the Storm" }
+        }
+
+        test("does not suppress a lifegain spell with a concrete recursion rider") {
+            val game = seeded()
+                .withLifeTotal(1, 20)
+                .withLandsOnBattlefield(1, "Forest", 3)
+                .withCardInHand(1, "Pulse of Murasa")
+                .withCardInGraveyard(1, "Grizzly Bears")
+                .build()
+
+            val (chosen, report) = chooseWithReport(game)
+            val action = withClue(report) { chosen.shouldBeInstanceOf<CastSpell>() }
+            withClue(report) { sourceName(game, action) shouldBe "Pulse of Murasa" }
+        }
+
         test("values Weather's separate Storm events as lethal Blight-Priest drains") {
             val game = seeded()
                 .withLifeTotal(2, 2)
