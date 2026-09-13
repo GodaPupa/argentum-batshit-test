@@ -42,6 +42,7 @@ import kotlin.time.Duration.Companion.minutes
 private const val PEST_GOLDFISH_HORIZON = 20
 private const val PEST_FRESH_SEED_SHA256 = "50d831076ff08c5df70aaa21e6edf7deaf9c269eeb74f0b5f9981b8be51caad8"
 private const val PEST_PERFORMANCE_SEED_SHA256 = "c674ee12b4a3ebce6584d8d2c0c285a57f2400519e99fd08be058d76c3ad7513"
+private const val PEST_UNTOUCHED_SEED_SHA256 = "f7012b5807621453692699055c90037bcf44526b4bc59edb37205c221aff9365"
 
 /** Pest Control-owned development goldfish. It is opt-in and never runs in ordinary CI. */
 class PestControlGoldfishTest : FunSpec({
@@ -50,6 +51,7 @@ class PestControlGoldfishTest : FunSpec({
         val retired = readPestSeeds()
         val fresh = readFreshPestSeeds()
         val performance = readPerformancePestSeeds()
+        val untouched = readUntouchedPestSeeds()
         retired.size shouldBe 30
         retired.distinct().size shouldBe 30
         fresh.size shouldBe 30
@@ -61,6 +63,12 @@ class PestControlGoldfishTest : FunSpec({
         performance.intersect(retired.toSet()) shouldBe emptySet()
         performance.intersect(fresh.toSet()) shouldBe emptySet()
         seedVectorSha256(performance) shouldBe PEST_PERFORMANCE_SEED_SHA256
+        untouched.size shouldBe 30
+        untouched.distinct().size shouldBe 30
+        untouched.intersect(retired.toSet()) shouldBe emptySet()
+        untouched.intersect(fresh.toSet()) shouldBe emptySet()
+        untouched.intersect(performance.toSet()) shouldBe emptySet()
+        seedVectorSha256(untouched) shouldBe PEST_UNTOUCHED_SEED_SHA256
     }
 
     test("reproduce rejected Pest Control Game 25 Scion provenance").config(
@@ -153,6 +161,33 @@ class PestControlGoldfishTest : FunSpec({
         println(markdown)
         games.flatMap(PestGoldfishGame::auditErrors) shouldBe emptyList()
     }
+
+    test("Pest Control v1.0 Goldfish Sample 1 untouched performance vector").config(
+        enabled = System.getenv("PEST_CONTROL_GOLDFISH_SAMPLE_1_UNTOUCHED") == "true",
+        timeout = 60.minutes,
+    ) {
+        val seeds = readUntouchedPestSeeds()
+        val registry = pestRegistry()
+        val games = seeds.mapIndexed { index, seed -> runPestGoldfish(registry, seed, index + 1) }
+        val block = PestGoldfishBlock(
+            deckVersion = "Pest Control v1.0",
+            agentProfile = AiProfile.PRODUCTION_CANDIDATE_EXPIRING.id,
+            horizon = PEST_GOLDFISH_HORIZON,
+            seeds = seeds,
+            games = games,
+            summary = summarizePest(games),
+        )
+        val reportDir = Path.of("..", "docs", "experiments", "pest-control")
+        Files.createDirectories(reportDir)
+        Files.writeString(
+            reportDir.resolve("goldfish-sample-1-untouched-raw.json"),
+            Json { prettyPrint = true }.encodeToString(block),
+        )
+        val markdown = renderPestMarkdown(block, freshPerformanceSample = true)
+        Files.writeString(reportDir.resolve("goldfish-sample-1-untouched-report.md"), markdown)
+        println(markdown)
+        games.flatMap(PestGoldfishGame::auditErrors) shouldBe emptyList()
+    }
 })
 
 private val PEST_CONTROL_V10 = linkedMapOf(
@@ -184,6 +219,10 @@ private fun readFreshPestSeeds(): List<Long> = Files.readAllLines(
 
 private fun readPerformancePestSeeds(): List<Long> = Files.readAllLines(
     Path.of("src", "test", "resources", "pest-control-v10-goldfish-sample-1-performance-seeds.csv")
+).drop(1).filter(String::isNotBlank).map { it.split(',')[1].toLong() }
+
+private fun readUntouchedPestSeeds(): List<Long> = Files.readAllLines(
+    Path.of("src", "test", "resources", "pest-control-v10-goldfish-sample-1-untouched-seeds.csv")
 ).drop(1).filter(String::isNotBlank).map { it.split(',')[1].toLong() }
 
 private fun seedVectorSha256(seeds: List<Long>): String = MessageDigest.getInstance("SHA-256")
@@ -229,6 +268,12 @@ internal data class PestWeatherCast(
     val availableManaBeforeCast: Int,
     val handBeforeCast: List<String>,
     val actionsBeforeCastThisTurn: List<String>,
+    val researcherPresent: Boolean,
+    val mascotPresent: Boolean,
+    val followAvailable: Boolean,
+    val survivalRequired: Boolean,
+    val pendingStackSources: List<String>,
+    val manaPlausibleUsefulPrecedingSpells: List<String>,
     val usefulSpellCastLaterThisTurn: String?,
 )
 
@@ -248,6 +293,19 @@ internal data class PestFollowCast(
     val lifeEventsBeforeCastThisTurn: Int,
     val handBeforeCast: List<String>,
     val actionsBeforeCastThisTurn: List<String>,
+    val availableLifeGainResources: List<String>,
+    val pendingStackSources: List<String>,
+)
+
+@Serializable
+internal data class PestPureLifeGainActivation(
+    val turn: Int,
+    val source: String,
+    val lifeBeforeActivation: Int,
+    val researcherPresent: Boolean,
+    val mascotPresent: Boolean,
+    val survivalRequired: Boolean,
+    val pendingStackSources: List<String>,
 )
 
 @Serializable
@@ -297,6 +355,7 @@ internal data class PestGoldfishGame(
     val generousEntCastTurns: List<Int>,
     val followCasts: List<PestFollowCast>,
     val weatherCasts: List<PestWeatherCast>,
+    val pureLifeGainActivations: List<PestPureLifeGainActivation>,
     val turnActions: List<PestTurnAction>,
     val creatureEntries: List<PestCreatureEntry>,
     val payoffWithoutWardenTurns: List<Int>,
@@ -414,6 +473,12 @@ private data class MutableWeather(
     val availableManaBeforeCast: Int,
     val handBeforeCast: List<String>,
     val actionsBeforeCastThisTurn: List<String>,
+    val researcherPresent: Boolean,
+    val mascotPresent: Boolean,
+    val followAvailable: Boolean,
+    val survivalRequired: Boolean,
+    val pendingStackSources: List<String>,
+    val manaPlausibleUsefulPrecedingSpells: List<String>,
     val actionIndex: Int,
     var observedCopies: Int = 0,
 )
@@ -514,6 +579,7 @@ internal fun runPestGoldfish(registry: CardRegistry, seed: Long, gameNumber: Int
     val entCasts = mutableListOf<Int>()
     val follows = mutableListOf<PestFollowCast>()
     val weathers = mutableListOf<MutableWeather>()
+    val pureLifeGainActivations = mutableListOf<PestPureLifeGainActivation>()
     val turnActions = mutableListOf<PestTurnAction>()
     val creatureEntries = mutableListOf<PestCreatureEntry>()
     val payoffWithoutWardenTurns = linkedSetOf<Int>()
@@ -562,6 +628,30 @@ internal fun runPestGoldfish(registry: CardRegistry, seed: Long, gameNumber: Int
         return top.get<CardComponent>()?.name
             ?: top.get<ActivatedAbilityOnStackComponent>()?.sourceName
             ?: top.get<TriggeredAbilityOnStackComponent>()?.sourceName
+    }
+
+    fun stackSourceNames(gameState: GameState): List<String> = gameState.stack.mapNotNull { id ->
+        val entity = gameState.getEntity(id) ?: return@mapNotNull null
+        entity.get<CardComponent>()?.name
+            ?: entity.get<ActivatedAbilityOnStackComponent>()?.sourceName
+            ?: entity.get<TriggeredAbilityOnStackComponent>()?.sourceName
+    }
+
+    fun survivalRequiresLife(gameState: GameState): Boolean {
+        val opposingPower = gameState.controlledBattlefield(blankId).sumOf { id ->
+            val card = gameState.getEntity(id)?.get<CardComponent>()
+            if (card?.isCreature == true) maxOf(0, gameState.projectedState.getPower(id) ?: 0) else 0
+        }
+        return opposingPower >= gameState.lifeTotal(pestId)
+    }
+
+    fun lifeGainResources(gameState: GameState): List<String> = buildList {
+        gameState.getHand(pestId).forEach { id ->
+            if (name(gameState, id) == "Weather the Storm") add("Weather the Storm in hand")
+        }
+        gameState.controlledBattlefield(pestId).forEach { id ->
+            if (name(gameState, id) == "Food") add("Food on battlefield")
+        }
     }
 
     fun observe(gameState: GameState) {
@@ -662,21 +752,52 @@ internal fun runPestGoldfish(registry: CardRegistry, seed: Long, gameNumber: Int
                     lifeEvents.count { it.turn == turn },
                     state.getHand(pestId).map { name(state, it) },
                     turnActions.dropLast(1).filter { it.turn == turn }.map(PestTurnAction::description),
+                    lifeGainResources(state),
+                    stackSourceNames(state),
                 )
-                "Weather the Storm" -> weathers += MutableWeather(
-                    turn = turn,
-                    stormCount = state.spellsCastThisTurn,
-                    expectedCopies = state.spellsCastThisTurn,
-                    lifeBeforeCast = state.lifeTotal(pestId),
-                    availableManaBeforeCast = manaSolver.getAvailableManaCount(state, pestId),
-                    handBeforeCast = state.getHand(pestId).map { name(state, it) },
-                    actionsBeforeCastThisTurn = turnActions.dropLast(1)
-                        .filter { it.turn == turn }.map(PestTurnAction::description),
-                    actionIndex = turnActions.lastIndex,
-                )
+                "Weather the Storm" -> {
+                    val battlefield = battlefieldNames(state)
+                    val available = manaSolver.getAvailableManaCount(state, pestId)
+                    val plausiblePreceding = state.getHand(pestId).mapNotNull { id ->
+                        val card = state.getEntity(id)?.get<CardComponent>() ?: return@mapNotNull null
+                        card.name.takeIf {
+                            !card.isLand && card.name != "Weather the Storm" &&
+                                card.name !in SOLITAIRE_INTERACTION && card.manaValue + 2 <= available
+                        }
+                    }
+                    weathers += MutableWeather(
+                        turn = turn,
+                        stormCount = state.spellsCastThisTurn,
+                        expectedCopies = state.spellsCastThisTurn,
+                        lifeBeforeCast = state.lifeTotal(pestId),
+                        availableManaBeforeCast = available,
+                        handBeforeCast = state.getHand(pestId).map { name(state, it) },
+                        actionsBeforeCastThisTurn = turnActions.dropLast(1)
+                            .filter { it.turn == turn }.map(PestTurnAction::description),
+                        researcherPresent = "Blood Researcher" in battlefield,
+                        mascotPresent = "Pest Mascot" in battlefield,
+                        followAvailable = state.getHand(pestId).any { name(state, it) == "Follow the Lumarets" },
+                        survivalRequired = survivalRequiresLife(state),
+                        pendingStackSources = stackSourceNames(state),
+                        manaPlausibleUsefulPrecedingSpells = plausiblePreceding,
+                        actionIndex = turnActions.lastIndex,
+                    )
+                }
                 "Chainer's Edict" -> if (state.controlledBattlefield(blankId).none {
                         state.getEntity(it)?.get<CardComponent>()?.isCreature == true
                     }) audit += "agent cast Chainer's Edict into an empty opposing battlefield on T$turn"
+            }
+            if (action is ActivateAbility && actionName == "Food") {
+                val battlefield = battlefieldNames(state)
+                pureLifeGainActivations += PestPureLifeGainActivation(
+                    turn = turn,
+                    source = "Food",
+                    lifeBeforeActivation = state.lifeTotal(pestId),
+                    researcherPresent = "Blood Researcher" in battlefield,
+                    mascotPresent = "Pest Mascot" in battlefield,
+                    survivalRequired = survivalRequiresLife(state),
+                    pendingStackSources = stackSourceNames(state),
+                )
             }
             if ((action is TypecycleCard || action is CycleCard) && actionName == "Generous Ent") entCycles += turn
         }
@@ -812,6 +933,12 @@ internal fun runPestGoldfish(registry: CardRegistry, seed: Long, gameNumber: Int
             weather.availableManaBeforeCast,
             weather.handBeforeCast,
             weather.actionsBeforeCastThisTurn,
+            weather.researcherPresent,
+            weather.mascotPresent,
+            weather.followAvailable,
+            weather.survivalRequired,
+            weather.pendingStackSources,
+            weather.manaPlausibleUsefulPrecedingSpells,
             usefulLater,
         )
     }
@@ -862,6 +989,7 @@ internal fun runPestGoldfish(registry: CardRegistry, seed: Long, gameNumber: Int
         entCasts,
         follows,
         weatherCasts,
+        pureLifeGainActivations,
         turnActions,
         creatureEntries,
         payoffWithoutWardenTurns.toList(),
@@ -1067,6 +1195,7 @@ internal fun renderPestMarkdown(block: PestGoldfishBlock, freshPerformanceSample
         appendLine("- Scion mana provenance: ${g.scionManaUses}")
         appendLine("- Witchstalker: ${g.fierceWitchstalkerCastTurns}; Ent cycle/cast: ${g.generousEntCycleTurns}/${g.generousEntCastTurns}")
         appendLine("- Follow: ${g.followCasts}; Weather: ${g.weatherCasts}")
+        appendLine("- Pure-lifegain activations: ${g.pureLifeGainActivations}")
         appendLine("- Turn actions: ${g.turnActions}")
         appendLine("- Creature entries: ${g.creatureEntries}")
         appendLine("- Lifegain: ${g.lifeEvents}; Researcher triggers/counters: ${g.researcherCounterTriggers}/${g.researcherCountersAdded}; Mascot: ${g.mascotCounterTriggers}/${g.mascotCountersAdded}")

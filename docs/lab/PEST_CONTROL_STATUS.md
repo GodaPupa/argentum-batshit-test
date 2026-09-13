@@ -1,6 +1,6 @@
 # Project Pest Control — Status
 
-- Status: Game 8 pending-effect correction green; fresh Sample #1 seed-readiness gate
+- Status: new untouched Goldfish Sample #1 vector frozen; pre-execution validation
 - Laboratory: Project Pest Control
 - Branch: `pest-control/lab`
 - Validated base: `47882cd645caf126afee6cf13a65909806fa40ab`
@@ -9,6 +9,26 @@
 - Accepted Weather regression replay remote head: `8a13f2d8f9322b85ba6c52de571c591fea966a31`
 - Control version: Pest Control v1.0 (permanent, immutable)
 - Candidate status: proposed Tier-1 architecture only; not approved, constructed, or run
+
+## New untouched Goldfish Sample #1 authorization
+
+The Game 8 pending-effect/redundant-resource correction is accepted as green at remote head
+`aff4a349390d3c8ac4dfcbd3479fe69d56c481da`. **SHARED ARGENTUM CHANGE: yes.** The immutable Pest
+Control v1.0 list remains exact, and the challenger remains audit-only and unconstructed.
+
+Every earlier Pest Control goldfish vector and execution entry point remains permanently retired and
+hard-disabled. A new 30-seed deterministic vector was generated only after a read-only collision audit
+of all 28 available local/remote refs and 1,469 normalized numeric seed-like values. It has zero
+overlap with the audit set and every prior Pest vector. The ordered vector was frozen before Game 1
+with SHA-256 `f7012b5807621453692699055c90037bcf44526b4bc59edb37205c221aff9365`;
+its derivation and immutable execution contract are preserved in
+`docs/experiments/pest-control/goldfish-sample-1-untouched-seed-freeze.md`.
+
+Pest-only observation telemetry was finalized before execution to snapshot payoff state, Follow
+availability, survival pressure, pending stack sources, mana-plausible useful pre-Weather spells,
+and pure-lifegain activations at decision time. This does not change engine, Gym production, agent
+policy, cards, deck composition, mulligans, or gameplay semantics. No game had been executed when
+this freeze was recorded.
 
 ## Laboratory boundary
 
