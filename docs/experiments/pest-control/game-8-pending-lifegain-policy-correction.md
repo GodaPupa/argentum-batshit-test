@@ -61,6 +61,6 @@ intact; after Weather resolves, it casts Follow in enhanced mode and still prese
 
 The focused Pest Control decision suite, structural intent checks, complete AI suite, frozen-control
 assertion, and existing Pest telemetry regressions pass locally. Every opt-in Pest goldfish execution
-is disabled and skipped; the retired vector was not executed. Full remote CI is required before this
-gate is final.
-
+is disabled and skipped; the retired vector was not executed. Full CI run 209 is green on
+implementation head `cbff8feaa80489fc3f2d37b0e9d92f57f93346cf`. The laboratory is at the fresh
+Sample #1 seed-readiness gate; generating or executing a new vector requires separate authorization.
