@@ -1,6 +1,6 @@
 # Project Pest Control — Status
 
-- Status: Sample #2 Take 2 rejected and permanently retired; focused correction validation pending
+- Status: Sample #2 Take 2 correction remotely green; at Take 3 seed-readiness gate
 - Laboratory: Project Pest Control
 - Branch: `pest-control/lab`
 - Validated base: `47882cd645caf126afee6cf13a65909806fa40ab`
@@ -9,6 +9,8 @@
 - Accepted Weather regression replay remote head: `8a13f2d8f9322b85ba6c52de571c591fea966a31`
 - Game 16/Game 28 correction implementation head: `dd0572ab61c6a2dd3d2e76a578999c2fa822b2c0`
 - Game 16/Game 28 remotely validated head: `9e5adc4416c1d5c2684befa9ea699be28fe6c2f0` (CI #217)
+- Sample #2 Take 2 correction remotely validated head:
+  `14bea9a1f0c67be74aae8f48704186e2277de1b1` (CI #220)
 - Control version: Pest Control v1.0 (permanent, immutable)
 - Candidate status: proposed Tier-1 architecture only; not approved, constructed, or run
 
@@ -85,9 +87,16 @@ ordinary opposing-target preference, holding when neither target is worthwhile, 
 Carrier/Scion-style death conversion.
 
 Local focused telemetry and agent tests, both Pest rules/engine scenario classes, the frozen baseline
-guard, and the complete AI suite are green. Remote full-CI validation remains the current gate.
-Sample #1 is still the sole accepted performance/engine evidence. Take 3 seed generation is not
-authorized and must not begin while this gate is pending.
+guard, and the complete AI suite are green. CI #220 completed green on exact correction head
+`14bea9a1f0c67be74aae8f48704186e2277de1b1`: all eight runnable test/frontend jobs and the aggregate
+backend gate succeeded; the main-only coverage job was correctly skipped. The correction gate is
+remotely validated.
+
+Sample #1 is still the sole accepted performance/engine evidence. The original rejected Sample #2
+and Take 2 vectors remain permanently retired/hard-disabled. Pest Control v1.0 remains exact and the
+challenger remains audit-only and unconstructed. The project is ready to receive a separate explicit
+authorization for a completely new Take 3 vector; no Take 3 seed generation is authorized by this
+status record and none has begun.
 
 Goldfish Sample #1 is formally accepted at
 `4ccd4f097ade866a8eb3eff42e897229cd34e29f` and its vector is permanently retired and
