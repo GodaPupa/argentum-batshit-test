@@ -1,6 +1,6 @@
 # Project Pest Control — Status
 
-- Status: Sample #2 Take 3 vector frozen before execution
+- Status: Sample #2 Take 3 formally rejected; stopped at correction-authorization gate
 - Laboratory: Project Pest Control
 - Branch: `pest-control/lab`
 - Validated base: `47882cd645caf126afee6cf13a65909806fa40ab`
@@ -38,6 +38,27 @@ Sample #1 metric set. It must execute once in frozen order and be rejected in fu
 rules/state, telemetry, mana-provenance, sequencing, or agent-policy defect. At this freeze point no
 Take 3 game has executed. Sample #1 remains the sole accepted performance/engine sample, and the
 challenger remains audit-only and unconstructed.
+
+#### Sample #2 Take 3 disposition
+
+The freeze passed CI #222 at exact head `d9bddfe67f78232e12b09003a239a0890c4f65d8`. A single forced
+opt-in invocation then executed all 30 seeds once in frozen order. The automatic runner completed
+green with no built-in audit errors, and trace-wide count/order/rules consistency checks passed.
+
+Take 3 is nevertheless **formally rejected in full**. The persisted Weather telemetry omitted the
+required `still unexecutable after land` and `executable but not materially superior` categories even
+though the corrected classifier computes them. The action timeline also omitted removal targets and
+Bone Shards' additional-cost choice. Consequently the two friendly-removal casts in Games 13 and 14
+cannot be audited against their exact pass line, resource expenditure, resulting board, and lethal
+necessity. These are clear telemetry/auditability defects under the predeclared whole-block rejection
+standard. Details are preserved in
+`docs/experiments/pest-control/goldfish-sample-2-take-3-rejection-audit.md`.
+
+The Take 3 vector is permanently retired and hard-disabled. It may never be replayed, rehabilitated,
+replaced, compared, optimized against, or reused. Its aggregates are quarantined and may not be pooled
+with Sample #1. Sample #1 remains the sole accepted performance/engine evidence. Pest Control v1.0 is
+unchanged and the challenger remains audit-only and unconstructed. No corrective implementation is
+authorized by this rejection record.
 
 ### Sample #2 Take 2 authorization and freeze
 

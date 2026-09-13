@@ -1,7 +1,7 @@
 # Pest Control v1.0 — Goldfish Sample #2 Take 3 Seed Freeze
 
-Status: frozen before execution. This independent replication vector belongs only to Project Pest
-Control.
+Status: executed exactly once and formally rejected. The vector is permanently retired and
+hard-disabled. This independent replication vector belongs only to Project Pest Control.
 
 - Accepted correction implementation: `14bea9a1f0c67be74aae8f48704186e2277de1b1` (CI #220 green)
 - Final validated documentation head: `99be2946c20c3a10f17b9e2a9d1c0c86809a877f` (CI #221 green)
@@ -29,3 +29,12 @@ agent-policy defect rejects the entire block. No game had been executed when thi
 Sample #1 remains the sole accepted Pest Control performance/engine sample. The original rejected
 Sample #2 and rejected Take 2 vectors remain permanently retired and hard-disabled. Pest Control v1.0
 remains exact, and the challenger remains audit-only and unconstructed.
+
+## Post-execution disposition
+
+The 30 seeds executed once in frozen order from remotely green freeze head
+`d9bddfe67f78232e12b09003a239a0890c4f65d8` (CI #222). The sample is rejected because the preserved
+Weather record omitted two required sequencing-classification fields and removal actions omitted
+their targets and additional-cost choices. The complete audit is recorded in
+`goldfish-sample-2-take-3-rejection-audit.md`. The vector may never be replayed, rehabilitated,
+replaced, compared, optimized against, or reused.
