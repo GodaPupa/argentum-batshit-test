@@ -1,6 +1,6 @@
 # Project Pest Control — Status
 
-- Status: Game 16/Game 28 deterministic policy correction green locally; fresh Sample #1 seed-readiness gate
+- Status: Game 16/Game 28 correction remotely green; Sample #2 Take 2 vector frozen before execution
 - Laboratory: Project Pest Control
 - Branch: `pest-control/lab`
 - Validated base: `47882cd645caf126afee6cf13a65909806fa40ab`
@@ -8,10 +8,36 @@
 - Accepted Phase 3 remote head: `8dd4a429e0799b60e7449c214a540dd8414b1f1c`
 - Accepted Weather regression replay remote head: `8a13f2d8f9322b85ba6c52de571c591fea966a31`
 - Game 16/Game 28 correction implementation head: `dd0572ab61c6a2dd3d2e76a578999c2fa822b2c0`
+- Game 16/Game 28 remotely validated head: `9e5adc4416c1d5c2684befa9ea699be28fe6c2f0` (CI #217)
 - Control version: Pest Control v1.0 (permanent, immutable)
 - Candidate status: proposed Tier-1 architecture only; not approved, constructed, or run
 
 ## Goldfish Sample #2 independent replication authorization
+
+### Sample #2 Take 2 authorization and freeze
+
+CI #217 is fully green at tested head
+`9e5adc4416c1d5c2684befa9ea699be28fe6c2f0`. That head contains the Game 16/Game 28
+implementation commit `dd0572ab61c6a2dd3d2e76a578999c2fa822b2c0`, the implementation-status commit
+`c50c7dfb0f93356adbfb6a9bc1d6f189e5f09042`, and only the director-map addition after the status
+commit. The correction gate is accepted as remotely validated. CI #215 created zero jobs and remains
+formally stranded/non-validation; it must never be cited as successful or failed validation.
+
+After explicit authorization, a completely new 30-seed deterministic performance vector was derived
+following a read-only collision audit of all 40 fetched refs (24 distinct trees), 12,721 seed-bearing
+ref/path instances, 652 unique blobs, and 11,856 normalized positive-`Long` values. It has zero overlap
+with every known Pest Control, Batshit Economics, and Project X development, regression, smoke,
+performance, and optimization seed available in the repository. The ordered vector was frozen before
+Game 1 with SHA-256 `1db3fb1fcf4b969d9229bb2a060491a556ff5e1c8c80d327caf37698ca1c3cb7`;
+its derivation and immutable execution contract are preserved in
+`docs/experiments/pest-control/goldfish-sample-2-take-2-seed-freeze.md`.
+
+Take 2 uses the exact accepted Sample #1 deck, agent, engine, telemetry definitions, mulligan behavior,
+horizon, and acceptance standard, plus the remotely validated sequencing corrections. At the time of
+freeze, no Take 2 game had executed. The previously rejected Sample #2 and its complete original
+30-seed vector remain permanently retired and hard-disabled; they are not replayed, rehabilitated,
+compared, or reused. Pest Control v1.0 remains exact, and the challenger remains audit-only and
+unconstructed.
 
 Goldfish Sample #1 is formally accepted at
 `4ccd4f097ade866a8eb3eff42e897229cd34e29f` and its vector is permanently retired and
