@@ -1,6 +1,6 @@
 # Project Pest Control — Status
 
-- Status: Sample #2 Take 3 formally rejected; stopped at correction-authorization gate
+- Status: Sample #2 Take 3 observability correction remotely green; stopped at Sample #2 Take 4 seed-readiness gate
 - Laboratory: Project Pest Control
 - Branch: `pest-control/lab`
 - Validated base: `47882cd645caf126afee6cf13a65909806fa40ab`
@@ -11,6 +11,8 @@
 - Game 16/Game 28 remotely validated head: `9e5adc4416c1d5c2684befa9ea699be28fe6c2f0` (CI #217)
 - Sample #2 Take 2 correction remotely validated head:
   `14bea9a1f0c67be74aae8f48704186e2277de1b1` (CI #220)
+- Sample #2 Take 3 observability implementation head:
+  `e316117ee71b30b170e241c8eb110bf8d4d20117` (CI #224)
 - Control version: Pest Control v1.0 (permanent, immutable)
 - Candidate status: proposed Tier-1 architecture only; not approved, constructed, or run
 
@@ -59,6 +61,43 @@ replaced, compared, optimized against, or reused. Its aggregates are quarantined
 with Sample #1. Sample #1 remains the sole accepted performance/engine evidence. Pest Control v1.0 is
 unchanged and the challenger remains audit-only and unconstructed. No corrective implementation is
 authorized by this rejection record.
+
+#### Sample #2 Take 3 observability correction gate
+
+**SHARED ARGENTUM CHANGE: yes.** Implementation
+`e316117ee71b30b170e241c8eb110bf8d4d20117` is remotely green in CI #224. The change is limited to
+audit observability and deterministic regression coverage; the existing removal hold/target policy
+comparison remains the production decision rule.
+
+The rejected Take 3 artifact omitted two complete sequencing categories (`still unexecutable after a
+legal land` and `executable but not materially superior`) and, for friendly removal, the exact target,
+controller and value, additional-cost choice, payment/resources consumed, pre/post board and
+downstream effects, pass/hold comparison, opposing alternatives, and final net/fair-trade reason.
+Sample reporting now preserves all five sequencing classifications as machine-readable evaluations,
+including the proposed land and tapped state, mana-source snapshots, source-specific payment,
+requirements, targets, temporary conditions, ordered actions, resources after each step, actual and
+counterfactual lines, scores, material-superiority result, and reason.
+
+Friendly-removal evaluations now preserve generic structured audit records for the action and exact
+target, ownership and battlefield value, mana/life/additional costs, removal-resource and future-
+interaction costs, death triggers and resources created, resulting board/engine/lethal/prevention or
+resource-transition effects, pass/hold value, legal opposing alternatives, net/fair-trade comparison,
+selection disposition, and reason. The data is derived from the same simulated actions and events used
+by the existing policy; no card, game number, or Pest-specific target exception was added.
+
+The preserved Take 3 records for Games 13 and 14 are insufficient to reconstruct the exact strategic
+decision: they contain only the removal spell name and surrounding aggregate events, not the selected
+target, Bone Shards additional cost, exact pre/post battlefield, pass comparison, or lethal necessity.
+They remain unclassifiable historical actions. Deterministic generic scenarios did not demonstrate a
+production gameplay-policy defect, so no gameplay policy was changed.
+
+Focused sequencing and friendly-removal telemetry regressions, the complete AI suite, Pest
+rules/engine scenarios, frozen-control/vector guards, and full CI are green. The Game-16-style genuine
+land-unlocked opportunity and Games-1/8/30 non-superior double-Weather regressions remain covered.
+All retired Pest runners, including Take 3, remained disabled and were not executed during validation.
+
+The project is stopped at the Sample #2 Take 4 seed-readiness gate. No Take 4 vector has been generated
+and no new gameplay, challenger construction, optimization, or opponent self-play is authorized.
 
 ### Sample #2 Take 2 authorization and freeze
 
