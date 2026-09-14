@@ -72,7 +72,6 @@ class LilysplashDeckReadinessTest : FunSpec({
             "Rustvine Cultivator",
             "Saprazzan Skerry",
             "Secret Door",
-            "Sheltered Aerie",
             "Snap",
             "Teferi's Time Twist",
             "Utopia Sprawl",
