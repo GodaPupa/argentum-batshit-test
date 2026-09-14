@@ -295,5 +295,26 @@ class PestControlMonoRedMadnessDecisionTest : ScenarioTestBase() {
             cardName(game, response.cardId) shouldBe "Lightning Bolt"
             chosenTargetId(response) shouldBe game.player2Id
         }
+
+        test("Mono Red uses Fireblast as necessary survival removal in the Weather response window") {
+            val game = seeded()
+                .withActivePlayer(2)
+                .withLifeTotal(1, 2)
+                .withLandsOnBattlefield(1, "Mountain", 2)
+                .withCardInHand(1, "Fireblast")
+                .withLandsOnBattlefield(2, "Forest", 2)
+                .withCardOnBattlefield(2, "Pest Mascot", summoningSickness = false)
+                .withCardInHand(2, "Weather the Storm")
+                .build()
+
+            game.castSpell(2, "Weather the Storm").isSuccess.shouldBeTrue()
+            game.execute(PassPriority(game.player2Id)).error.shouldBeNull()
+            game.state.priorityPlayerId shouldBe game.player1Id
+
+            val response = ai(game).chooseAction(game.state).shouldBeInstanceOf<CastSpell>()
+            cardName(game, response.cardId) shouldBe "Fireblast"
+            chosenTargetId(response) shouldBe game.findPermanent("Pest Mascot")
+            response.additionalCostPayment?.sacrificedPermanents?.size shouldBe 2
+        }
     }
 }
