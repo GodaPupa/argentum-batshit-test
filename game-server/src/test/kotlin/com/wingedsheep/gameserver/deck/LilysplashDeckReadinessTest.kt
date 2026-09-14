@@ -60,7 +60,6 @@ class LilysplashDeckReadinessTest : FunSpec({
             "Gilded Scuttler",
             "Hickory Woodlot",
             "Hidden Strings",
-            "Kasmina's Transmutation",
             "Masked Vandal",
             "Pollenbright Druid",
             "Rustvine Cultivator",
