@@ -26,13 +26,14 @@ val TeferisTimeTwist = card("Teferi's Time Twist") {
         effect = Effects.Move(permanent, Zone.EXILE).then(
             CreateDelayedTriggerEffect(
                 step = Step.END,
-                effect = Effects.Move(permanent, Zone.BATTLEFIELD)
-                    .then(
-                        ConditionalEffect(
-                            condition = Conditions.TargetMatchesFilter(GameObjectFilter.Creature),
-                            effect = Effects.AddCounters(Counters.PLUS_ONE_PLUS_ONE, 1, permanent)
-                        )
-                    )
+                effect = ConditionalEffect(
+                    // Check while the card is still in exile: moving it creates a fresh object,
+                    // so the original spell target no longer identifies the returned permanent.
+                    condition = Conditions.TargetMatchesFilter(GameObjectFilter.Creature),
+                    effect = Effects.Move(permanent, Zone.BATTLEFIELD)
+                        .then(Effects.AddCounters(Counters.PLUS_ONE_PLUS_ONE, 1, permanent)),
+                    elseEffect = Effects.Move(permanent, Zone.BATTLEFIELD)
+                )
             )
         )
     }
