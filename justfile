@@ -114,6 +114,13 @@ lilysplash-preflight:
     scripts/gradle-locked :ai:test --tests "*.LilysplashOpeningHandBenchmark" \
         -Dbenchmark=true -DlilysplashPreflight=true
 
+# Stage 4 item 6: compare the control deck against the frozen land-base-only challenger
+# (docs/experiments/lilysplash/challenger-land-v1.txt) under the commander-aware keep rule, same seeds.
+[group: 'ai']
+lilysplash-land-challenger:
+    scripts/gradle-locked :ai:test --tests "*.LilysplashOpeningHandBenchmark" \
+        -Dbenchmark=true -DlilysplashLandChallenger=true
+
 # ECL apprentice promotion ladder. Artifacts are installed outside the repository and selected with
 # -Dargentum.ai.apprentice.dir; missing or invalid files safely use the production evaluator.
 [group: 'ai']
