@@ -22,6 +22,10 @@ The minimum executable combo suite is:
 6. [x] A legal infinite-mana conversion through Sage's Row Denizen and the opponent's next draw.
 7. [ ] Commander-zone setup, singleton deck validation, and commander color identity.
 
+   The frozen snapshot has the correct 99-plus-commander shape and no repeated nonbasics. The
+   registry readiness test currently inventories 36 submitted cards that are not implemented, so
+   full color-identity validation and game initialization remain blocked rather than approximated.
+
 ## Experimental stages
 
 ### Stage 1 — Control freeze
@@ -37,7 +41,7 @@ The minimum executable combo suite is:
 - [x] Ghostly Flicker + Peregrine Drake + Archaeomancer/Mnemonic Wall recurs correctly.
 - [x] The Archaeomancer line nets two mana and mills four cards per cycle with Sage's Row Denizen,
   then wins when the opponent next draws from the empty library.
-- [ ] The Lilysplash-based mana loops each reach an explicit deterministic win condition.
+- [x] The Lilysplash-based mana loops each reach an explicit deterministic win condition.
 - [x] Removing the only Lilysplash target in response makes the activation fizzle.
 - [ ] Interaction tests cover counterspells and commander removal.
 
