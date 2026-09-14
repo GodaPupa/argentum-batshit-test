@@ -2321,6 +2321,11 @@ class StackResolver(
         // Countered and fizzled spells use their own non-resolution paths and therefore never
         // reach this branch. Flashback's "anywhere else" replacement remains above it.
         val buybackReturnToHand = spellComponent.declaredCostSlot == ChoiceSlot.BUYBACK
+        // Cipher's optional creature choice is made as the final spell effect. A successful
+        // choice leaves this marker on the resolving spell, replacing its normal graveyard move
+        // with exile; countered and fizzled spells never execute the effect and never get marked.
+        val cipherEncoding = newState.getEntity(spellId)
+            ?.get<com.wingedsheep.engine.state.components.battlefield.PendingCipherEncodingComponent>()
         // Rebound (CR 702.88): a spell cast from hand that has rebound (printed or granted) exiles
         // on resolution instead of going to the graveyard, and arms a next-upkeep free recast.
         val reboundExile = spellComponent.castFromZone == Zone.HAND &&
@@ -2349,6 +2354,7 @@ class StackResolver(
             // exactly as it was.
             flashbackExile -> Zone.EXILE
             selfShuffleIntoLibrary -> Zone.LIBRARY
+            cipherEncoding != null -> Zone.EXILE
             buybackReturnToHand -> Zone.HAND
             selfExile || adventureFaceExile || reboundExile -> Zone.EXILE
             omenFaceShuffle -> Zone.LIBRARY
@@ -2370,6 +2376,7 @@ class StackResolver(
                 .without<com.wingedsheep.engine.state.components.identity.PlayWithCostIncreaseComponent>()
                 .without<com.wingedsheep.engine.state.components.identity.PlayWithFixedAlternativeManaCostComponent>()
                 .without<AfterResolveDestinationComponent>()
+                .without<com.wingedsheep.engine.state.components.battlefield.PendingCipherEncodingComponent>()
         }
         newState = newState.removeMayPlayPermissionsForCard(spellId)
         newState = newState.addToZone(destZoneKey, spellId)
@@ -2381,6 +2388,17 @@ class StackResolver(
         if (destinationZone == Zone.EXILE && resolvedScript?.paradigm == true) {
             newState = newState.updateEntity(spellId) { c ->
                 c.with(com.wingedsheep.engine.state.components.battlefield.ParadigmComponent)
+            }
+        }
+
+        if (destinationZone == Zone.EXILE && cipherEncoding != null) {
+            newState = newState.updateEntity(spellId) { c ->
+                c.with(
+                    com.wingedsheep.engine.state.components.battlefield.CipherEncodedComponent(
+                        creatureId = cipherEncoding.creatureId,
+                        creatureBattlefieldTimestamp = cipherEncoding.creatureBattlefieldTimestamp,
+                    )
+                )
             }
         }
 

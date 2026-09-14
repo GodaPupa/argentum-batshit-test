@@ -306,6 +306,7 @@ val engineSerializersModule = SerializersModule {
         subclass(SelectFromCollectionContinuation::class)
         subclass(MoveCollectionOrderContinuation::class)
         subclass(SelectTargetPipelineContinuation::class)
+        subclass(CipherEncodeContinuation::class)
         subclass(ChooseOptionPipelineContinuation::class)
         subclass(NoteCreatureTypePipelineContinuation::class)
         subclass(ChoosePileContinuation::class)
@@ -556,6 +557,8 @@ val engineSerializersModule = SerializersModule {
         subclass(PreparedSpellCopyComponent::class)
         subclass(SuspendedComponent::class)
         subclass(ParadigmComponent::class)
+        subclass(PendingCipherEncodingComponent::class)
+        subclass(CipherEncodedComponent::class)
         subclass(CastRecordComponent::class)
         subclass(CastChoicesComponent::class)
 

@@ -110,6 +110,7 @@ class LibraryExecutors(
         SelectFromCollectionExecutor(cardRegistry = cardRegistry),
         ChoosePileExecutor(),
         SelectTargetPipelineExecutor(targetFinder = targetFinder ?: TargetFinder()),
+        CipherEncodeExecutor(),
         MoveCollectionExecutor(cardRegistry = cardRegistry, targetFinder = targetFinder),
         FilterCollectionExecutor(),
         ChooseOnePerCategoryExecutor(),

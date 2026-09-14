@@ -541,6 +541,14 @@ object ZoneTransitionService {
                     c.without<com.wingedsheep.engine.state.components.battlefield.ParadigmComponent>()
                 }
             }
+            // An encoded card is encoded only while that object remains in exile (CR 702.99).
+            if (entityContainer != null &&
+                entityContainer.has<com.wingedsheep.engine.state.components.battlefield.CipherEncodedComponent>()
+            ) {
+                newState = newState.updateEntity(entityId) { c ->
+                    c.without<com.wingedsheep.engine.state.components.battlefield.CipherEncodedComponent>()
+                }
+            }
             // A madness card leaving exile — cast, put into the graveyard by its own trigger, or
             // moved by anything else — is done with madness (CR 702.35a offers the cast once). Drop
             // the marker *and* the fixed madness cost it published: a lingering fixed alternative

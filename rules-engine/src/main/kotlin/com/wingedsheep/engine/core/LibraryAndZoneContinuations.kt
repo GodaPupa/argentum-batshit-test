@@ -88,6 +88,14 @@ data class SelectTargetPipelineContinuation(
     val objectReferences: com.wingedsheep.engine.handlers.ObjectReferenceEnvironment = com.wingedsheep.engine.handlers.ObjectReferenceEnvironment(),
 ) : AnswerContinuation
 
+/** Resume the non-targeting creature choice made by a resolving cipher spell. */
+@Serializable
+data class CipherEncodeContinuation(
+    val playerId: EntityId,
+    val sourceId: EntityId,
+    val legalCreatureIds: Set<EntityId>,
+) : AnswerContinuation
+
 /**
  * Resume after player chooses an option in a generic pipeline context.
  *
@@ -427,4 +435,3 @@ data class CastAnyNumberFromCollectionContinuation(
      */
     val maxCasts: Int? = null,
 ) : AnswerContinuation
-

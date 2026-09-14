@@ -9607,6 +9607,17 @@ composite abilities).
   original stays in exile; each cast copy is a phantom that ceases to exist (CR 707.10a / 112.3b), so there is no
   exponential growth. The `Lesson` spell subtype (`Subtype.LESSON`) is a plain, non-functional subtype (no Learn
   mechanic in the set), but the type line must parse it.
+- `Cipher` (CR 702.99) — `spell { effect = …; cipher() }`. The builder appends
+  `CipherEncodeEffect` after the authored spell effect and adds `Keyword.CIPHER`. At resolution the executor
+  offers a non-targeting 0..1 choice among creatures the spell's controller controls; choosing one marks the
+  spell so `StackResolver` exiles it with a `CipherEncodedComponent` instead of performing the normal
+  graveyard move. Countered and fizzled spells never reach that choice, and card/spell copies skip it because
+  only a spell **card** can be encoded. When the encoded creature deals combat damage to a player, the damage
+  detector queues `Cipher.copyAbility` under that creature's current controller. The ability reuses the proven
+  `CopyCardIntoCollectionEffect(Self)` → `CastFromCollectionWithoutPayingCostEffect` pipeline behind a may gate;
+  the original stays in exile, and the resolving copy cannot encode itself. The component also records the
+  host's battlefield-entry timestamp, so a creature that leaves and returns is a new object and no longer
+  carries the encoding relationship.
 - `Craft(filter, cost)` — `card { craft(filter, cost, materialDescription?, minCount = 1, maxCount = null) }`
   builder helper (CR 702.167, The Lost Caverns of
   Ixalan). On the front face of a transforming DFC: "Craft with [filter] [cost] ([cost], Exile this permanent,

@@ -43,6 +43,7 @@ class LibraryAndZoneContinuationResumer(
         resumer(ChooseOnePerCategoryContinuation::class, ::resumeChooseOnePerCategory),
         resumer(ChoosePileContinuation::class, ::resumeChoosePile),
         resumer(SelectTargetPipelineContinuation::class, ::resumeSelectTargetPipeline),
+        resumer(CipherEncodeContinuation::class, ::resumeCipherEncode),
         resumer(MoveCollectionAuraTargetContinuation::class, ::resumeMoveCollectionAuraTarget),
         resumer(PutOntoBattlefieldAttachedToChosenContinuation::class, ::resumePutOntoBattlefieldAttachedToChosen),
         resumer(PutOnTopOrBottomContinuation::class, ::resumePutOnTopOrBottom),
@@ -51,6 +52,33 @@ class LibraryAndZoneContinuationResumer(
         resumer(CastFromCollectionTargetsContinuation::class, ::resumeCastFromCollectionTargets),
         resumer(CastAnyNumberFromCollectionContinuation::class, ::resumeCastAnyNumberFromCollection)
     )
+
+    fun resumeCipherEncode(
+        state: GameState,
+        continuation: CipherEncodeContinuation,
+        response: DecisionResponse,
+        checkForMore: CheckForMore,
+    ): ExecutionResult {
+        val selected = (response as? CardsSelectedResponse)?.selectedCards.orEmpty()
+        val creatureId = selected.singleOrNull()
+        if (creatureId == null || creatureId !in continuation.legalCreatureIds ||
+            creatureId !in state.getBattlefield() || !state.projectedState.isCreature(creatureId) ||
+            state.projectedState.getController(creatureId) != continuation.playerId
+        ) {
+            return checkForMore(state, emptyList())
+        }
+        val updated = state.updateEntity(continuation.sourceId) { container ->
+            container.with(
+                com.wingedsheep.engine.state.components.battlefield.PendingCipherEncodingComponent(
+                    creatureId = creatureId,
+                    creatureBattlefieldTimestamp = state.getEntity(creatureId)
+                        ?.get<com.wingedsheep.engine.state.components.battlefield.BattlefieldEntryTimestampComponent>()
+                        ?.timestamp,
+                )
+            )
+        }
+        return checkForMore(updated, emptyList())
+    }
 
     fun resumeReturnFromGraveyard(
         state: GameState,
