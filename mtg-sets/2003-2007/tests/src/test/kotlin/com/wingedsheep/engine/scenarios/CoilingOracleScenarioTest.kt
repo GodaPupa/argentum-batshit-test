@@ -6,7 +6,6 @@ import com.wingedsheep.mtg.sets.definitions.dis.cards.CoilingOracle
 import com.wingedsheep.sdk.core.Step
 import com.wingedsheep.sdk.model.Deck
 import io.kotest.core.spec.style.FunSpec
-import io.kotest.matchers.collections.shouldContain
 import io.kotest.matchers.shouldBe
 
 class CoilingOracleScenarioTest : FunSpec({
@@ -24,24 +23,24 @@ class CoilingOracleScenarioTest : FunSpec({
     test("its ETB puts a revealed land onto the battlefield") {
         val game = driver()
         val me = game.activePlayer!!
-        val land = game.putCardOnTopOfLibrary(me, "Island")
+        game.putCardOnTopOfLibrary(me, "Island")
         val landsBefore = game.getLands(me).size
 
         game.putCreatureOnBattlefield(me, "Coiling Oracle")
         game.resolveStack()
 
         game.getLands(me).size shouldBe landsBefore + 1
-        game.getLands(me) shouldContain land
+        game.findPermanent("Island") shouldBe game.getLands(me).single()
     }
 
     test("its ETB puts a revealed nonland into its controller's hand") {
         val game = driver()
         val me = game.activePlayer!!
-        val card = game.putCardOnTopOfLibrary(me, "Grizzly Bears")
+        game.putCardOnTopOfLibrary(me, "Grizzly Bears")
 
         game.putCreatureOnBattlefield(me, "Coiling Oracle")
         game.resolveStack()
 
-        game.getHand(me) shouldContain card
+        game.isInHand(1, "Grizzly Bears") shouldBe true
     }
 })

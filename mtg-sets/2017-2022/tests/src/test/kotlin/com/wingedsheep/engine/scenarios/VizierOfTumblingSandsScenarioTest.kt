@@ -4,6 +4,7 @@ import com.wingedsheep.engine.core.ActivateAbility
 import com.wingedsheep.engine.core.ChooseTargetsDecision
 import com.wingedsheep.engine.state.components.battlefield.TappedComponent
 import com.wingedsheep.engine.support.ScenarioTestBase
+import com.wingedsheep.sdk.core.ChosenTarget
 import com.wingedsheep.sdk.core.Phase
 import com.wingedsheep.sdk.core.Step
 import io.kotest.assertions.withClue
@@ -30,7 +31,12 @@ class VizierOfTumblingSandsScenarioTest : ScenarioTestBase() {
             val forest = game.findPermanent("Forest")!!
 
             game.execute(
-                ActivateAbility(game.player1Id, vizier, abilityId, targets = listOf(forest))
+                ActivateAbility(
+                    game.player1Id,
+                    vizier,
+                    abilityId,
+                    targets = listOf(ChosenTarget.Permanent(forest)),
+                )
             ).error shouldBe null
             game.resolveStack()
 
@@ -52,7 +58,7 @@ class VizierOfTumblingSandsScenarioTest : ScenarioTestBase() {
 
             val cycle = game.cycleCard(1, "Vizier of Tumbling Sands")
             withClue("cycling should succeed: ${cycle.error}") { cycle.error shouldBe null }
-            game.autoPayIfAsked()
+            if (game.hasPendingDecision()) game.submitManaSourcesAutoPay()
             if (game.getPendingDecision() is ChooseTargetsDecision) game.selectTargets(listOf(forest))
             game.resolveStack()
 
