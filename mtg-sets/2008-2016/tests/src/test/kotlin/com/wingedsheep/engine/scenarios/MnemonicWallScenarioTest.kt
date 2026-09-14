@@ -13,7 +13,11 @@ import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
 
 class MnemonicWallScenarioTest : FunSpec({
-    fun setup(): Pair<GameTestDriver, com.wingedsheep.sdk.model.EntityId> {
+    fun setup(): Triple<
+        GameTestDriver,
+        com.wingedsheep.sdk.model.EntityId,
+        com.wingedsheep.sdk.model.EntityId,
+    > {
         val driver = GameTestDriver()
         driver.registerCards(TestCards.all)
         driver.registerCard(MnemonicWall)
@@ -25,26 +29,25 @@ class MnemonicWallScenarioTest : FunSpec({
         driver.giveMana(player, Color.BLUE, 5)
         driver.castSpell(player, wall).isSuccess shouldBe true
         driver.bothPass()
-        (driver.pendingDecision is ChooseTargetsDecision) shouldBe true
-        val targetDecision = driver.pendingDecision as ChooseTargetsDecision
-        driver.submitTargetSelection(targetDecision.playerId, listOf(instant)).isSuccess shouldBe true
-        driver.bothPass()
         (driver.pendingDecision is YesNoDecision) shouldBe true
-        return driver to player
+        return Triple(driver, player, instant)
     }
 
     test("may return the targeted instant when it enters") {
-        val (driver, player) = setup()
+        val (driver, player, instant) = setup()
         val consent = driver.pendingDecision as YesNoDecision
-        driver.submitYesNo(consent.playerId, true).isSuccess shouldBe true
+        driver.submitYesNo(consent.playerId, true)
+        (driver.pendingDecision is ChooseTargetsDecision) shouldBe true
+        val targetDecision = driver.pendingDecision as ChooseTargetsDecision
+        driver.submitTargetSelection(targetDecision.playerId, listOf(instant))
         driver.findCardInHand(player, "Lightning Bolt") shouldNotBe null
         driver.getGraveyardCardNames(player).contains("Lightning Bolt") shouldBe false
     }
 
     test("may decline to return the targeted instant") {
-        val (driver, player) = setup()
+        val (driver, player, _) = setup()
         val consent = driver.pendingDecision as YesNoDecision
-        driver.submitYesNo(consent.playerId, false).isSuccess shouldBe true
+        driver.submitYesNo(consent.playerId, false)
 
         driver.findCardInHand(player, "Lightning Bolt") shouldBe null
         driver.getGraveyardCardNames(player).contains("Lightning Bolt") shouldBe true

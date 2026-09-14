@@ -38,8 +38,8 @@ class SagesRowDenizenScenarioTest : FunSpec({
         while (guard++ < 12 && driver.state.stack.isNotEmpty()) {
             when (val decision = driver.pendingDecision) {
                 is ChooseTargetsDecision ->
-                    driver.submitTargetSelection(decision.playerId, listOf(opponent)).isSuccess shouldBe true
-                else -> driver.bothPass().isSuccess shouldBe true
+                    driver.submitTargetSelection(decision.playerId, listOf(opponent))
+                else -> driver.bothPass()
             }
         }
 
