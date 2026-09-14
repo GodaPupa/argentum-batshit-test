@@ -68,7 +68,6 @@ class LilysplashDeckReadinessTest : FunSpec({
             "Saprazzan Skerry",
             "Secret Door",
             "Snap",
-            "Utopia Sprawl",
             "Vizier of Tumbling Sands",
         )
 
