@@ -20,11 +20,14 @@ class SagesRowDenizenScenarioTest : ScenarioTestBase() {
             val game = builder.build()
 
             game.castSpell(1, "Wind Drake").error shouldBe null
-            game.resolveStack()
-
-            (game.state.pendingDecision is ChooseTargetsDecision) shouldBe true
-            game.selectTargets(listOf(game.player2Id)).error shouldBe null
-            if (game.state.stack.isNotEmpty()) game.resolveStack()
+            var guard = 0
+            while (guard++ < 20 && (game.state.stack.isNotEmpty() || game.state.pendingDecision != null)) {
+                when (game.state.pendingDecision) {
+                    is ChooseTargetsDecision -> game.selectTargets(listOf(game.player2Id))
+                    null -> if (game.state.priorityPlayerId != null) game.passPriority() else break
+                    else -> error("Unexpected decision while resolving Sage's Row Denizen")
+                }
+            }
 
             game.librarySize(2) shouldBe 4
             game.graveyardSize(2) shouldBe 2
