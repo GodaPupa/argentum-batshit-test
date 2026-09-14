@@ -294,6 +294,114 @@ class PestControlMonoRedMadnessDecisionTest : ScenarioTestBase() {
             }
         }
 
+        test("Melded Moxite completed branch selects the deterministic payoff among legal discards") {
+            val game = seeded()
+                .withLandsOnBattlefield(1, "Mountain", 2)
+                .withCardInHand(1, "Melded Moxite")
+                .withCardInHand(1, "Lightning Bolt")
+                .withCardInHand(1, "Sneaky Snacker")
+                .withCardInLibrary(1, "Mountain")
+                .withCardInLibrary(1, "Lava Dart")
+                .withCardInLibrary(1, "Guttersnipe")
+                .build()
+            game.state = game.state.updateEntity(game.player1Id) {
+                it.with(CardsDrawnThisTurnComponent(1))
+            }
+            game.castSpell(1, "Melded Moxite").error.shouldBeNull()
+            if (game.state.pendingDecision is SelectManaSourcesDecision) {
+                game.submitManaSourcesAutoPay().error.shouldBeNull()
+            }
+            game.resolveStack()
+
+            val agent = ai(game)
+            agent.respondToDecision(game.state, game.state.pendingDecision!!)
+                .shouldBeInstanceOf<YesNoResponse>().choice.shouldBeTrue()
+            game.answerYesNo(true).error.shouldBeNull()
+            val decision = game.state.pendingDecision.shouldBeInstanceOf<SelectCardsDecision>()
+            val selected = agent.respondToDecision(game.state, decision)
+                .shouldBeInstanceOf<CardsSelectedResponse>().selectedCards.single()
+
+            withClue("the follow-up selection must be the branch whose third draw returns Snacker") {
+                cardName(game, selected) shouldBe "Sneaky Snacker"
+            }
+        }
+
+        test("Melded Moxite does not credit a Snacker return when too few cards can be drawn") {
+            val game = seeded()
+                .withLandsOnBattlefield(1, "Mountain", 2)
+                .withCardInHand(1, "Melded Moxite")
+                .withCardInHand(1, "Sneaky Snacker")
+                .withCardInLibrary(1, "Mountain")
+                .build()
+            game.state = game.state.updateEntity(game.player1Id) {
+                it.with(CardsDrawnThisTurnComponent(1))
+            }
+            game.castSpell(1, "Melded Moxite").error.shouldBeNull()
+            if (game.state.pendingDecision is SelectManaSourcesDecision) {
+                game.submitManaSourcesAutoPay().error.shouldBeNull()
+            }
+            game.resolveStack()
+
+            withClue("one available draw reaches only draw two and supplies no material discard payoff") {
+                ai(game).respondToDecision(game.state, game.state.pendingDecision!!)
+                    .shouldBeInstanceOf<YesNoResponse>().choice.shouldBeFalse()
+            }
+        }
+
+        test("Melded Moxite declines when its completed acceptance branch has no legal discard") {
+            val game = seeded()
+                .withLandsOnBattlefield(1, "Mountain", 2)
+                .withCardInHand(1, "Melded Moxite")
+                .withCardInLibrary(1, "Mountain")
+                .withCardInLibrary(1, "Lava Dart")
+                .build()
+            game.castSpell(1, "Melded Moxite").error.shouldBeNull()
+            if (game.state.pendingDecision is SelectManaSourcesDecision) {
+                game.submitManaSourcesAutoPay().error.shouldBeNull()
+            }
+            game.resolveStack()
+
+            withClue("acceptance cannot complete its mandatory discard selection") {
+                ai(game).respondToDecision(game.state, game.state.pendingDecision!!)
+                    .shouldBeInstanceOf<YesNoResponse>().choice.shouldBeFalse()
+            }
+        }
+
+        test("Melded Moxite completed-branch policy is invariant to hidden library order") {
+            fun decide(library: List<String>): Pair<Boolean, String?> {
+                val setup = seeded()
+                    .withLandsOnBattlefield(1, "Mountain", 2)
+                    .withCardInHand(1, "Melded Moxite")
+                    .withCardInHand(1, "Lightning Bolt")
+                    .withCardInHand(1, "Sneaky Snacker")
+                library.forEach { setup.withCardInLibrary(1, it) }
+                val game = setup.build()
+                game.state = game.state.updateEntity(game.player1Id) {
+                    it.with(CardsDrawnThisTurnComponent(1))
+                }
+                game.castSpell(1, "Melded Moxite").error.shouldBeNull()
+                if (game.state.pendingDecision is SelectManaSourcesDecision) {
+                    game.submitManaSourcesAutoPay().error.shouldBeNull()
+                }
+                game.resolveStack()
+
+                val agent = ai(game)
+                val accept = agent.respondToDecision(game.state, game.state.pendingDecision!!)
+                    .shouldBeInstanceOf<YesNoResponse>().choice
+                if (!accept) return false to null
+                game.answerYesNo(true).error.shouldBeNull()
+                val discard = agent.respondToDecision(game.state, game.state.pendingDecision!!)
+                    .shouldBeInstanceOf<CardsSelectedResponse>().selectedCards.single()
+                return true to cardName(game, discard)
+            }
+
+            val first = decide(listOf("Mountain", "Lava Dart", "Guttersnipe"))
+            val permuted = decide(listOf("Guttersnipe", "Mountain", "Lava Dart"))
+
+            first shouldBe (true to "Sneaky Snacker")
+            permuted shouldBe first
+        }
+
         test("Melded Moxite converts an otherwise idle artifact but yields to stronger development") {
             val productive = seeded()
                 .withLandsOnBattlefield(1, "Mountain", 3)
