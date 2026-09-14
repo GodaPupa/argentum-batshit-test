@@ -7,6 +7,7 @@ import com.wingedsheep.sdk.core.Step
 import com.wingedsheep.sdk.model.Deck
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
+import io.kotest.matchers.shouldNotBe
 
 class CoilingOracleScenarioTest : FunSpec({
     fun driver() = GameTestDriver().apply {
@@ -30,7 +31,7 @@ class CoilingOracleScenarioTest : FunSpec({
         game.resolveStack()
 
         game.getLands(me).size shouldBe landsBefore + 1
-        game.findPermanent("Island") shouldBe game.getLands(me).single()
+        game.findPermanent(me, "Island") shouldBe game.getLands(me).single()
     }
 
     test("its ETB puts a revealed nonland into its controller's hand") {
@@ -41,6 +42,6 @@ class CoilingOracleScenarioTest : FunSpec({
         game.putCreatureOnBattlefield(me, "Coiling Oracle")
         game.resolveStack()
 
-        game.isInHand(1, "Grizzly Bears") shouldBe true
+        game.findCardInHand(me, "Grizzly Bears") shouldNotBe null
     }
 })
