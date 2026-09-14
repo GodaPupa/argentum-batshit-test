@@ -1,6 +1,3 @@
-Warning: truncated output (original token count: 51129)
-Total output lines: 3445
-
 package com.wingedsheep.engine.legalactions.enumerators
 
 import com.wingedsheep.engine.core.AlternativeCostType
@@ -934,7 +931,1386 @@ class CastSpellEnumerator : ActionEnumerator {
 
             // Compute miracle cost info (CR 702.94). Only offered while this card carries an open
             // miracle window (it was the first card drawn this turn and has miracle, printed or
-            // granted in hand). …21129 tokens truncated…         }
+            // granted in hand). The window component is set by the draw flow and cleared at cleanup.
+            val miracleWindowOpen = state.getEntity(cardId)
+                ?.has<com.wingedsheep.engine.state.components.identity.MiracleWindowComponent>() == true
+            val miracleAbility = if (miracleWindowOpen) {
+                com.wingedsheep.engine.mechanics.MiracleGrants.effectiveMiracle(
+                    state, cardId, cardDef, playerId, context.cardRegistry, context.predicateEvaluator
+                )
+            } else null
+            val miracleCostResult = if (miracleAbility != null) {
+                val miracleMana = context.costCalculator.calculateEffectiveCostWithAlternativeBase(state, cardDef, miracleAbility.cost, playerId)
+                if (context.manaSolver.canPay(state, playerId, miracleMana, precomputedSources = cachedSources)) {
+                    val miraclePreview = if (context.skipAutoTapPreview) null else {
+                        context.manaSolver.solve(state, playerId, miracleMana, precomputedSources = cachedSources)
+                            ?.sources?.map { it.entityId }
+                    }
+                    SelfAltCostResult(
+                        manaCostString = miracleMana.toString(),
+                        autoTapPreview = miraclePreview,
+                        additionalCostInfo = null
+                    )
+                } else null
+            } else null
+
+            // Free cast via `MayCastWithoutPayingManaCost` (e.g. Weftwalking) — its own variant,
+            // parallel to [altCostInfo], so the player can pick it over Jodah-style
+            // `GrantAlternativeCastingCost` and over any keyword alt (flashback, harmonize, warp,
+            // evoke, impending) when both are legal (CR 118.9a — only one alternative cost may
+            // apply to a cast, and which one is the player's choice). Routes through
+            // [CastSpell.useWithoutPayingManaCost].
+            val freeCastResult = if (context.freeCastPermissionFor(cardId)) {
+                SelfAltCostResult(
+                    manaCostString = "{0}",
+                    autoTapPreview = if (context.skipAutoTapPreview) null else emptyList(),
+                    additionalCostInfo = null
+                )
+            } else null
+
+            // Modal spells: choose-1 emits one LegalAction per mode so the opponent
+            // sees which mode was picked on the stack. Choose-N emits a single
+            // CastSpellModal action with a [ModalLegalEnumeration] payload and lets
+            // the client drive the cast-time mode/target decision loop (rules 601.2b–c,
+            // 700.2a). Choose-N cartesian enumeration would blow up for allowRepeat
+            // (Escalate/Spree) and for wide target pools.
+            val modalEffect = spellEffect as? ModalEffect
+            // Build the cast variants we'll emit. For modal spells with
+            // `chooseAllIfBlightPaid` + `BlightOrPay`, the pay path locks in the
+            // printed `minChooseCount` (typically "choose one") while the blight
+            // path forces choosing every mode — so the two paths surface as
+            // separate legal actions with different mana cost / cost info.
+            val modalVariants = if (modalEffect != null) {
+                buildList {
+                    if (canAfford) {
+                        val payChooseCount = if (modalEffect.chooseAllIfBlightPaid) {
+                            modalEffect.minChooseCount
+                        } else {
+                            modalEffect.chooseCount
+                        }
+                        add(
+                            ModalCastVariant(
+                                effect = modalEffect.copy(
+                                    chooseCount = payChooseCount,
+                                    minChooseCount = modalEffect.minChooseCount
+                                ),
+                                baseEffectiveCost = effectiveCost,
+                                additionalCostInfo = costInfo,
+                                manaCostString = manaCostString,
+                                autoTapPreview = autoTapPreview,
+                                descriptionSuffix = ""
+                            )
+                        )
+                    }
+                    if (modalEffect.chooseAllIfBlightPaid &&
+                        blightOrPayCost != null &&
+                        blightPathInfo != null
+                    ) {
+                        val all = modalEffect.modes.size
+                        add(
+                            ModalCastVariant(
+                                effect = modalEffect.copy(
+                                    chooseCount = all,
+                                    minChooseCount = all
+                                ),
+                                baseEffectiveCost = blightBaseCost,
+                                additionalCostInfo = blightPathInfo.costInfo,
+                                manaCostString = blightPathInfo.manaCostString,
+                                autoTapPreview = blightPathInfo.autoTapPreview,
+                                descriptionSuffix = " (Blight ${blightOrPayCost.blightAmount})"
+                            )
+                        )
+                    }
+                }
+            } else emptyList()
+
+            if (modalEffect != null) {
+                for (variant in modalVariants) {
+                val variantEffect = variant.effect
+                val modeEnumerations = variantEffect.modes.mapIndexed { modeIndex, mode ->
+                    computeModeEnumeration(
+                        context = context,
+                        cardId = cardId,
+                        playerId = playerId,
+                        modeIndex = modeIndex,
+                        mode = mode,
+                        baseEffectiveCost = variant.baseEffectiveCost,
+                        cardLevelAdditionalCostInfo = variant.additionalCostInfo,
+                        baseAutoTapPreview = variant.autoTapPreview,
+                        spellContext = spellContext,
+                        cachedSources = cachedSources
+                    )
+                }
+
+                if (variantEffect.chooseCount == 1) {
+                    for (modeEnum in modeEnumerations) {
+                        if (!modeEnum.available) continue
+
+                        val modeIndex = modeEnum.modeIndex
+                        val mode = modeEnum.mode
+                        val modeTargetReqs = mode.targetRequirements
+                        val modeTargetInfos = modeEnum.targetInfos
+
+                        if (modeTargetReqs.isNotEmpty()) {
+                            val firstReq = modeTargetReqs.first()
+                            val firstInfo = modeTargetInfos.first()
+
+                            // Check for auto-select (single player target, single valid choice)
+                            val canAutoSelect = modeTargetReqs.size == 1 &&
+                                TargetEnumerationUtils.shouldAutoSelectPlayerTarget(firstReq, firstInfo.validTargets)
+
+                            if (canAutoSelect) {
+                                val autoTarget = ChosenTarget.Player(firstInfo.validTargets.first())
+                                result.add(LegalAction(
+                                    actionType = "CastSpellMode",
+                                    description = mode.description + variant.descriptionSuffix,
+                                    action = CastSpell(
+                                        playerId,
+                                        cardId,
+                                        targets = listOf(autoTarget),
+                                        chosenModes = listOf(modeIndex),
+                                        modeTargetsOrdered = listOf(listOf(autoTarget))
+                                    ),
+                                    hasXCost = hasXCost,
+                                    maxAffordableX = maxAffordableX,
+                                    additionalCostInfo = modeEnum.additionalCostInfo,
+                                    hasConvoke = hasConvoke,
+                                    convokeCreatures = convokeCreatures,
+                                    hasDelve = hasDelve,
+                                    delveCards = delveCards,
+                                    minDelveNeeded = minDelveNeeded,
+                                    manaCostString = modeEnum.manaCostString,
+                                    autoTapPreview = modeEnum.autoTapPreview
+                                ))
+                            } else {
+                                result.add(LegalAction(
+                                    actionType = "CastSpellMode",
+                                    description = mode.description + variant.descriptionSuffix,
+                                    action = CastSpell(playerId, cardId, chosenModes = listOf(modeIndex)),
+                                    validTargets = firstInfo.validTargets,
+                                    requiresTargets = true,
+                                    targetCount = firstInfo.maxTargets,
+                                    minTargets = firstReq.effectiveMinCount,
+                                    targetDescription = firstReq.description,
+                                    targetRequirements = if (modeTargetInfos.size > 1) modeTargetInfos else null,
+                                    xConstrainsTargetManaValue = firstInfo.xConstrainsManaValue,
+                                    xConstrainsTargetManaValueExactly = firstInfo.xConstrainsManaValueExactly,
+                                    xConstrainsTargetPower = firstInfo.xConstrainsPower,
+                                    xConstrainsTargetCount = firstInfo.xConstrainsCount,
+                                    hasXCost = hasXCost,
+                                    maxAffordableX = maxAffordableX,
+                                    additionalCostInfo = modeEnum.additionalCostInfo,
+                                    hasConvoke = hasConvoke,
+                                    convokeCreatures = convokeCreatures,
+                                    hasDelve = hasDelve,
+                                    delveCards = delveCards,
+                                    minDelveNeeded = minDelveNeeded,
+                                    manaCostString = modeEnum.manaCostString,
+                                    autoTapPreview = modeEnum.autoTapPreview
+                                ))
+                            }
+                        } else {
+                            // Mode has no targets
+                            result.add(LegalAction(
+                                actionType = "CastSpellMode",
+                                description = mode.description + variant.descriptionSuffix,
+                                action = CastSpell(playerId, cardId, chosenModes = listOf(modeIndex)),
+                                hasXCost = hasXCost,
+                                maxAffordableX = maxAffordableX,
+                                additionalCostInfo = modeEnum.additionalCostInfo,
+                                hasConvoke = hasConvoke,
+                                convokeCreatures = convokeCreatures,
+                                hasDelve = hasDelve,
+                                delveCards = delveCards,
+                                minDelveNeeded = minDelveNeeded,
+                                manaCostString = modeEnum.manaCostString,
+                                autoTapPreview = modeEnum.autoTapPreview
+                            ))
+                        }
+                    }
+                } else {
+                    // Choose-N (> 1): emit a single LegalAction carrying the per-mode
+                    // enumeration. The client drives cast-time mode + target selection.
+                    val enumerationModes = modeEnumerations.map { modeEnum ->
+                        ModalEnumerationMode(
+                            index = modeEnum.modeIndex,
+                            description = modeEnum.mode.description,
+                            available = modeEnum.available,
+                            additionalManaCost = modeEnum.mode.additionalManaCost,
+                            additionalCostInfo = modeEnum.additionalCostInfo,
+                            targetRequirements = modeEnum.targetInfos
+                        )
+                    }
+                    val unavailableIndices = enumerationModes
+                        .filterNot { it.available }
+                        .map { it.index }
+
+                    // Escalate with a non-mana cost (CR 702.120a): the caster can only reach as
+                    // many modes as they can pay for — three modes on Collective Brutality wants
+                    // two cards in hand to discard. Cap the offered maximum the same way the mana
+                    // escalate is capped by [canPayModeSelection], and hand the client the cost
+                    // data so it can prompt for one extra mode's payment per mode chosen.
+                    val escalatePayability = EscalateCosts.payability(
+                        state, playerId, cardId, variantEffect, context.costUtils, context.predicateEvaluator
+                    )
+                    // What the *undeclared* cast can actually reach: a cast-time count gated on a
+                    // declaration that wasn't made ("...choose both instead" with no teamwork)
+                    // yields 1..1 here, which is what the handler will enforce on the submit.
+                    val plainCounts = effectiveModalChooseCounts(
+                        context, variantEffect, cardId, playerId, declaredCostSlot = null
+                    )
+                    val effectiveChooseCount = if (escalatePayability == null) plainCounts.last
+                        else minOf(plainCounts.last, 1 + escalatePayability.maxExtraModes)
+                    val effectiveMinChooseCount = minOf(plainCounts.first, effectiveChooseCount)
+
+                    // A mode with no legal target can't be chosen (CR 700.2a), so the cast is only
+                    // offerable when enough modes are available to satisfy the floor. `allowRepeat`
+                    // is exempt: one available mode can legally fill every pick (CR 700.2d).
+                    val availableModeCount = enumerationModes.count { it.available }
+                    val requiredModeCount = if (variantEffect.allowRepeat) 1 else effectiveMinChooseCount
+                    if (availableModeCount >= requiredModeCount && availableModeCount > 0) {
+                        result.add(LegalAction(
+                            actionType = "CastSpellModal",
+                            description = "Cast ${cardComponent.name}${variant.descriptionSuffix}",
+                            action = CastSpell(playerId, cardId),
+                            hasXCost = hasXCost,
+                            maxAffordableX = maxAffordableX,
+                            additionalCostInfo = variant.additionalCostInfo,
+                            hasConvoke = hasConvoke,
+                            convokeCreatures = convokeCreatures,
+                            hasDelve = hasDelve,
+                            delveCards = delveCards,
+                            minDelveNeeded = minDelveNeeded,
+                            manaCostString = variant.manaCostString,
+                            autoTapPreview = variant.autoTapPreview,
+                            modalEnumeration = ModalLegalEnumeration(
+                                chooseCount = effectiveChooseCount,
+                                minChooseCount = effectiveMinChooseCount,
+                                allowRepeat = variantEffect.allowRepeat,
+                                additionalManaCostPerExtraMode = variantEffect.additionalManaCostPerExtraMode,
+                                additionalCostPerExtraMode = escalatePayability?.costData,
+                                modes = enumerationModes,
+                                unavailableIndices = unavailableIndices
+                            )
+                        ))
+                    }
+                }
+                }
+                // Skip the normal targeting logic for modal spells
+            } else if (targetReqs.isNotEmpty()) {
+                // Spell requires targets - find valid targets for all requirements
+                val targetReqInfos = context.targetUtils.buildTargetInfos(state, playerId, targetReqs, cardId)
+
+                // Check if all requirements can be satisfied
+                val allRequirementsSatisfied = context.targetUtils.allRequirementsSatisfied(targetReqInfos)
+
+                val firstReq = targetReqs.first()
+                val firstReqInfo = targetReqInfos.first()
+
+                // Only add the action if all requirements can be satisfied
+                if (allRequirementsSatisfied) {
+                    // Check if we can auto-select player targets (single target, single valid choice)
+                    val canAutoSelect = targetReqs.size == 1 &&
+                        TargetEnumerationUtils.shouldAutoSelectPlayerTarget(firstReq, firstReqInfo.validTargets)
+
+                    if (canAutoSelect) {
+                        // Auto-select the single valid player target
+                        val autoSelectedTarget = ChosenTarget.Player(firstReqInfo.validTargets.first())
+                        if (canAfford) {
+                            result.add(LegalAction(
+                                actionType = "CastSpell",
+                                description = "Cast ${cardComponent.name}",
+                                action = CastSpell(playerId, cardId, targets = listOf(autoSelectedTarget)),
+                                hasXCost = hasXCost,
+                                maxAffordableX = maxAffordableX,
+                                additionalCostInfo = costInfo,
+                                hasConvoke = hasConvoke,
+                                convokeCreatures = convokeCreatures,
+                                hasDelve = hasDelve,
+                                delveCards = delveCards,
+                                minDelveNeeded = minDelveNeeded,
+                                manaCostString = manaCostString,
+                                requiresDamageDistribution = requiresDamageDistribution,
+                                totalDamageToDistribute = totalDamageToDistribute,
+                                minDamagePerTarget = minDamagePerTarget,
+                                autoTapPreview = autoTapPreview
+                            ))
+                        }
+                        if (altCostInfo != null) {
+                            result.add(LegalAction(
+                                actionType = "CastWithAlternativeCost",
+                                description = "Cast ${cardComponent.name} ($altCostLabel)",
+                                action = CastSpell(playerId, cardId, targets = listOf(autoSelectedTarget), useAlternativeCost = true, alternativeCostType = AlternativeCostType.GRANTED),
+                                manaCostString = altCostInfo.manaCostString,
+                                additionalCostInfo = altCostInfo.additionalCostInfo,
+                                requiresDamageDistribution = requiresDamageDistribution,
+                                totalDamageToDistribute = totalDamageToDistribute,
+                                minDamagePerTarget = minDamagePerTarget,
+                                autoTapPreview = altCostInfo.autoTapPreview
+                            ))
+                        }
+                        if (selfAltCostResult != null) {
+                            result.add(LegalAction(
+                                actionType = "CastWithAlternativeCost",
+                                description = "Cast ${cardComponent.name} (${selfAltCostResult.manaCostString})",
+                                action = CastSpell(playerId, cardId, targets = listOf(autoSelectedTarget), useAlternativeCost = true, alternativeCostType = AlternativeCostType.SELF_ALTERNATIVE),
+                                manaCostString = selfAltCostResult.manaCostString,
+                                additionalCostInfo = selfAltCostResult.additionalCostInfo,
+                                requiresDamageDistribution = requiresDamageDistribution,
+                                totalDamageToDistribute = totalDamageToDistribute,
+                                minDamagePerTarget = minDamagePerTarget,
+                                autoTapPreview = selfAltCostResult.autoTapPreview
+                            ))
+                        }
+                        if (evokeCostResult != null) {
+                            result.add(LegalAction(
+                                actionType = "CastWithAlternativeCost",
+                                description = "Evoke ${cardComponent.name} (${evokeCostResult.manaCostString})",
+                                action = CastSpell(playerId, cardId, targets = listOf(autoSelectedTarget), useAlternativeCost = true, alternativeCostType = AlternativeCostType.EVOKE),
+                                manaCostString = evokeCostResult.manaCostString,
+                                autoTapPreview = evokeCostResult.autoTapPreview
+                            ))
+                        }
+                        if (impendingCostResult != null) {
+                            result.add(LegalAction(
+                                actionType = "CastWithAlternativeCost",
+                                description = "Impending ${cardComponent.name} (${impendingCostResult.manaCostString})",
+                                action = CastSpell(playerId, cardId, targets = listOf(autoSelectedTarget), useAlternativeCost = true, alternativeCostType = AlternativeCostType.IMPENDING),
+                                manaCostString = impendingCostResult.manaCostString,
+                                autoTapPreview = impendingCostResult.autoTapPreview
+                            ))
+                        }
+                        if (miracleCostResult != null) {
+                            result.add(LegalAction(
+                                actionType = "CastWithAlternativeCost",
+                                description = "Miracle ${cardComponent.name} (${miracleCostResult.manaCostString})",
+                                action = CastSpell(playerId, cardId, targets = listOf(autoSelectedTarget), useAlternativeCost = true, alternativeCostType = AlternativeCostType.MIRACLE),
+                                manaCostString = miracleCostResult.manaCostString,
+                                autoTapPreview = miracleCostResult.autoTapPreview
+                            ))
+                        }
+                        if (freeCastResult != null) {
+                            result.add(LegalAction(
+                                actionType = "CastWithoutPayingManaCost",
+                                description = "Cast ${cardComponent.name} (Free)",
+                                action = CastSpell(playerId, cardId, targets = listOf(autoSelectedTarget), useWithoutPayingManaCost = true),
+                                manaCostString = freeCastResult.manaCostString,
+                                requiresDamageDistribution = requiresDamageDistribution,
+                                totalDamageToDistribute = totalDamageToDistribute,
+                                minDamagePerTarget = minDamagePerTarget,
+                                autoTapPreview = freeCastResult.autoTapPreview
+                            ))
+                        }
+                        for (path in orPayPaths) {
+                            result.add(LegalAction(
+                                actionType = "CastSpell",
+                                description = "Cast ${cardComponent.name} (${path.label})",
+                                action = CastSpell(playerId, cardId, targets = listOf(autoSelectedTarget)),
+                                additionalCostInfo = path.costInfo,
+                                manaCostString = path.manaCostString,
+                                requiresDamageDistribution = requiresDamageDistribution,
+                                totalDamageToDistribute = totalDamageToDistribute,
+                                minDamagePerTarget = minDamagePerTarget,
+                                autoTapPreview = path.autoTapPreview
+                            ))
+                        }
+                    } else {
+                        if (canAfford) {
+                            result.add(LegalAction(
+                                actionType = "CastSpell",
+                                description = "Cast ${cardComponent.name}",
+                                action = CastSpell(playerId, cardId),
+                                validTargets = firstReqInfo.validTargets,
+                                requiresTargets = true,
+                                targetCount = firstReqInfo.maxTargets,
+                                minTargets = firstReq.effectiveMinCount,
+                                targetDescription = firstReq.description,
+                                targetRequirements = if (targetReqInfos.size > 1) targetReqInfos else null,
+                                xConstrainsTargetManaValue = firstReqInfo.xConstrainsManaValue,
+                                xConstrainsTargetManaValueExactly = firstReqInfo.xConstrainsManaValueExactly,
+                                xConstrainsTargetPower = firstReqInfo.xConstrainsPower,
+                                xConstrainsTargetCount = firstReqInfo.xConstrainsCount,
+                                hasXCost = hasXCost,
+                                maxAffordableX = maxAffordableX,
+                                additionalCostInfo = costInfo,
+                                hasConvoke = hasConvoke,
+                                convokeCreatures = convokeCreatures,
+                                hasDelve = hasDelve,
+                                delveCards = delveCards,
+                                minDelveNeeded = minDelveNeeded,
+                                manaCostString = manaCostString,
+                                manaCostPerExtraTarget = manaCostPerExtraTarget,
+                                requiresDamageDistribution = requiresDamageDistribution,
+                                totalDamageToDistribute = totalDamageToDistribute,
+                                minDamagePerTarget = minDamagePerTarget,
+                                autoTapPreview = autoTapPreview
+                            ))
+                        }
+                        if (altCostInfo != null) {
+                            result.add(LegalAction(
+                                actionType = "CastWithAlternativeCost",
+                                description = "Cast ${cardComponent.name} ($altCostLabel)",
+                                action = CastSpell(playerId, cardId, useAlternativeCost = true, alternativeCostType = AlternativeCostType.GRANTED),
+                                validTargets = firstReqInfo.validTargets,
+                                requiresTargets = true,
+                                targetCount = firstReqInfo.maxTargets,
+                                minTargets = firstReq.effectiveMinCount,
+                                targetDescription = firstReq.description,
+                                targetRequirements = if (targetReqInfos.size > 1) targetReqInfos else null,
+                                xConstrainsTargetManaValue = firstReqInfo.xConstrainsManaValue,
+                                xConstrainsTargetManaValueExactly = firstReqInfo.xConstrainsManaValueExactly,
+                                xConstrainsTargetPower = firstReqInfo.xConstrainsPower,
+                                xConstrainsTargetCount = firstReqInfo.xConstrainsCount,
+                                manaCostString = altCostInfo.manaCostString,
+                                additionalCostInfo = altCostInfo.additionalCostInfo,
+                                requiresDamageDistribution = requiresDamageDistribution,
+                                totalDamageToDistribute = totalDamageToDistribute,
+                                minDamagePerTarget = minDamagePerTarget,
+                                autoTapPreview = altCostInfo.autoTapPreview
+                            ))
+                        }
+                        if (selfAltCostResult != null) {
+                            result.add(LegalAction(
+                                actionType = "CastWithAlternativeCost",
+                                description = "Cast ${cardComponent.name} (${selfAltCostResult.manaCostString})",
+                                action = CastSpell(playerId, cardId, useAlternativeCost = true, alternativeCostType = AlternativeCostType.SELF_ALTERNATIVE),
+                                validTargets = firstReqInfo.validTargets,
+                                requiresTargets = true,
+                                targetCount = firstReqInfo.maxTargets,
+                                minTargets = firstReq.effectiveMinCount,
+                                targetDescription = firstReq.description,
+                                targetRequirements = if (targetReqInfos.size > 1) targetReqInfos else null,
+                                xConstrainsTargetManaValue = firstReqInfo.xConstrainsManaValue,
+                                xConstrainsTargetManaValueExactly = firstReqInfo.xConstrainsManaValueExactly,
+                                xConstrainsTargetPower = firstReqInfo.xConstrainsPower,
+                                xConstrainsTargetCount = firstReqInfo.xConstrainsCount,
+                                manaCostString = selfAltCostResult.manaCostString,
+                                additionalCostInfo = selfAltCostResult.additionalCostInfo,
+                                requiresDamageDistribution = requiresDamageDistribution,
+                                totalDamageToDistribute = totalDamageToDistribute,
+                                minDamagePerTarget = minDamagePerTarget,
+                                autoTapPreview = selfAltCostResult.autoTapPreview
+                            ))
+                        }
+                        if (evokeCostResult != null) {
+                            result.add(LegalAction(
+                                actionType = "CastWithAlternativeCost",
+                                description = "Evoke ${cardComponent.name} (${evokeCostResult.manaCostString})",
+                                action = CastSpell(playerId, cardId, useAlternativeCost = true, alternativeCostType = AlternativeCostType.EVOKE),
+                                validTargets = firstReqInfo.validTargets,
+                                requiresTargets = true,
+                                targetCount = firstReqInfo.maxTargets,
+                                minTargets = firstReq.effectiveMinCount,
+                                targetDescription = firstReq.description,
+                                targetRequirements = if (targetReqInfos.size > 1) targetReqInfos else null,
+                                xConstrainsTargetManaValue = firstReqInfo.xConstrainsManaValue,
+                                xConstrainsTargetManaValueExactly = firstReqInfo.xConstrainsManaValueExactly,
+                                xConstrainsTargetPower = firstReqInfo.xConstrainsPower,
+                                xConstrainsTargetCount = firstReqInfo.xConstrainsCount,
+                                manaCostString = evokeCostResult.manaCostString,
+                                autoTapPreview = evokeCostResult.autoTapPreview
+                            ))
+                        }
+                        if (impendingCostResult != null) {
+                            result.add(LegalAction(
+                                actionType = "CastWithAlternativeCost",
+                                description = "Impending ${cardComponent.name} (${impendingCostResult.manaCostString})",
+                                action = CastSpell(playerId, cardId, useAlternativeCost = true, alternativeCostType = AlternativeCostType.IMPENDING),
+                                validTargets = firstReqInfo.validTargets,
+                                requiresTargets = true,
+                                targetCount = firstReqInfo.maxTargets,
+                                minTargets = firstReq.effectiveMinCount,
+                                targetDescription = firstReq.description,
+                                targetRequirements = if (targetReqInfos.size > 1) targetReqInfos else null,
+                                xConstrainsTargetManaValue = firstReqInfo.xConstrainsManaValue,
+                                xConstrainsTargetManaValueExactly = firstReqInfo.xConstrainsManaValueExactly,
+                                xConstrainsTargetPower = firstReqInfo.xConstrainsPower,
+                                xConstrainsTargetCount = firstReqInfo.xConstrainsCount,
+                                manaCostString = impendingCostResult.manaCostString,
+                                autoTapPreview = impendingCostResult.autoTapPreview
+                            ))
+                        }
+                        if (miracleCostResult != null) {
+                            result.add(LegalAction(
+                                actionType = "CastWithAlternativeCost",
+                                description = "Miracle ${cardComponent.name} (${miracleCostResult.manaCostString})",
+                                action = CastSpell(playerId, cardId, useAlternativeCost = true, alternativeCostType = AlternativeCostType.MIRACLE),
+                                validTargets = firstReqInfo.validTargets,
+                                requiresTargets = true,
+                                targetCount = firstReqInfo.maxTargets,
+                                minTargets = firstReq.effectiveMinCount,
+                                targetDescription = firstReq.description,
+                                targetRequirements = if (targetReqInfos.size > 1) targetReqInfos else null,
+                                xConstrainsTargetManaValue = firstReqInfo.xConstrainsManaValue,
+                                xConstrainsTargetManaValueExactly = firstReqInfo.xConstrainsManaValueExactly,
+                                xConstrainsTargetPower = firstReqInfo.xConstrainsPower,
+                                xConstrainsTargetCount = firstReqInfo.xConstrainsCount,
+                                manaCostString = miracleCostResult.manaCostString,
+                                autoTapPreview = miracleCostResult.autoTapPreview
+                            ))
+                        }
+                        if (freeCastResult != null) {
+                            result.add(LegalAction(
+                                actionType = "CastWithoutPayingManaCost",
+                                description = "Cast ${cardComponent.name} (Free)",
+                                action = CastSpell(playerId, cardId, useWithoutPayingManaCost = true),
+                                validTargets = firstReqInfo.validTargets,
+                                requiresTargets = true,
+                                targetCount = firstReqInfo.maxTargets,
+                                minTargets = firstReq.effectiveMinCount,
+                                targetDescription = firstReq.description,
+                                targetRequirements = if (targetReqInfos.size > 1) targetReqInfos else null,
+                                xConstrainsTargetManaValue = firstReqInfo.xConstrainsManaValue,
+                                xConstrainsTargetManaValueExactly = firstReqInfo.xConstrainsManaValueExactly,
+                                xConstrainsTargetPower = firstReqInfo.xConstrainsPower,
+                                xConstrainsTargetCount = firstReqInfo.xConstrainsCount,
+                                manaCostString = freeCastResult.manaCostString,
+                                requiresDamageDistribution = requiresDamageDistribution,
+                                totalDamageToDistribute = totalDamageToDistribute,
+                                minDamagePerTarget = minDamagePerTarget,
+                                autoTapPreview = freeCastResult.autoTapPreview
+                            ))
+                        }
+                        for (path in orPayPaths) {
+                            result.add(LegalAction(
+                                actionType = "CastSpell",
+                                description = "Cast ${cardComponent.name} (${path.label})",
+                                action = CastSpell(playerId, cardId),
+                                validTargets = firstReqInfo.validTargets,
+                                requiresTargets = true,
+                                targetCount = firstReqInfo.maxTargets,
+                                minTargets = firstReq.effectiveMinCount,
+                                targetDescription = firstReq.description,
+                                targetRequirements = if (targetReqInfos.size > 1) targetReqInfos else null,
+                                xConstrainsTargetManaValue = firstReqInfo.xConstrainsManaValue,
+                                xConstrainsTargetManaValueExactly = firstReqInfo.xConstrainsManaValueExactly,
+                                xConstrainsTargetPower = firstReqInfo.xConstrainsPower,
+                                xConstrainsTargetCount = firstReqInfo.xConstrainsCount,
+                                additionalCostInfo = path.costInfo,
+                                manaCostString = path.manaCostString,
+                                requiresDamageDistribution = requiresDamageDistribution,
+                                totalDamageToDistribute = totalDamageToDistribute,
+                                minDamagePerTarget = minDamagePerTarget,
+                                autoTapPreview = path.autoTapPreview
+                            ))
+                        }
+                    }
+                }
+            } else {
+                // No targets required
+                if (canAfford) {
+                    result.add(LegalAction(
+                        actionType = "CastSpell",
+                        description = "Cast ${cardComponent.name}",
+                        action = CastSpell(playerId, cardId),
+                        hasXCost = hasXCost,
+                        maxAffordableX = maxAffordableX,
+                        additionalCostInfo = costInfo,
+                        hasConvoke = hasConvoke,
+                        convokeCreatures = convokeCreatures,
+                        hasDelve = hasDelve,
+                        delveCards = delveCards,
+                        minDelveNeeded = minDelveNeeded,
+                        manaCostString = manaCostString,
+                        autoTapPreview = autoTapPreview
+                    ))
+                }
+                if (altCostInfo != null) {
+                    result.add(LegalAction(
+                        actionType = "CastWithAlternativeCost",
+                        description = "Cast ${cardComponent.name} ($altCostLabel)",
+                        action = CastSpell(playerId, cardId, useAlternativeCost = true, alternativeCostType = AlternativeCostType.GRANTED),
+                        manaCostString = altCostInfo.manaCostString,
+                        additionalCostInfo = altCostInfo.additionalCostInfo,
+                        autoTapPreview = altCostInfo.autoTapPreview
+                    ))
+                }
+                if (selfAltCostResult != null) {
+                    result.add(LegalAction(
+                        actionType = "CastWithAlternativeCost",
+                        description = "Cast ${cardComponent.name} (${selfAltCostResult.manaCostString})",
+                        action = CastSpell(playerId, cardId, useAlternativeCost = true, alternativeCostType = AlternativeCostType.SELF_ALTERNATIVE),
+                        manaCostString = selfAltCostResult.manaCostString,
+                        additionalCostInfo = selfAltCostResult.additionalCostInfo,
+                        autoTapPreview = selfAltCostResult.autoTapPreview
+                    ))
+                }
+                if (evokeCostResult != null) {
+                    result.add(LegalAction(
+                        actionType = "CastWithAlternativeCost",
+                        description = "Evoke ${cardComponent.name} (${evokeCostResult.manaCostString})",
+                        action = CastSpell(playerId, cardId, useAlternativeCost = true, alternativeCostType = AlternativeCostType.EVOKE),
+                        manaCostString = evokeCostResult.manaCostString,
+                        autoTapPreview = evokeCostResult.autoTapPreview
+                    ))
+                }
+                if (impendingCostResult != null) {
+                    result.add(LegalAction(
+                        actionType = "CastWithAlternativeCost",
+                        description = "Impending ${cardComponent.name} (${impendingCostResult.manaCostString})",
+                        action = CastSpell(playerId, cardId, useAlternativeCost = true, alternativeCostType = AlternativeCostType.IMPENDING),
+                        manaCostString = impendingCostResult.manaCostString,
+                        autoTapPreview = impendingCostResult.autoTapPreview
+                    ))
+                }
+                if (miracleCostResult != null) {
+                    result.add(LegalAction(
+                        actionType = "CastWithAlternativeCost",
+                        description = "Miracle ${cardComponent.name} (${miracleCostResult.manaCostString})",
+                        action = CastSpell(playerId, cardId, useAlternativeCost = true, alternativeCostType = AlternativeCostType.MIRACLE),
+                        manaCostString = miracleCostResult.manaCostString,
+                        autoTapPreview = miracleCostResult.autoTapPreview
+                    ))
+                }
+                if (freeCastResult != null) {
+                    result.add(LegalAction(
+                        actionType = "CastWithoutPayingManaCost",
+                        description = "Cast ${cardComponent.name} (Free)",
+                        action = CastSpell(playerId, cardId, useWithoutPayingManaCost = true),
+                        manaCostString = freeCastResult.manaCostString,
+                        autoTapPreview = freeCastResult.autoTapPreview
+                    ))
+                }
+                for (path in orPayPaths) {
+                    result.add(LegalAction(
+                        actionType = "CastSpell",
+                        description = "Cast ${cardComponent.name} (${path.label})",
+                        action = CastSpell(playerId, cardId),
+                        additionalCostInfo = path.costInfo,
+                        manaCostString = path.manaCostString,
+                        autoTapPreview = path.autoTapPreview
+                    ))
+                }
+            }
+        }
+
+        // --- Kicker ---
+        enumerateKicker(context, hand, result)
+
+        // --- Splice onto [quality] (CR 702.47) ---
+        enumerateSplice(context, hand, result)
+
+        // --- Cleave (CR 702.148) ---
+        enumerateCleave(context, hand, result)
+
+        // --- Conspire ---
+        enumerateConspire(context, hand, result)
+
+        // --- Casualty ---
+        enumerateCasualty(context, hand, result)
+
+        return expandGiftPromise(
+            context,
+            applyImproviseMetadata(
+                context,
+                applySpellWaterbendMetadata(context, expandChoiceAdditionalCosts(context, result))
+            )
+        )
+    }
+
+    /**
+     * Post-process: surface **improvise** (CR 702.126) on the cast actions already enumerated.
+     *
+     * Improvise is neither an additional nor an alternative cost (CR 702.126b), so — unlike the
+     * waterbend pass — this adds no second action and changes no cost: it only attaches the
+     * tap-to-help metadata (eligible untapped artifacts, the "improvise" label, no cap beyond the
+     * generic in the cost) so the client can offer the payment. Doing it here rather than at each
+     * `LegalAction(...)` emission site means every cast shape — plain, modal, kicked, or-pay,
+     * split — gets it for free.
+     *
+     * The keyword is resolved through the granted-keyword resolver, so a spell that only has
+     * improvise because of Ironheart, Clever Champion is covered identically to a printed one.
+     * Actions that already carry a tap-for-generic payment (a waterbend cost) are left alone —
+     * one tap payment per action, and no card has both.
+     *
+     * Also stamps [LegalAction.tapForGenericRequired] — whether the taps are *needed* or merely
+     * offered. That costs one extra `canPay` per improvise-eligible cast, which is why it is
+     * computed behind the two gates above (no untapped artifacts, or no improvise → no call).
+     */
+    private fun applyImproviseMetadata(
+        context: EnumerationContext,
+        actions: List<LegalAction>
+    ): List<LegalAction> {
+        val state = context.state
+        // Both lookups scan the battlefield, so memoize: the artifacts per caster, and the keyword
+        // answer per (caster, card definition) — a hand of modal/kicked variants otherwise re-asks
+        // the same question for every emitted action.
+        val artifactsByPlayer = mutableMapOf<EntityId, List<TapForGenericPermanentData>>()
+        val hasImproviseByCard = mutableMapOf<Pair<EntityId, String>, Boolean>()
+        return actions.map { la ->
+            val cs = la.action as? CastSpell
+            if (cs == null || la.hasTapForGeneric) return@map la
+            // Cheapest gate first: with no untapped artifacts there is nothing to offer either way.
+            val artifacts = artifactsByPlayer.getOrPut(cs.playerId) {
+                context.costUtils.findTapForGenericPermanents(state, cs.playerId, TapForGeneric.IMPROVISE)
+            }
+            if (artifacts.isEmpty()) return@map la
+            val cardComponent = state.getEntity(cs.cardId)?.get<CardComponent>() ?: return@map la
+            val cardDef = context.cardRegistry.getCard(cardComponent.cardDefinitionId) ?: return@map la
+            val hasImprovise = hasImproviseByCard.getOrPut(cs.playerId to cardComponent.cardDefinitionId) {
+                context.grantedKeywordResolver.hasKeyword(state, cs.playerId, cardDef, Keyword.IMPROVISE)
+            }
+            if (!hasImprovise) return@map la
+            // Are the taps needed, or just offered? Improvise is optional (CR 702.126a "you may"),
+            // and an automatic payer that always fills it can tap a mana rock for {1} that was
+            // worth more as mana and make its own cast unpayable — see [LegalAction.tapForGenericRequired].
+            val payableWithManaAlone = la.manaCostString?.let { costString ->
+                context.manaSolver.canPay(
+                    state, cs.playerId, ManaCost.parse(costString),
+                    spellContext = spellPaymentContextFor(cardComponent),
+                    precomputedSources = context.availableManaSources
+                )
+            } ?: false
+            la.copy(
+                hasTapForGeneric = true,
+                tapForGenericPermanents = artifacts,
+                // No cap: CR 702.126a bounds the taps at the generic mana in the total cost, which
+                // the client derives from the cost itself.
+                tapForGenericAmount = null,
+                tapForGenericLabel = TapForGeneric.IMPROVISE.label,
+                tapForGenericRequired = !payableWithManaAlone
+            )
+        }
+    }
+
+    /**
+     * Post-process: offer the **gift** additional cost (CR 702.174a, Bloomburrow) as its own cast
+     * variant — "as an additional cost to cast this spell, you may choose an opponent".
+     *
+     * The promise costs nothing and changes neither the mana cost nor the targets, so each cast is
+     * simply cloned into a `CastWithGift` twin carrying the promised opponent (one per opponent, so
+     * multiplayer picks the recipient as part of the cost). Keeping it a *cast* choice is the whole
+     * point: a gift permanent's gift is a "when this enters, if its gift cost was paid" trigger
+     * (CR 702.174b), so asking at resolution would ask after the permanent already entered.
+     *
+     * The unpromised cast is kept alongside — gift is optional (CR 702.174a "you *may* choose").
+     *
+     * Every cost path is expanded, not just the plain cast: an additional cost is chosen and paid
+     * regardless of which alternative cost pays the mana (CR 601.2b, 601.2f–h), so a gift permanent
+     * cast for free (Omniscience) or for an alternative cost must still be promisable. Only
+     * *affordable* casts are expanded, so an unpayable cast doesn't spawn a greyed-out gift twin per
+     * opponent.
+     */
+    private fun expandGiftPromise(
+        context: EnumerationContext,
+        actions: List<LegalAction>
+    ): List<LegalAction> {
+        val state = context.state
+        val out = mutableListOf<LegalAction>()
+        for (la in actions) {
+            out.add(la)
+            val cs = la.action as? CastSpell ?: continue
+            if (!la.affordable ||
+                la.actionType !in GIFT_EXPANDABLE_CAST_TYPES ||
+                cs.giftRecipient != null
+            ) continue
+            val name = state.getEntity(cs.cardId)?.get<CardComponent>()?.name
+            val gift = name?.let { context.cardRegistry.getCard(it) }?.giftKeyword() ?: continue
+
+            val opponents = state.getOpponents(cs.playerId)
+            for (opponentId in opponents) {
+                val suffix = if (opponents.size == 1) {
+                    "Gift ${gift.kind.label}"
+                } else {
+                    val opponentName = state.getEntity(opponentId)
+                        ?.get<com.wingedsheep.engine.state.components.identity.PlayerComponent>()?.name
+                    "Gift ${gift.kind.label} to ${opponentName ?: "opponent"}"
+                }
+                out.add(la.copy(
+                    actionType = "CastWithGift",
+                    description = "${la.description} ($suffix)",
+                    action = cs.copy(giftRecipient = opponentId)
+                ))
+            }
+        }
+        return out
+    }
+
+    /**
+     * Post-process: expand each normal-cost cast of a card carrying a cost-vs-cost
+     * [AdditionalCost.Choice] into **one legal action per payable option**, each carrying that
+     * option's [AdditionalCostData] picker (SacrificePermanent / DiscardCard / ExileFromGraveyard).
+     * The caster picks the option by choosing which action to play, then the existing per-cost picker
+     * drives the selection — no new client UI (the same multi-action pattern Forage and the `*OrPay`
+     * costs use). Modeled on [applySpellWaterbendMetadata] so it stays out of the branchy per-target
+     * emission above.
+     *
+     * The plain base action is *replaced* (not kept): a mandatory choice cost can't be skipped, so the
+     * un-expanded action — which would let the spell resolve without paying the additional cost — must
+     * not survive. Only the primary "CastSpell" cast is expanded; alternative/free-cast variants pay
+     * printed additional costs through the cast-time selection pause instead (CR 601.2f).
+     */
+    private fun expandChoiceAdditionalCosts(
+        context: EnumerationContext,
+        actions: List<LegalAction>
+    ): List<LegalAction> {
+        val state = context.state
+        val out = mutableListOf<LegalAction>()
+        for (la in actions) {
+            val cs = la.action as? CastSpell
+            val choice = if (cs != null && la.actionType == "CastSpell" && la.affordable) {
+                val name = state.getEntity(cs.cardId)?.get<CardComponent>()?.name
+                name?.let { context.cardRegistry.getCard(it) }?.script?.additionalCosts
+                    ?.filterIsInstance<AdditionalCost.Choice>()?.firstOrNull()
+            } else null
+            if (cs == null || choice == null) {
+                out.add(la)
+                continue
+            }
+            // One action per payable option; if none is payable the card is dropped (uncastable).
+            val optionInfos = com.wingedsheep.engine.handlers.costs.ChoiceCostResolver
+                .costInfos(state, cs.playerId, choice, context.costUtils, cs.cardId)
+            for (info in optionInfos) {
+                out.add(la.copy(
+                    description = "${la.description} (${info.description})",
+                    additionalCostInfo = info
+                ))
+            }
+        }
+        return out
+    }
+
+    /**
+     * Post-process: surface the spell-level waterbend additional cost (Avatar: The Last Airbender)
+     * on the cast actions already enumerated. A *mandatory* waterbend cost (whose {N} is already
+     * folded into the action's cost and affordability upstream) just gains the tap metadata and the
+     * `wasWaterbendPaid` flag. An *optional* "you may waterbend {N}" keeps its no-waterbend action
+     * and gains a second, paid variant costing {N} more — offered only when affordable with mana
+     * plus up to {N} taps. The `{X}` shape (Crashing Wave, Foggy Swamp Visions) is a *mandatory*
+     * cost whose {X} is already folded into the cast action upstream (so it reads as X-carrying);
+     * here it just gains the tap metadata, with [LegalAction.tapForGenericAmount] left null so the
+     * client caps taps at the chosen X.
+     */
+    private fun applySpellWaterbendMetadata(
+        context: EnumerationContext,
+        actions: List<LegalAction>
+    ): List<LegalAction> {
+        val state = context.state
+        val out = mutableListOf<LegalAction>()
+        for (la in actions) {
+            val cs = la.action as? CastSpell
+            val wb = if (cs != null && la.actionType == "CastSpell") {
+                val name = state.getEntity(cs.cardId)?.get<CardComponent>()?.name
+                name?.let { context.cardRegistry.getCard(it) }?.script?.spellWaterbend
+            } else null
+            if (cs == null || wb == null) {
+                out.add(la)
+                continue
+            }
+            val perms = context.costUtils.findTapForGenericPermanents(state, cs.playerId, TapForGeneric.WATERBEND)
+            // The tap cap N the client enforces: a fixed amount, or null for "waterbend {X}"
+            // (the client uses the chosen xValue).
+            val waterbendCap = if (wb.isX) null else wb.amount
+            if (!wb.optional) {
+                // Mandatory: {N}/{X} is already in la.manaCostString; attach tap metadata + paid flag.
+                out.add(la.copy(
+                    hasTapForGeneric = true,
+                    tapForGenericPermanents = perms,
+                    tapForGenericAmount = waterbendCap,
+                    tapForGenericLabel = TapForGeneric.WATERBEND.label,
+                    action = cs.copy(wasWaterbendPaid = true)
+                ))
+            } else {
+                // Optional: keep the unpaid action, then add a paid variant when affordable.
+                out.add(la)
+                val baseCost = la.manaCostString?.let { ManaCost.parse(it) }
+                if (!la.affordable || baseCost == null) continue
+                val paidCost = baseCost + ManaCost.parse("{${wb.amount}}")
+                val affordablePaid = context.costUtils.canAffordWithTapForGeneric(
+                    state, cs.playerId, paidCost, perms.take(wb.amount),
+                    precomputedSources = context.availableManaSources,
+                    // Eligible conditional floating mana counts toward the paid variant too.
+                    spellContext = state.getEntity(cs.cardId)?.get<CardComponent>()
+                        ?.let { spellPaymentContextFor(it) }
+                )
+                if (!affordablePaid) continue
+                out.add(la.copy(
+                    description = la.description + " (waterbend {${wb.amount}})",
+                    manaCostString = paidCost.toString(),
+                    hasTapForGeneric = true,
+                    tapForGenericPermanents = perms,
+                    tapForGenericAmount = waterbendCap,
+                    tapForGenericLabel = TapForGeneric.WATERBEND.label,
+                    // The unpaid action's auto-tap preview was solved for the cheaper base cost;
+                    // it would pre-select too few lands for the paid {base+N}. Clear it so the
+                    // client recomputes the preview against the higher paid cost.
+                    autoTapPreview = null,
+                    action = cs.copy(wasWaterbendPaid = true)
+                ))
+            }
+        }
+        return out
+    }
+
+    /**
+     * Enumerates a "Cast with Conspire" variant for each spell in hand that has Conspire
+     * (printed or granted by a permanent in play via [GrantKeywordToOwnSpells]) and for which
+     * the caster controls at least two untapped creatures whose projected colors overlap with
+     * the spell's. The two-creature selection is submitted as [CastSpell.conspiredCreatures].
+     *
+     * Skip colorless spells — a color-sharing creature cannot exist for them (CR 702.78).
+     */
+    private fun enumerateConspire(
+        context: EnumerationContext,
+        hand: List<EntityId>,
+        result: MutableList<LegalAction>
+    ) {
+        val state = context.state
+        val playerId = context.playerId
+        if (context.cantCastSpells) return
+
+        val projected = state.projectedState
+
+        for (cardId in hand) {
+            val cardComponent = state.getEntity(cardId)?.get<CardComponent>() ?: continue
+            if (cardComponent.typeLine.isLand) continue
+
+            val cardDef = context.cardRegistry.getCard(cardComponent.name) ?: continue
+            if (!context.grantedKeywordResolver.hasKeyword(state, playerId, cardDef, Keyword.CONSPIRE)) continue
+            // A per-spell restriction (e.g. PlayersCantCastSpells with a filter) removes the
+            // conspire variant for this card even though the blanket check above passed.
+            if (context.cantCastSpell(cardId)) continue
+
+            val spellColors = cardDef.colors
+            if (spellColors.isEmpty()) continue
+
+            // Check timing (same rules as normal cast)
+            val isInstant = cardComponent.typeLine.isInstant
+            val hasFlash = cardDef.keywords.contains(Keyword.FLASH)
+            val grantedFlash = hasFlash || context.castPermissionUtils.hasGrantedFlash(state, cardId)
+            if (!isInstant && !grantedFlash && !context.canPlaySorcerySpeed) continue
+
+            val castRestrictions = cardDef.script.castRestrictions
+            if (castRestrictions.isNotEmpty() && !context.castPermissionUtils.checkCastRestrictions(state, playerId, castRestrictions)) continue
+
+            // Gather controlled, untapped creatures that share at least one color with the spell.
+            val eligibleTapTargets = mutableListOf<EntityId>()
+            for (permId in state.getBattlefield()) {
+                val permContainer = state.getEntity(permId) ?: continue
+                if (projected.getController(permId) != playerId) continue
+                if (!projected.isCreature(permId)) continue
+                if (permContainer.has<com.wingedsheep.engine.state.components.battlefield.TappedComponent>()) continue
+                if (spellColors.none { projected.hasColor(permId, it) }) continue
+                eligibleTapTargets.add(permId)
+            }
+            if (eligibleTapTargets.size < 2) continue
+
+            val baseCost = context.costCalculator.calculateEffectiveCost(state, cardDef, playerId)
+            val spellContext = spellPaymentContextFor(cardComponent)
+            val canAfford = context.manaSolver.canPay(state, playerId, baseCost, spellContext = spellContext, precomputedSources = context.availableManaSources)
+            val autoTapPreview = if (context.skipAutoTapPreview) null else {
+                context.manaSolver.solve(state, playerId, baseCost, spellContext = spellContext, precomputedSources = context.availableManaSources)
+                    ?.sources?.map { it.entityId }
+            }
+
+            val targetReqs = buildList {
+                addAll(cardDef.script.targetRequirements)
+                cardDef.script.auraTarget?.let { add(it) }
+            }
+
+            val conspireCostInfo = AdditionalCostData(
+                description = "Tap two untapped creatures you control that share a color with this spell",
+                costType = "Conspire",
+                validTapTargets = eligibleTapTargets,
+                tapCount = 2
+            )
+
+            if (targetReqs.isNotEmpty()) {
+                val targetReqInfos = context.targetUtils.buildTargetInfos(state, playerId, targetReqs, cardId)
+                val allRequirementsSatisfied = context.targetUtils.allRequirementsSatisfied(targetReqInfos)
+                if (!allRequirementsSatisfied) continue
+                val firstReq = targetReqs.first()
+                val firstReqInfo = targetReqInfos.first()
+                result.add(LegalAction(
+                    actionType = "CastWithConspire",
+                    description = "Cast ${cardComponent.name} (Conspire)",
+                    action = CastSpell(playerId, cardId),
+                    validTargets = firstReqInfo.validTargets,
+                    requiresTargets = true,
+                    targetCount = firstReqInfo.maxTargets,
+                    minTargets = firstReq.effectiveMinCount,
+                    targetDescription = firstReq.description,
+                    targetRequirements = if (targetReqInfos.size > 1) targetReqInfos else null,
+                    affordable = canAfford,
+                    manaCostString = baseCost.toString(),
+                    autoTapPreview = autoTapPreview,
+                    additionalCostInfo = conspireCostInfo
+                ))
+            } else {
+                result.add(LegalAction(
+                    actionType = "CastWithConspire",
+                    description = "Cast ${cardComponent.name} (Conspire)",
+                    action = CastSpell(playerId, cardId),
+                    affordable = canAfford,
+                    manaCostString = baseCost.toString(),
+                    autoTapPreview = autoTapPreview,
+                    additionalCostInfo = conspireCostInfo
+                ))
+            }
+        }
+    }
+
+    /**
+     * Enumerates a "Cast with Casualty" variant for each spell in hand that has Casualty (printed
+     * via [com.wingedsheep.sdk.scripting.KeywordAbility.Casualty] or granted by a permanent via
+     * [GrantKeywordToOwnSpells] with a [GrantKeywordToOwnSpells.keywordParameter]) and for which the
+     * caster controls at least one creature whose projected power meets the threshold. The chosen
+     * creature is submitted as [CastSpell.casualtyCreature] (CR 702.153).
+     */
+    private fun enumerateCasualty(
+        context: EnumerationContext,
+        hand: List<EntityId>,
+        result: MutableList<LegalAction>
+    ) {
+        val state = context.state
+        val playerId = context.playerId
+        if (context.cantCastSpells) return
+
+        val projected = state.projectedState
+
+        for (cardId in hand) {
+            val cardComponent = state.getEntity(cardId)?.get<CardComponent>() ?: continue
+            if (cardComponent.typeLine.isLand) continue
+
+            val cardDef = context.cardRegistry.getCard(cardComponent.name) ?: continue
+            val threshold = context.grantedKeywordResolver.casualtyThreshold(state, playerId, cardDef) ?: continue
+            if (context.cantCastSpell(cardId)) continue
+
+            // Timing (same rules as a normal cast).
+            val isInstant = cardComponent.typeLine.isInstant
+            val hasFlash = cardDef.keywords.contains(Keyword.FLASH)
+            val grantedFlash = hasFlash || context.castPermissionUtils.hasGrantedFlash(state, cardId)
+            if (!isInstant && !grantedFlash && !context.canPlaySorcerySpeed) continue
+
+            val castRestrictions = cardDef.script.castRestrictions
+            if (castRestrictions.isNotEmpty() && !context.castPermissionUtils.checkCastRestrictions(state, playerId, castRestrictions)) continue
+
+            // Gather controlled creatures whose projected power meets the threshold.
+            val eligibleSacrifices = mutableListOf<EntityId>()
+            for (permId in state.getBattlefield()) {
+                if (projected.getController(permId) != playerId) continue
+                if (!projected.isCreature(permId)) continue
+                if ((projected.getPower(permId) ?: 0) < threshold) continue
+                eligibleSacrifices.add(permId)
+            }
+            if (eligibleSacrifices.isEmpty()) continue
+
+            val baseCost = context.costCalculator.calculateEffectiveCost(state, cardDef, playerId)
+            val spellContext = spellPaymentContextFor(cardComponent)
+            val canAfford = context.manaSolver.canPay(state, playerId, baseCost, spellContext = spellContext, precomputedSources = context.availableManaSources)
+            val autoTapPreview = if (context.skipAutoTapPreview) null else {
+                context.manaSolver.solve(state, playerId, baseCost, spellContext = spellContext, precomputedSources = context.availableManaSources)
+                    ?.sources?.map { it.entityId }
+            }
+
+            val targetReqs = buildList {
+                addAll(cardDef.script.targetRequirements)
+                cardDef.script.auraTarget?.let { add(it) }
+            }
+
+            val casualtyCostInfo = AdditionalCostData(
+                description = "Sacrifice a creature with power $threshold or greater",
+                costType = "Casualty",
+                validSacrificeTargets = eligibleSacrifices,
+                sacrificeCount = 1
+            )
+
+            if (targetReqs.isNotEmpty()) {
+                val targetReqInfos = context.targetUtils.buildTargetInfos(state, playerId, targetReqs, cardId)
+                if (!context.targetUtils.allRequirementsSatisfied(targetReqInfos)) continue
+                val firstReq = targetReqs.first()
+                val firstReqInfo = targetReqInfos.first()
+                result.add(LegalAction(
+                    actionType = "CastWithCasualty",
+                    description = "Cast ${cardComponent.name} (Casualty $threshold)",
+                    action = CastSpell(playerId, cardId),
+                    validTargets = firstReqInfo.validTargets,
+                    requiresTargets = true,
+                    targetCount = firstReqInfo.maxTargets,
+                    minTargets = firstReq.effectiveMinCount,
+                    targetDescription = firstReq.description,
+                    targetRequirements = if (targetReqInfos.size > 1) targetReqInfos else null,
+                    affordable = canAfford,
+                    manaCostString = baseCost.toString(),
+                    autoTapPreview = autoTapPreview,
+                    additionalCostInfo = casualtyCostInfo
+                ))
+            } else {
+                result.add(LegalAction(
+                    actionType = "CastWithCasualty",
+                    description = "Cast ${cardComponent.name} (Casualty $threshold)",
+                    action = CastSpell(playerId, cardId),
+                    affordable = canAfford,
+                    manaCostString = baseCost.toString(),
+                    autoTapPreview = autoTapPreview,
+                    additionalCostInfo = casualtyCostInfo
+                ))
+            }
+        }
+    }
+
+    /**
+     * Enumerates kicked spell actions for cards with Kicker or KickerWithAdditionalCost.
+     */
+    /**
+     * Offer **splice onto [quality]** (CR 702.47) as its own cast variant: "You may reveal this card
+     * from your hand as you cast a [quality] spell. If you do, that spell gains the text of this card's
+     * rules text and you pay [cost] as an additional cost to cast that spell."
+     *
+     * Splicing is a choice made *as the spell is cast* (CR 601.2b), and it changes both the total cost
+     * and the set of targets to pick, so it can't be deferred to resolution — it has to be a distinct
+     * cast option. One `CastWithSplice` action is emitted per (eligible spell, splice card in hand)
+     * pair, priced at the spell's cost plus that card's splice cost and target-checked against the
+     * union of both cards' requirements. The plain cast stays alongside: splice is optional.
+     *
+     * Two deliberate bounds, both rules-safe:
+     *  - **One splice card per emitted action.** The engine handles arbitrarily many spliced cards
+     *    (`CastSpell.splicedCardIds` is an ordered list, validated and resolved as such), but
+     *    enumerating every *subset* of splice cards in hand is exponential. Multi-splice is therefore
+     *    representable and legal, just not surfaced as a one-click action.
+     *  - **Normal-cost casts only.** A spliced-onto spell cast for an alternative cost or with a kicker
+     *    would need those variants crossed with every splice card; no printed Arcane spell has either,
+     *    so the cross product buys nothing.
+     *
+     * CR 702.47b's "you can't choose to use a splice ability if you can't make the required choices
+     * (targets, etc.)" is enforced by requiring every merged target requirement to be satisfiable.
+     */
+    private fun enumerateSplice(
+        context: EnumerationContext,
+        hand: List<EntityId>,
+        result: MutableList<LegalAction>
+    ) {
+        val state = context.state
+        val playerId = context.playerId
+
+        for (cardId in hand) {
+            val cardComponent = state.getEntity(cardId)?.get<CardComponent>() ?: continue
+            if (cardComponent.typeLine.isLand) continue
+            if (context.cantCastSpell(cardId)) continue
+
+            val cardDef = context.cardRegistry.getCard(cardComponent.name) ?: continue
+            val spellSubtypes = cardDef.typeLine.subtypes.map { it.value }
+            if (spellSubtypes.isEmpty()) continue
+
+            // Splice grants no timing permission of its own — the spell is cast at its normal timing.
+            val isInstant = cardComponent.typeLine.isInstant
+            val grantedFlash = cardDef.keywords.contains(Keyword.FLASH) ||
+                context.castPermissionUtils.hasGrantedFlash(state, cardId)
+            if (!isInstant && !grantedFlash && !context.canPlaySorcerySpeed) continue
+
+            val castRestrictions = cardDef.script.castRestrictions
+            if (castRestrictions.isNotEmpty() &&
+                !context.castPermissionUtils.checkCastRestrictions(state, playerId, castRestrictions)
+            ) continue
+
+            val candidates = SpliceCasts.candidates(
+                state, playerId, cardId, spellSubtypes, context.cardRegistry
+            )
+            if (candidates.isEmpty()) continue
+
+            val baseCost = context.costCalculator.calculateEffectiveCost(state, cardDef, playerId)
+            val spellContext = spellPaymentContextFor(cardComponent)
+
+            for (candidate in candidates) {
+                val splicedCost = baseCost + candidate.splice.cost
+                val canAfford = context.manaSolver.canPay(
+                    state, playerId, splicedCost,
+                    spellContext = spellContext,
+                    precomputedSources = context.availableManaSources
+                )
+                val autoTapPreview = if (context.skipAutoTapPreview) null else {
+                    context.manaSolver.solve(
+                        state, playerId, splicedCost,
+                        spellContext = spellContext,
+                        precomputedSources = context.availableManaSources
+                    )?.sources?.map { it.entityId }
+                }
+
+                // The main spell's own requirements first, then the spliced text's (CR 702.47d) — the
+                // same order the cast handler and the stack resolver slice the flat target list by.
+                val targetReqs = buildList {
+                    addAll(cardDef.script.targetRequirements)
+                    cardDef.script.auraTarget?.let { add(it) }
+                    addAll(candidate.definition.script.targetRequirements)
+                }
+                val description = "Cast ${cardComponent.name} (Splice ${candidate.name})"
+                val spliceAction = CastSpell(
+                    playerId, cardId, splicedCardIds = listOf(candidate.cardId)
+                )
+
+                if (targetReqs.isEmpty()) {
+                    result.add(LegalAction(
+                        actionType = "CastWithSplice",
+                        description = description,
+                        action = spliceAction,
+                        affordable = canAfford,
+                        manaCostString = splicedCost.toString(),
+                        autoTapPreview = autoTapPreview
+                    ))
+                    continue
+                }
+
+                val targetReqInfos = context.targetUtils.buildTargetInfos(state, playerId, targetReqs, cardId)
+                // CR 702.47b — no splice at all if the added text's choices can't be made.
+                if (!context.targetUtils.allRequirementsSatisfied(targetReqInfos)) continue
+                val firstReq = targetReqs.first()
+                val firstReqInfo = targetReqInfos.first()
+
+                result.add(LegalAction(
+                    actionType = "CastWithSplice",
+                    description = description,
+                    action = spliceAction,
+                    validTargets = firstReqInfo.validTargets,
+                    requiresTargets = true,
+                    targetCount = firstReqInfo.maxTargets,
+                    minTargets = firstReq.effectiveMinCount,
+                    targetDescription = firstReq.description,
+                    targetRequirements = if (targetReqInfos.size > 1) targetReqInfos else null,
+                    affordable = canAfford,
+                    manaCostString = splicedCost.toString(),
+                    autoTapPreview = autoTapPreview
+                ))
+            }
+        }
+    }
+
+    private fun enumerateKicker(
+        context: EnumerationContext,
+        hand: List<EntityId>,
+        result: MutableList<LegalAction>
+    ) {
+        val state = context.state
+        val playerId = context.playerId
+
+        for (cardId in hand) {
+            val cardComponent = state.getEntity(cardId)?.get<CardComponent>() ?: continue
+            if (cardComponent.typeLine.isLand) continue
+            if (context.cantCastSpell(cardId)) continue
+
+            val cardDef = context.cardRegistry.getCard(cardComponent.name) ?: continue
+            val optionalCosts = cardDef.keywordAbilities.filterIsInstance<KeywordAbility.OptionalAdditionalCost>()
+            if (optionalCosts.isEmpty()) continue
+
+            // Card-level gates, checked before the per-slot loop so an unplayable card is skipped
+            // whole — including the unaffordable-normal-cast fallback at the bottom, which must not
+            // advertise a cast the timing rules forbid outright.
+            val isInstant = cardComponent.typeLine.isInstant
+            val hasFlash = cardDef.keywords.contains(Keyword.FLASH)
+            val grantedFlash = hasFlash || context.castPermissionUtils.hasGrantedFlash(state, cardId)
+            if (!isInstant && !grantedFlash && optionalCosts.none { it.grantsFlashTiming } &&
+                !context.canPlaySorcerySpeed
+            ) continue
+
+            val castRestrictions = cardDef.script.castRestrictions
+            if (castRestrictions.isNotEmpty() && !context.castPermissionUtils.checkCastRestrictions(state, playerId, castRestrictions)) continue
+
+            // One cast variant per mechanic riding the optional-additional-cost rail, keyed by the
+            // slot it declares: kicker/multikicker/offspring stamp KICKED, bargain stamps BARGAINED
+            // (CR 702.166b). Grouping by slot keeps them separate cast options rather than one
+            // conflated "kicked" cast.
+            for ((declaredSlot, kickers) in optionalCosts.groupBy { it.declaredSlot }) {
+                val manaKicker = kickers.firstOrNull { it.manaCost != null && it.keyword != Keyword.OFFSPRING }
+                val additionalCostKicker = kickers.firstOrNull { it.additionalCost != null }
+                val offspringAbility = kickers.firstOrNull { it.keyword == Keyword.OFFSPRING }
+                val collectEvidenceAtom = (
+                    (additionalCostKicker?.additionalCost as? AdditionalCost.Atom)?.atom
+                    ) as? CostAtom.CollectEvidence
+
+                // Re-check timing per slot: the flash unlock belongs to the mechanic that prints it
+                // (Ghitu Fire's pay-{2}-more clause), so a bargain variant on the same card must not
+                // ride a kicker's instant-speed permission.
+                val flashKicker = manaKicker?.grantsFlashTiming == true ||
+                    additionalCostKicker?.grantsFlashTiming == true
+                if (!isInstant && !grantedFlash && !flashKicker && !context.canPlaySorcerySpeed) continue
+
+                // Calculate kicked/offspring cost. The base cost is priced *for this branch*: a
+                // "costs {2} less to cast if it's bargained" reduction (Hamlet Glutton) is gated on the
+                // declaration, so it only applies to the variant that declares it.
+                val baseCost = context.costCalculator.calculateEffectiveCost(
+                    state, cardDef, playerId, declaredCostSlot = declaredSlot,
+                )
+                val kickedManaCost = manaKicker?.manaCost ?: offspringAbility?.manaCost
+                val kickedCost = if (kickedManaCost != null) baseCost + kickedManaCost else baseCost
+                val kickedSpellContext = spellPaymentContextFor(cardComponent, isKicked = declaredSlot == ChoiceSlot.KICKED)
+                val canAffordKickedMana = context.manaSolver.canPay(state, playerId, kickedCost, spellContext = kickedSpellContext, precomputedSources = context.availableManaSources)
+                val kickedCostString = kickedCost.toString()
+                val kickedAutoTapPreview = if (context.skipAutoTapPreview) null else {
+                    context.manaSolver.solve(state, playerId, kickedCost, spellContext = kickedSpellContext, precomputedSources = context.availableManaSources)
+                        ?.sources?.map { it.entityId }
+                }
+
+                // Kicker {X} (e.g. Verdeloth the Ancient): the kicked cost carries {X}, so the
+                // client must prompt for X exactly like a base-cost X spell. The chosen X flows
+                // through CastSpell.xValue → SpellOnStackComponent.xValue → the ETB event's
+                // xValue, which "create X tokens" reads via DynamicAmount.XValue.
+                val kickedHasXCost = kickedCost.hasX
+                val kickedMaxAffordableX: Int? = if (kickedHasXCost) {
+                    val availableSources = context.manaSolver.getAvailableManaCount(state, playerId, precomputedSources = context.availableManaSources, spellContext = kickedSpellContext)
+                    val fixedCost = kickedCost.cmc  // X contributes 0 to CMC
+                    val xSymbolCount = kickedCost.xCount.coerceAtLeast(1)
+                    ((availableSources - fixedCost) / xSymbolCount).coerceAtLeast(0)
+                } else null
+
+                // Check additional cost payability (e.g., sacrifice a creature)
+                var kickerCostInfo: AdditionalCostData? = null
+                var canPayKickerAdditionalCost = true
+                if (additionalCostKicker?.additionalCost != null) {
+                    when (val cost = additionalCostKicker.additionalCost) {
+                        is AdditionalCost.Atom -> when (val atom = cost.atom) {
+                            is CostAtom.Sacrifice -> {
+                                val validSacTargets = context.costUtils.findSacrificeTargets(state, playerId, atom)
+                                if (validSacTargets.size < atom.count) {
+                                    canPayKickerAdditionalCost = false
+                                } else {
+                                    kickerCostInfo = AdditionalCostData(
+                                        description = atom.description.replaceFirstChar { it.uppercase() },
+                                        costType = "SacrificePermanent",
+                                        validSacrificeTargets = validSacTargets,
+                                        sacrificeCount = atom.count
+                                    )
+                                }
+                            }
+                            // CR 701.59b — the collect-evidence branch is only payable when the
+                            // graveyard's *total mana value* reaches N. The resolver also builds
+                            // the picker payload, whose candidate pool is the whole graveyard and
+                            // whose real constraint is the mana-value floor, not a card count.
+                            is CostAtom.CollectEvidence -> {
+                                // The optional rail is enumerated before targets exist, so only a
+                                // statically-priced threshold can be gated here; nothing prints a
+                                // target-derived one as an optional cost (Urgent Necropsy's is
+                                // mandatory — see the mandatory branch above).
+                                val info = com.wingedsheep.engine.handlers.costs.CollectEvidenceResolver
+                                    .costInfo(
+                                        state, playerId,
+                                        com.wingedsheep.engine.handlers.costs.CostAtomAmounts
+                                            .evaluate(state, atom.amount),
+                                        excludeCardId = cardId,
+                                    )
+                                if (info == null) canPayKickerAdditionalCost = false
+                                else kickerCostInfo = info
+                            }
+                            // "Tap any number of creatures you control with total power N or more"
+                            // — Teamwork N (CR 702.194a). The candidate pool and the threshold are
+                            // the crew/saddle payload; the caster's chosen ids come back as
+                            // `additionalCostPayment.variableCostPermanents`.
+                            is CostAtom.VariablePermanents -> {
+                                val projected = state.projectedState
+                                val candidates = VariablePermanentsCost.candidates(state, playerId, atom)
+                                // The cost info is published even when the threshold is out of
+                                // reach, so the greyed-out variant still tells the player what
+                                // teamwork would ask for; affordability is the separate flag.
+                                canPayKickerAdditionalCost = VariablePermanentsCost.canPay(state, playerId, atom)
+                                kickerCostInfo = AdditionalCostData(
+                                    description = atom.description.replaceFirstChar { it.uppercase() },
+                                    costType = "TapForTotalPower",
+                                    tapForPowerRequired = atom.minMeasure,
+                                    tapForPowerCreatures = candidates.map { creatureId ->
+                                        TapForPowerCreatureData(
+                                            entityId = creatureId,
+                                            name = state.getEntity(creatureId)?.get<CardComponent>()?.name ?: "Unknown",
+                                            power = projected.getPower(creatureId) ?: 0
+                                        )
+                                    }
                                 )
                             }
                             else -> {}
