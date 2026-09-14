@@ -1,6 +1,7 @@
 package com.wingedsheep.engine.scenarios
 
 import com.wingedsheep.engine.core.ChooseTargetsDecision
+import com.wingedsheep.engine.core.TargetsResponse
 import com.wingedsheep.engine.core.YesNoDecision
 import com.wingedsheep.engine.support.ScenarioTestBase
 import com.wingedsheep.sdk.core.Phase
@@ -31,8 +32,12 @@ class MaskedVandalScenarioTest : ScenarioTestBase() {
             game.answerYesNo(true)
             game.resolveStack()
             if (game.getPendingDecision() is ChooseTargetsDecision) {
-                val creature = game.state.getGraveyard(game.player1Id).single()
-                game.selectTargets(listOf(creature)).error shouldBe null
+                val choice = game.getPendingDecision() as ChooseTargetsDecision
+                val requirement = choice.targetRequirements.single()
+                val creature = choice.legalTargets.getValue(requirement.index).single()
+                game.submitDecision(
+                    TargetsResponse(choice.id, mapOf(requirement.index to listOf(creature)))
+                ).error shouldBe null
                 game.resolveStack()
             }
 
