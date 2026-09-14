@@ -59,7 +59,6 @@ class LilysplashDeckReadinessTest : FunSpec({
             "Hidden Strings",
             "Masked Vandal",
             "Rustvine Cultivator",
-            "Saprazzan Skerry",
             "Secret Door",
             "Snap",
             "Vizier of Tumbling Sands",
