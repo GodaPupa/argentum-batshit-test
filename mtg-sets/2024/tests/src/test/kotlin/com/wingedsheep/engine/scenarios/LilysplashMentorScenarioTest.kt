@@ -554,6 +554,7 @@ class LilysplashMentorScenarioTest : FunSpec({
         val removal = driver.putCardInHand(opponent, "Doom Blade")
         driver.giveMana(opponent, Color.BLACK, 1)
         driver.giveColorlessMana(opponent, 1)
+        driver.passPriority(player)
         driver.castSpell(opponent, removal, listOf(mentor)).isSuccess shouldBe true
         driver.bothPass()
         driver.submitYesNo(player, true).isSuccess shouldBe true
