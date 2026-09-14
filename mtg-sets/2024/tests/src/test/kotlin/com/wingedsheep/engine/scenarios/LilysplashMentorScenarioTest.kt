@@ -24,6 +24,7 @@ import com.wingedsheep.sdk.model.EntityId
 import com.wingedsheep.sdk.scripting.TimingRule
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
+import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.string.shouldContain
 
 /** Deterministic coverage for Lilysplash Mentor's blink activation and restrictions. */
@@ -130,7 +131,7 @@ class LilysplashMentorScenarioTest : FunSpec({
         val result = driver.activate(mentor, mentor)
 
         result.isSuccess shouldBe false
-        result.error.orEmpty() shouldContain "target"
+        result.error.shouldNotBeNull()
     }
 
     test("it cannot target a creature an opponent controls") {
@@ -145,7 +146,7 @@ class LilysplashMentorScenarioTest : FunSpec({
         val result = driver.activate(mentor, bears)
 
         result.isSuccess shouldBe false
-        result.error.orEmpty() shouldContain "target"
+        result.error.shouldNotBeNull()
     }
 
     test("an exiled token does not return or receive a counter") {

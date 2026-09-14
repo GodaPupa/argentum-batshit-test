@@ -205,6 +205,13 @@ object ZoneTransitionService {
         val currentZoneKey = fromZoneKey ?: findEntityZone(state, entityId)
             ?: return ZoneTransitionResult(state, emptyList())
 
+        // CR 111.8: once a token has left the battlefield, it cannot change zones again.
+        // This guard must live in the canonical transition service because consecutive effects
+        // can attempt a second move before state-based actions make the token cease to exist.
+        if (container.has<TokenComponent>() && currentZoneKey.zoneType != Zone.BATTLEFIELD) {
+            return ZoneTransitionResult(state, emptyList())
+        }
+
         val oldObject = state.objectRef(entityId)
         val fromZone = currentZoneKey.zoneType
         val leavingBattlefield = fromZone == Zone.BATTLEFIELD
