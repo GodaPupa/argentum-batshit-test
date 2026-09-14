@@ -223,8 +223,8 @@ class PestControlMonoRedMadnessDecisionTest : ScenarioTestBase() {
             cardName(game, discarded) shouldBe "Sneaky Snacker"
         }
 
-        test("Melded Moxite takes a concrete Snacker return and declines a zero-draw discard") {
-            val productive = seeded()
+        test("Melded Moxite accepts the deterministic Sneaky Snacker third-draw payoff") {
+            val game = seeded()
                 .withLandsOnBattlefield(1, "Mountain", 2)
                 .withCardInHand(1, "Melded Moxite")
                 .withCardInHand(1, "Sneaky Snacker")
@@ -232,39 +232,66 @@ class PestControlMonoRedMadnessDecisionTest : ScenarioTestBase() {
                 .withCardInLibrary(1, "Lightning Bolt")
                 .withCardInLibrary(1, "Lava Dart")
                 .build()
-            productive.state = productive.state.updateEntity(productive.player1Id) {
+            game.state = game.state.updateEntity(game.player1Id) {
                 it.with(CardsDrawnThisTurnComponent(1))
             }
-            productive.castSpell(1, "Melded Moxite").error.shouldBeNull()
-            if (productive.state.pendingDecision is SelectManaSourcesDecision) {
-                productive.submitManaSourcesAutoPay().error.shouldBeNull()
+            game.castSpell(1, "Melded Moxite").error.shouldBeNull()
+            if (game.state.pendingDecision is SelectManaSourcesDecision) {
+                game.submitManaSourcesAutoPay().error.shouldBeNull()
             }
-            productive.resolveStack()
+            game.resolveStack()
 
-            val accept = ai(productive).respondToDecision(
-                productive.state,
-                productive.state.pendingDecision!!,
+            val agent = ai(game)
+            val accept = agent.respondToDecision(
+                game.state,
+                game.state.pendingDecision!!,
             ).shouldBeInstanceOf<YesNoResponse>()
-            accept.choice.shouldBeTrue()
-            productive.answerYesNo(true).error.shouldBeNull()
-            val discardDecision = productive.state.pendingDecision.shouldBeInstanceOf<SelectCardsDecision>()
-            val discard = ai(productive).respondToDecision(productive.state, discardDecision)
-                .shouldBeInstanceOf<CardsSelectedResponse>()
-            discard.selectedCards.single().let { cardName(productive, it) } shouldBe "Sneaky Snacker"
+            withClue(
+                "Moxite positive payoff expected ACCEPT but observed choice=${accept.choice}; " +
+                    "hand=${game.state.getHand(game.player1Id).mapNotNull { cardName(game, it) }}; " +
+                    "librarySize=${game.state.getLibrary(game.player1Id).size}; " +
+                    "cardsDrawnThisTurn=1; available untapped Mountains=0 after paying {1}{R}",
+            ) {
+                accept.choice.shouldBeTrue()
+            }
 
-            val restrained = seeded()
+            game.answerYesNo(true).error.shouldBeNull()
+            val discardDecision = game.state.pendingDecision.shouldBeInstanceOf<SelectCardsDecision>()
+            val legalOptions = discardDecision.options.mapNotNull { cardName(game, it) }
+            val discard = agent.respondToDecision(game.state, discardDecision)
+                .shouldBeInstanceOf<CardsSelectedResponse>()
+            val selected = discard.selectedCards.singleOrNull()?.let { cardName(game, it) }
+            withClue(
+                "Moxite positive payoff expected Sneaky Snacker; observed selected=$selected; " +
+                    "legal discard options=$legalOptions; the discard precedes draws two and " +
+                    "deterministically enables the third-draw return",
+            ) {
+                selected shouldBe "Sneaky Snacker"
+            }
+        }
+
+        test("Melded Moxite declines discarding Lightning Bolt for zero available draws") {
+            val game = seeded()
                 .withLandsOnBattlefield(1, "Mountain", 2)
                 .withCardInHand(1, "Melded Moxite")
                 .withCardInHand(1, "Lightning Bolt")
                 .build()
-            restrained.castSpell(1, "Melded Moxite").error.shouldBeNull()
-            if (restrained.state.pendingDecision is SelectManaSourcesDecision) {
-                restrained.submitManaSourcesAutoPay().error.shouldBeNull()
+            game.castSpell(1, "Melded Moxite").error.shouldBeNull()
+            if (game.state.pendingDecision is SelectManaSourcesDecision) {
+                game.submitManaSourcesAutoPay().error.shouldBeNull()
             }
-            restrained.resolveStack()
+            game.resolveStack()
 
-            ai(restrained).respondToDecision(restrained.state, restrained.state.pendingDecision!!)
-                .shouldBeInstanceOf<YesNoResponse>().choice.shouldBeFalse()
+            val legalDiscardOptions = game.state.getHand(game.player1Id).mapNotNull { cardName(game, it) }
+            val decline = ai(game).respondToDecision(game.state, game.state.pendingDecision!!)
+                .shouldBeInstanceOf<YesNoResponse>()
+            withClue(
+                "Moxite restraint expected DECLINE but observed choice=${decline.choice}; " +
+                    "legal discard options=$legalDiscardOptions; librarySize=0; " +
+                    "available draws=0; available untapped Mountains=0 after paying {1}{R}",
+            ) {
+                decline.choice.shouldBeFalse()
+            }
         }
 
         test("Melded Moxite converts an otherwise idle artifact but yields to stronger development") {
