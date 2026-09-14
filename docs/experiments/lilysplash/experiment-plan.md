@@ -46,6 +46,10 @@ The minimum executable combo suite is:
 
 ### Stage 3 — Paired goldfish preflight
 
+Opening-hand substage complete for 12 frozen seeds × both seats. Exact traces and the audit verdict
+are recorded in `opening-hand-preflight-v0.1.md`; the generic mulligan policy's failure to require
+both commander colors must be isolated before a land-base challenger is judged.
+
 Measure, per game:
 
 - mulligans and opening colored sources;
