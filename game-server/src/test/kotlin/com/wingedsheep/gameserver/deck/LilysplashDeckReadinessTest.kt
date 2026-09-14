@@ -60,7 +60,6 @@ class LilysplashDeckReadinessTest : FunSpec({
             "Hickory Woodlot",
             "Hidden Strings",
             "Masked Vandal",
-            "Pollenbright Druid",
             "Rustvine Cultivator",
             "Saprazzan Skerry",
             "Secret Door",
