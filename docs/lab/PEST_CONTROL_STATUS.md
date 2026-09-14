@@ -1,6 +1,6 @@
 # Project Pest Control — Status
 
-- Status: Sample #2 Take 8 accepted after one complete, clean execution/audit; result-head remote CI pending
+- Status: Matchup Gates 1–2 complete; final exact-head CI and Argentum Validation pending
 - Laboratory: Project Pest Control
 - Branch: `pest-control/lab`
 - Validated base: `47882cd645caf126afee6cf13a65909806fa40ab`
@@ -27,6 +27,42 @@
   `d20e57b5e588546911d6f16b63d274651038bd49b53580f27f9a208448859f2f`
 - Control version: Pest Control v1.0 (permanent, immutable)
 - Candidate status: proposed Tier-1 architecture only; not approved, constructed, or run
+
+## Matchup validation — Gates 1–2
+
+The first Pest-specific opponent identity is
+`PEST_CONTROL_V10_VS_MONO_RED_MADNESS_SOTERX_2026_09_11_PREBOARD_V1`: SoterX's
+first-place Mono Red Madness 75 from the 52-player MTGO Pauper Challenge 32 on September 11,
+2026. The complete sourced 75 and its canonical hashes are preserved in
+`docs/experiments/pest-control/matchup-gate-1-mono-red-madness-soterx.md`. Only the exact
+60-card maindeck is approved for a future preboard protocol; the sideboard remains identity-only
+and has not been instantiated or validated.
+
+Gate 2's deterministic, seedless validation is complete. Its focused fixtures and the relevant
+existing suites establish:
+
+- Melded Moxite's optional discard/draw-two branch, decline and no-discard branches, and
+  `{3}`, sacrifice Robot activation;
+- Mono Red opening-hand, deterministic land-access, curve-sufficiency, London-bottom, madness,
+  Sneaky Snacker recursion, burn-restraint, burn-targeting, spell-engine sequencing, and Weather
+  response policies;
+- Pest's Weather, normal/enhanced Follow, removal, payoff-deployment, and survival decisions;
+- legal optional-cost payment from the actual post-originating-action state;
+- the final post-attack Fireblast survival boundary through authoritative blockers, priority,
+  combat-damage, and terminal resolution;
+- hidden-information determinization, preservation of player-visible state, non-mutation of the
+  authoritative state during search, legal-action submission, and required response windows.
+
+The fixture driver declares blockers exactly once, recognizes
+`BlockersDeclaredThisCombatComponent`, and retains its 40-transition loop guard. Passing the final
+must-act window demonstrates lethal; taking the selected Fireblast line removes Pest Mascot and
+prevents that loss. The timing premise remains unchanged: Mono Red may pass over Weather the Storm
+and act after Pest Mascot is declared attacking.
+
+All 13 Pest gameplay runners remain disabled. Gate 2 generated zero seeds and executed zero games.
+No matchup driver, telemetry contract, seed vector, sideboard behavior, deck change, or challenger
+was created. Gate 3 remains blocked pending research-director authorization and may not begin until
+fresh CI and Argentum Validation both succeed on the identical final Gate 2 head.
 
 ## Goldfish Sample #2 independent replication authorization
 
