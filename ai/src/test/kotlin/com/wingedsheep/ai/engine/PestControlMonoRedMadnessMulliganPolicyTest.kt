@@ -36,6 +36,13 @@ class PestControlMonoRedMadnessMulliganPolicyTest : ScenarioTestBase() {
         gameStateProvider = { game.state },
     )
 
+    private fun openingHand(vararg cardNames: String): TestGame {
+        require(cardNames.size == 7)
+        val builder = scenario().withPlayers("Opener", "Opponent")
+        cardNames.forEach { builder.withCardInHand(1, it) }
+        return builder.build()
+    }
+
     private fun mulliganDecision(
         game: TestGame,
         hand: List<com.wingedsheep.sdk.model.EntityId> = game.state.getHand(game.player1Id),
@@ -129,6 +136,115 @@ class PestControlMonoRedMadnessMulliganPolicyTest : ScenarioTestBase() {
                 .build()
 
             mulliganDecision(game) shouldBe false
+        }
+
+        test("requires nonempty executable evidence within the established early horizon") {
+            val payableTwoDrop = openingHand(
+                "Mountain", "Mountain", "Lightning Bolt", "Guttersnipe", "Guttersnipe",
+                "Fiery Temper", "Fiery Temper",
+            )
+            val threeLandDevelopment = openingHand(
+                "Mountain", "Mountain", "Mountain", "Guttersnipe", "Fiery Temper",
+                "Fiery Temper", "Fiery Temper",
+            )
+            val emptyEarlySet = openingHand(
+                "Mountain", "Mountain", "Guttersnipe", "Guttersnipe", "Guttersnipe",
+                "Guttersnipe", "Fierce Witchstalker",
+            )
+
+            withClue("two deterministic lands make the one-mana development spell executable") {
+                mulliganDecision(payableTwoDrop) shouldBe true
+            }
+            withClue("three deterministic Mountains make normal three-mana development executable") {
+                mulliganDecision(threeLandDevelopment) shouldBe true
+            }
+            withClue("an empty early-action set cannot pass through zero color mismatches") {
+                mulliganDecision(emptyEarlySet) shouldBe false
+            }
+        }
+
+        test("applies curve sufficiency equally to madness and non-madness slow hands") {
+            val normallyCastableMadness = openingHand(
+                "Mountain", "Mountain", "Mountain", "Fiery Temper", "Guttersnipe",
+                "Guttersnipe", "Guttersnipe",
+            )
+            val nonMadnessSlow = openingHand(
+                "Mountain", "Mountain", "Guttersnipe", "Guttersnipe", "Guttersnipe",
+                "Guttersnipe", "Fierce Witchstalker",
+            )
+
+            withClue("Fiery Temper retains its legitimate normal-cast value at three mana") {
+                mulliganDecision(normallyCastableMadness) shouldBe true
+            }
+            withClue("two lands do not imply an unproven third land for a non-madness curve") {
+                mulliganDecision(nonMadnessSlow) shouldBe false
+            }
+        }
+
+        test("evaluates colorless and colored early mana semantically") {
+            val colorlessAction = openingHand(
+                "Mountain", "Mountain", "Campfire", "Guttersnipe", "Guttersnipe",
+                "Fiery Temper", "Fiery Temper",
+            )
+            val wrongColor = openingHand(
+                "Forest", "Forest", "Lightning Bolt", "Lightning Bolt", "Lightning Bolt",
+                "Lightning Bolt", "Lightning Bolt",
+            )
+
+            withClue("a payable colorless action needs no colored source") {
+                mulliganDecision(colorlessAction) shouldBe true
+            }
+            withClue("green lands cannot pay a red early spell") {
+                mulliganDecision(wrongColor) shouldBe false
+            }
+        }
+
+        test("counts target-dependent interaction but enforces mandatory controller costs") {
+            val reactiveInteraction = openingHand(
+                "Swamp", "Swamp", "Cast Down", "Pest Mascot", "Pest Mascot",
+                "Blood Researcher", "Fierce Witchstalker",
+            )
+            val missingSacrifice = openingHand(
+                "Mountain", "Mountain", "Shrapnel Blast", "Guttersnipe", "Guttersnipe",
+                "Fiery Temper", "Fiery Temper",
+            )
+
+            withClue("Cast Down is mana-reachable without inventing a pregame target") {
+                mulliganDecision(reactiveInteraction) shouldBe true
+            }
+            withClue("Shrapnel Blast cannot qualify without an artifact to sacrifice") {
+                mulliganDecision(missingSacrifice) shouldBe false
+            }
+        }
+
+        test("does not spend a newly played tapped land before a legal untap") {
+            val game = openingHand(
+                "Jungle Hollow", "Jungle Hollow", "Carrier Thrall", "Pest Mascot",
+                "Blood Researcher", "Fierce Witchstalker", "Fierce Witchstalker",
+            )
+
+            mulliganDecision(game) shouldBe false
+        }
+
+        test("London bottoming preserves the only early development line") {
+            val game = openingHand(
+                "Mountain", "Mountain", "Lightning Bolt", "Guttersnipe", "Guttersnipe",
+                "Fiery Temper", "Fiery Temper",
+            )
+            val hand = game.state.getHand(game.player1Id)
+            val cardSummaries = summaries(game, hand)
+            val bolt = hand.single { cardSummaries.getValue(it).name == "Lightning Bolt" }
+
+            val bottomed = controller(game).chooseBottomCards(
+                BottomCardsInfo(
+                    hand = hand,
+                    cardsToPutOnBottom = 2,
+                    cards = cardSummaries,
+                )
+            )
+
+            bottomed.size shouldBe 2
+            bottomed shouldNotContain bolt
         }
 
         test("keeps a functional one-Forest hand with payable Generous Ent and a Forest target") {
