@@ -34,7 +34,12 @@ jobs:
           scripts/gradle-locked :mtg-sets:test --tests "*CardDefinitionSnapshotTest" -DupdateSnapshots=true
       - name: Verify exact snapshot scope
         run: |
-          mapfile -t changed < <(git diff --name-only | sort)
+          mapfile -t changed < <(
+            {
+              git diff --name-only
+              git ls-files --others --exclude-standard
+            } | sort -u
+          )
           expected=(
             "mtg-sets/src/test/resources/snapshots/cards/5DN.json"
             "mtg-sets/src/test/resources/snapshots/cards/J25.json"
