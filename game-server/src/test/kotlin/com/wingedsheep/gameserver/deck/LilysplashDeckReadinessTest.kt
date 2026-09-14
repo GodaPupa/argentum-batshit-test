@@ -53,7 +53,6 @@ class LilysplashDeckReadinessTest : FunSpec({
         unresolved shouldBe setOf(
             "Capsize",
             "Dawn's Reflection",
-            "Displace",
             "Evolution Witness",
             "Gilded Scuttler",
             "Hidden Strings",
