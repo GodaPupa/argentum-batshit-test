@@ -66,7 +66,6 @@ class LilysplashDeckReadinessTest : FunSpec({
             "Hickory Woodlot",
             "Hidden Strings",
             "Kasmina's Transmutation",
-            "Llanowar Visionary",
             "Masked Vandal",
             "Myconid Spore Tender",
             "Overgrowth",
