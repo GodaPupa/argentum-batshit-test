@@ -95,8 +95,8 @@ class PestControlMonoRedMadnessMulliganPolicyTest : ScenarioTestBase() {
                 .withCardInHand(1, "Fiery Temper")
                 .withCardInHand(1, "Fiery Temper")
                 .withCardInHand(1, "Fiery Temper")
-                .withCardInHand(1, "Fireblast")
-                .withCardInHand(1, "Fireblast")
+                .withCardInHand(1, "Guttersnipe")
+                .withCardInHand(1, "Guttersnipe")
                 .build()
 
             withClue("two Mountains cast Grab the Prize, which enables the represented madness line") {
