@@ -57,7 +57,6 @@ class LilysplashDeckReadinessTest : FunSpec({
             "Displace",
             "Emerald Charm",
             "Evolution Witness",
-            "Freed from the Real",
             "Gilded Scuttler",
             "Hickory Woodlot",
             "Hidden Strings",
