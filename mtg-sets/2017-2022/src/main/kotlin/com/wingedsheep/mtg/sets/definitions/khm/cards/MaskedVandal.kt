@@ -2,17 +2,24 @@ package com.wingedsheep.mtg.sets.definitions.khm.cards
 
 import com.wingedsheep.sdk.core.Keyword
 import com.wingedsheep.sdk.core.Zone
-import com.wingedsheep.sdk.dsl.Costs
 import com.wingedsheep.sdk.dsl.Effects
 import com.wingedsheep.sdk.dsl.Triggers
 import com.wingedsheep.sdk.dsl.card
 import com.wingedsheep.sdk.model.Printing
 import com.wingedsheep.sdk.model.Rarity
 import com.wingedsheep.sdk.scripting.GameObjectFilter
-import com.wingedsheep.sdk.scripting.effects.Gate
-import com.wingedsheep.sdk.scripting.effects.GatedEffect
+import com.wingedsheep.sdk.scripting.effects.CardDestination
+import com.wingedsheep.sdk.scripting.effects.CardSource
+import com.wingedsheep.sdk.scripting.effects.GatherCardsEffect
+import com.wingedsheep.sdk.scripting.effects.IfYouDoEffect
+import com.wingedsheep.sdk.scripting.effects.MayEffect
+import com.wingedsheep.sdk.scripting.effects.MoveCollectionEffect
+import com.wingedsheep.sdk.scripting.effects.SelectFromCollectionEffect
+import com.wingedsheep.sdk.scripting.effects.SelectionMode
+import com.wingedsheep.sdk.scripting.effects.SuccessCriterion
 import com.wingedsheep.sdk.scripting.filters.unified.TargetFilter
 import com.wingedsheep.sdk.scripting.targets.TargetPermanent
+import com.wingedsheep.sdk.scripting.values.DynamicAmount
 
 /** Masked Vandal — Kaldheim #184. */
 val MaskedVandal = card("Masked Vandal") {
@@ -33,15 +40,32 @@ val MaskedVandal = card("Masked Vandal") {
             "target artifact or enchantment an opponent controls",
             TargetPermanent(filter = TargetFilter.ArtifactOrEnchantment.opponentControls()),
         )
-        effect = GatedEffect(
-            gate = Gate.MayPay(
-                Costs.pay.Exile(
-                    filter = GameObjectFilter.Creature,
-                    zone = Zone.GRAVEYARD,
-                    count = 1,
-                )
+        effect = MayEffect(
+            IfYouDoEffect(
+                action = Effects.Composite(
+                    listOf(
+                        GatherCardsEffect(
+                            source = CardSource.FromZone(
+                                zone = Zone.GRAVEYARD,
+                                filter = GameObjectFilter.Creature,
+                            ),
+                            storeAs = "graveyardCreatures",
+                        ),
+                        SelectFromCollectionEffect(
+                            from = "graveyardCreatures",
+                            selection = SelectionMode.ChooseExactly(DynamicAmount.Fixed(1)),
+                            storeSelected = "toExile",
+                            selectedLabel = "Exile",
+                        ),
+                        MoveCollectionEffect(
+                            from = "toExile",
+                            destination = CardDestination.ToZone(Zone.EXILE),
+                        ),
+                    )
+                ),
+                ifYouDo = Effects.Move(permanent, Zone.EXILE),
+                successCriterion = SuccessCriterion.CollectionNonEmpty("toExile", min = 1),
             ),
-            then = Effects.Move(permanent, Zone.EXILE),
         )
     }
 
