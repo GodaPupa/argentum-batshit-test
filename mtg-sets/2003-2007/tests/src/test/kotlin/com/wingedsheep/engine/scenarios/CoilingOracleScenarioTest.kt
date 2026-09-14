@@ -3,6 +3,7 @@ package com.wingedsheep.engine.scenarios
 import com.wingedsheep.engine.support.GameTestDriver
 import com.wingedsheep.engine.support.TestCards
 import com.wingedsheep.mtg.sets.definitions.dis.cards.CoilingOracle
+import com.wingedsheep.sdk.core.Color
 import com.wingedsheep.sdk.core.Step
 import com.wingedsheep.sdk.model.Deck
 import io.kotest.core.spec.style.FunSpec
@@ -21,14 +22,21 @@ class CoilingOracleScenarioTest : FunSpec({
         while (!isPaused && state.stack.isNotEmpty()) bothPass()
     }
 
+    fun GameTestDriver.castOracle(player: com.wingedsheep.sdk.model.EntityId) {
+        val oracle = putCardInHand(player, "Coiling Oracle")
+        giveMana(player, Color.GREEN, 1)
+        giveMana(player, Color.BLUE, 1)
+        castSpell(player, oracle).isSuccess shouldBe true
+        resolveStack()
+    }
+
     test("its ETB puts a revealed land onto the battlefield") {
         val game = driver()
         val me = game.activePlayer!!
         game.putCardOnTopOfLibrary(me, "Island")
         val landsBefore = game.getLands(me).size
 
-        game.putCreatureOnBattlefield(me, "Coiling Oracle")
-        game.resolveStack()
+        game.castOracle(me)
 
         game.getLands(me).size shouldBe landsBefore + 1
         game.findPermanent(me, "Island") shouldBe game.getLands(me).single()
@@ -39,8 +47,7 @@ class CoilingOracleScenarioTest : FunSpec({
         val me = game.activePlayer!!
         game.putCardOnTopOfLibrary(me, "Grizzly Bears")
 
-        game.putCreatureOnBattlefield(me, "Coiling Oracle")
-        game.resolveStack()
+        game.castOracle(me)
 
         game.findCardInHand(me, "Grizzly Bears") shouldNotBe null
     }
