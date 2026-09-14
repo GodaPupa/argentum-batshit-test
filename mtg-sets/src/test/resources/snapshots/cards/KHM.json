@@ -2473,6 +2473,91 @@
     ]
 }
 
+// Masked Vandal
+{
+    "name": "Masked Vandal",
+    "manaCost": "{1}{G}",
+    "typeLine": "Creature — Shapeshifter",
+    "oracleText": "Changeling (This card is every creature type.)\nWhen this creature enters, you may exile a creature card from your graveyard. If you do, exile target artifact or enchantment an opponent controls.",
+    "creatureStats": {
+        "power": 1,
+        "toughness": 3
+    },
+    "keywords": [
+        "CHANGELING"
+    ],
+    "script": {
+        "triggeredAbilities": [
+            {
+                "id": "ability_1",
+                "trigger": {
+                    "type": "ZoneChangeEvent",
+                    "to": "Battlefield"
+                },
+                "effect": {
+                    "type": "Gated",
+                    "gate": {
+                        "type": "Gate.MayDecide",
+                        "feasibility": {
+                            "type": "HasCardsInZone",
+                            "zone": "Graveyard",
+                            "filter": "creature"
+                        }
+                    },
+                    "then": {
+                        "type": "Composite",
+                        "effects": [
+                            {
+                                "type": "SelectTarget",
+                                "requirement": {
+                                    "type": "TargetObject",
+                                    "filter": {
+                                        "baseFilter": "creature own:you",
+                                        "zone": "Graveyard"
+                                    }
+                                },
+                                "storeAs": "exiledCreature"
+                            },
+                            {
+                                "type": "MoveToZone",
+                                "target": {
+                                    "type": "PipelineTarget",
+                                    "collectionName": "exiledCreature"
+                                },
+                                "destination": "Exile",
+                                "fromZone": "Graveyard"
+                            },
+                            {
+                                "type": "MoveToZone",
+                                "target": {
+                                    "type": "BoundVariable",
+                                    "name": "target artifact or enchantment an opponent controls"
+                                },
+                                "destination": "Exile"
+                            }
+                        ]
+                    }
+                },
+                "targetRequirement": {
+                    "type": "TargetObject",
+                    "filter": {
+                        "baseFilter": "artifact|enchantment ctrl:opponent"
+                    },
+                    "id": "target artifact or enchantment an opponent controls"
+                }
+            }
+        ]
+    },
+    "metadata": {
+        "collectorNumber": "184",
+        "artist": "Jason A. Engle",
+        "imageUri": "https://cards.scryfall.io/normal/front/f/0/f0a9c72a-e450-41e3-80e5-06f2f1171245.jpg?1783928209"
+    },
+    "colorIdentityOverride": [
+        "GREEN"
+    ]
+}
+
 // Mistwalker
 {
     "name": "Mistwalker",
