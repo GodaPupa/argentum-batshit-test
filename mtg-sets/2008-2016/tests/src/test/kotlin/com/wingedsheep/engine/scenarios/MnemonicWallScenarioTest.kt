@@ -40,6 +40,7 @@ class MnemonicWallScenarioTest : FunSpec({
         (driver.pendingDecision is ChooseTargetsDecision) shouldBe true
         val targetDecision = driver.pendingDecision as ChooseTargetsDecision
         driver.submitTargetSelection(targetDecision.playerId, listOf(instant))
+        if (driver.state.stack.isNotEmpty()) driver.bothPass()
         driver.findCardInHand(player, "Lightning Bolt") shouldNotBe null
         driver.getGraveyardCardNames(player).contains("Lightning Bolt") shouldBe false
     }

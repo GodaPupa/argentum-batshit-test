@@ -39,7 +39,8 @@ class SagesRowDenizenScenarioTest : FunSpec({
             when (val decision = driver.pendingDecision) {
                 is ChooseTargetsDecision ->
                     driver.submitTargetSelection(decision.playerId, listOf(opponent))
-                else -> driver.bothPass()
+                null -> driver.bothPass()
+                else -> driver.autoResolveDecision()
             }
         }
 
