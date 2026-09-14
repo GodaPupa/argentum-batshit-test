@@ -352,10 +352,12 @@ class DecisionResponder(
     }
 
     /**
-     * Complete the narrow, common shape "you may … choose exactly one card …" one branch at a
-     * time. Each legal candidate is submitted through the authoritative action processor, and the
-     * resulting effect plus its immediate deterministic trigger chain is resolved by the ordinary
-     * simulator. Other decision shapes retain the established resolver path.
+     * Complete the narrow, common shape "you may … choose at most one card …" one branch at a
+     * time. Each legal singleton — and the empty branch when the continuation permits it — is
+     * submitted through the authoritative action processor, and the resulting effect plus its
+     * immediate deterministic trigger chain is resolved by the ordinary simulator. Evaluating the
+     * real empty branch preserves effects for which choosing nothing differs from declining the
+     * originating option. Other decision shapes retain the established resolver path.
      */
     private fun completedSingleCardBranch(
         state: GameState,
@@ -367,12 +369,23 @@ class DecisionResponder(
             YesNoResponse(decision.id, true),
         ) as? SimulationResult.NeedsDecision ?: return null
         val selection = accepted.decision as? SelectCardsDecision ?: return null
-        if (selection.playerId != playerId || selection.minSelections != 1 || selection.maxSelections != 1) {
+        if (
+            selection.playerId != playerId ||
+            selection.minSelections !in 0..1 ||
+            selection.maxSelections != 1
+        ) {
             return null
         }
 
-        val best = selection.options.mapNotNull { candidate ->
-            val response = CardsSelectedResponse(selection.id, listOf(candidate))
+        val responses = buildList {
+            selection.options.forEach { candidate ->
+                add(CardsSelectedResponse(selection.id, listOf(candidate)))
+            }
+            if (selection.minSelections == 0) {
+                add(CardsSelectedResponse(selection.id, emptyList()))
+            }
+        }
+        val best = responses.mapNotNull { response ->
             if (DecisionValidators.validate(selection, response, accepted.state) != null) return@mapNotNull null
             val result = simulator.simulateDecision(accepted.state, response)
             CompletedSelectionBranch(response, result, evaluateCompletedBranch(result, playerId))
