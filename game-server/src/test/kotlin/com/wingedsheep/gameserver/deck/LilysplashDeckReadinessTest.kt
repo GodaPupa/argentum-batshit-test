@@ -55,7 +55,6 @@ class LilysplashDeckReadinessTest : FunSpec({
             "Coiling Oracle",
             "Dawn's Reflection",
             "Displace",
-            "Emerald Charm",
             "Evolution Witness",
             "Gilded Scuttler",
             "Hickory Woodlot",
