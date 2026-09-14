@@ -56,7 +56,6 @@ class LilysplashDeckReadinessTest : FunSpec({
             "Displace",
             "Evolution Witness",
             "Gilded Scuttler",
-            "Hickory Woodlot",
             "Hidden Strings",
             "Masked Vandal",
             "Rustvine Cultivator",
