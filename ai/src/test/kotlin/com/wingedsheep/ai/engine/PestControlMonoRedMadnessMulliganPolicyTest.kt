@@ -77,6 +77,39 @@ class PestControlMonoRedMadnessMulliganPolicyTest : ScenarioTestBase() {
     }
 
     init {
+        test("keeps madness only when the opening hand has a usable discard path") {
+            val withOutlet = scenario()
+                .withPlayers("Mono Red", "Opponent")
+                .withCardInHand(1, "Mountain")
+                .withCardInHand(1, "Mountain")
+                .withCardInHand(1, "Grab the Prize")
+                .withCardInHand(1, "Fiery Temper")
+                .withCardInHand(1, "Lightning Bolt")
+                .withCardInHand(1, "Sneaky Snacker")
+                .withCardInHand(1, "Kessig Flamebreather")
+                .build()
+            val withoutOutlet = scenario()
+                .withPlayers("Mono Red", "Opponent")
+                .withCardInHand(1, "Mountain")
+                .withCardInHand(1, "Mountain")
+                .withCardInHand(1, "Fiery Temper")
+                .withCardInHand(1, "Fiery Temper")
+                .withCardInHand(1, "Fiery Temper")
+                .withCardInHand(1, "Fireblast")
+                .withCardInHand(1, "Fireblast")
+                .build()
+
+            withClue("two Mountains cast Grab the Prize, which enables the represented madness line") {
+                mulliganDecision(withOutlet) shouldBe true
+            }
+            withClue(
+                "the outlet-free control has no spell it can cast from the opening resources and " +
+                    "must not retain Fiery Temper on the premise that madness is available"
+            ) {
+                mulliganDecision(withoutOutlet) shouldBe false
+            }
+        }
+
         test("canonical Highway Robbery is random draw with Plot, not deterministic land access") {
             val highway = cardRegistry.requireCard("Highway Robbery")
             highway.manaCost.toString() shouldBe "{1}{R}"
