@@ -77,7 +77,6 @@ class LilysplashDeckReadinessTest : FunSpec({
             "Snap",
             "Teferi's Time Twist",
             "Utopia Sprawl",
-            "Vapor Snag",
             "Vizier of Tumbling Sands",
             "Whirlpool Rider",
             "Wild Growth",
