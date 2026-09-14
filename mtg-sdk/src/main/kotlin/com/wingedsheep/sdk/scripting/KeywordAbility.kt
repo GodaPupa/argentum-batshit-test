@@ -271,12 +271,12 @@ sealed interface KeywordAbility {
     }
 
     // =========================================================================
-    // Optional Additional Cost (Kicker, Multikicker, Offspring, FlashKicker, Bargain)
+    // Optional Additional Cost (Kicker, Multikicker, Buyback, Offspring, FlashKicker, Bargain)
     // =========================================================================
 
     /**
      * **Optional additional cost paid at cast time.** Generalises Kicker, Multikicker,
-     * Offspring, Bargain, and the pre-kicker "pay {N} more to cast as though it had flash"
+     * Buyback, Offspring, Bargain, and the pre-kicker "pay {N} more to cast as though it had flash"
      * pattern (Ghitu Fire et al.). The card script gates effect variations on the durable
      * fact recorded in [declaredSlot] — read via [WasKicked] / `Conditions.WasBargained`,
      * or `wasKicked` in trigger filters — when [branchesEffect] is `true`.
@@ -290,6 +290,8 @@ sealed interface KeywordAbility {
      * - **Kicker / Multikicker / Offspring** ([branchesEffect] = `true`) — the spell's
      *   effect branches on `WasKicked`. [multi] = `true` lets the cost be paid any
      *   number of times (Multikicker).
+     * - **Buyback** ([declaredSlot] = [ChoiceSlot.BUYBACK]) — the resolving spell returns to its
+     *   owner's hand instead of going to its graveyard.
      * - **Bargain** ([declaredSlot] = [ChoiceSlot.BARGAINED]) — same shape as
      *   kicker-with-a-sacrifice-cost, but a *different* fact (CR 702.166b), so bargaining
      *   never reads as kicking and vice versa.
@@ -297,7 +299,7 @@ sealed interface KeywordAbility {
      *   be cast as though it had flash. Effect is unchanged unless the card also opts
      *   into [branchesEffect] (rare — Ghitu Fire does not).
      *
-     * [displayPrefix] customises the printed label ("Kicker", "Multikicker", "Offspring");
+     * [displayPrefix] customises the printed label ("Kicker", "Multikicker", "Buyback", "Offspring");
      * for FlashKicker it's ignored and the description is rephrased to match the printed
      * oracle text, and for Bargain the `bargain()` DSL supplies the printed reminder text.
      *
@@ -1354,6 +1356,17 @@ sealed interface KeywordAbility {
          */
         fun kicker(additionalCost: AdditionalCost): KeywordAbility =
             OptionalAdditionalCost(additionalCost = additionalCost)
+
+        /**
+         * Create Buyback with a mana cost (CR 702.27). Paying it is recorded independently from
+         * kicker and changes the spell's normal post-resolution destination to its owner's hand.
+         */
+        fun buyback(cost: String): KeywordAbility = OptionalAdditionalCost(
+            manaCost = ManaCost.parse(cost),
+            displayPrefix = "Buyback",
+            branchesEffect = false,
+            declaredSlot = ChoiceSlot.BUYBACK
+        )
 
         /**
          * Create Multikicker — a kicker whose cost can be paid any number of times.

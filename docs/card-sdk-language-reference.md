@@ -1,5 +1,5 @@
-Warning: truncated output (original token count: 331990)
-... 279383 bytes omitted ...
+Warning: truncated output (original token count: 332135)
+... 279964 bytes omitted ...
 
 # Card SDK Language Reference
 
@@ -477,7 +477,451 @@ exist in the cost and charges the life through the shared life-payment service.
   control:"). The counted sibling of the variable-count `Costs.ExilePermanents` below — reach for
   this whenever the card names a specific number and nothing downstream reads an X. Pass a
   controller-scoped filter (`.youControl()`): the battlefield zone map is keyed by **owner**, so the
-  filter is what enforces "you control". Its selection is recorded, so a resolv…242152 tokens truncated…cost; CR 712.11b calls it choosing a face). Because the back is a real `backFace`, transform and the
+  filter is what enforces "you control". Its selection is recorded, so a resolving effect can name
+  the exiled cards via `CardSource.ExiledAsCost`.
+- `Costs.ExilePermanents(filter = Any, minCount = 1, excludeSelf = true, xMeasure = TOTAL_MANA_VALUE, minMeasure = 0)`
+  / `Costs.SacrificePermanents(filter = Any, minCount = 1, excludeSelf = false, xMeasure = COUNT, minMeasure = 0)`
+  / `Costs.TapPermanentsVariable(filter = Creature, minCount = 1, excludeSelf = false, xMeasure = COUNT, minMeasure = 0)` —
+  **variable-count** "exile/sacrifice/tap one or more permanents you control matching `filter`"
+  activated-ability cost (CR 601.2b — the player chooses how many, at least `minCount`, as the
+  ability is activated). One atom, `CostAtom.VariablePermanents`, with three orthogonal axes; the two
+  facades are the named entry points to it. With `excludeSelf` the ability's own source is excluded
+  ("one or more *other* …"); leave it false when the source may pay for itself.
+  - **`action`** (set by which facade you call) — `EXILE` moves the permanents via the normal
+    battlefield→exile transition; `SACRIFICE` puts them in their owners' graveyards through the same
+    path a fixed-count sacrifice cost uses, so "whenever you sacrifice" triggers and Food tracking
+    fire. Either way Auras fall off, tokens cease to exist, and leaves-the-battlefield triggers fire.
+    `TAP` taps them in place, leaving them on the battlefield — the Teamwork N shape, reached through
+    `Costs.additional.TapForTotalPower(n)` as a spell's additional cost and through
+    `Costs.TapPermanentsVariable(...)` as an activated-ability cost (Mossbridge Troll: "Tap any number
+    of untapped creatures you control other than this creature with total power 10 or greater:"). Only untapped permanents are candidates (CR 701.26a) and
+    summoning sickness never applies (CR 302.6 is about the `{T}` symbol, not a tap paid as a cost).
+  - **`xMeasure`** — how the choice is measured, both as the ability's **X** (read with
+    `DynamicAmount.XValue`) and as the quantity a `minMeasure` floor is compared against.
+    `TOTAL_MANA_VALUE` sums the chosen permanents' mana values, for "…with total mana value X" cards
+    whose target is bounded by `GameObjectFilter.manaValueAtMostX()`; `COUNT` is simply how many were
+    chosen, for "…for each permanent sacrificed this way"; `TOTAL_POWER` sums their **projected**
+    power, for "…with total power N or more". Either value is fixed at activation and
+    stored on the stack, so an X-bounded target is re-validated against it at resolution (CR 608.2b)
+    and a resolution-time `XValue` read can't be changed by removal in response.
+  - **`minMeasure`** — a floor on the *measure* rather than on the count (0 = none): "any number …
+    with total power N or more". Pair it with `minCount = 0` for the free-count shapes; the engine
+    marks the whole cost unpayable when every candidate together falls short (CR 601.2h).
+
+  This atom is also a **spell additional cost**, not only an activated-ability cost: teamwork
+  (CR 702.194a) rides it through `AdditionalCost.Atom`, paying from
+  `AdditionalCostPayment.variableCostPermanents`.
+
+  Backs **Fabrication Foundry** ("{2}{W}, {T}, Exile one or more other artifacts you control with
+  total mana value X: Return target artifact card with mana value X or less from your graveyard to
+  the battlefield") and **Radiant Lotus** ("{T}, Sacrifice one or more artifacts: Choose a color.
+  Target player adds three mana of the chosen color for each artifact sacrificed this way" —
+  `Costs.SacrificePermanents(Artifact, excludeSelf = false)` plus
+  `AddManaOfChoice(amount = Multiply(XValue, 3), recipient = <the target>)`). The engine drives the
+  activation in order: it pauses for the on-battlefield selection (min = `minCount`, max = all
+  eligible), computes X, then pauses again for the ability's target — so an over-X target can never
+  be chosen. Both pauses precede cost payment, so cancelling either is side-effect-free. Pair with
+  `TimingRule.SorcerySpeed` where the card says "Activate only as a sorcery."
+- `Costs.Forage()` (ability cost) / `Costs.additional.Forage` (additional cost) — Forage (CR
+  701.59a): "exile three cards from your graveyard **or** sacrifice a Food." A *choice* between two
+  sub-costs that belongs to the player. All cost-shaped forage payment is unified in the engine's
+  `ForageCostResolver`: the enumerators surface the available modes as separate legal actions (the
+  same multi-action pattern the "OrPay" costs use — `ExileFromGraveyard` and `SacrificePermanent`
+  cost-info, so the client's existing pickers let the player choose the mode *and* which cards/Food),
+  and payment honors that choice, only auto-paying a legal mode when none was supplied (AI /
+  engine-direct). Used as an activated/mana-ability cost (Camellia, Thornvault Forager), a modal
+  additional cost (Feed the Cycle), and the graveyard-cast permission (Osteomancer Adept, where the
+  card being cast is excluded from the exile pool). For a "you may forage" *effect* (not a cost) use
+  `Patterns.Mechanic.forage(afterEffect?)` instead. Every one of these paths emits the foraged event
+  that fires `Triggers.WheneverYouForage` — the cost forms from `ForageCostResolver.pay`, the effect
+  form from a marker inside each of its modes — so no context can forage without the payoffs seeing
+  it. A forage that was declined, or one no mode was feasible for, emits nothing: forage has no
+  "even if you can't" clause.
+- `Costs.RevealNotedCreatureType` (ability cost) — "Reveal the creature type you chose" (MKM — A Killer Among Us). Publishes the secret creature type this permanent's controller noted with `Effects.SecretlyChooseCreatureType(...)` (§ effects) and hands it to the ability's own effect as `chosenValues["chosenCreatureType"]` — the key `CardPredicate.HasSubtypeFromVariable` reads, so "if target attacking creature token is the chosen type" is an ordinary `Conditions.TargetMatchesFilter(Filters.creature.withSubtypeFromVariable("chosenCreatureType"))` test rather than new vocabulary. Two rules make it more than a formality. **Only the player who made the note can pay it**: for anyone else the cost is unpayable, so a permanent whose control changed hands stops offering the ability at all (the card's own ruling; CR 702.106d's linkage). And the type is **captured at activation, not at resolution** (CR 113.7a) — the same cost usually sacrifices the source, so by the time the ability resolves the permanent and its note are gone. Activated-ability-only: a spell has no source permanent to carry a note, and every other cost context reports it unpayable rather than half-paying it.
+- `Costs.Unattach` (ability cost) — "**Unattach this Equipment**" (RAV — Sunforger). Detaches the
+  ability's source from the permanent it is attached to, without moving it between zones (CR 701.3d).
+  The cost twin of `Effects.UnattachEquipment` (§ effects): the *effect* has existed since Stolen
+  Uniform's rider, the *cost* had not, and it is not a lookalike of any other atom — a sacrifice moves
+  zones, a tap can be restored, this does neither. Its affordability gate is the card's own ruling
+  ("You can't pay the cost of unattaching Sunforger unless Sunforger is attached to a creature"), so
+  the ability is offered as unaffordable while the Equipment sits loose. Payment runs through the same
+  `ZoneMovementUtils.unattachEmittingEvent` chokepoint as the effect, so a `Triggers.becomesUnattached`
+  trigger cannot tell the two apart. Activated-ability-only: a spell on the stack is attached to
+  nothing, so every other cost context reports it unpayable rather than half-paying it. Sunforger is
+  `Costs.Composite(Costs.Mana("{R}{W}"), Costs.Unattach)`.
+- `Costs.CollectEvidence(n)` (ability cost) / `Costs.additional.CollectEvidence(n)` (mandatory
+  additional cost) / `card { collectEvidence(n) }` (the optional **linked** cast cost) — Collect
+  evidence N (CR 701.59a): "exile any number of cards from your graveyard with total mana value N or
+  greater." Backed by one shared `CostAtom.CollectEvidence`, so the same payable thing serves an
+  activated-ability cost (Cryptex, Forensic Researcher, Polygraph Orb), a cast-time additional cost
+  (Extract a Confession, Vitu-Ghazi Inspector), and a `PayCost`. All of them route through the
+  engine's `CollectEvidenceResolver` — one reachability gate, one legality rule, one exile, one
+  `EvidenceCollectedEvent`.
+
+  **The threshold is a floor on total mana value, not a card count.** Exiling *more* than N is legal,
+  and mana-value-0 cards (lands) are legal selections contributing nothing — so "enough cards" never
+  implies "enough evidence". The picker is therefore a variable-size selection with a sum gate:
+  `AdditionalCostData.exileMinTotalWeight` (with the per-card `exileCardWeights` the client sums and
+  the `exileWeightUnit` it labels the tally with — the same payload the filtered
+  `ExileFromGraveyardForTotal` uses, so there is one sum-gated picker rather than one per cost) and
+  `SelectCardsDecision.minTotalManaValue` (the mirror of the existing `maxTotalManaValue` cap) carry
+  the floor, and the client shows a running total and keeps Confirm disabled until it is met.
+
+  Per **CR 701.59b** a player who cannot reach N *can't choose to collect evidence*: every
+  affordability check fails closed on the summed mana value, so the option is never payable and an
+  under-total submission is rejected rather than trimmed. For collect evidence as an *effect* rather
+  than a cost, use `Effects.CollectEvidence(n)` (§ effects).
+
+  `Costs.additional.CollectEvidenceForTargetsTotalManaValue` is the one shape whose threshold isn't
+  printed — **Urgent Necropsy**'s "collect evidence X, where X is the total mana value of the
+  permanents this spell targets". `CostAtom.CollectEvidence.amount` is a `DynamicAmount` for it, and
+  accepts exactly the three shapes a cost can be priced from before it is paid: a literal, the
+  cast's `XValue`, and `ContextPropertyKey.TARGETS_TOTAL_MANA_VALUE` (an `init` guard rejects the
+  rest, so a cost can never carry an amount the cost-time evaluator has no context to read). This is
+  the opposite call from `Effects.CollectEvidenceChosenAmount` (§ effects), which stayed a separate
+  effect precisely because a player-*chosen* X isn't a `DynamicAmount` at all — a derived one is.
+
+  Two consequences worth knowing, both from the card's own rulings. **X is locked in after targets,
+  before payment** (CR 601.2c → 601.2f → 601.2h): the engine prices it from `CastSpell.targets`, so
+  it counts what the caster actually chose, not what they could have. And a graveyard that can't
+  reach it makes the cast **illegal, not cheaper** (CR 601.2e) — the reachability gate has nowhere to
+  fail closed at enumeration time, since the price doesn't exist yet, so the check moves to cast-time
+  validation. Client-side that is why the evidence picker runs **after** the targeting step for this
+  cost: the enumerator ships `AdditionalCostData.exileWeightPerTarget` (what each legal target would
+  add), whose presence is both the per-target price list and the instruction to defer — the same
+  deferral `manaCostPerExtraTarget` already does for mana-source selection. With no targets chosen X
+  is 0, which collects evidence 0: legal, exiles nothing, and still counts as having collected
+  evidence per the 2024-02-02 ruling.
+
+  `Costs.CollectEvidence(n, linkToSource = true)` tethers the cards this payment exiles to the
+  *source permanent's* `LinkedExileComponent`, so a later ability on that same permanent can name
+  them — "cards exiled **with it**". That is the only thing the flag does: it grants no permission
+  and changes no legality, it just leaves a handle for `CardSource.FromLinkedExile()` to gather.
+  **Kylox's Voltstrider** ("Collect evidence 6: This Vehicle becomes an artifact creature until end
+  of turn" + "Whenever this Vehicle attacks, you may cast an instant or sorcery spell from among
+  cards exiled with it") is the whole reason it exists. Off by default, because an ordinary
+  collection exiles the cards and forgets them, and an unread pile is state the client would
+  otherwise tether to the permanent for no reason. The pile is cumulative across activations and
+  prunes itself: a card leaving exile is dropped from every linked-exile pile
+  (`ZoneMovementUtils.unlinkFromAllLinkedExiles`), so a spell already cast off the pile is gone from
+  it without the card doing any bookkeeping.
+
+  It also serves as the non-mana half of an **alternative** casting cost — Conspiracy Unraveler's
+  "You may collect evidence 10 rather than pay the mana cost for spells you cast", i.e.
+  `GrantAlternativeCastingCost("{0}", listOf(Costs.additional.CollectEvidence(10)))` (§ casting
+  permissions). That path stamps no `ChoiceSlot`, so unlike the linked `card { collectEvidence(n) }`
+  form it does **not** make `Conditions.WasEvidenceCollected` read true on the spell being cast.
+- `Costs.ExileFromGraveyardForTotal(minTotal, measure, filter = Any)` /
+  `Costs.ExileFromGraveyardForColoredSymbols(minSymbols, vararg colors)` — the **unnamed, filtered
+  generalization of collect evidence**: "exile any number of `<filter>` cards from your graveyard
+  whose summed `<measure>` is `minTotal` or more". Backed by `CostAtom.ExileFromGraveyardForTotal`
+  and by the *same* engine implementation collect evidence uses — `GraveyardTotalExileResolver`,
+  which `CollectEvidenceResolver` now delegates to, so the two can never drift apart on
+  reachability, legality, auto-selection or the exile itself.
+
+  Two axes distinguish it from `Costs.CollectEvidence(n)`, which is otherwise the identical mechanic:
+  the **filter** (collect evidence spends *any* graveyard card, CR 701.59a; here non-matching cards
+  are never offered), and the **measure** — the per-card quantity that is summed, a `CardMeasure`:
+  - `CardMeasure.ManaValue` — mana value (CR 202.3); what collect evidence uses;
+  - `CardMeasure.ColoredManaSymbols(colors)` — how many mana symbols of those colours appear in the
+    card's **printed** mana cost, counted by `ManaCost.coloredSymbolCount` — the single counting rule
+    also behind `CardPredicate.ColoredManaSymbolsAtLeast` and
+    `EntityNumericProperty.ColoredManaSymbolCount`, so a group total and a per-card read can never
+    disagree (hybrid/Phyrexian pips count for their colour(s), CR 107.4e/f; generic, `{C}` and `{X}`
+    count for none).
+
+  `ExileFromGraveyardForColoredSymbols(15, Color.BLACK)` is **Baron Helmut Zemo**'s boast cost,
+  "exile any number of black cards from your graveyard with fifteen or more black mana symbols among
+  their mana costs" — it derives the colour filter and the pip measure from one list of colours so
+  they can't drift. The colour filter and the pip count are *not* redundant: colour is a
+  characteristic, the count reads printed pips, so the filter is what keeps a black card with no
+  black pip on the right side of the printed wording.
+
+  Same three consequences as collect evidence, for the same reason: **the threshold is a floor on the
+  measure, never on the card count** (overpaying is legal, and a matching card whose measure is 0 is
+  a legal selection contributing nothing), and the cost **fails closed** — a graveyard that can't
+  reach the floor makes the ability not offered at all rather than offered and refused. Measures read
+  the **base** card (mana value and printed cost are intrinsic, and a graveyard card has no
+  battlefield projection); the *filter* evaluates against projected state like every other cost
+  filter.
+
+  Client-side it *is* the collect-evidence picker — one branch, not a parallel one. Both costs ship
+  `AdditionalCostData.exileMinTotalWeight` + `exileCardWeights` + `exileWeightUnit` (the unit label
+  comes from `CardMeasure.unitLabel`, so the measure names itself and the client never has to know
+  which cost it is looking at); only `costType` differs. The weights are server-computed for both,
+  because a pip total is a reading of the printed cost the client can't do — and sending mana values
+  it *could* have computed is what buys the single code path. The server re-validates the submitted
+  selection regardless — a submitted selection that doesn't pay is **rejected**, never silently
+  replaced with the engine's own pick.
+
+  Activated-ability cost only today: it is deliberately reported unpayable as a spell's additional
+  cost and as a `PayCost`, since no printed card wants either and an offered-then-unpayable cost is
+  worse than an absent one.
+- `Costs.Craft(filter, minCount = 1, maxCount = null)` — Craft material cost (CR 702.167a): exile
+  this permanent **and** exile at least `minCount` (and, when `maxCount` is set, at most `maxCount`)
+  cards matching `filter` selected from the combined pool of
+  permanents you control and cards in your graveyard. Exact-count crafts ("Craft with artifact" =
+  exactly one, "Craft with two creatures" = exactly two) set `maxCount == minCount`; "... or more"
+  wordings leave `maxCount = null`. Atomic because CR 702.167a pairs the
+  self-exile with the materials-exile in one clause. Records the chosen materials on the source's
+  `CraftedFromExiledComponent` so the back face's CDA can read them after the source returns
+  transformed. Always combined with `Mana(...)` and used with the
+  `Effects.ReturnSelfFromExileTransformed` resolution effect (the `card { craft(filter, cost) }`
+  helper wires the whole pattern).
+  - **Heterogeneous per-slot craft** — `card { craft(slots = listOf(f1, f2, ...), cost, materialDescription?) }`
+    for crafts that name one material of *each* of several kinds ("Craft with a Dinosaur, a Merfolk, a
+    Pirate, and a Vampire" — Throne of the Grim Captain). Each slot is filled by exactly **one distinct**
+    material, so validating a chosen set is a bipartite perfect-matching problem, not a per-subtype count
+    (a single Merfolk Pirate fills only one slot; four Vampires cannot cover four different subtypes). The
+    built `AbilityCost.Craft` carries the per-slot filters in `slots` plus a union `filter` (`anyOf` of the
+    slots) with `minCount == maxCount == slots.size`, so the flat BF+GY candidate gathering, `canPay`, the
+    legal-action enumerator, and the client material overlay work unchanged; the engine layers the
+    matching check (`CraftSlotMatching`, Kuhn's augmenting-path — same routine as `BlockPhaseManager`) on
+    top in `canPay`, enumeration, and payment. The legal action still ships one flat material list
+    (min = max = slot count); an illegal set that can't fill every slot is rejected at payment time
+    (no per-slot selection UI).
+- `Costs.PutCounterOnSelf(counterType, count = 1)` — "Put a [kind] counter on this permanent" as
+  part of the activation cost (Mazemind Tome: "{T}, Put a page counter on this artifact: Scry 1").
+  The *accruing* mirror of `Costs.RemoveCounterFromSelf`, and the only cost that adds something
+  rather than spending it: it is **always payable**, which is exactly what lets Mazemind Tome reach
+  the fourth page counter that exiles it. Paid at activation (so the counter lands before the
+  ability resolves, and stays even if the ability is countered), and routed through the normal
+  counter-placement chokepoint — the "can't have counters put on it" gate and the placement
+  replacements (Hardened Scales, Doubling Season) all apply. Activated-ability scoped: there is no
+  additional-cost or `PayCost` form, since a spell on the stack has no permanent to accrue them on.
+- `Costs.TapGrantingPermanent` — tap the permanent whose static ability *granted* this activated
+  ability, the third member of the granter-cost family alongside `Costs.ExileGrantingPermanent` and
+  `Costs.SacrificeGrantingPermanent`. Use for an Equipment/Aura whose granted ability names the
+  Equipment itself: Fishing Pole's "Equipped creature has '{1}, {T}, **Tap Fishing Pole**: …'",
+  where `Costs.Tap` t…232152 tokens truncated…er.ActivePlayerFirst`,
+  `Player.EachOpponent`) and fan out across every relevant player's copy of the zone in a single gather —
+  e.g. "all creature cards in each player's graveyard" (Bringer of the Last Gift). Pair with
+  `MoveCollectionEffect(underOwnersControl = true)` to return each card to its owner.
+  `revealed = true` makes a public reveal (every player sees the cards while they stay in a hidden
+  zone, persisted via `RevealedToComponent` and emitting a reveal event). For a non-public library
+  *look* (`revealed = false`), `lookAudience` chooses who privately sees the cards:
+  `LookAudience.Controller` (default — Scry / Surveil / look-at-top-N), `LookAudience.Opponent`
+  ("an opponent looks at the top N of your library"), or `LookAudience.None` (no one is auto-shown;
+  a downstream decision is the only window — used by **Sauron's Ransom**, where the opponent who
+  partitions sees the cards through their own `SelectFromCollection` decision but the caster does
+  not). `lookAudience` is ignored when `revealed = true` or for non-library sources. To then turn a
+  single pile face up for everyone — including the caster, before a `ChoosePileEffect` — re-gather
+  that pile via `GatherCards(FromVariable("pile"), revealed = true)`; any pile never revealed
+  renders to the caster as opaque card backs (Sauron's Ransom's concealed face-down pile).
+- `CaptureControllersEffect(from, storeAs)` — snapshot each entity's current controller into a parallel
+  `List<EntityId>` under `storedCollections[storeAs]`. Required when a later step needs "who controlled
+  this card before it left the battlefield" — `ControllerComponent` is stripped on move-out.
+  Also captures a spell's stack controller before countering it, even when its caster is not its owner
+  (Broken Ambitions). Battlefield permanents use projected control. Pair `captureControllers` with
+  `forEachCaptured` over the original collection when the rider applies regardless of whether a move
+  succeeded; retain the snapshot through intervening decisions such as counter payments and clashes.
+- `ForEachCapturedControllerEffect(collection, originalCollection, controllerSnapshot, countVariable?, effects)` —
+  cross-references a post-move `collection` against an `originalCollection` + parallel `controllerSnapshot` to
+  build per-controller tallies, then runs `effects` once per controller (turn order from the active player). Each
+  iteration sets `context.controllerId` to the controller (so `Player.You` / `EffectTarget.Controller` resolve to
+  them) and writes the tally into `storedNumbers[countVariable]` (default `"iterationCount"`) for
+  `DynamicAmount.VariableReference` to read. Outer `storedCollections` are preserved (unlike
+  `ForEachPlayerEffect`). Used by Builder's Bane via the
+  `GatherCards(ChosenTargets) → CaptureControllers → MoveCollection(Destroy, storeMovedAs) → ForEachCapturedController`
+  shape.
+- `ForEachInCollectionEffect(collection, effect)` — run `effect` once per entity in a named pipeline collection
+  (snapshotted at resolution), with `pipeline.iterationTarget` set to that entity. Lowers to
+  `ForEachEffect(IterationSpace.Collection(...))` — see the unified ForEach entry under "Sequencing &
+  conditional". Collection-based sibling of
+  `ForEachInGroupEffect` (which iterates a battlefield filter): use it to apply a per-entity effect to a *chosen*
+  set rather than a re-evaluated filter. Pair with a single-target effect on `EffectTarget.Self` — e.g.
+  `ForEachInCollection(nonChosenPile, Effects.CantAttack(EffectTarget.Self))` gives each creature in a chosen pile
+  its own snapshot can't-attack floating effect (Fight or Flight / Stand or Fall; creatures entering after the
+  split are unaffected).
+- `SelectFromCollectionEffect(from, into, selectCount?, allowZero?, alwaysPrompt?, restrictions?)` — let a player pick
+  from a collection. `restrictions` (`List<SelectionRestriction>`) cap and trim the picks server-side: `OnePerCardType`,
+  `OnePerColor(matchControllerPermanentColors?)`, `OnePerCardName`, `OnePerPower`, `TotalManaValueAtMost(max)` /
+  `TotalManaValueAtMost(maxAmount = <DynamicAmount>)` (the dynamic overload caps the sum at a resolved amount — e.g.
+  `DynamicAmount.XValue` for "with total mana value X or less"; the executor resolves it to a fixed cap up front so every
+  downstream consumer sees an integer — The Rise of Sozin // Fire Lord Sozin),
+  `TotalPowerAtMost(max)`, `OnePerBasicLandType`, `ReducedMinimumIfMatches(reducedMinimum, filter, requiredMatches?)`, and
+  `MaxAffordablePayment(manaPerSelected, payer?)`. `TotalPowerAtMost(max)` caps the sum of selected creatures'
+  **projected** power at `max` (a creature with undefined power contributes 0); it is the power analogue of
+  `TotalManaValueAtMost` and surfaces `maxTotalPower` on `SelectCardsDecision` so the UI shows a running "Total power: X / N"
+  and disables over-cap picks while the server trims oversubmits in response order — used for "choose any number of
+  creatures you control with total power N or less, then sacrifice the rest" (Destined Confrontation). `OnePerPower` keeps at most one card of each *printed* power
+  (a card with no fixed power — no printed P/T, or a characteristic-defining `*` — can't be kept and bottoms out,
+  like a typeless land under `OnePerBasicLandType`); pair it with the `CreatureOrVehicle` filter for "any number of
+  creature and/or Vehicle cards with different powers" (Rip, Spawn Hunter). `OnePerBasicLandType` keeps at most one
+  land of each basic land type (a kept land claims
+  *every* basic type it has) and — unlike `OnePerColor`, where a colourless card is unconstrained — a land with no
+  basic land type can't be kept at all (Global Ruin: "chooses a land of each basic land type, then sacrifices the
+  rest"). Each restriction also exposes a boolean flag on `SelectCardsDecision` (`onePerBasicLandType`, …) so the UI
+  can disable redundant picks. `ReducedMinimumIfMatches` exposes `conditionalMinimums` on `SelectCardsDecision` so the
+  UI and server can accept one matching card for "discard two unless you discard a creature card" while rejecting one
+  nonmatching card. `MaxAffordablePayment` caps the selection at
+  `floor(payer's available mana / manaPerSelected)` (floating + untapped sources) — pair it with a downstream
+  `Gate.MayPay` over `PayDynamicMana` at the same rate so a player can never select a set whose total cost is
+  unpayable and silently forfeit the payoff; a cap of zero (under `ChooseAnyNumber`) skips the selection prompt
+  entirely (Magnetic Mountain: "choose any number … and pay {4} for each creature chosen this way").
+  - `chooser` (`Chooser`, default `Controller`) — who makes the selection: `Controller`, `Opponent`, `TargetPlayer`
+    (`context.targets[0]` treated as the player), `TriggeringPlayer`, `SourceController` (the source's controller,
+    ignoring per-iteration swaps), `ControllerOfSelection` (the controller of the cards in `from` — resolved from the
+    first card's projected controller), `DefendingPlayer` (the player the source is attacking, CR 508.1), or
+    `ControllerOfTarget` (the controller of the targeted *permanent*,
+    `context.targets[0]`, falling back to its owner once it has left the battlefield). Use `ControllerOfSelection` for
+    "their controller chooses…" where the deciding player is whoever controls the gathered cards and may be you or an
+    opponent (Barrin's Spite: gather the two targeted creatures, their controller sacrifices one, the other is returned
+    to hand). Use `ControllerOfTarget` for "destroy target permanent. Its controller searches/chooses…" where the
+    targeted permanent's controller performs a follow-up (Magmatic Hellkite: destroy target nonbasic land, *its
+    controller* searches for a basic). Use `DefendingPlayer` for an attack trigger whose payoff is the defending
+    player's own choice — "defending player discards three cards" (Mindstab Thrull) is picked from *their* hand, not
+    the attacker's; it reads combat off the ability's source and keeps answering after a self-sacrifice has taken that
+    source off the battlefield (CR 508.1 / 608.2h), the same last-known leg `Player.DefendingPlayer` uses. The same
+    `chooser` set is accepted by `ChoosePileEffect`.
+  - **`Chooser.Opponent` in multiplayer.** "An opponent" is *one* opponent, and the controller of the spell or
+    ability picks which one (CR 601.7a / 602.3a for cast/activation-time choices; resolution-time choices follow the
+    same principle and cards say so in their rulings — Curator of Destinies: "You decide which opponent chooses the
+    pile"). The engine handles that for you: with several opponents the step first pauses on a `ChooseOptionDecision`
+    for the controller listing the opponents by name, then re-runs itself and presents the real choice to the named
+    opponent. With a sole opponent the choice is forced and nothing extra is prompted, so two-player games are
+    unaffected. Each "an opponent chooses" step in one resolution gets its own pick — the choice is
+    resolution-scoped, not recorded on the source. All of this lives in the engine's `ChooserResolution`, so any
+    effect carrying a `Chooser` inherits it; card definitions just say `Chooser.Opponent`. (For the durable,
+    cast-time "you may promise **an opponent** a gift"-style recipient choice, use
+    `Effects.ChooseOpponentForSource` + `Player.ChosenOpponent` instead — that one is stored on the source and
+    persists past the resolution.)
+  - **`Chooser.ChosenOpponent`** is the decision-side twin of `Player.ChosenOpponent`: the opponent a
+    preceding `Effects.ChooseOpponentForSource` already named for this source makes the choice. Use it,
+    not `Chooser.Opponent`, whenever the *same* opponent has to appear in two steps of one mechanic —
+    `Chooser.Opponent` re-picks per step, so in a multiplayer game a mechanic that reads one opponent's
+    library and then asks that opponent to decide could split across two different players. Clash
+    (CR 701.30b) is the case in hand. Unresolvable if no choice has been made, so a card using it must
+    run `Effects.ChooseOpponentForSource` first.
+
+**Linked exile**
+
+- `Effects.ExileGroupAndLink(filter, storeAs?)` — exile matching permanents linked to source.
+- `Effects.ReturnLinkedExile` — return all to controller.
+- `ReturnLinkedExileUnderOwnersControl` — return to owners.
+- `ReturnLinkedExileToHand` — return to hand.
+- `ReturnLinkedExileToZoneExiledFrom` — return each card to the zone it was exiled from (CR 610.3).
+- `ReturnOneFromLinkedExile` — return one chosen card.
+- `CardSource.FromLinkedExile()` — play permission targeting linked-exile pile.
+- `CardSource.FromExile(name)` — play permission for a named exile zone.
+
+**Face-down**
+
+- `PutOntoBattlefieldFaceDown(count, target?)` — enter face-down (morph shape).
+- `Triggers.TurnedFaceUp` — fires when source flips face-up.
+- UI label: `"Turn Face-Up"` (used by E2E `selectAction("Turn Face-Up")`).
+
+---
+
+## 18. Components (set indirectly by effects)
+
+### Permanent
+
+- `ChosenModeComponent` — chosen entry mode (Sieges, modal permanents).
+- `TypeLineOverrideComponent` — temporary type-line edits.
+- `CountersComponent` — all counters on the permanent.
+- `EnchantedCreatureComponent` — reference to attached creature (Auras).
+- `EquippedCreatureComponent` — reference to equipped creature.
+- `LinkedExileComponent` — linked exile pile attached to source.
+- `ExileOnLeaveComponent` — replace next zone change with exile.
+- `MayPlayFromExileComponent` — owner may play this from exile.
+- `TappedStateComponent` — tap state.
+- `FaceDownComponent` — face-down state.
+- `ControllerComponent` — current controller.
+- `ProtectionComponent` — protection from colors/types.
+- `CantAttackComponent` / `CantBlockComponent` — combat restrictions.
+
+### Player
+
+- `PlayerCitysBlessingComponent` — you have City's Blessing.
+- `TheRingComponent` — you have the Ring emblem; `temptCount` gates its four abilities (CR 701.54).
+- `RingBearerComponent` — designates a creature as a player's Ring-bearer (on the creature, not the player).
+- `SpellsCantBeCounteredComponent` — your matching spells can't be countered.
+- `LifeGainedAmountThisTurnComponent` — accumulator for life gained.
+- `LifeLostThisTurnComponent` — marker that you've lost life this turn.
+- `PlayerAttackedThisTurnComponent` — marker that you've attacked this turn.
+- `PlayerAttackersThisTurnComponent` — list of attackers declared this turn.
+- `PlayerAttackedPlayersThisTurnComponent` — set of defending players you "attacked" this turn (CR
+  508.6); read by `PlayerAttackedPlayerThisTurn`.
+- `LandDropsComponent` — lands played this turn.
+- `FoodSacrificeThisTurnComponent` — marker that you sacrificed a Food this turn.
+- `SpellsCastThisTurnByPlayer` — count of spells you cast this turn.
+
+Card authors rarely reference these directly; they are created/updated by the matching effect or trigger.
+
+---
+
+## 19. Named-mechanic composites
+
+- **Cycling / Typecycling / Basic landcycling** — `KeywordAbility.Cycling(cost)`, `Typecycling(type, cost)`,
+  `BasicLandcycling(cost)`; unified via `TypecyclingVariant(cost, searchFilter, description)` in `TypecycleCardHandler`.
+  A plain cycling cost may contain `{X}`; `CycleCardHandler` announces it (CR 107.3a), resolves the cost via
+  `ManaCost.withXAs(x)` so the ordinary payment path sees no X, and stamps it on `CardCycledEvent.xValue` for the
+  cycling trigger. See the `Cycling(cost)` entry in §Keyword abilities for the full flow.
+- **Cases (CR 719)** — `typeLine = "Enchantment — Case"` (`Subtype.CASE`, `TypeLine.isCase`) plus the
+  four DSL helpers in `dsl/mechanics/CaseDsl.kt`. No new ability kind: a Case's two special lines lower
+  onto vocabulary that already existed.
+  - `toSolve(condition)` — the **"To solve — [condition]"** ability (CR 719.3a) = "At the beginning of
+    your end step, if [condition] and this Case is not solved, this Case becomes solved". Emits a
+    `Triggers.YourEndStep` triggered ability whose `interveningIf` is
+    `All(condition, Not(SourceIsSolved))` and whose effect is `Effects.BecomeSolved()`. Both halves are
+    re-checked on resolution (CR 603.4), so a Case whose condition is undone in response stays unsolved,
+    and the `not solved` half is what stops a solved Case re-triggering every turn.
+  - `solvedStaticAbility { }` / `solvedTriggeredAbility { }` / `solvedActivatedAbility { }` — the
+    **"Solved — [ability]"** keyword (CR 702.169) in its three shapes. Each is the ordinary builder with
+    the gate pre-applied, matching the rule exactly: a static ability gets `condition = SourceIsSolved`
+    ("as long as this Case is solved", 702.169b), a triggered ability gets
+    `triggerRestriction = SourceIsSolved` ("triggers only if this Case is solved", 702.169c — a trigger
+    restriction, *not* an intervening-if, so an ability that triggered while solved still resolves), and
+    an activated ability gets `ActivationRestriction.OnlyIfCondition(SourceIsSolved)` ("activate only if
+    this Case is solved", 702.169d). Each helper ANDs its gate with whatever condition/restriction the
+    block sets itself, so a Solved ability that is also sorcery-speed-only keeps both.
+  - The **solved designation** itself (CR 719.3b) is `SolvedComponent` — engine state, neither an ability
+    nor a copiable value. `Effects.BecomeSolved` stamps it, `Conditions.SourceIsSolved` / `.solved()` /
+    `StatePredicate.IsSolved` read it, `ClientCard.isSolved` surfaces it as a card badge, and
+    `ZoneMovementUtils.stripBattlefieldComponents` drops it when the Case leaves the battlefield.
+  - The **moment** it flips is `Triggers.WheneverYouSolveACase` (§ Cases (CR 719) under triggers) —
+    "when this creature enters **and whenever you solve a Case**" (Case File Auditor). That is the
+    event, not the standing state; `SourceIsSolved` is the state.
+  - An **unsolved** Case shows how close its criterion is as a `current/required` badge — Case of the
+    Burning Masks counts 0/3 up to 3/3 as sources deal damage — and drops it once solved. That falls
+    out of the generic intervening-if badge (§ Triggered abilities) reading inside the
+    `All(condition, Not(SourceIsSolved))` composite that `toSolve` emits; no Case-specific plumbing.
+  - A Case's remaining lines — the "When this Case enters" ability, or an always-on static like Case of
+    the Ransacked Lab's cost reduction — are plain `triggeredAbility { }` / `staticAbility { }` blocks;
+    they function whether or not the Case is solved.
+- **Plot (CR 718)** — `KeywordAbility.plot(cost)`. Engine wires a sorcery-speed `PlotEnumerator` + `PlotCardHandler`
+  that pays the plot cost, exiles the card face-up from hand, stamps `PlottedComponent(controllerId, turnPlotted)` +
+  `PlayWithoutPayingCostComponent`, and adds a permanent `MayPlayPermission` gated by `SourcePlottedOnPriorTurn`.
+  The cast-from-exile path is the standard `MayPlayPermission` flow in `CastFromZoneEnumerator` — `permanent = true`
+  keeps the grant alive across end-of-turn cleanup. Emits `CardPlottedEvent` / `ClientEvent.CardPlotted`.
+- **Adventure (CR 715)** — `layout = ADVENTURE` + `cardFaces[0]` Adventure spell; DSL:
+  `card { adventure("Name") { spell { … } } }`. The primary face may be a **land** (`Land — Town`) instead of a
+  creature — FIN's "Town land // spell" DFCs (Ishgard, the Holy See // Faith & Grief, …). No new layout: resolving
+  the Adventure exiles the card with the same generic `MayPlayPermission`, which `CastFromZoneEnumerator` /
+  `PlayLandHandler` already honor as a *play-the-land-from-exile* permission. The only seam beyond the creature case
+  is `CastSpellEnumerator` — it now enumerates the Adventure spell face for a land-primary card (the land itself is
+  played via `PlayLandEnumerator`). First land users: Ishgard, the Holy See; Jidoor, Aristocratic Capital; Lindblum,
+  Industrial Regency; Midgar, City of Mako; Zanarkand, Ancient Metropolis.
+- **Omen (Tarkir: Dragonstorm)** — `layout = OMEN` + `cardFaces[0]` Omen spell; DSL:
+  `card { omen("Name") { spell { … } } }`. Reuses the Adventure cast/enumeration path (`enumerateSecondaryFace`,
+  cast via `CastSpell.faceIndex = 0`), but `StackResolver` routes the resolving Omen to `Zone.LIBRARY` and shuffles
+  the owner's library (`shuffleOwnerLibrary` + `LibraryShuffledEvent`) instead of exiling with a `MayPlayPermission`.
+  No new effect/component — the layout enum drives the resolution fork. First user: Dirgur Island Dragon //
+  Skimming Strike.
+- **Modal DFC, spell back (CR 712)** — `layout = MODAL_DFC` + `cardFaces[0]` back face; DSL:
+  `card { modalBack("Name") { imageUri = …; spell { selfExile(); … } } }`. Cast either face from hand (back via
+  `CastSpell.faceIndex = 0`); reuses the Adventure cast/enumeration path (`enumerateSecondaryFace`) but with no
+  exile-then-recast linkage at resolution. `StackResolver` reads the cast face's `selfExileOnResolve`, and the back
+  art rides on `CardFace.imageUri` → `CardComponent.backFaceImageUri`. First user: Flamescroll Celebrant.
+- **Modal DFC, permanent back (CR 712.3)** — `layout = MODAL_DFC` + a full `backFace`, via
+  `CardDefinition.modalDoubleFacedPermanent(front, back)`. Reuses the **disturb** path rather than the Adventure
+  one, because the card goes on the stack transformed: `ModalDfcCasts.castFace` is the single
+  can-I-and-as-which-face policy (mirroring `DisturbCasts`), `CastZoneResolver.modalBackCastFace` is its hand-side
+  permission check, `CastSpellEnumerator.enumerateModalBackFace` surfaces the offer, and `CastSpellHandler` reads
+  every characteristic off that face (`transformedFace`) and passes `castTransformed = true` to `StackResolver`.
+  Cost is the back's own mana cost (`AlternativeCostType.MODAL_BACK_FACE` — the enum entry is plumbing, not a real
+  alternative cost; CR 712.11b calls it choosing a face). Because the back is a real `backFace`, transform and the
   client's flip preview work with no extra wiring. The one place the shared disturb path is *not* shareable is
   **mana value**, which is the only characteristic the CR treats differently for the two layouts — see the entry
   below. Timing comes off the face being cast, not the front (CR 712.11c), so a permanent back is sorcery-speed

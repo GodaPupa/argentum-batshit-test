@@ -23,7 +23,7 @@ The minimum executable combo suite is:
 7. [ ] Commander-zone setup, singleton deck validation, and commander color identity.
 
    The frozen snapshot has the correct 99-plus-commander shape and no repeated nonbasics. The
-   registry readiness test currently inventories 3 submitted cards that are not implemented, so
+   registry readiness test currently inventories 2 submitted cards that are not implemented, so
    full color-identity validation and game initialization remain blocked rather than approximated.
 
 ## Experimental stages
