@@ -1,0 +1,67 @@
+package com.wingedsheep.mtg.sets.definitions.khm.cards
+
+import com.wingedsheep.sdk.core.Keyword
+import com.wingedsheep.sdk.core.Zone
+import com.wingedsheep.sdk.dsl.Costs
+import com.wingedsheep.sdk.dsl.Effects
+import com.wingedsheep.sdk.dsl.Triggers
+import com.wingedsheep.sdk.dsl.card
+import com.wingedsheep.sdk.model.Printing
+import com.wingedsheep.sdk.model.Rarity
+import com.wingedsheep.sdk.scripting.GameObjectFilter
+import com.wingedsheep.sdk.scripting.effects.Gate
+import com.wingedsheep.sdk.scripting.effects.GatedEffect
+import com.wingedsheep.sdk.scripting.filters.unified.TargetFilter
+import com.wingedsheep.sdk.scripting.targets.TargetPermanent
+
+/** Masked Vandal — Kaldheim #184. */
+val MaskedVandal = card("Masked Vandal") {
+    manaCost = "{1}{G}"
+    colorIdentity = "G"
+    typeLine = "Creature — Shapeshifter"
+    power = 1
+    toughness = 3
+    oracleText = "Changeling (This card is every creature type.)\n" +
+        "When this creature enters, you may exile a creature card from your graveyard. If you do, " +
+        "exile target artifact or enchantment an opponent controls."
+
+    keywords(Keyword.CHANGELING)
+
+    triggeredAbility {
+        trigger = Triggers.EntersBattlefield
+        val permanent = target(
+            "target artifact or enchantment an opponent controls",
+            TargetPermanent(filter = TargetFilter.ArtifactOrEnchantment.opponentControls()),
+        )
+        effect = GatedEffect(
+            gate = Gate.MayPay(
+                Costs.pay.Exile(
+                    filter = GameObjectFilter.Creature,
+                    zone = Zone.GRAVEYARD,
+                    count = 1,
+                )
+            ),
+            then = Effects.Move(permanent, Zone.EXILE),
+        )
+    }
+
+    metadata {
+        rarity = Rarity.COMMON
+        collectorNumber = "184"
+        artist = "Jason A. Engle"
+        imageUri = "https://cards.scryfall.io/normal/front/f/0/f0a9c72a-e450-41e3-80e5-06f2f1171245.jpg?1783928209"
+    }
+}
+
+/** Showcase frame used by the submitted list (KHM #405). */
+val MaskedVandalShowcase = Printing(
+    oracleId = "210940f1-3c11-4877-bbfc-2429c03f98ee",
+    name = "Masked Vandal",
+    setCode = "KHM",
+    collectorNumber = "405",
+    scryfallId = "2ace8e69-7550-4c40-bf63-59cb95603391",
+    artist = "Jason A. Engle",
+    imageUri = "https://cards.scryfall.io/normal/front/2/a/2ace8e69-7550-4c40-bf63-59cb95603391.jpg?1783928110",
+    releaseDate = "2021-02-05",
+    rarity = Rarity.COMMON,
+)
