@@ -38,8 +38,10 @@ import com.wingedsheep.engine.core.TypecycleCard
 import com.wingedsheep.engine.legalactions.LegalAction
 import com.wingedsheep.engine.legalactions.MeaningfulActionFilter
 import com.wingedsheep.engine.state.GameState
-import com.wingedsheep.engine.state.components.identity.CardComponent
 import com.wingedsheep.engine.state.components.battlefield.TappedComponent
+import com.wingedsheep.engine.state.components.combat.AttackingComponent
+import com.wingedsheep.engine.state.components.combat.AttackersDeclaredThisCombatComponent
+import com.wingedsheep.engine.state.components.identity.CardComponent
 import com.wingedsheep.engine.state.components.player.LifeGainedThisTurnComponent
 import com.wingedsheep.engine.state.components.stack.AbilityOnStackComponent
 import com.wingedsheep.engine.state.components.stack.ActivatedAbilityOnStackComponent
@@ -50,6 +52,7 @@ import com.wingedsheep.engine.state.components.stack.TriggeredAbilityOnStackComp
 import com.wingedsheep.sdk.core.Format
 import com.wingedsheep.sdk.core.ManaCost
 import com.wingedsheep.sdk.core.ManaSymbol
+import com.wingedsheep.sdk.core.Phase
 import com.wingedsheep.sdk.core.Step
 import com.wingedsheep.sdk.model.EntityId
 import com.wingedsheep.sdk.scripting.AdditionalCostPayment
@@ -306,19 +309,40 @@ class Strategist(
 
         // ── Pass 3: per-card timing and advisor adjustments, in raw evaluator units ──
         val firstCandidate = if (pass != null) 1 else 0
+        // A one-ply leaf cannot normally see combat damage from the priority window immediately
+        // after attackers are declared. Before applying resource-hold floors, recognize the narrow
+        // case where visible combat is already deterministic lethal and one fully materialized,
+        // legal action changes that outcome. Immediate wins stay authoritative; among survival
+        // actions the ordinary leaf score still chooses the least damaging continuation.
+        val hasImmediateWin = leafStates.any { leaf ->
+            leaf.gameOver && leaf.winnerId in leaf.teamOf(playerId)
+        }
+        val survivalIndex = if (!hasImmediateWin) {
+            (firstCandidate until leaves.size)
+                .filter { i -> preventsVisibleImminentCombatLethal(evaluationState, leafStates[i], playerId) }
+                .maxByOrNull { i -> leafScores[i] }
+        } else null
+
         val adjusted = (firstCandidate until leaves.size).map { i ->
             Triple(
                 leaves[i],
                 leafScores[i],
-                adjustScore(
-                    evaluationState,
-                    leafStates[i],
-                    leaves[i],
-                    playerId,
-                    leafScores[i],
-                    passScore,
-                    leafEvents[i],
-                ),
+                if (i == survivalIndex) {
+                    AdjustedScore(
+                        score = Double.MAX_VALUE / 4,
+                        note = "imminent-lethal policy: legal action is required to survive visible combat",
+                    )
+                } else {
+                    adjustScore(
+                        evaluationState,
+                        leafStates[i],
+                        leaves[i],
+                        playerId,
+                        leafScores[i],
+                        passScore,
+                        leafEvents[i],
+                    )
+                },
             )
         }
         val scored = adjusted.map { (action, _, adjustment) -> action to adjustment.score }
@@ -370,6 +394,48 @@ class Strategist(
             )
         }
         return chosen
+    }
+
+    /**
+     * Whether [after] turns a publicly determined lethal attack into a nonlethal one at the final
+     * priority window after attackers are declared. Candidate materialization and simulation have
+     * already enforced targeting, protection, costs, and the action's actual effect; this comparison
+     * only asks whether the resulting projected attackers still beat the defender's legal blocks.
+     */
+    private fun preventsVisibleImminentCombatLethal(
+        before: GameState,
+        after: GameState,
+        playerId: EntityId,
+    ): Boolean {
+        if (!isFinalDefensiveCombatWindow(before, playerId) || !visibleDeclaredAttackIsLethal(before, playerId)) {
+            return false
+        }
+        if (after.gameOver) return after.winnerId in after.teamOf(playerId)
+        return !visibleDeclaredAttackIsLethal(after, playerId)
+    }
+
+    private fun isFinalDefensiveCombatWindow(state: GameState, playerId: EntityId): Boolean {
+        if (state.phase != Phase.COMBAT || state.step != Step.DECLARE_ATTACKERS) return false
+        if (state.activePlayerId == playerId || state.priorityPlayerId != playerId) return false
+        val activePlayer = state.activePlayerId ?: return false
+        return state.getEntity(activePlayer)?.has<AttackersDeclaredThisCombatComponent>() == true
+    }
+
+    private fun visibleDeclaredAttackIsLethal(state: GameState, playerId: EntityId): Boolean {
+        if (state.phase != Phase.COMBAT || state.step != Step.DECLARE_ATTACKERS) return false
+        val projected = state.projectedState
+        val attackers = state.getBattlefield().filter { attackerId ->
+            state.getEntity(attackerId)?.get<AttackingComponent>()?.defenderId == playerId &&
+                projected.isCreature(attackerId)
+        }
+        if (attackers.isEmpty()) return false
+        val blockers = CombatMath.getOpponentUntappedCreatures(state, projected, playerId)
+        return CombatMath.calculateDamageThroughOptimalBlocking(
+            state = state,
+            projected = projected,
+            attackers = attackers,
+            opponentBlockers = blockers,
+        ) >= state.lifeTotal(playerId)
     }
 
     /**

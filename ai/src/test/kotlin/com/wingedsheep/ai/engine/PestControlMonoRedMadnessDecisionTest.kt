@@ -1,16 +1,23 @@
 package com.wingedsheep.ai.engine
 
 import com.wingedsheep.engine.core.CastSpell
+import com.wingedsheep.engine.core.DeclareAttackers
+import com.wingedsheep.engine.core.DeclareBlockers
 import com.wingedsheep.engine.core.PassPriority
 import com.wingedsheep.engine.core.PaymentStrategy
 import com.wingedsheep.engine.core.YesNoResponse
 import com.wingedsheep.engine.state.components.battlefield.TappedComponent
+import com.wingedsheep.engine.state.components.combat.AttackingComponent
+import com.wingedsheep.engine.state.components.combat.AttackersDeclaredThisCombatComponent
 import com.wingedsheep.engine.state.components.identity.CardComponent
+import com.wingedsheep.engine.state.components.identity.HexproofFromComponent
 import com.wingedsheep.engine.state.components.player.CardsDrawnThisTurnComponent
 import com.wingedsheep.engine.state.components.player.ManaPoolComponent
 import com.wingedsheep.engine.state.components.stack.ChosenTarget
 import com.wingedsheep.engine.support.ScenarioTestBase
 import com.wingedsheep.sdk.core.Color
+import com.wingedsheep.sdk.core.Phase
+import com.wingedsheep.sdk.core.Step
 import com.wingedsheep.sdk.model.EntityId
 import com.wingedsheep.sdk.scripting.AdditionalCostPayment
 import io.kotest.assertions.withClue
@@ -296,7 +303,7 @@ class PestControlMonoRedMadnessDecisionTest : ScenarioTestBase() {
             chosenTargetId(response) shouldBe game.player2Id
         }
 
-        test("Mono Red uses Fireblast as necessary survival removal in the Weather response window") {
+        test("Mono Red waits through safe windows then uses Fireblast at the final survival boundary") {
             val game = seeded()
                 .withActivePlayer(2)
                 .withLifeTotal(1, 2)
@@ -306,15 +313,169 @@ class PestControlMonoRedMadnessDecisionTest : ScenarioTestBase() {
                 .withCardOnBattlefield(2, "Pest Mascot", summoningSickness = false)
                 .withCardInHand(2, "Weather the Storm")
                 .build()
+            val mascot = game.findPermanent("Pest Mascot")!!
+            val redAi = ai(game)
+
+            game.state.phase shouldBe Phase.PRECOMBAT_MAIN
+            game.state.step shouldBe Step.PRECOMBAT_MAIN
+            game.state.activePlayerId shouldBe game.player2Id
+            game.state.lifeTotal(game.player1Id) shouldBe 2
+            game.state.lifeTotal(game.player2Id) shouldBe 20
+            game.state.stack shouldBe emptyList()
+            game.state.controlledBattlefield(game.player1Id).count { id ->
+                game.state.projectedState.isCreature(id)
+            } shouldBe 0
+            game.state.controlledBattlefield(game.player2Id).filter { id ->
+                game.state.projectedState.isCreature(id)
+            } shouldBe listOf(mascot)
+            game.findPermanents("Mountain").size shouldBe 2
+            game.findPermanents("Mountain").all { id ->
+                game.state.getEntity(id)?.has<TappedComponent>() != true
+            }.shouldBeTrue()
 
             game.castSpell(2, "Weather the Storm").isSuccess.shouldBeTrue()
             game.execute(PassPriority(game.player2Id)).error.shouldBeNull()
             game.state.priorityPlayerId shouldBe game.player1Id
+            game.state.stack.mapNotNull { id -> cardName(game, id) } shouldBe listOf("Weather the Storm")
 
-            val response = ai(game).chooseAction(game.state).shouldBeInstanceOf<CastSpell>()
+            val fireblastModes = GameSimulator(cardRegistry).getLegalActions(game.state, game.player1Id)
+                .filter { legal ->
+                    val cast = legal.action as? CastSpell
+                    cast != null && cardName(game, cast.cardId) == "Fireblast"
+                }
+            fireblastModes.size shouldBe 1
+            fireblastModes.single().affordable.shouldBeTrue()
+            val advertisedFireblast = fireblastModes.single().action.shouldBeInstanceOf<CastSpell>()
+            advertisedFireblast.useAlternativeCost.shouldBeTrue()
+            advertisedFireblast.alternativeCostType shouldBe com.wingedsheep.engine.core.AlternativeCostType.SELF_ALTERNATIVE
+            fireblastModes.single().additionalCostInfo?.sacrificeCount shouldBe 2
+
+            // Weather is not the final window. Consult production at every later Mono Red priority
+            // stop, and preserve each pass until Pest has actually committed Mascot as an attacker.
+            var windows = 0
+            while (!(game.state.step == Step.DECLARE_ATTACKERS &&
+                    game.state.priorityPlayerId == game.player1Id &&
+                    game.state.getEntity(mascot)?.has<AttackingComponent>() == true)
+            ) {
+                check(windows++ < 40) {
+                    "Never reached the final post-attack priority window: ${game.state.phase}/${game.state.step}"
+                }
+                val priority = checkNotNull(game.state.priorityPlayerId)
+                val action = when {
+                    game.state.step == Step.DECLARE_ATTACKERS &&
+                        priority == game.player2Id &&
+                        game.state.getEntity(mascot)?.has<AttackingComponent>() != true ->
+                        DeclareAttackers(game.player2Id, mapOf(mascot to game.player1Id))
+                    priority == game.player1Id ->
+                        redAi.chooseAction(game.state).shouldBeInstanceOf<PassPriority>()
+                    else -> PassPriority(priority)
+                }
+                game.execute(action).error.shouldBeNull()
+            }
+
+            val mustActState = game.state
+            mustActState.phase shouldBe Phase.COMBAT
+            mustActState.step shouldBe Step.DECLARE_ATTACKERS
+            mustActState.activePlayerId shouldBe game.player2Id
+            mustActState.priorityPlayerId shouldBe game.player1Id
+            mustActState.getEntity(mascot)?.get<AttackingComponent>()?.defenderId shouldBe game.player1Id
+
+            // Declining at this exact boundary is lethal through the authoritative combat flow.
+            game.execute(PassPriority(game.player1Id)).error.shouldBeNull()
+            var combatTransitions = 0
+            while (!game.state.gameOver && game.state.phase == Phase.COMBAT) {
+                check(combatTransitions++ < 40) { "Combat did not settle after the final pass" }
+                val priority = checkNotNull(game.state.priorityPlayerId)
+                val action = if (game.state.step == Step.DECLARE_BLOCKERS && priority == game.player1Id) {
+                    DeclareBlockers(game.player1Id, emptyMap())
+                } else {
+                    PassPriority(priority)
+                }
+                game.execute(action).error.shouldBeNull()
+            }
+            game.state.gameOver.shouldBeTrue()
+            game.state.winnerId shouldBe game.player2Id
+
+            // Restore the immutable must-act snapshot and require the survival action.
+            game.state = mustActState
+            val response = redAi.chooseAction(game.state).shouldBeInstanceOf<CastSpell>()
             cardName(game, response.cardId) shouldBe "Fireblast"
-            chosenTargetId(response) shouldBe game.findPermanent("Pest Mascot")
+            chosenTargetId(response) shouldBe mascot
+            response.useAlternativeCost.shouldBeTrue()
             response.additionalCostPayment?.sacrificedPermanents?.size shouldBe 2
+        }
+
+        test("imminent-combat survival override preserves restraint and winning lines") {
+            fun attackedState(
+                redLife: Int,
+                pestLife: Int = 20,
+                attackers: List<String>,
+                redHand: List<String>,
+                mountains: Int = 2,
+            ): TestGame {
+                var builder = seeded()
+                    .withActivePlayer(2)
+                    .withPriorityPlayer(1)
+                    .inPhase(Phase.COMBAT, Step.DECLARE_ATTACKERS)
+                    .withLifeTotal(1, redLife)
+                    .withLifeTotal(2, pestLife)
+                    .withLandsOnBattlefield(1, "Mountain", mountains)
+                attackers.forEach { builder = builder.withCardOnBattlefield(2, it, summoningSickness = false) }
+                redHand.forEach { builder = builder.withCardInHand(1, it) }
+                val game = builder.build()
+                game.state = game.state.updateEntity(game.player2Id) { it.with(AttackersDeclaredThisCombatComponent) }
+                attackers.forEach { name ->
+                    val id = game.findPermanent(name)!!
+                    game.state = game.state.updateEntity(id) { it.with(AttackingComponent(game.player1Id)) }
+                }
+                return game
+            }
+
+            val nonlethal = attackedState(3, attackers = listOf("Pest Mascot"), redHand = listOf("Fireblast"))
+            run {
+                val action = ai(nonlethal).chooseAction(nonlethal.state)
+                (action is CastSpell && cardName(nonlethal, action.cardId) == "Fireblast").shouldBeFalse()
+            }
+
+            val stillLethal = attackedState(
+                redLife = 2,
+                attackers = listOf("Pest Mascot", "Guttersnipe"),
+                redHand = listOf("Fireblast"),
+            )
+            val ineffective = ai(stillLethal).chooseAction(stillLethal.state)
+            (ineffective is CastSpell && cardName(stillLethal, ineffective.cardId) == "Fireblast").shouldBeFalse()
+
+            val cheaper = attackedState(
+                redLife = 2,
+                attackers = listOf("Pest Mascot"),
+                redHand = listOf("Fireblast", "Lightning Bolt"),
+            )
+            val cheaperAction = ai(cheaper).chooseAction(cheaper.state).shouldBeInstanceOf<CastSpell>()
+            cardName(cheaper, cheaperAction.cardId) shouldBe "Lightning Bolt"
+            chosenTargetId(cheaperAction) shouldBe cheaper.findPermanent("Pest Mascot")
+
+            val winNow = attackedState(
+                redLife = 2,
+                pestLife = 4,
+                attackers = listOf("Pest Mascot"),
+                redHand = listOf("Fireblast"),
+            )
+            val winningAction = ai(winNow).chooseAction(winNow.state).shouldBeInstanceOf<CastSpell>()
+            cardName(winNow, winningAction.cardId) shouldBe "Fireblast"
+            chosenTargetId(winningAction) shouldBe winNow.player2Id
+
+            val protected = attackedState(
+                redLife = 2,
+                attackers = listOf("Pest Mascot"),
+                redHand = listOf("Fireblast"),
+            )
+            val protectedMascot = protected.findPermanent("Pest Mascot")!!
+            protected.state = protected.state.updateEntity(protectedMascot) {
+                it.with(HexproofFromComponent(colors = setOf(Color.RED)))
+            }
+            val protectedAction = ai(protected).chooseAction(protected.state)
+            (protectedAction is CastSpell && chosenTargetId(protectedAction) == protectedMascot)
+                .shouldBeFalse()
         }
     }
 }
