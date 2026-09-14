@@ -1,3 +1,59 @@
+// Blur
+{
+    "name": "Blur",
+    "manaCost": "{2}{U}",
+    "typeLine": "Instant",
+    "oracleText": "Exile target creature you control, then return that card to the battlefield under its owner's control.\nDraw a card.",
+    "script": {
+        "spellEffect": {
+            "type": "Composite",
+            "effects": [
+                {
+                    "type": "MoveToZone",
+                    "target": {
+                        "type": "BoundVariable",
+                        "name": "target creature you control"
+                    },
+                    "destination": "Exile"
+                },
+                {
+                    "type": "MoveToZone",
+                    "target": {
+                        "type": "BoundVariable",
+                        "name": "target creature you control"
+                    },
+                    "destination": "Battlefield"
+                },
+                {
+                    "type": "DrawCards",
+                    "count": {
+                        "type": "Fixed",
+                        "amount": 1
+                    }
+                }
+            ]
+        },
+        "targetRequirements": [
+            {
+                "type": "TargetObject",
+                "filter": {
+                    "baseFilter": "creature ctrl:you"
+                },
+                "id": "target creature you control"
+            }
+        ]
+    },
+    "metadata": {
+        "collectorNumber": "58",
+        "artist": "Dave Greco",
+        "flavorText": "\"It's as much a trick of the mind as it is a trick of the eye.\"",
+        "imageUri": "https://cards.scryfall.io/normal/front/7/7/77a43413-3ab0-4ef6-83de-192a11d48f00.jpg?1783922795"
+    },
+    "colorIdentityOverride": [
+        "BLUE"
+    ]
+}
+
 // Bonecaller Cleric
 {
     "name": "Bonecaller Cleric",
