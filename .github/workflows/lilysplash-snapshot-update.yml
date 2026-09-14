@@ -36,16 +36,9 @@ jobs:
         run: |
           mapfile -t changed < <(git diff --name-only | sort)
           expected=(
-            "mtg-sets/src/test/resources/snapshots/cards/10E.json"
             "mtg-sets/src/test/resources/snapshots/cards/AKH.json"
-            "mtg-sets/src/test/resources/snapshots/cards/CMR.json"
             "mtg-sets/src/test/resources/snapshots/cards/DTK.json"
-            "mtg-sets/src/test/resources/snapshots/cards/ICE.json"
-            "mtg-sets/src/test/resources/snapshots/cards/J22.json"
             "mtg-sets/src/test/resources/snapshots/cards/LEA.json"
-            "mtg-sets/src/test/resources/snapshots/cards/LEB.json"
-            "mtg-sets/src/test/resources/snapshots/cards/M19.json"
-            "mtg-sets/src/test/resources/snapshots/cards/M20.json"
             "mtg-sets/src/test/resources/snapshots/cards/NEO.json"
             "mtg-sets/src/test/resources/snapshots/cards/STH.json"
           )
@@ -59,16 +52,9 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add \
-            mtg-sets/src/test/resources/snapshots/cards/10E.json \
             mtg-sets/src/test/resources/snapshots/cards/AKH.json \
-            mtg-sets/src/test/resources/snapshots/cards/CMR.json \
             mtg-sets/src/test/resources/snapshots/cards/DTK.json \
-            mtg-sets/src/test/resources/snapshots/cards/ICE.json \
-            mtg-sets/src/test/resources/snapshots/cards/J22.json \
             mtg-sets/src/test/resources/snapshots/cards/LEA.json \
-            mtg-sets/src/test/resources/snapshots/cards/LEB.json \
-            mtg-sets/src/test/resources/snapshots/cards/M19.json \
-            mtg-sets/src/test/resources/snapshots/cards/M20.json \
             mtg-sets/src/test/resources/snapshots/cards/NEO.json \
             mtg-sets/src/test/resources/snapshots/cards/STH.json
           git commit -m "Update Lilysplash land-aura batch snapshots"
