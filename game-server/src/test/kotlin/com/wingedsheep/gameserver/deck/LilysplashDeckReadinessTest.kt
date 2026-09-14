@@ -54,7 +54,6 @@ class LilysplashDeckReadinessTest : FunSpec({
             "Capsize",
             "Evolution Witness",
             "Hidden Strings",
-            "Rustvine Cultivator",
             "Secret Door",
         )
 
