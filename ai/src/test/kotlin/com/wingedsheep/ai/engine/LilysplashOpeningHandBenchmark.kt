@@ -30,6 +30,7 @@ class LilysplashOpeningHandBenchmark : FunSpec({
 
     data class SubmittedDeck(val commander: String, val library: List<String>)
     data class KeptHand(
+        val policy: String,
         val seed: Long,
         val seat: Int,
         val mulligans: Int,
@@ -92,6 +93,17 @@ class LilysplashOpeningHandBenchmark : FunSpec({
     val fixing = setOf(
         "Ash Barrens", "Escape Tunnel", "Evolving Wilds", "Terramorphic Expanse", "Lórien Revealed",
     )
+    val fetchBoth = setOf("Escape Tunnel", "Evolving Wilds", "Terramorphic Expanse")
+
+    fun hasCommanderColors(cards: Map<EntityId, CardSummary>): Boolean {
+        val names = cards.values.map { it.name }
+        val lands = cards.values.count { it.typeLine?.contains("Land", ignoreCase = true) == true }
+        val blue = names.any { it in blueSources || it in fetchBoth } ||
+            ("Ash Barrens" in names && lands >= 2) || ("Lórien Revealed" in names && lands >= 1)
+        val green = names.any { it in greenSources || it in fetchBoth } ||
+            ("Ash Barrens" in names && lands >= 2)
+        return blue && green
+    }
 
     test("Lilysplash fixed-seed opening-hand preflight").config(enabled = enabled) {
         val submitted = submittedDeck()
@@ -103,7 +115,8 @@ class LilysplashOpeningHandBenchmark : FunSpec({
         val initializer = GameInitializer(registry)
         val rows = mutableListOf<KeptHand>()
 
-        for (seed in seeds) {
+        for (policy in listOf("generic", "commander-aware")) {
+            for (seed in seeds) {
             val init = initializer.initializeGame(
                 GameConfig(
                     players = listOf(
@@ -126,7 +139,7 @@ class LilysplashOpeningHandBenchmark : FunSpec({
                 while (true) {
                     val cards = summaries(state, playerId)
                     val mulliganState = state.getEntity(playerId)!!.get<MulliganStateComponent>()!!
-                    val keep = controllers[seat].decideMulligan(
+                    val genericKeep = controllers[seat].decideMulligan(
                         MulliganInfo(
                             hand = state.getHand(playerId),
                             mulliganCount = mulliganState.mulligansTaken,
@@ -134,6 +147,9 @@ class LilysplashOpeningHandBenchmark : FunSpec({
                             cards = cards,
                             isOnThePlay = seat == 0,
                         ),
+                    )
+                    val keep = genericKeep && (
+                        policy == "generic" || mulliganState.mulligansTaken >= 2 || hasCommanderColors(cards)
                     )
                     if (keep) {
                         state = process(processor, state, KeepHand(playerId))
@@ -165,6 +181,7 @@ class LilysplashOpeningHandBenchmark : FunSpec({
                     state.getEntity(it)!!.get<CardComponent>()!!.typeLine.isLand
                 }
                 rows += KeptHand(
+                    policy = policy,
                     seed = seed,
                     seat = seat,
                     mulligans = mulligans[seat],
@@ -175,23 +192,29 @@ class LilysplashOpeningHandBenchmark : FunSpec({
                     fixers = hand.count { it in fixing },
                 )
             }
+            }
         }
 
         println("=== LILYSPLASH OPENING-HAND PREFLIGHT ===")
         println("deck=f315b0907f3f9ae9d61ae2d45de0b778b45a9d9ff86e6ac5c343e4385d5de525 seeds=${seeds.joinToString(",")}")
         rows.forEach { row ->
             println(
-                "seed=${row.seed} seat=${row.seat} mulligans=${row.mulligans} kept=${row.cards.size} " +
+                "policy=${row.policy} seed=${row.seed} seat=${row.seat} mulligans=${row.mulligans} kept=${row.cards.size} " +
                     "lands=${row.lands} U=${row.directBlue} G=${row.directGreen} fixers=${row.fixers} " +
                     "hand=${row.cards.joinToString(" | ")}",
             )
         }
-        println(
-            "summary samples=${rows.size} avgMulligans=${String.format(Locale.ROOT, "%.3f", rows.map { it.mulligans }.average())} " +
-                "keep7=${rows.count { it.mulligans == 0 }} keep6=${rows.count { it.mulligans == 1 }} " +
-                "keep5=${rows.count { it.mulligans == 2 }} lowLand=${rows.count { it.lands <= 1 }} " +
-                "noDirectU=${rows.count { it.directBlue == 0 }} noDirectG=${rows.count { it.directGreen == 0 }}",
-        )
-        check(rows.size == seeds.size * 2)
+        rows.groupBy { it.policy }.forEach { (policy, policyRows) ->
+            println(
+                "summary policy=$policy samples=${policyRows.size} " +
+                    "avgMulligans=${String.format(Locale.ROOT, "%.3f", policyRows.map { it.mulligans }.average())} " +
+                    "keep7=${policyRows.count { it.mulligans == 0 }} keep6=${policyRows.count { it.mulligans == 1 }} " +
+                    "keep5=${policyRows.count { it.mulligans == 2 }} lowLand=${policyRows.count { it.lands <= 1 }} " +
+                    "noDirectU=${policyRows.count { it.directBlue == 0 }} noDirectG=${policyRows.count { it.directGreen == 0 }} " +
+                    "noUAccess=${policyRows.count { it.directBlue == 0 && it.cards.none { name -> name in fixing } }} " +
+                    "noGAccess=${policyRows.count { it.directGreen == 0 && it.cards.none { name -> name in fixing - "Lórien Revealed" } }}",
+            )
+        }
+        check(rows.size == seeds.size * 2 * 2)
     }
 })
