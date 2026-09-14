@@ -51,7 +51,7 @@ class HiddenStringsScenarioTest : FunSpec({
         game.submitYesNo(player, true)
         chooseMode(game, "Untap")
         game.pendingDecision.shouldBeInstanceOf<SelectCardsDecision>()
-        game.selectCards(emptyList())
+        game.submitCardSelection(player, emptyList())
 
         game.isTapped(first) shouldBe true
         game.isTapped(second) shouldBe false
@@ -71,7 +71,7 @@ class HiddenStringsScenarioTest : FunSpec({
         game.bothPass()
         val encode = game.pendingDecision.shouldBeInstanceOf<SelectCardsDecision>()
         encode.options.contains(host) shouldBe true
-        game.selectCards(listOf(host))
+        game.submitCardSelection(player, listOf(host))
 
         game.getExile(player).contains(spell) shouldBe true
         game.state.getEntity(spell)?.get<CipherEncodedComponent>()?.creatureId shouldBe host
@@ -86,7 +86,7 @@ class HiddenStringsScenarioTest : FunSpec({
         game.submitYesNo(player, true)
         // Casting the copy reuses normal spell announcement, so its optional targets are chosen now.
         game.pendingDecision.shouldBeInstanceOf<com.wingedsheep.engine.core.ChooseTargetsDecision>()
-        game.skipTargets()
+        game.submitTargetSelection(player, emptyList())
         game.getExile(player).contains(spell) shouldBe true
     }
 })

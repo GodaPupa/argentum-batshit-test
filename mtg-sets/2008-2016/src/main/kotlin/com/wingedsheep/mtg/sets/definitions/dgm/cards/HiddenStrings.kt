@@ -1,10 +1,10 @@
 package com.wingedsheep.mtg.sets.definitions.dgm.cards
 
+import com.wingedsheep.sdk.dsl.Conditions
 import com.wingedsheep.sdk.dsl.Effects
 import com.wingedsheep.sdk.dsl.card
 import com.wingedsheep.sdk.model.Rarity
 import com.wingedsheep.sdk.scripting.GameObjectFilter
-import com.wingedsheep.sdk.scripting.conditions.EntityMatches
 import com.wingedsheep.sdk.scripting.effects.ConditionalEffect
 import com.wingedsheep.sdk.scripting.effects.MayEffect
 import com.wingedsheep.sdk.scripting.effects.ModalEffect
@@ -31,10 +31,7 @@ val HiddenStrings = card("Hidden Strings") {
         )
         effect = Effects.Composite(
             ConditionalEffect(
-                EntityMatches(
-                    EffectTarget.ContextTarget(0),
-                    GameObjectFilter.Permanent,
-                ),
+                Conditions.TargetMatchesFilter(GameObjectFilter.Permanent, targetIndex = 0),
                 MayEffect(
                     ModalEffect(
                         modes = listOf(
@@ -60,10 +57,7 @@ val HiddenStrings = card("Hidden Strings") {
                 ),
             ),
             ConditionalEffect(
-                EntityMatches(
-                    EffectTarget.ContextTarget(1),
-                    GameObjectFilter.Permanent,
-                ),
+                Conditions.TargetMatchesFilter(GameObjectFilter.Permanent, targetIndex = 1),
                 MayEffect(
                     ModalEffect(
                         modes = listOf(
