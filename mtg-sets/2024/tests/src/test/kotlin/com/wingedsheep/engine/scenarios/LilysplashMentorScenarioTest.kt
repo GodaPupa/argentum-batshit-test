@@ -551,9 +551,8 @@ class LilysplashMentorScenarioTest : FunSpec({
         driver.bothPass()
         driver.findPermanent(player, "Lilysplash Mentor") shouldBe mentor
 
-        val removal = driver.putCardInHand(opponent, "Doom Blade")
-        driver.giveMana(opponent, Color.BLACK, 1)
-        driver.giveColorlessMana(opponent, 1)
+        val removal = driver.putCardInHand(opponent, "Vapor Snag")
+        driver.giveMana(opponent, Color.BLUE, 1)
         driver.passPriority(player)
         driver.castSpell(opponent, removal, listOf(mentor)).isSuccess shouldBe true
         driver.bothPass()
