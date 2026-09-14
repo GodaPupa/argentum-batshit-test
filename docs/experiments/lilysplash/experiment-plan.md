@@ -14,13 +14,13 @@
 
 The minimum executable combo suite is:
 
-1. Lilysplash Mentor activation, sorcery-speed restriction, exile/return, and counter placement.
-2. Peregrine Drake and Cloud of Faeries untap behavior.
-3. Ghostly Flicker targeting and simultaneous return behavior.
-4. Archaeomancer and Mnemonic Wall graveyard recursion.
-5. Sage's Row Denizen as deterministic mill conversion.
-6. A legal infinite-mana conversion; Secret Door is optional if venture is not yet supported.
-7. Commander-zone setup, singleton deck validation, and commander color identity.
+1. [x] Lilysplash Mentor activation, sorcery-speed restriction, exile/return, and counter placement.
+2. [x] Peregrine Drake and Cloud of Faeries untap behavior.
+3. [x] Ghostly Flicker targeting and simultaneous return behavior.
+4. [x] Archaeomancer and Mnemonic Wall graveyard recursion.
+5. [x] Sage's Row Denizen as deterministic mill conversion.
+6. [ ] A legal infinite-mana conversion; Secret Door is optional if venture is not yet supported.
+7. [ ] Commander-zone setup, singleton deck validation, and commander color identity.
 
 ## Experimental stages
 
@@ -31,11 +31,13 @@ The minimum executable combo suite is:
 
 ### Stage 2 — Deterministic line tests
 
-- Lilysplash + Peregrine Drake produces net mana with five lands.
-- Lilysplash + Cloud of Faeries is neutral on ordinary lands and positive with enhanced lands.
-- Ghostly Flicker + Peregrine Drake + Archaeomancer/Mnemonic Wall recurs correctly.
+- [x] Lilysplash + Peregrine Drake produces two mana per cycle with five basic lands.
+- [x] Lilysplash + Cloud of Faeries loses one land activation on basics, but produces one mana per
+  cycle when New Horizons and Fertile Ground each make an untap target produce two mana.
+- [ ] Ghostly Flicker + Peregrine Drake + Archaeomancer/Mnemonic Wall recurs correctly.
 - Each infinite line reaches an explicit deterministic win condition.
-- Interaction tests cover removal, counterspells, fizzled targets, and commander removal.
+- [x] Removing the only Lilysplash target in response makes the activation fizzle.
+- [ ] Interaction tests cover counterspells and commander removal.
 
 ### Stage 3 — Paired goldfish preflight
 
