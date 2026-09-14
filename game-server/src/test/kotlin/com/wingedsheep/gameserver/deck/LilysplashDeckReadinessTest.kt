@@ -30,10 +30,16 @@ class LilysplashDeckReadinessTest : FunSpec({
             .map { it.resolve(relative) }
             .firstOrNull { Files.isRegularFile(it) }
             ?: error("Could not locate $relative from the test working directory")
-        val lines = Files.readAllLines(snapshot).filter { it.isNotBlank() }
-        val commander = lines.first().removePrefix("Commander: ")
-        val entry = Regex("""^(\d+)\s+(.+?)\s+\([^)]+\)\s+.+$""")
-        val library = lines.drop(1).flatMap { line ->
+        val lines = Files.readAllLines(snapshot)
+            .filter { it.isNotBlank() && !it.startsWith("#") }
+        lines.first() shouldBe "Commander"
+        val entry = Regex("""^(\d+)\s+(.+)$""")
+        val commanderEntry = entry.matchEntire(lines[1])
+            ?: error("Unparseable submitted commander line: ${lines[1]}")
+        commanderEntry.groupValues[1].toInt() shouldBe 1
+        val commander = commanderEntry.groupValues[2]
+        lines[2] shouldBe "Deck"
+        val library = lines.drop(3).flatMap { line ->
             val match = entry.matchEntire(line) ?: error("Unparseable submitted deck line: $line")
             List(match.groupValues[1].toInt()) { match.groupValues[2] }
         }
