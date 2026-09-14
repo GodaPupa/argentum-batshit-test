@@ -79,7 +79,6 @@ class LilysplashDeckReadinessTest : FunSpec({
             "Utopia Sprawl",
             "Vizier of Tumbling Sands",
             "Whirlpool Rider",
-            "Wild Growth",
         )
 
         val commanderIdentity = commander.colorIdentity
