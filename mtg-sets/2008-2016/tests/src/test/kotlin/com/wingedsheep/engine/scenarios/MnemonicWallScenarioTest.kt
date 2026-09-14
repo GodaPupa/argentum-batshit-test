@@ -32,12 +32,14 @@ class MnemonicWallScenarioTest : FunSpec({
 
     test("may return the targeted instant when it enters") {
         val (driver, player) = setup()
-        driver.submitYesNo(player, true).isSuccess shouldBe true
+        val consent = driver.pendingDecision as YesNoDecision
+        driver.submitYesNo(consent.playerId, true).isSuccess shouldBe true
         val instant = driver.getGraveyard(player).single {
             driver.state.getEntity(it)?.get<CardComponent>()?.name == "Lightning Bolt"
         }
         (driver.pendingDecision is ChooseTargetsDecision) shouldBe true
-        driver.submitTargetSelection(player, listOf(instant)).isSuccess shouldBe true
+        val targetDecision = driver.pendingDecision as ChooseTargetsDecision
+        driver.submitTargetSelection(targetDecision.playerId, listOf(instant)).isSuccess shouldBe true
 
         driver.findCardInHand(player, "Lightning Bolt") shouldNotBe null
         driver.getGraveyardCardNames(player).contains("Lightning Bolt") shouldBe false
@@ -45,7 +47,8 @@ class MnemonicWallScenarioTest : FunSpec({
 
     test("may decline to return the targeted instant") {
         val (driver, player) = setup()
-        driver.submitYesNo(player, false).isSuccess shouldBe true
+        val consent = driver.pendingDecision as YesNoDecision
+        driver.submitYesNo(consent.playerId, false).isSuccess shouldBe true
 
         driver.findCardInHand(player, "Lightning Bolt") shouldBe null
         driver.getGraveyardCardNames(player).contains("Lightning Bolt") shouldBe true

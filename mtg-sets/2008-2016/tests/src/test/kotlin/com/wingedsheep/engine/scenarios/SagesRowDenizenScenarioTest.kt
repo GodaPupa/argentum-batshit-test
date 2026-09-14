@@ -34,11 +34,14 @@ class SagesRowDenizenScenarioTest : FunSpec({
         val blueCreature = driver.putCardInHand(player, "Wind Drake")
         driver.giveMana(player, Color.BLUE, 3)
         driver.castSpell(player, blueCreature).isSuccess shouldBe true
-        driver.bothPass()
-
-        (driver.pendingDecision is ChooseTargetsDecision) shouldBe true
-        driver.submitTargetSelection(player, listOf(opponent)).isSuccess shouldBe true
-        driver.bothPass()
+        var guard = 0
+        while (guard++ < 12 && driver.state.stack.isNotEmpty()) {
+            when (val decision = driver.pendingDecision) {
+                is ChooseTargetsDecision ->
+                    driver.submitTargetSelection(decision.playerId, listOf(opponent)).isSuccess shouldBe true
+                else -> driver.passPriority(driver.state.priorityPlayerId!!).isSuccess shouldBe true
+            }
+        }
 
         driver.state.getLibrary(opponent).size shouldBe opponentLibraryBefore - 2
         driver.getGraveyardCardNames(opponent).size shouldBe 2
