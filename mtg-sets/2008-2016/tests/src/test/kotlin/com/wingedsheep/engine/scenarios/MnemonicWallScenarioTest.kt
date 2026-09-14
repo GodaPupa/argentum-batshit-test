@@ -1,6 +1,8 @@
 package com.wingedsheep.engine.scenarios
 
 import com.wingedsheep.engine.core.ChooseTargetsDecision
+import com.wingedsheep.engine.core.YesNoDecision
+import com.wingedsheep.engine.state.components.identity.CardComponent
 import com.wingedsheep.engine.support.GameTestDriver
 import com.wingedsheep.engine.support.TestCards
 import com.wingedsheep.mtg.sets.definitions.roe.cards.MnemonicWall
@@ -19,20 +21,23 @@ class MnemonicWallScenarioTest : FunSpec({
         driver.initMirrorMatch(deck = Deck.of("Island" to 40), startingLife = 20)
         driver.passPriorityUntil(Step.PRECOMBAT_MAIN)
         val player = driver.activePlayer!!
-        val instant = driver.putCardInGraveyard(player, "Lightning Bolt")
+        driver.putCardInGraveyard(player, "Lightning Bolt")
         val wall = driver.putCardInHand(player, "Mnemonic Wall")
         driver.giveMana(player, Color.BLUE, 5)
         driver.castSpell(player, wall).isSuccess shouldBe true
         driver.bothPass()
-        (driver.pendingDecision is ChooseTargetsDecision) shouldBe true
-        driver.submitTargetSelection(player, listOf(instant)).isSuccess shouldBe true
-        driver.bothPass()
+        (driver.pendingDecision is YesNoDecision) shouldBe true
         return driver to player
     }
 
     test("may return the targeted instant when it enters") {
         val (driver, player) = setup()
         driver.submitYesNo(player, true).isSuccess shouldBe true
+        val instant = driver.getGraveyard(player).single {
+            driver.state.getEntity(it)?.get<CardComponent>()?.name == "Lightning Bolt"
+        }
+        (driver.pendingDecision is ChooseTargetsDecision) shouldBe true
+        driver.submitTargetSelection(player, listOf(instant)).isSuccess shouldBe true
 
         driver.findCardInHand(player, "Lightning Bolt") shouldNotBe null
         driver.getGraveyardCardNames(player).contains("Lightning Bolt") shouldBe false

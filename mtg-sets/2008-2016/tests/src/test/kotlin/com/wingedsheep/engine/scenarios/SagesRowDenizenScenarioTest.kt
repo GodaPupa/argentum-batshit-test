@@ -26,10 +26,7 @@ class SagesRowDenizenScenarioTest : FunSpec({
         val opponent = driver.getOpponent(player)
         val opponentLibraryBefore = driver.state.getLibrary(opponent).size
 
-        val denizen = driver.putCardInHand(player, "Sage's Row Denizen")
-        driver.giveMana(player, Color.BLUE, 3)
-        driver.castSpell(player, denizen).isSuccess shouldBe true
-        driver.bothPass()
+        driver.putCreatureOnBattlefield(player, "Sage's Row Denizen")
 
         driver.pendingDecision shouldBe null
         driver.state.getLibrary(opponent).size shouldBe opponentLibraryBefore
