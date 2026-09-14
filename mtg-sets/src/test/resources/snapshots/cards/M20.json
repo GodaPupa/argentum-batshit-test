@@ -144,6 +144,49 @@
     ]
 }
 
+// Cloudkin Seer
+{
+    "name": "Cloudkin Seer",
+    "manaCost": "{2}{U}",
+    "typeLine": "Creature — Elemental Wizard",
+    "oracleText": "Flying\nWhen this creature enters, draw a card.",
+    "creatureStats": {
+        "power": 2,
+        "toughness": 1
+    },
+    "keywords": [
+        "FLYING"
+    ],
+    "script": {
+        "triggeredAbilities": [
+            {
+                "id": "ability_1",
+                "trigger": {
+                    "type": "ZoneChangeEvent",
+                    "to": "Battlefield"
+                },
+                "effect": {
+                    "type": "DrawCards",
+                    "count": {
+                        "type": "Fixed",
+                        "amount": 1
+                    }
+                },
+                "descriptionOverride": "When this creature enters, draw a card."
+            }
+        ]
+    },
+    "metadata": {
+        "collectorNumber": "54",
+        "artist": "Anastasia Ovchinnikova",
+        "flavorText": "\"I can see which way the wind is blowing.\"",
+        "imageUri": "https://cards.scryfall.io/normal/front/e/2/e2111753-a930-403f-9d94-a86dfcb069da.jpg?1783933012"
+    },
+    "colorIdentityOverride": [
+        "BLUE"
+    ]
+}
+
 // Cryptic Caves
 {
     "name": "Cryptic Caves",
