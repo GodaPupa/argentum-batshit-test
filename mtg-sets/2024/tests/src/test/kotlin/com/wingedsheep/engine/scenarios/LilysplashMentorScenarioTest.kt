@@ -1,7 +1,10 @@
 package com.wingedsheep.engine.scenarios
 
 import com.wingedsheep.engine.core.ActivateAbility
+import com.wingedsheep.engine.core.ChooseTargetsDecision
 import com.wingedsheep.engine.core.ColorChosenResponse
+import com.wingedsheep.engine.core.OrderObjectsDecision
+import com.wingedsheep.engine.core.OrderedResponse
 import com.wingedsheep.engine.core.PaymentStrategy
 import com.wingedsheep.engine.handlers.continuations.entityIdToChosenTarget
 import com.wingedsheep.engine.state.ComponentContainer
@@ -31,6 +34,7 @@ import com.wingedsheep.sdk.scripting.GrantActivatedAbility
 import com.wingedsheep.sdk.scripting.TimingRule
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
+import io.kotest.matchers.shouldNotBe
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.string.shouldContain
 
@@ -121,6 +125,50 @@ class LilysplashMentorScenarioTest : FunSpec({
     fun GameTestDriver.totalMana(player: EntityId): Int {
         val pool = state.getEntity(player)?.get<ManaPoolComponent>() ?: return 0
         return pool.white + pool.blue + pool.black + pool.red + pool.green + pool.colorless
+    }
+
+    fun GameTestDriver.resolveLilysplashTriggers(
+        opponent: EntityId,
+        lands: List<EntityId>,
+    ) {
+        var guard = 0
+        while ((state.stack.isNotEmpty() || pendingDecision != null) && guard++ < 100) {
+            when (val decision = pendingDecision) {
+                is OrderObjectsDecision -> submitDecision(
+                    decision.playerId,
+                    OrderedResponse(decision.id, decision.objects),
+                )
+                is ChooseTargetsDecision -> {
+                    val targetsByRequirement = decision.targetRequirements.associate { requirement ->
+                        val legal = decision.legalTargets[requirement.index].orEmpty().toSet()
+                        requirement.index to if (opponent in legal) {
+                            listOf(opponent)
+                        } else {
+                            lands.filter { it in legal }
+                        }
+                    }
+                    submitMultiTargetSelection(decision.playerId, targetsByRequirement).error shouldBe null
+                }
+                null -> bothPass()
+                else -> error("Unexpected Lilysplash combo decision: ${decision::class.simpleName}")
+            }
+        }
+        guard shouldNotBe 100
+        state.stack.isEmpty() shouldBe true
+        pendingDecision shouldBe null
+    }
+
+    fun GameTestDriver.advanceUntilGameOver(player: EntityId) {
+        var guard = 0
+        while (!state.gameOver && guard++ < 300) {
+            if (pendingDecision != null) {
+                autoResolveDecision()
+            } else {
+                bothPass()
+            }
+        }
+        guard shouldNotBe 300
+        assertGameOver(expectedWinner = player)
     }
 
     fun GameTestDriver.createMouseToken(player: EntityId): EntityId {
@@ -258,6 +306,41 @@ class LilysplashMentorScenarioTest : FunSpec({
         }
     }
 
+    test("Peregrine Drake converts repeated activations into a Sage's Row Denizen win") {
+        val driver = driver()
+        val player = driver.activePlayer!!
+        val opponent = driver.getOpponent(player)
+        driver.passPriorityUntil(Step.PRECOMBAT_MAIN)
+        val mentor = driver.putCreatureOnBattlefield(player, "Lilysplash Mentor")
+        driver.putCreatureOnBattlefield(player, "Peregrine Drake")
+        driver.putCreatureOnBattlefield(player, "Sage's Row Denizen")
+        val forests = List(3) { driver.putLandOnBattlefield(player, "Forest") }
+        val islands = List(2) { driver.putLandOnBattlefield(player, "Island") }
+        val lands = forests + islands
+        val opponentLibrary = ZoneKey(opponent, Zone.LIBRARY)
+        driver.replaceState(
+            driver.state.copy(
+                zones = driver.state.zones +
+                    (opponentLibrary to driver.state.getZone(opponentLibrary).take(4)),
+            ),
+        )
+
+        repeat(2) { iteration ->
+            forests.forEach { driver.tapBasicForMana(player, it, 'G') }
+            islands.forEach { driver.tapBasicForMana(player, it, 'U') }
+            val drake = driver.findPermanent(player, "Peregrine Drake")!!
+
+            driver.activate(mentor, drake, PaymentStrategy.FromPool).isSuccess shouldBe true
+            driver.resolveLilysplashTriggers(opponent, lands)
+
+            lands.count(driver::isTapped) shouldBe 0
+            driver.totalMana(player) shouldBe (iteration + 1) * 2
+            driver.state.getZone(opponentLibrary).size shouldBe 4 - ((iteration + 1) * 2)
+        }
+
+        driver.advanceUntilGameOver(player)
+    }
+
     test("Cloud of Faeries loses one basic-land activation and cannot immediately repeat") {
         val driver = driver()
         val player = driver.activePlayer!!
@@ -311,6 +394,43 @@ class LilysplashMentorScenarioTest : FunSpec({
             lands.count(driver::isTapped) shouldBe 0
             driver.totalMana(player) shouldBe iteration + 1
         }
+    }
+
+    test("enhanced-land Cloud of Faeries converts repeated activations into a Sage's Row Denizen win") {
+        val driver = driver()
+        val player = driver.activePlayer!!
+        val opponent = driver.getOpponent(player)
+        driver.passPriorityUntil(Step.PRECOMBAT_MAIN)
+        val mentor = driver.putCreatureOnBattlefield(player, "Lilysplash Mentor")
+        driver.putCreatureOnBattlefield(player, "Cloud of Faeries")
+        driver.putCreatureOnBattlefield(player, "Sage's Row Denizen")
+        val newHorizonsLand = driver.putLandOnBattlefield(player, "Forest")
+        val fertileGroundLand = driver.putLandOnBattlefield(player, "Forest")
+        val lands = listOf(newHorizonsLand, fertileGroundLand)
+        driver.attachAura(player, "New Horizons", newHorizonsLand)
+        driver.attachAura(player, "Fertile Ground", fertileGroundLand)
+        val opponentLibrary = ZoneKey(opponent, Zone.LIBRARY)
+        driver.replaceState(
+            driver.state.copy(
+                zones = driver.state.zones +
+                    (opponentLibrary to driver.state.getZone(opponentLibrary).take(4)),
+            ),
+        )
+
+        repeat(2) { iteration ->
+            driver.tapGrantedAuraAbility(player, newHorizonsLand, "New Horizons", Color.GREEN)
+            driver.tapFertileGroundLand(player, fertileGroundLand, 'G')
+            val faeries = driver.findPermanent(player, "Cloud of Faeries")!!
+
+            driver.activate(mentor, faeries, PaymentStrategy.FromPool).isSuccess shouldBe true
+            driver.resolveLilysplashTriggers(opponent, lands)
+
+            lands.count(driver::isTapped) shouldBe 0
+            driver.totalMana(player) shouldBe iteration + 1
+            driver.state.getZone(opponentLibrary).size shouldBe 4 - ((iteration + 1) * 2)
+        }
+
+        driver.advanceUntilGameOver(player)
     }
 
     test("the activation fizzles when its only target is returned to hand in response") {
