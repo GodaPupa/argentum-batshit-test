@@ -108,6 +108,12 @@ arena A B GAMES="300" SET="BLB" SEED="20260727" ARTIFACT_DIR="":
         -DarenaA={{A}} -DarenaB={{B}} -DarenaGames={{GAMES}} -DarenaSet={{SET}} -DarenaSeed={{SEED}} \
         -Dargentum.ai.apprentice.dir={{ARTIFACT_DIR}}
 
+# Audit the frozen Lilysplash Mentor PDH control deck's opening hands over a fixed seed block.
+[group: 'ai']
+lilysplash-preflight:
+    scripts/gradle-locked :ai:test --tests "*.LilysplashOpeningHandBenchmark" \
+        -Dbenchmark=true -DlilysplashPreflight=true
+
 # ECL apprentice promotion ladder. Artifacts are installed outside the repository and selected with
 # -Dargentum.ai.apprentice.dir; missing or invalid files safely use the production evaluator.
 [group: 'ai']
