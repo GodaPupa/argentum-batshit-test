@@ -1,50 +1,52 @@
 package com.wingedsheep.engine.scenarios
 
 import com.wingedsheep.engine.core.ChooseTargetsDecision
-import com.wingedsheep.engine.support.GameTestDriver
-import com.wingedsheep.engine.support.TestCards
-import com.wingedsheep.mtg.sets.definitions.gtc.cards.SagesRowDenizen
-import com.wingedsheep.sdk.core.Color
+import com.wingedsheep.engine.support.ScenarioTestBase
+import com.wingedsheep.sdk.core.Phase
 import com.wingedsheep.sdk.core.Step
-import com.wingedsheep.sdk.model.Deck
-import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
 
-class SagesRowDenizenScenarioTest : FunSpec({
-    fun setup(): GameTestDriver {
-        val driver = GameTestDriver()
-        driver.registerCards(TestCards.all)
-        driver.registerCard(SagesRowDenizen)
-        driver.initMirrorMatch(deck = Deck.of("Island" to 40), startingLife = 20)
-        driver.passPriorityUntil(Step.PRECOMBAT_MAIN)
-        return driver
-    }
+class SagesRowDenizenScenarioTest : ScenarioTestBase() {
+    init {
+        test("another blue creature entering mills the targeted player") {
+            val builder = scenario()
+                .withPlayers("P1", "P2")
+                .withCardOnBattlefield(1, "Sage's Row Denizen")
+                .withCardInHand(1, "Wind Drake")
+                .withLandsOnBattlefield(1, "Island", 3)
+                .withActivePlayer(1)
+                .inPhase(Phase.PRECOMBAT_MAIN, Step.PRECOMBAT_MAIN)
+            repeat(6) { builder.withCardInLibrary(2, "Island") }
+            val game = builder.build()
 
-    test("another blue creature entering mills the targeted player, but the Denizen itself does not") {
-        val driver = setup()
-        val player = driver.activePlayer!!
-        val opponent = driver.getOpponent(player)
-        val opponentLibraryBefore = driver.state.getLibrary(opponent).size
+            game.castSpell(1, "Wind Drake").error shouldBe null
+            game.resolveStack()
 
-        driver.putCreatureOnBattlefield(player, "Sage's Row Denizen")
+            (game.state.pendingDecision is ChooseTargetsDecision) shouldBe true
+            game.selectTargets(listOf(game.player2Id)).error shouldBe null
+            if (game.state.stack.isNotEmpty()) game.resolveStack()
 
-        driver.pendingDecision shouldBe null
-        driver.state.getLibrary(opponent).size shouldBe opponentLibraryBefore
-
-        val blueCreature = driver.putCardInHand(player, "Wind Drake")
-        driver.giveMana(player, Color.BLUE, 3)
-        driver.castSpell(player, blueCreature).isSuccess shouldBe true
-        var guard = 0
-        while (guard++ < 12 && driver.state.stack.isNotEmpty()) {
-            when (val decision = driver.pendingDecision) {
-                is ChooseTargetsDecision ->
-                    driver.submitTargetSelection(decision.playerId, listOf(opponent))
-                null -> driver.passPriority(driver.state.priorityPlayerId ?: player)
-                else -> driver.autoResolveDecision()
-            }
+            game.librarySize(2) shouldBe 4
+            game.graveyardSize(2) shouldBe 2
         }
 
-        driver.state.getLibrary(opponent).size shouldBe opponentLibraryBefore - 2
-        driver.getGraveyardCardNames(opponent).size shouldBe 2
+        test("the Denizen entering does not trigger itself") {
+            val game = scenario()
+                .withPlayers("P1", "P2")
+                .withCardInHand(1, "Sage's Row Denizen")
+                .withLandsOnBattlefield(1, "Island", 3)
+                .withCardInLibrary(2, "Island")
+                .withCardInLibrary(2, "Island")
+                .withActivePlayer(1)
+                .inPhase(Phase.PRECOMBAT_MAIN, Step.PRECOMBAT_MAIN)
+                .build()
+
+            game.castSpell(1, "Sage's Row Denizen").error shouldBe null
+            game.resolveStack()
+
+            game.state.pendingDecision shouldBe null
+            game.librarySize(2) shouldBe 2
+            game.graveyardSize(2) shouldBe 0
+        }
     }
-})
+}
