@@ -51,7 +51,6 @@ class LilysplashDeckReadinessTest : FunSpec({
 
         val unresolved = submitted.library.distinct().filter { registry.getCard(it) == null }.toSet()
         unresolved shouldBe setOf(
-            "Arbor Elf",
             "Blur",
             "Capsize",
             "Cloudkin Seer",
