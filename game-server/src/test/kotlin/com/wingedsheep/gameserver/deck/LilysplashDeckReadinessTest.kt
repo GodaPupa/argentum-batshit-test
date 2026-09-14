@@ -69,7 +69,6 @@ class LilysplashDeckReadinessTest : FunSpec({
             "Saprazzan Skerry",
             "Secret Door",
             "Snap",
-            "Teferi's Time Twist",
             "Utopia Sprawl",
             "Vizier of Tumbling Sands",
             "Whirlpool Rider",
