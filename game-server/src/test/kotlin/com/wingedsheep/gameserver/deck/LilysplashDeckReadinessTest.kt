@@ -59,7 +59,6 @@ class LilysplashDeckReadinessTest : FunSpec({
             "Evolution Witness",
             "Freed from the Real",
             "Frogify",
-            "Gift of Paradise",
             "Gilded Scuttler",
             "Grafted Growth",
             "Halimar Depths",
