@@ -9618,6 +9618,14 @@ composite abilities).
   the original stays in exile, and the resolving copy cannot encode itself. The component also records the
   host's battlefield-entry timestamp, so a creature that leaves and returns is a new object and no longer
   carries the encoding relationship.
+- `Venture into the dungeon` (CR 701.46) — `Effects.VentureIntoDungeon()`. If the resolving effect's
+  controller has no `ActiveDungeonComponent`, the engine offers the three ordinary AFR dungeons and enters
+  the chosen dungeon's first room. Otherwise it offers only rooms connected to that player's current room;
+  a single successor advances automatically. The marker is player state rather than permanent state, so it
+  survives zone changes to the source. Entering a bottommost room appends the dungeon to
+  `CompletedDungeonsComponent`, clears the active marker before resolving that room's instruction, and emits
+  `DungeonRoomEnteredEvent` plus `DungeonCompletedEvent`. Room choices and room-effect choices use ordinary
+  serializable continuations, so paused games resume without losing their dungeon branch.
 - `Craft(filter, cost)` — `card { craft(filter, cost, materialDescription?, minCount = 1, maxCount = null) }`
   builder helper (CR 702.167, The Lost Caverns of
   Ixalan). On the front face of a transforming DFC: "Craft with [filter] [cost] ([cost], Exile this permanent,

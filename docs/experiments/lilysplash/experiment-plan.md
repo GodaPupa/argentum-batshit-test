@@ -20,11 +20,10 @@ The minimum executable combo suite is:
 4. [x] Archaeomancer and Mnemonic Wall graveyard recursion.
 5. [x] Sage's Row Denizen as deterministic mill conversion.
 6. [x] A legal infinite-mana conversion through Sage's Row Denizen and the opponent's next draw.
-7. [ ] Commander-zone setup, singleton deck validation, and commander color identity.
+7. [x] Commander-zone setup, singleton deck validation, and commander color identity.
 
-   The frozen snapshot has the correct 99-plus-commander shape and no repeated nonbasics. The
-   registry readiness test currently inventories 1 submitted card that is not implemented, so
-   full color-identity validation and game initialization remain blocked rather than approximated.
+   The frozen snapshot has the correct 99-plus-commander shape, no repeated nonbasics, no unresolved
+   registry entries, and no cards outside Lilysplash Mentor's blue-green color identity.
 
 ## Experimental stages
 

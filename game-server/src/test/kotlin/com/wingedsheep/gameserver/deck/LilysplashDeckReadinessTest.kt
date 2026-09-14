@@ -39,7 +39,7 @@ class LilysplashDeckReadinessTest : FunSpec({
         register(MtgSetCatalog.all.flatMap { it.cards + it.basicLands })
     }
 
-    test("the submitted PDH snapshot shape and unresolved registry inventory are explicit") {
+    test("the submitted PDH snapshot is complete, singleton, and within commander color identity") {
         val submitted = submittedDeck()
         val registry = registry()
         val commander = registry.getCard(submitted.commander) ?: error("Missing commander definition")
@@ -50,9 +50,7 @@ class LilysplashDeckReadinessTest : FunSpec({
         submittedCounts.filterValues { it > 1 } shouldBe mapOf("Forest" to 9, "Island" to 8)
 
         val unresolved = submitted.library.distinct().filter { registry.getCard(it) == null }.toSet()
-        unresolved shouldBe setOf(
-            "Secret Door",
-        )
+        unresolved.shouldBeEmpty()
 
         val commanderIdentity = commander.colorIdentity
         val offIdentity = submitted.library.distinct().mapNotNull(registry::getCard).filter { card ->

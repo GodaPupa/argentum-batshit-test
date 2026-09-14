@@ -44,6 +44,7 @@ class LibraryAndZoneContinuationResumer(
         resumer(ChoosePileContinuation::class, ::resumeChoosePile),
         resumer(SelectTargetPipelineContinuation::class, ::resumeSelectTargetPipeline),
         resumer(CipherEncodeContinuation::class, ::resumeCipherEncode),
+        resumer(VentureIntoDungeonContinuation::class, ::resumeVentureIntoDungeon),
         resumer(MoveCollectionAuraTargetContinuation::class, ::resumeMoveCollectionAuraTarget),
         resumer(PutOntoBattlefieldAttachedToChosenContinuation::class, ::resumePutOntoBattlefieldAttachedToChosen),
         resumer(PutOnTopOrBottomContinuation::class, ::resumePutOnTopOrBottom),
@@ -78,6 +79,32 @@ class LibraryAndZoneContinuationResumer(
             )
         }
         return checkForMore(updated, emptyList())
+    }
+
+    fun resumeVentureIntoDungeon(
+        state: GameState,
+        continuation: VentureIntoDungeonContinuation,
+        response: DecisionResponse,
+        checkForMore: CheckForMore,
+    ): ExecutionResult {
+        val index = (response as? OptionChosenResponse)?.optionIndex
+            ?: return ExecutionResult.error(state, "Expected dungeon option response")
+        val destination = continuation.destinations.getOrNull(index)
+            ?: return ExecutionResult.error(state, "Invalid dungeon option")
+        val context = EffectContext(
+            sourceId = continuation.sourceId,
+            controllerId = continuation.playerId,
+            objectReferences = continuation.objectReferences,
+        )
+        val result = com.wingedsheep.engine.handlers.effects.library.VentureIntoDungeonExecutor.enterRoom(
+            state = state,
+            playerId = continuation.playerId,
+            destination = destination,
+            context = context,
+            recurse = services.effectExecutorRegistry::execute,
+        )
+        if (result.isPaused) return result.toExecutionResult()
+        return checkForMore(result.state, result.events)
     }
 
     fun resumeReturnFromGraveyard(
