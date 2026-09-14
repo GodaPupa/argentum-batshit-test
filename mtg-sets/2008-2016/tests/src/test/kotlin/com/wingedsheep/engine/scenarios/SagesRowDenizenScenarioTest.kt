@@ -24,15 +24,7 @@ class SagesRowDenizenScenarioTest : ScenarioTestBase() {
             while (guard++ < 20 && (game.state.stack.isNotEmpty() || game.state.pendingDecision != null)) {
                 when (game.state.pendingDecision) {
                     is ChooseTargetsDecision -> game.selectTargets(listOf(game.player2Id))
-                    null -> if (game.state.priorityPlayerId != null) {
-                        try {
-                            game.passPriority()
-                        } catch (failure: Throwable) {
-                            System.err.println("SAGE_ROW_RESOLUTION_FAILURE: ${failure.message}")
-                            failure.printStackTrace()
-                            throw failure
-                        }
-                    } else break
+                    null -> if (game.state.priorityPlayerId != null) game.passPriority() else break
                     else -> error("Unexpected decision while resolving Sage's Row Denizen")
                 }
             }
