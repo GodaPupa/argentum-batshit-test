@@ -1,8 +1,8 @@
 # Pest Control v1.0 — Goldfish Sample #2 Take 8 Seed Freeze
 
-Status: frozen and unexecuted. This independent replication vector belongs only to Project Pest
-Control. Gameplay requires separate explicit authorization after this exact freeze head is remotely
-green.
+Status: executed exactly once, accepted as Sample #2 independent goldfish evidence, and permanently
+retired/hard-disabled. This vector belongs only to Project Pest Control and must never be replayed,
+rehabilitated, replaced, optimized against, or reused.
 
 ## Validated baseline and immutable conditions
 
@@ -114,9 +114,16 @@ vector.
 
 The Take 8 runner is committed with `enabled = false`. Every earlier Pest gameplay runner remains
 disabled, and the focused readiness checks do not invoke Batshit Economics or Project X runners.
-Take 8 may run exactly once, in committed CSV order, only after separate explicit authorization on
-the exact remotely green freeze head. No reroll, replacement, exclusion, substitution, reorder,
-deck, policy, telemetry, schema, mulligan, horizon, or acceptance-criteria change is permitted.
+Take 8 ran exactly once in committed CSV order from freeze commit
+`3894ed0dbcad38b61fd2ac0640823dfe3b8778e8`. All 30 games completed normally, the complete artifact
+and manual strategic audit were clean, and Take 8 is accepted as Sample #2 independent goldfish
+performance/engine evidence. The runner was returned to disabled immediately after execution. The
+vector is permanently retired and hard-disabled; no rerun, replay, replacement, exclusion,
+substitution, reorder, optimization use, or reuse is permitted.
+
+The execution hashes, completeness findings, complete strategic audit, independent descriptive
+result, and formal disposition are recorded in
+`docs/experiments/pest-control/goldfish-sample-2-take-8-acceptance-audit.md`.
 
 Sample #1 remains the sole accepted Pest Control performance/engine sample. Take 7 and every earlier
 rejected vector remain permanently retired and hard-disabled. Pest Control v1.0 remains exact, and

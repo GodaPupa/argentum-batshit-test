@@ -1,6 +1,6 @@
 # Project Pest Control — Status
 
-- Status: Sample #2 Take 8 vector frozen and unexecuted; gameplay requires separate explicit authorization after the exact freeze head is remotely green
+- Status: Sample #2 Take 8 accepted after one complete, clean execution/audit; result-head remote CI pending
 - Laboratory: Project Pest Control
 - Branch: `pest-control/lab`
 - Validated base: `47882cd645caf126afee6cf13a65909806fa40ab`
@@ -30,7 +30,7 @@
 
 ## Goldfish Sample #2 independent replication authorization
 
-### Sample #2 Take 8 seed freeze
+### Sample #2 Take 8 accepted disposition
 
 Starting from exact validated head `c6b41a560d139a1f17f8ac1a68fd75cd29bf2ae8`, one new Take 8
 vector was deterministically derived and frozen before any gameplay. It contains exactly 30 unique
@@ -47,10 +47,30 @@ replay, performance, optimization, replication, rejected, retired, and previousl
 8 has zero overlap with that set and every prior Pest vector.
 
 The complete derivation, ordered vector, collision scope, hashes, and immutable execution contract
-are recorded in `docs/experiments/pest-control/goldfish-sample-2-take-8-seed-freeze.md`. The Take 8
-runner is hard-disabled, every prior Pest runner remains disabled, and no Batshit or Project X runner
-is part of this readiness gate. Zero seeds and zero games executed. Gameplay requires separate
-explicit authorization after this exact freeze head passes remote CI.
+are recorded in `docs/experiments/pest-control/goldfish-sample-2-take-8-seed-freeze.md`.
+
+From exact freeze commit `3894ed0dbcad38b61fd2ac0640823dfe3b8778e8`, one authorized JDK 21
+invocation executed the complete vector exactly once in frozen order. All 30 unique games reached
+normal `ENGINE_GAME_OVER` / `COMBAT_LETHAL` terminals. The raw JSON SHA-256 is
+`030c16b744e4690e0b3c6692eb22c458adf2fb66f49de7ea3a900001e8464d12`, its lossless gzip SHA-256 is
+`3895097cca986b3497aa200dac5769bedd6446bdcaad2ba40bba3dabaf06deb8`, and the human report SHA-256
+is `8d49293aad44a7afbe1ec8c3cae7c6d08934b75bad9a8a4b229486d876bf093a`.
+
+Artifact completeness passed before interpretation: all mandatory fields and explicit defaults are
+present; every built-in audit list is empty; all 13 Weather casts have exact Storm-copy accounting;
+all 22 setup comparisons use complete equal-horizon lines; no production-admissible materially
+superior action was missed; and all three executed friendly Bone Shards lines have selected
+`policyApplied=true` records that clear the established margin. Manual review of all 30 games found
+no rules/state, mana, sequencing, telemetry, serialization, evidence-integrity, or agent-policy
+defect. The detailed record is
+`docs/experiments/pest-control/goldfish-sample-2-take-8-acceptance-audit.md`.
+
+Take 8 is therefore **formally accepted as Pest Control Goldfish Sample #2 independent
+performance/engine replication evidence**. Sample #1 and Take 8 are the only accepted Pest Control
+performance samples and may support a later pooled 60-game descriptive analysis. The Take 8 vector
+is permanently retired and hard-disabled after execution. It may never be replayed, rehabilitated,
+replaced, optimized against, or reused. Every Pest gameplay runner remains disabled. Pest Control
+v1.0 and the audit-only unconstructed challenger remain unchanged.
 
 ### Sample #2 Take 7 disposition
 

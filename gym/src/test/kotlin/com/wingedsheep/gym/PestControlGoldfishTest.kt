@@ -537,7 +537,7 @@ class PestControlGoldfishTest : FunSpec({
     }
 
     test("Pest Control v1.0 Goldfish Sample 2 Take 8 independent replication").config(
-        enabled = false, // Frozen and unexecuted; gameplay requires separate explicit authorization.
+        enabled = false, // Accepted Sample #2; vector executed once and must never be run again.
         timeout = 60.minutes,
     ) {
         val seeds = readSample2Take8PestSeeds()
