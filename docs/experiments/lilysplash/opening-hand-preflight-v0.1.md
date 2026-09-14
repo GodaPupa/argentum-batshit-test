@@ -72,3 +72,35 @@ The next paired experiment should retain these exact seeds and compare two varia
 2. a green-access land package under the same commander-aware keep rule.
 
 Only after that separation should a land swap be promoted into the optimized list.
+
+## Commander-aware mulligan A/B
+
+The same deck, seeds, seat orientations, shuffle implementation, bottom-card policy, and generic
+land/castability rule were replayed with one additional keep requirement: before the forced keep at
+five, a hand needed practical access to both blue and green. Evolving Wilds, Terramorphic Expanse,
+and Escape Tunnel counted for either color; Ash Barrens needed another land to pay for basic landcycling;
+Lórien Revealed counted only for blue and needed a land to pay for islandcycling.
+
+| Metric | Generic | Commander-aware | Delta |
+|---|---:|---:|---:|
+| Mean mulligans | 0.333 | 0.542 | +0.209 |
+| Keep seven | 19/24 | 16/24 | -3 |
+| Keep six | 2/24 | 3/24 | +1 |
+| Keep five | 3/24 | 5/24 | +2 |
+| Kept with 0–1 land | 1/24 | 2/24 | +1 |
+| No blue source or listed fixer | 2/24 | 2/24 | — |
+| No green source or listed fixer | 3/24 | 2/24 | -1 |
+
+Only three paired traces changed:
+
+| Seed / seat | Generic keep | Commander-aware keep | Outcome |
+|---|---|---|---|
+| 2026091405 / 0 | Seven, two blue lands, no green access | Five, two green lands, no blue access | Two cards lost; still stranded |
+| 2026091412 / 0 | Seven, three blue lands, no green access | Five, one Island, no green access | Two cards lost; still stranded |
+| 2026091412 / 1 | Seven, two green lands, no blue access | Six, Island + Forest + Island | Recovered |
+
+The commander-aware rule spent five additional mulligans across the 24 hands and recovered only one
+additional color-functional keep. This isolates the dominant problem to the control deck's colored
+land/fixer density: stricter mulliganing alone mostly converts stranded sevens into smaller forced
+keeps. The first deck challenger should therefore add real colored land access while removing the
+slowest redundant ramp cards, using these same seeds and the commander-aware policy.
