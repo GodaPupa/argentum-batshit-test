@@ -19,7 +19,7 @@ The minimum executable combo suite is:
 3. [x] Ghostly Flicker targeting and simultaneous return behavior.
 4. [x] Archaeomancer and Mnemonic Wall graveyard recursion.
 5. [x] Sage's Row Denizen as deterministic mill conversion.
-6. [ ] A legal infinite-mana conversion; Secret Door is optional if venture is not yet supported.
+6. [x] A legal infinite-mana conversion through Sage's Row Denizen and the opponent's next draw.
 7. [ ] Commander-zone setup, singleton deck validation, and commander color identity.
 
 ## Experimental stages
@@ -34,8 +34,10 @@ The minimum executable combo suite is:
 - [x] Lilysplash + Peregrine Drake produces two mana per cycle with five basic lands.
 - [x] Lilysplash + Cloud of Faeries loses one land activation on basics, but produces one mana per
   cycle when New Horizons and Fertile Ground each make an untap target produce two mana.
-- [ ] Ghostly Flicker + Peregrine Drake + Archaeomancer/Mnemonic Wall recurs correctly.
-- Each infinite line reaches an explicit deterministic win condition.
+- [x] Ghostly Flicker + Peregrine Drake + Archaeomancer/Mnemonic Wall recurs correctly.
+- [x] The Archaeomancer line nets two mana and mills four cards per cycle with Sage's Row Denizen,
+  then wins when the opponent next draws from the empty library.
+- [ ] The Lilysplash-based mana loops each reach an explicit deterministic win condition.
 - [x] Removing the only Lilysplash target in response makes the activation fizzle.
 - [ ] Interaction tests cover counterspells and commander removal.
 
