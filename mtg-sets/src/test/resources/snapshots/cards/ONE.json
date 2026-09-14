@@ -1495,6 +1495,75 @@
     }
 }
 
+// Rustvine Cultivator
+{
+    "name": "Rustvine Cultivator",
+    "manaCost": "{G}",
+    "typeLine": "Creature — Phyrexian Elf Druid",
+    "oracleText": "{T}: Put an oil counter on this creature.\n{T}, Remove an oil counter from this creature: Untap target land.",
+    "creatureStats": {
+        "power": 1,
+        "toughness": 2
+    },
+    "script": {
+        "activatedAbilities": [
+            {
+                "id": "ability_1",
+                "cost": "CostTap",
+                "effect": {
+                    "type": "AddCounters",
+                    "counterType": "oil",
+                    "count": 1,
+                    "target": "Self"
+                }
+            },
+            {
+                "id": "ability_2",
+                "cost": {
+                    "type": "CostComposite",
+                    "costs": [
+                        "CostTap",
+                        {
+                            "type": "CostAtomWrapper",
+                            "atom": {
+                                "type": "AtomRemoveCounters",
+                                "counterType": "oil",
+                                "self": true
+                            }
+                        }
+                    ]
+                },
+                "effect": {
+                    "type": "TapUntap",
+                    "target": {
+                        "type": "BoundVariable",
+                        "name": "target land"
+                    },
+                    "tap": false
+                },
+                "targetRequirements": [
+                    {
+                        "type": "TargetObject",
+                        "filter": {
+                            "baseFilter": "land"
+                        },
+                        "id": "target land"
+                    }
+                ]
+            }
+        ]
+    },
+    "metadata": {
+        "collectorNumber": "181",
+        "artist": "Lauren K. Cannon",
+        "flavorText": "\"All elves aspire to be part of nature. Only Phyrexia can truly grant that wish.\"\n—Glissa Sunslayer",
+        "imageUri": "https://cards.scryfall.io/normal/front/6/b/6b71fd8f-e688-4210-bc5b-a3f19b5b3497.jpg?1783918010"
+    },
+    "colorIdentityOverride": [
+        "GREEN"
+    ]
+}
+
 // Sheoldred's Headcleaver
 {
     "name": "Sheoldred's Headcleaver",
