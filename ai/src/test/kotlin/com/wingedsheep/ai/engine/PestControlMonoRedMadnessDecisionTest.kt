@@ -4,10 +4,13 @@ import com.wingedsheep.engine.core.CastSpell
 import com.wingedsheep.engine.core.PassPriority
 import com.wingedsheep.engine.core.PaymentStrategy
 import com.wingedsheep.engine.core.YesNoResponse
+import com.wingedsheep.engine.state.components.battlefield.TappedComponent
 import com.wingedsheep.engine.state.components.identity.CardComponent
 import com.wingedsheep.engine.state.components.player.CardsDrawnThisTurnComponent
+import com.wingedsheep.engine.state.components.player.ManaPoolComponent
 import com.wingedsheep.engine.state.components.stack.ChosenTarget
 import com.wingedsheep.engine.support.ScenarioTestBase
+import com.wingedsheep.sdk.core.Color
 import com.wingedsheep.sdk.model.EntityId
 import com.wingedsheep.sdk.scripting.AdditionalCostPayment
 import io.kotest.assertions.withClue
@@ -44,6 +47,13 @@ class PestControlMonoRedMadnessDecisionTest : ScenarioTestBase() {
     private fun TestGame.advanceToDecision() {
         while (state.pendingDecision == null && state.stack.isNotEmpty()) {
             execute(PassPriority(state.priorityPlayerId!!)).error.shouldBeNull()
+        }
+    }
+
+    private fun TestGame.addFloatingMana(player: EntityId, color: Color, amount: Int = 1) {
+        state = state.updateEntity(player) { container ->
+            val pool = container.get<ManaPoolComponent>() ?: ManaPoolComponent()
+            container.with(pool.add(color, amount))
         }
     }
 
@@ -95,6 +105,88 @@ class PestControlMonoRedMadnessDecisionTest : ScenarioTestBase() {
                 )
             ).isSuccess.shouldBeTrue()
             game.advanceToDecision()
+
+            ai(game).respondToDecision(game.state, game.state.pendingDecision!!)
+                .shouldBeInstanceOf<YesNoResponse>().choice shouldBe false
+        }
+
+        test("accepts Fiery Temper madness with sufficient floating red mana") {
+            val game = seeded()
+                .withLifeTotal(2, 3)
+                .withLandsOnBattlefield(1, "Mountain", 2)
+                .withCardInHand(1, "Grab the Prize")
+                .withCardInHand(1, "Fiery Temper")
+                .withCardInLibrary(1, "Mountain")
+                .withCardInLibrary(1, "Mountain")
+                .build()
+            val outlet = game.findCardsInHand(1, "Grab the Prize").single()
+            val temper = game.findCardsInHand(1, "Fiery Temper").single()
+
+            game.execute(
+                CastSpell(
+                    game.player1Id,
+                    outlet,
+                    additionalCostPayment = AdditionalCostPayment(discardedCards = listOf(temper)),
+                    paymentStrategy = PaymentStrategy.AutoPay,
+                )
+            ).isSuccess.shouldBeTrue()
+            game.advanceToDecision()
+            game.addFloatingMana(game.player1Id, Color.RED)
+
+            ai(game).respondToDecision(game.state, game.state.pendingDecision!!)
+                .shouldBeInstanceOf<YesNoResponse>().choice shouldBe true
+        }
+
+        test("declines Fiery Temper madness when the remaining Mountain is tapped") {
+            val game = seeded()
+                .withLifeTotal(2, 3)
+                .withLandsOnBattlefield(1, "Mountain", 3)
+                .withCardInHand(1, "Grab the Prize")
+                .withCardInHand(1, "Fiery Temper")
+                .withCardInLibrary(1, "Mountain")
+                .withCardInLibrary(1, "Mountain")
+                .build()
+            val tappedMountain = game.findPermanents("Mountain").first()
+            game.state = game.state.updateEntity(tappedMountain) { it.with(TappedComponent) }
+            val outlet = game.findCardsInHand(1, "Grab the Prize").single()
+            val temper = game.findCardsInHand(1, "Fiery Temper").single()
+
+            game.execute(
+                CastSpell(
+                    game.player1Id,
+                    outlet,
+                    additionalCostPayment = AdditionalCostPayment(discardedCards = listOf(temper)),
+                    paymentStrategy = PaymentStrategy.AutoPay,
+                )
+            ).isSuccess.shouldBeTrue()
+            game.advanceToDecision()
+
+            ai(game).respondToDecision(game.state, game.state.pendingDecision!!)
+                .shouldBeInstanceOf<YesNoResponse>().choice shouldBe false
+        }
+
+        test("declines Fiery Temper madness when only wrong-color mana remains") {
+            val game = seeded()
+                .withLifeTotal(2, 3)
+                .withLandsOnBattlefield(1, "Mountain", 2)
+                .withCardInHand(1, "Grab the Prize")
+                .withCardInHand(1, "Fiery Temper")
+                .withCardInLibrary(1, "Mountain")
+                .withCardInLibrary(1, "Mountain")
+                .build()
+            val outlet = game.findCardsInHand(1, "Grab the Prize").single()
+            val temper = game.findCardsInHand(1, "Fiery Temper").single()
+
+            game.execute(
+                CastSpell(
+                    game.player1Id,
+                    outlet,
+                    additionalCostPayment = AdditionalCostPayment(discardedCards = listOf(temper)),
+                    paymentStrategy = PaymentStrategy.AutoPay,
+                )
+            ).isSuccess.shouldBeTrue()
+            game.advanceToDecision()
+            game.addFloatingMana(game.player1Id, Color.GREEN)
 
             ai(game).respondToDecision(game.state, game.state.pendingDecision!!)
                 .shouldBeInstanceOf<YesNoResponse>().choice shouldBe false

@@ -9,6 +9,7 @@ import com.wingedsheep.ai.engine.evaluation.BoardEvaluator
 import com.wingedsheep.ai.engine.evaluation.BoardPresence
 import com.wingedsheep.ai.engine.knowledge.IntentCatalog
 import com.wingedsheep.engine.core.*
+import com.wingedsheep.engine.mechanics.mana.OptionalCastAffordability
 import com.wingedsheep.engine.state.GameState
 import com.wingedsheep.engine.state.components.battlefield.TappedComponent
 import com.wingedsheep.engine.state.components.identity.CardComponent
@@ -297,6 +298,19 @@ class DecisionResponder(
         decision: YesNoDecision,
         playerId: EntityId
     ): DecisionResponse {
+        // Some pure "may" branches immediately initiate a paid cast (madness and other
+        // cast-from-collection effects). A failed cast is intentionally resolved by the rules
+        // engine as the decline path, so simulating an unaffordable "yes" is a no-op and ties the
+        // explicit "no". Do not let the generic tie-break turn that failed attempt into an AI
+        // acceptance: price the complete immediate cost against the post-originating-action state.
+        if (OptionalCastAffordability.canPayPendingMayCast(
+                state = state,
+                playerId = playerId,
+                cardRegistry = simulator.cardRegistry,
+            ) == false
+        ) {
+            return YesNoResponse(decision.id, false)
+        }
         val yesResult = simulator.simulateDecision(state, YesNoResponse(decision.id, true))
         val noResult = simulator.simulateDecision(state, YesNoResponse(decision.id, false))
         val yesScore = evaluateResult(yesResult, playerId)
