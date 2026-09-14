@@ -7,21 +7,17 @@ import com.wingedsheep.engine.core.SelectCardsDecision
 import com.wingedsheep.engine.core.SelectManaSourcesDecision
 import com.wingedsheep.engine.core.YesNoDecision
 import com.wingedsheep.engine.core.ZoneChangeEvent
-import com.wingedsheep.engine.core.engineSerializersModule
 import com.wingedsheep.engine.state.components.battlefield.TappedComponent
 import com.wingedsheep.engine.state.components.identity.CardComponent
 import com.wingedsheep.engine.state.components.identity.TokenComponent
-import com.wingedsheep.engine.state.GameState
 import com.wingedsheep.engine.support.ScenarioTestBase
+import com.wingedsheep.engine.support.SerializationTestSupport
 import com.wingedsheep.sdk.core.Phase
 import com.wingedsheep.sdk.core.Step
 import com.wingedsheep.sdk.core.Zone
 import io.kotest.assertions.withClue
 import io.kotest.matchers.collections.shouldContain
 import io.kotest.matchers.shouldBe
-import kotlinx.serialization.decodeFromString
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
 
 /**
  * Seedless Gate 2 rules coverage for the canonical Melded Moxite definition.
@@ -30,11 +26,6 @@ import kotlinx.serialization.json.Json
  * not use a matchup driver, shuffle a deck, generate a seed, or execute an experimental game.
  */
 class MeldedMoxiteScenarioTest : ScenarioTestBase() {
-
-    private val json = Json {
-        serializersModule = engineSerializersModule
-        allowStructuredMapKeys = true
-    }
 
     private fun moxiteGame(handCards: List<String>, libraryCards: List<String>): TestGame {
         val builder = scenario()
@@ -90,7 +81,7 @@ class MeldedMoxiteScenarioTest : ScenarioTestBase() {
                 } shouldBe true
 
                 withClue("the completed trigger state must survive canonical JSON serialization") {
-                    json.decodeFromString<GameState>(json.encodeToString(game.state)) shouldBe game.state
+                    SerializationTestSupport.roundTrip(game.state) shouldBe game.state
                 }
             }
 
@@ -183,7 +174,7 @@ class MeldedMoxiteScenarioTest : ScenarioTestBase() {
                 } shouldBe true
 
                 withClue("the sacrificed source and created token must survive serialization") {
-                    json.decodeFromString<GameState>(json.encodeToString(game.state)) shouldBe game.state
+                    SerializationTestSupport.roundTrip(game.state) shouldBe game.state
                 }
             }
 
