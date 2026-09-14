@@ -64,7 +64,6 @@ class LilysplashDeckReadinessTest : FunSpec({
             "Hidden Strings",
             "Kasmina's Transmutation",
             "Masked Vandal",
-            "Planar Incision",
             "Pollenbright Druid",
             "Rustvine Cultivator",
             "Saprazzan Skerry",
