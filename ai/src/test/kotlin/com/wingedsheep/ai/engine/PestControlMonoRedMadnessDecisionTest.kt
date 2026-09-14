@@ -1,10 +1,14 @@
 package com.wingedsheep.ai.engine
 
+import com.wingedsheep.engine.core.ActivateAbility
+import com.wingedsheep.engine.core.CardsSelectedResponse
 import com.wingedsheep.engine.core.CastSpell
 import com.wingedsheep.engine.core.DeclareAttackers
 import com.wingedsheep.engine.core.DeclareBlockers
 import com.wingedsheep.engine.core.PassPriority
 import com.wingedsheep.engine.core.PaymentStrategy
+import com.wingedsheep.engine.core.SelectCardsDecision
+import com.wingedsheep.engine.core.SelectManaSourcesDecision
 import com.wingedsheep.engine.core.YesNoResponse
 import com.wingedsheep.engine.state.components.battlefield.TappedComponent
 import com.wingedsheep.engine.state.components.combat.AttackingComponent
@@ -217,6 +221,68 @@ class PestControlMonoRedMadnessDecisionTest : ScenarioTestBase() {
             cardName(game, action.cardId) shouldBe "Grab the Prize"
             val discarded = action.additionalCostPayment?.discardedCards?.single()!!
             cardName(game, discarded) shouldBe "Sneaky Snacker"
+        }
+
+        test("Melded Moxite takes a concrete Snacker return and declines a zero-draw discard") {
+            val productive = seeded()
+                .withLandsOnBattlefield(1, "Mountain", 2)
+                .withCardInHand(1, "Melded Moxite")
+                .withCardInHand(1, "Sneaky Snacker")
+                .withCardInLibrary(1, "Mountain")
+                .withCardInLibrary(1, "Lightning Bolt")
+                .withCardInLibrary(1, "Lava Dart")
+                .build()
+            productive.state = productive.state.updateEntity(productive.player1Id) {
+                it.with(CardsDrawnThisTurnComponent(1))
+            }
+            productive.castSpell(1, "Melded Moxite").error.shouldBeNull()
+            if (productive.state.pendingDecision is SelectManaSourcesDecision) {
+                productive.submitManaSourcesAutoPay().error.shouldBeNull()
+            }
+            productive.resolveStack()
+
+            val accept = ai(productive).respondToDecision(
+                productive.state,
+                productive.state.pendingDecision!!,
+            ).shouldBeInstanceOf<YesNoResponse>()
+            accept.choice.shouldBeTrue()
+            productive.answerYesNo(true).error.shouldBeNull()
+            val discardDecision = productive.state.pendingDecision.shouldBeInstanceOf<SelectCardsDecision>()
+            val discard = ai(productive).respondToDecision(productive.state, discardDecision)
+                .shouldBeInstanceOf<CardsSelectedResponse>()
+            discard.selectedCards.single().let { cardName(productive, it) } shouldBe "Sneaky Snacker"
+
+            val restrained = seeded()
+                .withLandsOnBattlefield(1, "Mountain", 2)
+                .withCardInHand(1, "Melded Moxite")
+                .withCardInHand(1, "Lightning Bolt")
+                .build()
+            restrained.castSpell(1, "Melded Moxite").error.shouldBeNull()
+            if (restrained.state.pendingDecision is SelectManaSourcesDecision) {
+                restrained.submitManaSourcesAutoPay().error.shouldBeNull()
+            }
+            restrained.resolveStack()
+
+            ai(restrained).respondToDecision(restrained.state, restrained.state.pendingDecision!!)
+                .shouldBeInstanceOf<YesNoResponse>().choice.shouldBeFalse()
+        }
+
+        test("Melded Moxite converts an otherwise idle artifact but yields to stronger development") {
+            val productive = seeded()
+                .withLandsOnBattlefield(1, "Mountain", 3)
+                .withCardOnBattlefield(1, "Melded Moxite")
+                .build()
+            val activation = ai(productive).chooseAction(productive.state)
+                .shouldBeInstanceOf<ActivateAbility>()
+            cardName(productive, activation.sourceId) shouldBe "Melded Moxite"
+
+            val restrained = seeded()
+                .withLandsOnBattlefield(1, "Mountain", 3)
+                .withCardOnBattlefield(1, "Melded Moxite")
+                .withCardInHand(1, "Guttersnipe")
+                .build()
+            val stronger = ai(restrained).chooseAction(restrained.state).shouldBeInstanceOf<CastSpell>()
+            cardName(restrained, stronger.cardId) shouldBe "Guttersnipe"
         }
 
         test("deploys each spell-damage engine before a profitable follow-up spell") {
