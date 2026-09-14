@@ -35,7 +35,7 @@ added and pass before Gate 3 can be accepted.
 | Imminent-lethal survival removal | Final-must-act Fireblast and survival-override matrix — Gate 2 / `6bc23a…` | Lethal pass, survival action, nonlethal restraint, ineffective/protected targets, cheaper answer, immediate win | Covered |
 | No speculative face burn | Fireblast/Lava Dart sacrifice restraint — Gate 2 / `6bc23a…` | Decisive lethal and nondecisive holds | Covered for high-cost burn; ambiguous ordinary-burn planning remains an interpretation limitation |
 | Fireblast and Lava Dart sacrifice policy | Same decision fixture — Gate 2 / `6bc23a…` | Lethal/survival use and speculative restraint | Covered; a concretely productive nonlethal Dart flashback comparison remains a Gate 3 gap |
-| Melded Moxite discard and sacrifice policy | `MeldedMoxiteScenarioTest` proves rules, costs, zones, token, events, serialization — Gate 2 / `6bc23a…` | Rules accept/decline/no-card and payable/unpayable activation | Gate 3 gap: production-agent material-value choices |
+| Melded Moxite discard and sacrifice policy | `MeldedMoxiteScenarioTest` proves rules, costs, zones, token, events, serialization — Gate 2 / `6bc23a…` | Gate 3 fixtures cover the sole-Snacker auto-selection payoff, multiple discard candidates, zero-library and insufficient-draw restraint, hidden-order invariance, and productive/restraint sacrifice choices | Covered once the test/documentation candidate is remotely green; the sole eligible exact-one discard is auto-completed and does not expose a selection decision |
 | Combat attacks and blocks | `CombatAdvisorTest` profitable/lethal attacks, losing attacks, favorable/survival blocks; final-must-act matchup fixture — Gate 2 / `6bc23a…` | Positive attacks/blocks and losing-line restraint | Covered semantically; not a claim of optimal combat |
 | Stack and response timing | Weather lethal response and final must-act Fireblast path — Gate 2 / `6bc23a…` | Immediate lethal, safe-window restraint, final-window survival | Covered for frozen-list outcome-relevant windows; ambiguous exchanges remain limitations |
 | Pest threat-sensitive removal | Generic Cast Down high-value targeting and removal patience — Gate 2 / `6bc23a…` | High-value target and hold controls | Gate 3 gap: exact Guttersnipe/Flamebreather/Snacker comparison |
@@ -52,4 +52,30 @@ added and pass before Gate 3 can be accepted.
   order are not.
 - Sideboard cards and postboard decisions are outside this preboard gate.
 - These fixtures are not games, samples, matchup-performance evidence, or a substitute for Gate 4.
+- When an optional, automatically completed branch and declining have exactly equal evaluated
+  outcomes, the legacy yes/no tie-break may choose acceptance. The choice remains visible in
+  strategic-provenance telemetry but has no demonstrated gameplay effect. This is a noncanonical
+  control-flow distinction, not an outcome-policy defect. It is deferred unless later evidence shows
+  a loop, mutation, misleading derived metric, or gameplay consequence. Raw artifacts must retain the
+  actual submitted response; a derived gameplay metric may call it a no-op only when that
+  classification is explicit.
 
+## Completed-branch protocol diagnostic
+
+The initial completed-branch fixtures incorrectly described `Patterns.Hand.discardCards(1)` as a
+`minSelections=0, maxSelections=1` continuation. It is `ChooseExactly(1)`. The collection executor
+therefore auto-selects the sole eligible card, or auto-completes an empty result when none exists,
+without creating a `SelectCardsDecision`. The alleged Moxite lost-payoff defect is withdrawn:
+production accepted the branch, auto-selected Sneaky Snacker, and scored the completed state
+`15.21375` versus `10.05` for declining.
+
+The corrected controls keep exact-one auto-completion separate from synthetic effects that genuinely
+use `ChooseUpTo(1)`. Those synthetic fixtures assert the actual `0..1` bounds before testing a
+beneficial singleton, a beneficial empty branch, a harmful singleton whose empty branch ties decline,
+and selection consistency among multiple candidates.
+
+For the exact-one no-candidate/no-payoff case, acceptance and decline have identical final game state,
+resources, zones, terminal behavior, and ordered gameplay events. Their audit traces intentionally
+differ: the corresponding `DecisionSubmittedEvent` truthfully records `Chose Yes` or `Chose No`.
+Tests exclude only that outer provenance record when comparing gameplay events; production does not
+filter, suppress, normalize, or relabel it.

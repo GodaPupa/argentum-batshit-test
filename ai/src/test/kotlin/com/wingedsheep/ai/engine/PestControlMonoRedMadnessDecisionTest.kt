@@ -3,8 +3,11 @@ package com.wingedsheep.ai.engine
 import com.wingedsheep.engine.core.ActivateAbility
 import com.wingedsheep.engine.core.CardsSelectedResponse
 import com.wingedsheep.engine.core.CastSpell
+import com.wingedsheep.engine.core.CardsDiscardedEvent
+import com.wingedsheep.engine.core.CardsDrawnEvent
 import com.wingedsheep.engine.core.DeclareAttackers
 import com.wingedsheep.engine.core.DeclareBlockers
+import com.wingedsheep.engine.core.DecisionSubmittedEvent
 import com.wingedsheep.engine.core.PassPriority
 import com.wingedsheep.engine.core.PaymentStrategy
 import com.wingedsheep.engine.core.SelectCardsDecision
@@ -255,18 +258,24 @@ class PestControlMonoRedMadnessDecisionTest : ScenarioTestBase() {
                 accept.choice.shouldBeTrue()
             }
 
-            game.answerYesNo(true).error.shouldBeNull()
-            val discardDecision = game.state.pendingDecision.shouldBeInstanceOf<SelectCardsDecision>()
-            val legalOptions = discardDecision.options.mapNotNull { cardName(game, it) }
-            val discard = agent.respondToDecision(game.state, discardDecision)
-                .shouldBeInstanceOf<CardsSelectedResponse>()
-            val selected = discard.selectedCards.singleOrNull()?.let { cardName(game, it) }
+            val accepted = game.answerYesNo(true)
+            accepted.error.shouldBeNull()
+            val resolutionEvents = accepted.events + game.resolveStack().flatMap { it.events }
             withClue(
-                "Moxite positive payoff expected Sneaky Snacker; observed selected=$selected; " +
-                    "legal discard options=$legalOptions; the discard precedes draws two and " +
-                    "deterministically enables the third-draw return",
+                "ChooseExactly(1) must auto-select the sole Sneaky Snacker without exposing " +
+                    "a follow-up selection decision",
             ) {
-                selected shouldBe "Sneaky Snacker"
+                game.state.pendingDecision.shouldBeNull()
+                resolutionEvents.filterIsInstance<CardsDiscardedEvent>()
+                    .flatMap { it.cardNames } shouldBe listOf("Sneaky Snacker")
+            }
+            withClue("Moxite must draw exactly two cards and reach the third draw this turn") {
+                resolutionEvents.filterIsInstance<CardsDrawnEvent>().sumOf { it.count } shouldBe 2
+                game.state.getEntity(game.player1Id)!!
+                    .get<CardsDrawnThisTurnComponent>()!!.count shouldBe 3
+            }
+            withClue("the deterministic third-draw trigger must return Sneaky Snacker") {
+                game.isOnBattlefield("Sneaky Snacker").shouldBeTrue()
             }
         }
 
@@ -348,7 +357,7 @@ class PestControlMonoRedMadnessDecisionTest : ScenarioTestBase() {
             }
         }
 
-        test("Melded Moxite declines when its completed acceptance branch has no legal discard") {
+        test("Melded Moxite no-candidate tie is gameplay-equivalent under legacy acceptance") {
             val game = seeded()
                 .withLandsOnBattlefield(1, "Mountain", 2)
                 .withCardInHand(1, "Melded Moxite")
@@ -361,9 +370,29 @@ class PestControlMonoRedMadnessDecisionTest : ScenarioTestBase() {
             }
             game.resolveStack()
 
-            withClue("acceptance cannot complete its mandatory discard selection") {
-                ai(game).respondToDecision(game.state, game.state.pendingDecision!!)
-                    .shouldBeInstanceOf<YesNoResponse>().choice.shouldBeFalse()
+            val decision = game.state.pendingDecision!!
+            val simulator = GameSimulator(cardRegistry)
+            val accept = simulator.simulateDecision(game.state, YesNoResponse(decision.id, true))
+            val decline = simulator.simulateDecision(game.state, YesNoResponse(decision.id, false))
+
+            withClue("auto-completed no-candidate acceptance must be outcome-equivalent to decline") {
+                accept::class shouldBe decline::class
+                accept.state shouldBe decline.state
+                val acceptAudit = accept.events.filterIsInstance<DecisionSubmittedEvent>()
+                    .filter { it.decisionId == decision.id }
+                val declineAudit = decline.events.filterIsInstance<DecisionSubmittedEvent>()
+                    .filter { it.decisionId == decision.id }
+                acceptAudit.single().description shouldBe "(Melded Moxite) Chose Yes"
+                declineAudit.single().description shouldBe "(Melded Moxite) Chose No"
+                accept.events.filterNot {
+                    it is DecisionSubmittedEvent && it.decisionId == decision.id
+                } shouldBe decline.events.filterNot {
+                    it is DecisionSubmittedEvent && it.decisionId == decision.id
+                }
+            }
+            withClue("the outcome-neutral legacy score tie currently resolves to accept") {
+                ai(game).respondToDecision(game.state, decision)
+                    .shouldBeInstanceOf<YesNoResponse>().choice.shouldBeTrue()
             }
         }
 
