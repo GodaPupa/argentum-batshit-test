@@ -9,6 +9,7 @@ import com.wingedsheep.engine.core.YesNoResponse
 import com.wingedsheep.engine.state.components.battlefield.TappedComponent
 import com.wingedsheep.engine.state.components.combat.AttackingComponent
 import com.wingedsheep.engine.state.components.combat.AttackersDeclaredThisCombatComponent
+import com.wingedsheep.engine.state.components.combat.BlockersDeclaredThisCombatComponent
 import com.wingedsheep.engine.state.components.identity.CardComponent
 import com.wingedsheep.engine.state.components.identity.HexproofFromComponent
 import com.wingedsheep.engine.state.components.player.CardsDrawnThisTurnComponent
@@ -383,26 +384,61 @@ class PestControlMonoRedMadnessDecisionTest : ScenarioTestBase() {
             // Declining at this exact boundary is lethal through the authoritative combat flow.
             game.execute(PassPriority(game.player1Id)).error.shouldBeNull()
             var combatTransitions = 0
+            var blockerDeclarations = 0
             while (!game.state.gameOver && game.state.phase == Phase.COMBAT) {
                 check(combatTransitions++ < 40) { "Combat did not settle after the final pass" }
                 val priority = checkNotNull(game.state.priorityPlayerId)
-                val action = if (game.state.step == Step.DECLARE_BLOCKERS && priority == game.player1Id) {
+                val blockersDeclared = game.state.getEntity(game.player1Id)
+                    ?.has<BlockersDeclaredThisCombatComponent>() == true
+                val action = if (
+                    game.state.step == Step.DECLARE_BLOCKERS &&
+                    priority == game.player1Id &&
+                    !blockersDeclared
+                ) {
+                    blockerDeclarations++
                     DeclareBlockers(game.player1Id, emptyMap())
                 } else {
                     PassPriority(priority)
                 }
                 game.execute(action).error.shouldBeNull()
             }
+            blockerDeclarations shouldBe 1
             game.state.gameOver.shouldBeTrue()
             game.state.winnerId shouldBe game.player2Id
 
-            // Restore the immutable must-act snapshot and require the survival action.
+            // Restore the immutable must-act snapshot, take the survival action, and follow the
+            // same authoritative priority/combat path far enough to prove that lethal is prevented.
             game.state = mustActState
             val response = redAi.chooseAction(game.state).shouldBeInstanceOf<CastSpell>()
             cardName(game, response.cardId) shouldBe "Fireblast"
             chosenTargetId(response) shouldBe mascot
             response.useAlternativeCost.shouldBeTrue()
             response.additionalCostPayment?.sacrificedPermanents?.size shouldBe 2
+            game.execute(response).error.shouldBeNull()
+
+            combatTransitions = 0
+            var survivalBlockerDeclarations = 0
+            while (!game.state.gameOver && game.state.phase == Phase.COMBAT) {
+                check(combatTransitions++ < 40) { "Combat did not settle after survival removal" }
+                val priority = checkNotNull(game.state.priorityPlayerId)
+                val blockersDeclared = game.state.getEntity(game.player1Id)
+                    ?.has<BlockersDeclaredThisCombatComponent>() == true
+                val action = if (
+                    game.state.step == Step.DECLARE_BLOCKERS &&
+                    priority == game.player1Id &&
+                    !blockersDeclared
+                ) {
+                    survivalBlockerDeclarations++
+                    DeclareBlockers(game.player1Id, emptyMap())
+                } else {
+                    PassPriority(priority)
+                }
+                game.execute(action).error.shouldBeNull()
+            }
+            survivalBlockerDeclarations shouldBe 0
+            game.state.gameOver.shouldBeFalse()
+            game.state.lifeTotal(game.player1Id) shouldBe 2
+            game.findPermanent("Pest Mascot") shouldBe null
         }
 
         test("imminent-combat survival override preserves restraint and winning lines") {
