@@ -18,6 +18,7 @@ import com.wingedsheep.sdk.core.Zone
 import com.wingedsheep.sdk.model.Deck
 import com.wingedsheep.sdk.model.EntityId
 import com.wingedsheep.sdk.scripting.AbilityId
+import io.kotest.assertions.withClue
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
@@ -63,7 +64,14 @@ class GhostlyFlickerScenarioTest : FunSpec({
                         opponent in legal -> listOf(opponent)
                         else -> lands.filter { it in legal }
                     }
-                    submitTargetSelection(decision.playerId, targets).isSuccess shouldBe true
+                    val result = submitTargetSelection(decision.playerId, targets)
+                    withClue(
+                        "prompt=${decision.prompt}; requirements=${decision.targetRequirements}; " +
+                            "legal=${legal.map { getCardName(it) ?: it }}; " +
+                            "chosen=${targets.map { getCardName(it) ?: it }}; error=${result.error}",
+                    ) {
+                        result.isSuccess shouldBe true
+                    }
                 }
                 null -> bothPass()
                 else -> error("Unexpected combo decision: ${decision::class.simpleName}")
