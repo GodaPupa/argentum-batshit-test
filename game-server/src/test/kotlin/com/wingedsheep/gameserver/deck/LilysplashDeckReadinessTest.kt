@@ -61,7 +61,6 @@ class LilysplashDeckReadinessTest : FunSpec({
             "Rustvine Cultivator",
             "Secret Door",
             "Snap",
-            "Vizier of Tumbling Sands",
         )
 
         val commanderIdentity = commander.colorIdentity
