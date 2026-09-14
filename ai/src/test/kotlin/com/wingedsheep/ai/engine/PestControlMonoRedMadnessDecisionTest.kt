@@ -1,5 +1,6 @@
 package com.wingedsheep.ai.engine
 
+import com.wingedsheep.ai.insight.AiDecisionInsight
 import com.wingedsheep.engine.core.ActivateAbility
 import com.wingedsheep.engine.core.CardsSelectedResponse
 import com.wingedsheep.engine.core.CastSpell
@@ -47,6 +48,14 @@ class PestControlMonoRedMadnessDecisionTest : ScenarioTestBase() {
 
     private fun ai(game: TestGame, player: EntityId = game.player1Id) =
         AIPlayer.create(cardRegistry, player, profile)
+
+    private fun aiWithInsights(game: TestGame, captured: MutableList<AiDecisionInsight>) =
+        AIPlayer.create(
+            cardRegistry,
+            game.player1Id,
+            profile,
+            insightSink = { _, insight -> captured += insight },
+        )
 
     private fun cardName(game: TestGame, id: EntityId): String? =
         game.state.getEntity(id)?.get<CardComponent>()?.name
@@ -450,16 +459,115 @@ class PestControlMonoRedMadnessDecisionTest : ScenarioTestBase() {
         }
 
         test("deploys each spell-damage engine before a profitable follow-up spell") {
-            listOf("Guttersnipe" to 4, "Kessig Flamebreather" to 3).forEach { (engine, mountains) ->
+            data class SetupCase(
+                val engine: String,
+                val followUp: String,
+                val mountains: Int,
+                val opponentLife: Int,
+            )
+
+            val setupCases = listOf(
+                SetupCase("Guttersnipe", "Lightning Bolt", mountains = 4, opponentLife = 4),
+                SetupCase("Kessig Flamebreather", "Lightning Bolt", mountains = 3, opponentLife = 4),
+                SetupCase("Guttersnipe", "Faithless Looting", mountains = 4, opponentLife = 2),
+                SetupCase("Kessig Flamebreather", "Faithless Looting", mountains = 3, opponentLife = 1),
+                SetupCase("Guttersnipe", "Grab the Prize", mountains = 5, opponentLife = 3),
+                SetupCase("Kessig Flamebreather", "Grab the Prize", mountains = 4, opponentLife = 3),
+                SetupCase("Guttersnipe", "Highway Robbery", mountains = 5, opponentLife = 2),
+                SetupCase("Kessig Flamebreather", "Highway Robbery", mountains = 4, opponentLife = 1),
+                // Melded Moxite is a noncreature artifact: it triggers Flamebreather, not Guttersnipe.
+                SetupCase("Kessig Flamebreather", "Melded Moxite", mountains = 4, opponentLife = 1),
+            )
+            setupCases.forEach { case ->
                 val game = seeded()
-                    .withLandsOnBattlefield(1, "Mountain", mountains)
-                    .withCardInHand(1, engine)
-                    .withCardInHand(1, "Lightning Bolt")
-                    .withLifeTotal(2, 20)
+                    .withLandsOnBattlefield(1, "Mountain", case.mountains)
+                    .withCardInHand(1, case.engine)
+                    .withCardInHand(1, case.followUp)
+                    .withCardInHand(1, "Sneaky Snacker")
+                    .withCardInLibrary(1, "Mountain")
+                    .withCardInLibrary(1, "Mountain")
+                    .withCardInLibrary(1, "Mountain")
+                    .withLifeTotal(2, case.opponentLife)
                     .build()
 
                 val action = ai(game).chooseAction(game.state).shouldBeInstanceOf<CastSpell>()
-                withClue(engine) { cardName(game, action.cardId) shouldBe engine }
+                withClue(
+                    "${case.engine} before ${case.followUp} makes the nonlethal-alone follow-up lethal",
+                ) {
+                    cardName(game, action.cardId) shouldBe case.engine
+                }
+            }
+        }
+
+        test("takes an immediate Lightning Bolt win instead of unnecessary engine setup") {
+            val game = seeded()
+                .withLandsOnBattlefield(1, "Mountain", 4)
+                .withCardInHand(1, "Guttersnipe")
+                .withCardInHand(1, "Lightning Bolt")
+                .withLifeTotal(2, 2)
+                .build()
+
+            val action = ai(game).chooseAction(game.state).shouldBeInstanceOf<CastSpell>()
+            cardName(game, action.cardId) shouldBe "Lightning Bolt"
+            chosenTargetId(action) shouldBe game.player2Id
+        }
+
+        test("executes the bounded Guttersnipe Bolt sequence through terminal resolution") {
+            val game = seeded()
+                .withLandsOnBattlefield(1, "Mountain", 4)
+                .withCardInHand(1, "Guttersnipe")
+                .withCardInHand(1, "Lightning Bolt")
+                .withLifeTotal(2, 4)
+                .build()
+            val agent = ai(game)
+
+            val setup = agent.chooseAction(game.state).shouldBeInstanceOf<CastSpell>()
+            cardName(game, setup.cardId) shouldBe "Guttersnipe"
+            game.execute(setup).error.shouldBeNull()
+            game.resolveStack()
+
+            val payoff = agent.chooseAction(game.state).shouldBeInstanceOf<CastSpell>()
+            cardName(game, payoff.cardId) shouldBe "Lightning Bolt"
+            chosenTargetId(payoff) shouldBe game.player2Id
+            game.execute(payoff).error.shouldBeNull()
+            game.resolveStack()
+
+            game.state.gameOver.shouldBeTrue()
+            game.state.winnerId shouldBe game.player1Id
+            withClue("Guttersnipe's two and Bolt's three are each applied exactly once") {
+                game.state.lifeTotal(game.player2Id) shouldBe -1
+            }
+        }
+
+        test("does not award bounded lethal priority to unavailable or nonlethal continuations") {
+            data class RestraintCase(
+                val label: String,
+                val setup: String,
+                val payoff: String,
+                val mountains: Int,
+                val opponentLife: Int,
+            )
+
+            listOf(
+                RestraintCase("insufficient combined mana", "Guttersnipe", "Lightning Bolt", 3, 4),
+                RestraintCase("life above combined damage", "Guttersnipe", "Lightning Bolt", 4, 6),
+                RestraintCase("Guttersnipe does not trigger from an artifact", "Guttersnipe", "Melded Moxite", 5, 1),
+            ).forEach { case ->
+                val game = seeded()
+                    .withLandsOnBattlefield(1, "Mountain", case.mountains)
+                    .withCardInHand(1, case.setup)
+                    .withCardInHand(1, case.payoff)
+                    .withLifeTotal(2, case.opponentLife)
+                    .build()
+                val captured = mutableListOf<AiDecisionInsight>()
+
+                aiWithInsights(game, captured).chooseAction(game.state)
+
+                withClue(case.label) {
+                    captured.last().options.none {
+                        it.note == "lethal policy: legal bounded same-turn continuation wins the game"
+                    }.shouldBeTrue()
+                }
             }
         }
 

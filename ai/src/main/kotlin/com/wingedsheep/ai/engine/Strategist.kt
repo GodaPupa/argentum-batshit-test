@@ -309,39 +309,64 @@ class Strategist(
 
         // ── Pass 3: per-card timing and advisor adjustments, in raw evaluator units ──
         val firstCandidate = if (pass != null) 1 else 0
+        // Terminal outcomes outrank every heuristic term. Preserve a legal one-action win first;
+        // only when none exists, inspect one additional same-turn strategic action from each
+        // already-resolved candidate leaf. This is deliberately not a general search horizon: it
+        // runs only in our main phase, considers no land play or draw assumption, and accepts a
+        // sequence only when canonical resolution of the second action actually ends the game.
+        val immediateWinIndex = (firstCandidate until leaves.size)
+            .filter { i -> leafStates[i].isWinningTerminalFor(playerId) }
+            .maxByOrNull { i -> leafScores[i] }
+        val twoActionWinIndex = if (immediateWinIndex == null) {
+            bestTwoActionSameTurnWinIndex(
+                leaves = leaves,
+                leafStates = leafStates,
+                firstCandidate = firstCandidate,
+                playerId = playerId,
+                budget = budget,
+            )
+        } else null
         // A one-ply leaf cannot normally see combat damage from the priority window immediately
         // after attackers are declared. Before applying resource-hold floors, recognize the narrow
         // case where visible combat is already deterministic lethal and one fully materialized,
         // legal action changes that outcome. Immediate wins stay authoritative; among survival
         // actions the ordinary leaf score still chooses the least damaging continuation.
-        val hasImmediateWin = leafStates.any { leaf ->
-            leaf.gameOver && leaf.winnerId in leaf.teamOf(playerId)
-        }
-        val survivalIndex = if (!hasImmediateWin) {
+        val survivalIndex = if (immediateWinIndex == null && twoActionWinIndex == null) {
             (firstCandidate until leaves.size)
                 .filter { i -> preventsVisibleImminentCombatLethal(evaluationState, leafStates[i], playerId) }
                 .maxByOrNull { i -> leafScores[i] }
         } else null
 
         val adjusted = (firstCandidate until leaves.size).map { i ->
+            val ordinaryAdjustment = adjustScore(
+                evaluationState,
+                leafStates[i],
+                leaves[i],
+                playerId,
+                leafScores[i],
+                passScore,
+                leafEvents[i],
+            )
             Triple(
                 leaves[i],
                 leafScores[i],
-                if (i == survivalIndex) {
-                    AdjustedScore(
+                if (i == immediateWinIndex) {
+                    ordinaryAdjustment.copy(
+                        score = Double.MAX_VALUE,
+                        note = "lethal policy: legal immediate action wins the game",
+                    )
+                } else if (i == twoActionWinIndex) {
+                    ordinaryAdjustment.copy(
+                        score = Double.MAX_VALUE / 2,
+                        note = "lethal policy: legal bounded same-turn continuation wins the game",
+                    )
+                } else if (i == survivalIndex) {
+                    ordinaryAdjustment.copy(
                         score = Double.MAX_VALUE / 4,
                         note = "imminent-lethal policy: legal action is required to survive visible combat",
                     )
                 } else {
-                    adjustScore(
-                        evaluationState,
-                        leafStates[i],
-                        leaves[i],
-                        playerId,
-                        leafScores[i],
-                        passScore,
-                        leafEvents[i],
-                    )
+                    ordinaryAdjustment
                 },
             )
         }
@@ -395,6 +420,61 @@ class Strategist(
         }
         return chosen
     }
+
+    /**
+     * Find a proven terminal continuation one strategic action beyond the ordinary candidate leaf.
+     *
+     * Every first leaf was produced by the authoritative simulator above. Each second action is
+     * enumerated from that resulting state, fully materialized with the same canonical payment and
+     * target machinery, and resolved to the same quiet boundary. Enumerating every first action
+     * compares both orders naturally; a nonterminal reverse order receives no lethal priority.
+     */
+    private fun bestTwoActionSameTurnWinIndex(
+        leaves: List<LegalAction>,
+        leafStates: List<GameState>,
+        firstCandidate: Int,
+        playerId: EntityId,
+        budget: DecisionBudget,
+    ): Int? {
+        val initiallyAvailableSources = (firstCandidate until leaves.size)
+            .mapNotNull { index -> strategicActionSource(leaves[index].action) }
+            .toSet()
+        return (firstCandidate until leafStates.size).firstOrNull { index ->
+            if (strategicActionSource(leaves[index].action) == null) return@firstOrNull false
+            val afterFirst = leafStates[index]
+            if (!afterFirst.isActiveTurnFor(playerId) ||
+                afterFirst.step !in setOf(Step.PRECOMBAT_MAIN, Step.POSTCOMBAT_MAIN) ||
+                afterFirst.pendingDecision != null || afterFirst.stack.isNotEmpty()
+            ) {
+                return@firstOrNull false
+            }
+
+            val here = StateProgress.digest(afterFirst)
+            val continuations = expandXCostAbilities(
+                afterFirst,
+                preferKickerVariants(candidatesFrom(simulator.getLegalActions(afterFirst, playerId))),
+                playerId,
+            ).filter { continuation ->
+                strategicActionSource(continuation.action) in initiallyAvailableSources
+            }
+
+            continuations.any { continuation ->
+                val (_, result) = materialize(afterFirst, continuation, playerId, budget, here)
+                result !is SimulationResult.Illegal &&
+                    result !is SimulationResult.StoppedAtLimit &&
+                    result.state.isWinningTerminalFor(playerId)
+            }
+        }
+    }
+
+    private fun strategicActionSource(action: GameAction): EntityId? = when (action) {
+        is CastSpell -> action.cardId
+        is ActivateAbility -> action.sourceId
+        else -> null
+    }
+
+    private fun GameState.isWinningTerminalFor(playerId: EntityId): Boolean =
+        gameOver && winnerId in teamOf(playerId)
 
     /**
      * Whether [after] turns a publicly determined lethal attack into a nonlethal one at the final
