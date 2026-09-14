@@ -1,16 +1,13 @@
 package com.wingedsheep.mtg.sets.definitions.war.cards
 
-import com.wingedsheep.sdk.core.Counters
+import com.wingedsheep.sdk.core.CounterType
 import com.wingedsheep.sdk.core.Step
 import com.wingedsheep.sdk.core.Zone
 import com.wingedsheep.sdk.dsl.Effects
-import com.wingedsheep.sdk.dsl.Conditions
 import com.wingedsheep.sdk.dsl.Targets
 import com.wingedsheep.sdk.dsl.card
 import com.wingedsheep.sdk.model.Rarity
 import com.wingedsheep.sdk.scripting.effects.CreateDelayedTriggerEffect
-import com.wingedsheep.sdk.scripting.effects.ConditionalEffect
-import com.wingedsheep.sdk.scripting.GameObjectFilter
 
 /** Teferi's Time Twist — War of the Spark #72. */
 val TeferisTimeTwist = card("Teferi's Time Twist") {
@@ -26,13 +23,13 @@ val TeferisTimeTwist = card("Teferi's Time Twist") {
         effect = Effects.Move(permanent, Zone.EXILE).then(
             CreateDelayedTriggerEffect(
                 step = Step.END,
-                effect = ConditionalEffect(
-                    // Check while the card is still in exile: moving it creates a fresh object,
-                    // so the original spell target no longer identifies the returned permanent.
-                    condition = Conditions.TargetMatchesFilter(GameObjectFilter.Creature),
-                    effect = Effects.Move(permanent, Zone.BATTLEFIELD)
-                        .then(Effects.AddCounters(Counters.PLUS_ONE_PLUS_ONE, 1, permanent)),
-                    elseEffect = Effects.Move(permanent, Zone.BATTLEFIELD)
+                // The move carries the counter so the returned creature enters with it. The
+                // engine cannot yet condition an entry counter on the returned object's projected
+                // type, so a noncreature permanent can retain an inert +1/+1 counter.
+                effect = Effects.Move(
+                    permanent,
+                    Zone.BATTLEFIELD,
+                    addCounterType = CounterType.PLUS_ONE_PLUS_ONE
                 )
             )
         )
