@@ -60,7 +60,6 @@ class LilysplashDeckReadinessTest : FunSpec({
             "Freed from the Real",
             "Frogify",
             "Gilded Scuttler",
-            "Halimar Depths",
             "Hickory Woodlot",
             "Hidden Strings",
             "Kasmina's Transmutation",
