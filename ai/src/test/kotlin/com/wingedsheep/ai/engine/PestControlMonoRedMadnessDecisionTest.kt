@@ -13,6 +13,7 @@ import com.wingedsheep.sdk.scripting.AdditionalCostPayment
 import io.kotest.assertions.withClue
 import io.kotest.matchers.booleans.shouldBeFalse
 import io.kotest.matchers.booleans.shouldBeTrue
+import io.kotest.matchers.nulls.shouldBeNull
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.types.shouldBeInstanceOf
 
@@ -42,7 +43,7 @@ class PestControlMonoRedMadnessDecisionTest : ScenarioTestBase() {
 
     private fun TestGame.advanceToDecision() {
         while (state.pendingDecision == null && state.stack.isNotEmpty()) {
-            execute(PassPriority(state.priorityPlayerId!!)).isSuccess.shouldBeTrue()
+            execute(PassPriority(state.priorityPlayerId!!)).error.shouldBeNull()
         }
     }
 
@@ -135,12 +136,20 @@ class PestControlMonoRedMadnessDecisionTest : ScenarioTestBase() {
         test("burn prioritizes each active Pest engine over a strategically irrelevant body") {
             listOf("Essence Warden", "Blood Researcher", "Pest Mascot").forEach { payoff ->
                 val game = seeded()
+                    .withActivePlayer(2)
                     .withLandsOnBattlefield(1, "Mountain", 1)
                     .withCardInHand(1, "Lightning Bolt")
                     .withCardOnBattlefield(2, payoff)
                     .withCardOnBattlefield(2, "Mons's Goblin Raiders")
+                    .withLandsOnBattlefield(2, if (payoff == "Essence Warden") "Swamp" else "Forest", 2)
+                    .withCardInHand(2, if (payoff == "Essence Warden") "Carrier Thrall" else "Weather the Storm")
                     .withLifeTotal(2, 20)
                     .build()
+
+                val pendingValue = if (payoff == "Essence Warden") "Carrier Thrall" else "Weather the Storm"
+                game.castSpell(2, pendingValue).isSuccess.shouldBeTrue()
+                game.execute(PassPriority(game.player2Id)).error.shouldBeNull()
+                game.state.priorityPlayerId shouldBe game.player1Id
 
                 val action = ai(game).chooseAction(game.state).shouldBeInstanceOf<CastSpell>()
                 withClue(payoff) { cardName(game, chosenTargetId(action)!!) shouldBe payoff }
