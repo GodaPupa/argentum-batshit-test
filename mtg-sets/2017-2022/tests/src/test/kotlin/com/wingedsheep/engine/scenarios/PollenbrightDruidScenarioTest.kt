@@ -60,6 +60,7 @@ class PollenbrightDruidScenarioTest : ScenarioTestBase() {
             game.resolveStack()
             val mode = game.getPendingDecision() as ChooseOptionDecision
             game.submitDecision(OptionChosenResponse(mode.id, optionIndex = 1))
+            game.resolveStack()
             val select = game.getPendingDecision()!!
             game.submitDecision(CardsSelectedResponse(select.id, listOf(target)))
             game.resolveStack()
