@@ -8,6 +8,7 @@ import com.wingedsheep.engine.state.components.player.ActiveDungeonComponent
 import com.wingedsheep.engine.support.GameTestDriver
 import com.wingedsheep.engine.support.TestCards
 import com.wingedsheep.mtg.sets.definitions.afr.cards.SecretDoor
+import com.wingedsheep.mtg.sets.tokens.PredefinedTokens
 import com.wingedsheep.sdk.core.Color
 import com.wingedsheep.sdk.core.Step
 import com.wingedsheep.sdk.model.Deck
@@ -18,7 +19,7 @@ import io.kotest.matchers.types.shouldBeInstanceOf
 class SecretDoorScenarioTest : FunSpec({
     fun driver(): GameTestDriver = GameTestDriver().apply {
         registerCards(TestCards.all)
-        registerCard(SecretDoor)
+        registerCards(listOf(SecretDoor, PredefinedTokens.Treasure))
         initMirrorMatch(deck = Deck.of("Island" to 40), startingLife = 20)
         passPriorityUntil(Step.PRECOMBAT_MAIN)
     }

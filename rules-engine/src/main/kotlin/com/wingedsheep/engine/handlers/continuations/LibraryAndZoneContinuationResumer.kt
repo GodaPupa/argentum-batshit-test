@@ -104,6 +104,7 @@ class LibraryAndZoneContinuationResumer(
             recurse = services.effectExecutorRegistry::execute,
         )
         if (result.isPaused) return result.toExecutionResult()
+        if (!result.isSuccess) return result.toExecutionResult()
         return checkForMore(result.state, result.events)
     }
 
