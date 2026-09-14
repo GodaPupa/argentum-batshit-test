@@ -58,17 +58,20 @@ class GhostlyFlickerScenarioTest : FunSpec({
                 )
                 is YesNoDecision -> submitYesNo(decision.playerId, true)
                 is ChooseTargetsDecision -> {
-                    val legal = decision.legalTargets.values.flatten().toSet()
-                    val targets = when {
-                        flicker in legal -> listOf(flicker)
-                        opponent in legal -> listOf(opponent)
-                        else -> lands.filter { it in legal }
+                    val targetsByRequirement = decision.targetRequirements.associate { requirement ->
+                        val legal = decision.legalTargets[requirement.index].orEmpty().toSet()
+                        val targets = when {
+                            flicker in legal -> listOf(flicker)
+                            opponent in legal -> listOf(opponent)
+                            else -> lands.filter { it in legal }
+                        }
+                        requirement.index to targets
                     }
-                    val result = submitTargetSelection(decision.playerId, targets)
+                    val result = submitMultiTargetSelection(decision.playerId, targetsByRequirement)
                     withClue(
                         "prompt=${decision.prompt}; requirements=${decision.targetRequirements}; " +
-                            "legal=${legal.map { getCardName(it) ?: it }}; " +
-                            "chosen=${targets.map { getCardName(it) ?: it }}; error=${result.error}",
+                            "legal=${decision.legalTargets}; chosen=$targetsByRequirement; " +
+                            "error=${result.error}",
                     ) {
                         result.isSuccess shouldBe true
                     }
