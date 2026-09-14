@@ -1,5 +1,5 @@
-Warning: truncated output (original token count: 331831)
-... 278748 bytes omitted ...
+Warning: truncated output (original token count: 331990)
+... 279383 bytes omitted ...
 
 # Card SDK Language Reference
 
