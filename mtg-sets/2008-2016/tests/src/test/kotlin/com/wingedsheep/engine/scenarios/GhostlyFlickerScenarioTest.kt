@@ -73,7 +73,7 @@ class GhostlyFlickerScenarioTest : FunSpec({
                             "legal=${decision.legalTargets}; chosen=$targetsByRequirement; " +
                             "error=${result.error}",
                     ) {
-                        result.isSuccess shouldBe true
+                        result.error shouldBe null
                     }
                 }
                 null -> bothPass()
