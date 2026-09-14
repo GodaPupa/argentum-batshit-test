@@ -3193,6 +3193,82 @@
     ]
 }
 
+// Teferi's Time Twist
+{
+    "name": "Teferi's Time Twist",
+    "manaCost": "{1}{U}",
+    "typeLine": "Instant",
+    "oracleText": "Exile target permanent you control. Return that card to the battlefield under its owner's control at the beginning of the next end step. If it enters as a creature, it enters with an additional +1/+1 counter on it.",
+    "script": {
+        "spellEffect": {
+            "type": "Composite",
+            "effects": [
+                {
+                    "type": "MoveToZone",
+                    "target": {
+                        "type": "BoundVariable",
+                        "name": "permanent you control"
+                    },
+                    "destination": "Exile"
+                },
+                {
+                    "type": "CreateDelayedTrigger",
+                    "step": "END",
+                    "effect": {
+                        "type": "MoveToZone",
+                        "target": {
+                            "type": "BoundVariable",
+                            "name": "permanent you control"
+                        },
+                        "destination": "Battlefield",
+                        "addCounterType": "PLUS_ONE_PLUS_ONE"
+                    }
+                }
+            ]
+        },
+        "targetRequirements": [
+            {
+                "type": "TargetObject",
+                "filter": {
+                    "baseFilter": "permanent ctrl:you"
+                },
+                "id": "permanent you control"
+            }
+        ]
+    },
+    "metadata": {
+        "collectorNumber": "72",
+        "artist": "Ralph Horsley",
+        "flavorText": "\"The safest place for you is not now.\"",
+        "imageUri": "https://cards.scryfall.io/normal/front/c/8/c878bdc0-d697-4a2f-bba5-758b27f4247a.jpg?1783933453",
+        "rulings": [
+            {
+                "date": "2019-05-03",
+                "text": "If a token is exiled this way, it will cease to exist and won’t return to the battlefield."
+            },
+            {
+                "date": "2019-05-03",
+                "text": "Auras attached to the exiled permanent will be put into their owners’ graveyards. Equipment attached to the exiled permanent will become unattached and remain on the battlefield. Any counters on the exiled permanent will cease to exist. Once the exiled permanent returns, it’s considered a new object with no relation to the object that it was."
+            },
+            {
+                "date": "2019-05-03",
+                "text": "The permanent returns untapped unless another effect causes it to enter the battlefield tapped."
+            },
+            {
+                "date": "2019-05-03",
+                "text": "To determine whether the entering permanent is entering as a creature, consider any effects that will modify that permanent’s characteristics once it’s on the battlefield, including that permanent’s own abilities that affect only itself and effects from other objects."
+            },
+            {
+                "date": "2019-05-03",
+                "text": "A creature returned to the battlefield this way enters the battlefield with one +1/+1 counter if it would otherwise enter with no +1/+1 counters."
+            }
+        ]
+    },
+    "colorIdentityOverride": [
+        "BLUE"
+    ]
+}
+
 // Teyo's Lightshield
 {
     "name": "Teyo's Lightshield",
