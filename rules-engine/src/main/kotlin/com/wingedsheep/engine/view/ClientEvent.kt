@@ -889,6 +889,9 @@ object ClientEventTransformer {
             // The land-play signal drives triggers only; the client renders the land entering via
             // the accompanying ZoneChangeEvent, so no separate client event is emitted.
             is LandPlayedEvent -> null
+            // Dungeon progress is persistent player state. Dedicated client rendering can read the
+            // projected components; these engine events exist for rules triggers and audit traces.
+            is DungeonRoomEnteredEvent, is DungeonCompletedEvent -> null
             is SpeedChangedEvent -> ClientEvent.SpeedChanged(
                 playerId = event.playerId,
                 oldSpeed = event.oldSpeed,
