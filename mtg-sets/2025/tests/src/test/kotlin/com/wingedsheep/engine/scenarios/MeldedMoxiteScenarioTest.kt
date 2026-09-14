@@ -121,12 +121,21 @@ class MeldedMoxiteScenarioTest : ScenarioTestBase() {
                 if (game.getPendingDecision() is SelectManaSourcesDecision) {
                     game.submitManaSourcesAutoPay().error shouldBe null
                 }
-                val resolution = game.resolveStack()
+                val triggerResolution = game.resolveStack()
+                withClue("the optional instruction may still present its yes/no choice") {
+                    (game.getPendingDecision() is YesNoDecision) shouldBe true
+                }
+                val accepted = game.answerYesNo(true)
+                accepted.error shouldBe null
+                val actionResolution = game.resolveStack()
 
-                withClue("an impossible discard cost must not expose or complete the draw branch") {
+                withClue("an impossible discard cannot complete the draw branch") {
                     game.getPendingDecision() shouldBe null
                     game.librarySize(1) shouldBe libraryBefore
-                    resolution.flatMap { it.events }.filterIsInstance<CardsDrawnEvent>() shouldBe emptyList()
+                    (
+                        triggerResolution.flatMap { it.events } + accepted.events +
+                            actionResolution.flatMap { it.events }
+                    ).filterIsInstance<CardsDrawnEvent>() shouldBe emptyList()
                 }
             }
 
