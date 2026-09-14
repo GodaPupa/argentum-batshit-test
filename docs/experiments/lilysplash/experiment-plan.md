@@ -42,7 +42,7 @@ The minimum executable combo suite is:
   then wins when the opponent next draws from the empty library.
 - [x] The Lilysplash-based mana loops each reach an explicit deterministic win condition.
 - [x] Removing the only Lilysplash target in response makes the activation fizzle.
-- [ ] Interaction tests cover counterspells and commander removal.
+- [x] Interaction tests cover counterspells and commander removal.
 
 ### Stage 3 — Paired goldfish preflight
 

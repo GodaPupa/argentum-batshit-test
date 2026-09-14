@@ -1,6 +1,7 @@
 package com.wingedsheep.engine.scenarios
 
 import com.wingedsheep.engine.core.ActivateAbility
+import com.wingedsheep.engine.core.CastSpell
 import com.wingedsheep.engine.core.ChooseTargetsDecision
 import com.wingedsheep.engine.core.ColorChosenResponse
 import com.wingedsheep.engine.core.OrderObjectsDecision
@@ -14,14 +15,17 @@ import com.wingedsheep.engine.state.components.battlefield.AttachmentsComponent
 import com.wingedsheep.engine.state.components.battlefield.CountersComponent
 import com.wingedsheep.engine.state.components.battlefield.SummoningSicknessComponent
 import com.wingedsheep.engine.state.components.identity.CardComponent
+import com.wingedsheep.engine.state.components.identity.CommanderComponent
 import com.wingedsheep.engine.state.components.identity.ControllerComponent
 import com.wingedsheep.engine.state.components.identity.TokenComponent
 import com.wingedsheep.engine.state.components.player.ManaPoolComponent
+import com.wingedsheep.engine.state.components.stack.ChosenTarget
 import com.wingedsheep.engine.support.GameTestDriver
 import com.wingedsheep.engine.support.TestCards
 import com.wingedsheep.mtg.sets.definitions.blb.cards.LilysplashMentor
 import com.wingedsheep.sdk.core.Color
 import com.wingedsheep.sdk.core.CounterType
+import com.wingedsheep.sdk.core.Format
 import com.wingedsheep.sdk.core.ManaCost
 import com.wingedsheep.sdk.core.Step
 import com.wingedsheep.sdk.core.TypeLine
@@ -50,6 +54,22 @@ class LilysplashMentorScenarioTest : FunSpec({
             deck = Deck.of("Forest" to 20, "Island" to 20),
             startingPlayer = 0,
             skipMulligans = true,
+        )
+        return driver
+    }
+
+    fun commanderDriver(): GameTestDriver {
+        val driver = GameTestDriver()
+        driver.registerCards(TestCards.all)
+        driver.initMultiplayer(
+            decks = listOf(
+                Deck.of("Forest" to 20, "Island" to 20),
+                Deck.of("Forest" to 20, "Island" to 20),
+            ),
+            startingPlayer = 0,
+            skipMulligans = true,
+            format = Format.Commander(),
+            commanders = listOf("Lilysplash Mentor", "Lilysplash Mentor"),
         )
         return driver
     }
@@ -454,5 +474,103 @@ class LilysplashMentorScenarioTest : FunSpec({
 
         driver.findPermanent(player, "Peregrine Drake") shouldBe null
         driver.findCardInHand(player, "Peregrine Drake") shouldBe drake
+    }
+
+    test("a countered Lilysplash can return to the command zone and keeps its commander tax") {
+        val driver = commanderDriver()
+        val player = driver.player1
+        val opponent = driver.player2
+        driver.passPriorityUntil(Step.PRECOMBAT_MAIN)
+        val mentor = driver.state.getZone(ZoneKey(player, Zone.COMMAND)).single()
+        val counterspell = driver.putCardInHand(opponent, "Counterspell")
+        driver.giveMana(player, Color.GREEN, 1)
+        driver.giveMana(player, Color.BLUE, 1)
+        driver.giveColorlessMana(player, 2)
+        driver.giveMana(opponent, Color.BLUE, 2)
+
+        driver.submit(
+            CastSpell(
+                playerId = player,
+                cardId = mentor,
+                paymentStrategy = PaymentStrategy.FromPool,
+            ),
+        ).isSuccess shouldBe true
+        driver.passPriority(player)
+        driver.submit(
+            CastSpell(
+                playerId = opponent,
+                cardId = counterspell,
+                targets = listOf(ChosenTarget.Spell(mentor)),
+                paymentStrategy = PaymentStrategy.FromPool,
+            ),
+        ).isSuccess shouldBe true
+        driver.bothPass()
+
+        driver.submitYesNo(player, true).isSuccess shouldBe true
+        driver.state.getZone(ZoneKey(player, Zone.COMMAND)) shouldBe listOf(mentor)
+        driver.state.getEntity(mentor)!!.get<CommanderComponent>()!!.castsFromCommandZone shouldBe 1
+
+        driver.giveMana(player, Color.GREEN, 1)
+        driver.giveMana(player, Color.BLUE, 1)
+        driver.giveColorlessMana(player, 3)
+        driver.submit(
+            CastSpell(
+                playerId = player,
+                cardId = mentor,
+                paymentStrategy = PaymentStrategy.FromPool,
+            ),
+        ).isSuccess shouldBe false
+
+        driver.giveColorlessMana(player, 1)
+        driver.submit(
+            CastSpell(
+                playerId = player,
+                cardId = mentor,
+                paymentStrategy = PaymentStrategy.FromPool,
+            ),
+        ).isSuccess shouldBe true
+    }
+
+    test("a destroyed Lilysplash can return to the command zone and be recast with tax") {
+        val driver = commanderDriver()
+        val player = driver.player1
+        val opponent = driver.player2
+        driver.passPriorityUntil(Step.PRECOMBAT_MAIN)
+        val mentor = driver.state.getZone(ZoneKey(player, Zone.COMMAND)).single()
+        driver.giveMana(player, Color.GREEN, 1)
+        driver.giveMana(player, Color.BLUE, 1)
+        driver.giveColorlessMana(player, 2)
+
+        driver.submit(
+            CastSpell(
+                playerId = player,
+                cardId = mentor,
+                paymentStrategy = PaymentStrategy.FromPool,
+            ),
+        ).isSuccess shouldBe true
+        driver.bothPass()
+        driver.findPermanent(player, "Lilysplash Mentor") shouldBe mentor
+
+        val removal = driver.putCardInHand(opponent, "Doom Blade")
+        driver.giveMana(opponent, Color.BLACK, 1)
+        driver.giveColorlessMana(opponent, 1)
+        driver.castSpell(opponent, removal, listOf(mentor)).isSuccess shouldBe true
+        driver.bothPass()
+        driver.submitYesNo(player, true).isSuccess shouldBe true
+        driver.state.getZone(ZoneKey(player, Zone.COMMAND)) shouldBe listOf(mentor)
+
+        if (driver.priorityPlayer == opponent) driver.passPriority(opponent)
+        driver.giveMana(player, Color.GREEN, 1)
+        driver.giveMana(player, Color.BLUE, 1)
+        driver.giveColorlessMana(player, 4)
+        driver.submit(
+            CastSpell(
+                playerId = player,
+                cardId = mentor,
+                paymentStrategy = PaymentStrategy.FromPool,
+            ),
+        ).isSuccess shouldBe true
+        driver.bothPass()
+        driver.findPermanent(player, "Lilysplash Mentor") shouldNotBe null
     }
 })
