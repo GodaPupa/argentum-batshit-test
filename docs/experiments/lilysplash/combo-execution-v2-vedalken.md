@@ -88,6 +88,13 @@ bug, and the test's own doc comment says explicitly: if this assertion ever star
 the underlying `TargetSelection.kt`/evaluator gap got fixed before assuming a regression, and if so,
 rewrite the test to assert the intended outcome (opponent's library reaches 0) instead.
 
+CI: `lilysplash-preflight.yml` job `combo-execution` now runs both combo-execution tests together via
+`just test-class 'Lilysplash*ComboExecutionTest'` on every push to `lilysplash/lab` that touches either
+test file. CI run `019a191022`, `Lilysplash Preflight #14`,
+<https://github.com/GodaPupa/argentum-batshit-test/actions/runs/35007294955>, 6m23s, both jobs
+(`final-optimized`, `combo-execution`) green — a green `combo-execution` job confirms this test's pinned
+(buggy) assertion holds, not that the Vedalken line works.
+
 ## Verdict
 
 **The Vedalken Entrancer win condition, as currently implemented in the AI, does not work in AI-vs-AI
