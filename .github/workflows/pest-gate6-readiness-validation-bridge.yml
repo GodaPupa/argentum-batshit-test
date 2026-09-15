@@ -1,0 +1,35 @@
+name: Pest Gate 6 Readiness Validation Bridge
+
+on:
+  push:
+    branches: [ "pest-control/gate6-readiness-validation-bridge" ]
+
+permissions:
+  contents: read
+
+jobs:
+  oracle-assay:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout exact Gate 6 readiness source
+        uses: actions/checkout@v4
+        with:
+          ref: c5586482bb7fdaebb4118cff2b559b5712471b6b
+      - name: Verify exact checkout
+        run: test "$(git rev-parse HEAD)" = "c5586482bb7fdaebb4118cff2b559b5712471b6b"
+      - name: Set up Java 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - name: Set up Gradle 9.6.1
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '9.6.1'
+      - name: Show validation environment
+        run: |
+          java -version
+          gradle --version
+      - name: Run missing Argentum Validation task
+        run: ./gradlew :oracle-assay:test --stacktrace
