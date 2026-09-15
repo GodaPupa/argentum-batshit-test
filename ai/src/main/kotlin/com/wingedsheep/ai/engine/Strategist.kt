@@ -325,7 +325,7 @@ class Strategist(
                 .filter { i -> leafStates[i].isWinningTerminalFor(playerId) }
                 .maxByOrNull { i -> leafScores[i] }
         } else null
-        val twoActionWinIndex = if (immediateWinIndex == null) {
+        val twoActionWinIndex = if (!passAlreadyWins && immediateWinIndex == null) {
             bestTwoActionSameTurnWinIndex(
                 leaves = leaves,
                 leafStates = leafStates,
@@ -1746,7 +1746,7 @@ class Strategist(
             val toughness = state.projectedState.getToughness(target.entityId)
             val markedDamage = permanent?.get<DamageComponent>()?.amount ?: 0
             val finishesOpposingCreature = controller?.let { state.isOpponentTo(it, playerId) } == true &&
-                toughness != null && damage + markedDamage >= toughness
+                markedDamage > 0 && toughness != null && damage + markedDamage >= toughness
             if (finishesOpposingCreature) {
                 return false
             }

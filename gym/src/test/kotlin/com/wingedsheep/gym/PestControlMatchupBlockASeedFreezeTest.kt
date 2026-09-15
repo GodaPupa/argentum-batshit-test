@@ -93,13 +93,32 @@ class PestControlMatchupBlockASeedFreezeTest : FunSpec({
 
         val registryBytes = Files.readAllBytes(blockRegistryPath)
         assertCanonicalText(registryBytes)
-        sha256(registryBytes) shouldBe BLOCK_A_REGISTRY_SHA256
         val registryLines = registryBytes.decodeToString().trimEnd('\n').lines()
-        registryLines.size shouldBe 364
+        registryLines.size shouldBe 414
         val registryHeader = registryLines.first().split(',')
+        val categoryIndex = registryHeader.indexOf("category")
+        val identityIndex = registryHeader.indexOf("identity")
+        val positionIndex = registryHeader.indexOf("position")
         val decimalIndex = registryHeader.indexOf("seed_decimal")
+        val dispositionIndex = registryHeader.indexOf("disposition")
         decimalIndex shouldBe 3
-        val excluded = registryLines.drop(1).map { it.split(',')[decimalIndex].toLong() }.toSet()
+        val registryRows = registryLines.drop(1).map { it.split(',') }
+        val retiredBlockRows = registryRows.filter { row ->
+            row[categoryIndex] == "MATCHUP_VECTOR" && row[identityIndex] == BLOCK_A_ID
+        }
+        retiredBlockRows.size shouldBe 50
+        retiredBlockRows.map { it[positionIndex].toInt() } shouldBe (1..50).toList()
+        retiredBlockRows.map { it[decimalIndex].toLong() } shouldBe seeds
+        retiredBlockRows.map { it[dispositionIndex] }.distinct() shouldBe listOf("REJECTED_RETIRED")
+
+        val originalRegistryLines = registryLines.filterNot { line ->
+            val row = line.split(',')
+            row.size == registryHeader.size &&
+                row[categoryIndex] == "MATCHUP_VECTOR" && row[identityIndex] == BLOCK_A_ID
+        }
+        originalRegistryLines.size shouldBe 364
+        sha256((originalRegistryLines.joinToString("\n") + "\n").encodeToByteArray()) shouldBe BLOCK_A_REGISTRY_SHA256
+        val excluded = originalRegistryLines.drop(1).map { it.split(',')[decimalIndex].toLong() }.toSet()
         excluded.size shouldBe 363
         seeds.intersect(excluded).shouldBeEmpty()
     }
