@@ -25,7 +25,7 @@ import com.wingedsheep.sdk.core.Zone
  *
  * SHARED ARGENTUM CHANGE: yes
  *
- * Legality is deliberately not a veto: a death trigger, deterministic lethal, prevention of a
+ * Legality is deliberately not a veto: a death trigger, action-created deterministic lethal, prevention of a
  * worse result, or a real engine/resource transition can make self-removal correct. But replacing
  * a permanent with generic death value is not free. The resolved leaf must beat preserving the
  * permanent, the removal card, its mana, and its future interaction option by a positive fair-trade
@@ -44,6 +44,7 @@ object SelfRemovalValuation {
         legalTargetIds: List<EntityId>?,
         leafScore: Double,
         passScore: Double,
+        passAlreadyWins: Boolean,
         boardPresenceWeight: Double,
     ): FriendlyRemovalAudit? {
         if (card.isCreature) return null
@@ -68,9 +69,10 @@ object SelfRemovalValuation {
         val target = entity(state, targetId)
         val requiredMargin = boardPresenceWeight *
             Patience.FAIR_TRADE_VALUE_PER_MANA * card.manaValue.coerceAtLeast(1)
-        val lethal = lineWinsGame
+        val lethal = lineWinsGame && !passAlreadyWins
         val shouldHold = policyRecognizedRemoval && shouldHold(
-            state, leafState, playerId, intent, card, cast, leafScore, passScore, boardPresenceWeight,
+            state, leafState, playerId, intent, card, cast, leafScore, passScore, passAlreadyWins,
+            boardPresenceWeight,
         )
         val explicitPaymentIds = (cast.paymentStrategy as? PaymentStrategy.Explicit)
             ?.manaAbilitiesToActivate.orEmpty()
@@ -175,9 +177,12 @@ object SelfRemovalValuation {
         cast: CastSpell,
         leafScore: Double,
         passScore: Double,
+        passAlreadyWins: Boolean,
         boardPresenceWeight: Double,
     ): Boolean {
-        if (leafState.gameOver && leafState.winnerId == playerId) return false
+        // A terminal action leaf is exceptional only when the action creates the win. If the legal
+        // pass leaf reaches the same win, ordinary fair-trade policy still governs self-removal.
+        if (!passAlreadyWins && leafState.gameOver && leafState.winnerId == playerId) return false
         if (card.isCreature || intent.tags.none { it in ONE_CARD_REMOVAL }) return false
         val permanentTargets = cast.targets.filterIsInstance<ChosenTarget.Permanent>().map { it.entityId }
         val friendly = permanentTargets.filter { state.projectedState.getController(it) == playerId }

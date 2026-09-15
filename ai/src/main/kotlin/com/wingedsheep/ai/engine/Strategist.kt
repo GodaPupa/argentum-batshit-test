@@ -353,6 +353,7 @@ class Strategist(
                 playerId,
                 leafScores[i],
                 passScore,
+                passAlreadyWins,
                 leafEvents[i],
             )
             Triple(
@@ -841,6 +842,7 @@ class Strategist(
         playerId: EntityId,
         leafScore: Double,
         passScore: Double,
+        passAlreadyWins: Boolean,
         leafEvents: List<com.wingedsheep.engine.core.GameEvent>,
     ): AdjustedScore {
         val cardName = resolveCardName(state, action) ?: return AdjustedScore(leafScore)
@@ -852,13 +854,12 @@ class Strategist(
         val shouldHoldFriendlyRemoval = cast != null && card != null && intent != null &&
             SelfRemovalValuation.shouldHold(
                 state, leafState, playerId, intent, card, cast, leafScore, passScore,
-                boardPresenceWeight,
+                passAlreadyWins, boardPresenceWeight,
             )
         val friendlyRemovalAudit = if (insightSink != null && cast != null && card != null && intent != null) {
             SelfRemovalValuation.assess(
                 state, leafState, leafEvents, playerId, intent, card, cast, action.manaCostString,
-                action.validTargets,
-                leafScore, passScore, boardPresenceWeight,
+                action.validTargets, leafScore, passScore, passAlreadyWins, boardPresenceWeight,
             )
         } else null
         // Compute the pure sequencing term even for a candidate that a later production hold gate

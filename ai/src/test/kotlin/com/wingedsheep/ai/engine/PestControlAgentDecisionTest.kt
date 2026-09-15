@@ -1100,7 +1100,39 @@ class PestControlAgentDecisionTest : ScenarioTestBase() {
                 .build()
             game.castSpellTargetingPlayer(1, "Lightning Bolt", 2).error shouldBe null
 
-            ai(game).chooseAction(game.state).shouldBeInstanceOf<PassPriority>()
+            val (chosen, insights) = chooseWithInsights(game)
+            chosen.shouldBeInstanceOf<PassPriority>()
+            val castDown = insights.last().options.single { option ->
+                option.cardName == "Cast Down"
+            }
+            castDown.action.shouldBeInstanceOf<CastSpell>().targets shouldBe
+                listOf(ChosenTarget.Permanent(game.findPermanent("Fierce Witchstalker")!!))
+            castDown.friendlyRemovalAudit shouldNotBe null
+            castDown.friendlyRemovalAudit!!.deterministicLethal.shouldBeFalse()
+            castDown.friendlyRemovalAudit!!.policyDisposition shouldContain "reject"
+            castDown.productionAdmissible.shouldBeFalse()
+            castDown.score shouldBe insights.last().baselineScore - 1.0
+        }
+
+        test("pass-equivalent Cast Down binds an opposing target instead of a harmful friendly one") {
+            val game = seeded()
+                .withLifeTotal(2, 3)
+                .withLandsOnBattlefield(1, "Mountain", 1)
+                .withLandsOnBattlefield(1, "Swamp", 2)
+                .withCardInHand(1, "Lightning Bolt")
+                .withCardInHand(1, "Cast Down")
+                .withCardOnBattlefield(1, "Fierce Witchstalker")
+                .withCardOnBattlefield(2, "Craw Wurm")
+                .build()
+            val opposing = game.findPermanent("Craw Wurm")!!
+            game.castSpellTargetingPlayer(1, "Lightning Bolt", 2).error shouldBe null
+
+            val (chosen, insights) = chooseWithInsights(game)
+            chosen.shouldBeInstanceOf<PassPriority>()
+            val castDown = insights.last().options.single { option -> option.cardName == "Cast Down" }
+            castDown.action.shouldBeInstanceOf<CastSpell>().targets shouldBe
+                listOf(ChosenTarget.Permanent(opposing))
+            castDown.friendlyRemovalAudit shouldBe null
         }
 
         test("friendly removal records additional resource costs that erase death value") {
