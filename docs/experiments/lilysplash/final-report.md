@@ -46,7 +46,7 @@ Six packages, each changing exactly one variable against the control on the shar
 
 | Package | Swap | Verdict | CI |
 |---|---|---|---|
-| [Land](challenger-land-v1.md) | Ash Barrens → Yavimaya Coast; Escape Tunnel → Simic Guildgate | Accepted — blue screw cut by half, green screw eliminated across all 24 samples, traced to the mechanism (untapped duals replacing single-color/tapped fetches) | commit `54c46e8922`, `land-challenger` job |
+| [Land](challenger-land-v1.md) | Ash Barrens → Paradox Gardens; Escape Tunnel → Simic Guildgate; Saprazzan Skerry → Thornwood Falls | Accepted — blue screw cut by half, green screw cut to a quarter, "no color access at all" eliminated entirely across all 24 samples, traced to the mechanism (true duals replacing single-color/tapped fetches). Corrected post-acceptance: the original swap used Yavimaya Coast, which has never had a common printing and is therefore not legal in Pauper Commander; re-run with Paradox Gardens, a legal common dual — see the doc for the full note and re-run numbers | `land-challenger` job, re-run pending fresh CI citation |
 | [Selection](challenger-selection-v1.md) | Whirlpool Rider → Opt; Capsize → Preordain | Accepted, narrower evidence base — zero-selector-hand reduction matches simple probability, no traced regression | `Lilysplash Preflight #6`, [run 34916553630](https://github.com/GodaPupa/argentum-batshit-test/actions/runs/34916553630) |
 | [Aura](challenger-aura-v1.md) | Dawn's Reflection → Wayfarer's Bauble | Accepted, weakest evidence base of the three — the one causally-movable column (fixers) shifts as predicted; the real hypothesis (reduced 2-for-1 removal exposure) isn't measurable by an opening-hand benchmark | `Lilysplash Preflight #7`, [run 34922529134](https://github.com/GodaPupa/argentum-batshit-test/actions/runs/34922529134) |
 | [Untap](challenger-untap-v1.md) | Sunshower Druid → Seeker of Skybreak | Accepted — zero-untapper hands fell from 11/24 to 5/24, fully traced to three specific library-slot swaps | `Lilysplash Preflight #8`, [run 34926355810](https://github.com/GodaPupa/argentum-batshit-test/actions/runs/34926355810) |
@@ -60,27 +60,30 @@ this kind of test, and the reason the combo-execution follow-ups below exist.
 ## Final-optimized v0.1 — assembled and independently validated
 
 `final-optimized-v0.1.md` assembles all six accepted packages into one list
-(`final-optimized-v0.1.txt`, SHA-256 `54f7d58687a6b5db56eafb8dc1eb7884a02db831fcb27c12107802cc8b75bf32`)
+(`final-optimized-v0.1.txt`, SHA-256 `db3cdedb5d284658a8f1883f1d2b28000866151e9f171df0b0f79e9fbb63614b`)
 and — per the plan's explicit instruction not to assume the six deltas simply add — validates it on a
-brand-new 12-seed block (`2026091501`-`2026091512`) no individual package ever touched. CI run
-`004c634053`, `Lilysplash Preflight #11`,
-[run 34993244852](https://github.com/GodaPupa/argentum-batshit-test/actions/runs/34993244852), all seven
-jobs green.
+brand-new 12-seed block (`2026091501`-`2026091512`) no individual package ever touched. The original CI
+citation (`004c634053`, `Lilysplash Preflight #11`) covered the Yavimaya Coast-based list, corrected as
+described above; a fresh citation follows once the corrected list is pushed and re-verified in CI.
 
-The result: mean mulligans fell, keep-seven hands rose from 11/24 to 14/24, no-blue-source hands fell from
-5/24 to 1/24, and no-green-source hands were eliminated entirely (6/24 → 0/24) — real, CI-provable
-improvements over the submitted control. Two columns moved against their individual package's isolated
-direction (protection-pieces-per-hand fell; keep-six fell while keep-five rose), both traced to the AI's
-holistic hand-quality heuristic reacting to nine simultaneous card swaps at once rather than to any
-package's accepted mechanism failing to hold. The win-condition-density column landed flat versus control
-on this fresh block (0.125 each) — but via a different mechanism in each deck (control: three Sage's Row
-Denizen hands; final-optimized: two Vedalken Entrancer hands plus one Sage's Row Denizen hand) — the exact
-composability caveat the plan's fresh-sample requirement exists to catch.
+**Correction note:** the result below is the re-run with the legal Paradox Gardens swap in place, not
+rerolled to a nicer sample (the plan's "no rerolls" guardrail applies to a correction the same as any
+other change). It is a more mixed result than the original, superseded run reported. Color access still
+improves meaningfully: keep-seven hands rose from 11/24 to 13/24, no-blue-source hands fell from 5/24 to
+3/24, and no-green-source hands fell from 6/24 to 3/24 — real improvements traced to the land, selection,
+and untap packages' own accepted mechanisms. But mean mulligans, kept-0-to-1-land hands, and win-
+conditions-per-hand are all measurably *worse* than the submitted control on this specific fresh sample
+(mean mulligans 0.667 → 0.750; win conditions 0.125 → 0.083), each traced to the AI's holistic hand-
+evaluation heuristic reacting to nine simultaneous swaps and to which hands get kept at all shifting once
+every package's swap reshuffled the library together — not to any individual package's own accepted
+mechanism failing, but a real, honestly-worse outcome on this sample nonetheless. Full detail, including
+per-seed traces, is in `final-optimized-v0.1.md`.
 
-**Verdict: the final-optimized v0.1 list is accepted** as a real, CI-provable improvement over the
-submitted control for opening-hand quality and color access, with every movement traced to either a
-directly causal column or documented hand-evaluation-heuristic variance, and no movement inconsistent with
-any individual package's accepted mechanism.
+**Verdict: the final-optimized v0.1 list is accepted, with a narrower claim than originally reported.**
+The six individually-accepted packages each still stand on their own separately-validated evidence, and
+the assembled list keeps hands more often and accesses color meaningfully better when it does. What it no
+longer supports is a claim that the assembled list mulligans less overall or hits win conditions more
+often than the submitted control — on this fresh, un-rerolled sample, it does neither.
 
 ## Combo-execution follow-ups — does it actually convert to a win?
 
@@ -116,9 +119,11 @@ action sequences) rather than another opening-hand sample:
 
 ## Overall verdict
 
-**The experiment is complete and the deck is validated for real play.** `final-optimized-v0.1.txt` is a
-real, CI-proven improvement over the submitted list for the metrics an opening-hand benchmark can measure,
-and — going beyond what Stage 4 itself required — its actual win condition has now been proven end-to-end:
+**The experiment is complete and the deck is validated for real play, with one claim narrowed by a
+post-acceptance correction.** `final-optimized-v0.1.txt` — after swapping out an illegal card found late
+(see below) — is a real improvement over the submitted list for opening-hand color access specifically,
+though not for overall mulligan rate on its own fresh validation sample. Going beyond what Stage 4 itself
+required, its actual win condition has now been proven end-to-end:
 the production AI, given the pieces assembled, autonomously finds and executes the deck's original
 Peregrine Drake/Ghostly Flicker/Archaeomancer/Sage's Row Denizen mill loop to a real win. The deck's second
 win condition, Vedalken Entrancer, does not currently work in AI-vs-AI play, but this is a known, documented,
@@ -138,12 +143,31 @@ docs already say, and are not blockers to calling this experiment done:
   its own testing surface well beyond the Lilysplash deck, and belongs to whoever picks up that work next,
   not to this experiment.
 
+Two methodology gaps surfaced while correcting the Yavimaya Coast issue, worth naming so they aren't
+rediscovered blind:
+
+- **Format legality (rarity) was never checked for cards introduced by a Stage 4 package.** Every test in
+  this experiment checks in-engine mechanics, never whether a newly-introduced card is actually legal for
+  Pauper Commander (every card in the 99, lands included except true basics, must have a common printing).
+  Yavimaya Coast — added by the land package — never had one; it was caught only when preparing the list
+  for a real Moxfield import, not by any test in this experiment. `challenger-land-v1.md` and
+  `final-optimized-v0.1.md` are corrected (Paradox Gardens), re-run on their respective seed blocks, and
+  documented above; no other package's added cards were affected (checked directly against Scryfall
+  printing data).
+- **The decklist SHA-256 citations printed by `LilysplashOpeningHandBenchmark.kt` are hardcoded string
+  literals, not values computed from the actual `.txt` file at test time.** They are accurate at the
+  moment someone remembers to update them by hand, and silently stale otherwise — exactly what happened
+  here: editing `challenger-land-v1.txt` and `final-optimized-v0.1.txt` did not, by itself, change what
+  the benchmark printed as their hashes. Both literals are now updated to match the corrected files. This
+  is a real gap in the experiment's own verification methodology, not just in this one correction; a
+  future pass could compute these from the file at runtime instead of pasting a value in by hand.
+
 ## Artifact index
 
 | Artifact | Purpose |
 |---|---|
 | `submitted-v0.1.txt` | Frozen control decklist (SHA-256 `f315b0907f3f9ae9d61ae2d45de0b778b45a9d9ff86e6ac5c343e4385d5de525`) |
-| `final-optimized-v0.1.txt` | Accepted, validated decklist (SHA-256 `54f7d58687a6b5db56eafb8dc1eb7884a02db831fcb27c12107802cc8b75bf32`) |
+| `final-optimized-v0.1.txt` | Accepted, validated decklist (SHA-256 `db3cdedb5d284658a8f1883f1d2b28000866151e9f171df0b0f79e9fbb63614b`) |
 | `opening-hand-preflight-v0.1.md` | Stage 3 mulligan-policy diagnostics and commander-aware A/B |
 | `challenger-land-v1.md`, `challenger-selection-v1.md`, `challenger-aura-v1.md`, `challenger-untap-v1.md`, `challenger-stack-v1.md`, `challenger-wincon-v1.md` | Stage 4's six independently-accepted one-variable packages |
 | `final-optimized-v0.1.md` | Stage 4's closing assembly and fresh-sample validation |

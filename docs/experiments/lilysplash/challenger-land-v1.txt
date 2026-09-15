@@ -49,6 +49,7 @@ Deck
 1 Nature's Embrace
 1 New Horizons
 1 Overgrowth
+1 Paradox Gardens
 1 Peregrine Drake
 1 Pestermite
 1 Planar Incision
@@ -85,10 +86,18 @@ Deck
 1 Wild Growth
 1 Winter Eladrin
 1 Wood Elves
-1 Yavimaya Coast
 
 # Challenger deck count: 99 cards plus commander (100 total).
 # Land-base package v1: swaps Ash Barrens, Escape Tunnel, and Saprazzan Skerry for three
-# always-both-colors UG sources (Yavimaya Coast, Simic Guildgate, Thornwood Falls). No
+# always-both-colors UG sources (Paradox Gardens, Simic Guildgate, Thornwood Falls). No
 # ramp spell, aura, or non-land card is touched -- isolates Stage 4 item 6 (land-base speed
 # vs bounce-land/enhanced-land combo value) per the experiment plan's one-variable-at-a-time rule.
+#
+# Correction (post-acceptance): the original v1 swap used Yavimaya Coast, an untapped UG painland.
+# Yavimaya Coast has been printed 22 times, always at Rare -- it has never had a common printing, so
+# it is not legal in Pauper Commander (every card in the 99, lands included except true basics, must
+# have a common printing). Replaced with Paradox Gardens (Secrets of Strixhaven, common): a tapped UG
+# dual with a bonus {2}{G}{U},{T}: Surveil 1 -- legal, and still a genuine upgrade over Ash Barrens
+# (outright fixes both colors, no second land or sacrifice needed), just tapped rather than untapped.
+# Verified in-engine with a new ParadoxGardensScenarioTest (ai/../ or mtg-sets/2026/tests/../scenarios/)
+# before being relied on here, since the card had no prior scenario test.

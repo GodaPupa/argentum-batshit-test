@@ -85,14 +85,17 @@ class LilysplashOpeningHandBenchmark : FunSpec({
     val blueSources = setOf(
         "Island", "Command Tower", "Halimar Depths", "Lonely Sandbar", "Saprazzan Skerry",
         "Simic Growth Chamber", "The Surgical Bay",
-        // Stage 4 land-base challenger v1 additions (all true UG duals):
-        "Yavimaya Coast", "Simic Guildgate", "Thornwood Falls",
+        // Stage 4 land-base challenger v1 additions (all true UG duals). Paradox Gardens replaced
+        // Yavimaya Coast post-acceptance: Yavimaya Coast has never had a common printing (22
+        // printings, all Rare) and is therefore not legal in Pauper Commander.
+        "Paradox Gardens", "Simic Guildgate", "Thornwood Falls",
     )
     val greenSources = setOf(
         "Forest", "Command Tower", "Hickory Woodlot", "Simic Growth Chamber", "The Hunter Maze",
         "Tranquil Thicket",
-        // Stage 4 land-base challenger v1 additions (all true UG duals):
-        "Yavimaya Coast", "Simic Guildgate", "Thornwood Falls",
+        // Stage 4 land-base challenger v1 additions (all true UG duals). Paradox Gardens replaced
+        // Yavimaya Coast post-acceptance -- see the blueSources comment above.
+        "Paradox Gardens", "Simic Guildgate", "Thornwood Falls",
     )
     val fixing = setOf(
         "Ash Barrens", "Escape Tunnel", "Evolving Wilds", "Terramorphic Expanse", "Lórien Revealed",
@@ -401,7 +404,7 @@ class LilysplashOpeningHandBenchmark : FunSpec({
 
         println("=== LILYSPLASH LAND-BASE CHALLENGER V1 PREFLIGHT (commander-aware policy) ===")
         println("control=f315b0907f3f9ae9d61ae2d45de0b778b45a9d9ff86e6ac5c343e4385d5de525")
-        println("challenger-land-v1=12e4c15effe06e2e0a1792defbd15f075d3cc9a07fb8c2480f8742d7771fdaa6")
+        println("challenger-land-v1=59a58de609bde991a4488fd611e867dfb6b66f49fe1bd8a2ea68e9a5df935ae1")
         println("seeds=${seeds.joinToString(",")}")
         rows.forEach { row ->
             println(
@@ -1275,7 +1278,7 @@ class LilysplashOpeningHandBenchmark : FunSpec({
 
         println("=== LILYSPLASH FINAL-OPTIMIZED V0.1 PREFLIGHT (commander-aware policy) ===")
         println("control=f315b0907f3f9ae9d61ae2d45de0b778b45a9d9ff86e6ac5c343e4385d5de525")
-        println("final-optimized-v0.1=54f7d58687a6b5db56eafb8dc1eb7884a02db831fcb27c12107802cc8b75bf32")
+        println("final-optimized-v0.1=db3cdedb5d284658a8f1883f1d2b28000866151e9f171df0b0f79e9fbb63614b")
         println("seeds=${finalOptimizedSeeds.joinToString(",")}")
         rows.forEach { row ->
             println(
