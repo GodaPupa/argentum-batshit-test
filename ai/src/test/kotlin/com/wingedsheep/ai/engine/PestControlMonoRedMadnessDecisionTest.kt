@@ -807,11 +807,12 @@ class PestControlMonoRedMadnessDecisionTest : ScenarioTestBase() {
 
         test("an already-winning pass baseline does not justify sacrificing a Mountain") {
             val game = seeded()
-                .withLifeTotal(2, 0)
-                .withLandsOnBattlefield(1, "Mountain", 1)
+                .withLifeTotal(2, 3)
+                .withLandsOnBattlefield(1, "Mountain", 2)
+                .withCardInHand(1, "Lightning Bolt")
                 .withCardInGraveyard(1, "Lava Dart")
-                .withCardOnBattlefield(1, "Kessig Flamebreather")
                 .build()
+            game.castSpellTargetingPlayer(1, "Lightning Bolt", 2).error shouldBe null
 
             ai(game).chooseAction(game.state).shouldBeInstanceOf<PassPriority>()
         }

@@ -1091,11 +1091,14 @@ class PestControlAgentDecisionTest : ScenarioTestBase() {
 
         test("an already-winning pass baseline does not turn friendly removal into lethal") {
             val game = seeded()
-                .withLifeTotal(2, 0)
+                .withLifeTotal(2, 3)
+                .withLandsOnBattlefield(1, "Mountain", 1)
                 .withLandsOnBattlefield(1, "Swamp", 2)
+                .withCardInHand(1, "Lightning Bolt")
                 .withCardInHand(1, "Cast Down")
                 .withCardOnBattlefield(1, "Fierce Witchstalker")
                 .build()
+            game.castSpellTargetingPlayer(1, "Lightning Bolt", 2).error shouldBe null
 
             ai(game).chooseAction(game.state).shouldBeInstanceOf<PassPriority>()
         }
