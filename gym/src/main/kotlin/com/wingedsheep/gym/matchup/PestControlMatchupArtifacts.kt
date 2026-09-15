@@ -84,8 +84,24 @@ object PestControlMatchupArtifactCodec {
             if (game.provenance.monoRedSideboardSha256 != manifest.monoRedSideboardSha256) errors += "manifest Mono Red sideboard mismatch"
             if (game.provenance.monoRedComplete75Sha256 != manifest.monoRedComplete75Sha256) errors += "manifest Mono Red complete-75 mismatch"
             if (game.provenance.matchResult != PREBOARD_MATCH_RESULT) errors += "invalid preboard match result"
-            if (!game.fixtureIsNonexperimental || !game.excludedFromFutureSeedOverlapRegistry) {
-                errors += "fixture is not excluded from experimental seed registries"
+            when (game.provenance.entropyClassification) {
+                "NONEXPERIMENTAL_GATE4_FIXTURE" -> if (
+                    !game.fixtureIsNonexperimental || !game.excludedFromFutureSeedOverlapRegistry
+                ) {
+                    errors += "fixture is not excluded from experimental seed registries"
+                }
+                "FROZEN_EXPERIMENTAL_VECTOR" -> {
+                    if (game.fixtureIsNonexperimental) errors += "experimental game is mislabeled as a fixture"
+                    if (game.excludedFromFutureSeedOverlapRegistry) errors += "experimental seed is falsely registry-excluded"
+                    if (game.provenance.freezeCommit == null) errors += "experimental freeze commit is missing"
+                    if (game.provenance.executionCommit != game.provenance.sourceCommit) {
+                        errors += "experimental execution commit mismatch"
+                    }
+                    if (game.provenance.gameNumber == null || game.provenance.seedDecimal == null) {
+                        errors += "experimental game/seed identity is missing"
+                    }
+                }
+                else -> errors += "unknown entropy classification"
             }
         }
         return errors
@@ -94,7 +110,12 @@ object PestControlMatchupArtifactCodec {
     fun renderReport(rawJson: ByteArray): String {
         val game = PROTOCOL_JSON.decodeFromString<MatchupRawGame>(rawJson.decodeToString())
         return buildString {
-            appendLine("# Pest Control v1.0 vs SoterX Mono Red Madness — deterministic protocol fixture")
+            val classification = if (game.fixtureIsNonexperimental) {
+                "deterministic protocol fixture"
+            } else {
+                "frozen experimental game"
+            }
+            appendLine("# Pest Control v1.0 vs SoterX Mono Red Madness — $classification")
             appendLine()
             appendLine("- Protocol: `${game.provenance.protocolId}`")
             appendLine("- Schema: `${game.provenance.schema}`")
@@ -107,7 +128,10 @@ object PestControlMatchupArtifactCodec {
             appendLine("- Mono Red complete-75 SHA-256: `${game.provenance.monoRedComplete75Sha256}`")
             appendLine("- Scope: ${game.provenance.scope}")
             appendLine("- Match result: `${game.provenance.matchResult}`")
-            appendLine("- Fixture: `${game.fixtureId}` (nonexperimental; excluded from seed overlap)")
+            appendLine("- Record: `${game.fixtureId}`")
+            appendLine("- Entropy classification: `${game.provenance.entropyClassification}`")
+            appendLine("- Fixture-only: ${game.fixtureIsNonexperimental}")
+            appendLine("- Excluded from seed overlap: ${game.excludedFromFutureSeedOverlapRegistry}")
             appendLine("- Pest seat: ${game.provenance.pestSeat}; starts: ${game.provenance.startingDeck}")
             appendLine("- Recorded exact-one actions: ${game.priorityActions.size}")
             appendLine("- Mulligan records: ${game.mulligans.size}")

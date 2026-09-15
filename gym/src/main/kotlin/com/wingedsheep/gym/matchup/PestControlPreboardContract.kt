@@ -153,6 +153,15 @@ data class MatchupProvenance(
     val monoRedProfile: String = AiProfile.PRODUCTION_CANDIDATE_EXPIRING.id,
     val environment: MatchupEnvironmentIdentity,
     val entropyClassification: String = "NONEXPERIMENTAL_GATE4_FIXTURE",
+    val blockId: String? = null,
+    val freezeCommit: String? = null,
+    val executionCommit: String? = null,
+    val orderedVectorSha256: String? = null,
+    val assignmentCsvSha256: String? = null,
+    val freezeManifestSha256: String? = null,
+    val gameNumber: Int? = null,
+    val seedDecimal: Long? = null,
+    val seedHex: String? = null,
 )
 
 @Serializable
@@ -310,6 +319,8 @@ class PestControlPreboardSession private constructor(
     val environment: GameEnvironment,
     private val observationBuilder: ObservationBuilder,
     private val openingZones: List<OpeningZoneAudit>,
+    private val fixtureIsNonexperimental: Boolean,
+    private val excludedFromFutureSeedOverlapRegistry: Boolean,
 ) {
     private val mulligans = mutableListOf<MulliganAudit>()
     private val actions = mutableListOf<PriorityAudit>()
@@ -428,6 +439,8 @@ class PestControlPreboardSession private constructor(
     fun rawGame(): MatchupRawGame = MatchupRawGame(
         provenance = provenance,
         fixtureId = fixtureId,
+        fixtureIsNonexperimental = fixtureIsNonexperimental,
+        excludedFromFutureSeedOverlapRegistry = excludedFromFutureSeedOverlapRegistry,
         openingZones = openingZones,
         mulligans = mulligans.toList(),
         priorityActions = actions.toList(),
@@ -506,11 +519,67 @@ class PestControlPreboardSession private constructor(
             return fromEnvironment(registry, provenance, fixtureId, env)
         }
 
+        /**
+         * Initializes one frozen experimental game. The caller must durably mark the seed attempted
+         * before entering this function; initialization is the first operation that consumes it.
+         */
+        fun experimental(
+            registry: CardRegistry,
+            provenance: MatchupProvenance,
+            recordId: String,
+            seed: Long,
+        ): PestControlPreboardSession {
+            require(!recordId.startsWith("NONEXPERIMENTAL_GATE4_"))
+            require(provenance.entropyClassification == "FROZEN_EXPERIMENTAL_VECTOR")
+            require(provenance.blockId != null && provenance.freezeCommit != null)
+            require(provenance.executionCommit == provenance.sourceCommit)
+            require(provenance.gameNumber != null && provenance.seedDecimal == seed)
+            require(provenance.seedHex == "0x${seed.toULong().toString(16).padStart(16, '0')}")
+            PestControlPreboardDecks.verifyFrozenIdentities()
+            val seats = if (provenance.pestSeat == PestSeat.SEAT_ZERO) {
+                listOf(
+                    "Pest Control v1.0" to PestControlPreboardDecks.pestMain(),
+                    "SoterX Mono Red Madness" to PestControlPreboardDecks.monoRedMain(),
+                )
+            } else {
+                listOf(
+                    "SoterX Mono Red Madness" to PestControlPreboardDecks.monoRedMain(),
+                    "Pest Control v1.0" to PestControlPreboardDecks.pestMain(),
+                )
+            }
+            val startIndex = seats.indexOfFirst { (name) ->
+                (provenance.startingDeck == StartingDeck.PEST_CONTROL && name.startsWith("Pest")) ||
+                    (provenance.startingDeck == StartingDeck.MONO_RED_MADNESS && name.startsWith("SoterX"))
+            }
+            val environment = GameEnvironment.create(registry)
+            environment.reset(
+                com.wingedsheep.engine.core.GameConfig(
+                    players = seats.map { (name, deck) ->
+                        com.wingedsheep.engine.core.PlayerConfig(name, deck, startingLife = 20)
+                    },
+                    skipMulligans = false,
+                    useHandSmoother = false,
+                    startingPlayerIndex = startIndex,
+                    seed = seed,
+                )
+            )
+            return fromEnvironment(
+                registry = registry,
+                provenance = provenance,
+                fixtureId = recordId,
+                environment = environment,
+                fixtureIsNonexperimental = false,
+                excludedFromFutureSeedOverlapRegistry = false,
+            )
+        }
+
         fun fromEnvironment(
             registry: CardRegistry,
             provenance: MatchupProvenance,
             fixtureId: String,
             environment: GameEnvironment,
+            fixtureIsNonexperimental: Boolean = true,
+            excludedFromFutureSeedOverlapRegistry: Boolean = true,
         ): PestControlPreboardSession {
             val builder = ObservationBuilder(registry)
             val openings = environment.playerIds.mapIndexed { index, player ->
@@ -528,7 +597,15 @@ class PestControlPreboardSession private constructor(
                     sideboardCount = 0,
                 )
             }
-            return PestControlPreboardSession(provenance, fixtureId, environment, builder, openings)
+            return PestControlPreboardSession(
+                provenance,
+                fixtureId,
+                environment,
+                builder,
+                openings,
+                fixtureIsNonexperimental,
+                excludedFromFutureSeedOverlapRegistry,
+            )
         }
     }
 }
