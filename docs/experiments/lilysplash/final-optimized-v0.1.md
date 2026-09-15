@@ -81,9 +81,12 @@ for this table: a sync race on the connected OneDrive folder reverted `final-opt
 old Yavimaya Coast content between staging and the GitHub Desktop commit snapshot, so that CI run
 actually re-verified the illegal, superseded list under the corrected list's file path -- caught by
 diffing the committed blob's SHA-256 against the intended source after the fact, not by anything in the
-push itself. A corrective commit re-applies the intended content; see below for its fresh citation once
-pushed and confirmed. Commander-aware policy, same fresh 12-seed block (`2026091501`-`2026091512`, never
-used by any individual package), both seats, 24 samples per deck.
+push itself. Valid citation: commit `ef55e14243` (a corrective commit that re-applied the intended
+content, its own committed blob hash-verified against the source before and after pushing), `Lilysplash
+Preflight #16`, `final-optimized` job,
+<https://github.com/GodaPupa/argentum-batshit-test/actions/runs/35023315186>, 5m 1s, green. Commander-
+aware policy, same fresh 12-seed block (`2026091501`-`2026091512`, never used by any individual package),
+both seats, 24 samples per deck.
 
 | Metric | Control | Final-optimized-v0.1 | Delta |
 |---|---:|---:|---:|

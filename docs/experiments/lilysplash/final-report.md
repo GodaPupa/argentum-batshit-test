@@ -73,9 +73,11 @@ GitHub Desktop commit snapshot, so that run actually re-verified the superseded 
 corrected file's path -- caught afterward by diffing the committed blob's SHA-256 against the intended
 source, not by anything in the push itself. Every other file in that same commit (the benchmark's
 blueSources/greenSources fix, both markdown docs, the new ParadoxGardensScenarioTest, ParadoxGardens.kt,
-and challenger-land-v1.txt) was checked the same way and does match its intended source. A corrective
-commit re-applies the intended `final-optimized-v0.1.txt` content; see `final-optimized-v0.1.md` for its
-fresh citation once pushed and confirmed. Independent of that mix-up, a broader regression check on the
+and challenger-land-v1.txt) was checked the same way and does match its intended source. Valid citation:
+commit `ef55e14243` (a corrective commit that re-applied the intended content, hash-verified against the
+source both before and after pushing), `Lilysplash Preflight #16`, `final-optimized` job,
+[run 35023315186](https://github.com/GodaPupa/argentum-batshit-test/actions/runs/35023315186), 5m 1s,
+green. Independent of that mix-up, a broader regression check on the
 same original push -- one that never reads this specific decklist file -- did go green and stands:
 `Lilysplash PDH combo readiness batch #418`,
 [run 35021673816](https://github.com/GodaPupa/argentum-batshit-test/actions/runs/35021673816), all jobs

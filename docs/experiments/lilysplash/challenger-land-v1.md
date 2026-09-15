@@ -68,8 +68,9 @@ decklist in isolation. The corrected land swap is meant to be independently CI-v
 assembled list too, but the first attempt at that citation (commit `395494cf23`, run `35021667554`) does
 not count: a OneDrive sync race reverted `final-optimized-v0.1.txt` to the old Yavimaya Coast content
 between staging and the commit snapshot, so that CI run actually re-tested the superseded illegal list
-under the corrected file's path. See `final-optimized-v0.1.md`'s Result section for the corrective
-commit's real citation once pushed and confirmed.
+under the corrected file's path. Valid citation: commit `ef55e14243`, `Lilysplash Preflight #16`,
+`final-optimized` job, run `35023315186`, 5m 1s, green — see `final-optimized-v0.1.md`'s Result section
+for the full note.
 
 | Metric | Control | Challenger-land-v1 | Delta |
 |---|---:|---:|---:|
