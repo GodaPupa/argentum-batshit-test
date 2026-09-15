@@ -1,6 +1,6 @@
 # Project Pest Control — Status
 
-- Status: Matchup Gate 4 accepted; Matchup Block A's 50-seed vector frozen and unexecuted at Gate 5
+- Status: Matchup Block A executed once; artifacts preserved; pending Gate 7 review
 - Laboratory: Project Pest Control
 - Branch: `pest-control/lab`
 - Validated base: `47882cd645caf126afee6cf13a65909806fa40ab`
@@ -103,11 +103,19 @@ operation. The complete 363-value Pest exclusion registry SHA-256 is
 CSV SHA-256 is `b23d02ca18d604572f554cdc0aa6c99ce85a32a5e98515ee982cc266074911b9`; and the manifest SHA-256 is
 `4f3a82da8343a8176c9e98ffb8de2531a254e6f19072837ea3d997507e473e16`. The vector has 50 unique,
 nonzero signed 64-bit seeds with zero registry overlap, balanced 25/25 for Pest play/draw and seat,
-and joint cells of 13/12/12/13. It is frozen, unexecuted, and non-replayable after its future single
-authorized execution. No Block B vector exists.
+and joint cells of 13/12/12/13. It was executed exactly once in frozen order from execution commit
+`13c4680ddc952694c5d4738940b4abbe797563ab`; all 50 seeds are permanently non-replayable. No Block B
+vector exists.
 
-All 13 Pest gameplay runners remain disabled. Gates 2–5 executed zero sampled or matchup games.
-Block A gameplay, sideboarding, deck changes, and the challenger remain unauthorized.
+Gate 6 run #34930029981 completed on its sole attempt with 50 attempted seeds, 50 ordered records,
+50 legitimate `LIFE_ZERO` terminals, zero protocol defects, zero rejected actions, and zero fallbacks.
+The raw result is Pest Control 35 wins and Mono Red Madness 15 wins. This is not accepted matchup
+evidence yet: the block remains `PENDING_GATE_7_REVIEW`. The exact raw and compressed records remain
+in Actions artifact `10391659486`; their audit derivatives and identities are preserved under
+`docs/experiments/pest-control/matchup-block-a-execution/`.
+
+All 13 preexisting Pest gameplay runners and the dedicated Block A runner are disabled. Postboard
+gameplay, deck changes, the challenger, result acceptance, pooling, and Block B remain unauthorized.
 
 ## Goldfish Sample #2 independent replication authorization
 
