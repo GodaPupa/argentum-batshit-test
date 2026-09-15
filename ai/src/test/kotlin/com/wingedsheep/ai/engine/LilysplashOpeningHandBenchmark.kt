@@ -134,6 +134,17 @@ class LilysplashOpeningHandBenchmark : FunSpec({
         "Seeker of Skybreak",
     )
 
+    // Every card in the submitted list that protects a permanent or a spell already on the stack --
+    // countermagic and single-target hexproof/indestructible instants -- the target population for
+    // Stage 4 item 4 ("increased stack protection"). Muddle the Mixture is deliberately excluded here
+    // even though it can be cast as a counterspell: its search-a-CMC-2-card mode is what the selection
+    // package tracks it for, and counting it in both sets would double-attribute any movement.
+    val protectionPieces = setOf(
+        "Counterspell", "Dive Down", "Snakeskin Veil", "Tamiyo's Safekeeping",
+        // Stage 4 stack challenger v1 addition:
+        "Miscalculation",
+    )
+
     fun hasCommanderColors(cards: Map<EntityId, CardSummary>): Boolean {
         val names = cards.values.map { it.name }
         val lands = cards.values.count { it.typeLine?.contains("Land", ignoreCase = true) == true }
@@ -823,6 +834,152 @@ class LilysplashOpeningHandBenchmark : FunSpec({
                     "noDirectU=${deckRows.count { it.directBlue == 0 }} noDirectG=${deckRows.count { it.directGreen == 0 }} " +
                     "avgUntappers=${String.format(Locale.ROOT, "%.3f", deckRows.map { it.untappers }.average())} " +
                     "zeroUntappers=${deckRows.count { it.untappers == 0 }}",
+            )
+        }
+        check(rows.size == seeds.size * 2 * 2)
+    }
+
+    data class StackDeckHand(
+        val deck: String,
+        val seed: Long,
+        val seat: Int,
+        val mulligans: Int,
+        val cards: List<String>,
+        val lands: Int,
+        val directBlue: Int,
+        val directGreen: Int,
+        val fixers: Int,
+        val protection: Int,
+    )
+
+    // Stage 4 item 4 (increased stack protection): the submitted control deck against a frozen
+    // challenger that removes Frogify -- a {1}{U} Aura that loses-all-abilities-and-sets-1/1, an exact
+    // functional duplicate of Kasmina's Transmutation already in the list (the Frog creature type and
+    // color are cosmetic only in a non-tribal deck) -- and adds Miscalculation, a real, common,
+    // already-implemented {1}{U} instant ("Counter target spell unless its controller pays {2}",
+    // Cycling {2}). The submitted list's only countermagic is one hard counter (Counterspell) and one
+    // narrow soft counter (Muddle the Mixture, whose search mode only hits CMC 2); Miscalculation is a
+    // second, unrestricted soft counter that taxes an opponent's removal aimed at the combo pieces, and
+    // its cycling keeps it from ever being a dead late-game draw. No land, selection spell, Aura, or
+    // untap/win-condition card differs between the two decks, per the plan's one-variable-at-a-time
+    // rule.
+    test("Lilysplash stack challenger v1 preflight").config(
+        enabled = System.getProperty("lilysplashStackChallenger") == "true",
+    ) {
+        val control = submittedDeck()
+        val challenger = submittedDeck("docs/experiments/lilysplash/challenger-stack-v1.txt")
+        checkDeckGuardrails(control, "control")
+        checkDeckGuardrails(challenger, "challenger-stack-v1")
+
+        val registry = CardRegistry().apply {
+            register(MtgSetCatalog.all.flatMap { it.cards + it.basicLands })
+        }
+        val processor = ActionProcessor(registry)
+        val initializer = GameInitializer(registry)
+        val rows = mutableListOf<StackDeckHand>()
+
+        for ((deckLabel, deck) in listOf("control" to control, "challenger-stack-v1" to challenger)) {
+            val builtDeck = Deck(cards = deck.library, commander = deck.commander)
+            for (seed in seeds) {
+                val init = initializer.initializeGame(
+                    GameConfig(
+                        players = listOf(
+                            PlayerConfig("Seat0", builtDeck, commanderCardName = deck.commander),
+                            PlayerConfig("Seat1", builtDeck, commanderCardName = deck.commander),
+                        ),
+                        format = Format.Commander(alwaysDivertToCommand = true),
+                        skipMulligans = false,
+                        startingPlayerIndex = 0,
+                        seed = seed,
+                    ),
+                )
+                var state = init.state
+                val controllers = init.playerIds.map { playerId ->
+                    EngineAiPlayerController(registry, playerId, gameStateProvider = { state })
+                }
+                val mulligans = IntArray(init.playerIds.size)
+
+                for ((seat, playerId) in init.playerIds.withIndex()) {
+                    while (true) {
+                        val cards = summaries(state, playerId)
+                        val mulliganState = state.getEntity(playerId)!!.get<MulliganStateComponent>()!!
+                        val genericKeep = controllers[seat].decideMulligan(
+                            MulliganInfo(
+                                hand = state.getHand(playerId),
+                                mulliganCount = mulliganState.mulligansTaken,
+                                cardsToPutOnBottom = mulliganState.cardsToBottom,
+                                cards = cards,
+                                isOnThePlay = seat == 0,
+                            ),
+                        )
+                        val keep = genericKeep && (
+                            mulliganState.mulligansTaken >= 2 || hasCommanderColors(cards)
+                        )
+                        if (keep) {
+                            state = process(processor, state, KeepHand(playerId))
+                            break
+                        }
+                        state = process(processor, state, TakeMulligan(playerId))
+                        mulligans[seat]++
+                    }
+                }
+
+                for ((seat, playerId) in init.playerIds.withIndex()) {
+                    val mulliganState = state.getEntity(playerId)!!.get<MulliganStateComponent>()!!
+                    if (mulliganState.cardsToBottom > 0) {
+                        val cards = summaries(state, playerId)
+                        val bottom = controllers[seat].chooseBottomCards(
+                            BottomCardsInfo(
+                                hand = state.getHand(playerId),
+                                cardsToPutOnBottom = mulliganState.cardsToBottom,
+                                cards = cards,
+                            ),
+                        )
+                        state = process(processor, state, BottomCards(playerId, bottom))
+                    }
+                }
+
+                for ((seat, playerId) in init.playerIds.withIndex()) {
+                    val hand = state.getHand(playerId).map { state.getEntity(it)!!.get<CardComponent>()!!.name }
+                    val landCount = state.getHand(playerId).count {
+                        state.getEntity(it)!!.get<CardComponent>()!!.typeLine.isLand
+                    }
+                    rows += StackDeckHand(
+                        deck = deckLabel,
+                        seed = seed,
+                        seat = seat,
+                        mulligans = mulligans[seat],
+                        cards = hand,
+                        lands = landCount,
+                        directBlue = hand.count { it in blueSources },
+                        directGreen = hand.count { it in greenSources },
+                        fixers = hand.count { it in fixing },
+                        protection = hand.count { it in protectionPieces },
+                    )
+                }
+            }
+        }
+
+        println("=== LILYSPLASH STACK CHALLENGER V1 PREFLIGHT (commander-aware policy) ===")
+        println("control=f315b0907f3f9ae9d61ae2d45de0b778b45a9d9ff86e6ac5c343e4385d5de525")
+        println("challenger-stack-v1=a57903c6b651f76894ca185b89d460b1c84a66190a44edfbb4e9a8dae1223491")
+        println("seeds=${seeds.joinToString(",")}")
+        rows.forEach { row ->
+            println(
+                "deck=${row.deck} seed=${row.seed} seat=${row.seat} mulligans=${row.mulligans} kept=${row.cards.size} " +
+                    "lands=${row.lands} U=${row.directBlue} G=${row.directGreen} fixers=${row.fixers} " +
+                    "protection=${row.protection} hand=${row.cards.joinToString(" | ")}",
+            )
+        }
+        rows.groupBy { it.deck }.forEach { (deckLabel, deckRows) ->
+            println(
+                "summary deck=$deckLabel samples=${deckRows.size} " +
+                    "avgMulligans=${String.format(Locale.ROOT, "%.3f", deckRows.map { it.mulligans }.average())} " +
+                    "keep7=${deckRows.count { it.mulligans == 0 }} keep6=${deckRows.count { it.mulligans == 1 }} " +
+                    "keep5=${deckRows.count { it.mulligans == 2 }} lowLand=${deckRows.count { it.lands <= 1 }} " +
+                    "noDirectU=${deckRows.count { it.directBlue == 0 }} noDirectG=${deckRows.count { it.directGreen == 0 }} " +
+                    "avgProtection=${String.format(Locale.ROOT, "%.3f", deckRows.map { it.protection }.average())} " +
+                    "zeroProtection=${deckRows.count { it.protection == 0 }}",
             )
         }
         check(rows.size == seeds.size * 2 * 2)

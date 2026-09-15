@@ -142,6 +142,13 @@ lilysplash-untap-challenger:
     scripts/gradle-locked :ai:test --tests "*.LilysplashOpeningHandBenchmark" \
         -Dbenchmark=true -DlilysplashUntapChallenger=true
 
+# Stage 4 item 4: compare the control deck against the frozen stack-protection-only challenger
+# (docs/experiments/lilysplash/challenger-stack-v1.txt) under the commander-aware keep rule, same seeds.
+[group: 'ai']
+lilysplash-stack-challenger:
+    scripts/gradle-locked :ai:test --tests "*.LilysplashOpeningHandBenchmark" \
+        -Dbenchmark=true -DlilysplashStackChallenger=true
+
 # ECL apprentice promotion ladder. Artifacts are installed outside the repository and selected with
 # -Dargentum.ai.apprentice.dir; missing or invalid files safely use the production evaluator.
 [group: 'ai']
