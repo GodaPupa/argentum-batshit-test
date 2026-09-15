@@ -14,6 +14,7 @@ import java.security.MessageDigest
 private const val BLOCK_A_PROTOCOL =
     "PEST_CONTROL_V10_VS_MONO_RED_MADNESS_SOTERX_2026_09_11_PREBOARD_V1"
 private const val BLOCK_A_ID = "${BLOCK_A_PROTOCOL}_BLOCK_A"
+private const val REPLACEMENT_BLOCK_ID = "${BLOCK_A_PROTOCOL}_REPLACEMENT_BLOCK_1"
 private const val BLOCK_A_GATE4_SOURCE = "d81ec35f0be74422315f9bb5bf8d69c395b2d872"
 private const val BLOCK_A_REGISTRY_SHA256 = "62cf99b9b4b003752c2552f2a5965e96cc9026ea0d025cf8ffcba4bbab721842"
 private const val BLOCK_A_VECTOR_SHA256 = "48459229c8e261022c37fa52915c382a7ab9b95405ce2124254ff82b57ecf135"
@@ -94,7 +95,7 @@ class PestControlMatchupBlockASeedFreezeTest : FunSpec({
         val registryBytes = Files.readAllBytes(blockRegistryPath)
         assertCanonicalText(registryBytes)
         val registryLines = registryBytes.decodeToString().trimEnd('\n').lines()
-        registryLines.size shouldBe 414
+        registryLines.size shouldBe 464
         val registryHeader = registryLines.first().split(',')
         val categoryIndex = registryHeader.indexOf("category")
         val identityIndex = registryHeader.indexOf("identity")
@@ -114,7 +115,8 @@ class PestControlMatchupBlockASeedFreezeTest : FunSpec({
         val originalRegistryLines = registryLines.filterNot { line ->
             val row = line.split(',')
             row.size == registryHeader.size &&
-                row[categoryIndex] == "MATCHUP_VECTOR" && row[identityIndex] == BLOCK_A_ID
+                row[categoryIndex] == "MATCHUP_VECTOR" &&
+                row[identityIndex] in setOf(BLOCK_A_ID, REPLACEMENT_BLOCK_ID)
         }
         originalRegistryLines.size shouldBe 364
         sha256((originalRegistryLines.joinToString("\n") + "\n").encodeToByteArray()) shouldBe BLOCK_A_REGISTRY_SHA256
