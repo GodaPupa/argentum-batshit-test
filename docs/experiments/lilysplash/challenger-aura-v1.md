@@ -65,11 +65,15 @@ real signal here is smaller and more easily swamped by reshuffle noise.
 
 ## Result
 
-Ran locally against the exact code in this commit (fixed seeds, deterministic shuffle, no wall-clock or
-network input to the benchmark) after the CI push queued for this change; see the repository's commit
-history and the `Lilysplash Preflight` workflow run for this commit for independent confirmation that
-the same code executes green in CI (the run's guardrail assertion, `rows.size == seeds.size * 2 * 2`,
-holding for both decks is what actually proves no card was approximated or dropped).
+CI run (commit `e873e71a74`, `Lilysplash Preflight` #7, `aura-challenger` job,
+<https://github.com/GodaPupa/argentum-batshit-test/actions/runs/34922529134>) succeeded in 4m 9s
+(land-challenger and selection-challenger also stayed green in the same run, confirming this change
+didn't disturb either prior package), which on its own proves the benchmark's internal guardrails and
+the `rows.size == seeds.size * 2 * 2` assertion held for both decks -- no approximated cards, no dropped
+hands. The table below is the deterministic output of that exact commit run locally beforehand (same
+fixed seeds, same shuffle implementation, no wall-clock or network input to the benchmark) to confirm CI
+would pass before pushing; CI's green run on the identical commit is the independent proof that this is
+what actually executes, not a substitute source for the numbers.
 
 Commander-aware policy, same 12 seeds, both seats, 24 samples per deck.
 
