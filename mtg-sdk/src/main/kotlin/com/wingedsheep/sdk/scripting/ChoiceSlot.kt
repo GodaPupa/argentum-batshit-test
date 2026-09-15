@@ -60,6 +60,15 @@ enum class ChoiceSlot {
     KICKED,
 
     /**
+     * Whether the spell's buyback cost was paid as it was cast (CR 702.27). A present value means
+     * the resolving spell returns to its owner's hand instead of going to its graveyard.
+     *
+     * Buyback deliberately has its own slot even though it shares the optional-additional-cost
+     * rail with kicker: paying buyback must not satisfy kicked-spell conditions or triggers.
+     */
+    BUYBACK,
+
+    /**
      * Whether the spell's **bargain** additional cost was declared when cast (CR 702.166b, Wilds of
      * Eldraine — "you may sacrifice an artifact, enchantment, or token as you cast this spell"). A
      * present value means the spell was *bargained*. Read back through

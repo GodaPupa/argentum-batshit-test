@@ -286,3 +286,52 @@
         "imageUri": "https://cards.scryfall.io/normal/front/9/5/953610f6-ea96-4e71-969f-50ecac09c091.jpg?1722108794"
     }
 }
+
+// Vapor Snag
+{
+    "name": "Vapor Snag",
+    "manaCost": "{U}",
+    "typeLine": "Instant",
+    "oracleText": "Return target creature to its owner's hand. Its controller loses 1 life.",
+    "script": {
+        "spellEffect": {
+            "type": "Composite",
+            "effects": [
+                {
+                    "type": "MoveToZone",
+                    "target": {
+                        "type": "BoundVariable",
+                        "name": "target creature"
+                    },
+                    "destination": "Hand"
+                },
+                {
+                    "type": "LoseLife",
+                    "amount": {
+                        "type": "Fixed",
+                        "amount": 1
+                    },
+                    "target": "TargetController"
+                }
+            ]
+        },
+        "targetRequirements": [
+            {
+                "type": "TargetObject",
+                "filter": {
+                    "baseFilter": "creature"
+                },
+                "id": "target creature"
+            }
+        ]
+    },
+    "metadata": {
+        "collectorNumber": "48",
+        "artist": "Raymond Swanland",
+        "flavorText": "\"This creature is inadequate. Send it to the splicers for innovation.\"\n—Malcator, Executor of Synthesis",
+        "imageUri": "https://cards.scryfall.io/normal/front/7/0/70305148-23bd-41dd-9de5-13cf5ae591ae.jpg?1783941317"
+    },
+    "colorIdentityOverride": [
+        "BLUE"
+    ]
+}

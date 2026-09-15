@@ -1,0 +1,72 @@
+name: Lilysplash Preflight
+
+on:
+  push:
+    branches: ["lilysplash/lab"]
+    paths:
+      - ".github/workflows/lilysplash-preflight.yml"
+      - "ai/src/test/kotlin/com/wingedsheep/ai/engine/LilysplashOpeningHandBenchmark.kt"
+      - "ai/src/test/kotlin/com/wingedsheep/ai/engine/LilysplashComboExecutionTest.kt"
+      - "ai/src/test/kotlin/com/wingedsheep/ai/engine/LilysplashVedalkenComboExecutionTest.kt"
+      - "docs/experiments/lilysplash/final-optimized-v0.1.txt"
+      - "buildSrc/src/main/kotlin/kotlin-jvm.gradle.kts"
+      - "justfile"
+
+permissions:
+  contents: read
+
+# Stage 4's six individual challenger packages (land, selection, aura, untap, stack, wincon) each got
+# their own CI-proven run at the time they were accepted, cited by run ID/URL in their respective
+# challenger-*.md docs -- that's a permanent record, not something that needs continuous re-verification,
+# since those six decklists are frozen historical artifacts folded into final-optimized-v0.1.txt and are
+# not expected to change again. Only the actual recommended list (final-optimized-v0.1) still benefits
+# from a standing regression check here. The six `just lilysplash-*-challenger` recipes still exist and
+# still work for anyone who wants to manually reproduce an individual package's result later.
+jobs:
+  final-optimized:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+      - name: Set up JDK 21
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: 21
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v6
+      - name: Setup just
+        uses: extractions/setup-just@v3
+      - name: Run final-optimized v0.1 preflight
+        run: just lilysplash-final-optimized
+
+  # Not a Stage 4 seeded-hand benchmark like the job above -- deterministic, always-on engine-level tests
+  # in the spirit of Stage 2 (docs/experiments/lilysplash/experiment-plan.md), so they run plainly via
+  # the normal :ai:test suite rather than behind a -D opt-in flag. Both answer the open question every
+  # Stage 4 package's own Verdict section flags: given a win condition's pieces already assembled on the
+  # battlefield, does the production AI itself (not a scripted action sequence) recognize and repeat the
+  # loop to deck out a real opponent.
+  #   - LilysplashComboExecutionTest: the deck's original combo (Peregrine Drake + Ghostly Flicker +
+  #     Archaeomancer + Sage's Row Denizen). The AI executes it correctly.
+  #     See docs/experiments/lilysplash/combo-execution-v1.md.
+  #   - LilysplashVedalkenComboExecutionTest: the alternate Vedalken Entrancer + untapper line
+  #     challenger-wincon-v1.md's own Verdict named as untested. The AI does NOT execute it correctly --
+  #     it mills itself instead of the opponent, due to a real, reproducible AI target-selection bug.
+  #     This test pins that known (buggy) outcome rather than the intended one; a green run here does
+  #     NOT mean the combo works. See docs/experiments/lilysplash/combo-execution-v2-vedalken.md.
+  combo-execution:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+      - name: Set up JDK 21
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: 21
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v6
+      - name: Setup just
+        uses: extractions/setup-just@v3
+      - name: Run Lilysplash combo execution tests
+        run: just test-class 'Lilysplash*ComboExecutionTest'

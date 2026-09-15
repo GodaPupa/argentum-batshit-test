@@ -1272,6 +1272,15 @@ class TriggerMatcher(
             is com.wingedsheep.sdk.scripting.predicates.CardPredicate.IsNonartifact -> !cardComponent.typeLine.isArtifact
             is com.wingedsheep.sdk.scripting.predicates.CardPredicate.IsLegendary -> cardComponent.typeLine.isLegendary
             is com.wingedsheep.sdk.scripting.predicates.CardPredicate.IsNonlegendary -> !cardComponent.typeLine.isLegendary
+            is com.wingedsheep.sdk.scripting.predicates.CardPredicate.HasColor -> {
+                val colors = if (isFaceDown) {
+                    emptySet()
+                } else {
+                    projected.getProjectedValues(entityId)?.colors
+                        ?: cardComponent.colors.mapTo(mutableSetOf()) { it.name }
+                }
+                predicate.color.name in colors
+            }
             is com.wingedsheep.sdk.scripting.predicates.CardPredicate.HasSubtype ->
                 cardComponent.typeLine.hasSubtype(predicate.subtype)
             is com.wingedsheep.sdk.scripting.predicates.CardPredicate.HasAnyOfSubtypes ->

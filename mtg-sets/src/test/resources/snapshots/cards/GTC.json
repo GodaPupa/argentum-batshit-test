@@ -807,6 +807,77 @@
     ]
 }
 
+// Sage's Row Denizen
+{
+    "name": "Sage's Row Denizen",
+    "manaCost": "{2}{U}",
+    "typeLine": "Creature — Vedalken Wizard",
+    "oracleText": "Whenever another blue creature you control enters, target player mills two cards.",
+    "creatureStats": {
+        "power": 2,
+        "toughness": 3
+    },
+    "script": {
+        "triggeredAbilities": [
+            {
+                "id": "ability_1",
+                "trigger": {
+                    "type": "ZoneChangeEvent",
+                    "filter": "creature blue ctrl:you",
+                    "to": "Battlefield"
+                },
+                "binding": "OTHER",
+                "effect": {
+                    "type": "Composite",
+                    "effects": [
+                        {
+                            "type": "GatherCards",
+                            "source": {
+                                "type": "TopOfLibrary",
+                                "count": {
+                                    "type": "Fixed",
+                                    "amount": 2
+                                },
+                                "player": {
+                                    "type": "ContextPlayer",
+                                    "index": 0
+                                },
+                                "isMill": true
+                            },
+                            "storeAs": "milled"
+                        },
+                        {
+                            "type": "MoveCollection",
+                            "from": "milled",
+                            "destination": {
+                                "type": "ToZone",
+                                "zone": "Graveyard",
+                                "player": {
+                                    "type": "ContextPlayer",
+                                    "index": 0
+                                }
+                            }
+                        }
+                    ]
+                },
+                "targetRequirement": {
+                    "type": "TargetPlayer",
+                    "id": "target"
+                }
+            }
+        ]
+    },
+    "metadata": {
+        "collectorNumber": "46",
+        "artist": "Svetlin Velinov",
+        "flavorText": "\"I offer you wisdom untainted by false loyalty, learning free of any guild's agenda.\"",
+        "imageUri": "https://cards.scryfall.io/normal/front/0/6/063e6df9-2287-485a-ab46-fa4a38783884.jpg?1783940135"
+    },
+    "colorIdentityOverride": [
+        "BLUE"
+    ]
+}
+
 // Simic Guildgate
 {
     "name": "Simic Guildgate",

@@ -13,6 +13,7 @@ import com.wingedsheep.sdk.core.Subtype
 import com.wingedsheep.sdk.core.Zone
 import com.wingedsheep.sdk.scripting.*
 import com.wingedsheep.sdk.scripting.effects.SwitchPowerToughnessEffect
+import com.wingedsheep.sdk.scripting.effects.VentureIntoDungeonEffect
 import com.wingedsheep.sdk.scripting.effects.AddAnyColorManaSpendOnChosenTypeEffect
 import com.wingedsheep.sdk.scripting.effects.AddManaOfChoiceEffect
 import com.wingedsheep.sdk.scripting.effects.AddColorlessManaEffect
@@ -239,6 +240,9 @@ import com.wingedsheep.sdk.scripting.targets.TargetRequirement
  * ```
  */
 object Effects {
+    /** Venture into the dungeon (CR 701.46). */
+    fun VentureIntoDungeon(): Effect = VentureIntoDungeonEffect
+
 
     /**
      * Scryfall art for the white Spirit token created by Endure (Tarkir: Dragonstorm).

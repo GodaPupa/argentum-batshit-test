@@ -2800,6 +2800,49 @@
     ]
 }
 
+// Sheltered Aerie
+{
+    "name": "Sheltered Aerie",
+    "manaCost": "{2}{G}",
+    "typeLine": "Enchantment — Aura",
+    "oracleText": "Enchant land\nEnchanted land has \"{T}: Add two mana of any one color.\"",
+    "script": {
+        "staticAbilities": [
+            {
+                "type": "GrantActivatedAbility",
+                "ability": {
+                    "id": "ability_1",
+                    "cost": "CostTap",
+                    "effect": {
+                        "type": "AddManaOfChoice",
+                        "amount": {
+                            "type": "Fixed",
+                            "amount": 2
+                        }
+                    },
+                    "timing": "ManaAbility",
+                    "isManaAbility": true
+                }
+            }
+        ],
+        "auraTarget": {
+            "type": "TargetObject",
+            "filter": {
+                "baseFilter": "land"
+            }
+        }
+    },
+    "metadata": {
+        "collectorNumber": "206",
+        "artist": "Raoul Vitale",
+        "flavorText": "Dromoka's scalelords patrol the skies over Arashin, offering her people safety from the harsh world.",
+        "imageUri": "https://cards.scryfall.io/normal/front/a/f/afecf5a8-3c9e-48e0-8818-e2e3183e958c.jpg?1783938576"
+    },
+    "colorIdentityOverride": [
+        "GREEN"
+    ]
+}
+
 // Sight Beyond Sight
 {
     "name": "Sight Beyond Sight",

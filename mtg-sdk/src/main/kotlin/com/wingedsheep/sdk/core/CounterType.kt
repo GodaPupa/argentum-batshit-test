@@ -121,6 +121,7 @@ enum class CounterType {
     PLAN,
     INVASION,
     UNLOCK,
+    OIL,
 
     /**
      * Harness counter (Marvel's Spider-Man Infinity Stones). A binary "harnessed" marker: the Stone's
@@ -713,6 +714,13 @@ object Counters {
      * NOT a keyword counter, so it is intentionally absent from `StateProjector.KEYWORD_COUNTER_MAP`.
      */
     const val UNLOCK = "unlock"
+
+    /**
+     * Oil counter (ONE). A passive resource counter with no inherent rule of its own: cards such
+     * as Rustvine Cultivator place and spend it through their own abilities. NOT a keyword counter,
+     * so it is intentionally absent from `StateProjector.KEYWORD_COUNTER_MAP`.
+     */
+    const val OIL = "oil"
 
     /**
      * Judgment counter (VOW — Faithbound Judge // Sinner's Judgment). A passive

@@ -1,3 +1,67 @@
+// Freed from the Real
+{
+    "name": "Freed from the Real",
+    "manaCost": "{2}{U}",
+    "typeLine": "Enchantment — Aura",
+    "oracleText": "Enchant creature\n{U}: Tap enchanted creature.\n{U}: Untap enchanted creature.",
+    "script": {
+        "activatedAbilities": [
+            {
+                "id": "ability_1",
+                "cost": {
+                    "type": "CostAtomWrapper",
+                    "atom": {
+                        "type": "AtomMana",
+                        "cost": "{U}"
+                    }
+                },
+                "effect": {
+                    "type": "TapUntap",
+                    "target": "EnchantedCreature"
+                },
+                "descriptionOverride": "{U}: Tap enchanted creature."
+            },
+            {
+                "id": "ability_2",
+                "cost": {
+                    "type": "CostAtomWrapper",
+                    "atom": {
+                        "type": "AtomMana",
+                        "cost": "{U}"
+                    }
+                },
+                "effect": {
+                    "type": "TapUntap",
+                    "target": "EnchantedCreature",
+                    "tap": false
+                },
+                "descriptionOverride": "{U}: Untap enchanted creature."
+            }
+        ],
+        "auraTarget": {
+            "type": "TargetObject",
+            "filter": {
+                "baseFilter": "creature"
+            }
+        }
+    },
+    "metadata": {
+        "collectorNumber": "38",
+        "artist": "Scott M. Fischer",
+        "flavorText": "When a strong mind moves, form and energy shift to heed it.",
+        "imageUri": "https://cards.scryfall.io/normal/front/e/9/e9ecee02-12c0-4aed-a679-41bce95e0cda.jpg?1783944164",
+        "rulings": [
+            {
+                "date": "2018-03-16",
+                "text": "Only the player who controls Freed from the Real can activate its abilities. This might not be the controller of the enchanted creature."
+            }
+        ]
+    },
+    "colorIdentityOverride": [
+        "BLUE"
+    ]
+}
+
 // Hidetsugu's Second Rite
 {
     "name": "Hidetsugu's Second Rite",

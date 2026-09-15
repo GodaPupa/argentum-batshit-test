@@ -737,6 +737,50 @@
     ]
 }
 
+// Capsize
+{
+    "name": "Capsize",
+    "manaCost": "{1}{U}{U}",
+    "typeLine": "Instant",
+    "oracleText": "Buyback {3} (You may pay an additional {3} as you cast this spell. If you do, put this card into your hand as it resolves.)\nReturn target permanent to its owner's hand.",
+    "keywordAbilities": [
+        {
+            "type": "Kicker",
+            "manaCost": "{3}",
+            "displayPrefix": "Buyback",
+            "branchesEffect": false,
+            "declaredSlot": "BUYBACK"
+        }
+    ],
+    "script": {
+        "spellEffect": {
+            "type": "MoveToZone",
+            "target": {
+                "type": "BoundVariable",
+                "name": "target permanent"
+            },
+            "destination": "Hand"
+        },
+        "targetRequirements": [
+            {
+                "type": "TargetObject",
+                "filter": {
+                    "baseFilter": "permanent"
+                },
+                "id": "target permanent"
+            }
+        ]
+    },
+    "metadata": {
+        "collectorNumber": "55",
+        "artist": "Tom Wänerstrand",
+        "imageUri": "https://cards.scryfall.io/normal/front/e/5/e538b359-d893-422d-9d60-5f3e8ee0fa9e.jpg?1783946658"
+    },
+    "colorIdentityOverride": [
+        "BLUE"
+    ]
+}
+
 // Chill
 {
     "name": "Chill",

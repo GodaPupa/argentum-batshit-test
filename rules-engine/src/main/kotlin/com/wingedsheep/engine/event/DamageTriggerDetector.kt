@@ -4,6 +4,8 @@ import com.wingedsheep.engine.core.DamageDealtEvent
 import com.wingedsheep.engine.core.GameEvent as EngineGameEvent
 import com.wingedsheep.engine.mechanics.layers.ProjectedState
 import com.wingedsheep.engine.state.GameState
+import com.wingedsheep.engine.state.components.battlefield.BattlefieldEntryTimestampComponent
+import com.wingedsheep.engine.state.components.battlefield.CipherEncodedComponent
 import com.wingedsheep.engine.state.components.identity.CardComponent
 import com.wingedsheep.engine.state.components.identity.ControllerComponent
 import com.wingedsheep.engine.state.components.identity.FaceDownComponent
@@ -23,6 +25,45 @@ class DamageTriggerDetector(
     private val abilityResolver: TriggerAbilityResolver,
     private val matcher: TriggerMatcher
 ) {
+
+    /** Queue one cipher trigger for each exiled card encoded on the damaging creature. */
+    fun detectCipherTriggers(
+        state: GameState,
+        event: DamageDealtEvent,
+        triggers: MutableList<PendingTrigger>,
+        projected: ProjectedState,
+    ) {
+        val creatureId = event.sourceId ?: return
+        if (!event.isCombatDamage || event.targetId !in state.turnOrder) return
+        val controllerId = projected.getController(creatureId)
+            ?: state.getEntity(creatureId)?.get<ControllerComponent>()?.playerId
+            ?: return
+
+        for ((zoneKey, cards) in state.zones) {
+            if (zoneKey.zoneType != Zone.EXILE) continue
+            for (cardId in cards) {
+                val container = state.getEntity(cardId) ?: continue
+                val encoded = container.get<CipherEncodedComponent>() ?: continue
+                if (encoded.creatureId != creatureId) continue
+                if (creatureId in state.getBattlefield()) {
+                    val currentTimestamp = state.getEntity(creatureId)
+                        ?.get<BattlefieldEntryTimestampComponent>()
+                        ?.timestamp
+                    if (currentTimestamp != encoded.creatureBattlefieldTimestamp) continue
+                }
+                val card = container.get<CardComponent>() ?: continue
+                triggers.add(
+                    PendingTrigger(
+                        ability = com.wingedsheep.sdk.scripting.Cipher.copyAbility,
+                        sourceId = cardId,
+                        sourceName = card.name,
+                        controllerId = controllerId,
+                        triggerContext = TriggerContext.fromEvent(event),
+                    )
+                )
+            }
+        }
+    }
 
     companion object {
         /**

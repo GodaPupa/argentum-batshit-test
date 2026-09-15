@@ -76,6 +76,141 @@
     ]
 }
 
+// Hidden Strings
+{
+    "name": "Hidden Strings",
+    "manaCost": "{1}{U}",
+    "typeLine": "Sorcery",
+    "oracleText": "You may tap or untap target permanent, then you may tap or untap another target permanent.\nCipher (Then you may exile this spell card encoded on a creature you control. Whenever that creature deals combat damage to a player, its controller may cast a copy of the encoded card without paying its mana cost.)",
+    "keywords": [
+        "CIPHER"
+    ],
+    "script": {
+        "spellEffect": {
+            "type": "Composite",
+            "effects": [
+                {
+                    "type": "Composite",
+                    "effects": [
+                        {
+                            "type": "Gated",
+                            "gate": {
+                                "type": "Gate.WhenCondition",
+                                "condition": {
+                                    "type": "EntityMatches",
+                                    "entity": {
+                                        "type": "ContextTarget",
+                                        "index": 0
+                                    },
+                                    "filter": "permanent"
+                                }
+                            },
+                            "then": {
+                                "type": "Gated",
+                                "gate": "Gate.MayDecide",
+                                "then": {
+                                    "type": "Modal",
+                                    "modes": [
+                                        {
+                                            "effect": {
+                                                "type": "TapUntap",
+                                                "target": {
+                                                    "type": "ContextTarget",
+                                                    "index": 0
+                                                }
+                                            },
+                                            "description": "Tap that permanent"
+                                        },
+                                        {
+                                            "effect": {
+                                                "type": "TapUntap",
+                                                "target": {
+                                                    "type": "ContextTarget",
+                                                    "index": 0
+                                                },
+                                                "tap": false
+                                            },
+                                            "description": "Untap that permanent"
+                                        }
+                                    ],
+                                    "countsAsModalSpell": false
+                                },
+                                "descriptionOverride": "You may tap or untap the first permanent"
+                            }
+                        },
+                        {
+                            "type": "Gated",
+                            "gate": {
+                                "type": "Gate.WhenCondition",
+                                "condition": {
+                                    "type": "EntityMatches",
+                                    "entity": {
+                                        "type": "ContextTarget",
+                                        "index": 1
+                                    },
+                                    "filter": "permanent"
+                                }
+                            },
+                            "then": {
+                                "type": "Gated",
+                                "gate": "Gate.MayDecide",
+                                "then": {
+                                    "type": "Modal",
+                                    "modes": [
+                                        {
+                                            "effect": {
+                                                "type": "TapUntap",
+                                                "target": {
+                                                    "type": "ContextTarget",
+                                                    "index": 1
+                                                }
+                                            },
+                                            "description": "Tap that permanent"
+                                        },
+                                        {
+                                            "effect": {
+                                                "type": "TapUntap",
+                                                "target": {
+                                                    "type": "ContextTarget",
+                                                    "index": 1
+                                                },
+                                                "tap": false
+                                            },
+                                            "description": "Untap that permanent"
+                                        }
+                                    ],
+                                    "countsAsModalSpell": false
+                                },
+                                "descriptionOverride": "You may tap or untap the second permanent"
+                            }
+                        }
+                    ]
+                },
+                "CipherEncode"
+            ]
+        },
+        "targetRequirements": [
+            {
+                "type": "TargetObject",
+                "count": 2,
+                "optional": true,
+                "filter": {
+                    "baseFilter": "permanent"
+                },
+                "id": "target permanents"
+            }
+        ]
+    },
+    "metadata": {
+        "collectorNumber": "12",
+        "artist": "Daarken",
+        "imageUri": "https://cards.scryfall.io/normal/front/2/1/216e8047-6f54-49ce-bf86-27dc8fc8c8f7.jpg?1783940042"
+    },
+    "colorIdentityOverride": [
+        "BLUE"
+    ]
+}
+
 // Kraul Warrior
 {
     "name": "Kraul Warrior",

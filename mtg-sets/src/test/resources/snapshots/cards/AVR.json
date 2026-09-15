@@ -2064,6 +2064,72 @@
     ]
 }
 
+// Ghostly Flicker
+{
+    "name": "Ghostly Flicker",
+    "manaCost": "{2}{U}",
+    "typeLine": "Instant",
+    "oracleText": "Exile two target artifacts, creatures, and/or lands you control, then return those cards to the battlefield under your control.",
+    "script": {
+        "spellEffect": {
+            "type": "Composite",
+            "effects": [
+                {
+                    "type": "MoveToZone",
+                    "target": {
+                        "type": "BoundVariable",
+                        "name": "artifact, creature, and/or land you control[0]"
+                    },
+                    "destination": "Exile"
+                },
+                {
+                    "type": "MoveToZone",
+                    "target": {
+                        "type": "BoundVariable",
+                        "name": "artifact, creature, and/or land you control[1]"
+                    },
+                    "destination": "Exile"
+                },
+                {
+                    "type": "MoveToZone",
+                    "target": {
+                        "type": "BoundVariable",
+                        "name": "artifact, creature, and/or land you control[0]"
+                    },
+                    "destination": "Battlefield"
+                },
+                {
+                    "type": "MoveToZone",
+                    "target": {
+                        "type": "BoundVariable",
+                        "name": "artifact, creature, and/or land you control[1]"
+                    },
+                    "destination": "Battlefield"
+                }
+            ]
+        },
+        "targetRequirements": [
+            {
+                "type": "TargetObject",
+                "count": 2,
+                "filter": {
+                    "baseFilter": "artifact|creature|land ctrl:you"
+                },
+                "id": "artifact, creature, and/or land you control"
+            }
+        ]
+    },
+    "metadata": {
+        "collectorNumber": "57",
+        "artist": "Raymond Swanland",
+        "flavorText": "Sometimes it's useful to take a break from existence.",
+        "imageUri": "https://cards.scryfall.io/normal/front/f/0/f0a44373-0c50-4e14-a7c6-0de66796b81e.jpg?1783940717"
+    },
+    "colorIdentityOverride": [
+        "BLUE"
+    ]
+}
+
 // Ghostly Touch
 {
     "name": "Ghostly Touch",

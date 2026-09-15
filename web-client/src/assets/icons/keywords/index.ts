@@ -172,6 +172,7 @@ export const counterManaClass: Record<string, string> = {
   PLAN: 'counter-lore',
   INVASION: 'counter-charge',
   UNLOCK: 'counter-charge',
+  OIL: 'counter-void',
   HONE: 'counter-arrow',
   STORAGE: 'counter-brick',
   HUNGER: 'counter-doom',

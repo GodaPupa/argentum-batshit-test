@@ -2651,6 +2651,7 @@ class CastFromZoneEnumerator : ActionEnumerator {
 
                 val kickLabel = when {
                     declaredSlot == ChoiceSlot.BARGAINED -> "Bargained"
+                    declaredSlot == ChoiceSlot.BUYBACK -> "Buyback"
                     // See CastSpellEnumerator — the amount is the choice.
                     declaredSlot == ChoiceSlot.EVIDENCE_COLLECTED ->
                         collectEvidenceAtom

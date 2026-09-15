@@ -1,3 +1,59 @@
+// Blur
+{
+    "name": "Blur",
+    "manaCost": "{2}{U}",
+    "typeLine": "Instant",
+    "oracleText": "Exile target creature you control, then return that card to the battlefield under its owner's control.\nDraw a card.",
+    "script": {
+        "spellEffect": {
+            "type": "Composite",
+            "effects": [
+                {
+                    "type": "MoveToZone",
+                    "target": {
+                        "type": "BoundVariable",
+                        "name": "target creature you control"
+                    },
+                    "destination": "Exile"
+                },
+                {
+                    "type": "MoveToZone",
+                    "target": {
+                        "type": "BoundVariable",
+                        "name": "target creature you control"
+                    },
+                    "destination": "Battlefield"
+                },
+                {
+                    "type": "DrawCards",
+                    "count": {
+                        "type": "Fixed",
+                        "amount": 1
+                    }
+                }
+            ]
+        },
+        "targetRequirements": [
+            {
+                "type": "TargetObject",
+                "filter": {
+                    "baseFilter": "creature ctrl:you"
+                },
+                "id": "target creature you control"
+            }
+        ]
+    },
+    "metadata": {
+        "collectorNumber": "58",
+        "artist": "Dave Greco",
+        "flavorText": "\"It's as much a trick of the mind as it is a trick of the eye.\"",
+        "imageUri": "https://cards.scryfall.io/normal/front/7/7/77a43413-3ab0-4ef6-83de-192a11d48f00.jpg?1783922795"
+    },
+    "colorIdentityOverride": [
+        "BLUE"
+    ]
+}
+
 // Bonecaller Cleric
 {
     "name": "Bonecaller Cleric",
@@ -622,6 +678,56 @@
     ]
 }
 
+// Myconid Spore Tender
+{
+    "name": "Myconid Spore Tender",
+    "manaCost": "{3}{G}",
+    "typeLine": "Creature — Fungus",
+    "oracleText": "Infesting Spores — When this creature enters, destroy up to one target artifact or enchantment.",
+    "creatureStats": {
+        "power": 4,
+        "toughness": 1
+    },
+    "script": {
+        "triggeredAbilities": [
+            {
+                "id": "ability_1",
+                "trigger": {
+                    "type": "ZoneChangeEvent",
+                    "to": "Battlefield"
+                },
+                "effect": {
+                    "type": "MoveToZone",
+                    "target": {
+                        "type": "BoundVariable",
+                        "name": "up to one target artifact or enchantment"
+                    },
+                    "destination": "Graveyard",
+                    "byDestruction": true
+                },
+                "targetRequirement": {
+                    "type": "TargetObject",
+                    "optional": true,
+                    "filter": {
+                        "baseFilter": "artifact|enchantment"
+                    },
+                    "id": "up to one target artifact or enchantment"
+                },
+                "descriptionOverride": "Infesting Spores — When this creature enters, destroy up to one target artifact or enchantment."
+            }
+        ]
+    },
+    "metadata": {
+        "collectorNumber": "243",
+        "artist": "Brian Valeza",
+        "flavorText": "Myconid colonies grow and expand at an aggressive rate, but they are friendly and peaceful unless provoked.",
+        "imageUri": "https://cards.scryfall.io/normal/front/7/0/70408d70-1e4b-41f0-80b1-0d37b3a3918c.jpg?1783922708"
+    },
+    "colorIdentityOverride": [
+        "GREEN"
+    ]
+}
+
 // Pseudodragon Familiar
 {
     "name": "Pseudodragon Familiar",
@@ -860,5 +966,55 @@
     },
     "colorIdentityOverride": [
         "WHITE"
+    ]
+}
+
+// Winter Eladrin
+{
+    "name": "Winter Eladrin",
+    "manaCost": "{2}{U}",
+    "typeLine": "Creature — Faerie Elf Wizard",
+    "oracleText": "Gust of Wind — When this creature enters, return up to one other target creature to its owner's hand.",
+    "creatureStats": {
+        "power": 2,
+        "toughness": 2
+    },
+    "script": {
+        "triggeredAbilities": [
+            {
+                "id": "ability_1",
+                "trigger": {
+                    "type": "ZoneChangeEvent",
+                    "to": "Battlefield"
+                },
+                "effect": {
+                    "type": "MoveToZone",
+                    "target": {
+                        "type": "BoundVariable",
+                        "name": "up to one other target creature"
+                    },
+                    "destination": "Hand"
+                },
+                "targetRequirement": {
+                    "type": "TargetObject",
+                    "optional": true,
+                    "filter": {
+                        "baseFilter": "creature",
+                        "excludeSelf": true
+                    },
+                    "id": "up to one other target creature"
+                },
+                "descriptionOverride": "Gust of Wind — When this creature enters, return up to one other target creature to its owner's hand."
+            }
+        ]
+    },
+    "metadata": {
+        "collectorNumber": "104",
+        "artist": "Alexandr Leskinen",
+        "flavorText": "\"If you want a warm welcome, you'll have to seek it elsewhere.\"",
+        "imageUri": "https://cards.scryfall.io/normal/front/e/9/e9afba96-2ec7-45f2-9ddd-31ec27a423ca.jpg?1783922773"
+    },
+    "colorIdentityOverride": [
+        "BLUE"
     ]
 }

@@ -927,11 +927,19 @@ class CardBuilder(private val name: String) {
 
         // Build the script — wrap spell effect in ConditionalEffect if condition is set
         val rawSpellEffect = spellBuilder?.effect
-        val spellEffect = if (spellBuilder?.condition != null && rawSpellEffect != null) {
+        val conditionedSpellEffect = if (spellBuilder?.condition != null && rawSpellEffect != null) {
             ConditionalEffect(spellBuilder!!.condition!!, rawSpellEffect)
         } else {
             rawSpellEffect
         }
+        val spellEffect = if (spellBuilder?.hasCipher == true && conditionedSpellEffect != null) {
+            CompositeEffect(
+                listOf(
+                    conditionedSpellEffect,
+                    com.wingedsheep.sdk.scripting.effects.CipherEncodeEffect,
+                )
+            )
+        } else conditionedSpellEffect
         spellBuilder?.validateResolutionDestination(name)
         val script = CardScript(
             spellEffect = spellEffect,
@@ -996,7 +1004,8 @@ class CardBuilder(private val name: String) {
         val derivedKeywords = finalKeywordAbilities.mapNotNull { it.keyword }.toSet()
         // Paradigm is a display keyword whose behavior is driven by the spell's `paradigm` flag.
         val paradigmKeyword = if (spellBuilder?.isParadigm == true) setOf(Keyword.PARADIGM) else emptySet()
-        val finalKeywords = keywordSet + derivedKeywords + paradigmKeyword
+        val cipherKeyword = if (spellBuilder?.hasCipher == true) setOf(Keyword.CIPHER) else emptySet()
+        val finalKeywords = keywordSet + derivedKeywords + paradigmKeyword + cipherKeyword
 
         val parsedColorIdentity: Set<Color>? = colorIdentity?.let { raw ->
             raw.mapNotNullTo(mutableSetOf()) { Color.fromSymbol(it.uppercaseChar()) }
@@ -1132,6 +1141,18 @@ class SpellBuilder {
     }
 
     internal val isParadigm: Boolean get() = paradigm
+
+    private var cipher: Boolean = false
+
+    /**
+     * Cipher (CR 702.99). Appends the optional encoding choice to this spell's resolution and
+     * exposes the keyword for display.
+     */
+    fun cipher() {
+        cipher = true
+    }
+
+    internal val hasCipher: Boolean get() = cipher
 
     private var returnTransformedFromGraveyard: ReturnTransformedFromGraveyard? = null
 
@@ -2155,11 +2176,19 @@ class CardFaceBuilder(private val name: String) {
         val parsedManaCost = if (manaCost.isNotEmpty()) ManaCost.parse(manaCost) else ManaCost.ZERO
         val parsedTypeLine = TypeLine.parse(typeLine)
         val rawSpellEffect = spellBuilder?.effect
-        val spellEffect = if (spellBuilder?.condition != null && rawSpellEffect != null) {
+        val conditionedSpellEffect = if (spellBuilder?.condition != null && rawSpellEffect != null) {
             ConditionalEffect(spellBuilder!!.condition!!, rawSpellEffect)
         } else {
             rawSpellEffect
         }
+        val spellEffect = if (spellBuilder?.hasCipher == true && conditionedSpellEffect != null) {
+            CompositeEffect(
+                listOf(
+                    conditionedSpellEffect,
+                    com.wingedsheep.sdk.scripting.effects.CipherEncodeEffect,
+                )
+            )
+        } else conditionedSpellEffect
         spellBuilder?.validateResolutionDestination(name)
         val script = CardScript(
             spellEffect = spellEffect,
@@ -2178,7 +2207,8 @@ class CardFaceBuilder(private val name: String) {
             manaCost = parsedManaCost,
             typeLine = parsedTypeLine,
             oracleText = oracleText,
-            keywords = keywordSet.toSet(),
+            keywords = keywordSet.toSet() +
+                if (spellBuilder?.hasCipher == true) setOf(Keyword.CIPHER) else emptySet(),
             script = script,
             imageUri = imageUri,
         )

@@ -110,6 +110,8 @@ class LibraryExecutors(
         SelectFromCollectionExecutor(cardRegistry = cardRegistry),
         ChoosePileExecutor(),
         SelectTargetPipelineExecutor(targetFinder = targetFinder ?: TargetFinder()),
+        VentureIntoDungeonExecutor(recursion),
+        CipherEncodeExecutor(),
         MoveCollectionExecutor(cardRegistry = cardRegistry, targetFinder = targetFinder),
         FilterCollectionExecutor(),
         ChooseOnePerCategoryExecutor(),

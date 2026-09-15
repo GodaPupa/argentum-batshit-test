@@ -147,6 +147,45 @@
     ]
 }
 
+// Secret Door
+{
+    "name": "Secret Door",
+    "manaCost": "{U}",
+    "typeLine": "Artifact Creature — Wall",
+    "oracleText": "Defender\n{4}{U}: Venture into the dungeon. Activate only as a sorcery. (Enter the first room or advance to the next room.)",
+    "creatureStats": {
+        "power": 0,
+        "toughness": 4
+    },
+    "keywords": [
+        "DEFENDER"
+    ],
+    "script": {
+        "activatedAbilities": [
+            {
+                "id": "ability_1",
+                "cost": {
+                    "type": "CostAtomWrapper",
+                    "atom": {
+                        "type": "AtomMana",
+                        "cost": "{4}{U}"
+                    }
+                },
+                "effect": "VentureIntoDungeon",
+                "timing": "SorcerySpeed"
+            }
+        ]
+    },
+    "metadata": {
+        "collectorNumber": "71",
+        "artist": "Francisco Miyara",
+        "imageUri": "https://cards.scryfall.io/normal/front/3/1/3191e400-aa4e-4955-aca0-ecbe63ea240f.jpg?1783926508"
+    },
+    "colorIdentityOverride": [
+        "BLUE"
+    ]
+}
+
 // Shambling Ghast
 {
     "name": "Shambling Ghast",

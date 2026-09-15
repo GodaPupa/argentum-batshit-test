@@ -761,6 +761,7 @@ enum class Keyword(val displayName: String) {
      * ([com.wingedsheep.sdk.scripting.Paradigm.recastAbility]).
      */
     PARADIGM("Paradigm"),
+    CIPHER("Cipher"),
 
     /**
      * Increment (Secrets of Strixhaven).

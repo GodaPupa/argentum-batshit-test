@@ -758,6 +758,7 @@ export const PASSIVE_COUNTER_TYPES: readonly CounterType[] = [
   CounterType.PLAN,
   CounterType.INVASION,
   CounterType.UNLOCK,
+  CounterType.OIL,
   CounterType.HONE,
   // Counter types with live cards that rendered no badge at all until now: storage (City of
   // Shadows), hunger (Fasting), doom, fire, conqueror, net, silver, fate (Oblivion Stone), aim,

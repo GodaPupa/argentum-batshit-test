@@ -2717,6 +2717,74 @@
     ]
 }
 
+// Whirlpool Rider
+{
+    "name": "Whirlpool Rider",
+    "manaCost": "{1}{U}",
+    "typeLine": "Creature — Merfolk",
+    "oracleText": "When this creature enters, shuffle the cards from your hand into your library, then draw that many cards.",
+    "creatureStats": {
+        "power": 1,
+        "toughness": 1
+    },
+    "script": {
+        "triggeredAbilities": [
+            {
+                "id": "ability_1",
+                "trigger": {
+                    "type": "ZoneChangeEvent",
+                    "to": "Battlefield"
+                },
+                "effect": {
+                    "type": "ForEach",
+                    "space": {
+                        "type": "IterationSpace.Players",
+                        "players": "You"
+                    },
+                    "body": {
+                        "type": "Composite",
+                        "effects": [
+                            {
+                                "type": "GatherCards",
+                                "source": {
+                                    "type": "FromZone",
+                                    "zone": "Hand"
+                                },
+                                "storeAs": "wheelHand"
+                            },
+                            {
+                                "type": "MoveCollection",
+                                "from": "wheelHand",
+                                "destination": {
+                                    "type": "ToZone",
+                                    "zone": "Library",
+                                    "placement": "Shuffled"
+                                }
+                            },
+                            {
+                                "type": "DrawCards",
+                                "count": {
+                                    "type": "VariableReference",
+                                    "variableName": "wheelHand_count"
+                                }
+                            }
+                        ]
+                    }
+                }
+            }
+        ]
+    },
+    "metadata": {
+        "collectorNumber": "35",
+        "artist": "Ray Lago",
+        "flavorText": "Where the wind meets the water, change is inevitable.",
+        "imageUri": "https://cards.scryfall.io/normal/front/0/d/0de47f44-8c5e-4114-9064-145d2d8813c6.jpg?1783945350"
+    },
+    "colorIdentityOverride": [
+        "BLUE"
+    ]
+}
+
 // Wild Research
 {
     "name": "Wild Research",

@@ -1415,6 +1415,22 @@ data class SelectTargetEffect(
 }
 
 /**
+ * Cipher's final resolution instruction (CR 702.99): the controller may exile the resolving
+ * spell card encoded on a creature they control. The engine presents a non-targeting 0..1
+ * battlefield-card choice, then records the chosen creature on the spell for StackResolver to
+ * consume when it performs the spell's normal post-resolution zone move.
+ *
+ * A copy of a card is not a spell card and therefore cannot be encoded; the executor silently
+ * skips the choice for stack copies.
+ */
+@SerialName("CipherEncode")
+@Serializable
+data object CipherEncodeEffect : Effect {
+    override val description: String =
+        "You may exile this spell card encoded on a creature you control"
+}
+
+/**
  * Grant "may play from exile" permission to all cards in a named collection.
  * The cards must already be in exile. The engine registers a MayPlayPermission
  * on the game state, allowing the controller to play them as if they were in
