@@ -61,7 +61,10 @@ predicts for 5 iterations) gives a clean pass:
 - Full `:ai:test` module suite (569 tests) run alongside this change: 0 failures, confirming no
   regression anywhere else in the AI test corpus.
 - CI: `lilysplash-preflight.yml` job `combo-execution`, gated on this file's path, runs `just test-class
-  LilysplashComboExecutionTest` on every push to `lilysplash/lab` that touches it.
+  LilysplashComboExecutionTest` on every push to `lilysplash/lab` that touches it. CI run `e6bfc8abbd`,
+  `Lilysplash Preflight #13`,
+  <https://github.com/GodaPupa/argentum-batshit-test/actions/runs/35001742507>, 5m25s, both jobs
+  (`final-optimized`, `combo-execution`) green.
 
 ## Verdict
 
