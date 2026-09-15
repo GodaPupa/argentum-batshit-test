@@ -1,0 +1,43 @@
+name: Pest Gate 6 Block A One-Shot Execution
+
+on:
+  push:
+    branches: [ "pest-control/gate6-block-a-execution" ]
+
+permissions:
+  contents: read
+
+jobs:
+  block-a:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    steps:
+      - name: Checkout exact Block A execution commit
+        uses: actions/checkout@v4
+        with:
+          ref: 13c4680ddc952694c5d4738940b4abbe797563ab
+      - name: Verify exact execution checkout
+        run: test "$(git rev-parse HEAD)" = "13c4680ddc952694c5d4738940b4abbe797563ab"
+      - name: Set up Java 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - name: Set up Gradle 9.6.1
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '9.6.1'
+      - name: Execute frozen Block A exactly once
+        env:
+          PEST_BLOCK_A_EXECUTE: "true"
+          PEST_BLOCK_A_EXECUTION_ACK: "I_UNDERSTAND_BLOCK_A_SEEDS_ARE_CONSUMED_ON_ATTEMPT"
+          PEST_BLOCK_A_EXECUTION_COMMIT: "13c4680ddc952694c5d4738940b4abbe797563ab"
+        run: ./gradlew :gym:test --tests com.wingedsheep.gym.PestControlMatchupBlockARunnerTest --stacktrace
+      - name: Preserve Block A artifacts
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: pest-control-matchup-block-a-13c4680ddc952694c5d4738940b4abbe797563ab
+          path: build/reports/pest-control-matchup-block-a/
+          if-no-files-found: warn
+          retention-days: 90
