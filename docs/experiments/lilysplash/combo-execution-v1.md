@@ -80,8 +80,9 @@ Two honest limits on how far this generalizes:
 
 - **This is not the Vedalken Entrancer line.** `challenger-wincon-v1.md`'s own named gap -- a board with
   only Vedalken Entrancer and an untapper, no Peregrine Drake/Archaeomancer/Ghostly Flicker loop -- is
-  still untested. The two win conditions are structurally different (one needs the full recursion chain,
-  one doesn't), and this result says nothing about whether the AI finds the simpler line as readily.
+  a separate test, `LilysplashVedalkenComboExecutionTest`
+  (`docs/experiments/lilysplash/combo-execution-v2-vedalken.md`). It found the AI does *not* execute
+  that line correctly, for reasons unrelated to whatever made this one succeed -- see that doc.
 - **This is a constructed-board test, not a from-hand test.** The combo pieces started already resolved
   on the battlefield; this says the AI *executes* the combo once assembled, not that it reliably
   *assembles* it from a fresh opening hand over a full game against real opposition. That remains the
