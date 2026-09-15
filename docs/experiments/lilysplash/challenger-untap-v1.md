@@ -50,11 +50,13 @@ rule Stage 3 settled on. It reports the same land/U/G/fixer-style columns as pri
 
 ## Result
 
-CI run (commit pending at push time; see the repository's `Lilysplash Preflight` workflow for this
-commit's `untap-challenger` job) -- the table below is the deterministic output of a local run of the
-exact code in this commit (fixed seeds, deterministic shuffle, no wall-clock or network input to the
-benchmark); this document is updated with the CI run URL once it lands, the same practice as the two
-prior packages.
+CI run `eb3b04651a`, `Lilysplash Preflight #8`,
+<https://github.com/GodaPupa/argentum-batshit-test/actions/runs/34926355810>, 5m13s, all four jobs
+(`land-challenger`, `selection-challenger`, `aura-challenger`, `untap-challenger`) green -- the table
+below is the deterministic output of a local run of the exact code in this commit (fixed seeds,
+deterministic shuffle, no wall-clock or network input to the benchmark), disclosed as such since GitHub
+now requires sign-in to view raw Action logs even on public repos, the same practice as the three prior
+packages.
 
 Commander-aware policy, same 12 seeds, both seats, 24 samples per deck.
 
