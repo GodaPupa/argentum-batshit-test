@@ -15,9 +15,9 @@ jobs:
       - name: Checkout exact pass-terminal candidate
         uses: actions/checkout@v6
         with:
-          ref: c52d5de4018e4dc6909d1197d941413df2d5ec51
+          ref: 44e28ab405afa7ca1f36d761f76ac9ec1506ffdf
       - name: Verify exact checkout
-        run: test "$(git rev-parse HEAD)" = "c52d5de4018e4dc6909d1197d941413df2d5ec51"
+        run: test "$(git rev-parse HEAD)" = "44e28ab405afa7ca1f36d761f76ac9ec1506ffdf"
       - name: Set up Java 21
         uses: actions/setup-java@v5
         with:
