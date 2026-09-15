@@ -2,6 +2,12 @@
 
 This directory is reserved exclusively for Project Pest Control experiment protocols.
 
+Pest Control versus SoterX Mono Red Madness matchup Block A executed once and is formally rejected
+as `REJECTED_OUTCOME_RELEVANT_TARGET_SELECTION_DEFECTS`. All 50 Block A seeds are permanently
+retired. The descriptive 35–15 result is inadmissible for acceptance, pooling, or tuning. Preserved
+provenance and the controlling disposition are recorded in
+`matchup-block-a-rejection-audit.md`; no replacement vector or gameplay is authorized.
+
 Goldfish Sample #1 was authorized as a 30-game development/engine baseline candidate using the
 permanent Pest Control v1.0 control and the validated Phase 3 solitaire policy. Its seed vector was
 frozen in `goldfish-sample-1-seed-freeze.md` before execution. The sample was rejected by audit and

@@ -38,6 +38,7 @@ import com.wingedsheep.engine.core.TypecycleCard
 import com.wingedsheep.engine.legalactions.LegalAction
 import com.wingedsheep.engine.legalactions.MeaningfulActionFilter
 import com.wingedsheep.engine.state.GameState
+import com.wingedsheep.engine.state.components.battlefield.DamageComponent
 import com.wingedsheep.engine.state.components.battlefield.TappedComponent
 import com.wingedsheep.engine.state.components.combat.AttackingComponent
 import com.wingedsheep.engine.state.components.combat.AttackersDeclaredThisCombatComponent
@@ -314,9 +315,16 @@ class Strategist(
         // already-resolved candidate leaf. This is deliberately not a general search horizon: it
         // runs only in our main phase, considers no land play or draw assumption, and accepts a
         // sequence only when canonical resolution of the second action actually ends the game.
-        val immediateWinIndex = (firstCandidate until leaves.size)
-            .filter { i -> leafStates[i].isWinningTerminalFor(playerId) }
-            .maxByOrNull { i -> leafScores[i] }
+        // A terminal leaf is action-created lethal only when the pass baseline does not already
+        // reach the same win. Otherwise any legal action taken while a state-based or pending
+        // effect is already ending the game would receive lethal priority, bypassing resource and
+        // friendly-removal safeguards without contributing to the outcome.
+        val passAlreadyWins = pass != null && leafStates.first().isWinningTerminalFor(playerId)
+        val immediateWinIndex = if (!passAlreadyWins) {
+            (firstCandidate until leaves.size)
+                .filter { i -> leafStates[i].isWinningTerminalFor(playerId) }
+                .maxByOrNull { i -> leafScores[i] }
+        } else null
         val twoActionWinIndex = if (immediateWinIndex == null) {
             bestTwoActionSameTurnWinIndex(
                 leaves = leaves,
@@ -1734,6 +1742,14 @@ class Strategist(
         if (target is ChosenTarget.Permanent) {
             val permanent = state.getEntity(target.entityId)
             val name = permanent?.get<CardComponent>()?.name
+            val controller = state.projectedState.getController(target.entityId)
+            val toughness = state.projectedState.getToughness(target.entityId)
+            val markedDamage = permanent?.get<DamageComponent>()?.amount ?: 0
+            val finishesOpposingCreature = controller?.let { state.isOpponentTo(it, playerId) } == true &&
+                toughness != null && damage + markedDamage >= toughness
+            if (finishesOpposingCreature) {
+                return false
+            }
             val isImportantEngine = permanent != null && name != null &&
                 intents.forPermanent(permanent, name).any { intent ->
                     intent.repeatable && (intent.opponentDamage ?: 0) >= IMPORTANT_ENGINE_DAMAGE

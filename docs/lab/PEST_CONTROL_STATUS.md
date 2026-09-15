@@ -1,6 +1,6 @@
 # Project Pest Control — Status
 
-- Status: Matchup Block A executed once; artifacts preserved; pending Gate 7 review
+- Status: Matchup Block A formally rejected; all 50 seeds permanently retired; seedless policy correction in progress
 - Laboratory: Project Pest Control
 - Branch: `pest-control/lab`
 - Validated base: `47882cd645caf126afee6cf13a65909806fa40ab`
@@ -109,13 +109,19 @@ vector exists.
 
 Gate 6 run #34930029981 completed on its sole attempt with 50 attempted seeds, 50 ordered records,
 50 legitimate `LIFE_ZERO` terminals, zero protocol defects, zero rejected actions, and zero fallbacks.
-The raw result is Pest Control 35 wins and Mono Red Madness 15 wins. This is not accepted matchup
-evidence yet: the block remains `PENDING_GATE_7_REVIEW`. The exact raw and compressed records remain
-in Actions artifact `10391659486`; their audit derivatives and identities are preserved under
-`docs/experiments/pest-control/matchup-block-a-execution/`.
+The raw result was Pest Control 35 wins and Mono Red Madness 15 wins. Gate 7 formally rejected the
+entire block as `REJECTED_OUTCOME_RELEVANT_TARGET_SELECTION_DEFECTS` after the trace audit found
+repeated self-Cast Down and destructive Lava Dart target/resource decisions. The result and all
+derived performance metrics are inadmissible except as descriptive output from a rejected diagnostic
+block. All 50 seeds are permanently retired and may not be replayed, reused, rehabilitated, paired,
+reassigned, pooled, or used for tuning. The exact raw and compressed records remain in Actions
+artifact `10391659486`; the rejection is recorded in
+`docs/experiments/pest-control/matchup-block-a-rejection-audit.md`.
 
-All 13 preexisting Pest gameplay runners and the dedicated Block A runner are disabled. Postboard
-gameplay, deck changes, the challenger, result acceptance, pooling, and Block B remain unauthorized.
+All 13 preexisting Pest gameplay runners and the dedicated Block A runner are disabled. Seedless
+diagnosis and correction of the shared destructive-target/resource policy is authorized. Replacement
+seeds, replacement games, postboard gameplay, deck changes, the challenger, result acceptance,
+pooling, tuning, and Block B remain unauthorized.
 
 ## Goldfish Sample #2 independent replication authorization
 

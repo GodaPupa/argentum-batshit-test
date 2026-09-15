@@ -17,6 +17,7 @@ import com.wingedsheep.engine.core.SelectCardsDecision
 import com.wingedsheep.engine.core.SelectManaSourcesDecision
 import com.wingedsheep.engine.core.YesNoResponse
 import com.wingedsheep.engine.state.components.battlefield.TappedComponent
+import com.wingedsheep.engine.state.components.battlefield.DamageComponent
 import com.wingedsheep.engine.state.components.combat.AttackingComponent
 import com.wingedsheep.engine.state.components.combat.AttackersDeclaredThisCombatComponent
 import com.wingedsheep.engine.state.components.combat.BlockersDeclaredThisCombatComponent
@@ -802,6 +803,57 @@ class PestControlMonoRedMadnessDecisionTest : ScenarioTestBase() {
             val lethalAction = ai(lethal).chooseAction(lethal.state).shouldBeInstanceOf<CastSpell>()
             cardName(lethal, lethalAction.cardId) shouldBe "Lava Dart"
             chosenTargetId(lethalAction) shouldBe lethal.player2Id
+        }
+
+        test("an already-winning pass baseline does not justify sacrificing a Mountain") {
+            val game = seeded()
+                .withLifeTotal(2, 0)
+                .withLandsOnBattlefield(1, "Mountain", 1)
+                .withCardInGraveyard(1, "Lava Dart")
+                .withCardOnBattlefield(1, "Kessig Flamebreather")
+                .build()
+
+            ai(game).chooseAction(game.state).shouldBeInstanceOf<PassPriority>()
+        }
+
+        test("Lava Dart does not target its own valuable creature without a superior payoff") {
+            val game = seeded()
+                .withLifeTotal(2, 20)
+                .withLandsOnBattlefield(1, "Mountain", 1)
+                .withCardInGraveyard(1, "Lava Dart")
+                .withCardOnBattlefield(1, "Kessig Flamebreather")
+                .build()
+
+            val action = ai(game).chooseAction(game.state)
+            (action is CastSpell && cardName(game, action.cardId) == "Lava Dart").shouldBeFalse()
+        }
+
+        test("Lava Dart does not spend a Mountain for one damage on an undamaged five-five") {
+            val game = seeded()
+                .withLifeTotal(2, 20)
+                .withLandsOnBattlefield(1, "Mountain", 1)
+                .withCardInGraveyard(1, "Lava Dart")
+                .withCardOnBattlefield(2, "Colossapede")
+                .build()
+
+            val action = ai(game).chooseAction(game.state)
+            (action is CastSpell && cardName(game, action.cardId) == "Lava Dart").shouldBeFalse()
+        }
+
+        test("Lava Dart spends its Mountain when one damage finishes a damaged creature") {
+            val game = seeded()
+                .withLifeTotal(2, 20)
+                .withLandsOnBattlefield(1, "Mountain", 1)
+                .withCardInGraveyard(1, "Lava Dart")
+                .withCardOnBattlefield(2, "Colossapede")
+                .build()
+            val target = game.findPermanent("Colossapede")!!
+            game.state = game.state.updateEntity(target) { it.with(DamageComponent(4)) }
+
+            val action = ai(game).chooseAction(game.state).shouldBeInstanceOf<CastSpell>()
+            cardName(game, action.cardId) shouldBe "Lava Dart"
+            chosenTargetId(action) shouldBe target
+            action.additionalCostPayment?.sacrificedPermanents?.size shouldBe 1
         }
 
         test("flashes back Lava Dart when removing an attacker is required for survival") {

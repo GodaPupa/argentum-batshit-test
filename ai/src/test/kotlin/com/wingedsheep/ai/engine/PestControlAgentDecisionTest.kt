@@ -1089,6 +1089,17 @@ class PestControlAgentDecisionTest : ScenarioTestBase() {
             lethal!!.policyDisposition shouldContain "deterministic lethal"
         }
 
+        test("an already-winning pass baseline does not turn friendly removal into lethal") {
+            val game = seeded()
+                .withLifeTotal(2, 0)
+                .withLandsOnBattlefield(1, "Swamp", 2)
+                .withCardInHand(1, "Cast Down")
+                .withCardOnBattlefield(1, "Fierce Witchstalker")
+                .build()
+
+            ai(game).chooseAction(game.state).shouldBeInstanceOf<PassPriority>()
+        }
+
         test("friendly removal records additional resource costs that erase death value") {
             val game = seeded()
                 .withTurnNumber(15)
