@@ -1,6 +1,6 @@
 # Project Pest Control — Status
 
-- Status: Matchup Gate 3 deterministic coverage complete; final exact-head CI and Argentum Validation pending
+- Status: Matchup Gate 4 protocol/telemetry candidate under deterministic validation; Gate 5 blocked
 - Laboratory: Project Pest Control
 - Branch: `pest-control/lab`
 - Validated base: `47882cd645caf126afee6cf13a65909806fa40ab`
@@ -28,7 +28,7 @@
 - Control version: Pest Control v1.0 (permanent, immutable)
 - Candidate status: proposed Tier-1 architecture only; not approved, constructed, or run
 
-## Matchup validation — Gates 1–3
+## Matchup validation — Gates 1–4
 
 The first Pest-specific opponent identity is
 `PEST_CONTROL_V10_VS_MONO_RED_MADNESS_SOTERX_2026_09_11_PREBOARD_V1`: SoterX's
@@ -63,8 +63,8 @@ Gate 2 is accepted at `6bc23a88286bfcf9e0eb279769a12b279c3060a3` (tree
 `b3803658f46d59c2d2d8e16bf6bddad9f5369e09`): CI #334 and Argentum Validation #160
 passed on that identical head.
 
-Gate 3's seedless deterministic coverage is complete at the local validation-candidate stage. Its
-authoritative provisional baseline is `91a947ac7c7fdb8f30452f9706a8850531833ed4` (tree
+Gate 3's seedless deterministic coverage is complete. Its authoritative provisional implementation
+checkpoint was `91a947ac7c7fdb8f30452f9706a8850531833ed4` (tree
 `53d2e30cb44ac8f95e92bc11b0c1b3461a28ca8a`), green in CI #383. The final additions cover
 historical/defaulted modal-action serialization, explicit false/true round trips, outlet-specific
 discard restraint, productive Lava Dart survival use, exact Sneaky Snacker survival removal, and
@@ -72,10 +72,22 @@ production-action invariance under controlled opponent hidden-hand and library-o
 The complete evidence mapping and interpretation boundaries are in
 `docs/experiments/pest-control/matchup-gate-3-policy-validation.md`.
 
-Gate 3 is not accepted yet. Fresh full CI and Argentum Validation must both pass on the identical
-final published Gate 3 head. Gate 4 remains unauthorized and blocked until then. All 13 Pest gameplay
-runners remain disabled. Gates 2–3 generated zero seeds and executed zero games. No matchup driver,
-telemetry contract, seed vector, sideboard behavior, deck change, or challenger was created.
+Gate 3 is accepted at `b6fc0fb6fc31efa2148e3e3174782d267656e44c`. CI #384 covered the
+complete build/test matrix, and the isolated validation-equivalence assay completed green against
+that exact source. The accepted coverage and bounded strategic limitations remain recorded in the
+Gate 3 matrix.
+
+Gate 4 constructs the disabled preboard protocol and frozen telemetry/artifact contract from that
+exact Gate 3 head. The driver uses exact-one authoritative actions, explicit priority and decision
+windows, production London mulligans, separated player-visible and omniscient audit states, strict
+protocol-defect rejection, deterministic JSON/report/manifest/gzip artifacts, and raw-event-derived
+metric definitions. Its construction contract is recorded in
+`docs/experiments/pest-control/matchup-gate-4-protocol-telemetry.md`.
+
+Gate 4 remains a candidate until full CI and Argentum Validation pass on the identical published
+head. All 13 Pest gameplay runners remain disabled. Gates 2–4 generated zero experimental seeds and
+executed zero sampled or matchup games. Gate 5 seed generation, sideboarding, deck changes, and the
+challenger remain unauthorized.
 
 ## Goldfish Sample #2 independent replication authorization
 
