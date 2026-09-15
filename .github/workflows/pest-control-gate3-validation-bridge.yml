@@ -1,0 +1,48 @@
+name: Pest Control Gate 3 Validation Bridge
+
+on:
+  push:
+    branches: [ "pest-control/gate3-validation-bridge" ]
+
+permissions:
+  contents: read
+
+jobs:
+  oracle-assay:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout exact Gate 3 candidate
+        uses: actions/checkout@v4
+        with:
+          ref: b6fc0fb6fc31efa2148e3e3174782d267656e44c
+          persist-credentials: false
+
+      - name: Verify exact Gate 3 candidate
+        run: test "$(git rev-parse HEAD)" = "b6fc0fb6fc31efa2148e3e3174782d267656e44c"
+
+      - name: Set up Java 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '9.6.1'
+
+      - name: Make Gradle wrapper executable
+        run: chmod +x gradlew
+
+      - name: Show environment
+        run: |
+          java -version
+          gradle --version
+
+      - name: Compile missing Argentum Validation project
+        run: ./gradlew :oracle-assay:classes --stacktrace
+
+      - name: Run missing Argentum Validation tests
+        run: ./gradlew :oracle-assay:test --stacktrace
