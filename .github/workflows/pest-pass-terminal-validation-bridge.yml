@@ -1,0 +1,33 @@
+name: Pest Pass-Terminal Validation Bridge
+
+on:
+  push:
+    branches: [ "pest-control/pass-terminal-validation-bridge" ]
+
+permissions:
+  contents: read
+
+jobs:
+  exact-source-validation:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout exact pass-terminal candidate
+        uses: actions/checkout@v6
+        with:
+          ref: 9af6106915e4b41ab1d09d451633b7e09ab64bb4
+      - name: Verify exact checkout
+        run: test "$(git rev-parse HEAD)" = "9af6106915e4b41ab1d09d451633b7e09ab64bb4"
+      - name: Set up Java 21
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '21'
+      - name: Set up Just
+        uses: extractions/setup-just@v3
+        with:
+          just-version: '1.42.4'
+      - name: Set up Gradle cache
+        uses: gradle/actions/setup-gradle@v6
+      - name: Validate exact candidate through mandated runner
+        run: just test
