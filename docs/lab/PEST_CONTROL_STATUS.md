@@ -1,6 +1,6 @@
 # Project Pest Control — Status
 
-- Status: Matchup Gate 4 sideboard/75 provenance correction under deterministic validation; Gate 5 authorized but blocked pending exact-head validation
+- Status: Matchup Gate 4 accepted; Matchup Block A's 50-seed vector frozen and unexecuted at Gate 5
 - Laboratory: Project Pest Control
 - Branch: `pest-control/lab`
 - Validated base: `47882cd645caf126afee6cf13a65909806fa40ab`
@@ -91,11 +91,23 @@ canonical `Name,count` hashing rules used for the opponent, its sideboard SHA-25
 the preboard protocol: the driver continues to instantiate exactly 60 Pest maindeck cards and zero
 sideboard cards.
 
-Gate 4 remains suspended solely until the sideboard/75 provenance correction passes full CI and
-Argentum Validation on the identical published head. All 13 Pest gameplay runners remain disabled.
-Gates 2–4 generated zero experimental seeds and executed zero sampled or matchup games. Gate 5 seed
-generation resumes automatically only after that corrected Gate 4 head is accepted; gameplay,
-sideboarding, deck changes, and the challenger remain unauthorized.
+Gate 4 is accepted at `d81ec35f0be74422315f9bb5bf8d69c395b2d872` (tree
+`6782961fae76091d6bb3edfaf0c0db7bf8e96f43`). CI #390 and the isolated Argentum Validation bridge
+both completed green against that exact source. The bridge remained separate from
+`pest-control/lab` and did not alter PR #12.
+
+Gate 5 then generated exactly one 50-seed Block A vector in one operating-system cryptographic
+operation. The complete 363-value Pest exclusion registry SHA-256 is
+`62cf99b9b4b003752c2552f2a5965e96cc9026ea0d025cf8ffcba4bbab721842`; the ordered-vector SHA-256 is
+`48459229c8e261022c37fa52915c382a7ab9b95405ce2124254ff82b57ecf135`; the canonical seed/assignment
+CSV SHA-256 is `b23d02ca18d604572f554cdc0aa6c99ce85a32a5e98515ee982cc266074911b9`; and the manifest SHA-256 is
+`4f3a82da8343a8176c9e98ffb8de2531a254e6f19072837ea3d997507e473e16`. The vector has 50 unique,
+nonzero signed 64-bit seeds with zero registry overlap, balanced 25/25 for Pest play/draw and seat,
+and joint cells of 13/12/12/13. It is frozen, unexecuted, and non-replayable after its future single
+authorized execution. No Block B vector exists.
+
+All 13 Pest gameplay runners remain disabled. Gates 2–5 executed zero sampled or matchup games.
+Block A gameplay, sideboarding, deck changes, and the challenger remain unauthorized.
 
 ## Goldfish Sample #2 independent replication authorization
 
