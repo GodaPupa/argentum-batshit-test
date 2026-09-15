@@ -85,10 +85,14 @@ class LilysplashOpeningHandBenchmark : FunSpec({
     val blueSources = setOf(
         "Island", "Command Tower", "Halimar Depths", "Lonely Sandbar", "Saprazzan Skerry",
         "Simic Growth Chamber", "The Surgical Bay",
+        // Stage 4 land-base challenger v1 additions (all true UG duals):
+        "Yavimaya Coast", "Simic Guildgate", "Thornwood Falls",
     )
     val greenSources = setOf(
         "Forest", "Command Tower", "Hickory Woodlot", "Simic Growth Chamber", "The Hunter Maze",
         "Tranquil Thicket",
+        // Stage 4 land-base challenger v1 additions (all true UG duals):
+        "Yavimaya Coast", "Simic Guildgate", "Thornwood Falls",
     )
     val fixing = setOf(
         "Ash Barrens", "Escape Tunnel", "Evolving Wilds", "Terramorphic Expanse", "Lórien Revealed",
