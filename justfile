@@ -149,6 +149,13 @@ lilysplash-stack-challenger:
     scripts/gradle-locked :ai:test --tests "*.LilysplashOpeningHandBenchmark" \
         -Dbenchmark=true -DlilysplashStackChallenger=true
 
+# Stage 4 item 5: compare the control deck against the frozen win-condition-density challenger
+# (docs/experiments/lilysplash/challenger-wincon-v1.txt) under the commander-aware keep rule, same seeds.
+[group: 'ai']
+lilysplash-wincon-challenger:
+    scripts/gradle-locked :ai:test --tests "*.LilysplashOpeningHandBenchmark" \
+        -Dbenchmark=true -DlilysplashWinconChallenger=true
+
 # ECL apprentice promotion ladder. Artifacts are installed outside the repository and selected with
 # -Dargentum.ai.apprentice.dir; missing or invalid files safely use the production evaluator.
 [group: 'ai']

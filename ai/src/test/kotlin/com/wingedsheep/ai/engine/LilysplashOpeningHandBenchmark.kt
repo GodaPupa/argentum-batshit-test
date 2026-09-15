@@ -145,6 +145,17 @@ class LilysplashOpeningHandBenchmark : FunSpec({
         "Miscalculation",
     )
 
+    // The submitted list's only card that converts the mana engine into an actual win is Sage's Row
+    // Denizen (mills 2 whenever another blue creature you control enters) -- the target population for
+    // Stage 4 item 5 ("cleaner win-condition density"). Muddle the Mixture and Counterspell etc. are
+    // deliberately excluded: they're tracked by the selection and stack packages respectively, and this
+    // set is only the cards that themselves end the game once the mana/untap pieces are online.
+    val winConditionPieces = setOf(
+        "Sage's Row Denizen",
+        // Stage 4 wincon challenger v1 addition:
+        "Vedalken Entrancer",
+    )
+
     fun hasCommanderColors(cards: Map<EntityId, CardSummary>): Boolean {
         val names = cards.values.map { it.name }
         val lands = cards.values.count { it.typeLine?.contains("Land", ignoreCase = true) == true }
@@ -980,6 +991,156 @@ class LilysplashOpeningHandBenchmark : FunSpec({
                     "noDirectU=${deckRows.count { it.directBlue == 0 }} noDirectG=${deckRows.count { it.directGreen == 0 }} " +
                     "avgProtection=${String.format(Locale.ROOT, "%.3f", deckRows.map { it.protection }.average())} " +
                     "zeroProtection=${deckRows.count { it.protection == 0 }}",
+            )
+        }
+        check(rows.size == seeds.size * 2 * 2)
+    }
+
+    data class WinconDeckHand(
+        val deck: String,
+        val seed: Long,
+        val seat: Int,
+        val mulligans: Int,
+        val cards: List<String>,
+        val lands: Int,
+        val directBlue: Int,
+        val directGreen: Int,
+        val fixers: Int,
+        val winConditions: Int,
+    )
+
+    // Stage 4 item 5 (cleaner win-condition density): the submitted control deck against a frozen
+    // challenger that removes Displace -- a {2}{U} instant ("exile up to two target creatures you
+    // control, then return those cards"), a near-exact functional duplicate of Ghostly Flicker for the
+    // deck's documented combo line (Stage 2: "Ghostly Flicker + Peregrine Drake + Archaeomancer/Mnemonic
+    // Wall recurs correctly") since both let you double-blink Peregrine Drake and Archaeomancer/Mnemonic
+    // Wall together; Ghostly Flicker stays untouched, so that proven line is unaffected -- and adds
+    // Vedalken Entrancer, a real, common, already-implemented {3}{U} 1/4 creature ("{U}, {T}: Target
+    // player mills two cards"). The submitted list has exactly one card that converts the mana/untap
+    // engine into an actual win, Sage's Row Denizen, which requires the full Peregrine
+    // Drake/Archaeomancer/Ghostly Flicker recursion loop to be online before it mills anything.
+    // Vedalken Entrancer is a second, structurally simpler win condition: once infinite mana and any one
+    // of the untap pieces already in the submitted 99 (Freed from the Real, Hidden Strings) are online,
+    // repeatedly untapping this one creature mills the opponent directly, with no ETB-recursion loop
+    // required at all. No land, selection spell, Aura, untap, or stack-protection card differs between
+    // the two decks, per the plan's one-variable-at-a-time rule.
+    test("Lilysplash wincon challenger v1 preflight").config(
+        enabled = System.getProperty("lilysplashWinconChallenger") == "true",
+    ) {
+        val control = submittedDeck()
+        val challenger = submittedDeck("docs/experiments/lilysplash/challenger-wincon-v1.txt")
+        checkDeckGuardrails(control, "control")
+        checkDeckGuardrails(challenger, "challenger-wincon-v1")
+
+        val registry = CardRegistry().apply {
+            register(MtgSetCatalog.all.flatMap { it.cards + it.basicLands })
+        }
+        val processor = ActionProcessor(registry)
+        val initializer = GameInitializer(registry)
+        val rows = mutableListOf<WinconDeckHand>()
+
+        for ((deckLabel, deck) in listOf("control" to control, "challenger-wincon-v1" to challenger)) {
+            val builtDeck = Deck(cards = deck.library, commander = deck.commander)
+            for (seed in seeds) {
+                val init = initializer.initializeGame(
+                    GameConfig(
+                        players = listOf(
+                            PlayerConfig("Seat0", builtDeck, commanderCardName = deck.commander),
+                            PlayerConfig("Seat1", builtDeck, commanderCardName = deck.commander),
+                        ),
+                        format = Format.Commander(alwaysDivertToCommand = true),
+                        skipMulligans = false,
+                        startingPlayerIndex = 0,
+                        seed = seed,
+                    ),
+                )
+                var state = init.state
+                val controllers = init.playerIds.map { playerId ->
+                    EngineAiPlayerController(registry, playerId, gameStateProvider = { state })
+                }
+                val mulligans = IntArray(init.playerIds.size)
+
+                for ((seat, playerId) in init.playerIds.withIndex()) {
+                    while (true) {
+                        val cards = summaries(state, playerId)
+                        val mulliganState = state.getEntity(playerId)!!.get<MulliganStateComponent>()!!
+                        val genericKeep = controllers[seat].decideMulligan(
+                            MulliganInfo(
+                                hand = state.getHand(playerId),
+                                mulliganCount = mulliganState.mulligansTaken,
+                                cardsToPutOnBottom = mulliganState.cardsToBottom,
+                                cards = cards,
+                                isOnThePlay = seat == 0,
+                            ),
+                        )
+                        val keep = genericKeep && (
+                            mulliganState.mulligansTaken >= 2 || hasCommanderColors(cards)
+                        )
+                        if (keep) {
+                            state = process(processor, state, KeepHand(playerId))
+                            break
+                        }
+                        state = process(processor, state, TakeMulligan(playerId))
+                        mulligans[seat]++
+                    }
+                }
+
+                for ((seat, playerId) in init.playerIds.withIndex()) {
+                    val mulliganState = state.getEntity(playerId)!!.get<MulliganStateComponent>()!!
+                    if (mulliganState.cardsToBottom > 0) {
+                        val cards = summaries(state, playerId)
+                        val bottom = controllers[seat].chooseBottomCards(
+                            BottomCardsInfo(
+                                hand = state.getHand(playerId),
+                                cardsToPutOnBottom = mulliganState.cardsToBottom,
+                                cards = cards,
+                            ),
+                        )
+                        state = process(processor, state, BottomCards(playerId, bottom))
+                    }
+                }
+
+                for ((seat, playerId) in init.playerIds.withIndex()) {
+                    val hand = state.getHand(playerId).map { state.getEntity(it)!!.get<CardComponent>()!!.name }
+                    val landCount = state.getHand(playerId).count {
+                        state.getEntity(it)!!.get<CardComponent>()!!.typeLine.isLand
+                    }
+                    rows += WinconDeckHand(
+                        deck = deckLabel,
+                        seed = seed,
+                        seat = seat,
+                        mulligans = mulligans[seat],
+                        cards = hand,
+                        lands = landCount,
+                        directBlue = hand.count { it in blueSources },
+                        directGreen = hand.count { it in greenSources },
+                        fixers = hand.count { it in fixing },
+                        winConditions = hand.count { it in winConditionPieces },
+                    )
+                }
+            }
+        }
+
+        println("=== LILYSPLASH WINCON CHALLENGER V1 PREFLIGHT (commander-aware policy) ===")
+        println("control=f315b0907f3f9ae9d61ae2d45de0b778b45a9d9ff86e6ac5c343e4385d5de525")
+        println("challenger-wincon-v1=b53be3c86fbd1c2a793790fd7d408dd73c09584a860982df277fac17d79df836")
+        println("seeds=${seeds.joinToString(",")}")
+        rows.forEach { row ->
+            println(
+                "deck=${row.deck} seed=${row.seed} seat=${row.seat} mulligans=${row.mulligans} kept=${row.cards.size} " +
+                    "lands=${row.lands} U=${row.directBlue} G=${row.directGreen} fixers=${row.fixers} " +
+                    "winConditions=${row.winConditions} hand=${row.cards.joinToString(" | ")}",
+            )
+        }
+        rows.groupBy { it.deck }.forEach { (deckLabel, deckRows) ->
+            println(
+                "summary deck=$deckLabel samples=${deckRows.size} " +
+                    "avgMulligans=${String.format(Locale.ROOT, "%.3f", deckRows.map { it.mulligans }.average())} " +
+                    "keep7=${deckRows.count { it.mulligans == 0 }} keep6=${deckRows.count { it.mulligans == 1 }} " +
+                    "keep5=${deckRows.count { it.mulligans == 2 }} lowLand=${deckRows.count { it.lands <= 1 }} " +
+                    "noDirectU=${deckRows.count { it.directBlue == 0 }} noDirectG=${deckRows.count { it.directGreen == 0 }} " +
+                    "avgWinConditions=${String.format(Locale.ROOT, "%.3f", deckRows.map { it.winConditions }.average())} " +
+                    "zeroWinConditions=${deckRows.count { it.winConditions == 0 }}",
             )
         }
         check(rows.size == seeds.size * 2 * 2)
