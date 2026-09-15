@@ -1145,4 +1145,158 @@ class LilysplashOpeningHandBenchmark : FunSpec({
         }
         check(rows.size == seeds.size * 2 * 2)
     }
+
+    data class AssembledDeckHand(
+        val deck: String,
+        val seed: Long,
+        val seat: Int,
+        val mulligans: Int,
+        val cards: List<String>,
+        val lands: Int,
+        val directBlue: Int,
+        val directGreen: Int,
+        val fixers: Int,
+        val untappers: Int,
+        val protection: Int,
+        val winConditions: Int,
+    )
+
+    // Stage 4 closing instruction: "The final optimized list is assembled from accepted packages and
+    // then receives its own fresh, frozen validation sample." final-optimized-v0.1.txt applies all six
+    // accepted Stage 4 swaps together (land, selection, aura, untap, stack, wincon); every removal and
+    // addition across those six packages was verified programmatically to be distinct (no package
+    // touches a card another package touches), so the assembly is a clean union rather than a
+    // conflict-resolution exercise. This test deliberately does NOT reuse the 2026091401-12 seed block
+    // already spent proving the six individual packages -- an earlier same-session local dry run on
+    // those seeds happened to show win-condition density unchanged and mulligan rate worse for the
+    // assembled list purely from how nine simultaneous index shifts interact with the deterministic
+    // shuffle, which is exactly the kind of small-sample cancellation a fresh block is meant to guard
+    // against before trusting a combined result.
+    val finalOptimizedSeeds = (1L..12L).map { 2026091500L + it }
+
+    test("Lilysplash final-optimized v0.1 preflight").config(
+        enabled = System.getProperty("lilysplashFinalOptimized") == "true",
+    ) {
+        val control = submittedDeck()
+        val finalOptimized = submittedDeck("docs/experiments/lilysplash/final-optimized-v0.1.txt")
+        checkDeckGuardrails(control, "control")
+        checkDeckGuardrails(finalOptimized, "final-optimized-v0.1")
+
+        val registry = CardRegistry().apply {
+            register(MtgSetCatalog.all.flatMap { it.cards + it.basicLands })
+        }
+        val processor = ActionProcessor(registry)
+        val initializer = GameInitializer(registry)
+        val rows = mutableListOf<AssembledDeckHand>()
+
+        for ((deckLabel, deck) in listOf("control" to control, "final-optimized-v0.1" to finalOptimized)) {
+            val builtDeck = Deck(cards = deck.library, commander = deck.commander)
+            for (seed in finalOptimizedSeeds) {
+                val init = initializer.initializeGame(
+                    GameConfig(
+                        players = listOf(
+                            PlayerConfig("Seat0", builtDeck, commanderCardName = deck.commander),
+                            PlayerConfig("Seat1", builtDeck, commanderCardName = deck.commander),
+                        ),
+                        format = Format.Commander(alwaysDivertToCommand = true),
+                        skipMulligans = false,
+                        startingPlayerIndex = 0,
+                        seed = seed,
+                    ),
+                )
+                var state = init.state
+                val controllers = init.playerIds.map { playerId ->
+                    EngineAiPlayerController(registry, playerId, gameStateProvider = { state })
+                }
+                val mulligans = IntArray(init.playerIds.size)
+
+                for ((seat, playerId) in init.playerIds.withIndex()) {
+                    while (true) {
+                        val cards = summaries(state, playerId)
+                        val mulliganState = state.getEntity(playerId)!!.get<MulliganStateComponent>()!!
+                        val genericKeep = controllers[seat].decideMulligan(
+                            MulliganInfo(
+                                hand = state.getHand(playerId),
+                                mulliganCount = mulliganState.mulligansTaken,
+                                cardsToPutOnBottom = mulliganState.cardsToBottom,
+                                cards = cards,
+                                isOnThePlay = seat == 0,
+                            ),
+                        )
+                        val keep = genericKeep && (
+                            mulliganState.mulligansTaken >= 2 || hasCommanderColors(cards)
+                        )
+                        if (keep) {
+                            state = process(processor, state, KeepHand(playerId))
+                            break
+                        }
+                        state = process(processor, state, TakeMulligan(playerId))
+                        mulligans[seat]++
+                    }
+                }
+
+                for ((seat, playerId) in init.playerIds.withIndex()) {
+                    val mulliganState = state.getEntity(playerId)!!.get<MulliganStateComponent>()!!
+                    if (mulliganState.cardsToBottom > 0) {
+                        val cards = summaries(state, playerId)
+                        val bottom = controllers[seat].chooseBottomCards(
+                            BottomCardsInfo(
+                                hand = state.getHand(playerId),
+                                cardsToPutOnBottom = mulliganState.cardsToBottom,
+                                cards = cards,
+                            ),
+                        )
+                        state = process(processor, state, BottomCards(playerId, bottom))
+                    }
+                }
+
+                for ((seat, playerId) in init.playerIds.withIndex()) {
+                    val hand = state.getHand(playerId).map { state.getEntity(it)!!.get<CardComponent>()!!.name }
+                    val landCount = state.getHand(playerId).count {
+                        state.getEntity(it)!!.get<CardComponent>()!!.typeLine.isLand
+                    }
+                    rows += AssembledDeckHand(
+                        deck = deckLabel,
+                        seed = seed,
+                        seat = seat,
+                        mulligans = mulligans[seat],
+                        cards = hand,
+                        lands = landCount,
+                        directBlue = hand.count { it in blueSources },
+                        directGreen = hand.count { it in greenSources },
+                        fixers = hand.count { it in fixing },
+                        untappers = hand.count { it in untapPieces },
+                        protection = hand.count { it in protectionPieces },
+                        winConditions = hand.count { it in winConditionPieces },
+                    )
+                }
+            }
+        }
+
+        println("=== LILYSPLASH FINAL-OPTIMIZED V0.1 PREFLIGHT (commander-aware policy) ===")
+        println("control=f315b0907f3f9ae9d61ae2d45de0b778b45a9d9ff86e6ac5c343e4385d5de525")
+        println("final-optimized-v0.1=54f7d58687a6b5db56eafb8dc1eb7884a02db831fcb27c12107802cc8b75bf32")
+        println("seeds=${finalOptimizedSeeds.joinToString(",")}")
+        rows.forEach { row ->
+            println(
+                "deck=${row.deck} seed=${row.seed} seat=${row.seat} mulligans=${row.mulligans} kept=${row.cards.size} " +
+                    "lands=${row.lands} U=${row.directBlue} G=${row.directGreen} fixers=${row.fixers} " +
+                    "untappers=${row.untappers} protection=${row.protection} winConditions=${row.winConditions} " +
+                    "hand=${row.cards.joinToString(" | ")}",
+            )
+        }
+        rows.groupBy { it.deck }.forEach { (deckLabel, deckRows) ->
+            println(
+                "summary deck=$deckLabel samples=${deckRows.size} " +
+                    "avgMulligans=${String.format(Locale.ROOT, "%.3f", deckRows.map { it.mulligans }.average())} " +
+                    "keep7=${deckRows.count { it.mulligans == 0 }} keep6=${deckRows.count { it.mulligans == 1 }} " +
+                    "keep5=${deckRows.count { it.mulligans == 2 }} lowLand=${deckRows.count { it.lands <= 1 }} " +
+                    "noDirectU=${deckRows.count { it.directBlue == 0 }} noDirectG=${deckRows.count { it.directGreen == 0 }} " +
+                    "avgUntappers=${String.format(Locale.ROOT, "%.3f", deckRows.map { it.untappers }.average())} " +
+                    "avgProtection=${String.format(Locale.ROOT, "%.3f", deckRows.map { it.protection }.average())} " +
+                    "avgWinConditions=${String.format(Locale.ROOT, "%.3f", deckRows.map { it.winConditions }.average())}",
+            )
+        }
+        check(rows.size == finalOptimizedSeeds.size * 2 * 2)
+    }
 })

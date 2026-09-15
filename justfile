@@ -156,6 +156,14 @@ lilysplash-wincon-challenger:
     scripts/gradle-locked :ai:test --tests "*.LilysplashOpeningHandBenchmark" \
         -Dbenchmark=true -DlilysplashWinconChallenger=true
 
+# Stage 4 closing step: validate the assembled final-optimized list (all six accepted packages
+# combined, docs/experiments/lilysplash/final-optimized-v0.1.txt) against control on its own fresh
+# seed block (2026091501-2026091512), per the plan's "fresh, frozen validation sample" requirement.
+[group: 'ai']
+lilysplash-final-optimized:
+    scripts/gradle-locked :ai:test --tests "*.LilysplashOpeningHandBenchmark" \
+        -Dbenchmark=true -DlilysplashFinalOptimized=true
+
 # ECL apprentice promotion ladder. Artifacts are installed outside the repository and selected with
 # -Dargentum.ai.apprentice.dir; missing or invalid files safely use the production evaluator.
 [group: 'ai']
