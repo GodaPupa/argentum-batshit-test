@@ -61,6 +61,66 @@ class PestControlAgentDecisionTest : ScenarioTestBase() {
         return action to captured
     }
 
+    private data class CastDownCompanionProbe(
+        val game: TestGame,
+        val chosen: GameAction,
+        val insight: com.wingedsheep.ai.insight.AiDecisionInsight,
+        val castDown: com.wingedsheep.ai.insight.AiActionOption,
+        val opposing: EntityId,
+        val report: String,
+    )
+
+    private fun passEquivalentCastDownCompanionProbe(): CastDownCompanionProbe {
+        val game = seeded()
+            .withLifeTotal(2, 3)
+            .withLandsOnBattlefield(1, "Mountain", 1)
+            .withLandsOnBattlefield(1, "Swamp", 2)
+            .withCardInHand(1, "Lightning Bolt")
+            .withCardInHand(1, "Cast Down")
+            .withCardOnBattlefield(1, "Fierce Witchstalker")
+            .withCardOnBattlefield(2, "Craw Wurm")
+            .build()
+        val opposing = game.findPermanent("Craw Wurm")!!
+        game.castSpellTargetingPlayer(1, "Lightning Bolt", 2).error shouldBe null
+
+        val legalActions = game.getLegalActions(1)
+        val legalCastDown = legalActions.single { legal -> sourceName(game, legal.action) == "Cast Down" }
+        val (chosen, insights) = chooseWithInsights(game)
+        val insight = insights.last()
+        val castDown = insight.options.single { option -> option.cardName == "Cast Down" }
+        val simulator = GameSimulator(cardRegistry)
+        val passState = simulator.simulate(game.state, PassPriority(game.player1Id)).state
+        val castDownState = simulator.simulate(game.state, castDown.action!!).state
+        fun identity(id: EntityId): String =
+            "${cardName(game, id)}[$id,controller=${game.state.projectedState.getController(id)}]"
+        val legalTargets = legalCastDown.validTargets.orEmpty().joinToString { identity(it) }
+        val boundTargets = (castDown.action as? CastSpell)?.targets.orEmpty().joinToString { target ->
+            when (target) {
+                is ChosenTarget.Permanent -> identity(target.entityId)
+                else -> target.toString()
+            }
+        }
+        val report = buildString {
+            append("legal actions=")
+            append(legalActions.joinToString { legal ->
+                "${legal.actionType}:${sourceName(game, legal.action) ?: legal.description}"
+            })
+            append("; Cast Down legal targets=").append(legalTargets)
+            append("; automatic singleton binding=").append(legalCastDown.validTargets.orEmpty().size == 1)
+            append("; materialized target=").append(boundTargets)
+            append("; selected action=").append(chosen::class.simpleName)
+            append(":").append(sourceName(game, chosen))
+            append("; Cast Down chosen=").append(castDown.chosen)
+            append("; Cast Down score=").append(castDown.score)
+            append("; pass score=").append(insight.baselineScore)
+            append("; Cast Down terminal=").append(castDownState.gameOver)
+            append(",winner=").append(castDownState.winnerId)
+            append("; pass terminal=").append(passState.gameOver)
+            append(",winner=").append(passState.winnerId)
+        }
+        return CastDownCompanionProbe(game, chosen, insight, castDown, opposing, report)
+    }
+
     private fun cardName(game: TestGame, id: EntityId): String? =
         game.state.getEntity(id)?.get<CardComponent>()?.name
 
@@ -1114,26 +1174,27 @@ class PestControlAgentDecisionTest : ScenarioTestBase() {
             castDown.score shouldBe insights.last().baselineScore - 1.0
         }
 
-        test("pass-equivalent Cast Down binds an opposing target instead of a harmful friendly one") {
-            val game = seeded()
-                .withLifeTotal(2, 3)
-                .withLandsOnBattlefield(1, "Mountain", 1)
-                .withLandsOnBattlefield(1, "Swamp", 2)
-                .withCardInHand(1, "Lightning Bolt")
-                .withCardInHand(1, "Cast Down")
-                .withCardOnBattlefield(1, "Fierce Witchstalker")
-                .withCardOnBattlefield(2, "Craw Wurm")
-                .build()
-            val opposing = game.findPermanent("Craw Wurm")!!
-            game.castSpellTargetingPlayer(1, "Lightning Bolt", 2).error shouldBe null
+        test("pass-equivalent Cast Down materializes the opposing target") {
+            val probe = passEquivalentCastDownCompanionProbe()
+            withClue(probe.report) {
+                probe.castDown.action.shouldBeInstanceOf<CastSpell>().targets shouldBe
+                    listOf(ChosenTarget.Permanent(probe.opposing))
+            }
+        }
 
-            val (chosen, insights) = chooseWithInsights(game)
-            chosen.shouldBeInstanceOf<PassPriority>()
-            val castDown = insights.last().options.single { option -> option.cardName == "Cast Down" }
-            castDown.action.shouldBeInstanceOf<CastSpell>().targets shouldBe
-                listOf(ChosenTarget.Permanent(opposing))
-            castDown.chosen.shouldBeFalse()
-            (castDown.score!! <= insights.last().baselineScore).shouldBeTrue()
+        test("pass-equivalent Cast Down leaves pass as the selected top-level action") {
+            val probe = passEquivalentCastDownCompanionProbe()
+            withClue(probe.report) {
+                probe.chosen.shouldBeInstanceOf<PassPriority>()
+                probe.castDown.chosen.shouldBeFalse()
+            }
+        }
+
+        test("pass-equivalent Cast Down does not score above pass") {
+            val probe = passEquivalentCastDownCompanionProbe()
+            withClue(probe.report) {
+                (probe.castDown.score!! <= probe.insight.baselineScore).shouldBeTrue()
+            }
         }
 
         test("friendly removal records additional resource costs that erase death value") {
