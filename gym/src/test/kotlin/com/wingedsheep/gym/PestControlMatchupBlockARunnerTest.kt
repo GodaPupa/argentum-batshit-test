@@ -38,8 +38,9 @@ class PestControlMatchupBlockARunnerTest : FunSpec({
         enabled = enabled,
         timeout = 12.hours,
     ) {
-        val projectRoot = Path.of("").toAbsolutePath()
-        val csvPath = projectRoot.resolve("gym/src/test/resources/$CSV_RESOURCE")
+        val gymDirectory = Path.of("").toAbsolutePath()
+        val projectRoot = gymDirectory.parent
+        val csvPath = gymDirectory.resolve("src/test/resources/$CSV_RESOURCE")
         val vectorPath = projectRoot.resolve("docs/experiments/pest-control/matchup-block-a-ordered-seeds.txt")
         val registryPath = projectRoot.resolve("docs/experiments/pest-control/matchup-block-a-seed-registry.csv")
         val freezeManifestPath = projectRoot.resolve("docs/experiments/pest-control/matchup-block-a-seed-freeze-manifest.json")

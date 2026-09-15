@@ -14,7 +14,7 @@ private const val SYNTHETIC_EXECUTION_COMMIT = "11111111111111111111111111111111
 class PestControlMatchupBlockExecutionTest : FunSpec({
     test("the frozen CSV parses to the exact immutable 50-row assignment contract without execution") {
         val bytes = java.nio.file.Files.readAllBytes(
-            java.nio.file.Path.of("gym/src/test/resources/pest-control-v10-vs-mono-red-madness-soterx-2026-09-11-preboard-v1-block-a-seeds.csv")
+            java.nio.file.Path.of("src/test/resources/pest-control-v10-vs-mono-red-madness-soterx-2026-09-11-preboard-v1-block-a-seeds.csv")
         )
         sha256(bytes) shouldBe PEST_MATCHUP_BLOCK_A_CSV_SHA256
         val assignments = PestControlMatchupBlockCodec.parseFrozenCsv(bytes)
