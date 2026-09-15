@@ -1,6 +1,6 @@
 # Project Pest Control — Status
 
-- Status: Matchup Block A formally rejected; all 50 seeds permanently retired; seedless policy correction in progress
+- Status: Matchup Block A formally rejected; all 50 seeds permanently retired; shared policy correction validated; replacement execution readiness only
 - Laboratory: Project Pest Control
 - Branch: `pest-control/lab`
 - Validated base: `47882cd645caf126afee6cf13a65909806fa40ab`
@@ -27,6 +27,7 @@
   `d20e57b5e588546911d6f16b63d274651038bd49b53580f27f9a208448859f2f`
 - Control version: Pest Control v1.0 (permanent, immutable)
 - Candidate status: proposed Tier-1 architecture only; not approved, constructed, or run
+- Accepted pass-equivalent terminal-scoring source: `9af6106915e4b41ab1d09d451633b7e09ab64bb4`
 
 ## Matchup validation — Gates 1–4
 
@@ -118,9 +119,16 @@ reassigned, pooled, or used for tuning. The exact raw and compressed records rem
 artifact `10391659486`; the rejection is recorded in
 `docs/experiments/pest-control/matchup-block-a-rejection-audit.md`.
 
-All 13 preexisting Pest gameplay runners and the dedicated Block A runner are disabled. Seedless
-diagnosis and correction of the shared destructive-target/resource policy is authorized. Replacement
-seeds, replacement games, postboard gameplay, deck changes, the challenger, result acceptance,
+The shared pass-equivalent terminal-scoring correction is accepted at
+`9af6106915e4b41ab1d09d451633b7e09ab64bb4` after full CI #417 and exact-source validation run
+#35011793207 attempt 2 completed green. Attempt 1 was infrastructure-canceled without a test failure;
+the validated recovery commit has tree `9313b66b224b4b695198629400a7fc8cf840ed81` and transparently
+follows the malformed truncated API-transfer commit `99172c3da2617a4a99670f4525e7c36bf63e17ce`.
+
+All 13 preexisting Pest gameplay runners, the dedicated Block A runner, and the replacement-shard
+guard are disabled. The seedless two-by-25 execution-readiness contract is documented in
+`docs/experiments/pest-control/matchup-replacement-block-execution-readiness.md`. Replacement seeds,
+vector freeze, replacement games, postboard gameplay, deck changes, the challenger, result acceptance,
 pooling, tuning, and Block B remain unauthorized.
 
 ## Goldfish Sample #2 independent replication authorization

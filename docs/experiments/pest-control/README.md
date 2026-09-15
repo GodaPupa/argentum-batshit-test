@@ -8,6 +8,12 @@ retired. The descriptive 35–15 result is inadmissible for acceptance, pooling,
 provenance and the controlling disposition are recorded in
 `matchup-block-a-rejection-audit.md`; no replacement vector or gameplay is authorized.
 
+The accepted seedless pass-equivalent terminal-scoring correction is validated at
+`9af6106915e4b41ab1d09d451633b7e09ab64bb4`. Replacement-block execution readiness is specified in
+`matchup-replacement-block-execution-readiness.md`: one future logical 50-game block, two deterministic
+25-game shards, strict source/tree and artifact reconciliation, and whole-vector rejection on any
+failed or incomplete shard. All runners remain disabled, and no replacement seeds or games exist.
+
 Goldfish Sample #1 was authorized as a 30-game development/engine baseline candidate using the
 permanent Pest Control v1.0 control and the validated Phase 3 solitaire policy. Its seed vector was
 frozen in `goldfish-sample-1-seed-freeze.md` before execution. The sample was rejected by audit and
