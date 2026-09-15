@@ -352,7 +352,7 @@ object PestControlMatchupBlockCodec {
 }
 
 object PestControlMatchupBlockARunner {
-    const val CONFIGURED_STATE = "DISABLED"
+    const val CONFIGURED_STATE = "AUTHORIZED"
 
     fun activationAllowed(
         configuredState: String,
