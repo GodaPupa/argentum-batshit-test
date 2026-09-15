@@ -17,6 +17,8 @@ import com.wingedsheep.gym.matchup.MatchupEnvironmentIdentity
 import com.wingedsheep.gym.matchup.MatchupProvenance
 import com.wingedsheep.gym.matchup.MatchupProtocolRejected
 import com.wingedsheep.gym.matchup.PEST_CONTROL_V10_HASH
+import com.wingedsheep.gym.matchup.PEST_CONTROL_V10_SIDEBOARD_HASH
+import com.wingedsheep.gym.matchup.PEST_CONTROL_V10_75_HASH
 import com.wingedsheep.gym.matchup.PestControlPreboardDecks
 import com.wingedsheep.gym.matchup.PestControlPreboardSession
 import com.wingedsheep.gym.matchup.PestSeat
@@ -53,6 +55,9 @@ class PestControlPreboardProtocolTest : ScenarioTestBase() {
     test("frozen preboard identities instantiate exactly two 20-life maindecks and no sideboards") {
         PestControlPreboardDecks.verifyFrozenIdentities()
         PestControlPreboardDecks.pestMainCounts.values.sum() shouldBe 60
+        PestControlPreboardDecks.pestSideboardCounts.values.sum() shouldBe 15
+        (PestControlPreboardDecks.pestMainCounts.values.sum() +
+            PestControlPreboardDecks.pestSideboardCounts.values.sum()) shouldBe 75
         PestControlPreboardDecks.monoRedMainCounts.values.sum() shouldBe 60
         PestControlPreboardDecks.monoRedSideboardCounts.values.sum() shouldBe 15
 
@@ -62,6 +67,8 @@ class PestControlPreboardProtocolTest : ScenarioTestBase() {
         )
         val game = session.rawGame()
         game.provenance.pestControlMainSha256 shouldBe PEST_CONTROL_V10_HASH
+        game.provenance.pestControlSideboardSha256 shouldBe PEST_CONTROL_V10_SIDEBOARD_HASH
+        game.provenance.pestControlComplete75Sha256 shouldBe PEST_CONTROL_V10_75_HASH
         game.provenance.monoRedMainSha256 shouldBe SOTERX_MONO_RED_MAIN_HASH
         game.provenance.monoRedSideboardSha256 shouldBe SOTERX_MONO_RED_SIDEBOARD_HASH
         game.provenance.monoRedComplete75Sha256 shouldBe SOTERX_MONO_RED_75_HASH

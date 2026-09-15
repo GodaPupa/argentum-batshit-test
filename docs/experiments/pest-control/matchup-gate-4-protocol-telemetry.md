@@ -6,6 +6,10 @@
 - Construction base: `b6fc0fb6fc31efa2148e3e3174782d267656e44c`
 - Pest Control v1.0 maindeck SHA-256:
   `7be61a66e2c7654428043d56b411afb4d406f02dfcc4eb7f15a62295d4e906f5`
+- Pest Control v1.0 sideboard SHA-256:
+  `c1910468c228662b21647eb7ca8481cd11691906e56e0a37990e00f22886368c`
+- Pest Control v1.0 complete-75 SHA-256:
+  `2927737eb084657cda58fd1877db933037c383273062f0bd209c7ff3046c1cf5`
 - SoterX Mono Red maindeck SHA-256:
   `38c7850d1b9b070637502cedfffc6116d3504a525db8b51223505d7935134258`
 - SoterX Mono Red sideboard SHA-256:
@@ -15,10 +19,10 @@
 - Scope: independent preboard games. `match_result` is always
   `NOT_APPLICABLE_PREBOARD_INDEPENDENT_GAMES`.
 
-The complete opponent 75 remains provenance identity, but the driver instantiates only its exact
-60-card maindeck. Pest Control has no frozen sideboard, so none is invented or instantiated. Both
-players start at 20 life. Pest's seat and the starting deck are independent parameters for a later,
-separately authorized 25/25 play/draw allocation.
+Both complete frozen 75s remain provenance identities, but the driver instantiates only each exact
+60-card maindeck. Neither frozen sideboard is placed in a game zone. Both players start at 20 life.
+Pest's seat and the starting deck are independent parameters for a later, separately authorized
+25/25 play/draw allocation.
 
 Gate 4 creates no experimental seed vector and runs no sampled game. Every construction fixture uses
 an identifier beginning `NONEXPERIMENTAL_GATE4_`; its fixed entropy is fixture material, is explicitly
@@ -92,7 +96,8 @@ snapshots.
 
 Raw JSON is canonical Kotlin serialization with defaults and nulls retained and a trailing LF. The
 human report is produced only by decoding those raw bytes. The manifest binds protocol, schema,
-source commit, and SHA-256 identities for raw JSON, report, and compressed artifact.
+source commit, all six maindeck/sideboard/complete-75 SHA-256 identities, and SHA-256 identities for
+raw JSON, report, and compressed artifact.
 
 Compression is deterministic RFC 1952 gzip: DEFLATE body, MTIME zero, XFL zero, OS 255, and canonical
 CRC32/input-size trailer. Rebuilding identical raw bytes must yield byte-identical JSON, report,
@@ -103,7 +108,7 @@ report, reconciles protocol/source identities, and rejects tampering.
 
 | Requirement | Fixture evidence |
 | --- | --- |
-| Frozen lists, 20 life, two players, no sideboards | `PestControlPreboardProtocolTest` frozen-identity fixture |
+| Frozen 60/15/75 identities, 20 life, two players, no instantiated sideboards | `PestControlPreboardProtocolTest` frozen-identity fixture |
 | Independent seat/start parameters | seat-one/Pest-plays fixture |
 | London mulligan and bottom recording | validated London-policy fixture |
 | Exact-one advancement and spell response | exact-one Bolt/priority fixture |
@@ -121,5 +126,5 @@ for performance inference, and cannot be pooled with any goldfish or future matc
 ## Gate boundary
 
 Gate 4 acceptance requires focused tests, full CI, and Argentum Validation on one exact published
-candidate. All 13 Pest gameplay runners remain disabled. Gate 5 seed generation and every matchup
-game remain blocked pending separate research-director authorization.
+candidate. All 13 Pest gameplay runners remain disabled. Gate 5 seed generation is authorized only
+after the sideboard/75 provenance correction is accepted; every matchup game remains blocked.

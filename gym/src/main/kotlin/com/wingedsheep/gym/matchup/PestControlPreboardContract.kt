@@ -33,6 +33,8 @@ const val PEST_MONO_RED_PREBOARD_PROTOCOL_ID =
     "PEST_CONTROL_V10_VS_MONO_RED_MADNESS_SOTERX_2026_09_11_PREBOARD_V1"
 const val PEST_MATCHUP_SCHEMA = "pest-control-preboard-matchup@v1"
 const val PEST_CONTROL_V10_HASH = "7be61a66e2c7654428043d56b411afb4d406f02dfcc4eb7f15a62295d4e906f5"
+const val PEST_CONTROL_V10_SIDEBOARD_HASH = "c1910468c228662b21647eb7ca8481cd11691906e56e0a37990e00f22886368c"
+const val PEST_CONTROL_V10_75_HASH = "2927737eb084657cda58fd1877db933037c383273062f0bd209c7ff3046c1cf5"
 const val SOTERX_MONO_RED_MAIN_HASH = "38c7850d1b9b070637502cedfffc6116d3504a525db8b51223505d7935134258"
 const val SOTERX_MONO_RED_SIDEBOARD_HASH = "d0aab592e6c82ad019dba0eadc028db75ef5cf13c9b3e4e0531a04d513bfc77a"
 const val SOTERX_MONO_RED_75_HASH = "e9ff7ecbdbc8f41ebe526fe8fee4f87f706e0630491f9d78121677922fbd647d"
@@ -49,6 +51,11 @@ private val PEST_MAIN = linkedMapOf(
     "Swamp" to 7, "Jungle Hollow" to 4,
 )
 
+private val PEST_SIDEBOARD = linkedMapOf(
+    "Tamiyo's Safekeeping" to 4, "Nature's Claim" to 3, "Snuff Out" to 3,
+    "Suffocating Fumes" to 3, "Pulse of Murasa" to 2,
+)
+
 private val RED_MAIN = linkedMapOf(
     "Mountain" to 20, "Guttersnipe" to 4, "Kessig Flamebreather" to 3,
     "Sneaky Snacker" to 4, "Faithless Looting" to 2, "Fiery Temper" to 4,
@@ -63,6 +70,7 @@ private val RED_SIDEBOARD = linkedMapOf(
 
 object PestControlPreboardDecks {
     val pestMainCounts: Map<String, Int> get() = PEST_MAIN.toMap()
+    val pestSideboardCounts: Map<String, Int> get() = PEST_SIDEBOARD.toMap()
     val monoRedMainCounts: Map<String, Int> get() = RED_MAIN.toMap()
     val monoRedSideboardCounts: Map<String, Int> get() = RED_SIDEBOARD.toMap()
 
@@ -70,21 +78,29 @@ object PestControlPreboardDecks {
     fun monoRedMain(): Deck = Deck.of(*RED_MAIN.map { it.key to it.value }.toTypedArray())
 
     fun verifyFrozenIdentities() {
-        require(PEST_MAIN.values.sum() == 60 && RED_MAIN.values.sum() == 60 && RED_SIDEBOARD.values.sum() == 15)
+        require(
+            PEST_MAIN.values.sum() == 60 && PEST_SIDEBOARD.values.sum() == 15 &&
+                RED_MAIN.values.sum() == 60 && RED_SIDEBOARD.values.sum() == 15
+        )
         require(hashRows(PEST_MAIN) == PEST_CONTROL_V10_HASH)
+        require(hashRows(PEST_SIDEBOARD) == PEST_CONTROL_V10_SIDEBOARD_HASH)
+        require(hashComplete75(PEST_MAIN, PEST_SIDEBOARD) == PEST_CONTROL_V10_75_HASH)
         require(hashRows(RED_MAIN) == SOTERX_MONO_RED_MAIN_HASH)
         require(hashRows(RED_SIDEBOARD) == SOTERX_MONO_RED_SIDEBOARD_HASH)
-        val complete = buildString {
-            appendLine("MAIN")
-            RED_MAIN.forEach { (name, count) -> appendLine("$name,$count") }
-            appendLine("SIDEBOARD")
-            RED_SIDEBOARD.forEach { (name, count) -> appendLine("$name,$count") }
-        }
-        require(sha256(complete.toByteArray()) == SOTERX_MONO_RED_75_HASH)
+        require(hashComplete75(RED_MAIN, RED_SIDEBOARD) == SOTERX_MONO_RED_75_HASH)
     }
 
     private fun hashRows(rows: Map<String, Int>): String = sha256(
         rows.entries.joinToString(separator = "\n", postfix = "\n") { (name, count) -> "$name,$count" }.toByteArray()
+    )
+
+    private fun hashComplete75(main: Map<String, Int>, sideboard: Map<String, Int>): String = sha256(
+        buildString {
+            appendLine("MAIN")
+            main.forEach { (name, count) -> appendLine("$name,$count") }
+            appendLine("SIDEBOARD")
+            sideboard.forEach { (name, count) -> appendLine("$name,$count") }
+        }.toByteArray()
     )
 }
 
@@ -118,7 +134,9 @@ data class MatchupProvenance(
     val schema: String = PEST_MATCHUP_SCHEMA,
     val sourceCommit: String,
     val pestControlMainSha256: String = PEST_CONTROL_V10_HASH,
-    val pestControlSideboardStatus: String = "NO_FROZEN_SIDEBOARD; NOT_INSTANTIATED",
+    val pestControlSideboardSha256: String = PEST_CONTROL_V10_SIDEBOARD_HASH,
+    val pestControlComplete75Sha256: String = PEST_CONTROL_V10_75_HASH,
+    val pestControlSideboardStatus: String = "FROZEN_15; NOT_INSTANTIATED",
     val monoRedMainSha256: String = SOTERX_MONO_RED_MAIN_HASH,
     val monoRedSideboardSha256: String = SOTERX_MONO_RED_SIDEBOARD_HASH,
     val monoRedComplete75Sha256: String = SOTERX_MONO_RED_75_HASH,

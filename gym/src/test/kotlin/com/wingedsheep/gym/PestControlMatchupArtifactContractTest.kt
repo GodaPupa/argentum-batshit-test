@@ -4,6 +4,9 @@ import com.wingedsheep.gym.matchup.MatchupEnvironmentIdentity
 import com.wingedsheep.gym.matchup.MatchupProvenance
 import com.wingedsheep.gym.matchup.MatchupRawGame
 import com.wingedsheep.gym.matchup.PEST_MATCHUP_SCHEMA
+import com.wingedsheep.gym.matchup.PEST_CONTROL_V10_75_HASH
+import com.wingedsheep.gym.matchup.PEST_CONTROL_V10_HASH
+import com.wingedsheep.gym.matchup.PEST_CONTROL_V10_SIDEBOARD_HASH
 import com.wingedsheep.gym.matchup.PREBOARD_MATCH_RESULT
 import com.wingedsheep.gym.matchup.PestControlMatchupArtifactCodec
 import com.wingedsheep.gym.matchup.PestSeat
@@ -11,6 +14,7 @@ import com.wingedsheep.gym.matchup.StartingDeck
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.booleans.shouldBeTrue
 import io.kotest.matchers.collections.shouldBeEmpty
+import io.kotest.matchers.collections.shouldContain
 import io.kotest.matchers.shouldBe
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
@@ -43,7 +47,17 @@ class PestControlMatchupArtifactContractTest : FunSpec({
         first.report.contentEquals(second.report).shouldBeTrue()
         first.manifest.contentEquals(second.manifest).shouldBeTrue()
         PestControlMatchupArtifactCodec.verify(first).shouldBeEmpty()
-        first.report.decodeToString().contains(PREBOARD_MATCH_RESULT).shouldBeTrue()
+        val report = first.report.decodeToString()
+        report.contains(PREBOARD_MATCH_RESULT).shouldBeTrue()
+        report.contains(PEST_CONTROL_V10_HASH).shouldBeTrue()
+        report.contains(PEST_CONTROL_V10_SIDEBOARD_HASH).shouldBeTrue()
+        report.contains(PEST_CONTROL_V10_75_HASH).shouldBeTrue()
+        val manifest = tolerantJson.decodeFromString<com.wingedsheep.gym.matchup.MatchupArtifactManifest>(
+            first.manifest.decodeToString(),
+        )
+        manifest.pestControlMainSha256 shouldBe PEST_CONTROL_V10_HASH
+        manifest.pestControlSideboardSha256 shouldBe PEST_CONTROL_V10_SIDEBOARD_HASH
+        manifest.pestControlComplete75Sha256 shouldBe PEST_CONTROL_V10_75_HASH
     }
 
     test("tampering with any derived artifact is rejected") {
@@ -69,5 +83,17 @@ class PestControlMatchupArtifactContractTest : FunSpec({
         val bundle = PestControlMatchupArtifactCodec.build(raw)
         PestControlMatchupArtifactCodec.renderReport(bundle.rawJson).toByteArray()
             .contentEquals(bundle.report).shouldBeTrue()
+    }
+
+    test("missing or altered Pest sideboard and complete-75 identities fail validation") {
+        val altered = raw.copy(
+            provenance = raw.provenance.copy(
+                pestControlSideboardSha256 = "0".repeat(64),
+                pestControlComplete75Sha256 = "f".repeat(64),
+            ),
+        )
+        val errors = PestControlMatchupArtifactCodec.verify(PestControlMatchupArtifactCodec.build(altered))
+        errors.shouldContain("Pest sideboard identity mismatch")
+        errors.shouldContain("Pest complete-75 identity mismatch")
     }
 })

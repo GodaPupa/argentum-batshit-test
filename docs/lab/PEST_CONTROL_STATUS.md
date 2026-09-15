@@ -1,6 +1,6 @@
 # Project Pest Control — Status
 
-- Status: Matchup Gate 4 protocol/telemetry candidate under deterministic validation; Gate 5 blocked
+- Status: Matchup Gate 4 sideboard/75 provenance correction under deterministic validation; Gate 5 authorized but blocked pending exact-head validation
 - Laboratory: Project Pest Control
 - Branch: `pest-control/lab`
 - Validated base: `47882cd645caf126afee6cf13a65909806fa40ab`
@@ -84,10 +84,18 @@ protocol-defect rejection, deterministic JSON/report/manifest/gzip artifacts, an
 metric definitions. Its construction contract is recorded in
 `docs/experiments/pest-control/matchup-gate-4-protocol-telemetry.md`.
 
-Gate 4 remains a candidate until full CI and Argentum Validation pass on the identical published
-head. All 13 Pest gameplay runners remain disabled. Gates 2–4 generated zero experimental seeds and
-executed zero sampled or matchup games. Gate 5 seed generation, sideboarding, deck changes, and the
-challenger remain unauthorized.
+The permanent Pest Control v1.0 sideboard remains the ordered 15 recorded below. Under the same
+canonical `Name,count` hashing rules used for the opponent, its sideboard SHA-256 is
+`c1910468c228662b21647eb7ca8481cd11691906e56e0a37990e00f22886368c` and its complete-75 SHA-256 is
+`2927737eb084657cda58fd1877db933037c383273062f0bd209c7ff3046c1cf5`. These are provenance-only in
+the preboard protocol: the driver continues to instantiate exactly 60 Pest maindeck cards and zero
+sideboard cards.
+
+Gate 4 remains suspended solely until the sideboard/75 provenance correction passes full CI and
+Argentum Validation on the identical published head. All 13 Pest gameplay runners remain disabled.
+Gates 2–4 generated zero experimental seeds and executed zero sampled or matchup games. Gate 5 seed
+generation resumes automatically only after that corrected Gate 4 head is accepted; gameplay,
+sideboarding, deck changes, and the challenger remain unauthorized.
 
 ## Goldfish Sample #2 independent replication authorization
 

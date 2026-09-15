@@ -14,6 +14,12 @@ data class MatchupArtifactManifest(
     val protocolId: String,
     val schema: String,
     val sourceCommit: String,
+    val pestControlMainSha256: String = PEST_CONTROL_V10_HASH,
+    val pestControlSideboardSha256: String = PEST_CONTROL_V10_SIDEBOARD_HASH,
+    val pestControlComplete75Sha256: String = PEST_CONTROL_V10_75_HASH,
+    val monoRedMainSha256: String = SOTERX_MONO_RED_MAIN_HASH,
+    val monoRedSideboardSha256: String = SOTERX_MONO_RED_SIDEBOARD_HASH,
+    val monoRedComplete75Sha256: String = SOTERX_MONO_RED_75_HASH,
     val rawJsonSha256: String,
     val compressedSha256: String,
     val reportSha256: String,
@@ -36,6 +42,12 @@ object PestControlMatchupArtifactCodec {
             protocolId = game.provenance.protocolId,
             schema = game.provenance.schema,
             sourceCommit = game.provenance.sourceCommit,
+            pestControlMainSha256 = game.provenance.pestControlMainSha256,
+            pestControlSideboardSha256 = game.provenance.pestControlSideboardSha256,
+            pestControlComplete75Sha256 = game.provenance.pestControlComplete75Sha256,
+            monoRedMainSha256 = game.provenance.monoRedMainSha256,
+            monoRedSideboardSha256 = game.provenance.monoRedSideboardSha256,
+            monoRedComplete75Sha256 = game.provenance.monoRedComplete75Sha256,
             rawJsonSha256 = sha256(raw),
             compressedSha256 = sha256(compressed),
             reportSha256 = sha256(report),
@@ -59,6 +71,18 @@ object PestControlMatchupArtifactCodec {
         if (game != null) {
             if (game.provenance.protocolId != manifest.protocolId) errors += "manifest protocol mismatch"
             if (game.provenance.sourceCommit != manifest.sourceCommit) errors += "manifest source commit mismatch"
+            if (game.provenance.pestControlMainSha256 != PEST_CONTROL_V10_HASH) errors += "Pest maindeck identity mismatch"
+            if (game.provenance.pestControlSideboardSha256 != PEST_CONTROL_V10_SIDEBOARD_HASH) errors += "Pest sideboard identity mismatch"
+            if (game.provenance.pestControlComplete75Sha256 != PEST_CONTROL_V10_75_HASH) errors += "Pest complete-75 identity mismatch"
+            if (game.provenance.monoRedMainSha256 != SOTERX_MONO_RED_MAIN_HASH) errors += "Mono Red maindeck identity mismatch"
+            if (game.provenance.monoRedSideboardSha256 != SOTERX_MONO_RED_SIDEBOARD_HASH) errors += "Mono Red sideboard identity mismatch"
+            if (game.provenance.monoRedComplete75Sha256 != SOTERX_MONO_RED_75_HASH) errors += "Mono Red complete-75 identity mismatch"
+            if (game.provenance.pestControlMainSha256 != manifest.pestControlMainSha256) errors += "manifest Pest maindeck mismatch"
+            if (game.provenance.pestControlSideboardSha256 != manifest.pestControlSideboardSha256) errors += "manifest Pest sideboard mismatch"
+            if (game.provenance.pestControlComplete75Sha256 != manifest.pestControlComplete75Sha256) errors += "manifest Pest complete-75 mismatch"
+            if (game.provenance.monoRedMainSha256 != manifest.monoRedMainSha256) errors += "manifest Mono Red maindeck mismatch"
+            if (game.provenance.monoRedSideboardSha256 != manifest.monoRedSideboardSha256) errors += "manifest Mono Red sideboard mismatch"
+            if (game.provenance.monoRedComplete75Sha256 != manifest.monoRedComplete75Sha256) errors += "manifest Mono Red complete-75 mismatch"
             if (game.provenance.matchResult != PREBOARD_MATCH_RESULT) errors += "invalid preboard match result"
             if (!game.fixtureIsNonexperimental || !game.excludedFromFutureSeedOverlapRegistry) {
                 errors += "fixture is not excluded from experimental seed registries"
@@ -75,6 +99,12 @@ object PestControlMatchupArtifactCodec {
             appendLine("- Protocol: `${game.provenance.protocolId}`")
             appendLine("- Schema: `${game.provenance.schema}`")
             appendLine("- Source commit: `${game.provenance.sourceCommit}`")
+            appendLine("- Pest maindeck SHA-256: `${game.provenance.pestControlMainSha256}`")
+            appendLine("- Pest sideboard SHA-256: `${game.provenance.pestControlSideboardSha256}`")
+            appendLine("- Pest complete-75 SHA-256: `${game.provenance.pestControlComplete75Sha256}`")
+            appendLine("- Mono Red maindeck SHA-256: `${game.provenance.monoRedMainSha256}`")
+            appendLine("- Mono Red sideboard SHA-256: `${game.provenance.monoRedSideboardSha256}`")
+            appendLine("- Mono Red complete-75 SHA-256: `${game.provenance.monoRedComplete75Sha256}`")
             appendLine("- Scope: ${game.provenance.scope}")
             appendLine("- Match result: `${game.provenance.matchResult}`")
             appendLine("- Fixture: `${game.fixtureId}` (nonexperimental; excluded from seed overlap)")
