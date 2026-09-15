@@ -374,6 +374,19 @@ class Strategist(
                         score = Double.MAX_VALUE / 4,
                         note = "imminent-lethal policy: legal action is required to survive visible combat",
                     )
+                } else if (
+                    passAlreadyWins &&
+                    leafStates[i].gameOver &&
+                    leafStates[i].winnerId == leafStates.first().winnerId &&
+                    ordinaryAdjustment.score > passScore
+                ) {
+                    // Once passing already ends the game for the same winner, post-win board or
+                    // resource improvements cannot make spending an action better than passing.
+                    // Lower action scores remain lower so ordinary hold/audit evidence is retained.
+                    ordinaryAdjustment.copy(
+                        score = passScore,
+                        note = "terminal policy: same-winner action capped at winning pass",
+                    )
                 } else {
                     ordinaryAdjustment
                 },
@@ -2385,121 +2398,3 @@ class Strategist(
         val entityId = when (val gameAction = action.action) {
             is CastSpell -> gameAction.cardId
             is ActivateAbility -> gameAction.sourceId
-            is CycleCard -> gameAction.cardId
-            is TypecycleCard -> gameAction.cardId
-            else -> return null
-        }
-        return state.getEntity(entityId)?.get<CardComponent>()?.name
-    }
-
-    private companion object {
-        /** How many acted-from positions [remember] keeps. See it for why a short memory suffices. */
-        const val POSITION_MEMORY = 32
-
-        /**
-         * Targets simulated per requirement when rescuing a candidate the cheap pick made inert.
-         * A tier below [com.wingedsheep.ai.engine.budget.BudgetTier.NORMAL] can cap candidates at
-         * 1, so the rescue needs its own floor; this is the legacy cap.
-         */
-        const val RESCUE_TARGET_CANDIDATES = 8
-
-        /** Payment choices inspected for a one-card discard/sacrifice cost. */
-        const val AUTOMATIC_PAYMENT_CANDIDATES = 8
-
-        val IMMEDIATE_EVENT_TAGS = setOf(
-            IntentTag.LIFEGAIN,
-            IntentTag.DRAW,
-            IntentTag.TOKEN_MAKER,
-        )
-
-        /** Establishing a visible event engine before its next creature enters. */
-        const val TRIGGER_ENGINE_SETUP_VALUE = 4.0
-
-        /** One useful spell now buys one additional Storm copy on the proven follow-up. */
-        const val STORM_SETUP_VALUE = 2.0
-
-        /** Extra value of each visible repeatable payoff receiving the additional Storm event. */
-        const val STORM_PAYOFF_EVENT_VALUE = 2.0
-
-        /** Option value of a sacrifice mana action that makes a previously unavailable spell legal. */
-        const val SACRIFICE_MANA_UNLOCK_VALUE = 3.0
-
-        /** Bounded value of converting a hand card into a needed early land. */
-        const val EARLY_LAND_DEVELOPMENT_VALUE = 5.0
-
-        /** The same conversion after the early shortage, where another land is less urgent. */
-        const val MIDGAME_LAND_DEVELOPMENT_VALUE = 0.75
-
-        /** One extra card beyond replacing the tutor itself. */
-        const val TUTOR_CARD_ADVANTAGE_VALUE = 1.0
-
-        /** Immediate option value of a structurally explicit life-gained-this-turn enhancement. */
-        const val LIFEGAIN_ENHANCED_VALUE = 1.0
-
-        /** Break a pass tie when this life event newly enables a concrete enhanced spell. */
-        const val LIFEGAIN_FOLLOW_UP_UNLOCK_VALUE = 0.5
-
-        /** Structural value of consuming a newly established condition before it expires. */
-        const val EXPIRING_CONDITION_CONSUMPTION_VALUE = 2.0
-
-        /** A compound line must clear noise in the static evaluator before it can borrow future value. */
-        const val MATERIAL_SEQUENCE_MARGIN = 0.10
-
-        /** Tempo value per mana of a spell enabled by paying a non-mana alternative cost. */
-        const val ALTERNATIVE_COST_TEMPO_PER_MANA = 0.85
-
-        /** Keeps preserved-mana option value bounded even for unusually expensive follow-ups. */
-        const val ALTERNATIVE_COST_TEMPO_CAP = 5.5
-
-        /** Value recovered by cashing in a permanent an opposing stack object already targets. */
-        const val TARGETED_SACRIFICE_WINDOW = 2.0
-
-        /** A burn spell leaving this much reach is close enough to preserve race conversion. */
-        const val NEAR_LETHAL_REACH = 2
-
-        /** Repeatable face damage per trigger that justifies spending land as removal. */
-        const val IMPORTANT_ENGINE_DAMAGE = 2
-
-        /** Where the avatar tops out — the recommended stopping point. See [momirXCandidates]. */
-        const val MOMIR_TARGET_X = 8
-
-        /** First activation on the play: turns 1–3 are skipped, so the first flip is a four. */
-        const val MOMIR_FIRST_X_ON_THE_PLAY = 4
-
-        /** First activation on the draw — one turn earlier, since the extra card pays for it. */
-        const val MOMIR_FIRST_X_ON_THE_DRAW = 3
-
-        const val MOMIR_AVATAR_NAME = "Momir Vig, Simic Visionary"
-    }
-
-    private data class ExpiringConditionFollowUp(
-        val cardId: EntityId,
-        val faceIndex: Int?,
-        val downstreamCardId: EntityId?,
-        val projectedScore: Double,
-    )
-
-    private data class ExpiringConditionCommitment(
-        val playerId: EntityId,
-        val turn: Int,
-        val cardId: EntityId,
-        val faceIndex: Int?,
-    )
-
-    private data class LandUnlockedPayoffSequence(
-        val landId: EntityId,
-        val setupCardId: EntityId,
-        val focalCardId: EntityId,
-        val projectedScore: Double,
-        val comparisonScore: Double,
-    )
-
-    private data class LandUnlockedExpiringConditionLine(
-        val landId: EntityId,
-        val resourceCardId: EntityId,
-        val followUpCardId: EntityId,
-        val downstreamCardId: EntityId?,
-        val projectedScore: Double,
-    )
-
-}
