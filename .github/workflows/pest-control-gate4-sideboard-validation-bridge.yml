@@ -1,0 +1,40 @@
+name: Pest Control Gate 4 Sideboard Validation Bridge
+
+on:
+  push:
+    branches: [ "pest-control/gate4-sideboard-validation-bridge" ]
+
+permissions:
+  contents: read
+
+jobs:
+  oracle-assay:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout exact corrected Gate 4 source
+        uses: actions/checkout@v4
+        with:
+          ref: d81ec35f0be74422315f9bb5bf8d69c395b2d872
+          persist-credentials: false
+      - name: Verify exact corrected Gate 4 source
+        run: test "$(git rev-parse HEAD)" = "d81ec35f0be74422315f9bb5bf8d69c395b2d872"
+      - name: Set up Java 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '9.6.1'
+      - name: Make Gradle wrapper executable
+        run: chmod +x gradlew
+      - name: Show environment
+        run: |
+          java -version
+          gradle --version
+      - name: Compile missing Argentum Validation project
+        run: ./gradlew :oracle-assay:classes --stacktrace
+      - name: Run missing Argentum Validation tests
+        run: ./gradlew :oracle-assay:test --stacktrace
