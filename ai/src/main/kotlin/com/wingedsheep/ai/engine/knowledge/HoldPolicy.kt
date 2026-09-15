@@ -1,6 +1,7 @@
 package com.wingedsheep.ai.engine.knowledge
 
 import com.wingedsheep.ai.engine.evaluation.EvaluationWeights
+import com.wingedsheep.ai.engine.isOpponentTo
 import com.wingedsheep.engine.core.ActivateAbility
 import com.wingedsheep.engine.core.CastSpell
 import com.wingedsheep.engine.mechanics.layers.ProjectedState
@@ -10,7 +11,11 @@ import com.wingedsheep.engine.state.components.combat.AttackingComponent
 import com.wingedsheep.engine.state.components.combat.BlockingComponent
 import com.wingedsheep.engine.state.components.identity.CardComponent
 import com.wingedsheep.engine.state.components.stack.ChosenTarget
+import com.wingedsheep.engine.state.components.stack.AbilityOnStackComponent
+import com.wingedsheep.engine.state.components.stack.ActivatedAbilityOnStackComponent
+import com.wingedsheep.engine.state.components.stack.SpellOnStackComponent
 import com.wingedsheep.engine.state.components.stack.TargetsComponent
+import com.wingedsheep.engine.state.components.stack.TriggeredAbilityOnStackComponent
 import com.wingedsheep.sdk.core.Step
 import com.wingedsheep.sdk.model.EntityId
 
@@ -111,6 +116,12 @@ class HoldPolicy(
 
         val intent = intents.forName(cardName) ?: return TimingVerdict.Neutral
 
+        if (cast != null && IntentTag.PROTECTION in intent.tags && intent.targetsOnlyOurPermanents &&
+            !hasCredibleProtectionWindow(state, playerId, cast)
+        ) {
+            return TimingVerdict.NoWindow
+        }
+
         if (cast != null && IntentTag.DEATH_RETURN in intent.tags &&
             !hasCredibleDeathWindow(state, playerId, cast)
         ) {
@@ -157,6 +168,38 @@ class HoldPolicy(
                 IntentTag.SACRIFICE_OUTLET in intent.tags
             }
         }
+    }
+
+    /**
+     * A targeted protection spell is held until public state exposes something to protect from.
+     * Opposing stack targeting and committed combat are both real windows; an empty main phase is
+     * not. The test is structural, so hexproof/indestructible tricks and future equivalents share
+     * the policy without a card-name table.
+     */
+    private fun hasCredibleProtectionWindow(
+        state: GameState,
+        playerId: EntityId,
+        cast: CastSpell,
+    ): Boolean {
+        val target = cast.targets.singleOrNull() as? ChosenTarget.Permanent ?: return false
+        val targetId = target.entityId
+        val targetedByOpponent = state.stack.any { stackId ->
+            val stackObject = state.getEntity(stackId) ?: return@any false
+            val controller = stackObject.get<SpellOnStackComponent>()?.casterId
+                ?: stackObject.get<TriggeredAbilityOnStackComponent>()?.controllerId
+                ?: stackObject.get<ActivatedAbilityOnStackComponent>()?.controllerId
+                ?: stackObject.get<AbilityOnStackComponent>()?.controllerId
+                ?: return@any false
+            state.isOpponentTo(controller, playerId) &&
+                stackObject.get<TargetsComponent>()?.targets.orEmpty()
+                    .filterIsInstance<ChosenTarget.Permanent>()
+                    .any { it.entityId == targetId }
+        }
+        if (targetedByOpponent) return true
+
+        return state.getEntity(targetId)?.let { permanent ->
+            permanent.has<AttackingComponent>() || permanent.has<BlockingComponent>()
+        } == true
     }
 
     /**

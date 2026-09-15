@@ -9,6 +9,8 @@ import com.wingedsheep.ai.engine.evaluation.BoardEvaluator
 import com.wingedsheep.ai.engine.evaluation.BoardPresence
 import com.wingedsheep.ai.engine.knowledge.IntentCatalog
 import com.wingedsheep.engine.core.*
+import com.wingedsheep.engine.handlers.actions.decision.DecisionValidators
+import com.wingedsheep.engine.mechanics.mana.OptionalCastAffordability
 import com.wingedsheep.engine.state.GameState
 import com.wingedsheep.engine.state.components.battlefield.TappedComponent
 import com.wingedsheep.engine.state.components.identity.CardComponent
@@ -46,7 +48,25 @@ class DecisionResponder(
      */
     private val intents: IntentCatalog = IntentCatalog.NONE,
 ) {
+    /**
+     * A response selected while pricing the completed branch of the immediately preceding yes/no.
+     * Routing IDs and entity IDs are reproduced from the same immutable authoritative snapshot, so
+     * the response can be carried to the real follow-up without card-name or project-specific state.
+     */
+    private var committedFollowUp: DecisionResponse? = null
+
     fun respond(state: GameState, decision: PendingDecision, playerId: EntityId): DecisionResponse {
+        if (!simulator.isResolvingDecision) {
+            committedFollowUp?.let { planned ->
+                committedFollowUp = null
+                if (planned.decisionId == decision.id &&
+                    DecisionValidators.validate(decision, planned, state) == null
+                ) {
+                    return planned
+                }
+            }
+        }
+
         // Try card-specific advisor first
         val sourceName = decision.context.sourceName
         if (sourceName != null) {
@@ -297,12 +317,110 @@ class DecisionResponder(
         decision: YesNoDecision,
         playerId: EntityId
     ): DecisionResponse {
-        val yesResult = simulator.simulateDecision(state, YesNoResponse(decision.id, true))
+        // Some pure "may" branches immediately initiate a paid cast (madness and other
+        // cast-from-collection effects). A failed cast is intentionally resolved by the rules
+        // engine as the decline path, so simulating an unaffordable "yes" is a no-op and ties the
+        // explicit "no". Do not let the generic tie-break turn that failed attempt into an AI
+        // acceptance: price the complete immediate cost against the post-originating-action state.
+        if (OptionalCastAffordability.canPayPendingMayCast(
+                state = state,
+                playerId = playerId,
+                cardRegistry = simulator.cardRegistry,
+            ) == false
+        ) {
+            return YesNoResponse(decision.id, false)
+        }
+        val completedSelection = completedSingleCardBranch(state, decision, playerId)
+        if (completedSelection?.branch == null && completedSelection != null) {
+            return YesNoResponse(decision.id, false)
+        }
+        val selectedBranch = completedSelection?.branch
+        val yesResult = selectedBranch?.result
+            ?: simulator.simulateDecision(state, YesNoResponse(decision.id, true))
         val noResult = simulator.simulateDecision(state, YesNoResponse(decision.id, false))
-        val yesScore = evaluateResult(yesResult, playerId)
+        val yesScore = if (selectedBranch != null) {
+            evaluateCompletedBranch(yesResult, playerId)
+        } else {
+            evaluateResult(yesResult, playerId)
+        }
         val noScore = evaluateResult(noResult, playerId)
-        return YesNoResponse(decision.id, yesScore >= noScore)
+        val accept = if (selectedBranch != null) yesScore > noScore else yesScore >= noScore
+        if (!simulator.isResolvingDecision) {
+            committedFollowUp = selectedBranch?.response?.takeIf { accept }
+        }
+        return YesNoResponse(decision.id, accept)
     }
+
+    /**
+     * Complete the narrow, common shape "you may … choose at most one card …" one branch at a
+     * time. Each legal singleton — and the empty branch when the continuation permits it — is
+     * submitted through the authoritative action processor, and the resulting effect plus its
+     * immediate deterministic trigger chain is resolved by the ordinary simulator. Evaluating the
+     * real empty branch preserves effects for which choosing nothing differs from declining the
+     * originating option. Other decision shapes retain the established resolver path.
+     */
+    private fun completedSingleCardBranch(
+        state: GameState,
+        decision: YesNoDecision,
+        playerId: EntityId,
+    ): CompletedSelectionEvaluation? {
+        val accepted = simulator.simulateDecisionToNextChoice(
+            state,
+            YesNoResponse(decision.id, true),
+        ) as? SimulationResult.NeedsDecision ?: return null
+        val selection = accepted.decision as? SelectCardsDecision ?: return null
+        if (
+            selection.playerId != playerId ||
+            selection.minSelections !in 0..1 ||
+            selection.maxSelections != 1
+        ) {
+            return null
+        }
+
+        val responses = buildList {
+            selection.options.forEach { candidate ->
+                add(CardsSelectedResponse(selection.id, listOf(candidate)))
+            }
+            if (selection.minSelections == 0) {
+                add(CardsSelectedResponse(selection.id, emptyList()))
+            }
+        }
+        val best = responses.mapNotNull { response ->
+            if (DecisionValidators.validate(selection, response, accepted.state) != null) return@mapNotNull null
+            val result = simulator.simulateDecision(accepted.state, response)
+            CompletedSelectionBranch(response, result, evaluateCompletedBranch(result, playerId))
+        }.maxByOrNull { it.score }
+        return CompletedSelectionEvaluation(best)
+    }
+
+    /**
+     * Score deterministic branch consequences without learning the identities of cards drawn from
+     * a hidden library. The engine still resolves those draws normally so public draw counts and
+     * registered draw triggers are exact; only identities of cards that remain hidden in hand are
+     * removed from the evaluator's view. Their zone slots remain, preserving guaranteed card count.
+     */
+    private fun evaluateCompletedBranch(result: SimulationResult, playerId: EntityId): Double =
+        result.scoreOrRankLast { leaf ->
+            val hiddenDraws = result.events
+                .filterIsInstance<CardsDrawnEvent>()
+                .filter { it.playerId == playerId }
+                .flatMapTo(mutableSetOf()) { it.cardIds }
+                .filterTo(mutableSetOf()) { it in leaf.getHand(playerId) }
+            val masked = hiddenDraws.fold(leaf) { current, cardId ->
+                current.updateEntity(cardId) { it.without<CardComponent>() }
+            }
+            evaluator.evaluate(masked, masked.projectedState, playerId)
+        }
+
+    private data class CompletedSelectionBranch(
+        val response: CardsSelectedResponse,
+        val result: SimulationResult,
+        val score: Double,
+    )
+
+    private data class CompletedSelectionEvaluation(
+        val branch: CompletedSelectionBranch?,
+    )
 
     /**
      * Batched "you may …" raised once for a run of identical optional triggers. The AI evaluates the

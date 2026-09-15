@@ -1,7 +1,9 @@
 package com.wingedsheep.ai.engine.knowledge
 
 import com.wingedsheep.sdk.core.Keyword
+import com.wingedsheep.sdk.core.Counters
 import com.wingedsheep.sdk.core.Zone
+import com.wingedsheep.sdk.dsl.Conditions
 import com.wingedsheep.sdk.dsl.Triggers
 import com.wingedsheep.sdk.model.CardDefinition
 import com.wingedsheep.sdk.model.CardFace
@@ -11,6 +13,7 @@ import com.wingedsheep.sdk.scripting.CantAttack
 import com.wingedsheep.sdk.scripting.CantBlock
 import com.wingedsheep.sdk.scripting.Duration
 import com.wingedsheep.sdk.scripting.EventPattern
+import com.wingedsheep.sdk.scripting.GameObjectFilter
 import com.wingedsheep.sdk.scripting.EntersTapped
 import com.wingedsheep.sdk.scripting.GrantDynamicStatsEffect
 import com.wingedsheep.sdk.scripting.GrantKeyword
@@ -23,6 +26,7 @@ import com.wingedsheep.sdk.scripting.effects.*
 import com.wingedsheep.sdk.scripting.filters.unified.GroupFilter
 import com.wingedsheep.sdk.scripting.filters.unified.Scope
 import com.wingedsheep.sdk.scripting.predicates.ControllerPredicate
+import com.wingedsheep.sdk.scripting.references.Player
 import com.wingedsheep.sdk.scripting.targets.EffectTarget
 import com.wingedsheep.sdk.scripting.targets.TargetObject
 import com.wingedsheep.sdk.scripting.targets.TargetRequirement
@@ -90,6 +94,38 @@ import java.util.concurrent.ConcurrentHashMap
  * hold for them to stay apart.
  */
 object CardIntentAnalyzer {
+
+    /** Structural tags for one effect tree, without changing whole-card intent analysis. */
+    internal fun effectTags(effect: Effect): Set<IntentTag> =
+        EffectWalker.leaves(effect).flatMap(::tagsOf).toSet()
+
+    /**
+     * Structural tags for a concrete action's effect, including semantic wrappers that the broad
+     * whole-card fold intentionally leaves opaque for historical rating compatibility.
+     *
+     * SHARED ARGENTUM CHANGE: yes
+     *
+     * This is action classification, not card rating. Once a mode has been chosen, a targeted
+     * removal effect inside that mode is the same production-policy input as the identical effect
+     * at the spell root. Descending here keeps [EffectWalker] and all sealed-deck ratings frozen.
+     */
+    internal fun actionEffectTags(effect: Effect): Set<IntentTag> =
+        EffectWalker.fold(effect, object : EffectWalker.Fold<Set<IntentTag>> {
+            override fun leaf(effect: Effect): Set<IntentTag> = when (effect) {
+                is ModalEffect -> effect.modes.flatMap { actionEffectTags(it.effect) }.toSet()
+                else -> tagsOf(effect)
+            }
+
+            override fun composite(parts: List<Set<IntentTag>>): Set<IntentTag> =
+                parts.flatten().toSet()
+
+            override fun conditional(
+                thenValue: Set<IntentTag>,
+                elseValue: Set<IntentTag>?,
+            ): Set<IntentTag> = thenValue + elseValue.orEmpty()
+
+            override fun may(thenValue: Set<IntentTag>): Set<IntentTag> = thenValue
+        })
 
     private val cardCache = ConcurrentHashMap<String, CardIntent>()
     private val selfCache = ConcurrentHashMap<String, CardIntent>()
@@ -202,6 +238,13 @@ object CardIntentAnalyzer {
         if (activated.any { !it.isManaAbility && sacrificesOthers(it.cost) }) {
             tags += IntentTag.SACRIFICE_OUTLET
         }
+        if (scripts.flatMap { it.triggeredAbilities }.any { ability ->
+                val trigger = ability.trigger as? EventPattern.LifeGainEvent
+                trigger?.player == Player.You
+            }
+        ) {
+            tags += IntentTag.LIFEGAIN_PAYOFF
+        }
         // An Aura/Equipment whose whole point is the creature it sits on is a pump, not an anthem.
         if (scripts.any { it.isAura && it.staticAbilities.any { static -> static is ModifyStats } }) {
             tags += IntentTag.PUMP
@@ -294,6 +337,19 @@ object CardIntentAnalyzer {
             }
         }
 
+        // A permanent +1/+1 counter is the same strategic role as a lasting positive stat
+        // modification. Keeping this structural lets every grow-on-event creature advertise its
+        // payoff without teaching the strategist any card names.
+        is AddCountersEffect ->
+            if (effect.counterType == Counters.PLUS_ONE_PLUS_ONE && effect.count > 0) {
+                setOf(IntentTag.PUMP)
+            } else {
+                emptySet()
+            }
+
+        is AddDynamicCountersEffect ->
+            if (effect.counterType == Counters.PLUS_ONE_PLUS_ONE) setOf(IntentTag.PUMP) else emptySet()
+
         is TapUntapEffect -> if (effect.tap) setOf(IntentTag.TAPPER) else emptySet()
         is TapUntapCollectionEffect -> if (effect.tap) setOf(IntentTag.TAPPER) else emptySet()
 
@@ -322,9 +378,26 @@ object CardIntentAnalyzer {
         is GrantKeywordEffect -> keywordTags(effect.keyword)
         is GrantEvasionKeywordEffect -> setOf(IntentTag.EVASION_GRANT)
 
-        is GatherCardsEffect ->
-            if ((effect.source as? CardSource.FromZone)?.zone == Zone.LIBRARY) setOf(IntentTag.TUTOR)
-            else emptySet()
+        is GatherCardsEffect -> {
+            val source = effect.source as? CardSource.FromZone
+            if (source?.zone != Zone.LIBRARY) {
+                emptySet()
+            } else if (source.filter == GameObjectFilter.BasicLand) {
+                setOf(IntentTag.TUTOR, IntentTag.LAND_TUTOR)
+            } else {
+                setOf(IntentTag.TUTOR)
+            }
+        }
+
+        is SelectFromCollectionEffect -> {
+            val count = (effect.selection as? SelectionMode.ChooseUpTo)?.count
+            val condition = (count as? DynamicAmount.Conditional)?.condition
+            if (condition == Conditions.YouGainedLifeThisTurn) {
+                setOf(IntentTag.LIFEGAIN_ENHANCED)
+            } else {
+                emptySet()
+            }
+        }
 
         is EachPlayerDiscardsOrLoseLifeEffect -> setOf(IntentTag.DISCARD)
         is ReturnSameNamedFromGraveyardEffect -> setOf(IntentTag.RECURSION)

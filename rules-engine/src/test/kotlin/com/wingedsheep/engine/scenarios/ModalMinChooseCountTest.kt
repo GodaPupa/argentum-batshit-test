@@ -47,9 +47,19 @@ class ModalMinChooseCountTest : FunSpec({
         }
     }
 
+    val ChooseUpToOne: CardDefinition = card("Test Choose Up To One") {
+        manaCost = "{G}"
+        typeLine = "Sorcery"
+        spell {
+            modal(chooseCount = 1, minChooseCount = 0) {
+                mode("Gain 3 life", Effects.GainLife(3))
+            }
+        }
+    }
+
     fun driver(): GameTestDriver {
         val d = GameTestDriver()
-        d.registerCards(TestCards.all + listOf(ChooseOneOrBoth))
+        d.registerCards(TestCards.all + listOf(ChooseOneOrBoth, ChooseUpToOne))
         return d
     }
 
@@ -154,5 +164,28 @@ class ModalMinChooseCountTest : FunSpec({
         continuation.selectedModeIndices shouldBe emptyList()
         continuation.minChooseCount shouldBe 1
         continuation.chooseCount shouldBe 2
+    }
+
+    test("I4 — choosing zero modes completes a choose-up-to-one cast exactly once") {
+        val d = driver()
+        d.initMirrorMatch(deck = Deck.of("Forest" to 40))
+        val p1 = d.activePlayer!!
+        d.passPriorityUntil(Step.PRECOMBAT_MAIN)
+        d.giveMana(p1, Color.GREEN, 1)
+        val lifeBefore = d.state.getEntity(p1)!!.get<LifeTotalComponent>()!!.life
+
+        val spell = d.putCardInHand(p1, ChooseUpToOne.name)
+        d.submit(CastSpell(playerId = p1, cardId = spell))
+        val choice = d.pendingDecision.shouldBeInstanceOf<ChooseOptionDecision>()
+        choice.options shouldBe listOf("Gain 3 life", "Done")
+
+        d.submitDecision(p1, OptionChosenResponse(choice.id, choice.options.indexOf("Done")))
+
+        d.pendingDecision shouldBe null
+        d.state.stack shouldBe listOf(spell)
+        d.bothPass()
+        d.pendingDecision shouldBe null
+        d.state.stack shouldBe emptyList()
+        d.state.getEntity(p1)!!.get<LifeTotalComponent>()!!.life shouldBe lifeBefore
     }
 })

@@ -157,6 +157,16 @@ class ManaAbilityEnumeratorTest : FunSpec({
         }
     }
 
+    val SacrificeSelfManaCreature = card("Test Sacrifice-Self Mana Creature") {
+        typeLine = "Creature — Scion"
+        power = 1; toughness = 1
+        activatedAbility {
+            cost = Costs.SacrificeSelf
+            effect = Effects.AddColorlessMana(1)
+            manaAbility = true
+        }
+    }
+
     fun bf(driver: EnumerationTestDriver, name: String) =
         driver.game.state.getBattlefield(driver.player1).first { id ->
             driver.game.state.getEntity(id)?.get<CardComponent>()?.name == name
@@ -200,6 +210,22 @@ class ManaAbilityEnumeratorTest : FunSpec({
             .activatedAbilityActionsFor(sourceId).single()
         ability.affordable shouldBe true
         ability.additionalCostInfo?.validTapTargets shouldBe listOf(otherId)
+    }
+
+    test("SacrificeSelf mana ability exposes its irreversible payment to action policy") {
+        val driver = setupP1(
+            battlefield = listOf("Test Sacrifice-Self Mana Creature"),
+            extraSetCards = listOf(SacrificeSelfManaCreature),
+        )
+        val sourceId = bf(driver, "Test Sacrifice-Self Mana Creature")
+
+        val ability = driver.enumerateFor(driver.player1)
+            .activatedAbilityActionsFor(sourceId).single()
+        ability.isManaAbility shouldBe true
+        ability.affordable shouldBe true
+        ability.additionalCostInfo?.costType shouldBe "SacrificePermanent"
+        ability.additionalCostInfo?.validSacrificeTargets shouldBe listOf(sourceId)
+        MeaningfulActionFilter.isMeaningful(ability) shouldBe true
     }
 
     test("two Forests in play produce two distinct mana ability actions") {

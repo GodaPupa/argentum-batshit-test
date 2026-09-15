@@ -82,6 +82,16 @@ data class AiActionOption(
     val baseline: Boolean = false,
     /** Why an option was dropped, or what adjusted its score. */
     val note: String? = null,
+    /** Whether the concrete option survived production's strategic hold floors. */
+    val productionAdmissible: Boolean = true,
+    /** Exact production hold/floor reason when [productionAdmissible] is false. */
+    val productionRejectionReason: String? = null,
+    /** Structural sequencing term production applied on top of the candidate leaf. */
+    val strategicSequencingAdjustment: Double = 0.0,
+    /** Portion specifically pricing an immediately committed expiring-condition follow-up. */
+    val expiringConditionSequencingAdjustment: Double = 0.0,
+    /** Complete policy-side accounting when this option removes a friendly permanent. */
+    val friendlyRemovalAudit: FriendlyRemovalAudit? = null,
     /**
      * The exact action the AI would submit for this option — already materialized, already
      * simulated against the real processor.
@@ -92,6 +102,65 @@ data class AiActionOption(
      * submitted (it failed materialization), which is also how the UI knows not to offer it.
      */
     val action: GameAction? = null,
+)
+
+/**
+ * Machine-readable explanation of a friendly-removal candidate.
+ *
+ * SHARED ARGENTUM CHANGE: yes
+ */
+@Serializable
+data class FriendlyRemovalAudit(
+    val turnNumber: Int,
+    val removalAction: String,
+    val targetId: EntityId,
+    val targetName: String,
+    val targetControllerId: EntityId,
+    val targetBattlefieldValueBefore: Double,
+    val manaCost: String?,
+    val manaSources: List<AuditEntity> = emptyList(),
+    val lifePaid: Int = 0,
+    /** Concrete additional-cost branch chosen for the action, or `none`. */
+    val additionalCostMode: String = "none",
+    val additionalCosts: List<AuditCost> = emptyList(),
+    val removalResourceValueConsumed: Double,
+    val futureInteractionOpportunityCost: Double,
+    val deathTriggersCreated: List<String> = emptyList(),
+    val resourcesCreated: List<AuditEntity> = emptyList(),
+    val resultingBoardValue: Double,
+    val immediateEngineEffects: List<String> = emptyList(),
+    val deterministicLethal: Boolean,
+    val preventionBenefit: String? = null,
+    val resourceTransitionBenefit: Boolean,
+    val passHoldValue: Double,
+    val opposingTargetAlternatives: List<AuditEntity> = emptyList(),
+    val friendlyTargetAlternatives: List<AuditEntity> = emptyList(),
+    /** The caster's complete battlefield after the simulated line resolves. */
+    val resultingBoardState: List<AuditEntity> = emptyList(),
+    val resolvedLineValue: Double,
+    val netVersusHold: Double,
+    val requiredFairTradeMargin: Double,
+    val fairTradeSurplus: Double,
+    /** Whether the production removal-hold policy recognized and gated this candidate. */
+    val policyApplied: Boolean = true,
+    val policyDisposition: String,
+    val selected: Boolean = false,
+    val selectionReason: String? = null,
+)
+
+@Serializable
+data class AuditEntity(
+    val id: EntityId,
+    val name: String,
+    val controllerId: EntityId? = null,
+    val battlefieldValue: Double? = null,
+)
+
+@Serializable
+data class AuditCost(
+    val kind: String,
+    val entities: List<AuditEntity> = emptyList(),
+    val amount: Int? = null,
 )
 
 /**
