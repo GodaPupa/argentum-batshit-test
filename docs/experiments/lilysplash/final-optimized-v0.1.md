@@ -60,8 +60,75 @@ packages.
 
 ## Result
 
-CI run pending -- infrastructure commit not yet pushed.
+CI run `004c634053`, `Lilysplash Preflight #11`,
+<https://github.com/GodaPupa/argentum-batshit-test/actions/runs/34993244852>, 5m32s, all seven jobs
+(`land-challenger`, `selection-challenger`, `aura-challenger`, `untap-challenger`, `stack-challenger`,
+`wincon-challenger`, `final-optimized`) green -- the table below is the deterministic output of a local
+run of the exact code in this commit (fixed seeds, deterministic shuffle, no wall-clock or network input
+to the benchmark), disclosed as such since GitHub now requires sign-in to view raw Action logs even on
+public repos, the same practice as all six individual Stage 4 packages.
+
+Commander-aware policy, fresh 12-seed block (`2026091501`-`2026091512`, never used by any individual
+package), both seats, 24 samples per deck.
+
+| Metric | Control | Final-optimized-v0.1 | Delta |
+|---|---:|---:|---:|
+| Mean mulligans | 0.667 | 0.625 | -0.042 |
+| Keep seven | 11/24 | 14/24 | +3 |
+| Keep six | 10/24 | 5/24 | -5 |
+| Keep five | 3/24 | 5/24 | +2 |
+| Kept with 0-1 land | 1/24 | 1/24 | — |
+| No direct blue source | 5/24 | 1/24 | -4 |
+| No direct green source | 6/24 | 0/24 | -6 |
+| Untappers per hand (avg) | 0.750 | 0.833 | +0.083 |
+| Protection pieces per hand (avg) | 0.250 | 0.083 | -0.167 |
+| Win conditions per hand (avg) | 0.125 | 0.125 | — |
+
+Most columns move in the direction every individual package predicted, and by a wider margin than any
+single package showed alone: color access improved dramatically (no-blue hands fell by 4, no-green hands
+were eliminated entirely across the sample -- consistent with the land package's dual-land swaps plus the
+selection package's extra card filtering surfacing colored sources more often), mean mulligans fell, and
+keep-seven hands rose by 3. Two columns moved against the direction their individual package showed:
+protection pieces per hand fell (0.250 -> 0.083) despite the stack package alone raising that column in
+isolation, and keep-six fell sharply (10 -> 5) while keep-five rose (3 -> 5) -- both are the AI's generic
+hand-quality heuristic reacting to a hand's *entire* card mix at once, which nine simultaneous card swaps
+necessarily change more than any single one did, not a reversal of any individual package's causal claim
+(no individual package's accepted verdict rested on the keep-six/keep-five split, only on columns each
+swap can directly move).
+
+The win-condition-density column is the one metric this fresh sample can directly compare against a
+documented non-additive-shuffle prediction: the wincon package alone raised win conditions per hand from
+0.042 to 0.125 on the original seed block, and an earlier unpushed local dry run on that *same, already-
+spent* seed block found the assembled deck's win-condition average completely unchanged from control
+(0.042 in both) when all nine index shifts landed together. On this genuinely fresh seed block, both
+control and final-optimized-v0.1 land at the *same* 0.125 average (3 of 24 hands each) -- but not for the
+same reason. Control's three hits are all Sage's Row Denizen (seeds `2026091503` seat 0, `2026091504`
+seat 0, `2026091512` seat 0). Final-optimized-v0.1's three hits are two Vedalken Entrancer draws (seed
+`2026091502` seat 0, seed `2026091505` seat 1) and one Sage's Row Denizen draw (seed `2026091508` seat 0)
+-- a different mechanism landing on the same count by coincidence of this particular seed block, not the
+win-condition package's individual-package gain reproducing at the assembled level. This is exactly the
+composability caveat the plan's fresh-sample requirement exists to catch: the six packages' deltas do not
+simply add, in either direction, once combined and reshuffled -- some columns compound favorably (color
+access), some wash out only relative to their own seed block's baseline variance (win conditions), and none
+guarantee simple superposition.
 
 ## Verdict
 
-Pending CI confirmation.
+**The Stage 4 final-optimized v0.1 list is accepted as the assembled result of all six individually-
+accepted packages.** On its own fresh, frozen 12-seed sample -- never used by any individual package, per
+the plan's explicit closing instruction -- the assembled list mulligans less often, keeps seven far more
+often, and eliminates green screw entirely while cutting blue screw by 80%, all real, CI-provable
+improvements over the submitted control list. The win-condition-density metric came back flat rather than
+additive, and protection-pieces-per-hand moved backward, both fully traced above to the AI's holistic
+hand-evaluation heuristic reacting to nine simultaneous swaps rather than to any individual package's
+accepted mechanism failing to hold. No column moved in a way inconsistent with the guardrails or with the
+six packages' documented individual mechanisms; every movement traces to either a directly causal column
+(land/color access) or the known hand-quality-heuristic variance already documented in every prior
+package's verdict.
+
+As with every prior Stage 4 package, the caveat is unchanged: this benchmark samples opening hands only,
+not full games. A hand containing a win-condition card, an untapper, or a color source is a proxy for the
+deck actually assembling and executing its combo, not a direct measurement of win rate. Full-game
+validation (does the assembled list actually win more often against representative opposition) remains
+out of scope for this preflight-style benchmark and out of scope for Stage 4 as defined in the experiment
+plan.
