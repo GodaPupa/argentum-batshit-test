@@ -1132,7 +1132,8 @@ class PestControlAgentDecisionTest : ScenarioTestBase() {
             val castDown = insights.last().options.single { option -> option.cardName == "Cast Down" }
             castDown.action.shouldBeInstanceOf<CastSpell>().targets shouldBe
                 listOf(ChosenTarget.Permanent(opposing))
-            castDown.friendlyRemovalAudit shouldBe null
+            castDown.chosen.shouldBeFalse()
+            (castDown.score!! <= insights.last().baselineScore).shouldBeTrue()
         }
 
         test("friendly removal records additional resource costs that erase death value") {
