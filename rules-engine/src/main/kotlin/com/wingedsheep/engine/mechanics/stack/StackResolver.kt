@@ -68,6 +68,7 @@ import com.wingedsheep.sdk.core.Step
 import com.wingedsheep.sdk.core.Zone
 import com.wingedsheep.sdk.scripting.effects.WarpExileEffect
 import com.wingedsheep.sdk.scripting.effects.MoveTrackedBattlefieldObjectEffect
+import com.wingedsheep.sdk.scripting.effects.CompositeEffect
 import com.wingedsheep.sdk.model.EntityId
 import com.wingedsheep.sdk.scripting.EntersAsCopy
 import com.wingedsheep.engine.handlers.effects.EntersWithReplacements
@@ -184,6 +185,7 @@ class StackResolver(
         webSlungReturnedManaValue: Int = 0,
         wasMayhem: Boolean = false,
         chosenModes: List<Int> = emptyList(),
+        modalSelectionCompleted: Boolean = false,
         modeTargetsOrdered: List<List<ChosenTarget>> = emptyList(),
         modeTargetRequirements: Map<Int, List<TargetRequirement>> = emptyMap(),
         modeDamageDistribution: Map<Int, Map<EntityId, Int>> = emptyMap(),
@@ -332,6 +334,7 @@ class StackResolver(
                 splicedCardNames = splicedCardNames,
                 splicedTargetsOrdered = splicedTargetsOrdered,
                 chosenModes = chosenModes,
+                modalSelectionCompleted = modalSelectionCompleted,
                 modeTargetsOrdered = modeTargetsOrdered,
                 modeTargetRequirements = modeTargetRequirements,
                 modeDamageDistribution = modeDamageDistribution,
@@ -2094,10 +2097,22 @@ class StackResolver(
         }
         val rawSpellEffect = baseSpellEffect
         val textReplacement = state.getEntity(spellId)?.get<TextReplacementComponent>()
-        val spellEffect = if (rawSpellEffect != null && textReplacement != null) {
+        val replacedSpellEffect = if (rawSpellEffect != null && textReplacement != null) {
             rawSpellEffect.applyTextReplacement(textReplacement)
         } else {
             rawSpellEffect
+        }
+        // A completed cast-time choice of zero modes is a resolved no-op, not evidence that modal
+        // selection was never performed. Execute an empty composite so the ordinary spell
+        // finalizer and any spliced tail still run exactly once without reopening mode selection.
+        val spellEffect = if (
+            spellComponent.modalSelectionCompleted &&
+            spellComponent.chosenModes.isEmpty() &&
+            replacedSpellEffect is com.wingedsheep.sdk.scripting.effects.ModalEffect
+        ) {
+            CompositeEffect(emptyList())
+        } else {
+            replacedSpellEffect
         }
         // Splice (CR 702.47): the spliced cards' text is a tail that runs after the main spell's own
         // effects (CR 702.47b). Its targets were appended to the end of the flat list at cast time, so

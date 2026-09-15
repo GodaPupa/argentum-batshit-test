@@ -6,9 +6,11 @@ import com.wingedsheep.engine.core.CardsSelectedResponse
 import com.wingedsheep.engine.core.CastSpell
 import com.wingedsheep.engine.core.CardsDiscardedEvent
 import com.wingedsheep.engine.core.CardsDrawnEvent
+import com.wingedsheep.engine.core.ChooseOptionDecision
 import com.wingedsheep.engine.core.DeclareAttackers
 import com.wingedsheep.engine.core.DeclareBlockers
 import com.wingedsheep.engine.core.DecisionSubmittedEvent
+import com.wingedsheep.engine.core.OptionChosenResponse
 import com.wingedsheep.engine.core.PassPriority
 import com.wingedsheep.engine.core.PaymentStrategy
 import com.wingedsheep.engine.core.SelectCardsDecision
@@ -82,6 +84,76 @@ class PestControlMonoRedMadnessDecisionTest : ScenarioTestBase() {
     }
 
     init {
+        test("Highway Robbery chooses Done when every destructive mode has zero payoff") {
+            val game = seeded()
+                .withLandsOnBattlefield(1, "Mountain", 3)
+                .withCardInHand(1, "Highway Robbery")
+                .withCardInHand(1, "Lightning Bolt")
+                .build()
+
+            game.castSpell(1, "Highway Robbery").error.shouldBeNull()
+            game.resolveStack()
+
+            val decision = game.state.pendingDecision.shouldBeInstanceOf<ChooseOptionDecision>()
+            val response = ai(game).respondToDecision(game.state, decision)
+                .shouldBeInstanceOf<OptionChosenResponse>()
+
+            withClue(
+                "discarding Lightning Bolt or sacrificing a Mountain draws zero cards and has " +
+                    "no payoff, so Highway Robbery must select the legal Done branch",
+            ) {
+                decision.options[response.optionIndex] shouldBe "Done"
+            }
+            game.execute(
+                com.wingedsheep.engine.core.SubmitDecision(game.player1Id, response),
+            ).error.shouldBeNull()
+            game.resolveStack()
+            withClue("the restraint branch must preserve Bolt and every Mountain without drawing") {
+                game.findCardsInHand(1, "Lightning Bolt").size shouldBe 1
+                game.findPermanents("Mountain").size shouldBe 3
+                game.state.getLibrary(game.player1Id).size shouldBe 0
+            }
+        }
+
+        test("Highway Robbery chooses a destructive mode when completed available draws pay for it") {
+            val game = seeded()
+                .withLandsOnBattlefield(1, "Mountain", 3)
+                .withCardInHand(1, "Highway Robbery")
+                .withCardInHand(1, "Mountain")
+                .withCardInLibrary(1, "Lightning Bolt")
+                .withCardInLibrary(1, "Guttersnipe")
+                .build()
+
+            game.castSpell(1, "Highway Robbery").error.shouldBeNull()
+            game.resolveStack()
+
+            val decision = game.state.pendingDecision.shouldBeInstanceOf<ChooseOptionDecision>()
+            val response = ai(game).respondToDecision(game.state, decision)
+                .shouldBeInstanceOf<OptionChosenResponse>()
+            withClue("two available draws must preserve a useful completed destructive branch") {
+                decision.options[response.optionIndex] shouldBe "Discard a card, then draw two cards"
+            }
+        }
+
+        test("Highway Robbery can choose beneficial land sacrifice when no discard exists") {
+            val game = seeded()
+                .withLandsOnBattlefield(1, "Mountain", 3)
+                .withCardInHand(1, "Highway Robbery")
+                .withCardInLibrary(1, "Lightning Bolt")
+                .withCardInLibrary(1, "Guttersnipe")
+                .build()
+
+            game.castSpell(1, "Highway Robbery").error.shouldBeNull()
+            game.resolveStack()
+
+            val decision = game.state.pendingDecision.shouldBeInstanceOf<ChooseOptionDecision>()
+            val response = ai(game).respondToDecision(game.state, decision)
+                .shouldBeInstanceOf<OptionChosenResponse>()
+            withClue("a payable land sacrifice for two available draws must remain selectable") {
+                decision.options[response.optionIndex] shouldBe "Sacrifice a land, then draw two cards"
+            }
+        }
+
         test("accepts a profitable Fiery Temper madness cast") {
             val game = seeded()
                 .withLifeTotal(2, 3)

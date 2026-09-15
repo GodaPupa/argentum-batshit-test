@@ -61,6 +61,7 @@ class ModalCastTimeSerializationRoundTripTest : FunSpec({
                 ChosenTarget.Permanent(goblin),
                 ChosenTarget.Player(opponentPlayer)
             ),
+            modalSelectionCompleted = true,
             chosenModes = listOf(2, 3, 0),
             modeTargetsOrdered = listOf(
                 listOf(ChosenTarget.Permanent(creature)),
@@ -77,6 +78,7 @@ class ModalCastTimeSerializationRoundTripTest : FunSpec({
 
         decoded.playerId shouldBe player
         decoded.cardId shouldBe card
+        decoded.modalSelectionCompleted shouldBe true
         decoded.chosenModes shouldBe listOf(2, 3, 0)
         decoded.modeTargetsOrdered shouldBe listOf(
             listOf(ChosenTarget.Permanent(creature)),
@@ -99,6 +101,7 @@ class ModalCastTimeSerializationRoundTripTest : FunSpec({
         ) as CastSpell
 
         decoded.chosenModes shouldBe emptyList()
+        decoded.modalSelectionCompleted shouldBe false
         decoded.modeTargetsOrdered shouldBe emptyList()
         decoded.modeDamageDistribution shouldBe emptyMap()
     }

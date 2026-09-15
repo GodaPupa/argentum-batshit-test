@@ -101,11 +101,16 @@ class FrozenBaselineTest : FunSpec({
          * action text, this branch reproduces the previous golden `6ff9ded1403d59ac` exactly. The
          * outcome is untouched: seat 1 still wins on turn 20 at life -8 / 16.
          *
+         * Re-blessed 2026-09-15 for completed empty modal casts adding
+         * `CastSpell.modalSelectionCompleted`. **`LEGACY_V0` did not move.** The frozen deck has no
+         * modal spells, so every recorded cast carries only the default `modalSelectionCompleted=false`.
+         * The outcome is unchanged: seat 1 still wins on turn 20 at life -8 / 16.
+         *
          * Note for whoever hits this next: hashing `GameAction.toString()` means *any* new field on
          * a cast/action data class moves this hash without the AI having changed. Check the outcome
          * line in the failure clue first — if turns/winner/life match the values above, you are
          * almost certainly in this benign case rather than a real behavioural drift.
          */
-        private const val GOLDEN_HASH = "47e993c61a57ebbd"
+        private const val GOLDEN_HASH = "1eee5cd6e601e4e8"
     }
 }

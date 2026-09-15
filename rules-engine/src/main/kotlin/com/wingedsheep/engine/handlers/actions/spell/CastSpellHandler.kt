@@ -493,9 +493,17 @@ class CastSpellHandler(
         // Choose-N modal shape checks (rules 700.2a / 700.2d). Enforced only when the
         // action arrives with chosenModes populated — the cast-time continuation flow
         // starts with an empty list which falls through to the pause in execute().
-        if (cardDef != null && action.chosenModes.isNotEmpty()) {
+        if (cardDef != null) {
             val modalEffect = cardDef.script.spellEffect as? ModalEffect
-            if (modalEffect != null) {
+            if (action.modalSelectionCompleted && modalEffect == null) {
+                return "A nonmodal spell cannot complete modal selection"
+            }
+            if (action.modalSelectionCompleted && action.chosenModes.isEmpty() &&
+                modalEffect != null && modalEffect.minChooseCount > 0
+            ) {
+                return "This modal spell requires at least ${modalEffect.minChooseCount} mode(s)"
+            }
+            if (action.chosenModes.isNotEmpty() && modalEffect != null) {
                 val modalError = validateChosenModeShape(state, modalEffect, action)
                 if (modalError != null) return modalError
             }
@@ -2325,7 +2333,9 @@ class CastSpellHandler(
         // for modal *triggered* / *activated* abilities (CR 603.3c), which don't go
         // through the cast pipeline at all.
         val modalEffect = cardDef?.script?.spellEffect as? ModalEffect
-        if (modalEffect != null && action.chosenModes.isEmpty() && modalEffect.chooseCount >= 1) {
+        if (modalEffect != null && action.chosenModes.isEmpty() &&
+            !action.modalSelectionCompleted && modalEffect.chooseCount >= 1
+        ) {
             return pauseForCastTimeModeSelection(currentState, action, cardComponent, modalEffect)
         }
 
@@ -3715,6 +3725,7 @@ class CastSpellHandler(
             webSlungReturnedManaValue = webSlungReturnedManaValue,
             wasMayhem = wasMayhem,
             chosenModes = action.chosenModes,
+            modalSelectionCompleted = action.modalSelectionCompleted,
             modeTargetsOrdered = effectiveModeTargetsOrdered,
             modeTargetRequirements = perModeTargetRequirements,
             modeDamageDistribution = action.modeDamageDistribution,
@@ -4759,6 +4770,7 @@ class CastSpellHandler(
         val flatTargets = resolvedModeTargets.flatten()
         val finalAction = baseCastAction.copy(
             chosenModes = chosenModeIndices,
+            modalSelectionCompleted = true,
             modeTargetsOrdered = resolvedModeTargets,
             targets = flatTargets
         )
