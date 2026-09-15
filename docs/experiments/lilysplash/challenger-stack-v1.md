@@ -52,10 +52,13 @@ the reason given above).
 
 ## Result
 
-CI run `<pending>` -- see below; the table is the deterministic output of a local run of the exact code
-in this commit (fixed seeds, deterministic shuffle, no wall-clock or network input to the benchmark),
-disclosed as such since GitHub now requires sign-in to view raw Action logs even on public repos, the
-same practice as the three prior packages.
+CI run `e73ea866e0`, `Lilysplash Preflight #9`,
+<https://github.com/GodaPupa/argentum-batshit-test/actions/runs/34930246680>, 5m10s, all five jobs
+(`land-challenger`, `selection-challenger`, `aura-challenger`, `untap-challenger`, `stack-challenger`)
+green -- the table below is the deterministic output of a local run of the exact code in this commit
+(fixed seeds, deterministic shuffle, no wall-clock or network input to the benchmark), disclosed as such
+since GitHub now requires sign-in to view raw Action logs even on public repos, the same practice as the
+three prior packages.
 
 Commander-aware policy, same 12 seeds, both seats, 24 samples per deck.
 
