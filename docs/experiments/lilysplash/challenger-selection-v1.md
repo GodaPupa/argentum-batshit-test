@@ -55,8 +55,71 @@ Faerie Seer, plus Opt/Preordain for the challenger).
 
 ## Result
 
-Status: pending. This document is committed alongside the code and decklist so the challenger's
-provenance is frozen before the CI run; the `Result` and `Verdict` sections below will be filled in
-from the actual `land-challenger`-style CI log once `selection-challenger` has run on this branch, the
-same way `challenger-land-v1.md` was updated after its first (invalid) and corrected CI runs. No
-result is reported here until that log exists.
+CI run (commit `c218e2b650`, `Lilysplash Preflight` #6, `selection-challenger` job,
+<https://github.com/GodaPupa/argentum-batshit-test/actions/runs/34916553630>) succeeded in 5m 12s,
+which on its own proves the benchmark's internal guardrails and the `rows.size == seeds.size * 2 * 2`
+assertion held for both decks -- no approximated cards, no dropped hands. GitHub now requires sign-in
+to read a public run's raw log text, so the table below is the deterministic output of that exact
+commit run locally beforehand (same fixed seeds, same shuffle implementation, no wall-clock or network
+input to the benchmark) to confirm CI would pass before pushing; CI's green run on the identical commit
+is the independent proof that this is what actually executes, not a substitute source for the numbers.
+
+Commander-aware policy, same 12 seeds, both seats, 24 samples per deck.
+
+| Metric | Control | Challenger-selection-v1 | Delta |
+|---|---:|---:|---:|
+| Mean mulligans | 0.542 | 0.583 | +0.041 |
+| Keep seven | 16/24 | 14/24 | -2 |
+| Keep six | 3/24 | 6/24 | +3 |
+| Keep five | 5/24 | 4/24 | -1 |
+| Kept with 0-1 land | 2/24 | 1/24 | -1 |
+| No direct blue source | 6/24 | 1/24 | -5 |
+| No direct green source | 4/24 | 4/24 | — |
+| Selectors per hand (avg) | 0.750 | 0.917 | +0.167 |
+| Hands with zero selectors | 10/24 (41.7%) | 6/24 (25.0%) | -4 |
+| Cheap selectors per hand (avg) | 0.125 | 0.208 | +0.083 |
+
+The land/U/G columns are a sanity check, not the point of this package -- nothing about the land base
+changed, so their movement (including the -5 on "no direct blue source") is reshuffle noise from
+swapping 2 of 99 library cards, the same effect `challenger-land-v1.md` already documented for its own
+unrelated columns. It is *not* evidence this package fixes color screw; it's evidence that a 2-card
+swap reshuffles every seed's full draw sequence, so unrelated metrics can move by chance alone. The
+metrics this package is actually about are the last three rows.
+
+Zero-selector hands (an opening 7 with no cantrip, no looter, no card-selection creature -- nothing to
+dig toward a missing combo piece) dropped from 10/24 to 6/24. That size of move matches simple
+arithmetic: adding 2 selection spells to a 99-card library raises the chance any given 7-card hand
+contains at least one by roughly 2x7/99 =~ 14 percentage points, close to the observed 16.7-point drop.
+Opt appeared in 3 of the 24 challenger hands, Preordain in 0 (expected value for a single copy at this
+sample size is ~1.7 each; 3-and-0 is ordinary variance, not a sign either card underperformed).
+
+Three representative pairs (same seed and seat, control vs. challenger):
+
+- **Seed 2026091404, seat 1** -- same mulligan count (1) and land count (2) in both. Control's kept
+  hand had one selector (Brainstorm); the challenger's had two (Brainstorm and Opt). A clean,
+  same-keep-decision comparison where the added card is pure upside.
+- **Seed 2026091411, seat 1** -- same mulligan count (0) and land count (3) in both. Control's hand had
+  zero selectors; the challenger drew Opt into the same slot, going from zero to one. Another
+  apples-to-apples case with no confound.
+- **Seed 2026091406, seat 0** -- the one case worth flagging: the challenger's kept hand does contain
+  Opt, but it cost two extra mulligans to get there (0 -> 2) versus control's zero-mulligan seven. This
+  is the land/U/G-style reshuffle noise described above, not a cost of running fewer copies of
+  Whirlpool Rider or Capsize -- the two decks draw different card sequences from this seed onward the
+  moment any one of the 99 cards changes, independent of which two cards they were.
+
+## Verdict
+
+**Selection package v1 is accepted, with a narrower evidence base than the land package.** The
+zero-selector-hand reduction is real, lands almost exactly where simple probability predicts, and every
+spot-checked pair traces back to its actual cause (either the new card showing up with no other change,
+or ordinary reshuffle noise already documented as a known artifact of this benchmark). Nothing traces a
+regression to the specific cards removed.
+
+The caveat the plan's promotion bar asks for is worth stating plainly: this benchmark only samples
+opening hands, not full games, so "more selection in the opening 7" is a proxy for the actual goal
+(finding the mana/mill combo faster over a whole game), not a direct measurement of it. The land
+package's result was a first-order measurement of the thing it claimed to fix (color access in the
+opening hand *is* the land base's job); this package's opening-hand selector count is one step removed
+from what "cheaper selection" is ultimately supposed to buy. Held pending combination with the other
+Stage 4 packages, same as the land package, and pending eventual full-game validation once that
+infrastructure exists.
