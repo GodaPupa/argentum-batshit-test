@@ -154,6 +154,43 @@ class PestControlMonoRedMadnessDecisionTest : ScenarioTestBase() {
             }
         }
 
+        test("Faithless Looting is held when zero draws would only discard retained value") {
+            val game = seeded()
+                .withLandsOnBattlefield(1, "Mountain", 1)
+                .withCardInHand(1, "Faithless Looting")
+                .withCardInHand(1, "Lightning Bolt")
+                .withLifeTotal(2, 20)
+                .build()
+
+            val action = ai(game).chooseAction(game.state)
+
+            withClue(
+                "with an empty library, Looting cannot replace the retained Bolt and must not " +
+                    "turn its mandatory discard into pure resource loss",
+            ) {
+                (action is CastSpell && cardName(game, action.cardId) == "Faithless Looting")
+                    .shouldBeFalse()
+            }
+        }
+
+        test("Grab the Prize is held when its mandatory discard and zero draws lose material") {
+            val game = seeded()
+                .withLandsOnBattlefield(1, "Mountain", 2)
+                .withCardInHand(1, "Grab the Prize")
+                .withCardInHand(1, "Lightning Bolt")
+                .withLifeTotal(2, 20)
+                .build()
+
+            val action = ai(game).chooseAction(game.state)
+
+            withClue(
+                "two incidental damage does not justify discarding Bolt and drawing zero cards",
+            ) {
+                (action is CastSpell && cardName(game, action.cardId) == "Grab the Prize")
+                    .shouldBeFalse()
+            }
+        }
+
         test("accepts a profitable Fiery Temper madness cast") {
             val game = seeded()
                 .withLifeTotal(2, 3)
@@ -666,6 +703,78 @@ class PestControlMonoRedMadnessDecisionTest : ScenarioTestBase() {
             }
         }
 
+        test("visible burn decision is invariant to opponent hidden hand and library permutations") {
+            fun chooseTarget(
+                opponentHand: String,
+                opponentLibrary: List<String>,
+            ): Pair<String?, String?> {
+                val setup = seeded()
+                    .withActivePlayer(2)
+                    .withLandsOnBattlefield(1, "Mountain", 1)
+                    .withCardInHand(1, "Lightning Bolt")
+                    .withCardOnBattlefield(2, "Essence Warden")
+                    .withCardOnBattlefield(2, "Mons's Goblin Raiders")
+                    .withLandsOnBattlefield(2, "Swamp", 2)
+                    .withCardInHand(2, "Carrier Thrall")
+                    .withCardInHand(2, opponentHand)
+                    .withLifeTotal(2, 20)
+                opponentLibrary.forEach { setup.withCardInLibrary(2, it) }
+                val game = setup.build()
+                game.castSpell(2, "Carrier Thrall").isSuccess.shouldBeTrue()
+                game.execute(PassPriority(game.player2Id)).error.shouldBeNull()
+                game.state.priorityPlayerId shouldBe game.player1Id
+
+                val action = ai(game).chooseAction(game.state).shouldBeInstanceOf<CastSpell>()
+                return cardName(game, action.cardId) to cardName(game, chosenTargetId(action)!!)
+            }
+
+            val weatherHidden = chooseTarget(
+                opponentHand = "Weather the Storm",
+                opponentLibrary = listOf("Forest", "Carrier Thrall"),
+            )
+            val weatherInLibrary = chooseTarget(
+                opponentHand = "Forest",
+                opponentLibrary = listOf("Carrier Thrall", "Weather the Storm"),
+            )
+            val permutedLibrary = chooseTarget(
+                opponentHand = "Forest",
+                opponentLibrary = listOf("Weather the Storm", "Carrier Thrall"),
+            )
+
+            withClue(
+                "identical visible states and known deck composition must produce the same semantic " +
+                    "action regardless of the opponent's hidden hand identity or library order",
+            ) {
+                weatherHidden shouldBe ("Lightning Bolt" to "Essence Warden")
+                weatherInLibrary shouldBe weatherHidden
+                permutedLibrary shouldBe weatherHidden
+            }
+        }
+
+        test("Pest removal answers a visibly lethal attacking Sneaky Snacker") {
+            val combat = seeded()
+                .withActivePlayer(1)
+                .withPriorityPlayer(2)
+                .inPhase(Phase.COMBAT, Step.DECLARE_ATTACKERS)
+                .withLifeTotal(2, 2)
+                .withLandsOnBattlefield(2, "Swamp", 2)
+                .withCardInHand(2, "Cast Down")
+                .withCardOnBattlefield(1, "Sneaky Snacker", summoningSickness = false)
+                .build()
+            val snacker = combat.findPermanent("Sneaky Snacker")!!
+            combat.state = combat.state.updateEntity(combat.player1Id) {
+                it.with(AttackersDeclaredThisCombatComponent)
+            }.updateEntity(snacker) {
+                it.with(AttackingComponent(combat.player2Id))
+            }
+            val survivalRemoval = ai(combat, combat.player2Id).chooseAction(combat.state)
+                .shouldBeInstanceOf<CastSpell>()
+            withClue("the unblocked two-power Snacker is deterministic lethal") {
+                cardName(combat, survivalRemoval.cardId) shouldBe "Cast Down"
+                chosenTargetId(survivalRemoval) shouldBe snacker
+            }
+        }
+
         test("holds Fireblast and Lava Dart sacrifice costs until their value is decisive") {
             val fireblast = seeded()
                 .withLandsOnBattlefield(1, "Mountain", 4)
@@ -693,6 +802,34 @@ class PestControlMonoRedMadnessDecisionTest : ScenarioTestBase() {
             val lethalAction = ai(lethal).chooseAction(lethal.state).shouldBeInstanceOf<CastSpell>()
             cardName(lethal, lethalAction.cardId) shouldBe "Lava Dart"
             chosenTargetId(lethalAction) shouldBe lethal.player2Id
+        }
+
+        test("flashes back Lava Dart when removing an attacker is required for survival") {
+            val game = seeded()
+                .withActivePlayer(2)
+                .withPriorityPlayer(1)
+                .inPhase(Phase.COMBAT, Step.DECLARE_ATTACKERS)
+                .withLifeTotal(1, 1)
+                .withLandsOnBattlefield(1, "Mountain", 1)
+                .withCardInGraveyard(1, "Lava Dart")
+                .withCardOnBattlefield(2, "Essence Warden", summoningSickness = false)
+                .build()
+            val warden = game.findPermanent("Essence Warden")!!
+            game.state = game.state.updateEntity(game.player2Id) {
+                it.with(AttackersDeclaredThisCombatComponent)
+            }.updateEntity(warden) {
+                it.with(AttackingComponent(game.player1Id))
+            }
+
+            val action = ai(game).chooseAction(game.state).shouldBeInstanceOf<CastSpell>()
+            withClue(
+                "passing leaves an unblocked one-power attacker lethal, so sacrificing the sole " +
+                    "Mountain is concretely productive survival removal",
+            ) {
+                cardName(game, action.cardId) shouldBe "Lava Dart"
+                chosenTargetId(action) shouldBe warden
+                action.additionalCostPayment?.sacrificedPermanents?.size shouldBe 1
+            }
         }
 
         test("Mono Red receives and uses the lethal response window over Weather the Storm") {

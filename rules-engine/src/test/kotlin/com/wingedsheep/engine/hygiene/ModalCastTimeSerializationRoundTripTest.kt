@@ -22,6 +22,8 @@ import com.wingedsheep.sdk.scripting.targets.EffectTarget
 import com.wingedsheep.sdk.scripting.values.DynamicAmount
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
+import io.kotest.matchers.shouldNotBe
+import io.kotest.matchers.string.shouldNotContain
 import kotlinx.serialization.json.Json
 
 /**
@@ -42,6 +44,11 @@ class ModalCastTimeSerializationRoundTripTest : FunSpec({
     val json = Json {
         serializersModule = engineSerializersModule
         encodeDefaults = true
+    }
+
+    val historicalJson = Json {
+        serializersModule = engineSerializersModule
+        encodeDefaults = false
     }
 
     test("L2 — CastSpell with chosenModes, modeTargetsOrdered, modeDamageDistribution round-trips") {
@@ -104,6 +111,47 @@ class ModalCastTimeSerializationRoundTripTest : FunSpec({
         decoded.modalSelectionCompleted shouldBe false
         decoded.modeTargetsOrdered shouldBe emptyList()
         decoded.modeDamageDistribution shouldBe emptyMap()
+    }
+
+    test("L2 — historical CastSpell JSON without modal completion marker defaults to unperformed") {
+        val historical: GameAction = CastSpell(
+            playerId = EntityId.generate(),
+            cardId = EntityId.generate(),
+        )
+        val encoded = historicalJson.encodeToString(GameAction.serializer(), historical)
+        encoded shouldNotContain "modalSelectionCompleted"
+
+        val decoded = json.decodeFromString(GameAction.serializer(), encoded) as CastSpell
+
+        decoded.modalSelectionCompleted shouldBe false
+        decoded shouldBe historical
+    }
+
+    test("L2 — explicit modal completion values round-trip deterministically and remain distinct") {
+        val player = EntityId.generate()
+        val card = EntityId.generate()
+        val unperformed: GameAction = CastSpell(playerId = player, cardId = card)
+        val completed: GameAction = CastSpell(
+            playerId = player,
+            cardId = card,
+            modalSelectionCompleted = true,
+        )
+
+        fun roundTrip(action: GameAction): Pair<GameAction, String> {
+            val first = json.encodeToString(GameAction.serializer(), action)
+            val decoded = json.decodeFromString(GameAction.serializer(), first)
+            val second = json.encodeToString(GameAction.serializer(), decoded)
+            second shouldBe first
+            return decoded to first
+        }
+
+        val (decodedUnperformed, encodedUnperformed) = roundTrip(unperformed)
+        val (decodedCompleted, encodedCompleted) = roundTrip(completed)
+
+        (decodedUnperformed as CastSpell).modalSelectionCompleted shouldBe false
+        (decodedCompleted as CastSpell).modalSelectionCompleted shouldBe true
+        decodedUnperformed shouldNotBe decodedCompleted
+        encodedUnperformed shouldNotBe encodedCompleted
     }
 
     test("L3 — CastModalModeSelectionContinuation round-trips with Mode payload") {
