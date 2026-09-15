@@ -128,6 +128,13 @@ lilysplash-selection-challenger:
     scripts/gradle-locked :ai:test --tests "*.LilysplashOpeningHandBenchmark" \
         -Dbenchmark=true -DlilysplashSelectionChallenger=true
 
+# Stage 4 item 2: compare the control deck against the frozen aura-only challenger
+# (docs/experiments/lilysplash/challenger-aura-v1.txt) under the commander-aware keep rule, same seeds.
+[group: 'ai']
+lilysplash-aura-challenger:
+    scripts/gradle-locked :ai:test --tests "*.LilysplashOpeningHandBenchmark" \
+        -Dbenchmark=true -DlilysplashAuraChallenger=true
+
 # ECL apprentice promotion ladder. Artifacts are installed outside the repository and selected with
 # -Dargentum.ai.apprentice.dir; missing or invalid files safely use the production evaluator.
 [group: 'ai']

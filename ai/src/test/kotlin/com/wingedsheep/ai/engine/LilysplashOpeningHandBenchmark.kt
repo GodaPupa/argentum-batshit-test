@@ -96,6 +96,9 @@ class LilysplashOpeningHandBenchmark : FunSpec({
     )
     val fixing = setOf(
         "Ash Barrens", "Escape Tunnel", "Evolving Wilds", "Terramorphic Expanse", "Lórien Revealed",
+        // Stage 4 aura challenger v1 addition: also a "find the color you're missing" card, just via
+        // a colorless artifact instead of a fetchland.
+        "Wayfarer's Bauble",
     )
     val fetchBoth = setOf("Escape Tunnel", "Evolving Wilds", "Terramorphic Expanse")
 
@@ -528,6 +531,139 @@ class LilysplashOpeningHandBenchmark : FunSpec({
                     "zeroSelectors=${deckRows.count { it.selectors == 0 }} " +
                     "avgCheapSelectors=${String.format(Locale.ROOT, "%.3f", deckRows.map { it.cheapSelectors }.average())} " +
                     "zeroCheapSelectors=${deckRows.count { it.cheapSelectors == 0 }}",
+            )
+        }
+        check(rows.size == seeds.size * 2 * 2)
+    }
+
+    // Stage 4 item 2 (reduced four-mana Aura density): the submitted control deck against a frozen
+    // challenger that removes Dawn's Reflection -- the deck's only Aura at converted mana cost 4 (the
+    // other twelve Auras in the list all cost 1-3) -- and replaces it with Wayfarer's Bauble, a {1}
+    // common artifact that fetches a basic land for {2} and a sacrifice. Both cards are colorless-cost
+    // mana development; the swap isolates whether committing 4 mana to a single enchant-land Aura (a
+    // real 2-for-1 risk: removal on the enchanted land also strips the Aura) is worth more or less than
+    // a cheaper, non-Aura source that can't be blown out that way. No land, selection spell,
+    // untap/Freed piece, counterspell/protection spell, or win-condition card differs between the two
+    // decks, per the plan's one-variable-at-a-time rule. Wayfarer's Bauble is added to the shared
+    // `fixing` set above (it does the same "find the color I'm missing" job as the existing fetchlands),
+    // so the land/U/G/fixer columns double as both the sanity check and the one metric this narrow,
+    // single-card swap can actually move.
+    test("Lilysplash aura challenger v1 preflight").config(
+        enabled = System.getProperty("lilysplashAuraChallenger") == "true",
+    ) {
+        val control = submittedDeck()
+        val challenger = submittedDeck("docs/experiments/lilysplash/challenger-aura-v1.txt")
+        checkDeckGuardrails(control, "control")
+        checkDeckGuardrails(challenger, "challenger-aura-v1")
+
+        val registry = CardRegistry().apply {
+            register(MtgSetCatalog.all.flatMap { it.cards + it.basicLands })
+        }
+        val processor = ActionProcessor(registry)
+        val initializer = GameInitializer(registry)
+        val rows = mutableListOf<DeckHand>()
+
+        for ((deckLabel, deck) in listOf("control" to control, "challenger-aura-v1" to challenger)) {
+            val builtDeck = Deck(cards = deck.library, commander = deck.commander)
+            for (seed in seeds) {
+                val init = initializer.initializeGame(
+                    GameConfig(
+                        players = listOf(
+                            PlayerConfig("Seat0", builtDeck, commanderCardName = deck.commander),
+                            PlayerConfig("Seat1", builtDeck, commanderCardName = deck.commander),
+                        ),
+                        format = Format.Commander(alwaysDivertToCommand = true),
+                        skipMulligans = false,
+                        startingPlayerIndex = 0,
+                        seed = seed,
+                    ),
+                )
+                var state = init.state
+                val controllers = init.playerIds.map { playerId ->
+                    EngineAiPlayerController(registry, playerId, gameStateProvider = { state })
+                }
+                val mulligans = IntArray(init.playerIds.size)
+
+                for ((seat, playerId) in init.playerIds.withIndex()) {
+                    while (true) {
+                        val cards = summaries(state, playerId)
+                        val mulliganState = state.getEntity(playerId)!!.get<MulliganStateComponent>()!!
+                        val genericKeep = controllers[seat].decideMulligan(
+                            MulliganInfo(
+                                hand = state.getHand(playerId),
+                                mulliganCount = mulliganState.mulligansTaken,
+                                cardsToPutOnBottom = mulliganState.cardsToBottom,
+                                cards = cards,
+                                isOnThePlay = seat == 0,
+                            ),
+                        )
+                        val keep = genericKeep && (
+                            mulliganState.mulligansTaken >= 2 || hasCommanderColors(cards)
+                        )
+                        if (keep) {
+                            state = process(processor, state, KeepHand(playerId))
+                            break
+                        }
+                        state = process(processor, state, TakeMulligan(playerId))
+                        mulligans[seat]++
+                    }
+                }
+
+                for ((seat, playerId) in init.playerIds.withIndex()) {
+                    val mulliganState = state.getEntity(playerId)!!.get<MulliganStateComponent>()!!
+                    if (mulliganState.cardsToBottom > 0) {
+                        val cards = summaries(state, playerId)
+                        val bottom = controllers[seat].chooseBottomCards(
+                            BottomCardsInfo(
+                                hand = state.getHand(playerId),
+                                cardsToPutOnBottom = mulliganState.cardsToBottom,
+                                cards = cards,
+                            ),
+                        )
+                        state = process(processor, state, BottomCards(playerId, bottom))
+                    }
+                }
+
+                for ((seat, playerId) in init.playerIds.withIndex()) {
+                    val hand = state.getHand(playerId).map { state.getEntity(it)!!.get<CardComponent>()!!.name }
+                    val landCount = state.getHand(playerId).count {
+                        state.getEntity(it)!!.get<CardComponent>()!!.typeLine.isLand
+                    }
+                    rows += DeckHand(
+                        deck = deckLabel,
+                        seed = seed,
+                        seat = seat,
+                        mulligans = mulligans[seat],
+                        cards = hand,
+                        lands = landCount,
+                        directBlue = hand.count { it in blueSources },
+                        directGreen = hand.count { it in greenSources },
+                        fixers = hand.count { it in fixing },
+                    )
+                }
+            }
+        }
+
+        println("=== LILYSPLASH AURA CHALLENGER V1 PREFLIGHT (commander-aware policy) ===")
+        println("control=f315b0907f3f9ae9d61ae2d45de0b778b45a9d9ff86e6ac5c343e4385d5de525")
+        println("challenger-aura-v1=cb7cdb7cd9b52a57ef4e18934462ebee763d5a2bdb7415461ae1b274dd4fc699")
+        println("seeds=${seeds.joinToString(",")}")
+        rows.forEach { row ->
+            println(
+                "deck=${row.deck} seed=${row.seed} seat=${row.seat} mulligans=${row.mulligans} kept=${row.cards.size} " +
+                    "lands=${row.lands} U=${row.directBlue} G=${row.directGreen} fixers=${row.fixers} " +
+                    "hand=${row.cards.joinToString(" | ")}",
+            )
+        }
+        rows.groupBy { it.deck }.forEach { (deckLabel, deckRows) ->
+            println(
+                "summary deck=$deckLabel samples=${deckRows.size} " +
+                    "avgMulligans=${String.format(Locale.ROOT, "%.3f", deckRows.map { it.mulligans }.average())} " +
+                    "keep7=${deckRows.count { it.mulligans == 0 }} keep6=${deckRows.count { it.mulligans == 1 }} " +
+                    "keep5=${deckRows.count { it.mulligans == 2 }} lowLand=${deckRows.count { it.lands <= 1 }} " +
+                    "noDirectU=${deckRows.count { it.directBlue == 0 }} noDirectG=${deckRows.count { it.directGreen == 0 }} " +
+                    "avgFixers=${String.format(Locale.ROOT, "%.3f", deckRows.map { it.fixers }.average())} " +
+                    "zeroFixers=${deckRows.count { it.fixers == 0 }}",
             )
         }
         check(rows.size == seeds.size * 2 * 2)
