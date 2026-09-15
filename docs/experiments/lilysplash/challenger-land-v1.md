@@ -43,12 +43,60 @@ keep rule Stage 3 settled on (not the generic policy — that variable is alread
 the same per-seed trace and aggregate columns as the Stage 3 tables: mulligans, lands, direct U/G
 counts, and fixer counts, grouped by `deck=control` vs `deck=challenger-land-v1`.
 
-## Status
+## Result
 
-Code and the frozen challenger list are pushed to `lilysplash/lab`; the temporary
-`.github/workflows/lilysplash-preflight.yml` CI gate runs the comparison. **No results are recorded
-here yet** — per the experiment's own guardrail, gameplay/preflight performance is only reported
-once the run is in, not projected ahead of it. The next step is to read the CI output, append the
-aggregate and per-seed-delta tables here (mirroring the "Commander-aware mulligan A/B" section of
-`opening-hand-preflight-v0.1.md`), and only then decide whether to promote the land package and
-remove the temporary workflow.
+CI run (commit `54c46e8922`, `Lilysplash Preflight`, `land-challenger` job) — commander-aware policy,
+same 12 seeds, both seats, 24 samples per deck.
+
+| Metric | Control | Challenger-land-v1 | Delta |
+|---|---:|---:|---:|
+| Mean mulligans | 0.542 | 0.583 | +0.041 |
+| Keep seven | 16/24 | 15/24 | -1 |
+| Keep six | 3/24 | 4/24 | +1 |
+| Keep five | 5/24 | 5/24 | — |
+| Kept with 0-1 land | 2/24 | 1/24 | -1 |
+| No direct blue source | 6/24 | 3/24 | -3 |
+| No direct green source | 4/24 | 4/24 | — |
+| No blue source or listed fixer | 2/24 | 3/24 | +1 |
+| No green source or listed fixer | 2/24 | 0/24 | -2 |
+
+An earlier CI run of this same test (commit `cd61e0161e`) showed the challenger doing *worse* across
+every column. That run was invalid: `blueSources`/`greenSources` in the benchmark hadn't been updated
+to recognize Yavimaya Coast, Simic Guildgate, or Thornwood Falls, so the challenger's own new lands
+were counted as colorless to the mulligan logic and the reported metrics — the deck's entire point was
+invisible to its own measurement. Fixed in `54c46e8922`; the table above is the corrected run.
+
+Spot-checking the paired hands (same seed and seat, control vs. challenger) explains where the real
+movement comes from:
+
+- **Seed 2026091408, seat 0** — control kept a 5-card hand with zero lands producing blue or green and
+  no fixer (Shore Up, two Forests, Gift of Paradise, Freed from the Real). The challenger's version of
+  that hand drew Simic Guildgate and Yavimaya Coast instead, giving direct access to both colors.
+- **Seed 2026091411, seat 0** — control's hand had two blue sources and zero green, no fixer. The
+  challenger's version of that hand includes Yavimaya Coast, restoring green access.
+- **Seed 2026091405, seat 0** — unchanged in both: a two-Forest, zero-blue, zero-fixer hand that the
+  land swap doesn't touch, since neither deck drew a Yavimaya Coast/Simic Guildgate/Thornwood Falls (or
+  a removed card) into that specific opening hand.
+- **Seed 2026091409, seat 0** — the one regression: control kept a 7-card hand with a blue source
+  (Peregrine Drake's + others); the reshuffled challenger library produced a worse hand at the same
+  seed/seat (kept to 5, zero blue sources, zero fixers). This is exactly the caveat the experiment
+  plan warns about — changing which 3 of 99 cards are in the library reshuffles every downstream draw
+  for that seed, so an unrelated hand can get worse by chance even though nothing about that specific
+  hand's cards changed. One flip out of 24 pairs.
+
+## Verdict
+
+Net effect: the two "no access to a color at all" columns each moved in the challenger's favor (blue
+screw cut by half, green screw eliminated entirely across all 24 samples), at the cost of one
+reshuffle-driven regression on the "blue source or fixer" column and a mean-mulligan delta (+0.041)
+that isn't distinguishable from noise at this sample size. That is the general improvement the
+experiment plan asks for before promoting a challenger — the wins trace to the actual mechanism (two
+formerly single-color-or-tapped-fetch lands now producing both colors outright), not to seed-specific
+luck, and the one regression traces to reshuffling rather than to the land package itself.
+
+**Land-base package v1 is accepted.** Per the plan, it's held pending combination with whichever other
+Stage 4 packages (items 1-5: cheaper selection/tutors, reduced aura density, extra untapper/Freed
+redundancy, more stack protection, cleaner win density) are separately validated, before assembling
+and freshly validating the final optimized list. The temporary CI workflow
+(`.github/workflows/lilysplash-preflight.yml`) can come down once Stage 4 moves to the next package or
+to assembly.
