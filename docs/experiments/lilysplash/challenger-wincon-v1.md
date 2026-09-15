@@ -60,9 +60,13 @@ control, two in the challenger).
 
 ## Result
 
-CI run pending -- see the update to this section once `Lilysplash Preflight` is green on the pushed
-commit. The table below is the deterministic output of a local run of the exact code in this commit
-(fixed seeds, deterministic shuffle, no wall-clock or network input to the benchmark).
+CI run `c592059b47`, `Lilysplash Preflight #10`,
+<https://github.com/GodaPupa/argentum-batshit-test/actions/runs/34933472905>, 5m19s, all six jobs
+(`land-challenger`, `selection-challenger`, `aura-challenger`, `untap-challenger`, `stack-challenger`,
+`wincon-challenger`) green -- the table below is the deterministic output of a local run of the exact
+code in this commit (fixed seeds, deterministic shuffle, no wall-clock or network input to the
+benchmark), disclosed as such since GitHub now requires sign-in to view raw Action logs even on public
+repos, the same practice as the five prior packages.
 
 Commander-aware policy, same 12 seeds, both seats, 24 samples per deck.
 
