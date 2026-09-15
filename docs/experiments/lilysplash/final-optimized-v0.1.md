@@ -73,9 +73,17 @@ packages.
 Re-run after the Yavimaya Coast → Paradox Gardens correction described above (a Kotlin-level fix too:
 the benchmark's own `blueSources`/`greenSources` sets are what recognize which cards count as color
 fixing, and those literal card-name sets needed the same swap). The original CI citation
-(`004c634053`, `Lilysplash Preflight #11`) covered the Yavimaya Coast-based list and is superseded; see
-below for the corrected run's citation once pushed. Commander-aware policy, same fresh 12-seed block
-(`2026091501`-`2026091512`, never used by any individual package), both seats, 24 samples per deck.
+(`004c634053`, `Lilysplash Preflight #11`) covered the Yavimaya Coast-based list and is superseded. The
+table below is verified locally (forced `--rerun` of `-DlilysplashFinalOptimized=true`, deterministic,
+reproduced twice) against the corrected `final-optimized-v0.1.txt`. A first push of the fix (commit
+`395494cf23`, `Lilysplash Preflight #15`, run `35021667554`) went green but is **not** a valid citation
+for this table: a sync race on the connected OneDrive folder reverted `final-optimized-v0.1.txt` to the
+old Yavimaya Coast content between staging and the GitHub Desktop commit snapshot, so that CI run
+actually re-verified the illegal, superseded list under the corrected list's file path -- caught by
+diffing the committed blob's SHA-256 against the intended source after the fact, not by anything in the
+push itself. A corrective commit re-applies the intended content; see below for its fresh citation once
+pushed and confirmed. Commander-aware policy, same fresh 12-seed block (`2026091501`-`2026091512`, never
+used by any individual package), both seats, 24 samples per deck.
 
 | Metric | Control | Final-optimized-v0.1 | Delta |
 |---|---:|---:|---:|

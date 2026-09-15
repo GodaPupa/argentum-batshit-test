@@ -60,6 +60,17 @@ Re-run after the Yavimaya Coast → Paradox Gardens correction above. Commander-
 seeds, both seats, 24 samples per deck. (An earlier CI run, commit `54c46e8922`, used the illegal
 Yavimaya Coast version of this package; that table is superseded and no longer cited.)
 
+This package's own CI job was already retired once it was accepted and folded into
+`final-optimized-v0.1.txt` (per the comment at the top of `.github/workflows/lilysplash-preflight.yml`),
+so the table above is verified locally via a forced `--rerun` of `-DlilysplashLandChallenger=true`
+(deterministic Kotest output, reproduced twice) rather than a fresh standing CI citation for this
+decklist in isolation. The corrected land swap is meant to be independently CI-verified as part of the
+assembled list too, but the first attempt at that citation (commit `395494cf23`, run `35021667554`) does
+not count: a OneDrive sync race reverted `final-optimized-v0.1.txt` to the old Yavimaya Coast content
+between staging and the commit snapshot, so that CI run actually re-tested the superseded illegal list
+under the corrected file's path. See `final-optimized-v0.1.md`'s Result section for the corrective
+commit's real citation once pushed and confirmed.
+
 | Metric | Control | Challenger-land-v1 | Delta |
 |---|---:|---:|---:|
 | Mean mulligans | 0.542 | 0.500 | -0.042 |

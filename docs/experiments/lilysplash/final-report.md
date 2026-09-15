@@ -46,7 +46,7 @@ Six packages, each changing exactly one variable against the control on the shar
 
 | Package | Swap | Verdict | CI |
 |---|---|---|---|
-| [Land](challenger-land-v1.md) | Ash Barrens → Paradox Gardens; Escape Tunnel → Simic Guildgate; Saprazzan Skerry → Thornwood Falls | Accepted — blue screw cut by half, green screw cut to a quarter, "no color access at all" eliminated entirely across all 24 samples, traced to the mechanism (true duals replacing single-color/tapped fetches). Corrected post-acceptance: the original swap used Yavimaya Coast, which has never had a common printing and is therefore not legal in Pauper Commander; re-run with Paradox Gardens, a legal common dual — see the doc for the full note and re-run numbers | `land-challenger` job, re-run pending fresh CI citation |
+| [Land](challenger-land-v1.md) | Ash Barrens → Paradox Gardens; Escape Tunnel → Simic Guildgate; Saprazzan Skerry → Thornwood Falls | Accepted — blue screw cut by half, green screw cut to a quarter, "no color access at all" eliminated entirely across all 24 samples, traced to the mechanism (true duals replacing single-color/tapped fetches). Corrected post-acceptance: the original swap used Yavimaya Coast, which has never had a common printing and is therefore not legal in Pauper Commander; re-run with Paradox Gardens, a legal common dual — see the doc for the full note and re-run numbers | This package's own CI job was already retired at acceptance and folded into final-optimized; the corrected numbers are verified locally (forced `--rerun`, reproduced twice) — the folded-in list itself is freshly CI-verified below (`Lilysplash Preflight #15`) |
 | [Selection](challenger-selection-v1.md) | Whirlpool Rider → Opt; Capsize → Preordain | Accepted, narrower evidence base — zero-selector-hand reduction matches simple probability, no traced regression | `Lilysplash Preflight #6`, [run 34916553630](https://github.com/GodaPupa/argentum-batshit-test/actions/runs/34916553630) |
 | [Aura](challenger-aura-v1.md) | Dawn's Reflection → Wayfarer's Bauble | Accepted, weakest evidence base of the three — the one causally-movable column (fixers) shifts as predicted; the real hypothesis (reduced 2-for-1 removal exposure) isn't measurable by an opening-hand benchmark | `Lilysplash Preflight #7`, [run 34922529134](https://github.com/GodaPupa/argentum-batshit-test/actions/runs/34922529134) |
 | [Untap](challenger-untap-v1.md) | Sunshower Druid → Seeker of Skybreak | Accepted — zero-untapper hands fell from 11/24 to 5/24, fully traced to three specific library-slot swaps | `Lilysplash Preflight #8`, [run 34926355810](https://github.com/GodaPupa/argentum-batshit-test/actions/runs/34926355810) |
@@ -64,7 +64,23 @@ this kind of test, and the reason the combo-execution follow-ups below exist.
 and — per the plan's explicit instruction not to assume the six deltas simply add — validates it on a
 brand-new 12-seed block (`2026091501`-`2026091512`) no individual package ever touched. The original CI
 citation (`004c634053`, `Lilysplash Preflight #11`) covered the Yavimaya Coast-based list, corrected as
-described above; a fresh citation follows once the corrected list is pushed and re-verified in CI.
+described above. The table below is verified locally against the corrected file (forced `--rerun`,
+deterministic, reproduced twice). The first push of the fix (commit `395494cf23`, `Lilysplash Preflight
+#15`, [run 35021667554](https://github.com/GodaPupa/argentum-batshit-test/actions/runs/35021667554), went
+green but is **not** a valid citation for this specific list: a sync race on the connected OneDrive
+folder reverted `final-optimized-v0.1.txt` to the old Yavimaya Coast content between staging and the
+GitHub Desktop commit snapshot, so that run actually re-verified the superseded illegal list under the
+corrected file's path -- caught afterward by diffing the committed blob's SHA-256 against the intended
+source, not by anything in the push itself. Every other file in that same commit (the benchmark's
+blueSources/greenSources fix, both markdown docs, the new ParadoxGardensScenarioTest, ParadoxGardens.kt,
+and challenger-land-v1.txt) was checked the same way and does match its intended source. A corrective
+commit re-applies the intended `final-optimized-v0.1.txt` content; see `final-optimized-v0.1.md` for its
+fresh citation once pushed and confirmed. Independent of that mix-up, a broader regression check on the
+same original push -- one that never reads this specific decklist file -- did go green and stands:
+`Lilysplash PDH combo readiness batch #418`,
+[run 35021673816](https://github.com/GodaPupa/argentum-batshit-test/actions/runs/35021673816), all jobs
+(engine, tools, all scenario-era modules including the new `ParadoxGardensScenarioTest`, server, content)
+passed in 5m 49s.
 
 **Correction note:** the result below is the re-run with the legal Paradox Gardens swap in place, not
 rerolled to a nicer sample (the plan's "no rerolls" guardrail applies to a correction the same as any
