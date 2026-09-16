@@ -102,6 +102,14 @@ The four-seat game took roughly 2.85x the wall-clock time of the three-seat game
 actions, consistent with per-decision AI search cost growing faster than linearly with seat count (more
 opponents to model per rollout, more legal actions to enumerate per priority window).
 
+This package's changes (the `TableGameRunner.kt` and `kotlin-jvm.gradle.kts` fixes, and the corrected
+claims in `LilysplashComboExecutionTest.kt`/`final-report.md`) also went through the existing
+`lilysplash-preflight.yml` CI workflow, since two of the changed files sit in its trigger paths — a real
+regression check on the two harness fixes, even though the pod-simulation test itself isn't a CI job.
+Commit `8c5f345862`, **Lilysplash Preflight #17**,
+[run 35044603870](https://github.com/GodaPupa/argentum-batshit-test/actions/runs/35044603870), 6m 10s,
+green — both the pre-existing `final-optimized` and `combo-execution` jobs still pass.
+
 ## Verdict
 
 **The harness works; the deck plays cleanly; this run was too short to see it finish.** This is the
