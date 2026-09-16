@@ -64,7 +64,7 @@ tasks.withType<Test>().configureEach {
         "arenaGames", "arenaSeed", "arenaSet", "arenaMaxTurns", "arenaThreads",
         "lilysplashPreflight", "lilysplashLandChallenger", "lilysplashSelectionChallenger",
         "lilysplashAuraChallenger", "lilysplashUntapChallenger", "lilysplashStackChallenger",
-        "lilysplashWinconChallenger", "lilysplashFinalOptimized",
+        "lilysplashWinconChallenger", "lilysplashFinalOptimized", "lilysplashPod",
     )) {
         System.getProperty(prop)?.let { systemProperty(prop, it) }
     }

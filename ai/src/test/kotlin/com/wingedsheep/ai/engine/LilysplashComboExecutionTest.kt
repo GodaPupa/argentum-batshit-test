@@ -36,9 +36,19 @@ import io.kotest.matchers.shouldBe
  *    question, not a same-turn execution question, and would need real deckbuilding + draw-step
  *    simulation rather than a constructed board.
  *  - Full-game win-rate testing of the actual `final-optimized-v0.1.txt` decklist against
- *    representative opposition -- the existing `arena` harness (`ai/src/test/kotlin/com/wingedsheep/ai/arena`)
- *    has no `Format.Commander` / singleton / command-zone support, and building that out is a
- *    substantial, separate engineering effort, not a quick extension of this test.
+ *    representative opposition. **Correction:** this doc comment previously claimed the `arena` harness
+ *    (`ai/src/test/kotlin/com/wingedsheep/ai/arena`) "has no `Format.Commander` / singleton / command-zone
+ *    support" -- that was already stale when written: [TableGameRunner] takes an arbitrary [TableSetup]
+ *    and [com.wingedsheep.sdk.core.Format], and the rules-engine's own Commander-pod machinery
+ *    (`CommanderPodTest`, issue #1456) had no two-player assumption. `LilysplashPodSimulationTest`
+ *    (`ai/src/test/kotlin/com/wingedsheep/ai/engine/LilysplashPodSimulationTest.kt`) exercised this path
+ *    for the first time -- after fixing one real, small gap it uncovered (`TableGameRunner` never wired
+ *    `Deck.commander` into `PlayerConfig.commanderCardName`, so no prior caller had ever driven it through
+ *    a Commander-format table) -- and ran real 3- and 4-seat mirror-match pod games of this exact decklist
+ *    to completion of the harness's own turn/action caps, with zero exceptions and zero illegal actions.
+ *    What remains genuinely out of scope is a *win-rate* claim against representative (non-mirror)
+ *    opposition, which would require verifying a whole field of unrelated decks' cards -- see that test's
+ *    package doc for the full reasoning.
  *  - Milling a full 99-card Commander library -- the opponent here is given a small filler library
  *    purely so the test terminates in a handful of loop iterations; the number of cards milled is not
  *    the interesting variable, only whether the AI keeps choosing to mill at all.

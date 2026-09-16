@@ -200,7 +200,14 @@ object TableGameRunner {
 
         val init = initializer.initializeGame(
             GameConfig(
-                players = decks.mapIndexed { seat, deck -> PlayerConfig("Seat$seat", deck) },
+                // commanderCardName must come from the deck itself: GameInitializer requires it
+                // whenever setup.format is Format.Commander (GameInitializer.kt:172), and until
+                // this line every TableGameRunner table played Format.Standard/sealed, where a
+                // null commander is correct — so this path had never actually been exercised with
+                // a Commander deck before.
+                players = decks.mapIndexed { seat, deck ->
+                    PlayerConfig("Seat$seat", deck, commanderCardName = deck.commander)
+                },
                 // Mulligans are skipped so a rerun at the same seed is the same game. That puts
                 // mulligan quality out of test — schedule a separate mulligan A/B rather than
                 // pretending this measures it.

@@ -85,7 +85,10 @@ Two honest limits on how far this generalizes:
   that line correctly, for reasons unrelated to whatever made this one succeed -- see that doc.
 - **This is a constructed-board test, not a from-hand test.** The combo pieces started already resolved
   on the battlefield; this says the AI *executes* the combo once assembled, not that it reliably
-  *assembles* it from a fresh opening hand over a full game against real opposition. That remains the
-  same full-game-validation gap every Stage 4 document has flagged as out of scope, and it is still out
-  of scope here -- the `arena` harness has no Commander/singleton support, and building that out remains
-  a separate, larger effort.
+  *assembles* it from a fresh opening hand over a full game against real opposition. **Correction:** this
+  doc originally said that gap was out of scope because "the `arena` harness has no Commander/singleton
+  support" -- that was already stale when written. [`pod-simulation-v1.md`](pod-simulation-v1.md) ran real
+  multiplayer Commander pod games of the full decklist through that same harness. What that follow-up
+  found is narrower than "assembles the combo from a fresh hand": both pod games ran clean (no exceptions,
+  no illegal actions) but hit their turn cap before reaching a natural finish, so whether this exact combo
+  gets assembled and fired from a fresh hand in a real game remains open -- see that doc.

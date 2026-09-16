@@ -149,13 +149,35 @@ and pinned AI engine limitation unrelated to the deck itself — a human pilot a
 would not hit this bug, and the original combo remains fully functional as the deck's primary, proven win
 condition either way.
 
+## Pod-simulation follow-up — does the deck play a real multiplayer game?
+
+A further follow-up, run after the section above was written: [`pod-simulation-v1.md`](pod-simulation-v1.md).
+Every prior claim in this report about the "arena harness has no Commander/singleton support" (see the
+now-corrected bullet below) turned out to be stale, not true — the rules engine's multiplayer Commander
+machinery (`CommanderPodTest`, issue #1456) and the AI arena's `TableGameRunner` had no fundamental
+two-player assumption, just one small, real, previously-undiscovered wiring gap (`TableGameRunner` never
+threaded `Deck.commander` into `PlayerConfig.commanderCardName`, so no prior caller had ever driven it
+through `Format.Commander`). After fixing that, `LilysplashPodSimulationTest` ran real 3-seat and 4-seat
+Commander mirror-match pod games of `final-optimized-v0.1.txt` — every seat piloting an independent copy
+of the same, already-corrected, already-legal decklist, chosen specifically to avoid needing to verify any
+new, unrelated opponent decks' cards. Both games ran their full turn/action caps with **zero exceptions and
+zero illegal actions** — real evidence the AI can pilot this exact 99 through a genuine multi-seat Commander
+game without wedging — but **neither game reached a natural finish**: both hit the (deliberately tight,
+first-attempt) `maxTurns(25)`-per-seat cap first, with every seat still alive at capped life totals. See
+that doc for the full seeds, caps, and honest caveats about what a non-completing capped run does and does
+not prove.
+
 Two things remain explicitly out of scope, exactly as every Stage 4 document and both combo-execution
 docs already say, and are not blockers to calling this experiment done:
 
-- **Full-game validation.** Every test in this experiment is either an opening-hand sample or a
-  constructed-board scenario test — none plays a complete game from a fresh opening hand against real
-  opposition with the `arena` harness's turn structure. The harness has no Commander/singleton support
-  today; building that out is a separate, larger effort than this experiment's scope.
+- **Full-game win-rate validation against representative (non-mirror) opposition.** Every test in this
+  experiment other than the pod-simulation follow-up above is an opening-hand sample or a constructed-board
+  scenario test. The pod-simulation follow-up proved the harness itself works for real multiplayer Commander
+  games — the "arena harness has no Commander/singleton support" claim this bullet used to make here was
+  stale, corrected above and in `LilysplashPodSimulationTest`'s own package doc. What is still out of scope
+  is building and verifying a field of *unrelated* opponent decks (needed for a real win-rate claim, as
+  opposed to a mirror match) and letting a pod run long enough to reach a natural finish rather than a
+  turn-cap — both separate, larger efforts than this experiment's scope.
 - **The `TargetSelection.kt`/evaluator bug.** Documented and pinned in `combo-execution-v2-vedalken.md`
   with full root-cause citations, but not fixed — that is `add-feature`-scope work on shared AI code, with
   its own testing surface well beyond the Lilysplash deck, and belongs to whoever picks up that work next,
@@ -191,3 +213,4 @@ rediscovered blind:
 | `final-optimized-v0.1.md` | Stage 4's closing assembly and fresh-sample validation |
 | `combo-execution-v1.md` | Proof the AI executes the deck's original combo autonomously |
 | `combo-execution-v2-vedalken.md` | The Vedalken Entrancer line's known-failure pin and root-cause writeup |
+| `pod-simulation-v1.md` | First real multiplayer Commander-pod mirror-match runs (3-seat, 4-seat); harness-capability fixes; honest non-completion result |
