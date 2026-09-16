@@ -25,4 +25,9 @@ describe('passive counter badge wiring', () => {
     expect(PASSIVE_COUNTER_TYPES).toContain(CounterType.OMEN)
     expect(CounterTypeDisplayNames[CounterType.OMEN]).toBe('Omen')
   })
+
+  it('renders oil counters (Rustvine Cultivator)', () => {
+    expect(PASSIVE_COUNTER_TYPES).toContain(CounterType.OIL)
+    expect(CounterTypeDisplayNames[CounterType.OIL]).toBe('Oil')
+  })
 })

@@ -1375,6 +1375,73 @@
     ]
 }
 
+// Displace
+{
+    "name": "Displace",
+    "manaCost": "{2}{U}",
+    "typeLine": "Instant",
+    "oracleText": "Exile up to two target creatures you control, then return those cards to the battlefield under their owner's control.",
+    "script": {
+        "spellEffect": {
+            "type": "Composite",
+            "effects": [
+                {
+                    "type": "MoveToZone",
+                    "target": {
+                        "type": "BoundVariable",
+                        "name": "creature you control[0]"
+                    },
+                    "destination": "Exile"
+                },
+                {
+                    "type": "MoveToZone",
+                    "target": {
+                        "type": "BoundVariable",
+                        "name": "creature you control[1]"
+                    },
+                    "destination": "Exile"
+                },
+                {
+                    "type": "MoveToZone",
+                    "target": {
+                        "type": "BoundVariable",
+                        "name": "creature you control[0]"
+                    },
+                    "destination": "Battlefield"
+                },
+                {
+                    "type": "MoveToZone",
+                    "target": {
+                        "type": "BoundVariable",
+                        "name": "creature you control[1]"
+                    },
+                    "destination": "Battlefield"
+                }
+            ]
+        },
+        "targetRequirements": [
+            {
+                "type": "TargetObject",
+                "count": 2,
+                "optional": true,
+                "filter": {
+                    "baseFilter": "creature ctrl:you"
+                },
+                "id": "creature you control"
+            }
+        ]
+    },
+    "metadata": {
+        "collectorNumber": "55",
+        "artist": "Clint Cearley",
+        "flavorText": "\"I'll see you soon, Subjects 25 and 26. I've got a good feeling this time!\"",
+        "imageUri": "https://cards.scryfall.io/normal/front/8/a/8ab850c5-6f5e-41b7-ab52-094579caca12.jpg?1783937502"
+    },
+    "colorIdentityOverride": [
+        "BLUE"
+    ]
+}
+
 // Distended Mindbender
 {
     "name": "Distended Mindbender",

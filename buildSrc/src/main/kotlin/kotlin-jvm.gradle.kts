@@ -62,6 +62,9 @@ tasks.withType<Test>().configureEach {
         "eclCollect", "eclCollectGames", "eclCollectSeed", "eclCollectOutput", "eclCollectBaseDir",
         "eclCollectRunId", "eclCollectStartIndex",
         "arenaGames", "arenaSeed", "arenaSet", "arenaMaxTurns", "arenaThreads",
+        "lilysplashPreflight", "lilysplashLandChallenger", "lilysplashSelectionChallenger",
+        "lilysplashAuraChallenger", "lilysplashUntapChallenger", "lilysplashStackChallenger",
+        "lilysplashWinconChallenger", "lilysplashFinalOptimized", "lilysplashPod",
     )) {
         System.getProperty(prop)?.let { systemProperty(prop, it) }
     }

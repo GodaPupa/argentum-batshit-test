@@ -108,6 +108,62 @@ arena A B GAMES="300" SET="BLB" SEED="20260727" ARTIFACT_DIR="":
         -DarenaA={{A}} -DarenaB={{B}} -DarenaGames={{GAMES}} -DarenaSet={{SET}} -DarenaSeed={{SEED}} \
         -Dargentum.ai.apprentice.dir={{ARTIFACT_DIR}}
 
+# Audit the frozen Lilysplash Mentor PDH control deck's opening hands over a fixed seed block.
+[group: 'ai']
+lilysplash-preflight:
+    scripts/gradle-locked :ai:test --tests "*.LilysplashOpeningHandBenchmark" \
+        -Dbenchmark=true -DlilysplashPreflight=true
+
+# Stage 4 item 6: compare the control deck against the frozen land-base-only challenger
+# (docs/experiments/lilysplash/challenger-land-v1.txt) under the commander-aware keep rule, same seeds.
+[group: 'ai']
+lilysplash-land-challenger:
+    scripts/gradle-locked :ai:test --tests "*.LilysplashOpeningHandBenchmark" \
+        -Dbenchmark=true -DlilysplashLandChallenger=true
+
+# Stage 4 item 1: compare the control deck against the frozen selection-only challenger
+# (docs/experiments/lilysplash/challenger-selection-v1.txt) under the commander-aware keep rule, same seeds.
+[group: 'ai']
+lilysplash-selection-challenger:
+    scripts/gradle-locked :ai:test --tests "*.LilysplashOpeningHandBenchmark" \
+        -Dbenchmark=true -DlilysplashSelectionChallenger=true
+
+# Stage 4 item 2: compare the control deck against the frozen aura-only challenger
+# (docs/experiments/lilysplash/challenger-aura-v1.txt) under the commander-aware keep rule, same seeds.
+[group: 'ai']
+lilysplash-aura-challenger:
+    scripts/gradle-locked :ai:test --tests "*.LilysplashOpeningHandBenchmark" \
+        -Dbenchmark=true -DlilysplashAuraChallenger=true
+
+# Stage 4 item 3: compare the control deck against the frozen untap-only challenger
+# (docs/experiments/lilysplash/challenger-untap-v1.txt) under the commander-aware keep rule, same seeds.
+[group: 'ai']
+lilysplash-untap-challenger:
+    scripts/gradle-locked :ai:test --tests "*.LilysplashOpeningHandBenchmark" \
+        -Dbenchmark=true -DlilysplashUntapChallenger=true
+
+# Stage 4 item 4: compare the control deck against the frozen stack-protection-only challenger
+# (docs/experiments/lilysplash/challenger-stack-v1.txt) under the commander-aware keep rule, same seeds.
+[group: 'ai']
+lilysplash-stack-challenger:
+    scripts/gradle-locked :ai:test --tests "*.LilysplashOpeningHandBenchmark" \
+        -Dbenchmark=true -DlilysplashStackChallenger=true
+
+# Stage 4 item 5: compare the control deck against the frozen win-condition-density challenger
+# (docs/experiments/lilysplash/challenger-wincon-v1.txt) under the commander-aware keep rule, same seeds.
+[group: 'ai']
+lilysplash-wincon-challenger:
+    scripts/gradle-locked :ai:test --tests "*.LilysplashOpeningHandBenchmark" \
+        -Dbenchmark=true -DlilysplashWinconChallenger=true
+
+# Stage 4 closing step: validate the assembled final-optimized list (all six accepted packages
+# combined, docs/experiments/lilysplash/final-optimized-v0.1.txt) against control on its own fresh
+# seed block (2026091501-2026091512), per the plan's "fresh, frozen validation sample" requirement.
+[group: 'ai']
+lilysplash-final-optimized:
+    scripts/gradle-locked :ai:test --tests "*.LilysplashOpeningHandBenchmark" \
+        -Dbenchmark=true -DlilysplashFinalOptimized=true
+
 # ECL apprentice promotion ladder. Artifacts are installed outside the repository and selected with
 # -Dargentum.ai.apprentice.dir; missing or invalid files safely use the production evaluator.
 [group: 'ai']

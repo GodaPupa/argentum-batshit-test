@@ -137,6 +137,98 @@
     ]
 }
 
+// Emerald Charm
+{
+    "name": "Emerald Charm",
+    "manaCost": "{G}",
+    "typeLine": "Instant",
+    "oracleText": "Choose one —\n• Untap target permanent.\n• Destroy target non-Aura enchantment.\n• Target creature loses flying until end of turn.",
+    "script": {
+        "spellEffect": {
+            "type": "Modal",
+            "modes": [
+                {
+                    "effect": {
+                        "type": "TapUntap",
+                        "target": {
+                            "type": "BoundVariable",
+                            "name": "permanent"
+                        },
+                        "tap": false
+                    },
+                    "targetRequirements": [
+                        {
+                            "type": "TargetObject",
+                            "filter": {
+                                "baseFilter": "permanent"
+                            },
+                            "id": "permanent"
+                        }
+                    ],
+                    "description": "Untap target permanent"
+                },
+                {
+                    "effect": {
+                        "type": "MoveToZone",
+                        "target": {
+                            "type": "BoundVariable",
+                            "name": "non-Aura enchantment"
+                        },
+                        "destination": "Graveyard",
+                        "byDestruction": true
+                    },
+                    "targetRequirements": [
+                        {
+                            "type": "TargetObject",
+                            "filter": {
+                                "baseFilter": {
+                                    "cardPredicates": [
+                                        "IsEnchantment",
+                                        {
+                                            "type": "NotSubtype",
+                                            "subtype": "Aura"
+                                        }
+                                    ]
+                                }
+                            },
+                            "id": "non-Aura enchantment"
+                        }
+                    ],
+                    "description": "Destroy target non-Aura enchantment"
+                },
+                {
+                    "effect": {
+                        "type": "RemoveKeyword",
+                        "keyword": "FLYING",
+                        "target": {
+                            "type": "BoundVariable",
+                            "name": "creature"
+                        }
+                    },
+                    "targetRequirements": [
+                        {
+                            "type": "TargetObject",
+                            "filter": {
+                                "baseFilter": "creature"
+                            },
+                            "id": "creature"
+                        }
+                    ],
+                    "description": "Target creature loses flying until end of turn"
+                }
+            ]
+        }
+    },
+    "metadata": {
+        "collectorNumber": "106",
+        "artist": "Greg Spalenka",
+        "imageUri": "https://cards.scryfall.io/normal/front/e/9/e9c9199b-61b3-4794-878b-f065058f50f3.jpg?1783946983"
+    },
+    "colorIdentityOverride": [
+        "GREEN"
+    ]
+}
+
 // Fireblast
 {
     "name": "Fireblast",

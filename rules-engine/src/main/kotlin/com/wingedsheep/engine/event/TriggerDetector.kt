@@ -1677,6 +1677,10 @@ class TriggerDetector(
             damageDetector.detectDamageSourceTriggers(state, index.statics, event, triggers, projected)
         }
 
+        if (event is DamageDealtEvent && event.sourceId != null) {
+            damageDetector.detectCipherTriggers(state, event, triggers, projected)
+        }
+
         // Handle "whenever a creature/spell deals damage to this" triggers (e.g., Tephraderm)
         if (event is DamageDealtEvent && event.sourceId != null) {
             damageDetector.detectDamagedBySourceTriggers(state, index.statics, event, triggers)

@@ -554,6 +554,7 @@ class CastSpellHandler(
                 val mechanic = when (action.declaredCostSlot) {
                     ChoiceSlot.BARGAINED -> "bargain"
                     ChoiceSlot.KICKED -> "kicker"
+                    ChoiceSlot.BUYBACK -> "buyback"
                     else -> action.declaredCostSlot.name.lowercase()
                 }
                 return "This card does not have $mechanic"

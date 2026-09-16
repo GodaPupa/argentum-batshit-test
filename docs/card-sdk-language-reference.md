@@ -1668,7 +1668,8 @@ Atomic effect factories. For library/zone manipulation, prefer the pipelines in 
   rider on a mana ability doesn't change its classification — CR 605.1a asks whether the ability could
   add mana, whether it targets, whether it is a loyalty ability, and whether its cost or effect moves a
   card to or from a library; an unlock counter is none of those, so the counter lands at a moment nobody
-  can respond to).
+  can respond to), `Counters.OIL` (ONE — Rustvine Cultivator: one `{T}` ability adds an oil counter and
+  another spends one via `Costs.RemoveCounterFromSelf(Counters.OIL)` to untap a land).
 - `DistributeCountersFromSelf(type?, count?)` — split source's counters among creatures you control.
 - `DistributeCountersAmongTargets(total, type?, minPerTarget?)` — divvy N counters among chosen
   targets. `total` is a `DynamicAmount` (an `Int` overload wraps it in `Fixed`), evaluated once at
@@ -8506,6 +8507,22 @@ copy of it (CR 707.10e). The activated-ability analogue of the spell-level `cant
 > multi-set parameterized keywords (`prowess()`, `rampage(n)`, `keywordAbility(…)`) remain on the core
 > builder. New set mechanics get an extension file in `dsl/mechanics/`.
 
+> **Adapt** (CR 701.46). Use `adapt(count, cost)`, for example
+> `adapt(2, "{1}{G}")`. The helper creates an ordinary mana-activated ability whose effect is a
+> resolution-time `ConditionalEffect`: if the source has no +1/+1 counters when the ability
+> resolves, it uses the shared `AddCounters` effect to put `count` counters on it. This is not an
+> activation restriction—a counter placed in response makes the paid-for ability resolve without
+> adding counters. Because placement goes through the normal counter pipeline, “one or more
+> counters” triggers see Adapt as one placement batch. First user: **Evolution Witness**.
+
+> **Buyback** (CR 702.27). Use `keywordAbility(KeywordAbility.buyback(cost))`, for example
+> `KeywordAbility.buyback("{3}")`. Buyback rides the shared optional-additional-cost rail but
+> records `ChoiceSlot.BUYBACK`, never `KICKED`; the legal action is labelled “Buyback” and
+> includes the extra mana in the total cost. When a spell with that declaration resolves, the
+> normal stack-to-graveyard move becomes stack-to-owner's-hand. A spell that is countered or whose
+> only targets are illegal does not resolve, so it still goes to the graveyard. First user:
+> **Capsize**.
+
 > **Rebound** (`Keyword.REBOUND`, CR 702.88). "If this spell was cast from your hand, instead of
 > putting it into your graveyard as it resolves, exile it and, at the beginning of your next upkeep,
 > you may cast this card from exile without paying its mana cost." Modeled entirely in the
@@ -9590,6 +9607,25 @@ composite abilities).
   original stays in exile; each cast copy is a phantom that ceases to exist (CR 707.10a / 112.3b), so there is no
   exponential growth. The `Lesson` spell subtype (`Subtype.LESSON`) is a plain, non-functional subtype (no Learn
   mechanic in the set), but the type line must parse it.
+- `Cipher` (CR 702.99) — `spell { effect = …; cipher() }`. The builder appends
+  `CipherEncodeEffect` after the authored spell effect and adds `Keyword.CIPHER`. At resolution the executor
+  offers a non-targeting 0..1 choice among creatures the spell's controller controls; choosing one marks the
+  spell so `StackResolver` exiles it with a `CipherEncodedComponent` instead of performing the normal
+  graveyard move. Countered and fizzled spells never reach that choice, and card/spell copies skip it because
+  only a spell **card** can be encoded. When the encoded creature deals combat damage to a player, the damage
+  detector queues `Cipher.copyAbility` under that creature's current controller. The ability reuses the proven
+  `CopyCardIntoCollectionEffect(Self)` → `CastFromCollectionWithoutPayingCostEffect` pipeline behind a may gate;
+  the original stays in exile, and the resolving copy cannot encode itself. The component also records the
+  host's battlefield-entry timestamp, so a creature that leaves and returns is a new object and no longer
+  carries the encoding relationship.
+- `Venture into the dungeon` (CR 701.46) — `Effects.VentureIntoDungeon()`. If the resolving effect's
+  controller has no `ActiveDungeonComponent`, the engine offers the three ordinary AFR dungeons and enters
+  the chosen dungeon's first room. Otherwise it offers only rooms connected to that player's current room;
+  a single successor advances automatically. The marker is player state rather than permanent state, so it
+  survives zone changes to the source. Entering a bottommost room appends the dungeon to
+  `CompletedDungeonsComponent`, clears the active marker before resolving that room's instruction, and emits
+  `DungeonRoomEnteredEvent` plus `DungeonCompletedEvent`. Room choices and room-effect choices use ordinary
+  serializable continuations, so paused games resume without losing their dungeon branch.
 - `Craft(filter, cost)` — `card { craft(filter, cost, materialDescription?, minCount = 1, maxCount = null) }`
   builder helper (CR 702.167, The Lost Caverns of
   Ixalan). On the front face of a transforming DFC: "Craft with [filter] [cost] ([cost], Exile this permanent,

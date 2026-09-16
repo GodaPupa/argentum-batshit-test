@@ -88,6 +88,33 @@ data class SelectTargetPipelineContinuation(
     val objectReferences: com.wingedsheep.engine.handlers.ObjectReferenceEnvironment = com.wingedsheep.engine.handlers.ObjectReferenceEnvironment(),
 ) : AnswerContinuation
 
+/** Resume the non-targeting creature choice made by a resolving cipher spell. */
+@Serializable
+data class CipherEncodeContinuation(
+    val playerId: EntityId,
+    val sourceId: EntityId,
+    val legalCreatureIds: Set<EntityId>,
+) : AnswerContinuation
+
+/** One legal dungeon/room destination offered by a venture choice. */
+@Serializable
+data class VentureDestination(
+    val dungeonId: String,
+    val roomId: String,
+    val label: String,
+)
+
+/** Resume after choosing an ordinary dungeon or a branch from the current dungeon room. */
+@Serializable
+data class VentureIntoDungeonContinuation(
+    val playerId: EntityId,
+    val sourceId: EntityId?,
+    val sourceName: String?,
+    val destinations: List<VentureDestination>,
+    val objectReferences: com.wingedsheep.engine.handlers.ObjectReferenceEnvironment =
+        com.wingedsheep.engine.handlers.ObjectReferenceEnvironment(),
+) : AnswerContinuation
+
 /**
  * Resume after player chooses an option in a generic pipeline context.
  *
@@ -427,4 +454,3 @@ data class CastAnyNumberFromCollectionContinuation(
      */
     val maxCasts: Int? = null,
 ) : AnswerContinuation
-

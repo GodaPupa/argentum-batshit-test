@@ -467,6 +467,78 @@
     ]
 }
 
+// Frogify
+{
+    "name": "Frogify",
+    "manaCost": "{1}{U}",
+    "typeLine": "Enchantment — Aura",
+    "oracleText": "Enchant creature\nEnchanted creature loses all abilities and is a blue Frog creature with base power and toughness 1/1. (It loses all other card types and creature types.)",
+    "script": {
+        "staticAbilities": [
+            "LoseAllAbilities",
+            {
+                "type": "TransformPermanent",
+                "setCardTypes": [
+                    "CREATURE"
+                ],
+                "setSubtypes": [
+                    "Frog"
+                ],
+                "setColors": [
+                    "BLUE"
+                ]
+            },
+            {
+                "type": "SetBasePowerToughnessStatic",
+                "power": 1,
+                "toughness": 1
+            }
+        ],
+        "auraTarget": {
+            "type": "TargetObject",
+            "filter": {
+                "baseFilter": "creature"
+            }
+        }
+    },
+    "metadata": {
+        "collectorNumber": "47",
+        "rarity": "UNCOMMON",
+        "artist": "Chris Seaman",
+        "flavorText": "That gnat was still hovering by the venison, and now both looked delicious.",
+        "imageUri": "https://cards.scryfall.io/normal/front/b/6/b69cbb20-3c4e-480b-a330-9c6d6b39d12f.jpg?1783932656",
+        "rulings": [
+            {
+                "date": "2020-08-07",
+                "text": "If the affected creature gains an ability after Frogify becomes attached to it, it will keep that ability."
+            },
+            {
+                "date": "2020-08-07",
+                "text": "Frogify overwrites all colors and creature types the enchanted creature has. It's just a blue Frog. The creature keeps any supertypes (such as legendary) it has, but loses any other card types it has (such as artifact)."
+            },
+            {
+                "date": "2020-08-07",
+                "text": "Frogify overwrites all previous effects that set the creature's base power and toughness to specific values. Any power- or toughness-setting effects that start to apply after Frogify becomes attached to a creature will overwrite this effect."
+            },
+            {
+                "date": "2020-08-07",
+                "text": "Effects that modify a creature's power and/or toughness, such as the effect of Dead Weight, will apply to the creature no matter when they started to take effect. The same is true for any counters that change its power and/or toughness."
+            },
+            {
+                "date": "2020-08-07",
+                "text": "Frogify may enchant a permanent that is only temporarily a creature, such as a Vehicle. If this happens, Frogify's effect causes the enchanted permanent to remain a 1/1 blue Frog creature even after the temporary effect expires."
+            },
+            {
+                "date": "2020-08-07",
+                "text": "Because damage remains marked on a creature until the damage is removed as the turn ends, nonlethal damage dealt to a creature may become lethal if Frogify becomes attached to it during that turn."
+            }
+        ]
+    },
+    "colorIdentityOverride": [
+        "BLUE"
+    ]
+}
+
 // Gingerbrute
 {
     "name": "Gingerbrute",

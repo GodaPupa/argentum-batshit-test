@@ -43,6 +43,8 @@ class LibraryAndZoneContinuationResumer(
         resumer(ChooseOnePerCategoryContinuation::class, ::resumeChooseOnePerCategory),
         resumer(ChoosePileContinuation::class, ::resumeChoosePile),
         resumer(SelectTargetPipelineContinuation::class, ::resumeSelectTargetPipeline),
+        resumer(CipherEncodeContinuation::class, ::resumeCipherEncode),
+        resumer(VentureIntoDungeonContinuation::class, ::resumeVentureIntoDungeon),
         resumer(MoveCollectionAuraTargetContinuation::class, ::resumeMoveCollectionAuraTarget),
         resumer(PutOntoBattlefieldAttachedToChosenContinuation::class, ::resumePutOntoBattlefieldAttachedToChosen),
         resumer(PutOnTopOrBottomContinuation::class, ::resumePutOnTopOrBottom),
@@ -51,6 +53,60 @@ class LibraryAndZoneContinuationResumer(
         resumer(CastFromCollectionTargetsContinuation::class, ::resumeCastFromCollectionTargets),
         resumer(CastAnyNumberFromCollectionContinuation::class, ::resumeCastAnyNumberFromCollection)
     )
+
+    fun resumeCipherEncode(
+        state: GameState,
+        continuation: CipherEncodeContinuation,
+        response: DecisionResponse,
+        checkForMore: CheckForMore,
+    ): ExecutionResult {
+        val selected = (response as? CardsSelectedResponse)?.selectedCards.orEmpty()
+        val creatureId = selected.singleOrNull()
+        if (creatureId == null || creatureId !in continuation.legalCreatureIds ||
+            creatureId !in state.getBattlefield() || !state.projectedState.isCreature(creatureId) ||
+            state.projectedState.getController(creatureId) != continuation.playerId
+        ) {
+            return checkForMore(state, emptyList())
+        }
+        val updated = state.updateEntity(continuation.sourceId) { container ->
+            container.with(
+                com.wingedsheep.engine.state.components.battlefield.PendingCipherEncodingComponent(
+                    creatureId = creatureId,
+                    creatureBattlefieldTimestamp = state.getEntity(creatureId)
+                        ?.get<com.wingedsheep.engine.state.components.battlefield.BattlefieldEntryTimestampComponent>()
+                        ?.timestamp,
+                )
+            )
+        }
+        return checkForMore(updated, emptyList())
+    }
+
+    fun resumeVentureIntoDungeon(
+        state: GameState,
+        continuation: VentureIntoDungeonContinuation,
+        response: DecisionResponse,
+        checkForMore: CheckForMore,
+    ): ExecutionResult {
+        val index = (response as? OptionChosenResponse)?.optionIndex
+            ?: return ExecutionResult.error(state, "Expected dungeon option response")
+        val destination = continuation.destinations.getOrNull(index)
+            ?: return ExecutionResult.error(state, "Invalid dungeon option")
+        val context = EffectContext(
+            sourceId = continuation.sourceId,
+            controllerId = continuation.playerId,
+            objectReferences = continuation.objectReferences,
+        )
+        val result = com.wingedsheep.engine.handlers.effects.library.VentureIntoDungeonExecutor.enterRoom(
+            state = state,
+            playerId = continuation.playerId,
+            destination = destination,
+            context = context,
+            recurse = services.effectExecutorRegistry::execute,
+        )
+        if (result.isPaused) return result.toExecutionResult()
+        if (!result.isSuccess) return result.toExecutionResult()
+        return checkForMore(result.state, result.events)
+    }
 
     fun resumeReturnFromGraveyard(
         state: GameState,

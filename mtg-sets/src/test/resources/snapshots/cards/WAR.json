@@ -1966,6 +1966,53 @@
     ]
 }
 
+// Kasmina's Transmutation
+{
+    "name": "Kasmina's Transmutation",
+    "manaCost": "{1}{U}",
+    "typeLine": "Enchantment — Aura",
+    "oracleText": "Enchant creature\nEnchanted creature loses all abilities and has base power and toughness 1/1.",
+    "script": {
+        "staticAbilities": [
+            "LoseAllAbilities",
+            {
+                "type": "SetBasePowerToughnessStatic",
+                "power": 1,
+                "toughness": 1
+            }
+        ],
+        "auraTarget": {
+            "type": "TargetObject",
+            "filter": {
+                "baseFilter": "creature"
+            }
+        }
+    },
+    "metadata": {
+        "collectorNumber": "57",
+        "artist": "Uriah Voth",
+        "flavorText": "\"Hop away now, little Eternal. Go eat some flies.\"\n—Kasmina",
+        "imageUri": "https://cards.scryfall.io/normal/front/a/9/a9771412-695a-4e89-b146-0e3a7336d319.jpg?1783933460",
+        "rulings": [
+            {
+                "date": "2019-05-03",
+                "text": "Kasmina's Transmutation overwrites all previous effects that set the creature's base power and toughness to specific values. Any power- or toughness-setting effects that start to apply after Kasmina's Transmutation becomes attached to a creature will overwrite this effect."
+            },
+            {
+                "date": "2019-05-03",
+                "text": "Effects that modify a creature's power and/or toughness, such as the effect of Bleeding Edge, will apply to the creature no matter when they started to take effect. The same is true for any counters that change its power and/or toughness."
+            },
+            {
+                "date": "2019-05-03",
+                "text": "If the affected creature gains an ability after Kasmina's Transmutation becomes attached to it, it will keep that ability."
+            }
+        ]
+    },
+    "colorIdentityOverride": [
+        "BLUE"
+    ]
+}
+
 // Kraul Stinger
 {
     "name": "Kraul Stinger",
@@ -2432,6 +2479,96 @@
     },
     "colorIdentityOverride": [
         "RED"
+    ]
+}
+
+// Pollenbright Druid
+{
+    "name": "Pollenbright Druid",
+    "manaCost": "{1}{G}",
+    "typeLine": "Creature — Elf Druid",
+    "oracleText": "When this creature enters, choose one —\n• Put a +1/+1 counter on target creature.\n• Proliferate. (Choose any number of permanents and/or players, then give each another counter of each kind already there.)",
+    "creatureStats": {
+        "power": 1,
+        "toughness": 1
+    },
+    "script": {
+        "triggeredAbilities": [
+            {
+                "id": "ability_1",
+                "trigger": {
+                    "type": "ZoneChangeEvent",
+                    "to": "Battlefield"
+                },
+                "effect": {
+                    "type": "Modal",
+                    "modes": [
+                        {
+                            "effect": {
+                                "type": "AddCounters",
+                                "counterType": "+1/+1",
+                                "count": 1,
+                                "target": {
+                                    "type": "ContextTarget",
+                                    "index": 0
+                                }
+                            },
+                            "targetRequirements": [
+                                {
+                                    "type": "TargetObject",
+                                    "filter": {
+                                        "baseFilter": "creature"
+                                    }
+                                }
+                            ],
+                            "description": "Put a +1/+1 counter on target creature"
+                        },
+                        {
+                            "effect": "Proliferate",
+                            "description": "Proliferate"
+                        }
+                    ]
+                }
+            }
+        ]
+    },
+    "metadata": {
+        "collectorNumber": "173",
+        "artist": "Matt Stewart",
+        "imageUri": "https://cards.scryfall.io/normal/front/4/b/4b0f478c-54f8-4087-ad52-d089e2049dda.jpg?1783933409",
+        "rulings": [
+            {
+                "date": "2023-02-04",
+                "text": "If a player or permanent has more than one kind of counter on it, and you choose for it to get additional counters, it must get one of each kind of counter it already has. You can't have it get just one kind of counter it already has and not the others."
+            },
+            {
+                "date": "2023-02-04",
+                "text": "To proliferate, you can choose any permanent that has a counter, including ones controlled by opponents. You can choose any player who has a counter, including opponents. You can't choose cards in any zone other than the battlefield, even if they have counters on them."
+            },
+            {
+                "date": "2023-02-04",
+                "text": "You don't have to choose every permanent or player that has a counter, only the ones you want to add another counter to. Since \"any number\" includes zero, you don't have to choose any permanents at all, and you don't have to choose any players at all."
+            },
+            {
+                "date": "2023-02-04",
+                "text": "If a permanent ever has both +1/+1 counters and -1/-1 counters on it at the same time, they're removed in pairs as a state-based action so that the permanent has only one of those kinds of counters on it."
+            },
+            {
+                "date": "2023-02-04",
+                "text": "An ability that triggers \"Whenever you proliferate\" triggers even if you chose no permanents or players while doing so."
+            },
+            {
+                "date": "2023-02-04",
+                "text": "Players can respond to a spell or ability whose effect includes proliferating. Once that spell or ability starts to resolve, however, and its controller chooses which permanents and players will get new counters, it's too late for anyone to respond."
+            },
+            {
+                "date": "2019-05-03",
+                "text": "You may choose Pollenbright Druid as the target of its own ability."
+            }
+        ]
+    },
+    "colorIdentityOverride": [
+        "GREEN"
     ]
 }
 
@@ -3187,6 +3324,82 @@
         "artist": "Lake Hurwitz",
         "flavorText": "Tamiyo wished only to observe the war, but she soon realized neutrality was not an option.",
         "imageUri": "https://cards.scryfall.io/normal/front/c/e/ce338cf3-46dc-4c87-8df5-af27097c7dd4.jpg"
+    },
+    "colorIdentityOverride": [
+        "BLUE"
+    ]
+}
+
+// Teferi's Time Twist
+{
+    "name": "Teferi's Time Twist",
+    "manaCost": "{1}{U}",
+    "typeLine": "Instant",
+    "oracleText": "Exile target permanent you control. Return that card to the battlefield under its owner's control at the beginning of the next end step. If it enters as a creature, it enters with an additional +1/+1 counter on it.",
+    "script": {
+        "spellEffect": {
+            "type": "Composite",
+            "effects": [
+                {
+                    "type": "MoveToZone",
+                    "target": {
+                        "type": "BoundVariable",
+                        "name": "permanent you control"
+                    },
+                    "destination": "Exile"
+                },
+                {
+                    "type": "CreateDelayedTrigger",
+                    "step": "END",
+                    "effect": {
+                        "type": "MoveToZone",
+                        "target": {
+                            "type": "BoundVariable",
+                            "name": "permanent you control"
+                        },
+                        "destination": "Battlefield",
+                        "addCounterType": "PLUS_ONE_PLUS_ONE"
+                    }
+                }
+            ]
+        },
+        "targetRequirements": [
+            {
+                "type": "TargetObject",
+                "filter": {
+                    "baseFilter": "permanent ctrl:you"
+                },
+                "id": "permanent you control"
+            }
+        ]
+    },
+    "metadata": {
+        "collectorNumber": "72",
+        "artist": "Ralph Horsley",
+        "flavorText": "\"The safest place for you is not now.\"",
+        "imageUri": "https://cards.scryfall.io/normal/front/c/8/c878bdc0-d697-4a2f-bba5-758b27f4247a.jpg?1783933453",
+        "rulings": [
+            {
+                "date": "2019-05-03",
+                "text": "If a token is exiled this way, it will cease to exist and won’t return to the battlefield."
+            },
+            {
+                "date": "2019-05-03",
+                "text": "Auras attached to the exiled permanent will be put into their owners’ graveyards. Equipment attached to the exiled permanent will become unattached and remain on the battlefield. Any counters on the exiled permanent will cease to exist. Once the exiled permanent returns, it’s considered a new object with no relation to the object that it was."
+            },
+            {
+                "date": "2019-05-03",
+                "text": "The permanent returns untapped unless another effect causes it to enter the battlefield tapped."
+            },
+            {
+                "date": "2019-05-03",
+                "text": "To determine whether the entering permanent is entering as a creature, consider any effects that will modify that permanent’s characteristics once it’s on the battlefield, including that permanent’s own abilities that affect only itself and effects from other objects."
+            },
+            {
+                "date": "2019-05-03",
+                "text": "A creature returned to the battlefield this way enters the battlefield with one +1/+1 counter if it would otherwise enter with no +1/+1 counters."
+            }
+        ]
     },
     "colorIdentityOverride": [
         "BLUE"

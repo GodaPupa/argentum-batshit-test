@@ -503,6 +503,7 @@ export enum CounterType {
   PLAN = 'PLAN',
   INVASION = 'INVASION',
   UNLOCK = 'UNLOCK',
+  OIL = 'OIL',
   HONE = 'HONE',
   // Mirrored from CounterType.kt; see CounterTypeClientMirrorTest.kt (mtg-sdk), which reads this
   // file and fails when the two drift.
@@ -612,6 +613,7 @@ export const CounterTypeDisplayNames: Record<CounterType, string> = {
   [CounterType.PLAN]: 'Plan',
   [CounterType.INVASION]: 'Invasion',
   [CounterType.UNLOCK]: 'Unlock',
+  [CounterType.OIL]: 'Oil',
   [CounterType.HONE]: 'Hone',
   [CounterType.DEFENSE]: 'Defense',
   [CounterType.SILVER]: 'Silver',

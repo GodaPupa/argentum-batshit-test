@@ -291,6 +291,20 @@ data object SuspendedComponent : Component
 @Serializable
 data object ParadigmComponent : Component
 
+/** The creature selected by a resolving cipher spell, pending its move from stack to exile. */
+@Serializable
+data class PendingCipherEncodingComponent(
+    val creatureId: EntityId,
+    val creatureBattlefieldTimestamp: Long?,
+) : Component
+
+/** An exiled cipher card encoded on [creatureId]. */
+@Serializable
+data class CipherEncodedComponent(
+    val creatureId: EntityId,
+    val creatureBattlefieldTimestamp: Long?,
+) : Component
+
 /**
  * Records the mana colors spent to cast this permanent.
  * Used by mana-spent-gated trigger conditions (e.g., "if {W}{W} was spent to cast it").
