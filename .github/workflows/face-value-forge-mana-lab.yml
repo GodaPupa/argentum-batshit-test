@@ -2,8 +2,10 @@ name: Face Value Forge Mana Lab
 
 on:
   push:
-    branches: [face-value/lab]
-    paths: [.github/workflows/face-value-forge-mana-lab.yml]
+    branches:
+      - face-value/lab
+    paths:
+      - .github/workflows/face-value-forge-mana-lab.yml
 
 permissions:
   contents: read
@@ -76,48 +78,27 @@ jobs:
           mkdir -p decks "$HOME/.forge/decks/constructed"
           python3 - <<'PY'
           from pathlib import Path
-          nonlands='''4 Llanowar Elves
-4 Nest Invader
-4 Eldrazi Repurposer
-1 Eyeless Watcher
-4 Wretched Gryff
-2 It of the Horrid Swarm
-2 Annoyed Altisaur
-1 Drownyard Lurker
-1 Nyxborn Hydra
-4 Malevolent Rumble
-3 Energy Tap
-2 Rush of Knowledge
-4 Preordain
-2 Snap
-1 Lose Focus
-1 Tamiyo's Safekeeping'''
+          nonlands = [
+              '4 Llanowar Elves','4 Nest Invader','4 Eldrazi Repurposer','1 Eyeless Watcher',
+              '4 Wretched Gryff','2 It of the Horrid Swarm','2 Annoyed Altisaur','1 Drownyard Lurker',
+              '1 Nyxborn Hydra','4 Malevolent Rumble','3 Energy Tap','2 Rush of Knowledge',
+              '4 Preordain','2 Snap','1 Lose Focus',"1 Tamiyo's Safekeeping"
+          ]
           variants={
-            'Face Value v0.7 Control 8F8I4T': (8,8,4),
-            'Face Value Mana A 10F7I3T': (10,7,3),
-            'Face Value Mana B 11F6I3T': (11,6,3),
+              'Face Value v0.7 Control 8F8I4T':(8,8,4),
+              'Face Value Mana A 10F7I3T':(10,7,3),
+              'Face Value Mana B 11F6I3T':(11,6,3),
           }
           for name,(f,i,t) in variants.items():
-            body='[metadata]\nName='+name+'\nDeck Type=constructed\n[main]\n'+nonlands+f'\n{f} Forest\n{i} Island\n{t} Tangled Islet\n'
-            Path('decks',name+'.dck').write_text(body)
-          red='''[metadata]
-Name=Muril0Ambra Mono Red Madness 2026-09-12
-Deck Type=constructed
-[main]
-4 Voldaren Epicure
-4 Kessig Flamebreather
-4 Sneaky Snacker
-3 Guttersnipe
-4 Faithless Looting
-4 Grab the Prize
-4 Highway Robbery
-4 Lava Dart
-4 Lightning Bolt
-4 Fiery Temper
-3 Fireblast
-18 Mountain
-'''
-          Path('decks/Muril0Ambra Mono Red Madness 2026-09-12.dck').write_text(red)
+              lines=['[metadata]','Name='+name,'Deck Type=constructed','[main]']+nonlands+[f'{f} Forest',f'{i} Island',f'{t} Tangled Islet']
+              Path('decks',name+'.dck').write_text('\n'.join(lines)+'\n')
+          red=[
+              '[metadata]','Name=Muril0Ambra Mono Red Madness 2026-09-12','Deck Type=constructed','[main]',
+              '4 Voldaren Epicure','4 Kessig Flamebreather','4 Sneaky Snacker','3 Guttersnipe',
+              '4 Faithless Looting','4 Grab the Prize','4 Highway Robbery','4 Lava Dart','4 Lightning Bolt',
+              '4 Fiery Temper','3 Fireblast','18 Mountain'
+          ]
+          Path('decks/Muril0Ambra Mono Red Madness 2026-09-12.dck').write_text('\n'.join(red)+'\n')
           PY
           cp decks/*.dck "$HOME/.forge/decks/constructed/"
           seq 930001 930020 > mana-lab-seeds.txt
@@ -142,26 +123,29 @@ Deck Type=constructed
           from pathlib import Path
           import re,json
           names={
-            'Face_Value_v07_Control_8F8I4T':'control_8F8I4T',
-            'Face_Value_Mana_A_10F7I3T':'A_10F7I3T',
-            'Face_Value_Mana_B_11F6I3T':'B_11F6I3T'}
+              'Face_Value_v07_Control_8F8I4T':'control_8F8I4T',
+              'Face_Value_Mana_A_10F7I3T':'A_10F7I3T',
+              'Face_Value_Mana_B_11F6I3T':'B_11F6I3T'
+          }
           out={}
           for folder,label in names.items():
-            rec=[]
-            for p in sorted((Path('mana-logs')/folder).glob('*.log')):
-              text=p.read_text(errors='replace')
-              if 'Ai(1)-' in text and re.search(r'Ai\(1\)-.* has won!',text): win='face'
-              elif 'Ai(2)-Muril0Ambra Mono Red Madness 2026-09-12 has won!' in text: win='red'
-              elif 'ended in a Draw' in text: win='draw'
-              else: win='unknown'
-              rec.append({'seed':int(p.stem),'winner':win,
-                'llanowar_casts':len(re.findall(r'cast Llanowar Elves',text)),
-                'repurposer_casts':len(re.findall(r'cast Eldrazi Repurposer',text)),
-                'rumble_casts':len(re.findall(r'cast Malevolent Rumble',text)),
-                'gryff_emerge':len(re.findall(r'Wretched Gryff - Creature 3 / 4 \(Emerge\)',text)),
-                'engine_exception':bool(re.search(r'Exception|StackOverflowError|Stopping slow match as draw',text))})
-            out[label]={'games':len(rec),'wins':sum(x['winner']=='face' for x in rec),'losses':sum(x['winner']=='red' for x in rec),'draws':sum(x['winner']=='draw' for x in rec),'unknown':sum(x['winner']=='unknown' for x in rec),'avg_llanowar_casts':sum(x['llanowar_casts'] for x in rec)/len(rec),'avg_repurposer_casts':sum(x['repurposer_casts'] for x in rec)/len(rec),'avg_rumble_casts':sum(x['rumble_casts'] for x in rec)/len(rec),'gryff_emerge':sum(x['gryff_emerge'] for x in rec),'engine_exceptions':sum(x['engine_exception'] for x in rec),'records':rec}
-          Path('mana-lab-summary.json').write_text(json.dumps(out,indent=2,sort_keys=True)); print(json.dumps({k:{kk:vv for kk,vv in v.items() if kk!='records'} for k,v in out.items()},indent=2,sort_keys=True))
+              rec=[]
+              for p in sorted((Path('mana-logs')/folder).glob('*.log')):
+                  text=p.read_text(errors='replace')
+                  if re.search(r'Ai\(1\)-.* has won!',text): win='face'
+                  elif 'Ai(2)-Muril0Ambra Mono Red Madness 2026-09-12 has won!' in text: win='red'
+                  elif 'ended in a Draw' in text: win='draw'
+                  else: win='unknown'
+                  rec.append({'seed':int(p.stem),'winner':win,
+                      'llanowar_casts':len(re.findall(r'cast Llanowar Elves',text)),
+                      'repurposer_casts':len(re.findall(r'cast Eldrazi Repurposer',text)),
+                      'rumble_casts':len(re.findall(r'cast Malevolent Rumble',text)),
+                      'gryff_emerge':len(re.findall(r'Wretched Gryff - Creature 3 / 4 \(Emerge\)',text)),
+                      'engine_exception':bool(re.search(r'Exception|StackOverflowError|Stopping slow match as draw',text))})
+              n=len(rec)
+              out[label]={'games':n,'wins':sum(x['winner']=='face' for x in rec),'losses':sum(x['winner']=='red' for x in rec),'draws':sum(x['winner']=='draw' for x in rec),'unknown':sum(x['winner']=='unknown' for x in rec),'avg_llanowar_casts':sum(x['llanowar_casts'] for x in rec)/n if n else None,'avg_repurposer_casts':sum(x['repurposer_casts'] for x in rec)/n if n else None,'avg_rumble_casts':sum(x['rumble_casts'] for x in rec)/n if n else None,'gryff_emerge':sum(x['gryff_emerge'] for x in rec),'engine_exceptions':sum(x['engine_exception'] for x in rec),'records':rec}
+          Path('mana-lab-summary.json').write_text(json.dumps(out,indent=2,sort_keys=True))
+          print(json.dumps({k:{kk:vv for kk,vv in v.items() if kk!='records'} for k,v in out.items()},indent=2,sort_keys=True))
           PY
 
       - name: Preserve mana lab artifacts
