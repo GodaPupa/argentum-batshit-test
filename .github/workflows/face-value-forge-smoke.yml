@@ -37,17 +37,27 @@ jobs:
           new = "A:SP$ Tap | TgtPrompt$ Select target untapped creature you control | ValidTgts$ Creature.untapped+YouCtrl | AILogic$ EnergyTap | SubAbility$ DBMana | SpellDescription$ Tap target untapped creature you control. If you do, add an amount of {C} equal to that creature's mana value."
           assert old in text
           card.write_text(text.replace(old, new).replace('\nAI:RemoveDeck:All', ''))
+
           tap = Path('forge-src/forge-ai/src/main/java/forge/ai/ability/TapAi.java')
           src = tap.read_text()
-          needle = '        final String aiLogic = sa.getParamOrDefault("AILogic", "");\n'
+          needle = '        final Player turn = phase.getPlayerTurn();\n\n'
           assert needle in src
           lines = [
-              '        final String aiLogic = sa.getParamOrDefault("AILogic", "");',
-              '        if ("EnergyTap".equals(aiLogic)) {',
+              '        final Player turn = phase.getPlayerTurn();',
+              '',
+              '        if ("EnergyTap".equals(sa.getParamOrDefault("AILogic", ""))) {',
+              '            if (!phase.is(PhaseType.MAIN2, ai)) {',
+              '                return new AiAbilityDecision(0, AiPlayDecision.WaitForMain2);',
+              '            }',
+              '            boolean hasFollowup = ai.getCardsIn(ZoneType.Hand).stream()',
+              '                    .anyMatch(c -> c.getCMC() >= 3 || "Nyxborn Hydra".equals(c.getName()));',
+              '            if (!hasFollowup) {',
+              '                return new AiAbilityDecision(0, AiPlayDecision.CantPlayAi);',
+              '            }',
               '            CardCollection candidates = CardLists.getTargetableCards(ai.getCreaturesInPlay(), sa);',
               '            candidates = CardLists.filter(candidates, CardPredicates.CAN_TAP);',
               '            Card choice = ComputerUtilCard.getMostExpensivePermanentAI(candidates);',
-              '            if (choice == null || choice.getCMC() < 5) {',
+              '            if (choice == null || choice.getCMC() < 7) {',
               '                return new AiAbilityDecision(0, AiPlayDecision.CantPlayAi);',
               '            }',
               '            sa.resetTargets();',
@@ -58,7 +68,7 @@ jobs:
           ]
           src = src.replace(needle, '\n'.join(lines), 1)
           tap.write_text(src)
-          Path('energy-tap-ai.patch.txt').write_text('Energy Tap AI lab patch: own highest-MV untapped creature, minimum MV5.\n')
+          Path('energy-tap-ai.patch.txt').write_text('Energy Tap AI lab patch v2: Main2 only, MV7+ target, and a 3+ MV or Nyxborn Hydra follow-up in hand.\n')
           PY
           git -C forge-src diff -- forge-gui/res/cardsfolder/e/energy_tap.txt forge-ai/src/main/java/forge/ai/ability/TapAi.java | tee forge-energy-tap.patch
 
