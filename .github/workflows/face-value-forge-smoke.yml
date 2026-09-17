@@ -23,9 +23,9 @@ jobs:
           mkdir forge-dist
           tar -xjf forge.tar.bz2 -C forge-dist
           find forge-dist -maxdepth 4 -type f > forge-files.txt
-          FORGE_JAR="$(find forge-dist -type f -name 'forge.jar' -print -quit)"
+          FORGE_JAR="$(find forge-dist -type f -name 'forge-gui-desktop-*-jar-with-dependencies.jar' -print -quit)"
           if [ -z "$FORGE_JAR" ]; then
-            echo "forge.jar not found" >&2
+            echo "Forge desktop jar not found" >&2
             sed -n '1,100p' forge-files.txt >&2
             exit 1
           fi
