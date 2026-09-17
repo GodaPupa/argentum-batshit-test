@@ -24,13 +24,11 @@ jobs:
           tar -xjf forge.tar.bz2 -C forge-dist
           find forge-dist -maxdepth 4 -type f > forge-files.txt
           FORGE_LAUNCHER="$(find forge-dist -type f -name 'forge.sh' -print -quit)"
-          if [ -z "$FORGE_LAUNCHER" ]; then
-            echo "Forge launcher not found" >&2
-            sed -n '1,100p' forge-files.txt >&2
-            exit 1
-          fi
+          test -n "$FORGE_LAUNCHER"
           chmod +x "$FORGE_LAUNCHER"
           echo "FORGE_LAUNCHER=$FORGE_LAUNCHER" >> "$GITHUB_ENV"
+          java --version 2>&1 | tee java-version.txt
+          cat "$FORGE_LAUNCHER" | tee forge-launcher.txt
 
       - name: Write Face Value v0.7 deck
         run: |
@@ -87,13 +85,10 @@ jobs:
           python3 - <<'PY'
           import re, pathlib
           for path in pathlib.Path('decks').glob('*.dck'):
-              in_main=False
-              total=0
+              in_main=False; total=0
               for line in path.read_text().splitlines():
-                  if line.strip()=='[main]':
-                      in_main=True; continue
-                  if line.startswith('[') and line.strip()!='[main]':
-                      in_main=False
+                  if line.strip()=='[main]': in_main=True; continue
+                  if line.startswith('[') and line.strip()!='[main]': in_main=False
                   if in_main:
                       m=re.match(r'^(\d+)\s+', line.strip())
                       if m: total += int(m.group(1))
@@ -101,13 +96,25 @@ jobs:
               assert total==60, (path,total)
           PY
 
-      - name: Run 20-game Forge headless smoke
+      - name: Diagnose Forge headless launch
         run: |
+          set +e
           set -o pipefail
-          "$FORGE_LAUNCHER" sim \
+          bash -x "$FORGE_LAUNCHER" sim \
             -D "$(pwd)/decks" \
             -d "Face Value v0.7.dck" "Mono Red Madness Aggregate.dck" \
-            -n 20 -c 60 2>&1 | tee forge-smoke.log
+            -n 1 -c 60 > forge-smoke.log 2>&1
+          STATUS=$?
+          echo "$STATUS" > forge-exit-code.txt
+          echo "Forge exit code: $STATUS"
+          find "$HOME" forge-dist -type f \( -iname '*.log' -o -iname '*error*' \) -print > forge-log-files.txt 2>/dev/null || true
+          while IFS= read -r f; do
+            echo "===== $f =====" >> forge-diagnostics.txt
+            tail -300 "$f" >> forge-diagnostics.txt 2>&1 || true
+          done < forge-log-files.txt
+          cat forge-smoke.log || true
+          cat forge-diagnostics.txt || true
+          exit "$STATUS"
 
       - name: Preserve Forge smoke artifacts
         if: always()
@@ -116,6 +123,11 @@ jobs:
           name: face-value-forge-smoke
           path: |
             forge-smoke.log
+            forge-diagnostics.txt
+            forge-log-files.txt
+            forge-launcher.txt
+            forge-exit-code.txt
+            java-version.txt
             forge-files.txt
             decks/*.dck
           if-no-files-found: warn
