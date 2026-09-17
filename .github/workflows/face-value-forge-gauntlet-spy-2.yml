@@ -1,0 +1,124 @@
+name: Face Value Forge Gauntlet Spy 2
+
+on:
+  push:
+    branches: [face-value/lab]
+    paths: [.github/workflows/face-value-forge-gauntlet-spy-2.yml]
+
+permissions:
+  contents: read
+
+jobs:
+  spy-gauntlet:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - name: Setup Java 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - name: Clone and build stock Forge
+        run: |
+          set -euxo pipefail
+          git clone --depth 1 https://github.com/Card-Forge/forge.git forge-src
+          git -C forge-src rev-parse HEAD | tee forge-source-commit.txt
+          cd forge-src
+          mvn -B -DskipTests -pl forge-gui-desktop -am package
+          chmod +x forge-gui-desktop/target/forge.sh
+          rm -rf forge-gui-desktop/target/res
+          cp -R forge-gui/res forge-gui-desktop/target/res
+          echo "FORGE_LAUNCHER=$(pwd)/forge-gui-desktop/target/forge.sh" >> "$GITHUB_ENV"
+      - name: Write frozen decks and fresh seeds
+        run: |
+          mkdir -p decks "$HOME/.forge/decks/constructed"
+          cat > 'decks/Face Value v1.2 Ent.dck' <<'EOF'
+          [metadata]
+          Name=Face Value v1.2 Ent
+          Deck Type=constructed
+          [main]
+          4 Llanowar Elves
+          4 Nest Invader
+          4 Eldrazi Repurposer
+          1 Eyeless Watcher
+          4 Wretched Gryff
+          2 It of the Horrid Swarm
+          2 Annoyed Altisaur
+          1 Drownyard Lurker
+          1 Nyxborn Hydra
+          3 Generous Ent
+          4 Malevolent Rumble
+          4 Preordain
+          2 Snap
+          1 Lose Focus
+          1 Tamiyo's Safekeeping
+          2 Growth Spasm
+          9 Forest
+          8 Island
+          3 Tangled Islet
+          EOF
+          cat > 'decks/Christian Casanova Spy Combo 2026-09-12.dck' <<'EOF'
+          [metadata]
+          Name=Christian Casanova Spy Combo 2026-09-12
+          Deck Type=constructed
+          [main]
+          4 Avenging Hunter
+          4 Balustrade Spy
+          4 Elves of Deep Shadow
+          4 Gatecreeper Vine
+          4 Generous Ent
+          3 Masked Vandal
+          4 Overgrown Battlement
+          4 Sagu Wildling
+          4 Saruli Caretaker
+          4 Wall of Roots
+          2 Lotleth Giant
+          4 Land Grant
+          4 Lead the Stampede
+          4 Winding Way
+          2 Dread Return
+          4 Forest
+          1 Swamp
+          EOF
+          cp decks/*.dck "$HOME/.forge/decks/constructed/"
+          seq 1080001 1080020 > spy2-seeds.txt
+          sha256sum spy2-seeds.txt decks/*.dck | tee spy2-inputs.sha256
+      - name: Run fresh Spy gauntlet with extended slow-match allowance
+        run: |
+          set -euo pipefail
+          mkdir -p spy2-logs
+          while read -r seed; do
+            "$FORGE_LAUNCHER" sim -d 'Face Value v1.2 Ent.dck' 'Christian Casanova Spy Combo 2026-09-12.dck' -n 1 -s "$seed" -c 180 > "spy2-logs/$seed.log" 2>&1
+          done < spy2-seeds.txt
+      - name: Audit Spy gauntlet 2
+        if: always()
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re,json
+          rec=[]
+          face='Ai(1)-Face Value v1.2 Ent'
+          for p in sorted(Path('spy2-logs').glob('*.log')):
+            text=p.read_text(errors='replace')
+            if re.search(r'Ai\(1\)-Face Value v1.2 Ent has won!',text): winner='face'
+            elif re.search(r'Ai\(2\)-Christian Casanova Spy Combo 2026-09-12 has won!',text): winner='spy'
+            elif 'ended in a Draw' in text: winner='draw'
+            else: winner='unknown'
+            rec.append({'seed':int(p.stem),'winner':winner,'face_ent_landcycles':len(re.findall(re.escape(face)+r' activated Generous Ent',text)),'face_ent_casts':len(re.findall(re.escape(face)+r' cast Generous Ent',text)),'face_growth_spasm':len(re.findall(re.escape(face)+r' cast Growth Spasm',text)),'face_gryff_emerge':len(re.findall(r'Wretched Gryff - Creature 3 / 4 \(Emerge\)',text)),'spy_casts':len(re.findall(r'cast Balustrade Spy',text)),'dread_return_casts':len(re.findall(r'cast Dread Return',text)),'lotleth_giant_casts':len(re.findall(r'cast Lotleth Giant',text)),'land_grant_casts':len(re.findall(r'cast Land Grant',text)),'winding_way_casts':len(re.findall(r'cast Winding Way',text)),'lead_casts':len(re.findall(r'cast Lead the Stampede',text)),'timeout_or_slow':bool(re.search(r'TimeoutException|Stopping slow match as draw',text)),'other_exception':bool(re.search(r'Exception|StackOverflowError',text) and not re.search(r'TimeoutException',text))})
+          n=len(rec); out={'games':n,'wins':sum(x['winner']=='face' for x in rec),'losses':sum(x['winner']=='spy' for x in rec),'draws':sum(x['winner']=='draw' for x in rec),'unknown':sum(x['winner']=='unknown' for x in rec),'face_ent_landcycles':sum(x['face_ent_landcycles'] for x in rec),'face_ent_casts':sum(x['face_ent_casts'] for x in rec),'face_growth_spasm':sum(x['face_growth_spasm'] for x in rec),'face_gryff_emerge':sum(x['face_gryff_emerge'] for x in rec),'spy_casts':sum(x['spy_casts'] for x in rec),'dread_return_casts':sum(x['dread_return_casts'] for x in rec),'lotleth_giant_casts':sum(x['lotleth_giant_casts'] for x in rec),'land_grant_casts':sum(x['land_grant_casts'] for x in rec),'winding_way_casts':sum(x['winding_way_casts'] for x in rec),'lead_casts':sum(x['lead_casts'] for x in rec),'timeout_or_slow':sum(x['timeout_or_slow'] for x in rec),'other_exceptions':sum(x['other_exception'] for x in rec),'records':rec}
+          Path('spy2-gauntlet-summary.json').write_text(json.dumps(out,indent=2,sort_keys=True)); print(json.dumps({k:v for k,v in out.items() if k!='records'},indent=2,sort_keys=True))
+          assert n==20 and out['unknown']==0 and out['timeout_or_slow']==0 and out['other_exceptions']==0,out
+          PY
+      - name: Preserve Spy 2 artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: face-value-forge-gauntlet-spy-2
+          path: |
+            spy2-gauntlet-summary.json
+            spy2-seeds.txt
+            spy2-inputs.sha256
+            spy2-logs/*.log
+            forge-source-commit.txt
+            decks/*.dck
+          if-no-files-found: warn
