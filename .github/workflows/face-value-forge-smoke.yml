@@ -1,4 +1,4 @@
-name: Face Value Forge Energy Tap AI Audit
+name: Face Value Forge Pilot Heuristics Audit
 
 on:
   push:
@@ -11,7 +11,7 @@ permissions:
   contents: read
 
 jobs:
-  forge-energy-tap-ai-audit:
+  forge-pilot-heuristics-audit:
     runs-on: ubuntu-latest
     timeout-minutes: 45
     steps:
@@ -27,21 +27,23 @@ jobs:
           git clone --depth 1 https://github.com/Card-Forge/forge.git forge-src
           git -C forge-src rev-parse HEAD | tee forge-source-commit.txt
 
-      - name: Apply narrow Energy Tap AI patch
+      - name: Apply Face Value pilot heuristics
         run: |
           python3 - <<'PY'
           from pathlib import Path
-          card = Path('forge-src/forge-gui/res/cardsfolder/e/energy_tap.txt')
-          text = card.read_text()
-          old = "A:SP$ Tap | TgtPrompt$ Select target untapped creature you control | ValidTgts$ Creature.untapped+YouCtrl | SubAbility$ DBMana | SpellDescription$ Tap target untapped creature you control. If you do, add an amount of {C} equal to that creature's mana value."
-          new = "A:SP$ Tap | TgtPrompt$ Select target untapped creature you control | ValidTgts$ Creature.untapped+YouCtrl | AILogic$ EnergyTap | SubAbility$ DBMana | SpellDescription$ Tap target untapped creature you control. If you do, add an amount of {C} equal to that creature's mana value."
-          assert old in text
-          card.write_text(text.replace(old, new).replace('\nAI:RemoveDeck:All', ''))
+
+          energy = Path('forge-src/forge-gui/res/cardsfolder/e/energy_tap.txt')
+          et = energy.read_text()
+          et_old = "A:SP$ Tap | TgtPrompt$ Select target untapped creature you control | ValidTgts$ Creature.untapped+YouCtrl | SubAbility$ DBMana | SpellDescription$ Tap target untapped creature you control. If you do, add an amount of {C} equal to that creature's mana value."
+          et_new = "A:SP$ Tap | TgtPrompt$ Select target untapped creature you control | ValidTgts$ Creature.untapped+YouCtrl | AILogic$ EnergyTap | SubAbility$ DBMana | SpellDescription$ Tap target untapped creature you control. If you do, add an amount of {C} equal to that creature's mana value."
+          assert et_old in et
+          energy.write_text(et.replace(et_old, et_new).replace('\nAI:RemoveDeck:All', ''))
+
           tap = Path('forge-src/forge-ai/src/main/java/forge/ai/ability/TapAi.java')
           src = tap.read_text()
           needle = '        final Player turn = phase.getPlayerTurn();\n\n'
           assert needle in src
-          lines = [
+          tap_lines = [
               '        final Player turn = phase.getPlayerTurn();',
               '',
               '        if ("EnergyTap".equals(sa.getParamOrDefault("AILogic", ""))) {',
@@ -49,7 +51,7 @@ jobs:
               '                return new AiAbilityDecision(0, AiPlayDecision.WaitForMain2);',
               '            }',
               '            boolean hasFollowup = ai.getCardsIn(ZoneType.Hand).stream()',
-              '                    .anyMatch(c -> c.getCMC() >= 3 || "Nyxborn Hydra".equals(c.getName()));',
+              '                    .anyMatch(c -> c.getCMC() >= 5 || "Nyxborn Hydra".equals(c.getName()));',
               '            if (!hasFollowup) {',
               '                return new AiAbilityDecision(0, AiPlayDecision.CantPlayAi);',
               '            }',
@@ -65,10 +67,40 @@ jobs:
               '        }',
               ''
           ]
-          tap.write_text(src.replace(needle, '\n'.join(lines), 1))
-          Path('energy-tap-ai.patch.txt').write_text('Energy Tap AI lab patch v2: Main2 only, MV7+ target, 3+ MV or Hydra follow-up.\n')
+          tap.write_text(src.replace(needle, '\n'.join(tap_lines), 1))
+
+          rush = Path('forge-src/forge-gui/res/cardsfolder/r/rush_of_knowledge.txt')
+          rt = rush.read_text()
+          r_old = 'A:SP$ Draw | Defined$ You | NumCards$ X | SpellDescription$ Draw cards equal to the highest mana value among permanents you control.'
+          r_new = 'A:SP$ Draw | Defined$ You | NumCards$ X | AILogic$ FaceValueRush | SpellDescription$ Draw cards equal to the highest mana value among permanents you control.'
+          assert r_old in rt
+          rush.write_text(rt.replace(r_old, r_new))
+
+          draw = Path('forge-src/forge-ai/src/main/java/forge/ai/ability/DrawAi.java')
+          ds = draw.read_text()
+          dneedle = '        boolean aboutToBeMyTurn = ph.getNextTurn().equals(ai) && ph.is(PhaseType.END_OF_TURN);\n\n'
+          assert dneedle in ds
+          draw_lines = [
+              '        boolean aboutToBeMyTurn = ph.getNextTurn().equals(ai) && ph.is(PhaseType.END_OF_TURN);',
+              '',
+              '        if ("FaceValueRush".equals(sa.getParamOrDefault("AILogic", ""))) {',
+              '            int highest = ai.getCardsIn(ZoneType.Battlefield).stream()',
+              '                    .mapToInt(Card::getCMC).max().orElse(0);',
+              '            if (highest < 7) {',
+              '                return new AiAbilityDecision(0, AiPlayDecision.CantPlayAi);',
+              '            }',
+              '        }',
+              ''
+          ]
+          draw.write_text(ds.replace(dneedle, '\n'.join(draw_lines), 1))
+
+          Path('face-value-forge-ai-notes.txt').write_text(
+              'Lab-only Forge AI heuristics:\n'
+              '- Energy Tap: Main2, MV7+ target, CMC5+ or Nyxborn Hydra follow-up.\n'
+              '- Rush of Knowledge: cast only with MV7+ permanent already on battlefield.\n'
+          )
           PY
-          git -C forge-src diff -- forge-gui/res/cardsfolder/e/energy_tap.txt forge-ai/src/main/java/forge/ai/ability/TapAi.java | tee forge-energy-tap.patch
+          git -C forge-src diff -- forge-gui/res/cardsfolder/e/energy_tap.txt forge-ai/src/main/java/forge/ai/ability/TapAi.java forge-gui/res/cardsfolder/r/rush_of_knowledge.txt forge-ai/src/main/java/forge/ai/ability/DrawAi.java | tee forge-face-value-ai.patch
 
       - name: Build patched Forge desktop
         run: |
@@ -131,28 +163,38 @@ jobs:
       - name: Run 20-game patched Forge audit
         run: |
           set -o pipefail
-          "$FORGE_LAUNCHER" sim -d "Face Value v0.7.dck" "Mono Red Madness Aggregate.dck" -n 20 -c 60 2>&1 | tee forge-energy-tap-audit.log
+          "$FORGE_LAUNCHER" sim -d "Face Value v0.7.dck" "Mono Red Madness Aggregate.dck" -n 20 -c 60 2>&1 | tee forge-face-value-ai-audit.log
 
-      - name: Summarize patched pilot behavior
+      - name: Summarize pilot behavior
         if: always()
         run: |
           python3 - <<'PY'
           from pathlib import Path
           import json, re
-          text = Path('forge-energy-tap-audit.log').read_text(errors='replace') if Path('forge-energy-tap-audit.log').exists() else ''
+          text = Path('forge-face-value-ai-audit.log').read_text(errors='replace') if Path('forge-face-value-ai-audit.log').exists() else ''
+          winners = re.findall(r'Game Result: Game \d+ ended.*? (Ai\(\d\)-.*?) has won!', text)
+          taps = list(re.finditer(r'Add To Stack: Ai\(1\)-Face Value v0\.7 cast Energy Tap targeting', text))
+          productive = 0
+          for m in taps:
+              end = text.find("Phase: Ai(1)-Face Value v0.7's End step", m.end())
+              segment = text[m.end(): end if end != -1 else m.end()+2000]
+              if re.search(r'Add To Stack: Ai\(1\)-Face Value v0\.7 cast (?!Energy Tap)', segment):
+                  productive += 1
+          rush_draws = [int(x) if x.isdigit() else None for x in re.findall(r'Resolve Stack: Rush of Knowledge .*? draws (\d+) cards', text)]
           summary = {
-              'games_reported': len(re.findall(r'Game Result: Game \d+', text)),
-              'face_value_wins': len(re.findall(r'Ai\(1\)-Face Value v0\.7 has won', text)),
-              'mono_red_wins': len(re.findall(r'Ai\(2\)-Mono Red Madness Aggregate has won', text)),
-              'energy_tap_casts': len(re.findall(r'cast Energy Tap targeting', text)),
-              'energy_tap_resolutions': len(re.findall(r'Resolve Stack: Energy Tap', text)),
+              'games_reported': len(winners),
+              'face_value_wins': sum('Face Value' in w for w in winners),
+              'mono_red_wins': sum('Mono Red' in w for w in winners),
+              'energy_tap_casts': len(taps),
+              'energy_tap_productive_same_main': productive,
+              'rush_casts': len(re.findall(r'cast Rush of Knowledge', text)),
+              'rush_draw_counts_numeric': rush_draws,
               'wretched_gryff_emerge_resolutions': len(re.findall(r'Wretched Gryff - Creature 3 / 4 \(Emerge\)', text)),
               'it_emerge_mentions': len(re.findall(r'It of the Horrid Swarm.*Emerge', text)),
-              'rush_casts': len(re.findall(r'cast Rush of Knowledge', text)),
               'hydra_bestow_casts': len(re.findall(r'cast Nyxborn Hydra targeting', text)),
-              'hydra_total_mentions': text.count('Nyxborn Hydra')
+              'engine_exceptions': len(re.findall(r'Exception|StackOverflowError|Stopping slow match as draw', text))
           }
-          Path('forge-energy-tap-audit-summary.json').write_text(json.dumps(summary, indent=2, sort_keys=True))
+          Path('forge-face-value-ai-audit-summary.json').write_text(json.dumps(summary, indent=2, sort_keys=True))
           print(json.dumps(summary, indent=2, sort_keys=True))
           PY
 
@@ -160,12 +202,12 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: face-value-forge-energy-tap-ai-audit
+          name: face-value-forge-pilot-heuristics-audit
           path: |
-            forge-energy-tap-audit.log
-            forge-energy-tap-audit-summary.json
-            forge-energy-tap.patch
-            energy-tap-ai.patch.txt
+            forge-face-value-ai-audit.log
+            forge-face-value-ai-audit-summary.json
+            forge-face-value-ai.patch
+            face-value-forge-ai-notes.txt
             forge-source-commit.txt
             decks/*.dck
           if-no-files-found: warn
