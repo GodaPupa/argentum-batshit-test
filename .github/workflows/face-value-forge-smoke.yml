@@ -80,7 +80,7 @@ jobs:
           18 Mountain
           EOF
 
-      - name: Validate deck counts
+      - name: Validate and install decks for Forge
         run: |
           python3 - <<'PY'
           import re, pathlib
@@ -95,12 +95,14 @@ jobs:
               print(path.name, total)
               assert total==60, (path,total)
           PY
+          mkdir -p "$HOME/.forge/decks/constructed"
+          cp decks/*.dck "$HOME/.forge/decks/constructed/"
+          ls -l "$HOME/.forge/decks/constructed"
 
       - name: Run one-game Forge headless smoke
         run: |
           set -o pipefail
           "$FORGE_LAUNCHER" sim \
-            -D "$(pwd)/decks" \
             -d "Face Value v0.7.dck" "Mono Red Madness Aggregate.dck" \
             -n 1 -c 60 2>&1 | tee forge-smoke.log
 
