@@ -1,4 +1,4 @@
-name: Face Value Forge Smoke
+name: Face Value Forge Pilot Audit
 
 on:
   push:
@@ -11,7 +11,7 @@ permissions:
   contents: read
 
 jobs:
-  forge-smoke:
+  forge-pilot-audit:
     runs-on: ubuntu-latest
     timeout-minutes: 45
     steps:
@@ -27,8 +27,6 @@ jobs:
           test -n "$FORGE_LAUNCHER"
           chmod +x "$FORGE_LAUNCHER"
           echo "FORGE_LAUNCHER=$FORGE_LAUNCHER" >> "$GITHUB_ENV"
-          java --version 2>&1 | tee java-version.txt
-          cat "$FORGE_LAUNCHER" | tee forge-launcher.txt
 
       - name: Write Face Value v0.7 deck
         run: |
@@ -97,24 +95,42 @@ jobs:
           PY
           mkdir -p "$HOME/.forge/decks/constructed"
           cp decks/*.dck "$HOME/.forge/decks/constructed/"
-          ls -l "$HOME/.forge/decks/constructed"
 
-      - name: Run one-game Forge headless smoke
+      - name: Run 20-game Forge pilot audit
         run: |
           set -o pipefail
           "$FORGE_LAUNCHER" sim \
             -d "Face Value v0.7.dck" "Mono Red Madness Aggregate.dck" \
-            -n 1 -c 60 2>&1 | tee forge-smoke.log
+            -n 20 -c 60 2>&1 | tee forge-pilot-audit.log
 
-      - name: Preserve Forge smoke artifacts
+      - name: Summarize pilot behavior
+        if: always()
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re, json
+          p=Path('forge-pilot-audit.log')
+          text=p.read_text(errors='replace') if p.exists() else ''
+          keys=['Wretched Gryff','It of the Horrid Swarm','Energy Tap','Rush of Knowledge','Nyxborn Hydra','Drownyard Lurker','Annoyed Altisaur']
+          summary={k: text.count(k) for k in keys}
+          summary['games_reported']=len(re.findall(r'Game Result: Game \d+', text))
+          summary['face_value_wins']=len(re.findall(r'Ai\(1\)-Face Value v0\.7 has won', text))
+          summary['mono_red_wins']=len(re.findall(r'Ai\(2\)-Mono Red Madness Aggregate has won', text))
+          # Indicators useful for manual trace audit; these are text-presence counts, not final strategic classifications.
+          summary['emerge_mentions']=len(re.findall(r'(?i)emerge', text))
+          summary['bestow_mentions']=len(re.findall(r'(?i)bestow', text))
+          Path('forge-pilot-summary.json').write_text(json.dumps(summary, indent=2, sort_keys=True))
+          print(json.dumps(summary, indent=2, sort_keys=True))
+          PY
+
+      - name: Preserve Forge pilot artifacts
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: face-value-forge-smoke
+          name: face-value-forge-pilot-audit
           path: |
-            forge-smoke.log
-            forge-launcher.txt
-            java-version.txt
+            forge-pilot-audit.log
+            forge-pilot-summary.json
             forge-files.txt
             decks/*.dck
           if-no-files-found: warn
