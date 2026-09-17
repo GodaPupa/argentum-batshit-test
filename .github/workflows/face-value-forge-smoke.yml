@@ -1,4 +1,4 @@
-name: Face Value Forge Pilot Heuristics Audit
+name: Face Value Forge Fixed-Seed Matchup Block
 
 on:
   push:
@@ -11,7 +11,7 @@ permissions:
   contents: read
 
 jobs:
-  forge-pilot-heuristics-audit:
+  forge-fixed-seed-matchup:
     runs-on: ubuntu-latest
     timeout-minutes: 45
     steps:
@@ -112,7 +112,7 @@ jobs:
           cp -R forge-gui/res forge-gui-desktop/target/res
           echo "FORGE_LAUNCHER=$(pwd)/forge-gui-desktop/target/forge.sh" >> "$GITHUB_ENV"
 
-      - name: Write and install test decks
+      - name: Write and install frozen decks
         run: |
           mkdir -p decks "$HOME/.forge/decks/constructed"
           cat > "decks/Face Value v0.7.dck" <<'EOF'
@@ -140,72 +140,148 @@ jobs:
           8 Island
           4 Tangled Islet
           EOF
-          cat > "decks/Mono Red Madness Aggregate.dck" <<'EOF'
+          cat > "decks/Muril0Ambra Mono Red Madness 2026-09-12.dck" <<'EOF'
           [metadata]
-          Name=Mono Red Madness Aggregate
+          Name=Muril0Ambra Mono Red Madness 2026-09-12
           Deck Type=constructed
           [main]
-          4 Fiery Temper
-          4 Lightning Bolt
-          4 Sneaky Snacker
-          4 Grab the Prize
-          3 Fireblast
-          3 Guttersnipe
-          4 Lava Dart
-          4 Highway Robbery
-          4 Faithless Looting
-          4 Kessig Flamebreather
           4 Voldaren Epicure
+          4 Kessig Flamebreather
+          4 Sneaky Snacker
+          3 Guttersnipe
+          4 Faithless Looting
+          4 Grab the Prize
+          4 Highway Robbery
+          4 Lava Dart
+          4 Lightning Bolt
+          4 Fiery Temper
+          3 Fireblast
           18 Mountain
           EOF
           cp decks/*.dck "$HOME/.forge/decks/constructed/"
+          python3 - <<'PY'
+          import pathlib, re, hashlib, json
+          for p in pathlib.Path('decks').glob('*.dck'):
+              total=0; main=False
+              for line in p.read_text().splitlines():
+                  if line.strip() == '[main]': main=True; continue
+                  if line.startswith('[') and line.strip() != '[main]': main=False
+                  if main:
+                      m=re.match(r'^(\d+)\s+', line.strip())
+                      if m: total += int(m.group(1))
+              assert total == 60, (p, total)
+              print(p.name, total, hashlib.sha256(p.read_bytes()).hexdigest())
+          provenance = {
+              'opponent': 'Muril0Ambra Mono Red Madness, MTGO Pauper League #10991, 5-0, 2026-09-12',
+              'mtgdecks_event': 'https://mtgdecks.net/Pauper/mtgo-pauper-league-10991-tournament-269860',
+              'mtgdecks_deck': 'https://mtgdecks.net/Pauper/mono-red-madness-decklist-by-muril0ambra-3086428',
+              'mode': 'preboard',
+          }
+          pathlib.Path('matchup-provenance.json').write_text(json.dumps(provenance, indent=2, sort_keys=True))
+          PY
 
-      - name: Run 20-game patched Forge audit
+      - name: Freeze fixed seed vector
         run: |
-          set -o pipefail
-          "$FORGE_LAUNCHER" sim -d "Face Value v0.7.dck" "Mono Red Madness Aggregate.dck" -n 20 -c 60 2>&1 | tee forge-face-value-ai-audit.log
+          cat > forge-seeds.txt <<'EOF'
+          910001
+          910002
+          910003
+          910004
+          910005
+          910006
+          910007
+          910008
+          910009
+          910010
+          910011
+          910012
+          910013
+          910014
+          910015
+          910016
+          910017
+          910018
+          910019
+          910020
+          EOF
+          sha256sum forge-seeds.txt | tee forge-seeds.sha256
 
-      - name: Summarize pilot behavior
+      - name: Run 20 fixed-seed Forge games
+        run: |
+          set -euo pipefail
+          mkdir -p forge-fixed-logs
+          : > forge-fixed-combined.log
+          while read -r seed; do
+            echo "===== SEED $seed =====" | tee -a forge-fixed-combined.log
+            "$FORGE_LAUNCHER" sim \
+              -d "Face Value v0.7.dck" "Muril0Ambra Mono Red Madness 2026-09-12.dck" \
+              -n 1 -s "$seed" -c 60 2>&1 | tee "forge-fixed-logs/seed-${seed}.log" | tee -a forge-fixed-combined.log
+          done < forge-seeds.txt
+
+      - name: Summarize fixed-seed block
         if: always()
         run: |
           python3 - <<'PY'
           from pathlib import Path
-          import json, re
-          text = Path('forge-face-value-ai-audit.log').read_text(errors='replace') if Path('forge-face-value-ai-audit.log').exists() else ''
-          winners = re.findall(r'Game Result: Game \d+ ended.*? (Ai\(\d\)-.*?) has won!', text)
-          taps = list(re.finditer(r'Add To Stack: Ai\(1\)-Face Value v0\.7 cast Energy Tap targeting', text))
-          productive = 0
-          for m in taps:
-              end = text.find("Phase: Ai(1)-Face Value v0.7's End step", m.end())
-              segment = text[m.end(): end if end != -1 else m.end()+2000]
-              if re.search(r'Add To Stack: Ai\(1\)-Face Value v0\.7 cast (?!Energy Tap)', segment):
-                  productive += 1
-          rush_draws = [int(x) if x.isdigit() else None for x in re.findall(r'Resolve Stack: Rush of Knowledge .*? draws (\d+) cards', text)]
-          summary = {
-              'games_reported': len(winners),
-              'face_value_wins': sum('Face Value' in w for w in winners),
-              'mono_red_wins': sum('Mono Red' in w for w in winners),
-              'energy_tap_casts': len(taps),
-              'energy_tap_productive_same_main': productive,
-              'rush_casts': len(re.findall(r'cast Rush of Knowledge', text)),
-              'rush_draw_counts_numeric': rush_draws,
-              'wretched_gryff_emerge_resolutions': len(re.findall(r'Wretched Gryff - Creature 3 / 4 \(Emerge\)', text)),
-              'it_emerge_mentions': len(re.findall(r'It of the Horrid Swarm.*Emerge', text)),
-              'hydra_bestow_casts': len(re.findall(r'cast Nyxborn Hydra targeting', text)),
-              'engine_exceptions': len(re.findall(r'Exception|StackOverflowError|Stopping slow match as draw', text))
+          import json, re, hashlib
+          records=[]
+          for p in sorted(Path('forge-fixed-logs').glob('seed-*.log')):
+              seed=int(p.stem.split('-')[1])
+              text=p.read_text(errors='replace')
+              winner='unknown'
+              if re.search(r'Ai\(1\)-Face Value v0\.7 has won!', text): winner='face_value'
+              elif re.search(r'Ai\(2\)-Muril0Ambra Mono Red Madness 2026-09-12 has won!', text): winner='mono_red'
+              elif 'ended in a Draw' in text: winner='draw'
+              taps=list(re.finditer(r'Add To Stack: Ai\(1\)-Face Value v0\.7 cast Energy Tap targeting', text))
+              productive=0
+              for m in taps:
+                  end=text.find("Phase: Ai(1)-Face Value v0.7's End step", m.end())
+                  seg=text[m.end(): end if end!=-1 else m.end()+2500]
+                  if re.search(r'Add To Stack: Ai\(1\)-Face Value v0\.7 cast (?!Energy Tap)', seg): productive+=1
+              records.append({
+                  'seed': seed,
+                  'winner': winner,
+                  'energy_tap_casts': len(taps),
+                  'energy_tap_productive': productive,
+                  'rush_casts': len(re.findall(r'cast Rush of Knowledge', text)),
+                  'gryff_emerge': len(re.findall(r'Wretched Gryff - Creature 3 / 4 \(Emerge\)', text)),
+                  'it_emerge_mentions': len(re.findall(r'It of the Horrid Swarm.*Emerge', text)),
+                  'hydra_bestow_casts': len(re.findall(r'cast Nyxborn Hydra targeting', text)),
+                  'engine_exception': bool(re.search(r'Exception|StackOverflowError|Stopping slow match as draw', text)),
+              })
+          summary={
+              'games': len(records),
+              'face_value_wins': sum(r['winner']=='face_value' for r in records),
+              'mono_red_wins': sum(r['winner']=='mono_red' for r in records),
+              'draws': sum(r['winner']=='draw' for r in records),
+              'unknown': sum(r['winner']=='unknown' for r in records),
+              'energy_tap_casts': sum(r['energy_tap_casts'] for r in records),
+              'energy_tap_productive': sum(r['energy_tap_productive'] for r in records),
+              'rush_casts': sum(r['rush_casts'] for r in records),
+              'gryff_emerge': sum(r['gryff_emerge'] for r in records),
+              'it_emerge_mentions': sum(r['it_emerge_mentions'] for r in records),
+              'hydra_bestow_casts': sum(r['hydra_bestow_casts'] for r in records),
+              'engine_exceptions': sum(r['engine_exception'] for r in records),
+              'seed_vector_sha256': hashlib.sha256(Path('forge-seeds.txt').read_bytes()).hexdigest(),
           }
-          Path('forge-face-value-ai-audit-summary.json').write_text(json.dumps(summary, indent=2, sort_keys=True))
+          Path('forge-fixed-records.json').write_text(json.dumps(records, indent=2, sort_keys=True))
+          Path('forge-fixed-summary.json').write_text(json.dumps(summary, indent=2, sort_keys=True))
           print(json.dumps(summary, indent=2, sort_keys=True))
           PY
 
-      - name: Preserve patched Forge audit artifacts
+      - name: Preserve fixed-seed matchup artifacts
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: face-value-forge-pilot-heuristics-audit
+          name: face-value-forge-fixed-seed-muril0ambra
           path: |
-            forge-face-value-ai-audit.log
-            forge-face-value-ai-audit-summary.json
+            forge-fixed-combined.log
+            forge-fixed-logs/*.log
+            forge-fixed-records.json
+            forge-fixed-summary.json
+            forge-seeds.txt
+            forge-seeds.sha256
+            matchup-provenance.json
             forge-face-value-ai.patch
             face-value-forge-ai-notes.txt
             forge-source-commit.txt
