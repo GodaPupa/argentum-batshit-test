@@ -22,11 +22,11 @@ jobs:
             https://github.com/Card-Forge/forge/releases/download/forge-2.0.14/forge-installer-2.0.14.tar.bz2
           mkdir forge-dist
           tar -xjf forge.tar.bz2 -C forge-dist
-          find forge-dist -maxdepth 4 -type f | head -100 > forge-files.txt
-          FORGE_JAR="$(find forge-dist -type f -name 'forge.jar' | head -1)"
+          find forge-dist -maxdepth 4 -type f > forge-files.txt
+          FORGE_JAR="$(find forge-dist -type f -name 'forge.jar' -print -quit)"
           if [ -z "$FORGE_JAR" ]; then
             echo "forge.jar not found" >&2
-            cat forge-files.txt >&2
+            sed -n '1,100p' forge-files.txt >&2
             exit 1
           fi
           echo "FORGE_JAR=$FORGE_JAR" >> "$GITHUB_ENV"
