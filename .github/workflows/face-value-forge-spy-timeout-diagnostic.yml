@@ -1,0 +1,131 @@
+name: Face Value Forge Spy Timeout Diagnostic
+
+on:
+  push:
+    branches: [face-value/lab]
+    paths: [.github/workflows/face-value-forge-spy-timeout-diagnostic.yml]
+
+permissions:
+  contents: read
+
+jobs:
+  spy-timeout-diagnostic:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - name: Setup Java 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - name: Clone and build stock Forge
+        run: |
+          set -euxo pipefail
+          git clone --depth 1 https://github.com/Card-Forge/forge.git forge-src
+          git -C forge-src rev-parse HEAD | tee forge-source-commit.txt
+          cd forge-src
+          mvn -B -DskipTests -pl forge-gui-desktop -am package
+          chmod +x forge-gui-desktop/target/forge.sh
+          rm -rf forge-gui-desktop/target/res
+          cp -R forge-gui/res forge-gui-desktop/target/res
+          echo "FORGE_LAUNCHER=$(pwd)/forge-gui-desktop/target/forge.sh" >> "$GITHUB_ENV"
+      - name: Write exact frozen decks
+        run: |
+          mkdir -p decks "$HOME/.forge/decks/constructed"
+          cat > 'decks/Face Value v1.2 Ent.dck' <<'EOF'
+          [metadata]
+          Name=Face Value v1.2 Ent
+          Deck Type=constructed
+          [main]
+          4 Llanowar Elves
+          4 Nest Invader
+          4 Eldrazi Repurposer
+          1 Eyeless Watcher
+          4 Wretched Gryff
+          2 It of the Horrid Swarm
+          2 Annoyed Altisaur
+          1 Drownyard Lurker
+          1 Nyxborn Hydra
+          3 Generous Ent
+          4 Malevolent Rumble
+          4 Preordain
+          2 Snap
+          1 Lose Focus
+          1 Tamiyo's Safekeeping
+          2 Growth Spasm
+          9 Forest
+          8 Island
+          3 Tangled Islet
+          EOF
+          cat > 'decks/Christian Casanova Spy Combo 2026-09-12.dck' <<'EOF'
+          [metadata]
+          Name=Christian Casanova Spy Combo 2026-09-12
+          Deck Type=constructed
+          [main]
+          4 Avenging Hunter
+          4 Balustrade Spy
+          4 Elves of Deep Shadow
+          4 Gatecreeper Vine
+          4 Generous Ent
+          3 Masked Vandal
+          4 Overgrown Battlement
+          4 Sagu Wildling
+          4 Saruli Caretaker
+          4 Wall of Roots
+          2 Lotleth Giant
+          4 Land Grant
+          4 Lead the Stampede
+          4 Winding Way
+          2 Dread Return
+          4 Forest
+          1 Swamp
+          EOF
+          cp decks/*.dck "$HOME/.forge/decks/constructed/"
+          printf '1080014\n1080020\n' > diagnostic-seeds.txt
+          sha256sum diagnostic-seeds.txt decks/*.dck | tee diagnostic-inputs.sha256
+      - name: Replay only timeout seeds at 600 seconds
+        run: |
+          set -euo pipefail
+          mkdir -p diagnostic-logs
+          while read -r seed; do
+            "$FORGE_LAUNCHER" sim -d 'Face Value v1.2 Ent.dck' 'Christian Casanova Spy Combo 2026-09-12.dck' -n 1 -s "$seed" -c 600 > "diagnostic-logs/$seed.log" 2>&1
+          done < diagnostic-seeds.txt
+      - name: Audit timeout diagnostic
+        if: always()
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re,json
+          records=[]
+          for p in sorted(Path('diagnostic-logs').glob('*.log')):
+            text=p.read_text(errors='replace')
+            m=re.search(r'Game Result: Game 1 ended in (\d+) ms\.',text)
+            if re.search(r'Ai\(1\)-Face Value v1.2 Ent has won!',text): winner='face'
+            elif re.search(r'Ai\(2\)-Christian Casanova Spy Combo 2026-09-12 has won!',text): winner='spy'
+            elif 'ended in a Draw' in text: winner='draw'
+            else: winner='unknown'
+            records.append({
+              'seed':int(p.stem), 'winner':winner,
+              'elapsed_ms':int(m.group(1)) if m else None,
+              'timeout':bool(re.search(r'TimeoutException|Stopping slow match as draw',text)),
+              'other_exception':bool(re.search(r'Exception|StackOverflowError',text)) and not bool(re.search(r'TimeoutException',text)),
+              'face_ent_landcycles':len(re.findall(r'Ai\(1\).*activated Generous Ent|Ai\(1\).*Generous Ent.*activated',text))
+            })
+          out={'records':records,'all_clean':len(records)==2 and all(r['winner']!='unknown' and not r['timeout'] and not r['other_exception'] for r in records)}
+          Path('spy-timeout-diagnostic-summary.json').write_text(json.dumps(out,indent=2,sort_keys=True))
+          print(json.dumps(out,indent=2,sort_keys=True))
+          assert out['all_clean'], out
+          PY
+      - name: Preserve diagnostic artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: face-value-forge-spy-timeout-diagnostic
+          path: |
+            spy-timeout-diagnostic-summary.json
+            diagnostic-seeds.txt
+            diagnostic-inputs.sha256
+            diagnostic-logs/*.log
+            forge-source-commit.txt
+            decks/*.dck
+          if-no-files-found: warn
