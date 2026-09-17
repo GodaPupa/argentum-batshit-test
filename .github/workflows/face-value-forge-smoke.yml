@@ -23,13 +23,14 @@ jobs:
           mkdir forge-dist
           tar -xjf forge.tar.bz2 -C forge-dist
           find forge-dist -maxdepth 4 -type f > forge-files.txt
-          FORGE_JAR="$(find forge-dist -type f -name 'forge-gui-desktop-*-jar-with-dependencies.jar' -print -quit)"
-          if [ -z "$FORGE_JAR" ]; then
-            echo "Forge desktop jar not found" >&2
+          FORGE_LAUNCHER="$(find forge-dist -type f -name 'forge.sh' -print -quit)"
+          if [ -z "$FORGE_LAUNCHER" ]; then
+            echo "Forge launcher not found" >&2
             sed -n '1,100p' forge-files.txt >&2
             exit 1
           fi
-          echo "FORGE_JAR=$FORGE_JAR" >> "$GITHUB_ENV"
+          chmod +x "$FORGE_LAUNCHER"
+          echo "FORGE_LAUNCHER=$FORGE_LAUNCHER" >> "$GITHUB_ENV"
 
       - name: Write Face Value v0.7 deck
         run: |
@@ -103,7 +104,7 @@ jobs:
       - name: Run 20-game Forge headless smoke
         run: |
           set -o pipefail
-          java -Xmx3g -jar "$FORGE_JAR" sim \
+          "$FORGE_LAUNCHER" sim \
             -D "$(pwd)/decks" \
             -d "Face Value v0.7.dck" "Mono Red Madness Aggregate.dck" \
             -n 20 -c 60 2>&1 | tee forge-smoke.log
