@@ -1,0 +1,122 @@
+name: Face Value Forge Sideboard Red Hydroblast 1
+
+on:
+  push:
+    branches: [face-value/lab]
+    paths: [.github/workflows/face-value-forge-sideboard-red-hydroblast-1.yml]
+
+permissions:
+  contents: read
+
+jobs:
+  red-hydroblast:
+    runs-on: ubuntu-latest
+    timeout-minutes: 55
+    steps:
+      - name: Setup Java 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - name: Clone and build stock Forge
+        run: |
+          set -euxo pipefail
+          git clone --depth 1 https://github.com/Card-Forge/forge.git forge-src
+          git -C forge-src rev-parse HEAD | tee forge-source-commit.txt
+          cd forge-src
+          mvn -B -DskipTests -pl forge-gui-desktop -am package
+          chmod +x forge-gui-desktop/target/forge.sh
+          rm -rf forge-gui-desktop/target/res
+          cp -R forge-gui/res forge-gui-desktop/target/res
+          echo "FORGE_LAUNCHER=$(pwd)/forge-gui-desktop/target/forge.sh" >> "$GITHUB_ENV"
+      - name: Write control challenger and Mono Red
+        run: |
+          set -euo pipefail
+          mkdir -p decks "$HOME/.forge/decks/constructed"
+          cat > /tmp/base <<'EOF'
+          4 Llanowar Elves
+          4 Nest Invader
+          4 Eldrazi Repurposer
+          1 Eyeless Watcher
+          4 Wretched Gryff
+          2 It of the Horrid Swarm
+          2 Annoyed Altisaur
+          1 Drownyard Lurker
+          1 Nyxborn Hydra
+          3 Generous Ent
+          4 Malevolent Rumble
+          4 Preordain
+          2 Snap
+          1 Lose Focus
+          1 Tamiyo's Safekeeping
+          2 Growth Spasm
+          9 Forest
+          8 Island
+          3 Tangled Islet
+          EOF
+          { printf '[metadata]\nName=Face Value v1.2 Control\nDeck Type=constructed\n[main]\n'; cat /tmp/base; } > 'decks/Face Value v1.2 Control.dck'
+          sed -e '/1 Eyeless Watcher/d' -e '/1 Nyxborn Hydra/d' -e 's/4 Preordain/3 Preordain/' -e 's/2 Growth Spasm/1 Growth Spasm/' /tmp/base > /tmp/hydro
+          { printf '[metadata]\nName=Face Value Red Hydroblast 4\nDeck Type=constructed\n[main]\n'; cat /tmp/hydro; printf '4 Hydroblast\n'; } > 'decks/Face Value Red Hydroblast 4.dck'
+          cat > 'decks/Mono Red Madness.dck' <<'EOF'
+          [metadata]
+          Name=Mono Red Madness
+          Deck Type=constructed
+          [main]
+          4 Voldaren Epicure
+          4 Kitchen Imp
+          4 Sneaky Snacker
+          4 Fiery Temper
+          4 Lightning Bolt
+          4 Chain Lightning
+          4 Faithless Looting
+          4 Demand Answers
+          4 Grab the Prize
+          4 Highway Robbery
+          4 Fireblast
+          16 Mountain
+          EOF
+          cp decks/*.dck "$HOME/.forge/decks/constructed/"
+          seq 1120001 1120020 > red-hydro-seeds.txt
+          sha256sum red-hydro-seeds.txt decks/*.dck | tee red-hydro-inputs.sha256
+      - name: Run paired Mono Red block
+        run: |
+          set -euo pipefail
+          mkdir -p red-hydro-logs/control red-hydro-logs/hydro
+          while read -r seed; do
+            "$FORGE_LAUNCHER" sim -d 'Face Value v1.2 Control.dck' 'Mono Red Madness.dck' -n 1 -s "$seed" -c 300 > "red-hydro-logs/control/$seed.log" 2>&1
+            "$FORGE_LAUNCHER" sim -d 'Face Value Red Hydroblast 4.dck' 'Mono Red Madness.dck' -n 1 -s "$seed" -c 300 > "red-hydro-logs/hydro/$seed.log" 2>&1
+          done < red-hydro-seeds.txt
+      - name: Audit paired Mono Red block
+        if: always()
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re,json
+          names={'control':'Face Value v1.2 Control','hydro':'Face Value Red Hydroblast 4'}
+          out={}
+          for cfg,name in names.items():
+            rec=[]
+            for p in sorted((Path('red-hydro-logs')/cfg).glob('*.log')):
+              t=p.read_text(errors='replace')
+              if re.search(r'Ai\(1\)-'+re.escape(name)+r' has won!',t): w='face'
+              elif re.search(r'Ai\(2\)-Mono Red Madness has won!',t): w='red'
+              elif 'ended in a Draw' in t: w='draw'
+              else: w='unknown'
+              rec.append({'seed':int(p.stem),'winner':w,'timeout':bool(re.search(r'java\.util\.concurrent\.TimeoutException|Stopping slow match as draw',t)),'stack_overflow':bool(re.search(r'java\.lang\.StackOverflowError',t)),'hydroblast_casts':len(re.findall(r'cast Hydroblast',t)),'gryff_emerge':len(re.findall(r'Wretched Gryff - Creature 3 / 4 \(Emerge\)',t)),'bolt_casts':len(re.findall(r'cast Lightning Bolt',t)),'temper_casts':len(re.findall(r'cast Fiery Temper',t)),'fireblast_casts':len(re.findall(r'cast Fireblast',t))})
+            out[cfg]={'games':len(rec),'wins':sum(x['winner']=='face' for x in rec),'losses':sum(x['winner']=='red' for x in rec),'draws':sum(x['winner']=='draw' for x in rec),'unknown':sum(x['winner']=='unknown' for x in rec),'timeouts':sum(x['timeout'] for x in rec),'stack_overflows':sum(x['stack_overflow'] for x in rec),'hydroblast_casts':sum(x['hydroblast_casts'] for x in rec),'gryff_emerge':sum(x['gryff_emerge'] for x in rec),'bolt_casts':sum(x['bolt_casts'] for x in rec),'temper_casts':sum(x['temper_casts'] for x in rec),'fireblast_casts':sum(x['fireblast_casts'] for x in rec),'records':rec}
+          Path('red-hydro-summary.json').write_text(json.dumps(out,indent=2,sort_keys=True)); print(json.dumps({k:{kk:vv for kk,vv in v.items() if kk!='records'} for k,v in out.items()},indent=2,sort_keys=True))
+          for cfg,v in out.items(): assert v['games']==20 and v['unknown']==0 and v['timeouts']==0 and v['stack_overflows']==0,(cfg,v)
+          PY
+      - name: Preserve Mono Red artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: face-value-forge-sideboard-red-hydroblast-1
+          path: |
+            red-hydro-summary.json
+            red-hydro-seeds.txt
+            red-hydro-inputs.sha256
+            red-hydro-logs/**/*.log
+            forge-source-commit.txt
+            decks/*.dck
+          if-no-files-found: warn
