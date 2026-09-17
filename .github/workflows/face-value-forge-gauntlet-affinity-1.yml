@@ -1,0 +1,147 @@
+name: Face Value Forge Gauntlet Affinity 1
+
+on:
+  push:
+    branches: [face-value/lab]
+    paths: [.github/workflows/face-value-forge-gauntlet-affinity-1.yml]
+
+permissions:
+  contents: read
+
+jobs:
+  affinity-gauntlet:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Setup Java 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - name: Clone Forge and apply validated Face Value heuristics
+        run: |
+          set -euxo pipefail
+          git clone --depth 1 https://github.com/Card-Forge/forge.git forge-src
+          git -C forge-src rev-parse HEAD | tee forge-source-commit.txt
+          python3 - <<'PY'
+          from pathlib import Path
+          energy=Path('forge-src/forge-gui/res/cardsfolder/e/energy_tap.txt'); t=energy.read_text()
+          old="A:SP$ Tap | TgtPrompt$ Select target untapped creature you control | ValidTgts$ Creature.untapped+YouCtrl | SubAbility$ DBMana | SpellDescription$ Tap target untapped creature you control. If you do, add an amount of {C} equal to that creature's mana value."
+          new="A:SP$ Tap | TgtPrompt$ Select target untapped creature you control | ValidTgts$ Creature.untapped+YouCtrl | AILogic$ EnergyTap | SubAbility$ DBMana | SpellDescription$ Tap target untapped creature you control. If you do, add an amount of {C} equal to that creature's mana value."
+          assert old in t; energy.write_text(t.replace(old,new).replace('\nAI:RemoveDeck:All',''))
+          tap=Path('forge-src/forge-ai/src/main/java/forge/ai/ability/TapAi.java'); s=tap.read_text(); needle='        final Player turn = phase.getPlayerTurn();\n\n'; assert needle in s
+          lines=['        final Player turn = phase.getPlayerTurn();','', '        if ("EnergyTap".equals(sa.getParamOrDefault("AILogic", ""))) {','            if (!phase.is(PhaseType.MAIN2, ai)) return new AiAbilityDecision(0, AiPlayDecision.WaitForMain2);','            boolean hasFollowup = ai.getCardsIn(ZoneType.Hand).stream().anyMatch(c ->','                    "Wretched Gryff".equals(c.getName()) || "Drownyard Lurker".equals(c.getName()) || "It of the Horrid Swarm".equals(c.getName()));','            if (!hasFollowup) return new AiAbilityDecision(0, AiPlayDecision.CantPlayAi);','            CardCollection candidates = CardLists.getTargetableCards(ai.getCreaturesInPlay(), sa);','            candidates = CardLists.filter(candidates, CardPredicates.CAN_TAP);','            Card choice = ComputerUtilCard.getMostExpensivePermanentAI(candidates);','            if (choice == null || choice.getCMC() < 7) return new AiAbilityDecision(0, AiPlayDecision.CantPlayAi);','            sa.resetTargets(); sa.getTargets().add(choice);','            return new AiAbilityDecision(100, AiPlayDecision.WillPlay);','        }','']
+          tap.write_text(s.replace(needle,'\n'.join(lines),1))
+          rush=Path('forge-src/forge-gui/res/cardsfolder/r/rush_of_knowledge.txt'); r=rush.read_text(); rold='A:SP$ Draw | Defined$ You | NumCards$ X | SpellDescription$ Draw cards equal to the highest mana value among permanents you control.'; rnew='A:SP$ Draw | Defined$ You | NumCards$ X | AILogic$ FaceValueRush | SpellDescription$ Draw cards equal to the highest mana value among permanents you control.'; assert rold in r; rush.write_text(r.replace(rold,rnew))
+          draw=Path('forge-src/forge-ai/src/main/java/forge/ai/ability/DrawAi.java'); d=draw.read_text(); dn='        boolean aboutToBeMyTurn = ph.getNextTurn().equals(ai) && ph.is(PhaseType.END_OF_TURN);\n\n'; assert dn in d
+          dl=['        boolean aboutToBeMyTurn = ph.getNextTurn().equals(ai) && ph.is(PhaseType.END_OF_TURN);','','        if ("FaceValueRush".equals(sa.getParamOrDefault("AILogic", ""))) {','            int highest = ai.getCardsIn(ZoneType.Battlefield).stream().mapToInt(Card::getCMC).max().orElse(0);','            if (highest < 7) return new AiAbilityDecision(0, AiPlayDecision.CantPlayAi);','        }','']
+          draw.write_text(d.replace(dn,'\n'.join(dl),1))
+          PY
+          git -C forge-src diff -- forge-gui/res/cardsfolder/e/energy_tap.txt forge-ai/src/main/java/forge/ai/ability/TapAi.java forge-gui/res/cardsfolder/r/rush_of_knowledge.txt forge-ai/src/main/java/forge/ai/ability/DrawAi.java > forge-face-value-ai.patch
+      - name: Build patched Forge
+        run: |
+          set -euxo pipefail
+          cd forge-src
+          mvn -B -DskipTests -pl forge-gui-desktop -am package
+          chmod +x forge-gui-desktop/target/forge.sh
+          rm -rf forge-gui-desktop/target/res
+          cp -R forge-gui/res forge-gui-desktop/target/res
+          echo "FORGE_LAUNCHER=$(pwd)/forge-gui-desktop/target/forge.sh" >> "$GITHUB_ENV"
+      - name: Write frozen gauntlet decks
+        run: |
+          mkdir -p decks "$HOME/.forge/decks/constructed"
+          cat > 'decks/Face Value v1.1.dck' <<'EOF'
+          [metadata]
+          Name=Face Value v1.1
+          Deck Type=constructed
+          [main]
+          4 Llanowar Elves
+          4 Nest Invader
+          4 Eldrazi Repurposer
+          1 Eyeless Watcher
+          4 Wretched Gryff
+          2 It of the Horrid Swarm
+          2 Annoyed Altisaur
+          1 Drownyard Lurker
+          1 Nyxborn Hydra
+          4 Malevolent Rumble
+          4 Preordain
+          2 Snap
+          1 Lose Focus
+          1 Tamiyo's Safekeeping
+          2 Energy Tap
+          1 Rush of Knowledge
+          2 Growth Spasm
+          9 Forest
+          8 Island
+          3 Tangled Islet
+          EOF
+          cat > 'decks/VitorCarvalho01 Grixis Affinity 2026-09-14.dck' <<'EOF'
+          [metadata]
+          Name=VitorCarvalho01 Grixis Affinity 2026-09-14
+          Deck Type=constructed
+          [main]
+          4 Drossforge Bridge
+          2 Great Furnace
+          4 Mistvault Bridge
+          1 Mountain
+          2 Seat of the Synod
+          2 Silverbluff Bridge
+          4 Vault of Whispers
+          3 Krark-Clan Shaman
+          4 Myr Enforcer
+          4 Refurbished Familiar
+          3 Utrom Monitor
+          2 Cast Down
+          4 Galvanic Blast
+          4 Reckoner's Bargain
+          4 Thoughtcast
+          2 Toxin Analysis
+          4 Black Mage's Rod
+          2 Blood Fountain
+          2 Ichor Wellspring
+          2 Nihil Spellbomb
+          1 Sewer-veillance Cam
+          EOF
+          cp decks/*.dck "$HOME/.forge/decks/constructed/"
+          seq 1020001 1020020 > affinity-seeds.txt
+          sha256sum affinity-seeds.txt decks/*.dck | tee affinity-inputs.sha256
+      - name: Run fixed Affinity gauntlet
+        run: |
+          set -euo pipefail
+          mkdir -p affinity-logs
+          while read -r seed; do
+            "$FORGE_LAUNCHER" sim -d 'Face Value v1.1.dck' 'VitorCarvalho01 Grixis Affinity 2026-09-14.dck' -n 1 -s "$seed" -c 60 > "affinity-logs/$seed.log" 2>&1
+          done < affinity-seeds.txt
+      - name: Audit Affinity gauntlet
+        if: always()
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re,json
+          rec=[]
+          for p in sorted(Path('affinity-logs').glob('*.log')):
+            text=p.read_text(errors='replace')
+            if re.search(r'Ai\(1\)-Face Value v1.1 has won!',text): winner='face'
+            elif re.search(r'Ai\(2\)-VitorCarvalho01 Grixis Affinity 2026-09-14 has won!',text): winner='affinity'
+            elif 'ended in a Draw' in text: winner='draw'
+            else: winner='unknown'
+            rec.append({'seed':int(p.stem),'winner':winner,'energy_tap_casts':len(re.findall(r'cast Energy Tap targeting',text)),'rush_casts':len(re.findall(r'cast Rush of Knowledge',text)),'growth_spasm_casts':len(re.findall(r'cast Growth Spasm',text)),'gryff_emerge':len(re.findall(r'Wretched Gryff - Creature 3 / 4 \(Emerge\)',text)),'galvanic_blast_casts':len(re.findall(r'cast Galvanic Blast',text)),'cast_down_casts':len(re.findall(r'cast Cast Down',text)),'shaman_casts':len(re.findall(r'cast Krark-Clan Shaman',text)),'familiar_casts':len(re.findall(r'cast Refurbished Familiar',text)),'enforcer_casts':len(re.findall(r'cast Myr Enforcer',text)),'thoughtcast_casts':len(re.findall(r'cast Thoughtcast',text)),'engine_exception':bool(re.search(r'Exception|StackOverflowError|Stopping slow match as draw',text))})
+          n=len(rec); out={'games':n,'wins':sum(x['winner']=='face' for x in rec),'losses':sum(x['winner']=='affinity' for x in rec),'draws':sum(x['winner']=='draw' for x in rec),'unknown':sum(x['winner']=='unknown' for x in rec),'energy_tap_casts':sum(x['energy_tap_casts'] for x in rec),'rush_casts':sum(x['rush_casts'] for x in rec),'growth_spasm_casts':sum(x['growth_spasm_casts'] for x in rec),'gryff_emerge':sum(x['gryff_emerge'] for x in rec),'galvanic_blast_casts':sum(x['galvanic_blast_casts'] for x in rec),'cast_down_casts':sum(x['cast_down_casts'] for x in rec),'shaman_casts':sum(x['shaman_casts'] for x in rec),'familiar_casts':sum(x['familiar_casts'] for x in rec),'enforcer_casts':sum(x['enforcer_casts'] for x in rec),'thoughtcast_casts':sum(x['thoughtcast_casts'] for x in rec),'engine_exceptions':sum(x['engine_exception'] for x in rec),'records':rec}
+          Path('affinity-gauntlet-summary.json').write_text(json.dumps(out,indent=2,sort_keys=True)); print(json.dumps({k:v for k,v in out.items() if k!='records'},indent=2,sort_keys=True))
+          assert n==20 and out['unknown']==0 and out['engine_exceptions']==0,out
+          PY
+      - name: Preserve Affinity artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: face-value-forge-gauntlet-affinity-1
+          path: |
+            affinity-gauntlet-summary.json
+            affinity-seeds.txt
+            affinity-inputs.sha256
+            affinity-logs/*.log
+            forge-face-value-ai.patch
+            forge-source-commit.txt
+            decks/*.dck
+          if-no-files-found: warn
