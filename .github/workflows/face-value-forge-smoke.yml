@@ -1,4 +1,4 @@
-name: Face Value Forge Pilot Audit
+name: Face Value Forge Energy Tap AI Smoke
 
 on:
   push:
@@ -11,24 +11,77 @@ permissions:
   contents: read
 
 jobs:
-  forge-pilot-audit:
+  forge-energy-tap-ai-smoke:
     runs-on: ubuntu-latest
     timeout-minutes: 45
     steps:
-      - name: Download Forge 2.0.15 snapshot desktop distribution
+      - name: Setup Java 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: maven
+
+      - name: Clone current Forge source
         run: |
           set -euxo pipefail
-          curl -L --retry 3 -o forge.tar.bz2 \
-            https://github.com/Card-Forge/forge/releases/download/daily-snapshots/forge-installer-2.0.15-SNAPSHOT-09.16.tar.bz2
-          mkdir forge-dist
-          tar -xjf forge.tar.bz2 -C forge-dist
-          find forge-dist -maxdepth 4 -type f > forge-files.txt
-          FORGE_LAUNCHER="$(find forge-dist -type f -name 'forge.sh' -print -quit)"
-          test -n "$FORGE_LAUNCHER"
-          chmod +x "$FORGE_LAUNCHER"
-          echo "FORGE_LAUNCHER=$FORGE_LAUNCHER" >> "$GITHUB_ENV"
+          git clone --depth 1 https://github.com/Card-Forge/forge.git forge-src
+          git -C forge-src rev-parse HEAD | tee forge-source-commit.txt
 
-      - name: Write Face Value v0.7 deck
+      - name: Apply narrow Energy Tap AI patch
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          card = Path('forge-src/forge-gui/res/cardsfolder/e/energy_tap.txt')
+          text = card.read_text()
+          old = 'A:SP$ Tap | TgtPrompt$ Select target untapped creature you control | ValidTgts$ Creature.untapped+YouCtrl | SubAbility$ DBMana | SpellDescription$ Tap target untapped creature you control. If you do, add an amount of {C} equal to that creature\'s mana value.'
+          new = 'A:SP$ Tap | TgtPrompt$ Select target untapped creature you control | ValidTgts$ Creature.untapped+YouCtrl | AILogic$ EnergyTap | SubAbility$ DBMana | SpellDescription$ Tap target untapped creature you control. If you do, add an amount of {C} equal to that creature\'s mana value.'
+          assert old in text
+          text = text.replace(old, new).replace('\nAI:RemoveDeck:All', '')
+          card.write_text(text)
+
+          tap = Path('forge-src/forge-ai/src/main/java/forge/ai/ability/TapAi.java')
+          src = tap.read_text()
+          needle = '        final String aiLogic = sa.getParamOrDefault("AILogic", "");\n'
+          assert needle in src
+          patch = '''        final String aiLogic = sa.getParamOrDefault("AILogic", "");
+        if ("EnergyTap".equals(aiLogic)) {
+            CardCollection candidates = CardLists.getTargetableCards(ai.getCreaturesInPlay(), sa);
+            candidates = CardLists.filter(candidates, CardPredicates.CAN_TAP);
+            Card choice = ComputerUtilCard.getMostExpensivePermanentAI(candidates);
+            if (choice == null || choice.getCMC() < 5) {
+                return new AiAbilityDecision(0, AiPlayDecision.CantPlayAi);
+            }
+            sa.resetTargets();
+            sa.getTargets().add(choice);
+            return new AiAbilityDecision(100, AiPlayDecision.WillPlay);
+        }
+'''
+          src = src.replace(needle, patch, 1)
+          tap.write_text(src)
+
+          Path('energy-tap-ai.patch.txt').write_text(
+              'Energy Tap lab patch:\n'
+              '- remove AI:RemoveDeck:All\n'
+              '- add AILogic$ EnergyTap\n'
+              '- TapAi targets highest-MV legal untapped creature we control, minimum MV5\n'
+          )
+          PY
+          git -C forge-src diff -- forge-gui/res/cardsfolder/e/energy_tap.txt forge-ai/src/main/java/forge/ai/ability/TapAi.java | tee forge-energy-tap.patch
+
+      - name: Build patched Forge desktop
+        run: |
+          set -euxo pipefail
+          cd forge-src
+          mvn -B -DskipTests -pl forge-gui-desktop -am package
+          test -f forge-gui-desktop/target/forge.sh
+          chmod +x forge-gui-desktop/target/forge.sh
+          rm -rf forge-gui-desktop/target/res
+          cp -R forge-gui/res forge-gui-desktop/target/res
+          echo "FORGE_LAUNCHER=$(pwd)/forge-gui-desktop/target/forge.sh" >> "$GITHUB_ENV"
+
+      - name: Write Face Value v0.7 and Mono-Red decks
         run: |
           mkdir -p decks
           cat > "decks/Face Value v0.7.dck" <<'EOF'
@@ -56,9 +109,6 @@ jobs:
           8 Island
           4 Tangled Islet
           EOF
-
-      - name: Write current Mono-Red Madness aggregate deck
-        run: |
           cat > "decks/Mono Red Madness Aggregate.dck" <<'EOF'
           [metadata]
           Name=Mono Red Madness Aggregate
@@ -77,60 +127,45 @@ jobs:
           4 Voldaren Epicure
           18 Mountain
           EOF
-
-      - name: Validate and install decks for Forge
-        run: |
-          python3 - <<'PY'
-          import re, pathlib
-          for path in pathlib.Path('decks').glob('*.dck'):
-              in_main=False; total=0
-              for line in path.read_text().splitlines():
-                  if line.strip()=='[main]': in_main=True; continue
-                  if line.startswith('[') and line.strip()!='[main]': in_main=False
-                  if in_main:
-                      m=re.match(r'^(\d+)\s+', line.strip())
-                      if m: total += int(m.group(1))
-              print(path.name, total)
-              assert total==60, (path,total)
-          PY
           mkdir -p "$HOME/.forge/decks/constructed"
           cp decks/*.dck "$HOME/.forge/decks/constructed/"
 
-      - name: Run 20-game Forge pilot audit
+      - name: Run one-game patched Forge smoke
         run: |
           set -o pipefail
           "$FORGE_LAUNCHER" sim \
             -d "Face Value v0.7.dck" "Mono Red Madness Aggregate.dck" \
-            -n 20 -c 60 2>&1 | tee forge-pilot-audit.log
+            -n 1 -c 60 2>&1 | tee forge-energy-tap-smoke.log
 
-      - name: Summarize pilot behavior
+      - name: Audit Energy Tap behavior
         if: always()
         run: |
           python3 - <<'PY'
           from pathlib import Path
-          import re, json
-          p=Path('forge-pilot-audit.log')
-          text=p.read_text(errors='replace') if p.exists() else ''
-          keys=['Wretched Gryff','It of the Horrid Swarm','Energy Tap','Rush of Knowledge','Nyxborn Hydra','Drownyard Lurker','Annoyed Altisaur']
-          summary={k: text.count(k) for k in keys}
-          summary['games_reported']=len(re.findall(r'Game Result: Game \d+', text))
-          summary['face_value_wins']=len(re.findall(r'Ai\(1\)-Face Value v0\.7 has won', text))
-          summary['mono_red_wins']=len(re.findall(r'Ai\(2\)-Mono Red Madness Aggregate has won', text))
-          # Indicators useful for manual trace audit; these are text-presence counts, not final strategic classifications.
-          summary['emerge_mentions']=len(re.findall(r'(?i)emerge', text))
-          summary['bestow_mentions']=len(re.findall(r'(?i)bestow', text))
-          Path('forge-pilot-summary.json').write_text(json.dumps(summary, indent=2, sort_keys=True))
+          import json, re
+          text = Path('forge-energy-tap-smoke.log').read_text(errors='replace') if Path('forge-energy-tap-smoke.log').exists() else ''
+          summary = {
+              'games_reported': len(re.findall(r'Game Result: Game \\d+', text)),
+              'energy_tap_mentions': text.count('Energy Tap'),
+              'wretched_gryff_mentions': text.count('Wretched Gryff'),
+              'emerge_mentions': len(re.findall(r'(?i)emerge', text)),
+              'rush_mentions': text.count('Rush of Knowledge'),
+              'hydra_mentions': text.count('Nyxborn Hydra'),
+          }
+          Path('forge-energy-tap-smoke-summary.json').write_text(json.dumps(summary, indent=2, sort_keys=True))
           print(json.dumps(summary, indent=2, sort_keys=True))
           PY
 
-      - name: Preserve Forge pilot artifacts
+      - name: Preserve patched Forge smoke artifacts
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: face-value-forge-pilot-audit
+          name: face-value-forge-energy-tap-ai-smoke
           path: |
-            forge-pilot-audit.log
-            forge-pilot-summary.json
-            forge-files.txt
+            forge-energy-tap-smoke.log
+            forge-energy-tap-smoke-summary.json
+            forge-energy-tap.patch
+            energy-tap-ai.patch.txt
+            forge-source-commit.txt
             decks/*.dck
           if-no-files-found: warn
