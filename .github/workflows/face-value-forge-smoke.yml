@@ -15,11 +15,11 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 45
     steps:
-      - name: Download Forge 2.0.14 desktop distribution
+      - name: Download Forge 2.0.15 snapshot desktop distribution
         run: |
           set -euxo pipefail
           curl -L --retry 3 -o forge.tar.bz2 \
-            https://github.com/Card-Forge/forge/releases/download/forge-2.0.14/forge-installer-2.0.14.tar.bz2
+            https://github.com/Card-Forge/forge/releases/download/daily-snapshots/forge-installer-2.0.15-SNAPSHOT-09.16.tar.bz2
           mkdir forge-dist
           tar -xjf forge.tar.bz2 -C forge-dist
           find forge-dist -maxdepth 4 -type f > forge-files.txt
@@ -96,25 +96,13 @@ jobs:
               assert total==60, (path,total)
           PY
 
-      - name: Diagnose Forge headless launch
+      - name: Run one-game Forge headless smoke
         run: |
-          set +e
           set -o pipefail
-          bash -x "$FORGE_LAUNCHER" sim \
+          "$FORGE_LAUNCHER" sim \
             -D "$(pwd)/decks" \
             -d "Face Value v0.7.dck" "Mono Red Madness Aggregate.dck" \
-            -n 1 -c 60 > forge-smoke.log 2>&1
-          STATUS=$?
-          echo "$STATUS" > forge-exit-code.txt
-          echo "Forge exit code: $STATUS"
-          find "$HOME" forge-dist -type f \( -iname '*.log' -o -iname '*error*' \) -print > forge-log-files.txt 2>/dev/null || true
-          while IFS= read -r f; do
-            echo "===== $f =====" >> forge-diagnostics.txt
-            tail -300 "$f" >> forge-diagnostics.txt 2>&1 || true
-          done < forge-log-files.txt
-          cat forge-smoke.log || true
-          cat forge-diagnostics.txt || true
-          exit "$STATUS"
+            -n 1 -c 60 2>&1 | tee forge-smoke.log
 
       - name: Preserve Forge smoke artifacts
         if: always()
@@ -123,10 +111,7 @@ jobs:
           name: face-value-forge-smoke
           path: |
             forge-smoke.log
-            forge-diagnostics.txt
-            forge-log-files.txt
             forge-launcher.txt
-            forge-exit-code.txt
             java-version.txt
             forge-files.txt
             decks/*.dck
