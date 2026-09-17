@@ -1,0 +1,113 @@
+name: Face Value Terror Dispel Timeout Diagnostic
+
+on:
+  push:
+    branches: [face-value/lab]
+    paths: [.github/workflows/face-value-forge-terror-dispel-timeout-diagnostic.yml]
+
+permissions:
+  contents: read
+
+jobs:
+  diagnostic:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - name: Setup Java 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - name: Clone and build stock Forge
+        run: |
+          set -euxo pipefail
+          git clone --depth 1 https://github.com/Card-Forge/forge.git forge-src
+          git -C forge-src rev-parse HEAD | tee forge-source-commit.txt
+          cd forge-src
+          mvn -B -DskipTests -pl forge-gui-desktop -am package
+          chmod +x forge-gui-desktop/target/forge.sh
+          rm -rf forge-gui-desktop/target/res
+          cp -R forge-gui/res forge-gui-desktop/target/res
+          echo "FORGE_LAUNCHER=$(pwd)/forge-gui-desktop/target/forge.sh" >> "$GITHUB_ENV"
+      - name: Write exact Dispel challenger and Terror
+        run: |
+          mkdir -p decks "$HOME/.forge/decks/constructed"
+          cat > 'decks/Face Value Terror Dispel 2.dck' <<'EOF'
+          [metadata]
+          Name=Face Value Terror Dispel 2
+          Deck Type=constructed
+          [main]
+          4 Llanowar Elves
+          4 Nest Invader
+          4 Eldrazi Repurposer
+          4 Wretched Gryff
+          2 It of the Horrid Swarm
+          2 Annoyed Altisaur
+          1 Drownyard Lurker
+          1 Nyxborn Hydra
+          3 Generous Ent
+          4 Malevolent Rumble
+          3 Preordain
+          2 Snap
+          1 Lose Focus
+          1 Tamiyo's Safekeeping
+          2 Growth Spasm
+          2 Dispel
+          9 Forest
+          8 Island
+          3 Tangled Islet
+          EOF
+          cat > 'decks/Mono Blue Terror.dck' <<'EOF'
+          [metadata]
+          Name=Mono Blue Terror
+          Deck Type=constructed
+          [main]
+          4 Delver of Secrets
+          4 Tolarian Terror
+          4 Cryptic Serpent
+          4 Brainstorm
+          4 Ponder
+          4 Preordain
+          4 Thought Scour
+          4 Mental Note
+          4 Counterspell
+          4 Force Spike
+          2 Spell Pierce
+          2 Snap
+          16 Island
+          EOF
+          cp decks/*.dck "$HOME/.forge/decks/constructed/"
+          printf '1100009\n' > diagnostic-seed.txt
+          sha256sum diagnostic-seed.txt decks/*.dck | tee diagnostic-inputs.sha256
+      - name: Replay seed 1100009 at 600 seconds
+        run: |
+          "$FORGE_LAUNCHER" sim -d 'Face Value Terror Dispel 2.dck' 'Mono Blue Terror.dck' -n 1 -s 1100009 -c 600 > diagnostic.log 2>&1
+      - name: Audit diagnostic
+        if: always()
+        run: |
+          python3 - <<'PY'
+          import re,json
+          from pathlib import Path
+          t=Path('diagnostic.log').read_text(errors='replace')
+          if re.search(r'Ai\(1\)-Face Value Terror Dispel 2 has won!',t): winner='face'
+          elif re.search(r'Ai\(2\)-Mono Blue Terror has won!',t): winner='terror'
+          elif 'ended in a Draw' in t: winner='draw'
+          else: winner='unknown'
+          m=re.search(r'Game Result: Game 1 ended in (\d+) ms\.',t)
+          out={'seed':1100009,'winner':winner,'elapsed_ms':int(m.group(1)) if m else None,'timeout':bool(re.search(r'java\.util\.concurrent\.TimeoutException|Stopping slow match as draw',t)),'stack_overflow':bool(re.search(r'java\.lang\.StackOverflowError',t)),'dispel_casts':len(re.findall(r'cast Dispel',t)),'gryff_emerge':len(re.findall(r'Wretched Gryff - Creature 3 / 4 \(Emerge\)',t))}
+          Path('diagnostic-summary.json').write_text(json.dumps(out,indent=2,sort_keys=True)); print(json.dumps(out,indent=2,sort_keys=True))
+          assert winner!='unknown' and not out['timeout'] and not out['stack_overflow'],out
+          PY
+      - name: Preserve diagnostic
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: face-value-terror-dispel-timeout-diagnostic
+          path: |
+            diagnostic-summary.json
+            diagnostic.log
+            diagnostic-seed.txt
+            diagnostic-inputs.sha256
+            forge-source-commit.txt
+            decks/*.dck
+          if-no-files-found: warn
