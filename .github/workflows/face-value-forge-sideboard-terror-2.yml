@@ -1,0 +1,130 @@
+name: Face Value Forge Sideboard Terror 2
+
+on:
+  push:
+    branches: [face-value/lab]
+    paths: [.github/workflows/face-value-forge-sideboard-terror-2.yml]
+
+permissions:
+  contents: read
+
+jobs:
+  terror-sideboard-2:
+    runs-on: ubuntu-latest
+    timeout-minutes: 50
+    steps:
+      - name: Setup Java 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - name: Clone and build stock Forge
+        run: |
+          set -euxo pipefail
+          git clone --depth 1 https://github.com/Card-Forge/forge.git forge-src
+          git -C forge-src rev-parse HEAD | tee forge-source-commit.txt
+          cd forge-src
+          mvn -B -DskipTests -pl forge-gui-desktop -am package
+          chmod +x forge-gui-desktop/target/forge.sh
+          rm -rf forge-gui-desktop/target/res
+          cp -R forge-gui/res forge-gui-desktop/target/res
+          echo "FORGE_LAUNCHER=$(pwd)/forge-gui-desktop/target/forge.sh" >> "$GITHUB_ENV"
+      - name: Write control and surgical challengers
+        run: |
+          mkdir -p decks "$HOME/.forge/decks/constructed"
+          cat > /tmp/base <<'EOF'
+          4 Llanowar Elves
+          4 Nest Invader
+          4 Eldrazi Repurposer
+          1 Eyeless Watcher
+          4 Wretched Gryff
+          2 It of the Horrid Swarm
+          2 Annoyed Altisaur
+          1 Drownyard Lurker
+          1 Nyxborn Hydra
+          3 Generous Ent
+          4 Malevolent Rumble
+          4 Preordain
+          2 Snap
+          1 Lose Focus
+          1 Tamiyo's Safekeeping
+          2 Growth Spasm
+          9 Forest
+          8 Island
+          3 Tangled Islet
+          EOF
+          { printf '[metadata]\nName=Face Value v1.2 Control\nDeck Type=constructed\n[main]\n'; cat /tmp/base; } > 'decks/Face Value v1.2 Control.dck'
+          # Relic-only: preserve all Emerge creatures and core acceleration; trim one Watcher, one top-end Hydra, one Preordain.
+          sed -e '/1 Eyeless Watcher/d' -e '/1 Nyxborn Hydra/d' -e 's/4 Preordain/3 Preordain/' /tmp/base > /tmp/relic
+          { printf '[metadata]\nName=Face Value Terror Relic 3\nDeck Type=constructed\n[main]\n'; cat /tmp/relic; printf '3 Relic of Progenitus\n'; } > 'decks/Face Value Terror Relic 3.dck'
+          # Counter package: add two Dispels only, minimizing dilution; trim Watcher and one Preordain.
+          sed -e '/1 Eyeless Watcher/d' -e 's/4 Preordain/3 Preordain/' /tmp/base > /tmp/dispel
+          { printf '[metadata]\nName=Face Value Terror Dispel 2\nDeck Type=constructed\n[main]\n'; cat /tmp/dispel; printf '2 Dispel\n'; } > 'decks/Face Value Terror Dispel 2.dck'
+          cat > 'decks/Mono Blue Terror.dck' <<'EOF'
+          [metadata]
+          Name=Mono Blue Terror
+          Deck Type=constructed
+          [main]
+          4 Delver of Secrets
+          4 Tolarian Terror
+          4 Cryptic Serpent
+          4 Brainstorm
+          4 Ponder
+          4 Preordain
+          4 Thought Scour
+          4 Mental Note
+          4 Counterspell
+          4 Force Spike
+          2 Spell Pierce
+          2 Snap
+          16 Island
+          EOF
+          cp decks/*.dck "$HOME/.forge/decks/constructed/"
+          seq 1100001 1100020 > terror2-seeds.txt
+          sha256sum terror2-seeds.txt decks/*.dck | tee terror2-inputs.sha256
+      - name: Run three-way paired Terror block
+        run: |
+          set -euo pipefail
+          for cfg in control relic dispel; do mkdir -p "terror2-logs/$cfg"; done
+          while read -r seed; do
+            "$FORGE_LAUNCHER" sim -d 'Face Value v1.2 Control.dck' 'Mono Blue Terror.dck' -n 1 -s "$seed" -c 300 > "terror2-logs/control/$seed.log" 2>&1
+            "$FORGE_LAUNCHER" sim -d 'Face Value Terror Relic 3.dck' 'Mono Blue Terror.dck' -n 1 -s "$seed" -c 300 > "terror2-logs/relic/$seed.log" 2>&1
+            "$FORGE_LAUNCHER" sim -d 'Face Value Terror Dispel 2.dck' 'Mono Blue Terror.dck' -n 1 -s "$seed" -c 300 > "terror2-logs/dispel/$seed.log" 2>&1
+          done < terror2-seeds.txt
+      - name: Audit three-way Terror block
+        if: always()
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re,json
+          names={'control':'Face Value v1.2 Control','relic':'Face Value Terror Relic 3','dispel':'Face Value Terror Dispel 2'}
+          out={}
+          for cfg,name in names.items():
+            rec=[]
+            for p in sorted((Path('terror2-logs')/cfg).glob('*.log')):
+              t=p.read_text(errors='replace')
+              if re.search(r'Ai\(1\)-'+re.escape(name)+r' has won!',t): w='face'
+              elif re.search(r'Ai\(2\)-Mono Blue Terror has won!',t): w='terror'
+              elif 'ended in a Draw' in t: w='draw'
+              else: w='unknown'
+              timeout=bool(re.search(r'java\.util\.concurrent\.TimeoutException|Stopping slow match as draw',t))
+              stack=bool(re.search(r'java\.lang\.StackOverflowError',t))
+              rec.append({'seed':int(p.stem),'winner':w,'timeout':timeout,'stack_overflow':stack,'relic_casts':len(re.findall(r'cast Relic of Progenitus',t)),'dispel_casts':len(re.findall(r'cast Dispel',t)),'gryff_emerge':len(re.findall(r'Wretched Gryff - Creature 3 / 4 \(Emerge\)',t))})
+            out[cfg]={'games':len(rec),'wins':sum(x['winner']=='face' for x in rec),'losses':sum(x['winner']=='terror' for x in rec),'draws':sum(x['winner']=='draw' for x in rec),'unknown':sum(x['winner']=='unknown' for x in rec),'timeouts':sum(x['timeout'] for x in rec),'stack_overflows':sum(x['stack_overflow'] for x in rec),'relic_casts':sum(x['relic_casts'] for x in rec),'dispel_casts':sum(x['dispel_casts'] for x in rec),'gryff_emerge':sum(x['gryff_emerge'] for x in rec),'records':rec}
+          Path('terror2-summary.json').write_text(json.dumps(out,indent=2,sort_keys=True))
+          print(json.dumps({k:{kk:vv for kk,vv in v.items() if kk!='records'} for k,v in out.items()},indent=2,sort_keys=True))
+          for cfg,v in out.items(): assert v['games']==20 and v['unknown']==0 and v['timeouts']==0 and v['stack_overflows']==0,(cfg,v)
+          PY
+      - name: Preserve Terror 2 artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: face-value-forge-sideboard-terror-2
+          path: |
+            terror2-summary.json
+            terror2-seeds.txt
+            terror2-inputs.sha256
+            terror2-logs/**/*.log
+            forge-source-commit.txt
+            decks/*.dck
+          if-no-files-found: warn
