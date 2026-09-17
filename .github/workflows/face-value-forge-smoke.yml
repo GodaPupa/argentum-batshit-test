@@ -1,0 +1,120 @@
+name: Face Value Forge Smoke
+
+on:
+  push:
+    branches:
+      - face-value/lab
+    paths:
+      - .github/workflows/face-value-forge-smoke.yml
+
+permissions:
+  contents: read
+
+jobs:
+  forge-smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Download Forge 2.0.14 desktop distribution
+        run: |
+          set -euxo pipefail
+          curl -L --retry 3 -o forge.tar.bz2 \
+            https://github.com/Card-Forge/forge/releases/download/forge-2.0.14/forge-installer-2.0.14.tar.bz2
+          mkdir forge-dist
+          tar -xjf forge.tar.bz2 -C forge-dist
+          find forge-dist -maxdepth 4 -type f | head -100 > forge-files.txt
+          FORGE_JAR="$(find forge-dist -type f -name 'forge.jar' | head -1)"
+          if [ -z "$FORGE_JAR" ]; then
+            echo "forge.jar not found" >&2
+            cat forge-files.txt >&2
+            exit 1
+          fi
+          echo "FORGE_JAR=$FORGE_JAR" >> "$GITHUB_ENV"
+
+      - name: Write Face Value v0.7 deck
+        run: |
+          mkdir -p decks
+          cat > "decks/Face Value v0.7.dck" <<'EOF'
+          [metadata]
+          Name=Face Value v0.7
+          Deck Type=constructed
+          [main]
+          4 Llanowar Elves
+          4 Nest Invader
+          4 Eldrazi Repurposer
+          1 Eyeless Watcher
+          4 Wretched Gryff
+          2 It of the Horrid Swarm
+          2 Annoyed Altisaur
+          1 Drownyard Lurker
+          1 Nyxborn Hydra
+          4 Malevolent Rumble
+          3 Energy Tap
+          2 Rush of Knowledge
+          4 Preordain
+          2 Snap
+          1 Lose Focus
+          1 Tamiyo's Safekeeping
+          8 Forest
+          8 Island
+          4 Tangled Islet
+          EOF
+
+      - name: Write current Mono-Red Madness aggregate deck
+        run: |
+          cat > "decks/Mono Red Madness Aggregate.dck" <<'EOF'
+          [metadata]
+          Name=Mono Red Madness Aggregate
+          Deck Type=constructed
+          [main]
+          4 Fiery Temper
+          4 Lightning Bolt
+          4 Sneaky Snacker
+          4 Grab the Prize
+          3 Fireblast
+          3 Guttersnipe
+          4 Lava Dart
+          4 Highway Robbery
+          4 Faithless Looting
+          4 Kessig Flamebreather
+          4 Voldaren Epicure
+          18 Mountain
+          EOF
+
+      - name: Validate deck counts
+        run: |
+          python3 - <<'PY'
+          import re, pathlib
+          for path in pathlib.Path('decks').glob('*.dck'):
+              in_main=False
+              total=0
+              for line in path.read_text().splitlines():
+                  if line.strip()=='[main]':
+                      in_main=True; continue
+                  if line.startswith('[') and line.strip()!='[main]':
+                      in_main=False
+                  if in_main:
+                      m=re.match(r'^(\d+)\s+', line.strip())
+                      if m: total += int(m.group(1))
+              print(path.name, total)
+              assert total==60, (path,total)
+          PY
+
+      - name: Run 20-game Forge headless smoke
+        run: |
+          set -o pipefail
+          java -Xmx3g -jar "$FORGE_JAR" sim \
+            -D "$(pwd)/decks" \
+            -d "Face Value v0.7.dck" "Mono Red Madness Aggregate.dck" \
+            -n 20 -c 60 2>&1 | tee forge-smoke.log
+
+      - name: Preserve Forge smoke artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: face-value-forge-smoke
+          path: |
+            forge-smoke.log
+            forge-files.txt
+            decks/*.dck
+          if-no-files-found: warn
