@@ -1,0 +1,126 @@
+name: Face Value Forge Gauntlet Elves 1
+
+on:
+  push:
+    branches: [face-value/lab]
+    paths: [.github/workflows/face-value-forge-gauntlet-elves-1.yml]
+
+permissions:
+  contents: read
+
+jobs:
+  elves-gauntlet:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Setup Java 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - name: Clone Forge
+        run: |
+          set -euxo pipefail
+          git clone --depth 1 https://github.com/Card-Forge/forge.git forge-src
+          git -C forge-src rev-parse HEAD | tee forge-source-commit.txt
+      - name: Build Forge
+        run: |
+          set -euxo pipefail
+          cd forge-src
+          mvn -B -DskipTests -pl forge-gui-desktop -am package
+          chmod +x forge-gui-desktop/target/forge.sh
+          rm -rf forge-gui-desktop/target/res
+          cp -R forge-gui/res forge-gui-desktop/target/res
+          echo "FORGE_LAUNCHER=$(pwd)/forge-gui-desktop/target/forge.sh" >> "$GITHUB_ENV"
+      - name: Write frozen decks
+        run: |
+          mkdir -p decks "$HOME/.forge/decks/constructed"
+          cat > 'decks/Face Value v1.2 Ent.dck' <<'EOF'
+          [metadata]
+          Name=Face Value v1.2 Ent
+          Deck Type=constructed
+          [main]
+          4 Llanowar Elves
+          4 Nest Invader
+          4 Eldrazi Repurposer
+          1 Eyeless Watcher
+          4 Wretched Gryff
+          2 It of the Horrid Swarm
+          2 Annoyed Altisaur
+          1 Drownyard Lurker
+          1 Nyxborn Hydra
+          3 Generous Ent
+          4 Malevolent Rumble
+          4 Preordain
+          2 Snap
+          1 Lose Focus
+          1 Tamiyo's Safekeeping
+          2 Growth Spasm
+          9 Forest
+          8 Island
+          3 Tangled Islet
+          EOF
+          cat > 'decks/CarrodaPolicia Elves 2026-09-15.dck' <<'EOF'
+          [metadata]
+          Name=CarrodaPolicia Elves 2026-09-15
+          Deck Type=constructed
+          [main]
+          2 Elvish Mystic
+          3 Fyndhorn Elves
+          3 Llanowar Elves
+          4 Nyxborn Hydra
+          4 Quirion Ranger
+          4 Masked Vandal
+          4 Priest of Titania
+          1 Wellwisher
+          4 Timberwatch Elf
+          4 Avenging Hunter
+          3 Sagu Wildling
+          4 Generous Ent
+          2 Land Grant
+          4 Winding Way
+          4 Lead the Stampede
+          9 Forest
+          1 Gingerbread Cabin
+          EOF
+          cp decks/*.dck "$HOME/.forge/decks/constructed/"
+          seq 1060001 1060020 > elves-seeds.txt
+          sha256sum elves-seeds.txt decks/*.dck | tee elves-inputs.sha256
+      - name: Run fixed Elves gauntlet
+        run: |
+          set -euo pipefail
+          mkdir -p elves-logs
+          while read -r seed; do
+            "$FORGE_LAUNCHER" sim -d 'Face Value v1.2 Ent.dck' 'CarrodaPolicia Elves 2026-09-15.dck' -n 1 -s "$seed" -c 60 > "elves-logs/$seed.log" 2>&1
+          done < elves-seeds.txt
+      - name: Audit Elves gauntlet
+        if: always()
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re,json
+          rec=[]
+          for p in sorted(Path('elves-logs').glob('*.log')):
+            text=p.read_text(errors='replace')
+            if re.search(r'Ai\(1\)-Face Value v1.2 Ent has won!',text): winner='face'
+            elif re.search(r'Ai\(2\)-CarrodaPolicia Elves 2026-09-15 has won!',text): winner='elves'
+            elif 'ended in a Draw' in text: winner='draw'
+            else: winner='unknown'
+            rec.append({'seed':int(p.stem),'winner':winner,'face_ent_landcycles':len(re.findall(r'cycled Generous Ent',text)),'face_growth_spasm':len(re.findall(r'cast Growth Spasm',text)),'face_gryff_emerge':len(re.findall(r'Wretched Gryff - Creature 3 / 4 \(Emerge\)',text)),'priest_casts':len(re.findall(r'cast Priest of Titania',text)),'timberwatch_casts':len(re.findall(r'cast Timberwatch Elf',text)),'hunter_casts':len(re.findall(r'cast Avenging Hunter',text)),'lead_casts':len(re.findall(r'cast Lead the Stampede',text)),'winding_way_casts':len(re.findall(r'cast Winding Way',text)),'hydra_casts':len(re.findall(r'cast Nyxborn Hydra',text)),'engine_exception':bool(re.search(r'Exception|StackOverflowError|Stopping slow match as draw',text))})
+          n=len(rec); out={'games':n,'wins':sum(x['winner']=='face' for x in rec),'losses':sum(x['winner']=='elves' for x in rec),'draws':sum(x['winner']=='draw' for x in rec),'unknown':sum(x['winner']=='unknown' for x in rec),'face_ent_landcycles':sum(x['face_ent_landcycles'] for x in rec),'face_growth_spasm':sum(x['face_growth_spasm'] for x in rec),'face_gryff_emerge':sum(x['face_gryff_emerge'] for x in rec),'priest_casts':sum(x['priest_casts'] for x in rec),'timberwatch_casts':sum(x['timberwatch_casts'] for x in rec),'hunter_casts':sum(x['hunter_casts'] for x in rec),'lead_casts':sum(x['lead_casts'] for x in rec),'winding_way_casts':sum(x['winding_way_casts'] for x in rec),'hydra_casts':sum(x['hydra_casts'] for x in rec),'engine_exceptions':sum(x['engine_exception'] for x in rec),'records':rec}
+          Path('elves-gauntlet-summary.json').write_text(json.dumps(out,indent=2,sort_keys=True)); print(json.dumps({k:v for k,v in out.items() if k!='records'},indent=2,sort_keys=True))
+          assert n==20 and out['unknown']==0 and out['engine_exceptions']==0,out
+          PY
+      - name: Preserve Elves artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: face-value-forge-gauntlet-elves-1
+          path: |
+            elves-gauntlet-summary.json
+            elves-seeds.txt
+            elves-inputs.sha256
+            elves-logs/*.log
+            forge-source-commit.txt
+            decks/*.dck
+          if-no-files-found: warn
