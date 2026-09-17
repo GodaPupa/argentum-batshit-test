@@ -1,0 +1,105 @@
+name: Face Value Forge Tap Density 2
+
+on:
+  push:
+    branches: [face-value/lab]
+    paths: [.github/workflows/face-value-forge-tap-density-2.yml]
+
+permissions:
+  contents: read
+
+jobs:
+  tap-density:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Setup Java 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - name: Clone Forge and apply validated Face Value heuristics
+        run: |
+          set -euxo pipefail
+          git clone --depth 1 https://github.com/Card-Forge/forge.git forge-src
+          git -C forge-src rev-parse HEAD | tee forge-source-commit.txt
+          python3 - <<'PY'
+          from pathlib import Path
+          energy=Path('forge-src/forge-gui/res/cardsfolder/e/energy_tap.txt'); t=energy.read_text()
+          old="A:SP$ Tap | TgtPrompt$ Select target untapped creature you control | ValidTgts$ Creature.untapped+YouCtrl | SubAbility$ DBMana | SpellDescription$ Tap target untapped creature you control. If you do, add an amount of {C} equal to that creature's mana value."
+          new="A:SP$ Tap | TgtPrompt$ Select target untapped creature you control | ValidTgts$ Creature.untapped+YouCtrl | AILogic$ EnergyTap | SubAbility$ DBMana | SpellDescription$ Tap target untapped creature you control. If you do, add an amount of {C} equal to that creature's mana value."
+          assert old in t; energy.write_text(t.replace(old,new).replace('\nAI:RemoveDeck:All',''))
+          tap=Path('forge-src/forge-ai/src/main/java/forge/ai/ability/TapAi.java'); s=tap.read_text(); needle='        final Player turn = phase.getPlayerTurn();\n\n'; assert needle in s
+          lines=['        final Player turn = phase.getPlayerTurn();','', '        if ("EnergyTap".equals(sa.getParamOrDefault("AILogic", ""))) {','            if (!phase.is(PhaseType.MAIN2, ai)) return new AiAbilityDecision(0, AiPlayDecision.WaitForMain2);','            boolean hasFollowup = ai.getCardsIn(ZoneType.Hand).stream().anyMatch(c ->','                    "Wretched Gryff".equals(c.getName()) || "Drownyard Lurker".equals(c.getName()) || "It of the Horrid Swarm".equals(c.getName()));','            if (!hasFollowup) return new AiAbilityDecision(0, AiPlayDecision.CantPlayAi);','            CardCollection candidates = CardLists.getTargetableCards(ai.getCreaturesInPlay(), sa);','            candidates = CardLists.filter(candidates, CardPredicates.CAN_TAP);','            Card choice = ComputerUtilCard.getMostExpensivePermanentAI(candidates);','            if (choice == null || choice.getCMC() < 7) return new AiAbilityDecision(0, AiPlayDecision.CantPlayAi);','            sa.resetTargets(); sa.getTargets().add(choice);','            return new AiAbilityDecision(100, AiPlayDecision.WillPlay);','        }','']
+          tap.write_text(s.replace(needle,'\n'.join(lines),1))
+          rush=Path('forge-src/forge-gui/res/cardsfolder/r/rush_of_knowledge.txt'); r=rush.read_text(); rold='A:SP$ Draw | Defined$ You | NumCards$ X | SpellDescription$ Draw cards equal to the highest mana value among permanents you control.'; rnew='A:SP$ Draw | Defined$ You | NumCards$ X | AILogic$ FaceValueRush | SpellDescription$ Draw cards equal to the highest mana value among permanents you control.'; assert rold in r; rush.write_text(r.replace(rold,rnew))
+          draw=Path('forge-src/forge-ai/src/main/java/forge/ai/ability/DrawAi.java'); d=draw.read_text(); dn='        boolean aboutToBeMyTurn = ph.getNextTurn().equals(ai) && ph.is(PhaseType.END_OF_TURN);\n\n'; assert dn in d
+          dl=['        boolean aboutToBeMyTurn = ph.getNextTurn().equals(ai) && ph.is(PhaseType.END_OF_TURN);','','        if ("FaceValueRush".equals(sa.getParamOrDefault("AILogic", ""))) {','            int highest = ai.getCardsIn(ZoneType.Battlefield).stream().mapToInt(Card::getCMC).max().orElse(0);','            if (highest < 7) return new AiAbilityDecision(0, AiPlayDecision.CantPlayAi);','        }','']
+          draw.write_text(d.replace(dn,'\n'.join(dl),1))
+          PY
+          git -C forge-src diff -- forge-gui/res/cardsfolder/e/energy_tap.txt forge-ai/src/main/java/forge/ai/ability/TapAi.java forge-gui/res/cardsfolder/r/rush_of_knowledge.txt forge-ai/src/main/java/forge/ai/ability/DrawAi.java > forge-face-value-ai.patch
+      - name: Build patched Forge
+        run: |
+          set -euxo pipefail
+          cd forge-src
+          mvn -B -DskipTests -pl forge-gui-desktop -am package
+          chmod +x forge-gui-desktop/target/forge.sh
+          rm -rf forge-gui-desktop/target/res
+          cp -R forge-gui/res forge-gui-desktop/target/res
+          echo "FORGE_LAUNCHER=$(pwd)/forge-gui-desktop/target/forge.sh" >> "$GITHUB_ENV"
+      - name: Write frozen density decks
+        run: |
+          mkdir -p decks "$HOME/.forge/decks/constructed"
+          python3 - <<'PY'
+          from pathlib import Path
+          shared=['4 Llanowar Elves','4 Nest Invader','4 Eldrazi Repurposer','1 Eyeless Watcher','4 Wretched Gryff','2 It of the Horrid Swarm','2 Annoyed Altisaur','1 Drownyard Lurker','1 Nyxborn Hydra','4 Malevolent Rumble','4 Preordain','2 Snap','1 Lose Focus',"1 Tamiyo's Safekeeping",'9 Forest','8 Island','3 Tangled Islet']
+          variants={'Face Value v0.9 2Tap2Rush1Spasm':shared+['2 Energy Tap','2 Rush of Knowledge','1 Growth Spasm'],'Face Value v1.0 1Tap2Rush2Spasm':shared+['1 Energy Tap','2 Rush of Knowledge','2 Growth Spasm']}
+          for name,cards in variants.items(): Path('decks',name+'.dck').write_text('\n'.join(['[metadata]','Name='+name,'Deck Type=constructed','[main]']+cards)+'\n')
+          red=['[metadata]','Name=Muril0Ambra Mono Red Madness 2026-09-12','Deck Type=constructed','[main]','4 Voldaren Epicure','4 Kessig Flamebreather','4 Sneaky Snacker','3 Guttersnipe','4 Faithless Looting','4 Grab the Prize','4 Highway Robbery','4 Lava Dart','4 Lightning Bolt','4 Fiery Temper','3 Fireblast','18 Mountain']
+          Path('decks/Muril0Ambra Mono Red Madness 2026-09-12.dck').write_text('\n'.join(red)+'\n')
+          PY
+          cp decks/*.dck "$HOME/.forge/decks/constructed/"
+          seq 980001 980020 > tap-density-seeds.txt
+          sha256sum tap-density-seeds.txt decks/*.dck | tee tap-density-inputs.sha256
+      - name: Run matched density block
+        run: |
+          set -euo pipefail
+          mkdir -p density-logs
+          for variant in "Face Value v0.9 2Tap2Rush1Spasm" "Face Value v1.0 1Tap2Rush2Spasm"; do
+            slug=$(echo "$variant" | tr ' ' '_' | tr -cd '[:alnum:]_'); mkdir -p "density-logs/$slug"
+            while read -r seed; do "$FORGE_LAUNCHER" sim -d "$variant.dck" "Muril0Ambra Mono Red Madness 2026-09-12.dck" -n 1 -s "$seed" -c 60 > "density-logs/$slug/$seed.log" 2>&1; done < tap-density-seeds.txt
+          done
+      - name: Audit density block
+        if: always()
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re,json
+          folders={'Face_Value_v09_2Tap2Rush1Spasm':'v0.9_2Tap2Rush1Spasm','Face_Value_v10_1Tap2Rush2Spasm':'v1.0_1Tap2Rush2Spasm'}; out={}
+          for folder,label in folders.items():
+            rec=[]
+            for p in sorted((Path('density-logs')/folder).glob('*.log')):
+              text=p.read_text(errors='replace')
+              if re.search(r'Ai\(1\)-.* has won!',text): winner='face'
+              elif 'Ai(2)-Muril0Ambra Mono Red Madness 2026-09-12 has won!' in text: winner='red'
+              elif 'ended in a Draw' in text: winner='draw'
+              else: winner='unknown'
+              rec.append({'seed':int(p.stem),'winner':winner,'energy_tap_casts':len(re.findall(r'cast Energy Tap targeting',text)),'rush_casts':len(re.findall(r'cast Rush of Knowledge',text)),'growth_spasm_casts':len(re.findall(r'cast Growth Spasm',text)),'gryff_emerge':len(re.findall(r'Wretched Gryff - Creature 3 / 4 \(Emerge\)',text)),'repurposer_casts':len(re.findall(r'cast Eldrazi Repurposer',text)),'rumble_casts':len(re.findall(r'cast Malevolent Rumble',text)),'preordain_casts':len(re.findall(r'cast Preordain',text)),'engine_exception':bool(re.search(r'Exception|StackOverflowError|Stopping slow match as draw',text))})
+            n=len(rec); out[label]={'games':n,'wins':sum(x['winner']=='face' for x in rec),'losses':sum(x['winner']=='red' for x in rec),'draws':sum(x['winner']=='draw' for x in rec),'unknown':sum(x['winner']=='unknown' for x in rec),'energy_tap_casts':sum(x['energy_tap_casts'] for x in rec),'rush_casts':sum(x['rush_casts'] for x in rec),'growth_spasm_casts':sum(x['growth_spasm_casts'] for x in rec),'gryff_emerge':sum(x['gryff_emerge'] for x in rec),'avg_repurposer_casts':sum(x['repurposer_casts'] for x in rec)/n,'avg_rumble_casts':sum(x['rumble_casts'] for x in rec)/n,'avg_preordain_casts':sum(x['preordain_casts'] for x in rec)/n,'engine_exceptions':sum(x['engine_exception'] for x in rec),'records':rec}
+          Path('tap-density-summary.json').write_text(json.dumps(out,indent=2,sort_keys=True)); print(json.dumps({k:{kk:vv for kk,vv in v.items() if kk!='records'} for k,v in out.items()},indent=2,sort_keys=True))
+          for label,v in out.items(): assert v['games']==20 and v['unknown']==0 and v['engine_exceptions']==0,(label,v)
+          PY
+      - name: Preserve density artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: face-value-forge-tap-density-2
+          path: |
+            tap-density-summary.json
+            tap-density-seeds.txt
+            tap-density-inputs.sha256
+            density-logs/**/*.log
+            forge-face-value-ai.patch
+            forge-source-commit.txt
+            decks/*.dck
+          if-no-files-found: warn
