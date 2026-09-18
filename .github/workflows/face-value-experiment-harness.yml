@@ -1,5 +1,13 @@
 name: Face Value Experiment Harness
 on:
+  workflow_call:
+    inputs:
+      experiment_name: {required: true, type: string}
+      control_deck: {required: true, type: string}
+      challenger_deck: {required: true, type: string}
+      opponent_deck: {required: true, type: string}
+      seed_start: {required: true, type: number}
+      games: {required: true, type: number}
   workflow_dispatch:
     inputs:
       experiment_name: {required: true, type: string}
