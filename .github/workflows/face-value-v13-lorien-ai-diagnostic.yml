@@ -21,22 +21,17 @@ jobs:
           from pathlib import Path
           p=Path('forge-src/forge-ai/src/main/java/forge/ai/ability/ChangeZoneAi.java')
           s=p.read_text()
-          needle='''                        // this is mainly for typecycling
-                        if (!cd.payCostFromSource() || !ComputerUtil.isWorseThanDraw(payer, source)) {
-                            return false;
-                        }'''
-          repl='''                        // this is mainly for typecycling
-                        if (sa.isCycling()) {
+          needle='if (!cd.payCostFromSource() || !ComputerUtil.isWorseThanDraw(payer, source)) {'
+          assert s.count(needle) == 1, s.count(needle)
+          repl='''if (sa.isCycling()) {
                             System.out.println("FV_TYPECYCLING_COST source=" + source.getName()
                                     + " worseThanDraw=" + ComputerUtil.isWorseThanDraw(payer, source)
                                     + " payFromSource=" + cd.payCostFromSource()
                                     + " turn=" + payer.getTurn());
                         }
-                        if (!cd.payCostFromSource() || !ComputerUtil.isWorseThanDraw(payer, source)) {
-                            return false;
-                        }'''
-          assert needle in s
+                        ''' + needle
           p.write_text(s.replace(needle,repl,1))
+          assert 'FV_TYPECYCLING_COST' in p.read_text()
           PY
           cd forge-src
           mvn -B -DskipTests -pl forge-gui-desktop -am package
