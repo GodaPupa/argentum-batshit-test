@@ -65,7 +65,12 @@ class PestControlV2QualifyingSmokeTest : FunSpec({
         (game.terminal?.gameOver == true && game.protocolDefect == null).shouldBeTrue()
         val out = Path.of("").toAbsolutePath().parent.resolve("build/reports/pest-control-v2-smoke")
         Files.createDirectories(out)
-        Files.writeString(out.resolve("smoke-raw.json"), PestControlMatchupArtifactCodec.encodeRaw(game).decodeToString())
+        val bundle = PestControlMatchupArtifactCodec.build(game)
+        check(PestControlMatchupArtifactCodec.verify(bundle).isEmpty()) { "smoke artifact verification failed" }
+        Files.write(out.resolve("smoke-raw.json"), bundle.rawJson)
+        Files.write(out.resolve("smoke-raw.json.gz"), bundle.compressed)
+        Files.write(out.resolve("smoke-report.md"), bundle.report)
+        Files.write(out.resolve("smoke-manifest.json"), bundle.manifest)
         Files.writeString(out.resolve("smoke-summary.txt"), "seed=$V2_SMOKE_SEED\nterminal=${game.terminal}\nprotocolDefect=${game.protocolDefect}\nactions=${game.priorityActions.size}\n")
     }
 })
