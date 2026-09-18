@@ -1,0 +1,56 @@
+name: Face Value v1.3 Lorien Gruul Preserved Audit
+on:
+  push:
+    branches: [face-value/lab]
+    paths: [.github/workflows/face-value-v13-lorien-gruul-preserved-audit.yml]
+permissions: {actions: read, contents: read}
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Recover preserved Gruul artifact
+        env: {GH_TOKEN: "${{ github.token }}"}
+        run: |
+          gh api repos/${GITHUB_REPOSITORY}/actions/artifacts/10570172536/zip > artifact.zip
+          unzip -q artifact.zip -d preserved
+      - name: Forensic audit
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re,json
+          root=Path('preserved'); out={}
+          names={'control':'FV v1.2 Control','lorien':'FV v1.3 LB'}
+          for cfg,name in names.items():
+            rr=[]
+            for p in sorted((root/'gruul-logs'/cfg).glob('*.log')):
+              t=p.read_text(errors='replace')
+              if f'Ai(1)-{name} has won!' in t: w='face'
+              elif 'Ai(2)-Ixidor29 Gruul Ramp 2026-09-16 has won!' in t: w='gruul'
+              elif 'ended in a Draw' in t: w='draw'
+              else: w='unknown'
+              flags=[]
+              for pat,label in [('StackOverflowError','stack'),('TimeoutException','timeout'),('Stopping slow match as draw','slow_draw')]:
+                if pat in t: flags.append(label)
+              lorien_lines=[x for x in t.splitlines() if 'Lórien Revealed' in x or 'Lorien Revealed' in x]
+              rr.append({'seed':int(p.stem),'winner':w,'flags':flags,
+                'gryff_casts':len(re.findall(r'cast Wretched Gryff',t)),
+                'lorien_casts':sum(('cast Lórien Revealed' in x or 'cast Lorien Revealed' in x) and f'Ai(1)-{name}' in x for x in lorien_lines),
+                'lorien_cycles':sum(('activated Lórien Revealed' in x or 'activated Lorien Revealed' in x) and f'Ai(1)-{name}' in x for x in lorien_lines),
+                'lorien_lines':lorien_lines})
+            out[cfg]={'games':len(rr),'wins':sum(x['winner']=='face' for x in rr),'losses':sum(x['winner']=='gruul' for x in rr),
+              'unknown':sum(x['winner']=='unknown' for x in rr),'flagged':sum(bool(x['flags']) for x in rr),
+              'flagged_records':[x for x in rr if x['flags']],
+              'gryff_casts':sum(x['gryff_casts'] for x in rr),'lorien_casts':sum(x['lorien_casts'] for x in rr),
+              'lorien_cycles':sum(x['lorien_cycles'] for x in rr),'records':rr}
+          a={x['seed']:x['winner'] for x in out['control']['records']}; b={x['seed']:x['winner'] for x in out['lorien']['records']}
+          out['paired_flips']={'control_win_to_lorien_loss':sum(a[s]=='face' and b[s]=='gruul' for s in a),'control_loss_to_lorien_win':sum(a[s]=='gruul' and b[s]=='face' for s in a),'same':sum(a[s]==b[s] for s in a)}
+          Path('gruul-preserved-audit.json').write_text(json.dumps(out,indent=2,sort_keys=True))
+          print(json.dumps({k:({kk:vv for kk,vv in v.items() if kk not in ('records','flagged_records')} if isinstance(v,dict) else v) for k,v in out.items()},indent=2))
+          print('FLAGGED',json.dumps({k:v.get('flagged_records',[]) for k,v in out.items() if isinstance(v,dict)},indent=2))
+          assert out['control']['games']==20 and out['lorien']['games']==20
+          assert out['control']['unknown']==0 and out['lorien']['unknown']==0
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: face-value-v13-lorien-gruul-preserved-audit
+          path: gruul-preserved-audit.json
