@@ -1,0 +1,62 @@
+name: Face Value v1.3 Lorien Affinity Preserved Audit
+on:
+  push:
+    branches: [face-value/lab]
+    paths: [.github/workflows/face-value-v13-lorien-affinity-preserved-audit.yml]
+permissions:
+  actions: read
+  contents: read
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download preserved failed-run artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euxo pipefail
+          gh api repos/${GITHUB_REPOSITORY}/actions/artifacts/10565018501/zip > artifact.zip
+          unzip -q artifact.zip -d preserved
+          find preserved -maxdepth 3 -type f | sort | head -200
+      - name: Re-audit preserved traces with current log grammar
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re,json
+          root=Path('preserved')
+          out={}
+          names={'control':'FV v1.2 Control','lorien':'FV v1.3 LB'}
+          for cfg,name in names.items():
+            rec=[]
+            for p in sorted((root/'affinity-logs'/cfg).glob('*.log')):
+              t=p.read_text(errors='replace')
+              face=bool(re.search(r'Ai\\(1\\)-'+re.escape(name)+r'.* has won!',t))
+              aff=bool(re.search(r'Ai\\(2\\)-VitorCarvalho01 Grixis Affinity 2026-09-14.* has won!',t))
+              draw='ended in a Draw' in t
+              w='face' if face else 'affinity' if aff else 'draw' if draw else 'unknown'
+              rec.append({'seed':int(p.stem),'winner':w,
+                'gryff_casts':len(re.findall(r'cast Wretched Gryff',t)),
+                'lorien_casts':len(re.findall(r'cast L(?:o|ó)rien Revealed',t)),
+                'lorien_cycles':len(re.findall(r'activated L(?:o|ó)rien Revealed',t)),
+                'bad':bool(re.search(r'StackOverflowError|TimeoutException|Stopping slow match as draw',t))})
+            out[cfg]={'games':len(rec),'wins':sum(x['winner']=='face' for x in rec),
+              'losses':sum(x['winner']=='affinity' for x in rec),'draws':sum(x['winner']=='draw' for x in rec),
+              'unknown':sum(x['winner']=='unknown' for x in rec),'gryff_casts':sum(x['gryff_casts'] for x in rec),
+              'lorien_casts':sum(x['lorien_casts'] for x in rec),'lorien_cycles':sum(x['lorien_cycles'] for x in rec),
+              'bad':sum(x['bad'] for x in rec),'records':rec}
+          # paired seed deltas
+          a={x['seed']:x['winner'] for x in out['control']['records']}
+          b={x['seed']:x['winner'] for x in out['lorien']['records']}
+          flips={'control_win_to_lorien_loss':sum(a[s]=='face' and b[s]=='affinity' for s in a),
+                 'control_loss_to_lorien_win':sum(a[s]=='affinity' and b[s]=='face' for s in a),
+                 'same':sum(a[s]==b[s] for s in a)}
+          out['paired_flips']=flips
+          Path('preserved-audit.json').write_text(json.dumps(out,indent=2,sort_keys=True))
+          print(json.dumps({k:({kk:vv for kk,vv in v.items() if kk!='records'} if isinstance(v,dict) else v) for k,v in out.items()},indent=2))
+          for k in ('control','lorien'):
+            v=out[k]; assert v['games']==20 and v['unknown']==0 and v['bad']==0,(k,v)
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: face-value-v13-lorien-affinity-preserved-audit
+          path: preserved-audit.json
