@@ -1,0 +1,16 @@
+name: Face Value Harness Validation
+on:
+  push:
+    branches: [face-value/lab]
+    paths: [.github/workflows/face-value-harness-validation.yml]
+permissions: {contents: read}
+jobs:
+  validate:
+    uses: ./.github/workflows/face-value-experiment-harness.yml
+    with:
+      experiment_name: harness-validation
+      control_deck: experiments/face-value/decks/fv-v12-control.dck
+      challenger_deck: experiments/face-value/decks/fv-v12-control.dck
+      opponent_deck: experiments/face-value/decks/mono-red-madness.dck
+      seed_start: 1250001
+      games: 10
