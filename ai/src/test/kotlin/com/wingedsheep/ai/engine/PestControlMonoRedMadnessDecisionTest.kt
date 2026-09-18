@@ -1041,6 +1041,45 @@ class PestControlMonoRedMadnessDecisionTest : ScenarioTestBase() {
             game.findPermanent("Pest Mascot") shouldBe null
         }
 
+        test("Fireblast sacrifices persist into later mana legality") {
+            val game = seeded()
+                .withLandsOnBattlefield(1, "Mountain", 4)
+                .withCardInHand(1, "Fireblast")
+                .withCardInHand(1, "Grab the Prize")
+                .withLifeTotal(2, 4)
+                .build()
+
+            val fireblast = ai(game).chooseAction(game.state).shouldBeInstanceOf<CastSpell>()
+            cardName(game, fireblast.cardId) shouldBe "Fireblast"
+            fireblast.useAlternativeCost.shouldBeTrue()
+            fireblast.additionalCostPayment?.sacrificedPermanents?.size shouldBe 2
+            game.execute(fireblast).error.shouldBeNull()
+
+            game.findPermanents("Mountain").size shouldBe 2
+            val laterGrab = GameSimulator(cardRegistry).getLegalActions(game.state, game.player1Id)
+                .filter { legal ->
+                    val cast = legal.action as? CastSpell
+                    cast != null && cardName(game, cast.cardId) == "Grab the Prize"
+                }
+            laterGrab.single().affordable.shouldBeFalse()
+        }
+
+        test("Blood Researcher menace is valued against a single blocker") {
+            val game = seeded()
+                .withActivePlayer(1)
+                .inPhase(Phase.COMBAT, Step.DECLARE_ATTACKERS)
+                .withLifeTotal(2, 2)
+                .withCardOnBattlefield(1, "Blood Researcher", summoningSickness = false)
+                .withCardOnBattlefield(2, "Guttersnipe", summoningSickness = false)
+                .build()
+            val researcher = game.findPermanent("Blood Researcher")!!
+
+            val action = ai(game).chooseAction(game.state).shouldBeInstanceOf<DeclareAttackers>()
+            withClue("one blocker cannot legally block a menace attacker, so Researcher is lethal") {
+                action.attackers[researcher] shouldBe game.player2Id
+            }
+        }
+
         test("imminent-combat survival override preserves restraint and winning lines") {
             fun attackedState(
                 redLife: Int,
