@@ -1,0 +1,48 @@
+name: Face Value Sideboard Candidate Freeze
+on:
+  push:
+    branches: [face-value/lab]
+    paths: [.github/workflows/face-value-sideboard-candidate-freeze.yml]
+permissions:
+  contents: read
+jobs:
+  freeze:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Write candidate ledger
+        run: |
+          cat > face-value-sideboard-candidate-ledger.txt <<'EOF'
+          Face Value v1.2 Sideboard Phase 1 candidate ledger
+          Maindeck: frozen unchanged.
+
+          RETAIN FOR FINAL-75 TESTING
+          3 Deglamer
+            Evidence: clean Affinity block 15-5 vs control 11-9; clean replication 13-7 vs control 14-6.
+            Aggregate descriptive clean arms: Deglamer 28-12, control 25-15.
+            Status: credible flexible artifact package; effect inconsistent, not matchup-essential.
+
+          UNRESOLVED / REAL-WORLD CANDIDATE ONLY
+          2 Dispel
+            Terror raw signal inconclusive; pathological Forge seed persisted at 600s.
+          Hydroblast
+            Gruul +4 arm showed usage, but dose experiment +2/+3 recorded zero casts and runtime contamination.
+            Mono-Red challenger recorded zero casts and underperformed strong control.
+            Status: do not spend further Forge sampling budget.
+
+          DEPRIORITIZED
+          Relic of Progenitus
+            Clean Terror arm failed to improve control and reduced engine activity.
+          Breath Weapon
+            Elves challenger 8-12, seven timeouts, one recorded cast. Not validated.
+
+          STRUCTURAL FINDING
+          Preserve engine density. Large boarding packages repeatedly risked reducing performance.
+          Favor compact, broad-purpose sideboard packages and minimal boarding in naturally favorable matchups.
+          EOF
+          sha256sum face-value-sideboard-candidate-ledger.txt | tee ledger.sha256
+      - uses: actions/upload-artifact@v4
+        with:
+          name: face-value-sideboard-candidate-ledger
+          path: |
+            face-value-sideboard-candidate-ledger.txt
+            ledger.sha256
