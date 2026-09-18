@@ -1,0 +1,90 @@
+name: Face Value Experiment Harness
+on:
+  workflow_dispatch:
+    inputs:
+      experiment_name: {required: true, type: string}
+      control_deck: {required: true, type: string}
+      challenger_deck: {required: true, type: string}
+      opponent_deck: {required: true, type: string}
+      seed_start: {required: true, type: number}
+      games: {required: true, type: number}
+permissions: {contents: read}
+jobs:
+  paired:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: '21', cache: maven}
+      - name: Validate inputs
+        run: |
+          set -euo pipefail
+          for f in "${{ inputs.control_deck }}" "${{ inputs.challenger_deck }}" "${{ inputs.opponent_deck }}"; do test -f "$f"; done
+          test "${{ inputs.games }}" -gt 0
+      - name: Build Forge
+        run: |
+          set -euxo pipefail
+          git clone --depth 1 https://github.com/Card-Forge/forge.git forge-src
+          git -C forge-src rev-parse HEAD | tee forge-source-commit.txt
+          cd forge-src
+          mvn -B -DskipTests -pl forge-gui-desktop -am package
+          chmod +x forge-gui-desktop/target/forge.sh
+          rm -rf forge-gui-desktop/target/res && cp -R forge-gui/res forge-gui-desktop/target/res
+          echo "FORGE_LAUNCHER=$(pwd)/forge-gui-desktop/target/forge.sh" >> "$GITHUB_ENV"
+      - name: Freeze inputs
+        run: |
+          mkdir -p frozen "$HOME/.forge/decks/constructed"
+          cp "${{ inputs.control_deck }}" frozen/control.dck
+          cp "${{ inputs.challenger_deck }}" frozen/challenger.dck
+          cp "${{ inputs.opponent_deck }}" frozen/opponent.dck
+          cp frozen/*.dck "$HOME/.forge/decks/constructed/"
+          end=$(( ${{ inputs.seed_start }} + ${{ inputs.games }} - 1 ))
+          seq "${{ inputs.seed_start }}" "$end" > seeds.txt
+          sha256sum seeds.txt frozen/*.dck | tee inputs.sha256
+      - name: Run paired games
+        run: |
+          set -euo pipefail
+          mkdir -p logs/control logs/challenger
+          while read seed; do
+            "$FORGE_LAUNCHER" sim -d control.dck opponent.dck -n 1 -s "$seed" -c 120 > "logs/control/$seed.log" 2>&1
+            "$FORGE_LAUNCHER" sim -d challenger.dck opponent.dck -n 1 -s "$seed" -c 120 > "logs/challenger/$seed.log" 2>&1
+          done < seeds.txt
+      - name: Standard audit
+        if: always()
+        env:
+          EXPECTED_GAMES: "${{ inputs.games }}"
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re,json,os
+          def dn(p):
+            for x in Path(p).read_text(errors='replace').splitlines():
+              if x.startswith('Name='): return x.split('=',1)[1]
+            raise RuntimeError(p)
+          names={'control':dn('frozen/control.dck'),'challenger':dn('frozen/challenger.dck')}; opp=dn('frozen/opponent.dck'); out={}
+          for cfg,name in names.items():
+            rr=[]
+            for p in sorted((Path('logs')/cfg).glob('*.log')):
+              t=p.read_text(errors='replace')
+              w='face' if f'Ai(1)-{name} has won!' in t else 'opponent' if f'Ai(2)-{opp} has won!' in t else 'draw' if 'ended in a Draw' in t else 'unknown'
+              flags=[z for pat,z in [('StackOverflowError','stack'),('TimeoutException','timeout'),('Stopping slow match as draw','slow_draw')] if pat in t]
+              rr.append({'seed':int(p.stem),'winner':w,'flags':flags,'gryff_casts':t.count('cast Wretched Gryff'),'ram_casts':len(re.findall(r'Ai\\(1\\)-'+re.escape(name)+r' cast Ram Through',t))})
+            out[cfg]={'name':name,'games':len(rr),'wins':sum(x['winner']=='face' for x in rr),'losses':sum(x['winner']=='opponent' for x in rr),'draws':sum(x['winner']=='draw' for x in rr),'unknown':sum(x['winner']=='unknown' for x in rr),'flagged':sum(bool(x['flags']) for x in rr),'gryff_casts':sum(x['gryff_casts'] for x in rr),'ram_casts':sum(x['ram_casts'] for x in rr),'records':rr}
+          a={x['seed']:x['winner'] for x in out['control']['records']}; b={x['seed']:x['winner'] for x in out['challenger']['records']}
+          out['paired']={'control_win_to_challenger_loss':sum(a[s]=='face' and b[s]=='opponent' for s in a),'control_loss_to_challenger_win':sum(a[s]=='opponent' and b[s]=='face' for s in a),'same':sum(a[s]==b[s] for s in a)}
+          Path('summary.json').write_text(json.dumps(out,indent=2,sort_keys=True)); print(json.dumps({k:({kk:vv for kk,vv in v.items() if kk!='records'} if isinstance(v,dict) else v) for k,v in out.items()},indent=2))
+          n=int(os.environ['EXPECTED_GAMES'])
+          for k in ('control','challenger'): assert out[k]['games']==n and out[k]['unknown']==0 and out[k]['flagged']==0,(k,out[k])
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: face-value-experiment-${{ inputs.experiment_name }}
+          path: |
+            summary.json
+            seeds.txt
+            inputs.sha256
+            frozen/*.dck
+            logs/**/*.log
+            forge-source-commit.txt
