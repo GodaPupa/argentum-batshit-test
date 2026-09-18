@@ -1,0 +1,105 @@
+name: Face Value v1.3 Lorien Terror Paired
+
+on:
+  push:
+    branches: [face-value/lab]
+    paths: [.github/workflows/face-value-v13-lorien-terror-paired.yml]
+
+permissions:
+  contents: read
+
+jobs:
+  terror-gauntlet:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Setup Java 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - name: Clone Forge and apply validated Face Value heuristics
+        run: |
+          set -euxo pipefail
+          git clone --depth 1 https://github.com/Card-Forge/forge.git forge-src
+          git -C forge-src rev-parse HEAD | tee forge-source-commit.txt
+          python3 - <<'PY'
+          from pathlib import Path
+          energy=Path('forge-src/forge-gui/res/cardsfolder/e/energy_tap.txt'); t=energy.read_text()
+          old="A:SP$ Tap | TgtPrompt$ Select target untapped creature you control | ValidTgts$ Creature.untapped+YouCtrl | SubAbility$ DBMana | SpellDescription$ Tap target untapped creature you control. If you do, add an amount of {C} equal to that creature's mana value."
+          new="A:SP$ Tap | TgtPrompt$ Select target untapped creature you control | ValidTgts$ Creature.untapped+YouCtrl | AILogic$ EnergyTap | SubAbility$ DBMana | SpellDescription$ Tap target untapped creature you control. If you do, add an amount of {C} equal to that creature's mana value."
+          assert old in t; energy.write_text(t.replace(old,new).replace('\nAI:RemoveDeck:All',''))
+          tap=Path('forge-src/forge-ai/src/main/java/forge/ai/ability/TapAi.java'); s=tap.read_text(); needle='        final Player turn = phase.getPlayerTurn();\n\n'; assert needle in s
+          lines=['        final Player turn = phase.getPlayerTurn();','', '        if ("EnergyTap".equals(sa.getParamOrDefault("AILogic", ""))) {','            if (!phase.is(PhaseType.MAIN2, ai)) return new AiAbilityDecision(0, AiPlayDecision.WaitForMain2);','            boolean hasFollowup = ai.getCardsIn(ZoneType.Hand).stream().anyMatch(c ->','                    "Wretched Gryff".equals(c.getName()) || "Drownyard Lurker".equals(c.getName()) || "It of the Horrid Swarm".equals(c.getName()));','            if (!hasFollowup) return new AiAbilityDecision(0, AiPlayDecision.CantPlayAi);','            CardCollection candidates = CardLists.getTargetableCards(ai.getCreaturesInPlay(), sa);','            candidates = CardLists.filter(candidates, CardPredicates.CAN_TAP);','            Card choice = ComputerUtilCard.getMostExpensivePermanentAI(candidates);','            if (choice == null || choice.getCMC() < 7) return new AiAbilityDecision(0, AiPlayDecision.CantPlayAi);','            sa.resetTargets(); sa.getTargets().add(choice);','            return new AiAbilityDecision(100, AiPlayDecision.WillPlay);','        }','']
+          tap.write_text(s.replace(needle,'\n'.join(lines),1))
+          rush=Path('forge-src/forge-gui/res/cardsfolder/r/rush_of_knowledge.txt'); r=rush.read_text(); rold='A:SP$ Draw | Defined$ You | NumCards$ X | SpellDescription$ Draw cards equal to the highest mana value among permanents you control.'; rnew='A:SP$ Draw | Defined$ You | NumCards$ X | AILogic$ FaceValueRush | SpellDescription$ Draw cards equal to the highest mana value among permanents you control.'; assert rold in r; rush.write_text(r.replace(rold,rnew))
+          draw=Path('forge-src/forge-ai/src/main/java/forge/ai/ability/DrawAi.java'); d=draw.read_text(); dn='        boolean aboutToBeMyTurn = ph.getNextTurn().equals(ai) && ph.is(PhaseType.END_OF_TURN);\n\n'; assert dn in d
+          dl=['        boolean aboutToBeMyTurn = ph.getNextTurn().equals(ai) && ph.is(PhaseType.END_OF_TURN);','','        if ("FaceValueRush".equals(sa.getParamOrDefault("AILogic", ""))) {','            int highest = ai.getCardsIn(ZoneType.Battlefield).stream().mapToInt(Card::getCMC).max().orElse(0);','            if (highest < 7) return new AiAbilityDecision(0, AiPlayDecision.CantPlayAi);','        }','']
+          draw.write_text(d.replace(dn,'\n'.join(dl),1))
+          PY
+      - name: Build patched Forge
+        run: |
+          cd forge-src
+          mvn -B -DskipTests -pl forge-gui-desktop -am package
+          chmod +x forge-gui-desktop/target/forge.sh
+          rm -rf forge-gui-desktop/target/res && cp -R forge-gui/res forge-gui-desktop/target/res
+          echo "FORGE_LAUNCHER=$(pwd)/forge-gui-desktop/target/forge.sh" >> "$GITHUB_ENV"
+      - name: Write frozen gauntlet decks
+        run: |
+          mkdir -p decks "$HOME/.forge/decks/constructed"
+          python3 - <<'PY'
+          from pathlib import Path
+          control=['4 Llanowar Elves','4 Nest Invader','4 Eldrazi Repurposer','1 Eyeless Watcher','4 Wretched Gryff','2 It of the Horrid Swarm','2 Annoyed Altisaur','1 Drownyard Lurker','1 Nyxborn Hydra','3 Generous Ent','4 Malevolent Rumble','4 Preordain','2 Snap','1 Lose Focus',"1 Tamiyo's Safekeeping",'2 Growth Spasm','9 Forest','8 Island','3 Tangled Islet']
+          lorien=['4 Llanowar Elves','4 Nest Invader','4 Eldrazi Repurposer','1 Eyeless Watcher','4 Wretched Gryff','2 It of the Horrid Swarm','2 Annoyed Altisaur','1 Drownyard Lurker','1 Nyxborn Hydra','2 Generous Ent','2 Lórien Revealed','4 Malevolent Rumble','4 Preordain','2 Snap','1 Lose Focus',"1 Tamiyo's Safekeeping",'1 Growth Spasm','9 Forest','8 Island','3 Tangled Islet']
+          terror=['4 Tolarian Terror','4 Cryptic Serpent','4 Delver of Secrets','4 Brainstorm','4 Counterspell','4 Mental Note','4 Thought Scour','2 Dispel','4 Deem Inferior','4 Lórien Revealed','3 Ponder','2 Sleep of the Dead','1 Deep Analysis','16 Island']
+          decks={'FV v1.2 Control':control,'FV v1.3 LB':lorien,'Luminati Mono Blue Terror 2026-07-12':terror}
+          for name,cards in decks.items():
+            assert sum(int(x.split()[0]) for x in cards)==60,(name,sum(int(x.split()[0]) for x in cards))
+            Path('decks',name+'.dck').write_text('\n'.join(['[metadata]','Name='+name,'Deck Type=constructed','[main]']+cards)+'\n')
+          PY
+          cp decks/*.dck "$HOME/.forge/decks/constructed/"
+          seq 1230001 1230020 > terror-seeds.txt
+          sha256sum terror-seeds.txt decks/*.dck | tee terror-inputs.sha256
+      - name: Run fixed Terror gauntlet
+        run: |
+          set -euo pipefail
+          mkdir -p terror-logs/control terror-logs/lorien
+          while read -r seed; do
+            "$FORGE_LAUNCHER" sim -d "FV v1.2 Control.dck" "Luminati Mono Blue Terror 2026-07-12.dck" -n 1 -s "$seed" -c 120 > "terror-logs/control/$seed.log" 2>&1
+            "$FORGE_LAUNCHER" sim -d "FV v1.3 LB.dck" "Luminati Mono Blue Terror 2026-07-12.dck" -n 1 -s "$seed" -c 120 > "terror-logs/lorien/$seed.log" 2>&1
+          done < terror-seeds.txt
+      - name: Audit Terror gauntlet
+        if: always()
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re,json
+          out={}
+          for cfg,name in {'control':'FV v1.2 Control','lorien':'FV v1.3 LB'}.items():
+            rec=[]
+            for p in sorted((Path('terror-logs')/cfg).glob('*.log')):
+              t=p.read_text(errors='replace')
+              if f'Ai(1)-{name} has won!' in t: w='face'
+              elif 'Ai(2)-Luminati Mono Blue Terror 2026-07-12 has won!' in t: w='terror'
+              elif 'ended in a Draw' in t: w='draw'
+              else: w='unknown'
+              rec.append({'seed':int(p.stem),'winner':w,'gryff_casts':len(re.findall(r'cast Wretched Gryff',t)),'lorien_casts':len(re.findall(r'cast L(?:o|ó)rien Revealed',t)),'lorien_cycles':len(re.findall(r'activated L(?:o|ó)rien Revealed',t)),'bad':bool(re.search(r'StackOverflowError|TimeoutException|Stopping slow match as draw',t))})
+            out[cfg]={'games':len(rec),'wins':sum(x['winner']=='face' for x in rec),'losses':sum(x['winner']=='terror' for x in rec),'draws':sum(x['winner']=='draw' for x in rec),'unknown':sum(x['winner']=='unknown' for x in rec),'gryff_casts':sum(x['gryff_casts'] for x in rec),'lorien_casts':sum(x['lorien_casts'] for x in rec),'lorien_cycles':sum(x['lorien_cycles'] for x in rec),'bad':sum(x['bad'] for x in rec),'records':rec}
+          a={x['seed']:x['winner'] for x in out['control']['records']}; b={x['seed']:x['winner'] for x in out['lorien']['records']}
+          out['paired_flips']={'control_win_to_lorien_loss':sum(a[s]=='face' and b[s]=='terror' for s in a),'control_loss_to_lorien_win':sum(a[s]=='terror' and b[s]=='face' for s in a),'same':sum(a[s]==b[s] for s in a)}
+          Path('terror-summary.json').write_text(json.dumps(out,indent=2,sort_keys=True)); print(json.dumps({k:({kk:vv for kk,vv in v.items() if kk!='records'} if isinstance(v,dict) else v) for k,v in out.items()},indent=2))
+          for k in ('control','lorien'): assert out[k]['games']==20 and out[k]['unknown']==0 and out[k]['bad']==0,(k,out[k])
+          PY
+      - name: Preserve Terror artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: face-value-v13-lorien-terror-paired
+          path: |
+            terror-summary.json
+            terror-seeds.txt
+            terror-inputs.sha256
+            terror-logs/**/*.log
+            forge-source-commit.txt
+            decks/*.dck
+          if-no-files-found: warn
