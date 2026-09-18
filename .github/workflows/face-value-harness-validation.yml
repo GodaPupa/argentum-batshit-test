@@ -2,7 +2,7 @@ name: Face Value Harness Validation
 on:
   push:
     branches: [face-value/lab]
-    paths: [.github/workflows/face-value-harness-validation.yml]
+    paths: [.github/workflows/face-value-harness-validation.yml, .github/workflows/face-value-experiment-harness.yml]
 permissions: {contents: read}
 jobs:
   validate:
