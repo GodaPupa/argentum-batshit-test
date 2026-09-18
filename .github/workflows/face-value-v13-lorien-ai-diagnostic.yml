@@ -1,0 +1,112 @@
+name: Face Value v1.3 Lorien AI Diagnostic
+on:
+  push:
+    branches: [face-value/lab]
+    paths: [.github/workflows/face-value-v13-lorien-ai-diagnostic.yml]
+permissions:
+  contents: read
+jobs:
+  diagnostic:
+    runs-on: ubuntu-latest
+    timeout-minutes: 55
+    steps:
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: '21'}
+      - name: Clone Forge and instrument typecycling decision
+        run: |
+          set -euxo pipefail
+          git clone --depth 1 https://github.com/Card-Forge/forge.git forge-src
+          git -C forge-src rev-parse HEAD | tee forge-source-commit.txt
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('forge-src/forge-ai/src/main/java/forge/ai/ability/ChangeZoneAi.java')
+          s=p.read_text()
+          needle='''                        // this is mainly for typecycling
+                        if (!cd.payCostFromSource() || !ComputerUtil.isWorseThanDraw(payer, source)) {
+                            return false;
+                        }'''
+          repl='''                        // this is mainly for typecycling
+                        if (sa.isCycling()) {
+                            System.out.println("FV_TYPECYCLING_COST source=" + source.getName()
+                                    + " worseThanDraw=" + ComputerUtil.isWorseThanDraw(payer, source)
+                                    + " payFromSource=" + cd.payCostFromSource()
+                                    + " turn=" + payer.getTurn());
+                        }
+                        if (!cd.payCostFromSource() || !ComputerUtil.isWorseThanDraw(payer, source)) {
+                            return false;
+                        }'''
+          assert needle in s
+          p.write_text(s.replace(needle,repl,1))
+          PY
+          cd forge-src
+          mvn -B -DskipTests -pl forge-gui-desktop -am package
+          chmod +x forge-gui-desktop/target/forge.sh
+          rm -rf forge-gui-desktop/target/res
+          cp -R forge-gui/res forge-gui-desktop/target/res
+          echo "FORGE_LAUNCHER=$(pwd)/forge-gui-desktop/target/forge.sh" >> "$GITHUB_ENV"
+      - name: Write focused decks
+        run: |
+          mkdir -p decks "$HOME/.forge/decks/constructed"
+          cat > 'decks/FV Lorien Diagnostic.dck' <<'EOF'
+          [metadata]
+          Name=FV Lorien Diagnostic
+          Deck Type=constructed
+          [main]
+          4 Lórien Revealed
+          4 Llanowar Elves
+          4 Nest Invader
+          4 Eldrazi Repurposer
+          4 Wretched Gryff
+          4 Malevolent Rumble
+          4 Preordain
+          4 Snap
+          4 Growth Spasm
+          12 Forest
+          12 Island
+          EOF
+          cat > 'decks/Vanilla Red Diagnostic.dck' <<'EOF'
+          [metadata]
+          Name=Vanilla Red Diagnostic
+          Deck Type=constructed
+          [main]
+          20 Raging Goblin
+          20 Lightning Bolt
+          20 Mountain
+          EOF
+          cp decks/*.dck "$HOME/.forge/decks/constructed/"
+          seq 1190001 1190010 > seeds.txt
+      - name: Run focused diagnostic
+        run: |
+          set -euo pipefail
+          mkdir -p logs
+          while read seed; do
+            "$FORGE_LAUNCHER" sim -d 'FV Lorien Diagnostic.dck' 'Vanilla Red Diagnostic.dck' -n 1 -s "$seed" -c 120 > "logs/$seed.log" 2>&1
+          done < seeds.txt
+      - name: Audit
+        if: always()
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import json,re
+          rec=[]
+          for p in sorted(Path('logs').glob('*.log')):
+              t=p.read_text(errors='replace')
+              lines=[x for x in t.splitlines() if 'FV_TYPECYCLING_COST' in x or 'Lórien Revealed' in x]
+              rec.append({'seed':int(p.stem),'diagnostic_lines':lines,
+                          'decision_hits':t.count('FV_TYPECYCLING_COST'),
+                          'lorien_mentions':t.count('Lórien Revealed')})
+          out={'games':len(rec),'decision_hits':sum(x['decision_hits'] for x in rec),
+               'lorien_mentions':sum(x['lorien_mentions'] for x in rec),'records':rec}
+          Path('diagnostic-summary.json').write_text(json.dumps(out,indent=2))
+          print(json.dumps(out,indent=2))
+          assert len(rec)==10
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: face-value-v13-lorien-ai-diagnostic
+          path: |
+            diagnostic-summary.json
+            logs/*.log
+            seeds.txt
+            forge-source-commit.txt
