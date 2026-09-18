@@ -1,0 +1,62 @@
+name: Face Value Final 75 Redundancy Audit
+on:
+  push:
+    branches: [face-value/lab]
+    paths: [.github/workflows/face-value-final75-redundancy-audit.yml]
+permissions:
+  contents: read
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Audit candidate sideboard coverage and evidence
+        run: |
+          python3 - <<'PY'
+          import json, hashlib
+          cards={
+            'Deglamer': {'n':3,'roles':['artifact','enchantment'],'evidence':'replicated_clean'},
+            'Dispel': {'n':2,'roles':['counter_war','instant_combo','control'],'evidence':'forge_unresolved'},
+            'Hydroblast': {'n':2,'roles':['red','gruul'],'evidence':'forge_inconsistent'},
+            'Relic of Progenitus': {'n':2,'roles':['graveyard'],'evidence':'clean_no_terror_gain'},
+            'Weather the Storm': {'n':2,'roles':['burn','storm'],'evidence':'coverage'},
+            'Annul': {'n':2,'roles':['artifact','enchantment','stack'],'evidence':'coverage'},
+            'Faerie Macabre': {'n':2,'roles':['graveyard','zero_mana'],'evidence':'coverage'},
+          }
+          # Redundancy audit: graveyard package has four slots despite Relic's clean no-gain result.
+          # Preserve zero-mana interaction; remove Relic pair. Artifact/enchantment has five slots;
+          # Deglamer owns the clean evidence, so remove Annul pair. Retain one broad flexible pair
+          # for creature/combo interaction: Echoing Truth.
+          final={
+            'Deglamer':3,
+            'Dispel':2,
+            'Hydroblast':2,
+            'Weather the Storm':2,
+            'Faerie Macabre':2,
+            'Echoing Truth':2,
+            'Relic of Progenitus':1,
+            'Annul':1,
+          }
+          assert sum(final.values())==15
+          report={
+            'candidate_before':cards,
+            'decision':{
+              'reduce_relic':'2 -> 1; clean Terror test did not improve control, retain singleton broad graveyard coverage',
+              'reduce_annul':'2 -> 1; overlaps Deglamer, whose artifact/enchantment role has stronger direct evidence',
+              'add_echoing_truth':'2; broad interactive coverage for tokens, problematic permanents, and tempo without requiring a third color',
+              'preserve_faerie_macabre':'2; zero-mana graveyard interaction avoids holding mana',
+              'preserve_deglamer':'3; strongest sideboard evidence',
+            },
+            'final_candidate_15':final,
+            'total':sum(final.values()),
+          }
+          raw=json.dumps(report,indent=2,sort_keys=True)
+          open('redundancy-audit.json','w').write(raw)
+          open('redundancy-audit.sha256','w').write(hashlib.sha256(raw.encode()).hexdigest()+'  redundancy-audit.json\n')
+          print(raw)
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: face-value-final75-redundancy-audit
+          path: |
+            redundancy-audit.json
+            redundancy-audit.sha256
