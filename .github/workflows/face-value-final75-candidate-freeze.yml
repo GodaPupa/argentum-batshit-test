@@ -1,0 +1,79 @@
+name: Face Value Final 75 Candidate Freeze
+on:
+  push:
+    branches: [face-value/lab]
+    paths: [.github/workflows/face-value-final75-candidate-freeze.yml]
+permissions:
+  contents: read
+jobs:
+  freeze:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Freeze candidate 75 and boarding principles
+        run: |
+          cat > face-value-final75-candidate.txt <<'EOF'
+          FACE VALUE v1.2 — CANDIDATE FINAL 75
+
+          MAINDECK — FROZEN 60
+          4 Llanowar Elves
+          4 Nest Invader
+          4 Eldrazi Repurposer
+          1 Eyeless Watcher
+          4 Wretched Gryff
+          2 It of the Horrid Swarm
+          2 Annoyed Altisaur
+          1 Drownyard Lurker
+          1 Nyxborn Hydra
+          3 Generous Ent
+          4 Malevolent Rumble
+          4 Preordain
+          2 Snap
+          1 Lose Focus
+          1 Tamiyo's Safekeeping
+          2 Growth Spasm
+          9 Forest
+          8 Island
+          3 Tangled Islet
+
+          CANDIDATE SIDEBOARD — 15
+          3 Deglamer
+          2 Dispel
+          2 Hydroblast
+          2 Relic of Progenitus
+          2 Weather the Storm
+          2 Annul
+          2 Faerie Macabre
+
+          EVIDENCE / ROLE TAGS
+          Deglamer: strongest clean Forge sideboard evidence; Affinity/artifact coverage.
+          Dispel: stack interaction candidate for Terror/control/combo; Forge validation unresolved.
+          Hydroblast: compact Gruul/red interaction; no further Forge dose testing authorized.
+          Relic: broad graveyard coverage; not primary Terror plan.
+          Weather the Storm: compact burn/storm insurance; avoid routine boarding into already-favorable Red unless needed.
+          Annul: broad artifact/enchantment + stack coverage with minimal mana cost.
+          Faerie Macabre: zero-mana graveyard interaction, useful where holding mana is costly.
+
+          BOARDING PRINCIPLES
+          1. Preserve engine density; default to 2-3 cards in, not transformational boarding.
+          2. Do not routinely board into naturally favorable matchups merely because hate exists.
+          3. Preferred trims begin with Eyeless Watcher, Nyxborn Hydra, a Preordain, or a Growth Spasm depending on matchup.
+          4. Preserve four Wretched Gryff, four Llanowar Elves, four Nest Invader, four Eldrazi Repurposer, and three Generous Ent unless later evidence explicitly overturns this rule.
+          5. Deglamer is the only package with replicated clean Forge evidence; other slots are candidate coverage slots pending final integrity validation.
+          EOF
+          sha256sum face-value-final75-candidate.txt | tee candidate75.sha256
+      - name: Structural validation
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          t=Path('face-value-final75-candidate.txt').read_text()
+          side=t.split('CANDIDATE SIDEBOARD — 15\n',1)[1].split('\n\nEVIDENCE',1)[0].strip().splitlines()
+          n=sum(int(x.split()[0]) for x in side)
+          assert n==15,n
+          print('candidate sideboard count:',n)
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: face-value-final75-candidate-freeze
+          path: |
+            face-value-final75-candidate.txt
+            candidate75.sha256
