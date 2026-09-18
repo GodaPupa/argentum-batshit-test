@@ -1,0 +1,86 @@
+name: Face Value Permanent Final 75 Freeze
+on:
+  push:
+    branches: [face-value/lab]
+    paths: [.github/workflows/face-value-permanent-final75-freeze.yml]
+permissions:
+  contents: read
+jobs:
+  freeze:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Freeze final 75
+        run: |
+          cat > face-value-final75.txt <<'EOF'
+          FACE VALUE v1.2 — FINAL 75
+
+          MAINDECK
+          4 Llanowar Elves
+          4 Nest Invader
+          4 Eldrazi Repurposer
+          1 Eyeless Watcher
+          4 Wretched Gryff
+          2 It of the Horrid Swarm
+          2 Annoyed Altisaur
+          1 Drownyard Lurker
+          1 Nyxborn Hydra
+          3 Generous Ent
+          4 Malevolent Rumble
+          4 Preordain
+          2 Snap
+          1 Lose Focus
+          1 Tamiyo's Safekeeping
+          2 Growth Spasm
+          9 Forest
+          8 Island
+          3 Tangled Islet
+
+          SIDEBOARD
+          3 Deglamer
+          2 Dispel
+          2 Hydroblast
+          2 Weather the Storm
+          2 Faerie Macabre
+          2 Echoing Truth
+          1 Relic of Progenitus
+          1 Annul
+          EOF
+          python3 - <<'PY'
+          from pathlib import Path
+          import hashlib
+          t=Path('face-value-final75.txt').read_text()
+          main=t.split('MAINDECK\n',1)[1].split('\n\nSIDEBOARD',1)[0].strip().splitlines()
+          side=t.split('SIDEBOARD\n',1)[1].strip().splitlines()
+          cm=sum(int(x.split()[0]) for x in main)
+          cs=sum(int(x.split()[0]) for x in side)
+          assert cm==60,(cm,main)
+          assert cs==15,(cs,side)
+          h=hashlib.sha256(t.encode()).hexdigest()
+          Path('face-value-final75.sha256').write_text(h+'  face-value-final75.txt\n')
+          print('main',cm,'side',cs,'sha256',h)
+          PY
+      - name: Freeze evidence classification
+        run: |
+          cat > face-value-final-evidence.txt <<'EOF'
+          FINAL EVIDENCE CLASSIFICATION
+          Maindeck v1.2: frozen unchanged through final sideboard program.
+          Deglamer: strongest sideboard evidence; two clean independent Affinity paired blocks, mixed individual effects, positive descriptive aggregate.
+          Dispel: coverage slot; Forge Terror validation unresolved due pathological runtime.
+          Hydroblast: coverage slot; Forge usage inconsistent, no further simulation inference.
+          Weather the Storm: coverage slot for burn/storm; avoid automatic boarding into naturally favorable Red.
+          Faerie Macabre: zero-mana graveyard coverage.
+          Echoing Truth: flexible blue permanent/token/tempo coverage selected in redundancy audit.
+          Relic of Progenitus: singleton broad graveyard coverage; clean Terror test did not show improvement.
+          Annul: singleton artifact/enchantment stack coverage complementing Deglamer.
+
+          FINAL BOARDING PRINCIPLE
+          Preserve engine density. Default to compact 1-4 card boarding.
+          Protected default core: 4 Wretched Gryff, 4 Llanowar Elves, 4 Nest Invader, 4 Eldrazi Repurposer, 3 Generous Ent.
+          EOF
+      - uses: actions/upload-artifact@v4
+        with:
+          name: face-value-permanent-final75
+          path: |
+            face-value-final75.txt
+            face-value-final75.sha256
+            face-value-final-evidence.txt
