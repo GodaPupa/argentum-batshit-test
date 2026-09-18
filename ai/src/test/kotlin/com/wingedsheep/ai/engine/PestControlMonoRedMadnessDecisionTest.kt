@@ -1061,7 +1061,9 @@ class PestControlMonoRedMadnessDecisionTest : ScenarioTestBase() {
                     val cast = legal.action as? CastSpell
                     cast != null && cardName(game, cast.cardId) == "Grab the Prize"
                 }
-            laterGrab.single().affordable.shouldBeFalse()
+            withClue("the two sacrificed Mountains cannot be reused to pay for a later Grab") {
+                laterGrab.none { it.affordable }.shouldBeTrue()
+            }
         }
 
         test("Blood Researcher menace is valued against a single blocker") {
