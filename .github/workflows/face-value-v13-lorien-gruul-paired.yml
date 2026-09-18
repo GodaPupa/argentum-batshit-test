@@ -1,0 +1,174 @@
+name: Face Value v1.3 Lorien Gruul Paired
+
+on:
+  push:
+    branches: [face-value/lab]
+    paths: [.github/workflows/face-value-v13-lorien-gruul-paired.yml]
+
+permissions:
+  contents: read
+
+jobs:
+  gruul-gauntlet:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Setup Java 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - name: Clone Forge and apply validated Face Value heuristics
+        run: |
+          set -euxo pipefail
+          git clone --depth 1 https://github.com/Card-Forge/forge.git forge-src
+          git -C forge-src rev-parse HEAD | tee forge-source-commit.txt
+          python3 - <<'PY'
+          from pathlib import Path
+          energy=Path('forge-src/forge-gui/res/cardsfolder/e/energy_tap.txt'); t=energy.read_text()
+          old="A:SP$ Tap | TgtPrompt$ Select target untapped creature you control | ValidTgts$ Creature.untapped+YouCtrl | SubAbility$ DBMana | SpellDescription$ Tap target untapped creature you control. If you do, add an amount of {C} equal to that creature's mana value."
+          new="A:SP$ Tap | TgtPrompt$ Select target untapped creature you control | ValidTgts$ Creature.untapped+YouCtrl | AILogic$ EnergyTap | SubAbility$ DBMana | SpellDescription$ Tap target untapped creature you control. If you do, add an amount of {C} equal to that creature's mana value."
+          assert old in t; energy.write_text(t.replace(old,new).replace('\nAI:RemoveDeck:All',''))
+          tap=Path('forge-src/forge-ai/src/main/java/forge/ai/ability/TapAi.java'); s=tap.read_text(); needle='        final Player turn = phase.getPlayerTurn();\n\n'; assert needle in s
+          lines=['        final Player turn = phase.getPlayerTurn();','', '        if ("EnergyTap".equals(sa.getParamOrDefault("AILogic", ""))) {','            if (!phase.is(PhaseType.MAIN2, ai)) return new AiAbilityDecision(0, AiPlayDecision.WaitForMain2);','            boolean hasFollowup = ai.getCardsIn(ZoneType.Hand).stream().anyMatch(c ->','                    "Wretched Gryff".equals(c.getName()) || "Drownyard Lurker".equals(c.getName()) || "It of the Horrid Swarm".equals(c.getName()));','            if (!hasFollowup) return new AiAbilityDecision(0, AiPlayDecision.CantPlayAi);','            CardCollection candidates = CardLists.getTargetableCards(ai.getCreaturesInPlay(), sa);','            candidates = CardLists.filter(candidates, CardPredicates.CAN_TAP);','            Card choice = ComputerUtilCard.getMostExpensivePermanentAI(candidates);','            if (choice == null || choice.getCMC() < 7) return new AiAbilityDecision(0, AiPlayDecision.CantPlayAi);','            sa.resetTargets(); sa.getTargets().add(choice);','            return new AiAbilityDecision(100, AiPlayDecision.WillPlay);','        }','']
+          tap.write_text(s.replace(needle,'\n'.join(lines),1))
+          rush=Path('forge-src/forge-gui/res/cardsfolder/r/rush_of_knowledge.txt'); r=rush.read_text(); rold='A:SP$ Draw | Defined$ You | NumCards$ X | SpellDescription$ Draw cards equal to the highest mana value among permanents you control.'; rnew='A:SP$ Draw | Defined$ You | NumCards$ X | AILogic$ FaceValueRush | SpellDescription$ Draw cards equal to the highest mana value among permanents you control.'; assert rold in r; rush.write_text(r.replace(rold,rnew))
+          draw=Path('forge-src/forge-ai/src/main/java/forge/ai/ability/DrawAi.java'); d=draw.read_text(); dn='        boolean aboutToBeMyTurn = ph.getNextTurn().equals(ai) && ph.is(PhaseType.END_OF_TURN);\n\n'; assert dn in d
+          dl=['        boolean aboutToBeMyTurn = ph.getNextTurn().equals(ai) && ph.is(PhaseType.END_OF_TURN);','','        if ("FaceValueRush".equals(sa.getParamOrDefault("AILogic", ""))) {','            int highest = ai.getCardsIn(ZoneType.Battlefield).stream().mapToInt(Card::getCMC).max().orElse(0);','            if (highest < 7) return new AiAbilityDecision(0, AiPlayDecision.CantPlayAi);','        }','']
+          draw.write_text(d.replace(dn,'\n'.join(dl),1))
+          PY
+          git -C forge-src diff > forge-face-value-ai.patch
+      - name: Build patched Forge
+        run: |
+          set -euxo pipefail
+          cd forge-src
+          mvn -B -DskipTests -pl forge-gui-desktop -am package
+          chmod +x forge-gui-desktop/target/forge.sh
+          rm -rf forge-gui-desktop/target/res
+          cp -R forge-gui/res forge-gui-desktop/target/res
+          echo "FORGE_LAUNCHER=$(pwd)/forge-gui-desktop/target/forge.sh" >> "$GITHUB_ENV"
+      - name: Write frozen gauntlet decks
+        run: |
+          mkdir -p decks "$HOME/.forge/decks/constructed"
+          cat > 'decks/FV v1.2 Control.dck' <<'EOF'
+          [metadata]
+          Name=FV v1.2 Control
+          Deck Type=constructed
+          [main]
+          4 Llanowar Elves
+          4 Nest Invader
+          4 Eldrazi Repurposer
+          1 Eyeless Watcher
+          4 Wretched Gryff
+          2 It of the Horrid Swarm
+          2 Annoyed Altisaur
+          1 Drownyard Lurker
+          1 Nyxborn Hydra
+          3 Generous Ent
+          4 Malevolent Rumble
+          4 Preordain
+          2 Snap
+          1 Lose Focus
+          1 Tamiyo's Safekeeping
+          2 Growth Spasm
+          9 Forest
+          8 Island
+          3 Tangled Islet
+          EOF
+          cat > 'decks/FV v1.3 LB.dck' <<'EOF'
+          [metadata]
+          Name=FV v1.3 LB
+          Deck Type=constructed
+          [main]
+          4 Llanowar Elves
+          4 Nest Invader
+          4 Eldrazi Repurposer
+          1 Eyeless Watcher
+          4 Wretched Gryff
+          2 It of the Horrid Swarm
+          2 Annoyed Altisaur
+          1 Drownyard Lurker
+          1 Nyxborn Hydra
+          2 Generous Ent
+          2 Lórien Revealed
+          4 Malevolent Rumble
+          4 Preordain
+          2 Snap
+          1 Lose Focus
+          1 Tamiyo's Safekeeping
+          1 Growth Spasm
+          9 Forest
+          8 Island
+          3 Tangled Islet
+          EOF
+          cat > 'decks/Ixidor29 Gruul Ramp 2026-09-16.dck' <<'EOF'
+          [metadata]
+          Name=Ixidor29 Gruul Ramp 2026-09-16
+          Deck Type=constructed
+          [main]
+          3 Eldrazi Repurposer
+          4 Writhing Chrysalis
+          3 Avenging Hunter
+          2 Generous Ent
+          3 Annoyed Altisaur
+          4 Boarding Party
+          4 Arbor Elf
+          2 Malevolent Rumble
+          4 Thermokarst
+          4 Mwonvuli Acid-Moss
+          2 Structural Distortion
+          1 Bonder's Ornament
+          1 Colossal Dreadmask
+          4 Utopia Sprawl
+          2 Wild Growth
+          14 Forest
+          2 Mountain
+          1 Wooded Ridgeline
+          EOF
+          cp decks/*.dck "$HOME/.forge/decks/constructed/"
+          seq 1240001 1240020 > gruul-seeds.txt
+          sha256sum gruul-seeds.txt decks/*.dck | tee gruul-inputs.sha256
+      - name: Run fixed Gruul gauntlet
+        run: |
+          set -euo pipefail
+          mkdir -p gruul-logs/control gruul-logs/lorien
+          while read -r seed; do
+            "$FORGE_LAUNCHER" sim -d 'FV v1.2 Control.dck' 'Ixidor29 Gruul Ramp 2026-09-16.dck' -n 1 -s "$seed" -c 120 > "gruul-logs/control/$seed.log" 2>&1
+            "$FORGE_LAUNCHER" sim -d 'FV v1.3 LB.dck' 'Ixidor29 Gruul Ramp 2026-09-16.dck' -n 1 -s "$seed" -c 120 > "gruul-logs/lorien/$seed.log" 2>&1
+          done < gruul-seeds.txt
+      - name: Audit Gruul gauntlet
+        if: always()
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re,json
+          out={}
+          for cfg,name in {'control':'FV v1.2 Control','lorien':'FV v1.3 LB'}.items():
+            rec=[]
+            for p in sorted((Path('gruul-logs')/cfg).glob('*.log')):
+              t=p.read_text(errors='replace')
+              if f'Ai(1)-{name} has won!' in t: w='face'
+              elif 'Ai(2)-Ixidor29 Gruul Ramp 2026-09-16 has won!' in t: w='gruul'
+              elif 'ended in a Draw' in t: w='draw'
+              else: w='unknown'
+              rec.append({'seed':int(p.stem),'winner':w,'gryff_casts':len(re.findall(r'cast Wretched Gryff',t)),'lorien_casts':len(re.findall(r'Ai\\(1\\)-'+re.escape(name)+r' cast L(?:o|ó)rien Revealed',t)),'lorien_cycles':len(re.findall(r'Ai\\(1\\)-'+re.escape(name)+r' activated L(?:o|ó)rien Revealed',t)),'bad':bool(re.search(r'StackOverflowError|TimeoutException|Stopping slow match as draw',t))})
+            out[cfg]={'games':len(rec),'wins':sum(x['winner']=='face' for x in rec),'losses':sum(x['winner']=='gruul' for x in rec),'draws':sum(x['winner']=='draw' for x in rec),'unknown':sum(x['winner']=='unknown' for x in rec),'gryff_casts':sum(x['gryff_casts'] for x in rec),'lorien_casts':sum(x['lorien_casts'] for x in rec),'lorien_cycles':sum(x['lorien_cycles'] for x in rec),'bad':sum(x['bad'] for x in rec),'records':rec}
+          aa={x['seed']:x['winner'] for x in out['control']['records']}; bb={x['seed']:x['winner'] for x in out['lorien']['records']}
+          out['paired_flips']={'control_win_to_lorien_loss':sum(aa[s]=='face' and bb[s]=='gruul' for s in aa),'control_loss_to_lorien_win':sum(aa[s]=='gruul' and bb[s]=='face' for s in aa),'same':sum(aa[s]==bb[s] for s in aa)}
+          Path('gruul-gauntlet-summary.json').write_text(json.dumps(out,indent=2,sort_keys=True)); print(json.dumps({k:({kk:vv for kk,vv in v.items() if kk!='records'} if isinstance(v,dict) else v) for k,v in out.items()},indent=2))
+          for k in ('control','lorien'): assert out[k]['games']==20 and out[k]['unknown']==0 and out[k]['bad']==0,(k,out[k])
+          PY
+      - name: Preserve Gruul artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: face-value-v13-lorien-gruul-paired
+          path: |
+            gruul-gauntlet-summary.json
+            gruul-seeds.txt
+            gruul-inputs.sha256
+            gruul-logs/**/*.log
+            forge-face-value-ai.patch
+            forge-source-commit.txt
+            decks/*.dck
+          if-no-files-found: warn
