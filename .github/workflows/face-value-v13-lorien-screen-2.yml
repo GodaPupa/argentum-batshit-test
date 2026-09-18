@@ -1,0 +1,116 @@
+name: Face Value v1.3 Lorien Screen 2
+on:
+  push:
+    branches: [face-value/lab]
+    paths: [.github/workflows/face-value-v13-lorien-screen-2.yml]
+permissions:
+  contents: read
+jobs:
+  screen:
+    runs-on: ubuntu-latest
+    timeout-minutes: 55
+    steps:
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: '21'}
+      - name: Build Forge
+        run: |
+          set -euxo pipefail
+          git clone --depth 1 https://github.com/Card-Forge/forge.git forge-src
+          git -C forge-src rev-parse HEAD | tee forge-source-commit.txt
+          cd forge-src
+          mvn -B -DskipTests -pl forge-gui-desktop -am package
+          chmod +x forge-gui-desktop/target/forge.sh
+          rm -rf forge-gui-desktop/target/res
+          cp -R forge-gui/res forge-gui-desktop/target/res
+          echo "FORGE_LAUNCHER=$(pwd)/forge-gui-desktop/target/forge.sh" >> "$GITHUB_ENV"
+      - name: Freeze decks
+        run: |
+          mkdir -p decks "$HOME/.forge/decks/constructed"
+          cat > /tmp/base <<'EOF'
+          4 Llanowar Elves
+          4 Nest Invader
+          4 Eldrazi Repurposer
+          1 Eyeless Watcher
+          4 Wretched Gryff
+          2 It of the Horrid Swarm
+          2 Annoyed Altisaur
+          1 Drownyard Lurker
+          1 Nyxborn Hydra
+          3 Generous Ent
+          4 Malevolent Rumble
+          4 Preordain
+          2 Snap
+          1 Lose Focus
+          1 Tamiyo's Safekeeping
+          2 Growth Spasm
+          9 Forest
+          8 Island
+          3 Tangled Islet
+          EOF
+          { printf '[metadata]\nName=Face Value v1.2 Control\nDeck Type=constructed\n[main]\n'; cat /tmp/base; } > 'decks/Face Value v1.2 Control.dck'
+          sed -e '/1 Eyeless Watcher/d' -e 's/2 Growth Spasm/1 Growth Spasm/' /tmp/base > /tmp/lorien
+          { printf '[metadata]\nName=Face Value v1.3 Lorien 2\nDeck Type=constructed\n[main]\n'; cat /tmp/lorien; printf '2 Lorien Revealed\n'; } > 'decks/Face Value v1.3 Lorien 2.dck'
+          cat > 'decks/Mono Red Madness.dck' <<'EOF'
+          [metadata]
+          Name=Mono Red Madness
+          Deck Type=constructed
+          [main]
+          4 Voldaren Epicure
+          4 Kitchen Imp
+          4 Sneaky Snacker
+          4 Fiery Temper
+          4 Lightning Bolt
+          4 Chain Lightning
+          4 Faithless Looting
+          4 Demand Answers
+          4 Grab the Prize
+          4 Highway Robbery
+          4 Fireblast
+          16 Mountain
+          EOF
+          cp decks/*.dck "$HOME/.forge/decks/constructed/"
+          seq 1180001 1180020 > seeds.txt
+          sha256sum seeds.txt decks/*.dck | tee inputs.sha256
+      - name: Run paired screen
+        run: |
+          set -euo pipefail
+          mkdir -p logs/control logs/lorien
+          while read seed; do
+            "$FORGE_LAUNCHER" sim -d 'Face Value v1.2 Control.dck' 'Mono Red Madness.dck' -n 1 -s "$seed" -c 300 > "logs/control/$seed.log" 2>&1
+            "$FORGE_LAUNCHER" sim -d 'Face Value v1.3 Lorien 2.dck' 'Mono Red Madness.dck' -n 1 -s "$seed" -c 300 > "logs/lorien/$seed.log" 2>&1
+          done < seeds.txt
+      - name: Audit and Lorien telemetry
+        if: always()
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re,json
+          names={'control':'Face Value v1.2 Control','lorien':'Face Value v1.3 Lorien 2'}
+          out={}
+          for cfg,name in names.items():
+            rr=[]
+            for p in sorted((Path('logs')/cfg).glob('*.log')):
+              t=p.read_text(errors='replace')
+              if re.search(r'Ai\(1\)-'+re.escape(name)+r' has won!',t): w='face'
+              elif re.search(r'Ai\(2\)-Mono Red Madness has won!',t): w='red'
+              elif 'ended in a Draw' in t: w='draw'
+              else: w='unknown'
+              # Keep raw Lorien-related lines so telemetry claims can be audited against Forge wording.
+              lorien_lines=[x for x in t.splitlines() if 'Lorien Revealed' in x]
+              rr.append({'seed':int(p.stem),'winner':w,'timeout':bool(re.search(r'java\.util\.concurrent\.TimeoutException|Stopping slow match as draw',t)),'stack':bool(re.search(r'java\.lang\.StackOverflowError',t)),'lorien_casts':len(re.findall(r'cast Lorien Revealed',t)),'lorien_mentions':len(lorien_lines),'lorien_lines':lorien_lines,'gryff_emerge':len(re.findall(r'Wretched Gryff - Creature 3 / 4 \(Emerge\)',t))})
+            out[cfg]={'games':len(rr),'wins':sum(x['winner']=='face' for x in rr),'losses':sum(x['winner']=='red' for x in rr),'draws':sum(x['winner']=='draw' for x in rr),'unknown':sum(x['winner']=='unknown' for x in rr),'timeouts':sum(x['timeout'] for x in rr),'stack_overflows':sum(x['stack'] for x in rr),'lorien_casts':sum(x['lorien_casts'] for x in rr),'lorien_mentions':sum(x['lorien_mentions'] for x in rr),'gryff_emerge':sum(x['gryff_emerge'] for x in rr),'records':rr}
+          Path('summary.json').write_text(json.dumps(out,indent=2,sort_keys=True))
+          print(json.dumps({k:{kk:vv for kk,vv in v.items() if kk!='records'} for k,v in out.items()},indent=2))
+          for k,v in out.items(): assert v['games']==20 and v['unknown']==0 and v['timeouts']==0 and v['stack_overflows']==0,(k,v)
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: face-value-v13-lorien-screen-2
+          path: |
+            summary.json
+            seeds.txt
+            inputs.sha256
+            logs/**/*.log
+            decks/*.dck
+            forge-source-commit.txt
