@@ -1,0 +1,44 @@
+name: Face Value Final 75 Boarding Integrity
+on:
+  push:
+    branches: [face-value/lab]
+    paths: [.github/workflows/face-value-final75-boarding-integrity.yml]
+permissions:
+  contents: read
+jobs:
+  integrity:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Validate boarding plans
+        run: |
+          python3 - <<'PY'
+          import json,hashlib
+          core={'Wretched Gryff':4,'Llanowar Elves':4,'Nest Invader':4,'Eldrazi Repurposer':4,'Generous Ent':3}
+          plans={
+            'Affinity': {'in':['Deglamer']*3,'out':['Eyeless Watcher','Nyxborn Hydra','Preordain']},
+            'Terror': {'in':['Dispel']*2,'out':['Eyeless Watcher','Preordain']},
+            'Gruul': {'in':['Hydroblast']*2,'out':['Eyeless Watcher','Preordain']},
+            'Graveyard_combo': {'in':['Faerie Macabre']*2+['Relic of Progenitus']*2,'out':['Eyeless Watcher','Nyxborn Hydra','Preordain','Growth Spasm']},
+            'Burn_or_Storm': {'in':['Weather the Storm']*2,'out':['Eyeless Watcher','Preordain']},
+            'Artifact_enchantment_stack': {'in':['Annul']*2,'out':['Eyeless Watcher','Preordain']},
+          }
+          protected=set(core)
+          report={}
+          for m,p in plans.items():
+            assert len(p['in'])==len(p['out']),m
+            assert not protected.intersection(p['out']),(m,protected.intersection(p['out']))
+            assert len(p['in'])<=4,m
+            report[m]={'cards_in':p['in'],'cards_out':p['out'],'engine_core_preserved':True,'boarding_count':len(p['in'])}
+          # Never combine packages by default; >4 cards requires matchup-specific evidence.
+          report['principle']='Default boarding ceiling 4; preserve all protected engine-core cards.'
+          raw=json.dumps(report,indent=2,sort_keys=True)
+          open('boarding-integrity.json','w').write(raw)
+          open('boarding-integrity.sha256','w').write(hashlib.sha256(raw.encode()).hexdigest()+'  boarding-integrity.json\n')
+          print(raw)
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: face-value-final75-boarding-integrity
+          path: |
+            boarding-integrity.json
+            boarding-integrity.sha256
