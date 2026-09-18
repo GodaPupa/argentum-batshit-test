@@ -30,8 +30,8 @@ jobs:
             rec=[]
             for p in sorted((root/'affinity-logs'/cfg).glob('*.log')):
               t=p.read_text(errors='replace')
-              face=bool(re.search(r'Ai\\(1\\)-'+re.escape(name)+r'.* has won!',t))
-              aff=bool(re.search(r'Ai\\(2\\)-VitorCarvalho01 Grixis Affinity 2026-09-14.* has won!',t))
+              face=('Game Result:' in t and (f'Ai(1)-{name} has won!' in t))
+              aff=('Game Result:' in t and 'Ai(2)-VitorCarvalho01 Grixis Affinity 2026-09-14 has won!' in t)
               draw='ended in a Draw' in t
               w='face' if face else 'affinity' if aff else 'draw' if draw else 'unknown'
               rec.append({'seed':int(p.stem),'winner':w,
