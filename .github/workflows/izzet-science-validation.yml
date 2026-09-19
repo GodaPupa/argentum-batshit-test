@@ -1,5 +1,8 @@
 name: Izzet Science Validation
 
+permissions:
+  contents: write
+
 on:
   push:
     branches:
@@ -31,9 +34,9 @@ jobs:
           mkdir -p izzet-science/results/latest
           cp izzet-science/artifacts/turn-sequence-v1.txt izzet-science/results/latest/turn-sequence-v1.txt
           {
-            echo "source_sha=\${GITHUB_SHA}"
-            echo "run_id=\${GITHUB_RUN_ID}"
-            echo "run_attempt=\${GITHUB_RUN_ATTEMPT}"
+            echo "source_sha=${GITHUB_SHA}"
+            echo "run_id=${GITHUB_RUN_ID}"
+            echo "run_attempt=${GITHUB_RUN_ATTEMPT}"
             echo "seed=0x1A22E7001"
             echo "samples=100000"
             sha256sum izzet-science/artifacts/turn-sequence-v1.txt
