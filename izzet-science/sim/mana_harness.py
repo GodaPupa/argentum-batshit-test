@@ -738,13 +738,30 @@ def integration_regressions():
     assert s.lands()[0]["tapped"]
     return True
 
+
+
+def mutable_library_regressions():
+    # Brainstorm put-backs remain on the same future library.
+    d=DevState(["Island"])
+    ss=SpellState(["Mountain","Negate"],["Island","Lava Spike","Desperate Ritual","Opt"])
+    _,put=resolve_brainstorm(ss,d)
+    assert ss.library[:2]==put
+    first=ss.draw(1)[0]
+    assert first==put[0]
+    # Ponder ordering mutates the future draw library.
+    pp=SpellState([],["Negate","Mountain","Lava Spike","Island"])
+    drawn,_=resolve_ponder(pp,d)
+    assert drawn==["Negate"]
+    assert pp.library[0] in {"Lava Spike","Mountain"}
+    return True
+
 def simulate_one(cards, rng, through=6):
-    deck=list(cards); rng.shuffle(deck)
-    hand=deck[:7]; pos=7
+    library=list(cards); rng.shuffle(library)
+    hand=library[:7]; library=library[7:]
     s=DevState(hand)
     rows=[]
     for turn in range(1,through+1):
-        draw=deck[pos] if pos<len(deck) else None; pos+=1
+        draw=library.pop(0) if library else None
         s.begin_turn(draw)
         # Start-of-main telemetry: after untap/draw, before land play or spending.
         untap_step(s)
@@ -912,6 +929,7 @@ def main():
     scheduler_regressions()
     integration_regressions()
     colored_payment_regressions()
+    mutable_library_regressions()
     b,r=opening_baseline(cards,args.samples,args.seed)
     print("seed",hex(args.seed),"samples",args.samples)
     print("land_buckets_0_1_2_3_4plus",b)
