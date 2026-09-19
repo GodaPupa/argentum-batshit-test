@@ -290,6 +290,57 @@ def rock_regressions():
     d.begin_turn(); untap_step(d); assert nonland_mana_profile(d)["U"]==1
     return True
 
+
+
+LAND_PRIORITY=["Island","Command Tower","Mountain","Ash Barrens","Evolving Wilds",
+"Terramorphic Expanse","Volatile Fjord","Swiftwater Cliffs","Silverbluff Bridge",
+"Lonely Sandbar","Forgotten Cave","Izzet Boilerworks"]
+ROCK_PRIORITY=["Mind Stone","Izzet Signet","Sky Diamond","Fire Diamond","Star Compass",
+"Fellwar Stone","Ornithopter of Paradise","Silver Myr","Iron Myr","Network Terminal",
+"Everflowing Chalice","Ur-Golem's Eye","Sisay's Ring"]
+
+def choose_land(state):
+    candidates=[c for c in LAND_PRIORITY if c in state.hand]
+    if not candidates: return None
+    # secure U, then R; prefer untapped sources, delay Boilerworks.
+    controlled=set()
+    for p in state.lands(): controlled |= land_colors(p["card"])
+    if "U" not in controlled:
+        for c in candidates:
+            if "U" in land_colors(c) and not land_enters_tapped(c): return c
+    if "R" not in controlled:
+        for c in candidates:
+            if "R" in land_colors(c) and not land_enters_tapped(c): return c
+    return candidates[0]
+
+def choose_mana_permanent(state):
+    for c in ROCK_PRIORITY:
+        if c in state.hand:
+            if c=="Everflowing Chalice":
+                if generic_land_capacity(state)>=2: return c
+            elif can_pay_simple(state,generic=MANA_COST[c]): return c
+    return None
+
+def development_turn(state):
+    untap_step(state)
+    # Information-limited: uses only current hand/battlefield.
+    land=choose_land(state)
+    if land: state.play_land(land)
+    # crack fetches immediately for deterministic color development.
+    for fetch in ("Evolving Wilds","Terramorphic Expanse"):
+        if any(p["card"]==fetch for p in state.battlefield): fetch_basic(state,fetch)
+    rock=choose_mana_permanent(state)
+    if rock: cast_mana_permanent(state,rock)
+    return {"land":land,"mana_permanent":rock,"reversal":reversal_threshold(state)}
+
+def policy_regressions():
+    s=DevState(["Mountain","Island"]); s.begin_turn(); assert choose_land(s)=="Island"
+    s.play_land("Island"); s.begin_turn(); untap_step(s); assert choose_land(s)=="Mountain"
+    r=DevState(["Island","Island","Mind Stone"]); r.begin_turn(); development_turn(r)
+    r.begin_turn(); r.hand.append("Island"); out=development_turn(r)
+    assert out["mana_permanent"]=="Mind Stone"
+    return True
+
 def main():
     ap=argparse.ArgumentParser()
     ap.add_argument("--deck",default="izzet-science/v0.1-control.md")
@@ -302,6 +353,7 @@ def main():
     payment_regressions()
     fetch_regressions()
     rock_regressions()
+    policy_regressions()
     _,cards=parse_deck(Path(args.deck))
     b,r=opening_baseline(cards,args.samples,args.seed)
     print("seed",hex(args.seed),"samples",args.samples)
