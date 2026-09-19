@@ -29,17 +29,14 @@ class PestControlV2QualifyingSmokeTest : FunSpec({
             MtgSetCatalog.all.forEach { set -> register(set.cards); register(set.basicLands) }
         }
         PestControlPreboardDecks.verifyFrozenIdentities()
-        val provenance = MatchupProvenance(
+        val session = PestControlPreboardSession.qualifyingSmoke(
+            registry = registry,
             sourceCommit = System.getenv("PEST_V2_SMOKE_COMMIT") ?: error("PEST_V2_SMOKE_COMMIT required"),
             pestSeat = PestSeat.SEAT_ZERO,
             startingDeck = StartingDeck.PEST_CONTROL,
-            environment = MatchupEnvironmentIdentity.current(),
-            entropyClassification = "NONEXPERIMENTAL_V2_QUALIFYING_SMOKE_EXCLUDED_FROM_OFFICIAL_REGISTRY",
-            blockId = "PEST_CONTROL_V2_QUALIFYING_SMOKE",
-            seedDecimal = V2_SMOKE_SEED,
-            seedHex = "0x" + V2_SMOKE_SEED.toULong().toString(16).uppercase(),
+            recordId = "PEST_CONTROL_V2_QUALIFYING_SMOKE",
+            seed = V2_SMOKE_SEED,
         )
-        val session = PestControlPreboardSession.experimental(registry, provenance, "PEST_V2_QUALIFYING_SMOKE", V2_SMOKE_SEED)
         val players = session.environment.playerIds
         val mulligans = players.associateWith { player ->
             EngineAiPlayerController(registry, player, gameStateProvider = { session.environment.state })
