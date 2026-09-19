@@ -486,6 +486,63 @@ def selection_regressions():
     assert keep==["Negate"]
     return True
 
+
+
+class SpellState:
+    def __init__(self, hand, library):
+        self.hand=list(hand); self.library=list(library); self.graveyard=[]
+        self.cards_seen=0; self.cards_drawn=0
+    def draw(self,n=1):
+        got=self.library[:n]; self.library=self.library[n:]; self.hand+=got
+        self.cards_drawn+=len(got); return got
+    def look(self,n):
+        seen=self.library[:n]; self.cards_seen+=len(seen); return seen
+    def remove_top(self,n): self.library=self.library[n:]
+
+def resolve_curate(ss, dev):
+    seen=ss.look(2); ss.remove_top(len(seen))
+    keep,rest=choose_from_seen(seen,dev,1)
+    ss.hand+=keep; ss.cards_drawn+=len(keep); ss.graveyard+=rest
+    return keep,rest
+
+def resolve_consider(ss,dev):
+    seen=ss.look(1); ss.remove_top(len(seen))
+    if not seen: return [],[]
+    keep,rest=choose_from_seen(seen,dev,1)
+    # deterministic policy: keep any card scoring >=40, otherwise mill then draw.
+    if selection_priority(seen[0],dev)>=40:
+        ss.library=seen+ss.library
+        return ss.draw(1),[]
+    ss.graveyard+=seen
+    return ss.draw(1),seen
+
+def resolve_opt(ss,dev):
+    seen=ss.look(1); ss.remove_top(len(seen))
+    if seen and selection_priority(seen[0],dev)>=40:
+        ss.library=seen+ss.library
+    # otherwise bottom the looked card
+    elif seen: ss.library+=seen
+    return ss.draw(1)
+
+def resolve_impulse(ss,dev):
+    seen=ss.look(4); ss.remove_top(len(seen))
+    keep,rest=choose_from_seen(seen,dev,1)
+    ss.hand+=keep; ss.cards_drawn+=len(keep); ss.library+=rest
+    return keep
+
+def selection_resolution_regressions():
+    d=DevState(["Lava Spike"])
+    s=SpellState([],["Desperate Ritual","Mountain","Island"])
+    keep,mill=resolve_curate(s,d)
+    assert keep==["Desperate Ritual"] and mill==["Mountain"] and s.library[0]=="Island"
+    d2=DevState(["Island"])
+    o=SpellState([],["Negate","Mountain"])
+    assert resolve_opt(o,d2)==["Negate"]
+    i=SpellState([],["Mountain","Negate","Island","Lava Spike","Desperate Ritual"])
+    k=resolve_impulse(i,d2)
+    assert k==["Negate"] and len(i.library)==4
+    return True
+
 def simulate_one(cards, rng, through=6):
     deck=list(cards); rng.shuffle(deck)
     hand=deck[:7]; pos=7
@@ -654,6 +711,7 @@ def main():
     unified_payment_regressions()
     readiness_regressions(cards)
     selection_regressions()
+    selection_resolution_regressions()
     b,r=opening_baseline(cards,args.samples,args.seed)
     print("seed",hex(args.seed),"samples",args.samples)
     print("land_buckets_0_1_2_3_4plus",b)
