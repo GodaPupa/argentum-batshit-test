@@ -1,0 +1,30 @@
+name: Izzet Science Validation
+
+on:
+  push:
+    branches:
+      - mayhem/izzet-science
+    paths:
+      - 'izzet-science/**'
+      - '.github/workflows/izzet-science-validation.yml'
+  workflow_dispatch:
+
+jobs:
+  turn-sequence-v1:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Run frozen v0.1 deterministic harness
+        run: |
+          mkdir -p izzet-science/artifacts
+          python izzet-science/sim/mana_harness.py             --deck izzet-science/v0.1-control.md             --samples 100000             --seed 0x1A22E7001             | tee izzet-science/artifacts/turn-sequence-v1.txt
+      - name: Preserve output
+        uses: actions/upload-artifact@v4
+        with:
+          name: izzet-science-turn-sequence-v1
+          path: izzet-science/artifacts/turn-sequence-v1.txt
+          if-no-files-found: error
