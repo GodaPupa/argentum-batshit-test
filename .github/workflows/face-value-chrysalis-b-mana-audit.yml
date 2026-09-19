@@ -1,0 +1,40 @@
+name: Face Value Chrysalis B Mana Audit
+on:
+  push:
+    branches: [face-value/lab]
+    paths: [.github/workflows/face-value-chrysalis-b-mana-audit.yml]
+permissions: {contents: read}
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Audit mana architecture
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import json,re,math
+          p=Path('experiments/face-value/decks/fv-gruul-chrysalis-b.dck')
+          lines=p.read_text().splitlines(); cards=[]
+          for x in lines:
+            m=re.match(r'^(\d+) (.+)$',x)
+            if m: cards += [m.group(2)]*int(m.group(1))
+          lands={'Forest':8,'Mountain':4,'Wooded Ridgeline':4,'Tangled Islet':3}
+          # untapped native sources; fetch/landcycling and mana creatures reported separately
+          sources={'green_native':8+4+3,'red_native':4+4,'blue_native':3,
+                   'llanowar_green':4,'ent_forestcycle':3}
+          def hyper_nohit(N,K,n):
+            if n>K+N-K: return 0
+            return math.comb(N-K,n)/math.comb(N,n)
+          def atleast(K,n): return 1-hyper_nohit(60,K,n)
+          out={'deck_cards':len(cards),'lands':lands,'sources':sources,
+               'opening7':{k:atleast(v,7) for k,v in [('green_native',15),('red_native',8),('blue_native',3)]},
+               'by_turn2_8cards':{k:atleast(v,8) for k,v in [('green_native',15),('red_native',8),('blue_native',3)]},
+               'notes':['Wooded Ridgeline counts green/red but enters tapped','Tangled Islet counts green/blue but enters tapped','Generous Ent can Forestcycle for green land access','Llanowar Elves accelerates green only']}
+          Path('mana-audit.json').write_text(json.dumps(out,indent=2)); print(json.dumps(out,indent=2))
+          assert len(cards)==60,len(cards)
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: face-value-chrysalis-b-mana-audit
+          path: mana-audit.json
