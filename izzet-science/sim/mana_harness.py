@@ -401,30 +401,34 @@ def simulate_one(cards, rng, through=6):
     for turn in range(1,through+1):
         draw=deck[pos] if pos<len(deck) else None; pos+=1
         s.begin_turn(draw)
-        # readiness after untap/draw but before development spending
+        # Start-of-main telemetry: after untap/draw, before land play or spending.
         untap_step(s)
-        pre_guildmage=can_pay_simple(s,need_u=1,need_r=1)
-        # development_turn performs its own untap; state is already untapped so idempotent here
+        start_u,start_r,start_uu=color_flags(s)
+        start_guildmage=can_pay_simple(s,need_u=1,need_r=1)
+        # development_turn's untap is idempotent because nothing has been spent yet.
         out=development_turn(s)
-        u,r,uu=color_flags(s)
+        residual_u,residual_r,residual_uu=color_flags(s)
         neutral,positive,gross=reversal_threshold(s)
         islands=sum(high_tide_island(p["card"]) for p in s.lands())
-        rows.append({"turn":turn,"lands":len(s.lands()),"U":u,"R":r,"UU":uu,
-                     "guildmage_pre":pre_guildmage,
-                     "guildmage_post":can_pay_simple(s,need_u=1,need_r=1),
+        rows.append({"turn":turn,"lands":len(s.lands()),
+                     "start_U":start_u,"start_R":start_r,"start_UU":start_uu,
+                     "residual_U":residual_u,"residual_R":residual_r,"residual_UU":residual_uu,
+                     "guildmage_start":start_guildmage,
+                     "guildmage_end":can_pay_simple(s,need_u=1,need_r=1),
                      "reversal_neutral":neutral,"reversal_positive":positive,
                      "nonland_gross":gross,"islands":islands})
     return rows
 
 def simulate_sample(cards, samples=10000, seed=SEED, through=6):
     rng=random.Random(seed)
-    agg={t:{"n":0,"U":0,"R":0,"UU":0,"guildmage_pre":0,"guildmage_post":0,
+    agg={t:{"n":0,"start_U":0,"start_R":0,"start_UU":0,"residual_U":0,"residual_R":0,"residual_UU":0,
+            "guildmage_start":0,"guildmage_end":0,
             "reversal_neutral":0,"reversal_positive":0,"lands_sum":0,"islands_sum":0}
          for t in range(1,through+1)}
     for _ in range(samples):
         for row in simulate_one(cards,rng,through):
             a=agg[row["turn"]]; a["n"]+=1
-            for k in ("U","R","UU","guildmage_pre","guildmage_post","reversal_neutral","reversal_positive"):
+            for k in ("start_U","start_R","start_UU","residual_U","residual_R","residual_UU","guildmage_start","guildmage_end","reversal_neutral","reversal_positive"):
                 a[k]+=int(row[k])
             a["lands_sum"]+=row["lands"]; a["islands_sum"]+=row["islands"]
     return agg
@@ -486,7 +490,8 @@ def unified_payment_regressions():
 def readiness_regressions(cards):
     rng=random.Random(24680)
     rows=simulate_one(cards,rng,6)
-    assert all("guildmage_pre" in x and "guildmage_post" in x for x in rows)
+    assert all("guildmage_start" in x and "guildmage_end" in x for x in rows)
+    assert all("start_U" in x and "residual_U" in x for x in rows)
     return True
 
 def main():
@@ -514,8 +519,10 @@ def main():
     agg=simulate_sample(cards,args.samples,args.seed,6)
     for turn in range(1,7):
         a=agg[turn]; n=a["n"]
-        print("turn",turn,"U",a["U"]/n,"R",a["R"]/n,"UU",a["UU"]/n,
-              "guildmage_pre",a["guildmage_pre"]/n,"guildmage_post",a["guildmage_post"]/n,
+        print("turn",turn,
+              "start_U",a["start_U"]/n,"start_R",a["start_R"]/n,"start_UU",a["start_UU"]/n,
+              "residual_U",a["residual_U"]/n,"residual_R",a["residual_R"]/n,"residual_UU",a["residual_UU"]/n,
+              "guildmage_start",a["guildmage_start"]/n,"guildmage_end",a["guildmage_end"]/n,
               "reversal_neutral",a["reversal_neutral"]/n,"reversal_positive",a["reversal_positive"]/n,
               "avg_lands",a["lands_sum"]/n,"avg_islands",a["islands_sum"]/n)
 
