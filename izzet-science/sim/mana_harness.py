@@ -401,6 +401,25 @@ UU_HAND={"Counterspell","Deprive","Ideas Unbound"}
 U_HAND={"Brainstorm","Consider","Opt","Ponder","Preordain","Impulse","Dispel","Negate","Memory Lapse","Prohibit","Spell Pierce","Turn Aside","Into the Roil","Blink of an Eye","Echoing Truth","Merchant Scroll","Dizzy Spell","Muddle the Mixture","High Tide","Snap"}
 R_HAND={"Lightning Bolt","Galvanic Blast","Skred","Flame Slash","Abrade","Shattering Pulse","Lava Spike","Desperate Ritual","Faithless Looting"}
 
+
+
+def total_actionable_land_capacity(state):
+    return sum(2 if p["card"]=="Izzet Boilerworks" else 1 for p,_ in available_land_mana(state))
+
+def hold_up_metrics(state):
+    # Conservative capacity checks after land play, before optional development.
+    # Guildmage is modeled as UR (2 total); retaining U/R requires a third mana
+    # with the retained color available from remaining source structure.
+    cap=total_actionable_land_capacity(state)
+    _,r,uu=color_flags(state)
+    u,_,_=color_flags(state)
+    guild=can_pay_simple(state,need_u=1,need_r=1)
+    return {
+        "guild_plus_u": guild and cap>=3 and uu,
+        "guild_plus_r": guild and cap>=3 and r,
+        "uu_plus_r": can_pay_simple(state,need_u=2,need_r=1),
+    }
+
 def actual_hand_action_metrics(state):
     h=set(state.hand)
     # evaluated at actionable state after land play/fetch, before optional rock spending
@@ -449,6 +468,7 @@ def simulate_one(cards, rng, through=6):
         action_u,action_r,action_uu=color_flags(s)
         action_guildmage=can_pay_simple(s,need_u=1,need_r=1)
         hand_actions=actual_hand_action_metrics(s)
+        holds=hold_up_metrics(s)
         ht_castable,ht_productive,ht_post,ht_gain=high_tide_metrics(s)
         # Finish optional mana development without replaying a land.
         rock=choose_mana_permanent(s)
@@ -466,6 +486,7 @@ def simulate_one(cards, rng, through=6):
                      "u_spell_present":hand_actions["u_spell_present"],"u_spell_exec":hand_actions["u_spell_exec"],
                      "r_spell_present":hand_actions["r_spell_present"],"r_spell_exec":hand_actions["r_spell_exec"],
                      "ritual_present":hand_actions["ritual_present"],"spike_present":hand_actions["spike_present"],
+                     "guild_plus_u":holds["guild_plus_u"],"guild_plus_r":holds["guild_plus_r"],"uu_plus_r":holds["uu_plus_r"],
                      "high_tide_castable":ht_castable,"high_tide_productive":ht_productive,
                      "high_tide_post_mana":ht_post,"high_tide_gain":ht_gain,
                      "guildmage_end":can_pay_simple(s,need_u=1,need_r=1),
@@ -480,13 +501,14 @@ def simulate_sample(cards, samples=10000, seed=SEED, through=6):
             "guildmage_start":0,"guildmage_action":0,"guildmage_end":0,
             "uu_spell_present":0,"uu_spell_exec":0,"u_spell_present":0,"u_spell_exec":0,
             "r_spell_present":0,"r_spell_exec":0,"ritual_present":0,"spike_present":0,
+            "guild_plus_u":0,"guild_plus_r":0,"uu_plus_r":0,
             "high_tide_castable":0,"high_tide_productive":0,"high_tide_post_sum":0,"high_tide_gain_sum":0,
             "reversal_neutral":0,"reversal_positive":0,"lands_sum":0,"islands_sum":0}
          for t in range(1,through+1)}
     for _ in range(samples):
         for row in simulate_one(cards,rng,through):
             a=agg[row["turn"]]; a["n"]+=1
-            for k in ("start_U","start_R","start_UU","action_U","action_R","action_UU","residual_U","residual_R","residual_UU","guildmage_start","guildmage_action","guildmage_end","uu_spell_present","uu_spell_exec","u_spell_present","u_spell_exec","r_spell_present","r_spell_exec","ritual_present","spike_present","high_tide_castable","high_tide_productive","reversal_neutral","reversal_positive"):
+            for k in ("start_U","start_R","start_UU","action_U","action_R","action_UU","residual_U","residual_R","residual_UU","guildmage_start","guildmage_action","guildmage_end","uu_spell_present","uu_spell_exec","u_spell_present","u_spell_exec","r_spell_present","r_spell_exec","ritual_present","spike_present","guild_plus_u","guild_plus_r","uu_plus_r","high_tide_castable","high_tide_productive","reversal_neutral","reversal_positive"):
                 a[k]+=int(row[k])
             a["high_tide_post_sum"]+=row["high_tide_post_mana"]
             a["high_tide_gain_sum"]+=row["high_tide_gain"]
@@ -585,6 +607,7 @@ def main():
               "action_U",a["action_U"]/n,"action_R",a["action_R"]/n,"action_UU",a["action_UU"]/n,
               "residual_U",a["residual_U"]/n,"residual_R",a["residual_R"]/n,"residual_UU",a["residual_UU"]/n,
               "guildmage_start",a["guildmage_start"]/n,"guildmage_action",a["guildmage_action"]/n,"guildmage_end",a["guildmage_end"]/n,
+              "guild_plus_u",a["guild_plus_u"]/n,"guild_plus_r",a["guild_plus_r"]/n,"uu_plus_r",a["uu_plus_r"]/n,
               "uu_exec",a["uu_spell_exec"]/n,"u_exec",a["u_spell_exec"]/n,"r_exec",a["r_spell_exec"]/n,
               "high_tide_castable",a["high_tide_castable"]/n,"high_tide_productive",a["high_tide_productive"]/n,
               "avg_high_tide_gain",a["high_tide_gain_sum"]/n,
