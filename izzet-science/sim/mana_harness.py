@@ -661,6 +661,47 @@ def scheduler_regressions():
     assert choose_selection_spell(z) is None
     return True
 
+
+
+def pay_selection_cost(state,card):
+    g,nu,nr=selection_cost(card)
+    # conservative: require colors, then mutate generic payment across lands/nonlands.
+    if not can_pay_simple(state,generic=g,need_u=nu,need_r=nr): return False
+    # current mutating payer is generic; spend total only after colored feasibility check.
+    return pay_generic_unified(state,g+nu+nr)
+
+def resolve_selected_card(card,ss,dev):
+    if card=="Curate": return resolve_curate(ss,dev)
+    if card=="Consider": return resolve_consider(ss,dev)
+    if card=="Opt": return resolve_opt(ss,dev)
+    if card=="Impulse": return resolve_impulse(ss,dev)
+    if card=="Ponder": return resolve_ponder(ss,dev)
+    if card=="Preordain": return resolve_preordain(ss,dev)
+    if card=="Brainstorm": return resolve_brainstorm(ss,dev)
+    if card=="Faithless Looting": return resolve_faithless_looting(ss,dev)
+    if card=="Thrill of Possibility": return resolve_thrill(ss,dev)
+    if card=="Frantic Search": return resolve_frantic_search(ss,dev)
+    if card=="Think Twice": return resolve_think_twice(ss,dev)
+    raise ValueError(card)
+
+def cast_one_selection(state, library):
+    card=choose_selection_spell(state)
+    if card is None or not pay_selection_cost(state,card): return None,library,0,0
+    state.hand.remove(card)
+    ss=SpellState(state.hand,library)
+    before_seen,before_drawn=ss.cards_seen,ss.cards_drawn
+    resolve_selected_card(card,ss,state)
+    ss.graveyard.append(card)
+    state.hand=ss.hand
+    return card,ss.library,ss.cards_seen-before_seen,ss.cards_drawn-before_drawn
+
+def integration_regressions():
+    s=DevState(["Island","Ponder"]); s.begin_turn(); s.play_land("Island")
+    card,lib,seen,drawn=cast_one_selection(s,["Negate","Mountain","Opt"])
+    assert card=="Ponder" and drawn==1 and "Negate" in s.hand
+    assert s.lands()[0]["tapped"]
+    return True
+
 def simulate_one(cards, rng, through=6):
     deck=list(cards); rng.shuffle(deck)
     hand=deck[:7]; pos=7
@@ -833,6 +874,7 @@ def main():
     complex_selection_regressions()
     draw_discard_regressions()
     scheduler_regressions()
+    integration_regressions()
     b,r=opening_baseline(cards,args.samples,args.seed)
     print("seed",hex(args.seed),"samples",args.samples)
     print("land_buckets_0_1_2_3_4plus",b)
