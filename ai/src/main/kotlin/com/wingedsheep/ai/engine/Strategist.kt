@@ -184,6 +184,29 @@ class Strategist(
         append(survivalCommitment)
     }
 
+    internal fun survivalPressureDiagnostic(state: GameState, playerId: EntityId): String {
+        val opposingPermanents = state.turnOrder.asSequence()
+            .filter { state.isOpponentTo(it, playerId) }
+            .flatMap { state.controlledBattlefield(it).asSequence() }
+            .toList()
+        val opposingPower = opposingPermanents
+            .filter { state.getEntity(it)?.get<CardComponent>()?.isCreature == true }
+            .sumOf { (state.projectedState.getPower(it) ?: 0).coerceAtLeast(0) }
+        val visibleRepeatableDamage = opposingPermanents.sumOf { permanentId ->
+            val permanent = state.getEntity(permanentId) ?: return@sumOf 0
+            val name = permanent.get<CardComponent>()?.name ?: return@sumOf 0
+            intents.forPermanent(permanent, name)
+                .filter { it.repeatable }
+                .maxOfOrNull { (it.opponentDamage ?: 0).coerceAtLeast(0) } ?: 0
+        }
+        val pending = pendingGuaranteedLifeGain(state, playerId)
+        return "life=" + state.lifeTotal(playerId) +
+            "; opposingPower=" + opposingPower +
+            "; visibleRepeatableDamage=" + visibleRepeatableDamage +
+            "; pendingGuaranteedLifeGain=" + pending +
+            "; needed=" + lifeGainNeededForSurvival(state, playerId, pending)
+    }
+
     fun chooseAction(
         state: GameState,
         legalActions: List<LegalAction>,
