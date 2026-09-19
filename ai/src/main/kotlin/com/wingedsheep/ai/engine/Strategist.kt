@@ -174,6 +174,7 @@ class Strategist(
      * let the condition expire after its cost has already been paid.
      */
     private var expiringConditionCommitment: ExpiringConditionCommitment? = null
+    private var survivalCommitment: SurvivalCommitment? = null
 
     fun chooseAction(
         state: GameState,
@@ -182,6 +183,7 @@ class Strategist(
     ): LegalAction {
         val startNanos = if (insightSink != null) System.nanoTime() else 0L
         val evaluationState = stateSampler?.invoke(state, playerId) ?: state
+        committedSurvivalFollowUp(evaluationState, legalActions, playerId)?.let { return it }
         committedExpiringConditionFollowUp(evaluationState, legalActions, playerId)?.let { return it }
         // Combat declaration steps need the CombatAdvisor to fill in attacker/blocker maps
         // even when there's only one legal action (which is the common case — the enumerator
@@ -423,6 +425,12 @@ class Strategist(
         if (takeAction) {
             val chosenIndex = leaves.indexOf(best.first)
             if (chosenIndex >= 0) {
+                rememberSurvivalFollowUp(
+                    evaluationState,
+                    leafStates[chosenIndex],
+                    best.first,
+                    playerId,
+                )
                 rememberExpiringConditionFollowUp(
                     evaluationState,
                     leafStates[chosenIndex],
@@ -1231,6 +1239,62 @@ class Strategist(
                 projected,
             )
         }.maxByOrNull(ExpiringConditionFollowUp::projectedScore)
+    }
+
+    private fun committedSurvivalFollowUp(
+        state: GameState,
+        legalActions: List<LegalAction>,
+        playerId: EntityId,
+    ): LegalAction? {
+        val commitment = survivalCommitment ?: return null
+        if (commitment.playerId != playerId || commitment.turn != state.turnNumber) {
+            survivalCommitment = null
+            return null
+        }
+        if (state.pendingDecision != null || state.stack.isNotEmpty()) return null
+        if (!lifeGainNeededForSurvival(state, playerId)) {
+            survivalCommitment = null
+            return null
+        }
+        val followUp = legalActions.firstOrNull { legal ->
+            if (!legal.affordable) return@firstOrNull false
+            val cast = legal.action as? CastSpell ?: return@firstOrNull false
+            cast.cardId == commitment.cardId && cast.faceIndex == commitment.faceIndex
+        }
+        if (followUp == null) {
+            survivalCommitment = null
+            return null
+        }
+        survivalCommitment = null
+        return followUp.copy(action = chooseCommittedTargets(state, followUp, playerId))
+    }
+
+    private fun rememberSurvivalFollowUp(
+        state: GameState,
+        leafState: GameState,
+        action: LegalAction,
+        playerId: EntityId,
+    ) {
+        if (!lifeGainNeededForSurvival(state, playerId)) return
+        val cast = action.action as? CastSpell ?: return
+        val stormFollowUp = simulator.getLegalActions(leafState, playerId).firstOrNull { next ->
+            if (!next.affordable) return@firstOrNull false
+            val nextCast = next.action as? CastSpell ?: return@firstOrNull false
+            val name = leafState.getEntity(nextCast.cardId)?.get<CardComponent>()?.name ?: return@firstOrNull false
+            intents.isPureLifeGainSpell(name, nextCast.faceIndex) &&
+                leafState.getEntity(nextCast.cardId)?.get<CardComponent>()?.baseKeywords
+                    ?.contains(com.wingedsheep.sdk.core.Keyword.STORM) == true
+        } ?: return
+        val followCast = stormFollowUp.action as CastSpell
+        // The setup must have advanced the protected event rather than merely being an unrelated
+        // action that happens to leave lifegain available.
+        if (leafState.spellsCastThisTurn <= state.spellsCastThisTurn) return
+        survivalCommitment = SurvivalCommitment(
+            playerId = playerId,
+            turn = state.turnNumber,
+            cardId = followCast.cardId,
+            faceIndex = followCast.faceIndex,
+        )
     }
 
     private fun committedExpiringConditionFollowUp(
@@ -2506,6 +2570,13 @@ class Strategist(
         val faceIndex: Int?,
         val downstreamCardId: EntityId?,
         val projectedScore: Double,
+    )
+
+    private data class SurvivalCommitment(
+        val playerId: EntityId,
+        val turn: Int,
+        val cardId: EntityId,
+        val faceIndex: Int?,
     )
 
     private data class ExpiringConditionCommitment(
