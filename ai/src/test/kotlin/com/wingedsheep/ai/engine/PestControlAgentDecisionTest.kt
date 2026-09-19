@@ -1530,5 +1530,63 @@ class PestControlAgentDecisionTest : ScenarioTestBase() {
             val action = withClue(report) { chosen.shouldBeInstanceOf<CastSpell>() }
             withClue(report) { sourceName(game, action) shouldBe "Follow the Lumarets" }
         }
+        test("V2 qualifying smoke T9 preserves a visible-burn survival continuation") {
+            val game = seeded()
+                .withTurnNumber(9)
+                .withLifeTotal(1, 12)
+                .withLandsOnBattlefield(1, "Forest", 3)
+                .withLandsOnBattlefield(1, "Swamp", 1)
+                .withLandsOnBattlefield(2, "Mountain", 4)
+                .withCardOnBattlefield(1, "Carrier Thrall")
+                .withCardOnBattlefield(2, "Kessig Flamebreather")
+                .withCardOnBattlefield(2, "Guttersnipe")
+                .withCardInHand(1, "Swamp")
+                .withCardInHand(1, "Carrier Thrall")
+                .withCardInHand(1, "Pest Mascot")
+                .withCardInHand(1, "Blood Researcher")
+                .withCardInHand(1, "Weather the Storm")
+                .build()
+            game.state = game.state.copy(phase = Phase.POSTCOMBAT_MAIN, step = Step.POSTCOMBAT_MAIN)
+            val player = ai(game)
+
+            val first = player.chooseAction(game.state).shouldBeInstanceOf<CastSpell>()
+            withClue("visible repeatable spell-damage engines make preserving the Weather continuation material") {
+                sourceName(game, first) shouldBe "Carrier Thrall"
+            }
+            game.execute(first).error shouldBe null
+            game.resolveStack()
+
+            val land = player.chooseAction(game.state).shouldBeInstanceOf<PlayLand>()
+            cardName(game, land.cardId) shouldBe "Swamp"
+            game.execute(land).error shouldBe null
+
+            val follow = player.chooseAction(game.state).shouldBeInstanceOf<CastSpell>()
+            withClue("the setup spell must commit into Weather rather than spend its reserved mana on Pest Mascot") {
+                sourceName(game, follow) shouldBe "Weather the Storm"
+            }
+        }
+
+        test("T9 survival continuation is not forced without visible burn pressure") {
+            val game = seeded()
+                .withTurnNumber(9)
+                .withLifeTotal(1, 12)
+                .withLandsOnBattlefield(1, "Forest", 3)
+                .withLandsOnBattlefield(1, "Swamp", 1)
+                .withLandsOnBattlefield(2, "Mountain", 4)
+                .withCardOnBattlefield(1, "Carrier Thrall")
+                .withCardInHand(1, "Swamp")
+                .withCardInHand(1, "Carrier Thrall")
+                .withCardInHand(1, "Pest Mascot")
+                .withCardInHand(1, "Blood Researcher")
+                .withCardInHand(1, "Weather the Storm")
+                .build()
+            game.state = game.state.copy(phase = Phase.POSTCOMBAT_MAIN, step = Step.POSTCOMBAT_MAIN)
+
+            val chosen = ai(game).chooseAction(game.state)
+            withClue("without a concrete visible threat, the regression must not make Weather categorically dominant") {
+                (chosen is CastSpell && sourceName(game, chosen) == "Weather the Storm").shouldBeFalse()
+            }
+        }
+
     }
 }
