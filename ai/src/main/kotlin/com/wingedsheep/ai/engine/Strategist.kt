@@ -1498,12 +1498,14 @@ class Strategist(
         val legalNow = simulator.getLegalActions(state, playerId)
         val immediateEvents = legalNow.filter { isImmediateEventCast(state, it) }
         if (immediateEvents.isEmpty()) return null
-        if (immediateEvents.any { focal ->
-                val name = resolveCardName(state, focal) ?: return@any false
-                val cast = focal.action as CastSpell
-                intents.isPureLifeGainSpell(name, cast.faceIndex) && lifeGainNeededForSurvival(state, playerId)
+        val survivalFocalIds = immediateEvents.mapNotNull { focal ->
+            val name = resolveCardName(state, focal) ?: return@mapNotNull null
+            val cast = focal.action as CastSpell
+            cast.cardId.takeIf {
+                intents.isPureLifeGainSpell(name, cast.faceIndex) &&
+                    lifeGainNeededForSurvival(state, playerId)
             }
-        ) return null
+        }.toSet()
 
         return legalNow.asSequence().mapNotNull { landAction ->
             val land = landAction.action as? PlayLand ?: return@mapNotNull null
@@ -1530,6 +1532,14 @@ class Strategist(
                             val focalFirstScore = focalFirstCompleteScore(
                                 state, playerId, focalId, land.cardId, setupId,
                             ) ?: return@mapNotNull null
+                            // Emergency lifegain may still be sequenced after a setup spell, but
+                            // only when canonical execution proves the lifegain remains executable
+                            // and the completed setup-first line is materially better. This keeps
+                            // the old survival guard's purpose without making it blind to safe
+                            // same-turn setup that increases the protected outcome.
+                            if (focalId in survivalFocalIds &&
+                                setupFirstScore <= focalFirstScore + MATERIAL_SEQUENCE_MARGIN
+                            ) return@mapNotNull null
                             if (setupFirstScore <= focalFirstScore + MATERIAL_SEQUENCE_MARGIN) return@mapNotNull null
                             LandUnlockedPayoffSequence(
                                 land.cardId, setupId, focalId, setupFirstScore, focalFirstScore,
