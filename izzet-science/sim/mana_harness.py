@@ -185,6 +185,42 @@ def payment_regressions():
     assert can_pay_simple(b,need_u=1) and can_pay_simple(b,need_r=1)
     return True
 
+
+
+def untap_step(state):
+    for p in state.battlefield: p["tapped"]=False
+
+def fetch_basic(state, fetch):
+    if fetch not in {"Evolving Wilds","Terramorphic Expanse"}: return False
+    perm=next((p for p in state.battlefield if p["card"]==fetch and not p["tapped"]),None)
+    if perm is None: return False
+    # deterministic color policy: secure U first, then R.
+    controlled={c for p in state.lands() for c in land_colors(p["card"])}
+    basic="Island" if "U" not in controlled else "Mountain"
+    state.battlefield.remove(perm)
+    state.battlefield.append({"card":basic,"tapped":True,"entered":state.turn})
+    return True
+
+def ash_barrens_cycle(state):
+    if "Ash Barrens" not in state.hand: return False
+    # requires one available mana; conservative land-only payment.
+    if not can_pay_simple(state,generic=1): return False
+    state.hand.remove("Ash Barrens")
+    controlled={c for p in state.lands() for c in land_colors(p["card"])}
+    basic="Island" if "U" not in controlled else "Mountain"
+    state.hand.append(basic)
+    return True
+
+def fetch_regressions():
+    s=DevState(["Evolving Wilds"]); s.begin_turn(); assert s.play_land("Evolving Wilds")
+    assert fetch_basic(s,"Evolving Wilds")
+    assert s.lands()[0]["card"]=="Island" and s.lands()[0]["tapped"]
+    a=DevState(["Island","Ash Barrens"]); a.begin_turn(); a.play_land("Island")
+    assert ash_barrens_cycle(a) and "Mountain" in a.hand and "Ash Barrens" not in a.hand
+    z=DevState(["Ash Barrens"]); z.begin_turn()
+    assert not ash_barrens_cycle(z)
+    return True
+
 def main():
     ap=argparse.ArgumentParser()
     ap.add_argument("--deck",default="izzet-science/v0.1-control.md")
@@ -195,6 +231,7 @@ def main():
     state_regressions()
     development_regressions()
     payment_regressions()
+    fetch_regressions()
     _,cards=parse_deck(Path(args.deck))
     b,r=opening_baseline(cards,args.samples,args.seed)
     print("seed",hex(args.seed),"samples",args.samples)
