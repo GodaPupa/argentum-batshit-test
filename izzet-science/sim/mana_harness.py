@@ -401,25 +401,30 @@ def simulate_one(cards, rng, through=6):
     for turn in range(1,through+1):
         draw=deck[pos] if pos<len(deck) else None; pos+=1
         s.begin_turn(draw)
+        # readiness after untap/draw but before development spending
+        untap_step(s)
+        pre_guildmage=can_pay_simple(s,need_u=1,need_r=1)
+        # development_turn performs its own untap; state is already untapped so idempotent here
         out=development_turn(s)
         u,r,uu=color_flags(s)
         neutral,positive,gross=reversal_threshold(s)
         islands=sum(high_tide_island(p["card"]) for p in s.lands())
         rows.append({"turn":turn,"lands":len(s.lands()),"U":u,"R":r,"UU":uu,
-                     "guildmage_castable":can_pay_simple(s,need_u=1,need_r=1),
+                     "guildmage_pre":pre_guildmage,
+                     "guildmage_post":can_pay_simple(s,need_u=1,need_r=1),
                      "reversal_neutral":neutral,"reversal_positive":positive,
                      "nonland_gross":gross,"islands":islands})
     return rows
 
 def simulate_sample(cards, samples=10000, seed=SEED, through=6):
     rng=random.Random(seed)
-    agg={t:{"n":0,"U":0,"R":0,"UU":0,"guildmage_castable":0,
+    agg={t:{"n":0,"U":0,"R":0,"UU":0,"guildmage_pre":0,"guildmage_post":0,
             "reversal_neutral":0,"reversal_positive":0,"lands_sum":0,"islands_sum":0}
          for t in range(1,through+1)}
     for _ in range(samples):
         for row in simulate_one(cards,rng,through):
             a=agg[row["turn"]]; a["n"]+=1
-            for k in ("U","R","UU","guildmage_castable","reversal_neutral","reversal_positive"):
+            for k in ("U","R","UU","guildmage_pre","guildmage_post","reversal_neutral","reversal_positive"):
                 a[k]+=int(row[k])
             a["lands_sum"]+=row["lands"]; a["islands_sum"]+=row["islands"]
     return agg
@@ -477,6 +482,13 @@ def unified_payment_regressions():
     assert ms["tapped"]
     return True
 
+
+def readiness_regressions(cards):
+    rng=random.Random(24680)
+    rows=simulate_one(cards,rng,6)
+    assert all("guildmage_pre" in x and "guildmage_post" in x for x in rows)
+    return True
+
 def main():
     ap=argparse.ArgumentParser()
     ap.add_argument("--deck",default="izzet-science/v0.1-control.md")
@@ -493,6 +505,7 @@ def main():
     mutating_payment_regressions()
     simulation_regressions(cards)
     unified_payment_regressions()
+    readiness_regressions(cards)
     _,cards=parse_deck(Path(args.deck))
     b,r=opening_baseline(cards,args.samples,args.seed)
     print("seed",hex(args.seed),"samples",args.samples)
