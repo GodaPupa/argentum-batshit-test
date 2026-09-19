@@ -1,0 +1,13 @@
+name: Face Value E Postboard Validation 2
+on:
+  push:
+    branches: [face-value/lab]
+    paths: [.github/workflows/face-value-e-postboard-validation-2.yml]
+permissions: {contents: read}
+jobs:
+  terror:
+    uses: ./.github/workflows/face-value-experiment-harness.yml
+    with: {experiment_name: e-post-terror-v2, control_deck: experiments/face-value/decks/fv-temur-chrysalis-e.dck, challenger_deck: experiments/face-value/decks/fv-e-post-terror-v2.dck, opponent_deck: experiments/face-value/decks/mono-blue-terror.dck, seed_start: 1480001, games: 20}
+  red:
+    uses: ./.github/workflows/face-value-experiment-harness.yml
+    with: {experiment_name: e-post-red-v1, control_deck: experiments/face-value/decks/fv-temur-chrysalis-e.dck, challenger_deck: experiments/face-value/decks/fv-e-post-red-v1.dck, opponent_deck: experiments/face-value/decks/mono-red-madness.dck, seed_start: 1490001, games: 20}
