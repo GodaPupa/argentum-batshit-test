@@ -85,7 +85,7 @@ object PestControlMatchupArtifactCodec {
             if (game.provenance.monoRedComplete75Sha256 != manifest.monoRedComplete75Sha256) errors += "manifest Mono Red complete-75 mismatch"
             if (game.provenance.matchResult != PREBOARD_MATCH_RESULT) errors += "invalid preboard match result"
             when (game.provenance.entropyClassification) {
-                "NONEXPERIMENTAL_GATE4_FIXTURE" -> if (
+                "NONEXPERIMENTAL_GATE4_FIXTURE", "NONEXPERIMENTAL_V2_QUALIFYING_SMOKE" -> if (
                     !game.fixtureIsNonexperimental || !game.excludedFromFutureSeedOverlapRegistry
                 ) {
                     errors += "fixture is not excluded from experimental seed registries"
