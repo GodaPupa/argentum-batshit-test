@@ -77,6 +77,8 @@ class AIPlayer(
     }
 
     internal fun survivalPlanDiagnostic(): String = strategist.survivalPlanDiagnostic()
+    internal fun survivalPressureDiagnostic(state: GameState): String =
+        strategist.survivalPressureDiagnostic(state, playerId)
 
     /**
      * Respond to a pending decision.
