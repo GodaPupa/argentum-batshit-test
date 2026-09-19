@@ -1150,7 +1150,10 @@ class Strategist(
                 .maxOfOrNull { (it.opponentDamage ?: 0).coerceAtLeast(0) } ?: 0
         }
         if (visibleRepeatableDamage <= 0) return false
-        return visibleRepeatableDamage * 2 >= state.lifeTotal(playerId)
+        val opposingPower = opposingPermanents
+            .filter { state.getEntity(it)?.get<CardComponent>()?.isCreature == true }
+            .sumOf { (state.projectedState.getPower(it) ?: 0).coerceAtLeast(0) }
+        return (opposingPower + visibleRepeatableDamage) * 2 >= state.lifeTotal(playerId)
     }
 
     private fun lifeGainNeededForSurvival(
