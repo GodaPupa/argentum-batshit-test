@@ -1564,11 +1564,14 @@ class PestControlAgentDecisionTest : ScenarioTestBase() {
 
             val follow = player.chooseAction(game.state).shouldBeInstanceOf<CastSpell>()
             val afterFollowChoice = player.survivalPlanDiagnostic()
-            withClue(
-                "afterCarrier=" + afterCarrierPlan + "; afterLand=" + afterLandBeforeChoice +
-                    "; afterFollowChoice=" + afterFollowChoice + "; chosen=" + sourceName(game, follow),
-            ) {
-                sourceName(game, follow) shouldBe "Weather the Storm"
+            val chosenName = sourceName(game, follow)
+            if (chosenName != "Weather the Storm") {
+                error(
+                    "T9_SURVIVAL_DIAGNOSTIC afterCarrier=" + afterCarrierPlan +
+                        "; afterLand=" + afterLandBeforeChoice +
+                        "; afterFollowChoice=" + afterFollowChoice +
+                        "; chosen=" + chosenName,
+                )
             }
         }
 
