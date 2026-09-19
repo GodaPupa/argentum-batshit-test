@@ -11,10 +11,14 @@ on:
 
 jobs:
   turn-sequence-v1:
+    if: github.actor != 'github-actions[bot]'
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: mayhem/izzet-science
+          fetch-depth: 0
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
@@ -22,9 +26,33 @@ jobs:
         run: |
           mkdir -p izzet-science/artifacts
           python izzet-science/sim/mana_harness.py             --deck izzet-science/v0.1-control.md             --samples 100000             --seed 0x1A22E7001             | tee izzet-science/artifacts/turn-sequence-v1.txt
+      - name: Build self-published result
+        run: |
+          mkdir -p izzet-science/results/latest
+          cp izzet-science/artifacts/turn-sequence-v1.txt izzet-science/results/latest/turn-sequence-v1.txt
+          {
+            echo "source_sha=\${GITHUB_SHA}"
+            echo "run_id=\${GITHUB_RUN_ID}"
+            echo "run_attempt=\${GITHUB_RUN_ATTEMPT}"
+            echo "seed=0x1A22E7001"
+            echo "samples=100000"
+            sha256sum izzet-science/artifacts/turn-sequence-v1.txt
+          } > izzet-science/results/latest/manifest.txt
       - name: Preserve output
         uses: actions/upload-artifact@v4
         with:
           name: izzet-science-turn-sequence-v1
           path: izzet-science/artifacts/turn-sequence-v1.txt
           if-no-files-found: error
+
+      - name: Publish result back to experiment branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add izzet-science/results/latest/
+          if git diff --cached --quiet; then
+            echo "No result changes to publish"
+            exit 0
+          fi
+          git commit -m "Record Izzet Science validation result [skip ci]"
+          git push origin HEAD:mayhem/izzet-science
