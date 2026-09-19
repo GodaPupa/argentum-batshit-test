@@ -663,12 +663,48 @@ def scheduler_regressions():
 
 
 
+
+
+def source_options(state):
+    opts=[]
+    for p,colors in available_land_mana(state):
+        if "UR" in colors: opts.append((p,2,{"U","R"}))
+        else: opts.append((p,1,set(colors)))
+    for p,v in ready_nonland_sources(state):
+        c=p["card"]
+        cols={"U","R"} if c in {"Network Terminal","Ornithopter of Paradise"} else ({"U"} if c in {"Sky Diamond","Silver Myr"} else ({"R"} if c in {"Fire Diamond","Iron Myr"} else {"C"}))
+        opts.append((p,v,cols))
+    return opts
+
+def pay_colored_mutating(state,generic=0,need_u=0,need_r=0):
+    opts=source_options(state)
+    # Small early-game source sets: brute force subsets and color assignments conservatively.
+    import itertools
+    for k in range(1,len(opts)+1):
+        for subset in itertools.combinations(opts,k):
+            total=sum(v for _,v,_ in subset)
+            if total < generic+need_u+need_r: continue
+            has_u=sum(1 for _,_,cs in subset if "U" in cs)
+            has_r=sum(1 for _,_,cs in subset if "R" in cs)
+            if has_u<need_u or has_r<need_r: continue
+            for p,_,_ in subset: p["tapped"]=True
+            return True
+    return generic+need_u+need_r==0
+
+def colored_payment_regressions():
+    s=DevState([]); s.turn=3
+    s.battlefield=[{"card":"Island","tapped":False,"entered":1},{"card":"Mountain","tapped":False,"entered":2}]
+    assert pay_colored_mutating(s,need_u=1)
+    assert s.battlefield[0]["tapped"] and not s.battlefield[1]["tapped"]
+    t=DevState([]); t.turn=3
+    t.battlefield=[{"card":"Island","tapped":False,"entered":1},{"card":"Mountain","tapped":False,"entered":2}]
+    assert pay_colored_mutating(t,need_u=1,need_r=1)
+    assert all(p["tapped"] for p in t.battlefield)
+    return True
+
 def pay_selection_cost(state,card):
     g,nu,nr=selection_cost(card)
-    # conservative: require colors, then mutate generic payment across lands/nonlands.
-    if not can_pay_simple(state,generic=g,need_u=nu,need_r=nr): return False
-    # current mutating payer is generic; spend total only after colored feasibility check.
-    return pay_generic_unified(state,g+nu+nr)
+    return pay_colored_mutating(state,generic=g,need_u=nu,need_r=nr)
 
 def resolve_selected_card(card,ss,dev):
     if card=="Curate": return resolve_curate(ss,dev)
@@ -875,6 +911,7 @@ def main():
     draw_discard_regressions()
     scheduler_regressions()
     integration_regressions()
+    colored_payment_regressions()
     b,r=opening_baseline(cards,args.samples,args.seed)
     print("seed",hex(args.seed),"samples",args.samples)
     print("land_buckets_0_1_2_3_4plus",b)
