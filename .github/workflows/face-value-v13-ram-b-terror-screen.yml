@@ -1,0 +1,16 @@
+name: Face Value v1.3 Ram B Terror Screen
+on:
+  push:
+    branches: [face-value/lab]
+    paths: [.github/workflows/face-value-v13-ram-b-terror-screen.yml]
+permissions: {contents: read}
+jobs:
+  screen:
+    uses: ./.github/workflows/face-value-experiment-harness.yml
+    with:
+      experiment_name: v13-ram-b-terror-screen
+      control_deck: experiments/face-value/decks/fv-v12-control.dck
+      challenger_deck: experiments/face-value/decks/fv-v13-ram-b.dck
+      opponent_deck: experiments/face-value/decks/mono-blue-terror.dck
+      seed_start: 1300001
+      games: 20
