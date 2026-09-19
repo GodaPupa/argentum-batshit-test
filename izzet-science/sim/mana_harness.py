@@ -582,8 +582,28 @@ def main():
     ap.add_argument("--deck",default="izzet-science/v0.1-control.md")
     ap.add_argument("--samples",type=int,default=100000)
     ap.add_argument("--seed",type=lambda x:int(x,0),default=SEED)
+    ap.add_argument("--diagnostic-size",type=int,default=None,
+                    help="Explicit reduced main-deck size for diagnostic exclusion runs only")
     args=ap.parse_args()
-    _,cards=parse_deck(Path(args.deck))
+    if args.diagnostic_size is None:
+        _,cards=parse_deck(Path(args.deck))
+    else:
+        # Diagnostic parser preserves commander identity but permits only the exact declared reduced size.
+        raw=Path(args.deck).read_text()
+        tmp=[]
+        commander=None; section=""
+        for line in raw.splitlines():
+            line=line.strip()
+            if line=="Commander": section="commander"; continue
+            if line.startswith("## "): section=line; continue
+            mm=re.match(r"^(\\d+) (.+)$",line)
+            if not mm: continue
+            n,name=int(mm.group(1)),mm.group(2)
+            if section=="commander": commander=name
+            elif section.startswith("## "): tmp += [name]*n
+        if commander!="Izzet Guildmage" or len(tmp)!=args.diagnostic_size:
+            raise ValueError(f"diagnostic identity mismatch commander={commander} size={len(tmp)} expected={args.diagnostic_size}")
+        cards=tmp
     regressions()
     state_regressions()
     development_regressions()
