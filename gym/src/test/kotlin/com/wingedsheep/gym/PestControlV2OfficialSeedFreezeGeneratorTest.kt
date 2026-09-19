@@ -21,9 +21,21 @@ class PestControlV2OfficialSeedFreezeGeneratorTest : FunSpec({
         val root = Path.of("").toAbsolutePath().parent
         val docs = root.resolve("docs/experiments/pest-control")
         val registryPath = docs.resolve("matchup-block-a-seed-registry.csv")
-        val historical = Files.readAllLines(registryPath).drop(1).mapNotNull { line ->
-            line.split(',').getOrNull(2)?.toLongOrNull()
+        val registryLines = Files.readAllLines(registryPath)
+        val registryHeader = registryLines.first().split(',')
+        val seedColumn = registryHeader.indexOf("seed_decimal")
+        require(seedColumn >= 0) { "registry lacks seed_decimal column" }
+        val historical = registryLines.drop(1).map { line ->
+            line.split(',').getOrNull(seedColumn)?.toLongOrNull()
+                ?: error("invalid seed_decimal registry row: $line")
         }.toMutableSet()
+        // Permanently retire the first rejected V2 candidate vector.
+        historical += setOf(
+            352421150441762375L, -7897966070063678192L, 5918577377114013031L,
+            -676340927639613933L, 7240270641543801242L, -6824674089531578284L,
+            5070049516395972099L, -8923988165019673829L, -4759076379260409612L,
+            2895538220561058244L,
+        )
         // Permanently exclude the nonexperimental V2 qualifying-smoke entropy too.
         historical += 0x5045_5354_5632_0001L
 
