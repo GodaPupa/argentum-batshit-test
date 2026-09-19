@@ -1,0 +1,16 @@
+name: Face Value Chrysalis B Terror Replication
+on:
+  push:
+    branches: [face-value/lab]
+    paths: [.github/workflows/face-value-chrysalis-b-terror-replication.yml]
+permissions: {contents: read}
+jobs:
+  replicate:
+    uses: ./.github/workflows/face-value-experiment-harness.yml
+    with:
+      experiment_name: chrysalis-b-terror-replication
+      control_deck: experiments/face-value/decks/fv-v12-control.dck
+      challenger_deck: experiments/face-value/decks/fv-gruul-chrysalis-b.dck
+      opponent_deck: experiments/face-value/decks/mono-blue-terror.dck
+      seed_start: 1370001
+      games: 30
