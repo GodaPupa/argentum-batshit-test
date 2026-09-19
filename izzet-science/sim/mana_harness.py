@@ -393,6 +393,19 @@ def color_flags(state):
     u_sources=sum(1 for _,cs in untapped if "U" in cs or "UR" in cs)
     return u,r,u_sources>=2
 
+
+
+def high_tide_metrics(state):
+    islands=sum(high_tide_island(p["card"]) and not p["tapped"] for p in state.lands())
+    # If High Tide is in hand, casting it costs U from an Island; remaining untapped Islands
+    # then each produce an extra U this turn. Gross post-cast mana from those Islands is 2 each.
+    in_hand="High Tide" in state.hand
+    castable=in_hand and islands>=1
+    post_cast_island_mana=(islands-1)*2 if castable else 0
+    net_gain_over_no_tide=(islands-1) if castable else 0
+    productive=castable and net_gain_over_no_tide>0
+    return castable,productive,post_cast_island_mana,net_gain_over_no_tide
+
 def simulate_one(cards, rng, through=6):
     deck=list(cards); rng.shuffle(deck)
     hand=deck[:7]; pos=7
@@ -412,6 +425,7 @@ def simulate_one(cards, rng, through=6):
             if any(p["card"]==fetch for p in s.battlefield): fetch_basic(s,fetch)
         action_u,action_r,action_uu=color_flags(s)
         action_guildmage=can_pay_simple(s,need_u=1,need_r=1)
+        ht_castable,ht_productive,ht_post,ht_gain=high_tide_metrics(s)
         # Finish optional mana development without replaying a land.
         rock=choose_mana_permanent(s)
         if rock: cast_mana_permanent_unified(s,rock)
@@ -424,6 +438,8 @@ def simulate_one(cards, rng, through=6):
                      "action_U":action_u,"action_R":action_r,"action_UU":action_uu,
                      "residual_U":residual_u,"residual_R":residual_r,"residual_UU":residual_uu,
                      "guildmage_start":start_guildmage,"guildmage_action":action_guildmage,
+                     "high_tide_castable":ht_castable,"high_tide_productive":ht_productive,
+                     "high_tide_post_mana":ht_post,"high_tide_gain":ht_gain,
                      "guildmage_end":can_pay_simple(s,need_u=1,need_r=1),
                      "reversal_neutral":neutral,"reversal_positive":positive,
                      "nonland_gross":gross,"islands":islands})
@@ -434,13 +450,16 @@ def simulate_sample(cards, samples=10000, seed=SEED, through=6):
     agg={t:{"n":0,"start_U":0,"start_R":0,"start_UU":0,"action_U":0,"action_R":0,"action_UU":0,
             "residual_U":0,"residual_R":0,"residual_UU":0,
             "guildmage_start":0,"guildmage_action":0,"guildmage_end":0,
+            "high_tide_castable":0,"high_tide_productive":0,"high_tide_post_sum":0,"high_tide_gain_sum":0,
             "reversal_neutral":0,"reversal_positive":0,"lands_sum":0,"islands_sum":0}
          for t in range(1,through+1)}
     for _ in range(samples):
         for row in simulate_one(cards,rng,through):
             a=agg[row["turn"]]; a["n"]+=1
-            for k in ("start_U","start_R","start_UU","action_U","action_R","action_UU","residual_U","residual_R","residual_UU","guildmage_start","guildmage_action","guildmage_end","reversal_neutral","reversal_positive"):
+            for k in ("start_U","start_R","start_UU","action_U","action_R","action_UU","residual_U","residual_R","residual_UU","guildmage_start","guildmage_action","guildmage_end","high_tide_castable","high_tide_productive","reversal_neutral","reversal_positive"):
                 a[k]+=int(row[k])
+            a["high_tide_post_sum"]+=row["high_tide_post_mana"]
+            a["high_tide_gain_sum"]+=row["high_tide_gain"]
             a["lands_sum"]+=row["lands"]; a["islands_sum"]+=row["islands"]
     return agg
 
@@ -536,6 +555,8 @@ def main():
               "action_U",a["action_U"]/n,"action_R",a["action_R"]/n,"action_UU",a["action_UU"]/n,
               "residual_U",a["residual_U"]/n,"residual_R",a["residual_R"]/n,"residual_UU",a["residual_UU"]/n,
               "guildmage_start",a["guildmage_start"]/n,"guildmage_action",a["guildmage_action"]/n,"guildmage_end",a["guildmage_end"]/n,
+              "high_tide_castable",a["high_tide_castable"]/n,"high_tide_productive",a["high_tide_productive"]/n,
+              "avg_high_tide_gain",a["high_tide_gain_sum"]/n,
               "reversal_neutral",a["reversal_neutral"]/n,"reversal_positive",a["reversal_positive"]/n,
               "avg_lands",a["lands_sum"]/n,"avg_islands",a["islands_sum"]/n)
 
