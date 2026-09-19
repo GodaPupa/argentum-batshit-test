@@ -519,6 +519,42 @@ class PestControlPreboardSession private constructor(
             return fromEnvironment(registry, provenance, fixtureId, env)
         }
 
+        /** Seeded full-game smoke that is permanently excluded from experimental evidence. */
+        fun qualifyingSmoke(
+            registry: CardRegistry,
+            sourceCommit: String,
+            pestSeat: PestSeat,
+            startingDeck: StartingDeck,
+            recordId: String,
+            seed: Long,
+        ): PestControlPreboardSession {
+            require(recordId.startsWith("PEST_CONTROL_V2_QUALIFYING_SMOKE"))
+            PestControlPreboardDecks.verifyFrozenIdentities()
+            val seats = if (pestSeat == PestSeat.SEAT_ZERO) {
+                listOf("Pest Control v1.0" to PestControlPreboardDecks.pestMain(), "SoterX Mono Red Madness" to PestControlPreboardDecks.monoRedMain())
+            } else {
+                listOf("SoterX Mono Red Madness" to PestControlPreboardDecks.monoRedMain(), "Pest Control v1.0" to PestControlPreboardDecks.pestMain())
+            }
+            val startIndex = seats.indexOfFirst { (name) ->
+                (startingDeck == StartingDeck.PEST_CONTROL && name.startsWith("Pest")) ||
+                    (startingDeck == StartingDeck.MONO_RED_MADNESS && name.startsWith("SoterX"))
+            }
+            val env = GameEnvironment.create(registry)
+            env.reset(com.wingedsheep.engine.core.GameConfig(
+                players = seats.map { (name, deck) -> com.wingedsheep.engine.core.PlayerConfig(name, deck, startingLife = 20) },
+                skipMulligans = false, useHandSmoother = false, startingPlayerIndex = startIndex, seed = seed,
+            ))
+            val provenance = MatchupProvenance(
+                sourceCommit = sourceCommit, pestSeat = pestSeat, startingDeck = startingDeck,
+                environment = MatchupEnvironmentIdentity.current(),
+                entropyClassification = "NONEXPERIMENTAL_V2_QUALIFYING_SMOKE",
+                blockId = "PEST_CONTROL_V2_QUALIFYING_SMOKE",
+                seedDecimal = seed,
+                seedHex = "0x${seed.toULong().toString(16).padStart(16, '0')}",
+            )
+            return fromEnvironment(registry, provenance, recordId, env, true, true)
+        }
+
         /**
          * Initializes one frozen experimental game. The caller must durably mark the seed attempted
          * before entering this function; initialization is the first operation that consumes it.
