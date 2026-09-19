@@ -1,0 +1,16 @@
+name: Face Value Chrysalis E affinity Validation
+on:
+  push:
+    branches: [face-value/lab]
+    paths: [.github/workflows/face-value-chrysalis-e-affinity-validation.yml]
+permissions: {contents: read}
+jobs:
+  validate:
+    uses: ./.github/workflows/face-value-experiment-harness.yml
+    with:
+      experiment_name: chrysalis-e-affinity-validation
+      control_deck: experiments/face-value/decks/fv-v12-control.dck
+      challenger_deck: experiments/face-value/decks/fv-temur-chrysalis-e.dck
+      opponent_deck: experiments/face-value/decks/grixis-affinity.dck
+      seed_start: 1440001
+      games: 30
