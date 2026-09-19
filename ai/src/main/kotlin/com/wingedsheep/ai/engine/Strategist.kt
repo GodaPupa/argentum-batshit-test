@@ -1090,12 +1090,28 @@ class Strategist(
         playerId: EntityId,
         pendingGuaranteedLifeGain: Int = 0,
     ): Boolean {
-        val opposingPower = state.turnOrder.asSequence()
+        val opposingPermanents = state.turnOrder.asSequence()
             .filter { state.isOpponentTo(it, playerId) }
             .flatMap { state.controlledBattlefield(it).asSequence() }
+            .toList()
+        val opposingPower = opposingPermanents
             .filter { state.getEntity(it)?.get<CardComponent>()?.isCreature == true }
             .sumOf { (state.projectedState.getPower(it) ?: 0).coerceAtLeast(0) }
-        return opposingPower >= state.lifeTotal(playerId) + pendingGuaranteedLifeGain
+        // Public repeatable damage engines are pressure too. Count one structurally guaranteed
+        // opponent-damage event from each such permanent; do not inspect the opponent's hand or
+        // assume any particular future spell. This is deliberately conservative and bounded:
+        // it preserves an emergency lifegain resource when the visible board itself represents
+        // meaningful reach without pretending to know hidden cards.
+        val visibleRepeatableDamage = opposingPermanents.sumOf { permanentId ->
+            val permanent = state.getEntity(permanentId) ?: return@sumOf 0
+            val name = permanent.get<CardComponent>()?.name ?: return@sumOf 0
+            intents.forPermanent(permanent, name)
+                .filter { it.repeatable }
+                .maxOfOrNull { (it.opponentDamage ?: 0).coerceAtLeast(0) }
+                ?: 0
+        }
+        return opposingPower + visibleRepeatableDamage >=
+            state.lifeTotal(playerId) + pendingGuaranteedLifeGain
     }
 
     /**
