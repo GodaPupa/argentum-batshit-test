@@ -777,6 +777,8 @@ def simulate_one(cards, rng, through=6):
         hand_actions=actual_hand_action_metrics(s)
         holds=hold_up_metrics(s)
         ht_castable,ht_productive,ht_post,ht_gain=high_tide_metrics(s)
+        # Cast at most one information-limited selection spell before optional infrastructure.
+        selected,library,sel_seen,sel_drawn=cast_one_selection(s,library)
         # Finish optional mana development without replaying a land.
         rock=choose_mana_permanent(s)
         if rock: cast_mana_permanent_unified(s,rock)
@@ -784,7 +786,8 @@ def simulate_one(cards, rng, through=6):
         residual_u,residual_r,residual_uu=color_flags(s)
         neutral,positive,gross=reversal_threshold(s)
         islands=sum(high_tide_island(p["card"]) for p in s.lands())
-        rows.append({"turn":turn,"lands":len(s.lands()),
+        rows.append({"turn":turn,"lands":len(s.lands()),"selection_cast":selected is not None,
+                     "selection_seen":sel_seen,"selection_drawn":sel_drawn,
                      "start_U":start_u,"start_R":start_r,"start_UU":start_uu,
                      "action_U":action_u,"action_R":action_r,"action_UU":action_uu,
                      "residual_U":residual_u,"residual_R":residual_r,"residual_UU":residual_uu,
@@ -803,7 +806,7 @@ def simulate_one(cards, rng, through=6):
 
 def simulate_sample(cards, samples=10000, seed=SEED, through=6):
     rng=random.Random(seed)
-    agg={t:{"n":0,"start_U":0,"start_R":0,"start_UU":0,"action_U":0,"action_R":0,"action_UU":0,
+    agg={t:{"n":0,"selection_cast":0,"selection_seen_sum":0,"selection_drawn_sum":0,"start_U":0,"start_R":0,"start_UU":0,"action_U":0,"action_R":0,"action_UU":0,
             "residual_U":0,"residual_R":0,"residual_UU":0,
             "guildmage_start":0,"guildmage_action":0,"guildmage_end":0,
             "uu_spell_present":0,"uu_spell_exec":0,"u_spell_present":0,"u_spell_exec":0,
@@ -815,6 +818,9 @@ def simulate_sample(cards, samples=10000, seed=SEED, through=6):
     for _ in range(samples):
         for row in simulate_one(cards,rng,through):
             a=agg[row["turn"]]; a["n"]+=1
+            a["selection_cast"]+=int(row["selection_cast"])
+            a["selection_seen_sum"]+=row["selection_seen"]
+            a["selection_drawn_sum"]+=row["selection_drawn"]
             for k in ("start_U","start_R","start_UU","action_U","action_R","action_UU","residual_U","residual_R","residual_UU","guildmage_start","guildmage_action","guildmage_end","uu_spell_present","uu_spell_exec","u_spell_present","u_spell_exec","r_spell_present","r_spell_exec","ritual_present","spike_present","guild_plus_u","guild_plus_r","uu_plus_r","high_tide_castable","high_tide_productive","reversal_neutral","reversal_positive"):
                 a[k]+=int(row[k])
             a["high_tide_post_sum"]+=row["high_tide_post_mana"]
@@ -884,6 +890,13 @@ def readiness_regressions(cards):
     assert all("guildmage_action" in x for x in rows)
     return True
 
+
+def loop_selection_regression(cards):
+    rng=random.Random(777)
+    rows=simulate_one(cards,rng,3)
+    assert all("selection_cast" in r and "selection_seen" in r for r in rows)
+    return True
+
 def main():
     ap=argparse.ArgumentParser()
     ap.add_argument("--deck",default="izzet-science/v0.1-control.md")
@@ -930,6 +943,7 @@ def main():
     integration_regressions()
     colored_payment_regressions()
     mutable_library_regressions()
+    loop_selection_regression(cards)
     b,r=opening_baseline(cards,args.samples,args.seed)
     print("seed",hex(args.seed),"samples",args.samples)
     print("land_buckets_0_1_2_3_4plus",b)
@@ -937,7 +951,8 @@ def main():
     agg=simulate_sample(cards,args.samples,args.seed,6)
     for turn in range(1,7):
         a=agg[turn]; n=a["n"]
-        print("turn",turn,
+        print("turn",turn,"selection_cast",a["selection_cast"]/n,
+              "avg_selection_seen",a["selection_seen_sum"]/n,"avg_selection_drawn",a["selection_drawn_sum"]/n,
               "start_U",a["start_U"]/n,"start_R",a["start_R"]/n,"start_UU",a["start_UU"]/n,
               "action_U",a["action_U"]/n,"action_R",a["action_R"]/n,"action_UU",a["action_UU"]/n,
               "residual_U",a["residual_U"]/n,"residual_R",a["residual_R"]/n,"residual_UU",a["residual_UU"]/n,
