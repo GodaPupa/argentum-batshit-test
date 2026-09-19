@@ -1,0 +1,16 @@
+name: Face Value Chrysalis B Terror Screen
+on:
+  push:
+    branches: [face-value/lab]
+    paths: [.github/workflows/face-value-chrysalis-b-terror-screen.yml]
+permissions: {contents: read}
+jobs:
+  screen:
+    uses: ./.github/workflows/face-value-experiment-harness.yml
+    with:
+      experiment_name: chrysalis-b-terror-screen
+      control_deck: experiments/face-value/decks/fv-v12-control.dck
+      challenger_deck: experiments/face-value/decks/fv-gruul-chrysalis-b.dck
+      opponent_deck: experiments/face-value/decks/mono-blue-terror.dck
+      seed_start: 1340001
+      games: 20
