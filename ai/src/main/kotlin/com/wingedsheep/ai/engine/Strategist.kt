@@ -175,6 +175,7 @@ class Strategist(
      */
     private var expiringConditionCommitment: ExpiringConditionCommitment? = null
     private var survivalCommitment: SurvivalCommitment? = null
+    private var pendingSurvivalSetup: PendingSurvivalSetup? = null
 
     fun chooseAction(
         state: GameState,
@@ -183,6 +184,7 @@ class Strategist(
     ): LegalAction {
         val startNanos = if (insightSink != null) System.nanoTime() else 0L
         val evaluationState = stateSampler?.invoke(state, playerId) ?: state
+        promotePendingSurvivalSetup(evaluationState, legalActions, playerId)
         committedSurvivalFollowUp(evaluationState, legalActions, playerId)?.let { return it }
         committedExpiringConditionFollowUp(evaluationState, legalActions, playerId)?.let { return it }
         // Combat declaration steps need the CombatAdvisor to fill in attacker/blocker maps
@@ -1276,25 +1278,85 @@ class Strategist(
         playerId: EntityId,
     ) {
         if (!lifeGainNeededForSurvival(state, playerId)) return
-        val cast = action.action as? CastSpell ?: return
-        val stormFollowUp = simulator.getLegalActions(leafState, playerId).firstOrNull { next ->
-            if (!next.affordable) return@firstOrNull false
-            val nextCast = next.action as? CastSpell ?: return@firstOrNull false
-            val name = leafState.getEntity(nextCast.cardId)?.get<CardComponent>()?.name ?: return@firstOrNull false
-            intents.isPureLifeGainSpell(name, nextCast.faceIndex) &&
-                leafState.getEntity(nextCast.cardId)?.get<CardComponent>()?.baseKeywords
-                    ?.contains(com.wingedsheep.sdk.core.Keyword.STORM) == true
-        } ?: return
-        val followCast = stormFollowUp.action as CastSpell
-        // The setup must have advanced the protected event rather than merely being an unrelated
-        // action that happens to leave lifegain available.
+        if (action.action !is CastSpell) return
+
+        // First prefer an immediately executable protected lifegain follow-up.
+        val immediate = survivalLifeGainFollowUp(leafState, playerId)
+        if (immediate != null && leafState.spellsCastThisTurn > state.spellsCastThisTurn) {
+            val cast = immediate.action as CastSpell
+            survivalCommitment = SurvivalCommitment(playerId, state.turnNumber, cast.cardId, cast.faceIndex)
+            pendingSurvivalSetup = null
+            return
+        }
+
+        // Otherwise retain only a bounded "one land drop away" setup. No card name or hidden
+        // information is used: after the chosen spell resolves, simulate each currently legal land
+        // play and require that it makes a survival-relevant pure lifegain Storm cast affordable.
         if (leafState.spellsCastThisTurn <= state.spellsCastThisTurn) return
+        val landAndFollow = simulator.getLegalActions(leafState, playerId).asSequence().mapNotNull { landLegal ->
+            val land = landLegal.action as? PlayLand ?: return@mapNotNull null
+            val afterLand = simulator.simulate(leafState, land)
+            if (afterLand is SimulationResult.Illegal || afterLand is SimulationResult.StoppedAtLimit) {
+                return@mapNotNull null
+            }
+            val follow = survivalLifeGainFollowUp(afterLand.state, playerId) ?: return@mapNotNull null
+            land.cardId to (follow.action as CastSpell)
+        }.firstOrNull() ?: return
+
+        pendingSurvivalSetup = PendingSurvivalSetup(
+            playerId = playerId,
+            turn = state.turnNumber,
+            landId = landAndFollow.first,
+            cardId = landAndFollow.second.cardId,
+            faceIndex = landAndFollow.second.faceIndex,
+        )
+    }
+
+    private fun promotePendingSurvivalSetup(
+        state: GameState,
+        legalActions: List<LegalAction>,
+        playerId: EntityId,
+    ) {
+        val pending = pendingSurvivalSetup ?: return
+        if (pending.playerId != playerId || pending.turn != state.turnNumber) {
+            pendingSurvivalSetup = null
+            return
+        }
+        if (!lifeGainNeededForSurvival(state, playerId)) {
+            pendingSurvivalSetup = null
+            return
+        }
+        // While the planned land is still legal, the setup is waiting for that land action.
+        if (legalActions.any { (it.action as? PlayLand)?.cardId == pending.landId }) return
+
+        val follow = legalActions.firstOrNull { legal ->
+            if (!legal.affordable) return@firstOrNull false
+            val cast = legal.action as? CastSpell ?: return@firstOrNull false
+            cast.cardId == pending.cardId && cast.faceIndex == pending.faceIndex
+        }
+        if (follow == null) {
+            pendingSurvivalSetup = null
+            return
+        }
         survivalCommitment = SurvivalCommitment(
             playerId = playerId,
             turn = state.turnNumber,
-            cardId = followCast.cardId,
-            faceIndex = followCast.faceIndex,
+            cardId = pending.cardId,
+            faceIndex = pending.faceIndex,
         )
+        pendingSurvivalSetup = null
+    }
+
+    private fun survivalLifeGainFollowUp(state: GameState, playerId: EntityId): LegalAction? {
+        if (!lifeGainNeededForSurvival(state, playerId)) return null
+        return simulator.getLegalActions(state, playerId).firstOrNull { next ->
+            if (!next.affordable) return@firstOrNull false
+            val cast = next.action as? CastSpell ?: return@firstOrNull false
+            val name = state.getEntity(cast.cardId)?.get<CardComponent>()?.name ?: return@firstOrNull false
+            intents.isPureLifeGainSpell(name, cast.faceIndex) &&
+                state.getEntity(cast.cardId)?.get<CardComponent>()?.baseKeywords
+                    ?.contains(com.wingedsheep.sdk.core.Keyword.STORM) == true
+        }
     }
 
     private fun committedExpiringConditionFollowUp(
@@ -2570,6 +2632,14 @@ class Strategist(
         val faceIndex: Int?,
         val downstreamCardId: EntityId?,
         val projectedScore: Double,
+    )
+
+    private data class PendingSurvivalSetup(
+        val playerId: EntityId,
+        val turn: Int,
+        val landId: EntityId,
+        val cardId: EntityId,
+        val faceIndex: Int?,
     )
 
     private data class SurvivalCommitment(
