@@ -543,6 +543,49 @@ def selection_resolution_regressions():
     assert k==["Negate"] and len(i.library)==4
     return True
 
+
+
+def resolve_preordain(ss,dev):
+    seen=ss.look(2); ss.remove_top(len(seen))
+    ranked=sorted(seen,key=lambda c:-selection_priority(c,dev))
+    top=[c for c in ranked if selection_priority(c,dev)>=40]
+    bottom=[c for c in ranked if selection_priority(c,dev)<40]
+    ss.library=top+ss.library+bottom
+    return ss.draw(1)
+
+def resolve_ponder(ss,dev):
+    seen=ss.look(3); ss.remove_top(len(seen))
+    ranked=sorted(seen,key=lambda c:-selection_priority(c,dev))
+    # deterministic no-shuffle policy when any viewed card is useful; otherwise shuffle viewed
+    # cards into library with caller RNG handled later by turn engine.
+    if ranked and selection_priority(ranked[0],dev)>=40:
+        ss.library=ranked+ss.library
+        return ss.draw(1),False
+    ss.library=seen+ss.library
+    return ss.draw(1),False
+
+def resolve_brainstorm(ss,dev):
+    drawn=ss.draw(3)
+    # Put back two lowest-priority cards from the full hand.
+    ranked=sorted(enumerate(ss.hand),key=lambda x:(selection_priority(x[1],dev),x[0]))
+    chosen=sorted([i for i,_ in ranked[:2]],reverse=True)
+    put=[]
+    for i in chosen: put.append(ss.hand.pop(i))
+    # first popped should become deeper; reverse to preserve deterministic top order
+    ss.library=list(reversed(put))+ss.library
+    return drawn,list(reversed(put))
+
+def complex_selection_regressions():
+    d=DevState(["Island"])
+    p=SpellState([],["Negate","Mountain","Lava Spike","Island"])
+    draw,_=resolve_ponder(p,d); assert draw==["Negate"]
+    q=SpellState([],["Mountain","Negate","Island"])
+    assert resolve_preordain(q,d)==["Negate"]
+    b=SpellState(["Negate","Mountain"],["Island","Lava Spike","Desperate Ritual","Opt"])
+    drawn,put=resolve_brainstorm(b,d)
+    assert len(drawn)==3 and len(put)==2 and len(b.hand)==3
+    return True
+
 def simulate_one(cards, rng, through=6):
     deck=list(cards); rng.shuffle(deck)
     hand=deck[:7]; pos=7
@@ -712,6 +755,7 @@ def main():
     readiness_regressions(cards)
     selection_regressions()
     selection_resolution_regressions()
+    complex_selection_regressions()
     b,r=opening_baseline(cards,args.samples,args.seed)
     print("seed",hex(args.seed),"samples",args.samples)
     print("land_buckets_0_1_2_3_4plus",b)
