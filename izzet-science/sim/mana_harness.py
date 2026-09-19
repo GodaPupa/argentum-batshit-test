@@ -625,6 +625,42 @@ def draw_discard_regressions():
     assert resolve_think_twice(q,d)==["Island"]
     return True
 
+
+
+SELECTION_CAST_ORDER=["Ponder","Preordain","Consider","Opt","Curate","Impulse","Brainstorm",
+"Faithless Looting","Thrill of Possibility","Think Twice","Frantic Search"]
+
+def selection_cost(card):
+    return {"Ponder":(0,1,0),"Preordain":(0,1,0),"Brainstorm":(0,1,0),
+            "Consider":(0,1,0),"Opt":(0,1,0),"Curate":(1,1,0),"Impulse":(1,1,0),
+            "Faithless Looting":(0,0,1),"Thrill of Possibility":(1,0,1),
+            "Think Twice":(1,1,0),"Frantic Search":(2,1,0)}[card]
+
+def can_cast_selection(state,card):
+    g,u,r=selection_cost(card)
+    return card in state.hand and can_pay_simple(state,generic=g,need_u=u,need_r=r)
+
+def choose_selection_spell(state):
+    # Cast selection when it addresses a concrete current need; otherwise prefer cheap velocity.
+    land_count=sum(c in LANDS for c in state.hand)
+    combo=set(state.hand)&COMBO_CARDS
+    no_interaction=not bool(set(state.hand)&INTERACTION_CARDS)
+    candidates=[c for c in SELECTION_CAST_ORDER if can_cast_selection(state,c)]
+    if not candidates: return None
+    if land_count==0 or len(combo)==1 or no_interaction:
+        return candidates[0]
+    # default: only spend one mana on velocity; preserve larger mana for development/hold-up
+    return next((c for c in candidates if sum(selection_cost(c))==1),None)
+
+def scheduler_regressions():
+    s=DevState(["Island","Ponder"]); s.begin_turn(); s.play_land("Island")
+    assert choose_selection_spell(s)=="Ponder"
+    t=DevState(["Island","Island","Impulse"]); t.begin_turn(); t.play_land("Island"); t.begin_turn(); untap_step(t); t.play_land("Island")
+    assert choose_selection_spell(t)=="Impulse"
+    z=DevState(["Island","Island","Counterspell","Impulse"]); z.begin_turn(); z.play_land("Island"); z.begin_turn(); untap_step(z); z.play_land("Island")
+    assert choose_selection_spell(z) is None
+    return True
+
 def simulate_one(cards, rng, through=6):
     deck=list(cards); rng.shuffle(deck)
     hand=deck[:7]; pos=7
@@ -796,6 +832,7 @@ def main():
     selection_resolution_regressions()
     complex_selection_regressions()
     draw_discard_regressions()
+    scheduler_regressions()
     b,r=opening_baseline(cards,args.samples,args.seed)
     print("seed",hex(args.seed),"samples",args.samples)
     print("land_buckets_0_1_2_3_4plus",b)
