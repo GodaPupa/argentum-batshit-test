@@ -30,7 +30,7 @@ jobs:
                                     + " targetEval=" + ComputerUtilCard.evaluateCreature(humanCreature));
                         }
                         sa.getTargets().add(aiCreature);'''
-          assert s.count(needle)==1,s.count(needle); p.write_text(s.replace(needle,repl,1))
+          assert s.count(needle)==1,s.count(needle); p.write_text(s.replace(needle,repl,1)); assert 'FV_RAM_CHOICE' in p.read_text()
           PY
           cd forge-src
           mvn -B -DskipTests -pl forge-gui-desktop -am package
@@ -67,3 +67,5 @@ jobs:
             ram-powerdmg-diagnostic.json
             logs/*.log
             seeds.txt
+
+# retry current FightAi anchor
