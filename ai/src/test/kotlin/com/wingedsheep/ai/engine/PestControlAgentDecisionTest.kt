@@ -134,6 +134,17 @@ class PestControlAgentDecisionTest : ScenarioTestBase() {
     private fun chosenPermanent(action: CastSpell): EntityId? =
         action.targets.filterIsInstance<ChosenTarget.Permanent>().singleOrNull()?.entityId
 
+    private fun writeT9Diagnostic(initialPressure: String, player: AIPlayer, trace: String) {
+        val out = java.nio.file.Path.of("").toAbsolutePath().parent
+            .resolve("build/reports/pest-control-v2-diagnostic")
+        java.nio.file.Files.createDirectories(out)
+        java.nio.file.Files.writeString(
+            out.resolve("t9-survival-diagnostic.txt"),
+            "initialPressure=" + initialPressure + "; plan=" + player.survivalPlanDiagnostic() +
+                "; trace=" + trace + "\n",
+        )
+    }
+
     private fun TestGame.markLifeGainedThisTurn() {
         state = state.updateEntity(player1Id) { it.with(LifeGainedThisTurnComponent) }
     }
@@ -1551,16 +1562,27 @@ class PestControlAgentDecisionTest : ScenarioTestBase() {
             val player = ai(game)
             val initialPressure = player.survivalPressureDiagnostic(game.state)
 
-            val first = player.chooseAction(game.state).shouldBeInstanceOf<CastSpell>()
-            withClue("visible repeatable spell-damage engines make preserving the Weather continuation material") {
-                sourceName(game, first) shouldBe "Carrier Thrall"
+            val firstRaw = player.chooseAction(game.state)
+            val firstLabel = sourceName(game, firstRaw) ?: firstRaw::class.simpleName.orEmpty()
+            if (firstRaw !is CastSpell || firstLabel != "Carrier Thrall") {
+                writeT9Diagnostic(initialPressure, player, "first=" + firstLabel)
+                error("T9_TRACE first=" + firstLabel)
             }
+            val first = firstRaw
             game.execute(first).error shouldBe null
             game.resolveStack()
             val afterCarrierPlan = player.survivalPlanDiagnostic()
 
-            val land = player.chooseAction(game.state).shouldBeInstanceOf<PlayLand>()
-            cardName(game, land.cardId) shouldBe "Swamp"
+            val landRaw = player.chooseAction(game.state)
+            val landLabel = when (landRaw) {
+                is PlayLand -> cardName(game, landRaw.cardId) ?: "PlayLand"
+                else -> sourceName(game, landRaw) ?: landRaw::class.simpleName.orEmpty()
+            }
+            if (landRaw !is PlayLand || landLabel != "Swamp") {
+                writeT9Diagnostic(initialPressure, player, "first=" + firstLabel + "; second=" + landLabel)
+                error("T9_TRACE first=" + firstLabel + "; second=" + landLabel)
+            }
+            val land = landRaw
             game.execute(land).error shouldBe null
             val afterLandBeforeChoice = player.survivalPlanDiagnostic()
 
@@ -1573,10 +1595,7 @@ class PestControlAgentDecisionTest : ScenarioTestBase() {
                     "; afterLand=" + afterLandBeforeChoice +
                     "; afterFollowChoice=" + afterFollowChoice +
                     "; chosen=" + chosenName
-                val out = java.nio.file.Path.of("").toAbsolutePath().parent
-                    .resolve("build/reports/pest-control-v2-diagnostic")
-                java.nio.file.Files.createDirectories(out)
-                java.nio.file.Files.writeString(out.resolve("t9-survival-diagnostic.txt"), diagnostic + "\n")
+                writeT9Diagnostic(initialPressure, player, diagnostic)
                 error(diagnostic)
             }
         }
