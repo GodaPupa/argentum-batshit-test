@@ -321,5 +321,19 @@ class CardIntentAnalyzerTest : ScenarioTestBase() {
             catalog.forName("Icy Manipulator")?.tags shouldBe intentOf("Icy Manipulator").tags
             catalog.forName("Definitely Not A Card") shouldBe null
         }
+        test("repeatable spell-triggered burn permanents expose opponent damage") {
+            val catalog = IntentCatalog.of(cardRegistry)
+            listOf(
+                "Kessig Flamebreather" to 1,
+                "Guttersnipe" to 2,
+            ).forEach { (name, damage) ->
+                val intent = catalog.forPermanent(ComponentContainer(), name).single()
+                withClue(name) {
+                    intent.repeatable shouldBe true
+                    intent.opponentDamage shouldBe damage
+                }
+            }
+        }
+
     }
 }
