@@ -1555,13 +1555,19 @@ class PestControlAgentDecisionTest : ScenarioTestBase() {
             }
             game.execute(first).error shouldBe null
             game.resolveStack()
+            val afterCarrierPlan = player.survivalPlanDiagnostic()
 
             val land = player.chooseAction(game.state).shouldBeInstanceOf<PlayLand>()
             cardName(game, land.cardId) shouldBe "Swamp"
             game.execute(land).error shouldBe null
+            val afterLandBeforeChoice = player.survivalPlanDiagnostic()
 
             val follow = player.chooseAction(game.state).shouldBeInstanceOf<CastSpell>()
-            withClue("the setup spell must commit into Weather rather than spend its reserved mana on Pest Mascot") {
+            val afterFollowChoice = player.survivalPlanDiagnostic()
+            withClue(
+                "afterCarrier=" + afterCarrierPlan + "; afterLand=" + afterLandBeforeChoice +
+                    "; afterFollowChoice=" + afterFollowChoice + "; chosen=" + sourceName(game, follow),
+            ) {
                 sourceName(game, follow) shouldBe "Weather the Storm"
             }
         }
