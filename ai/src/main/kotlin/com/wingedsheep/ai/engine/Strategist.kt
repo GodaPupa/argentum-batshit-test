@@ -1125,6 +1125,34 @@ class Strategist(
      * power because it can untap or lose summoning sickness before the next attack; overestimating
      * pressure merely preserves an emergency lifegain option and is safer than suppressing one.
      */
+    /**
+     * Public-board reach can make preserving an executable lifegain line valuable well before it
+     * constitutes deterministic lethal. Keep this weaker than [lifeGainNeededForSurvival]: it is
+     * used only to retain a plan, never to force an immediate lifegain cast.
+     *
+     * One trigger from every visible repeatable damage engine defines the reach window. Requiring
+     * that reach to cover at least half the current life total keeps ordinary low-pressure boards
+     * out while recognizing states where tapping out would strand a material defensive resource.
+     */
+    private fun lifeGainWorthPreservingAgainstVisibleReach(
+        state: GameState,
+        playerId: EntityId,
+    ): Boolean {
+        val opposingPermanents = state.turnOrder.asSequence()
+            .filter { state.isOpponentTo(it, playerId) }
+            .flatMap { state.controlledBattlefield(it).asSequence() }
+            .toList()
+        val visibleRepeatableDamage = opposingPermanents.sumOf { permanentId ->
+            val permanent = state.getEntity(permanentId) ?: return@sumOf 0
+            val name = permanent.get<CardComponent>()?.name ?: return@sumOf 0
+            intents.forPermanent(permanent, name)
+                .filter { it.repeatable }
+                .maxOfOrNull { (it.opponentDamage ?: 0).coerceAtLeast(0) } ?: 0
+        }
+        if (visibleRepeatableDamage <= 0) return false
+        return visibleRepeatableDamage * 2 >= state.lifeTotal(playerId)
+    }
+
     private fun lifeGainNeededForSurvival(
         state: GameState,
         playerId: EntityId,
@@ -1284,7 +1312,7 @@ class Strategist(
             return null
         }
         if (state.pendingDecision != null || state.stack.isNotEmpty()) return null
-        if (!lifeGainNeededForSurvival(state, playerId)) {
+        if (!lifeGainWorthPreservingAgainstVisibleReach(state, playerId)) {
             survivalCommitment = null
             return null
         }
@@ -1307,7 +1335,7 @@ class Strategist(
         action: LegalAction,
         playerId: EntityId,
     ) {
-        if (!lifeGainNeededForSurvival(state, playerId)) return
+        if (!lifeGainWorthPreservingAgainstVisibleReach(state, playerId)) return
         if (action.action !is CastSpell) return
 
         // First prefer an immediately executable protected lifegain follow-up.
@@ -1352,7 +1380,7 @@ class Strategist(
             pendingSurvivalSetup = null
             return
         }
-        if (!lifeGainNeededForSurvival(state, playerId)) {
+        if (!lifeGainWorthPreservingAgainstVisibleReach(state, playerId)) {
             pendingSurvivalSetup = null
             return
         }
@@ -1378,7 +1406,7 @@ class Strategist(
     }
 
     private fun survivalLifeGainFollowUp(state: GameState, playerId: EntityId): LegalAction? {
-        if (!lifeGainNeededForSurvival(state, playerId)) return null
+        if (!lifeGainWorthPreservingAgainstVisibleReach(state, playerId)) return null
         return simulator.getLegalActions(state, playerId).firstOrNull { next ->
             if (!next.affordable) return@firstOrNull false
             val cast = next.action as? CastSpell ?: return@firstOrNull false
