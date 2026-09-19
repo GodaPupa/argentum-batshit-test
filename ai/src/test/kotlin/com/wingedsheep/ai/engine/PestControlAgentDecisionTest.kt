@@ -493,6 +493,7 @@ class PestControlAgentDecisionTest : ScenarioTestBase() {
                 .withCardInLibrary(1, "Pest Mascot")
                 .build()
             val player = ai(game)
+            val initialPressure = player.survivalPressureDiagnostic(game.state)
 
             val first = player.chooseAction(game.state).shouldBeInstanceOf<CastSpell>()
             sourceName(game, first) shouldBe "Weather the Storm"
@@ -1566,7 +1567,8 @@ class PestControlAgentDecisionTest : ScenarioTestBase() {
             val afterFollowChoice = player.survivalPlanDiagnostic()
             val chosenName = sourceName(game, follow)
             if (chosenName != "Weather the Storm") {
-                val diagnostic = "T9_SURVIVAL_DIAGNOSTIC afterCarrier=" + afterCarrierPlan +
+                val diagnostic = "T9_SURVIVAL_DIAGNOSTIC initialPressure=" + initialPressure +
+                    "; afterCarrier=" + afterCarrierPlan +
                     "; afterLand=" + afterLandBeforeChoice +
                     "; afterFollowChoice=" + afterFollowChoice +
                     "; chosen=" + chosenName
