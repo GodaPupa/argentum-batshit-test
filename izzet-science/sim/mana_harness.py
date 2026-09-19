@@ -330,7 +330,7 @@ def development_turn(state):
     for fetch in ("Evolving Wilds","Terramorphic Expanse"):
         if any(p["card"]==fetch for p in state.battlefield): fetch_basic(state,fetch)
     rock=choose_mana_permanent(state)
-    if rock: cast_mana_permanent(state,rock)
+    if rock: cast_mana_permanent_mutating(state,rock)
     return {"land":land,"mana_permanent":rock,"reversal":reversal_threshold(state)}
 
 def policy_regressions():
@@ -339,6 +339,46 @@ def policy_regressions():
     r=DevState(["Island","Island","Mind Stone"]); r.begin_turn(); development_turn(r)
     r.begin_turn(); r.hand.append("Island"); out=development_turn(r)
     assert out["mana_permanent"]=="Mind Stone"
+    return True
+
+
+
+def pay_generic_from_lands(state, amount):
+    """Conservative mutating generic payment. Returns False without mutation if impossible."""
+    avail=[p for p,_ in available_land_mana(state)]
+    capacity=sum(2 if p["card"]=="Izzet Boilerworks" else 1 for p in avail)
+    if capacity<amount: return False
+    need=amount
+    # one land cannot be partially tapped: Boilerworks spends its full two-mana production.
+    for p in avail:
+        if need<=0: break
+        p["tapped"]=True
+        need-=2 if p["card"]=="Izzet Boilerworks" else 1
+    return True
+
+def cast_mana_permanent_mutating(state, card, chalice_kicks=None):
+    if card not in state.hand or card not in ROCKS|MANA_CREATURES: return False
+    if card=="Everflowing Chalice":
+        kicks=chalice_kicks if chalice_kicks is not None else generic_land_capacity(state)//2
+        if kicks<1 or not pay_generic_from_lands(state,2*kicks): return False
+        state.hand.remove(card); state.battlefield.append({"card":card,"tapped":False,"entered":state.turn,"kicks":kicks})
+        return True
+    if not pay_generic_from_lands(state,MANA_COST[card]): return False
+    state.hand.remove(card); state.battlefield.append({"card":card,"tapped":rock_enters_tapped(card),"entered":state.turn})
+    return True
+
+def mutating_payment_regressions():
+    s=DevState(["Island","Island","Mind Stone","Sky Diamond"])
+    s.begin_turn(); s.play_land("Island")
+    s.begin_turn(); untap_step(s); s.play_land("Island")
+    assert cast_mana_permanent_mutating(s,"Mind Stone")
+    assert all(p["tapped"] for p in s.lands())
+    assert not cast_mana_permanent_mutating(s,"Sky Diamond")
+    b=DevState(["Island","Izzet Boilerworks","Mind Stone"])
+    b.begin_turn(); b.play_land("Island"); b.begin_turn(); untap_step(b); b.play_land("Izzet Boilerworks")
+    b.begin_turn(); untap_step(b)
+    assert cast_mana_permanent_mutating(b,"Mind Stone")
+    assert b.lands()[0]["tapped"]
     return True
 
 def main():
@@ -354,6 +394,7 @@ def main():
     fetch_regressions()
     rock_regressions()
     policy_regressions()
+    mutating_payment_regressions()
     _,cards=parse_deck(Path(args.deck))
     b,r=opening_baseline(cards,args.samples,args.seed)
     print("seed",hex(args.seed),"samples",args.samples)
