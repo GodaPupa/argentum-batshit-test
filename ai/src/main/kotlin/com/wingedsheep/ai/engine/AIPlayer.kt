@@ -76,6 +76,8 @@ class AIPlayer(
         return strategist.chooseAction(state, legalActions, playerId)
     }
 
+    internal fun survivalPlanDiagnostic(): String = strategist.survivalPlanDiagnostic()
+
     /**
      * Respond to a pending decision.
      */
