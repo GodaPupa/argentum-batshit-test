@@ -130,6 +130,61 @@ def development_regressions():
     assert t.lands()[0]["tapped"]
     return True
 
+
+
+def land_colors(card, basics_controlled=None):
+    basics_controlled=basics_controlled or set()
+    if card=="Island": return {"U"}
+    if card=="Mountain": return {"R"}
+    if card=="Command Tower": return {"U","R"}
+    if card in {"Volatile Fjord","Swiftwater Cliffs","Silverbluff Bridge"}: return {"U","R"}
+    if card=="Lonely Sandbar": return {"U"}
+    if card=="Forgotten Cave": return {"R"}
+    if card=="Ash Barrens": return {"C"}
+    if card=="Izzet Boilerworks": return {"UR"}
+    return set()
+
+def available_land_mana(state):
+    basics={x["card"] for x in state.lands() if x["card"] in {"Island","Mountain"}}
+    out=[]
+    for p in state.lands():
+        if not p["tapped"]: out.append((p,land_colors(p["card"],basics)))
+    return out
+
+def can_pay_simple(state, generic=0, need_u=0, need_r=0):
+    # conservative land-only payer; Boilerworks contributes U+R as two mana.
+    pools=[]
+    for _,colors in available_land_mana(state):
+        pools.append(colors)
+    # brute-force choices for <= early-game land counts
+    choices=[(0,0,0)]
+    for colors in pools:
+        opts=[]
+        if "UR" in colors: opts=[(1,1,0)]  # U,R,generic-total represented below
+        else:
+            if "U" in colors: opts.append((1,0,0))
+            if "R" in colors: opts.append((0,1,0))
+            if "C" in colors: opts.append((0,0,1))
+        nxt=[]
+        for a in choices:
+            for o in opts:
+                nxt.append((a[0]+o[0],a[1]+o[1],a[2]+o[2]))
+        choices += nxt
+    for u,r,c in choices:
+        if u>=need_u and r>=need_r and (u+r+c-need_u-need_r)>=generic: return True
+    return False
+
+def payment_regressions():
+    s=DevState(["Island"]); s.begin_turn(); s.play_land("Island")
+    assert can_pay_simple(s,need_u=1)
+    assert not can_pay_simple(s,need_r=1)
+    b=DevState(["Island","Izzet Boilerworks"]); b.begin_turn(); b.play_land("Island"); b.begin_turn(); b.play_land("Izzet Boilerworks")
+    # Boilerworks entered tapped this turn.
+    assert not can_pay_simple(b,need_u=1)
+    b.lands()[0]["tapped"]=False
+    assert can_pay_simple(b,need_u=1) and can_pay_simple(b,need_r=1)
+    return True
+
 def main():
     ap=argparse.ArgumentParser()
     ap.add_argument("--deck",default="izzet-science/v0.1-control.md")
@@ -139,6 +194,7 @@ def main():
     regressions()
     state_regressions()
     development_regressions()
+    payment_regressions()
     _,cards=parse_deck(Path(args.deck))
     b,r=opening_baseline(cards,args.samples,args.seed)
     print("seed",hex(args.seed),"samples",args.samples)
