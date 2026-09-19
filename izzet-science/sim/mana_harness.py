@@ -221,6 +221,75 @@ def fetch_regressions():
     assert not ash_barrens_cycle(z)
     return True
 
+
+
+def generic_land_capacity(state):
+    total=0
+    for _,colors in available_land_mana(state):
+        total += 2 if "UR" in colors else 1
+    return total
+
+def cast_mana_permanent(state, card, chalice_kicks=None):
+    if card not in state.hand or card not in ROCKS|MANA_CREATURES: return False
+    cost=MANA_COST[card]
+    if card=="Everflowing Chalice":
+        kicks=chalice_kicks if chalice_kicks is not None else generic_land_capacity(state)//2
+        if kicks<1 or not can_pay_simple(state,generic=2*kicks): return False
+        state.hand.remove(card); state.battlefield.append({"card":card,"tapped":False,"entered":state.turn,"kicks":kicks})
+        return True
+    if not can_pay_simple(state,generic=cost): return False
+    state.hand.remove(card)
+    state.battlefield.append({"card":card,"tapped":rock_enters_tapped(card),"entered":state.turn})
+    return True
+
+def nonland_mana_profile(state, conservative_fellwar=True):
+    u=r=c=0
+    for p in state.battlefield:
+        if p["tapped"]: continue
+        card=p["card"]
+        if card=="Everflowing Chalice": c+=p.get("kicks",0)
+        elif card=="Mind Stone": c+=1
+        elif card=="Sky Diamond": u+=1
+        elif card=="Fire Diamond": r+=1
+        elif card=="Network Terminal": u+=1  # choose U for Guildmage threshold
+        elif card in {"Ur-Golem's Eye","Sisay's Ring"}: c+=2
+        elif card=="Star Compass":
+            basics={x["card"] for x in state.lands()}
+            if "Island" in basics: u+=1
+            elif "Mountain" in basics: r+=1
+        elif card=="Fellwar Stone":
+            if not conservative_fellwar: u+=1
+            else: c+=1
+        elif card=="Ornithopter of Paradise" and creature_mana_ready(card,p["entered"],state.turn): u+=1
+        elif card=="Silver Myr" and creature_mana_ready(card,p["entered"],state.turn): u+=1
+        elif card=="Iron Myr" and creature_mana_ready(card,p["entered"],state.turn): r+=1
+    # Signet handled as converter: with at least one other nonland mana available it can turn 1 into UR.
+    signets=sum(p["card"]=="Izzet Signet" and not p["tapped"] for p in state.battlefield)
+    return {"U":u,"R":r,"C":c,"signets":signets,"gross":u+r+c}
+
+def reversal_threshold(state):
+    p=nonland_mana_profile(state)
+    gross=p["gross"]
+    # A ready Signet can consume one existing mana and return UR: net +1 and guarantees U.
+    if p["signets"] and gross>=1:
+        gross += 1
+        has_u=True
+    else:
+        has_u=p["U"]>=1
+    neutral=has_u and gross>=3
+    positive=has_u and gross>3
+    return neutral,positive,gross
+
+def rock_regressions():
+    s=DevState(["Island","Island","Mind Stone"]); s.begin_turn(); s.play_land("Island"); s.begin_turn(); untap_step(s); s.play_land("Island")
+    assert cast_mana_permanent(s,"Mind Stone")
+    assert nonland_mana_profile(s)["C"]==1
+    d=DevState(["Island","Island","Sky Diamond"]); d.begin_turn(); d.play_land("Island"); d.begin_turn(); untap_step(d); d.play_land("Island")
+    assert cast_mana_permanent(d,"Sky Diamond")
+    assert nonland_mana_profile(d)["U"]==0
+    d.begin_turn(); untap_step(d); assert nonland_mana_profile(d)["U"]==1
+    return True
+
 def main():
     ap=argparse.ArgumentParser()
     ap.add_argument("--deck",default="izzet-science/v0.1-control.md")
@@ -232,6 +301,7 @@ def main():
     development_regressions()
     payment_regressions()
     fetch_regressions()
+    rock_regressions()
     _,cards=parse_deck(Path(args.deck))
     b,r=opening_baseline(cards,args.samples,args.seed)
     print("seed",hex(args.seed),"samples",args.samples)
