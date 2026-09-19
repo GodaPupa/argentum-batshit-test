@@ -330,7 +330,7 @@ def development_turn(state):
     for fetch in ("Evolving Wilds","Terramorphic Expanse"):
         if any(p["card"]==fetch for p in state.battlefield): fetch_basic(state,fetch)
     rock=choose_mana_permanent(state)
-    if rock: cast_mana_permanent_mutating(state,rock)
+    if rock: cast_mana_permanent_unified(state,rock)
     return {"land":land,"mana_permanent":rock,"reversal":reversal_threshold(state)}
 
 def policy_regressions():
@@ -431,6 +431,52 @@ def simulation_regressions(cards):
     assert len(rows)==6
     return True
 
+
+
+def ready_nonland_sources(state):
+    out=[]
+    for p in state.battlefield:
+        if p["tapped"]: continue
+        c=p["card"]
+        if c=="Everflowing Chalice" and p.get("kicks",0)>0: out.append((p,p.get("kicks",0)))
+        elif c in {"Mind Stone","Sky Diamond","Fire Diamond","Star Compass","Fellwar Stone","Network Terminal"}: out.append((p,1))
+        elif c in {"Ur-Golem's Eye","Sisay's Ring"}: out.append((p,2))
+        elif c in MANA_CREATURES and creature_mana_ready(c,p["entered"],state.turn): out.append((p,1))
+    return out
+
+def pay_generic_unified(state, amount):
+    land=[(p,2 if p["card"]=="Izzet Boilerworks" else 1) for p,_ in available_land_mana(state)]
+    nonland=ready_nonland_sources(state)
+    sources=nonland+land  # spend nonland first to preserve colored lands when possible
+    if sum(v for _,v in sources)<amount: return False
+    need=amount
+    for p,v in sources:
+        if need<=0: break
+        p["tapped"]=True; need-=v
+    return True
+
+def cast_mana_permanent_unified(state, card, chalice_kicks=None):
+    if card not in state.hand or card not in ROCKS|MANA_CREATURES: return False
+    if card=="Everflowing Chalice":
+        total=generic_land_capacity(state)+sum(v for _,v in ready_nonland_sources(state))
+        kicks=chalice_kicks if chalice_kicks is not None else total//2
+        if kicks<1 or not pay_generic_unified(state,2*kicks): return False
+        state.hand.remove(card); state.battlefield.append({"card":card,"tapped":False,"entered":state.turn,"kicks":kicks}); return True
+    if not pay_generic_unified(state,MANA_COST[card]): return False
+    state.hand.remove(card); state.battlefield.append({"card":card,"tapped":rock_enters_tapped(card),"entered":state.turn}); return True
+
+def unified_payment_regressions():
+    s=DevState([])
+    s.turn=3
+    s.battlefield=[
+        {"card":"Island","tapped":False,"entered":1},
+        {"card":"Mind Stone","tapped":False,"entered":2}]
+    s.hand=["Sky Diamond"]
+    assert cast_mana_permanent_unified(s,"Sky Diamond")
+    ms=next(p for p in s.battlefield if p["card"]=="Mind Stone")
+    assert ms["tapped"]
+    return True
+
 def main():
     ap=argparse.ArgumentParser()
     ap.add_argument("--deck",default="izzet-science/v0.1-control.md")
@@ -446,6 +492,7 @@ def main():
     policy_regressions()
     mutating_payment_regressions()
     simulation_regressions(cards)
+    unified_payment_regressions()
     _,cards=parse_deck(Path(args.deck))
     b,r=opening_baseline(cards,args.samples,args.seed)
     print("seed",hex(args.seed),"samples",args.samples)
