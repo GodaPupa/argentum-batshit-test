@@ -448,6 +448,44 @@ def high_tide_metrics(state):
     productive=castable and net_gain_over_no_tide>0
     return castable,productive,post_cast_island_mana,net_gain_over_no_tide
 
+
+
+SELECTION_SPECS={
+"Ponder":(1,3),"Preordain":(1,2),"Brainstorm":(1,3),"Consider":(1,1),
+"Opt":(1,1),"Impulse":(2,4),"Curate":(2,2),"Faithless Looting":(1,2),
+"Thrill of Possibility":(2,2),"Frantic Search":(3,2),"Think Twice":(2,1)
+}
+INTERACTION_CARDS={"Counterspell","Arcane Denial","Negate","Dispel","Memory Lapse","Deprive","Prohibit","Spell Pierce","Turn Aside","Lose Focus","Lightning Bolt","Galvanic Blast","Skred","Flame Slash","Fire // Ice","Into the Roil","Blink of an Eye","Echoing Truth","Abrade","Shattering Pulse"}
+COMBO_CARDS={"Lava Spike","Desperate Ritual"}
+
+def selection_priority(card, state):
+    # Uses current state only; caller supplies only legally viewed cards.
+    lands_in_hand=sum(c in LANDS for c in state.hand)
+    if card in LANDS and lands_in_hand==0: return 100
+    if card in COMBO_CARDS and bool((COMBO_CARDS-{card}) & set(state.hand)): return 90
+    if card in INTERACTION_CARDS and not (INTERACTION_CARDS & set(state.hand)): return 80
+    if card in {"Island","Mountain","Command Tower"}: return 60
+    if card in INTERACTION_CARDS: return 50
+    if card in COMBO_CARDS: return 40
+    return 20
+
+def choose_from_seen(seen, state, take=1):
+    ranked=sorted(enumerate(seen),key=lambda x:(-selection_priority(x[1],state),x[0]))
+    idx={i for i,_ in ranked[:take]}
+    return [c for i,c in enumerate(seen) if i in idx],[c for i,c in enumerate(seen) if i not in idx]
+
+def selection_regressions():
+    s=DevState(["Lava Spike"])
+    keep,rest=choose_from_seen(["Desperate Ritual","Mountain"],s,1)
+    assert keep==["Desperate Ritual"]
+    t=DevState(["Counterspell"])
+    keep,_=choose_from_seen(["Island","Lightning Bolt"],t,1)
+    assert keep==["Island"]
+    z=DevState(["Island"])
+    keep,_=choose_from_seen(["Negate","Mountain"],z,1)
+    assert keep==["Negate"]
+    return True
+
 def simulate_one(cards, rng, through=6):
     deck=list(cards); rng.shuffle(deck)
     hand=deck[:7]; pos=7
@@ -615,6 +653,7 @@ def main():
     simulation_regressions(cards)
     unified_payment_regressions()
     readiness_regressions(cards)
+    selection_regressions()
     b,r=opening_baseline(cards,args.samples,args.seed)
     print("seed",hex(args.seed),"samples",args.samples)
     print("land_buckets_0_1_2_3_4plus",b)
