@@ -596,7 +596,7 @@ def main():
             line=line.strip()
             if line=="Commander": section="commander"; continue
             if line.startswith("## "): section=line; continue
-            mm=re.match(r"^(\\d+) (.+)$",line)
+            mm=re.match(r"^(\d+) (.+)$",line)
             if not mm: continue
             n,name=int(mm.group(1)),mm.group(2)
             if section=="commander": commander=name
