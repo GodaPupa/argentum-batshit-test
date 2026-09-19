@@ -177,6 +177,13 @@ class Strategist(
     private var survivalCommitment: SurvivalCommitment? = null
     private var pendingSurvivalSetup: PendingSurvivalSetup? = null
 
+    internal fun survivalPlanDiagnostic(): String = buildString {
+        append("pending=")
+        append(pendingSurvivalSetup)
+        append("; committed=")
+        append(survivalCommitment)
+    }
+
     fun chooseAction(
         state: GameState,
         legalActions: List<LegalAction>,
