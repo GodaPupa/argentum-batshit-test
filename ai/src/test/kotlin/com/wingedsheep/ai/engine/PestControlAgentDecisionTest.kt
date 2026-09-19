@@ -1566,12 +1566,15 @@ class PestControlAgentDecisionTest : ScenarioTestBase() {
             val afterFollowChoice = player.survivalPlanDiagnostic()
             val chosenName = sourceName(game, follow)
             if (chosenName != "Weather the Storm") {
-                error(
-                    "T9_SURVIVAL_DIAGNOSTIC afterCarrier=" + afterCarrierPlan +
-                        "; afterLand=" + afterLandBeforeChoice +
-                        "; afterFollowChoice=" + afterFollowChoice +
-                        "; chosen=" + chosenName,
-                )
+                val diagnostic = "T9_SURVIVAL_DIAGNOSTIC afterCarrier=" + afterCarrierPlan +
+                    "; afterLand=" + afterLandBeforeChoice +
+                    "; afterFollowChoice=" + afterFollowChoice +
+                    "; chosen=" + chosenName
+                val out = java.nio.file.Path.of("").toAbsolutePath().parent
+                    .resolve("build/reports/pest-control-v2-diagnostic")
+                java.nio.file.Files.createDirectories(out)
+                java.nio.file.Files.writeString(out.resolve("t9-survival-diagnostic.txt"), diagnostic + "\n")
+                error(diagnostic)
             }
         }
 
