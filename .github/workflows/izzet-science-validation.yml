@@ -67,6 +67,21 @@ jobs:
             echo "deck=izzet-science/challengers/R0.5-midpoint-deck.md"
             sha256sum izzet-science/artifacts/R0.5-midpoint.txt
           } > izzet-science/results/R0.5-midpoint/manifest.txt
+      - name: Run infrastructure exclusion diagnostics
+        run: |
+          python izzet-science/sim/mana_harness.py             --deck izzet-science/challengers/infrastructure-A9.md             --diagnostic-size 98 --samples 100000 --seed 0x1A22E7001             | tee izzet-science/artifacts/infrastructure-A9.txt
+          python izzet-science/sim/mana_harness.py             --deck izzet-science/challengers/infrastructure-B8.md             --diagnostic-size 97 --samples 100000 --seed 0x1A22E7001             | tee izzet-science/artifacts/infrastructure-B8.txt
+          for name in infrastructure-A9 infrastructure-B8; do
+            mkdir -p "izzet-science/results/$name"
+            cp "izzet-science/artifacts/$name.txt" "izzet-science/results/$name/turn-sequence-v1.txt"
+            {
+              echo "source_sha=${GITHUB_SHA}"
+              echo "run_id=${GITHUB_RUN_ID}"
+              echo "seed=0x1A22E7001"
+              echo "samples=100000"
+              sha256sum "izzet-science/artifacts/$name.txt"
+            } > "izzet-science/results/$name/manifest.txt"
+          done
       - name: Preserve output
         uses: actions/upload-artifact@v4
         with:
@@ -75,13 +90,15 @@ jobs:
             izzet-science/artifacts/turn-sequence-v1.txt
             izzet-science/artifacts/R1-red-access.txt
             izzet-science/artifacts/R0.5-midpoint.txt
+            izzet-science/artifacts/infrastructure-A9.txt
+            izzet-science/artifacts/infrastructure-B8.txt
           if-no-files-found: error
 
       - name: Publish result back to experiment branch
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add izzet-science/results/latest/ izzet-science/results/R1-red-access/ izzet-science/results/R0.5-midpoint/
+          git add izzet-science/results/latest/ izzet-science/results/R1-red-access/ izzet-science/results/R0.5-midpoint/ izzet-science/results/infrastructure-A9/ izzet-science/results/infrastructure-B8/
           if git diff --cached --quiet; then
             echo "No result changes to publish"
             exit 0
