@@ -1,0 +1,10 @@
+name: Face Value E Post Red v2 Validation
+on:
+  push:
+    branches: [face-value/lab]
+    paths: [.github/workflows/face-value-e-post-red-v2-validation.yml]
+permissions: {contents: read}
+jobs:
+  red:
+    uses: ./.github/workflows/face-value-experiment-harness.yml
+    with: {experiment_name: e-post-red-v2, control_deck: experiments/face-value/decks/fv-temur-chrysalis-e.dck, challenger_deck: experiments/face-value/decks/fv-e-post-red-v2.dck, opponent_deck: experiments/face-value/decks/mono-red-madness.dck, seed_start: 1500001, games: 30}
