@@ -405,15 +405,25 @@ def simulate_one(cards, rng, through=6):
         untap_step(s)
         start_u,start_r,start_uu=color_flags(s)
         start_guildmage=can_pay_simple(s,need_u=1,need_r=1)
-        # development_turn's untap is idempotent because nothing has been spent yet.
-        out=development_turn(s)
+        # Actionable state: make the policy's legal land play/fetch, but spend no optional mana.
+        land=choose_land(s)
+        if land: s.play_land(land)
+        for fetch in ("Evolving Wilds","Terramorphic Expanse"):
+            if any(p["card"]==fetch for p in s.battlefield): fetch_basic(s,fetch)
+        action_u,action_r,action_uu=color_flags(s)
+        action_guildmage=can_pay_simple(s,need_u=1,need_r=1)
+        # Finish optional mana development without replaying a land.
+        rock=choose_mana_permanent(s)
+        if rock: cast_mana_permanent_unified(s,rock)
+        out={"land":land,"mana_permanent":rock,"reversal":reversal_threshold(s)}
         residual_u,residual_r,residual_uu=color_flags(s)
         neutral,positive,gross=reversal_threshold(s)
         islands=sum(high_tide_island(p["card"]) for p in s.lands())
         rows.append({"turn":turn,"lands":len(s.lands()),
                      "start_U":start_u,"start_R":start_r,"start_UU":start_uu,
+                     "action_U":action_u,"action_R":action_r,"action_UU":action_uu,
                      "residual_U":residual_u,"residual_R":residual_r,"residual_UU":residual_uu,
-                     "guildmage_start":start_guildmage,
+                     "guildmage_start":start_guildmage,"guildmage_action":action_guildmage,
                      "guildmage_end":can_pay_simple(s,need_u=1,need_r=1),
                      "reversal_neutral":neutral,"reversal_positive":positive,
                      "nonland_gross":gross,"islands":islands})
@@ -421,14 +431,15 @@ def simulate_one(cards, rng, through=6):
 
 def simulate_sample(cards, samples=10000, seed=SEED, through=6):
     rng=random.Random(seed)
-    agg={t:{"n":0,"start_U":0,"start_R":0,"start_UU":0,"residual_U":0,"residual_R":0,"residual_UU":0,
-            "guildmage_start":0,"guildmage_end":0,
+    agg={t:{"n":0,"start_U":0,"start_R":0,"start_UU":0,"action_U":0,"action_R":0,"action_UU":0,
+            "residual_U":0,"residual_R":0,"residual_UU":0,
+            "guildmage_start":0,"guildmage_action":0,"guildmage_end":0,
             "reversal_neutral":0,"reversal_positive":0,"lands_sum":0,"islands_sum":0}
          for t in range(1,through+1)}
     for _ in range(samples):
         for row in simulate_one(cards,rng,through):
             a=agg[row["turn"]]; a["n"]+=1
-            for k in ("start_U","start_R","start_UU","residual_U","residual_R","residual_UU","guildmage_start","guildmage_end","reversal_neutral","reversal_positive"):
+            for k in ("start_U","start_R","start_UU","action_U","action_R","action_UU","residual_U","residual_R","residual_UU","guildmage_start","guildmage_action","guildmage_end","reversal_neutral","reversal_positive"):
                 a[k]+=int(row[k])
             a["lands_sum"]+=row["lands"]; a["islands_sum"]+=row["islands"]
     return agg
@@ -491,7 +502,8 @@ def readiness_regressions(cards):
     rng=random.Random(24680)
     rows=simulate_one(cards,rng,6)
     assert all("guildmage_start" in x and "guildmage_end" in x for x in rows)
-    assert all("start_U" in x and "residual_U" in x for x in rows)
+    assert all("start_U" in x and "action_U" in x and "residual_U" in x for x in rows)
+    assert all("guildmage_action" in x for x in rows)
     return True
 
 def main():
@@ -521,8 +533,9 @@ def main():
         a=agg[turn]; n=a["n"]
         print("turn",turn,
               "start_U",a["start_U"]/n,"start_R",a["start_R"]/n,"start_UU",a["start_UU"]/n,
+              "action_U",a["action_U"]/n,"action_R",a["action_R"]/n,"action_UU",a["action_UU"]/n,
               "residual_U",a["residual_U"]/n,"residual_R",a["residual_R"]/n,"residual_UU",a["residual_UU"]/n,
-              "guildmage_start",a["guildmage_start"]/n,"guildmage_end",a["guildmage_end"]/n,
+              "guildmage_start",a["guildmage_start"]/n,"guildmage_action",a["guildmage_action"]/n,"guildmage_end",a["guildmage_end"]/n,
               "reversal_neutral",a["reversal_neutral"]/n,"reversal_positive",a["reversal_positive"]/n,
               "avg_lands",a["lands_sum"]/n,"avg_islands",a["islands_sum"]/n)
 
