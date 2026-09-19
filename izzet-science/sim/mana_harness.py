@@ -495,6 +495,7 @@ def main():
     ap.add_argument("--samples",type=int,default=100000)
     ap.add_argument("--seed",type=lambda x:int(x,0),default=SEED)
     args=ap.parse_args()
+    _,cards=parse_deck(Path(args.deck))
     regressions()
     state_regressions()
     development_regressions()
@@ -506,11 +507,17 @@ def main():
     simulation_regressions(cards)
     unified_payment_regressions()
     readiness_regressions(cards)
-    _,cards=parse_deck(Path(args.deck))
     b,r=opening_baseline(cards,args.samples,args.seed)
     print("seed",hex(args.seed),"samples",args.samples)
     print("land_buckets_0_1_2_3_4plus",b)
     print("rock_buckets_0_1_2_3plus",r)
+    agg=simulate_sample(cards,args.samples,args.seed,6)
+    for turn in range(1,7):
+        a=agg[turn]; n=a["n"]
+        print("turn",turn,"U",a["U"]/n,"R",a["R"]/n,"UU",a["UU"]/n,
+              "guildmage_pre",a["guildmage_pre"]/n,"guildmage_post",a["guildmage_post"]/n,
+              "reversal_neutral",a["reversal_neutral"]/n,"reversal_positive",a["reversal_positive"]/n,
+              "avg_lands",a["lands_sum"]/n,"avg_islands",a["islands_sum"]/n)
 
 if __name__=="__main__":
     main()
