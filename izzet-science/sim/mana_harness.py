@@ -586,6 +586,45 @@ def complex_selection_regressions():
     assert len(drawn)==3 and len(put)==2 and len(b.hand)==3
     return True
 
+
+
+def discard_lowest(hand,dev,n):
+    ranked=sorted(enumerate(hand),key=lambda x:(selection_priority(x[1],dev),x[0]))
+    idx=sorted([i for i,_ in ranked[:n]],reverse=True)
+    out=[]
+    for i in idx: out.append(hand.pop(i))
+    return list(reversed(out))
+
+def resolve_faithless_looting(ss,dev):
+    drawn=ss.draw(2); discarded=discard_lowest(ss.hand,dev,min(2,len(ss.hand)))
+    ss.graveyard+=discarded; return drawn,discarded
+
+def resolve_thrill(ss,dev):
+    if not ss.hand: return [],[]
+    discarded=discard_lowest(ss.hand,dev,1); ss.graveyard+=discarded
+    return ss.draw(2),discarded
+
+def resolve_frantic_search(ss,dev):
+    drawn=ss.draw(2); discarded=discard_lowest(ss.hand,dev,min(2,len(ss.hand)))
+    ss.graveyard+=discarded
+    return drawn,discarded
+
+def resolve_think_twice(ss,dev,flashback=False):
+    drawn=ss.draw(1)
+    return drawn
+
+def draw_discard_regressions():
+    d=DevState(["Lava Spike"])
+    f=SpellState(["Mountain","Negate"],["Desperate Ritual","Island","Opt"])
+    drawn,disc=resolve_faithless_looting(f,d)
+    assert drawn==["Desperate Ritual","Island"] and len(disc)==2
+    t=SpellState(["Mountain","Negate"],["Island","Opt"])
+    drawn,disc=resolve_thrill(t,d)
+    assert len(disc)==1 and drawn==["Island","Opt"]
+    q=SpellState([],["Island","Opt"])
+    assert resolve_think_twice(q,d)==["Island"]
+    return True
+
 def simulate_one(cards, rng, through=6):
     deck=list(cards); rng.shuffle(deck)
     hand=deck[:7]; pos=7
@@ -756,6 +795,7 @@ def main():
     selection_regressions()
     selection_resolution_regressions()
     complex_selection_regressions()
+    draw_discard_regressions()
     b,r=opening_baseline(cards,args.samples,args.seed)
     print("seed",hex(args.seed),"samples",args.samples)
     print("land_buckets_0_1_2_3_4plus",b)
