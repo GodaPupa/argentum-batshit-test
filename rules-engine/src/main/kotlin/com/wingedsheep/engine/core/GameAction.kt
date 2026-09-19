@@ -52,6 +52,8 @@ data class PassPriority(
  * @property damageDistribution Pre-chosen damage distribution for DividedDamageEffect spells (target ID -> damage amount)
  * @property chosenModes Cast-time mode choices for modal spells (rules 700.2). Ordered; the same index
  *           may repeat when the [ModalEffect.allowRepeat] flag is set (Escalate/Spree).
+ * @property modalSelectionCompleted Distinguishes a legal completed zero-mode choice from a cast
+ *           that has not made its required cast-time modal choice yet.
  * @property modeTargetsOrdered Per-mode target bindings, aligned 1:1 with [chosenModes]. Required for
  *           choose-N modal spells so the resolution pipeline can resolve `ContextTarget(k)` inside each mode's scope.
  * @property modeDamageDistribution Per-mode DividedDamageEffect allocations (future — no current card uses this).
@@ -117,6 +119,7 @@ data class CastSpell(
     val damageDistribution: Map<EntityId, Int>? = null,
     val useAlternativeCost: Boolean = false,
     val chosenModes: List<Int> = emptyList(),
+    val modalSelectionCompleted: Boolean = false,
     val modeTargetsOrdered: List<List<ChosenTarget>> = emptyList(),
     val modeDamageDistribution: Map<Int, Map<EntityId, Int>> = emptyMap(),
     val graveyardLifeCost: Int = 0,

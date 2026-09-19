@@ -1,0 +1,34 @@
+# Pest Control v1.0 — Goldfish Sample #1 seed freeze
+
+These 30 seeds were frozen before execution for Pest Control v1.0 Goldfish Sample #1. They are now
+permanently retired regression-validation seeds. They must never be executed again, optimized
+against, or used for future performance inference.
+
+- Accepted laboratory tip: `8dd4a429e0799b60e7449c214a540dd8414b1f1c`
+- Shared Argentum change at the accepted Phase 3 gate: **yes**
+- Deck: permanent frozen Pest Control v1.0 main deck, no sideboard
+- Agent: validated generic Argentum/Pest Control solitaire policy from Phase 3
+- Count: 30 unique deterministic seeds
+- Derivation: first 60 bits of SHA-256 over
+  `Project Pest Control v1.0 Goldfish Sample #1 seed NN`, for `NN` from `01` through `30`
+- Overlap audit: no numeric or normalized hexadecimal match on any fetched remote branch, including
+  Pest Control, Batshit, Affinity, Project X, development, regression, smoke, performance, and
+  optimization seed material
+- Execution status at freeze: not started
+- Final execution status: original performance sample permanently rejected; final corrected replay
+  accepted solely as regression evidence; vector permanently retired
+
+The authoritative vector is
+`gym/src/test/resources/pest-control-v10-goldfish-sample-1-seeds.csv`.
+
+This is a development/engine goldfish, not matchup evidence. Opponent-dependent interaction that is
+stranded against the blank solitaire opponent must be reported separately from genuinely
+nonfunctional hands. The sample is invalidated by any clear rules/state, telemetry, mana-legality,
+terminal-reporting, or agent-policy defect.
+
+The original post-run audit found four empty-board Chainer's Edict casts, one Scion mana sacrifice
+with no funded spell, and an invalid pre-land-drop/repeated-snapshot bottleneck metric. Two interim
+replays exposed and invalidated additional interaction-relevance telemetry. After the final generic
+modal-removal correction and green CI, an explicitly authorized exact-order replay passed all 30
+games. Its regression audit is preserved in `goldfish-sample-1-regression-accepted.md`. The vector
+is retired and must not be rerun, replaced, or repurposed.

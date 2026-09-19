@@ -23,10 +23,8 @@ import com.wingedsheep.sdk.scripting.effects.SearchDestination
  *   Search your library for a basic land card, reveal it, put it into your hand, then shuffle.
  *   (Also shuffle this card.)
  *
- * Omen (CR 715, modeled on the Adventure layout): casting Roost Seek resolves its search, then
- * exiles the card and lets the caster cast Sagu Wildling later from exile. The "(Also shuffle
- * this card.)" reminder is handled by the Omen/Adventure exile-and-recast flow — the omen half
- * leaves the stack into exile rather than the graveyard.
+ * Omen (CR 715): casting Roost Seek resolves its search, then shuffles the card into its owner's
+ * library. This must use the dedicated Omen layout rather than Adventure's exile-and-recast flow.
  */
 val SaguWildling = card("Sagu Wildling") {
     manaCost = "{4}{G}"
@@ -48,7 +46,7 @@ val SaguWildling = card("Sagu Wildling") {
 
     // Roost Seek — Omen. Search your library for a basic land card, reveal it, put it into your
     // hand, then shuffle.
-    adventure("Roost Seek") {
+    omen("Roost Seek") {
         manaCost = "{G}"
         typeLine = "Sorcery — Omen"
         oracleText = "Search your library for a basic land card, reveal it, put it into your hand, " +

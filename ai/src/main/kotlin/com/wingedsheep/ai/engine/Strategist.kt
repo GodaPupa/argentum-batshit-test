@@ -10,6 +10,8 @@ import com.wingedsheep.ai.engine.evaluation.BoardPresence
 import com.wingedsheep.ai.engine.evaluation.EvaluationWeights
 import com.wingedsheep.ai.engine.knowledge.HoldPolicy
 import com.wingedsheep.ai.engine.knowledge.IntentCatalog
+import com.wingedsheep.ai.engine.knowledge.IntentTag
+import com.wingedsheep.ai.engine.knowledge.SelfRemovalValuation
 import com.wingedsheep.ai.engine.knowledge.TimingVerdict
 import com.wingedsheep.ai.engine.rollout.CandidateEvaluator
 import com.wingedsheep.ai.engine.rollout.PlayoutPolicy
@@ -20,18 +22,28 @@ import com.wingedsheep.ai.insight.AiDecisionInsight
 import com.wingedsheep.ai.insight.AiDecisionKind
 import com.wingedsheep.ai.insight.AiInsightLabels
 import com.wingedsheep.ai.insight.AiInsightSink
+import com.wingedsheep.ai.insight.FriendlyRemovalAudit
 import com.wingedsheep.ai.insight.CombatPlan
 import com.wingedsheep.ai.insight.CombatPlanTrace
 import com.wingedsheep.engine.core.ActivateAbility
 import com.wingedsheep.engine.core.AlternativeCostType
 import com.wingedsheep.engine.core.CastSpell
+import com.wingedsheep.engine.core.CycleCard
 import com.wingedsheep.engine.core.DeclareAttackers
 import com.wingedsheep.engine.core.DeclareBlockers
 import com.wingedsheep.engine.core.GameAction
+import com.wingedsheep.engine.core.PlayLand
+import com.wingedsheep.engine.core.PaymentStrategy
+import com.wingedsheep.engine.core.TypecycleCard
 import com.wingedsheep.engine.legalactions.LegalAction
 import com.wingedsheep.engine.legalactions.MeaningfulActionFilter
 import com.wingedsheep.engine.state.GameState
+import com.wingedsheep.engine.state.components.battlefield.DamageComponent
+import com.wingedsheep.engine.state.components.battlefield.TappedComponent
+import com.wingedsheep.engine.state.components.combat.AttackingComponent
+import com.wingedsheep.engine.state.components.combat.AttackersDeclaredThisCombatComponent
 import com.wingedsheep.engine.state.components.identity.CardComponent
+import com.wingedsheep.engine.state.components.player.LifeGainedThisTurnComponent
 import com.wingedsheep.engine.state.components.stack.AbilityOnStackComponent
 import com.wingedsheep.engine.state.components.stack.ActivatedAbilityOnStackComponent
 import com.wingedsheep.engine.state.components.stack.ChosenTarget
@@ -41,6 +53,7 @@ import com.wingedsheep.engine.state.components.stack.TriggeredAbilityOnStackComp
 import com.wingedsheep.sdk.core.Format
 import com.wingedsheep.sdk.core.ManaCost
 import com.wingedsheep.sdk.core.ManaSymbol
+import com.wingedsheep.sdk.core.Phase
 import com.wingedsheep.sdk.core.Step
 import com.wingedsheep.sdk.model.EntityId
 import com.wingedsheep.sdk.scripting.AdditionalCostPayment
@@ -155,6 +168,22 @@ class Strategist(
      */
     private val positionsActedFrom = ArrayDeque<Long>()
 
+    /**
+     * A resource that exists only to establish an expiring condition is not a complete plan. Keep
+     * the proven consumer across the intervening stack resolution so a combat-step shortcut cannot
+     * let the condition expire after its cost has already been paid.
+     */
+    private var expiringConditionCommitment: ExpiringConditionCommitment? = null
+    private var survivalCommitment: SurvivalCommitment? = null
+    private var pendingSurvivalSetup: PendingSurvivalSetup? = null
+
+    internal fun survivalPlanDiagnostic(): String = buildString {
+        append("pending=")
+        append(pendingSurvivalSetup)
+        append("; committed=")
+        append(survivalCommitment)
+    }
+
     fun chooseAction(
         state: GameState,
         legalActions: List<LegalAction>,
@@ -162,6 +191,9 @@ class Strategist(
     ): LegalAction {
         val startNanos = if (insightSink != null) System.nanoTime() else 0L
         val evaluationState = stateSampler?.invoke(state, playerId) ?: state
+        promotePendingSurvivalSetup(evaluationState, legalActions, playerId)
+        committedSurvivalFollowUp(evaluationState, legalActions, playerId)?.let { return it }
+        committedExpiringConditionFollowUp(evaluationState, legalActions, playerId)?.let { return it }
         // Combat declaration steps need the CombatAdvisor to fill in attacker/blocker maps
         // even when there's only one legal action (which is the common case — the enumerator
         // returns a single DeclareAttackers/DeclareBlockers with an empty default map).
@@ -204,6 +236,7 @@ class Strategist(
         // the real option it is rather than as a separately-computed threshold.
         val leaves = mutableListOf<LegalAction>()
         val leafStates = mutableListOf<GameState>()
+        val leafEvents = mutableListOf<List<com.wingedsheep.engine.core.GameEvent>>()
         // Local testing mode only: the candidates that never reached scoring. Reading the panel
         // without them makes the AI look like it never considered a play it in fact discarded.
         val dropped = if (insightSink != null) mutableListOf<AiActionOption>() else null
@@ -219,6 +252,7 @@ class Strategist(
             } else {
                 passSimulation.state
             }
+            leafEvents += passSimulation.events
         }
         for (action in affordable) {
             searched++
@@ -243,6 +277,7 @@ class Strategist(
             if (usable) {
                 leaves += action.copy(action = materialized)
                 leafStates += simulation.state
+                leafEvents += simulation.events
             } else {
                 val illegal = simulation is SimulationResult.Illegal
                 dropped?.add(
@@ -286,8 +321,87 @@ class Strategist(
 
         // ── Pass 3: per-card timing and advisor adjustments, in raw evaluator units ──
         val firstCandidate = if (pass != null) 1 else 0
+        // Terminal outcomes outrank every heuristic term. Preserve a legal one-action win first;
+        // only when none exists, inspect one additional same-turn strategic action from each
+        // already-resolved candidate leaf. This is deliberately not a general search horizon: it
+        // runs only in our main phase, considers no land play or draw assumption, and accepts a
+        // sequence only when canonical resolution of the second action actually ends the game.
+        // A terminal leaf is action-created lethal only when the pass baseline does not already
+        // reach the same win. Otherwise any legal action taken while a state-based or pending
+        // effect is already ending the game would receive lethal priority, bypassing resource and
+        // friendly-removal safeguards without contributing to the outcome.
+        val passAlreadyWins = pass != null && leafStates.first().isWinningTerminalFor(playerId)
+        val immediateWinIndex = if (!passAlreadyWins) {
+            (firstCandidate until leaves.size)
+                .filter { i -> leafStates[i].isWinningTerminalFor(playerId) }
+                .maxByOrNull { i -> leafScores[i] }
+        } else null
+        val twoActionWinIndex = if (!passAlreadyWins && immediateWinIndex == null) {
+            bestTwoActionSameTurnWinIndex(
+                leaves = leaves,
+                leafStates = leafStates,
+                firstCandidate = firstCandidate,
+                playerId = playerId,
+                budget = budget,
+            )
+        } else null
+        // A one-ply leaf cannot normally see combat damage from the priority window immediately
+        // after attackers are declared. Before applying resource-hold floors, recognize the narrow
+        // case where visible combat is already deterministic lethal and one fully materialized,
+        // legal action changes that outcome. Immediate wins stay authoritative; among survival
+        // actions the ordinary leaf score still chooses the least damaging continuation.
+        val survivalIndex = if (immediateWinIndex == null && twoActionWinIndex == null) {
+            (firstCandidate until leaves.size)
+                .filter { i -> preventsVisibleImminentCombatLethal(evaluationState, leafStates[i], playerId) }
+                .maxByOrNull { i -> leafScores[i] }
+        } else null
+
         val adjusted = (firstCandidate until leaves.size).map { i ->
-            Triple(leaves[i], leafScores[i], adjustScore(evaluationState, leaves[i], playerId, leafScores[i], passScore))
+            val ordinaryAdjustment = adjustScore(
+                evaluationState,
+                leafStates[i],
+                leaves[i],
+                playerId,
+                leafScores[i],
+                passScore,
+                passAlreadyWins,
+                leafEvents[i],
+            )
+            Triple(
+                leaves[i],
+                leafScores[i],
+                if (i == immediateWinIndex) {
+                    ordinaryAdjustment.copy(
+                        score = Double.MAX_VALUE,
+                        note = "lethal policy: legal immediate action wins the game",
+                    )
+                } else if (i == twoActionWinIndex) {
+                    ordinaryAdjustment.copy(
+                        score = Double.MAX_VALUE / 2,
+                        note = "lethal policy: legal bounded same-turn continuation wins the game",
+                    )
+                } else if (i == survivalIndex) {
+                    ordinaryAdjustment.copy(
+                        score = Double.MAX_VALUE / 4,
+                        note = "imminent-lethal policy: legal action is required to survive visible combat",
+                    )
+                } else if (
+                    passAlreadyWins &&
+                    leafStates[i].gameOver &&
+                    leafStates[i].winnerId == leafStates.first().winnerId &&
+                    ordinaryAdjustment.score > passScore
+                ) {
+                    // Once passing already ends the game for the same winner, post-win board or
+                    // resource improvements cannot make spending an action better than passing.
+                    // Lower action scores remain lower so ordinary hold/audit evidence is retained.
+                    ordinaryAdjustment.copy(
+                        score = passScore,
+                        note = "terminal policy: same-winner action capped at winning pass",
+                    )
+                } else {
+                    ordinaryAdjustment
+                },
+            )
         }
         val scored = adjusted.map { (action, _, adjustment) -> action to adjustment.score }
 
@@ -317,6 +431,24 @@ class Strategist(
             pass ?: legalActions.first()
         }
 
+        if (takeAction) {
+            val chosenIndex = leaves.indexOf(best.first)
+            if (chosenIndex >= 0) {
+                rememberSurvivalFollowUp(
+                    evaluationState,
+                    leafStates[chosenIndex],
+                    best.first,
+                    playerId,
+                )
+                rememberExpiringConditionFollowUp(
+                    evaluationState,
+                    leafStates[chosenIndex],
+                    best.first,
+                    playerId,
+                )
+            }
+        }
+
         if (insightSink != null) {
             recordPriorityInsight(
                 state, evaluationState, playerId, startNanos,
@@ -326,6 +458,103 @@ class Strategist(
             )
         }
         return chosen
+    }
+
+    /**
+     * Find a proven terminal continuation one strategic action beyond the ordinary candidate leaf.
+     *
+     * Every first leaf was produced by the authoritative simulator above. Each second action is
+     * enumerated from that resulting state, fully materialized with the same canonical payment and
+     * target machinery, and resolved to the same quiet boundary. Enumerating every first action
+     * compares both orders naturally; a nonterminal reverse order receives no lethal priority.
+     */
+    private fun bestTwoActionSameTurnWinIndex(
+        leaves: List<LegalAction>,
+        leafStates: List<GameState>,
+        firstCandidate: Int,
+        playerId: EntityId,
+        budget: DecisionBudget,
+    ): Int? {
+        val initiallyAvailableSources = (firstCandidate until leaves.size)
+            .mapNotNull { index -> strategicActionSource(leaves[index].action) }
+            .toSet()
+        return (firstCandidate until leafStates.size).firstOrNull { index ->
+            if (strategicActionSource(leaves[index].action) == null) return@firstOrNull false
+            val afterFirst = leafStates[index]
+            if (!afterFirst.isActiveTurnFor(playerId) ||
+                afterFirst.step !in setOf(Step.PRECOMBAT_MAIN, Step.POSTCOMBAT_MAIN) ||
+                afterFirst.pendingDecision != null || afterFirst.stack.isNotEmpty()
+            ) {
+                return@firstOrNull false
+            }
+
+            val here = StateProgress.digest(afterFirst)
+            val continuations = expandXCostAbilities(
+                afterFirst,
+                preferKickerVariants(candidatesFrom(simulator.getLegalActions(afterFirst, playerId))),
+                playerId,
+            ).filter { continuation ->
+                strategicActionSource(continuation.action) in initiallyAvailableSources
+            }
+
+            continuations.any { continuation ->
+                val (_, result) = materialize(afterFirst, continuation, playerId, budget, here)
+                result !is SimulationResult.Illegal &&
+                    result !is SimulationResult.StoppedAtLimit &&
+                    result.state.isWinningTerminalFor(playerId)
+            }
+        }
+    }
+
+    private fun strategicActionSource(action: GameAction): EntityId? = when (action) {
+        is CastSpell -> action.cardId
+        is ActivateAbility -> action.sourceId
+        else -> null
+    }
+
+    private fun GameState.isWinningTerminalFor(playerId: EntityId): Boolean =
+        gameOver && winnerId in teamOf(playerId)
+
+    /**
+     * Whether [after] turns a publicly determined lethal attack into a nonlethal one at the final
+     * priority window after attackers are declared. Candidate materialization and simulation have
+     * already enforced targeting, protection, costs, and the action's actual effect; this comparison
+     * only asks whether the resulting projected attackers still beat the defender's legal blocks.
+     */
+    private fun preventsVisibleImminentCombatLethal(
+        before: GameState,
+        after: GameState,
+        playerId: EntityId,
+    ): Boolean {
+        if (!isFinalDefensiveCombatWindow(before, playerId) || !visibleDeclaredAttackIsLethal(before, playerId)) {
+            return false
+        }
+        if (after.gameOver) return after.winnerId in after.teamOf(playerId)
+        return !visibleDeclaredAttackIsLethal(after, playerId)
+    }
+
+    private fun isFinalDefensiveCombatWindow(state: GameState, playerId: EntityId): Boolean {
+        if (state.phase != Phase.COMBAT || state.step != Step.DECLARE_ATTACKERS) return false
+        if (state.activePlayerId == playerId || state.priorityPlayerId != playerId) return false
+        val activePlayer = state.activePlayerId ?: return false
+        return state.getEntity(activePlayer)?.has<AttackersDeclaredThisCombatComponent>() == true
+    }
+
+    private fun visibleDeclaredAttackIsLethal(state: GameState, playerId: EntityId): Boolean {
+        if (state.phase != Phase.COMBAT || state.step != Step.DECLARE_ATTACKERS) return false
+        val projected = state.projectedState
+        val attackers = state.getBattlefield().filter { attackerId ->
+            state.getEntity(attackerId)?.get<AttackingComponent>()?.defenderId == playerId &&
+                projected.isCreature(attackerId)
+        }
+        if (attackers.isEmpty()) return false
+        val blockers = CombatMath.getOpponentUntappedCreatures(state, projected, playerId)
+        return CombatMath.calculateDamageThroughOptimalBlocking(
+            state = state,
+            projected = projected,
+            attackers = attackers,
+            opponentBlockers = blockers,
+        ) >= state.lifeTotal(playerId)
     }
 
     /**
@@ -374,6 +603,19 @@ class Strategist(
                 advantage = adjustment.score - adjustedPassScore,
                 chosen = action === chosenAction,
                 note = adjustment.note,
+                productionAdmissible = adjustment.productionAdmissible,
+                productionRejectionReason = adjustment.productionRejectionReason,
+                strategicSequencingAdjustment = adjustment.sequencingAdjustment,
+                expiringConditionSequencingAdjustment = adjustment.expiringConditionSequencingAdjustment,
+                friendlyRemovalAudit = adjustment.friendlyRemovalAudit?.copy(
+                    selected = action === chosenAction,
+                    selectionReason = when {
+                        action === chosenAction -> "selected: highest adjusted option above passing"
+                        adjustment.friendlyRemovalAudit.policyDisposition.startsWith("reject") ->
+                            adjustment.friendlyRemovalAudit.policyDisposition
+                        else -> "not selected: another option or holding had greater adjusted value"
+                    },
+                ),
                 action = action.action,
             )
         }
@@ -487,9 +729,15 @@ class Strategist(
      */
     private fun candidatesFrom(legalActions: List<LegalAction>): List<LegalAction> =
         if (useMeaningfulFilter) {
-            MeaningfulActionFilter.filterMeaningful(legalActions).filter { it.affordable && !it.isManaAbility }
+            // The meaningful filter already removes ordinary mana abilities while retaining a
+            // sacrifice-for-mana action whose irreversible cost makes it a strategic choice.
+            MeaningfulActionFilter.filterMeaningful(legalActions).filter { it.affordable }
         } else {
-            legalActions.filter { it.affordable && !it.isManaAbility && it.actionType != "PassPriority" }
+            legalActions.filter {
+                it.affordable &&
+                    (!it.isManaAbility || it.additionalCostInfo?.costType == "SacrificePermanent") &&
+                    it.actionType != "PassPriority"
+            }
         }
 
     private fun handleCombatDeclaration(
@@ -619,12 +867,54 @@ class Strategist(
      */
     private fun adjustScore(
         state: GameState,
+        leafState: GameState,
         action: LegalAction,
         playerId: EntityId,
         leafScore: Double,
         passScore: Double,
+        passAlreadyWins: Boolean,
+        leafEvents: List<com.wingedsheep.engine.core.GameEvent>,
     ): AdjustedScore {
         val cardName = resolveCardName(state, action) ?: return AdjustedScore(leafScore)
+        val cast = action.action as? CastSpell
+        val card = cast?.let { state.getEntity(it.cardId)?.get<CardComponent>() }
+        val intent = cast?.let { spell ->
+            intents.forCast(cardName, spell)
+        }
+        val shouldHoldFriendlyRemoval = cast != null && card != null && intent != null &&
+            SelfRemovalValuation.shouldHold(
+                state, leafState, playerId, intent, card, cast, leafScore, passScore,
+                passAlreadyWins, boardPresenceWeight,
+            )
+        val friendlyRemovalAudit = if (insightSink != null && cast != null && card != null && intent != null) {
+            SelfRemovalValuation.assess(
+                state, leafState, leafEvents, playerId, intent, card, cast, action.manaCostString,
+                action.validTargets, leafScore, passScore, passAlreadyWins, boardPresenceWeight,
+            )
+        } else null
+        // Compute the pure sequencing term even for a candidate that a later production hold gate
+        // rejects. The floor remains authoritative; retaining the otherwise-applicable term merely
+        // lets observational counterfactuals compare equivalent complete lines.
+        val sequencing = strategicSequencingAdjustment(
+            state, leafState, action, playerId, leafScore, passScore,
+        )
+        val expiringConditionSequencing = lifeGainEnhancedSequencingAdjustment(
+            state, leafState, action, playerId, leafScore,
+        )
+        fun adjusted(
+            score: Double,
+            note: String? = null,
+            productionAdmissible: Boolean = true,
+            sequencingAdjustment: Double = sequencing,
+        ) = AdjustedScore(
+            score = score,
+            note = note,
+            friendlyRemovalAudit = friendlyRemovalAudit,
+            productionAdmissible = productionAdmissible,
+            productionRejectionReason = note.takeUnless { productionAdmissible },
+            sequencingAdjustment = sequencingAdjustment,
+            expiringConditionSequencingAdjustment = expiringConditionSequencing,
+        )
 
         // Phase 6: what the board looks like after this resolves is only half the question; the
         // other half is whether this was the window — and, for removal, whether this was the target
@@ -641,7 +931,7 @@ class Strategist(
         if (timing is TimingVerdict.NoWindow) {
             // The card does nothing here, so nothing the simulation reports should make it beat
             // passing. See [TimingVerdict.NoWindow] for why this is a floor and not a penalty.
-            return AdjustedScore(passScore - 1.0, "hold policy: wrong window — floored below passing")
+            return adjusted(passScore - 1.0, "hold policy: wrong window — floored below passing", false)
         }
         if (shouldHoldLandSacrifice(state, action.action, playerId, cardName)) {
             // A finite discount was not strong enough here: rollout damage and response-window
@@ -649,9 +939,60 @@ class Strategist(
             // spend two Mountains on speculative face damage. This is a timing decision, not a
             // small material adjustment, so preserve the lands by flooring the candidate below
             // passing until the cast is lethal, near-lethal, or answers a real engine.
-            return AdjustedScore(
+            return adjusted(
                 passScore - 1.0,
                 "land-sacrifice policy: low-value conversion — floored below passing",
+                false,
+            )
+        }
+        if (shouldHoldNullForcedSacrifice(state, leafState, action.action, playerId, cardName)) {
+            // An edict without a sacrifice is legal, but a pure one has bought no strategic
+            // result. Keep legality in the engine and value the result here, below passing.
+            return adjusted(
+                passScore - 1.0,
+                "forced-sacrifice policy: no opposing permanent was sacrificed — floored below passing",
+                false,
+            )
+        }
+        if (holdRemovalForBetterTargets && shouldHoldFriendlyRemoval) {
+            return adjusted(
+                passScore - 1.0,
+                "removal policy: friendly target lacks sufficient concrete downstream value",
+                false,
+            )
+        }
+        if (shouldDeferForLandUnlockedSequence(state, action, playerId)) {
+            return adjusted(
+                passScore - 1.0,
+                "sequencing policy: legal land play unlocks a superior same-turn line",
+                false,
+            )
+        }
+        if (shouldDeferForExecutableExpiringConditionSequence(state, action.action, playerId)) {
+            return adjusted(
+                passScore - 1.0,
+                "sequencing policy: executable expiring-condition line should begin with its enabler",
+                false,
+            )
+        }
+        if (shouldHoldNullLifeGain(state, leafState, action.action, playerId, cardName)) {
+            // Raw life has board-score value even when no game object can currently exploit it.
+            // A pure gain spell with no pressure, payoff, or enabled follow-up is therefore a
+            // legal but strategically null resource conversion, and should remain in hand.
+            return adjusted(
+                passScore - 1.0,
+                "lifegain policy: no pressure or concrete payoff — floored below passing",
+                false,
+            )
+        }
+        if (isSacrificeManaAction(action) && unlockedProductiveCastIds(state, leafState, playerId).isEmpty()) {
+            // Sacrificing a permanent is an irreversible strategic cost, even when the ability is
+            // a mana ability. Require an immediate, newly executable productive use rather than
+            // consuming the body merely because mana can be generated.
+            return adjusted(
+                passScore - 1.0,
+                "sacrifice-mana policy: no productive use unlocked — floored below passing",
+                false,
             )
         }
         val timingDelta = (timing as? TimingVerdict.Adjust)?.delta ?: 0.0
@@ -665,11 +1006,15 @@ class Strategist(
         // Check for card-specific advisor override. Timing is applied outside it, so a per-card
         // advisor still sees the pure board score as its `defaultScore` and a card with both
         // keeps both.
+        val sequencingNote = sequencing.takeIf { it != 0.0 }
+            ?.let { "structural sequencing %+.2f".format(it) }
+
         val advisor = advisorRegistry.getAdvisor(cardName)
-            ?: return AdjustedScore(
-                leafScore + timingDelta + sacrificeWindowDelta,
-                listOfNotNull(timingNote, sacrificeWindowNote)
+            ?: return adjusted(
+                leafScore + timingDelta + sacrificeWindowDelta + sequencing,
+                listOfNotNull(timingNote, sacrificeWindowNote, sequencingNote)
                     .joinToString("; ").ifEmpty { null },
+                sequencingAdjustment = sequencing,
             )
         val context = CastContext(
             state = state,
@@ -683,12 +1028,852 @@ class Strategist(
         )
         val override = advisor.evaluateCast(context)
         val advisorNote = override?.let { "${advisor::class.simpleName} replaced the board score" }
-        return AdjustedScore(
-            (override ?: leafScore) + timingDelta + sacrificeWindowDelta,
-            listOfNotNull(advisorNote, timingNote, sacrificeWindowNote)
+        return adjusted(
+            (override ?: leafScore) + timingDelta + sacrificeWindowDelta + sequencing,
+            listOfNotNull(advisorNote, timingNote, sacrificeWindowNote, sequencingNote)
                 .joinToString("; ").ifEmpty { null },
+            sequencingAdjustment = sequencing,
         )
     }
+
+    /**
+     * A pure forced-sacrifice spell is strategically null when its targeted opponent's
+     * battlefield is unchanged after full simulation. The test is intentionally about the
+     * resolved result, not whether casting was legal: player-targeted edicts remain executable,
+     * while the agent declines to spend one into an empty or otherwise non-sacrificing board.
+     *
+     * Strictly pure spells only. [IntentCatalog.isPureForcedSacrificeSpell] declines when any
+     * additional effect exists, preserving casts whose draw/drain/token rider is useful even when
+     * the sacrifice portion does nothing.
+     */
+    private fun shouldHoldNullForcedSacrifice(
+        state: GameState,
+        leafState: GameState,
+        action: GameAction,
+        playerId: EntityId,
+        cardName: String,
+    ): Boolean {
+        val cast = action as? CastSpell ?: return false
+        if (!intents.isPureForcedSacrificeSpell(cardName, cast.faceIndex)) return false
+
+        val explicitOpponents = cast.targets.filterIsInstance<ChosenTarget.Player>()
+            .map(ChosenTarget.Player::playerId)
+            .filter { state.isOpponentTo(it, playerId) }
+            .toSet()
+        // Some internal planning leaves player selection implicit. A pure forced-sacrifice spell
+        // still has no useful result when every opponent's battlefield is unchanged.
+        val affectedOpponents = explicitOpponents.ifEmpty {
+            state.turnOrder.filter { state.isOpponentTo(it, playerId) }.toSet()
+        }
+        if (affectedOpponents.isEmpty()) return false
+
+        return affectedOpponents.all { opponentId ->
+            state.controlledBattlefield(opponentId).toSet() ==
+                leafState.controlledBattlefield(opponentId).toSet()
+        }
+    }
+
+    private fun isSacrificeManaAction(action: LegalAction): Boolean =
+        action.isManaAbility && action.additionalCostInfo?.costType == "SacrificePermanent"
+
+    /** Hold a pure life-only resource until life or a visible event consumer makes it concrete. */
+    private fun shouldHoldNullLifeGain(
+        state: GameState,
+        leafState: GameState,
+        action: GameAction,
+        playerId: EntityId,
+        cardName: String,
+    ): Boolean {
+        val isPureLifeGain = when (action) {
+            is CastSpell -> intents.isPureLifeGainSpell(cardName, action.faceIndex)
+            is ActivateAbility -> intents.isPureLifeGainAbility(cardName, action.abilityId)
+            else -> false
+        }
+        if (!isPureLifeGain) return false
+        val pendingLifeGain = pendingGuaranteedLifeGain(state, playerId)
+        if (visibleRepeatablePayoffCount(state, playerId) > 0) return false
+        if (lifeGainNeededForSurvival(state, playerId, pendingLifeGain)) return false
+        if (bestLifeGainEnhancedFollowUp(state, leafState, playerId, pendingLifeGain) != null) return false
+        return true
+    }
+
+    /**
+     * Conservative public-board survival test. Every opposing creature is counted at its projected
+     * power because it can untap or lose summoning sickness before the next attack; overestimating
+     * pressure merely preserves an emergency lifegain option and is safer than suppressing one.
+     */
+    private fun lifeGainNeededForSurvival(
+        state: GameState,
+        playerId: EntityId,
+        pendingGuaranteedLifeGain: Int = 0,
+    ): Boolean {
+        val opposingPermanents = state.turnOrder.asSequence()
+            .filter { state.isOpponentTo(it, playerId) }
+            .flatMap { state.controlledBattlefield(it).asSequence() }
+            .toList()
+        val opposingPower = opposingPermanents
+            .filter { state.getEntity(it)?.get<CardComponent>()?.isCreature == true }
+            .sumOf { (state.projectedState.getPower(it) ?: 0).coerceAtLeast(0) }
+        // Public repeatable damage engines are pressure too. Count one structurally guaranteed
+        // opponent-damage event from each such permanent; do not inspect the opponent's hand or
+        // assume any particular future spell. This is deliberately conservative and bounded:
+        // it preserves an emergency lifegain resource when the visible board itself represents
+        // meaningful reach without pretending to know hidden cards.
+        val visibleRepeatableDamage = opposingPermanents.sumOf { permanentId ->
+            val permanent = state.getEntity(permanentId) ?: return@sumOf 0
+            val name = permanent.get<CardComponent>()?.name ?: return@sumOf 0
+            intents.forPermanent(permanent, name)
+                .filter { it.repeatable }
+                .maxOfOrNull { (it.opponentDamage ?: 0).coerceAtLeast(0) }
+                ?: 0
+        }
+        return opposingPower + visibleRepeatableDamage >=
+            state.lifeTotal(playerId) + pendingGuaranteedLifeGain
+    }
+
+    /**
+     * Life already certain from controlled stack objects, after conservative disruption checks.
+     * Hidden card identities are never inspected: an opponent with any card in hand means the
+     * pending object is not treated as guaranteed. A visible counter-capable permanent or opposing
+     * counter object on the stack likewise prevents certainty. This intentionally under-claims;
+     * it is used only to suppress a redundant resource expenditure.
+     */
+    private fun pendingGuaranteedLifeGain(state: GameState, playerId: EntityId): Int {
+        if (state.stack.isEmpty()) return 0
+        val opponents = state.turnOrder.filter { state.isOpponentTo(it, playerId) }
+        if (opponents.any { state.getHand(it).isNotEmpty() }) return 0
+        if (opponents.any { opponentId ->
+                state.controlledBattlefield(opponentId).any { permanentId ->
+                    val permanent = state.getEntity(permanentId) ?: return@any false
+                    val name = permanent.get<CardComponent>()?.name ?: return@any false
+                    intents.forPermanent(permanent, name).any { IntentTag.COUNTERSPELL in it.tags }
+                }
+            }
+        ) return 0
+
+        return state.stack.mapIndexedNotNull { index, stackId ->
+            val stackObject = state.getEntity(stackId) ?: return@mapIndexedNotNull null
+            val amount = intents.guaranteedControllerLifeGain(stackObject, playerId)
+                ?: return@mapIndexedNotNull null
+            val hasOpposingCounterAbove = state.stack.drop(index + 1).any { laterId ->
+                val later = state.getEntity(laterId) ?: return@any false
+                val controller = later.get<SpellOnStackComponent>()?.casterId
+                    ?: later.get<TriggeredAbilityOnStackComponent>()?.controllerId
+                    ?: later.get<ActivatedAbilityOnStackComponent>()?.controllerId
+                    ?: later.get<AbilityOnStackComponent>()?.controllerId
+                controller != null && state.isOpponentTo(controller, playerId) &&
+                    intents.forStackObject(later)?.tags?.contains(IntentTag.COUNTERSPELL) == true
+            }
+            amount.takeUnless { hasOpposingCounterAbove }
+        }.sum()
+    }
+
+    /**
+     * The life event changed a currently executable spell from normal to enhanced, and the whole
+     * resource-plus-consumer line is materially better than either stopping after the resource or
+     * casting the consumer normally. This couples an expiring condition to its use inside the
+     * valid window instead of valuing a theoretical option that the next decision may abandon.
+     */
+    private fun bestLifeGainEnhancedFollowUp(
+        state: GameState,
+        leafState: GameState,
+        playerId: EntityId,
+        pendingGuaranteedLifeGain: Int = pendingGuaranteedLifeGain(state, playerId),
+    ): ExpiringConditionFollowUp? {
+        if (state.getEntity(playerId)?.has<LifeGainedThisTurnComponent>() == true) return null
+        if (pendingGuaranteedLifeGain > 0) return null
+        if (leafState.getEntity(playerId)?.has<LifeGainedThisTurnComponent>() != true) return null
+
+        val resourceOnlyScore = evaluator.evaluate(leafState, leafState.projectedState, playerId)
+        return simulator.getLegalActions(leafState, playerId).asSequence().mapNotNull { next ->
+            if (!next.affordable) return@mapNotNull null
+            val nextCast = next.action as? CastSpell ?: return@mapNotNull null
+            val nextName = leafState.getEntity(nextCast.cardId)?.get<CardComponent>()?.name ?: return@mapNotNull null
+            val nextIntent = nextCast.faceIndex?.let { intents.forFaceIndex(nextName, it) }
+                ?: intents.forName(nextName)
+            if (nextIntent == null || IntentTag.LIFEGAIN_ENHANCED !in nextIntent.tags) return@mapNotNull null
+
+            val enhancedAction = heuristicTargets(leafState, next, playerId)
+            val enhanced = simulator.simulate(leafState, enhancedAction)
+            if (enhanced is SimulationResult.Illegal || enhanced is SimulationResult.StoppedAtLimit) {
+                return@mapNotNull null
+            }
+            val enhancedScore = evaluator.evaluate(enhanced.state, enhanced.state.projectedState, playerId)
+            val downstream = simulator.getLegalActions(enhanced.state, playerId).asSequence()
+                .filter { it.affordable && it.action is CastSpell }
+                .mapNotNull { downstream ->
+                    val result = simulator.simulate(
+                        enhanced.state,
+                        heuristicTargets(enhanced.state, downstream, playerId),
+                    )
+                    if (result is SimulationResult.Illegal || result is SimulationResult.StoppedAtLimit) {
+                        return@mapNotNull null
+                    }
+                    (downstream.action as CastSpell).cardId to
+                        evaluator.evaluate(result.state, result.state.projectedState, playerId)
+                }
+                .maxByOrNull { it.second }
+
+            val normalState = simulator.getLegalActions(state, playerId).asSequence()
+                .filter { it.affordable }
+                .firstOrNull { direct ->
+                    val directCast = direct.action as? CastSpell
+                    directCast?.cardId == nextCast.cardId && directCast.faceIndex == nextCast.faceIndex
+                }
+                ?.let { direct -> simulator.simulate(state, heuristicTargets(state, direct, playerId)) }
+                ?.takeUnless { it is SimulationResult.Illegal || it is SimulationResult.StoppedAtLimit }
+                ?.state
+            val normalScore = normalState?.let { evaluator.evaluate(it, it.projectedState, playerId) }
+                ?: Double.NEGATIVE_INFINITY
+            val enhancedCardsRecovered = enhanced.state.getHand(playerId).size - leafState.getHand(playerId).size + 1
+            val normalCardsRecovered = normalState?.let {
+                it.getHand(playerId).size - state.getHand(playerId).size + 1
+            } ?: 0
+            // LIFEGAIN_ENHANCED is currently emitted only for a conditional library-selection
+            // count. Compare the cards actually recovered, not raw life-weighted board score.
+            val materiallyEnhanced = enhancedCardsRecovered > normalCardsRecovered
+            if (normalScore.isFinite() && !materiallyEnhanced) {
+                return@mapNotNull null
+            }
+            val alternative = maxOf(resourceOnlyScore, normalScore)
+            val projected = maxOf(
+                enhancedScore,
+                downstream?.second ?: Double.NEGATIVE_INFINITY,
+                alternative + EXPIRING_CONDITION_CONSUMPTION_VALUE,
+            )
+            ExpiringConditionFollowUp(
+                nextCast.cardId,
+                nextCast.faceIndex,
+                downstream?.first,
+                projected,
+            )
+        }.maxByOrNull(ExpiringConditionFollowUp::projectedScore)
+    }
+
+    private fun committedSurvivalFollowUp(
+        state: GameState,
+        legalActions: List<LegalAction>,
+        playerId: EntityId,
+    ): LegalAction? {
+        val commitment = survivalCommitment ?: return null
+        if (commitment.playerId != playerId || commitment.turn != state.turnNumber) {
+            survivalCommitment = null
+            return null
+        }
+        if (state.pendingDecision != null || state.stack.isNotEmpty()) return null
+        if (!lifeGainNeededForSurvival(state, playerId)) {
+            survivalCommitment = null
+            return null
+        }
+        val followUp = legalActions.firstOrNull { legal ->
+            if (!legal.affordable) return@firstOrNull false
+            val cast = legal.action as? CastSpell ?: return@firstOrNull false
+            cast.cardId == commitment.cardId && cast.faceIndex == commitment.faceIndex
+        }
+        if (followUp == null) {
+            survivalCommitment = null
+            return null
+        }
+        survivalCommitment = null
+        return followUp.copy(action = chooseCommittedTargets(state, followUp, playerId))
+    }
+
+    private fun rememberSurvivalFollowUp(
+        state: GameState,
+        leafState: GameState,
+        action: LegalAction,
+        playerId: EntityId,
+    ) {
+        if (!lifeGainNeededForSurvival(state, playerId)) return
+        if (action.action !is CastSpell) return
+
+        // First prefer an immediately executable protected lifegain follow-up.
+        val immediate = survivalLifeGainFollowUp(leafState, playerId)
+        if (immediate != null && leafState.spellsCastThisTurn > state.spellsCastThisTurn) {
+            val cast = immediate.action as CastSpell
+            survivalCommitment = SurvivalCommitment(playerId, state.turnNumber, cast.cardId, cast.faceIndex)
+            pendingSurvivalSetup = null
+            return
+        }
+
+        // Otherwise retain only a bounded "one land drop away" setup. No card name or hidden
+        // information is used: after the chosen spell resolves, simulate each currently legal land
+        // play and require that it makes a survival-relevant pure lifegain Storm cast affordable.
+        if (leafState.spellsCastThisTurn <= state.spellsCastThisTurn) return
+        val landAndFollow = simulator.getLegalActions(leafState, playerId).asSequence().mapNotNull { landLegal ->
+            val land = landLegal.action as? PlayLand ?: return@mapNotNull null
+            val afterLand = simulator.simulate(leafState, land)
+            if (afterLand is SimulationResult.Illegal || afterLand is SimulationResult.StoppedAtLimit) {
+                return@mapNotNull null
+            }
+            val follow = survivalLifeGainFollowUp(afterLand.state, playerId) ?: return@mapNotNull null
+            land.cardId to (follow.action as CastSpell)
+        }.firstOrNull() ?: return
+
+        pendingSurvivalSetup = PendingSurvivalSetup(
+            playerId = playerId,
+            turn = state.turnNumber,
+            landId = landAndFollow.first,
+            cardId = landAndFollow.second.cardId,
+            faceIndex = landAndFollow.second.faceIndex,
+        )
+    }
+
+    private fun promotePendingSurvivalSetup(
+        state: GameState,
+        legalActions: List<LegalAction>,
+        playerId: EntityId,
+    ) {
+        val pending = pendingSurvivalSetup ?: return
+        if (pending.playerId != playerId || pending.turn != state.turnNumber) {
+            pendingSurvivalSetup = null
+            return
+        }
+        if (!lifeGainNeededForSurvival(state, playerId)) {
+            pendingSurvivalSetup = null
+            return
+        }
+        // While the planned land is still legal, the setup is waiting for that land action.
+        if (legalActions.any { (it.action as? PlayLand)?.cardId == pending.landId }) return
+
+        val follow = legalActions.firstOrNull { legal ->
+            if (!legal.affordable) return@firstOrNull false
+            val cast = legal.action as? CastSpell ?: return@firstOrNull false
+            cast.cardId == pending.cardId && cast.faceIndex == pending.faceIndex
+        }
+        if (follow == null) {
+            pendingSurvivalSetup = null
+            return
+        }
+        survivalCommitment = SurvivalCommitment(
+            playerId = playerId,
+            turn = state.turnNumber,
+            cardId = pending.cardId,
+            faceIndex = pending.faceIndex,
+        )
+        pendingSurvivalSetup = null
+    }
+
+    private fun survivalLifeGainFollowUp(state: GameState, playerId: EntityId): LegalAction? {
+        if (!lifeGainNeededForSurvival(state, playerId)) return null
+        return simulator.getLegalActions(state, playerId).firstOrNull { next ->
+            if (!next.affordable) return@firstOrNull false
+            val cast = next.action as? CastSpell ?: return@firstOrNull false
+            val name = state.getEntity(cast.cardId)?.get<CardComponent>()?.name ?: return@firstOrNull false
+            intents.isPureLifeGainSpell(name, cast.faceIndex) &&
+                state.getEntity(cast.cardId)?.get<CardComponent>()?.baseKeywords
+                    ?.contains(com.wingedsheep.sdk.core.Keyword.STORM) == true
+        }
+    }
+
+    private fun committedExpiringConditionFollowUp(
+        state: GameState,
+        legalActions: List<LegalAction>,
+        playerId: EntityId,
+    ): LegalAction? {
+        val commitment = expiringConditionCommitment ?: return null
+        if (commitment.playerId != playerId || commitment.turn != state.turnNumber) {
+            expiringConditionCommitment = null
+            return null
+        }
+        if (state.getEntity(playerId)?.has<LifeGainedThisTurnComponent>() != true) {
+            if (state.stack.isEmpty()) expiringConditionCommitment = null
+            return null
+        }
+        val followUp = legalActions.firstOrNull { legal ->
+            if (!legal.affordable) return@firstOrNull false
+            val cast = legal.action as? CastSpell ?: return@firstOrNull false
+            cast.cardId == commitment.cardId && cast.faceIndex == commitment.faceIndex
+        }
+        if (followUp == null) {
+            if (state.stack.isEmpty()) expiringConditionCommitment = null
+            return null
+        }
+        expiringConditionCommitment = null
+        return followUp.copy(action = chooseCommittedTargets(state, followUp, playerId))
+    }
+
+    private fun rememberExpiringConditionFollowUp(
+        state: GameState,
+        leafState: GameState,
+        action: LegalAction,
+        playerId: EntityId,
+    ) {
+        val cardName = resolveCardName(state, action) ?: return
+        val pureLifeGain = when (val gameAction = action.action) {
+            is CastSpell -> intents.isPureLifeGainSpell(cardName, gameAction.faceIndex)
+            is ActivateAbility -> intents.isPureLifeGainAbility(cardName, gameAction.abilityId)
+            else -> false
+        }
+        if (!pureLifeGain) return
+        val followUp = bestLifeGainEnhancedFollowUp(state, leafState, playerId) ?: return
+        expiringConditionCommitment = ExpiringConditionCommitment(
+            playerId,
+            state.turnNumber,
+            followUp.cardId,
+            followUp.faceIndex,
+        )
+    }
+
+    /** Casts made newly executable by the leaf, excluding legal-but-strategically-null effects. */
+    private fun unlockedProductiveCastIds(
+        state: GameState,
+        leafState: GameState,
+        playerId: EntityId,
+    ): Set<EntityId> {
+        fun executable(position: GameState): Set<EntityId> {
+            val baseline = evaluator.evaluate(position, position.projectedState, playerId)
+            return simulator.getLegalActions(position, playerId).asSequence()
+                .filter { it.affordable && it.action is CastSpell }
+                .mapNotNull { next ->
+                    val cast = next.action as CastSpell
+                    val filled = heuristicTargets(position, next, playerId)
+                    val result = simulator.simulate(position, filled)
+                    if (result is SimulationResult.Illegal || result is SimulationResult.StoppedAtLimit) {
+                        return@mapNotNull null
+                    }
+                    // Executability alone is not a plan. If the resolved leaf is no better than
+                    // retaining priority, the generated mana has no concrete productive consumer.
+                    if (evaluator.evaluate(result.state, result.state.projectedState, playerId) <= baseline) {
+                        return@mapNotNull null
+                    }
+                    val cardName = resolveCardName(position, next) ?: return@mapNotNull cast.cardId
+                    cast.cardId.takeUnless {
+                        shouldHoldNullForcedSacrifice(position, result.state, filled, playerId, cardName)
+                    }
+                }
+                .toSet()
+        }
+
+        return executable(leafState) - executable(state)
+    }
+
+    /**
+     * Small, structural option-value terms for actions whose payoff sits one priority decision
+     * beyond the ordinary leaf. The normal evaluator still decides whether the action itself is
+     * useful; these terms only break blind one-ply ties that the next legal-action set can prove.
+     *
+     * No card names are involved:
+     *
+     *  * a repeatable life-gain permanent is worth establishing before another creature when a
+     *    visible repeatable counter/drain payoff is already in play;
+     *  * a useful spell is worth sequencing before a still-affordable Storm spell;
+     *  * a sacrifice mana ability is worth using when it unlocks a spell that was not affordable;
+     *  * turning a spell into a land in hand has bounded early-game mana-development value.
+     */
+    private fun strategicSequencingAdjustment(
+        state: GameState,
+        leafState: GameState,
+        action: LegalAction,
+        playerId: EntityId,
+        leafScore: Double,
+        passScore: Double,
+    ): Double {
+        var delta = 0.0
+        val cast = action.action as? CastSpell
+        val cardName = resolveCardName(state, action)
+        val intent = cardName?.let(intents::forName)
+
+        if (cast != null && intent != null && intent.repeatable && IntentTag.LIFEGAIN in intent.tags) {
+            val hasCreatureFollowUp = leafState.getHand(playerId).any { id ->
+                leafState.getEntity(id)?.get<CardComponent>()?.isCreature == true
+            }
+            val hasVisiblePayoff = state.controlledBattlefield(playerId).any { id ->
+                val permanent = state.getEntity(id) ?: return@any false
+                val name = permanent.get<CardComponent>()?.name ?: return@any false
+                intents.forPermanent(permanent, name).any { payoff ->
+                    payoff.repeatable &&
+                        (IntentTag.PUMP in payoff.tags || (payoff.opponentDamage ?: 0) > 0)
+                }
+            }
+            if (hasCreatureFollowUp && hasVisiblePayoff) delta += TRIGGER_ENGINE_SETUP_VALUE
+        }
+
+        delta += lifeGainEnhancedSequencingAdjustment(state, leafState, action, playerId, leafScore)
+
+        val landPlay = action.action as? PlayLand
+        if (landPlay != null) {
+            val setup = bestLandUnlockedPayoffSequence(state, playerId)
+            if (setup != null && setup.landId == landPlay.cardId) {
+                delta += (setup.projectedScore - leafScore).coerceAtLeast(0.0)
+            }
+            val expiringLine = bestLandUnlockedExpiringConditionLine(state, playerId)
+            if (expiringLine != null && expiringLine.landId == landPlay.cardId) {
+                delta += (expiringLine.projectedScore - leafScore).coerceAtLeast(0.0)
+            }
+        }
+
+        if (cast != null && leafScore > passScore) {
+            val stormFollowUp = simulator.getLegalActions(leafState, playerId).any { next ->
+                if (!next.affordable) return@any false
+                val nextCast = next.action as? CastSpell ?: return@any false
+                leafState.getEntity(nextCast.cardId)?.get<CardComponent>()
+                    ?.baseKeywords?.contains(com.wingedsheep.sdk.core.Keyword.STORM) == true
+            }
+            if (stormFollowUp) {
+                val payoffCount = visibleRepeatablePayoffCount(state, playerId)
+                delta += STORM_SETUP_VALUE + payoffCount * STORM_PAYOFF_EVENT_VALUE
+            }
+        }
+
+        // Alternative costs trade one resource for tempo. Reward that tempo only when the leaf
+        // proves the preserved mana immediately enables a meaningful spell; the normal evaluator
+        // still prices the life/card/permanent paid, so an idle "free" cast gets no encouragement.
+        if (cast?.alternativeCostType == AlternativeCostType.SELF_ALTERNATIVE) {
+            val bestFollowUpManaValue = simulator.getLegalActions(leafState, playerId)
+                .asSequence()
+                .filter { it.affordable && it.action is CastSpell }
+                .mapNotNull { next ->
+                    val nextCast = next.action as CastSpell
+                    leafState.getEntity(nextCast.cardId)?.get<CardComponent>()?.manaValue
+                }
+                .maxOrNull()
+            if (bestFollowUpManaValue != null) {
+                delta += (bestFollowUpManaValue * ALTERNATIVE_COST_TEMPO_PER_MANA)
+                    .coerceAtMost(ALTERNATIVE_COST_TEMPO_CAP)
+            }
+        }
+
+        if (isSacrificeManaAction(action)) {
+            if (unlockedProductiveCastIds(state, leafState, playerId).isNotEmpty()) {
+                delta += SACRIFICE_MANA_UNLOCK_VALUE
+            }
+        }
+
+        val landsBefore = state.getHand(playerId).count { id ->
+            state.getEntity(id)?.get<CardComponent>()?.isLand == true
+        }
+        val landsAfter = leafState.getHand(playerId).count { id ->
+            leafState.getEntity(id)?.get<CardComponent>()?.isLand == true
+        }
+        val landsInPlay = state.projectedState.getBattlefieldControlledBy(playerId)
+            .count { state.projectedState.hasType(it, "LAND") }
+        if (landsAfter > landsBefore) {
+            delta += when {
+                landsInPlay <= 2 -> EARLY_LAND_DEVELOPMENT_VALUE
+                landsInPlay <= 4 -> MIDGAME_LAND_DEVELOPMENT_VALUE
+                else -> 0.0
+            }
+        }
+
+        // A typecycle is a typed tutor even when the simulation's optional search has not yet
+        // exposed the selected card at this scoring boundary. At an actual land shortage the
+        // common land-type cycle has immediate option value; late game receives none.
+        if (action.action is TypecycleCard && cardName != null &&
+            intents.hasLandTypecycling(cardName) && landsInPlay <= 2 && landsBefore == 0
+        ) {
+            delta += EARLY_LAND_DEVELOPMENT_VALUE
+        }
+
+        // Omen/Adventure/split faces are read independently from the permanent face. A cheap tutor
+        // face is a distinct mana-development option in an early shortage, without borrowing the
+        // typecycling assumption or teaching the policy a card name.
+        val faceIntent = cast?.faceIndex?.let { index ->
+            cardName?.let { name -> intents.forFaceIndex(name, index) }
+        }
+        if (faceIntent != null && IntentTag.LAND_TUTOR in faceIntent.tags &&
+            landsInPlay <= 2 && landsBefore == 0
+        ) {
+            delta += EARLY_LAND_DEVELOPMENT_VALUE
+        }
+
+        if (cast != null && intent != null && IntentTag.LIFEGAIN_ENHANCED in intent.tags &&
+            state.getEntity(playerId)?.has<LifeGainedThisTurnComponent>() == true
+        ) {
+            delta += LIFEGAIN_ENHANCED_VALUE
+        }
+
+        // A tutor that replaces itself is neutral card flow; one that resolves into more than one
+        // card has real immediate card-advantage value that a pass rollout can otherwise defer.
+        if (cast != null && intent != null && IntentTag.TUTOR in intent.tags) {
+            val cardsRecovered = leafState.getHand(playerId).size - state.getHand(playerId).size + 1
+            if (cardsRecovered > 1) delta += (cardsRecovered - 1) * TUTOR_CARD_ADVANTAGE_VALUE
+        }
+
+        return delta
+    }
+
+    private fun lifeGainEnhancedSequencingAdjustment(
+        state: GameState,
+        leafState: GameState,
+        action: LegalAction,
+        playerId: EntityId,
+        leafScore: Double,
+    ): Double {
+        val cast = action.action as? CastSpell ?: return 0.0
+        val cardName = resolveCardName(state, action) ?: return 0.0
+        val intent = intents.forCast(cardName, cast) ?: return 0.0
+        if (IntentTag.LIFEGAIN !in intent.tags) return 0.0
+        val followUp = bestLifeGainEnhancedFollowUp(state, leafState, playerId) ?: return 0.0
+        return (followUp.projectedScore - leafScore).coerceAtLeast(0.0) +
+            LIFEGAIN_FOLLOW_UP_UNLOCK_VALUE
+    }
+
+    /**
+     * Validate one bounded main-phase line that the ordinary one-ply candidate set cannot see:
+     * land, deployment/setup, then an immediate event-producing spell. The comparator uses the
+     * same land and cards in focal-first order, so a deployment is preferred only when having it
+     * present for the pending event creates material value rather than merely adding Storm count.
+     *
+     * Explicit mana-source variants are authoritative here. An auto-payment that spends the only
+     * source needed by the second spell must not erase a complete legal same-turn sequence.
+     *
+     * SHARED ARGENTUM CHANGE: yes
+     */
+    private fun bestLandUnlockedPayoffSequence(
+        state: GameState,
+        playerId: EntityId,
+    ): LandUnlockedPayoffSequence? {
+        if (!state.isActiveTurnFor(playerId) || state.step !in setOf(Step.PRECOMBAT_MAIN, Step.POSTCOMBAT_MAIN)) {
+            return null
+        }
+
+        val legalNow = simulator.getLegalActions(state, playerId)
+        val immediateEvents = legalNow.filter { isImmediateEventCast(state, it) }
+        if (immediateEvents.isEmpty()) return null
+        if (immediateEvents.any { focal ->
+                val name = resolveCardName(state, focal) ?: return@any false
+                val cast = focal.action as CastSpell
+                intents.isPureLifeGainSpell(name, cast.faceIndex) && lifeGainNeededForSurvival(state, playerId)
+            }
+        ) return null
+
+        return legalNow.asSequence().mapNotNull { landAction ->
+            val land = landAction.action as? PlayLand ?: return@mapNotNull null
+            val landResult = simulator.simulate(state, land)
+            if (landResult is SimulationResult.Illegal || landResult is SimulationResult.StoppedAtLimit) {
+                return@mapNotNull null
+            }
+            val landState = landResult.state
+            simulator.getLegalActions(landState, playerId).asSequence().mapNotNull { setup ->
+                if (setup.action !is CastSpell) {
+                    return@mapNotNull null
+                }
+                val setupId = (setup.action as CastSpell).cardId
+                castStatesWithSourceChoices(landState, setup, playerId).asSequence().flatMap { setupState ->
+                    simulator.getLegalActions(setupState, playerId).asSequence().filter { focal ->
+                        val focalCast = focal.action as? CastSpell
+                        focalCast != null && focalCast.cardId != setupId &&
+                            isImmediateEventCast(setupState, focal) &&
+                            immediateEvents.any { (it.action as CastSpell).cardId == focalCast.cardId }
+                    }.flatMap { focal ->
+                        val focalId = (focal.action as CastSpell).cardId
+                        castStatesWithSourceChoices(setupState, focal, playerId).asSequence().mapNotNull { completed ->
+                            val setupFirstScore = evaluator.evaluate(completed, completed.projectedState, playerId)
+                            val focalFirstScore = focalFirstCompleteScore(
+                                state, playerId, focalId, land.cardId, setupId,
+                            ) ?: return@mapNotNull null
+                            if (setupFirstScore <= focalFirstScore + MATERIAL_SEQUENCE_MARGIN) return@mapNotNull null
+                            LandUnlockedPayoffSequence(
+                                land.cardId, setupId, focalId, setupFirstScore, focalFirstScore,
+                            )
+                        }
+                    }
+                }.maxByOrNull(LandUnlockedPayoffSequence::projectedScore)
+            }.maxByOrNull(LandUnlockedPayoffSequence::projectedScore)
+        }.maxByOrNull(LandUnlockedPayoffSequence::projectedScore)
+    }
+
+    private fun isImmediateEventCast(state: GameState, legal: LegalAction): Boolean {
+        val cast = legal.action as? CastSpell ?: return false
+        val name = state.getEntity(cast.cardId)?.get<CardComponent>()?.name ?: return false
+        val intent = intents.forCast(name, cast) ?: return false
+        return intent.tags.any { it in IMMEDIATE_EVENT_TAGS } || (intent.opponentDamage ?: 0) > 0
+    }
+
+    private fun focalFirstCompleteScore(
+        state: GameState,
+        playerId: EntityId,
+        focalId: EntityId,
+        landId: EntityId,
+        setupId: EntityId,
+    ): Double? = simulator.getLegalActions(state, playerId).asSequence()
+        .filter { (it.action as? CastSpell)?.cardId == focalId }
+        .flatMap { castStatesWithSourceChoices(state, it, playerId).asSequence() }
+        .mapNotNull { afterFocal ->
+            val land = simulator.getLegalActions(afterFocal, playerId)
+                .firstOrNull { (it.action as? PlayLand)?.cardId == landId } ?: return@mapNotNull null
+            val afterLand = simulator.simulate(afterFocal, land.action)
+            if (afterLand is SimulationResult.Illegal || afterLand is SimulationResult.StoppedAtLimit) return@mapNotNull null
+            simulator.getLegalActions(afterLand.state, playerId).asSequence()
+                .filter { (it.action as? CastSpell)?.cardId == setupId }
+                .flatMap { castStatesWithSourceChoices(afterLand.state, it, playerId).asSequence() }
+                .maxOfOrNull { evaluator.evaluate(it, it.projectedState, playerId) }
+        }.maxOrNull()
+
+    private fun castStatesWithSourceChoices(
+        state: GameState,
+        legal: LegalAction,
+        playerId: EntityId,
+    ): List<GameState> {
+        val selected = heuristicTargets(state, legal, playerId) as? CastSpell ?: return emptyList()
+        val sources = state.projectedState.getBattlefieldControlledBy(playerId).filter { id ->
+            state.projectedState.hasType(id, "LAND") && state.getEntity(id)?.has<TappedComponent>() != true
+        }
+        val manaValue = legal.manaCostString?.let { ManaCost.parse(it).cmc } ?: sources.size
+        val actions = buildList {
+            add(selected)
+            fun choose(start: Int, remaining: Int, chosen: MutableList<EntityId>) {
+                if (remaining == 0) {
+                    add(selected.copy(paymentStrategy = PaymentStrategy.Explicit(chosen.toList())))
+                    return
+                }
+                for (index in start..sources.size - remaining) {
+                    chosen += sources[index]
+                    choose(index + 1, remaining - 1, chosen)
+                    chosen.removeAt(chosen.lastIndex)
+                }
+            }
+            if (manaValue in 1..sources.size) choose(0, manaValue, mutableListOf())
+        }
+        return actions.distinct().mapNotNull { action ->
+            when (val result = simulator.simulate(state, action)) {
+                is SimulationResult.Illegal, is SimulationResult.StoppedAtLimit -> null
+                else -> result.state
+            }
+        }
+    }
+
+    /** Land first, then establish and consume a same-turn expiring condition. */
+    private fun bestLandUnlockedExpiringConditionLine(
+        state: GameState,
+        playerId: EntityId,
+    ): LandUnlockedExpiringConditionLine? {
+        if (!state.isActiveTurnFor(playerId) || state.step !in setOf(Step.PRECOMBAT_MAIN, Step.POSTCOMBAT_MAIN)) {
+            return null
+        }
+        if (lifeGainNeededForSurvival(state, playerId)) return null
+        return simulator.getLegalActions(state, playerId).asSequence().mapNotNull { landAction ->
+            val land = landAction.action as? PlayLand ?: return@mapNotNull null
+            val landResult = simulator.simulate(state, land)
+            if (landResult is SimulationResult.Illegal || landResult is SimulationResult.StoppedAtLimit) {
+                return@mapNotNull null
+            }
+            val landState = landResult.state
+            simulator.getLegalActions(landState, playerId).asSequence().mapNotNull { resource ->
+                if (!resource.affordable) return@mapNotNull null
+                val resourceName = resolveCardName(landState, resource) ?: return@mapNotNull null
+                val pureLifeGain = when (val gameAction = resource.action) {
+                    is CastSpell -> intents.isPureLifeGainSpell(resourceName, gameAction.faceIndex)
+                    is ActivateAbility -> intents.isPureLifeGainAbility(resourceName, gameAction.abilityId)
+                    else -> false
+                }
+                if (!pureLifeGain) return@mapNotNull null
+                val resourceResult = simulator.simulate(
+                    landState,
+                    heuristicTargets(landState, resource, playerId),
+                )
+                if (resourceResult is SimulationResult.Illegal || resourceResult is SimulationResult.StoppedAtLimit) {
+                    return@mapNotNull null
+                }
+                val followUp = bestLifeGainEnhancedFollowUp(
+                    landState,
+                    resourceResult.state,
+                    playerId,
+                ) ?: return@mapNotNull null
+                val resourceCardId = when (val gameAction = resource.action) {
+                    is CastSpell -> gameAction.cardId
+                    is ActivateAbility -> gameAction.sourceId
+                    else -> return@mapNotNull null
+                }
+                val followAction = simulator.getLegalActions(resourceResult.state, playerId)
+                    .firstOrNull { legal ->
+                        val cast = legal.action as? CastSpell
+                        legal.affordable && cast?.cardId == followUp.cardId && cast.faceIndex == followUp.faceIndex
+                    }
+                val followResult = followAction?.let { legal ->
+                    simulator.simulate(resourceResult.state, heuristicTargets(resourceResult.state, legal, playerId))
+                }
+                val afterFollow = followResult?.takeUnless {
+                    it is SimulationResult.Illegal || it is SimulationResult.StoppedAtLimit
+                }?.state
+                val afterFollowScore = afterFollow?.let {
+                    evaluator.evaluate(it, it.projectedState, playerId)
+                } ?: followUp.projectedScore
+                val downstreamCardId = afterFollow?.let { position ->
+                    simulator.getLegalActions(position, playerId).asSequence().mapNotNull { next ->
+                        if (!next.affordable || next.action !is CastSpell) return@mapNotNull null
+                        val result = simulator.simulate(position, heuristicTargets(position, next, playerId))
+                        if (result is SimulationResult.Illegal || result is SimulationResult.StoppedAtLimit) {
+                            return@mapNotNull null
+                        }
+                        val score = evaluator.evaluate(result.state, result.state.projectedState, playerId)
+                        val id = (next.action as CastSpell).cardId
+                        (id to score).takeIf { score > afterFollowScore + MATERIAL_SEQUENCE_MARGIN }
+                    }.maxByOrNull { it.second }?.first
+                }
+                LandUnlockedExpiringConditionLine(
+                    land.cardId,
+                    resourceCardId,
+                    followUp.cardId,
+                    downstreamCardId,
+                    afterFollowScore,
+                )
+            }.maxByOrNull(LandUnlockedExpiringConditionLine::projectedScore)
+        }.maxByOrNull(LandUnlockedExpiringConditionLine::projectedScore)
+    }
+
+    private fun isStormCast(state: GameState, action: LegalAction): Boolean {
+        val cast = action.action as? CastSpell ?: return false
+        return state.getEntity(cast.cardId)?.get<CardComponent>()?.baseKeywords
+            ?.contains(com.wingedsheep.sdk.core.Keyword.STORM) == true
+    }
+
+    private fun shouldDeferForLandUnlockedSequence(
+        state: GameState,
+        action: LegalAction,
+        playerId: EntityId,
+    ): Boolean {
+        val cast = action.action as? CastSpell ?: return false
+        val payoffSequence = bestLandUnlockedPayoffSequence(state, playerId)
+        if (payoffSequence != null) {
+            if (cast.cardId == payoffSequence.setupCardId) return true
+            val selectedFocal = simulator.getLegalActions(state, playerId)
+                .firstOrNull { (it.action as? CastSpell)?.cardId == payoffSequence.focalCardId }
+            if (selectedFocal != null && CastActionSemanticIdentity.equivalent(state, action, selectedFocal)) {
+                return true
+            }
+        }
+        val expiringLine = bestLandUnlockedExpiringConditionLine(state, playerId)
+        return expiringLine != null && cast.cardId in setOfNotNull(
+            expiringLine.resourceCardId,
+            expiringLine.followUpCardId,
+            expiringLine.downstreamCardId,
+        )
+    }
+
+    private fun shouldDeferForExecutableExpiringConditionSequence(
+        state: GameState,
+        action: GameAction,
+        playerId: EntityId,
+    ): Boolean {
+        val cast = action as? CastSpell ?: return false
+        val line = simulator.getLegalActions(state, playerId).asSequence().mapNotNull { resource ->
+            if (!resource.affordable) return@mapNotNull null
+            val name = resolveCardName(state, resource) ?: return@mapNotNull null
+            val pureLifeGain = when (val gameAction = resource.action) {
+                is CastSpell -> intents.isPureLifeGainSpell(name, gameAction.faceIndex)
+                is ActivateAbility -> intents.isPureLifeGainAbility(name, gameAction.abilityId)
+                else -> false
+            }
+            if (!pureLifeGain) return@mapNotNull null
+            val result = simulator.simulate(state, heuristicTargets(state, resource, playerId))
+            if (result is SimulationResult.Illegal || result is SimulationResult.StoppedAtLimit) {
+                return@mapNotNull null
+            }
+            bestLifeGainEnhancedFollowUp(state, result.state, playerId)
+        }.maxByOrNull(ExpiringConditionFollowUp::projectedScore) ?: return false
+        return cast.cardId == line.cardId || cast.cardId == line.downstreamCardId
+    }
+
+    private fun visibleRepeatablePayoffCount(state: GameState, playerId: EntityId): Int =
+        state.controlledBattlefield(playerId).count { id ->
+            val permanent = state.getEntity(id) ?: return@count false
+            val name = permanent.get<CardComponent>()?.name ?: return@count false
+            intents.forPermanent(permanent, name).any { payoff ->
+                payoff.repeatable && IntentTag.LIFEGAIN_PAYOFF in payoff.tags
+            }
+        }
 
     /**
      * Price the irreversible land loss of graveyard/self alternative costs. The ordinary board
@@ -720,6 +1905,14 @@ class Strategist(
         if (target is ChosenTarget.Permanent) {
             val permanent = state.getEntity(target.entityId)
             val name = permanent?.get<CardComponent>()?.name
+            val controller = state.projectedState.getController(target.entityId)
+            val toughness = state.projectedState.getToughness(target.entityId)
+            val markedDamage = permanent?.get<DamageComponent>()?.amount ?: 0
+            val finishesOpposingCreature = controller?.let { state.isOpponentTo(it, playerId) } == true &&
+                markedDamage > 0 && toughness != null && damage + markedDamage >= toughness
+            if (finishesOpposingCreature) {
+                return false
+            }
             val isImportantEngine = permanent != null && name != null &&
                 intents.forPermanent(permanent, name).any { intent ->
                     intent.repeatable && (intent.opponentDamage ?: 0) >= IMPORTANT_ENGINE_DAMAGE
@@ -774,7 +1967,15 @@ class Strategist(
      * The [note] exists for the local testing mode: a candidate the AI passed over despite a strong
      * board score is only explicable if the panel can say *which* policy floored it.
      */
-    private data class AdjustedScore(val score: Double, val note: String? = null)
+    private data class AdjustedScore(
+        val score: Double,
+        val note: String? = null,
+        val friendlyRemovalAudit: FriendlyRemovalAudit? = null,
+        val productionAdmissible: Boolean = true,
+        val productionRejectionReason: String? = null,
+        val sequencingAdjustment: Double = 0.0,
+        val expiringConditionSequencingAdjustment: Double = 0.0,
+    )
 
     /**
      * Pick the targets the AI actually commits to for a chosen targeted action, by simulation
@@ -1346,6 +2547,8 @@ class Strategist(
         val entityId = when (val gameAction = action.action) {
             is CastSpell -> gameAction.cardId
             is ActivateAbility -> gameAction.sourceId
+            is CycleCard -> gameAction.cardId
+            is TypecycleCard -> gameAction.cardId
             else -> return null
         }
         return state.getEntity(entityId)?.get<CardComponent>()?.name
@@ -1364,6 +2567,51 @@ class Strategist(
 
         /** Payment choices inspected for a one-card discard/sacrifice cost. */
         const val AUTOMATIC_PAYMENT_CANDIDATES = 8
+
+        val IMMEDIATE_EVENT_TAGS = setOf(
+            IntentTag.LIFEGAIN,
+            IntentTag.DRAW,
+            IntentTag.TOKEN_MAKER,
+        )
+
+        /** Establishing a visible event engine before its next creature enters. */
+        const val TRIGGER_ENGINE_SETUP_VALUE = 4.0
+
+        /** One useful spell now buys one additional Storm copy on the proven follow-up. */
+        const val STORM_SETUP_VALUE = 2.0
+
+        /** Extra value of each visible repeatable payoff receiving the additional Storm event. */
+        const val STORM_PAYOFF_EVENT_VALUE = 2.0
+
+        /** Option value of a sacrifice mana action that makes a previously unavailable spell legal. */
+        const val SACRIFICE_MANA_UNLOCK_VALUE = 3.0
+
+        /** Bounded value of converting a hand card into a needed early land. */
+        const val EARLY_LAND_DEVELOPMENT_VALUE = 5.0
+
+        /** The same conversion after the early shortage, where another land is less urgent. */
+        const val MIDGAME_LAND_DEVELOPMENT_VALUE = 0.75
+
+        /** One extra card beyond replacing the tutor itself. */
+        const val TUTOR_CARD_ADVANTAGE_VALUE = 1.0
+
+        /** Immediate option value of a structurally explicit life-gained-this-turn enhancement. */
+        const val LIFEGAIN_ENHANCED_VALUE = 1.0
+
+        /** Break a pass tie when this life event newly enables a concrete enhanced spell. */
+        const val LIFEGAIN_FOLLOW_UP_UNLOCK_VALUE = 0.5
+
+        /** Structural value of consuming a newly established condition before it expires. */
+        const val EXPIRING_CONDITION_CONSUMPTION_VALUE = 2.0
+
+        /** A compound line must clear noise in the static evaluator before it can borrow future value. */
+        const val MATERIAL_SEQUENCE_MARGIN = 0.10
+
+        /** Tempo value per mana of a spell enabled by paying a non-mana alternative cost. */
+        const val ALTERNATIVE_COST_TEMPO_PER_MANA = 0.85
+
+        /** Keeps preserved-mana option value bounded even for unusually expensive follow-ups. */
+        const val ALTERNATIVE_COST_TEMPO_CAP = 5.5
 
         /** Value recovered by cashing in a permanent an opposing stack object already targets. */
         const val TARGETED_SACRIFICE_WINDOW = 2.0
@@ -1385,4 +2633,50 @@ class Strategist(
 
         const val MOMIR_AVATAR_NAME = "Momir Vig, Simic Visionary"
     }
+
+    private data class ExpiringConditionFollowUp(
+        val cardId: EntityId,
+        val faceIndex: Int?,
+        val downstreamCardId: EntityId?,
+        val projectedScore: Double,
+    )
+
+    private data class PendingSurvivalSetup(
+        val playerId: EntityId,
+        val turn: Int,
+        val landId: EntityId,
+        val cardId: EntityId,
+        val faceIndex: Int?,
+    )
+
+    private data class SurvivalCommitment(
+        val playerId: EntityId,
+        val turn: Int,
+        val cardId: EntityId,
+        val faceIndex: Int?,
+    )
+
+    private data class ExpiringConditionCommitment(
+        val playerId: EntityId,
+        val turn: Int,
+        val cardId: EntityId,
+        val faceIndex: Int?,
+    )
+
+    private data class LandUnlockedPayoffSequence(
+        val landId: EntityId,
+        val setupCardId: EntityId,
+        val focalCardId: EntityId,
+        val projectedScore: Double,
+        val comparisonScore: Double,
+    )
+
+    private data class LandUnlockedExpiringConditionLine(
+        val landId: EntityId,
+        val resourceCardId: EntityId,
+        val followUpCardId: EntityId,
+        val downstreamCardId: EntityId?,
+        val projectedScore: Double,
+    )
+
 }

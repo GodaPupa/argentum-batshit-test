@@ -7,15 +7,40 @@ import com.wingedsheep.ai.llm.BottomCardsInfo
 import com.wingedsheep.ai.llm.CardSummary
 import com.wingedsheep.ai.llm.MulliganInfo
 import com.wingedsheep.engine.core.*
+import com.wingedsheep.engine.handlers.ConditionEvaluator
+import com.wingedsheep.engine.handlers.EffectContext
+import com.wingedsheep.engine.handlers.PredicateContext
+import com.wingedsheep.engine.handlers.PredicateEvaluator
+import com.wingedsheep.engine.handlers.effects.BattlefieldEntry
+import com.wingedsheep.engine.handlers.effects.EnterTappedReplacements
+import com.wingedsheep.engine.handlers.effects.EnterUntappedReplacements
+import com.wingedsheep.engine.legalactions.utils.LandDropUtils
+import com.wingedsheep.engine.legalactions.utils.CostEnumerationUtils
+import com.wingedsheep.engine.legalactions.utils.SelectionCostPresentation
+import com.wingedsheep.engine.mechanics.mana.CostCalculator
+import com.wingedsheep.engine.mechanics.mana.ManaSolver
 import com.wingedsheep.engine.registry.CardRegistry
 import com.wingedsheep.engine.state.GameState
+import com.wingedsheep.engine.state.ZoneKey
+import com.wingedsheep.engine.state.components.battlefield.TappedComponent
+import com.wingedsheep.engine.state.components.identity.CardComponent
+import com.wingedsheep.engine.state.components.identity.ControllerComponent
+import com.wingedsheep.engine.state.components.player.PlayerCantPlayFromHandComponent
 import com.wingedsheep.engine.view.ClientGameState
 import com.wingedsheep.engine.view.LegalActionInfo
 import com.wingedsheep.sdk.core.Format
 import com.wingedsheep.sdk.core.Color
 import com.wingedsheep.sdk.core.ManaCost
 import com.wingedsheep.sdk.core.ManaSymbol
+import com.wingedsheep.sdk.core.Zone
 import com.wingedsheep.sdk.model.EntityId
+import com.wingedsheep.sdk.scripting.EntersAsCopy
+import com.wingedsheep.sdk.scripting.EntersTapped
+import com.wingedsheep.sdk.scripting.EntersWithChoice
+import com.wingedsheep.sdk.scripting.AdditionalCost
+import com.wingedsheep.sdk.scripting.KeywordAbility
+import com.wingedsheep.sdk.scripting.PreventCycling
+import com.wingedsheep.sdk.scripting.costs.CostAtom
 import org.slf4j.LoggerFactory
 
 private val logger = LoggerFactory.getLogger(EngineAiPlayerController::class.java)
@@ -60,6 +85,22 @@ class EngineAiPlayerController(
      */
     insightSink: AiInsightSink? = null,
 ) : AiPlayerController {
+
+    private val mulliganManaSolver = ManaSolver(cardRegistry)
+    private val mulliganPredicateEvaluator = PredicateEvaluator()
+    private val mulliganConditionEvaluator = ConditionEvaluator()
+    private val mulliganCostUtils = CostEnumerationUtils(
+        mulliganManaSolver,
+        CostCalculator(cardRegistry, mulliganPredicateEvaluator, mulliganConditionEvaluator),
+        mulliganPredicateEvaluator,
+        cardRegistry,
+    )
+
+    private data class GuaranteedLandAccess(
+        val landId: EntityId,
+        val acquisitionCardId: EntityId,
+        val acquiredLandId: EntityId,
+    )
 
     private val aiPlayer =
         AIPlayer.create(
@@ -123,20 +164,32 @@ class EngineAiPlayerController(
             cards[entityId]?.typeLine?.contains("Land", ignoreCase = true) == true
         }
 
-        val reasonableLandCount = landCount in 2..5
+        val guaranteedLandAccess = if (landCount == 1) {
+            guaranteedSecondLandAccess(mulliganMessage.hand, cards)
+        } else null
+        // A deterministic, immediately fundable typecycling line counts as exactly one virtual
+        // land for this minimum-land gate only. Every downstream color/castability heuristic keeps
+        // using the physical land count, so recognizing the line cannot force an otherwise weak
+        // hand to be kept.
+        val effectiveLandCount = landCount + if (guaranteedLandAccess != null) 1 else 0
+        val reasonableLandCount = effectiveLandCount in 2..5
         val coloredSources = mulliganMessage.hand
             .mapNotNull(cards::get)
             .filter { it.typeLine?.contains("Land", ignoreCase = true) == true }
             .flatMapTo(mutableSetOf(), ::colorsProducedBy)
+        // Preserve the existing early horizon: at most turn three, reduced to the number of
+        // deterministic opening-hand land drops. A recognized typecycling line contributes its
+        // one virtual land here as well as at the minimum-land gate.
+        val earlyHorizon = effectiveLandCount.coerceAtMost(3)
         val earlySpells = mulliganMessage.hand
-            .mapNotNull(cards::get)
-            .filterNot { it.typeLine?.contains("Land", ignoreCase = true) == true }
-            .mapNotNull { summary ->
+            .mapNotNull { entityId -> cards[entityId]?.let { entityId to it } }
+            .filterNot { (_, summary) -> summary.typeLine?.contains("Land", ignoreCase = true) == true }
+            .mapNotNull { (entityId, summary) ->
                 summary.manaCost?.let { runCatching { ManaCost.parse(it) }.getOrNull() }
-                    ?.takeIf { it.cmc <= landCount.coerceAtMost(3) }
-                    ?.let { summary to it }
+                    ?.takeIf { it.cmc <= earlyHorizon }
+                    ?.let { Triple(entityId, summary, it) }
             }
-        val castableEarly = earlySpells.count { (_, cost) ->
+        val castableEarly = earlySpells.count { (_, _, cost) ->
             cost.symbols.all { symbol ->
                 symbol.colors.isEmpty() || symbol is ManaSymbol.Phyrexian ||
                     symbol.colors.any { it in coloredSources }
@@ -146,14 +199,300 @@ class EngineAiPlayerController(
         // A nominal two-land hand is not functional when nearly all of its cheap plays ask for a
         // color those lands cannot make. One incidental castable (often a reactive protection
         // spell) does not turn four stranded early spells into a keep.
-        val colorFunctional = coloredMismatch < 3 || castableEarly >= 2
-        val keep = reasonableLandCount && colorFunctional
+        // No evidence is not positive evidence. Keep the established colored-source tolerance,
+        // but require a nonempty early set before it can establish color functionality.
+        val colorFunctional = earlySpells.isNotEmpty() &&
+            (coloredMismatch < 3 || castableEarly >= 2)
+        val developmentFunctional = earlySpells.any { (cardId, _, _) ->
+            hasPayableEarlyDevelopmentLine(
+                state = gameStateProvider() ?: return@any false,
+                hand = mulliganMessage.hand,
+                cardId = cardId,
+                guaranteedLandAccess = guaranteedLandAccess,
+            )
+        }
+        val keep = reasonableLandCount && colorFunctional && developmentFunctional
         logger.info(
-            "Engine AI mulligan: hand={} cards, {} lands, {}/{} early spells castable → {}",
-            handSize, landCount, castableEarly, earlySpells.size, if (keep) "KEEP" else "MULLIGAN"
+            "Engine AI mulligan: hand={} cards, {} physical lands, {} virtual lands, " +
+                "{}/{} early spells color-compatible, development={} → {}",
+            handSize, landCount, effectiveLandCount - landCount, castableEarly, earlySpells.size,
+            developmentFunctional,
+            if (keep) "KEEP" else "MULLIGAN"
         )
         return keep
     }
+
+    /**
+     * Proves that [cardId] can be cast normally within the existing turn-three mulligan horizon
+     * using only deterministic land resources from the retained opening hand. Targeted interaction
+     * does not need a pregame target, but every controller-supplied additional cost must already be
+     * payable. This is a reachability check, not a card-value or strategic-weight adjustment.
+     */
+    private fun hasPayableEarlyDevelopmentLine(
+        state: GameState,
+        hand: List<EntityId>,
+        cardId: EntityId,
+        guaranteedLandAccess: GuaranteedLandAccess?,
+    ): Boolean {
+        val actualHand = state.getHand(playerId).toSet()
+        if (cardId !in actualHand) return false
+        val component = state.getEntity(cardId)?.get<CardComponent>() ?: return false
+        val definition = cardRegistry.getCard(component.cardDefinitionId) ?: return false
+        if (definition.typeLine.isLand || definition.hasNoManaCost) return false
+        if (!definition.typeLine.isPermanent && definition.script.spellEffect == null) return false
+        // A restriction whose future satisfaction would require projected game development is not
+        // deterministic opening-hand evidence. Ordinary instants, sorceries, and permanents have
+        // no entry here; target requirements are deliberately handled separately.
+        if (definition.script.castRestrictions.isNotEmpty()) return false
+
+        val physicalLandIds = hand.filter { entityId ->
+            entityId in actualHand &&
+                state.getEntity(entityId)?.get<CardComponent>()?.typeLine?.isLand == true &&
+                !LandDropUtils.playerCantPlayLands(
+                    state,
+                    playerId,
+                    cardRegistry,
+                    mulliganConditionEvaluator,
+                    landCardId = entityId,
+                )
+        }
+        val landPlans = deterministicLandPlans(physicalLandIds, guaranteedLandAccess)
+        return landPlans.any { plan ->
+            val planningState = stateAfterLandPlan(state, plan, guaranteedLandAccess) ?: return@any false
+            val sources = mulliganManaSolver.findAvailableManaSources(planningState, playerId)
+            mulliganManaSolver.solve(
+                planningState,
+                playerId,
+                definition.manaCost,
+                precomputedSources = sources,
+            ) != null && canPayOpeningHandAdditionalCosts(planningState, cardId, definition.script.additionalCosts)
+        }
+    }
+
+    private fun deterministicLandPlans(
+        physicalLandIds: List<EntityId>,
+        guaranteedLandAccess: GuaranteedLandAccess?,
+    ): List<List<EntityId>> {
+        val horizon = (physicalLandIds.size + if (guaranteedLandAccess != null) 1 else 0).coerceAtMost(3)
+        if (horizon <= 0) return emptyList()
+        if (guaranteedLandAccess != null) {
+            // The cycling line fixes the first two land drops: play the sole land, cycle, then play
+            // the acquired land. It never invents additional draws or a second acquisition.
+            return listOf(listOf(guaranteedLandAccess.landId, guaranteedLandAccess.acquiredLandId))
+        }
+        return physicalLandIds.permutations(horizon)
+    }
+
+    private fun <T> List<T>.permutations(length: Int): List<List<T>> {
+        if (length == 0) return listOf(emptyList())
+        return flatMapIndexed { index, item ->
+            (take(index) + drop(index + 1)).permutations(length - 1).map { listOf(item) + it }
+        }
+    }
+
+    private fun stateAfterLandPlan(
+        initial: GameState,
+        landPlan: List<EntityId>,
+        guaranteedLandAccess: GuaranteedLandAccess?,
+    ): GameState? {
+        if (landPlan.isEmpty()) return null
+        var simulated = initial
+        val played = mutableListOf<EntityId>()
+
+        if (guaranteedLandAccess != null) {
+            // Cycling consumes the acquisition card. The searched land is known to be available,
+            // but its former library position is never consulted or used.
+            simulated = simulated
+                .removeFromZone(ZoneKey(playerId, Zone.HAND), guaranteedLandAccess.acquisitionCardId)
+                .addToZone(ZoneKey(playerId, Zone.GRAVEYARD), guaranteedLandAccess.acquisitionCardId)
+        }
+
+        for ((turnIndex, landId) in landPlan.withIndex()) {
+            if (turnIndex > 0) {
+                for (playedLand in played) {
+                    simulated = simulated.updateEntity(playedLand) { it.without<TappedComponent>() }
+                }
+            }
+            val sourceZone = if (
+                guaranteedLandAccess != null && landId == guaranteedLandAccess.acquiredLandId
+            ) Zone.LIBRARY else Zone.HAND
+            simulated = stateAfterPlanningLandPlay(simulated, landId, sourceZone) ?: return null
+            played += landId
+        }
+        return simulated
+    }
+
+    /** Fail closed for uncommon mandatory-cost shapes not proven payable by the shared picker seam. */
+    private fun canPayOpeningHandAdditionalCosts(
+        state: GameState,
+        castCardId: EntityId,
+        costs: List<AdditionalCost>,
+    ): Boolean = costs.all { cost ->
+        when (cost) {
+            is AdditionalCost.Atom -> when (val atom = cost.atom) {
+                is CostAtom.PayLife -> state.lifeTotal(playerId) >= atom.amount
+                is CostAtom.DiscardHand -> true
+                is CostAtom.Mana -> {
+                    val sources = mulliganManaSolver.findAvailableManaSources(state, playerId)
+                    mulliganManaSolver.solve(state, playerId, atom.cost, precomputedSources = sources) != null
+                }
+                else -> {
+                    val candidates = SelectionCostPresentation.candidates(
+                        state,
+                        playerId,
+                        castCardId,
+                        cost,
+                        mulliganCostUtils,
+                        mulliganPredicateEvaluator,
+                    )
+                    SelectionCostPresentation.selectionCount(cost) > 0 &&
+                        SelectionCostPresentation.canPay(state, playerId, castCardId, cost, candidates)
+                }
+            }
+            is AdditionalCost.Composite -> canPayOpeningHandAdditionalCosts(state, castCardId, cost.steps)
+            is AdditionalCost.Choice -> cost.options.any {
+                canPayOpeningHandAdditionalCosts(state, castCardId, listOf(it))
+            }
+            else -> false
+        }
+    }
+
+    /**
+     * Finds one guaranteed second-land line without looking at library order. The card must have a
+     * registered typed-cycling ability, be in the player's actual hand, be payable solely by the
+     * one land after that land enters untapped, and have at least one matching target somewhere in
+     * the player's library. Ordinary cycling/draw effects have no search filter and never qualify.
+     */
+    private fun guaranteedSecondLandAccess(
+        hand: List<EntityId>,
+        cards: Map<EntityId, CardSummary>,
+    ): GuaranteedLandAccess? {
+        val state = gameStateProvider() ?: return null
+        val actualHand = state.getHand(playerId).toSet()
+        val landIds = hand.filter { entityId ->
+            entityId in actualHand &&
+                state.getEntity(entityId)?.get<CardComponent>()?.typeLine?.isLand == true
+        }
+        if (landIds.size != 1) return null
+
+        val landId = landIds.single()
+        if (state.getEntity(playerId)?.has<PlayerCantPlayFromHandComponent>() == true) return null
+        if (LandDropUtils.playerCantPlayLands(
+                state,
+                playerId,
+                cardRegistry,
+                mulliganConditionEvaluator,
+                landCardId = landId,
+            )
+        ) return null
+        if (cyclingIsPrevented(state)) return null
+
+        val stateAfterLand = stateAfterGuaranteedUntappedLandPlay(state, landId) ?: return null
+        val soleLandSources = mulliganManaSolver.findAvailableManaSources(stateAfterLand, playerId)
+            .filter { it.entityId == landId && !it.requiresSacrifice }
+        if (soleLandSources.isEmpty()) return null
+
+        for (cardId in hand) {
+            if (cardId == landId || cardId !in actualHand || cards[cardId] == null) continue
+            val component = state.getEntity(cardId)?.get<CardComponent>() ?: continue
+            val definition = cardRegistry.getCard(component.cardDefinitionId) ?: continue
+            val typedCycling = definition.keywordAbilities
+                .filterIsInstance<KeywordAbility.Cycling>()
+                .firstOrNull { it.searchFilter != null }
+                ?: continue
+            val targetFilter = typedCycling.searchFilter ?: continue
+
+            // Only existence is observed. No positional information from the hidden library is
+            // retained or used, so a library reorder cannot affect this decision.
+            val targetId = state.getLibrary(playerId)
+                .filter { candidateId ->
+                    mulliganPredicateEvaluator.matches(
+                        state,
+                        state.projectedState,
+                        candidateId,
+                        targetFilter,
+                        PredicateContext(controllerId = playerId, sourceId = cardId),
+                    )
+                }
+                // Pick a representative by intrinsic definition identity, never by hidden library
+                // position. The mulligan decision learns only that a legal searched-for land exists.
+                .minByOrNull { candidateId ->
+                    state.getEntity(candidateId)?.get<CardComponent>()?.cardDefinitionId.orEmpty()
+                }
+                ?: continue
+
+            val payment = mulliganManaSolver.solve(
+                stateAfterLand,
+                playerId,
+                typedCycling.cost,
+                precomputedSources = soleLandSources,
+            ) ?: continue
+            if (payment.sources.any { it.entityId != landId || it.requiresSacrifice }) continue
+
+            return GuaranteedLandAccess(landId, cardId, targetId)
+        }
+        return null
+    }
+
+    /**
+     * Builds an immutable planning state after the sole land is played at the first legal
+     * opportunity. Choice-dependent or copy-dependent land entries are not deterministic enough
+     * for virtual-land credit. A land that is guaranteed to enter tapped cannot fund the line.
+     */
+    private fun stateAfterGuaranteedUntappedLandPlay(state: GameState, landId: EntityId): GameState? {
+        val simulated = stateAfterPlanningLandPlay(state, landId, Zone.HAND) ?: return null
+        if (simulated.getEntity(landId)?.has<TappedComponent>() == true) return null
+        return simulated
+    }
+
+    /** Places one deterministic planned land drop and applies its real entry-tapped semantics. */
+    private fun stateAfterPlanningLandPlay(
+        state: GameState,
+        landId: EntityId,
+        sourceZone: Zone,
+    ): GameState? {
+        val component = state.getEntity(landId)?.get<CardComponent>() ?: return null
+        val definition = cardRegistry.getCard(component.cardDefinitionId) ?: return null
+        if (!definition.typeLine.isLand) return null
+        if (definition.script.replacementEffects.any { it is EntersAsCopy || it is EntersWithChoice }) {
+            return null
+        }
+
+        var simulated = state
+            .removeFromZone(ZoneKey(playerId, sourceZone), landId)
+            .updateEntity(landId) { it.with(ControllerComponent(playerId)) }
+        simulated = BattlefieldEntry.place(simulated, playerId, landId)
+
+        val entersUntapped = EnterUntappedReplacements.entersUntapped(simulated, landId, playerId)
+        if (!entersUntapped) {
+            val selfForcesTapped = definition.script.replacementEffects
+                .filterIsInstance<EntersTapped>()
+                .any { replacement ->
+                    when {
+                        replacement.payLifeCost != null ->
+                            state.lifeTotal(playerId) <= replacement.payLifeCost!!
+                        replacement.unlessCondition == null -> true
+                        else -> !mulliganConditionEvaluator.evaluate(
+                            simulated,
+                            replacement.unlessCondition!!,
+                            EffectContext(sourceId = landId, controllerId = playerId),
+                        )
+                    }
+                }
+            val globallyForcedTapped = EnterTappedReplacements.entersTapped(simulated, landId, playerId)
+            if (selfForcesTapped || globallyForcedTapped) {
+                simulated = simulated.updateEntity(landId) { it.with(TappedComponent) }
+            }
+        }
+        return simulated
+    }
+
+    private fun cyclingIsPrevented(state: GameState): Boolean =
+        state.getBattlefield().any { sourceId ->
+            val component = state.getEntity(sourceId)?.get<CardComponent>() ?: return@any false
+            cardRegistry.getCard(component.cardDefinitionId)
+                ?.script?.staticAbilities?.any { it is PreventCycling } == true
+        }
 
     private fun colorsProducedBy(card: CardSummary): Set<Color> {
         val basic = when (card.name) {
@@ -189,6 +528,10 @@ class EngineAiPlayerController(
 
         val toBottom = mutableListOf<EntityId>()
         val targetLands = if (message.hand.size - count <= 5) 2 else 3
+        val protectedLandAccess = guaranteedSecondLandAccess(message.hand, cards)
+        val protectedIds = protectedLandAccess?.let {
+            setOf(it.landId, it.acquisitionCardId)
+        }.orEmpty()
 
         // Bottom excess lands
         if (lands.size > targetLands) {
@@ -197,12 +540,21 @@ class EngineAiPlayerController(
 
         // If we need more, bottom most expensive spells
         if (toBottom.size < count) {
-            val expensive = spells.sortedByDescending { entityId ->
+            val expensive = spells.filterNot { it in protectedIds }.sortedByDescending { entityId ->
                 LimitedPickScorer.parseCmc(cards[entityId]?.manaCost ?: "")
             }
             for (spell in expensive) {
                 if (toBottom.size >= count) break
                 toBottom.add(spell)
+            }
+        }
+
+        // A normal London mulligan always leaves enough non-pair cards to bottom, but keep this
+        // fallback total and legal if a caller supplies an unusual hand/count combination.
+        if (toBottom.size < count) {
+            for (entityId in message.hand) {
+                if (toBottom.size >= count) break
+                if (entityId !in toBottom && entityId !in protectedIds) toBottom.add(entityId)
             }
         }
 

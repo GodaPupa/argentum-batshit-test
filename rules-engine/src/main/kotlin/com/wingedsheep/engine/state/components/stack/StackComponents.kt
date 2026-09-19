@@ -58,6 +58,8 @@ data class SpellOnStackComponent(
      */
     val splicedTargetsOrdered: List<List<ChosenTarget>> = emptyList(),
     val chosenModes: List<Int> = emptyList(),  // For modal spells (700.2). Ordered; same index may repeat when allowRepeat.
+    /** True once cast-time modal selection completed, including a legal choice of zero modes. */
+    val modalSelectionCompleted: Boolean = false,
     val modeTargetsOrdered: List<List<ChosenTarget>> = emptyList(),  // Per-mode chosen targets, aligned 1:1 with chosenModes
     val modeTargetRequirements: Map<Int, List<TargetRequirement>> = emptyMap(),  // Per-mode TargetRequirements for 608.2b re-validation at resolution
     val modeDamageDistribution: Map<Int, Map<EntityId, Int>> = emptyMap(),  // Per-mode DividedDamageEffect allocations (future)
