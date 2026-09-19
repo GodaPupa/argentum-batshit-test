@@ -1549,6 +1549,7 @@ class PestControlAgentDecisionTest : ScenarioTestBase() {
                 .build()
             game.state = game.state.copy(phase = Phase.POSTCOMBAT_MAIN, step = Step.POSTCOMBAT_MAIN)
             val player = ai(game)
+            val initialPressure = player.survivalPressureDiagnostic(game.state)
 
             val first = player.chooseAction(game.state).shouldBeInstanceOf<CastSpell>()
             withClue("visible repeatable spell-damage engines make preserving the Weather continuation material") {
