@@ -96,6 +96,40 @@ def state_regressions():
     assert boilerworks_legal(1)
     return True
 
+
+
+class DevState:
+    def __init__(self, hand):
+        self.hand=list(hand); self.battlefield=[]; self.turn=0; self.land_played=False
+    def begin_turn(self, draw=None):
+        self.turn+=1; self.land_played=False
+        if draw is not None: self.hand.append(draw)
+    def lands(self): return [x for x in self.battlefield if x["card"] in LANDS]
+    def permanents(self): return [x["card"] for x in self.battlefield]
+    def play_land(self, card):
+        if self.land_played or card not in self.hand or card not in LANDS: return False
+        if card=="Izzet Boilerworks" and not boilerworks_legal(len(self.lands())): return False
+        self.hand.remove(card)
+        if card=="Izzet Boilerworks":
+            # deterministic development policy: return a tapped land if possible, else last land.
+            lands=self.lands(); target=next((x for x in lands if x["tapped"]),lands[-1])
+            self.battlefield.remove(target); self.hand.append(target["card"])
+        self.battlefield.append({"card":card,"tapped":land_enters_tapped(card),"entered":self.turn})
+        self.land_played=True; return True
+
+def development_regressions():
+    s=DevState(["Izzet Boilerworks","Island"])
+    s.begin_turn()
+    assert not s.play_land("Izzet Boilerworks")
+    assert s.play_land("Island")
+    s.begin_turn()
+    assert s.play_land("Izzet Boilerworks")
+    assert len(s.lands())==1 and s.lands()[0]["card"]=="Izzet Boilerworks"
+    assert "Island" in s.hand
+    t=DevState(["Volatile Fjord"]); t.begin_turn(); assert t.play_land("Volatile Fjord")
+    assert t.lands()[0]["tapped"]
+    return True
+
 def main():
     ap=argparse.ArgumentParser()
     ap.add_argument("--deck",default="izzet-science/v0.1-control.md")
@@ -104,6 +138,7 @@ def main():
     args=ap.parse_args()
     regressions()
     state_regressions()
+    development_regressions()
     _,cards=parse_deck(Path(args.deck))
     b,r=opening_baseline(cards,args.samples,args.seed)
     print("seed",hex(args.seed),"samples",args.samples)
