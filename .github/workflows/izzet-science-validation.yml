@@ -82,6 +82,19 @@ jobs:
               sha256sum "izzet-science/artifacts/$name.txt"
             } > "izzet-science/results/$name/manifest.txt"
           done
+      - name: Run C1 lean-machine challenger
+        run: |
+          python izzet-science/sim/mana_harness.py             --deck izzet-science/challengers/C1-lean-machine.md             --samples 100000 --seed 0x1A22E7001             | tee izzet-science/artifacts/C1-lean-machine.txt
+          mkdir -p izzet-science/results/C1-lean-machine
+          cp izzet-science/artifacts/C1-lean-machine.txt izzet-science/results/C1-lean-machine/turn-sequence-v1.txt
+          {
+            echo "source_sha=${GITHUB_SHA}"
+            echo "run_id=${GITHUB_RUN_ID}"
+            echo "seed=0x1A22E7001"
+            echo "samples=100000"
+            echo "deck=izzet-science/challengers/C1-lean-machine.md"
+            sha256sum izzet-science/artifacts/C1-lean-machine.txt
+          } > izzet-science/results/C1-lean-machine/manifest.txt
       - name: Preserve output
         uses: actions/upload-artifact@v4
         with:
@@ -92,13 +105,14 @@ jobs:
             izzet-science/artifacts/R0.5-midpoint.txt
             izzet-science/artifacts/infrastructure-A9.txt
             izzet-science/artifacts/infrastructure-B8.txt
+            izzet-science/artifacts/C1-lean-machine.txt
           if-no-files-found: error
 
       - name: Publish result back to experiment branch
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add izzet-science/results/latest/ izzet-science/results/R1-red-access/ izzet-science/results/R0.5-midpoint/ izzet-science/results/infrastructure-A9/ izzet-science/results/infrastructure-B8/
+          git add izzet-science/results/latest/ izzet-science/results/R1-red-access/ izzet-science/results/R0.5-midpoint/ izzet-science/results/infrastructure-A9/ izzet-science/results/infrastructure-B8/ izzet-science/results/C1-lean-machine/
           if git diff --cached --quiet; then
             echo "No result changes to publish"
             exit 0
