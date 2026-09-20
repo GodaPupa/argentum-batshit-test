@@ -647,11 +647,16 @@ def choose_selection_spell(state):
     no_interaction=not bool(set(state.hand)&INTERACTION_CARDS)
     candidates=[c for c in SELECTION_CAST_ORDER if can_cast_selection(state,c)]
     if not candidates: return None
-    if land_count==0 or len(combo)==1 or no_interaction:
+    # Combo completion is highest priority.
+    if len(combo)==1:
         return candidates[0]
-    # With interaction already available and no concrete rescue/combo need, preserve mana.
+    # Preserve interaction once development is stable; only dig when the next land is genuinely at risk.
     if not no_interaction:
+        if land_count==0 and len(state.lands())<2:
+            return candidates[0]
         return None
+    if land_count==0 or no_interaction:
+        return candidates[0]
     return next((c for c in candidates if sum(selection_cost(c))==1),None)
 
 def scheduler_regressions():
