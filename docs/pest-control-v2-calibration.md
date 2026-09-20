@@ -8,7 +8,7 @@ Persistent calibration workspace for Pest Control v1.0 vs SoterX Mono Red Madnes
 - Base commit: `44e28ab405afa7ca1f36d761f76ac9ec1506ffdf`
 - V1 chat-local official freeze: retired unexecuted after ephemeral artifacts became unavailable.
 - V2 official accepted games: 10.
-- V2 official disposition: `COMPLETED` (Pest Control 6-4 Mono Red Madness; 10/10 terminal; zero protocol defects).
+- V2 official execution: `COMPLETED`; post-execution disposition: `ACCEPTED_CALIBRATION` (Pest Control 6-4 Mono Red Madness; 10/10 terminal; zero protocol defects).
 - Official execution: workflow run `35525262024`, artifact `10610310479`, archive SHA-256 `577ecf33bbbd6fa2b9967867228b6eabb81b6b2c5590f2c0670f5d3536f80a2b`.
 - Durable result record: `docs/experiments/pest-control/v2-official-execution/`.
 
