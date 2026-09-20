@@ -869,6 +869,44 @@ def tutor_regressions():
     assert tutor_target("Merchant Scroll",m,["Mountain","High Tide"])=="High Tide"
     return True
 
+
+
+def pay_tutor_cost(state,card):
+    g,nu,nr=TUTOR_SPECS[card]["cost"]
+    return pay_colored_mutating(state,generic=g,need_u=nu,need_r=nr)
+
+def execute_tutor(state,library,card,rng):
+    if card not in state.hand: return None,library
+    target=tutor_target(card,state,library)
+    if target is None or not pay_tutor_cost(state,card): return None,library
+    state.hand.remove(card)
+    # Transmute discards the card; Merchant Scroll resolves to graveyard. Graveyard zone
+    # is not yet persistent on DevState, so telemetry only records consumption here.
+    idx=library.index(target)
+    state.hand.append(library.pop(idx))
+    rng.shuffle(library)
+    return target,library
+
+def choose_tutor(state,library):
+    h=set(state.hand)
+    # Only spend tutor mana for a concrete primary-pair completion in this first gate.
+    for card in ("Dizzy Spell","Muddle the Mixture","Merchant Scroll","Drift of Phantasms"):
+        if card not in h: continue
+        target=tutor_target(card,state,library)
+        if target in {"Lava Spike","Desperate Ritual"} and can_cast_selection(state,card) if card in SELECTION_SPECS else True:
+            if can_pay_simple(state,generic=TUTOR_SPECS[card]["cost"][0],
+                              need_u=TUTOR_SPECS[card]["cost"][1],need_r=TUTOR_SPECS[card]["cost"][2]):
+                return card
+    return None
+
+def tutor_execution_regressions():
+    import random as _r
+    s=DevState(["Lava Spike","Muddle the Mixture"]); s.turn=4
+    s.battlefield=[{"card":"Island","tapped":False,"entered":1},{"card":"Island","tapped":False,"entered":2},{"card":"Island","tapped":False,"entered":3}]
+    target,lib=execute_tutor(s,["Mountain","Desperate Ritual","Counterspell"],"Muddle the Mixture",_r.Random(1))
+    assert target=="Desperate Ritual" and "Desperate Ritual" in s.hand and "Muddle the Mixture" not in s.hand
+    return True
+
 def combo_assembly_metrics(state):
     h=set(state.hand)
     spike="Lava Spike" in h
@@ -919,6 +957,10 @@ def simulate_one(cards, rng, through=6):
         ht_castable,ht_productive,ht_post,ht_gain=high_tide_metrics(s)
         # Cast at most one information-limited selection spell before optional infrastructure.
         selected,library,sel_seen,sel_drawn=cast_one_selection(s,library)
+        tutor_used=choose_tutor(s,library)
+        tutor_found=None
+        if tutor_used:
+            tutor_found,library=execute_tutor(s,library,tutor_used,rng)
         commander_deployed=deploy_guildmage(s)
         # Finish optional mana development without replaying a land.
         rock=choose_mana_permanent(s)
@@ -929,6 +971,7 @@ def simulate_one(cards, rng, through=6):
         islands=sum(high_tide_island(p["card"]) for p in s.lands())
         rows.append({"turn":turn,"lands":len(s.lands()),"selection_cast":selected is not None,
                      "commander_deployed":commander_deployed,"commander_battlefield":guildmage_on_battlefield(s),
+                     "tutor_used":tutor_used is not None,"tutor_found_combo":tutor_found in {"Lava Spike","Desperate Ritual"},
                      "selection_seen":sel_seen,"selection_drawn":sel_drawn,
                      "start_U":start_u,"start_R":start_r,"start_UU":start_uu,
                      "action_U":action_u,"action_R":action_r,"action_UU":action_uu,
@@ -950,7 +993,7 @@ def simulate_one(cards, rng, through=6):
 
 def simulate_sample(cards, samples=10000, seed=SEED, through=10):
     rng=random.Random(seed)
-    agg={t:{"n":0,"selection_cast":0,"commander_deployed":0,"commander_battlefield":0,"selection_seen_sum":0,"selection_drawn_sum":0,"start_U":0,"start_R":0,"start_UU":0,"action_U":0,"action_R":0,"action_UU":0,
+    agg={t:{"n":0,"selection_cast":0,"commander_deployed":0,"commander_battlefield":0,"tutor_used":0,"tutor_found_combo":0,"selection_seen_sum":0,"selection_drawn_sum":0,"start_U":0,"start_R":0,"start_UU":0,"action_U":0,"action_R":0,"action_UU":0,
             "residual_U":0,"residual_R":0,"residual_UU":0,
             "guildmage_start":0,"guildmage_action":0,"guildmage_end":0,
             "uu_spell_present":0,"uu_spell_exec":0,"u_spell_present":0,"u_spell_exec":0,
@@ -966,6 +1009,8 @@ def simulate_sample(cards, samples=10000, seed=SEED, through=10):
             a["selection_cast"]+=int(row["selection_cast"])
             a["commander_deployed"]+=int(row["commander_deployed"])
             a["commander_battlefield"]+=int(row["commander_battlefield"])
+            a["tutor_used"]+=int(row["tutor_used"])
+            a["tutor_found_combo"]+=int(row["tutor_found_combo"])
             a["selection_seen_sum"]+=row["selection_seen"]
             a["selection_drawn_sum"]+=row["selection_drawn"]
             for k in ("start_U","start_R","start_UU","action_U","action_R","action_UU","residual_U","residual_R","residual_UU","guildmage_start","guildmage_action","guildmage_end","uu_spell_present","uu_spell_exec","u_spell_present","u_spell_exec","r_spell_present","r_spell_exec","ritual_present","spike_present","combo_pair","combo_pair_guild_action","combo_pair_commander_ready","combo_lethal","guild_plus_u","guild_plus_r","uu_plus_r","high_tide_castable","high_tide_productive","reversal_neutral","reversal_positive"):
@@ -1095,6 +1140,7 @@ def main():
     commander_regressions()
     lethal_regressions()
     tutor_regressions()
+    tutor_execution_regressions()
     b,r=opening_baseline(cards,args.samples,args.seed)
     print("seed",hex(args.seed),"samples",args.samples)
     print("land_buckets_0_1_2_3_4plus",b)
@@ -1104,6 +1150,7 @@ def main():
         a=agg[turn]; n=a["n"]
         print("turn",turn,"selection_cast",a["selection_cast"]/n,
               "commander_deployed",a["commander_deployed"]/n,"commander_battlefield",a["commander_battlefield"]/n,
+              "tutor_used",a["tutor_used"]/n,"tutor_found_combo",a["tutor_found_combo"]/n,
               "avg_selection_seen",a["selection_seen_sum"]/n,"avg_selection_drawn",a["selection_drawn_sum"]/n,
               "start_U",a["start_U"]/n,"start_R",a["start_R"]/n,"start_UU",a["start_UU"]/n,
               "action_U",a["action_U"]/n,"action_R",a["action_R"]/n,"action_UU",a["action_UU"]/n,
