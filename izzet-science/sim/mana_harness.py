@@ -1012,10 +1012,14 @@ def commander_independent_readiness(state):
     electromancer=any(p["card"]=="Goblin Electromancer" for p in state.battlefield)
     capsize_generic=3 if electromancer else 4
     return {
+        "mystic_present":"Murmuring Mystic" in state.hand,
         "mystic_castable":"Murmuring Mystic" in state.hand and
             ready_payment_feasible_exact(state,generic=3,need_u=1),
+        "rolling_present":"Rolling Thunder" in state.hand,
         "rolling_x":max_x_damage_castable(state,"Rolling Thunder"),
+        "torch_present":"Kaervek's Torch" in state.hand,
         "torch_x":max_x_damage_castable(state,"Kaervek's Torch"),
+        "capsize_present":"Capsize" in state.hand,
         "capsize_buyback":"Capsize" in state.hand and
             ready_payment_feasible_exact(state,generic=capsize_generic,need_u=2),
     }
@@ -1442,7 +1446,10 @@ def combo_assembly_regressions():
     assert not combo_assembly_metrics(z)["pair"]
     return True
 
-def simulate_one(cards, rng, through=6, include_interaction=False):
+BACKUP_ROW_KEYS=("mystic_present","mystic_castable","rolling_present","rolling_x",
+                 "torch_present","torch_x","capsize_present","capsize_buyback")
+
+def simulate_one(cards, rng, through=6, include_interaction=False, include_backup=False):
     library=list(cards); rng.shuffle(library)
     hand=library[:7]; library=library[7:]
     snow_basics="Snow-Covered Island" in cards or "Snow-Covered Mountain" in cards
@@ -1469,6 +1476,7 @@ def simulate_one(cards, rng, through=6, include_interaction=False):
         combo_pair_commander_ready=combo["pair"] and guildmage_on_battlefield(s)
         combo_lethal=primary_combo_launch_feasible(s)
         interaction=interaction_readiness_metrics(s) if include_interaction else None
+        backup=commander_independent_readiness(s) if include_backup else None
         if combo_lethal and first_lethal_turn is None:
             first_lethal_turn=turn
         first_lethal_now=(first_lethal_turn==turn)
@@ -1513,10 +1521,29 @@ def simulate_one(cards, rng, through=6, include_interaction=False):
                      "reversal_neutral":neutral,"reversal_positive":positive,
                      "nonland_gross":gross,"islands":islands}
         if interaction is not None: row.update(interaction)
+        if backup is not None: row.update(backup)
         rows.append(row)
     return rows
 
-def simulate_sample(cards, samples=10000, seed=SEED, through=10, include_interaction=False):
+def empty_backup_aggregate():
+    return {"mystic_present":0,"mystic_castable":0,
+            "rolling_present":0,"rolling_live":0,"rolling_5plus":0,"rolling_x_sum":0,
+            "torch_present":0,"torch_live":0,"torch_5plus":0,"torch_x_sum":0,
+            "capsize_present":0,"capsize_buyback":0}
+
+def accumulate_backup_metrics(aggregate,row):
+    for key in ("mystic_present","mystic_castable","rolling_present",
+                "torch_present","capsize_present","capsize_buyback"):
+        aggregate[key]+=int(row[key])
+    aggregate["rolling_live"]+=int(row["rolling_x"]>0)
+    aggregate["rolling_5plus"]+=int(row["rolling_x"]>=5)
+    aggregate["rolling_x_sum"]+=row["rolling_x"]
+    aggregate["torch_live"]+=int(row["torch_x"]>0)
+    aggregate["torch_5plus"]+=int(row["torch_x"]>=5)
+    aggregate["torch_x_sum"]+=row["torch_x"]
+
+def simulate_sample(cards, samples=10000, seed=SEED, through=10,
+                    include_interaction=False, include_backup=False):
     rng=random.Random(seed)
     agg={t:{"n":0,"selection_cast":0,"commander_deployed":0,"commander_battlefield":0,"tutor_used":0,"tutor_found_combo":0,"selection_seen_sum":0,"selection_drawn_sum":0,"start_U":0,"start_R":0,"start_UU":0,"action_U":0,"action_R":0,"action_UU":0,
             "residual_U":0,"residual_R":0,"residual_UU":0,
@@ -1534,8 +1561,10 @@ def simulate_sample(cards, samples=10000, seed=SEED, through=10, include_interac
                       "removal_conditional","commander_recovery")
     if include_interaction:
         for a in agg.values(): a.update({k:0 for k in interaction_keys})
+    if include_backup:
+        for a in agg.values(): a.update(empty_backup_aggregate())
     for _ in range(samples):
-        for row in simulate_one(cards,rng,through,include_interaction):
+        for row in simulate_one(cards,rng,through,include_interaction,include_backup):
             a=agg[row["turn"]]; a["n"]+=1
             a["selection_cast"]+=int(row["selection_cast"])
             a["commander_deployed"]+=int(row["commander_deployed"])
@@ -1552,6 +1581,8 @@ def simulate_sample(cards, samples=10000, seed=SEED, through=10, include_interac
             a["skred_3plus"]+=int(row["skred_3plus"])
             if include_interaction:
                 for k in interaction_keys: a[k]+=int(row[k])
+            if include_backup:
+                accumulate_backup_metrics(a,row)
             a["high_tide_post_sum"]+=row["high_tide_post_mana"]
             a["high_tide_gain_sum"]+=row["high_tide_gain"]
             a["lands_sum"]+=row["lands"]; a["islands_sum"]+=row["islands"]
@@ -1567,6 +1598,16 @@ def simulate_sample(cards, samples=10000, seed=SEED, through=10, include_interac
                 raise ValueError(f"blue protection ordering violation turn={turn}")
             if a["removal_conditional"]<a["stack_conditional"]:
                 raise ValueError(f"conditional protection ordering violation turn={turn}")
+    if include_backup:
+        for turn,a in agg.items():
+            for ready,present in (("mystic_castable","mystic_present"),
+                                  ("rolling_live","rolling_present"),
+                                  ("rolling_5plus","rolling_live"),
+                                  ("torch_live","torch_present"),
+                                  ("torch_5plus","torch_live"),
+                                  ("capsize_buyback","capsize_present")):
+                if not 0<=a[ready]<=a[present]<=a["n"]:
+                    raise ValueError(f"backup subset violation turn={turn} {ready}<={present}")
     return agg
 
 def simulation_regressions(cards):
@@ -1707,8 +1748,10 @@ def commander_independent_readiness_regressions():
     for i,card in enumerate(["Mountain","Mountain","Island","Island","Island","Island"]):
         direct.battlefield.append({"card":card,"tapped":False,"entered":i})
     ready=commander_independent_readiness(direct)
-    assert ready=={"mystic_castable":False,"rolling_x":5,"torch_x":5,
-                  "capsize_buyback":False}
+    assert ready=={"mystic_present":False,"mystic_castable":False,
+                  "rolling_present":True,"rolling_x":5,
+                  "torch_present":True,"torch_x":5,
+                  "capsize_present":False,"capsize_buyback":False}
     direct.battlefield.append({"card":"Goblin Electromancer","tapped":False,"entered":2})
     reduced=commander_independent_readiness(direct)
     assert reduced["rolling_x"]==6 and reduced["torch_x"]==6
@@ -1724,9 +1767,43 @@ def commander_independent_readiness_regressions():
     for i,card in enumerate(["Island","Island","Mountain"]):
         short.battlefield.append({"card":card,"tapped":False,"entered":i})
     assert commander_independent_readiness(short)=={
-        "mystic_castable":False,"rolling_x":2,"torch_x":0,
-        "capsize_buyback":False,
+        "mystic_present":True,"mystic_castable":False,
+        "rolling_present":True,"rolling_x":2,
+        "torch_present":False,"torch_x":0,
+        "capsize_present":True,"capsize_buyback":False,
     }
+    return True
+
+def commander_independent_instrumentation_regressions(cards):
+    class FixtureRng:
+        def shuffle(self,items):
+            return None
+        def choice(self,items):
+            return items[0]
+    front=["Murmuring Mystic","Rolling Thunder","Kaervek's Torch","Capsize",
+           "Snow-Covered Island","Snow-Covered Mountain","Snow-Covered Island"]
+    ordered=list(cards)
+    for card in front:
+        ordered.remove(card)
+    ordered=front+ordered
+    plain=simulate_one(ordered,FixtureRng(),10,False,False)
+    observed=simulate_one(ordered,FixtureRng(),10,False,True)
+    for baseline,instrumented in zip(plain,observed):
+        legacy={k:v for k,v in instrumented.items() if k not in BACKUP_ROW_KEYS}
+        assert baseline==legacy
+        assert set(BACKUP_ROW_KEYS)<=set(instrumented)
+        assert not instrumented["mystic_castable"] or instrumented["mystic_present"]
+        assert not instrumented["rolling_x"] or instrumented["rolling_present"]
+        assert not instrumented["torch_x"] or instrumented["torch_present"]
+        assert not instrumented["capsize_buyback"] or instrumented["capsize_present"]
+    aggregate=empty_backup_aggregate()
+    aggregate["n"]=len(observed)
+    for row in observed:
+        accumulate_backup_metrics(aggregate,row)
+    assert aggregate["mystic_present"]==len(observed)
+    assert aggregate["rolling_present"]==len(observed)
+    assert aggregate["torch_present"]==len(observed)
+    assert aggregate["capsize_present"]==len(observed)
     return True
 
 def electromancer_lethal_regressions():
@@ -1762,6 +1839,8 @@ def main():
                     help="Explicit reduced main-deck size for diagnostic exclusion runs only")
     ap.add_argument("--interaction-pilot",action="store_true",
                     help="Emit v0.7 fixed-event interaction-readiness telemetry")
+    ap.add_argument("--commander-independent-pilot",action="store_true",
+                    help="Emit v0.9 commander-independent readiness telemetry")
     args=ap.parse_args()
     if args.diagnostic_size is None:
         _,cards=parse_deck(Path(args.deck))
@@ -1815,11 +1894,13 @@ def main():
     seething_song_launch_regressions()
     multiplayer_table_kill_regressions()
     commander_independent_readiness_regressions()
+    commander_independent_instrumentation_regressions(cards)
     b,r=opening_baseline(cards,args.samples,args.seed)
     print("seed",hex(args.seed),"samples",args.samples)
     print("land_buckets_0_1_2_3_4plus",b)
     print("rock_buckets_0_1_2_3plus",r)
-    agg=simulate_sample(cards,args.samples,args.seed,10,args.interaction_pilot)
+    agg=simulate_sample(cards,args.samples,args.seed,10,args.interaction_pilot,
+                        args.commander_independent_pilot)
     for turn in range(1,11):
         a=agg[turn]; n=a["n"]
         print("turn",turn,"selection_cast",a["selection_cast"]/n,
@@ -1856,6 +1937,20 @@ def main():
                   "removal_loss",(a["combo_lethal"]-a["removal_guaranteed"])/n,
                   "ability_removal_loss",(a["combo_lethal"]-a["ability_removal_guaranteed"])/n,
                   "recovery_loss",(a["combo_lethal"]-a["commander_recovery"])/n)
+        if args.commander_independent_pilot:
+            print("backup","turn",turn,
+                  "mystic_present",a["mystic_present"]/n,
+                  "mystic_castable",a["mystic_castable"]/n,
+                  "rolling_present",a["rolling_present"]/n,
+                  "rolling_live",a["rolling_live"]/n,
+                  "rolling_5plus",a["rolling_5plus"]/n,
+                  "avg_rolling_x",a["rolling_x_sum"]/n,
+                  "torch_present",a["torch_present"]/n,
+                  "torch_live",a["torch_live"]/n,
+                  "torch_5plus",a["torch_5plus"]/n,
+                  "avg_torch_x",a["torch_x_sum"]/n,
+                  "capsize_present",a["capsize_present"]/n,
+                  "capsize_buyback",a["capsize_buyback"]/n)
 
 if __name__=="__main__":
     main()

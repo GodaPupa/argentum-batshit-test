@@ -25,8 +25,9 @@ def main() -> None:
     if len(cards)!=99:
         raise SystemExit(f"control main-deck identity mismatch: {len(cards)} cards")
     harness.commander_independent_readiness_regressions()
+    harness.commander_independent_instrumentation_regressions(cards)
     print(f"control_sha256={CONTROL_SHA256}")
-    print("phase=commander-independent-readiness-0")
+    print("phase=commander-independent-readiness-1-preflight")
     print("deterministic_regressions=pass")
     print("sampled_games=0")
     print("outcome_claims=0")

@@ -86,3 +86,7 @@ Current gate: v0.9 Phase 0 validated seed-free commander-independent readiness
 semantics for Murmuring Mystic, Rolling Thunder, Kaervek's Torch, and buyback
 Capsize. No sampled baseline, challenger, or backup-plan win-rate claim is yet
 authorized.
+
+Phase 1 now freezes passive T1–T10 readiness telemetry for one control-only
+10,000-game pilot. The expanded seed-free validator passed, so its fresh bound seed
+is authorized for one execution. No pilot outcome has yet been exposed.

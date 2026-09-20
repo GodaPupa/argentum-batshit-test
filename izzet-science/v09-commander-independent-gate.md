@@ -15,10 +15,10 @@ challenger is authorized. It does not label a hand or trajectory a win.
 
 At the post-land, pre-spend action window, report only:
 
-1. whether Murmuring Mystic is in hand and castable for `3U`;
-2. the maximum legal `X` payable for an in-hand Rolling Thunder at `XR`;
-3. the maximum legal `X` payable for an in-hand Kaervek's Torch at `XR`;
-4. whether an in-hand Capsize can be cast with buyback for `4UU`.
+1. whether Murmuring Mystic is in hand and whether it is castable for `3U`;
+2. whether Rolling Thunder is in hand and the maximum legal `X` payable at `XR`;
+3. whether Kaervek's Torch is in hand and the maximum legal `X` payable at `XR`;
+4. whether Capsize is in hand and whether it can be cast with buyback for `4UU`.
 
 Goblin Electromancer reduces the generic portion of each instant or sorcery by one.
 The exact ready-source enumerator must account for fixed Izzet Boilerworks output,
