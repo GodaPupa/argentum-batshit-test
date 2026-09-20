@@ -935,6 +935,7 @@ def simulate_one(cards, rng, through=6):
     hand=library[:7]; library=library[7:]
     s=DevState(hand)
     rows=[]
+    first_lethal_turn=None
     for turn in range(1,through+1):
         draw=library.pop(0) if library else None
         s.begin_turn(draw)
@@ -953,6 +954,10 @@ def simulate_one(cards, rng, through=6):
         combo=combo_assembly_metrics(s)
         combo_pair_commander_ready=combo["pair"] and guildmage_on_battlefield(s)
         combo_lethal=primary_combo_launch_feasible(s)
+        if combo_lethal and first_lethal_turn is None:
+            first_lethal_turn=turn
+        first_lethal_now=(first_lethal_turn==turn)
+        lethal_by_now=(first_lethal_turn is not None and first_lethal_turn<=turn)
         holds=hold_up_metrics(s)
         ht_castable,ht_productive,ht_post,ht_gain=high_tide_metrics(s)
         # Cast at most one information-limited selection spell before optional infrastructure.
@@ -983,6 +988,7 @@ def simulate_one(cards, rng, through=6):
                      "ritual_present":hand_actions["ritual_present"],"spike_present":hand_actions["spike_present"],
                      "combo_pair":combo["pair"],"combo_pair_guild_action":combo["pair_guild_action"],
                      "combo_pair_commander_ready":combo_pair_commander_ready,"combo_lethal":combo_lethal,
+                     "first_lethal_now":first_lethal_now,"lethal_by_now":lethal_by_now,
                      "guild_plus_u":holds["guild_plus_u"],"guild_plus_r":holds["guild_plus_r"],"uu_plus_r":holds["uu_plus_r"],
                      "high_tide_castable":ht_castable,"high_tide_productive":ht_productive,
                      "high_tide_post_mana":ht_post,"high_tide_gain":ht_gain,
@@ -999,6 +1005,7 @@ def simulate_sample(cards, samples=10000, seed=SEED, through=10):
             "uu_spell_present":0,"uu_spell_exec":0,"u_spell_present":0,"u_spell_exec":0,
             "r_spell_present":0,"r_spell_exec":0,"ritual_present":0,"spike_present":0,
             "combo_pair":0,"combo_pair_guild_action":0,"combo_pair_commander_ready":0,"combo_lethal":0,
+            "first_lethal_now":0,"lethal_by_now":0,
             "guild_plus_u":0,"guild_plus_r":0,"uu_plus_r":0,
             "high_tide_castable":0,"high_tide_productive":0,"high_tide_post_sum":0,"high_tide_gain_sum":0,
             "reversal_neutral":0,"reversal_positive":0,"lands_sum":0,"islands_sum":0}
@@ -1013,7 +1020,7 @@ def simulate_sample(cards, samples=10000, seed=SEED, through=10):
             a["tutor_found_combo"]+=int(row["tutor_found_combo"])
             a["selection_seen_sum"]+=row["selection_seen"]
             a["selection_drawn_sum"]+=row["selection_drawn"]
-            for k in ("start_U","start_R","start_UU","action_U","action_R","action_UU","residual_U","residual_R","residual_UU","guildmage_start","guildmage_action","guildmage_end","uu_spell_present","uu_spell_exec","u_spell_present","u_spell_exec","r_spell_present","r_spell_exec","ritual_present","spike_present","combo_pair","combo_pair_guild_action","combo_pair_commander_ready","combo_lethal","guild_plus_u","guild_plus_r","uu_plus_r","high_tide_castable","high_tide_productive","reversal_neutral","reversal_positive"):
+            for k in ("start_U","start_R","start_UU","action_U","action_R","action_UU","residual_U","residual_R","residual_UU","guildmage_start","guildmage_action","guildmage_end","uu_spell_present","uu_spell_exec","u_spell_present","u_spell_exec","r_spell_present","r_spell_exec","ritual_present","spike_present","combo_pair","combo_pair_guild_action","combo_pair_commander_ready","combo_lethal","first_lethal_now","lethal_by_now","guild_plus_u","guild_plus_r","uu_plus_r","high_tide_castable","high_tide_productive","reversal_neutral","reversal_positive"):
                 a[k]+=int(row[k])
             a["high_tide_post_sum"]+=row["high_tide_post_mana"]
             a["high_tide_gain_sum"]+=row["high_tide_gain"]
@@ -1089,6 +1096,16 @@ def loop_selection_regression(cards):
     assert all("selection_cast" in r and "selection_seen" in r for r in rows)
     return True
 
+
+def first_lethal_regression():
+    # Absorption semantics: first lethal is recorded once and cumulative state remains true.
+    first=None; seen=[]
+    for turn,lethal in [(1,False),(2,False),(3,True),(4,True)]:
+        if lethal and first is None: first=turn
+        seen.append((turn,first==turn,first is not None and first<=turn))
+    assert seen==[(1,False,False),(2,False,False),(3,True,True),(4,False,True)]
+    return True
+
 def main():
     ap=argparse.ArgumentParser()
     ap.add_argument("--deck",default="izzet-science/v0.1-control.md")
@@ -1141,6 +1158,7 @@ def main():
     lethal_regressions()
     tutor_regressions()
     tutor_execution_regressions()
+    first_lethal_regression()
     b,r=opening_baseline(cards,args.samples,args.seed)
     print("seed",hex(args.seed),"samples",args.samples)
     print("land_buckets_0_1_2_3_4plus",b)
@@ -1158,6 +1176,7 @@ def main():
               "guildmage_start",a["guildmage_start"]/n,"guildmage_action",a["guildmage_action"]/n,"guildmage_end",a["guildmage_end"]/n,
               "combo_pair",a["combo_pair"]/n,"combo_pair_guild_action",a["combo_pair_guild_action"]/n,
               "combo_pair_commander_ready",a["combo_pair_commander_ready"]/n,"combo_lethal",a["combo_lethal"]/n,
+              "first_lethal_now",a["first_lethal_now"]/n,"lethal_by_now",a["lethal_by_now"]/n,
               "guild_plus_u",a["guild_plus_u"]/n,"guild_plus_r",a["guild_plus_r"]/n,"uu_plus_r",a["uu_plus_r"]/n,
               "uu_exec",a["uu_spell_exec"]/n,"u_exec",a["u_spell_exec"]/n,"r_exec",a["r_spell_exec"]/n,
               "high_tide_castable",a["high_tide_castable"]/n,"high_tide_productive",a["high_tide_productive"]/n,
