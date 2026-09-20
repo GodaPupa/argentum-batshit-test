@@ -831,6 +831,44 @@ def lethal_regressions():
     assert primary_combo_damage_available(b,30)>=30
     return True
 
+
+
+TUTOR_SPECS={
+    "Muddle the Mixture":{"mode":"transmute","cost":(1,2,0),"mv":2},
+    "Dizzy Spell":{"mode":"transmute","cost":(1,2,0),"mv":1},
+    "Drift of Phantasms":{"mode":"transmute","cost":(1,2,0),"mv":3},
+    "Merchant Scroll":{"mode":"search","cost":(1,1,0),"blue_instant":True},
+}
+CARD_MV={"Lava Spike":1,"Desperate Ritual":2,"High Tide":1,"Dramatic Reversal":2,
+         "Counterspell":2,"Lose Focus":2,"Snap":2,"Ideas Unbound":2}
+
+def tutor_target(card,state,library):
+    h=set(state.hand)
+    missing=[]
+    if "Lava Spike" not in h: missing.append("Lava Spike")
+    if "Desperate Ritual" not in h: missing.append("Desperate Ritual")
+    spec=TUTOR_SPECS[card]
+    legal=[]
+    if spec["mode"]=="transmute":
+        legal=[c for c in library if CARD_MV.get(c)==spec["mv"]]
+    else:
+        # Narrow current model: known blue instants relevant to engine/control.
+        legal=[c for c in library if c in {"High Tide","Dramatic Reversal","Counterspell","Lose Focus","Snap"}]
+    for want in missing:
+        if want in legal: return want
+    return legal[0] if legal else None
+
+def tutor_regressions():
+    s=DevState(["Lava Spike","Muddle the Mixture"])
+    lib=["Island","Desperate Ritual","Counterspell"]
+    assert tutor_target("Muddle the Mixture",s,lib)=="Desperate Ritual"
+    d=DevState(["Desperate Ritual","Dizzy Spell"])
+    lib=["Island","Lava Spike","High Tide"]
+    assert tutor_target("Dizzy Spell",d,lib)=="Lava Spike"
+    m=DevState(["Merchant Scroll"])
+    assert tutor_target("Merchant Scroll",m,["Mountain","High Tide"])=="High Tide"
+    return True
+
 def combo_assembly_metrics(state):
     h=set(state.hand)
     spike="Lava Spike" in h
@@ -1056,6 +1094,7 @@ def main():
     combo_assembly_regressions()
     commander_regressions()
     lethal_regressions()
+    tutor_regressions()
     b,r=opening_baseline(cards,args.samples,args.seed)
     print("seed",hex(args.seed),"samples",args.samples)
     print("land_buckets_0_1_2_3_4plus",b)
