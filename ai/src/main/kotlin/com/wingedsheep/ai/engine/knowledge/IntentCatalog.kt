@@ -1,5 +1,6 @@
 package com.wingedsheep.ai.engine.knowledge
 
+import com.wingedsheep.engine.core.CastSpell
 import com.wingedsheep.engine.registry.CardRegistry
 import com.wingedsheep.engine.state.ComponentContainer
 import com.wingedsheep.engine.state.components.identity.CardComponent
@@ -7,11 +8,22 @@ import com.wingedsheep.engine.state.components.identity.RoomComponent
 import com.wingedsheep.engine.state.components.identity.RoomFaceId
 import com.wingedsheep.engine.state.components.stack.AbilityOnStackComponent
 import com.wingedsheep.engine.state.components.stack.ActivatedAbilityOnStackComponent
+import com.wingedsheep.engine.state.components.stack.SpellOnStackComponent
 import com.wingedsheep.engine.state.components.stack.TriggeredAbilityOnStackComponent
+import com.wingedsheep.sdk.model.EntityId
 import com.wingedsheep.sdk.model.CardDefinition
 import com.wingedsheep.sdk.scripting.AbilityId
 import com.wingedsheep.sdk.scripting.ActivatedAbility
+import com.wingedsheep.sdk.scripting.KeywordAbility
 import com.wingedsheep.sdk.scripting.effects.Effect
+import com.wingedsheep.sdk.scripting.effects.ForceSacrificeEffect
+import com.wingedsheep.sdk.scripting.effects.GainLifeEffect
+import com.wingedsheep.sdk.scripting.effects.ModalEffect
+import com.wingedsheep.sdk.scripting.targets.TargetCreatureOrPlaneswalker
+import com.wingedsheep.sdk.scripting.targets.EffectTarget
+import com.wingedsheep.sdk.scripting.targets.TargetObject
+import com.wingedsheep.sdk.scripting.targets.TargetRequirement
+import com.wingedsheep.sdk.scripting.values.DynamicAmount
 
 /**
  * Card-name → [CardIntent] lookup, and the switch that turns Phase 6 on.
@@ -57,6 +69,177 @@ class IntentCatalog private constructor(private val registry: CardRegistry?) {
         val definition = registry?.getCard(cardName) ?: return null
         val face = definition.cardFaces.find { it.name == faceName } ?: return null
         return CardIntentAnalyzer.analyzeFace(definition, face)
+    }
+
+    /** The intent of a cast face identified by the engine's stable card-face index. */
+    fun forFaceIndex(cardName: String, faceIndex: Int): CardIntent? {
+        val definition = registry?.getCard(cardName) ?: return null
+        val face = definition.cardFaces.getOrNull(faceIndex) ?: return null
+        return CardIntentAnalyzer.analyzeFace(definition, face)
+    }
+
+    /**
+     * The intent of the concrete spell action after its structural choices have been made.
+     *
+     * SHARED ARGENTUM CHANGE: yes
+     *
+     * Whole-card analysis deliberately leaves modal interiors opaque because widening that fold
+     * would change historical card ratings. Production action policy has a narrower question: what
+     * does this chosen cast do? For a modal root, inspect only the selected modes; for an ordinary
+     * spell, inspect its root. Only targeted-answer tags are added, so unrelated modal choices do
+     * not acquire removal policy and no other card-intent policy is silently widened.
+     */
+    fun forCast(cardName: String, cast: CastSpell): CardIntent? {
+        val definition = registry?.getCard(cardName) ?: return null
+        val face = cast.faceIndex?.let { definition.cardFaces.getOrNull(it) ?: return null }
+        val script = face?.script ?: definition.script
+        val base = face?.let { CardIntentAnalyzer.analyzeFace(definition, it) }
+            ?: CardIntentAnalyzer.analyze(definition)
+        val root = script.spellEffect ?: return base
+        val concreteEffects = if (root is ModalEffect) {
+            if (cast.chosenModes.isEmpty()) emptyList()
+            else cast.chosenModes.mapNotNull(root.modes::getOrNull).map { it.effect }
+        } else {
+            listOf(root)
+        }
+        val actionAnswerTags = concreteEffects
+            .flatMap(CardIntentAnalyzer::actionEffectTags)
+            .filterTo(mutableSetOf()) { it in ACTION_TARGETED_ANSWER_TAGS }
+        return base.copy(tags = base.tags + actionAnswerTags)
+    }
+
+    /** Whether the card's typed cycling search names a basic land type (or all basic lands). */
+    fun hasLandTypecycling(cardName: String): Boolean {
+        val definition = registry?.getCard(cardName) ?: return false
+        return definition.keywordAbilities.filterIsInstance<KeywordAbility.Cycling>().any { cycling ->
+            cycling.searchFilter != null && (
+                cycling.searchFilter == com.wingedsheep.sdk.scripting.GameObjectFilter.BasicLand ||
+                    cycling.displayPrefix.removeSuffix("cycling") in BASIC_LAND_TYPES
+                )
+        }
+    }
+
+    /**
+     * Whether the selected spell face's entire resolvable effect is an opponent/player-directed
+     * forced sacrifice. This is deliberately structural and strict: a spell that also draws,
+     * drains, creates a permanent, or has any unrecognized additional leaf answers false, so a
+     * caller never suppresses a separate concrete benefit merely because an edict is present.
+     */
+    fun isPureForcedSacrificeSpell(cardName: String, faceIndex: Int? = null): Boolean {
+        return pureForcedSacrificeEffects(cardName, faceIndex) != null
+    }
+
+    /** The selected face's forced-sacrifice leaves, or null when any other effect is present. */
+    fun pureForcedSacrificeEffects(
+        cardName: String,
+        faceIndex: Int? = null,
+    ): List<ForceSacrificeEffect>? {
+        val definition = registry?.getCard(cardName) ?: return null
+        val effect = faceIndex?.let { definition.cardFaces.getOrNull(it)?.script?.spellEffect }
+            ?: definition.script.spellEffect
+            ?: return null
+        val leaves = EffectWalker.leaves(effect)
+        if (leaves.isEmpty() || leaves.any { it !is ForceSacrificeEffect }) return null
+        return leaves.filterIsInstance<ForceSacrificeEffect>()
+    }
+
+    /**
+     * Whether the selected spell face does nothing except gain life for its controller.
+     *
+     * Strict by design: draw, recursion, token creation, drain, or an unrecognized rider makes the
+     * answer false. Keyword machinery such as Storm is outside the resolving effect tree and does
+     * not change what each individual resolution accomplishes.
+     */
+    fun isPureLifeGainSpell(cardName: String, faceIndex: Int? = null): Boolean {
+        val definition = registry?.getCard(cardName) ?: return false
+        val effect = if (faceIndex == null) {
+            definition.script.spellEffect
+        } else {
+            definition.cardFaces.getOrNull(faceIndex)?.script?.spellEffect
+        } ?: return false
+        val leaves = EffectWalker.leaves(effect)
+        return leaves.isNotEmpty() && leaves.all { it is GainLifeEffect }
+    }
+
+    /** Whether the selected printed activated ability does nothing except gain life. */
+    fun isPureLifeGainAbility(cardName: String, abilityId: AbilityId): Boolean {
+        val effect = activatedAbility(cardName, abilityId)?.effect ?: return false
+        val leaves = EffectWalker.leaves(effect)
+        return leaves.isNotEmpty() && leaves.all { it is GainLifeEffect }
+    }
+
+    /**
+     * Fixed life that this stack object is guaranteed to give [playerId] when it resolves.
+     *
+     * This is deliberately stricter than an intent lookup. Conditional, optional, dynamic,
+     * targeted, or mixed effects answer null: callers use this to avoid spending another resource
+     * on a condition that is already certain, so a false positive would be much worse than a false
+     * negative. Spell copies carry their prepared effect on [CardComponent], while abilities carry
+     * the exact effect that was put on the stack.
+     */
+    fun guaranteedControllerLifeGain(
+        container: ComponentContainer,
+        playerId: EntityId,
+    ): Int? {
+        val controllerId = container.get<SpellOnStackComponent>()?.casterId
+            ?: container.get<TriggeredAbilityOnStackComponent>()?.controllerId
+            ?: container.get<ActivatedAbilityOnStackComponent>()?.controllerId
+            ?: container.get<AbilityOnStackComponent>()?.controllerId
+            ?: return null
+        if (controllerId != playerId) return null
+
+        val effect = container.get<TriggeredAbilityOnStackComponent>()?.effect
+            ?: container.get<ActivatedAbilityOnStackComponent>()?.effect
+            ?: container.get<AbilityOnStackComponent>()?.effect
+            ?: container.get<CardComponent>()?.spellEffect
+            ?: return null
+
+        return EffectWalker.fold(effect, object : EffectWalker.Fold<Int?> {
+            override fun leaf(effect: Effect): Int? {
+                val gain = effect as? GainLifeEffect ?: return null
+                if (gain.target != EffectTarget.Controller) return null
+                return (gain.amount as? DynamicAmount.Fixed)?.amount?.takeIf { it > 0 }
+            }
+
+            override fun composite(parts: List<Int?>): Int? =
+                parts.takeIf { it.isNotEmpty() && it.all { part -> part != null } }
+                    ?.sumOf { it!! }
+
+            override fun conditional(thenValue: Int?, elseValue: Int?): Int? = null
+
+            override fun may(thenValue: Int?): Int? = null
+        })
+    }
+
+    /**
+     * Whether every available spell mode is solely a targeted answer to a permanent. Modal spells
+     * are inspected mode-by-mode because the whole-card intent walk deliberately treats a modal
+     * root as opaque for historical scoring compatibility.
+     */
+    fun isPureTargetedAnswerSpell(cardName: String, faceIndex: Int? = null): Boolean =
+        pureTargetedAnswerRequirements(cardName, faceIndex) != null
+
+    /** Target requirements for every pure answer mode, or null when any mode has another purpose. */
+    fun pureTargetedAnswerRequirements(
+        cardName: String,
+        faceIndex: Int? = null,
+    ): List<TargetRequirement>? {
+        val definition = registry?.getCard(cardName) ?: return null
+        val script = faceIndex?.let { definition.cardFaces.getOrNull(it)?.script } ?: definition.script
+        val effect = script.spellEffect ?: return null
+        val branches = if (effect is ModalEffect) {
+            effect.modes.map { mode -> mode.effect to mode.targetRequirements }
+        } else {
+            listOf(effect to script.targetRequirements)
+        }
+        val answerTags = setOf(IntentTag.REMOVAL, IntentTag.EXILE_REMOVAL, IntentTag.NEUTRALIZE, IntentTag.FIGHT)
+        if (branches.isEmpty() || !branches.all { (branchEffect, requirements) ->
+            requirements.any { it is TargetObject || it is TargetCreatureOrPlaneswalker } &&
+                CardIntentAnalyzer.effectTags(branchEffect).let { tags ->
+                    tags.isNotEmpty() && tags.all { it in answerTags }
+                }
+        }) return null
+        return branches.flatMap { it.second }
     }
 
     /**
@@ -144,6 +327,14 @@ class IntentCatalog private constructor(private val registry: CardRegistry?) {
     fun forEffect(effect: Effect): CardIntent = CardIntentAnalyzer.analyzeEffect(effect)
 
     companion object {
+        private val ACTION_TARGETED_ANSWER_TAGS = setOf(
+            IntentTag.REMOVAL,
+            IntentTag.EXILE_REMOVAL,
+            IntentTag.NEUTRALIZE,
+            IntentTag.FIGHT,
+        )
+        private val BASIC_LAND_TYPES = setOf("Plains", "Island", "Swamp", "Mountain", "Forest")
+
         /** The off position: no registry, no answers, pre-Phase-6 behaviour everywhere. */
         val NONE = IntentCatalog(null)
 

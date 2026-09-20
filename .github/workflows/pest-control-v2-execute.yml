@@ -1,0 +1,117 @@
+name: Pest Control V2 Official Execution
+run-name: Pest V2 official ${{ github.event_name == 'pull_request' && 'VALIDATE_ONLY' || inputs.mode }}
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - .github/workflows/pest-control-v2-execute.yml
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: Validation never initializes a game; execution consumes the frozen vector once.
+        required: true
+        default: VALIDATE_ONLY
+        type: choice
+        options:
+          - VALIDATE_ONLY
+          - EXECUTE
+      execution_ack:
+        description: Required only for EXECUTE.
+        required: false
+        type: string
+
+permissions:
+  actions: read
+  contents: read
+
+concurrency:
+  group: pest-control-v2-official-execution
+  cancel-in-progress: false
+
+jobs:
+  official:
+    runs-on: ubuntu-latest
+    timeout-minutes: 720
+    env:
+      RUN_MODE: ${{ github.event_name == 'pull_request' && 'VALIDATE_ONLY' || inputs.mode }}
+      PINNED_HARNESS_COMMIT: cafa38d496479c863480a4f5db019d1ec58d9cbb
+      FREEZE_ARTIFACT_ID: "10605531402"
+      FREEZE_ARTIFACT_SHA256: 9b7e61ddd92cf008c82368d4d5f897fc91815fdf07e6f0d4ab04b651db313731
+    steps:
+      - name: Reject repeat or rerun execution
+        if: env.RUN_MODE == 'EXECUTE'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          EXECUTION_ACK: ${{ inputs.execution_ack }}
+        run: |
+          set -euo pipefail
+          test "${GITHUB_RUN_ATTEMPT}" = "1"
+          test "${EXECUTION_ACK}" = "EXECUTE_FROZEN_V2_OFFICIAL_10_EXACTLY_ONCE"
+          prior="$(curl -fsSL \
+            -H "Authorization: Bearer ${GH_TOKEN}" \
+            -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/workflows/pest-control-v2-execute.yml/runs?per_page=100" \
+            | jq --arg current "${GITHUB_RUN_ID}" \
+              '[.workflow_runs[] | select((.id | tostring) != $current and .display_title == "Pest V2 official EXECUTE")] | length')"
+          test "${prior}" = "0"
+
+      - name: Checkout pinned green harness
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ env.PINNED_HARNESS_COMMIT }}
+
+      - name: Verify pinned checkout
+        run: test "$(git rev-parse HEAD)" = "${PINNED_HARNESS_COMMIT}"
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v6
+
+      - name: Download exact accepted freeze artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p build/pest-v2-official-input
+          curl -fsSL \
+            -H "Authorization: Bearer ${GH_TOKEN}" \
+            -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/artifacts/${FREEZE_ARTIFACT_ID}/zip" \
+            -o build/pest-v2-official-freeze.zip
+          echo "${FREEZE_ARTIFACT_SHA256}  build/pest-v2-official-freeze.zip" | sha256sum -c -
+          unzip -q build/pest-v2-official-freeze.zip -d build/pest-v2-official-input
+          cd build/pest-v2-official-input
+          sha256sum -c v2-official-artifacts.sha256
+
+      - name: Validate or execute through pinned coordinator
+        env:
+          PEST_V2_OFFICIAL_MODE: ${{ env.RUN_MODE }}
+          PEST_V2_OFFICIAL_ACK: ${{ inputs.execution_ack }}
+          PEST_V2_EXECUTION_COMMIT: ${{ env.PINNED_HARNESS_COMMIT }}
+          PEST_V2_OFFICIAL_INPUT_DIR: ${{ github.workspace }}/build/pest-v2-official-input
+          PEST_V2_OFFICIAL_OUTPUT_DIR: ${{ github.workspace }}/build/reports/pest-control-v2-official
+        run: scripts/test-class PestControlV2OfficialExecutionRunnerTest --info --stacktrace
+
+      - name: Upload validation evidence
+        if: always() && env.RUN_MODE == 'VALIDATE_ONLY'
+        uses: actions/upload-artifact@v7
+        with:
+          name: pest-control-v2-official-validation-${{ github.run_id }}
+          path: build/reports/pest-control-v2-official/
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Upload one-shot official evidence
+        if: always() && env.RUN_MODE == 'EXECUTE'
+        uses: actions/upload-artifact@v7
+        with:
+          name: pest-control-v2-official-execution
+          path: build/reports/pest-control-v2-official/
+          if-no-files-found: error
+          retention-days: 90

@@ -5,6 +5,10 @@ import com.wingedsheep.engine.core.ChooseOptionDecision
 import com.wingedsheep.engine.core.OptionChosenResponse
 import com.wingedsheep.engine.core.SelectCardsDecision
 import com.wingedsheep.engine.core.CardsSelectedResponse
+import com.wingedsheep.engine.core.CardsDiscardedEvent
+import com.wingedsheep.engine.core.CardsDrawnEvent
+import com.wingedsheep.engine.core.DecisionSubmittedEvent
+import com.wingedsheep.engine.core.ZoneChangeEvent
 import com.wingedsheep.engine.support.GameTestDriver
 import com.wingedsheep.engine.support.TestCards
 import com.wingedsheep.mtg.sets.definitions.otj.cards.HighwayRobbery
@@ -54,13 +58,20 @@ class HighwayRobberyScenarioTest : FunSpec({
         d.bothPass() // resolve the spell -> discard prompt
 
         val discardSel = d.pendingDecision.shouldBeInstanceOf<SelectCardsDecision>()
-        d.submitDecision(p1, CardsSelectedResponse(decisionId = discardSel.id, selectedCards = listOf(fodder)))
-        d.bothPass()
+        val discardResult = d.submitDecision(
+            p1,
+            CardsSelectedResponse(decisionId = discardSel.id, selectedCards = listOf(fodder)),
+        )
+        val afterDiscard = d.bothPass()
 
         d.isPaused shouldBe false
         d.getGraveyard(p1).contains(fodder) shouldBe true
         // Hand: started handBefore, -1 cast Robbery, -1 discarded fodder, +2 drawn = handBefore.
         d.state.getHand(p1).size shouldBe handBefore
+        (discardResult.events + afterDiscard.events)
+            .filterIsInstance<CardsDiscardedEvent>().sumOf { it.cardIds.size } shouldBe 1
+        (discardResult.events + afterDiscard.events)
+            .filterIsInstance<CardsDrawnEvent>().sumOf { it.count } shouldBe 2
     }
 
     test("sacrifice-a-land mode: sacrifices a land then draws two") {
@@ -83,13 +94,49 @@ class HighwayRobberyScenarioTest : FunSpec({
 
         if (d.pendingDecision is SelectCardsDecision) {
             val sacSel = d.pendingDecision as SelectCardsDecision
-            d.submitDecision(p1, CardsSelectedResponse(decisionId = sacSel.id, selectedCards = listOf(land)))
-            d.bothPass()
+            val sacrificeResult = d.submitDecision(
+                p1,
+                CardsSelectedResponse(decisionId = sacSel.id, selectedCards = listOf(land)),
+            )
+            val afterSacrifice = d.bothPass()
+            (sacrificeResult.events + afterSacrifice.events)
+                .filterIsInstance<CardsDrawnEvent>().sumOf { it.count } shouldBe 2
+            (sacrificeResult.events + afterSacrifice.events)
+                .filterIsInstance<ZoneChangeEvent>().count { it.wasSacrificed } shouldBe 1
         }
 
         d.isPaused shouldBe false
         d.getGraveyard(p1).contains(land) shouldBe true
         // Hand: started handBefore, -1 cast Robbery, +2 drawn = handBefore + 1.
         d.state.getHand(p1).size shouldBe handBefore + 1
+    }
+
+    test("Done completes the legal zero-mode branch once without destructive effects") {
+        val d = newDriver()
+        val p1 = d.player1
+        val robbery = d.putCardInHand(p1, "Highway Robbery")
+        val bolt = d.putCardInHand(p1, "Lightning Bolt")
+        val land = d.putLandOnBattlefield(p1, "Mountain")
+        d.giveMana(p1, Color.RED, 1)
+        d.giveColorlessMana(p1, 1)
+
+        d.submit(CastSpell(playerId = p1, cardId = robbery))
+        val choice = d.pendingDecision.shouldBeInstanceOf<ChooseOptionDecision>()
+        val done = OptionChosenResponse(choice.id, choice.options.indexOf("Done"))
+        val chosen = d.submitDecision(p1, done)
+
+        chosen.events.filterIsInstance<DecisionSubmittedEvent>().single().description shouldBe
+            "(Highway Robbery) Chose Done"
+        d.pendingDecision shouldBe null
+        d.state.stack shouldBe listOf(robbery)
+
+        val resolution = d.bothPass()
+        d.pendingDecision shouldBe null
+        d.state.stack shouldBe emptyList()
+        d.state.getHand(p1) shouldContain bolt
+        d.state.getBattlefield(p1) shouldContain land
+        resolution.events.filterIsInstance<CardsDiscardedEvent>().size shouldBe 0
+        resolution.events.filterIsInstance<CardsDrawnEvent>().size shouldBe 0
+        resolution.events.filterIsInstance<ZoneChangeEvent>().count { it.wasSacrificed } shouldBe 0
     }
 })

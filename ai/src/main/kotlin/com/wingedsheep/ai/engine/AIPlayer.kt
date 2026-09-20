@@ -76,6 +76,10 @@ class AIPlayer(
         return strategist.chooseAction(state, legalActions, playerId)
     }
 
+    internal fun survivalPlanDiagnostic(): String = strategist.survivalPlanDiagnostic()
+    internal fun survivalPressureDiagnostic(state: GameState): String =
+        strategist.survivalPressureDiagnostic(state, playerId)
+
     /**
      * Respond to a pending decision.
      */
