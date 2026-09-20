@@ -972,6 +972,27 @@ def primary_combo_damage_available(state, opponent_life=30):
     copies_needed=max(0,(opponent_life+2)//3 - 1)  # original contributes final 3
     return 3*(copies_needed+1)
 
+def primary_combo_table_damage_plan(state, opponent_lives=(30,30,30)):
+    """Return the finite resolving-spell plan for a multiplayer goldfish table kill.
+
+    The original combined Lava Spike has one fixed target. Each Guildmage copy may
+    choose a new target, so every opponent can receive an independently sufficient
+    number of three-damage resolutions. One of those resolutions is the original;
+    all others are copies. ``None`` means the launch itself is unavailable.
+    """
+    lives=tuple(opponent_lives)
+    if not lives or any(isinstance(life,bool) or not isinstance(life,int) or life<=0
+                        for life in lives):
+        raise ValueError("opponent_lives must contain positive integers")
+    if not primary_combo_launch_feasible(state): return None
+    resolving_spells=tuple((life+2)//3 for life in lives)
+    return {
+        "resolving_spells_by_opponent":resolving_spells,
+        "damage_by_opponent":tuple(3*spells for spells in resolving_spells),
+        "copies":sum(resolving_spells)-1,
+        "originals":1,
+    }
+
 
 # v0.7 phase-0 interaction semantics. Soft permission remains deliberately excluded
 # from guaranteed protection because the opponent's available payment is unspecified.
@@ -1624,6 +1645,36 @@ def seething_song_launch_regressions():
     assert not primary_combo_launch_feasible(s)
     return True
 
+def multiplayer_table_kill_regressions():
+    s=DevState(["Lava Spike","Desperate Ritual"]); s.turn=5
+    s.battlefield=[{"card":"Izzet Guildmage","tapped":False,"entered":2}]
+    for i,c in enumerate(["Mountain","Mountain","Mountain","Island","Island"]):
+        s.battlefield.append({"card":c,"tapped":False,"entered":i})
+    plan=primary_combo_table_damage_plan(s,(30,30,30))
+    assert plan=={
+        "resolving_spells_by_opponent":(10,10,10),
+        "damage_by_opponent":(30,30,30),
+        "copies":29,
+        "originals":1,
+    }
+    uneven=primary_combo_table_damage_plan(s,(1,4,31))
+    assert uneven["resolving_spells_by_opponent"]==(1,2,11)
+    assert uneven["damage_by_opponent"]==(3,6,33)
+    assert uneven["copies"]==13
+    z=DevState(["Lava Spike","Desperate Ritual"]); z.turn=4
+    z.battlefield=[{"card":"Izzet Guildmage","tapped":False,"entered":2}]
+    for i,c in enumerate(["Mountain","Mountain","Island","Island"]):
+        z.battlefield.append({"card":c,"tapped":False,"entered":i})
+    assert primary_combo_table_damage_plan(z,(30,30,30)) is None
+    for invalid in ((),(30,0,30),(30,-1,30),(30,True,30),(30,3.5,30)):
+        try:
+            primary_combo_table_damage_plan(s,invalid)
+        except ValueError:
+            pass
+        else:
+            raise AssertionError(f"accepted invalid opponent lives: {invalid}")
+    return True
+
 def electromancer_lethal_regressions():
     # Electromancer removes both generic costs, enabling a three-red-mana launch.
     s=DevState(["Lava Spike","Desperate Ritual"]); s.turn=4
@@ -1708,6 +1759,7 @@ def main():
     electromancer_lethal_regressions()
     five_mana_ritual_route_regressions()
     seething_song_launch_regressions()
+    multiplayer_table_kill_regressions()
     b,r=opening_baseline(cards,args.samples,args.seed)
     print("seed",hex(args.seed),"samples",args.samples)
     print("land_buckets_0_1_2_3_4plus",b)

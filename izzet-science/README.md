@@ -77,4 +77,7 @@ equivalents after a paired 100,000-game confirmation.
 Latest gate: v0.8-A Mizzium Skin (`-1 Turn Aside, +1 Mizzium Skin`) was rejected as
 inadmissible after its sole pilot exposed outcomes but failed before provenance
 artifact completion and revealed two ability-event modeling defects. It cannot be
-rerun or rehabilitated. v0.7 remains the accepted control.
+rerun or rehabilitated. A subsequent seed-free deterministic gate proved that a
+legal primary-combo launch can distribute 29 retargeted copies plus the original
+across three 30-life opponents. This adds no sampled performance claim and changes
+no cards. v0.7 remains the accepted control.

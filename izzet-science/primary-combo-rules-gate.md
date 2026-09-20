@@ -24,7 +24,12 @@ Goldfish feasibility boundary:
 
 Damage:
 - Against a 30-life PDH opponent at full life, enough copies must resolve to reach at least 30 total damage, including eventual original Lava Spike resolution.
-- Multiplayer table-kill logic is out of scope; this gate is single-opponent deterministic goldfish lethal only.
+- In a three-opponent, 30-life goldfish, assign ten three-damage resolutions to each
+  opponent. The original combined spell supplies one resolution and 29 retargeted
+  copies supply the other 29, for 90 total damage.
+- This is a deterministic table-kill capability statement, not a claim that the
+  sampled solitaire policy models priority, disruption, prevention, or opponent
+  concessions.
 
 Required deterministic regressions:
 - assembled cards + commander but insufficient first-copy mana => not lethal;
@@ -33,8 +38,11 @@ Required deterministic regressions:
 - original spell must remain on stack while copied;
 - copied combined spell includes both damage and RRR;
 - mana cannot be generated from the unresolved original to pay the first Guildmage activation.
+- three 30-life opponents require exactly 29 copies plus the original;
+- each copy allocation rounds an opponent's positive life total up to a multiple of 3;
+- an infeasible initial launch cannot produce a table-damage plan.
 
-Disposition: RULES_GATE_CORRECTED_AND_IMPLEMENTED
+Disposition: RULES_GATE_CORRECTED_IMPLEMENTED_AND_MULTIPLAYER_EXTENDED
 
 The earlier six-mana boundary is superseded by the accepted corrected-clock audit in
 `v04-five-mana-clock-accepted.md`.
