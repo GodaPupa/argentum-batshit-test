@@ -1,6 +1,6 @@
 # Gate 3B: paired metric goldfish screen v1
 
-Status: authorized small diagnostic screen; not promotion evidence.
+Status: completed valid diagnostic screen; not promotion evidence.
 
 ## Design
 

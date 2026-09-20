@@ -44,7 +44,7 @@ industrial-waste-smoke:
 
 # Small paired executable goldfish screen for Industrial Waste Control vs Pactdoll-A.
 industrial-waste-goldfish:
-    scripts/gradle-locked :ai:test --tests "*.IndustrialWasteGoldfishBenchmark" -DiwGoldfish=true
+    IW_GOLDFISH=true scripts/gradle-locked :ai:test --tests "*.IndustrialWasteGoldfishBenchmark"
 
 # Run tests for gym only
 [group: 'build']

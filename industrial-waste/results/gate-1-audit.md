@@ -64,3 +64,30 @@ the remaining four reached the 12-turn-per-seat cap. Because the opponent was
 combo policy, these outcomes are capability evidence only. They authorize a
 metric-aware executable goldfish harness; they do not promote Pactdoll-A and
 cannot be cited as matchup results.
+
+## Gate 3 paired goldfish result
+
+The telemetry contract passed focused fixtures in GitHub Actions run
+35535991166. Two later workflow attempts were rejected before gameplay: one
+lacked the `just` executable and one compiled but explicitly skipped the
+opt-in benchmark. Neither spent its namespace. Run 35536713445 then executed
+all 24 games on `IW-G3-GOLDFISH-S1` and uploaded a complete, valid artifact.
+
+Pactdoll-A and Control each reached lethal in 9/12 games. Pactdoll-A recorded
+fewer colored-mana-failure turns on average (2.50 vs 3.42) and more
+non-infinite Pactdoll life loss (3.50 vs 2.92), while combat damage was nearly
+flat (15.33 vs 15.83). The paired medians for all three differences were zero,
+so these are weak directional signals rather than stable effects.
+
+The screen did not exercise the central plan well enough to justify a larger
+sample: neither list assembled Tron by turn 5 or reached Retriever-loop or
+combo-ready state in any game. Control eventually assembled Tron in 3/12 games
+and Pactdoll-A in 2/12, all on turns 6 or 7. The stock AI's fair-combat wins are
+therefore useful as engine diagnostics but not as Altar Tron performance
+evidence.
+
+Decision: do not promote, reject, or statistically escalate Pactdoll-A from
+this gate. Preserve its challenger status and spend the next implementation
+budget on a deterministic Industrial Waste policy/line harness that can
+actually tutor Tron and execute Retriever loops. Interaction recovery,
+matchup wins, and sideboarding remain untested.
