@@ -36,4 +36,4 @@ Promotion gate:
 - Empty output, failed regressions, identity mismatch, missing artifact, or non-green
   workflow rejects the run.
 
-Disposition: V06A_AUTHORIZED_NOT_EXECUTED
+Disposition: V06A_PASS_PROMOTED_TO_V06
