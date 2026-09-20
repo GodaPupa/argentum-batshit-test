@@ -10,6 +10,12 @@ data class V2OfficialAssignment(
     val playDraw: String,
 )
 
+data class V2OfficialPreflightResult(
+    val errors: List<String>,
+    val seeds: List<Long>,
+    val assignments: List<V2OfficialAssignment>,
+)
+
 object PestControlV2OfficialExecutionPreflight {
     fun validate(
         vector: ByteArray,
@@ -17,7 +23,15 @@ object PestControlV2OfficialExecutionPreflight {
         qualifiedRunner: String,
         protocol: String,
         block: String,
-    ): List<String> {
+    ): List<String> = inspect(vector, csv, qualifiedRunner, protocol, block).errors
+
+    fun inspect(
+        vector: ByteArray,
+        csv: ByteArray,
+        qualifiedRunner: String,
+        protocol: String,
+        block: String,
+    ): V2OfficialPreflightResult {
         val errors = mutableListOf<String>()
         if (qualifiedRunner != PEST_V2_QUALIFIED_RUNNER) errors += "qualified runner mismatch"
         if (protocol != PEST_V2_OFFICIAL_PROTOCOL || protocol != PEST_MONO_RED_PREBOARD_PROTOCOL_ID) {
@@ -65,7 +79,7 @@ object PestControlV2OfficialExecutionPreflight {
             val expectedHex = "0x${assignment.seed.toULong().toString(16).padStart(16, '0')}"
             if (assignment.seedHex != expectedHex) errors += "seed hex mismatch game ${assignment.game}"
         }
-        return errors
+        return V2OfficialPreflightResult(errors, seeds, assignments)
     }
 
     private fun parse(bytes: ByteArray): List<V2OfficialAssignment> {
