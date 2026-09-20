@@ -649,7 +649,9 @@ def choose_selection_spell(state):
     if not candidates: return None
     if land_count==0 or len(combo)==1 or no_interaction:
         return candidates[0]
-    # default: only spend one mana on velocity; preserve larger mana for development/hold-up
+    # With interaction already available and no concrete rescue/combo need, preserve mana.
+    if not no_interaction:
+        return None
     return next((c for c in candidates if sum(selection_cost(c))==1),None)
 
 def scheduler_regressions():
