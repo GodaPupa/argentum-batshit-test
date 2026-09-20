@@ -2,9 +2,11 @@ package com.wingedsheep.ai.industrialwaste
 
 import com.wingedsheep.ai.engine.AIPlayer
 import com.wingedsheep.ai.engine.AiProfile
+import com.wingedsheep.engine.core.AlternativeCostType
 import com.wingedsheep.engine.core.CastSpell
 import com.wingedsheep.engine.state.components.identity.CardComponent
 import com.wingedsheep.engine.state.components.player.CardsDrawnThisTurnComponent
+import com.wingedsheep.engine.state.components.stack.ChosenTarget
 import com.wingedsheep.engine.support.ScenarioTestBase
 import com.wingedsheep.sdk.model.EntityId
 import io.kotest.matchers.shouldBe
@@ -23,6 +25,14 @@ class IndustrialWasteMadnessBurnPolicyAuditTest : ScenarioTestBase() {
 
     private fun cardName(game: TestGame, id: EntityId): String? =
         game.state.getEntity(id)?.get<CardComponent>()?.name
+
+    private fun chosenTargetId(action: CastSpell): EntityId? = when (val target = action.targets.singleOrNull()) {
+        is ChosenTarget.Permanent -> target.entityId
+        is ChosenTarget.Player -> target.playerId
+        is ChosenTarget.Card -> target.cardId
+        is ChosenTarget.Spell -> target.spellEntityId
+        null -> null
+    }
 
     private fun seeded() = scenario().withPlayers().withRngSeed(0x1A57_E001L)
 
@@ -74,25 +84,31 @@ class IndustrialWasteMadnessBurnPolicyAuditTest : ScenarioTestBase() {
             cardName(game, action.cardId) shouldBe "Kessig Flamebreather"
         }
 
-        test("v0 converts Fireblast and Lava Dart only when their land costs are lethal") {
-            val fireblast = seeded()
+        test("v0 converts Fireblast's alternative land cost when lethal") {
+            val game = seeded()
                 .withLandsOnBattlefield(1, "Mountain", 2)
                 .withCardInHand(1, "Fireblast")
                 .withLifeTotal(2, 4)
                 .build()
-            val fireblastAction = ai(fireblast).chooseAction(fireblast.state)
+            val action = ai(game).chooseAction(game.state)
                 .shouldBeInstanceOf<CastSpell>()
-            cardName(fireblast, fireblastAction.cardId) shouldBe "Fireblast"
-            fireblastAction.additionalCostPayment?.sacrificedPermanents?.size shouldBe 2
+            cardName(game, action.cardId) shouldBe "Fireblast"
+            chosenTargetId(action) shouldBe game.player2Id
+            action.alternativeCostType shouldBe AlternativeCostType.SELF_ALTERNATIVE
+            action.additionalCostPayment?.sacrificedPermanents?.size shouldBe 2
+        }
 
-            val dart = seeded()
+        test("v0 converts Lava Dart's flashback land cost when lethal") {
+            val game = seeded()
                 .withLandsOnBattlefield(1, "Mountain", 1)
                 .withCardInGraveyard(1, "Lava Dart")
                 .withLifeTotal(2, 1)
                 .build()
-            val dartAction = ai(dart).chooseAction(dart.state).shouldBeInstanceOf<CastSpell>()
-            cardName(dart, dartAction.cardId) shouldBe "Lava Dart"
-            dartAction.additionalCostPayment?.sacrificedPermanents?.size shouldBe 1
+            val action = ai(game).chooseAction(game.state).shouldBeInstanceOf<CastSpell>()
+            cardName(game, action.cardId) shouldBe "Lava Dart"
+            chosenTargetId(action) shouldBe game.player2Id
+            action.alternativeCostType shouldBe AlternativeCostType.FLASHBACK
+            action.additionalCostPayment?.sacrificedPermanents?.size shouldBe 1
         }
     }
 }
