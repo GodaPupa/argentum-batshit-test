@@ -190,6 +190,7 @@ object PestControlMatchupSharding {
     fun plan(
         identity: ShardedBlockIdentity,
         assignments: List<FrozenMatchupAssignment>,
+        readinessBaselineCommit: String = PEST_REPLACEMENT_READINESS_BASELINE,
     ): ShardedMatchupPlan {
         val shards = assignments.chunked(PEST_GAMES_PER_SHARD).mapIndexed { index, rows ->
             MatchupShardSpec(
@@ -203,7 +204,12 @@ object PestControlMatchupSharding {
                 timeoutMinutes = PEST_SHARD_TIMEOUT_MINUTES,
             )
         }
-        return ShardedMatchupPlan(identity = identity, assignments = assignments, shards = shards)
+        return ShardedMatchupPlan(
+            readinessBaselineCommit = readinessBaselineCommit,
+            identity = identity,
+            assignments = assignments,
+            shards = shards,
+        )
     }
 
     fun assignmentsFor(plan: ShardedMatchupPlan, shard: MatchupShardSpec): List<FrozenMatchupAssignment> =
@@ -211,7 +217,12 @@ object PestControlMatchupSharding {
 
     fun validatePlan(plan: ShardedMatchupPlan): List<String> = buildList {
         if (plan.schema != PEST_SHARDED_PLAN_SCHEMA) add("plan schema mismatch")
-        if (plan.readinessBaselineCommit != PEST_REPLACEMENT_READINESS_BASELINE) add("readiness baseline mismatch")
+        val expectedReadiness = if (plan.identity.blockId == PEST_V2_QUALIFICATION_BLOCK) {
+            PEST_V2_QUALIFICATION_READINESS_COMMIT
+        } else {
+            PEST_REPLACEMENT_READINESS_BASELINE
+        }
+        if (plan.readinessBaselineCommit != expectedReadiness) add("readiness baseline mismatch")
         if (plan.identity.expectedGames != 50) add("logical block must contain exactly 50 games")
         if (plan.assignments.size != plan.identity.expectedGames) add("assignment count mismatch")
         if (plan.assignments.map { it.gameNumber } != (1..plan.identity.expectedGames).toList()) {
