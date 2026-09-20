@@ -5,7 +5,6 @@ import com.wingedsheep.gym.matchup.*
 import com.wingedsheep.mtg.sets.MtgSetCatalog
 import com.wingedsheep.mtg.sets.tokens.PredefinedTokens
 import io.kotest.core.spec.style.FunSpec
-import io.kotest.matchers.collections.shouldContain
 import io.kotest.matchers.shouldBe
 import java.nio.ByteBuffer
 import java.nio.channels.FileChannel
@@ -50,7 +49,26 @@ class PestControlV2QualificationShardRunnerTest : FunSpec({
                     checkedOutTree = executionTree,
                 )
             }
-            validationErrors.shouldContain("runner is not AUTHORIZED")
+            validationErrors shouldBe emptyList()
+            plan.shards.forEach { shard ->
+                PestControlV2QualificationShardRunnerGuard.activationErrors(
+                    plan = plan,
+                    shardId = shard.shardId,
+                    explicitAuthorization = false,
+                    isUnitTestProcess = true,
+                    attemptNumber = 2,
+                    outputAlreadyExists = true,
+                    checkedOutCommit = "0".repeat(40),
+                    checkedOutTree = "0".repeat(40),
+                ).let { errors ->
+                    check(errors.contains("explicit execution acknowledgement is missing"))
+                    check(errors.contains("unit tests cannot activate the runner"))
+                    check(errors.contains("shard retry is forbidden"))
+                    check(errors.contains("shard output already exists"))
+                    check(errors.contains("checked-out commit mismatch"))
+                    check(errors.contains("checked-out tree mismatch"))
+                }
+            }
             plan.assignments.forEach { assignment ->
                 val provenance = PestControlV2QualificationGameAdapter.provenance(assignment, executionCommit)
                 check(provenance.gameNumber == assignment.gameNumber && provenance.seedDecimal == assignment.seedDecimal)
