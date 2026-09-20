@@ -11,6 +11,11 @@ Persistent calibration workspace for Pest Control v1.0 vs SoterX Mono Red Madnes
 - V2 official execution: `COMPLETED`; post-execution disposition: `ACCEPTED_CALIBRATION` (Pest Control 6-4 Mono Red Madness; 10/10 terminal; zero protocol defects).
 - Official execution: workflow run `35525262024`, artifact `10610310479`, archive SHA-256 `577ecf33bbbd6fa2b9967867228b6eabb81b6b2c5590f2c0670f5d3536f80a2b`.
 - Durable result record: `docs/experiments/pest-control/v2-official-execution/`.
+- V2 qualification execution: workflow run `35536805887`, attempt 1, success; 50/50 clean
+  terminals and final disposition `ACCEPTED_MATCHUP_QUALIFICATION`.
+- Qualification result: Pest Control 32-18 SoterX Mono Red Madness (preboard). This is accepted
+  matchup evidence, not a Tier-1 determination; the 50-game vector is permanently retired.
+- Durable qualification record: `docs/experiments/pest-control/v2-qualification-execution/`.
 
 ## Frozen Pest Control v1.0 (60)
 

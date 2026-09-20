@@ -1,5 +1,12 @@
 # Project Pest Control experiments
 
+The controlling V2 qualification block executed exactly once in run `35536805887` and is accepted as
+`ACCEPTED_MATCHUP_QUALIFICATION`: 50/50 clean terminals, zero protocol defects, zero rejected or
+fallback actions, and Pest Control 32-18 SoterX Mono Red Madness. The complete disposition and
+artifact provenance are preserved in `v2-qualification-execution/`. All 50 qualification seeds are
+permanently retired. The result qualifies only this exact preboard matchup and does not establish
+Tier-1 status or alter the frozen Pest Control v1.0 deck.
+
 This directory is reserved exclusively for Project Pest Control experiment protocols.
 
 Pest Control versus SoterX Mono Red Madness matchup Block A executed once and is formally rejected
