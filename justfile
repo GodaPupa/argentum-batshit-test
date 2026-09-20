@@ -46,6 +46,10 @@ industrial-waste-smoke:
 industrial-waste-goldfish:
     IW_GOLDFISH=true scripts/gradle-locked :ai:test --tests "*.IndustrialWasteGoldfishBenchmark"
 
+# Four fresh seeds with both play/draw rotations against a sourced contemporary fast deck.
+industrial-waste-matchup-pilot:
+    IW_MATCHUP_PILOT=true scripts/gradle-locked :ai:test --tests "*.IndustrialWasteMatchupPilotBenchmark"
+
 # Run tests for gym only
 [group: 'build']
 test-gym:

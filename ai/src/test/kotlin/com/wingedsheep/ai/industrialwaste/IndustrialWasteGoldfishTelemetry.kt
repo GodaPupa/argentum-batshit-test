@@ -43,7 +43,10 @@ data class IndustrialWasteGoldfishMetrics(
  * that environment Pactdoll Terror is the sole noncombat source of opponent life loss. The count
  * excludes transitions where the Retriever loop was already available.
  */
-class IndustrialWasteGoldfishObserver(registry: CardRegistry) : ArenaTrainingObserver {
+class IndustrialWasteGoldfishObserver(
+    registry: CardRegistry,
+    private val industrialSeat: Int = 0,
+) : ArenaTrainingObserver {
     private val manaSolver = ManaSolver(registry)
     private var player: EntityId? = null
     private var opponent: EntityId? = null
@@ -60,8 +63,9 @@ class IndustrialWasteGoldfishObserver(registry: CardRegistry) : ArenaTrainingObs
 
     override fun gameStarted(state: GameState, seats: List<EntityId>) {
         require(seats.size == 2) { "Industrial Waste goldfish telemetry requires a duel" }
-        player = seats[0]
-        opponent = seats[1]
+        require(industrialSeat in seats.indices) { "Industrial Waste seat must exist" }
+        player = seats[industrialSeat]
+        opponent = seats[1 - industrialSeat]
         observePosition(state)
     }
 
