@@ -453,7 +453,7 @@ def high_tide_metrics(state):
 SELECTION_SPECS={
 "Ponder":(1,3),"Preordain":(1,2),"Brainstorm":(1,3),"Consider":(1,1),
 "Opt":(1,1),"Impulse":(2,4),"Curate":(2,2),"Faithless Looting":(1,2),
-"Thrill of Possibility":(2,2),"Frantic Search":(3,2),"Think Twice":(2,1)
+"Thrill of Possibility":(2,2),"Frantic Search":(3,2),"Think Twice":(2,1),"Strategic Planning":(2,3)
 }
 INTERACTION_CARDS={"Counterspell","Arcane Denial","Negate","Dispel","Memory Lapse","Deprive","Prohibit","Spell Pierce","Turn Aside","Lose Focus","Lightning Bolt","Galvanic Blast","Skred","Flame Slash","Fire // Ice","Into the Roil","Blink of an Eye","Echoing Truth","Abrade","Shattering Pulse"}
 COMBO_CARDS={"Lava Spike","Desperate Ritual"}
@@ -499,6 +499,14 @@ class SpellState:
         seen=self.library[:n]; self.cards_seen+=len(seen); return seen
     def remove_top(self,n): self.library=self.library[n:]
 
+
+
+def resolve_strategic_planning(ss,dev):
+    seen=ss.look(3); ss.remove_top(len(seen))
+    keep,rest=choose_from_seen(seen,dev,1)
+    ss.hand+=keep; ss.cards_drawn+=len(keep); ss.graveyard+=rest
+    return keep,rest
+
 def resolve_curate(ss, dev):
     seen=ss.look(2); ss.remove_top(len(seen))
     keep,rest=choose_from_seen(seen,dev,1)
@@ -541,6 +549,9 @@ def selection_resolution_regressions():
     i=SpellState([],["Mountain","Negate","Island","Lava Spike","Desperate Ritual"])
     k=resolve_impulse(i,d2)
     assert k==["Negate"] and len(i.library)==4
+    sp=SpellState([],["Mountain","Desperate Ritual","Island","Opt"])
+    keep,mill=resolve_strategic_planning(sp,DevState(["Lava Spike"]))
+    assert keep==["Desperate Ritual"] and len(mill)==2 and len(sp.graveyard)==2
     return True
 
 
@@ -628,13 +639,13 @@ def draw_discard_regressions():
 
 
 SELECTION_CAST_ORDER=["Ponder","Preordain","Consider","Opt","Curate","Impulse","Brainstorm",
-"Faithless Looting","Thrill of Possibility","Think Twice","Frantic Search"]
+"Faithless Looting","Thrill of Possibility","Think Twice","Strategic Planning","Frantic Search"]
 
 def selection_cost(card):
     return {"Ponder":(0,1,0),"Preordain":(0,1,0),"Brainstorm":(0,1,0),
             "Consider":(0,1,0),"Opt":(0,1,0),"Curate":(1,1,0),"Impulse":(1,1,0),
             "Faithless Looting":(0,0,1),"Thrill of Possibility":(1,0,1),
-            "Think Twice":(1,1,0),"Frantic Search":(2,1,0)}[card]
+            "Think Twice":(1,1,0),"Strategic Planning":(1,1,0),"Frantic Search":(2,1,0)}[card]
 
 def can_cast_selection(state,card):
     g,u,r=selection_cost(card)
@@ -714,6 +725,7 @@ def pay_selection_cost(state,card):
     return pay_colored_mutating(state,generic=g,need_u=nu,need_r=nr)
 
 def resolve_selected_card(card,ss,dev):
+    if card=="Strategic Planning": return resolve_strategic_planning(ss,dev)
     if card=="Curate": return resolve_curate(ss,dev)
     if card=="Consider": return resolve_consider(ss,dev)
     if card=="Opt": return resolve_opt(ss,dev)
