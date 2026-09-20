@@ -71,14 +71,14 @@ private object AshnodsAltarAdvisor : CardAdvisor {
     override val cardNames = setOf("Ashnod's Altar")
 
     override fun evaluateCast(context: CastContext): Double? {
-        return if (retrieverLoopIsAvailable(context.state, context.playerId)) {
+        return if (retrieverEngineCanAdvance(context.state, context.playerId)) {
             context.passScore + 20.0
         } else null
     }
 
     override fun respondToDecision(context: AdvisorDecisionContext) =
         (context.decision as? SelectCardsDecision)?.let { decision ->
-            if (!retrieverLoopIsAvailable(context.state, context.playerId)) return@let null
+            if (!retrieverEngineCanAdvance(context.state, context.playerId)) return@let null
             val retriever = decision.options
                 .firstOrNull { context.state.cardName(it) == "Myr Retriever" }
                 ?: return@let null
@@ -96,15 +96,18 @@ private fun missingTronLands(
     return TRON_LANDS.filterNot(names::contains)
 }
 
-private fun retrieverLoopIsAvailable(
+private fun retrieverEngineCanAdvance(
     state: com.wingedsheep.engine.state.GameState,
     playerId: EntityId,
 ): Boolean {
     val battlefield = state.projectedState.getBattlefieldControlledBy(playerId)
-    return battlefield.any { state.cardName(it) == "Myr Retriever" } &&
+    val accessible = battlefield + state.getZone(playerId, Zone.HAND) +
+        state.getZone(playerId, Zone.GRAVEYARD)
+    val retrieverCount = accessible.count { state.cardName(it) == "Myr Retriever" }
+    return retrieverCount >= 2 &&
+        battlefield.any { state.cardName(it) == "Myr Retriever" } &&
         battlefield.any { state.cardName(it) == "Ashnod's Altar" } &&
-        battlefield.any { state.cardName(it) in setOf("Pactdoll Terror", "Golem Foundry") } &&
-        state.getZone(playerId, Zone.GRAVEYARD).any { state.cardName(it) == "Myr Retriever" }
+        battlefield.any { state.cardName(it) in setOf("Pactdoll Terror", "Golem Foundry") }
 }
 
 private fun com.wingedsheep.engine.state.GameState.cardName(id: EntityId): String? =

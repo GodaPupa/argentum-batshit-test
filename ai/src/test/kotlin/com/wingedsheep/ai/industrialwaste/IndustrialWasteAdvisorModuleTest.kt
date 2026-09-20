@@ -123,6 +123,27 @@ class IndustrialWasteAdvisorModuleTest : FunSpec({
         responder.respond(driver.state, decision, player) shouldBe
             CardsSelectedResponse(decision.id, listOf(retriever))
     }
+
+    test("Ashnod's Altar seeds the loop when the second Retriever is in hand") {
+        val (driver, player, responder) = fixture()
+        driver.putPermanentOnBattlefield(player, "Ashnod's Altar")
+        driver.putPermanentOnBattlefield(player, "Pactdoll Terror")
+        val retriever = driver.putPermanentOnBattlefield(player, "Myr Retriever")
+        val spare = driver.putPermanentOnBattlefield(player, "Grizzly Bears")
+        driver.putCardInHand(player, "Myr Retriever")
+        val decision = SelectCardsDecision(
+            id = "altar-stage-loop",
+            playerId = player,
+            prompt = "Select a permanent to sacrifice for Ashnod's Altar",
+            context = DecisionContext(sourceName = "Ashnod's Altar"),
+            options = listOf(spare, retriever),
+            minSelections = 1,
+            maxSelections = 1,
+        )
+
+        responder.respond(driver.state, decision, player) shouldBe
+            CardsSelectedResponse(decision.id, listOf(retriever))
+    }
 })
 
 private fun land(name: String) = SearchCardInfo(name, "", "Land")

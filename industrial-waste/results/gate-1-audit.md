@@ -110,3 +110,22 @@ is a reproducibility-only duplicate and is not counted or pooled.
 Decision: the calibration clears the minimum bar for one fresh 16-pair policy screen. It does not
 authorize matchup testing, sideboarding, or promotion. If the fresh screen again records no loop
 or combo-ready states, stop sampling and diagnose the remaining line-policy failure.
+
+## Gate 3 fresh policy screen
+
+Run 35541012276 is rejected because its artifact mislabeled the fresh vector with the earlier Gate
+3 digest. The implementation assertion confirms it played the intended namespace, but provenance
+metadata is part of validity, so none of that artifact is accepted. After correcting the report
+field, run 35541293028 executed all 32 outcomes on `IW-G3-POLICY-S1` with the registered digest,
+zero exceptions, and zero rejected actions. The namespace is spent by this corrected run only.
+
+Both lists reached Tron by turn 5 in 5/16 and lethal in 16/16, confirming the tutor policy is now
+observable. Neither list ever reached Retriever-loop or combo-ready state, so the predeclared
+harness gate failed. Pactdoll-A remains an unpromoted challenger; matchup and sideboard work remain
+blocked.
+
+Diagnosis: the v1 advisor only sacrificed a Retriever after another Retriever was already in the
+graveyard. Against the inert opponent, no event seeded that first Retriever, making the loop policy
+unreachable. The next permitted work is a seed-free v2 fixture for staging the loop from one
+Retriever on the battlefield plus a second in hand or on the battlefield. No new experimental
+namespace may be allocated until a replay-only calibration observes the line.

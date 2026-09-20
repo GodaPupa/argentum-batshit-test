@@ -2,19 +2,6 @@ name: Industrial Waste — Policy Screen
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - industrial-waste/lab
-    paths:
-      - .github/workflows/industrial-waste-policy-screen.yml
-      - ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteAdvisorModule.kt
-      - ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteGoldfishBenchmark.kt
-      - ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteGoldfishTelemetry.kt
-      - industrial-waste/control/industrial-waste-v1.0-submitted.dck
-      - industrial-waste/challengers/pactdoll-a.dck
-      - industrial-waste/protocols/gate-3-policy-screen-v1.md
-      - industrial-waste/seed-registry.json
-      - justfile
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
