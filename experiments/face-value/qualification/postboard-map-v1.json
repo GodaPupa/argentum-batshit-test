@@ -1,0 +1,105 @@
+{
+  "classification": "FROZEN_POSTBOARD_MAP_V1_PRE_OUTCOME",
+  "control": "Face Value Temur Chrysalis E Final Forge 75",
+  "control_sha256": "c57d727eab6299f4835e0fc42768c62ac2029c3c2789052b3ef18e249946d760",
+  "freeze_date_utc": "2026-09-20",
+  "full_gauntlet_aggregate_permitted": false,
+  "map_basis": "Card-role and matchup-mechanism analysis only. Stage 1B outcome rates were not used to select individual cards or counts.",
+  "mono_blue_faeries": {
+    "status": "HUMAN_ONLY_REQUIRED",
+    "reason": "Replicated Forge runtime defect; no simulator postboard evidence authorized."
+  },
+  "matchups": {
+    "elves": {
+      "opponent_file": "elves-mogged-2026-09-19.dck",
+      "face_value": {
+        "in": {"Breath Weapon": 2},
+        "out": {"Preordain": 2},
+        "rationale": "Add the cleanest available reset against mana and payoff creatures while preserving the ramp-creature core."
+      },
+      "opponent": {
+        "in": {"Monstrous Emergence": 2, "Mwonvuli Acid-Moss": 2, "Scattershot Archer": 3},
+        "out": {"Generous Ent": 1, "Masked Vandal": 4, "Sagu Wildling": 2},
+        "rationale": "Add large-creature removal, multicolor mana pressure, and repeatable coverage of Face Value's flying emerge threats."
+      }
+    },
+    "grixis-affinity": {
+      "opponent_file": "grixis-affinity-brunoramos93-2026-09-19.dck",
+      "face_value": {
+        "in": {"Ancient Grudge": 2, "Annul": 2, "Relic of Progenitus": 2, "Tamiyo's Safekeeping": 1},
+        "out": {"Eyeless Watcher": 1, "Llanowar Elves": 4, "Preordain": 2},
+        "rationale": "Trade Shaman-vulnerable accelerants and low-impact setup for artifact interaction, recursion pressure, and one protection spell."
+      },
+      "opponent": {
+        "in": {"Cast into the Fire": 3, "Extract a Confession": 2, "Krark-Clan Shaman": 1, "Pyroblast": 4},
+        "out": {"Black Mage's Rod": 2, "Blood Fountain": 1, "Makeshift Munitions": 1, "Nihil Spellbomb": 3, "Sewer-veillance Cam": 1, "Toxin Analysis": 2},
+        "rationale": "Increase cheap interaction with mana creatures, large threats, and blue emerge cards while removing slow or low-relevance engines."
+      }
+    },
+    "jund-wildfire": {
+      "opponent_file": "jund-wildfire-blaze66-2026-09-19.dck",
+      "face_value": {
+        "in": {"Ancient Grudge": 2, "Relic of Progenitus": 2, "Tamiyo's Safekeeping": 1},
+        "out": {"Eyeless Watcher": 1, "Llanowar Elves": 4},
+        "rationale": "Replace the cards most exposed to sweepers with artifact/recursion disruption and protection."
+      },
+      "opponent": {
+        "in": {"Breath Weapon": 3, "Duress": 3, "Pyroblast": 2},
+        "out": {"Lembas": 2, "Nihil Spellbomb": 4, "Pulse of Murasa": 1, "Toxin Analysis": 1},
+        "rationale": "Add sweepers and stack/hand interaction; remove graveyard hate and slower marginal value cards."
+      }
+    },
+    "mono-blue-terror": {
+      "opponent_file": "mono-blue-terror-luminati-2026-09-19.dck",
+      "face_value": {
+        "in": {"Pyroblast": 3, "Relic of Progenitus": 2, "Tamiyo's Safekeeping": 1},
+        "out": {"Annoyed Altisaur": 2, "Drownyard Lurker": 1, "Eyeless Watcher": 1, "Growth Spasm": 2},
+        "rationale": "Lower the curve and add direct stack/permanent interaction, graveyard pressure, and protection."
+      },
+      "opponent": {
+        "in": {"Gut Shot": 4, "Hydroblast": 4},
+        "out": {"Artful Dodge": 2, "Dispel": 4, "Sleep of the Dead": 2},
+        "rationale": "Add zero-mana answers to accelerants and efficient answers to red threats; cut narrow evasion and instant-only counters."
+      }
+    },
+    "mono-red-madness": {
+      "opponent_file": "mono-red-madness-john-marek-2026-09-19.dck",
+      "face_value": {
+        "in": {"Relic of Progenitus": 2, "Weather the Storm": 3},
+        "out": {"Annoyed Altisaur": 2, "Drownyard Lurker": 1, "Growth Spasm": 2},
+        "rationale": "Trade the slowest setup and top end for life stabilization and graveyard suppression."
+      },
+      "opponent": {
+        "in": {"End the Festivities": 3, "Pyroblast": 4, "Red Elemental Blast": 1},
+        "out": {"Fireblast": 1, "Guttersnipe": 3, "Sneaky Snacker": 4},
+        "rationale": "Add broad one-toughness coverage and interaction with blue emerge/protection cards while reducing slow or Relic-exposed threats."
+      }
+    },
+    "mono-red-rally": {
+      "opponent_file": "mono-red-rally-monturulez-2026-09-20.dck",
+      "face_value": {
+        "in": {"Ancient Grudge": 2, "Breath Weapon": 2, "Weather the Storm": 3},
+        "out": {"Annoyed Altisaur": 2, "Drownyard Lurker": 1, "Growth Spasm": 2, "Preordain": 2},
+        "rationale": "Replace slow setup and top end with life gain, a reset, and interaction for artifact mana/equipment."
+      },
+      "opponent": {
+        "in": {"End the Festivities": 2, "Pyroblast": 2, "Red Elemental Blast": 2},
+        "out": {"Fireblast": 1, "Inventor's Axe": 3, "Reckless Impulse": 2},
+        "rationale": "Add one-toughness coverage and answers to blue emerge cards without adopting the unvalidated Raze or Flash of Defiance scripts."
+      }
+    },
+    "monster-tron": {
+      "opponent_file": "monster-tron-discovern-2026-09-19.dck",
+      "face_value": {
+        "in": {"Ancient Grudge": 2, "Annul": 2, "Pyroblast": 2},
+        "out": {"Drownyard Lurker": 1, "Eyeless Watcher": 1, "Growth Spasm": 2, "Snap": 2},
+        "rationale": "Exchange low-leverage tempo/setup cards for artifact interaction and counters for blue card flow."
+      },
+      "opponent": {
+        "in": {"Blue Elemental Blast": 1, "Breath Weapon": 2, "Gut Shot": 2, "Hydroblast": 4},
+        "out": {"Barrels of Blasting Jelly": 4, "Firebolt": 1, "Giant's Boulder": 2, "Maelstrom Colossus": 2},
+        "rationale": "Add cheap coverage for accelerants and red threats while trimming slower interaction and top end."
+      }
+    }
+  }
+}

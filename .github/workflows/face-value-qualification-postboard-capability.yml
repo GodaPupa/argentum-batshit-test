@@ -1,0 +1,135 @@
+name: Face Value Qualification Postboard Capability
+
+on:
+  push:
+    branches: [face-value/lab]
+    paths:
+      - .github/workflows/face-value-qualification-postboard-capability.yml
+      - experiments/face-value/qualification/postboard-map-v1.json
+      - experiments/face-value/qualification/postboard-map-v1.sha256
+      - experiments/face-value/qualification/materialize_postboard_decks.py
+      - experiments/face-value/qualification/apply_forge_profile_v3.py
+      - experiments/face-value/qualification/audit_postboard_capability.py
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: face-value-qualification-postboard-capability
+  cancel-in-progress: false
+
+jobs:
+  execute-and-audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 100
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: face-value/lab
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - name: Verify immutable inputs and frozen postboard map
+        run: |
+          set -euo pipefail
+          python3 experiments/face-value/qualification/validate_inputs.py >/dev/null
+          cd experiments/face-value/qualification
+          sha256sum -c postboard-map-v1.sha256
+      - name: Build pinned Forge profile v3
+        run: |
+          set -euxo pipefail
+          FORGE_SHA=f387ede550e336315637a8b765f0927ac768c113
+          git clone --filter=blob:none https://github.com/Card-Forge/forge.git forge-src
+          git -C forge-src checkout --detach "$FORGE_SHA"
+          test "$(git -C forge-src rev-parse HEAD)" = "$FORGE_SHA"
+          printf '%s\n' "$FORGE_SHA" > forge-source-commit.txt
+          python3 experiments/face-value/qualification/apply_forge_profile_v1.py --forge-root forge-src > forge-profile-v1-id.txt
+          python3 experiments/face-value/qualification/apply_forge_profile_v2.py --forge-root forge-src > forge-profile-v2-id.txt
+          python3 experiments/face-value/qualification/apply_forge_profile_v3.py --forge-root forge-src > forge-profile-v3-id.txt
+          test "$(cat forge-profile-v1-id.txt)" = 'FACE_VALUE_QUALIFICATION_FORGE_PROFILE_V1'
+          test "$(cat forge-profile-v2-id.txt)" = 'FACE_VALUE_QUALIFICATION_FORGE_PROFILE_V2'
+          test "$(cat forge-profile-v3-id.txt)" = 'FACE_VALUE_QUALIFICATION_FORGE_PROFILE_V3'
+          git -C forge-src diff > forge-profile-v3.patch
+          test -s forge-profile-v3.patch
+          sha256sum forge-profile-v3.patch experiments/face-value/qualification/apply_forge_profile_v*.py > forge-profile-v3.sha256
+          cd forge-src
+          mvn -B -DskipTests -pl forge-gui-desktop -am package
+          chmod +x forge-gui-desktop/target/forge.sh
+          rm -rf forge-gui-desktop/target/res
+          cp -R forge-gui/res forge-gui-desktop/target/res
+          echo "FORGE_LAUNCHER=$(pwd)/forge-gui-desktop/target/forge.sh" >> "$GITHUB_ENV"
+      - name: Materialize frozen maps and diagnostic assignments
+        run: |
+          set -euo pipefail
+          mkdir -p postboard-decks postboard-capability-logs "$HOME/.forge/decks/constructed"
+          python3 experiments/face-value/qualification/materialize_postboard_decks.py --output postboard-decks
+          python3 - <<'PY'
+          from pathlib import Path
+          terror = Path('postboard-decks/opponent-mono-blue-terror.dck')
+          text = terror.read_text(encoding='utf-8')
+          assert text.count('4 Lorien Revealed') == 1
+          terror.write_text(text.replace('4 Lorien Revealed', '4 Lórien Revealed'), encoding='utf-8')
+          matchups = ('elves', 'grixis-affinity', 'jund-wildfire', 'mono-blue-terror', 'mono-red-madness', 'mono-red-rally', 'monster-tron')
+          rows = []
+          seed = 730001
+          for matchup in matchups:
+              for face_seat in (1, 2, 1, 2):
+                  rows.append(f'{matchup}\t{face_seat}\t{seed}')
+                  seed += 1
+          assert seed == 730029
+          Path('postboard-capability-assignments.tsv').write_text('\n'.join(rows) + '\n', encoding='utf-8')
+          PY
+          cp postboard-decks/*.dck "$HOME/.forge/decks/constructed/"
+          sha256sum postboard-decks/*.dck postboard-capability-assignments.tsv experiments/face-value/qualification/postboard-map-v1.json forge-profile-v3.patch > postboard-capability-inputs.sha256
+          cat > postboard-capability-disposition.txt <<'EOF'
+          DIAGNOSTIC_ONLY_POSTBOARD_MAP_V1_CAPABILITY
+          Seeds 730001-730028 and all outcomes are permanently retired diagnostic material.
+          Results have no matchup, qualification, tuning, structural-diagnosis, or challenger authority.
+          EOF
+      - name: Run fresh balanced diagnostic block
+        run: |
+          set -uo pipefail
+          while IFS=$'\t' read -r matchup face_seat seed; do
+            face="face-value-vs-${matchup}.dck"
+            opponent="opponent-${matchup}.dck"
+            log="postboard-capability-logs/${matchup}-face-seat${face_seat}-seed${seed}.log"
+            if [ "$face_seat" = 1 ]; then first="$face"; second="$opponent"; else first="$opponent"; second="$face"; fi
+            timeout 300 "$FORGE_LAUNCHER" sim -d "$first" "$second" -n 1 -s "$seed" -c 120 > "$log" 2>&1
+            code=$?
+            if [ "$code" -ne 0 ]; then printf '\nDIAGNOSTIC_PROCESS_EXIT_%s\n' "$code" >> "$log"; fi
+          done < postboard-capability-assignments.tsv
+          exit 0
+      - name: Fail-closed automated capability audit
+        id: audit
+        continue-on-error: true
+        run: |
+          python3 experiments/face-value/qualification/audit_postboard_capability.py \
+            --logs postboard-capability-logs \
+            --assignments postboard-capability-assignments.tsv \
+            --map experiments/face-value/qualification/postboard-map-v1.json \
+            --output postboard-capability-summary.json
+      - name: Preserve diagnostic evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: face-value-postboard-capability-v1
+          path: |
+            postboard-capability-summary.json
+            postboard-capability-assignments.tsv
+            postboard-capability-inputs.sha256
+            postboard-capability-disposition.txt
+            postboard-capability-logs/*.log
+            postboard-decks/*.dck
+            forge-profile-v3.patch
+            forge-profile-v3.sha256
+            forge-profile-v*-id.txt
+            forge-source-commit.txt
+            experiments/face-value/qualification/input-validation-report.json
+          if-no-files-found: warn
+      - name: Enforce fail-closed capability gate
+        if: steps.audit.outcome != 'success'
+        run: |
+          echo 'Postboard capability was not demonstrated; artifact preserved and all diagnostic seeds retired.'
+          exit 1
