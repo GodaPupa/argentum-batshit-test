@@ -2,6 +2,11 @@ name: Industrial Waste — Policy Calibration v2
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - industrial-waste/lab
+    paths:
+      - .github/workflows/industrial-waste-policy-calibration-v2.yml
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
