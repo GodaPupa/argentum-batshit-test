@@ -1,8 +1,10 @@
 package com.wingedsheep.ai.industrialwaste
 
+import com.wingedsheep.ai.arena.ArenaAgent
 import com.wingedsheep.ai.arena.ArenaAgents
 import com.wingedsheep.ai.arena.TableGameRunner
 import com.wingedsheep.ai.arena.TableSetup
+import com.wingedsheep.ai.engine.AiProfile
 import com.wingedsheep.engine.registry.CardRegistry
 import com.wingedsheep.mtg.sets.MtgSetCatalog
 import com.wingedsheep.sdk.model.Deck
@@ -19,6 +21,7 @@ class IndustrialWasteGoldfishBenchmark : FunSpec({
     test("Industrial Waste paired metric goldfish").config(
         enabled = System.getenv("IW_GOLDFISH") == "true",
     ) {
+        val policyCalibration = System.getenv("IW_POLICY_CALIBRATION") == "true"
         val repository = goldfishRepositoryRoot()
         val root = repository.resolve("industrial-waste")
         val registry = CardRegistry().apply {
@@ -42,7 +45,16 @@ class IndustrialWasteGoldfishBenchmark : FunSpec({
             "goldfish namespace is not registered"
         }
 
-        val agent = ArenaAgents.resolve("v0")
+        val controlAgent = ArenaAgents.resolve("v0")
+        val industrialAgent = if (policyCalibration) {
+            ArenaAgent(
+                "industrial-waste-policy-v1",
+                AiProfile.LEGACY_V0.copy(
+                    id = "industrial-waste-policy-v1",
+                    advisorModules = listOf(IndustrialWasteAdvisorModule),
+                ),
+            )
+        } else controlAgent
         val inert = Deck.of("Forest" to 60)
         val outcomes = buildList {
             seeds.forEachIndexed { index, seed ->
@@ -51,7 +63,7 @@ class IndustrialWasteGoldfishBenchmark : FunSpec({
                     val game = TableGameRunner.play(
                         registry = registry,
                         setup = TableSetup.HEADS_UP,
-                        agents = listOf(agent, agent),
+                        agents = listOf(industrialAgent, controlAgent),
                         decks = listOf(deck, inert),
                         seed = seed,
                         groupId = index + 1,
@@ -85,12 +97,17 @@ class IndustrialWasteGoldfishBenchmark : FunSpec({
         }
         val report = GoldfishReport(
             schemaVersion = 1,
-            evidenceClass = "diagnostic-engine-goldfish",
+            evidenceClass = if (policyCalibration) {
+                "non-promotional-policy-calibration"
+            } else {
+                "diagnostic-engine-goldfish"
+            },
             promotionEligible = false,
             namespace = SEED_NAMESPACE,
             seedCount = seeds.size,
             seedVectorSha256 = SEED_VECTOR_SHA256,
-            opponent = "60 Forest; v0 AI; inert capability opponent",
+            opponent = "60 Forest; v0 AI; inert capability opponent; " +
+                "Industrial seat=${industrialAgent.name}",
             mulligans = "London mulligans enabled for both seats",
             maxTurnsPerSeat = MAX_TURNS,
             maxActions = MAX_ACTIONS,
@@ -98,7 +115,13 @@ class IndustrialWasteGoldfishBenchmark : FunSpec({
             summaries = decks.keys.map { deckName -> summarize(deckName, outcomes) },
             valid = invalid.isEmpty(),
         )
-        val output = root.resolve("results/gate-3-goldfish-screen-v1.json")
+        val output = root.resolve(
+            if (policyCalibration) {
+                "results/gate-3-policy-calibration-v1.json"
+            } else {
+                "results/gate-3-goldfish-screen-v1.json"
+            }
+        )
         output.parent?.let { Files.createDirectories(it) }
         Files.writeString(output, Json { prettyPrint = true }.encodeToString(report) + "\n")
         check(invalid.isEmpty()) {
