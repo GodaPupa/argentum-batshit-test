@@ -23,7 +23,8 @@ The workflow accepted the frozen vector once, in order. There were no rerolls, r
 
 ## Disposition
 
-- State: `COMPLETED`
+- Execution state: `COMPLETED`
+- Audit disposition: `ACCEPTED_CALIBRATION`
 - Attempted games: 10/10
 - Recorded games: 10/10
 - Terminal games: 10/10
@@ -43,5 +44,7 @@ These are ten independent preboard games, not a best-of match. The 6-4 result is
 - `attempted-seeds.csv` records the exact one-shot attempt order.
 - `block-summary.csv` records terminal outcome, seat/start assignment, turn, action count, and protocol-defect status for every game.
 - `archive-provenance.json` binds this durable record to the GitHub workflow and artifact archive.
+- `post-execution-audit-input.json` preserves the machine reconciliation of all 3,160 actions.
+- `post-execution-acceptance-audit.md` records the controlling audit disposition and the reviewed game-8 terminal target.
 
 The full artifact additionally contains each game's raw JSON, deterministic gzip, report, and manifest. The archive digest above commits to those exact bytes.
