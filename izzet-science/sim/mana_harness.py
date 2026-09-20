@@ -826,18 +826,9 @@ def commander_regressions():
 
 
 
-def primary_combo_launch_feasible(state):
-    if not guildmage_on_battlefield(state): return False
-    if not {"Lava Spike","Desperate Ritual"} <= set(state.hand): return False
-    # Cast Spike with Ritual spliced, then cast the still-in-hand Ritual while the
-    # combined Spike remains on stack. The two casts cost 2RRR total, or RRR with
-    # Electromancer reducing both generic portions. The resolved Ritual then creates
-    # the RRR needed for Guildmage's first 2R activation.
-    electromancer=any(p["card"]=="Goblin Electromancer" for p in state.battlefield)
-    generic=0 if electromancer else 2
-
+def ready_red_payment_feasible(state,generic,need_r):
     # Aggregate ready mana, including Boilerworks' fixed U+R production and Signet's
-    # one-mana activation. For this red-only launch test, every flexible source may
+    # one-mana activation. For a red-heavy payment, every flexible source may
     # produce red; a Signet can consume non-red mana first (or one red if necessary).
     total=0; max_red=0
     for _,value,colors in source_options(state):
@@ -851,9 +842,28 @@ def primary_combo_launch_feasible(state):
         post_total=total+signets
         activation_red_cost=1 if signets and total==max_red else 0
         post_red=max_red+signets-activation_red_cost
-        if post_total>=generic+3 and post_red>=3:
+        if post_total>=generic+need_r and post_red>=need_r:
             return True
     return False
+
+def primary_combo_launch_feasible(state):
+    if not guildmage_on_battlefield(state): return False
+    if not {"Lava Spike","Desperate Ritual"} <= set(state.hand): return False
+    electromancer=any(p["card"]=="Goblin Electromancer" for p in state.battlefield)
+
+    # Seething Song can resolve first and turn an initial 2R payment into the five
+    # red mana required to cast Spike with Ritual spliced and then cast Ritual itself.
+    if "Seething Song" in state.hand:
+        song_generic=1 if electromancer else 2
+        if ready_red_payment_feasible(state,generic=song_generic,need_r=1):
+            return True
+
+    # Baseline route: cast Spike with Ritual spliced, then cast the still-in-hand
+    # Ritual while the combined Spike remains on stack. The two casts cost 2RRR
+    # total, or RRR with Electromancer reducing both generic portions. The resolved
+    # Ritual then creates the RRR needed for Guildmage's first 2R activation.
+    generic=0 if electromancer else 2
+    return ready_red_payment_feasible(state,generic=generic,need_r=3)
 
 def primary_combo_damage_available(state, opponent_life=30):
     if not primary_combo_launch_feasible(state): return 0
@@ -1183,6 +1193,16 @@ def five_mana_ritual_route_regressions():
     assert primary_combo_launch_feasible(q)
     return True
 
+def seething_song_launch_regressions():
+    s=DevState(["Lava Spike","Desperate Ritual","Seething Song"]); s.turn=4
+    s.battlefield=[{"card":"Izzet Guildmage","tapped":False,"entered":2}]
+    for i,c in enumerate(["Mountain","Island","Island"]):
+        s.battlefield.append({"card":c,"tapped":False,"entered":i})
+    assert primary_combo_launch_feasible(s)
+    s.hand.remove("Seething Song")
+    assert not primary_combo_launch_feasible(s)
+    return True
+
 def electromancer_lethal_regressions():
     # Electromancer removes both generic costs, enabling a three-red-mana launch.
     s=DevState(["Lava Spike","Desperate Ritual"]); s.turn=4
@@ -1262,6 +1282,7 @@ def main():
     first_lethal_regression()
     electromancer_lethal_regressions()
     five_mana_ritual_route_regressions()
+    seething_song_launch_regressions()
     b,r=opening_baseline(cards,args.samples,args.seed)
     print("seed",hex(args.seed),"samples",args.samples)
     print("land_buckets_0_1_2_3_4plus",b)

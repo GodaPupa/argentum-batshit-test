@@ -1,24 +1,24 @@
-name: Izzet v0.3 Lethal Validation
+name: Izzet v0.5 Launch Validation
 
 on:
   push:
     branches: [mayhem/izzet-science]
     paths:
       - 'izzet-science/sim/**'
-      - 'izzet-science/v0.3-control.md'
-      - 'izzet-science/challengers/v04A-strategic-planning.md'
+      - 'izzet-science/v0.4-control.md'
+      - 'izzet-science/challengers/v05A-seething-song.md'
       - '.github/workflows/izzet-v03-lethal.yml'
   pull_request:
     branches: [main]
     paths:
       - 'izzet-science/sim/**'
-      - 'izzet-science/v0.3-control.md'
-      - 'izzet-science/challengers/v04A-strategic-planning.md'
+      - 'izzet-science/v0.4-control.md'
+      - 'izzet-science/challengers/v05A-seething-song.md'
       - '.github/workflows/izzet-v03-lethal.yml'
   workflow_dispatch:
 
 jobs:
-  lethal-v03:
+  launch-v05:
     if: github.event_name != 'pull_request' || github.head_ref == 'mayhem/izzet-science'
     runs-on: ubuntu-latest
     timeout-minutes: 10
@@ -29,24 +29,32 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Run v0.3 lethal sample
+      - name: Run frozen v0.4 control
         shell: bash
         run: |
           set -euo pipefail
           mkdir -p izzet-science/artifacts
-          python izzet-science/sim/mana_harness.py             --deck izzet-science/v0.3-control.md             --samples 100000             --seed 0x1A22E7001             | tee izzet-science/artifacts/v03-lethal.txt
-          test -s izzet-science/artifacts/v03-lethal.txt
-      - name: Run v0.4-A Strategic Planning sample
+          python izzet-science/sim/mana_harness.py \
+            --deck izzet-science/v0.4-control.md \
+            --samples 100000 \
+            --seed 0x1A22E7001 \
+            | tee izzet-science/artifacts/v04-control.txt
+          test -s izzet-science/artifacts/v04-control.txt
+      - name: Run v0.5-A Seething Song challenger
         shell: bash
         run: |
           set -euo pipefail
-          python izzet-science/sim/mana_harness.py             --deck izzet-science/challengers/v04A-strategic-planning.md             --samples 100000             --seed 0x1A22E7001             | tee izzet-science/artifacts/v04A-strategic-planning.txt
-          test -s izzet-science/artifacts/v04A-strategic-planning.txt
-      - name: Preserve lethal output
+          python izzet-science/sim/mana_harness.py \
+            --deck izzet-science/challengers/v05A-seething-song.md \
+            --samples 100000 \
+            --seed 0x1A22E7001 \
+            | tee izzet-science/artifacts/v05A-seething-song.txt
+          test -s izzet-science/artifacts/v05A-seething-song.txt
+      - name: Preserve paired launch output
         uses: actions/upload-artifact@v4
         with:
-          name: izzet-v03-v04A-paired-clock
+          name: izzet-v04-v05A-paired-launch
           path: |
-            izzet-science/artifacts/v03-lethal.txt
-            izzet-science/artifacts/v04A-strategic-planning.txt
+            izzet-science/artifacts/v04-control.txt
+            izzet-science/artifacts/v05A-seething-song.txt
           if-no-files-found: error

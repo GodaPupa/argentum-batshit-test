@@ -4,18 +4,6 @@ permissions:
   contents: write
 
 on:
-  push:
-    branches:
-      - mayhem/izzet-science
-    paths:
-      - 'izzet-science/**'
-      - '.github/workflows/izzet-science-validation.yml'
-  pull_request:
-    branches:
-      - main
-    paths:
-      - 'izzet-science/**'
-      - '.github/workflows/izzet-science-validation.yml'
   workflow_dispatch:
 
 jobs:
