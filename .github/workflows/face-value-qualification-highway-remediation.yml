@@ -1,0 +1,125 @@
+name: Face Value Qualification Highway Remediation
+
+on:
+  push:
+    branches: [face-value/lab]
+    paths:
+      - .github/workflows/face-value-qualification-highway-remediation.yml
+      - experiments/face-value/qualification/audit_highway_remediation.py
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  highway-remediation-smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - name: Verify frozen qualification inputs
+        run: python3 experiments/face-value/qualification/validate_inputs.py
+      - name: Build pinned Forge with isolated Highway heuristic
+        run: |
+          set -euxo pipefail
+          FORGE_SHA=f387ede550e336315637a8b765f0927ac768c113
+          git clone --filter=blob:none https://github.com/Card-Forge/forge.git forge-src
+          git -C forge-src checkout --detach "$FORGE_SHA"
+          test "$(git -C forge-src rev-parse HEAD)" = "$FORGE_SHA"
+          printf '%s\n' "$FORGE_SHA" > forge-source-commit.txt
+          python3 - <<'PY'
+          from pathlib import Path
+
+          faithless = Path('forge-src/forge-gui/res/cardsfolder/f/faithless_looting.txt')
+          text = faithless.read_text(encoding='utf-8')
+          assert text.count('\nAI:RemoveDeck:All') == 1
+          faithless.write_text(text.replace('\nAI:RemoveDeck:All', ''), encoding='utf-8')
+
+          highway = Path('forge-src/forge-gui/res/cardsfolder/h/highway_robbery.txt')
+          text = highway.read_text(encoding='utf-8')
+          old = 'A:SP$ GenericChoice | Choices$ DBDiscardToDraw,DBSacToDraw | SpellDescription$ You may discard a card or sacrifice a land. If you do, draw two cards.'
+          new = 'A:SP$ GenericChoice | Choices$ DBDiscardToDraw,DBSacToDraw | AILogic$ PayUnlessCost | SpellDescription$ You may discard a card or sacrifice a land. If you do, draw two cards.'
+          assert text.count(old) == 1
+          highway.write_text(text.replace(old, new), encoding='utf-8')
+
+          choose = Path('forge-src/forge-ai/src/main/java/forge/ai/ability/ChooseGenericAi.java')
+          text = choose.read_text(encoding='utf-8')
+          needle = '        } else if ("Always".equals(aiLogic)) {\n            return true;\n        }'
+          insert = '        } else if ("Always".equals(aiLogic) || "PayUnlessCost".equals(aiLogic)) {\n            return true;\n        }'
+          assert text.count(needle) == 1
+          choose.write_text(text.replace(needle, insert), encoding='utf-8')
+          PY
+          git -C forge-src diff -- forge-gui/res/cardsfolder/f/faithless_looting.txt forge-gui/res/cardsfolder/h/highway_robbery.txt forge-ai/src/main/java/forge/ai/ability/ChooseGenericAi.java > highway-remediation.patch
+          test -s highway-remediation.patch
+          cd forge-src
+          mvn -B -DskipTests -pl forge-gui-desktop -am package
+          chmod +x forge-gui-desktop/target/forge.sh
+          rm -rf forge-gui-desktop/target/res
+          cp -R forge-gui/res forge-gui-desktop/target/res
+          echo "FORGE_LAUNCHER=$(pwd)/forge-gui-desktop/target/forge.sh" >> "$GITHUB_ENV"
+      - name: Install actual lists and freeze fresh diagnostics
+        run: |
+          set -euo pipefail
+          mkdir -p diagnostic-decks diagnostic-logs "$HOME/.forge/decks/constructed"
+          cp experiments/face-value/qualification/control/fv-temur-chrysalis-e-final-forge-75.dck diagnostic-decks/
+          cp experiments/face-value/qualification/opponents/mono-red-madness-john-marek-2026-09-19.dck diagnostic-decks/
+          python3 - <<'PY'
+          from pathlib import Path
+          rows = []
+          for offset, face_seat in enumerate((1, 2, 1, 2, 1, 2)):
+              rows.append(f'mono-red-madness\tmono-red-madness-john-marek-2026-09-19.dck\t{face_seat}\t{720101 + offset}')
+          Path('diagnostic-assignments.tsv').write_text('\n'.join(rows) + '\n', encoding='utf-8')
+          PY
+          cp diagnostic-decks/*.dck "$HOME/.forge/decks/constructed/"
+          sha256sum diagnostic-assignments.tsv diagnostic-decks/*.dck highway-remediation.patch > diagnostic-inputs.sha256
+          cat > diagnostic-disposition.txt <<'EOF'
+          DIAGNOSTIC_ONLY_HIGHWAY_ROBBERY_REMEDIATION
+          Seeds 720101-720106 and all outcomes are permanently diagnostic only.
+          No output is matchup evidence or authority for official qualification seeds.
+          EOF
+      - name: Run six isolated actual-list diagnostics
+        run: |
+          set -uo pipefail
+          control='fv-temur-chrysalis-e-final-forge-75.dck'
+          while IFS=$'\t' read -r matchup opponent face_seat seed; do
+            log="diagnostic-logs/${matchup}-face-seat${face_seat}-seed${seed}.log"
+            if [ "$face_seat" = 1 ]; then first="$control"; second="$opponent"; else first="$opponent"; second="$control"; fi
+            timeout 180 "$FORGE_LAUNCHER" sim -d "$first" "$second" -n 1 -s "$seed" -c 90 > "$log" 2>&1
+            code=$?
+            if [ "$code" -ne 0 ]; then printf '\nDIAGNOSTIC_PROCESS_EXIT_%s\n' "$code" >> "$log"; fi
+          done < diagnostic-assignments.tsv
+          exit 0
+      - name: Audit isolated Highway remediation
+        id: audit
+        continue-on-error: true
+        run: |
+          python3 experiments/face-value/qualification/audit_highway_remediation.py \
+            --logs diagnostic-logs \
+            --assignments diagnostic-assignments.tsv \
+            --output highway-remediation-summary.json
+      - name: Preserve Highway remediation evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: face-value-highway-remediation
+          path: |
+            highway-remediation-summary.json
+            highway-remediation.patch
+            diagnostic-assignments.tsv
+            diagnostic-inputs.sha256
+            diagnostic-disposition.txt
+            diagnostic-decks/*.dck
+            diagnostic-logs/*.log
+            forge-source-commit.txt
+            experiments/face-value/qualification/input-validation-report.json
+          if-no-files-found: warn
+      - name: Enforce fail-closed Highway gate
+        if: steps.audit.outcome != 'success'
+        run: |
+          echo 'Highway Robbery opponent-pilot remediation was not demonstrated.'
+          echo 'No fresh qualification seeds are authorized.'
+          exit 1
