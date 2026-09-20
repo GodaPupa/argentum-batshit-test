@@ -1,0 +1,118 @@
+name: Face Value Qualification Rally Forced Exposure
+
+on:
+  push:
+    branches: [face-value/lab]
+    paths:
+      - .github/workflows/face-value-qualification-rally-forced-exposure.yml
+      - experiments/face-value/qualification/apply_forge_profile_v1.py
+      - experiments/face-value/qualification/audit_rally_forced_exposure.py
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  forced-exposure:
+    runs-on: ubuntu-latest
+    timeout-minutes: 70
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - name: Verify frozen qualification inputs
+        run: python3 experiments/face-value/qualification/validate_inputs.py
+      - name: Build pinned Forge profile v1
+        run: |
+          set -euxo pipefail
+          FORGE_SHA=f387ede550e336315637a8b765f0927ac768c113
+          git clone --filter=blob:none https://github.com/Card-Forge/forge.git forge-src
+          git -C forge-src checkout --detach "$FORGE_SHA"
+          test "$(git -C forge-src rev-parse HEAD)" = "$FORGE_SHA"
+          python3 experiments/face-value/qualification/apply_forge_profile_v1.py --forge-root forge-src | tee forge-profile-id.txt
+          test "$(cat forge-profile-id.txt)" = 'FACE_VALUE_QUALIFICATION_FORGE_PROFILE_V1'
+          cd forge-src
+          mvn -B -DskipTests -pl forge-gui-desktop -am package
+          chmod +x forge-gui-desktop/target/forge.sh
+          rm -rf forge-gui-desktop/target/res
+          cp -R forge-gui/res forge-gui-desktop/target/res
+          echo "FORGE_LAUNCHER=$(pwd)/forge-gui-desktop/target/forge.sh" >> "$GITHUB_ENV"
+      - name: Freeze nonlegal sequencing fixture
+        run: |
+          set -euo pipefail
+          mkdir -p diagnostic-decks diagnostic-logs "$HOME/.forge/decks/constructed"
+          cat > diagnostic-decks/rally-forced-exposure.dck <<'EOF'
+          [metadata]
+          Name=DIAGNOSTIC ONLY Rally Forced Exposure
+          Deck Type=constructed
+          [main]
+          16 Rally at the Hornburg
+          16 Goblin Bushwhacker
+          28 Mountain
+          EOF
+          cat > diagnostic-decks/passive-plains.dck <<'EOF'
+          [metadata]
+          Name=DIAGNOSTIC ONLY Passive Plains
+          Deck Type=constructed
+          [main]
+          60 Plains
+          EOF
+          python3 - <<'PY'
+          from pathlib import Path
+          rows = [f'{1 + i % 2}\t{720153 + i}' for i in range(8)]
+          Path('diagnostic-assignments.tsv').write_text('\n'.join(rows) + '\n', encoding='utf-8')
+          PY
+          cp diagnostic-decks/*.dck "$HOME/.forge/decks/constructed/"
+          sha256sum diagnostic-assignments.tsv diagnostic-decks/*.dck > diagnostic-inputs.sha256
+          cat > diagnostic-disposition.txt <<'EOF'
+          DIAGNOSTIC_ONLY_NONLEGAL_FORCED_EXPOSURE_RALLY_SEQUENCING
+          Seeds 720153-720160 and all outcomes are permanently retired diagnostic material.
+          The decks are deliberately nonlegal and the results have no matchup, tuning, structural-diagnosis, challenger, or qualification authority.
+          This fixture tests only whether Forge orders Rally at the Hornburg before Goblin Bushwhacker when both are cast in one turn.
+          EOF
+      - name: Run fresh forced-exposure block
+        run: |
+          set -uo pipefail
+          while IFS=$'\t' read -r fixture_seat seed; do
+            log="diagnostic-logs/rally-forced-seat${fixture_seat}-seed${seed}.log"
+            if [ "$fixture_seat" = 1 ]; then
+              first='rally-forced-exposure.dck'; second='passive-plains.dck'
+            else
+              first='passive-plains.dck'; second='rally-forced-exposure.dck'
+            fi
+            timeout 120 "$FORGE_LAUNCHER" sim -d "$first" "$second" -n 1 -s "$seed" -c 60 > "$log" 2>&1
+            code=$?
+            if [ "$code" -ne 0 ]; then printf '\nDIAGNOSTIC_PROCESS_EXIT_%s\n' "$code" >> "$log"; fi
+          done < diagnostic-assignments.tsv
+          exit 0
+      - name: Audit Rally sequencing
+        id: audit
+        continue-on-error: true
+        run: |
+          python3 experiments/face-value/qualification/audit_rally_forced_exposure.py \
+            --logs diagnostic-logs \
+            --assignments diagnostic-assignments.tsv \
+            --output rally-forced-exposure-summary.json
+      - name: Preserve forced-exposure evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: face-value-rally-forced-exposure
+          path: |
+            rally-forced-exposure-summary.json
+            forge-profile-id.txt
+            diagnostic-assignments.tsv
+            diagnostic-inputs.sha256
+            diagnostic-disposition.txt
+            diagnostic-decks/*.dck
+            diagnostic-logs/*.log
+            experiments/face-value/qualification/input-validation-report.json
+          if-no-files-found: warn
+      - name: Enforce fail-closed sequencing gate
+        if: steps.audit.outcome != 'success'
+        run: |
+          echo 'Rally sequencing capability was not demonstrated.'
+          echo 'No qualification seeds are authorized.'
+          exit 1
