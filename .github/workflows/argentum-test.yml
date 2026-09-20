@@ -9,61 +9,41 @@ permissions:
   contents: read
 
 jobs:
-  izzet-dive-down-v07c:
-    if: github.ref == 'refs/heads/mayhem/izzet-science'
+  test:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 30
 
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Java 21
+        uses: actions/setup-java@v4
         with:
-          python-version: '3.12'
-      - name: Verify paired deck identities
-        shell: bash
-        run: |
-          set -euo pipefail
-          test "$(sha256sum izzet-science/v0.6-control.md | cut -d' ' -f1)" = "a6acc3e0a00fa1bab0eb3ad7d981a449b8ce0e8c6bf4ed384968e46ca081fac5"
-          test "$(sha256sum izzet-science/challengers/v07C-dive-down.md | cut -d' ' -f1)" = "6329279e87ae4922765609c5b8e6b71e28d82013ebea5ed2e95a13a5581bdf88"
-      - name: Run paired interaction pilot
-        shell: bash
-        run: |
-          set -euo pipefail
-          mkdir -p izzet-science/artifacts
-          python izzet-science/sim/mana_harness.py \
-            --deck izzet-science/v0.6-control.md \
-            --samples 10000 --seed 0x1A22E7006 --interaction-pilot \
-            | tee izzet-science/artifacts/v07C-control.txt
-          python izzet-science/sim/mana_harness.py \
-            --deck izzet-science/challengers/v07C-dive-down.md \
-            --samples 10000 --seed 0x1A22E7006 --interaction-pilot \
-            | tee izzet-science/artifacts/v07C-dive-down.txt
-          for file in v07C-control v07C-dive-down; do
-            test -s "izzet-science/artifacts/${file}.txt"
-            test "$(grep -c '^turn ' "izzet-science/artifacts/${file}.txt")" -eq 10
-            test "$(grep -c '^interaction turn ' "izzet-science/artifacts/${file}.txt")" -eq 10
-          done
-      - name: Write provenance manifest
-        shell: bash
-        run: |
-          set -euo pipefail
-          {
-            echo "source_sha=${GITHUB_SHA}"
-            echo "run_id=${GITHUB_RUN_ID}"
-            echo "run_attempt=${GITHUB_RUN_ATTEMPT}"
-            echo "control_sha256=a6acc3e0a00fa1bab0eb3ad7d981a449b8ce0e8c6bf4ed384968e46ca081fac5"
-            echo "challenger_sha256=6329279e87ae4922765609c5b8e6b71e28d82013ebea5ed2e95a13a5581bdf88"
-            echo "seed=0x1A22E7006"
-            echo "samples_per_deck=10000"
-            echo "change=-1 Skred; +1 Dive Down"
-            sha256sum izzet-science/artifacts/v07C-control.txt izzet-science/artifacts/v07C-dive-down.txt
-          } > izzet-science/artifacts/v07C-dive-down.manifest
-      - name: Preserve paired pilot artifact
-        uses: actions/upload-artifact@v4
+          distribution: temurin
+          java-version: '21'
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
         with:
-          name: izzet-v07C-dive-down-paired-pilot
-          path: |
-            izzet-science/artifacts/v07C-control.txt
-            izzet-science/artifacts/v07C-dive-down.txt
-            izzet-science/artifacts/v07C-dive-down.manifest
-          if-no-files-found: error
+          gradle-version: '9.6.1'
+
+      - name: Make Gradle wrapper executable
+        run: chmod +x gradlew
+
+      - name: Show environment
+        run: |
+          java -version
+          gradle --version
+
+      - name: Compile Argentum
+        run: ./gradlew classes --stacktrace
+
+      - name: Run engine tests
+        run: ./gradlew test --stacktrace
+
+      - name: Run Gym tests
+        run: ./gradlew :gym:test --stacktrace
+
+      - name: Run Gym trainer tests
+        run: ./gradlew :gym-trainer:test --stacktrace

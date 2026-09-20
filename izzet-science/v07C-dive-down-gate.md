@@ -56,4 +56,9 @@ Failure of any criterion rejects v0.7-C and permanently ends this challenger
 identity. A pass authorizes exactly one 100,000-game confirmation on the
 preregistered seed; only that confirmation may earn promotion.
 
-Disposition: `V07C_PILOT_FROZEN_PENDING_EXECUTION`
+Disposition: `V07C_REJECTED_AT_PILOT`
+
+The single authorized pilot completed in GitHub Actions run `35535687806` and
+failed criterion 7: T10 R execution decreased from 84.28% to 81.39% (-2.89
+percentage points). No confirmation run is authorized. See
+`v07C-dive-down-rejected.md` for the complete audit.
