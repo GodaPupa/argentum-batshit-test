@@ -62,103 +62,102 @@ class PestControlV2QualificationShardRunnerTest : FunSpec({
                     "runner_state=${PestControlV2QualificationShardRunnerGuard.CONFIGURED_STATE}\n" +
                     "outcome_exposure=0/50\n").toByteArray(),
             )
-            return@test
-        }
+        } else {
+            System.getenv("PEST_V2_QUALIFICATION_EXECUTION_ACK") shouldBe QUALIFICATION_EXECUTION_ACK
+            val shardId = System.getenv("PEST_V2_QUALIFICATION_SHARD_ID") ?: error("shard ID required")
+            val shard = plan.shards.singleOrNull { it.shardId == shardId } ?: error("unknown shard ID")
+            val guardErrors = PestControlV2QualificationShardRunnerGuard.activationErrors(
+                plan = plan,
+                shardId = shardId,
+                explicitAuthorization = true,
+                isUnitTestProcess = false,
+                attemptNumber = System.getenv("GITHUB_RUN_ATTEMPT")?.toIntOrNull() ?: 0,
+                outputAlreadyExists = Files.exists(output),
+                checkedOutCommit = executionCommit,
+                checkedOutTree = executionTree,
+            )
+            check(guardErrors.isEmpty()) { "qualification runner rejected activation: ${guardErrors.joinToString()}" }
 
-        System.getenv("PEST_V2_QUALIFICATION_EXECUTION_ACK") shouldBe QUALIFICATION_EXECUTION_ACK
-        val shardId = System.getenv("PEST_V2_QUALIFICATION_SHARD_ID") ?: error("shard ID required")
-        val shard = plan.shards.singleOrNull { it.shardId == shardId } ?: error("unknown shard ID")
-        val guardErrors = PestControlV2QualificationShardRunnerGuard.activationErrors(
-            plan = plan,
-            shardId = shardId,
-            explicitAuthorization = true,
-            isUnitTestProcess = false,
-            attemptNumber = System.getenv("GITHUB_RUN_ATTEMPT")?.toIntOrNull() ?: 0,
-            outputAlreadyExists = Files.exists(output),
-            checkedOutCommit = executionCommit,
-            checkedOutTree = executionTree,
-        )
-        check(guardErrors.isEmpty()) { "qualification runner rejected activation: ${guardErrors.joinToString()}" }
-
-        Files.createDirectories(output)
-        val assignments = PestControlMatchupSharding.assignmentsFor(plan, shard)
-        val attempts = mutableListOf<AttemptedSeed>()
-        val games = mutableListOf<MatchupRawGame>()
-        val runtimes = mutableListOf<GameRuntime>()
-        val log = AppendOnlyBlockExecutionLog().apply {
-            append(BlockRunnerState.AUTHORIZED, "qualification shard authorization")
-        }
-        val registry = CardRegistry().apply {
-            register(PredefinedTokens.allTokens)
-            MtgSetCatalog.all.forEach { set -> register(set.cards); register(set.basicLands) }
-        }
-        val shardStarted = System.nanoTime()
-        var failure: Throwable? = null
-        try {
-            assignments.forEach { assignment ->
-                val attempted = AttemptedSeed(assignment.gameNumber, assignment.seedDecimal, assignment.seedHex)
-                appendAttemptForced(output.resolve("attempted-seeds.csv"), attempted, attempts.isEmpty())
-                attempts += attempted
-                log.append(
-                    BlockRunnerState.STARTED,
-                    "seed marked attempted before game initialization",
-                    assignment.gameNumber,
-                    assignment.seedDecimal,
-                )
-                val gameStarted = System.nanoTime()
-                val session = PestControlV2QualificationGameAdapter.initialize(registry, assignment, executionCommit)
-                val game = PestControlPreboardProductionDriver.drive(registry, session)
-                check(game.terminal?.gameOver == true && game.protocolDefect == null)
-                check(game.priorityActions.none { !it.accepted || it.fallbackUsed })
-                val bundle = PestControlMatchupArtifactCodec.build(game)
-                check(PestControlMatchupArtifactCodec.verify(bundle).isEmpty())
-                val gameDir = output.resolve("games/game-${assignment.gameNumber.toString().padStart(2, '0')}")
-                writeNewForced(gameDir.resolve("raw.json"), bundle.rawJson)
-                writeNewForced(gameDir.resolve("raw.json.gz"), bundle.compressed)
-                writeNewForced(gameDir.resolve("report.md"), bundle.report)
-                writeNewForced(gameDir.resolve("manifest.json"), bundle.manifest)
-                games += game
-                runtimes += GameRuntime(
-                    assignment.gameNumber,
-                    assignment.seedHex,
-                    ((System.nanoTime() - gameStarted) / 1_000_000L).coerceAtLeast(1L),
-                )
+            Files.createDirectories(output)
+            val assignments = PestControlMatchupSharding.assignmentsFor(plan, shard)
+            val attempts = mutableListOf<AttemptedSeed>()
+            val games = mutableListOf<MatchupRawGame>()
+            val runtimes = mutableListOf<GameRuntime>()
+            val log = AppendOnlyBlockExecutionLog().apply {
+                append(BlockRunnerState.AUTHORIZED, "qualification shard authorization")
             }
-            log.append(BlockRunnerState.COMPLETED, "qualification shard completion")
-        } catch (error: Throwable) {
-            failure = error
-            log.append(BlockRunnerState.REJECTED, "qualification shard failure: ${error.message}")
+            val registry = CardRegistry().apply {
+                register(PredefinedTokens.allTokens)
+                MtgSetCatalog.all.forEach { set -> register(set.cards); register(set.basicLands) }
+            }
+            val shardStarted = System.nanoTime()
+            var failure: Throwable? = null
+            try {
+                assignments.forEach { assignment ->
+                    val attempted = AttemptedSeed(assignment.gameNumber, assignment.seedDecimal, assignment.seedHex)
+                    appendAttemptForced(output.resolve("attempted-seeds.csv"), attempted, attempts.isEmpty())
+                    attempts += attempted
+                    log.append(
+                        BlockRunnerState.STARTED,
+                        "seed marked attempted before game initialization",
+                        assignment.gameNumber,
+                        assignment.seedDecimal,
+                    )
+                    val gameStarted = System.nanoTime()
+                    val session = PestControlV2QualificationGameAdapter.initialize(registry, assignment, executionCommit)
+                    val game = PestControlPreboardProductionDriver.drive(registry, session)
+                    check(game.terminal?.gameOver == true && game.protocolDefect == null)
+                    check(game.priorityActions.none { !it.accepted || it.fallbackUsed })
+                    val bundle = PestControlMatchupArtifactCodec.build(game)
+                    check(PestControlMatchupArtifactCodec.verify(bundle).isEmpty())
+                    val gameDir = output.resolve("games/game-${assignment.gameNumber.toString().padStart(2, '0')}")
+                    writeNewForced(gameDir.resolve("raw.json"), bundle.rawJson)
+                    writeNewForced(gameDir.resolve("raw.json.gz"), bundle.compressed)
+                    writeNewForced(gameDir.resolve("report.md"), bundle.report)
+                    writeNewForced(gameDir.resolve("manifest.json"), bundle.manifest)
+                    games += game
+                    runtimes += GameRuntime(
+                        assignment.gameNumber,
+                        assignment.seedHex,
+                        ((System.nanoTime() - gameStarted) / 1_000_000L).coerceAtLeast(1L),
+                    )
+                }
+                log.append(BlockRunnerState.COMPLETED, "qualification shard completion")
+            } catch (error: Throwable) {
+                failure = error
+                log.append(BlockRunnerState.REJECTED, "qualification shard failure: ${error.message}")
+            }
+            val completion = if (failure == null) ShardCompletion.COMPLETED else ShardCompletion.FAILED
+            val runtimeMillis = maxOf(
+                ((System.nanoTime() - shardStarted) / 1_000_000L).coerceAtLeast(1L),
+                runtimes.sumOf { it.runtimeMillis },
+            )
+            val raw = MatchupShardRaw(
+                identity = plan.identity,
+                shard = shard,
+                completion = completion,
+                failureReason = failure?.message,
+                assignments = assignments,
+                attemptedSeeds = attempts,
+                games = games,
+                gameRuntimes = runtimes,
+                shardRuntimeMillis = runtimeMillis,
+                executionLog = log.entries,
+            )
+            val shardBundle = PestControlMatchupSharding.buildShard(raw)
+            writeNewForced(output.resolve("shard-raw.json"), shardBundle.rawJson)
+            writeNewForced(output.resolve("shard-raw.json.gz"), shardBundle.compressed)
+            writeNewForced(output.resolve("shard-manifest.json"), shardBundle.manifest)
+            writeNewForced(output.resolve("shard-audit-input.json"), shardBundle.auditInput)
+            writeNewForced(
+                output.resolve("execution-status.txt"),
+                "completion=$completion\nattempted=${attempts.size}\nrecorded=${games.size}\nfailure=${failure?.message ?: "none"}\n".toByteArray(),
+            )
+            if (failure == null) {
+                check(PestControlMatchupSharding.verifyShard(plan, shard, shardBundle).second.isEmpty())
+            }
+            failure?.let { throw it }
         }
-        val completion = if (failure == null) ShardCompletion.COMPLETED else ShardCompletion.FAILED
-        val runtimeMillis = maxOf(
-            ((System.nanoTime() - shardStarted) / 1_000_000L).coerceAtLeast(1L),
-            runtimes.sumOf { it.runtimeMillis },
-        )
-        val raw = MatchupShardRaw(
-            identity = plan.identity,
-            shard = shard,
-            completion = completion,
-            failureReason = failure?.message,
-            assignments = assignments,
-            attemptedSeeds = attempts,
-            games = games,
-            gameRuntimes = runtimes,
-            shardRuntimeMillis = runtimeMillis,
-            executionLog = log.entries,
-        )
-        val shardBundle = PestControlMatchupSharding.buildShard(raw)
-        writeNewForced(output.resolve("shard-raw.json"), shardBundle.rawJson)
-        writeNewForced(output.resolve("shard-raw.json.gz"), shardBundle.compressed)
-        writeNewForced(output.resolve("shard-manifest.json"), shardBundle.manifest)
-        writeNewForced(output.resolve("shard-audit-input.json"), shardBundle.auditInput)
-        writeNewForced(
-            output.resolve("execution-status.txt"),
-            "completion=$completion\nattempted=${attempts.size}\nrecorded=${games.size}\nfailure=${failure?.message ?: "none"}\n".toByteArray(),
-        )
-        if (failure == null) {
-            check(PestControlMatchupSharding.verifyShard(plan, shard, shardBundle).second.isEmpty())
-        }
-        failure?.let { throw it }
     }
 })
 
