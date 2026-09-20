@@ -1,6 +1,6 @@
 package com.wingedsheep.mtg.sets.definitions.mh3.cards
 
-import com.wingedsheep.sdk.core.KeywordAbility
+import com.wingedsheep.sdk.scripting.KeywordAbility
 import com.wingedsheep.sdk.dsl.Costs
 import com.wingedsheep.sdk.dsl.Effects
 import com.wingedsheep.sdk.dsl.card
