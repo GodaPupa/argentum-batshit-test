@@ -33,7 +33,7 @@ class PestControlV2OfficialArtifactContractTest : FunSpec({
             disposition = "REJECTED",
         )
         PestControlV2OfficialArtifactContract.validate(base.copy(attemptedGames=listOf(1,3,2)), ARTIFACT_TEST_VECTOR).isNotEmpty() shouldBe true
-        PestControlV2OfficialArtifactContract.validate(base.copy(attemptedSeeds=listOf(1,2,999).map(Long::toLong)), ARTIFACT_TEST_VECTOR).isNotEmpty() shouldBe true
+        PestControlV2OfficialArtifactContract.validate(base.copy(attemptedSeeds=listOf(1L,2L,999L)), ARTIFACT_TEST_VECTOR).isNotEmpty() shouldBe true
         PestControlV2OfficialArtifactContract.validate(base.copy(recordedGames=listOf(1,2,3,4), perGameRawSha256=listOf("a","b","c","d")), ARTIFACT_TEST_VECTOR).isNotEmpty() shouldBe true
         PestControlV2OfficialArtifactContract.validate(base.copy(disposition="COMPLETED"), ARTIFACT_TEST_VECTOR).isNotEmpty() shouldBe true
     }
