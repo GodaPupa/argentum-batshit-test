@@ -33,4 +33,4 @@ Promotion gate:
 - A run with empty output, failing regressions, identity mismatch, missing artifact,
   or non-green workflow is rejected.
 
-Disposition: V05A_AUTHORIZED_NOT_EXECUTED
+Disposition: V05A_PASS_PROMOTED_TO_V05
