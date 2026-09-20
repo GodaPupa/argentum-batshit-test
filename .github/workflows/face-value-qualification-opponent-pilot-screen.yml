@@ -1,0 +1,152 @@
+name: Face Value Qualification Opponent Pilot Screen
+
+on:
+  push:
+    branches: [face-value/lab]
+    paths:
+      - .github/workflows/face-value-qualification-opponent-pilot-screen.yml
+      - experiments/face-value/qualification/audit_opponent_pilot_capability.py
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  diagnostic-pilot-screen:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - name: Verify frozen qualification inputs
+        run: python3 experiments/face-value/qualification/validate_inputs.py
+
+      - name: Build a pinned diagnostic Forge variant
+        run: |
+          set -euxo pipefail
+          FORGE_SHA=f387ede550e336315637a8b765f0927ac768c113
+          git clone --filter=blob:none https://github.com/Card-Forge/forge.git forge-src
+          git -C forge-src checkout --detach "$FORGE_SHA"
+          test "$(git -C forge-src rev-parse HEAD)" = "$FORGE_SHA"
+          printf '%s\n' "$FORGE_SHA" > forge-source-commit.txt
+          python3 - <<'PY'
+          from pathlib import Path
+
+          paths = [
+              'forge-gui/res/cardsfolder/f/faithless_looting.txt',
+              'forge-gui/res/cardsfolder/k/krark_clan_shaman.txt',
+              'forge-gui/res/cardsfolder/p/prophetic_prism.txt',
+              'forge-gui/res/cardsfolder/q/quirion_ranger.txt',
+              'forge-gui/res/cardsfolder/w/winding_way.txt',
+          ]
+          for raw in paths:
+              path = Path('forge-src') / raw
+              text = path.read_text(encoding='utf-8')
+              assert text.count('\nAI:RemoveDeck:All') == 1, raw
+              path.write_text(text.replace('\nAI:RemoveDeck:All', ''), encoding='utf-8')
+          PY
+          git -C forge-src diff -- forge-gui/res/cardsfolder > diagnostic-forge-card-script.patch
+          test -s diagnostic-forge-card-script.patch
+          cd forge-src
+          mvn -B -DskipTests -pl forge-gui-desktop -am package
+          chmod +x forge-gui-desktop/target/forge.sh
+          rm -rf forge-gui-desktop/target/res
+          cp -R forge-gui/res forge-gui-desktop/target/res
+          echo "FORGE_LAUNCHER=$(pwd)/forge-gui-desktop/target/forge.sh" >> "$GITHUB_ENV"
+
+      - name: Install diagnostic deck copies and freeze assignments
+        run: |
+          set -euo pipefail
+          mkdir -p diagnostic-decks diagnostic-logs "$HOME/.forge/decks/constructed"
+          cp experiments/face-value/qualification/control/fv-temur-chrysalis-e-final-forge-75.dck diagnostic-decks/
+          cp experiments/face-value/qualification/opponents/*.dck diagnostic-decks/
+          python3 - <<'PY'
+          from pathlib import Path
+
+          terror = Path('diagnostic-decks/mono-blue-terror-luminati-2026-09-19.dck')
+          text = terror.read_text(encoding='utf-8')
+          assert text.count('4 Lorien Revealed') == 1
+          terror.write_text(text.replace('4 Lorien Revealed', '4 Lórien Revealed'), encoding='utf-8')
+
+          opponents = [
+              ('mono-red-madness', 'mono-red-madness-john-marek-2026-09-19.dck'),
+              ('mono-blue-terror', 'mono-blue-terror-luminati-2026-09-19.dck'),
+              ('grixis-affinity', 'grixis-affinity-brunoramos93-2026-09-19.dck'),
+              ('monster-tron', 'monster-tron-discovern-2026-09-19.dck'),
+              ('jund-wildfire', 'jund-wildfire-blaze66-2026-09-19.dck'),
+              ('elves', 'elves-mogged-2026-09-19.dck'),
+              ('mono-red-rally', 'mono-red-rally-monturulez-2026-09-20.dck'),
+              ('mono-blue-faeries', 'mono-blue-faeries-enz091-2026-09-19.dck'),
+          ]
+          rows = []
+          seed = 720001
+          for matchup, opponent in opponents:
+              for face_seat in (1, 2, 1, 2):
+                  rows.append(f'{matchup}\t{opponent}\t{face_seat}\t{seed}')
+                  seed += 1
+          Path('diagnostic-assignments.tsv').write_text('\n'.join(rows) + '\n', encoding='utf-8')
+          PY
+          cp diagnostic-decks/*.dck "$HOME/.forge/decks/constructed/"
+          sha256sum diagnostic-assignments.tsv diagnostic-decks/*.dck diagnostic-forge-card-script.patch > diagnostic-inputs.sha256
+          cat > diagnostic-disposition.txt <<'EOF'
+          DIAGNOSTIC_ONLY_NONQUALIFICATION_OPPONENT_PILOT_SCREEN
+          Seeds 720001-720032 and all outcomes from this workflow are permanently diagnostic only.
+          They are ineligible for matchup evidence, pooling, structural diagnosis, tuning, challenger authorization, or replay as official qualification seeds.
+          The Forge changes are lab-only capability probes, not accepted engine remediation.
+          EOF
+
+      - name: Run four preliminary diagnostics per matchup
+        run: |
+          set -uo pipefail
+          control='fv-temur-chrysalis-e-final-forge-75.dck'
+          while IFS=$'\t' read -r matchup opponent face_seat seed; do
+            log="diagnostic-logs/${matchup}-face-seat${face_seat}-seed${seed}.log"
+            if [ "$face_seat" = 1 ]; then
+              first="$control"; second="$opponent"
+            else
+              first="$opponent"; second="$control"
+            fi
+            timeout 180 "$FORGE_LAUNCHER" sim -d "$first" "$second" -n 1 -s "$seed" -c 90 > "$log" 2>&1
+            code=$?
+            if [ "$code" -ne 0 ]; then
+              printf '\nDIAGNOSTIC_PROCESS_EXIT_%s\n' "$code" >> "$log"
+            fi
+          done < diagnostic-assignments.tsv
+          exit 0
+
+      - name: Audit preliminary opponent-pilot capability
+        id: audit
+        continue-on-error: true
+        run: |
+          python3 experiments/face-value/qualification/audit_opponent_pilot_capability.py \
+            --logs diagnostic-logs \
+            --assignments diagnostic-assignments.tsv \
+            --output opponent-pilot-capability-summary.json
+
+      - name: Preserve diagnostic evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: face-value-opponent-pilot-screen
+          path: |
+            opponent-pilot-capability-summary.json
+            diagnostic-assignments.tsv
+            diagnostic-inputs.sha256
+            diagnostic-disposition.txt
+            diagnostic-forge-card-script.patch
+            diagnostic-decks/*.dck
+            diagnostic-logs/*.log
+            forge-source-commit.txt
+            experiments/face-value/qualification/input-validation-report.json
+          if-no-files-found: warn
+
+      - name: Enforce fail-closed pilot gate
+        if: steps.audit.outcome != 'success'
+        run: |
+          echo 'Opponent-pilot capability was not demonstrated across the complete gauntlet.'
+          echo 'No fresh qualification seeds are authorized.'
+          exit 1
