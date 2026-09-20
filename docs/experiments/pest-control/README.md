@@ -14,6 +14,10 @@ exact Pasquale first-place 75, shared card-support package, and fail-closed stat
 `tier-one-grixis-readiness.md`. The preboard 60 is fully resolvable, but no runner, seed vector, or
 game is authorized or present; outcome exposure remains zero.
 
+The following disabled smoke-harness specification is recorded in
+`tier-one-grixis-smoke-harness.md`. It fixes four balanced seat/play-draw cells but contains no
+entropy, seed vector, adapter, execution method, workflow, or game initialization path.
+
 Pest Control versus SoterX Mono Red Madness matchup Block A executed once and is formally rejected
 as `REJECTED_OUTCOME_RELEVANT_TARGET_SELECTION_DEFECTS`. All 50 Block A seeds are permanently
 retired. The descriptive 35–15 result is inadmissible for acceptance, pooling, or tuning. Preserved
