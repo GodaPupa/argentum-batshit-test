@@ -400,7 +400,7 @@ def color_flags(state):
 
 UU_HAND={"Counterspell","Deprive","Ideas Unbound"}
 U_HAND={"Brainstorm","Consider","Opt","Ponder","Preordain","Impulse","Dispel","Negate","Memory Lapse","Prohibit","Spell Pierce","Turn Aside","Into the Roil","Blink of an Eye","Echoing Truth","Merchant Scroll","Dizzy Spell","Muddle the Mixture","High Tide","Snap"}
-R_HAND={"Lightning Bolt","Galvanic Blast","Skred","Flame Slash","Abrade","Shattering Pulse","Lava Spike","Desperate Ritual","Faithless Looting"}
+R_HAND={"Lightning Bolt","Galvanic Blast","Skred","Flame Slash","Abrade","Shattering Pulse","Lava Spike","Desperate Ritual","Faithless Looting","Pyroblast"}
 
 
 
@@ -457,7 +457,7 @@ SELECTION_SPECS={
 "Thrill of Possibility":(2,2),"Frantic Search":(3,2),"Think Twice":(2,1),"Strategic Planning":(2,3),
 "Pieces of the Puzzle":(3,5)
 }
-INTERACTION_CARDS={"Counterspell","Arcane Denial","Negate","Dispel","Memory Lapse","Deprive","Prohibit","Spell Pierce","Turn Aside","Lose Focus","Lightning Bolt","Galvanic Blast","Skred","Flame Slash","Fire // Ice","Into the Roil","Blink of an Eye","Echoing Truth","Abrade","Shattering Pulse"}
+INTERACTION_CARDS={"Counterspell","Arcane Denial","Negate","Dispel","Memory Lapse","Deprive","Prohibit","Spell Pierce","Turn Aside","Lose Focus","Pyroblast","Lightning Bolt","Galvanic Blast","Skred","Flame Slash","Fire // Ice","Into the Roil","Blink of an Eye","Echoing Truth","Abrade","Shattering Pulse"}
 COMBO_CARDS={"Lava Spike","Desperate Ritual"}
 
 def selection_priority(card, state):
@@ -932,13 +932,13 @@ def primary_combo_damage_available(state, opponent_life=30):
 PROTECTION_COSTS={
     "Counterspell":(0,2,0), "Arcane Denial":(1,1,0), "Negate":(1,1,0),
     "Dispel":(0,1,0), "Memory Lapse":(1,1,0), "Deprive":(0,2,0),
-    "Turn Aside":(0,1,0),
+    "Turn Aside":(0,1,0), "Pyroblast":(0,0,1),
 }
 PROTECTION_COVERAGE={
     "Counterspell":{"spell"}, "Arcane Denial":{"spell"},
     "Memory Lapse":{"spell"}, "Deprive":{"spell"},
     "Negate":{"noncreature"}, "Dispel":{"instant"},
-    "Turn Aside":{"targeted_permanent"},
+    "Turn Aside":{"targeted_permanent"}, "Pyroblast":{"blue_spell"},
 }
 CONDITIONAL_PROTECTION={"Prohibit","Spell Pierce","Lose Focus"}
 CONDITIONAL_PROTECTION_COSTS={
@@ -1057,11 +1057,13 @@ def commander_recovery_launch_feasible(state):
 
 def interaction_readiness_metrics(state):
     stack_tags={"spell","instant","noncreature"}
+    blue_stack_tags=stack_tags|{"blue_spell"}
     removal_tags={"spell","instant","noncreature","targeted_permanent"}
     guaranteed=tuple(PROTECTION_COSTS)
     conditional=tuple(CONDITIONAL_PROTECTION)
     return {
         "stack_guaranteed":any(primary_combo_launch_with_protection_exact(state,c,stack_tags) for c in guaranteed),
+        "blue_stack_guaranteed":any(primary_combo_launch_with_protection_exact(state,c,blue_stack_tags) for c in guaranteed),
         "stack_conditional":any(conditional_combo_protection_exact(state,c,stack_tags,2) for c in conditional),
         "removal_guaranteed":any(primary_combo_launch_with_protection_exact(state,c,removal_tags) for c in guaranteed),
         "removal_conditional":any(conditional_combo_protection_exact(state,c,removal_tags,2) for c in conditional),
@@ -1098,6 +1100,13 @@ def interaction_regressions():
     assert not primary_combo_launch_with_protection_feasible(electromancer,"Dispel",{"instant"})
     electromancer.battlefield.append({"card":"Island","tapped":False,"entered":4})
     assert primary_combo_launch_with_protection_feasible(electromancer,"Dispel",{"instant"})
+
+    pyro=DevState(["Lava Spike","Desperate Ritual","Pyroblast"]); pyro.turn=6
+    pyro.battlefield=[{"card":"Izzet Guildmage","tapped":False,"entered":2}]
+    for i,c in enumerate(["Mountain","Mountain","Mountain","Mountain","Island","Island"]):
+        pyro.battlefield.append({"card":c,"tapped":False,"entered":i})
+    assert primary_combo_launch_with_protection_exact(pyro,"Pyroblast",{"blue_spell"})
+    assert not primary_combo_launch_with_protection_exact(pyro,"Pyroblast",{"instant","spell"})
 
     # Phase-1 exact payer counts nonland mana and Signet conversion without changing
     # the accepted solitaire launch predicate.
@@ -1346,7 +1355,7 @@ def simulate_sample(cards, samples=10000, seed=SEED, through=10, include_interac
             "high_tide_castable":0,"high_tide_productive":0,"high_tide_post_sum":0,"high_tide_gain_sum":0,
             "reversal_neutral":0,"reversal_positive":0,"lands_sum":0,"islands_sum":0}
          for t in range(1,through+1)}
-    interaction_keys=("stack_guaranteed","stack_conditional","removal_guaranteed",
+    interaction_keys=("stack_guaranteed","blue_stack_guaranteed","stack_conditional","removal_guaranteed",
                       "removal_conditional","commander_recovery")
     if include_interaction:
         for a in agg.values(): a.update({k:0 for k in interaction_keys})
@@ -1375,6 +1384,8 @@ def simulate_sample(cards, samples=10000, seed=SEED, through=10, include_interac
                     raise ValueError(f"interaction subset violation turn={turn} key={key}")
             if a["removal_guaranteed"]<a["stack_guaranteed"]:
                 raise ValueError(f"removal protection ordering violation turn={turn}")
+            if a["blue_stack_guaranteed"]<a["stack_guaranteed"]:
+                raise ValueError(f"blue protection ordering violation turn={turn}")
             if a["removal_conditional"]<a["stack_conditional"]:
                 raise ValueError(f"conditional protection ordering violation turn={turn}")
     return agg
@@ -1592,11 +1603,13 @@ def main():
         if args.interaction_pilot:
             print("interaction","turn",turn,
                   "stack_guaranteed",a["stack_guaranteed"]/n,
+                  "blue_stack_guaranteed",a["blue_stack_guaranteed"]/n,
                   "stack_conditional",a["stack_conditional"]/n,
                   "removal_guaranteed",a["removal_guaranteed"]/n,
                   "removal_conditional",a["removal_conditional"]/n,
                   "commander_recovery",a["commander_recovery"]/n,
                   "stack_loss",(a["combo_lethal"]-a["stack_guaranteed"])/n,
+                  "blue_stack_loss",(a["combo_lethal"]-a["blue_stack_guaranteed"])/n,
                   "removal_loss",(a["combo_lethal"]-a["removal_guaranteed"])/n,
                   "recovery_loss",(a["combo_lethal"]-a["commander_recovery"])/n)
 
