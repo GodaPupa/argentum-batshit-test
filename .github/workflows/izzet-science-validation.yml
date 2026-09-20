@@ -33,6 +33,7 @@ jobs:
           python-version: '3.12'
       - name: Run frozen v0.1 deterministic harness
         run: |
+          set -o pipefail
           mkdir -p izzet-science/artifacts
           python izzet-science/sim/mana_harness.py             --deck izzet-science/v0.1-control.md             --samples 100000             --seed 0x1A22E7001             | tee izzet-science/artifacts/turn-sequence-v1.txt
       - name: Assert control output non-empty
@@ -51,6 +52,7 @@ jobs:
           } > izzet-science/results/latest/manifest.txt
       - name: Run R1 red-access challenger
         run: |
+          set -o pipefail
           python izzet-science/sim/mana_harness.py             --deck izzet-science/challengers/R1-red-access-deck.md             --samples 100000             --seed 0x1A22E7001             | tee izzet-science/artifacts/R1-red-access.txt
           test -s izzet-science/artifacts/R1-red-access.txt
           mkdir -p izzet-science/results/R1-red-access
@@ -65,6 +67,7 @@ jobs:
           } > izzet-science/results/R1-red-access/manifest.txt
       - name: Run R0.5 midpoint challenger
         run: |
+          set -o pipefail
           python izzet-science/sim/mana_harness.py             --deck izzet-science/challengers/R0.5-midpoint-deck.md             --samples 100000             --seed 0x1A22E7001             | tee izzet-science/artifacts/R0.5-midpoint.txt
           test -s izzet-science/artifacts/R0.5-midpoint.txt
           mkdir -p izzet-science/results/R0.5-midpoint
@@ -79,6 +82,7 @@ jobs:
           } > izzet-science/results/R0.5-midpoint/manifest.txt
       - name: Run infrastructure exclusion diagnostics
         run: |
+          set -o pipefail
           python izzet-science/sim/mana_harness.py             --deck izzet-science/challengers/infrastructure-A9.md             --diagnostic-size 98 --samples 100000 --seed 0x1A22E7001             | tee izzet-science/artifacts/infrastructure-A9.txt
           python izzet-science/sim/mana_harness.py             --deck izzet-science/challengers/infrastructure-B8.md             --diagnostic-size 97 --samples 100000 --seed 0x1A22E7001             | tee izzet-science/artifacts/infrastructure-B8.txt
           for name in infrastructure-A9 infrastructure-B8; do
@@ -95,6 +99,7 @@ jobs:
           done
       - name: Run C1 lean-machine challenger
         run: |
+          set -o pipefail
           python izzet-science/sim/mana_harness.py             --deck izzet-science/challengers/C1-lean-machine.md             --samples 100000 --seed 0x1A22E7001             | tee izzet-science/artifacts/C1-lean-machine.txt
           test -s izzet-science/artifacts/C1-lean-machine.txt
           mkdir -p izzet-science/results/C1-lean-machine
