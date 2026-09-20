@@ -1,20 +1,6 @@
 name: Izzet v0.6 Pair Acquisition
 
 on:
-  push:
-    branches: [mayhem/izzet-science]
-    paths:
-      - 'izzet-science/sim/**'
-      - 'izzet-science/v0.5-control.md'
-      - 'izzet-science/challengers/v06A-pieces-of-the-puzzle.md'
-      - '.github/workflows/izzet-v03-lethal.yml'
-  pull_request:
-    branches: [main]
-    paths:
-      - 'izzet-science/sim/**'
-      - 'izzet-science/v0.5-control.md'
-      - 'izzet-science/challengers/v06A-pieces-of-the-puzzle.md'
-      - '.github/workflows/izzet-v03-lethal.yml'
   workflow_dispatch:
 
 jobs:
