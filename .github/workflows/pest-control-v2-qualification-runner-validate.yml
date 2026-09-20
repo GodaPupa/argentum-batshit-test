@@ -1,0 +1,63 @@
+name: Pest Control V2 Qualification Runner Validation
+
+on:
+  pull_request:
+    paths:
+      - .github/workflows/pest-control-v2-qualification-runner-validate.yml
+      - gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlV2QualificationGameAdapter.kt
+      - gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlV2QualificationCoordinator.kt
+      - gym/src/test/kotlin/com/wingedsheep/gym/PestControlV2QualificationShardRunnerTest.kt
+      - docs/experiments/pest-control/v2-qualification-execution-harness.md
+  workflow_dispatch:
+
+permissions:
+  actions: read
+  contents: read
+
+jobs:
+  validate-runner-only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      FREEZE_ARTIFACT_ID: "10612245984"
+      FREEZE_ARTIFACT_SHA256: bf7456303c355202587484f208da20a1ca37a2ba326d081e8a3fb7c3a31be8f0
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Download exact qualification freeze
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p build/pest-v2-qualification-input
+          curl -fsSL \
+            -H "Authorization: Bearer ${GH_TOKEN}" \
+            -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/artifacts/${FREEZE_ARTIFACT_ID}/zip" \
+            -o build/pest-v2-qualification-freeze.zip
+          echo "${FREEZE_ARTIFACT_SHA256}  build/pest-v2-qualification-freeze.zip" | sha256sum -c -
+          unzip -q build/pest-v2-qualification-freeze.zip -d build/pest-v2-qualification-input
+          cd build/pest-v2-qualification-input
+          sha256sum -c artifacts.sha256
+      - name: Validate compiled runner while disabled
+        env:
+          PEST_V2_QUALIFICATION_RUNNER_MODE: VALIDATE_ONLY
+          PEST_V2_QUALIFICATION_INPUT_DIR: ${{ github.workspace }}/build/pest-v2-qualification-input
+          PEST_V2_QUALIFICATION_OUTPUT_DIR: ${{ github.workspace }}/build/reports/pest-v2-qualification-runner-validation
+          PEST_V2_QUALIFICATION_HARNESS_COMMIT: ${{ github.sha }}
+        run: |
+          PEST_V2_QUALIFICATION_HARNESS_TREE="$(git rev-parse 'HEAD^{tree}')"
+          export PEST_V2_QUALIFICATION_HARNESS_TREE
+          scripts/test-class PestControlV2QualificationShardRunnerTest --info --stacktrace
+      - name: Upload runner validation evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: pest-control-v2-qualification-runner-validation-${{ github.run_id }}
+          path: build/reports/pest-v2-qualification-runner-validation/
+          if-no-files-found: error
+          retention-days: 30
