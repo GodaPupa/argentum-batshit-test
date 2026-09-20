@@ -1,0 +1,145 @@
+name: Face Value Qualification Postboard Stage 1
+
+on:
+  push:
+    branches: [face-value/lab]
+    paths:
+      - .github/workflows/face-value-qualification-postboard-stage1.yml
+      - experiments/face-value/qualification/postboard-stage1-seed-registry.json
+      - experiments/face-value/qualification/postboard-stage1-seed-registry.sha256
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: face-value-qualification-postboard-stage1
+  cancel-in-progress: false
+
+jobs:
+  execute-and-audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 240
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: face-value/lab
+          fetch-depth: 0
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - name: Verify immutable inputs, maps, and assignment vector
+        run: |
+          set -euo pipefail
+          python3 experiments/face-value/qualification/validate_inputs.py >/dev/null
+          cd experiments/face-value/qualification
+          sha256sum -c postboard-map-v1.sha256
+          sha256sum -c postboard-map-v2.sha256
+          sha256sum -c postboard-stage1-seed-registry.sha256
+          python3 - <<'PY'
+          import json
+          from collections import Counter
+          from pathlib import Path
+          d = json.loads(Path('postboard-stage1-seed-registry.json').read_text())
+          rows = d['assignments']; seeds = [r['seed'] for r in rows]
+          assert d['classification'] == 'OFFICIAL_QUALIFICATION_POSTBOARD_STAGE1_MAP_V2'
+          assert d['design'] == {'full_gauntlet_aggregate_permitted': False, 'games_per_matchup': 32, 'games_per_seat_per_matchup': 16, 'matchups': 7, 'outcomes_exposed_before_freeze': 0, 'total_games': 224}
+          assert len(rows) == len(set(seeds)) == 224
+          assert all(0 < s < 2**63 for s in seeds)
+          assert not (set(seeds) & set(range(710001, 730075)))
+          counts = Counter((r['matchup'], r['face_value_seat']) for r in rows)
+          assert len(counts) == 14 and set(counts.values()) == {16}
+          assert [r['run_index'] for r in rows] == list(range(1, 225))
+          PY
+      - name: Build accepted Forge profile v4 once
+        run: |
+          set -euxo pipefail
+          FORGE_SHA=f387ede550e336315637a8b765f0927ac768c113
+          git clone --filter=blob:none https://github.com/Card-Forge/forge.git forge-src
+          git -C forge-src checkout --detach "$FORGE_SHA"
+          printf '%s\n' "$FORGE_SHA" > forge-source-commit.txt
+          for v in 1 2 3 4; do python3 "experiments/face-value/qualification/apply_forge_profile_v${v}.py" --forge-root forge-src > "forge-profile-v${v}-id.txt"; done
+          test "$(cat forge-profile-v4-id.txt)" = 'FACE_VALUE_QUALIFICATION_FORGE_PROFILE_V4'
+          git -C forge-src diff > forge-profile-v4.patch
+          sha256sum forge-profile-v4.patch experiments/face-value/qualification/apply_forge_profile_v{1,2,3,4}.py > forge-profile-v4.sha256
+          cd forge-src
+          mvn -B -DskipTests -pl forge-gui-desktop -am package
+          chmod +x forge-gui-desktop/target/forge.sh
+          rm -rf forge-gui-desktop/target/res
+          cp -R forge-gui/res forge-gui-desktop/target/res
+          echo "FORGE_LAUNCHER=$(pwd)/forge-gui-desktop/target/forge.sh" >> "$GITHUB_ENV"
+      - name: Materialize frozen map v2 and assignments
+        run: |
+          set -euo pipefail
+          mkdir -p postboard-stage1-decks postboard-stage1-logs "$HOME/.forge/decks/constructed"
+          python3 experiments/face-value/qualification/materialize_postboard_decks_v2.py --output postboard-stage1-decks
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          terror = Path('postboard-stage1-decks/opponent-mono-blue-terror.dck')
+          terror.write_text(terror.read_text(encoding='utf-8').replace('4 Lorien Revealed', '4 Lórien Revealed'), encoding='utf-8')
+          rows = json.loads(Path('experiments/face-value/qualification/postboard-stage1-seed-registry.json').read_text())['assignments']
+          with Path('postboard-stage1-assignments.tsv').open('w') as out:
+              for row in rows:
+                  print(row['run_index'], row['matchup'], row['face_value_seat'], row['seed'], sep='\t', file=out)
+          PY
+          cp postboard-stage1-decks/*.dck "$HOME/.forge/decks/constructed/"
+          sha256sum postboard-stage1-decks/*.dck postboard-stage1-assignments.tsv experiments/face-value/qualification/postboard-map-v{1,2}.json experiments/face-value/qualification/postboard-stage1-seed-registry.json forge-profile-v4.patch > postboard-stage1-inputs.sha256
+      - name: Execute every official assignment once
+        run: |
+          set -uo pipefail
+          : > postboard-stage1-exit-status.tsv
+          while IFS=$'\t' read -r index matchup face_seat seed; do
+            face="face-value-vs-${matchup}.dck"; opponent="opponent-${matchup}.dck"
+            log=$(printf 'postboard-stage1-logs/%03d-%s-seat%s-%s.log' "$index" "$matchup" "$face_seat" "$seed")
+            if [ "$face_seat" = 1 ]; then first="$face"; second="$opponent"; else first="$opponent"; second="$face"; fi
+            timeout 300 "$FORGE_LAUNCHER" sim -d "$first" "$second" -n 1 -s "$seed" -c 120 > "$log" 2>&1
+            code=$?
+            printf '%s\t%s\t%s\n' "$index" "$seed" "$code" >> postboard-stage1-exit-status.tsv
+            if [ "$code" -ne 0 ]; then printf '\nQUALIFICATION_PROCESS_EXIT_%s\n' "$code" >> "$log"; fi
+          done < postboard-stage1-assignments.tsv
+          exit 0
+      - name: Fail-closed automated audit and telemetry
+        id: audit
+        continue-on-error: true
+        run: |
+          python3 experiments/face-value/qualification/audit_postboard_stage1.py \
+            --logs postboard-stage1-logs --assignments postboard-stage1-assignments.tsv \
+            --output postboard-stage1-summary.json
+      - name: Package and preserve evidence in branch
+        if: always()
+        run: |
+          set -euo pipefail
+          tar -czf postboard-stage1-logs.tar.gz postboard-stage1-logs
+          sha256sum postboard-stage1-summary.json postboard-stage1-logs.tar.gz postboard-stage1-inputs.sha256 > postboard-stage1-evidence.sha256
+          target="experiments/face-value/qualification/evidence/postboard-stage1/run-${GITHUB_RUN_ID}"
+          mkdir -p "$target"
+          cp postboard-stage1-summary.json postboard-stage1-assignments.tsv postboard-stage1-inputs.sha256 postboard-stage1-evidence.sha256 forge-profile-v4.patch forge-profile-v4.sha256 "$target/"
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add "$target"
+          git commit -m "Preserve postboard Stage 1 run ${GITHUB_RUN_ID} evidence"
+          git push origin HEAD:face-value/lab
+      - name: Upload complete evidence artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: face-value-postboard-stage1
+          path: |
+            postboard-stage1-summary.json
+            postboard-stage1-assignments.tsv
+            postboard-stage1-inputs.sha256
+            postboard-stage1-evidence.sha256
+            postboard-stage1-exit-status.tsv
+            postboard-stage1-logs.tar.gz
+            postboard-stage1-decks/*.dck
+            forge-profile-v4.patch
+            forge-profile-v4.sha256
+            forge-profile-v*-id.txt
+            forge-source-commit.txt
+            experiments/face-value/qualification/input-validation-report.json
+          if-no-files-found: warn
+      - name: Enforce automated gate
+        if: steps.audit.outcome != 'success'
+        run: exit 1
