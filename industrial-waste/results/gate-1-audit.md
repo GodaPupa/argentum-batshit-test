@@ -42,13 +42,25 @@ the permanent control and Pactdoll A remains a challenger.
 ## Capability inventory
 
 Thirteen of the seventeen unique maindeck cards were already implemented in
-Argentum. Four shared cards were absent: Crop Rotation, Eviscerator's Insight,
-Golem Foundry, and Ichor Wellspring. Canonical definitions using existing SDK
-primitives have been staged on the Industrial Waste branch.
+Argentum. The four missing shared cards—Crop Rotation, Eviscerator's Insight,
+Golem Foundry, and Ichor Wellspring—now have canonical definitions using
+existing SDK primitives. The repository accepted their snapshots, affected
+module compilation, canonical-printing checks, and Assay differentials in
+GitHub Actions run 35533153870. Ichor Wellspring's C14 and C16 reprint rows were
+also added to satisfy printing provenance.
 
-Compilation and scenario acceptance are blocked in the current Work container:
-`just` is unavailable, the Gradle distribution is not cached, and the Gradle
-wrapper cannot reach its distribution host. The staged definitions are therefore
-`UNVERIFIED_CAPABILITY_WORK`, not accepted infrastructure. No executable game,
-matchup seed, metagame outcome, or promotion evidence may be produced until the
-repository's build/snapshot gates are green.
+## Gate 2 capability result
+
+The first executable smoke attempt was rejected because the opt-in property was
+not forwarded to the test worker; the second was rejected before game
+initialization because it assumed the wrong working directory. Neither consumed
+gameplay evidence. The corrected run, GitHub Actions 35534324422, executed all
+eight games on namespace IW-G2-ENGINE-SMOKE-V1.
+
+All eight games completed their bounded engine loops with zero exceptions and
+zero rejected actions. Two Control games and two Pactdoll-A games reached lethal;
+the remaining four reached the 12-turn-per-seat cap. Because the opponent was
+60 Forest, mulligans were skipped, and the stock AI has no Industrial Waste
+combo policy, these outcomes are capability evidence only. They authorize a
+metric-aware executable goldfish harness; they do not promote Pactdoll-A and
+cannot be cited as matchup results.
