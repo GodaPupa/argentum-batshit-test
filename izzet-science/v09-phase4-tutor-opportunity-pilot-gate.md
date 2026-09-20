@@ -55,4 +55,10 @@ Phase-3 seed-free validator and all adjacent deterministic validators remained
 green with the accepted control hash intact. The pilot has not executed; seed
 `0x1A22E700F` is assigned but unconsumed.
 
-Disposition: `V09_PHASE4_PREFLIGHT_PASSED_SOURCE_FREEZE_PENDING`
+Experimental source `3a4ca81f9d3476e6f4f5495b729d44fae4b271f8` is frozen. The
+temporary manual workflow checks out that exact commit, independently records its
+own runner SHA, repeats the seed-free preflight, audits the sampled output, writes
+the required manifest, and fails if artifact upload is empty. After the sole run is
+audited, the ordinary workflow must be restored byte-for-byte from `origin/main`.
+
+Disposition: `V09_PHASE4_PILOT_ARMED_UNEXECUTED`

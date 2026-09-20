@@ -2,48 +2,72 @@ name: Argentum Validation
 
 on:
   workflow_dispatch:
-  push:
-    branches: [ "main" ]
 
 permissions:
   contents: read
 
 jobs:
-  test:
+  izzet-v09-tutor-opportunity:
+    if: github.ref == 'refs/heads/mayhem/izzet-science'
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 10
 
     steps:
-      - name: Checkout repository
+      - name: Checkout frozen experimental source
         uses: actions/checkout@v4
-
-      - name: Set up Java 21
-        uses: actions/setup-java@v4
         with:
-          distribution: temurin
-          java-version: '21'
+          ref: 3a4ca81f9d3476e6f4f5495b729d44fae4b271f8
 
-      - name: Set up Gradle
-        uses: gradle/actions/setup-gradle@v4
-        with:
-          gradle-version: '9.6.1'
-
-      - name: Make Gradle wrapper executable
-        run: chmod +x gradlew
-
-      - name: Show environment
+      - name: Verify frozen identities
+        shell: bash
         run: |
-          java -version
-          gradle --version
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "3a4ca81f9d3476e6f4f5495b729d44fae4b271f8"
+          test "$(sha256sum izzet-science/v0.7-control.md | cut -d' ' -f1)" = "726f5e9458b46dda30b33a6ce9f3c3237b25d6e11b81dac85308c3065c108a01"
 
-      - name: Compile Argentum
-        run: ./gradlew classes --stacktrace
+      - name: Run seed-free preflight
+        run: |
+          python3 izzet-science/sim/validate_backup_tutor_opportunities.py
+          python3 izzet-science/sim/audit_v09_tutor_opportunity_output.py --self-test
 
-      - name: Run engine tests
-        run: ./gradlew test --stacktrace
+      - name: Execute sole authorized pilot
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p izzet-science/artifacts
+          python3 izzet-science/sim/mana_harness.py \
+            --deck izzet-science/v0.7-control.md \
+            --samples 10000 --seed 0x1A22E700F \
+            --commander-independent-pilot \
+            --backup-tutor-opportunity-pilot \
+            | tee izzet-science/artifacts/v09-tutor-opportunity-pilot.txt
+          python3 izzet-science/sim/audit_v09_tutor_opportunity_output.py \
+            izzet-science/artifacts/v09-tutor-opportunity-pilot.txt \
+            | tee izzet-science/artifacts/v09-tutor-opportunity-audit.txt
 
-      - name: Run Gym tests
-        run: ./gradlew :gym:test --stacktrace
+      - name: Write provenance manifest
+        shell: bash
+        run: |
+          set -euo pipefail
+          {
+            echo "experimental_source_sha=3a4ca81f9d3476e6f4f5495b729d44fae4b271f8"
+            echo "workflow_runner_sha=${GITHUB_SHA}"
+            echo "run_id=${GITHUB_RUN_ID}"
+            echo "run_attempt=${GITHUB_RUN_ATTEMPT}"
+            echo "control_sha256=726f5e9458b46dda30b33a6ce9f3c3237b25d6e11b81dac85308c3065c108a01"
+            echo "seed=0x1A22E700F"
+            echo "samples=10000"
+            echo "horizon=T1-T10"
+            sha256sum izzet-science/artifacts/v09-tutor-opportunity-pilot.txt \
+              izzet-science/artifacts/v09-tutor-opportunity-audit.txt
+          } > izzet-science/artifacts/v09-tutor-opportunity.manifest
 
-      - name: Run Gym trainer tests
-        run: ./gradlew :gym-trainer:test --stacktrace
+      - name: Preserve pilot artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: izzet-v09-tutor-opportunity
+          path: |
+            izzet-science/artifacts/v09-tutor-opportunity-pilot.txt
+            izzet-science/artifacts/v09-tutor-opportunity-audit.txt
+            izzet-science/artifacts/v09-tutor-opportunity.manifest
+          if-no-files-found: error
