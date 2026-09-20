@@ -5,8 +5,12 @@ on:
     paths:
       - .github/workflows/pest-control-v2-qualification-validate.yml
       - gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlV2QualificationExecutionPreflight.kt
+      - gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlV2QualificationCoordinator.kt
+      - gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlMatchupSharding.kt
+      - gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlV2QualificationReadiness.kt
       - gym/src/test/kotlin/com/wingedsheep/gym/PestControlV2QualificationHarnessValidationTest.kt
       - docs/experiments/pest-control/v2-qualification-execution-harness.md
+      - docs/experiments/pest-control/v2-matchup-qualification-readiness.md
   workflow_dispatch:
 
 permissions:
@@ -47,7 +51,11 @@ jobs:
           PEST_V2_QUALIFICATION_VALIDATE_ONLY: "true"
           PEST_V2_QUALIFICATION_INPUT_DIR: ${{ github.workspace }}/build/pest-v2-qualification-input
           PEST_V2_QUALIFICATION_OUTPUT_DIR: ${{ github.workspace }}/build/reports/pest-v2-qualification-validation
-        run: scripts/test-class PestControlV2QualificationHarnessValidationTest --info --stacktrace
+          PEST_V2_QUALIFICATION_HARNESS_COMMIT: ${{ github.sha }}
+        run: |
+          PEST_V2_QUALIFICATION_HARNESS_TREE="$(git rev-parse 'HEAD^{tree}')"
+          export PEST_V2_QUALIFICATION_HARNESS_TREE
+          scripts/test-class PestControlV2QualificationHarnessValidationTest --info --stacktrace
       - name: Upload validation evidence
         if: always()
         uses: actions/upload-artifact@v7
