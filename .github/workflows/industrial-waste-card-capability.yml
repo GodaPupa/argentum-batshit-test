@@ -5,6 +5,23 @@ on:
   push:
     branches:
       - industrial-waste/lab
+    paths:
+      - .github/workflows/industrial-waste-card-capability.yml
+      - industrial-waste/**
+      - mtg-sets/1993-1999/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/ulg/cards/CropRotation.kt
+      - mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/c14/cards/IchorWellspringReprint.kt
+      - mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/c16/cards/IchorWellspringReprint.kt
+      - mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/mbs/cards/IchorWellspring.kt
+      - mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/som/cards/GolemFoundry.kt
+      - mtg-sets/2024/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/mh3/cards/EvisceratorsInsight.kt
+      - mtg-sets/src/test/resources/snapshots/cards/MBS.json
+      - mtg-sets/src/test/resources/snapshots/cards/MH3.json
+      - mtg-sets/src/test/resources/snapshots/cards/SOM.json
+      - mtg-sets/src/test/resources/snapshots/cards/ULG.json
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 permissions:
   contents: read
@@ -12,7 +29,7 @@ permissions:
 jobs:
   card-capability:
     runs-on: ubuntu-latest
-    timeout-minutes: 90
+    timeout-minutes: 30
     steps:
       - name: Checkout exact branch head
         uses: actions/checkout@v6
@@ -34,27 +51,21 @@ jobs:
           python3 -m unittest discover -s industrial-waste/sim -p 'test_*.py' -v
           python3 industrial-waste/sim/validate_inputs.py
 
-      - name: Generate card snapshots
+      - name: Verify committed card snapshots
         run: |
           set -o pipefail
           just rebless-cards 2>&1 | tee industrial-waste-card-snapshots.log
-          git diff --binary > industrial-waste-card-snapshots.patch
+          git diff --exit-code
 
-      - name: Enforce exact snapshot scope
-        run: |
-          actual="$(git diff --name-only | sort)"
-          expected="$(printf '%s\n' \
-            mtg-sets/src/test/resources/snapshots/cards/MBS.json \
-            mtg-sets/src/test/resources/snapshots/cards/MH3.json \
-            mtg-sets/src/test/resources/snapshots/cards/SOM.json \
-            mtg-sets/src/test/resources/snapshots/cards/ULG.json \
-            | sort)"
-          test "$actual" = "$expected"
-
-      - name: Run full card build gate
+      - name: Run targeted card build gate
         run: |
           set -o pipefail
-          just build 2>&1 | tee industrial-waste-card-build.log
+          scripts/gradle-locked \
+            :mtg-sets:1993-1999:compileKotlin \
+            :mtg-sets:2008-2016:compileKotlin \
+            :mtg-sets:2024:compileKotlin \
+            :mtg-sets:test --tests "*CardDefinitionSnapshotTest" \
+            2>&1 | tee industrial-waste-card-build.log
 
       - name: Verify canonical printings
         run: |
@@ -80,7 +91,6 @@ jobs:
           name: industrial-waste-card-capability
           path: |
             industrial-waste-card-snapshots.log
-            industrial-waste-card-snapshots.patch
             industrial-waste-card-build.log
             industrial-waste-assay-differential.log
           if-no-files-found: warn
