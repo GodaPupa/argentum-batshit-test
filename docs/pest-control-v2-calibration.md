@@ -7,7 +7,10 @@ Persistent calibration workspace for Pest Control v1.0 vs SoterX Mono Red Madnes
 - Base branch: `pest-control/lab`
 - Base commit: `44e28ab405afa7ca1f36d761f76ac9ec1506ffdf`
 - V1 chat-local official freeze: retired unexecuted after ephemeral artifacts became unavailable.
-- V2 official accepted games: 0.
+- V2 official accepted games: 10.
+- V2 official disposition: `COMPLETED` (Pest Control 6-4 Mono Red Madness; 10/10 terminal; zero protocol defects).
+- Official execution: workflow run `35525262024`, artifact `10610310479`, archive SHA-256 `577ecf33bbbd6fa2b9967867228b6eabb81b6b2c5590f2c0670f5d3536f80a2b`.
+- Durable result record: `docs/experiments/pest-control/v2-official-execution/`.
 
 ## Frozen Pest Control v1.0 (60)
 
@@ -51,4 +54,4 @@ Persistent calibration workspace for Pest Control v1.0 vs SoterX Mono Red Madnes
 - speculative-burn conservation
 - retained-hand accounting and exact lethal hand/mana audit
 
-This file establishes the durable V2 provenance chain. No official V2 seeds are frozen here.
+This file establishes the durable V2 provenance chain. The official V2 vector was frozen separately and executed exactly once; the durable result record above is controlling.
