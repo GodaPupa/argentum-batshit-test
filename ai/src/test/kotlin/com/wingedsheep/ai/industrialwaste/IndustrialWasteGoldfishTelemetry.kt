@@ -45,8 +45,8 @@ data class IndustrialWasteGoldfishMetrics(
  */
 class IndustrialWasteGoldfishObserver(registry: CardRegistry) : ArenaTrainingObserver {
     private val manaSolver = ManaSolver(registry)
-    private lateinit var player: EntityId
-    private lateinit var opponent: EntityId
+    private var player: EntityId? = null
+    private var opponent: EntityId? = null
     private var mulligans = 0
     private var tronTurn: Int? = null
     private var loopTurn: Int? = null
@@ -67,18 +67,19 @@ class IndustrialWasteGoldfishObserver(registry: CardRegistry) : ArenaTrainingObs
 
     override fun quietRoot(state: GameState, actingPlayer: EntityId) {
         observePosition(state)
+        val playerId = requireNotNull(player) { "gameStarted must run before quietRoot" }
         val turn = ownTurn(state)
-        if (actingPlayer != player || state.activePlayerId != player ||
+        if (actingPlayer != playerId || state.activePlayerId != playerId ||
             state.step != Step.PRECOMBAT_MAIN || !inspectedMainPhases.add(turn)
         ) return
 
-        val strandedForColor = state.getZone(player, Zone.HAND)
+        val strandedForColor = state.getZone(playerId, Zone.HAND)
             .mapNotNull { state.getEntity(it)?.get<CardComponent>() }
             .filter { it.manaCost.colors.isNotEmpty() }
             .any { card ->
                 val genericEquivalent = ManaCost.parse("{${card.manaCost.cmc}}")
-                manaSolver.canPay(state, player, genericEquivalent) &&
-                    !manaSolver.canPay(state, player, card.manaCost)
+                manaSolver.canPay(state, playerId, genericEquivalent) &&
+                    !manaSolver.canPay(state, playerId, card.manaCost)
             }
         if (strandedForColor) coloredFailureTurns += turn
     }
@@ -89,6 +90,7 @@ class IndustrialWasteGoldfishObserver(registry: CardRegistry) : ArenaTrainingObs
         after: GameState,
         events: List<GameEvent>,
     ) {
+        val opponentId = requireNotNull(opponent) { "gameStarted must run before transition" }
         observeMulligans(before)
         observeMulligans(after)
 
@@ -98,18 +100,18 @@ class IndustrialWasteGoldfishObserver(registry: CardRegistry) : ArenaTrainingObs
             when (event) {
                 is CardsDrawnEvent -> countRedundantPayoffs(before, event)
                 is LifeChangedEvent -> if (
-                    event.playerId == opponent && event.reason == LifeChangeReason.LIFE_LOSS &&
+                    event.playerId == opponentId && event.reason == LifeChangeReason.LIFE_LOSS &&
                     hadPactdoll && !loopWasAvailable
                 ) {
                     nonInfinitePactdollLifeLoss += (event.oldLife - event.newLife).coerceAtLeast(0)
                 }
                 is DamageDealtEvent -> if (
-                    event.targetId == opponent && event.targetIsPlayer && event.isCombatDamage
+                    event.targetId == opponentId && event.targetIsPlayer && event.isCombatDamage
                 ) combatDamageToOpponent += event.amount
                 else -> Unit
             }
         }
-        if (before.lifeTotal(opponent) > 0 && after.lifeTotal(opponent) <= 0) {
+        if (before.lifeTotal(opponentId) > 0 && after.lifeTotal(opponentId) <= 0) {
             lethalTurn = lethalTurn ?: ownTurn(after)
         }
         observePosition(after)
@@ -131,7 +133,7 @@ class IndustrialWasteGoldfishObserver(registry: CardRegistry) : ArenaTrainingObs
     )
 
     private fun observePosition(state: GameState) {
-        if (!::player.isInitialized) return
+        if (player == null) return
         observeMulligans(state)
         val turn = ownTurn(state)
         val battlefield = battlefieldNames(state)
@@ -142,28 +144,31 @@ class IndustrialWasteGoldfishObserver(registry: CardRegistry) : ArenaTrainingObs
     }
 
     private fun observeMulligans(state: GameState) {
-        val count = state.getEntity(player)?.get<MulliganStateComponent>()?.mulligansTaken ?: 0
+        val playerId = requireNotNull(player)
+        val count = state.getEntity(playerId)?.get<MulliganStateComponent>()?.mulligansTaken ?: 0
         mulligans = maxOf(mulligans, count)
     }
 
     private fun ownTurn(state: GameState): Int =
-        state.getEntity(player)?.get<PlayerTurnsTakenComponent>()?.count ?: 0
+        state.getEntity(requireNotNull(player))?.get<PlayerTurnsTakenComponent>()?.count ?: 0
 
-    private fun battlefieldNames(state: GameState): List<String> = state.controlledBattlefield(player)
+    private fun battlefieldNames(state: GameState): List<String> =
+        state.controlledBattlefield(requireNotNull(player))
         .mapNotNull { state.getEntity(it)?.get<CardComponent>()?.name }
 
     private fun retrieverLoopAvailable(state: GameState): Boolean {
         val battlefield = battlefieldNames(state)
-        val graveyard = state.getZone(player, Zone.GRAVEYARD)
+        val graveyard = state.getZone(requireNotNull(player), Zone.GRAVEYARD)
             .mapNotNull { state.getEntity(it)?.get<CardComponent>()?.name }
         return "Ashnod's Altar" in battlefield && "Myr Retriever" in battlefield &&
             "Myr Retriever" in graveyard
     }
 
     private fun countRedundantPayoffs(before: GameState, event: CardsDrawnEvent) {
-        if (event.playerId != player || ownTurn(before) == 0) return
+        val playerId = requireNotNull(player)
+        if (event.playerId != playerId || ownTurn(before) == 0) return
         var accessiblePayoffs = (
-            before.getZone(player, Zone.HAND) + before.controlledBattlefield(player)
+            before.getZone(playerId, Zone.HAND) + before.controlledBattlefield(playerId)
         ).count { id -> stateName(before, id) in PAYOFF_NAMES }
         event.cardNames.forEach { name ->
             if (name in PAYOFF_NAMES) {
