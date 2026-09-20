@@ -805,6 +805,114 @@
     ]
 }
 
+// Refurbished Familiar
+{
+    "name": "Refurbished Familiar",
+    "manaCost": "{3}{B}",
+    "typeLine": "Artifact Creature — Zombie Rat",
+    "oracleText": "Affinity for artifacts (This spell costs {1} less to cast for each artifact you control.)\nFlying\nWhen this creature enters, each opponent discards a card. For each opponent who can't, you draw a card.",
+    "creatureStats": {
+        "power": 2,
+        "toughness": 1
+    },
+    "keywords": [
+        "FLYING",
+        "AFFINITY"
+    ],
+    "keywordAbilities": [
+        {
+            "type": "Affinity",
+            "forType": "ARTIFACT"
+        }
+    ],
+    "script": {
+        "triggeredAbilities": [
+            {
+                "id": "ability_1",
+                "trigger": {
+                    "type": "ZoneChangeEvent",
+                    "to": "Battlefield"
+                },
+                "effect": {
+                    "type": "Composite",
+                    "effects": [
+                        {
+                            "type": "DrawCards",
+                            "count": {
+                                "type": "CountPlayersWith",
+                                "scope": "EachOpponent",
+                                "condition": {
+                                    "type": "Compare",
+                                    "left": {
+                                        "type": "Count",
+                                        "player": "You",
+                                        "zone": "Hand"
+                                    },
+                                    "operator": "LTE",
+                                    "right": {
+                                        "type": "Fixed",
+                                        "amount": 0
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "type": "ForEach",
+                            "space": {
+                                "type": "IterationSpace.Players",
+                                "players": "EachOpponent"
+                            },
+                            "body": {
+                                "type": "Composite",
+                                "effects": [
+                                    {
+                                        "type": "GatherCards",
+                                        "source": {
+                                            "type": "FromZone",
+                                            "zone": "Hand"
+                                        },
+                                        "storeAs": "hand"
+                                    },
+                                    {
+                                        "type": "SelectFromCollection",
+                                        "from": "hand",
+                                        "selection": {
+                                            "type": "ChooseExactly",
+                                            "count": {
+                                                "type": "Fixed",
+                                                "amount": 1
+                                            }
+                                        },
+                                        "storeSelected": "discarded"
+                                    },
+                                    {
+                                        "type": "MoveCollection",
+                                        "from": "discarded",
+                                        "destination": {
+                                            "type": "ToZone",
+                                            "zone": "Graveyard"
+                                        },
+                                        "moveType": "Discard"
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            }
+        ]
+    },
+    "metadata": {
+        "collectorNumber": "105",
+        "artist": "Steve Ellis",
+        "flavorText": "When her beloved pet died, the artificer turned to necromancy.",
+        "imageUri": "https://cards.scryfall.io/normal/front/b/3/b338e078-629c-4cac-bd1d-e1f0a132728d.jpg?1783911277"
+    },
+    "colorIdentityOverride": [
+        "BLACK"
+    ]
+}
+
 // Sarpadian Simulacrum
 {
     "name": "Sarpadian Simulacrum",

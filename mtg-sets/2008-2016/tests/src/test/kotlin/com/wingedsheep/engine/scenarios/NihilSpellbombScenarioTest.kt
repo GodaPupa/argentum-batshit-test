@@ -38,7 +38,6 @@ class NihilSpellbombScenarioTest : ScenarioTestBase() {
             game.isInExile(2, "Hill Giant") shouldBe true
             game.isInExile(2, "Ornithopter") shouldBe true
         }
-
         test("paying black for the battlefield-to-graveyard trigger draws one card") {
             val game = scenario()
                 .withPlayers("Player", "Opponent")
@@ -48,7 +47,6 @@ class NihilSpellbombScenarioTest : ScenarioTestBase() {
                 .withActivePlayer(1)
                 .inPhase(Phase.PRECOMBAT_MAIN, Step.PRECOMBAT_MAIN)
                 .build()
-
             val bomb = game.findPermanent("Nihil Spellbomb")!!
             val ability = cardRegistry.getCard("Nihil Spellbomb")!!.activatedAbilities.single().id
             val handBefore = game.handSize(1)
