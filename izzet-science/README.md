@@ -94,3 +94,10 @@ Kaervek's Torch in 16.42%, and Capsize had buyback mana in 15.39%. Conditional o
 being present, all four were mana-ready at least 90.96% of the time, making access
 the clearer next bottleneck. This is readiness evidence, not a backup-plan win rate;
 v0.7 remains the accepted control.
+
+Phase 2 audits the accepted control's existing tutor connectivity to those backup
+cards without changing tutor-use policy. It is a seed-free legal-semantics gate:
+Dizzy Spell can find either X-spell, Drift of Phantasms and Merchant Scroll can find
+Capsize, and no current tutor can find Murmuring Mystic. The seed-free validator
+passed with zero policy changes, samples, seeds, or outcome claims; no card change
+is authorized by this audit.
