@@ -81,3 +81,8 @@ rerun or rehabilitated. A subsequent seed-free deterministic gate proved that a
 legal primary-combo launch can distribute 29 retargeted copies plus the original
 across three 30-life opponents. This adds no sampled performance claim and changes
 no cards. v0.7 remains the accepted control.
+
+Current gate: v0.9 Phase 0 validated seed-free commander-independent readiness
+semantics for Murmuring Mystic, Rolling Thunder, Kaervek's Torch, and buyback
+Capsize. No sampled baseline, challenger, or backup-plan win-rate claim is yet
+authorized.

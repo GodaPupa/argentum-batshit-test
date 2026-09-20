@@ -993,6 +993,33 @@ def primary_combo_table_damage_plan(state, opponent_lives=(30,30,30)):
         "originals":1,
     }
 
+def max_x_damage_castable(state, card):
+    """Maximum X for an in-hand XR backup finisher using ready sources exactly."""
+    if card not in {"Rolling Thunder","Kaervek's Torch"} or card not in state.hand:
+        return 0
+    pools=ready_mana_pool_states(state)
+    max_total=max((sum(pool) for pool in pools),default=0)
+    electromancer=any(p["card"]=="Goblin Electromancer" for p in state.battlefield)
+    discount=1 if electromancer else 0
+    best=0
+    for x in range(1,max_total+discount+1):
+        if ready_payment_feasible_exact(state,generic=max(0,x-discount),need_r=1):
+            best=x
+    return best
+
+def commander_independent_readiness(state):
+    """Observable backup-plan readiness; deliberately not a win-rate model."""
+    electromancer=any(p["card"]=="Goblin Electromancer" for p in state.battlefield)
+    capsize_generic=3 if electromancer else 4
+    return {
+        "mystic_castable":"Murmuring Mystic" in state.hand and
+            ready_payment_feasible_exact(state,generic=3,need_u=1),
+        "rolling_x":max_x_damage_castable(state,"Rolling Thunder"),
+        "torch_x":max_x_damage_castable(state,"Kaervek's Torch"),
+        "capsize_buyback":"Capsize" in state.hand and
+            ready_payment_feasible_exact(state,generic=capsize_generic,need_u=2),
+    }
+
 
 # v0.7 phase-0 interaction semantics. Soft permission remains deliberately excluded
 # from guaranteed protection because the opponent's available payment is unspecified.
@@ -1675,6 +1702,33 @@ def multiplayer_table_kill_regressions():
             raise AssertionError(f"accepted invalid opponent lives: {invalid}")
     return True
 
+def commander_independent_readiness_regressions():
+    direct=DevState(["Rolling Thunder","Kaervek's Torch"]); direct.turn=6
+    for i,card in enumerate(["Mountain","Mountain","Island","Island","Island","Island"]):
+        direct.battlefield.append({"card":card,"tapped":False,"entered":i})
+    ready=commander_independent_readiness(direct)
+    assert ready=={"mystic_castable":False,"rolling_x":5,"torch_x":5,
+                  "capsize_buyback":False}
+    direct.battlefield.append({"card":"Goblin Electromancer","tapped":False,"entered":2})
+    reduced=commander_independent_readiness(direct)
+    assert reduced["rolling_x"]==6 and reduced["torch_x"]==6
+
+    utility=DevState(["Murmuring Mystic","Capsize"]); utility.turn=6
+    for i,card in enumerate(["Island","Island","Island","Island","Mountain","Mountain"]):
+        utility.battlefield.append({"card":card,"tapped":False,"entered":i})
+    utility_ready=commander_independent_readiness(utility)
+    assert utility_ready["mystic_castable"] and utility_ready["capsize_buyback"]
+    assert utility_ready["rolling_x"]==0 and utility_ready["torch_x"]==0
+
+    short=DevState(["Murmuring Mystic","Capsize","Rolling Thunder"]); short.turn=3
+    for i,card in enumerate(["Island","Island","Mountain"]):
+        short.battlefield.append({"card":card,"tapped":False,"entered":i})
+    assert commander_independent_readiness(short)=={
+        "mystic_castable":False,"rolling_x":2,"torch_x":0,
+        "capsize_buyback":False,
+    }
+    return True
+
 def electromancer_lethal_regressions():
     # Electromancer removes both generic costs, enabling a three-red-mana launch.
     s=DevState(["Lava Spike","Desperate Ritual"]); s.turn=4
@@ -1760,6 +1814,7 @@ def main():
     five_mana_ritual_route_regressions()
     seething_song_launch_regressions()
     multiplayer_table_kill_regressions()
+    commander_independent_readiness_regressions()
     b,r=opening_baseline(cards,args.samples,args.seed)
     print("seed",hex(args.seed),"samples",args.samples)
     print("land_buckets_0_1_2_3_4plus",b)
