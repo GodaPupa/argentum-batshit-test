@@ -9,7 +9,7 @@ permissions:
   contents: read
 
 jobs:
-  izzet-snow-basics-v07d:
+  izzet-snow-basics-v07d-confirmation:
     if: github.ref == 'refs/heads/mayhem/izzet-science'
     runs-on: ubuntu-latest
     timeout-minutes: 10
@@ -25,23 +25,23 @@ jobs:
           set -euo pipefail
           test "$(sha256sum izzet-science/v0.6-control.md | cut -d' ' -f1)" = "a6acc3e0a00fa1bab0eb3ad7d981a449b8ce0e8c6bf4ed384968e46ca081fac5"
           test "$(sha256sum izzet-science/challengers/v07D-snow-basics.md | cut -d' ' -f1)" = "29fa77acd45069b1374f10ae0569d4371c6cd5ac70d78cd07c8f5543fbb337da"
-      - name: Run paired snow-basic pilot
+      - name: Run paired snow-basic confirmation
         shell: bash
         run: |
           set -euo pipefail
           mkdir -p izzet-science/artifacts
           python izzet-science/sim/mana_harness.py \
             --deck izzet-science/v0.6-control.md \
-            --samples 10000 --seed 0x1A22E700A --interaction-pilot \
-            | tee izzet-science/artifacts/v07D-control.txt
+            --samples 100000 --seed 0x1A22E700B --interaction-pilot \
+            | tee izzet-science/artifacts/v07D-confirm-control.txt
           python izzet-science/sim/mana_harness.py \
             --deck izzet-science/challengers/v07D-snow-basics.md \
-            --samples 10000 --seed 0x1A22E700A --interaction-pilot \
-            | tee izzet-science/artifacts/v07D-snow-basics.txt
+            --samples 100000 --seed 0x1A22E700B --interaction-pilot \
+            | tee izzet-science/artifacts/v07D-confirm-snow-basics.txt
           python izzet-science/sim/compare_v07d.py \
-            izzet-science/artifacts/v07D-control.txt \
-            izzet-science/artifacts/v07D-snow-basics.txt \
-            | tee izzet-science/artifacts/v07D-comparison.txt
+            izzet-science/artifacts/v07D-confirm-control.txt \
+            izzet-science/artifacts/v07D-confirm-snow-basics.txt \
+            | tee izzet-science/artifacts/v07D-confirm-comparison.txt
       - name: Write provenance manifest
         shell: bash
         run: |
@@ -52,20 +52,20 @@ jobs:
             echo "run_attempt=${GITHUB_RUN_ATTEMPT}"
             echo "control_sha256=a6acc3e0a00fa1bab0eb3ad7d981a449b8ce0e8c6bf4ed384968e46ca081fac5"
             echo "challenger_sha256=29fa77acd45069b1374f10ae0569d4371c6cd5ac70d78cd07c8f5543fbb337da"
-            echo "seed=0x1A22E700A"
-            echo "samples_per_deck=10000"
+            echo "seed=0x1A22E700B"
+            echo "samples_per_deck=100000"
             echo "change=19 Island to Snow-Covered Island; 7 Mountain to Snow-Covered Mountain"
-            sha256sum izzet-science/artifacts/v07D-control.txt \
-              izzet-science/artifacts/v07D-snow-basics.txt \
-              izzet-science/artifacts/v07D-comparison.txt
-          } > izzet-science/artifacts/v07D-snow-basics.manifest
-      - name: Preserve paired pilot artifact
+            sha256sum izzet-science/artifacts/v07D-confirm-control.txt \
+              izzet-science/artifacts/v07D-confirm-snow-basics.txt \
+              izzet-science/artifacts/v07D-confirm-comparison.txt
+          } > izzet-science/artifacts/v07D-snow-basics-confirmation.manifest
+      - name: Preserve paired confirmation artifact
         uses: actions/upload-artifact@v4
         with:
-          name: izzet-v07D-snow-basics-paired-pilot
+          name: izzet-v07D-snow-basics-paired-confirmation
           path: |
-            izzet-science/artifacts/v07D-control.txt
-            izzet-science/artifacts/v07D-snow-basics.txt
-            izzet-science/artifacts/v07D-comparison.txt
-            izzet-science/artifacts/v07D-snow-basics.manifest
+            izzet-science/artifacts/v07D-confirm-control.txt
+            izzet-science/artifacts/v07D-confirm-snow-basics.txt
+            izzet-science/artifacts/v07D-confirm-comparison.txt
+            izzet-science/artifacts/v07D-snow-basics-confirmation.manifest
           if-no-files-found: error

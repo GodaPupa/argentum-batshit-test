@@ -50,4 +50,10 @@ identity. A pass authorizes exactly one 100,000-game confirmation on the
 preregistered seed. Confirmation must satisfy the same criteria; only confirmation
 may promote v0.7-D.
 
-Disposition: `V07D_PILOT_FROZEN_PENDING_EXECUTION`
+Disposition: `V07D_PILOT_ACCEPTED_CONFIRMATION_AUTHORIZED`
+
+The sole authorized pilot completed in GitHub Actions run `35536773714`. It passed
+all criteria, including exact equality of every legacy telemetry field and a T10
+Skred three-plus-damage gain of 17.64 percentage points. See
+`v07D-snow-basics-pilot-accepted.md` for the artifact audit. Exactly one confirmation
+is authorized on seed `0x1A22E700B`.
