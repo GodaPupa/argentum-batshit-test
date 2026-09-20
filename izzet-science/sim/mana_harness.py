@@ -101,6 +101,7 @@ def state_regressions():
 class DevState:
     def __init__(self, hand):
         self.hand=list(hand); self.battlefield=[]; self.turn=0; self.land_played=False
+        self.commander_casts=0; self.commander_zone=True
     def begin_turn(self, draw=None):
         self.turn+=1; self.land_played=False
         if draw is not None: self.hand.append(draw)
@@ -833,10 +834,13 @@ def mutable_library_regressions():
 def guildmage_on_battlefield(state):
     return any(p["card"]=="Izzet Guildmage" for p in state.battlefield)
 
+def guildmage_tax(state):
+    return 2*state.commander_casts
+
 def should_deploy_guildmage(state):
-    if guildmage_on_battlefield(state): return False
+    if guildmage_on_battlefield(state) or not state.commander_zone: return False
     # Deploy when affordable and either combo pair is present or hand has interaction to support future turns.
-    if not can_pay_simple(state,need_u=1,need_r=1): return False
+    if not can_pay_simple(state,generic=guildmage_tax(state),need_u=1,need_r=1): return False
     h=set(state.hand)
     pair={"Lava Spike","Desperate Ritual"} <= h
     protected=bool(h & INTERACTION_CARDS)
@@ -844,16 +848,31 @@ def should_deploy_guildmage(state):
 
 def deploy_guildmage(state):
     if not should_deploy_guildmage(state): return False
-    if not pay_colored_mutating(state,need_u=1,need_r=1): return False
+    if not pay_colored_mutating(state,generic=guildmage_tax(state),need_u=1,need_r=1): return False
     state.battlefield.append({"card":"Izzet Guildmage","tapped":False,"entered":state.turn})
+    state.commander_casts+=1; state.commander_zone=False
+    return True
+
+def remove_guildmage_to_command_zone(state):
+    permanent=next((p for p in state.battlefield if p["card"]=="Izzet Guildmage"),None)
+    if permanent is None: return False
+    state.battlefield.remove(permanent); state.commander_zone=True
     return True
 
 def commander_regressions():
     s=DevState(["Lava Spike","Desperate Ritual"]); s.turn=3
     s.battlefield=[{"card":"Island","tapped":False,"entered":1},{"card":"Mountain","tapped":False,"entered":2}]
     assert deploy_guildmage(s) and guildmage_on_battlefield(s)
+    assert s.commander_casts==1 and not s.commander_zone
     assert all(p["tapped"] for p in s.lands())
     assert not deploy_guildmage(s)
+    assert remove_guildmage_to_command_zone(s)
+    assert s.commander_zone and not guildmage_on_battlefield(s)
+    untap_step(s)
+    s.battlefield.append({"card":"Island","tapped":False,"entered":3})
+    assert not should_deploy_guildmage(s)  # three mana cannot pay the first 2-mana tax
+    s.battlefield.append({"card":"Mountain","tapped":False,"entered":3})
+    assert deploy_guildmage(s) and s.commander_casts==2
     z=DevState(["Ponder"]); z.turn=3
     z.battlefield=[{"card":"Island","tapped":False,"entered":1},{"card":"Mountain","tapped":False,"entered":2}]
     assert not should_deploy_guildmage(z)
@@ -906,6 +925,73 @@ def primary_combo_damage_available(state, opponent_life=30):
     # Thus arbitrarily many copies are available in this goldfish model.
     copies_needed=max(0,(opponent_life+2)//3 - 1)  # original contributes final 3
     return 3*(copies_needed+1)
+
+
+# v0.7 phase-0 interaction semantics. Soft permission remains deliberately excluded
+# from guaranteed protection because the opponent's available payment is unspecified.
+PROTECTION_COSTS={
+    "Counterspell":(0,2,0), "Arcane Denial":(1,1,0), "Negate":(1,1,0),
+    "Dispel":(0,1,0), "Memory Lapse":(1,1,0), "Deprive":(0,2,0),
+    "Turn Aside":(0,1,0),
+}
+PROTECTION_COVERAGE={
+    "Counterspell":{"spell"}, "Arcane Denial":{"spell"},
+    "Memory Lapse":{"spell"}, "Deprive":{"spell"},
+    "Negate":{"noncreature"}, "Dispel":{"instant"},
+    "Turn Aside":{"targeted_permanent"},
+}
+CONDITIONAL_PROTECTION={"Prohibit","Spell Pierce","Lose Focus"}
+
+def protection_covers(card, threat_tags):
+    if card in CONDITIONAL_PROTECTION: return False
+    coverage=PROTECTION_COVERAGE.get(card,set())
+    return "spell" in coverage or bool(coverage & set(threat_tags))
+
+def primary_combo_launch_with_protection_feasible(state, protection_card, threat_tags):
+    """Phase-0 land-payment check; sampled instrumentation is not authorized here."""
+    if protection_card not in state.hand or not protection_covers(protection_card,threat_tags):
+        return False
+    if not primary_combo_launch_feasible(state): return False
+    protect_generic,protect_u,protect_r=PROTECTION_COSTS[protection_card]
+    electromancer=any(p["card"]=="Goblin Electromancer" for p in state.battlefield)
+    if "Seething Song" in state.hand:
+        launch_generic,launch_red=(1 if electromancer else 2),1
+    else:
+        launch_generic,launch_red=(0 if electromancer else 2),3
+    return can_pay_simple(state,generic=launch_generic+protect_generic,
+                          need_u=protect_u,need_r=launch_red+protect_r)
+
+def interaction_regressions():
+    exact=DevState(["Lava Spike","Desperate Ritual","Dispel"]); exact.turn=5
+    exact.battlefield=[{"card":"Izzet Guildmage","tapped":False,"entered":2}]
+    for i,c in enumerate(["Mountain","Mountain","Mountain","Island","Island"]):
+        exact.battlefield.append({"card":c,"tapped":False,"entered":i})
+    assert primary_combo_launch_feasible(exact)
+    assert not primary_combo_launch_with_protection_feasible(exact,"Dispel",{"instant","spell"})
+    exact.battlefield.append({"card":"Island","tapped":False,"entered":5})
+    assert primary_combo_launch_with_protection_feasible(exact,"Dispel",{"instant","spell"})
+    assert not primary_combo_launch_with_protection_feasible(exact,"Turn Aside",{"instant","spell"})
+    assert not primary_combo_launch_with_protection_feasible(exact,"Spell Pierce",{"instant","spell"})
+
+    song=DevState(["Lava Spike","Desperate Ritual","Seething Song","Dispel"]); song.turn=4
+    song.battlefield=[{"card":"Izzet Guildmage","tapped":False,"entered":2}]
+    for i,c in enumerate(["Mountain","Island","Island"]):
+        song.battlefield.append({"card":c,"tapped":False,"entered":i})
+    assert primary_combo_launch_feasible(song)
+    assert not primary_combo_launch_with_protection_feasible(song,"Dispel",{"instant"})
+    song.battlefield.append({"card":"Island","tapped":False,"entered":4})
+    assert primary_combo_launch_with_protection_feasible(song,"Dispel",{"instant"})
+
+    electromancer=DevState(["Lava Spike","Desperate Ritual","Dispel"]); electromancer.turn=4
+    electromancer.battlefield=[{"card":"Izzet Guildmage","tapped":False,"entered":2},
+                              {"card":"Goblin Electromancer","tapped":False,"entered":3}]
+    for i in range(3):
+        electromancer.battlefield.append({"card":"Mountain","tapped":False,"entered":i})
+    assert primary_combo_launch_feasible(electromancer)
+    assert not primary_combo_launch_with_protection_feasible(electromancer,"Dispel",{"instant"})
+    electromancer.battlefield.append({"card":"Island","tapped":False,"entered":4})
+    assert primary_combo_launch_with_protection_feasible(electromancer,"Dispel",{"instant"})
+    return True
 
 def lethal_regressions():
     # The classic Ritual route launches from five mana with three red sources.
@@ -1312,6 +1398,7 @@ def main():
     combo_assembly_regressions()
     commander_regressions()
     lethal_regressions()
+    interaction_regressions()
     tutor_regressions()
     tutor_execution_regressions()
     first_lethal_regression()
