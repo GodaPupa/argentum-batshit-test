@@ -50,6 +50,8 @@ jobs:
 
       - name: Run paired metric goldfish
         run: just industrial-waste-goldfish
+        env:
+          IW_GOLDFISH: "true"
 
       - name: Upload goldfish evidence
         if: always()

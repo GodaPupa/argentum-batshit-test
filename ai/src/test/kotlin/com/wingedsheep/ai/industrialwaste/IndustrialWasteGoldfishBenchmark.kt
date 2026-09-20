@@ -17,7 +17,7 @@ import java.security.MessageDigest
 
 class IndustrialWasteGoldfishBenchmark : FunSpec({
     test("Industrial Waste paired metric goldfish").config(
-        enabled = System.getProperty("iwGoldfish") == "true",
+        enabled = System.getenv("IW_GOLDFISH") == "true",
     ) {
         val repository = goldfishRepositoryRoot()
         val root = repository.resolve("industrial-waste")
