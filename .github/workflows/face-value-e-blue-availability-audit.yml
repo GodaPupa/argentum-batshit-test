@@ -1,0 +1,53 @@
+name: Face Value E Blue Availability Audit
+on:
+  push:
+    branches: [face-value/lab]
+    paths: [.github/workflows/face-value-e-blue-availability-audit.yml]
+permissions: {contents: read}
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: '21'}
+      - name: Verify frozen identities
+        run: |
+          set -euo pipefail
+          test -f experiments/face-value/final/temur-chrysalis-e-final-forge-75.txt
+          test -f experiments/face-value/decks/fv-temur-chrysalis-e.dck
+          sha256sum experiments/face-value/final/temur-chrysalis-e-final-forge-75.txt experiments/face-value/decks/fv-temur-chrysalis-e.dck | tee frozen-identities.sha256
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          p=Path('experiments/face-value/decks/fv-temur-chrysalis-e.dck')
+          n=sum(int(m.group(1)) for x in p.read_text().splitlines() if (m:=re.match(r'^(\d+) ',x)))
+          assert n==60,n
+          PY
+      - name: Static color-source audit
+        run: |
+          python3 - <<'PY'
+          import math,json
+          # Exact E land base: 10 Forest, 4 Mountain, 4 Wooded Ridgeline, 3 Tangled Islet.
+          # Both Ridgeline and Islet have Forest subtype; Islet is the only native U land.
+          N=60
+          def atleast(K,n): return 1-math.comb(N-K,n)/math.comb(N,n)
+          out={
+            'native_blue_sources':3,
+            'native_red_sources':8,
+            'green_land_sources':17,
+            'forest_subtype_lands':17,
+            'blue_access_probability':{str(n):atleast(3,n) for n in (7,8,9,10,11)},
+            'forest_for_sprawl_probability':{str(n):atleast(17,n) for n in (7,8,9,10,11)},
+            'note':'Observation gate only. Frozen E is unchanged; no Utopia Sprawl challenger is constructed here.'
+          }
+          open('blue-availability-static.json','w').write(json.dumps(out,indent=2))
+          print(json.dumps(out,indent=2))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: face-value-e-blue-availability-audit
+          path: |
+            frozen-identities.sha256
+            blue-availability-static.json
