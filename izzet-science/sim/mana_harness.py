@@ -401,7 +401,7 @@ def color_flags(state):
 
 
 UU_HAND={"Counterspell","Deprive","Ideas Unbound"}
-U_HAND={"Brainstorm","Consider","Opt","Ponder","Preordain","Impulse","Dispel","Negate","Memory Lapse","Prohibit","Spell Pierce","Turn Aside","Into the Roil","Blink of an Eye","Echoing Truth","Merchant Scroll","Dizzy Spell","Muddle the Mixture","High Tide","Snap"}
+U_HAND={"Brainstorm","Consider","Opt","Ponder","Preordain","Impulse","Dispel","Negate","Memory Lapse","Prohibit","Spell Pierce","Turn Aside","Dive Down","Into the Roil","Blink of an Eye","Echoing Truth","Merchant Scroll","Dizzy Spell","Muddle the Mixture","High Tide","Snap"}
 R_HAND={"Lightning Bolt","Galvanic Blast","Skred","Flame Slash","Abrade","Shattering Pulse","Lava Spike","Desperate Ritual","Faithless Looting","Pyroblast"}
 
 
@@ -459,7 +459,7 @@ SELECTION_SPECS={
 "Thrill of Possibility":(2,2),"Frantic Search":(3,2),"Think Twice":(2,1),"Strategic Planning":(2,3),
 "Pieces of the Puzzle":(3,5)
 }
-INTERACTION_CARDS={"Counterspell","Arcane Denial","Negate","Dispel","Memory Lapse","Deprive","Prohibit","Spell Pierce","Turn Aside","Lose Focus","Pyroblast","Lightning Bolt","Galvanic Blast","Skred","Flame Slash","Fire // Ice","Into the Roil","Blink of an Eye","Echoing Truth","Abrade","Shattering Pulse"}
+INTERACTION_CARDS={"Counterspell","Arcane Denial","Negate","Dispel","Memory Lapse","Deprive","Prohibit","Spell Pierce","Turn Aside","Lose Focus","Pyroblast","Dive Down","Lightning Bolt","Galvanic Blast","Skred","Flame Slash","Fire // Ice","Into the Roil","Blink of an Eye","Echoing Truth","Abrade","Shattering Pulse"}
 COMBO_CARDS={"Lava Spike","Desperate Ritual"}
 
 def selection_priority(card, state):
@@ -937,13 +937,14 @@ def primary_combo_damage_available(state, opponent_life=30):
 PROTECTION_COSTS={
     "Counterspell":(0,2,0), "Arcane Denial":(1,1,0), "Negate":(1,1,0),
     "Dispel":(0,1,0), "Memory Lapse":(1,1,0), "Deprive":(0,2,0),
-    "Turn Aside":(0,1,0), "Pyroblast":(0,0,1),
+    "Turn Aside":(0,1,0), "Pyroblast":(0,0,1), "Dive Down":(0,1,0),
 }
 PROTECTION_COVERAGE={
     "Counterspell":{"spell"}, "Arcane Denial":{"spell"},
     "Memory Lapse":{"spell"}, "Deprive":{"spell"},
     "Negate":{"noncreature"}, "Dispel":{"instant"},
     "Turn Aside":{"targeted_permanent"}, "Pyroblast":{"blue_spell"},
+    "Dive Down":{"targeted_creature"},
 }
 CONDITIONAL_PROTECTION={"Prohibit","Spell Pierce","Lose Focus"}
 CONDITIONAL_PROTECTION_COSTS={
@@ -1084,7 +1085,7 @@ def commander_recovery_launch_feasible(state):
 def interaction_readiness_metrics(state):
     stack_tags={"spell","instant","noncreature"}
     blue_stack_tags=stack_tags|{"blue_spell"}
-    removal_tags={"spell","instant","noncreature","targeted_permanent"}
+    removal_tags={"spell","instant","noncreature","targeted_permanent","targeted_creature"}
     guaranteed=tuple(PROTECTION_COSTS)
     conditional=tuple(CONDITIONAL_PROTECTION)
     return {
@@ -1133,6 +1134,15 @@ def interaction_regressions():
         pyro.battlefield.append({"card":c,"tapped":False,"entered":i})
     assert primary_combo_launch_with_protection_exact(pyro,"Pyroblast",{"blue_spell"})
     assert not primary_combo_launch_with_protection_exact(pyro,"Pyroblast",{"instant","spell"})
+
+    dive=DevState(["Lava Spike","Desperate Ritual","Dive Down"]); dive.turn=6
+    dive.battlefield=[{"card":"Izzet Guildmage","tapped":False,"entered":2}]
+    for i,c in enumerate(["Mountain","Mountain","Mountain","Island","Island","Island"]):
+        dive.battlefield.append({"card":c,"tapped":False,"entered":i})
+    assert primary_combo_launch_with_protection_exact(
+        dive,"Dive Down",{"targeted_creature","targeted_permanent"})
+    assert not primary_combo_launch_with_protection_exact(
+        dive,"Dive Down",{"instant","spell","noncreature"})
 
     lens=DevState([]); lens.turn=6
     lens.battlefield=[{"card":"Prismatic Lens","tapped":False,"entered":2},
