@@ -34,6 +34,8 @@ targeted creature-removal abilities.
 - Confirmation: 100,000 samples per deck, seed `0x1A22E700D`, only after pilot pass
 - Horizon: T1–T10
 - One execution per stage; no rerolls or replacement seeds
+- A separate `validate` dispatch must pass with `sampled_games=0` before the `pilot`
+  dispatch is authorized.
 
 The 10,000-game pilot cannot promote the challenger.
 

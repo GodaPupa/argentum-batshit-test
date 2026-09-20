@@ -2,6 +2,15 @@ name: Argentum Validation
 
 on:
   workflow_dispatch:
+    inputs:
+      mode:
+        description: Seed-free validation or authorized pilot
+        required: true
+        default: validate
+        type: choice
+        options:
+          - validate
+          - pilot
   push:
     branches: [ "main" ]
 
@@ -25,7 +34,10 @@ jobs:
           set -euo pipefail
           test "$(sha256sum izzet-science/v0.7-control.md | cut -d' ' -f1)" = "726f5e9458b46dda30b33a6ce9f3c3237b25d6e11b81dac85308c3065c108a01"
           test "$(sha256sum izzet-science/challengers/v08A-mizzium-skin.md | cut -d' ' -f1)" = "575bfc592082f5999ebc50cca348b1bfeb157e9fa27bff09b5e092cc1aa496d1"
+      - name: Run seed-free deterministic validation
+        run: python izzet-science/sim/validate_v08a.py
       - name: Run paired Mizzium Skin pilot
+        if: inputs.mode == 'pilot'
         shell: bash
         run: |
           set -euo pipefail
@@ -43,6 +55,7 @@ jobs:
             izzet-science/artifacts/v08A-mizzium-skin.txt \
             | tee izzet-science/artifacts/v08A-comparison.txt
       - name: Write provenance manifest
+        if: inputs.mode == 'pilot'
         shell: bash
         run: |
           set -euo pipefail
@@ -60,6 +73,7 @@ jobs:
               izzet-science/artifacts/v08A-comparison.txt
           } > izzet-science/artifacts/v08A-mizzium-skin.manifest
       - name: Preserve paired pilot artifact
+        if: inputs.mode == 'pilot'
         uses: actions/upload-artifact@v4
         with:
           name: izzet-v08A-mizzium-skin-paired-pilot
