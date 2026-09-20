@@ -1,0 +1,26 @@
+name: Face Value Qualification Input Gate
+
+on:
+  push:
+    branches: [face-value/lab]
+    paths:
+      - experiments/face-value/qualification/**
+      - .github/workflows/face-value-qualification-input-gate.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate-inputs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate frozen control and gauntlet inputs
+        run: python3 experiments/face-value/qualification/validate_inputs.py
+      - name: Preserve input identity report
+        uses: actions/upload-artifact@v4
+        with:
+          name: face-value-qualification-input-identities
+          path: experiments/face-value/qualification/input-validation-report.json
+          if-no-files-found: error
