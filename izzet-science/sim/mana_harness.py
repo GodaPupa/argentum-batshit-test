@@ -686,7 +686,7 @@ def scheduler_regressions():
 def source_options(state):
     opts=[]
     for p,colors in available_land_mana(state):
-        if "UR" in colors: opts.append((p,2,{"U","R"}))
+        if "UR" in colors: opts.append((p,2,{"UR"}))
         else: opts.append((p,1,set(colors)))
     for p,v in ready_nonland_sources(state):
         c=p["card"]
@@ -705,9 +705,17 @@ def pay_colored_mutating(state,generic=0,need_u=0,need_r=0):
             color_sources=[cs for _,_,cs in subset]
             import itertools as _it
             ok=False
-            for assignment in _it.product(("U","R","C"), repeat=len(color_sources)):
-                if any(a!="C" and a not in cs for a,cs in zip(assignment,color_sources)): continue
-                if sum(a=="U" for a in assignment)>=need_u and sum(a=="R" for a in assignment)>=need_r:
+            modes=[]
+            for cs in color_sources:
+                if "UR" in cs: modes.append(((1,1),))
+                else:
+                    source_modes=[]
+                    if "U" in cs: source_modes.append((1,0))
+                    if "R" in cs: source_modes.append((0,1))
+                    if not source_modes: source_modes.append((0,0))
+                    modes.append(tuple(source_modes))
+            for assignment in _it.product(*modes):
+                if sum(u for u,_ in assignment)>=need_u and sum(r for _,r in assignment)>=need_r:
                     ok=True; break
             if not ok: continue
             for p,_,_ in subset: p["tapped"]=True
@@ -723,6 +731,10 @@ def colored_payment_regressions():
     t.battlefield=[{"card":"Island","tapped":False,"entered":1},{"card":"Mountain","tapped":False,"entered":2}]
     assert pay_colored_mutating(t,need_u=1,need_r=1)
     assert all(p["tapped"] for p in t.battlefield)
+    b=DevState([]); b.turn=3
+    b.battlefield=[{"card":"Izzet Boilerworks","tapped":False,"entered":2}]
+    assert pay_colored_mutating(b,need_u=1,need_r=1)
+    assert b.battlefield[0]["tapped"]
     return True
 
 def pay_selection_cost(state,card):
@@ -817,28 +829,31 @@ def commander_regressions():
 def primary_combo_launch_feasible(state):
     if not guildmage_on_battlefield(state): return False
     if not {"Lava Spike","Desperate Ritual"} <= set(state.hand): return False
-    import copy
-    # Route A: direct first-copy launch. Electromancer can reduce the generic splice portion.
-    direct=copy.deepcopy(state)
-    electromancer=any(p["card"]=="Goblin Electromancer" for p in direct.battlefield)
-    cast_generic=0 if electromancer else 1
-    if pay_colored_mutating(direct,generic=cast_generic,need_r=2):
-        if pay_colored_mutating(direct,generic=2,need_r=1):
+    # Cast Spike with Ritual spliced, then cast the still-in-hand Ritual while the
+    # combined Spike remains on stack. The two casts cost 2RRR total, or RRR with
+    # Electromancer reducing both generic portions. The resolved Ritual then creates
+    # the RRR needed for Guildmage's first 2R activation.
+    electromancer=any(p["card"]=="Goblin Electromancer" for p in state.battlefield)
+    generic=0 if electromancer else 2
+
+    # Aggregate ready mana, including Boilerworks' fixed U+R production and Signet's
+    # one-mana activation. For this red-only launch test, every flexible source may
+    # produce red; a Signet can consume non-red mana first (or one red if necessary).
+    total=0; max_red=0
+    for _,value,colors in source_options(state):
+        total+=value
+        if "UR" in colors: max_red+=1
+        elif "R" in colors: max_red+=1
+    ready_signets=sum(p["card"]=="Izzet Signet" and not p["tapped"] for p in state.battlefield)
+    for signets in range(ready_signets+1):
+        if signets and total<1:
+            continue
+        post_total=total+signets
+        activation_red_cost=1 if signets and total==max_red else 0
+        post_red=max_red+signets-activation_red_cost
+        if post_total>=generic+3 and post_red>=3:
             return True
-    # Route B: classic five-mana line. Cast Spike with Ritual spliced, then cast the
-    # still-in-hand Ritual while the combined Spike remains on stack. Ritual resolves
-    # for RRR, which pays Guildmage's first 2R copy activation.
-    ritual_route=copy.deepcopy(state)
-    electromancer=any(p["card"]=="Goblin Electromancer" for p in ritual_route.battlefield)
-    cast_generic=0 if electromancer else 1
-    if not pay_colored_mutating(ritual_route,generic=cast_generic,need_r=2):
-        return False
-    # Desperate Ritual itself costs 1R; Electromancer reduces its generic portion too.
-    ritual_generic=0 if electromancer else 1
-    if not pay_colored_mutating(ritual_route,generic=ritual_generic,need_r=1):
-        return False
-    # The resolved Ritual creates RRR, exactly enough for the first Guildmage 2R activation.
-    return True
+    return False
 
 def primary_combo_damage_available(state, opponent_life=30):
     if not primary_combo_launch_feasible(state): return 0
@@ -848,12 +863,19 @@ def primary_combo_damage_available(state, opponent_life=30):
     return 3*(copies_needed+1)
 
 def lethal_regressions():
-    # five mana cannot launch.
+    # The classic Ritual route launches from five mana with three red sources.
     a=DevState(["Lava Spike","Desperate Ritual"]); a.turn=5
     a.battlefield=[{"card":"Izzet Guildmage","tapped":False,"entered":2}]
-    for i,c in enumerate(["Mountain","Mountain","Mountain","Mountain","Mountain"]):
+    for i,c in enumerate(["Mountain","Mountain","Mountain","Island","Island"]):
         a.battlefield.append({"card":c,"tapped":False,"entered":i})
-    assert not primary_combo_launch_feasible(a)
+    assert primary_combo_launch_feasible(a)
+    assert primary_combo_damage_available(a,30)>=30
+    # Five mana with only two red sources cannot pay the three red pips.
+    c=DevState(["Lava Spike","Desperate Ritual"]); c.turn=5
+    c.battlefield=[{"card":"Izzet Guildmage","tapped":False,"entered":2}]
+    for i,card in enumerate(["Mountain","Mountain","Island","Island","Island"]):
+        c.battlefield.append({"card":card,"tapped":False,"entered":i})
+    assert not primary_combo_launch_feasible(c)
     # six mana with enough red can launch and kill a 30-life opponent.
     b=DevState(["Lava Spike","Desperate Ritual"]); b.turn=6
     b.battlefield=[{"card":"Izzet Guildmage","tapped":False,"entered":2}]
@@ -1152,19 +1174,26 @@ def five_mana_ritual_route_regressions():
     for i,c in enumerate(["Mountain","Mountain","Island","Island"]):
         z.battlefield.append({"card":c,"tapped":False,"entered":i})
     assert not primary_combo_launch_feasible(z)
+    # A ready Signet turns four lands into the required five mana and third red.
+    q=DevState(["Lava Spike","Desperate Ritual"]); q.turn=5
+    q.battlefield=[{"card":"Izzet Guildmage","tapped":False,"entered":2},
+                   {"card":"Izzet Signet","tapped":False,"entered":3}]
+    for i,c in enumerate(["Mountain","Mountain","Island","Island"]):
+        q.battlefield.append({"card":c,"tapped":False,"entered":i})
+    assert primary_combo_launch_feasible(q)
     return True
 
 def electromancer_lethal_regressions():
-    # Five mana is sufficient only with Electromancer and adequate red.
-    s=DevState(["Lava Spike","Desperate Ritual"]); s.turn=5
+    # Electromancer removes both generic costs, enabling a three-red-mana launch.
+    s=DevState(["Lava Spike","Desperate Ritual"]); s.turn=4
     s.battlefield=[{"card":"Izzet Guildmage","tapped":False,"entered":2},
                    {"card":"Goblin Electromancer","tapped":False,"entered":3}]
-    for i,c in enumerate(["Mountain","Mountain","Mountain","Island","Island"]):
+    for i,c in enumerate(["Mountain","Mountain","Mountain"]):
         s.battlefield.append({"card":c,"tapped":False,"entered":i})
     assert primary_combo_launch_feasible(s)
-    z=DevState(["Lava Spike","Desperate Ritual"]); z.turn=5
+    z=DevState(["Lava Spike","Desperate Ritual"]); z.turn=4
     z.battlefield=[{"card":"Izzet Guildmage","tapped":False,"entered":2}]
-    for i,c in enumerate(["Mountain","Mountain","Mountain","Island","Island"]):
+    for i,c in enumerate(["Mountain","Mountain","Mountain"]):
         z.battlefield.append({"card":c,"tapped":False,"entered":i})
     assert not primary_combo_launch_feasible(z)
     return True
