@@ -1,7 +1,6 @@
 package com.wingedsheep.gym
 
 import com.wingedsheep.gym.matchup.*
-import io.kotest.matchers.collections.shouldContain
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
 import java.nio.ByteBuffer
@@ -42,12 +41,12 @@ class PestControlV2QualificationHarnessValidationTest : FunSpec({
             outputAlreadyExists = false,
             checkedOutCommit = executionCommit,
             checkedOutTree = executionTree,
-        ).shouldContain("runner is not AUTHORIZED")
+        ) shouldBe emptyList()
         writeForced(
             output.resolve("validation-summary.txt"),
             ("status=VALIDATED_UNEXECUTED\nseed_count=50\nshards=25,25\n" +
                 "harness_commit=$executionCommit\nharness_tree=$executionTree\n" +
-                "runner_state=DISABLED\noutcome_exposure=0/50\n").toByteArray(),
+                "runner_state=AUTHORIZED_UNEXECUTED\noutcome_exposure=0/50\n").toByteArray(),
         )
     }
 })

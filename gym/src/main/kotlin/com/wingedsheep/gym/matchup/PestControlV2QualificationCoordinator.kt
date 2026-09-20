@@ -75,7 +75,7 @@ object PestControlV2QualificationCoordinator {
 }
 
 object PestControlV2QualificationShardRunnerGuard {
-    const val CONFIGURED_STATE = "DISABLED"
+    const val CONFIGURED_STATE = "AUTHORIZED"
 
     fun activationErrors(
         plan: ShardedMatchupPlan,
