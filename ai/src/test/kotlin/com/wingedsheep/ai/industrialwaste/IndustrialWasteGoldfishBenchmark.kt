@@ -22,9 +22,12 @@ class IndustrialWasteGoldfishBenchmark : FunSpec({
         enabled = System.getenv("IW_GOLDFISH") == "true",
     ) {
         val policyCalibration = System.getenv("IW_POLICY_CALIBRATION") == "true"
+        val policyCalibrationV2 = System.getenv("IW_POLICY_CALIBRATION_V2") == "true"
         val policyScreen = System.getenv("IW_POLICY_SCREEN") == "true"
-        require(!(policyCalibration && policyScreen)) { "select only one policy run mode" }
-        val policyEnabled = policyCalibration || policyScreen
+        require(listOf(policyCalibration, policyCalibrationV2, policyScreen).count { it } <= 1) {
+            "select only one policy run mode"
+        }
+        val policyEnabled = policyCalibration || policyCalibrationV2 || policyScreen
         val repository = goldfishRepositoryRoot()
         val root = repository.resolve("industrial-waste")
         val registry = CardRegistry().apply {
@@ -54,9 +57,13 @@ class IndustrialWasteGoldfishBenchmark : FunSpec({
         val controlAgent = ArenaAgents.resolve("v0")
         val industrialAgent = if (policyEnabled) {
             ArenaAgent(
-                "industrial-waste-policy-v1",
+                if (policyCalibrationV2) "industrial-waste-policy-v2" else "industrial-waste-policy-v1",
                 AiProfile.LEGACY_V0.copy(
-                    id = "industrial-waste-policy-v1",
+                    id = if (policyCalibrationV2) {
+                        "industrial-waste-policy-v2"
+                    } else {
+                        "industrial-waste-policy-v1"
+                    },
                     advisorModules = listOf(IndustrialWasteAdvisorModule),
                 ),
             )
@@ -105,7 +112,7 @@ class IndustrialWasteGoldfishBenchmark : FunSpec({
             schemaVersion = 1,
             evidenceClass = when {
                 policyScreen -> "diagnostic-engine-policy-screen"
-                policyCalibration -> "non-promotional-policy-calibration"
+                policyCalibration || policyCalibrationV2 -> "non-promotional-policy-calibration"
                 else -> "diagnostic-engine-goldfish"
             },
             promotionEligible = false,
@@ -124,6 +131,8 @@ class IndustrialWasteGoldfishBenchmark : FunSpec({
         val output = root.resolve(
             if (policyScreen) {
                 "results/gate-3-policy-screen-v1.json"
+            } else if (policyCalibrationV2) {
+                "results/gate-3-policy-calibration-v2.json"
             } else if (policyCalibration) {
                 "results/gate-3-policy-calibration-v1.json"
             } else {
