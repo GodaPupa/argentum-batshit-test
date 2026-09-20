@@ -88,5 +88,9 @@ Capsize. No sampled baseline, challenger, or backup-plan win-rate claim is yet
 authorized.
 
 Phase 1 now freezes passive T1–T10 readiness telemetry for one control-only
-10,000-game pilot. The expanded seed-free validator passed, so its fresh bound seed
-is authorized for one execution. No pilot outcome has yet been exposed.
+10,000-game pilot. Run #181 passed with complete audited artifacts. At T10, Mystic
+was castable in 16.00% of trajectories, Rolling Thunder had positive X in 16.85%,
+Kaervek's Torch in 16.42%, and Capsize had buyback mana in 15.39%. Conditional on
+being present, all four were mana-ready at least 90.96% of the time, making access
+the clearer next bottleneck. This is readiness evidence, not a backup-plan win rate;
+v0.7 remains the accepted control.

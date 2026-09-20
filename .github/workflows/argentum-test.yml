@@ -2,15 +2,6 @@ name: Argentum Validation
 
 on:
   workflow_dispatch:
-    inputs:
-      mode:
-        description: Seed-free validation or sole authorized pilot
-        required: true
-        default: validate
-        type: choice
-        options:
-          - validate
-          - pilot
   push:
     branches: [ "main" ]
 
@@ -18,59 +9,41 @@ permissions:
   contents: read
 
 jobs:
-  izzet-v09-readiness:
-    if: github.ref == 'refs/heads/mayhem/izzet-science'
+  test:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 30
 
     steps:
-      - uses: actions/checkout@v4
-      - name: Verify accepted control
-        shell: bash
-        run: |
-          set -euo pipefail
-          test "$(sha256sum izzet-science/v0.7-control.md | cut -d' ' -f1)" = "726f5e9458b46dda30b33a6ce9f3c3237b25d6e11b81dac85308c3065c108a01"
-      - name: Run seed-free preflight
-        run: |
-          python3 izzet-science/sim/validate_commander_independent.py
-          python3 izzet-science/sim/audit_v09_output.py --self-test
-      - name: Execute sole authorized pilot
-        if: inputs.mode == 'pilot'
-        shell: bash
-        run: |
-          set -euo pipefail
-          mkdir -p izzet-science/artifacts
-          python3 izzet-science/sim/mana_harness.py \
-            --deck izzet-science/v0.7-control.md \
-            --samples 10000 --seed 0x1A22E700E \
-            --commander-independent-pilot \
-            | tee izzet-science/artifacts/v09-readiness-pilot.txt
-          python3 izzet-science/sim/audit_v09_output.py \
-            izzet-science/artifacts/v09-readiness-pilot.txt \
-            | tee izzet-science/artifacts/v09-readiness-audit.txt
-      - name: Write provenance manifest
-        if: inputs.mode == 'pilot'
-        shell: bash
-        run: |
-          set -euo pipefail
-          {
-            echo "source_sha=${GITHUB_SHA}"
-            echo "run_id=${GITHUB_RUN_ID}"
-            echo "run_attempt=${GITHUB_RUN_ATTEMPT}"
-            echo "control_sha256=726f5e9458b46dda30b33a6ce9f3c3237b25d6e11b81dac85308c3065c108a01"
-            echo "seed=0x1A22E700E"
-            echo "samples=10000"
-            echo "horizon=T1-T10"
-            sha256sum izzet-science/artifacts/v09-readiness-pilot.txt \
-              izzet-science/artifacts/v09-readiness-audit.txt
-          } > izzet-science/artifacts/v09-readiness.manifest
-      - name: Preserve pilot artifacts
-        if: inputs.mode == 'pilot'
-        uses: actions/upload-artifact@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Java 21
+        uses: actions/setup-java@v4
         with:
-          name: izzet-v09-commander-independent-readiness
-          path: |
-            izzet-science/artifacts/v09-readiness-pilot.txt
-            izzet-science/artifacts/v09-readiness-audit.txt
-            izzet-science/artifacts/v09-readiness.manifest
-          if-no-files-found: error
+          distribution: temurin
+          java-version: '21'
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '9.6.1'
+
+      - name: Make Gradle wrapper executable
+        run: chmod +x gradlew
+
+      - name: Show environment
+        run: |
+          java -version
+          gradle --version
+
+      - name: Compile Argentum
+        run: ./gradlew classes --stacktrace
+
+      - name: Run engine tests
+        run: ./gradlew test --stacktrace
+
+      - name: Run Gym tests
+        run: ./gradlew :gym:test --stacktrace
+
+      - name: Run Gym trainer tests
+        run: ./gradlew :gym-trainer:test --stacktrace

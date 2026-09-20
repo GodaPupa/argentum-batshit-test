@@ -66,4 +66,9 @@ the control hash, deterministic preflight, output-auditor self-test, complete T1
 telemetry, subset invariants, manifest, and nonempty artifact upload. After the run is
 audited, the ordinary workflow must be restored byte-for-byte from `origin/main`.
 
-Disposition: `V09_PHASE1_PREFLIGHT_PASSED_PILOT_AUTHORIZED`
+Disposition: `V09_PHASE1_PILOT_ACCEPTED`
+
+The sole authorized pilot completed successfully as run `35544856015` / #181 on
+source `ea7549be570318e3ae2af64fd44d425f329db033`. Its output audit, manifest, and
+artifact upload all passed. See `v09-phase1-readiness-baseline-accepted.md`. The
+assigned seed is consumed; no rerun or replacement execution is authorized.
