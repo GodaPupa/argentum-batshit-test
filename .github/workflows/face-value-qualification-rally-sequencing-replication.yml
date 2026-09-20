@@ -1,0 +1,126 @@
+name: Face Value Qualification Rally Sequencing Replication
+
+on:
+  push:
+    branches: [face-value/lab]
+    paths:
+      - .github/workflows/face-value-qualification-rally-sequencing-replication.yml
+      - experiments/face-value/qualification/apply_forge_profile_v1.py
+      - experiments/face-value/qualification/apply_forge_profile_v2.py
+      - experiments/face-value/qualification/audit_rally_forced_exposure.py
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  rally-replication:
+    runs-on: ubuntu-latest
+    timeout-minutes: 70
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - name: Verify frozen qualification inputs
+        run: python3 experiments/face-value/qualification/validate_inputs.py
+      - name: Build pinned Forge profile v2
+        run: |
+          set -euxo pipefail
+          FORGE_SHA=f387ede550e336315637a8b765f0927ac768c113
+          git clone --filter=blob:none https://github.com/Card-Forge/forge.git forge-src
+          git -C forge-src checkout --detach "$FORGE_SHA"
+          test "$(git -C forge-src rev-parse HEAD)" = "$FORGE_SHA"
+          python3 experiments/face-value/qualification/apply_forge_profile_v1.py --forge-root forge-src > forge-profile-v1-id.txt
+          test "$(cat forge-profile-v1-id.txt)" = 'FACE_VALUE_QUALIFICATION_FORGE_PROFILE_V1'
+          python3 experiments/face-value/qualification/apply_forge_profile_v2.py --forge-root forge-src | tee forge-profile-id.txt
+          test "$(cat forge-profile-id.txt)" = 'FACE_VALUE_QUALIFICATION_FORGE_PROFILE_V2'
+          git -C forge-src diff > forge-profile-v2.patch
+          sha256sum forge-profile-v2.patch experiments/face-value/qualification/apply_forge_profile_v1.py experiments/face-value/qualification/apply_forge_profile_v2.py > forge-profile-v2.sha256
+          cd forge-src
+          mvn -B -DskipTests -pl forge-gui-desktop -am package
+          chmod +x forge-gui-desktop/target/forge.sh
+          rm -rf forge-gui-desktop/target/res
+          cp -R forge-gui/res forge-gui-desktop/target/res
+          echo "FORGE_LAUNCHER=$(pwd)/forge-gui-desktop/target/forge.sh" >> "$GITHUB_ENV"
+      - name: Freeze replication fixture
+        run: |
+          set -euo pipefail
+          mkdir -p diagnostic-decks diagnostic-logs "$HOME/.forge/decks/constructed"
+          cat > diagnostic-decks/rally-forced-exposure.dck <<'EOF'
+          [metadata]
+          Name=DIAGNOSTIC ONLY Rally Forced Exposure
+          Deck Type=constructed
+          [main]
+          16 Rally at the Hornburg
+          16 Goblin Bushwhacker
+          28 Mountain
+          EOF
+          cat > diagnostic-decks/passive-plains.dck <<'EOF'
+          [metadata]
+          Name=DIAGNOSTIC ONLY Passive Plains
+          Deck Type=constructed
+          [main]
+          60 Plains
+          EOF
+          python3 - <<'PY'
+          from pathlib import Path
+          rows = [f'{1 + i % 2}\t{720169 + i}' for i in range(8)]
+          Path('diagnostic-assignments.tsv').write_text('\n'.join(rows) + '\n', encoding='utf-8')
+          PY
+          cp diagnostic-decks/*.dck "$HOME/.forge/decks/constructed/"
+          sha256sum diagnostic-assignments.tsv diagnostic-decks/*.dck forge-profile-v2.patch > diagnostic-inputs.sha256
+          cat > diagnostic-disposition.txt <<'EOF'
+          DIAGNOSTIC_ONLY_NONLEGAL_RALLY_SEQUENCING_REPLICATION
+          Seeds 720169-720176 and all outcomes are permanently retired diagnostic material.
+          The decks are deliberately nonlegal and results have no matchup, tuning, structural-diagnosis, challenger, or qualification authority.
+          A pass completes the independent fresh-seed forced-exposure replication of profile v2; it does not create matchup evidence.
+          EOF
+      - name: Run fresh replication block
+        run: |
+          set -uo pipefail
+          while IFS=$'\t' read -r fixture_seat seed; do
+            log="diagnostic-logs/rally-forced-seat${fixture_seat}-seed${seed}.log"
+            if [ "$fixture_seat" = 1 ]; then
+              first='rally-forced-exposure.dck'; second='passive-plains.dck'
+            else
+              first='passive-plains.dck'; second='rally-forced-exposure.dck'
+            fi
+            timeout 120 "$FORGE_LAUNCHER" sim -d "$first" "$second" -n 1 -s "$seed" -c 60 > "$log" 2>&1
+            code=$?
+            if [ "$code" -ne 0 ]; then printf '\nDIAGNOSTIC_PROCESS_EXIT_%s\n' "$code" >> "$log"; fi
+          done < diagnostic-assignments.tsv
+          exit 0
+      - name: Audit Rally sequencing replication
+        id: audit
+        continue-on-error: true
+        run: |
+          python3 experiments/face-value/qualification/audit_rally_forced_exposure.py \
+            --logs diagnostic-logs \
+            --assignments diagnostic-assignments.tsv \
+            --output rally-sequencing-replication-summary.json
+      - name: Preserve replication evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: face-value-rally-sequencing-replication
+          path: |
+            rally-sequencing-replication-summary.json
+            forge-profile-id.txt
+            forge-profile-v1-id.txt
+            forge-profile-v2.patch
+            forge-profile-v2.sha256
+            diagnostic-assignments.tsv
+            diagnostic-inputs.sha256
+            diagnostic-disposition.txt
+            diagnostic-decks/*.dck
+            diagnostic-logs/*.log
+            experiments/face-value/qualification/input-validation-report.json
+          if-no-files-found: warn
+      - name: Enforce fail-closed replication gate
+        if: steps.audit.outcome != 'success'
+        run: |
+          echo 'Rally sequencing replication was not demonstrated.'
+          echo 'No qualification seeds are authorized.'
+          exit 1
