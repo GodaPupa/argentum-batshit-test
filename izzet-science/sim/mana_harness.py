@@ -453,7 +453,8 @@ def high_tide_metrics(state):
 SELECTION_SPECS={
 "Ponder":(1,3),"Preordain":(1,2),"Brainstorm":(1,3),"Consider":(1,1),
 "Opt":(1,1),"Impulse":(2,4),"Curate":(2,2),"Faithless Looting":(1,2),
-"Thrill of Possibility":(2,2),"Frantic Search":(3,2),"Think Twice":(2,1),"Strategic Planning":(2,3)
+"Thrill of Possibility":(2,2),"Frantic Search":(3,2),"Think Twice":(2,1),"Strategic Planning":(2,3),
+"Pieces of the Puzzle":(3,5)
 }
 INTERACTION_CARDS={"Counterspell","Arcane Denial","Negate","Dispel","Memory Lapse","Deprive","Prohibit","Spell Pierce","Turn Aside","Lose Focus","Lightning Bolt","Galvanic Blast","Skred","Flame Slash","Fire // Ice","Into the Roil","Blink of an Eye","Echoing Truth","Abrade","Shattering Pulse"}
 COMBO_CARDS={"Lava Spike","Desperate Ritual"}
@@ -507,6 +508,34 @@ def resolve_strategic_planning(ss,dev):
     ss.hand+=keep; ss.cards_drawn+=len(keep); ss.graveyard+=rest
     return keep,rest
 
+NON_INSTANT_SORCERY_CARDS=LANDS|ROCKS|MANA_CREATURES|{
+    "Goblin Electromancer","Archaeomancer","Mnemonic Wall","Izzet Chronarch","Murmuring Mystic"
+}
+
+def resolve_pieces_of_the_puzzle(ss,dev):
+    seen=ss.look(5); ss.remove_top(len(seen))
+    eligible=[c for c in seen if c not in NON_INSTANT_SORCERY_CARDS]
+    keep=[]
+    hand=set(dev.hand)
+    # When both primary pieces are visible, preserve the pair before taking generic value.
+    if not (COMBO_CARDS & hand) and COMBO_CARDS <= set(eligible):
+        keep=["Lava Spike","Desperate Ritual"]
+    elif len(COMBO_CARDS & hand)==1:
+        missing=next(iter(COMBO_CARDS-hand))
+        if missing in eligible:
+            keep=[missing]
+    remaining=list(eligible)
+    for card in keep:
+        remaining.remove(card)
+    if len(keep)<2 and remaining:
+        extra,_=choose_from_seen(remaining,dev,2-len(keep))
+        keep+=extra
+    rest=list(seen)
+    for card in keep:
+        rest.remove(card)
+    ss.hand+=keep; ss.cards_drawn+=len(keep); ss.graveyard+=rest
+    return keep,rest
+
 def resolve_curate(ss, dev):
     seen=ss.look(2); ss.remove_top(len(seen))
     keep,rest=choose_from_seen(seen,dev,1)
@@ -552,6 +581,10 @@ def selection_resolution_regressions():
     sp=SpellState([],["Mountain","Desperate Ritual","Island","Opt"])
     keep,mill=resolve_strategic_planning(sp,DevState(["Lava Spike"]))
     assert keep==["Desperate Ritual"] and len(mill)==2 and len(sp.graveyard)==2
+    pp=SpellState([],["Negate","Lava Spike","Desperate Ritual","Island","Mind Stone","Opt"])
+    keep,mill=resolve_pieces_of_the_puzzle(pp,DevState([]))
+    assert keep==["Lava Spike","Desperate Ritual"] and len(mill)==3
+    assert pp.library==["Opt"]
     return True
 
 
@@ -639,13 +672,14 @@ def draw_discard_regressions():
 
 
 SELECTION_CAST_ORDER=["Ponder","Preordain","Consider","Opt","Curate","Impulse","Brainstorm",
-"Faithless Looting","Thrill of Possibility","Think Twice","Strategic Planning","Frantic Search"]
+"Faithless Looting","Thrill of Possibility","Think Twice","Strategic Planning","Pieces of the Puzzle","Frantic Search"]
 
 def selection_cost(card):
     return {"Ponder":(0,1,0),"Preordain":(0,1,0),"Brainstorm":(0,1,0),
             "Consider":(0,1,0),"Opt":(0,1,0),"Curate":(1,1,0),"Impulse":(1,1,0),
             "Faithless Looting":(0,0,1),"Thrill of Possibility":(1,0,1),
-            "Think Twice":(1,1,0),"Strategic Planning":(1,1,0),"Frantic Search":(2,1,0)}[card]
+            "Think Twice":(1,1,0),"Strategic Planning":(1,1,0),"Pieces of the Puzzle":(2,1,0),
+            "Frantic Search":(2,1,0)}[card]
 
 def can_cast_selection(state,card):
     g,u,r=selection_cost(card)
@@ -743,6 +777,7 @@ def pay_selection_cost(state,card):
 
 def resolve_selected_card(card,ss,dev):
     if card=="Strategic Planning": return resolve_strategic_planning(ss,dev)
+    if card=="Pieces of the Puzzle": return resolve_pieces_of_the_puzzle(ss,dev)
     if card=="Curate": return resolve_curate(ss,dev)
     if card=="Consider": return resolve_consider(ss,dev)
     if card=="Opt": return resolve_opt(ss,dev)
