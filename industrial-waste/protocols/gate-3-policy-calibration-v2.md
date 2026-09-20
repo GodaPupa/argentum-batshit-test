@@ -1,6 +1,6 @@
 # Gate 3 policy calibration v2
 
-Status: planned; non-promotional diagnostic.
+Status: completed; non-promotional diagnostic; failed.
 
 ## Purpose
 
@@ -22,3 +22,13 @@ hand, and graveyard.
 The calibration passes only if the artifact is valid and at least one game records Retriever-loop
 availability or combo readiness. Otherwise stop gameplay and return to seed-free diagnosis. A pass
 permits one new small policy-v2 screen; it does not qualify either deck or authorize matchups.
+
+## Result
+
+GitHub Actions run 35542066782 completed a valid 24-game replay. Its summaries and every core-line
+metric were identical to v1 calibration: both decks recorded zero Retriever-loop and combo-ready
+states. The calibration failed, so no new policy-v2 namespace is allocated.
+
+The passing sacrifice-response fixture only proved behavior after an activation was submitted. The
+next seed-free test moves upstream and compares Altar activation directly against passing from a
+staged board. No further gameplay is permitted until that action-choice fixture passes.

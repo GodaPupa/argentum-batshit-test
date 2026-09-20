@@ -129,3 +129,15 @@ graveyard. Against the inert opponent, no event seeded that first Retriever, mak
 unreachable. The next permitted work is a seed-free v2 fixture for staging the loop from one
 Retriever on the battlefield plus a second in hand or on the battlefield. No new experimental
 namespace may be allocated until a replay-only calibration observes the line.
+
+## Gate 3 policy-v2 calibration
+
+The new seed-free sacrifice fixture passed in run 35541739181, proving v2 selects the battlefield
+Retriever when another copy is in hand. Run 35542066782 replayed the original 12 pairs with v2 and
+completed validly, but its summary was identical to v1 calibration and again recorded zero loop or
+combo-ready states for both decks. No fresh namespace was allocated.
+
+Decision: v2 fails calibration. The fixture began too late in the action sequence—it assumed Altar
+had already been activated. Continue only with a deterministic action-choice fixture that presents
+Altar activation against passing on a staged board. Matchups and further sampled screens remain
+blocked.

@@ -1,9 +1,11 @@
 package com.wingedsheep.ai.industrialwaste
 
 import com.wingedsheep.ai.engine.AIPlayer
+import com.wingedsheep.ai.engine.AiProfile
 import com.wingedsheep.ai.engine.DecisionResponder
 import com.wingedsheep.ai.engine.GameSimulator
 import com.wingedsheep.ai.engine.advisor.CardAdvisorRegistry
+import com.wingedsheep.engine.core.ActivateAbility
 import com.wingedsheep.engine.core.CardsSelectedResponse
 import com.wingedsheep.engine.core.ChooseTargetsDecision
 import com.wingedsheep.engine.core.DecisionContext
@@ -14,10 +16,12 @@ import com.wingedsheep.engine.core.TargetRequirementInfo
 import com.wingedsheep.engine.core.TargetsResponse
 import com.wingedsheep.engine.support.GameTestDriver
 import com.wingedsheep.mtg.sets.MtgSetCatalog
+import com.wingedsheep.sdk.core.Step
 import com.wingedsheep.sdk.model.Deck
 import com.wingedsheep.sdk.model.EntityId
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
+import io.kotest.matchers.types.shouldBeInstanceOf
 
 class IndustrialWasteAdvisorModuleTest : FunSpec({
     fun fixture(): Triple<GameTestDriver, EntityId, DecisionResponder> {
@@ -143,6 +147,28 @@ class IndustrialWasteAdvisorModuleTest : FunSpec({
 
         responder.respond(driver.state, decision, player) shouldBe
             CardsSelectedResponse(decision.id, listOf(retriever))
+    }
+
+    test("policy prefers staging the Retriever loop over passing") {
+        val (driver, player) = fixture()
+        driver.passPriorityUntil(Step.PRECOMBAT_MAIN)
+        val altar = driver.putPermanentOnBattlefield(player, "Ashnod's Altar")
+        driver.putPermanentOnBattlefield(player, "Pactdoll Terror")
+        driver.putPermanentOnBattlefield(player, "Myr Retriever")
+        driver.putCardInHand(player, "Myr Retriever")
+        val simulator = GameSimulator(driver.cardRegistry)
+        val legal = simulator.getLegalActions(driver.state, player)
+        val activate = legal.single { (it.action as? ActivateAbility)?.sourceId == altar }
+        val pass = legal.single { it.actionType == "PassPriority" }
+        val profile = AiProfile.LEGACY_V0.copy(
+            id = "industrial-waste-policy-v2-fixture",
+            advisorModules = listOf(IndustrialWasteAdvisorModule),
+        )
+
+        val chosen = AIPlayer.create(driver.cardRegistry, player, profile)
+            .chooseFrom(driver.state, listOf(activate, pass)).action
+
+        chosen.shouldBeInstanceOf<ActivateAbility>().sourceId shouldBe altar
     }
 })
 
