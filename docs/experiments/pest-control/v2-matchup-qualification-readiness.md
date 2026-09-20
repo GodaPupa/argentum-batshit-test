@@ -46,5 +46,6 @@ the Mono Red Madness matchup; it cannot by itself establish Tier-1 status across
 ## Current stop condition
 
 No freeze identity is attached, and the compiled runner state is `DISABLED`. Unit tests use no seed
-vector and cannot activate execution. The next gate is one manual, auditable seed-generation and freeze
-operation after this readiness branch and all CI shards are green.
+vector and cannot activate execution. The next gate is the manual, artifact-only operation specified
+in [the qualification seed-freeze gate](v2-qualification-seed-freeze-gate.md), after its implementation
+and every required check are green.
