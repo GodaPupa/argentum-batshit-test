@@ -1,6 +1,7 @@
 # Project Pest Control — Status
 
-- Status: Matchup Block A formally rejected; all 50 seeds permanently retired; shared policy correction validated; replacement execution readiness only
+- Status: V2 50-game matchup qualification accepted; Pest Control 32-18 SoterX Mono Red Madness;
+  qualification vector permanently retired; frozen control unchanged
 - Laboratory: Project Pest Control
 - Branch: `pest-control/lab`
 - Validated base: `47882cd645caf126afee6cf13a65909806fa40ab`
@@ -28,6 +29,26 @@
 - Control version: Pest Control v1.0 (permanent, immutable)
 - Candidate status: proposed Tier-1 architecture only; not approved, constructed, or run
 - Accepted pass-equivalent terminal-scoring source: `9af6106915e4b41ab1d09d451633b7e09ab64bb4`
+
+## Current V2 matchup qualification
+
+The fresh V2 qualification vector executed exactly once through the fail-closed two-shard workflow
+at run `35536805887`, pinned to commit `8d3895de38189ca16f18017eb84b5e5a3f060b3bc` and tree
+`801f6eb99da2d2b7339b313a3fc27d9849bfc17d`. Reconciliation and independent readback found 50/50
+expected, attempted, recorded, and terminal games; 16,523/16,523 accepted actions; zero protocol
+defects; zero rejected or fallback actions; and exact frozen provenance throughout.
+
+The controlling disposition is `ACCEPTED_MATCHUP_QUALIFICATION`. Pest Control won 32-18 (64%);
+the exact 95% interval is 49.2%-77.1%. Pest was 19-6 on the play and 13-12 on the draw. A material
+seat split (12-13 in seat zero, 20-5 in seat one) is reported as outcome heterogeneity; targeted trace
+review found no seat mapping, provenance, targeting, payment, or terminal defect. Because the seat
+allocation was pre-balanced, the aggregate remains controlling, but the split limits precision and
+must not be hidden or tuned against.
+
+All 50 qualification seeds are permanently retired. This evidence qualifies only the exact frozen
+preboard SoterX Mono Red Madness matchup. It is not a Tier-1 determination and does not promote or
+change Pest Control v1.0. The durable record is in
+`docs/experiments/pest-control/v2-qualification-execution/`.
 
 ## Matchup validation — Gates 1–4
 
