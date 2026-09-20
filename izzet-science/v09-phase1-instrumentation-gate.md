@@ -60,4 +60,8 @@ fixtures only, reported zero sampled games and zero outcome claims, and preserve
 accepted control hash. The sole Phase-1 pilot is now authorized on the frozen source
 and assigned seed; it has not yet executed.
 
+A dedicated manual-only workflow now requires the control hash, deterministic
+preflight, output-auditor self-test, complete T1–T10 telemetry, subset invariants,
+manifest, and nonempty artifact upload. The ordinary Argentum workflow is unchanged.
+
 Disposition: `V09_PHASE1_PREFLIGHT_PASSED_PILOT_AUTHORIZED`
