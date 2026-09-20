@@ -176,3 +176,16 @@ list reached combo-ready state.
 Decision: the two-sided capability gate passes, but the pilot shows no challenger advantage.
 Execute the one predeclared eight-seed fresh replication before adding another opponent. The pilot
 remains non-promotional and must not be pooled with the replication.
+
+## Gate 4 Madness Burn replication
+
+GitHub Actions run 35544615045 completed all 32 fresh games on `IW-G4-MADNESS-BURN-R1` with zero
+exceptions, zero rejected actions, and no draws. Control and Pactdoll-A each went 13-3. Control
+recorded four combo-ready games to Pactdoll-A's three; each assembled Tron by turn 5 in 3/16, and
+their mean colored-mana-failure turns were effectively flat at 2.00 versus 2.06.
+
+Decision: do not escalate sampled gameplay. The opponent won only 3/16 against each list, missing
+the predeclared four-win two-sided threshold, and Pactdoll-A again produced no win advantage over
+Control. Preserve both artifacts separately and return to deterministic opponent-policy diagnosis
+before spending another matchup namespace. Industrial Waste v1.0 Control remains the immutable
+baseline; no challenger is promoted.

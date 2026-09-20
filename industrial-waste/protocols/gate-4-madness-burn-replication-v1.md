@@ -1,6 +1,6 @@
 # Gate 4 Madness Burn replication v1
 
-Status: planned; preboard screening evidence, not promotion evidence.
+Status: completed; valid screen; escalation gate failed.
 
 ## Inputs
 
@@ -19,3 +19,16 @@ The matchup earns a larger qualification sample only if at least one Industrial 
 games (37.5%) and Madness Burn wins at least four games against that list. Pactdoll-A earns a
 directional advantage only with at least two more wins than Control; a smaller gap is noise at this
 screening size. No result from this single opponent can promote a deck.
+
+## Result
+
+GitHub Actions run 35544615045 completed all 32 games with the registered namespace and digest,
+zero exceptions, zero rejected actions, and no draws. Control and Pactdoll-A each went 13-3.
+Control recorded four combo-ready games and Pactdoll-A three; Tron by turn 5 was 3/16 for each.
+Mean colored-mana-failure turns were nearly identical (2.00 Control, 2.06 Pactdoll-A).
+
+Decision: stop sampled escalation. Madness Burn won only 3/16 against each list, one short of the
+predeclared two-sided threshold, and Pactdoll-A's win differential versus Control was zero. This
+artifact neither promotes Pactdoll-A nor qualifies the matchup for a larger run. Before spending a
+new namespace or adding another opponent, audit the stock Burn policy deterministically to verify
+that it uses its damage and discard engines credibly.
