@@ -1,0 +1,111 @@
+name: Face Value Qualification Postboard Profile V4 Integration
+
+on:
+  push:
+    branches: [face-value/lab]
+    paths:
+      - .github/workflows/face-value-qualification-postboard-profile-v4-integration.yml
+      - experiments/face-value/qualification/audit_postboard_profile_v4_integration.py
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  legal-integration:
+    runs-on: ubuntu-latest
+    timeout-minutes: 85
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: face-value/lab
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - name: Verify inputs and build profile v4
+        run: |
+          set -euxo pipefail
+          python3 experiments/face-value/qualification/validate_inputs.py >/dev/null
+          cd experiments/face-value/qualification
+          sha256sum -c postboard-map-v1.sha256
+          cd ../../..
+          FORGE_SHA=f387ede550e336315637a8b765f0927ac768c113
+          git clone --filter=blob:none https://github.com/Card-Forge/forge.git forge-src
+          git -C forge-src checkout --detach "$FORGE_SHA"
+          python3 experiments/face-value/qualification/apply_forge_profile_v1.py --forge-root forge-src >/dev/null
+          python3 experiments/face-value/qualification/apply_forge_profile_v2.py --forge-root forge-src >/dev/null
+          python3 experiments/face-value/qualification/apply_forge_profile_v3.py --forge-root forge-src >/dev/null
+          python3 experiments/face-value/qualification/apply_forge_profile_v4.py --forge-root forge-src > forge-profile-v4-id.txt
+          test "$(cat forge-profile-v4-id.txt)" = 'FACE_VALUE_QUALIFICATION_FORGE_PROFILE_V4'
+          git -C forge-src diff > forge-profile-v4.patch
+          cd forge-src
+          mvn -B -DskipTests -pl forge-gui-desktop -am package
+          chmod +x forge-gui-desktop/target/forge.sh
+          rm -rf forge-gui-desktop/target/res
+          cp -R forge-gui/res forge-gui-desktop/target/res
+          echo "FORGE_LAUNCHER=$(pwd)/forge-gui-desktop/target/forge.sh" >> "$GITHUB_ENV"
+      - name: Materialize legal maps and fresh integration seeds
+        run: |
+          set -euo pipefail
+          mkdir -p postboard-v4-decks postboard-v4-logs "$HOME/.forge/decks/constructed"
+          python3 experiments/face-value/qualification/materialize_postboard_decks.py --output postboard-v4-decks
+          python3 - <<'PY'
+          from pathlib import Path
+          terror = Path('postboard-v4-decks/opponent-mono-blue-terror.dck')
+          terror.write_text(terror.read_text(encoding='utf-8').replace('4 Lorien Revealed', '4 Lórien Revealed'), encoding='utf-8')
+          matchups = ('elves', 'grixis-affinity', 'jund-wildfire', 'mono-blue-terror', 'mono-red-madness', 'mono-red-rally', 'monster-tron')
+          rows = []
+          seed = 730045
+          for matchup in matchups:
+              for seat in (1, 2):
+                  rows.append(f'{matchup}\t{seat}\t{seed}')
+                  seed += 1
+          assert seed == 730059
+          Path('postboard-v4-assignments.tsv').write_text('\n'.join(rows) + '\n', encoding='utf-8')
+          PY
+          cp postboard-v4-decks/*.dck "$HOME/.forge/decks/constructed/"
+          sha256sum postboard-v4-decks/*.dck postboard-v4-assignments.tsv forge-profile-v4.patch > postboard-v4-inputs.sha256
+          cat > postboard-v4-disposition.txt <<'EOF'
+          DIAGNOSTIC_ONLY_LEGAL_POSTBOARD_MAP_V1_PROFILE_V4_INTEGRATION
+          Seeds 730045-730058 and all outcomes are permanently retired diagnostic material.
+          Results have no matchup, qualification, tuning, structural-diagnosis, or challenger authority.
+          EOF
+      - name: Run balanced legal integration block
+        run: |
+          set -uo pipefail
+          while IFS=$'\t' read -r matchup face_seat seed; do
+            face="face-value-vs-${matchup}.dck"; opponent="opponent-${matchup}.dck"
+            if [ "$face_seat" = 1 ]; then first="$face"; second="$opponent"; else first="$opponent"; second="$face"; fi
+            log="postboard-v4-logs/${matchup}-face-seat${face_seat}-seed${seed}.log"
+            timeout 300 "$FORGE_LAUNCHER" sim -d "$first" "$second" -n 1 -s "$seed" -c 120 > "$log" 2>&1
+            code=$?
+            if [ "$code" -ne 0 ]; then printf '\nDIAGNOSTIC_PROCESS_EXIT_%s\n' "$code" >> "$log"; fi
+          done < postboard-v4-assignments.tsv
+          exit 0
+      - name: Audit legal integration
+        id: audit
+        continue-on-error: true
+        run: |
+          python3 experiments/face-value/qualification/audit_postboard_profile_v4_integration.py \
+            --logs postboard-v4-logs --assignments postboard-v4-assignments.tsv \
+            --output postboard-v4-summary.json
+      - name: Preserve integration evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: face-value-postboard-profile-v4-integration
+          path: |
+            postboard-v4-summary.json
+            postboard-v4-assignments.tsv
+            postboard-v4-inputs.sha256
+            postboard-v4-disposition.txt
+            postboard-v4-decks/*.dck
+            postboard-v4-logs/*.log
+            forge-profile-v4.patch
+            forge-profile-v4-id.txt
+            experiments/face-value/qualification/input-validation-report.json
+          if-no-files-found: warn
+      - name: Enforce fail-closed integration gate
+        if: steps.audit.outcome != 'success'
+        run: exit 1
