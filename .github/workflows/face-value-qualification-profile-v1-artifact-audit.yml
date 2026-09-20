@@ -1,0 +1,60 @@
+name: Face Value Qualification Profile v1 Artifact Audit
+
+on:
+  push:
+    branches: [face-value/lab]
+    paths: [.github/workflows/face-value-qualification-profile-v1-artifact-audit.yml]
+  workflow_dispatch:
+
+permissions:
+  actions: read
+  contents: read
+
+jobs:
+  extract-flagged-records:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download preserved composite-profile artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          gh run download 35534978465 --repo GodaPupa/argentum-batshit-test \
+            --name face-value-composite-forge-profile-v1 --dir preserved-profile-v1
+      - name: Extract flagged records without replaying games
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+
+          root = Path('preserved-profile-v1')
+          summary_path = root / 'composite-forge-profile-v1-summary.json'
+          summary = json.loads(summary_path.read_text(encoding='utf-8'))
+          flagged = [record for record in summary['records'] if record['flags']]
+          output = {
+              'classification': 'READ_ONLY_AUDIT_OF_PRESERVED_PROFILE_V1_ARTIFACT',
+              'source_run': 35534978465,
+              'source_artifact_id': 10613251188,
+              'flagged_records': flagged,
+          }
+          Path('composite-profile-v1-flagged-records.json').write_text(
+              json.dumps(output, indent=2, sort_keys=True) + '\n', encoding='utf-8'
+          )
+          print(json.dumps(output, indent=2, sort_keys=True))
+          assert len(flagged) == 1, flagged
+
+          log = root / flagged[0]['log']
+          lines = log.read_text(encoding='utf-8', errors='replace').splitlines()
+          Path('flagged-log-tail.txt').write_text('\n'.join(lines[-160:]) + '\n', encoding='utf-8')
+          print('--- FLAGGED LOG TAIL ---')
+          print('\n'.join(lines[-160:]))
+          PY
+      - name: Preserve read-only audit
+        uses: actions/upload-artifact@v4
+        with:
+          name: face-value-profile-v1-flagged-record-audit
+          path: |
+            composite-profile-v1-flagged-records.json
+            flagged-log-tail.txt
+          if-no-files-found: error
