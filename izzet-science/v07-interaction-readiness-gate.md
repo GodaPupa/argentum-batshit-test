@@ -64,5 +64,8 @@ No rerolls, replacement seeds, or post-outcome threshold changes.
 - A challenger cannot earn promotion from goldfish speed alone; it must improve a
   predeclared interaction metric without breaching the frozen mana and combo guardrails.
 
-Disposition: `V07_PHASE0_AUTHORIZED`
+Disposition: `V07_PHASE1_PILOT_ACCEPTED`
 
+The accepted pilot is recorded in `v07-phase1-pilot-accepted.md`. No challenger or
+100,000-game confirmation is authorized until a specific interaction hypothesis is
+preregistered.
