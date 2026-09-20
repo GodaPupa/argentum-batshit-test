@@ -1,0 +1,103 @@
+name: Face Value Qualification Postboard Map V2 Elves
+
+on:
+  push:
+    branches: [face-value/lab]
+    paths:
+      - .github/workflows/face-value-qualification-postboard-map-v2-elves.yml
+      - experiments/face-value/qualification/postboard-map-v2.json
+      - experiments/face-value/qualification/postboard-map-v2.sha256
+      - experiments/face-value/qualification/materialize_postboard_decks_v2.py
+      - experiments/face-value/qualification/audit_postboard_map_v2_elves.py
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  elves-integration:
+    runs-on: ubuntu-latest
+    timeout-minutes: 70
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: face-value/lab
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - name: Validate inputs and build accepted profile v4
+        run: |
+          set -euxo pipefail
+          python3 experiments/face-value/qualification/validate_inputs.py >/dev/null
+          cd experiments/face-value/qualification
+          sha256sum -c postboard-map-v1.sha256
+          sha256sum -c postboard-map-v2.sha256
+          cd ../../..
+          FORGE_SHA=f387ede550e336315637a8b765f0927ac768c113
+          git clone --filter=blob:none https://github.com/Card-Forge/forge.git forge-src
+          git -C forge-src checkout --detach "$FORGE_SHA"
+          for v in 1 2 3 4; do python3 "experiments/face-value/qualification/apply_forge_profile_v${v}.py" --forge-root forge-src > "forge-profile-v${v}-id.txt"; done
+          test "$(cat forge-profile-v4-id.txt)" = 'FACE_VALUE_QUALIFICATION_FORGE_PROFILE_V4'
+          git -C forge-src diff > forge-profile-v4.patch
+          cd forge-src
+          mvn -B -DskipTests -pl forge-gui-desktop -am package
+          chmod +x forge-gui-desktop/target/forge.sh
+          rm -rf forge-gui-desktop/target/res
+          cp -R forge-gui/res forge-gui-desktop/target/res
+          echo "FORGE_LAUNCHER=$(pwd)/forge-gui-desktop/target/forge.sh" >> "$GITHUB_ENV"
+      - name: Materialize map v2 and fresh Elves seeds
+        run: |
+          set -euo pipefail
+          mkdir -p map-v2-decks map-v2-elves-logs "$HOME/.forge/decks/constructed"
+          python3 experiments/face-value/qualification/materialize_postboard_decks_v2.py --output map-v2-decks
+          python3 - <<'PY'
+          from pathlib import Path
+          rows = [f'{seat}\t{seed}' for seat, seed in zip((1, 2, 1, 2), range(730071, 730075))]
+          Path('map-v2-elves-assignments.tsv').write_text('\n'.join(rows) + '\n', encoding='utf-8')
+          PY
+          cp map-v2-decks/*.dck "$HOME/.forge/decks/constructed/"
+          sha256sum map-v2-decks/*.dck map-v2-elves-assignments.tsv forge-profile-v4.patch > map-v2-elves-inputs.sha256
+          cat > map-v2-elves-disposition.txt <<'EOF'
+          DIAGNOSTIC_ONLY_LEGAL_POSTBOARD_MAP_V2_ELVES_INTEGRATION
+          Seeds 730071-730074 and all outcomes are permanently retired diagnostic material.
+          Map v1 remains preserved and simulator-rejected due to Monstrous Emergence execution failure.
+          Results have no matchup, qualification, tuning, structural-diagnosis, or challenger authority.
+          EOF
+      - name: Run fresh legal Elves integration
+        run: |
+          set -uo pipefail
+          while IFS=$'\t' read -r seat seed; do
+            if [ "$seat" = 1 ]; then first=face-value-vs-elves.dck; second=opponent-elves.dck; else first=opponent-elves.dck; second=face-value-vs-elves.dck; fi
+            log="map-v2-elves-logs/elves-face-seat${seat}-seed${seed}.log"
+            timeout 300 "$FORGE_LAUNCHER" sim -d "$first" "$second" -n 1 -s "$seed" -c 120 > "$log" 2>&1
+            code=$?
+            if [ "$code" -ne 0 ]; then printf '\nDIAGNOSTIC_PROCESS_EXIT_%s\n' "$code" >> "$log"; fi
+          done < map-v2-elves-assignments.tsv
+          exit 0
+      - name: Audit map-v2 Elves integration
+        id: audit
+        continue-on-error: true
+        run: |
+          python3 experiments/face-value/qualification/audit_postboard_map_v2_elves.py \
+            --logs map-v2-elves-logs --assignments map-v2-elves-assignments.tsv \
+            --output map-v2-elves-summary.json
+      - name: Preserve map-v2 evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: face-value-postboard-map-v2-elves
+          path: |
+            map-v2-elves-summary.json
+            map-v2-elves-assignments.tsv
+            map-v2-elves-inputs.sha256
+            map-v2-elves-disposition.txt
+            map-v2-decks/*.dck
+            map-v2-elves-logs/*.log
+            forge-profile-v4.patch
+            forge-profile-v*-id.txt
+            experiments/face-value/qualification/input-validation-report.json
+          if-no-files-found: warn
+      - name: Enforce fail-closed map-v2 gate
+        if: steps.audit.outcome != 'success'
+        run: exit 1
