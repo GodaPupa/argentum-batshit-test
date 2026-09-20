@@ -412,7 +412,7 @@ def color_flags(state):
 
 
 UU_HAND={"Counterspell","Deprive","Ideas Unbound"}
-U_HAND={"Brainstorm","Consider","Opt","Ponder","Preordain","Impulse","Dispel","Negate","Memory Lapse","Prohibit","Spell Pierce","Turn Aside","Dive Down","Into the Roil","Blink of an Eye","Echoing Truth","Merchant Scroll","Dizzy Spell","Muddle the Mixture","High Tide","Snap"}
+U_HAND={"Brainstorm","Consider","Opt","Ponder","Preordain","Impulse","Dispel","Negate","Memory Lapse","Prohibit","Spell Pierce","Turn Aside","Dive Down","Mizzium Skin","Into the Roil","Blink of an Eye","Echoing Truth","Merchant Scroll","Dizzy Spell","Muddle the Mixture","High Tide","Snap"}
 R_HAND={"Lightning Bolt","Galvanic Blast","Skred","Flame Slash","Abrade","Shattering Pulse","Lava Spike","Desperate Ritual","Faithless Looting","Pyroblast"}
 
 
@@ -999,7 +999,8 @@ CONDITIONAL_PROTECTION_COVERAGE={
 def protection_covers(card, threat_tags):
     if card in CONDITIONAL_PROTECTION: return False
     coverage=PROTECTION_COVERAGE.get(card,set())
-    return "spell" in coverage or bool(coverage & set(threat_tags))
+    threats=set(threat_tags)
+    return ("spell" in coverage and "spell" in threats) or bool((coverage-{"spell"}) & threats)
 
 def primary_combo_launch_with_protection_feasible(state, protection_card, threat_tags):
     """Phase-0 land-payment check; sampled instrumentation is not authorized here."""
@@ -1197,6 +1198,10 @@ def interaction_regressions():
         turn_aside,"Turn Aside",{"spell","targeted_spell","targeted_creature","targeted_permanent"})
     assert not primary_combo_launch_with_protection_exact(
         turn_aside,"Turn Aside",{"ability","targeted_creature","targeted_permanent"})
+    broad_counter=DevState(["Lava Spike","Desperate Ritual","Counterspell"]); broad_counter.turn=7
+    broad_counter.battlefield=list(dive.battlefield)+[{"card":"Island","tapped":False,"entered":6}]
+    assert not primary_combo_launch_with_protection_exact(
+        broad_counter,"Counterspell",{"ability","targeted_creature","targeted_permanent"})
     skin=DevState(["Lava Spike","Desperate Ritual","Mizzium Skin"]); skin.turn=6
     skin.battlefield=list(dive.battlefield)
     assert primary_combo_launch_with_protection_exact(

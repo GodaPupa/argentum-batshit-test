@@ -55,4 +55,13 @@ At T10, all conditions must hold:
 Failure rejects v0.8-A permanently. A pass authorizes exactly one 100,000-game
 confirmation on the preregistered seed; only confirmation may promote the challenger.
 
-Disposition: `V08A_FROZEN_AWAITING_PILOT`
+Disposition: `V08A_PILOT_INADMISSIBLE_REJECTED`
+
+The sole pilot run `35539938514` exposed complete outcomes but failed before writing
+its manifest or uploading its artifact. Its comparator also found that legacy U-action
+telemetry differed because Mizzium Skin was missing from the harness's one-blue action
+class. Post-run audit then found that broad spell counters were incorrectly credited
+against the newly introduced ability event. These are modeling defects, not evidence
+for promotion. The run is incomplete and inadmissible; v0.8-A is permanently rejected,
+no rerun is allowed, and its confirmation seed is retired unused. See
+`v08A-mizzium-skin-inadmissible.md`.

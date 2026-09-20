@@ -74,6 +74,7 @@ Accepted control: `izzet-science/v0.7-control.md`, SHA256
 It preserves the v0.6 shell and replaces its 26 ordinary basics with Snow-Covered
 equivalents after a paired 100,000-game confirmation.
 
-Current gate: v0.8-A Mizzium Skin (`-1 Turn Aside, +1 Mizzium Skin`) is frozen for
-one paired 10,000-game pilot. It targets protection from creature-removal abilities;
-v0.7 remains accepted unless the challenger passes pilot and confirmation.
+Latest gate: v0.8-A Mizzium Skin (`-1 Turn Aside, +1 Mizzium Skin`) was rejected as
+inadmissible after its sole pilot exposed outcomes but failed before provenance
+artifact completion and revealed two ability-event modeling defects. It cannot be
+rerun or rehabilitated. v0.7 remains the accepted control.
