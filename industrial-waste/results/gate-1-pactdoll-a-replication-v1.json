@@ -1,0 +1,109 @@
+{
+  "candidates": {
+    "pactdoll-a": {
+      "black_failure_pct": 4.55,
+      "combo_ready_by_t8_pct": 22.55,
+      "games": 2000,
+      "green_failure_pct": 6.15,
+      "interaction_exposure_pct": 95.55,
+      "lethal_by_t8_pct": 22.0,
+      "mean_fair_material_proxy": 10.659,
+      "mean_final_hand_size": 6.514,
+      "mean_noninfinite_pactdoll_damage": 4.471,
+      "mean_redundant_payoffs": 0.03,
+      "median_combo_ready_turn": 7,
+      "median_lethal_turn": 7,
+      "mulligan_rate_pct": 34.05,
+      "recovery_given_interaction_pct": 8.79,
+      "recursion_access_pct": 0.0,
+      "retriever_pair_pct": 51.7,
+      "tron_t3_pct": 33.85,
+      "tron_t4_pct": 47.95,
+      "tron_t5_pct": 59.2
+    },
+    "v1.0-control": {
+      "black_failure_pct": 5.15,
+      "combo_ready_by_t8_pct": 20.85,
+      "games": 2000,
+      "green_failure_pct": 6.95,
+      "interaction_exposure_pct": 95.8,
+      "lethal_by_t8_pct": 20.0,
+      "mean_fair_material_proxy": 9.923,
+      "mean_final_hand_size": 6.455,
+      "mean_noninfinite_pactdoll_damage": 3.942,
+      "mean_redundant_payoffs": 0.034,
+      "median_combo_ready_turn": 7,
+      "median_lethal_turn": 7,
+      "mulligan_rate_pct": 38.0,
+      "recovery_given_interaction_pct": 9.45,
+      "recursion_access_pct": 0.0,
+      "retriever_pair_pct": 50.45,
+      "tron_t3_pct": 33.05,
+      "tron_t4_pct": 47.7,
+      "tron_t5_pct": 58.25
+    }
+  },
+  "evidence_class": "DIAGNOSTIC_MODEL_ONLY",
+  "paired_deltas_vs_control": {
+    "pactdoll-a": {
+      "black_failure_pct": {
+        "ci95_high": 0.543,
+        "ci95_low": -1.743,
+        "delta": -0.6
+      },
+      "combo_ready_by_t8_pct": {
+        "ci95_high": 3.584,
+        "ci95_low": -0.184,
+        "delta": 1.7
+      },
+      "green_failure_pct": {
+        "ci95_high": 0.432,
+        "ci95_low": -2.032,
+        "delta": -0.8
+      },
+      "lethal_by_t8_pct": {
+        "ci95_high": 3.858,
+        "ci95_low": 0.142,
+        "delta": 2.0
+      },
+      "mean_fair_material_proxy": {
+        "ci95_high": 1.037,
+        "ci95_low": 0.434,
+        "delta": 0.736
+      },
+      "mean_noninfinite_pactdoll_damage": {
+        "ci95_high": 0.703,
+        "ci95_low": 0.354,
+        "delta": 0.528
+      },
+      "mulligan_rate_pct": {
+        "ci95_high": -2.219,
+        "ci95_low": -5.681,
+        "delta": -3.95
+      },
+      "retriever_pair_pct": {
+        "ci95_high": 3.197,
+        "ci95_low": -0.697,
+        "delta": 1.25
+      },
+      "tron_t3_pct": {
+        "ci95_high": 2.586,
+        "ci95_low": -0.986,
+        "delta": 0.8
+      },
+      "tron_t4_pct": {
+        "ci95_high": 2.304,
+        "ci95_low": -1.804,
+        "delta": 0.25
+      },
+      "tron_t5_pct": {
+        "ci95_high": 3.022,
+        "ci95_low": -1.122,
+        "delta": 0.95
+      }
+    }
+  },
+  "protocol": "IW-G1-PACTDOLL-A-R1",
+  "seed_count": 2000,
+  "seed_vector_sha256": "bf1322fb9583629494e9de0f6e80bb521c8ce0d9e40c418102d769837501aea9"
+}

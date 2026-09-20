@@ -1,0 +1,265 @@
+{
+  "candidates": {
+    "pactdoll-a": {
+      "black_failure_pct": 4.65,
+      "combo_ready_by_t8_pct": 23.85,
+      "games": 2000,
+      "green_failure_pct": 6.25,
+      "interaction_exposure_pct": 96.2,
+      "lethal_by_t8_pct": 22.8,
+      "mean_fair_material_proxy": 10.882,
+      "mean_final_hand_size": 6.508,
+      "mean_noninfinite_pactdoll_damage": 4.6,
+      "mean_redundant_payoffs": 0.036,
+      "median_combo_ready_turn": 7,
+      "median_lethal_turn": 7,
+      "mulligan_rate_pct": 34.85,
+      "recovery_given_interaction_pct": 9.04,
+      "recursion_access_pct": 0.0,
+      "retriever_pair_pct": 53.55,
+      "tron_t3_pct": 33.2,
+      "tron_t4_pct": 49.05,
+      "tron_t5_pct": 60.05
+    },
+    "recursive-a": {
+      "black_failure_pct": 6.35,
+      "combo_ready_by_t8_pct": 22.75,
+      "games": 2000,
+      "green_failure_pct": 7.85,
+      "interaction_exposure_pct": 95.7,
+      "lethal_by_t8_pct": 21.7,
+      "mean_fair_material_proxy": 10.46,
+      "mean_final_hand_size": 6.532,
+      "mean_noninfinite_pactdoll_damage": 4.199,
+      "mean_redundant_payoffs": 0.042,
+      "median_combo_ready_turn": 7,
+      "median_lethal_turn": 7,
+      "mulligan_rate_pct": 33.95,
+      "recovery_given_interaction_pct": 9.04,
+      "recursion_access_pct": 46.4,
+      "retriever_pair_pct": 52.9,
+      "tron_t3_pct": 31.15,
+      "tron_t4_pct": 45.6,
+      "tron_t5_pct": 56.9
+    },
+    "turbo-a": {
+      "black_failure_pct": 9.7,
+      "combo_ready_by_t8_pct": 19.4,
+      "games": 2000,
+      "green_failure_pct": 13.8,
+      "interaction_exposure_pct": 94.3,
+      "lethal_by_t8_pct": 18.8,
+      "mean_fair_material_proxy": 9.563,
+      "mean_final_hand_size": 6.444,
+      "mean_noninfinite_pactdoll_damage": 3.712,
+      "mean_redundant_payoffs": 0.057,
+      "median_combo_ready_turn": 7.0,
+      "median_lethal_turn": 7.0,
+      "mulligan_rate_pct": 37.95,
+      "recovery_given_interaction_pct": 7.74,
+      "recursion_access_pct": 0.0,
+      "retriever_pair_pct": 51.05,
+      "tron_t3_pct": 36.05,
+      "tron_t4_pct": 51.1,
+      "tron_t5_pct": 62.25
+    },
+    "v1.0-control": {
+      "black_failure_pct": 4.25,
+      "combo_ready_by_t8_pct": 21.95,
+      "games": 2000,
+      "green_failure_pct": 6.65,
+      "interaction_exposure_pct": 95.5,
+      "lethal_by_t8_pct": 20.9,
+      "mean_fair_material_proxy": 10.104,
+      "mean_final_hand_size": 6.489,
+      "mean_noninfinite_pactdoll_damage": 4.058,
+      "mean_redundant_payoffs": 0.037,
+      "median_combo_ready_turn": 7,
+      "median_lethal_turn": 7,
+      "mulligan_rate_pct": 35.9,
+      "recovery_given_interaction_pct": 9.16,
+      "recursion_access_pct": 0.0,
+      "retriever_pair_pct": 52.15,
+      "tron_t3_pct": 33.35,
+      "tron_t4_pct": 46.95,
+      "tron_t5_pct": 58.9
+    }
+  },
+  "evidence_class": "DIAGNOSTIC_MODEL_ONLY",
+  "paired_deltas_vs_control": {
+    "pactdoll-a": {
+      "black_failure_pct": {
+        "ci95_high": 1.465,
+        "ci95_low": -0.665,
+        "delta": 0.4
+      },
+      "combo_ready_by_t8_pct": {
+        "ci95_high": 3.854,
+        "ci95_low": -0.054,
+        "delta": 1.9
+      },
+      "green_failure_pct": {
+        "ci95_high": 0.76,
+        "ci95_low": -1.56,
+        "delta": -0.4
+      },
+      "lethal_by_t8_pct": {
+        "ci95_high": 3.794,
+        "ci95_low": 0.006,
+        "delta": 1.9
+      },
+      "mean_fair_material_proxy": {
+        "ci95_high": 1.061,
+        "ci95_low": 0.495,
+        "delta": 0.778
+      },
+      "mean_noninfinite_pactdoll_damage": {
+        "ci95_high": 0.706,
+        "ci95_low": 0.379,
+        "delta": 0.542
+      },
+      "mulligan_rate_pct": {
+        "ci95_high": 0.604,
+        "ci95_low": -2.704,
+        "delta": -1.05
+      },
+      "retriever_pair_pct": {
+        "ci95_high": 3.35,
+        "ci95_low": -0.55,
+        "delta": 1.4
+      },
+      "tron_t3_pct": {
+        "ci95_high": 1.551,
+        "ci95_low": -1.851,
+        "delta": -0.15
+      },
+      "tron_t4_pct": {
+        "ci95_high": 4.126,
+        "ci95_low": 0.074,
+        "delta": 2.1
+      },
+      "tron_t5_pct": {
+        "ci95_high": 3.151,
+        "ci95_low": -0.851,
+        "delta": 1.15
+      }
+    },
+    "recursive-a": {
+      "black_failure_pct": {
+        "ci95_high": 3.133,
+        "ci95_low": 1.067,
+        "delta": 2.1
+      },
+      "combo_ready_by_t8_pct": {
+        "ci95_high": 2.526,
+        "ci95_low": -0.926,
+        "delta": 0.8
+      },
+      "green_failure_pct": {
+        "ci95_high": 2.375,
+        "ci95_low": 0.025,
+        "delta": 1.2
+      },
+      "lethal_by_t8_pct": {
+        "ci95_high": 2.469,
+        "ci95_low": -0.869,
+        "delta": 0.8
+      },
+      "mean_fair_material_proxy": {
+        "ci95_high": 0.618,
+        "ci95_low": 0.094,
+        "delta": 0.356
+      },
+      "mean_noninfinite_pactdoll_damage": {
+        "ci95_high": 0.291,
+        "ci95_low": -0.007,
+        "delta": 0.142
+      },
+      "mulligan_rate_pct": {
+        "ci95_high": -0.431,
+        "ci95_low": -3.469,
+        "delta": -1.95
+      },
+      "retriever_pair_pct": {
+        "ci95_high": 2.467,
+        "ci95_low": -0.967,
+        "delta": 0.75
+      },
+      "tron_t3_pct": {
+        "ci95_high": -0.672,
+        "ci95_low": -3.728,
+        "delta": -2.2
+      },
+      "tron_t4_pct": {
+        "ci95_high": 0.432,
+        "ci95_low": -3.132,
+        "delta": -1.35
+      },
+      "tron_t5_pct": {
+        "ci95_high": -0.142,
+        "ci95_low": -3.858,
+        "delta": -2.0
+      }
+    },
+    "turbo-a": {
+      "black_failure_pct": {
+        "ci95_high": 6.762,
+        "ci95_low": 4.138,
+        "delta": 5.45
+      },
+      "combo_ready_by_t8_pct": {
+        "ci95_high": -0.87,
+        "ci95_low": -4.23,
+        "delta": -2.55
+      },
+      "green_failure_pct": {
+        "ci95_high": 8.532,
+        "ci95_low": 5.768,
+        "delta": 7.15
+      },
+      "lethal_by_t8_pct": {
+        "ci95_high": -0.451,
+        "ci95_low": -3.749,
+        "delta": -2.1
+      },
+      "mean_fair_material_proxy": {
+        "ci95_high": -0.276,
+        "ci95_low": -0.805,
+        "delta": -0.54
+      },
+      "mean_noninfinite_pactdoll_damage": {
+        "ci95_high": -0.192,
+        "ci95_low": -0.498,
+        "delta": -0.345
+      },
+      "mulligan_rate_pct": {
+        "ci95_high": 3.637,
+        "ci95_low": 0.463,
+        "delta": 2.05
+      },
+      "retriever_pair_pct": {
+        "ci95_high": 0.738,
+        "ci95_low": -2.938,
+        "delta": -1.1
+      },
+      "tron_t3_pct": {
+        "ci95_high": 4.493,
+        "ci95_low": 0.907,
+        "delta": 2.7
+      },
+      "tron_t4_pct": {
+        "ci95_high": 6.247,
+        "ci95_low": 2.053,
+        "delta": 4.15
+      },
+      "tron_t5_pct": {
+        "ci95_high": 5.504,
+        "ci95_low": 1.196,
+        "delta": 3.35
+      }
+    }
+  },
+  "protocol": "IW-G1-V1",
+  "seed_count": 2000,
+  "seed_vector_sha256": "fe92fcd386cf4b447cf0ff97f9cf9043d9ee45814773de88f900816a95ea9f6f"
+}
