@@ -40,6 +40,9 @@ jobs:
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v6
 
+      - name: Set up just
+        uses: extractions/setup-just@v3
+
       - name: Validate frozen inputs
         run: |
           python3 -m unittest discover -s industrial-waste/sim -p 'test_*.py' -v
