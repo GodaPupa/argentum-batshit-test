@@ -1,0 +1,139 @@
+name: Face Value Qualification Blast Forced Exposure
+
+on:
+  push:
+    branches: [face-value/lab]
+    paths:
+      - .github/workflows/face-value-qualification-blast-forced-exposure.yml
+      - experiments/face-value/qualification/audit_blast_forced_exposure.py
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  forced-exposure:
+    runs-on: ubuntu-latest
+    timeout-minutes: 75
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: face-value/lab
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - name: Validate frozen inputs and build profile v3
+        run: |
+          set -euxo pipefail
+          python3 experiments/face-value/qualification/validate_inputs.py >/dev/null
+          FORGE_SHA=f387ede550e336315637a8b765f0927ac768c113
+          git clone --filter=blob:none https://github.com/Card-Forge/forge.git forge-src
+          git -C forge-src checkout --detach "$FORGE_SHA"
+          python3 experiments/face-value/qualification/apply_forge_profile_v1.py --forge-root forge-src >/dev/null
+          python3 experiments/face-value/qualification/apply_forge_profile_v2.py --forge-root forge-src >/dev/null
+          python3 experiments/face-value/qualification/apply_forge_profile_v3.py --forge-root forge-src > forge-profile-v3-id.txt
+          test "$(cat forge-profile-v3-id.txt)" = 'FACE_VALUE_QUALIFICATION_FORGE_PROFILE_V3'
+          git -C forge-src diff > forge-profile-v3.patch
+          cd forge-src
+          mvn -B -DskipTests -pl forge-gui-desktop -am package
+          chmod +x forge-gui-desktop/target/forge.sh
+          rm -rf forge-gui-desktop/target/res
+          cp -R forge-gui/res forge-gui-desktop/target/res
+          echo "FORGE_LAUNCHER=$(pwd)/forge-gui-desktop/target/forge.sh" >> "$GITHUB_ENV"
+      - name: Freeze nonlegal forced-exposure fixtures
+        run: |
+          set -euo pipefail
+          mkdir -p blast-fixtures blast-forced-logs "$HOME/.forge/decks/constructed"
+          cat > blast-fixtures/red-blast-caster.dck <<'EOF'
+          [metadata]
+          Name=DIAGNOSTIC ONLY Red Blast Caster
+          Deck Type=constructed
+          [main]
+          12 Pyroblast
+          12 Red Elemental Blast
+          12 Kessig Flamebreather
+          24 Mountain
+          EOF
+          cat > blast-fixtures/blue-target.dck <<'EOF'
+          [metadata]
+          Name=DIAGNOSTIC ONLY Blue Target
+          Deck Type=constructed
+          [main]
+          24 Faerie Miscreant
+          36 Island
+          EOF
+          cat > blast-fixtures/blue-blast-caster.dck <<'EOF'
+          [metadata]
+          Name=DIAGNOSTIC ONLY Blue Blast Caster
+          Deck Type=constructed
+          [main]
+          12 Hydroblast
+          12 Blue Elemental Blast
+          12 Faerie Seer
+          24 Island
+          EOF
+          cat > blast-fixtures/red-target.dck <<'EOF'
+          [metadata]
+          Name=DIAGNOSTIC ONLY Red Target
+          Deck Type=constructed
+          [main]
+          24 Voldaren Epicure
+          36 Mountain
+          EOF
+          python3 - <<'PY'
+          from pathlib import Path
+          rows = []
+          seed = 730029
+          for family in ('red-blasts', 'blue-blasts'):
+              for seat in (1, 2, 1, 2):
+                  rows.append(f'{family}\t{seat}\t{seed}')
+                  seed += 1
+          Path('blast-forced-assignments.tsv').write_text('\n'.join(rows) + '\n', encoding='utf-8')
+          PY
+          cp blast-fixtures/*.dck "$HOME/.forge/decks/constructed/"
+          sha256sum blast-fixtures/*.dck blast-forced-assignments.tsv forge-profile-v3.patch > blast-forced-inputs.sha256
+          cat > blast-forced-disposition.txt <<'EOF'
+          DIAGNOSTIC_ONLY_NONLEGAL_BLAST_FORCED_EXPOSURE
+          Seeds 730029-730036 and all outcomes are permanently retired diagnostic material.
+          The deliberately nonlegal decks test only blast casting and valid mode/target selection.
+          Results have no matchup, qualification, tuning, structural-diagnosis, or challenger authority.
+          EOF
+      - name: Run fresh forced-exposure assignments
+        run: |
+          set -uo pipefail
+          while IFS=$'\t' read -r family caster_seat seed; do
+            if [ "$family" = red-blasts ]; then caster=red-blast-caster.dck; target=blue-target.dck; else caster=blue-blast-caster.dck; target=red-target.dck; fi
+            if [ "$caster_seat" = 1 ]; then first="$caster"; second="$target"; else first="$target"; second="$caster"; fi
+            log="blast-forced-logs/${family}-caster-seat${caster_seat}-seed${seed}.log"
+            timeout 240 "$FORGE_LAUNCHER" sim -d "$first" "$second" -n 1 -s "$seed" -c 120 > "$log" 2>&1
+            code=$?
+            if [ "$code" -ne 0 ]; then printf '\nDIAGNOSTIC_PROCESS_EXIT_%s\n' "$code" >> "$log"; fi
+          done < blast-forced-assignments.tsv
+          exit 0
+      - name: Audit blast capability
+        id: audit
+        continue-on-error: true
+        run: |
+          python3 experiments/face-value/qualification/audit_blast_forced_exposure.py \
+            --logs blast-forced-logs --assignments blast-forced-assignments.tsv \
+            --output blast-forced-summary.json
+      - name: Preserve remediation evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: face-value-blast-forced-exposure
+          path: |
+            blast-forced-summary.json
+            blast-forced-assignments.tsv
+            blast-forced-inputs.sha256
+            blast-forced-disposition.txt
+            blast-fixtures/*.dck
+            blast-forced-logs/*.log
+            forge-profile-v3.patch
+            forge-profile-v3-id.txt
+            experiments/face-value/qualification/input-validation-report.json
+          if-no-files-found: warn
+      - name: Enforce fail-closed remediation gate
+        if: steps.audit.outcome != 'success'
+        run: exit 1
