@@ -5,9 +5,9 @@ archive, ordered vector, assignments, freeze manifest, shard allocation, qualifi
 hashes, protocol, block, and balance constraints already accepted in frozen readiness.
 
 The harness has no execution mode. Its workflow exposes only validation, and its Kotlin entry point
-only reads bytes, builds the sealed two-shard plan, proves that the runner guard rejects activation,
-and emits `VALIDATED_UNEXECUTED` evidence. The compiled qualification runner remains `DISABLED`;
-outcome exposure remains 0/50.
+only reads bytes, builds the sealed two-shard plan, verifies every execution guard without selecting
+execution, and emits `VALIDATED_UNEXECUTED` evidence. Authorization is isolated in a separate
+manual-only one-shot workflow; outcome exposure remains 0/50 until that workflow is dispatched.
 
 Validation requires:
 
@@ -24,9 +24,9 @@ contract binds every attempt before initialization, rejects retries and substitu
 terminal records with no rejected or fallback actions, and retires the complete vector if either
 shard is missing, failed, cancelled, timed out, duplicated, reordered, or incomplete.
 
-Any mismatch rejects validation. Authorization and execution require a later, separately reviewed gate
-that pins a green harness commit and preserves the no-retry, no-replacement, whole-vector rejection
-boundary.
+Any mismatch rejects validation. Execution is available only through the separately reviewed one-shot
+gate, which pins an exact green harness commit and tree and preserves the no-retry, no-replacement,
+whole-vector rejection boundary.
 
 ## Compiled runner boundary
 
@@ -34,8 +34,8 @@ The production game adapter and per-shard runner are compiled behind the same gu
 provenance for all 50 assignments but never constructs a card registry or calls game initialization.
 The validation workflow contains no execution input or execution branch selection.
 
-If a later authorization changes the runner guard through review, each shard will durably append its
-seed attempt before initialization, preserve every per-game raw trace and deterministic artifact, and
-emit a shard raw record, compressed copy, manifest, audit input, and status. A gameplay, persistence,
+The authorized one-shot runner durably appends each shard's
+seed attempt before initialization, preserves every per-game raw trace and deterministic artifact, and
+emits a shard raw record, compressed copy, manifest, audit input, and status. A gameplay, persistence,
 terminal, protocol, rejected-action, fallback-action, timeout, or artifact failure rejects that shard;
 aggregate reconciliation then retires the complete vector without retry or partial salvage.
