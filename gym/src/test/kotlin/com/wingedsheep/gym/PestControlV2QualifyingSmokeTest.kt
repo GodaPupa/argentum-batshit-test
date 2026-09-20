@@ -1,10 +1,5 @@
 package com.wingedsheep.gym
 
-import com.wingedsheep.ai.engine.AIPlayer
-import com.wingedsheep.ai.engine.AiProfile
-import com.wingedsheep.ai.engine.EngineAiPlayerController
-import com.wingedsheep.engine.core.GameAction
-import com.wingedsheep.engine.core.SubmitDecision
 import com.wingedsheep.engine.registry.CardRegistry
 import com.wingedsheep.gym.matchup.*
 import com.wingedsheep.mtg.sets.MtgSetCatalog
@@ -37,28 +32,7 @@ class PestControlV2QualifyingSmokeTest : FunSpec({
             recordId = "PEST_CONTROL_V2_QUALIFYING_SMOKE",
             seed = V2_SMOKE_SEED,
         )
-        val players = session.environment.playerIds
-        val mulligans = players.associateWith { player ->
-            EngineAiPlayerController(registry, player, gameStateProvider = { session.environment.state })
-        }
-        session.driveValidatedLondonMulligans(mulligans)
-        val agents = players.associateWith { player -> AIPlayer.create(registry, player, AiProfile.PRODUCTION_CANDIDATE_EXPIRING) }
-        var lastTurn = session.environment.turnNumber
-        var actionsThisTurn = 0
-        while (!session.environment.isTerminal) {
-            session.enforceLimits(maxActions = 12_000, maxTurns = 60)
-            if (session.environment.turnNumber != lastTurn) { lastTurn = session.environment.turnNumber; actionsThisTurn = 0 }
-            if (++actionsThisTurn > 500) session.reject(ProtocolDefectKind.WEDGE, "more than 500 exact-one actions on turn $lastTurn")
-            val state = session.environment.state
-            val decision = state.pendingDecision
-            val acting = decision?.playerId ?: state.priorityPlayerId
-                ?: session.reject(ProtocolDefectKind.WEDGE, "no pending decision or priority holder")
-            val agent = agents.getValue(acting)
-            val action: GameAction = if (decision != null) SubmitDecision(acting, agent.respondToDecision(state, decision))
-                else agent.chooseAction(state)
-            session.submit(action, fallbackUsed = false)
-        }
-        val game = session.rawGame()
+        val game = PestControlPreboardProductionDriver.drive(registry, session)
         (game.terminal?.gameOver == true && game.protocolDefect == null).shouldBeTrue()
         val out = Path.of("").toAbsolutePath().parent.resolve("build/reports/pest-control-v2-smoke")
         Files.createDirectories(out)
