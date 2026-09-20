@@ -500,7 +500,7 @@ SELECTION_SPECS={
 "Thrill of Possibility":(2,2),"Frantic Search":(3,2),"Think Twice":(2,1),"Strategic Planning":(2,3),
 "Pieces of the Puzzle":(3,5)
 }
-INTERACTION_CARDS={"Counterspell","Arcane Denial","Negate","Dispel","Memory Lapse","Deprive","Prohibit","Spell Pierce","Turn Aside","Lose Focus","Pyroblast","Dive Down","Lightning Bolt","Galvanic Blast","Skred","Flame Slash","Fire // Ice","Into the Roil","Blink of an Eye","Echoing Truth","Abrade","Shattering Pulse"}
+INTERACTION_CARDS={"Counterspell","Arcane Denial","Negate","Dispel","Memory Lapse","Deprive","Prohibit","Spell Pierce","Turn Aside","Lose Focus","Pyroblast","Dive Down","Mizzium Skin","Lightning Bolt","Galvanic Blast","Skred","Flame Slash","Fire // Ice","Into the Roil","Blink of an Eye","Echoing Truth","Abrade","Shattering Pulse"}
 COMBO_CARDS={"Lava Spike","Desperate Ritual"}
 
 def selection_priority(card, state):
@@ -979,13 +979,14 @@ PROTECTION_COSTS={
     "Counterspell":(0,2,0), "Arcane Denial":(1,1,0), "Negate":(1,1,0),
     "Dispel":(0,1,0), "Memory Lapse":(1,1,0), "Deprive":(0,2,0),
     "Turn Aside":(0,1,0), "Pyroblast":(0,0,1), "Dive Down":(0,1,0),
+    "Mizzium Skin":(0,1,0),
 }
 PROTECTION_COVERAGE={
     "Counterspell":{"spell"}, "Arcane Denial":{"spell"},
     "Memory Lapse":{"spell"}, "Deprive":{"spell"},
     "Negate":{"noncreature"}, "Dispel":{"instant"},
-    "Turn Aside":{"targeted_permanent"}, "Pyroblast":{"blue_spell"},
-    "Dive Down":{"targeted_creature"},
+    "Turn Aside":{"targeted_spell"}, "Pyroblast":{"blue_spell"},
+    "Dive Down":{"targeted_creature"}, "Mizzium Skin":{"targeted_creature"},
 }
 CONDITIONAL_PROTECTION={"Prohibit","Spell Pierce","Lose Focus"}
 CONDITIONAL_PROTECTION_COSTS={
@@ -1126,7 +1127,8 @@ def commander_recovery_launch_feasible(state):
 def interaction_readiness_metrics(state):
     stack_tags={"spell","instant","noncreature"}
     blue_stack_tags=stack_tags|{"blue_spell"}
-    removal_tags={"spell","instant","noncreature","targeted_permanent","targeted_creature"}
+    removal_tags={"spell","instant","noncreature","targeted_spell","targeted_permanent","targeted_creature"}
+    ability_removal_tags={"ability","targeted_permanent","targeted_creature"}
     guaranteed=tuple(PROTECTION_COSTS)
     conditional=tuple(CONDITIONAL_PROTECTION)
     return {
@@ -1134,6 +1136,7 @@ def interaction_readiness_metrics(state):
         "blue_stack_guaranteed":any(primary_combo_launch_with_protection_exact(state,c,blue_stack_tags) for c in guaranteed),
         "stack_conditional":any(conditional_combo_protection_exact(state,c,stack_tags,2) for c in conditional),
         "removal_guaranteed":any(primary_combo_launch_with_protection_exact(state,c,removal_tags) for c in guaranteed),
+        "ability_removal_guaranteed":any(primary_combo_launch_with_protection_exact(state,c,ability_removal_tags) for c in guaranteed),
         "removal_conditional":any(conditional_combo_protection_exact(state,c,removal_tags,2) for c in conditional),
         "commander_recovery":commander_recovery_launch_feasible(state),
     }
@@ -1184,6 +1187,24 @@ def interaction_regressions():
         dive,"Dive Down",{"targeted_creature","targeted_permanent"})
     assert not primary_combo_launch_with_protection_exact(
         dive,"Dive Down",{"instant","spell","noncreature"})
+
+    # Turn Aside can counter a spell targeting Guildmage, but cannot answer a
+    # targeted activated or triggered ability. Hexproof from Mizzium Skin covers
+    # either origin while the Guildmage remains the target.
+    turn_aside=DevState(["Lava Spike","Desperate Ritual","Turn Aside"]); turn_aside.turn=6
+    turn_aside.battlefield=list(dive.battlefield)
+    assert primary_combo_launch_with_protection_exact(
+        turn_aside,"Turn Aside",{"spell","targeted_spell","targeted_creature","targeted_permanent"})
+    assert not primary_combo_launch_with_protection_exact(
+        turn_aside,"Turn Aside",{"ability","targeted_creature","targeted_permanent"})
+    skin=DevState(["Lava Spike","Desperate Ritual","Mizzium Skin"]); skin.turn=6
+    skin.battlefield=list(dive.battlefield)
+    assert primary_combo_launch_with_protection_exact(
+        skin,"Mizzium Skin",{"spell","targeted_spell","targeted_creature","targeted_permanent"})
+    assert primary_combo_launch_with_protection_exact(
+        skin,"Mizzium Skin",{"ability","targeted_creature","targeted_permanent"})
+    assert not primary_combo_launch_with_protection_exact(
+        skin,"Mizzium Skin",{"spell","instant","noncreature"})
 
     lens=DevState([]); lens.turn=6
     lens.battlefield=[{"card":"Prismatic Lens","tapped":False,"entered":2},
@@ -1456,7 +1477,7 @@ def simulate_sample(cards, samples=10000, seed=SEED, through=10, include_interac
             "high_tide_castable":0,"high_tide_productive":0,"high_tide_post_sum":0,"high_tide_gain_sum":0,
             "reversal_neutral":0,"reversal_positive":0,"lands_sum":0,"islands_sum":0}
          for t in range(1,through+1)}
-    interaction_keys=("stack_guaranteed","blue_stack_guaranteed","stack_conditional","removal_guaranteed",
+    interaction_keys=("stack_guaranteed","blue_stack_guaranteed","stack_conditional","removal_guaranteed","ability_removal_guaranteed",
                       "removal_conditional","commander_recovery")
     if include_interaction:
         for a in agg.values(): a.update({k:0 for k in interaction_keys})
@@ -1715,11 +1736,13 @@ def main():
                   "blue_stack_guaranteed",a["blue_stack_guaranteed"]/n,
                   "stack_conditional",a["stack_conditional"]/n,
                   "removal_guaranteed",a["removal_guaranteed"]/n,
+                  "ability_removal_guaranteed",a["ability_removal_guaranteed"]/n,
                   "removal_conditional",a["removal_conditional"]/n,
                   "commander_recovery",a["commander_recovery"]/n,
                   "stack_loss",(a["combo_lethal"]-a["stack_guaranteed"])/n,
                   "blue_stack_loss",(a["combo_lethal"]-a["blue_stack_guaranteed"])/n,
                   "removal_loss",(a["combo_lethal"]-a["removal_guaranteed"])/n,
+                  "ability_removal_loss",(a["combo_lethal"]-a["ability_removal_guaranteed"])/n,
                   "recovery_loss",(a["combo_lethal"]-a["commander_recovery"])/n)
 
 if __name__=="__main__":

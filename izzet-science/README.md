@@ -68,4 +68,12 @@ Except for compact deterministic combo necessities, cards should have useful sta
 9. Preserve v0.1 before testing challengers.
 
 ## Status
-Repository migration initialized 2026-09-18. No experimental results are accepted yet; this file records the starting hypotheses and protocol.
+
+Accepted control: `izzet-science/v0.7-control.md`, SHA256
+`726f5e9458b46dda30b33a6ce9f3c3237b25d6e11b81dac85308c3065c108a01`.
+It preserves the v0.6 shell and replaces its 26 ordinary basics with Snow-Covered
+equivalents after a paired 100,000-game confirmation.
+
+Current gate: v0.8-A Mizzium Skin (`-1 Turn Aside, +1 Mizzium Skin`) is frozen for
+one paired 10,000-game pilot. It targets protection from creature-removal abilities;
+v0.7 remains accepted unless the challenger passes pilot and confirmation.
