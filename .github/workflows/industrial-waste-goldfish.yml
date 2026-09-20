@@ -1,0 +1,57 @@
+name: Industrial Waste — Goldfish Screen
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - industrial-waste/lab
+    paths:
+      - .github/workflows/industrial-waste-goldfish.yml
+      - ai/src/test/kotlin/com/wingedsheep/ai/arena/TableGameRunner.kt
+      - ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteGoldfishBenchmark.kt
+      - ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteGoldfishTelemetry.kt
+      - industrial-waste/control/industrial-waste-v1.0-submitted.dck
+      - industrial-waste/challengers/pactdoll-a.dck
+      - industrial-waste/protocols/gate-3-goldfish-screen-v1.md
+      - industrial-waste/seed-registry.json
+      - justfile
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  goldfish-screen:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout exact branch head
+        uses: actions/checkout@v6
+
+      - name: Set up Java 21
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v6
+
+      - name: Validate frozen inputs
+        run: |
+          python3 -m unittest discover -s industrial-waste/sim -p 'test_*.py' -v
+          python3 industrial-waste/sim/validate_inputs.py
+
+      - name: Run paired metric goldfish
+        run: just industrial-waste-goldfish
+
+      - name: Upload goldfish evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: industrial-waste-goldfish-screen
+          path: industrial-waste/results/gate-3-goldfish-screen-v1.json
+          if-no-files-found: error
