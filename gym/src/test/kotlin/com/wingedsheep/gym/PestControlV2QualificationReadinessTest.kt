@@ -6,7 +6,7 @@ import io.kotest.matchers.collections.shouldBeEmpty
 import io.kotest.matchers.collections.shouldContain
 import io.kotest.matchers.shouldBe
 
-/** Seedless readiness only: these tests never generate entropy, initialize a game, or attach a vector. */
+/** Frozen readiness only: these tests never read seeds, initialize a game, or activate execution. */
 class PestControlV2QualificationReadinessTest : FunSpec({
     test("accepted V2 calibration binds a fresh disabled 50-game qualification boundary") {
         val readiness = V2QualificationReadiness()
@@ -17,7 +17,7 @@ class PestControlV2QualificationReadinessTest : FunSpec({
         (readiness.pestPlayGames to readiness.pestDrawGames) shouldBe (25 to 25)
         (readiness.pestSeatZeroGames to readiness.pestSeatOneGames) shouldBe (25 to 25)
         readiness.jointCellCounts.sorted() shouldBe listOf(12, 12, 13, 13)
-        readiness.freezeIdentity shouldBe null
+        readiness.freezeIdentity shouldBe PEST_V2_QUALIFICATION_FREEZE_IDENTITY
         readiness.configuredRunnerState shouldBe V2QualificationRunnerState.DISABLED
     }
 
@@ -45,7 +45,7 @@ class PestControlV2QualificationReadinessTest : FunSpec({
         )
     }
 
-    test("readiness cannot activate before a fresh freeze and never activates from tests") {
+    test("frozen readiness remains disabled and never activates from tests") {
         PestControlV2QualificationReadiness.activationErrors(
             readiness = V2QualificationReadiness(),
             explicitAuthorization = true,
@@ -54,9 +54,19 @@ class PestControlV2QualificationReadinessTest : FunSpec({
             priorOutputExists = false,
         ).let { errors ->
             errors.shouldContain("runner is not AUTHORIZED")
-            errors.shouldContain("fresh qualification freeze is not attached")
             errors.shouldContain("unit tests cannot activate the runner")
         }
+    }
+
+    test("qualification freeze identity is exact and fails closed on substitution") {
+        val tampered = V2QualificationReadiness(
+            freezeIdentity = PEST_V2_QUALIFICATION_FREEZE_IDENTITY.copy(
+                orderedVectorSha256 = "0".repeat(64),
+            ),
+        )
+
+        PestControlV2QualificationReadiness.validationErrors(tampered)
+            .shouldContain("qualification freeze identity mismatch")
     }
 
     test("tampered calibration provenance and future retry state fail closed") {
