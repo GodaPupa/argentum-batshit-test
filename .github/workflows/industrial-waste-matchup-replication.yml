@@ -1,7 +1,16 @@
-name: Industrial Waste — Madness Burn Pilot
+name: Industrial Waste — Madness Burn Replication
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - industrial-waste/lab
+    paths:
+      - .github/workflows/industrial-waste-matchup-replication.yml
+      - ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteMatchupPilotBenchmark.kt
+      - industrial-waste/gauntlet/madness-burn-canevazzi-2026-09-12.dck
+      - industrial-waste/protocols/gate-4-madness-burn-replication-v1.md
+      - industrial-waste/seed-registry.json
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -11,7 +20,7 @@ permissions:
   contents: read
 
 jobs:
-  matchup-pilot:
+  matchup-replication:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
@@ -30,12 +39,14 @@ jobs:
         run: |
           python3 -m unittest discover -s industrial-waste/sim -p 'test_*.py' -v
           python3 industrial-waste/sim/validate_inputs.py
-      - name: Run paired preboard pilot
-        run: just industrial-waste-matchup-pilot
+      - name: Run fresh paired preboard replication
+        run: scripts/gradle-locked :ai:test --tests "*.IndustrialWasteMatchupPilotBenchmark"
+        env:
+          IW_MATCHUP_REPLICATION: "true"
       - name: Upload matchup evidence
         if: always()
         uses: actions/upload-artifact@v7
         with:
-          name: industrial-waste-madness-burn-pilot
-          path: industrial-waste/results/gate-4-madness-burn-pilot-v1.json
+          name: industrial-waste-madness-burn-replication
+          path: industrial-waste/results/gate-4-madness-burn-replication-v1.json
           if-no-files-found: error

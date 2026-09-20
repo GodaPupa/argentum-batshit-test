@@ -19,8 +19,13 @@ import java.security.MessageDigest
 
 class IndustrialWasteMatchupPilotBenchmark : FunSpec({
     test("Industrial Waste paired Madness Burn pilot").config(
-        enabled = System.getenv("IW_MATCHUP_PILOT") == "true",
+        enabled = System.getenv("IW_MATCHUP_PILOT") == "true" ||
+            System.getenv("IW_MATCHUP_REPLICATION") == "true",
     ) {
+        val replication = System.getenv("IW_MATCHUP_REPLICATION") == "true"
+        val namespace = if (replication) REPLICATION_NAMESPACE else PILOT_NAMESPACE
+        val seedCount = if (replication) REPLICATION_SEED_COUNT else PILOT_SEED_COUNT
+        val expectedDigest = if (replication) REPLICATION_VECTOR_SHA256 else PILOT_VECTOR_SHA256
         val repository = matchupRepositoryRoot()
         val root = repository.resolve("industrial-waste")
         val registry = CardRegistry().apply {
@@ -41,9 +46,9 @@ class IndustrialWasteMatchupPilotBenchmark : FunSpec({
             deck.uniqueCards().forEach(registry::requireCard)
         }
 
-        val seeds = (1..SEED_COUNT).map { matchupSeedFor(NAMESPACE, it) }
-        require(matchupVectorDigest(seeds) == VECTOR_SHA256) { "matchup seed vector drift" }
-        require(Files.readString(root.resolve("seed-registry.json")).contains(NAMESPACE)) {
+        val seeds = (1..seedCount).map { matchupSeedFor(namespace, it) }
+        require(matchupVectorDigest(seeds) == expectedDigest) { "matchup seed vector drift" }
+        require(Files.readString(root.resolve("seed-registry.json")).contains(namespace)) {
             "matchup namespace is not registered"
         }
 
@@ -115,11 +120,15 @@ class IndustrialWasteMatchupPilotBenchmark : FunSpec({
         }
         val report = MatchupPilotReport(
             schemaVersion = 1,
-            evidenceClass = "preboard-matchup-capability-pilot",
+            evidenceClass = if (replication) {
+                "preboard-matchup-screen"
+            } else {
+                "preboard-matchup-capability-pilot"
+            },
             promotionEligible = false,
-            namespace = NAMESPACE,
+            namespace = namespace,
             seedCount = seeds.size,
-            seedVectorSha256 = VECTOR_SHA256,
+            seedVectorSha256 = expectedDigest,
             opponent = "Madness Burn — Davide Canevazzi, 43rd Super Ingenio, 2026-09-12",
             source = "https://www.mtgtop8.com/event?d=889937&e=90850&f=PAU",
             mulligans = "London mulligans enabled for both seats",
@@ -129,17 +138,27 @@ class IndustrialWasteMatchupPilotBenchmark : FunSpec({
             summaries = industrialDecks.keys.map { name -> matchupSummary(name, outcomes) },
             valid = invalid.isEmpty(),
         )
-        val output = root.resolve("results/gate-4-madness-burn-pilot-v1.json")
+        val output = root.resolve(
+            if (replication) {
+                "results/gate-4-madness-burn-replication-v1.json"
+            } else {
+                "results/gate-4-madness-burn-pilot-v1.json"
+            }
+        )
         output.parent?.let { Files.createDirectories(it) }
         Files.writeString(output, Json { prettyPrint = true }.encodeToString(report) + "\n")
         check(invalid.isEmpty()) { "matchup pilot found ${invalid.size} invalid outcomes; see $output" }
     }
 })
 
-private const val NAMESPACE = "IW-G4-MADNESS-BURN-PILOT-V1"
-private const val SEED_COUNT = 4
-private const val VECTOR_SHA256 =
+private const val PILOT_NAMESPACE = "IW-G4-MADNESS-BURN-PILOT-V1"
+private const val PILOT_SEED_COUNT = 4
+private const val PILOT_VECTOR_SHA256 =
     "6b4ef63509e4bf4edfa1863791487b6e6cb27fee2c4b437f164a41ebba8f5c7e"
+private const val REPLICATION_NAMESPACE = "IW-G4-MADNESS-BURN-R1"
+private const val REPLICATION_SEED_COUNT = 8
+private const val REPLICATION_VECTOR_SHA256 =
+    "011e5fdfb0d05340968c4df3fd4bde6628a1a5fc9364ebc045d1a62daafec7ef"
 private const val MAX_TURNS = 16
 private const val MAX_ACTIONS = 4_000
 

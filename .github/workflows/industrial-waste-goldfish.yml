@@ -2,19 +2,6 @@ name: Industrial Waste — Goldfish Screen
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - industrial-waste/lab
-    paths:
-      - .github/workflows/industrial-waste-goldfish.yml
-      - ai/src/test/kotlin/com/wingedsheep/ai/arena/TableGameRunner.kt
-      - ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteGoldfishBenchmark.kt
-      - ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteGoldfishTelemetry.kt
-      - industrial-waste/control/industrial-waste-v1.0-submitted.dck
-      - industrial-waste/challengers/pactdoll-a.dck
-      - industrial-waste/protocols/gate-3-goldfish-screen-v1.md
-      - industrial-waste/seed-registry.json
-      - justfile
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}

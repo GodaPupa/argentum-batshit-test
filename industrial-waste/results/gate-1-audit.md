@@ -164,3 +164,15 @@ This result validates enough policy coverage for a minimal preboard matchup pilo
 promote Pactdoll-A. Control led loop incidence and lethal rate in the diagnostic sample;
 Pactdoll-A's directional positives were fewer colored-mana-failure turns and a one-turn advantage
 in the pair where both lists assembled the loop. Both lists remain candidates for the pilot.
+
+## Gate 4 Madness Burn capability pilot
+
+The opponent is Davide Canevazzi's Top 8 Madness Burn list from the 99-player 43rd Super Ingenio
+on 2026-09-12. GitHub Actions run 35544249719 completed all 16 games on
+`IW-G4-MADNESS-BURN-PILOT-V1` with play/draw swaps, zero exceptions, zero rejected actions, and no
+draws. Control and Pactdoll-A each went 4-4, split evenly between wins on the play and draw. Neither
+list reached combo-ready state.
+
+Decision: the two-sided capability gate passes, but the pilot shows no challenger advantage.
+Execute the one predeclared eight-seed fresh replication before adding another opponent. The pilot
+remains non-promotional and must not be pooled with the replication.

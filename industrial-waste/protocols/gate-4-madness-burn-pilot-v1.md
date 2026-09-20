@@ -1,6 +1,6 @@
 # Gate 4 Madness Burn preboard pilot v1
 
-Status: planned; capability pilot, not promotion evidence.
+Status: completed; capability pilot passed; not promotion evidence.
 
 ## Inputs
 
@@ -19,3 +19,14 @@ exercises a live two-sided race.
 
 On a pass, allocate one small fresh-seed replication against Madness Burn before adding a second
 opponent. On a failure, diagnose engine or policy behavior without spending another namespace.
+
+## Result
+
+GitHub Actions run 35544249719 completed all 16 games with the registered namespace and digest,
+zero exceptions, zero rejected actions, and no draws. Control and Pactdoll-A each went 4-4; each
+won twice on the play and twice on the draw. Madness Burn therefore supplied a live clock and both
+Industrial lists demonstrated fair-game wins. Neither list reached a combo-ready state.
+
+Decision: the capability gate passes. Neither list has an advantage in this sample. Allocate the
+single predeclared fresh replication; do not pool the pilot and replication or add another opponent
+until that replication completes.
