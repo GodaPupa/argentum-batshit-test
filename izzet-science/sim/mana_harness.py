@@ -19,7 +19,7 @@ TAPPED_LANDS={"Izzet Boilerworks","Volatile Fjord","Swiftwater Cliffs",
 "Silverbluff Bridge","Lonely Sandbar","Forgotten Cave"}
 ROCKS={"Everflowing Chalice","Fellwar Stone","Mind Stone","Star Compass",
 "Sky Diamond","Fire Diamond","Izzet Signet","Network Terminal",
-"Ur-Golem's Eye","Sisay's Ring"}
+"Prismatic Lens","Ur-Golem's Eye","Sisay's Ring"}
 MANA_CREATURES={"Ornithopter of Paradise","Silver Myr","Iron Myr"}
 
 def parse_deck(path: Path):
@@ -68,6 +68,7 @@ def regressions():
 MANA_COST={
 "Everflowing Chalice":0,"Fellwar Stone":2,"Mind Stone":2,"Star Compass":2,
 "Sky Diamond":2,"Fire Diamond":2,"Izzet Signet":2,"Network Terminal":3,
+"Prismatic Lens":2,
 "Ur-Golem's Eye":4,"Sisay's Ring":4,"Ornithopter of Paradise":2,
 "Silver Myr":2,"Iron Myr":2,"Izzet Guildmage":2
 }
@@ -250,6 +251,7 @@ def nonland_mana_profile(state, conservative_fellwar=True):
         card=p["card"]
         if card=="Everflowing Chalice": c+=p.get("kicks",0)
         elif card=="Mind Stone": c+=1
+        elif card=="Prismatic Lens": c+=1
         elif card=="Sky Diamond": u+=1
         elif card=="Fire Diamond": r+=1
         elif card=="Network Terminal": u+=1  # choose U for Guildmage threshold
@@ -296,7 +298,7 @@ def rock_regressions():
 LAND_PRIORITY=["Island","Command Tower","Mountain","Ash Barrens","Evolving Wilds",
 "Terramorphic Expanse","Volatile Fjord","Swiftwater Cliffs","Silverbluff Bridge",
 "Lonely Sandbar","Forgotten Cave","Izzet Boilerworks"]
-ROCK_PRIORITY=["Mind Stone","Izzet Signet","Sky Diamond","Fire Diamond","Star Compass",
+ROCK_PRIORITY=["Mind Stone","Izzet Signet","Prismatic Lens","Sky Diamond","Fire Diamond","Star Compass",
 "Fellwar Stone","Ornithopter of Paradise","Silver Myr","Iron Myr","Network Terminal",
 "Everflowing Chalice","Ur-Golem's Eye","Sisay's Ring"]
 
@@ -884,6 +886,9 @@ def ready_red_payment_feasible(state,generic,need_r):
     # Aggregate ready mana, including Boilerworks' fixed U+R production and Signet's
     # one-mana activation. For a red-heavy payment, every flexible source may
     # produce red; a Signet can consume non-red mana first (or one red if necessary).
+    if any(p["card"]=="Prismatic Lens" and not p.get("tapped",False)
+           for p in state.battlefield):
+        return ready_payment_feasible_exact(state,generic=generic,need_r=need_r)
     total=0; max_red=0
     for _,value,colors in source_options(state):
         total+=value
@@ -988,6 +993,10 @@ def ready_mana_pool_states(state):
             source_modes.append(((0,0,p["kicks"]),))
         elif card in {"Mind Stone","Fellwar Stone"}:
             source_modes.append(((0,0,1),))
+        elif card=="Prismatic Lens":
+            # Lens is handled below: tapping for C adds one mana, while filtering
+            # recolors one mana from another source without increasing the total.
+            continue
         elif card=="Star Compass":
             modes=[]
             if "Island" in basics: modes.append((1,0,0))
@@ -1005,6 +1014,23 @@ def ready_mana_pool_states(state):
     pools={(0,0,0)}
     for modes in source_modes:
         pools={(u+du,r+dr,c+dc) for u,r,c in pools for du,dr,dc in modes}
+
+    lenses=sum(p["card"]=="Prismatic Lens" and not p.get("tapped",False)
+               for p in state.battlefield)
+    for _ in range(lenses):
+        expanded=set()
+        for u,r,c in pools:
+            expanded.add((u,r,c+1))
+            if u:
+                expanded.add((u-1,r+1,c))
+                expanded.add((u,r,c))
+            if r:
+                expanded.add((u+1,r-1,c))
+                expanded.add((u,r,c))
+            if c:
+                expanded.add((u+1,r,c-1))
+                expanded.add((u,r+1,c-1))
+        pools=expanded
 
     signets=sum(p["card"]=="Izzet Signet" and not p.get("tapped",False) for p in state.battlefield)
     for _ in range(signets):
@@ -1107,6 +1133,25 @@ def interaction_regressions():
         pyro.battlefield.append({"card":c,"tapped":False,"entered":i})
     assert primary_combo_launch_with_protection_exact(pyro,"Pyroblast",{"blue_spell"})
     assert not primary_combo_launch_with_protection_exact(pyro,"Pyroblast",{"instant","spell"})
+
+    lens=DevState([]); lens.turn=6
+    lens.battlefield=[{"card":"Prismatic Lens","tapped":False,"entered":2},
+                      {"card":"Mountain","tapped":False,"entered":1}]
+    assert ready_payment_feasible_exact(lens,need_u=1)
+    assert not ready_payment_feasible_exact(lens,generic=1,need_u=1)
+    lens.battlefield.append({"card":"Mountain","tapped":False,"entered":2})
+    assert ready_payment_feasible_exact(lens,generic=1,need_u=1)
+
+    lens_recovery=DevState(["Lava Spike","Desperate Ritual"]); lens_recovery.turn=9
+    lens_recovery.commander_casts=1; lens_recovery.commander_zone=False
+    lens_recovery.battlefield=[{"card":"Izzet Guildmage","tapped":False,"entered":2},
+                               {"card":"Prismatic Lens","tapped":False,"entered":3}]
+    for i,c in enumerate(["Mountain"]*4+["Island"]*4):
+        lens_recovery.battlefield.append({"card":c,"tapped":False,"entered":i})
+    assert commander_recovery_launch_feasible(lens_recovery)
+    lens_recovery.battlefield.remove(next(
+        p for p in lens_recovery.battlefield if p["card"]=="Prismatic Lens"))
+    assert not commander_recovery_launch_feasible(lens_recovery)
 
     # Phase-1 exact payer counts nonland mana and Signet conversion without changing
     # the accepted solitaire launch predicate.
@@ -1405,7 +1450,7 @@ def ready_nonland_sources(state):
         if p["tapped"]: continue
         c=p["card"]
         if c=="Everflowing Chalice" and p.get("kicks",0)>0: out.append((p,p.get("kicks",0)))
-        elif c in {"Mind Stone","Sky Diamond","Fire Diamond","Star Compass","Fellwar Stone","Network Terminal"}: out.append((p,1))
+        elif c in {"Mind Stone","Prismatic Lens","Sky Diamond","Fire Diamond","Star Compass","Fellwar Stone","Network Terminal"}: out.append((p,1))
         elif c in {"Ur-Golem's Eye","Sisay's Ring"}: out.append((p,2))
         elif c in MANA_CREATURES and creature_mana_ready(c,p["entered"],state.turn): out.append((p,1))
     return out
