@@ -851,7 +851,7 @@ def lethal_regressions():
     # five mana cannot launch.
     a=DevState(["Lava Spike","Desperate Ritual"]); a.turn=5
     a.battlefield=[{"card":"Izzet Guildmage","tapped":False,"entered":2}]
-    for i,c in enumerate(["Mountain","Mountain","Mountain","Mountain","Island"]):
+    for i,c in enumerate(["Mountain","Mountain","Mountain","Mountain","Mountain"]):
         a.battlefield.append({"card":c,"tapped":False,"entered":i})
     assert not primary_combo_launch_feasible(a)
     # six mana with enough red can launch and kill a 30-life opponent.
