@@ -10,6 +10,11 @@ const val PEST_V2_QUALIFICATION_GAMES = 50
 const val PEST_V2_QUALIFICATION_SHARDS = 2
 const val PEST_V2_QUALIFICATION_GAMES_PER_SHARD = 25
 const val PEST_V2_QUALIFICATION_SHARD_TIMEOUT_MINUTES = 240
+const val PEST_V2_QUALIFICATION_FREEZE_SOURCE_COMMIT = "5301c8cb536142cff3600e2eb4e6fffa7de2a8d3"
+const val PEST_V2_QUALIFICATION_FREEZE_RUN_ID = 35532647383L
+const val PEST_V2_QUALIFICATION_FREEZE_ARTIFACT_ID = 10612245984L
+const val PEST_V2_QUALIFICATION_FREEZE_ARCHIVE_SHA256 =
+    "bf7456303c355202587484f208da20a1ca37a2ba326d081e8a3fb7c3a31be8f0"
 
 enum class V2QualificationRunnerState { DISABLED, AUTHORIZED }
 
@@ -41,6 +46,14 @@ data class V2QualificationFreezeIdentity(
     val freezeManifestSha256: String,
 )
 
+val PEST_V2_QUALIFICATION_FREEZE_IDENTITY = V2QualificationFreezeIdentity(
+    freezeCommit = PEST_V2_QUALIFICATION_FREEZE_SOURCE_COMMIT,
+    registrySha256 = "fcc09ba4db85c0b157de7301b5506a1c9cd29c1d85ccb3f6482d6cfe9260a246",
+    orderedVectorSha256 = "c38ff24c9b45e36036cab506475bb8283f4e14e211318a7a7e6ab99acef6f497",
+    assignmentCsvSha256 = "510476250ec0fce2eac7b574c0cc01d80d8b91ce723aa39e543e5388f7f3a476",
+    freezeManifestSha256 = "25c88ddca3fe0b65a4727cdb503cfaa40d78c2f0ae0055b113024e194a9d7f40",
+)
+
 data class V2QualificationReadiness(
     val protocolId: String = PEST_V2_OFFICIAL_PROTOCOL,
     val blockId: String = PEST_V2_QUALIFICATION_BLOCK,
@@ -57,7 +70,7 @@ data class V2QualificationReadiness(
     val jointCellCounts: List<Int> = listOf(12, 12, 13, 13),
     val shards: List<V2QualificationShardTemplate> = PestControlV2QualificationReadiness.shardTemplates(),
     val criteria: V2QualificationAcceptanceCriteria = V2QualificationAcceptanceCriteria(),
-    val freezeIdentity: V2QualificationFreezeIdentity? = null,
+    val freezeIdentity: V2QualificationFreezeIdentity? = PEST_V2_QUALIFICATION_FREEZE_IDENTITY,
     val configuredRunnerState: V2QualificationRunnerState = V2QualificationRunnerState.DISABLED,
 )
 
@@ -98,6 +111,9 @@ object PestControlV2QualificationReadiness {
         if (readiness.criteria != V2QualificationAcceptanceCriteria()) add("acceptance criteria mismatch")
         if (readiness.configuredRunnerState != V2QualificationRunnerState.DISABLED) {
             add("readiness runner must remain DISABLED")
+        }
+        if (readiness.freezeIdentity != PEST_V2_QUALIFICATION_FREEZE_IDENTITY) {
+            add("qualification freeze identity mismatch")
         }
         readiness.freezeIdentity?.let { freeze ->
             if (!freeze.freezeCommit.isLowerHex(40)) add("freeze commit is invalid")
