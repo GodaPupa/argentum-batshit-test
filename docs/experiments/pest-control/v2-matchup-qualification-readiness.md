@@ -1,4 +1,4 @@
-# Pest Control V2 matchup qualification — seedless readiness
+# Pest Control V2 matchup qualification — frozen readiness
 
 ## Accepted boundary
 
@@ -10,7 +10,13 @@
 - Accepted calibration artifact: `10610310479`
 - Accepted calibration archive SHA-256: `577ecf33bbbd6fa2b9967867228b6eabb81b6b2c5590f2c0670f5d3536f80a2b`
 - Qualification runner state: `DISABLED`
-- Qualification vector: not generated
+- Qualification freeze run: `35532647383`, attempt 1, success
+- Qualification freeze artifact: `10612245984`
+- Qualification freeze archive SHA-256: `bf7456303c355202587484f208da20a1ca37a2ba326d081e8a3fb7c3a31be8f0`
+- Qualification vector SHA-256: `c38ff24c9b45e36036cab506475bb8283f4e14e211318a7a7e6ab99acef6f497`
+- Assignment CSV SHA-256: `510476250ec0fce2eac7b574c0cc01d80d8b91ce723aa39e543e5388f7f3a476`
+- Freeze manifest SHA-256: `25c88ddca3fe0b65a4727cdb503cfaa40d78c2f0ae0055b113024e194a9d7f40`
+- Qualification vector disposition: `FROZEN_UNEXECUTED`
 - Outcome exposure: 0/50
 
 The accepted ten-game V2 block validated the corrected runner and production-candidate pilots. Its 6-4
@@ -20,10 +26,10 @@ seeds are permanently unavailable for replay or reassignment.
 The pre-V2 replacement freeze remains a separate historical identity and is not an input to this gate.
 This readiness change neither executes nor changes the disposition of that vector.
 
-## Future frozen design
+## Frozen design
 
-The qualification block will contain exactly 50 fresh, unique, nonzero signed 64-bit seeds with no
-overlap against the complete Pest registry. Assignment is fixed before outcome exposure:
+The qualification block contains exactly 50 fresh, unique, nonzero signed 64-bit seeds with no
+overlap against all 484 preserved exclusion values. Assignment was fixed before outcome exposure:
 
 - Pest play/draw: 25/25;
 - Pest engine seat: 25/25;
@@ -45,7 +51,7 @@ the Mono Red Madness matchup; it cannot by itself establish Tier-1 status across
 
 ## Current stop condition
 
-No freeze identity is attached, and the compiled runner state is `DISABLED`. Unit tests use no seed
-vector and cannot activate execution. The next gate is the manual, artifact-only operation specified
-in [the qualification seed-freeze gate](v2-qualification-seed-freeze-gate.md), after its implementation
-and every required check are green.
+The exact freeze identity is attached, but the compiled runner state remains `DISABLED`. Unit tests do
+not read the seed vector and cannot activate execution. The freeze operation is documented in
+[the qualification seed-freeze gate](v2-qualification-seed-freeze-gate.md). The next gate must build
+and deterministically validate an artifact-bound, two-shard execution harness before authorization.
