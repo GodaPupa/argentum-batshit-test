@@ -2,14 +2,6 @@ name: Industrial Waste — Policy v2 Screen
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - industrial-waste/lab
-    paths:
-      - .github/workflows/industrial-waste-policy-screen.yml
-      - ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteGoldfishBenchmark.kt
-      - industrial-waste/protocols/gate-3-policy-v2-screen-v1.md
-      - industrial-waste/seed-registry.json
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}

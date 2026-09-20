@@ -152,3 +152,15 @@ combo-ready state on turn 7, followed by lethal that turn; Control recorded none
 
 Decision: corrected v2 passes calibration and earns exactly one fresh 16-pair diagnostic screen.
 The observation is not deck-promotion evidence and does not authorize a matchup gauntlet by itself.
+
+## Gate 3 fresh policy-v2 screen
+
+GitHub Actions run 35543607190 completed 32 valid games on the fresh
+`IW-G3-POLICY-V2-S1` vector. Control recorded two loop-available/combo-ready games and Pactdoll-A
+recorded one; every observed combo-ready state converted to lethal on the same turn. Control reached
+lethal in 14/16 games and Pactdoll-A in 13/16, so the predeclared aggregate gate passed.
+
+This result validates enough policy coverage for a minimal preboard matchup pilot, but it does not
+promote Pactdoll-A. Control led loop incidence and lethal rate in the diagnostic sample;
+Pactdoll-A's directional positives were fewer colored-mana-failure turns and a one-turn advantage
+in the pair where both lists assembled the loop. Both lists remain candidates for the pilot.
