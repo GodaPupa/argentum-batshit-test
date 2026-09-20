@@ -812,17 +812,27 @@ def commander_regressions():
 def primary_combo_launch_feasible(state):
     if not guildmage_on_battlefield(state): return False
     if not {"Lava Spike","Desperate Ritual"} <= set(state.hand): return False
-    # Need to pay Spike R + splice 1R + first Guildmage activation 2R before any copy resolves.
-    # Use a shadow source calculation so telemetry does not mutate the live turn.
     import copy
-    shadow=copy.deepcopy(state)
-    # Goblin Electromancer reduces the generic portion of the spell's total casting cost.
-    # Spike R + Ritual splice 1R therefore becomes RR while Electromancer is on battlefield.
-    electromancer=any(p["card"]=="Goblin Electromancer" for p in shadow.battlefield)
+    # Route A: direct first-copy launch. Electromancer can reduce the generic splice portion.
+    direct=copy.deepcopy(state)
+    electromancer=any(p["card"]=="Goblin Electromancer" for p in direct.battlefield)
     cast_generic=0 if electromancer else 1
-    if not pay_colored_mutating(shadow,generic=cast_generic,need_r=2): return False
-    # Guildmage's copy ability is activated, not a spell; Electromancer does not reduce it.
-    if not pay_colored_mutating(shadow,generic=2,need_r=1): return False
+    if pay_colored_mutating(direct,generic=cast_generic,need_r=2):
+        if pay_colored_mutating(direct,generic=2,need_r=1):
+            return True
+    # Route B: classic five-mana line. Cast Spike with Ritual spliced, then cast the
+    # still-in-hand Ritual while the combined Spike remains on stack. Ritual resolves
+    # for RRR, which pays Guildmage's first 2R copy activation.
+    ritual_route=copy.deepcopy(state)
+    electromancer=any(p["card"]=="Goblin Electromancer" for p in ritual_route.battlefield)
+    cast_generic=0 if electromancer else 1
+    if not pay_colored_mutating(ritual_route,generic=cast_generic,need_r=2):
+        return False
+    # Desperate Ritual itself costs 1R; Electromancer reduces its generic portion too.
+    ritual_generic=0 if electromancer else 1
+    if not pay_colored_mutating(ritual_route,generic=ritual_generic,need_r=1):
+        return False
+    # The resolved Ritual creates RRR, exactly enough for the first Guildmage 2R activation.
     return True
 
 def primary_combo_damage_available(state, opponent_life=30):
@@ -1124,6 +1134,21 @@ def loop_selection_regression(cards):
 
 
 
+
+def five_mana_ritual_route_regressions():
+    s=DevState(["Lava Spike","Desperate Ritual"]); s.turn=5
+    s.battlefield=[{"card":"Izzet Guildmage","tapped":False,"entered":2}]
+    for i,c in enumerate(["Mountain","Mountain","Mountain","Island","Island"]):
+        s.battlefield.append({"card":c,"tapped":False,"entered":i})
+    assert primary_combo_launch_feasible(s)
+    # Four mana without Electromancer cannot pay Spike+splice and then Ritual.
+    z=DevState(["Lava Spike","Desperate Ritual"]); z.turn=4
+    z.battlefield=[{"card":"Izzet Guildmage","tapped":False,"entered":2}]
+    for i,c in enumerate(["Mountain","Mountain","Island","Island"]):
+        z.battlefield.append({"card":c,"tapped":False,"entered":i})
+    assert not primary_combo_launch_feasible(z)
+    return True
+
 def electromancer_lethal_regressions():
     # Five mana is sufficient only with Electromancer and adequate red.
     s=DevState(["Lava Spike","Desperate Ritual"]); s.turn=5
@@ -1202,6 +1227,7 @@ def main():
     tutor_execution_regressions()
     first_lethal_regression()
     electromancer_lethal_regressions()
+    five_mana_ritual_route_regressions()
     b,r=opening_baseline(cards,args.samples,args.seed)
     print("seed",hex(args.seed),"samples",args.samples)
     print("land_buckets_0_1_2_3_4plus",b)
