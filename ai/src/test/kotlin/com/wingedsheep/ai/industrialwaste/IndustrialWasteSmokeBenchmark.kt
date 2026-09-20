@@ -28,13 +28,9 @@ class IndustrialWasteSmokeBenchmark : FunSpec({
     test("Industrial Waste engine smoke").config(
         enabled = System.getProperty("benchmark") == "true",
     ) {
-        val root = Path.of(System.getProperty("industrialWasteRoot", "industrial-waste"))
-        val output = Path.of(
-            System.getProperty(
-                "industrialWasteOutput",
-                "industrial-waste/results/gate-2-engine-smoke-v1.json",
-            )
-        )
+        val repository = findRepositoryRoot()
+        val root = repository.resolve("industrial-waste")
+        val output = repository.resolve("industrial-waste/results/gate-2-engine-smoke-v1.json")
         val registry = CardRegistry().apply {
             MtgSetCatalog.all.forEach { set ->
                 register(set.cards)
@@ -118,6 +114,15 @@ private const val SEED_NAMESPACE = "IW-G2-ENGINE-SMOKE-V1"
 private const val SEED_COUNT = 4
 private const val SEED_VECTOR_SHA256 =
     "677f86d5b15e990e887f11a25c05392bf52e11ae87e677c738712954d2d3d327"
+
+private fun findRepositoryRoot(): Path {
+    var candidate: Path? = Path.of("").toAbsolutePath()
+    while (candidate != null) {
+        if (Files.isDirectory(candidate.resolve("industrial-waste"))) return candidate
+        candidate = candidate.parent
+    }
+    error("Cannot locate repository root containing industrial-waste")
+}
 
 private fun seedFor(namespace: String, index: Int): Long {
     val digest = MessageDigest.getInstance("SHA-256")
