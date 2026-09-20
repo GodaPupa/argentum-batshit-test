@@ -1,6 +1,6 @@
 # Face Value Tier 1 Qualification Protocol v1
 
-Status: input construction; no qualification seeds generated and no qualification games executed.
+Status: input and capability gates passed; Stage 1 preboard seed freeze authorized. No qualification game had been executed when the Stage 1 vector was generated.
 
 ## Immutable control
 
@@ -33,6 +33,14 @@ Representative lists favor a current successful MTGO Challenge result, then a cu
 Simulator evidence can reject Tier 1 readiness or identify coverage gaps; it cannot alone establish human tournament Tier 1 status. The final report must separate simulator results from human-event evidence such as leagues, challenges, win rate, conversion, and metagame share.
 
 No pooled overall win rate is reported until every included matchup block passes audit. Matchup results remain separate, with play/draw splits and uncertainty intervals; any metagame-weighted estimate must state the exact frozen weights and cannot replace matchup-level gates.
+
+## Preboard Stage 1 design
+
+Stage 1 is a coverage screen, not a promotion experiment. It contains 32 games per matchup: 16 with Face Value in seat 1 (play) and 16 with Face Value in seat 2 (draw), for 256 games total. Every game has its own seed. The full assignment order is frozen before any qualification outcome exists.
+
+Stage 1 can reject a block, quarantine a block, identify a candidate structural concern for later confirmation, or authorize a separately frozen confirmatory block. It cannot promote a challenger or establish Tier 1 status. No deck change may be designed from an exposed Stage 1 outcome unless the entire relevant matchup block passes the gameplay audit and the structural signal is independently confirmed under a predeclared fresh-seed experiment.
+
+Capability run `35522374363` at Forge commit `f387ede550e336315637a8b765f0927ac768c113` completed all 16 diagnostic seat-order fixtures with zero audit flags. Diagnostic seeds 710001 through 710008 and their outcomes are permanently ineligible for qualification evidence.
 
 ## Seed discipline
 

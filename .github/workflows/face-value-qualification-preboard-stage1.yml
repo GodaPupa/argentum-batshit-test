@@ -1,0 +1,253 @@
+name: Face Value Qualification Preboard Stage 1
+
+on:
+  push:
+    branches: [face-value/lab]
+    paths:
+      - experiments/face-value/qualification/preboard-stage1-seed-registry.json
+      - experiments/face-value/qualification/preboard-stage1-seed-registry.sha256
+      - .github/workflows/face-value-qualification-preboard-stage1.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: face-value-qualification-preboard-stage1
+  cancel-in-progress: false
+
+jobs:
+  execute-and-audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 240
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: face-value/lab
+          fetch-depth: 0
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: maven
+      - name: Validate immutable inputs and frozen assignment vector
+        run: |
+          set -euo pipefail
+          python3 experiments/face-value/qualification/validate_inputs.py >/dev/null
+          cd experiments/face-value/qualification
+          sha256sum -c preboard-stage1-seed-registry.sha256
+          python3 - <<'PY'
+          import json
+          from collections import Counter
+          from pathlib import Path
+
+          data = json.loads(Path('preboard-stage1-seed-registry.json').read_text())
+          rows = data['assignments']
+          seeds = [row['seed'] for row in rows]
+          assert data['classification'] == 'OFFICIAL_QUALIFICATION_PREBOARD_STAGE1'
+          assert data['design'] == {
+              'games_per_matchup': 32,
+              'games_per_seat_per_matchup': 16,
+              'matchups': 8,
+              'outcomes_exposed_before_freeze': 0,
+              'total_games': 256,
+          }
+          assert len(rows) == len(set(seeds)) == 256
+          assert all(0 < seed < 2**63 for seed in seeds)
+          assert not (set(seeds) & set(range(710001, 710009)))
+          counts = Counter((row['matchup'], row['face_value_seat']) for row in rows)
+          assert len(counts) == 16 and set(counts.values()) == {16}, counts
+          assert [row['run_index'] for row in rows] == list(range(1, 257))
+          PY
+      - name: Build the capability-qualified Forge snapshot once
+        run: |
+          set -euxo pipefail
+          FORGE_SHA=f387ede550e336315637a8b765f0927ac768c113
+          git clone --filter=blob:none https://github.com/Card-Forge/forge.git forge-src
+          git -C forge-src checkout --detach "$FORGE_SHA"
+          test "$(git -C forge-src rev-parse HEAD)" = "$FORGE_SHA"
+          printf '%s\n' "$FORGE_SHA" > forge-source-commit.txt
+          cd forge-src
+          mvn -B -DskipTests -pl forge-gui-desktop -am package
+          chmod +x forge-gui-desktop/target/forge.sh
+          rm -rf forge-gui-desktop/target/res
+          cp -R forge-gui/res forge-gui-desktop/target/res
+          echo "FORGE_LAUNCHER=$(pwd)/forge-gui-desktop/target/forge.sh" >> "$GITHUB_ENV"
+      - name: Install frozen decks and materialize assignments
+        run: |
+          set -euo pipefail
+          mkdir -p "$HOME/.forge/decks/constructed" preboard-stage1-logs
+          cp experiments/face-value/qualification/control/*.dck "$HOME/.forge/decks/constructed/"
+          cp experiments/face-value/qualification/opponents/*.dck "$HOME/.forge/decks/constructed/"
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          root = Path('experiments/face-value/qualification')
+          rows = json.loads((root / 'preboard-stage1-seed-registry.json').read_text())['assignments']
+          with Path('preboard-stage1-assignments.tsv').open('w') as out:
+              for row in rows:
+                  opponent = Path(row['opponent_file']).name
+                  print(row['run_index'], row['matchup'], opponent, row['face_value_seat'], row['seed'], sep='\t', file=out)
+          PY
+          sha256sum \
+            experiments/face-value/qualification/input-identities.sha256 \
+            experiments/face-value/qualification/preboard-stage1-seed-registry.json \
+            preboard-stage1-assignments.tsv \
+            forge-source-commit.txt > preboard-stage1-inputs.sha256
+      - name: Execute all frozen assignments once
+        run: |
+          set -uo pipefail
+          control='fv-temur-chrysalis-e-final-forge-75.dck'
+          : > preboard-stage1-exit-status.tsv
+          while IFS=$'\t' read -r run_index matchup opponent face_seat seed; do
+            log=$(printf 'preboard-stage1-logs/%03d-%s-seat%s-%s.log' "$run_index" "$matchup" "$face_seat" "$seed")
+            if [ "$face_seat" = 1 ]; then
+              timeout 300 "$FORGE_LAUNCHER" sim -d "$control" "$opponent" -n 1 -s "$seed" -c 120 > "$log" 2>&1
+            else
+              timeout 300 "$FORGE_LAUNCHER" sim -d "$opponent" "$control" -n 1 -s "$seed" -c 120 > "$log" 2>&1
+            fi
+            status=$?
+            printf '%s\t%s\t%s\n' "$run_index" "$seed" "$status" >> preboard-stage1-exit-status.tsv
+          done < preboard-stage1-assignments.tsv
+          exit 0
+      - name: Fail-closed automated audit and telemetry extraction
+        id: audit
+        run: |
+          python3 - <<'PY'
+          from collections import Counter, defaultdict
+          from pathlib import Path
+          import json, math, re
+
+          control_name = 'Face Value Temur Chrysalis E Final Forge 75'
+          exits = {}
+          for line in Path('preboard-stage1-exit-status.tsv').read_text().splitlines():
+              index, seed, status = line.split('\t')
+              exits[int(index)] = int(status)
+          records = []
+          bad_patterns = {
+              'exception': r'Exception|StackOverflowError|AssertionError',
+              'slow_draw': r'Stopping slow match as draw',
+              'missing_deck': r'Deck not found|Unable to load deck',
+              'unsupported': r'UnsupportedOperationException|not implemented',
+          }
+          key_cards = [
+              'Llanowar Elves', 'Nest Invader', 'Eldrazi Repurposer', 'Eyeless Watcher',
+              'Writhing Chrysalis', 'Wretched Gryff', 'It of the Horrid Swarm',
+              'Annoyed Altisaur', 'Drownyard Lurker', 'Generous Ent',
+              'Malevolent Rumble', 'Growth Spasm', 'Snap', 'Preordain',
+          ]
+          for line in Path('preboard-stage1-assignments.tsv').read_text().splitlines():
+              index_s, matchup, opponent, seat_s, seed_s = line.split('\t')
+              index, seat, seed = int(index_s), int(seat_s), int(seed_s)
+              glob = list(Path('preboard-stage1-logs').glob(f'{index:03d}-{matchup}-seat{seat}-{seed}.log'))
+              path = glob[0] if len(glob) == 1 else None
+              text = path.read_text(errors='replace') if path else ''
+              opp_seat = 3 - seat
+              win_face = bool(re.search(rf'Ai\({seat}\)-{re.escape(control_name)} has won!', text))
+              win_opp = bool(re.search(rf'Ai\({opp_seat}\)-.+ has won!', text))
+              draw = 'ended in a Draw' in text
+              terminal_count = sum((win_face, win_opp, draw))
+              flags = [name for name, pattern in bad_patterns.items() if re.search(pattern, text, re.I)]
+              if exits.get(index, 999) != 0:
+                  flags.append(f'process_exit_{exits.get(index, "missing")}')
+              if terminal_count != 1:
+                  flags.append(f'terminal_count_{terminal_count}')
+              turns = [int(x) for x in re.findall(r'^Turn: Turn (\d+)', text, re.M)]
+              keep = {}
+              for player_seat, label in ((seat, 'face'), (opp_seat, 'opponent')):
+                  sizes = re.findall(rf'Mulligan: Ai\({player_seat}\)-.+ has kept a hand of (\d+) cards', text)
+                  keep[label] = int(sizes[-1]) if sizes else None
+                  if keep[label] is None:
+                      flags.append(f'missing_{label}_mulligan')
+              casts = {
+                  card: len(re.findall(rf'Ai\({seat}\)-{re.escape(control_name)} cast {re.escape(card)}(?:\s|$)', text, re.M))
+                  for card in key_cards
+              }
+              records.append({
+                  'run_index': index,
+                  'matchup': matchup,
+                  'opponent_file': opponent,
+                  'face_value_seat': seat,
+                  'seed': seed,
+                  'log': str(path) if path else None,
+                  'process_exit': exits.get(index),
+                  'winner': 'face_value' if win_face else 'opponent' if win_opp else 'draw' if draw else 'unknown',
+                  'turns': max(turns) if turns else None,
+                  'face_kept': keep['face'],
+                  'opponent_kept': keep['opponent'],
+                  'face_casts': casts,
+                  'face_ent_landcycles': len(re.findall(rf'Ai\({seat}\)-{re.escape(control_name)} activated Generous Ent', text)),
+                  'flags': sorted(set(flags)),
+              })
+
+          blocks = {}
+          for matchup in sorted({r['matchup'] for r in records}):
+              rr = [r for r in records if r['matchup'] == matchup]
+              flagged = [r for r in rr if r['flags']]
+              seats = {}
+              for seat in (1, 2):
+                  ss = [r for r in rr if r['face_value_seat'] == seat]
+                  seats[str(seat)] = {
+                      'games': len(ss),
+                      'wins': sum(r['winner'] == 'face_value' for r in ss),
+                      'losses': sum(r['winner'] == 'opponent' for r in ss),
+                      'draws': sum(r['winner'] == 'draw' for r in ss),
+                  }
+              blocks[matchup] = {
+                  'disposition': 'AUTOMATED_AUDIT_GREEN_PENDING_GAMEPLAY_REVIEW' if not flagged and len(rr) == 32 else 'QUARANTINED',
+                  'games': len(rr),
+                  'flagged_games': len(flagged),
+                  'seats': seats,
+              }
+          summary = {
+              'classification': 'OFFICIAL_QUALIFICATION_PREBOARD_STAGE1',
+              'acceptance': 'PENDING_GAMEPLAY_QUALITY_AUDIT',
+              'expected_games': 256,
+              'games_found': len(records),
+              'flagged_games': sum(bool(r['flags']) for r in records),
+              'blocks': blocks,
+              'records': records,
+          }
+          Path('preboard-stage1-summary.json').write_text(json.dumps(summary, indent=2, sort_keys=True) + '\n')
+          green = len(records) == 256 and summary['flagged_games'] == 0 and all(v['games'] == 32 for v in blocks.values())
+          Path('preboard-stage1-automated-audit.txt').write_text('GREEN_PENDING_GAMEPLAY_REVIEW\n' if green else 'QUARANTINED\n')
+          print(json.dumps({'games_found': len(records), 'flagged_games': summary['flagged_games'], 'block_dispositions': {k:v['disposition'] for k,v in blocks.items()}}, indent=2))
+          assert green, summary
+          PY
+      - name: Package immutable raw evidence
+        if: always()
+        run: |
+          set -euo pipefail
+          tar -czf preboard-stage1-raw-logs.tar.gz preboard-stage1-logs preboard-stage1-exit-status.tsv
+          sha256sum preboard-stage1-raw-logs.tar.gz preboard-stage1-summary.json > preboard-stage1-evidence.sha256
+      - name: Preserve evidence on the laboratory branch
+        if: always()
+        env:
+          RUN_ID: ${{ github.run_id }}
+          HEAD_SHA: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          dest="experiments/face-value/qualification/evidence/preboard-stage1/run-${RUN_ID}"
+          test ! -e "$dest"
+          mkdir -p "$dest"
+          cp preboard-stage1-summary.json preboard-stage1-automated-audit.txt preboard-stage1-evidence.sha256 preboard-stage1-inputs.sha256 forge-source-commit.txt "$dest/"
+          cp preboard-stage1-raw-logs.tar.gz "$dest/"
+          printf 'workflow_run=https://github.com/%s/actions/runs/%s\nhead_sha=%s\n' "$GITHUB_REPOSITORY" "$RUN_ID" "$HEAD_SHA" > "$dest/provenance.txt"
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add "$dest"
+          git commit -m "face-value: preserve preboard stage 1 evidence run ${RUN_ID}"
+          git push origin HEAD:face-value/lab
+      - name: Upload redundant workflow artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: face-value-qualification-preboard-stage1-${{ github.run_id }}
+          path: |
+            preboard-stage1-summary.json
+            preboard-stage1-automated-audit.txt
+            preboard-stage1-evidence.sha256
+            preboard-stage1-inputs.sha256
+            preboard-stage1-raw-logs.tar.gz
+            forge-source-commit.txt
+          if-no-files-found: error
