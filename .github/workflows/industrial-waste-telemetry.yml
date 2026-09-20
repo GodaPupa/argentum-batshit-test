@@ -9,6 +9,9 @@ on:
       - .github/workflows/industrial-waste-telemetry.yml
       - ai/src/test/kotlin/com/wingedsheep/ai/arena/TableGameRunner.kt
       - ai/src/test/kotlin/com/wingedsheep/ai/arena/TableGameRunnerObserverTest.kt
+      - ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteGoldfishTelemetry.kt
+      - ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteGoldfishTelemetryTest.kt
+      - industrial-waste/control/industrial-waste-v1.0-submitted.dck
       - industrial-waste/protocols/gate-3-telemetry-validation-v1.md
 
 concurrency:
@@ -36,4 +39,7 @@ jobs:
         uses: gradle/actions/setup-gradle@v6
 
       - name: Run focused telemetry fixtures
-        run: scripts/gradle-locked :ai:test --tests '*TableGameRunnerObserverTest'
+        run: >-
+          scripts/gradle-locked :ai:test
+          --tests '*TableGameRunnerObserverTest'
+          --tests '*IndustrialWasteGoldfishTelemetryTest'
