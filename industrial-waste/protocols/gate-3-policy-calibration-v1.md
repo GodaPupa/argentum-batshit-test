@@ -1,6 +1,6 @@
 # Gate 3 policy calibration v1
 
-Status: planned; non-promotional diagnostic.
+Status: completed; non-promotional diagnostic.
 
 ## Purpose
 
@@ -34,3 +34,14 @@ Advance the policy to a fresh, small paired screen only if it produces an observ
 in at least one targeted capability (Tron by turn 5, Retriever-loop availability, or combo-ready
 state) without reducing total lethals versus the original screen. Otherwise diagnose or reject the
 policy; do not allocate new seeds.
+
+## Result
+
+GitHub Actions run 35540498081 completed all 24 outcomes with no exception or rejected action.
+Control and Pactdoll-A each assembled Tron by turn 5 in 1/12 games, versus 0/12 each under the
+stock policy. Total lethals were 19/24, versus 18/24 in the original screen. Retriever-loop and
+combo-ready rates remained zero for both lists.
+
+Decision: the policy met the narrow calibration rule and advances to one fresh 16-pair screen. It
+has not qualified the harness for matchup testing, and none of these replayed outcomes may be
+pooled with deck evidence.

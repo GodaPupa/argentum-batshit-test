@@ -94,3 +94,19 @@ this gate. Preserve its challenger status and spend the next implementation
 budget on a deterministic Industrial Waste policy/line harness that can
 actually tutor Tron and execute Retriever loops. Interaction recovery,
 matchup wins, and sideboarding remain untested.
+
+## Gate 3 policy calibration
+
+The seed-free advisor fixtures passed in GitHub Actions run 35540194659. They prove deterministic
+missing-Tron-piece selection for Expedition Map and Crop Rotation, Retriever-to-Retriever death
+targeting, and Retriever selection for Ashnod's Altar when the payoff loop is already assembled.
+
+Run 35540498081 then replayed the already-spent `IW-G3-GOLDFISH-S1` vector with the scoped policy.
+The artifact is valid and explicitly non-promotional. Control and Pactdoll-A each moved from zero
+to one Tron-by-turn-5 outcome; aggregate lethals increased from 18/24 to 19/24. Neither list reached
+a Retriever-loop or combo-ready state. The simultaneously triggered stock-policy run 35540498101
+is a reproducibility-only duplicate and is not counted or pooled.
+
+Decision: the calibration clears the minimum bar for one fresh 16-pair policy screen. It does not
+authorize matchup testing, sideboarding, or promotion. If the fresh screen again records no loop
+or combo-ready states, stop sampling and diagnose the remaining line-policy failure.
