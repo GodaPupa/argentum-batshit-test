@@ -34,6 +34,16 @@ jobs:
           python3 - <<'PY'
           from pathlib import Path
 
+          for raw in [
+              'forge-gui/res/cardsfolder/f/faithless_looting.txt',
+              'forge-gui/res/cardsfolder/k/krark_clan_shaman.txt',
+              'forge-gui/res/cardsfolder/q/quirion_ranger.txt',
+          ]:
+              path = Path('forge-src') / raw
+              text = path.read_text(encoding='utf-8')
+              assert text.count('\nAI:RemoveDeck:All') == 1, raw
+              path.write_text(text.replace('\nAI:RemoveDeck:All', ''), encoding='utf-8')
+
           highway = Path('forge-src/forge-gui/res/cardsfolder/h/highway_robbery.txt')
           text = highway.read_text(encoding='utf-8')
           old = 'A:SP$ GenericChoice | Choices$ DBDiscardToDraw,DBSacToDraw | SpellDescription$ You may discard a card or sacrifice a land. If you do, draw two cards.'
@@ -108,7 +118,7 @@ jobs:
               ('elves', 'elves-mogged-2026-09-19.dck'),
           ]
           rows = []
-          seed = 720065
+          seed = 720083
           for matchup, opponent in opponents:
               for face_seat in (1, 2, 1, 2, 1, 2):
                   rows.append(f'{matchup}\t{opponent}\t{face_seat}\t{seed}')
@@ -118,8 +128,9 @@ jobs:
           cp diagnostic-decks/*.dck "$HOME/.forge/decks/constructed/"
           sha256sum diagnostic-assignments.tsv diagnostic-decks/*.dck opponent-engine-remediation.patch > diagnostic-inputs.sha256
           cat > diagnostic-disposition.txt <<'EOF'
-          DIAGNOSTIC_ONLY_LAB_FORGE_AI_REMEDIATION_SMOKE
-          Seeds 720065-720082 and all outcomes are permanently diagnostic only.
+          DIAGNOSTIC_ONLY_LAB_FORGE_AI_REMEDIATION_SMOKE_ATTEMPT_2
+          Seeds 720083-720100 and all outcomes are permanently diagnostic only.
+          Attempt 1 seeds 720065-720082 remain retired and are not replayed or rehabilitated.
           The heuristics are unaccepted lab probes. No output is matchup evidence or authority for fresh qualification seeds.
           EOF
       - name: Run six fresh diagnostics per remediated pilot
