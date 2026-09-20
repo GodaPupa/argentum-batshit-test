@@ -941,6 +941,12 @@ PROTECTION_COVERAGE={
     "Turn Aside":{"targeted_permanent"},
 }
 CONDITIONAL_PROTECTION={"Prohibit","Spell Pierce","Lose Focus"}
+CONDITIONAL_PROTECTION_COSTS={
+    "Prohibit":(1,1,0), "Spell Pierce":(0,1,0), "Lose Focus":(1,1,0),
+}
+CONDITIONAL_PROTECTION_COVERAGE={
+    "Prohibit":{"spell"}, "Spell Pierce":{"noncreature"}, "Lose Focus":{"spell"},
+}
 
 def protection_covers(card, threat_tags):
     if card in CONDITIONAL_PROTECTION: return False
@@ -960,6 +966,107 @@ def primary_combo_launch_with_protection_feasible(state, protection_card, threat
         launch_generic,launch_red=(0 if electromancer else 2),3
     return can_pay_simple(state,generic=launch_generic+protect_generic,
                           need_u=protect_u,need_r=launch_red+protect_r)
+
+def ready_mana_pool_states(state):
+    """Enumerate exact ready U/R/C pools, including fixed Boilerworks and Signet conversion."""
+    source_modes=[]
+    basics={p["card"] for p in state.lands() if p["card"] in {"Island","Mountain"}}
+    for p in state.battlefield:
+        if p.get("tapped",False): continue
+        card=p["card"]
+        if card=="Izzet Signet": continue
+        if card=="Izzet Boilerworks": source_modes.append(((1,1,0),)); continue
+        colors=land_colors(card,basics)
+        if colors:
+            modes=[]
+            if "U" in colors: modes.append((1,0,0))
+            if "R" in colors: modes.append((0,1,0))
+            if "C" in colors: modes.append((0,0,1))
+            if modes: source_modes.append(tuple(modes))
+            continue
+        if card=="Everflowing Chalice" and p.get("kicks",0)>0:
+            source_modes.append(((0,0,p["kicks"]),))
+        elif card in {"Mind Stone","Fellwar Stone"}:
+            source_modes.append(((0,0,1),))
+        elif card=="Star Compass":
+            modes=[]
+            if "Island" in basics: modes.append((1,0,0))
+            if "Mountain" in basics: modes.append((0,1,0))
+            if modes: source_modes.append(tuple(modes))
+        elif card in {"Sky Diamond","Silver Myr"} and (card not in MANA_CREATURES or creature_mana_ready(card,p["entered"],state.turn)):
+            source_modes.append(((1,0,0),))
+        elif card in {"Fire Diamond","Iron Myr"} and (card not in MANA_CREATURES or creature_mana_ready(card,p["entered"],state.turn)):
+            source_modes.append(((0,1,0),))
+        elif card in {"Network Terminal","Ornithopter of Paradise"} and (card not in MANA_CREATURES or creature_mana_ready(card,p["entered"],state.turn)):
+            source_modes.append(((1,0,0),(0,1,0)))
+        elif card in {"Ur-Golem's Eye","Sisay's Ring"}:
+            source_modes.append(((0,0,2),))
+
+    pools={(0,0,0)}
+    for modes in source_modes:
+        pools={(u+du,r+dr,c+dc) for u,r,c in pools for du,dr,dc in modes}
+
+    signets=sum(p["card"]=="Izzet Signet" and not p.get("tapped",False) for p in state.battlefield)
+    for _ in range(signets):
+        expanded=set(pools)
+        for u,r,c in pools:
+            if u: expanded.add((u,r+1,c))       # spend U; add UR
+            if r: expanded.add((u+1,r,c))       # spend R; add UR
+            if c: expanded.add((u+1,r+1,c-1))   # spend C; add UR
+        pools=expanded
+    return pools
+
+def ready_payment_feasible_exact(state,generic=0,need_u=0,need_r=0):
+    for u,r,c in ready_mana_pool_states(state):
+        if u>=need_u and r>=need_r and u+r+c-need_u-need_r>=generic:
+            return True
+    return generic+need_u+need_r==0
+
+def primary_launch_source_cost(state):
+    electromancer=any(p["card"]=="Goblin Electromancer" for p in state.battlefield)
+    if "Seething Song" in state.hand:
+        return (1 if electromancer else 2),0,1
+    return (0 if electromancer else 2),0,3
+
+def primary_combo_launch_with_protection_exact(state, protection_card, threat_tags):
+    if protection_card not in state.hand or not protection_covers(protection_card,threat_tags):
+        return False
+    if not primary_combo_launch_feasible(state): return False
+    lg,lu,lr=primary_launch_source_cost(state)
+    pg,pu,pr=PROTECTION_COSTS[protection_card]
+    return ready_payment_feasible_exact(state,lg+pg,lu+pu,lr+pr)
+
+def conditional_combo_protection_exact(state, protection_card, threat_tags, threat_mv):
+    if protection_card not in state.hand or protection_card not in CONDITIONAL_PROTECTION:
+        return False
+    coverage=CONDITIONAL_PROTECTION_COVERAGE[protection_card]
+    if "spell" not in coverage and not (coverage & set(threat_tags)): return False
+    if protection_card=="Prohibit" and threat_mv>2: return False
+    if not primary_combo_launch_feasible(state): return False
+    lg,lu,lr=primary_launch_source_cost(state)
+    pg,pu,pr=CONDITIONAL_PROTECTION_COSTS[protection_card]
+    return ready_payment_feasible_exact(state,lg+pg,lu+pu,lr+pr)
+
+def commander_recovery_launch_feasible(state):
+    if not guildmage_on_battlefield(state) or state.commander_casts<1: return False
+    if not {"Lava Spike","Desperate Ritual"} <= set(state.hand): return False
+    if not primary_combo_launch_feasible(state): return False
+    lg,lu,lr=primary_launch_source_cost(state)
+    # Model one resolved removal, command-zone replacement, and immediate taxed recast.
+    return ready_payment_feasible_exact(state,lg+guildmage_tax(state),lu+1,lr+1)
+
+def interaction_readiness_metrics(state):
+    stack_tags={"spell","instant","noncreature"}
+    removal_tags={"spell","instant","noncreature","targeted_permanent"}
+    guaranteed=tuple(PROTECTION_COSTS)
+    conditional=tuple(CONDITIONAL_PROTECTION)
+    return {
+        "stack_guaranteed":any(primary_combo_launch_with_protection_exact(state,c,stack_tags) for c in guaranteed),
+        "stack_conditional":any(conditional_combo_protection_exact(state,c,stack_tags,2) for c in conditional),
+        "removal_guaranteed":any(primary_combo_launch_with_protection_exact(state,c,removal_tags) for c in guaranteed),
+        "removal_conditional":any(conditional_combo_protection_exact(state,c,removal_tags,2) for c in conditional),
+        "commander_recovery":commander_recovery_launch_feasible(state),
+    }
 
 def interaction_regressions():
     exact=DevState(["Lava Spike","Desperate Ritual","Dispel"]); exact.turn=5
@@ -991,6 +1098,38 @@ def interaction_regressions():
     assert not primary_combo_launch_with_protection_feasible(electromancer,"Dispel",{"instant"})
     electromancer.battlefield.append({"card":"Island","tapped":False,"entered":4})
     assert primary_combo_launch_with_protection_feasible(electromancer,"Dispel",{"instant"})
+
+    # Phase-1 exact payer counts nonland mana and Signet conversion without changing
+    # the accepted solitaire launch predicate.
+    rock=DevState(["Lava Spike","Desperate Ritual","Dispel"]); rock.turn=6
+    rock.battlefield=[{"card":"Izzet Guildmage","tapped":False,"entered":2},
+                      {"card":"Sky Diamond","tapped":False,"entered":3}]
+    for i,c in enumerate(["Mountain","Mountain","Mountain","Island","Island"]):
+        rock.battlefield.append({"card":c,"tapped":False,"entered":i})
+    assert primary_combo_launch_with_protection_exact(rock,"Dispel",{"instant"})
+    assert ready_payment_feasible_exact(rock,generic=2,need_u=1,need_r=3)
+
+    signet=DevState([]); signet.turn=6
+    signet.battlefield=[{"card":"Izzet Signet","tapped":False,"entered":2}]
+    for i,c in enumerate(["Island","Mountain","Mountain","Ash Barrens","Ash Barrens"]):
+        signet.battlefield.append({"card":c,"tapped":False,"entered":i})
+    assert ready_payment_feasible_exact(signet,generic=2,need_u=1,need_r=3)
+    signet.battlefield.pop(0)
+    assert not ready_payment_feasible_exact(signet,generic=2,need_u=1,need_r=3)
+
+    soft=DevState(["Lava Spike","Desperate Ritual","Spell Pierce"]); soft.turn=6
+    soft.battlefield=list(exact.battlefield)
+    assert conditional_combo_protection_exact(soft,"Spell Pierce",{"noncreature"},2)
+    assert not protection_covers("Spell Pierce",{"noncreature"})
+
+    recover=DevState(["Lava Spike","Desperate Ritual"]); recover.turn=9
+    recover.commander_casts=1; recover.commander_zone=False
+    recover.battlefield=[{"card":"Izzet Guildmage","tapped":False,"entered":2}]
+    for i,c in enumerate(["Mountain"]*4+["Island"]*5):
+        recover.battlefield.append({"card":c,"tapped":False,"entered":i})
+    assert commander_recovery_launch_feasible(recover)
+    recover.battlefield.pop()
+    assert not commander_recovery_launch_feasible(recover)
     return True
 
 def lethal_regressions():
@@ -1124,7 +1263,7 @@ def combo_assembly_regressions():
     assert not combo_assembly_metrics(z)["pair"]
     return True
 
-def simulate_one(cards, rng, through=6):
+def simulate_one(cards, rng, through=6, include_interaction=False):
     library=list(cards); rng.shuffle(library)
     hand=library[:7]; library=library[7:]
     s=DevState(hand)
@@ -1148,6 +1287,7 @@ def simulate_one(cards, rng, through=6):
         combo=combo_assembly_metrics(s)
         combo_pair_commander_ready=combo["pair"] and guildmage_on_battlefield(s)
         combo_lethal=primary_combo_launch_feasible(s)
+        interaction=interaction_readiness_metrics(s) if include_interaction else None
         if combo_lethal and first_lethal_turn is None:
             first_lethal_turn=turn
         first_lethal_now=(first_lethal_turn==turn)
@@ -1168,7 +1308,7 @@ def simulate_one(cards, rng, through=6):
         residual_u,residual_r,residual_uu=color_flags(s)
         neutral,positive,gross=reversal_threshold(s)
         islands=sum(high_tide_island(p["card"]) for p in s.lands())
-        rows.append({"turn":turn,"lands":len(s.lands()),"selection_cast":selected is not None,
+        row={"turn":turn,"lands":len(s.lands()),"selection_cast":selected is not None,
                      "commander_deployed":commander_deployed,"commander_battlefield":guildmage_on_battlefield(s),
                      "tutor_used":tutor_used is not None,"tutor_found_combo":tutor_found in {"Lava Spike","Desperate Ritual"},
                      "selection_seen":sel_seen,"selection_drawn":sel_drawn,
@@ -1188,10 +1328,12 @@ def simulate_one(cards, rng, through=6):
                      "high_tide_post_mana":ht_post,"high_tide_gain":ht_gain,
                      "guildmage_end":can_pay_simple(s,need_u=1,need_r=1),
                      "reversal_neutral":neutral,"reversal_positive":positive,
-                     "nonland_gross":gross,"islands":islands})
+                     "nonland_gross":gross,"islands":islands}
+        if interaction is not None: row.update(interaction)
+        rows.append(row)
     return rows
 
-def simulate_sample(cards, samples=10000, seed=SEED, through=10):
+def simulate_sample(cards, samples=10000, seed=SEED, through=10, include_interaction=False):
     rng=random.Random(seed)
     agg={t:{"n":0,"selection_cast":0,"commander_deployed":0,"commander_battlefield":0,"tutor_used":0,"tutor_found_combo":0,"selection_seen_sum":0,"selection_drawn_sum":0,"start_U":0,"start_R":0,"start_UU":0,"action_U":0,"action_R":0,"action_UU":0,
             "residual_U":0,"residual_R":0,"residual_UU":0,
@@ -1204,8 +1346,12 @@ def simulate_sample(cards, samples=10000, seed=SEED, through=10):
             "high_tide_castable":0,"high_tide_productive":0,"high_tide_post_sum":0,"high_tide_gain_sum":0,
             "reversal_neutral":0,"reversal_positive":0,"lands_sum":0,"islands_sum":0}
          for t in range(1,through+1)}
+    interaction_keys=("stack_guaranteed","stack_conditional","removal_guaranteed",
+                      "removal_conditional","commander_recovery")
+    if include_interaction:
+        for a in agg.values(): a.update({k:0 for k in interaction_keys})
     for _ in range(samples):
-        for row in simulate_one(cards,rng,through):
+        for row in simulate_one(cards,rng,through,include_interaction):
             a=agg[row["turn"]]; a["n"]+=1
             a["selection_cast"]+=int(row["selection_cast"])
             a["commander_deployed"]+=int(row["commander_deployed"])
@@ -1216,9 +1362,21 @@ def simulate_sample(cards, samples=10000, seed=SEED, through=10):
             a["selection_drawn_sum"]+=row["selection_drawn"]
             for k in ("start_U","start_R","start_UU","action_U","action_R","action_UU","residual_U","residual_R","residual_UU","guildmage_start","guildmage_action","guildmage_end","uu_spell_present","uu_spell_exec","u_spell_present","u_spell_exec","r_spell_present","r_spell_exec","ritual_present","spike_present","combo_pair","combo_pair_guild_action","combo_pair_commander_ready","combo_lethal","first_lethal_now","lethal_by_now","guild_plus_u","guild_plus_r","uu_plus_r","high_tide_castable","high_tide_productive","reversal_neutral","reversal_positive"):
                 a[k]+=int(row[k])
+            if include_interaction:
+                for k in interaction_keys: a[k]+=int(row[k])
             a["high_tide_post_sum"]+=row["high_tide_post_mana"]
             a["high_tide_gain_sum"]+=row["high_tide_gain"]
             a["lands_sum"]+=row["lands"]; a["islands_sum"]+=row["islands"]
+    if include_interaction:
+        for turn,a in agg.items():
+            lethal=a["combo_lethal"]
+            for key in interaction_keys:
+                if not 0<=a[key]<=lethal:
+                    raise ValueError(f"interaction subset violation turn={turn} key={key}")
+            if a["removal_guaranteed"]<a["stack_guaranteed"]:
+                raise ValueError(f"removal protection ordering violation turn={turn}")
+            if a["removal_conditional"]<a["stack_conditional"]:
+                raise ValueError(f"conditional protection ordering violation turn={turn}")
     return agg
 
 def simulation_regressions(cards):
@@ -1355,6 +1513,8 @@ def main():
     ap.add_argument("--seed",type=lambda x:int(x,0),default=SEED)
     ap.add_argument("--diagnostic-size",type=int,default=None,
                     help="Explicit reduced main-deck size for diagnostic exclusion runs only")
+    ap.add_argument("--interaction-pilot",action="store_true",
+                    help="Emit v0.7 fixed-event interaction-readiness telemetry")
     args=ap.parse_args()
     if args.diagnostic_size is None:
         _,cards=parse_deck(Path(args.deck))
@@ -1409,7 +1569,7 @@ def main():
     print("seed",hex(args.seed),"samples",args.samples)
     print("land_buckets_0_1_2_3_4plus",b)
     print("rock_buckets_0_1_2_3plus",r)
-    agg=simulate_sample(cards,args.samples,args.seed,10)
+    agg=simulate_sample(cards,args.samples,args.seed,10,args.interaction_pilot)
     for turn in range(1,11):
         a=agg[turn]; n=a["n"]
         print("turn",turn,"selection_cast",a["selection_cast"]/n,
@@ -1429,6 +1589,16 @@ def main():
               "avg_high_tide_gain",a["high_tide_gain_sum"]/n,
               "reversal_neutral",a["reversal_neutral"]/n,"reversal_positive",a["reversal_positive"]/n,
               "avg_lands",a["lands_sum"]/n,"avg_islands",a["islands_sum"]/n)
+        if args.interaction_pilot:
+            print("interaction","turn",turn,
+                  "stack_guaranteed",a["stack_guaranteed"]/n,
+                  "stack_conditional",a["stack_conditional"]/n,
+                  "removal_guaranteed",a["removal_guaranteed"]/n,
+                  "removal_conditional",a["removal_conditional"]/n,
+                  "commander_recovery",a["commander_recovery"]/n,
+                  "stack_loss",(a["combo_lethal"]-a["stack_guaranteed"])/n,
+                  "removal_loss",(a["combo_lethal"]-a["removal_guaranteed"])/n,
+                  "recovery_loss",(a["combo_lethal"]-a["commander_recovery"])/n)
 
 if __name__=="__main__":
     main()

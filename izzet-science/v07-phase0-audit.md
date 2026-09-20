@@ -23,11 +23,12 @@ Verification:
   `718913aaaee4ca77435cb9f83101faebf9945e36bc144d52734bc8a6a1e16007`
 - Replay digest equals the accepted v0.6 challenger-output digest recorded in
   `v06A-pieces-of-the-puzzle-accepted.md`.
+- GitHub CI run 35525676773: success.
 
 The 100,000-game replay is a control-identity check only. It is not a new experiment,
 is not pooled with accepted results, and produces no new performance claim.
 
 No phase-1 pilot or challenger run was launched.
 
-Disposition: `V07_PHASE0_PASS`
-Next authorized state: `V07_PHASE1_INSTRUMENTATION_NOT_RUN`
+Disposition: `V07_PHASE0_ACCEPTED`
+Next authorized state: `V07_PHASE1_INSTRUMENTATION_AUTHORIZED`

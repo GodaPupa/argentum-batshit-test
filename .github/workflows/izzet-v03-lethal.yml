@@ -1,11 +1,10 @@
-name: Izzet v0.6 Pair Acquisition
+name: Izzet v0.7 Interaction Pilot
 
 on:
   workflow_dispatch:
 
 jobs:
-  pair-acquisition-v06:
-    if: github.event_name != 'pull_request' || github.head_ref == 'mayhem/izzet-science'
+  interaction-readiness-v07:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
@@ -15,32 +14,46 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Run frozen v0.5 control
+      - name: Verify frozen v0.6 identity
+        shell: bash
+        run: |
+          set -euo pipefail
+          expected=a6acc3e0a00fa1bab0eb3ad7d981a449b8ce0e8c6bf4ed384968e46ca081fac5
+          actual=$(sha256sum izzet-science/v0.6-control.md | cut -d' ' -f1)
+          test "$actual" = "$expected"
+      - name: Run fixed-event interaction pilot
         shell: bash
         run: |
           set -euo pipefail
           mkdir -p izzet-science/artifacts
           python izzet-science/sim/mana_harness.py \
-            --deck izzet-science/v0.5-control.md \
-            --samples 100000 \
+            --deck izzet-science/v0.6-control.md \
+            --samples 10000 \
             --seed 0x1A22E7001 \
-            | tee izzet-science/artifacts/v05-control.txt
-          test -s izzet-science/artifacts/v05-control.txt
-      - name: Run v0.6-A Pieces of the Puzzle challenger
+            --interaction-pilot \
+            | tee izzet-science/artifacts/v07-interaction-pilot.txt
+          test -s izzet-science/artifacts/v07-interaction-pilot.txt
+          test "$(grep -c '^interaction turn ' izzet-science/artifacts/v07-interaction-pilot.txt)" -eq 10
+      - name: Write provenance manifest
         shell: bash
         run: |
           set -euo pipefail
-          python izzet-science/sim/mana_harness.py \
-            --deck izzet-science/challengers/v06A-pieces-of-the-puzzle.md \
-            --samples 100000 \
-            --seed 0x1A22E7001 \
-            | tee izzet-science/artifacts/v06A-pieces-of-the-puzzle.txt
-          test -s izzet-science/artifacts/v06A-pieces-of-the-puzzle.txt
-      - name: Preserve paired acquisition output
+          {
+            echo "source_sha=${GITHUB_SHA}"
+            echo "run_id=${GITHUB_RUN_ID}"
+            echo "run_attempt=${GITHUB_RUN_ATTEMPT}"
+            echo "deck=izzet-science/v0.6-control.md"
+            echo "deck_sha256=a6acc3e0a00fa1bab0eb3ad7d981a449b8ce0e8c6bf4ed384968e46ca081fac5"
+            echo "seed=0x1A22E7001"
+            echo "samples=10000"
+            echo "mode=fixed-event-readiness"
+            sha256sum izzet-science/artifacts/v07-interaction-pilot.txt
+          } > izzet-science/artifacts/v07-interaction-pilot.manifest
+      - name: Preserve pilot artifact
         uses: actions/upload-artifact@v4
         with:
-          name: izzet-v05-v06A-paired-acquisition
+          name: izzet-v07-interaction-pilot
           path: |
-            izzet-science/artifacts/v05-control.txt
-            izzet-science/artifacts/v06A-pieces-of-the-puzzle.txt
+            izzet-science/artifacts/v07-interaction-pilot.txt
+            izzet-science/artifacts/v07-interaction-pilot.manifest
           if-no-files-found: error
