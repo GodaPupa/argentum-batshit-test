@@ -24,10 +24,13 @@ class IndustrialWasteGoldfishBenchmark : FunSpec({
         val policyCalibration = System.getenv("IW_POLICY_CALIBRATION") == "true"
         val policyCalibrationV2 = System.getenv("IW_POLICY_CALIBRATION_V2") == "true"
         val policyScreen = System.getenv("IW_POLICY_SCREEN") == "true"
-        require(listOf(policyCalibration, policyCalibrationV2, policyScreen).count { it } <= 1) {
+        val policyScreenV2 = System.getenv("IW_POLICY_SCREEN_V2") == "true"
+        require(
+            listOf(policyCalibration, policyCalibrationV2, policyScreen, policyScreenV2).count { it } <= 1
+        ) {
             "select only one policy run mode"
         }
-        val policyEnabled = policyCalibration || policyCalibrationV2 || policyScreen
+        val policyEnabled = policyCalibration || policyCalibrationV2 || policyScreen || policyScreenV2
         val repository = goldfishRepositoryRoot()
         val root = repository.resolve("industrial-waste")
         val registry = CardRegistry().apply {
@@ -45,9 +48,17 @@ class IndustrialWasteGoldfishBenchmark : FunSpec({
             deck.uniqueCards().forEach(registry::requireCard)
         }
 
-        val namespace = if (policyScreen) POLICY_SCREEN_NAMESPACE else SEED_NAMESPACE
-        val seedCount = if (policyScreen) POLICY_SCREEN_SEED_COUNT else SEED_COUNT
-        val expectedDigest = if (policyScreen) POLICY_SCREEN_VECTOR_SHA256 else SEED_VECTOR_SHA256
+        val namespace = when {
+            policyScreenV2 -> POLICY_V2_SCREEN_NAMESPACE
+            policyScreen -> POLICY_SCREEN_NAMESPACE
+            else -> SEED_NAMESPACE
+        }
+        val seedCount = if (policyScreen || policyScreenV2) POLICY_SCREEN_SEED_COUNT else SEED_COUNT
+        val expectedDigest = when {
+            policyScreenV2 -> POLICY_V2_SCREEN_VECTOR_SHA256
+            policyScreen -> POLICY_SCREEN_VECTOR_SHA256
+            else -> SEED_VECTOR_SHA256
+        }
         val seeds = (1..seedCount).map { goldfishSeedFor(namespace, it) }
         require(goldfishVectorDigest(seeds) == expectedDigest) { "goldfish seed vector drift" }
         require(Files.readString(root.resolve("seed-registry.json")).contains(namespace)) {
@@ -57,15 +68,19 @@ class IndustrialWasteGoldfishBenchmark : FunSpec({
         val controlAgent = ArenaAgents.resolve("v0")
         val industrialAgent = if (policyEnabled) {
             ArenaAgent(
-                if (policyCalibrationV2) "industrial-waste-policy-v2" else "industrial-waste-policy-v1",
+                if (policyCalibrationV2 || policyScreenV2) {
+                    "industrial-waste-policy-v2"
+                } else {
+                    "industrial-waste-policy-v1"
+                },
                 AiProfile.LEGACY_V0.copy(
-                    id = if (policyCalibrationV2) {
+                    id = if (policyCalibrationV2 || policyScreenV2) {
                         "industrial-waste-policy-v2"
                     } else {
                         "industrial-waste-policy-v1"
                     },
                     advisorModules = listOf(IndustrialWasteAdvisorModule),
-                    considerAdvisedManaAbilities = policyCalibrationV2,
+                    considerAdvisedManaAbilities = policyCalibrationV2 || policyScreenV2,
                 ),
             )
         } else controlAgent
@@ -112,6 +127,7 @@ class IndustrialWasteGoldfishBenchmark : FunSpec({
         val report = GoldfishReport(
             schemaVersion = 1,
             evidenceClass = when {
+                policyScreenV2 -> "diagnostic-engine-policy-v2-screen"
                 policyScreen -> "diagnostic-engine-policy-screen"
                 policyCalibration || policyCalibrationV2 -> "non-promotional-policy-calibration"
                 else -> "diagnostic-engine-goldfish"
@@ -130,7 +146,9 @@ class IndustrialWasteGoldfishBenchmark : FunSpec({
             valid = invalid.isEmpty(),
         )
         val output = root.resolve(
-            if (policyScreen) {
+            if (policyScreenV2) {
+                "results/gate-3-policy-v2-screen-v1.json"
+            } else if (policyScreen) {
                 "results/gate-3-policy-screen-v1.json"
             } else if (policyCalibrationV2) {
                 "results/gate-3-policy-calibration-v2.json"
@@ -156,6 +174,9 @@ private const val POLICY_SCREEN_NAMESPACE = "IW-G3-POLICY-S1"
 private const val POLICY_SCREEN_SEED_COUNT = 16
 private const val POLICY_SCREEN_VECTOR_SHA256 =
     "72d641cc85c1ca5bb0d260e061b4102405b5b706fd6e7cf22f101cdb5efb0270"
+private const val POLICY_V2_SCREEN_NAMESPACE = "IW-G3-POLICY-V2-S1"
+private const val POLICY_V2_SCREEN_VECTOR_SHA256 =
+    "ea9bc29a6ed3bab7155c893795cd6d9cccabefc1a5718f715e90cd40c4fe441a"
 private const val MAX_TURNS = 12
 private const val MAX_ACTIONS = 4_000
 

@@ -141,3 +141,14 @@ Decision: v2 fails calibration. The fixture began too late in the action sequenc
 had already been activated. Continue only with a deterministic action-choice fixture that presents
 Altar activation against passing on a staged board. Matchups and further sampled screens remain
 blocked.
+
+## Gate 3 corrected policy-v2 calibration
+
+The upstream action-choice fixture then failed in run 35542441270 and revealed that the generic
+strategist discarded all mana abilities before advisor scoring. The correction is profile-gated
+and defaults off, preserving every existing agent. Run 35542754981 passed the corrected fixture.
+Corrected replay run 35543032055 subsequently recorded Pactdoll-A's first loop-available and
+combo-ready state on turn 7, followed by lethal that turn; Control recorded none.
+
+Decision: corrected v2 passes calibration and earns exactly one fresh 16-pair diagnostic screen.
+The observation is not deck-promotion evidence and does not authorize a matchup gauntlet by itself.

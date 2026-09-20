@@ -1,7 +1,15 @@
-name: Industrial Waste — Policy Screen
+name: Industrial Waste — Policy v2 Screen
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - industrial-waste/lab
+    paths:
+      - .github/workflows/industrial-waste-policy-screen.yml
+      - ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteGoldfishBenchmark.kt
+      - industrial-waste/protocols/gate-3-policy-v2-screen-v1.md
+      - industrial-waste/seed-registry.json
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -39,12 +47,12 @@ jobs:
         run: just industrial-waste-goldfish
         env:
           IW_GOLDFISH: "true"
-          IW_POLICY_SCREEN: "true"
+          IW_POLICY_SCREEN_V2: "true"
 
       - name: Upload policy-screen evidence
         if: always()
         uses: actions/upload-artifact@v7
         with:
-          name: industrial-waste-policy-screen
-          path: industrial-waste/results/gate-3-policy-screen-v1.json
+          name: industrial-waste-policy-v2-screen
+          path: industrial-waste/results/gate-3-policy-v2-screen-v1.json
           if-no-files-found: error

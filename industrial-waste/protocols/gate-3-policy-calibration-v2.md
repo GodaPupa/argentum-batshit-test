@@ -1,6 +1,6 @@
 # Gate 3 policy calibration v2
 
-Status: completed; non-promotional diagnostic; failed.
+Status: completed; non-promotional diagnostic; passed after action-filter correction.
 
 ## Purpose
 
@@ -25,10 +25,20 @@ permits one new small policy-v2 screen; it does not qualify either deck or autho
 
 ## Result
 
-GitHub Actions run 35542066782 completed a valid 24-game replay. Its summaries and every core-line
+The initial replay, GitHub Actions run 35542066782, completed 24 valid games. Its summaries and every core-line
 metric were identical to v1 calibration: both decks recorded zero Retriever-loop and combo-ready
-states. The calibration failed, so no new policy-v2 namespace is allocated.
+states. The calibration failed at this stage, so no new policy-v2 namespace was allocated.
 
 The passing sacrifice-response fixture only proved behavior after an activation was submitted. The
 next seed-free test moves upstream and compares Altar activation directly against passing from a
 staged board. No further gameplay is permitted until that action-choice fixture passes.
+
+The upstream fixture initially failed and exposed the root cause: generic candidate filtering
+removed all mana abilities before card-advisor scoring. A new profile flag now permits only advised
+mana abilities into strategic scoring and defaults off for every existing profile. The corrected
+fixture passed in run 35542754981. Corrected replay run 35543032055 then recorded Pactdoll-A's first
+Retriever-loop and combo-ready state on turn 7 (pair 4), with lethal on the same turn. Control
+remained at zero loop observations.
+
+Decision: v2 passes the declared calibration gate and may spend one fresh 16-pair diagnostic
+namespace. This single replay observation is directional and cannot promote Pactdoll-A.
