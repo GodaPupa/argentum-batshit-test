@@ -111,7 +111,7 @@ class IndustrialWasteGoldfishBenchmark : FunSpec({
             promotionEligible = false,
             namespace = namespace,
             seedCount = seeds.size,
-            seedVectorSha256 = SEED_VECTOR_SHA256,
+            seedVectorSha256 = expectedDigest,
             opponent = "60 Forest; v0 AI; inert capability opponent; " +
                 "Industrial seat=${industrialAgent.name}",
             mulligans = "London mulligans enabled for both seats",
