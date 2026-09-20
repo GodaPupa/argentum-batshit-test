@@ -1341,19 +1341,11 @@ class Strategist(
         if (!lifeGainWorthPreservingAgainstVisibleReach(state, playerId)) return
         if (action.action !is CastSpell) return
 
-        // First prefer an immediately executable protected lifegain follow-up.
-        val immediate = survivalLifeGainFollowUp(leafState, playerId)
-        if (immediate != null && leafState.spellsCastThisTurn > state.spellsCastThisTurn) {
-            val cast = immediate.action as CastSpell
-            survivalCommitment = SurvivalCommitment(playerId, state.turnNumber, cast.cardId, cast.faceIndex)
-            pendingSurvivalSetup = null
-            return
-        }
-
-        // Otherwise retain only a bounded "one land drop away" setup. No card name or hidden
-        // information is used: after the chosen spell resolves, simulate each currently legal land
-        // play and require that it makes a survival-relevant pure lifegain Storm cast affordable.
         if (leafState.spellsCastThisTurn <= state.spellsCastThisTurn) return
+
+        // Prefer a legal land step before committing the protected lifegain when that land keeps
+        // the same focal cast executable. This preserves ordinary mana development and prevents an
+        // immediate commitment from skipping a superior land -> lifegain continuation.
         val landAndFollow = simulator.getLegalActions(leafState, playerId).asSequence().mapNotNull { landLegal ->
             val land = landLegal.action as? PlayLand ?: return@mapNotNull null
             val afterLand = simulator.simulate(leafState, land)
@@ -1362,15 +1354,26 @@ class Strategist(
             }
             val follow = survivalLifeGainFollowUp(afterLand.state, playerId) ?: return@mapNotNull null
             land.cardId to (follow.action as CastSpell)
-        }.firstOrNull() ?: return
+        }.firstOrNull()
 
-        pendingSurvivalSetup = PendingSurvivalSetup(
-            playerId = playerId,
-            turn = state.turnNumber,
-            landId = landAndFollow.first,
-            cardId = landAndFollow.second.cardId,
-            faceIndex = landAndFollow.second.faceIndex,
-        )
+        if (landAndFollow != null) {
+            pendingSurvivalSetup = PendingSurvivalSetup(
+                playerId = playerId,
+                turn = state.turnNumber,
+                landId = landAndFollow.first,
+                cardId = landAndFollow.second.cardId,
+                faceIndex = landAndFollow.second.faceIndex,
+            )
+            survivalCommitment = null
+            return
+        }
+
+        // With no useful intervening land action, commit the immediately executable protected
+        // lifegain follow-up.
+        val immediate = survivalLifeGainFollowUp(leafState, playerId) ?: return
+        val cast = immediate.action as CastSpell
+        survivalCommitment = SurvivalCommitment(playerId, state.turnNumber, cast.cardId, cast.faceIndex)
+        pendingSurvivalSetup = null
     }
 
     private fun promotePendingSurvivalSetup(
