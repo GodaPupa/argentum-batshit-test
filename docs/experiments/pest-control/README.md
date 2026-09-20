@@ -9,6 +9,11 @@ Tier-1 status or alter the frozen Pest Control v1.0 deck.
 
 This directory is reserved exclusively for Project Pest Control experiment protocols.
 
+Tier-1 breadth construction has begun with a seedless, no-game Grixis Affinity readiness gate. The
+exact Pasquale first-place 75, shared card-support package, and fail-closed state are recorded in
+`tier-one-grixis-readiness.md`. The preboard 60 is fully resolvable, but no runner, seed vector, or
+game is authorized or present; outcome exposure remains zero.
+
 Pest Control versus SoterX Mono Red Madness matchup Block A executed once and is formally rejected
 as `REJECTED_OUTCOME_RELEVANT_TARGET_SELECTION_DEFECTS`. All 50 Block A seeds are permanently
 retired. The descriptive 35–15 result is inadmissible for acceptance, pooling, or tuning. Preserved
