@@ -51,7 +51,10 @@ the Mono Red Madness matchup; it cannot by itself establish Tier-1 status across
 
 ## Current stop condition
 
-The exact freeze identity is attached, but the compiled runner state remains `DISABLED`. Unit tests do
-not read the seed vector and cannot activate execution. The freeze operation is documented in
-[the qualification seed-freeze gate](v2-qualification-seed-freeze-gate.md). The next gate must build
-and deterministically validate an artifact-bound, two-shard execution harness before authorization.
+The exact freeze identity is attached, and the artifact-bound two-shard plan and reconciliation
+contract are constructed, but the compiled runner state remains `DISABLED`. The validation workflow
+cannot initialize a game and proves that the runner guard rejects activation. The freeze operation is
+documented in [the qualification seed-freeze gate](v2-qualification-seed-freeze-gate.md), and the
+coordinator boundary is documented in
+[the qualification execution harness](v2-qualification-execution-harness.md). Authorization requires
+a later, separately reviewed workflow pinned to the exact green coordinator commit and source tree.
