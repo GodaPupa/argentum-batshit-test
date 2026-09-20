@@ -1,0 +1,45 @@
+name: Face Value Qualification Forge AI Compatibility
+
+on:
+  push:
+    branches: [face-value/lab]
+    paths:
+      - experiments/face-value/qualification/audit_forge_ai_compatibility.py
+      - .github/workflows/face-value-qualification-forge-ai-compatibility.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  static-audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fetch only the pinned Forge card corpus
+        run: |
+          set -euo pipefail
+          FORGE_SHA=f387ede550e336315637a8b765f0927ac768c113
+          git clone --filter=blob:none --no-checkout https://github.com/Card-Forge/forge.git forge-src
+          git -C forge-src sparse-checkout init --cone
+          git -C forge-src sparse-checkout set forge-gui/res/cardsfolder
+          git -C forge-src checkout --detach "$FORGE_SHA"
+          test "$(git -C forge-src rev-parse HEAD)" = "$FORGE_SHA"
+      - name: Audit every frozen 75 for exact identity and AI exclusions
+        id: compatibility
+        continue-on-error: true
+        run: |
+          python3 experiments/face-value/qualification/audit_forge_ai_compatibility.py \
+            --forge-root forge-src \
+            --output forge-ai-compatibility-report.json
+      - name: Preserve compatibility report
+        uses: actions/upload-artifact@v4
+        with:
+          name: face-value-forge-ai-compatibility
+          path: forge-ai-compatibility-report.json
+          if-no-files-found: error
+      - name: Enforce fail-closed disposition
+        if: steps.compatibility.outcome != 'success'
+        run: |
+          echo 'Representative-deck AI compatibility is blocked; no replacement seeds are authorized.'
+          exit 1
