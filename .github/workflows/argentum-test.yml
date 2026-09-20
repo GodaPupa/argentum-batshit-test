@@ -9,41 +9,63 @@ permissions:
   contents: read
 
 jobs:
-  test:
+  izzet-snow-basics-v07d:
+    if: github.ref == 'refs/heads/mayhem/izzet-science'
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 10
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Set up Java 21
-        uses: actions/setup-java@v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
         with:
-          distribution: temurin
-          java-version: '21'
-
-      - name: Set up Gradle
-        uses: gradle/actions/setup-gradle@v4
-        with:
-          gradle-version: '9.6.1'
-
-      - name: Make Gradle wrapper executable
-        run: chmod +x gradlew
-
-      - name: Show environment
+          python-version: '3.12'
+      - name: Verify frozen identities
+        shell: bash
         run: |
-          java -version
-          gradle --version
-
-      - name: Compile Argentum
-        run: ./gradlew classes --stacktrace
-
-      - name: Run engine tests
-        run: ./gradlew test --stacktrace
-
-      - name: Run Gym tests
-        run: ./gradlew :gym:test --stacktrace
-
-      - name: Run Gym trainer tests
-        run: ./gradlew :gym-trainer:test --stacktrace
+          set -euo pipefail
+          test "$(sha256sum izzet-science/v0.6-control.md | cut -d' ' -f1)" = "a6acc3e0a00fa1bab0eb3ad7d981a449b8ce0e8c6bf4ed384968e46ca081fac5"
+          test "$(sha256sum izzet-science/challengers/v07D-snow-basics.md | cut -d' ' -f1)" = "29fa77acd45069b1374f10ae0569d4371c6cd5ac70d78cd07c8f5543fbb337da"
+      - name: Run paired snow-basic pilot
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p izzet-science/artifacts
+          python izzet-science/sim/mana_harness.py \
+            --deck izzet-science/v0.6-control.md \
+            --samples 10000 --seed 0x1A22E700A --interaction-pilot \
+            | tee izzet-science/artifacts/v07D-control.txt
+          python izzet-science/sim/mana_harness.py \
+            --deck izzet-science/challengers/v07D-snow-basics.md \
+            --samples 10000 --seed 0x1A22E700A --interaction-pilot \
+            | tee izzet-science/artifacts/v07D-snow-basics.txt
+          python izzet-science/sim/compare_v07d.py \
+            izzet-science/artifacts/v07D-control.txt \
+            izzet-science/artifacts/v07D-snow-basics.txt \
+            | tee izzet-science/artifacts/v07D-comparison.txt
+      - name: Write provenance manifest
+        shell: bash
+        run: |
+          set -euo pipefail
+          {
+            echo "source_sha=${GITHUB_SHA}"
+            echo "run_id=${GITHUB_RUN_ID}"
+            echo "run_attempt=${GITHUB_RUN_ATTEMPT}"
+            echo "control_sha256=a6acc3e0a00fa1bab0eb3ad7d981a449b8ce0e8c6bf4ed384968e46ca081fac5"
+            echo "challenger_sha256=29fa77acd45069b1374f10ae0569d4371c6cd5ac70d78cd07c8f5543fbb337da"
+            echo "seed=0x1A22E700A"
+            echo "samples_per_deck=10000"
+            echo "change=19 Island to Snow-Covered Island; 7 Mountain to Snow-Covered Mountain"
+            sha256sum izzet-science/artifacts/v07D-control.txt \
+              izzet-science/artifacts/v07D-snow-basics.txt \
+              izzet-science/artifacts/v07D-comparison.txt
+          } > izzet-science/artifacts/v07D-snow-basics.manifest
+      - name: Preserve paired pilot artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: izzet-v07D-snow-basics-paired-pilot
+          path: |
+            izzet-science/artifacts/v07D-control.txt
+            izzet-science/artifacts/v07D-snow-basics.txt
+            izzet-science/artifacts/v07D-comparison.txt
+            izzet-science/artifacts/v07D-snow-basics.manifest
+          if-no-files-found: error

@@ -11,7 +11,8 @@ from pathlib import Path
 
 SEED = 0x1A22E7001
 LANDS = {
-"Island","Mountain","Command Tower","Ash Barrens","Evolving Wilds",
+"Island","Mountain","Snow-Covered Island","Snow-Covered Mountain",
+"Command Tower","Ash Barrens","Evolving Wilds",
 "Terramorphic Expanse","Izzet Boilerworks","Volatile Fjord",
 "Swiftwater Cliffs","Silverbluff Bridge","Lonely Sandbar","Forgotten Cave"
 }
@@ -73,7 +74,14 @@ MANA_COST={
 "Silver Myr":2,"Iron Myr":2,"Izzet Guildmage":2
 }
 def land_enters_tapped(card): return card in TAPPED_LANDS
-def high_tide_island(card): return card in {"Island","Volatile Fjord"}
+def basic_land_kind(card):
+    if card in {"Island","Snow-Covered Island"}: return "Island"
+    if card in {"Mountain","Snow-Covered Mountain"}: return "Mountain"
+    return None
+
+def high_tide_island(card): return card in {"Island","Snow-Covered Island","Volatile Fjord"}
+def is_snow_permanent(card):
+    return card in {"Snow-Covered Island","Snow-Covered Mountain","Volatile Fjord"}
 def rock_enters_tapped(card): return card in {"Star Compass","Sky Diamond","Fire Diamond"}
 def creature_mana_ready(card, entered_turn, turn):
     return card in MANA_CREATURES and entered_turn < turn
@@ -100,9 +108,10 @@ def state_regressions():
 
 
 class DevState:
-    def __init__(self, hand):
+    def __init__(self, hand, snow_basics=False):
         self.hand=list(hand); self.battlefield=[]; self.turn=0; self.land_played=False
         self.commander_casts=0; self.commander_zone=True
+        self.snow_basics=snow_basics
     def begin_turn(self, draw=None):
         self.turn+=1; self.land_played=False
         if draw is not None: self.hand.append(draw)
@@ -136,8 +145,8 @@ def development_regressions():
 
 def land_colors(card, basics_controlled=None):
     basics_controlled=basics_controlled or set()
-    if card=="Island": return {"U"}
-    if card=="Mountain": return {"R"}
+    if basic_land_kind(card)=="Island": return {"U"}
+    if basic_land_kind(card)=="Mountain": return {"R"}
     if card=="Command Tower": return {"U","R"}
     if card in {"Volatile Fjord","Swiftwater Cliffs","Silverbluff Bridge"}: return {"U","R"}
     if card=="Lonely Sandbar": return {"U"}
@@ -147,7 +156,7 @@ def land_colors(card, basics_controlled=None):
     return set()
 
 def available_land_mana(state):
-    basics={x["card"] for x in state.lands() if x["card"] in {"Island","Mountain"}}
+    basics={basic_land_kind(x["card"]) for x in state.lands() if basic_land_kind(x["card"])}
     out=[]
     for p in state.lands():
         if not p["tapped"]: out.append((p,land_colors(p["card"],basics)))
@@ -198,7 +207,8 @@ def fetch_basic(state, fetch):
     if perm is None: return False
     # deterministic color policy: secure U first, then R.
     controlled={c for p in state.lands() for c in land_colors(p["card"])}
-    basic="Island" if "U" not in controlled else "Mountain"
+    basic_kind="Island" if "U" not in controlled else "Mountain"
+    basic=f"Snow-Covered {basic_kind}" if state.snow_basics else basic_kind
     state.battlefield.remove(perm)
     state.battlefield.append({"card":basic,"tapped":True,"entered":state.turn})
     return True
@@ -209,7 +219,8 @@ def ash_barrens_cycle(state):
     if not can_pay_simple(state,generic=1): return False
     state.hand.remove("Ash Barrens")
     controlled={c for p in state.lands() for c in land_colors(p["card"])}
-    basic="Island" if "U" not in controlled else "Mountain"
+    basic_kind="Island" if "U" not in controlled else "Mountain"
+    basic=f"Snow-Covered {basic_kind}" if state.snow_basics else basic_kind
     state.hand.append(basic)
     return True
 
@@ -257,7 +268,7 @@ def nonland_mana_profile(state, conservative_fellwar=True):
         elif card=="Network Terminal": u+=1  # choose U for Guildmage threshold
         elif card in {"Ur-Golem's Eye","Sisay's Ring"}: c+=2
         elif card=="Star Compass":
-            basics={x["card"] for x in state.lands()}
+            basics={basic_land_kind(x["card"]) for x in state.lands() if basic_land_kind(x["card"])}
             if "Island" in basics: u+=1
             elif "Mountain" in basics: r+=1
         elif card=="Fellwar Stone":
@@ -295,7 +306,7 @@ def rock_regressions():
 
 
 
-LAND_PRIORITY=["Island","Command Tower","Mountain","Ash Barrens","Evolving Wilds",
+LAND_PRIORITY=["Island","Snow-Covered Island","Command Tower","Mountain","Snow-Covered Mountain","Ash Barrens","Evolving Wilds",
 "Terramorphic Expanse","Volatile Fjord","Swiftwater Cliffs","Silverbluff Bridge",
 "Lonely Sandbar","Forgotten Cave","Izzet Boilerworks"]
 ROCK_PRIORITY=["Mind Stone","Izzet Signet","Prismatic Lens","Sky Diamond","Fire Diamond","Star Compass",
@@ -440,6 +451,36 @@ def actual_hand_action_metrics(state):
         "spike_present":"Lava Spike" in h,
     }
 
+def snow_readiness_metrics(state):
+    snow=sum(is_snow_permanent(p["card"]) for p in state.battlefield)
+    skred_castable="Skred" in state.hand and ready_payment_feasible_exact(state,need_r=1)
+    return {
+        "snow_permanents":snow,
+        "skred_damage":snow if skred_castable else 0,
+        "skred_live":skred_castable and snow>=1,
+        "skred_3plus":skred_castable and snow>=3,
+    }
+
+def snow_regressions():
+    regular=DevState(["Island","Mountain"])
+    regular.begin_turn(); assert regular.play_land("Island")
+    assert land_colors("Snow-Covered Island")==land_colors("Island")=={"U"}
+    assert land_colors("Snow-Covered Mountain")==land_colors("Mountain")=={"R"}
+    assert high_tide_island("Snow-Covered Island")
+    assert not is_snow_permanent("Island")
+    assert is_snow_permanent("Snow-Covered Island") and is_snow_permanent("Volatile Fjord")
+
+    snow=DevState(["Snow-Covered Island","Snow-Covered Mountain","Skred"],snow_basics=True)
+    snow.begin_turn(); assert snow.play_land("Snow-Covered Island")
+    snow.begin_turn(); untap_step(snow); assert snow.play_land("Snow-Covered Mountain")
+    metrics=snow_readiness_metrics(snow)
+    assert metrics=={"snow_permanents":2,"skred_damage":2,"skred_live":True,"skred_3plus":False}
+
+    fetch=DevState(["Evolving Wilds"],snow_basics=True)
+    fetch.begin_turn(); assert fetch.play_land("Evolving Wilds") and fetch_basic(fetch,"Evolving Wilds")
+    assert fetch.lands()[0]["card"]=="Snow-Covered Island"
+    return True
+
 def high_tide_metrics(state):
     islands=sum(high_tide_island(p["card"]) and not p["tapped"] for p in state.lands())
     # If High Tide is in hand, casting it costs U from an Island; remaining untapped Islands
@@ -468,7 +509,7 @@ def selection_priority(card, state):
     if card in COMBO_CARDS and bool((COMBO_CARDS-{card}) & set(state.hand)): return 90
     if card in INTERACTION_CARDS and not (INTERACTION_CARDS & set(state.hand)): return 80
     if card in LANDS and lands_in_hand==0: return 70
-    if card in {"Island","Mountain","Command Tower"}: return 60
+    if basic_land_kind(card) or card=="Command Tower": return 60
     if card in INTERACTION_CARDS: return 50
     if card in COMBO_CARDS: return 40
     return 20
@@ -976,7 +1017,7 @@ def primary_combo_launch_with_protection_feasible(state, protection_card, threat
 def ready_mana_pool_states(state):
     """Enumerate exact ready U/R/C pools, including fixed Boilerworks and Signet conversion."""
     source_modes=[]
-    basics={p["card"] for p in state.lands() if p["card"] in {"Island","Mountain"}}
+    basics={basic_land_kind(p["card"]) for p in state.lands() if basic_land_kind(p["card"])}
     for p in state.battlefield:
         if p.get("tapped",False): continue
         card=p["card"]
@@ -1330,7 +1371,8 @@ def combo_assembly_regressions():
 def simulate_one(cards, rng, through=6, include_interaction=False):
     library=list(cards); rng.shuffle(library)
     hand=library[:7]; library=library[7:]
-    s=DevState(hand)
+    snow_basics="Snow-Covered Island" in cards or "Snow-Covered Mountain" in cards
+    s=DevState(hand,snow_basics=snow_basics)
     rows=[]
     first_lethal_turn=None
     for turn in range(1,through+1):
@@ -1348,6 +1390,7 @@ def simulate_one(cards, rng, through=6, include_interaction=False):
         action_u,action_r,action_uu=color_flags(s)
         action_guildmage=can_pay_simple(s,need_u=1,need_r=1)
         hand_actions=actual_hand_action_metrics(s)
+        snow_metrics=snow_readiness_metrics(s)
         combo=combo_assembly_metrics(s)
         combo_pair_commander_ready=combo["pair"] and guildmage_on_battlefield(s)
         combo_lethal=primary_combo_launch_feasible(s)
@@ -1384,6 +1427,8 @@ def simulate_one(cards, rng, through=6, include_interaction=False):
                      "u_spell_present":hand_actions["u_spell_present"],"u_spell_exec":hand_actions["u_spell_exec"],
                      "r_spell_present":hand_actions["r_spell_present"],"r_spell_exec":hand_actions["r_spell_exec"],
                      "ritual_present":hand_actions["ritual_present"],"spike_present":hand_actions["spike_present"],
+                     "snow_permanents":snow_metrics["snow_permanents"],"skred_damage":snow_metrics["skred_damage"],
+                     "skred_live":snow_metrics["skred_live"],"skred_3plus":snow_metrics["skred_3plus"],
                      "combo_pair":combo["pair"],"combo_pair_guild_action":combo["pair_guild_action"],
                      "combo_pair_commander_ready":combo_pair_commander_ready,"combo_lethal":combo_lethal,
                      "first_lethal_now":first_lethal_now,"lethal_by_now":lethal_by_now,
@@ -1404,6 +1449,7 @@ def simulate_sample(cards, samples=10000, seed=SEED, through=10, include_interac
             "guildmage_start":0,"guildmage_action":0,"guildmage_end":0,
             "uu_spell_present":0,"uu_spell_exec":0,"u_spell_present":0,"u_spell_exec":0,
             "r_spell_present":0,"r_spell_exec":0,"ritual_present":0,"spike_present":0,
+            "snow_permanents_sum":0,"skred_damage_sum":0,"skred_live":0,"skred_3plus":0,
             "combo_pair":0,"combo_pair_guild_action":0,"combo_pair_commander_ready":0,"combo_lethal":0,
             "first_lethal_now":0,"lethal_by_now":0,
             "guild_plus_u":0,"guild_plus_r":0,"uu_plus_r":0,
@@ -1426,6 +1472,10 @@ def simulate_sample(cards, samples=10000, seed=SEED, through=10, include_interac
             a["selection_drawn_sum"]+=row["selection_drawn"]
             for k in ("start_U","start_R","start_UU","action_U","action_R","action_UU","residual_U","residual_R","residual_UU","guildmage_start","guildmage_action","guildmage_end","uu_spell_present","uu_spell_exec","u_spell_present","u_spell_exec","r_spell_present","r_spell_exec","ritual_present","spike_present","combo_pair","combo_pair_guild_action","combo_pair_commander_ready","combo_lethal","first_lethal_now","lethal_by_now","guild_plus_u","guild_plus_r","uu_plus_r","high_tide_castable","high_tide_productive","reversal_neutral","reversal_positive"):
                 a[k]+=int(row[k])
+            a["snow_permanents_sum"]+=row["snow_permanents"]
+            a["skred_damage_sum"]+=row["skred_damage"]
+            a["skred_live"]+=int(row["skred_live"])
+            a["skred_3plus"]+=int(row["skred_3plus"])
             if include_interaction:
                 for k in interaction_keys: a[k]+=int(row[k])
             a["high_tide_post_sum"]+=row["high_tide_post_mana"]
@@ -1612,6 +1662,7 @@ def main():
     simulation_regressions(cards)
     unified_payment_regressions()
     readiness_regressions(cards)
+    snow_regressions()
     selection_regressions()
     selection_resolution_regressions()
     complex_selection_regressions()
@@ -1654,6 +1705,9 @@ def main():
               "high_tide_castable",a["high_tide_castable"]/n,"high_tide_productive",a["high_tide_productive"]/n,
               "avg_high_tide_gain",a["high_tide_gain_sum"]/n,
               "reversal_neutral",a["reversal_neutral"]/n,"reversal_positive",a["reversal_positive"]/n,
+              "avg_snow_permanents",a["snow_permanents_sum"]/n,
+              "avg_skred_damage",a["skred_damage_sum"]/n,
+              "skred_live",a["skred_live"]/n,"skred_3plus",a["skred_3plus"]/n,
               "avg_lands",a["lands_sum"]/n,"avg_islands",a["islands_sum"]/n)
         if args.interaction_pilot:
             print("interaction","turn",turn,

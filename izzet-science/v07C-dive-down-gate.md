@@ -6,10 +6,11 @@ Challenger: `izzet-science/challengers/v07C-dive-down.md`
 Change: `-1 Skred, +1 Dive Down`
 
 Repository legality data identifies both cards as Pauper Commander legal. Skred deals
-damage equal to the number of snow permanents its controller controls. The frozen
-v0.6 deck contains no snow permanents, so its current rules-text damage ceiling is
-zero. Dive Down costs one blue mana and gives a controlled creature hexproof and
-+0/+3 until end of turn.
+damage equal to the number of snow permanents its controller controls. The original
+freeze stated that v0.6 contained no snow permanents. A later audit found Volatile
+Fjord, a snow land, so the correct Skred damage ceiling is one. This factual
+correction does not change the frozen gate or completed rejection. Dive Down costs
+one blue mana and gives a controlled creature hexproof and +0/+3 until end of turn.
 
 The readiness model credits Dive Down only against the declared event in which a
 targeted spell would remove Izzet Guildmage. It receives no credit against a spell

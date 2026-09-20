@@ -56,3 +56,10 @@ protection metric improved. The result is not rerun, re-seeded, or reinterpreted
 
 Reject v0.7-C. Preserve v0.6 unchanged as the accepted control. The confirmation
 seed `0x1A22E7007` remains unused.
+
+## Post-run factual correction
+
+The preregistration described Skred as having a zero-damage ceiling because v0.6
+supposedly had no snow permanents. Volatile Fjord is a snow land, so the correct
+ceiling is one. This correction does not alter any sampled value, frozen threshold,
+or the binding -2.89 percentage-point R-execution failure; v0.7-C remains rejected.
