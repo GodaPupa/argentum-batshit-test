@@ -1,0 +1,13 @@
+name: Face Value E Fix Sprawl Screen
+on:
+  push:
+    branches: [face-value/lab]
+    paths: [.github/workflows/face-value-e-fix-sprawl-screen.yml]
+permissions: {contents: read}
+jobs:
+  A:
+    uses: ./.github/workflows/face-value-experiment-harness.yml
+    with: {experiment_name: e-fix-sprawl-a-terror, control_deck: experiments/face-value/decks/fv-temur-chrysalis-e.dck, challenger_deck: experiments/face-value/decks/fv-e-fix-sprawl-a.dck, opponent_deck: experiments/face-value/decks/mono-blue-terror.dck, seed_start: 1510001, games: 20}
+  B:
+    uses: ./.github/workflows/face-value-experiment-harness.yml
+    with: {experiment_name: e-fix-sprawl-b-terror, control_deck: experiments/face-value/decks/fv-temur-chrysalis-e.dck, challenger_deck: experiments/face-value/decks/fv-e-fix-sprawl-b.dck, opponent_deck: experiments/face-value/decks/mono-blue-terror.dck, seed_start: 1520001, games: 20}
