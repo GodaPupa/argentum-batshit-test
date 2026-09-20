@@ -1,0 +1,238 @@
+diff --git a/forge-ai/src/main/java/forge/ai/ComputerUtil.java b/forge-ai/src/main/java/forge/ai/ComputerUtil.java
+index d6fd8378f2..fcd30dbd2c 100644
+--- a/forge-ai/src/main/java/forge/ai/ComputerUtil.java
++++ b/forge-ai/src/main/java/forge/ai/ComputerUtil.java
+@@ -2418,7 +2418,16 @@ public class ComputerUtil {
+             // TODO
+             // computer will need to choose a type based on whether it needs a creature or land,
+             // otherwise, lib search for most common type left then, reveal chosenType to Human
+-            if (game.getPhaseHandler().is(PhaseType.UNTAP) && logic == null) { // Storage Matrix
++            if ("FaceValueWindingWay".equals(logic)) {
++                int bestCount = -1;
++                for (String type : validTypes) {
++                    int typeCount = CardLists.filter(ai.getCardsIn(ZoneType.Library), CardPredicates.isType(type)).size();
++                    if (typeCount > bestCount) {
++                        bestCount = typeCount;
++                        chosen = type;
++                    }
++                }
++            } else if (game.getPhaseHandler().is(PhaseType.UNTAP) && logic == null) { // Storage Matrix
+                 double amount = 0;
+                 for (String type : validTypes) {
+                     CardCollection list = CardLists.filter(ai.getCardsIn(ZoneType.Battlefield), CardPredicates.isType(type), CardPredicates.TAPPED);
+diff --git a/forge-ai/src/main/java/forge/ai/ability/ChooseGenericAi.java b/forge-ai/src/main/java/forge/ai/ability/ChooseGenericAi.java
+index b2bdc38f09..669a3b89d9 100644
+--- a/forge-ai/src/main/java/forge/ai/ability/ChooseGenericAi.java
++++ b/forge-ai/src/main/java/forge/ai/ability/ChooseGenericAi.java
+@@ -31,7 +31,7 @@ public class ChooseGenericAi extends SpellAbilityAi {
+                     return true;
+                 }
+             }
+-        } else if ("Always".equals(aiLogic)) {
++        } else if ("Always".equals(aiLogic) || "PayUnlessCost".equals(aiLogic)) {
+             return true;
+         }
+         return false;
+diff --git a/forge-ai/src/main/java/forge/ai/ability/ChooseTypeAi.java b/forge-ai/src/main/java/forge/ai/ability/ChooseTypeAi.java
+index b098187424..3a361a024a 100644
+--- a/forge-ai/src/main/java/forge/ai/ability/ChooseTypeAi.java
++++ b/forge-ai/src/main/java/forge/ai/ability/ChooseTypeAi.java
+@@ -23,6 +23,10 @@ public class ChooseTypeAi extends SpellAbilityAi {
+     protected AiAbilityDecision canPlay(Player aiPlayer, SpellAbility sa) {
+         String aiLogic = sa.getParamOrDefault("AILogic", "");
+ 
++        if ("FaceValueWindingWay".equals(aiLogic)) {
++            return new AiAbilityDecision(100, AiPlayDecision.WillPlay);
++        }
++
+         if (aiLogic.isEmpty()) {
+             return new AiAbilityDecision(0, AiPlayDecision.MissingLogic);
+         } else if ("MostProminentComputerControls".equals(aiLogic)) {
+diff --git a/forge-ai/src/main/java/forge/ai/ability/LifeGainAi.java b/forge-ai/src/main/java/forge/ai/ability/LifeGainAi.java
+index 2518d16759..3d011a9ba2 100644
+--- a/forge-ai/src/main/java/forge/ai/ability/LifeGainAi.java
++++ b/forge-ai/src/main/java/forge/ai/ability/LifeGainAi.java
+@@ -125,6 +125,10 @@ public class LifeGainAi extends SpellAbilityAi {
+         final Card source = sa.getHostCard();
+         final String sourceName = ComputerUtilAbility.getAbilitySourceName(sa);
+ 
++        if ("FaceValueBargain".equals(sa.getParam("AILogic"))) {
++            return new AiAbilityDecision(100, AiPlayDecision.WillPlay);
++        }
++
+         final int life = ai.getLife();
+         final String amountStr = sa.getParam("LifeAmount");
+         int lifeAmount = 0;
+diff --git a/forge-ai/src/main/java/forge/ai/ability/PermanentAi.java b/forge-ai/src/main/java/forge/ai/ability/PermanentAi.java
+index 85451d60d2..43192ba5d2 100644
+--- a/forge-ai/src/main/java/forge/ai/ability/PermanentAi.java
++++ b/forge-ai/src/main/java/forge/ai/ability/PermanentAi.java
+@@ -46,6 +46,20 @@ public class PermanentAi extends SpellAbilityAi {
+     protected AiAbilityDecision checkApiLogic(final Player ai, final SpellAbility sa) {
+         final Card source = sa.getHostCard();
+ 
++        // Lab-only sequencing guard: if both spells can be cast this turn,
++        // create the Rally tokens before resolving the Bushwhacker pump.
++        if (source.hasSVar("FaceValueSequenceAfter")) {
++            final String precursor = source.getSVar("FaceValueSequenceAfter");
++            final boolean precursorInHand = ai.getCardsIn(ZoneType.Hand)
++                    .anyMatch(CardPredicates.nameEquals(precursor));
++            final boolean precursorCastThisTurn = CardUtil.getThisTurnCast("Card", source, sa, ai)
++                    .stream().anyMatch(CardPredicates.nameEquals(precursor));
++            if (precursorInHand && !precursorCastThisTurn
++                    && ComputerUtilMana.getAvailableManaSources(ai, true).size() >= 4) {
++                return new AiAbilityDecision(0, AiPlayDecision.AnotherTime);
++            }
++        }
++
+         // check on legendary
+         if (!source.ignoreLegendRule() && ai.isCardInPlay(source.getName())) {
+             // TODO check the risk we'd lose the effect with bad timing
+diff --git a/forge-gui/res/cardsfolder/b/blue_elemental_blast.txt b/forge-gui/res/cardsfolder/b/blue_elemental_blast.txt
+index 2336c9aaf4..63a78060cf 100644
+--- a/forge-gui/res/cardsfolder/b/blue_elemental_blast.txt
++++ b/forge-gui/res/cardsfolder/b/blue_elemental_blast.txt
+@@ -4,5 +4,4 @@ Types:Instant
+ A:SP$ Charm | Choices$ DBCounter,DBDestroy
+ SVar:DBCounter:DB$ Counter | TargetType$ Spell | ValidTgts$ Card.Red | TgtPrompt$ Select target red spell | SpellDescription$ Counter target red spell.
+ SVar:DBDestroy:DB$ Destroy | ValidTgts$ Permanent.Red | TgtPrompt$ Select target red permanent. | SpellDescription$ Destroy target red permanent.
+-AI:RemoveDeck:Random
+ Oracle:Choose one —\n• Counter target red spell.\n• Destroy target red permanent.
+diff --git a/forge-gui/res/cardsfolder/f/faithless_looting.txt b/forge-gui/res/cardsfolder/f/faithless_looting.txt
+index 12d39874da..0f080dc391 100644
+--- a/forge-gui/res/cardsfolder/f/faithless_looting.txt
++++ b/forge-gui/res/cardsfolder/f/faithless_looting.txt
+@@ -4,5 +4,4 @@ Types:Sorcery
+ K:Flashback:2 R
+ A:SP$ Draw | NumCards$ 2 | SpellDescription$ Draw two cards, then discard two cards. | SubAbility$ DBDiscard
+ SVar:DBDiscard:DB$ Discard | Defined$ You | NumCards$ 2 | Mode$ TgtChoose
+-AI:RemoveDeck:All
+ Oracle:Draw two cards, then discard two cards.\nFlashback {2}{R} (You may cast this card from your graveyard for its flashback cost. Then exile it.)
+diff --git a/forge-gui/res/cardsfolder/g/goblin_bushwhacker.txt b/forge-gui/res/cardsfolder/g/goblin_bushwhacker.txt
+index 789521276f..07628b7f8e 100644
+--- a/forge-gui/res/cardsfolder/g/goblin_bushwhacker.txt
++++ b/forge-gui/res/cardsfolder/g/goblin_bushwhacker.txt
+@@ -6,4 +6,5 @@ K:Kicker:R
+ T:Mode$ ChangesZone | Origin$ Any | Destination$ Battlefield | ValidCard$ Card.Self+kicked | Execute$ TrigPumpAll | TriggerDescription$ When CARDNAME enters, if it was kicked, creatures you control get +1/+0 and gain haste until end of turn.
+ SVar:TrigPumpAll:DB$ PumpAll | ValidCards$ Creature.YouCtrl | NumAtt$ +1 | KW$ Haste
+ SVar:PlayMain1:TRUE
++SVar:FaceValueSequenceAfter:Rally at the Hornburg
+ Oracle:Kicker {R} (You may pay an additional {R} as you cast this spell.)\nWhen Goblin Bushwhacker enters, if it was kicked, creatures you control get +1/+0 and gain haste until end of turn.
+diff --git a/forge-gui/res/cardsfolder/h/highway_robbery.txt b/forge-gui/res/cardsfolder/h/highway_robbery.txt
+index efa2d6e8df..b8e8a70166 100644
+--- a/forge-gui/res/cardsfolder/h/highway_robbery.txt
++++ b/forge-gui/res/cardsfolder/h/highway_robbery.txt
+@@ -1,7 +1,7 @@
+ Name:Highway Robbery
+ ManaCost:1 R
+ Types:Sorcery
+-A:SP$ GenericChoice | Choices$ DBDiscardToDraw,DBSacToDraw | SpellDescription$ You may discard a card or sacrifice a land. If you do, draw two cards.
++A:SP$ GenericChoice | Choices$ DBDiscardToDraw,DBSacToDraw | AILogic$ PayUnlessCost | SpellDescription$ You may discard a card or sacrifice a land. If you do, draw two cards.
+ SVar:DBSacToDraw:DB$ Draw | UnlessCost$ Sac<1/Land> | NumCards$ 2 | UnlessPayer$ You | UnlessSwitched$ True | SpellDescription$ Sacrifice a land. If you do, draw two cards.
+ SVar:DBDiscardToDraw:DB$ Draw | UnlessCost$ Discard<1/Card> | NumCards$ 2 | UnlessPayer$ You | UnlessSwitched$ True | SpellDescription$ Discard a card. If you do, draw two cards.
+ K:Plot:1 R
+diff --git a/forge-gui/res/cardsfolder/h/hydroblast.txt b/forge-gui/res/cardsfolder/h/hydroblast.txt
+index 2fb54990a4..69630902f1 100644
+--- a/forge-gui/res/cardsfolder/h/hydroblast.txt
++++ b/forge-gui/res/cardsfolder/h/hydroblast.txt
+@@ -2,7 +2,6 @@ Name:Hydroblast
+ ManaCost:U
+ Types:Instant
+ A:SP$ Charm | Choices$ DBCounter,DBDestroy
+-SVar:DBCounter:DB$ Counter | TargetType$ Spell | TgtPrompt$ Select target spell | ValidTgts$ Card | AITgts$ Card.Red | ConditionDefined$ Targeted | ConditionPresent$ Spell.Red | SpellDescription$ Counter target spell if it's red.
+-SVar:DBDestroy:DB$ Destroy | ValidTgts$ Permanent | AITgts$ Card.Red | ConditionDefined$ Targeted | ConditionPresent$ Card.Red | ConditionCompare$ GE1 | SpellDescription$ Destroy target permanent if it's red.
+-AI:RemoveDeck:Random
++SVar:DBCounter:DB$ Counter | TargetType$ Spell | TgtPrompt$ Select target spell | ValidTgts$ Card.Red | SpellDescription$ Counter target spell if it's red.
++SVar:DBDestroy:DB$ Destroy | ValidTgts$ Permanent.Red | SpellDescription$ Destroy target permanent if it's red.
+ Oracle:Choose one —\n• Counter target spell if it's red.\n• Destroy target permanent if it's red.
+diff --git a/forge-gui/res/cardsfolder/k/krark_clan_shaman.txt b/forge-gui/res/cardsfolder/k/krark_clan_shaman.txt
+index 3b8217aedc..3494fd23eb 100644
+--- a/forge-gui/res/cardsfolder/k/krark_clan_shaman.txt
++++ b/forge-gui/res/cardsfolder/k/krark_clan_shaman.txt
+@@ -3,5 +3,4 @@ ManaCost:R
+ Types:Creature Goblin Shaman
+ PT:1/1
+ A:AB$ DamageAll | Cost$ Sac<1/Artifact> | ValidCards$ Creature.withoutFlying | NumDmg$ 1 | ValidDescription$ each creature without flying. | SpellDescription$ CARDNAME deals 1 damage to each creature without flying.
+-AI:RemoveDeck:All
+ Oracle:Sacrifice an artifact: Krark-Clan Shaman deals 1 damage to each creature without flying.
+diff --git a/forge-gui/res/cardsfolder/p/prophetic_prism.txt b/forge-gui/res/cardsfolder/p/prophetic_prism.txt
+index a41886b986..a4c6a39aea 100644
+--- a/forge-gui/res/cardsfolder/p/prophetic_prism.txt
++++ b/forge-gui/res/cardsfolder/p/prophetic_prism.txt
+@@ -4,5 +4,4 @@ Types:Artifact
+ T:Mode$ ChangesZone | Origin$ Any | Destination$ Battlefield | ValidCard$ Card.Self | Execute$ TrigDraw | TriggerDescription$ When CARDNAME enters, draw a card.
+ SVar:TrigDraw:DB$ Draw | Defined$ You | NumCards$ 1
+ A:AB$ Mana | Cost$ 1 T | Produced$ Any | SpellDescription$ Add one mana of any color.
+-AI:RemoveDeck:All
+ Oracle:When Prophetic Prism enters, draw a card.\n{1}, {T}: Add one mana of any color.
+diff --git a/forge-gui/res/cardsfolder/p/pyroblast.txt b/forge-gui/res/cardsfolder/p/pyroblast.txt
+index c23c78e259..7a52243c22 100644
+--- a/forge-gui/res/cardsfolder/p/pyroblast.txt
++++ b/forge-gui/res/cardsfolder/p/pyroblast.txt
+@@ -2,7 +2,6 @@ Name:Pyroblast
+ ManaCost:R
+ Types:Instant
+ A:SP$ Charm | Choices$ DBCounter,DBDestroy
+-SVar:DBCounter:DB$ Counter | TargetType$ Spell | TgtPrompt$ Select target spell | ValidTgts$ Card | AITgts$ Card.Blue | ConditionDefined$ Targeted | ConditionPresent$ Spell.Blue | SpellDescription$ Counter target spell if it's blue.
+-SVar:DBDestroy:DB$ Destroy | ValidTgts$ Permanent | AITgts$ Card.Blue | ConditionDefined$ Targeted | ConditionPresent$ Card.Blue | ConditionCompare$ GE1 | SpellDescription$ Destroy target permanent if it's blue.
+-AI:RemoveDeck:Random
++SVar:DBCounter:DB$ Counter | TargetType$ Spell | TgtPrompt$ Select target spell | ValidTgts$ Card.Blue | SpellDescription$ Counter target spell if it's blue.
++SVar:DBDestroy:DB$ Destroy | ValidTgts$ Permanent.Blue | SpellDescription$ Destroy target permanent if it's blue.
+ Oracle:Choose one —\n• Counter target spell if it's blue.\n• Destroy target permanent if it's blue.
+diff --git a/forge-gui/res/cardsfolder/q/quirion_ranger.txt b/forge-gui/res/cardsfolder/q/quirion_ranger.txt
+index 6f33a901c4..51000cc565 100644
+--- a/forge-gui/res/cardsfolder/q/quirion_ranger.txt
++++ b/forge-gui/res/cardsfolder/q/quirion_ranger.txt
+@@ -3,5 +3,4 @@ ManaCost:G
+ Types:Creature Elf Ranger
+ PT:1/1
+ A:AB$ Untap | Cost$ Return<1/Forest> | ValidTgts$ Creature | ActivationLimit$ 1 | SpellDescription$ Untap target creature. Activate only once each turn.
+-AI:RemoveDeck:All
+ Oracle:Return a Forest you control to its owner's hand: Untap target creature. Activate only once each turn.
+diff --git a/forge-gui/res/cardsfolder/r/reckoners_bargain.txt b/forge-gui/res/cardsfolder/r/reckoners_bargain.txt
+index 77b73521bd..935126c33a 100644
+--- a/forge-gui/res/cardsfolder/r/reckoners_bargain.txt
++++ b/forge-gui/res/cardsfolder/r/reckoners_bargain.txt
+@@ -1,7 +1,7 @@
+ Name:Reckoner's Bargain
+ ManaCost:1 B
+ Types:Instant
+-A:SP$ GainLife | Cost$ 1 B Sac<1/Artifact;Creature/artifact or creature> | LifeAmount$ X | SubAbility$ DBDraw | SpellDescription$ You gain life equal to the sacrificed permanent's mana value. Draw two cards.
++A:SP$ GainLife | Cost$ 1 B Sac<1/Artifact;Creature/artifact or creature> | LifeAmount$ X | AILogic$ FaceValueBargain | SubAbility$ DBDraw | SpellDescription$ You gain life equal to the sacrificed permanent's mana value. Draw two cards.
+ SVar:DBDraw:DB$ Draw | NumCards$ 2
+ SVar:X:Sacrificed$CardManaCost
+ DeckHas:Ability$LifeGain
+diff --git a/forge-gui/res/cardsfolder/r/red_elemental_blast.txt b/forge-gui/res/cardsfolder/r/red_elemental_blast.txt
+index 91d0829098..99fbb51f77 100644
+--- a/forge-gui/res/cardsfolder/r/red_elemental_blast.txt
++++ b/forge-gui/res/cardsfolder/r/red_elemental_blast.txt
+@@ -4,5 +4,4 @@ Types:Instant
+ A:SP$ Charm | Choices$ DBCounter,DBDestroy
+ SVar:DBCounter:DB$ Counter | TargetType$ Spell | ValidTgts$ Card.Blue | TgtPrompt$ Select target blue spell | SpellDescription$ Counter target blue spell.
+ SVar:DBDestroy:DB$ Destroy | ValidTgts$ Permanent.Blue | TgtPrompt$ Select target blue permanent | SpellDescription$ Destroy target blue permanent.
+-AI:RemoveDeck:Random
+ Oracle:Choose one —\n• Counter target blue spell.\n• Destroy target blue permanent.
+diff --git a/forge-gui/res/cardsfolder/r/relic_of_progenitus.txt b/forge-gui/res/cardsfolder/r/relic_of_progenitus.txt
+index e957f6932a..034f317b39 100644
+--- a/forge-gui/res/cardsfolder/r/relic_of_progenitus.txt
++++ b/forge-gui/res/cardsfolder/r/relic_of_progenitus.txt
+@@ -4,5 +4,4 @@ Types:Artifact
+ A:AB$ ChangeZone | Cost$ T | Origin$ Graveyard | Destination$ Exile | ValidTgts$ Player | DefinedPlayer$ Targeted | Mandatory$ True | ChangeType$ Card | ChangeNum$ 1 | Hidden$ True | IsCurse$ True | Chooser$ Targeted | SpellDescription$ Target player exiles a card from their graveyard.
+ A:AB$ ChangeZoneAll | Cost$ 1 Exile<1/CARDNAME> | Origin$ Graveyard | Destination$ Exile | ChangeType$ Card | AILogic$ ExileGraveyards | SubAbility$ DBDraw | SpellDescription$ Exile all graveyards. Draw a card.
+ SVar:DBDraw:DB$ Draw
+-AI:RemoveDeck:Random
+ Oracle:{T}: Target player exiles a card from their graveyard.\n{1}, Exile Relic of Progenitus: Exile all graveyards. Draw a card.
+diff --git a/forge-gui/res/cardsfolder/w/winding_way.txt b/forge-gui/res/cardsfolder/w/winding_way.txt
+index b3f0f0d4c4..217e05b157 100644
+--- a/forge-gui/res/cardsfolder/w/winding_way.txt
++++ b/forge-gui/res/cardsfolder/w/winding_way.txt
+@@ -1,8 +1,7 @@
+ Name:Winding Way
+ ManaCost:1 G
+ Types:Sorcery
+-A:SP$ ChooseType | Type$ Card | ValidTypes$ Creature,Land | SubAbility$ DBDig | StackDescription$ SpellDescription | SpellDescription$ Choose creature or land.
++A:SP$ ChooseType | Type$ Card | ValidTypes$ Creature,Land | AILogic$ FaceValueWindingWay | SubAbility$ DBDig | StackDescription$ SpellDescription | SpellDescription$ Choose creature or land.
+ SVar:DBDig:DB$ Dig | DigNum$ 4 | Reveal$ True | ChangeNum$ All | ChangeValid$ Card.ChosenType | DestinationZone2$ Graveyard | StackDescription$ SpellDescription | SpellDescription$ Reveal the top four cards of your library. Put all cards of the chosen type revealed this way into your hand and the rest into your graveyard.
+-AI:RemoveDeck:All
+ DeckHas:Ability$Graveyard
+ Oracle:Choose creature or land. Reveal the top four cards of your library. Put all cards of the chosen type revealed this way into your hand and the rest into your graveyard.
