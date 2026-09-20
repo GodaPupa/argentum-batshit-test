@@ -54,4 +54,7 @@ Failure of any criterion rejects v0.7-B and permanently ends this challenger
 identity. A pass authorizes exactly one 100,000-game confirmation on the
 preregistered seed; only that confirmation may earn promotion.
 
-Disposition: `V07B_PILOT_FROZEN_PENDING_EXECUTION`
+Disposition: `V07B_PILOT_REJECTED`
+
+Official rejection evidence: `izzet-science/v07B-prismatic-lens-rejected.md`.
+The 100,000-game confirmation was not authorized and was not run.
