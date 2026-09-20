@@ -702,9 +702,14 @@ def pay_colored_mutating(state,generic=0,need_u=0,need_r=0):
         for subset in itertools.combinations(opts,k):
             total=sum(v for _,v,_ in subset)
             if total < generic+need_u+need_r: continue
-            has_u=sum(1 for _,_,cs in subset if "U" in cs)
-            has_r=sum(1 for _,_,cs in subset if "R" in cs)
-            if has_u<need_u or has_r<need_r: continue
+            color_sources=[cs for _,_,cs in subset]
+            import itertools as _it
+            ok=False
+            for assignment in _it.product(("U","R","C"), repeat=len(color_sources)):
+                if any(a!="C" and a not in cs for a,cs in zip(assignment,color_sources)): continue
+                if sum(a=="U" for a in assignment)>=need_u and sum(a=="R" for a in assignment)>=need_r:
+                    ok=True; break
+            if not ok: continue
             for p,_,_ in subset: p["tapped"]=True
             return True
     return generic+need_u+need_r==0
