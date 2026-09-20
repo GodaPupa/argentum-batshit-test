@@ -2,6 +2,11 @@ name: Pest Control V2 Official Seed Freeze
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - 'pest-control/v2-calibration'
+    paths:
+      - '.pest-v2-freeze-trigger'
 
 permissions:
   contents: read
@@ -20,7 +25,7 @@ jobs:
         env:
           PEST_V2_FREEZE: "true"
           PEST_V2_FREEZE_ACK: "GENERATE_V2_OFFICIAL_SEEDS_NO_GAMEPLAY"
-          PEST_V2_QUALIFIED_RUNNER: "43d9c29cbde78d070761bc617570a72a225f3e0f"
+          PEST_V2_QUALIFIED_RUNNER: "9829ee98869343cd48dceaa9a27c56ed27c6b3bc"
         run: scripts/test-class PestControlV2OfficialSeedFreezeGeneratorTest --info --stacktrace
       - name: Upload frozen seed evidence
         if: always()
