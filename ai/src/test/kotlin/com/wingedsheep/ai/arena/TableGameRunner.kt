@@ -8,6 +8,7 @@ import com.wingedsheep.engine.core.PlayerConfig
 import com.wingedsheep.engine.core.SubmitDecision
 import com.wingedsheep.engine.core.DecisionResponse
 import com.wingedsheep.engine.core.GameAction
+import com.wingedsheep.engine.core.GameEvent
 import com.wingedsheep.engine.core.CastSpell
 import com.wingedsheep.engine.core.ActivateAbility
 import com.wingedsheep.engine.legalactions.LegalActionEnumerator
@@ -133,6 +134,19 @@ interface ArenaTrainingObserver {
     fun quietRoot(state: GameState, actingPlayer: EntityId) {}
     fun action(action: GameAction) {}
     fun decision(playerId: EntityId, response: DecisionResponse) {}
+    /**
+     * One action the processor accepted, with the exact state and event batch on both sides.
+     *
+     * Unlike [action], this is not called for a rejected proposal. When the runner recovers with
+     * a safe fallback, [acceptedAction] is that fallback. This makes offline measurement
+     * fail-closed: observers never have to infer whether a proposed action actually happened.
+     */
+    fun transition(
+        before: GameState,
+        acceptedAction: GameAction,
+        after: GameState,
+        events: List<GameEvent>,
+    ) {}
 }
 
 /**
@@ -190,6 +204,8 @@ object TableGameRunner {
         recordActionStream: Boolean = false,
         featureCollector: ArenaFeatureCollector? = null,
         trainingObserver: ArenaTrainingObserver? = null,
+        /** Historical default stays true; metric harnesses may exercise London mulligans. */
+        skipMulligans: Boolean = true,
     ): TableGameOutcome {
         require(agents.size == setup.seats && decks.size == setup.seats) {
             "${setup.id} has ${setup.seats} seats but got ${agents.size} agents / ${decks.size} decks."
@@ -201,10 +217,7 @@ object TableGameRunner {
         val init = initializer.initializeGame(
             GameConfig(
                 players = decks.mapIndexed { seat, deck -> PlayerConfig("Seat$seat", deck) },
-                // Mulligans are skipped so a rerun at the same seed is the same game. That puts
-                // mulligan quality out of test — schedule a separate mulligan A/B rather than
-                // pretending this measures it.
-                skipMulligans = true,
+                skipMulligans = skipMulligans,
                 startingPlayerIndex = 0,
                 seed = seed,
                 format = setup.format,
@@ -273,6 +286,12 @@ object TableGameRunner {
                             drawReason = "decisionError(${r.error})"
                             break
                         }
+                        trainingObserver?.transition(
+                            state,
+                            SubmitDecision(decision.playerId, response),
+                            r.state,
+                            r.events,
+                        )
                         state = r.state
                         continue
                     }
@@ -295,7 +314,7 @@ object TableGameRunner {
                     trainingObserver?.action(action)
                     record("A$actionCount|${seatOf(priorityPlayer)}|${state.step.name}|$action\n")
                     val r = processor.process(state, action).result
-                    val next = if (r.error != null) {
+                    val accepted = if (r.error != null) {
                         val subjectId = when (action) {
                             is CastSpell -> action.cardId
                             is ActivateAbility -> action.sourceId
@@ -304,16 +323,17 @@ object TableGameRunner {
                         val subject = subjectId?.let { state.getEntity(it)?.get<com.wingedsheep.engine.state.components.identity.CardComponent>()?.name }
                         val key = "${action::class.simpleName}${subject?.let { "[$it]" }.orEmpty()}: ${r.error}"
                         illegalActions[key] = (illegalActions[key] ?: 0) + 1
-                        val fallback = processor
-                            .process(state, safeFallbackAction(state, priorityPlayer, enumerator))
-                            .result
+                        val fallbackAction = safeFallbackAction(state, priorityPlayer, enumerator)
+                        val fallback = processor.process(state, fallbackAction).result
                         if (fallback.error != null) {
                             drawReason = "error(${r.error}; fallback: ${fallback.error})"
                             null
-                        } else fallback.state
-                    } else r.state
+                        } else Triple(fallback.state, fallback.events, fallbackAction)
+                    } else Triple(r.state, r.events, action)
 
+                    val next = accepted?.first
                     if (next == null) break
+                    trainingObserver?.transition(state, accepted.third, next, accepted.second)
                     if (next === state) {
                         drawReason = "noProgress(turn=${state.turnNumber},step=${state.step.name})"
                         break
