@@ -65,6 +65,7 @@ class IndustrialWasteGoldfishBenchmark : FunSpec({
                         "industrial-waste-policy-v1"
                     },
                     advisorModules = listOf(IndustrialWasteAdvisorModule),
+                    considerAdvisedManaAbilities = policyCalibrationV2,
                 ),
             )
         } else controlAgent

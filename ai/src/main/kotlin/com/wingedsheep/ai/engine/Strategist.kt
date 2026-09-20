@@ -85,6 +85,8 @@ class Strategist(
      * `CastSpell: No valid targets available`" finding Phase 1 quantified and left open.
      */
     private val useMeaningfulFilter: Boolean = false,
+    /** Permit only advisor-owned mana abilities to enter strategic action scoring. */
+    private val considerAdvisedManaAbilities: Boolean = false,
     /** Phase 4b. How much search each decision may spend. */
     private val budgetPolicy: BudgetPolicy = LegacyBudgetPolicy,
     /**
@@ -188,7 +190,11 @@ class Strategist(
         }
 
         val pass = legalActions.find { it.actionType == "PassPriority" }
-        val affordable = expandXCostAbilities(state, preferKickerVariants(candidatesFrom(legalActions)), playerId)
+        val affordable = expandXCostAbilities(
+            state,
+            preferKickerVariants(candidatesFrom(evaluationState, legalActions)),
+            playerId,
+        )
 
         if (affordable.isEmpty()) return pass ?: legalActions.first()
 
@@ -482,15 +488,23 @@ class Strategist(
     /**
      * The candidate actions worth scoring.
      *
-     * Mana abilities are excluded either way: activating one on its own is never the AI's move —
-     * mana is produced as part of paying for something, by the engine's own auto-tap.
+     * Mana abilities are excluded by default: activating one on its own is normally payment
+     * plumbing. A profile may opt in abilities with a card advisor when producing mana is itself a
+     * strategic combo action; every unadvised mana source remains excluded.
      */
-    private fun candidatesFrom(legalActions: List<LegalAction>): List<LegalAction> =
-        if (useMeaningfulFilter) {
-            MeaningfulActionFilter.filterMeaningful(legalActions).filter { it.affordable && !it.isManaAbility }
-        } else {
-            legalActions.filter { it.affordable && !it.isManaAbility && it.actionType != "PassPriority" }
+    private fun candidatesFrom(state: GameState, legalActions: List<LegalAction>): List<LegalAction> {
+        fun isCandidate(action: LegalAction): Boolean {
+            val advisedManaAbility = considerAdvisedManaAbilities && action.isManaAbility &&
+                resolveCardName(state, action)?.let(advisorRegistry::getAdvisor) != null
+            return action.affordable && (!action.isManaAbility || advisedManaAbility)
         }
+
+        return if (useMeaningfulFilter) {
+            MeaningfulActionFilter.filterMeaningful(legalActions).filter(::isCandidate)
+        } else {
+            legalActions.filter { isCandidate(it) && it.actionType != "PassPriority" }
+        }
+    }
 
     private fun handleCombatDeclaration(
         state: GameState,

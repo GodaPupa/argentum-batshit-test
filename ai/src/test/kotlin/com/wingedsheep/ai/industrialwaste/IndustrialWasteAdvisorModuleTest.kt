@@ -163,6 +163,7 @@ class IndustrialWasteAdvisorModuleTest : FunSpec({
         val profile = AiProfile.LEGACY_V0.copy(
             id = "industrial-waste-policy-v2-fixture",
             advisorModules = listOf(IndustrialWasteAdvisorModule),
+            considerAdvisedManaAbilities = true,
         )
 
         val chosen = AIPlayer.create(driver.cardRegistry, player, profile)

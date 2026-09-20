@@ -375,6 +375,12 @@ data class AiProfile(
      * hand, and it is why this gets a real arena run rather than a puzzle column.
      */
     val priceLandsInHandAsMana: Boolean = false,
+    /**
+     * Let a registered card advisor score a mana ability as a strategic action. Off by default:
+     * ordinary mana abilities remain payment plumbing, while combo profiles may opt a specific
+     * advised outlet (for example Ashnod's Altar) into priority-action comparison.
+     */
+    val considerAdvisedManaAbilities: Boolean = false,
     /** Non-null profiles may only be selected automatically for this set. Arena selection stays explicit. */
     val restrictedToSet: String? = null,
 ) {
