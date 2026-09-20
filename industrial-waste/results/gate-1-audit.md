@@ -72,6 +72,9 @@ The telemetry contract passed focused fixtures in GitHub Actions run
 lacked the `just` executable and one compiled but explicitly skipped the
 opt-in benchmark. Neither spent its namespace. Run 35536713445 then executed
 all 24 games on `IW-G3-GOLDFISH-S1` and uploaded a complete, valid artifact.
+The same setup commit incidentally reran the already-spent Gate 2 smoke namespace
+in run 35536374431; that duplicate is reproducibility-only and is not merged into
+any sample or counted as new evidence.
 
 Pactdoll-A and Control each reached lethal in 9/12 games. Pactdoll-A recorded
 fewer colored-mana-failure turns on average (2.50 vs 3.42) and more
