@@ -8,7 +8,7 @@ import java.security.SecureRandom
 import java.security.MessageDigest
 
 private const val V2_FREEZE_ACK = "GENERATE_V2_OFFICIAL_SEEDS_NO_GAMEPLAY"
-private const val V2_QUALIFIED_RUNNER = "43d9c29cbde78d070761bc617570a72a225f3e0f"
+private const val V2_QUALIFIED_RUNNER = "9829ee98869343cd48dceaa9a27c56ed27c6b3bc"
 private const val V2_PROTOCOL = "PEST_CONTROL_V10_VS_MONO_RED_MADNESS_SOTERX_2026_09_11_PREBOARD_V1"
 private const val V2_BLOCK = "${V2_PROTOCOL}_V2_OFFICIAL_10"
 
