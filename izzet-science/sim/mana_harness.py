@@ -816,8 +816,13 @@ def primary_combo_launch_feasible(state):
     # Use a shadow source calculation so telemetry does not mutate the live turn.
     import copy
     shadow=copy.deepcopy(state)
-    if not pay_colored_mutating(shadow,generic=1,need_r=2): return False  # Spike + splice
-    if not pay_colored_mutating(shadow,generic=2,need_r=1): return False  # first copy
+    # Goblin Electromancer reduces the generic portion of the spell's total casting cost.
+    # Spike R + Ritual splice 1R therefore becomes RR while Electromancer is on battlefield.
+    electromancer=any(p["card"]=="Goblin Electromancer" for p in shadow.battlefield)
+    cast_generic=0 if electromancer else 1
+    if not pay_colored_mutating(shadow,generic=cast_generic,need_r=2): return False
+    # Guildmage's copy ability is activated, not a spell; Electromancer does not reduce it.
+    if not pay_colored_mutating(shadow,generic=2,need_r=1): return False
     return True
 
 def primary_combo_damage_available(state, opponent_life=30):
@@ -1118,6 +1123,22 @@ def loop_selection_regression(cards):
     return True
 
 
+
+def electromancer_lethal_regressions():
+    # Five mana is sufficient only with Electromancer and adequate red.
+    s=DevState(["Lava Spike","Desperate Ritual"]); s.turn=5
+    s.battlefield=[{"card":"Izzet Guildmage","tapped":False,"entered":2},
+                   {"card":"Goblin Electromancer","tapped":False,"entered":3}]
+    for i,c in enumerate(["Mountain","Mountain","Mountain","Island","Island"]):
+        s.battlefield.append({"card":c,"tapped":False,"entered":i})
+    assert primary_combo_launch_feasible(s)
+    z=DevState(["Lava Spike","Desperate Ritual"]); z.turn=5
+    z.battlefield=[{"card":"Izzet Guildmage","tapped":False,"entered":2}]
+    for i,c in enumerate(["Mountain","Mountain","Mountain","Island","Island"]):
+        z.battlefield.append({"card":c,"tapped":False,"entered":i})
+    assert not primary_combo_launch_feasible(z)
+    return True
+
 def first_lethal_regression():
     # Absorption semantics: first lethal is recorded once and cumulative state remains true.
     first=None; seen=[]
@@ -1180,6 +1201,7 @@ def main():
     tutor_regressions()
     tutor_execution_regressions()
     first_lethal_regression()
+    electromancer_lethal_regressions()
     b,r=opening_baseline(cards,args.samples,args.seed)
     print("seed",hex(args.seed),"samples",args.samples)
     print("land_buckets_0_1_2_3_4plus",b)
