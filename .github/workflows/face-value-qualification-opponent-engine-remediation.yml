@@ -1,0 +1,166 @@
+name: Face Value Qualification Opponent Engine Remediation
+
+on:
+  push:
+    branches: [face-value/lab]
+    paths:
+      - .github/workflows/face-value-qualification-opponent-engine-remediation.yml
+      - experiments/face-value/qualification/audit_opponent_engine_remediation.py
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  diagnostic-remediation-smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 75
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - name: Verify frozen qualification inputs
+        run: python3 experiments/face-value/qualification/validate_inputs.py
+      - name: Build pinned Forge with narrow lab-only opponent heuristics
+        run: |
+          set -euxo pipefail
+          FORGE_SHA=f387ede550e336315637a8b765f0927ac768c113
+          git clone --filter=blob:none https://github.com/Card-Forge/forge.git forge-src
+          git -C forge-src checkout --detach "$FORGE_SHA"
+          test "$(git -C forge-src rev-parse HEAD)" = "$FORGE_SHA"
+          printf '%s\n' "$FORGE_SHA" > forge-source-commit.txt
+          python3 - <<'PY'
+          from pathlib import Path
+
+          highway = Path('forge-src/forge-gui/res/cardsfolder/h/highway_robbery.txt')
+          text = highway.read_text(encoding='utf-8')
+          old = 'A:SP$ GenericChoice | Choices$ DBDiscardToDraw,DBSacToDraw | SpellDescription$ You may discard a card or sacrifice a land. If you do, draw two cards.'
+          new = 'A:SP$ GenericChoice | Choices$ DBDiscardToDraw,DBSacToDraw | AILogic$ PayUnlessCost | SpellDescription$ You may discard a card or sacrifice a land. If you do, draw two cards.'
+          assert text.count(old) == 1
+          highway.write_text(text.replace(old, new), encoding='utf-8')
+
+          bargain = Path('forge-src/forge-gui/res/cardsfolder/r/reckoners_bargain.txt')
+          text = bargain.read_text(encoding='utf-8')
+          old = 'A:SP$ GainLife | Cost$ 1 B Sac<1/Artifact;Creature/artifact or creature> | LifeAmount$ X | SubAbility$ DBDraw | SpellDescription$ You gain life equal to the sacrificed permanent\'s mana value. Draw two cards.'
+          new = 'A:SP$ GainLife | Cost$ 1 B Sac<1/Artifact;Creature/artifact or creature> | LifeAmount$ X | AILogic$ FaceValueBargain | SubAbility$ DBDraw | SpellDescription$ You gain life equal to the sacrificed permanent\'s mana value. Draw two cards.'
+          assert text.count(old) == 1
+          bargain.write_text(text.replace(old, new), encoding='utf-8')
+
+          life = Path('forge-src/forge-ai/src/main/java/forge/ai/ability/LifeGainAi.java')
+          text = life.read_text(encoding='utf-8')
+          needle = '        final String sourceName = ComputerUtilAbility.getAbilitySourceName(sa);\n\n        final int life = ai.getLife();'
+          insert = '        final String sourceName = ComputerUtilAbility.getAbilitySourceName(sa);\n\n        if ("FaceValueBargain".equals(sa.getParam("AILogic"))) {\n            return new AiAbilityDecision(100, AiPlayDecision.WillPlay);\n        }\n\n        final int life = ai.getLife();'
+          assert text.count(needle) == 1
+          life.write_text(text.replace(needle, insert), encoding='utf-8')
+
+          winding = Path('forge-src/forge-gui/res/cardsfolder/w/winding_way.txt')
+          text = winding.read_text(encoding='utf-8')
+          old = 'A:SP$ ChooseType | Type$ Card | ValidTypes$ Creature,Land | SubAbility$ DBDig | StackDescription$ SpellDescription | SpellDescription$ Choose creature or land.'
+          new = 'A:SP$ ChooseType | Type$ Card | ValidTypes$ Creature,Land | AILogic$ FaceValueWindingWay | SubAbility$ DBDig | StackDescription$ SpellDescription | SpellDescription$ Choose creature or land.'
+          assert text.count(old) == 1
+          assert text.count('\nAI:RemoveDeck:All') == 1
+          winding.write_text(text.replace(old, new).replace('\nAI:RemoveDeck:All', ''), encoding='utf-8')
+
+          choose = Path('forge-src/forge-ai/src/main/java/forge/ai/ability/ChooseTypeAi.java')
+          text = choose.read_text(encoding='utf-8')
+          needle = '        if (aiLogic.isEmpty()) {'
+          insert = '        if ("FaceValueWindingWay".equals(aiLogic)) {\n            return new AiAbilityDecision(100, AiPlayDecision.WillPlay);\n        }\n\n        if (aiLogic.isEmpty()) {'
+          assert text.count(needle) == 1
+          choose.write_text(text.replace(needle, insert), encoding='utf-8')
+
+          computer = Path('forge-src/forge-ai/src/main/java/forge/ai/ComputerUtil.java')
+          text = computer.read_text(encoding='utf-8')
+          needle = '            if (game.getPhaseHandler().is(PhaseType.UNTAP) && logic == null) { // Storage Matrix'
+          insert = '''            if ("FaceValueWindingWay".equals(logic)) {
+                int bestCount = -1;
+                for (String type : validTypes) {
+                    int typeCount = CardLists.filter(ai.getCardsIn(ZoneType.Library), CardPredicates.isType(type)).size();
+                    if (typeCount > bestCount) {
+                        bestCount = typeCount;
+                        chosen = type;
+                    }
+                }
+            } else if (game.getPhaseHandler().is(PhaseType.UNTAP) && logic == null) { // Storage Matrix'''
+          assert text.count(needle) == 1
+          computer.write_text(text.replace(needle, insert), encoding='utf-8')
+          PY
+          git -C forge-src diff -- forge-gui/res/cardsfolder/h/highway_robbery.txt forge-gui/res/cardsfolder/r/reckoners_bargain.txt forge-gui/res/cardsfolder/w/winding_way.txt forge-ai/src/main/java/forge/ai/ability/LifeGainAi.java forge-ai/src/main/java/forge/ai/ability/ChooseTypeAi.java forge-ai/src/main/java/forge/ai/ComputerUtil.java > opponent-engine-remediation.patch
+          test -s opponent-engine-remediation.patch
+          cd forge-src
+          mvn -B -DskipTests -pl forge-gui-desktop -am package
+          chmod +x forge-gui-desktop/target/forge.sh
+          rm -rf forge-gui-desktop/target/res
+          cp -R forge-gui/res forge-gui-desktop/target/res
+          echo "FORGE_LAUNCHER=$(pwd)/forge-gui-desktop/target/forge.sh" >> "$GITHUB_ENV"
+      - name: Install actual tournament lists and freeze diagnostics
+        run: |
+          set -euo pipefail
+          mkdir -p diagnostic-decks diagnostic-logs "$HOME/.forge/decks/constructed"
+          cp experiments/face-value/qualification/control/fv-temur-chrysalis-e-final-forge-75.dck diagnostic-decks/
+          cp experiments/face-value/qualification/opponents/*.dck diagnostic-decks/
+          python3 - <<'PY'
+          from pathlib import Path
+          opponents = [
+              ('mono-red-madness', 'mono-red-madness-john-marek-2026-09-19.dck'),
+              ('grixis-affinity', 'grixis-affinity-brunoramos93-2026-09-19.dck'),
+              ('elves', 'elves-mogged-2026-09-19.dck'),
+          ]
+          rows = []
+          seed = 720065
+          for matchup, opponent in opponents:
+              for face_seat in (1, 2, 1, 2, 1, 2):
+                  rows.append(f'{matchup}\t{opponent}\t{face_seat}\t{seed}')
+                  seed += 1
+          Path('diagnostic-assignments.tsv').write_text('\n'.join(rows) + '\n', encoding='utf-8')
+          PY
+          cp diagnostic-decks/*.dck "$HOME/.forge/decks/constructed/"
+          sha256sum diagnostic-assignments.tsv diagnostic-decks/*.dck opponent-engine-remediation.patch > diagnostic-inputs.sha256
+          cat > diagnostic-disposition.txt <<'EOF'
+          DIAGNOSTIC_ONLY_LAB_FORGE_AI_REMEDIATION_SMOKE
+          Seeds 720065-720082 and all outcomes are permanently diagnostic only.
+          The heuristics are unaccepted lab probes. No output is matchup evidence or authority for fresh qualification seeds.
+          EOF
+      - name: Run six fresh diagnostics per remediated pilot
+        run: |
+          set -uo pipefail
+          control='fv-temur-chrysalis-e-final-forge-75.dck'
+          while IFS=$'\t' read -r matchup opponent face_seat seed; do
+            log="diagnostic-logs/${matchup}-face-seat${face_seat}-seed${seed}.log"
+            if [ "$face_seat" = 1 ]; then first="$control"; second="$opponent"; else first="$opponent"; second="$control"; fi
+            timeout 180 "$FORGE_LAUNCHER" sim -d "$first" "$second" -n 1 -s "$seed" -c 90 > "$log" 2>&1
+            code=$?
+            if [ "$code" -ne 0 ]; then printf '\nDIAGNOSTIC_PROCESS_EXIT_%s\n' "$code" >> "$log"; fi
+          done < diagnostic-assignments.tsv
+          exit 0
+      - name: Audit lab remediation smoke
+        id: audit
+        continue-on-error: true
+        run: |
+          python3 experiments/face-value/qualification/audit_opponent_engine_remediation.py \
+            --logs diagnostic-logs \
+            --assignments diagnostic-assignments.tsv \
+            --output opponent-engine-remediation-summary.json
+      - name: Preserve lab remediation evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: face-value-opponent-engine-remediation
+          path: |
+            opponent-engine-remediation-summary.json
+            opponent-engine-remediation.patch
+            diagnostic-assignments.tsv
+            diagnostic-inputs.sha256
+            diagnostic-disposition.txt
+            diagnostic-decks/*.dck
+            diagnostic-logs/*.log
+            forge-source-commit.txt
+            experiments/face-value/qualification/input-validation-report.json
+          if-no-files-found: warn
+      - name: Enforce fail-closed remediation gate
+        if: steps.audit.outcome != 'success'
+        run: |
+          echo 'Lab-only opponent remediation was not demonstrated.'
+          echo 'No fresh qualification seeds are authorized.'
+          exit 1
