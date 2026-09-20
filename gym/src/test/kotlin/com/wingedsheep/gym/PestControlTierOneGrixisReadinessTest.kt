@@ -11,6 +11,7 @@ import com.wingedsheep.gym.matchup.TierOneGrixisReadiness
 import com.wingedsheep.mtg.sets.MtgSetCatalog
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.collections.shouldBeEmpty
+import io.kotest.matchers.collections.shouldContainExactly
 import io.kotest.matchers.collections.shouldContainExactlyInAnyOrder
 import io.kotest.matchers.shouldBe
 
