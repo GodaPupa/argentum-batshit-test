@@ -29,7 +29,6 @@ jobs:
         with:
           distribution: temurin
           java-version: '21'
-          cache: maven
       - name: Validate immutable inputs and frozen assignment vector
         run: |
           set -euo pipefail
@@ -218,6 +217,25 @@ jobs:
         if: always()
         run: |
           set -euo pipefail
+          if [ ! -d preboard-stage1-logs ]; then
+            mkdir preboard-stage1-logs
+            printf 'No game execution occurred in workflow run %s.\n' "$GITHUB_RUN_ID" > preboard-stage1-logs/NO_GAMES_EXECUTED.txt
+          fi
+          if [ ! -f preboard-stage1-exit-status.tsv ]; then
+            : > preboard-stage1-exit-status.tsv
+          fi
+          if [ ! -f preboard-stage1-summary.json ]; then
+            printf '{"acceptance":"INFRASTRUCTURE_FAILURE_NO_GAME_EXECUTION","workflow_run_id":%s}\n' "$GITHUB_RUN_ID" > preboard-stage1-summary.json
+          fi
+          if [ ! -f preboard-stage1-automated-audit.txt ]; then
+            printf 'INFRASTRUCTURE_FAILURE_NO_GAME_EXECUTION\n' > preboard-stage1-automated-audit.txt
+          fi
+          if [ ! -f preboard-stage1-inputs.sha256 ]; then
+            printf 'unavailable: workflow failed before input materialization\n' > preboard-stage1-inputs.sha256
+          fi
+          if [ ! -f forge-source-commit.txt ]; then
+            printf 'unavailable: workflow failed before Forge checkout\n' > forge-source-commit.txt
+          fi
           tar -czf preboard-stage1-raw-logs.tar.gz preboard-stage1-logs preboard-stage1-exit-status.tsv
           sha256sum preboard-stage1-raw-logs.tar.gz preboard-stage1-summary.json > preboard-stage1-evidence.sha256
       - name: Preserve evidence on the laboratory branch
