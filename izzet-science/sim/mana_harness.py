@@ -461,9 +461,9 @@ COMBO_CARDS={"Lava Spike","Desperate Ritual"}
 def selection_priority(card, state):
     # Uses current state only; caller supplies only legally viewed cards.
     lands_in_hand=sum(c in LANDS for c in state.hand)
-    if card in LANDS and lands_in_hand==0: return 100
     if card in COMBO_CARDS and bool((COMBO_CARDS-{card}) & set(state.hand)): return 90
     if card in INTERACTION_CARDS and not (INTERACTION_CARDS & set(state.hand)): return 80
+    if card in LANDS and lands_in_hand==0: return 70
     if card in {"Island","Mountain","Command Tower"}: return 60
     if card in INTERACTION_CARDS: return 50
     if card in COMBO_CARDS: return 40
