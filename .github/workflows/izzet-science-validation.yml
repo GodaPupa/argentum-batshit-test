@@ -10,11 +10,17 @@ on:
     paths:
       - 'izzet-science/**'
       - '.github/workflows/izzet-science-validation.yml'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'izzet-science/**'
+      - '.github/workflows/izzet-science-validation.yml'
   workflow_dispatch:
 
 jobs:
   turn-sequence-v1:
-    if: github.actor != 'github-actions[bot]'
+    if: github.actor != 'github-actions[bot]' && (github.event_name != 'pull_request' || github.head_ref == 'mayhem/izzet-science')
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
