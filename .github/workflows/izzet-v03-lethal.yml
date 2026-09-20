@@ -6,12 +6,14 @@ on:
     paths:
       - 'izzet-science/sim/**'
       - 'izzet-science/v0.3-control.md'
+      - 'izzet-science/challengers/v04A-strategic-planning.md'
       - '.github/workflows/izzet-v03-lethal.yml'
   pull_request:
     branches: [main]
     paths:
       - 'izzet-science/sim/**'
       - 'izzet-science/v0.3-control.md'
+      - 'izzet-science/challengers/v04A-strategic-planning.md'
       - '.github/workflows/izzet-v03-lethal.yml'
   workflow_dispatch:
 
@@ -34,9 +36,17 @@ jobs:
           mkdir -p izzet-science/artifacts
           python izzet-science/sim/mana_harness.py             --deck izzet-science/v0.3-control.md             --samples 100000             --seed 0x1A22E7001             | tee izzet-science/artifacts/v03-lethal.txt
           test -s izzet-science/artifacts/v03-lethal.txt
+      - name: Run v0.4-A Strategic Planning sample
+        shell: bash
+        run: |
+          set -euo pipefail
+          python izzet-science/sim/mana_harness.py             --deck izzet-science/challengers/v04A-strategic-planning.md             --samples 100000             --seed 0x1A22E7001             | tee izzet-science/artifacts/v04A-strategic-planning.txt
+          test -s izzet-science/artifacts/v04A-strategic-planning.txt
       - name: Preserve lethal output
         uses: actions/upload-artifact@v4
         with:
-          name: izzet-v03-lethal
-          path: izzet-science/artifacts/v03-lethal.txt
+          name: izzet-v03-v04A-paired-clock
+          path: |
+            izzet-science/artifacts/v03-lethal.txt
+            izzet-science/artifacts/v04A-strategic-planning.txt
           if-no-files-found: error
