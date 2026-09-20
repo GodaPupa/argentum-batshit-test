@@ -1,0 +1,128 @@
+name: Face Value Qualification Composite Forge Profile Gate
+
+on:
+  push:
+    branches: [face-value/lab]
+    paths:
+      - .github/workflows/face-value-qualification-composite-profile-gate.yml
+      - experiments/face-value/qualification/apply_forge_profile_v1.py
+      - experiments/face-value/qualification/audit_composite_forge_profile.py
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  integrated-profile-gate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - name: Verify frozen qualification inputs
+        run: python3 experiments/face-value/qualification/validate_inputs.py
+      - name: Build pinned Forge profile v1
+        run: |
+          set -euxo pipefail
+          FORGE_SHA=f387ede550e336315637a8b765f0927ac768c113
+          git clone --filter=blob:none https://github.com/Card-Forge/forge.git forge-src
+          git -C forge-src checkout --detach "$FORGE_SHA"
+          test "$(git -C forge-src rev-parse HEAD)" = "$FORGE_SHA"
+          printf '%s\n' "$FORGE_SHA" > forge-source-commit.txt
+          python3 experiments/face-value/qualification/apply_forge_profile_v1.py --forge-root forge-src | tee forge-profile-id.txt
+          test "$(cat forge-profile-id.txt)" = 'FACE_VALUE_QUALIFICATION_FORGE_PROFILE_V1'
+          git -C forge-src diff > forge-profile-v1.patch
+          test -s forge-profile-v1.patch
+          sha256sum forge-profile-v1.patch experiments/face-value/qualification/apply_forge_profile_v1.py > forge-profile-v1.sha256
+          cd forge-src
+          mvn -B -DskipTests -pl forge-gui-desktop -am package
+          chmod +x forge-gui-desktop/target/forge.sh
+          rm -rf forge-gui-desktop/target/res
+          cp -R forge-gui/res forge-gui-desktop/target/res
+          echo "FORGE_LAUNCHER=$(pwd)/forge-gui-desktop/target/forge.sh" >> "$GITHUB_ENV"
+      - name: Install diagnostic copies and freeze integrated assignments
+        run: |
+          set -euo pipefail
+          mkdir -p diagnostic-decks diagnostic-logs "$HOME/.forge/decks/constructed"
+          cp experiments/face-value/qualification/control/fv-temur-chrysalis-e-final-forge-75.dck diagnostic-decks/
+          cp experiments/face-value/qualification/opponents/*.dck diagnostic-decks/
+          python3 - <<'PY'
+          from pathlib import Path
+          terror = Path('diagnostic-decks/mono-blue-terror-luminati-2026-09-19.dck')
+          text = terror.read_text(encoding='utf-8')
+          assert text.count('4 Lorien Revealed') == 1
+          terror.write_text(text.replace('4 Lorien Revealed', '4 Lórien Revealed'), encoding='utf-8')
+          specs = [
+              ('mono-red-madness', 'mono-red-madness-john-marek-2026-09-19.dck', 4),
+              ('mono-blue-terror', 'mono-blue-terror-luminati-2026-09-19.dck', 4),
+              ('grixis-affinity', 'grixis-affinity-brunoramos93-2026-09-19.dck', 6),
+              ('monster-tron', 'monster-tron-discovern-2026-09-19.dck', 4),
+              ('jund-wildfire', 'jund-wildfire-blaze66-2026-09-19.dck', 4),
+              ('elves', 'elves-mogged-2026-09-19.dck', 4),
+              ('mono-red-rally', 'mono-red-rally-monturulez-2026-09-20.dck', 12),
+              ('mono-blue-faeries', 'mono-blue-faeries-enz091-2026-09-19.dck', 8),
+          ]
+          rows = []
+          seed = 720107
+          for matchup, opponent, games in specs:
+              for index in range(games):
+                  rows.append(f'{matchup}\t{opponent}\t{1 + index % 2}\t{seed}')
+                  seed += 1
+          assert seed == 720153
+          Path('diagnostic-assignments.tsv').write_text('\n'.join(rows) + '\n', encoding='utf-8')
+          PY
+          cp diagnostic-decks/*.dck "$HOME/.forge/decks/constructed/"
+          sha256sum diagnostic-assignments.tsv diagnostic-decks/*.dck forge-profile-v1.patch > diagnostic-inputs.sha256
+          cat > diagnostic-disposition.txt <<'EOF'
+          DIAGNOSTIC_ONLY_INTEGRATED_FORGE_PROFILE_V1_GATE
+          Seeds 720107-720152 and all outcomes are permanently diagnostic only.
+          They are ineligible for matchup evidence, pooling, tuning, structural diagnosis, challenger authorization, or official reuse.
+          Passing this gate can authorize planning of a separately frozen fresh qualification block; it cannot become qualification evidence itself.
+          EOF
+      - name: Run integrated fresh diagnostic block
+        run: |
+          set -uo pipefail
+          control='fv-temur-chrysalis-e-final-forge-75.dck'
+          while IFS=$'\t' read -r matchup opponent face_seat seed; do
+            log="diagnostic-logs/${matchup}-face-seat${face_seat}-seed${seed}.log"
+            if [ "$face_seat" = 1 ]; then first="$control"; second="$opponent"; else first="$opponent"; second="$control"; fi
+            timeout 180 "$FORGE_LAUNCHER" sim -d "$first" "$second" -n 1 -s "$seed" -c 90 > "$log" 2>&1
+            code=$?
+            if [ "$code" -ne 0 ]; then printf '\nDIAGNOSTIC_PROCESS_EXIT_%s\n' "$code" >> "$log"; fi
+          done < diagnostic-assignments.tsv
+          exit 0
+      - name: Audit integrated Forge profile v1
+        id: audit
+        continue-on-error: true
+        run: |
+          python3 experiments/face-value/qualification/audit_composite_forge_profile.py \
+            --logs diagnostic-logs \
+            --assignments diagnostic-assignments.tsv \
+            --output composite-forge-profile-v1-summary.json
+      - name: Preserve integrated profile evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: face-value-composite-forge-profile-v1
+          path: |
+            composite-forge-profile-v1-summary.json
+            forge-profile-v1.patch
+            forge-profile-v1.sha256
+            forge-profile-id.txt
+            forge-source-commit.txt
+            diagnostic-assignments.tsv
+            diagnostic-inputs.sha256
+            diagnostic-disposition.txt
+            diagnostic-decks/*.dck
+            diagnostic-logs/*.log
+            experiments/face-value/qualification/input-validation-report.json
+          if-no-files-found: warn
+      - name: Enforce fail-closed integrated profile gate
+        if: steps.audit.outcome != 'success'
+        run: |
+          echo 'Integrated Forge profile v1 capability was not demonstrated.'
+          echo 'No fresh qualification seeds are authorized.'
+          exit 1
