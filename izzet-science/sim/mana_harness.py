@@ -867,6 +867,13 @@ def tutor_regressions():
     assert tutor_target("Dizzy Spell",d,lib)=="Lava Spike"
     m=DevState(["Merchant Scroll"])
     assert tutor_target("Merchant Scroll",m,["Mountain","High Tide"])=="High Tide"
+    # Non-combo tutors must not be spent by the primary-pair completion policy.
+    m.turn=3
+    m.battlefield=[{"card":"Island","tapped":False,"entered":1},{"card":"Island","tapped":False,"entered":2}]
+    assert choose_tutor(m,["Mountain","High Tide"]) is None
+    d2=DevState(["Desperate Ritual","Dizzy Spell"]); d2.turn=4
+    d2.battlefield=[{"card":"Island","tapped":False,"entered":1},{"card":"Island","tapped":False,"entered":2},{"card":"Island","tapped":False,"entered":3}]
+    assert choose_tutor(d2,["Mountain","Lava Spike","High Tide"])=="Dizzy Spell"
     return True
 
 
@@ -888,15 +895,17 @@ def execute_tutor(state,library,card,rng):
     return target,library
 
 def choose_tutor(state,library):
+    # Spend tutor mana only when the tutor can directly fetch the missing primary combo half.
     h=set(state.hand)
-    # Only spend tutor mana for a concrete primary-pair completion in this first gate.
     for card in ("Dizzy Spell","Muddle the Mixture","Merchant Scroll","Drift of Phantasms"):
-        if card not in h: continue
+        if card not in h:
+            continue
         target=tutor_target(card,state,library)
-        if target in {"Lava Spike","Desperate Ritual"} and can_cast_selection(state,card) if card in SELECTION_SPECS else True:
-            if can_pay_simple(state,generic=TUTOR_SPECS[card]["cost"][0],
-                              need_u=TUTOR_SPECS[card]["cost"][1],need_r=TUTOR_SPECS[card]["cost"][2]):
-                return card
+        if target not in {"Lava Spike","Desperate Ritual"}:
+            continue
+        g,nu,nr=TUTOR_SPECS[card]["cost"]
+        if can_pay_simple(state,generic=g,need_u=nu,need_r=nr):
+            return card
     return None
 
 def tutor_execution_regressions():
