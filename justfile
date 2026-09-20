@@ -40,7 +40,7 @@ test-ai:
 # Run the four-seed, eight-game Industrial Waste executable compatibility screen.
 [group: 'research']
 industrial-waste-smoke:
-    scripts/gradle-locked :ai:test --tests "*.IndustrialWasteSmokeBenchmark" -DindustrialWasteSmoke=true
+    scripts/gradle-locked :ai:test --tests "*.IndustrialWasteSmokeBenchmark" -Dbenchmark=true
 
 # Run tests for gym only
 [group: 'build']

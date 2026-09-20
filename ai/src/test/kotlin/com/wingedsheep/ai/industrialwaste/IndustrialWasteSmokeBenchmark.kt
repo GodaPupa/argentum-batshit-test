@@ -26,7 +26,7 @@ import java.security.MessageDigest
 class IndustrialWasteSmokeBenchmark : FunSpec({
 
     test("Industrial Waste engine smoke").config(
-        enabled = System.getProperty("industrialWasteSmoke") == "true",
+        enabled = System.getProperty("benchmark") == "true",
     ) {
         val root = Path.of(System.getProperty("industrialWasteRoot", "industrial-waste"))
         val output = Path.of(
