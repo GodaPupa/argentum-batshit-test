@@ -7,10 +7,11 @@ data class V2OfficialExecutionOutcome(
     val perGameRaw: List<ByteArray>,
     val failure: String? = null,
 ) {
-    fun artifactIndex(): ByteArray = PestControlV2OfficialArtifactContract.buildIndex(
+    fun artifactIndex(summary: ByteArray): ByteArray = PestControlV2OfficialArtifactContract.buildIndex(
         attempts = attempts,
         recordedGames = recordedGames,
         perGameRaw = perGameRaw,
+        summary = summary,
         disposition = if (state == V2OfficialRunnerState.COMPLETED) "COMPLETED" else "REJECTED",
     )
 }

@@ -5,6 +5,7 @@ import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
 
 private val COORDINATOR_TEST_SEEDS = (1L..10L).map { 6_000_000L + it }
+private val COORDINATOR_TEST_SUMMARY = "synthetic-summary\n".toByteArray()
 
 class PestControlV2OfficialExecutionCoordinatorTest : FunSpec({
     test("synthetic coordinator persists each attempt before game initialization and completes exactly once") {
@@ -25,8 +26,10 @@ class PestControlV2OfficialExecutionCoordinatorTest : FunSpec({
         outcome.recordedGames shouldBe (1..10).toList()
         events shouldBe (1..10).flatMap { listOf("attempt-$it", "initialize-$it", "record-$it") }
         PestControlV2OfficialArtifactContract.validate(
-            PROTOCOL_JSON.decodeFromString(outcome.artifactIndex().decodeToString()),
+            PROTOCOL_JSON.decodeFromString(outcome.artifactIndex(COORDINATOR_TEST_SUMMARY).decodeToString()),
             COORDINATOR_TEST_SEEDS,
+            outcome.perGameRaw,
+            COORDINATOR_TEST_SUMMARY,
         ) shouldBe emptyList()
     }
 
@@ -46,8 +49,10 @@ class PestControlV2OfficialExecutionCoordinatorTest : FunSpec({
         outcome.recordedGames shouldBe listOf(1, 2)
         initialized shouldBe listOf(1, 2, 3)
         PestControlV2OfficialArtifactContract.validate(
-            PROTOCOL_JSON.decodeFromString(outcome.artifactIndex().decodeToString()),
+            PROTOCOL_JSON.decodeFromString(outcome.artifactIndex(COORDINATOR_TEST_SUMMARY).decodeToString()),
             COORDINATOR_TEST_SEEDS,
+            outcome.perGameRaw,
+            COORDINATOR_TEST_SUMMARY,
         ) shouldBe emptyList()
     }
 

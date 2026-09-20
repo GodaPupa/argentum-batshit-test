@@ -15,6 +15,7 @@ data class V2OfficialArtifactIndex(
     val attemptedSeeds: List<Long>,
     val recordedGames: List<Int>,
     val perGameRawSha256: List<String>,
+    val summarySha256: String,
     val disposition: String,
 )
 
@@ -23,6 +24,7 @@ object PestControlV2OfficialArtifactContract {
         attempts: List<V2OfficialAttempt>,
         recordedGames: List<Int>,
         perGameRaw: List<ByteArray>,
+        summary: ByteArray,
         disposition: String,
     ): ByteArray {
         require(recordedGames.size == perGameRaw.size)
@@ -31,6 +33,7 @@ object PestControlV2OfficialArtifactContract {
             attemptedSeeds = attempts.map { it.seed },
             recordedGames = recordedGames,
             perGameRawSha256 = perGameRaw.map(::sha256),
+            summarySha256 = sha256(summary),
             disposition = disposition,
         )
         return (PROTOCOL_JSON.encodeToString(index) + "\n").toByteArray()
@@ -39,6 +42,8 @@ object PestControlV2OfficialArtifactContract {
     fun validate(
         index: V2OfficialArtifactIndex,
         frozenSeeds: List<Long>,
+        perGameRaw: List<ByteArray>,
+        summary: ByteArray,
     ): List<String> {
         val errors = mutableListOf<String>()
         if (index.protocolId != PEST_V2_OFFICIAL_PROTOCOL) errors += "protocol mismatch"
@@ -52,6 +57,8 @@ object PestControlV2OfficialArtifactContract {
         if (index.recordedGames != (1..index.recordedGames.size).toList()) errors += "recorded games are not a prefix"
         if (index.recordedGames.size > index.attemptedGames.size) errors += "record exists without attempted seed"
         if (index.perGameRawSha256.size != index.recordedGames.size) errors += "per-game hash count mismatch"
+        if (index.perGameRawSha256 != perGameRaw.map(::sha256)) errors += "per-game raw hash mismatch"
+        if (index.summarySha256 != sha256(summary)) errors += "summary hash mismatch"
         if (index.disposition == "COMPLETED") {
             if (index.attemptedGames.size != PEST_V2_EXPECTED_GAMES || index.recordedGames.size != PEST_V2_EXPECTED_GAMES) {
                 errors += "partial block cannot be completed"
