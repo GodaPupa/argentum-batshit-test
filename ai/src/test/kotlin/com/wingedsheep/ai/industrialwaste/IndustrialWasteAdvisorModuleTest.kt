@@ -34,7 +34,7 @@ class IndustrialWasteAdvisorModuleTest : FunSpec({
             AIPlayer.defaultEvaluator(),
             advisors,
         )
-        return Triple(driver, driver.player1Id, responder)
+        return Triple(driver, driver.activePlayer!!, responder)
     }
 
     test("Expedition Map selects the missing Tron piece independent of library order") {
