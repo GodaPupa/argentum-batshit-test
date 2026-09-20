@@ -101,3 +101,9 @@ Dizzy Spell can find either X-spell, Drift of Phantasms and Merchant Scroll can 
 Capsize, and no current tutor can find Murmuring Mystic. The seed-free validator
 passed with zero policy changes, samples, seeds, or outcome claims; no card change
 is authorized by this audit.
+
+Phase 3 freezes passive `targetable`, `payable`, and primary-combo-`uncontested`
+tutor-opportunity fields. It is an instrumentation preflight only: tutors remain
+unspent and the existing policy remains unchanged. Deterministic trajectory
+equivalence and aggregate invariants passed with zero samples or seeds. No sampled
+pilot or fresh seed is yet authorized.

@@ -1365,6 +1365,34 @@ def backup_tutor_targets(card,library):
     legal=set(legal_tutor_targets(card,library))
     return tuple(candidate for candidate in BACKUP_CARDS if candidate in legal)
 
+def backup_tutor_opportunities(state,library):
+    """Observe legal backup searches without spending mana or changing zones."""
+    metrics={}
+    missing_primary={card for card in ("Lava Spike","Desperate Ritual")
+                     if card not in state.hand}
+    for target in BACKUP_CARDS:
+        prefix={"Murmuring Mystic":"mystic","Rolling Thunder":"rolling",
+                "Kaervek's Torch":"torch","Capsize":"capsize"}[target]
+        targetable=payable=uncontested=False
+        for tutor,spec in TUTOR_SPECS.items():
+            if tutor not in state.hand:
+                continue
+            legal=set(legal_tutor_targets(tutor,library))
+            if target not in legal:
+                continue
+            targetable=True
+            generic,need_u,need_r=spec["cost"]
+            if not ready_payment_feasible_exact(
+                    state,generic=generic,need_u=need_u,need_r=need_r):
+                continue
+            payable=True
+            if not (missing_primary & legal):
+                uncontested=True
+        metrics[f"{prefix}_tutor_targetable"]=targetable
+        metrics[f"{prefix}_tutor_payable"]=payable
+        metrics[f"{prefix}_tutor_uncontested"]=uncontested
+    return metrics
+
 def tutor_target(card,state,library):
     h=set(state.hand)
     missing=[]
@@ -1411,6 +1439,43 @@ def backup_tutor_connectivity_regressions():
                           {"card":"Island","tapped":False,"entered":3}]
     assert tutor_target("Dizzy Spell",complete,library)=="Rolling Thunder"
     assert choose_tutor(complete,library) is None
+    return True
+
+def backup_tutor_opportunity_regressions():
+    all_targets=["Murmuring Mystic","Rolling Thunder","Kaervek's Torch","Capsize",
+                 "Lava Spike"]
+    contested=DevState(["Desperate Ritual","Dizzy Spell","Drift of Phantasms",
+                        "Merchant Scroll"]); contested.turn=4
+    contested.battlefield=[{"card":"Island","tapped":False,"entered":turn}
+                           for turn in (1,2,3)]
+    metrics=backup_tutor_opportunities(contested,all_targets)
+    assert not metrics["mystic_tutor_targetable"]
+    for prefix in ("rolling","torch"):
+        assert metrics[f"{prefix}_tutor_targetable"]
+        assert metrics[f"{prefix}_tutor_payable"]
+        assert not metrics[f"{prefix}_tutor_uncontested"]
+    assert metrics["capsize_tutor_targetable"]
+    assert metrics["capsize_tutor_payable"]
+    assert metrics["capsize_tutor_uncontested"]
+
+    # Once Lava Spike is already present, Dizzy's backup option is uncontested.
+    uncontested=DevState(["Lava Spike","Desperate Ritual","Dizzy Spell"]); uncontested.turn=4
+    uncontested.battlefield=list(contested.battlefield)
+    clear=backup_tutor_opportunities(uncontested,all_targets)
+    assert clear["rolling_tutor_uncontested"] and clear["torch_tutor_uncontested"]
+
+    # Merchant Scroll is payable on two Islands; three-mana transmute is not.
+    two=DevState(["Merchant Scroll","Drift of Phantasms"]); two.turn=3
+    two.battlefield=[{"card":"Island","tapped":False,"entered":1},
+                     {"card":"Island","tapped":False,"entered":2}]
+    two_metrics=backup_tutor_opportunities(two,["Capsize"])
+    assert two_metrics["capsize_tutor_payable"]
+    drift_only=DevState(["Drift of Phantasms"]); drift_only.turn=3
+    drift_only.battlefield=list(two.battlefield)
+    assert not backup_tutor_opportunities(
+        drift_only,["Capsize"])["capsize_tutor_payable"]
+    assert not backup_tutor_opportunities(
+        uncontested,["Murmuring Mystic"])["rolling_tutor_targetable"]
     return True
 
 
@@ -1478,8 +1543,13 @@ def combo_assembly_regressions():
 
 BACKUP_ROW_KEYS=("mystic_present","mystic_castable","rolling_present","rolling_x",
                  "torch_present","torch_x","capsize_present","capsize_buyback")
+BACKUP_TUTOR_ROW_KEYS=tuple(
+    f"{prefix}_tutor_{suffix}"
+    for prefix in ("mystic","rolling","torch","capsize")
+    for suffix in ("targetable","payable","uncontested"))
 
-def simulate_one(cards, rng, through=6, include_interaction=False, include_backup=False):
+def simulate_one(cards, rng, through=6, include_interaction=False, include_backup=False,
+                 include_backup_tutors=False):
     library=list(cards); rng.shuffle(library)
     hand=library[:7]; library=library[7:]
     snow_basics="Snow-Covered Island" in cards or "Snow-Covered Mountain" in cards
@@ -1507,6 +1577,8 @@ def simulate_one(cards, rng, through=6, include_interaction=False, include_backu
         combo_lethal=primary_combo_launch_feasible(s)
         interaction=interaction_readiness_metrics(s) if include_interaction else None
         backup=commander_independent_readiness(s) if include_backup else None
+        backup_tutors=(backup_tutor_opportunities(s,library)
+                       if include_backup_tutors else None)
         if combo_lethal and first_lethal_turn is None:
             first_lethal_turn=turn
         first_lethal_now=(first_lethal_turn==turn)
@@ -1552,6 +1624,7 @@ def simulate_one(cards, rng, through=6, include_interaction=False, include_backu
                      "nonland_gross":gross,"islands":islands}
         if interaction is not None: row.update(interaction)
         if backup is not None: row.update(backup)
+        if backup_tutors is not None: row.update(backup_tutors)
         rows.append(row)
     return rows
 
@@ -1572,8 +1645,16 @@ def accumulate_backup_metrics(aggregate,row):
     aggregate["torch_5plus"]+=int(row["torch_x"]>=5)
     aggregate["torch_x_sum"]+=row["torch_x"]
 
+def empty_backup_tutor_aggregate():
+    return {key:0 for key in BACKUP_TUTOR_ROW_KEYS}
+
+def accumulate_backup_tutor_metrics(aggregate,row):
+    for key in BACKUP_TUTOR_ROW_KEYS:
+        aggregate[key]+=int(row[key])
+
 def simulate_sample(cards, samples=10000, seed=SEED, through=10,
-                    include_interaction=False, include_backup=False):
+                    include_interaction=False, include_backup=False,
+                    include_backup_tutors=False):
     rng=random.Random(seed)
     agg={t:{"n":0,"selection_cast":0,"commander_deployed":0,"commander_battlefield":0,"tutor_used":0,"tutor_found_combo":0,"selection_seen_sum":0,"selection_drawn_sum":0,"start_U":0,"start_R":0,"start_UU":0,"action_U":0,"action_R":0,"action_UU":0,
             "residual_U":0,"residual_R":0,"residual_UU":0,
@@ -1593,8 +1674,11 @@ def simulate_sample(cards, samples=10000, seed=SEED, through=10,
         for a in agg.values(): a.update({k:0 for k in interaction_keys})
     if include_backup:
         for a in agg.values(): a.update(empty_backup_aggregate())
+    if include_backup_tutors:
+        for a in agg.values(): a.update(empty_backup_tutor_aggregate())
     for _ in range(samples):
-        for row in simulate_one(cards,rng,through,include_interaction,include_backup):
+        for row in simulate_one(cards,rng,through,include_interaction,include_backup,
+                                include_backup_tutors):
             a=agg[row["turn"]]; a["n"]+=1
             a["selection_cast"]+=int(row["selection_cast"])
             a["commander_deployed"]+=int(row["commander_deployed"])
@@ -1613,6 +1697,8 @@ def simulate_sample(cards, samples=10000, seed=SEED, through=10,
                 for k in interaction_keys: a[k]+=int(row[k])
             if include_backup:
                 accumulate_backup_metrics(a,row)
+            if include_backup_tutors:
+                accumulate_backup_tutor_metrics(a,row)
             a["high_tide_post_sum"]+=row["high_tide_post_mana"]
             a["high_tide_gain_sum"]+=row["high_tide_gain"]
             a["lands_sum"]+=row["lands"]; a["islands_sum"]+=row["islands"]
@@ -1638,6 +1724,14 @@ def simulate_sample(cards, samples=10000, seed=SEED, through=10,
                                   ("capsize_buyback","capsize_present")):
                 if not 0<=a[ready]<=a[present]<=a["n"]:
                     raise ValueError(f"backup subset violation turn={turn} {ready}<={present}")
+    if include_backup_tutors:
+        for turn,a in agg.items():
+            for prefix in ("mystic","rolling","torch","capsize"):
+                targetable=a[f"{prefix}_tutor_targetable"]
+                payable=a[f"{prefix}_tutor_payable"]
+                uncontested=a[f"{prefix}_tutor_uncontested"]
+                if not 0<=uncontested<=payable<=targetable<=a["n"]:
+                    raise ValueError(f"backup tutor subset violation turn={turn} target={prefix}")
     return agg
 
 def simulation_regressions(cards):
@@ -1836,6 +1930,40 @@ def commander_independent_instrumentation_regressions(cards):
     assert aggregate["capsize_present"]==len(observed)
     return True
 
+def backup_tutor_instrumentation_regressions(cards):
+    class FixtureRng:
+        def shuffle(self,items):
+            return None
+        def choice(self,items):
+            return items[0]
+    front=["Dizzy Spell","Drift of Phantasms","Merchant Scroll",
+           "Snow-Covered Island","Snow-Covered Island","Snow-Covered Island",
+           "Desperate Ritual"]
+    ordered=list(cards)
+    for card in front:
+        ordered.remove(card)
+    ordered=front+ordered
+    plain=simulate_one(ordered,FixtureRng(),10,False,True,False)
+    observed=simulate_one(ordered,FixtureRng(),10,False,True,True)
+    for baseline,instrumented in zip(plain,observed):
+        legacy={k:v for k,v in instrumented.items() if k not in BACKUP_TUTOR_ROW_KEYS}
+        assert baseline==legacy
+        assert set(BACKUP_TUTOR_ROW_KEYS)<=set(instrumented)
+        for prefix in ("mystic","rolling","torch","capsize"):
+            assert (instrumented[f"{prefix}_tutor_uncontested"] <=
+                    instrumented[f"{prefix}_tutor_payable"] <=
+                    instrumented[f"{prefix}_tutor_targetable"])
+    assert all(not row["mystic_tutor_targetable"] for row in observed)
+    aggregate=empty_backup_tutor_aggregate()
+    aggregate["n"]=len(observed)
+    for row in observed:
+        accumulate_backup_tutor_metrics(aggregate,row)
+    for prefix in ("mystic","rolling","torch","capsize"):
+        assert (0 <= aggregate[f"{prefix}_tutor_uncontested"] <=
+                aggregate[f"{prefix}_tutor_payable"] <=
+                aggregate[f"{prefix}_tutor_targetable"] <= aggregate["n"])
+    return True
+
 def electromancer_lethal_regressions():
     # Electromancer removes both generic costs, enabling a three-red-mana launch.
     s=DevState(["Lava Spike","Desperate Ritual"]); s.turn=4
@@ -1871,6 +1999,8 @@ def main():
                     help="Emit v0.7 fixed-event interaction-readiness telemetry")
     ap.add_argument("--commander-independent-pilot",action="store_true",
                     help="Emit v0.9 commander-independent readiness telemetry")
+    ap.add_argument("--backup-tutor-opportunity-pilot",action="store_true",
+                    help="Emit passive v0.9 backup-tutor opportunity telemetry")
     args=ap.parse_args()
     if args.diagnostic_size is None:
         _,cards=parse_deck(Path(args.deck))
@@ -1918,6 +2048,7 @@ def main():
     interaction_regressions()
     tutor_regressions()
     backup_tutor_connectivity_regressions()
+    backup_tutor_opportunity_regressions()
     tutor_execution_regressions()
     first_lethal_regression()
     electromancer_lethal_regressions()
@@ -1926,12 +2057,14 @@ def main():
     multiplayer_table_kill_regressions()
     commander_independent_readiness_regressions()
     commander_independent_instrumentation_regressions(cards)
+    backup_tutor_instrumentation_regressions(cards)
     b,r=opening_baseline(cards,args.samples,args.seed)
     print("seed",hex(args.seed),"samples",args.samples)
     print("land_buckets_0_1_2_3_4plus",b)
     print("rock_buckets_0_1_2_3plus",r)
     agg=simulate_sample(cards,args.samples,args.seed,10,args.interaction_pilot,
-                        args.commander_independent_pilot)
+                        args.commander_independent_pilot,
+                        args.backup_tutor_opportunity_pilot)
     for turn in range(1,11):
         a=agg[turn]; n=a["n"]
         print("turn",turn,"selection_cast",a["selection_cast"]/n,
@@ -1982,6 +2115,12 @@ def main():
                   "avg_torch_x",a["torch_x_sum"]/n,
                   "capsize_present",a["capsize_present"]/n,
                   "capsize_buyback",a["capsize_buyback"]/n)
+        if args.backup_tutor_opportunity_pilot:
+            print("backup_tutors","turn",turn,
+                  *(item for prefix in ("mystic","rolling","torch","capsize")
+                    for suffix in ("targetable","payable","uncontested")
+                    for item in (f"{prefix}_tutor_{suffix}",
+                                 a[f"{prefix}_tutor_{suffix}"]/n)))
 
 if __name__=="__main__":
     main()
