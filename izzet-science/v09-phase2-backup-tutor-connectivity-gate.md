@@ -52,4 +52,17 @@ kill validators remained green.
 The validator reported `policy_changes=0`, `sampled_games=0`, `seeds_consumed=0`,
 and `outcome_claims=0`.
 
+## Publication integrity incident
+
+The first GitHub publication, commit `c2b4a6d7bcd5e20ec4d50f003b7d7a4162fea4fd`,
+contained a transport-truncated `mana_harness.py` blob with null bytes. It was
+rejected immediately by the post-publication syntax check and was never an
+experimental source. No sample ran and no seed or outcome was exposed.
+
+Repair commit `58ea26b71191fc16c79d14df9bdc1badf89b6fc1` restores harness blob
+`47b695b1d85f868628d7693aeb4e63cb53a41c6f`. Its complete tree
+`2439827c6cdae09d18b49aee4f59a961c4db4a19` exactly matches the preserved,
+locally validated tree. The syntax check and all three deterministic validators
+then passed from the repaired branch head.
+
 Disposition: `V09_PHASE2_SEED_FREE_VALIDATED`
