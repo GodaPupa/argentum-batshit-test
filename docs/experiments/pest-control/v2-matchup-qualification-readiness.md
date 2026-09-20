@@ -9,7 +9,7 @@
 - Accepted calibration run: `35525262024`
 - Accepted calibration artifact: `10610310479`
 - Accepted calibration archive SHA-256: `577ecf33bbbd6fa2b9967867228b6eabb81b6b2c5590f2c0670f5d3536f80a2b`
-- Qualification runner state: `DISABLED`
+- Qualification runner state: `AUTHORIZED_UNEXECUTED`
 - Qualification freeze run: `35532647383`, attempt 1, success
 - Qualification freeze artifact: `10612245984`
 - Qualification freeze archive SHA-256: `bf7456303c355202587484f208da20a1ca37a2ba326d081e8a3fb7c3a31be8f0`
@@ -49,12 +49,16 @@ and a post-execution trace audit. The observed win count does not control the in
 Performance is reported separately after the integrity decision. This block can qualify evidence for
 the Mono Red Madness matchup; it cannot by itself establish Tier-1 status across the Pauper metagame.
 
-## Current stop condition
+## Authorization gate
 
-The exact freeze identity is attached, and the artifact-bound two-shard plan and reconciliation
-contract are constructed, but the compiled runner state remains `DISABLED`. The validation workflow
-cannot initialize a game and proves that the runner guard rejects activation. The freeze operation is
-documented in [the qualification seed-freeze gate](v2-qualification-seed-freeze-gate.md), and the
-coordinator boundary is documented in
-[the qualification execution harness](v2-qualification-execution-harness.md). Authorization requires
-a later, separately reviewed workflow pinned to the exact green coordinator commit and source tree.
+The exact freeze identity is attached, and the artifact-bound two-shard plan, compiled runner, and
+reconciliation contract are green. The runner is authorized only through the dedicated one-shot
+workflow, which requires the exact reviewed commit and tree, an explicit acknowledgement, attempt 1,
+and proof that no earlier qualification execution dispatch exists. Each shard records a seed attempt
+before initialization. The aggregate job runs even after a shard failure and rejects and retires the
+complete vector if either exact shard artifact is absent or inadmissible.
+
+The validation workflow remains incapable of selecting execution or initializing a game. The freeze
+operation is documented in [the qualification seed-freeze gate](v2-qualification-seed-freeze-gate.md),
+and the coordinator boundary is documented in
+[the qualification execution harness](v2-qualification-execution-harness.md).
