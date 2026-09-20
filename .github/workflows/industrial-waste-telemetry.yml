@@ -11,6 +11,8 @@ on:
       - ai/src/test/kotlin/com/wingedsheep/ai/arena/TableGameRunnerObserverTest.kt
       - ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteGoldfishTelemetry.kt
       - ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteGoldfishTelemetryTest.kt
+      - ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteAdvisorModule.kt
+      - ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteAdvisorModuleTest.kt
       - industrial-waste/control/industrial-waste-v1.0-submitted.dck
       - industrial-waste/protocols/gate-3-telemetry-validation-v1.md
 
@@ -43,3 +45,4 @@ jobs:
           scripts/gradle-locked :ai:test
           --tests '*TableGameRunnerObserverTest'
           --tests '*IndustrialWasteGoldfishTelemetryTest'
+          --tests '*IndustrialWasteAdvisorModuleTest'
