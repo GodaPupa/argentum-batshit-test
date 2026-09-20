@@ -764,6 +764,37 @@ def mutable_library_regressions():
 
 
 
+
+
+def guildmage_on_battlefield(state):
+    return any(p["card"]=="Izzet Guildmage" for p in state.battlefield)
+
+def should_deploy_guildmage(state):
+    if guildmage_on_battlefield(state): return False
+    # Deploy when affordable and either combo pair is present or hand has interaction to support future turns.
+    if not can_pay_simple(state,need_u=1,need_r=1): return False
+    h=set(state.hand)
+    pair={"Lava Spike","Desperate Ritual"} <= h
+    protected=bool(h & INTERACTION_CARDS)
+    return pair or protected
+
+def deploy_guildmage(state):
+    if not should_deploy_guildmage(state): return False
+    if not pay_colored_mutating(state,need_u=1,need_r=1): return False
+    state.battlefield.append({"card":"Izzet Guildmage","tapped":False,"entered":state.turn})
+    return True
+
+def commander_regressions():
+    s=DevState(["Lava Spike","Desperate Ritual"]); s.turn=3
+    s.battlefield=[{"card":"Island","tapped":False,"entered":1},{"card":"Mountain","tapped":False,"entered":2}]
+    assert deploy_guildmage(s) and guildmage_on_battlefield(s)
+    assert all(p["tapped"] for p in s.lands())
+    assert not deploy_guildmage(s)
+    z=DevState(["Ponder"]); z.turn=3
+    z.battlefield=[{"card":"Island","tapped":False,"entered":1},{"card":"Mountain","tapped":False,"entered":2}]
+    assert not should_deploy_guildmage(z)
+    return True
+
 def combo_assembly_metrics(state):
     h=set(state.hand)
     spike="Lava Spike" in h
@@ -812,6 +843,7 @@ def simulate_one(cards, rng, through=6):
         ht_castable,ht_productive,ht_post,ht_gain=high_tide_metrics(s)
         # Cast at most one information-limited selection spell before optional infrastructure.
         selected,library,sel_seen,sel_drawn=cast_one_selection(s,library)
+        commander_deployed=deploy_guildmage(s)
         # Finish optional mana development without replaying a land.
         rock=choose_mana_permanent(s)
         if rock: cast_mana_permanent_unified(s,rock)
@@ -820,6 +852,7 @@ def simulate_one(cards, rng, through=6):
         neutral,positive,gross=reversal_threshold(s)
         islands=sum(high_tide_island(p["card"]) for p in s.lands())
         rows.append({"turn":turn,"lands":len(s.lands()),"selection_cast":selected is not None,
+                     "commander_deployed":commander_deployed,"commander_battlefield":guildmage_on_battlefield(s),
                      "selection_seen":sel_seen,"selection_drawn":sel_drawn,
                      "start_U":start_u,"start_R":start_r,"start_UU":start_uu,
                      "action_U":action_u,"action_R":action_r,"action_UU":action_uu,
@@ -840,7 +873,7 @@ def simulate_one(cards, rng, through=6):
 
 def simulate_sample(cards, samples=10000, seed=SEED, through=6):
     rng=random.Random(seed)
-    agg={t:{"n":0,"selection_cast":0,"selection_seen_sum":0,"selection_drawn_sum":0,"start_U":0,"start_R":0,"start_UU":0,"action_U":0,"action_R":0,"action_UU":0,
+    agg={t:{"n":0,"selection_cast":0,"commander_deployed":0,"commander_battlefield":0,"selection_seen_sum":0,"selection_drawn_sum":0,"start_U":0,"start_R":0,"start_UU":0,"action_U":0,"action_R":0,"action_UU":0,
             "residual_U":0,"residual_R":0,"residual_UU":0,
             "guildmage_start":0,"guildmage_action":0,"guildmage_end":0,
             "uu_spell_present":0,"uu_spell_exec":0,"u_spell_present":0,"u_spell_exec":0,
@@ -854,6 +887,8 @@ def simulate_sample(cards, samples=10000, seed=SEED, through=6):
         for row in simulate_one(cards,rng,through):
             a=agg[row["turn"]]; a["n"]+=1
             a["selection_cast"]+=int(row["selection_cast"])
+            a["commander_deployed"]+=int(row["commander_deployed"])
+            a["commander_battlefield"]+=int(row["commander_battlefield"])
             a["selection_seen_sum"]+=row["selection_seen"]
             a["selection_drawn_sum"]+=row["selection_drawn"]
             for k in ("start_U","start_R","start_UU","action_U","action_R","action_UU","residual_U","residual_R","residual_UU","guildmage_start","guildmage_action","guildmage_end","uu_spell_present","uu_spell_exec","u_spell_present","u_spell_exec","r_spell_present","r_spell_exec","ritual_present","spike_present","combo_pair","combo_pair_guild_action","guild_plus_u","guild_plus_r","uu_plus_r","high_tide_castable","high_tide_productive","reversal_neutral","reversal_positive"):
@@ -980,6 +1015,7 @@ def main():
     mutable_library_regressions()
     loop_selection_regression(cards)
     combo_assembly_regressions()
+    commander_regressions()
     b,r=opening_baseline(cards,args.samples,args.seed)
     print("seed",hex(args.seed),"samples",args.samples)
     print("land_buckets_0_1_2_3_4plus",b)
@@ -988,6 +1024,7 @@ def main():
     for turn in range(1,7):
         a=agg[turn]; n=a["n"]
         print("turn",turn,"selection_cast",a["selection_cast"]/n,
+              "commander_deployed",a["commander_deployed"]/n,"commander_battlefield",a["commander_battlefield"]/n,
               "avg_selection_seen",a["selection_seen_sum"]/n,"avg_selection_drawn",a["selection_drawn_sum"]/n,
               "start_U",a["start_U"]/n,"start_R",a["start_R"]/n,"start_UU",a["start_UU"]/n,
               "action_U",a["action_U"]/n,"action_R",a["action_R"]/n,"action_UU",a["action_UU"]/n,
