@@ -1,0 +1,19 @@
+name: Face Value EDH R1-A Validation
+on:
+  workflow_dispatch:
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: face-value-edh/r1-reconstruction
+      - name: Positive fixture must validate
+        run: python3 research/face-value-edh/validate_r1_fixture.py research/face-value-edh/fixtures/r1-schema-valid.json
+      - name: Negative fixture must fail closed
+        run: |
+          if python3 research/face-value-edh/validate_r1_fixture.py research/face-value-edh/fixtures/r1-failclosed-invalid.json; then
+            echo "negative fixture incorrectly accepted"
+            exit 1
+          fi
+          echo "negative fixture rejected as required"
