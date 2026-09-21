@@ -38,16 +38,25 @@ class IzzetScienceVeteranBeastriderEngineReadinessTest : FunSpec({
         amount.amount shouldBe 1
     }
 
+    test("Llanowar Visionary resolves as ETB draw mana creature") {
+        val card = registry.getCard("Llanowar Visionary") ?: error("Llanowar Visionary unresolved")
+        card.oracleText shouldBe "When this creature enters, draw a card.\n{T}: Add {G}."
+        card.creatureStats?.basePower shouldBe 2
+        card.creatureStats?.baseToughness shouldBe 2
+        card.script.triggeredAbilities.size shouldBe 1
+        card.script.activatedAbilities.single().isManaAbility shouldBe true
+    }
+
     test("freeze exact unresolved engine coverage count and emit identities") {
         val unresolved = IzzetScienceVeteranBeastriderEngineReadiness.unresolvedCardIdentities(registry)
         println("V09_REAL_ENGINE_UNRESOLVED_COUNT=" + unresolved.size)
         unresolved.forEach { println("V09_REAL_ENGINE_UNRESOLVED=" + it) }
-        unresolved.size shouldBe 54
+        unresolved.size shouldBe 53
     }
 
     test("full execution remains fail closed behind unresolved cards and PDH semantics") {
         val blockers = IzzetScienceVeteranBeastriderEngineReadiness.executionBlockers(registry)
-        blockers.size shouldBe 59
+        blockers.size shouldBe 58
         blockers.takeLast(5).shouldContainExactly(
             "PDH commander-zone initialization not qualified",
             "PDH commander recast/tax semantics not qualified",
