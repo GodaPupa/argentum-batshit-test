@@ -105,7 +105,7 @@ jobs:
               p=Path('peace-capability-logs')/f'peace-seat{seat}-{seed}.log'
               text=p.read_text(errors='replace') if p.exists() else ''
               c=len(re.findall(r"cast Moment's Peace",text,re.I))
-              fb=len(re.findall(r"Moment's Peace.*flashback|flashback.*Moment's Peace",text,re.I))
+              fb=len(re.findall(r"^Replacement Effect: Flashback \\{2\\}\\{G\\}",text,re.I|re.M))
               casts+=c
               flashback_casts+=fb
               t=bool(re.search(r'^Game Result: .+(has won|Draw)',text,re.I|re.M))
