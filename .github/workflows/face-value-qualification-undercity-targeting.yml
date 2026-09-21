@@ -1,5 +1,5 @@
 name: Face Value Qualification Undercity Targeting Diagnostic
-# replication-trigger: corrected-parser-fresh-741021
+# replication-trigger: fixed-parser-741041
 # profile-v6 revision 2
 
 on:
@@ -82,7 +82,7 @@ jobs:
 
           python3 - <<'PY'
           from pathlib import Path
-          rows = [f'{1 + i % 2}\t{741021 + i}' for i in range(8)]
+          rows = [f'{1 + i % 2}\t{741041 + i}' for i in range(8)]
           Path('undercity-assignments.tsv').write_text('\n'.join(rows) + '\n', encoding='utf-8')
           PY
 
@@ -91,7 +91,7 @@ jobs:
 
           cat > undercity-disposition.txt <<'EOF'
           DIAGNOSTIC_ONLY_NONLEGAL_UNDERCITY_TARGETING
-          Seeds 741021-741028 and all outcomes are permanently retired diagnostic material.
+          Seeds 741041-741048 and all outcomes are permanently retired diagnostic material.
           These decks are deliberately nonlegal and results have no matchup, tuning, structural-diagnosis, challenger, or qualification authority.
           This gate tests only whether Undercity Arena can select and resolve a legal creature target under the pinned simulator profile.
           EOF
