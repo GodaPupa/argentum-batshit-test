@@ -251,3 +251,11 @@ window only after the deterministic turn policy has spent mana. Zero samples ran
 zero experimental seeds were assigned or consumed, and no outcome was exposed. The
 next authorized work is an invariant-only qualification on public regression
 coordinate `1`; an official interactive pilot remains unauthorized.
+
+Phase 17 defines that cost-controlled invariant qualification: 1,024 complete
+matched pairs on public regression coordinate `1`, with the accepted tutor policy
+active and all Phase-15 interaction fields enabled. The complete Phase-16 summary
+is aggregated and validated only in memory. Durable output is restricted to
+identity, execution counts, zero-outcome accounting, and disposition; no outcome
+field, effect estimate, or performance interpretation is emitted. The gate assigns
+and consumes no experimental seed and does not yet authorize an official pilot.
