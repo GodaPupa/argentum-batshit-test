@@ -267,3 +267,10 @@ outcome assignments. Public regression coordinate `1` is not an experimental see
 so zero experimental seeds were assigned or consumed. This accepts only the full-
 path invariant qualification. The temporary workflow is removed, ordinary CI is
 restored, the accepted tutor policy is unchanged, and v0.7 remains the card control.
+
+Phase 18 freezes a single 10,000-pair fixed-event interaction pilot. Full-history
+search found fresh master seed `0x00000001A22E7013` unused; it is assigned but
+unconsumed. The runner binds the Phase-16 nine-metric summary and strict four-file
+artifact schema, while eleven adversarial artifacts fail closed. No workflow is
+armed, no paired iterator has been consumed, and no outcome exists. A separate
+source-freeze record is required before the sole pilot can be authorized.
