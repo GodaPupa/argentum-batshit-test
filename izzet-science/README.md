@@ -144,15 +144,14 @@ including duplicate-key and non-finite JSON attacks. No paired games or experime
 seeds were consumed. Execution identity, pilot size, seed, and artifact provenance
 must be frozen next; v0.7 remains the accepted control.
 
-Phase 9 freezes a 10,000-pair execution runner and exact four-file artifact contract.
-Fresh master seed `0x00000001A22E7010` is assigned but unconsumed; historical unused
-seed `0x1A22E7009` remains untouched. Ten adversarial artifacts were rejected, and
-the runner is frozen at SHA256 `1dce15e3555f937964ae571140ca43e763f52747af56c2be71d53a7b7bcebb36`.
-The source commit must be recorded and a temporary exact-checkout workflow separately
-armed before execution. No paired outcomes exist, and v0.7 remains the control.
-
-The experimental source is now frozen at commit
-`2035adc350368f8eeec87a2f960ea05c40763fb8`, tree
-`b2972f92fb1afaf994e9020362960b2c944a76c1`. The runner, seed, and sample identity
-cannot change. The workflow is not yet armed, the seed remains unconsumed, and no
-outcomes are exposed.
+Phase 9's sole paired pilot is inadmissible. GitHub Actions run `35548464487` passed
+its exact checkout, identity checks, and complete seed-free preflight, then failed
+closed during paired execution with `policy event identity violation`; manifest and
+artifact steps were skipped and zero artifacts were uploaded. Static diagnosis found
+that Capsize tutor selection used the exact mana solver while execution used an older
+mutating payer that omits Izzet Signet and cannot model Prismatic Lens filtering or
+Star Compass colors. The log does not identify which source state triggered first.
+Seed `0x00000001A22E7010` is consumed and permanently retired; no rerun, replacement,
+pooling, outcome claim, or promotion is allowed. The temporary workflow was removed,
+the ordinary workflow restored, and v0.7 remains the accepted control. A future
+pilot requires a seed-free unified-payment gate and a fresh frozen identity.
