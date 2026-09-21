@@ -1,49 +1,82 @@
-name: Argentum Validation
+name: Izzet Phase 16 Validation
 
 on:
-  workflow_dispatch:
   push:
-    branches: [ "main" ]
+    branches: [ "mayhem/izzet-science" ]
 
 permissions:
   contents: read
 
 jobs:
-  test:
+  izzet-v09-capsize-interaction-contract:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 5
 
     steps:
-      - name: Checkout repository
+      - name: Checkout frozen Phase 16 source
         uses: actions/checkout@v4
-
-      - name: Set up Java 21
-        uses: actions/setup-java@v4
         with:
-          distribution: temurin
-          java-version: '21'
+          ref: df121cd658c4626be14654953aaadbaf6cc8f65e
 
-      - name: Set up Gradle
-        uses: gradle/actions/setup-gradle@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
         with:
-          gradle-version: '9.6.1'
+          python-version: "3.12"
 
-      - name: Make Gradle wrapper executable
-        run: chmod +x gradlew
-
-      - name: Show environment
+      - name: Verify frozen identities
+        shell: bash
         run: |
-          java -version
-          gradle --version
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "df121cd658c4626be14654953aaadbaf6cc8f65e"
+          test "$(sha256sum izzet-science/v0.7-control.md | cut -d' ' -f1)" = "726f5e9458b46dda30b33a6ce9f3c3237b25d6e11b81dac85308c3065c108a01"
+          test "$(sha256sum izzet-science/sim/mana_harness.py | cut -d' ' -f1)" = "9d4eab04e694acba246528419a2d5667c31e056348d58f0bf5c8628d7d35d470"
+          test "$(sha256sum izzet-science/sim/capsize_interaction.py | cut -d' ' -f1)" = "df914d8149c0f264ee84732bfb269dd04818c6e1ef23d82c8972b25d7bf439ad"
+          test "$(sha256sum izzet-science/sim/paired_capsize_interaction_contract.py | cut -d' ' -f1)" = "136b8b43d1c7e42352b783fa2058f706bcd2737228d674ff76c10e14c1460c9e"
+          test "$(sha256sum izzet-science/sim/audit_v09_capsize_interaction_output.py | cut -d' ' -f1)" = "8f59c831f611e39d4b723714e764dae1ac2b4b1ce11d40052bcdd336bcd86583"
+          test "$(sha256sum izzet-science/sim/validate_v09_capsize_interaction_contract.py | cut -d' ' -f1)" = "5f3e472015d44710df1335a687bc2b582073554a5c279e468b7728ae62f15465"
 
-      - name: Compile Argentum
-        run: ./gradlew classes --stacktrace
+      - name: Run seed-free interaction contract gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p izzet-science/artifacts/v09-phase16
+          {
+            python3 -m py_compile \
+              izzet-science/sim/mana_harness.py \
+              izzet-science/sim/capsize_interaction.py \
+              izzet-science/sim/paired_capsize_interaction_contract.py \
+              izzet-science/sim/audit_v09_capsize_interaction_output.py \
+              izzet-science/sim/validate_v09_capsize_interaction_contract.py
+            python3 izzet-science/sim/validate_v09_capsize_interaction_contract.py
+            python3 izzet-science/sim/validate_v09_capsize_interaction.py
+            python3 izzet-science/sim/validate_commander_independent.py
+            python3 izzet-science/sim/validate_capsize_tutor_policy.py
+            python3 izzet-science/sim/validate_v09_payment_recovery.py
+            python3 izzet-science/sim/validate_paired_capsize_contract.py
+            python3 izzet-science/sim/validate_paired_rng_isolation.py
+          } | tee izzet-science/artifacts/v09-phase16/validation.txt
 
-      - name: Run engine tests
-        run: ./gradlew test --stacktrace
+      - name: Write manifest
+        shell: bash
+        run: |
+          set -euo pipefail
+          {
+            echo "schema=izzet-v09-phase16-seed-free-v1"
+            echo "experimental_source_sha=df121cd658c4626be14654953aaadbaf6cc8f65e"
+            echo "workflow_runner_sha=${GITHUB_SHA}"
+            echo "run_id=${GITHUB_RUN_ID}"
+            echo "run_attempt=${GITHUB_RUN_ATTEMPT}"
+            echo "samples=0"
+            echo "experimental_seeds_assigned=0"
+            echo "experimental_seeds_consumed=0"
+            sha256sum izzet-science/artifacts/v09-phase16/validation.txt
+          } > izzet-science/artifacts/v09-phase16/manifest.txt
+          test -s izzet-science/artifacts/v09-phase16/validation.txt
+          test -s izzet-science/artifacts/v09-phase16/manifest.txt
 
-      - name: Run Gym tests
-        run: ./gradlew :gym:test --stacktrace
-
-      - name: Run Gym trainer tests
-        run: ./gradlew :gym-trainer:test --stacktrace
+      - name: Preserve seed-free gate artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: izzet-v09-phase16-seed-free
+          path: izzet-science/artifacts/v09-phase16
+          if-no-files-found: error
