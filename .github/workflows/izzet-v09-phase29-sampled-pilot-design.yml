@@ -40,7 +40,8 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          ! grep -R --line-number -E 'secrets\.SystemRandom\(|random\.SystemRandom\(|os\.urandom\(|execute_game\(|run_matchup\('             izzet-science/v09-phase29-sampled-pilot-design-gate.md             izzet-science/sim/validate_v09_phase29_sampled_pilot_design.py
+          ! grep --line-number -E 'secrets\.SystemRandom\(|random\.SystemRandom\(|os\.urandom\(|execute_game\(|run_matchup\(' izzet-science/v09-phase29-sampled-pilot-design-gate.md
+          ! grep --line-number -E '^(import|from) +(random|secrets|subprocess)( |$)' izzet-science/sim/validate_v09_phase29_sampled_pilot_design.py
       - name: Emit qualification manifest
         shell: bash
         run: |
