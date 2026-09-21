@@ -5,6 +5,8 @@ import java.nio.file.Path
 
 const val PEST_GRIXIS_EXECUTION_INPUT_ACK =
     "LOAD_FROZEN_TIER_ONE_GRIXIS_4_FOR_VALIDATION_ONLY"
+const val PEST_GRIXIS_EXECUTION_INPUT_EXECUTE_ACK =
+    "EXECUTE_FROZEN_TIER_ONE_GRIXIS_4_EXACTLY_ONCE"
 
 data class GrixisOfficialExecutionInput(
     val vectorIdentity: GrixisSmokeVectorIdentity,
@@ -15,6 +17,15 @@ data class GrixisOfficialExecutionInput(
 object PestControlTierOneGrixisOfficialExecutionInputLoader {
     fun loadValidatedFromEnvironment(): GrixisOfficialExecutionInput {
         require(System.getenv("PEST_GRIXIS_EXECUTION_INPUT_ACK") == PEST_GRIXIS_EXECUTION_INPUT_ACK)
+        return loadFromEnvironment()
+    }
+
+    fun loadForAuthorizedExecutionFromEnvironment(): GrixisOfficialExecutionInput {
+        require(System.getenv("PEST_GRIXIS_EXECUTION_INPUT_ACK") == PEST_GRIXIS_EXECUTION_INPUT_EXECUTE_ACK)
+        return loadFromEnvironment()
+    }
+
+    private fun loadFromEnvironment(): GrixisOfficialExecutionInput {
         val dir = Path.of(
             System.getenv("PEST_GRIXIS_EXECUTION_INPUT_DIR")
                 ?: error("PEST_GRIXIS_EXECUTION_INPUT_DIR required"),
