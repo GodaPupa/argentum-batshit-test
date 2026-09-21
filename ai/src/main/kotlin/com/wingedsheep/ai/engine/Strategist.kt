@@ -871,20 +871,28 @@ class Strategist(
                 .sortedByDescending(::targetRank)
                 .take(targetCandidates)
             if (candidates.size <= 1) continue
-            val best = candidates.maxByOrNull { candidate ->
-                val trial = chosenTargets.toMutableList()
-                trial[i] = TargetSelection.toChosenTarget(state, info, candidate, playerId)
-                val result = simulator.simulate(state, TargetSelection.applyTargets(baseAction, trial))
-                // A target that resolves back into the position we are standing in is not a target
-                // choice, it is a no-op wearing one — Aphetto Alchemist untapping itself. Rank it
-                // below every real option, so `chooseAction` only ever drops the whole ability as
-                // inert when *no* target does anything. A target whose simulation never finished
-                // ranks there too, for the same reason: we cannot say what it does.
-                result.scoreOrRankLast { leaf ->
-                    if (StateProgress.digest(leaf) == here) {
-                        Double.NEGATIVE_INFINITY
-                    } else {
-                        evaluator.evaluate(leaf, leaf.projectedState, playerId)
+            // A card advisor that explicitly ranks targets owns this requirement. The preference
+            // is card-domain policy, so generic one-ply refinement must not silently undo it.
+            val best = if (targetAdvisor != null &&
+                candidates.any { targetAdvisor.targetPreference(state, it, playerId) != null }
+            ) {
+                candidates.maxByOrNull { targetAdvisor.targetPreference(state, it, playerId) ?: Double.NEGATIVE_INFINITY }
+            } else {
+                candidates.maxByOrNull { candidate ->
+                    val trial = chosenTargets.toMutableList()
+                    trial[i] = TargetSelection.toChosenTarget(state, info, candidate, playerId)
+                    val result = simulator.simulate(state, TargetSelection.applyTargets(baseAction, trial))
+                    // A target that resolves back into the position we are standing in is not a target
+                    // choice, it is a no-op wearing one — Aphetto Alchemist untapping itself. Rank it
+                    // below every real option, so `chooseAction` only ever drops the whole ability as
+                    // inert when *no* target does anything. A target whose simulation never finished
+                    // ranks there too, for the same reason: we cannot say what it does.
+                    result.scoreOrRankLast { leaf ->
+                        if (StateProgress.digest(leaf) == here) {
+                            Double.NEGATIVE_INFINITY
+                        } else {
+                            evaluator.evaluate(leaf, leaf.projectedState, playerId)
+                        }
                     }
                 }
             } ?: continue
