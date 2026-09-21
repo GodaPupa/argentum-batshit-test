@@ -1,0 +1,31 @@
+{
+  "fixture_id": "FVEDH-R1-TARGET-001",
+  "surface": "targeted_interaction",
+  "synthetic": true,
+  "official_material": false,
+  "initial_state": {
+    "active_player": "P2",
+    "priority_player": "P1",
+    "zones": {
+      "battlefield": [
+        "Synthetic Opponent Permanent"
+      ]
+    },
+    "stack": [],
+    "commander": {
+      "name": "Animar, Soul of Elements",
+      "zone": "battlefield",
+      "tax": 0
+    }
+  },
+  "decision": {
+    "action": "target_opponent_permanent",
+    "supported": true,
+    "targets": [
+      "Synthetic Opponent Permanent"
+    ]
+  },
+  "expected": {
+    "result": "accept"
+  }
+}
