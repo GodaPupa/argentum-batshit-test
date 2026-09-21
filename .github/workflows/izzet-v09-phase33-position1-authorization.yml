@@ -1,0 +1,69 @@
+name: Izzet v0.9 Phase 33 Position-1 Authorization
+
+on:
+  pull_request:
+    paths:
+      - "izzet-science/v09-phase33-position1-execution-authorization-gate.md"
+      - "izzet-science/v09-phase32-execution-readiness-accepted.md"
+      - "izzet-science/sim/phase33_position1_authorization.py"
+      - "izzet-science/sim/validate_v09_phase33_position1_authorization.py"
+      - ".github/workflows/izzet-v09-phase33-position1-authorization.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify-phase33:
+    if: github.event_name != 'pull_request' || github.head_ref == 'mayhem/izzet-science'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Verify frozen identities and parent acceptance
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(sha256sum izzet-science/v0.7-control.md | cut -d' ' -f1)" = "726f5e9458b46dda30b33a6ce9f3c3237b25d6e11b81dac85308c3065c108a01"
+          grep -Fq 'V09_PHASE32_EXECUTION_READINESS_ACCEPTED' izzet-science/v09-phase32-execution-readiness-accepted.md
+          grep -Fq 'V09_PHASE31_SEED_VECTOR_FREEZE_ACCEPTED' izzet-science/v09-phase31-seed-vector-freeze-accepted.md
+      - name: Run Phase 33 static opaque authorization qualification
+        shell: bash
+        run: |
+          set -euo pipefail
+          export PYTHONPATH="$PWD/izzet-science/sim"
+          python izzet-science/sim/validate_v09_phase33_position1_authorization.py | tee /tmp/phase33.txt
+          grep -Fx "V09_PHASE33_POSITION1_AUTHORIZATION_VALIDATION_PASS" /tmp/phase33.txt
+      - name: Assert no official execution surface
+        shell: bash
+        run: |
+          set -euo pipefail
+          ! grep --line-number -E 'execute_game\(|run_matchup\(|shuffle\(|reveal_for_authorized_execution\(|secrets\.|random\.'             izzet-science/sim/phase33_position1_authorization.py             izzet-science/sim/validate_v09_phase33_position1_authorization.py
+      - name: Emit qualification manifest
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/phase33-artifact
+          cp /tmp/phase33.txt /tmp/phase33-artifact/validation.txt
+          {
+            echo "schema=izzet-v09-phase33-position1-authorization-v1"
+            echo "source_sha=${GITHUB_SHA}"
+            echo "authorized_position=1"
+            echo "positions_2_12_authorized=0"
+            echo "experimental_seeds_generated=12"
+            echo "experimental_seeds_consumed=0"
+            echo "games_initialized=0"
+            echo "outcome_exposure=0"
+            sha256sum izzet-science/v09-phase33-position1-execution-authorization-gate.md
+            sha256sum izzet-science/sim/phase33_position1_authorization.py
+            sha256sum izzet-science/sim/validate_v09_phase33_position1_authorization.py
+            sha256sum /tmp/phase33-artifact/validation.txt
+          } > /tmp/phase33-artifact/manifest.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: izzet-v09-phase33-position1-authorization
+          path: /tmp/phase33-artifact
+          if-no-files-found: error
