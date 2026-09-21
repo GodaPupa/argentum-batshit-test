@@ -56,3 +56,6 @@ or illegal actions. The minimal two-seed, eight-game paired capability pilot the
 Control went 2-2, Pactdoll-A went 1-3, and Boros went 5-3 overall. Both capability floors passed,
 but Control's one-win lead closes Boros sampling under the predeclared rule. No replication,
 promotion, or postboard work is authorized; the frozen v1.0 Control remains unchanged.
+Gate 6 now begins with the exact sourced Carlos Dc Grixis Affinity 75. Its six-card implementation
+gap and fail-closed admission criteria are frozen, but no seed namespace or gameplay run is
+authorized until card, policy, and deterministic-smoke readiness all pass.

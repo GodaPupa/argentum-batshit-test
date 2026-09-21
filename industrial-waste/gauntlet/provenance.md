@@ -37,3 +37,19 @@ candidate in the event's published Top 16. Boros also adds a distinct recursive 
 prevention axis. It is therefore selected for the next readiness gate, not admitted to the executable
 gauntlet yet. `protocols/gate-5-boros-aggro-readiness-v1.md` records the comparison and the no-seed
 admission criteria.
+
+## Third opponent selection
+
+Research updated 2026-09-21 after the valid Boros capability pilot closed without replication.
+Carlos Dc's Top 8 Grixis Affinity list from the same event is preserved exactly in
+`grixis-affinity-carlos-dc-2026-09-12.dck` from:
+
+- https://www.mtgtop8.com/event?d=889936&e=90850&f=PAU
+- Event index and field size: https://www.mtgtop8.com/event?e=90850&f=PAU
+
+Grixis Affinity, UR Control, and Mono-Black Aggro tied at six absent distinct maindeck cards in the
+Gate 5 audit. Grixis wins the cost/coverage tie because its missing package maps more narrowly to
+existing primitives, it has the stronger finish than Mono-Black Aggro, and its artifact-affinity,
+sacrifice, discard, reach, and graveyard-interaction plan adds more direct coverage of Industrial
+Waste's resilience than another speed opponent. It is selected for readiness only; no experimental
+seed or gameplay run is authorized.
