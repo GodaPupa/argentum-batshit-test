@@ -71,6 +71,10 @@ def validate_project(root: Path) -> None:
             Counter({"Blood Fountain": 2}),
             Counter({"Giant's Boulder": 2}),
         ),
+        "tempo-a.dck": (
+            Counter({"Ancient Grudge": 2}),
+            Counter({"Giant's Boulder": 2}),
+        ),
     }
     for name, (additions, removals) in expected_changes.items():
         main, side = parse_deck(root / "challengers" / name)
