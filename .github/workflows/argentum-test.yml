@@ -1,49 +1,87 @@
-name: Argentum Validation
+name: Izzet Phase 24 Real Opponent Identity Validation
 
 on:
-  workflow_dispatch:
   push:
-    branches: [ "main" ]
+    branches: [ "mayhem/izzet-science" ]
 
 permissions:
   contents: read
 
 jobs:
-  test:
+  validate:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 10
 
     steps:
-      - name: Checkout repository
+      - name: Checkout frozen semantic source
         uses: actions/checkout@v4
-
-      - name: Set up Java 21
-        uses: actions/setup-java@v4
         with:
-          distribution: temurin
-          java-version: '21'
+          ref: bd7699847a662899e8024ed55f55f2b861eda531
+          persist-credentials: false
 
-      - name: Set up Gradle
-        uses: gradle/actions/setup-gradle@v4
-        with:
-          gradle-version: '9.6.1'
-
-      - name: Make Gradle wrapper executable
-        run: chmod +x gradlew
-
-      - name: Show environment
+      - name: Verify frozen identities
+        shell: bash
         run: |
-          java -version
-          gradle --version
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "bd7699847a662899e8024ed55f55f2b861eda531"
+          test "$(git rev-parse HEAD^{tree})" = "95bccc0a25c96ec2dd6ac86a3e454f6e1db4d905"
+          echo "726f5e9458b46dda30b33a6ce9f3c3237b25d6e11b81dac85308c3065c108a01  izzet-science/v0.7-control.md" | sha256sum --check --strict
+          echo "c3ab6ee8e37a78219e7bbb7c6a75c634d78c1eb4965ab0db3abd5d853398b0be  izzet-science/opponents/veteran-beastrider-commander-clash-2025.txt" | sha256sum --check --strict
+          echo "ecde45fcafc4f09ce7e69398ab0787979a6e0d84b4dba83f067a2153176dc0ff  izzet-science/opponents/veteran-beastrider-commander-clash-2025.identity.json" | sha256sum --check --strict
+          echo "673b0c07959937a549823b8a410cdc764649e40e6f8237060b3eca12c4c08261  izzet-science/sim/capture_v09_phase24_veteran_beastrider.py" | sha256sum --check --strict
+          echo "a4d768af9da73420b805065b34a66247b45f96388359563449cdf8bd670bcd22  izzet-science/sim/validate_v09_phase24_veteran_beastrider_identity.py" | sha256sum --check --strict
+          echo "5bef023ec3c24d7cb08afeaec20424ab77fd71a0c209f83a7e2fb2022115bbd5  izzet-science/v09-phase24-real-opponent-identity-gate.md" | sha256sum --check --strict
 
-      - name: Compile Argentum
-        run: ./gradlew classes --stacktrace
+      - name: Run frozen and live-replay validation
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p phase24-artifact
+          python3 izzet-science/sim/validate_v09_capsize_fixture_action_generator.py | tee phase24-artifact/phase23-validation.txt
+          python3 izzet-science/sim/validate_v09_phase24_veteran_beastrider_identity.py | tee phase24-artifact/phase24-offline-validation.txt
+          python3 izzet-science/sim/capture_v09_phase24_veteran_beastrider.py > phase24-artifact/phase24-live-replay.json
+          python3 izzet-science/sim/validate_v09_phase24_veteran_beastrider_identity.py \
+            --online-replay phase24-artifact/phase24-live-replay.json | tee phase24-artifact/phase24-online-validation.txt
+          grep -Fx "source_standing=1st" phase24-artifact/phase24-online-validation.txt
+          grep -Fx "current_mainboard_pdh_legal=99/99" phase24-artifact/phase24-online-validation.txt
+          grep -Fx "online_replay_verified=1" phase24-artifact/phase24-online-validation.txt
+          grep -Fx "experimental_seeds_consumed=0" phase24-artifact/phase24-online-validation.txt
+          grep -Fx "pilot_authorized=0" phase24-artifact/phase24-online-validation.txt
+          grep -Fx "outcome_claims=0" phase24-artifact/phase24-online-validation.txt
+          grep -Fx "disposition=V09_PHASE24_IDENTITY_VALIDATED" phase24-artifact/phase24-online-validation.txt
+          cp izzet-science/opponents/veteran-beastrider-commander-clash-2025.txt phase24-artifact/frozen-list.txt
+          cp izzet-science/opponents/veteran-beastrider-commander-clash-2025.identity.json phase24-artifact/frozen-identity.json
+          cp izzet-science/v09-phase24-real-opponent-identity-gate.md phase24-artifact/gate.md
 
-      - name: Run engine tests
-        run: ./gradlew test --stacktrace
+      - name: Build provenance manifest
+        shell: bash
+        run: |
+          set -euo pipefail
+          {
+            echo "schema=izzet-v09-phase24-validation-artifact-v1"
+            echo "source_sha=$(git rev-parse HEAD)"
+            echo "source_tree=$(git rev-parse HEAD^{tree})"
+            echo "workflow_runner_sha=${GITHUB_SHA}"
+            echo "control_sha256=726f5e9458b46dda30b33a6ce9f3c3237b25d6e11b81dac85308c3065c108a01"
+            echo "opponent_identity=veteran-beastrider-commander-clash-2025-v1"
+            echo "source_standing=1st"
+            echo "mainboard_pdh_legal=99/99"
+            echo "experimental_seeds_assigned=0"
+            echo "experimental_seeds_consumed=0"
+            echo "outcome_claims=0"
+          } > phase24-artifact/manifest.txt
+          sha256sum phase24-artifact/phase23-validation.txt \
+            phase24-artifact/phase24-offline-validation.txt \
+            phase24-artifact/phase24-live-replay.json \
+            phase24-artifact/phase24-online-validation.txt \
+            phase24-artifact/frozen-list.txt \
+            phase24-artifact/frozen-identity.json \
+            phase24-artifact/gate.md >> phase24-artifact/manifest.txt
 
-      - name: Run Gym tests
-        run: ./gradlew :gym:test --stacktrace
-
-      - name: Run Gym trainer tests
-        run: ./gradlew :gym-trainer:test --stacktrace
+      - name: Upload validation artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: izzet-v09-phase24-real-opponent-identity
+          path: phase24-artifact/
+          if-no-files-found: error
+          retention-days: 30
