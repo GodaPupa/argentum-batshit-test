@@ -19,12 +19,19 @@ on:
       - mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/mbs/cards/IchorWellspring.kt
       - mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/som/cards/GolemFoundry.kt
       - mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/som/cards/GalvanicBlast.kt
+      - mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/som/cards/NihilSpellbomb.kt
       - mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/nph/cards/ScrapyardSalvo.kt
       - mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/GalvanicBlastScenarioTest.kt
+      - mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/NihilSpellbombScenarioTest.kt
       - mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/ScrapyardSalvoScenarioTest.kt
       - mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/neo/cards/ReckonersBargain.kt
       - mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/ReckonersBargainScenarioTest.kt
       - mtg-sets/2024/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/mh3/cards/EvisceratorsInsight.kt
+      - mtg-sets/2024/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/mh3/cards/RefurbishedFamiliar.kt
+      - mtg-sets/2024/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/RefurbishedFamiliarScenarioTest.kt
+      - mtg-sets/2026/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/tmc/TeenageMutantNinjaTurtlesEternalSet.kt
+      - mtg-sets/2026/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/tmc/cards/UtromMonitor.kt
+      - mtg-sets/2026/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/UtromMonitorScenarioTest.kt
       - mtg-sets/2000-2002/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/jud/cards/BattleScreech.kt
       - mtg-sets/2000-2002/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/jud/cards/PrismaticStrands.kt
       - mtg-sets/2000-2002/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/BattleScreechScenarioTest.kt
@@ -43,6 +50,7 @@ on:
       - mtg-sets/src/test/resources/snapshots/cards/NPH.json
       - mtg-sets/src/test/resources/snapshots/cards/NEO.json
       - mtg-sets/src/test/resources/snapshots/cards/ULG.json
+      - mtg-sets/src/test/resources/snapshots/cards/TMC.json
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -90,10 +98,13 @@ jobs:
             :mtg-sets:1993-1999:compileKotlin \
             :mtg-sets:2000-2002:tests:test --tests "*BattleScreechScenarioTest" --tests "*PrismaticStrandsScenarioTest" \
             :mtg-sets:2008-2016:compileKotlin \
-            :mtg-sets:2008-2016:tests:test --tests "*GalvanicBlastScenarioTest" --tests "*ScrapyardSalvoScenarioTest" \
+            :mtg-sets:2008-2016:tests:test --tests "*GalvanicBlastScenarioTest" --tests "*NihilSpellbombScenarioTest" --tests "*ScrapyardSalvoScenarioTest" \
             :mtg-sets:2017-2022:compileKotlin \
             :mtg-sets:2017-2022:tests:test --tests "*ReckonersBargainScenarioTest" \
             :mtg-sets:2024:compileKotlin \
+            :mtg-sets:2024:tests:test --tests "*RefurbishedFamiliarScenarioTest" \
+            :mtg-sets:2026:compileKotlin \
+            :mtg-sets:2026:tests:test --tests "*UtromMonitorScenarioTest" \
             :mtg-sets:test --tests "*CardDefinitionSnapshotTest" \
             2>&1 | tee industrial-waste-card-build.log
 
@@ -110,6 +121,9 @@ jobs:
           just check-card-printing "Galvanic Blast"
           just check-card-printing "Reckoner's Bargain"
           just check-card-printing "Scrapyard Salvo"
+          just check-card-printing "Nihil Spellbomb"
+          just check-card-printing "Refurbished Familiar"
+          just check-card-printing "Utrom Monitor"
 
       - name: Run Assay differential checks
         run: |
@@ -123,6 +137,7 @@ jobs:
             just assay-differential --set MBS
             just assay-differential --set JUD
             just assay-differential --set STX
+            just assay-differential --set TMC
           } 2>&1 | tee industrial-waste-assay-differential.log
 
       - name: Upload validation evidence
