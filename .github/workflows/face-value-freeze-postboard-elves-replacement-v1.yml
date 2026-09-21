@@ -4,7 +4,7 @@ on:
   push:
     branches: [face-value/lab]
     paths:
-      - .github/workflows/face-value-freeze-elves-postboard-elves-replacement-v1.yml
+      - .github/workflows/face-value-freeze-postboard-elves-replacement-v1.yml
   workflow_dispatch:
 
 permissions:
@@ -70,10 +70,8 @@ jobs:
                   'postboard_authority':True,
                   'preboard_acceptance_commit':'a26a572789a9d548811beca4f43404d753bbfe57',
                   'frozen_postboard_map':'postboard-map-v2.json',
-                  'replaces_quarantined_blocks':[
-                      'preboard-stage1b run 35537193920 elves only',
-                      'preboard-elves-replacement-v1 run 35572397418',
-                      'preboard-elves-replacement-v2 run 35576397752'
+                  'replaces_quarantined_postboard_blocks':['
+                      'postboard-stage1 run 35543054441 elves only'
                   ]
               },
               'generation':{
@@ -94,14 +92,14 @@ jobs:
           assert sum(r['face_value_seat']==2 for r in rows)==16
           for s in seeds:
               assert str(s) not in corpus, s
-          print('V2_VECTOR_GENERATION_AND_COLLISION_AUDIT_GREEN')
+          print('POSTBOARD_V1_VECTOR_GENERATION_AND_COLLISION_AUDIT_GREEN')
           PY
 
           cd experiments/face-value/qualification
           sha256sum postboard-elves-replacement-v1-seed-registry.json > postboard-elves-replacement-v1-seed-registry.sha256
           sha256sum -c postboard-elves-replacement-v1-seed-registry.sha256
 
-      - name: Commit frozen V2 vector and digest
+      - name: Commit frozen postboard V1 vector and digest
         run: |
           set -euo pipefail
           git config user.name github-actions[bot]
