@@ -61,4 +61,10 @@ own runner SHA, repeats the seed-free preflight, audits the sampled output, writ
 the required manifest, and fails if artifact upload is empty. After the sole run is
 audited, the ordinary workflow must be restored byte-for-byte from `origin/main`.
 
-Disposition: `V09_PHASE4_PILOT_ARMED_UNEXECUTED`
+Disposition: `V09_PHASE4_PILOT_ACCEPTED`
+
+The sole pilot completed as GitHub Actions run `35546197942` / #184, attempt 1,
+on workflow runner `2163ab35ad74436ed0c14aa99ffd6a1235fbfd08`. Every step and
+the independent downloaded-artifact audit passed. See
+`v09-phase4-tutor-opportunity-baseline-accepted.md`. Seed `0x1A22E700F` is consumed;
+no rerun or replacement execution is authorized.

@@ -109,7 +109,8 @@ equivalence and aggregate invariants passed with zero samples or seeds. No sampl
 pilot or fresh seed is yet authorized.
 
 Phase 4 freezes a single 10,000-game control-only pilot contract for both readiness
-and passive tutor-opportunity telemetry. Fresh seed `0x1A22E700F` is assigned but
-unconsumed. The new output auditor and deterministic preflight must pass before the
-pilot can be armed; no rerun or replacement execution will be allowed after outcome
-exposure.
+and passive tutor-opportunity telemetry. Run #184 passed with complete independently
+verified artifacts. At T10, payable tutor opportunity was 3.05% for Rolling Thunder,
+2.88% for Kaervek's Torch, and 24.34% for Capsize; Capsize's entire opportunity was
+primary-combo-uncontested. This remains passive evidence, not executed acquisition.
+Seed `0x1A22E700F` is consumed and no rerun is authorized. v0.7 remains the control.
