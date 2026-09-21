@@ -336,3 +336,17 @@ rejections. Its independently downloaded seven-file artifact matched GitHub's ZI
 digest and every receipt hash. Zero games ran and zero seeds were assigned or
 consumed. The adapter is accepted as methodology only, ordinary CI is restored,
 and v0.7 remains the exact card control.
+
+Phase 22 adds a deterministic public opponent action selector. It prioritizes a
+known imminent loss, public Guildmage removal, a frozen next-main plan lock, then
+tempo-only actions; stable event identity breaks equal-priority ties. It passes when
+no action exists and rejects illegal, hidden-information-dependent, duplicate, or
+mixed-window candidate sets. The selector never receives the Izzet hand and makes
+no claim that its conservative priority is strategically optimal.
+
+Phase 22 run `35560189696` passed the complete adjacent semantic chain, all 24
+four-action permutations, 96 exhaustive public action states, and twelve malformed
+or contaminated inputs. Its independently downloaded eight-file artifact matched
+GitHub's ZIP digest and every receipt hash. Zero games ran and zero seeds were
+assigned or consumed. The selector is accepted as methodology only, ordinary CI is
+restored, and v0.7 remains the exact card control.
