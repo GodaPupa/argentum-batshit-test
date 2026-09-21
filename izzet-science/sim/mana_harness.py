@@ -773,32 +773,22 @@ def source_options(state):
     return opts
 
 def pay_colored_mutating(state,generic=0,need_u=0,need_r=0):
-    opts=source_options(state)
-    # Small early-game source sets: brute force subsets and color assignments conservatively.
-    import itertools
-    for k in range(1,len(opts)+1):
-        for subset in itertools.combinations(opts,k):
-            total=sum(v for _,v,_ in subset)
-            if total < generic+need_u+need_r: continue
-            color_sources=[cs for _,_,cs in subset]
-            import itertools as _it
-            ok=False
-            modes=[]
-            for cs in color_sources:
-                if "UR" in cs: modes.append(((1,1),))
-                else:
-                    source_modes=[]
-                    if "U" in cs: source_modes.append((1,0))
-                    if "R" in cs: source_modes.append((0,1))
-                    if not source_modes: source_modes.append((0,0))
-                    modes.append(tuple(source_modes))
-            for assignment in _it.product(*modes):
-                if sum(u for u,_ in assignment)>=need_u and sum(r for _,r in assignment)>=need_r:
-                    ok=True; break
-            if not ok: continue
-            for p,_,_ in subset: p["tapped"]=True
-            return True
-    return generic+need_u+need_r==0
+    if any(isinstance(value,bool) or not isinstance(value,int) or value<0
+           for value in (generic,need_u,need_r)):
+        return False
+    if generic+need_u+need_r==0:
+        return True
+    witnesses=_ready_mana_activation_states(state)
+    payable=[]
+    for (u,r,c),activated in witnesses.items():
+        if u>=need_u and r>=need_r and u+r+c-need_u-need_r>=generic:
+            payable.append((len(activated),activated,(u,r,c)))
+    if not payable:
+        return False
+    _,activated,_=min(payable)
+    for index in activated:
+        state.battlefield[index]["tapped"]=True
+    return True
 
 def colored_payment_regressions():
     s=DevState([]); s.turn=3
@@ -1068,75 +1058,84 @@ def primary_combo_launch_with_protection_feasible(state, protection_card, threat
     return can_pay_simple(state,generic=launch_generic+protect_generic,
                           need_u=protect_u,need_r=launch_red+protect_r)
 
-def ready_mana_pool_states(state):
-    """Enumerate exact ready U/R/C pools, including fixed Boilerworks and Signet conversion."""
+def _prefer_activation(states,pool,activated):
+    """Keep one deterministic minimum-permanent witness for a mana pool."""
+    current=states.get(pool)
+    if current is None or (len(activated),activated)<(len(current),current):
+        states[pool]=activated
+
+def _ready_mana_activation_states(state):
+    """Map exact ready U/R/C pools to deterministic tapped-permanent witnesses."""
     source_modes=[]
     basics={basic_land_kind(p["card"]) for p in state.lands() if basic_land_kind(p["card"])}
-    for p in state.battlefield:
+    lenses=[]; signets=[]
+    for index,p in enumerate(state.battlefield):
         if p.get("tapped",False): continue
         card=p["card"]
-        if card=="Izzet Signet": continue
-        if card=="Izzet Boilerworks": source_modes.append(((1,1,0),)); continue
+        if card=="Izzet Signet": signets.append(index); continue
+        if card=="Prismatic Lens": lenses.append(index); continue
+        if card=="Izzet Boilerworks": source_modes.append((index,((1,1,0),))); continue
         colors=land_colors(card,basics)
         if colors:
             modes=[]
             if "U" in colors: modes.append((1,0,0))
             if "R" in colors: modes.append((0,1,0))
             if "C" in colors: modes.append((0,0,1))
-            if modes: source_modes.append(tuple(modes))
+            if modes: source_modes.append((index,tuple(modes)))
             continue
         if card=="Everflowing Chalice" and p.get("kicks",0)>0:
-            source_modes.append(((0,0,p["kicks"]),))
+            source_modes.append((index,((0,0,p["kicks"]),)))
         elif card in {"Mind Stone","Fellwar Stone"}:
-            source_modes.append(((0,0,1),))
-        elif card=="Prismatic Lens":
-            # Lens is handled below: tapping for C adds one mana, while filtering
-            # recolors one mana from another source without increasing the total.
-            continue
+            source_modes.append((index,((0,0,1),)))
         elif card=="Star Compass":
             modes=[]
             if "Island" in basics: modes.append((1,0,0))
             if "Mountain" in basics: modes.append((0,1,0))
-            if modes: source_modes.append(tuple(modes))
+            if modes: source_modes.append((index,tuple(modes)))
         elif card in {"Sky Diamond","Silver Myr"} and (card not in MANA_CREATURES or creature_mana_ready(card,p["entered"],state.turn)):
-            source_modes.append(((1,0,0),))
+            source_modes.append((index,((1,0,0),)))
         elif card in {"Fire Diamond","Iron Myr"} and (card not in MANA_CREATURES or creature_mana_ready(card,p["entered"],state.turn)):
-            source_modes.append(((0,1,0),))
+            source_modes.append((index,((0,1,0),)))
         elif card in {"Network Terminal","Ornithopter of Paradise"} and (card not in MANA_CREATURES or creature_mana_ready(card,p["entered"],state.turn)):
-            source_modes.append(((1,0,0),(0,1,0)))
+            source_modes.append((index,((1,0,0),(0,1,0))))
         elif card in {"Ur-Golem's Eye","Sisay's Ring"}:
-            source_modes.append(((0,0,2),))
+            source_modes.append((index,((0,0,2),)))
 
-    pools={(0,0,0)}
-    for modes in source_modes:
-        pools={(u+du,r+dr,c+dc) for u,r,c in pools for du,dr,dc in modes}
+    states={(0,0,0):()}
+    for index,modes in source_modes:
+        expanded=dict(states)
+        for (u,r,c),activated in states.items():
+            for du,dr,dc in modes:
+                _prefer_activation(expanded,(u+du,r+dr,c+dc),activated+(index,))
+        states=expanded
 
-    lenses=sum(p["card"]=="Prismatic Lens" and not p.get("tapped",False)
-               for p in state.battlefield)
-    for _ in range(lenses):
-        expanded=set()
-        for u,r,c in pools:
-            expanded.add((u,r,c+1))
+    for index in lenses:
+        expanded=dict(states)
+        for (u,r,c),activated in states.items():
+            witness=activated+(index,)
+            _prefer_activation(expanded,(u,r,c+1),witness)
             if u:
-                expanded.add((u-1,r+1,c))
-                expanded.add((u,r,c))
+                _prefer_activation(expanded,(u-1,r+1,c),witness)
             if r:
-                expanded.add((u+1,r-1,c))
-                expanded.add((u,r,c))
+                _prefer_activation(expanded,(u+1,r-1,c),witness)
             if c:
-                expanded.add((u+1,r,c-1))
-                expanded.add((u,r+1,c-1))
-        pools=expanded
+                _prefer_activation(expanded,(u+1,r,c-1),witness)
+                _prefer_activation(expanded,(u,r+1,c-1),witness)
+        states=expanded
 
-    signets=sum(p["card"]=="Izzet Signet" and not p.get("tapped",False) for p in state.battlefield)
-    for _ in range(signets):
-        expanded=set(pools)
-        for u,r,c in pools:
-            if u: expanded.add((u,r+1,c))       # spend U; add UR
-            if r: expanded.add((u+1,r,c))       # spend R; add UR
-            if c: expanded.add((u+1,r+1,c-1))   # spend C; add UR
-        pools=expanded
-    return pools
+    for index in signets:
+        expanded=dict(states)
+        for (u,r,c),activated in states.items():
+            witness=activated+(index,)
+            if u: _prefer_activation(expanded,(u,r+1,c),witness)
+            if r: _prefer_activation(expanded,(u+1,r,c),witness)
+            if c: _prefer_activation(expanded,(u+1,r+1,c-1),witness)
+        states=expanded
+    return states
+
+def ready_mana_pool_states(state):
+    """Enumerate exact ready U/R/C pools from the shared activation engine."""
+    return set(_ready_mana_activation_states(state))
 
 def ready_payment_feasible_exact(state,generic=0,need_u=0,need_r=0):
     for u,r,c in ready_mana_pool_states(state):
@@ -1582,6 +1581,34 @@ def capsize_tutor_policy_regressions():
     assert "Merchant Scroll" not in execute.hand and "Capsize" in execute.hand
     assert len(after_library)==len(before_library)-1 and "Capsize" not in after_library
     assert sum(p["tapped"] for p in execute.lands())==2
+
+    # Selector and executor share exact witnesses for the three source classes
+    # that the retired Phase-9 payer could select but could not mutate.
+    fixtures=(
+        ("signet",[
+            {"card":"Island","tapped":False,"entered":1},
+            {"card":"Izzet Signet","tapped":False,"entered":2},
+        ]),
+        ("lens",[
+            {"card":"Mountain","tapped":False,"entered":1},
+            {"card":"Mountain","tapped":False,"entered":2},
+            {"card":"Prismatic Lens","tapped":False,"entered":2},
+        ]),
+        ("compass",[
+            {"card":"Island","tapped":False,"entered":1},
+            {"card":"Star Compass","tapped":False,"entered":2},
+        ]),
+    )
+    for name,battlefield in fixtures:
+        witness=DevState(["Lava Spike","Desperate Ritual","Merchant Scroll"])
+        witness.turn=4; witness.battlefield=battlefield
+        assert ready_payment_feasible_exact(witness,generic=1,need_u=1),name
+        assert choose_capsize_tutor(witness,["Capsize","Mountain"])=="Merchant Scroll",name
+        card,target,remaining=execute_capsize_tutor_policy(
+            witness,["Capsize","Mountain"],_r.Random(7))
+        assert (card,target)==("Merchant Scroll","Capsize"),name
+        assert remaining==["Mountain"] and "Capsize" in witness.hand,name
+        assert all(p["tapped"] for p in battlefield),name
 
     # A failed declared execution is transactionally inert.
     inert=DevState(["Merchant Scroll"]); inert.turn=3

@@ -155,3 +155,13 @@ Seed `0x00000001A22E7010` is consumed and permanently retired; no rerun, replace
 pooling, outcome claim, or promotion is allowed. The temporary workflow was removed,
 the ordinary workflow restored, and v0.7 remains the accepted control. A future
 pilot requires a seed-free unified-payment gate and a fresh frozen identity.
+
+Phase 10 completes the seed-free payment recovery. Feasibility and mutating payment
+now share one exact activation-state engine with deterministic tap witnesses.
+End-to-end fixtures prove successful Capsize acquisition through Izzet Signet,
+Prismatic Lens filtering, and Star Compass color production—the three source classes
+the retired Phase-9 executor could mishandle. The failed runner now exits before
+argument parsing or iterator construction, preventing accidental reuse of its
+consumed seed. Adjacent seed-free semantic controls pass with zero sampled games or
+consumed seeds. No pilot is yet authorized, no policy or card is promoted, and v0.7
+remains the accepted control.

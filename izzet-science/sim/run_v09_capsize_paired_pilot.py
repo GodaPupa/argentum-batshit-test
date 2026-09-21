@@ -16,9 +16,14 @@ CONTROL_SHA256="726f5e9458b46dda30b33a6ce9f3c3237b25d6e11b81dac85308c3065c108a01
 MASTER_SEED=0x1A22E7010
 SAMPLES=10000
 THROUGH=10
+RETIRED=True
+RETIRED_REASON=("Phase-9 seed 0x00000001A22E7010 is consumed; "
+                "the failed pilot is permanently inadmissible and may not be rerun")
 
 
 def main() -> None:
+    if RETIRED:
+        raise SystemExit(RETIRED_REASON)
     parser=argparse.ArgumentParser()
     parser.add_argument("--deck",type=Path,default=Path("izzet-science/v0.7-control.md"))
     parser.add_argument("--source-sha",required=True)
