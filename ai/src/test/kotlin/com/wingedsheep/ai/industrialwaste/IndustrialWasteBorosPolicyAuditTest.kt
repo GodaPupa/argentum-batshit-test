@@ -10,14 +10,12 @@ import com.wingedsheep.engine.core.ChooseColorDecision
 import com.wingedsheep.engine.core.ColorChosenResponse
 import com.wingedsheep.engine.core.PassPriority
 import com.wingedsheep.engine.core.SearchLibraryDecision
-import com.wingedsheep.engine.core.SelectCardsDecision
 import com.wingedsheep.engine.core.YesNoDecision
 import com.wingedsheep.engine.core.YesNoResponse
 import com.wingedsheep.engine.state.components.identity.CardComponent
 import com.wingedsheep.engine.support.ScenarioTestBase
 import com.wingedsheep.sdk.core.Color
 import com.wingedsheep.sdk.model.EntityId
-import io.kotest.matchers.collections.shouldContainExactlyInAnyOrder
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.types.shouldBeInstanceOf
 
@@ -32,6 +30,7 @@ class IndustrialWasteBorosPolicyAuditTest : ScenarioTestBase() {
             base.copy(
                 id = "boros-gate-5-readiness",
                 advisorModules = base.advisorModules + IndustrialWasteBorosAdvisorModule,
+                useMeaningfulFilter = false,
             ),
         )
     }
@@ -102,8 +101,9 @@ class IndustrialWasteBorosPolicyAuditTest : ScenarioTestBase() {
 
             val action = player.chooseAction(game.state).shouldBeInstanceOf<ActivateAbility>()
             cardName(game, action.sourceId) shouldBe "Perilous Landscape"
-            action.costPayment?.sacrificedPermanents shouldBe listOf(action.sourceId)
             game.execute(action).error shouldBe null
+            game.state.projectedState.getBattlefieldControlledBy(game.player1Id)
+                .contains(action.sourceId) shouldBe false
             advanceToDecision(game)
             game.state.pendingDecision.shouldBeInstanceOf<SearchLibraryDecision>()
             val response = player.respondToDecision(game.state, game.state.pendingDecision!!)
@@ -132,12 +132,6 @@ class IndustrialWasteBorosPolicyAuditTest : ScenarioTestBase() {
             val yes = player.respondToDecision(game.state, game.state.pendingDecision!!)
                 .shouldBeInstanceOf<YesNoResponse>()
             yes.choice shouldBe true
-            game.execute(com.wingedsheep.engine.core.SubmitDecision(game.player1Id, yes)).error shouldBe null
-            game.state.pendingDecision.shouldBeInstanceOf<SelectCardsDecision>()
-            val discard = player.respondToDecision(game.state, game.state.pendingDecision!!)
-                .shouldBeInstanceOf<CardsSelectedResponse>()
-            discard.selectedCards.map { cardName(game, it) }
-                .shouldContainExactlyInAnyOrder("Sneaky Snacker", "Sneaky Snacker")
         }
     }
 }

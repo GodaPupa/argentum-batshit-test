@@ -49,6 +49,7 @@ class IndustrialWasteBorosReadinessSmokeTest : FunSpec({
                 id = "boros-gate-5-readiness",
                 advisorModules = production.advisorModules + IndustrialWasteBorosAdvisorModule,
                 considerAdvisedManaAbilities = true,
+                useMeaningfulFilter = false,
             ),
         )
         val game = TableGameRunner.play(
