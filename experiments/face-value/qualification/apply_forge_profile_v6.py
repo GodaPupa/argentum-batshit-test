@@ -6,17 +6,9 @@ from pathlib import Path
 
 PROFILE_ID = "FACE_VALUE_QUALIFICATION_FORGE_PROFILE_V6_UNDERCITY_TARGETING"
 
-OLD = """            // Undercity Arena is mandatory. Strategic reluctance cannot make
-            // a legal target disappear; choose a legal creature and resolve.
-            if ("Undercity".equals(source.getName())) {
-                List<Card> legal = CardLists.getTargetableCards(game.getCardsIn(ZoneType.Battlefield), sa);
-                if (!legal.isEmpty()) {
-                    sa.getTargets().add(ComputerUtilCard.getWorstCreatureAI(legal));
-                    return new AiAbilityDecision(100, AiPlayDecision.MandatoryPlay);
-                }
-            }
-
-            // AI does not find a good creature to goad.
+OLD = """            // AI does not find a good creature to goad.
+            // because if it would goad a creature it would attack AI.
+            // AI might not have enough information to block it
             return new AiAbilityDecision(0, AiPlayDecision.TargetingFailed);
 """
 
@@ -45,7 +37,7 @@ def main() -> None:
     path = root / "forge-ai/src/main/java/forge/ai/ability/GoadAi.java"
     text = path.read_text(encoding="utf-8")
     if text.count(OLD) != 1:
-        raise RuntimeError(f"expected exactly one strategic failure block in {path}")
+        raise RuntimeError(f"expected exactly one original strategic failure block in {path}")
     path.write_text(text.replace(OLD, NEW), encoding="utf-8")
     print(PROFILE_ID)
 
