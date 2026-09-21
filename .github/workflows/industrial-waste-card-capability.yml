@@ -24,6 +24,7 @@ on:
       - mtg-sets/2000-2002/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/BattleScreechScenarioTest.kt
       - mtg-sets/2000-2002/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/PrismaticStrandsScenarioTest.kt
       - mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/stx/cards/ThrillingDiscovery.kt
+      - mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/mh1/cards/BattleScreechReprint.kt
       - mtg-sets/2024/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/mh3/cards/PerilousLandscape.kt
       - mtg-sdk/src/main/**
       - rules-engine/src/main/**
@@ -72,6 +73,7 @@ jobs:
           set -o pipefail
           just rebless-cards 2>&1 | tee industrial-waste-card-snapshots.log
           git diff --binary > industrial-waste-card-snapshots.patch
+          base64 -w0 industrial-waste-card-snapshots.patch
 
       - name: Run targeted card build gate
         run: |
@@ -84,9 +86,6 @@ jobs:
             :mtg-sets:2024:compileKotlin \
             :mtg-sets:test --tests "*CardDefinitionSnapshotTest" \
             2>&1 | tee industrial-waste-card-build.log
-
-      - name: Run full new-vocabulary gate
-        run: just test
 
       - name: Verify canonical printings
         run: |

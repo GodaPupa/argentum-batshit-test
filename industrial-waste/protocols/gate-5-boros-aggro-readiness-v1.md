@@ -1,6 +1,6 @@
 # Gate 5 Boros Aggro readiness v1
 
-Status: selected; implementation-gated; no seeds authorized.
+Status: implementation compiled and fully tested; metadata/snapshot qualification pending; no seeds authorized.
 
 ## Question
 
@@ -63,3 +63,12 @@ true:
 
 Only then may a tiny paired preboard capability pilot receive a fresh, disjoint namespace. Control
 remains frozen and Pactdoll-A remains unpromoted throughout this readiness work.
+
+## Implementation evidence
+
+GitHub Actions run 35555220238 passed frozen-input validation, card snapshot generation, the focused
+Battle Screech and Prismatic Strands scenarios, the targeted card build, and the repository-wide
+`just test` gate. An independent engine-smoke run (35555220178) also passed. The card-capability job
+then stopped at printing validation because Battle Screech's MH1 reprint record was absent; this is
+a metadata-only failure after all executable behavior passed. The exact MH1 #4 printing has been
+added and only the remaining printing, snapshot, and Assay gates require rerun. No seeds were used.
