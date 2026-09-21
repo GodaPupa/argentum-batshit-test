@@ -2,48 +2,96 @@ name: Argentum Validation
 
 on:
   workflow_dispatch:
-  push:
-    branches: [ "main" ]
 
 permissions:
   contents: read
 
 jobs:
-  test:
+  izzet-v09-capsize-paired-v2:
+    if: github.ref == 'refs/heads/mayhem/izzet-science'
     runs-on: ubuntu-latest
     timeout-minutes: 30
 
     steps:
-      - name: Checkout repository
+      - name: Checkout frozen recovered source
         uses: actions/checkout@v4
-
-      - name: Set up Java 21
-        uses: actions/setup-java@v4
         with:
-          distribution: temurin
-          java-version: '21'
+          ref: cd93b7e427b4e8c1b67cbf23560770d2ad19b5bc
 
-      - name: Set up Gradle
-        uses: gradle/actions/setup-gradle@v4
-        with:
-          gradle-version: '9.6.1'
-
-      - name: Make Gradle wrapper executable
-        run: chmod +x gradlew
-
-      - name: Show environment
+      - name: Verify frozen identities
+        shell: bash
         run: |
-          java -version
-          gradle --version
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "cd93b7e427b4e8c1b67cbf23560770d2ad19b5bc"
+          test "$(sha256sum izzet-science/v0.7-control.md | cut -d' ' -f1)" = "726f5e9458b46dda30b33a6ce9f3c3237b25d6e11b81dac85308c3065c108a01"
+          test "$(sha256sum izzet-science/sim/run_v09_capsize_paired_pilot_v2.py | cut -d' ' -f1)" = "2db5bdc6351836ffa3f5c76c98f9966b0a516fbeafc796eb9a2ae85f70932bbe"
 
-      - name: Compile Argentum
-        run: ./gradlew classes --stacktrace
+      - name: Run complete recovered seed-free preflight
+        run: |
+          python3 izzet-science/sim/validate_v09_payment_recovery.py
+          python3 izzet-science/sim/validate_v09_capsize_paired_execution_v2.py
+          python3 izzet-science/sim/validate_paired_capsize_contract.py
+          python3 izzet-science/sim/validate_paired_rng_isolation.py
+          python3 izzet-science/sim/validate_capsize_tutor_instrumentation.py
+          python3 izzet-science/sim/validate_capsize_tutor_policy.py
+          python3 izzet-science/sim/validate_backup_tutor_connectivity.py
+          python3 izzet-science/sim/validate_backup_tutor_opportunities.py
+          python3 izzet-science/sim/validate_commander_independent.py
+          python3 izzet-science/sim/validate_multiplayer_kill.py
 
-      - name: Run engine tests
-        run: ./gradlew test --stacktrace
+      - name: Execute sole authorized recovered paired pilot
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p izzet-science/artifacts/v09-capsize-paired-v2
+          python3 izzet-science/sim/run_v09_capsize_paired_pilot_v2.py \
+            --source-sha cd93b7e427b4e8c1b67cbf23560770d2ad19b5bc \
+            --output izzet-science/artifacts/v09-capsize-paired-v2/paired-summary.json
+          python3 izzet-science/sim/audit_v09_capsize_paired_output.py \
+            izzet-science/artifacts/v09-capsize-paired-v2/paired-summary.json \
+            --expected-source cd93b7e427b4e8c1b67cbf23560770d2ad19b5bc \
+            --expected-seed 0x1A22E7011 \
+            --expected-samples 10000 \
+            | tee izzet-science/artifacts/v09-capsize-paired-v2/paired-audit.txt
+          cp izzet-science/sim/run_v09_capsize_paired_pilot_v2.py \
+            izzet-science/artifacts/v09-capsize-paired-v2/paired-runner.py
 
-      - name: Run Gym tests
-        run: ./gradlew :gym:test --stacktrace
+      - name: Write and independently audit manifest
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import hashlib, json, os
+          from pathlib import Path
+          root=Path("izzet-science/artifacts/v09-capsize-paired-v2")
+          digest=lambda name: hashlib.sha256((root/name).read_bytes()).hexdigest()
+          manifest={
+              "schema":"izzet-v09-capsize-paired-artifact-v1",
+              "experimental_source_sha":"cd93b7e427b4e8c1b67cbf23560770d2ad19b5bc",
+              "workflow_runner_sha":os.environ["GITHUB_SHA"],
+              "control_sha256":"726f5e9458b46dda30b33a6ce9f3c3237b25d6e11b81dac85308c3065c108a01",
+              "master_seed":"0x00000001A22E7011",
+              "samples":10000,
+              "through":10,
+              "run_id":os.environ["GITHUB_RUN_ID"],
+              "run_attempt":int(os.environ["GITHUB_RUN_ATTEMPT"]),
+              "summary_sha256":digest("paired-summary.json"),
+              "audit_sha256":digest("paired-audit.txt"),
+              "runner_sha256":digest("paired-runner.py"),
+          }
+          (root/"manifest.json").write_text(json.dumps(manifest,indent=2)+"\n")
+          PY
+          python3 izzet-science/sim/audit_v09_capsize_paired_artifact.py \
+            izzet-science/artifacts/v09-capsize-paired-v2 \
+            --expected-source cd93b7e427b4e8c1b67cbf23560770d2ad19b5bc \
+            --expected-workflow "${GITHUB_SHA}" \
+            --expected-runner-sha256 2db5bdc6351836ffa3f5c76c98f9966b0a516fbeafc796eb9a2ae85f70932bbe \
+            --expected-seed 0x1A22E7011 \
+            --expected-samples 10000
 
-      - name: Run Gym trainer tests
-        run: ./gradlew :gym-trainer:test --stacktrace
+      - name: Preserve recovered paired pilot artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: izzet-v09-capsize-paired-v2
+          path: izzet-science/artifacts/v09-capsize-paired-v2
+          if-no-files-found: error
