@@ -1,6 +1,6 @@
 # Gate 4 Madness Burn production-profile fresh screen v1
 
-Status: frozen; unexecuted.
+Status: completed; valid; directional replication gate passed.
 
 ## Question
 
@@ -42,3 +42,19 @@ cannot promote a deck or authorize postboard work by itself.
 
 Tron by turn 5, combo-ready incidence, mulligans, and colored-mana failures remain diagnostic
 secondary metrics; they cannot override the win gate.
+
+## Result
+
+GitHub Actions run 35552681373 completed all eight one-seed jobs successfully. The canonical merge
+contains exactly 32 unique `(deck, pair, seat)` keys, all eight registered pairs, zero exceptions,
+zero rejected actions, and no draws.
+
+Control went 2-14 and Pactdoll-A went 4-12. Burn therefore cleared the pressure floor against both
+lists. Pactdoll-A's +2-win gap exactly met the directional threshold: three paired outcomes were
+Pactdoll-A-only wins, one was a Control-only win, one was a shared win, and eleven were shared
+losses. Both lists reached Tron by turn 5 once and neither recorded a combo-ready state. Pactdoll-A
+also had fewer mean colored-mana-failure turns (1.56 versus 2.44); that is supporting diagnostic
+evidence, not an independent promotion criterion.
+
+Decision: authorize exactly one fresh production-profile Madness Burn replication. Pactdoll-A is
+not promoted, and postboard work remains blocked.

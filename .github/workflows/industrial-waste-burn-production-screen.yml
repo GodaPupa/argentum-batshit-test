@@ -2,13 +2,6 @@ name: Industrial Waste — Burn Production Screen
 
 on:
   workflow_dispatch:
-  push:
-    branches: [industrial-waste/lab]
-    paths:
-      - ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteMatchupPilotBenchmark.kt
-      - industrial-waste/seed-registry.json
-      - industrial-waste/protocols/gate-4-madness-burn-production-screen-v1.md
-      - .github/workflows/industrial-waste-burn-production-screen.yml
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}

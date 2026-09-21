@@ -42,5 +42,7 @@ Pactdoll-A remains the only surviving challenger, but it is not promoted. The or
 pilot and replication rates remain quarantined because frozen v0 misses lethal Fireblast. An exact
 spent-seed replay changing only Burn to `PRODUCTION_CANDIDATE_EXPIRING` produced 14 Burn wins in 16
 games against each Industrial list and changed 22/32 results, passing the opponent-policy
-calibration. Exactly one fresh preboard Burn namespace is now authorized; no postboard work or deck
-promotion is authorized. The frozen Control remains the experimental baseline.
+calibration. The authorized fresh screen then completed 2-14 for Control and 4-12 for Pactdoll-A,
+meeting the predeclared +2-win directional threshold and authorizing one fresh replication. No
+postboard work or deck promotion is authorized. The frozen Control remains the experimental
+baseline and Pactdoll-A remains unpromoted.

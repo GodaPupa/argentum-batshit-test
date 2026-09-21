@@ -219,3 +219,19 @@ evidence and not a matchup-rate estimate.
 Decision: calibration passes and authorizes exactly one fresh Burn namespace under the production
 opponent profile. It does not promote Pactdoll-A, unquarantine the old v0 win rates, or authorize
 postboard work. Industrial Waste v1.0 Control remains frozen.
+
+## Gate 4 Madness Burn production-profile fresh screen
+
+Run 35552681373 completed eight clean one-seed jobs on fresh namespace
+`IW-G4-MADNESS-BURN-PROD-S1`. The merged artifact contains all 32 expected game keys exactly once,
+with zero exceptions, rejected actions, or draws. No fallback, reroll, or replacement seed was used.
+
+Control went 2-14; Pactdoll-A went 4-12. Burn cleared the predeclared four-win pressure floor
+against both lists. Pactdoll-A's +2-win gap exactly cleared the directional replication threshold,
+with three Pactdoll-A-only paired wins versus one Control-only paired win. Tron by turn 5 was 1/16
+for each list, neither recorded a combo-ready state, and Pactdoll-A reduced mean colored-mana-
+failure turns from 2.44 to 1.56.
+
+Decision: Pactdoll-A earns one fresh production-profile Burn replication. This is directional
+single-matchup evidence only; Control remains frozen, Pactdoll-A remains unpromoted, and postboard
+work remains unauthorized.
