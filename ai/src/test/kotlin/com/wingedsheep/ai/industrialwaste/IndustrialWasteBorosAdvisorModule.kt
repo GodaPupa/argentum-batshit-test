@@ -41,7 +41,7 @@ private object PrismaticStrandsAdvisor : CardAdvisor {
     override fun respondToDecision(context: AdvisorDecisionContext) =
         (context.decision as? ChooseColorDecision)?.let { decision ->
             val opponentColors = context.state.turnOrder
-                .filter { context.state.isOpponentTo(it, context.playerId) }
+                .filter { context.state.isOpponentOf(it, context.playerId) }
                 .flatMap { context.state.projectedState.getBattlefieldControlledBy(it) }
                 .flatMap { id -> context.state.getEntity(id)?.get<CardComponent>()?.colors.orEmpty() }
             val color = decision.availableColors.maxByOrNull { candidate ->
@@ -54,7 +54,7 @@ private object PrismaticStrandsAdvisor : CardAdvisor {
 private object PerilousLandscapeAdvisor : CardAdvisor {
     override val cardNames = setOf("Perilous Landscape")
 
-    override fun evaluateCast(context: CastContext): Double {
+    override fun evaluateCast(context: CastContext): Double? {
         val battlefieldNames = context.state.projectedState
             .getBattlefieldControlledBy(context.playerId)
             .mapNotNull(context.state::cardName)
@@ -76,7 +76,7 @@ private object PerilousLandscapeAdvisor : CardAdvisor {
 private object ThrillingDiscoveryAdvisor : CardAdvisor {
     override val cardNames = setOf("Thrilling Discovery")
 
-    override fun evaluateCast(context: CastContext): Double {
+    override fun evaluateCast(context: CastContext): Double? {
         val handSize = context.state.getZone(context.playerId, Zone.HAND).size
         return if (handSize >= 3) context.passScore + 7.0 else null
     }
