@@ -2,13 +2,6 @@ name: Industrial Waste — Burn Policy Audit
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - industrial-waste/lab
-    paths:
-      - .github/workflows/industrial-waste-burn-policy-audit.yml
-      - ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteMadnessBurnPolicyAuditTest.kt
-      - industrial-waste/protocols/gate-4-madness-burn-policy-audit-v1.md
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}

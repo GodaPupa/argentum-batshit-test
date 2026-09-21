@@ -1,6 +1,6 @@
 # Gate 4 Madness Burn policy audit v1
 
-Status: planned; seed-free deterministic diagnosis.
+Status: completed; failed opponent-policy gate.
 
 ## Question
 
@@ -18,3 +18,19 @@ The audit uses no deck shuffles and no experimental namespace. It requires v0 to
 
 Any failed fixture blocks more matchup sampling. A full pass clears the policy concern raised by the
 replication but does not retroactively change its failed gate or promote either Industrial list.
+
+## Result
+
+The focused diagnostic in GitHub Actions run 35548082721 established that frozen v0 passes priority
+instead of casting an immediately lethal Fireblast with two Mountains available. The other four
+required behaviors passed: Sneaky Snacker discard selection, Guttersnipe sequencing, Kessig
+Flamebreather sequencing, and lethal Lava Dart flashback.
+
+Run 35548397874 converted that observation into a passing regression: it preserves v0's Fireblast
+miss and independently proves that `PRODUCTION_CANDIDATE_EXPIRING` takes the same lethal alternative-
+cost line. No shuffled games or experimental seeds were used by any audit attempt.
+
+Decision: the audit fails. The Madness Burn pilot and replication remain useful only as engine
+capability records; their win rates are quarantined from matchup-strength, promotion, and sideboard
+claims. Do not sample this opponent again under v0. A future replay-only calibration may substitute
+the proven production-candidate profile symmetrically before any fresh Burn namespace is considered.

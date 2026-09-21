@@ -38,8 +38,8 @@ See `protocols/gate-1-structural-screen-v1.md` for the current gate.
 
 ## Current decision
 
-Pactdoll-A remains the only surviving challenger, but it is not promoted. A valid contemporary
-Madness Burn pilot split 4-4 for both Control and Pactdoll-A. Its fresh replication split 13-3 for
-both lists and failed the predeclared opponent-pressure gate by one opposing win. Further sampled
-matchup work is paused pending deterministic opponent-policy diagnosis; the frozen Control remains
-the experimental baseline.
+Pactdoll-A remains the only surviving challenger, but it is not promoted. A contemporary Madness
+Burn pilot split 4-4 for both lists and its fresh replication split 13-3 for both, but a seed-free
+audit proved that frozen v0 passes instead of casting lethal Fireblast. Those win rates are now
+quarantined as capability-only evidence. Further sampled matchup work is blocked until an opponent
+profile passes replay-only calibration; the frozen Control remains the experimental baseline.

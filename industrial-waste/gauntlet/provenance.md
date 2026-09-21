@@ -17,3 +17,8 @@ The same event's runner-up Mono-Blue Terror and Top 8 Grixis Affinity are reserv
 the interaction and artifact axes. They are not yet admitted because each requires several missing
 card implementations; spending that work before the one-opponent capability pilot would violate the
 project's staged cost gate.
+
+The post-pilot feasibility audit counted seven currently absent unique maindeck cards in Joan
+Rubies's runner-up Mono-Blue Terror list: Murmuring Mystic, Artful Dodge, Deem Inferior, Deep
+Analysis, Force Spike, Sleep of the Dead, and Thought Scour. That makes it strategically attractive
+but not the next cost-efficient executable opponent. No substitute list has been admitted.

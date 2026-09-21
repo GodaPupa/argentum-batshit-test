@@ -189,3 +189,16 @@ the predeclared four-win two-sided threshold, and Pactdoll-A again produced no w
 Control. Preserve both artifacts separately and return to deterministic opponent-policy diagnosis
 before spending another matchup namespace. Industrial Waste v1.0 Control remains the immutable
 baseline; no challenger is promoted.
+
+## Gate 4 Madness Burn policy audit
+
+The seed-free audit found one material frozen-v0 failure: with exactly two Mountains and Fireblast
+against an opponent at four life, v0 passes priority. It correctly executed the four other audited
+identity lines. GitHub Actions run 35548082721 supplied the conclusive failure detail; run
+35548397874 then passed a regression that records the v0 miss and confirms the production-candidate
+profile casts lethal Fireblast through its self-alternative cost.
+
+Decision: quarantine the Madness Burn pilot and replication win rates from all competitive and
+promotion claims. They remain capability artifacts only. No new seeds were spent on diagnosis, and
+no further Burn sampling is authorized under v0. Control remains frozen and Pactdoll-A remains
+unpromoted.
