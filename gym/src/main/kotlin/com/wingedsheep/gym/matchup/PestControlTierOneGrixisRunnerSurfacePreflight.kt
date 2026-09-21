@@ -56,6 +56,9 @@ object PestControlTierOneGrixisRunnerSurfacePreflight {
         if (fourCellMethods != setOf("inspect")) errors += "four-cell plan surface mismatch"
         val assignmentMethods = inventory.publicMethods["PestControlTierOneGrixisDisabledAssignmentSchema"].orEmpty()
         if (assignmentMethods != setOf("inspect")) errors += "assignment schema surface mismatch"
+        val provenanceMethods =
+            inventory.publicMethods["PestControlTierOneGrixisDisabledSyntheticProvenance"].orEmpty()
+        if (provenanceMethods != setOf("inspect")) errors += "synthetic provenance surface mismatch"
         return GrixisRunnerSurfacePreflightResult(
             errors = errors.distinct(),
             workflowFilesAudited = inventory.workflowFiles.size,
