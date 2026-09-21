@@ -29,8 +29,14 @@ def main() -> None:
         path = args.logs / f"undercity-seat{seat}-seed{seed}.log"
         text = path.read_text(encoding="utf-8", errors="replace") if path.exists() else ""
 
-        attempts = len(re.findall(r"Add To Stack: Undercity .*Goad target creature\.", text))
-        failures = len(re.findall(r"Add To Stack: Undercity .*failed to target.*Goad target creature\.", text, re.I))
+        attempts = len(re.findall(
+            r"^Add To Stack: .* triggered Undercity targeting \[[^\]]+\]$",
+            text, re.I | re.M
+        ))
+        failures = len(re.findall(
+            r"^Add To Stack: .*Undercity.*failed to target.*Goad target creature\.",
+            text, re.I | re.M
+        ))
         terminal = bool(re.search(r"^Game Result: .+(has won|Draw)", text, re.I | re.M))
 
         flags = []
@@ -80,7 +86,7 @@ def main() -> None:
         "records": records,
     }
     args.output.write_text(json.dumps(summary, indent=2, sort_keys=True) + "\n", encoding="utf-8")
-    print(json.dumps({k:v for k,v in summary.items() if k != "records"}, indent=2, sort_keys=True))
+    print(json.dumps({k: v for k, v in summary.items() if k != "records"}, indent=2, sort_keys=True))
     if not demonstrated:
         raise SystemExit(1)
 
