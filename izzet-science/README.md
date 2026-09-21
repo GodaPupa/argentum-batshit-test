@@ -231,3 +231,9 @@ target-illegal failures, explicit commander hand/command-zone branches, and the
 three recovered mana-source classes. The gate deliberately assigns no opponent
 deck, threat frequency, tempo value, survival rate, or win rate. No sample or seed
 is consumed, no card changes, and v0.7 remains the exact accepted card control.
+
+Phase 15 run `35552812250` passed all frozen identity checks, twelve interaction
+fixture groups, adjacent semantic validators, manifest construction, and artifact
+upload; ordinary CI run `35552816003` also passed. The deterministic infrastructure
+is accepted without a performance claim. Phase 16 may define fixed-event paired
+interaction estimands, but no sample or experimental seed is yet authorized.
