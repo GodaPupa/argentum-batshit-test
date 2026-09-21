@@ -1,10 +1,10 @@
 package com.wingedsheep.mtg.sets.definitions.csp.cards
 
-import com.wingedsheep.sdk.dsl.Costs
-import com.wingedsheep.sdk.dsl.Effects
 import com.wingedsheep.sdk.dsl.card
 import com.wingedsheep.sdk.model.Rarity
+import com.wingedsheep.sdk.scripting.AbilityCost
 import com.wingedsheep.sdk.scripting.TimingRule
+import com.wingedsheep.sdk.scripting.effects.AddColorlessManaEffect
 
 /**
  * Boreal Druid
@@ -17,15 +17,17 @@ val BorealDruid = card("Boreal Druid") {
     manaCost = "{G}"
     colorIdentity = "G"
     typeLine = "Snow Creature — Elf Druid"
-    oracleText = "{T}: Add {C}."
     power = 1
     toughness = 1
+    oracleText = "{T}: Add {C}."
+
     activatedAbility {
-        cost = Costs.Tap
-        effect = Effects.AddColorlessMana(1)
+        cost = AbilityCost.Tap
+        effect = AddColorlessManaEffect(1)
         manaAbility = true
         timing = TimingRule.ManaAbility
     }
+
     metadata {
         rarity = Rarity.COMMON
         collectorNumber = "105"
