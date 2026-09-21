@@ -135,3 +135,11 @@ can diverge inside that game but cannot affect any later pair. Frozen derivation
 vectors, replay, isolation, and invalid-input regressions passed without consuming
 the paired iterator. No seed or pilot is authorized until paired estimands and the
 artifact contract are frozen. v0.7 remains the accepted control.
+
+Phase 8 freezes matched-pair estimands for Capsize access, buyback readiness, primary
+assembly/lethal timing, and commander deployment. Its strict JSON contract preserves
+both/control-only/policy-only/neither cells and independently recomputes every delta.
+A synthetic ten-turn ledger passed while twelve malformed outputs were rejected,
+including duplicate-key and non-finite JSON attacks. No paired games or experimental
+seeds were consumed. Execution identity, pilot size, seed, and artifact provenance
+must be frozen next; v0.7 remains the accepted control.
