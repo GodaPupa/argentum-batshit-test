@@ -9,7 +9,6 @@ import com.wingedsheep.engine.state.components.player.CardsDrawnThisTurnComponen
 import com.wingedsheep.engine.state.components.stack.ChosenTarget
 import com.wingedsheep.engine.support.ScenarioTestBase
 import com.wingedsheep.sdk.model.EntityId
-import com.wingedsheep.sdk.model.Zone
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.types.shouldBeInstanceOf
 
@@ -105,7 +104,7 @@ class IndustrialWasteMadnessBurnPolicyAuditTest : ScenarioTestBase() {
             game.getPendingDecision()?.let { decision ->
                 game.submitDecision(player.respondToDecision(game.state, decision)).error shouldBe null
             }
-            game.state.getZone(com.wingedsheep.engine.state.ZoneKey(game.player1Id, Zone.BATTLEFIELD))
+            game.state.getBattlefieldControlledBy(game.player1Id)
                 .count { cardName(game, it) == "Mountain" } shouldBe 0
         }
 
