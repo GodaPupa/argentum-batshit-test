@@ -1,0 +1,60 @@
+name: Izzet Position-1 Engine Gap Inventory
+
+on:
+  pull_request:
+    paths:
+      - "izzet-science/position1-engine-gap-inventory.json"
+      - "izzet-science/v09-position1-engine-gap-triage-gate.md"
+      - "izzet-science/sim/validate_v09_position1_engine_gap_inventory.py"
+      - ".github/workflows/izzet-v09-position1-engine-gap-inventory.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    if: github.event_name != 'pull_request' || github.head_ref == 'mayhem/izzet-science'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Verify parent coverage acceptance
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -Fq 'V09_POSITION1_REAL_ENGINE_COVERAGE_ACCEPTED' izzet-science/v09-position1-real-engine-coverage-accepted.md
+      - name: Validate frozen inventory
+        shell: bash
+        run: |
+          set -euo pipefail
+          python izzet-science/sim/validate_v09_position1_engine_gap_inventory.py | tee /tmp/gaps.txt
+          grep -Fx 'V09_POSITION1_ENGINE_GAP_INVENTORY_VALIDATION_PASS' /tmp/gaps.txt
+      - name: Emit manifest
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/gap-artifact
+          cp /tmp/gaps.txt /tmp/gap-artifact/validation.txt
+          {
+            echo "schema=izzet-v09-position1-engine-gap-inventory-v1"
+            echo "source_sha=${GITHUB_SHA}"
+            echo "unresolved_total=55"
+            echo "izzet_unresolved=22"
+            echo "veteran_unresolved=33"
+            echo "experimental_seeds_consumed=0"
+            echo "games_initialized=0"
+            echo "outcome_exposure=0"
+            sha256sum izzet-science/position1-engine-gap-inventory.json
+            sha256sum izzet-science/v09-position1-engine-gap-triage-gate.md
+            sha256sum izzet-science/sim/validate_v09_position1_engine_gap_inventory.py
+            sha256sum /tmp/gap-artifact/validation.txt
+          } > /tmp/gap-artifact/manifest.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: izzet-v09-position1-engine-gap-inventory
+          path: /tmp/gap-artifact
+          if-no-files-found: error
