@@ -18,6 +18,12 @@ on:
       - mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/c16/cards/IchorWellspringReprint.kt
       - mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/mbs/cards/IchorWellspring.kt
       - mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/som/cards/GolemFoundry.kt
+      - mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/som/cards/GalvanicBlast.kt
+      - mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/nph/cards/ScrapyardSalvo.kt
+      - mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/GalvanicBlastScenarioTest.kt
+      - mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/ScrapyardSalvoScenarioTest.kt
+      - mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/neo/cards/ReckonersBargain.kt
+      - mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/ReckonersBargainScenarioTest.kt
       - mtg-sets/2024/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/mh3/cards/EvisceratorsInsight.kt
       - mtg-sets/2000-2002/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/jud/cards/BattleScreech.kt
       - mtg-sets/2000-2002/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/jud/cards/PrismaticStrands.kt
@@ -34,6 +40,8 @@ on:
       - mtg-sets/src/test/resources/snapshots/cards/MBS.json
       - mtg-sets/src/test/resources/snapshots/cards/MH3.json
       - mtg-sets/src/test/resources/snapshots/cards/SOM.json
+      - mtg-sets/src/test/resources/snapshots/cards/NPH.json
+      - mtg-sets/src/test/resources/snapshots/cards/NEO.json
       - mtg-sets/src/test/resources/snapshots/cards/ULG.json
 
 concurrency:
@@ -82,7 +90,9 @@ jobs:
             :mtg-sets:1993-1999:compileKotlin \
             :mtg-sets:2000-2002:tests:test --tests "*BattleScreechScenarioTest" --tests "*PrismaticStrandsScenarioTest" \
             :mtg-sets:2008-2016:compileKotlin \
+            :mtg-sets:2008-2016:tests:test --tests "*GalvanicBlastScenarioTest" --tests "*ScrapyardSalvoScenarioTest" \
             :mtg-sets:2017-2022:compileKotlin \
+            :mtg-sets:2017-2022:tests:test --tests "*ReckonersBargainScenarioTest" \
             :mtg-sets:2024:compileKotlin \
             :mtg-sets:test --tests "*CardDefinitionSnapshotTest" \
             2>&1 | tee industrial-waste-card-build.log
@@ -97,6 +107,9 @@ jobs:
           just check-card-printing "Prismatic Strands"
           just check-card-printing "Thrilling Discovery"
           just check-card-printing "Perilous Landscape"
+          just check-card-printing "Galvanic Blast"
+          just check-card-printing "Reckoner's Bargain"
+          just check-card-printing "Scrapyard Salvo"
 
       - name: Run Assay differential checks
         run: |
@@ -105,6 +118,8 @@ jobs:
             just assay-differential --set ULG
             just assay-differential --set MH3
             just assay-differential --set SOM
+            just assay-differential --set NPH
+            just assay-differential --set NEO
             just assay-differential --set MBS
             just assay-differential --set JUD
             just assay-differential --set STX
