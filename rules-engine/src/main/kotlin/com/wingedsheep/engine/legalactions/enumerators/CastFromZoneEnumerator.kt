@@ -1350,6 +1350,20 @@ class CastFromZoneEnumerator : ActionEnumerator {
                             sacrificeCount = atom.count,
                         )
                     }
+                    is CostAtom.TapPermanents -> {
+                        val matches = context.costUtils.findAbilityTapTargets(
+                            state = state,
+                            playerId = playerId,
+                            filter = atom.filter,
+                            excludeEntityId = cardId.takeIf { atom.excludeSelf },
+                        )
+                        AdditionalCostData(
+                            description = extra.description,
+                            costType = "TapPermanents",
+                            validTapTargets = matches,
+                            tapCount = atom.count,
+                        )
+                    }
                     else -> null
                 }
                 else -> null
@@ -1358,6 +1372,8 @@ class CastFromZoneEnumerator : ActionEnumerator {
                 "Behold" -> flashbackAdditionalInfo.validBeholdTargets.size >= flashbackAdditionalInfo.beholdCount
                 "SacrificePermanent" ->
                     flashbackAdditionalInfo.validSacrificeTargets.size >= flashbackAdditionalInfo.sacrificeCount
+                "TapPermanents" ->
+                    flashbackAdditionalInfo.validTapTargets.size >= flashbackAdditionalInfo.tapCount
                 else -> flashbackAdditionalInfo == null
             }
 

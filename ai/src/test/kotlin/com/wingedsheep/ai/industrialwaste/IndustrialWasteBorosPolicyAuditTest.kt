@@ -12,9 +12,11 @@ import com.wingedsheep.engine.core.PassPriority
 import com.wingedsheep.engine.core.SelectCardsDecision
 import com.wingedsheep.engine.core.YesNoDecision
 import com.wingedsheep.engine.core.YesNoResponse
+import com.wingedsheep.engine.state.ZoneKey
 import com.wingedsheep.engine.state.components.identity.CardComponent
 import com.wingedsheep.engine.support.ScenarioTestBase
 import com.wingedsheep.sdk.core.Color
+import com.wingedsheep.sdk.core.Zone
 import com.wingedsheep.sdk.model.EntityId
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.types.shouldBeInstanceOf
@@ -102,8 +104,8 @@ class IndustrialWasteBorosPolicyAuditTest : ScenarioTestBase() {
             val action = player.chooseAction(game.state).shouldBeInstanceOf<ActivateAbility>()
             cardName(game, action.sourceId) shouldBe "Perilous Landscape"
             game.execute(action).error shouldBe null
-            game.state.projectedState.getBattlefieldControlledBy(game.player1Id)
-                .contains(action.sourceId) shouldBe false
+            game.state.getZone(ZoneKey(game.player1Id, Zone.GRAVEYARD))
+                .contains(action.sourceId) shouldBe true
             advanceToDecision(game)
             game.state.pendingDecision.shouldBeInstanceOf<SelectCardsDecision>()
             val response = player.respondToDecision(game.state, game.state.pendingDecision!!)
