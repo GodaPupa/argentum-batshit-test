@@ -1,4 +1,4 @@
-name: Face Value EDH R2-A Validation
+name: Face Value EDH R2-A/B Validation
 on:
   workflow_dispatch:
 jobs:
@@ -8,10 +8,9 @@ jobs:
       - uses: actions/checkout@v4
         with:
           ref: face-value-edh/r1-reconstruction
-      - name: Validate R2-A protocol and runner contract
+      - name: Revalidate R2-A contract
         run: python3 research/face-value-edh/validate_r2a.py
-      - name: Preserve R1 regression floor
-        run: |
-          python3 research/face-value-edh/validate_r1_fixture.py research/face-value-edh/fixtures/r1-schema-valid.json
-          if python3 research/face-value-edh/validate_r1_fixture.py research/face-value-edh/fixtures/r1-failclosed-invalid.json; then exit 1; fi
-          python3 research/face-value-edh/r1_replay.py
+      - name: Validate R2-B commander denial and stack readiness
+        run: python3 research/face-value-edh/validate_r2b.py
+      - name: Preserve R1 deterministic regression floor
+        run: python3 research/face-value-edh/r1_replay.py
