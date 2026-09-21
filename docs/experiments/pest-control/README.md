@@ -119,6 +119,10 @@ The opaque four-slot plan in `tier-one-grixis-opaque-plan.md` binds the frozen a
 digest to exact game order, seat/start cells, predecessor order, and durable-attempt sequencing. Its
 slots structurally exclude seeds and executable data; initialization and execution remain blocked.
 
+The final closure in `tier-one-grixis-final-readiness.md` audits the complete frozen harness and live
+repository surfaces. Its accepted status is `HARNESS_READY_EXECUTION_NOT_AUTHORIZED`: construction is
+green and fail-closed, while initializer, runner, official games, actions, and outcomes remain zero.
+
 Pest Control versus SoterX Mono Red Madness matchup Block A executed once and is formally rejected
 as `REJECTED_OUTCOME_RELEVANT_TARGET_SELECTION_DEFECTS`. All 50 Block A seeds are permanently
 retired. The descriptive 35–15 result is inadmissible for acceptance, pooling, or tuning. Preserved

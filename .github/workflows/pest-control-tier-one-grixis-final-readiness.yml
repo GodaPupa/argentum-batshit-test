@@ -1,0 +1,25 @@
+name: Pest Control Tier-1 Grixis Final Readiness
+
+on:
+  pull_request:
+    paths:
+      - gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlTierOneGrixisFinalHarnessReadiness.kt
+      - gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOneGrixisFinalHarnessReadinessTest.kt
+      - .github/workflows/pest-control-tier-one-grixis-final-readiness.yml
+      - docs/experiments/pest-control/tier-one-grixis-final-readiness.md
+
+permissions:
+  contents: read
+
+jobs:
+  validate-final-readiness:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Verify green fail-closed harness
+        run: scripts/test-class PestControlTierOneGrixisFinalHarnessReadinessTest --info --stacktrace
