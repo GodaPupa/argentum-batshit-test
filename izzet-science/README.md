@@ -121,3 +121,10 @@ preferred over Drift of Phantasms when Capsize is in the library and exact ready
 mana can pay the search. Deterministic execution, failure atomicity, and adjacent
 validators passed with no sampled games or seeds. The default simulator remains
 unchanged, and v0.7 remains the accepted control.
+
+Phase 6 adds an explicit opt-in activation path and four fail-closed Capsize tutor
+event fields. A fixed ordered-deck fixture acquires Capsize exactly once on turn two;
+the disabled path remains exactly identical to the default. No sampling is yet
+authorized: the batch simulator's shared random stream could let an extra policy
+shuffle perturb later games. Per-game paired RNG isolation is the next required
+seed-free gate. v0.7 remains the accepted control.

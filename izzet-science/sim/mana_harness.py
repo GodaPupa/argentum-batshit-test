@@ -1629,9 +1629,11 @@ BACKUP_TUTOR_ROW_KEYS=tuple(
     f"{prefix}_tutor_{suffix}"
     for prefix in ("mystic","rolling","torch","capsize")
     for suffix in ("targetable","payable","uncontested"))
+CAPSIZE_POLICY_ROW_KEYS=("capsize_tutor_used","capsize_tutor_found",
+                         "capsize_scroll_used","capsize_drift_used")
 
 def simulate_one(cards, rng, through=6, include_interaction=False, include_backup=False,
-                 include_backup_tutors=False):
+                 include_backup_tutors=False, include_capsize_tutor_policy=False):
     library=list(cards); rng.shuffle(library)
     hand=library[:7]; library=library[7:]
     snow_basics="Snow-Covered Island" in cards or "Snow-Covered Mountain" in cards
@@ -1673,6 +1675,13 @@ def simulate_one(cards, rng, through=6, include_interaction=False, include_backu
         tutor_found=None
         if tutor_used:
             tutor_found,library=execute_tutor(s,library,tutor_used,rng)
+        capsize_tutor_used=capsize_tutor_found=None
+        if include_capsize_tutor_policy:
+            if tutor_used is None:
+                capsize_tutor_used,capsize_tutor_found,library=(
+                    execute_capsize_tutor_policy(s,library,rng))
+            if tutor_used is not None and capsize_tutor_used is not None:
+                raise ValueError("primary and Capsize tutors executed in one window")
         commander_deployed=deploy_guildmage(s)
         # Finish optional mana development without replaying a land.
         rock=choose_mana_permanent(s)
@@ -1707,6 +1716,13 @@ def simulate_one(cards, rng, through=6, include_interaction=False, include_backu
         if interaction is not None: row.update(interaction)
         if backup is not None: row.update(backup)
         if backup_tutors is not None: row.update(backup_tutors)
+        if include_capsize_tutor_policy:
+            row.update({
+                "capsize_tutor_used":capsize_tutor_used is not None,
+                "capsize_tutor_found":capsize_tutor_found=="Capsize",
+                "capsize_scroll_used":capsize_tutor_used=="Merchant Scroll",
+                "capsize_drift_used":capsize_tutor_used=="Drift of Phantasms",
+            })
         rows.append(row)
     return rows
 
@@ -1734,9 +1750,20 @@ def accumulate_backup_tutor_metrics(aggregate,row):
     for key in BACKUP_TUTOR_ROW_KEYS:
         aggregate[key]+=int(row[key])
 
+def validate_capsize_policy_aggregate(aggregate):
+    for turn,a in aggregate.items():
+        counts=[a[key] for key in CAPSIZE_POLICY_ROW_KEYS]
+        if not all(isinstance(value,int) and not isinstance(value,bool)
+                   and 0<=value<=a["n"] for value in counts):
+            raise ValueError(f"Capsize tutor telemetry range violation turn={turn}")
+        if not (a["capsize_tutor_used"]==a["capsize_tutor_found"]==
+                a["capsize_scroll_used"]+a["capsize_drift_used"]):
+            raise ValueError(f"Capsize tutor telemetry identity violation turn={turn}")
+    return True
+
 def simulate_sample(cards, samples=10000, seed=SEED, through=10,
                     include_interaction=False, include_backup=False,
-                    include_backup_tutors=False):
+                    include_backup_tutors=False, include_capsize_tutor_policy=False):
     rng=random.Random(seed)
     agg={t:{"n":0,"selection_cast":0,"commander_deployed":0,"commander_battlefield":0,"tutor_used":0,"tutor_found_combo":0,"selection_seen_sum":0,"selection_drawn_sum":0,"start_U":0,"start_R":0,"start_UU":0,"action_U":0,"action_R":0,"action_UU":0,
             "residual_U":0,"residual_R":0,"residual_UU":0,
@@ -1758,9 +1785,11 @@ def simulate_sample(cards, samples=10000, seed=SEED, through=10,
         for a in agg.values(): a.update(empty_backup_aggregate())
     if include_backup_tutors:
         for a in agg.values(): a.update(empty_backup_tutor_aggregate())
+    if include_capsize_tutor_policy:
+        for a in agg.values(): a.update({key:0 for key in CAPSIZE_POLICY_ROW_KEYS})
     for _ in range(samples):
         for row in simulate_one(cards,rng,through,include_interaction,include_backup,
-                                include_backup_tutors):
+                                include_backup_tutors,include_capsize_tutor_policy):
             a=agg[row["turn"]]; a["n"]+=1
             a["selection_cast"]+=int(row["selection_cast"])
             a["commander_deployed"]+=int(row["commander_deployed"])
@@ -1781,6 +1810,8 @@ def simulate_sample(cards, samples=10000, seed=SEED, through=10,
                 accumulate_backup_metrics(a,row)
             if include_backup_tutors:
                 accumulate_backup_tutor_metrics(a,row)
+            if include_capsize_tutor_policy:
+                for key in CAPSIZE_POLICY_ROW_KEYS: a[key]+=int(row[key])
             a["high_tide_post_sum"]+=row["high_tide_post_mana"]
             a["high_tide_gain_sum"]+=row["high_tide_gain"]
             a["lands_sum"]+=row["lands"]; a["islands_sum"]+=row["islands"]
@@ -1814,6 +1845,8 @@ def simulate_sample(cards, samples=10000, seed=SEED, through=10,
                 uncontested=a[f"{prefix}_tutor_uncontested"]
                 if not 0<=uncontested<=payable<=targetable<=a["n"]:
                     raise ValueError(f"backup tutor subset violation turn={turn} target={prefix}")
+    if include_capsize_tutor_policy:
+        validate_capsize_policy_aggregate(agg)
     return agg
 
 def simulation_regressions(cards):
@@ -2046,6 +2079,58 @@ def backup_tutor_instrumentation_regressions(cards):
                 aggregate[f"{prefix}_tutor_targetable"] <= aggregate["n"])
     return True
 
+def capsize_tutor_policy_instrumentation_regressions(cards):
+    class FixtureRng:
+        def shuffle(self,items):
+            return None
+        def choice(self,items):
+            return items[0]
+
+    # Capsize remains in the library through the turn-two action window.
+    front=["Merchant Scroll","Snow-Covered Island","Snow-Covered Island",
+           "Lava Spike","Desperate Ritual","Murmuring Mystic","Kaervek's Torch",
+           "Snow-Covered Island","Snow-Covered Mountain"]
+    ordered=list(cards)
+    for card in front:
+        ordered.remove(card)
+    ordered.remove("Capsize")
+    ordered=front+["Capsize"]+ordered
+
+    plain=simulate_one(ordered,FixtureRng(),4)
+    explicit_off=simulate_one(ordered,FixtureRng(),4,False,False,False,False)
+    assert plain==explicit_off
+    assert all(not (set(row) & set(CAPSIZE_POLICY_ROW_KEYS)) for row in plain)
+
+    enabled=simulate_one(ordered,FixtureRng(),4,False,False,False,True)
+    events=[row for row in enabled if row["capsize_tutor_used"]]
+    assert len(events)==1 and events[0]["turn"]==2
+    assert events[0]["capsize_tutor_found"] and events[0]["capsize_scroll_used"]
+    assert not events[0]["capsize_drift_used"]
+    for row in enabled:
+        assert set(CAPSIZE_POLICY_ROW_KEYS)<=set(row)
+        assert row["capsize_tutor_used"]==row["capsize_tutor_found"]
+        assert int(row["capsize_tutor_used"])==(int(row["capsize_scroll_used"])+
+                                                int(row["capsize_drift_used"]))
+    good={2:{"n":10,"capsize_tutor_used":2,"capsize_tutor_found":2,
+             "capsize_scroll_used":1,"capsize_drift_used":1}}
+    assert validate_capsize_policy_aggregate(good)
+    bad_fixtures=(
+        {2:{**good[2],"capsize_tutor_found":1}},
+        {2:{**good[2],"capsize_scroll_used":2,"capsize_drift_used":1}},
+        {2:{**good[2],"capsize_tutor_used":11,"capsize_tutor_found":11,
+            "capsize_scroll_used":10}},
+        {2:{**good[2],"capsize_tutor_used":True,"capsize_tutor_found":True,
+            "capsize_scroll_used":1,"capsize_drift_used":0}},
+    )
+    for bad in bad_fixtures:
+        try:
+            validate_capsize_policy_aggregate(bad)
+        except ValueError:
+            pass
+        else:
+            raise AssertionError(f"accepted invalid Capsize telemetry: {bad}")
+    return True
+
 def electromancer_lethal_regressions():
     # Electromancer removes both generic costs, enabling a three-red-mana launch.
     s=DevState(["Lava Spike","Desperate Ritual"]); s.turn=4
@@ -2083,6 +2168,8 @@ def main():
                     help="Emit v0.9 commander-independent readiness telemetry")
     ap.add_argument("--backup-tutor-opportunity-pilot",action="store_true",
                     help="Emit passive v0.9 backup-tutor opportunity telemetry")
+    ap.add_argument("--capsize-tutor-policy",action="store_true",
+                    help="Activate explicit v0.9 Capsize tutor policy telemetry")
     args=ap.parse_args()
     if args.diagnostic_size is None:
         _,cards=parse_deck(Path(args.deck))
@@ -2141,13 +2228,15 @@ def main():
     commander_independent_readiness_regressions()
     commander_independent_instrumentation_regressions(cards)
     backup_tutor_instrumentation_regressions(cards)
+    capsize_tutor_policy_instrumentation_regressions(cards)
     b,r=opening_baseline(cards,args.samples,args.seed)
     print("seed",hex(args.seed),"samples",args.samples)
     print("land_buckets_0_1_2_3_4plus",b)
     print("rock_buckets_0_1_2_3plus",r)
     agg=simulate_sample(cards,args.samples,args.seed,10,args.interaction_pilot,
                         args.commander_independent_pilot,
-                        args.backup_tutor_opportunity_pilot)
+                        args.backup_tutor_opportunity_pilot,
+                        args.capsize_tutor_policy)
     for turn in range(1,11):
         a=agg[turn]; n=a["n"]
         print("turn",turn,"selection_cast",a["selection_cast"]/n,
@@ -2204,6 +2293,12 @@ def main():
                     for suffix in ("targetable","payable","uncontested")
                     for item in (f"{prefix}_tutor_{suffix}",
                                  a[f"{prefix}_tutor_{suffix}"]/n)))
+        if args.capsize_tutor_policy:
+            print("capsize_policy","turn",turn,
+                  "tutor_used",a["capsize_tutor_used"]/n,
+                  "capsize_found",a["capsize_tutor_found"]/n,
+                  "merchant_scroll",a["capsize_scroll_used"]/n,
+                  "drift",a["capsize_drift_used"]/n)
 
 if __name__=="__main__":
     main()
