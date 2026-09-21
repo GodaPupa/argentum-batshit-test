@@ -52,8 +52,10 @@ class PestControlTierOneGrixisReplicationAuthorizedInitializerTest : FunSpec({
                 registry, assignment(game), identity,
                 "80f62d1c87f8897b47ddb408b52d0fa619db7c70", true,
             )
-            initialized.provenance.assignment.gameNumber shouldBe game
-            initialized.provenance.vectorIdentity shouldBe identity
+            initialized.provenance.gameNumber shouldBe game
+            initialized.provenance.orderedVectorSha256 shouldBe identity.orderedVectorSha256
+            initialized.provenance.assignmentCsvSha256 shouldBe identity.assignmentCsvSha256
+            initialized.provenance.freezeManifestSha256 shouldBe identity.freezeManifestSha256
         }
     }
 
