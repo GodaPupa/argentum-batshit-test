@@ -1,0 +1,145 @@
+name: Face Value Postboard Rally Replacement V1
+
+on:
+  push:
+    branches: [face-value/lab]
+    paths:
+      - .github/workflows/face-value-postboard-rally-replacement-v1.yml
+      - experiments/face-value/qualification/postboard-rally-replacement-v1-seed-registry.json
+
+permissions:
+  contents: write
+
+concurrency:
+  group: face-value-postboard-rally-replacement-v1
+  cancel-in-progress: false
+
+jobs:
+  execute-audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: face-value/lab
+          fetch-depth: 0
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - name: Validate frozen inputs
+        run: |
+          set -euo pipefail
+          python3 experiments/face-value/qualification/validate_inputs.py >/dev/null
+          cd experiments/face-value/qualification
+          sha256sum -c postboard-rally-replacement-v1-seed-registry.sha256
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          d=json.loads(Path('postboard-rally-replacement-v1-seed-registry.json').read_text())
+          r=d['assignments']
+          assert d['classification']=='OFFICIAL_QUALIFICATION_POSTBOARD_RALLY_REPLACEMENT_V1'
+          assert d['design']['qualification_authority'] is True
+          assert d['sequencing_capability_run']==35536776074
+          assert len(r)==32 and len({x['seed'] for x in r})==32
+          assert sum(x['face_value_seat']==1 for x in r)==16
+          assert sum(x['face_value_seat']==2 for x in r)==16
+          PY
+      - name: Build accepted Forge profile v4
+        run: |
+          set -euxo pipefail
+          FORGE_SHA=f387ede550e336315637a8b765f0927ac768c113
+          git clone --filter=blob:none https://github.com/Card-Forge/forge.git forge-src
+          git -C forge-src checkout --detach "$FORGE_SHA"
+          for v in 1 2 3 4; do python3 "experiments/face-value/qualification/apply_forge_profile_v${v}.py" --forge-root forge-src >/dev/null; done
+          cd forge-src
+          mvn -B -DskipTests -pl forge-gui-desktop -am package
+          chmod +x forge-gui-desktop/target/forge.sh
+          rm -rf forge-gui-desktop/target/res
+          cp -R forge-gui/res forge-gui-desktop/target/res
+          echo "FORGE_LAUNCHER=$(pwd)/forge-gui-desktop/target/forge.sh" >> "$GITHUB_ENV"
+      - name: Materialize frozen Rally postboard decks
+        run: |
+          set -euo pipefail
+          mkdir -p rally-decks rally-logs "$HOME/.forge/decks/constructed"
+          python3 experiments/face-value/qualification/materialize_postboard_decks_v2.py --output rally-decks
+          cp rally-decks/face-value-vs-mono-red-rally.dck "$HOME/.forge/decks/constructed/face-rally.dck"
+          cp rally-decks/opponent-mono-red-rally.dck "$HOME/.forge/decks/constructed/opponent-rally.dck"
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          d=json.loads(Path('experiments/face-value/qualification/postboard-rally-replacement-v1-seed-registry.json').read_text())
+          with Path('rally-assignments.tsv').open('w') as f:
+              for r in d['assignments']: print(r['run_index'],r['face_value_seat'],r['seed'],sep='\t',file=f)
+          PY
+      - name: Execute 32 frozen assignments once
+        run: |
+          set -uo pipefail
+          : > rally-exit-status.tsv
+          while IFS=$'\t' read -r idx seat seed; do
+            log=$(printf 'rally-logs/%02d-seat%s-%s.log' "$idx" "$seat" "$seed")
+            if [ "$seat" = 1 ]; then first=face-rally.dck; second=opponent-rally.dck; else first=opponent-rally.dck; second=face-rally.dck; fi
+            timeout 300 "$FORGE_LAUNCHER" sim -d "$first" "$second" -n 1 -s "$seed" -c 120 > "$log" 2>&1
+            code=$?
+            printf '%s\t%s\t%s\n' "$idx" "$seed" "$code" >> rally-exit-status.tsv
+          done < rally-assignments.tsv
+          exit 0
+      - name: Audit Rally replacement
+        run: |
+          python3 - <<'PY'
+          import json,re
+          from pathlib import Path
+          exits={}
+          for l in Path('rally-exit-status.tsv').read_text().splitlines():
+              i,s,c=l.split('\t'); exits[int(i)]=int(c)
+          rows=[]
+          for l in Path('rally-assignments.tsv').read_text().splitlines():
+              a,b,c=l.split('\t'); i=int(a); seat=int(b); seed=int(c)
+              p=Path('rally-logs')/f'{i:02d}-seat{seat}-{seed}.log'; t=p.read_text(errors='replace')
+              opp=3-seat
+              fv=bool(re.search(rf'Ai\({seat}\)-Face Value.*has won!',t))
+              op=bool(re.search(rf'Ai\({opp}\)-.+has won!',t)); draw='ended in a Draw' in t
+              flags=[]
+              if exits.get(i,999)!=0: flags.append(f'process_exit_{exits.get(i,"missing")}')
+              if sum((fv,op,draw))!=1: flags.append('terminal_count_not_1')
+              for n,pat in {'exception':r'Exception|StackOverflowError|AssertionError','slow_draw':r'Stopping slow match as draw','unsupported':r'UnsupportedOperationException|not implemented'}.items():
+                  if re.search(pat,t,re.I): flags.append(n)
+              # order violation: Bushwhacker before Rally when both are cast on same logged turn.
+              lines=t.splitlines(); turn=None; events={}
+              for line in lines:
+                  mt=re.search(r'Turn (\d+)',line)
+                  if mt: turn=int(mt.group(1))
+                  if turn is not None and ('cast Rally at the Hornburg' in line or 'cast Goblin Bushwhacker' in line):
+                      events.setdefault(turn,[]).append(line)
+              joint=viol=0
+              for ev in events.values():
+                  ri=[j for j,x in enumerate(ev) if 'cast Rally at the Hornburg' in x]
+                  bi=[j for j,x in enumerate(ev) if 'cast Goblin Bushwhacker' in x]
+                  if ri and bi:
+                      joint+=1
+                      if min(bi)<min(ri): viol+=1
+              rows.append({'run_index':i,'seat':seat,'seed':seed,'winner':'face_value' if fv else 'opponent' if op else 'draw' if draw else 'unknown','flags':flags,'joint_turns':joint,'order_violations':viol})
+          bad=[r for r in rows if r['flags']]
+          v=sum(r['order_violations'] for r in rows); j=sum(r['joint_turns'] for r in rows)
+          s={'classification':'OFFICIAL_QUALIFICATION_POSTBOARD_RALLY_REPLACEMENT_V1','games':32,'wins':sum(r['winner']=='face_value' for r in rows),'losses':sum(r['winner']=='opponent' for r in rows),'draws':sum(r['winner']=='draw' for r in rows),'flagged_games':len(bad),'joint_rally_bushwhacker_turns':j,'order_violations':v,'acceptance':'ACCEPTED' if not bad and v==0 else 'QUARANTINED','records':rows}
+          Path('rally-replacement-summary.json').write_text(json.dumps(s,indent=2,sort_keys=True)+'\n')
+          print(json.dumps({k:v for k,v in s.items() if k!='records'},indent=2))
+          assert not bad and v==0
+          PY
+      - name: Preserve evidence
+        if: always()
+        env:
+          RUN_ID: ${{ github.run_id }}
+        run: |
+          set -euo pipefail
+          tar -czf rally-raw-logs.tar.gz rally-logs rally-exit-status.tsv
+          dest="experiments/face-value/qualification/evidence/postboard-rally-replacement-v1/run-${RUN_ID}"
+          mkdir -p "$dest"
+          cp rally-replacement-summary.json rally-raw-logs.tar.gz "$dest/"
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add "$dest"
+          git commit -m "face-value: preserve postboard Rally replacement V1 run ${RUN_ID}"
+          git fetch origin face-value/lab
+          git rebase origin/face-value/lab
+          git push origin HEAD:face-value/lab
