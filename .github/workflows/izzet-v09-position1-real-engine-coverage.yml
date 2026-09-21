@@ -41,12 +41,19 @@ jobs:
           grep -Fq 'officialGamesAuthorized: Int = 0' gym/src/main/kotlin/com/wingedsheep/gym/matchup/IzzetScienceVeteranBeastriderEngineReadiness.kt
           grep -Fq 'officialSeedsConsumed: Int = 0' gym/src/main/kotlin/com/wingedsheep/gym/matchup/IzzetScienceVeteranBeastriderEngineReadiness.kt
           grep -Fq 'outcomeExposure: Int = 0' gym/src/main/kotlin/com/wingedsheep/gym/matchup/IzzetScienceVeteranBeastriderEngineReadiness.kt
+      - name: Extract unresolved coverage inventory
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep 'V09_REAL_ENGINE_UNRESOLVED' /tmp/engine-coverage.txt > /tmp/unresolved.txt
+          test -s /tmp/unresolved.txt
       - name: Emit qualification manifest
         shell: bash
         run: |
           set -euo pipefail
           mkdir -p /tmp/engine-coverage-artifact
           cp /tmp/engine-coverage.txt /tmp/engine-coverage-artifact/test-output.txt
+          cp /tmp/unresolved.txt /tmp/engine-coverage-artifact/unresolved.txt
           {
             echo "schema=izzet-v09-position1-real-engine-coverage-v1"
             echo "source_sha=${GITHUB_SHA}"
