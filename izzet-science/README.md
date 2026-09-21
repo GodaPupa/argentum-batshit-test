@@ -195,3 +195,10 @@ deterministic fixture now executes Merchant acquisition, Brainstorm put-back, an
 Drift reacquisition in one trajectory; a two-event synthetic ledger passes and
 thirteen malformed outputs fail closed. No samples or seeds were consumed, no new
 pilot is authorized, and v0.7 remains the accepted control.
+
+Phase 13 adds a cost-controlled invariant-only qualification before any third pilot.
+It runs 1,024 complete matched pairs on existing public regression coordinate `1`,
+emits no outcome fields, and interprets no effect sizes. Both retired runners, the
+accepted control hash, full paired generation, shared payment engine, repeated tutor
+events, aggregation, and strict v2 summary validation are exercised end to end. No
+experimental seed is assigned or consumed and no pilot is authorized.
