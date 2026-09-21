@@ -235,3 +235,20 @@ failure turns from 2.44 to 1.56.
 Decision: Pactdoll-A earns one fresh production-profile Burn replication. This is directional
 single-matchup evidence only; Control remains frozen, Pactdoll-A remains unpromoted, and postboard
 work remains unauthorized.
+
+## Gate 4 Madness Burn production-profile replication
+
+Run 35553511000 completed all eight fresh one-seed partitions on
+`IW-G4-MADNESS-BURN-PROD-R1`. The canonical artifact has all 32 expected keys exactly once, zero
+exceptions, zero rejected actions, and no draws.
+
+Control again went 2-14 while Pactdoll-A went 3-13. The +1 replication gap confirms the direction,
+and pooled fresh evidence is Control 4-28 versus Pactdoll-A 7-25, exactly meeting the predeclared
++3-win confirmation threshold. Burn pressure remained credible at 14 and 13 wins respectively.
+The replication contained one Pactdoll-A-only paired win, no Control-only wins, and one Pactdoll-A
+combo-ready game. The screen's colored-mana advantage did not replicate: Pactdoll-A averaged 2.75
+failure turns to Control's 2.44 in this block.
+
+Decision: the Burn-specific Pactdoll-A advantage is replicated, but both lists' absolute results
+remain poor. Close Burn sampling, retain immutable Control, keep Pactdoll-A unpromoted, and advance
+to the next implementation-feasible preboard opponent. Postboard work remains blocked.

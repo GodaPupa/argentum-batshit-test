@@ -45,4 +45,7 @@ games against each Industrial list and changed 22/32 results, passing the oppone
 calibration. The authorized fresh screen then completed 2-14 for Control and 4-12 for Pactdoll-A,
 meeting the predeclared +2-win directional threshold and authorizing one fresh replication. No
 postboard work or deck promotion is authorized. The frozen Control remains the experimental
-baseline and Pactdoll-A remains unpromoted.
+baseline and Pactdoll-A remains unpromoted. Replication then finished 2-14 for Control and 3-13 for
+Pactdoll-A, confirming the direction at +1 and producing a pooled +3 edge across 32 games per list.
+Burn sampling is now closed: the relative Pactdoll-A edge is real enough to carry forward, but both
+lists' absolute Burn matchup remains poor. The next gate is another feasible preboard opponent.

@@ -1,6 +1,6 @@
 # Gate 4 Madness Burn production-profile replication v1
 
-Status: frozen; unexecuted.
+Status: completed; valid; directional advantage replicated.
 
 ## Question
 
@@ -39,3 +39,22 @@ can promote Pactdoll-A or authorize postboard work by itself.
 
 Tron by turn 5, combo-ready incidence, mulligans, colored-mana failures, and paired win discordance
 remain supporting diagnostics and cannot override the win gates.
+
+## Result
+
+GitHub Actions run 35553511000 completed all eight one-seed jobs successfully. The canonical merge
+contains all 32 expected game keys exactly once, with zero exceptions, rejected actions, or draws.
+
+Control again went 2-14; Pactdoll-A went 3-13. Burn cleared the pressure floor against both lists.
+Pactdoll-A led the independent replication by one win, satisfying the same-direction requirement.
+Across the two fresh production-profile samples, Control is 4-28 and Pactdoll-A is 7-25, a pooled
++3-win advantage that exactly meets the frozen confirmation threshold. The replication's paired
+discordance was one Pactdoll-A-only win and zero Control-only wins.
+
+Both lists reached Tron by turn 5 twice. Pactdoll-A recorded the only combo-ready game, but its mean
+colored-mana-failure turns were worse in this block (2.75 versus 2.44), so the earlier mana advantage
+did not replicate.
+
+Decision: record a replicated Burn-specific advantage for Pactdoll-A and close Burn sampling. The
+absolute matchup remains poor for both lists, so this does not promote Pactdoll-A or authorize
+postboard work. Advance to the next implementation-feasible preboard gauntlet opponent.
