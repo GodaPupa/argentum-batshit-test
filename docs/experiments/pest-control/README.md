@@ -8,6 +8,13 @@ permanently retired. The result qualifies only this exact preboard matchup and d
 Tier-1 status or alter the frozen Pest Control v1.0 deck.
 
 This directory is reserved exclusively for Project Pest Control experiment protocols.
+The official four-game Grixis Affinity smoke executed exactly once in run `35632206268` and is accepted
+as `ACCEPTED_NONEXPERIMENTAL_SMOKE`: Pest Control finished 3-1, all four frozen assignments were
+attempted and recorded exactly once, all raw hashes reconcile, and rerolls/replacements/seed
+regeneration are zero. The result is preserved in `tier-one-grixis-official-smoke-result.md`. It is
+not a matchup qualification or Tier-1 claim. The next authorized gate is a fresh independently frozen
+12-game preboard Grixis replication block; no replication seeds exist yet.
+
 
 Tier-1 breadth construction has begun with a seedless, no-game Grixis Affinity readiness gate. The
 exact Pasquale first-place 75, shared card-support package, and fail-closed state are recorded in
