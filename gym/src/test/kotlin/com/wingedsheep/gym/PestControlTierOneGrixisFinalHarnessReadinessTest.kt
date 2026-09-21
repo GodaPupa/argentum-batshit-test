@@ -94,6 +94,7 @@ private fun finalHarnessSurfaceAudit(): GrixisFinalHarnessSurfaceAudit {
     )
     val runnerMethodNames = setOf(
         "execute", "run", "main", "initializeOfficial", "writeArtifact", "downloadArtifact",
+        "recover", "recordAttempt", "recordResult",
     )
     val auditedTypes = listOf(
         PestControlTierOneGrixisDisabledOfficialArtifactLoader::class.java,
@@ -101,6 +102,7 @@ private fun finalHarnessSurfaceAudit(): GrixisFinalHarnessSurfaceAudit {
         PestControlTierOneGrixisOpaqueExecutionPlan::class.java,
         PestControlTierOneGrixisFinalHarnessReadiness::class.java,
         PestControlTierOneGrixisDisabledPrivateRunnerGate::class.java,
+        PestControlTierOneGrixisDisabledDurabilityGate::class.java,
     )
     return GrixisFinalHarnessSurfaceAudit(
         workflowFilesAudited = workflows.size,

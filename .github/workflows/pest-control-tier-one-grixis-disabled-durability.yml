@@ -1,0 +1,28 @@
+name: Pest Control Tier-1 Grixis Disabled Durability
+
+on:
+  pull_request:
+    paths:
+      - gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlTierOneGrixisDisabledDurabilityGate.kt
+      - gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOneGrixisDisabledDurabilityGateTest.kt
+      - gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOneGrixisFinalHarnessReadinessTest.kt
+      - .github/workflows/pest-control-tier-one-grixis-disabled-durability.yml
+      - docs/experiments/pest-control/tier-one-grixis-disabled-durability.md
+
+permissions:
+  contents: read
+
+jobs:
+  validate-disabled-durability:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Verify synthetic durability rehearsal
+        run: scripts/test-class PestControlTierOneGrixisDisabledDurabilityGateTest --info --stacktrace
+      - name: Recheck final fail-closed readiness
+        run: scripts/test-class PestControlTierOneGrixisFinalHarnessReadinessTest --info --stacktrace
