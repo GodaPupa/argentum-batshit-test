@@ -100,8 +100,13 @@ object IzzetScienceVeteranBeastriderEngineReadiness {
         }
     }
 
+    fun unresolvedCardIdentities(registry: CardRegistry): List<String> =
+        validationErrors(IzzetVeteranEngineReadiness(), registry)
+            .filter { it.startsWith("unresolved ") }
+            .sorted()
+
     fun executionBlockers(registry: CardRegistry): List<String> = buildList {
-        addAll(validationErrors(IzzetVeteranEngineReadiness(), registry))
+        addAll(unresolvedCardIdentities(registry))
         add("PDH commander-zone initialization not qualified")
         add("PDH commander recast/tax semantics not qualified")
         add("16-damage commander-loss accounting not qualified in gameplay engine")
