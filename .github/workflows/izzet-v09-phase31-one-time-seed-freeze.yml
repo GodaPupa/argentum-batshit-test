@@ -1,16 +1,14 @@
 name: Izzet v0.9 Phase 31 One-Time Seed Freeze
 
 on:
-  pull_request:
-    paths:
-      - "izzet-science/phase31-one-time-generation.authorized"
+  workflow_dispatch:
 
 permissions:
   contents: read
 
 jobs:
   freeze-seed-vector:
-    if: github.head_ref == 'mayhem/izzet-science' && github.run_attempt == 1
+    if: false
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
