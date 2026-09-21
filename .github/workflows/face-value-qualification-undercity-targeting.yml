@@ -6,7 +6,6 @@ on:
     paths:
       - .github/workflows/face-value-qualification-undercity-targeting.yml
       - experiments/face-value/qualification/audit_undercity_targeting.py
-      - experiments/face-value/qualification/apply_forge_profile_v6.py
   workflow_dispatch:
 
 permissions:
@@ -79,7 +78,7 @@ jobs:
 
           python3 - <<'PY'
           from pathlib import Path
-          rows = [f'{1 + i % 2}\t{740921 + i}' for i in range(8)]
+          rows = [f'{1 + i % 2}\t{740941 + i}' for i in range(8)]
           Path('undercity-assignments.tsv').write_text('\n'.join(rows) + '\n', encoding='utf-8')
           PY
 
@@ -88,7 +87,7 @@ jobs:
 
           cat > undercity-disposition.txt <<'EOF'
           DIAGNOSTIC_ONLY_NONLEGAL_UNDERCITY_TARGETING
-          Seeds 740921-740928 and all outcomes are permanently retired diagnostic material.
+          Seeds 740941-740948 and all outcomes are permanently retired diagnostic material.
           These decks are deliberately nonlegal and results have no matchup, tuning, structural-diagnosis, challenger, or qualification authority.
           This gate tests only whether Undercity Arena can select and resolve a legal creature target under the pinned simulator profile.
           EOF
