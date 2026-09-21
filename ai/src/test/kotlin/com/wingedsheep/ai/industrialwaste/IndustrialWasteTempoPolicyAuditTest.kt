@@ -11,9 +11,10 @@ import io.kotest.matchers.shouldBe
 import io.kotest.matchers.types.shouldBeInstanceOf
 
 class IndustrialWasteTempoPolicyAuditTest : ScenarioTestBase() {
-    private val profile = AiProfile.LEGACY_V0.copy(
+    private val baseProfile = AiProfile.PRODUCTION_CANDIDATE_EXPIRING
+    private val profile = baseProfile.copy(
         id = "industrial-waste-tempo-a-readiness",
-        advisorModules = listOf(IndustrialWasteAdvisorModule),
+        advisorModules = baseProfile.advisorModules + IndustrialWasteAdvisorModule,
         considerAdvisedManaAbilities = true,
     )
 
