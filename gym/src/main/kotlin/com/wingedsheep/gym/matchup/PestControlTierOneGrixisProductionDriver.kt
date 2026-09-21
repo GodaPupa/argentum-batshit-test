@@ -62,7 +62,7 @@ object PestControlTierOneGrixisProductionDriver {
             EngineAiPlayerController(registry, player, gameStateProvider = { environment.state })
         }
 
-        driveMulligans(environment.state, environment.playerIds, controllers) { action ->
+        driveMulligans(environment, environment.playerIds, controllers) { action ->
             submitExactlyOne(environment, action, traces)
         }
 
@@ -123,17 +123,17 @@ object PestControlTierOneGrixisProductionDriver {
         (PROTOCOL_JSON.encodeToString(raw) + "\n").toByteArray()
 
     private fun driveMulligans(
-        state: GameState,
+        environment: com.wingedsheep.gym.GameEnvironment,
         players: List<EntityId>,
         controllers: Map<EntityId, EngineAiPlayerController>,
         submit: (GameAction) -> Unit,
     ) {
         var transitions = 0
-        for (player in state.turnOrder) {
+        for (player in environment.state.turnOrder) {
             val controller = controllers.getValue(player)
             while (true) {
                 check(++transitions <= 30) { "London mulligan did not settle" }
-                val current = controllerState(controllers, player, state)
+                val current = environment.state
                 val component = current.getEntity(player)
                     ?.get<com.wingedsheep.engine.state.components.player.MulliganStateComponent>()
                     ?: error("player lacks MulliganStateComponent")
@@ -152,7 +152,7 @@ object PestControlTierOneGrixisProductionDriver {
             }
         }
         for (player in players) {
-            val current = controllerState(controllers, player, state)
+            val current = environment.state
             val component = current.getEntity(player)
                 ?.get<com.wingedsheep.engine.state.components.player.MulliganStateComponent>() ?: continue
             if (component.cardsToBottom == 0) continue
@@ -163,12 +163,6 @@ object PestControlTierOneGrixisProductionDriver {
             submit(BottomCards(player, bottom))
         }
     }
-
-    private fun controllerState(
-        controllers: Map<EntityId, EngineAiPlayerController>,
-        player: EntityId,
-        fallback: GameState,
-    ): GameState = controllers[player]?.let { fallback } ?: fallback
 
     private fun submitExactlyOne(
         environment: com.wingedsheep.gym.GameEnvironment,
