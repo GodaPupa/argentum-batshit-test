@@ -176,3 +176,13 @@ retirement. The experimental source is now frozen at commit
 `cd93b7e427b4e8c1b67cbf23560770d2ad19b5bc`, tree
 `d5b4ce36672181cdcb26b34644ca9dd56862ad4e`. The workflow is not yet armed and the
 fresh seed remains unconsumed; no outcomes exist and v0.7 remains the control.
+
+Phase 11's sole recovered run `35549404361` is also inadmissible. Exact checkout,
+identity verification, payment recovery, and the complete seed-free preflight
+passed; paired execution then failed closed on `more than one Capsize acquisition
+in a game`. The contract's one-acquisition assumption is unsound because modeled
+Brainstorm can return an acquired Capsize from hand to the library, permitting a
+later reacquisition. The log did not preserve the failing trajectory, so no narrower
+path is claimed. Seed `0x00000001A22E7011` is consumed and retired, the v2 runner is
+guarded against reuse, zero artifacts were uploaded, the ordinary workflow is
+restored, and no outcome or promotion is accepted. v0.7 remains the control.
