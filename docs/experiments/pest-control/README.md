@@ -91,6 +91,11 @@ The one authorized production freeze completed once and is now recorded in
 `tier-one-grixis-vector-freeze-provenance.json`. Its vector is `FROZEN_UNEXECUTED`, its production
 dispatch path has been removed, and official games, actions, and outcome exposure remain zero.
 
+The inspect-only compiled binding in `tier-one-grixis-frozen-vector-binding.md` pins that frozen
+artifact identity to the accepted four-cell plan and qualified runner. Its status is
+`VECTOR_FROZEN_EXECUTION_NOT_AUTHORIZED`; it loads no seeds and exposes no initializer, runner,
+writer, workflow, or command surface.
+
 Pest Control versus SoterX Mono Red Madness matchup Block A executed once and is formally rejected
 as `REJECTED_OUTCOME_RELEVANT_TARGET_SELECTION_DEFECTS`. All 50 Block A seeds are permanently
 retired. The descriptive 35–15 result is inadmissible for acceptance, pooling, or tuning. Preserved
