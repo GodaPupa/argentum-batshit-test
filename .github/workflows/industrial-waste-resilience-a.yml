@@ -1,0 +1,40 @@
+name: Industrial Waste — Resilience A Diagnostic
+
+on:
+  push:
+    branches:
+      - industrial-waste/lab
+    paths:
+      - .github/workflows/industrial-waste-resilience-a.yml
+      - industrial-waste/challengers/resilience-a.dck
+      - industrial-waste/seed-registry.json
+      - industrial-waste/sim/**
+      - justfile
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  resilience-diagnostic:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Validate inputs
+        run: |
+          python3 -m unittest discover -s industrial-waste/sim -p 'test_*.py' -v
+          python3 industrial-waste/sim/validate_inputs.py
+      - name: Run paired 2000-game disruption/recovery diagnostic
+        run: |
+          python3 industrial-waste/sim/structural_screen.py \
+            --games 2000 \
+            --namespace IW-G6-RESILIENCE-A-S1 \
+            --candidate resilience-a \
+            --output industrial-waste/results/gate-6-resilience-a-structural-v1.json
+      - name: Upload diagnostic evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: industrial-waste-resilience-a-structural
+          path: industrial-waste/results/gate-6-resilience-a-structural-v1.json
+          if-no-files-found: error
