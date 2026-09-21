@@ -1,109 +1,20 @@
 name: Pest Control Tier-1 Grixis Replication Production Freeze
-run-name: Pest Grixis replication FREEZE 12
 
 on:
-  workflow_dispatch:
+  pull_request:
+    paths:
+      - .github/workflows/pest-control-tier-one-grixis-replication-production-freeze.yml
+      - docs/experiments/pest-control/tier-one-grixis-replication-freeze-provenance.json
 
 permissions:
-  actions: read
   contents: read
 
-concurrency:
-  group: pest-control-tier-one-grixis-replication-production-freeze
-  cancel-in-progress: false
-
-env:
-  PRIOR_SMOKE_ARTIFACT_ID: "10620940806"
-  PRIOR_SMOKE_ARTIFACT_SHA256: 88b5e99d7aab2065fb26d51c074478d43310209d45b084d9dcfe552e8c328373
-  FREEZE_ACK: GENERATE_TIER_ONE_GRIXIS_REPLICATION_12_NO_GAMEPLAY
-
 jobs:
-  freeze:
+  retired:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
     steps:
-      - name: Reject GitHub rerun
+      - name: Confirm production freeze is permanently retired
         run: |
           set -euo pipefail
-          test "${GITHUB_RUN_ATTEMPT}" = "1"
-
-      - name: Checkout exact workflow-dispatch commit
-        uses: actions/checkout@v6
-        with:
-          ref: ${{ github.sha }}
-
-      - name: Capture exact commit and tree
-        id: identity
-        run: |
-          set -euo pipefail
-          commit="$(git rev-parse HEAD)"
-          tree="$(git rev-parse 'HEAD^{tree}')"
-          test "${commit}" = "${GITHUB_SHA}"
-          echo "commit=${commit}" >> "${GITHUB_OUTPUT}"
-          echo "tree=${tree}" >> "${GITHUB_OUTPUT}"
-
-      - name: Download exact accepted Grixis smoke freeze artifact
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          set -euo pipefail
-          mkdir -p build/prior-grixis-smoke-freeze
-          curl -fsSL -H "Authorization: Bearer ${GH_TOKEN}" -H "Accept: application/vnd.github+json"             "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/artifacts/${PRIOR_SMOKE_ARTIFACT_ID}/zip"             -o build/prior-grixis-smoke-freeze.zip
-          echo "${PRIOR_SMOKE_ARTIFACT_SHA256}  build/prior-grixis-smoke-freeze.zip" | sha256sum -c -
-          unzip -q build/prior-grixis-smoke-freeze.zip -d build/prior-grixis-smoke-freeze
-          cd build/prior-grixis-smoke-freeze
-          sha256sum -c artifacts.sha256
-
-      - name: Entropy-free preflight
-        run: |
-          set -euo pipefail
-          python3 scripts/experiments/pest-control/generate_tier_one_grixis_replication_freeze.py             --preflight             --prior-smoke-dir build/prior-grixis-smoke-freeze
-
-      - name: Generate and freeze exact 12-game replication vector once
-        env:
-          PEST_GRIXIS_REPLICATION_FREEZE_ACK: ${{ env.FREEZE_ACK }}
-        run: |
-          set -euo pipefail
-          python3 scripts/experiments/pest-control/generate_tier_one_grixis_replication_freeze.py             --generate             --prior-smoke-dir build/prior-grixis-smoke-freeze             --output-dir build/reports/pest-control-tier-one-grixis-replication-freeze             --freeze-commit "${{ steps.identity.outputs.commit }}"             --freeze-tree "${{ steps.identity.outputs.tree }}"
-
-      - name: Verify frozen artifact before upload
-        run: |
-          set -euo pipefail
-          cd build/reports/pest-control-tier-one-grixis-replication-freeze
-          sha256sum -c artifacts.sha256
-          python3 - <<'PY'
-          import csv, json
-          from pathlib import Path
-          root=Path(".")
-          m=json.loads((root/"freeze-manifest.json").read_text())
-          assert m["status"]=="FROZEN_UNEXECUTED"
-          assert m["runner_state"]=="DISABLED"
-          assert m["collision_audit"]["excluded_seed_count"]==538
-          assert m["collision_audit"]["new_seed_count"]==12
-          assert m["collision_audit"]["new_unique_count"]==12
-          assert m["collision_audit"]["overlap_count"]==0
-          assert m["assignment_counts"]["games"]==12
-          assert m["assignment_counts"]["pest_play"]==6
-          assert m["assignment_counts"]["pest_draw"]==6
-          assert m["assignment_counts"]["pest_seat_zero"]==6
-          assert m["assignment_counts"]["pest_seat_one"]==6
-          assert set(m["assignment_counts"]["joint_cells"].values())=={3}
-          assert m["official_counters"]=={
-              "actions_submitted":0,
-              "artifacts_with_outcomes":0,
-              "games_initialized":0,
-              "outcome_exposure":0,
-          }
-          rows=list(csv.DictReader((root/"assignments.csv").open()))
-          assert len(rows)==12
-          assert [int(r["game_number"]) for r in rows]==list(range(1,13))
-          PY
-
-      - name: Upload frozen replication vector
-        if: always()
-        uses: actions/upload-artifact@v7
-        with:
-          name: pest-control-tier-one-grixis-replication-freeze-12
-          path: build/reports/pest-control-tier-one-grixis-replication-freeze/
-          if-no-files-found: error
-          retention-days: 90
+          echo "Replication vector frozen successfully in run 35644821800."
+          echo "Production generation is permanently disabled."
