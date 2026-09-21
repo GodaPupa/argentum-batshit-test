@@ -244,3 +244,10 @@ commander destination choices while preserving primary-lethal and commander-
 deployment guardrails. Countered and target-illegal branches explicitly resolve
 neither the bounce nor buyback. This is a seed-free schema and adversarial-audit
 gate only; it authorizes no pilot, new seed, performance claim, or card change.
+
+Phase 16 run `35553843335` passed the exact-source gate and all seventeen
+adversarial summary rejections. The accepted contract observes the residual response
+window only after the deterministic turn policy has spent mana. Zero samples ran,
+zero experimental seeds were assigned or consumed, and no outcome was exposed. The
+next authorized work is an invariant-only qualification on public regression
+coordinate `1`; an official interactive pilot remains unauthorized.
