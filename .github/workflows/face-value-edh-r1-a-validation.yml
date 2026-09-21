@@ -1,4 +1,4 @@
-name: Face Value EDH R1-A/B/C Validation
+name: Face Value EDH R1-A/B/C/D Validation
 on:
   workflow_dispatch:
 jobs:
@@ -12,17 +12,23 @@ jobs:
         run: python3 research/face-value-edh/validate_r1_fixture.py research/face-value-edh/fixtures/r1-schema-valid.json
       - name: R1-A negative fixture must fail closed
         run: |
-          if python3 research/face-value-edh/validate_r1_fixture.py research/face-value-edh/fixtures/r1-failclosed-invalid.json; then
-            echo "negative fixture incorrectly accepted"
-            exit 1
-          fi
-          echo "negative fixture rejected as required"
+          if python3 research/face-value-edh/validate_r1_fixture.py research/face-value-edh/fixtures/r1-failclosed-invalid.json; then exit 1; fi
       - name: R1-B five mandatory surfaces must validate
         run: |
           set -euo pipefail
-          for f in             research/face-value-edh/fixtures/r1b-ordinary-cast.json             research/face-value-edh/fixtures/r1b-targeted-interaction.json             research/face-value-edh/fixtures/r1b-stack-priority.json             research/face-value-edh/fixtures/r1b-commander-unavailable.json             research/face-value-edh/fixtures/r1b-food-chain-pressure.json
-          do
+          for f in research/face-value-edh/fixtures/r1b-ordinary-cast.json research/face-value-edh/fixtures/r1b-targeted-interaction.json research/face-value-edh/fixtures/r1b-stack-priority.json research/face-value-edh/fixtures/r1b-commander-unavailable.json research/face-value-edh/fixtures/r1b-food-chain-pressure.json; do
             python3 research/face-value-edh/validate_r1_fixture.py "$f"
           done
       - name: R1-C deterministic replay must match
         run: python3 research/face-value-edh/r1_replay.py
+      - name: R1-D structural identity and historical serialization probe
+        run: |
+          set +e
+          python3 research/face-value-edh/verify_r1d_identity.py
+          rc=$?
+          set -e
+          if [ "$rc" -eq 3 ]; then
+            echo "Structural identity passed; historical byte serialization not yet reproduced."
+            exit 3
+          fi
+          exit "$rc"
