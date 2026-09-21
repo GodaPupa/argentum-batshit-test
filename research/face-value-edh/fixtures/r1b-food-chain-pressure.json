@@ -1,0 +1,33 @@
+{
+  "fixture_id": "FVEDH-R1-FOODCHAIN-001",
+  "surface": "food_chain_pressure",
+  "synthetic": true,
+  "official_material": false,
+  "initial_state": {
+    "active_player": "P2",
+    "priority_player": "P1",
+    "zones": {
+      "battlefield": [
+        "Synthetic Food Chain Engine"
+      ]
+    },
+    "stack": [
+      "Synthetic Engine Enabler"
+    ],
+    "commander": {
+      "name": "Animar, Soul of Elements",
+      "zone": "battlefield",
+      "tax": 0
+    }
+  },
+  "decision": {
+    "action": "interact_with_engine_enabler",
+    "supported": true,
+    "targets": [
+      "Synthetic Engine Enabler"
+    ]
+  },
+  "expected": {
+    "result": "accept"
+  }
+}
