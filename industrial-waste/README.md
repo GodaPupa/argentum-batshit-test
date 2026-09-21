@@ -52,5 +52,7 @@ lists' absolute Burn matchup remains poor. The next gate is another feasible pre
 The next opponent is Boros Aggro from the same 99-player event. Its exact published 75 and selection
 audit are frozen. All four missing maindeck cards, the Boros-specific policy fixtures, and an exact
 deck deterministic smoke are qualified. The smoke made 516 accepted actions with zero exceptions
-or illegal actions. A minimal two-seed, eight-game paired capability pilot is now authorized under
-`IW-G5-BOROS-PILOT-V1`; it cannot promote either list and no larger Boros sample is authorized.
+or illegal actions. The minimal two-seed, eight-game paired capability pilot then completed validly:
+Control went 2-2, Pactdoll-A went 1-3, and Boros went 5-3 overall. Both capability floors passed,
+but Control's one-win lead closes Boros sampling under the predeclared rule. No replication,
+promotion, or postboard work is authorized; the frozen v1.0 Control remains unchanged.
