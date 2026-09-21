@@ -6,6 +6,10 @@ from pathlib import Path
 
 PROFILE_ID = "FACE_VALUE_QUALIFICATION_FORGE_PROFILE_V6_UNDERCITY_TARGETING"
 
+OLD_HEAD = """        if (sa.usesTargeting()) {
+            List<Card> goadable = CardLists.getTargetableCards(game.getCardsIn(ZoneType.Battlefield), sa);
+"""
+
 OLD = """            // AI does not find a good creature to goad.
             // because if it would goad a creature it would attack AI.
             // AI might not have enough information to block it
@@ -36,9 +40,20 @@ def main() -> None:
     root = ap.parse_args().forge_root
     path = root / "forge-ai/src/main/java/forge/ai/ability/GoadAi.java"
     text = path.read_text(encoding="utf-8")
+    if text.count(OLD_HEAD) != 1:
+        raise RuntimeError(f"expected exactly one targeting head in {path}")
     if text.count(OLD) != 1:
         raise RuntimeError(f"expected exactly one original strategic failure block in {path}")
-    path.write_text(text.replace(OLD, NEW), encoding="utf-8")
+    text = text.replace(OLD_HEAD, """        if (sa.usesTargeting()) {
+            // Dungeon-room AI can be evaluated more than once before stack insertion.
+            // Do not accumulate stale Arena targets across evaluations.
+            if ("Undercity".equals(source.getName())) {
+                sa.getTargets().clear();
+            }
+            List<Card> goadable = CardLists.getTargetableCards(game.getCardsIn(ZoneType.Battlefield), sa);
+""")
+    text = text.replace(OLD, NEW)
+    path.write_text(text, encoding="utf-8")
     print(PROFILE_ID)
 
 if __name__ == "__main__":
