@@ -212,3 +212,14 @@ were rejected. The experimental source is frozen at commit
 `5a981b1f4a34b065af0630bf68113f7ac73e94b9`, tree
 `777c2d4b0219871dbed04dfe4daa8a928cb0dace`. No workflow is armed, the seed remains
 unconsumed, no outcomes exist, and v0.7 remains the control.
+
+Phase 14 run `35551616504` passed the complete qualified workflow and independent
+four-file artifact audit. At T10, the Capsize policy increased direct presence from
+16.96% to 41.11% (+24.15 points) and buyback readiness from 15.11% to 37.50%
+(+22.39 points). Primary lethal was 7.05% versus 7.12%, cumulative lethal 7.07%
+versus 7.13%, and commander presence 95.02% versus 94.94%. T3 commander presence did
+fall 2.05 points from early tutor spending, but the gap largely recovered by T5 and
+did not reduce the modeled T10 lethal clock. The artifact is accepted and the tutor
+policy is promoted for future stateful modeling; no card is promoted and the exact
+v0.7 deck remains the accepted card control. Seed `0x00000001A22E7012` and the v3
+runner are retired, and the ordinary workflow is restored.
