@@ -1,0 +1,68 @@
+name: Face Value Freeze Postboard Rally Replacement V1
+
+on:
+  push:
+    branches: [face-value/lab]
+    paths:
+      - .github/workflows/face-value-freeze-postboard-rally-replacement-v1.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  freeze:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: face-value/lab
+          fetch-depth: 0
+      - name: Freeze fresh Rally replacement vector
+        env:
+          RUN_ID: ${{ github.run_id }}
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json,os,pathlib,secrets,subprocess
+          root=pathlib.Path('experiments/face-value/qualification')
+          out=root/'postboard-rally-replacement-v1-seed-registry.json'
+          corpus='\n'.join(pathlib.Path(fp).read_text(encoding='utf-8',errors='ignore')
+                           for fp in subprocess.check_output(['git','ls-files'],text=True).splitlines()
+                           if pathlib.Path(fp).is_file())
+          seeds=[]
+          while len(seeds)<32:
+              s=secrets.randbelow(2**63-1)+1
+              if s in seeds or str(s) in corpus: continue
+              seeds.append(s)
+          rows=[{'run_index':i,'round':(i+1)//2,'face_value_seat':1 if i%2 else 2,
+                 'matchup':'mono-red-rally','seed':s} for i,s in enumerate(seeds,1)]
+          doc={'classification':'OFFICIAL_QUALIFICATION_POSTBOARD_RALLY_REPLACEMENT_V1',
+               'supersedes_quarantined_run':35543054441,
+               'sequencing_capability_run':35536776074,
+               'sequencing_capability':'8/8 terminal; 6 joint Rally/Bushwhacker turns; 0 order violations',
+               'postboard_map':'postboard-map-v1.json rally exchange, inherited unchanged by map v2',
+               'design':{'games':32,'games_per_seat':16,'outcomes_exposed_before_freeze':0,
+                         'qualification_authority':True},
+               'generation':{'source':'python secrets.randbelow backed by operating-system CSPRNG',
+                             'workflow_run_id':os.environ['RUN_ID']},
+               'assignments':rows}
+          out.write_text(json.dumps(doc,indent=2,sort_keys=True)+'\n')
+          assert len(seeds)==len(set(seeds))==32
+          assert sum(r['face_value_seat']==1 for r in rows)==16
+          assert sum(r['face_value_seat']==2 for r in rows)==16
+          print('RALLY_REPLACEMENT_V1_VECTOR_GREEN')
+          PY
+          cd experiments/face-value/qualification
+          sha256sum postboard-rally-replacement-v1-seed-registry.json > postboard-rally-replacement-v1-seed-registry.sha256
+          sha256sum -c postboard-rally-replacement-v1-seed-registry.sha256
+      - name: Publish frozen vector
+        run: |
+          set -euo pipefail
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add experiments/face-value/qualification/postboard-rally-replacement-v1-seed-registry.*
+          git commit -m 'face-value: freeze postboard Rally replacement V1 vector'
+          git fetch origin face-value/lab
+          git rebase origin/face-value/lab
+          git push origin HEAD:face-value/lab
