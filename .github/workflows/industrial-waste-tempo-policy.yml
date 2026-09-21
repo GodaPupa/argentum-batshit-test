@@ -8,6 +8,8 @@ on:
       - .github/workflows/industrial-waste-tempo-policy.yml
       - ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteTempoPolicyAuditTest.kt
       - ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteAdvisorModule.kt
+      - ai/src/main/kotlin/com/wingedsheep/ai/engine/Strategist.kt
+      - ai/src/main/kotlin/com/wingedsheep/ai/engine/advisor/CardAdvisor.kt
   workflow_dispatch:
 
 permissions:
@@ -31,3 +33,5 @@ jobs:
 # committed-target scoring retry
 
 # production-target-refinement retry
+
+# precommit-target-seam retry
