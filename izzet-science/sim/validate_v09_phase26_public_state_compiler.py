@@ -21,7 +21,10 @@ def main():
     bite=ObservedActionSpec("bite","Bite Down","targeted_creature_control","sorcery",generic_cost=1,colored_cost=("G",),target_type="creature",target_controller="self")
     gift=ObservedActionSpec("gift","Generous Gift","targeted_noncreature_control","instant",generic_cost=2,colored_cost=("W",),target_controller="self")
 
-    s=state([forest,plains,guild],observed_cards=("Bite Down","Generous Gift"))
+    forest2=PublicPermanent("forest2","Forest","opponent",mana_colors=("G",),mana_amount=1)
+    plains2=PublicPermanent("plains2","Plains","opponent",mana_colors=("W",),mana_amount=1)
+    plains3=PublicPermanent("plains3","Plains","opponent",mana_colors=("W",),mana_amount=1)
+    s=state([forest,forest2,plains,plains2,plains3,guild],observed_cards=("Bite Down","Generous Gift"))
     a=compile_public_actions(s,(bite,gift))
     assert any(x.action_id=="bite" and x.target_id=="guild" for x in a)
     assert any(x.action_id=="gift" and x.target_id=="guild" for x in a)
@@ -31,11 +34,11 @@ def main():
     assert compile_public_actions(s2,(bite,))==()
 
     # sorcery-speed action rejected outside own main phase.
-    s3=state([forest,plains,guild],phase="combat",step="declare_attackers",observed_cards=("Bite Down",))
+    s3=state([forest,forest2,plains,guild],phase="combat",step="declare_attackers",observed_cards=("Bite Down",))
     assert compile_public_actions(s3,(bite,))==()
 
     # hexproof blocks opposing targeted action.
-    s4=state([forest,plains,protected],observed_cards=("Bite Down",))
+    s4=state([forest,forest2,plains,protected],observed_cards=("Bite Down",))
     assert compile_public_actions(s4,(bite,))==()
 
     # hidden/unobserved source contamination fails closed.
@@ -49,7 +52,7 @@ def main():
     assert compile_public_actions(s,(gift,bite)) == compile_public_actions(s,(bite,gift))
 
     # commander-damage terminal state yields no further actions.
-    s5=state([forest,plains,guild],observed_cards=("Bite Down",),commander_damage_to_self=16)
+    s5=state([forest,forest2,plains,guild],observed_cards=("Bite Down",),commander_damage_to_self=16)
     assert compile_public_actions(s5,(bite,))==()
 
     print("V09_PHASE26_PUBLIC_STATE_COMPILER_VALIDATION_PASS")
