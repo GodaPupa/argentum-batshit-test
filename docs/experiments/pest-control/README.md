@@ -96,6 +96,10 @@ artifact identity to the accepted four-cell plan and qualified runner. Its statu
 `VECTOR_FROZEN_EXECUTION_NOT_AUTHORIZED`; it loads no seeds and exposes no initializer, runner,
 writer, workflow, or command surface.
 
+The disabled digest envelope in `tier-one-grixis-disabled-artifact-envelope.md` binds every frozen
+artifact hash without accepting artifact bytes, paths, URLs, or seed values. It remains inspect-only,
+with the initializer and runner disabled and every gameplay and outcome counter at zero.
+
 Pest Control versus SoterX Mono Red Madness matchup Block A executed once and is formally rejected
 as `REJECTED_OUTCOME_RELEVANT_TARGET_SELECTION_DEFECTS`. All 50 Block A seeds are permanently
 retired. The descriptive 35–15 result is inadmissible for acceptance, pooling, or tuning. Preserved
