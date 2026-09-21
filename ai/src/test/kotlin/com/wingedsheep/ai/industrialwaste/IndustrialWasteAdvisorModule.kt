@@ -20,6 +20,7 @@ internal object IndustrialWasteAdvisorModule : CardAdvisorModule {
         registry.register(TronTutorAdvisor)
         registry.register(MyrRetrieverAdvisor)
         registry.register(AshnodsAltarAdvisor)
+        registry.register(AncientGrudgeAdvisor)
     }
 }
 
@@ -64,6 +65,35 @@ private object MyrRetrieverAdvisor : CardAdvisor {
                 ?.firstOrNull { context.state.cardName(it) == "Myr Retriever" }
                 ?: return@let null
             TargetsResponse(decision.id, mapOf(requirement.index to listOf(retriever)))
+        }
+}
+
+
+private object AncientGrudgeAdvisor : CardAdvisor {
+    override val cardNames = setOf("Ancient Grudge")
+
+    override fun evaluateCast(context: CastContext): Double? =
+        context.passScore + 12.0
+
+    override fun respondToDecision(context: AdvisorDecisionContext) =
+        (context.decision as? ChooseTargetsDecision)?.let { decision ->
+            val requirement = decision.targetRequirements.singleOrNull() ?: return@let null
+            val legal = decision.legalTargets[requirement.index].orEmpty()
+            val preferred = legal.maxByOrNull { id ->
+                when (context.state.cardName(id)) {
+                    "Myr Enforcer" -> 100
+                    "Refurbished Familiar" -> 95
+                    "Utrom Monitor" -> 90
+                    "Makeshift Munitions" -> 85
+                    "Nihil Spellbomb" -> 55
+                    "Blood Fountain" -> 50
+                    "Ichor Wellspring" -> 45
+                    "Drossforge Bridge", "Mistvault Bridge", "Silverbluff Bridge" -> 35
+                    "Great Furnace", "Seat of the Synod", "Vault of Whispers" -> 30
+                    else -> 10
+                }
+            } ?: return@let null
+            TargetsResponse(decision.id, mapOf(requirement.index to listOf(preferred)))
         }
 }
 
