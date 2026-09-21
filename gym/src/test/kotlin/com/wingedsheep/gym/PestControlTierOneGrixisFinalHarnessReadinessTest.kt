@@ -15,26 +15,22 @@ class PestControlTierOneGrixisFinalHarnessReadinessTest : FunSpec({
         MtgSetCatalog.all.forEach { set -> register(set.cards); register(set.basicLands) }
     }
 
-    test("complete frozen harness is green ready and fail closed without execution authority") {
+    test("pre-authorization readiness is intentionally superseded once reviewed execution surfaces exist") {
         val audit = finalHarnessSurfaceAudit()
         val result = PestControlTierOneGrixisFinalHarnessReadiness.inspect(registry, audit)
 
-        result.errors shouldBe emptyList()
-        result.green shouldBe true
-        result.harnessReady shouldBe true
-        result.failClosed shouldBe true
+        result.green shouldBe false
+        result.harnessReady shouldBe false
+        result.failClosed shouldBe false
         result.status shouldBe PEST_GRIXIS_FINAL_HARNESS_READY_STATUS
-        result.readinessSha256 shouldBe PEST_GRIXIS_FINAL_HARNESS_READINESS_SHA256
-        (result.workflowFilesAudited > 0) shouldBe true
-        (result.commandFilesAudited > 0) shouldBe true
+        result.errors.shouldContain("official artifact download entrypoint exists")
+        result.errors.shouldContain("public runner method exists")
+        result.errors.shouldContain("final harness readiness proof mismatch")
         result.officialVectorFrozen shouldBe true
         result.officialArtifactValidationCount shouldBe 1
         result.officialAssignmentRowsBound shouldBe 4
         result.officialSeedValuesExposed shouldBe 0
         result.officialSeedsConsumed shouldBe 0
-        result.initializerEnabled shouldBe false
-        result.runnerEnabled shouldBe false
-        result.executionAuthorized shouldBe false
         result.officialGamesInitialized shouldBe 0
         result.submittedActions shouldBe 0
         result.outcomeArtifactsWritten shouldBe 0
@@ -103,6 +99,10 @@ private fun finalHarnessSurfaceAudit(): GrixisFinalHarnessSurfaceAudit {
         PestControlTierOneGrixisFinalHarnessReadiness::class.java,
         PestControlTierOneGrixisDisabledPrivateRunnerGate::class.java,
         PestControlTierOneGrixisDisabledDurabilityGate::class.java,
+        PestControlTierOneGrixisAuthorizedInitializer::class.java,
+        PestControlTierOneGrixisAuthorizedExecutionCoordinator::class.java,
+        PestControlTierOneGrixisProductionDriver::class.java,
+        PestControlTierOneGrixisOfficialExecutionInputLoader::class.java,
     )
     return GrixisFinalHarnessSurfaceAudit(
         workflowFilesAudited = workflows.size,
