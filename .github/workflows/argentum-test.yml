@@ -1,49 +1,75 @@
-name: Argentum Validation
+name: Izzet Phase 21 Concrete State Adapter Validation
 
 on:
-  workflow_dispatch:
   push:
-    branches: [ "main" ]
+    branches: [ "mayhem/izzet-science" ]
 
 permissions:
   contents: read
 
 jobs:
-  test:
+  validate:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 10
 
     steps:
-      - name: Checkout repository
+      - name: Checkout frozen semantic source
         uses: actions/checkout@v4
-
-      - name: Set up Java 21
-        uses: actions/setup-java@v4
         with:
-          distribution: temurin
-          java-version: '21'
+          ref: 5797f49cac3ccf76aec18056b5e7c5c4395efabf
+          persist-credentials: false
 
-      - name: Set up Gradle
-        uses: gradle/actions/setup-gradle@v4
-        with:
-          gradle-version: '9.6.1'
-
-      - name: Make Gradle wrapper executable
-        run: chmod +x gradlew
-
-      - name: Show environment
+      - name: Verify frozen identities
+        shell: bash
         run: |
-          java -version
-          gradle --version
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "5797f49cac3ccf76aec18056b5e7c5c4395efabf"
+          test "$(git rev-parse HEAD^{tree})" = "1cc2be0bf25c84938f845e3c5eb53fe7db10413d"
+          echo "726f5e9458b46dda30b33a6ce9f3c3237b25d6e11b81dac85308c3065c108a01  izzet-science/v0.7-control.md" | sha256sum --check --strict
+          echo "65b605fd0c62c5dbf9973997f4ddb55c9d026814aeba7f3d7a87a679c0987197  izzet-science/sim/capsize_response_policy.py" | sha256sum --check --strict
+          echo "810082856bd9bcd1dd4e74bfa03255d8bac437a0f424a16b8a34cee82f207977  izzet-science/sim/capsize_event_ledger.py" | sha256sum --check --strict
+          echo "fa43d97dc761a380bc8128b866e5f665bb645966571839a27c4b50a853fb4679  izzet-science/sim/capsize_state_adapter.py" | sha256sum --check --strict
+          echo "93143ea067103352e5f78cac61ab480888cee8500f35bf82de705a5330957f66  izzet-science/sim/validate_v09_capsize_state_adapter.py" | sha256sum --check --strict
+          echo "b656ea2d8a5fcf0f0c2f0a007b1814d4d63239d446649d7ff80a43429f670174  izzet-science/v09-phase21-concrete-state-adapter-gate.md" | sha256sum --check --strict
 
-      - name: Compile Argentum
-        run: ./gradlew classes --stacktrace
+      - name: Run seed-free semantic chain
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p phase21-artifact
+          python3 izzet-science/sim/validate_v09_capsize_interaction.py | tee phase21-artifact/phase15-validation.txt
+          python3 izzet-science/sim/validate_v09_capsize_interaction_contract.py | tee phase21-artifact/phase16-validation.txt
+          python3 izzet-science/sim/validate_v09_interaction_integrity_sweep.py | tee phase21-artifact/phase17-validation.txt
+          python3 izzet-science/sim/validate_v09_capsize_response_policy.py | tee phase21-artifact/phase19-validation.txt
+          python3 izzet-science/sim/validate_v09_capsize_event_ledger.py | tee phase21-artifact/phase20-validation.txt
+          python3 izzet-science/sim/validate_v09_capsize_state_adapter.py | tee phase21-artifact/phase21-validation.txt
+          grep -Fx "opponent_hidden_information_used=0" phase21-artifact/phase21-validation.txt
+          grep -Fx "experimental_seeds_consumed=0" phase21-artifact/phase21-validation.txt
+          grep -Fx "pilot_authorized=0" phase21-artifact/phase21-validation.txt
+          grep -Fx "outcome_claims=0" phase21-artifact/phase21-validation.txt
+          grep -Fx "disposition=V09_PHASE21_SEED_FREE_VALIDATED" phase21-artifact/phase21-validation.txt
 
-      - name: Run engine tests
-        run: ./gradlew test --stacktrace
+      - name: Build provenance manifest
+        shell: bash
+        run: |
+          set -euo pipefail
+          {
+            echo "schema=izzet-v09-phase21-validation-artifact-v1"
+            echo "source_sha=$(git rev-parse HEAD)"
+            echo "source_tree=$(git rev-parse HEAD^{tree})"
+            echo "workflow_runner_sha=${GITHUB_SHA}"
+            echo "control_sha256=726f5e9458b46dda30b33a6ce9f3c3237b25d6e11b81dac85308c3065c108a01"
+            echo "opponent_hidden_information_used=0"
+            echo "experimental_seeds_assigned=0"
+            echo "experimental_seeds_consumed=0"
+            echo "outcome_claims=0"
+          } > phase21-artifact/manifest.txt
+          sha256sum phase21-artifact/*-validation.txt >> phase21-artifact/manifest.txt
 
-      - name: Run Gym tests
-        run: ./gradlew :gym:test --stacktrace
-
-      - name: Run Gym trainer tests
-        run: ./gradlew :gym-trainer:test --stacktrace
+      - name: Upload validation artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: izzet-v09-phase21-concrete-state-adapter
+          path: phase21-artifact/
+          if-no-files-found: error
+          retention-days: 30
