@@ -82,6 +82,11 @@ the manifest with live workflow, command, and compiled-surface inspection and ma
 `CONSTRUCTION_READY_VECTOR_CREATION_NOT_AUTHORIZED`; vector creation still requires a separate
 explicit research decision.
 
+That separate decision now authorizes only the one-time, no-game four-seed freeze gate documented in
+`tier-one-grixis-vector-freeze-gate.md`. Pull requests can exercise only deterministic fixture bytes;
+the production path is manual, single-attempt, artifact-only, collision-audited against 534 Pest seed
+identities, and cannot initialize a game or expose an outcome. Execution remains unauthorized.
+
 Pest Control versus SoterX Mono Red Madness matchup Block A executed once and is formally rejected
 as `REJECTED_OUTCOME_RELEVANT_TARGET_SELECTION_DEFECTS`. All 50 Block A seeds are permanently
 retired. The descriptive 35–15 result is inadmissible for acceptance, pooling, or tuning. Preserved
