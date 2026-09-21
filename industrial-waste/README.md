@@ -49,7 +49,8 @@ baseline and Pactdoll-A remains unpromoted. Replication then finished 2-14 for C
 Pactdoll-A, confirming the direction at +1 and producing a pooled +3 edge across 32 games per list.
 Burn sampling is now closed: the relative Pactdoll-A edge is real enough to carry forward, but both
 lists' absolute Burn matchup remains poor. The next gate is another feasible preboard opponent.
-The next opponent is now implementation-gated Boros Aggro from the same 99-player event. Its exact
-published 75 and selection audit are frozen, but no seed namespace or gameplay run is authorized
-until all four missing maindeck cards and Boros-specific policy fixtures pass the Gate 5 readiness
-criteria.
+The next opponent is Boros Aggro from the same 99-player event. Its exact published 75 and selection
+audit are frozen, and all four missing maindeck cards have passed snapshots, focused scenarios,
+printing checks, Assay differentials, and the required full repository test gate. No seed namespace
+or gameplay run is authorized until Boros-specific policy fixtures and a seed-free deterministic
+matchup smoke pass the remaining Gate 5 readiness criteria.

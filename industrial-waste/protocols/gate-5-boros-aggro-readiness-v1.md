@@ -1,6 +1,6 @@
 # Gate 5 Boros Aggro readiness v1
 
-Status: implementation compiled and fully tested; metadata/snapshot qualification pending; no seeds authorized.
+Status: card implementation qualified; policy/smoke qualification pending; no seeds authorized.
 
 ## Question
 
@@ -71,4 +71,8 @@ Battle Screech and Prismatic Strands scenarios, the targeted card build, and the
 `just test` gate. An independent engine-smoke run (35555220178) also passed. The card-capability job
 then stopped at printing validation because Battle Screech's MH1 reprint record was absent; this is
 a metadata-only failure after all executable behavior passed. The exact MH1 #4 printing has been
-added and only the remaining printing, snapshot, and Assay gates require rerun. No seeds were used.
+added. Follow-up run 35556984302 then passed frozen-input validation, reproducible committed
+snapshots, the focused card build/scenarios, all eight canonical printing checks, both new JUD/STX
+Assay differentials, and the clean-worktree snapshot gate. Card implementation is therefore
+qualified. Admission items 3–4 (Boros policy fixtures and seed-free matchup smoke) remain closed.
+No seeds were used.
