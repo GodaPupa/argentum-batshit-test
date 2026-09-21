@@ -143,3 +143,10 @@ A synthetic ten-turn ledger passed while twelve malformed outputs were rejected,
 including duplicate-key and non-finite JSON attacks. No paired games or experimental
 seeds were consumed. Execution identity, pilot size, seed, and artifact provenance
 must be frozen next; v0.7 remains the accepted control.
+
+Phase 9 freezes a 10,000-pair execution runner and exact four-file artifact contract.
+Fresh master seed `0x00000001A22E7010` is assigned but unconsumed; historical unused
+seed `0x1A22E7009` remains untouched. Ten adversarial artifacts were rejected, and
+the runner is frozen at SHA256 `1dce15e3555f937964ae571140ca43e763f52747af56c2be71d53a7b7bcebb36`.
+The source commit must be recorded and a temporary exact-checkout workflow separately
+armed before execution. No paired outcomes exist, and v0.7 remains the control.
