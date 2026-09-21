@@ -31,3 +31,17 @@ production command entrypoint, or public runner method.
 This status means the construction harness is complete, green, and fail-closed. It does not itself
 authorize or expose an execution mechanism. Any future runner or official initialization path is a
 separate reviewed gate and must invalidate readiness if it appears prematurely.
+
+
+## Superseded after reviewed authorization
+
+This closure was the controlling pre-authorization state only. It was intentionally superseded after
+the separately reviewed execution authorization merged at `0ba33375d7e75fcfbedd0b5f19aedf0cf24eff6c`,
+followed by the authorized initializer, coordinator, production driver, and official-input integration.
+
+Accordingly, the legacy readiness audit must now fail if it sees those reviewed execution surfaces.
+That failure is expected and confirms that the repository is no longer claiming
+`HARNESS_READY_EXECUTION_NOT_AUTHORIZED` after execution authorization. The controlling current
+boundary remains zero official Grixis seed consumption, zero official games initialized, zero
+official actions submitted, and zero official outcome exposure until the one-shot workflow is
+separately validated and dispatched.
