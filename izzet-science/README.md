@@ -172,5 +172,7 @@ Repository and full-history search found fresh seed `0x00000001A22E7011` unused;
 it is now assigned but unconsumed, while failed seed `0x00000001A22E7010` remains
 retired. The exact four-file artifact contract rejected ten adversarial fixtures,
 and the recovery preflight includes payment-parity fixtures plus old-runner
-retirement. No workflow is authorized until this source commit is separately
-recorded; no outcomes exist and v0.7 remains the accepted control.
+retirement. The experimental source is now frozen at commit
+`cd93b7e427b4e8c1b67cbf23560770d2ad19b5bc`, tree
+`d5b4ce36672181cdcb26b34644ca9dd56862ad4e`. The workflow is not yet armed and the
+fresh seed remains unconsumed; no outcomes exist and v0.7 remains the control.

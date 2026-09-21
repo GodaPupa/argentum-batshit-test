@@ -57,3 +57,8 @@ the assigned seed remains unconsumed, no outcomes exist, and v0.7 remains the
 accepted control.
 
 Disposition: `V09_PHASE11_PREFLIGHT_VALIDATED`
+
+Experimental source commit `cd93b7e427b4e8c1b67cbf23560770d2ad19b5bc`, tree
+`d5b4ce36672181cdcb26b34644ca9dd56862ad4e`, is now frozen by the subsequent
+provenance-only record `v09-phase11-paired-v2-source-freeze.md`. A workflow remains
+separately required before execution.
