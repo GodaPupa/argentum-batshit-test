@@ -22,6 +22,11 @@ The deterministic provenance adapter and byte-level reconciliation layer are rec
 `tier-one-grixis-adapter-artifact-contract.md`. They use synthetic in-memory fixtures, expose no game
 initializer, and leave the harness disabled with no vector or outcome exposure.
 
+The construction-only Grixis initializer and telemetry taxonomy are recorded in
+`tier-one-grixis-initializer-contract.md`. One fixed nonexperimental fixture verifies exact opening
+card conservation without taking a game action. No official initializer, vector, runner, or outcome
+exposure exists.
+
 Pest Control versus SoterX Mono Red Madness matchup Block A executed once and is formally rejected
 as `REJECTED_OUTCOME_RELEVANT_TARGET_SELECTION_DEFECTS`. All 50 Block A seeds are permanently
 retired. The descriptive 35–15 result is inadmissible for acceptance, pooling, or tuning. Preserved

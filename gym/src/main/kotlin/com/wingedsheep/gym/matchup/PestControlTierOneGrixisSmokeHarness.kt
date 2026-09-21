@@ -100,7 +100,7 @@ object PestControlTierOneGrixisSmokeHarness {
         if (isUnitTestProcess) add("unit tests cannot activate the smoke harness")
         if (attemptNumber != 1) add("smoke retry is forbidden")
         if (priorOutputExists) add("smoke output already exists")
-        add("game adapter has no initialization method")
+        add("game adapter has no official initialization method")
         add("no execution method is defined")
     }
 }
