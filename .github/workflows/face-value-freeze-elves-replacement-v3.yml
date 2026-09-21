@@ -1,0 +1,110 @@
+name: Face Value Freeze Elves Replacement V3
+
+on:
+  push:
+    branches: [face-value/lab]
+    paths:
+      - .github/workflows/face-value-freeze-elves-replacement-v3.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  freeze:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: face-value/lab
+          fetch-depth: 0
+
+      - name: Generate fresh cryptographic vector and audit collisions
+        env:
+          RUN_ID: ${{ github.run_id }}
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json, os, pathlib, secrets, subprocess
+
+          root=pathlib.Path('experiments/face-value/qualification')
+          out=root/'preboard-elves-replacement-v3-seed-registry.json'
+
+          tracked=subprocess.check_output(['git','ls-files'], text=True).splitlines()
+          corpus=[]
+          for fp in tracked:
+              try:
+                  corpus.append(pathlib.Path(fp).read_text(encoding='utf-8', errors='ignore'))
+              except Exception:
+                  pass
+          corpus='\n'.join(corpus)
+
+          seeds=[]
+          while len(seeds)<32:
+              s=secrets.randbelow(2**63-1)+1
+              if s in seeds:
+                  continue
+              if str(s) in corpus:
+                  continue
+              seeds.append(s)
+
+          rows=[]
+          for i,s in enumerate(seeds, start=1):
+              rows.append({
+                  'face_value_seat': 1 if i%2==1 else 2,
+                  'matchup':'elves',
+                  'opponent_file':'opponents/elves-mogged-2026-09-19.dck',
+                  'round': (i+1)//2,
+                  'run_index': i,
+                  'seed': s,
+              })
+
+          doc={
+              'assignments':rows,
+              'classification':'OFFICIAL_QUALIFICATION_PREBOARD_ELVES_REPLACEMENT_V3',
+              'design':{
+                  'games':32,
+                  'games_per_seat':16,
+                  'matchup':'elves',
+                  'outcomes_exposed_before_freeze':0,
+                  'postboard_authority':False,
+                  'replaces_quarantined_blocks':[
+                      'preboard-stage1b run 35537193920 elves only',
+                      'preboard-elves-replacement-v1 run 35572397418',
+                      'preboard-elves-replacement-v2 run 35576397752'
+                  ]
+              },
+              'generation':{
+                  'source':'python secrets.randbelow backed by operating-system CSPRNG',
+                  'workflow_run_id':os.environ['RUN_ID'],
+                  'timeout_diagnostic_run':35607553010,
+                  'timeout_diagnostic_result':'16/16 terminal; 0 internal AI timeouts; 0 outer timeouts'
+              },
+              'remediation_confirmation_run':35571259363,
+              'remediation_profile':'FACE_VALUE_QUALIFICATION_FORGE_PROFILE_V6_UNDERCITY_TARGETING'
+          }
+
+          out.write_text(json.dumps(doc, indent=2, sort_keys=True)+'\n', encoding='utf-8')
+
+          assert len(seeds)==len(set(seeds))==32
+          assert all(0<s<2**63 for s in seeds)
+          assert sum(r['face_value_seat']==1 for r in rows)==16
+          assert sum(r['face_value_seat']==2 for r in rows)==16
+          for s in seeds:
+              assert str(s) not in corpus, s
+          print('V2_VECTOR_GENERATION_AND_COLLISION_AUDIT_GREEN')
+          PY
+
+          cd experiments/face-value/qualification
+          sha256sum preboard-elves-replacement-v3-seed-registry.json > preboard-elves-replacement-v3-seed-registry.sha256
+          sha256sum -c preboard-elves-replacement-v3-seed-registry.sha256
+
+      - name: Commit frozen V2 vector and digest
+        run: |
+          set -euo pipefail
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add experiments/face-value/qualification/preboard-elves-replacement-v3-seed-registry.json \
+                  experiments/face-value/qualification/preboard-elves-replacement-v3-seed-registry.sha256
+          git commit -m 'face-value: freeze cryptographic Elves replacement V3 vector'
+          git push origin HEAD:face-value/lab
