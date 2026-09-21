@@ -1,0 +1,255 @@
+name: Face Value Qualification Preboard Elves Replacement V3
+
+on:
+  push:
+    branches: [face-value/lab]
+    paths:
+      - .github/workflows/face-value-qualification-preboard-elves-replacement-v3.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: face-value-qualification-preboard-elves-replacement-v3
+  cancel-in-progress: false
+
+jobs:
+  execute-and-audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: face-value/lab
+          fetch-depth: 0
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - name: Validate frozen inputs and replacement vector
+        run: |
+          set -euo pipefail
+          python3 experiments/face-value/qualification/validate_inputs.py >/dev/null
+          cd experiments/face-value/qualification
+          sha256sum -c preboard-elves-replacement-v3-seed-registry.sha256
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          d=json.loads(Path('preboard-elves-replacement-v3-seed-registry.json').read_text())
+          rows=d['assignments']
+          assert d['classification']=='OFFICIAL_QUALIFICATION_PREBOARD_ELVES_REPLACEMENT_V3'
+          assert len(rows)==32
+          assert len({r['seed'] for r in rows})==32
+          assert sum(r['face_value_seat']==1 for r in rows)==16
+          assert sum(r['face_value_seat']==2 for r in rows)==16
+          assert all(r['matchup']=='elves' for r in rows)
+          assert [r['run_index'] for r in rows]==list(range(1,33))
+          assert d['remediation_confirmation_run']==35571259363
+          PY
+
+      - name: Build pinned Forge with accepted profiles and Undercity remediation
+        run: |
+          set -euxo pipefail
+          FORGE_SHA=f387ede550e336315637a8b765f0927ac768c113
+          git clone --filter=blob:none https://github.com/Card-Forge/forge.git forge-src
+          git -C forge-src reset --hard
+          git -C forge-src clean -fd
+          git -C forge-src checkout --detach "$FORGE_SHA"
+          test "$(git -C forge-src rev-parse HEAD)" = "$FORGE_SHA"
+          printf '%s\n' "$FORGE_SHA" > forge-source-commit.txt
+
+          python3 experiments/face-value/qualification/apply_forge_profile_v1.py --forge-root forge-src >/dev/null
+          python3 experiments/face-value/qualification/apply_forge_profile_v2.py --forge-root forge-src >/dev/null
+          python3 experiments/face-value/qualification/apply_forge_profile_v3.py --forge-root forge-src >/dev/null
+          python3 experiments/face-value/qualification/apply_forge_profile_v4.py --forge-root forge-src >/dev/null
+          python3 experiments/face-value/qualification/apply_forge_profile_v6.py --forge-root forge-src > forge-profile-v6-id.txt
+          test "$(cat forge-profile-v6-id.txt)" = 'FACE_VALUE_QUALIFICATION_FORGE_PROFILE_V6_UNDERCITY_TARGETING'
+
+          git -C forge-src diff > forge-profile-elves-replacement.patch
+          test -s forge-profile-elves-replacement.patch
+          sha256sum forge-profile-elves-replacement.patch             experiments/face-value/qualification/apply_forge_profile_v1.py             experiments/face-value/qualification/apply_forge_profile_v2.py             experiments/face-value/qualification/apply_forge_profile_v3.py             experiments/face-value/qualification/apply_forge_profile_v4.py             experiments/face-value/qualification/apply_forge_profile_v6.py             > forge-profile-elves-replacement.sha256
+
+          cd forge-src
+          mvn -B -DskipTests -pl forge-gui-desktop -am package
+          chmod +x forge-gui-desktop/target/forge.sh
+          rm -rf forge-gui-desktop/target/res
+          cp -R forge-gui/res forge-gui-desktop/target/res
+          echo "FORGE_LAUNCHER=$(pwd)/forge-gui-desktop/target/forge.sh" >> "$GITHUB_ENV"
+
+      - name: Install frozen decks and assignments
+        run: |
+          set -euo pipefail
+          mkdir -p "$HOME/.forge/decks/constructed" elves-replacement-logs
+          cp experiments/face-value/qualification/control/fv-temur-chrysalis-e-final-forge-75.dck "$HOME/.forge/decks/constructed/"
+          cp experiments/face-value/qualification/opponents/elves-mogged-2026-09-19.dck "$HOME/.forge/decks/constructed/"
+
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          d=json.loads(Path('experiments/face-value/qualification/preboard-elves-replacement-v3-seed-registry.json').read_text())
+          with Path('elves-replacement-assignments.tsv').open('w') as out:
+              for r in d['assignments']:
+                  print(r['run_index'], r['face_value_seat'], r['seed'], sep='\t', file=out)
+          PY
+
+          sha256sum             experiments/face-value/qualification/input-identities.sha256             experiments/face-value/qualification/preboard-elves-replacement-v3-seed-registry.json             elves-replacement-assignments.tsv             experiments/face-value/qualification/control/fv-temur-chrysalis-e-final-forge-75.dck             experiments/face-value/qualification/opponents/elves-mogged-2026-09-19.dck             forge-profile-elves-replacement.patch             forge-source-commit.txt > elves-replacement-inputs.sha256
+
+      - name: Execute all 32 frozen assignments once
+        run: |
+          set -uo pipefail
+          control='fv-temur-chrysalis-e-final-forge-75.dck'
+          opponent='elves-mogged-2026-09-19.dck'
+          : > elves-replacement-exit-status.tsv
+          while IFS=$'\t' read -r run_index face_seat seed; do
+            log=$(printf 'elves-replacement-logs/%02d-seat%s-%s.log' "$run_index" "$face_seat" "$seed")
+            if [ "$face_seat" = 1 ]; then
+              timeout 300 "$FORGE_LAUNCHER" sim -d "$control" "$opponent" -n 1 -s "$seed" -c 120 > "$log" 2>&1
+            else
+              timeout 300 "$FORGE_LAUNCHER" sim -d "$opponent" "$control" -n 1 -s "$seed" -c 120 > "$log" 2>&1
+            fi
+            code=$?
+            printf '%s\t%s\t%s\n' "$run_index" "$seed" "$code" >> elves-replacement-exit-status.tsv
+          done < elves-replacement-assignments.tsv
+          exit 0
+
+      - name: Automated audit
+        id: audit
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import json,re
+
+          control='Face Value Temur Chrysalis E Final Forge 75'
+          exits={}
+          for line in Path('elves-replacement-exit-status.tsv').read_text().splitlines():
+              idx,seed,status=line.split('\t')
+              exits[int(idx)]=int(status)
+
+          records=[]
+          for line in Path('elves-replacement-assignments.tsv').read_text().splitlines():
+              idx_s,seat_s,seed_s=line.split('\t')
+              idx,seat,seed=int(idx_s),int(seat_s),int(seed_s)
+              path=Path('elves-replacement-logs') / f'{idx:02d}-seat{seat}-{seed}.log'
+              text=path.read_text(errors='replace') if path.exists() else ''
+              opp=3-seat
+
+              win_face=bool(re.search(rf'Ai\({seat}\)-{re.escape(control)} has won!',text))
+              win_opp=bool(re.search(rf'Ai\({opp}\)-.+ has won!',text))
+              draw='ended in a Draw' in text
+              terminal_count=sum((win_face,win_opp,draw))
+
+              flags=[]
+              for name,pat in {
+                  'exception':r'Exception|StackOverflowError|AssertionError',
+                  'slow_draw':r'Stopping slow match as draw',
+                  'missing_deck':r'Deck not found|Unable to load deck',
+                  'unsupported':r'UnsupportedOperationException|not implemented',
+                  'arena_target_failure':r'Undercity.*failed to target.*Goad target creature',
+              }.items():
+                  if re.search(pat,text,re.I):
+                      flags.append(name)
+              if exits.get(idx,999)!=0:
+                  flags.append(f'process_exit_{exits.get(idx,"missing")}')
+              if terminal_count!=1:
+                  flags.append(f'terminal_count_{terminal_count}')
+              if len(re.findall(r'^Game Outcome: .+ has won because',text,re.I|re.M))>1:
+                  flags.append('contradictory_terminal_bookkeeping')
+
+              ranger_casts=len(re.findall(r'cast Quirion Ranger',text,re.I))
+              ranger_acts=len(re.findall(r'activated Quirion Ranger',text,re.I))
+              winding=len(re.findall(r'cast Winding Way',text,re.I))
+              arena_success=len(re.findall(r'^Add To Stack: .* triggered Undercity targeting \[[^\]]+\]$',text,re.I|re.M))
+
+              records.append({
+                  'run_index':idx,'face_value_seat':seat,'seed':seed,
+                  'winner':'face_value' if win_face else 'opponent' if win_opp else 'draw' if draw else 'unknown',
+                  'flags':sorted(set(flags)),
+                  'ranger_casts':ranger_casts,
+                  'ranger_activations':ranger_acts,
+                  'winding_way_casts':winding,
+                  'arena_successful_targets':arena_success,
+                  'log':str(path),
+              })
+
+          flagged=[r for r in records if r['flags']]
+          metrics={
+              'ranger_casts':sum(r['ranger_casts'] for r in records),
+              'ranger_activations':sum(r['ranger_activations'] for r in records),
+              'winding_way_casts':sum(r['winding_way_casts'] for r in records),
+              'arena_successful_targets':sum(r['arena_successful_targets'] for r in records),
+          }
+          seats={}
+          for seat in (1,2):
+              ss=[r for r in records if r['face_value_seat']==seat]
+              seats[str(seat)]={
+                  'games':len(ss),
+                  'wins':sum(r['winner']=='face_value' for r in ss),
+                  'losses':sum(r['winner']=='opponent' for r in ss),
+                  'draws':sum(r['winner']=='draw' for r in ss),
+              }
+
+          reasons=[]
+          if metrics['ranger_casts']<1: reasons.append('no Quirion Ranger casts')
+          if metrics['ranger_activations']<1: reasons.append('no Quirion Ranger activations')
+          if metrics['winding_way_casts']<1: reasons.append('no Winding Way casts')
+
+          green=(len(records)==32 and not flagged and not reasons and seats['1']['games']==16 and seats['2']['games']==16)
+          summary={
+              'classification':'OFFICIAL_QUALIFICATION_PREBOARD_ELVES_REPLACEMENT_V3',
+              'acceptance':'PENDING_GAMEPLAY_QUALITY_AUDIT' if green else 'QUARANTINED',
+              'games_found':len(records),
+              'flagged_games':len(flagged),
+              'capability_reasons':reasons,
+              'opponent_metrics':metrics,
+              'seats':seats,
+              'records':records,
+          }
+          Path('elves-replacement-summary.json').write_text(json.dumps(summary,indent=2,sort_keys=True)+'\n')
+          Path('elves-replacement-automated-audit.txt').write_text('GREEN_PENDING_GAMEPLAY_REVIEW\n' if green else 'QUARANTINED\n')
+          print(json.dumps({k:v for k,v in summary.items() if k!='records'},indent=2,sort_keys=True))
+          assert green,summary
+          PY
+
+      - name: Package and preserve evidence
+        if: always()
+        run: |
+          set -euo pipefail
+          tar -czf elves-replacement-raw-logs.tar.gz elves-replacement-logs elves-replacement-exit-status.tsv
+          sha256sum elves-replacement-raw-logs.tar.gz elves-replacement-summary.json > elves-replacement-evidence.sha256
+
+      - name: Preserve evidence on branch
+        if: always()
+        env:
+          RUN_ID: ${{ github.run_id }}
+          HEAD_SHA: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          dest="experiments/face-value/qualification/evidence/preboard-elves-replacement-v3/run-${RUN_ID}"
+          mkdir -p "$dest"
+          cp elves-replacement-summary.json elves-replacement-automated-audit.txt elves-replacement-evidence.sha256 elves-replacement-inputs.sha256              forge-source-commit.txt forge-profile-v6-id.txt forge-profile-elves-replacement.patch forge-profile-elves-replacement.sha256              elves-replacement-raw-logs.tar.gz "$dest/"
+          printf 'workflow_run=https://github.com/%s/actions/runs/%s\nhead_sha=%s\n' "$GITHUB_REPOSITORY" "$RUN_ID" "$HEAD_SHA" > "$dest/provenance.txt"
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add "$dest"
+          git commit -m "face-value: preserve Elves preboard replacement evidence run ${RUN_ID}"
+          git push origin HEAD:face-value/lab
+
+      - name: Upload redundant artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: face-value-preboard-elves-replacement-v3-${{ github.run_id }}
+          path: |
+            elves-replacement-summary.json
+            elves-replacement-automated-audit.txt
+            elves-replacement-evidence.sha256
+            elves-replacement-inputs.sha256
+            elves-replacement-raw-logs.tar.gz
+            forge-source-commit.txt
+            forge-profile-v6-id.txt
+            forge-profile-elves-replacement.patch
+            forge-profile-elves-replacement.sha256
+          if-no-files-found: error
