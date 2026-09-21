@@ -1,5 +1,5 @@
 name: Face Value Qualification Undercity Targeting Diagnostic
-# replication-trigger: clear-stale-targets-740981
+# replication-trigger: clean-clone-stale-targets-741001
 # profile-v6 revision 2
 
 on:
@@ -32,6 +32,8 @@ jobs:
           python3 experiments/face-value/qualification/validate_inputs.py >/dev/null
           FORGE_SHA=f387ede550e336315637a8b765f0927ac768c113
           git clone --filter=blob:none https://github.com/Card-Forge/forge.git forge-src
+          git -C forge-src reset --hard
+          git -C forge-src clean -fd
           git -C forge-src checkout --detach "$FORGE_SHA"
           test "$(git -C forge-src rev-parse HEAD)" = "$FORGE_SHA"
           python3 experiments/face-value/qualification/apply_forge_profile_v1.py --forge-root forge-src >/dev/null
@@ -80,7 +82,7 @@ jobs:
 
           python3 - <<'PY'
           from pathlib import Path
-          rows = [f'{1 + i % 2}\t{740981 + i}' for i in range(8)]
+          rows = [f'{1 + i % 2}\t{741001 + i}' for i in range(8)]
           Path('undercity-assignments.tsv').write_text('\n'.join(rows) + '\n', encoding='utf-8')
           PY
 
@@ -89,7 +91,7 @@ jobs:
 
           cat > undercity-disposition.txt <<'EOF'
           DIAGNOSTIC_ONLY_NONLEGAL_UNDERCITY_TARGETING
-          Seeds 740981-740988 and all outcomes are permanently retired diagnostic material.
+          Seeds 741001-741008 and all outcomes are permanently retired diagnostic material.
           These decks are deliberately nonlegal and results have no matchup, tuning, structural-diagnosis, challenger, or qualification authority.
           This gate tests only whether Undercity Arena can select and resolve a legal creature target under the pinned simulator profile.
           EOF
