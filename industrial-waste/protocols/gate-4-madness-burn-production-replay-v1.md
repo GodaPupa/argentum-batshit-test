@@ -25,9 +25,12 @@ This run reuses spent seeds by design. It receives no new namespace, cannot be p
 ## Execution and gates
 
 Replay all eight seeds for both Industrial lists and both seat rotations: 32 games total. The exact
-vector is partitioned by original seed index across two disjoint 16-game CI shards to remain below
-the test-worker time ceiling. Accept evidence only after both shards are complete and merged, and
-only if all games complete without exceptions, rejected actions, or unapproved draw reasons.
+vector was initially partitioned by original seed index across two disjoint 16-game CI shards. The
+even-index shard completed cleanly; the odd-index shard wrote complete output but exceeded the test
+timeout and is quarantined. Only that failed half is subdivided into two disjoint 8-game partitions
+(original zero-based indices 1/5 and 3/7). Accept evidence only after the clean even shard and both
+clean odd subshards are complete and merged, and only if all games complete without exceptions,
+rejected actions, or unapproved draw reasons.
 
 The opponent-policy calibration passes only if:
 

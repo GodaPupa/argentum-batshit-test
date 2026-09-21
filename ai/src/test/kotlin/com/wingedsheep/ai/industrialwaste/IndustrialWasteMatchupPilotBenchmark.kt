@@ -61,7 +61,9 @@ class IndustrialWasteMatchupPilotBenchmark : FunSpec({
         val shardCount = System.getenv("IW_MATCHUP_SHARD_COUNT")?.toInt() ?: 1
         val shardIndex = System.getenv("IW_MATCHUP_SHARD_INDEX")?.toInt() ?: 0
         require(shardCount > 0 && shardIndex in 0 until shardCount) { "invalid matchup shard" }
-        require(!productionReplay || shardCount == 2) { "production replay requires two shards" }
+        require(!productionReplay || shardCount == 2 || shardCount == 4) {
+            "production replay requires a registered two- or four-way partition"
+        }
         val seeds = allSeeds.mapIndexed { index, seed -> index to seed }
             .filter { (index, _) -> index % shardCount == shardIndex }
         require(seeds.isNotEmpty()) { "matchup shard is empty" }
