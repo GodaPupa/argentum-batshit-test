@@ -1,6 +1,6 @@
 # Gate 5 Boros Aggro readiness v1
 
-Status: card implementation qualified; policy/smoke qualification pending; no seeds authorized.
+Status: qualified; two-seed capability pilot authorized separately.
 
 ## Question
 
@@ -74,5 +74,20 @@ a metadata-only failure after all executable behavior passed. The exact MH1 #4 p
 added. Follow-up run 35556984302 then passed frozen-input validation, reproducible committed
 snapshots, the focused card build/scenarios, all eight canonical printing checks, both new JUD/STX
 Assay differentials, and the clean-worktree snapshot gate. Card implementation is therefore
-qualified. Admission items 3–4 (Boros policy fixtures and seed-free matchup smoke) remain closed.
-No seeds were used.
+qualified.
+
+GitHub Actions run 35561071328 then passed all five deterministic opponent-policy fixtures. The
+agent cast Battle Screech from hand and graveyard, materialized its three-creature tap payment,
+flashed back Prismatic Strands, named black against an opposing Pactdoll Terror, activated Perilous
+Landscape's search rather than its mana ability and selected Mountain, and accepted Thrilling
+Discovery's discard/draw branch. This work exposed and fixed a reusable rules-enumeration omission:
+flashback's bundled additional-cost presentation handled Behold and sacrifice, but not
+`TapPermanents`. Both tap-cost flashback fixtures pass after that correction.
+
+The same run passed the exact Control-versus-Boros deterministic smoke. It made 516 accepted actions
+over 24 player-turns, stopped only at the declared 12-turn-per-seat cap, and recorded zero exceptions
+and zero illegal actions. The fixed fixture seed is development-only, unregistered, and not matchup
+evidence.
+
+All four admission items are satisfied. Gate 5 readiness is qualified. No experimental seeds were
+used by readiness work; the separately specified two-seed capability pilot may now execute.

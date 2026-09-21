@@ -50,7 +50,7 @@ Pactdoll-A, confirming the direction at +1 and producing a pooled +3 edge across
 Burn sampling is now closed: the relative Pactdoll-A edge is real enough to carry forward, but both
 lists' absolute Burn matchup remains poor. The next gate is another feasible preboard opponent.
 The next opponent is Boros Aggro from the same 99-player event. Its exact published 75 and selection
-audit are frozen, and all four missing maindeck cards have passed snapshots, focused scenarios,
-printing checks, Assay differentials, and the required full repository test gate. No seed namespace
-or gameplay run is authorized until Boros-specific policy fixtures and a seed-free deterministic
-matchup smoke pass the remaining Gate 5 readiness criteria.
+audit are frozen. All four missing maindeck cards, the Boros-specific policy fixtures, and an exact
+deck deterministic smoke are qualified. The smoke made 516 accepted actions with zero exceptions
+or illegal actions. A minimal two-seed, eight-game paired capability pilot is now authorized under
+`IW-G5-BOROS-PILOT-V1`; it cannot promote either list and no larger Boros sample is authorized.
