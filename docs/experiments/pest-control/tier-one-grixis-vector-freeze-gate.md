@@ -46,3 +46,16 @@ A valid artifact contains the quarantined vector, ordered vector, fixed assignme
 and checksum inventory with disposition `FROZEN_UNEXECUTED`. It records zero initialized games,
 submitted actions, outcome artifacts, and outcome exposure. A later reviewed provenance change is
 required before any execution gate may be considered.
+
+## Frozen result
+
+The sole production dispatch, workflow run `35556631787` at source commit
+`6465548adfa7039ff02edb8834e33318231903f6`, completed successfully on its first attempt. Artifact
+`10620940806` passed its internal checksum inventory and independent audit: four unique nonzero seeds,
+zero overlap with all 534 excluded Pest identities, and the exact four assignment cells above.
+
+Immutable hashes and GitHub artifact metadata are recorded in
+`tier-one-grixis-vector-freeze-provenance.json`. The production `workflow_dispatch` and freeze job are
+removed by the same provenance change, permanently closing the repository's regeneration path. The
+official vector is `FROZEN_UNEXECUTED`; games initialized, actions submitted, and outcome exposure
+remain zero. Execution is not authorized.

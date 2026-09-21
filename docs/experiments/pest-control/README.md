@@ -84,8 +84,12 @@ explicit research decision.
 
 That separate decision now authorizes only the one-time, no-game four-seed freeze gate documented in
 `tier-one-grixis-vector-freeze-gate.md`. Pull requests can exercise only deterministic fixture bytes;
-the production path is manual, single-attempt, artifact-only, collision-audited against 534 Pest seed
+the production path was manual, single-attempt, artifact-only, collision-audited against 534 Pest seed
 identities, and cannot initialize a game or expose an outcome. Execution remains unauthorized.
+
+The one authorized production freeze completed once and is now recorded in
+`tier-one-grixis-vector-freeze-provenance.json`. Its vector is `FROZEN_UNEXECUTED`, its production
+dispatch path has been removed, and official games, actions, and outcome exposure remain zero.
 
 Pest Control versus SoterX Mono Red Madness matchup Block A executed once and is formally rejected
 as `REJECTED_OUTCOME_RELEVANT_TARGET_SELECTION_DEFECTS`. All 50 Block A seeds are permanently
