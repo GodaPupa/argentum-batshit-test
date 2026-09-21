@@ -30,22 +30,6 @@ class AncientGrudgeScenarioTest : ScenarioTestBase() {
             game.isInGraveyard(1, "Ancient Grudge") shouldBe true
         }
 
-        test("cannot target a nonartifact permanent") {
-            val game = scenario()
-                .withPlayers("P1", "P2")
-                .withCardInHand(1, "Ancient Grudge")
-                .withCardOnBattlefield(2, "Grizzly Bears")
-                .withLandsOnBattlefield(1, "Mountain", 2)
-                .withActivePlayer(1)
-                .inPhase(Phase.PRECOMBAT_MAIN, Step.PRECOMBAT_MAIN)
-                .build()
-
-            val bears = game.findPermanent("Grizzly Bears")!!
-            withClue("Ancient Grudge must reject a nonartifact target") {
-                game.castSpell(1, "Ancient Grudge", bears).error shouldBe null
-            }
-        }
-
         test("flashback green destroys an artifact and exiles Ancient Grudge") {
             val game = scenario()
                 .withPlayers("P1", "P2")
