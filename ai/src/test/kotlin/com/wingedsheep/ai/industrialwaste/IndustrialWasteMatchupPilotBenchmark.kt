@@ -22,30 +22,41 @@ class IndustrialWasteMatchupPilotBenchmark : FunSpec({
         enabled = System.getenv("IW_MATCHUP_PILOT") == "true" ||
             System.getenv("IW_MATCHUP_REPLICATION") == "true" ||
             System.getenv("IW_MATCHUP_PRODUCTION_REPLAY") == "true" ||
-            System.getenv("IW_MATCHUP_PRODUCTION_SCREEN") == "true",
+            System.getenv("IW_MATCHUP_PRODUCTION_SCREEN") == "true" ||
+            System.getenv("IW_MATCHUP_PRODUCTION_REPLICATION") == "true",
     ) {
         val pilotRequested = System.getenv("IW_MATCHUP_PILOT") == "true"
         val replicationRequested = System.getenv("IW_MATCHUP_REPLICATION") == "true"
         val productionReplay = System.getenv("IW_MATCHUP_PRODUCTION_REPLAY") == "true"
         val productionScreen = System.getenv("IW_MATCHUP_PRODUCTION_SCREEN") == "true"
+        val productionReplication =
+            System.getenv("IW_MATCHUP_PRODUCTION_REPLICATION") == "true"
         require(
-            listOf(pilotRequested, replicationRequested, productionReplay, productionScreen)
-                .count { it } == 1
+            listOf(
+                pilotRequested,
+                replicationRequested,
+                productionReplay,
+                productionScreen,
+                productionReplication,
+            ).count { it } == 1
         ) {
             "exactly one Industrial Waste matchup mode must be enabled"
         }
         val replication = productionReplay || replicationRequested
         val namespace = when {
+            productionReplication -> PRODUCTION_REPLICATION_NAMESPACE
             productionScreen -> PRODUCTION_SCREEN_NAMESPACE
             replication -> REPLICATION_NAMESPACE
             else -> PILOT_NAMESPACE
         }
         val seedCount = when {
+            productionReplication -> PRODUCTION_REPLICATION_SEED_COUNT
             productionScreen -> PRODUCTION_SCREEN_SEED_COUNT
             replication -> REPLICATION_SEED_COUNT
             else -> PILOT_SEED_COUNT
         }
         val expectedDigest = when {
+            productionReplication -> PRODUCTION_REPLICATION_VECTOR_SHA256
             productionScreen -> PRODUCTION_SCREEN_VECTOR_SHA256
             replication -> REPLICATION_VECTOR_SHA256
             else -> PILOT_VECTOR_SHA256
@@ -84,11 +95,14 @@ class IndustrialWasteMatchupPilotBenchmark : FunSpec({
         require(!productionScreen || shardCount == 8) {
             "fresh production screen requires eight one-seed partitions"
         }
+        require(!productionReplication || shardCount == 8) {
+            "fresh production replication requires eight one-seed partitions"
+        }
         val seeds = allSeeds.mapIndexed { index, seed -> index to seed }
             .filter { (index, _) -> index % shardCount == shardIndex }
         require(seeds.isNotEmpty()) { "matchup shard is empty" }
 
-        val opponentAgent = if (productionReplay || productionScreen) {
+        val opponentAgent = if (productionReplay || productionScreen || productionReplication) {
             ArenaAgent("production-candidate-expiring", AiProfile.PRODUCTION_CANDIDATE_EXPIRING)
         } else {
             ArenaAgents.resolve("v0")
@@ -162,6 +176,8 @@ class IndustrialWasteMatchupPilotBenchmark : FunSpec({
             schemaVersion = 2,
             evidenceClass = if (productionReplay) {
                 "replay-only-opponent-policy-calibration"
+            } else if (productionReplication) {
+                "preboard-matchup-replication"
             } else if (replication || productionScreen) {
                 "preboard-matchup-screen"
             } else {
@@ -175,7 +191,7 @@ class IndustrialWasteMatchupPilotBenchmark : FunSpec({
             shardCount = shardCount,
             opponent = "Madness Burn — Davide Canevazzi, 43rd Super Ingenio, 2026-09-12",
             source = "https://www.mtgtop8.com/event?d=889937&e=90850&f=PAU",
-            opponentProfile = if (productionReplay || productionScreen) {
+            opponentProfile = if (productionReplay || productionScreen || productionReplication) {
                 "production-candidate-expiring"
             } else {
                 "v0"
@@ -197,6 +213,8 @@ class IndustrialWasteMatchupPilotBenchmark : FunSpec({
                 "results/gate-4-madness-burn-production-replay-v1-shard-${shardIndex + 1}-of-$shardCount.json"
             } else if (productionScreen) {
                 "results/gate-4-madness-burn-production-screen-v1-shard-${shardIndex + 1}-of-$shardCount.json"
+            } else if (productionReplication) {
+                "results/gate-4-madness-burn-production-replication-v1-shard-${shardIndex + 1}-of-$shardCount.json"
             } else if (replication) {
                 "results/gate-4-madness-burn-replication-v1.json"
             } else {
@@ -221,6 +239,10 @@ private const val PRODUCTION_SCREEN_NAMESPACE = "IW-G4-MADNESS-BURN-PROD-S1"
 private const val PRODUCTION_SCREEN_SEED_COUNT = 8
 private const val PRODUCTION_SCREEN_VECTOR_SHA256 =
     "134dda1362f5c9719a8e209bd1dec0e3d769a842704a156064f111eddb597031"
+private const val PRODUCTION_REPLICATION_NAMESPACE = "IW-G4-MADNESS-BURN-PROD-R1"
+private const val PRODUCTION_REPLICATION_SEED_COUNT = 8
+private const val PRODUCTION_REPLICATION_VECTOR_SHA256 =
+    "4f12f51b6535464629de73e2dc72260426cfb2277ad52e8ff4287d6a5f35bab7"
 private const val MAX_TURNS = 16
 private const val MAX_ACTIONS = 4_000
 
