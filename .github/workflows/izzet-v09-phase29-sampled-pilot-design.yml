@@ -1,0 +1,66 @@
+name: Izzet v0.9 Phase 29 Sampled-Pilot Design
+
+on:
+  pull_request:
+    paths:
+      - "izzet-science/v09-phase29-sampled-pilot-design-gate.md"
+      - "izzet-science/sim/validate_v09_phase29_sampled_pilot_design.py"
+      - ".github/workflows/izzet-v09-phase29-sampled-pilot-design.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify-phase29:
+    if: github.event_name != 'pull_request' || github.head_ref == 'mayhem/izzet-science'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Verify frozen control and accepted parents
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(sha256sum izzet-science/v0.7-control.md | cut -d' ' -f1)" = "726f5e9458b46dda30b33a6ce9f3c3237b25d6e11b81dac85308c3065c108a01"
+          grep -Fq 'V09_PHASE25_ACTION_SURFACES_ACCEPTED' izzet-science/v09-phase25-real-opponent-action-surfaces-accepted.md
+          grep -Fq 'V09_PHASE26_PUBLIC_STATE_COMPILER_ACCEPTED' izzet-science/v09-phase26-public-state-action-compiler-accepted.md
+          grep -Fq 'V09_PHASE27_OBSERVED_ACTION_BEHAVIOR_ACCEPTED' izzet-science/v09-phase27-observed-action-behavior-accepted.md
+          grep -Fq 'V09_PHASE28_PUBLIC_INTEGRATION_ACCEPTED' izzet-science/v09-phase28-public-integration-accepted.md
+      - name: Run Phase 29 seed-free design validation
+        shell: bash
+        run: |
+          set -euo pipefail
+          python izzet-science/sim/validate_v09_phase29_sampled_pilot_design.py | tee /tmp/phase29.txt
+          grep -Fx "V09_PHASE29_SAMPLED_PILOT_DESIGN_VALIDATION_PASS" /tmp/phase29.txt
+      - name: Assert design-only surface
+        shell: bash
+        run: |
+          set -euo pipefail
+          ! grep -R --line-number -E 'secrets\.SystemRandom\(|random\.SystemRandom\(|os\.urandom\(|execute_game\(|run_matchup\('             izzet-science/v09-phase29-sampled-pilot-design-gate.md             izzet-science/sim/validate_v09_phase29_sampled_pilot_design.py
+      - name: Emit qualification manifest
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/phase29-artifact
+          cp /tmp/phase29.txt /tmp/phase29-artifact/validation.txt
+          {
+            echo "schema=izzet-v09-phase29-sampled-pilot-design-v1"
+            echo "source_sha=${GITHUB_SHA}"
+            echo "control_sha256=726f5e9458b46dda30b33a6ce9f3c3237b25d6e11b81dac85308c3065c108a01"
+            echo "experimental_seeds_generated=0"
+            echo "experimental_seeds_consumed=0"
+            echo "sampled_games=0"
+            echo "outcome_exposure=0"
+            sha256sum izzet-science/v09-phase29-sampled-pilot-design-gate.md
+            sha256sum izzet-science/sim/validate_v09_phase29_sampled_pilot_design.py
+            sha256sum /tmp/phase29-artifact/validation.txt
+          } > /tmp/phase29-artifact/manifest.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: izzet-v09-phase29-sampled-pilot-design
+          path: /tmp/phase29-artifact
+          if-no-files-found: error
