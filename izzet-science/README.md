@@ -150,3 +150,9 @@ seed `0x1A22E7009` remains untouched. Ten adversarial artifacts were rejected, a
 the runner is frozen at SHA256 `1dce15e3555f937964ae571140ca43e763f52747af56c2be71d53a7b7bcebb36`.
 The source commit must be recorded and a temporary exact-checkout workflow separately
 armed before execution. No paired outcomes exist, and v0.7 remains the control.
+
+The experimental source is now frozen at commit
+`2035adc350368f8eeec87a2f960ea05c40763fb8`, tree
+`b2972f92fb1afaf994e9020362960b2c944a76c1`. The runner, seed, and sample identity
+cannot change. The workflow is not yet armed, the seed remains unconsumed, and no
+outcomes are exposed.

@@ -73,3 +73,8 @@ No workflow is authorized by this commit alone. No paired iterator was consumed,
 the assigned master seed remains unconsumed, and no result is known.
 
 Disposition: `V09_PHASE9_PREFLIGHT_VALIDATED`
+
+Experimental source commit `2035adc350368f8eeec87a2f960ea05c40763fb8`, tree
+`b2972f92fb1afaf994e9020362960b2c944a76c1`, is now frozen by the subsequent
+provenance-only record `v09-phase9-paired-source-freeze.md`. A workflow remains
+separately required before execution.
