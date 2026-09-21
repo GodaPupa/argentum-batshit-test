@@ -27,6 +27,10 @@ The construction-only Grixis initializer and telemetry taxonomy are recorded in
 card conservation without taking a game action. No official initializer, vector, runner, or outcome
 exposure exists.
 
+The vectorless composition gate is recorded in `tier-one-grixis-turn-zero-preflight.md`. It binds
+the qualified runner, readiness, construction conservation, telemetry schema, artifact contract,
+and exact activation blockers while keeping the fixed fixture at zero submitted actions.
+
 Pest Control versus SoterX Mono Red Madness matchup Block A executed once and is formally rejected
 as `REJECTED_OUTCOME_RELEVANT_TARGET_SELECTION_DEFECTS`. All 50 Block A seeds are permanently
 retired. The descriptive 35–15 result is inadmissible for acceptance, pooling, or tuning. Preserved
