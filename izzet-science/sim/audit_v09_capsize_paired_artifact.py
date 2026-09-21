@@ -11,7 +11,7 @@ from audit_v09_capsize_paired_output import loads_strict
 from paired_capsize_contract import CONTROL_SHA256,SCHEMA,validate_summary
 
 
-ARTIFACT_SCHEMA="izzet-v09-capsize-paired-artifact-v1"
+ARTIFACT_SCHEMA="izzet-v09-capsize-paired-artifact-v2"
 FILES={"paired-summary.json","paired-audit.txt","paired-runner.py","manifest.json"}
 MANIFEST_KEYS={"schema","experimental_source_sha","workflow_runner_sha",
                "control_sha256","master_seed","samples","through","run_id",

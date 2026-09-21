@@ -202,3 +202,11 @@ emits no outcome fields, and interprets no effect sizes. Both retired runners, t
 accepted control hash, full paired generation, shared payment engine, repeated tutor
 events, aggregation, and strict v2 summary validation are exercised end to end. No
 experimental seed is assigned or consumed and no pilot is authorized.
+
+Phase 14 freezes the v3 10,000-pair runner at SHA256
+`760ce035e6dc81fc001b2f080e87ebfda97be7444819a7a1e2fd7f3afb3eb5b3`.
+Repository and full-history search found `0x00000001A22E7012` unused; it is assigned
+but unconsumed. The run binds summary schema `izzet-v09-capsize-paired-v2` and
+artifact schema `izzet-v09-capsize-paired-artifact-v2`; ten adversarial artifacts
+were rejected. No workflow is authorized until the source commit is separately
+recorded, no outcomes exist, and v0.7 remains the control.
