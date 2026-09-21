@@ -132,6 +132,18 @@ data class GrixisTelemetryIndex(
 
 /** Pure index over canonical raw text. It cannot initialize or advance a game. */
 object PestControlTierOneGrixisTelemetryContract {
+    val schemaFields: List<String> = listOf(
+        "affinityAndCostReduction",
+        "artifactSacrificeAndDraw",
+        "familiarDiscard",
+        "toxinAndShaman",
+        "removalAndDamage",
+        "artifactLands",
+        "graveyardAndRecursion",
+    )
+
+    fun schemaSha256(): String = sha256(schemaFields.joinToString("\n", postfix = "\n").toByteArray())
+
     fun index(actions: List<PriorityAudit>): GrixisTelemetryIndex = indexText(
         actions.map { action ->
             GrixisTelemetryTextTrace(
