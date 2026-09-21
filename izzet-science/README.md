@@ -259,3 +259,11 @@ is aggregated and validated only in memory. Durable output is restricted to
 identity, execution counts, zero-outcome accounting, and disposition; no outcome
 field, effect estimate, or performance interpretation is emitted. The gate assigns
 and consumes no experimental seed and does not yet authorize an official pilot.
+
+Phase 17 run `35554539657` passed exact-source verification, both adjacent controls,
+and all 1,024 matched pairs. Its independently downloaded four-file artifact matched
+GitHub's ZIP digest and every receipt hash; it contained zero serialized interaction
+outcome assignments. Public regression coordinate `1` is not an experimental seed,
+so zero experimental seeds were assigned or consumed. This accepts only the full-
+path invariant qualification. The temporary workflow is removed, ordinary CI is
+restored, the accepted tutor policy is unchanged, and v0.7 remains the card control.
