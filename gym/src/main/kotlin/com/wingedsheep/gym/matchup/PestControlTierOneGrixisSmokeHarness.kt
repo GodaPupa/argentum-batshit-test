@@ -41,7 +41,7 @@ data class GrixisSmokeHarnessReadiness(
 
 /**
  * Pure validation boundary for a future four-game smoke. This object deliberately has no game
- * adapter, execution method, entropy source, or artifact writer. It cannot initialize a game.
+ * initializer, execution method, entropy source, or artifact writer. It cannot initialize a game.
  */
 object PestControlTierOneGrixisSmokeHarness {
     fun cellTemplate(): List<GrixisSmokeCell> = listOf(
@@ -100,7 +100,7 @@ object PestControlTierOneGrixisSmokeHarness {
         if (isUnitTestProcess) add("unit tests cannot activate the smoke harness")
         if (attemptNumber != 1) add("smoke retry is forbidden")
         if (priorOutputExists) add("smoke output already exists")
-        add("no game adapter is defined")
+        add("game adapter has no initialization method")
         add("no execution method is defined")
     }
 }

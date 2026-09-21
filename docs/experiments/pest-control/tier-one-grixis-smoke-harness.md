@@ -8,8 +8,8 @@
 - Future smoke block: `PEST_CONTROL_V10_VS_PASQUALE_GRIXIS_AFFINITY_2026_09_07_PREBOARD_V1_NONEXPERIMENTAL_SMOKE_4`
 
 The accepted Pest Control v1.0 and Pasquale Grixis Affinity identities are unchanged. This gate adds
-only a pure specification and validation boundary. It has no game adapter, execution method,
-entropy source, artifact writer, workflow, seed file, or seed-freeze operation.
+only a pure specification and validation boundary. It has no execution method, entropy source,
+artifact writer, workflow, seed file, or seed-freeze operation.
 
 ## Predeclared smoke shape
 
@@ -32,13 +32,13 @@ if separately authorized after the complete harness is green, do not exist.
 - Official seeds generated: `0`
 - Official games authorized: `0`
 - Outcome exposure: `0`
-- Game adapter: absent
+- Game initialization method: absent
 - Execution method: absent
 
 Activation validation independently rejects a disabled state, missing vector, missing explicit
-authorization, unit-test execution, attempts other than one, existing output, the absent adapter,
-and the absent execution method. No test in this gate can initialize a game.
+authorization, unit-test execution, attempts other than one, existing output, the absence of a game
+initialization method, and the absent execution method. No test in this gate can initialize a game.
 
-The next justified gate is implementation of a deterministic adapter and artifact contract while
-keeping execution disabled and the vector absent. No smoke or official gameplay is authorized by
-this document.
+The provenance-only adapter and byte-level artifact contract are implemented in the following gate.
+They use synthetic in-memory fixtures and expose no game initializer. Execution remains disabled and
+the vector remains absent. No smoke or official gameplay is authorized by this document.

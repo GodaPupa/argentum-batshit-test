@@ -16,7 +16,11 @@ game is authorized or present; outcome exposure remains zero.
 
 The following disabled smoke-harness specification is recorded in
 `tier-one-grixis-smoke-harness.md`. It fixes four balanced seat/play-draw cells but contains no
-entropy, seed vector, adapter, execution method, workflow, or game initialization path.
+entropy, seed vector, execution method, workflow, or game initialization path.
+
+The deterministic provenance adapter and byte-level reconciliation layer are recorded in
+`tier-one-grixis-adapter-artifact-contract.md`. They use synthetic in-memory fixtures, expose no game
+initializer, and leave the harness disabled with no vector or outcome exposure.
 
 Pest Control versus SoterX Mono Red Madness matchup Block A executed once and is formally rejected
 as `REJECTED_OUTCOME_RELEVANT_TARGET_SELECTION_DEFECTS`. All 50 Block A seeds are permanently
