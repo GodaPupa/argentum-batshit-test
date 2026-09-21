@@ -1,0 +1,66 @@
+name: Izzet Position-1 Execution Adapter Qualification
+
+on:
+  pull_request:
+    paths:
+      - "izzet-science/v09-position1-execution-adapter-gate.md"
+      - "izzet-science/sim/phase33_position1_execution_adapter.py"
+      - "izzet-science/sim/validate_v09_position1_execution_adapter.py"
+      - ".github/workflows/izzet-v09-position1-execution-adapter.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    if: github.event_name != 'pull_request' || github.head_ref == 'mayhem/izzet-science'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Verify parent acceptances
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -Fq 'V09_PHASE31_SEED_VECTOR_FREEZE_ACCEPTED' izzet-science/v09-phase31-seed-vector-freeze-accepted.md
+          grep -Fq 'V09_PHASE32_EXECUTION_READINESS_ACCEPTED' izzet-science/v09-phase32-execution-readiness-accepted.md
+          grep -Fq 'V09_PHASE33_POSITION1_EXECUTION_AUTHORIZATION_ACCEPTED' izzet-science/v09-phase33-position1-execution-authorization-accepted.md
+      - name: Run synthetic adapter qualification
+        shell: bash
+        run: |
+          set -euo pipefail
+          export PYTHONPATH="$PWD/izzet-science/sim"
+          python izzet-science/sim/validate_v09_position1_execution_adapter.py | tee /tmp/adapter.txt
+          grep -Fx 'V09_POSITION1_EXECUTION_ADAPTER_VALIDATION_PASS' /tmp/adapter.txt
+      - name: Assert no official artifact fetch or real game invocation
+        shell: bash
+        run: |
+          set -euo pipefail
+          ! grep --line-number -E '10627816776|actions/download-artifact|gh api|curl .*artifacts|official.*seed' \
+            izzet-science/sim/validate_v09_position1_execution_adapter.py
+      - name: Emit manifest
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/adapter-artifact
+          cp /tmp/adapter.txt /tmp/adapter-artifact/validation.txt
+          {
+            echo "schema=izzet-v09-position1-execution-adapter-v1"
+            echo "source_sha=${GITHUB_SHA}"
+            echo "experimental_seeds_consumed=0"
+            echo "games_initialized=0"
+            echo "outcome_exposure=0"
+            sha256sum izzet-science/v09-position1-execution-adapter-gate.md
+            sha256sum izzet-science/sim/phase33_position1_execution_adapter.py
+            sha256sum izzet-science/sim/validate_v09_position1_execution_adapter.py
+            sha256sum /tmp/adapter-artifact/validation.txt
+          } > /tmp/adapter-artifact/manifest.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: izzet-v09-position1-execution-adapter
+          path: /tmp/adapter-artifact
+          if-no-files-found: error
