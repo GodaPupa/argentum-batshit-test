@@ -36,6 +36,10 @@ The validation-only official initialization boundary is recorded in
 durable-attempt prerequisites but exposes no initializer implementation or environment-returning
 method.
 
+The pure synthetic coordinator ledger is recorded in `tier-one-grixis-coordinator-ledger.md`. It
+enforces durable attempt-before-initialize-before-record ordering, global game order, terminal
+rejection, and complete-only validation without owning callbacks, seeds, or environments.
+
 Pest Control versus SoterX Mono Red Madness matchup Block A executed once and is formally rejected
 as `REJECTED_OUTCOME_RELEVANT_TARGET_SELECTION_DEFECTS`. All 50 Block A seeds are permanently
 retired. The descriptive 35–15 result is inadmissible for acceptance, pooling, or tuning. Preserved
