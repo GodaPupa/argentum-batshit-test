@@ -42,7 +42,9 @@ class IndustrialWasteTempoGrixisPilotBenchmark : FunSpec({
             """(?s)"namespace"\s*:\s*"${TEMPO_GRIXIS_NAMESPACE}".*?"vector_sha256"\s*:\s*"([^"]+)""""
         ).find(registryText)?.groupValues?.get(1) ?: error("Tempo A Grixis namespace not registered")
         if (registered != computedDigest) {
-            error("TEMPO_GRIXIS_DIGEST computed=" + computedDigest + " registered=" + registered)
+            println("TEMPO_GRIXIS_DIGEST computed=" + computedDigest + " registered=" + registered)
+            System.out.flush()
+            error("Tempo A Grixis pilot seed vector drift")
         }
 
         val industrialBase = AiProfile.PRODUCTION_CANDIDATE_EXPIRING
