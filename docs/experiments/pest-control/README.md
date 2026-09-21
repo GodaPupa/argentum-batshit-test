@@ -110,6 +110,11 @@ recorded in `tier-one-grixis-official-loader-validation-provenance.json`; its ma
 official-artifact job are removed. Four values were parsed privately, none were exposed or consumed,
 and games, actions, and outcome exposure remain zero.
 
+The digest-only gate in `tier-one-grixis-execution-admission-gate.md` composes the frozen binding,
+loader-validation evidence, disabled loader, and disabled official initializer. It remains green only
+while execution admission is blocked and exposes no official bytes, seed, initializer, runner, or
+outcome-producing surface.
+
 Pest Control versus SoterX Mono Red Madness matchup Block A executed once and is formally rejected
 as `REJECTED_OUTCOME_RELEVANT_TARGET_SELECTION_DEFECTS`. All 50 Block A seeds are permanently
 retired. The descriptive 35–15 result is inadmissible for acceptance, pooling, or tuning. Preserved
