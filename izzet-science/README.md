@@ -223,3 +223,11 @@ did not reduce the modeled T10 lethal clock. The artifact is accepted and the tu
 policy is promoted for future stateful modeling; no card is promoted and the exact
 v0.7 deck remains the accepted card control. Seed `0x00000001A22E7012` and the v3
 runner are retired, and the ordinary workflow is restored.
+
+Phase 15 begins the opponent-aware path with a seed-free Capsize resolution gate.
+Twelve deterministic fixtures now cover target legality, exact normal and buyback
+payment, Electromancer reduction, successful return and retention, countered and
+target-illegal failures, explicit commander hand/command-zone branches, and the
+three recovered mana-source classes. The gate deliberately assigns no opponent
+deck, threat frequency, tempo value, survival rate, or win rate. No sample or seed
+is consumed, no card changes, and v0.7 remains the exact accepted card control.
