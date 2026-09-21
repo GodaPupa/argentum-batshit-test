@@ -26,7 +26,7 @@ jobs:
           test "$(sha256sum izzet-science/v0.7-control.md | cut -d' ' -f1)" = "726f5e9458b46dda30b33a6ce9f3c3237b25d6e11b81dac85308c3065c108a01"
           test "$(sha256sum izzet-science/v09-phase31-seed-vector-freeze-gate.md | cut -d' ' -f1)" = "27b64e27b6c9528cd84a2d1dcf831e5f93010282d1d816db9872464604dd4733"
           test "$(sha256sum izzet-science/seed-registry-v1.json | cut -d' ' -f1)" = "cc1d9777837dbb255d4bffc92b1da611ad2db52d259ab725918487639ad76565"
-          test "$(sha256sum izzet-science/phase31-one-time-generation.authorized | cut -d' ' -f1)" = "99b90e4f65adb349cb96da2563a59fa09b75f9ab3c089f4cfd313a6ea43ab662"
+          test "$(sha256sum izzet-science/phase31-one-time-generation.authorized | cut -d' ' -f1)" = "3557ca110bdd9aec1d03302d55f09738d275c5e39fc35836f33dca721c657159"
           grep -Fq 'V09_PHASE31_COMPLETED_REGISTRY_STATIC_ACCEPTED' izzet-science/v09-phase31-completed-registry-static-accepted.md
           test "$(sha256sum izzet-science/sim/phase31_seed_vector.py | cut -d' ' -f1)" = "4c2870d7f01238dfe4317e057f0788c2ba7f434335e820140b62c3fb1442e54a"
           test "$(sha256sum izzet-science/sim/sampled_pilot_runner.py | cut -d' ' -f1)" = "864d46745c7ffd1c1e9c8eef48c5a0ad14b34938aa0a6066d94ab7a394516fc3"
