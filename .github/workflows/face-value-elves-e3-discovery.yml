@@ -1,0 +1,181 @@
+name: Face Value Elves E3 Discovery
+
+on:
+  push:
+    branches: [face-value/lab]
+    paths:
+      - experiments/face-value/qualification/elves-e3-discovery-seed-registry.json
+      - .github/workflows/face-value-elves-e3-discovery.yml
+
+permissions:
+  contents: write
+
+concurrency:
+  group: face-value-elves-e3-discovery
+  cancel-in-progress: false
+
+jobs:
+  execute-audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: face-value/lab
+          fetch-depth: 0
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - name: Validate frozen discovery inputs
+        run: |
+          set -euo pipefail
+          python3 experiments/face-value/qualification/validate_inputs.py >/dev/null
+          cd experiments/face-value/qualification
+          sha256sum -c elves-e3-discovery-seed-registry.sha256
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          d=json.loads(Path('elves-e3-discovery-seed-registry.json').read_text())
+          r=d['assignments']
+          assert d['classification']=='DISCOVERY_ELVES_SIDEBOARD_E3'
+          assert d['design']['discovery_only'] and not d['design']['promotion_authority']
+          assert d['authority']['peace_capability_run']==35640288402
+          assert len(r)==32 and len({x['seed'] for x in r})==32
+          assert sum(x['face_value_seat']==1 for x in r)==16
+          assert sum(x['face_value_seat']==2 for x in r)==16
+          PY
+      - name: Build pinned Forge profile
+        run: |
+          set -euxo pipefail
+          FORGE_SHA=f387ede550e336315637a8b765f0927ac768c113
+          git clone --filter=blob:none https://github.com/Card-Forge/forge.git forge-src
+          git -C forge-src checkout --detach "$FORGE_SHA"
+          python3 experiments/face-value/qualification/apply_forge_profile_v1.py --forge-root forge-src >/dev/null
+          python3 experiments/face-value/qualification/apply_forge_profile_v2.py --forge-root forge-src >/dev/null
+          python3 experiments/face-value/qualification/apply_forge_profile_v3.py --forge-root forge-src >/dev/null
+          python3 experiments/face-value/qualification/apply_forge_profile_v4.py --forge-root forge-src >/dev/null
+          python3 experiments/face-value/qualification/apply_forge_profile_v6.py --forge-root forge-src > forge-profile-v6-id.txt
+          test "$(cat forge-profile-v6-id.txt)" = 'FACE_VALUE_QUALIFICATION_FORGE_PROFILE_V6_UNDERCITY_TARGETING'
+          cd forge-src
+          mvn -B -DskipTests -pl forge-gui-desktop -am package
+          chmod +x forge-gui-desktop/target/forge.sh
+          rm -rf forge-gui-desktop/target/res
+          cp -R forge-gui/res forge-gui-desktop/target/res
+          echo "FORGE_LAUNCHER=$(pwd)/forge-gui-desktop/target/forge.sh" >> "$GITHUB_ENV"
+      - name: Install postboard E3 and assignments
+        run: |
+          set -euo pipefail
+          mkdir -p "$HOME/.forge/decks/constructed" e3-logs
+          cat > "$HOME/.forge/decks/constructed/e3-postboard.dck" <<'EOF'
+          [metadata]
+          Name=Face Value Elves Sideboard E3 POSTBOARD
+          Deck Type=constructed
+          [main]
+          4 Llanowar Elves
+          4 Nest Invader
+          4 Eldrazi Repurposer
+          1 Eyeless Watcher
+          4 Writhing Chrysalis
+          4 Wretched Gryff
+          1 It of the Horrid Swarm
+          2 Annoyed Altisaur
+          1 Drownyard Lurker
+          3 Generous Ent
+          4 Malevolent Rumble
+          1 Growth Spasm
+          2 Snap
+          8 Forest
+          4 Mountain
+          4 Wooded Ridgeline
+          3 Tangled Islet
+          2 Forest
+          2 Breath Weapon
+          2 Moment's Peace
+          EOF
+          cp experiments/face-value/qualification/opponents/elves-mogged-2026-09-19.dck "$HOME/.forge/decks/constructed/opponent-elves.dck"
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          d=json.loads(Path('experiments/face-value/qualification/elves-e3-discovery-seed-registry.json').read_text())
+          with Path('e3-assignments.tsv').open('w') as f:
+              for r in d['assignments']: print(r['run_index'],r['face_value_seat'],r['seed'],sep='\t',file=f)
+          PY
+      - name: Execute 32 frozen discovery assignments once
+        run: |
+          set -uo pipefail
+          : > e3-exit-status.tsv
+          while IFS=$'\t' read -r idx seat seed; do
+            log=$(printf 'e3-logs/%02d-seat%s-%s.log' "$idx" "$seat" "$seed")
+            if [ "$seat" = 1 ]; then
+              timeout 300 "$FORGE_LAUNCHER" sim -d e3-postboard.dck opponent-elves.dck -n 1 -s "$seed" -c 120 > "$log" 2>&1
+            else
+              timeout 300 "$FORGE_LAUNCHER" sim -d opponent-elves.dck e3-postboard.dck -n 1 -s "$seed" -c 120 > "$log" 2>&1
+            fi
+            code=$?
+            printf '%s\t%s\t%s\n' "$idx" "$seed" "$code" >> e3-exit-status.tsv
+          done < e3-assignments.tsv
+          exit 0
+      - name: Audit discovery block
+        run: |
+          python3 - <<'PY'
+          import json,re
+          from pathlib import Path
+          exits={}
+          for line in Path('e3-exit-status.tsv').read_text().splitlines():
+              i,s,c=line.split('\t'); exits[int(i)]=int(c)
+          rows=[]
+          for line in Path('e3-assignments.tsv').read_text().splitlines():
+              a,b,c=line.split('\t'); i=int(a); seat=int(b); seed=int(c)
+              p=Path('e3-logs')/f'{i:02d}-seat{seat}-{seed}.log'
+              t=p.read_text(errors='replace') if p.exists() else ''
+              opp=3-seat
+              fv=bool(re.search(rf'Ai\({seat}\)-Face Value Elves Sideboard E3 POSTBOARD has won!',t))
+              op=bool(re.search(rf'Ai\({opp}\)-.+ has won!',t))
+              draw='ended in a Draw' in t
+              flags=[]
+              if exits.get(i,999)!=0: flags.append(f'process_exit_{exits.get(i,"missing")}')
+              if sum((fv,op,draw))!=1: flags.append('terminal_count_not_1')
+              for name,pat in {'exception':r'Exception|StackOverflowError|AssertionError',
+                               'slow_draw':r'Stopping slow match as draw',
+                               'missing_deck':r'Deck not found|Unable to load deck',
+                               'unsupported':r'UnsupportedOperationException|not implemented'}.items():
+                  if re.search(pat,t,re.I): flags.append(name)
+              rows.append({'run_index':i,'face_value_seat':seat,'seed':seed,
+                           'winner':'face_value' if fv else 'opponent' if op else 'draw' if draw else 'unknown',
+                           'flags':sorted(set(flags)),
+                           'peace_casts':len(re.findall(r"cast Moment's Peace",t,re.I)),
+                           'flashback_markers':t.lower().count('replacement effect: flashback'),
+                           'breath_casts':len(re.findall(r'cast Breath Weapon',t,re.I))})
+          bad=[r for r in rows if r['flags']]
+          summary={'classification':'DISCOVERY_ELVES_SIDEBOARD_E3',
+                   'acceptance':'DISCOVERY_VALID_PENDING_INTERPRETATION' if len(rows)==32 and not bad else 'QUARANTINED',
+                   'games':len(rows),'wins':sum(r['winner']=='face_value' for r in rows),
+                   'losses':sum(r['winner']=='opponent' for r in rows),
+                   'draws':sum(r['winner']=='draw' for r in rows),'flagged_games':len(bad),
+                   'peace_casts':sum(r['peace_casts'] for r in rows),
+                   'flashback_markers':sum(r['flashback_markers'] for r in rows),
+                   'breath_casts':sum(r['breath_casts'] for r in rows),'records':rows}
+          Path('e3-summary.json').write_text(json.dumps(summary,indent=2,sort_keys=True)+'\n')
+          print(json.dumps({k:v for k,v in summary.items() if k!='records'},indent=2,sort_keys=True))
+          assert len(rows)==32 and not bad
+          PY
+      - name: Preserve discovery evidence
+        if: always()
+        env:
+          RUN_ID: ${{ github.run_id }}
+          HEAD_SHA: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          tar -czf e3-raw-logs.tar.gz e3-logs e3-exit-status.tsv
+          dest="experiments/face-value/qualification/evidence/elves-e3-discovery/run-${RUN_ID}"
+          mkdir -p "$dest"
+          cp e3-summary.json e3-raw-logs.tar.gz forge-profile-v6-id.txt "$dest/"
+          printf 'workflow_run=https://github.com/%s/actions/runs/%s\nhead_sha=%s\n' "$GITHUB_REPOSITORY" "$RUN_ID" "$HEAD_SHA" > "$dest/provenance.txt"
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add "$dest"
+          git commit -m "face-value: preserve Elves E3 discovery evidence run ${RUN_ID}"
+          git fetch origin face-value/lab
+          git rebase origin/face-value/lab
+          git push origin HEAD:face-value/lab
