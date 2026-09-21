@@ -1,3 +1,41 @@
+// Boreal Druid
+{
+    "name": "Boreal Druid",
+    "manaCost": "{G}",
+    "typeLine": "Snow Creature — Elf Druid",
+    "oracleText": "{T}: Add {C}.",
+    "creatureStats": {
+        "power": 1,
+        "toughness": 1
+    },
+    "script": {
+        "activatedAbilities": [
+            {
+                "id": "ability_1",
+                "cost": "CostTap",
+                "effect": {
+                    "type": "AddColorlessMana",
+                    "amount": {
+                        "type": "Fixed",
+                        "amount": 1
+                    }
+                },
+                "timing": "ManaAbility",
+                "isManaAbility": true
+            }
+        ]
+    },
+    "metadata": {
+        "collectorNumber": "105",
+        "artist": "Dan Dos Santos",
+        "flavorText": "Some creatures are bound to the cold by Rimewind magic. Others seek it out, adapted by two thousand years of the Ice. The Boreal, where Heidar's frigid sway is strongest, is home to both.",
+        "imageUri": "https://cards.scryfall.io/normal/front/4/7/473d3633-6dc7-4026-a50e-3ea76b9e8c20.jpg"
+    },
+    "colorIdentityOverride": [
+        "GREEN"
+    ]
+}
+
 // Deathmark
 {
     "name": "Deathmark",
