@@ -31,7 +31,7 @@ object PestControlTierOneGrixisExecutionContract {
         val errors = mutableListOf<String>()
         val boundary = PestControlTierOneGrixisOfficialInitializationBoundary.inspect(registry)
         if (!boundary.failClosed) errors += "official initialization boundary is not fail closed"
-        if (boundary.activationBlockers.none { it == "official initializer implementation is absent" }) {
+        if (boundary.activationBlockers.none { it == "official initializer is disabled" }) {
             errors += "official initializer terminal blocker is absent"
         }
         val ledger = PestControlTierOneGrixisCoordinatorLedger.validate(events, disposition)

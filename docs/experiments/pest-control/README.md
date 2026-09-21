@@ -48,6 +48,12 @@ The runner-surface audit is recorded in `tier-one-grixis-runner-surface-prefligh
 that workflows, tools, server entry points, and compiled public APIs expose no official Grixis
 initializer or execution path.
 
+The private disabled initializer is recorded in
+`tier-one-grixis-disabled-official-initializer.md`. It accepts no caller entropy or official
+identity, validates only the fixed excluded construction fixture, exposes no public environment,
+and remains unreachable from workflows and commands. Official seeds, games, and outcome exposure
+remain zero.
+
 Pest Control versus SoterX Mono Red Madness matchup Block A executed once and is formally rejected
 as `REJECTED_OUTCOME_RELEVANT_TARGET_SELECTION_DEFECTS`. All 50 Block A seeds are permanently
 retired. The descriptive 35–15 result is inadmissible for acceptance, pooling, or tuning. Preserved
