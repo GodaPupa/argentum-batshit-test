@@ -34,6 +34,9 @@ class PestControlTierOneGrixisRunnerSurfacePreflightTest : FunSpec({
                 "PestControlTierOneGrixisDisabledSingleGame" to publicMethods(
                     PestControlTierOneGrixisDisabledSingleGame::class.java,
                 ),
+                "PestControlTierOneGrixisDisabledFourCellPlan" to publicMethods(
+                    PestControlTierOneGrixisDisabledFourCellPlan::class.java,
+                ),
             ),
         )
         val result = PestControlTierOneGrixisRunnerSurfacePreflight.inspect(inventory)
@@ -42,7 +45,7 @@ class PestControlTierOneGrixisRunnerSurfacePreflightTest : FunSpec({
         result.green shouldBe true
         (result.workflowFilesAudited > 0) shouldBe true
         (result.commandFilesAudited > 0) shouldBe true
-        result.classesAudited shouldBe 4
+        result.classesAudited shouldBe 5
         result.officialSeedsGenerated shouldBe 0
         result.officialGamesInitialized shouldBe 0
         result.outcomeExposure shouldBe 0
@@ -58,6 +61,7 @@ class PestControlTierOneGrixisRunnerSurfacePreflightTest : FunSpec({
                     "PestControlTierOneGrixisOfficialInitializationBoundary" to setOf("inspect"),
                     "PestControlTierOneGrixisExecutionContract" to setOf("inspect", "execute"),
                     "PestControlTierOneGrixisDisabledSingleGame" to setOf("inspect"),
+                    "PestControlTierOneGrixisDisabledFourCellPlan" to setOf("inspect"),
                 ),
             )
         )

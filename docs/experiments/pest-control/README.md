@@ -59,6 +59,10 @@ The disabled Game-1 wiring contract is recorded in
 and pinned disabled-initializer proofs without accepting a vector, assignment, seed, environment,
 action, artifact, or outcome.
 
+The complete seedless plan is recorded in `tier-one-grixis-disabled-four-cell-plan.md`. It binds all
+four ordered cells and their 2/2 seat and starting-deck balances while retaining zero assignments,
+official seeds, games, actions, artifacts, and outcomes.
+
 Pest Control versus SoterX Mono Red Madness matchup Block A executed once and is formally rejected
 as `REJECTED_OUTCOME_RELEVANT_TARGET_SELECTION_DEFECTS`. All 50 Block A seeds are permanently
 retired. The descriptive 35–15 result is inadmissible for acceptance, pooling, or tuning. Preserved
