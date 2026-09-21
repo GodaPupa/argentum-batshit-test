@@ -1,0 +1,42 @@
+name: Pest Control Grixis SALVAGE_CONTINUATION_11 Artifact VALIDATE_ONLY
+
+on:
+  pull_request:
+    paths:
+      - gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOneGrixisSalvageContinuationOfficialArtifactValidationTest.kt
+      - .github/workflows/pest-control-tier-one-grixis-salvage-11-artifact-validate.yml
+      - docs/experiments/pest-control/tier-one-grixis-salvage-11-artifact-validation.md
+
+permissions:
+  actions: read
+  contents: read
+
+jobs:
+  validate-only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: gradle/actions/setup-gradle@v6
+
+      - name: Download exact original frozen replication artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p build/pest-grixis-continuation-input
+          curl -fsSL -H "Authorization: Bearer ${GH_TOKEN}" -H "Accept: application/vnd.github+json"             "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/artifacts/10660335894/zip"             -o build/pest-grixis-replication-freeze.zip
+          echo "49597c4a3011464e1d4bb707dfa1b554090054059e0675254524c92fcce8d6fd  build/pest-grixis-replication-freeze.zip" | sha256sum -c -
+          unzip -q build/pest-grixis-replication-freeze.zip -d build/pest-grixis-continuation-input
+          cd build/pest-grixis-continuation-input
+          sha256sum -c artifacts.sha256
+
+      - name: Validate untouched suffix without gameplay
+        env:
+          PEST_GRIXIS_CONTINUATION_MODE: VALIDATE_CONTINUATION_ONLY
+          PEST_GRIXIS_CONTINUATION_INPUT_DIR: ${{ github.workspace }}/build/pest-grixis-continuation-input
+        run: scripts/test-class PestControlTierOneGrixisSalvageContinuationOfficialArtifactValidationTest --info --stacktrace
