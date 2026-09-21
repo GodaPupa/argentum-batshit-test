@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "face-value-edh-r1-fixture.schema.json",
+  "title": "Face Value EDH R1 Synthetic Fixture",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["fixture_id","surface","synthetic","official_material","initial_state","decision","expected"],
+  "properties": {
+    "fixture_id": {"type":"string","pattern":"^FVEDH-R1-[A-Z0-9_-]+$"},
+    "surface": {"enum":["ordinary_cast","targeted_interaction","stack_priority","commander_unavailable","food_chain_pressure"]},
+    "synthetic": {"const":true},
+    "official_material": {"const":false},
+    "initial_state": {
+      "type":"object",
+      "additionalProperties":false,
+      "required":["active_player","priority_player","zones","stack","commander"],
+      "properties":{
+        "active_player":{"type":"string","minLength":1},
+        "priority_player":{"type":"string","minLength":1},
+        "zones":{"type":"object"},
+        "stack":{"type":"array"},
+        "commander":{
+          "type":"object","additionalProperties":false,
+          "required":["name","zone","tax"],
+          "properties":{
+            "name":{"const":"Animar, Soul of Elements"},
+            "zone":{"enum":["command","battlefield","graveyard","exile","hand","library"]},
+            "tax":{"type":"integer","minimum":0}
+          }
+        }
+      }
+    },
+    "decision":{
+      "type":"object","additionalProperties":false,
+      "required":["action","supported"],
+      "properties":{
+        "action":{"type":"string","minLength":1},
+        "supported":{"type":"boolean"},
+        "targets":{"type":"array","items":{"type":"string"}}
+      }
+    },
+    "expected":{
+      "type":"object","additionalProperties":false,
+      "required":["result"],
+      "properties":{
+        "result":{"enum":["accept","reject_unsupported","reject_illegal"]},
+        "reason":{"type":"string"}
+      }
+    }
+  }
+}
