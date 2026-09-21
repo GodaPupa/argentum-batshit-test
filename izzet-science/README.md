@@ -322,3 +322,17 @@ independently downloaded six-file artifact matched GitHub's ZIP digest and every
 receipt hash after accounting for GitHub's stripped upload-directory prefix. The
 ledger contract is accepted as methodology only. The temporary workflow is removed,
 ordinary CI is restored, and v0.7 remains the exact card control.
+
+Phase 21 derives the Phase-20 facts from concrete decision-time state rather than
+renamed Boolean declarations. Public opponent-event consequences determine life or
+poison loss, target class and legality, and next-main plan intersections. The
+Guildmage rescue predicate is deliberately separated: it reads only the responder's
+own legally known hand, battlefield, and ready mana through the existing exact combo
+launch function. No opponent hidden zone is represented or inspected.
+
+Phase 21 run `35559436303` passed the complete adjacent semantic chain, 192
+threshold states, four plan-intersection states, and fourteen malformed-input
+rejections. Its independently downloaded seven-file artifact matched GitHub's ZIP
+digest and every receipt hash. Zero games ran and zero seeds were assigned or
+consumed. The adapter is accepted as methodology only, ordinary CI is restored,
+and v0.7 remains the exact card control.
