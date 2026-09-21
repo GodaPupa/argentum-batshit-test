@@ -38,7 +38,7 @@ object PestControlTierOneGrixisReplicationAuthorizedInitializer {
         val readinessErrors = PestControlTierOneGrixisReadiness.validationErrors(TierOneGrixisReadiness(), registry)
         require(readinessErrors.isEmpty()) { readinessErrors.joinToString("; ") }
 
-        val provenance = PestControlTierOneGrixisGameAdapter.provenance(
+        val provenance = PestControlTierOneGrixisReplicationGameAdapter.provenance(
             assignment = assignment,
             vectorIdentity = vectorIdentity,
             sourceCommit = executionCommit,
