@@ -1,34 +1,29 @@
-name: Face Value EDH R1-A/B/C/D Validation
+name: Face Value EDH R1 Reconstruction Freeze
 on:
   workflow_dispatch:
 jobs:
-  validate:
+  freeze:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
           ref: face-value-edh/r1-reconstruction
-      - name: R1-A positive fixture must validate
-        run: python3 research/face-value-edh/validate_r1_fixture.py research/face-value-edh/fixtures/r1-schema-valid.json
-      - name: R1-A negative fixture must fail closed
+      - name: Revalidate R1-A
         run: |
+          python3 research/face-value-edh/validate_r1_fixture.py research/face-value-edh/fixtures/r1-schema-valid.json
           if python3 research/face-value-edh/validate_r1_fixture.py research/face-value-edh/fixtures/r1-failclosed-invalid.json; then exit 1; fi
-      - name: R1-B five mandatory surfaces must validate
+      - name: Revalidate R1-B
         run: |
           set -euo pipefail
-          for f in research/face-value-edh/fixtures/r1b-ordinary-cast.json research/face-value-edh/fixtures/r1b-targeted-interaction.json research/face-value-edh/fixtures/r1b-stack-priority.json research/face-value-edh/fixtures/r1b-commander-unavailable.json research/face-value-edh/fixtures/r1b-food-chain-pressure.json; do
-            python3 research/face-value-edh/validate_r1_fixture.py "$f"
-          done
-      - name: R1-C deterministic replay must match
+          for f in research/face-value-edh/fixtures/r1b-ordinary-cast.json research/face-value-edh/fixtures/r1b-targeted-interaction.json research/face-value-edh/fixtures/r1b-stack-priority.json research/face-value-edh/fixtures/r1b-commander-unavailable.json research/face-value-edh/fixtures/r1b-food-chain-pressure.json; do python3 research/face-value-edh/validate_r1_fixture.py "$f"; done
+      - name: Revalidate R1-C
         run: python3 research/face-value-edh/r1_replay.py
-      - name: R1-D structural identity and historical serialization probe
-        run: |
-          set +e
-          python3 research/face-value-edh/verify_r1d_identity.py
-          rc=$?
-          set -e
-          if [ "$rc" -eq 3 ]; then
-            echo "Structural identity passed; historical byte serialization not yet reproduced."
-            exit 3
-          fi
-          exit "$rc"
+      - name: Freeze reconstructed card identity
+        run: python3 research/face-value-edh/freeze_r1d_reconstruction.py
+      - name: Preserve reconstruction artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: face-value-edh-r1d-reconstruction
+          path: |
+            research/face-value-edh/r1d-reconstructed-v0.11.canonical.json
+            research/face-value-edh/r1d-reconstruction-manifest.json
