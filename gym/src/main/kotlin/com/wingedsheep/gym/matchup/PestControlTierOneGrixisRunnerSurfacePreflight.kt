@@ -59,6 +59,9 @@ object PestControlTierOneGrixisRunnerSurfacePreflight {
         val provenanceMethods =
             inventory.publicMethods["PestControlTierOneGrixisDisabledSyntheticProvenance"].orEmpty()
         if (provenanceMethods != setOf("inspect")) errors += "synthetic provenance surface mismatch"
+        val manifestMethods =
+            inventory.publicMethods["PestControlTierOneGrixisDisabledPreExecutionManifest"].orEmpty()
+        if (manifestMethods != setOf("inspect")) errors += "pre-execution manifest surface mismatch"
         return GrixisRunnerSurfacePreflightResult(
             errors = errors.distinct(),
             workflowFilesAudited = inventory.workflowFiles.size,

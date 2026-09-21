@@ -43,6 +43,9 @@ class PestControlTierOneGrixisRunnerSurfacePreflightTest : FunSpec({
                 "PestControlTierOneGrixisDisabledSyntheticProvenance" to publicMethods(
                     PestControlTierOneGrixisDisabledSyntheticProvenance::class.java,
                 ),
+                "PestControlTierOneGrixisDisabledPreExecutionManifest" to publicMethods(
+                    PestControlTierOneGrixisDisabledPreExecutionManifest::class.java,
+                ),
             ),
         )
         val result = PestControlTierOneGrixisRunnerSurfacePreflight.inspect(inventory)
@@ -51,7 +54,7 @@ class PestControlTierOneGrixisRunnerSurfacePreflightTest : FunSpec({
         result.green shouldBe true
         (result.workflowFilesAudited > 0) shouldBe true
         (result.commandFilesAudited > 0) shouldBe true
-        result.classesAudited shouldBe 7
+        result.classesAudited shouldBe 8
         result.officialSeedsGenerated shouldBe 0
         result.officialGamesInitialized shouldBe 0
         result.outcomeExposure shouldBe 0
@@ -70,6 +73,7 @@ class PestControlTierOneGrixisRunnerSurfacePreflightTest : FunSpec({
                     "PestControlTierOneGrixisDisabledFourCellPlan" to setOf("inspect"),
                     "PestControlTierOneGrixisDisabledAssignmentSchema" to setOf("inspect"),
                     "PestControlTierOneGrixisDisabledSyntheticProvenance" to setOf("inspect"),
+                    "PestControlTierOneGrixisDisabledPreExecutionManifest" to setOf("inspect"),
                 ),
             )
         )
