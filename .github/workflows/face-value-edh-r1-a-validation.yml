@@ -1,29 +1,17 @@
-name: Face Value EDH R1 Reconstruction Freeze
+name: Face Value EDH R2-A Validation
 on:
   workflow_dispatch:
 jobs:
-  freeze:
+  validate:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
           ref: face-value-edh/r1-reconstruction
-      - name: Revalidate R1-A
+      - name: Validate R2-A protocol and runner contract
+        run: python3 research/face-value-edh/validate_r2a.py
+      - name: Preserve R1 regression floor
         run: |
           python3 research/face-value-edh/validate_r1_fixture.py research/face-value-edh/fixtures/r1-schema-valid.json
           if python3 research/face-value-edh/validate_r1_fixture.py research/face-value-edh/fixtures/r1-failclosed-invalid.json; then exit 1; fi
-      - name: Revalidate R1-B
-        run: |
-          set -euo pipefail
-          for f in research/face-value-edh/fixtures/r1b-ordinary-cast.json research/face-value-edh/fixtures/r1b-targeted-interaction.json research/face-value-edh/fixtures/r1b-stack-priority.json research/face-value-edh/fixtures/r1b-commander-unavailable.json research/face-value-edh/fixtures/r1b-food-chain-pressure.json; do python3 research/face-value-edh/validate_r1_fixture.py "$f"; done
-      - name: Revalidate R1-C
-        run: python3 research/face-value-edh/r1_replay.py
-      - name: Freeze reconstructed card identity
-        run: python3 research/face-value-edh/freeze_r1d_reconstruction.py
-      - name: Preserve reconstruction artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: face-value-edh-r1d-reconstruction
-          path: |
-            research/face-value-edh/r1d-reconstructed-v0.11.canonical.json
-            research/face-value-edh/r1d-reconstruction-manifest.json
+          python3 research/face-value-edh/r1_replay.py
