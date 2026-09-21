@@ -103,9 +103,13 @@ class IndustrialWasteMadnessBurnPolicyAuditTest : ScenarioTestBase() {
             // than carried inline on CastSpell. Exercise the same decision path as TableGameRunner
             // and verify that the alternative cost actually consumes both Mountains.
             game.execute(action).error shouldBe null
-            game.getPendingDecision()?.let { decision ->
+            var decisions = 0
+            while (game.hasPendingDecision() && decisions < 4) {
+                val decision = game.getPendingDecision()!!
                 game.submitDecision(player.respondToDecision(game.state, decision)).error shouldBe null
+                decisions++
             }
+            game.hasPendingDecision() shouldBe false
             game.state.getZone(ZoneKey(game.player1Id, Zone.BATTLEFIELD))
                 .count { cardName(game, it) == "Mountain" } shouldBe 0
         }
