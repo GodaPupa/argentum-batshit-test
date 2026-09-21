@@ -54,6 +54,11 @@ identity, validates only the fixed excluded construction fixture, exposes no pub
 and remains unreachable from workflows and commands. Official seeds, games, and outcome exposure
 remain zero.
 
+The disabled Game-1 wiring contract is recorded in
+`tier-one-grixis-disabled-single-game.md`. It binds the accepted first cell to the qualified runner
+and pinned disabled-initializer proofs without accepting a vector, assignment, seed, environment,
+action, artifact, or outcome.
+
 Pest Control versus SoterX Mono Red Madness matchup Block A executed once and is formally rejected
 as `REJECTED_OUTCOME_RELEVANT_TARGET_SELECTION_DEFECTS`. All 50 Block A seeds are permanently
 retired. The descriptive 35–15 result is inadmissible for acceptance, pooling, or tuning. Preserved
