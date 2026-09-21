@@ -1,0 +1,73 @@
+name: Pest Control Tier-1 Grixis Smoke Vector Freeze
+
+on:
+  pull_request:
+    paths:
+      - scripts/experiments/pest-control/generate_tier_one_grixis_smoke_freeze.py
+      - .github/workflows/pest-control-tier-one-grixis-smoke-freeze.yml
+      - docs/experiments/pest-control/tier-one-grixis-vector-freeze-gate.md
+  workflow_dispatch:
+    inputs:
+      freeze_ack:
+        description: Exact one-time four-seed freeze acknowledgement; this never runs games
+        required: true
+        type: string
+
+permissions:
+  actions: read
+  contents: read
+
+concurrency:
+  group: pest-control-tier-one-grixis-smoke-vector-freeze
+  cancel-in-progress: false
+
+jobs:
+  validate-gate:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Deterministic entropy-free validation
+        run: |
+          python3 scripts/experiments/pest-control/generate_tier_one_grixis_smoke_freeze.py --preflight
+          python3 scripts/experiments/pest-control/generate_tier_one_grixis_smoke_freeze.py \
+            --validate-fixture \
+            --output-dir build/reports/pest-control-tier-one-grixis-smoke-freeze-fixture
+          test "$(python3 -c 'import json; print(json.load(open("build/reports/pest-control-tier-one-grixis-smoke-freeze-fixture/freeze-manifest.json"))["status"])')" = "NONEXPERIMENTAL_FIXTURE"
+
+  freeze:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fail-closed dispatch guard
+        env:
+          FREEZE_ACK: ${{ inputs.freeze_ack }}
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          test "${GITHUB_REF}" = "refs/heads/main"
+          test "${GITHUB_RUN_ATTEMPT}" = "1"
+          test "${FREEZE_ACK}" = "GENERATE_TIER_ONE_GRIXIS_SMOKE_4_NO_GAMEPLAY"
+          test "$(gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts?name=pest-control-tier-one-grixis-smoke-vector-freeze" --jq '.total_count')" = "0"
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.sha }}
+      - name: Audit frozen source boundary without entropy
+        run: python3 scripts/experiments/pest-control/generate_tier_one_grixis_smoke_freeze.py --preflight
+      - name: Draw and quarantine exactly once; no gameplay
+        env:
+          PEST_GRIXIS_FREEZE_ACK: ${{ inputs.freeze_ack }}
+        run: |
+          FREEZE_TREE="$(git rev-parse 'HEAD^{tree}')"
+          python3 scripts/experiments/pest-control/generate_tier_one_grixis_smoke_freeze.py \
+            --generate \
+            --output-dir build/reports/pest-control-tier-one-grixis-smoke-freeze \
+            --freeze-commit "${GITHUB_SHA}" \
+            --freeze-tree "${FREEZE_TREE}"
+      - name: Upload immutable freeze evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: pest-control-tier-one-grixis-smoke-vector-freeze
+          path: build/reports/pest-control-tier-one-grixis-smoke-freeze/
+          if-no-files-found: error
+          retention-days: 90
