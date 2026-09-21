@@ -9,6 +9,7 @@ import com.wingedsheep.engine.state.components.player.CardsDrawnThisTurnComponen
 import com.wingedsheep.engine.state.components.stack.ChosenTarget
 import com.wingedsheep.engine.support.ScenarioTestBase
 import com.wingedsheep.sdk.model.EntityId
+import com.wingedsheep.sdk.model.Zone
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.types.shouldBeInstanceOf
 
@@ -90,13 +91,22 @@ class IndustrialWasteMadnessBurnPolicyAuditTest : ScenarioTestBase() {
                 .withCardInHand(1, "Fireblast")
                 .withLifeTotal(2, 4)
                 .build()
-            val action = ai(game).chooseAction(game.state)
+            val player = ai(game)
+            val action = player.chooseAction(game.state)
                 .shouldBeInstanceOf<CastSpell>()
-            println("IW_BURN_AUDIT_FIREBLAST_ACTION=$action")
             cardName(game, action.cardId) shouldBe "Fireblast"
             chosenTargetId(action) shouldBe game.player2Id
             action.alternativeCostType shouldBe AlternativeCostType.SELF_ALTERNATIVE
-            action.additionalCostPayment?.sacrificedPermanents?.size shouldBe 2
+
+            // A two-object cost may be completed through the engine's selection decision rather
+            // than carried inline on CastSpell. Exercise the same decision path as TableGameRunner
+            // and verify that the alternative cost actually consumes both Mountains.
+            game.execute(action).error shouldBe null
+            game.getPendingDecision()?.let { decision ->
+                game.submitDecision(player.respondToDecision(game.state, decision)).error shouldBe null
+            }
+            game.state.getZone(com.wingedsheep.engine.state.ZoneKey(game.player1Id, Zone.BATTLEFIELD))
+                .count { cardName(game, it) == "Mountain" } shouldBe 0
         }
 
         test("v0 converts Lava Dart's flashback land cost when lethal") {
