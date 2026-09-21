@@ -39,6 +39,9 @@ class RefurbishedFamiliarScenarioTest : ScenarioTestBase() {
             }
 
             game.castSpell(1, "Refurbished Familiar").error shouldBe null
+            // First resolution puts the creature onto the battlefield; the ETB trigger is then
+            // placed on the stack. Resolve that trigger before inspecting its discard decision.
+            game.resolveStack()
             game.resolveStack()
             val discard = game.getPendingDecision() as SelectCardsDecision
             game.submitDecision(
