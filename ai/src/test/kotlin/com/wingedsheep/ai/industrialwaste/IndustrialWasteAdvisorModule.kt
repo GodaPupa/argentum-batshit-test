@@ -72,6 +72,23 @@ private object MyrRetrieverAdvisor : CardAdvisor {
 private object AncientGrudgeAdvisor : CardAdvisor {
     override val cardNames = setOf("Ancient Grudge")
 
+    override fun targetPreference(
+        state: com.wingedsheep.engine.state.GameState,
+        targetId: EntityId,
+        playerId: EntityId,
+    ): Double? = when (state.cardName(targetId)) {
+        "Myr Enforcer" -> 100.0
+        "Refurbished Familiar" -> 95.0
+        "Utrom Monitor" -> 90.0
+        "Makeshift Munitions" -> 85.0
+        "Nihil Spellbomb" -> 55.0
+        "Blood Fountain" -> 50.0
+        "Ichor Wellspring" -> 45.0
+        "Drossforge Bridge", "Mistvault Bridge", "Silverbluff Bridge" -> 35.0
+        "Great Furnace", "Seat of the Synod", "Vault of Whispers" -> 30.0
+        else -> 10.0
+    }
+
     override fun evaluateCast(context: CastContext): Double? {
         val cast = context.action.action as? com.wingedsheep.engine.core.CastSpell ?: return null
         val targetName = cast.targets.firstOrNull()?.let { target ->
