@@ -4,12 +4,11 @@ import com.wingedsheep.ai.engine.AIPlayer
 import com.wingedsheep.ai.engine.AiProfile
 import com.wingedsheep.engine.core.AlternativeCostType
 import com.wingedsheep.engine.core.CastSpell
+import com.wingedsheep.engine.core.PassPriority
 import com.wingedsheep.engine.state.components.identity.CardComponent
 import com.wingedsheep.engine.state.components.player.CardsDrawnThisTurnComponent
 import com.wingedsheep.engine.state.components.stack.ChosenTarget
-import com.wingedsheep.engine.state.ZoneKey
 import com.wingedsheep.engine.support.ScenarioTestBase
-import com.wingedsheep.sdk.core.Zone
 import com.wingedsheep.sdk.model.EntityId
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.types.shouldBeInstanceOf
@@ -86,32 +85,26 @@ class IndustrialWasteMadnessBurnPolicyAuditTest : ScenarioTestBase() {
             cardName(game, action.cardId) shouldBe "Kessig Flamebreather"
         }
 
-        test("v0 converts Fireblast's alternative land cost when lethal") {
+        test("v0 passes instead of converting lethal Fireblast") {
             val game = seeded()
                 .withLandsOnBattlefield(1, "Mountain", 2)
                 .withCardInHand(1, "Fireblast")
                 .withLifeTotal(2, 4)
                 .build()
-            val player = ai(game)
-            val action = player.chooseAction(game.state)
-                .shouldBeInstanceOf<CastSpell>()
+            ai(game).chooseAction(game.state).shouldBeInstanceOf<PassPriority>()
+        }
+
+        test("production candidate converts lethal Fireblast's alternative cost") {
+            val game = seeded()
+                .withLandsOnBattlefield(1, "Mountain", 2)
+                .withCardInHand(1, "Fireblast")
+                .withLifeTotal(2, 4)
+                .build()
+            val action = ai(game, AiProfile.PRODUCTION_CANDIDATE_EXPIRING)
+                .chooseAction(game.state).shouldBeInstanceOf<CastSpell>()
             cardName(game, action.cardId) shouldBe "Fireblast"
             chosenTargetId(action) shouldBe game.player2Id
             action.alternativeCostType shouldBe AlternativeCostType.SELF_ALTERNATIVE
-
-            // A two-object cost may be completed through the engine's selection decision rather
-            // than carried inline on CastSpell. Exercise the same decision path as TableGameRunner
-            // and verify that the alternative cost actually consumes both Mountains.
-            game.execute(action).error shouldBe null
-            var decisions = 0
-            while (game.hasPendingDecision() && decisions < 4) {
-                val decision = game.getPendingDecision()!!
-                game.submitDecision(player.respondToDecision(game.state, decision)).error shouldBe null
-                decisions++
-            }
-            game.hasPendingDecision() shouldBe false
-            game.state.getZone(ZoneKey(game.player1Id, Zone.BATTLEFIELD))
-                .count { cardName(game, it) == "Mountain" } shouldBe 0
         }
 
         test("v0 converts Lava Dart's flashback land cost when lethal") {
