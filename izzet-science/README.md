@@ -165,3 +165,12 @@ argument parsing or iterator construction, preventing accidental reuse of its
 consumed seed. Adjacent seed-free semantic controls pass with zero sampled games or
 consumed seeds. No pilot is yet authorized, no policy or card is promoted, and v0.7
 remains the accepted control.
+
+Phase 11 freezes a recovered 10,000-pair runner at SHA256
+`2db5bdc6351836ffa3f5c76c98f9966b0a516fbeafc796eb9a2ae85f70932bbe`.
+Repository and full-history search found fresh seed `0x00000001A22E7011` unused;
+it is now assigned but unconsumed, while failed seed `0x00000001A22E7010` remains
+retired. The exact four-file artifact contract rejected ten adversarial fixtures,
+and the recovery preflight includes payment-parity fixtures plus old-runner
+retirement. No workflow is authorized until this source commit is separately
+recorded; no outcomes exist and v0.7 remains the accepted control.
