@@ -30,6 +30,6 @@ ledger remains valid for a failure before the first attempt.
 - Coordinator implementation: absent
 - Execution method: absent
 
-The next justified gate is a disabled execution-coordinator contract that composes this ledger with
-the initialization boundary and artifact index using synthetic records only. It must still expose
-no official runner, initializer, or seed source.
+The following gate is a disabled execution-coordinator contract that composes this ledger with the
+initialization boundary and artifact index using synthetic records only. It still exposes no
+official runner, initializer, or seed source.
