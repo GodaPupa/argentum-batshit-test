@@ -4,6 +4,7 @@ import com.wingedsheep.engine.registry.CardRegistry
 import com.wingedsheep.gym.matchup.IzzetScienceVeteranBeastriderEngineReadiness
 import com.wingedsheep.gym.matchup.IzzetVeteranEngineReadiness
 import com.wingedsheep.mtg.sets.MtgSetCatalog
+import com.wingedsheep.sdk.model.CharacteristicValue
 import com.wingedsheep.sdk.scripting.effects.AddColorlessManaEffect
 import com.wingedsheep.sdk.scripting.values.DynamicAmount
 import io.kotest.core.spec.style.FunSpec
