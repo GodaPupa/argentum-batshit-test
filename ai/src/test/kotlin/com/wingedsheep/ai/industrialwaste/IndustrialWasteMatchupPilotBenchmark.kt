@@ -53,11 +53,18 @@ class IndustrialWasteMatchupPilotBenchmark : FunSpec({
             deck.uniqueCards().forEach(registry::requireCard)
         }
 
-        val seeds = (1..seedCount).map { matchupSeedFor(namespace, it) }
-        require(matchupVectorDigest(seeds) == expectedDigest) { "matchup seed vector drift" }
+        val allSeeds = (1..seedCount).map { matchupSeedFor(namespace, it) }
+        require(matchupVectorDigest(allSeeds) == expectedDigest) { "matchup seed vector drift" }
         require(Files.readString(root.resolve("seed-registry.json")).contains(namespace)) {
             "matchup namespace is not registered"
         }
+        val shardCount = System.getenv("IW_MATCHUP_SHARD_COUNT")?.toInt() ?: 1
+        val shardIndex = System.getenv("IW_MATCHUP_SHARD_INDEX")?.toInt() ?: 0
+        require(shardCount > 0 && shardIndex in 0 until shardCount) { "invalid matchup shard" }
+        require(!productionReplay || shardCount == 2) { "production replay requires two shards" }
+        val seeds = allSeeds.mapIndexed { index, seed -> index to seed }
+            .filter { (index, _) -> index % shardCount == shardIndex }
+        require(seeds.isNotEmpty()) { "matchup shard is empty" }
 
         val opponentAgent = if (productionReplay) {
             ArenaAgent("production-candidate-expiring", AiProfile.PRODUCTION_CANDIDATE_EXPIRING)
@@ -73,7 +80,7 @@ class IndustrialWasteMatchupPilotBenchmark : FunSpec({
             ),
         )
         val outcomes = buildList {
-            seeds.forEachIndexed { seedIndex, seed ->
+            seeds.forEach { (seedIndex, seed) ->
                 industrialDecks.forEach { (deckName, deck) ->
                     repeat(2) { rotation ->
                         val industrialSeat = rotation
@@ -140,8 +147,10 @@ class IndustrialWasteMatchupPilotBenchmark : FunSpec({
             },
             promotionEligible = false,
             namespace = namespace,
-            seedCount = seeds.size,
+            seedCount = allSeeds.size,
             seedVectorSha256 = expectedDigest,
+            shardIndex = shardIndex,
+            shardCount = shardCount,
             opponent = "Madness Burn — Davide Canevazzi, 43rd Super Ingenio, 2026-09-12",
             source = "https://www.mtgtop8.com/event?d=889937&e=90850&f=PAU",
             opponentProfile = if (productionReplay) {
@@ -163,7 +172,7 @@ class IndustrialWasteMatchupPilotBenchmark : FunSpec({
         )
         val output = root.resolve(
             if (productionReplay) {
-                "results/gate-4-madness-burn-production-replay-v1.json"
+                "results/gate-4-madness-burn-production-replay-v1-shard-${shardIndex + 1}-of-$shardCount.json"
             } else if (replication) {
                 "results/gate-4-madness-burn-replication-v1.json"
             } else {
@@ -228,6 +237,8 @@ private data class MatchupPilotReport(
     val namespace: String,
     val seedCount: Int,
     val seedVectorSha256: String,
+    val shardIndex: Int,
+    val shardCount: Int,
     val opponent: String,
     val source: String,
     val opponentProfile: String,
