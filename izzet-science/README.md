@@ -208,5 +208,7 @@ Phase 14 freezes the v3 10,000-pair runner at SHA256
 Repository and full-history search found `0x00000001A22E7012` unused; it is assigned
 but unconsumed. The run binds summary schema `izzet-v09-capsize-paired-v2` and
 artifact schema `izzet-v09-capsize-paired-artifact-v2`; ten adversarial artifacts
-were rejected. No workflow is authorized until the source commit is separately
-recorded, no outcomes exist, and v0.7 remains the control.
+were rejected. The experimental source is frozen at commit
+`5a981b1f4a34b065af0630bf68113f7ac73e94b9`, tree
+`777c2d4b0219871dbed04dfe4daa8a928cb0dace`. No workflow is armed, the seed remains
+unconsumed, no outcomes exist, and v0.7 remains the control.
