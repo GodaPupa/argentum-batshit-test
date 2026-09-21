@@ -1,0 +1,66 @@
+name: Izzet v0.9 Phase 31 Metadata Repair Audit
+
+on:
+  pull_request:
+    paths:
+      - "izzet-science/v09-phase31-seed-freeze-metadata-repair.md"
+      - "izzet-science/seed-registry-v1.json"
+      - "izzet-science/sim/sampled_pilot_runner.py"
+      - "izzet-science/sim/validate_v09_phase31_metadata_repair.py"
+      - ".github/workflows/izzet-v09-phase31-metadata-repair-audit.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  audit-phase31-repair:
+    if: github.event_name != 'pull_request' || github.head_ref == 'mayhem/izzet-science'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Verify frozen parents
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(sha256sum izzet-science/v0.7-control.md | cut -d' ' -f1)" = "726f5e9458b46dda30b33a6ce9f3c3237b25d6e11b81dac85308c3065c108a01"
+          grep -Fq 'V09_PHASE31_COMPLETED_REGISTRY_STATIC_ACCEPTED' izzet-science/v09-phase31-completed-registry-static-accepted.md
+      - name: Audit repaired freeze metadata
+        shell: bash
+        run: |
+          set -euo pipefail
+          python izzet-science/sim/validate_v09_phase31_metadata_repair.py | tee /tmp/phase31-repair.txt
+          grep -Fx "V09_PHASE31_METADATA_REPAIR_AUDIT_PASS" /tmp/phase31-repair.txt
+      - name: Assert no generation or gameplay surface
+        shell: bash
+        run: |
+          set -euo pipefail
+          ! grep --line-number -E 'secrets\.randbits\(|--generate|execute_game\(|run_matchup\(|shuffle\('             izzet-science/sim/validate_v09_phase31_metadata_repair.py
+      - name: Emit repair-audit manifest
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/phase31-repair-artifact
+          cp /tmp/phase31-repair.txt /tmp/phase31-repair-artifact/validation.txt
+          {
+            echo "schema=izzet-v09-phase31-metadata-repair-audit-v1"
+            echo "source_sha=${GITHUB_SHA}"
+            echo "experimental_seeds_generated=12"
+            echo "experimental_seeds_consumed=0"
+            echo "games_initialized=0"
+            echo "outcome_exposure=0"
+            sha256sum izzet-science/v09-phase31-seed-freeze-metadata-repair.md
+            sha256sum izzet-science/seed-registry-v1.json
+            sha256sum izzet-science/sim/sampled_pilot_runner.py
+            sha256sum izzet-science/sim/validate_v09_phase31_metadata_repair.py
+            sha256sum /tmp/phase31-repair-artifact/validation.txt
+          } > /tmp/phase31-repair-artifact/manifest.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: izzet-v09-phase31-metadata-repair-audit
+          path: /tmp/phase31-repair-artifact
+          if-no-files-found: error
