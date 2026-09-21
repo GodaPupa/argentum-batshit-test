@@ -24,6 +24,7 @@ class RefurbishedFamiliarScenarioTest : ScenarioTestBase() {
                 .withCardOnBattlefield(1, "Bonesplitter")
                 .withCardOnBattlefield(1, "Millstone")
                 .withCardInHand(2, "Lightning Bolt")
+                .withCardInHand(2, "Mountain")
                 .withActivePlayer(1)
                 .inPhase(Phase.PRECOMBAT_MAIN, Step.PRECOMBAT_MAIN)
                 .build()
@@ -49,7 +50,7 @@ class RefurbishedFamiliarScenarioTest : ScenarioTestBase() {
             )
             game.resolveStack()
 
-            game.handSize(2) shouldBe 0
+            game.handSize(2) shouldBe 1
             withClue("the controller draws nothing when the opponent could discard") {
                 game.handSize(1) shouldBe 0
             }
