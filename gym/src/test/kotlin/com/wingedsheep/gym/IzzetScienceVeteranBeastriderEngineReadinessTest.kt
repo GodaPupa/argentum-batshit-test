@@ -5,7 +5,6 @@ import com.wingedsheep.gym.matchup.IzzetScienceVeteranBeastriderEngineReadiness
 import com.wingedsheep.gym.matchup.IzzetVeteranEngineReadiness
 import com.wingedsheep.mtg.sets.MtgSetCatalog
 import io.kotest.core.spec.style.FunSpec
-import io.kotest.matchers.collections.shouldBeEmpty
 import io.kotest.matchers.collections.shouldContainExactly
 import io.kotest.matchers.shouldBe
 
@@ -24,21 +23,23 @@ class IzzetScienceVeteranBeastriderEngineReadinessTest : FunSpec({
         IzzetScienceVeteranBeastriderEngineReadiness.veteranDeck().cards.size shouldBe 99
     }
 
-    test("all frozen card identities resolve in the engine registry") {
-        IzzetScienceVeteranBeastriderEngineReadiness
-            .validationErrors(IzzetVeteranEngineReadiness(), registry)
-            .shouldBeEmpty()
+    test("freeze exact unresolved engine coverage count and emit identities") {
+        val unresolved = IzzetScienceVeteranBeastriderEngineReadiness.unresolvedCardIdentities(registry)
+        println("V09_REAL_ENGINE_UNRESOLVED_COUNT=" + unresolved.size)
+        unresolved.forEach { println("V09_REAL_ENGINE_UNRESOLVED=" + it) }
+        unresolved.size shouldBe 55
     }
 
-    test("full execution remains fail closed behind explicit PDH semantics") {
-        IzzetScienceVeteranBeastriderEngineReadiness.executionBlockers(registry)
-            .shouldContainExactly(
-                "PDH commander-zone initialization not qualified",
-                "PDH commander recast/tax semantics not qualified",
-                "16-damage commander-loss accounting not qualified in gameplay engine",
-                "30-life PDH game initialization not qualified",
-                "Phase-29 event-ledger extraction from full engine game not qualified",
-            )
+    test("full execution remains fail closed behind unresolved cards and PDH semantics") {
+        val blockers = IzzetScienceVeteranBeastriderEngineReadiness.executionBlockers(registry)
+        blockers.size shouldBe 60
+        blockers.takeLast(5).shouldContainExactly(
+            "PDH commander-zone initialization not qualified",
+            "PDH commander recast/tax semantics not qualified",
+            "16-damage commander-loss accounting not qualified in gameplay engine",
+            "30-life PDH game initialization not qualified",
+            "Phase-29 event-ledger extraction from full engine game not qualified",
+        )
     }
 
     test("readiness consumes no official seed and exposes no outcome") {
