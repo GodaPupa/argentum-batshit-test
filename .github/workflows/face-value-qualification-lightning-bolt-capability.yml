@@ -1,0 +1,120 @@
+name: Face Value Qualification Lightning Bolt Capability
+
+on:
+  push:
+    branches: [face-value/lab]
+    paths:
+      - .github/workflows/face-value-qualification-lightning-bolt-capability.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  capability:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: face-value/lab
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - name: Build accepted Forge profile
+        run: |
+          set -euxo pipefail
+          python3 experiments/face-value/qualification/validate_inputs.py >/dev/null
+          FORGE_SHA=f387ede550e336315637a8b765f0927ac768c113
+          git clone --filter=blob:none https://github.com/Card-Forge/forge.git forge-src
+          git -C forge-src checkout --detach "$FORGE_SHA"
+          python3 experiments/face-value/qualification/apply_forge_profile_v1.py --forge-root forge-src >/dev/null
+          python3 experiments/face-value/qualification/apply_forge_profile_v2.py --forge-root forge-src >/dev/null
+          python3 experiments/face-value/qualification/apply_forge_profile_v3.py --forge-root forge-src >/dev/null
+          python3 experiments/face-value/qualification/apply_forge_profile_v4.py --forge-root forge-src >/dev/null
+          python3 experiments/face-value/qualification/apply_forge_profile_v6.py --forge-root forge-src > forge-profile-v6-id.txt
+          cd forge-src
+          mvn -B -DskipTests -pl forge-gui-desktop -am package
+          chmod +x forge-gui-desktop/target/forge.sh
+          rm -rf forge-gui-desktop/target/res
+          cp -R forge-gui/res forge-gui-desktop/target/res
+          echo "FORGE_LAUNCHER=$(pwd)/forge-gui-desktop/target/forge.sh" >> "$GITHUB_ENV"
+
+      - name: Freeze diagnostic-only fixtures
+        run: |
+          set -euo pipefail
+          mkdir -p "$HOME/.forge/decks/constructed" bolt-capability-logs bolt-capability-decks
+          cat > bolt-capability-decks/bolt-e2.dck <<'EOF'
+          [metadata]
+          Name=DIAGNOSTIC ONLY Lightning Bolt
+          Deck Type=constructed
+          [main]
+          16 Lightning Bolt
+          4 Llanowar Elves
+          40 Mountain
+          EOF
+          cat > bolt-capability-decks/priority-elves.dck <<'EOF'
+          [metadata]
+          Name=DIAGNOSTIC ONLY Priority Elves
+          Deck Type=constructed
+          [main]
+          12 Priest of Titania
+          12 Timberwatch Elf
+          12 Quirion Ranger
+          24 Forest
+          EOF
+          cp bolt-capability-decks/*.dck "$HOME/.forge/decks/constructed/"
+          python3 - <<'PY'
+          from pathlib import Path
+          Path('bolt-capability-assignments.tsv').write_text(
+              '\n'.join(f'{1+i%2}\t{744001+i}' for i in range(8))+'\n')
+          PY
+
+      - name: Execute diagnostic block
+        run: |
+          set -uo pipefail
+          while IFS=$'\t' read -r bolt_seat seed; do
+            log="bolt-capability-logs/bolt-seat${bolt_seat}-${seed}.log"
+            if [ "$bolt_seat" = 1 ]; then
+              first='bolt-e2.dck'; second='priority-elves.dck'
+            else
+              first='priority-elves.dck'; second='bolt-e2.dck'
+            fi
+            timeout 240 "$FORGE_LAUNCHER" sim -d "$first" "$second" -n 1 -s "$seed" -c 100 > "$log" 2>&1
+            code=$?
+            if [ "$code" -ne 0 ]; then printf '\nDIAGNOSTIC_PROCESS_EXIT_%s\n' "$code" >> "$log"; fi
+          done < bolt-capability-assignments.tsv
+          exit 0
+
+      - name: Audit Lightning Bolt capability
+        run: |
+          python3 - <<'PY'
+          import json,re
+          from pathlib import Path
+          records=[]; casts=0; terminal=0; flags=0
+          for line in Path('bolt-capability-assignments.tsv').read_text().splitlines():
+              seat,seed=line.split('\t')
+              p=Path('bolt-capability-logs')/f'bolt-seat{seat}-{seed}.log'
+              text=p.read_text(errors='replace') if p.exists() else ''
+              c=len(re.findall(r'cast Lightning Bolt',text,re.I))
+              casts+=c
+              t=bool(re.search(r'^Game Result: .+(has won|Draw)',text,re.I|re.M))
+              terminal+=int(t)
+              fl=[]
+              for name,pat in {
+                  'exception':r'Exception|StackOverflowError|AssertionError',
+                  'outer_timeout':r'DIAGNOSTIC_PROCESS_EXIT_124',
+                  'missing_deck':r'Deck not found|Unable to load deck'
+              }.items():
+                  if re.search(pat,text,re.I): fl.append(name)
+              if not t: fl.append('missing_terminal')
+              flags+=int(bool(fl))
+              records.append({'seat':int(seat),'seed':int(seed),'casts':c,'flags':fl,'terminal':t})
+          summary={'classification':'DIAGNOSTIC_ONLY_LIGHTNING_BOLT_CAPABILITY','games':len(records),
+                   'terminal_games':terminal,'flagged_games':flags,'bolt_casts':casts,'records':records}
+          Path('bolt-capability-summary.json').write_text(json.dumps(summary,indent=2,sort_keys=True)+'\n')
+          print(json.dumps({k:v for k,v in summary.items() if k!='records'},indent=2,sort_keys=True))
+          assert len(records)==8 and terminal==8 and flags==0 and casts>=2
+          PY
