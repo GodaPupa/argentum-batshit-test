@@ -77,6 +77,11 @@ The in-memory closure manifest is recorded in
 and explicit zero counters while exposing no writer, workflow, command, vector, entropy, initializer
 activation, environment, action, artifact, or outcome path.
 
+The final construction audit is recorded in `tier-one-grixis-construction-closure.md`. It combines
+the manifest with live workflow, command, and compiled-surface inspection and may conclude only
+`CONSTRUCTION_READY_VECTOR_CREATION_NOT_AUTHORIZED`; vector creation still requires a separate
+explicit research decision.
+
 Pest Control versus SoterX Mono Red Madness matchup Block A executed once and is formally rejected
 as `REJECTED_OUTCOME_RELEVANT_TARGET_SELECTION_DEFECTS`. All 50 Block A seeds are permanently
 retired. The descriptive 35–15 result is inadmissible for acceptance, pooling, or tuning. Preserved
