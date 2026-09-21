@@ -72,8 +72,31 @@ private object MyrRetrieverAdvisor : CardAdvisor {
 private object AncientGrudgeAdvisor : CardAdvisor {
     override val cardNames = setOf("Ancient Grudge")
 
-    override fun evaluateCast(context: CastContext): Double? =
-        context.passScore + 12.0
+    override fun evaluateCast(context: CastContext): Double? {
+        val cast = context.action.action as? com.wingedsheep.engine.core.CastSpell ?: return null
+        val targetName = cast.targets.firstOrNull()?.let { target ->
+            when (target) {
+                is com.wingedsheep.engine.state.components.stack.ChosenTarget.Permanent ->
+                    context.state.cardName(target.entityId)
+                is com.wingedsheep.engine.state.components.stack.ChosenTarget.Card ->
+                    context.state.cardName(target.cardId)
+                else -> null
+            }
+        }
+        val targetBonus = when (targetName) {
+            "Myr Enforcer" -> 30.0
+            "Refurbished Familiar" -> 28.0
+            "Utrom Monitor" -> 26.0
+            "Makeshift Munitions" -> 24.0
+            "Nihil Spellbomb" -> 12.0
+            "Blood Fountain" -> 10.0
+            "Ichor Wellspring" -> 8.0
+            "Drossforge Bridge", "Mistvault Bridge", "Silverbluff Bridge" -> 5.0
+            "Great Furnace", "Seat of the Synod", "Vault of Whispers" -> 4.0
+            else -> 1.0
+        }
+        return context.passScore + 12.0 + targetBonus
+    }
 
     override fun respondToDecision(context: AdvisorDecisionContext) =
         (context.decision as? ChooseTargetsDecision)?.let { decision ->
