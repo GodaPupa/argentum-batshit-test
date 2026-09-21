@@ -28,8 +28,8 @@ class IzzetScienceVeteranBeastriderEngineReadinessTest : FunSpec({
     test("Boreal Druid resolves with exact colorless mana ability") {
         val card = registry.getCard("Boreal Druid") ?: error("Boreal Druid unresolved")
         card.oracleText shouldBe "{T}: Add {C}."
-        card.creatureStats?.power shouldBe 1
-        card.creatureStats?.toughness shouldBe 1
+        (card.creatureStats?.power as DynamicAmount.Fixed).amount shouldBe 1
+        (card.creatureStats?.toughness as DynamicAmount.Fixed).amount shouldBe 1
         val ability = card.script.activatedAbilities.single()
         ability.isManaAbility shouldBe true
         val effect = ability.effect as AddColorlessManaEffect
