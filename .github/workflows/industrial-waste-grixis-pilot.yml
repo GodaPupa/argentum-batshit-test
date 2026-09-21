@@ -1,0 +1,58 @@
+name: Industrial Waste — Grixis Capability Pilot
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - industrial-waste/lab
+    paths:
+      - .github/workflows/industrial-waste-grixis-pilot.yml
+      - ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteGrixisPilotBenchmark.kt
+      - ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteGrixisAdvisorModule.kt
+      - ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteAdvisorModule.kt
+      - industrial-waste/control/industrial-waste-v1.0-submitted.dck
+      - industrial-waste/challengers/pactdoll-a.dck
+      - industrial-waste/gauntlet/grixis-affinity-carlos-dc-2026-09-12.dck
+      - industrial-waste/seed-registry.json
+      - industrial-waste/input-identities.sha256
+      - industrial-waste/sim/**
+      - justfile
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  grixis-pilot:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - name: Checkout exact branch head
+        uses: actions/checkout@v6
+      - name: Set up Java 21
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: 21
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v6
+      - name: Set up just
+        uses: extractions/setup-just@v3
+      - name: Validate frozen inputs
+        run: |
+          python3 -m unittest discover -s industrial-waste/sim -p 'test_*.py' -v
+          python3 industrial-waste/sim/validate_inputs.py
+      - name: Execute two-seed paired Grixis pilot
+        env:
+          IW_GRIXIS_PILOT: "true"
+        run: just test-class IndustrialWasteGrixisPilotBenchmark
+      - name: Upload pilot evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: industrial-waste-grixis-pilot
+          path: industrial-waste/results/gate-6-grixis-pilot-v1.json
+          if-no-files-found: error
