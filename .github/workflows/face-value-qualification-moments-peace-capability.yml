@@ -1,0 +1,120 @@
+name: Face Value Qualification Moments Peace Capability
+
+on:
+  push:
+    branches: [face-value/lab]
+    paths:
+      - .github/workflows/face-value-qualification-moments-peace-capability.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  capability:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: face-value/lab
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - name: Build accepted Forge profile
+        run: |
+          set -euxo pipefail
+          python3 experiments/face-value/qualification/validate_inputs.py >/dev/null
+          FORGE_SHA=f387ede550e336315637a8b765f0927ac768c113
+          git clone --filter=blob:none https://github.com/Card-Forge/forge.git forge-src
+          git -C forge-src checkout --detach "$FORGE_SHA"
+          python3 experiments/face-value/qualification/apply_forge_profile_v1.py --forge-root forge-src >/dev/null
+          python3 experiments/face-value/qualification/apply_forge_profile_v2.py --forge-root forge-src >/dev/null
+          python3 experiments/face-value/qualification/apply_forge_profile_v3.py --forge-root forge-src >/dev/null
+          python3 experiments/face-value/qualification/apply_forge_profile_v4.py --forge-root forge-src >/dev/null
+          python3 experiments/face-value/qualification/apply_forge_profile_v6.py --forge-root forge-src > forge-profile-v6-id.txt
+          cd forge-src
+          mvn -B -DskipTests -pl forge-gui-desktop -am package
+          chmod +x forge-gui-desktop/target/forge.sh
+          rm -rf forge-gui-desktop/target/res
+          cp -R forge-gui/res forge-gui-desktop/target/res
+          echo "FORGE_LAUNCHER=$(pwd)/forge-gui-desktop/target/forge.sh" >> "$GITHUB_ENV"
+
+      - name: Freeze diagnostic-only fixtures
+        run: |
+          set -euo pipefail
+          mkdir -p "$HOME/.forge/decks/constructed" peace-capability-logs peace-capability-decks
+          cat > peace-capability-decks/peace-e3.dck <<'EOF'
+          [metadata]
+          Name=DIAGNOSTIC ONLY Moments Peace
+          Deck Type=constructed
+          [main]
+          12 Moment's Peace
+          4 Llanowar Elves
+          44 Forest
+          EOF
+          cat > peace-capability-decks/combat-pressure.dck <<'EOF'
+          [metadata]
+          Name=DIAGNOSTIC ONLY Combat Pressure
+          Deck Type=constructed
+          [main]
+          12 Timberwatch Elf
+          12 Nyxborn Hydra
+          12 Llanowar Elves
+          24 Forest
+          EOF
+          cp peace-capability-decks/*.dck "$HOME/.forge/decks/constructed/"
+          python3 - <<'PY'
+          from pathlib import Path
+          Path('peace-capability-assignments.tsv').write_text(
+              '\n'.join(f'{1+i%2}\t{745001+i}' for i in range(8))+'\n')
+          PY
+
+      - name: Execute diagnostic block
+        run: |
+          set -uo pipefail
+          while IFS=$'\t' read -r peace_seat seed; do
+            log="peace-capability-logs/peace-seat${peace_seat}-${seed}.log"
+            if [ "$peace_seat" = 1 ]; then
+              first='peace-e3.dck'; second='combat-pressure.dck'
+            else
+              first='combat-pressure.dck'; second='peace-e3.dck'
+            fi
+            timeout 240 "$FORGE_LAUNCHER" sim -d "$first" "$second" -n 1 -s "$seed" -c 100 > "$log" 2>&1
+            code=$?
+            if [ "$code" -ne 0 ]; then printf '\nDIAGNOSTIC_PROCESS_EXIT_%s\n' "$code" >> "$log"; fi
+          done < peace-capability-assignments.tsv
+          exit 0
+
+      - name: Audit Moments Peace capability
+        run: |
+          python3 - <<'PY'
+          import json,re
+          from pathlib import Path
+          records=[]; casts=0; terminal=0; flags=0
+          for line in Path('peace-capability-assignments.tsv').read_text().splitlines():
+              seat,seed=line.split('\t')
+              p=Path('peace-capability-logs')/f'peace-seat{seat}-{seed}.log'
+              text=p.read_text(errors='replace') if p.exists() else ''
+              c=len(re.findall(r"cast Moment's Peace",text,re.I))
+              casts+=c
+              t=bool(re.search(r'^Game Result: .+(has won|Draw)',text,re.I|re.M))
+              terminal+=int(t)
+              fl=[]
+              for name,pat in {
+                  'exception':r'Exception|StackOverflowError|AssertionError',
+                  'outer_timeout':r'DIAGNOSTIC_PROCESS_EXIT_124',
+                  'missing_deck':r'Deck not found|Unable to load deck'
+              }.items():
+                  if re.search(pat,text,re.I): fl.append(name)
+              if not t: fl.append('missing_terminal')
+              flags+=int(bool(fl))
+              records.append({'seat':int(seat),'seed':int(seed),'casts':c,'flags':fl,'terminal':t})
+          summary={'classification':'DIAGNOSTIC_ONLY_MOMENTS_PEACE_CAPABILITY','games':len(records),
+                   'terminal_games':terminal,'flagged_games':flags,'peace_casts':casts,'records':records}
+          Path('peace-capability-summary.json').write_text(json.dumps(summary,indent=2,sort_keys=True)+'\n')
+          print(json.dumps({k:v for k,v in summary.items() if k!='records'},indent=2,sort_keys=True))
+          assert len(records)==8 and terminal==8 and flags==0 and casts>=2
+          PY
