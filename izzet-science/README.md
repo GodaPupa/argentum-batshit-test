@@ -274,3 +274,9 @@ unconsumed. The runner binds the Phase-16 nine-metric summary and strict four-fi
 artifact schema, while eleven adversarial artifacts fail closed. No workflow is
 armed, no paired iterator has been consumed, and no outcome exists. A separate
 source-freeze record is required before the sole pilot can be authorized.
+
+The Phase-18 experimental source is now frozen at commit
+`9bc8b75cffc1fc8698bf135819c0465a0641bfbd`, tree
+`9947c4b0bac55b7628ba8fa2d3bdedc34a84c461`. This provenance record changes no
+frozen source. The workflow remains unarmed, seed `0x00000001A22E7013` remains
+unconsumed, and no interaction outcome has been exposed.

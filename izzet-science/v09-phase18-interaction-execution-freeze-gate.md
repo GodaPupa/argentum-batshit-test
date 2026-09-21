@@ -59,3 +59,8 @@ workflow may be armed.
 This commit alone authorizes no execution. The iterator must remain untouched, the
 assigned seed unconsumed, and outcomes nonexistent. The accepted Phase-14 behavior
 policy remains unchanged, and v0.7 remains the exact accepted card control.
+
+Experimental source commit `9bc8b75cffc1fc8698bf135819c0465a0641bfbd`, tree
+`9947c4b0bac55b7628ba8fa2d3bdedc34a84c461`, is frozen by the subsequent
+provenance-only record `v09-phase18-interaction-source-freeze.md`. A workflow remains
+separately required before execution.
