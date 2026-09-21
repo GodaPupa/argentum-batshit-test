@@ -1,0 +1,85 @@
+name: Izzet v0.9 Phase 31 Seed Tooling Static Qualification
+
+on:
+  pull_request:
+    paths:
+      - "izzet-science/v09-phase31-seed-vector-freeze-gate.md"
+      - "izzet-science/seed-registry-v1.json"
+      - "izzet-science/sim/phase31_seed_vector.py"
+      - "izzet-science/sim/validate_v09_phase31_seed_tooling.py"
+      - ".github/workflows/izzet-v09-phase31-seed-tooling-static.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify-phase31-static:
+    if: github.event_name != 'pull_request' || github.head_ref == 'mayhem/izzet-science'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Verify frozen control and Phase 30 acceptance
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(sha256sum izzet-science/v0.7-control.md | cut -d' ' -f1)" = "726f5e9458b46dda30b33a6ce9f3c3237b25d6e11b81dac85308c3065c108a01"
+          grep -Fq 'V09_PHASE30_RUNNER_CONSTRUCTION_ACCEPTED' izzet-science/v09-phase30-runner-construction-accepted.md
+      - name: Run Phase 31 seed-free tooling validation
+        shell: bash
+        run: |
+          set -euo pipefail
+          export PYTHONPATH="$PWD/izzet-science/sim"
+          python izzet-science/sim/validate_v09_phase31_seed_tooling.py | tee /tmp/phase31-static.txt
+          grep -Fx "V09_PHASE31_SEED_TOOLING_STATIC_VALIDATION_PASS" /tmp/phase31-static.txt
+      - name: Verify registry labels match signed values
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path("izzet-science/seed-registry-v1.json")
+          d=json.loads(p.read_text())
+          labels=d["hex_labels"]
+          vals=d["signed_i64_values"]
+          assert len(labels)==len(vals)
+          for label,value in zip(labels,vals):
+              u=int(label,16)
+              signed=u if u < (1<<63) else u-(1<<64)
+              assert signed==value,(label,value,signed)
+          print("V09_PHASE31_REGISTRY_LABEL_VALUE_MATCH_PASS")
+          PY
+      - name: Assert no generation invocation in static workflow
+        shell: bash
+        run: |
+          set -euo pipefail
+          ! grep --line-number -- '--generate' .github/workflows/izzet-v09-phase31-seed-tooling-static.yml
+      - name: Emit static qualification manifest
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/phase31-static-artifact
+          cp /tmp/phase31-static.txt /tmp/phase31-static-artifact/validation.txt
+          {
+            echo "schema=izzet-v09-phase31-seed-tooling-static-v1"
+            echo "source_sha=${GITHUB_SHA}"
+            echo "experimental_seeds_generated=0"
+            echo "experimental_seeds_consumed=0"
+            echo "sampled_games=0"
+            echo "outcome_exposure=0"
+            sha256sum izzet-science/v09-phase31-seed-vector-freeze-gate.md
+            sha256sum izzet-science/seed-registry-v1.json
+            sha256sum izzet-science/sim/phase31_seed_vector.py
+            sha256sum izzet-science/sim/validate_v09_phase31_seed_tooling.py
+            sha256sum /tmp/phase31-static-artifact/validation.txt
+          } > /tmp/phase31-static-artifact/manifest.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: izzet-v09-phase31-seed-tooling-static
+          path: /tmp/phase31-static-artifact
+          if-no-files-found: error
