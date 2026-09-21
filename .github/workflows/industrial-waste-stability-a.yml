@@ -1,0 +1,53 @@
+name: Industrial Waste — Stability A Structural Gate
+
+on:
+  push:
+    branches:
+      - industrial-waste/lab
+    paths:
+      - .github/workflows/industrial-waste-stability-a.yml
+      - industrial-waste/challengers/stability-a.dck
+      - industrial-waste/sim/**
+      - justfile
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  structural-gate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Validate challenger shape and immutable control
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import hashlib
+
+          root = Path("industrial-waste")
+          challenger = root / "challengers/stability-a.dck"
+          control = root / "control/industrial-waste-v1.0-submitted.dck"
+
+          def counts(path):
+              section = None
+              total = {"main": 0, "sideboard": 0}
+              for raw in path.read_text().splitlines():
+                  line = raw.strip()
+                  if line == "[main]":
+                      section = "main"
+                  elif line == "[sideboard]":
+                      section = "sideboard"
+                  elif line.startswith("["):
+                      section = None
+                  elif section and line:
+                      n, _ = line.split(" ", 1)
+                      total[section] += int(n)
+              return total
+
+          assert counts(challenger) == {"main": 60, "sideboard": 15}
+          assert counts(control) == {"main": 60, "sideboard": 15}
+          control_sha = hashlib.sha256(control.read_bytes()).hexdigest()
+          assert control_sha == "9b8a2932d78c99dd13f5c4834066bfa644f065137ee90efa75f3418ab56d1f1a"
+          print("Stability A structural gate: VALID")
+          PY
