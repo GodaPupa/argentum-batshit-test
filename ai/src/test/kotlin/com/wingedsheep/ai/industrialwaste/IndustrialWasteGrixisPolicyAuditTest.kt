@@ -19,7 +19,11 @@ import io.kotest.matchers.types.shouldBeInstanceOf
  * any Industrial Waste experimental seed namespace.
  */
 class IndustrialWasteGrixisPolicyAuditTest : ScenarioTestBase() {
-    private val profile = AiProfile.PRODUCTION_CANDIDATE_EXPIRING
+    private val baseProfile = AiProfile.PRODUCTION_CANDIDATE_EXPIRING
+    private val profile = baseProfile.copy(
+        id = "grixis-gate-6-readiness",
+        advisorModules = baseProfile.advisorModules + IndustrialWasteGrixisAdvisorModule,
+    )
 
     private fun ai(game: TestGame) = AIPlayer.create(cardRegistry, game.player1Id, profile)
 
