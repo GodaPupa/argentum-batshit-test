@@ -1,0 +1,25 @@
+name: Pest Control Tier-1 Grixis Opaque Plan
+
+on:
+  pull_request:
+    paths:
+      - gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlTierOneGrixisOpaqueExecutionPlan.kt
+      - gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOneGrixisOpaqueExecutionPlanTest.kt
+      - .github/workflows/pest-control-tier-one-grixis-opaque-plan.yml
+      - docs/experiments/pest-control/tier-one-grixis-opaque-plan.md
+
+permissions:
+  contents: read
+
+jobs:
+  validate-opaque-plan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Verify opaque four-slot plan
+        run: scripts/test-class PestControlTierOneGrixisOpaqueExecutionPlanTest --info --stacktrace

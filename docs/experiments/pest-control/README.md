@@ -115,6 +115,10 @@ loader-validation evidence, disabled loader, and disabled official initializer. 
 while execution admission is blocked and exposes no official bytes, seed, initializer, runner, or
 outcome-producing surface.
 
+The opaque four-slot plan in `tier-one-grixis-opaque-plan.md` binds the frozen assignment artifact
+digest to exact game order, seat/start cells, predecessor order, and durable-attempt sequencing. Its
+slots structurally exclude seeds and executable data; initialization and execution remain blocked.
+
 Pest Control versus SoterX Mono Red Madness matchup Block A executed once and is formally rejected
 as `REJECTED_OUTCOME_RELEVANT_TARGET_SELECTION_DEFECTS`. All 50 Block A seeds are permanently
 retired. The descriptive 35–15 result is inadmissible for acceptance, pooling, or tuning. Preserved
