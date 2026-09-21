@@ -278,10 +278,12 @@
     },
     "Deepwood Denizen": {
       "deck": "veteran",
-      "classification": "registry_only",
+      "classification": "reusable_mechanic",
       "dependencies": [
-        "creature_stats",
-        "keyword_or_simple_static"
+        "vigilance",
+        "activated_draw",
+        "tap_cost",
+        "dynamic_generic_cost_reduction_from_plus1_plus1_counters"
       ]
     },
     "Destroy Evil": {
@@ -383,10 +385,10 @@
     },
     "Owlbear": {
       "deck": "veteran",
-      "classification": "registry_only",
+      "classification": "reusable_mechanic",
       "dependencies": [
-        "etb_draw",
-        "trample"
+        "trample",
+        "etb_draw"
       ]
     },
     "Prismatic Strands": {
