@@ -1,4 +1,4 @@
-name: Face Value EDH R2-A/B Validation
+name: Face Value EDH R2-A/B/C Validation
 on:
   workflow_dispatch:
 jobs:
@@ -8,9 +8,9 @@ jobs:
       - uses: actions/checkout@v4
         with:
           ref: face-value-edh/r1-reconstruction
-      - name: Revalidate R2-A contract
+      - name: Revalidate R2-A
         run: python3 research/face-value-edh/validate_r2a.py
-      - name: Validate R2-B commander denial and stack readiness
+      - name: Revalidate R2-B
         run: python3 research/face-value-edh/validate_r2b.py
-      - name: Preserve R1 deterministic regression floor
-        run: python3 research/face-value-edh/r1_replay.py
+      - name: Validate R2-C pilot totality and cross-regression
+        run: python3 research/face-value-edh/validate_r2c.py
