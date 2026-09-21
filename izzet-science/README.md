@@ -299,3 +299,11 @@ on tempo-only events. Commander destination remains the owner's choice; countere
 and illegal-at-resolution branches retain no buyback. This assigns no event
 frequency, opponent policy, tempo value, survival rate, or win rate and authorizes
 no sampled pilot.
+
+Phase 19 run `35557828845` passed exact-source validation, the complete adjacent
+semantic chain, all 84 exhaustive response states, and eight malformed-input
+rejections. The independently downloaded five-file artifact matched GitHub's ZIP
+digest and every receipt hash. The response policy is accepted as methodology, not
+as proof of strategic optimality. Zero games ran and zero experimental seeds were
+assigned or consumed. The temporary workflow is removed, and v0.7 remains the exact
+card control.
