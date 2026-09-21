@@ -4,7 +4,6 @@ import com.wingedsheep.ai.engine.advisor.CardAdvisor
 import com.wingedsheep.ai.engine.advisor.CardAdvisorModule
 import com.wingedsheep.ai.engine.advisor.CardAdvisorRegistry
 import com.wingedsheep.ai.engine.advisor.CastContext
-import com.wingedsheep.engine.core.ActivateAbility
 import com.wingedsheep.engine.core.CastSpell
 import com.wingedsheep.engine.state.components.identity.CardComponent
 import com.wingedsheep.sdk.core.Zone
@@ -63,7 +62,6 @@ private object GrixisNihilSpellbombAdvisor : CardAdvisor {
     override val cardNames = setOf("Nihil Spellbomb")
 
     override fun evaluateCast(context: CastContext): Double? {
-        if (context.action !is ActivateAbility) return null
         val opposingGraveyardHasCards = context.state.turnOrder
             .filter { context.state.isOpponentOf(it, context.playerId) }
             .any { context.state.getZone(it, Zone.GRAVEYARD).isNotEmpty() }
