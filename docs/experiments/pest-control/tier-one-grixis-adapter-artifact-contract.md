@@ -40,5 +40,5 @@ Reorder, replacement, orphan records, byte tampering, and false completion fail 
 - Game initializer: absent
 - Execution method: absent
 
-The next gate is a disabled initialization adapter plus conservation/telemetry fixtures. It must not
-create a vector or execute a smoke game.
+The following gate adds a construction-only initializer plus conservation/telemetry fixtures. It
+must not create a vector or execute a smoke game.
