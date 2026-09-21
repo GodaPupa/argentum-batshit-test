@@ -1,0 +1,200 @@
+{
+  "schema": "izzet-v09-phase25-action-surface-map-v1",
+  "opponent_identity": "veteran-beastrider-commander-clash-2025-v1",
+  "classification_basis": "exact current oracle text captured by frozen oracle identity",
+  "format_rules": {
+    "commander_damage_loss_threshold": 16,
+    "source": "https://pdhhomebase.com/rules/"
+  },
+  "surface_definitions": {
+    "aura_access": {
+      "information_boundary": "hidden_card_until_cast_then_public_search_result",
+      "meaning": "A resolved permanent searches the library for an Aura card."
+    },
+    "battlefield_mana_source": {
+      "information_boundary": "public_battlefield_only",
+      "meaning": "A battlefield permanent has an oracle ability that can produce mana; conditions and tapping remain mandatory."
+    },
+    "commander_entry_scaling": {
+      "information_boundary": "public_battlefield_and_command_cast_history",
+      "meaning": "A public land can add +1/+1 counters to Veteran Beastrider as or after it enters."
+    },
+    "commander_power_scaling": {
+      "information_boundary": "public_after_cast_or_activation",
+      "meaning": "A spell, permanent, or ability can increase Veteran Beastrider's power; all printed costs, targets, durations, and conditions remain mandatory."
+    },
+    "commander_trample": {
+      "information_boundary": "public_after_cast_or_activation",
+      "meaning": "A spell, permanent, or ability can grant Veteran Beastrider trample; all printed costs, targets, durations, and conditions remain mandatory."
+    },
+    "commander_untap": {
+      "information_boundary": "public_trigger",
+      "meaning": "Veteran Beastrider's end-step trigger can untap itself and the controller's other creatures."
+    },
+    "damage_prevention": {
+      "information_boundary": "public_after_cast_or_relevant_effect",
+      "meaning": "An oracle effect prevents damage; its scope, duration, color, turn, and target restrictions remain mandatory."
+    },
+    "destruction_replacement": {
+      "information_boundary": "public_attached_permanent",
+      "meaning": "An attached public permanent can replace destruction under its oracle conditions."
+    },
+    "hidden_land_access": {
+      "information_boundary": "private_hand_until_action_then_public",
+      "meaning": "A card in hand can search for a land through a spell mode or cycling ability; this is not a public candidate before the action is observed."
+    },
+    "targeted_creature_control": {
+      "information_boundary": "private_hand_or_public_trigger_until_action_then_public",
+      "meaning": "An oracle effect can target a creature through destruction, exile, damage, fighting, or damage suppression; target and condition checks remain mandatory."
+    },
+    "targeted_noncreature_control": {
+      "information_boundary": "private_hand_or_public_trigger_until_action_then_public",
+      "meaning": "An oracle effect can target an artifact, enchantment, permanent, or other printed noncreature class; target and condition checks remain mandatory."
+    },
+    "targeting_protection": {
+      "information_boundary": "private_hand_until_action_then_public",
+      "meaning": "A spell or flash Aura can block opposing targeting through protection, hexproof, or explicit targeting restriction."
+    }
+  },
+  "surfaces": {
+    "aura_access": [
+      "Heliod's Pilgrim",
+      "Shrine Steward",
+      "Totem-Guide Hartebeest"
+    ],
+    "battlefield_mana_source": [
+      "Arctic Treeline",
+      "Avacyn's Pilgrim",
+      "Blossoming Sands",
+      "Bonder's Ornament",
+      "Boreal Druid",
+      "Command Tower",
+      "Druid of the Cowl",
+      "Elvish Aberration",
+      "Elvish Mystic",
+      "Forest",
+      "Forge of Heroes",
+      "Fyndhorn Elves",
+      "Gene Pollinator",
+      "Gold Myr",
+      "Goobbue Gardener",
+      "Heart Warden",
+      "Ilysian Caryatid",
+      "Jaspera Sentinel",
+      "Leafkin Druid",
+      "Llanowar Elves",
+      "Llanowar Visionary",
+      "Magnifying Glass",
+      "Nightshade Dryad",
+      "Opal Palace",
+      "Ornithopter of Paradise",
+      "Path of Ancestry",
+      "Plains",
+      "Poison Dart Frog",
+      "Radiant Grove",
+      "Rootrider Faun",
+      "Selesnya Sanctuary",
+      "Suburban Sanctuary",
+      "The Fair Basilica",
+      "The Hunter Maze",
+      "Three Tree Rootweaver",
+      "Ulvenwald Captive // Ulvenwald Abomination",
+      "Whisperer of the Wilds",
+      "Wose Pathfinder"
+    ],
+    "commander_entry_scaling": [
+      "Forge of Heroes",
+      "Opal Palace"
+    ],
+    "commander_power_scaling": [
+      "Armadillo Cloak",
+      "Colossal Dreadmask",
+      "Eagles of the North",
+      "Nyxborn Hydra",
+      "Snake Umbra",
+      "Veteran Beastrider",
+      "Vines of Vastwood",
+      "Wose Pathfinder"
+    ],
+    "commander_trample": [
+      "Armadillo Cloak",
+      "Colossal Dreadmask",
+      "Nyxborn Hydra",
+      "Wose Pathfinder"
+    ],
+    "commander_untap": [
+      "Veteran Beastrider"
+    ],
+    "damage_prevention": [
+      "Guardian Naga // Banishing Coils",
+      "Prismatic Strands",
+      "Temporal Isolation"
+    ],
+    "destruction_replacement": [
+      "Snake Umbra"
+    ],
+    "hidden_land_access": [
+      "Alabaster Host Intercessor",
+      "Balamb T-Rexaur",
+      "Bushwhack",
+      "Eagles of the North",
+      "Elvish Aberration",
+      "Generous Ent",
+      "Orchard Strider",
+      "Shardless Outlander",
+      "Shepherding Spirits",
+      "Slavering Branchsnapper",
+      "Timberland Ancient"
+    ],
+    "targeted_creature_control": [
+      "Afterlife",
+      "Alabaster Host Intercessor",
+      "Bite Down",
+      "Bushwhack",
+      "Coordinated Maneuver",
+      "Cosmic Hunger",
+      "Crib Swap",
+      "Destroy Evil",
+      "Generous Gift",
+      "Master's Rebuke",
+      "Pinnacle Kill-Ship",
+      "Ram Through",
+      "Slash of Light",
+      "Temporal Isolation",
+      "Thraben Charm"
+    ],
+    "targeted_noncreature_control": [
+      "Coordinated Maneuver",
+      "Destroy Evil",
+      "Generous Gift",
+      "Guardian Naga // Banishing Coils",
+      "Shower of Arrows",
+      "Thraben Charm"
+    ],
+    "targeting_protection": [
+      "Benevolent Blessing",
+      "Cho-Manno's Blessing",
+      "Sheltering Word",
+      "Stave Off",
+      "Vines of Vastwood"
+    ]
+  },
+  "deferred_unique_cards": [
+    "Beastrider Vanguard",
+    "Brightwood Tracker",
+    "Crusader of Odric",
+    "Deepwood Denizen",
+    "Owlbear",
+    "Salt Road Packbeast",
+    "Scion of the Wild",
+    "Spirit Link"
+  ],
+  "mapped_unique_cards": 77,
+  "total_unique_cards": 85,
+  "execution_authorized": false,
+  "pilot_authorized": false,
+  "experimental_seeds_assigned": 0,
+  "experimental_seeds_consumed": 0,
+  "sampled_games": 0,
+  "outcome_claims": 0
+}
