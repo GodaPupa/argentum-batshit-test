@@ -1,0 +1,500 @@
+{
+  "schema": "izzet-v09-position1-engine-gap-triage-v1",
+  "classification_definitions": {
+    "registry_only": "Card definition/registration is missing; no special mechanic beyond already-common engine primitives is assumed by this triage.",
+    "reusable_mechanic": "Card needs card wiring plus an engine mechanic family already represented elsewhere in the project or readily reusable from existing generic primitives.",
+    "new_engine_mechanic": "Card requires a mechanic family not yet qualified for this matchup and should be implemented/tested as a reusable engine feature.",
+    "special_modal_cost": "Card requires modal/DFC/adventure/split/X/additional-cost/alternate-cost or similarly specialized casting/zone support."
+  },
+  "cards": {
+    "Arcane Denial": {
+      "deck": "izzet",
+      "classification": "reusable_mechanic",
+      "dependencies": [
+        "counterspell",
+        "delayed_upkeep_draw"
+      ]
+    },
+    "Archaeomancer": {
+      "deck": "izzet",
+      "classification": "reusable_mechanic",
+      "dependencies": [
+        "etb_trigger",
+        "graveyard_target",
+        "return_instant_or_sorcery_to_hand"
+      ]
+    },
+    "Capsize": {
+      "deck": "izzet",
+      "classification": "special_modal_cost",
+      "dependencies": [
+        "buyback_additional_cost",
+        "target_permanent",
+        "return_to_hand",
+        "buyback_resolution_return"
+      ]
+    },
+    "Echoing Truth": {
+      "deck": "izzet",
+      "classification": "reusable_mechanic",
+      "dependencies": [
+        "target_nonland_permanent",
+        "same_name_battlefield_sweep",
+        "return_to_hand"
+      ]
+    },
+    "Everflowing Chalice": {
+      "deck": "izzet",
+      "classification": "special_modal_cost",
+      "dependencies": [
+        "multikicker",
+        "charge_counters",
+        "mana_ability_from_counters"
+      ]
+    },
+    "Fire // Ice": {
+      "deck": "izzet",
+      "classification": "special_modal_cost",
+      "dependencies": [
+        "split_card_cast_choice",
+        "damage_division",
+        "tap_target",
+        "draw_card"
+      ]
+    },
+    "Frantic Search": {
+      "deck": "izzet",
+      "classification": "reusable_mechanic",
+      "dependencies": [
+        "draw",
+        "discard",
+        "untap_lands"
+      ]
+    },
+    "Goblin Electromancer": {
+      "deck": "izzet",
+      "classification": "reusable_mechanic",
+      "dependencies": [
+        "static_cost_reduction",
+        "instant_sorcery_filter"
+      ]
+    },
+    "Ideas Unbound": {
+      "deck": "izzet",
+      "classification": "reusable_mechanic",
+      "dependencies": [
+        "draw",
+        "delayed_end_step_discard"
+      ]
+    },
+    "Izzet Guildmage": {
+      "deck": "izzet",
+      "classification": "new_engine_mechanic",
+      "dependencies": [
+        "copy_spell_on_stack",
+        "mana_value_gate",
+        "instant_sorcery_copy",
+        "commander_zone"
+      ]
+    },
+    "Kaervek's Torch": {
+      "deck": "izzet",
+      "classification": "special_modal_cost",
+      "dependencies": [
+        "x_cost",
+        "damage_target",
+        "opponent_casting_tax_while_on_stack"
+      ]
+    },
+    "Lose Focus": {
+      "deck": "izzet",
+      "classification": "special_modal_cost",
+      "dependencies": [
+        "replicate",
+        "counter_unless_pay",
+        "spell_copy"
+      ]
+    },
+    "Memory Lapse": {
+      "deck": "izzet",
+      "classification": "reusable_mechanic",
+      "dependencies": [
+        "counterspell",
+        "put_spell_on_top_of_library"
+      ]
+    },
+    "Mnemonic Wall": {
+      "deck": "izzet",
+      "classification": "reusable_mechanic",
+      "dependencies": [
+        "etb_trigger",
+        "graveyard_target",
+        "return_instant_or_sorcery_to_hand"
+      ]
+    },
+    "Murmuring Mystic": {
+      "deck": "izzet",
+      "classification": "reusable_mechanic",
+      "dependencies": [
+        "cast_trigger",
+        "instant_sorcery_filter",
+        "create_token"
+      ]
+    },
+    "Pieces of the Puzzle": {
+      "deck": "izzet",
+      "classification": "reusable_mechanic",
+      "dependencies": [
+        "look_top_n",
+        "choose_instant_sorcery",
+        "rest_to_graveyard"
+      ]
+    },
+    "Rolling Thunder": {
+      "deck": "izzet",
+      "classification": "special_modal_cost",
+      "dependencies": [
+        "x_cost",
+        "divide_damage_among_targets"
+      ]
+    },
+    "Shattering Pulse": {
+      "deck": "izzet",
+      "classification": "special_modal_cost",
+      "dependencies": [
+        "buyback_additional_cost",
+        "destroy_artifact",
+        "buyback_resolution_return"
+      ]
+    },
+    "Skred": {
+      "deck": "izzet",
+      "classification": "reusable_mechanic",
+      "dependencies": [
+        "count_snow_permanents",
+        "damage_creature"
+      ]
+    },
+    "Snap": {
+      "deck": "izzet",
+      "classification": "reusable_mechanic",
+      "dependencies": [
+        "return_creature_to_hand",
+        "untap_lands"
+      ]
+    },
+    "Star Compass": {
+      "deck": "izzet",
+      "classification": "reusable_mechanic",
+      "dependencies": [
+        "mana_ability",
+        "basic_land_type_color_restriction",
+        "enters_tapped"
+      ]
+    },
+    "Turn Aside": {
+      "deck": "izzet",
+      "classification": "reusable_mechanic",
+      "dependencies": [
+        "counterspell",
+        "targeting_spell_filter"
+      ]
+    },
+    "Afterlife": {
+      "deck": "veteran",
+      "classification": "reusable_mechanic",
+      "dependencies": [
+        "destroy_creature",
+        "create_token_for_controller"
+      ]
+    },
+    "Alabaster Host Intercessor": {
+      "deck": "veteran",
+      "classification": "special_modal_cost",
+      "dependencies": [
+        "plainscycling",
+        "exile_target_creature_until_leave_battlefield"
+      ]
+    },
+    "Benevolent Blessing": {
+      "deck": "veteran",
+      "classification": "reusable_mechanic",
+      "dependencies": [
+        "flash_aura",
+        "protection_from_color_choice",
+        "attachment"
+      ]
+    },
+    "Bonder's Ornament": {
+      "deck": "veteran",
+      "classification": "reusable_mechanic",
+      "dependencies": [
+        "mana_ability",
+        "activated_draw_with_shared_name_check"
+      ]
+    },
+    "Boreal Druid": {
+      "deck": "veteran",
+      "classification": "registry_only",
+      "dependencies": [
+        "tap_for_colorless_mana"
+      ]
+    },
+    "Brightwood Tracker": {
+      "deck": "veteran",
+      "classification": "reusable_mechanic",
+      "dependencies": [
+        "activated_ability",
+        "look_top_cards",
+        "creature_selection"
+      ]
+    },
+    "Cho-Manno's Blessing": {
+      "deck": "veteran",
+      "classification": "reusable_mechanic",
+      "dependencies": [
+        "flash_aura",
+        "protection_from_color_choice",
+        "attachment"
+      ]
+    },
+    "Colossal Dreadmask": {
+      "deck": "veteran",
+      "classification": "reusable_mechanic",
+      "dependencies": [
+        "equipment",
+        "equip_cost",
+        "power_toughness_bonus",
+        "trample"
+      ]
+    },
+    "Cosmic Hunger": {
+      "deck": "veteran",
+      "classification": "reusable_mechanic",
+      "dependencies": [
+        "fight_or_damage_by_creature",
+        "optional_lifegain_if_vigilance"
+      ]
+    },
+    "Deepwood Denizen": {
+      "deck": "veteran",
+      "classification": "registry_only",
+      "dependencies": [
+        "creature_stats",
+        "keyword_or_simple_static"
+      ]
+    },
+    "Destroy Evil": {
+      "deck": "veteran",
+      "classification": "special_modal_cost",
+      "dependencies": [
+        "modal_spell",
+        "destroy_toughness_threshold_creature",
+        "destroy_enchantment"
+      ]
+    },
+    "Forge of Heroes": {
+      "deck": "veteran",
+      "classification": "new_engine_mechanic",
+      "dependencies": [
+        "commander_cast_history",
+        "commander_entry_counter",
+        "mana_ability"
+      ]
+    },
+    "Generous Gift": {
+      "deck": "veteran",
+      "classification": "reusable_mechanic",
+      "dependencies": [
+        "destroy_permanent",
+        "create_token_for_controller"
+      ]
+    },
+    "Guardian Naga // Banishing Coils": {
+      "deck": "veteran",
+      "classification": "special_modal_cost",
+      "dependencies": [
+        "adventure_or_split_zone_casting",
+        "destroy_artifact_enchantment",
+        "damage_prevention_creature"
+      ]
+    },
+    "Heliod's Pilgrim": {
+      "deck": "veteran",
+      "classification": "reusable_mechanic",
+      "dependencies": [
+        "etb_trigger",
+        "library_search",
+        "aura_card_filter",
+        "shuffle"
+      ]
+    },
+    "Ilysian Caryatid": {
+      "deck": "veteran",
+      "classification": "reusable_mechanic",
+      "dependencies": [
+        "mana_ability",
+        "power_threshold_bonus_mana"
+      ]
+    },
+    "Leafkin Druid": {
+      "deck": "veteran",
+      "classification": "reusable_mechanic",
+      "dependencies": [
+        "mana_ability",
+        "creature_count_threshold"
+      ]
+    },
+    "Llanowar Visionary": {
+      "deck": "veteran",
+      "classification": "reusable_mechanic",
+      "dependencies": [
+        "etb_draw",
+        "mana_ability"
+      ]
+    },
+    "Master's Rebuke": {
+      "deck": "veteran",
+      "classification": "reusable_mechanic",
+      "dependencies": [
+        "creature_deals_damage_equal_power",
+        "target_creature_or_planeswalker"
+      ]
+    },
+    "Nyxborn Hydra": {
+      "deck": "veteran",
+      "classification": "special_modal_cost",
+      "dependencies": [
+        "bestow",
+        "x_cost",
+        "aura_creature_transition",
+        "power_toughness_bonus",
+        "trample"
+      ]
+    },
+    "Opal Palace": {
+      "deck": "veteran",
+      "classification": "new_engine_mechanic",
+      "dependencies": [
+        "commander_cast_history",
+        "commander_entry_counter",
+        "mana_filtering"
+      ]
+    },
+    "Owlbear": {
+      "deck": "veteran",
+      "classification": "registry_only",
+      "dependencies": [
+        "etb_draw",
+        "trample"
+      ]
+    },
+    "Prismatic Strands": {
+      "deck": "veteran",
+      "classification": "special_modal_cost",
+      "dependencies": [
+        "flashback_alternate_cost_tap_white_creature",
+        "color_choice",
+        "damage_prevention"
+      ]
+    },
+    "Ram Through": {
+      "deck": "veteran",
+      "classification": "reusable_mechanic",
+      "dependencies": [
+        "creature_deals_damage_equal_power",
+        "trample_excess_to_controller"
+      ]
+    },
+    "Shardless Outlander": {
+      "deck": "veteran",
+      "classification": "special_modal_cost",
+      "dependencies": [
+        "landcycling",
+        "creature_stats"
+      ]
+    },
+    "Shrine Steward": {
+      "deck": "veteran",
+      "classification": "reusable_mechanic",
+      "dependencies": [
+        "etb_trigger",
+        "library_search",
+        "aura_or_shrine_filter",
+        "shuffle"
+      ]
+    },
+    "Snake Umbra": {
+      "deck": "veteran",
+      "classification": "new_engine_mechanic",
+      "dependencies": [
+        "aura",
+        "totem_armor_replacement",
+        "combat_damage_draw_trigger"
+      ]
+    },
+    "Spirit Link": {
+      "deck": "veteran",
+      "classification": "reusable_mechanic",
+      "dependencies": [
+        "aura",
+        "damage_dealt_lifegain_trigger"
+      ]
+    },
+    "Stave Off": {
+      "deck": "veteran",
+      "classification": "reusable_mechanic",
+      "dependencies": [
+        "target_creature",
+        "protection_from_color_choice_until_eot"
+      ]
+    },
+    "Temporal Isolation": {
+      "deck": "veteran",
+      "classification": "reusable_mechanic",
+      "dependencies": [
+        "flash_aura",
+        "shadow",
+        "prevent_combat_damage_by_enchanted_creature"
+      ]
+    },
+    "Ulvenwald Captive // Ulvenwald Abomination": {
+      "deck": "veteran",
+      "classification": "special_modal_cost",
+      "dependencies": [
+        "transform",
+        "activated_transform_cost",
+        "mana_ability",
+        "double_faced_card"
+      ]
+    },
+    "Vines of Vastwood": {
+      "deck": "veteran",
+      "classification": "special_modal_cost",
+      "dependencies": [
+        "kicker",
+        "targeting_restriction",
+        "power_toughness_bonus"
+      ]
+    },
+    "Whisperer of the Wilds": {
+      "deck": "veteran",
+      "classification": "reusable_mechanic",
+      "dependencies": [
+        "mana_ability",
+        "ferocious_bonus_mana"
+      ]
+    }
+  },
+  "pdh_blockers": [
+    "commander_zone_initialization",
+    "commander_tax_and_recast",
+    "commander_damage_16",
+    "starting_life_30",
+    "phase29_event_ledger_extraction"
+  ],
+  "official_execution_authorized": false,
+  "official_seeds_consumed": 0,
+  "games_initialized": 0,
+  "outcome_exposure": 0
+}
