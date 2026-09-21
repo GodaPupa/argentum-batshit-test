@@ -75,4 +75,6 @@ jobs:
           git add experiments/face-value/qualification/elves-e1-discovery-seed-registry.json \
                   experiments/face-value/qualification/elves-e1-discovery-seed-registry.sha256
           git commit -m 'face-value: freeze Elves E1 discovery vector'
+          git fetch origin face-value/lab
+          git rebase origin/face-value/lab
           git push origin HEAD:face-value/lab
