@@ -19,7 +19,7 @@ def main():
     protected=PublicPermanent("prot","Izzet Guildmage","self",hexproof=True)
 
     bite=ObservedActionSpec("bite","Bite Down","targeted_creature_control","sorcery",generic_cost=1,colored_cost=("G",),target_type="creature",target_controller="self")
-    gift=ObservedActionSpec("gift","Generous Gift","targeted_noncreature_control","instant",generic_cost=2,colored_cost=("W",),target_controller="self")
+    gift=ObservedActionSpec("gift","Generous Gift","targeted_noncreature_control","instant",generic_cost=2,colored_cost=("W",),target_type="permanent",target_controller="self")
 
     forest2=PublicPermanent("forest2","Forest","opponent",mana_colors=("G",),mana_amount=1)
     plains2=PublicPermanent("plains2","Plains","opponent",mana_colors=("W",),mana_amount=1)
