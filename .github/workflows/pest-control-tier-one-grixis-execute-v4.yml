@@ -1,0 +1,127 @@
+name: Pest Control Tier-1 Grixis Official Execution v4
+run-name: Pest Grixis official EXECUTE v4
+
+on:
+  workflow_dispatch:
+    inputs:
+      execution_commit:
+        description: Exact green replacement-authorization commit.
+        required: true
+        type: string
+      execution_tree:
+        description: Exact tree of the green replacement-authorization commit.
+        required: true
+        type: string
+      execution_ack:
+        description: Exact one-shot Grixis acknowledgement.
+        required: true
+        type: string
+
+permissions:
+  actions: read
+  contents: read
+
+concurrency:
+  group: pest-control-tier-one-grixis-official-execution-v4
+  cancel-in-progress: false
+
+env:
+  FREEZE_ARTIFACT_ID: "10620940806"
+  FREEZE_ARTIFACT_SHA256: 88b5e99d7aab2065fb26d51c074478d43310209d45b084d9dcfe552e8c328373
+
+jobs:
+  official:
+    runs-on: ubuntu-latest
+    timeout-minutes: 720
+    steps:
+      - name: Reject GitHub rerun
+        run: |
+          set -euo pipefail
+          test "${GITHUB_RUN_ATTEMPT}" = "1"
+
+      - name: Verify exact execution acknowledgement
+        env:
+          EXECUTION_ACK: ${{ inputs.execution_ack }}
+        run: |
+          set -euo pipefail
+          test "${EXECUTION_ACK}" = "EXECUTE_FROZEN_TIER_ONE_GRIXIS_4_EXACTLY_ONCE"
+
+      - name: Validate pinned identity syntax
+        env:
+          EXECUTION_COMMIT: ${{ inputs.execution_commit }}
+          EXECUTION_TREE: ${{ inputs.execution_tree }}
+        run: |
+          set -euo pipefail
+          test "${#EXECUTION_COMMIT}" = "40"
+          test "${#EXECUTION_TREE}" = "40"
+          case "${EXECUTION_COMMIT}${EXECUTION_TREE}" in *[!0-9a-f]*) exit 1;; esac
+
+      - name: Checkout exact green replacement execution commit
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ inputs.execution_commit }}
+
+      - name: Verify exact commit and tree
+        env:
+          EXECUTION_COMMIT: ${{ inputs.execution_commit }}
+          EXECUTION_TREE: ${{ inputs.execution_tree }}
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "${EXECUTION_COMMIT}"
+          test "$(git rev-parse 'HEAD^{tree}')" = "${EXECUTION_TREE}"
+
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - uses: gradle/actions/setup-gradle@v6
+
+      - name: Download exact frozen Grixis vector
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p build/pest-grixis-official-input
+          curl -fsSL -H "Authorization: Bearer ${GH_TOKEN}" -H "Accept: application/vnd.github+json"             "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/artifacts/${FREEZE_ARTIFACT_ID}/zip"             -o build/pest-grixis-official-freeze.zip
+          echo "${FREEZE_ARTIFACT_SHA256}  build/pest-grixis-official-freeze.zip" | sha256sum -c -
+          unzip -q build/pest-grixis-official-freeze.zip -d build/pest-grixis-official-input
+          cd build/pest-grixis-official-input
+          sha256sum -c artifacts.sha256
+
+      - name: Create durable execution envelope
+        env:
+          EXECUTION_COMMIT: ${{ inputs.execution_commit }}
+          EXECUTION_TREE: ${{ inputs.execution_tree }}
+        run: |
+          set -euo pipefail
+          mkdir -p build/reports/pest-control-tier-one-grixis-official
+          {
+            echo "run_id=${GITHUB_RUN_ID}"
+            echo "run_attempt=${GITHUB_RUN_ATTEMPT}"
+            echo "replacement_identity=v4"
+            echo "retired_preflight_run_ids=35611002403,35614730818,35619166656"
+            echo "execution_commit=${EXECUTION_COMMIT}"
+            echo "execution_tree=${EXECUTION_TREE}"
+            echo "freeze_artifact_id=${FREEZE_ARTIFACT_ID}"
+            echo "freeze_artifact_sha256=${FREEZE_ARTIFACT_SHA256}"
+          } > build/reports/pest-control-tier-one-grixis-official/execution-envelope.txt
+
+      - name: Execute frozen four-game vector exactly once
+        env:
+          PEST_GRIXIS_OFFICIAL_MODE: EXECUTE
+          PEST_GRIXIS_OFFICIAL_EXECUTION_ACK: ${{ inputs.execution_ack }}
+          PEST_GRIXIS_EXECUTION_INPUT_ACK: ${{ inputs.execution_ack }}
+          PEST_GRIXIS_EXECUTION_INPUT_DIR: ${{ github.workspace }}/build/pest-grixis-official-input
+          PEST_GRIXIS_OFFICIAL_EXECUTION_COMMIT: ${{ inputs.execution_commit }}
+          PEST_GRIXIS_OFFICIAL_OUTPUT_DIR: ${{ github.workspace }}/build/reports/pest-control-tier-one-grixis-official
+        run: scripts/test-class PestControlTierOneGrixisOfficialExecutionRunnerTest --info --stacktrace
+
+      - name: Upload one-shot official evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: pest-control-tier-one-grixis-official-execution-v4
+          path: build/reports/pest-control-tier-one-grixis-official/
+          if-no-files-found: error
+          retention-days: 90
