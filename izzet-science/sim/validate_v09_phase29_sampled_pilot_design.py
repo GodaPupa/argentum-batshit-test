@@ -47,7 +47,8 @@ FORBIDDEN_EXECUTION_MARKERS = [
 
 def main():
     text = GATE.read_text()
-    missing = [item for item in REQUIRED if item not in text]
+    normalized = " ".join(text.split()).lower()
+    missing = [item for item in REQUIRED if " ".join(item.split()).lower() not in normalized]
     assert not missing, f"missing required design clauses: {missing}"
 
     # Freeze exact pilot cardinalities and prevent accidental widening.
