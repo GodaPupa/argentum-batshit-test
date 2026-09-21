@@ -7,7 +7,7 @@ artifact provenance are preserved in `v2-qualification-execution/`. All 50 quali
 permanently retired. The result qualifies only this exact preboard matchup and does not establish
 Tier-1 status or alter the frozen Pest Control v1.0 deck.
 
-This directory is reserved exclusively for Project Pest Control experiment protocols.\n
+This directory is reserved exclusively for Project Pest Control experiment protocols.
 The official four-game Grixis Affinity smoke executed exactly once in run `35632206268` and is accepted
 as `ACCEPTED_NONEXPERIMENTAL_SMOKE`: Pest Control finished 3-1, all four frozen assignments were
 attempted and recorded exactly once, all raw hashes reconcile, and rerolls/replacements/seed
