@@ -52,6 +52,8 @@ object PestControlTierOneGrixisRunnerSurfacePreflight {
         if (executionMethods != setOf("inspect")) errors += "execution contract surface mismatch"
         val singleGameMethods = inventory.publicMethods["PestControlTierOneGrixisDisabledSingleGame"].orEmpty()
         if (singleGameMethods != setOf("inspect")) errors += "single-game surface mismatch"
+        val fourCellMethods = inventory.publicMethods["PestControlTierOneGrixisDisabledFourCellPlan"].orEmpty()
+        if (fourCellMethods != setOf("inspect")) errors += "four-cell plan surface mismatch"
         return GrixisRunnerSurfacePreflightResult(
             errors = errors.distinct(),
             workflowFilesAudited = inventory.workflowFiles.size,
