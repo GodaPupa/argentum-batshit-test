@@ -1,0 +1,64 @@
+name: Izzet v0.9 Phase 26 Public-State Compiler
+
+on:
+  pull_request:
+    paths:
+      - "izzet-science/sim/public_action_compiler.py"
+      - "izzet-science/sim/validate_v09_phase26_public_state_compiler.py"
+      - "izzet-science/v09-phase26-public-state-action-compiler-gate.md"
+      - ".github/workflows/izzet-v09-phase26-public-state-compiler.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify-phase26:
+    if: github.event_name != 'pull_request' || github.head_ref == 'mayhem/izzet-science'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Verify frozen card control
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(sha256sum izzet-science/v0.7-control.md | cut -d' ' -f1)" = "726f5e9458b46dda30b33a6ce9f3c3237b25d6e11b81dac85308c3065c108a01"
+      - name: Run Phase 26 seed-free compiler qualification
+        shell: bash
+        run: |
+          set -euo pipefail
+          export PYTHONPATH="$PWD/izzet-science/sim"
+          python izzet-science/sim/validate_v09_phase26_public_state_compiler.py | tee /tmp/phase26.txt
+          grep -Fx "V09_PHASE26_PUBLIC_STATE_COMPILER_VALIDATION_PASS" /tmp/phase26.txt
+      - name: Assert no experimental execution surface
+        shell: bash
+        run: |
+          set -euo pipefail
+          ! grep -R --line-number -E 'random\.|secrets\.|SystemRandom|experimental[_ -]?seed|sampled[_ -]?game'             izzet-science/sim/public_action_compiler.py             izzet-science/sim/validate_v09_phase26_public_state_compiler.py
+      - name: Emit qualification manifest
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/phase26-artifact
+          cp /tmp/phase26.txt /tmp/phase26-artifact/validation.txt
+          {
+            echo "schema=izzet-v09-phase26-public-state-compiler-v1"
+            echo "source_sha=${GITHUB_SHA}"
+            echo "control_sha256=726f5e9458b46dda30b33a6ce9f3c3237b25d6e11b81dac85308c3065c108a01"
+            echo "experimental_seeds_consumed=0"
+            echo "sampled_games=0"
+            echo "outcome_exposure=0"
+            sha256sum izzet-science/sim/public_action_compiler.py
+            sha256sum izzet-science/sim/validate_v09_phase26_public_state_compiler.py
+            sha256sum izzet-science/v09-phase26-public-state-action-compiler-gate.md
+            sha256sum /tmp/phase26-artifact/validation.txt
+          } > /tmp/phase26-artifact/manifest.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: izzet-v09-phase26-public-state-compiler
+          path: /tmp/phase26-artifact
+          if-no-files-found: error
