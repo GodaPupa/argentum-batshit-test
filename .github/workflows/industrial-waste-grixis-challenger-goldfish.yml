@@ -1,0 +1,26 @@
+name: Industrial Waste — Grixis Challenger Goldfish
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - industrial-waste/lab
+    paths:
+      - .github/workflows/industrial-waste-grixis-challenger-goldfish.yml
+      - industrial-waste/challengers/grixis-turbo-a.dck
+      - industrial-waste/input-identities.sha256
+      - industrial-waste/sim/**
+      - justfile
+
+permissions:
+  contents: read
+
+jobs:
+  structural-gate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Validate frozen inputs
+        run: |
+          python3 -m unittest discover -s industrial-waste/sim -p 'test_*.py' -v
+          python3 industrial-waste/sim/validate_inputs.py
