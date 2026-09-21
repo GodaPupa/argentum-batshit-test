@@ -1,0 +1,67 @@
+name: Izzet Position-1 Engine Gap Triage
+
+on:
+  pull_request:
+    paths:
+      - "izzet-science/position1-engine-gap-inventory.json"
+      - "izzet-science/position1-engine-gap-triage.json"
+      - "izzet-science/v09-position1-engine-gap-triage-gate.md"
+      - "izzet-science/sim/validate_v09_position1_engine_gap_triage.py"
+      - ".github/workflows/izzet-v09-position1-engine-gap-triage.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    if: github.event_name != 'pull_request' || github.head_ref == 'mayhem/izzet-science'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Verify accepted inventory
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -Fq 'V09_POSITION1_ENGINE_GAP_INVENTORY_ACCEPTED' izzet-science/v09-position1-engine-gap-inventory-accepted.md
+      - name: Validate complete triage
+        shell: bash
+        run: |
+          set -euo pipefail
+          python izzet-science/sim/validate_v09_position1_engine_gap_triage.py | tee /tmp/triage.txt
+          grep -Fx 'V09_POSITION1_ENGINE_GAP_TRIAGE_VALIDATION_PASS' /tmp/triage.txt
+      - name: Assert no execution surface
+        shell: bash
+        run: |
+          set -euo pipefail
+          ! grep --line-number -E 'execute_game\(|run_matchup\(|seed *=|outcome *=|shuffle\(' \
+            izzet-science/position1-engine-gap-triage.json \
+            izzet-science/sim/validate_v09_position1_engine_gap_triage.py
+      - name: Emit manifest
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/triage-artifact
+          cp /tmp/triage.txt /tmp/triage-artifact/validation.txt
+          {
+            echo "schema=izzet-v09-position1-engine-gap-triage-v1"
+            echo "source_sha=${GITHUB_SHA}"
+            echo "total_cards=55"
+            echo "experimental_seeds_consumed=0"
+            echo "games_initialized=0"
+            echo "outcome_exposure=0"
+            sha256sum izzet-science/position1-engine-gap-inventory.json
+            sha256sum izzet-science/position1-engine-gap-triage.json
+            sha256sum izzet-science/v09-position1-engine-gap-triage-gate.md
+            sha256sum izzet-science/sim/validate_v09_position1_engine_gap_triage.py
+            sha256sum /tmp/triage-artifact/validation.txt
+          } > /tmp/triage-artifact/manifest.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: izzet-v09-position1-engine-gap-triage
+          path: /tmp/triage-artifact
+          if-no-files-found: error
