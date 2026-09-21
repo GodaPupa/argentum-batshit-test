@@ -1,49 +1,71 @@
-name: Argentum Validation
+name: Izzet Phase 20 Public Event Ledger Validation
 
 on:
-  workflow_dispatch:
   push:
-    branches: [ "main" ]
+    branches: [ "mayhem/izzet-science" ]
 
 permissions:
   contents: read
 
 jobs:
-  test:
+  validate:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 10
 
     steps:
-      - name: Checkout repository
+      - name: Checkout frozen semantic source
         uses: actions/checkout@v4
-
-      - name: Set up Java 21
-        uses: actions/setup-java@v4
         with:
-          distribution: temurin
-          java-version: '21'
+          ref: 0792a6f0b1e468b13f44d050dcd6d31019d002a6
+          persist-credentials: false
 
-      - name: Set up Gradle
-        uses: gradle/actions/setup-gradle@v4
-        with:
-          gradle-version: '9.6.1'
-
-      - name: Make Gradle wrapper executable
-        run: chmod +x gradlew
-
-      - name: Show environment
+      - name: Verify frozen identities
+        shell: bash
         run: |
-          java -version
-          gradle --version
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "0792a6f0b1e468b13f44d050dcd6d31019d002a6"
+          test "$(git rev-parse HEAD^{tree})" = "ba8084bc8ad3388c1408b1dfe281e8f5f35916e6"
+          echo "726f5e9458b46dda30b33a6ce9f3c3237b25d6e11b81dac85308c3065c108a01  izzet-science/v0.7-control.md" | sha256sum --check --strict
+          echo "65b605fd0c62c5dbf9973997f4ddb55c9d026814aeba7f3d7a87a679c0987197  izzet-science/sim/capsize_response_policy.py" | sha256sum --check --strict
+          echo "810082856bd9bcd1dd4e74bfa03255d8bac437a0f424a16b8a34cee82f207977  izzet-science/sim/capsize_event_ledger.py" | sha256sum --check --strict
+          echo "ef08f454e96e340d3dd5fcad01cc8ee48b256b38d39ef996be1b514a483f295c  izzet-science/sim/validate_v09_capsize_event_ledger.py" | sha256sum --check --strict
+          echo "956ecb4973d5b05a2d9947b22be668b588a9d51e51fdc81f5c41e15d7d99fc1f  izzet-science/v09-phase20-event-ledger-contract-gate.md" | sha256sum --check --strict
 
-      - name: Compile Argentum
-        run: ./gradlew classes --stacktrace
+      - name: Run seed-free semantic chain
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p phase20-artifact
+          python3 izzet-science/sim/validate_v09_capsize_interaction.py | tee phase20-artifact/phase15-validation.txt
+          python3 izzet-science/sim/validate_v09_capsize_interaction_contract.py | tee phase20-artifact/phase16-validation.txt
+          python3 izzet-science/sim/validate_v09_interaction_integrity_sweep.py | tee phase20-artifact/phase17-validation.txt
+          python3 izzet-science/sim/validate_v09_capsize_response_policy.py | tee phase20-artifact/phase19-validation.txt
+          python3 izzet-science/sim/validate_v09_capsize_event_ledger.py | tee phase20-artifact/phase20-validation.txt
+          grep -Fx "experimental_seeds_consumed=0" phase20-artifact/phase20-validation.txt
+          grep -Fx "pilot_authorized=0" phase20-artifact/phase20-validation.txt
+          grep -Fx "outcome_claims=0" phase20-artifact/phase20-validation.txt
+          grep -Fx "disposition=V09_PHASE20_SEED_FREE_VALIDATED" phase20-artifact/phase20-validation.txt
 
-      - name: Run engine tests
-        run: ./gradlew test --stacktrace
+      - name: Build provenance manifest
+        shell: bash
+        run: |
+          set -euo pipefail
+          {
+            echo "schema=izzet-v09-phase20-validation-artifact-v1"
+            echo "source_sha=$(git rev-parse HEAD)"
+            echo "source_tree=$(git rev-parse HEAD^{tree})"
+            echo "workflow_runner_sha=${GITHUB_SHA}"
+            echo "control_sha256=726f5e9458b46dda30b33a6ce9f3c3237b25d6e11b81dac85308c3065c108a01"
+            echo "experimental_seeds_assigned=0"
+            echo "experimental_seeds_consumed=0"
+            echo "outcome_claims=0"
+          } > phase20-artifact/manifest.txt
+          sha256sum phase20-artifact/*-validation.txt >> phase20-artifact/manifest.txt
 
-      - name: Run Gym tests
-        run: ./gradlew :gym:test --stacktrace
-
-      - name: Run Gym trainer tests
-        run: ./gradlew :gym-trainer:test --stacktrace
+      - name: Upload validation artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: izzet-v09-phase20-public-event-ledger
+          path: phase20-artifact/
+          if-no-files-found: error
+          retention-days: 30
