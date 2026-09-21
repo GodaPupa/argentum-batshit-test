@@ -11,7 +11,11 @@ class PestControlTierOneGrixisRunnerSurfacePreflightTest : FunSpec({
     test("repository workflows commands and public methods expose no official Grixis runner") {
         val root = repositoryRoot()
         val workflows = textFiles(root.resolve(".github/workflows"))
-        val commands = listOf("tools", "server/src/main").flatMap { relative ->
+        val commands = listOf(
+            "game-server/src/main",
+            "gym-server/src/main",
+            "mtgish-tooling/src/main",
+        ).flatMap { relative ->
             textFiles(root.resolve(relative)).entries
         }.associate { it.toPair() }
         val inventory = GrixisRunnerSurfaceInventory(
