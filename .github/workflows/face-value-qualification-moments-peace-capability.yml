@@ -88,6 +88,12 @@ jobs:
           done < peace-capability-assignments.tsv
           exit 0
 
+      - name: Print Moment's Peace trace evidence
+        if: always()
+        run: |
+          set +e
+          grep -RniE "Moment's Peace|flashback|graveyard|exile" peace-capability-logs || true
+
       - name: Audit Moments Peace capability
         run: |
           python3 - <<'PY'
@@ -120,3 +126,14 @@ jobs:
           print(json.dumps({k:v for k,v in summary.items() if k!='records'},indent=2,sort_keys=True))
           assert len(records)==8 and terminal==8 and flags==0 and casts>=2 and flashback_casts>=1
           PY
+
+      - name: Preserve diagnostic logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: face-value-moments-peace-capability-${{ github.run_id }}
+          path: |
+            peace-capability-logs/*.log
+            peace-capability-summary.json
+            peace-capability-assignments.tsv
+          if-no-files-found: warn
