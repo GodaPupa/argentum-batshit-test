@@ -1,0 +1,59 @@
+name: Pest Control Tier-1 Grixis Replication Freeze Gate
+
+on:
+  pull_request:
+    paths:
+      - scripts/experiments/pest-control/generate_tier_one_grixis_replication_freeze.py
+      - .github/workflows/pest-control-tier-one-grixis-replication-freeze.yml
+      - docs/experiments/pest-control/tier-one-grixis-replication-freeze-gate.md
+
+permissions:
+  actions: read
+  contents: read
+
+concurrency:
+  group: pest-control-tier-one-grixis-replication-freeze-validation
+  cancel-in-progress: false
+
+jobs:
+  validate-gate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Download exact accepted Grixis smoke freeze artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p build/prior-grixis-smoke-freeze
+          curl -fsSL -H "Authorization: Bearer ${GH_TOKEN}" -H "Accept: application/vnd.github+json"             "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/artifacts/10620940806/zip"             -o build/prior-grixis-smoke-freeze.zip
+          echo "88b5e99d7aab2065fb26d51c074478d43310209d45b084d9dcfe552e8c328373  build/prior-grixis-smoke-freeze.zip" | sha256sum -c -
+          unzip -q build/prior-grixis-smoke-freeze.zip -d build/prior-grixis-smoke-freeze
+          cd build/prior-grixis-smoke-freeze
+          sha256sum -c artifacts.sha256
+
+      - name: Deterministic entropy-free replication validation
+        run: |
+          set -euo pipefail
+          python3 scripts/experiments/pest-control/generate_tier_one_grixis_replication_freeze.py             --preflight             --prior-smoke-dir build/prior-grixis-smoke-freeze
+          python3 scripts/experiments/pest-control/generate_tier_one_grixis_replication_freeze.py             --validate-fixture             --prior-smoke-dir build/prior-grixis-smoke-freeze             --output-dir build/reports/pest-control-tier-one-grixis-replication-freeze-fixture
+          python3 - <<'PY'
+          import csv, json
+          from pathlib import Path
+          root=Path("build/reports/pest-control-tier-one-grixis-replication-freeze-fixture")
+          manifest=json.loads((root/"freeze-manifest.json").read_text())
+          assert manifest["status"]=="NONEXPERIMENTAL_FIXTURE"
+          assert manifest["collision_audit"]=={
+              "excluded_seed_count":538,"new_seed_count":12,"new_unique_count":12,
+              "overlap_count":0,"result":"PASS"}
+          assert manifest["assignment_counts"]["games"]==12
+          assert manifest["assignment_counts"]["pest_play"]==6
+          assert manifest["assignment_counts"]["pest_draw"]==6
+          assert manifest["assignment_counts"]["pest_seat_zero"]==6
+          assert manifest["assignment_counts"]["pest_seat_one"]==6
+          assert set(manifest["assignment_counts"]["joint_cells"].values())=={3}
+          rows=list(csv.DictReader((root/"assignments.csv").open()))
+          assert len(rows)==12
+          assert [int(r["game_number"]) for r in rows]==list(range(1,13))
+          PY
