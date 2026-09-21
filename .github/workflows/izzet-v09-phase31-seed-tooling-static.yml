@@ -58,7 +58,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          ! grep --line-number -- '--generate' .github/workflows/izzet-v09-phase31-seed-tooling-static.yml
+          ! grep --line-number -E 'phase31_seed_vector\.py .*--generate|python .*phase31_seed_vector\.py.*--generate' .github/workflows/izzet-v09-phase31-seed-tooling-static.yml
       - name: Emit static qualification manifest
         shell: bash
         run: |
