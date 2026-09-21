@@ -35,3 +35,8 @@ jobs:
         uses: extractions/setup-just@v3
       - name: Run deterministic Burn policy fixtures
         run: just test-class IndustrialWasteMadnessBurnPolicyAuditTest
+      - name: Print focused test failure details
+        if: failure()
+        run: |
+          find ai/build/test-results/test -name 'TEST-*IndustrialWasteMadnessBurnPolicyAuditTest*.xml' \
+            -exec sed -n '1,220p' {} \;
