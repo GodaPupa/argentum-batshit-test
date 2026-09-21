@@ -1,0 +1,130 @@
+name: Izzet v0.9 Phase 31 One-Time Seed Freeze
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/izzet-v09-phase31-one-time-seed-freeze.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  freeze-seed-vector:
+    if: github.head_ref == 'mayhem/izzet-science' && github.run_attempt == 1
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Verify exact qualified identities
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(sha256sum izzet-science/v0.7-control.md | cut -d' ' -f1)" = "726f5e9458b46dda30b33a6ce9f3c3237b25d6e11b81dac85308c3065c108a01"
+          test "$(sha256sum izzet-science/v09-phase31-seed-vector-freeze-gate.md | cut -d' ' -f1)" = "27b64e27b6c9528cd84a2d1dcf831e5f93010282d1d816db9872464604dd4733"
+          test "$(sha256sum izzet-science/seed-registry-v1.json | cut -d' ' -f1)" = "c235f9cd89206490ec5c9105255c187a0f3d845cfb5877fbe4110c926e3dfb2f"
+          test "$(sha256sum izzet-science/sim/phase31_seed_vector.py | cut -d' ' -f1)" = "4c2870d7f01238dfe4317e057f0788c2ba7f434335e820140b62c3fb1442e54a"
+          test "$(sha256sum izzet-science/sim/sampled_pilot_runner.py | cut -d' ' -f1)" = "864d46745c7ffd1c1e9c8eef48c5a0ad14b34938aa0a6066d94ab7a394516fc3"
+          grep -Fq 'V09_PHASE31_SEED_TOOLING_STATIC_ACCEPTED' izzet-science/v09-phase31-seed-tooling-static-accepted.md
+
+      - name: Audit repository Izzet seed literals against registry
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json,re
+          from pathlib import Path
+          root=Path("izzet-science")
+          reg=json.loads((root/"seed-registry-v1.json").read_text())
+          registry=set(int(v) for v in reg["signed_i64_values"])
+          seen=set()
+          pat=re.compile(r"0x[0-9A-Fa-f]{8,16}")
+          for p in root.rglob("*"):
+              if not p.is_file() or p.name=="seed-registry-v1.json":
+                  continue
+              try:
+                  text=p.read_text(errors="strict")
+              except Exception:
+                  continue
+              for label in pat.findall(text):
+                  u=int(label,16)
+                  v=u if u < (1<<63) else u-(1<<64)
+                  # Restrict repository audit to the Izzet experimental namespace.
+                  if label.lower().startswith(("0x1a22e7","0x00000001a22e7")):
+                      seen.add(v)
+          missing=seen-registry
+          if missing:
+              raise SystemExit("FAIL_CLOSED_UNREGISTERED_IZZET_SEED_LITERAL")
+          print("V09_PHASE31_REGISTRY_REPOSITORY_AUDIT_PASS")
+          PY
+
+      - name: Generate and freeze exactly one opaque vector
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/phase31-private /tmp/phase31-public
+          export PYTHONPATH="$PWD/izzet-science/sim"
+          python izzet-science/sim/phase31_seed_vector.py             --generate             --registry izzet-science/seed-registry-v1.json             --quarantine /tmp/phase31-private/vector.json             --public-manifest /tmp/phase31-public/manifest.json             --registry-digest c235f9cd89206490ec5c9105255c187a0f3d845cfb5877fbe4110c926e3dfb2f             --protocol-identity f404cd9e4c916b569deb9786145e31d30ea4dbedabd355778f582c4b7ba9b3cb             --runner-sha256 864d46745c7ffd1c1e9c8eef48c5a0ad14b34938aa0a6066d94ab7a394516fc3             > /tmp/phase31-public/generation-status.txt
+          grep -Fx "V09_PHASE31_GENERATION_COMPLETE_VALUES_QUARANTINED" /tmp/phase31-public/generation-status.txt
+
+      - name: Validate quarantined vector without logging values
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json,hashlib
+          from pathlib import Path
+          q=Path("/tmp/phase31-private/vector.json")
+          p=Path("/tmp/phase31-public/manifest.json")
+          private=json.loads(q.read_text())
+          public=json.loads(p.read_text())
+          values=private["values"]
+          assignments=private["assignments"]
+          assert len(values)==12 and len(set(values))==12 and all(v!=0 and -(1<<63)<=v<=(1<<63)-1 for v in values)
+          assert len(assignments)==12 and assignments.count("play")==6 and assignments.count("draw")==6
+          vector_sha=hashlib.sha256(json.dumps(values,separators=(",",":")).encode()).hexdigest()
+          assert public["vector_sha256"]==vector_sha
+          assert public["count"]==12 and public["izzet_play"]==6 and public["izzet_draw"]==6
+          assert public["experimental_seeds_generated"]==12
+          assert public["experimental_seeds_consumed"]==0
+          assert public["games_initialized"]==0 and public["outcome_exposure"]==0
+          public_text=p.read_text()
+          assert all(str(v) not in public_text for v in values)
+          print("V09_PHASE31_QUARANTINED_VECTOR_VALIDATION_PASS")
+          PY
+
+      - name: Build public freeze receipt
+        shell: bash
+        run: |
+          set -euo pipefail
+          {
+            echo "schema=izzet-v09-phase31-freeze-receipt-v1"
+            echo "source_sha=${GITHUB_SHA}"
+            echo "run_id=${GITHUB_RUN_ID}"
+            echo "run_attempt=${GITHUB_RUN_ATTEMPT}"
+            echo "quarantine_file_sha256=$(sha256sum /tmp/phase31-private/vector.json | cut -d' ' -f1)"
+            echo "public_manifest_sha256=$(sha256sum /tmp/phase31-public/manifest.json | cut -d' ' -f1)"
+            echo "experimental_seeds_generated=12"
+            echo "experimental_seeds_consumed=0"
+            echo "games_initialized=0"
+            echo "outcome_exposure=0"
+          } > /tmp/phase31-public/freeze-receipt.txt
+
+      - name: Upload quarantined seed vector
+        uses: actions/upload-artifact@v4
+        with:
+          name: izzet-v09-phase31-seed-vector-quarantine
+          path: /tmp/phase31-private/vector.json
+          if-no-files-found: error
+          retention-days: 90
+
+      - name: Upload public freeze record
+        uses: actions/upload-artifact@v4
+        with:
+          name: izzet-v09-phase31-public-freeze-record
+          path: /tmp/phase31-public
+          if-no-files-found: error
+          retention-days: 90
