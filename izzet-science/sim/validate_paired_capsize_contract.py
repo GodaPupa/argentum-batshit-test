@@ -43,9 +43,10 @@ def row(turn,game,policy):
         "commander_battlefield":turn>=(3 if policy and game==0 else 2),
     }
     if policy:
-        event=game==0 and turn==2
+        event=game==0 and turn in {2,4}
         out.update({"capsize_tutor_used":event,"capsize_tutor_found":event,
-                    "capsize_scroll_used":event,"capsize_drift_used":False})
+                    "capsize_scroll_used":event and turn==2,
+                    "capsize_drift_used":event and turn==4})
     return out
 
 
@@ -66,6 +67,7 @@ def main() -> None:
     if len(cards)!=99:
         raise SystemExit(f"control main-deck identity mismatch: {len(cards)} cards")
     harness.paired_rng_isolation_regressions()
+    harness.capsize_reacquisition_regressions()
     pairs=[]
     for game in range(SAMPLES):
         control=[row(turn,game,False) for turn in range(1,11)]
@@ -76,6 +78,10 @@ def main() -> None:
     assert validate_summary(summary,SOURCE,MASTER,SAMPLES)
     assert summary["turns"][2]["metrics"]["capsize_present"]["policy_only"]==1
     assert summary["turns"][1]["metrics"]["commander_battlefield"]["control_only"]==1
+    assert summary["turns"][3]["capsize_tutor_events_by_now"]==2
+    assert summary["turns"][3]["capsize_ever_tutored_by_now"]==1
+    assert summary["turns"][3]["merchant_scroll_events_by_now"]==1
+    assert summary["turns"][3]["drift_events_by_now"]==1
 
     mutators=(
         lambda s:s.pop("schema"),
@@ -84,8 +90,9 @@ def main() -> None:
         lambda s:s["turns"][0].__setitem__("n",True),
         lambda s:s["turns"][0]["metrics"]["combo_pair"].__setitem__("neither",99),
         lambda s:s["turns"][0]["metrics"]["combo_pair"].__setitem__("delta",1),
-        lambda s:s["turns"][1].__setitem__("capsize_tutored_by_now",2),
-        lambda s:s["turns"][2].__setitem__("capsize_tutored_by_now",0),
+        lambda s:s["turns"][1].__setitem__("capsize_ever_tutored_by_now",2),
+        lambda s:s["turns"][3].__setitem__("capsize_tutor_events_by_now",1),
+        lambda s:s["turns"][4].__setitem__("capsize_ever_tutored_by_now",0),
         lambda s:s["turns"][0]["metrics"]["capsize_buyback"].update(
             {"both":0,"control_only":0,"policy_only":1,"neither":1,"delta":1}),
     )
@@ -113,14 +120,14 @@ def main() -> None:
             raise AssertionError("accepted noncanonical JSON")
 
     print(f"control_sha256={CONTROL_SHA256}")
-    print("phase=commander-independent-readiness-8-paired-output-contract")
+    print("phase=commander-independent-readiness-12-reacquisition-contract")
     print("paired_metrics="+",".join(summary["turns"][0]["metrics"]))
-    print("adversarial_rejections=12")
+    print("adversarial_rejections=13")
     print("sampled_games=0")
     print("seeds_consumed=0")
     print("pilot_authorized=0")
     print("outcome_claims=0")
-    print("disposition=V09_PHASE8_SEED_FREE_VALIDATED")
+    print("disposition=V09_PHASE12_SEED_FREE_VALIDATED")
 
 
 if __name__=="__main__":

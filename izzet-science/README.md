@@ -186,3 +186,12 @@ later reacquisition. The log did not preserve the failing trajectory, so no narr
 path is claimed. Seed `0x00000001A22E7011` is consumed and retired, the v2 runner is
 guarded against reuse, zero artifacts were uploaded, the ordinary workflow is
 restored, and no outcome or promotion is accepted. v0.7 remains the control.
+
+Phase 12 replaces the invalid one-acquisition invariant with paired summary schema
+`izzet-v09-capsize-paired-v2`. Cumulative tutor events may exceed the number of
+trajectories, while a separate `ever tutored` field remains a per-game estimand.
+Merchant Scroll and Drift event counts must still partition all events exactly. A
+deterministic fixture now executes Merchant acquisition, Brainstorm put-back, and
+Drift reacquisition in one trajectory; a two-event synthetic ledger passes and
+thirteen malformed outputs fail closed. No samples or seeds were consumed, no new
+pilot is authorized, and v0.7 remains the accepted control.

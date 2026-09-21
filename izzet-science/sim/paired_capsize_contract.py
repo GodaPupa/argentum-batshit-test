@@ -5,7 +5,7 @@ from __future__ import annotations
 import re
 
 
-SCHEMA="izzet-v09-capsize-paired-v1"
+SCHEMA="izzet-v09-capsize-paired-v2"
 DERIVATION="sha256-domain-counter-u64be"
 CONTROL_SHA256="726f5e9458b46dda30b33a6ce9f3c3237b25d6e11b81dac85308c3065c108a01"
 METRICS=("capsize_present","capsize_buyback","combo_pair","combo_lethal",
@@ -15,8 +15,9 @@ POLICY_EVENT_KEYS=("capsize_tutor_used","capsize_tutor_found",
                    "capsize_scroll_used","capsize_drift_used")
 TOP_KEYS={"schema","source_sha","control_sha256","master_seed","samples",
           "through","derivation","turns"}
-TURN_KEYS={"turn","n","capsize_tutored_by_now","merchant_scroll_by_now",
-           "drift_by_now","metrics"}
+TURN_KEYS={"turn","n","capsize_tutor_events_by_now",
+           "capsize_ever_tutored_by_now","merchant_scroll_events_by_now",
+           "drift_events_by_now","metrics"}
 
 
 def _count(value,name):
@@ -51,8 +52,9 @@ def aggregate_paired_games(pairs,source_sha,master_seed,samples,derive_seed,thro
     turns=[]
     for turn in range(1,through+1):
         turns.append({
-            "turn":turn,"n":0,"capsize_tutored_by_now":0,
-            "merchant_scroll_by_now":0,"drift_by_now":0,
+            "turn":turn,"n":0,"capsize_tutor_events_by_now":0,
+            "capsize_ever_tutored_by_now":0,
+            "merchant_scroll_events_by_now":0,"drift_events_by_now":0,
             "metrics":{metric:{"both":0,"control_only":0,"policy_only":0,
                                 "neither":0,"delta":0}
                        for metric in METRICS},
@@ -70,7 +72,8 @@ def aggregate_paired_games(pairs,source_sha,master_seed,samples,derive_seed,thro
         child_seeds.add(child_seed)
         if len(control_rows)!=through or len(policy_rows)!=through:
             raise ValueError("paired trajectory length mismatch")
-        tutored=scroll=drift=0
+        events_by_now=scroll_events=drift_events=0
+        ever_tutored=False
         for offset,(control,policy) in enumerate(zip(control_rows,policy_rows),1):
             if control.get("turn")!=offset or policy.get("turn")!=offset:
                 raise ValueError("paired turn order mismatch")
@@ -82,13 +85,15 @@ def aggregate_paired_games(pairs,source_sha,master_seed,samples,derive_seed,thro
             used,found,used_scroll,used_drift=events
             if not (used==found and int(used)==int(used_scroll)+int(used_drift)):
                 raise ValueError("policy event identity violation")
-            tutored+=int(used); scroll+=int(used_scroll); drift+=int(used_drift)
-            if tutored>1:
-                raise ValueError("more than one Capsize acquisition in a game")
+            events_by_now+=int(used)
+            scroll_events+=int(used_scroll)
+            drift_events+=int(used_drift)
+            ever_tutored=ever_tutored or used
             out=turns[offset-1]; out["n"]+=1
-            out["capsize_tutored_by_now"]+=tutored
-            out["merchant_scroll_by_now"]+=scroll
-            out["drift_by_now"]+=drift
+            out["capsize_tutor_events_by_now"]+=events_by_now
+            out["capsize_ever_tutored_by_now"]+=int(ever_tutored)
+            out["merchant_scroll_events_by_now"]+=scroll_events
+            out["drift_events_by_now"]+=drift_events
             for metric in METRICS:
                 cell=_paired_cell(control.get(metric),policy.get(metric))
                 out["metrics"][metric][cell]+=1
@@ -131,7 +136,7 @@ def validate_summary(summary,expected_source,expected_seed,expected_samples):
         raise ValueError("turn horizon mismatch")
     if not isinstance(summary["turns"],list) or len(summary["turns"])!=10:
         raise ValueError("turn horizon mismatch")
-    previous_events=(0,0,0)
+    previous_events=(0,0,0,0)
     previous_lethal={"control":0,"policy":0}
     for expected_turn,row in enumerate(summary["turns"],1):
         if (not isinstance(row,dict) or set(row)!=TURN_KEYS or
@@ -141,8 +146,10 @@ def validate_summary(summary,expected_source,expected_seed,expected_samples):
         if n!=expected_samples:
             raise ValueError("turn sample count mismatch")
         events=tuple(_count(row[key],key) for key in
-                     ("capsize_tutored_by_now","merchant_scroll_by_now","drift_by_now"))
-        if events[0]!=events[1]+events[2] or events[0]>n:
+                     ("capsize_tutor_events_by_now","capsize_ever_tutored_by_now",
+                      "merchant_scroll_events_by_now","drift_events_by_now"))
+        total,ever,scroll,drift=events
+        if total!=scroll+drift or ever>n or ever>total or total>n*expected_turn:
             raise ValueError("cumulative tutor identity violation")
         if any(now<before for now,before in zip(events,previous_events)):
             raise ValueError("cumulative tutor count decreased")

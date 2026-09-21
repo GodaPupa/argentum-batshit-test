@@ -1627,6 +1627,28 @@ def capsize_tutor_policy_regressions():
     assert not poor.battlefield[0]["tapped"] and poor_library==["Capsize","Mountain"]
     return True
 
+def capsize_reacquisition_regressions():
+    """A legal Brainstorm put-back permits a second Capsize tutor event."""
+    import random as _r
+    state=DevState(["Lava Spike","Desperate Ritual","Merchant Scroll",
+                    "Drift of Phantasms","Brainstorm"])
+    state.turn=4
+    state.battlefield=[{"card":"Island","tapped":False,"entered":turn}
+                       for turn in (1,2,3)]
+    card,target,library=execute_capsize_tutor_policy(
+        state,["Capsize","Counterspell","Negate","Island","Mountain"],
+        _r.Random(7))
+    assert (card,target)==("Merchant Scroll","Capsize")
+    untap_step(state)
+    selected,library,_,_=cast_one_selection(state,library)
+    assert selected=="Brainstorm"
+    assert library[:2]==["Drift of Phantasms","Capsize"]
+    state.begin_turn(library.pop(0)); untap_step(state)
+    card,target,library=execute_capsize_tutor_policy(state,library,_r.Random(8))
+    assert (card,target)==("Drift of Phantasms","Capsize")
+    assert "Capsize" in state.hand and "Capsize" not in library
+    return True
+
 def combo_assembly_metrics(state):
     h=set(state.hand)
     spike="Lava Spike" in h
