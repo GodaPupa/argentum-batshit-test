@@ -67,6 +67,11 @@ The disabled assignment shape is recorded in `tier-one-grixis-disabled-assignmen
 opaque synthetic slot labels validate row order and substitution rejection while the row type
 structurally excludes seeds, entropy, vectors, environments, actions, artifacts, and outcomes.
 
+The synthetic provenance binding is recorded in
+`tier-one-grixis-disabled-synthetic-provenance.md`. It attaches protocol, runner, deck, and schema
+hashes to the opaque rows while remaining structurally incapable of representing executable entropy
+or outcome-bearing state.
+
 Pest Control versus SoterX Mono Red Madness matchup Block A executed once and is formally rejected
 as `REJECTED_OUTCOME_RELEVANT_TARGET_SELECTION_DEFECTS`. All 50 Block A seeds are permanently
 retired. The descriptive 35–15 result is inadmissible for acceptance, pooling, or tuning. Preserved
