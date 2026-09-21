@@ -33,7 +33,8 @@ class IzzetScienceVeteranBeastriderEngineReadinessTest : FunSpec({
         val ability = card.script.activatedAbilities.single()
         ability.isManaAbility shouldBe true
         val effect = ability.effect as AddColorlessManaEffect
-        effect.amount shouldBe DynamicAmount.Fixed(1)
+        val amount = effect.amount as DynamicAmount.Fixed
+        amount.amount shouldBe 1
     }
 
     test("freeze exact unresolved engine coverage count and emit identities") {
