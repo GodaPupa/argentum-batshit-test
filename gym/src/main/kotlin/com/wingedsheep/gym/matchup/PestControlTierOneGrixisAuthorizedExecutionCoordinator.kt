@@ -1,5 +1,7 @@
 package com.wingedsheep.gym.matchup
 
+import kotlinx.serialization.decodeFromString
+
 data class GrixisAuthorizedExecutionOutcome(
     val disposition: GrixisCoordinatorDisposition,
     val attempts: List<GrixisSmokeAttempt>,
@@ -33,13 +35,6 @@ data class GrixisAuthorizedExecutionOutcome(
     }
 }
 
-/**
- * One-shot execution coordinator for the already-authorized four-game Grixis smoke.
- *
- * The coordinator is callback-driven so deterministic tests can prove ordering without exposing the
- * official artifact. Every attempt must be durably persisted before initialization. Any failure
- * becomes terminal rejection; there is no retry, replacement, or continuation path.
- */
 class PestControlTierOneGrixisAuthorizedExecutionCoordinator(
     private val assignments: List<GrixisSmokeAssignment>,
     private val vectorIdentity: GrixisSmokeVectorIdentity,
@@ -67,11 +62,11 @@ class PestControlTierOneGrixisAuthorizedExecutionCoordinator(
                     assignment.gameNumber,
                     GrixisCoordinatorEventType.ATTEMPT_DURABLY_RECORDED,
                 )
-
                 events += GrixisCoordinatorEvent(
                     assignment.gameNumber,
                     GrixisCoordinatorEventType.INITIALIZATION_ENTERED,
                 )
+
                 val raw = runGame(assignment)
                 persistCompletedGame(assignment, raw)
                 recordedGames += assignment.gameNumber
