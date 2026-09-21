@@ -92,6 +92,7 @@ class IndustrialWasteMadnessBurnPolicyAuditTest : ScenarioTestBase() {
                 .build()
             val action = ai(game).chooseAction(game.state)
                 .shouldBeInstanceOf<CastSpell>()
+            println("IW_BURN_AUDIT_FIREBLAST_ACTION=$action")
             cardName(game, action.cardId) shouldBe "Fireblast"
             chosenTargetId(action) shouldBe game.player2Id
             action.alternativeCostType shouldBe AlternativeCostType.SELF_ALTERNATIVE
