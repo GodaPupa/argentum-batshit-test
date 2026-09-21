@@ -280,3 +280,13 @@ The Phase-18 experimental source is now frozen at commit
 `9947c4b0bac55b7628ba8fa2d3bdedc34a84c461`. This provenance record changes no
 frozen source. The workflow remains unarmed, seed `0x00000001A22E7013` remains
 unconsumed, and no interaction outcome has been exposed.
+
+Phase 18 run `35556914552` passed the complete exact-source workflow and independent
+four-file artifact audit. At T10, the accepted policy raised one-shot hostile-
+permanent response readiness from 15.55% to 39.50%, buyback-retained readiness from
+13.64% to 34.19%, and Guildmage self-rescue from 14.98% to 37.47%. Primary lethal by
+T10 was 7.20% versus 7.09%, and commander presence was 94.76% versus 94.69%. These
+are fixed-event readiness results, not opponent-frequency, tempo, survival, or win-
+rate evidence. Seed `0x00000001A22E7013` and its runner are retired, the temporary
+workflow is removed, the accepted tutor policy is unchanged, and v0.7 remains the
+exact card control.
