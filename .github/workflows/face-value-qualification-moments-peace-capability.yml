@@ -93,13 +93,15 @@ jobs:
           python3 - <<'PY'
           import json,re
           from pathlib import Path
-          records=[]; casts=0; terminal=0; flags=0
+          records=[]; casts=0; flashback_casts=0; terminal=0; flags=0
           for line in Path('peace-capability-assignments.tsv').read_text().splitlines():
               seat,seed=line.split('\t')
               p=Path('peace-capability-logs')/f'peace-seat{seat}-{seed}.log'
               text=p.read_text(errors='replace') if p.exists() else ''
               c=len(re.findall(r"cast Moment's Peace",text,re.I))
+              fb=len(re.findall(r"Moment's Peace.*flashback|flashback.*Moment's Peace",text,re.I))
               casts+=c
+              flashback_casts+=fb
               t=bool(re.search(r'^Game Result: .+(has won|Draw)',text,re.I|re.M))
               terminal+=int(t)
               fl=[]
@@ -111,10 +113,10 @@ jobs:
                   if re.search(pat,text,re.I): fl.append(name)
               if not t: fl.append('missing_terminal')
               flags+=int(bool(fl))
-              records.append({'seat':int(seat),'seed':int(seed),'casts':c,'flags':fl,'terminal':t})
+              records.append({'seat':int(seat),'seed':int(seed),'casts':c,'flashback_mentions':fb,'flags':fl,'terminal':t})
           summary={'classification':'DIAGNOSTIC_ONLY_MOMENTS_PEACE_CAPABILITY','games':len(records),
-                   'terminal_games':terminal,'flagged_games':flags,'peace_casts':casts,'records':records}
+                   'terminal_games':terminal,'flagged_games':flags,'peace_casts':casts,'flashback_mentions':flashback_casts,'records':records}
           Path('peace-capability-summary.json').write_text(json.dumps(summary,indent=2,sort_keys=True)+'\n')
           print(json.dumps({k:v for k,v in summary.items() if k!='records'},indent=2,sort_keys=True))
-          assert len(records)==8 and terminal==8 and flags==0 and casts>=2
+          assert len(records)==8 and terminal==8 and flags==0 and casts>=2 and flashback_casts>=1
           PY
