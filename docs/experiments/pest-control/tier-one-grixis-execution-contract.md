@@ -30,5 +30,5 @@ disagreement, invented failed-game records, partial validation, or disposition m
 - Initializer implementation: absent
 - Execution runner/workflow: absent
 
-The next justified gate is a disabled runner-surface preflight proving that no workflow, command,
-or production entry point can invoke this synthetic composition contract as official execution.
+The following gate is a disabled runner-surface preflight proving that no workflow, command, or
+production entry point can invoke this synthetic composition contract as official execution.
