@@ -104,6 +104,10 @@ The private parser contract in `tier-one-grixis-private-synthetic-parser.md` exe
 and manifest parsing only against fixed nonexperimental fixture bytes. Corrupt synthetic variants
 fail closed; official artifact bytes remain unloaded and official seed values remain unseen.
 
+The disabled official-byte loader in `tier-one-grixis-disabled-official-artifact-loader.md` is the
+next guarded boundary. It is disabled during ordinary CI and may perform one separately authorized,
+read-only validation of the exact frozen artifact without initializing or executing a game.
+
 Pest Control versus SoterX Mono Red Madness matchup Block A executed once and is formally rejected
 as `REJECTED_OUTCOME_RELEVANT_TARGET_SELECTION_DEFECTS`. All 50 Block A seeds are permanently
 retired. The descriptive 35–15 result is inadmissible for acceptance, pooling, or tuning. Preserved
