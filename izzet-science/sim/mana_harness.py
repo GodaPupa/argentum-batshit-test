@@ -997,10 +997,16 @@ def max_x_damage_castable(state, card):
             best=x
     return best
 
+def capsize_generic_cost(state,buyback):
+    generic=1+(3 if buyback else 0)
+    if any(p["card"]=="Goblin Electromancer" for p in state.battlefield):
+        generic=max(0,generic-1)
+    return generic
+
+
 def commander_independent_readiness(state):
     """Observable backup-plan readiness; deliberately not a win-rate model."""
-    electromancer=any(p["card"]=="Goblin Electromancer" for p in state.battlefield)
-    capsize_generic=3 if electromancer else 4
+    capsize_generic=capsize_generic_cost(state,True)
     return {
         "mystic_present":"Murmuring Mystic" in state.hand,
         "mystic_castable":"Murmuring Mystic" in state.hand and
@@ -1012,6 +1018,40 @@ def commander_independent_readiness(state):
         "capsize_present":"Capsize" in state.hand,
         "capsize_buyback":"Capsize" in state.hand and
             ready_payment_feasible_exact(state,generic=capsize_generic,need_u=2),
+    }
+
+
+CAPSIZE_INTERACTION_ROW_KEYS=(
+    "response_window_capsize_present","hostile_permanent_one_shot",
+    "hostile_permanent_buyback",
+    "guildmage_self_rescue","opposing_commander_to_hand",
+    "opposing_commander_to_command","countered_resolves",
+    "countered_buyback_retained","illegal_target_resolves",
+    "illegal_target_buyback_retained",
+)
+
+def capsize_interaction_readiness(state):
+    """Fixed-event readiness only; assigns no opponent frequency or outcome value."""
+    present="Capsize" in state.hand
+    one_shot=present and ready_payment_feasible_exact(
+        state,generic=capsize_generic_cost(state,False),need_u=2)
+    buyback=present and ready_payment_feasible_exact(
+        state,generic=capsize_generic_cost(state,True),need_u=2)
+    return {
+        "response_window_capsize_present":present,
+        "hostile_permanent_one_shot":one_shot,
+        "hostile_permanent_buyback":buyback,
+        "guildmage_self_rescue":one_shot and guildmage_on_battlefield(state),
+        # The commander's owner chooses the destination. Readiness is identical;
+        # downstream contracts must preserve both branches without assuming tax.
+        "opposing_commander_to_hand":one_shot,
+        "opposing_commander_to_command":one_shot,
+        # Buyback applies only while the spell resolves. These fixed hostile
+        # branches therefore cannot produce a bounce or retain Capsize.
+        "countered_resolves":False,
+        "countered_buyback_retained":False,
+        "illegal_target_resolves":False,
+        "illegal_target_buyback_retained":False,
     }
 
 
@@ -1700,20 +1740,24 @@ def paired_game_rngs(master_seed,game_index):
 
 def iter_paired_capsize_policy_games(cards,samples,master_seed,through=10,
                                      include_interaction=False,include_backup=True,
-                                     include_backup_tutors=False):
+                                     include_backup_tutors=False,
+                                     include_capsize_interaction=False):
     """Yield isolated paired trajectories; callers own aggregation and acceptance."""
     if not isinstance(samples,int) or isinstance(samples,bool) or samples<1:
         raise ValueError("samples must be a positive integer")
     for game_index in range(samples):
         control_rng,policy_rng=paired_game_rngs(master_seed,game_index)
         control=simulate_one(cards,control_rng,through,include_interaction,
-                             include_backup,include_backup_tutors,False)
+                             include_backup,include_backup_tutors,False,
+                             include_capsize_interaction)
         policy=simulate_one(cards,policy_rng,through,include_interaction,
-                            include_backup,include_backup_tutors,True)
+                            include_backup,include_backup_tutors,True,
+                            include_capsize_interaction)
         yield game_index,derive_paired_game_seed(master_seed,game_index),control,policy
 
 def simulate_one(cards, rng, through=6, include_interaction=False, include_backup=False,
-                 include_backup_tutors=False, include_capsize_tutor_policy=False):
+                 include_backup_tutors=False, include_capsize_tutor_policy=False,
+                 include_capsize_interaction=False):
     library=list(cards); rng.shuffle(library)
     hand=library[:7]; library=library[7:]
     snow_basics="Snow-Covered Island" in cards or "Snow-Covered Mountain" in cards
@@ -1766,6 +1810,10 @@ def simulate_one(cards, rng, through=6, include_interaction=False, include_backu
         # Finish optional mana development without replaying a land.
         rock=choose_mana_permanent(s)
         if rock: cast_mana_permanent_unified(s,rock)
+        # Opponent-facing fixed-event window: after this turn's deterministic
+        # selection, tutor, commander, and infrastructure actions have spent mana.
+        capsize_interaction=(capsize_interaction_readiness(s)
+                             if include_capsize_interaction else None)
         out={"land":land,"mana_permanent":rock,"reversal":reversal_threshold(s)}
         residual_u,residual_r,residual_uu=color_flags(s)
         neutral,positive,gross=reversal_threshold(s)
@@ -1796,6 +1844,7 @@ def simulate_one(cards, rng, through=6, include_interaction=False, include_backu
         if interaction is not None: row.update(interaction)
         if backup is not None: row.update(backup)
         if backup_tutors is not None: row.update(backup_tutors)
+        if capsize_interaction is not None: row.update(capsize_interaction)
         if include_capsize_tutor_policy:
             row.update({
                 "capsize_tutor_used":capsize_tutor_used is not None,

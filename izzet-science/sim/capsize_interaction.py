@@ -8,7 +8,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from mana_harness import DevState, pay_colored_mutating
+from mana_harness import DevState, capsize_generic_cost, pay_colored_mutating
 
 
 @dataclass
@@ -29,14 +29,6 @@ class CapsizeResolution:
     spell_zone: str
     target_zone: str
     commander_destination: str | None
-
-
-def capsize_generic_cost(state: DevState, buyback: bool) -> int:
-    """Return generic cost after Electromancer and the optional buyback cost."""
-    generic = 1 + (3 if buyback else 0)
-    if any(p["card"] == "Goblin Electromancer" for p in state.battlefield):
-        generic = max(0, generic - 1)
-    return generic
 
 
 def legal_capsize_target(target: PermanentTarget, caster: str = "self") -> bool:

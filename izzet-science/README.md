@@ -237,3 +237,10 @@ fixture groups, adjacent semantic validators, manifest construction, and artifac
 upload; ordinary CI run `35552816003` also passed. The deterministic infrastructure
 is accepted without a performance claim. Phase 16 may define fixed-event paired
 interaction estimands, but no sample or experimental seed is yet authorized.
+
+Phase 16 freezes a strict paired fixed-event output contract. It separates one-shot
+Capsize readiness, retained buyback, Guildmage self-rescue, and both opposing-
+commander destination choices while preserving primary-lethal and commander-
+deployment guardrails. Countered and target-illegal branches explicitly resolve
+neither the bounce nor buyback. This is a seed-free schema and adversarial-audit
+gate only; it authorizes no pilot, new seed, performance claim, or card change.
