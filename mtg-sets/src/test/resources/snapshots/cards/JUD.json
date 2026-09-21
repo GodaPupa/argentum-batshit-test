@@ -92,6 +92,61 @@
     ]
 }
 
+// Battle Screech
+{
+    "name": "Battle Screech",
+    "manaCost": "{2}{W}{W}",
+    "typeLine": "Sorcery",
+    "oracleText": "Create two 1/1 white Bird creature tokens with flying.\nFlashback—Tap three untapped white creatures you control. (You may cast this card from your graveyard for its flashback cost. Then exile it.)",
+    "keywords": [
+        "FLASHBACK"
+    ],
+    "keywordAbilities": [
+        {
+            "type": "Flashback",
+            "cost": "",
+            "additionalCost": {
+                "type": "AdditionalAtom",
+                "atom": {
+                    "type": "AtomTapPermanents",
+                    "count": 3,
+                    "filter": "creature white"
+                }
+            }
+        }
+    ],
+    "script": {
+        "spellEffect": {
+            "type": "CreateToken",
+            "count": {
+                "type": "Fixed",
+                "amount": 2
+            },
+            "power": 1,
+            "toughness": 1,
+            "colors": [
+                "WHITE"
+            ],
+            "creatureTypes": [
+                "Bird"
+            ],
+            "keywords": [
+                "FLYING"
+            ],
+            "imageUri": "/images/tokens/arn-bird.jpeg"
+        }
+    },
+    "metadata": {
+        "collectorNumber": "3",
+        "rarity": "UNCOMMON",
+        "artist": "Roger Raupp",
+        "imageUri": "https://cards.scryfall.io/normal/front/c/3/c3c38264-0d79-47d4-bca2-a20a991bbac9.jpg"
+    },
+    "colorIdentityOverride": [
+        "WHITE"
+    ]
+}
+
 // Border Patrol
 {
     "name": "Border Patrol",
@@ -1259,6 +1314,49 @@
         "artist": "Eric Peterson",
         "flavorText": "Nomads weave tales thicker than tapestries.",
         "imageUri": "https://cards.scryfall.io/normal/front/9/a/9a5694fe-57d2-4359-857a-63213d986747.jpg"
+    },
+    "colorIdentityOverride": [
+        "WHITE"
+    ]
+}
+
+// Prismatic Strands
+{
+    "name": "Prismatic Strands",
+    "manaCost": "{2}{W}",
+    "typeLine": "Instant",
+    "oracleText": "Prevent all damage that sources of the color of your choice would deal this turn.\nFlashback—Tap an untapped white creature you control. (You may cast this card from your graveyard for its flashback cost. Then exile it.)",
+    "keywords": [
+        "FLASHBACK"
+    ],
+    "keywordAbilities": [
+        {
+            "type": "Flashback",
+            "cost": "",
+            "additionalCost": {
+                "type": "AdditionalAtom",
+                "atom": {
+                    "type": "AtomTapPermanents",
+                    "filter": "creature white"
+                }
+            }
+        }
+    ],
+    "script": {
+        "spellEffect": {
+            "type": "ChooseColorThen",
+            "then": {
+                "type": "PreventDamageShield",
+                "direction": "FromTarget",
+                "sourceFilter": "ChosenColor"
+            }
+        }
+    },
+    "metadata": {
+        "collectorNumber": "18",
+        "rarity": "UNCOMMON",
+        "artist": "Eric Peterson",
+        "imageUri": "https://cards.scryfall.io/normal/front/3/4/3454ef42-2e0b-4ce4-945f-e4ec3e83c39d.jpg?1562629309"
     },
     "colorIdentityOverride": [
         "WHITE"

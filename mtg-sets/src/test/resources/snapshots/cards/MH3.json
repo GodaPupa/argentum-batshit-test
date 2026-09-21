@@ -849,6 +849,97 @@
     ]
 }
 
+// Perilous Landscape
+{
+    "name": "Perilous Landscape",
+    "manaCost": "",
+    "typeLine": "Land",
+    "oracleText": "{T}: Add {C}.\n{T}, Sacrifice this land: Search your library for a basic Island, Mountain, or Plains card, put it onto the battlefield tapped, then shuffle.\nCycling {U}{R}{W} ({U}{R}{W}, Discard this card: Draw a card.)",
+    "keywordAbilities": [
+        {
+            "type": "Cycling",
+            "cost": "{U}{R}{W}"
+        }
+    ],
+    "script": {
+        "activatedAbilities": [
+            {
+                "id": "ability_1",
+                "cost": "CostTap",
+                "effect": {
+                    "type": "AddColorlessMana",
+                    "amount": {
+                        "type": "Fixed",
+                        "amount": 1
+                    }
+                },
+                "timing": "ManaAbility",
+                "isManaAbility": true
+            },
+            {
+                "id": "ability_2",
+                "cost": {
+                    "type": "CostComposite",
+                    "costs": [
+                        "CostTap",
+                        "CostSacrificeSelf"
+                    ]
+                },
+                "effect": {
+                    "type": "Composite",
+                    "effects": [
+                        {
+                            "type": "GatherCards",
+                            "source": {
+                                "type": "FromZone",
+                                "zone": "Library",
+                                "filter": "basicland Island|Mountain|Plains"
+                            },
+                            "storeAs": "searchable"
+                        },
+                        {
+                            "type": "SelectFromCollection",
+                            "from": "searchable",
+                            "selection": {
+                                "type": "ChooseUpTo",
+                                "count": {
+                                    "type": "Fixed",
+                                    "amount": 1
+                                }
+                            },
+                            "storeSelected": "found"
+                        },
+                        {
+                            "type": "MoveCollection",
+                            "from": "found",
+                            "destination": {
+                                "type": "ToZone",
+                                "zone": "Battlefield",
+                                "placement": "Tapped"
+                            },
+                            "revealed": true
+                        },
+                        "ShuffleLibrary",
+                        "EmitLibrarySearchedEvent"
+                    ]
+                },
+                "descriptionOverride": "Search your library for a basic Island, Mountain, or Plains card, put it onto the battlefield tapped, then shuffle."
+            }
+        ]
+    },
+    "metadata": {
+        "collectorNumber": "223",
+        "artist": "Alayna Danner",
+        "flavorText": "The path to genius is forged in creativity.",
+        "imageUri": "https://cards.scryfall.io/normal/front/4/b/4b0bd07e-cf80-4d64-af29-f4cec6632b3e.jpg"
+    },
+    "colorIdentityOverride": [
+        "RED",
+        "BLUE",
+        "WHITE"
+    ]
+}
+
 // Sarpadian Simulacrum
 {
     "name": "Sarpadian Simulacrum",
