@@ -7,6 +7,7 @@ on:
     paths:
       - .github/workflows/industrial-waste-stability-a.yml
       - industrial-waste/challengers/stability-a.dck
+      - industrial-waste/seed-registry.json
       - industrial-waste/sim/**
       - justfile
   workflow_dispatch:
@@ -51,3 +52,16 @@ jobs:
           assert control_sha == "9b8a2932d78c99dd13f5c4834066bfa644f065137ee90efa75f3418ab56d1f1a"
           print("Stability A structural gate: VALID")
           PY
+      - name: Run paired 2000-game diagnostic structural screen
+        run: |
+          python3 industrial-waste/sim/structural_screen.py \
+            --games 2000 \
+            --namespace IW-G6-STABILITY-A-S1 \
+            --candidate stability-a \
+            --output industrial-waste/results/gate-6-stability-a-structural-v1.json
+      - name: Upload diagnostic evidence
+        uses: actions/upload-artifact@v7
+        with:
+          name: industrial-waste-stability-a-structural
+          path: industrial-waste/results/gate-6-stability-a-structural-v1.json
+          if-no-files-found: error
