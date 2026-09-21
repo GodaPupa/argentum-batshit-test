@@ -20,6 +20,8 @@ on:
       - mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/som/cards/GolemFoundry.kt
       - mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/som/cards/GalvanicBlast.kt
       - mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/som/cards/NihilSpellbomb.kt
+      - mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/c13/cards/NihilSpellbombReprint.kt
+      - mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/c17/cards/NihilSpellbombReprint.kt
       - mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/nph/cards/ScrapyardSalvo.kt
       - mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/GalvanicBlastScenarioTest.kt
       - mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/NihilSpellbombScenarioTest.kt
@@ -51,6 +53,8 @@ on:
       - mtg-sets/src/test/resources/snapshots/cards/NEO.json
       - mtg-sets/src/test/resources/snapshots/cards/ULG.json
       - mtg-sets/src/test/resources/snapshots/cards/TMC.json
+      - mtg-sets/src/test/resources/snapshots/cards/C13.json
+      - mtg-sets/src/test/resources/snapshots/cards/C17.json
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -138,6 +142,8 @@ jobs:
             just assay-differential --set JUD
             just assay-differential --set STX
             just assay-differential --set TMC
+            just assay-differential --set C13
+            just assay-differential --set C17
           } 2>&1 | tee industrial-waste-assay-differential.log
 
       - name: Upload validation evidence
