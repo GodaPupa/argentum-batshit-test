@@ -1,5 +1,5 @@
 name: Face Value Freeze Elves Postboard Replacement V1
-# trigger: corrected-freeze-v1
+# trigger: syntax-fixed-postboard-v1
 
 on:
   push:
@@ -71,7 +71,7 @@ jobs:
                   'postboard_authority':True,
                   'preboard_acceptance_commit':'a26a572789a9d548811beca4f43404d753bbfe57',
                   'frozen_postboard_map':'postboard-map-v2.json',
-                  'replaces_quarantined_postboard_blocks':['
+                  'replaces_quarantined_postboard_blocks':[
                       'postboard-stage1 run 35543054441 elves only'
                   ]
               },
