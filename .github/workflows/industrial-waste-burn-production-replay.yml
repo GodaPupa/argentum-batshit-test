@@ -1,0 +1,51 @@
+name: Industrial Waste — Burn Production Replay
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [industrial-waste/lab]
+    paths:
+      - ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteMatchupPilotBenchmark.kt
+      - .github/workflows/industrial-waste-burn-production-replay.yml
+      - industrial-waste/protocols/gate-4-madness-burn-production-replay-v1.md
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  burn-production-replay:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout exact branch head
+        uses: actions/checkout@v6
+      - name: Set up Java 21
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: 21
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v6
+      - name: Set up just
+        uses: extractions/setup-just@v3
+      - name: Validate frozen inputs
+        run: |
+          python3 -m unittest discover -s industrial-waste/sim -p 'test_*.py' -v
+          python3 industrial-waste/sim/validate_inputs.py
+          test "$(sha256sum industrial-waste/results/gate-4-madness-burn-replication-v1.json | cut -d' ' -f1)" = \
+            "2e2db7a1177fab08872e23aa437fa70d219ac0a78da5bff4c200f38cb669c903"
+      - name: Replay spent replication vector with production Burn policy
+        run: scripts/gradle-locked :ai:test --tests "*.IndustrialWasteMatchupPilotBenchmark"
+        env:
+          IW_MATCHUP_PRODUCTION_REPLAY: "true"
+      - name: Upload replay-only calibration
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: industrial-waste-madness-burn-production-replay
+          path: industrial-waste/results/gate-4-madness-burn-production-replay-v1.json
+          if-no-files-found: error

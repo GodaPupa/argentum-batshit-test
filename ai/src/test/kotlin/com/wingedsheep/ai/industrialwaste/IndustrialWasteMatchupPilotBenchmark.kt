@@ -20,9 +20,16 @@ import java.security.MessageDigest
 class IndustrialWasteMatchupPilotBenchmark : FunSpec({
     test("Industrial Waste paired Madness Burn pilot").config(
         enabled = System.getenv("IW_MATCHUP_PILOT") == "true" ||
-            System.getenv("IW_MATCHUP_REPLICATION") == "true",
+            System.getenv("IW_MATCHUP_REPLICATION") == "true" ||
+            System.getenv("IW_MATCHUP_PRODUCTION_REPLAY") == "true",
     ) {
-        val replication = System.getenv("IW_MATCHUP_REPLICATION") == "true"
+        val pilotRequested = System.getenv("IW_MATCHUP_PILOT") == "true"
+        val replicationRequested = System.getenv("IW_MATCHUP_REPLICATION") == "true"
+        val productionReplay = System.getenv("IW_MATCHUP_PRODUCTION_REPLAY") == "true"
+        require(listOf(pilotRequested, replicationRequested, productionReplay).count { it } == 1) {
+            "exactly one Industrial Waste matchup mode must be enabled"
+        }
+        val replication = productionReplay || replicationRequested
         val namespace = if (replication) REPLICATION_NAMESPACE else PILOT_NAMESPACE
         val seedCount = if (replication) REPLICATION_SEED_COUNT else PILOT_SEED_COUNT
         val expectedDigest = if (replication) REPLICATION_VECTOR_SHA256 else PILOT_VECTOR_SHA256
@@ -52,7 +59,11 @@ class IndustrialWasteMatchupPilotBenchmark : FunSpec({
             "matchup namespace is not registered"
         }
 
-        val stock = ArenaAgents.resolve("v0")
+        val opponentAgent = if (productionReplay) {
+            ArenaAgent("production-candidate-expiring", AiProfile.PRODUCTION_CANDIDATE_EXPIRING)
+        } else {
+            ArenaAgents.resolve("v0")
+        }
         val industrial = ArenaAgent(
             "industrial-waste-policy-v2",
             AiProfile.LEGACY_V0.copy(
@@ -68,9 +79,9 @@ class IndustrialWasteMatchupPilotBenchmark : FunSpec({
                         val industrialSeat = rotation
                         val observer = IndustrialWasteGoldfishObserver(registry, industrialSeat)
                         val agents = if (industrialSeat == 0) {
-                            listOf(industrial, stock)
+                            listOf(industrial, opponentAgent)
                         } else {
-                            listOf(stock, industrial)
+                            listOf(opponentAgent, industrial)
                         }
                         val decks = if (industrialSeat == 0) {
                             listOf(deck, opponent)
@@ -119,8 +130,10 @@ class IndustrialWasteMatchupPilotBenchmark : FunSpec({
                     !outcome.drawReason.startsWith("maxActions"))
         }
         val report = MatchupPilotReport(
-            schemaVersion = 1,
-            evidenceClass = if (replication) {
+            schemaVersion = 2,
+            evidenceClass = if (productionReplay) {
+                "replay-only-opponent-policy-calibration"
+            } else if (replication) {
                 "preboard-matchup-screen"
             } else {
                 "preboard-matchup-capability-pilot"
@@ -131,6 +144,16 @@ class IndustrialWasteMatchupPilotBenchmark : FunSpec({
             seedVectorSha256 = expectedDigest,
             opponent = "Madness Burn — Davide Canevazzi, 43rd Super Ingenio, 2026-09-12",
             source = "https://www.mtgtop8.com/event?d=889937&e=90850&f=PAU",
+            opponentProfile = if (productionReplay) {
+                "production-candidate-expiring"
+            } else {
+                "v0"
+            },
+            seedUse = if (productionReplay) {
+                "exact replay of spent IW-G4-MADNESS-BURN-R1 seeds; non-promotional"
+            } else {
+                "first execution of registered namespace"
+            },
             mulligans = "London mulligans enabled for both seats",
             maxTurnsPerSeat = MAX_TURNS,
             maxActions = MAX_ACTIONS,
@@ -139,7 +162,9 @@ class IndustrialWasteMatchupPilotBenchmark : FunSpec({
             valid = invalid.isEmpty(),
         )
         val output = root.resolve(
-            if (replication) {
+            if (productionReplay) {
+                "results/gate-4-madness-burn-production-replay-v1.json"
+            } else if (replication) {
                 "results/gate-4-madness-burn-replication-v1.json"
             } else {
                 "results/gate-4-madness-burn-pilot-v1.json"
@@ -205,6 +230,8 @@ private data class MatchupPilotReport(
     val seedVectorSha256: String,
     val opponent: String,
     val source: String,
+    val opponentProfile: String,
+    val seedUse: String,
     val mulligans: String,
     val maxTurnsPerSeat: Int,
     val maxActions: Int,
