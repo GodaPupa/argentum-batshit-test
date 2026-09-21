@@ -100,6 +100,7 @@ private fun finalHarnessSurfaceAudit(): GrixisFinalHarnessSurfaceAudit {
         PestControlTierOneGrixisExecutionAdmissionGate::class.java,
         PestControlTierOneGrixisOpaqueExecutionPlan::class.java,
         PestControlTierOneGrixisFinalHarnessReadiness::class.java,
+        PestControlTierOneGrixisDisabledPrivateRunnerGate::class.java,
     )
     return GrixisFinalHarnessSurfaceAudit(
         workflowFilesAudited = workflows.size,
