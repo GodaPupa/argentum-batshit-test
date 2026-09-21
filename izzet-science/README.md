@@ -307,3 +307,18 @@ digest and every receipt hash. The response policy is accepted as methodology, n
 as proof of strategic optimality. Zero games ran and zero experimental seeds were
 assigned or consumed. The temporary workflow is removed, and v0.7 remains the exact
 card control.
+
+Phase 20 replaces caller-supplied severity labels with a deterministic public-state
+ledger. Stable event, policy, window, source, and target identities are bound to four
+enumerated public facts; classification then follows the accepted Phase-19 priority.
+The contract rejects mixed or contradictory records and preserves nonlethal
+Guildmage events in the audit trail while omitting them from the frozen consumer,
+which cannot encode that case as tempo-only. No opponent deck, frequency, hidden
+information, sampling, seed, or outcome is introduced.
+
+Phase 20 run `35558604980` passed the complete adjacent semantic chain, all 96
+target/fact/legality combinations, and eighteen malformed-input rejections. Its
+independently downloaded six-file artifact matched GitHub's ZIP digest and every
+receipt hash after accounting for GitHub's stripped upload-directory prefix. The
+ledger contract is accepted as methodology only. The temporary workflow is removed,
+ordinary CI is restored, and v0.7 remains the exact card control.
