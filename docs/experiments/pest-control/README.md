@@ -40,6 +40,10 @@ The pure synthetic coordinator ledger is recorded in `tier-one-grixis-coordinato
 enforces durable attempt-before-initialize-before-record ordering, global game order, terminal
 rejection, and complete-only validation without owning callbacks, seeds, or environments.
 
+The synthetic execution composition contract is recorded in
+`tier-one-grixis-execution-contract.md`. It reconciles boundary, coordinator, and artifact views
+without owning or invoking an initializer, callback, writer, seed source, runner, or workflow.
+
 Pest Control versus SoterX Mono Red Madness matchup Block A executed once and is formally rejected
 as `REJECTED_OUTCOME_RELEVANT_TARGET_SELECTION_DEFECTS`. All 50 Block A seeds are permanently
 retired. The descriptive 35–15 result is inadmissible for acceptance, pooling, or tuning. Preserved
