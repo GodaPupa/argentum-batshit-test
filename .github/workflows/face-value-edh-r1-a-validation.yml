@@ -1,4 +1,4 @@
-name: Face Value EDH R1-A/B Validation
+name: Face Value EDH R1-A/B/C Validation
 on:
   workflow_dispatch:
 jobs:
@@ -24,3 +24,5 @@ jobs:
           do
             python3 research/face-value-edh/validate_r1_fixture.py "$f"
           done
+      - name: R1-C deterministic replay must match
+        run: python3 research/face-value-edh/r1_replay.py
