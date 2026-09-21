@@ -22,7 +22,7 @@ import java.nio.file.Path
  */
 class IndustrialWasteGrixisReadinessSmokeTest : FunSpec({
     test("Gate 6 Grixis Affinity exact-deck readiness smoke").config(
-        enabled = System.getenv("IW_G6_GrixIS_READINESS_SMOKE") == "true",
+        enabled = System.getenv("IW_G6_GRIXIS_READINESS_SMOKE") == "true",
     ) {
         val repository = grixisRepositoryRoot()
         val root = repository.resolve("industrial-waste")
