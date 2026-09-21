@@ -48,7 +48,6 @@ class IndustrialWasteBorosReadinessSmokeTest : FunSpec({
             borosBase.copy(
                 id = "boros-gate-5-readiness",
                 advisorModules = listOf(IndustrialWasteBorosAdvisorModule),
-                considerAdvisedManaAbilities = true,
             ),
         )
         val game = TableGameRunner.play(

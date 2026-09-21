@@ -30,7 +30,6 @@ class IndustrialWasteBorosPolicyAuditTest : ScenarioTestBase() {
             base.copy(
                 id = "boros-gate-5-readiness",
                 advisorModules = base.advisorModules + IndustrialWasteBorosAdvisorModule,
-                considerAdvisedManaAbilities = true,
             ),
         )
     }
