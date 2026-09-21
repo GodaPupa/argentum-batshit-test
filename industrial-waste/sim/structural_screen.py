@@ -417,7 +417,9 @@ def validate_seed_registry(root: Path, requested_namespace: str, requested_count
         vector = [seed_for(namespace, index) for index in range(1, count + 1)]
         digest = hashlib.sha256("\n".join(map(str, vector)).encode()).hexdigest()
         if digest != entry["vector_sha256"] or len(vector) != len(set(vector)) or 0 in vector:
-            raise SystemExit(f"invalid registered vector: {namespace}")
+            raise SystemExit(
+                f"invalid registered vector: {namespace}; computed={digest}; registered={entry['vector_sha256']}"
+            )
         vectors[namespace] = set(vector)
     if requested_namespace not in vectors:
         raise SystemExit(f"unregistered namespace: {requested_namespace}")
