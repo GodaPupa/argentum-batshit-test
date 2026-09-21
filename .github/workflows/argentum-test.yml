@@ -1,49 +1,82 @@
-name: Argentum Validation
+name: Izzet Phase 23 Fixture Action Generator Validation
 
 on:
-  workflow_dispatch:
   push:
-    branches: [ "main" ]
+    branches: [ "mayhem/izzet-science" ]
 
 permissions:
   contents: read
 
 jobs:
-  test:
+  validate:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 10
 
     steps:
-      - name: Checkout repository
+      - name: Checkout frozen semantic source
         uses: actions/checkout@v4
-
-      - name: Set up Java 21
-        uses: actions/setup-java@v4
         with:
-          distribution: temurin
-          java-version: '21'
+          ref: bbb10b2f7c5f16c3f2da1d3b61d05db955c21c8d
+          persist-credentials: false
 
-      - name: Set up Gradle
-        uses: gradle/actions/setup-gradle@v4
-        with:
-          gradle-version: '9.6.1'
-
-      - name: Make Gradle wrapper executable
-        run: chmod +x gradlew
-
-      - name: Show environment
+      - name: Verify frozen identities
+        shell: bash
         run: |
-          java -version
-          gradle --version
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "bbb10b2f7c5f16c3f2da1d3b61d05db955c21c8d"
+          test "$(git rev-parse HEAD^{tree})" = "94ee3463bd174ed88f30092fc1e613c200ba1c1e"
+          echo "726f5e9458b46dda30b33a6ce9f3c3237b25d6e11b81dac85308c3065c108a01  izzet-science/v0.7-control.md" | sha256sum --check --strict
+          echo "810082856bd9bcd1dd4e74bfa03255d8bac437a0f424a16b8a34cee82f207977  izzet-science/sim/capsize_event_ledger.py" | sha256sum --check --strict
+          echo "65b605fd0c62c5dbf9973997f4ddb55c9d026814aeba7f3d7a87a679c0987197  izzet-science/sim/capsize_response_policy.py" | sha256sum --check --strict
+          echo "fa43d97dc761a380bc8128b866e5f665bb645966571839a27c4b50a853fb4679  izzet-science/sim/capsize_state_adapter.py" | sha256sum --check --strict
+          echo "ae98059481dde833a2777093c83e28cb67e5c7f23d9876cab6227b7fd05cdc6a  izzet-science/sim/capsize_opponent_action_policy.py" | sha256sum --check --strict
+          echo "5e206280c5adf38e1085b07a0e887eb5f2bc4e25c035ed5d8e946f5cc3ab5959  izzet-science/sim/capsize_fixture_action_generator.py" | sha256sum --check --strict
+          echo "36b72b8eadfb2d98c403e750dc0b8fa7ee7c048e63fd25cd442ef2832b9a36c3  izzet-science/sim/validate_v09_capsize_fixture_action_generator.py" | sha256sum --check --strict
+          echo "7f221ea1b33ef70caab13d7f2aed4d8df333d9913ff2decfa3f64a5e0277fadb  izzet-science/v09-phase23-fixture-action-generator-gate.md" | sha256sum --check --strict
 
-      - name: Compile Argentum
-        run: ./gradlew classes --stacktrace
+      - name: Run seed-free semantic chain
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p phase23-artifact
+          python3 izzet-science/sim/validate_v09_capsize_interaction.py | tee phase23-artifact/phase15-validation.txt
+          python3 izzet-science/sim/validate_v09_capsize_interaction_contract.py | tee phase23-artifact/phase16-validation.txt
+          python3 izzet-science/sim/validate_v09_interaction_integrity_sweep.py | tee phase23-artifact/phase17-validation.txt
+          python3 izzet-science/sim/validate_v09_capsize_response_policy.py | tee phase23-artifact/phase19-validation.txt
+          python3 izzet-science/sim/validate_v09_capsize_event_ledger.py | tee phase23-artifact/phase20-validation.txt
+          python3 izzet-science/sim/validate_v09_capsize_state_adapter.py | tee phase23-artifact/phase21-validation.txt
+          python3 izzet-science/sim/validate_v09_capsize_opponent_action_policy.py | tee phase23-artifact/phase22-validation.txt
+          python3 izzet-science/sim/validate_v09_capsize_fixture_action_generator.py | tee phase23-artifact/phase23-validation.txt
+          grep -Fx "fixture_is_deck=0" phase23-artifact/phase23-validation.txt
+          grep -Fx "fixture_representative_matchup=0" phase23-artifact/phase23-validation.txt
+          grep -Fx "experimental_seeds_consumed=0" phase23-artifact/phase23-validation.txt
+          grep -Fx "pilot_authorized=0" phase23-artifact/phase23-validation.txt
+          grep -Fx "outcome_claims=0" phase23-artifact/phase23-validation.txt
+          grep -Fx "disposition=V09_PHASE23_SEED_FREE_VALIDATED" phase23-artifact/phase23-validation.txt
 
-      - name: Run engine tests
-        run: ./gradlew test --stacktrace
+      - name: Build provenance manifest
+        shell: bash
+        run: |
+          set -euo pipefail
+          {
+            echo "schema=izzet-v09-phase23-validation-artifact-v1"
+            echo "source_sha=$(git rev-parse HEAD)"
+            echo "source_tree=$(git rev-parse HEAD^{tree})"
+            echo "workflow_runner_sha=${GITHUB_SHA}"
+            echo "control_sha256=726f5e9458b46dda30b33a6ce9f3c3237b25d6e11b81dac85308c3065c108a01"
+            echo "fixture_identity=phase23-public-action-fixture-v1"
+            echo "fixture_is_deck=0"
+            echo "fixture_representative_matchup=0"
+            echo "experimental_seeds_assigned=0"
+            echo "experimental_seeds_consumed=0"
+            echo "outcome_claims=0"
+          } > phase23-artifact/manifest.txt
+          sha256sum phase23-artifact/*-validation.txt >> phase23-artifact/manifest.txt
 
-      - name: Run Gym tests
-        run: ./gradlew :gym:test --stacktrace
-
-      - name: Run Gym trainer tests
-        run: ./gradlew :gym-trainer:test --stacktrace
+      - name: Upload validation artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: izzet-v09-phase23-fixture-action-generator
+          path: phase23-artifact/
+          if-no-files-found: error
+          retention-days: 30
