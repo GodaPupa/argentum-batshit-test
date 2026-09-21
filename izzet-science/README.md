@@ -290,3 +290,12 @@ are fixed-event readiness results, not opponent-frequency, tempo, survival, or w
 rate evidence. Seed `0x00000001A22E7013` and its runner are retired, the temporary
 workflow is removed, the accepted tutor policy is unchanged, and v0.7 remains the
 exact card control.
+
+Phase 19 freezes a seed-free Capsize response policy over four externally declared
+event classes: imminent loss, lethal-combo Guildmage removal, next-main lock, and
+tempo-only. It answers at most one legal target using stable emergency priority,
+prefers buyback only when already affordable in the one-response window, and passes
+on tempo-only events. Commander destination remains the owner's choice; countered
+and illegal-at-resolution branches retain no buyback. This assigns no event
+frequency, opponent policy, tempo value, survival rate, or win rate and authorizes
+no sampled pilot.
