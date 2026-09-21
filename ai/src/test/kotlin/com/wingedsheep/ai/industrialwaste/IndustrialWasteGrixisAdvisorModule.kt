@@ -4,7 +4,6 @@ import com.wingedsheep.ai.engine.advisor.CardAdvisor
 import com.wingedsheep.ai.engine.advisor.CardAdvisorModule
 import com.wingedsheep.ai.engine.advisor.CardAdvisorRegistry
 import com.wingedsheep.ai.engine.advisor.CastContext
-import com.wingedsheep.engine.core.CastSpell
 import com.wingedsheep.engine.state.components.identity.CardComponent
 import com.wingedsheep.sdk.core.Zone
 import com.wingedsheep.sdk.model.EntityId
@@ -34,13 +33,6 @@ private object GrixisGalvanicBlastAdvisor : CardAdvisor {
     override val cardNames = setOf("Galvanic Blast")
 
     override fun evaluateCast(context: CastContext): Double? {
-        val cast = context.action as? CastSpell ?: return null
-        val targetsOpponent = cast.targets.any { target ->
-            val player = target as? com.wingedsheep.engine.state.components.stack.ChosenTarget.Player
-            player != null && context.state.isOpponentOf(player.playerId, context.playerId)
-        }
-        if (!targetsOpponent) return null
-
         val opponent = context.state.turnOrder.firstOrNull {
             context.state.isOpponentOf(it, context.playerId)
         } ?: return null
