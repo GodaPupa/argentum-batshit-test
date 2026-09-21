@@ -114,3 +114,10 @@ verified artifacts. At T10, payable tutor opportunity was 3.05% for Rolling Thun
 2.88% for Kaervek's Torch, and 24.34% for Capsize; Capsize's entire opportunity was
 primary-combo-uncontested. This remains passive evidence, not executed acquisition.
 Seed `0x1A22E700F` is consumed and no rerun is authorized. v0.7 remains the control.
+
+Phase 5 freezes executable but dormant Capsize tutor semantics. The existing
+primary-combo tutor action has global precedence; otherwise Merchant Scroll is
+preferred over Drift of Phantasms when Capsize is in the library and exact ready
+mana can pay the search. Deterministic execution, failure atomicity, and adjacent
+validators passed with no sampled games or seeds. The default simulator remains
+unchanged, and v0.7 remains the accepted control.

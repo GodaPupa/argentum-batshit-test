@@ -1487,7 +1487,13 @@ def pay_tutor_cost(state,card):
 def execute_tutor(state,library,card,rng):
     if card not in state.hand: return None,library
     target=tutor_target(card,state,library)
-    if target is None or not pay_tutor_cost(state,card): return None,library
+    return execute_declared_tutor_target(state,library,card,target,rng)
+
+def execute_declared_tutor_target(state,library,card,target,rng):
+    """Execute one explicit legal search; fail without mutation before payment."""
+    if card not in state.hand or target not in legal_tutor_targets(card,library):
+        return None,library
+    if not pay_tutor_cost(state,card): return None,library
     state.hand.remove(card)
     # Transmute discards the card; Merchant Scroll resolves to graveyard. Graveyard zone
     # is not yet persistent on DevState, so telemetry only records consumption here.
@@ -1510,12 +1516,88 @@ def choose_tutor(state,library):
             return card
     return None
 
+def choose_capsize_tutor(state,library):
+    """Choose the cheapest declared Capsize route only after primary policy passes."""
+    if choose_tutor(state,library) is not None or "Capsize" not in library:
+        return None
+    for card in ("Merchant Scroll","Drift of Phantasms"):
+        if card not in state.hand or "Capsize" not in legal_tutor_targets(card,library):
+            continue
+        g,nu,nr=TUTOR_SPECS[card]["cost"]
+        if ready_payment_feasible_exact(state,generic=g,need_u=nu,need_r=nr):
+            return card
+    return None
+
+def execute_capsize_tutor_policy(state,library,rng):
+    """Execute the dormant Phase-5 policy arm; the default simulator never calls it."""
+    card=choose_capsize_tutor(state,library)
+    if card is None: return None,None,library
+    target,library=execute_declared_tutor_target(state,library,card,"Capsize",rng)
+    return card,target,library
+
 def tutor_execution_regressions():
     import random as _r
     s=DevState(["Lava Spike","Muddle the Mixture"]); s.turn=4
     s.battlefield=[{"card":"Island","tapped":False,"entered":1},{"card":"Island","tapped":False,"entered":2},{"card":"Island","tapped":False,"entered":3}]
     target,lib=execute_tutor(s,["Mountain","Desperate Ritual","Counterspell"],"Muddle the Mixture",_r.Random(1))
     assert target=="Desperate Ritual" and "Desperate Ritual" in s.hand and "Muddle the Mixture" not in s.hand
+    return True
+
+def capsize_tutor_policy_regressions():
+    import random as _r
+    def islands(count=3):
+        return [{"card":"Island","tapped":False,"entered":turn}
+                for turn in range(1,count+1)]
+
+    # Any executable action selected by the frozen primary policy wins globally.
+    primary=DevState(["Desperate Ritual","Dizzy Spell","Merchant Scroll"])
+    primary.turn=4; primary.battlefield=islands()
+    primary_library=["Lava Spike","Capsize","Mountain"]
+    assert choose_tutor(primary,primary_library)=="Dizzy Spell"
+    assert choose_capsize_tutor(primary,primary_library) is None
+
+    # Merchant Scroll is the lower-cost deterministic route; Drift is the fallback.
+    both=DevState(["Lava Spike","Desperate Ritual","Merchant Scroll","Drift of Phantasms"])
+    both.turn=4; both.battlefield=islands()
+    assert choose_capsize_tutor(both,["Capsize","Mountain"])=="Merchant Scroll"
+    drift=DevState(["Lava Spike","Desperate Ritual","Drift of Phantasms"])
+    drift.turn=4; drift.battlefield=islands()
+    assert choose_capsize_tutor(drift,["Capsize","Mountain"])=="Drift of Phantasms"
+
+    # Exact payment and target presence both fail closed.
+    short=DevState(["Merchant Scroll","Drift of Phantasms"])
+    short.turn=3; short.battlefield=islands(2)
+    assert choose_capsize_tutor(short,["Capsize"])=="Merchant Scroll"
+    short.hand.remove("Merchant Scroll")
+    assert choose_capsize_tutor(short,["Capsize"]) is None
+    assert choose_capsize_tutor(both,["Mountain"]) is None
+
+    # Execution consumes exactly one tutor, pays its cost, and moves Capsize to hand.
+    before_library=["Island","Capsize","Mountain"]
+    execute=DevState(["Lava Spike","Desperate Ritual","Merchant Scroll"])
+    execute.turn=4; execute.battlefield=islands()
+    card,target,after_library=execute_capsize_tutor_policy(
+        execute,list(before_library),_r.Random(7))
+    assert card=="Merchant Scroll" and target=="Capsize"
+    assert "Merchant Scroll" not in execute.hand and "Capsize" in execute.hand
+    assert len(after_library)==len(before_library)-1 and "Capsize" not in after_library
+    assert sum(p["tapped"] for p in execute.lands())==2
+
+    # A failed declared execution is transactionally inert.
+    inert=DevState(["Merchant Scroll"]); inert.turn=3
+    inert.battlefield=islands(2); snapshot=list(inert.hand)
+    bad_library=["Island","Mountain"]
+    found,returned=execute_declared_tutor_target(
+        inert,bad_library,"Merchant Scroll","Capsize",_r.Random(7))
+    assert found is None and returned is bad_library
+    assert inert.hand==snapshot and not any(p["tapped"] for p in inert.lands())
+    poor=DevState(["Merchant Scroll"]); poor.turn=2
+    poor.battlefield=islands(1); poor_library=["Capsize","Mountain"]
+    poor_hand=list(poor.hand)
+    found,returned=execute_declared_tutor_target(
+        poor,poor_library,"Merchant Scroll","Capsize",_r.Random(7))
+    assert found is None and returned is poor_library and poor.hand==poor_hand
+    assert not poor.battlefield[0]["tapped"] and poor_library==["Capsize","Mountain"]
     return True
 
 def combo_assembly_metrics(state):
@@ -2050,6 +2132,7 @@ def main():
     backup_tutor_connectivity_regressions()
     backup_tutor_opportunity_regressions()
     tutor_execution_regressions()
+    capsize_tutor_policy_regressions()
     first_lethal_regression()
     electromancer_lethal_regressions()
     five_mana_ritual_route_regressions()
