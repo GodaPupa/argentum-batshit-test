@@ -63,6 +63,10 @@ def validate_project(root: Path) -> None:
             Counter({"Blood Fountain": 1, "Haunted Fengraf": 1}),
             Counter({"Eviscerator's Insight": 1, "Giant's Boulder": 1}),
         ),
+        "stability-a.dck": (
+            Counter({"Conduit Pylons": 1, "Crop Rotation": 1}),
+            Counter({"Eviscerator's Insight": 1, "Giant's Boulder": 1}),
+        ),
     }
     for name, (additions, removals) in expected_changes.items():
         main, side = parse_deck(root / "challengers" / name)
