@@ -1,0 +1,75 @@
+name: Izzet v0.9 Phase 32 Execution Readiness
+
+on:
+  pull_request:
+    paths:
+      - "izzet-science/v09-phase32-execution-readiness-gate.md"
+      - "izzet-science/v09-phase31-seed-vector-freeze-accepted.md"
+      - "izzet-science/sim/phase32_execution_readiness.py"
+      - "izzet-science/sim/validate_v09_phase32_execution_readiness.py"
+      - ".github/workflows/izzet-v09-phase32-execution-readiness.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify-phase32:
+    if: github.event_name != 'pull_request' || github.head_ref == 'mayhem/izzet-science'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Verify frozen identities and parent acceptances
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(sha256sum izzet-science/v0.7-control.md | cut -d' ' -f1)" = "726f5e9458b46dda30b33a6ce9f3c3237b25d6e11b81dac85308c3065c108a01"
+          grep -Fq 'V09_PHASE30_RUNNER_CONSTRUCTION_ACCEPTED' izzet-science/v09-phase30-runner-construction-accepted.md
+          grep -Fq 'V09_PHASE31_SEED_VECTOR_FREEZE_ACCEPTED' izzet-science/v09-phase31-seed-vector-freeze-accepted.md
+
+      - name: Run Phase 32 seed-free opaque qualification
+        shell: bash
+        run: |
+          set -euo pipefail
+          export PYTHONPATH="$PWD/izzet-science/sim"
+          python izzet-science/sim/validate_v09_phase32_execution_readiness.py | tee /tmp/phase32.txt
+          grep -Fx "V09_PHASE32_EXECUTION_READINESS_VALIDATION_PASS" /tmp/phase32.txt
+
+      - name: Assert no official game execution or seed exposure surface
+        shell: bash
+        run: |
+          set -euo pipefail
+          ! grep --line-number -E 'execute_game\(|run_matchup\(|shuffle\(|print\(.*seed|logging\..*seed'             izzet-science/sim/phase32_execution_readiness.py             izzet-science/sim/validate_v09_phase32_execution_readiness.py
+
+      - name: Emit qualification manifest
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/phase32-artifact
+          cp /tmp/phase32.txt /tmp/phase32-artifact/validation.txt
+          {
+            echo "schema=izzet-v09-phase32-execution-readiness-v1"
+            echo "source_sha=${GITHUB_SHA}"
+            echo "vector_sha256=5d8f9f758ed87286efb0ca07b74cec652a44304158e867f4c1aa6fc8a3bb824f"
+            echo "assignment_sha256=b2da95af015d1acd84bebd6794acad5c8a81530ccae74f41e6f925ef301e5be3"
+            echo "quarantine_artifact_id=10627816776"
+            echo "experimental_seeds_generated=12"
+            echo "experimental_seeds_consumed=0"
+            echo "games_initialized=0"
+            echo "outcome_exposure=0"
+            sha256sum izzet-science/v09-phase32-execution-readiness-gate.md
+            sha256sum izzet-science/sim/phase32_execution_readiness.py
+            sha256sum izzet-science/sim/validate_v09_phase32_execution_readiness.py
+            sha256sum /tmp/phase32-artifact/validation.txt
+          } > /tmp/phase32-artifact/manifest.txt
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: izzet-v09-phase32-execution-readiness
+          path: /tmp/phase32-artifact
+          if-no-files-found: error
