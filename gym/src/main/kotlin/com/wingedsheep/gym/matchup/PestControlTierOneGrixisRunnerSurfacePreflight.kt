@@ -62,6 +62,8 @@ object PestControlTierOneGrixisRunnerSurfacePreflight {
         val manifestMethods =
             inventory.publicMethods["PestControlTierOneGrixisDisabledPreExecutionManifest"].orEmpty()
         if (manifestMethods != setOf("inspect")) errors += "pre-execution manifest surface mismatch"
+        val closureMethods = inventory.publicMethods["PestControlTierOneGrixisConstructionClosure"].orEmpty()
+        if (closureMethods != setOf("inspect")) errors += "construction closure surface mismatch"
         return GrixisRunnerSurfacePreflightResult(
             errors = errors.distinct(),
             workflowFilesAudited = inventory.workflowFiles.size,
