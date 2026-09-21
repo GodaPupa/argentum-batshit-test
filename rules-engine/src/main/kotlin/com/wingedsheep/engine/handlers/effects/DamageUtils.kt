@@ -1473,8 +1473,22 @@ object DamageUtils {
      */
     fun isAllDamageFromSourcePrevented(state: GameState, sourceId: EntityId): Boolean {
         return state.floatingEffects.any { floatingEffect ->
-            floatingEffect.effect.modification is SerializableModification.PreventAllDamageDealtBy &&
-                sourceId in floatingEffect.effect.affectedEntities
+            when (val modification = floatingEffect.effect.modification) {
+                is SerializableModification.PreventAllDamageDealtBy ->
+                    sourceId in floatingEffect.effect.affectedEntities
+                is SerializableModification.PreventAllDamageFromColor -> {
+                    val projectedColors = state.projectedState.getColors(sourceId)
+                    val sourceColors = if (projectedColors.isNotEmpty()) {
+                        projectedColors
+                    } else {
+                        state.getEntity(sourceId)?.get<CardComponent>()?.colors
+                            ?.mapTo(linkedSetOf()) { it.name }
+                            .orEmpty()
+                    }
+                    modification.color in sourceColors
+                }
+                else -> false
+            }
         }
     }
 

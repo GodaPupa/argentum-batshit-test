@@ -2118,6 +2118,8 @@ class ClientStateTransformer(
                 is SerializableModification.PreventAllCombatDamage -> preventsAllCombatDamage = true
                 is SerializableModification.PreventCombatDamageFromGroup ->
                     preventedCombatDamageSources.add(modification.filter.description)
+                is SerializableModification.PreventAllDamageFromColor ->
+                    preventedCombatDamageSources.add("${modification.color.lowercase()} sources (all damage)")
                 else -> {}
             }
             if (playerId !in floatingEffect.effect.affectedEntities) continue

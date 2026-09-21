@@ -4736,6 +4736,18 @@ object Effects {
         )
 
     /**
+     * Prevent all damage sources of the color selected by an enclosing [ChooseColorThen] would
+     * deal for [duration]. The shield is global rather than limited to damage dealt to one player.
+     */
+    fun PreventAllDamageFromChosenColor(
+        duration: Duration = Duration.EndOfTurn
+    ): Effect = PreventDamageEffect(
+        direction = PreventionDirection.FromTarget,
+        sourceFilter = PreventionSourceFilter.ChosenColor,
+        duration = duration
+    )
+
+    /**
      * Prevent the next damage instance [target] would deal this turn, then run [onPrevented] as a
      * linked delayed trigger with the prevented amount available through
      * [DynamicAmounts.preventedDamage].

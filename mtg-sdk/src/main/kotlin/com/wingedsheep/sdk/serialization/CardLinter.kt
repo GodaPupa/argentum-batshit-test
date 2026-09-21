@@ -800,6 +800,7 @@ object CardLinter {
         "GrantChosenColor" to "COLOR",
         "GrantChosenSubtype" to "CREATURE_TYPE",
         "GrantProtectionFromChosenColorToGroup" to "COLOR",
+        "ChosenColor" to "COLOR",
         "GrantLandwalkOfChosenType" to "LAND_TYPE",
         "NotOfSourceChosenType" to "CREATURE_TYPE",
         "SneakCostWasPaid" to "SNEAK",

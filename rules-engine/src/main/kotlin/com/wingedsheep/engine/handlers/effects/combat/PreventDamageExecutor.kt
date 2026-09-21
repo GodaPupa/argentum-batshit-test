@@ -221,6 +221,14 @@ class PreventDamageExecutor(
         val modification: SerializableModification
 
         when {
+            // Capture the resolution-time choice in a self-contained global source shield.
+            effect.sourceFilter is PreventionSourceFilter.ChosenColor -> {
+                val color = context.chosenColor
+                    ?: return EffectResult.error(state, "ChosenColor prevention requires a chosen color in context")
+                affectedEntities = emptySet()
+                modification = SerializableModification.PreventAllDamageFromColor(color.name)
+            }
+
             // Recipient-side prevention: "prevent all damage that would be dealt to creatures you
             // control this turn", and the two shapes that include the player — "to you and creatures
             // you control" (group + flag) and "to you" alone (flag, no group; Scarecrow). No specific

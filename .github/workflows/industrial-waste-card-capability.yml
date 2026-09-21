@@ -19,6 +19,17 @@ on:
       - mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/mbs/cards/IchorWellspring.kt
       - mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/som/cards/GolemFoundry.kt
       - mtg-sets/2024/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/mh3/cards/EvisceratorsInsight.kt
+      - mtg-sets/2000-2002/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/jud/cards/BattleScreech.kt
+      - mtg-sets/2000-2002/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/jud/cards/PrismaticStrands.kt
+      - mtg-sets/2000-2002/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/BattleScreechScenarioTest.kt
+      - mtg-sets/2000-2002/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/PrismaticStrandsScenarioTest.kt
+      - mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/stx/cards/ThrillingDiscovery.kt
+      - mtg-sets/2024/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/mh3/cards/PerilousLandscape.kt
+      - mtg-sdk/src/main/**
+      - rules-engine/src/main/**
+      - docs/card-sdk-language-reference.md
+      - mtg-sets/src/test/resources/snapshots/cards/JUD.json
+      - mtg-sets/src/test/resources/snapshots/cards/STX.json
       - mtg-sets/src/test/resources/snapshots/cards/MBS.json
       - mtg-sets/src/test/resources/snapshots/cards/MH3.json
       - mtg-sets/src/test/resources/snapshots/cards/SOM.json
@@ -60,17 +71,22 @@ jobs:
         run: |
           set -o pipefail
           just rebless-cards 2>&1 | tee industrial-waste-card-snapshots.log
-          git diff --exit-code
+          git diff --binary > industrial-waste-card-snapshots.patch
 
       - name: Run targeted card build gate
         run: |
           set -o pipefail
           scripts/gradle-locked \
             :mtg-sets:1993-1999:compileKotlin \
+            :mtg-sets:2000-2002:tests:test --tests "*BattleScreechScenarioTest" --tests "*PrismaticStrandsScenarioTest" \
             :mtg-sets:2008-2016:compileKotlin \
+            :mtg-sets:2017-2022:compileKotlin \
             :mtg-sets:2024:compileKotlin \
             :mtg-sets:test --tests "*CardDefinitionSnapshotTest" \
             2>&1 | tee industrial-waste-card-build.log
+
+      - name: Run full new-vocabulary gate
+        run: just test
 
       - name: Verify canonical printings
         run: |
@@ -78,6 +94,10 @@ jobs:
           just check-card-printing "Eviscerator's Insight"
           just check-card-printing "Golem Foundry"
           just check-card-printing "Ichor Wellspring"
+          just check-card-printing "Battle Screech"
+          just check-card-printing "Prismatic Strands"
+          just check-card-printing "Thrilling Discovery"
+          just check-card-printing "Perilous Landscape"
 
       - name: Run Assay differential checks
         run: |
@@ -87,6 +107,8 @@ jobs:
             just assay-differential --set MH3
             just assay-differential --set SOM
             just assay-differential --set MBS
+            just assay-differential --set JUD
+            just assay-differential --set STX
           } 2>&1 | tee industrial-waste-assay-differential.log
 
       - name: Upload validation evidence
@@ -96,6 +118,10 @@ jobs:
           name: industrial-waste-card-capability
           path: |
             industrial-waste-card-snapshots.log
+            industrial-waste-card-snapshots.patch
             industrial-waste-card-build.log
             industrial-waste-assay-differential.log
           if-no-files-found: warn
+
+      - name: Require committed snapshots
+        run: git diff --exit-code

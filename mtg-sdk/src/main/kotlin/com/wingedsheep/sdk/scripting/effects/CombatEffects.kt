@@ -57,6 +57,8 @@ sealed interface PreventionSourceFilter {
     @SerialName("ChosenColoredSource") @Serializable data object ChosenColoredSource : PreventionSourceFilter
     /** Uses the chosen creature type from the source permanent's component. */
     @SerialName("ChosenCreatureType") @Serializable data object ChosenCreatureType : PreventionSourceFilter
+    /** Every source that has the color chosen by an enclosing [ChooseColorThenEffect]. */
+    @SerialName("ChosenColor") @Serializable data object ChosenColor : PreventionSourceFilter
     /**
      * Player chooses a damage source on resolution, but only sources matching [filter] are
      * eligible — e.g. "an artifact source of your choice" (Circle of Protection: Artifacts) with
@@ -186,6 +188,7 @@ data class PreventDamageEffect(
             PreventionSourceFilter.ChosenColoredSource ->
                 append(" by a source of your choice that shares a color with the mana spent")
             PreventionSourceFilter.ChosenCreatureType -> append(" by a creature of the chosen type")
+            PreventionSourceFilter.ChosenColor -> append(" from sources of the chosen color")
             is PreventionSourceFilter.ChosenSourceMatching -> {
                 val quality = sourceFilter.filter.description.replaceFirstChar { it.lowercase() }
                 val article = if (quality.firstOrNull()?.lowercaseChar() in listOf('a', 'e', 'i', 'o', 'u')) "an" else "a"
@@ -838,5 +841,4 @@ data class RemoveSuspectedEffect(
 ) : Effect {
     override val description: String = "${target.description} is no longer suspected"
 }
-
 

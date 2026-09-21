@@ -476,6 +476,10 @@ sealed interface SerializableModification {
     @Serializable
     data object PreventAllDamageDealtBy : SerializableModification
 
+    /** Prevent all damage dealt by any source that has [color]. */
+    @Serializable
+    data class PreventAllDamageFromColor(val color: String) : SerializableModification
+
     /**
      * Damage redirection shield: while active, damage that would be dealt to any of the affected
      * entities this turn is redirected to the specified target instead. Used by Glarecaster and
@@ -815,6 +819,7 @@ fun SerializableModification.toModification(): Modification = when (this) {
     is SerializableModification.SetSuspected -> Modification.SetSuspected
     // PreventAllDamageDealtBy doesn't map to a layer modification - it's checked during damage resolution directly
     is SerializableModification.PreventAllDamageDealtBy -> Modification.NoOp
+    is SerializableModification.PreventAllDamageFromColor -> Modification.NoOp
     // RedirectNextDamage doesn't map to a layer modification - it's checked during damage resolution directly
     is SerializableModification.RedirectNextDamage -> Modification.NoOp
     // ReplaceDrawWithEffect doesn't map to a layer modification - it's checked during draw execution directly
