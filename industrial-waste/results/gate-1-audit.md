@@ -202,3 +202,20 @@ Decision: quarantine the Madness Burn pilot and replication win rates from all c
 promotion claims. They remain capability artifacts only. No new seeds were spent on diagnosis, and
 no further Burn sampling is authorized under v0. Control remains frozen and Pactdoll-A remains
 unpromoted.
+
+## Gate 4 Madness Burn production-profile replay
+
+The exact spent `IW-G4-MADNESS-BURN-R1` vector was replayed with only the Burn opponent changed to
+`PRODUCTION_CANDIDATE_EXPIRING`. Runtime limits required a non-overlapping adaptive partition. The
+canonical merge accepts only clean-success jobs from runs 35550602282, 35551201558, and 35551633513;
+timed-out artifacts are preserved but excluded. The accepted partitions cover all 32 expected game
+keys exactly once, with zero exceptions, rejected actions, or unapproved draws.
+
+Burn won 14/16 against Control and 14/16 against Pactdoll-A, clearing the 4/16 pressure floor for
+both lists. Twenty-two of 32 results changed from the frozen v0 artifact, clearing the observable
+policy-change gate. Control and Pactdoll-A each won 2/16; this equality is replay-only diagnostic
+evidence and not a matchup-rate estimate.
+
+Decision: calibration passes and authorizes exactly one fresh Burn namespace under the production
+opponent profile. It does not promote Pactdoll-A, unquarantine the old v0 win rates, or authorize
+postboard work. Industrial Waste v1.0 Control remains frozen.

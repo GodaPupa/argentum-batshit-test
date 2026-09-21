@@ -2,12 +2,6 @@ name: Industrial Waste — Burn Production Replay
 
 on:
   workflow_dispatch:
-  push:
-    branches: [industrial-waste/lab]
-    paths:
-      - ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteMatchupPilotBenchmark.kt
-      - .github/workflows/industrial-waste-burn-production-replay.yml
-      - industrial-waste/protocols/gate-4-madness-burn-production-replay-v1.md
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}

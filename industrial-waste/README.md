@@ -38,8 +38,9 @@ See `protocols/gate-1-structural-screen-v1.md` for the current gate.
 
 ## Current decision
 
-Pactdoll-A remains the only surviving challenger, but it is not promoted. A contemporary Madness
-Burn pilot split 4-4 for both lists and its fresh replication split 13-3 for both, but a seed-free
-audit proved that frozen v0 passes instead of casting lethal Fireblast. Those win rates are now
-quarantined as capability-only evidence. Further sampled matchup work is blocked until an opponent
-profile passes replay-only calibration; the frozen Control remains the experimental baseline.
+Pactdoll-A remains the only surviving challenger, but it is not promoted. The original Madness Burn
+pilot and replication rates remain quarantined because frozen v0 misses lethal Fireblast. An exact
+spent-seed replay changing only Burn to `PRODUCTION_CANDIDATE_EXPIRING` produced 14 Burn wins in 16
+games against each Industrial list and changed 22/32 results, passing the opponent-policy
+calibration. Exactly one fresh preboard Burn namespace is now authorized; no postboard work or deck
+promotion is authorized. The frozen Control remains the experimental baseline.

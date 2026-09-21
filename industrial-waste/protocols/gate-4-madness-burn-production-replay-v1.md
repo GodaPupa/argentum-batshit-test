@@ -1,6 +1,6 @@
 # Gate 4 Madness Burn production-profile replay v1
 
-Status: planned; replay-only calibration.
+Status: completed; calibration passed; non-promotional.
 
 ## Question
 
@@ -43,3 +43,17 @@ The opponent-policy calibration passes only if:
 Passing authorizes only a decision on whether one fresh Burn namespace is worth its cost. Failure
 retires Madness Burn from qualification work in the current harness. Neither outcome promotes or
 rejects Pactdoll-A.
+
+## Result
+
+The canonical artifact is `results/gate-4-madness-burn-production-replay-v1.json`. Its accepted
+partitions come only from clean-success jobs in runs 35550602282, 35551201558, and 35551633513.
+Together they contain exactly 32 unique `(deck, pair, seat)` keys covering all eight registered
+seeds. The timed-out 2-way and 4-way odd partitions are preserved but excluded from the merge.
+
+Madness Burn won 14/16 against Control and 14/16 against Pactdoll-A. Twenty-two of 32 game results
+changed relative to the frozen v0 artifact. Both predeclared gates therefore pass decisively.
+
+Decision: the production opponent profile makes this matchup harness sufficiently two-sided to
+justify exactly one fresh Burn namespace. This replay cannot estimate win rate and does not promote
+or reject Pactdoll-A. Postboard work remains blocked until a fresh preboard comparison is valid.
