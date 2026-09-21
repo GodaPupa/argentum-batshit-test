@@ -267,6 +267,50 @@
     ]
 }
 
+// Scrapyard Salvo
+{
+    "name": "Scrapyard Salvo",
+    "manaCost": "{1}{R}{R}",
+    "typeLine": "Sorcery",
+    "oracleText": "Scrapyard Salvo deals damage to target player or planeswalker equal to the number of artifact cards in your graveyard.",
+    "script": {
+        "spellEffect": {
+            "type": "DealDamage",
+            "amount": {
+                "type": "AggregateZone",
+                "player": "You",
+                "zone": "Graveyard",
+                "filter": "artifact"
+            },
+            "target": {
+                "type": "BoundVariable",
+                "name": "target player or planeswalker"
+            }
+        },
+        "targetRequirements": [
+            {
+                "type": "TargetPlayerOrPlaneswalker",
+                "id": "target player or planeswalker"
+            }
+        ]
+    },
+    "metadata": {
+        "collectorNumber": "94",
+        "artist": "Austin Hsu",
+        "flavorText": "\"Squealstokers! Build me a glorious pile of Mirran metal. Then add yourselves to the pile.\"\n—Furnace boss, sector 11",
+        "imageUri": "https://cards.scryfall.io/normal/front/3/a/3a4874eb-635b-47f0-bbee-6bd8b26e2f10.jpg?1783941306",
+        "rulings": [
+            {
+                "date": "2011-06-01",
+                "text": "The number of artifact cards in your graveyard is counted when Scrapyard Salvo resolves."
+            }
+        ]
+    },
+    "colorIdentityOverride": [
+        "RED"
+    ]
+}
+
 // Torpor Orb
 {
     "name": "Torpor Orb",
