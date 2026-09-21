@@ -31,7 +31,6 @@ val BorealDruid = card("Boreal Druid") {
         collectorNumber = "105"
         artist = "Dan Dos Santos"
         flavorText = "Some creatures are bound to the cold by Rimewind magic. Others seek it out, adapted by two thousand years of the Ice. The Boreal, where Heidar's frigid sway is strongest, is home to both."
-        scryfallId = "473d3633-6dc7-4026-a50e-3ea76b9e8c20"
         imageUri = "https://cards.scryfall.io/normal/front/4/7/473d3633-6dc7-4026-a50e-3ea76b9e8c20.jpg"
     }
 }
