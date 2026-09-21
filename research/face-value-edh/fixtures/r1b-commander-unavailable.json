@@ -1,0 +1,29 @@
+{
+  "fixture_id": "FVEDH-R1-CMD-001",
+  "surface": "commander_unavailable",
+  "synthetic": true,
+  "official_material": false,
+  "initial_state": {
+    "active_player": "P1",
+    "priority_player": "P1",
+    "zones": {
+      "battlefield": [],
+      "command": [
+        "Animar, Soul of Elements"
+      ]
+    },
+    "stack": [],
+    "commander": {
+      "name": "Animar, Soul of Elements",
+      "zone": "command",
+      "tax": 2
+    }
+  },
+  "decision": {
+    "action": "continue_without_commander",
+    "supported": true
+  },
+  "expected": {
+    "result": "accept"
+  }
+}
