@@ -83,13 +83,23 @@ def _find_payment(state: PublicState, generic: int, colored: Tuple[str,...]):
         for subset in itertools.combinations(units,k):
             if sum(a for _,a,_ in subset) < need_total:
                 continue
-            # assign each colored symbol to a distinct source activation.
+            # Assign colored symbols to source activations. A source that produces
+            # multiple mana may satisfy multiple symbols only up to its public amount.
             ids=[x[0] for x in subset]
+            amounts=[x[1] for x in subset]
             colors=[x[2] for x in subset]
             for picks in itertools.product(range(len(subset)), repeat=len(colored)):
-                if len(set(picks)) != len(picks):
+                used=[0]*len(subset)
+                legal=True
+                for sym,i in zip(colored,picks):
+                    used[i]+=1
+                    if sym not in colors[i] or used[i]>amounts[i]:
+                        legal=False; break
+                if not legal:
                     continue
-                if all(sym in colors[i] for sym,i in zip(colored,picks)):
+                colored_spent=len(colored)
+                remaining=sum(amounts)-colored_spent
+                if remaining >= generic:
                     return tuple(ids)
     return None
 
