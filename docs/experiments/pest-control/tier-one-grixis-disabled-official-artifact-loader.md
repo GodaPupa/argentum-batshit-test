@@ -30,7 +30,8 @@ and transient inside the validation process.
 - Outcome-bearing artifacts: `0`
 - Outcome exposure: `0/4`
 
-Pull requests exercise only the disabled state. Production validation requires an exact acknowledgement,
-`main`, workflow attempt one, the exact archived artifact SHA-256, and absence of prior validation
-evidence. After the one authorized validation, a reviewed provenance change must remove the manual
-trigger. Execution remains separately unauthorized.
+The one authorized validation completed successfully in workflow run `35559222714` at source commit
+`eb15b1b9a580214f5f6a5766f3c7bb9ab46abe7c`. The digest-only result is recorded in
+`tier-one-grixis-official-loader-validation-provenance.json`. The manual trigger and official-artifact
+job have been removed; pull requests can exercise only the disabled state. Execution remains
+separately unauthorized.
