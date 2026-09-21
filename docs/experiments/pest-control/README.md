@@ -128,6 +128,11 @@ complete and terminal-rejection orchestration with fixed nonexperimental fixture
 is inspection-only, the implementation is file-private, and it provides no official input, workflow
 dispatch, production command, or execution authority. All official counters remain zero.
 
+The disabled durability gate in `tier-one-grixis-disabled-durability.md` validates write-once durable
+attempt and record markers plus terminal crash recovery in isolated nonexperimental temporary
+directories. It rejects duplicate attempts, blocks continuation after an incomplete slot, cleans all
+temporary state, and accepts no external path or official input. All official counters remain zero.
+
 Pest Control versus SoterX Mono Red Madness matchup Block A executed once and is formally rejected
 as `REJECTED_OUTCOME_RELEVANT_TARGET_SELECTION_DEFECTS`. All 50 Block A seeds are permanently
 retired. The descriptive 35–15 result is inadmissible for acceptance, pooling, or tuning. Preserved
