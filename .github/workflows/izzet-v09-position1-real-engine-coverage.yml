@@ -1,0 +1,65 @@
+name: Izzet Position-1 Real Engine Coverage
+
+on:
+  pull_request:
+    paths:
+      - "gym/src/main/kotlin/com/wingedsheep/gym/matchup/IzzetScienceVeteranBeastriderEngineReadiness.kt"
+      - "gym/src/test/kotlin/com/wingedsheep/gym/IzzetScienceVeteranBeastriderEngineReadinessTest.kt"
+      - "izzet-science/v09-position1-real-engine-coverage-gate.md"
+      - ".github/workflows/izzet-v09-position1-real-engine-coverage.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify-real-engine-coverage:
+    if: github.event_name != 'pull_request' || github.head_ref == 'mayhem/izzet-science'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "21"
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Verify parent adapter acceptance
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -Fq 'V09_POSITION1_EXECUTION_ADAPTER_ACCEPTED' izzet-science/v09-position1-execution-adapter-accepted.md
+      - name: Run exact engine-coverage test
+        shell: bash
+        run: |
+          set -euo pipefail
+          scripts/test-class IzzetScienceVeteranBeastriderEngineReadinessTest --info --stacktrace | tee /tmp/engine-coverage.txt
+      - name: Assert no official execution counters moved
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -Fq 'officialGamesAuthorized: Int = 0' gym/src/main/kotlin/com/wingedsheep/gym/matchup/IzzetScienceVeteranBeastriderEngineReadiness.kt
+          grep -Fq 'officialSeedsConsumed: Int = 0' gym/src/main/kotlin/com/wingedsheep/gym/matchup/IzzetScienceVeteranBeastriderEngineReadiness.kt
+          grep -Fq 'outcomeExposure: Int = 0' gym/src/main/kotlin/com/wingedsheep/gym/matchup/IzzetScienceVeteranBeastriderEngineReadiness.kt
+      - name: Emit qualification manifest
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/engine-coverage-artifact
+          cp /tmp/engine-coverage.txt /tmp/engine-coverage-artifact/test-output.txt
+          {
+            echo "schema=izzet-v09-position1-real-engine-coverage-v1"
+            echo "source_sha=${GITHUB_SHA}"
+            echo "experimental_seeds_consumed=0"
+            echo "games_initialized=0"
+            echo "outcome_exposure=0"
+            sha256sum gym/src/main/kotlin/com/wingedsheep/gym/matchup/IzzetScienceVeteranBeastriderEngineReadiness.kt
+            sha256sum gym/src/test/kotlin/com/wingedsheep/gym/IzzetScienceVeteranBeastriderEngineReadinessTest.kt
+            sha256sum izzet-science/v09-position1-real-engine-coverage-gate.md
+            sha256sum /tmp/engine-coverage-artifact/test-output.txt
+          } > /tmp/engine-coverage-artifact/manifest.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: izzet-v09-position1-real-engine-coverage
+          path: /tmp/engine-coverage-artifact
+          if-no-files-found: error
