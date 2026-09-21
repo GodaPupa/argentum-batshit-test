@@ -31,13 +31,25 @@ Reckoner's Bargain, Scrapyard Salvo, and Nihil Spellbomb.
 
 - Galvanic Blast, Reckoner's Bargain, and Scrapyard Salvo map to existing conditional damage,
   sacrifice, life-gain, draw, and artifact-count primitives.
-- Utrom Monitor requires artifact-affinity cost reduction plus Cycling.
-- Refurbished Familiar requires artifact-affinity, flying, and an opponent discard trigger.
+- Utrom Monitor requires artifact-affinity cost reduction plus flying. The initial audit incorrectly
+  attributed Cycling to the card; the frozen TMC #113 oracle text has no Cycling ability.
+- Refurbished Familiar requires artifact-affinity, flying, and an opponent discard trigger that
+  draws once for each opponent who cannot discard.
 - Nihil Spellbomb requires targeted graveyard exile and the black-payment draw trigger.
 
 The audit must verify rules fidelity rather than substitute approximate effects. In particular,
 affinity must reduce only generic mana, Scrapyard Salvo must count artifacts in the controller's
 graveyard at resolution, and Nihil Spellbomb's card draw must depend on the separate black payment.
+
+### Capability evidence
+
+- Batch 1 (Galvanic Blast, Reckoner's Bargain, Scrapyard Salvo) passed the complete card-capability
+  workflow on 2026-09-21: GitHub Actions run
+  [35564718118](https://github.com/GodaPupa/argentum-batshit-test/actions/runs/35564718118).
+- The run passed frozen-input validation, committed snapshots, focused scenarios, canonical
+  printing checks, Assay differential checks, and the final clean-tree requirement.
+- This is implementation evidence only. It reserves no seed and authorizes no gameplay while
+  admission items 1, 3, and 4 remain open.
 
 ## Admission gate
 
