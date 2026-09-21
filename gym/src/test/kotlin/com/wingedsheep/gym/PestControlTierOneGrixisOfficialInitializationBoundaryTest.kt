@@ -8,12 +8,14 @@ import com.wingedsheep.gym.matchup.GrixisSmokeHarnessState
 import com.wingedsheep.gym.matchup.GrixisSmokeVectorIdentity
 import com.wingedsheep.gym.matchup.GrixisStartingDeck
 import com.wingedsheep.gym.matchup.PEST_GRIXIS_OFFICIAL_INITIALIZATION_BLOCKER_SHA256
+import com.wingedsheep.gym.matchup.PEST_GRIXIS_DISABLED_INITIALIZER_CONSTRUCTION_SHA256
 import com.wingedsheep.gym.matchup.PestControlTierOneGrixisOfficialInitializationBoundary
 import com.wingedsheep.gym.matchup.PestSeat
 import com.wingedsheep.mtg.sets.MtgSetCatalog
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.collections.shouldContain
 import io.kotest.matchers.shouldBe
+import java.lang.reflect.Modifier
 
 private const val SYNTHETIC_BOUNDARY_SEED = 8_800_001L
 private val SYNTHETIC_BOUNDARY_IDENTITY = GrixisSmokeVectorIdentity(
@@ -42,14 +44,18 @@ class PestControlTierOneGrixisOfficialInitializationBoundaryTest : FunSpec({
         result.activationBlockers.shouldContain("official assignment is absent")
         result.activationBlockers.shouldContain("execution commit is absent")
         result.activationBlockers.shouldContain("durable attempt marker is absent")
-        result.activationBlockers.shouldContain("official initializer implementation is absent")
+        result.activationBlockers.shouldContain("official initializer is disabled")
         result.blockerSha256 shouldBe PEST_GRIXIS_OFFICIAL_INITIALIZATION_BLOCKER_SHA256
+        result.constructionValidationSha256 shouldBe PEST_GRIXIS_DISABLED_INITIALIZER_CONSTRUCTION_SHA256
+        result.officialInitializerImplemented shouldBe true
+        result.officialInitializerEnabled shouldBe false
+        result.disabledInitializerConstructionGamesInitialized shouldBe 1
         result.officialSeedsGenerated shouldBe 0
         result.officialGamesInitialized shouldBe 0
         result.outcomeExposure shouldBe 0
     }
 
-    test("even a complete synthetic request cannot initialize while implementation is absent") {
+    test("even a complete synthetic request cannot reach the disabled initializer") {
         val readiness = GrixisSmokeHarnessReadiness(
             vectorIdentity = SYNTHETIC_BOUNDARY_IDENTITY,
             state = GrixisSmokeHarnessState.AUTHORIZED,
@@ -75,8 +81,22 @@ class PestControlTierOneGrixisOfficialInitializationBoundaryTest : FunSpec({
         result.failClosed shouldBe true
         result.activationBlockers.shouldContain("smoke vector must remain absent during harness construction")
         result.activationBlockers.shouldContain("smoke harness must remain disabled")
-        result.activationBlockers.shouldContain("official initializer implementation is absent")
+        result.activationBlockers.shouldContain("official initializer is disabled")
+        result.officialInitializerImplemented shouldBe true
+        result.officialInitializerEnabled shouldBe false
+        result.disabledInitializerConstructionGamesInitialized shouldBe 1
+        result.constructionValidationSha256 shouldBe PEST_GRIXIS_DISABLED_INITIALIZER_CONSTRUCTION_SHA256
         result.officialGamesInitialized shouldBe 0
+    }
+
+    test("disabled initializer implementation is not a public API and initialize stays private") {
+        val implementation = Class.forName(
+            "com.wingedsheep.gym.matchup.PestControlTierOneGrixisDisabledOfficialInitializer",
+        )
+
+        Modifier.isPublic(implementation.modifiers) shouldBe false
+        val initialize = implementation.declaredMethods.single { it.name == "initialize" }
+        Modifier.isPrivate(initialize.modifiers) shouldBe true
     }
 
     test("runner and preflight failures remain contract errors") {
