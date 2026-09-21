@@ -50,6 +50,12 @@ interface CardAdvisor {
     fun respondToDecision(context: AdvisorDecisionContext): DecisionResponse? = null
 
     /**
+     * Optional card-specific target preference used before Strategist commits a legal target.
+     * Higher values are preferred. Null defers entirely to generic target ranking/simulation.
+     */
+    fun targetPreference(state: GameState, targetId: EntityId, playerId: EntityId): Double? = null
+
+    /**
      * Score penalty for attacking with this creature.
      *
      * Called by [CombatAdvisor] for each valid attacker whose card name
