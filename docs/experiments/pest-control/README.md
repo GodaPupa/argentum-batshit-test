@@ -72,6 +72,11 @@ The synthetic provenance binding is recorded in
 hashes to the opaque rows while remaining structurally incapable of representing executable entropy
 or outcome-bearing state.
 
+The in-memory closure manifest is recorded in
+`tier-one-grixis-disabled-preexecution-manifest.md`. It binds the complete construction hash chain
+and explicit zero counters while exposing no writer, workflow, command, vector, entropy, initializer
+activation, environment, action, artifact, or outcome path.
+
 Pest Control versus SoterX Mono Red Madness matchup Block A executed once and is formally rejected
 as `REJECTED_OUTCOME_RELEVANT_TARGET_SELECTION_DEFECTS`. All 50 Block A seeds are permanently
 retired. The descriptive 35–15 result is inadmissible for acceptance, pooling, or tuning. Preserved
