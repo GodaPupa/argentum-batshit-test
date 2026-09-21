@@ -1,0 +1,24 @@
+{
+  "protocol": "FVEDH-R2-A-v1",
+  "deck_identity_sha256": "9a29093306b92cab815112c61b2401a1b5e48ac418b87d50ee263b4fd2b402ca",
+  "phase": "synthetic_readiness",
+  "official_seed_vector": null,
+  "official_outcomes_exposed": 0,
+  "historical_vector_access": "forbidden",
+  "fail_closed": true,
+  "required_surfaces": [
+    "ordinary_cast",
+    "targeted_interaction",
+    "stack_priority",
+    "commander_unavailable",
+    "food_chain_pressure"
+  ],
+  "runner_rules": {
+    "deterministic_same_input": true,
+    "unsupported_action": "abort",
+    "illegal_action": "reject",
+    "future_information": "forbidden",
+    "outcome_adaptive_policy": "forbidden",
+    "deck_mutation": "forbidden"
+  }
+}
