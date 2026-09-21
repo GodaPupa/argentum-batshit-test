@@ -9,7 +9,7 @@ import com.wingedsheep.engine.core.CardsSelectedResponse
 import com.wingedsheep.engine.core.ChooseColorDecision
 import com.wingedsheep.engine.core.ColorChosenResponse
 import com.wingedsheep.engine.core.PassPriority
-import com.wingedsheep.engine.core.SearchLibraryDecision
+import com.wingedsheep.engine.core.SelectCardsDecision
 import com.wingedsheep.engine.core.YesNoDecision
 import com.wingedsheep.engine.core.YesNoResponse
 import com.wingedsheep.engine.state.components.identity.CardComponent
@@ -23,14 +23,14 @@ import io.kotest.matchers.types.shouldBeInstanceOf
 class IndustrialWasteBorosPolicyAuditTest : ScenarioTestBase() {
 
     private fun ai(game: TestGame): AIPlayer {
-        val base = AiProfile.PRODUCTION_CANDIDATE_EXPIRING
+        val base = AiProfile.LEGACY_V0
         return AIPlayer.create(
             cardRegistry,
             game.player1Id,
             base.copy(
                 id = "boros-gate-5-readiness",
                 advisorModules = base.advisorModules + IndustrialWasteBorosAdvisorModule,
-                useMeaningfulFilter = false,
+                considerAdvisedManaAbilities = true,
             ),
         )
     }
@@ -105,7 +105,7 @@ class IndustrialWasteBorosPolicyAuditTest : ScenarioTestBase() {
             game.state.projectedState.getBattlefieldControlledBy(game.player1Id)
                 .contains(action.sourceId) shouldBe false
             advanceToDecision(game)
-            game.state.pendingDecision.shouldBeInstanceOf<SearchLibraryDecision>()
+            game.state.pendingDecision.shouldBeInstanceOf<SelectCardsDecision>()
             val response = player.respondToDecision(game.state, game.state.pendingDecision!!)
                 .shouldBeInstanceOf<CardsSelectedResponse>()
             response.selectedCards.map { cardName(game, it) } shouldBe listOf("Mountain")

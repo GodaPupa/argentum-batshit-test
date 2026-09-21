@@ -61,8 +61,8 @@ private object PerilousLandscapeAdvisor : CardAdvisor {
         return if ("Mountain" !in battlefieldNames) context.passScore + 5.0 else null
     }
 
-    override fun respondToDecision(context: AdvisorDecisionContext) =
-        (context.decision as? SearchLibraryDecision)?.let { decision ->
+    override fun respondToDecision(context: AdvisorDecisionContext) = when (val decision = context.decision) {
+        is SearchLibraryDecision -> {
             val battlefieldNames = context.state.projectedState
                 .getBattlefieldControlledBy(context.playerId)
                 .mapNotNull(context.state::cardName)
@@ -71,6 +71,17 @@ private object PerilousLandscapeAdvisor : CardAdvisor {
                 ?: decision.options.firstOrNull()
             CardsSelectedResponse(decision.id, listOfNotNull(selected))
         }
+        is SelectCardsDecision -> {
+            val battlefieldNames = context.state.projectedState
+                .getBattlefieldControlledBy(context.playerId)
+                .mapNotNull(context.state::cardName)
+            val preferred = if ("Mountain" !in battlefieldNames) "Mountain" else "Plains"
+            val selected = decision.options.firstOrNull { decision.cardInfo?.get(it)?.name == preferred }
+                ?: decision.options.firstOrNull()
+            CardsSelectedResponse(decision.id, listOfNotNull(selected))
+        }
+        else -> null
+    }
 }
 
 private object ThrillingDiscoveryAdvisor : CardAdvisor {

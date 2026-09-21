@@ -42,14 +42,13 @@ class IndustrialWasteBorosReadinessSmokeTest : FunSpec({
                 considerAdvisedManaAbilities = true,
             ),
         )
-        val production = AiProfile.PRODUCTION_CANDIDATE_EXPIRING
+        val borosBase = AiProfile.LEGACY_V0
         val borosAgent = ArenaAgent(
             "boros-gate-5-readiness",
-            production.copy(
+            borosBase.copy(
                 id = "boros-gate-5-readiness",
-                advisorModules = production.advisorModules + IndustrialWasteBorosAdvisorModule,
+                advisorModules = listOf(IndustrialWasteBorosAdvisorModule),
                 considerAdvisedManaAbilities = true,
-                useMeaningfulFilter = false,
             ),
         )
         val game = TableGameRunner.play(
