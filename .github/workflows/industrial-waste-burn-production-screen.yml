@@ -1,0 +1,58 @@
+name: Industrial Waste — Burn Production Screen
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [industrial-waste/lab]
+    paths:
+      - ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteMatchupPilotBenchmark.kt
+      - industrial-waste/seed-registry.json
+      - industrial-waste/protocols/gate-4-madness-burn-production-screen-v1.md
+      - .github/workflows/industrial-waste-burn-production-screen.yml
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  burn-production-screen:
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [0, 1, 2, 3, 4, 5, 6, 7]
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout exact branch head
+        uses: actions/checkout@v6
+      - name: Set up Java 21
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: 21
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v6
+      - name: Set up just
+        uses: extractions/setup-just@v3
+      - name: Validate frozen inputs
+        run: |
+          python3 -m unittest discover -s industrial-waste/sim -p 'test_*.py' -v
+          python3 industrial-waste/sim/validate_inputs.py
+          test "$(sha256sum industrial-waste/results/gate-4-madness-burn-production-replay-v1.json | cut -d' ' -f1)" = \
+            "0d67c8f29bd9b3cc56cc4b86b8e0edb64742fc1871a8a00387fb60a3f6c9cf2d"
+      - name: Run fresh production-profile Burn screen
+        run: scripts/gradle-locked :ai:test --tests "*.IndustrialWasteMatchupPilotBenchmark"
+        env:
+          IW_MATCHUP_PRODUCTION_SCREEN: "true"
+          IW_MATCHUP_SHARD_COUNT: "8"
+          IW_MATCHUP_SHARD_INDEX: ${{ matrix.shard }}
+      - name: Upload fresh screen partition
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: industrial-waste-madness-burn-production-screen-shard-${{ matrix.shard }}
+          path: industrial-waste/results/gate-4-madness-burn-production-screen-v1-shard-*-of-8.json
+          if-no-files-found: error
