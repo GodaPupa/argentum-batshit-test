@@ -1,0 +1,39 @@
+name: Industrial Waste — Tempo A Structural Gate
+
+on:
+  push:
+    branches:
+      - industrial-waste/lab
+    paths:
+      - .github/workflows/industrial-waste-tempo-a.yml
+      - industrial-waste/challengers/tempo-a.dck
+      - industrial-waste/sim/**
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  tempo-structural:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Validate exact challenger and frozen control
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import hashlib
+          from collections import Counter
+          import sys
+          sys.path.insert(0, "industrial-waste/sim")
+          from validate_inputs import parse_deck
+
+          root = Path("industrial-waste")
+          control, control_sb = parse_deck(root / "control/industrial-waste-v1.0-submitted.dck")
+          tempo, tempo_sb = parse_deck(root / "challengers/tempo-a.dck")
+          assert sum(tempo.values()) == 60 and sum(tempo_sb.values()) == 15
+          assert tempo - control == Counter({"Ancient Grudge": 2})
+          assert control - tempo == Counter({"Giant's Boulder": 2})
+          assert hashlib.sha256((root / "control/industrial-waste-v1.0-submitted.dck").read_bytes()).hexdigest() == "9b8a2932d78c99dd13f5c4834066bfa644f065137ee90efa75f3418ab56d1f1a"
+          print("Tempo A exact-swap structural gate: VALID")
+          PY
