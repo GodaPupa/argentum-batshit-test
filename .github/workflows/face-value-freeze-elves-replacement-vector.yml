@@ -1,0 +1,76 @@
+name: Face Value Freeze Elves Replacement Vector
+
+on:
+  push:
+    branches: [face-value/lab]
+    paths:
+      - .github/workflows/face-value-freeze-elves-replacement-vector.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  freeze:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: face-value/lab
+          fetch-depth: 0
+      - name: Audit vector and compute canonical digest
+        run: |
+          set -euo pipefail
+          root=experiments/face-value/qualification
+          reg="$root/preboard-elves-replacement-v1-seed-registry.json"
+          python3 - <<'PY'
+          import json, pathlib, subprocess
+          p=pathlib.Path('experiments/face-value/qualification/preboard-elves-replacement-v1-seed-registry.json')
+          d=json.loads(p.read_text())
+          assert d['classification']=='OFFICIAL_QUALIFICATION_PREBOARD_ELVES_REPLACEMENT_V1'
+          rows=d['assignments']
+          seeds=[r['seed'] for r in rows]
+          assert len(rows)==32 and len(set(seeds))==32
+          assert all(0 < s < 2**63 for s in seeds)
+          assert sum(r['face_value_seat']==1 for r in rows)==16
+          assert sum(r['face_value_seat']==2 for r in rows)==16
+          assert all(r['matchup']=='elves' for r in rows)
+          assert [r['run_index'] for r in rows]==list(range(1,33))
+          assert d['design']['outcomes_exposed_before_freeze']==0
+
+          # Search every tracked repository file except this registry and its digest
+          # for accidental reuse of any proposed official seed.
+          tracked=subprocess.check_output(['git','ls-files'], text=True).splitlines()
+          excluded={
+              str(p),
+              'experiments/face-value/qualification/preboard-elves-replacement-v1-seed-registry.sha256',
+          }
+          collisions=[]
+          for fp in tracked:
+              if fp in excluded:
+                  continue
+              try:
+                  text=pathlib.Path(fp).read_text(encoding='utf-8', errors='ignore')
+              except Exception:
+                  continue
+              for s in seeds:
+                  if str(s) in text:
+                      collisions.append((s,fp))
+          assert not collisions, collisions
+          print('VECTOR_AUDIT_GREEN')
+          PY
+          cd "$root"
+          sha256sum preboard-elves-replacement-v1-seed-registry.json > preboard-elves-replacement-v1-seed-registry.sha256
+          sha256sum -c preboard-elves-replacement-v1-seed-registry.sha256
+      - name: Commit canonical digest
+        run: |
+          set -euo pipefail
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add experiments/face-value/qualification/preboard-elves-replacement-v1-seed-registry.sha256
+          if git diff --cached --quiet; then
+            echo 'Digest already canonical.'
+          else
+            git commit -m 'face-value: canonicalize Elves replacement vector digest'
+            git push origin HEAD:face-value/lab
+          fi
