@@ -6,7 +6,7 @@ opening hands reproducibly, and exposes card semantics/regression checks.
 Turn-policy execution is intentionally staged behind tests.
 """
 from __future__ import annotations
-import argparse, random, re
+import argparse, hashlib, random, re
 from pathlib import Path
 
 SEED = 0x1A22E7001
@@ -1631,6 +1631,37 @@ BACKUP_TUTOR_ROW_KEYS=tuple(
     for suffix in ("targetable","payable","uncontested"))
 CAPSIZE_POLICY_ROW_KEYS=("capsize_tutor_used","capsize_tutor_found",
                          "capsize_scroll_used","capsize_drift_used")
+PAIRED_GAME_SEED_DOMAIN=b"izzet-v09-paired-game-v1\0"
+
+def derive_paired_game_seed(master_seed,game_index):
+    """Derive one counter-addressable 64-bit child seed without shared RNG state."""
+    for name,value in (("master_seed",master_seed),("game_index",game_index)):
+        if not isinstance(value,int) or isinstance(value,bool) or not 0<=value<2**64:
+            raise ValueError(f"{name} must be an unsigned 64-bit integer")
+    digest=hashlib.sha256(
+        PAIRED_GAME_SEED_DOMAIN+
+        master_seed.to_bytes(8,"big")+
+        game_index.to_bytes(8,"big")).digest()
+    return int.from_bytes(digest[:8],"big")
+
+def paired_game_rngs(master_seed,game_index):
+    """Return independent control/policy RNGs with identical per-game initial state."""
+    game_seed=derive_paired_game_seed(master_seed,game_index)
+    return random.Random(game_seed),random.Random(game_seed)
+
+def iter_paired_capsize_policy_games(cards,samples,master_seed,through=10,
+                                     include_interaction=False,include_backup=True,
+                                     include_backup_tutors=False):
+    """Yield isolated paired trajectories; callers own aggregation and acceptance."""
+    if not isinstance(samples,int) or isinstance(samples,bool) or samples<1:
+        raise ValueError("samples must be a positive integer")
+    for game_index in range(samples):
+        control_rng,policy_rng=paired_game_rngs(master_seed,game_index)
+        control=simulate_one(cards,control_rng,through,include_interaction,
+                             include_backup,include_backup_tutors,False)
+        policy=simulate_one(cards,policy_rng,through,include_interaction,
+                            include_backup,include_backup_tutors,True)
+        yield game_index,derive_paired_game_seed(master_seed,game_index),control,policy
 
 def simulate_one(cards, rng, through=6, include_interaction=False, include_backup=False,
                  include_backup_tutors=False, include_capsize_tutor_policy=False):
@@ -2131,6 +2162,49 @@ def capsize_tutor_policy_instrumentation_regressions(cards):
             raise AssertionError(f"accepted invalid Capsize telemetry: {bad}")
     return True
 
+def paired_rng_isolation_regressions():
+    # Frozen derivation vectors use fixture integer 1, not an experimental seed.
+    assert derive_paired_game_seed(1,0)==0x5D971FF74224A405
+    assert derive_paired_game_seed(1,1)==0x592C610D76160D7D
+    assert derive_paired_game_seed(1,2)==0xE076DFA63A9DF208
+    assert len({derive_paired_game_seed(1,i) for i in range(3)})==3
+
+    control0,policy0=paired_game_rngs(1,0)
+    control_deck=list(range(40)); policy_deck=list(range(40))
+    control0.shuffle(control_deck); policy0.shuffle(policy_deck)
+    assert control_deck==policy_deck
+
+    # A policy-only search shuffle separates only the current game's RNG states.
+    policy_search_library=list(range(31))
+    policy0.shuffle(policy_search_library)
+    assert control0.getstate()!=policy0.getstate()
+
+    # Game one is reconstructed from its own counter, independent of game zero use.
+    control1,policy1=paired_game_rngs(1,1)
+    next_control=list(range(40)); next_policy=list(range(40))
+    control1.shuffle(next_control); policy1.shuffle(next_policy)
+    assert next_control==next_policy
+    replay,_=paired_game_rngs(1,1)
+    replay_deck=list(range(40)); replay.shuffle(replay_deck)
+    assert replay_deck==next_control
+
+    invalid=((True,0),(-1,0),(2**64,0),(1,True),(1,-1),(1,2**64))
+    for master,index in invalid:
+        try:
+            derive_paired_game_seed(master,index)
+        except ValueError:
+            pass
+        else:
+            raise AssertionError(f"accepted invalid paired seed coordinates: {master},{index}")
+    for samples in (0,-1,True,1.5):
+        try:
+            next(iter_paired_capsize_policy_games([],samples,1))
+        except ValueError:
+            pass
+        else:
+            raise AssertionError(f"accepted invalid paired sample count: {samples}")
+    return True
+
 def electromancer_lethal_regressions():
     # Electromancer removes both generic costs, enabling a three-red-mana launch.
     s=DevState(["Lava Spike","Desperate Ritual"]); s.turn=4
@@ -2229,6 +2303,7 @@ def main():
     commander_independent_instrumentation_regressions(cards)
     backup_tutor_instrumentation_regressions(cards)
     capsize_tutor_policy_instrumentation_regressions(cards)
+    paired_rng_isolation_regressions()
     b,r=opening_baseline(cards,args.samples,args.seed)
     print("seed",hex(args.seed),"samples",args.samples)
     print("land_buckets_0_1_2_3_4plus",b)

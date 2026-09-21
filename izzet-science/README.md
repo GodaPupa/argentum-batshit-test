@@ -128,3 +128,10 @@ the disabled path remains exactly identical to the default. No sampling is yet
 authorized: the batch simulator's shared random stream could let an extra policy
 shuffle perturb later games. Per-game paired RNG isolation is the next required
 seed-free gate. v0.7 remains the accepted control.
+
+Phase 7 resolves that coupling with SHA-256 domain-and-counter child seeds. Separate
+control and policy RNGs begin every game identically; policy-only search randomness
+can diverge inside that game but cannot affect any later pair. Frozen derivation
+vectors, replay, isolation, and invalid-input regressions passed without consuming
+the paired iterator. No seed or pilot is authorized until paired estimands and the
+artifact contract are frozen. v0.7 remains the accepted control.
