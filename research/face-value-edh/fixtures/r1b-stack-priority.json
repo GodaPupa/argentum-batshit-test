@@ -1,0 +1,26 @@
+{
+  "fixture_id": "FVEDH-R1-STACK-001",
+  "surface": "stack_priority",
+  "synthetic": true,
+  "official_material": false,
+  "initial_state": {
+    "active_player": "P2",
+    "priority_player": "P1",
+    "zones": {},
+    "stack": [
+      "Synthetic Opponent Spell"
+    ],
+    "commander": {
+      "name": "Animar, Soul of Elements",
+      "zone": "battlefield",
+      "tax": 0
+    }
+  },
+  "decision": {
+    "action": "respond_to_top_of_stack",
+    "supported": true
+  },
+  "expected": {
+    "result": "accept"
+  }
+}
