@@ -48,9 +48,13 @@ class IndustrialWasteGrixisReadinessSmokeTest : FunSpec({
                 considerAdvisedManaAbilities = true,
             ),
         )
+        val grixisBase = AiProfile.PRODUCTION_CANDIDATE_EXPIRING
         val grixis = ArenaAgent(
             "grixis-gate-6-readiness",
-            AiProfile.PRODUCTION_CANDIDATE_EXPIRING.copy(id = "grixis-gate-6-readiness"),
+            grixisBase.copy(
+                id = "grixis-gate-6-readiness",
+                advisorModules = grixisBase.advisorModules + IndustrialWasteGrixisAdvisorModule,
+            ),
         )
 
         val game = TableGameRunner.play(
