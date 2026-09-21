@@ -1,0 +1,124 @@
+name: Face Value Qualification Elves Timeout Diagnostic
+
+on:
+  push:
+    branches: [face-value/lab]
+    paths:
+      - .github/workflows/face-value-qualification-elves-timeout-diagnostic.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  timeout-diagnostic:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: face-value/lab
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - name: Validate frozen inputs and build accepted Forge profile
+        run: |
+          set -euxo pipefail
+          python3 experiments/face-value/qualification/validate_inputs.py >/dev/null
+          FORGE_SHA=f387ede550e336315637a8b765f0927ac768c113
+          git clone --filter=blob:none https://github.com/Card-Forge/forge.git forge-src
+          git -C forge-src reset --hard
+          git -C forge-src clean -fd
+          git -C forge-src checkout --detach "$FORGE_SHA"
+          python3 experiments/face-value/qualification/apply_forge_profile_v1.py --forge-root forge-src >/dev/null
+          python3 experiments/face-value/qualification/apply_forge_profile_v2.py --forge-root forge-src >/dev/null
+          python3 experiments/face-value/qualification/apply_forge_profile_v3.py --forge-root forge-src >/dev/null
+          python3 experiments/face-value/qualification/apply_forge_profile_v4.py --forge-root forge-src >/dev/null
+          python3 experiments/face-value/qualification/apply_forge_profile_v6.py --forge-root forge-src > forge-profile-v6-id.txt
+          test "$(cat forge-profile-v6-id.txt)" = 'FACE_VALUE_QUALIFICATION_FORGE_PROFILE_V6_UNDERCITY_TARGETING'
+          cd forge-src
+          mvn -B -DskipTests -pl forge-gui-desktop -am package
+          chmod +x forge-gui-desktop/target/forge.sh
+          rm -rf forge-gui-desktop/target/res
+          cp -R forge-gui/res forge-gui-desktop/target/res
+          echo "FORGE_LAUNCHER=$(pwd)/forge-gui-desktop/target/forge.sh" >> "$GITHUB_ENV"
+
+      - name: Freeze diagnostic-only assignments
+        run: |
+          set -euo pipefail
+          mkdir -p "$HOME/.forge/decks/constructed" elves-timeout-logs
+          cp experiments/face-value/qualification/control/fv-temur-chrysalis-e-final-forge-75.dck "$HOME/.forge/decks/constructed/"
+          cp experiments/face-value/qualification/opponents/elves-mogged-2026-09-19.dck "$HOME/.forge/decks/constructed/"
+          python3 - <<'PY'
+          from pathlib import Path
+          rows=[]
+          seed=742001
+          for i in range(16):
+              seat=1 if i%2==0 else 2
+              rows.append(f'{i+1}\t{seat}\t{seed+i}')
+          Path('elves-timeout-assignments.tsv').write_text('\n'.join(rows)+'\n',encoding='utf-8')
+          PY
+          cat > elves-timeout-disposition.txt <<'EOF'
+          DIAGNOSTIC_ONLY_ELVES_AI_TIMEOUT_REPRODUCTION
+          Seeds 742001-742016 and all outcomes are permanently retired diagnostic material.
+          These results have no qualification, tuning, structural-diagnosis, challenger, or sideboard authority.
+          EOF
+
+      - name: Execute 16 fresh diagnostics
+        run: |
+          set -uo pipefail
+          control='fv-temur-chrysalis-e-final-forge-75.dck'
+          opponent='elves-mogged-2026-09-19.dck'
+          : > elves-timeout-exit-status.tsv
+          while IFS=$'\t' read -r idx seat seed; do
+            log="elves-timeout-logs/${idx}-seat${seat}-${seed}.log"
+            if [ "$seat" = 1 ]; then
+              timeout 300 "$FORGE_LAUNCHER" sim -d "$control" "$opponent" -n 1 -s "$seed" -c 120 > "$log" 2>&1
+            else
+              timeout 300 "$FORGE_LAUNCHER" sim -d "$opponent" "$control" -n 1 -s "$seed" -c 120 > "$log" 2>&1
+            fi
+            code=$?
+            printf '%s\t%s\t%s\n' "$idx" "$seed" "$code" >> elves-timeout-exit-status.tsv
+          done < elves-timeout-assignments.tsv
+          exit 0
+
+      - name: Audit internal AI timeouts
+        run: |
+          python3 - <<'PY'
+          import json,re
+          from pathlib import Path
+          records=[]
+          internal=outer=missing=0
+          for line in Path('elves-timeout-assignments.tsv').read_text().splitlines():
+              idx,seat,seed=line.split('\t')
+              p=Path('elves-timeout-logs')/f'{idx}-seat{seat}-{seed}.log'
+              text=p.read_text(errors='replace') if p.exists() else ''
+              i=len(re.findall(r'java\.util\.concurrent\.TimeoutException',text))
+              o=1 if 'DIAGNOSTIC_PROCESS_EXIT_124' in text else 0
+              term=bool(re.search(r'^Game Result: .+(has won|Draw)',text,re.I|re.M))
+              internal+=i; outer+=o; missing+=0 if term else 1
+              records.append({'index':int(idx),'seat':int(seat),'seed':int(seed),'internal_timeouts':i,'outer_timeout':bool(o),'terminal':term,'log':str(p)})
+          summary={'classification':'DIAGNOSTIC_ONLY_ELVES_AI_TIMEOUT_REPRODUCTION','games':len(records),'internal_ai_timeouts':internal,'outer_timeouts':outer,'missing_terminal':missing,'records':records}
+          Path('elves-timeout-summary.json').write_text(json.dumps(summary,indent=2,sort_keys=True)+'\n')
+          print(json.dumps({k:v for k,v in summary.items() if k!='records'},indent=2,sort_keys=True))
+          assert len(records)==16
+          assert outer==0
+          assert missing==0
+          assert internal==0
+          PY
+
+      - name: Preserve diagnostic artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: face-value-elves-timeout-diagnostic
+          path: |
+            elves-timeout-summary.json
+            elves-timeout-assignments.tsv
+            elves-timeout-disposition.txt
+            elves-timeout-exit-status.tsv
+            elves-timeout-logs/*.log
+            forge-profile-v6-id.txt
+          if-no-files-found: warn
