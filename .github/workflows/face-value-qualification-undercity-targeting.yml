@@ -1,0 +1,140 @@
+name: Face Value Qualification Undercity Targeting Diagnostic
+
+on:
+  push:
+    branches: [face-value/lab]
+    paths:
+      - .github/workflows/face-value-qualification-undercity-targeting.yml
+      - experiments/face-value/qualification/audit_undercity_targeting.py
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  undercity-targeting:
+    runs-on: ubuntu-latest
+    timeout-minutes: 85
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: face-value/lab
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - name: Verify frozen inputs and build pinned Forge profile v4
+        run: |
+          set -euxo pipefail
+          python3 experiments/face-value/qualification/validate_inputs.py >/dev/null
+          FORGE_SHA=f387ede550e336315637a8b765f0927ac768c113
+          git clone --filter=blob:none https://github.com/Card-Forge/forge.git forge-src
+          git -C forge-src checkout --detach "$FORGE_SHA"
+          test "$(git -C forge-src rev-parse HEAD)" = "$FORGE_SHA"
+          python3 experiments/face-value/qualification/apply_forge_profile_v1.py --forge-root forge-src >/dev/null
+          python3 experiments/face-value/qualification/apply_forge_profile_v2.py --forge-root forge-src >/dev/null
+          python3 experiments/face-value/qualification/apply_forge_profile_v3.py --forge-root forge-src >/dev/null
+          python3 experiments/face-value/qualification/apply_forge_profile_v4.py --forge-root forge-src > forge-profile-v4-id.txt
+          test "$(cat forge-profile-v4-id.txt)" = 'FACE_VALUE_QUALIFICATION_FORGE_PROFILE_V4'
+          git -C forge-src diff > forge-profile-v4.patch
+          cd forge-src
+          mvn -B -DskipTests -pl forge-gui-desktop -am package
+          chmod +x forge-gui-desktop/target/forge.sh
+          rm -rf forge-gui-desktop/target/res
+          cp -R forge-gui/res forge-gui-desktop/target/res
+          echo "FORGE_LAUNCHER=$(pwd)/forge-gui-desktop/target/forge.sh" >> "$GITHUB_ENV"
+
+      - name: Freeze diagnostic-only fixtures
+        run: |
+          set -euo pipefail
+          mkdir -p undercity-decks undercity-logs "$HOME/.forge/decks/constructed"
+
+          cat > undercity-decks/initiative-elves.dck <<'EOF'
+          [metadata]
+          Name=DIAGNOSTIC ONLY Initiative Elves
+          Deck Type=constructed
+          [main]
+          12 Avenging Hunter
+          4 Llanowar Elves
+          4 Fyndhorn Elves
+          4 Elvish Mystic
+          4 Priest of Titania
+          32 Forest
+          EOF
+
+          cat > undercity-decks/target-creatures.dck <<'EOF'
+          [metadata]
+          Name=DIAGNOSTIC ONLY Target Creatures
+          Deck Type=constructed
+          [main]
+          8 Nest Invader
+          8 Eldrazi Repurposer
+          4 Llanowar Elves
+          40 Forest
+          EOF
+
+          python3 - <<'PY'
+          from pathlib import Path
+          rows = [f'{1 + i % 2}\t{740901 + i}' for i in range(8)]
+          Path('undercity-assignments.tsv').write_text('\n'.join(rows) + '\n', encoding='utf-8')
+          PY
+
+          cp undercity-decks/*.dck "$HOME/.forge/decks/constructed/"
+          sha256sum undercity-decks/*.dck undercity-assignments.tsv forge-profile-v4.patch > undercity-inputs.sha256
+
+          cat > undercity-disposition.txt <<'EOF'
+          DIAGNOSTIC_ONLY_NONLEGAL_UNDERCITY_TARGETING
+          Seeds 740901-740908 and all outcomes are permanently retired diagnostic material.
+          These decks are deliberately nonlegal and results have no matchup, tuning, structural-diagnosis, challenger, or qualification authority.
+          This gate tests only whether Undercity Arena can select and resolve a legal creature target under the pinned simulator profile.
+          EOF
+
+      - name: Run fresh Undercity diagnostic block
+        run: |
+          set -uo pipefail
+          while IFS=$'\t' read -r initiative_seat seed; do
+            log="undercity-logs/undercity-seat${initiative_seat}-seed${seed}.log"
+            if [ "$initiative_seat" = 1 ]; then
+              first='initiative-elves.dck'; second='target-creatures.dck'
+            else
+              first='target-creatures.dck'; second='initiative-elves.dck'
+            fi
+            timeout 240 "$FORGE_LAUNCHER" sim -d "$first" "$second" -n 1 -s "$seed" -c 100 > "$log" 2>&1
+            code=$?
+            if [ "$code" -ne 0 ]; then printf '\nDIAGNOSTIC_PROCESS_EXIT_%s\n' "$code" >> "$log"; fi
+          done < undercity-assignments.tsv
+          exit 0
+
+      - name: Audit Undercity targeting
+        id: audit
+        continue-on-error: true
+        run: |
+          python3 experiments/face-value/qualification/audit_undercity_targeting.py \
+            --logs undercity-logs \
+            --assignments undercity-assignments.tsv \
+            --output undercity-targeting-summary.json
+
+      - name: Preserve diagnostic evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: face-value-undercity-targeting-diagnostic
+          path: |
+            undercity-targeting-summary.json
+            undercity-assignments.tsv
+            undercity-inputs.sha256
+            undercity-disposition.txt
+            undercity-decks/*.dck
+            undercity-logs/*.log
+            forge-profile-v4.patch
+            forge-profile-v4-id.txt
+            experiments/face-value/qualification/input-validation-report.json
+          if-no-files-found: warn
+
+      - name: Enforce fail-closed diagnostic gate
+        if: steps.audit.outcome != 'success'
+        run: |
+          echo 'Undercity targeting capability was not demonstrated.'
+          echo 'No replacement Elves qualification seeds are authorized.'
+          exit 1
