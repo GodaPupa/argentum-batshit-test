@@ -1,0 +1,56 @@
+name: Industrial Waste — Tempo B Readiness
+
+on:
+  push:
+    branches:
+      - industrial-waste/lab
+    paths:
+      - .github/workflows/industrial-waste-tempo-b.yml
+      - industrial-waste/challengers/tempo-b.dck
+      - industrial-waste/challengers/tempo-a.dck
+      - industrial-waste/control/industrial-waste-v1.0-submitted.dck
+      - industrial-waste/sim/validate_inputs.py
+      - industrial-waste/sim/test_validate_inputs.py
+      - industrial-waste/input-identities.sha256
+      - industrial-waste/protocols/gate-6-tempo-b-readiness-v1.md
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  tempo-b-readiness:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Validate frozen project identities
+        run: python3 industrial-waste/sim/validate_inputs.py
+      - name: Run validator regressions
+        working-directory: industrial-waste/sim
+        run: python3 -m unittest -v test_validate_inputs.py
+      - name: Validate exact Tempo B parent refinement
+        run: |
+          python3 - <<'PY'
+          from collections import Counter
+          from pathlib import Path
+          import hashlib
+          import sys
+
+          sys.path.insert(0, "industrial-waste/sim")
+          from validate_inputs import parse_deck
+
+          root = Path("industrial-waste")
+          control_path = root / "control/industrial-waste-v1.0-submitted.dck"
+          control, _ = parse_deck(control_path)
+          tempo_a, tempo_a_side = parse_deck(root / "challengers/tempo-a.dck")
+          tempo_b, tempo_b_side = parse_deck(root / "challengers/tempo-b.dck")
+
+          assert (sum(tempo_b.values()), sum(tempo_b_side.values())) == (60, 15)
+          assert tempo_b - tempo_a == Counter({"Conduit Pylons": 1})
+          assert tempo_a - tempo_b == Counter({"Eviscerator's Insight": 1})
+          assert tempo_b_side == tempo_a_side
+          assert tempo_b - control == Counter({"Ancient Grudge": 2, "Conduit Pylons": 1})
+          assert control - tempo_b == Counter({"Giant's Boulder": 2, "Eviscerator's Insight": 1})
+          assert hashlib.sha256(control_path.read_bytes()).hexdigest() == "9b8a2932d78c99dd13f5c4834066bfa644f065137ee90efa75f3418ab56d1f1a"
+          print("Tempo B seedless readiness: VALID")
+          PY

@@ -57,31 +57,52 @@ def validate_project(root: Path) -> None:
         raise ValueError("submitted control must remain exactly 60 main plus 15 side")
 
     expected_changes = {
-        "turbo-a.dck": (Counter({"Crop Rotation": 2}), Counter({"Giant's Boulder": 2})),
-        "pactdoll-a.dck": (Counter({"Ichor Wellspring": 2}), Counter({"Eviscerator's Insight": 2})),
-        "recursive-a.dck": (
-            Counter({"Blood Fountain": 1, "Haunted Fengraf": 1}),
-            Counter({"Eviscerator's Insight": 1, "Giant's Boulder": 1}),
-        ),
-        "stability-a.dck": (
-            Counter({"Conduit Pylons": 1, "Crop Rotation": 1}),
-            Counter({"Eviscerator's Insight": 1, "Giant's Boulder": 1}),
-        ),
-        "resilience-a.dck": (
-            Counter({"Blood Fountain": 2}),
-            Counter({"Giant's Boulder": 2}),
-        ),
-        "tempo-a.dck": (
-            Counter({"Ancient Grudge": 2}),
-            Counter({"Giant's Boulder": 2}),
-        ),
+        "turbo-a.dck": {
+            "main": (Counter({"Crop Rotation": 2}), Counter({"Giant's Boulder": 2})),
+            "sideboard": (Counter(), Counter()),
+        },
+        "pactdoll-a.dck": {
+            "main": (Counter({"Ichor Wellspring": 2}), Counter({"Eviscerator's Insight": 2})),
+            "sideboard": (Counter(), Counter()),
+        },
+        "recursive-a.dck": {
+            "main": (
+                Counter({"Blood Fountain": 1, "Haunted Fengraf": 1}),
+                Counter({"Eviscerator's Insight": 1, "Giant's Boulder": 1}),
+            ),
+            "sideboard": (Counter(), Counter()),
+        },
+        "stability-a.dck": {
+            "main": (
+                Counter({"Conduit Pylons": 1, "Crop Rotation": 1}),
+                Counter({"Eviscerator's Insight": 1, "Giant's Boulder": 1}),
+            ),
+            "sideboard": (Counter(), Counter()),
+        },
+        "resilience-a.dck": {
+            "main": (Counter({"Blood Fountain": 2}), Counter({"Giant's Boulder": 2})),
+            "sideboard": (Counter(), Counter()),
+        },
+        "tempo-a.dck": {
+            "main": (Counter({"Ancient Grudge": 2}), Counter({"Giant's Boulder": 2})),
+            "sideboard": (Counter({"Weather the Storm": 2}), Counter({"Ancient Grudge": 2})),
+        },
+        "tempo-b.dck": {
+            "main": (
+                Counter({"Ancient Grudge": 2, "Conduit Pylons": 1}),
+                Counter({"Giant's Boulder": 2, "Eviscerator's Insight": 1}),
+            ),
+            "sideboard": (Counter({"Weather the Storm": 2}), Counter({"Ancient Grudge": 2})),
+        },
     }
-    for name, (additions, removals) in expected_changes.items():
+    for name, changes in expected_changes.items():
         main, side = parse_deck(root / "challengers" / name)
-        if main - control != additions or control - main != removals:
-            raise ValueError(f"{name}: not the declared exact swap")
-        if side != sideboard:
-            raise ValueError(f"{name}: sideboard drift")
+        main_additions, main_removals = changes["main"]
+        side_additions, side_removals = changes["sideboard"]
+        if main - control != main_additions or control - main != main_removals:
+            raise ValueError(f"{name}: not the declared exact maindeck swap")
+        if side - sideboard != side_additions or sideboard - side != side_removals:
+            raise ValueError(f"{name}: not the declared exact sideboard swap")
         if (sum(main.values()), sum(side.values())) != (60, 15):
             raise ValueError(f"{name}: expected 60 main plus 15 side")
 
