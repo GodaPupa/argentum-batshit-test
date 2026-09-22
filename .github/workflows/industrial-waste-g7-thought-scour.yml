@@ -23,3 +23,5 @@ jobs:
       - uses: gradle/actions/setup-gradle@v6
       - name: Run Thought Scour scenario
         run: ./gradlew :mtg-sets:2008-2016:tests:test --tests '*ThoughtScourScenarioTest' --no-daemon
+
+# Gate 7 Thought Scour capability trigger
