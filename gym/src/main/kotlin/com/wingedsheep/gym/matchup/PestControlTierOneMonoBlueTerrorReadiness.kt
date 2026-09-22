@@ -44,9 +44,7 @@ private val MONO_BLUE_TERROR_SIDEBOARD = linkedMapOf(
 
 private val EXPECTED_UNSUPPORTED_MAIN = linkedMapOf(
     "Deem Inferior" to 2,
-    "Artful Dodge" to 2,
     "Sleep of the Dead" to 2,
-    "Thought Scour" to 4,
 )
 
 private val EXPECTED_UNSUPPORTED_SIDEBOARD = linkedMapOf(
@@ -70,7 +68,7 @@ data class TierOneMonoBlueTerrorReadiness(
     val opponentSideboardSha256: String = PEST_MONO_BLUE_TERROR_SIDEBOARD_SHA256,
     val opponentComplete75Sha256: String = PEST_MONO_BLUE_TERROR_COMPLETE_75_SHA256,
     val scope: String = "PREBOARD_READINESS_ONLY",
-    val mainSupportStatus: String = "BLOCKED_4_IDENTITIES_10_SLOTS",
+    val mainSupportStatus: String = "BLOCKED_2_IDENTITIES_4_SLOTS",
     val sideboardStatus: String = "FROZEN_15; NOT_INSTANTIATED; BLOCKED_4_IDENTITIES_11_SLOTS",
     val runnerState: TierOneMonoBlueTerrorRunnerState = TierOneMonoBlueTerrorRunnerState.DISABLED,
     val officialGamesAuthorized: Int = 0,
@@ -113,7 +111,7 @@ object PestControlTierOneMonoBlueTerrorReadiness {
             add("Mono-Blue Terror complete-75 hash mismatch")
         }
         if (readiness.scope != "PREBOARD_READINESS_ONLY") add("scope must remain preboard readiness only")
-        if (readiness.mainSupportStatus != "BLOCKED_4_IDENTITIES_10_SLOTS") add("main support status mismatch")
+        if (readiness.mainSupportStatus != "BLOCKED_2_IDENTITIES_4_SLOTS") add("main support status mismatch")
         if (readiness.sideboardStatus != "FROZEN_15; NOT_INSTANTIATED; BLOCKED_4_IDENTITIES_11_SLOTS") {
             add("sideboard status mismatch")
         }
@@ -136,7 +134,7 @@ object PestControlTierOneMonoBlueTerrorReadiness {
         registry: CardRegistry,
     ): List<String> = buildList {
         addAll(validationErrors(readiness, registry))
-        add("maindeck card support is incomplete: 4 identities / 10 slots")
+        add("maindeck card support is incomplete: 2 identities / 4 slots")
         add("no execution runner is defined")
         add("no official seed vector is frozen")
         add("official Mono-Blue Terror games are not authorized")
