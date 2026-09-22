@@ -1507,6 +1507,42 @@
     ]
 }
 
+// Goblin Electromancer
+{
+    "name": "Goblin Electromancer",
+    "manaCost": "{U}{R}",
+    "typeLine": "Creature — Goblin Wizard",
+    "oracleText": "Instant and sorcery spells you cast cost {1} less to cast.",
+    "creatureStats": {
+        "power": 2,
+        "toughness": 2
+    },
+    "script": {
+        "staticAbilities": [
+            {
+                "type": "ModifySpellCost",
+                "target": {
+                    "type": "YouCast",
+                    "filter": "instant|sorcery"
+                },
+                "modification": {
+                    "type": "ReduceGeneric",
+                    "amount": 1
+                }
+            }
+        ]
+    },
+    "metadata": {
+        "collectorNumber": "163",
+        "artist": "Svetlin Velinov",
+        "flavorText": "When asked how much power is required, Izzet mages always answer \"more.\""
+    },
+    "colorIdentityOverride": [
+        "BLUE",
+        "RED"
+    ]
+}
+
 // Goblin Rally
 {
     "name": "Goblin Rally",
