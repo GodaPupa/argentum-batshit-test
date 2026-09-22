@@ -474,6 +474,41 @@ sealed interface KeywordAbility {
     }
 
     // =========================================================================
+    // Escape
+    // =========================================================================
+
+    /**
+     * Escape [cost], exile [exileOtherCards] other cards from your graveyard (CR 702.138).
+     *
+     * Escape grants permission to cast this card from its owner's graveyard by paying [cost]
+     * rather than its mana cost plus the specified exile payment. It grants no extra timing
+     * permission. The escaped spell has no special post-resolution destination: an instant or
+     * sorcery returns to the graveyard normally, unlike Flashback/Harmonize.
+     */
+    @SerialName("Escape")
+    @Serializable
+    data class Escape(
+        val cost: ManaCost,
+        val exileOtherCards: Int = 0,
+    ) : KeywordAbility {
+        init {
+            require(exileOtherCards >= 0) { "Escape exile count must be nonnegative" }
+        }
+
+        override val keyword: Keyword = Keyword.ESCAPE
+        override val description: String = buildString {
+            append("Escape—")
+            append(cost)
+            if (exileOtherCards > 0) {
+                append(", Exile ")
+                append(exileOtherCards)
+                append(if (exileOtherCards == 1) " other card" else " other cards")
+                append(" from your graveyard")
+            }
+        }
+    }
+
+    // =========================================================================
     // Harmonize
     // =========================================================================
 
@@ -1316,6 +1351,13 @@ sealed interface KeywordAbility {
          */
         fun flashback(cost: String, additionalCost: AdditionalCost): KeywordAbility =
             Flashback(ManaCost.parse(cost), additionalCost)
+
+        /**
+         * Create Escape with a mana cost and a fixed number of other graveyard cards to exile.
+         * E.g. `escape("{2}{U}", 3)` for Sleep of the Dead.
+         */
+        fun escape(cost: String, exileOtherCards: Int = 0): KeywordAbility =
+            Escape(ManaCost.parse(cost), exileOtherCards)
 
         /**
          * Create Harmonize with mana cost from string (e.g., "Harmonize {5}{R}{R}").

@@ -2,7 +2,7 @@
 
 ## Boundary
 
-Status: `SEEDLESS_READINESS_BLOCKED_ON_ESCAPE_SUPPORT`
+Status: `PREBOARD_CARD_SUPPORT_COMPLETE_EXECUTION_DISABLED`
 
 This is a seedless, no-game construction/readiness gate. It does **not** authorize an execution runner,
 generate or freeze seeds, initialize a game, expose an outcome, alter Pest Control v1.0, revisit the
@@ -84,20 +84,16 @@ The sideboard is recorded as part of the opponent identity but is not instantiat
 The exact current registry audit is encoded in
 `PestControlTierOneMonoBlueTerrorReadinessTest`.
 
-### Preboard blocker
+### Preboard card support
+
+The exact 60-card maindeck is now fully supported.
 
 Support A added and deterministically covered Deem Inferior, Artful Dodge, and Thought Scour.
-The remaining preboard blocker is now exactly one identity spanning two slots:
+Support B adds true Escape support and Sleep of the Dead, including exact other-card graveyard exile,
+normal post-resolution graveyard destination, sorcery-speed timing, production-AI payment
+materialization, and the one-controller-untap restriction.
 
-- 2 Sleep of the Dead
-
-The currently supported maindeck identities are:
-Island, Snow-Covered Island, Cryptic Serpent, Tolarian Terror, Deem Inferior, Lórien Revealed,
-Artful Dodge, Ponder, Preordain, Brainstorm, Dispel, Mental Note, Thought Scour, and Counterspell.
-
-Deem Inferior is implemented with the shared CardsDrawnThisTurn cost-reduction source and the existing
-owner-choice second-from-top/bottom library primitive. Artful Dodge uses the existing true Flashback
-rail; Thought Scour uses targeted mill-two followed by draw-one.
+All 15 unique maindeck identities now resolve in the current catalog.
 
 ### Sideboard blocker
 
@@ -115,7 +111,7 @@ question, but they keep postboard work explicitly blocked.
 
 - Pest Control v1.0: unchanged and immutable
 - Opponent 60/15 identity: frozen by ordered hashes
-- Opponent maindeck support: **blocked — Sleep of the Dead only (1 identity / 2 slots)**
+- Opponent maindeck support: **complete — 60/60 slots supported**
 - Runner: `DISABLED`
 - Execution adapter: absent
 - Official games authorized: `0`
@@ -127,19 +123,15 @@ question, but they keep postboard work explicitly blocked.
 
 The activation audit must continue to return all of the following blockers:
 
-1. maindeck card support is incomplete;
-2. no execution runner is defined;
-3. no official seed vector is frozen;
-4. official Mono-Blue Terror games are not authorized.
+1. no execution runner is defined;
+2. no official seed vector is frozen;
+3. official Mono-Blue Terror games are not authorized.
 
 ## Next justified gate
 
-Implement and deterministically validate true **Escape** support, then add Sleep of the Dead on that
-rail. Sleep's base effect already maps to the existing tap plus "doesn't untap during its controller's
-next untap step" primitive, but Escape must remain distinct from Flashback: it pays {2}{U} plus exile
-three other cards from the caster's graveyard and the resolved sorcery returns to the graveyard
-normally.
+After full CI accepts the Escape/Sleep support package, the next step is a **seedless, disabled
+preboard smoke-harness specification** for the frozen Serpico_CC Mono-Blue Terror 60. That gate may
+bind exact deck identities, seat/play-draw cells, telemetry, deterministic policy fixtures, and
+fail-closed activation blockers, but it must not generate or freeze official seeds or execute games.
 
-After Sleep of the Dead and focused Escape scenarios are green, rerun the exact readiness audit. Only
-a separate later gate may specify a disabled smoke harness. Seed generation and official gameplay
-remain outside this authorization.
+Seed generation and official gameplay remain outside this authorization.

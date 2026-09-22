@@ -231,6 +231,13 @@ enum class AlternativeCostType {
      */
     MAYHEM,
     /**
+     * Escape ([com.wingedsheep.sdk.scripting.KeywordAbility.Escape], CR 702.138) — graveyard,
+     * at the spell's normal timing. Pays the escape mana instead of the mana cost plus the
+     * keyword's non-mana escape cost (for Sleep of the Dead, exile three other cards from your
+     * graveyard). Unlike Flashback/Harmonize, the spell has no exile-on-resolution rider.
+     */
+    ESCAPE,
+    /**
      * Disturb ([com.wingedsheep.sdk.scripting.KeywordAbility.Disturb], CR 702.146) — graveyard, at
      * the *back* face's normal timing. Pays the disturb mana instead of the mana cost and puts the
      * card on the stack transformed (back face up, CR 712.8c), so the spell's type line, targets and

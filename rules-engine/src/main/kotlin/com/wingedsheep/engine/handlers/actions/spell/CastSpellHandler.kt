@@ -240,21 +240,28 @@ class CastSpellHandler(
         val hasMayhem = !inHand && !onTopOfLibrary && !mayPlayFromExile && !mayCastFromZone && !mayCastFromGraveyard && !hasFlashback && !hasHarmonize &&
             action.useAlternativeCost && action.altAllows(AlternativeCostType.MAYHEM) &&
             zoneResolver.hasMayhemPermission(state, action.playerId, action.cardId)
-        val hasGraveyardCast = !inHand && !onTopOfLibrary && !mayPlayFromExile && !mayCastFromZone && !mayCastFromGraveyard && !hasFlashback && !hasHarmonize && !hasMayhem &&
+        // Escape (CR 702.138) — cast from the owner's graveyard for the printed escape cost.
+        // Like Mayhem it has no post-resolution exile rider, but unlike Mayhem its non-mana
+        // payment is part of the keyword and must exile other graveyard cards.
+        val hasEscape = !inHand && !onTopOfLibrary && !mayPlayFromExile && !mayCastFromZone &&
+            !mayCastFromGraveyard && !hasFlashback && !hasHarmonize && !hasMayhem &&
+            action.useAlternativeCost && action.altAllows(AlternativeCostType.ESCAPE) &&
+            zoneResolver.hasEscapePermission(state, action.playerId, action.cardId)
+        val hasGraveyardCast = !inHand && !onTopOfLibrary && !mayPlayFromExile && !mayCastFromZone && !mayCastFromGraveyard && !hasFlashback && !hasHarmonize && !hasMayhem && !hasEscape &&
             zoneResolver.hasMayCastFromGraveyardPermission(state, action.playerId, action.cardId, cardComponent)
-        val hasForageFromGraveyard = !inHand && !onTopOfLibrary && !mayPlayFromExile && !mayCastFromZone && !mayCastFromGraveyard && !hasFlashback && !hasHarmonize && !hasMayhem && !hasGraveyardCast &&
+        val hasForageFromGraveyard = !inHand && !onTopOfLibrary && !mayPlayFromExile && !mayCastFromZone && !mayCastFromGraveyard && !hasFlashback && !hasHarmonize && !hasMayhem && !hasEscape && !hasGraveyardCast &&
             zoneResolver.hasMayCastCreaturesFromGraveyardWithForage(state, action.playerId, action.cardId, cardComponent)
         // Warp from graveyard (e.g., Timeline Culler) — `hasWarpPermission` already
         // checks both hand and graveyard; this branch covers the graveyard case
         // when `inHand` is false.
-        val hasWarpFromGraveyard = !inHand && !onTopOfLibrary && !mayPlayFromExile && !mayCastFromZone && !mayCastFromGraveyard && !hasFlashback && !hasHarmonize && !hasMayhem && !hasGraveyardCast && !hasForageFromGraveyard &&
+        val hasWarpFromGraveyard = !inHand && !onTopOfLibrary && !mayPlayFromExile && !mayCastFromZone && !mayCastFromGraveyard && !hasFlashback && !hasHarmonize && !hasMayhem && !hasEscape && !hasGraveyardCast && !hasForageFromGraveyard &&
             action.useAlternativeCost &&
             zoneResolver.hasWarpPermission(state, action.playerId, action.cardId)
-        val hasCommanderCast = !inHand && !onTopOfLibrary && !mayPlayFromExile && !mayCastFromZone && !mayCastFromGraveyard && !hasFlashback && !hasHarmonize && !hasMayhem && !hasGraveyardCast && !hasForageFromGraveyard && !hasWarpFromGraveyard &&
+        val hasCommanderCast = !inHand && !onTopOfLibrary && !mayPlayFromExile && !mayCastFromZone && !mayCastFromGraveyard && !hasFlashback && !hasHarmonize && !hasMayhem && !hasEscape && !hasGraveyardCast && !hasForageFromGraveyard && !hasWarpFromGraveyard &&
             zoneResolver.hasCommanderCastPermission(state, action.playerId, action.cardId)
         // Granted graveyard sneak (Ninja Teen): a creature card in the player's graveyard while they
         // control an active "creature cards in your graveyard have sneak {cost}" grant.
-        val hasGraveyardSneak = !inHand && !onTopOfLibrary && !mayPlayFromExile && !mayCastFromZone && !mayCastFromGraveyard && !hasFlashback && !hasHarmonize && !hasMayhem && !hasGraveyardCast && !hasForageFromGraveyard && !hasWarpFromGraveyard && !hasCommanderCast &&
+        val hasGraveyardSneak = !inHand && !onTopOfLibrary && !mayPlayFromExile && !mayCastFromZone && !mayCastFromGraveyard && !hasFlashback && !hasHarmonize && !hasMayhem && !hasEscape && !hasGraveyardCast && !hasForageFromGraveyard && !hasWarpFromGraveyard && !hasCommanderCast &&
             action.useAlternativeCost && action.altAllows(AlternativeCostType.SNEAK) &&
             cardComponent.typeLine.isCreature &&
             action.cardId in state.getGraveyard(action.playerId) &&
@@ -268,7 +275,7 @@ class CastSpellHandler(
         ) {
             zoneResolver.disturbCastFace(state, action.playerId, action.cardId)
         } else null
-        if (!inHand && !onTopOfLibrary && !mayPlayFromExile && !mayCastFromZone && !mayCastFromGraveyard && !hasFlashback && !hasHarmonize && !hasMayhem && !hasGraveyardCast && !hasForageFromGraveyard && !hasWarpFromGraveyard && !hasCommanderCast && !hasGraveyardSneak && disturbFace == null) {
+        if (!inHand && !onTopOfLibrary && !mayPlayFromExile && !mayCastFromZone && !mayCastFromGraveyard && !hasFlashback && !hasHarmonize && !hasMayhem && !hasEscape && !hasGraveyardCast && !hasForageFromGraveyard && !hasWarpFromGraveyard && !hasCommanderCast && !hasGraveyardSneak && disturbFace == null) {
             return "Card is not in your hand"
         }
 
@@ -608,6 +615,31 @@ class CastSpellHandler(
             if (grantedAdditional.isNotEmpty()) {
                 val grantedCostError = validateAdditionalCosts(state, grantedAdditional, action)
                 if (grantedCostError != null) return grantedCostError
+            }
+        }
+
+        // Escape's non-mana cost (CR 702.138a) is part of the chosen alternative cost.
+        // The selection is client-supplied, so prove exact count, uniqueness, source exclusion,
+        // and current-zone ownership here even though legal-action enumeration already filtered it.
+        if (action.useAlternativeCost && cardDef != null &&
+            action.altAllows(AlternativeCostType.ESCAPE) &&
+            zoneResolver.hasEscapePermission(state, action.playerId, action.cardId)
+        ) {
+            val escape = zoneResolver.escapeAbility(state, action.playerId, action.cardId)
+                ?: return "Escape is not available for this card"
+            val exiled = action.additionalCostPayment?.exiledCards ?: emptyList()
+            if (exiled.size != escape.exileOtherCards) {
+                return "Escape requires exiling exactly ${escape.exileOtherCards} other card(s) from your graveyard"
+            }
+            if (exiled.size != exiled.distinct().size) {
+                return "The same card cannot be exiled more than once to pay Escape"
+            }
+            if (action.cardId in exiled) {
+                return "The escaping card cannot exile itself to pay Escape"
+            }
+            val graveyard = state.getZone(ZoneKey(action.playerId, Zone.GRAVEYARD))
+            if (exiled.any { it !in graveyard }) {
+                return "Every card exiled to pay Escape must be in your graveyard"
             }
         }
 
@@ -984,6 +1016,9 @@ class CastSpellHandler(
             )
             // Harmonize may be printed on the card or granted at runtime (Songcrafter Mage).
             val harmonizeAbility = HarmonizeGrants.effectiveHarmonize(state, action.cardId, cardDef)
+            // Escape is currently printed-only. The resolver also proves the card is in its
+            // owner's graveyard before this cost can be selected.
+            val escapeAbility = zoneResolver.escapeAbility(state, action.playerId, action.cardId)
             // The back face of a modal DFC whose back is a permanent, when this card is one and is
             // in hand (CR 712.11b). Resolved once here alongside the other face/keyword lookups so
             // the branch below can both test it and read its cost.
@@ -1004,6 +1039,12 @@ class CastSpellHandler(
                 // Mayhem cost (CR 702.187) — cast from graveyard for its mayhem cost.
                 costCalculator.calculateEffectiveCostWithAlternativeBase(
                     state, cardDef, MayhemGrants.effectiveMayhem(state, action.cardId, cardDef, action.playerId, cardRegistry, predicateEvaluator)!!.cost, action.playerId
+                )
+            } else if (action.altAllows(AlternativeCostType.ESCAPE) && escapeAbility != null) {
+                // Escape cost (CR 702.138a). The non-mana "exile other cards" portion is
+                // validated and paid separately through the additional-cost rail.
+                costCalculator.calculateEffectiveCostWithAlternativeBase(
+                    state, cardDef, escapeAbility.cost, action.playerId
                 )
             } else if (action.altAllows(AlternativeCostType.DISTURB) &&
                 DisturbCasts.printedDisturb(cardDef) != null &&
@@ -2408,6 +2449,15 @@ class CastSpellHandler(
                 costCalculator.calculateEffectiveCostWithAlternativeBase(
                     currentState, cardDef, MayhemGrants.effectiveMayhem(currentState, action.cardId, cardDef, action.playerId, cardRegistry, predicateEvaluator)!!.cost, action.playerId
                 )
+            } else if (action.altAllows(AlternativeCostType.ESCAPE) &&
+                zoneResolver.hasEscapePermission(currentState, action.playerId, action.cardId)) {
+                // Escape cost (CR 702.138a) — mirror validate() exactly. The non-mana exile
+                // payment is validated and executed separately through the additional-cost rail.
+                val escapeAbility = zoneResolver.escapeAbility(currentState, action.playerId, action.cardId)
+                    ?: return ExecutionResult.error(currentState, "Escape is not available for this card")
+                costCalculator.calculateEffectiveCostWithAlternativeBase(
+                    currentState, cardDef, escapeAbility.cost, action.playerId
+                )
             } else if (action.altAllows(AlternativeCostType.DISTURB) &&
                 DisturbCasts.printedDisturb(cardDef) != null &&
                 zoneResolver.disturbCastFace(currentState, action.playerId, action.cardId) != null) {
@@ -2647,6 +2697,24 @@ class CastSpellHandler(
                 if (action.altAllows(AlternativeCostType.GRANTED)) {
                     costCalculator.findAlternativeCastingCosts(currentState, action.playerId)
                         .firstOrNull()?.let { addAll(it.additionalCosts) }
+                }
+                // Escape's bundled non-mana payment. The legal-action and validation layers
+                // exclude the escaping card itself; the ordinary exile-cost payment loop below
+                // performs the actual zone changes and event emission.
+                if (action.altAllows(AlternativeCostType.ESCAPE) &&
+                    zoneResolver.hasEscapePermission(currentState, action.playerId, action.cardId)) {
+                    val escape = zoneResolver.escapeAbility(currentState, action.playerId, action.cardId)
+                    if (escape != null && escape.exileOtherCards > 0) {
+                        add(
+                            AdditionalCost.Atom(
+                                CostAtom.ExileFrom(
+                                    zone = Zone.GRAVEYARD,
+                                    filter = com.wingedsheep.sdk.scripting.GameObjectFilter.Any,
+                                    count = escape.exileOtherCards,
+                                )
+                            )
+                        )
+                    }
                 }
                 // Flashback's bundled additional cost (e.g., Behold three Elementals)
                 if (action.altAllows(AlternativeCostType.FLASHBACK) &&

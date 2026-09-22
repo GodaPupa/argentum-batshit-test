@@ -2516,6 +2516,61 @@
     ]
 }
 
+// Sleep of the Dead
+{
+    "name": "Sleep of the Dead",
+    "manaCost": "{U}",
+    "typeLine": "Sorcery",
+    "oracleText": "Tap target creature. It doesn't untap during its controller's next untap step.\nEscape—{2}{U}, Exile three other cards from your graveyard.",
+    "keywords": [
+        "ESCAPE"
+    ],
+    "keywordAbilities": [
+        {
+            "type": "Escape",
+            "cost": "{2}{U}",
+            "exileOtherCards": 3
+        }
+    ],
+    "script": {
+        "spellEffect": {
+            "type": "Composite",
+            "effects": [
+                {
+                    "type": "TapUntap",
+                    "target": {
+                        "type": "ContextTarget",
+                        "index": 0
+                    }
+                },
+                {
+                    "type": "GrantKeyword",
+                    "keyword": "DOESNT_UNTAP",
+                    "target": {
+                        "type": "ContextTarget",
+                        "index": 0
+                    },
+                    "duration": "UntilAfterAffectedControllersNextUntap"
+                }
+            ]
+        },
+        "targetRequirements": [
+            {
+                "type": "TargetObject",
+                "filter": {
+                    "baseFilter": "creature"
+                }
+            }
+        ]
+    },
+    "metadata": {
+        "collectorNumber": "66"
+    },
+    "colorIdentityOverride": [
+        "BLUE"
+    ]
+}
+
 // Soul-Guide Lantern
 {
     "name": "Soul-Guide Lantern",
