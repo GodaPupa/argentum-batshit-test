@@ -1,3 +1,48 @@
+// Artful Dodge
+{
+    "name": "Artful Dodge",
+    "manaCost": "{U}",
+    "typeLine": "Sorcery",
+    "oracleText": "Target creature can't be blocked this turn.\nFlashback {U}",
+    "keywords": [
+        "FLASHBACK"
+    ],
+    "keywordAbilities": [
+        {
+            "type": "Flashback",
+            "cost": "{U}"
+        }
+    ],
+    "script": {
+        "spellEffect": {
+            "type": "GrantKeyword",
+            "keyword": "CANT_BE_BLOCKED",
+            "target": {
+                "type": "BoundVariable",
+                "name": "target creature"
+            }
+        },
+        "targetRequirements": [
+            {
+                "type": "TargetObject",
+                "filter": {
+                    "baseFilter": "creature"
+                },
+                "id": "target creature"
+            }
+        ]
+    },
+    "metadata": {
+        "collectorNumber": "27",
+        "artist": "Tomasz Jedruszek",
+        "flavorText": "Those who know the alleys and sewers of the Erdwal can disappear like smoke.",
+        "imageUri": "https://cards.scryfall.io/normal/front/0/3/0325684e-6bb2-4aa0-9d0e-cb5e7d94693f.jpg"
+    },
+    "colorIdentityOverride": [
+        "BLUE"
+    ]
+}
+
 // Black Cat
 {
     "name": "Black Cat",
@@ -1849,6 +1894,76 @@
     },
     "colorIdentityOverride": [
         "WHITE"
+    ]
+}
+
+// Thought Scour
+{
+    "name": "Thought Scour",
+    "manaCost": "{U}",
+    "typeLine": "Instant",
+    "oracleText": "Target player mills two cards.\nDraw a card.",
+    "script": {
+        "spellEffect": {
+            "type": "Composite",
+            "effects": [
+                {
+                    "type": "Composite",
+                    "effects": [
+                        {
+                            "type": "GatherCards",
+                            "source": {
+                                "type": "TopOfLibrary",
+                                "count": {
+                                    "type": "Fixed",
+                                    "amount": 2
+                                },
+                                "player": {
+                                    "type": "ContextPlayer",
+                                    "index": 0
+                                },
+                                "isMill": true
+                            },
+                            "storeAs": "milled"
+                        },
+                        {
+                            "type": "MoveCollection",
+                            "from": "milled",
+                            "destination": {
+                                "type": "ToZone",
+                                "zone": "Graveyard",
+                                "player": {
+                                    "type": "ContextPlayer",
+                                    "index": 0
+                                }
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "DrawCards",
+                    "count": {
+                        "type": "Fixed",
+                        "amount": 1
+                    }
+                }
+            ]
+        },
+        "targetRequirements": [
+            {
+                "type": "TargetPlayer",
+                "id": "target player"
+            }
+        ]
+    },
+    "metadata": {
+        "collectorNumber": "52",
+        "artist": "David Rapoza",
+        "flavorText": "“As you inject the viscus vitae into the brain stem, don't let the spastic moaning bother you. It will soon become music to your ears.”\n—Stitcher Geralf",
+        "imageUri": "https://cards.scryfall.io/normal/front/0/7/074f2822-f4d5-4d58-b04d-57bdf9c7cc57.jpg"
+    },
+    "colorIdentityOverride": [
+        "BLUE"
     ]
 }
 
