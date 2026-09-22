@@ -1,0 +1,70 @@
+name: Industrial Waste — Gate 7 Mono-Blue Readiness
+
+on:
+  push:
+    branches: [industrial-waste/lab]
+    paths:
+      - .github/workflows/industrial-waste-g7-mono-blue-readiness.yml
+      - ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteMonoBlueReadinessSmokeTest.kt
+      - industrial-waste/gauntlet/mono-blue-terror-joan-rubies-2026-09-12.dck
+      - industrial-waste/protocols/gate-7-mono-blue-terror-readiness-v1.md
+      - industrial-waste/control/industrial-waste-v1.0-submitted.dck
+      - ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteAdvisorModule.kt
+      - mtg-sets/2003-2007/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/mrd/cards/MyrRetriever.kt
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  gate-7-readiness:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v6
+      - name: Validate exact 60/15 opponent identity
+        run: |
+          python3 - <<'PY'
+          import hashlib
+          import pathlib
+          import re
+
+          path = pathlib.Path("industrial-waste/gauntlet/mono-blue-terror-joan-rubies-2026-09-12.dck")
+          text = path.read_text()
+          section = None
+          totals = {"main": 0, "sideboard": 0}
+          for raw in text.splitlines():
+              line = raw.strip()
+              if line == "[main]":
+                  section = "main"; continue
+              if line == "[sideboard]":
+                  section = "sideboard"; continue
+              if line.startswith("["):
+                  section = None; continue
+              if section and line and "=" not in line:
+                  m = re.match(r"^(\d+)\s+(.+)$", line)
+                  assert m, line
+                  totals[section] += int(m.group(1))
+          assert totals == {"main": 60, "sideboard": 15}, totals
+          digest = hashlib.sha256(path.read_bytes()).hexdigest()
+          assert digest == "f99a01d040e8d0c5d0144db019ca53db7a07bb251c07ac6fb3118f695d3fc3d3", digest
+          print("Gate 7 opponent identity: VALID", totals, digest)
+          PY
+      - uses: actions/setup-java@v5
+        with: {distribution: temurin, java-version: 21}
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Run exact-deck registry and legal-progression smoke
+        env:
+          IW_G7_MONO_BLUE_READINESS_SMOKE: "true"
+        run: ./gradlew :ai:test --tests IndustrialWasteMonoBlueReadinessSmokeTest -Dbenchmark=true --no-daemon
+      - name: Print focused failure details
+        if: failure()
+        run: |
+          find ai/build/test-results/test -name 'TEST-*IndustrialWasteMonoBlue*.xml' -exec sed -n '1,700p' {} \; || true
+      - name: Upload readiness evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: industrial-waste-g7-mono-blue-readiness
+          path: industrial-waste/results/gate-7-mono-blue-readiness-smoke-v1.json
+          if-no-files-found: warn
