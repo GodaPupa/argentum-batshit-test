@@ -1,0 +1,35 @@
+name: Industrial Waste — Tempo A Stuck Diagnostic
+
+on:
+  push:
+    branches: [industrial-waste/lab]
+    paths:
+      - .github/workflows/industrial-waste-tempo-stuck-diagnostic.yml
+      - ai/src/test/kotlin/com/wingedsheep/ai/arena/TableGameRunner.kt
+      - ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteTempoStuckDiagnosticTest.kt
+      - ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteAdvisorModule.kt
+      - ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteGrixisAdvisorModule.kt
+      - ai/src/main/kotlin/com/wingedsheep/ai/engine/Strategist.kt
+      - ai/src/main/kotlin/com/wingedsheep/ai/engine/advisor/CardAdvisor.kt
+      - industrial-waste/challengers/tempo-a.dck
+      - industrial-waste/gauntlet/grixis-affinity-carlos-dc-2026-09-12.dck
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  stuck-diagnostic:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: 21
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Replay exact invalid game
+        env:
+          IW_TEMPO_STUCK_DIAG: "true"
+        run: ./gradlew :ai:test --tests IndustrialWasteTempoStuckDiagnosticTest -Dbenchmark=true --no-daemon
