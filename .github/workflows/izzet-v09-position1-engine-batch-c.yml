@@ -1,0 +1,99 @@
+name: Izzet Position-1 Engine Batch C Reconciled
+
+on:
+  push:
+    branches:
+      - "mayhem/izzet-science"
+    paths:
+      - ".github/workflows/izzet-v09-position1-engine-batch-c.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  qualify-batch-c:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "21"
+
+      - uses: gradle/actions/setup-gradle@v6
+
+      - name: Verify frozen card control and reconciled gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(sha256sum izzet-science/v0.7-control.md | cut -d' ' -f1)" = "726f5e9458b46dda30b33a6ce9f3c3237b25d6e11b81dac85308c3065c108a01"
+          grep -Fq 'V07_DECK_AUDIT_NO_CHANGE' izzet-science/v07-deck-level-audit-no-change.md
+          grep -Fq 'V09_CARD_CONTROL_ARCHITECTURE_AUDIT_KEEP_V07' izzet-science/v09-card-control-architecture-audit.md
+          grep -Fq '53 to 50' izzet-science/v09-position1-engine-batch-c-gate.md
+
+      - name: Requalify canonical card snapshots
+        run: ./gradlew :mtg-sets:test --tests "*CardDefinitionSnapshotTest" --stacktrace
+
+      - name: Run Batch C card semantics
+        shell: bash
+        run: |
+          set -euo pipefail
+          scripts/test-class ArchaeomancerScenarioTest --info --stacktrace
+          scripts/test-class MnemonicWallScenarioTest --info --stacktrace
+
+      - name: Run exact real-engine coverage regression
+        shell: bash
+        run: |
+          set -euo pipefail
+          scripts/test-class IzzetScienceVeteranBeastriderEngineReadinessTest --info --stacktrace | tee /tmp/batch-c.txt
+          grep -Fq 'V09_REAL_ENGINE_UNRESOLVED_COUNT=50' /tmp/batch-c.txt
+          ! grep -Fq 'unresolved Veteran Beastrider card: Boreal Druid' /tmp/batch-c.txt
+          ! grep -Fq 'unresolved Veteran Beastrider card: Llanowar Visionary' /tmp/batch-c.txt
+          ! grep -Fq 'unresolved Veteran Beastrider card: Owlbear' /tmp/batch-c.txt
+          ! grep -Fq 'unresolved Izzet card: Archaeomancer' /tmp/batch-c.txt
+          ! grep -Fq 'unresolved Izzet card: Mnemonic Wall' /tmp/batch-c.txt
+
+      - name: Assert official experiment remains untouched
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -Fq 'officialGamesAuthorized: Int = 0' gym/src/main/kotlin/com/wingedsheep/gym/matchup/IzzetScienceVeteranBeastriderEngineReadiness.kt
+          grep -Fq 'officialSeedsConsumed: Int = 0' gym/src/main/kotlin/com/wingedsheep/gym/matchup/IzzetScienceVeteranBeastriderEngineReadiness.kt
+          grep -Fq 'outcomeExposure: Int = 0' gym/src/main/kotlin/com/wingedsheep/gym/matchup/IzzetScienceVeteranBeastriderEngineReadiness.kt
+
+      - name: Emit Batch C manifest
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/izzet-batch-c
+          cp /tmp/batch-c.txt /tmp/izzet-batch-c/test-output.txt
+          {
+            echo "schema=izzet-v09-position1-engine-batch-c-reconciled-v1"
+            echo "source_sha=${GITHUB_SHA}"
+            echo "frozen_control_sha256=726f5e9458b46dda30b33a6ce9f3c3237b25d6e11b81dac85308c3065c108a01"
+            echo "implemented=Owlbear;Archaeomancer;Mnemonic Wall"
+            echo "unresolved_before=53"
+            echo "unresolved_after=50"
+            echo "official_seeds_consumed=0"
+            echo "games_initialized=0"
+            echo "outcome_exposure=0"
+            sha256sum mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/afr/cards/Owlbear.kt
+            sha256sum mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/m13/cards/Archaeomancer.kt
+            sha256sum mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/roe/cards/MnemonicWall.kt
+            sha256sum mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/ArchaeomancerScenarioTest.kt
+            sha256sum mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/MnemonicWallScenarioTest.kt
+            sha256sum gym/src/test/kotlin/com/wingedsheep/gym/IzzetScienceVeteranBeastriderEngineReadinessTest.kt
+            sha256sum izzet-science/v09-position1-engine-batch-c-gate.md
+            sha256sum mtg-sets/src/test/resources/snapshots/cards/AFR.json
+            sha256sum mtg-sets/src/test/resources/snapshots/cards/M13.json
+            sha256sum mtg-sets/src/test/resources/snapshots/cards/ROE.json
+            sha256sum /tmp/izzet-batch-c/test-output.txt
+          } > /tmp/izzet-batch-c/manifest.txt
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: izzet-v09-position1-engine-batch-c-reconciled
+          path: /tmp/izzet-batch-c
+          if-no-files-found: error
