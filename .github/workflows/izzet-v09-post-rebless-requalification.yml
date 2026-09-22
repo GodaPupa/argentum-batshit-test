@@ -16,10 +16,6 @@ jobs:
     timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
-        with:
-          # Match the accepted Izzet qualification context: the current PR #15
-          # integration ref (feature branch + current main dependencies).
-          ref: refs/pull/15/merge
 
       - uses: actions/setup-java@v5
         with:
@@ -65,9 +61,7 @@ jobs:
           cp /tmp/izzet-post-rebless.txt /tmp/izzet-post-rebless-artifact/test-output.txt
           {
             echo "schema=izzet-v09-post-rebless-requalification-v1"
-            echo "trigger_sha=${GITHUB_SHA}"
-            echo "qualified_checkout=refs/pull/15/merge"
-            echo "qualified_sha=$(git rev-parse HEAD)"
+            echo "source_sha=${GITHUB_SHA}"
             echo "frozen_control_sha256=726f5e9458b46dda30b33a6ce9f3c3237b25d6e11b81dac85308c3065c108a01"
             echo "aggregate_unresolved_current=53"
             echo "boreal_druid_resolved=true"
