@@ -43,8 +43,9 @@ data class MonoBlueTerrorSmokeHarnessReadiness(
 /**
  * Pure validation boundary for a future four-game Mono-Blue Terror smoke.
  *
- * This object deliberately has no game initializer, adapter, execution method, entropy source,
- * artifact writer, workflow, or seed-freeze operation. It cannot initialize or execute a game.
+ * This object deliberately has no game initializer, execution method, entropy source, artifact
+ * writer, workflow, or seed-freeze operation. The provenance-only adapter has no initializer, so
+ * this harness still cannot initialize or execute a game.
  */
 object PestControlTierOneMonoBlueTerrorSmokeHarness {
     fun cellTemplate(): List<MonoBlueTerrorSmokeCell> = listOf(
@@ -116,7 +117,7 @@ object PestControlTierOneMonoBlueTerrorSmokeHarness {
         if (isUnitTestProcess) add("unit tests cannot activate the smoke harness")
         if (attemptNumber != 1) add("smoke retry is forbidden")
         if (priorOutputExists) add("smoke output already exists")
-        add("no game adapter is defined")
+        add("game adapter has no initialization method")
         add("no execution method is defined")
     }
 }
