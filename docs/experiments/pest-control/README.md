@@ -46,6 +46,11 @@ The vectorless Mono-Blue Terror composition gate is recorded in
 construction conservation, telemetry schema, artifact contract, and exact activation blockers while
 keeping the fixed fixture at zero submitted actions and all official counters at zero.
 
+The validation-only Mono-Blue Terror official initialization boundary is recorded in
+`tier-one-mono-blue-terror-official-initialization-boundary.md`. It formalizes assignment,
+provenance, execution-commit, and durable-attempt prerequisites but exposes no initializer
+implementation or environment-returning method.
+
 The deterministic provenance adapter and byte-level reconciliation layer are recorded in
 `tier-one-grixis-adapter-artifact-contract.md`. They use synthetic in-memory fixtures, expose no game
 initializer, and leave the harness disabled with no vector or outcome exposure.
