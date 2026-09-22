@@ -12,6 +12,7 @@ import com.wingedsheep.engine.state.components.battlefield.ClassLevelComponent
 import com.wingedsheep.engine.state.components.combat.PlayerAttackersThisTurnComponent
 import com.wingedsheep.engine.state.components.identity.CardComponent
 import com.wingedsheep.engine.state.components.player.CreaturesDiedThisTurnComponent
+import com.wingedsheep.engine.state.components.player.CardsDrawnThisTurnComponent
 import com.wingedsheep.engine.state.components.identity.CommanderComponent
 import com.wingedsheep.sdk.core.CardType
 import com.wingedsheep.sdk.core.Color
@@ -462,6 +463,8 @@ class CostCalculator(
                 val controls = controlsMatchingPermanent(state, playerId, source.filter)
                 if (controls) source.amount else 0
             }
+            CostReductionSource.CardsDrawnThisTurn ->
+                state.getEntity(playerId)?.get<CardsDrawnThisTurnComponent>()?.count ?: 0
             is CostReductionSource.CardsInGraveyardMatchingFilter -> {
                 countGraveyardCardsMatchingFilter(state, playerId, source.filter) * source.amountPerCard
             }
