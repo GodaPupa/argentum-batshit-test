@@ -51,6 +51,11 @@ The validation-only Mono-Blue Terror official initialization boundary is recorde
 provenance, execution-commit, and durable-attempt prerequisites but exposes no initializer
 implementation or environment-returning method.
 
+The pure synthetic Mono-Blue Terror coordinator ledger is recorded in
+`tier-one-mono-blue-terror-coordinator-ledger.md`. It enforces durable
+attempt-before-initialize-before-record ordering, global game order, terminal rejection, and
+complete-only validation without owning callbacks, seeds, environments, or a runner.
+
 The deterministic provenance adapter and byte-level reconciliation layer are recorded in
 `tier-one-grixis-adapter-artifact-contract.md`. They use synthetic in-memory fixtures, expose no game
 initializer, and leave the harness disabled with no vector or outcome exposure.
