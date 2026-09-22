@@ -56,6 +56,11 @@ The pure synthetic Mono-Blue Terror coordinator ledger is recorded in
 attempt-before-initialize-before-record ordering, global game order, terminal rejection, and
 complete-only validation without owning callbacks, seeds, environments, or a runner.
 
+The synthetic Mono-Blue Terror execution composition contract is recorded in
+`tier-one-mono-blue-terror-execution-contract.md`. It reconciles the official-initialization
+boundary, coordinator ledger, and artifact views without owning or invoking an initializer,
+callback, writer, seed source, runner, or workflow.
+
 The deterministic provenance adapter and byte-level reconciliation layer are recorded in
 `tier-one-grixis-adapter-artifact-contract.md`. They use synthetic in-memory fixtures, expose no game
 initializer, and leave the harness disabled with no vector or outcome exposure.
