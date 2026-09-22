@@ -1,0 +1,25 @@
+name: Industrial Waste — Thought Scour Capability
+
+on:
+  push:
+    branches: [industrial-waste/lab]
+    paths:
+      - .github/workflows/industrial-waste-g7-thought-scour.yml
+      - mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/dka/cards/ThoughtScour.kt
+      - mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/ThoughtScourScenarioTest.kt
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  thought-scour-capability:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-java@v5
+        with: {distribution: temurin, java-version: 21}
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Run Thought Scour scenario
+        run: ./gradlew :mtg-sets:2008-2016:tests:test --tests '*ThoughtScourScenarioTest' --no-daemon
