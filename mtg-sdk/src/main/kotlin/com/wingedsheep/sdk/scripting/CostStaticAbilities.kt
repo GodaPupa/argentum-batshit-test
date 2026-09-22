@@ -541,6 +541,21 @@ sealed interface CostReductionSource {
     }
 
     /**
+     * Reduces a spell's generic cost by the number of cards its caster has drawn this turn.
+     *
+     * Used for Deem Inferior ("This spell costs {1} less to cast for each card you've drawn
+     * this turn"). The engine already tracks successful draws per player with
+     * CardsDrawnThisTurnComponent; this source exposes that turn-history counter to the unified
+     * spell-cost pipeline. Draw replacements that replace a draw with another event do not count,
+     * because the underlying draw primitive increments the counter only for cards actually drawn.
+     */
+    @SerialName("CardsDrawnThisTurn")
+    @Serializable
+    data object CardsDrawnThisTurn : CostReductionSource {
+        override val description: String = "the number of cards you've drawn this turn"
+    }
+
+    /**
      * Reduces cost by 1 for each card in your graveyard matching the filter.
      * Used for Eddymurk Crab ("This spell costs {1} less to cast for each instant and sorcery card in your graveyard").
      *
