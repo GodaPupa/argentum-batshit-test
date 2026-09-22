@@ -11,7 +11,7 @@ The accepted Pest Control v1.0 and Serpico_CC Mono-Blue Terror identities are un
 preboard 60 is fully supported after the accepted Escape/Sleep of the Dead gate. The frozen sideboard
 remains outside preboard execution scope.
 
-This gate adds only a pure specification and validation boundary. It has no game adapter, initializer,
+This gate adds only a pure specification and validation boundary. It has no initializer,
 execution method, entropy source, artifact writer, workflow, seed file, or seed-freeze operation.
 
 ## Predeclared smoke shape
@@ -35,15 +35,16 @@ if separately authorized after the complete harness is green, do not exist.
 - Official seeds generated: `0`
 - Official games authorized: `0`
 - Outcome exposure: `0`
-- Game adapter: absent
+- Provenance adapter: present, no initialization method
 - Game initializer: absent
 - Execution method: absent
 - Outcome-bearing workflow: absent
 
 Activation validation independently rejects a disabled state, missing vector, missing explicit
-authorization, unit-test execution, attempts other than one, existing output, the absent adapter,
-and the absent execution method. No test in this gate can initialize a game.
+authorization, unit-test execution, attempts other than one, existing output, the provenance
+adapter's lack of an initialization method, and the absent execution method. No test in this gate can
+initialize a game.
 
-The next justified gate is a deterministic provenance adapter and byte-level artifact contract using
-synthetic in-memory fixtures only. Execution must remain disabled and the vector must remain absent.
-No smoke or official gameplay is authorized by this document.
+The provenance-only adapter and byte-level artifact contract are implemented in the following gate.
+They use synthetic in-memory fixtures and expose no game initializer. Execution remains disabled and
+the vector remains absent. No smoke or official gameplay is authorized by this document.
