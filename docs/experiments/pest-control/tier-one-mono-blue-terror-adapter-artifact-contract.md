@@ -43,5 +43,5 @@ Reorder, replacement, orphan records, byte tampering, and false completion fail 
 - Execution method: absent
 - Outcome-bearing workflow: absent
 
-The next justified gate is a disabled construction-only initializer plus conservation and telemetry
-fixtures. It must not create a vector, accept an official assignment, or execute a smoke game.
+The following gate adds a construction-only initializer plus conservation and telemetry fixtures.
+It must not create a vector, accept an official assignment, or execute a smoke game.
