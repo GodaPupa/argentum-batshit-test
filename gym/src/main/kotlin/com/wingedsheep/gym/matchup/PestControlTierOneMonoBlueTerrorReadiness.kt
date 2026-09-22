@@ -1,6 +1,7 @@
 package com.wingedsheep.gym.matchup
 
 import com.wingedsheep.engine.registry.CardRegistry
+import com.wingedsheep.sdk.model.Deck
 import java.security.MessageDigest
 
 const val PEST_MONO_BLUE_TERROR_PREBOARD_PROTOCOL_ID =
@@ -78,6 +79,8 @@ object PestControlTierOneMonoBlueTerrorReadiness {
     val sideboardCounts: Map<String, Int> get() = MONO_BLUE_TERROR_SIDEBOARD.toMap()
     val expectedUnsupportedMain: Map<String, Int> get() = EXPECTED_UNSUPPORTED_MAIN.toMap()
     val expectedUnsupportedSideboard: Map<String, Int> get() = EXPECTED_UNSUPPORTED_SIDEBOARD.toMap()
+
+    fun mainDeck(): Deck = Deck.of(*MONO_BLUE_TERROR_MAIN.map { it.key to it.value }.toTypedArray())
 
     fun unresolvedMain(registry: CardRegistry): Map<String, Int> =
         MONO_BLUE_TERROR_MAIN.filterKeys { name -> registry.getCard(name) == null }

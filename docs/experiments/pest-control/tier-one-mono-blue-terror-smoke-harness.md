@@ -35,16 +35,21 @@ if separately authorized after the complete harness is green, do not exist.
 - Official seeds generated: `0`
 - Official games authorized: `0`
 - Outcome exposure: `0`
-- Provenance adapter: present, no initialization method
-- Game initializer: absent
+- Provenance adapter: present, no official initialization method
+- Construction-only initializer: fixed excluded fixture
+- Official game initializer: absent
 - Execution method: absent
 - Outcome-bearing workflow: absent
 
 Activation validation independently rejects a disabled state, missing vector, missing explicit
 authorization, unit-test execution, attempts other than one, existing output, the provenance
-adapter's lack of an initialization method, and the absent execution method. No test in this gate can
-initialize a game.
+adapter's lack of an official initialization method, and the absent execution method. No test in this
+gate can initialize an official game.
 
 The provenance-only adapter and byte-level artifact contract are implemented in the following gate.
-They use synthetic in-memory fixtures and expose no game initializer. Execution remains disabled and
-the vector remains absent. No smoke or official gameplay is authorized by this document.
+They use synthetic in-memory fixtures and expose no official game initializer. Execution remains
+disabled and the vector remains absent. No smoke or official gameplay is authorized by this
+document.
+
+A following gate adds one fixed construction-only initializer to validate exact deck conservation.
+It cannot accept a future frozen assignment and never advances the initialized fixture.
