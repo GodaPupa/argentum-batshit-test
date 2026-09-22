@@ -37,7 +37,9 @@ jobs:
         run: |
           set -euo pipefail
           scripts/test-class IzzetScienceVeteranBeastriderEngineReadinessTest --info --stacktrace | tee /tmp/batch-a.txt
-          grep -Fq 'V09_REAL_ENGINE_UNRESOLVED_COUNT=54' /tmp/batch-a.txt
+          # Batch A historically reduced 55 -> 54. Batch B is now also present on this
+          # branch, so the current aggregate must be 53 while Boreal Druid remains resolved.
+          grep -Fq 'V09_REAL_ENGINE_UNRESOLVED_COUNT=53' /tmp/batch-a.txt
           ! grep -Fq 'unresolved Veteran Beastrider card: Boreal Druid' /tmp/batch-a.txt
       - name: Assert official execution remains untouched
         shell: bash
@@ -58,6 +60,7 @@ jobs:
             echo "implemented=Boreal Druid"
             echo "unresolved_before=55"
             echo "unresolved_after=54"
+            echo "aggregate_unresolved_current=53"
             echo "experimental_seeds_consumed=0"
             echo "games_initialized=0"
             echo "outcome_exposure=0"
