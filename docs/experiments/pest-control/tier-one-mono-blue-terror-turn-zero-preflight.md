@@ -39,6 +39,5 @@ support also fails closed.
 - Official initializer: absent
 - Execution method: absent
 
-This completes the vectorless construction harness. A future gate may design an official
-initialization boundary, but it must remain disabled and use no official seed until that new layer
-and the entire harness are green and fail closed.
+This completes the vectorless construction harness. The following gate designs a validation-only
+official initialization boundary that remains disabled and uses no official seed.
