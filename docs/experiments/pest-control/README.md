@@ -66,6 +66,12 @@ The Mono-Blue Terror runner-surface audit is recorded in
 tools, server entry points, and compiled public APIs expose no official Terror initializer or
 execution path.
 
+The private disabled Mono-Blue Terror initializer is recorded in
+`tier-one-mono-blue-terror-disabled-official-initializer.md`. It accepts no caller entropy or
+official identity, validates only the fixed excluded construction fixture, exposes no public
+environment, and remains unreachable from workflows and commands. Official seeds, games, and
+outcome exposure remain zero.
+
 The deterministic provenance adapter and byte-level reconciliation layer are recorded in
 `tier-one-grixis-adapter-artifact-contract.md`. They use synthetic in-memory fixtures, expose no game
 initializer, and leave the harness disabled with no vector or outcome exposure.
