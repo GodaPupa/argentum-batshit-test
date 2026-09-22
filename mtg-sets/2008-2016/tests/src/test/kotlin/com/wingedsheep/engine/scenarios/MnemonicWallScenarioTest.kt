@@ -30,11 +30,11 @@ class MnemonicWallScenarioTest : FunSpec({
         driver.castSpell(player, wall).isSuccess shouldBe true
         driver.bothPass()
 
-        // With exactly one legal target, the engine deterministically locks that
-        // target while placing the ETB trigger on the stack. The only interactive
-        // decision occurs when the MayEffect resolves.
-        driver.bothPass()
+        // The optional targeted trigger asks "may?" first. After "Yes", the single
+        // legal graveyard target is auto-selected and the ETB ability is put on the
+        // stack; one more priority cycle is required to resolve that ability.
         driver.submitYesNo(player, true).isSuccess shouldBe true
+        driver.bothPass()
 
         driver.findPermanent(player, "Mnemonic Wall") shouldNotBe null
         driver.findCardInHand(player, "Lightning Bolt") shouldNotBe null
@@ -51,7 +51,6 @@ class MnemonicWallScenarioTest : FunSpec({
         driver.castSpell(player, wall).isSuccess shouldBe true
         driver.bothPass()
 
-        driver.bothPass()
         driver.submitYesNo(player, false).isSuccess shouldBe true
 
         driver.findPermanent(player, "Mnemonic Wall") shouldNotBe null
