@@ -31,7 +31,7 @@ val MyrRetriever = card("Myr Retriever") {
         trigger = Triggers.Dies
         val t = target(
             "target",
-            TargetObject(filter = TargetFilter.ArtifactInYourGraveyard)
+            TargetObject(filter = TargetFilter.ArtifactInYourGraveyard.copy(excludeSelf = true))
         )
         effect = Effects.Move(t, Zone.HAND)
     }
