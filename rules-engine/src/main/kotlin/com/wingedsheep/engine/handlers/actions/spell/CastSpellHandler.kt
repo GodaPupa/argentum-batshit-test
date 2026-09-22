@@ -991,6 +991,9 @@ class CastSpellHandler(
             )
             // Harmonize may be printed on the card or granted at runtime (Songcrafter Mage).
             val harmonizeAbility = HarmonizeGrants.effectiveHarmonize(state, action.cardId, cardDef)
+            // Escape is currently printed-only. The resolver also proves the card is in its
+            // owner's graveyard before this cost can be selected.
+            val escapeAbility = zoneResolver.escapeAbility(state, action.playerId, action.cardId)
             // The back face of a modal DFC whose back is a permanent, when this card is one and is
             // in hand (CR 712.11b). Resolved once here alongside the other face/keyword lookups so
             // the branch below can both test it and read its cost.
@@ -1011,6 +1014,12 @@ class CastSpellHandler(
                 // Mayhem cost (CR 702.187) — cast from graveyard for its mayhem cost.
                 costCalculator.calculateEffectiveCostWithAlternativeBase(
                     state, cardDef, MayhemGrants.effectiveMayhem(state, action.cardId, cardDef, action.playerId, cardRegistry, predicateEvaluator)!!.cost, action.playerId
+                )
+            } else if (action.altAllows(AlternativeCostType.ESCAPE) && escapeAbility != null) {
+                // Escape cost (CR 702.138a). The non-mana "exile other cards" portion is
+                // validated and paid separately through the additional-cost rail.
+                costCalculator.calculateEffectiveCostWithAlternativeBase(
+                    state, cardDef, escapeAbility.cost, action.playerId
                 )
             } else if (action.altAllows(AlternativeCostType.DISTURB) &&
                 DisturbCasts.printedDisturb(cardDef) != null &&
