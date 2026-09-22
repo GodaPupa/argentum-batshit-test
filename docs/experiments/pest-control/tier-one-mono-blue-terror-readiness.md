@@ -2,7 +2,7 @@
 
 ## Boundary
 
-Status: `SEEDLESS_READINESS_BLOCKED_ON_CARD_SUPPORT`
+Status: `SEEDLESS_READINESS_BLOCKED_ON_ESCAPE_SUPPORT`
 
 This is a seedless, no-game construction/readiness gate. It does **not** authorize an execution runner,
 generate or freeze seeds, initialize a game, expose an outcome, alter Pest Control v1.0, revisit the
@@ -86,16 +86,18 @@ The exact current registry audit is encoded in
 
 ### Preboard blocker
 
-Four maindeck identities spanning 10 slots are currently unresolved:
+Support A added and deterministically covered Deem Inferior, Artful Dodge, and Thought Scour.
+The remaining preboard blocker is now exactly one identity spanning two slots:
 
-- 2 Deem Inferior
-- 2 Artful Dodge
 - 2 Sleep of the Dead
-- 4 Thought Scour
 
-The following maindeck identities are already expected to resolve in the current catalog:
-Island, Snow-Covered Island, Cryptic Serpent, Tolarian Terror, Lórien Revealed, Ponder, Preordain,
-Brainstorm, Dispel, Mental Note, and Counterspell.
+The currently supported maindeck identities are:
+Island, Snow-Covered Island, Cryptic Serpent, Tolarian Terror, Deem Inferior, Lórien Revealed,
+Artful Dodge, Ponder, Preordain, Brainstorm, Dispel, Mental Note, Thought Scour, and Counterspell.
+
+Deem Inferior is implemented with the shared CardsDrawnThisTurn cost-reduction source and the existing
+owner-choice second-from-top/bottom library primitive. Artful Dodge uses the existing true Flashback
+rail; Thought Scour uses targeted mill-two followed by draw-one.
 
 ### Sideboard blocker
 
@@ -113,7 +115,7 @@ question, but they keep postboard work explicitly blocked.
 
 - Pest Control v1.0: unchanged and immutable
 - Opponent 60/15 identity: frozen by ordered hashes
-- Opponent maindeck support: **blocked — 4 identities / 10 slots**
+- Opponent maindeck support: **blocked — Sleep of the Dead only (1 identity / 2 slots)**
 - Runner: `DISABLED`
 - Execution adapter: absent
 - Official games authorized: `0`
@@ -132,14 +134,12 @@ The activation audit must continue to return all of the following blockers:
 
 ## Next justified gate
 
-Implement and deterministically validate the four missing **maindeck** card identities one at a time,
-including focused rules scenarios and the policy surfaces that matter for this matchup:
+Implement and deterministically validate true **Escape** support, then add Sleep of the Dead on that
+rail. Sleep's base effect already maps to the existing tap plus "doesn't untap during its controller's
+next untap step" primitive, but Escape must remain distinct from Flashback: it pays {2}{U} plus exile
+three other cards from the caster's graveyard and the resolved sorcery returns to the graveyard
+normally.
 
-- Deem Inferior: bargain/cost and bounce-target legality;
-- Artful Dodge: target legality, unblockable duration, flashback, and exile-after-flashback;
-- Sleep of the Dead: target/tap behavior and escape cost/zone movement;
-- Thought Scour: target-player mill-two plus draw-one, including self-target graveyard setup.
-
-After those definitions and focused scenarios are green, rerun the exact readiness audit. Only a
-separate later gate may specify a disabled smoke harness. Seed generation and official gameplay remain
-outside this authorization.
+After Sleep of the Dead and focused Escape scenarios are green, rerun the exact readiness audit. Only
+a separate later gate may specify a disabled smoke harness. Seed generation and official gameplay
+remain outside this authorization.

@@ -57,10 +57,7 @@ class PestControlTierOneMonoBlueTerrorReadinessTest : FunSpec({
     test("readiness records the exact current preboard support blocker") {
         PestControlTierOneMonoBlueTerrorReadiness.unresolvedMain(registry).entries.map { it.key to it.value }
             .shouldContainExactly(
-                "Deem Inferior" to 2,
-                "Artful Dodge" to 2,
                 "Sleep of the Dead" to 2,
-                "Thought Scour" to 4,
             )
 
         PestControlTierOneMonoBlueTerrorReadiness.unresolvedSideboard(registry).entries.map { it.key to it.value }
@@ -79,7 +76,7 @@ class PestControlTierOneMonoBlueTerrorReadinessTest : FunSpec({
         )
 
         errors.shouldContainExactly(
-            "maindeck card support is incomplete: 4 identities / 10 slots",
+            "maindeck card support is incomplete: 1 identity / 2 slots",
             "no execution runner is defined",
             "no official seed vector is frozen",
             "official Mono-Blue Terror games are not authorized",
