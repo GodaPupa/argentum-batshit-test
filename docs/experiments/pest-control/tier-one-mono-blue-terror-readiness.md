@@ -86,16 +86,15 @@ The exact current registry audit is encoded in
 
 ### Preboard blocker
 
-Four maindeck identities spanning 10 slots are currently unresolved:
+Two maindeck identities spanning 4 slots remain unresolved after the first support package:
 
 - 2 Deem Inferior
-- 2 Artful Dodge
 - 2 Sleep of the Dead
-- 4 Thought Scour
 
-The following maindeck identities are already expected to resolve in the current catalog:
-Island, Snow-Covered Island, Cryptic Serpent, Tolarian Terror, Lórien Revealed, Ponder, Preordain,
-Brainstorm, Dispel, Mental Note, and Counterspell.
+Artful Dodge and Thought Scour are now supplied by card-scoped definitions using existing rules
+primitives. The following maindeck identities resolve in the current catalog:
+Island, Snow-Covered Island, Cryptic Serpent, Tolarian Terror, Lórien Revealed, Artful Dodge, Ponder,
+Preordain, Brainstorm, Dispel, Mental Note, Thought Scour, and Counterspell.
 
 ### Sideboard blocker
 
@@ -113,7 +112,7 @@ question, but they keep postboard work explicitly blocked.
 
 - Pest Control v1.0: unchanged and immutable
 - Opponent 60/15 identity: frozen by ordered hashes
-- Opponent maindeck support: **blocked — 4 identities / 10 slots**
+- Opponent maindeck support: **blocked — 2 identities / 4 slots**
 - Runner: `DISABLED`
 - Execution adapter: absent
 - Official games authorized: `0`
@@ -132,14 +131,17 @@ The activation audit must continue to return all of the following blockers:
 
 ## Next justified gate
 
-Implement and deterministically validate the four missing **maindeck** card identities one at a time,
-including focused rules scenarios and the policy surfaces that matter for this matchup:
+Complete deterministic support for the two remaining **maindeck** identities:
 
-- Deem Inferior: bargain/cost and bounce-target legality;
-- Artful Dodge: target legality, unblockable duration, flashback, and exile-after-flashback;
-- Sleep of the Dead: target/tap behavior and escape cost/zone movement;
-- Thought Scour: target-player mill-two plus draw-one, including self-target graveyard setup.
+- Deem Inferior: add a reusable "cards you've drawn this turn" generic-cost reduction source and
+  validate target-nonland-permanent plus owner choice of second-from-top or bottom;
+- Sleep of the Dead: add shared Escape casting support, including the {2}{U} alternative cost,
+  exiling three other graveyard cards, normal post-resolution graveyard destination, and the
+  next-untap-step restriction.
 
-After those definitions and focused scenarios are green, rerun the exact readiness audit. Only a
+Artful Dodge and Thought Scour are intentionally completed first because both are expressible through
+existing general primitives; they do not justify new engine mechanics.
+
+After the remaining shared capabilities and focused scenarios are green, rerun the exact readiness audit. Only a
 separate later gate may specify a disabled smoke harness. Seed generation and official gameplay remain
 outside this authorization.
