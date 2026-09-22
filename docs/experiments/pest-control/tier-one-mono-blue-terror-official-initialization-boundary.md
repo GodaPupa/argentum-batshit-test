@@ -7,10 +7,11 @@ initializer. It binds the accepted qualified runner, vector identity, assignment
 execution commit, explicit authorization, one-attempt rule, prior-output exclusion, and durable
 attempt-before-initialization ordering.
 
-The boundary is validation-only. It exposes no function returning a game environment or session.
-Even a complete synthetic request terminates at `official initializer implementation is absent`.
-The canonical ordered blocker set is pinned at SHA-256
-`fdfc85b1be4c27556ca1acd9dce20407d9730026e93fc7f096234fd4c472c1d1`.
+The public boundary remains validation-only. It exposes no function returning a game environment or
+session. A private construction-locked initializer now exists, but every request—including a
+complete synthetic request—terminates at `official initializer is disabled`. The canonical ordered
+blocker set is pinned at SHA-256
+`64cd80b7d0e7e5a76c89fe98b7b67355ff21a9569cbb5720a89314474efaad14`.
 
 ## Fail-closed construction state
 
@@ -21,11 +22,11 @@ The canonical request remains blocked because:
 - no official assignment exists;
 - no execution commit is supplied;
 - no durable attempt marker exists;
-- no official initializer implementation exists; and
+- the private official initializer remains disabled; and
 - no execution method exists.
 
 Synthetic request tests prove that supplying all request-shaped fields still cannot initialize a
-game while the implementation terminal blocker remains present. Missing registry support or a
+game while the disabled-initializer terminal blocker remains present. Missing registry support or a
 qualified-runner mismatch is a contract error rather than an activation opportunity.
 
 ## Current state
@@ -35,7 +36,7 @@ qualified-runner mismatch is a contract error rather than an activation opportun
 - Official seeds generated: `0`
 - Official games initialized: `0`
 - Outcome exposure: `0`
-- Official initializer implementation: absent
+- Official initializer implementation: private and disabled
 - Execution method: absent
 
 The following gate is a pure synthetic coordinator ledger. It proves durable

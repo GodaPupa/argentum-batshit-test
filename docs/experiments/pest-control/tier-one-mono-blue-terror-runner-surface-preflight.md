@@ -27,6 +27,6 @@ detected.
 - Outcome exposure: `0`
 - Harness: `DISABLED`
 
-The next gate may construct a disabled official initializer implementation only after this surface
-audit and all prior layers are green. It must remain unreachable from workflows and commands and
-must be validated with fixed nonexperimental construction entropy before any official vector exists.
+The following gate adds a private disabled official initializer implementation. It remains
+unreachable from workflows and commands and is validated only with fixed nonexperimental
+construction entropy before any official vector exists.

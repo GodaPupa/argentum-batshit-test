@@ -37,7 +37,7 @@ object PestControlTierOneMonoBlueTerrorExecutionContract {
         }
         if (
             boundary.activationBlockers.none {
-                it == "official initializer implementation is absent"
+                it == "official initializer is disabled"
             }
         ) {
             errors += "official initializer terminal blocker is absent"
