@@ -2362,6 +2362,71 @@
     ]
 }
 
+// Murmuring Mystic
+{
+    "name": "Murmuring Mystic",
+    "manaCost": "{3}{U}",
+    "typeLine": "Creature — Human Wizard",
+    "oracleText": "Whenever you cast an instant or sorcery spell, create a 1/1 blue Bird Illusion creature token with flying.",
+    "creatureStats": {
+        "power": 1,
+        "toughness": 5
+    },
+    "script": {
+        "triggeredAbilities": [
+            {
+                "id": "ability_1",
+                "trigger": {
+                    "type": "SpellCastEvent",
+                    "spellFilter": {
+                        "cardPredicates": [
+                            {
+                                "type": "Or",
+                                "predicates": [
+                                    "IsInstant",
+                                    "IsSorcery"
+                                ]
+                            }
+                        ]
+                    }
+                },
+                "binding": "ANY",
+                "effect": {
+                    "type": "CreateToken",
+                    "power": 1,
+                    "toughness": 1,
+                    "colors": [
+                        "BLUE"
+                    ],
+                    "creatureTypes": [
+                        "Bird",
+                        "Illusion"
+                    ],
+                    "keywords": [
+                        "FLYING"
+                    ]
+                },
+                "descriptionOverride": "Whenever you cast an instant or sorcery spell, create a 1/1 blue Bird Illusion creature token with flying."
+            }
+        ]
+    },
+    "metadata": {
+        "collectorNumber": "45",
+        "rarity": "UNCOMMON",
+        "artist": "Mark Winters",
+        "flavorText": "Rumors float through the city like crows, alighting on citizens seemingly at random.",
+        "rulings": [
+            {
+                "date": "2018-10-05",
+                "text": "The triggered ability resolves before the spell that caused it to trigger and resolves even if that spell is countered."
+            }
+        ]
+    },
+    "colorIdentityOverride": [
+        "BLUE"
+    ]
+}
+
 // Muse Drake
 {
     "name": "Muse Drake",

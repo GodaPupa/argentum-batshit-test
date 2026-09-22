@@ -396,6 +396,55 @@
     ]
 }
 
+// Deep Analysis
+{
+    "name": "Deep Analysis",
+    "manaCost": "{3}{U}",
+    "typeLine": "Sorcery",
+    "oracleText": "Target player draws two cards.\nFlashback—{1}{U}, Pay 3 life.",
+    "keywords": [
+        "FLASHBACK"
+    ],
+    "keywordAbilities": [
+        {
+            "type": "Flashback",
+            "cost": "{1}{U}",
+            "additionalCost": {
+                "type": "AdditionalAtom",
+                "atom": {
+                    "type": "AtomPayLife",
+                    "amount": 3
+                }
+            }
+        }
+    ],
+    "script": {
+        "spellEffect": {
+            "type": "DrawCards",
+            "count": {
+                "type": "Fixed",
+                "amount": 2
+            },
+            "target": {
+                "type": "BoundVariable",
+                "name": "target player"
+            }
+        },
+        "targetRequirements": [
+            {
+                "type": "TargetPlayer",
+                "id": "target player"
+            }
+        ]
+    },
+    "metadata": {
+        "collectorNumber": "36"
+    },
+    "colorIdentityOverride": [
+        "BLUE"
+    ]
+}
+
 // Enslaved Dwarf
 {
     "name": "Enslaved Dwarf",

@@ -1378,6 +1378,35 @@
     ]
 }
 
+// Force Spike
+{
+    "name": "Force Spike",
+    "manaCost": "{U}",
+    "typeLine": "Instant",
+    "oracleText": "Counter target spell unless its controller pays {1}.",
+    "script": {
+        "spellEffect": {
+            "type": "Counter",
+            "condition": {
+                "type": "CounterCondition.UnlessPaysMana",
+                "cost": "{1}"
+            }
+        },
+        "targetRequirements": [
+            {
+                "type": "TargetObject",
+                "filter": {
+                    "baseFilter": {},
+                    "zone": "Stack"
+                }
+            }
+        ]
+    },
+    "colorIdentityOverride": [
+        "BLUE"
+    ]
+}
+
 // Frost Giant
 {
     "name": "Frost Giant",
