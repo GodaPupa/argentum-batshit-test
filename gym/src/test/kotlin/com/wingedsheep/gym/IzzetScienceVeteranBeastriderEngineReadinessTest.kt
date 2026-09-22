@@ -4,10 +4,12 @@ import com.wingedsheep.engine.registry.CardRegistry
 import com.wingedsheep.gym.matchup.IzzetScienceVeteranBeastriderEngineReadiness
 import com.wingedsheep.gym.matchup.IzzetVeteranEngineReadiness
 import com.wingedsheep.mtg.sets.MtgSetCatalog
+import com.wingedsheep.sdk.core.Keyword
 import com.wingedsheep.sdk.model.CharacteristicValue
 import com.wingedsheep.sdk.scripting.effects.AddColorlessManaEffect
 import com.wingedsheep.sdk.scripting.values.DynamicAmount
 import io.kotest.core.spec.style.FunSpec
+import io.kotest.matchers.collections.shouldContain
 import io.kotest.matchers.collections.shouldContainExactly
 import io.kotest.matchers.shouldBe
 
@@ -47,16 +49,25 @@ class IzzetScienceVeteranBeastriderEngineReadinessTest : FunSpec({
         card.script.activatedAbilities.single().isManaAbility shouldBe true
     }
 
+    test("Owlbear resolves as trample ETB draw creature") {
+        val card = registry.getCard("Owlbear") ?: error("Owlbear unresolved")
+        card.oracleText shouldBe "Trample\nKeen Senses — When this creature enters, draw a card."
+        card.creatureStats?.basePower shouldBe 4
+        card.creatureStats?.baseToughness shouldBe 4
+        card.keywords shouldContain Keyword.TRAMPLE
+        card.script.triggeredAbilities.size shouldBe 1
+    }
+
     test("freeze exact unresolved engine coverage count and emit identities") {
         val unresolved = IzzetScienceVeteranBeastriderEngineReadiness.unresolvedCardIdentities(registry)
         println("V09_REAL_ENGINE_UNRESOLVED_COUNT=" + unresolved.size)
         unresolved.forEach { println("V09_REAL_ENGINE_UNRESOLVED=" + it) }
-        unresolved.size shouldBe 53
+        unresolved.size shouldBe 52
     }
 
     test("full execution remains fail closed behind unresolved cards and PDH semantics") {
         val blockers = IzzetScienceVeteranBeastriderEngineReadiness.executionBlockers(registry)
-        blockers.size shouldBe 58
+        blockers.size shouldBe 57
         blockers.takeLast(5).shouldContainExactly(
             "PDH commander-zone initialization not qualified",
             "PDH commander recast/tax semantics not qualified",
