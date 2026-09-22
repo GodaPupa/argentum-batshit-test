@@ -22,3 +22,5 @@ Registering Llanowar Visionary using already-supported ETB-draw and green mana-a
 4. Boreal Druid and Llanowar Visionary are absent from the unresolved output.
 5. Official counters remain zero.
 6. Full repository CI and the M21 golden snapshot must be reconciled separately before Batch B can be accepted.
+
+<!-- post-rebless CI trigger: canonical M21 snapshot audited at 08c21cec63628179b9bc57233e95390c50c5f51d -->
