@@ -25,3 +25,5 @@ jobs:
       - uses: gradle/actions/setup-gradle@v6
       - name: Run Deem Inferior scenarios
         run: ./gradlew :mtg-sets:2024:tests:test --tests '*DeemInferior*' --no-daemon
+
+# validate Deem Inferior for Gate 7
