@@ -325,7 +325,26 @@ object TableGameRunner {
                     actionCount++
                     val action = aiFor(priorityPlayer).chooseAction(state)
                     trainingObserver?.action(action)
-                    record("A$actionCount|${seatOf(priorityPlayer)}|${state.step.name}|$action\n")
+                    val traceAction = if (recordActionStream) {
+                        when (action) {
+                            is CastSpell -> {
+                                val name = state.getEntity(action.cardId)
+                                    ?.get<com.wingedsheep.engine.state.components.identity.CardComponent>()?.name
+                                "CastSpell[$name] $action"
+                            }
+                            is ActivateAbility -> {
+                                val name = state.getEntity(action.sourceId)
+                                    ?.get<com.wingedsheep.engine.state.components.identity.CardComponent>()?.name
+                                val sacs = action.costPayment?.sacrificedPermanents.orEmpty().map { id ->
+                                    state.getEntity(id)
+                                        ?.get<com.wingedsheep.engine.state.components.identity.CardComponent>()?.name ?: id.toString()
+                                }
+                                "ActivateAbility[$name sacs=$sacs] $action"
+                            }
+                            else -> action.toString()
+                        }
+                    } else action.toString()
+                    record("A$actionCount|${seatOf(priorityPlayer)}|${state.step.name}|$traceAction\n")
                     val r = processor.process(state, action).result
                     val accepted = if (r.error != null) {
                         val subjectId = when (action) {
