@@ -23,3 +23,5 @@ jobs:
       - uses: gradle/actions/setup-gradle@v6
       - name: Run Force Spike scenario
         run: ./gradlew :mtg-sets:1993-1999:tests:test --tests '*ForceSpikeScenarioTest' --no-daemon
+
+# Gate 7 Force Spike capability trigger
