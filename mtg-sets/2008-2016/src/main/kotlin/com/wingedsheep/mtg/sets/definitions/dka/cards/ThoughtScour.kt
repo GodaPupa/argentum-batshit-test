@@ -36,7 +36,8 @@ val ThoughtScour = card("Thought Scour") {
         rarity = Rarity.COMMON
         collectorNumber = "52"
         artist = "David Rapoza"
-        flavorText = ""As you inject the viscus vitae into the brain stem, don't let the spastic moaning bother you. It will soon become music to your ears."\n—Stitcher Geralf"
+        flavorText = """“As you inject the viscus vitae into the brain stem, don't let the spastic moaning bother you. It will soon become music to your ears.”
+—Stitcher Geralf"""
         imageUri = "https://cards.scryfall.io/normal/front/0/7/074f2822-f4d5-4d58-b04d-57bdf9c7cc57.jpg"
     }
 }
