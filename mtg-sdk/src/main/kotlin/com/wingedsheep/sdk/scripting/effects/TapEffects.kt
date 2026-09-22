@@ -22,6 +22,15 @@ data class TapUntapEffect(
     override val description: String = "${if (tap) "Tap" else "Untap"} ${target.description}"
 }
 
+@SerialName("SkipNextControllerUntap")
+@Serializable
+data class SkipNextControllerUntapEffect(
+    val target: EffectTarget
+) : Effect {
+    override val description: String =
+        "${target.description} doesn't untap during its controller's next untap step"
+}
+
 /**
  * Tap or untap all entities in a named collection.
  * Used for effects that let a player choose permanents to tap/untap from a selection.

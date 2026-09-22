@@ -10,6 +10,7 @@ import com.wingedsheep.engine.state.components.battlefield.CountersComponent
 import com.wingedsheep.engine.state.components.battlefield.SagaComponent
 import com.wingedsheep.engine.state.components.battlefield.EnteredThisTurnComponent
 import com.wingedsheep.engine.state.components.battlefield.ExertedComponent
+import com.wingedsheep.engine.state.components.battlefield.SkipNextControllerUntapComponent
 import com.wingedsheep.engine.state.components.battlefield.HasDealtDamageComponent
 import com.wingedsheep.engine.state.components.battlefield.PhasedOutComponent
 import com.wingedsheep.engine.state.components.battlefield.SummoningSicknessComponent
@@ -144,7 +145,8 @@ class BeginningPhaseManager(
         // expires having done nothing).
         val permanentsAfterCantUntap = permanentsToUntap.filter { entityId ->
             !projected.doesntUntapDuringUntapStep(entityId) &&
-                newState.getEntity(entityId)?.has<ExertedComponent>() != true
+                newState.getEntity(entityId)?.has<ExertedComponent>() != true &&
+                newState.getEntity(entityId)?.has<SkipNextControllerUntapComponent>() != true
         }
 
         // Check if any permanents have MAY_NOT_UNTAP keyword (e.g., Everglove Courier)
@@ -310,6 +312,14 @@ class BeginningPhaseManager(
         }.keys
         for (entityId in exertedForActiveTeam) {
             newState = newState.updateEntity(entityId) { it.without<ExertedComponent>() }
+        }
+
+        val skipNextUntapForActiveTeam = newState.entities.filter { (entityId, container) ->
+            container.has<SkipNextControllerUntapComponent>() &&
+                projectedAfterUntap.getController(entityId) in activeTeam
+        }.keys
+        for (entityId in skipNextUntapForActiveTeam) {
+            newState = newState.updateEntity(entityId) { it.without<SkipNextControllerUntapComponent>() }
         }
 
         // Wipe "put into a graveyard this turn" markers on every turn boundary so the

@@ -62,6 +62,7 @@ import com.wingedsheep.engine.handlers.effects.permanent.tapping.TapUntapCollect
 import com.wingedsheep.engine.handlers.effects.permanent.room.LockDoorExecutor
 import com.wingedsheep.engine.handlers.effects.permanent.room.UnlockDoorExecutor
 import com.wingedsheep.engine.handlers.effects.permanent.tapping.TapUntapExecutor
+import com.wingedsheep.engine.handlers.effects.permanent.tapping.SkipNextControllerUntapExecutor
 import com.wingedsheep.engine.handlers.effects.permanent.types.AddCardTypeExecutor
 import com.wingedsheep.engine.handlers.effects.permanent.types.AddColorExecutor
 import com.wingedsheep.engine.handlers.effects.permanent.types.AddCreatureTypeExecutor
@@ -239,6 +240,7 @@ class PermanentExecutors(
         EmitConnivedEventExecutor(),
         // tapping
         TapUntapExecutor(),
+        SkipNextControllerUntapExecutor(),
         TapUntapCollectionExecutor(),
         // rooms / doors
         UnlockDoorExecutor(staticAbilityHandler),

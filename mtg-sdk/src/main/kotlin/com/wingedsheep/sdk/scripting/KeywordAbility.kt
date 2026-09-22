@@ -473,6 +473,18 @@ sealed interface KeywordAbility {
             else "Flashback—$cost, ${additionalCost.description}"
     }
 
+    /** Escape — cast from your graveyard for [cost], exiling [exileCards] other cards. */
+    @SerialName("Escape")
+    @Serializable
+    data class Escape(
+        val cost: ManaCost,
+        val exileCards: Int
+    ) : KeywordAbility {
+        override val keyword: Keyword = Keyword.ESCAPE
+        override val description: String =
+            "Escape—$cost, Exile $exileCards other cards from your graveyard."
+    }
+
     // =========================================================================
     // Harmonize
     // =========================================================================
@@ -1316,6 +1328,9 @@ sealed interface KeywordAbility {
          */
         fun flashback(cost: String, additionalCost: AdditionalCost): KeywordAbility =
             Flashback(ManaCost.parse(cost), additionalCost)
+
+        fun escape(cost: String, exileCards: Int): KeywordAbility =
+            Escape(ManaCost.parse(cost), exileCards)
 
         /**
          * Create Harmonize with mana cost from string (e.g., "Harmonize {5}{R}{R}").

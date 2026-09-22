@@ -564,6 +564,10 @@ data object EnteredThisTurnComponent : Component
 @Serializable
 data object ExertedComponent : Component
 
+/** One-shot next-controller-untap restriction, distinct from exert and stun counters. */
+@Serializable
+data object SkipNextControllerUntapComponent : Component
+
 /**
  * Stores replacement effects on a permanent (e.g., Daunting Defender's damage prevention).
  * These are static replacement effects that are continuously active while the permanent

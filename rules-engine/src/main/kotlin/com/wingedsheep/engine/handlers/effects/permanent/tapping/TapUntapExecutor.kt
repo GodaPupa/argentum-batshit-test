@@ -6,7 +6,9 @@ import com.wingedsheep.engine.core.untapOrConsumeStun
 import com.wingedsheep.engine.handlers.EffectContext
 import com.wingedsheep.engine.handlers.effects.EffectExecutor
 import com.wingedsheep.engine.state.GameState
+import com.wingedsheep.engine.state.components.battlefield.SkipNextControllerUntapComponent
 import com.wingedsheep.sdk.scripting.effects.TapUntapEffect
+import com.wingedsheep.sdk.scripting.effects.SkipNextControllerUntapEffect
 import kotlin.reflect.KClass
 
 /**
@@ -43,5 +45,18 @@ class TapUntapExecutor : EffectExecutor<TapUntapEffect> {
         // controller.
         val (newState, event) = tap(state, targetId, tappedById = context.controllerId)
         return EffectResult.success(newState, listOfNotNull(event))
+    }
+}
+
+
+class SkipNextControllerUntapExecutor : EffectExecutor<SkipNextControllerUntapEffect> {
+    override val effectType: KClass<SkipNextControllerUntapEffect> = SkipNextControllerUntapEffect::class
+
+    override fun execute(state: GameState, effect: SkipNextControllerUntapEffect, context: EffectContext): EffectResult {
+        val targetId = context.resolveTarget(effect.target, state) ?: return EffectResult.success(state)
+        if (targetId !in state.getBattlefield()) return EffectResult.success(state)
+        return EffectResult.success(
+            state.updateEntity(targetId) { it.with(SkipNextControllerUntapComponent) }
+        )
     }
 }

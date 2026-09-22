@@ -218,6 +218,8 @@ data class GraveyardCastRiderSelection(
 enum class AlternativeCostType {
     /** Flashback ([com.wingedsheep.sdk.scripting.KeywordAbility.Flashback]) — graveyard. */
     FLASHBACK,
+    /** Escape ([com.wingedsheep.sdk.scripting.KeywordAbility.Escape]) — graveyard. */
+    ESCAPE,
     /** Harmonize ([com.wingedsheep.sdk.scripting.KeywordAbility.Harmonize], printed or granted) — graveyard. */
     HARMONIZE,
     /**

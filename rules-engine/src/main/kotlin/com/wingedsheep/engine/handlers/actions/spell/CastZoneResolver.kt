@@ -371,6 +371,14 @@ class CastZoneResolver(
         ) != null
     }
 
+    /** Printed Escape permits casting this card from its owner's graveyard. */
+    fun hasEscapePermission(state: GameState, playerId: EntityId, cardId: EntityId): Boolean {
+        if (cardId !in state.getZone(ZoneKey(playerId, Zone.GRAVEYARD))) return false
+        val card = state.getEntity(cardId)?.get<CardComponent>() ?: return false
+        val def = cardRegistry.getCard(card.cardDefinitionId) ?: return false
+        return def.keywordAbilities.any { it is KeywordAbility.Escape }
+    }
+
     /**
      * The back face a card in [playerId]'s graveyard would be cast as through disturb (CR 702.146a),
      * or null when it isn't there, has no disturb keyword, or has no permanent back face.
