@@ -1,0 +1,33 @@
+name: Pest Control Terror Snapshot Rebless Preview
+
+on:
+  pull_request:
+    paths:
+      - .github/workflows/pest-control-terror-snapshot-rebless.yml
+      - mtg-sdk/**
+      - mtg-sets/**
+      - gym/**
+
+permissions:
+  contents: read
+
+jobs:
+  preview:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Rebless snapshots in workspace only
+        run: ./gradlew :mtg-sets:test --tests "*CardDefinitionSnapshotTest" -DupdateSnapshots=true
+      - name: Upload reviewed snapshot candidates
+        uses: actions/upload-artifact@v7
+        with:
+          name: pest-terror-snapshot-candidates
+          path: |
+            mtg-sets/src/test/resources/snapshots/cards/dka.json
+            mtg-sets/src/test/resources/snapshots/cards/mh3.json
+          if-no-files-found: error
