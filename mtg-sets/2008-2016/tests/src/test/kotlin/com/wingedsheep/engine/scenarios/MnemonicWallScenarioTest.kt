@@ -30,9 +30,12 @@ class MnemonicWallScenarioTest : FunSpec({
         driver.castSpell(player, wall).isSuccess shouldBe true
         driver.bothPass()
 
-        driver.submitYesNo(player, true).isSuccess shouldBe true
+        // Targets for a triggered ability are locked when the trigger is put on
+        // the stack (CR 603.3d), before Mnemonic Wall's "you may" decision is
+        // made during resolution.
         driver.submitTargetSelection(player, listOf(bolt)).isSuccess shouldBe true
         driver.bothPass()
+        driver.submitYesNo(player, true).isSuccess shouldBe true
 
         driver.findPermanent(player, "Mnemonic Wall") shouldNotBe null
         driver.findCardInHand(player, "Lightning Bolt") shouldNotBe null
@@ -42,13 +45,15 @@ class MnemonicWallScenarioTest : FunSpec({
     test("ETB may be declined without returning the targeted card") {
         val driver = setup()
         val player = driver.activePlayer!!
-        driver.putCardInGraveyard(player, "Lightning Bolt")
+        val bolt = driver.putCardInGraveyard(player, "Lightning Bolt")
         val wall = driver.putCardInHand(player, "Mnemonic Wall")
         driver.giveMana(player, Color.BLUE, 5)
 
         driver.castSpell(player, wall).isSuccess shouldBe true
         driver.bothPass()
 
+        driver.submitTargetSelection(player, listOf(bolt)).isSuccess shouldBe true
+        driver.bothPass()
         driver.submitYesNo(player, false).isSuccess shouldBe true
 
         driver.findPermanent(player, "Mnemonic Wall") shouldNotBe null
