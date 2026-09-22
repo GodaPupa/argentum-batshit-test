@@ -1,6 +1,5 @@
 package com.wingedsheep.mtg.sets.definitions.hml.cards
 
-import com.wingedsheep.sdk.dsl.Effects
 import com.wingedsheep.sdk.dsl.Targets
 import com.wingedsheep.sdk.dsl.card
 import com.wingedsheep.sdk.model.Rarity
@@ -29,6 +28,6 @@ val MemoryLapse = card("Memory Lapse") {
         rarity = Rarity.COMMON
         collectorNumber = "32a"
         artist = "Mark Tedin"
-        flavorText = ""Um . . . oh . . . what was I saying?"\n—Reveka, Wizard Savant"
+        flavorText = "\\\"Um . . . oh . . . what was I saying?\\\"\\n—Reveka, Wizard Savant"
     }
 }

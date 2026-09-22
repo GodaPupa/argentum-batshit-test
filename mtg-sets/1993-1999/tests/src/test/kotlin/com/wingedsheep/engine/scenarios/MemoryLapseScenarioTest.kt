@@ -1,5 +1,6 @@
 package com.wingedsheep.engine.scenarios
 
+import com.wingedsheep.engine.state.components.identity.AfterResolveDestinationComponent
 import com.wingedsheep.engine.state.components.identity.CantBeCounteredComponent
 import com.wingedsheep.engine.state.components.stack.ChosenTarget
 import com.wingedsheep.engine.support.GameTestDriver
@@ -63,6 +64,24 @@ class MemoryLapseScenarioTest : FunSpec({
         d.memoryLapse(caster, courser)
 
         d.findPermanent(victim, "Centaur Courser") shouldBe courser
-        d.state.getLibrary(victim).firstOrNull() shouldBe d.state.getLibrary(victim).firstOrNull()
+        d.state.getLibrary(victim).contains(courser) shouldBe false
+        d.getGraveyardCardNames(victim).contains("Centaur Courser") shouldBe false
+    }
+
+    test("counter-time exile rider takes precedence over Memory Lapse library destination") {
+        val d = driver()
+        val caster = d.player2
+        val victim = d.player1
+
+        d.giveMana(victim, Color.GREEN, 3)
+        val courser = d.putCardInHand(victim, "Centaur Courser")
+        d.castSpell(victim, courser).isSuccess shouldBe true
+        d.addComponent(courser, AfterResolveDestinationComponent())
+
+        d.memoryLapse(caster, courser)
+
+        d.getExile(victim).contains(courser) shouldBe true
+        d.state.getLibrary(victim).contains(courser) shouldBe false
+        d.getGraveyardCardNames(victim).contains("Centaur Courser") shouldBe false
     }
 })
