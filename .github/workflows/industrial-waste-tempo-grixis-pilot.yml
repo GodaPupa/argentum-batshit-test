@@ -29,7 +29,7 @@ jobs:
         id: pilot
         continue-on-error: true
         env: {IW_TEMPO_GRIXIS_PILOT: "true"}
-        run: just test-class IndustrialWasteTempoGrixisPilotBenchmark
+        run: ./gradlew :ai:test --tests IndustrialWasteTempoGrixisPilotBenchmark -Dbenchmark=true --no-daemon
       - name: Diagnose test runtime
         if: always()
         run: |
