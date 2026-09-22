@@ -155,6 +155,38 @@
     ]
 }
 
+// Memory Lapse
+{
+    "name": "Memory Lapse",
+    "manaCost": "{1}{U}",
+    "typeLine": "Instant",
+    "oracleText": "Counter target spell. If that spell is countered this way, put it on top of its owner's library instead of into that player's graveyard.",
+    "script": {
+        "spellEffect": {
+            "type": "Counter",
+            "counterDestination": "CounterDestination.LibraryTop"
+        },
+        "targetRequirements": [
+            {
+                "type": "TargetObject",
+                "filter": {
+                    "baseFilter": {},
+                    "zone": "Stack"
+                },
+                "id": "target spell"
+            }
+        ]
+    },
+    "metadata": {
+        "collectorNumber": "32a",
+        "artist": "Mark Tedin",
+        "flavorText": "\\\"Um . . . oh . . . what was I saying?\\\"\\n—Reveka, Wizard Savant"
+    },
+    "colorIdentityOverride": [
+        "BLUE"
+    ]
+}
+
 // Merchant Scroll
 {
     "name": "Merchant Scroll",
