@@ -41,6 +41,6 @@ validate the taxonomy without advancing a game.
 - Official initializer: absent
 - Execution method: absent
 
-The next justified gate is a disabled turn-zero preflight contract binding initializer conservation,
-telemetry schema, artifact reconciliation, and activation blockers. It must remain vectorless and
-must not advance or execute a smoke game.
+The following gate is a disabled turn-zero preflight contract binding initializer conservation,
+telemetry schema, artifact reconciliation, and activation blockers. It remains vectorless and does
+not advance or execute a smoke game.
