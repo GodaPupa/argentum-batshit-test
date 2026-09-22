@@ -82,16 +82,24 @@ class IzzetScienceVeteranBeastriderEngineReadinessTest : FunSpec({
         card.script.spellEffect shouldNotBe null
     }
 
+    test("Izzet Guildmage resolves with two capped spell-copy abilities") {
+        val card = registry.getCard("Izzet Guildmage") ?: error("Izzet Guildmage unresolved")
+        card.oracleText shouldBe "{2}{U}: Copy target instant spell you control with mana value 2 or less. You may choose new targets for the copy.\n{2}{R}: Copy target sorcery spell you control with mana value 2 or less. You may choose new targets for the copy."
+        card.creatureStats?.basePower shouldBe 2
+        card.creatureStats?.baseToughness shouldBe 2
+        card.script.activatedAbilities.size shouldBe 2
+    }
+
     test("freeze exact unresolved engine coverage count and emit identities") {
         val unresolved = IzzetScienceVeteranBeastriderEngineReadiness.unresolvedCardIdentities(registry)
         println("V09_REAL_ENGINE_UNRESOLVED_COUNT=" + unresolved.size)
         unresolved.forEach { println("V09_REAL_ENGINE_UNRESOLVED=" + it) }
-        unresolved.size shouldBe 47
+        unresolved.size shouldBe 46
     }
 
     test("full execution remains fail closed behind unresolved cards and PDH semantics") {
         val blockers = IzzetScienceVeteranBeastriderEngineReadiness.executionBlockers(registry)
-        blockers.size shouldBe 52
+        blockers.size shouldBe 51
         blockers.takeLast(5).shouldContainExactly(
             "PDH commander-zone initialization not qualified",
             "PDH commander recast/tax semantics not qualified",
