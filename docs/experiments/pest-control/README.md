@@ -36,6 +36,11 @@ The Mono-Blue Terror provenance adapter and byte-level reconciliation layer are 
 expose no game initializer, and leave the harness disabled with no official vector or outcome
 exposure.
 
+The construction-only Mono-Blue Terror initializer and telemetry taxonomy are recorded in
+`tier-one-mono-blue-terror-initializer-contract.md`. One fixed nonexperimental fixture verifies
+exact opening card conservation without taking a game action. No official initializer, vector,
+runner, or outcome exposure exists.
+
 The deterministic provenance adapter and byte-level reconciliation layer are recorded in
 `tier-one-grixis-adapter-artifact-contract.md`. They use synthetic in-memory fixtures, expose no game
 initializer, and leave the harness disabled with no vector or outcome exposure.
