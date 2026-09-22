@@ -53,3 +53,29 @@ existing primitives, it has the stronger finish than Mono-Black Aggro, and its a
 sacrifice, discard, reach, and graveyard-interaction plan adds more direct coverage of Industrial
 Waste's resilience than another speed opponent. It is selected for readiness only; no experimental
 seed or gameplay run is authorized.
+
+
+## Fourth opponent selection
+
+Research updated 2026-09-22 after Gate 7 Mono-Blue Terror closed validly without replication.
+Current Pauper metagame evidence keeps Jund Wildfire among the major competitive archetypes: recent
+MTGO data places it at roughly five percent of the field, while DeckSnipe's recent published-list
+window shows a 4.3% share and a 51.9% match win rate.
+
+The representative list is manohito's Top 4 Jund Wildfire finish from MTGO Pauper Challenge 16
+#12854110 on 2026-09-15 (27 players), preserved exactly in
+`jund-wildfire-manohito-2026-09-15.dck`.
+
+Sources:
+- https://decksnipe.com/archetype/pauper/jund-wildfire
+- https://mtgdecks.net/Pauper/mtgo-pauper-challenge-16-12854110-tournament-270190
+
+This opponent is selected ahead of Monster Tron for the next readiness gate because it adds a
+distinct Cleansing-Wildfire/resource-denial, artifact-value, sacrifice, and midrange axis while
+requiring only three absent maindeck definitions on the current Industrial Waste branch:
+Writhing Chrysalis, Cleansing Wildfire, and Twisted Landscape. The audited representative Monster
+Tron list requires five absent maindeck definitions. Selection is therefore a cost/coverage decision,
+not a claim that Jund Wildfire is stronger than Monster Tron.
+
+No Gate 8 gameplay seed namespace is authorized until exact 60/15 identity, all maindeck card
+implementations, opponent-policy fixtures, and a deterministic exact-deck readiness smoke pass.
