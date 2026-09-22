@@ -111,7 +111,6 @@ class EscapeTest : FunSpec({
                 cardId = spell,
                 useAlternativeCost = true,
                 alternativeCostType = AlternativeCostType.ESCAPE,
-                paymentStrategy = PaymentStrategy.FromPool,
                 additionalCostPayment = AdditionalCostPayment(exiledCards = listOf(fuelA, fuelB)),
             )
         )
