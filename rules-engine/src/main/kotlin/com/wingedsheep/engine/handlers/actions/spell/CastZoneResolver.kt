@@ -482,6 +482,30 @@ class CastZoneResolver(
     }
 
     /**
+     * Return this graveyard card's printed Escape ability when the card is in its owner's
+     * graveyard. Escape is an intrinsic graveyard-cast permission; it grants no timing permission
+     * and has no special post-resolution destination.
+     */
+    fun escapeAbility(
+        state: GameState,
+        playerId: EntityId,
+        cardId: EntityId
+    ): KeywordAbility.Escape? {
+        val graveyardZone = ZoneKey(playerId, Zone.GRAVEYARD)
+        if (cardId !in state.getZone(graveyardZone)) return null
+        val cardComponent = state.getEntity(cardId)?.get<CardComponent>() ?: return null
+        if (cardComponent.ownerId != playerId) return null
+        val cardDef = cardRegistry.getCard(cardComponent.cardDefinitionId) ?: return null
+        return cardDef.keywordAbilities.filterIsInstance<KeywordAbility.Escape>().firstOrNull()
+    }
+
+    fun hasEscapePermission(
+        state: GameState,
+        playerId: EntityId,
+        cardId: EntityId
+    ): Boolean = escapeAbility(state, playerId, cardId) != null
+
+    /**
      * Get the mayhem cost for a card, or null if it doesn't have mayhem.
      */
     fun getMayhemCost(cardId: EntityId, state: GameState): com.wingedsheep.sdk.core.ManaCost? {
