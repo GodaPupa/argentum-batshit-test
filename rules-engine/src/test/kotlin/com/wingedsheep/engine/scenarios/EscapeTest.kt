@@ -70,7 +70,7 @@ class EscapeTest : FunSpec({
         }
         withFuel.additionalCostInfo?.exileMinCount shouldBe 2
         withFuel.additionalCostInfo?.exileMaxCount shouldBe 2
-        withFuel.additionalCostInfo?.validExileTargets?.contains(spell).shouldBeFalse()
+        withFuel.additionalCostInfo?.validExileTargets?.contains(spell) shouldBe false
     }
 
     test("Escape grants no timing permission to a sorcery") {
