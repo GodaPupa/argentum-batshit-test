@@ -1,0 +1,30 @@
+name: Industrial Waste — Gate 8 Jund Card Capability
+
+on:
+  push:
+    branches: [industrial-waste/lab]
+    paths:
+      - .github/workflows/industrial-waste-g8-jund-card-capability.yml
+      - mtg-sets/2024/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/mh3/cards/WrithingChrysalis.kt
+      - mtg-sets/2024/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/mh3/cards/TwistedLandscape.kt
+      - mtg-sets/2024/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/IndustrialWasteGate8Mh3ScenarioTest.kt
+      - mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/znr/cards/CleansingWildfire.kt
+      - mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/CleansingWildfireScenarioTest.kt
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  jund-card-capability:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-java@v5
+        with: {distribution: temurin, java-version: 21}
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Validate Cleansing Wildfire
+        run: ./gradlew :mtg-sets:2017-2022:tests:test --tests '*CleansingWildfireScenarioTest' --no-daemon
+      - name: Validate Writhing Chrysalis and Twisted Landscape
+        run: ./gradlew :mtg-sets:2024:tests:test --tests '*IndustrialWasteGate8Mh3ScenarioTest' --no-daemon
