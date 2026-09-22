@@ -26,8 +26,24 @@ jobs:
       - uses: gradle/actions/setup-gradle@v6
       - uses: extractions/setup-just@v3
       - name: Execute frozen-vector pilot
+        id: pilot
+        continue-on-error: true
         env: {IW_TEMPO_GRIXIS_PILOT: "true"}
         run: just test-class IndustrialWasteTempoGrixisPilotBenchmark
+      - name: Diagnose test runtime
+        if: always()
+        run: |
+          echo "pilot_outcome=${{ steps.pilot.outcome }}"
+          find ai/build/test-results -type f -maxdepth 4 -print 2>/dev/null || true
+          for f in ai/build/test-results/test/*.xml; do
+            [ -f "$f" ] || continue
+            echo "===== $f ====="
+            cat "$f"
+          done
+          find ai/build/reports/tests -type f -maxdepth 5 -print 2>/dev/null | head -100 || true
+      - name: Enforce pilot success
+        if: always()
+        run: test "${{ steps.pilot.outcome }}" = "success"
       - name: Upload evidence
         if: always()
         uses: actions/upload-artifact@v7
