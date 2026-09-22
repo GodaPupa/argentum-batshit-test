@@ -123,6 +123,54 @@
     ]
 }
 
+// Archaeomancer
+{
+    "name": "Archaeomancer",
+    "manaCost": "{2}{U}{U}",
+    "typeLine": "Creature — Human Wizard",
+    "oracleText": "When this creature enters, return target instant or sorcery card from your graveyard to your hand.",
+    "creatureStats": {
+        "power": 1,
+        "toughness": 2
+    },
+    "script": {
+        "triggeredAbilities": [
+            {
+                "id": "ability_1",
+                "trigger": {
+                    "type": "ZoneChangeEvent",
+                    "to": "Battlefield"
+                },
+                "effect": {
+                    "type": "MoveToZone",
+                    "target": {
+                        "type": "BoundVariable",
+                        "name": "target"
+                    },
+                    "destination": "Hand"
+                },
+                "targetRequirement": {
+                    "type": "TargetObject",
+                    "filter": {
+                        "baseFilter": "instant|sorcery own:you",
+                        "zone": "Graveyard"
+                    },
+                    "id": "target"
+                },
+                "descriptionOverride": "When this creature enters, return target instant or sorcery card from your graveyard to your hand."
+            }
+        ]
+    },
+    "metadata": {
+        "collectorNumber": "41",
+        "artist": "Zoltan Boros",
+        "flavorText": "Words of power never disappear. They sleep, awaiting those with the will to rouse them."
+    },
+    "colorIdentityOverride": [
+        "BLUE"
+    ]
+}
+
 // Bloodhunter Bat
 {
     "name": "Bloodhunter Bat",

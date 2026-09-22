@@ -1785,6 +1785,65 @@
     ]
 }
 
+// Mnemonic Wall
+{
+    "name": "Mnemonic Wall",
+    "manaCost": "{4}{U}",
+    "typeLine": "Creature — Wall",
+    "oracleText": "Defender\nWhen this creature enters, you may return target instant or sorcery card from your graveyard to your hand.",
+    "creatureStats": {
+        "power": 0,
+        "toughness": 4
+    },
+    "keywords": [
+        "DEFENDER"
+    ],
+    "script": {
+        "triggeredAbilities": [
+            {
+                "id": "ability_1",
+                "trigger": {
+                    "type": "ZoneChangeEvent",
+                    "to": "Battlefield"
+                },
+                "effect": {
+                    "type": "Gated",
+                    "gate": {
+                        "type": "Gate.MayDecide",
+                        "hint": "Return the targeted instant or sorcery card to your hand?"
+                    },
+                    "then": {
+                        "type": "MoveToZone",
+                        "target": {
+                            "type": "BoundVariable",
+                            "name": "target"
+                        },
+                        "destination": "Hand"
+                    },
+                    "descriptionOverride": "You may return target instant or sorcery card from your graveyard to your hand."
+                },
+                "targetRequirement": {
+                    "type": "TargetObject",
+                    "filter": {
+                        "baseFilter": "instant|sorcery own:you",
+                        "zone": "Graveyard"
+                    },
+                    "id": "target"
+                },
+                "descriptionOverride": "When this creature enters, you may return target instant or sorcery card from your graveyard to your hand."
+            }
+        ]
+    },
+    "metadata": {
+        "collectorNumber": "78",
+        "artist": "Vance Kovacs",
+        "flavorText": "\"I'd build an entire fortress of them if I could.\"\n—Mzali, Lighthouse archmage"
+    },
+    "colorIdentityOverride": [
+        "BLUE"
+    ]
+}
+
 // Nema Siltlurker
 {
     "name": "Nema Siltlurker",

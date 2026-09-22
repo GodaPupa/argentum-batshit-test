@@ -43,6 +43,45 @@
     ]
 }
 
+// Owlbear
+{
+    "name": "Owlbear",
+    "manaCost": "{3}{G}{G}",
+    "typeLine": "Creature — Bird Bear",
+    "oracleText": "Trample\nKeen Senses — When this creature enters, draw a card.",
+    "creatureStats": {
+        "power": 4,
+        "toughness": 4
+    },
+    "keywords": [
+        "TRAMPLE"
+    ],
+    "script": {
+        "triggeredAbilities": [
+            {
+                "id": "ability_1",
+                "trigger": {
+                    "type": "ZoneChangeEvent",
+                    "to": "Battlefield"
+                },
+                "effect": {
+                    "type": "DrawCards",
+                    "count": {
+                        "type": "Fixed",
+                        "amount": 1
+                    }
+                }
+            }
+        ]
+    },
+    "metadata": {
+        "collectorNumber": "198"
+    },
+    "colorIdentityOverride": [
+        "GREEN"
+    ]
+}
+
 // Priest of Ancient Lore
 {
     "name": "Priest of Ancient Lore",
