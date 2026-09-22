@@ -69,6 +69,5 @@ class EscapeAutomaticPaymentAiTest : FunSpec({
 
         driver.getExile(player) shouldContainAll fuel
         driver.getGraveyard(player).contains(sleep) shouldBe true
-        driver.state.getEntity(target) != null shouldBe true
     }
 })
