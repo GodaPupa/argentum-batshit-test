@@ -77,6 +77,7 @@ class IndustrialWasteTempoGrixisPilotBenchmark : FunSpec({
                             registry = registry, setup = TableSetup.HEADS_UP, agents = agents, decks = decks,
                             seed = seed, groupId = seedIndex + 1, rotation = rotation, maxTurns = 16,
                             maxActions = 4_000, trainingObserver = observer, skipMulligans = false,
+                            recordActionStream = true,
                         )
                         add(TempoGrixisOutcome(
                             deckName, seedIndex + 1, seed, industrialSeat, game.completed, game.winnerSeat,
