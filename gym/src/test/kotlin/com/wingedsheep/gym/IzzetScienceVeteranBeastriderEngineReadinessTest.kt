@@ -66,16 +66,24 @@ class IzzetScienceVeteranBeastriderEngineReadinessTest : FunSpec({
         card.script.triggeredAbilities.size shouldBe 1
     }
 
+    test("Goblin Electromancer resolves with generic instant-sorcery cost reduction") {
+        val card = registry.getCard("Goblin Electromancer") ?: error("Goblin Electromancer unresolved")
+        card.oracleText shouldBe "Instant and sorcery spells you cast cost {1} less to cast."
+        card.creatureStats?.basePower shouldBe 2
+        card.creatureStats?.baseToughness shouldBe 2
+        card.script.staticAbilities.size shouldBe 1
+    }
+
     test("freeze exact unresolved engine coverage count and emit identities") {
         val unresolved = IzzetScienceVeteranBeastriderEngineReadiness.unresolvedCardIdentities(registry)
         println("V09_REAL_ENGINE_UNRESOLVED_COUNT=" + unresolved.size)
         unresolved.forEach { println("V09_REAL_ENGINE_UNRESOLVED=" + it) }
-        unresolved.size shouldBe 49
+        unresolved.size shouldBe 48
     }
 
     test("full execution remains fail closed behind unresolved cards and PDH semantics") {
         val blockers = IzzetScienceVeteranBeastriderEngineReadiness.executionBlockers(registry)
-        blockers.size shouldBe 54
+        blockers.size shouldBe 53
         blockers.takeLast(5).shouldContainExactly(
             "PDH commander-zone initialization not qualified",
             "PDH commander recast/tax semantics not qualified",
