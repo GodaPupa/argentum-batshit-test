@@ -131,7 +131,6 @@ object PestControlTierOneMonoBlueTerrorReadiness {
         registry: CardRegistry,
     ): List<String> = buildList {
         addAll(validationErrors(readiness, registry))
-        add("maindeck card support is incomplete: 1 identity / 2 slots")
         add("no execution runner is defined")
         add("no official seed vector is frozen")
         add("official Mono-Blue Terror games are not authorized")
