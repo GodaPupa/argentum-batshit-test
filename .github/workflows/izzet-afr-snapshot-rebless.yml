@@ -1,0 +1,56 @@
+name: Izzet AFR Snapshot Rebless
+
+on:
+  push:
+    branches:
+      - "mayhem/izzet-science"
+    paths:
+      - ".github/workflows/izzet-afr-snapshot-rebless.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  rebless-afr:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: mayhem/izzet-science
+
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "21"
+
+      - uses: gradle/actions/setup-gradle@v6
+
+      - name: Verify frozen control
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(sha256sum izzet-science/v0.7-control.md | cut -d' ' -f1)" = "726f5e9458b46dda30b33a6ce9f3c3237b25d6e11b81dac85308c3065c108a01"
+
+      - name: Regenerate snapshots canonically
+        run: ./gradlew :mtg-sets:test --tests "*CardDefinitionSnapshotTest" -DupdateSnapshots=true --stacktrace
+
+      - name: Fail closed on unrelated snapshot changes
+        shell: bash
+        run: |
+          set -euo pipefail
+          changed="$(git diff --name-only)"
+          printf '%s\n' "$changed"
+          test "$changed" = "mtg-sets/src/test/resources/snapshots/cards/AFR.json"
+          git diff --check
+          grep -Fq '// Owlbear' mtg-sets/src/test/resources/snapshots/cards/AFR.json
+
+      - name: Commit canonical AFR snapshot
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add mtg-sets/src/test/resources/snapshots/cards/AFR.json
+          git commit -m "Rebless AFR snapshot for Owlbear"
+          git push origin HEAD:mayhem/izzet-science
