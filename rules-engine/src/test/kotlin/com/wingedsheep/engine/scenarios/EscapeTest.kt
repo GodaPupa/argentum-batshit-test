@@ -42,7 +42,7 @@ class EscapeTest : FunSpec({
     fun createDriver(): GameTestDriver {
         val driver = GameTestDriver()
         driver.registerCards(TestCards.all + escapeStudy)
-        driver.initMirrorMatch(deck = Deck.of("Island" to 40), startingLife = 20)
+        driver.initMirrorMatch(\n            deck = Deck.of("Island" to 40),\n            startingLife = 20,\n            skipMulligans = true,\n            startingPlayer = 0,\n        )
         return driver
     }
 
