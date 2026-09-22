@@ -618,6 +618,31 @@ class CastSpellHandler(
             }
         }
 
+        // Escape's non-mana cost (CR 702.138a) is part of the chosen alternative cost.
+        // The selection is client-supplied, so prove exact count, uniqueness, source exclusion,
+        // and current-zone ownership here even though legal-action enumeration already filtered it.
+        if (action.useAlternativeCost && cardDef != null &&
+            action.altAllows(AlternativeCostType.ESCAPE) &&
+            zoneResolver.hasEscapePermission(state, action.playerId, action.cardId)
+        ) {
+            val escape = zoneResolver.escapeAbility(state, action.playerId, action.cardId)
+                ?: return "Escape is not available for this card"
+            val exiled = action.additionalCostPayment?.exiledCards ?: emptyList()
+            if (exiled.size != escape.exileOtherCards) {
+                return "Escape requires exiling exactly ${escape.exileOtherCards} other card(s) from your graveyard"
+            }
+            if (exiled.size != exiled.distinct().size) {
+                return "The same card cannot be exiled more than once to pay Escape"
+            }
+            if (action.cardId in exiled) {
+                return "The escaping card cannot exile itself to pay Escape"
+            }
+            val graveyard = state.getZone(ZoneKey(action.playerId, Zone.GRAVEYARD))
+            if (exiled.any { it !in graveyard }) {
+                return "Every card exiled to pay Escape must be in your graveyard"
+            }
+        }
+
         // Validate flashback's bundled additional cost (e.g., "Flashback—{1}{R}, Behold three Elementals")
         if (action.useAlternativeCost && cardDef != null && hasFlashback && action.altAllows(AlternativeCostType.FLASHBACK)) {
             val flashbackAdditional = cardDef.keywordAbilities
@@ -2663,6 +2688,24 @@ class CastSpellHandler(
                 if (action.altAllows(AlternativeCostType.GRANTED)) {
                     costCalculator.findAlternativeCastingCosts(currentState, action.playerId)
                         .firstOrNull()?.let { addAll(it.additionalCosts) }
+                }
+                // Escape's bundled non-mana payment. The legal-action and validation layers
+                // exclude the escaping card itself; the ordinary exile-cost payment loop below
+                // performs the actual zone changes and event emission.
+                if (action.altAllows(AlternativeCostType.ESCAPE) &&
+                    zoneResolver.hasEscapePermission(currentState, action.playerId, action.cardId)) {
+                    val escape = zoneResolver.escapeAbility(currentState, action.playerId, action.cardId)
+                    if (escape != null && escape.exileOtherCards > 0) {
+                        add(
+                            AdditionalCost.Atom(
+                                CostAtom.ExileFrom(
+                                    zone = Zone.GRAVEYARD,
+                                    filter = com.wingedsheep.sdk.scripting.GameObjectFilter.Any,
+                                    count = escape.exileOtherCards,
+                                )
+                            )
+                        )
+                    }
                 }
                 // Flashback's bundled additional cost (e.g., Behold three Elementals)
                 if (action.altAllows(AlternativeCostType.FLASHBACK) &&
