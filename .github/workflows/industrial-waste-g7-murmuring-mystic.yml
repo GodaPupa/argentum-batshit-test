@@ -23,3 +23,5 @@ jobs:
       - uses: gradle/actions/setup-gradle@v6
       - name: Run Murmuring Mystic scenarios
         run: ./gradlew :mtg-sets:2017-2022:tests:test --tests '*MurmuringMysticScenarioTest' --no-daemon
+
+# execute focused capability
