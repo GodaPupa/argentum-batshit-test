@@ -5,13 +5,15 @@ on:
       - pest-control/tier1-mono-blue-terror-escape-support
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   rebless:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
+        with:
+          ref: pest-control/tier1-mono-blue-terror-escape-support
       - uses: actions/setup-java@v5
         with:
           distribution: temurin
@@ -20,6 +22,7 @@ jobs:
       - name: Rebless deterministic card snapshots
         run: ./gradlew :mtg-sets:test --tests "*CardDefinitionSnapshotTest" -DupdateSnapshots=true
       - name: Verify THB is the only card snapshot changed
+        shell: bash
         run: |
           set -euo pipefail
           changed="$(git status --short -- mtg-sets/src/test/resources/snapshots/cards)"
@@ -27,8 +30,13 @@ jobs:
           test -n "$changed"
           unexpected="$(printf '%s\n' "$changed" | grep -Ev ' mtg-sets/src/test/resources/snapshots/cards/THB\.json$' || true)"
           test -z "$unexpected"
-      - uses: actions/upload-artifact@v7
-        with:
-          name: pest-terror-thb-snapshot
-          path: mtg-sets/src/test/resources/snapshots/cards/THB.json
-          if-no-files-found: error
+          git diff --check
+      - name: Commit canonical THB snapshot
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add mtg-sets/src/test/resources/snapshots/cards/THB.json
+          git commit -m "Rebless THB snapshot for Sleep of the Dead"
+          git push origin HEAD:pest-control/tier1-mono-blue-terror-escape-support
