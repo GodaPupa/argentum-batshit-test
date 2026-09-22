@@ -458,6 +458,73 @@
     ]
 }
 
+// Izzet Guildmage
+{
+    "name": "Izzet Guildmage",
+    "manaCost": "{U/R}{U/R}",
+    "typeLine": "Creature — Human Wizard",
+    "oracleText": "{2}{U}: Copy target instant spell you control with mana value 2 or less. You may choose new targets for the copy.\n{2}{R}: Copy target sorcery spell you control with mana value 2 or less. You may choose new targets for the copy.",
+    "creatureStats": {
+        "power": 2,
+        "toughness": 2
+    },
+    "script": {
+        "activatedAbilities": [
+            {
+                "id": "ability_1",
+                "cost": {
+                    "type": "CostAtomWrapper",
+                    "atom": {
+                        "type": "AtomMana",
+                        "cost": "{2}{U}"
+                    }
+                },
+                "effect": "CopyTargetSpell",
+                "targetRequirements": [
+                    {
+                        "type": "TargetObject",
+                        "filter": {
+                            "baseFilter": "instant mv<=2 ctrl:you",
+                            "zone": "Stack"
+                        },
+                        "id": "target instant spell you control with mana value 2 or less"
+                    }
+                ]
+            },
+            {
+                "id": "ability_2",
+                "cost": {
+                    "type": "CostAtomWrapper",
+                    "atom": {
+                        "type": "AtomMana",
+                        "cost": "{2}{R}"
+                    }
+                },
+                "effect": "CopyTargetSpell",
+                "targetRequirements": [
+                    {
+                        "type": "TargetObject",
+                        "filter": {
+                            "baseFilter": "sorcery mv<=2 ctrl:you",
+                            "zone": "Stack"
+                        },
+                        "id": "target sorcery spell you control with mana value 2 or less"
+                    }
+                ]
+            }
+        ]
+    },
+    "metadata": {
+        "collectorNumber": "145",
+        "rarity": "UNCOMMON",
+        "artist": "Jim Murray"
+    },
+    "colorIdentityOverride": [
+        "BLUE",
+        "RED"
+    ]
+}
+
 // Izzet Signet
 {
     "name": "Izzet Signet",
