@@ -1369,7 +1369,10 @@ class CastFromZoneEnumerator : ActionEnumerator {
                 }
                 else -> null
             }
-            val canPayAdditional = when (flashbackAdditionalInfo?.costType) {
+            val flashbackPayLife = ((flashback.additionalCost as? AdditionalCost.Atom)?.atom as? CostAtom.PayLife)
+            val canPayAdditional = if (flashbackPayLife != null) {
+                state.lifeTotal(playerId) >= flashbackPayLife.amount
+            } else when (flashbackAdditionalInfo?.costType) {
                 "Behold" -> flashbackAdditionalInfo.validBeholdTargets.size >= flashbackAdditionalInfo.beholdCount
                 "SacrificePermanent" ->
                     flashbackAdditionalInfo.validSacrificeTargets.size >= flashbackAdditionalInfo.sacrificeCount

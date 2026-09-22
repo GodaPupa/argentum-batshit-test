@@ -1,0 +1,28 @@
+name: Industrial Waste — Gate 7 Remaining Mono-Blue Cards
+
+on:
+  push:
+    branches: [industrial-waste/lab]
+    paths:
+      - .github/workflows/industrial-waste-g7-remaining-mono-blue.yml
+      - rules-engine/src/main/kotlin/com/wingedsheep/engine/legalactions/enumerators/CastFromZoneEnumerator.kt
+      - mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/dka/cards/ArtfulDodge.kt
+      - mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/ArtfulDodgeCapabilityTest.kt
+      - mtg-sets/2000-2002/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/tor/cards/DeepAnalysis.kt
+      - mtg-sets/2000-2002/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/DeepAnalysisCapabilityTest.kt
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  remaining-mono-blue-capability:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-java@v5
+        with: {distribution: temurin, java-version: 21}
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Validate Artful Dodge and Deep Analysis
+        run: ./gradlew :mtg-sets:2008-2016:tests:test --tests '*ArtfulDodge*' :mtg-sets:2000-2002:tests:test --tests '*DeepAnalysis*' :ai:compileTestKotlin --no-daemon
