@@ -7,6 +7,7 @@ import com.wingedsheep.gym.matchup.MonoBlueTerrorSmokeHarnessReadiness
 import com.wingedsheep.gym.matchup.MonoBlueTerrorSmokeHarnessState
 import com.wingedsheep.gym.matchup.MonoBlueTerrorSmokeVectorIdentity
 import com.wingedsheep.gym.matchup.MonoBlueTerrorStartingDeck
+import com.wingedsheep.gym.matchup.PEST_MONO_BLUE_TERROR_DISABLED_INITIALIZER_CONSTRUCTION_SHA256
 import com.wingedsheep.gym.matchup.PEST_MONO_BLUE_TERROR_OFFICIAL_INITIALIZATION_BLOCKER_SHA256
 import com.wingedsheep.gym.matchup.PestControlTierOneMonoBlueTerrorOfficialInitializationBoundary
 import com.wingedsheep.gym.matchup.PestSeat
@@ -14,6 +15,7 @@ import com.wingedsheep.mtg.sets.MtgSetCatalog
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.collections.shouldContain
 import io.kotest.matchers.shouldBe
+import java.lang.reflect.Modifier
 
 private const val SYNTHETIC_TERROR_BOUNDARY_SEED = 8_900_001L
 private val SYNTHETIC_TERROR_BOUNDARY_IDENTITY = MonoBlueTerrorSmokeVectorIdentity(
@@ -43,14 +45,19 @@ class PestControlTierOneMonoBlueTerrorOfficialInitializationBoundaryTest : FunSp
         result.activationBlockers.shouldContain("official assignment is absent")
         result.activationBlockers.shouldContain("execution commit is absent")
         result.activationBlockers.shouldContain("durable attempt marker is absent")
-        result.activationBlockers.shouldContain("official initializer implementation is absent")
+        result.activationBlockers.shouldContain("official initializer is disabled")
         result.blockerSha256 shouldBe PEST_MONO_BLUE_TERROR_OFFICIAL_INITIALIZATION_BLOCKER_SHA256
+        result.constructionValidationSha256 shouldBe
+            PEST_MONO_BLUE_TERROR_DISABLED_INITIALIZER_CONSTRUCTION_SHA256
+        result.officialInitializerImplemented shouldBe true
+        result.officialInitializerEnabled shouldBe false
+        result.disabledInitializerConstructionGamesInitialized shouldBe 1
         result.officialSeedsGenerated shouldBe 0
         result.officialGamesInitialized shouldBe 0
         result.outcomeExposure shouldBe 0
     }
 
-    test("even a complete synthetic request cannot initialize while implementation is absent") {
+    test("even a complete synthetic request cannot reach the disabled initializer") {
         val readiness = MonoBlueTerrorSmokeHarnessReadiness(
             vectorIdentity = SYNTHETIC_TERROR_BOUNDARY_IDENTITY,
             state = MonoBlueTerrorSmokeHarnessState.AUTHORIZED,
@@ -79,8 +86,23 @@ class PestControlTierOneMonoBlueTerrorOfficialInitializationBoundaryTest : FunSp
             "smoke vector must remain absent during harness construction"
         )
         result.activationBlockers.shouldContain("smoke harness must remain disabled")
-        result.activationBlockers.shouldContain("official initializer implementation is absent")
+        result.activationBlockers.shouldContain("official initializer is disabled")
+        result.officialInitializerImplemented shouldBe true
+        result.officialInitializerEnabled shouldBe false
+        result.disabledInitializerConstructionGamesInitialized shouldBe 1
+        result.constructionValidationSha256 shouldBe
+            PEST_MONO_BLUE_TERROR_DISABLED_INITIALIZER_CONSTRUCTION_SHA256
         result.officialGamesInitialized shouldBe 0
+    }
+
+    test("disabled initializer implementation is not a public API and initialize stays private") {
+        val implementation = Class.forName(
+            "com.wingedsheep.gym.matchup.PestControlTierOneMonoBlueTerrorDisabledOfficialInitializer"
+        )
+
+        Modifier.isPublic(implementation.modifiers) shouldBe false
+        val initialize = implementation.declaredMethods.single { it.name == "initialize" }
+        Modifier.isPrivate(initialize.modifiers) shouldBe true
     }
 
     test("runner and preflight failures remain contract errors") {
