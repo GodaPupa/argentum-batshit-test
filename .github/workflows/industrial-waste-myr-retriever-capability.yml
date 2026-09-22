@@ -1,0 +1,28 @@
+name: Industrial Waste — Myr Retriever Capability
+
+on:
+  push:
+    branches:
+      - industrial-waste/lab
+    paths:
+      - .github/workflows/industrial-waste-myr-retriever-capability.yml
+      - mtg-sets/2003-2007/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/mrd/cards/MyrRetriever.kt
+      - mtg-sets/2003-2007/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/MyrRetrieverScenarioTest.kt
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  myr-retriever-capability:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: 21
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Run Myr Retriever scenarios
+        run: ./gradlew :mtg-sets:2003-2007:tests:test --tests '*MyrRetrieverScenarioTest' --no-daemon
