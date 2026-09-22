@@ -2449,6 +2449,15 @@ class CastSpellHandler(
                 costCalculator.calculateEffectiveCostWithAlternativeBase(
                     currentState, cardDef, MayhemGrants.effectiveMayhem(currentState, action.cardId, cardDef, action.playerId, cardRegistry, predicateEvaluator)!!.cost, action.playerId
                 )
+            } else if (action.altAllows(AlternativeCostType.ESCAPE) &&
+                zoneResolver.hasEscapePermission(currentState, action.playerId, action.cardId)) {
+                // Escape cost (CR 702.138a) — mirror validate() exactly. The non-mana exile
+                // payment is validated and executed separately through the additional-cost rail.
+                val escapeAbility = zoneResolver.escapeAbility(currentState, action.playerId, action.cardId)
+                    ?: return ExecutionResult.error(currentState, "Escape is not available for this card")
+                costCalculator.calculateEffectiveCostWithAlternativeBase(
+                    currentState, cardDef, escapeAbility.cost, action.playerId
+                )
             } else if (action.altAllows(AlternativeCostType.DISTURB) &&
                 DisturbCasts.printedDisturb(cardDef) != null &&
                 zoneResolver.disturbCastFace(currentState, action.playerId, action.cardId) != null) {
