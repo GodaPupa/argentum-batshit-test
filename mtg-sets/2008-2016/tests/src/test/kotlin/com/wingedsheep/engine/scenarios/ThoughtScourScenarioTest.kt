@@ -1,8 +1,7 @@
 package com.wingedsheep.engine.scenarios
 
 import com.wingedsheep.engine.core.CastSpell
-import com.wingedsheep.engine.handlers.continuations.entityIdToChosenTarget
-import com.wingedsheep.engine.state.components.identity.CardComponent
+import com.wingedsheep.engine.state.components.stack.ChosenTarget
 import com.wingedsheep.engine.support.ScenarioTestBase
 import com.wingedsheep.sdk.core.Phase
 import com.wingedsheep.sdk.core.Step
@@ -11,11 +10,12 @@ import io.kotest.matchers.shouldBe
 
 class ThoughtScourScenarioTest : ScenarioTestBase() {
     init {
-        test("target player mills two cards and the caster draws one") {
+        test("Thought Scour mills the targeted player two then its controller draws one") {
             val game = scenario()
-                .withPlayers("Caster", "Target")
+                .withPlayers("Player1", "Player2")
                 .withCardInHand(1, "Thought Scour")
                 .withLandsOnBattlefield(1, "Island", 1)
+                .withCardInLibrary(1, "Forest")
                 .withCardInLibrary(1, "Forest")
                 .withCardInLibrary(2, "Mountain")
                 .withCardInLibrary(2, "Mountain")
@@ -24,33 +24,31 @@ class ThoughtScourScenarioTest : ScenarioTestBase() {
                 .inPhase(Phase.PRECOMBAT_MAIN, Step.PRECOMBAT_MAIN)
                 .build()
 
-            val targetLibraryBefore = game.librarySize(2)
-            val targetGraveyardBefore = game.graveyardSize(2)
-            val casterLibraryBefore = game.librarySize(1)
-            val casterHandBefore = game.state.getHand(game.player1Id).size
-            val thoughtScourId = game.state.getHand(game.player1Id).first { id ->
-                game.state.getEntity(id)?.get<CardComponent>()?.name == "Thought Scour"
-            }
+            val spellId = game.state.getHand(game.player1Id).single()
+            val p1HandBefore = game.state.getHand(game.player1Id).size
+            val p1LibraryBefore = game.librarySize(1)
+            val p2LibraryBefore = game.librarySize(2)
+            val p2GraveyardBefore = game.graveyardSize(2)
 
             val result = game.execute(
                 CastSpell(
                     playerId = game.player1Id,
-                    cardId = thoughtScourId,
-                    targets = listOf(entityIdToChosenTarget(game.state, game.player2Id)),
+                    cardId = spellId,
+                    targets = listOf(ChosenTarget.Player(game.player2Id))
                 )
             )
-            withClue("Casting Thought Scour should succeed: ${result.error}") {
+            withClue("Thought Scour should cast legally: ${result.error}") {
                 result.error shouldBe null
             }
             game.resolveStack()
 
-            withClue("The chosen player mills exactly two cards") {
-                game.librarySize(2) shouldBe targetLibraryBefore - 2
-                game.graveyardSize(2) shouldBe targetGraveyardBefore + 2
+            withClue("The targeted opponent mills exactly two cards") {
+                game.librarySize(2) shouldBe p2LibraryBefore - 2
+                game.graveyardSize(2) shouldBe p2GraveyardBefore + 2
             }
-            withClue("The caster draws exactly one card after casting the spell") {
-                game.librarySize(1) shouldBe casterLibraryBefore - 1
-                game.state.getHand(game.player1Id).size shouldBe casterHandBefore
+            withClue("Thought Scour's controller draws exactly one card after the mill") {
+                game.librarySize(1) shouldBe p1LibraryBefore - 1
+                game.state.getHand(game.player1Id).size shouldBe p1HandBefore
             }
         }
     }

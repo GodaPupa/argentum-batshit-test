@@ -11,6 +11,7 @@ import com.wingedsheep.sdk.scripting.effects.DrawCardsEffect
  * Thought Scour
  * {U}
  * Instant
+ *
  * Target player mills two cards.
  * Draw a card.
  */
@@ -24,12 +25,13 @@ val ThoughtScour = card("Thought Scour") {
         val player = target("target player", Targets.Player)
         effect = Effects.Composite(
             Patterns.Library.mill(2, player),
-            DrawCardsEffect(1),
+            DrawCardsEffect(1)
         )
     }
 
     metadata {
         rarity = Rarity.COMMON
         collectorNumber = "52"
+        artist = "David Rapoza"
     }
 }
