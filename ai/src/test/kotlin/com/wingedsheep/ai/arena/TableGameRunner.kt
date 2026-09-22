@@ -255,7 +255,14 @@ object TableGameRunner {
         // `GameState.turnNumber` counts player turns, hence the multiply.
         val maxPlayerTurns = maxTurns * setup.seats
         val stream = if (recordActionStream) MessageDigest.getInstance("SHA-256") else null
-        fun record(entry: String) = stream?.update(entry.toByteArray(Charsets.UTF_8))
+        val recentActions = ArrayDeque<String>()
+        fun record(entry: String) {
+            stream?.update(entry.toByteArray(Charsets.UTF_8))
+            if (recordActionStream) {
+                recentActions.addLast(entry.trim())
+                while (recentActions.size > 40) recentActions.removeFirst()
+            }
+        }
         val featureGame = featureCollector?.newGame(
             "$groupId-$rotation-$seed",
             seatIds.mapIndexed { seat, id -> id to agents[seat].name }.toMap(),
@@ -268,6 +275,12 @@ object TableGameRunner {
                 ) {
                     if (actionCount - lastProgressAction > STUCK_ACTIONS_PER_TURN) {
                         drawReason = "stuck(turn=${state.turnNumber},step=${state.step.name})"
+                        if (recordActionStream) {
+                            println("TABLE_GAME_STUCK group=$groupId rotation=$rotation seed=$seed " +
+                                "turn=${state.turnNumber} step=${state.step.name}")
+                            recentActions.forEach { println("TABLE_GAME_TRACE $it") }
+                            System.out.flush()
+                        }
                         break
                     }
                     if (state.activePlayerId != lastActivePlayer) {
