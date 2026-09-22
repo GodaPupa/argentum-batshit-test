@@ -68,6 +68,7 @@ class EscapeTest : FunSpec({
         withClue("two OTHER graveyard cards make the non-mana Escape payment affordable") {
             withFuel.affordable.shouldBeTrue()
         }
+        withFuel.additionalCostInfo?.costType shouldBe "ExileFromGraveyard"
         withFuel.additionalCostInfo?.exileMinCount shouldBe 2
         withFuel.additionalCostInfo?.exileMaxCount shouldBe 2
         withFuel.additionalCostInfo?.validExileTargets?.contains(spell) shouldBe false
