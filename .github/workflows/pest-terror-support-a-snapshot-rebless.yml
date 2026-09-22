@@ -1,0 +1,44 @@
+name: Pest Terror Support A Snapshot Rebless
+
+on:
+  push:
+    branches:
+      - pest-control/tier1-mono-blue-terror-card-support-a
+    paths:
+      - .github/workflows/pest-terror-support-a-snapshot-rebless.yml
+
+permissions:
+  contents: write
+
+jobs:
+  rebless:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: pest-control/tier1-mono-blue-terror-card-support-a
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Regenerate canonical card snapshots
+        run: ./gradlew :mtg-sets:test --tests "*CardDefinitionSnapshotTest" -DupdateSnapshots=true
+      - name: Fail closed on unrelated snapshot changes
+        shell: bash
+        run: |
+          set -euo pipefail
+          changed="$(git diff --name-only)"
+          printf '%s\n' "$changed"
+          test "$changed" = $'mtg-sets/src/test/resources/snapshots/cards/DKA.json\nmtg-sets/src/test/resources/snapshots/cards/MH3.json'
+          git diff --check
+      - name: Commit reviewed snapshot refresh
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add mtg-sets/src/test/resources/snapshots/cards/DKA.json mtg-sets/src/test/resources/snapshots/cards/MH3.json
+          git commit -m "Rebless Terror support card snapshots"
+          git push origin HEAD:pest-control/tier1-mono-blue-terror-card-support-a
