@@ -80,6 +80,7 @@ class CastFromZoneEnumerator : ActionEnumerator {
         enumerateFlashback(context, result)
         enumerateHarmonize(context, result)
         enumerateMayhem(context, result)
+        enumerateEscape(context, result)
         enumerateDisturb(context, result)
         enumerateGraveyardCast(context, result)
         enumerateWarp(context, result)
@@ -1549,6 +1550,145 @@ class CastFromZoneEnumerator : ActionEnumerator {
                         manaCostString = costString,
                         autoTapPreview = autoTapPreview,
                         sourceZone = "GRAVEYARD"
+                    )
+                )
+            }
+        }
+    }
+
+    // =========================================================================
+    // Escape (cards in graveyard with the Escape keyword)
+    // =========================================================================
+
+    /**
+     * Escape (CR 702.138): cast this card from its owner's graveyard for its escape mana cost
+     * plus the keyword's non-mana payment. It grants no timing permission. The exile candidates
+     * explicitly exclude the escaping card itself because printed Escape costs say "other cards".
+     */
+    private fun enumerateEscape(
+        context: EnumerationContext,
+        result: MutableList<LegalAction>
+    ) {
+        val state = context.state
+        val playerId = context.playerId
+        val graveyardCards = state.getZone(ZoneKey(playerId, Zone.GRAVEYARD))
+
+        for (cardId in graveyardCards) {
+            val container = state.getEntity(cardId) ?: continue
+            val cardComponent = container.get<CardComponent>() ?: continue
+            val cardDef = context.cardRegistry.getCard(cardComponent.cardDefinitionId) ?: continue
+            val escape = cardDef.keywordAbilities.filterIsInstance<KeywordAbility.Escape>().firstOrNull()
+                ?: continue
+
+            // Escape grants no timing permission of its own.
+            val isInstant = cardComponent.typeLine.isInstant
+            val hasFlash = cardDef.keywords.contains(com.wingedsheep.sdk.core.Keyword.FLASH) ||
+                context.castPermissionUtils.hasGrantedFlash(state, cardId)
+            if (!isInstant && !hasFlash && !context.canPlaySorcerySpeed) continue
+
+            val otherGraveyardCards = graveyardCards.filter { it != cardId }
+            val canPayEscapeExile = otherGraveyardCards.size >= escape.exileOtherCards
+            val escapeAdditionalInfo = if (escape.exileOtherCards > 0) {
+                AdditionalCostData(
+                    description = "Exile ${escape.exileOtherCards} other cards from your graveyard",
+                    costType = "ExileCards",
+                    validExileTargets = otherGraveyardCards,
+                    exileMinCount = escape.exileOtherCards,
+                    exileMaxCount = escape.exileOtherCards,
+                )
+            } else null
+
+            val action = CastSpell(
+                playerId = playerId,
+                cardId = cardId,
+                useAlternativeCost = true,
+                alternativeCostType = AlternativeCostType.ESCAPE,
+            )
+
+            if (context.cantCastSpell(cardId)) {
+                result.add(
+                    LegalAction(
+                        actionType = "CastWithEscape",
+                        description = "Cast ${cardComponent.name} (Escape)",
+                        action = action,
+                        affordable = false,
+                        manaCostString = escape.cost.toString(),
+                        additionalCostInfo = escapeAdditionalInfo,
+                        sourceZone = "GRAVEYARD",
+                    )
+                )
+                continue
+            }
+
+            val castRestrictions = cardDef.script.castRestrictions
+            if (!context.castPermissionUtils.checkCastRestrictions(state, playerId, castRestrictions)) continue
+
+            val effectiveCost = context.costCalculator.calculateEffectiveCostWithAlternativeBase(
+                state, cardDef, escape.cost, playerId
+            )
+            val costString = effectiveCost.toString()
+            val canAffordMana = context.manaSolver.canPay(
+                state, playerId, effectiveCost, precomputedSources = context.availableManaSources
+            )
+
+            if (!canAffordMana || !canPayEscapeExile) {
+                result.add(
+                    LegalAction(
+                        actionType = "CastWithEscape",
+                        description = "Cast ${cardComponent.name} (Escape)",
+                        action = action,
+                        affordable = false,
+                        manaCostString = costString,
+                        additionalCostInfo = escapeAdditionalInfo,
+                        sourceZone = "GRAVEYARD",
+                    )
+                )
+                continue
+            }
+
+            val targetReqs = buildList {
+                addAll(cardDef.script.targetRequirements)
+                cardDef.script.auraTarget?.let { add(it) }
+            }
+            val autoTapPreview = if (context.skipAutoTapPreview) null else {
+                context.manaSolver.solve(
+                    state, playerId, effectiveCost, precomputedSources = context.availableManaSources
+                )?.sources?.map { it.entityId }
+            }
+
+            if (targetReqs.isNotEmpty()) {
+                val targetInfos = context.targetUtils.buildTargetInfos(state, playerId, targetReqs)
+                if (context.targetUtils.allRequirementsSatisfied(targetInfos)) {
+                    val firstReq = targetReqs.first()
+                    val firstInfo = targetInfos.first()
+                    result.add(
+                        LegalAction(
+                            actionType = "CastWithEscape",
+                            description = "Cast ${cardComponent.name} (Escape)",
+                            action = action,
+                            validTargets = firstInfo.validTargets,
+                            requiresTargets = true,
+                            targetCount = firstInfo.maxTargets,
+                            minTargets = firstReq.effectiveMinCount,
+                            targetDescription = firstReq.description,
+                            targetRequirements = if (targetInfos.size > 1) targetInfos else null,
+                            manaCostString = costString,
+                            additionalCostInfo = escapeAdditionalInfo,
+                            autoTapPreview = autoTapPreview,
+                            sourceZone = "GRAVEYARD",
+                        )
+                    )
+                }
+            } else {
+                result.add(
+                    LegalAction(
+                        actionType = "CastWithEscape",
+                        description = "Cast ${cardComponent.name} (Escape)",
+                        action = action,
+                        manaCostString = costString,
+                        additionalCostInfo = escapeAdditionalInfo,
+                        autoTapPreview = autoTapPreview,
+                        sourceZone = "GRAVEYARD",
                     )
                 )
             }
