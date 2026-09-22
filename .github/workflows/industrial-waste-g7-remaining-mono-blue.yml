@@ -26,3 +26,5 @@ jobs:
       - uses: gradle/actions/setup-gradle@v6
       - name: Validate Artful Dodge and Deep Analysis
         run: ./gradlew :mtg-sets:2008-2016:tests:test --tests '*ArtfulDodge*' :mtg-sets:2000-2002:tests:test --tests '*DeepAnalysis*' :ai:compileTestKotlin --no-daemon
+
+# validate remaining Mono-Blue cards for Gate 7
