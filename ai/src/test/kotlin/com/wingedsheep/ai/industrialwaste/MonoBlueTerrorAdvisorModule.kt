@@ -5,6 +5,7 @@ import com.wingedsheep.ai.engine.advisor.CardAdvisorModule
 import com.wingedsheep.ai.engine.advisor.CardAdvisorRegistry
 import com.wingedsheep.ai.engine.advisor.CastContext
 import com.wingedsheep.engine.core.CastSpell
+import com.wingedsheep.engine.state.GameState
 import com.wingedsheep.engine.state.components.identity.CardComponent
 import com.wingedsheep.engine.state.components.stack.ChosenTarget
 import com.wingedsheep.sdk.core.Zone
@@ -29,21 +30,26 @@ internal object MonoBlueTerrorAdvisorModule : CardAdvisorModule {
 private object ThoughtScourSelfMillAdvisor : CardAdvisor {
     override val cardNames = setOf("Thought Scour")
 
+    override fun targetPreference(state: GameState, targetId: EntityId, playerId: EntityId): Double? {
+        if (targetId != playerId) return null
+        if (!state.monoBlueHasDiscountedThreatInHand(playerId)) return null
+        return 100.0
+    }
+
     override fun evaluateCast(context: CastContext): Double? {
         val cast = context.action.action as? CastSpell ?: return null
         val target = cast.targets.singleOrNull() as? ChosenTarget.Player ?: return null
         if (target.playerId != context.playerId) return null
-
-        val handNames = context.state.getZone(context.playerId, Zone.HAND)
-            .mapNotNull(context.state::monoBlueCardName)
-        val selfMillAdvancesThreat = handNames.any {
-            it == "Tolarian Terror" || it == "Cryptic Serpent"
-        }
-        if (!selfMillAdvancesThreat) return null
+        if (!context.state.monoBlueHasDiscountedThreatInHand(context.playerId)) return null
 
         return context.passScore + 20.0
     }
 }
 
-private fun com.wingedsheep.engine.state.GameState.monoBlueCardName(id: EntityId): String? =
+private fun GameState.monoBlueHasDiscountedThreatInHand(playerId: EntityId): Boolean =
+    getZone(playerId, Zone.HAND)
+        .mapNotNull(::monoBlueCardName)
+        .any { it == "Tolarian Terror" || it == "Cryptic Serpent" }
+
+private fun GameState.monoBlueCardName(id: EntityId): String? =
     getEntity(id)?.get<CardComponent>()?.name
