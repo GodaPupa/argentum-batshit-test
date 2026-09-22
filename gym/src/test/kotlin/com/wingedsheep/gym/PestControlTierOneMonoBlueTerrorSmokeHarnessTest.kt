@@ -56,7 +56,7 @@ class PestControlTierOneMonoBlueTerrorSmokeHarnessTest : FunSpec({
 
         errors.shouldContain("smoke harness is not AUTHORIZED")
         errors.shouldContain("smoke vector is not frozen")
-        errors.shouldContain("game adapter has no initialization method")
+        errors.shouldContain("game adapter has no official initialization method")
         errors.shouldContain("no execution method is defined")
     }
 
