@@ -1,97 +1,20 @@
 name: Pest Control Grixis SALVAGE_CONTINUATION_11 Official Execution
-run-name: Pest Grixis SALVAGE_CONTINUATION_11 EXECUTE
 
 on:
-  workflow_dispatch:
+  pull_request:
+    paths:
+      - .github/workflows/pest-control-tier-one-grixis-salvage-11-execute.yml
+      - docs/experiments/pest-control/tier-one-grixis-salvage-11-result.md
 
 permissions:
-  actions: read
   contents: read
 
-concurrency:
-  group: pest-control-grixis-salvage-continuation-11-official
-  cancel-in-progress: false
-
-env:
-  REPLICATION_ARTIFACT_ID: "10660335894"
-  REPLICATION_ARTIFACT_SHA256: 49597c4a3011464e1d4bb707dfa1b554090054059e0675254524c92fcce8d6fd
-
 jobs:
-  official:
+  retired:
     runs-on: ubuntu-latest
-    timeout-minutes: 1440
     steps:
-      - name: Reject GitHub rerun
+      - name: Confirm Grixis salvage continuation is terminal
         run: |
           set -euo pipefail
-          test "${GITHUB_RUN_ATTEMPT}" = "1"
-
-      - name: Checkout exact workflow-dispatch commit
-        uses: actions/checkout@v6
-        with:
-          ref: ${{ github.sha }}
-
-      - name: Capture exact commit and tree
-        id: identity
-        run: |
-          set -euo pipefail
-          commit="$(git rev-parse HEAD)"
-          tree="$(git rev-parse 'HEAD^{tree}')"
-          test "${commit}" = "${GITHUB_SHA}"
-          echo "commit=${commit}" >> "${GITHUB_OUTPUT}"
-          echo "tree=${tree}" >> "${GITHUB_OUTPUT}"
-
-      - uses: actions/setup-java@v5
-        with:
-          distribution: temurin
-          java-version: '21'
-      - uses: gradle/actions/setup-gradle@v6
-
-      - name: Download exact original frozen replication artifact
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          set -euo pipefail
-          mkdir -p build/pest-grixis-continuation-input
-          curl -fsSL -H "Authorization: Bearer ${GH_TOKEN}" -H "Accept: application/vnd.github+json"             "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/artifacts/${REPLICATION_ARTIFACT_ID}/zip"             -o build/pest-grixis-replication-freeze.zip
-          echo "${REPLICATION_ARTIFACT_SHA256}  build/pest-grixis-replication-freeze.zip" | sha256sum -c -
-          unzip -q build/pest-grixis-replication-freeze.zip -d build/pest-grixis-continuation-input
-          cd build/pest-grixis-continuation-input
-          sha256sum -c artifacts.sha256
-
-      - name: Create durable continuation envelope
-        env:
-          EXECUTION_COMMIT: ${{ steps.identity.outputs.commit }}
-          EXECUTION_TREE: ${{ steps.identity.outputs.tree }}
-        run: |
-          set -euo pipefail
-          mkdir -p build/reports/pest-control-grixis-salvage-continuation-11
-          {
-            echo "run_id=${GITHUB_RUN_ID}"
-            echo "run_attempt=${GITHUB_RUN_ATTEMPT}"
-            echo "classification=SALVAGE_CONTINUATION_11"
-            echo "consumed_incomplete_game=1"
-            echo "authorized_games=2-12"
-            echo "execution_commit=${EXECUTION_COMMIT}"
-            echo "execution_tree=${EXECUTION_TREE}"
-            echo "replication_artifact_id=${REPLICATION_ARTIFACT_ID}"
-            echo "replication_artifact_sha256=${REPLICATION_ARTIFACT_SHA256}"
-            echo "vector_sha256=5cd8a78fb62a59495d07ed31c4579fab7bafe2bc9c075aa7757a7f67953c75d4"
-          } > build/reports/pest-control-grixis-salvage-continuation-11/execution-envelope.txt
-
-      - name: Execute untouched Games 2 through 12 exactly once
-        env:
-          PEST_GRIXIS_CONTINUATION_MODE: EXECUTE_SALVAGE_11
-          PEST_GRIXIS_CONTINUATION_INPUT_DIR: ${{ github.workspace }}/build/pest-grixis-continuation-input
-          PEST_GRIXIS_CONTINUATION_EXECUTION_COMMIT: ${{ steps.identity.outputs.commit }}
-          PEST_GRIXIS_CONTINUATION_OUTPUT_DIR: ${{ github.workspace }}/build/reports/pest-control-grixis-salvage-continuation-11
-        run: scripts/test-class PestControlTierOneGrixisSalvageContinuationOfficialExecutionRunnerTest --info --stacktrace
-
-      - name: Upload continuation evidence
-        if: always()
-        uses: actions/upload-artifact@v7
-        with:
-          name: pest-control-grixis-salvage-continuation-11-official
-          path: build/reports/pest-control-grixis-salvage-continuation-11/
-          if-no-files-found: error
-          retention-days: 90
+          echo "Run 35670905674 completed SALVAGE_CONTINUATION_11 at Pest Control 4-7."
+          echo "No rerun, replay, replacement, regeneration, or Grixis extension is authorized."
