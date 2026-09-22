@@ -180,6 +180,14 @@ enum class Keyword(val displayName: String) {
     FLASHBACK("Flashback"),
 
     /**
+     * Escape [cost], exile other cards (CR 702.138). "You may cast this card from your graveyard
+     * for its escape cost." Escape grants graveyard cast permission but no timing permission; the
+     * printed escape cost replaces the mana cost and may include exiling other graveyard cards.
+     * Unlike Flashback, an escaped instant or sorcery goes to the graveyard normally on resolution.
+     */
+    ESCAPE("Escape"),
+
+    /**
      * Harmonize—[cost] (Tarkir: Dragonstorm). "You may cast this card from your
      * graveyard for its harmonize cost. You may tap a creature you control to
      * reduce that cost by an amount of generic mana equal to its power. Then exile
