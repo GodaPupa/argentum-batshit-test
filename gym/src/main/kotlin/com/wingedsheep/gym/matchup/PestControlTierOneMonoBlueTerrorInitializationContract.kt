@@ -151,6 +151,19 @@ data class MonoBlueTerrorTelemetryIndex(
 
 /** Pure index over canonical raw text. It cannot initialize or advance a game. */
 object PestControlTierOneMonoBlueTerrorTelemetryContract {
+    val schemaFields: List<String> = listOf(
+        "cantripsAndSetup",
+        "graveyardAndEscape",
+        "threatsAndCostReduction",
+        "permission",
+        "tempoAndBounce",
+        "evasion",
+        "landsAndCycling",
+    )
+
+    fun schemaSha256(): String =
+        sha256(schemaFields.joinToString("\n", postfix = "\n").toByteArray())
+
     fun index(actions: List<PriorityAudit>): MonoBlueTerrorTelemetryIndex = indexText(
         actions.map { action ->
             MonoBlueTerrorTelemetryTextTrace(
