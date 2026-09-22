@@ -41,6 +41,11 @@ The construction-only Mono-Blue Terror initializer and telemetry taxonomy are re
 exact opening card conservation without taking a game action. No official initializer, vector,
 runner, or outcome exposure exists.
 
+The vectorless Mono-Blue Terror composition gate is recorded in
+`tier-one-mono-blue-terror-turn-zero-preflight.md`. It binds the qualified runner, readiness,
+construction conservation, telemetry schema, artifact contract, and exact activation blockers while
+keeping the fixed fixture at zero submitted actions and all official counters at zero.
+
 The deterministic provenance adapter and byte-level reconciliation layer are recorded in
 `tier-one-grixis-adapter-artifact-contract.md`. They use synthetic in-memory fixtures, expose no game
 initializer, and leave the harness disabled with no vector or outcome exposure.
