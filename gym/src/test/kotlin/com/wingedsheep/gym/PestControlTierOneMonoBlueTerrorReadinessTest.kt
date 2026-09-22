@@ -55,10 +55,7 @@ class PestControlTierOneMonoBlueTerrorReadinessTest : FunSpec({
     }
 
     test("readiness records the exact current preboard support blocker") {
-        PestControlTierOneMonoBlueTerrorReadiness.unresolvedMain(registry).entries.map { it.key to it.value }
-            .shouldContainExactly(
-                "Sleep of the Dead" to 2,
-            )
+        PestControlTierOneMonoBlueTerrorReadiness.unresolvedMain(registry).shouldBeEmpty()
 
         PestControlTierOneMonoBlueTerrorReadiness.unresolvedSideboard(registry).entries.map { it.key to it.value }
             .shouldContainExactly(
