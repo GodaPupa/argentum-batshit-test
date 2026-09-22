@@ -59,3 +59,12 @@ promotion, or postboard work is authorized; the frozen v1.0 Control remains unch
 Gate 6 now begins with the exact sourced Carlos Dc Grixis Affinity 75. Its six-card implementation
 gap and fail-closed admission criteria are frozen, but no seed namespace or gameplay run is
 authorized until card, policy, and deterministic-smoke readiness all pass.
+
+
+Gate 7 Mono-Blue Terror is complete. Exact-deck readiness and the seven-fixture opponent-policy
+audit passed before any official seed exposure. The fresh two-seed paired pilot then completed all
+eight games validly: frozen Control went 1-3, Pactdoll-A went 0-4, and Mono-Blue went 7-1 overall.
+Opponent pressure and the minimum Industrial capability floor both passed, but Pactdoll-A trailed
+Control and therefore failed the predeclared replication trigger. Mono-Blue sampling is closed with
+no replication, no promotion, and no postboard authorization. Frozen v1.0 Control remains the
+baseline.

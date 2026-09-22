@@ -1,6 +1,6 @@
 # Gate 7 Mono-Blue Terror preboard capability pilot v1
 
-Status: frozen before execution; fresh namespace reserved; non-promotional.
+Status: completed; valid eight-game capability pilot; Mono-Blue sampling closed without replication or promotion.
 
 ## Inputs
 
@@ -48,3 +48,26 @@ evidence.
 
 Frozen Industrial Waste v1.0 Control remains unchanged. No postboard work is authorized by this
 pilot.
+
+
+## Result and decision
+
+GitHub Actions run `35782519152` completed successfully. The uploaded canonical artifact
+`industrial-waste-g7-mono-blue-pilot` has artifact digest
+`sha256:e5ccdcf240011320062c814d8c04637fac3086fea4f79e2ba08070d5d512c751`.
+
+All eight games were valid: zero exceptions, zero illegal actions, zero non-cap draws, complete
+play/draw rotation, and the frozen seed vector matched its registered digest.
+
+- Frozen Control: 1-3.
+- Pactdoll-A: 0-4.
+- Mono-Blue Terror overall: 7-1.
+- Control produced the only Industrial win; Pactdoll-A trailed Control by one win.
+- Neither Industrial list reached combo-ready state in the pilot.
+- Control assembled Tron by turn 5 in 0/4 games; Pactdoll-A did so in 1/4.
+- Mean colored-mana-failure turns were 2.25 for Control and 4.00 for Pactdoll-A.
+
+The opponent-pressure floor passed and Industrial fair-game capability was demonstrated by Control's
+single win. The predeclared replication trigger did not pass because Pactdoll-A did not lead Control
+by at least one win. Mono-Blue sampling therefore closes with no replication, no challenger
+promotion, and no postboard authorization. The frozen v1.0 Control remains unchanged.
