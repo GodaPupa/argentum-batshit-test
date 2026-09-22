@@ -23,17 +23,16 @@ class MnemonicWallScenarioTest : FunSpec({
     test("ETB may return a targeted instant from your graveyard") {
         val driver = setup()
         val player = driver.activePlayer!!
-        val bolt = driver.putCardInGraveyard(player, "Lightning Bolt")
+        driver.putCardInGraveyard(player, "Lightning Bolt")
         val wall = driver.putCardInHand(player, "Mnemonic Wall")
         driver.giveMana(player, Color.BLUE, 5)
 
         driver.castSpell(player, wall).isSuccess shouldBe true
         driver.bothPass()
 
-        // Targets for a triggered ability are locked when the trigger is put on
-        // the stack (CR 603.3d), before Mnemonic Wall's "you may" decision is
-        // made during resolution.
-        driver.submitTargetSelection(player, listOf(bolt)).isSuccess shouldBe true
+        // With exactly one legal target, the engine deterministically locks that
+        // target while placing the ETB trigger on the stack. The only interactive
+        // decision occurs when the MayEffect resolves.
         driver.bothPass()
         driver.submitYesNo(player, true).isSuccess shouldBe true
 
@@ -52,7 +51,6 @@ class MnemonicWallScenarioTest : FunSpec({
         driver.castSpell(player, wall).isSuccess shouldBe true
         driver.bothPass()
 
-        driver.submitTargetSelection(player, listOf(bolt)).isSuccess shouldBe true
         driver.bothPass()
         driver.submitYesNo(player, false).isSuccess shouldBe true
 
