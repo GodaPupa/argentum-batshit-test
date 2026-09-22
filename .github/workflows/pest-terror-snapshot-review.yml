@@ -1,0 +1,35 @@
+name: Pest Terror Snapshot Review
+
+on:
+  pull_request:
+    paths:
+      - mtg-sdk/**
+      - mtg-sets/**
+      - .github/workflows/pest-terror-snapshot-review.yml
+
+permissions:
+  contents: read
+
+jobs:
+  capture:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Rebuild card-definition snapshots in workspace
+        run: ./gradlew :mtg-sets:test --tests "*CardDefinitionSnapshotTest" -DupdateSnapshots=true
+      - name: Show intentional snapshot diff
+        run: git diff -- mtg-sets/src/test/resources/snapshots/cards/DKA.json mtg-sets/src/test/resources/snapshots/cards/MH3.json
+      - name: Upload reviewed snapshot candidates
+        uses: actions/upload-artifact@v7
+        with:
+          name: pest-terror-snapshot-candidates
+          path: |
+            mtg-sets/src/test/resources/snapshots/cards/DKA.json
+            mtg-sets/src/test/resources/snapshots/cards/MH3.json
+          if-no-files-found: error
+          retention-days: 7
