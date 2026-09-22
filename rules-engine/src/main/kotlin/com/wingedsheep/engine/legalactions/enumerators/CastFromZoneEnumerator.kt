@@ -1591,7 +1591,7 @@ class CastFromZoneEnumerator : ActionEnumerator {
             val escapeAdditionalInfo = if (escape.exileOtherCards > 0) {
                 AdditionalCostData(
                     description = "Exile ${escape.exileOtherCards} other cards from your graveyard",
-                    costType = "ExileCards",
+                    costType = "ExileFromGraveyard",
                     validExileTargets = otherGraveyardCards,
                     exileMinCount = escape.exileOtherCards,
                     exileMaxCount = escape.exileOtherCards,
