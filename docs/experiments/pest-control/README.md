@@ -61,6 +61,11 @@ The synthetic Mono-Blue Terror execution composition contract is recorded in
 boundary, coordinator ledger, and artifact views without owning or invoking an initializer,
 callback, writer, seed source, runner, or workflow.
 
+The Mono-Blue Terror runner-surface audit is recorded in
+`tier-one-mono-blue-terror-runner-surface-preflight.md`. It verifies that repository workflows,
+tools, server entry points, and compiled public APIs expose no official Terror initializer or
+execution path.
+
 The deterministic provenance adapter and byte-level reconciliation layer are recorded in
 `tier-one-grixis-adapter-artifact-contract.md`. They use synthetic in-memory fixtures, expose no game
 initializer, and leave the harness disabled with no vector or outcome exposure.
