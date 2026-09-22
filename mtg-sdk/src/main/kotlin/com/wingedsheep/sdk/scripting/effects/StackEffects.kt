@@ -94,6 +94,16 @@ sealed interface CounterDestination {
     @SerialName("CounterDestination.Hand")
     @Serializable
     data object Hand : CounterDestination
+
+    /**
+     * Spell is put on top of its owner's library instead of their graveyard.
+     * This remains a genuine counter: can't-be-countered still applies and
+     * SpellCounteredEvent still fires. A counter-time exile rider such as
+     * flashback takes precedence over this destination.
+     */
+    @SerialName("CounterDestination.LibraryTop")
+    @Serializable
+    data object LibraryTop : CounterDestination
 }
 
 /**
@@ -206,6 +216,13 @@ data class CounterEffect(
                             append(". If countered, put it into its owner's hand")
                         } else {
                             append(". If that spell is countered this way, put it into its owner's hand instead of into that player's graveyard")
+                        }
+                    }
+                    CounterDestination.LibraryTop -> {
+                        if (condition is CounterCondition.UnlessPaysMana || condition is CounterCondition.UnlessPaysDynamic) {
+                            append(". If countered, put it on top of its owner's library")
+                        } else {
+                            append(". If that spell is countered this way, put it on top of its owner's library instead of into that player's graveyard")
                         }
                     }
                 }

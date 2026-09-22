@@ -74,16 +74,23 @@ class IzzetScienceVeteranBeastriderEngineReadinessTest : FunSpec({
         card.script.staticAbilities.size shouldBe 1
     }
 
+    test("Memory Lapse resolves through counter-to-library-top destination") {
+        val card = registry.getCard("Memory Lapse") ?: error("Memory Lapse unresolved")
+        card.oracleText shouldBe "Counter target spell. If that spell is countered this way, put it on top of its owner's library instead of into that player's graveyard."
+        card.typeLine.toString() shouldBe "Instant"
+        card.script.spellEffect shouldNotBe null
+    }
+
     test("freeze exact unresolved engine coverage count and emit identities") {
         val unresolved = IzzetScienceVeteranBeastriderEngineReadiness.unresolvedCardIdentities(registry)
         println("V09_REAL_ENGINE_UNRESOLVED_COUNT=" + unresolved.size)
         unresolved.forEach { println("V09_REAL_ENGINE_UNRESOLVED=" + it) }
-        unresolved.size shouldBe 48
+        unresolved.size shouldBe 47
     }
 
     test("full execution remains fail closed behind unresolved cards and PDH semantics") {
         val blockers = IzzetScienceVeteranBeastriderEngineReadiness.executionBlockers(registry)
-        blockers.size shouldBe 53
+        blockers.size shouldBe 52
         blockers.takeLast(5).shouldContainExactly(
             "PDH commander-zone initialization not qualified",
             "PDH commander recast/tax semantics not qualified",

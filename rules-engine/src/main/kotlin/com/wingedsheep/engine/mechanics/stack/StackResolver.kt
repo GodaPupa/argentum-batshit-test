@@ -3089,6 +3089,64 @@ class StackResolver(
     }
 
     /**
+     * Counter a spell on the stack and put it on top of its owner's library instead of their
+     * graveyard (Memory Lapse). If the spell can't be countered, nothing happens.
+     *
+     * A counter-time AfterResolveDestinationComponent (notably flashback's exile replacement)
+     * takes precedence over the printed library destination. When library is used, index 0 is
+     * the top of library in GameState.
+     */
+    fun counterSpellToLibraryTop(state: GameState, spellId: EntityId): ExecutionResult {
+        if (spellId !in state.stack) {
+            return ExecutionResult.error(state, "Spell not on stack: $spellId")
+        }
+
+        val container = state.getEntity(spellId)
+            ?: return ExecutionResult.error(state, "Spell not found: $spellId")
+        val cardComponent = container.get<CardComponent>()
+
+        if (container.has<CantBeCounteredComponent>() || isGrantedCantBeCountered(state, spellId)) {
+            return ExecutionResult.success(state)
+        }
+
+        val spellComponent = container.get<SpellOnStackComponent>()
+        val ownerId = cardComponent?.ownerId
+            ?: spellComponent?.casterId
+            ?: return ExecutionResult.error(state, "Cannot determine spell owner")
+
+        var newState = state.removeFromStack(spellId)
+        val riderOnCounter = container.get<AfterResolveDestinationComponent>()
+            ?.takeIf { !it.onlyIfResolved }
+        val destZone = riderOnCounter?.zone ?: Zone.LIBRARY
+        newState = if (destZone == Zone.LIBRARY) {
+            newState.insertIntoZone(ZoneKey(ownerId, Zone.LIBRARY), spellId, 0)
+        } else {
+            newState.addToZone(ZoneKey(ownerId, destZone), spellId)
+        }
+        val destinationObject = newState.objectRef(spellId)
+
+        newState = newState.updateEntity(spellId) { c ->
+            c.without<SpellOnStackComponent>().without<TargetsComponent>()
+        }
+
+        return ExecutionResult.success(
+            newState,
+            listOf(
+                SpellCounteredEvent(spellId, cardComponent?.name ?: "Unknown"),
+                ZoneChangeEvent(
+                    spellId,
+                    cardComponent?.name ?: "Unknown",
+                    Zone.STACK,
+                    destZone,
+                    ownerId,
+                    oldObject = state.objectRef(spellId),
+                    newObject = destinationObject
+                )
+            )
+        )
+    }
+
+    /**
      * Counter a spell on the stack and exile it instead of putting it into
      * its owner's graveyard. If the spell can't be countered, nothing happens.
      *
