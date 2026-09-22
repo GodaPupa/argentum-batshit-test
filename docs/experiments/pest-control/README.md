@@ -31,6 +31,11 @@ Mono-Blue Terror breadth construction is recorded in
 supported, while the new four-cell smoke specification remains disabled with no vector, entropy,
 game initializer, execution method, official seeds, official games, or outcome exposure.
 
+The Mono-Blue Terror provenance adapter and byte-level reconciliation layer are recorded in
+`tier-one-mono-blue-terror-adapter-artifact-contract.md`. They use synthetic in-memory fixtures,
+expose no game initializer, and leave the harness disabled with no official vector or outcome
+exposure.
+
 The deterministic provenance adapter and byte-level reconciliation layer are recorded in
 `tier-one-grixis-adapter-artifact-contract.md`. They use synthetic in-memory fixtures, expose no game
 initializer, and leave the harness disabled with no vector or outcome exposure.
