@@ -23,17 +23,19 @@ class MnemonicWallScenarioTest : FunSpec({
     test("ETB may return a targeted instant from your graveyard") {
         val driver = setup()
         val player = driver.activePlayer!!
-        driver.putCardInGraveyard(player, "Lightning Bolt")
+        val bolt = driver.putCardInGraveyard(player, "Lightning Bolt")
         val wall = driver.putCardInHand(player, "Mnemonic Wall")
         driver.giveMana(player, Color.BLUE, 5)
 
         driver.castSpell(player, wall).isSuccess shouldBe true
         driver.bothPass()
 
-        // The optional targeted trigger asks "may?" first. After "Yes", the single
-        // legal graveyard target is auto-selected and the ETB ability is put on the
-        // stack; one more priority cycle is required to resolve that ability.
-        driver.submitYesNo(player, true).isSuccess shouldBe true
+        // This engine asks the "may?" question before target selection for a targeted
+        // optional trigger. Saying "Yes" legitimately pauses again for the graveyard
+        // target, so a paused ExecutionResult is the expected outcome here.
+        val yes = driver.submitYesNo(player, true)
+        yes.isPaused shouldBe true
+        driver.submitTargetSelection(player, listOf(bolt)).isSuccess shouldBe true
         driver.bothPass()
 
         driver.findPermanent(player, "Mnemonic Wall") shouldNotBe null
