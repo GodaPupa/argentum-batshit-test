@@ -38,6 +38,6 @@ qualified-runner mismatch is a contract error rather than an activation opportun
 - Official initializer implementation: absent
 - Execution method: absent
 
-The next justified gate is a disabled execution-coordinator state machine using synthetic callbacks
-only. It must prove durable attempt-before-initialize-before-record ordering, reject retries and
-partials, and expose no production runner or official seed source.
+The following gate is a pure synthetic coordinator ledger. It proves durable
+attempt-before-initialize-before-record ordering, rejects retries and partials, and exposes no
+callbacks, production runner, or official seed source.
