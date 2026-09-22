@@ -1,0 +1,29 @@
+name: Industrial Waste — Gate 7 Mono-Blue Policy Audit
+
+on:
+  push:
+    branches: [industrial-waste/lab]
+    paths:
+      - .github/workflows/industrial-waste-g7-mono-blue-policy-audit.yml
+      - ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteMonoBluePolicyAuditTest.kt
+      - industrial-waste/protocols/gate-7-mono-blue-terror-policy-audit-v1.md
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  mono-blue-policy-audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-java@v5
+        with: {distribution: temurin, java-version: 21}
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Run deterministic Mono-Blue policy fixtures
+        run: ./gradlew :ai:test --tests '*IndustrialWasteMonoBluePolicyAuditTest' --no-daemon
+      - name: Print focused failure details
+        if: failure()
+        run: |
+          find ai/build/test-results/test -name 'TEST-*IndustrialWasteMonoBluePolicyAuditTest*.xml' -exec sed -n '1,600p' {} \\;
