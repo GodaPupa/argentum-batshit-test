@@ -25,6 +25,12 @@ The following disabled smoke-harness specification is recorded in
 `tier-one-grixis-smoke-harness.md`. It fixes four balanced seat/play-draw cells but contains no
 entropy, seed vector, execution method, workflow, or game initialization path.
 
+Mono-Blue Terror breadth construction is recorded in
+`tier-one-mono-blue-terror-readiness.md` and
+`tier-one-mono-blue-terror-smoke-harness.md`. The accepted Serpico_CC preboard 60 is fully
+supported, while the new four-cell smoke specification remains disabled with no vector, entropy,
+game initializer, execution method, official seeds, official games, or outcome exposure.
+
 The deterministic provenance adapter and byte-level reconciliation layer are recorded in
 `tier-one-grixis-adapter-artifact-contract.md`. They use synthetic in-memory fixtures, expose no game
 initializer, and leave the harness disabled with no vector or outcome exposure.
