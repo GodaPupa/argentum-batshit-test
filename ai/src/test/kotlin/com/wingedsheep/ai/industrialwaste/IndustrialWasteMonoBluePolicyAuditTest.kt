@@ -18,8 +18,10 @@ import io.kotest.matchers.types.shouldBeInstanceOf
  * lines. They allocate no experimental namespace and are not matchup-strength evidence.
  */
 class IndustrialWasteMonoBluePolicyAuditTest : ScenarioTestBase() {
-    private val profile = AiProfile.PRODUCTION_CANDIDATE_EXPIRING.copy(
+    private val baseProfile = AiProfile.PRODUCTION_CANDIDATE_EXPIRING
+    private val profile = baseProfile.copy(
         id = "mono-blue-terror-gate-7-policy-audit",
+        advisorModules = baseProfile.advisorModules + MonoBlueTerrorAdvisorModule,
     )
 
     private fun ai(game: TestGame) = AIPlayer.create(cardRegistry, game.player1Id, profile)
@@ -95,10 +97,10 @@ class IndustrialWasteMonoBluePolicyAuditTest : ScenarioTestBase() {
                 .withLandsOnBattlefield(1, "Island", 2)
                 .withCardInHand(1, "Counterspell")
                 .withLandsOnBattlefield(2, "Swamp", 4)
-                .withCardInHand(2, "Pestilence")
+                .withCardInHand(2, "Pactdoll Terror")
                 .build()
 
-            putSpellOnStackAndPass(game, "Pestilence")
+            putSpellOnStackAndPass(game, "Pactdoll Terror")
             val action = ai(game).chooseAction(game.state).shouldBeInstanceOf<CastSpell>()
             name(game, action.cardId) shouldBe "Counterspell"
             action.targets.single().shouldBeInstanceOf<ChosenTarget.Spell>()
@@ -109,11 +111,11 @@ class IndustrialWasteMonoBluePolicyAuditTest : ScenarioTestBase() {
                 .withActivePlayer(2)
                 .withLandsOnBattlefield(1, "Island", 1)
                 .withCardInHand(1, "Force Spike")
-                .withLandsOnBattlefield(2, "Swamp", 5)
-                .withCardInHand(2, "Gray Merchant of Asphodel")
+                .withLandsOnBattlefield(2, "Swamp", 4)
+                .withCardInHand(2, "Pactdoll Terror")
                 .build()
 
-            putSpellOnStackAndPass(game, "Gray Merchant of Asphodel")
+            putSpellOnStackAndPass(game, "Pactdoll Terror")
             val action = ai(game).chooseAction(game.state).shouldBeInstanceOf<CastSpell>()
             name(game, action.cardId) shouldBe "Force Spike"
             action.targets.single().shouldBeInstanceOf<ChosenTarget.Spell>()

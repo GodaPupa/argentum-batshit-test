@@ -6,6 +6,7 @@ on:
     paths:
       - .github/workflows/industrial-waste-g7-mono-blue-policy-audit.yml
       - ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteMonoBluePolicyAuditTest.kt
+      - ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/MonoBlueTerrorAdvisorModule.kt
       - industrial-waste/protocols/gate-7-mono-blue-terror-policy-audit-v1.md
   workflow_dispatch:
 
@@ -26,4 +27,4 @@ jobs:
       - name: Print focused failure details
         if: failure()
         run: |
-          find ai/build/test-results/test -name 'TEST-*IndustrialWasteMonoBluePolicyAuditTest*.xml' -exec sed -n '1,600p' {} \\;
+          find ai/build/test-results/test -name 'TEST-*IndustrialWasteMonoBluePolicyAuditTest*.xml' -print0 | xargs -0 -r sed -n '1,600p' || true
