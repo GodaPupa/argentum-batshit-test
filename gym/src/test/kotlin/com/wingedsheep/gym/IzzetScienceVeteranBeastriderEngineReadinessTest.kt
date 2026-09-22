@@ -58,16 +58,24 @@ class IzzetScienceVeteranBeastriderEngineReadinessTest : FunSpec({
         card.script.triggeredAbilities.size shouldBe 1
     }
 
+    test("Murmuring Mystic resolves as instant-sorcery cast token engine") {
+        val card = registry.getCard("Murmuring Mystic") ?: error("Murmuring Mystic unresolved")
+        card.oracleText shouldBe "Whenever you cast an instant or sorcery spell, create a 1/1 blue Bird Illusion creature token with flying."
+        card.creatureStats?.basePower shouldBe 1
+        card.creatureStats?.baseToughness shouldBe 5
+        card.script.triggeredAbilities.size shouldBe 1
+    }
+
     test("freeze exact unresolved engine coverage count and emit identities") {
         val unresolved = IzzetScienceVeteranBeastriderEngineReadiness.unresolvedCardIdentities(registry)
         println("V09_REAL_ENGINE_UNRESOLVED_COUNT=" + unresolved.size)
         unresolved.forEach { println("V09_REAL_ENGINE_UNRESOLVED=" + it) }
-        unresolved.size shouldBe 50
+        unresolved.size shouldBe 49
     }
 
     test("full execution remains fail closed behind unresolved cards and PDH semantics") {
         val blockers = IzzetScienceVeteranBeastriderEngineReadiness.executionBlockers(registry)
-        blockers.size shouldBe 55
+        blockers.size shouldBe 54
         blockers.takeLast(5).shouldContainExactly(
             "PDH commander-zone initialization not qualified",
             "PDH commander recast/tax semantics not qualified",
