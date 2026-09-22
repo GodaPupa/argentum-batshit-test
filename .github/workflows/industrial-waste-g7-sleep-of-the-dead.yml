@@ -34,3 +34,5 @@ jobs:
       - uses: gradle/actions/setup-gradle@v6
       - name: Run Sleep of the Dead scenario and compile AI
         run: ./gradlew :mtg-sets:2017-2022:tests:test --tests '*SleepOfTheDead*' :ai:compileTestKotlin --no-daemon
+
+# validate Sleep of the Dead for Gate 7
