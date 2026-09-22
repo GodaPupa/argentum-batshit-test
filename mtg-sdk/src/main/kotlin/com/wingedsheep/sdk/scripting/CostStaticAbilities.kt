@@ -541,6 +541,20 @@ sealed interface CostReductionSource {
     }
 
     /**
+     * Reduces generic cost for each card the caster has drawn this turn.
+     * Used for Deem Inferior ("This spell costs {1} less to cast for each card you've drawn this turn").
+     *
+     * @property amountPerCard Generic mana reduced per card drawn (normally 1).
+     */
+    @SerialName("CardsDrawnThisTurn")
+    @Serializable
+    data class CardsDrawnThisTurn(
+        val amountPerCard: Int = 1
+    ) : CostReductionSource {
+        override val description: String = "the number of cards you've drawn this turn"
+    }
+
+    /**
      * Reduces cost by 1 for each card in your graveyard matching the filter.
      * Used for Eddymurk Crab ("This spell costs {1} less to cast for each instant and sorcery card in your graveyard").
      *

@@ -462,6 +462,12 @@ class CostCalculator(
                 val controls = controlsMatchingPermanent(state, playerId, source.filter)
                 if (controls) source.amount else 0
             }
+            is CostReductionSource.CardsDrawnThisTurn -> {
+                val cardsDrawn = state.getEntity(playerId)
+                    ?.get<com.wingedsheep.engine.state.components.player.CardsDrawnThisTurnComponent>()
+                    ?.count ?: 0
+                cardsDrawn * source.amountPerCard
+            }
             is CostReductionSource.CardsInGraveyardMatchingFilter -> {
                 countGraveyardCardsMatchingFilter(state, playerId, source.filter) * source.amountPerCard
             }
