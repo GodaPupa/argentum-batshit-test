@@ -307,3 +307,10 @@ The Mono-Blue Terror smoke vector is now frozen and unexecuted. Workflow run `35
 produced artifact `10733086089`; immutable hashes and audit metadata are recorded in
 `tier-one-mono-blue-terror-vector-freeze-provenance.json`. The production trigger has been
 removed, generator-side regeneration is blocked, and official games/actions/outcomes remain zero.
+
+
+The disabled Mono-Blue Terror engine/evidence rehearsal is recorded in
+`tier-one-mono-blue-terror-disabled-engine-evidence.md`. It wraps the real engine construction
+surface with the durable attempt journal and a write-once synthetic evidence index using only fixed
+nonexperimental assignments. Official seeds remain unconsumed, no actions are submitted, and the
+official initializer/runner remain disabled.
