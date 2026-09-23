@@ -114,6 +114,11 @@ dispatch-guard incidents in `tier-one-mono-blue-terror-freeze-preentropy-inciden
 `tier-one-mono-blue-terror-freeze-checkout-order-incident.md` as checkout-order pre-entropy
 incidents. All four runs collectively consumed zero seeds and created no freeze artifact.
 
+Run `35818672369` is preserved in
+`tier-one-mono-blue-terror-freeze-ack-whitespace-incident.md` as a fifth pre-entropy incident.
+Its acknowledgement contained seven leading spaces; checkout succeeded but the metadata guard
+stopped before artifact audit or entropy. It consumed zero seeds and created no freeze artifact.
+
 The deterministic provenance adapter and byte-level reconciliation layer are recorded in
 `tier-one-grixis-adapter-artifact-contract.md`. They use synthetic in-memory fixtures, expose no game
 initializer, and leave the harness disabled with no vector or outcome exposure.
