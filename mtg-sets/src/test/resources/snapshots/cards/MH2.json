@@ -1673,6 +1673,53 @@
     ]
 }
 
+// Lose Focus
+{
+    "name": "Lose Focus",
+    "manaCost": "{1}{U}",
+    "typeLine": "Instant",
+    "oracleText": "Replicate {U} (When you cast this spell, copy it for each time you paid its replicate cost. You may choose new targets for the copies.)\nCounter target spell unless its controller pays {2}.",
+    "keywords": [
+        "REPLICATE"
+    ],
+    "keywordAbilities": [
+        {
+            "type": "Kicker",
+            "manaCost": "{U}",
+            "multi": true,
+            "displayPrefix": "Replicate",
+            "keyword": "REPLICATE",
+            "branchesEffect": false,
+            "declaredSlot": "REPLICATED"
+        }
+    ],
+    "script": {
+        "spellEffect": {
+            "type": "Counter",
+            "condition": {
+                "type": "CounterCondition.UnlessPaysMana",
+                "cost": "{2}"
+            }
+        },
+        "targetRequirements": [
+            {
+                "type": "TargetObject",
+                "filter": {
+                    "baseFilter": {},
+                    "zone": "Stack"
+                },
+                "id": "target"
+            }
+        ]
+    },
+    "metadata": {
+        "collectorNumber": "49"
+    },
+    "colorIdentityOverride": [
+        "BLUE"
+    ]
+}
+
 // Marble Gargoyle
 {
     "name": "Marble Gargoyle",
