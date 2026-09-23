@@ -79,3 +79,28 @@ not a claim that Jund Wildfire is stronger than Monster Tron.
 
 No Gate 8 gameplay seed namespace is authorized until exact 60/15 identity, all maindeck card
 implementations, opponent-policy fixtures, and a deterministic exact-deck readiness smoke pass.
+
+
+## Fifth opponent selection
+
+Research updated 2026-09-22 after Gate 8 Jund Wildfire closed validly without replication.
+Monster Tron remains an active contemporary Pauper archetype, and PinoIo_Cosmico's 7-1 runner-up
+finish in the 27-player MTGO Pauper Challenge 16 #12854110 on 2026-09-15 provides a recent,
+high-finish exact 75 with public list provenance.
+
+The representative list is frozen exactly in
+`monster-tron-pinoio-cosmico-2026-09-15.dck`.
+
+Sources:
+- https://decksnipe.com/player/pinoio_cosmico
+- https://mtgdecks.net/Pauper/mtgo-pauper-challenge-16-12854110-tournament-270190
+
+The branch audit now finds only four absent maindeck definitions: Nyxborn Hydra, Pulse of Murasa,
+Bonder's Ornament, and Bojuka Bog. The earlier five-card estimate included Writhing Chrysalis, which
+was implemented and qualified during Gate 8. Monster Tron therefore becomes the next cost-efficient
+coverage gate, adding a large-mana mirror/resource-race axis distinct from the Burn, Boros, Grixis,
+Mono-Blue, and Jund opponents already sampled.
+
+No Gate 9 gameplay seed namespace is authorized until exact 60/15 identity, all four maindeck card
+implementations, Monster-Tron-specific opponent-policy fixtures, and a deterministic exact-deck
+readiness smoke all pass.
