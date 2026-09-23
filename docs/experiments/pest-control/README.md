@@ -108,8 +108,10 @@ fixture bytes; the production path is manual, single-attempt, artifact-only, col
 against 550 retired Pest seed identities, and cannot initialize a game or expose an outcome.
 
 Manual freeze run `35814874094` is preserved as a rejected pre-entropy dispatch-guard incident in
-`tier-one-mono-blue-terror-freeze-preentropy-incident.md`. It failed before checkout or entropy,
-created no artifact, consumed no seed, and does not count as a production vector attempt.
+`tier-one-mono-blue-terror-freeze-preentropy-incident.md`. A second manual run,
+`35816035083`, is preserved in
+`tier-one-mono-blue-terror-freeze-preentropy-incident-v2.md`. Both failed before entropy, created
+no artifact, consumed no seed, and do not count as production vector attempts.
 
 The deterministic provenance adapter and byte-level reconciliation layer are recorded in
 `tier-one-grixis-adapter-artifact-contract.md`. They use synthetic in-memory fixtures, expose no game
