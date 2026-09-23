@@ -19,6 +19,7 @@ import com.wingedsheep.sdk.scripting.effects.CreateTokenEffect
 import com.wingedsheep.sdk.scripting.effects.DelayedTriggerExpiry
 import com.wingedsheep.sdk.scripting.effects.DelayedTriggerTiming
 import com.wingedsheep.sdk.scripting.effects.DealDamagePerEntityInZoneEffect
+import com.wingedsheep.sdk.scripting.effects.DrawUpToEffect
 import com.wingedsheep.sdk.scripting.effects.Effect
 import com.wingedsheep.sdk.scripting.effects.DestroyAllEquipmentOnTargetEffect
 import com.wingedsheep.sdk.scripting.effects.FlipCoinEffect
@@ -401,6 +402,23 @@ class CreateDelayedTriggerExecutor : EffectExecutor<CreateDelayedTriggerEffect> 
                     collectionName = null,
                     damageSource = resolvedSource ?: effect.damageSource
                 )
+            }
+            // A delayed "its controller may draw up to N" needs the controller of the
+            // ORIGINAL target while that object is still live. Arcane Denial schedules this
+            // before countering the spell; once the counter removes SpellOnStackComponent,
+            // TargetController could otherwise fall back to card ownership. Freeze only this
+            // relational DrawUpTo target into the concrete player id at scheduling time.
+            is DrawUpToEffect -> {
+                if (effect.target == EffectTarget.TargetController) {
+                    val resolvedPlayer = context.resolvePlayerTarget(effect.target, state)
+                    if (resolvedPlayer != null) {
+                        effect.copy(target = EffectTarget.SpecificEntity(resolvedPlayer))
+                    } else {
+                        effect
+                    }
+                } else {
+                    effect
+                }
             }
             is CompositeEffect -> effect.copy(
                 effects = effect.effects.map { resolveContextTargets(it, context, state) }
