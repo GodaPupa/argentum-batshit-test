@@ -294,3 +294,10 @@ Its separately authorized same-seed replay is preserved as
 permanently retired from any further execution and remains unusable for performance, optimization,
 sampling, or comparison. No replacement vector, challenger construction, optimization, Sample #2,
 or opponent self-play is authorized.
+
+
+The manual Mono-Blue Terror freeze path is retired after run `35819323454`, preserved in
+`tier-one-mono-blue-terror-freeze-generator-ack-incident.md`. The one-time production freeze is
+now repository-authorized by
+`tier-one-mono-blue-terror-auto-freeze-authorization.json` and is triggered automatically by the
+merge that adds that immutable record to `main`. No further manual workflow action is required.
