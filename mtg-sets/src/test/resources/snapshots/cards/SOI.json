@@ -4618,6 +4618,73 @@
     ]
 }
 
+// Pieces of the Puzzle
+{
+    "name": "Pieces of the Puzzle",
+    "manaCost": "{2}{U}",
+    "typeLine": "Sorcery",
+    "oracleText": "Reveal the top five cards of your library. Put up to two instant and/or sorcery cards from among them into your hand and the rest into your graveyard.",
+    "script": {
+        "spellEffect": {
+            "type": "Composite",
+            "effects": [
+                {
+                    "type": "GatherCards",
+                    "source": {
+                        "type": "TopOfLibrary",
+                        "count": {
+                            "type": "Fixed",
+                            "amount": 5
+                        }
+                    },
+                    "storeAs": "looked",
+                    "revealed": true
+                },
+                {
+                    "type": "SelectFromCollection",
+                    "from": "looked",
+                    "selection": {
+                        "type": "ChooseUpTo",
+                        "count": {
+                            "type": "Fixed",
+                            "amount": 2
+                        }
+                    },
+                    "filter": "instant|sorcery",
+                    "storeSelected": "kept",
+                    "storeRemainder": "rest",
+                    "prompt": "Put up to two instant and/or sorcery cards from among them into your hand",
+                    "showAllCards": true
+                },
+                {
+                    "type": "MoveCollection",
+                    "from": "kept",
+                    "destination": {
+                        "type": "ToZone",
+                        "zone": "Hand"
+                    }
+                },
+                {
+                    "type": "MoveCollection",
+                    "from": "rest",
+                    "destination": {
+                        "type": "ToZone",
+                        "zone": "Graveyard"
+                    }
+                }
+            ]
+        }
+    },
+    "metadata": {
+        "collectorNumber": "78",
+        "artist": "Magali Villeneuve",
+        "flavorText": "\"The clues have begun to reveal a truth I hesitate to accept.\""
+    },
+    "colorIdentityOverride": [
+        "BLUE"
+    ]
+}
+
 // Pyre Hound
 {
     "name": "Pyre Hound",
