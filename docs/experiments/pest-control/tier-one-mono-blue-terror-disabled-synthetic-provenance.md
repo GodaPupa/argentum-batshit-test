@@ -26,6 +26,6 @@ fails closed without changing any official counter.
 - Workflow/command entry points: `0`
 
 `PestControlTierOneMonoBlueTerrorDisabledSyntheticProvenance` exposes only `inspect`, bringing
-the compiled API surface audit to seven objects. The next gate may compose a disabled pre-execution
-manifest from these hashes and counters. It must remain synthetic, vectorless, seedless,
+the compiled API surface audit to seven objects. The following gate composes a disabled
+pre-execution manifest from these hashes and counters. It remains synthetic, vectorless, seedless,
 environment-free, actionless, artifact-free, and unreachable from workflows or commands.
