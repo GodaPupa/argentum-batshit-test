@@ -133,6 +133,8 @@ class CostPaymentService(private val services: EngineServices) {
                 // Nothing to select — every card goes — so this is a yes/no like a random discard.
                 is CostAtom.DiscardHand ->
                     yesNoPrompt(state, payerId, resolved, sourceId, sourceName, ctx, "Discard your hand?", "Discard hand")
+                is CostAtom.RevealHand ->
+                    yesNoPrompt(state, payerId, resolved, sourceId, sourceName, ctx, "Reveal your hand?", "Reveal hand")
                 is CostAtom.Discard ->
                     if (atom.random) {
                         val word = if (atom.count == 1) "a card" else "${atom.count} cards"
@@ -357,6 +359,9 @@ class CostPaymentService(private val services: EngineServices) {
                 if (atom.random) discardRandom(state, payerId, atom.filter, atom.count)
                 else discardSelected(state, payerId, selected.keys.toList())
             is CostAtom.DiscardHand -> discardHand(state, payerId)
+            is CostAtom.RevealHand -> revealSelected(
+                state, payerId, state.getZone(ZoneKey(payerId, Zone.HAND)).toList()
+            )
             is CostAtom.ExileFrom -> exileSelected(state, payerId, selected.keys.toList(), atom.zone)
             is CostAtom.CollectEvidence ->
                 when (
@@ -763,6 +768,7 @@ class CostPaymentService(private val services: EngineServices) {
                     is CostAtom.Discard -> domain(state, payerId, c, sourceId).size >= atom.count
                     // CR 118.3 — an empty hand discards nothing, and a cost of nothing is payable.
                     is CostAtom.DiscardHand -> true
+                    is CostAtom.RevealHand -> true
                     is CostAtom.ExileFrom -> domain(state, payerId, c, sourceId).size >= atom.count
                     // CR 701.59b — unpayable unless the graveyard's *total mana value* reaches N.
                     // Card count says nothing here: five lands total 0 and pay nothing.
@@ -855,6 +861,7 @@ class CostPaymentService(private val services: EngineServices) {
                 is CostAtom.Discard -> cardsInHand(state, payerId, atom.filter)
                 // The whole hand goes, so there is nothing for the payer to pick.
                 is CostAtom.DiscardHand -> null
+                is CostAtom.RevealHand -> null
                 is CostAtom.RevealFromHand -> cardsInHand(state, payerId, atom.filter)
                 is CostAtom.ExileFrom -> cardsInZone(state, payerId, atom.filter, atom.zone)
                 // Collect evidence N (CR 701.59a) — the whole graveyard is selectable; the gate is
