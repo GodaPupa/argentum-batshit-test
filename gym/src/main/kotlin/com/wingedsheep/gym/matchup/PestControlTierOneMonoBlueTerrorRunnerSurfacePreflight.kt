@@ -96,6 +96,14 @@ object PestControlTierOneMonoBlueTerrorRunnerSurfacePreflight {
             errors += "four-cell plan surface mismatch"
         }
 
+        val assignmentMethods =
+            inventory.publicMethods[
+                "PestControlTierOneMonoBlueTerrorDisabledAssignmentSchema"
+            ].orEmpty()
+        if (assignmentMethods != setOf("inspect")) {
+            errors += "assignment schema surface mismatch"
+        }
+
         return MonoBlueTerrorRunnerSurfacePreflightResult(
             errors = errors.distinct(),
             workflowFilesAudited = inventory.workflowFiles.size,
