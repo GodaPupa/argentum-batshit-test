@@ -2344,6 +2344,10 @@ class StackResolver(
             // clause, below the rider, which leaves the pre-existing rider-vs-flashback precedence
             // exactly as it was.
             flashbackExile -> Zone.EXILE
+            // Buyback (CR 702.27a): only a successfully resolving spell whose buyback cost
+            // was actually paid returns to its owner's hand. Countered/fizzled spells use
+            // their separate destination paths and therefore never reach this branch.
+            spellComponent.declaredCostSlot == ChoiceSlot.BUYBACK -> Zone.HAND
             selfShuffleIntoLibrary -> Zone.LIBRARY
             selfExile || adventureFaceExile || reboundExile -> Zone.EXILE
             omenFaceShuffle -> Zone.LIBRARY
