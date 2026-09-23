@@ -1,7 +1,7 @@
 package com.wingedsheep.mtg.sets.definitions.khm.cards
 
 import com.wingedsheep.sdk.core.Keyword
-import com.wingedsheep.sdk.core.Player
+import com.wingedsheep.sdk.scripting.references.Player
 import com.wingedsheep.sdk.core.Zone
 import com.wingedsheep.sdk.dsl.Effects
 import com.wingedsheep.sdk.dsl.Targets
