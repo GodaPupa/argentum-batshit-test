@@ -45,3 +45,20 @@ priority during spell resolution, so this does not change observable resolution 
 12. Live unresolved count is exactly 35.
 13. Arcane Denial is absent from unresolved output.
 14. Official games/seeds/outcomes remain 0/0/0 and the exact v0.7 control remains unchanged.
+
+
+## Pre-qualification provenance
+
+- Initial snapshot/rebless run 35880817893 and infrastructure retry 35881541067 both
+  reached the same deterministic semantic failure: the delayed DrawUpTo target had been
+  correctly baked to a SpecificEntity player id, but DrawUpToExecutor used the stateless
+  player-target resolver and therefore could not consume that baked id.
+- Smallest correction: DrawUpToExecutor now uses the existing state-aware overload
+  `resolvePlayerTarget(effect.target, state)`; that overload preserves the old stateless
+  behavior first, then adds SpecificEntity/relational resolution.
+- Corrected fail-closed snapshot/rebless run **35882535605** succeeded.
+- Canonical snapshot integration commit:
+  `f112ce65f89ca9aa4d7698132a665a034ca2bffe`.
+- The integration commit changes exactly
+  `mtg-sets/src/test/resources/snapshots/cards/ALL.json` and no other file.
+- These runs are qualification infrastructure only and are not deck-strength evidence.
