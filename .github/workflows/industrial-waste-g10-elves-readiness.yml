@@ -1,0 +1,51 @@
+name: Industrial Waste — Gate 10 Elves Readiness
+
+on:
+  pull_request:
+    branches: [industrial-waste/lab]
+    paths:
+      - .github/workflows/industrial-waste-g10-elves-readiness.yml
+      - industrial-waste/gauntlet/elves-mogged-2026-09-19.dck
+      - industrial-waste/control/industrial-waste-v1.0-submitted.dck
+      - industrial-waste/protocols/gate-10-elves-readiness-v1.md
+      - ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/ElvesAdvisorModule.kt
+      - ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteElvesPolicyAuditTest.kt
+      - ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteElvesReadinessSmokeTest.kt
+      - mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/clb/cards/AvengingHunter.kt
+      - mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/eld/cards/GingerbreadCabin.kt
+      - mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/khm/cards/MaskedVandal.kt
+      - mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/mh1/cards/WindingWay.kt
+      - mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/roe/cards/LeadTheStampede.kt
+      - mtg-sets/1993-1999/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/mmq/cards/LandGrant.kt
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  elves-readiness:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-java@v5
+        with: {distribution: temurin, java-version: 21}
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Qualify Gate 10 Elves policy
+        run: |
+          ./gradlew :ai:test \
+            --tests '*IndustrialWasteElvesPolicyAuditTest' \
+            --no-daemon
+      - name: Run Gate 10 exact-deck readiness smoke
+        env:
+          IW_G10_ELVES_READINESS_SMOKE: "true"
+        run: |
+          ./gradlew :ai:test \
+            --tests '*IndustrialWasteElvesReadinessSmokeTest' \
+            --no-daemon
+      - name: Upload Gate 10 readiness report
+        uses: actions/upload-artifact@v4
+        with:
+          name: industrial-waste-g10-elves-readiness
+          path: industrial-waste/results/gate-10-elves-readiness-smoke-v1.json
+          if-no-files-found: error
