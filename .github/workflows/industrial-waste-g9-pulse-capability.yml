@@ -1,4 +1,4 @@
-name: Industrial Waste — Gate 9 Pulse Capability
+name: Industrial Waste — Gate 9 Card Capability
 
 on:
   pull_request:
@@ -6,14 +6,16 @@ on:
     paths:
       - .github/workflows/industrial-waste-g9-pulse-capability.yml
       - mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/ogw/cards/PulseOfMurasa.kt
+      - mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/wwk/cards/BojukaBog.kt
       - mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/IndustrialWasteGate9OgwScenarioTest.kt
+      - mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/IndustrialWasteGate9WwkScenarioTest.kt
   workflow_dispatch:
 
 permissions:
   contents: read
 
 jobs:
-  pulse-capability:
+  card-capability:
     runs-on: ubuntu-latest
     timeout-minutes: 35
     steps:
@@ -21,5 +23,9 @@ jobs:
       - uses: actions/setup-java@v5
         with: {distribution: temurin, java-version: 21}
       - uses: gradle/actions/setup-gradle@v6
-      - name: Validate Pulse of Murasa
-        run: ./gradlew :mtg-sets:2008-2016:tests:test --tests '*IndustrialWasteGate9OgwScenarioTest' --no-daemon
+      - name: Validate Gate 9 card capability
+        run: |
+          ./gradlew :mtg-sets:2008-2016:tests:test \
+            --tests '*IndustrialWasteGate9OgwScenarioTest' \
+            --tests '*IndustrialWasteGate9WwkScenarioTest' \
+            --no-daemon
