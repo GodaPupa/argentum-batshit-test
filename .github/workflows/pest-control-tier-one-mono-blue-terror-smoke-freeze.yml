@@ -41,7 +41,7 @@ jobs:
           python3 - <<'PY'
           from pathlib import Path
           text = Path(".github/workflows/pest-control-tier-one-mono-blue-terror-smoke-freeze.yml").read_text()
-          assert "workflow_dispatch" not in text
+          assert ("workflow" + "_dispatch") not in text
           assert "tier-one-mono-blue-terror-auto-freeze-authorization.json" in text
           freeze = text.split("\n  freeze:\n", 1)[1]
           anchors = [
