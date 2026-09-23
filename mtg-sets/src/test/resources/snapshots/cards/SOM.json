@@ -4186,6 +4186,46 @@
     ]
 }
 
+// Turn Aside
+{
+    "name": "Turn Aside",
+    "manaCost": "{U}",
+    "typeLine": "Instant",
+    "oracleText": "Counter target spell that targets a permanent you control.",
+    "script": {
+        "spellEffect": "Counter",
+        "targetRequirements": [
+            {
+                "type": "TargetObject",
+                "filter": {
+                    "baseFilter": {
+                        "cardPredicates": [
+                            {
+                                "type": "TargetsMatching",
+                                "subfilter": {
+                                    "cardPredicates": [
+                                        "IsPermanent"
+                                    ],
+                                    "controllerPredicate": "ControlledByYou"
+                                }
+                            }
+                        ]
+                    },
+                    "zone": "Stack"
+                },
+                "id": "target spell that targets a permanent you control"
+            }
+        ]
+    },
+    "metadata": {
+        "collectorNumber": "49",
+        "artist": "Shelly Wan"
+    },
+    "colorIdentityOverride": [
+        "BLUE"
+    ]
+}
+
 // Vulshok Heartstoker
 {
     "name": "Vulshok Heartstoker",
