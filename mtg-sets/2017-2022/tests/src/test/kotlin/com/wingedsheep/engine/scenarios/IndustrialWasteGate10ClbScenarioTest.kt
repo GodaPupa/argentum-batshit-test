@@ -163,7 +163,7 @@ class IndustrialWasteGate10ClbScenarioTest : ScenarioTestBase() {
 
             game.passUntilPhase(Phase.COMBAT, Step.DECLARE_ATTACKERS)
             game.declareAttackers(mapOf("Elvish Mystic" to 2)).error shouldBe null
-            game.passUntilPhase(Phase.COMBAT, Step.END_OF_COMBAT)
+            game.passUntilPhase(Phase.COMBAT, Step.END_COMBAT)
             game.resolveStack()
 
             val search = game.getPendingDecision().shouldBeInstanceOf<SelectCardsDecision>()
