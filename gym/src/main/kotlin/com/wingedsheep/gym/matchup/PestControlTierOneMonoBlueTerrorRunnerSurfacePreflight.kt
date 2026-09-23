@@ -120,6 +120,14 @@ object PestControlTierOneMonoBlueTerrorRunnerSurfacePreflight {
             errors += "pre-execution manifest surface mismatch"
         }
 
+        val closureMethods =
+            inventory.publicMethods[
+                "PestControlTierOneMonoBlueTerrorConstructionClosure"
+            ].orEmpty()
+        if (closureMethods != setOf("inspect")) {
+            errors += "construction closure surface mismatch"
+        }
+
         return MonoBlueTerrorRunnerSurfacePreflightResult(
             errors = errors.distinct(),
             workflowFilesAudited = inventory.workflowFiles.size,
