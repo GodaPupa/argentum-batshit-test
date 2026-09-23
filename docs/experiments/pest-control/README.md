@@ -82,6 +82,11 @@ The complete seedless Mono-Blue Terror plan is recorded in
 2/2 seat and starting-deck balances while retaining zero assignments, official seeds, games,
 actions, artifacts, and outcomes.
 
+The disabled Mono-Blue Terror assignment shape is recorded in
+`tier-one-mono-blue-terror-disabled-assignment-schema.md`. Four opaque synthetic slot labels
+validate row order and substitution rejection while the row type structurally excludes seeds,
+entropy, vectors, environments, actions, artifacts, and outcomes.
+
 The deterministic provenance adapter and byte-level reconciliation layer are recorded in
 `tier-one-grixis-adapter-artifact-contract.md`. They use synthetic in-memory fixtures, expose no game
 initializer, and leave the harness disabled with no vector or outcome exposure.
