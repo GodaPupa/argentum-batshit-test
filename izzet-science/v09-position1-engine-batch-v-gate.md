@@ -61,5 +61,20 @@ stack with independent retargeting.
 14. Everflowing Chalice is absent from unresolved output and Lose Focus remains unresolved.
 15. Official games/seeds/outcomes remain 0/0/0 and the exact v0.7 control remains unchanged.
 
+
+## Pre-qualification provenance
+
+- Fail-closed Batch V snapshot/rebless run **35919566544** succeeded.
+- Canonical snapshot integration commit:
+  `733c8b93f66f70a05658bc29682b822727ed0907`.
+- The integration commit changes exactly
+  `mtg-sets/src/test/resources/snapshots/cards/WWK.json` (60 additions, 0 deletions).
+- Everflowing Chalice semantic scenarios passed.
+- Multikicker legal-action regression passed, including every affordable positive repeat count.
+- Exact real-engine readiness emitted `V09_REAL_ENGINE_UNRESOLVED_COUNT=31`, with
+  Everflowing Chalice absent and Lose Focus the only remaining unresolved Izzet identity.
+- The fail-closed unrelated-snapshot guard passed.
+- The exact frozen v0.7 SHA remained verified and no official seed/game/outcome was consumed or exposed.
+
 Infrastructure, fixture, compilation, snapshot, or semantic failures are qualification history only,
 not evidence about deck strength.
