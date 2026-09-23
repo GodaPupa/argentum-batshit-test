@@ -38,7 +38,7 @@ class KaerveksTorchScenarioTest : FunSpec({
         KaerveksTorch.manaCost.hasX shouldBe true
         val tax = KaerveksTorch.script.staticAbilities.single() as ModifySpellCost
         tax.sourceZones shouldContain com.wingedsheep.sdk.core.Zone.STACK
-        tax.target is SpellCostTarget.AnyCasterTargeting shouldBe true
+        (tax.target is SpellCostTarget.AnyCasterTargeting) shouldBe true
         tax.modification shouldBe CostModification.IncreaseGeneric(2)
     }
 
