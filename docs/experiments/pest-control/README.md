@@ -370,3 +370,10 @@ rerolls/replacements/seed regeneration are zero. The result is preserved in
 `tier-one-mono-blue-terror-official-smoke-result.md`. It is not a matchup qualification or Tier-1
 claim. The next authorized inference gate is a fresh independently frozen 12-game preboard
 Mono-Blue Terror replication block; the prior seed-exclusion universe is now `554`.
+
+
+The next Mono-Blue Terror inference gate is the entropy-free 12-game replication freeze
+construction in `tier-one-mono-blue-terror-replication-freeze-gate.md`. It extends the complete
+retired-seed universe from `550` to `554` by binding all four accepted Terror smoke seeds and
+requires exact 3× coverage of each seat × starting-deck cell. No replication seeds exist at this
+gate.
