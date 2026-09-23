@@ -178,6 +178,12 @@ sealed interface CardPredicate : TextReplaceable<CardPredicate> {
         override val description: String = "legendary"
     }
 
+    @SerialName("IsSnow")
+    @Serializable
+    data object IsSnow : CardPredicate {
+        override val description: String = "snow"
+    }
+
     @SerialName("IsNonlegendary")
     @Serializable
     data object IsNonlegendary : CardPredicate {
