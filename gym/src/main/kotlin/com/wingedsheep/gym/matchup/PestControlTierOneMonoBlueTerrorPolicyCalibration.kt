@@ -82,6 +82,9 @@ private object PestControlTierOneMonoBlueTerrorPolicyCalibrationRehearsal {
             val terrorPlayerIndex = if (assignment.terrorSeat == PestSeat.SEAT_ZERO) 0 else 1
             val terrorPlayer = initialized.environment.playerIds[terrorPlayerIndex]
             val raw = PestControlTierOneMonoBlueTerrorProductionDriver.drive(registry, initialized)
+            check(PestControlTierOneMonoBlueTerrorProductionDriver.encode(raw).isNotEmpty()) {
+                "production raw encoding is empty"
+            }
             val gameplayActions = raw.actions
                 .drop(raw.mulliganActionCount)
                 .count { it.actingPlayerId == terrorPlayer }
