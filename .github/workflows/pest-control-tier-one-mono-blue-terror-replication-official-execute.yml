@@ -1,0 +1,236 @@
+name: Pest Control Tier-1 Mono-Blue Terror Replication Official One-Shot Execution
+
+on:
+  pull_request:
+    paths:
+      - .github/workflows/pest-control-tier-one-mono-blue-terror-replication-official-execute.yml
+      - docs/experiments/pest-control/tier-one-mono-blue-terror-replication-auto-execution-authorization.json
+      - gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlTierOneMonoBlueTerrorReplicationExecutionAuthorization.kt
+      - gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOneMonoBlueTerrorReplicationComposedValidationTest.kt
+      - docs/experiments/pest-control/tier-one-mono-blue-terror-replication-auto-execution.md
+  push:
+    branches:
+      - main
+    paths:
+      - docs/experiments/pest-control/tier-one-mono-blue-terror-replication-auto-execution-authorization.json
+
+permissions:
+  actions: read
+  contents: read
+
+concurrency:
+  group: pest-control-tier-one-mono-blue-terror-primary-replication-one-shot
+  cancel-in-progress: false
+
+env:
+  FREEZE_ARTIFACT_ID: "10773131628"
+  FREEZE_ARTIFACT_SHA256: 4d3a19ef7febacb336911ff1271c14ab83a6ea1f99ed34ae154ae154d6ef5f25
+  AUTHORIZATION_SHA256: f35b4d178a7bfa3a2e019756c616799bea2e8afcd5cd977ae208e1cdeceaed8a
+  OFFICIAL_ARTIFACT_NAME: pest-control-tier-one-mono-blue-terror-replication-official-execution
+
+jobs:
+  validate-gate:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - uses: gradle/actions/setup-gradle@v6
+
+      - name: Validate immutable replication authorization record
+        run: |
+          set -euo pipefail
+          echo "${AUTHORIZATION_SHA256}  docs/experiments/pest-control/tier-one-mono-blue-terror-replication-auto-execution-authorization.json" | sha256sum -c -
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+
+          path = Path("docs/experiments/pest-control/tier-one-mono-blue-terror-replication-auto-execution-authorization.json")
+          record = json.loads(path.read_text())
+          assert record["schema"] == "pest-control-tier-one-mono-blue-terror-replication-auto-execution-authorization@v1"
+          assert record["repository"] == "GodaPupa/argentum-batshit-test"
+          assert record["protocolId"] == "PEST_CONTROL_V10_VS_SERPICO_CC_MONO_BLUE_TERROR_2026_09_20_PREBOARD_V1"
+          assert record["blockId"] == "PEST_CONTROL_V10_VS_SERPICO_CC_MONO_BLUE_TERROR_2026_09_20_PREBOARD_V1_REPLICATION_12"
+          assert record["acceptedHarnessReviewedHead"] == "e9c0b357ad2eca3d6d5cb99ce225f6532d640913"
+          assert record["acceptedHarnessMerge"] == "51a020b45ad278ec22883c6a6f977c77e2c32c54"
+          assert record["harnessCiRunId"] == 35923355149
+          assert record["harnessArtifactValidationRunId"] == 35923355357
+          assert record["acceptedExecutionStackReviewedHead"] == "728e2d5e150c527b2049e10b8bc304945e2b7d99"
+          assert record["acceptedExecutionStackMerge"] == "b8468b5b7865db5a2138852968b9e6ef89278273"
+          assert record["executionStackCiRunId"] == 35925031349
+          assert record["executionStackValidateRunId"] == 35925031432
+          assert record["freezeArtifactId"] == 10773131628
+          assert record["freezeArtifactSha256"] == "4d3a19ef7febacb336911ff1271c14ab83a6ea1f99ed34ae154ae154d6ef5f25"
+          assert record["orderedVectorSha256"] == "445542e6cdf9902cc435b4db276a747e6b2200ff4f24ec9ac896b517a44bd34d"
+          assert record["assignmentCsvSha256"] == "24c1ce43362dbb2ae61fa79926437182fb74d0b76ff28a6ec44d040c2a434b70"
+          assert record["freezeManifestSha256"] == "ad10e52e6b64d85aa4d890ff772aa31a271435ed100564490f63ec9afc1d6862"
+          assert record["qualifiedRunner"] == "9829ee98869343cd48dceaa9a27c56ed27c6b3bc"
+          assert record["authorization"] == "AUTOMATIC_ONE_SHOT_PRIMARY_REPLICATION_EXECUTION"
+          assert record["executionMode"] == "OFFICIAL_FROZEN_PRIMARY_REPLICATION_12"
+          assert record["officialGamesAuthorized"] == 12
+          assert record["executionAttemptLimit"] == 1
+          assert record["rerollsPermitted"] is False
+          assert record["replacementsPermitted"] is False
+          assert record["regenerationPermitted"] is False
+          assert record["officialGamesInitializedBeforeExecution"] == 0
+          assert record["officialActionsSubmittedBeforeExecution"] == 0
+          assert record["officialOutcomeExposureBeforeExecution"] == 0
+          assert record["smokeExcludedFromPrimaryInference"] is True
+          assert record["trigger"] == "PUSH_TO_MAIN_BY_AUTHORIZATION_RECORD_MERGE"
+          PY
+
+      - name: Validate automatic one-shot workflow contract
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+
+          text = Path(".github/workflows/pest-control-tier-one-mono-blue-terror-replication-official-execute.yml").read_text()
+          assert ("workflow" + "_dispatch") not in text
+          assert "github.event_name == 'push'" in text
+          assert "PestControlTierOneMonoBlueTerrorReplicationOfficialExecutionRunnerTest" in text
+          assert "GITHUB_RUN_ATTEMPT" in text
+          assert "OFFICIAL_ARTIFACT_NAME" in text
+          assert "10773131628" in text
+          assert "f35b4d178a7bfa3a2e019756c616799bea2e8afcd5cd977ae208e1cdeceaed8a" in text
+          PY
+
+      - name: Download exact frozen replication artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p build/pest-terror-replication-input
+          curl -fsSL -H "Authorization: Bearer ${GH_TOKEN}" -H "Accept: application/vnd.github+json" "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/artifacts/${FREEZE_ARTIFACT_ID}/zip" -o build/pest-terror-replication-freeze.zip
+          echo "${FREEZE_ARTIFACT_SHA256}  build/pest-terror-replication-freeze.zip" | sha256sum -c -
+          unzip -q build/pest-terror-replication-freeze.zip -d build/pest-terror-replication-input
+          cd build/pest-terror-replication-input
+          sha256sum -c artifacts.sha256
+
+      - name: Validate authorized replication wiring without gameplay
+        run: scripts/test-class PestControlTierOneMonoBlueTerrorReplicationComposedValidationTest --info --stacktrace
+
+      - name: Revalidate exact frozen replication artifact without gameplay
+        env:
+          PEST_TERROR_REPLICATION_MODE: VALIDATE_ONLY
+          PEST_TERROR_REPLICATION_INPUT_DIR: ${{ github.workspace }}/build/pest-terror-replication-input
+        run: scripts/test-class PestControlTierOneMonoBlueTerrorReplicationOfficialArtifactValidationTest --info --stacktrace
+
+  official:
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    timeout-minutes: 720
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+
+      - name: Verify one-shot authorization and replay barriers
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          test "${GITHUB_REF}" = "refs/heads/main"
+          test "${GITHUB_RUN_ATTEMPT}" = "1"
+          echo "${AUTHORIZATION_SHA256}  docs/experiments/pest-control/tier-one-mono-blue-terror-replication-auto-execution-authorization.json" | sha256sum -c -
+          git merge-base --is-ancestor b8468b5b7865db5a2138852968b9e6ef89278273 HEAD
+          python3 - <<'PY'
+          import json, os, urllib.parse, urllib.request
+
+          repo = os.environ["GITHUB_REPOSITORY"]
+          token = os.environ["GH_TOKEN"]
+          current = int(os.environ["GITHUB_RUN_ID"])
+          headers = {
+              "Authorization": f"Bearer {token}",
+              "Accept": "application/vnd.github+json",
+              "X-GitHub-Api-Version": "2022-11-28",
+          }
+
+          workflow = "pest-control-tier-one-mono-blue-terror-replication-official-execute.yml"
+          runs_url = (
+              f"https://api.github.com/repos/{repo}/actions/workflows/{workflow}/runs"
+              "?event=push&per_page=100"
+          )
+          with urllib.request.urlopen(urllib.request.Request(runs_url, headers=headers)) as response:
+              runs = json.load(response)["workflow_runs"]
+          others = [run["id"] for run in runs if run["id"] != current]
+          print(json.dumps({"current_run_id": current, "prior_push_run_ids": others}, sort_keys=True))
+          if others:
+              raise SystemExit("prior replication production push run exists")
+
+          name = os.environ["OFFICIAL_ARTIFACT_NAME"]
+          artifacts_url = (
+              f"https://api.github.com/repos/{repo}/actions/artifacts?"
+              + urllib.parse.urlencode({"name": name, "per_page": 100})
+          )
+          with urllib.request.urlopen(urllib.request.Request(artifacts_url, headers=headers)) as response:
+              count = json.load(response).get("total_count")
+          print(json.dumps({"official_artifact_name": name, "prior_artifact_count": count}, sort_keys=True))
+          if count != 0:
+              raise SystemExit("prior replication official execution artifact exists")
+          PY
+
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - uses: gradle/actions/setup-gradle@v6
+
+      - name: Download exact frozen Mono-Blue Terror replication vector
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p build/pest-terror-replication-input
+          curl -fsSL -H "Authorization: Bearer ${GH_TOKEN}" -H "Accept: application/vnd.github+json" "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/artifacts/${FREEZE_ARTIFACT_ID}/zip" -o build/pest-terror-replication-freeze.zip
+          echo "${FREEZE_ARTIFACT_SHA256}  build/pest-terror-replication-freeze.zip" | sha256sum -c -
+          unzip -q build/pest-terror-replication-freeze.zip -d build/pest-terror-replication-input
+          cd build/pest-terror-replication-input
+          sha256sum -c artifacts.sha256
+
+      - name: Create durable replication execution envelope
+        id: envelope
+        run: |
+          set -euo pipefail
+          mkdir -p build/reports/pest-control-tier-one-mono-blue-terror-replication-official
+          EXECUTION_TREE="$(git rev-parse 'HEAD^{tree}')"
+          {
+            echo "schema=terror-primary-replication-execution-envelope-v1"
+            echo "run_id=${GITHUB_RUN_ID}"
+            echo "run_attempt=${GITHUB_RUN_ATTEMPT}"
+            echo "execution_commit=${GITHUB_SHA}"
+            echo "execution_tree=${EXECUTION_TREE}"
+            echo "authorization_sha256=${AUTHORIZATION_SHA256}"
+            echo "freeze_artifact_id=${FREEZE_ARTIFACT_ID}"
+            echo "freeze_artifact_sha256=${FREEZE_ARTIFACT_SHA256}"
+            echo "accepted_execution_stack_merge=b8468b5b7865db5a2138852968b9e6ef89278273"
+            echo "execution_stack_ci_run=35925031349"
+            echo "execution_stack_validate_run=35925031432"
+          } > build/reports/pest-control-tier-one-mono-blue-terror-replication-official/execution-envelope.txt
+          sync
+
+      - name: Execute frozen twelve-game primary replication exactly once
+        env:
+          PEST_TERROR_REPLICATION_OFFICIAL_MODE: EXECUTE
+          PEST_TERROR_REPLICATION_EXECUTION_ACK: AUTOMATIC_ONE_SHOT_PRIMARY_REPLICATION_EXECUTION
+          PEST_TERROR_REPLICATION_INPUT_DIR: ${{ github.workspace }}/build/pest-terror-replication-input
+          PEST_TERROR_REPLICATION_EXECUTION_COMMIT: ${{ github.sha }}
+          PEST_TERROR_REPLICATION_OUTPUT_DIR: ${{ github.workspace }}/build/reports/pest-control-tier-one-mono-blue-terror-replication-official
+        run: scripts/test-class PestControlTierOneMonoBlueTerrorReplicationOfficialExecutionRunnerTest --info --stacktrace
+
+      - name: Upload one-shot primary replication evidence
+        if: always() && steps.envelope.outcome != 'skipped'
+        uses: actions/upload-artifact@v7
+        with:
+          name: pest-control-tier-one-mono-blue-terror-replication-official-execution
+          path: build/reports/pest-control-tier-one-mono-blue-terror-replication-official/
+          if-no-files-found: error
+          retention-days: 90
