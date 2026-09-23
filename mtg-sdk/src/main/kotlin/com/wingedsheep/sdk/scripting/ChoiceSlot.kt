@@ -60,6 +60,13 @@ enum class ChoiceSlot {
     KICKED,
 
     /**
+     * How many times this spell's replicate cost was paid as it was cast (CR 702.56).
+     * Stored as a numeric cast choice so the Replicate cast trigger can copy the spell exactly
+     * once per payment without ever reading as kicker to unrelated kicker payoffs.
+     */
+    REPLICATED,
+
+    /**
      * Whether a spell's buyback cost was paid as it was cast (CR 702.27).
      * A present value means the spell returns to its owner's hand instead of its graveyard
      * when it resolves successfully. Countered or fizzled spells do not use this slot at

@@ -3983,6 +3983,55 @@ class CastSpellHandler(
                 } else emptyList()
             } else emptyList()
 
+        // Handle Replicate (CR 702.56): the keyword is a cast trigger that copies the spell once
+        // for each time its repeatable additional cost was paid. The trigger exists even when the
+        // cost was paid zero times; StormCopyEffect is then a deliberate no-op, matching Storm's
+        // zero-copy trigger behavior. Copies are not cast and may independently choose new targets.
+        val replicateAbility = cardDef?.keywordAbilities
+            ?.filterIsInstance<KeywordAbility.OptionalAdditionalCost>()
+            ?.firstOrNull { it.keyword == Keyword.REPLICATE && it.declaredSlot == ChoiceSlot.REPLICATED }
+        val replicatePendingTriggers: List<PendingTrigger> =
+            if (!action.castFaceDown && cardDef != null && replicateAbility != null) {
+                val spellEffect = cardDef.script.spellEffect
+                if (spellEffect != null) {
+                    val repeatCount = if (action.declaredCostSlot == ChoiceSlot.REPLICATED) {
+                        declaredOptionalCostRepeatCount(action, cardDef) ?: 0
+                    } else 0
+                    val copyEffect = StormCopyEffect(
+                        copyCount = repeatCount,
+                        spellEffect = spellEffect,
+                        spellTargetRequirements = spellTargetRequirements,
+                        spellName = cardComponent.name
+                    )
+                    val ability = TriggeredAbility(
+                        id = AbilityId.generate(),
+                        trigger = SdkGameEvent.SpellCastEvent(player = Player.You),
+                        binding = TriggerBinding.SELF,
+                        effect = copyEffect,
+                        activeZones = setOf(Zone.STACK),
+                        descriptionOverride = "Replicate — copy ${cardComponent.name} $repeatCount time(s)"
+                    )
+                    listOf(
+                        PendingTrigger(
+                            ability = ability,
+                            sourceId = action.cardId,
+                            objectReferences = com.wingedsheep.engine.handlers.ObjectReferenceEnvironment(
+                                captured = true,
+                                origin = currentCastState.objectRef(action.cardId),
+                                source = currentCastState.objectRef(action.cardId),
+                                triggering = currentCastState.objectRef(action.cardId)
+                            ),
+                            sourceName = cardComponent.name,
+                            controllerId = action.playerId,
+                            triggerContext = TriggerContext(
+                                triggeringEntityId = action.cardId,
+                                triggeringPlayerId = action.playerId
+                            )
+                        )
+                    )
+                } else emptyList()
+            } else emptyList()
+
         // Handle Conspire (CR 702.78): when the optional additional cost was paid, a reflexive
         // trigger goes on the stack above the spell: "When you do, copy it and you may choose
         // new targets for the copy." Reuses StormCopyEffect with copyCount=1 so the existing
@@ -4206,7 +4255,7 @@ class CastSpellHandler(
         // Other AP spell-cast triggers follow (placed higher on the stack), then NAP triggers on top,
         // matching APNAP ordering within processTriggers.
         val detectedTriggers = triggerDetector.detectTriggers(currentCastState, allEvents)
-        val triggers = riderPendingTriggers + conspirePendingTriggers + casualtyPendingTriggers + stormPendingTriggers + detectedTriggers
+        val triggers = riderPendingTriggers + conspirePendingTriggers + casualtyPendingTriggers + replicatePendingTriggers + stormPendingTriggers + detectedTriggers
         if (triggers.isNotEmpty()) {
             val triggerResult = triggerProcessor.processTriggers(currentCastState, triggers)
 

@@ -1376,6 +1376,19 @@ sealed interface KeywordAbility {
             multi = true,
             displayPrefix = "Multikicker"
         )
+        /**
+         * Create Replicate — a repeatable optional additional mana cost. The paid repetition count
+         * rides the generic multi-cost cast rail under its own [ChoiceSlot.REPLICATED] identity;
+         * the cast handler turns that count into spell copies via the shared copy infrastructure.
+         */
+        fun replicate(cost: String): KeywordAbility = OptionalAdditionalCost(
+            manaCost = ManaCost.parse(cost),
+            multi = true,
+            displayPrefix = "Replicate",
+            keyword = Keyword.REPLICATE,
+            branchesEffect = false,
+            declaredSlot = ChoiceSlot.REPLICATED
+        )
 
         /**
          * Create a flash-timing kicker (Ghitu Fire pattern) — paying [cost] more lets you

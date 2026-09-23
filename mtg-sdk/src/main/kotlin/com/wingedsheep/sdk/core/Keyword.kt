@@ -177,6 +177,7 @@ enum class Keyword(val displayName: String) {
 
     // ── Spell mechanics ─────────────────────────────────────
     STORM("Storm"),
+    REPLICATE("Replicate"),
     FLASHBACK("Flashback"),
 
     /**

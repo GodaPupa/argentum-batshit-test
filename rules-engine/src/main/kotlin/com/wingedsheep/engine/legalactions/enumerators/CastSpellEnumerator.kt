@@ -2230,10 +2230,10 @@ class CastSpellEnumerator : ActionEnumerator {
                     state, cardDef, playerId, declaredCostSlot = declaredSlot,
                 )
 
-                // Multikicker (CR 702.33c): pure positive-mana, targetless/nonmodal instances emit
+                // Repeatable optional mana costs (Multikicker / Replicate): pure positive-mana, targetless/nonmodal instances emit
                 // every affordable positive repetition count. Affordability is the natural finite
                 // stopping condition; zero repetitions are the ordinary undeclared cast.
-                val pureManaMultikicker = manaKicker?.takeIf {
+                val pureManaRepeatableCost = manaKicker?.takeIf {
                     it.multi &&
                         it.manaCost != null &&
                         it.additionalCost == null &&
@@ -2244,8 +2244,8 @@ class CastSpellEnumerator : ActionEnumerator {
                         cardDef.script.auraTarget == null &&
                         cardDef.script.spellEffect !is ModalEffect
                 }
-                if (pureManaMultikicker != null) {
-                    val unitCost = pureManaMultikicker.manaCost!!
+                if (pureManaRepeatableCost != null) {
+                    val unitCost = pureManaRepeatableCost.manaCost!!
                     // Zero-mana repeat units admit infinitely many equivalent declarations.
                     // Fail closed rather than inventing an arbitrary maximum.
                     if (unitCost.cmc > 0) {
@@ -2276,7 +2276,7 @@ class CastSpellEnumerator : ActionEnumerator {
                             result.add(
                                 LegalAction(
                                     actionType = "CastWithKicker",
-                                    description = "Cast ${cardComponent.name} (${pureManaMultikicker.displayPrefix} ×$repeatCount)",
+                                    description = "Cast ${cardComponent.name} (${pureManaRepeatableCost.displayPrefix} ×$repeatCount)",
                                     action = CastSpell(
                                         playerId,
                                         cardId,
