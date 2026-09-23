@@ -40,6 +40,7 @@ class CostAtomSerializationTest : FunSpec({
         CostAtom.TapPermanents(count = 1, filter = GameObjectFilter.Creature),
         CostAtom.ReturnToHand(GameObjectFilter.Any, count = 1),
         CostAtom.RevealFromHand(GameObjectFilter.Any, count = 1),
+        CostAtom.RevealHand,
         CostAtom.RemoveCounters(Counters.PLUS_ONE_PLUS_ONE, filter = GameObjectFilter.Creature),
         CostAtom.RemoveCounters("charge", self = true),
         CostAtom.RemoveCounters(counterType = null, filter = GameObjectFilter.Creature),
@@ -105,5 +106,6 @@ class CostAtomSerializationTest : FunSpec({
         // Top-of-library costs take no selection: the cards are the top, not a player's pick.
         CostAtom.Mill(count = 1).selectionCount shouldBe 0
         CostAtom.ExileTopOfLibrary(count = 10).selectionCount shouldBe 0
+        CostAtom.RevealHand.selectionCount shouldBe 0
     }
 })
