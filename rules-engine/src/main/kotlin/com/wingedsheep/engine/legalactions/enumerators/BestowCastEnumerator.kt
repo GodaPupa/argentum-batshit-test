@@ -7,6 +7,8 @@ import com.wingedsheep.engine.legalactions.EnumerationContext
 import com.wingedsheep.engine.legalactions.LegalAction
 import com.wingedsheep.engine.state.components.identity.CardComponent
 import com.wingedsheep.sdk.core.Keyword
+import com.wingedsheep.sdk.core.TypeLine
+import com.wingedsheep.engine.mechanics.mana.spellPaymentContextFor
 import com.wingedsheep.sdk.dsl.Targets
 import com.wingedsheep.sdk.scripting.KeywordAbility
 
@@ -44,31 +46,42 @@ class BestowCastEnumerator : ActionEnumerator {
                 )
             ) continue
 
+            // CR 702.103b: once the bestow alternative cost is chosen, the spell is an
+            // Enchantment — Aura (not a creature spell) before costs/targets are finalized.
+            // Use a local characteristic view here; the real entity is rewritten when it is
+            // actually put on the stack by StackResolver.
+            val bestowType = TypeLine.aura()
+            val bestowDef = cardDef.copy(typeLine = bestowType)
+            val bestowCard = card.copy(typeLine = bestowType)
+            val bestowState = state.updateEntity(cardId) { it.with(bestowCard) }
             val effectiveCost = context.costCalculator.calculateEffectiveCostWithAlternativeBase(
-                state, cardDef, bestow.cost, playerId
+                state, bestowDef, bestow.cost, playerId
             )
+            val spellContext = spellPaymentContextFor(bestowCard).copy(hasXInCost = effectiveCost.hasX)
 
-            // A Bestow spell always targets one creature.
+            // A Bestow spell always targets one creature. The local Aura state matters for
+            // protection-from-creatures / protection-from-subtype checks while choosing targets.
             val requirement = Targets.Creature
-            val infos = context.targetUtils.buildTargetInfos(state, playerId, listOf(requirement), cardId)
+            val infos = context.targetUtils.buildTargetInfos(bestowState, playerId, listOf(requirement), cardId)
             val info = infos.firstOrNull() ?: continue
             if (!context.targetUtils.allRequirementsSatisfied(infos)) continue
 
             val maxX = if (effectiveCost.hasX) {
                 val available = context.manaSolver.getAvailableManaCount(
-                    state, playerId, precomputedSources = cachedSources
+                    state, playerId, precomputedSources = cachedSources, spellContext = spellContext
                 )
                 val roughUpper = ((available - effectiveCost.cmc) /
                     effectiveCost.xCount.coerceAtLeast(1)).coerceAtLeast(0)
                 (roughUpper downTo 0).firstOrNull { x ->
                     context.manaSolver.canPay(
                         state, playerId, effectiveCost, xValue = x,
-                        precomputedSources = cachedSources
+                        precomputedSources = cachedSources, spellContext = spellContext
                     )
                 } ?: continue
             } else {
                 if (!context.manaSolver.canPay(
-                        state, playerId, effectiveCost, precomputedSources = cachedSources
+                        state, playerId, effectiveCost, precomputedSources = cachedSources,
+                        spellContext = spellContext
                     )
                 ) continue
                 null
@@ -76,7 +89,8 @@ class BestowCastEnumerator : ActionEnumerator {
 
             val preview = if (context.skipAutoTapPreview) null else {
                 context.manaSolver.solve(
-                    state, playerId, effectiveCost, xValue = 0, precomputedSources = cachedSources
+                    state, playerId, effectiveCost, xValue = 0, precomputedSources = cachedSources,
+                    spellContext = spellContext
                 )?.sources?.map { it.entityId }
             }
 
