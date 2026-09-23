@@ -835,24 +835,6 @@ sealed interface KeywordAbility {
     }
 
     // =========================================================================
-    // Bestow
-    // =========================================================================
-
-    /**
-     * Bestow [cost] (CR 702.103). A card cast for its bestow cost is an Aura enchantment spell
-     * with enchant creature rather than a creature spell. If its target is illegal as it begins
-     * to resolve, it stops being an Aura spell and resolves as its enchantment-creature self.
-     * On the battlefield it remains an Aura only while attached; if it becomes unattached it
-     * immediately resumes being an enchantment creature instead of going to the graveyard.
-     */
-    @SerialName("Bestow")
-    @Serializable
-    data class Bestow(val cost: ManaCost) : KeywordAbility {
-        override val keyword: Keyword = Keyword.BESTOW
-        override val description: String = "Bestow $cost"
-    }
-
-    // =========================================================================
     // Emerge
     // =========================================================================
 
