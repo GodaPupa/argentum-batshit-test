@@ -1,0 +1,73 @@
+name: Izzet Position-1 Batch U Snapshot Rebless
+
+on:
+  push:
+    branches:
+      - "mayhem/izzet-science"
+    paths:
+      - ".github/workflows/izzet-v09-position1-batch-u-snapshot-rebless.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  rebless-batch-u:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: mayhem/izzet-science
+          fetch-depth: 0
+
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "21"
+
+      - uses: gradle/actions/setup-gradle@v6
+
+      - name: Verify frozen control and Batch U boundary
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(sha256sum izzet-science/v0.7-control.md | cut -d' ' -f1)" = "726f5e9458b46dda30b33a6ce9f3c3237b25d6e11b81dac85308c3065c108a01"
+          grep -Fq 'Batch T is accepted from Actions run 35896899458' izzet-science/v09-position1-engine-batch-u-gate.md
+          grep -Fq 'Live unresolved count is exactly 32' izzet-science/v09-position1-engine-batch-u-gate.md
+
+      - name: Run Kaervek's Torch semantics
+        run: scripts/test-class KaerveksTorchScenarioTest --info --stacktrace
+
+      - name: Run exact real-engine readiness expectation
+        shell: bash
+        run: |
+          set -euo pipefail
+          scripts/test-class IzzetScienceVeteranBeastriderEngineReadinessTest --info --stacktrace | tee /tmp/batch-u-readiness.txt
+          grep -Fq 'V09_REAL_ENGINE_UNRESOLVED_COUNT=32' /tmp/batch-u-readiness.txt
+          ! grep -Fq "unresolved Izzet card: Kaervek's Torch" /tmp/batch-u-readiness.txt
+
+      - name: Regenerate snapshots canonically
+        run: ./gradlew :mtg-sets:test --tests "*CardDefinitionSnapshotTest" -DupdateSnapshots=true --stacktrace
+
+      - name: Fail closed on unrelated snapshot changes
+        shell: bash
+        run: |
+          set -euo pipefail
+          mapfile -t changed < <(git diff --name-only | sort)
+          printf '%s\n' "${changed[@]}"
+          test "${#changed[@]}" -eq 1
+          test "${changed[0]}" = "mtg-sets/src/test/resources/snapshots/cards/MIR.json"
+          git diff --check
+          grep -Fq "// Kaervek's Torch" mtg-sets/src/test/resources/snapshots/cards/MIR.json
+
+      - name: Commit and safely integrate canonical snapshot
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add mtg-sets/src/test/resources/snapshots/cards/MIR.json
+          git commit -m "Rebless Position-1 Batch U snapshot"
+          git fetch origin mayhem/izzet-science
+          git rebase origin/mayhem/izzet-science
+          git push origin HEAD:mayhem/izzet-science
