@@ -5,6 +5,19 @@ on:
     branches: [industrial-waste/lab]
     paths:
       - .github/workflows/industrial-waste-g10-elves-card-capability.yml
+      - mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/clb/cards/AvengingHunter.kt
+      - mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/IndustrialWasteGate10ClbScenarioTest.kt
+      - mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/core/UndercityRoom.kt
+      - mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/scripting/effects/InitiativeEffects.kt
+      - mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/dsl/Effects.kt
+      - rules-engine/src/main/kotlin/com/wingedsheep/engine/core/InitiativeEvents.kt
+      - rules-engine/src/main/kotlin/com/wingedsheep/engine/core/Serialization.kt
+      - rules-engine/src/main/kotlin/com/wingedsheep/engine/state/components/player/InitiativeComponents.kt
+      - rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/player/InitiativeExecutors.kt
+      - rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/player/PlayerExecutors.kt
+      - rules-engine/src/main/kotlin/com/wingedsheep/engine/event/InitiativeTriggers.kt
+      - rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerDetector.kt
+      - rules-engine/src/main/kotlin/com/wingedsheep/engine/view/ClientEvent.kt
       - mtg-sets/1993-1999/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/mmq/cards/LandGrant.kt
       - mtg-sets/1993-1999/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/IndustrialWasteGate10MmqScenarioTest.kt
       - mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/scripting/costs/CostAtom.kt
@@ -45,6 +58,7 @@ jobs:
             --tests '*IndustrialWasteGate10RoeScenarioTest' \
             --no-daemon
           ./gradlew :mtg-sets:2017-2022:tests:test \
+            --tests '*IndustrialWasteGate10ClbScenarioTest' \
             --tests '*IndustrialWasteGate10EldScenarioTest' \
             --tests '*IndustrialWasteGate10KhmScenarioTest' \
             --tests '*IndustrialWasteGate10Mh1ScenarioTest' \
