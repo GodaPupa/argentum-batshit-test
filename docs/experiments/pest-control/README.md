@@ -72,6 +72,11 @@ official identity, validates only the fixed excluded construction fixture, expos
 environment, and remains unreachable from workflows and commands. Official seeds, games, and
 outcome exposure remain zero.
 
+The disabled Mono-Blue Terror Game-1 wiring contract is recorded in
+`tier-one-mono-blue-terror-disabled-single-game.md`. It binds the accepted first cell to the
+qualified runner and pinned disabled-initializer proofs without accepting a vector, assignment,
+seed, environment, action, artifact, or outcome.
+
 The deterministic provenance adapter and byte-level reconciliation layer are recorded in
 `tier-one-grixis-adapter-artifact-contract.md`. They use synthetic in-memory fixtures, expose no game
 initializer, and leave the harness disabled with no vector or outcome exposure.

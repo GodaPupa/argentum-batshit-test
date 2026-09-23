@@ -80,6 +80,14 @@ object PestControlTierOneMonoBlueTerrorRunnerSurfacePreflight {
             errors += "execution contract surface mismatch"
         }
 
+        val singleGameMethods =
+            inventory.publicMethods[
+                "PestControlTierOneMonoBlueTerrorDisabledSingleGame"
+            ].orEmpty()
+        if (singleGameMethods != setOf("inspect")) {
+            errors += "single-game surface mismatch"
+        }
+
         return MonoBlueTerrorRunnerSurfacePreflightResult(
             errors = errors.distinct(),
             workflowFilesAudited = inventory.workflowFiles.size,

@@ -39,6 +39,6 @@ Every request, including a structurally complete synthetic request, terminates a
 - Outcome exposure: `0`
 - Execution method: absent
 
-The next gate may validate a private, disabled single-game composition using only the same fixed
-nonexperimental construction entropy. It must not add a workflow, command entry point, official
-vector, seed source, artifact writer, or outcome-producing action.
+The following gate validates a private, disabled single-game composition using only pinned metadata
+and the same fixed nonexperimental construction proofs. It adds no workflow, command entry point,
+official vector, seed source, artifact writer, or outcome-producing action.
