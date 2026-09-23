@@ -390,3 +390,9 @@ The Mono-Blue Terror 12-game replication vector is now frozen and unexecuted. Pr
 collision audit are recorded in
 `tier-one-mono-blue-terror-replication-freeze-provenance.json`. The production freeze trigger is
 retired and generator-side regeneration is fail-closed. Replication games/actions/outcomes remain zero.
+
+
+The frozen 12-game Mono-Blue Terror replication harness and read-only artifact validation are
+documented in `tier-one-mono-blue-terror-replication-harness-validation.md`. The exact frozen
+artifact is parsed only for identity/order validation; synthetic fixtures validate coordinator
+success and fail-closed ordering. Official replication games/actions/outcomes remain zero.
