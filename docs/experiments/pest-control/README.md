@@ -354,3 +354,10 @@ artifact, decodes its four official assignments for identity/order validation on
 separate four-game synthetic shadow through the durable journal, authorized coordinator,
 authorized initializer, production driver and artifact contract. Official seeds remain unconsumed
 and official gameplay remains zero.
+
+
+The final Mono-Blue Terror one-shot execution gate is documented in
+`tier-one-mono-blue-terror-auto-execution.md`. It is merge-triggered rather than manually
+dispatched, binds the exact green composed-validation provenance, permits exactly one four-game
+production attempt, and uploads partial durable evidence on failure. Before that merge-triggered
+production run, official gameplay counters remain zero.
