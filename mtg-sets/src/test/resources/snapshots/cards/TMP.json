@@ -737,6 +737,49 @@
     ]
 }
 
+// Capsize
+{
+    "name": "Capsize",
+    "manaCost": "{1}{U}{U}",
+    "typeLine": "Instant",
+    "oracleText": "Buyback {3} (You may pay an additional {3} as you cast this spell. If you do, put this card into your hand as it resolves.)\nReturn target permanent to its owner's hand.",
+    "keywordAbilities": [
+        {
+            "type": "Kicker",
+            "manaCost": "{3}",
+            "displayPrefix": "Buyback",
+            "branchesEffect": false,
+            "declaredSlot": "BUYBACK"
+        }
+    ],
+    "script": {
+        "spellEffect": {
+            "type": "MoveToZone",
+            "target": {
+                "type": "BoundVariable",
+                "name": "target permanent"
+            },
+            "destination": "Hand"
+        },
+        "targetRequirements": [
+            {
+                "type": "TargetObject",
+                "filter": {
+                    "baseFilter": "permanent"
+                },
+                "id": "target permanent"
+            }
+        ]
+    },
+    "metadata": {
+        "collectorNumber": "55",
+        "artist": "Tom Wänerstrand"
+    },
+    "colorIdentityOverride": [
+        "BLUE"
+    ]
+}
+
 // Chill
 {
     "name": "Chill",
