@@ -327,3 +327,10 @@ The Mono-Blue Terror execution decision is recorded in
 `tier-one-mono-blue-terror-execution-authorization.md`. It authorizes exactly four frozen games,
 one attempt each, with no rerolls, replacements or seed regeneration. The initializer and runner
 remain disabled; official seeds consumed, games initialized, actions and outcome exposure remain zero.
+
+
+The first authorized Mono-Blue Terror initialization surface is documented in
+`tier-one-mono-blue-terror-authorized-initializer.md`. It requires the reviewed four-game
+authorization, exact frozen-vector identity and prior durable-attempt evidence. It initializes but
+does not advance gameplay; frozen-artifact loading, runner orchestration and official execution remain
+separate gates.
