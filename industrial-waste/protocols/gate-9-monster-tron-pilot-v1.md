@@ -1,6 +1,6 @@
 # Gate 9 Monster Tron preboard capability pilot v1
 
-Status: frozen and reserved; execution authorized only from this exact protocol.
+Status: completed; valid eight-game capability pilot; Monster Tron sampling closed without replication or promotion.
 
 ## Inputs
 
@@ -68,3 +68,30 @@ Grixis, Mono-Blue, or Jund evidence.
 
 This pilot is capability/screening evidence only. It cannot by itself promote Pactdoll-A, alter the
 frozen v1.0 Control, authorize postboard work, or justify any deck change.
+
+
+## Result and decision
+
+GitHub Actions run `35889660768` completed successfully. The uploaded canonical artifact
+`industrial-waste-g9-monster-tron-pilot` has artifact digest
+`sha256:f41664ea3c2527d1301d7deeb82cdc45bf509e565b2119896e022af46f5f500b`.
+
+All eight games were valid: zero exceptions, zero illegal actions, complete paired play/draw
+rotation, and the frozen seed vector matched its registered digest.
+
+- Frozen Control: 1-3.
+- Pactdoll-A: 0-4.
+- Monster Tron overall versus Industrial: 7-1.
+- Control reached Tron by turn 5 in 1/4 games and combo-ready state in 1/4 games.
+- Pactdoll-A reached Tron by turn 5 in 0/4 games and combo-ready state in 0/4 games.
+- Mean colored-mana-failure turns were 2.25 for Control and 1.50 for Pactdoll-A.
+- No mulligans occurred in the pilot.
+- The single Industrial win was Control on the draw in pair 2; it assembled Tron on turn 5,
+  became combo-ready on turn 7, and recorded lethal on turn 7.
+
+The opponent-pressure floor passed because Monster Tron won seven games. Industrial fair-game
+capability also passed because Control won one game. Pactdoll-A trailed Control by one win, so the
+predeclared replication trigger did not pass.
+
+Monster Tron sampling therefore closes with no replication, no Pactdoll-A promotion, no deck
+modification, and no postboard authorization. Frozen Industrial Waste v1.0 Control remains unchanged.
