@@ -89,15 +89,40 @@ jobs:
     if: github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     steps:
-      - name: Fail-closed dispatch guard
+      - name: Validate dispatch metadata
         env:
           FREEZE_ACK: ${{ inputs.freeze_ack }}
+          RUN_REF: ${{ github.ref }}
+          RUN_ATTEMPT: ${{ github.run_attempt }}
+        run: |
+          python3 - <<'PY'
+          import hashlib, json, os
+          expected_ack = "GENERATE_TIER_ONE_MONO_BLUE_TERROR_SMOKE_4_NO_GAMEPLAY"
+          ack = os.environ.get("FREEZE_ACK", "")
+          ref = os.environ.get("RUN_REF", "")
+          attempt = os.environ.get("RUN_ATTEMPT", "")
+          checks = {
+              "main_ref": ref == "refs/heads/main",
+              "attempt_one": attempt == "1",
+              "ack_exact": ack == expected_ack,
+          }
+          print(json.dumps({
+              "checks": checks,
+              "ref": ref,
+              "run_attempt": attempt,
+              "ack_length": len(ack),
+              "ack_sha256": hashlib.sha256(ack.encode()).hexdigest(),
+              "expected_ack_length": len(expected_ack),
+              "expected_ack_sha256": hashlib.sha256(expected_ack.encode()).hexdigest(),
+          }, sort_keys=True))
+          if not all(checks.values()):
+              raise SystemExit("dispatch metadata guard failed")
+          PY
+
+      - name: Audit absence of prior freeze artifact
+        env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          set -euo pipefail
-          test "${GITHUB_REF}" = "refs/heads/main"
-          test "${GITHUB_RUN_ATTEMPT}" = "1"
-          test "${FREEZE_ACK}" = "GENERATE_TIER_ONE_MONO_BLUE_TERROR_SMOKE_4_NO_GAMEPLAY"
           python3 - <<'PY'
           import json, os, urllib.request
           name = "pest-control-tier-one-mono-blue-terror-smoke-vector-freeze"
