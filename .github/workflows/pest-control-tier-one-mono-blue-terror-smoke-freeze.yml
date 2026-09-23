@@ -86,6 +86,10 @@ jobs:
     if: github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.sha }}
+
       - name: Validate dispatch metadata
         env:
           FREEZE_ACK: ${{ inputs.freeze_ack }}
@@ -97,9 +101,7 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: python3 scripts/experiments/pest-control/audit_tier_one_mono_blue_terror_freeze_artifact_absence.py
-      - uses: actions/checkout@v6
-        with:
-          ref: ${{ github.sha }}
+
       - name: Audit frozen source boundary without entropy
         run: python3 scripts/experiments/pest-control/generate_tier_one_mono_blue_terror_smoke_freeze.py --preflight
       - name: Draw and quarantine exactly once; no gameplay
