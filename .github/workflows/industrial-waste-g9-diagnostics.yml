@@ -53,3 +53,32 @@ jobs:
           ./gradlew :mtg-sets:test --tests '*CardDefinitionSnapshotTest'             -DupdateSnapshots=true --no-daemon
           echo '===== GATE 9 SNAPSHOT DIFF ====='
           git diff --             mtg-sets/src/test/resources/snapshots/cards/WWK.json             mtg-sets/src/test/resources/snapshots/cards/OGW.json             mtg-sets/src/test/resources/snapshots/cards/C20.json             mtg-sets/src/test/resources/snapshots/cards/ZNR.json             mtg-sets/src/test/resources/snapshots/cards/MH3.json             mtg-sets/src/test/resources/snapshots/cards/TMC.json
+          for code in WWK OGW C20 ZNR MH3; do
+            echo "===== SNAPSHOT_BASE64_${code} ====="
+            base64 -w0 "mtg-sets/src/test/resources/snapshots/cards/${code}.json"
+            echo
+          done
+
+  base-audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ce0e05210efc0939e74cca480410e065b8d97a4b
+      - uses: actions/setup-java@v5
+        with: {distribution: temurin, java-version: 21}
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Audit frozen Gate 9 base
+        shell: bash
+        run: |
+          set +e
+          ./gradlew :mtg-sets:test --tests '*FacadeBoundaryTest' --no-daemon
+          facade=$?
+          ./gradlew :ai:test --tests '*FrozenBaselineTest' -Dbenchmark=true --no-daemon
+          frozen=$?
+          echo "BASE_FACADE_STATUS=$facade"
+          echo "BASE_FROZEN_STATUS=$frozen"
+          find mtg-sets/build/test-results/test -name 'TEST-*FacadeBoundaryTest*.xml' -exec sed -n '1,500p' {} \; || true
+          find ai/build/test-results/test -name 'TEST-*FrozenBaselineTest*.xml' -exec sed -n '1,500p' {} \; || true
+          exit $(( facade || frozen ))
