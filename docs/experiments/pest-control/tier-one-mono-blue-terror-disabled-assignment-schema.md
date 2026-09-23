@@ -25,6 +25,6 @@ fail closed without creating an official assignment.
 - Workflow/command entry points: `0`
 
 `PestControlTierOneMonoBlueTerrorDisabledAssignmentSchema` exposes only `inspect`, bringing the
-compiled API surface audit to six objects. The next gate may validate a synthetic provenance binding
-for these opaque rows. It must not turn slot labels into seeds, generate or freeze a vector,
+compiled API surface audit to six objects. The following gate validates a synthetic provenance
+binding for these opaque rows. It does not turn slot labels into seeds, generate or freeze a vector,
 initialize a game, submit an action, or write an execution artifact.

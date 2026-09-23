@@ -104,6 +104,14 @@ object PestControlTierOneMonoBlueTerrorRunnerSurfacePreflight {
             errors += "assignment schema surface mismatch"
         }
 
+        val provenanceMethods =
+            inventory.publicMethods[
+                "PestControlTierOneMonoBlueTerrorDisabledSyntheticProvenance"
+            ].orEmpty()
+        if (provenanceMethods != setOf("inspect")) {
+            errors += "synthetic provenance surface mismatch"
+        }
+
         return MonoBlueTerrorRunnerSurfacePreflightResult(
             errors = errors.distinct(),
             workflowFilesAudited = inventory.workflowFiles.size,

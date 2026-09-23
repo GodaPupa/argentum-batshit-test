@@ -87,6 +87,11 @@ The disabled Mono-Blue Terror assignment shape is recorded in
 validate row order and substitution rejection while the row type structurally excludes seeds,
 entropy, vectors, environments, actions, artifacts, and outcomes.
 
+The Mono-Blue Terror synthetic provenance binding is recorded in
+`tier-one-mono-blue-terror-disabled-synthetic-provenance.md`. It attaches protocol, runner, deck,
+and schema hashes to the opaque rows while remaining structurally incapable of representing
+executable entropy or outcome-bearing state.
+
 The deterministic provenance adapter and byte-level reconciliation layer are recorded in
 `tier-one-grixis-adapter-artifact-contract.md`. They use synthetic in-memory fixtures, expose no game
 initializer, and leave the harness disabled with no vector or outcome exposure.
