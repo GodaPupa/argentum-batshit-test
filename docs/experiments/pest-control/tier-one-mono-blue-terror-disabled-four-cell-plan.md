@@ -34,6 +34,6 @@ methods continue to fail closed.
 - Outcome exposure: `0`
 - Workflow/command entry points: `0`
 
-The next gate may validate a disabled assignment schema using synthetic nonexperimental values only.
-It must not generate or freeze a vector, accept official entropy, initialize a game, submit an
-action, or write an execution artifact.
+The following gate validates a disabled assignment schema using opaque synthetic labels only. It
+does not generate or freeze a vector, accept official entropy, initialize a game, submit an action,
+or write an execution artifact.
