@@ -4,6 +4,8 @@ on:
   pull_request:
     paths:
       - scripts/experiments/pest-control/generate_tier_one_mono_blue_terror_smoke_freeze.py
+      - scripts/experiments/pest-control/validate_tier_one_mono_blue_terror_freeze_dispatch.py
+      - scripts/experiments/pest-control/audit_tier_one_mono_blue_terror_freeze_artifact_absence.py
       - .github/workflows/pest-control-tier-one-mono-blue-terror-smoke-freeze.yml
       - docs/experiments/pest-control/tier-one-mono-blue-terror-vector-freeze-gate.md
   workflow_dispatch:
@@ -27,33 +29,28 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
+      - name: Validate dispatch metadata guard contract
+        env:
+          FREEZE_ACK: GENERATE_TIER_ONE_MONO_BLUE_TERROR_SMOKE_4_NO_GAMEPLAY
+          RUN_REF: refs/heads/main
+          RUN_ATTEMPT: "1"
+        run: |
+          set -euo pipefail
+          python3 scripts/experiments/pest-control/validate_tier_one_mono_blue_terror_freeze_dispatch.py
+          if FREEZE_ACK=WRONG_ACK \
+             RUN_REF=refs/heads/main \
+             RUN_ATTEMPT=1 \
+             python3 scripts/experiments/pest-control/validate_tier_one_mono_blue_terror_freeze_dispatch.py; then
+            echo "metadata guard accepted an invalid acknowledgement" >&2
+            exit 1
+          fi
+
       - name: Audit absence of prior freeze artifact
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
-          python3 - <<'PY'
-          import json, os, urllib.request
-          name = "pest-control-tier-one-mono-blue-terror-smoke-vector-freeze"
-          url = (
-              f"https://api.github.com/repos/{os.environ['GITHUB_REPOSITORY']}"
-              f"/actions/artifacts?name={name}&per_page=100"
-          )
-          request = urllib.request.Request(
-              url,
-              headers={
-                  "Authorization": f"Bearer {os.environ['GH_TOKEN']}",
-                  "Accept": "application/vnd.github+json",
-                  "X-GitHub-Api-Version": "2022-11-28",
-              },
-          )
-          with urllib.request.urlopen(request) as response:
-              payload = json.load(response)
-          count = payload.get("total_count")
-          print(json.dumps({"artifact_name": name, "total_count": count}, sort_keys=True))
-          if count != 0:
-              raise SystemExit(f"prior freeze artifact exists: total_count={count}")
-          PY
+          python3 scripts/experiments/pest-control/audit_tier_one_mono_blue_terror_freeze_artifact_absence.py
       - name: Deterministic entropy-free validation
         run: |
           set -euo pipefail
@@ -89,37 +86,17 @@ jobs:
     if: github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     steps:
-      - name: Fail-closed dispatch guard
+      - name: Validate dispatch metadata
         env:
           FREEZE_ACK: ${{ inputs.freeze_ack }}
+          RUN_REF: ${{ github.ref }}
+          RUN_ATTEMPT: ${{ github.run_attempt }}
+        run: python3 scripts/experiments/pest-control/validate_tier_one_mono_blue_terror_freeze_dispatch.py
+
+      - name: Audit absence of prior freeze artifact
+        env:
           GH_TOKEN: ${{ github.token }}
-        run: |
-          set -euo pipefail
-          test "${GITHUB_REF}" = "refs/heads/main"
-          test "${GITHUB_RUN_ATTEMPT}" = "1"
-          test "${FREEZE_ACK}" = "GENERATE_TIER_ONE_MONO_BLUE_TERROR_SMOKE_4_NO_GAMEPLAY"
-          python3 - <<'PY'
-          import json, os, urllib.request
-          name = "pest-control-tier-one-mono-blue-terror-smoke-vector-freeze"
-          url = (
-              f"https://api.github.com/repos/{os.environ['GITHUB_REPOSITORY']}"
-              f"/actions/artifacts?name={name}&per_page=100"
-          )
-          request = urllib.request.Request(
-              url,
-              headers={
-                  "Authorization": f"Bearer {os.environ['GH_TOKEN']}",
-                  "Accept": "application/vnd.github+json",
-                  "X-GitHub-Api-Version": "2022-11-28",
-              },
-          )
-          with urllib.request.urlopen(request) as response:
-              payload = json.load(response)
-          count = payload.get("total_count")
-          print(json.dumps({"artifact_name": name, "total_count": count}, sort_keys=True))
-          if count != 0:
-              raise SystemExit(f"prior freeze artifact exists: total_count={count}")
-          PY
+        run: python3 scripts/experiments/pest-control/audit_tier_one_mono_blue_terror_freeze_artifact_absence.py
       - uses: actions/checkout@v6
         with:
           ref: ${{ github.sha }}

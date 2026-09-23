@@ -67,9 +67,9 @@ A valid production artifact contains the quarantined vector, ordered vector, fix
 manifest, and checksum inventory with disposition `FROZEN_UNEXECUTED`. Official games initialized,
 actions submitted, outcome artifacts, and outcome exposure remain zero.
 
-The first manual dispatch, run `35814874094`, is formally rejected as a pre-entropy dispatch-guard
-incident. It failed before checkout, source audit, or the entropy step; it drew and retired zero
-seeds and produced no artifact. The corrected artifact-absence guard must pass full pull-request
-validation before any fresh manual dispatch is permitted.
+Manual dispatch runs `35814874094` and `35816035083` are both formally rejected as pre-entropy
+dispatch-guard incidents. Neither run reached checkout, source audit, or the entropy step; together
+they drew and retired zero seeds and produced no artifacts. The dispatch metadata guard and artifact
+absence guard are now separate, fail-closed steps and must both pass before entropy can be reached.
 
 This gate itself creates no official seed and executes no game.
