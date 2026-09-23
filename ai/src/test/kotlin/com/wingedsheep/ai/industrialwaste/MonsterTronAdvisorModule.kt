@@ -10,6 +10,7 @@ import com.wingedsheep.engine.core.CardsSelectedResponse
 import com.wingedsheep.engine.core.CastSpell
 import com.wingedsheep.engine.core.ChooseTargetsDecision
 import com.wingedsheep.engine.core.SearchLibraryDecision
+import com.wingedsheep.engine.core.SelectCardsDecision
 import com.wingedsheep.engine.core.TargetsResponse
 import com.wingedsheep.engine.state.GameState
 import com.wingedsheep.engine.state.components.identity.CardComponent
@@ -54,11 +55,11 @@ private object MonsterTronTutorAdvisor : CardAdvisor {
                 return context.passScore - 25.0
             }
         }
-        return context.passScore + 12.0
+        return context.passScore + 35.0
     }
 
-    override fun respondToDecision(context: AdvisorDecisionContext) =
-        (context.decision as? SearchLibraryDecision)?.let { decision ->
+    override fun respondToDecision(context: AdvisorDecisionContext) = when (val decision = context.decision) {
+        is SearchLibraryDecision -> {
             val missing = monsterMissingTronLands(context.state, context.playerId)
             val selected = missing.asSequence().mapNotNull { wanted ->
                 decision.options.firstOrNull { id -> decision.cards[id]?.name == wanted }
@@ -66,6 +67,20 @@ private object MonsterTronTutorAdvisor : CardAdvisor {
                 ?: decision.options.firstOrNull { id -> decision.cards[id]?.name in MONSTER_TRON_LANDS }
             selected?.let { CardsSelectedResponse(decision.id, listOf(it)) }
         }
+        is SelectCardsDecision -> {
+            // Library searches currently surface through SelectCardsDecision. A Crop Rotation
+            // sacrifice prompt uses the same decision class but has no hidden-card info, so leave
+            // that cost choice to the normal responder and only override the actual search.
+            val info = decision.cardInfo ?: return null
+            val missing = monsterMissingTronLands(context.state, context.playerId)
+            val selected = missing.asSequence().mapNotNull { wanted ->
+                decision.options.firstOrNull { id -> info[id]?.name == wanted }
+            }.firstOrNull()
+                ?: decision.options.firstOrNull { id -> info[id]?.name in MONSTER_TRON_LANDS }
+            selected?.let { CardsSelectedResponse(decision.id, listOf(it)) }
+        }
+        else -> null
+    }
 }
 
 private object MonsterTronNyxbornHydraAdvisor : CardAdvisor {
