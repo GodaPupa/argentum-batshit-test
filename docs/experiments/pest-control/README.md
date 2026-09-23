@@ -301,3 +301,9 @@ The manual Mono-Blue Terror freeze path is retired after run `35819323454`, pres
 now repository-authorized by
 `tier-one-mono-blue-terror-auto-freeze-authorization.json` and is triggered automatically by the
 merge that adds that immutable record to `main`. No further manual workflow action is required.
+
+
+The Mono-Blue Terror smoke vector is now frozen and unexecuted. Workflow run `35819861075`
+produced artifact `10733086089`; immutable hashes and audit metadata are recorded in
+`tier-one-mono-blue-terror-vector-freeze-provenance.json`. The production trigger has been
+removed, generator-side regeneration is blocked, and official games/actions/outcomes remain zero.

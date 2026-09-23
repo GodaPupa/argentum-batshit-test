@@ -39,6 +39,7 @@ GRIXIS_REPLICATION_VECTOR_SHA256 = "5cd8a78fb62a59495d07ed31c4579fab7bafe2bc9c07
 AUTO_AUTH_PATH = "docs/experiments/pest-control/tier-one-mono-blue-terror-auto-freeze-authorization.json"
 AUTO_AUTH_SHA256 = "b7bf1f820ef733a4457b23d0ecf5c987366b6b3697aff1b92de59d22ebbd1201"
 AUTO_AUTHORIZATION = "AUTOMATIC_SINGLE_FREEZE_NO_GAMEPLAY"
+FROZEN_PROVENANCE_PATH = "docs/experiments/pest-control/tier-one-mono-blue-terror-vector-freeze-provenance.json"
 
 REJECTED_V2_CANDIDATE = (
     352421150441762375, -7897966070063678192, 5918577377114013031,
@@ -477,6 +478,8 @@ def main() -> None:
             parser.error("--output-dir is required")
 
         if args.generate:
+            if (root / FROZEN_PROVENANCE_PATH).exists():
+                raise ValueError("official Mono-Blue Terror vector is already frozen; regeneration prohibited")
             if os.environ.get("PEST_TERROR_AUTO_FREEZE_AUTH") != AUTO_AUTHORIZATION:
                 raise ValueError("automatic freeze authorization environment mismatch")
             if os.environ.get("GITHUB_EVENT_NAME") != "push":
