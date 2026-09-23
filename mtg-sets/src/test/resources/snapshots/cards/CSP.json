@@ -262,6 +262,49 @@
     ]
 }
 
+// Skred
+{
+    "name": "Skred",
+    "manaCost": "{R}",
+    "typeLine": "Instant",
+    "oracleText": "Skred deals damage to target creature equal to the number of snow permanents you control.",
+    "script": {
+        "spellEffect": {
+            "type": "DealDamage",
+            "amount": {
+                "type": "AggregateBattlefield",
+                "player": "You",
+                "filter": {
+                    "cardPredicates": [
+                        "IsPermanent",
+                        "IsSnow"
+                    ]
+                }
+            },
+            "target": {
+                "type": "BoundVariable",
+                "name": "target creature"
+            }
+        },
+        "targetRequirements": [
+            {
+                "type": "TargetObject",
+                "filter": {
+                    "baseFilter": "creature"
+                },
+                "id": "target creature"
+            }
+        ]
+    },
+    "metadata": {
+        "collectorNumber": "97",
+        "artist": "Christopher Moeller"
+    },
+    "colorIdentityOverride": [
+        "RED"
+    ]
+}
+
 // Zur the Enchanter
 {
     "name": "Zur the Enchanter",
