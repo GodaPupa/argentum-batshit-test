@@ -71,13 +71,13 @@ class IndustrialWasteGate9Mh3NyxbornScenarioTest : ScenarioTestBase() {
             val game = scenario()
                 .withPlayers("Monster Tron", "Opponent")
                 .withCardInHand(1, "Nyxborn Hydra")
-                .withCardOnBattlefield(1, "Carrier Thrall")
+                .withCardOnBattlefield(1, "Myr Retriever")
                 .withLandsOnBattlefield(1, "Forest", 6)
                 .withActivePlayer(1)
                 .inPhase(Phase.PRECOMBAT_MAIN, Step.PRECOMBAT_MAIN)
                 .build()
 
-            val host = game.findPermanent("Carrier Thrall")!!
+            val host = game.findPermanent("Myr Retriever")!!
             withClue("bestow cast should be legal") {
                 castBestow(game, x = 2, target = host).error shouldBe null
             }
@@ -93,7 +93,7 @@ class IndustrialWasteGate9Mh3NyxbornScenarioTest : ScenarioTestBase() {
             game.state.getEntity(hydra)!!.get<AttachedToComponent>()?.targetId shouldBe host
             plusOneCounters(game, hydra) shouldBe 2
 
-            projector.getProjectedPower(game.state, host) shouldBe 4
+            projector.getProjectedPower(game.state, host) shouldBe 3
             projector.getProjectedToughness(game.state, host) shouldBe 3
             projector.getProjectedKeywords(game.state, host).contains(Keyword.REACH) shouldBe true
             projector.getProjectedKeywords(game.state, host).contains(Keyword.TRAMPLE) shouldBe true
@@ -103,13 +103,13 @@ class IndustrialWasteGate9Mh3NyxbornScenarioTest : ScenarioTestBase() {
             val game = scenario()
                 .withPlayers("Monster Tron", "Opponent")
                 .withCardInHand(1, "Nyxborn Hydra")
-                .withCardOnBattlefield(1, "Carrier Thrall")
+                .withCardOnBattlefield(1, "Myr Retriever")
                 .withLandsOnBattlefield(1, "Forest", 6)
                 .withActivePlayer(1)
                 .inPhase(Phase.PRECOMBAT_MAIN, Step.PRECOMBAT_MAIN)
                 .build()
 
-            val host = game.findPermanent("Carrier Thrall")!!
+            val host = game.findPermanent("Myr Retriever")!!
             castBestow(game, x = 1, target = host).error shouldBe null
 
             // Make the target illegal before the Bestow spell resolves.
@@ -133,13 +133,13 @@ class IndustrialWasteGate9Mh3NyxbornScenarioTest : ScenarioTestBase() {
             val game = scenario()
                 .withPlayers("Monster Tron", "Opponent")
                 .withCardInHand(1, "Nyxborn Hydra")
-                .withCardOnBattlefield(1, "Carrier Thrall")
+                .withCardOnBattlefield(1, "Myr Retriever")
                 .withLandsOnBattlefield(1, "Forest", 6)
                 .withActivePlayer(1)
                 .inPhase(Phase.PRECOMBAT_MAIN, Step.PRECOMBAT_MAIN)
                 .build()
 
-            val host = game.findPermanent("Carrier Thrall")!!
+            val host = game.findPermanent("Myr Retriever")!!
             castBestow(game, x = 2, target = host).error shouldBe null
             game.resolveStack()
 
