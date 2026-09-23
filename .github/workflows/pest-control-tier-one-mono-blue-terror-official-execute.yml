@@ -25,10 +25,10 @@ jobs:
           text = Path(".github/workflows/pest-control-tier-one-mono-blue-terror-official-execute.yml").read_text()
           assert ("workflow" + "_dispatch") not in text
           assert "\n  push:" not in text
-          assert "github.event_name == 'push'" not in text
-          assert "PestControlTierOneMonoBlueTerrorOfficialExecutionRunnerTest" not in text
-          assert "Execute frozen four-game vector exactly once" not in text
-          assert "Upload one-shot official evidence" not in text
+          assert ("github.event_name == " + "'push'") not in text
+          assert ("PestControlTierOneMonoBlueTerror" + "OfficialExecutionRunnerTest") not in text
+          assert ("Execute frozen four-game vector " + "exactly once") not in text
+          assert ("Upload one-shot official " + "evidence") not in text
           PY
 
       - name: Verify accepted smoke record exists
