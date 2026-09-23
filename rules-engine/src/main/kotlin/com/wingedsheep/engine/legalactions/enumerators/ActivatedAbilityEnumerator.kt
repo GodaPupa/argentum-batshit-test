@@ -344,7 +344,8 @@ class ActivatedAbilityEnumerator : ActionEnumerator {
                         // here (life payability is validated at payment time, matching the prior
                         // fall-through behavior for these costs). Putting counters on the source
                         // costs nothing the player must have, so it never gates enumeration either.
-                        is CostAtom.PayLife, is CostAtom.RevealFromHand, is CostAtom.PutCountersOnSelf,
+                        is CostAtom.PayLife, is CostAtom.RevealFromHand, is CostAtom.RevealHand,
+                        is CostAtom.PutCountersOnSelf,
                         // PayCost-only (Tourach's Chant); no activated ability pays it, so there is
                         // nothing to enumerate.
                         is CostAtom.PutCountersOnPermanent,
@@ -583,7 +584,7 @@ class ActivatedAbilityEnumerator : ActionEnumerator {
                                     }
                                     // Pay-life / reveal / put-counters-on-self carry no enumeration-time
                                     // gate here (matching the prior else fall-through for these sub-costs).
-                                    is CostAtom.PayLife, is CostAtom.RevealFromHand,
+                                    is CostAtom.PayLife, is CostAtom.RevealFromHand, is CostAtom.RevealHand,
                                     is CostAtom.PutCountersOnSelf,
                                     is CostAtom.PutCountersOnPermanent,
                                     // See the top-level branch: always payable, nothing to select.
