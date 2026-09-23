@@ -7,17 +7,23 @@ import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
 
 class PestControlTierOneMonoBlueTerrorReplicationComposedValidationTest : FunSpec({
-    test("replication execution stack is green but remains explicitly unauthorized") {
+    test("replication execution authorization is exact and one-shot") {
         val inspection =
             PestControlTierOneMonoBlueTerrorReplicationExecutionAuthorization.inspect()
 
         inspection.green shouldBe true
-        inspection.executionAuthorized shouldBe false
+        inspection.executionAuthorized shouldBe true
         inspection.authorizedGames shouldBe 12
         inspection.attemptLimit shouldBe 1
         inspection.rerollsPermitted shouldBe false
         inspection.replacementsPermitted shouldBe false
         inspection.regenerationPermitted shouldBe false
+        inspection.executionStackHead shouldBe
+            "728e2d5e150c527b2049e10b8bc304945e2b7d99"
+        inspection.executionStackMerge shouldBe
+            "b8468b5b7865db5a2138852968b9e6ef89278273"
+        inspection.authorizationSha256 shouldBe
+            "9668fde1aa109433b8b87b3677aab1f8ce4995efea98f145e7324df191085572"
         inspection.officialGamesInitialized shouldBe 0
         inspection.actionsSubmitted shouldBe 0
         inspection.outcomeExposure shouldBe 0
@@ -56,7 +62,7 @@ class PestControlTierOneMonoBlueTerrorReplicationComposedValidationTest : FunSpe
         index.isNotEmpty() shouldBe true
     }
 
-    test("replication initializer cannot initialize before separate execution authorization") {
+    test("replication initializer requires durable attempt evidence before initialization") {
         val cell =
             PestControlTierOneMonoBlueTerrorReplicationExecutionInputLoader.replicationCells().first()
         val assignment = MonoBlueTerrorSmokeAssignment(
@@ -80,7 +86,7 @@ class PestControlTierOneMonoBlueTerrorReplicationComposedValidationTest : FunSpe
                 assignment = assignment,
                 vectorIdentity = identity,
                 executionCommit = "1".repeat(40),
-                durableAttemptRecorded = true,
+                durableAttemptRecorded = false,
             )
         }
     }
