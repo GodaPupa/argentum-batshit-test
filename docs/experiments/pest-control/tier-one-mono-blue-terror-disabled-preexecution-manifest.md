@@ -29,6 +29,6 @@ entropy, execution commit, enabled initializer, environment, action, artifact, o
 - Outcome exposure: `0`
 
 State substitution fails closed and changes the pinned hash. The runner-surface preflight audits
-eight inspect-only APIs. The next gate may perform a final construction-readiness closure audit over
-the complete disabled chain before any request to authorize vector creation. It must not create or
-expose a vector, assignment, entropy value, game, action, artifact, or outcome.
+eight inspect-only APIs. The following gate performs a final construction-readiness closure audit
+over the complete disabled chain before any request to authorize vector creation. It does not create
+or expose a vector, assignment, entropy value, game, action, artifact, or outcome.

@@ -55,6 +55,10 @@ class PestControlTierOneMonoBlueTerrorRunnerSurfacePreflightTest : FunSpec({
                     terrorPublicMethods(
                         PestControlTierOneMonoBlueTerrorDisabledPreExecutionManifest::class.java
                     ),
+                "PestControlTierOneMonoBlueTerrorConstructionClosure" to
+                    terrorPublicMethods(
+                        PestControlTierOneMonoBlueTerrorConstructionClosure::class.java
+                    ),
             ),
         )
 
@@ -64,7 +68,7 @@ class PestControlTierOneMonoBlueTerrorRunnerSurfacePreflightTest : FunSpec({
         result.green shouldBe true
         (result.workflowFilesAudited > 0) shouldBe true
         (result.commandFilesAudited > 0) shouldBe true
-        result.classesAudited shouldBe 8
+        result.classesAudited shouldBe 9
         result.officialSeedsGenerated shouldBe 0
         result.officialGamesInitialized shouldBe 0
         result.outcomeExposure shouldBe 0
@@ -95,6 +99,8 @@ class PestControlTierOneMonoBlueTerrorRunnerSurfacePreflightTest : FunSpec({
                     "PestControlTierOneMonoBlueTerrorDisabledSyntheticProvenance" to
                         setOf("inspect"),
                     "PestControlTierOneMonoBlueTerrorDisabledPreExecutionManifest" to
+                        setOf("inspect"),
+                    "PestControlTierOneMonoBlueTerrorConstructionClosure" to
                         setOf("inspect"),
                 ),
             )

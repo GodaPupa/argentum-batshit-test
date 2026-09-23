@@ -97,6 +97,12 @@ The in-memory Mono-Blue Terror closure manifest is recorded in
 hash chain and explicit zero counters while exposing no writer, workflow, command, vector, entropy,
 initializer activation, environment, action, artifact, or outcome path.
 
+The final Mono-Blue Terror construction audit is recorded in
+`tier-one-mono-blue-terror-construction-closure.md`. It combines the manifest with live workflow,
+command, and compiled-surface inspection and may conclude only
+`CONSTRUCTION_READY_VECTOR_CREATION_NOT_AUTHORIZED`; vector creation still requires a separate
+explicit research decision.
+
 The deterministic provenance adapter and byte-level reconciliation layer are recorded in
 `tier-one-grixis-adapter-artifact-contract.md`. They use synthetic in-memory fixtures, expose no game
 initializer, and leave the harness disabled with no vector or outcome exposure.
