@@ -13,9 +13,9 @@ manifest, positive workflow and command audit coverage, nine inspect-only API su
 
 ## Authority boundary
 
-Construction readiness does not itself authorize vector creation or execution. The subsequent
-research decision authorizes only construction and deterministic validation of a guarded one-shot
-freeze gate. No production vector, game, action, outcome artifact, or outcome exposure exists yet.
+Construction readiness does not authorize vector creation or execution. No vector identity,
+assignment, entropy value, game, action, artifact, or outcome exists. A separate explicit research
+decision is required before any vector-generation or freeze gate may be constructed.
 
 ## Current state
 
