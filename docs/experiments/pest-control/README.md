@@ -346,3 +346,11 @@ The Mono-Blue Terror production gameplay driver is documented in
 `tier-one-mono-blue-terror-production-driver.md`. The accepted four-cell AI calibration now uses
 this exact authorized-initializer + driver + raw-encoding path, eliminating the prior duplicate
 gameplay loop. Official frozen seeds remain unconsumed.
+
+
+The Mono-Blue Terror composed `VALIDATE_ONLY` gate is documented in
+`tier-one-mono-blue-terror-composed-validation.md`. It downloads and verifies the exact frozen
+artifact, decodes its four official assignments for identity/order validation only, then runs a
+separate four-game synthetic shadow through the durable journal, authorized coordinator,
+authorized initializer, production driver and artifact contract. Official seeds remain unconsumed
+and official gameplay remains zero.

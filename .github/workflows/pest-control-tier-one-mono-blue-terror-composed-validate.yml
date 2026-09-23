@@ -1,0 +1,59 @@
+name: Pest Control Tier-1 Mono-Blue Terror Composed VALIDATE_ONLY
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlTierOneMonoBlueTerrorOfficialExecutionInputLoader.kt
+      - gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOneMonoBlueTerrorOfficialExecutionInputLoaderTest.kt
+      - gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOneMonoBlueTerrorComposedValidationTest.kt
+      - .github/workflows/pest-control-tier-one-mono-blue-terror-composed-validate.yml
+
+permissions:
+  actions: read
+  contents: read
+
+jobs:
+  validate-only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 300
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - uses: gradle/actions/setup-gradle@v6
+
+      - name: Download exact frozen Mono-Blue Terror artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p build/pest-terror-official-input
+          curl -fsSL \
+            -H "Authorization: Bearer ${GH_TOKEN}" \
+            -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/artifacts/10733086089/zip" \
+            -o build/pest-terror-official-input/frozen.zip
+          echo "bbf9f20e834f27f838e37de78c905c213a8917651818367360a8e8a140914961  build/pest-terror-official-input/frozen.zip" | sha256sum -c -
+
+      - name: Validate full composed path without official gameplay
+        env:
+          PEST_TERROR_COMPOSED_MODE: VALIDATE_ONLY
+          PEST_TERROR_EXECUTION_INPUT_ACK: LOAD_FROZEN_TIER_ONE_MONO_BLUE_TERROR_4_FOR_VALIDATION_ONLY
+          PEST_TERROR_EXECUTION_INPUT_ZIP: ${{ github.workspace }}/build/pest-terror-official-input/frozen.zip
+          PEST_TERROR_COMPOSED_OUTPUT_DIR: ${{ github.workspace }}/build/reports/pest-control-tier-one-mono-blue-terror-composed-validation
+          PEST_TERROR_COMPOSED_EXECUTION_COMMIT: ${{ github.sha }}
+        run: scripts/test-class PestControlTierOneMonoBlueTerrorComposedValidationTest --info --stacktrace
+
+      - name: Upload composed validation evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: pest-control-tier-one-mono-blue-terror-composed-validation-${{ github.run_id }}
+          path: build/reports/pest-control-tier-one-mono-blue-terror-composed-validation/
+          if-no-files-found: error
+          retention-days: 30
