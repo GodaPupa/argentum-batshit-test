@@ -67,7 +67,7 @@ jobs:
           text=Path(".github/workflows/pest-control-tier-one-mono-blue-terror-replication-production-freeze.yml").read_text()
           assert ("workflow" + "_dispatch") not in text
           assert "github.event_name == 'push'" in text
-          assert "os.urandom(96)" not in text
+          assert ("os.urandom" + "(96)") not in text
           assert "generate_tier_one_mono_blue_terror_replication_freeze.py" in text
           assert "FREEZE_ARTIFACT_NAME" in text
           PY
