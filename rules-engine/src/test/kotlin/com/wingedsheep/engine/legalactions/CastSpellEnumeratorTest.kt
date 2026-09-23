@@ -10,6 +10,7 @@ import com.wingedsheep.engine.legalactions.support.shouldNotContainCastOf
 import com.wingedsheep.engine.state.components.identity.CardComponent
 import com.wingedsheep.engine.state.components.player.CantCastSpellsComponent
 import com.wingedsheep.mtg.sets.definitions.dom.cards.StrongholdConfessor
+import com.wingedsheep.mtg.sets.definitions.wwk.cards.EverflowingChalice
 import com.wingedsheep.mtg.sets.definitions.ktk.cards.TormentingVoice
 import com.wingedsheep.mtg.sets.definitions.ecl.cards.BrigidsCommand
 import com.wingedsheep.mtg.sets.definitions.ecl.cards.MorningtidesLight
@@ -316,6 +317,22 @@ class CastSpellEnumeratorTest : FunSpec({
         // Kicker adds {3} to the base {B} cost.
         kicked.manaCostString shouldBe "{3}{B}"
         (kicked.action as CastSpell).declaredCostSlot shouldBe ChoiceSlot.KICKED
+    }
+
+    test("Multikicker emits every affordable positive repeat count without changing base cast") {
+        val driver = setupP1(
+            hand = listOf("Everflowing Chalice"),
+            battlefield = listOf("Island", "Island", "Island", "Island", "Island", "Island"),
+            extraSetCards = listOf(EverflowingChalice)
+        )
+
+        val casts = driver.enumerateFor(driver.player1).castActionsFor("Everflowing Chalice")
+        val kicked = casts.filter { it.actionType == "CastWithKicker" }
+
+        kicked shouldHaveSize 3
+        kicked.map { it.manaCostString } shouldBe listOf("{2}", "{4}", "{6}")
+        kicked.map { (it.action as CastSpell).declaredCostRepeatCount } shouldBe listOf(1, 2, 3)
+        casts.single { it.actionType == "CastSpell" }.manaCostString shouldBe "{0}"
     }
 
     test("Kicker action is emitted as unaffordable when the kicked cost can't be paid") {
