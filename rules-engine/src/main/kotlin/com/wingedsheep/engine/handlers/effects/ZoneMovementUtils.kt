@@ -450,7 +450,18 @@ object ZoneMovementUtils {
      * tapped, damage, counters, summoning sickness, combat state, attachments, etc.
      */
     fun stripBattlefieldComponents(container: ComponentContainer): ComponentContainer {
-        return container
+        // A bestowed permanent's Aura type is a temporary Bestow effect, not a copiable printed
+        // characteristic. Restore its normal type before the zone change creates the new object.
+        val bestow = container.get<com.wingedsheep.engine.state.components.identity.BestowComponent>()
+        var stripped = container
+        if (bestow != null) {
+            container.get<CardComponent>()?.let { card ->
+                stripped = stripped.with(card.copy(typeLine = bestow.originalTypeLine))
+            }
+            stripped = stripped.without<com.wingedsheep.engine.state.components.identity.BestowComponent>()
+        }
+
+        return stripped
             // Identity
             .without<ControllerComponent>()
             .without<FaceDownComponent>()
