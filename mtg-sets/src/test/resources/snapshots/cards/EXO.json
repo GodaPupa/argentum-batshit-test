@@ -492,6 +492,50 @@
     ]
 }
 
+// Shattering Pulse
+{
+    "name": "Shattering Pulse",
+    "manaCost": "{1}{R}",
+    "typeLine": "Instant",
+    "oracleText": "Buyback {3} (You may pay an additional {3} as you cast this spell. If you do, put this card into your hand as it resolves.)\nDestroy target artifact.",
+    "keywordAbilities": [
+        {
+            "type": "Kicker",
+            "manaCost": "{3}",
+            "displayPrefix": "Buyback",
+            "branchesEffect": false,
+            "declaredSlot": "BUYBACK"
+        }
+    ],
+    "script": {
+        "spellEffect": {
+            "type": "MoveToZone",
+            "target": {
+                "type": "BoundVariable",
+                "name": "target artifact"
+            },
+            "destination": "Graveyard",
+            "byDestruction": true
+        },
+        "targetRequirements": [
+            {
+                "type": "TargetObject",
+                "filter": {
+                    "baseFilter": "artifact"
+                },
+                "id": "target artifact"
+            }
+        ]
+    },
+    "metadata": {
+        "collectorNumber": "102",
+        "artist": "Donato Giancola"
+    },
+    "colorIdentityOverride": [
+        "RED"
+    ]
+}
+
 // Soul Warden
 {
     "name": "Soul Warden",
