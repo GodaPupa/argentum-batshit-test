@@ -104,16 +104,27 @@ class IzzetScienceVeteranBeastriderEngineReadinessTest : FunSpec({
         card.script.spellEffect shouldNotBe null
     }
 
+    test("Capsize resolves as permanent bounce with buyback") {
+        val card = registry.getCard("Capsize") ?: error("Capsize unresolved")
+        card.oracleText shouldBe "Buyback {3} (You may pay an additional {3} as you cast this spell. If you do, put this card into your hand as it resolves.)\nReturn target permanent to its owner's hand."
+        card.typeLine.toString() shouldBe "Instant"
+        card.script.spellEffect shouldNotBe null
+        card.keywordAbilities.any {
+            it is com.wingedsheep.sdk.scripting.KeywordAbility.OptionalAdditionalCost &&
+                it.declaredSlot == com.wingedsheep.sdk.scripting.ChoiceSlot.BUYBACK
+        } shouldBe true
+    }
+
     test("freeze exact unresolved engine coverage count and emit identities") {
         val unresolved = IzzetScienceVeteranBeastriderEngineReadiness.unresolvedCardIdentities(registry)
         println("V09_REAL_ENGINE_UNRESOLVED_COUNT=" + unresolved.size)
         unresolved.forEach { println("V09_REAL_ENGINE_UNRESOLVED=" + it) }
-        unresolved.size shouldBe 44
+        unresolved.size shouldBe 43
     }
 
     test("full execution remains fail closed behind unresolved cards and PDH semantics") {
         val blockers = IzzetScienceVeteranBeastriderEngineReadiness.executionBlockers(registry)
-        blockers.size shouldBe 49
+        blockers.size shouldBe 48
         blockers.takeLast(5).shouldContainExactly(
             "PDH commander-zone initialization not qualified",
             "PDH commander recast/tax semantics not qualified",
