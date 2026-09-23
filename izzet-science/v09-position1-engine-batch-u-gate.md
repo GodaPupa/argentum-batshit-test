@@ -51,5 +51,20 @@ a Replicate cast/copy rail.
 12. Kaervek's Torch is absent from unresolved output.
 13. Official games/seeds/outcomes remain 0/0/0 and the exact v0.7 control remains unchanged.
 
+## Pre-qualification provenance
+
+- Initial Batch U snapshot/rebless run **35909478408** failed only because the semantic fixture
+  contained a syntax error. That failure is qualification infrastructure history, not deck-strength evidence.
+- Corrected fail-closed snapshot/rebless run **35911164210** succeeded.
+- Canonical snapshot integration commit:
+  `38c8cf2f8358357b4f6f6e1ce6d79b73175c162e`.
+- The integration commit changes exactly
+  `mtg-sets/src/test/resources/snapshots/cards/MIR.json` (51 additions, 0 deletions).
+- Kaervek's Torch semantic scenarios passed.
+- Exact real-engine readiness emitted `V09_REAL_ENGINE_UNRESOLVED_COUNT=32`, with
+  Kaervek's Torch absent and only Everflowing Chalice plus Lose Focus remaining unresolved for Izzet.
+- The fail-closed unrelated-snapshot guard passed.
+- The exact frozen v0.7 SHA remained verified and no official seed/game/outcome was consumed or exposed.
+
 Infrastructure, fixture, compilation, snapshot, or semantic failures are qualification history only,
 not evidence about deck strength.
