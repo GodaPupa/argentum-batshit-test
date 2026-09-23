@@ -68,16 +68,26 @@ private object MonsterTronTutorAdvisor : CardAdvisor {
             selected?.let { CardsSelectedResponse(decision.id, listOf(it)) }
         }
         is SelectCardsDecision -> {
-            // Library searches currently surface through SelectCardsDecision. A Crop Rotation
-            // sacrifice prompt uses the same decision class but has no hidden-card info, so leave
-            // that cost choice to the normal responder and only override the actual search.
-            val info = decision.cardInfo ?: return null
-            val missing = monsterMissingTronLands(context.state, context.playerId)
-            val selected = missing.asSequence().mapNotNull { wanted ->
-                decision.options.firstOrNull { id -> info[id]?.name == wanted }
-            }.firstOrNull()
-                ?: decision.options.firstOrNull { id -> info[id]?.name in MONSTER_TRON_LANDS }
-            selected?.let { CardsSelectedResponse(decision.id, listOf(it)) }
+            val info = decision.cardInfo
+            if (info == null && context.sourceCardName == "Crop Rotation") {
+                // Additional-cost choice: preserve every live Tron piece when a spare/fixing land
+                // is available. This is decision-local and makes no claim that Crop Rotation
+                // should always be fired immediately.
+                val selected = decision.options.firstOrNull { id ->
+                    context.state.cardName(id) !in MONSTER_TRON_LANDS
+                } ?: return null
+                CardsSelectedResponse(decision.id, listOf(selected))
+            } else if (info != null) {
+                // Library searches currently surface through SelectCardsDecision.
+                val missing = monsterMissingTronLands(context.state, context.playerId)
+                val selected = missing.asSequence().mapNotNull { wanted ->
+                    decision.options.firstOrNull { id -> info[id]?.name == wanted }
+                }.firstOrNull()
+                    ?: decision.options.firstOrNull { id -> info[id]?.name in MONSTER_TRON_LANDS }
+                selected?.let { CardsSelectedResponse(decision.id, listOf(it)) }
+            } else {
+                null
+            }
         }
         else -> null
     }
