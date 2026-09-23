@@ -1350,6 +1350,19 @@ sealed interface KeywordAbility {
         fun kicker(cost: ManaCost): KeywordAbility = OptionalAdditionalCost(manaCost = cost)
 
         /**
+         * Create Buyback with a mana cost (CR 702.27). Buyback rides the generic
+         * optional-additional-cost rail but records its own cast-choice slot so it is
+         * never observed as kicker. Stack resolution consumes that slot to return a
+         * successfully resolved spell to its owner's hand.
+         */
+        fun buyback(cost: String): KeywordAbility = OptionalAdditionalCost(
+            manaCost = ManaCost.parse(cost),
+            displayPrefix = "Buyback",
+            branchesEffect = false,
+            declaredSlot = ChoiceSlot.BUYBACK
+        )
+
+        /**
          * Create Kicker with a non-mana additional cost (e.g., sacrifice a creature).
          */
         fun kicker(additionalCost: AdditionalCost): KeywordAbility =
