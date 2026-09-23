@@ -1,0 +1,55 @@
+name: Industrial Waste — Gate 9 Diagnostics
+
+on:
+  pull_request:
+    branches: [industrial-waste/lab]
+    paths:
+      - .github/workflows/industrial-waste-g9-diagnostics.yml
+      - mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/**
+      - mtg-sets/**/src/main/kotlin/**
+      - mtg-sets/**/src/test/resources/snapshots/cards/**
+      - rules-engine/src/main/kotlin/**
+      - ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/**
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  diagnostics:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-java@v5
+        with: {distribution: temurin, java-version: 21}
+      - uses: gradle/actions/setup-gradle@v6
+
+      - name: Structural card diagnostics
+        shell: bash
+        run: |
+          set +e
+          ./gradlew :mtg-sets:test             --tests '*CardLintTest'             --tests '*FacadeBoundaryTest'             --no-daemon
+          status=$?
+          echo '===== STRUCTURAL XML ====='
+          find mtg-sets/build/test-results/test             \( -name 'TEST-*CardLintTest*.xml' -o -name 'TEST-*FacadeBoundaryTest*.xml' \)             -exec sed -n '1,900p' {} \; || true
+          exit $status
+
+      - name: Frozen baseline diagnostic
+        if: always()
+        shell: bash
+        run: |
+          set +e
+          ./gradlew :ai:test --tests '*FrozenBaselineTest' -Dbenchmark=true --no-daemon
+          status=$?
+          echo '===== FROZEN BASELINE XML ====='
+          find ai/build/test-results/test -name 'TEST-*FrozenBaselineTest*.xml'             -exec sed -n '1,500p' {} \; || true
+          exit $status
+
+      - name: Generate intentional snapshot diff
+        if: always()
+        shell: bash
+        run: |
+          ./gradlew :mtg-sets:test --tests '*CardDefinitionSnapshotTest'             -DupdateSnapshots=true --no-daemon
+          echo '===== GATE 9 SNAPSHOT DIFF ====='
+          git diff --             mtg-sets/src/test/resources/snapshots/cards/WWK.json             mtg-sets/src/test/resources/snapshots/cards/OGW.json             mtg-sets/src/test/resources/snapshots/cards/C20.json             mtg-sets/src/test/resources/snapshots/cards/ZNR.json             mtg-sets/src/test/resources/snapshots/cards/MH3.json             mtg-sets/src/test/resources/snapshots/cards/TMC.json
