@@ -51,6 +51,8 @@ object ManaColorSetResolver {
         is ManaColorSet.AmongPermanents -> amongPermanents(colorSet, state, projected, controllerId)
         is ManaColorSet.AmongCardsInGraveyard -> amongCardsInGraveyard(colorSet, state, projected, controllerId)
         is ManaColorSet.LandsCouldProduce -> landsCouldProduce(colorSet, state, projected, controllerId, cardRegistry)
+        is ManaColorSet.BasicLandsYouControlCouldProduce ->
+            basicLandsYouControlCouldProduce(state, projected, controllerId, cardRegistry)
         is ManaColorSet.SourceChosenColor -> sourceChosenColor(state, sourceId)
         is ManaColorSet.AmongLinkedExiledCards -> amongLinkedExiledCards(state, sourceId)
     }
@@ -131,6 +133,21 @@ object ManaColorSetResolver {
             val container = state.getEntity(permId) ?: return@filter false
             val card = container.get<CardComponent>() ?: return@filter false
             card.typeLine.isLand && projected.getController(permId) in targetPlayers
+        }
+        return LandManaColorInspector.colorsLandsCouldProduce(state, projected, landIds, cardRegistry)
+    }
+
+    private fun basicLandsYouControlCouldProduce(
+        state: GameState,
+        projected: ProjectedState,
+        controllerId: EntityId,
+        cardRegistry: CardRegistry,
+    ): Set<Color> {
+        val landIds = state.getBattlefield().filter { permId ->
+            val projectedTypes = projected.getTypes(permId)
+            "LAND" in projectedTypes &&
+                "BASIC" in projectedTypes &&
+                projected.getController(permId) == controllerId
         }
         return LandManaColorInspector.colorsLandsCouldProduce(state, projected, landIds, cardRegistry)
     }
