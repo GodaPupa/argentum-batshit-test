@@ -34,6 +34,16 @@ The other Izzet blockers require broader new machinery: repeat-count persistence
 (Everflowing Chalice), a replicate cast/copy rail (Lose Focus), or a spell-on-stack source that taxes
 opposing spells targeting it (Kaervek's Torch).
 
+## Snapshot qualification provenance
+
+- Snapshot rebless Actions run: `35896094530` — SUCCESS.
+- Canonical snapshot integration commit: `f76aa551748858d36f2c36f54d5561c7ff05c158`.
+- The fail-closed snapshot audit changed exactly:
+  `mtg-sets/src/test/resources/snapshots/cards/TMP.json`.
+- Rolling Thunder semantic scenarios passed before the rebless.
+- Exact real-engine readiness emitted 33 unresolved identities with Rolling Thunder absent.
+- No official games, seeds, or outcomes were initialized or exposed.
+
 ## Acceptance
 
 1. Rolling Thunder is {X}{R}{R}, Sorcery, with current Oracle behavior.
