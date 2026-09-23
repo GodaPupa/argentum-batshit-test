@@ -871,6 +871,83 @@
     ]
 }
 
+// Fire // Ice
+{
+    "name": "Fire // Ice",
+    "manaCost": "",
+    "typeLine": "Instant",
+    "oracleText": "Fire deals 2 damage divided as you choose among one or two targets.\n//\nTap target permanent.\nDraw a card.",
+    "metadata": {
+        "collectorNumber": "128",
+        "rarity": "UNCOMMON",
+        "artist": "David Martin & Franz Vohwinkel"
+    },
+    "colorIdentityOverride": [
+        "BLUE",
+        "RED"
+    ],
+    "layout": "SPLIT",
+    "cardFaces": [
+        {
+            "name": "Fire",
+            "manaCost": "{1}{R}",
+            "typeLine": "Instant",
+            "oracleText": "Fire deals 2 damage divided as you choose among one or two targets.",
+            "script": {
+                "spellEffect": {
+                    "type": "DividedDamage",
+                    "totalDamage": 2,
+                    "maxTargets": 2
+                },
+                "targetRequirements": [
+                    {
+                        "type": "AnyTarget",
+                        "count": 2,
+                        "minCount": 1
+                    }
+                ]
+            }
+        },
+        {
+            "name": "Ice",
+            "manaCost": "{1}{U}",
+            "typeLine": "Instant",
+            "oracleText": "Tap target permanent.\nDraw a card.",
+            "script": {
+                "spellEffect": {
+                    "type": "Composite",
+                    "effects": [
+                        {
+                            "type": "TapUntap",
+                            "target": {
+                                "type": "BoundVariable",
+                                "name": "target permanent"
+                            }
+                        },
+                        {
+                            "type": "DrawCards",
+                            "count": {
+                                "type": "Fixed",
+                                "amount": 1
+                            }
+                        }
+                    ]
+                },
+                "targetRequirements": [
+                    {
+                        "type": "TargetObject",
+                        "filter": {
+                            "baseFilter": "permanent"
+                        },
+                        "id": "target permanent"
+                    }
+                ]
+            }
+        }
+    ],
+    "hasNoManaCost": true
+}
+
 // Flowstone Charger
 {
     "name": "Flowstone Charger",
