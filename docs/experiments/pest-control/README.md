@@ -321,3 +321,9 @@ Mono-Blue Terror production-AI compatibility is validated in
 seat/start cells with `PRODUCTION_CANDIDATE_EXPIRING`, real London mulligans and exact-one engine
 submissions. The gate qualifies technical completion/no-rejection behavior only; official seeds stay
 unconsumed and synthetic winners are not matchup evidence.
+
+
+The Mono-Blue Terror execution decision is recorded in
+`tier-one-mono-blue-terror-execution-authorization.md`. It authorizes exactly four frozen games,
+one attempt each, with no rerolls, replacements or seed regeneration. The initializer and runner
+remain disabled; official seeds consumed, games initialized, actions and outcome exposure remain zero.
