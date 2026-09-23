@@ -1,6 +1,7 @@
 package com.wingedsheep.engine.scenarios
 
 import com.wingedsheep.engine.core.ActivateAbility
+import com.wingedsheep.engine.state.components.identity.CardComponent
 import com.wingedsheep.engine.support.ScenarioTestBase
 import com.wingedsheep.sdk.core.Phase
 import com.wingedsheep.sdk.core.Step
@@ -55,12 +56,8 @@ class IndustrialWasteGate9C20ScenarioTest : ScenarioTestBase() {
                 .inPhase(Phase.PRECOMBAT_MAIN, Step.PRECOMBAT_MAIN)
                 .build()
 
-            val ornament = game.state.getBattlefield(game.player1Id)
-                .first { it == game.findPermanent("Bonder's Ornament") || true }
-            val source = game.state.getBattlefield(game.player1Id).first { id ->
-                game.state.getEntity(id)?.let { entity ->
-                    entity.get<com.wingedsheep.engine.state.components.identity.CardComponent>()?.name == "Bonder's Ornament"
-                } == true
+            val source = game.state.getBattlefield(game.player1Id).single { id ->
+                game.state.getEntity(id)?.get<CardComponent>()?.name == "Bonder's Ornament"
             }
 
             val activation = game.execute(
