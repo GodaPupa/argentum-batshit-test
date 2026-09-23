@@ -42,10 +42,20 @@ class StarCompassScenarioTest : FunSpec({
             )
         )
 
-    test("Star Compass enters tapped") {
+    test("Star Compass enters tapped after resolving as a spell") {
         val d = driver()
-        val compass = d.putPermanentOnBattlefield(d.player1, "Star Compass")
+        val caster = d.player1
+        d.giveColorlessMana(caster, 2)
+        val compassCard = d.putCardInHand(caster, "Star Compass")
 
+        d.castSpell(caster, compassCard).error shouldBe null
+        var guard = 0
+        while (d.state.stack.isNotEmpty() && guard++ < 30) {
+            d.bothPass()
+        }
+
+        val compass = d.findPermanent(caster, "Star Compass")
+            ?: error("Star Compass did not resolve to the battlefield")
         d.isTapped(compass) shouldBe true
     }
 
