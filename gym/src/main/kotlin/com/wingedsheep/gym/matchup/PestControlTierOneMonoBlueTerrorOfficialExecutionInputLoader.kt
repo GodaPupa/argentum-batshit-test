@@ -5,6 +5,8 @@ import java.nio.file.Path
 
 const val PEST_MONO_BLUE_TERROR_EXECUTION_INPUT_ACK =
     "LOAD_FROZEN_TIER_ONE_MONO_BLUE_TERROR_4_FOR_VALIDATION_ONLY"
+const val PEST_MONO_BLUE_TERROR_EXECUTION_INPUT_EXECUTE_ACK =
+    "AUTOMATIC_ONE_SHOT_OFFICIAL_EXECUTION"
 const val PEST_MONO_BLUE_TERROR_FREEZE_ARTIFACT_ID = 10_733_086_089L
 const val PEST_MONO_BLUE_TERROR_FREEZE_COMMIT =
     "eb140403cceff8e930afdfb2874972c6e44f77e7"
@@ -27,7 +29,18 @@ object PestControlTierOneMonoBlueTerrorOfficialExecutionInputLoader {
             System.getenv("PEST_TERROR_EXECUTION_INPUT_ACK") ==
                 PEST_MONO_BLUE_TERROR_EXECUTION_INPUT_ACK
         ) { "exact Mono-Blue Terror validation acknowledgement is required" }
+        return loadFromEnvironment()
+    }
 
+    fun loadForAuthorizedExecutionFromEnvironment(): MonoBlueTerrorOfficialExecutionInput {
+        require(
+            System.getenv("PEST_TERROR_EXECUTION_INPUT_ACK") ==
+                PEST_MONO_BLUE_TERROR_EXECUTION_INPUT_EXECUTE_ACK
+        ) { "exact Mono-Blue Terror execution acknowledgement is required" }
+        return loadFromEnvironment()
+    }
+
+    private fun loadFromEnvironment(): MonoBlueTerrorOfficialExecutionInput {
         val path = Path.of(
             System.getenv("PEST_TERROR_EXECUTION_INPUT_ZIP")
                 ?: error("PEST_TERROR_EXECUTION_INPUT_ZIP required")
