@@ -104,3 +104,33 @@ Mono-Blue, and Jund opponents already sampled.
 No Gate 9 gameplay seed namespace is authorized until exact 60/15 identity, all four maindeck card
 implementations, Monster-Tron-specific opponent-policy fixtures, and a deterministic exact-deck
 readiness smoke all pass.
+
+
+## Sixth opponent selection
+
+Research updated 2026-09-23 after Gate 9 Monster Tron closed validly without replication.
+
+Elves remains a materially represented contemporary Pauper archetype. Current MTGO metagame
+tracking places it around the mid-single-digit share range, and recent Challenge results continue to
+put Elves into Top 8s. The matchup adds a strategic axis not yet covered by the Industrial Waste
+gauntlet: creature-mana scaling, go-wide development, Timberwatch burst, initiative pressure, and
+high-density creature refill.
+
+The representative exact 75 is Mogged's 5-2 Top 4 finish from MTGO Pauper Challenge 16 #12854501
+on 2026-09-19 (28 players), preserved in `elves-mogged-2026-09-19.dck`.
+
+Sources:
+- https://decksnipe.com/archetype/pauper/mono-green-elves?lists=40
+- https://mtgdecks.net/Pauper/mtgo-pauper-challenge-16-12854501-tournament-270509
+
+Deck-file SHA-256:
+`01f63d291f90fdd6956a37b5ec9bc6b411bff4d23ea87e4ff96c69be89c19cf6`.
+
+The current branch source-tree audit identifies six absent distinct maindeck definitions: Masked
+Vandal, Avenging Hunter, Land Grant, Winding Way, Lead the Stampede, and Gingerbread Cabin.
+Nyxborn Hydra is already qualified from Gate 9.
+
+Elves is selected for Gate 10 readiness because it adds the first dedicated creature-swarm/mana-engine
+coverage axis while keeping the implementation gap bounded. No Gate 10 gameplay seed namespace is
+authorized until exact identity, all six card capabilities, Elves-specific policy fixtures, registry
+completeness, and a deterministic exact-deck readiness smoke all pass.
