@@ -36,7 +36,9 @@ GRIXIS_SMOKE_PROVENANCE_SHA256 = "14d46801735ab9bf49d816161c75415c8072f027498949
 GRIXIS_REPLICATION_PROVENANCE_SHA256 = "85f80ad88b64f55c6798f8697c63be875528e82ba894d3c1fd7e5f2a1e199fe5"
 GRIXIS_SMOKE_VECTOR_SHA256 = "99eb94c4ec28f073534c008b367f3384df25abebd29dde0a9574227599cb60eb"
 GRIXIS_REPLICATION_VECTOR_SHA256 = "5cd8a78fb62a59495d07ed31c4579fab7bafe2bc9c075aa7757a7f67953c75d4"
-ACK = "GENERATE_TIER_ONE_MONO_BLUE_TERROR_SMOKE_4_NO_GAMEPLAY"
+AUTO_AUTH_PATH = "docs/experiments/pest-control/tier-one-mono-blue-terror-auto-freeze-authorization.json"
+AUTO_AUTH_SHA256 = "b7bf1f820ef733a4457b23d0ecf5c987366b6b3697aff1b92de59d22ebbd1201"
+AUTO_AUTHORIZATION = "AUTOMATIC_SINGLE_FREEZE_NO_GAMEPLAY"
 
 REJECTED_V2_CANDIDATE = (
     352421150441762375, -7897966070063678192, 5918577377114013031,
@@ -155,6 +157,7 @@ def audit_sources(root: Path) -> tuple[set[int], dict[str, object]]:
     closure_source = root / "gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlTierOneMonoBlueTerrorConstructionClosure.kt"
     grixis_smoke_provenance_path = root / "docs/experiments/pest-control/tier-one-grixis-vector-freeze-provenance.json"
     grixis_replication_provenance_path = root / "docs/experiments/pest-control/tier-one-grixis-replication-freeze-provenance.json"
+    auto_auth_path = root / AUTO_AUTH_PATH
 
     actual_hashes = {
         "permanent_registry": sha256(registry_path.read_bytes()),
@@ -166,6 +169,7 @@ def audit_sources(root: Path) -> tuple[set[int], dict[str, object]]:
         "grixis_replication_provenance": sha256(grixis_replication_provenance_path.read_bytes()),
         "grixis_smoke_vector": vector_hash(GRIXIS_SMOKE_SEEDS),
         "grixis_replication_vector": vector_hash(GRIXIS_REPLICATION_SEEDS),
+        "auto_freeze_authorization": sha256(auto_auth_path.read_bytes()),
     }
     expected_hashes = {
         "permanent_registry": REGISTRY_SHA256,
@@ -177,9 +181,29 @@ def audit_sources(root: Path) -> tuple[set[int], dict[str, object]]:
         "grixis_replication_provenance": GRIXIS_REPLICATION_PROVENANCE_SHA256,
         "grixis_smoke_vector": GRIXIS_SMOKE_VECTOR_SHA256,
         "grixis_replication_vector": GRIXIS_REPLICATION_VECTOR_SHA256,
+        "auto_freeze_authorization": AUTO_AUTH_SHA256,
     }
     if actual_hashes != expected_hashes:
         raise ValueError(f"pinned source hash mismatch: expected={expected_hashes} actual={actual_hashes}")
+
+    auto_auth = json.loads(auto_auth_path.read_text())
+    expected_auto_auth = {
+        "schema": "pest-control-tier-one-mono-blue-terror-auto-freeze-authorization@v1",
+        "repository": "GodaPupa/argentum-batshit-test",
+        "protocolId": PROTOCOL,
+        "blockId": BLOCK,
+        "qualifiedRunner": QUALIFIED_RUNNER,
+        "acceptedGuardMerge": "81a6135f20b7e87cc9053f7bb340bdae2104361e",
+        "constructionProof": CONSTRUCTION_PROOF,
+        "authorization": AUTO_AUTHORIZATION,
+        "trigger": "PUSH_TO_MAIN_BY_AUTHORIZATION_RECORD_MERGE",
+        "regenerationPermitted": False,
+        "officialSeedsBeforeAuthorization": 0,
+        "gamesAuthorized": 0,
+        "outcomeExposureAuthorized": 0,
+    }
+    if auto_auth != expected_auto_auth:
+        raise ValueError("automatic freeze authorization record mismatch")
 
     smoke_provenance = json.loads(grixis_smoke_provenance_path.read_text())
     replication_provenance = json.loads(grixis_replication_provenance_path.read_text())
@@ -453,17 +477,19 @@ def main() -> None:
             parser.error("--output-dir is required")
 
         if args.generate:
-            if os.environ.get("PEST_TERROR_FREEZE_ACK") != ACK:
-                raise ValueError("exact production acknowledgement is required")
-            if os.environ.get("GITHUB_EVENT_NAME") != "workflow_dispatch":
-                raise ValueError("production entropy is restricted to workflow_dispatch")
+            if os.environ.get("PEST_TERROR_AUTO_FREEZE_AUTH") != AUTO_AUTHORIZATION:
+                raise ValueError("automatic freeze authorization environment mismatch")
+            if os.environ.get("GITHUB_EVENT_NAME") != "push":
+                raise ValueError("production entropy is restricted to the authorization-record push")
             if (
                 os.environ.get("GITHUB_REF") != "refs/heads/main"
                 or os.environ.get("GITHUB_RUN_ATTEMPT") != "1"
             ):
                 raise ValueError(
-                    "production entropy requires main and workflow attempt 1"
+                    "production entropy requires main push and workflow attempt 1"
                 )
+            if os.environ.get("GITHUB_SHA") != args.freeze_commit:
+                raise ValueError("freeze commit must equal the triggering push commit")
             if any(
                 len(value) != 40
                 or any(char not in "0123456789abcdef" for char in value)
