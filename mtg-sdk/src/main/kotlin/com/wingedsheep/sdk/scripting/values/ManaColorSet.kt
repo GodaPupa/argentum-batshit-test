@@ -89,6 +89,20 @@ sealed interface ManaColorSet {
     }
 
     /**
+     * The union of colors that any **basic land you control** could produce.
+     *
+     * This is the Star Compass variant of [LandsCouldProduce]: candidate permanents are restricted
+     * to projected Basic Lands you control, while the existing land-mana inspector still answers
+     * the CR 106.7 "could produce" question (including gained basic land types / mana abilities and
+     * ignoring tapped state and colorless).
+     */
+    @SerialName("ManaColorSet.BasicLandsYouControlCouldProduce")
+    @Serializable
+    data object BasicLandsYouControlCouldProduce : ManaColorSet {
+        override val description: String = "any color that a basic land you control could produce"
+    }
+
+    /**
      * The union of colors among the cards currently exiled *with* the source permanent — the
      * cards recorded in its `LinkedExileComponent` (set by `MoveToZoneEffect(linkToSource = true)`)
      * that are still in the exile zone. Colors are read from each exiled card's base colors
