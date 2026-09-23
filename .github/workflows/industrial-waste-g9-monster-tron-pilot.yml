@@ -1,0 +1,121 @@
+name: Industrial Waste — Gate 9 Monster Tron Pilot
+
+on:
+  pull_request:
+    branches: [industrial-waste/lab]
+    paths:
+      - .github/workflows/industrial-waste-g9-monster-tron-pilot.yml
+      - ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteMonsterTronPilotBenchmark.kt
+      - ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/MonsterTronAdvisorModule.kt
+      - ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteAdvisorModule.kt
+      - industrial-waste/protocols/gate-9-monster-tron-pilot-v1.md
+      - industrial-waste/control/industrial-waste-v1.0-submitted.dck
+      - industrial-waste/challengers/pactdoll-a.dck
+      - industrial-waste/gauntlet/monster-tron-pinoio-cosmico-2026-09-15.dck
+      - industrial-waste/seed-registry.json
+      - industrial-waste/input-identities.sha256
+      - industrial-waste/sim/**
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  monster-tron-pilot:
+    runs-on: ubuntu-latest
+    timeout-minutes: 50
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-python@v6
+        with: {python-version: "3.12"}
+
+      - name: Verify frozen inputs and fresh disjoint vector
+        run: |
+          python3 industrial-waste/sim/validate_inputs.py
+          python3 - <<'PY'
+          import hashlib
+          import json
+          from pathlib import Path
+
+          namespace = "IW-G9-MONSTER-TRON-PILOT-V1"
+          expected_count = 2
+          expected_seeds = [4887770374418762850, 3072597163935011335]
+          expected_digest = "0513dfbac2da94356299f289c8ea7de1746c3ae3dab6371e4368a996b20177a4"
+          expected_opponent_digest = "4d358e76a3566ed096299550f7400c9d63c79c2e715cd74c372faa38960428cc"
+
+          def seed_for(ns, index):
+              raw = hashlib.sha256(f"{ns}:{index}".encode()).digest()[:8]
+              value = int.from_bytes(raw, "big") & ((1 << 63) - 1)
+              return value or 1
+
+          entries = json.loads(Path("industrial-waste/seed-registry.json").read_text())
+          matches = [item for item in entries if item["namespace"] == namespace]
+          assert len(matches) == 1, matches
+          entry = matches[0]
+          assert entry["count"] == expected_count
+          assert entry["status"] == "reserved"
+          assert entry["evidence_class"] == "preboard-matchup-capability-pilot"
+
+          vector = [seed_for(namespace, i) for i in range(1, expected_count + 1)]
+          assert vector == expected_seeds, vector
+          digest = hashlib.sha256("\n".join(map(str, vector)).encode()).hexdigest()
+          assert digest == expected_digest == entry["vector_sha256"]
+
+          mine = set(vector)
+          for other in entries:
+              if other["namespace"] == namespace:
+                  continue
+              other_vector = {
+                  seed_for(other["namespace"], i)
+                  for i in range(1, other["count"] + 1)
+              }
+              assert mine.isdisjoint(other_vector), f"seed overlap with {other['namespace']}"
+
+          opponent = Path("industrial-waste/gauntlet/monster-tron-pinoio-cosmico-2026-09-15.dck")
+          opponent_digest = hashlib.sha256(opponent.read_bytes()).hexdigest()
+          assert opponent_digest == expected_opponent_digest
+
+          protocol = Path("industrial-waste/protocols/gate-9-monster-tron-pilot-v1.md").read_text()
+          assert "industrial-waste/control/industrial-waste-v1.0-submitted.dck" in protocol
+          assert "industrial-waste/challengers/pactdoll-a.dck" in protocol
+          assert "eight games total" in protocol
+
+          print(f"Gate 9 vector fresh/disjoint: {vector} sha256={digest}")
+          print(f"Monster Tron opponent identity: {opponent_digest}")
+          PY
+
+      - uses: actions/setup-java@v5
+        with: {distribution: temurin, java-version: 21}
+
+      - uses: gradle/actions/setup-gradle@v6
+
+      - name: Execute frozen-vector Gate 9 pilot
+        id: pilot
+        continue-on-error: true
+        env:
+          IW_MONSTER_TRON_PILOT: "true"
+        run: ./gradlew :ai:test --tests IndustrialWasteMonsterTronPilotBenchmark -Dbenchmark=true --no-daemon
+
+      - name: Diagnose pilot runtime
+        if: always()
+        run: |
+          echo "pilot_outcome=${{ steps.pilot.outcome }}"
+          find ai/build/test-results -type f -maxdepth 4 -print 2>/dev/null || true
+          for f in ai/build/test-results/test/*.xml; do
+            [ -f "$f" ] || continue
+            echo "===== $f ====="
+            cat "$f"
+          done
+
+      - name: Enforce pilot success
+        if: always()
+        run: test "${{ steps.pilot.outcome }}" = "success"
+
+      - name: Upload pilot evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: industrial-waste-g9-monster-tron-pilot
+          path: industrial-waste/results/gate-9-monster-tron-pilot-v1.json
+          if-no-files-found: ignore
