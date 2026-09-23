@@ -1,0 +1,168 @@
+name: Pest Control Tier-1 Mono-Blue Terror Replication Production Freeze
+
+on:
+  pull_request:
+    paths:
+      - .github/workflows/pest-control-tier-one-mono-blue-terror-replication-production-freeze.yml
+      - docs/experiments/pest-control/tier-one-mono-blue-terror-replication-auto-freeze-authorization.json
+      - scripts/experiments/pest-control/generate_tier_one_mono_blue_terror_replication_freeze.py
+  push:
+    branches:
+      - main
+    paths:
+      - docs/experiments/pest-control/tier-one-mono-blue-terror-replication-auto-freeze-authorization.json
+
+permissions:
+  actions: read
+  contents: read
+
+concurrency:
+  group: pest-control-tier-one-mono-blue-terror-replication-production-freeze
+  cancel-in-progress: false
+
+env:
+  PRIOR_SMOKE_ARTIFACT_ID: "10733086089"
+  PRIOR_SMOKE_ARTIFACT_SHA256: bbf9f20e834f27f838e37de78c905c213a8917651818367360a8e8a140914961
+  AUTHORIZATION_SHA256: e2762dfd323470c0567eb12a3e9d4ef524881b17a753f9f701a0ec736f85116b
+  FREEZE_ARTIFACT_NAME: pest-control-tier-one-mono-blue-terror-replication-vector-freeze
+
+jobs:
+  validate-gate:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Validate immutable replication freeze authorization
+        run: |
+          set -euo pipefail
+          echo "${AUTHORIZATION_SHA256}  docs/experiments/pest-control/tier-one-mono-blue-terror-replication-auto-freeze-authorization.json" | sha256sum -c -
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          r=json.loads(Path("docs/experiments/pest-control/tier-one-mono-blue-terror-replication-auto-freeze-authorization.json").read_text())
+          assert r["schema"]=="pest-control-tier-one-mono-blue-terror-replication-auto-freeze-authorization@v1"
+          assert r["acceptedReplicationFreezeGateMerge"]=="bc32108205e6e9daa11336125718891b541a85dc"
+          assert r["acceptedReplicationFreezeGateTree"]=="21608e530d6f568d9f703f514145669694b781e9"
+          assert r["priorSmokeResultMerge"]=="d2d67d23239974c8a61316bbadc55316a40e820a"
+          assert r["priorSmokeFreezeArtifactId"]==10733086089
+          assert r["priorSmokeFreezeArtifactSha256"]=="bbf9f20e834f27f838e37de78c905c213a8917651818367360a8e8a140914961"
+          assert r["completeExclusionCount"]==554
+          assert r["replicationSeedCount"]==12
+          assert r["entropyByteCount"]==96
+          assert r["authorization"]=="AUTOMATIC_ONE_SHOT_TERROR_REPLICATION_FREEZE_NO_GAMEPLAY"
+          assert r["trigger"]=="PUSH_TO_MAIN_BY_AUTHORIZATION_RECORD_MERGE"
+          assert r["rerollPermitted"] is False
+          assert r["replacementPermitted"] is False
+          assert r["regenerationPermitted"] is False
+          assert r["officialGamesAuthorized"]==0
+          assert r["officialReplicationSeedsBeforeFreeze"]==0
+          assert r["officialOutcomeExposureBeforeFreeze"]==0
+          PY
+
+      - name: Validate production trigger contract
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          text=Path(".github/workflows/pest-control-tier-one-mono-blue-terror-replication-production-freeze.yml").read_text()
+          assert ("workflow" + "_dispatch") not in text
+          assert "github.event_name == 'push'" in text
+          assert "os.urandom(96)" not in text
+          assert "generate_tier_one_mono_blue_terror_replication_freeze.py" in text
+          assert "FREEZE_ARTIFACT_NAME" in text
+          PY
+
+  freeze:
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+
+      - name: Verify one-shot authorization and replay barriers
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          test "${GITHUB_REF}" = "refs/heads/main"
+          test "${GITHUB_RUN_ATTEMPT}" = "1"
+          echo "${AUTHORIZATION_SHA256}  docs/experiments/pest-control/tier-one-mono-blue-terror-replication-auto-freeze-authorization.json" | sha256sum -c -
+          git merge-base --is-ancestor bc32108205e6e9daa11336125718891b541a85dc HEAD
+          python3 - <<'PY'
+          import json, os, urllib.parse, urllib.request
+          repo=os.environ["GITHUB_REPOSITORY"]
+          token=os.environ["GH_TOKEN"]
+          current=int(os.environ["GITHUB_RUN_ID"])
+          headers={
+              "Authorization":f"Bearer {token}",
+              "Accept":"application/vnd.github+json",
+              "X-GitHub-Api-Version":"2022-11-28",
+          }
+          workflow="pest-control-tier-one-mono-blue-terror-replication-production-freeze.yml"
+          url=f"https://api.github.com/repos/{repo}/actions/workflows/{workflow}/runs?event=push&per_page=100"
+          with urllib.request.urlopen(urllib.request.Request(url,headers=headers)) as response:
+              runs=json.load(response)["workflow_runs"]
+          prior=[run["id"] for run in runs if run["id"] != current]
+          print(json.dumps({"current_run_id":current,"prior_push_run_ids":prior},sort_keys=True))
+          if prior:
+              raise SystemExit("prior replication production-freeze push run exists")
+          name=os.environ["FREEZE_ARTIFACT_NAME"]
+          artifacts_url=(
+              f"https://api.github.com/repos/{repo}/actions/artifacts?"
+              + urllib.parse.urlencode({"name":name,"per_page":100})
+          )
+          with urllib.request.urlopen(urllib.request.Request(artifacts_url,headers=headers)) as response:
+              count=json.load(response).get("total_count")
+          print(json.dumps({"artifact_name":name,"prior_artifact_count":count},sort_keys=True))
+          if count != 0:
+              raise SystemExit("prior replication freeze artifact exists")
+          PY
+
+      - name: Download exact accepted Terror smoke freeze artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p build/prior-terror-smoke-freeze
+          curl -fsSL \
+            -H "Authorization: Bearer ${GH_TOKEN}" \
+            -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/artifacts/${PRIOR_SMOKE_ARTIFACT_ID}/zip" \
+            -o build/prior-terror-smoke-freeze.zip
+          echo "${PRIOR_SMOKE_ARTIFACT_SHA256}  build/prior-terror-smoke-freeze.zip" | sha256sum -c -
+          unzip -q build/prior-terror-smoke-freeze.zip -d build/prior-terror-smoke-freeze
+          cd build/prior-terror-smoke-freeze
+          sha256sum -c artifacts.sha256
+
+      - name: Entropy-free preflight
+        run: |
+          set -euo pipefail
+          python3 scripts/experiments/pest-control/generate_tier_one_mono_blue_terror_replication_freeze.py \
+            --preflight \
+            --prior-smoke-dir build/prior-terror-smoke-freeze
+
+      - name: Generate and freeze exact 12-game replication vector once
+        id: freeze-vector
+        env:
+          PEST_TERROR_REPLICATION_FREEZE_AUTH: AUTOMATIC_ONE_SHOT_TERROR_REPLICATION_FREEZE_NO_GAMEPLAY
+        run: |
+          set -euo pipefail
+          FREEZE_TREE="$(git rev-parse 'HEAD^{tree}')"
+          python3 scripts/experiments/pest-control/generate_tier_one_mono_blue_terror_replication_freeze.py \
+            --generate \
+            --prior-smoke-dir build/prior-terror-smoke-freeze \
+            --output-dir build/reports/pest-control-tier-one-mono-blue-terror-replication-freeze \
+            --freeze-commit "${GITHUB_SHA}" \
+            --freeze-tree "${FREEZE_TREE}"
+
+      - name: Upload immutable replication freeze evidence
+        if: always() && steps.freeze-vector.outcome != 'skipped'
+        uses: actions/upload-artifact@v7
+        with:
+          name: pest-control-tier-one-mono-blue-terror-replication-vector-freeze
+          path: build/reports/pest-control-tier-one-mono-blue-terror-replication-freeze/
+          if-no-files-found: error
+          retention-days: 90
