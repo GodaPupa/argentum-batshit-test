@@ -1,6 +1,6 @@
 # Gate 8 Jund Wildfire preboard capability pilot v1
 
-Status: frozen and authorized for one fresh two-seed capability pilot; no outcome-dependent edits are permitted.
+Status: completed; valid eight-game capability pilot; Jund sampling closed without replication or promotion.
 
 ## Inputs
 
@@ -47,3 +47,26 @@ Mono-Blue evidence.
 
 Frozen Industrial Waste v1.0 Control remains unchanged. Pactdoll-A remains unpromoted. No postboard
 work is authorized by this pilot.
+
+
+## Result and decision
+
+GitHub Actions run `35808048994` completed successfully. The uploaded canonical artifact
+`industrial-waste-g8-jund-pilot` has artifact digest
+`sha256:6914211d09fcbf66a6891d99d4edc5e1f19c22bec6851cade674f550117f1723`.
+
+All eight games were valid: zero exceptions, zero illegal actions, zero non-cap draws, complete
+play/draw rotation, and the frozen seed vector matched its registered digest.
+
+- Frozen Control: 2-1-1.
+- Pactdoll-A: 2-2.
+- Jund Wildfire overall versus Industrial: 3 wins, 4 losses, 1 draw.
+- Both Industrial lists reached combo-ready state in 3/4 games.
+- Both Industrial lists assembled Tron by turn 5 in 1/4 games.
+- Mean colored-mana-failure turns were 1.25 for Control and 1.75 for Pactdoll-A.
+- No mulligans occurred in the pilot.
+
+The opponent-pressure floor passed and Industrial fair-game capability passed. Pactdoll-A tied
+Control at two wins each, so the predeclared replication trigger did not pass. Jund sampling
+therefore closes with no replication, no challenger promotion, and no postboard authorization.
+Frozen Industrial Waste v1.0 Control remains unchanged.

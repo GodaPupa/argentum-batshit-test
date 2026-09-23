@@ -68,3 +68,12 @@ Opponent pressure and the minimum Industrial capability floor both passed, but P
 Control and therefore failed the predeclared replication trigger. Mono-Blue sampling is closed with
 no replication, no promotion, and no postboard authorization. Frozen v1.0 Control remains the
 baseline.
+
+
+Gate 8 Jund Wildfire is complete. Exact-deck readiness and the Jund-specific opponent-policy audit
+passed before official seed exposure. The fresh two-seed paired pilot then completed all eight games
+validly: frozen Control went 2-1-1, Pactdoll-A went 2-2, and Jund went 3-4-1 overall versus the two
+Industrial lists. Opponent pressure and Industrial fair-game capability both passed, but Pactdoll-A
+tied Control on wins and therefore failed the predeclared replication trigger. Jund sampling is
+closed with no replication, no promotion, and no postboard authorization. Frozen v1.0 Control
+remains the baseline.
