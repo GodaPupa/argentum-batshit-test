@@ -52,7 +52,7 @@ jobs:
 
           workflow=Path(".github/workflows/pest-control-tier-one-mono-blue-terror-smoke-freeze.yml").read_text()
           assert ("workflow" + "_dispatch") not in workflow
-          assert "github.event_name == 'push'" not in workflow
-          assert "--generate" not in workflow
-          assert "PEST_TERROR_AUTO_FREEZE_AUTH" not in workflow
+          assert ("github.event_name == " + "'push'") not in workflow
+          assert ("-" + "-generate") not in workflow
+          assert ("PEST_TERROR_" + "AUTO_FREEZE_AUTH") not in workflow
           PY
