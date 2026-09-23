@@ -77,6 +77,11 @@ The disabled Mono-Blue Terror Game-1 wiring contract is recorded in
 qualified runner and pinned disabled-initializer proofs without accepting a vector, assignment,
 seed, environment, action, artifact, or outcome.
 
+The complete seedless Mono-Blue Terror plan is recorded in
+`tier-one-mono-blue-terror-disabled-four-cell-plan.md`. It binds all four ordered cells and their
+2/2 seat and starting-deck balances while retaining zero assignments, official seeds, games,
+actions, artifacts, and outcomes.
+
 The deterministic provenance adapter and byte-level reconciliation layer are recorded in
 `tier-one-grixis-adapter-artifact-contract.md`. They use synthetic in-memory fixtures, expose no game
 initializer, and leave the harness disabled with no vector or outcome exposure.
