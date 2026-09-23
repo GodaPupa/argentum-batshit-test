@@ -90,16 +90,23 @@ class IzzetScienceVeteranBeastriderEngineReadinessTest : FunSpec({
         card.script.activatedAbilities.size shouldBe 2
     }
 
+    test("Echoing Truth resolves as same-name nonland-permanent bounce") {
+        val card = registry.getCard("Echoing Truth") ?: error("Echoing Truth unresolved")
+        card.oracleText shouldBe "Return target nonland permanent and all other permanents with the same name as that permanent to their owners' hands."
+        card.typeLine.toString() shouldBe "Instant"
+        card.script.spellEffect shouldNotBe null
+    }
+
     test("freeze exact unresolved engine coverage count and emit identities") {
         val unresolved = IzzetScienceVeteranBeastriderEngineReadiness.unresolvedCardIdentities(registry)
         println("V09_REAL_ENGINE_UNRESOLVED_COUNT=" + unresolved.size)
         unresolved.forEach { println("V09_REAL_ENGINE_UNRESOLVED=" + it) }
-        unresolved.size shouldBe 46
+        unresolved.size shouldBe 45
     }
 
     test("full execution remains fail closed behind unresolved cards and PDH semantics") {
         val blockers = IzzetScienceVeteranBeastriderEngineReadiness.executionBlockers(registry)
-        blockers.size shouldBe 51
+        blockers.size shouldBe 50
         blockers.takeLast(5).shouldContainExactly(
             "PDH commander-zone initialization not qualified",
             "PDH commander recast/tax semantics not qualified",
