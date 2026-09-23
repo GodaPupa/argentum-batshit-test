@@ -110,6 +110,7 @@ class IndustrialWasteGate10ClbScenarioTest : ScenarioTestBase() {
             game.state.projectedState.hasKeyword(creature, Keyword.HEXPROOF) shouldBe true
             revealed!!.cardNames shouldContain "Elvish Mystic"
             revealed.cardNames shouldContain "Fyndhorn Elves"
+        }
 
         test("initiative holder ventures at upkeep, chooses Forge, and resolves its room ability") {
             val game = scenario()
@@ -174,7 +175,6 @@ class IndustrialWasteGate10ClbScenarioTest : ScenarioTestBase() {
             game.state.getEntity(game.player2Id)?.has<PlayerInitiativeComponent>() shouldBe false
             game.state.getEntity(game.player1Id)
                 ?.get<UndercityProgressComponent>()?.room shouldBe UndercityRoom.SECRET_ENTRANCE
-        }
         }
     }
 }
