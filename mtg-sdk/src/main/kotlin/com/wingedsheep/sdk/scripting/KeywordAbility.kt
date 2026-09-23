@@ -817,6 +817,24 @@ sealed interface KeywordAbility {
     }
 
     // =========================================================================
+    // Bestow
+    // =========================================================================
+
+    /**
+     * Bestow [cost] (CR 702.103).
+     *
+     * Paying this alternative cost casts the permanent spell as an Aura enchantment with
+     * enchant creature. If its target becomes illegal before resolution, the bestow effect
+     * ends and the spell resolves as its normal permanent instead of fizzling.
+     */
+    @SerialName("Bestow")
+    @Serializable
+    data class Bestow(val cost: ManaCost) : KeywordAbility {
+        override val keyword: Keyword = Keyword.BESTOW
+        override val description: String = "Bestow $cost"
+    }
+
+    // =========================================================================
     // Emerge
     // =========================================================================
 
