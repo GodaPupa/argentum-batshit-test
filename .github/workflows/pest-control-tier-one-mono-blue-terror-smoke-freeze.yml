@@ -51,6 +51,24 @@ jobs:
         run: |
           set -euo pipefail
           python3 scripts/experiments/pest-control/audit_tier_one_mono_blue_terror_freeze_artifact_absence.py
+      - name: Validate production step order
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          text = Path(".github/workflows/pest-control-tier-one-mono-blue-terror-smoke-freeze.yml").read_text()
+          freeze = text.split("\n  freeze:\n", 1)[1]
+          anchors = [
+              "- uses: actions/checkout@v6",
+              "- name: Validate dispatch metadata",
+              "- name: Audit absence of prior freeze artifact",
+              "- name: Audit frozen source boundary without entropy",
+              "- name: Draw and quarantine exactly once; no gameplay",
+          ]
+          positions = [freeze.index(anchor) for anchor in anchors]
+          assert positions == sorted(positions), (anchors, positions)
+          assert len(set(positions)) == len(positions)
+          PY
+
       - name: Deterministic entropy-free validation
         run: |
           set -euo pipefail
@@ -86,6 +104,10 @@ jobs:
     if: github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.sha }}
+
       - name: Validate dispatch metadata
         env:
           FREEZE_ACK: ${{ inputs.freeze_ack }}
@@ -97,9 +119,7 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: python3 scripts/experiments/pest-control/audit_tier_one_mono_blue_terror_freeze_artifact_absence.py
-      - uses: actions/checkout@v6
-        with:
-          ref: ${{ github.sha }}
+
       - name: Audit frozen source boundary without entropy
         run: python3 scripts/experiments/pest-control/generate_tier_one_mono_blue_terror_smoke_freeze.py --preflight
       - name: Draw and quarantine exactly once; no gameplay
