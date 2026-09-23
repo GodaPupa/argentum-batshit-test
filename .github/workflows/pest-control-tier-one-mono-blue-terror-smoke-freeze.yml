@@ -1,0 +1,98 @@
+name: Pest Control Tier-1 Mono-Blue Terror Smoke Vector Freeze
+
+on:
+  pull_request:
+    paths:
+      - scripts/experiments/pest-control/generate_tier_one_mono_blue_terror_smoke_freeze.py
+      - .github/workflows/pest-control-tier-one-mono-blue-terror-smoke-freeze.yml
+      - docs/experiments/pest-control/tier-one-mono-blue-terror-vector-freeze-gate.md
+  workflow_dispatch:
+    inputs:
+      freeze_ack:
+        description: Exact one-time four-seed freeze acknowledgement; this never runs games
+        required: true
+        type: string
+
+permissions:
+  actions: read
+  contents: read
+
+concurrency:
+  group: pest-control-tier-one-mono-blue-terror-smoke-vector-freeze
+  cancel-in-progress: false
+
+jobs:
+  validate-gate:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Deterministic entropy-free validation
+        run: |
+          set -euo pipefail
+          python3 scripts/experiments/pest-control/generate_tier_one_mono_blue_terror_smoke_freeze.py --preflight
+          python3 scripts/experiments/pest-control/generate_tier_one_mono_blue_terror_smoke_freeze.py \
+            --validate-fixture \
+            --output-dir build/reports/pest-control-tier-one-mono-blue-terror-smoke-freeze-fixture
+          python3 - <<'PY'
+          import csv, json
+          from pathlib import Path
+          root=Path("build/reports/pest-control-tier-one-mono-blue-terror-smoke-freeze-fixture")
+          manifest=json.loads((root/"freeze-manifest.json").read_text())
+          assert manifest["status"]=="NONEXPERIMENTAL_FIXTURE"
+          assert manifest["collision_audit"]=={
+              "excluded_seed_count":550,
+              "new_seed_count":4,
+              "new_unique_count":4,
+              "overlap_count":0,
+              "result":"PASS",
+          }
+          assert manifest["assignment_counts"]["games"]==4
+          assert manifest["assignment_counts"]["pest_play"]==2
+          assert manifest["assignment_counts"]["pest_draw"]==2
+          assert manifest["assignment_counts"]["pest_seat_zero"]==2
+          assert manifest["assignment_counts"]["pest_seat_one"]==2
+          assert set(manifest["assignment_counts"]["joint_cells"].values())=={1}
+          rows=list(csv.DictReader((root/"assignments.csv").open()))
+          assert len(rows)==4
+          assert [int(r["game_number"]) for r in rows]==[1,2,3,4]
+          PY
+
+  freeze:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fail-closed dispatch guard
+        env:
+          FREEZE_ACK: ${{ inputs.freeze_ack }}
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          test "${GITHUB_REF}" = "refs/heads/main"
+          test "${GITHUB_RUN_ATTEMPT}" = "1"
+          test "${FREEZE_ACK}" = "GENERATE_TIER_ONE_MONO_BLUE_TERROR_SMOKE_4_NO_GAMEPLAY"
+          test "$(gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts?name=pest-control-tier-one-mono-blue-terror-smoke-vector-freeze" --jq '.total_count')" = "0"
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.sha }}
+      - name: Audit frozen source boundary without entropy
+        run: python3 scripts/experiments/pest-control/generate_tier_one_mono_blue_terror_smoke_freeze.py --preflight
+      - name: Draw and quarantine exactly once; no gameplay
+        env:
+          PEST_TERROR_FREEZE_ACK: ${{ inputs.freeze_ack }}
+        run: |
+          set -euo pipefail
+          FREEZE_TREE="$(git rev-parse 'HEAD^{tree}')"
+          python3 scripts/experiments/pest-control/generate_tier_one_mono_blue_terror_smoke_freeze.py \
+            --generate \
+            --output-dir build/reports/pest-control-tier-one-mono-blue-terror-smoke-freeze \
+            --freeze-commit "${GITHUB_SHA}" \
+            --freeze-tree "${FREEZE_TREE}"
+      - name: Upload immutable freeze evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: pest-control-tier-one-mono-blue-terror-smoke-vector-freeze
+          path: build/reports/pest-control-tier-one-mono-blue-terror-smoke-freeze/
+          if-no-files-found: error
+          retention-days: 90
