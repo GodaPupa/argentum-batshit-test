@@ -1590,6 +1590,9 @@ class CastSpellEnumerator : ActionEnumerator {
         // --- Splice onto [quality] (CR 702.47) ---
         enumerateSplice(context, hand, result)
 
+        // --- Bestow (CR 702.103) ---
+        enumerateBestow(context, hand, result)
+
         // --- Cleave (CR 702.148) ---
         enumerateCleave(context, hand, result)
 
@@ -2535,6 +2538,101 @@ class CastSpellEnumerator : ActionEnumerator {
                     manaCostString = undeclaredCost.toString()
                 ))
             }
+        }
+    }
+
+    /**
+     * Enumerates bestow casts (CR 702.103). Bestow is a hand-only alternative cost that changes
+     * the spell into an Aura enchantment spell with enchant creature. It therefore has a target
+     * requirement even though the card's normal enchantment-creature cast is untargeted.
+     *
+     * X in a bestow cost is chosen normally. The chosen value rides CastSpell.xValue exactly like
+     * printed X and is later preserved on the permanent for enters-with-X counters.
+     */
+    private fun enumerateBestow(
+        context: EnumerationContext,
+        hand: List<EntityId>,
+        result: MutableList<LegalAction>
+    ) {
+        val state = context.state
+        val playerId = context.playerId
+
+        for (cardId in hand) {
+            val cardComponent = state.getEntity(cardId)?.get<CardComponent>() ?: continue
+            if (cardComponent.typeLine.isLand) continue
+            if (context.cantCastSpell(cardId)) continue
+
+            val cardDef = context.cardRegistry.getCard(cardComponent.name) ?: continue
+            val bestow = cardDef.keywordAbilities.filterIsInstance<KeywordAbility.Bestow>().firstOrNull()
+                ?: continue
+
+            // Bestow changes what the spell is, not when the underlying card may be cast.
+            val isInstant = cardComponent.typeLine.isInstant
+            val grantedFlash = cardDef.keywords.contains(Keyword.FLASH) ||
+                context.castPermissionUtils.hasGrantedFlash(state, cardId)
+            if (!isInstant && !grantedFlash && !context.canPlaySorcerySpeed) continue
+
+            val restrictions = cardDef.script.castRestrictions
+            if (restrictions.isNotEmpty() &&
+                !context.castPermissionUtils.checkCastRestrictions(state, playerId, restrictions)
+            ) continue
+
+            val bestowCost = context.costCalculator.calculateEffectiveCostWithAlternativeBase(
+                state, cardDef, bestow.cost, playerId
+            )
+            val spellContext = spellPaymentContextFor(cardComponent).copy(hasXInCost = bestowCost.hasX)
+            val canAfford = context.manaSolver.canPay(
+                state, playerId, bestowCost,
+                precomputedSources = context.availableManaSources,
+                spellContext = spellContext
+            )
+            val autoTapPreview = if (context.skipAutoTapPreview) null else {
+                context.manaSolver.solve(
+                    state, playerId, bestowCost,
+                    precomputedSources = context.availableManaSources,
+                    spellContext = spellContext
+                )?.sources?.map { it.entityId }
+            }
+
+            val hasX = bestowCost.hasX
+            val maxX = if (hasX) {
+                val available = context.manaSolver.getAvailableManaCount(
+                    state, playerId,
+                    precomputedSources = context.availableManaSources,
+                    spellContext = spellContext
+                )
+                val fixedCost = bestowCost.cmc
+                val xCount = bestowCost.xCount.coerceAtLeast(1)
+                ((available - fixedCost) / xCount).coerceAtLeast(0)
+            } else null
+
+            val targetReqs = listOf(com.wingedsheep.sdk.dsl.Targets.Creature)
+            val targetInfos = context.targetUtils.buildTargetInfos(state, playerId, targetReqs, cardId)
+            if (!context.targetUtils.allRequirementsSatisfied(targetInfos)) continue
+            val firstReq = targetReqs.first()
+            val firstInfo = targetInfos.first()
+
+            result.add(
+                LegalAction(
+                    actionType = "CastWithAlternativeCost",
+                    description = "Bestow ${cardComponent.name} (${bestowCost})",
+                    action = CastSpell(
+                        playerId, cardId,
+                        useAlternativeCost = true,
+                        alternativeCostType = AlternativeCostType.BESTOW
+                    ),
+                    validTargets = firstInfo.validTargets,
+                    requiresTargets = true,
+                    targetCount = firstInfo.maxTargets,
+                    minTargets = firstReq.effectiveMinCount,
+                    targetDescription = "creature to enchant",
+                    affordable = canAfford,
+                    manaCostString = bestowCost.toString(),
+                    hasXCost = hasX,
+                    maxAffordableX = maxX,
+                    autoTapPreview = autoTapPreview
+                )
+            )
         }
     }
 
