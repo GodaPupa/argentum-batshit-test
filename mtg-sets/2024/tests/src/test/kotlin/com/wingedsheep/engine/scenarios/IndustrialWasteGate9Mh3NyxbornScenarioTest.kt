@@ -8,6 +8,7 @@ import com.wingedsheep.engine.state.components.battlefield.AttachedToComponent
 import com.wingedsheep.engine.state.components.battlefield.CountersComponent
 import com.wingedsheep.engine.state.components.identity.BestowComponent
 import com.wingedsheep.engine.state.components.identity.CardComponent
+import com.wingedsheep.engine.state.components.identity.ProtectionComponent
 import com.wingedsheep.engine.state.components.stack.ChosenTarget
 import com.wingedsheep.engine.support.ScenarioTestBase
 import com.wingedsheep.sdk.core.CounterType
@@ -127,6 +128,31 @@ class IndustrialWasteGate9Mh3NyxbornScenarioTest : ScenarioTestBase() {
             plusOneCounters(game, hydra) shouldBe 1
             projector.getProjectedPower(game.state, hydra) shouldBe 1
             projector.getProjectedToughness(game.state, hydra) shouldBe 2
+        }
+
+        test("bestow uses Aura card type for protection checks while being cast") {
+            val game = scenario()
+                .withPlayers("Monster Tron", "Opponent")
+                .withCardInHand(1, "Nyxborn Hydra")
+                .withCardOnBattlefield(1, "Myr Retriever")
+                .withLandsOnBattlefield(1, "Forest", 6)
+                .withActivePlayer(1)
+                .inPhase(Phase.PRECOMBAT_MAIN, Step.PRECOMBAT_MAIN)
+                .build()
+
+            val host = game.findPermanent("Myr Retriever")!!
+            game.state = game.state.updateEntity(host) { permanent ->
+                permanent.with(
+                    ProtectionComponent(
+                        colors = emptySet(),
+                        cardTypes = setOf("CREATURE")
+                    )
+                )
+            }
+
+            // CR 702.103b: after choosing the bestow cost this is an Enchantment — Aura spell,
+            // so protection from creatures does not make the creature an illegal target.
+            castBestow(game, x = 1, target = host).error shouldBe null
         }
 
         test("a bestowed Nyxborn Hydra becomes its normal creature when its host leaves") {
