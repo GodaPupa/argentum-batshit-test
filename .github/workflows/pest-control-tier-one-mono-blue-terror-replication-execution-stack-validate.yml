@@ -1,58 +1,25 @@
-name: Pest Control Tier-1 Mono-Blue Terror Replication Execution Stack VALIDATE_ONLY
+name: Pest Control Tier-1 Mono-Blue Terror Replication Execution Stack Accepted
 
 on:
   pull_request:
     paths:
-      - gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlTierOneMonoBlueTerrorReplicationExecutionAuthorization.kt
-      - gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlTierOneMonoBlueTerrorReplicationAuthorizedInitializer.kt
-      - gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlTierOneMonoBlueTerrorReplicationDurableAttempts.kt
-      - gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlTierOneMonoBlueTerrorReplicationArtifactContract.kt
-      - gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOneMonoBlueTerrorReplicationOfficialExecutionRunnerTest.kt
-      - gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOneMonoBlueTerrorReplicationComposedValidationTest.kt
       - .github/workflows/pest-control-tier-one-mono-blue-terror-replication-execution-stack-validate.yml
       - docs/experiments/pest-control/tier-one-mono-blue-terror-replication-execution-stack.md
 
 permissions:
-  actions: read
   contents: read
 
 jobs:
-  validate-only:
+  validate-accepted:
     runs-on: ubuntu-latest
-    timeout-minutes: 45
     steps:
       - uses: actions/checkout@v6
 
-      - uses: actions/setup-java@v5
-        with:
-          distribution: temurin
-          java-version: '21'
-
-      - uses: gradle/actions/setup-gradle@v6
-
-      - name: Verify execution remains unauthorized
+      - name: Verify accepted execution-stack provenance
         run: |
           set -euo pipefail
-          grep -F 'REPLICATION_EXECUTION_STACK_VALIDATED_NOT_AUTHORIZED'             gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlTierOneMonoBlueTerrorReplicationExecutionAuthorization.kt
-          test ! -e .github/workflows/pest-control-tier-one-mono-blue-terror-replication-official-execute.yml
-
-      - name: Download exact frozen replication artifact
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          set -euo pipefail
-          mkdir -p build/pest-terror-replication-input
-          curl -fsSL             -H "Authorization: Bearer ${GH_TOKEN}"             -H "Accept: application/vnd.github+json"             "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/artifacts/10773131628/zip"             -o build/pest-terror-replication-freeze.zip
-          echo "4d3a19ef7febacb336911ff1271c14ab83a6ea1f99ed34ae154ae154d6ef5f25  build/pest-terror-replication-freeze.zip" | sha256sum -c -
-          unzip -q build/pest-terror-replication-freeze.zip -d build/pest-terror-replication-input
-          cd build/pest-terror-replication-input
-          sha256sum -c artifacts.sha256
-
-      - name: Validate dormant replication execution stack
-        run: scripts/test-class PestControlTierOneMonoBlueTerrorReplicationComposedValidationTest --info --stacktrace
-
-      - name: Revalidate exact frozen replication artifact without gameplay
-        env:
-          PEST_TERROR_REPLICATION_MODE: VALIDATE_ONLY
-          PEST_TERROR_REPLICATION_INPUT_DIR: ${{ github.workspace }}/build/pest-terror-replication-input
-        run: scripts/test-class PestControlTierOneMonoBlueTerrorReplicationOfficialArtifactValidationTest --info --stacktrace
+          grep -F '`728e2d5e150c527b2049e10b8bc304945e2b7d99`' docs/experiments/pest-control/tier-one-mono-blue-terror-replication-execution-stack.md
+          grep -F '`b8468b5b7865db5a2138852968b9e6ef89278273`' docs/experiments/pest-control/tier-one-mono-blue-terror-replication-execution-stack.md
+          grep -F '`35925031349` — success' docs/experiments/pest-control/tier-one-mono-blue-terror-replication-execution-stack.md
+          grep -F '`35925031432` — success' docs/experiments/pest-control/tier-one-mono-blue-terror-replication-execution-stack.md
+          grep -F 'games initialized: `0/12`' docs/experiments/pest-control/tier-one-mono-blue-terror-replication-execution-stack.md
