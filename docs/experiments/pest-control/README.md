@@ -100,8 +100,12 @@ initializer activation, environment, action, artifact, or outcome path.
 The final Mono-Blue Terror construction audit is recorded in
 `tier-one-mono-blue-terror-construction-closure.md`. It combines the manifest with live workflow,
 command, and compiled-surface inspection and may conclude only
-`CONSTRUCTION_READY_VECTOR_CREATION_NOT_AUTHORIZED`; vector creation still requires a separate
-explicit research decision.
+`CONSTRUCTION_READY_VECTOR_CREATION_NOT_AUTHORIZED`.
+
+The separate guarded Mono-Blue Terror smoke-vector freeze decision is documented in
+`tier-one-mono-blue-terror-vector-freeze-gate.md`. Pull requests may exercise only deterministic
+fixture bytes; the production path is manual, single-attempt, artifact-only, collision-audited
+against 550 retired Pest seed identities, and cannot initialize a game or expose an outcome.
 
 The deterministic provenance adapter and byte-level reconciliation layer are recorded in
 `tier-one-grixis-adapter-artifact-contract.md`. They use synthetic in-memory fixtures, expose no game
