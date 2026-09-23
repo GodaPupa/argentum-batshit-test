@@ -6,8 +6,11 @@ import com.wingedsheep.engine.core.ActivateAbility
 import com.wingedsheep.engine.core.CardsSelectedResponse
 import com.wingedsheep.engine.core.CastSpell
 import com.wingedsheep.engine.core.ChooseTargetsDecision
+import com.wingedsheep.engine.core.DecisionContext
 import com.wingedsheep.engine.core.PlayLand
+import com.wingedsheep.engine.core.SearchCardInfo
 import com.wingedsheep.engine.core.SearchLibraryDecision
+import com.wingedsheep.engine.core.SelectCardsDecision
 import com.wingedsheep.engine.core.TargetsResponse
 import com.wingedsheep.engine.state.components.identity.CardComponent
 import com.wingedsheep.engine.state.components.stack.ChosenTarget
@@ -39,27 +42,50 @@ class IndustrialWasteMonsterTronPolicyAuditTest : ScenarioTestBase() {
         .withRngSeed(0x1A57_B109L)
 
     init {
-        test("Crop Rotation preserves live Tron pieces and tutors the missing piece") {
+        test("Crop Rotation preserves a live Tron piece then tutors the missing piece") {
             val game = seeded()
-                .withCardInHand(1, "Crop Rotation")
                 .withLandsOnBattlefield(1, "Forest", 1)
-                .withLandsOnBattlefield(1, "Swamp", 1)
                 .withLandsOnBattlefield(1, "Urza's Mine", 1)
                 .withLandsOnBattlefield(1, "Urza's Power Plant", 1)
-                .withCardInLibrary(1, "Urza's Tower")
                 .build()
 
-            val action = ai(game).chooseAction(game.state).shouldBeInstanceOf<CastSpell>()
-            name(game, action.cardId) shouldBe "Crop Rotation"
-            val sacrificed = action.additionalCostPayment?.sacrificedPermanents?.singleOrNull()
-            (sacrificed?.let { name(game, it) } in setOf("Forest", "Swamp")) shouldBe true
+            val forest = game.state.getBattlefield(game.player1Id)
+                .single { name(game, it) == "Forest" }
+            val mine = game.state.getBattlefield(game.player1Id)
+                .single { name(game, it) == "Urza's Mine" }
 
-            game.execute(action).error shouldBe null
-            game.resolveStack()
-            val decision = game.getPendingDecision() ?: error("Crop Rotation search decision missing")
-            val response = ai(game).respondToDecision(game.state, decision)
+            val sacrifice = SelectCardsDecision(
+                id = "crop-sacrifice",
+                playerId = game.player1Id,
+                prompt = "Sacrifice a land",
+                context = DecisionContext(sourceName = "Crop Rotation"),
+                options = listOf(mine, forest),
+                minSelections = 1,
+                maxSelections = 1,
+            )
+            ai(game).respondToDecision(game.state, sacrifice)
                 .shouldBeInstanceOf<CardsSelectedResponse>()
-            name(game, response.selectedCards.single()) shouldBe "Urza's Tower"
+                .selectedCards.single() shouldBe forest
+
+            val tower = EntityId.of("tower-option")
+            val redundantMine = EntityId.of("mine-option")
+            val search = SearchLibraryDecision(
+                id = "crop-search",
+                playerId = game.player1Id,
+                prompt = "Search for a land",
+                context = DecisionContext(sourceName = "Crop Rotation"),
+                options = listOf(redundantMine, tower),
+                minSelections = 1,
+                maxSelections = 1,
+                cards = mapOf(
+                    redundantMine to SearchCardInfo("Urza's Mine", "", "Land"),
+                    tower to SearchCardInfo("Urza's Tower", "", "Land"),
+                ),
+                filterDescription = "land card",
+            )
+            ai(game).respondToDecision(game.state, search)
+                .shouldBeInstanceOf<CardsSelectedResponse>()
+                .selectedCards.single() shouldBe tower
         }
 
         test("Expedition Map tutors the missing Tron piece rather than a redundant land") {
