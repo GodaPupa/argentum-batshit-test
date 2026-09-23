@@ -36,5 +36,5 @@ and execution contract. Any public run or execution method still fails closed.
 - Outcome exposure: `0`
 - Workflow/command entry points: `0`
 
-The next gate may compose all four accepted cells as a disabled, seedless plan. It must continue to
+The following gate composes all four accepted cells as a disabled, seedless plan. It continues to
 exclude assignments, entropy, environments, actions, artifacts, and any official execution surface.
