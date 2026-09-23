@@ -769,13 +769,26 @@ class CastSpellHandler(
                         return "No valid targets available"
                     }
                 }
+                val bestowValidation = action.useAlternativeCost &&
+                    action.altAllows(AlternativeCostType.BESTOW) &&
+                    cardDef.keywordAbilities.any { it is KeywordAbility.Bestow }
+                val targetState = if (bestowValidation) {
+                    state.updateEntity(action.cardId) { container ->
+                        val card = container.get<CardComponent>()
+                        if (card == null) container
+                        else container.with(card.copy(typeLine = com.wingedsheep.sdk.core.TypeLine.aura()))
+                    }
+                } else state
+                val validationDef = if (bestowValidation) {
+                    cardDef.copy(typeLine = com.wingedsheep.sdk.core.TypeLine.aura())
+                } else (transformedFace ?: cardDef)
                 val targetError = targetValidator.validateTargets(
-                    state,
+                    targetState,
                     action.targets,
                     targetRequirements,
                     action.playerId,
-                    sourceColors = (transformedFace ?: cardDef).colors,
-                    sourceSubtypes = (transformedFace ?: cardDef).typeLine.subtypes.map { it.value }.toSet(),
+                    sourceColors = validationDef.colors,
+                    sourceSubtypes = validationDef.typeLine.subtypes.map { it.value }.toSet(),
                     sourceId = action.cardId,
                     xValue = action.xValue,
                     targetingSourceType = TargetingSourceType.SPELL
@@ -1096,7 +1109,14 @@ class CastSpellHandler(
                             state, action.cardId, cardDef, action.playerId, cardRegistry, predicateEvaluator
                         ) else null
                         if (action.altAllows(AlternativeCostType.BESTOW) && bestowAbility != null) {
-                            costCalculator.calculateEffectiveCostWithAlternativeBase(state, cardDef, bestowAbility.cost, action.playerId)
+                            // CR 702.103b: bestow changes the spell to Enchantment — Aura before
+                            // total-cost modifiers are applied. Noncreature/enchantment spell taxes
+                            // and reductions therefore read the Aura characteristics, not the
+                            // printed enchantment-creature type.
+                            val bestowDef = cardDef.copy(typeLine = com.wingedsheep.sdk.core.TypeLine.aura())
+                            costCalculator.calculateEffectiveCostWithAlternativeBase(
+                                state, bestowDef, bestowAbility.cost, action.playerId
+                            )
                         } else if (action.altAllows(AlternativeCostType.IMPENDING) && impendingAbility != null) {
                             costCalculator.calculateEffectiveCostWithAlternativeBase(state, cardDef, impendingAbility.cost, action.playerId)
                         } else if (action.altAllows(AlternativeCostType.CLEAVE) && cleaveAbility != null) {
@@ -1286,27 +1306,39 @@ class CastSpellHandler(
         return ComputedCastCost(costAfterImprovise, paymentXValue)
     }
 
+    private fun cardDefForBestow(state: GameState, cardId: EntityId) =
+        state.getEntity(cardId)?.get<CardComponent>()?.let { cardRegistry.getCard(it.cardDefinitionId) }
+
     private fun validatePayment(state: GameState, action: CastSpell, cost: ManaCost, paymentXValue: Int = action.xValue ?: 0): String? {
         val xValue = paymentXValue
 
         // Build spell context for conditional mana validation
         val cardComponent = state.getEntity(action.cardId)?.get<CardComponent>()
+        val bestowPaymentCard = cardComponent?.takeIf {
+            action.useAlternativeCost && action.altAllows(AlternativeCostType.BESTOW)
+        }?.copy(typeLine = com.wingedsheep.sdk.core.TypeLine.aura())
         val spellCtx = if (action.castFaceDown) {
             // CR 708.2 — a face-down spell has none of the printed card's characteristics, so
             // conditional mana is judged against the nameless 2/2 creature it actually is.
             SpellPaymentContext.faceDownCast(isFromHand = isCastFromHand(state, action.cardId))
         } else if (cardComponent != null) {
+            val paymentCard = bestowPaymentCard ?: cardComponent
             SpellPaymentContext(
-                isInstantOrSorcery = cardComponent.typeLine.isInstant || cardComponent.typeLine.isSorcery,
+                isInstantOrSorcery = paymentCard.typeLine.isInstant || paymentCard.typeLine.isSorcery,
                 isKicked = action.declaredCostSlot == ChoiceSlot.KICKED,
-                isCreature = cardComponent.typeLine.isCreature,
-                isLegendary = cardComponent.typeLine.isLegendary,
+                isCreature = paymentCard.typeLine.isCreature,
+                isLegendary = paymentCard.typeLine.isLegendary,
+                // Alternative costs do not change mana value (CR 202.3); use the printed cost.
                 manaValue = cardComponent.manaCost.cmc,
-                hasXInCost = cardComponent.manaCost.hasX,
-                subtypes = paymentSubtypesOf(cardComponent),
+                hasXInCost = if (bestowPaymentCard != null) {
+                    cardDefForBestow(state, action.cardId)?.keywordAbilities
+                        ?.filterIsInstance<KeywordAbility.Bestow>()?.firstOrNull()?.cost?.hasX
+                        ?: cardComponent.manaCost.hasX
+                } else cardComponent.manaCost.hasX,
+                subtypes = paymentSubtypesOf(paymentCard),
                 isFromExile = isCastFromExile(state, action.cardId),
                 isFromHand = isCastFromHand(state, action.cardId),
-                cardTypes = cardComponent.typeLine.cardTypes,
+                cardTypes = paymentCard.typeLine.cardTypes,
             )
         } else null
 
@@ -3615,7 +3647,12 @@ class CastSpellHandler(
                 // "only the characteristics of the face that's up" with no such exception — so a
                 // back-face cast reports that face's own mana value. Mirrors `StackResolver`'s
                 // `spellManaValue`, which stamps the same number onto the SpellCastEvent.
-                typeLine = transformedFace?.typeLine ?: cardComponent.typeLine,
+                typeLine = if (
+                    action.useAlternativeCost &&
+                    action.altAllows(AlternativeCostType.BESTOW) &&
+                    cardDef?.keywordAbilities?.any { it is KeywordAbility.Bestow } == true
+                ) com.wingedsheep.sdk.core.TypeLine.aura()
+                else transformedFace?.typeLine ?: cardComponent.typeLine,
                 manaValue = modalBackFace?.manaCost?.cmc ?: cardComponent.manaValue,
                 colors = transformedFace?.colors ?: cardComponent.colors,
                 isFaceDown = action.castFaceDown,
