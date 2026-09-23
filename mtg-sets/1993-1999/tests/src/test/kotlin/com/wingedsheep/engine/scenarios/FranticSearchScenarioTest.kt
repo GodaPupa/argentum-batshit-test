@@ -46,6 +46,8 @@ class FranticSearchScenarioTest : FunSpec({
         val d = driver()
         val caster = d.player1
 
+        repeat(3) { d.putLandOnBattlefield(caster, "Island") }
+
         val (handAfterCast, discardDecision) = castAndReachDiscard(d)
 
         discardDecision.prompt shouldBe "Choose 2 cards to discard"
