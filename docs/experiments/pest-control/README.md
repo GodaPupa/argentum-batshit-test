@@ -377,3 +377,9 @@ construction in `tier-one-mono-blue-terror-replication-freeze-gate.md`. It exten
 retired-seed universe from `550` to `554` by binding all four accepted Terror smoke seeds and
 requires exact 3× coverage of each seat × starting-deck cell. No replication seeds exist at this
 gate.
+
+
+The Mono-Blue Terror replication freeze production gate is documented in
+`tier-one-mono-blue-terror-replication-auto-freeze.md`. It is merge-triggered, may draw exactly
+96 entropy bytes once, collision-audits all 12 values against the full 554-identity exclusion
+universe, and permits no reroll, replacement, salvage, or regeneration. It executes no gameplay.
