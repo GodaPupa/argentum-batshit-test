@@ -4396,6 +4396,36 @@
     ]
 }
 
+// Rolling Thunder
+{
+    "name": "Rolling Thunder",
+    "manaCost": "{X}{R}{R}",
+    "typeLine": "Sorcery",
+    "oracleText": "Rolling Thunder deals X damage divided as you choose among any number of targets.",
+    "script": {
+        "spellEffect": {
+            "type": "DividedDamage",
+            "totalDamage": 0,
+            "minTargets": 0,
+            "dynamicTotal": "XValue"
+        },
+        "targetRequirements": [
+            {
+                "type": "AnyTarget",
+                "unlimited": true
+            }
+        ]
+    },
+    "metadata": {
+        "collectorNumber": "198",
+        "artist": "Richard Thomas",
+        "flavorText": "\"Such rage,\" thought Vhati, gazing up at the thunderhead from the Predator. \"It is Greven's mind manifest.\""
+    },
+    "colorIdentityOverride": [
+        "RED"
+    ]
+}
+
 // Rootbreaker Wurm
 {
     "name": "Rootbreaker Wurm",
