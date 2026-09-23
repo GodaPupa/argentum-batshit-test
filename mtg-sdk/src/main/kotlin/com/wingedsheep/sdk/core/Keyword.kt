@@ -244,7 +244,6 @@ enum class Keyword(val displayName: String) {
 
     /** Bestow [cost] (CR 702.103): cast this enchantment creature as an Aura for an alternative cost. */
     BESTOW("Bestow"),
-    BESTOW("Bestow"),
 
     /**
      * Sneak [cost] (CR 702.190, Teenage Mutant Ninja Turtles).
