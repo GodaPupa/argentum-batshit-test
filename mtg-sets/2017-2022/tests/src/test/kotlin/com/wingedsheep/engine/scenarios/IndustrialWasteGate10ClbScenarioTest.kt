@@ -1,6 +1,8 @@
 package com.wingedsheep.engine.scenarios
 
 import com.wingedsheep.engine.core.CardsRevealedEvent
+import com.wingedsheep.engine.core.ChooseOptionDecision
+import com.wingedsheep.engine.core.OptionChosenResponse
 import com.wingedsheep.engine.core.SelectCardsDecision
 import com.wingedsheep.engine.state.components.battlefield.CountersComponent
 import com.wingedsheep.engine.state.components.player.PlayerInitiativeComponent
@@ -108,6 +110,71 @@ class IndustrialWasteGate10ClbScenarioTest : ScenarioTestBase() {
             game.state.projectedState.hasKeyword(creature, Keyword.HEXPROOF) shouldBe true
             revealed!!.cardNames shouldContain "Elvish Mystic"
             revealed.cardNames shouldContain "Fyndhorn Elves"
+
+        test("initiative holder ventures at upkeep, chooses Forge, and resolves its room ability") {
+            val game = scenario()
+                .withPlayers("Elves", "Opponent")
+                .withCardOnBattlefield(1, "Elvish Mystic", summoningSickness = false)
+                .withCardInLibrary(1, "Forest")
+                .withCardInLibrary(2, "Forest")
+                .withActivePlayer(2)
+                .inPhase(Phase.PRECOMBAT_MAIN, Step.PRECOMBAT_MAIN)
+                .build()
+
+            game.state = game.state.updateEntity(game.player1Id) {
+                it.with(PlayerInitiativeComponent)
+                    .with(UndercityProgressComponent(UndercityRoom.SECRET_ENTRANCE))
+            }
+
+            game.passUntilPhase(Phase.BEGINNING, Step.UPKEEP)
+            game.resolveStack()
+
+            val route = game.getPendingDecision().shouldBeInstanceOf<ChooseOptionDecision>()
+            route.options shouldBe listOf("Forge", "Lost Well")
+            game.submitDecision(
+                OptionChosenResponse(route.id, route.options.indexOf("Forge"))
+            ).error shouldBe null
+            game.resolveStack()
+
+            val mystic = game.findPermanent("Elvish Mystic")!!
+            game.selectTargets(listOf(mystic)).error shouldBe null
+            game.resolveStack()
+
+            game.state.getEntity(game.player1Id)
+                ?.get<UndercityProgressComponent>()?.room shouldBe UndercityRoom.FORGE
+            game.state.getEntity(mystic)
+                ?.get<CountersComponent>()
+                ?.getCount(CounterType.PLUS_ONE_PLUS_ONE) shouldBe 2
+        }
+
+        test("combat damage to the initiative holder transfers initiative and ventures for the new holder") {
+            val game = scenario()
+                .withPlayers("Elves", "Opponent")
+                .withCardOnBattlefield(1, "Elvish Mystic", summoningSickness = false)
+                .withCardInLibrary(1, "Forest")
+                .withCardInLibrary(2, "Forest")
+                .withActivePlayer(1)
+                .inPhase(Phase.PRECOMBAT_MAIN, Step.PRECOMBAT_MAIN)
+                .build()
+
+            game.state = game.state.updateEntity(game.player2Id) {
+                it.with(PlayerInitiativeComponent)
+            }
+
+            game.passUntilPhase(Phase.COMBAT, Step.DECLARE_ATTACKERS)
+            game.declareAttackers(mapOf("Elvish Mystic" to 2)).error shouldBe null
+            game.passUntilPhase(Phase.COMBAT, Step.END_OF_COMBAT)
+            game.resolveStack()
+
+            val search = game.getPendingDecision().shouldBeInstanceOf<SelectCardsDecision>()
+            game.selectCards(emptyList()).error shouldBe null
+            game.resolveStack()
+
+            game.state.getEntity(game.player1Id)?.has<PlayerInitiativeComponent>() shouldBe true
+            game.state.getEntity(game.player2Id)?.has<PlayerInitiativeComponent>() shouldBe false
+            game.state.getEntity(game.player1Id)
+                ?.get<UndercityProgressComponent>()?.room shouldBe UndercityRoom.SECRET_ENTRANCE
+        }
         }
     }
 }
