@@ -1,18 +1,17 @@
 package com.wingedsheep.gym
 
-import com.wingedsheep.engine.registry.CardRegistry
 import com.wingedsheep.gym.matchup.*
-import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
 
 class PestControlTierOneMonoBlueTerrorReplicationComposedValidationTest : FunSpec({
-    test("replication execution stack is green but remains explicitly unauthorized") {
+    test("replication execution authorization binds the accepted dormant stack") {
         val inspection =
             PestControlTierOneMonoBlueTerrorReplicationExecutionAuthorization.inspect()
 
         inspection.green shouldBe true
-        inspection.executionAuthorized shouldBe false
+        inspection.executionAuthorized shouldBe true
+        inspection.status shouldBe "PRIMARY_REPLICATION_EXECUTION_AUTHORIZED"
         inspection.authorizedGames shouldBe 12
         inspection.attemptLimit shouldBe 1
         inspection.rerollsPermitted shouldBe false
@@ -21,6 +20,12 @@ class PestControlTierOneMonoBlueTerrorReplicationComposedValidationTest : FunSpe
         inspection.officialGamesInitialized shouldBe 0
         inspection.actionsSubmitted shouldBe 0
         inspection.outcomeExposure shouldBe 0
+        inspection.stackReviewedHead shouldBe
+            "728e2d5e150c527b2049e10b8bc304945e2b7d99"
+        inspection.stackMerge shouldBe
+            "b8468b5b7865db5a2138852968b9e6ef89278273"
+        inspection.stackCiRunId shouldBe 35_925_031_349L
+        inspection.stackValidateRunId shouldBe 35_925_031_432L
     }
 
     test("replication artifact contract accepts a complete synthetic twelve-game shape") {
@@ -54,34 +59,5 @@ class PestControlTierOneMonoBlueTerrorReplicationComposedValidationTest : FunSpe
             )
 
         index.isNotEmpty() shouldBe true
-    }
-
-    test("replication initializer cannot initialize before separate execution authorization") {
-        val cell =
-            PestControlTierOneMonoBlueTerrorReplicationExecutionInputLoader.replicationCells().first()
-        val assignment = MonoBlueTerrorSmokeAssignment(
-            gameNumber = cell.gameNumber,
-            seed = 1L,
-            seedHex = terrorAssignmentSeedHex(1L),
-            pestSeat = cell.pestSeat,
-            terrorSeat = if (cell.pestSeat == PestSeat.SEAT_ZERO) PestSeat.SEAT_ONE else PestSeat.SEAT_ZERO,
-            startingDeck = cell.startingDeck,
-        )
-        val identity = MonoBlueTerrorSmokeVectorIdentity(
-            freezeCommit = PEST_MONO_BLUE_TERROR_REPLICATION_FREEZE_COMMIT,
-            orderedVectorSha256 = PEST_MONO_BLUE_TERROR_REPLICATION_VECTOR_SHA256,
-            assignmentCsvSha256 = PEST_MONO_BLUE_TERROR_REPLICATION_ASSIGNMENTS_SHA256,
-            freezeManifestSha256 = PEST_MONO_BLUE_TERROR_REPLICATION_MANIFEST_SHA256,
-        )
-
-        shouldThrow<IllegalArgumentException> {
-            PestControlTierOneMonoBlueTerrorReplicationAuthorizedInitializer.initialize(
-                registry = CardRegistry(),
-                assignment = assignment,
-                vectorIdentity = identity,
-                executionCommit = "1".repeat(40),
-                durableAttemptRecorded = true,
-            )
-        }
     }
 })
