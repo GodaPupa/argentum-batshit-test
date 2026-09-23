@@ -1,13 +1,18 @@
 package com.wingedsheep.engine.scenarios
 
+import com.wingedsheep.engine.core.CardsRevealedEvent
 import com.wingedsheep.engine.core.SelectCardsDecision
+import com.wingedsheep.engine.state.components.battlefield.CountersComponent
 import com.wingedsheep.engine.state.components.player.PlayerInitiativeComponent
 import com.wingedsheep.engine.state.components.player.UndercityProgressComponent
 import com.wingedsheep.engine.support.ScenarioTestBase
+import com.wingedsheep.sdk.core.CounterType
+import com.wingedsheep.sdk.core.Keyword
 import com.wingedsheep.sdk.core.Phase
 import com.wingedsheep.sdk.core.Step
 import com.wingedsheep.sdk.core.UndercityRoom
 import io.kotest.assertions.withClue
+import io.kotest.matchers.collections.shouldContain
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.types.shouldBeInstanceOf
 
@@ -44,6 +49,65 @@ class IndustrialWasteGate10ClbScenarioTest : ScenarioTestBase() {
             game.state.getEntity(game.player1Id)
                 ?.get<UndercityProgressComponent>()?.room shouldBe UndercityRoom.SECRET_ENTRANCE
             game.isInHand(1, "Forest") shouldBe true
+        }
+
+        test("Throne reveals ten and requires a creature choice before applying its rider") {
+            val game = scenario()
+                .withPlayers("Elves", "Opponent")
+                .withCardInHand(1, "Avenging Hunter")
+                .withLandsOnBattlefield(1, "Forest", 5)
+                .withCardInLibrary(1, "Elvish Mystic")
+                .withCardInLibrary(1, "Fyndhorn Elves")
+                .withCardInLibrary(1, "Forest")
+                .withCardInLibrary(1, "Forest")
+                .withCardInLibrary(1, "Forest")
+                .withCardInLibrary(1, "Forest")
+                .withCardInLibrary(1, "Forest")
+                .withCardInLibrary(1, "Forest")
+                .withCardInLibrary(1, "Forest")
+                .withCardInLibrary(1, "Forest")
+                .withActivePlayer(1)
+                .inPhase(Phase.PRECOMBAT_MAIN, Step.PRECOMBAT_MAIN)
+                .build()
+
+            game.state = game.state
+                .updateEntity(game.player1Id) {
+                    it.with(PlayerInitiativeComponent)
+                        .with(UndercityProgressComponent(UndercityRoom.CATACOMBS))
+                }
+
+            game.castSpell(1, "Avenging Hunter").error shouldBe null
+            val resolution = game.resolveStack()
+
+            val revealed = resolution
+                .flatMap { it.events }
+                .filterIsInstance<CardsRevealedEvent>()
+                .firstOrNull { it.cardNames.size == 10 }
+            withClue("Throne must publicly reveal the full top ten") {
+                revealed?.cardNames?.size shouldBe 10
+            }
+
+            val choice = game.getPendingDecision().shouldBeInstanceOf<SelectCardsDecision>()
+            choice.minSelections shouldBe 1
+            choice.maxSelections shouldBe 1
+            choice.options.size shouldBe 2
+
+            val chosen = choice.options.first()
+            val chosenName = game.state.getEntity(chosen)
+                ?.get<com.wingedsheep.engine.state.components.identity.CardComponent>()?.name
+            chosenName shouldBe listOf("Elvish Mystic", "Fyndhorn Elves").first { it == chosenName }
+
+            game.selectCards(listOf(chosen)).error shouldBe null
+            game.resolveStack()
+
+            val creature = game.findPermanent(chosenName!!)
+            creature shouldBe chosen
+            game.state.getEntity(creature!!)
+                ?.get<CountersComponent>()
+                ?.getCount(CounterType.PLUS_ONE_PLUS_ONE) shouldBe 3
+            game.state.projectedState.hasKeyword(creature, Keyword.HEXPROOF) shouldBe true
+            revealed!!.cardNames shouldContain "Elvish Mystic"
+            revealed.cardNames shouldContain "Fyndhorn Elves"
         }
     }
 }

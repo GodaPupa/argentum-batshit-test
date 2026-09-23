@@ -101,29 +101,37 @@ internal object InitiativeTriggers {
         }
 
     private fun throneEffect(): com.wingedsheep.sdk.scripting.effects.Effect = Effects.Pipeline(
-        descriptionOverride = "Look at the top ten cards of your library. You may reveal a creature card " +
-            "from among them and put it onto the battlefield with three +1/+1 counters on it. " +
-            "It gains hexproof until your next turn. Shuffle the rest into your library."
+        descriptionOverride = "Reveal the top ten cards of your library. Put a creature card from among them " +
+            "onto the battlefield with three +1/+1 counters on it. It gains hexproof until your next turn. " +
+            "Then shuffle."
     ) {
-        val looked = gather(
+        val revealed = gather(
             CardSource.TopOfLibrary(DynamicAmount.Fixed(10)),
             revealed = false,
-            name = "undercityThroneLook"
+            name = "undercityThroneReveal"
         )
-        val creature = chooseUpTo(
-            count = 1,
-            from = looked,
-            filter = GameObjectFilter.Creature,
-            prompt = "You may reveal a creature card and put it onto the battlefield",
-            showAllCards = true,
-            name = "undercityThroneCreature"
+        // Throne reveals the whole top ten before the creature is chosen. The creature choice is not
+        // optional when one or more creatures are present; if none are present, the move simply
+        // does nothing and the library is shuffled.
+        reveal(revealed)
+        val creatures = filter(
+            revealed,
+            GameObjectFilter.Creature,
+            name = "undercityThroneCreatures"
         )
-        move(
-            creature,
-            CardDestination.ToZone(Zone.BATTLEFIELD),
-            revealed = true
-        )
-        ifNotEmpty(creature) {
+        ifNotEmpty(creatures) {
+            val creature = chooseExactly(
+                count = 1,
+                from = creatures,
+                prompt = "Choose a creature card to put onto the battlefield",
+                showAllCards = true,
+                name = "undercityThroneCreature"
+            )
+            move(
+                creature,
+                CardDestination.ToZone(Zone.BATTLEFIELD),
+                revealed = true
+            )
             run(Effects.AddCountersToCollection(creature.key, Counters.PLUS_ONE_PLUS_ONE, 3))
             run(
                 Effects.GrantKeyword(
