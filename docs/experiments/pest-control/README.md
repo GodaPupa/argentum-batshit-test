@@ -383,3 +383,10 @@ The Mono-Blue Terror replication freeze production gate is documented in
 `tier-one-mono-blue-terror-replication-auto-freeze.md`. It is merge-triggered, may draw exactly
 96 entropy bytes once, collision-audits all 12 values against the full 554-identity exclusion
 universe, and permits no reroll, replacement, salvage, or regeneration. It executes no gameplay.
+
+
+The Mono-Blue Terror 12-game replication vector is now frozen and unexecuted. Production freeze run
+`35911067849` created artifact `10773131628`; immutable source/artifact hashes and the 554-seed
+collision audit are recorded in
+`tier-one-mono-blue-terror-replication-freeze-provenance.json`. The production freeze trigger is
+retired and generator-side regeneration is fail-closed. Replication games/actions/outcomes remain zero.
