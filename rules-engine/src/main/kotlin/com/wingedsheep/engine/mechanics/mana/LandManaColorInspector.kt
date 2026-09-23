@@ -141,7 +141,8 @@ object LandManaColorInspector {
             is ManaColorSet.AmongPermanents,
             is ManaColorSet.AmongCardsInGraveyard,
             is ManaColorSet.AmongLinkedExiledCards,
-            is ManaColorSet.LandsCouldProduce -> out.addAll(Color.entries)
+            is ManaColorSet.LandsCouldProduce,
+            is ManaColorSet.BasicLandsYouControlCouldProduce -> out.addAll(Color.entries)
         }
     }
 }
