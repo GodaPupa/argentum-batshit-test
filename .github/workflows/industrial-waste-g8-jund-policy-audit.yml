@@ -1,0 +1,28 @@
+name: Industrial Waste — Gate 8 Jund Policy Audit
+
+on:
+  push:
+    branches: [industrial-waste/lab]
+    paths:
+      - .github/workflows/industrial-waste-g8-jund-policy-audit.yml
+      - ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/JundWildfireAdvisorModule.kt
+      - ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteJundPolicyAuditTest.kt
+      - mtg-sets/2024/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/mh3/cards/WrithingChrysalis.kt
+      - mtg-sets/2024/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/mh3/cards/TwistedLandscape.kt
+      - mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/znr/cards/CleansingWildfire.kt
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  jund-policy-audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-java@v5
+        with: {distribution: temurin, java-version: 21}
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Run Gate 8 seed-free Jund policy fixtures
+        run: ./gradlew :ai:test --tests IndustrialWasteJundPolicyAuditTest -Dbenchmark=true --no-daemon
