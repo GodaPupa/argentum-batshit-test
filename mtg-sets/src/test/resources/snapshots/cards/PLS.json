@@ -1593,6 +1593,39 @@
     ]
 }
 
+// Star Compass
+{
+    "name": "Star Compass",
+    "manaCost": "{2}",
+    "typeLine": "Artifact",
+    "oracleText": "This artifact enters tapped.\n{T}: Add one mana of any color that a basic land you control could produce.",
+    "script": {
+        "activatedAbilities": [
+            {
+                "id": "ability_1",
+                "cost": "CostTap",
+                "effect": {
+                    "type": "AddManaOfChoice",
+                    "colorSet": "ManaColorSet.BasicLandsYouControlCouldProduce"
+                },
+                "timing": "ManaAbility",
+                "isManaAbility": true,
+                "descriptionOverride": "{T}: Add one mana of any color that a basic land you control could produce."
+            }
+        ],
+        "replacementEffects": [
+            "EntersTapped"
+        ]
+    },
+    "metadata": {
+        "collectorNumber": "134",
+        "rarity": "UNCOMMON",
+        "artist": "Donato Giancola",
+        "flavorText": "It doesn't point north. It points home."
+    },
+    "colorIdentityOverride": []
+}
+
 // Stone Kavu
 {
     "name": "Stone Kavu",
