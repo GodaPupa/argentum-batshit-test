@@ -43,16 +43,17 @@ No Lose Focus-specific executor is justified.
 2. Its base effect is counter target spell unless its controller pays {2}.
 3. Replicate payments use ChoiceSlot.REPLICATED and never count as kicker payments.
 4. A repeat count N adds N copies of the replicate mana cost.
-5. Casting a Replicate spell creates one Replicate triggered ability even when N=0.
-6. Resolving that trigger creates exactly N real spell copies on the stack.
-7. Replicate copies are not cast and do not increment spell-cast counts.
-8. Each copy may independently choose a new legal target.
-9. Existing Storm copy, Conspire, Casualty, and Multikicker behavior remains unchanged.
-10. Canonical MH2 snapshot is reblessed through a fail-closed workflow.
-11. Full golden card snapshots pass.
-12. Expected post-implementation unresolved count is exactly 30.
-13. Lose Focus is absent from unresolved output; no Izzet identity remains unresolved.
-14. Official games/seeds/outcomes remain 0/0/0 and the exact v0.7 control remains unchanged.
+5. Public legal actions surface every affordable positive Replicate count while preserving the spell's target metadata.
+6. Casting a Replicate spell creates one Replicate triggered ability even when N=0.
+7. Resolving that trigger creates exactly N real spell copies on the stack.
+8. Replicate copies are not cast and do not increment spell-cast counts.
+9. Each copy may independently choose a new legal target.
+10. Existing Storm copy, Conspire, Casualty, and Multikicker behavior remains unchanged.
+11. Canonical MH2 snapshot is reblessed through a fail-closed workflow.
+12. Full golden card snapshots pass.
+13. Expected post-implementation unresolved count is exactly 30.
+14. Lose Focus is absent from unresolved output; no Izzet identity remains unresolved.
+15. Official games/seeds/outcomes remain 0/0/0 and the exact v0.7 control remains unchanged.
 
 Infrastructure, compilation, fixture, snapshot, or semantic failures are qualification history only,
 not evidence about deck strength.

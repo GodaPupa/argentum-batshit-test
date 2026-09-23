@@ -38,6 +38,14 @@ class LoseFocusScenarioTest : FunSpec({
 
         d.giveMana(responder, Color.BLUE, 4)
         val lose = d.putCardInHand(responder, "Lose Focus")
+
+        val offeredReplicate = d.legalActions(responder).filter { action ->
+            action.actionType == "CastWithKicker" &&
+                (action.action as? CastSpell)?.cardId == lose
+        }
+        offeredReplicate.map { (it.action as CastSpell).declaredCostRepeatCount } shouldBe listOf(1, 2)
+        offeredReplicate.all { it.validTargets?.contains(opt) == true } shouldBe true
+
         d.submit(
             CastSpell(
                 playerId = responder,
@@ -56,7 +64,7 @@ class LoseFocusScenarioTest : FunSpec({
                 guard++
             }
             (d.state.pendingDecision is ChooseTargetsDecision) shouldBe true
-            d.submitTargetSelection(responder, listOf(opt)).isSuccess shouldBe true
+            d.submitTargetSelection(responder, listOf(opt)).error shouldBe null
         }
 
         val copies = d.state.stack.filter { id ->

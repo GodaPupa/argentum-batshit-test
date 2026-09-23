@@ -2436,6 +2436,8 @@ class CastSpellEnumerator : ActionEnumerator {
                     // Teamwork prints its N, so the variant reads "Cast X (Teamwork 2)".
                     declaredSlot == ChoiceSlot.TEAMWORK ->
                         additionalCostKicker?.displayPrefix ?: "Teamwork"
+                    declaredSlot == ChoiceSlot.REPLICATED ->
+                        manaKicker?.displayPrefix ?: "Replicate"
                     offspringAbility != null -> "Offspring"
                     flashKicker -> "with Flash"
                     else -> "Kicked"
@@ -2524,6 +2526,7 @@ class CastSpellEnumerator : ActionEnumerator {
                     continue
                 }
 
+                val slotResultStart = result.size
                 if (targetReqs.isNotEmpty()) {
                     val targetReqInfos = context.targetUtils.buildTargetInfos(state, playerId, targetReqs, cardId)
                     val allRequirementsSatisfied = context.targetUtils.allRequirementsSatisfied(targetReqInfos)
@@ -2585,6 +2588,67 @@ class CastSpellEnumerator : ActionEnumerator {
                         hasXCost = kickedHasXCost,
                         maxAffordableX = kickedMaxAffordableX
                     ))
+                }
+
+                // A targeted/nonmodal repeatable optional mana cost uses the ordinary one-payment
+                // action above as its target/UI template, then clones that complete metadata for
+                // every affordable positive repetition count. This keeps Replicate and future
+                // targeted multikicker cards on the same generic rail without duplicating target
+                // enumeration or inventing a separate client protocol.
+                val targetedRepeatableCost = manaKicker?.takeIf {
+                    it.multi &&
+                        it.manaCost != null &&
+                        it.additionalCost == null &&
+                        additionalCostKicker == null &&
+                        offspringAbility == null &&
+                        targetReqs.isNotEmpty() &&
+                        kickerModalEffect == null
+                }
+                if (targetedRepeatableCost != null) {
+                    val templates = result.subList(slotResultStart, result.size).toList()
+                    while (result.size > slotResultStart) {
+                        result.removeAt(result.lastIndex)
+                    }
+
+                    val unitCost = targetedRepeatableCost.manaCost!!
+                    if (unitCost.cmc > 0 && templates.isNotEmpty()) {
+                        var repeatCount = 1
+                        while (true) {
+                            val repeatedCost = baseCost + (unitCost * repeatCount)
+                            if (!context.manaSolver.canPay(
+                                    state,
+                                    playerId,
+                                    repeatedCost,
+                                    spellContext = kickedSpellContext,
+                                    precomputedSources = context.availableManaSources
+                                )
+                            ) break
+
+                            val preview = if (context.skipAutoTapPreview) null else {
+                                context.manaSolver.solve(
+                                    state,
+                                    playerId,
+                                    repeatedCost,
+                                    spellContext = kickedSpellContext,
+                                    precomputedSources = context.availableManaSources
+                                )?.sources?.map { it.entityId }
+                            }
+
+                            for (template in templates) {
+                                val castTemplate = template.action as CastSpell
+                                result.add(
+                                    template.copy(
+                                        description = "Cast ${cardComponent.name} (${targetedRepeatableCost.displayPrefix} ×$repeatCount)",
+                                        action = castTemplate.copy(declaredCostRepeatCount = repeatCount),
+                                        affordable = true,
+                                        manaCostString = repeatedCost.toString(),
+                                        autoTapPreview = preview,
+                                    )
+                                )
+                            }
+                            repeatCount++
+                        }
+                    }
                 }
             }
 
