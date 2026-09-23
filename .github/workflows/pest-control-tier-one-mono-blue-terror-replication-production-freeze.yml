@@ -28,7 +28,7 @@ jobs:
           ).read_text()
           assert ("workflow" + "_dispatch") not in workflow
           assert "\n  push:" not in workflow
-          assert "github.event_name == 'push'" not in workflow
+          assert ("github.event_name == " + "'push'") not in workflow
           assert ("-" + "-generate") not in workflow
           assert ("os." + "urandom") not in workflow
 
