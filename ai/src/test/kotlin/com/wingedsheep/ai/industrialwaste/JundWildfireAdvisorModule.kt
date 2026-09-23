@@ -80,7 +80,7 @@ private object JundCastDownAdvisor : CardAdvisor {
     override fun targetPreference(state: GameState, targetId: EntityId, playerId: EntityId): Double? =
         when (state.cardName(targetId)) {
             "Pactdoll Terror" -> 100.0
-            "Carrier Thrall" -> 25.0
+            "Shambling Ghast" -> 25.0
             else -> null
         }
 }
