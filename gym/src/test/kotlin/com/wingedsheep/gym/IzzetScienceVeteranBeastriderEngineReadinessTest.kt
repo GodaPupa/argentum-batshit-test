@@ -97,16 +97,23 @@ class IzzetScienceVeteranBeastriderEngineReadinessTest : FunSpec({
         card.script.spellEffect shouldNotBe null
     }
 
+    test("Snap resolves as creature bounce with resolution-time land choice") {
+        val card = registry.getCard("Snap") ?: error("Snap unresolved")
+        card.oracleText shouldBe "Return target creature to its owner's hand. Untap up to two lands."
+        card.typeLine.toString() shouldBe "Instant"
+        card.script.spellEffect shouldNotBe null
+    }
+
     test("freeze exact unresolved engine coverage count and emit identities") {
         val unresolved = IzzetScienceVeteranBeastriderEngineReadiness.unresolvedCardIdentities(registry)
         println("V09_REAL_ENGINE_UNRESOLVED_COUNT=" + unresolved.size)
         unresolved.forEach { println("V09_REAL_ENGINE_UNRESOLVED=" + it) }
-        unresolved.size shouldBe 45
+        unresolved.size shouldBe 44
     }
 
     test("full execution remains fail closed behind unresolved cards and PDH semantics") {
         val blockers = IzzetScienceVeteranBeastriderEngineReadiness.executionBlockers(registry)
-        blockers.size shouldBe 50
+        blockers.size shouldBe 49
         blockers.takeLast(5).shouldContainExactly(
             "PDH commander-zone initialization not qualified",
             "PDH commander recast/tax semantics not qualified",
