@@ -7,6 +7,10 @@ on:
       - .github/workflows/industrial-waste-g10-elves-card-capability.yml
       - mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/eld/cards/GingerbreadCabin.kt
       - mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/IndustrialWasteGate10EldScenarioTest.kt
+      - mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/khm/cards/MaskedVandal.kt
+      - mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/IndustrialWasteGate10KhmScenarioTest.kt
+      - mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/mh1/cards/WindingWay.kt
+      - mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/IndustrialWasteGate10Mh1ScenarioTest.kt
       - mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/roe/cards/LeadTheStampede.kt
       - mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/IndustrialWasteGate10RoeScenarioTest.kt
   workflow_dispatch:
@@ -30,5 +34,6 @@ jobs:
             --no-daemon
           ./gradlew :mtg-sets:2017-2022:tests:test \
             --tests '*IndustrialWasteGate10EldScenarioTest' \
+            --tests '*IndustrialWasteGate10KhmScenarioTest' \
             --tests '*IndustrialWasteGate10Mh1ScenarioTest' \
             --no-daemon
