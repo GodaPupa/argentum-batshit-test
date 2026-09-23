@@ -115,16 +115,23 @@ class IzzetScienceVeteranBeastriderEngineReadinessTest : FunSpec({
         } shouldBe true
     }
 
+    test("Frantic Search resolves as draw-discard with resolution-time land choice") {
+        val card = registry.getCard("Frantic Search") ?: error("Frantic Search unresolved")
+        card.oracleText shouldBe "Draw two cards, then discard two cards. Untap up to three lands."
+        card.typeLine.toString() shouldBe "Instant"
+        card.script.spellEffect shouldNotBe null
+    }
+
     test("freeze exact unresolved engine coverage count and emit identities") {
         val unresolved = IzzetScienceVeteranBeastriderEngineReadiness.unresolvedCardIdentities(registry)
         println("V09_REAL_ENGINE_UNRESOLVED_COUNT=" + unresolved.size)
         unresolved.forEach { println("V09_REAL_ENGINE_UNRESOLVED=" + it) }
-        unresolved.size shouldBe 43
+        unresolved.size shouldBe 42
     }
 
     test("full execution remains fail closed behind unresolved cards and PDH semantics") {
         val blockers = IzzetScienceVeteranBeastriderEngineReadiness.executionBlockers(registry)
-        blockers.size shouldBe 48
+        blockers.size shouldBe 47
         blockers.takeLast(5).shouldContainExactly(
             "PDH commander-zone initialization not qualified",
             "PDH commander recast/tax semantics not qualified",
