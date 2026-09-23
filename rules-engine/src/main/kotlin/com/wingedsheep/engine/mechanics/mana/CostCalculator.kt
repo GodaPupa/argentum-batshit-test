@@ -1245,6 +1245,9 @@ class CostCalculator(
             CardPredicate.HasAdventure -> cardDef.isAdventure
             CardPredicate.IsDoubleFaced -> cardDef.isDoubleFaced
             CardPredicate.HasNoAbilities -> cardDef.oracleText.isBlank()
+            // Cost calculation has no resolution-time chosenValues. This predicate is only
+            // meaningful inside effect pipelines (e.g. Winding Way), so fail closed here.
+            is CardPredicate.HasCardTypeFromVariable -> false
             CardPredicate.IsBasicLand -> typeLine.isBasicLand
             CardPredicate.IsPermanent -> typeLine.isPermanent
             CardPredicate.IsNonland -> !typeLine.isLand
