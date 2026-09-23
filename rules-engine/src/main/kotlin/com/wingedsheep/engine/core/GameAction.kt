@@ -248,8 +248,6 @@ enum class AlternativeCostType {
     DASH,
     /** Evoke ([com.wingedsheep.sdk.scripting.KeywordAbility.Evoke]) — hand. */
     EVOKE,
-    /** Bestow ([com.wingedsheep.sdk.scripting.KeywordAbility.Bestow]) — hand; spell is an Aura while bestowed. */
-    BESTOW,
     /**
      * Bestow ([com.wingedsheep.sdk.scripting.KeywordAbility.Bestow], CR 702.103) — an alternative
      * cost that casts the permanent spell as an Aura enchantment targeting a creature.
