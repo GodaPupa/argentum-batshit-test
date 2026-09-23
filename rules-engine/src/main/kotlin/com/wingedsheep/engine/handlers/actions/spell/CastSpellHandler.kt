@@ -732,7 +732,12 @@ class CastSpellHandler(
                 action.chosenModes.isNotEmpty() &&
                 action.targets.isEmpty() &&
                 action.modeTargetsOrdered.isEmpty()
-            val baseTargetReqs = if (modalTargetsDeferred) {
+            val bestowCast = action.useAlternativeCost &&
+                action.altAllows(AlternativeCostType.BESTOW) &&
+                cardDef.keywordAbilities.any { it is KeywordAbility.Bestow }
+            val baseTargetReqs = if (bestowCast) {
+                listOf(com.wingedsheep.sdk.dsl.Targets.Creature)
+            } else if (modalTargetsDeferred) {
                 emptyList()
             } else if (action.chosenModes.isNotEmpty() && modalEffect != null) {
                 // Modal spell with mode(s) chosen at cast time — validate against the union of per-mode requirements.
@@ -3446,7 +3451,12 @@ class CastSpellHandler(
             // a disturb cast reads the back face's (CR 712.8c). Mirrors validate().
             val faceScriptForTargets = action.faceIndex?.let { cardDef.cardFaces.getOrNull(it)?.script }
                 ?: transformedFace?.script
-            val baseTargetReqs = if (action.chosenModes.isNotEmpty() && modalEffectForTargets != null) {
+            val bestowCast = action.useAlternativeCost &&
+                action.altAllows(AlternativeCostType.BESTOW) &&
+                cardDef.keywordAbilities.any { it is KeywordAbility.Bestow }
+            val baseTargetReqs = if (bestowCast) {
+                listOf(com.wingedsheep.sdk.dsl.Targets.Creature)
+            } else if (action.chosenModes.isNotEmpty() && modalEffectForTargets != null) {
                 // Modal spell with modes chosen at cast time — union per-mode requirements
                 action.chosenModes.flatMap { idx ->
                     modalEffectForTargets.modes.getOrNull(idx)?.targetRequirements ?: emptyList()
