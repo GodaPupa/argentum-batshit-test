@@ -111,7 +111,7 @@ private object PestControlTierOneMonoBlueTerrorDisabledEngineEvidenceRehearsal {
         } finally {
             runCatching {
                 Files.walk(root).use { paths ->
-                    paths.sorted(Comparator.reverseOrder()).forEach(Files::delete)
+                    paths.sorted(Comparator.reverseOrder()).forEach { path -> Files.delete(path) }
                 }
                 temporaryRootsRemoved = 1
             }.onFailure {
