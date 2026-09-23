@@ -396,3 +396,14 @@ The frozen 12-game Mono-Blue Terror replication harness and read-only artifact v
 documented in `tier-one-mono-blue-terror-replication-harness-validation.md`. The exact frozen
 artifact is parsed only for identity/order validation; synthetic fixtures validate coordinator
 success and fail-closed ordering. Official replication games/actions/outcomes remain zero.
+The frozen 12-game Mono-Blue Terror primary replication executed exactly once in run
+`35927279604` from authorization merge `73b98896eeb4f47c4ed3ec97a10a9a3aeb5dc62e` and is accepted
+as `ACCEPTED_PRIMARY_REPLICATION`. Pest Control finished **11-1**: 6-0 on the play, 5-1 on the
+draw, 5-1 from seat zero and 6-0 from seat one. Artifact `10780871469` reconciles all twelve frozen
+assignments, durable attempt → initialization-entry → record transitions, raw hashes and terminal
+traces with zero rerolls, replacements or seed regeneration. The primary replication remains
+independent from the earlier 4-0 smoke. The exact preboard Serpico_CC Mono-Blue Terror matchup is
+accepted as favorable evidence for the Tier-1 qualification program; this is not by itself a
+metagame-wide Tier-1 claim and does not authorize a deck change or postboard testing. The result is
+preserved in `tier-one-mono-blue-terror-replication-result.md`, and the production trigger is
+retired.
