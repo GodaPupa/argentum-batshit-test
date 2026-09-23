@@ -77,3 +77,13 @@ Industrial lists. Opponent pressure and Industrial fair-game capability both pas
 tied Control on wins and therefore failed the predeclared replication trigger. Jund sampling is
 closed with no replication, no promotion, and no postboard authorization. Frozen v1.0 Control
 remains the baseline.
+
+
+Gate 9 Monster Tron is complete. Exact-card capability, six opponent-policy fixtures, the exact
+60/15 identity check, registry completeness, and the deterministic readiness smoke all qualified
+before official seed exposure. The frozen two-seed paired pilot then completed all eight games
+validly: frozen Control went 1-3, Pactdoll-A went 0-4, and Monster Tron went 7-1 overall. Control
+produced the only Industrial win, assembling Tron on turn 5 and reaching combo-ready/lethal on turn
+7. Pactdoll-A trailed Control, so the predeclared replication trigger did not pass. Monster Tron
+sampling is closed with no replication, no promotion, no card changes, and no postboard
+authorization. Frozen v1.0 Control remains unchanged.

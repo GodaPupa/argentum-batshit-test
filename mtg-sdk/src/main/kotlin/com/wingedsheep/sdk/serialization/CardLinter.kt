@@ -431,6 +431,10 @@ object CardLinter {
                 script.auraTarget != null
 
         if (attaches(card.typeLine, card.script) || card.equipCost != null) return true
+        // Bestow (CR 702.103) makes the spell/permanent an Aura while the bestow effect lasts,
+        // so attach-scoped statics are intentional even though the printed type line is an
+        // enchantment creature and carries no ordinary auraTarget.
+        if (card.keywordAbilities.any { it is com.wingedsheep.sdk.scripting.KeywordAbility.Bestow }) return true
         if (card.cardFaces.any { attaches(it.typeLine, it.script) }) return true
         return card.backFace?.let { canEverBeAttached(it) } ?: false
     }

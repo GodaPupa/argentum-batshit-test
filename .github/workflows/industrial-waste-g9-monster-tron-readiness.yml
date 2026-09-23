@@ -1,0 +1,75 @@
+name: Industrial Waste — Gate 9 Monster Tron Readiness
+
+on:
+  pull_request:
+    branches: [industrial-waste/lab]
+    paths:
+      - .github/workflows/industrial-waste-g9-monster-tron-readiness.yml
+      - ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteMonsterTronReadinessSmokeTest.kt
+      - ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/MonsterTronAdvisorModule.kt
+      - ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteAdvisorModule.kt
+      - industrial-waste/gauntlet/monster-tron-pinoio-cosmico-2026-09-15.dck
+      - industrial-waste/protocols/gate-9-monster-tron-readiness-v1.md
+      - industrial-waste/control/industrial-waste-v1.0-submitted.dck
+      - mtg-sets/2024/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/mh3/cards/NyxbornHydra.kt
+      - mtg-sets/2024/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/mh3/cards/WrithingChrysalis.kt
+      - mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/ogw/cards/PulseOfMurasa.kt
+      - mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/c20/cards/BondersOrnament.kt
+      - mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/wwk/cards/BojukaBog.kt
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  gate-9-readiness:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v6
+      - name: Validate exact 60/15 opponent identity
+        run: |
+          python3 - <<'PY'
+          import hashlib
+          import pathlib
+          import re
+
+          path = pathlib.Path("industrial-waste/gauntlet/monster-tron-pinoio-cosmico-2026-09-15.dck")
+          text = path.read_text()
+          section = None
+          totals = {"main": 0, "sideboard": 0}
+          for raw in text.splitlines():
+              line = raw.strip()
+              if line == "[main]":
+                  section = "main"; continue
+              if line == "[sideboard]":
+                  section = "sideboard"; continue
+              if line.startswith("["):
+                  section = None; continue
+              if section and line and "=" not in line:
+                  m = re.match(r"^(\d+)\s+(.+)$", line)
+                  assert m, line
+                  totals[section] += int(m.group(1))
+          assert totals == {"main": 60, "sideboard": 15}, totals
+          digest = hashlib.sha256(path.read_bytes()).hexdigest()
+          assert digest == "4d358e76a3566ed096299550f7400c9d63c79c2e715cd74c372faa38960428cc", digest
+          print("Gate 9 opponent identity: VALID", totals, digest)
+          PY
+      - uses: actions/setup-java@v5
+        with: {distribution: temurin, java-version: 21}
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Run exact-deck registry and legal-progression smoke
+        env:
+          IW_G9_MONSTER_TRON_READINESS_SMOKE: "true"
+        run: ./gradlew :ai:test --tests IndustrialWasteMonsterTronReadinessSmokeTest -Dbenchmark=true --no-daemon
+      - name: Print focused failure details
+        if: failure()
+        run: |
+          find ai/build/test-results/test -name 'TEST-*IndustrialWasteMonsterTronReadinessSmokeTest*.xml' -exec sed -n '1,900p' {} \; || true
+      - name: Upload readiness evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: industrial-waste-g9-monster-tron-readiness
+          path: industrial-waste/results/gate-9-monster-tron-readiness-smoke-v1.json
+          if-no-files-found: warn

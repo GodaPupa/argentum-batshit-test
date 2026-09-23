@@ -1,0 +1,51 @@
+name: Industrial Waste — Gate 9 Card Capability
+
+on:
+  pull_request:
+    branches: [industrial-waste/lab]
+    paths:
+      - .github/workflows/industrial-waste-g9-pulse-capability.yml
+      - mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/core/Keyword.kt
+      - mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/scripting/KeywordAbility.kt
+      - rules-engine/src/main/kotlin/com/wingedsheep/engine/core/GameAction.kt
+      - rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/spell/CastSpellHandler.kt
+      - rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/ZoneMovementUtils.kt
+      - rules-engine/src/main/kotlin/com/wingedsheep/engine/legalactions/LegalActionEnumerator.kt
+      - rules-engine/src/main/kotlin/com/wingedsheep/engine/legalactions/enumerators/BestowCastEnumerator.kt
+      - rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/sba/permanent/UnattachedAurasCheck.kt
+      - rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/stack/StackResolver.kt
+      - rules-engine/src/main/kotlin/com/wingedsheep/engine/state/components/identity/BestowComponent.kt
+      - mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/ogw/cards/PulseOfMurasa.kt
+      - mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/wwk/cards/BojukaBog.kt
+      - mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/IndustrialWasteGate9OgwScenarioTest.kt
+      - mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/IndustrialWasteGate9WwkScenarioTest.kt
+      - mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/c20/**
+      - mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/IndustrialWasteGate9C20ScenarioTest.kt
+      - mtg-sets/2024/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/mh3/cards/NyxbornHydra.kt
+      - mtg-sets/2024/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/IndustrialWasteGate9Mh3NyxbornScenarioTest.kt
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  card-capability:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-java@v5
+        with: {distribution: temurin, java-version: 21}
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Validate Gate 9 card capability
+        run: |
+          ./gradlew :mtg-sets:2008-2016:tests:test \
+            --tests '*IndustrialWasteGate9OgwScenarioTest' \
+            --tests '*IndustrialWasteGate9WwkScenarioTest' \
+            --no-daemon
+          ./gradlew :mtg-sets:2017-2022:tests:test \
+            --tests '*IndustrialWasteGate9C20ScenarioTest' \
+            --no-daemon
+          ./gradlew :mtg-sets:2024:tests:test \
+            --tests '*IndustrialWasteGate9Mh3NyxbornScenarioTest' \
+            --no-daemon

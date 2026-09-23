@@ -242,6 +242,9 @@ enum class Keyword(val displayName: String) {
     DISTURB("Disturb"),
     EVOKE("Evoke"),
 
+    /** Bestow [cost] (CR 702.103): cast this enchantment creature as an Aura for an alternative cost. */
+    BESTOW("Bestow"),
+
     /**
      * Sneak [cost] (CR 702.190, Teenage Mutant Ninja Turtles).
      * "Any time you could cast an instant during your declare blockers step, you may cast
