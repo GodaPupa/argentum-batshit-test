@@ -95,7 +95,7 @@ class IndustrialWasteJundPolicyAuditTest : ScenarioTestBase() {
             val game = seeded()
                 .withLandsOnBattlefield(1, "Swamp", 2)
                 .withCardInHand(1, "Cast Down")
-                .withCardOnBattlefield(2, "Carrier Thrall")
+                .withCardOnBattlefield(2, "Shambling Ghast")
                 .withCardOnBattlefield(2, "Pactdoll Terror")
                 .build()
 
