@@ -1,4 +1,4 @@
-name: Pest Control Tier-1 Mono-Blue Terror Replication Execution Stack VALIDATE_ONLY
+name: Pest Control Tier-1 Mono-Blue Terror Replication Authorization VALIDATE_ONLY
 
 on:
   pull_request:
@@ -10,7 +10,9 @@ on:
       - gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOneMonoBlueTerrorReplicationOfficialExecutionRunnerTest.kt
       - gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOneMonoBlueTerrorReplicationComposedValidationTest.kt
       - .github/workflows/pest-control-tier-one-mono-blue-terror-replication-execution-stack-validate.yml
+      - .github/workflows/pest-control-tier-one-mono-blue-terror-replication-official-execute.yml
       - docs/experiments/pest-control/tier-one-mono-blue-terror-replication-execution-stack.md
+      - docs/experiments/pest-control/tier-one-mono-blue-terror-replication-auto-execution-authorization.json
 
 permissions:
   actions: read
@@ -30,11 +32,26 @@ jobs:
 
       - uses: gradle/actions/setup-gradle@v6
 
-      - name: Verify execution remains unauthorized
+      - name: Verify exact execution authorization
         run: |
           set -euo pipefail
-          grep -F 'REPLICATION_EXECUTION_STACK_VALIDATED_NOT_AUTHORIZED'             gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlTierOneMonoBlueTerrorReplicationExecutionAuthorization.kt
-          test ! -e .github/workflows/pest-control-tier-one-mono-blue-terror-replication-official-execute.yml
+          echo "9668fde1aa109433b8b87b3677aab1f8ce4995efea98f145e7324df191085572  docs/experiments/pest-control/tier-one-mono-blue-terror-replication-auto-execution-authorization.json" | sha256sum -c -
+          grep -F 'PRIMARY_REPLICATION_EXECUTION_AUTHORIZED'             gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlTierOneMonoBlueTerrorReplicationExecutionAuthorization.kt
+          test -f .github/workflows/pest-control-tier-one-mono-blue-terror-replication-official-execute.yml
+
+      - name: Verify automatic one-shot workflow contract
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          text = Path(".github/workflows/pest-control-tier-one-mono-blue-terror-replication-official-execute.yml").read_text()
+          assert ("workflow" + "_dispatch") not in text
+          assert "\n  push:" in text
+          assert "github.event_name == 'push'" in text
+          assert "GITHUB_RUN_ATTEMPT" in text
+          assert "PestControlTierOneMonoBlueTerrorReplicationOfficialExecutionRunnerTest" in text
+          assert "pest-control-tier-one-mono-blue-terror-replication-official-execution" in text
+          PY
 
       - name: Download exact frozen replication artifact
         env:
@@ -48,7 +65,7 @@ jobs:
           cd build/pest-terror-replication-input
           sha256sum -c artifacts.sha256
 
-      - name: Validate dormant replication execution stack
+      - name: Validate authorized replication execution stack without gameplay
         run: scripts/test-class PestControlTierOneMonoBlueTerrorReplicationComposedValidationTest --info --stacktrace
 
       - name: Revalidate exact frozen replication artifact without gameplay
