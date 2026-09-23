@@ -5,6 +5,8 @@ import com.wingedsheep.engine.handlers.EffectContext
 import com.wingedsheep.engine.state.GameState
 import com.wingedsheep.engine.state.components.battlefield.CantBeBlockedWhilePropertyAtMostComponent
 import com.wingedsheep.engine.state.components.battlefield.CountersComponent
+import com.wingedsheep.engine.state.components.battlefield.AttachedToComponent
+import com.wingedsheep.engine.state.components.battlefield.BestowedAuraComponent
 import com.wingedsheep.engine.state.components.battlefield.DashedComponent
 import com.wingedsheep.engine.state.components.battlefield.TappedComponent
 import com.wingedsheep.engine.state.components.identity.CardComponent
@@ -112,7 +114,25 @@ class StateProjector(
                     isFaceDown = true
                 )
             } else {
-                val baseStats = cardComponent.baseStats
+                // Bestow (CR 702.103): a permanent cast for bestow is an Aura only while it is
+                // attached. It keeps the same object and counters, but loses CREATURE and its
+                // creature subtype/P-T while attached; once unattached the marker remains and the
+                // next projection naturally restores the printed enchantment-creature form.
+                val inBestowAuraForm =
+                    container.has<BestowedAuraComponent>() && container.has<AttachedToComponent>()
+                val baseStats = if (inBestowAuraForm) null else cardComponent.baseStats
+                val effectiveTypes = extractTypes(cardComponent).apply {
+                    if (inBestowAuraForm) {
+                        remove("CREATURE")
+                        cardComponent.typeLine.subtypes.forEach { remove(it.value) }
+                        add("Aura")
+                    }
+                }
+                val effectiveSubtypes = if (inBestowAuraForm) {
+                    linkedSetOf("Aura")
+                } else {
+                    cardComponent.typeLine.subtypes.mapTo(linkedSetOf()) { it.value }
+                }
                 projectedValues[entityId] = MutableProjectedValues(
                     power = baseStats?.basePower,
                     toughness = baseStats?.baseToughness,
@@ -134,8 +154,8 @@ class StateProjector(
                         if (container.has<DashedComponent>()) add(Keyword.HASTE.name)
                     },
                     colors = cardComponent.colors.mapTo(linkedSetOf()) { it.name },
-                    types = extractTypes(cardComponent),
-                    subtypes = cardComponent.typeLine.subtypes.mapTo(linkedSetOf()) { it.value },
+                    types = effectiveTypes,
+                    subtypes = effectiveSubtypes,
                     controllerId = container.get<ControllerComponent>()?.playerId,
                     isFaceDown = false
                 )
