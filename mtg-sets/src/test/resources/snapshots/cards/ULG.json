@@ -620,6 +620,98 @@
     ]
 }
 
+// Frantic Search
+{
+    "name": "Frantic Search",
+    "manaCost": "{2}{U}",
+    "typeLine": "Instant",
+    "oracleText": "Draw two cards, then discard two cards. Untap up to three lands.",
+    "script": {
+        "spellEffect": {
+            "type": "Composite",
+            "effects": [
+                {
+                    "type": "DrawCards",
+                    "count": {
+                        "type": "Fixed",
+                        "amount": 2
+                    }
+                },
+                {
+                    "type": "Composite",
+                    "effects": [
+                        {
+                            "type": "GatherCards",
+                            "source": {
+                                "type": "FromZone",
+                                "zone": "Hand"
+                            },
+                            "storeAs": "hand"
+                        },
+                        {
+                            "type": "SelectFromCollection",
+                            "from": "hand",
+                            "selection": {
+                                "type": "ChooseExactly",
+                                "count": {
+                                    "type": "Fixed",
+                                    "amount": 2
+                                }
+                            },
+                            "storeSelected": "discarded",
+                            "prompt": "Choose 2 cards to discard"
+                        },
+                        {
+                            "type": "MoveCollection",
+                            "from": "discarded",
+                            "destination": {
+                                "type": "ToZone",
+                                "zone": "Graveyard"
+                            },
+                            "moveType": "Discard"
+                        }
+                    ]
+                },
+                {
+                    "type": "GatherCards",
+                    "source": {
+                        "type": "BattlefieldMatching",
+                        "filter": "land"
+                    },
+                    "storeAs": "franticLands"
+                },
+                {
+                    "type": "SelectFromCollection",
+                    "from": "franticLands",
+                    "selection": {
+                        "type": "ChooseUpTo",
+                        "count": {
+                            "type": "Fixed",
+                            "amount": 3
+                        }
+                    },
+                    "filter": "land",
+                    "storeSelected": "franticUntap",
+                    "prompt": "Choose up to three lands to untap",
+                    "useTargetingUI": true
+                },
+                {
+                    "type": "TapUntapCollection",
+                    "collectionName": "franticUntap",
+                    "tap": false
+                }
+            ]
+        }
+    },
+    "metadata": {
+        "collectorNumber": "32",
+        "artist": "Jeff Miracola"
+    },
+    "colorIdentityOverride": [
+        "BLUE"
+    ]
+}
+
 // Ghitu Fire-Eater
 {
     "name": "Ghitu Fire-Eater",
