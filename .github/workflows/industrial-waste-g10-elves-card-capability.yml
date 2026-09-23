@@ -1,0 +1,33 @@
+name: Industrial Waste — Gate 10 Elves Card Capability
+
+on:
+  pull_request:
+    branches: [industrial-waste/lab]
+    paths:
+      - .github/workflows/industrial-waste-g10-elves-card-capability.yml
+      - mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/eld/cards/GingerbreadCabin.kt
+      - mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/IndustrialWasteGate10EldScenarioTest.kt
+      - mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/roe/cards/LeadTheStampede.kt
+      - mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/IndustrialWasteGate10RoeScenarioTest.kt
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  elves-card-capability:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-java@v5
+        with: {distribution: temurin, java-version: 21}
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Validate Gate 10 implemented cards
+        run: |
+          ./gradlew :mtg-sets:2008-2016:tests:test \
+            --tests '*IndustrialWasteGate10RoeScenarioTest' \
+            --no-daemon
+          ./gradlew :mtg-sets:2017-2022:tests:test \
+            --tests '*IndustrialWasteGate10EldScenarioTest' \
+            --no-daemon
