@@ -79,3 +79,27 @@ metadata guard → artifact guard → source audit → one-shot draw, and PR val
 exact ordering.
 
 This gate itself creates no official seed and executes no game.
+
+
+## Automatic production authorization
+
+The manual `workflow_dispatch` path is retired. No further user-entered acknowledgement is used.
+
+Production is authorized exactly once by the immutable repository record
+`tier-one-mono-blue-terror-auto-freeze-authorization.json`
+(SHA-256 `b7bf1f820ef733a4457b23d0ecf5c987366b6b3697aff1b92de59d22ebbd1201`).
+
+The merge that first adds that record to `main` is the only production trigger. The workflow runs
+only on a `push` to `main` whose changed paths include that authorization record. The generator
+requires:
+
+- event `push`;
+- ref `refs/heads/main`;
+- workflow attempt `1`;
+- freeze commit equal to the triggering `GITHUB_SHA`;
+- exact authorization-record bytes and semantic fields; and
+- `PEST_TERROR_AUTO_FREEZE_AUTH=AUTOMATIC_SINGLE_FREEZE_NO_GAMEPLAY`.
+
+No later ordinary push can retrigger production because the workflow path filter is the one-time
+authorization file. A new production attempt would require changing that frozen record, which would
+break its pinned SHA-256 and fail closed.
