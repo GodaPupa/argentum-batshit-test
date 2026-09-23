@@ -1935,6 +1935,74 @@
     ]
 }
 
+// Snap
+{
+    "name": "Snap",
+    "manaCost": "{1}{U}",
+    "typeLine": "Instant",
+    "oracleText": "Return target creature to its owner's hand. Untap up to two lands.",
+    "script": {
+        "spellEffect": {
+            "type": "Composite",
+            "effects": [
+                {
+                    "type": "MoveToZone",
+                    "target": {
+                        "type": "BoundVariable",
+                        "name": "target creature"
+                    },
+                    "destination": "Hand"
+                },
+                {
+                    "type": "GatherCards",
+                    "source": {
+                        "type": "BattlefieldMatching",
+                        "filter": "land"
+                    },
+                    "storeAs": "snapLands"
+                },
+                {
+                    "type": "SelectFromCollection",
+                    "from": "snapLands",
+                    "selection": {
+                        "type": "ChooseUpTo",
+                        "count": {
+                            "type": "Fixed",
+                            "amount": 2
+                        }
+                    },
+                    "filter": "land",
+                    "storeSelected": "snapUntap",
+                    "prompt": "Choose up to two lands to untap",
+                    "useTargetingUI": true
+                },
+                {
+                    "type": "TapUntapCollection",
+                    "collectionName": "snapUntap",
+                    "tap": false
+                }
+            ]
+        },
+        "targetRequirements": [
+            {
+                "type": "TargetObject",
+                "filter": {
+                    "baseFilter": "creature"
+                },
+                "id": "target creature"
+            }
+        ]
+    },
+    "metadata": {
+        "collectorNumber": "43",
+        "artist": "Mike Raabe",
+        "flavorText": "Good riddance."
+    },
+    "colorIdentityOverride": [
+        "BLUE"
+    ]
+}
+
 // Sustainer of the Realm
 {
     "name": "Sustainer of the Realm",
