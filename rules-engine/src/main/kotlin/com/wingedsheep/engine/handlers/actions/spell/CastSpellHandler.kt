@@ -1076,7 +1076,8 @@ class CastSpellHandler(
                     } else if (action.altAllows(AlternativeCostType.DASH) && dashAbility != null && zoneResolver.hasDashPermission(state, action.playerId, action.cardId)) {
                         costCalculator.calculateEffectiveCostWithAlternativeBase(state, cardDef, dashAbility.cost, action.playerId)
                     } else {
-                        // Check impending cost
+                        // Check bestow / impending alternative costs.
+                        val bestowAbility = cardDef.keywordAbilities.filterIsInstance<KeywordAbility.Bestow>().firstOrNull()
                         val impendingAbility = cardDef.keywordAbilities.filterIsInstance<KeywordAbility.Impending>().firstOrNull()
                         // Check cleave cost (CR 702.148 — an alternative cost; the brackets-removed
                         // text variant is chosen structurally at resolution, not here).
@@ -1089,7 +1090,9 @@ class CastSpellHandler(
                         val miracleAbility = if (miracleWindowOpen) MiracleGrants.effectiveMiracle(
                             state, action.cardId, cardDef, action.playerId, cardRegistry, predicateEvaluator
                         ) else null
-                        if (action.altAllows(AlternativeCostType.IMPENDING) && impendingAbility != null) {
+                        if (action.altAllows(AlternativeCostType.BESTOW) && bestowAbility != null) {
+                            costCalculator.calculateEffectiveCostWithAlternativeBase(state, cardDef, bestowAbility.cost, action.playerId)
+                        } else if (action.altAllows(AlternativeCostType.IMPENDING) && impendingAbility != null) {
                             costCalculator.calculateEffectiveCostWithAlternativeBase(state, cardDef, impendingAbility.cost, action.playerId)
                         } else if (action.altAllows(AlternativeCostType.CLEAVE) && cleaveAbility != null) {
                             costCalculator.calculateEffectiveCostWithAlternativeBase(state, cardDef, cleaveAbility.cost, action.playerId)
