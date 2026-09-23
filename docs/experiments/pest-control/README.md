@@ -92,6 +92,11 @@ The Mono-Blue Terror synthetic provenance binding is recorded in
 and schema hashes to the opaque rows while remaining structurally incapable of representing
 executable entropy or outcome-bearing state.
 
+The in-memory Mono-Blue Terror closure manifest is recorded in
+`tier-one-mono-blue-terror-disabled-preexecution-manifest.md`. It binds the complete construction
+hash chain and explicit zero counters while exposing no writer, workflow, command, vector, entropy,
+initializer activation, environment, action, artifact, or outcome path.
+
 The deterministic provenance adapter and byte-level reconciliation layer are recorded in
 `tier-one-grixis-adapter-artifact-contract.md`. They use synthetic in-memory fixtures, expose no game
 initializer, and leave the harness disabled with no vector or outcome exposure.

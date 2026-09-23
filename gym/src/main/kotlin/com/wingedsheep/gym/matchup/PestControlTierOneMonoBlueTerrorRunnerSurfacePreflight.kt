@@ -112,6 +112,14 @@ object PestControlTierOneMonoBlueTerrorRunnerSurfacePreflight {
             errors += "synthetic provenance surface mismatch"
         }
 
+        val manifestMethods =
+            inventory.publicMethods[
+                "PestControlTierOneMonoBlueTerrorDisabledPreExecutionManifest"
+            ].orEmpty()
+        if (manifestMethods != setOf("inspect")) {
+            errors += "pre-execution manifest surface mismatch"
+        }
+
         return MonoBlueTerrorRunnerSurfacePreflightResult(
             errors = errors.distinct(),
             workflowFilesAudited = inventory.workflowFiles.size,
