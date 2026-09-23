@@ -50,3 +50,14 @@ on an exact Fire // Ice behavior.
 
 Infrastructure or fixture failures are not deck-strength evidence and must be corrected only
 by the smallest justified change before qualification continues.
+
+## Pre-qualification provenance
+
+- Corrected fail-closed snapshot/rebless run **35889372421** succeeded.
+- Canonical snapshot integration commit:
+  `6106fbcce93b0ab3fa21c2c64b3699c1e2bcae71`.
+- The integration commit is exactly one commit ahead of the trigger SHA and changes exactly
+  `mtg-sets/src/test/resources/snapshots/cards/APC.json` (77 additions, 0 deletions).
+- Fire // Ice semantic scenarios, canonical snapshot regeneration, and the unrelated-snapshot
+  fail-closed guard all passed in that run.
+- This qualification infrastructure is not deck-strength evidence and consumed no official seed.
