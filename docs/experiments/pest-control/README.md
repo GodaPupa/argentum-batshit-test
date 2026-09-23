@@ -361,3 +361,12 @@ The final Mono-Blue Terror one-shot execution gate is documented in
 dispatched, binds the exact green composed-validation provenance, permits exactly one four-game
 production attempt, and uploads partial durable evidence on failure. Before that merge-triggered
 production run, official gameplay counters remain zero.
+
+
+The official four-game Mono-Blue Terror smoke executed exactly once in run `35894018961` and is
+accepted as `ACCEPTED_NONEXPERIMENTAL_SMOKE`: Pest Control finished **4-0**, all four frozen
+assignments were attempted, initialized and recorded exactly once, every raw hash reconciles, and
+rerolls/replacements/seed regeneration are zero. The result is preserved in
+`tier-one-mono-blue-terror-official-smoke-result.md`. It is not a matchup qualification or Tier-1
+claim. The next authorized inference gate is a fresh independently frozen 12-game preboard
+Mono-Blue Terror replication block; the prior seed-exclusion universe is now `554`.
