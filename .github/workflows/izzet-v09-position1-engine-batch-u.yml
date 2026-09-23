@@ -1,0 +1,95 @@
+name: Izzet Position-1 Engine Batch U
+
+on:
+  push:
+    branches:
+      - "mayhem/izzet-science"
+    paths:
+      - ".github/workflows/izzet-v09-position1-engine-batch-u.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  qualify-batch-u:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "21"
+
+      - uses: gradle/actions/setup-gradle@v6
+
+      - name: Verify frozen control and Batch U gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(sha256sum izzet-science/v0.7-control.md | cut -d' ' -f1)" = "726f5e9458b46dda30b33a6ce9f3c3237b25d6e11b81dac85308c3065c108a01"
+          grep -Fq 'V07_DECK_AUDIT_NO_CHANGE' izzet-science/v07-deck-level-audit-no-change.md
+          grep -Fq 'V09_CARD_CONTROL_ARCHITECTURE_AUDIT_KEEP_V07' izzet-science/v09-card-control-architecture-audit.md
+          grep -Fq 'Live unresolved count is exactly 32' izzet-science/v09-position1-engine-batch-u-gate.md
+          grep -Fq '35911164210' izzet-science/v09-position1-engine-batch-u-gate.md
+          grep -Fq '38c8cf2f8358357b4f6f6e1ce6d79b73175c162e' izzet-science/v09-position1-engine-batch-u-gate.md
+
+      - name: Requalify canonical card snapshots
+        run: ./gradlew :mtg-sets:test --tests "*CardDefinitionSnapshotTest" --stacktrace
+
+      - name: Run Kaervek's Torch semantics
+        run: scripts/test-class KaerveksTorchScenarioTest --info --stacktrace
+
+      - name: Run exact real-engine coverage regression
+        shell: bash
+        run: |
+          set -euo pipefail
+          scripts/test-class IzzetScienceVeteranBeastriderEngineReadinessTest --info --stacktrace | tee /tmp/batch-u.txt
+          grep -Fq 'V09_REAL_ENGINE_UNRESOLVED_COUNT=32' /tmp/batch-u.txt
+          ! grep -Fq "unresolved Izzet card: Kaervek's Torch" /tmp/batch-u.txt
+          grep -Fq 'V09_REAL_ENGINE_UNRESOLVED=unresolved Izzet card: Everflowing Chalice' /tmp/batch-u.txt
+          grep -Fq 'V09_REAL_ENGINE_UNRESOLVED=unresolved Izzet card: Lose Focus' /tmp/batch-u.txt
+
+      - name: Assert official experiment remains untouched
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -Fq 'officialGamesAuthorized: Int = 0' gym/src/main/kotlin/com/wingedsheep/gym/matchup/IzzetScienceVeteranBeastriderEngineReadiness.kt
+          grep -Fq 'officialSeedsConsumed: Int = 0' gym/src/main/kotlin/com/wingedsheep/gym/matchup/IzzetScienceVeteranBeastriderEngineReadiness.kt
+          grep -Fq 'outcomeExposure: Int = 0' gym/src/main/kotlin/com/wingedsheep/gym/matchup/IzzetScienceVeteranBeastriderEngineReadiness.kt
+
+      - name: Emit Batch U manifest
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/izzet-batch-u
+          cp /tmp/batch-u.txt /tmp/izzet-batch-u/test-output.txt
+          {
+            echo "schema=izzet-v09-position1-engine-batch-u-v1"
+            echo "source_sha=${GITHUB_SHA}"
+            echo "frozen_control_sha256=726f5e9458b46dda30b33a6ce9f3c3237b25d6e11b81dac85308c3065c108a01"
+            echo "implemented=Kaervek's Torch;stack-zone ModifySpellCost;AnyCasterTargeting;X damage"
+            echo "snapshot_run=35911164210"
+            echo "snapshot_commit=38c8cf2f8358357b4f6f6e1ce6d79b73175c162e"
+            echo "unresolved_before=33"
+            echo "unresolved_after=32"
+            echo "official_seeds_consumed=0"
+            echo "games_initialized=0"
+            echo "outcome_exposure=0"
+            sha256sum mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/scripting/CostStaticAbilities.kt
+            sha256sum rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/mana/CostCalculator.kt
+            sha256sum rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/spell/CastSpellHandler.kt
+            sha256sum mtg-sets/1993-1999/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/mir/cards/KaerveksTorch.kt
+            sha256sum mtg-sets/1993-1999/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/KaerveksTorchScenarioTest.kt
+            sha256sum gym/src/test/kotlin/com/wingedsheep/gym/IzzetScienceVeteranBeastriderEngineReadinessTest.kt
+            sha256sum izzet-science/v09-position1-engine-batch-u-gate.md
+            sha256sum mtg-sets/src/test/resources/snapshots/cards/MIR.json
+            sha256sum /tmp/izzet-batch-u/test-output.txt
+          } > /tmp/izzet-batch-u/manifest.txt
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: izzet-v09-position1-engine-batch-u
+          path: /tmp/izzet-batch-u
+          if-no-files-found: error
