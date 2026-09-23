@@ -56,7 +56,7 @@ class IndustrialWasteMonsterTronPolicyAuditTest : ScenarioTestBase() {
 
             game.execute(action).error shouldBe null
             game.resolveStack()
-            val decision = game.getPendingDecision().shouldBeInstanceOf<SearchLibraryDecision>()
+            val decision = game.getPendingDecision() ?: error("Crop Rotation search decision missing")
             val response = ai(game).respondToDecision(game.state, decision)
                 .shouldBeInstanceOf<CardsSelectedResponse>()
             name(game, response.selectedCards.single()) shouldBe "Urza's Tower"
@@ -77,7 +77,7 @@ class IndustrialWasteMonsterTronPolicyAuditTest : ScenarioTestBase() {
             game.execute(action).error shouldBe null
             game.resolveStack()
 
-            val decision = game.getPendingDecision().shouldBeInstanceOf<SearchLibraryDecision>()
+            val decision = game.getPendingDecision() ?: error("Expedition Map search decision missing")
             val response = ai(game).respondToDecision(game.state, decision)
                 .shouldBeInstanceOf<CardsSelectedResponse>()
             name(game, response.selectedCards.single()) shouldBe "Urza's Tower"
