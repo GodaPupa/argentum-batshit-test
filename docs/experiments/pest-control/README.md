@@ -107,11 +107,12 @@ The separate guarded Mono-Blue Terror smoke-vector freeze decision is documented
 fixture bytes; the production path is manual, single-attempt, artifact-only, collision-audited
 against 550 retired Pest seed identities, and cannot initialize a game or expose an outcome.
 
-Manual freeze run `35814874094` is preserved as a rejected pre-entropy dispatch-guard incident in
-`tier-one-mono-blue-terror-freeze-preentropy-incident.md`. A second manual run,
-`35816035083`, is preserved in
-`tier-one-mono-blue-terror-freeze-preentropy-incident-v2.md`. Both failed before entropy, created
-no artifact, consumed no seed, and do not count as production vector attempts.
+Manual freeze runs `35814874094` and `35816035083` are preserved as rejected pre-entropy
+dispatch-guard incidents in `tier-one-mono-blue-terror-freeze-preentropy-incident.md` and
+`tier-one-mono-blue-terror-freeze-preentropy-incident-v2.md`. Runs `35817231288` and
+`35818142621` are preserved in
+`tier-one-mono-blue-terror-freeze-checkout-order-incident.md` as checkout-order pre-entropy
+incidents. All four runs collectively consumed zero seeds and created no freeze artifact.
 
 The deterministic provenance adapter and byte-level reconciliation layer are recorded in
 `tier-one-grixis-adapter-artifact-contract.md`. They use synthetic in-memory fixtures, expose no game
