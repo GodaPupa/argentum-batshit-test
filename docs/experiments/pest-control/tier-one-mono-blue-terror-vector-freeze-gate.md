@@ -103,3 +103,31 @@ requires:
 No later ordinary push can retrigger production because the workflow path filter is the one-time
 authorization file. A new production attempt would require changing that frozen record, which would
 break its pinned SHA-256 and fail closed.
+
+
+## Frozen result
+
+The sole authorized automatic production freeze completed successfully in workflow run
+`35819861075` at source commit
+`eb140403cceff8e930afdfb2874972c6e44f77e7` and source tree
+`2af00cc7e04eb0157930dc5254fcde27a7253f38`.
+
+Artifact `10733086089` passed:
+
+- GitHub archive SHA-256 reconciliation;
+- internal checksum inventory validation;
+- four-seed unique/nonzero validation;
+- exact 2/2 Pest play-draw balance;
+- exact 2/2 Pest seat balance;
+- exact four-cell assignment mapping; and
+- independent zero-overlap validation against all 550 retired Pest seed identities.
+
+The ordered vector SHA-256 is
+`ca508c842886fff2af7db1c966fbedbb8ae801796c5043e26b22def056c724ea`.
+
+Immutable artifact/run metadata are recorded in
+`tier-one-mono-blue-terror-vector-freeze-provenance.json`.
+
+The official vector is now `FROZEN_UNEXECUTED`. Official games initialized, actions submitted,
+and outcome exposure remain zero. The production trigger is removed and generator-side regeneration
+is fail-closed. Execution is still unauthorized.
