@@ -1,192 +1,40 @@
-name: Pest Control Tier-1 Mono-Blue Terror Official One-Shot Execution
+name: Pest Control Tier-1 Mono-Blue Terror Official Execution Retired Validation
 
 on:
   pull_request:
-    types: [opened, synchronize, reopened]
     paths:
       - .github/workflows/pest-control-tier-one-mono-blue-terror-official-execute.yml
       - docs/experiments/pest-control/tier-one-mono-blue-terror-auto-execution-authorization.json
-      - gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlTierOneMonoBlueTerrorOfficialExecutionInputLoader.kt
-      - gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOneMonoBlueTerrorOfficialExecutionRunnerTest.kt
-  push:
-    branches:
-      - main
-    paths:
-      - docs/experiments/pest-control/tier-one-mono-blue-terror-auto-execution-authorization.json
+      - docs/experiments/pest-control/tier-one-mono-blue-terror-official-smoke-result.md
 
 permissions:
-  actions: read
   contents: read
 
-concurrency:
-  group: pest-control-tier-one-mono-blue-terror-official-one-shot
-  cancel-in-progress: false
-
-env:
-  FREEZE_ARTIFACT_ID: "10733086089"
-  FREEZE_ARTIFACT_SHA256: bbf9f20e834f27f838e37de78c905c213a8917651818367360a8e8a140914961
-  AUTHORIZATION_SHA256: 80b1097c88059668d9b7740db5213690430cf6bf1e9299a0c3a94d466a9e7c1f
-  OFFICIAL_ARTIFACT_NAME: pest-control-tier-one-mono-blue-terror-official-execution
-
 jobs:
-  validate-gate:
-    if: github.event_name == 'pull_request'
+  validate-retired:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
 
-      - name: Validate immutable authorization record
+      - name: Verify retired one-shot execution surface
         run: |
           set -euo pipefail
-          echo "${AUTHORIZATION_SHA256}  docs/experiments/pest-control/tier-one-mono-blue-terror-auto-execution-authorization.json" | sha256sum -c -
-          python3 - <<'PY'
-          import json
-          from pathlib import Path
-
-          path = Path("docs/experiments/pest-control/tier-one-mono-blue-terror-auto-execution-authorization.json")
-          record = json.loads(path.read_text())
-          assert record["schema"] == "pest-control-tier-one-mono-blue-terror-auto-execution-authorization@v1"
-          assert record["acceptedComposedValidationMerge"] == "97924f57522528507ce0e71ffc0cc0f942a83fef"
-          assert record["acceptedComposedValidationTree"] == "1a34844a03698e3b67f7cafe9aec4e73067de7c0"
-          assert record["composedValidationRunId"] == 35888858865
-          assert record["composedValidationRunAttempt"] == 1
-          assert record["composedValidationArtifactId"] == 10765360051
-          assert record["composedValidationArtifactSha256"] == "43dd691e75eac1a5cc7fc53c74104f144939912697e912a3f84e13288f6c815a"
-          assert record["freezeArtifactId"] == 10733086089
-          assert record["freezeArtifactSha256"] == "bbf9f20e834f27f838e37de78c905c213a8917651818367360a8e8a140914961"
-          assert record["authorization"] == "AUTOMATIC_ONE_SHOT_OFFICIAL_EXECUTION"
-          assert record["officialGamesAuthorized"] == 4
-          assert record["executionAttemptLimit"] == 1
-          assert record["rerollsPermitted"] is False
-          assert record["replacementsPermitted"] is False
-          assert record["regenerationPermitted"] is False
-          assert record["officialSeedsConsumedBeforeExecution"] == 0
-          assert record["officialOutcomeExposureBeforeExecution"] == 0
-          PY
-
-      - name: Validate automatic one-shot workflow contract
-        run: |
           python3 - <<'PY'
           from pathlib import Path
+
           text = Path(".github/workflows/pest-control-tier-one-mono-blue-terror-official-execute.yml").read_text()
           assert ("workflow" + "_dispatch") not in text
-          assert "github.event_name == 'push'" in text
-          assert "tier-one-mono-blue-terror-auto-execution-authorization.json" in text
-          assert "PestControlTierOneMonoBlueTerrorOfficialExecutionRunnerTest" in text
-          assert "run_attempt" in text
-          assert "OFFICIAL_ARTIFACT_NAME" in text
+          assert "\n  push:" not in text
+          assert "github.event_name == 'push'" not in text
+          assert "PestControlTierOneMonoBlueTerrorOfficialExecutionRunnerTest" not in text
+          assert "Execute frozen four-game vector exactly once" not in text
+          assert "Upload one-shot official evidence" not in text
           PY
 
-  official:
-    if: github.event_name == 'push'
-    runs-on: ubuntu-latest
-    timeout-minutes: 720
-    steps:
-      - uses: actions/checkout@v6
-        with:
-          ref: ${{ github.sha }}
-          fetch-depth: 0
-
-      - name: Verify one-shot authorization and replay barriers
-        env:
-          GH_TOKEN: ${{ github.token }}
+      - name: Verify accepted smoke record exists
         run: |
           set -euo pipefail
-          test "${GITHUB_REF}" = "refs/heads/main"
-          test "${GITHUB_RUN_ATTEMPT}" = "1"
-          echo "${AUTHORIZATION_SHA256}  docs/experiments/pest-control/tier-one-mono-blue-terror-auto-execution-authorization.json" | sha256sum -c -
-          git merge-base --is-ancestor 97924f57522528507ce0e71ffc0cc0f942a83fef HEAD
-          python3 - <<'PY'
-          import json, os, urllib.parse, urllib.request
-
-          repo = os.environ["GITHUB_REPOSITORY"]
-          token = os.environ["GH_TOKEN"]
-          current = int(os.environ["GITHUB_RUN_ID"])
-          headers = {
-              "Authorization": f"Bearer {token}",
-              "Accept": "application/vnd.github+json",
-              "X-GitHub-Api-Version": "2022-11-28",
-          }
-
-          workflow = "pest-control-tier-one-mono-blue-terror-official-execute.yml"
-          runs_url = (
-              f"https://api.github.com/repos/{repo}/actions/workflows/{workflow}/runs"
-              "?event=push&per_page=100"
-          )
-          with urllib.request.urlopen(urllib.request.Request(runs_url, headers=headers)) as response:
-              runs = json.load(response)["workflow_runs"]
-          others = [run["id"] for run in runs if run["id"] != current]
-          print(json.dumps({"current_run_id": current, "prior_push_run_ids": others}, sort_keys=True))
-          if others:
-              raise SystemExit("prior production push run exists")
-
-          name = os.environ["OFFICIAL_ARTIFACT_NAME"]
-          artifacts_url = (
-              f"https://api.github.com/repos/{repo}/actions/artifacts?"
-              + urllib.parse.urlencode({"name": name, "per_page": 100})
-          )
-          with urllib.request.urlopen(urllib.request.Request(artifacts_url, headers=headers)) as response:
-              count = json.load(response).get("total_count")
-          print(json.dumps({"official_artifact_name": name, "prior_artifact_count": count}, sort_keys=True))
-          if count != 0:
-              raise SystemExit("prior official execution artifact exists")
-          PY
-
-      - uses: actions/setup-java@v5
-        with:
-          distribution: temurin
-          java-version: '21'
-
-      - uses: gradle/actions/setup-gradle@v6
-
-      - name: Download exact frozen Mono-Blue Terror vector
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          set -euo pipefail
-          mkdir -p build/pest-terror-official-input
-          curl -fsSL \
-            -H "Authorization: Bearer ${GH_TOKEN}" \
-            -H "Accept: application/vnd.github+json" \
-            "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/artifacts/${FREEZE_ARTIFACT_ID}/zip" \
-            -o build/pest-terror-official-input/frozen.zip
-          echo "${FREEZE_ARTIFACT_SHA256}  build/pest-terror-official-input/frozen.zip" | sha256sum -c -
-
-      - name: Create durable execution envelope
-        id: envelope
-        run: |
-          set -euo pipefail
-          mkdir -p build/reports/pest-control-tier-one-mono-blue-terror-official
-          EXECUTION_TREE="$(git rev-parse 'HEAD^{tree}')"
-          {
-            echo "schema=terror-official-execution-envelope-v1"
-            echo "run_id=${GITHUB_RUN_ID}"
-            echo "run_attempt=${GITHUB_RUN_ATTEMPT}"
-            echo "execution_commit=${GITHUB_SHA}"
-            echo "execution_tree=${EXECUTION_TREE}"
-            echo "authorization_sha256=${AUTHORIZATION_SHA256}"
-            echo "freeze_artifact_id=${FREEZE_ARTIFACT_ID}"
-            echo "freeze_artifact_sha256=${FREEZE_ARTIFACT_SHA256}"
-            echo "composed_validation_merge=97924f57522528507ce0e71ffc0cc0f942a83fef"
-            echo "composed_validation_run=35888858865"
-          } > build/reports/pest-control-tier-one-mono-blue-terror-official/execution-envelope.txt
-          sync
-
-      - name: Execute frozen four-game vector exactly once
-        env:
-          PEST_TERROR_OFFICIAL_MODE: EXECUTE
-          PEST_TERROR_OFFICIAL_EXECUTION_ACK: AUTOMATIC_ONE_SHOT_OFFICIAL_EXECUTION
-          PEST_TERROR_EXECUTION_INPUT_ACK: AUTOMATIC_ONE_SHOT_OFFICIAL_EXECUTION
-          PEST_TERROR_EXECUTION_INPUT_ZIP: ${{ github.workspace }}/build/pest-terror-official-input/frozen.zip
-          PEST_TERROR_OFFICIAL_EXECUTION_COMMIT: ${{ github.sha }}
-          PEST_TERROR_OFFICIAL_OUTPUT_DIR: ${{ github.workspace }}/build/reports/pest-control-tier-one-mono-blue-terror-official
-        run: scripts/test-class PestControlTierOneMonoBlueTerrorOfficialExecutionRunnerTest --info --stacktrace
-
-      - name: Upload one-shot official evidence
-        if: always() && steps.envelope.outcome != 'skipped'
-        uses: actions/upload-artifact@v7
-        with:
-          name: pest-control-tier-one-mono-blue-terror-official-execution
-          path: build/reports/pest-control-tier-one-mono-blue-terror-official/
-          if-no-files-found: error
-          retention-days: 90
+          grep -F 'Status: `ACCEPTED_NONEXPERIMENTAL_SMOKE`' docs/experiments/pest-control/tier-one-mono-blue-terror-official-smoke-result.md
+          grep -F 'Pest Control finished **4-0**.' docs/experiments/pest-control/tier-one-mono-blue-terror-official-smoke-result.md
+          grep -F '`35894018961`' docs/experiments/pest-control/tier-one-mono-blue-terror-official-smoke-result.md
+          grep -F '`10766612589`' docs/experiments/pest-control/tier-one-mono-blue-terror-official-smoke-result.md
