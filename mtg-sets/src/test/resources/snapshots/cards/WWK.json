@@ -148,6 +148,66 @@
     ]
 }
 
+// Everflowing Chalice
+{
+    "name": "Everflowing Chalice",
+    "manaCost": "{0}",
+    "typeLine": "Artifact",
+    "oracleText": "Multikicker {2} (You may pay an additional {2} any number of times as you cast this spell.)\nThis artifact enters with a charge counter on it for each time it was kicked.\n{T}: Add {C} for each charge counter on this artifact.",
+    "keywordAbilities": [
+        {
+            "type": "Kicker",
+            "manaCost": "{2}",
+            "multi": true,
+            "displayPrefix": "Multikicker"
+        }
+    ],
+    "script": {
+        "activatedAbilities": [
+            {
+                "id": "ability_1",
+                "cost": "CostTap",
+                "effect": {
+                    "type": "AddColorlessMana",
+                    "amount": {
+                        "type": "EntityProperty",
+                        "entity": "Source",
+                        "numericProperty": {
+                            "type": "CounterCount",
+                            "counterType": {
+                                "type": "Named",
+                                "name": "charge"
+                            }
+                        }
+                    }
+                },
+                "timing": "ManaAbility",
+                "isManaAbility": true,
+                "descriptionOverride": "{T}: Add {C} for each charge counter on this artifact."
+            }
+        ],
+        "replacementEffects": [
+            {
+                "type": "EntersWithDynamicCounters",
+                "counterType": {
+                    "type": "Named",
+                    "name": "charge"
+                },
+                "count": {
+                    "type": "CastChoice",
+                    "slot": "KICKED"
+                }
+            }
+        ]
+    },
+    "metadata": {
+        "collectorNumber": "123",
+        "rarity": "UNCOMMON",
+        "artist": "Steve Argyle"
+    },
+    "colorIdentityOverride": []
+}
+
 // Goblin Roughrider
 {
     "name": "Goblin Roughrider",
