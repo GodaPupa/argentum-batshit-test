@@ -55,5 +55,23 @@ No Lose Focus-specific executor is justified.
 14. Lose Focus is absent from unresolved output; no Izzet identity remains unresolved.
 15. Official games/seeds/outcomes remain 0/0/0 and the exact v0.7 control remains unchanged.
 
+
+## Pre-qualification provenance
+
+- Initial Batch W snapshot/rebless run **35928319287** failed in the targeted Replicate semantic fixture:
+  the two-payment copy/retarget path did not complete successfully. This was qualification infrastructure/engine history, not deck-strength evidence.
+- Corrective commit:
+  `8b6a4d24a090f9a5834a1782160c55ac891d9f0f` — targeted repeatable-cost legal actions preserve target metadata and the multi-copy continuation fixture was corrected.
+- Corrected fail-closed snapshot/rebless run **35929235572** succeeded.
+- Canonical snapshot integration commit:
+  `46cf05a9afdfbe9b42280daa93f2a5536d851d96`.
+- That integration commit changes exactly
+  `mtg-sets/src/test/resources/snapshots/cards/MH2.json` (47 additions, 0 deletions).
+- Lose Focus semantic scenarios passed.
+- Storm copy retargeting, real-spell-copy behavior, and multikicker/legal-action regressions passed.
+- Exact real-engine readiness emitted `V09_REAL_ENGINE_UNRESOLVED_COUNT=30` with no unresolved Izzet identity.
+- The fail-closed unrelated-snapshot guard passed.
+- The exact frozen v0.7 SHA remained verified and no official seed/game/outcome was consumed or exposed.
+
 Infrastructure, compilation, fixture, snapshot, or semantic failures are qualification history only,
 not evidence about deck strength.
