@@ -340,3 +340,9 @@ The authorized Mono-Blue Terror execution coordinator is documented in
 `tier-one-mono-blue-terror-execution-coordinator.md`. It enforces durable
 attempt → initialization-entry → result ordering and terminal rejection, but owns no official
 artifact loader, evidence root, initializer, AI policy or workflow entrypoint.
+
+
+The Mono-Blue Terror production gameplay driver is documented in
+`tier-one-mono-blue-terror-production-driver.md`. The accepted four-cell AI calibration now uses
+this exact authorized-initializer + driver + raw-encoding path, eliminating the prior duplicate
+gameplay loop. Official frozen seeds remain unconsumed.
