@@ -9,6 +9,8 @@ on:
       - mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/wwk/cards/BojukaBog.kt
       - mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/IndustrialWasteGate9OgwScenarioTest.kt
       - mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/IndustrialWasteGate9WwkScenarioTest.kt
+      - mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/c20/**
+      - mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/IndustrialWasteGate9C20ScenarioTest.kt
   workflow_dispatch:
 
 permissions:
@@ -28,4 +30,7 @@ jobs:
           ./gradlew :mtg-sets:2008-2016:tests:test \
             --tests '*IndustrialWasteGate9OgwScenarioTest' \
             --tests '*IndustrialWasteGate9WwkScenarioTest' \
+            --no-daemon
+          ./gradlew :mtg-sets:2017-2022:tests:test \
+            --tests '*IndustrialWasteGate9C20ScenarioTest' \
             --no-daemon
