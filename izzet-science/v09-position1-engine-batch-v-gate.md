@@ -76,5 +76,20 @@ stack with independent retargeting.
 - The fail-closed unrelated-snapshot guard passed.
 - The exact frozen v0.7 SHA remained verified and no official seed/game/outcome was consumed or exposed.
 
+
+## Formal qualification provenance
+
+- Formal Batch V qualification run **35926252699** — SUCCESS.
+- Accepted source SHA:
+  `3124c6c9eaa7083889342a70ec5487183eaaa233`.
+- Accepted artifact:
+  `izzet-v09-position1-engine-batch-v`, artifact id **10779541865**.
+- Artifact ZIP SHA-256:
+  `1b3140168c37bf892311a93d76fd9b158b0e6ae96c7923e5fac5f6b29cb0064e`.
+- Downloaded artifact manifest independently matched the source SHA, frozen-control SHA,
+  snapshot run/commit, unresolved transition `32 -> 31`, and official state `0/0/0`.
+- Full canonical snapshots, Everflowing Chalice semantics, multikicker legal-action enumeration,
+  one-shot kicker regressions, and exact real-engine coverage all passed.
+
 Infrastructure, fixture, compilation, snapshot, or semantic failures are qualification history only,
 not evidence about deck strength.
