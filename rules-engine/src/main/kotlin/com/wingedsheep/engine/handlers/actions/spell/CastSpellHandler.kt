@@ -182,6 +182,15 @@ private fun declaredOptionalCosts(
         ?: emptyList()
 }
 
+private fun declaredOptionalCostRepeatCount(
+    action: CastSpell,
+    cardDef: com.wingedsheep.sdk.model.CardDefinition?,
+): Int? {
+    if (action.declaredCostSlot == null) return null
+    val repeatable = declaredOptionalCosts(action, cardDef).any { it.multi }
+    return if (repeatable) action.declaredCostRepeatCount ?: 1 else null
+}
+
 class CastSpellHandler(
     private val cardRegistry: CardRegistry,
     private val turnManager: TurnManager,
@@ -549,6 +558,9 @@ class CastSpellHandler(
         // Validate the declared optional additional cost (kicker/offspring/bargain): the card must
         // actually have a keyword declaring that slot, so a hand-built action can't claim to have
         // bargained a kicker spell (or bargained a card with no bargain at all).
+        if (action.declaredCostRepeatCount != null && action.declaredCostSlot == null) {
+            return "Optional additional cost repeat count requires a declared optional cost"
+        }
         if (action.declaredCostSlot != null && cardDef != null) {
             val declared = declaredOptionalCosts(action, cardDef)
             if (declared.isEmpty()) {
@@ -558,6 +570,14 @@ class CastSpellHandler(
                     else -> action.declaredCostSlot.name.lowercase()
                 }
                 return "This card does not have $mechanic"
+            }
+            if (action.declaredCostRepeatCount != null) {
+                if (action.declaredCostRepeatCount < 1) {
+                    return "Optional additional cost repeat count must be at least 1"
+                }
+                if (declared.none { it.multi }) {
+                    return "This optional additional cost cannot be paid multiple times"
+                }
             }
 
             // Validate the non-mana portion (sacrifice a creature for kicker, an artifact /
@@ -1149,11 +1169,14 @@ class CastSpellHandler(
 
         // Add kicker/offspring mana cost if kicked (only for mana-based kicker/offspring)
         if (!playForFree && !action.useAlternativeCost) {
-            val kickerManaCost = declaredOptionalCosts(action, cardDef)
+            val declaredManaCost = declaredOptionalCosts(action, cardDef)
                 .firstOrNull { it.manaCost != null }
-                ?.manaCost
+            val kickerManaCost = declaredManaCost?.manaCost
             if (kickerManaCost != null) {
-                effectiveCost = ManaCost(effectiveCost.symbols + kickerManaCost.symbols)
+                val repetitions = if (declaredManaCost.multi) {
+                    declaredOptionalCostRepeatCount(action, cardDef) ?: 1
+                } else 1
+                effectiveCost = effectiveCost + (kickerManaCost * repetitions)
             }
         }
 
@@ -2535,11 +2558,14 @@ class CastSpellHandler(
 
         // Add kicker/offspring cost if kicked (not applicable with alternative costs)
         if (!playForFreeInExecute && !action.useAlternativeCost) {
-            val kickerManaCost = declaredOptionalCosts(action, cardDef)
+            val declaredManaCost = declaredOptionalCosts(action, cardDef)
                 .firstOrNull { it.manaCost != null }
-                ?.manaCost
+            val kickerManaCost = declaredManaCost?.manaCost
             if (kickerManaCost != null) {
-                effectiveCost = ManaCost(effectiveCost.symbols + kickerManaCost.symbols)
+                val repetitions = if (declaredManaCost.multi) {
+                    declaredOptionalCostRepeatCount(action, cardDef) ?: 1
+                } else 1
+                effectiveCost = effectiveCost + (kickerManaCost * repetitions)
             }
         }
 
@@ -3719,6 +3745,7 @@ class CastSpellHandler(
             additionalCostBlightAmount = action.additionalCostPayment?.blightAmount ?: 0,
             additionalCostPayXLifeAmount = payXLifeAmount,
             declaredCostSlot = action.declaredCostSlot,
+            declaredCostRepeatCount = declaredOptionalCostRepeatCount(action, cardDef),
             wasBlightPaid = (action.additionalCostPayment?.blightTargets?.isNotEmpty() == true),
             // True when the spell's waterbend additional cost was paid (Avatar) — mandatory costs
             // always, optional "you may waterbend {N}" only when the player elected it.

@@ -28,6 +28,11 @@ data class SpellOnStackComponent(
      * declared. Carried onto the resolving permanent's cast-choices bag by `StackResolver`.
      */
     val declaredCostSlot: ChoiceSlot? = null,
+    /**
+     * Repetition count for a repeatable declared optional cost (multikicker). Null for ordinary
+     * one-shot optional costs; positive when the declared cost may be paid multiple times.
+     */
+    val declaredCostRepeatCount: Int? = null,
     val wasBlightPaid: Boolean = false,  // For BlightOrPay additional cost — true if blight path was taken
     val wasWaterbendPaid: Boolean = false,  // For optional spell waterbend additional cost (Avatar) — true if "you may waterbend {N}" was paid; readable via WaterbendWasPaid
     /**

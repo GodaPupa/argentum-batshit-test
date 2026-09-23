@@ -2229,6 +2229,71 @@ class CastSpellEnumerator : ActionEnumerator {
                 val baseCost = context.costCalculator.calculateEffectiveCost(
                     state, cardDef, playerId, declaredCostSlot = declaredSlot,
                 )
+
+                // Multikicker (CR 702.33c): pure positive-mana, targetless/nonmodal instances emit
+                // every affordable positive repetition count. Affordability is the natural finite
+                // stopping condition; zero repetitions are the ordinary undeclared cast.
+                val pureManaMultikicker = manaKicker?.takeIf {
+                    it.multi &&
+                        it.manaCost != null &&
+                        it.additionalCost == null &&
+                        additionalCostKicker == null &&
+                        offspringAbility == null &&
+                        cardDef.script.kickerTargetRequirements.isEmpty() &&
+                        cardDef.script.targetRequirements.isEmpty() &&
+                        cardDef.script.auraTarget == null &&
+                        cardDef.script.spellEffect !is ModalEffect
+                }
+                if (pureManaMultikicker != null) {
+                    val unitCost = pureManaMultikicker.manaCost!!
+                    // Zero-mana repeat units admit infinitely many equivalent declarations.
+                    // Fail closed rather than inventing an arbitrary maximum.
+                    if (unitCost.cmc > 0) {
+                        val spellContext = spellPaymentContextFor(
+                            cardComponent,
+                            isKicked = declaredSlot == ChoiceSlot.KICKED
+                        )
+                        var repeatCount = 1
+                        while (true) {
+                            val repeatedCost = baseCost + (unitCost * repeatCount)
+                            if (!context.manaSolver.canPay(
+                                    state,
+                                    playerId,
+                                    repeatedCost,
+                                    spellContext = spellContext,
+                                    precomputedSources = context.availableManaSources
+                                )
+                            ) break
+                            val preview = if (context.skipAutoTapPreview) null else {
+                                context.manaSolver.solve(
+                                    state,
+                                    playerId,
+                                    repeatedCost,
+                                    spellContext = spellContext,
+                                    precomputedSources = context.availableManaSources
+                                )?.sources?.map { it.entityId }
+                            }
+                            result.add(
+                                LegalAction(
+                                    actionType = "CastWithKicker",
+                                    description = "Cast ${cardComponent.name} (${pureManaMultikicker.displayPrefix} ×$repeatCount)",
+                                    action = CastSpell(
+                                        playerId,
+                                        cardId,
+                                        declaredCostSlot = declaredSlot,
+                                        declaredCostRepeatCount = repeatCount,
+                                    ),
+                                    affordable = true,
+                                    manaCostString = repeatedCost.toString(),
+                                    autoTapPreview = preview,
+                                )
+                            )
+                            repeatCount++
+                        }
+                    }
+                    continue
+                }
+
                 val kickedManaCost = manaKicker?.manaCost ?: offspringAbility?.manaCost
                 val kickedCost = if (kickedManaCost != null) baseCost + kickedManaCost else baseCost
                 val kickedSpellContext = spellPaymentContextFor(cardComponent, isKicked = declaredSlot == ChoiceSlot.KICKED)

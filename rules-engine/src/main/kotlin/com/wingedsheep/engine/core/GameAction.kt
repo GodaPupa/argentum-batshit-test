@@ -81,6 +81,15 @@ data class CastSpell(
      */
     val declaredCostSlot: ChoiceSlot? = null,
     /**
+     * How many times a repeatable optional additional cost was paid (CR 702.33c multikicker).
+     *
+     * Null preserves the legacy one-shot optional-cost rail. When the declared keyword has
+     * `multi = true`, null is normalized to one payment for backward-compatible hand-built
+     * actions; explicit positive values record the announced repetition count. Zero repetitions
+     * are represented by not declaring the optional cost at all.
+     */
+    val declaredCostRepeatCount: Int? = null,
+    /**
      * Whether the spell's *optional* waterbend additional cost was elected (Avatar: The Last
      * Airbender — [com.wingedsheep.sdk.scripting.SpellWaterbendCost] with `optional = true`).
      * Always `false` for spells with no optional waterbend cost, and irrelevant for a *mandatory*
