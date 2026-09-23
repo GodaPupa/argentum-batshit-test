@@ -1,0 +1,73 @@
+name: Industrial Waste — Gate 8 Jund Readiness
+
+on:
+  push:
+    branches: [industrial-waste/lab]
+    paths:
+      - .github/workflows/industrial-waste-g8-jund-readiness.yml
+      - ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteJundReadinessSmokeTest.kt
+      - ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/JundWildfireAdvisorModule.kt
+      - ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteAdvisorModule.kt
+      - industrial-waste/gauntlet/jund-wildfire-manohito-2026-09-15.dck
+      - industrial-waste/protocols/gate-8-jund-wildfire-readiness-v1.md
+      - industrial-waste/control/industrial-waste-v1.0-submitted.dck
+      - mtg-sets/2024/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/mh3/cards/WrithingChrysalis.kt
+      - mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/znr/cards/CleansingWildfire.kt
+      - mtg-sets/2024/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/mh3/cards/TwistedLandscape.kt
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  gate-8-readiness:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v6
+      - name: Validate exact 60/15 opponent identity
+        run: |
+          python3 - <<'PY'
+          import hashlib
+          import pathlib
+          import re
+
+          path = pathlib.Path("industrial-waste/gauntlet/jund-wildfire-manohito-2026-09-15.dck")
+          text = path.read_text()
+          section = None
+          totals = {"main": 0, "sideboard": 0}
+          for raw in text.splitlines():
+              line = raw.strip()
+              if line == "[main]":
+                  section = "main"; continue
+              if line == "[sideboard]":
+                  section = "sideboard"; continue
+              if line.startswith("["):
+                  section = None; continue
+              if section and line and "=" not in line:
+                  m = re.match(r"^(\d+)\s+(.+)$", line)
+                  assert m, line
+                  totals[section] += int(m.group(1))
+          assert totals == {"main": 60, "sideboard": 15}, totals
+          digest = hashlib.sha256(path.read_bytes()).hexdigest()
+          assert digest == "b3c5722946b3e32adc0c716a7b08a0688f2ab62b0f6bb87d9d0faec12c09cc29", digest
+          print("Gate 8 opponent identity: VALID", totals, digest)
+          PY
+      - uses: actions/setup-java@v5
+        with: {distribution: temurin, java-version: 21}
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Run exact-deck registry and legal-progression smoke
+        env:
+          IW_G8_JUND_READINESS_SMOKE: "true"
+        run: ./gradlew :ai:test --tests IndustrialWasteJundReadinessSmokeTest -Dbenchmark=true --no-daemon
+      - name: Print focused failure details
+        if: failure()
+        run: |
+          find ai/build/test-results/test -name 'TEST-*IndustrialWasteJund*.xml' -exec sed -n '1,700p' {} \; || true
+      - name: Upload readiness evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: industrial-waste-g8-jund-readiness
+          path: industrial-waste/results/gate-8-jund-readiness-smoke-v1.json
+          if-no-files-found: warn
