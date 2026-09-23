@@ -60,6 +60,14 @@ enum class ChoiceSlot {
     KICKED,
 
     /**
+     * Whether a spell's buyback cost was paid as it was cast (CR 702.27).
+     * A present value means the spell returns to its owner's hand instead of its graveyard
+     * when it resolves successfully. Countered or fizzled spells do not use this slot at
+     * their destination step and therefore go to the graveyard normally.
+     */
+    BUYBACK,
+
+    /**
      * Whether the spell's **bargain** additional cost was declared when cast (CR 702.166b, Wilds of
      * Eldraine — "you may sacrifice an artifact, enchantment, or token as you cast this spell"). A
      * present value means the spell was *bargained*. Read back through
