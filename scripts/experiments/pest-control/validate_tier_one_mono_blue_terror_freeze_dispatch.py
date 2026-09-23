@@ -11,19 +11,22 @@ EXPECTED_ACK = "GENERATE_TIER_ONE_MONO_BLUE_TERROR_SMOKE_4_NO_GAMEPLAY"
 
 
 def main() -> None:
-    ack = os.environ.get("FREEZE_ACK", "")
+    raw_ack = os.environ.get("FREEZE_ACK", "")
+    ack = raw_ack.strip()
     ref = os.environ.get("RUN_REF", "")
     attempt = os.environ.get("RUN_ATTEMPT", "")
     checks = {
         "main_ref": ref == "refs/heads/main",
         "attempt_one": attempt == "1",
-        "ack_exact": ack == EXPECTED_ACK,
+        "ack_exact_after_trim": ack == EXPECTED_ACK,
     }
     print(json.dumps({
         "checks": checks,
         "ref": ref,
         "run_attempt": attempt,
-        "ack_length": len(ack),
+        "raw_ack_length": len(raw_ack),
+        "canonical_ack_length": len(ack),
+        "surrounding_whitespace_removed": len(raw_ack) - len(ack),
         "ack_sha256": hashlib.sha256(ack.encode()).hexdigest(),
         "expected_ack_length": len(EXPECTED_ACK),
         "expected_ack_sha256": hashlib.sha256(EXPECTED_ACK.encode()).hexdigest(),

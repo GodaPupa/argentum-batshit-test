@@ -70,8 +70,12 @@ actions submitted, outcome artifacts, and outcome exposure remain zero.
 Manual dispatch runs `35814874094` and `35816035083` are formally rejected as pre-entropy
 dispatch-guard incidents. Runs `35817231288` and `35818142621` are separately rejected as a
 checkout-order pre-entropy incident: both attempted to invoke a repository guard script before
-checkout. Across all four runs, zero entropy calls occurred, zero seeds were drawn or retired, and
-zero freeze artifacts were created. The production order is now checkout → metadata guard →
-artifact guard → source audit → one-shot draw, and PR validation asserts that exact ordering.
+checkout. Across those four runs, zero entropy calls occurred, zero seeds were drawn or retired, and zero
+freeze artifacts were created. Run `35818672369` is a separate acknowledgement-whitespace
+pre-entropy incident: checkout succeeded, but the acknowledgement contained seven leading spaces.
+It also drew and retired zero seeds and created no artifact. The guard now trims only surrounding
+whitespace before requiring the canonical token exactly. The production order remains checkout →
+metadata guard → artifact guard → source audit → one-shot draw, and PR validation asserts that
+exact ordering.
 
 This gate itself creates no official seed and executes no game.
