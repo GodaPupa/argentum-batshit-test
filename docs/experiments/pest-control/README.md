@@ -314,3 +314,10 @@ The disabled Mono-Blue Terror engine/evidence rehearsal is recorded in
 surface with the durable attempt journal and a write-once synthetic evidence index using only fixed
 nonexperimental assignments. Official seeds remain unconsumed, no actions are submitted, and the
 official initializer/runner remain disabled.
+
+
+Mono-Blue Terror production-AI compatibility is validated in
+`tier-one-mono-blue-terror-policy-calibration.md`. Four fixed nonofficial games exercise the exact
+seat/start cells with `PRODUCTION_CANDIDATE_EXPIRING`, real London mulligans and exact-one engine
+submissions. The gate qualifies technical completion/no-rejection behavior only; official seeds stay
+unconsumed and synthetic winners are not matchup evidence.
