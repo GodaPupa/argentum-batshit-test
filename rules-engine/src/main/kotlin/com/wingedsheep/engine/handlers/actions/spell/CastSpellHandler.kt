@@ -200,6 +200,7 @@ class CastSpellHandler(
     override val actionType: KClass<CastSpell> = CastSpell::class
 
     private val predicateEvaluator = PredicateEvaluator()
+    private val dynamicAmountEvaluator = DynamicAmountEvaluator()
     private val zoneResolver = CastZoneResolver(cardRegistry, conditionEvaluator)
     private val castPermissionUtils = com.wingedsheep.engine.legalactions.utils.CastPermissionUtils(
         cardRegistry, predicateEvaluator, conditionEvaluator
@@ -776,30 +777,51 @@ class CastSpellHandler(
         } else {
             cardDef?.script?.spellEffect
         }
-        if (spellEffect is DividedDamageEffect && action.targets.size > 1) {
-            val distribution = action.damageDistribution
-            if (distribution == null) {
-                return "Damage distribution required for this spell when targeting multiple creatures"
+        if (spellEffect is DividedDamageEffect) {
+            val announcedTotal = spellEffect.dynamicTotal?.let { dynamicTotal ->
+                dynamicAmountEvaluator.evaluate(
+                    state,
+                    dynamicTotal,
+                    EffectContext(
+                        sourceId = action.cardId,
+                        controllerId = action.playerId,
+                        targets = action.targets,
+                        xValue = action.xValue,
+                    )
+                )
+            } ?: spellEffect.totalDamage
+
+            // A zero total cannot be assigned to a target because every chosen target must receive
+            // at least 1 damage. This is the X=0 Rolling Thunder case.
+            if (spellEffect.dynamicTotal != null && announcedTotal == 0 && action.targets.isNotEmpty()) {
+                return "Cannot choose targets when total divided damage is 0"
             }
 
-            // Check that distribution targets match chosen targets
-            val targetIds = action.targets.map { it.toEntityId() }.toSet()
-            val distributionTargets = distribution.keys
-            if (distributionTargets != targetIds) {
-                return "Damage distribution targets must match chosen targets"
-            }
+            if (action.targets.size > 1) {
+                val distribution = action.damageDistribution
+                if (distribution == null) {
+                    return "Damage distribution required for this spell when targeting multiple creatures"
+                }
 
-            // Check that total damage equals the spell's total damage
-            val totalDistributed = distribution.values.sum()
-            if (totalDistributed != spellEffect.totalDamage) {
-                return "Total distributed damage ($totalDistributed) must equal ${spellEffect.totalDamage}"
-            }
+                // Check that distribution targets match chosen targets
+                val targetIds = action.targets.map { it.toEntityId() }.toSet()
+                val distributionTargets = distribution.keys
+                if (distributionTargets != targetIds) {
+                    return "Damage distribution targets must match chosen targets"
+                }
 
-            // Check that each target gets at least 1 damage (per MTG rules)
-            val minPerTarget = 1
-            for ((targetId, damage) in distribution) {
-                if (damage < minPerTarget) {
-                    return "Each target must receive at least $minPerTarget damage"
+                // Check that total damage equals the announced dynamic/fixed total.
+                val totalDistributed = distribution.values.sum()
+                if (totalDistributed != announcedTotal) {
+                    return "Total distributed damage (${totalDistributed}) must equal ${announcedTotal}"
+                }
+
+                // Check that each target gets at least 1 damage (per MTG rules)
+                val minPerTarget = 1
+                for ((targetId, damage) in distribution) {
+                    if (damage < minPerTarget) {
+                        return "Each target must receive at least ${minPerTarget} damage"
+                    }
                 }
             }
         }
