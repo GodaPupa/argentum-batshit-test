@@ -334,3 +334,9 @@ The first authorized Mono-Blue Terror initialization surface is documented in
 authorization, exact frozen-vector identity and prior durable-attempt evidence. It initializes but
 does not advance gameplay; frozen-artifact loading, runner orchestration and official execution remain
 separate gates.
+
+
+The authorized Mono-Blue Terror execution coordinator is documented in
+`tier-one-mono-blue-terror-execution-coordinator.md`. It enforces durable
+attempt → initialization-entry → result ordering and terminal rejection, but owns no official
+artifact loader, evidence root, initializer, AI policy or workflow entrypoint.
