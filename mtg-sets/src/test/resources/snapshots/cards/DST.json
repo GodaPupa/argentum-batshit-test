@@ -495,6 +495,71 @@
     ]
 }
 
+// Echoing Truth
+{
+    "name": "Echoing Truth",
+    "manaCost": "{1}{U}",
+    "typeLine": "Instant",
+    "oracleText": "Return target nonland permanent and all other permanents with the same name as that permanent to their owners' hands.",
+    "script": {
+        "spellEffect": {
+            "type": "Composite",
+            "effects": [
+                {
+                    "type": "GatherCards",
+                    "source": "ChosenTargets",
+                    "storeAs": "target"
+                },
+                {
+                    "type": "StoreCardName",
+                    "from": "target",
+                    "storeAs": "name"
+                },
+                {
+                    "type": "GatherCards",
+                    "source": {
+                        "type": "BattlefieldMatching",
+                        "filter": {
+                            "cardPredicates": [
+                                {
+                                    "type": "NameEqualsChosen",
+                                    "variableName": "name"
+                                }
+                            ]
+                        }
+                    },
+                    "storeAs": "sameNamed"
+                },
+                {
+                    "type": "MoveCollection",
+                    "from": "sameNamed",
+                    "destination": {
+                        "type": "ToZone",
+                        "zone": "Hand"
+                    }
+                }
+            ]
+        },
+        "targetRequirements": [
+            {
+                "type": "TargetObject",
+                "filter": {
+                    "baseFilter": "nonland permanent"
+                },
+                "id": "target nonland permanent"
+            }
+        ]
+    },
+    "metadata": {
+        "collectorNumber": "21",
+        "artist": "Greg Staples",
+        "flavorText": "A single lie unleashes a tide of disbelief."
+    },
+    "colorIdentityOverride": [
+        "BLUE"
+    ]
+}
+
 // Essence Drain
 {
     "name": "Essence Drain",
