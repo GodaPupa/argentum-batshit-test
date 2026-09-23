@@ -494,15 +494,6 @@ data class AttachedToComponent(
 ) : Component
 
 /**
- * Marks a permanent that resolved from a spell cast for its bestow cost. While it also has an
- * [AttachedToComponent], projection treats it as an Aura enchantment rather than a creature.
- * The marker deliberately survives becoming unattached: bestow then resumes the card's printed
- * enchantment-creature characteristics instead of creating a new object or moving zones.
- */
-@Serializable
-data object BestowedAuraComponent : Component
-
-/**
  * Tracks what is attached to this permanent.
  */
 @Serializable
