@@ -2,8 +2,11 @@ package com.wingedsheep.engine.handlers.effects.library
 
 import com.wingedsheep.engine.core.CardsRevealedEvent
 import com.wingedsheep.engine.core.CascadeMayCastContinuation
+import com.wingedsheep.engine.core.ChooseOptionDecision
+import com.wingedsheep.engine.core.DecisionContext
 import com.wingedsheep.engine.core.DecisionPhase
 import com.wingedsheep.engine.core.EffectResult
+import com.wingedsheep.engine.core.suspendForDecision
 import com.wingedsheep.engine.core.GameEvent as EngineGameEvent
 import com.wingedsheep.engine.handlers.DecisionHandler
 import com.wingedsheep.engine.handlers.EffectContext
@@ -15,6 +18,7 @@ import com.wingedsheep.engine.handlers.effects.ZoneTransitionService
 import com.wingedsheep.engine.state.GameState
 import com.wingedsheep.engine.state.ZoneKey
 import com.wingedsheep.engine.state.components.identity.CardComponent
+import com.wingedsheep.sdk.core.Keyword
 import com.wingedsheep.sdk.core.Zone
 import com.wingedsheep.sdk.model.EntityId
 import com.wingedsheep.sdk.scripting.effects.CascadeEffect
@@ -124,22 +128,46 @@ class CascadeExecutor(
             cascadeCardId = cascadeCard
         )
 
-        val pause = decisionHandler.createYesNoDecision(
-            state = currentState,
-            playerId = controllerId,
-            sourceId = context.sourceId,
-            sourceName = sourceName,
-            prompt = "Cast $cascadeName without paying its mana cost?",
-            yesText = "Cast for free",
-            noText = "Decline",
-            phase = DecisionPhase.RESOLUTION,
-            answer = continuation
-        )
+        val hasPrototype = currentState.getEntity(cascadeCard)
+            ?.get<CardComponent>()?.baseKeywords?.contains(Keyword.PROTOTYPE) == true
 
-        val stateWithCont = pause.state
+        val pause = if (hasPrototype) {
+            currentState.suspendForDecision(
+                question = { decisionId ->
+                    ChooseOptionDecision(
+                        id = decisionId,
+                        playerId = controllerId,
+                        prompt = "Cast $cascadeName without paying its mana cost?",
+                        context = DecisionContext(
+                            sourceId = context.sourceId,
+                            sourceName = sourceName,
+                            phase = DecisionPhase.RESOLUTION,
+                        ),
+                        options = listOf(
+                            "Cast normally for free",
+                            "Cast as Prototype for free",
+                            "Decline",
+                        ),
+                    )
+                },
+                answer = continuation,
+            )
+        } else {
+            decisionHandler.createYesNoDecision(
+                state = currentState,
+                playerId = controllerId,
+                sourceId = context.sourceId,
+                sourceName = sourceName,
+                prompt = "Cast $cascadeName without paying its mana cost?",
+                yesText = "Cast for free",
+                noText = "Decline",
+                phase = DecisionPhase.RESOLUTION,
+                answer = continuation
+            )
+        }
 
         return EffectResult.propagatePause(
-            stateWithCont,
+            pause.state,
             allEvents + pause.events
         )
     }
