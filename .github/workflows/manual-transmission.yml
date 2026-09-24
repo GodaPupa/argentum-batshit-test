@@ -37,3 +37,25 @@ jobs:
           name: manual-transmission-hashaton-timing-fixtures-r3
           path: experiments/manual-transmission/results/hashaton/timing-fixtures-r3.json
           if-no-files-found: error
+
+  hashaton-policy-development:
+    needs: hashaton-legality-fixtures
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Run exact Hashaton policy development enumeration
+        run: |
+          mkdir -p experiments/manual-transmission/results/hashaton
+          python experiments/manual-transmission/development/hashaton_policy_development.py \
+            | tee experiments/manual-transmission/results/hashaton/policy-development-r1.json
+          grep -q '"status": "DEVELOPMENT_ONLY"' experiments/manual-transmission/results/hashaton/policy-development-r1.json
+          grep -q '"qualification_eligible": false' experiments/manual-transmission/results/hashaton/policy-development-r1.json
+      - name: Upload development evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: manual-transmission-hashaton-policy-development-r1
+          path: experiments/manual-transmission/results/hashaton/policy-development-r1.json
+          if-no-files-found: error
