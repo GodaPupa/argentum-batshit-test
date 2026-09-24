@@ -1,7 +1,9 @@
 package com.wingedsheep.gym
 
 import com.wingedsheep.gym.matchup.MonsterTronRunnerSurfaceInventory
+import com.wingedsheep.gym.matchup.PestControlTierOneMonsterTronOfficialInitializationBoundary
 import com.wingedsheep.gym.matchup.PestControlTierOneMonsterTronPolicyReadiness
+import com.wingedsheep.gym.matchup.PestControlTierOneMonsterTronRunnerContract
 import com.wingedsheep.gym.matchup.PestControlTierOneMonsterTronRunnerSurfacePreflight
 import com.wingedsheep.gym.matchup.TierOneMonsterTronRunnerState
 import io.kotest.core.spec.style.FunSpec
@@ -11,7 +13,7 @@ import java.nio.file.Files
 import java.nio.file.Path
 
 class PestControlTierOneMonsterTronRunnerSurfacePreflightTest : FunSpec({
-    test("repository exposes no official Monster Tron runner seed or initialization surface") {
+    test("repository exposes only disabled Monster Tron construction boundaries and no execution surface") {
         val root = monsterTronRepositoryRoot()
         val workflows = monsterTronTextFiles(root.resolve(".github/workflows"))
         val commands = listOf(
@@ -31,6 +33,14 @@ class PestControlTierOneMonsterTronRunnerSurfacePreflightTest : FunSpec({
                         monsterTronPublicMethods(
                             PestControlTierOneMonsterTronPolicyReadiness::class.java
                         ),
+                    "PestControlTierOneMonsterTronRunnerContract" to
+                        monsterTronPublicMethods(
+                            PestControlTierOneMonsterTronRunnerContract::class.java
+                        ),
+                    "PestControlTierOneMonsterTronOfficialInitializationBoundary" to
+                        monsterTronPublicMethods(
+                            PestControlTierOneMonsterTronOfficialInitializationBoundary::class.java
+                        ),
                 ),
             )
         )
@@ -39,7 +49,7 @@ class PestControlTierOneMonsterTronRunnerSurfacePreflightTest : FunSpec({
         result.green shouldBe true
         (result.workflowFilesAudited > 0) shouldBe true
         (result.commandFilesAudited > 0) shouldBe true
-        result.classesAudited shouldBe 1
+        result.classesAudited shouldBe 3
         result.runnerState shouldBe TierOneMonsterTronRunnerState.DISABLED
         result.officialGamesAuthorized shouldBe 0
         result.officialSeedsGenerated shouldBe 0
@@ -59,7 +69,7 @@ class PestControlTierOneMonsterTronRunnerSurfacePreflightTest : FunSpec({
             appendLine("official_games_initialized=0")
             appendLine("official_actions=0")
             appendLine("outcome_exposure=0")
-            appendLine("status=NO_OFFICIAL_EXECUTION_SURFACE")
+            appendLine("status=DISABLED_CONSTRUCTION_BOUNDARY_NO_OFFICIAL_EXECUTION_SURFACE")
         }
         println(report)
         System.getenv("PEST_MONSTER_TRON_RUNNER_PREFLIGHT_REPORT")?.let { raw ->
