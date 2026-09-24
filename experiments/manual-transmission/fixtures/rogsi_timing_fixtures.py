@@ -63,8 +63,12 @@ def fixture_breach_escape_spends_three_distinct_other_cards():
 
 def fixture_breach_exiled_fuel_cannot_be_reused():
     s=State(); start_breach(s,["Brain Freeze","a","b","c","d","e","f"]); escape(s,"Brain Freeze",["a","b","c"]); resolve_to_grave(s,"Brain Freeze")
-    try: escape(s,"Brain Freeze",["a","d","e"]); raise AssertionError("reused")
-    except AssertionError: pass
+    rejected=False
+    try:
+        escape(s,"Brain Freeze",["a","d","e"])
+    except AssertionError:
+        rejected=True
+    assert rejected
 
 def fixture_one_storm_trigger_counter_not_terminal_with_fuel():
     s=State(); start_breach(s,["Brain Freeze","a","b","c","d","e","f","g"]); escape(s,"Brain Freeze",["a","b","c"])
