@@ -796,18 +796,11 @@ class LibraryAndZoneContinuationResumer(
         response: DecisionResponse,
         checkForMore: CheckForMore
     ): ExecutionResult {
-        val (shouldCast, castForPrototype) = when (response) {
-            is YesNoResponse -> response.choice to false
-            is OptionChosenResponse -> when (response.optionIndex) {
-                0 -> true to false
-                1 -> true to true
-                2 -> false to false
-                else -> return ExecutionResult.error(state, "Invalid cascade cast-mode option")
-            }
-            else -> return ExecutionResult.error(state, "Expected cascade cast decision response")
+        if (response !is YesNoResponse) {
+            return ExecutionResult.error(state, "Expected yes/no response for cascade may-cast")
         }
 
-        if (!shouldCast) {
+        if (!response.choice) {
             var newState = state
             val events = CascadeExecutor.bottomRandomize(
                 state = state,
@@ -860,7 +853,6 @@ class LibraryAndZoneContinuationResumer(
             val targetsContinuation = targetPrep.continuation.copy(
                 grantedPermissionId = permId,
                 onCastFailure = FreeCastFallback.BOTTOM_OF_LIBRARY,
-                castForPrototype = castForPrototype,
             )
             return stateWithGrant.withPriority(continuation.playerId).suspendForDecision(
                 question = targetPrep.question,
@@ -873,11 +865,7 @@ class LibraryAndZoneContinuationResumer(
         // happens *during* cascade resolution (CR 702.85a) rather than on a normal
         // priority window, so we override the priorityPlayerId for this single call.
         val stateForCast = stateWithGrant.copy(priorityPlayerId = continuation.playerId)
-        val castAction = CastSpell(
-            continuation.playerId,
-            continuation.cascadeCardId,
-            castForPrototype = castForPrototype,
-        )
+        val castAction = CastSpell(continuation.playerId, continuation.cascadeCardId)
         val castResult = castSpellHandler.execute(stateForCast, castAction)
 
         if (castResult.error != null) {
@@ -1154,12 +1142,7 @@ class LibraryAndZoneContinuationResumer(
         val stateForCast = state.copy(priorityPlayerId = continuation.casterId)
         val castResult = castSpellHandler.execute(
             stateForCast,
-            CastSpell(
-                continuation.casterId,
-                continuation.cardId,
-                chosenTargets,
-                castForPrototype = continuation.castForPrototype,
-            ),
+            CastSpell(continuation.casterId, continuation.cardId, chosenTargets),
         )
 
         if (castResult.error != null) {

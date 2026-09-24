@@ -2,8 +2,8 @@
 
 ## Scope
 
-This gate closes the final exact preboard card-support blocker for the frozen mehanske Monster Tron
-identity by implementing **Prototype** as a shared Argentum casting mechanic and defining
+This gate closes the final **card-definition / Prototype-mechanic** blocker for the frozen mehanske
+Monster Tron identity by implementing Prototype as a shared Argentum casting mechanic and defining
 Boulderbranch Golem faithfully.
 
 Protocol:
@@ -18,34 +18,32 @@ Accepted predecessor gates:
 
 No Pest Control or Monster Tron deck identity changes are made.
 
-## Rules model
+## Prototype rules model
 
 Prototype is **not an alternative cost**. Choosing Prototype changes the spell/permanent's mana
 cost, color, power and toughness while it is on the stack and battlefield; it does not replace
 name, types, rules text or abilities. Outside those zones the card uses its printed
 characteristics again.
 
-A true alternative cost may coexist with Prototype. In particular, “cast without paying its mana
-cost” can cast either the normal object or the prototyped object for free. This is outcome-relevant
-to the exact frozen Monster Tron 60 because Maelstrom Colossus has cascade and can hit the
-mana-value-7 Boulderbranch Golem. The cascade resolution rail therefore exposes three explicit
-choices: normal/free, Prototype/free, or decline.
+A true alternative cost may coexist with Prototype. The shared engine therefore keeps the
+Prototype characteristic choice orthogonal to what cost is actually paid. A generic deterministic
+test proves that a spell may be cast “without paying its mana cost” while still using Prototype
+characteristics.
 
-The shared implementation now covers:
+The implementation covers:
 
-- ordinary normal and Prototype hand-cast actions;
-- Prototype cost/color/power/toughness on the stack and battlefield;
-- cost increases/reductions applied to the Prototype mana cost when that is the payable base;
-- true alternative/free-cost precedence without erasing Prototype characteristics;
-- durable Prototype cast provenance into the resolving permanent;
-- zone-change reset to printed characteristics;
-- normal recasting after a reset;
-- the exact Cascade → Prototype free-cast choice needed by the frozen Monster Tron list;
-- component serialization needed by persisted/replayed GameState.
+- separate normal and Prototype hand-cast actions;
+- Prototype mana cost, mana value, color, power and toughness on the stack and battlefield;
+- cost increases/reductions applied when the Prototype mana cost is the payable base;
+- a true alternative/free cost without erasing Prototype characteristics;
+- durable Prototype provenance into the resolving permanent;
+- reset to printed characteristics whenever the object leaves the stack/battlefield, including
+  direct counter/exile stack exits;
+- return to hand followed by an ordinary normal recast;
+- polymorphic component registration for persisted/replayed GameState.
 
-Multi-face Prototype combinations remain fail-closed. The ordinary hand enumerator also declines
-cast-payload shapes it cannot faithfully describe rather than emitting incomplete UI actions; the
-core CastSpell/stack semantics themselves do not impose a hand-only or no-alternative-cost rule.
+Multi-face Prototype combinations remain fail-closed because no such interaction is needed for the
+frozen list and it has not been separately validated.
 
 ## Boulderbranch Golem
 
@@ -59,10 +57,25 @@ Authoritative card characteristics used here:
 - The Brothers' War collector number 197;
 - artist Dan Murayama Scott.
 
-The ETB reads source power through the rules engine's normal dynamic-power path. Deterministic
-scenarios require normal entry to gain 6 and Prototype entry to gain 3.
+The ETB reads source power through the shared dynamic-power path. Deterministic scenarios require
+normal entry to gain 6 and Prototype entry to gain 3.
 
-## Validation
+## Newly discovered seedless readiness blocker: Cascade
+
+The exact frozen Monster Tron list contains four Maelstrom Colossus with Cascade. During this gate,
+a deterministic attempt to exercise Maelstrom Colossus → Boulderbranch Golem did **not** produce a
+Cascade may-cast decision.
+
+Repository inspection found the shared `CascadeExecutor` and the `Keyword.CASCADE` card tag, but
+no currently live keyword-to-trigger synthesis was identified on the production cast path. This is
+therefore a separate seedless rules/readiness blocker for the exact frozen 60.
+
+This gate does **not** approximate Cascade, hide the gap, or authorize gameplay around it. After
+Prototype is accepted, the next justified gate is a generic Cascade wiring/validation gate followed
+by the broader seedless Monster Tron readiness matrix. No official seed may be generated until that
+work is green.
+
+## Validation required for this gate
 
 The dedicated pull-request workflow must prove:
 
@@ -70,20 +83,19 @@ The dedicated pull-request workflow must prove:
 2. a generic synthetic Prototype card exposes and resolves Prototype independently of
    Boulderbranch Golem;
 3. Prototype GameState survives serialization with its provenance component intact;
-4. both normal and Prototype Boulderbranch hand casts are offered at their correct costs;
-5. the Prototype spell is green, mana value 4 and 3/3 on the stack;
-6. it remains 3/3 on the battlefield and gains 3 life on entry;
-7. a normal cast remains colorless, mana value 7 and 6/5 and gains 6 life;
-8. a Prototype permanent/countered spell restores printed characteristics after leaving the
-   stack/battlefield;
-9. Maelstrom Colossus cascade into Boulderbranch offers normal/free and Prototype/free separately;
-10. both cascade modes resolve with the correct characteristics and ETB life;
+4. a free/alternative cast can coexist with Prototype characteristics;
+5. both normal and Prototype Boulderbranch hand casts are offered at their correct costs;
+6. the Prototype spell is green, mana value 4 and 3/3 on the stack;
+7. it remains 3/3 on the battlefield and gains 3 life on entry;
+8. a normal cast remains colorless, mana value 7 and 6/5 and gains 6 life;
+9. destruction, countering and return-to-hand all restore printed characteristics;
+10. a normal recast after return to hand is the ordinary 6/5, mana-value-7 object;
 11. polymorphic serialization registration remains complete;
-12. generated BRO card snapshots are reviewed and committed before merge.
+12. the BRO golden snapshot is reviewed and committed before merge.
 
 ## Experimental boundary
 
-Status: `PROTOTYPE_ENGINE_VALIDATION_PENDING`
+Status: `PROTOTYPE_ENGINE_VALIDATION_PENDING_CASCADE_READINESS_SEPARATE`
 
 This is rules/card support only. It does **not** authorize a Monster Tron matchup experiment.
 
@@ -95,5 +107,5 @@ Official Monster Tron counters remain:
 - actions submitted: `0`;
 - outcomes exposed: `0`.
 
-Only after this gate is fully green and merged may the project advance to seedless Monster Tron
-rules/policy readiness. No seed freeze or gameplay follows directly from this PR.
+Only after this gate is fully green and merged may the project advance to the separate seedless
+Cascade/readiness gate. No seed freeze or gameplay follows directly from PR #130.

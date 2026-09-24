@@ -7,13 +7,10 @@ on:
       - mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/scripting/KeywordAbility.kt
       - rules-engine/src/main/kotlin/com/wingedsheep/engine/core/GameAction.kt
       - rules-engine/src/main/kotlin/com/wingedsheep/engine/core/Serialization.kt
-      - rules-engine/src/main/kotlin/com/wingedsheep/engine/core/LibraryAndZoneContinuations.kt
       - rules-engine/src/main/kotlin/com/wingedsheep/engine/state/components/identity/CardComponents.kt
       - rules-engine/src/main/kotlin/com/wingedsheep/engine/legalactions/LegalActionEnumerator.kt
       - rules-engine/src/main/kotlin/com/wingedsheep/engine/legalactions/enumerators/PrototypeCastEnumerator.kt
       - rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/spell/CastSpellHandler.kt
-      - rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/library/CascadeExecutor.kt
-      - rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/LibraryAndZoneContinuationResumer.kt
       - rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/stack/StackResolver.kt
       - rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/ZoneTransitionService.kt
       - mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/bro/cards/BoulderbranchGolem.kt
@@ -47,7 +44,7 @@ jobs:
       - name: Validate polymorphic serialization registration
         run: scripts/test-class SerializationPolymorphicRegistrationTest --info --stacktrace
 
-      - name: Validate Boulderbranch Prototype lifecycle and Cascade interaction
+      - name: Validate Boulderbranch Prototype lifecycle
         run: scripts/test-class BoulderbranchGolemPrototypeScenarioTest --info --stacktrace
 
       - name: Validate exact Monster Tron support closure
