@@ -39,6 +39,8 @@ val BoulderbranchGolem = card("Boulderbranch Golem") {
     }
 
     metadata {
+        collectorNumber = "197"
         rarity = Rarity.COMMON
+        artist = "Dan Murayama Scott"
     }
 }

@@ -50,6 +50,8 @@ class PestControlTierOneMonsterTronPrototypeReadinessTest : FunSpec({
             appendLine("boulderbranch_normal_stats=6/5")
             appendLine("boulderbranch_prototype_cost={3}{G}")
             appendLine("boulderbranch_prototype_stats=3/3")
+            appendLine("maelstrom_cascade_prototype_choice_required=true")
+            appendLine("prototype_free_cast_combination_rules_covered=true")
             appendLine("status=PREBOARD_CARD_SUPPORT_COMPLETE_GAMEPLAY_NOT_AUTHORIZED")
             appendLine("official_games_authorized=0")
             appendLine("official_seeds_generated=0")

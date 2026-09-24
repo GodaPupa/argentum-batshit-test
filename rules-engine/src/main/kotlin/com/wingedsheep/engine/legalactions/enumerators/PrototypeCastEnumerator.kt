@@ -11,11 +11,14 @@ import com.wingedsheep.sdk.scripting.KeywordAbility
 /**
  * Enumerates ordinary hand casts using Prototype characteristics (CR 702.160).
  *
- * Prototype is a cast mode, not an alternative cost. This first shared implementation is
- * deliberately bounded to the rules-complete path required by Boulderbranch Golem: a primary-face
- * permanent spell from hand with no targets or additional costs. Combinations with another true
- * alternative cost, free-cast permission, split/DFC faces, or target/additional-cost machinery are
- * not surfaced until separately validated.
+ * Prototype is a cast mode, not an alternative cost. This enumerator owns the ordinary hand-cast
+ * rail, where Prototype's own mana cost is the payable base. True alternative/free-cost casts keep
+ * their existing enumerators/resolution rails and preserve Prototype separately; Cascade, in
+ * particular, offers an explicit normal-vs-Prototype free-cast choice.
+ *
+ * Multi-face and cast-payload shapes that this compact hand rail cannot faithfully describe remain
+ * fail-closed here rather than emitting an incomplete UI action. The shared CastSpell/stack
+ * implementation itself is zone-agnostic and does not prohibit alternative/free costs.
  */
 class PrototypeCastEnumerator : ActionEnumerator {
     override fun enumerate(context: EnumerationContext): List<LegalAction> {
@@ -35,7 +38,8 @@ class PrototypeCastEnumerator : ActionEnumerator {
                 cardDef.keywordAbilities.filterIsInstance<KeywordAbility.Prototype>().firstOrNull()
                     ?: continue
 
-            // Current reviewed support boundary: ordinary primary-face permanent from hand only.
+            // This enumerator is the ordinary primary-face hand rail. Other zones/alternative
+            // costs are owned by their existing cast-permission enumerators/resolution flows.
             if (!cardComponent.typeLine.isPermanent || cardComponent.typeLine.isLand) continue
             if (cardDef.cardFaces.isNotEmpty() || cardDef.backFace != null) continue
             if (cardDef.script.targetRequirements.isNotEmpty() || cardDef.script.auraTarget != null) continue
