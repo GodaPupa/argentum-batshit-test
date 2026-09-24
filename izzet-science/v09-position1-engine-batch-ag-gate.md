@@ -51,3 +51,30 @@ or card-specific engine condition.
 
 Infrastructure, compilation, fixture, snapshot, or semantic failures are qualification history only,
 not evidence about deck strength.
+
+
+## Formal qualification and acceptance
+
+- Formal Batch AG qualification run **36057944951**: **SUCCESS**.
+- Accepted source SHA:
+  `690c6bdd733eaf83fe13943cc9e5dfa9c93b8ded`.
+- Accepted artifact:
+  `izzet-v09-position1-engine-batch-ag`, artifact ID **10833471323**.
+- GitHub artifact ZIP SHA-256:
+  `843b53e4e770d67956960be7a35048beaaba1ccfa76062863d91fc859deb9261`.
+- Independent download reproduced that exact ZIP SHA-256 digest.
+- The archive contains exactly `manifest.txt` and `test-output.txt`.
+- The manifest binds:
+  - source SHA `690c6bdd733eaf83fe13943cc9e5dfa9c93b8ded`;
+  - frozen-control SHA-256
+    `726f5e9458b46dda30b33a6ce9f3c3237b25d6e11b81dac85308c3065c108a01`;
+  - snapshot run **36053709223**;
+  - snapshot commit `1277e6daa35e28eddc03153420ec45a1bd8520f6`;
+  - unresolved reduction **21 -> 20**;
+  - unresolved Izzet identities **0**;
+  - official seeds/games/outcome exposure **0/0/0**.
+- The downloaded test output independently emits
+  `V09_REAL_ENGINE_UNRESOLVED_COUNT=20` and contains no unresolved Izzet identity.
+- Formal qualification reverified Leafkin Druid semantics, canonical M20 snapshots, exact
+  real-engine coverage, the frozen-control hash, and untouched official state.
+- **Batch AG is accepted.**
