@@ -343,7 +343,7 @@ class CastSpellHandler(
 
         val cardDef = cardRegistry.getCard(cardComponent.cardDefinitionId)
 
-        // Prototype (CR 702.160 / CR 718) is a characteristic-changing cast choice, not an
+        // Prototype (CR 702.160) is a characteristic-changing cast choice, not an
         // alternative cost. It may be chosen from any zone the card is otherwise allowed to be cast
         // from, and it may coexist with a true alternative/free cost. The latter changes what the
         // caster pays; Prototype still supplies the spell/permanent's mana cost, color and P/T

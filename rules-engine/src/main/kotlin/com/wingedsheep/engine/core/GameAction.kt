@@ -118,7 +118,7 @@ data class CastSpell(
     val splicedCardIds: List<EntityId> = emptyList(),
     val damageDistribution: Map<EntityId, Int>? = null,
     /**
-     * Cast this card using its Prototype characteristics (CR 702.160 / CR 718). Prototype is not an
+     * Cast this card using its Prototype characteristics (CR 702.160). Prototype is not an
      * alternative cost: this flag selects the card's alternate mana cost/color/size characteristics
      * while it is a spell and permanent. A true alternative cost (including "without paying its
      * mana cost") may coexist with Prototype; that cost changes what is paid, not which Prototype
