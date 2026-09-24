@@ -4116,7 +4116,20 @@ class CastSpellHandler(
             } else 0
             componentGrants + staticGrants
         }
-        val printedCascadeCount = if (cardDef != null && cardDef.hasKeyword(Keyword.CASCADE)) 1 else 0
+        // A small legacy set of cards already hand-author Cascade as an ordinary cast trigger
+        // because Keyword.CASCADE was historically display-only. Do not synthesize the printed
+        // instance a second time for those definitions; TriggerDetector will enqueue the authored
+        // ability below. Runtime-granted Cascade instances are still synthesized independently.
+        val authoredCascadeCastTriggerCount = cardDef?.script?.effectiveTriggeredAbilities(null)?.count { ability ->
+            ability.effect == CascadeEffect &&
+                ability.trigger is SdkGameEvent.SpellCastEvent &&
+                ability.binding == TriggerBinding.SELF
+        } ?: 0
+        val printedCascadeCount =
+            if (cardDef != null &&
+                cardDef.hasKeyword(Keyword.CASCADE) &&
+                authoredCascadeCastTriggerCount == 0
+            ) 1 else 0
         val cascadeInstanceCount = printedCascadeCount + cascadeGrantCount
         val cascadePendingTriggers: List<PendingTrigger> =
             if (!action.castFaceDown && cardDef != null && cascadeInstanceCount > 0) {
