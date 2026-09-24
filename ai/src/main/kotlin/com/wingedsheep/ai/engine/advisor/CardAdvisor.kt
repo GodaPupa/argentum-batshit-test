@@ -28,6 +28,14 @@ interface CardAdvisor {
     val cardNames: Set<String>
 
     /**
+     * Whether this advisor intentionally treats the card's mana ability as a strategic action
+     * rather than ordinary payment plumbing. Defaults off: a card may have an advisor for a
+     * non-mana activated ability (Bonder's Ornament) without making its tap-for-mana mode a plan.
+     */
+    val strategicManaAbility: Boolean
+        get() = false
+
+    /**
      * Adjust the score for casting this spell or activated ability.
      *
      * Called during [Strategist]'s Phase 1 scoring after the default 1-ply
