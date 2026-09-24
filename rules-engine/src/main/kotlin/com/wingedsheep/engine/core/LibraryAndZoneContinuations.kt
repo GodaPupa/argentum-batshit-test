@@ -1,3 +1,5 @@
+@file:OptIn(kotlinx.serialization.ExperimentalSerializationApi::class)
+
 package com.wingedsheep.engine.core
 
 import com.wingedsheep.sdk.model.EntityId
@@ -375,6 +377,7 @@ data class CastFromCollectionTargetsContinuation(
     val storeCastTo: String? = null,
     val grantedPermissionId: EntityId? = null,
     val onCastFailure: FreeCastFallback = FreeCastFallback.LEAVE,
+    @kotlinx.serialization.EncodeDefault(kotlinx.serialization.EncodeDefault.Mode.NEVER)
     val castForPrototype: Boolean = false,
 ) : AnswerContinuation
 
