@@ -426,3 +426,50 @@ jobs:
           name: manual-transmission-shorikai-r3sh-qualification-r1
           path: experiments/manual-transmission/results/shorikai/qualification-r1/
           if-no-files-found: error
+
+
+  sisay-r3sy-qualification:
+    needs: sisay-policy-development
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Verify frozen Sisay qualification model identities
+        run: |
+          test "$(git hash-object experiments/manual-transmission/qualification/sisay_r3sy_qualification.py)" = "6b474e17c9f274ffd02df2760f38bfe475b81988"
+          test "$(git hash-object experiments/manual-transmission/qualification/sisay_r3sy_audit.py)" = "9a31b756526d08c5efa52175f3af82ceafd383df"
+      - name: Run broadened exact R3-SY qualification
+        run: |
+          mkdir -p experiments/manual-transmission/results/sisay/qualification-r1
+          python experiments/manual-transmission/qualification/sisay_r3sy_qualification.py \
+            --rows experiments/manual-transmission/results/sisay/qualification-r1/rows.jsonl \
+            --summary experiments/manual-transmission/results/sisay/qualification-r1/summary.json
+          python experiments/manual-transmission/qualification/sisay_r3sy_audit.py \
+            --rows experiments/manual-transmission/results/sisay/qualification-r1/rows.jsonl \
+            --out experiments/manual-transmission/results/sisay/qualification-r1/audit.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          root=Path("experiments/manual-transmission")
+          protocol=json.loads((root/"protocols/sisay-r3sy-qualification-r1.json").read_text())
+          summary=json.loads((root/"results/sisay/qualification-r1/summary.json").read_text())
+          audit=json.loads((root/"results/sisay/qualification-r1/audit.json").read_text())
+          assert summary["pass"] is True
+          assert audit["pass"] is True
+          assert summary["rows"] == protocol["enumeration"]["expected_rows"] == 220972
+          assert summary["rows_sha256"] == audit["rows_sha256"]
+          assert summary["candidate_false_stops"] == 0
+          assert summary["candidate_false_live"] == 0
+          assert summary["candidate_target_classification_errors"] == 0
+          assert summary["lki_changed_ceiling_errors"] == 0
+          assert summary["reference_false_stops"] > 0
+          assert audit["errors"] == 0
+          PY
+      - name: Upload R3-SY qualification evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: manual-transmission-sisay-r3sy-qualification-r1
+          path: experiments/manual-transmission/results/sisay/qualification-r1/
+          if-no-files-found: error
