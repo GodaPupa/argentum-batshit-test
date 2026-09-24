@@ -1362,6 +1362,42 @@
     "colorIdentityOverride": []
 }
 
+// Unfathomable Truths
+{
+    "name": "Unfathomable Truths",
+    "manaCost": "{4}{U}",
+    "typeLine": "Instant",
+    "oracleText": "Devoid\nDraw three cards and create a 0/1 colorless Eldrazi Spawn creature token with \"Sacrifice this token: Add {C}.\"",
+    "keywords": [
+        "DEVOID"
+    ],
+    "script": {
+        "spellEffect": {
+            "type": "Composite",
+            "effects": [
+                {
+                    "type": "DrawCards",
+                    "count": {
+                        "type": "Fixed",
+                        "amount": 3
+                    }
+                },
+                {
+                    "type": "CreatePredefinedToken",
+                    "tokenType": "Eldrazi Spawn"
+                }
+            ]
+        }
+    },
+    "metadata": {
+        "collectorNumber": "77",
+        "artist": "Drew Tucker"
+    },
+    "colorIdentityOverride": [
+        "BLUE"
+    ]
+}
+
 // Warren Soultrader
 {
     "name": "Warren Soultrader",
