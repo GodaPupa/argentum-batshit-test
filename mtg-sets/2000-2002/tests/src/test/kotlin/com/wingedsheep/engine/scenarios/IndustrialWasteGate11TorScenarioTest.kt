@@ -25,7 +25,7 @@ class IndustrialWasteGate11TorScenarioTest : FunSpec({
         d.passPriorityUntil(Step.PRECOMBAT_MAIN)
 
         val victim = d.putCardInHand(p2, "Lightning Bolt")
-        val land = d.putCardInHand(p2, "Mountain")
+        val alternative = d.putCardInHand(p2, "Centaur Courser")\n        val land = d.putCardInHand(p2, "Mountain")
         val fiendCard = d.putCardInHand(p1, "Mesmeric Fiend")
         d.giveMana(p1, Color.BLACK, 2)
         d.castSpell(p1, fiendCard)
