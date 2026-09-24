@@ -1,0 +1,74 @@
+name: Industrial Waste — Gate 11 Spy Readiness
+
+on:
+  pull_request:
+    branches: [industrial-waste/lab]
+    paths:
+      - .github/workflows/industrial-waste-g11-spy-readiness.yml
+      - industrial-waste/gauntlet/spy-combo-drinkme-2026-09-16.dck
+      - industrial-waste/control/industrial-waste-v1.0-submitted.dck
+      - industrial-waste/challengers/pactdoll-a.dck
+      - industrial-waste/protocols/gate-11-spy-combo-readiness-v1.md
+      - ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/SpyComboAdvisorModule.kt
+      - ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteSpyComboPolicyAuditTest.kt
+      - ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteSpyComboReadinessSmokeTest.kt
+      - mtg-sets/1993-1999/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/mmq/cards/LandGrant.kt
+      - mtg-sets/1993-1999/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/mir/cards/WallOfRoots.kt
+      - mtg-sets/2000-2002/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/tor/cards/MesmericFiend.kt
+      - mtg-sets/2003-2007/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/tsp/cards/DreadReturn.kt
+      - mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/gtc/cards/BalustradeSpy.kt
+      - mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/roe/cards/LeadTheStampede.kt
+      - mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/roe/cards/OvergrownBattlement.kt
+      - mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/rtr/cards/GatecreeperVine.kt
+      - mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/grn/cards/LotlethGiant.kt
+      - mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/mh1/cards/WindingWay.kt
+      - mtg-sets/2024/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/mh3/cards/NyxbornHydra.kt
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  spy-readiness:
+    runs-on: ubuntu-latest
+    timeout-minutes: 50
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-java@v5
+        with: {distribution: temurin, java-version: 21}
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Requalify combo-critical mechanics
+        run: |
+          ./gradlew :mtg-sets:1993-1999:tests:test \
+            --tests '*IndustrialWasteGate10MmqScenarioTest' \
+            --no-daemon
+          ./gradlew :mtg-sets:2003-2007:tests:test \
+            --tests '*DreadReturnScenarioTest' \
+            --no-daemon
+          ./gradlew :mtg-sets:2008-2016:tests:test \
+            --tests '*IndustrialWasteGate10RoeScenarioTest' \
+            --no-daemon
+          ./gradlew :mtg-sets:2017-2022:tests:test \
+            --tests '*IndustrialWasteGate10Mh1ScenarioTest' \
+            --no-daemon
+          ./gradlew :mtg-sets:2024:tests:test \
+            --tests '*IndustrialWasteGate9Mh3NyxbornScenarioTest' \
+            --no-daemon
+      - name: Qualify Gate 11 Spy policy
+        run: |
+          ./gradlew :ai:test \
+            --tests '*IndustrialWasteSpyComboPolicyAuditTest' \
+            --no-daemon
+      - name: Run Gate 11 exact-deck readiness smoke
+        env:
+          IW_G11_SPY_READINESS_SMOKE: "true"
+        run: |
+          ./gradlew :ai:test \
+            --tests '*IndustrialWasteSpyComboReadinessSmokeTest' \
+            --no-daemon
+      - name: Upload Gate 11 readiness report
+        uses: actions/upload-artifact@v4
+        with:
+          name: industrial-waste-g11-spy-readiness
+          path: industrial-waste/results/gate-11-spy-combo-readiness-smoke-v1.json
+          if-no-files-found: error
