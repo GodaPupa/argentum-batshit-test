@@ -33,17 +33,19 @@ jobs:
       - uses: gradle/actions/setup-gradle@v6
       - name: Validate Gate 11 implemented cards
         run: |
+          status=0
           ./gradlew :mtg-sets:1993-1999:tests:test \
             --tests '*IndustrialWasteGate11MirScenarioTest' \
-            --no-daemon
+            --no-daemon || status=1
           ./gradlew :mtg-sets:2000-2002:tests:test \
             --tests '*IndustrialWasteGate11TorScenarioTest' \
-            --no-daemon
+            --no-daemon || status=1
           ./gradlew :mtg-sets:2008-2016:tests:test \
             --tests '*IndustrialWasteGate11GtcScenarioTest' \
             --tests '*IndustrialWasteGate11RoeScenarioTest' \
             --tests '*IndustrialWasteGate11RtrScenarioTest' \
-            --no-daemon
+            --no-daemon || status=1
           ./gradlew :mtg-sets:2017-2022:tests:test \
             --tests '*IndustrialWasteGate11GrnScenarioTest' \
-            --no-daemon
+            --no-daemon || status=1
+          exit "$status"
