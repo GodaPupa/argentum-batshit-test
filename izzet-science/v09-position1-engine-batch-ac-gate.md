@@ -54,3 +54,19 @@ of any one color instead."
 
 Infrastructure, compilation, fixture, snapshot, or semantic failures are qualification history only,
 not evidence about deck strength.
+
+
+## Pre-qualification provenance
+
+- Fail-closed Batch AC snapshot/rebless run **36026261710**: **SUCCESS**.
+- Snapshot workflow source SHA:
+  `30e3cc0c9663aabe1632089eb9aa9843b8f40990`.
+- Canonical snapshot integration commit:
+  `a4260a4cf83eb71369eb3c93c28d1a421751d91e`.
+- The integration commit changes exactly
+  `mtg-sets/src/test/resources/snapshots/cards/THB.json`.
+- Ilysian Caryatid conditional any-color mana semantics passed.
+- Exact real-engine readiness emitted `V09_REAL_ENGINE_UNRESOLVED_COUNT=24`, with Ilysian Caryatid
+  absent and no unresolved Izzet identity.
+- The unrelated-snapshot guard passed and the exact frozen v0.7 SHA remained verified.
+- No official seed/game/outcome was consumed or exposed.
