@@ -4936,6 +4936,47 @@
     ]
 }
 
+// Wall of Roots
+{
+    "name": "Wall of Roots",
+    "manaCost": "{1}{G}",
+    "typeLine": "Creature — Plant Wall",
+    "oracleText": "Defender\nPut a -0/-1 counter on this creature: Add {G}. Activate only once each turn.",
+    "creatureStats": {
+        "power": 0,
+        "toughness": 5
+    },
+    "keywords": [
+        "DEFENDER"
+    ],
+    "script": {
+        "activatedAbilities": [
+            {
+                "id": "ability_1",
+                "cost": {
+                    "type": "CostAtomWrapper",
+                    "atom": {
+                        "type": "AtomPutCountersOnSelf",
+                        "counterType": "-0/-1"
+                    }
+                },
+                "effect": {
+                    "type": "AddMana",
+                    "color": "GREEN"
+                },
+                "timing": "ManaAbility",
+                "restrictions": [
+                    "OncePerTurn"
+                ],
+                "isManaAbility": true
+            }
+        ]
+    },
+    "colorIdentityOverride": [
+        "GREEN"
+    ]
+}
+
 // Wave Elemental
 {
     "name": "Wave Elemental",

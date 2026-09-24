@@ -3277,6 +3277,72 @@
     ]
 }
 
+// Land Grant
+{
+    "name": "Land Grant",
+    "manaCost": "{1}{G}",
+    "typeLine": "Sorcery",
+    "oracleText": "If you have no land cards in hand, you may reveal your hand rather than pay this spell's mana cost.\nSearch your library for a Forest card, reveal that card, put it into your hand, then shuffle.",
+    "script": {
+        "spellEffect": {
+            "type": "Composite",
+            "effects": [
+                {
+                    "type": "GatherCards",
+                    "source": {
+                        "type": "FromZone",
+                        "zone": "Library",
+                        "filter": "Forest"
+                    },
+                    "storeAs": "searchable"
+                },
+                {
+                    "type": "SelectFromCollection",
+                    "from": "searchable",
+                    "selection": {
+                        "type": "ChooseUpTo",
+                        "count": {
+                            "type": "Fixed",
+                            "amount": 1
+                        }
+                    },
+                    "storeSelected": "found"
+                },
+                {
+                    "type": "MoveCollection",
+                    "from": "found",
+                    "destination": {
+                        "type": "ToZone",
+                        "zone": "Hand"
+                    },
+                    "revealed": true
+                },
+                "ShuffleLibrary",
+                "EmitLibrarySearchedEvent"
+            ]
+        },
+        "selfAlternativeCost": {
+            "manaCost": "{0}",
+            "additionalCosts": [
+                {
+                    "type": "AdditionalAtom",
+                    "atom": "AtomRevealHand"
+                }
+            ],
+            "condition": {
+                "type": "Exists",
+                "player": "You",
+                "zone": "Hand",
+                "filter": "land",
+                "negate": true
+            }
+        }
+    },
+    "colorIdentityOverride": [
+        "GREEN"
+    ]
+}
+
 // Lightning Hounds
 {
     "name": "Lightning Hounds",

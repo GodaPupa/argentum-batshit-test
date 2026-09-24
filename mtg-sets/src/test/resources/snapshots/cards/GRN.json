@@ -2162,6 +2162,49 @@
     ]
 }
 
+// Lotleth Giant
+{
+    "name": "Lotleth Giant",
+    "manaCost": "{6}{B}",
+    "typeLine": "Creature — Zombie Giant",
+    "oracleText": "Undergrowth — When this creature enters, it deals 1 damage to target opponent for each creature card in your graveyard.",
+    "creatureStats": {
+        "power": 6,
+        "toughness": 5
+    },
+    "script": {
+        "triggeredAbilities": [
+            {
+                "id": "ability_1",
+                "trigger": {
+                    "type": "ZoneChangeEvent",
+                    "to": "Battlefield"
+                },
+                "effect": {
+                    "type": "DealDamage",
+                    "amount": {
+                        "type": "Count",
+                        "player": "You",
+                        "zone": "Graveyard",
+                        "filter": "creature"
+                    },
+                    "target": {
+                        "type": "BoundVariable",
+                        "name": "target opponent"
+                    }
+                },
+                "targetRequirement": {
+                    "type": "TargetOpponent",
+                    "id": "target opponent"
+                }
+            }
+        ]
+    },
+    "colorIdentityOverride": [
+        "BLACK"
+    ]
+}
+
 // Loxodon Restorer
 {
     "name": "Loxodon Restorer",

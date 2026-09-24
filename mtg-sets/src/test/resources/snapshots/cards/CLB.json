@@ -1,3 +1,38 @@
+// Avenging Hunter
+{
+    "name": "Avenging Hunter",
+    "manaCost": "{4}{G}",
+    "typeLine": "Creature — Dragon Ranger",
+    "oracleText": "Trample\nWhen this creature enters, you take the initiative.",
+    "creatureStats": {
+        "power": 5,
+        "toughness": 4
+    },
+    "keywords": [
+        "TRAMPLE"
+    ],
+    "script": {
+        "triggeredAbilities": [
+            {
+                "id": "ability_1",
+                "trigger": {
+                    "type": "ZoneChangeEvent",
+                    "to": "Battlefield"
+                },
+                "effect": "TakeInitiative"
+            }
+        ]
+    },
+    "metadata": {
+        "collectorNumber": "215",
+        "artist": "Borja Pindado",
+        "flavorText": "\"I will remember my friends. But you? You won't be remembered at all.\""
+    },
+    "colorIdentityOverride": [
+        "GREEN"
+    ]
+}
+
 // Bonecaller Cleric
 {
     "name": "Bonecaller Cleric",
