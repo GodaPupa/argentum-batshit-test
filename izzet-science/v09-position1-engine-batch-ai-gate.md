@@ -71,5 +71,29 @@ card-specific rule.
   Intercessor absent and no unresolved Izzet identity.
 - The unrelated-snapshot guard passed; frozen v0.7 remained exact; official state remained `0/0/0`.
 
+
+## Formal qualification and acceptance
+
+- Initial formal qualification run **36069050679** failed only because the workflow executed the
+  readiness test twice in one job; the second invocation was up-to-date and therefore emitted no
+  transcript for the fail-closed grep. Frozen control, canonical snapshots, and Alabaster Host
+  Intercessor semantics had all passed.
+- Workflow-only correction commit:
+  `08ffc961ecca4f8c6b0f118efddb0198735c4435` removes the duplicate readiness execution.
+- Corrected formal Batch AI qualification run **36069680436**: **SUCCESS**.
+- Accepted source SHA:
+  `08ffc961ecca4f8c6b0f118efddb0198735c4435`.
+- Accepted artifact:
+  `izzet-v09-position1-engine-batch-ai`, artifact ID **10837449732**.
+- GitHub artifact ZIP SHA-256:
+  `ffcd76aa00657c757b8f3f6c07e41aff1f7fb7b3bbacd7d2366e352e40dfd1f3`.
+- Independent download reproduced that exact ZIP digest.
+- Manifest binds source SHA, frozen v0.7 SHA, snapshot run **36067996431**, snapshot commit
+  `0b07bc7fada66c24e57018f34ca2693a348a014f`, unresolved reduction **19 -> 18**,
+  unresolved Izzet identities **0**, and official seeds/games/outcome exposure **0/0/0**.
+- Formal qualification reverified full canonical snapshots, Alabaster Host Intercessor semantics,
+  exact real-engine readiness, both no-change audits, and untouched official state.
+- **Batch AI is accepted.**
+
 Infrastructure, compilation, fixture, snapshot, or semantic failures are qualification history only,
 not evidence about deck strength.
