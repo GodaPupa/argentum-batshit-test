@@ -7,6 +7,7 @@ import com.wingedsheep.sdk.dsl.Triggers
 import com.wingedsheep.sdk.dsl.card
 import com.wingedsheep.sdk.model.Rarity
 import com.wingedsheep.sdk.scripting.GameObjectFilter
+import com.wingedsheep.sdk.scripting.references.Player
 
 /**
  * Mesmeric Fiend
@@ -44,7 +45,10 @@ val MesmericFiend = card("Mesmeric Fiend") {
 
     triggeredAbility {
         trigger = Triggers.LeavesBattlefield
-        effect = Effects.ReturnLinkedExileToHand()
+        effect = Effects.ForEachPlayer(
+            players = Player.OwnersOfLinkedExile,
+            effects = listOf(Effects.ReturnLinkedExileToHand())
+        )
     }
 
     metadata {
