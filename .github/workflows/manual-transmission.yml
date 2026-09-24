@@ -1,0 +1,222 @@
+name: Manual Transmission Qualification
+
+on:
+  push:
+    branches:
+      - "manual-transmission/qualification"
+    paths:
+      - "experiments/manual-transmission/**"
+      - ".github/workflows/manual-transmission.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: manual-transmission-${{ github.ref_name }}
+  cancel-in-progress: true
+
+jobs:
+  evidence:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Verify frozen qualification model identities
+        run: |
+          set -euo pipefail
+          test "$(git hash-object experiments/manual-transmission/qualification/hashaton_r3ht_qualification.py)" = "b3b8ae2aab9fb5dcc416520a2f424bd3924dcd95"
+          test "$(git hash-object experiments/manual-transmission/qualification/hashaton_r3ht_audit.py)" = "2395ff464f2e1c02f03864d3ec1ed9bd0dd15b5f"
+          test "$(git hash-object experiments/manual-transmission/qualification/magda_r3m_qualification.py)" = "6685022682f73a55d425848847871305fa31f887"
+          test "$(git hash-object experiments/manual-transmission/qualification/magda_r3m_audit.py)" = "edc0f5741607f97b1cca753b83564e53d99ece8b"
+          test "$(git hash-object experiments/manual-transmission/qualification/blue_farm_r3bf_qualification.py)" = "3b9a9d113a504188b3e3329242266e69ecb18074"
+          test "$(git hash-object experiments/manual-transmission/qualification/blue_farm_r3bf_audit.py)" = "560c1244887ccdca2afc9b8fb4ceebaa04ba2177"
+          test "$(git hash-object experiments/manual-transmission/qualification/shorikai_r3sh_qualification.py)" = "1221dc4d35a40b23f99629ecc9ac76333e54bdfb"
+          test "$(git hash-object experiments/manual-transmission/qualification/shorikai_r3sh_audit.py)" = "e97c028560a64071cef20040bd8b902b83cc8958"
+          test "$(git hash-object experiments/manual-transmission/qualification/sisay_r3sy_qualification.py)" = "6b474e17c9f274ffd02df2760f38bfe475b81988"
+          test "$(git hash-object experiments/manual-transmission/qualification/sisay_r3sy_audit.py)" = "9a31b756526d08c5efa52175f3af82ceafd383df"
+          test "$(git hash-object experiments/manual-transmission/qualification/rogsi_r3rs_qualification.py)" = "d4cfb05fa760316fa5156c44f7bd1f51fd65ae38"
+          test "$(git hash-object experiments/manual-transmission/qualification/rogsi_r3rs_audit.py)" = "81cb2568a6f2337be6e6f813b5e817a0969cdc95"
+          test "$(git hash-object experiments/manual-transmission/qualification/kinnan_basalt_r3kb_qualification.py)" = "a9e4c57df1610c53067f877d441c88e438b09ef7"
+          test "$(git hash-object experiments/manual-transmission/qualification/kinnan_basalt_r3kb_audit.py)" = "710ed1ee24ed3e61642a70ff63fa8aac6c63547e"
+
+      - name: Run active deterministic Phase B fixtures
+        run: |
+          set -euo pipefail
+          mkdir -p build/manual-transmission/fixtures
+          python experiments/manual-transmission/fixtures/blue_farm_timing_fixtures.py | tee build/manual-transmission/fixtures/blue-farm.json
+          python experiments/manual-transmission/fixtures/shorikai_timing_fixtures.py | tee build/manual-transmission/fixtures/shorikai.json
+          python experiments/manual-transmission/fixtures/sisay_timing_fixtures.py | tee build/manual-transmission/fixtures/sisay.json
+          python experiments/manual-transmission/fixtures/rogsi_timing_fixtures.py | tee build/manual-transmission/fixtures/rogsi.json
+          python experiments/manual-transmission/fixtures/kinnan_basalt_timing_fixtures.py | tee build/manual-transmission/fixtures/kinnan-basalt.json
+          grep -q '"fixtures_passed": 18' build/manual-transmission/fixtures/blue-farm.json
+          grep -q '"fixtures_passed": 16' build/manual-transmission/fixtures/shorikai.json
+          grep -q '"fixtures_passed": 16' build/manual-transmission/fixtures/sisay.json
+          grep -q '"fixtures_passed": 18' build/manual-transmission/fixtures/rogsi.json
+          grep -q '"fixtures_passed": 16' build/manual-transmission/fixtures/kinnan-basalt.json
+          test "$(grep -l '"status": "PASS"' build/manual-transmission/fixtures/*.json | wc -l)" -eq 5
+
+      - name: Run active DEVELOPMENT ONLY policy screens
+        run: |
+          set -euo pipefail
+          mkdir -p build/manual-transmission/development
+          python experiments/manual-transmission/development/blue_farm_policy_development.py | tee build/manual-transmission/development/blue-farm.json
+          python experiments/manual-transmission/development/shorikai_policy_development.py | tee build/manual-transmission/development/shorikai.json
+          python experiments/manual-transmission/development/sisay_policy_development.py | tee build/manual-transmission/development/sisay.json
+          python experiments/manual-transmission/development/rogsi_policy_development.py | tee build/manual-transmission/development/rogsi.json
+          python experiments/manual-transmission/development/kinnan_basalt_policy_development.py | tee build/manual-transmission/development/kinnan-basalt.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          root=Path("build/manual-transmission/development")
+          for path in root.glob("*.json"):
+              d=json.loads(path.read_text())
+              assert d["status"]=="DEVELOPMENT_ONLY", path
+              assert d["qualification_eligible"] is False, path
+              assert d.get("qualification_outcomes_exposed",0)==0, path
+          bf=json.loads((root/"blue-farm.json").read_text())
+          sh=json.loads((root/"shorikai.json").read_text())
+          sy=json.loads((root/"sisay.json").read_text())
+          rs=json.loads((root/"rogsi.json").read_text())
+          kb=json.loads((root/"kinnan-basalt.json").read_text())
+          assert bf["candidate_false_stop"]==0 and bf["candidate_false_live"]==0
+          assert sh["candidate_false_stops"]==0
+          assert sy["candidate_direct_false_stops"]==0 and sy["candidate_ceiling_false_full_stops"]==0 and sy["candidate_false_live"]==0
+          assert rs["candidate_false_stop"]==0 and rs["candidate_false_live"]==0 and rs["candidate_mana_errors"]==0
+          assert kb["candidate_false_stop"]==0 and kb["candidate_false_live"]==0 and kb["candidate_illegal_windows"]==0 and kb["candidate_terminal_errors"]==0
+          PY
+
+      - name: Regress accepted Hashaton and Magda overlays
+        run: |
+          set -euo pipefail
+          mkdir -p build/manual-transmission/accepted/hashaton build/manual-transmission/accepted/magda
+          python experiments/manual-transmission/qualification/hashaton_r3ht_qualification.py             --rows build/manual-transmission/accepted/hashaton/rows.jsonl             --summary build/manual-transmission/accepted/hashaton/summary.json
+          python experiments/manual-transmission/qualification/hashaton_r3ht_audit.py             --rows build/manual-transmission/accepted/hashaton/rows.jsonl             --out build/manual-transmission/accepted/hashaton/audit.json
+          python experiments/manual-transmission/qualification/magda_r3m_qualification.py             --rows build/manual-transmission/accepted/magda/rows.jsonl             --summary build/manual-transmission/accepted/magda/summary.json
+          python experiments/manual-transmission/qualification/magda_r3m_audit.py             --rows build/manual-transmission/accepted/magda/rows.jsonl             --out build/manual-transmission/accepted/magda/audit.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          root=Path("build/manual-transmission/accepted")
+          h=json.loads((root/"hashaton/summary.json").read_text())
+          ha=json.loads((root/"hashaton/audit.json").read_text())
+          m=json.loads((root/"magda/summary.json").read_text())
+          ma=json.loads((root/"magda/audit.json").read_text())
+          assert h["pass"] and ha["pass"] and h["rows"]==2950 and h["rows_sha256"]==ha["rows_sha256"]
+          assert m["pass"] and ma["pass"] and m["rows"]==960 and m["rows_sha256"]==ma["rows_sha256"]
+          PY
+
+      - name: Execute frozen Blue Farm Shorikai and Sisay qualifications
+        run: |
+          set -euo pipefail
+          mkdir -p build/manual-transmission/qualification/blue-farm
+          mkdir -p build/manual-transmission/qualification/shorikai
+          mkdir -p build/manual-transmission/qualification/sisay
+
+          python experiments/manual-transmission/qualification/blue_farm_r3bf_qualification.py             --rows build/manual-transmission/qualification/blue-farm/rows.jsonl             --summary build/manual-transmission/qualification/blue-farm/summary.json
+          python experiments/manual-transmission/qualification/blue_farm_r3bf_audit.py             --rows build/manual-transmission/qualification/blue-farm/rows.jsonl             --out build/manual-transmission/qualification/blue-farm/audit.json
+
+          python experiments/manual-transmission/qualification/shorikai_r3sh_qualification.py             --rows build/manual-transmission/qualification/shorikai/rows.jsonl             --summary build/manual-transmission/qualification/shorikai/summary.json
+          python experiments/manual-transmission/qualification/shorikai_r3sh_audit.py             --rows build/manual-transmission/qualification/shorikai/rows.jsonl             --out build/manual-transmission/qualification/shorikai/audit.json
+
+          python experiments/manual-transmission/qualification/sisay_r3sy_qualification.py             --rows build/manual-transmission/qualification/sisay/rows.jsonl             --summary build/manual-transmission/qualification/sisay/summary.json
+          python experiments/manual-transmission/qualification/sisay_r3sy_audit.py             --rows build/manual-transmission/qualification/sisay/rows.jsonl             --out build/manual-transmission/qualification/sisay/audit.json
+
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          root=Path("build/manual-transmission/qualification")
+          expected={"blue-farm":144,"shorikai":120,"sisay":220972}
+          for name,n in expected.items():
+              s=json.loads((root/name/"summary.json").read_text())
+              a=json.loads((root/name/"audit.json").read_text())
+              assert s["pass"] is True, name
+              assert a["pass"] is True, name
+              assert s["rows"]==n, (name,s["rows"],n)
+              assert a["rows_recounted"]==n, name
+              assert s["rows_sha256"]==a["rows_sha256"], name
+              assert s["candidate_false_stops"]==0, name
+              assert s["candidate_false_live"]==0, name
+              assert a["errors"]==0, name
+          sy=json.loads((root/"sisay/summary.json").read_text())
+          assert sy["candidate_target_classification_errors"]==0
+          assert sy["lki_changed_ceiling_errors"]==0
+          PY
+
+
+      - name: Execute frozen RogSi and Kinnan qualifications
+        run: |
+          set -euo pipefail
+          mkdir -p build/manual-transmission/qualification/rogsi
+          mkdir -p build/manual-transmission/qualification/kinnan-basalt
+
+          python experiments/manual-transmission/qualification/rogsi_r3rs_qualification.py \
+            --rows build/manual-transmission/qualification/rogsi/rows.jsonl \
+            --summary build/manual-transmission/qualification/rogsi/summary.json
+          python experiments/manual-transmission/qualification/rogsi_r3rs_audit.py \
+            --rows build/manual-transmission/qualification/rogsi/rows.jsonl \
+            --out build/manual-transmission/qualification/rogsi/audit.json
+
+          python experiments/manual-transmission/qualification/kinnan_basalt_r3kb_qualification.py \
+            --rows build/manual-transmission/qualification/kinnan-basalt/rows.jsonl \
+            --summary build/manual-transmission/qualification/kinnan-basalt/summary.json
+          python experiments/manual-transmission/qualification/kinnan_basalt_r3kb_audit.py \
+            --rows build/manual-transmission/qualification/kinnan-basalt/rows.jsonl \
+            --out build/manual-transmission/qualification/kinnan-basalt/audit.json
+
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          root=Path("build/manual-transmission/qualification")
+          rs=json.loads((root/"rogsi/summary.json").read_text())
+          rsa=json.loads((root/"rogsi/audit.json").read_text())
+          kb=json.loads((root/"kinnan-basalt/summary.json").read_text())
+          kba=json.loads((root/"kinnan-basalt/audit.json").read_text())
+
+          assert rs["pass"] and rsa["pass"]
+          assert rs["rows"]==444 and rsa["rows_recounted"]==444
+          assert rs["rows_sha256"]==rsa["rows_sha256"]
+          assert rs["candidate_false_stops"]==0 and rs["candidate_false_live"]==0
+          assert rs["candidate_mana_errors"]==0 and rsa["errors"]==0
+
+          assert kb["pass"] and kba["pass"]
+          assert kb["rows"]==74 and kba["rows_recounted"]==74
+          assert kb["rows_sha256"]==kba["rows_sha256"]
+          assert kb["candidate_false_stops"]==0 and kb["candidate_false_live"]==0
+          assert kb["candidate_illegal_windows"]==0 and kb["candidate_terminal_errors"]==0
+          assert kba["errors"]==0
+          PY
+
+      - name: Build evidence manifest
+        run: |
+          python - <<'PY'
+          import hashlib, json
+          from pathlib import Path
+          root=Path("build/manual-transmission")
+          files=[]
+          for p in sorted(root.rglob("*")):
+              if p.is_file():
+                  files.append({
+                    "path":str(p.relative_to(root)),
+                    "size":p.stat().st_size,
+                    "sha256":hashlib.sha256(p.read_bytes()).hexdigest(),
+                  })
+          out={
+            "schema":"manual-transmission-ci-evidence-manifest-v1",
+            "head_sha":"${{ github.sha }}",
+            "files":files,
+          }
+          (root/"manifest.json").write_text(json.dumps(out,indent=2,sort_keys=True)+"\n")
+          PY
+
+      - name: Upload Manual Transmission evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: manual-transmission-active-evidence
+          path: build/manual-transmission/
+          if-no-files-found: error
+          retention-days: 90

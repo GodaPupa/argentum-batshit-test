@@ -1,0 +1,67 @@
+{
+  "schema": "manual-transmission-policy-qualification-v1",
+  "protocol_id": "MT_ROGSI_R3RS_QUAL_R1_2026_09_24",
+  "frozen_before_outcomes": true,
+  "control": {
+    "version": "Manual Transmission v0.7",
+    "sha256": "6c28f0629d8ff0a859784f8c7dc0a47054b298d17c6b8e041a4a0a1d8744f111",
+    "game_changers": 0,
+    "hardware_changes_authorized": false
+  },
+  "opponent": {
+    "source_file": "experiments/manual-transmission/opponents/rogsi/source-freeze.json",
+    "commanders_plus_98_sha256": "d17b520fcacf951fd31cbe909bf154ab24a6efe884f9baa8c91a7e621ce16a26"
+  },
+  "prerequisite_fixture": {
+    "protocol": "MT_ROGSI_TIMING_FIXTURES_R1_2026_09_24",
+    "required_pass": true,
+    "required_fixture_count": 18
+  },
+  "development_only_input": {
+    "protocol": "MT_ROGSI_POLICY_DEVELOPMENT_R1_2026_09_24",
+    "artifact_id": 10820441368,
+    "artifact_digest": "sha256:6f4ebed33ee94efec59142eeb6275327380c0bf43420155c6a32a26db143a848",
+    "use": "candidate selection only; development numbers are not promotion evidence"
+  },
+  "candidate_policy": {
+    "name": "R3-RS",
+    "kind": "public-information Oracle/Breach/Grid/Bauble/Tower timing-resource overlay",
+    "hidden_information_required": false,
+    "rules": [
+      "Distinguish Oracle spell and ETB windows; source removal after the ETB trigger exists does not erase it.",
+      "Apply Defense Grid's additional three generic mana only to spells cast by players other than the active player.",
+      "Treat a live Vexing Bauble as a triggered counter for spells cast with no mana spent unless that trigger is answered.",
+      "Mindbreak Trap's free condition counts spells actually cast by RogSi, not storm copies or other players' spells.",
+      "Track Breach fuel exactly and never reuse the same graveyard card across escape payments.",
+      "Treat Phyrexian Tower as colorless unless a creature is actually sacrificed for BB; record that creature as spent.",
+      "Record Pact debt whenever Pact is used."
+    ]
+  },
+  "model_freeze": {
+    "primary_path": "experiments/manual-transmission/qualification/rogsi_r3rs_qualification.py",
+    "primary_git_blob_sha": "d4cfb05fa760316fa5156c44f7bd1f51fd65ae38",
+    "audit_path": "experiments/manual-transmission/qualification/rogsi_r3rs_audit.py",
+    "audit_git_blob_sha": "81cb2568a6f2337be6e6f813b5e817a0969cdc95"
+  },
+  "enumeration": {
+    "method": "exact; no random sampling",
+    "random_seeds_used": 0,
+    "expected_rows": 444
+  },
+  "result_class": "exact enumeration policy delta",
+  "acceptance": {
+    "candidate_false_stops": 0,
+    "candidate_false_live": 0,
+    "candidate_mana_errors": 0,
+    "reference_error_signal_must_be_positive": true,
+    "primary_and_independent_audit_rows_sha256_must_match": true,
+    "independent_audit_errors": 0,
+    "exact_row_count": 444
+  },
+  "promotion_scope": {
+    "if_pass": "promote R3-RS as Race public-state timing/resource overlay only",
+    "if_fail": "reject R3-RS and return to development",
+    "hardware_effect": "none",
+    "game_changer_effect": "none"
+  }
+}

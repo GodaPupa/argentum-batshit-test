@@ -1,0 +1,108 @@
+{
+  "schema": "manual-transmission-policy-qualification-v1",
+  "protocol_id": "MT_SISAY_R3SY_QUAL_R1_2026_09_24",
+  "frozen_before_outcomes": true,
+  "control": {
+    "version": "Manual Transmission v0.7",
+    "sha256": "6c28f0629d8ff0a859784f8c7dc0a47054b298d17c6b8e041a4a0a1d8744f111",
+    "game_changers": 0,
+    "hardware_changes_authorized": false
+  },
+  "opponent": {
+    "source_file": "experiments/manual-transmission/opponents/sisay/source-freeze.json",
+    "commander_plus_99_sha256": "25d6794046a80dba919ec19a4491bb6ce8ef799b0d2de2afbaac377592b66580"
+  },
+  "prerequisite_fixture": {
+    "protocol": "MT_SISAY_TIMING_FIXTURES_R1_2026_09_24",
+    "required_pass": true,
+    "required_fixture_count": 16,
+    "repaired_expectation_note": "Initial run-72 expectation defect is retired; current repaired fixture suite passed with no qualification outcomes exposed.",
+    "accepted_artifact_id": 10816616336,
+    "accepted_artifact_digest": "sha256:ceb568633fe7608a58406b9aac8b64fa4e7c0ac147cba07518421c103465c27a"
+  },
+  "development_only_input": {
+    "protocol": "MT_SISAY_POLICY_DEVELOPMENT_R1_2026_09_24",
+    "artifact_id": 10819551528,
+    "artifact_digest": "sha256:9f3b5e842e4839147867ab4dec1c0d1fbb6e590bc110705a14ae7cdbe4c6d888",
+    "development_cells": 34594,
+    "use": "candidate selection only; development numbers are not promotion evidence"
+  },
+  "candidate_policy": {
+    "name": "R3-SY",
+    "kind": "public-information Sisay activation/LKI/ceiling classifier",
+    "hidden_information_required": false,
+    "rules": [
+      "Once Sisay's WUBRG activation is on the stack, removing Sisay does not erase it; a live Tishana's Tidebinder ETB is the direct current-activation counter.",
+      "If Sisay remains, removing another public legendary before resolution lowers Sisay's power only for colors that were uniquely represented; shared colors do not lower the ceiling.",
+      "Ceiling denial is a downgrade, not an automatic full stop. A particular mana-value tier is excluded only if the new search ceiling falls below that tier; the activation remains live for lower mana values.",
+      "If Sisay has already left, resolution uses last-known power and later removal of other legends does not change that frozen ceiling.",
+      "A fetched Marvin/Ioreth, Derevi/Emiel, Shang-Chi, or Tyvar engine piece is not scored terminal; continue through the actual trigger/activated-ability windows."
+    ]
+  },
+  "model_freeze": {
+    "primary_path": "experiments/manual-transmission/qualification/sisay_r3sy_qualification.py",
+    "primary_git_blob_sha": "6b474e17c9f274ffd02df2760f38bfe475b81988",
+    "audit_path": "experiments/manual-transmission/qualification/sisay_r3sy_audit.py",
+    "audit_git_blob_sha": "9a31b756526d08c5efa52175f3af82ceafd383df"
+  },
+  "enumeration": {
+    "method": "exact; no random sampling; qualification universe is broader than development",
+    "random_seeds_used": 0,
+    "direct_activation_rows": 10,
+    "support_count_values_per_color": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "colors": [
+      "W",
+      "U",
+      "B",
+      "R",
+      "G"
+    ],
+    "removed_provider_masks": "all nonempty subsets of currently represented colors",
+    "sisay_lki_states": [
+      false,
+      true
+    ],
+    "hypothetical_target_mana_values": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "expected_rows": 220972
+  },
+  "result_class": "exact enumeration policy delta",
+  "acceptance": {
+    "candidate_false_stops": 0,
+    "candidate_false_live": 0,
+    "candidate_target_classification_errors": 0,
+    "lki_changed_ceiling_errors": 0,
+    "reference_false_stops_must_be_positive": true,
+    "primary_and_independent_audit_rows_sha256_must_match": true,
+    "independent_audit_errors": 0,
+    "exact_row_count": 220972
+  },
+  "invariants": [
+    "source removal never erases an already-stacked Sisay activation",
+    "Tidebinder lifecycle determines whether its ETB can counter the activation",
+    "only uniquely represented colors can lower Sisay power when another legend leaves",
+    "shared-color removal does not falsely lower power",
+    "last-known power freezes once Sisay leaves",
+    "ceiling downgrade is not equated with stopping the activation",
+    "hypothetical MV exclusion is classified separately from activation survival",
+    "post-fetch engine pieces are not scored as wins"
+  ],
+  "promotion_scope": {
+    "if_pass": "promote R3-SY as Race public-state timing/ceiling overlay only",
+    "if_fail": "reject R3-SY and return to development",
+    "hardware_effect": "none",
+    "game_changer_effect": "none"
+  }
+}

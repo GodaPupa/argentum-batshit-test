@@ -1,0 +1,68 @@
+name: Manual Transmission Same-Hardware Elasticity
+
+on:
+  push:
+    branches:
+      - "manual-transmission/qualification"
+    paths:
+      - "experiments/manual-transmission/imports/README_D2P.md"
+      - "experiments/manual-transmission/protocols/same-hardware-elasticity-r1.json"
+      - "experiments/manual-transmission/qualification/same_hardware_elasticity_audit.py"
+      - ".github/workflows/manual-transmission-elasticity.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  validate-elasticity:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Requalify final Race policy
+        run: python experiments/manual-transmission/qualification/final_race_policy_audit.py
+
+      - name: Regenerate seven exact qualification summaries
+        shell: bash
+        run: |
+          set -euo pipefail
+          root=/tmp/manual-elasticity
+          mkdir -p "$root"/{hashaton,magda,blue-farm,shorikai,sisay,rogsi,kinnan-basalt}
+          python experiments/manual-transmission/qualification/hashaton_r3ht_qualification.py             --rows "$root/hashaton/rows.jsonl" --summary "$root/hashaton/summary.json"
+          python experiments/manual-transmission/qualification/magda_r3m_qualification.py             --rows "$root/magda/rows.jsonl" --summary "$root/magda/summary.json"
+          python experiments/manual-transmission/qualification/blue_farm_r3bf_qualification.py             --rows "$root/blue-farm/rows.jsonl" --summary "$root/blue-farm/summary.json"
+          python experiments/manual-transmission/qualification/shorikai_r3sh_qualification.py             --rows "$root/shorikai/rows.jsonl" --summary "$root/shorikai/summary.json"
+          python experiments/manual-transmission/qualification/sisay_r3sy_qualification.py             --rows "$root/sisay/rows.jsonl" --summary "$root/sisay/summary.json"
+          python experiments/manual-transmission/qualification/rogsi_r3rs_qualification.py             --rows "$root/rogsi/rows.jsonl" --summary "$root/rogsi/summary.json"
+          python experiments/manual-transmission/qualification/kinnan_basalt_r3kb_qualification.py             --rows "$root/kinnan-basalt/rows.jsonl" --summary "$root/kinnan-basalt/summary.json"
+
+      - name: Audit same-hardware gear elasticity
+        run: |
+          python experiments/manual-transmission/qualification/same_hardware_elasticity_audit.py             --summary-root /tmp/manual-elasticity             --out /tmp/manual-elasticity/elasticity-summary.json
+
+      - name: Emit evidence manifest
+        shell: bash
+        run: |
+          set -euo pipefail
+          {
+            echo "schema=manual-transmission-elasticity-r1"
+            echo "source_sha=${GITHUB_SHA}"
+            echo "hardware_sha256=6c28f0629d8ff0a859784f8c7dc0a47054b298d17c6b8e041a4a0a1d8744f111"
+            echo "low_gear_import_sha256=a8f95c2f3ea91ed7138a252204fdf8996732a426a511c95f4c6db2193114543a"
+            sha256sum /tmp/manual-elasticity/*/summary.json | sort
+            sha256sum /tmp/manual-elasticity/elasticity-summary.json
+          } > /tmp/manual-elasticity/manifest.txt
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: manual-transmission-same-hardware-elasticity-r1
+          path: |
+            /tmp/manual-elasticity/elasticity-summary.json
+            /tmp/manual-elasticity/manifest.txt
+            /tmp/manual-elasticity/*/summary.json
+          if-no-files-found: error
+          retention-days: 90
