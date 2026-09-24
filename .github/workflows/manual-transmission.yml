@@ -473,3 +473,8 @@ jobs:
           name: manual-transmission-sisay-r3sy-qualification-r1
           path: experiments/manual-transmission/results/sisay/qualification-r1/
           if-no-files-found: error
+
+
+concurrency:
+  group: manual-transmission-${{ github.event.pull_request.head.ref || github.ref_name }}
+  cancel-in-progress: true
