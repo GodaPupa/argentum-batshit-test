@@ -50,3 +50,20 @@ executor, decision type, target-routing primitive, damage primitive, or opponent
 
 Infrastructure, compilation, fixture, snapshot, or semantic failures are qualification history only,
 not evidence about deck strength.
+
+
+## Pre-qualification provenance
+
+- Corrected fail-closed Batch AF snapshot/rebless run **36044188188**: **SUCCESS**.
+- Snapshot workflow source SHA:
+  `fde7b0462aed15dd8248e7a48b856fcfce6a6349`.
+- Canonical snapshot integration commit:
+  `9fe2a4eded6e6bf7d5fc67a869b9ec31d0ace219`.
+- That integration commit changes exactly
+  `mtg-sets/src/test/resources/snapshots/cards/NEO.json`.
+- Master's Rebuke source-power damage semantics passed after the fixture's damage-component
+  reference was corrected; the correction changed test fixture wiring, not card rules behavior.
+- Exact real-engine readiness emitted `V09_REAL_ENGINE_UNRESOLVED_COUNT=21`, with Master's
+  Rebuke absent and no unresolved Izzet identity.
+- The unrelated-snapshot guard admitted exactly the NEO golden change.
+- Frozen v0.7 remained verified; no official seed/game/outcome was consumed or exposed.
