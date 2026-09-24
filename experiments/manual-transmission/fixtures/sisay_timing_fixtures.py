@@ -72,11 +72,11 @@ def fixture_lki_freezes_after_sisay_leaves():
 
 def fixture_ceiling_denial_unique_color_lowers_power():
     s=State(other_legends={"Dihada":set("RWB"),"Tam":set("U"),"Tyvar":set("BG")})
-    assert current_power(s)==6
+    assert current_power(s)==7
     activate_sisay(s)
     # Blue is uniquely contributed by Tam in this public state.
     remove_legend(s,"Tam")
-    assert current_power(s)==5 and search_ceiling(s)==4
+    assert current_power(s)==6 and search_ceiling(s)==5
 
 def fixture_ceiling_denial_shared_color_does_not_lower_power():
     s=State(other_legends={"Tam":set("U"),"Teferi":set("WU"),"Dihada":set("RWB"),"Tyvar":set("BG")})
