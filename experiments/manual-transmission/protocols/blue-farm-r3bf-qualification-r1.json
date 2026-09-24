@@ -39,7 +39,7 @@
     "primary_path": "experiments/manual-transmission/qualification/blue_farm_r3bf_qualification.py",
     "primary_git_blob_sha": "3b9a9d113a504188b3e3329242266e69ecb18074",
     "audit_path": "experiments/manual-transmission/qualification/blue_farm_r3bf_audit.py",
-    "audit_git_blob_sha": "0801956df44320363c161dbabd422bba1baab16a"
+    "audit_git_blob_sha": "560c1244887ccdca2afc9b8fb4ceebaa04ba2177"
   },
   "enumeration": {
     "method": "exact; no random sampling",
@@ -71,5 +71,12 @@
     "if_fail": "reject R3-BF and return to development",
     "hardware_effect": "none",
     "game_changer_effect": "none"
-  }
+  },
+  "pre_execution_repairs": [
+    {
+      "defect": "Independent audit used a chained comparison for Breach rebuild consistency that would falsely flag correct non-live rebuild rows.",
+      "disposition": "repaired before authoritative qualification execution",
+      "outcomes_exposed_before_repair": 0
+    }
+  ]
 }
