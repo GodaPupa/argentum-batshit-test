@@ -34,8 +34,8 @@ class PestControlTierOneMonsterTronPrototypeReadinessTest : FunSpec({
             .single()
 
         boulderbranch.manaCost.toString() shouldBe "{7}"
-        boulderbranch.power shouldBe 6
-        boulderbranch.toughness shouldBe 5
+        boulderbranch.creatureStats?.basePower shouldBe 6
+        boulderbranch.creatureStats?.baseToughness shouldBe 5
         prototype.cost.toString() shouldBe "{3}{G}"
         prototype.power shouldBe 3
         prototype.toughness shouldBe 3
