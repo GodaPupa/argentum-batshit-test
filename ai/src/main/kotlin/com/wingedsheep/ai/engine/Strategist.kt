@@ -498,7 +498,9 @@ class Strategist(
     private fun candidatesFrom(state: GameState, legalActions: List<LegalAction>): List<LegalAction> {
         fun isAdvisedManaAbility(action: LegalAction): Boolean =
             considerAdvisedManaAbilities && action.isManaAbility &&
-                resolveCardName(state, action)?.let(advisorRegistry::getAdvisor) != null
+                resolveCardName(state, action)
+                    ?.let(advisorRegistry::getAdvisor)
+                    ?.strategicManaAbility == true
 
         fun isCandidate(action: LegalAction): Boolean {
             val advisedManaAbility = isAdvisedManaAbility(action)
@@ -951,7 +953,9 @@ class Strategist(
         val activation = gameAction as? ActivateAbility ?: return gameAction
         if (!considerAdvisedManaAbilities ||
             !action.isManaAbility ||
-            resolveCardName(state, action)?.let(advisorRegistry::getAdvisor) == null ||
+            resolveCardName(state, action)
+                ?.let(advisorRegistry::getAdvisor)
+                ?.strategicManaAbility != true ||
             !action.requiresManaColorChoice ||
             activation.manaColorChoice != null
         ) return gameAction
