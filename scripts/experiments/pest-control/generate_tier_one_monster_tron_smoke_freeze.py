@@ -228,6 +228,7 @@ def generate_bundle(
         "protocol_id": PROTOCOL,
         "block_id": BLOCK,
         "status": "NONEXPERIMENTAL_FIXTURE" if fixture else "FROZEN_UNEXECUTED",
+        "production_entropy_requested": not fixture,
         "qualified_runner": QUALIFIED_RUNNER,
         "runner_state": "DISABLED",
         "deck_hashes": {"pest_main": PEST_MAIN, "monster_tron_main": MONSTER_TRON_MAIN},
