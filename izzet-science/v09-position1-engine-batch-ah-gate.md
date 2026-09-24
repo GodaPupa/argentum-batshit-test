@@ -49,3 +49,28 @@ Batch AH therefore adds only a card definition plus semantic regression.
 
 Infrastructure, compilation, fixture, snapshot, or semantic failures are qualification history only,
 not evidence about deck strength.
+
+
+## Formal qualification and acceptance
+
+- Formal Batch AH qualification run **36061578258**: **SUCCESS**.
+- Accepted source SHA:
+  `a6a031f10c650688b9cb5d9a08ac532a85b480f9`.
+- Accepted artifact:
+  `izzet-v09-position1-engine-batch-ah`, artifact ID **10835085391**.
+- GitHub artifact ZIP SHA-256:
+  `27fe702f0e11212a3e4298be34897dc31b08535effd4ed77dc6901635f195915`.
+- Independent download reproduced that exact ZIP SHA-256 digest.
+- The archive contains exactly `manifest.txt` and `test-output.txt`.
+- The manifest binds:
+  - source SHA `a6a031f10c650688b9cb5d9a08ac532a85b480f9`;
+  - frozen-control SHA-256
+    `726f5e9458b46dda30b33a6ce9f3c3237b25d6e11b81dac85308c3065c108a01`;
+  - snapshot run **36059365434**;
+  - snapshot commit `dd3dae645f88bd987f2e31d34523598fa6a1c8e7`;
+  - unresolved reduction **20 -> 19**;
+  - unresolved Izzet identities **0**;
+  - official seeds/games/outcome exposure **0/0/0**.
+- Formal qualification reverified Stave Off semantics, canonical M12 snapshots, exact real-engine
+  coverage, the frozen-control hash, and untouched official state.
+- **Batch AH is accepted.**
