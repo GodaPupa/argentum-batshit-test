@@ -73,5 +73,21 @@ No Lose Focus-specific executor is justified.
 - The fail-closed unrelated-snapshot guard passed.
 - The exact frozen v0.7 SHA remained verified and no official seed/game/outcome was consumed or exposed.
 
+
+## Formal qualification provenance
+
+- Formal Batch W qualification run **35931662488** — SUCCESS.
+- Accepted source SHA:
+  `ad5fbf406fab720cbc75916ae16c173ca21ea262`.
+- Accepted artifact:
+  `izzet-v09-position1-engine-batch-w`, artifact id **10781493656**.
+- Artifact ZIP SHA-256:
+  `2b3bcaf3f8ae0e6c326bcaa539ba1b80a6d30ad6b643039e85fa73d6129560c7`.
+- Downloaded artifact manifest independently matched the accepted source SHA, frozen-control SHA,
+  snapshot run/commit, unresolved transition `31 -> 30`, zero remaining unresolved Izzet identities,
+  and official state `0/0/0`.
+- Full canonical snapshots, Lose Focus semantics, Replicate retargeting/copy behavior,
+  Storm-copy regressions, multikicker regressions, and exact real-engine coverage all passed.
+
 Infrastructure, compilation, fixture, snapshot, or semantic failures are qualification history only,
 not evidence about deck strength.
