@@ -1,6 +1,6 @@
 # Gate 11 Spy Combo preboard capability pilot v1
 
-Status: **FROZEN / EXECUTION AUTHORIZED ONLY THROUGH ARTIFACT-BOUND ADMISSION**. The vector remains unchanged; no rerolls or replacement seeds are permitted.
+Status: **COMPLETED — VALID CAPABILITY PILOT / CLOSED WITHOUT REPLICATION OR PROMOTION**. The vector is retired; no reruns, rerolls, or replacement seeds are permitted.
 
 ## Inputs
 
@@ -75,3 +75,34 @@ pooled as if independent with Burn, Boros, Grixis, Mono-Blue, Jund, Monster Tron
 
 This pilot cannot by itself alter the frozen v1.0 Control, authorize postboard work, or promote a
 challenger. Any later structural challenger must be earned by a separately predeclared experiment.
+
+
+## Result and decision
+
+GitHub Actions run **36059100002** completed successfully at source
+`8d8bd9e8dc16602fd96dffcab88651f24930ef0a`. The uploaded canonical artifact
+`industrial-waste-g11-spy-combo-pilot` has artifact ID **10834191899** and ZIP SHA-256
+`955320513863f3d9cdec2b9b6ff749ef5474d1850956dda391a469340b7cc7b0`.
+An independent download reproduced that exact digest.
+
+All eight games were valid: every frozen assignment completed, there were zero exceptions, zero
+illegal actions, complete paired seat rotation, and the frozen two-seed vector matched its registered
+digest.
+
+- Frozen Control: **2-2**.
+- Pactdoll-A: **2-2**.
+- Spy Combo overall versus Industrial: **4-4**.
+- Both Industrial identities won at least one game, so fair-game/matchup capability passed.
+- Spy won at least one game, so the opponent-pressure floor passed.
+- Control reached Tron by turn 5 in **0/4** games and combo-ready state in **0/4** games.
+- Pactdoll-A reached Tron by turn 5 in **0/4** games and combo-ready state in **0/4** games.
+- Mean colored-mana-failure turns were **1.25** for Control and **2.50** for Pactdoll-A.
+- No mulligans occurred.
+
+The predeclared replication trigger required Pactdoll-A to lead Control by at least one win.
+The pilot tied **2-2 to 2-2**, so that trigger did not pass. Spy Combo sampling therefore closes
+with **no replication, no Pactdoll-A promotion, no deck modification, and no postboard
+authorization**. Frozen Industrial Waste v1.0 Control remains unchanged.
+
+The eight-game block is capability/screening evidence only. It is not a precise matchup percentage
+and is not pooled as independent evidence with the other gauntlet pilots.
