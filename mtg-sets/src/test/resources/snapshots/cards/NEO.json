@@ -1300,6 +1300,56 @@
     ]
 }
 
+// Master's Rebuke
+{
+    "name": "Master's Rebuke",
+    "manaCost": "{1}{G}",
+    "typeLine": "Instant",
+    "oracleText": "Target creature you control deals damage equal to its power to target creature or planeswalker you don't control.",
+    "script": {
+        "spellEffect": {
+            "type": "DealDamage",
+            "amount": {
+                "type": "EntityProperty",
+                "entity": "Target",
+                "numericProperty": "Power"
+            },
+            "target": {
+                "type": "BoundVariable",
+                "name": "target creature or planeswalker you don't control"
+            },
+            "damageSource": {
+                "type": "BoundVariable",
+                "name": "target creature you control"
+            }
+        },
+        "targetRequirements": [
+            {
+                "type": "TargetObject",
+                "filter": {
+                    "baseFilter": "creature ctrl:you"
+                },
+                "id": "target creature you control"
+            },
+            {
+                "type": "TargetObject",
+                "filter": {
+                    "baseFilter": "creature|planeswalker ctrl:opponent"
+                },
+                "id": "target creature or planeswalker you don't control"
+            }
+        ]
+    },
+    "metadata": {
+        "collectorNumber": "202",
+        "artist": "Francisco Miyara",
+        "flavorText": "\"You have always been a promising student, but your arrogance far outstrips your prowess.\""
+    },
+    "colorIdentityOverride": [
+        "GREEN"
+    ]
+}
+
 // Moonsnare Specialist
 {
     "name": "Moonsnare Specialist",
