@@ -1,0 +1,37 @@
+name: Pest Control Tier-1 Monster Tron Execution Authorization
+
+on:
+  pull_request:
+    paths:
+      - gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlTierOneMonsterTronExecutionAuthorization.kt
+      - gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOneMonsterTronExecutionAuthorizationTest.kt
+      - docs/experiments/pest-control/tier-one-monster-tron-execution-authorization.md
+      - .github/workflows/pest-control-tier-one-monster-tron-execution-authorization.yml
+
+permissions:
+  contents: read
+
+jobs:
+  validate-only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Validate authorization boundary without gameplay
+        run: scripts/test-class PestControlTierOneMonsterTronExecutionAuthorizationTest --info --stacktrace
+      - name: Assert no operational surface is introduced
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -Fq 'runnerEnabled: Boolean = false' gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlTierOneMonsterTronExecutionAuthorization.kt
+          grep -Fq 'initializerEnabled: Boolean = false' gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlTierOneMonsterTronExecutionAuthorization.kt
+          python3 - <<'PY'
+          from pathlib import Path
+          text = Path(".github/workflows/pest-control-tier-one-monster-tron-execution-authorization.yml").read_text()
+          assert ("workflow" + "_dispatch") not in text
+          PY

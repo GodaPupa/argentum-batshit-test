@@ -27,7 +27,17 @@ class CommanderPodCapabilityTest : FunSpec({
     val registry = CardRegistry().apply { register(TestCards.all); register(fixture) }
     fun setup(start: Int = 0, skip: Boolean = true): InitializationResult =
         GameInitializer(registry).initializeGame(GameConfig(
-            players = (0..3).map { PlayerConfig("Fixture seat $it", Deck.of("Forest" to 99), commanderCardName = fixture.name) },
+            players = (0..3).map { seat ->
+                if (seat == 0) {
+                    PlayerConfig(
+                        "Fixture seat 0",
+                        Deck.of("Forest" to 98),
+                        commanderCardNames = listOf(fixture.name, "Grizzly Bears"),
+                    )
+                } else {
+                    PlayerConfig("Fixture seat $seat", Deck.of("Forest" to 99), commanderCardName = fixture.name)
+                }
+            },
             format = Format.Commander(),
             startingPlayerIndex = start,
             skipMulligans = skip,
@@ -45,11 +55,11 @@ class CommanderPodCapabilityTest : FunSpec({
             val initialized = setup(start)
             val ids = initialized.playerIds
             initialized.state.turnOrder shouldBe ids.drop(start) + ids.take(start)
-            ids.forEach { pid ->
+            ids.forEachIndexed { seat, pid ->
                 initialized.state.lifeTotal(pid) shouldBe 40
                 initialized.state.getHand(pid).size shouldBe 7
-                initialized.state.getLibrary(pid).size shouldBe 92
-                initialized.state.getZone(pid, Zone.COMMAND).size shouldBe 1
+                initialized.state.getLibrary(pid).size shouldBe if (seat == 0) 91 else 92
+                initialized.state.getZone(pid, Zone.COMMAND).size shouldBe if (seat == 0) 2 else 1
             }
         }
     }
@@ -86,7 +96,13 @@ class CommanderPodCapabilityTest : FunSpec({
         }
     }
     test("fixed-seed four-player initial state serializes deterministically") {
-        val json = Json { serializersModule = engineSerializersModule; encodeDefaults = true }
+        // Production persistence and the shared test bridge both enable structured map keys because
+        // GameState.zones is keyed by ZoneKey. The capability gate must use the same contract.
+        val json = Json {
+            serializersModule = engineSerializersModule
+            encodeDefaults = true
+            allowStructuredMapKeys = true
+        }
         val first = json.encodeToString(GameState.serializer(), setup().state)
         val second = json.encodeToString(GameState.serializer(), setup().state)
         first shouldBe second

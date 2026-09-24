@@ -27,18 +27,29 @@ source revalidation, executable pilot hashes, engine coverage, production manife
 and sealed fresh seed vectors must all be bound before gameplay. Missing evidence
 fails closed. This PR cannot authorize official gameplay.
 
-## Initial findings
+## Seed-free capability batch
 
-The current initializer represents one commander per player, although its registry
-component can hold multiple commanders. Blue Farm and RogSi require two; dropping
-a partner is forbidden. Four-player setup and multiplayer free-mulligan flags are
-present but must be checked through the real engine. Phase 1 Python classifications
-are not assumed to be executable four-player Argentum pilots.
+Current `main` already contains generic four-player turn/priority rails, multiplayer
+free mulligans, per-defender commander damage, commander tax, APNAP trigger ordering,
+and CR 800.4 leave-game handling with dedicated engine tests. Phase 2 therefore
+qualifies those shared rails instead of duplicating them.
 
-The current official rules download points to a September 25, 2026 effective-date
-file, which is later than this September 24 audit. Ruleset admission must resolve
-and hash an effective snapshot explicitly; a future-dated file cannot silently
-be labeled the currently effective rules.
+This branch extends the generic initializer to support one or two designated
+commanders per player while keeping per-commander entity provenance. The paired
+path is required by Blue Farm and RogSi; no partner is dropped or approximated.
+
+GameState JSON uses structured `ZoneKey` map keys. Production persistence and the
+shared serialization test bridge already enable `allowStructuredMapKeys`; the
+Phase 2 deterministic serialization fixture now uses that exact contract rather
+than misclassifying the default Json configuration as an engine defect.
+
+Phase 1 Python classifications remain policy evidence only and are not assumed to
+be executable four-player Argentum pilots. Executable pilots and telemetry still
+block actual-deck gameplay.
+
+Ruleset admission remains fail-closed: the repository-discovered September 25,
+2026 rules snapshot cannot be labeled effective for a September 24 source freeze
+without an explicitly sourced effective snapshot and digest.
 
 ## Completion
 

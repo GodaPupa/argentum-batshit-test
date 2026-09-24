@@ -4,7 +4,14 @@ on:
   pull_request:
     paths:
       - 'experiments/manual-transmission-phase2/**'
+      - 'rules-engine/src/main/kotlin/com/wingedsheep/engine/core/GameInitializer.kt'
+      - 'rules-engine/src/test/kotlin/com/wingedsheep/engine/core/CommanderSetupTest.kt'
       - 'rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/CommanderPodCapabilityTest.kt'
+      - 'rules-engine/src/test/kotlin/com/wingedsheep/engine/multiplayer/CommanderPodTest.kt'
+      - 'rules-engine/src/test/kotlin/com/wingedsheep/engine/multiplayer/MultiplayerSmokeTest.kt'
+      - 'rules-engine/src/test/kotlin/com/wingedsheep/engine/multiplayer/MultiplayerMulliganTest.kt'
+      - 'rules-engine/src/test/kotlin/com/wingedsheep/engine/multiplayer/LeaveTheGameTest.kt'
+      - 'rules-engine/src/test/kotlin/com/wingedsheep/engine/mana/CommanderTaxTest.kt'
       - 'gym/src/test/kotlin/com/wingedsheep/gym/ManualTransmissionPhaseTwoRegistryAuditTest.kt'
       - '.github/workflows/manual-transmission-phase2-capability.yml'
 
@@ -56,8 +63,18 @@ jobs:
       - uses: gradle/actions/setup-gradle@v6
       - name: Prepare exact registry requests without seeds
         run: python3 experiments/manual-transmission-phase2/bootstrap_audit.py --phase1 .phase1-source --out build/reports/manual-transmission-phase2/source
-      - name: Four-player synthetic engine capability fixtures
+      - name: Phase 2 paired-commander and deterministic pod capability fixtures
         run: scripts/test-class CommanderPodCapabilityTest --info --stacktrace
+      - name: Generic Commander setup and tax qualification
+        run: |
+          scripts/test-class CommanderSetupTest --info --stacktrace
+          scripts/test-class CommanderTaxTest --info --stacktrace
+      - name: Generic four-player priority, APNAP-adjacent, mulligan and elimination qualification
+        run: |
+          scripts/test-class MultiplayerSmokeTest --info --stacktrace
+          scripts/test-class MultiplayerMulliganTest --info --stacktrace
+          scripts/test-class CommanderPodTest --info --stacktrace
+          scripts/test-class LeaveTheGameTest --info --stacktrace
       - name: Actual catalog inventory without actual-deck games
         env:
           MT_P2_AUDIT_INPUT: ${{ github.workspace }}/build/reports/manual-transmission-phase2/source/registry-requests.json
