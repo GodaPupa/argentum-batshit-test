@@ -64,3 +64,31 @@ not evidence about deck strength.
   and no unresolved Izzet identity.
 - The unrelated-snapshot guard passed and the exact frozen v0.7 SHA remained verified.
 - No official seed/game/outcome was consumed or exposed.
+
+
+## Formal qualification and acceptance
+
+- Formal Batch AD qualification run **36029536192**: **SUCCESS**.
+- Accepted source SHA:
+  `a006f7f153364a6bedaa82299915f5f28e337709`.
+- Accepted artifact:
+  `izzet-v09-position1-engine-batch-ad`, artifact ID **10822235063**.
+- GitHub artifact ZIP SHA-256:
+  `a898568a706dda6f8e69039f6e0a9794685c653ee44e4fab239dbfb4c119b8d2`.
+- Independent download reproduced that exact ZIP SHA-256 digest.
+- The archive contains exactly `manifest.txt` and `test-output.txt`.
+- The manifest binds:
+  - source SHA `a006f7f153364a6bedaa82299915f5f28e337709`;
+  - frozen-control SHA-256
+    `726f5e9458b46dda30b33a6ce9f3c3237b25d6e11b81dac85308c3065c108a01`;
+  - snapshot run **36028474414**;
+  - snapshot commit `7d2e9aed3345073006e6ffb837a64d96b5320a38`;
+  - unresolved reduction **24 -> 23**;
+  - unresolved Izzet identities **0**;
+  - official seeds/games/outcome exposure **0/0/0**.
+- The downloaded test output independently emits `V09_REAL_ENGINE_UNRESOLVED_COUNT=23`
+  and contains no unresolved Izzet identity.
+- Formal qualification reverified Whisperer of the Wilds semantics, the existing
+  mana/activation-restriction/projected-power rails, exact real-engine coverage, the frozen
+  control hash, and untouched official state.
+- **Batch AD is accepted.**
