@@ -793,6 +793,18 @@ object ZoneTransitionService {
                         if (frontDef != null) withDfcFaceSelfRedirects(reverted, frontDef) else reverted
                     }
                 }
+
+                // Prototype (CR 702.160): its alternate mana cost/color/P/T apply only on the
+                // stack and battlefield. Any move elsewhere restores the printed CardComponent and
+                // forgets the cast mode as the object changes zones.
+                val prototype = newState.getEntity(entityId)
+                    ?.get<com.wingedsheep.engine.state.components.identity.PrototypeComponent>()
+                if (prototype != null) {
+                    newState = newState.updateEntity(entityId) { c ->
+                        c.with(prototype.originalCardComponent)
+                            .without<com.wingedsheep.engine.state.components.identity.PrototypeComponent>()
+                    }
+                }
             }
         }
 

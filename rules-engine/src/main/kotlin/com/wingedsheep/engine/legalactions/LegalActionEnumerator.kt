@@ -32,6 +32,7 @@ class LegalActionEnumerator(
         PassPriorityEnumerator(),
         PlayLandEnumerator(),
         MorphCastEnumerator(),
+        PrototypeCastEnumerator(),
         CastSpellEnumerator(),
         SneakCastEnumerator(),
         EmergeCastEnumerator(),

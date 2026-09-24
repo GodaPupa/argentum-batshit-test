@@ -174,6 +174,7 @@ enum class Keyword(val displayName: String) {
      * sacrificed. See [com.wingedsheep.sdk.scripting.KeywordAbility.Emerge].
      */
     EMERGE("Emerge"),
+    PROTOTYPE("Prototype"),
 
     // ── Spell mechanics ─────────────────────────────────────
     STORM("Storm"),

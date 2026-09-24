@@ -414,6 +414,7 @@ val engineSerializersModule = SerializersModule {
     polymorphic(Component::class) {
         // Identity components
         subclass(CardComponent::class)
+        subclass(PrototypeComponent::class)
         subclass(OwnerComponent::class)
         subclass(ControllerComponent::class)
         subclass(PlayerComponent::class)

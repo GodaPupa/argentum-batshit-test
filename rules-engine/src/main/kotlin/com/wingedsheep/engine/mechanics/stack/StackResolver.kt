@@ -211,7 +211,9 @@ class StackResolver(
         alternativeCost: com.wingedsheep.engine.core.AlternativeCostType? = null,
         // Payment can tap or remove the source that made the origin visible. This immutable
         // input is consulted only while capturing the event; the event retains no GameState.
-        castOriginState: GameState = state
+        castOriginState: GameState = state,
+        /** Prototype characteristics selected for this cast (CR 702.160), or null for a normal cast. */
+        prototype: com.wingedsheep.sdk.scripting.KeywordAbility.Prototype? = null,
     ): ExecutionResult {
         val container = state.getEntity(cardId)
             ?: return ExecutionResult.error(state, "Card not found: $cardId")
@@ -267,13 +269,40 @@ class StackResolver(
             }
         }
 
+        // Prototype (CR 702.160): while cast this way, the spell/permanent uses the prototype mana
+        // cost (and therefore color), power, and toughness while retaining its name, types, text,
+        // and abilities. The printed CardComponent is preserved on PrototypeComponent so any move
+        // outside stack/battlefield can restore the normal characteristics.
+        if (prototype != null) {
+            require(!castTransformed && !castFaceDown) {
+                "Prototype cannot be combined with another face mode in this support boundary"
+            }
+            newState = newState.updateEntity(cardId) { c ->
+                c.with(
+                    cardComponent.copy(
+                        manaCost = prototype.cost,
+                        baseStats = com.wingedsheep.sdk.model.CreatureStats(
+                            basePower = prototype.power,
+                            baseToughness = prototype.toughness,
+                        ),
+                        colors = prototype.cost.colors,
+                    )
+                ).with(
+                    com.wingedsheep.engine.state.components.identity.PrototypeComponent(
+                        originalCardComponent = cardComponent
+                    )
+                )
+            }
+        }
+
         // The spell's mana value (CR 202.3), reported by the SpellCastEvent below — which feeds
         // ContextPropertyKey.TRIGGERING_SPELL_MANA_VALUE and every "a spell with mana value N"
         // payoff. It is the same number the stack object now carries, so it comes from the same
         // decision: a disturb cast keeps the front's (CR 712.8c, `backFaceManaValue` non-null),
         // while a modal DFC cast as its back face has that face's own — The Sensational She-Hulk is
         // 6, not Jennifer Walters' 2. CastSpellHandler mirrors this for its CastSpellRecord.
-        val spellManaValue = backFaceManaValue
+        val spellManaValue = prototype?.cost?.cmc
+            ?: backFaceManaValue
             ?: transformedBackDef?.manaCost?.cmc
             ?: cardComponent.manaValue
 
@@ -290,8 +319,9 @@ class StackResolver(
         // creature, and Day of Black Sun cast for X=0 wipes the board. It is also what puts the
         // "(X=0)" in the game log's cast line, which is otherwise silently absent.
         val boundXValue = xValue ?: run {
-            val castCost = faceIndex
-                ?.let { cardRegistry.getCard(cardComponent.cardDefinitionId)?.cardFaces?.getOrNull(it)?.manaCost }
+            val castCost = prototype?.cost
+                ?: faceIndex
+                    ?.let { cardRegistry.getCard(cardComponent.cardDefinitionId)?.cardFaces?.getOrNull(it)?.manaCost }
                 ?: transformedBackDef?.manaCost
                 ?: cardComponent.manaCost
             if (castCost.hasX) 0 else null
@@ -2966,6 +2996,21 @@ class StackResolver(
     /**
      * Counter a spell on the stack.
      */
+    /**
+     * Restore printed characteristics when a Prototype spell leaves the stack for a non-battlefield
+     * zone. Direct counter/exile paths in this resolver do not pass through ZoneTransitionService,
+     * so they must perform the same CR 400.7 / Prototype reset explicitly.
+     */
+    private fun restorePrototypeAfterStackExit(state: GameState, spellId: EntityId): GameState {
+        val prototype = state.getEntity(spellId)
+            ?.get<com.wingedsheep.engine.state.components.identity.PrototypeComponent>()
+            ?: return state
+        return state.updateEntity(spellId) { container ->
+            container.with(prototype.originalCardComponent)
+                .without<com.wingedsheep.engine.state.components.identity.PrototypeComponent>()
+        }
+    }
+
     fun counterSpell(state: GameState, spellId: EntityId): ExecutionResult {
         if (spellId !in state.stack) {
             return ExecutionResult.error(state, "Spell not on stack: $spellId")
@@ -3020,10 +3065,12 @@ class StackResolver(
                 .linkExiledToSource(newState, spellId, counterRedirect.linkSourceId)
         }
 
-        // Remove stack components
+        // Remove stack components and reset any Prototype characteristics now that the card has
+        // become a new object outside the stack/battlefield.
         newState = newState.updateEntity(spellId) { c ->
             c.without<SpellOnStackComponent>().without<TargetsComponent>()
         }
+        newState = restorePrototypeAfterStackExit(newState, spellId)
 
         return ExecutionResult.success(
             newState,
@@ -3087,6 +3134,7 @@ class StackResolver(
         newState = newState.updateEntity(spellId) { c ->
             c.without<SpellOnStackComponent>().without<TargetsComponent>()
         }
+        newState = restorePrototypeAfterStackExit(newState, spellId)
 
         return ExecutionResult.success(
             newState,
@@ -3147,14 +3195,13 @@ class StackResolver(
         // Remove stack components and optionally grant the counter's controller a free recast
         // (Kheru Spellsnatcher).
         newState = newState.updateEntity(spellId) { c ->
-            var updated = c.without<SpellOnStackComponent>().without<TargetsComponent>()
-            if (grantFreeCast) {
-                updated = updated
-                    .with(PlayWithoutPayingCostComponent(controllerId = controllerId, permanent = true))
-            }
-            updated
+            c.without<SpellOnStackComponent>().without<TargetsComponent>()
         }
+        newState = restorePrototypeAfterStackExit(newState, spellId)
         if (grantFreeCast) {
+            newState = newState.updateEntity(spellId) { c ->
+                c.with(PlayWithoutPayingCostComponent(controllerId = controllerId, permanent = true))
+            }
             val (permId, stateWithPerm) = newState.newEntity()
             newState = stateWithPerm.addMayPlayPermission(
                 com.wingedsheep.engine.state.permissions.MayPlayPermission(
@@ -3228,6 +3275,7 @@ class StackResolver(
         newState = newState.updateEntity(spellId) { c ->
             c.without<SpellOnStackComponent>().without<TargetsComponent>()
         }
+        newState = restorePrototypeAfterStackExit(newState, spellId)
 
         val events = mutableListOf<GameEvent>(
             ZoneChangeEvent(spellId, cardComponent?.name ?: "Unknown", Zone.STACK, Zone.EXILE, ownerId,

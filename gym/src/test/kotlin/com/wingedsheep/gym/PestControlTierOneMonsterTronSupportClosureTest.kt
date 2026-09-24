@@ -11,7 +11,7 @@ import java.nio.file.Files
 import java.nio.file.Path
 
 class PestControlTierOneMonsterTronSupportClosureTest : FunSpec({
-    test("all non-Prototype Monster Tron preboard gaps resolve and Prototype remains explicit blocker") {
+    test("non-Prototype support remains resolved after the Prototype gate supersedes the blocker") {
         val registry = CardRegistry().apply {
             register(PredefinedTokens.allTokens)
             MtgSetCatalog.all.forEach { set ->
@@ -32,13 +32,13 @@ class PestControlTierOneMonsterTronSupportClosureTest : FunSpec({
         unresolvedExpected shouldBe emptyList()
 
         val unresolvedMain = PestControlTierOneMonsterTronAdmission.unresolvedMain(registry)
-        unresolvedMain shouldBe mapOf("Boulderbranch Golem" to 2)
+        unresolvedMain shouldBe emptyMap()
 
         val prototypeKeywordPresent = Keyword.entries.any { it.name == "PROTOTYPE" }
-        prototypeKeywordPresent shouldBe false
+        prototypeKeywordPresent shouldBe true
 
         val report = buildString {
-            appendLine("schema=pest-monster-tron-support-closure-v1")
+            appendLine("schema=pest-monster-tron-support-closure-v2")
             appendLine("protocol_id=PEST_CONTROL_V10_VS_MEHANSKE_MONSTER_TRON_2026_09_21_PREBOARD_V1")
             appendLine("resolved_nonprototype=" + expectedResolved.joinToString(";"))
             appendLine(
@@ -46,7 +46,7 @@ class PestControlTierOneMonsterTronSupportClosureTest : FunSpec({
                     unresolvedMain.entries.joinToString(";") { (name, count) -> name + ":" + count }
             )
             appendLine("prototype_keyword_present=" + prototypeKeywordPresent)
-            appendLine("status=PREBOARD_SUPPORT_BLOCKED_ON_PROTOTYPE")
+            appendLine("status=SUPERSEDED_BY_PROTOTYPE_GATE_PREBOARD_CARD_SUPPORT_COMPLETE")
             appendLine("official_games_authorized=0")
             appendLine("official_seeds_generated=0")
             appendLine("outcome_exposure=0")

@@ -869,6 +869,29 @@ sealed interface KeywordAbility {
     }
 
     // =========================================================================
+    // Prototype
+    // =========================================================================
+
+    /**
+     * Prototype [cost] — [power]/[toughness] (CR 702.160).
+     *
+     * Prototype is a cast mode, not an alternative cost. While a card cast this way is on the
+     * stack and while the resulting permanent is on the battlefield, its mana cost, color, power,
+     * and toughness are the prototype values; its name, types, rules text, and abilities are
+     * unchanged. Outside the stack/battlefield it uses its normal characteristics.
+     */
+    @SerialName("Prototype")
+    @Serializable
+    data class Prototype(
+        val cost: ManaCost,
+        val power: Int,
+        val toughness: Int,
+    ) : KeywordAbility {
+        override val keyword: Keyword = Keyword.PROTOTYPE
+        override val description: String = "Prototype $cost — $power/$toughness"
+    }
+
+    // =========================================================================
     // Gift
     // =========================================================================
 
