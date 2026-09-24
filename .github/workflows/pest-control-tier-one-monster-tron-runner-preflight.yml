@@ -1,0 +1,46 @@
+name: Pest Control Tier-1 Monster Tron Runner Surface Preflight
+
+on:
+  push:
+    branches:
+      - "pest-control/tier1-monster-tron-runner-preflight"
+    paths:
+      - ".github/workflows/pest-control-tier-one-monster-tron-runner-preflight.yml"
+      - "gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlTierOneMonsterTronRunnerSurfacePreflight.kt"
+      - "gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOneMonsterTronRunnerSurfacePreflightTest.kt"
+      - "docs/experiments/pest-control/tier-one-monster-tron-runner-surface-preflight.md"
+  pull_request:
+    branches: [main]
+    paths:
+      - ".github/workflows/pest-control-tier-one-monster-tron-runner-preflight.yml"
+      - "gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlTierOneMonsterTronRunnerSurfacePreflight.kt"
+      - "gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOneMonsterTronRunnerSurfacePreflightTest.kt"
+      - "docs/experiments/pest-control/tier-one-monster-tron-runner-surface-preflight.md"
+
+permissions:
+  contents: read
+
+jobs:
+  audit-only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "21"
+      - uses: gradle/actions/setup-gradle@v6
+
+      - name: Audit repository execution surfaces
+        env:
+          PEST_MONSTER_TRON_RUNNER_PREFLIGHT_REPORT: ${{ github.workspace }}/build/reports/pest-monster-tron-runner-preflight/report.txt
+        run: scripts/test-class PestControlTierOneMonsterTronRunnerSurfacePreflightTest --info --stacktrace
+
+      - name: Upload preflight evidence
+        uses: actions/upload-artifact@v7
+        with:
+          name: pest-control-tier-one-monster-tron-runner-preflight
+          path: build/reports/pest-monster-tron-runner-preflight/report.txt
+          if-no-files-found: error
+          retention-days: 90
