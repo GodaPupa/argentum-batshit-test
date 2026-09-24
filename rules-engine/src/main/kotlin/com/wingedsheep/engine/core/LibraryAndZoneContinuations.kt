@@ -365,6 +365,8 @@ data class DiscoverMayCastContinuation(
  *   per-card removal could clobber an unrelated permission covering the same card).
  * @property onCastFailure Where the card goes if the cast still can't initiate with the chosen
  *   targets. The free-cast grant is revoked either way.
+ * @property castForPrototype Preserve a Prototype characteristic choice made before target
+ *   selection on a synthesized free cast.
  */
 @Serializable
 data class CastFromCollectionTargetsContinuation(
@@ -373,6 +375,7 @@ data class CastFromCollectionTargetsContinuation(
     val storeCastTo: String? = null,
     val grantedPermissionId: EntityId? = null,
     val onCastFailure: FreeCastFallback = FreeCastFallback.LEAVE,
+    val castForPrototype: Boolean = false,
 ) : AnswerContinuation
 
 /**
