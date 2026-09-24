@@ -1,0 +1,47 @@
+{
+  "protocol": "MT_FINAL_RACE_POLICY_R1_2026_09_24",
+  "status": "PREDECLARED_CONSOLIDATION",
+  "hardware": {
+    "name": "Manual Transmission v0.7",
+    "sha256": "6c28f0629d8ff0a859784f8c7dc0a47054b298d17c6b8e041a4a0a1d8744f111",
+    "game_changers": 0,
+    "disposition": "KEEP_V07"
+  },
+  "generic_layers": [
+    "R3 Balanced Mulligan",
+    "R3-P Priority Conservation",
+    "R3-K Kinnan Awareness"
+  ],
+  "opponent_overlays": {
+    "Hashaton": "R3-HT",
+    "Magda": "R3-M",
+    "Blue Farm": "R3-BF",
+    "Shorikai": "R3-SH",
+    "Sisay": "R3-SY",
+    "RogSi": "R3-RS",
+    "Kinnan/Basalt": "R3-KB"
+  },
+  "invariants": [
+    "Public-state opponent overlays never change the 100-card hardware.",
+    "A current stack object is not erased merely because its source leaves unless rules say otherwise.",
+    "Resource spending is accounted once and not refunded by a later counter.",
+    "Opponent-specific overlays classify timing and resource windows; they do not score bounded enumerations as win rates.",
+    "When no opponent-specific overlay applies, Race falls back to the accepted generic R3/R3-P/R3-K layers.",
+    "Cruise and Sport do not inherit Race-only opponent overlays during elasticity validation."
+  ],
+  "acceptance": {
+    "policy_files_required": [
+      "R3-HT.md",
+      "R3-M.md",
+      "R3-BF.md",
+      "R3-SH.md",
+      "R3-SY.md",
+      "R3-RS.md",
+      "R3-KB.md"
+    ],
+    "all_overlay_status": "ACCEPTED",
+    "hardware_sha_must_match": true,
+    "card_changes_authorized": false,
+    "win_rate_claim_authorized": false
+  }
+}
