@@ -4,7 +4,6 @@ import com.wingedsheep.engine.core.SelectCardsDecision
 import com.wingedsheep.engine.core.YesNoDecision
 import com.wingedsheep.engine.support.GameTestDriver
 import com.wingedsheep.engine.support.TestCards
-import com.wingedsheep.mtg.sets.definitions.m15.cards.Hammerhand
 import com.wingedsheep.mtg.sets.definitions.neo.cards.ShrineSteward
 import com.wingedsheep.sdk.core.Step
 import com.wingedsheep.sdk.dsl.card
@@ -14,6 +13,13 @@ import io.kotest.matchers.collections.shouldContain
 import io.kotest.matchers.collections.shouldNotContain
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.types.shouldBeInstanceOf
+
+private val BatchAaTestAura = card("Batch AA Test Aura") {
+    manaCost = "{W}"
+    colorIdentity = "W"
+    typeLine = "Enchantment — Aura"
+    oracleText = ""
+}
 
 private val BatchAaTestShrine = card("Batch AA Test Shrine") {
     manaCost = "{1}"
@@ -28,7 +34,7 @@ class ShrineStewardScenarioTest : FunSpec({
 
     fun driver(): GameTestDriver {
         val d = GameTestDriver()
-        d.registerCards(TestCards.all + listOf(ShrineSteward, Hammerhand, BatchAaTestShrine))
+        d.registerCards(TestCards.all + listOf(ShrineSteward, BatchAaTestAura, BatchAaTestShrine))
         d.initMirrorMatch(deck = Deck.of("Plains" to 40), skipMulligans = true, startingPlayer = 0)
         d.passPriorityUntil(Step.PRECOMBAT_MAIN)
         return d
@@ -37,7 +43,7 @@ class ShrineStewardScenarioTest : FunSpec({
     test("ETB optional search offers Aura or Shrine and excludes other subtypes") {
         val d = driver()
         val me = d.activePlayer!!
-        val aura = d.putCardOnTopOfLibrary(me, "Hammerhand")
+        val aura = d.putCardOnTopOfLibrary(me, "Batch AA Test Aura")
         val shrine = d.putCardOnTopOfLibrary(me, "Batch AA Test Shrine")
         val nonQualifier = d.putCardOnTopOfLibrary(me, "Shrine Steward")
         val librarySizeBefore = d.state.getLibrary(me).size
