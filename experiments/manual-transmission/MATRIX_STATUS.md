@@ -37,6 +37,44 @@ Updated from live branch after the serialized evidence run at `1c321af73f6e04845
 - independent audit errors: 0
 - rows SHA-256: `00c3c9cf65d5d59b9be396ec3c615468be4a3fa122d0f0df17cc22d2d05305c9`
 
+
+### Blue Farm — R3-BF
+- protocol: `MT_BLUE_FARM_R3BF_QUAL_R1_2026_09_24`
+- exact states: 144
+- generic-reference false stops: 19
+- candidate false stops / false-live: 0 / 0
+- independent audit errors: 0
+- rows SHA-256: `59f611bdd6421963ab6c929e078cbb00429ec14680aef1c621fb9cef6cbe690e`
+
+### Shorikai — R3-SH
+- protocol: `MT_SHORIKAI_R3SH_QUAL_R1_2026_09_24`
+- exact states: 120
+- generic-reference false stops: 55
+- candidate false stops / false-live: 0 / 0
+- independent audit errors: 0
+- rows SHA-256: `290f205ca23669e3d0c4acc551ee95cdaed941001a24e4c35c0a4c4fb2403482`
+
+### Sisay — R3-SY
+- protocol: `MT_SISAY_R3SY_QUAL_R1_2026_09_24`
+- exact states: 220,972
+- generic-reference false stops: 12,007
+- candidate false stops / false-live: 0 / 0
+- candidate target-classification errors: 0
+- LKI changed-ceiling errors: 0
+- independent audit errors: 0
+- rows SHA-256: `08132877c8c0ce6669596af4b524310fed3326ecef1a3d98627c249482e76ea3`
+
+### Active-evidence provenance
+- Actions run: **36026769912** — **SUCCESS**.
+- Source SHA: `1c321af73f6e04845778f58f20ff0c96907e4382`.
+- Artifact: `manual-transmission-active-evidence`, ID **10820441368**.
+- Artifact ZIP SHA-256:
+  `6f4ebed33ee94efec59142eeb6275327380c0bf43420155c6a32a26db143a848`.
+- Independent artifact download reproduced that exact ZIP digest.
+- Artifact manifest schema: `manual-transmission-ci-evidence-manifest-v1`;
+  manifest head SHA equals the qualification source SHA.
+- Broad CI run **36026775814** also completed **SUCCESS** at the same source SHA.
+
 ### Blue Farm — R3-BF
 - protocol: `MT_BLUE_FARM_R3BF_QUAL_R1_2026_09_24`
 - exact states: 144
