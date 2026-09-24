@@ -13,6 +13,7 @@ import com.wingedsheep.engine.core.OptionChosenResponse
 import com.wingedsheep.engine.core.SearchLibraryDecision
 import com.wingedsheep.engine.core.SelectCardsDecision
 import com.wingedsheep.engine.core.TargetsResponse
+import com.wingedsheep.engine.core.TypecycleCard
 import com.wingedsheep.engine.state.GameState
 import com.wingedsheep.engine.state.components.battlefield.TappedComponent
 import com.wingedsheep.engine.state.components.identity.CardComponent
@@ -26,6 +27,7 @@ internal object SpyComboAdvisorModule : CardAdvisorModule {
         registry.register(SpyDefenderManaAdvisor)
         registry.register(SpyLandGrantAdvisor)
         registry.register(SpyGatecreeperAdvisor)
+        registry.register(SpyLandcyclerAdvisor)
         registry.register(SpyWindingWayAdvisor)
         registry.register(SpyLeadAdvisor)
         registry.register(SpyMesmericFiendAdvisor)
@@ -165,6 +167,21 @@ private object SpyGatecreeperAdvisor : CardAdvisor {
             CardsSelectedResponse(decision.id, listOfNotNull(chosen))
         }
         else -> null
+    }
+}
+
+private object SpyLandcyclerAdvisor : CardAdvisor {
+    override val cardNames = setOf("Generous Ent", "Sagu Wildling", "Troll of Khazad-dûm")
+
+    override fun evaluateCast(context: CastContext): Double? {
+        if (context.action.action !is TypecycleCard) return null
+        val battlefieldLands = context.projected.getBattlefieldControlledBy(context.playerId).count { id ->
+            context.state.getEntity(id)?.get<CardComponent>()?.isLand == true
+        }
+        val handLands = context.state.getZone(context.playerId, Zone.HAND).count { id ->
+            context.state.getEntity(id)?.get<CardComponent>()?.isLand == true
+        }
+        return if (battlefieldLands + handLands <= 1) context.passScore + 17.0 else null
     }
 }
 
