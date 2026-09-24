@@ -223,6 +223,55 @@ class IndustrialWasteSpyComboPolicyAuditTest : ScenarioTestBase() {
             response.selectedTargets[0] shouldContain game.player1Id
         }
 
+
+        test("Mesmeric Fiend policy exiles the priority engine card and linked return restores it") {
+            val game = seeded()
+                .withCardInHand(1, "Mesmeric Fiend")
+                .withCardInHand(1, "Lightning Bolt")
+                .withLandsOnBattlefield(1, "Swamp", 2)
+                .withLandsOnBattlefield(1, "Mountain", 2)
+                .withCardInHand(2, "Ashnod's Altar")
+                .withCardInHand(2, "Candy Trail")
+                .build()
+
+            game.castSpell(1, "Mesmeric Fiend").error shouldBe null
+            game.resolveStack()
+
+            repeat(3) {
+                val pending = game.getPendingDecision() ?: return@repeat
+                game.submitDecision(ai(game).respondToDecision(game.state, pending)).error shouldBe null
+                game.resolveStack()
+            }
+
+            game.isInExile(2, "Ashnod's Altar") shouldBe true
+            game.isInHand(2, "Ashnod's Altar") shouldBe false
+
+            val fiend = game.findPermanent("Mesmeric Fiend")!!
+            game.castSpell(1, "Lightning Bolt", fiend).error shouldBe null
+            game.resolveStack()
+
+            game.isInExile(2, "Ashnod's Altar") shouldBe false
+            game.isInHand(2, "Ashnod's Altar") shouldBe true
+        }
+
+        test("Lotleth Giant policy converts a lethal creature graveyard into the kill") {
+            val game = seeded()
+                .withCardInHand(1, "Lotleth Giant")
+                .withLandsOnBattlefield(1, "Swamp", 7)
+                .withCardInGraveyard(1, "Elvish Mystic")
+                .withCardInGraveyard(1, "Fyndhorn Elves")
+                .withCardInGraveyard(1, "Llanowar Elves")
+                .withLifeTotal(2, 3)
+                .build()
+
+            val action = ai(game).chooseAction(game.state).shouldBeInstanceOf<CastSpell>()
+            name(game, action.cardId) shouldBe "Lotleth Giant"
+            game.execute(action).error shouldBe null
+            game.resolveStack()
+
+            game.getLifeTotal(2) shouldBe 0
+        }
+
         test("Dread Return preserves the kill while sacrificing three low-value bodies") {
             val game = seeded()
                 .withCardOnBattlefield(1, "Gatecreeper Vine")
