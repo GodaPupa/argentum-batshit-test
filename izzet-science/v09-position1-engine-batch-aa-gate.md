@@ -72,5 +72,30 @@ put it into your hand, then shuffle."
   readiness reductions cannot retrigger an already-closed snapshot gate.
 
 
+## Formal qualification and acceptance
+
+- Formal Batch AA qualification run **35999269636**: **SUCCESS**.
+- Accepted source SHA:
+  `47c4f8411aa53fc55df8c72f85d2ffa29459d4f4`.
+- Accepted artifact:
+  `izzet-v09-position1-engine-batch-aa`, artifact ID **10807656778**.
+- GitHub artifact ZIP SHA-256:
+  `01772830b10cd133ae2ae1c6462d43f183a21f9b0d2413f5d3fd0431c4488ace`.
+- Independent download reproduced that exact ZIP SHA-256 digest.
+- The downloaded manifest binds:
+  - source SHA `47c4f8411aa53fc55df8c72f85d2ffa29459d4f4`;
+  - frozen-control SHA-256
+    `726f5e9458b46dda30b33a6ce9f3c3237b25d6e11b81dac85308c3065c108a01`;
+  - snapshot run **35998536694**;
+  - snapshot commit `660374cd8ae40104c23f1c46464c87c8633696f3`;
+  - unresolved reduction **27 -> 26**;
+  - unresolved Izzet identities **0**;
+  - official seeds/games/outcome exposure **0/0/0**.
+- Formal qualification reverified Shrine Steward semantics, the existing optional ETB search plus
+  Aura-or-Shrine subtype filter rail, exact real-engine coverage, the frozen control hash, and
+  untouched official state.
+- **Batch AA is accepted.**
+
+
 Infrastructure, compilation, fixture, snapshot, or semantic failures are qualification history only,
 not evidence about deck strength.
