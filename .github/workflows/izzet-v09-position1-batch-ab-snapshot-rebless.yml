@@ -1,14 +1,7 @@
 name: Izzet Position-1 Batch AB Snapshot Rebless
 
 on:
-  push:
-    branches:
-      - "mayhem/izzet-science"
-    paths:
-      - ".github/workflows/izzet-v09-position1-batch-ab-snapshot-rebless.yml"
-      - "mtg-sets/1993-1999/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/mir/cards/Afterlife.kt"
-      - "mtg-sets/1993-1999/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/AfterlifeScenarioTest.kt"
-      - "gym/src/test/kotlin/com/wingedsheep/gym/IzzetScienceVeteranBeastriderEngineReadinessTest.kt"
+  workflow_dispatch:
 
 permissions:
   contents: write
