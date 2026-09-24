@@ -69,7 +69,7 @@ class PrototypeCastEnumerator : ActionEnumerator {
             }
 
             result += LegalAction(
-                actionType = "CastPrototype",
+                actionType = "CastSpell",
                 description = "Prototype ${cardComponent.name}",
                 action = CastSpell(
                     playerId = playerId,
