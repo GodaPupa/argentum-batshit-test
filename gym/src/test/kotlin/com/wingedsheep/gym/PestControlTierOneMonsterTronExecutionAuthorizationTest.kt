@@ -33,5 +33,5 @@ class PestControlTierOneMonsterTronExecutionAuthorizationTest : FunSpec({
         PEST_MONSTER_TRON_FROZEN_SMOKE_ARCHIVE_SHA256 shouldBe
             "70b9a665fbb154342e2789c1b6b2c2fd912579431a6ae1f9ab289984d5e7801c"
         inspection.authorizationSha256 shouldBe PEST_MONSTER_TRON_EXECUTION_AUTHORIZATION_SHA256
-    })
+    }
 })
