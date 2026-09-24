@@ -74,3 +74,33 @@ not evidence about deck strength.
   rejected every other tracked or untracked path.
 - The exact frozen v0.7 SHA remained verified; no official seed/game/outcome was consumed or exposed.
 
+## Formal qualification and acceptance
+
+- Formal Batch AE qualification run **36037864352**: **SUCCESS**.
+- Accepted source SHA:
+  `d7432270e8f1eff63bb6e3e9adb5c94728c5c3eb`.
+- Accepted artifact:
+  `izzet-v09-position1-engine-batch-ae`, artifact ID **10825790086**.
+- GitHub artifact ZIP SHA-256:
+  `9f8950458e32dcc4530dda3f79f01d5c0bc96118dc7b18eb0b8461996f8a61ac`.
+- Independent download reproduced that exact ZIP SHA-256 digest.
+- The archive contains exactly `manifest.txt` and `test-output.txt`.
+- The manifest binds:
+  - source SHA `d7432270e8f1eff63bb6e3e9adb5c94728c5c3eb`;
+  - frozen-control SHA-256
+    `726f5e9458b46dda30b33a6ce9f3c3237b25d6e11b81dac85308c3065c108a01`;
+  - snapshot run **36036706908**;
+  - snapshot commit `1d0226a274e7e2dcf643eee023d6d469e109f986`;
+  - unresolved reduction **23 -> 22**;
+  - unresolved Izzet identities **0**;
+  - official seeds/games/outcome exposure **0/0/0**.
+- The downloaded test output independently emits `V09_REAL_ENGINE_UNRESOLVED_COUNT=22`
+  and contains no unresolved Izzet identity.
+- Formal qualification reverified Bonder's Ornament semantics, exact real-engine coverage,
+  canonical snapshots, the frozen control hash, and untouched official state.
+- **Batch AE is accepted.**
+
+The later automatic snapshot rerun triggered only by recording provenance was superseded by the
+already-successful one-file C20 integration. The automatic rebless trigger is retired; that
+superseded run is infrastructure history only.
+
