@@ -346,7 +346,7 @@ jobs:
       - name: Verify frozen Blue Farm qualification model identities
         run: |
           test "$(git hash-object experiments/manual-transmission/qualification/blue_farm_r3bf_qualification.py)" = "3b9a9d113a504188b3e3329242266e69ecb18074"
-          test "$(git hash-object experiments/manual-transmission/qualification/blue_farm_r3bf_audit.py)" = "0801956df44320363c161dbabd422bba1baab16a"
+          test "$(git hash-object experiments/manual-transmission/qualification/blue_farm_r3bf_audit.py)" = "560c1244887ccdca2afc9b8fb4ceebaa04ba2177"
       - name: Run exact R3-BF qualification
         run: |
           mkdir -p experiments/manual-transmission/results/blue-farm/qualification-r1
