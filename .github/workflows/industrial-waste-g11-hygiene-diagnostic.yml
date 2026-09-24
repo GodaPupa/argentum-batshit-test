@@ -22,7 +22,7 @@ jobs:
           java-version: "21"
       - uses: gradle/actions/setup-gradle@v6
 
-      - name: Diagnose serializer and frozen baseline
+      - name: Diagnose serializer and current-branch frozen baseline
         shell: bash
         run: |
           set +e
@@ -33,9 +33,32 @@ jobs:
 
           ./gradlew :ai:test --tests '*FrozenBaselineTest' --stacktrace
           base=$?
-          echo '=== FROZEN BASELINE JUNIT ==='
+          echo '=== CURRENT FROZEN BASELINE JUNIT ==='
           find ai/build/test-results/test -type f -name '*.xml' -print -exec cat {} \; 2>/dev/null
 
           if [ "$ser" -ne 0 ] || [ "$base" -ne 0 ]; then
             exit 1
           fi
+
+  diagnose-lab-baseline:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: industrial-waste/lab
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "21"
+      - uses: gradle/actions/setup-gradle@v6
+
+      - name: Run accepted lab frozen baseline
+        shell: bash
+        run: |
+          set +e
+          ./gradlew :ai:test --tests '*FrozenBaselineTest' --stacktrace
+          rc=$?
+          echo '=== LAB FROZEN BASELINE JUNIT ==='
+          find ai/build/test-results/test -type f -name '*.xml' -print -exec cat {} \; 2>/dev/null
+          exit "$rc"
