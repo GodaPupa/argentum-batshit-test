@@ -48,3 +48,19 @@ or greater."
 
 Infrastructure, compilation, fixture, snapshot, or semantic failures are qualification history only,
 not evidence about deck strength.
+
+
+## Pre-qualification provenance
+
+- Fail-closed Batch AD snapshot/rebless run **36028474414**: **SUCCESS**.
+- Snapshot workflow source SHA:
+  `8a61bb72d0b4deb262d6bf8bcbbf26bbd891ad7a`.
+- Canonical snapshot integration commit:
+  `7d2e9aed3345073006e6ffb837a64d96b5320a38`.
+- The integration commit changes exactly
+  `mtg-sets/src/test/resources/snapshots/cards/FRF.json`.
+- Whisperer base/Ferocious mana semantics and the shared conditional-mana rail passed.
+- Exact real-engine readiness emitted `V09_REAL_ENGINE_UNRESOLVED_COUNT=23`, with Whisperer absent
+  and no unresolved Izzet identity.
+- The unrelated-snapshot guard passed and the exact frozen v0.7 SHA remained verified.
+- No official seed/game/outcome was consumed or exposed.
