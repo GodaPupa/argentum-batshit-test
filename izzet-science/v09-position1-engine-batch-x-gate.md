@@ -57,5 +57,19 @@ opponent card using already-existing reusable semantics.
 11. Generous Gift is absent from unresolved output and no Izzet identity becomes unresolved.
 12. Official games/seeds/outcomes remain `0/0/0` and the exact v0.7 control remains unchanged.
 
+
+## Pre-qualification provenance
+
+- Fail-closed Batch X snapshot/rebless run **35947000559** succeeded.
+- Canonical snapshot integration commit:
+  `856485bc2db1e34cd0c05889edc709a6c4515e86`.
+- The integration commit changes exactly
+  `mtg-sets/src/test/resources/snapshots/cards/MH1.json` (53 additions, 0 deletions).
+- Generous Gift semantic scenarios passed.
+- Exact real-engine readiness emitted `V09_REAL_ENGINE_UNRESOLVED_COUNT=29`, with
+  Generous Gift absent and no unresolved Izzet identity.
+- The fail-closed unrelated-snapshot guard passed.
+- The exact frozen v0.7 SHA remained verified; no official seed/game/outcome was consumed or exposed.
+
 Infrastructure, compilation, fixture, snapshot, or semantic failures are qualification history only,
 not evidence about deck strength.
