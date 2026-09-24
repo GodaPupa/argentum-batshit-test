@@ -1,15 +1,7 @@
 name: Izzet Position-1 Batch Z Snapshot Rebless
 
 on:
-  push:
-    branches:
-      - "mayhem/izzet-science"
-    paths:
-      - ".github/workflows/izzet-v09-position1-batch-z-snapshot-rebless.yml"
-      - "mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/m15/cards/HeliodsPilgrim.kt"
-      - "mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/HeliodsPilgrimScenarioTest.kt"
-      - "gym/src/main/kotlin/com/wingedsheep/gym/matchup/IzzetScienceVeteranBeastriderEngineReadiness.kt"
-      - "gym/src/test/kotlin/com/wingedsheep/gym/IzzetScienceVeteranBeastriderEngineReadinessTest.kt"
+  workflow_dispatch:
 
 permissions:
   contents: write
