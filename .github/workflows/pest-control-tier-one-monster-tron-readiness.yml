@@ -1,0 +1,38 @@
+name: Pest Control Tier-1 Monster Tron Readiness
+
+on:
+  push:
+    branches:
+      - "pest-control/tier1-monster-tron-readiness"
+  pull_request:
+    paths:
+      - "gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlTierOneMonsterTronReadiness.kt"
+      - "gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOneMonsterTronReadinessTest.kt"
+      - "docs/experiments/pest-control/tier-one-monster-tron-readiness.md"
+      - ".github/workflows/pest-control-tier-one-monster-tron-readiness.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  exact-60-readiness:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "21"
+      - uses: gradle/actions/setup-gradle@v6
+
+      - name: Requalify exact Monster Tron readiness boundary
+        run: scripts/test-class PestControlTierOneMonsterTronReadinessTest --info --stacktrace
+
+      - name: Requalify Prototype predecessor
+        run: scripts/test-class BoulderbranchGolemPrototypeScenarioTest --info --stacktrace
+
+      - name: Requalify Cascade predecessor
+        run: |
+          scripts/test-class CascadeKeywordTest --info --stacktrace
+          scripts/test-class MaelstromColossusCascadeScenarioTest --info --stacktrace
