@@ -260,6 +260,7 @@ def generate_bundle(
             "regeneration_permitted": False,
         },
         "official_counters": {
+            "seeds_generated": 0 if fixture else 4,
             "games_authorized": 0,
             "games_initialized": 0,
             "actions_submitted": 0,
