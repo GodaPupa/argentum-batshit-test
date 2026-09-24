@@ -58,6 +58,6 @@ jobs:
           text=Path(".github/workflows/pest-control-tier-one-monster-tron-operational-stack.yml").read_text()
           assert ("workflow" + "_dispatch") not in text
           assert "\n  push:" not in text
-          assert "AUTOMATIC_ONE_SHOT_MONSTER_TRON_EXECUTION" not in text
-          assert "OfficialExecutionRunnerTest" not in text
+          assert ("AUTOMATIC_ONE_SHOT_" + "MONSTER_TRON_EXECUTION") not in text
+          assert ("OfficialExecution" + "RunnerTest") not in text
           PY
