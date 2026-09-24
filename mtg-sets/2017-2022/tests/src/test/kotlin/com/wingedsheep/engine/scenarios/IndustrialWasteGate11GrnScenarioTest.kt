@@ -26,8 +26,8 @@ class IndustrialWasteGate11GrnScenarioTest : ScenarioTestBase() {
             withClue("Lotleth Giant should cast legally: ${cast.error}") {
                 cast.error shouldBe null
             }
-            game.resolveStack()
-            game.selectTargets(listOf(game.player2Id)).error shouldBe null
+            // In a two-player game the only legal opponent target is deterministic, so the
+            // trigger auto-selects it rather than surfacing a target decision.
             game.resolveStack()
 
             game.getLifeTotal(2) shouldBe 17
