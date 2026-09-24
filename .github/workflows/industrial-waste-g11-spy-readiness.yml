@@ -10,6 +10,8 @@ on:
       - industrial-waste/challengers/pactdoll-a.dck
       - industrial-waste/protocols/gate-11-spy-combo-readiness-v1.md
       - ai/src/main/kotlin/com/wingedsheep/ai/engine/Strategist.kt
+      - rules-engine/src/main/kotlin/com/wingedsheep/engine/legalactions/enumerators/ActivatedAbilityEnumerator.kt
+      - mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/IndustrialWasteGate11RnaScenarioTest.kt
       - ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/SpyComboAdvisorModule.kt
       - ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteSpyComboPolicyAuditTest.kt
       - ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteSpyComboReadinessSmokeTest.kt
@@ -51,6 +53,7 @@ jobs:
             --no-daemon
           ./gradlew :mtg-sets:2017-2022:tests:test \
             --tests '*IndustrialWasteGate10Mh1ScenarioTest' \
+            --tests '*IndustrialWasteGate11RnaScenarioTest' \
             --no-daemon
           ./gradlew :mtg-sets:2024:tests:test \
             --tests '*IndustrialWasteGate9Mh3NyxbornScenarioTest' \
