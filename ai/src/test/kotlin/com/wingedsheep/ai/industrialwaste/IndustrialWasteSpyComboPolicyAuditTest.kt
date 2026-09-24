@@ -18,6 +18,7 @@ import com.wingedsheep.engine.core.TypecycleCard
 import com.wingedsheep.engine.state.components.battlefield.TappedComponent
 import com.wingedsheep.engine.state.components.identity.CardComponent
 import com.wingedsheep.engine.support.ScenarioTestBase
+import com.wingedsheep.sdk.core.Color
 import com.wingedsheep.sdk.model.EntityId
 import io.kotest.matchers.collections.shouldContain
 import io.kotest.matchers.shouldBe
@@ -128,6 +129,7 @@ class IndustrialWasteSpyComboPolicyAuditTest : ScenarioTestBase() {
 
             val action = ai(game).chooseAction(game.state).shouldBeInstanceOf<ActivateAbility>()
             name(game, action.sourceId) shouldBe "Saruli Caretaker"
+            action.manaColorChoice shouldBe Color.BLACK
         }
 
         test("one-mana forestcycling is used in a one-land low-resource hand") {
