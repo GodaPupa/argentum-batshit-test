@@ -90,6 +90,7 @@ private object SpyQuirionAdvisor : CardAdvisor {
 
 private object SpyDefenderManaAdvisor : CardAdvisor {
     override val cardNames = setOf("Wall of Roots", "Overgrown Battlement", "Saruli Caretaker")
+    override val strategicManaAbility: Boolean = true
 
     override fun evaluateCast(context: CastContext): Double? {
         if (context.action.action !is ActivateAbility) return null
