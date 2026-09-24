@@ -7,7 +7,7 @@ import com.wingedsheep.sdk.core.Step
 import io.kotest.matchers.collections.shouldContain
 import io.kotest.matchers.collections.shouldNotContain
 import io.kotest.matchers.shouldBe
-import io.kotest.matchers.types.shouldNotBeNull
+import io.kotest.matchers.nulls.shouldNotBeNull
 
 class IndustrialWasteGate11RnaScenarioTest : ScenarioTestBase() {
     init {
@@ -26,7 +26,7 @@ class IndustrialWasteGate11RnaScenarioTest : ScenarioTestBase() {
             val action = game.getLegalActions(1).single { legal ->
                 (legal.action as? ActivateAbility)?.sourceId == saruli
             }
-            action.affordable shouldBe true
+            action.isAffordable shouldBe true
 
             val cost = action.additionalCostInfo.shouldNotBeNull()
             cost.costType shouldBe "TapPermanents"
