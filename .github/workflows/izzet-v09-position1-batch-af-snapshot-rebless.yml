@@ -2,11 +2,7 @@ name: Izzet Position-1 Batch AF Snapshot Rebless
 # Fixture retry after DamageComponent reference correction
 
 on:
-  push:
-    branches:
-      - "mayhem/izzet-science"
-    paths:
-      - ".github/workflows/izzet-v09-position1-batch-af-snapshot-rebless.yml"
+  workflow_dispatch:
 
 permissions:
   contents: write
