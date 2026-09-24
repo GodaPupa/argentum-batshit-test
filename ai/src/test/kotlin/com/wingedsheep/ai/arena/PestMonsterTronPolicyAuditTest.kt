@@ -26,7 +26,6 @@ class PestMonsterTronPolicyAuditTest : ScenarioTestBase() {
     private val profile = baseProfile.copy(
         id = "pest-monster-tron-policy-audit",
         advisorModules = baseProfile.advisorModules + PestMonsterTronAdvisorModule,
-        considerAdvisedManaAbilities = true,
     )
 
     private fun ai(game: TestGame) = AIPlayer.create(cardRegistry, game.player1Id, profile)
