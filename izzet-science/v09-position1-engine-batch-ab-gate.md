@@ -51,5 +51,23 @@ Therefore Batch AB adds no new executor, decision type, target-routing path, or 
 10. Afterlife is absent from unresolved output and no Izzet identity becomes unresolved.
 11. Official games/seeds/outcomes remain `0/0/0` and the exact v0.7 control remains unchanged.
 
+
+## Pre-qualification provenance
+
+- Fail-closed Batch AB snapshot/rebless run **36023879877**: **SUCCESS**.
+- Snapshot source SHA:
+  `1e8b3f705fbb7cbae6cdf8946d958965a8cc9023`.
+- Canonical snapshot integration commit:
+  `bfdd09c8506ad61c31af758811a1d82149c151a0`.
+- The integration commit changes exactly
+  `mtg-sets/src/test/resources/snapshots/cards/MIR.json`.
+- Afterlife target-controller Spirit semantics, flying-token identity, and illegal-target fizzle
+  behavior passed.
+- Exact real-engine readiness emitted `V09_REAL_ENGINE_UNRESOLVED_COUNT=25`, with Afterlife
+  absent and no unresolved Izzet identity.
+- The unrelated-snapshot guard passed and the exact frozen v0.7 SHA remained verified.
+- No official seed/game/outcome was consumed or exposed.
+
+
 Infrastructure, compilation, fixture, snapshot, or semantic failures are qualification history only,
 not evidence about deck strength.
