@@ -1,0 +1,56 @@
+# v0.9 Position 1 — Engine Coverage Batch AC Gate
+
+Purpose: qualify Veteran Beastrider's Ilysian Caryatid by composing the already-qualified
+any-one-color mana rail with the engine's state-conditional mana-ability rail, without changing
+Izzet Science v0.7, Veteran Beastrider's frozen identity, or any gameplay engine primitive.
+
+## Frozen boundaries
+
+- Izzet Science v0.7 remains byte-identical; SHA-256:
+  `726f5e9458b46dda30b33a6ce9f3c3237b25d6e11b81dac85308c3065c108a01`.
+- Card-control disposition remains KEEP_V07 / no card changes.
+- Accepted Batches A through AB remain unchanged.
+- Batch AB is accepted from Actions run **36024552017** and audited artifact
+  `izzet-v09-position1-engine-batch-ab` (artifact ID **10818158912**, SHA-256
+  `45ac51935c94db6742efdd68d5c1286b21a4af46ea028ad834c913ebde3a9fbc`).
+- Batch AB accepted source SHA is
+  `5c052dc022e502e6561d0334a67b8fc4c1fa0387`;
+  formal acceptance record HEAD is
+  `9e7310e447c196ad17839c41ea9a4c1310864cb7`.
+- No official seed may be revealed or consumed.
+- No official game may be initialized.
+- No outcome may be exposed.
+
+## Why Ilysian Caryatid is Batch AC
+
+Ilysian Caryatid is the smallest remaining Veteran blocker that reuses existing generic mana
+semantics without requiring a new executor or card-specific rule.
+
+The engine already has:
+- `Effects.AddAnyColorMana(amount)`, which adds N mana of one chosen color;
+- `ConditionalEffect` over projected battlefield conditions;
+- `Conditions.YouControl(GameObjectFilter.Creature.powerAtLeast(4))`;
+- qualified conditional mana-source discovery/auto-tap behavior from the Raucous Audience rail.
+
+Current Oracle text:
+"{T}: Add one mana of any color. If you control a creature with power 4 or greater, add two mana
+of any one color instead."
+
+## Acceptance
+
+1. Ilysian Caryatid is `{1}{G}`, Creature — Plant, 1/1.
+2. Its activated ability is a mana ability with tap cost and does not use the stack.
+3. Without a creature you control with power 4 or greater, it adds exactly one mana of the chosen color.
+4. With a creature you control with power 4 or greater, it adds exactly two mana of one chosen color instead.
+5. The threshold reads projected power through the generic creature filter.
+6. The chosen color is shared by all mana produced by the activation; it is not "any combination".
+7. Conditional mana-source discovery remains compatible with the generic ManaSolver/auto-tap rail.
+8. No new engine executor, decision type, mana primitive, or card-specific condition is introduced.
+9. Canonical THB snapshot is reblessed through a fail-closed workflow.
+10. Full golden card snapshots pass.
+11. Expected post-implementation unresolved count is exactly 24.
+12. Ilysian Caryatid is absent from unresolved output and no Izzet identity becomes unresolved.
+13. Official games/seeds/outcomes remain `0/0/0` and the exact v0.7 control remains unchanged.
+
+Infrastructure, compilation, fixture, snapshot, or semantic failures are qualification history only,
+not evidence about deck strength.
