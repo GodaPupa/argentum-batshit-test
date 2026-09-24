@@ -1,0 +1,125 @@
+name: Industrial Waste — Gate 11 Spy Combo Pilot
+
+on:
+  pull_request:
+    branches: [industrial-waste/lab]
+    paths:
+      - .github/workflows/industrial-waste-g11-spy-combo-pilot.yml
+      - ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteSpyComboPilotBenchmark.kt
+      - ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/SpyComboAdvisorModule.kt
+      - ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteAdvisorModule.kt
+      - industrial-waste/protocols/gate-11-spy-combo-pilot-v1.md
+      - industrial-waste/protocols/gate-11-spy-combo-readiness-v1.md
+      - industrial-waste/control/industrial-waste-v1.0-submitted.dck
+      - industrial-waste/challengers/pactdoll-a.dck
+      - industrial-waste/gauntlet/spy-combo-drinkme-2026-09-16.dck
+      - industrial-waste/seed-registry.json
+      - industrial-waste/input-identities.sha256
+      - industrial-waste/sim/**
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  spy-pilot:
+    runs-on: ubuntu-latest
+    timeout-minutes: 50
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-python@v6
+        with: {python-version: "3.12"}
+
+      - name: Verify frozen inputs and fresh disjoint vector
+        run: |
+          python3 industrial-waste/sim/validate_inputs.py
+          python3 - <<'PY'
+          import hashlib
+          import json
+          from pathlib import Path
+
+          namespace = "IW-G11-SPY-COMBO-PILOT-V1"
+          expected_count = 2
+          expected_seeds = [1152348211386038845, 7755587151185123565]
+          expected_digest = "be34b18805d92b3ef418eba43e063942c56a21261325cc2151e9e0d8783cb0f4"
+          expected_opponent_digest = "d01a41caed140d361fb5bb1a8d5b224f27161a7e4732efc202636029a7a6de2f"
+
+          def seed_for(ns, index):
+              raw = hashlib.sha256(f"{ns}:{index}".encode()).digest()[:8]
+              value = int.from_bytes(raw, "big") & ((1 << 63) - 1)
+              return value or 1
+
+          entries = json.loads(Path("industrial-waste/seed-registry.json").read_text())
+          matches = [item for item in entries if item["namespace"] == namespace]
+          assert len(matches) == 1, matches
+          entry = matches[0]
+          assert entry["count"] == expected_count
+          assert entry["status"] == "reserved"
+          assert entry["evidence_class"] == "preboard-matchup-capability-pilot"
+
+          vector = [seed_for(namespace, i) for i in range(1, expected_count + 1)]
+          assert vector == expected_seeds, vector
+          digest = hashlib.sha256("\n".join(map(str, vector)).encode()).hexdigest()
+          assert digest == expected_digest == entry["vector_sha256"]
+
+          mine = set(vector)
+          for other in entries:
+              if other["namespace"] == namespace:
+                  continue
+              other_vector = {
+                  seed_for(other["namespace"], i)
+                  for i in range(1, other["count"] + 1)
+              }
+              assert mine.isdisjoint(other_vector), f"seed overlap with {other['namespace']}"
+
+          opponent = Path("industrial-waste/gauntlet/spy-combo-drinkme-2026-09-16.dck")
+          opponent_digest = hashlib.sha256(opponent.read_bytes()).hexdigest()
+          assert opponent_digest == expected_opponent_digest
+
+          protocol = Path("industrial-waste/protocols/gate-11-spy-combo-pilot-v1.md").read_text()
+          assert "industrial-waste/control/industrial-waste-v1.0-submitted.dck" in protocol
+          assert "industrial-waste/challengers/pactdoll-a.dck" in protocol
+          assert "eight games total" in protocol
+          assert "36030772926" in protocol
+          assert "10822875571" in protocol
+
+          print(f"Gate 11 vector fresh/disjoint: {vector} sha256={digest}")
+          print(f"Spy opponent identity: {opponent_digest}")
+          PY
+
+      - uses: actions/setup-java@v5
+        with: {distribution: temurin, java-version: 21}
+
+      - uses: gradle/actions/setup-gradle@v6
+
+      - name: Execute frozen-vector Gate 11 pilot
+        id: pilot
+        continue-on-error: true
+        env:
+          IW_SPY_COMBO_PILOT: "true"
+        run: ./gradlew :ai:test --tests IndustrialWasteSpyComboPilotBenchmark -Dbenchmark=true --no-daemon
+
+      - name: Diagnose pilot runtime
+        if: always()
+        run: |
+          echo "pilot_outcome=${{ steps.pilot.outcome }}"
+          find ai/build/test-results -type f -maxdepth 4 -print 2>/dev/null || true
+          for f in ai/build/test-results/test/*.xml; do
+            [ -f "$f" ] || continue
+            echo "===== $f ====="
+            cat "$f"
+          done
+
+      - name: Enforce pilot success
+        if: always()
+        run: test "${{ steps.pilot.outcome }}" = "success"
+
+      - name: Upload pilot evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: industrial-waste-g11-spy-combo-pilot
+          path: industrial-waste/results/gate-11-spy-combo-pilot-v1.json
+          if-no-files-found: ignore
+          retention-days: 90
