@@ -149,10 +149,18 @@ Both promotions are bound to Actions run **36028662543**, source
 An independent download reproduced that digest; every one of the 31 manifest entries independently
 matched its recorded SHA-256 and byte size. Same-source broad CI run **36028672513** succeeded.
 
+## Final Race policy
+
+- Protocol: `MT_FINAL_RACE_POLICY_R1_2026_09_24`
+- Status: **ACCEPTED**
+- Dedicated audit run **36031552516**: **SUCCESS**
+- Accepted source: `9530ff2de311534e0f7f80137938aff20ed41cc4`
+- Card changes authorized: **0**
+- Hardware remains **Manual Transmission v0.7 / KEEP_V07**
+
 ## Next justified work
 
-1. Consolidate all seven accepted opponent overlays into one final Race policy without changing the 100-card hardware.
-2. Run same-hardware Cruise / Sport / Race elasticity validation.
-3. Finish with `KEEP_V07` unless the elasticity evidence itself supports a hardware change.
+1. Run same-hardware Cruise / Sport / Race elasticity validation.
+2. Finish with `KEEP_V07` unless the elasticity evidence itself supports a hardware change.
 
 Exact policy enumerations are timing/classification evidence, not cEDH matchup win rates.
