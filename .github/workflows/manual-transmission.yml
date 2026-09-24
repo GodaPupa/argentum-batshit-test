@@ -104,3 +104,26 @@ jobs:
           name: manual-transmission-hashaton-r3ht-qualification-r1
           path: experiments/manual-transmission/results/hashaton/qualification-r1/
           if-no-files-found: error
+
+
+  magda-legality-fixtures:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Run deterministic Magda timing fixtures
+        run: |
+          mkdir -p experiments/manual-transmission/results/magda
+          python experiments/manual-transmission/fixtures/magda_timing_fixtures.py \
+            | tee experiments/manual-transmission/results/magda/timing-fixtures-r1.json
+          grep -q '"status": "PASS"' experiments/manual-transmission/results/magda/timing-fixtures-r1.json
+          grep -q '"fixtures_passed": 12' experiments/manual-transmission/results/magda/timing-fixtures-r1.json
+          grep -q '"qualification_outcomes_exposed": 0' experiments/manual-transmission/results/magda/timing-fixtures-r1.json
+      - name: Upload Magda fixture evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: manual-transmission-magda-timing-fixtures-r1
+          path: experiments/manual-transmission/results/magda/timing-fixtures-r1.json
+          if-no-files-found: error
