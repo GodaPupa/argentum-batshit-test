@@ -1,0 +1,33 @@
+name: Pest Control Tier-1 Spy Combo Admission Audit
+
+on:
+  pull_request:
+    paths:
+      - gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlTierOneSpyComboAdmission.kt
+      - gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOneSpyComboAdmissionTest.kt
+      - docs/experiments/pest-control/tier-one-spy-combo-source-freeze.md
+      - .github/workflows/pest-control-tier-one-spy-admission.yml
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Audit exact Spy Combo support without gameplay
+        env:
+          PEST_SPY_ADMISSION_REPORT: ${{ github.workspace }}/build/reports/pest-spy-admission/report.txt
+        run: scripts/test-class PestControlTierOneSpyComboAdmissionTest --info --stacktrace
+      - name: Upload support audit
+        uses: actions/upload-artifact@v7
+        with:
+          name: pest-control-tier-one-spy-admission
+          path: build/reports/pest-spy-admission/report.txt
+          if-no-files-found: error
