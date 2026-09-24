@@ -264,3 +264,50 @@ jobs:
           name: manual-transmission-sisay-timing-fixtures-r1
           path: experiments/manual-transmission/results/sisay/timing-fixtures-r1.json
           if-no-files-found: error
+
+
+  blue-farm-policy-development:
+    needs: blue-farm-legality-fixtures
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Run Blue Farm policy development screen
+        run: |
+          mkdir -p experiments/manual-transmission/results/blue-farm
+          python experiments/manual-transmission/development/blue_farm_policy_development.py \
+            | tee experiments/manual-transmission/results/blue-farm/policy-development-r1.json
+          grep -q '"status": "DEVELOPMENT_ONLY"' experiments/manual-transmission/results/blue-farm/policy-development-r1.json
+          grep -q '"qualification_eligible": false' experiments/manual-transmission/results/blue-farm/policy-development-r1.json
+          grep -q '"qualification_outcomes_exposed": 0' experiments/manual-transmission/results/blue-farm/policy-development-r1.json
+      - name: Upload Blue Farm development evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: manual-transmission-blue-farm-policy-development-r1
+          path: experiments/manual-transmission/results/blue-farm/policy-development-r1.json
+          if-no-files-found: error
+
+  shorikai-policy-development:
+    needs: shorikai-legality-fixtures
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Run Shorikai policy development screen
+        run: |
+          mkdir -p experiments/manual-transmission/results/shorikai
+          python experiments/manual-transmission/development/shorikai_policy_development.py \
+            | tee experiments/manual-transmission/results/shorikai/policy-development-r1.json
+          grep -q '"status": "DEVELOPMENT_ONLY"' experiments/manual-transmission/results/shorikai/policy-development-r1.json
+          grep -q '"qualification_eligible": false' experiments/manual-transmission/results/shorikai/policy-development-r1.json
+          grep -q '"qualification_outcomes_exposed": 0' experiments/manual-transmission/results/shorikai/policy-development-r1.json
+      - name: Upload Shorikai development evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: manual-transmission-shorikai-policy-development-r1
+          path: experiments/manual-transmission/results/shorikai/policy-development-r1.json
+          if-no-files-found: error
