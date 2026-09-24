@@ -31,7 +31,7 @@ def main():
         if r["candidate_stopped"]!=exp: errors.append([r["case_id"],"candidate",exp])
         if r["candidate_false_stop"] or r["candidate_false_live"]: errors.append([r["case_id"],"candidate_error"])
         if r["reference_false_stop"]: refs+=1
-        if r["family"]=="breach" and r["candidate_rebuild_live"]==(not exp) is False:
+        if r["family"]=="breach" and r["candidate_rebuild_live"] != (not exp):
             errors.append([r["case_id"],"breach_live_mismatch"])
     out={"protocol":"MT_BLUE_FARM_R3BF_QUAL_R1_2026_09_24","audit":"independent row oracle",
       "result_class":"exact enumeration replay/audit","rows_recounted":n,"families":fam,
