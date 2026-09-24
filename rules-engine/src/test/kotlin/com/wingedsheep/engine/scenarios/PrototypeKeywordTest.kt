@@ -96,6 +96,7 @@ class PrototypeKeywordTest : FunSpec({
         val json = Json {
             serializersModule = engineSerializersModule
             encodeDefaults = true
+            allowStructuredMapKeys = true
         }
         val encoded = json.encodeToString(GameState.serializer(), driver.state)
         val decoded = json.decodeFromString(GameState.serializer(), encoded)

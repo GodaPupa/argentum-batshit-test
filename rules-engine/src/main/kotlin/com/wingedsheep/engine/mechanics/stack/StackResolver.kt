@@ -2996,6 +2996,21 @@ class StackResolver(
     /**
      * Counter a spell on the stack.
      */
+    /**
+     * Restore printed characteristics when a Prototype spell leaves the stack for a non-battlefield
+     * zone. Direct counter/exile paths in this resolver do not pass through ZoneTransitionService,
+     * so they must perform the same CR 400.7 / Prototype reset explicitly.
+     */
+    private fun restorePrototypeAfterStackExit(state: GameState, spellId: EntityId): GameState {
+        val prototype = state.getEntity(spellId)
+            ?.get<com.wingedsheep.engine.state.components.identity.PrototypeComponent>()
+            ?: return state
+        return state.updateEntity(spellId) { container ->
+            container.with(prototype.originalCardComponent)
+                .without<com.wingedsheep.engine.state.components.identity.PrototypeComponent>()
+        }
+    }
+
     fun counterSpell(state: GameState, spellId: EntityId): ExecutionResult {
         if (spellId !in state.stack) {
             return ExecutionResult.error(state, "Spell not on stack: $spellId")
@@ -3050,10 +3065,12 @@ class StackResolver(
                 .linkExiledToSource(newState, spellId, counterRedirect.linkSourceId)
         }
 
-        // Remove stack components
+        // Remove stack components and reset any Prototype characteristics now that the card has
+        // become a new object outside the stack/battlefield.
         newState = newState.updateEntity(spellId) { c ->
             c.without<SpellOnStackComponent>().without<TargetsComponent>()
         }
+        newState = restorePrototypeAfterStackExit(newState, spellId)
 
         return ExecutionResult.success(
             newState,
@@ -3117,6 +3134,7 @@ class StackResolver(
         newState = newState.updateEntity(spellId) { c ->
             c.without<SpellOnStackComponent>().without<TargetsComponent>()
         }
+        newState = restorePrototypeAfterStackExit(newState, spellId)
 
         return ExecutionResult.success(
             newState,
@@ -3177,14 +3195,13 @@ class StackResolver(
         // Remove stack components and optionally grant the counter's controller a free recast
         // (Kheru Spellsnatcher).
         newState = newState.updateEntity(spellId) { c ->
-            var updated = c.without<SpellOnStackComponent>().without<TargetsComponent>()
-            if (grantFreeCast) {
-                updated = updated
-                    .with(PlayWithoutPayingCostComponent(controllerId = controllerId, permanent = true))
-            }
-            updated
+            c.without<SpellOnStackComponent>().without<TargetsComponent>()
         }
+        newState = restorePrototypeAfterStackExit(newState, spellId)
         if (grantFreeCast) {
+            newState = newState.updateEntity(spellId) { c ->
+                c.with(PlayWithoutPayingCostComponent(controllerId = controllerId, permanent = true))
+            }
             val (permId, stateWithPerm) = newState.newEntity()
             newState = stateWithPerm.addMayPlayPermission(
                 com.wingedsheep.engine.state.permissions.MayPlayPermission(
@@ -3258,6 +3275,7 @@ class StackResolver(
         newState = newState.updateEntity(spellId) { c ->
             c.without<SpellOnStackComponent>().without<TargetsComponent>()
         }
+        newState = restorePrototypeAfterStackExit(newState, spellId)
 
         val events = mutableListOf<GameEvent>(
             ZoneChangeEvent(spellId, cardComponent?.name ?: "Unknown", Zone.STACK, Zone.EXILE, ownerId,

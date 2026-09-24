@@ -1,8 +1,6 @@
 package com.wingedsheep.engine.scenarios
 
 import com.wingedsheep.engine.core.CastSpell
-import com.wingedsheep.engine.core.ChooseOptionDecision
-import com.wingedsheep.engine.core.OptionChosenResponse
 import com.wingedsheep.engine.state.components.identity.CardComponent
 import com.wingedsheep.engine.state.components.identity.PrototypeComponent
 import com.wingedsheep.engine.support.ScenarioTestBase
@@ -174,74 +172,46 @@ class BoulderbranchGolemPrototypeScenarioTest : ScenarioTestBase() {
             ).error shouldBe "Grizzly Bears has no Prototype ability"
         }
 
-        test("Maelstrom Colossus cascade offers normal and Prototype free-cast modes") {
+        test("return to hand clears Prototype and normal recast restores ordinary card") {
             val game = scenario()
                 .withPlayers("Monster Tron", "Opponent")
-                .withCardInHand(1, "Maelstrom Colossus")
-                .withCardInLibrary(1, "Boulderbranch Golem")
-                .withLandsOnBattlefield(1, "Forest", 8)
+                .withCardInHand(1, "Boulderbranch Golem")
+                .withCardInHand(2, "Unsummon")
+                .withLandsOnBattlefield(1, "Forest", 11)
+                .withLandsOnBattlefield(2, "Island", 1)
                 .withActivePlayer(1)
                 .inPhase(Phase.PRECOMBAT_MAIN, Step.PRECOMBAT_MAIN)
                 .build()
 
-            game.castSpell(1, "Maelstrom Colossus").error shouldBe null
-            game.resolveStack()
-
-            val decision = game.getPendingDecision() as? ChooseOptionDecision
-                ?: error("Cascade into Prototype must expose an explicit cast-mode choice")
-            decision.options shouldBe listOf(
-                "Cast normally for free",
-                "Cast as Prototype for free",
-                "Decline",
-            )
-
-            game.submitDecision(OptionChosenResponse(decision.id, 1)).error shouldBe null
-
-            val golemId = game.state.stack.single { id ->
-                game.state.getEntity(id)?.get<CardComponent>()?.name == "Boulderbranch Golem"
-            }
-            val spell = game.state.getEntity(golemId)?.get<CardComponent>()!!
-            spell.manaCost.toString() shouldBe "{3}{G}"
-            spell.manaValue shouldBe 4
-            spell.colors shouldBe setOf(Color.GREEN)
-            spell.baseStats?.basePower shouldBe 3
-            spell.baseStats?.baseToughness shouldBe 3
-            game.state.getEntity(golemId)?.has<PrototypeComponent>() shouldBe true
-
+            val cardId = game.findCardsInHand(1, "Boulderbranch Golem").single()
+            game.execute(CastSpell(game.player1Id, cardId, castForPrototype = true)).error shouldBe null
             game.resolveStack()
             game.getLifeTotal(1) shouldBe 23
-        }
 
-        test("Maelstrom Colossus cascade can instead cast Boulderbranch normally for free") {
-            val game = scenario()
-                .withPlayers("Monster Tron", "Opponent")
-                .withCardInHand(1, "Maelstrom Colossus")
-                .withCardInLibrary(1, "Boulderbranch Golem")
-                .withLandsOnBattlefield(1, "Forest", 8)
-                .withActivePlayer(1)
-                .inPhase(Phase.PRECOMBAT_MAIN, Step.PRECOMBAT_MAIN)
-                .build()
-
-            game.castSpell(1, "Maelstrom Colossus").error shouldBe null
+            val permanent = game.findPermanent("Boulderbranch Golem")!!
+            game.passPriority().error shouldBe null
+            game.castSpell(2, "Unsummon", permanent).error shouldBe null
             game.resolveStack()
 
-            val decision = game.getPendingDecision() as? ChooseOptionDecision
-                ?: error("Cascade into Prototype must expose an explicit cast-mode choice")
-            game.submitDecision(OptionChosenResponse(decision.id, 0)).error shouldBe null
+            val returned = game.findCardsInHand(1, "Boulderbranch Golem").single()
+            returned shouldBe cardId
+            val restored = game.state.getEntity(returned)?.get<CardComponent>()!!
+            restored.manaCost.toString() shouldBe "{7}"
+            restored.manaValue shouldBe 7
+            restored.colors shouldBe emptySet()
+            restored.baseStats?.basePower shouldBe 6
+            restored.baseStats?.baseToughness shouldBe 5
+            game.state.getEntity(returned)?.has<PrototypeComponent>() shouldBe false
 
-            val golemId = game.state.stack.single { id ->
-                game.state.getEntity(id)?.get<CardComponent>()?.name == "Boulderbranch Golem"
-            }
-            val spell = game.state.getEntity(golemId)?.get<CardComponent>()!!
-            spell.manaCost.toString() shouldBe "{7}"
-            spell.manaValue shouldBe 7
-            spell.colors shouldBe emptySet()
-            spell.baseStats?.basePower shouldBe 6
-            spell.baseStats?.baseToughness shouldBe 5
-            game.state.getEntity(golemId)?.has<PrototypeComponent>() shouldBe false
-
+            game.castSpell(1, "Boulderbranch Golem").error shouldBe null
             game.resolveStack()
-            game.getLifeTotal(1) shouldBe 26
+            val recast = game.findPermanent("Boulderbranch Golem")!!
+            val ordinary = game.state.getEntity(recast)?.get<CardComponent>()!!
+            ordinary.manaCost.toString() shouldBe "{7}"
+            ordinary.manaValue shouldBe 7
+            ordinary.baseStats?.basePower shouldBe 6
+            ordinary.baseStats?.baseToughness shouldBe 5
+            game.getLifeTotal(1) shouldBe 29
         }
     }
 }
