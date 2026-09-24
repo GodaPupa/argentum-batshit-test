@@ -57,3 +57,20 @@ introduced.
 
 Infrastructure, compilation, fixture, snapshot, or semantic failures are qualification history only,
 not evidence about deck strength.
+
+## Pre-qualification provenance
+
+- Fail-closed Batch AE snapshot/rebless run **36036706908**: **SUCCESS**.
+- Snapshot workflow source SHA:
+  `4cb26917a742da000587c845d04d063bc6e62660`.
+- Canonical snapshot integration commit:
+  `1d0226a274e7e2dcf643eee023d6d469e109f986`.
+- That integration commit adds exactly
+  `mtg-sets/src/test/resources/snapshots/cards/C20.json`.
+- Bonder's Ornament mana/draw semantics passed before snapshot integration.
+- Exact real-engine readiness emitted `V09_REAL_ENGINE_UNRESOLVED_COUNT=22`, with Bonder's
+  Ornament absent and no unresolved Izzet identity.
+- The corrected unrelated-snapshot guard admitted exactly the previously absent C20 golden and
+  rejected every other tracked or untracked path.
+- The exact frozen v0.7 SHA remained verified; no official seed/game/outcome was consumed or exposed.
+
