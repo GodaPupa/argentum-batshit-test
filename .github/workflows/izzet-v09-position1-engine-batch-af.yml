@@ -1,0 +1,95 @@
+name: Izzet Position-1 Engine Batch AF
+
+on:
+  push:
+    branches:
+      - "mayhem/izzet-science"
+    paths:
+      - ".github/workflows/izzet-v09-position1-engine-batch-af.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  qualify-batch-af:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "21"
+
+      - uses: gradle/actions/setup-gradle@v6
+
+      - name: Verify frozen control and Batch AF provenance
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(sha256sum izzet-science/v0.7-control.md | cut -d' ' -f1)" = "726f5e9458b46dda30b33a6ce9f3c3237b25d6e11b81dac85308c3065c108a01"
+          grep -Fq 'Batch AE is accepted' izzet-science/v09-position1-engine-batch-ae-gate.md
+          grep -Fq 'Expected post-implementation unresolved count is exactly **21**' izzet-science/v09-position1-engine-batch-af-gate.md
+          grep -Fq '36044188188' izzet-science/v09-position1-engine-batch-af-gate.md
+          test "$(git show --format= --name-only 9fe2a4eded6e6bf7d5fc67a869b9ec31d0ace219 | sed '/^$/d' | wc -l)" -eq 1
+          test "$(git show --format= --name-only 9fe2a4eded6e6bf7d5fc67a869b9ec31d0ace219 | sed '/^$/d')" = "mtg-sets/src/test/resources/snapshots/cards/NEO.json"
+
+      - name: Requalify canonical card snapshots
+        run: ./gradlew :mtg-sets:test --tests "*CardDefinitionSnapshotTest" --stacktrace
+
+      - name: Requalify Master's Rebuke semantics
+        run: scripts/test-class MastersRebukeBatchAFScenarioTest --info --stacktrace
+
+      - name: Run exact real-engine coverage regression
+        shell: bash
+        run: |
+          set -euo pipefail
+          scripts/test-class IzzetScienceVeteranBeastriderEngineReadinessTest --info --stacktrace | tee /tmp/batch-af.txt
+          grep -Fq 'V09_REAL_ENGINE_UNRESOLVED_COUNT=21' /tmp/batch-af.txt
+          ! grep -Fq "unresolved Veteran Beastrider card: Master's Rebuke" /tmp/batch-af.txt
+          ! grep -Fq 'V09_REAL_ENGINE_UNRESOLVED=unresolved Izzet card:' /tmp/batch-af.txt
+
+      - name: Assert official experiment remains untouched
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -Fq 'officialGamesAuthorized: Int = 0' gym/src/main/kotlin/com/wingedsheep/gym/matchup/IzzetScienceVeteranBeastriderEngineReadiness.kt
+          grep -Fq 'officialSeedsConsumed: Int = 0' gym/src/main/kotlin/com/wingedsheep/gym/matchup/IzzetScienceVeteranBeastriderEngineReadiness.kt
+          grep -Fq 'outcomeExposure: Int = 0' gym/src/main/kotlin/com/wingedsheep/gym/matchup/IzzetScienceVeteranBeastriderEngineReadiness.kt
+
+      - name: Emit Batch AF manifest
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/izzet-batch-af
+          cp /tmp/batch-af.txt /tmp/izzet-batch-af/test-output.txt
+          {
+            echo "schema=izzet-v09-position1-engine-batch-af-v1"
+            echo "source_sha=${GITHUB_SHA}"
+            echo "frozen_control_sha256=726f5e9458b46dda30b33a6ce9f3c3237b25d6e11b81dac85308c3065c108a01"
+            echo "implemented=Master's Rebuke;existing source-power damage rail"
+            echo "snapshot_run=36044188188"
+            echo "snapshot_commit=9fe2a4eded6e6bf7d5fc67a869b9ec31d0ace219"
+            echo "unresolved_before=22"
+            echo "unresolved_after=21"
+            echo "unresolved_izzet_after=0"
+            echo "official_seeds_consumed=0"
+            echo "games_initialized=0"
+            echo "outcome_exposure=0"
+            sha256sum mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/neo/cards/MastersRebuke.kt
+            sha256sum mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/MastersRebukeBatchAFScenarioTest.kt
+            sha256sum gym/src/test/kotlin/com/wingedsheep/gym/IzzetScienceVeteranBeastriderEngineReadinessTest.kt
+            sha256sum izzet-science/v09-position1-engine-batch-af-gate.md
+            sha256sum mtg-sets/src/test/resources/snapshots/cards/NEO.json
+            sha256sum /tmp/izzet-batch-af/test-output.txt
+          } > /tmp/izzet-batch-af/manifest.txt
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: izzet-v09-position1-engine-batch-af
+          path: /tmp/izzet-batch-af
+          if-no-files-found: error
+          retention-days: 90
