@@ -1,6 +1,6 @@
 # Manual Transmission — Final Race Policy R1
 
-Status: **PREDECLARED CONSOLIDATION**
+Status: **ACCEPTED**
 
 Protocol: `MT_FINAL_RACE_POLICY_R1_2026_09_24`
 
@@ -62,3 +62,15 @@ pilot modes and do **not** inherit Race-only opponent overlays during that compa
 A hardware promotion is not authorized by this document. The project remains KEEP_V07 unless
 same-hardware elasticity or later deck-level evidence demonstrates that v0.7 cannot sustain the
 intended gear separation.
+
+
+## Formal acceptance
+
+- Dedicated final-policy audit run **36031552516**: **SUCCESS**.
+- Accepted source SHA: `9530ff2de311534e0f7f80137938aff20ed41cc4`.
+- Same-source Manual qualification run **36031552871**: **SUCCESS**.
+- The original failed audit was a provenance-fixture defect: it incorrectly treated the inherited
+  v0.7 experiment SHA as a byte hash of the plaintext decklist, contrary to `PROVENANCE_IMPORT.md`.
+- The corrected audit verifies the declared inherited identifier, the exact 100-card frozen list,
+  all seven accepted overlays, zero card changes, and no win-rate claim.
+- **Final Race Policy R1 is accepted.**
