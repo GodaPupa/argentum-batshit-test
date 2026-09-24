@@ -197,3 +197,70 @@ jobs:
           name: manual-transmission-magda-r3m-qualification-r1
           path: experiments/manual-transmission/results/magda/qualification-r1/
           if-no-files-found: error
+
+
+  blue-farm-legality-fixtures:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Run Blue Farm Oracle/Breach fixtures
+        run: |
+          mkdir -p experiments/manual-transmission/results/blue-farm
+          python experiments/manual-transmission/fixtures/blue_farm_timing_fixtures.py \
+            | tee experiments/manual-transmission/results/blue-farm/timing-fixtures-r1.json
+          grep -q '"status": "PASS"' experiments/manual-transmission/results/blue-farm/timing-fixtures-r1.json
+          grep -q '"fixtures_passed": 18' experiments/manual-transmission/results/blue-farm/timing-fixtures-r1.json
+          grep -q '"qualification_outcomes_exposed": 0' experiments/manual-transmission/results/blue-farm/timing-fixtures-r1.json
+      - name: Upload Blue Farm fixture evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: manual-transmission-blue-farm-timing-fixtures-r1
+          path: experiments/manual-transmission/results/blue-farm/timing-fixtures-r1.json
+          if-no-files-found: error
+
+  shorikai-legality-fixtures:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Run Shorikai Scepter/Hullbreaker fixtures
+        run: |
+          mkdir -p experiments/manual-transmission/results/shorikai
+          python experiments/manual-transmission/fixtures/shorikai_timing_fixtures.py \
+            | tee experiments/manual-transmission/results/shorikai/timing-fixtures-r1.json
+          grep -q '"status": "PASS"' experiments/manual-transmission/results/shorikai/timing-fixtures-r1.json
+          grep -q '"fixtures_passed": 16' experiments/manual-transmission/results/shorikai/timing-fixtures-r1.json
+          grep -q '"qualification_outcomes_exposed": 0' experiments/manual-transmission/results/shorikai/timing-fixtures-r1.json
+      - name: Upload Shorikai fixture evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: manual-transmission-shorikai-timing-fixtures-r1
+          path: experiments/manual-transmission/results/shorikai/timing-fixtures-r1.json
+          if-no-files-found: error
+
+  sisay-legality-fixtures:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Run Sisay activation/ceiling fixtures
+        run: |
+          mkdir -p experiments/manual-transmission/results/sisay
+          python experiments/manual-transmission/fixtures/sisay_timing_fixtures.py \
+            | tee experiments/manual-transmission/results/sisay/timing-fixtures-r1.json
+          grep -q '"status": "PASS"' experiments/manual-transmission/results/sisay/timing-fixtures-r1.json
+          grep -q '"fixtures_passed": 16' experiments/manual-transmission/results/sisay/timing-fixtures-r1.json
+          grep -q '"qualification_outcomes_exposed": 0' experiments/manual-transmission/results/sisay/timing-fixtures-r1.json
+      - name: Upload Sisay fixture evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: manual-transmission-sisay-timing-fixtures-r1
+          path: experiments/manual-transmission/results/sisay/timing-fixtures-r1.json
+          if-no-files-found: error
