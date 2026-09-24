@@ -94,5 +94,33 @@ Therefore Batch AB adds no new executor, decision type, target-routing path, or 
 - **Batch AB is accepted.**
 
 
+
+## Formal qualification and acceptance
+
+- Formal Batch AB qualification run **36024552017**: **SUCCESS**.
+- Accepted source SHA:
+  `5c052dc022e502e6561d0334a67b8fc4c1fa0387`.
+- Accepted artifact:
+  `izzet-v09-position1-engine-batch-ab`, artifact ID **10818158912**.
+- GitHub artifact ZIP SHA-256:
+  `45ac51935c94db6742efdd68d5c1286b21a4af46ea028ad834c913ebde3a9fbc`.
+- Independent download reproduced that exact ZIP SHA-256 digest.
+- The archive contains exactly `manifest.txt` and `test-output.txt`.
+- The downloaded manifest binds:
+  - source SHA `5c052dc022e502e6561d0334a67b8fc4c1fa0387`;
+  - frozen-control SHA-256
+    `726f5e9458b46dda30b33a6ce9f3c3237b25d6e11b81dac85308c3065c108a01`;
+  - snapshot run **36023879877**;
+  - snapshot commit `bfdd09c8506ad61c31af758811a1d82149c151a0`;
+  - unresolved reduction **26 -> 25**;
+  - unresolved Izzet identities **0**;
+  - official seeds/games/outcome exposure **0/0/0**.
+- Every source/snapshot hash listed by the manifest independently matches the exact accepted source SHA.
+- Formal qualification reverified full canonical snapshots, Afterlife semantics, the Generous Gift
+  target-controller token rail, exact real-engine coverage, both no-change audits, the frozen
+  control hash, and untouched official state.
+- **Batch AB is accepted.**
+
+
 Infrastructure, compilation, fixture, snapshot, or semantic failures are qualification history only,
 not evidence about deck strength.
