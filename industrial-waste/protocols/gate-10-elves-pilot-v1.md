@@ -1,6 +1,6 @@
 # Gate 10 Elves preboard capability pilot v1
 
-Status: frozen and authorized for one official eight-game capability pilot. No replication, promotion, deck change, or postboard work is authorized unless the predeclared decision rule below is satisfied.
+Status: completed; valid eight-game capability pilot; Elves sampling closed without replication or promotion.
 
 ## Inputs
 
@@ -67,3 +67,30 @@ Jund, or Monster Tron evidence.
 
 This pilot is capability/screening evidence only. It cannot by itself promote Pactdoll-A, alter the
 frozen v1.0 Control, authorize postboard work, or justify any deck change.
+
+
+## Result and decision
+
+GitHub Actions run `35958345848` completed successfully. The uploaded canonical artifact
+`industrial-waste-g10-elves-pilot` has artifact digest
+`sha256:efea56b685450829a36c02d80b3f69d6bc146081dc424a495703a6038dd69a54`.
+
+All eight games were valid: zero exceptions, zero illegal actions, complete paired play/draw
+rotation, and the frozen seed vector matched its registered digest.
+
+- Frozen Control: 1-3.
+- Pactdoll-A: 0-4.
+- Elves overall versus Industrial: 7-1.
+- Control reached Tron by turn 5 in 1/4 games and combo-ready state in 0/4 games.
+- Pactdoll-A reached Tron by turn 5 in 1/4 games and combo-ready state in 0/4 games.
+- Mean colored-mana-failure turns were 4.25 for Control and 2.00 for Pactdoll-A.
+- No mulligans occurred in the pilot.
+- The single Industrial win was Control on the draw in pair 1; it assembled Tron on turn 4
+  and recorded lethal on turn 15 without a combo-ready marker.
+
+The opponent-pressure floor passed because Elves won seven games. Industrial fair-game capability
+also passed because Control won one game. Pactdoll-A trailed Control by one win, so the predeclared
+replication trigger did not pass.
+
+Elves sampling therefore closes with no replication, no Pactdoll-A promotion, no deck modification,
+and no postboard authorization. Frozen Industrial Waste v1.0 Control remains unchanged.
