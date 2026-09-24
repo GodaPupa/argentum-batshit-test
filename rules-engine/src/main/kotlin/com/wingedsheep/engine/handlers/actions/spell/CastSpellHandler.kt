@@ -343,6 +343,41 @@ class CastSpellHandler(
 
         val cardDef = cardRegistry.getCard(cardComponent.cardDefinitionId)
 
+        // Prototype (CR 702.160) is a cast mode rather than an alternative cost. The first shared
+        // implementation is intentionally bounded to the reviewed Boulderbranch path: primary-face
+        // permanent casts from hand with no targets or additional costs. Unsupported combinations
+        // fail closed rather than silently falling back to printed characteristics.
+        if (action.castForPrototype) {
+            val prototype = cardDef?.keywordAbilities
+                ?.filterIsInstance<KeywordAbility.Prototype>()
+                ?.firstOrNull()
+                ?: return "${cardComponent.name} has no Prototype ability"
+            if (!inHand) return "Prototype casting is currently supported from hand only"
+            if (action.useAlternativeCost || action.useWithoutPayingManaCost) {
+                return "Prototype combined with another alternative/free cast is not yet supported"
+            }
+            if (action.castFaceDown || action.faceIndex != null || transformedFace != null) {
+                return "Prototype cannot use another face/cast mode in the current support boundary"
+            }
+            if (cardDef.cardFaces.isNotEmpty() || cardDef.backFace != null) {
+                return "Prototype on multi-face cards is not yet supported"
+            }
+            if (cardDef.script.targetRequirements.isNotEmpty() || cardDef.script.auraTarget != null) {
+                return "Targeted Prototype spells are not yet supported"
+            }
+            if (cardDef.script.additionalCosts.isNotEmpty() ||
+                cardDef.keywordAbilities.any { it is KeywordAbility.OptionalAdditionalCost } ||
+                cardDef.script.selfAlternativeCost != null ||
+                cardDef.giftKeyword() != null
+            ) {
+                return "Prototype with additional/optional casting costs is not yet supported"
+            }
+            // Touch the values here so malformed data fails during validation rather than later.
+            require(prototype.power >= 0 && prototype.toughness >= 0) {
+                "Prototype power/toughness must be nonnegative"
+            }
+        }
+
         // A may-play permission authorizes exactly one set of characteristics. By default that is
         // the card's primary face; a prepare-spell copy (Secrets of Strixhaven) or a permission
         // carrying `castFaceIndex` ("cast it from your graveyard as an Adventure" — Mosswood
@@ -1008,6 +1043,14 @@ class CastSpellHandler(
             ManaCost.ZERO
         } else if (faceManaCostOverride != null && cardDef != null) {
             costCalculator.calculateEffectiveCostWithAlternativeBase(state, cardDef, faceManaCostOverride, action.playerId)
+        } else if (action.castForPrototype && cardDef != null) {
+            val prototype = cardDef.keywordAbilities
+                .filterIsInstance<KeywordAbility.Prototype>()
+                .firstOrNull()
+                ?: return null
+            costCalculator.calculateEffectiveCostWithAlternativeBase(
+                state, cardDef, prototype.cost, action.playerId
+            )
         } else if (action.useAlternativeCost && cardDef != null) {
             // Check flashback cost first (printed, granted per-entity by Archmage's Newt, or
             // granted to the whole graveyard by a battlefield static — Iroh, Grand Lotus).
@@ -1319,13 +1362,20 @@ class CastSpellHandler(
             // conditional mana is judged against the nameless 2/2 creature it actually is.
             SpellPaymentContext.faceDownCast(isFromHand = isCastFromHand(state, action.cardId))
         } else if (cardComponent != null) {
+            val prototypeCost = if (action.castForPrototype) {
+                cardRegistry.getCard(cardComponent.cardDefinitionId)
+                    ?.keywordAbilities
+                    ?.filterIsInstance<KeywordAbility.Prototype>()
+                    ?.firstOrNull()
+                    ?.cost
+            } else null
             SpellPaymentContext(
                 isInstantOrSorcery = cardComponent.typeLine.isInstant || cardComponent.typeLine.isSorcery,
                 isKicked = action.declaredCostSlot == ChoiceSlot.KICKED,
                 isCreature = cardComponent.typeLine.isCreature,
                 isLegendary = cardComponent.typeLine.isLegendary,
-                manaValue = cardComponent.manaCost.cmc,
-                hasXInCost = cardComponent.manaCost.hasX,
+                manaValue = prototypeCost?.cmc ?: cardComponent.manaCost.cmc,
+                hasXInCost = prototypeCost?.hasX ?: cardComponent.manaCost.hasX,
                 subtypes = paymentSubtypesOf(cardComponent),
                 isFromExile = isCastFromExile(state, action.cardId),
                 isFromHand = isCastFromHand(state, action.cardId),
@@ -2428,6 +2478,14 @@ class CastSpellHandler(
             ManaCost.ZERO
         } else if (faceManaCostOverrideExecute != null && cardDef != null) {
             costCalculator.calculateEffectiveCostWithAlternativeBase(currentState, cardDef, faceManaCostOverrideExecute, action.playerId)
+        } else if (action.castForPrototype && cardDef != null) {
+            val prototype = cardDef.keywordAbilities
+                .filterIsInstance<KeywordAbility.Prototype>()
+                .firstOrNull()
+                ?: return ExecutionResult.error(currentState, "Prototype is not available for this card")
+            costCalculator.calculateEffectiveCostWithAlternativeBase(
+                currentState, cardDef, prototype.cost, action.playerId
+            )
         } else if (action.useAlternativeCost && cardDef != null) {
             // Check flashback cost first (printed, granted per-entity by Archmage's Newt, or
             // granted to the whole graveyard by a battlefield static — Iroh, Grand Lotus).
@@ -3359,18 +3417,26 @@ class CastSpellHandler(
         // rather than the printed card's — see `validatePayment`.
         val spellContext = if (action.castFaceDown) {
             SpellPaymentContext.faceDownCast(isFromHand = isCastFromHand(currentState, action.cardId))
-        } else SpellPaymentContext(
+        } else {
+            val prototypeCost = if (action.castForPrototype) {
+                cardDef?.keywordAbilities
+                    ?.filterIsInstance<KeywordAbility.Prototype>()
+                    ?.firstOrNull()
+                    ?.cost
+            } else null
+            SpellPaymentContext(
             isInstantOrSorcery = cardComponent.typeLine.isInstant || cardComponent.typeLine.isSorcery,
             isKicked = action.declaredCostSlot == ChoiceSlot.KICKED,
             isCreature = cardComponent.typeLine.isCreature,
             isLegendary = cardComponent.typeLine.isLegendary,
-            manaValue = cardComponent.manaCost.cmc,
-            hasXInCost = cardComponent.manaCost.hasX,
+            manaValue = prototypeCost?.cmc ?: cardComponent.manaCost.cmc,
+            hasXInCost = prototypeCost?.hasX ?: cardComponent.manaCost.hasX,
             subtypes = paymentSubtypesOf(cardComponent),
             isFromExile = isCastFromExile(currentState, action.cardId),
             isFromHand = isCastFromHand(currentState, action.cardId),
             cardTypes = cardComponent.typeLine.cardTypes,
-        )
+            )
+        }
 
         // "Mana of any type can be spent" — relax colored requirements for cast-from-exile
         // permissions that carry the flag (Taster of Wares, Cruelclaw's Heist).
@@ -3653,8 +3719,24 @@ class CastSpellHandler(
                 // back-face cast reports that face's own mana value. Mirrors `StackResolver`'s
                 // `spellManaValue`, which stamps the same number onto the SpellCastEvent.
                 typeLine = transformedFace?.typeLine ?: cardComponent.typeLine,
-                manaValue = modalBackFace?.manaCost?.cmc ?: cardComponent.manaValue,
-                colors = transformedFace?.colors ?: cardComponent.colors,
+                manaValue = if (action.castForPrototype) {
+                    cardDef?.keywordAbilities
+                        ?.filterIsInstance<KeywordAbility.Prototype>()
+                        ?.firstOrNull()
+                        ?.cost
+                        ?.cmc ?: cardComponent.manaValue
+                } else {
+                    modalBackFace?.manaCost?.cmc ?: cardComponent.manaValue
+                },
+                colors = if (action.castForPrototype) {
+                    cardDef?.keywordAbilities
+                        ?.filterIsInstance<KeywordAbility.Prototype>()
+                        ?.firstOrNull()
+                        ?.cost
+                        ?.colors ?: cardComponent.colors
+                } else {
+                    transformedFace?.colors ?: cardComponent.colors
+                },
                 isFaceDown = action.castFaceDown,
                 spentManaSubtypes = paymentResult.spentManaProvenance.spentSubtypes,
                 // The cast card moves to the stack keeping its entity id, so this matches the
@@ -3769,6 +3851,11 @@ class CastSpellHandler(
             sacrificedSnapshots,
             castFaceDown = action.castFaceDown,
             castTransformed = transformedFace != null,
+            prototype = if (action.castForPrototype) {
+                cardDef?.keywordAbilities
+                    ?.filterIsInstance<KeywordAbility.Prototype>()
+                    ?.firstOrNull()
+            } else null,
             damageDistribution = action.damageDistribution,
             targetRequirements = spellTargetRequirements,
             exiledCardCount = exiledCardCount,
