@@ -1,0 +1,75 @@
+name: Manual Transmission Phase 2 Capability Audit
+
+on:
+  pull_request:
+    paths:
+      - 'experiments/manual-transmission-phase2/**'
+      - 'rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/CommanderPodCapabilityTest.kt'
+      - 'gym/src/test/kotlin/com/wingedsheep/gym/ManualTransmissionPhaseTwoRegistryAuditTest.kt'
+      - '.github/workflows/manual-transmission-phase2-capability.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  source-audit:
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          persist-credentials: false
+      - uses: actions/checkout@v6
+        with:
+          ref: e7d37e2ea0f18dfa8d6b0fff68ef816b59555d2d
+          path: .phase1-source
+          persist-credentials: false
+      - name: Read-only provenance and source inventory
+        run: python3 experiments/manual-transmission-phase2/bootstrap_audit.py --phase1 .phase1-source --out build/reports/manual-transmission-phase2/source --bundle
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: manual-transmission-phase2-source-audit
+          path: build/reports/manual-transmission-phase2/source/
+          if-no-files-found: error
+          retention-days: 90
+  engine-audit:
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          persist-credentials: false
+      - uses: actions/checkout@v6
+        with:
+          ref: e7d37e2ea0f18dfa8d6b0fff68ef816b59555d2d
+          path: .phase1-source
+          persist-credentials: false
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Prepare exact registry requests without seeds
+        run: python3 experiments/manual-transmission-phase2/bootstrap_audit.py --phase1 .phase1-source --out build/reports/manual-transmission-phase2/source
+      - name: Four-player synthetic engine capability fixtures
+        run: scripts/test-class CommanderPodCapabilityTest --info --stacktrace
+      - name: Actual catalog inventory without actual-deck games
+        env:
+          MT_P2_AUDIT_INPUT: ${{ github.workspace }}/build/reports/manual-transmission-phase2/source/registry-requests.json
+          MT_P2_AUDIT_OUTPUT: ${{ github.workspace }}/build/reports/manual-transmission-phase2/registry
+        run: scripts/test-class ManualTransmissionPhaseTwoRegistryAuditTest --info --stacktrace
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: manual-transmission-phase2-engine-audit
+          path: |
+            build/reports/manual-transmission-phase2/
+            rules-engine/build/test-results/test/
+            gym/build/test-results/test/
+          if-no-files-found: error
+          retention-days: 90

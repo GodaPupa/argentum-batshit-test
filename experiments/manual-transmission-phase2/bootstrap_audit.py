@@ -1,0 +1,124 @@
+#!/usr/bin/env python3
+"""Read-only Phase 2 inventory. Never imports pilots or creates an actual-deck game."""
+from __future__ import annotations
+import argparse
+import hashlib
+import json
+import re
+import subprocess
+import unicodedata
+import zipfile
+from pathlib import Path
+
+PHASE1 = 'e7d37e2ea0f18dfa8d6b0fff68ef816b59555d2d'
+HARDWARE = '6c28f0629d8ff0a859784f8c7dc0a47054b298d17c6b8e041a4a0a1d8744f111'
+DECK = 'experiments/manual-transmission/control/v0.7.decklist.txt'
+DECK_BLOB = 'c350bdc86eb2d37e5da4eb712e8ee2fa729b7e89'
+FINAL = 'experiments/manual-transmission/results/FINAL_CONCLUSION_2026_09_24.md'
+FINAL_BLOB = 'dbf081b0c6e205c65750866adcb6f7d43f532caf'
+AXES = ('blue-farm', 'rogsi', 'kinnan', 'sisay', 'magda', 'hashaton', 'shorikai')
+
+
+def git(root: Path, *args: str) -> str:
+    return subprocess.check_output(['git', '-C', str(root), *args], text=True).strip()
+
+
+def sha(data: bytes) -> str:
+    return hashlib.sha256(data).hexdigest()
+
+
+def write(path: Path, obj: object) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(obj, sort_keys=True, indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
+
+
+def main() -> None:
+    ap = argparse.ArgumentParser()
+    ap.add_argument('--phase1', type=Path, required=True)
+    ap.add_argument('--out', type=Path, required=True)
+    ap.add_argument('--bundle', action='store_true')
+    args = ap.parse_args()
+    root = Path(__file__).resolve().parents[2]
+    prior = args.phase1.resolve()
+    out = args.out.resolve()
+    out.mkdir(parents=True, exist_ok=True)
+    if git(prior, 'rev-parse', 'HEAD') != PHASE1:
+        raise ValueError('Wrong Phase 1 checkout')
+    for path, expected in ((DECK, DECK_BLOB), (FINAL, FINAL_BLOB)):
+        if git(prior, 'rev-parse', f'HEAD:{path}') != expected:
+            raise ValueError(f'Phase 1 blob mismatch: {path}')
+    deck_bytes = (prior / DECK).read_bytes()
+    text = deck_bytes.decode('utf-8')
+    if HARDWARE not in text:
+        raise ValueError('Inherited hardware identifier missing')
+    if 'PASS_BOUNDED_POLICY_ELASTICITY_KEEP_V07' not in (prior / FINAL).read_text():
+        raise ValueError('Phase 1 conclusion mismatch')
+    commanders: list[str] = []
+    mainboard: list[str] = []
+    section = ''
+    for line in text.splitlines():
+        if line in ('Commander', 'Creatures', 'Noncreatures', 'Lands'):
+            section = line
+        match = re.fullmatch(r'(\d+) (.+)', line)
+        if match:
+            count, name = int(match[1]), match[2]
+            (commanders if section == 'Commander' else mainboard).extend([name] * count)
+    if len(commanders) != 1 or len(mainboard) != 99:
+        raise ValueError('Frozen v0.7 must contain one commander plus 99')
+    decks = [{'id': 'manual-transmission-v07', 'commanders': commanders, 'mainboard': mainboard}]
+    sources = {'control': {'git_blob_sha1': DECK_BLOB, 'plaintext_sha256': sha(deck_bytes), 'inherited_identifier': HARDWARE}}
+    for axis in AXES:
+        path = prior / f'experiments/manual-transmission/opponents/{axis}/source-freeze.json'
+        raw = path.read_bytes()
+        obj = json.loads(raw)
+        opp = obj['opponent']
+        names = opp.get('commanders') or [opp['commander']]
+        cards = obj['mainboard']
+        if not isinstance(cards, list) or not all(isinstance(x, str) for x in cards):
+            raise ValueError(f'Unsupported source card schema: {axis}')
+        if len(names) + len(cards) != 100:
+            raise ValueError(f'Wrong exact card count: {axis}')
+        decks.append({'id': axis, 'commanders': names, 'mainboard': cards})
+        sources[axis] = {'source_file_sha256': sha(raw), 'source_metadata': opp, 'declared_digests': obj.get('digests'), 'phase2_admission': 'REVALIDATION_PENDING'}
+    request = {'schema': 'mt-phase2-registry-requests-v1', 'phase1_commit': PHASE1, 'decks': decks}
+    write(out / 'registry-requests.json', request)
+    tracked = git(root, 'ls-files').splitlines()
+    signals = []
+    pattern = re.compile(r'getOpponent\(|opponentId\b|firstOrNull\s*\{.*!=|single commander|Phase 4|Partner|APNAP|opponent.*hidden', re.I)
+    for name in tracked:
+        if name.startswith(('ai/src/main/', 'gym/src/main/', 'rules-engine/src/main/')) and name.endswith('.kt'):
+            for number, line in enumerate((root / name).read_text(encoding='utf-8').splitlines(), 1):
+                if pattern.search(line):
+                    signals.append({'file': name, 'line': number, 'text': line.strip()[:280]})
+    write(out / 'source-signals.json', signals)
+    report = {
+        'schema': 'mt-phase2-bootstrap-audit-v1',
+        'source_commit': git(root, 'rev-parse', 'HEAD'),
+        'source_tree': git(root, 'rev-parse', 'HEAD^{tree}'),
+        'phase1_commit': PHASE1,
+        'phase1_preserved': True,
+        'sources': sources,
+        'registry_request_sha256': sha((out / 'registry-requests.json').read_bytes()),
+        'deck_count': len(decks),
+        'requested_physical_cards': sum(len(x['commanders']) + len(x['mainboard']) for x in decks),
+        'source_signals_are_diagnostic_not_automatic_defect_classifications': True,
+        'execution_allowed': False,
+        'official_counters': {'seeds_generated': 0, 'attempts': 0, 'games_initialized': 0, 'actions': 0, 'outcomes': 0},
+        'status': 'INVENTORY_ONLY_NOT_CEDH_QUALIFICATION',
+    }
+    write(out / 'bootstrap-report.json', report)
+    if args.bundle:
+        with zipfile.ZipFile(out / 'source-bundle.zip', 'w', compression=zipfile.ZIP_DEFLATED) as archive:
+            for name in tracked:
+                production = name.startswith(('rules-engine/', 'mtg-sdk/', 'ai/', 'gym/', 'mtg-sets/', '.agents/skills/', 'experiments/manual-transmission-phase2/'))
+                if production and Path(name).suffix in ('.kt', '.kts', '.md', '.py', '.json', '.txt', '.toml') and '/build/' not in name and '/src/test/resources/' not in name:
+                    archive.write(root / name, 'source/' + name)
+                elif name in ('build.gradle.kts', 'settings.gradle.kts', 'gradle/libs.versions.toml', 'scripts/test-class', 'scripts/gradle-locked'):
+                    archive.write(root / name, 'source/' + name)
+            for name in git(prior, 'ls-files', 'experiments/manual-transmission').splitlines():
+                archive.write(prior / name, 'phase1/' + name)
+    print(json.dumps({'status': report['status'], 'decks': len(decks), 'cards': report['requested_physical_cards'], 'execution_allowed': False}))
+
+
+if __name__ == '__main__':
+    main()
