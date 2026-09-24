@@ -1,6 +1,10 @@
 # Gate 11 Spy Combo readiness v1
 
-Status: qualified dedicated seed-free readiness; **gameplay remains unauthorized** until the required broad CI gate is green. The separately frozen pilot namespace remains reserved but must not be executed or interpreted before that condition is satisfied.
+Status: qualified dedicated seed-free readiness. The Gate 11 delta is admitted against the accepted lab baseline under the exact inherited LEGACY_V0 equivalence exception below; no global baseline rebless is made.
+
+BROAD_CI_STATUS=GREEN_EXCEPT_ACCEPTED_INHERITED_LEGACY_V0_EQUIVALENT
+
+The separately frozen pilot namespace may execute only through the artifact-bound admission check in the Gate 11 pilot workflow.
 
 ## Frozen opponent
 
@@ -101,3 +105,30 @@ replication trigger and no card-change authority.
 
 Fail closed whenever a card capability, policy choice, deck identity, registry resolution, or
 execution invariant is uncertain.
+
+
+## Broad-CI inherited-baseline equivalence disposition
+
+Repository-wide CI at Gate 11 source `0c03d1f0d7726597f0b0882b4e233bf816b3f21c` has exactly one
+red test: `FrozenBaselineTest > LEGACY_V0 plays the frozen baseline game exactly as it always has`.
+All card snapshots and the remainder of the content/AI suite pass.
+
+That same legacy guard is already red at the accepted Industrial Waste lab baseline
+`0cf0818434ddccf06baaa1fd1c06cdaa341ebdf3`. This is therefore not admitted by assumption:
+dedicated equivalence run **36058339345** compared the JUnit failure signatures from the accepted
+lab and the Gate 11 current source.
+
+Accepted equivalence artifact:
+- name: `industrial-waste-g11-legacy-v0-equivalence`
+- artifact ID: **10834210091**
+- ZIP SHA-256: `2edc7ff3341efd316db53ca198bb7c662c6ec1d3d5e567fd28ec70450aa64a62`
+
+The independently downloaded artifact reports, for both sources:
+- action-stream hash: `399321c248898b96`
+- outcome: `20 turns, winner seat 1, life -8/16`
+- `equivalent: true`
+
+This is a **narrow inherited-failure equivalence exception**, not a rebless of
+`FrozenBaselineTest`, not a waiver for any new CI failure, and not deck-strength evidence.
+Gate 11 execution must fail closed if the exact artifact digest, accepted/current source identities,
+hash, or outcome signature does not match. Any additional broad-CI failure re-blocks gameplay.
