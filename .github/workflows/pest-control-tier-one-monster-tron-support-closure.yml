@@ -9,12 +9,18 @@ on:
       - mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/roe/cards/AncientStirrings.kt
       - mtg-sets/2024/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/mh3/cards/UnfathomableTruths.kt
       - mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/dka/cards/HauntedFengraf.kt
+      - mtg-sets/src/test/resources/snapshots/cards/ULG.json
+      - mtg-sets/src/test/resources/snapshots/cards/WWK.json
+      - mtg-sets/src/test/resources/snapshots/cards/ROE.json
+      - mtg-sets/src/test/resources/snapshots/cards/DKA.json
+      - mtg-sets/src/test/resources/snapshots/cards/C20.json
+      - mtg-sets/src/test/resources/snapshots/cards/MH3.json
       - gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOneMonsterTronSupportClosureTest.kt
       - docs/experiments/pest-control/tier-one-monster-tron-support-closure.md
       - .github/workflows/pest-control-tier-one-monster-tron-support-closure.yml
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   support-closure:
@@ -22,8 +28,6 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v6
-        with:
-          ref: ${{ github.head_ref }}
 
       - uses: actions/setup-java@v5
         with:
@@ -37,41 +41,8 @@ jobs:
           PEST_MONSTER_TRON_SUPPORT_CLOSURE_REPORT: ${{ github.workspace }}/build/reports/pest-monster-tron-support-closure/report.txt
         run: scripts/test-class PestControlTierOneMonsterTronSupportClosureTest --info --stacktrace
 
-      - name: Regenerate affected golden card snapshots
-        run: ./gradlew :mtg-sets:test --tests "*CardDefinitionSnapshotTest" -DupdateSnapshots=true --info --stacktrace
-
-      - name: Commit regenerated Monster Tron snapshots
-        run: |
-          set -euo pipefail
-          git add \
-            mtg-sets/src/test/resources/snapshots/cards/ULG.json \
-            mtg-sets/src/test/resources/snapshots/cards/WWK.json \
-            mtg-sets/src/test/resources/snapshots/cards/ROE.json \
-            mtg-sets/src/test/resources/snapshots/cards/DKA.json \
-            mtg-sets/src/test/resources/snapshots/cards/C20.json \
-            mtg-sets/src/test/resources/snapshots/cards/MH3.json
-          if git diff --cached --quiet; then
-            echo "No regenerated snapshot changes to commit."
-          else
-            git config user.name "github-actions[bot]"
-            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git commit -m "Refresh Monster Tron support snapshots"
-            git push origin "HEAD:${{ github.head_ref }}"
-          fi
-
-      - name: Upload regenerated Monster Tron snapshots
-        uses: actions/upload-artifact@v7
-        with:
-          name: pest-control-tier-one-monster-tron-regenerated-snapshots
-          path: |
-            mtg-sets/src/test/resources/snapshots/cards/ULG.json
-            mtg-sets/src/test/resources/snapshots/cards/WWK.json
-            mtg-sets/src/test/resources/snapshots/cards/ROE.json
-            mtg-sets/src/test/resources/snapshots/cards/DKA.json
-            mtg-sets/src/test/resources/snapshots/cards/C20.json
-            mtg-sets/src/test/resources/snapshots/cards/MH3.json
-          if-no-files-found: error
-          retention-days: 7
+      - name: Validate affected golden card snapshots
+        run: ./gradlew :mtg-sets:test --tests "*CardDefinitionSnapshotTest" --info --stacktrace
 
       - name: Upload support closure audit
         uses: actions/upload-artifact@v7
