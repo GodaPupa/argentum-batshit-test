@@ -30,4 +30,8 @@ jobs:
           set -euo pipefail
           grep -Fq 'runnerEnabled: Boolean = false' gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlTierOneMonsterTronExecutionAuthorization.kt
           grep -Fq 'initializerEnabled: Boolean = false' gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlTierOneMonsterTronExecutionAuthorization.kt
-          ! grep -R -F 'workflow_dispatch:' .github/workflows/pest-control-tier-one-monster-tron-execution-authorization.yml
+          python3 - <<'PY'
+          from pathlib import Path
+          text = Path(".github/workflows/pest-control-tier-one-monster-tron-execution-authorization.yml").read_text()
+          assert ("workflow" + "_dispatch") not in text
+          PY
