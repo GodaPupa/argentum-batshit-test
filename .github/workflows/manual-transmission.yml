@@ -39,6 +39,10 @@ jobs:
           test "$(git hash-object experiments/manual-transmission/qualification/shorikai_r3sh_audit.py)" = "e97c028560a64071cef20040bd8b902b83cc8958"
           test "$(git hash-object experiments/manual-transmission/qualification/sisay_r3sy_qualification.py)" = "6b474e17c9f274ffd02df2760f38bfe475b81988"
           test "$(git hash-object experiments/manual-transmission/qualification/sisay_r3sy_audit.py)" = "9a31b756526d08c5efa52175f3af82ceafd383df"
+          test "$(git hash-object experiments/manual-transmission/qualification/rogsi_r3rs_qualification.py)" = "d4cfb05fa760316fa5156c44f7bd1f51fd65ae38"
+          test "$(git hash-object experiments/manual-transmission/qualification/rogsi_r3rs_audit.py)" = "81cb2568a6f2337be6e6f813b5e817a0969cdc95"
+          test "$(git hash-object experiments/manual-transmission/qualification/kinnan_basalt_r3kb_qualification.py)" = "a9e4c57df1610c53067f877d441c88e438b09ef7"
+          test "$(git hash-object experiments/manual-transmission/qualification/kinnan_basalt_r3kb_audit.py)" = "710ed1ee24ed3e61642a70ff63fa8aac6c63547e"
 
       - name: Run active deterministic Phase B fixtures
         run: |
@@ -141,6 +145,50 @@ jobs:
           sy=json.loads((root/"sisay/summary.json").read_text())
           assert sy["candidate_target_classification_errors"]==0
           assert sy["lki_changed_ceiling_errors"]==0
+          PY
+
+
+      - name: Execute frozen RogSi and Kinnan qualifications
+        run: |
+          set -euo pipefail
+          mkdir -p build/manual-transmission/qualification/rogsi
+          mkdir -p build/manual-transmission/qualification/kinnan-basalt
+
+          python experiments/manual-transmission/qualification/rogsi_r3rs_qualification.py \
+            --rows build/manual-transmission/qualification/rogsi/rows.jsonl \
+            --summary build/manual-transmission/qualification/rogsi/summary.json
+          python experiments/manual-transmission/qualification/rogsi_r3rs_audit.py \
+            --rows build/manual-transmission/qualification/rogsi/rows.jsonl \
+            --out build/manual-transmission/qualification/rogsi/audit.json
+
+          python experiments/manual-transmission/qualification/kinnan_basalt_r3kb_qualification.py \
+            --rows build/manual-transmission/qualification/kinnan-basalt/rows.jsonl \
+            --summary build/manual-transmission/qualification/kinnan-basalt/summary.json
+          python experiments/manual-transmission/qualification/kinnan_basalt_r3kb_audit.py \
+            --rows build/manual-transmission/qualification/kinnan-basalt/rows.jsonl \
+            --out build/manual-transmission/qualification/kinnan-basalt/audit.json
+
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          root=Path("build/manual-transmission/qualification")
+          rs=json.loads((root/"rogsi/summary.json").read_text())
+          rsa=json.loads((root/"rogsi/audit.json").read_text())
+          kb=json.loads((root/"kinnan-basalt/summary.json").read_text())
+          kba=json.loads((root/"kinnan-basalt/audit.json").read_text())
+
+          assert rs["pass"] and rsa["pass"]
+          assert rs["rows"]==444 and rsa["rows_recounted"]==444
+          assert rs["rows_sha256"]==rsa["rows_sha256"]
+          assert rs["candidate_false_stops"]==0 and rs["candidate_false_live"]==0
+          assert rs["candidate_mana_errors"]==0 and rsa["errors"]==0
+
+          assert kb["pass"] and kba["pass"]
+          assert kb["rows"]==74 and kba["rows_recounted"]==74
+          assert kb["rows_sha256"]==kba["rows_sha256"]
+          assert kb["candidate_false_stops"]==0 and kb["candidate_false_live"]==0
+          assert kb["candidate_illegal_windows"]==0 and kb["candidate_terminal_errors"]==0
+          assert kba["errors"]==0
           PY
 
       - name: Build evidence manifest
