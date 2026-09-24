@@ -158,9 +158,20 @@ matched its recorded SHA-256 and byte size. Same-source broad CI run **360286725
 - Card changes authorized: **0**
 - Hardware remains **Manual Transmission v0.7 / KEEP_V07**
 
-## Next justified work
+## Final disposition
 
-1. Run same-hardware Cruise / Sport / Race elasticity validation.
-2. Finish with `KEEP_V07` unless the elasticity evidence itself supports a hardware change.
+- **Project status: COMPLETE**
+- Same-hardware elasticity run **36037314707**: **SUCCESS**
+- Same-source broad CI run **36037320714**: **SUCCESS**
+- Elasticity artifact ID **10824458364**, ZIP SHA-256
+  `a6aac951676b03f3d141802692d3a4ee3a0c4c20b27b3716fab0a5556977a421`
+- Elasticity result: `PASS_BOUNDED_POLICY_ELASTICITY_KEEP_V07`
+- Frozen hardware remains Manual Transmission v0.7 /
+  `6c28f0629d8ff0a859784f8c7dc0a47054b298d17c6b8e041a4a0a1d8744f111`
+- Disposition: **KEEP_V07**
+- No v0.8 promotion is authorized.
+- Final record:
+  `experiments/manual-transmission/results/FINAL_CONCLUSION_2026_09_24.md`
 
-Exact policy enumerations are timing/classification evidence, not cEDH matchup win rates.
+Exact policy enumerations and the elasticity audit are bounded timing/classification evidence, not
+cEDH matchup win rates.
