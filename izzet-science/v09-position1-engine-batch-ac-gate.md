@@ -70,3 +70,27 @@ not evidence about deck strength.
   absent and no unresolved Izzet identity.
 - The unrelated-snapshot guard passed and the exact frozen v0.7 SHA remained verified.
 - No official seed/game/outcome was consumed or exposed.
+
+
+## Formal qualification and acceptance
+
+- Formal Batch AC qualification run **36027210971**: **SUCCESS**.
+- Accepted source SHA:
+  `622d7486d8da53be6f33ed0381938ab6eb2055e2`.
+- Accepted artifact:
+  `izzet-v09-position1-engine-batch-ac`, artifact ID **10820891185**.
+- GitHub artifact ZIP SHA-256:
+  `74d5a4399844b209f816cbe55bc91b9a25c60cb413d7caec033817eda0086abf`.
+- Independent download reproduced that exact ZIP SHA-256 digest.
+- The downloaded manifest binds:
+  - source SHA `622d7486d8da53be6f33ed0381938ab6eb2055e2`;
+  - frozen-control SHA-256
+    `726f5e9458b46dda30b33a6ce9f3c3237b25d6e11b81dac85308c3065c108a01`;
+  - snapshot run **36026261710**;
+  - snapshot commit `a4260a4cf83eb71369eb3c93c28d1a421751d91e`;
+  - unresolved reduction **25 -> 24**;
+  - unresolved Izzet identities **0**;
+  - official seeds/games/outcome exposure **0/0/0**.
+- Formal qualification reverified Ilysian Caryatid conditional any-color mana semantics, exact
+  real-engine coverage, full card snapshots, the frozen v0.7 control hash, and untouched official state.
+- **Batch AC is accepted.**
