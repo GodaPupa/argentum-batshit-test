@@ -35,6 +35,23 @@ jobs:
           PEST_MONSTER_TRON_SUPPORT_CLOSURE_REPORT: ${{ github.workspace }}/build/reports/pest-monster-tron-support-closure/report.txt
         run: scripts/test-class PestControlTierOneMonsterTronSupportClosureTest --info --stacktrace
 
+      - name: Regenerate affected golden card snapshots
+        run: ./gradlew :mtg-sets:test --tests "*CardDefinitionSnapshotTest" -DupdateSnapshots=true --info --stacktrace
+
+      - name: Upload regenerated Monster Tron snapshots
+        uses: actions/upload-artifact@v7
+        with:
+          name: pest-control-tier-one-monster-tron-regenerated-snapshots
+          path: |
+            mtg-sets/src/test/resources/snapshots/cards/ULG.json
+            mtg-sets/src/test/resources/snapshots/cards/WWK.json
+            mtg-sets/src/test/resources/snapshots/cards/ROE.json
+            mtg-sets/src/test/resources/snapshots/cards/DKA.json
+            mtg-sets/src/test/resources/snapshots/cards/C20.json
+            mtg-sets/src/test/resources/snapshots/cards/MH3.json
+          if-no-files-found: error
+          retention-days: 7
+
       - name: Upload support closure audit
         uses: actions/upload-artifact@v7
         with:
