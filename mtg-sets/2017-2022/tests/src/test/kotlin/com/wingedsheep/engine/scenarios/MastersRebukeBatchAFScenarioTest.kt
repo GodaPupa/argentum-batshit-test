@@ -54,7 +54,7 @@ class MastersRebukeBatchAFScenarioTest : FunSpec({
         )
         d.bothPass()
 
-        d.state.getEntity(recipient)?.get<DamageMarkedComponent>()?.amount shouldBe 4
-        (d.state.getEntity(source)?.get<DamageMarkedComponent>()?.amount ?: 0) shouldBe 0
+        d.state.getEntity(recipient)?.get<DamageComponent>()?.amount shouldBe 4
+        (d.state.getEntity(source)?.get<DamageComponent>()?.amount ?: 0) shouldBe 0
     }
 })
