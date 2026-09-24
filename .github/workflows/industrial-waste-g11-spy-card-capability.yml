@@ -16,6 +16,7 @@ on:
       - mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/IndustrialWasteGate11RoeScenarioTest.kt
       - mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/IndustrialWasteGate11RtrScenarioTest.kt
       - mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/grn/cards/LotlethGiant.kt
+      - mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/IndustrialWasteGate11RnaScenarioTest.kt
       - mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/IndustrialWasteGate11GrnScenarioTest.kt
   workflow_dispatch:
 
@@ -47,5 +48,6 @@ jobs:
             --no-daemon || status=1
           ./gradlew :mtg-sets:2017-2022:tests:test \
             --tests '*IndustrialWasteGate11GrnScenarioTest' \
+            --tests '*IndustrialWasteGate11RnaScenarioTest' \
             --no-daemon || status=1
           exit "$status"
