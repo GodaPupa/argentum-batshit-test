@@ -66,5 +66,21 @@ opponent card entirely by composing already-qualified reusable semantics.
 - The fail-closed unrelated-snapshot guard passed.
 - The exact frozen v0.7 SHA remained verified; no official seed/game/outcome was consumed or exposed.
 
+
+## Formal qualification provenance
+
+- Formal Batch Y qualification run **35959999945** — SUCCESS.
+- Accepted source SHA:
+  `31e649cd01b91d2dbab73db40336e6636477249c`.
+- Accepted artifact:
+  `izzet-v09-position1-engine-batch-y`, artifact id **10792166883**.
+- Artifact ZIP SHA-256:
+  `124e8b5cb7aee2e645cdfc40d3ac462757d042bf6d564bc9f5c36c11df413e39`.
+- Downloaded artifact manifest independently matched the accepted source SHA, frozen-control SHA,
+  snapshot run/commit, unresolved transition `29 -> 28`, zero unresolved Izzet identities,
+  and official state `0/0/0`.
+- Full canonical snapshots, Destroy Evil semantics, modal-cast regressions,
+  enchantment-destruction regressions, and exact real-engine coverage all passed.
+
 Infrastructure, compilation, fixture, snapshot, or semantic failures are qualification history only,
 not evidence about deck strength.
