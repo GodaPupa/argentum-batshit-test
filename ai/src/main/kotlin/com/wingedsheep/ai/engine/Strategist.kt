@@ -28,6 +28,7 @@ import com.wingedsheep.engine.core.CastSpell
 import com.wingedsheep.engine.core.DeclareAttackers
 import com.wingedsheep.engine.core.DeclareBlockers
 import com.wingedsheep.engine.core.GameAction
+import com.wingedsheep.engine.core.TypecycleCard
 import com.wingedsheep.engine.legalactions.LegalAction
 import com.wingedsheep.engine.legalactions.MeaningfulActionFilter
 import com.wingedsheep.engine.state.GameState
@@ -493,14 +494,24 @@ class Strategist(
      * strategic combo action; every unadvised mana source remains excluded.
      */
     private fun candidatesFrom(state: GameState, legalActions: List<LegalAction>): List<LegalAction> {
-        fun isCandidate(action: LegalAction): Boolean {
-            val advisedManaAbility = considerAdvisedManaAbilities && action.isManaAbility &&
+        fun isAdvisedManaAbility(action: LegalAction): Boolean =
+            considerAdvisedManaAbilities && action.isManaAbility &&
                 resolveCardName(state, action)?.let(advisorRegistry::getAdvisor) != null
+
+        fun isCandidate(action: LegalAction): Boolean {
+            val advisedManaAbility = isAdvisedManaAbility(action)
             return action.affordable && (!action.isManaAbility || advisedManaAbility)
         }
 
         return if (useMeaningfulFilter) {
-            MeaningfulActionFilter.filterMeaningful(legalActions).filter(::isCandidate)
+            // MeaningfulActionFilter intentionally hides ordinary mana abilities from normal
+            // strategic scoring. The profile-level opt-in above exists for the exceptional case
+            // where an advisor says producing mana is itself part of a combo line; preserve that
+            // narrow exception even when the meaningful filter is enabled.
+            legalActions.filter { action ->
+                isCandidate(action) &&
+                    (MeaningfulActionFilter.isMeaningful(action) || isAdvisedManaAbility(action))
+            }
         } else {
             legalActions.filter { isCandidate(it) && it.actionType != "PassPriority" }
         }
@@ -1372,6 +1383,7 @@ class Strategist(
         val entityId = when (val gameAction = action.action) {
             is CastSpell -> gameAction.cardId
             is ActivateAbility -> gameAction.sourceId
+            is TypecycleCard -> gameAction.cardId
             else -> return null
         }
         return state.getEntity(entityId)?.get<CardComponent>()?.name
