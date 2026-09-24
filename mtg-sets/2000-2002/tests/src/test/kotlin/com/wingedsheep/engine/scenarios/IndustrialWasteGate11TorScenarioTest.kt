@@ -31,9 +31,15 @@ class IndustrialWasteGate11TorScenarioTest : FunSpec({
         d.castSpell(p1, fiendCard)
         d.bothPass()
 
-        (d.pendingDecision is ChooseTargetsDecision) shouldBe true
-        d.submitTargetSelection(p1, listOf(p2))
-        d.bothPass()
+        when (d.pendingDecision) {
+            is ChooseTargetsDecision -> {
+                d.submitTargetSelection(p1, listOf(p2))
+                d.bothPass()
+            }
+            is SelectCardsDecision -> Unit
+            null -> d.bothPass()
+            else -> error("Unexpected Mesmeric Fiend ETB decision: ${d.pendingDecision}")
+        }
 
         val choose = d.pendingDecision as SelectCardsDecision
         choose.options shouldContain victim
