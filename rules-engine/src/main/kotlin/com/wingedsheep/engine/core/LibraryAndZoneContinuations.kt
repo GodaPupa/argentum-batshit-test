@@ -1,3 +1,5 @@
+@file:OptIn(kotlinx.serialization.ExperimentalSerializationApi::class)
+
 package com.wingedsheep.engine.core
 
 import com.wingedsheep.sdk.model.EntityId
@@ -365,6 +367,8 @@ data class DiscoverMayCastContinuation(
  *   per-card removal could clobber an unrelated permission covering the same card).
  * @property onCastFailure Where the card goes if the cast still can't initiate with the chosen
  *   targets. The free-cast grant is revoked either way.
+ * @property castForPrototype Preserve a Prototype characteristic choice made before target
+ *   selection on a synthesized free cast.
  */
 @Serializable
 data class CastFromCollectionTargetsContinuation(
@@ -373,6 +377,8 @@ data class CastFromCollectionTargetsContinuation(
     val storeCastTo: String? = null,
     val grantedPermissionId: EntityId? = null,
     val onCastFailure: FreeCastFallback = FreeCastFallback.LEAVE,
+    @kotlinx.serialization.EncodeDefault(kotlinx.serialization.EncodeDefault.Mode.NEVER)
+    val castForPrototype: Boolean = false,
 ) : AnswerContinuation
 
 /**
