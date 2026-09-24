@@ -1,15 +1,7 @@
 name: Izzet Position-1 Batch AA Snapshot Rebless
 
 on:
-  push:
-    branches:
-      - "mayhem/izzet-science"
-    paths:
-      - ".github/workflows/izzet-v09-position1-batch-aa-snapshot-rebless.yml"
-      - "mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/neo/cards/ShrineSteward.kt"
-      - "mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/ShrineStewardScenarioTest.kt"
-      - "gym/src/test/kotlin/com/wingedsheep/gym/IzzetScienceVeteranBeastriderEngineReadinessTest.kt"
-      - "izzet-science/v09-position1-engine-batch-aa-gate.md"
+  workflow_dispatch:
 
 permissions:
   contents: write
