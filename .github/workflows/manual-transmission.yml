@@ -151,3 +151,49 @@ jobs:
           name: manual-transmission-magda-policy-development-r1
           path: experiments/manual-transmission/results/magda/policy-development-r1.json
           if-no-files-found: error
+
+
+  magda-r3m-qualification:
+    needs: magda-policy-development
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Verify frozen Magda qualification model identities
+        run: |
+          test "$(git hash-object experiments/manual-transmission/qualification/magda_r3m_qualification.py)" = "6685022682f73a55d425848847871305fa31f887"
+          test "$(git hash-object experiments/manual-transmission/qualification/magda_r3m_audit.py)" = "edc0f5741607f97b1cca753b83564e53d99ece8b"
+      - name: Run exact R3-M qualification
+        run: |
+          mkdir -p experiments/manual-transmission/results/magda/qualification-r1
+          python experiments/manual-transmission/qualification/magda_r3m_qualification.py \
+            --rows experiments/manual-transmission/results/magda/qualification-r1/rows.jsonl \
+            --summary experiments/manual-transmission/results/magda/qualification-r1/summary.json
+          python experiments/manual-transmission/qualification/magda_r3m_audit.py \
+            --rows experiments/manual-transmission/results/magda/qualification-r1/rows.jsonl \
+            --out experiments/manual-transmission/results/magda/qualification-r1/audit.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          root=Path("experiments/manual-transmission")
+          protocol=json.loads((root/"protocols/magda-r3m-qualification-r1.json").read_text())
+          summary=json.loads((root/"results/magda/qualification-r1/summary.json").read_text())
+          audit=json.loads((root/"results/magda/qualification-r1/audit.json").read_text())
+          assert summary["pass"] is True
+          assert audit["pass"] is True
+          assert summary["rows"] == protocol["enumeration"]["expected_rows"] == 960
+          assert summary["rows_sha256"] == audit["rows_sha256"]
+          assert summary["candidate_false_stops"] == protocol["acceptance"]["candidate_false_stops"] == 0
+          assert summary["candidate_false_live"] == protocol["acceptance"]["candidate_false_live"] == 0
+          assert summary["source_removal_current_stop_errors"] == 0
+          assert summary["reference_false_stops"] > 0
+          assert audit["errors"] == 0
+          PY
+      - name: Upload R3-M qualification evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: manual-transmission-magda-r3m-qualification-r1
+          path: experiments/manual-transmission/results/magda/qualification-r1/
+          if-no-files-found: error
