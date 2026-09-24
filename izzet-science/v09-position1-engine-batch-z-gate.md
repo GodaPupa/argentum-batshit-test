@@ -74,5 +74,37 @@ Therefore Batch Z adds no new engine primitive and no card-specific executor.
 - The exact frozen v0.7 SHA remained verified and no official seed/game/outcome was consumed or exposed.
 
 
+
+## Formal qualification and acceptance
+
+- The first formal workflow attempt, Actions run **35997366806**, requalified the full snapshots and
+  Heliod's Pilgrim semantics, then failed only because the workflow referenced a non-existent
+  `TotemGuideHartebeestScenarioTest` class as an extra regression target. No card/engine assertion
+  failed and no official state advanced.
+- Workflow-only corrective commit:
+  `e8fdb9afad0f42a2b40569f9ee744200fd535596`.
+- Corrected formal qualification run **35997404054**: **SUCCESS**.
+- Accepted source SHA:
+  `e8fdb9afad0f42a2b40569f9ee744200fd535596`.
+- Artifact:
+  `izzet-v09-position1-engine-batch-z`.
+- Artifact ID: **10807111679**.
+- GitHub artifact digest:
+  `sha256:87713eb4f3636054abf02b9611179f065673bc3f39cf128b34697c09885002e3`.
+- Independent download of the ZIP reproduced that exact SHA-256 digest.
+- The downloaded manifest binds:
+  - source SHA `e8fdb9afad0f42a2b40569f9ee744200fd535596`;
+  - frozen control SHA-256
+    `726f5e9458b46dda30b33a6ce9f3c3237b25d6e11b81dac85308c3065c108a01`;
+  - snapshot run **35996588860**;
+  - snapshot commit `32fbc0a108f945fb5638568c1308ea94c212fff9`;
+  - unresolved reduction **28 -> 27**;
+  - unresolved Izzet identities **0**;
+  - official seeds/games/outcome exposure **0/0/0**.
+- Formal logs reverified both no-change audit tokens, all canonical card snapshots, Heliod's Pilgrim
+  semantics, exact `V09_REAL_ENGINE_UNRESOLVED_COUNT=27`, and untouched official state.
+- **Batch Z is accepted.**
+
+
 Infrastructure, compilation, fixture, snapshot, or semantic failures are qualification history only,
 not evidence about deck strength.
