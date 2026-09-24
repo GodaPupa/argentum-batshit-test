@@ -1,7 +1,6 @@
 # Gate 11 Spy Combo readiness v1
 
-Status: qualified seed-free readiness. Official gameplay is authorized only under the separately
-frozen Gate 11 Spy Combo capability-pilot protocol and its registered namespace.
+Status: qualified dedicated seed-free readiness; **gameplay remains unauthorized** until the required broad CI gate is green. The separately frozen pilot namespace remains reserved but must not be executed or interpreted before that condition is satisfied.
 
 ## Frozen opponent
 
