@@ -41,7 +41,7 @@ class HeliodsPilgrimScenarioTest : FunSpec({
 
         val may = d.pendingDecision.shouldBeInstanceOf<YesNoDecision>()
         may.playerId shouldBe me
-        d.submitYesNo(me, true).isSuccess shouldBe true
+        d.submitYesNo(me, true).isPaused shouldBe true
 
         val search = d.pendingDecision.shouldBeInstanceOf<SelectCardsDecision>()
         search.options shouldContain aura
