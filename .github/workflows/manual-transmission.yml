@@ -11,563 +11,164 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: manual-transmission-${{ github.ref_name }}
+  cancel-in-progress: true
+
 jobs:
-  hashaton-legality-fixtures:
+  evidence:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-      - name: Run final deterministic Hashaton timing fixtures
-        run: |
-          mkdir -p experiments/manual-transmission/results/hashaton
-          python experiments/manual-transmission/fixtures/hashaton_timing_fixtures_r3.py \
-            | tee experiments/manual-transmission/results/hashaton/timing-fixtures-r3.json
-          grep -q '"status": "PASS"' experiments/manual-transmission/results/hashaton/timing-fixtures-r3.json
-          grep -q '"fixtures_passed": 25' experiments/manual-transmission/results/hashaton/timing-fixtures-r3.json
-          grep -q '"qualification_outcomes_exposed": 0' experiments/manual-transmission/results/hashaton/timing-fixtures-r3.json
-      - name: Upload fixture evidence
-        uses: actions/upload-artifact@v4
-        with:
-          name: manual-transmission-hashaton-timing-fixtures-r3
-          path: experiments/manual-transmission/results/hashaton/timing-fixtures-r3.json
-          if-no-files-found: error
 
-  hashaton-policy-development:
-    needs: hashaton-legality-fixtures
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - name: Run exact Hashaton policy development enumeration
-        run: |
-          mkdir -p experiments/manual-transmission/results/hashaton
-          python experiments/manual-transmission/development/hashaton_policy_development.py \
-            | tee experiments/manual-transmission/results/hashaton/policy-development-r1.json
-          grep -q '"status": "DEVELOPMENT_ONLY"' experiments/manual-transmission/results/hashaton/policy-development-r1.json
-          grep -q '"qualification_eligible": false' experiments/manual-transmission/results/hashaton/policy-development-r1.json
-      - name: Upload development evidence
-        uses: actions/upload-artifact@v4
-        with:
-          name: manual-transmission-hashaton-policy-development-r1
-          path: experiments/manual-transmission/results/hashaton/policy-development-r1.json
-          if-no-files-found: error
 
-  hashaton-r3ht-qualification:
-    needs: hashaton-policy-development
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
       - name: Verify frozen qualification model identities
         run: |
+          set -euo pipefail
           test "$(git hash-object experiments/manual-transmission/qualification/hashaton_r3ht_qualification.py)" = "b3b8ae2aab9fb5dcc416520a2f424bd3924dcd95"
           test "$(git hash-object experiments/manual-transmission/qualification/hashaton_r3ht_audit.py)" = "2395ff464f2e1c02f03864d3ec1ed9bd0dd15b5f"
-      - name: Run exact R3-HT qualification
-        run: |
-          mkdir -p experiments/manual-transmission/results/hashaton/qualification-r1
-          python experiments/manual-transmission/qualification/hashaton_r3ht_qualification.py \
-            --rows experiments/manual-transmission/results/hashaton/qualification-r1/rows.jsonl \
-            --summary experiments/manual-transmission/results/hashaton/qualification-r1/summary.json
-          python experiments/manual-transmission/qualification/hashaton_r3ht_audit.py \
-            --rows experiments/manual-transmission/results/hashaton/qualification-r1/rows.jsonl \
-            --out experiments/manual-transmission/results/hashaton/qualification-r1/audit.json
-          python - <<'PY'
-          import json
-          from pathlib import Path
-          root=Path("experiments/manual-transmission")
-          protocol=json.loads((root/"protocols/hashaton-r3ht-qualification-r1.json").read_text())
-          summary=json.loads((root/"results/hashaton/qualification-r1/summary.json").read_text())
-          audit=json.loads((root/"results/hashaton/qualification-r1/audit.json").read_text())
-          assert summary["pass"] is True
-          assert audit["pass"] is True
-          assert summary["rows"] == protocol["enumeration"]["expected_rows"] == 2950
-          assert summary["rows_sha256"] == audit["rows_sha256"]
-          assert summary["candidate_false_stops"] == protocol["acceptance"]["candidate_false_stops"] == 0
-          assert summary["candidate_false_live"] == protocol["acceptance"]["candidate_false_live"] == 0
-          assert summary["led_multi_trigger_candidate_full_stop_errors"] == 0
-          assert summary["tidebinder_lifecycle_blank_errors"] == 0
-          assert audit["errors"] == 0
-          PY
-      - name: Upload R3-HT qualification evidence
-        uses: actions/upload-artifact@v4
-        with:
-          name: manual-transmission-hashaton-r3ht-qualification-r1
-          path: experiments/manual-transmission/results/hashaton/qualification-r1/
-          if-no-files-found: error
-
-
-  magda-legality-fixtures:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-      - name: Run deterministic Magda timing fixtures
-        run: |
-          mkdir -p experiments/manual-transmission/results/magda
-          python experiments/manual-transmission/fixtures/magda_timing_fixtures.py \
-            | tee experiments/manual-transmission/results/magda/timing-fixtures-r1.json
-          grep -q '"status": "PASS"' experiments/manual-transmission/results/magda/timing-fixtures-r1.json
-          grep -q '"fixtures_passed": 12' experiments/manual-transmission/results/magda/timing-fixtures-r1.json
-          grep -q '"qualification_outcomes_exposed": 0' experiments/manual-transmission/results/magda/timing-fixtures-r1.json
-      - name: Upload Magda fixture evidence
-        uses: actions/upload-artifact@v4
-        with:
-          name: manual-transmission-magda-timing-fixtures-r1
-          path: experiments/manual-transmission/results/magda/timing-fixtures-r1.json
-          if-no-files-found: error
-
-
-  magda-policy-development:
-    needs: magda-legality-fixtures
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-      - name: Run exact Magda policy development screen
-        run: |
-          mkdir -p experiments/manual-transmission/results/magda
-          python experiments/manual-transmission/development/magda_policy_development.py \
-            | tee experiments/manual-transmission/results/magda/policy-development-r1.json
-          grep -q '"status": "DEVELOPMENT_ONLY"' experiments/manual-transmission/results/magda/policy-development-r1.json
-          grep -q '"qualification_eligible": false' experiments/manual-transmission/results/magda/policy-development-r1.json
-          grep -q '"qualification_outcomes_exposed": 0' experiments/manual-transmission/results/magda/policy-development-r1.json
-      - name: Upload Magda development evidence
-        uses: actions/upload-artifact@v4
-        with:
-          name: manual-transmission-magda-policy-development-r1
-          path: experiments/manual-transmission/results/magda/policy-development-r1.json
-          if-no-files-found: error
-
-
-  magda-r3m-qualification:
-    needs: magda-policy-development
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-      - name: Verify frozen Magda qualification model identities
-        run: |
           test "$(git hash-object experiments/manual-transmission/qualification/magda_r3m_qualification.py)" = "6685022682f73a55d425848847871305fa31f887"
           test "$(git hash-object experiments/manual-transmission/qualification/magda_r3m_audit.py)" = "edc0f5741607f97b1cca753b83564e53d99ece8b"
-      - name: Run exact R3-M qualification
-        run: |
-          mkdir -p experiments/manual-transmission/results/magda/qualification-r1
-          python experiments/manual-transmission/qualification/magda_r3m_qualification.py \
-            --rows experiments/manual-transmission/results/magda/qualification-r1/rows.jsonl \
-            --summary experiments/manual-transmission/results/magda/qualification-r1/summary.json
-          python experiments/manual-transmission/qualification/magda_r3m_audit.py \
-            --rows experiments/manual-transmission/results/magda/qualification-r1/rows.jsonl \
-            --out experiments/manual-transmission/results/magda/qualification-r1/audit.json
-          python - <<'PY'
-          import json
-          from pathlib import Path
-          root=Path("experiments/manual-transmission")
-          protocol=json.loads((root/"protocols/magda-r3m-qualification-r1.json").read_text())
-          summary=json.loads((root/"results/magda/qualification-r1/summary.json").read_text())
-          audit=json.loads((root/"results/magda/qualification-r1/audit.json").read_text())
-          assert summary["pass"] is True
-          assert audit["pass"] is True
-          assert summary["rows"] == protocol["enumeration"]["expected_rows"] == 960
-          assert summary["rows_sha256"] == audit["rows_sha256"]
-          assert summary["candidate_false_stops"] == protocol["acceptance"]["candidate_false_stops"] == 0
-          assert summary["candidate_false_live"] == protocol["acceptance"]["candidate_false_live"] == 0
-          assert summary["source_removal_current_stop_errors"] == 0
-          assert summary["reference_false_stops"] > 0
-          assert audit["errors"] == 0
-          PY
-      - name: Upload R3-M qualification evidence
-        uses: actions/upload-artifact@v4
-        with:
-          name: manual-transmission-magda-r3m-qualification-r1
-          path: experiments/manual-transmission/results/magda/qualification-r1/
-          if-no-files-found: error
-
-
-  blue-farm-legality-fixtures:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-      - name: Run Blue Farm Oracle/Breach fixtures
-        run: |
-          mkdir -p experiments/manual-transmission/results/blue-farm
-          python experiments/manual-transmission/fixtures/blue_farm_timing_fixtures.py \
-            | tee experiments/manual-transmission/results/blue-farm/timing-fixtures-r1.json
-          grep -q '"status": "PASS"' experiments/manual-transmission/results/blue-farm/timing-fixtures-r1.json
-          grep -q '"fixtures_passed": 18' experiments/manual-transmission/results/blue-farm/timing-fixtures-r1.json
-          grep -q '"qualification_outcomes_exposed": 0' experiments/manual-transmission/results/blue-farm/timing-fixtures-r1.json
-      - name: Upload Blue Farm fixture evidence
-        uses: actions/upload-artifact@v4
-        with:
-          name: manual-transmission-blue-farm-timing-fixtures-r1
-          path: experiments/manual-transmission/results/blue-farm/timing-fixtures-r1.json
-          if-no-files-found: error
-
-  shorikai-legality-fixtures:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-      - name: Run Shorikai Scepter/Hullbreaker fixtures
-        run: |
-          mkdir -p experiments/manual-transmission/results/shorikai
-          python experiments/manual-transmission/fixtures/shorikai_timing_fixtures.py \
-            | tee experiments/manual-transmission/results/shorikai/timing-fixtures-r1.json
-          grep -q '"status": "PASS"' experiments/manual-transmission/results/shorikai/timing-fixtures-r1.json
-          grep -q '"fixtures_passed": 16' experiments/manual-transmission/results/shorikai/timing-fixtures-r1.json
-          grep -q '"qualification_outcomes_exposed": 0' experiments/manual-transmission/results/shorikai/timing-fixtures-r1.json
-      - name: Upload Shorikai fixture evidence
-        uses: actions/upload-artifact@v4
-        with:
-          name: manual-transmission-shorikai-timing-fixtures-r1
-          path: experiments/manual-transmission/results/shorikai/timing-fixtures-r1.json
-          if-no-files-found: error
-
-  sisay-legality-fixtures:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-      - name: Run Sisay activation/ceiling fixtures
-        run: |
-          mkdir -p experiments/manual-transmission/results/sisay
-          python experiments/manual-transmission/fixtures/sisay_timing_fixtures.py \
-            | tee experiments/manual-transmission/results/sisay/timing-fixtures-r1.json
-          grep -q '"status": "PASS"' experiments/manual-transmission/results/sisay/timing-fixtures-r1.json
-          grep -q '"fixtures_passed": 16' experiments/manual-transmission/results/sisay/timing-fixtures-r1.json
-          grep -q '"qualification_outcomes_exposed": 0' experiments/manual-transmission/results/sisay/timing-fixtures-r1.json
-      - name: Upload Sisay fixture evidence
-        uses: actions/upload-artifact@v4
-        with:
-          name: manual-transmission-sisay-timing-fixtures-r1
-          path: experiments/manual-transmission/results/sisay/timing-fixtures-r1.json
-          if-no-files-found: error
-
-
-  blue-farm-policy-development:
-    needs: blue-farm-legality-fixtures
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-      - name: Run Blue Farm policy development screen
-        run: |
-          mkdir -p experiments/manual-transmission/results/blue-farm
-          python experiments/manual-transmission/development/blue_farm_policy_development.py \
-            | tee experiments/manual-transmission/results/blue-farm/policy-development-r1.json
-          grep -q '"status": "DEVELOPMENT_ONLY"' experiments/manual-transmission/results/blue-farm/policy-development-r1.json
-          grep -q '"qualification_eligible": false' experiments/manual-transmission/results/blue-farm/policy-development-r1.json
-          grep -q '"qualification_outcomes_exposed": 0' experiments/manual-transmission/results/blue-farm/policy-development-r1.json
-      - name: Upload Blue Farm development evidence
-        uses: actions/upload-artifact@v4
-        with:
-          name: manual-transmission-blue-farm-policy-development-r1
-          path: experiments/manual-transmission/results/blue-farm/policy-development-r1.json
-          if-no-files-found: error
-
-  shorikai-policy-development:
-    needs: shorikai-legality-fixtures
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-      - name: Run Shorikai policy development screen
-        run: |
-          mkdir -p experiments/manual-transmission/results/shorikai
-          python experiments/manual-transmission/development/shorikai_policy_development.py \
-            | tee experiments/manual-transmission/results/shorikai/policy-development-r1.json
-          grep -q '"status": "DEVELOPMENT_ONLY"' experiments/manual-transmission/results/shorikai/policy-development-r1.json
-          grep -q '"qualification_eligible": false' experiments/manual-transmission/results/shorikai/policy-development-r1.json
-          grep -q '"qualification_outcomes_exposed": 0' experiments/manual-transmission/results/shorikai/policy-development-r1.json
-      - name: Upload Shorikai development evidence
-        uses: actions/upload-artifact@v4
-        with:
-          name: manual-transmission-shorikai-policy-development-r1
-          path: experiments/manual-transmission/results/shorikai/policy-development-r1.json
-          if-no-files-found: error
-
-
-  sisay-policy-development:
-    needs: sisay-legality-fixtures
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-      - name: Run Sisay policy development screen
-        run: |
-          mkdir -p experiments/manual-transmission/results/sisay
-          python experiments/manual-transmission/development/sisay_policy_development.py \
-            | tee experiments/manual-transmission/results/sisay/policy-development-r1.json
-          grep -q '"status": "DEVELOPMENT_ONLY"' experiments/manual-transmission/results/sisay/policy-development-r1.json
-          grep -q '"qualification_eligible": false' experiments/manual-transmission/results/sisay/policy-development-r1.json
-          grep -q '"qualification_outcomes_exposed": 0' experiments/manual-transmission/results/sisay/policy-development-r1.json
-          grep -q '"candidate_direct_false_stops": 0' experiments/manual-transmission/results/sisay/policy-development-r1.json
-          grep -q '"candidate_ceiling_false_full_stops": 0' experiments/manual-transmission/results/sisay/policy-development-r1.json
-      - name: Upload Sisay development evidence
-        uses: actions/upload-artifact@v4
-        with:
-          name: manual-transmission-sisay-policy-development-r1
-          path: experiments/manual-transmission/results/sisay/policy-development-r1.json
-          if-no-files-found: error
-
-
-  blue-farm-r3bf-qualification:
-    needs: blue-farm-policy-development
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-      - name: Verify frozen Blue Farm qualification model identities
-        run: |
           test "$(git hash-object experiments/manual-transmission/qualification/blue_farm_r3bf_qualification.py)" = "3b9a9d113a504188b3e3329242266e69ecb18074"
           test "$(git hash-object experiments/manual-transmission/qualification/blue_farm_r3bf_audit.py)" = "560c1244887ccdca2afc9b8fb4ceebaa04ba2177"
-      - name: Run exact R3-BF qualification
-        run: |
-          mkdir -p experiments/manual-transmission/results/blue-farm/qualification-r1
-          python experiments/manual-transmission/qualification/blue_farm_r3bf_qualification.py \
-            --rows experiments/manual-transmission/results/blue-farm/qualification-r1/rows.jsonl \
-            --summary experiments/manual-transmission/results/blue-farm/qualification-r1/summary.json
-          python experiments/manual-transmission/qualification/blue_farm_r3bf_audit.py \
-            --rows experiments/manual-transmission/results/blue-farm/qualification-r1/rows.jsonl \
-            --out experiments/manual-transmission/results/blue-farm/qualification-r1/audit.json
-          python - <<'PY'
-          import json
-          from pathlib import Path
-          root=Path("experiments/manual-transmission")
-          protocol=json.loads((root/"protocols/blue-farm-r3bf-qualification-r1.json").read_text())
-          summary=json.loads((root/"results/blue-farm/qualification-r1/summary.json").read_text())
-          audit=json.loads((root/"results/blue-farm/qualification-r1/audit.json").read_text())
-          assert summary["pass"] is True
-          assert audit["pass"] is True
-          assert summary["rows"] == protocol["enumeration"]["expected_rows"] == 144
-          assert summary["rows_sha256"] == audit["rows_sha256"]
-          assert summary["candidate_false_stops"] == 0
-          assert summary["candidate_false_live"] == 0
-          assert summary["reference_false_stops"] > 0
-          assert audit["errors"] == 0
-          PY
-      - name: Upload R3-BF qualification evidence
-        uses: actions/upload-artifact@v4
-        with:
-          name: manual-transmission-blue-farm-r3bf-qualification-r1
-          path: experiments/manual-transmission/results/blue-farm/qualification-r1/
-          if-no-files-found: error
-
-  shorikai-r3sh-qualification:
-    needs: shorikai-policy-development
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-      - name: Verify frozen Shorikai qualification model identities
-        run: |
           test "$(git hash-object experiments/manual-transmission/qualification/shorikai_r3sh_qualification.py)" = "1221dc4d35a40b23f99629ecc9ac76333e54bdfb"
           test "$(git hash-object experiments/manual-transmission/qualification/shorikai_r3sh_audit.py)" = "e97c028560a64071cef20040bd8b902b83cc8958"
-      - name: Run exact R3-SH qualification
-        run: |
-          mkdir -p experiments/manual-transmission/results/shorikai/qualification-r1
-          python experiments/manual-transmission/qualification/shorikai_r3sh_qualification.py \
-            --rows experiments/manual-transmission/results/shorikai/qualification-r1/rows.jsonl \
-            --summary experiments/manual-transmission/results/shorikai/qualification-r1/summary.json
-          python experiments/manual-transmission/qualification/shorikai_r3sh_audit.py \
-            --rows experiments/manual-transmission/results/shorikai/qualification-r1/rows.jsonl \
-            --out experiments/manual-transmission/results/shorikai/qualification-r1/audit.json
-          python - <<'PY'
-          import json
-          from pathlib import Path
-          root=Path("experiments/manual-transmission")
-          protocol=json.loads((root/"protocols/shorikai-r3sh-qualification-r1.json").read_text())
-          summary=json.loads((root/"results/shorikai/qualification-r1/summary.json").read_text())
-          audit=json.loads((root/"results/shorikai/qualification-r1/audit.json").read_text())
-          assert summary["pass"] is True
-          assert audit["pass"] is True
-          assert summary["rows"] == protocol["enumeration"]["expected_rows"] == 120
-          assert summary["rows_sha256"] == audit["rows_sha256"]
-          assert summary["candidate_false_stops"] == 0
-          assert summary["candidate_false_live"] == 0
-          assert summary["reference_false_stops"] > 0
-          assert audit["errors"] == 0
-          PY
-      - name: Upload R3-SH qualification evidence
-        uses: actions/upload-artifact@v4
-        with:
-          name: manual-transmission-shorikai-r3sh-qualification-r1
-          path: experiments/manual-transmission/results/shorikai/qualification-r1/
-          if-no-files-found: error
-
-
-  sisay-r3sy-qualification:
-    needs: sisay-policy-development
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-      - name: Verify frozen Sisay qualification model identities
-        run: |
           test "$(git hash-object experiments/manual-transmission/qualification/sisay_r3sy_qualification.py)" = "6b474e17c9f274ffd02df2760f38bfe475b81988"
           test "$(git hash-object experiments/manual-transmission/qualification/sisay_r3sy_audit.py)" = "9a31b756526d08c5efa52175f3af82ceafd383df"
-      - name: Run broadened exact R3-SY qualification
+
+      - name: Run active deterministic Phase B fixtures
         run: |
-          mkdir -p experiments/manual-transmission/results/sisay/qualification-r1
-          python experiments/manual-transmission/qualification/sisay_r3sy_qualification.py \
-            --rows experiments/manual-transmission/results/sisay/qualification-r1/rows.jsonl \
-            --summary experiments/manual-transmission/results/sisay/qualification-r1/summary.json
-          python experiments/manual-transmission/qualification/sisay_r3sy_audit.py \
-            --rows experiments/manual-transmission/results/sisay/qualification-r1/rows.jsonl \
-            --out experiments/manual-transmission/results/sisay/qualification-r1/audit.json
+          set -euo pipefail
+          mkdir -p build/manual-transmission/fixtures
+          python experiments/manual-transmission/fixtures/blue_farm_timing_fixtures.py | tee build/manual-transmission/fixtures/blue-farm.json
+          python experiments/manual-transmission/fixtures/shorikai_timing_fixtures.py | tee build/manual-transmission/fixtures/shorikai.json
+          python experiments/manual-transmission/fixtures/sisay_timing_fixtures.py | tee build/manual-transmission/fixtures/sisay.json
+          python experiments/manual-transmission/fixtures/rogsi_timing_fixtures.py | tee build/manual-transmission/fixtures/rogsi.json
+          python experiments/manual-transmission/fixtures/kinnan_basalt_timing_fixtures.py | tee build/manual-transmission/fixtures/kinnan-basalt.json
+          grep -q '"fixtures_passed": 18' build/manual-transmission/fixtures/blue-farm.json
+          grep -q '"fixtures_passed": 16' build/manual-transmission/fixtures/shorikai.json
+          grep -q '"fixtures_passed": 16' build/manual-transmission/fixtures/sisay.json
+          grep -q '"fixtures_passed": 18' build/manual-transmission/fixtures/rogsi.json
+          grep -q '"fixtures_passed": 16' build/manual-transmission/fixtures/kinnan-basalt.json
+          test "$(grep -l '"status": "PASS"' build/manual-transmission/fixtures/*.json | wc -l)" -eq 5
+
+      - name: Run active DEVELOPMENT ONLY policy screens
+        run: |
+          set -euo pipefail
+          mkdir -p build/manual-transmission/development
+          python experiments/manual-transmission/development/blue_farm_policy_development.py | tee build/manual-transmission/development/blue-farm.json
+          python experiments/manual-transmission/development/shorikai_policy_development.py | tee build/manual-transmission/development/shorikai.json
+          python experiments/manual-transmission/development/sisay_policy_development.py | tee build/manual-transmission/development/sisay.json
+          python experiments/manual-transmission/development/rogsi_policy_development.py | tee build/manual-transmission/development/rogsi.json
+          python experiments/manual-transmission/development/kinnan_basalt_policy_development.py | tee build/manual-transmission/development/kinnan-basalt.json
           python - <<'PY'
           import json
           from pathlib import Path
-          root=Path("experiments/manual-transmission")
-          protocol=json.loads((root/"protocols/sisay-r3sy-qualification-r1.json").read_text())
-          summary=json.loads((root/"results/sisay/qualification-r1/summary.json").read_text())
-          audit=json.loads((root/"results/sisay/qualification-r1/audit.json").read_text())
-          assert summary["pass"] is True
-          assert audit["pass"] is True
-          assert summary["rows"] == protocol["enumeration"]["expected_rows"] == 220972
-          assert summary["rows_sha256"] == audit["rows_sha256"]
-          assert summary["candidate_false_stops"] == 0
-          assert summary["candidate_false_live"] == 0
-          assert summary["candidate_target_classification_errors"] == 0
-          assert summary["lki_changed_ceiling_errors"] == 0
-          assert summary["reference_false_stops"] > 0
-          assert audit["errors"] == 0
+          root=Path("build/manual-transmission/development")
+          for path in root.glob("*.json"):
+              d=json.loads(path.read_text())
+              assert d["status"]=="DEVELOPMENT_ONLY", path
+              assert d["qualification_eligible"] is False, path
+              assert d.get("qualification_outcomes_exposed",0)==0, path
+          bf=json.loads((root/"blue-farm.json").read_text())
+          sh=json.loads((root/"shorikai.json").read_text())
+          sy=json.loads((root/"sisay.json").read_text())
+          rs=json.loads((root/"rogsi.json").read_text())
+          kb=json.loads((root/"kinnan-basalt.json").read_text())
+          assert bf["candidate_false_stop"]==0 and bf["candidate_false_live"]==0
+          assert sh["candidate_false_stops"]==0
+          assert sy["candidate_direct_false_stops"]==0 and sy["candidate_ceiling_false_full_stops"]==0 and sy["candidate_false_live"]==0
+          assert rs["candidate_false_stop"]==0 and rs["candidate_false_live"]==0 and rs["candidate_mana_errors"]==0
+          assert kb["candidate_false_stop"]==0 and kb["candidate_false_live"]==0 and kb["candidate_illegal_windows"]==0 and kb["candidate_terminal_errors"]==0
           PY
-      - name: Upload R3-SY qualification evidence
-        uses: actions/upload-artifact@v4
-        with:
-          name: manual-transmission-sisay-r3sy-qualification-r1
-          path: experiments/manual-transmission/results/sisay/qualification-r1/
-          if-no-files-found: error
 
-
-
-  rogsi-legality-fixtures:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-      - name: Run contemporary RogSi timing fixtures
+      - name: Regress accepted Hashaton and Magda overlays
         run: |
-          mkdir -p experiments/manual-transmission/results/rogsi
-          python experiments/manual-transmission/fixtures/rogsi_timing_fixtures.py \
-            | tee experiments/manual-transmission/results/rogsi/timing-fixtures-r1.json
-          grep -q '"status": "PASS"' experiments/manual-transmission/results/rogsi/timing-fixtures-r1.json
-          grep -q '"fixtures_passed": 18' experiments/manual-transmission/results/rogsi/timing-fixtures-r1.json
-          grep -q '"qualification_outcomes_exposed": 0' experiments/manual-transmission/results/rogsi/timing-fixtures-r1.json
-      - name: Upload RogSi fixture evidence
-        uses: actions/upload-artifact@v4
-        with:
-          name: manual-transmission-rogsi-timing-fixtures-r1
-          path: experiments/manual-transmission/results/rogsi/timing-fixtures-r1.json
-          if-no-files-found: error
+          set -euo pipefail
+          mkdir -p build/manual-transmission/accepted/hashaton build/manual-transmission/accepted/magda
+          python experiments/manual-transmission/qualification/hashaton_r3ht_qualification.py             --rows build/manual-transmission/accepted/hashaton/rows.jsonl             --summary build/manual-transmission/accepted/hashaton/summary.json
+          python experiments/manual-transmission/qualification/hashaton_r3ht_audit.py             --rows build/manual-transmission/accepted/hashaton/rows.jsonl             --out build/manual-transmission/accepted/hashaton/audit.json
+          python experiments/manual-transmission/qualification/magda_r3m_qualification.py             --rows build/manual-transmission/accepted/magda/rows.jsonl             --summary build/manual-transmission/accepted/magda/summary.json
+          python experiments/manual-transmission/qualification/magda_r3m_audit.py             --rows build/manual-transmission/accepted/magda/rows.jsonl             --out build/manual-transmission/accepted/magda/audit.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          root=Path("build/manual-transmission/accepted")
+          h=json.loads((root/"hashaton/summary.json").read_text())
+          ha=json.loads((root/"hashaton/audit.json").read_text())
+          m=json.loads((root/"magda/summary.json").read_text())
+          ma=json.loads((root/"magda/audit.json").read_text())
+          assert h["pass"] and ha["pass"] and h["rows"]==2950 and h["rows_sha256"]==ha["rows_sha256"]
+          assert m["pass"] and ma["pass"] and m["rows"]==960 and m["rows_sha256"]==ma["rows_sha256"]
+          PY
 
-  rogsi-policy-development:
-    needs: rogsi-legality-fixtures
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-      - name: Run RogSi policy development screen
+      - name: Execute frozen Blue Farm Shorikai and Sisay qualifications
         run: |
-          mkdir -p experiments/manual-transmission/results/rogsi
-          python experiments/manual-transmission/development/rogsi_policy_development.py \
-            | tee experiments/manual-transmission/results/rogsi/policy-development-r1.json
-          grep -q '"status": "DEVELOPMENT_ONLY"' experiments/manual-transmission/results/rogsi/policy-development-r1.json
-          grep -q '"qualification_eligible": false' experiments/manual-transmission/results/rogsi/policy-development-r1.json
-          grep -q '"candidate_false_stop": 0' experiments/manual-transmission/results/rogsi/policy-development-r1.json
-          grep -q '"candidate_false_live": 0' experiments/manual-transmission/results/rogsi/policy-development-r1.json
-          grep -q '"candidate_mana_errors": 0' experiments/manual-transmission/results/rogsi/policy-development-r1.json
-      - name: Upload RogSi development evidence
-        uses: actions/upload-artifact@v4
-        with:
-          name: manual-transmission-rogsi-policy-development-r1
-          path: experiments/manual-transmission/results/rogsi/policy-development-r1.json
-          if-no-files-found: error
+          set -euo pipefail
+          mkdir -p build/manual-transmission/qualification/blue-farm
+          mkdir -p build/manual-transmission/qualification/shorikai
+          mkdir -p build/manual-transmission/qualification/sisay
 
-  kinnan-basalt-legality-fixtures:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-      - name: Run current Kinnan Basalt timing fixtures
+          python experiments/manual-transmission/qualification/blue_farm_r3bf_qualification.py             --rows build/manual-transmission/qualification/blue-farm/rows.jsonl             --summary build/manual-transmission/qualification/blue-farm/summary.json
+          python experiments/manual-transmission/qualification/blue_farm_r3bf_audit.py             --rows build/manual-transmission/qualification/blue-farm/rows.jsonl             --out build/manual-transmission/qualification/blue-farm/audit.json
+
+          python experiments/manual-transmission/qualification/shorikai_r3sh_qualification.py             --rows build/manual-transmission/qualification/shorikai/rows.jsonl             --summary build/manual-transmission/qualification/shorikai/summary.json
+          python experiments/manual-transmission/qualification/shorikai_r3sh_audit.py             --rows build/manual-transmission/qualification/shorikai/rows.jsonl             --out build/manual-transmission/qualification/shorikai/audit.json
+
+          python experiments/manual-transmission/qualification/sisay_r3sy_qualification.py             --rows build/manual-transmission/qualification/sisay/rows.jsonl             --summary build/manual-transmission/qualification/sisay/summary.json
+          python experiments/manual-transmission/qualification/sisay_r3sy_audit.py             --rows build/manual-transmission/qualification/sisay/rows.jsonl             --out build/manual-transmission/qualification/sisay/audit.json
+
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          root=Path("build/manual-transmission/qualification")
+          expected={"blue-farm":144,"shorikai":120,"sisay":220972}
+          for name,n in expected.items():
+              s=json.loads((root/name/"summary.json").read_text())
+              a=json.loads((root/name/"audit.json").read_text())
+              assert s["pass"] is True, name
+              assert a["pass"] is True, name
+              assert s["rows"]==n, (name,s["rows"],n)
+              assert a["rows_recounted"]==n, name
+              assert s["rows_sha256"]==a["rows_sha256"], name
+              assert s["candidate_false_stops"]==0, name
+              assert s["candidate_false_live"]==0, name
+              assert a["errors"]==0, name
+          sy=json.loads((root/"sisay/summary.json").read_text())
+          assert sy["candidate_target_classification_errors"]==0
+          assert sy["lki_changed_ceiling_errors"]==0
+          PY
+
+      - name: Build evidence manifest
         run: |
-          mkdir -p experiments/manual-transmission/results/kinnan
-          python experiments/manual-transmission/fixtures/kinnan_basalt_timing_fixtures.py \
-            | tee experiments/manual-transmission/results/kinnan/basalt-timing-fixtures-r1.json
-          grep -q '"status": "PASS"' experiments/manual-transmission/results/kinnan/basalt-timing-fixtures-r1.json
-          grep -q '"fixtures_passed": 16' experiments/manual-transmission/results/kinnan/basalt-timing-fixtures-r1.json
-          grep -q '"qualification_outcomes_exposed": 0' experiments/manual-transmission/results/kinnan/basalt-timing-fixtures-r1.json
-      - name: Upload Kinnan Basalt fixture evidence
+          python - <<'PY'
+          import hashlib, json
+          from pathlib import Path
+          root=Path("build/manual-transmission")
+          files=[]
+          for p in sorted(root.rglob("*")):
+              if p.is_file():
+                  files.append({
+                    "path":str(p.relative_to(root)),
+                    "size":p.stat().st_size,
+                    "sha256":hashlib.sha256(p.read_bytes()).hexdigest(),
+                  })
+          out={
+            "schema":"manual-transmission-ci-evidence-manifest-v1",
+            "head_sha":"${{ github.sha }}",
+            "files":files,
+          }
+          (root/"manifest.json").write_text(json.dumps(out,indent=2,sort_keys=True)+"\n")
+          PY
+
+      - name: Upload Manual Transmission evidence
         uses: actions/upload-artifact@v4
         with:
-          name: manual-transmission-kinnan-basalt-timing-fixtures-r1
-          path: experiments/manual-transmission/results/kinnan/basalt-timing-fixtures-r1.json
+          name: manual-transmission-active-evidence
+          path: build/manual-transmission/
           if-no-files-found: error
-
-  kinnan-basalt-policy-development:
-    needs: kinnan-basalt-legality-fixtures
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-      - name: Run Kinnan Basalt policy development screen
-        run: |
-          mkdir -p experiments/manual-transmission/results/kinnan
-          python experiments/manual-transmission/development/kinnan_basalt_policy_development.py \
-            | tee experiments/manual-transmission/results/kinnan/basalt-policy-development-r1.json
-          grep -q '"status": "DEVELOPMENT_ONLY"' experiments/manual-transmission/results/kinnan/basalt-policy-development-r1.json
-          grep -q '"qualification_eligible": false' experiments/manual-transmission/results/kinnan/basalt-policy-development-r1.json
-          grep -q '"candidate_false_stop": 0' experiments/manual-transmission/results/kinnan/basalt-policy-development-r1.json
-          grep -q '"candidate_false_live": 0' experiments/manual-transmission/results/kinnan/basalt-policy-development-r1.json
-          grep -q '"candidate_illegal_windows": 0' experiments/manual-transmission/results/kinnan/basalt-policy-development-r1.json
-          grep -q '"candidate_terminal_errors": 0' experiments/manual-transmission/results/kinnan/basalt-policy-development-r1.json
-      - name: Upload Kinnan Basalt development evidence
-        uses: actions/upload-artifact@v4
-        with:
-          name: manual-transmission-kinnan-basalt-policy-development-r1
-          path: experiments/manual-transmission/results/kinnan/basalt-policy-development-r1.json
-          if-no-files-found: error
-
-
-concurrency:
-  group: manual-transmission-${{ github.event.pull_request.head.ref || github.ref_name }}
-  cancel-in-progress: true
+          retention-days: 90
