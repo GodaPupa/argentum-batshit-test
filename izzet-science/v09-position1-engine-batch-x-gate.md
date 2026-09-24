@@ -71,5 +71,21 @@ opponent card using already-existing reusable semantics.
 - The fail-closed unrelated-snapshot guard passed.
 - The exact frozen v0.7 SHA remained verified; no official seed/game/outcome was consumed or exposed.
 
+
+## Formal qualification provenance
+
+- Formal Batch X qualification run **35958438388** — SUCCESS.
+- Accepted source SHA:
+  `e5871e01ccaaa89d018cc0098fb4e9909515f144`.
+- Accepted artifact:
+  `izzet-v09-position1-engine-batch-x`, artifact id **10791302028**.
+- Artifact ZIP SHA-256:
+  `08e0b5b7c773ee51191463b5fd1e26de9f3092fa57e44d2f540d1a17b0b955e1`.
+- Downloaded artifact manifest independently matched the accepted source SHA, frozen-control SHA,
+  snapshot run/commit, unresolved transition `30 -> 29`, zero unresolved Izzet identities,
+  and official state `0/0/0`.
+- Full canonical snapshots, Generous Gift target-controller semantics, illegal-target fizzle behavior,
+  and exact real-engine coverage all passed.
+
 Infrastructure, compilation, fixture, snapshot, or semantic failures are qualification history only,
 not evidence about deck strength.
