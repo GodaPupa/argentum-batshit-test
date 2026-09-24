@@ -23,17 +23,17 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - name: Run repaired deterministic Hashaton timing fixtures
+      - name: Run final deterministic Hashaton timing fixtures
         run: |
           mkdir -p experiments/manual-transmission/results/hashaton
-          python experiments/manual-transmission/fixtures/hashaton_timing_fixtures_r2.py \
-            | tee experiments/manual-transmission/results/hashaton/timing-fixtures-r2.json
-          grep -q '"status": "PASS"' experiments/manual-transmission/results/hashaton/timing-fixtures-r2.json
-          grep -q '"fixtures_passed": 22' experiments/manual-transmission/results/hashaton/timing-fixtures-r2.json
-          grep -q '"qualification_outcomes_exposed": 0' experiments/manual-transmission/results/hashaton/timing-fixtures-r2.json
+          python experiments/manual-transmission/fixtures/hashaton_timing_fixtures_r3.py \
+            | tee experiments/manual-transmission/results/hashaton/timing-fixtures-r3.json
+          grep -q '"status": "PASS"' experiments/manual-transmission/results/hashaton/timing-fixtures-r3.json
+          grep -q '"fixtures_passed": 25' experiments/manual-transmission/results/hashaton/timing-fixtures-r3.json
+          grep -q '"qualification_outcomes_exposed": 0' experiments/manual-transmission/results/hashaton/timing-fixtures-r3.json
       - name: Upload fixture evidence
         uses: actions/upload-artifact@v4
         with:
-          name: manual-transmission-hashaton-timing-fixtures-r2
-          path: experiments/manual-transmission/results/hashaton/timing-fixtures-r2.json
+          name: manual-transmission-hashaton-timing-fixtures-r3
+          path: experiments/manual-transmission/results/hashaton/timing-fixtures-r3.json
           if-no-files-found: error
