@@ -311,3 +311,29 @@ jobs:
           name: manual-transmission-shorikai-policy-development-r1
           path: experiments/manual-transmission/results/shorikai/policy-development-r1.json
           if-no-files-found: error
+
+
+  sisay-policy-development:
+    needs: sisay-legality-fixtures
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Run Sisay policy development screen
+        run: |
+          mkdir -p experiments/manual-transmission/results/sisay
+          python experiments/manual-transmission/development/sisay_policy_development.py \
+            | tee experiments/manual-transmission/results/sisay/policy-development-r1.json
+          grep -q '"status": "DEVELOPMENT_ONLY"' experiments/manual-transmission/results/sisay/policy-development-r1.json
+          grep -q '"qualification_eligible": false' experiments/manual-transmission/results/sisay/policy-development-r1.json
+          grep -q '"qualification_outcomes_exposed": 0' experiments/manual-transmission/results/sisay/policy-development-r1.json
+          grep -q '"candidate_direct_false_stops": 0' experiments/manual-transmission/results/sisay/policy-development-r1.json
+          grep -q '"candidate_ceiling_false_full_stops": 0' experiments/manual-transmission/results/sisay/policy-development-r1.json
+      - name: Upload Sisay development evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: manual-transmission-sisay-policy-development-r1
+          path: experiments/manual-transmission/results/sisay/policy-development-r1.json
+          if-no-files-found: error
