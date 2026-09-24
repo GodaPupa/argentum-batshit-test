@@ -48,5 +48,31 @@ Therefore Batch Z adds no new engine primitive and no card-specific executor.
 11. Heliod's Pilgrim is absent from unresolved output and no Izzet identity becomes unresolved.
 12. Official games/seeds/outcomes remain `0/0/0` and the exact v0.7 control remains unchanged.
 
+
+## Pre-qualification provenance
+
+- Initial Batch Z snapshot/rebless run **35961181816** failed only in the targeted semantic fixture.
+  The card definition used the already-qualified Totem-Guide Hartebeest Aura-tutor recipe; the
+  fixture incorrectly asserted that answering the optional trigger `Yes` was an immediate
+  `isSuccess` result even though the correct engine contract pauses on the ensuing
+  `SelectCardsDecision`.
+- Corrective fixture commit:
+  `7bcede531d7a1f5b1218dfc5067bee7b59557fae` — assert the expected paused decision instead of
+  changing card or engine semantics.
+- Trigger-discipline commit:
+  `d2ecb13b26a35dd6653d6b1814b1bff1c779bc7e` — retrigger the fail-closed snapshot workflow when
+  its qualification card/test/readiness sources change.
+- Corrected fail-closed snapshot/rebless run **35996588860** succeeded.
+- Canonical snapshot integration commit:
+  `32fbc0a108f945fb5638568c1308ea94c212fff9`.
+- That integration commit changes exactly
+  `mtg-sets/src/test/resources/snapshots/cards/M15.json`.
+- Heliod's Pilgrim optional-tutor semantics passed.
+- Exact real-engine readiness emitted `V09_REAL_ENGINE_UNRESOLVED_COUNT=27`, with Heliod's Pilgrim
+  absent and no unresolved Izzet identity.
+- The fail-closed unrelated-snapshot guard passed.
+- The exact frozen v0.7 SHA remained verified and no official seed/game/outcome was consumed or exposed.
+
+
 Infrastructure, compilation, fixture, snapshot, or semantic failures are qualification history only,
 not evidence about deck strength.
