@@ -190,7 +190,7 @@ class IndustrialWasteSpyComboPolicyAuditTest : ScenarioTestBase() {
             )
             val targetResponse = ai(game).respondToDecision(game.state, targetDecision)
                 .shouldBeInstanceOf<TargetsResponse>()
-            targetResponse.selectedTargets[0] shouldContain game.player2Id
+            targetResponse.selectedTargets[0].orEmpty() shouldContain game.player2Id
 
             val opponentHand = game.state.getHand(game.player2Id)
             val selection = SelectCardsDecision(
@@ -220,7 +220,7 @@ class IndustrialWasteSpyComboPolicyAuditTest : ScenarioTestBase() {
             )
             val response = ai(game).respondToDecision(game.state, decision)
                 .shouldBeInstanceOf<TargetsResponse>()
-            response.selectedTargets[0] shouldContain game.player1Id
+            response.selectedTargets[0].orEmpty() shouldContain game.player1Id
         }
 
 
