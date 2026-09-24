@@ -50,5 +50,27 @@ put it into your hand, then shuffle."
 11. Shrine Steward is absent from unresolved output and no Izzet identity becomes unresolved.
 12. Official games/seeds/outcomes remain `0/0/0` and the exact v0.7 control remains unchanged.
 
+
+## Pre-qualification provenance
+
+- The first AA workflow was triggered before the semantic fixture was fully isolated from cross-set
+  test dependencies. No engine or card semantic change was made in response.
+- Fixture-isolation commit:
+  `f0ed831b6f01edb580ea1eaf2952604c87d3aec6`, replacing the external M15 Aura fixture with
+  local test-only Aura and Shrine definitions so the scenario exercises only the subtype filter/search rail.
+- Corrected fail-closed snapshot/rebless run **35998536694**: **SUCCESS**.
+- Canonical snapshot integration commit:
+  `660374cd8ae40104c23f1c46464c87c8633696f3`.
+- The integration commit changes exactly
+  `mtg-sets/src/test/resources/snapshots/cards/NEO.json`.
+- Shrine Steward optional Aura-or-Shrine tutor semantics passed.
+- Exact real-engine readiness emitted `V09_REAL_ENGINE_UNRESOLVED_COUNT=26`, with Shrine Steward
+  absent and no unresolved Izzet identity.
+- The unrelated-snapshot guard passed and the exact frozen v0.7 SHA remained verified.
+- No official seed/game/outcome was consumed or exposed.
+- The AA automatic rebless trigger was retired after successful snapshot integration so later shared
+  readiness reductions cannot retrigger an already-closed snapshot gate.
+
+
 Infrastructure, compilation, fixture, snapshot, or semantic failures are qualification history only,
 not evidence about deck strength.
