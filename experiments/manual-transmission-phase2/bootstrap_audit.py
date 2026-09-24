@@ -32,6 +32,30 @@ def write(path: Path, obj: object) -> None:
     path.write_text(json.dumps(obj, sort_keys=True, indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
 
 
+def source_cards(obj: dict, axis: str) -> tuple[list[str], list[str], dict[str, str]]:
+    """Accept only the two observed, explicit Phase 1 schemas; preserve every copy."""
+    opp = obj['opponent']
+    names = opp.get('commanders') or [opp['commander']]
+    keys = [key for key in ('mainboard', 'mainboard_expanded') if key in obj]
+    if len(keys) != 1:
+        raise ValueError(f'Ambiguous or missing mainboard schema: {axis}: {keys}')
+    cards = obj[keys[0]]
+    if not isinstance(cards, list) or not all(isinstance(x, str) for x in cards):
+        raise ValueError(f'Unsupported source card schema: {axis}')
+    if len(names) + len(cards) != 100:
+        raise ValueError(f'Wrong exact card count: {axis}')
+    main = ''.join(f'1 {unicodedata.normalize("NFC", name)}\n' for name in sorted(cards))
+    header = 'COMMANDERS\n' if len(names) == 2 else 'COMMANDER\n'
+    complete = header + ''.join(f'1 {name}\n' for name in names) + 'MAINBOARD\n' + main
+    main_key = f'mainboard_{len(cards)}_sha256'
+    full_key = 'commanders_plus_98_sha256' if len(names) == 2 else 'commander_plus_99_sha256'
+    calculated = {main_key: sha(main.encode('utf-8')), full_key: sha(complete.encode('utf-8'))}
+    for key, digest in calculated.items():
+        if obj['digests'].get(key) != digest:
+            raise ValueError(f'Source digest mismatch {axis} {key}: {digest}')
+    return names, cards, calculated
+
+
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument('--phase1', type=Path, required=True)
@@ -71,15 +95,9 @@ def main() -> None:
         path = prior / f'experiments/manual-transmission/opponents/{axis}/source-freeze.json'
         raw = path.read_bytes()
         obj = json.loads(raw)
-        opp = obj['opponent']
-        names = opp.get('commanders') or [opp['commander']]
-        cards = obj['mainboard']
-        if not isinstance(cards, list) or not all(isinstance(x, str) for x in cards):
-            raise ValueError(f'Unsupported source card schema: {axis}')
-        if len(names) + len(cards) != 100:
-            raise ValueError(f'Wrong exact card count: {axis}')
+        names, cards, calculated = source_cards(obj, axis)
         decks.append({'id': axis, 'commanders': names, 'mainboard': cards})
-        sources[axis] = {'source_file_sha256': sha(raw), 'source_metadata': opp, 'declared_digests': obj.get('digests'), 'phase2_admission': 'REVALIDATION_PENDING'}
+        sources[axis] = {'source_file_sha256': sha(raw), 'source_metadata': obj['opponent'], 'verified_digests': calculated, 'phase2_admission': 'REVALIDATION_PENDING'}
     request = {'schema': 'mt-phase2-registry-requests-v1', 'phase1_commit': PHASE1, 'decks': decks}
     write(out / 'registry-requests.json', request)
     tracked = git(root, 'ls-files').splitlines()
