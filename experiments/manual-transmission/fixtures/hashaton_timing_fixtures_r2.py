@@ -182,8 +182,14 @@ def fixture_led_tidebinder_does_not_erase_sibling_triggers():
     # Blanking Hashaton prevents future triggers, but the two sibling triggers
     # already on the stack remain independent under CR 113.7a.
     assert sum(isinstance(x, Trigger) for x in s.stack) == 2
-    s.resolve_hashaton()
-    s.resolve_hashaton()
+    # Rune-Scarred's Hashaton trigger is now on top. When it resolves, its ETB
+    # trigger is created above the remaining sibling Hashaton trigger. Continuous
+    # priority/stack processing must resolve that ETB before the sibling trigger.
+    assert s.resolve_hashaton() == "Rune-Scarred Demon"
+    assert s.stack[-1] == "Rune-Scarred Demon ETB"
+    resolve_top(s)
+    assert isinstance(s.stack[-1], Trigger)
+    assert s.resolve_hashaton() == "Razaketh, the Foulblooded"
     assert Counter(s.tokens) == Counter(["Rune-Scarred Demon", "Razaketh, the Foulblooded"])
     return s
 
