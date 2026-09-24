@@ -203,6 +203,12 @@ class BoulderbranchGolemPrototypeScenarioTest : ScenarioTestBase() {
             restored.baseStats?.baseToughness shouldBe 5
             game.state.getEntity(returned)?.has<PrototypeComponent>() shouldBe false
 
+            // The opponent cast the bounce spell, so the scenario harness may still leave them
+            // holding priority after it resolves. Return priority to the active player before the
+            // sorcery-speed normal recast; this is test sequencing, not a Prototype rule.
+            if (game.state.priorityPlayerId != game.player1Id) {
+                game.passPriority().error shouldBe null
+            }
             game.castSpell(1, "Boulderbranch Golem").error shouldBe null
             game.resolveStack()
             val recast = game.findPermanent("Boulderbranch Golem")!!
