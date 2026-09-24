@@ -4,14 +4,17 @@ import com.wingedsheep.engine.core.CastSpell
 import com.wingedsheep.engine.core.PaymentStrategy
 import com.wingedsheep.engine.core.YesNoDecision
 import com.wingedsheep.engine.state.components.stack.ChosenTarget
+import com.wingedsheep.engine.state.components.stack.TriggeredAbilityOnStackComponent
 import com.wingedsheep.engine.support.GameTestDriver
 import com.wingedsheep.engine.support.TestCards
 import com.wingedsheep.sdk.core.Color
 import com.wingedsheep.sdk.core.Keyword
 import com.wingedsheep.sdk.core.Step
 import com.wingedsheep.sdk.dsl.Effects
+import com.wingedsheep.sdk.dsl.Triggers
 import com.wingedsheep.sdk.dsl.card
 import com.wingedsheep.sdk.model.Deck
+import com.wingedsheep.sdk.scripting.effects.CascadeEffect
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.collections.shouldContain
 import io.kotest.matchers.collections.shouldNotContain
@@ -34,10 +37,21 @@ class CascadeKeywordTest : FunSpec({
         typeLine = "Sorcery"
         spell { effect = Effects.GainLife(2) }
     }
+    val legacyAuthoredCascade = card("Test Legacy Authored Cascade") {
+        manaCost = "{8}"
+        typeLine = "Sorcery"
+        keywords(Keyword.CASCADE)
+        triggeredAbility {
+            trigger = Triggers.WhenYouCastThisSpell()
+            effect = Effects.Cascade
+            description = "Cascade"
+        }
+        spell { effect = Effects.GainLife(1) }
+    }
 
     fun driver(): GameTestDriver {
         val d = GameTestDriver()
-        d.registerCards(TestCards.all + listOf(cascadeEight, sameMv, hitSeven))
+        d.registerCards(TestCards.all + listOf(cascadeEight, sameMv, hitSeven, legacyAuthoredCascade))
         d.initMirrorMatch(deck = Deck.of("Forest" to 40), startingLife = 20)
         d.passPriorityUntil(Step.PRECOMBAT_MAIN)
         return d
@@ -63,6 +77,22 @@ class CascadeKeywordTest : FunSpec({
         d.getStackSpellNames() shouldContain "Test Cascade Seven"
         d.getExile(caster).map { d.getCardName(it) } shouldNotContain "Test Cascade Same MV"
         d.getExile(caster).map { d.getCardName(it) } shouldNotContain "Test Cascade Seven"
+    }
+
+    test("legacy authored Cascade trigger is not duplicated by keyword synthesis") {
+        val d = driver()
+        val caster = d.activePlayer!!
+        d.giveColorlessMana(caster, 8)
+        val source = d.putCardInHand(caster, "Test Legacy Authored Cascade")
+
+        d.submit(CastSpell(caster, source, paymentStrategy = PaymentStrategy.FromPool)).isSuccess shouldBe true
+
+        val cascadeTriggers = d.state.stack.mapNotNull { id ->
+            d.state.getEntity(id)?.get<TriggeredAbilityOnStackComponent>()
+        }.filter { it.effect is CascadeEffect }
+
+        cascadeTriggers.size shouldBe 1
+        cascadeTriggers.single().sourceId shouldBe source
     }
 
     test("Cascade trigger remains after the source spell is countered") {
