@@ -67,14 +67,15 @@ jobs:
         run: scripts/test-class CommanderPodCapabilityTest --info --stacktrace
       - name: Generic Commander setup and tax qualification
         run: |
-          scripts/test-class CommanderSetupTest --info --stacktrace
-          scripts/test-class CommanderTaxTest --info --stacktrace
+          ./gradlew :rules-engine:test --tests "*CommanderSetupTest" --tests "*CommanderTaxTest" --info --stacktrace
       - name: Generic four-player priority, APNAP-adjacent, mulligan and elimination qualification
         run: |
-          scripts/test-class MultiplayerSmokeTest --info --stacktrace
-          scripts/test-class MultiplayerMulliganTest --info --stacktrace
-          scripts/test-class CommanderPodTest --info --stacktrace
-          scripts/test-class LeaveTheGameTest --info --stacktrace
+          ./gradlew :rules-engine:test \
+            --tests "*MultiplayerSmokeTest" \
+            --tests "*MultiplayerMulliganTest" \
+            --tests "*CommanderPodTest" \
+            --tests "*LeaveTheGameTest" \
+            --info --stacktrace
       - name: Actual catalog inventory without actual-deck games
         env:
           MT_P2_AUDIT_INPUT: ${{ github.workspace }}/build/reports/manual-transmission-phase2/source/registry-requests.json
