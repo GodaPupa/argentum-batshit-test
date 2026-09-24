@@ -549,7 +549,6 @@ val engineSerializersModule = SerializersModule {
         subclass(WarpedComponent::class)
         subclass(EvokedComponent::class)
         subclass(BestowComponent::class)
-        subclass(PrototypeComponent::class)
         subclass(SaddledComponent::class)
         subclass(SolvedComponent::class)
         subclass(RenownedComponent::class)
