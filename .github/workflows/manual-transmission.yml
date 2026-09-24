@@ -471,6 +471,103 @@ jobs:
           if-no-files-found: error
 
 
+
+  rogsi-legality-fixtures:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Run contemporary RogSi timing fixtures
+        run: |
+          mkdir -p experiments/manual-transmission/results/rogsi
+          python experiments/manual-transmission/fixtures/rogsi_timing_fixtures.py \
+            | tee experiments/manual-transmission/results/rogsi/timing-fixtures-r1.json
+          grep -q '"status": "PASS"' experiments/manual-transmission/results/rogsi/timing-fixtures-r1.json
+          grep -q '"fixtures_passed": 18' experiments/manual-transmission/results/rogsi/timing-fixtures-r1.json
+          grep -q '"qualification_outcomes_exposed": 0' experiments/manual-transmission/results/rogsi/timing-fixtures-r1.json
+      - name: Upload RogSi fixture evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: manual-transmission-rogsi-timing-fixtures-r1
+          path: experiments/manual-transmission/results/rogsi/timing-fixtures-r1.json
+          if-no-files-found: error
+
+  rogsi-policy-development:
+    needs: rogsi-legality-fixtures
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Run RogSi policy development screen
+        run: |
+          mkdir -p experiments/manual-transmission/results/rogsi
+          python experiments/manual-transmission/development/rogsi_policy_development.py \
+            | tee experiments/manual-transmission/results/rogsi/policy-development-r1.json
+          grep -q '"status": "DEVELOPMENT_ONLY"' experiments/manual-transmission/results/rogsi/policy-development-r1.json
+          grep -q '"qualification_eligible": false' experiments/manual-transmission/results/rogsi/policy-development-r1.json
+          grep -q '"candidate_false_stop": 0' experiments/manual-transmission/results/rogsi/policy-development-r1.json
+          grep -q '"candidate_false_live": 0' experiments/manual-transmission/results/rogsi/policy-development-r1.json
+          grep -q '"candidate_mana_errors": 0' experiments/manual-transmission/results/rogsi/policy-development-r1.json
+      - name: Upload RogSi development evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: manual-transmission-rogsi-policy-development-r1
+          path: experiments/manual-transmission/results/rogsi/policy-development-r1.json
+          if-no-files-found: error
+
+  kinnan-basalt-legality-fixtures:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Run current Kinnan Basalt timing fixtures
+        run: |
+          mkdir -p experiments/manual-transmission/results/kinnan
+          python experiments/manual-transmission/fixtures/kinnan_basalt_timing_fixtures.py \
+            | tee experiments/manual-transmission/results/kinnan/basalt-timing-fixtures-r1.json
+          grep -q '"status": "PASS"' experiments/manual-transmission/results/kinnan/basalt-timing-fixtures-r1.json
+          grep -q '"fixtures_passed": 16' experiments/manual-transmission/results/kinnan/basalt-timing-fixtures-r1.json
+          grep -q '"qualification_outcomes_exposed": 0' experiments/manual-transmission/results/kinnan/basalt-timing-fixtures-r1.json
+      - name: Upload Kinnan Basalt fixture evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: manual-transmission-kinnan-basalt-timing-fixtures-r1
+          path: experiments/manual-transmission/results/kinnan/basalt-timing-fixtures-r1.json
+          if-no-files-found: error
+
+  kinnan-basalt-policy-development:
+    needs: kinnan-basalt-legality-fixtures
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Run Kinnan Basalt policy development screen
+        run: |
+          mkdir -p experiments/manual-transmission/results/kinnan
+          python experiments/manual-transmission/development/kinnan_basalt_policy_development.py \
+            | tee experiments/manual-transmission/results/kinnan/basalt-policy-development-r1.json
+          grep -q '"status": "DEVELOPMENT_ONLY"' experiments/manual-transmission/results/kinnan/basalt-policy-development-r1.json
+          grep -q '"qualification_eligible": false' experiments/manual-transmission/results/kinnan/basalt-policy-development-r1.json
+          grep -q '"candidate_false_stop": 0' experiments/manual-transmission/results/kinnan/basalt-policy-development-r1.json
+          grep -q '"candidate_false_live": 0' experiments/manual-transmission/results/kinnan/basalt-policy-development-r1.json
+          grep -q '"candidate_illegal_windows": 0' experiments/manual-transmission/results/kinnan/basalt-policy-development-r1.json
+          grep -q '"candidate_terminal_errors": 0' experiments/manual-transmission/results/kinnan/basalt-policy-development-r1.json
+      - name: Upload Kinnan Basalt development evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: manual-transmission-kinnan-basalt-policy-development-r1
+          path: experiments/manual-transmission/results/kinnan/basalt-policy-development-r1.json
+          if-no-files-found: error
+
+
 concurrency:
   group: manual-transmission-${{ github.event.pull_request.head.ref || github.ref_name }}
   cancel-in-progress: true
