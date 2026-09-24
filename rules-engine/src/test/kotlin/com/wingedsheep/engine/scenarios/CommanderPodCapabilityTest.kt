@@ -74,7 +74,9 @@ class CommanderPodCapabilityTest : FunSpec({
         val initialized = setup()
         val ids = initialized.playerIds
         var state = initialized.state.copy(phase = Phase.PRECOMBAT_MAIN, step = Step.PRECOMBAT_MAIN)
-        val commander = state.getZone(ids[0], Zone.COMMAND).single()
+        val commander = state.getZone(ids[0], Zone.COMMAND).single { id ->
+            state.getEntity(id)?.get<CardComponent>()?.name == fixture.name
+        }
         state = submit(state, CastSpell(ids[0], commander))
         state.stack.contains(commander) shouldBe true
         for (index in 0..2) {
