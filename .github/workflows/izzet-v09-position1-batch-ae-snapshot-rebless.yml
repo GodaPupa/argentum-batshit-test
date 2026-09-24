@@ -1,14 +1,7 @@
 name: Izzet Position-1 Batch AE Snapshot Rebless
 
 on:
-  push:
-    branches:
-      - "mayhem/izzet-science"
-    paths:
-      - ".github/workflows/izzet-v09-position1-batch-ae-snapshot-rebless.yml"
-      - "mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/c20/**"
-      - "gym/src/test/kotlin/com/wingedsheep/gym/IzzetScienceVeteranBeastriderEngineReadinessTest.kt"
-      - "izzet-science/v09-position1-engine-batch-ae-gate.md"
+  workflow_dispatch:
 
 permissions:
   contents: write
