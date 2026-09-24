@@ -1,0 +1,45 @@
+name: Industrial Waste — Gate 11 Spy Combo Pilot
+
+on:
+  pull_request:
+    branches: [industrial-waste/lab]
+    paths:
+      - .github/workflows/industrial-waste-g11-spy-combo-pilot.yml
+      - industrial-waste/protocols/gate-11-spy-combo-pilot-v1.md
+      - industrial-waste/seed-registry.json
+
+permissions:
+  contents: read
+
+jobs:
+  spy-pilot:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Validate retired Gate 11 pilot without replay
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+
+          namespace = "IW-G11-SPY-COMBO-PILOT-V1"
+          entries = json.loads(Path("industrial-waste/seed-registry.json").read_text())
+          matches = [item for item in entries if item["namespace"] == namespace]
+          assert len(matches) == 1, matches
+          entry = matches[0]
+          assert entry["count"] == 2
+          assert entry["status"] == "executed"
+          assert entry["vector_sha256"] == "be34b18805d92b3ef418eba43e063942c56a21261325cc2151e9e0d8783cb0f4"
+
+          protocol = Path("industrial-waste/protocols/gate-11-spy-combo-pilot-v1.md").read_text()
+          assert "COMPLETED — VALID CAPABILITY PILOT / CLOSED WITHOUT REPLICATION OR PROMOTION" in protocol
+          assert "36059100002" in protocol
+          assert "10834191899" in protocol
+          assert "955320513863f3d9cdec2b9b6ff749ef5474d1850956dda391a469340b7cc7b0" in protocol
+          assert "Frozen Control: **2-2**" in protocol
+          assert "Pactdoll-A: **2-2**" in protocol
+          assert "no replication, no Pactdoll-A promotion, no deck modification" in protocol
+          PY

@@ -1,0 +1,53 @@
+name: Industrial Waste — Gate 11 Spy Card Capability
+
+on:
+  pull_request:
+    branches: [industrial-waste/lab]
+    paths:
+      - .github/workflows/industrial-waste-g11-spy-card-capability.yml
+      - mtg-sets/1993-1999/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/mir/cards/WallOfRoots.kt
+      - mtg-sets/1993-1999/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/IndustrialWasteGate11MirScenarioTest.kt
+      - mtg-sets/2000-2002/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/tor/cards/MesmericFiend.kt
+      - mtg-sets/2000-2002/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/IndustrialWasteGate11TorScenarioTest.kt
+      - mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/gtc/cards/BalustradeSpy.kt
+      - mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/roe/cards/OvergrownBattlement.kt
+      - mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/rtr/cards/GatecreeperVine.kt
+      - mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/IndustrialWasteGate11GtcScenarioTest.kt
+      - mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/IndustrialWasteGate11RoeScenarioTest.kt
+      - mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/IndustrialWasteGate11RtrScenarioTest.kt
+      - mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/grn/cards/LotlethGiant.kt
+      - mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/IndustrialWasteGate11RnaScenarioTest.kt
+      - mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/IndustrialWasteGate11GrnScenarioTest.kt
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  spy-card-capability:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-java@v5
+        with: {distribution: temurin, java-version: 21}
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Validate Gate 11 implemented cards
+        run: |
+          status=0
+          ./gradlew :mtg-sets:1993-1999:tests:test \
+            --tests '*IndustrialWasteGate11MirScenarioTest' \
+            --no-daemon || status=1
+          ./gradlew :mtg-sets:2000-2002:tests:test \
+            --tests '*IndustrialWasteGate11TorScenarioTest' \
+            --no-daemon || status=1
+          ./gradlew :mtg-sets:2008-2016:tests:test \
+            --tests '*IndustrialWasteGate11GtcScenarioTest' \
+            --tests '*IndustrialWasteGate11RoeScenarioTest' \
+            --tests '*IndustrialWasteGate11RtrScenarioTest' \
+            --no-daemon || status=1
+          ./gradlew :mtg-sets:2017-2022:tests:test \
+            --tests '*IndustrialWasteGate11GrnScenarioTest' \
+            --tests '*IndustrialWasteGate11RnaScenarioTest' \
+            --no-daemon || status=1
+          exit "$status"

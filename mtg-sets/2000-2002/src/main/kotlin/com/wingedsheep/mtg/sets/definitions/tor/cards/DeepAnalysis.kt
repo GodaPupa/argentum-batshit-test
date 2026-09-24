@@ -1,11 +1,10 @@
 package com.wingedsheep.mtg.sets.definitions.tor.cards
 
+import com.wingedsheep.sdk.dsl.Costs
 import com.wingedsheep.sdk.dsl.Targets
 import com.wingedsheep.sdk.dsl.card
 import com.wingedsheep.sdk.model.Rarity
-import com.wingedsheep.sdk.scripting.AdditionalCost
 import com.wingedsheep.sdk.scripting.KeywordAbility
-import com.wingedsheep.sdk.scripting.costs.CostAtom
 import com.wingedsheep.sdk.scripting.effects.DrawCardsEffect
 
 /**
@@ -30,7 +29,7 @@ val DeepAnalysis = card("Deep Analysis") {
     keywordAbility(
         KeywordAbility.flashback(
             "{1}{U}",
-            AdditionalCost.Atom(CostAtom.PayLife(3))
+            Costs.additional.PayLife(3)
         )
     )
 

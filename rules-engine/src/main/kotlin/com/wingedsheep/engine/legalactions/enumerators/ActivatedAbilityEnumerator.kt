@@ -505,9 +505,15 @@ class ActivatedAbilityEnumerator : ActionEnumerator {
                                     }
                                     is CostAtom.TapPermanents -> {
                                         tapCost = atom
+                                        // If this composite also pays the source's {T} cost, that
+                                        // same permanent cannot pay a second "tap an untapped
+                                        // permanent" cost. Exclude it even when the printed atom
+                                        // does not say "another" (Saruli Caretaker is the canonical
+                                        // shape: {T}, Tap an untapped creature you control).
+                                        val excludeSource = atom.excludeSelf || hasTapCost
                                         tapTargets = context.costUtils.findAbilityTapTargets(
                                             state, playerId, atom.filter,
-                                            if (atom.excludeSelf) entityId else null
+                                            if (excludeSource) entityId else null
                                         )
                                         if (tapTargets.size < atom.count) {
                                             costCanBePaid = false

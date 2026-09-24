@@ -1,0 +1,83 @@
+name: Industrial Waste — Gate 11 Legacy Baseline Equivalence
+
+on:
+  push:
+    branches:
+      - "industrial-waste/gate-11-spy-combo-readiness"
+    paths:
+      - ".github/workflows/industrial-waste-g11-legacy-baseline-equivalence.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  compare:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "21"
+      - uses: gradle/actions/setup-gradle@v6
+
+      - name: Capture accepted-lab and current failure signatures
+        shell: bash
+        run: |
+          set -euo pipefail
+          for spec in             "accepted_lab:0cf0818434ddccf06baaa1fd1c06cdaa341ebdf3"             "gate11_current:0c03d1f0d7726597f0b0882b4e233bf816b3f21c"
+          do
+            label="${spec%%:*}"
+            ref="${spec#*:}"
+            git checkout --force "${ref}"
+            set +e
+            ./gradlew :ai:test --tests '*FrozenBaselineTest' --stacktrace
+            rc=$?
+            set -e
+            test "${rc}" -eq 1
+            cp ai/build/test-results/test/TEST-com.wingedsheep.ai.arena.FrozenBaselineTest.xml "/tmp/${label}.xml"
+          done
+
+      - name: Prove exact inherited failure equivalence
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json, re, xml.etree.ElementTree as ET
+          from pathlib import Path
+
+          def signature(path):
+              root=ET.parse(path).getroot()
+              cases=[tc for tc in root.findall("testcase") if "LEGACY_V0" in tc.attrib.get("name","")]
+              assert len(cases)==1
+              failure=cases[0].find("failure")
+              assert failure is not None
+              text=(failure.attrib.get("message","") + "\n" + (failure.text or ""))
+              m=re.search(r"Actual hash: ([0-9a-f]+) \(([^)]*)\)", text)
+              assert m, text
+              return {"hash":m.group(1),"outcome":m.group(2)}
+
+          accepted=signature("/tmp/accepted_lab.xml")
+          current=signature("/tmp/gate11_current.xml")
+          assert current==accepted, (accepted,current)
+          out={
+              "schema":"industrial-waste-g11-legacy-v0-equivalence@v1",
+              "accepted_lab":"0cf0818434ddccf06baaa1fd1c06cdaa341ebdf3",
+              "gate11_current":"0c03d1f0d7726597f0b0882b4e233bf816b3f21c",
+              "accepted_signature":accepted,
+              "current_signature":current,
+              "equivalent":True,
+          }
+          Path("/tmp/legacy-v0-equivalence.json").write_text(json.dumps(out,sort_keys=True,indent=2)+"\n")
+          print(json.dumps(out,sort_keys=True))
+          PY
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: industrial-waste-g11-legacy-v0-equivalence
+          path: /tmp/legacy-v0-equivalence.json
+          if-no-files-found: error
+          retention-days: 90

@@ -1,0 +1,71 @@
+name: Industrial Waste — Gate 11 Refresh Qualified Snapshots
+
+on:
+  pull_request:
+    branches: [industrial-waste/lab]
+    paths:
+      - .github/workflows/industrial-waste-g11-refresh-snapshots.yml
+      - mtg-sets/1993-1999/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/mir/cards/WallOfRoots.kt
+      - mtg-sets/2000-2002/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/tor/cards/MesmericFiend.kt
+      - mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/gtc/cards/BalustradeSpy.kt
+      - mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/roe/cards/OvergrownBattlement.kt
+      - mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/rtr/cards/GatecreeperVine.kt
+      - mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/grn/cards/LotlethGiant.kt
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  refresh-qualified-snapshots:
+    if: github.event_name == 'workflow_dispatch' || github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.head_ref || github.ref_name }}
+          fetch-depth: 0
+      - uses: actions/setup-java@v5
+        with: {distribution: temurin, java-version: 21}
+      - uses: gradle/actions/setup-gradle@v6
+
+      - name: Re-bless card-definition snapshots in update mode
+        run: |
+          ./gradlew :mtg-sets:test \
+            --tests '*CardDefinitionSnapshotTest' \
+            -DupdateSnapshots=true \
+            --no-daemon
+
+      - name: Retain only qualified Industrial Waste snapshot changes
+        run: |
+          set -euo pipefail
+          SNAP_DIR="mtg-sets/src/test/resources/snapshots/cards"
+          KEEP="MIR MMQ TOR ROE RTR GTC GRN MH1 ELD KHM CLB"
+          mkdir -p /tmp/iw-qualified-snapshots
+          for code in $KEEP; do
+            cp "$SNAP_DIR/$code.json" "/tmp/iw-qualified-snapshots/$code.json"
+          done
+
+          git restore --worktree --staged "$SNAP_DIR"
+          for code in $KEEP; do
+            cp "/tmp/iw-qualified-snapshots/$code.json" "$SNAP_DIR/$code.json"
+          done
+
+          git add \
+            "$SNAP_DIR/MIR.json" "$SNAP_DIR/MMQ.json" "$SNAP_DIR/TOR.json" \
+            "$SNAP_DIR/ROE.json" "$SNAP_DIR/RTR.json" "$SNAP_DIR/GTC.json" \
+            "$SNAP_DIR/GRN.json" "$SNAP_DIR/MH1.json" "$SNAP_DIR/ELD.json" \
+            "$SNAP_DIR/KHM.json" "$SNAP_DIR/CLB.json"
+
+          echo "Qualified snapshot diff:"
+          git diff --cached --stat
+          if git diff --cached --quiet; then
+            echo "No qualified snapshot changes remain."
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "Gate 11: refresh qualified card snapshots"
+          git push origin "HEAD:${{ github.head_ref || github.ref_name }}"

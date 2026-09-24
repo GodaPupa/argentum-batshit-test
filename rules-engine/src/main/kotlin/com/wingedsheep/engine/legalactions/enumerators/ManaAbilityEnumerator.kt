@@ -245,9 +245,15 @@ class ManaAbilityEnumerator : ActionEnumerator {
                                     }
                                     is CostAtom.TapPermanents -> {
                                         tapCost = atom
+                                        // The source is already being tapped by the sibling {T}
+                                        // cost in this composite, so it cannot also satisfy a
+                                        // separate "tap an untapped permanent" payment. This must
+                                        // mirror ActivatedAbilityEnumerator for mana abilities
+                                        // such as Saruli Caretaker.
+                                        val excludeSource = atom.excludeSelf || hasTapCost
                                         tapTargets = context.costUtils.findAbilityTapTargets(
                                             state, playerId, atom.filter,
-                                            if (atom.excludeSelf) entityId else null
+                                            if (excludeSource) entityId else null
                                         )
                                         if (tapTargets.size < atom.count) {
                                             affordable = false; break
