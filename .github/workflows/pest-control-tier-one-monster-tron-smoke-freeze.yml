@@ -1,0 +1,84 @@
+name: Pest Control Tier-1 Monster Tron Smoke Freeze Validation
+
+on:
+  pull_request:
+    paths:
+      - scripts/experiments/pest-control/generate_tier_one_monster_tron_smoke_freeze.py
+      - .github/workflows/pest-control-tier-one-monster-tron-smoke-freeze.yml
+      - docs/experiments/pest-control/tier-one-monster-tron-smoke-freeze-gate.md
+
+permissions:
+  actions: read
+  contents: read
+
+concurrency:
+  group: pest-control-tier-one-monster-tron-smoke-freeze-validation
+  cancel-in-progress: false
+
+jobs:
+  validate-gate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Download accepted Terror smoke and replication freeze artifacts
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p build/prior-terror-smoke-freeze build/prior-terror-replication-freeze
+          curl -fsSL -H "Authorization: Bearer ${GH_TOKEN}" -H "Accept: application/vnd.github+json"             "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/artifacts/10733086089/zip"             -o build/prior-terror-smoke-freeze.zip
+          echo "bbf9f20e834f27f838e37de78c905c213a8917651818367360a8e8a140914961  build/prior-terror-smoke-freeze.zip" | sha256sum -c -
+          unzip -q build/prior-terror-smoke-freeze.zip -d build/prior-terror-smoke-freeze
+          (cd build/prior-terror-smoke-freeze && sha256sum -c artifacts.sha256)
+
+          curl -fsSL -H "Authorization: Bearer ${GH_TOKEN}" -H "Accept: application/vnd.github+json"             "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/artifacts/10773131628/zip"             -o build/prior-terror-replication-freeze.zip
+          echo "4d3a19ef7febacb336911ff1271c14ab83a6ea1f99ed34ae154ae154d6ef5f25  build/prior-terror-replication-freeze.zip" | sha256sum -c -
+          unzip -q build/prior-terror-replication-freeze.zip -d build/prior-terror-replication-freeze
+          (cd build/prior-terror-replication-freeze && sha256sum -c artifacts.sha256)
+
+      - name: Reconstruct complete retired Pest seed universe
+        run: |
+          set -euo pipefail
+          python3 scripts/experiments/pest-control/generate_tier_one_monster_tron_smoke_freeze.py             --preflight             --prior-terror-smoke-dir build/prior-terror-smoke-freeze             --prior-terror-replication-dir build/prior-terror-replication-freeze             | tee build/monster-tron-smoke-freeze-preflight.json
+          grep -Fq '"excluded_values": 566' build/monster-tron-smoke-freeze-preflight.json
+          grep -Fq '"entropy_requested": false' build/monster-tron-smoke-freeze-preflight.json
+
+      - name: Validate deterministic four-cell fixture
+        run: |
+          set -euo pipefail
+          python3 scripts/experiments/pest-control/generate_tier_one_monster_tron_smoke_freeze.py             --validate-fixture             --prior-terror-smoke-dir build/prior-terror-smoke-freeze             --prior-terror-replication-dir build/prior-terror-replication-freeze             --output-dir build/reports/pest-control-tier-one-monster-tron-smoke-freeze-fixture
+          python3 - <<'PY'
+          import csv, json
+          from pathlib import Path
+          root=Path("build/reports/pest-control-tier-one-monster-tron-smoke-freeze-fixture")
+          manifest=json.loads((root/"freeze-manifest.json").read_text())
+          assert manifest["status"]=="NONEXPERIMENTAL_FIXTURE"
+          assert manifest["production_entropy_requested"] is False
+          assert manifest["collision_audit"]=={
+              "excluded_seed_count":566,
+              "new_seed_count":4,
+              "new_unique_count":4,
+              "overlap_count":0,
+              "result":"PASS",
+          }
+          assert manifest["assignment_counts"]["games"]==4
+          assert manifest["assignment_counts"]["pest_play"]==2
+          assert manifest["assignment_counts"]["pest_draw"]==2
+          assert manifest["assignment_counts"]["pest_seat_zero"]==2
+          assert manifest["assignment_counts"]["pest_seat_one"]==2
+          assert set(manifest["assignment_counts"]["joint_cells"].values())=={1}
+          assert manifest["official_counters"]=={
+              "seeds_generated":0,
+              "games_authorized":0,
+              "games_initialized":0,
+              "actions_submitted":0,
+              "outcome_exposure":0,
+          }
+          rows=list(csv.DictReader((root/"assignments.csv").open()))
+          assert len(rows)==4
+          assert [int(row["game_number"]) for row in rows]==[1,2,3,4]
+          assert len({int(row["seed_decimal"]) for row in rows})==4
+          assert all(int(row["seed_decimal"]) != 0 for row in rows)
+          PY
