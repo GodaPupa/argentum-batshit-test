@@ -1,6 +1,6 @@
 package com.wingedsheep.engine.scenarios
 
-import com.wingedsheep.engine.state.components.battlefield.DamageMarkedComponent
+import com.wingedsheep.engine.state.components.battlefield.DamageComponent
 import com.wingedsheep.engine.state.components.stack.ChosenTarget
 import com.wingedsheep.engine.support.GameTestDriver
 import com.wingedsheep.engine.support.TestCards
