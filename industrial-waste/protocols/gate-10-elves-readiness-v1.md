@@ -1,6 +1,6 @@
 # Gate 10 Elves readiness v1
 
-Status: seed-free readiness only. No Gate 10 gameplay namespace is authorized.
+Status: qualified seed-free readiness. Official gameplay is authorized only under the separately frozen Gate 10 Elves pilot protocol and its registered namespace.
 
 ## Frozen opponent
 
