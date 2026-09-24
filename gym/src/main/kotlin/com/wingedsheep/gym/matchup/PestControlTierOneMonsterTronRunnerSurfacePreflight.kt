@@ -31,7 +31,7 @@ object PestControlTierOneMonsterTronRunnerSurfacePreflight {
     private val forbiddenContent = listOf(
         "tier-one-monster-tron-official-execution",
         "PestControlTierOneMonsterTronOfficialExecutionRunner",
-        "PestControlTierOneMonsterTronOfficialInitialization",
+        "PestControlTierOneMonsterTronOfficialInitializer",
         "PEST_MONSTER_TRON_OFFICIAL_VECTOR",
         "PEST_MONSTER_TRON_EXECUTE",
     )
