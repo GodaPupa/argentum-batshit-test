@@ -843,6 +843,9 @@ internal class AffectsFilterResolver {
         // Double-faced-ness is likewise a static whole-card characteristic, not a projected type.
         CardPredicate.IsDoubleFaced -> card.isDoubleFaced
         CardPredicate.HasNoAbilities -> card.oracleText.isBlank()
+        // Static projection has no EffectContext chosenValues; dynamic card-type predicates
+        // are resolution-local and therefore fail closed here.
+        is CardPredicate.HasCardTypeFromVariable -> false
         CardPredicate.IsPermanent -> types.any { it in setOf("CREATURE", "LAND", "ARTIFACT", "ENCHANTMENT", "PLANESWALKER") }
         CardPredicate.IsNonland -> "LAND" !in types
         CardPredicate.IsNoncreature -> "CREATURE" !in types

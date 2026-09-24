@@ -1,0 +1,294 @@
+package com.wingedsheep.ai.industrialwaste
+
+import com.wingedsheep.ai.arena.ArenaAgent
+import com.wingedsheep.ai.arena.TableGameRunner
+import com.wingedsheep.ai.arena.TableSetup
+import com.wingedsheep.ai.engine.AiProfile
+import com.wingedsheep.engine.registry.CardRegistry
+import com.wingedsheep.mtg.sets.MtgSetCatalog
+import com.wingedsheep.sdk.model.Deck
+import io.kotest.core.spec.style.FunSpec
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
+import java.nio.ByteBuffer
+import java.nio.file.Files
+import java.nio.file.Path
+import java.security.MessageDigest
+
+class IndustrialWasteElvesPilotBenchmark : FunSpec({
+    test("Industrial Waste paired Elves capability pilot").config(
+        enabled = System.getenv("IW_ELVES_PILOT") == "true",
+    ) {
+        val repository = elvesPilotRepositoryRoot()
+        val root = repository.resolve("industrial-waste")
+        val opponentPath = root.resolve("gauntlet/elves-mogged-2026-09-19.dck")
+        val opponentDigest = elvesPilotFileDigest(opponentPath)
+        require(opponentDigest == ELVES_OPPONENT_SHA256) {
+            "Elves opponent identity drift: $opponentDigest"
+        }
+
+        val registry = CardRegistry().apply {
+            MtgSetCatalog.all.forEach { set ->
+                register(set.cards)
+                register(set.basicLands)
+            }
+        }
+
+        val industrialDecks = linkedMapOf(
+            "control" to elvesPilotParseMain(
+                root.resolve("control/industrial-waste-v1.0-submitted.dck")
+            ),
+            "pactdoll-a" to elvesPilotParseMain(
+                root.resolve("challengers/pactdoll-a.dck")
+            ),
+        )
+        val opponent = elvesPilotParseMain(opponentPath)
+        (industrialDecks.values + opponent).forEach { deck ->
+            require(deck.size == 60) { "pilot decks must contain exactly 60 maindeck cards" }
+            deck.uniqueCards().forEach(registry::requireCard)
+        }
+
+        val seeds = (1..ELVES_PILOT_SEED_COUNT).map {
+            elvesPilotSeedFor(ELVES_PILOT_NAMESPACE, it)
+        }
+        require(seeds == ELVES_PILOT_FROZEN_SEEDS) {
+            "Elves pilot frozen seed vector drift: $seeds"
+        }
+        require(elvesPilotVectorDigest(seeds) == ELVES_PILOT_VECTOR_SHA256) {
+            "Elves pilot seed vector digest drift"
+        }
+        require(Files.readString(root.resolve("seed-registry.json")).contains(ELVES_PILOT_NAMESPACE)) {
+            "Elves pilot namespace is not registered"
+        }
+
+        val industrial = ArenaAgent(
+            "industrial-waste-policy-v2",
+            AiProfile.LEGACY_V0.copy(
+                id = "industrial-waste-policy-v2",
+                advisorModules = listOf(IndustrialWasteAdvisorModule),
+                considerAdvisedManaAbilities = true,
+            ),
+        )
+
+        val monsterBase = AiProfile.PRODUCTION_CANDIDATE_EXPIRING
+        val monster = ArenaAgent(
+            "elves-gate-10-pilot",
+            monsterBase.copy(
+                id = "elves-gate-10-pilot",
+                advisorModules = monsterBase.advisorModules + ElvesAdvisorModule,
+                considerAdvisedManaAbilities = true,
+            ),
+        )
+
+        val outcomes = buildList {
+            seeds.forEachIndexed { seedIndex, seed ->
+                industrialDecks.forEach { (deckName, deck) ->
+                    repeat(2) { rotation ->
+                        val industrialSeat = rotation
+                        val observer = IndustrialWasteGoldfishObserver(registry, industrialSeat)
+                        val agents =
+                            if (industrialSeat == 0) listOf(industrial, monster) else listOf(monster, industrial)
+                        val decks =
+                            if (industrialSeat == 0) listOf(deck, opponent) else listOf(opponent, deck)
+
+                        val game = TableGameRunner.play(
+                            registry = registry,
+                            setup = TableSetup.HEADS_UP,
+                            agents = agents,
+                            decks = decks,
+                            seed = seed,
+                            groupId = seedIndex + 1,
+                            rotation = rotation,
+                            maxTurns = ELVES_PILOT_MAX_TURNS,
+                            maxActions = ELVES_PILOT_MAX_ACTIONS,
+                            trainingObserver = observer,
+                            skipMulligans = false,
+                        )
+
+                        add(
+                            ElvesPilotOutcome(
+                                deck = deckName,
+                                pair = seedIndex + 1,
+                                seed = seed,
+                                industrialSeat = industrialSeat,
+                                completed = game.completed,
+                                winnerSeat = game.winnerSeat,
+                                industrialWon = game.winnerSeat == industrialSeat,
+                                opponentWon = game.winnerSeat == 1 - industrialSeat,
+                                turns = game.turns,
+                                actions = game.actions,
+                                drawReason = game.drawReason,
+                                exception = game.exception,
+                                illegalActions = game.illegalActions,
+                                metrics = observer.snapshot(),
+                            )
+                        )
+                    }
+                }
+            }
+        }
+
+        val invalid = outcomes.filter { outcome ->
+            outcome.exception != null ||
+                outcome.illegalActions.isNotEmpty() ||
+                (outcome.drawReason.isNotEmpty() &&
+                    !outcome.drawReason.startsWith("maxTurns") &&
+                    !outcome.drawReason.startsWith("maxActions"))
+        }
+
+        val summaries = industrialDecks.keys.map { deck ->
+            val selected = outcomes.filter { it.deck == deck }
+            ElvesPilotSummary(
+                deck = deck,
+                games = selected.size,
+                industrialWins = selected.count { it.industrialWon },
+                opponentWins = selected.count { it.opponentWon },
+                draws = selected.count { !it.industrialWon && !it.opponentWon },
+                tronByTurn5 = selected.count { it.metrics.tronByTurn5 },
+                comboReady = selected.count { it.metrics.comboReadyTurn != null },
+                meanMulligans = selected.sumOf { it.metrics.mulligans } / selected.size.toDouble(),
+                meanColoredManaFailureTurns =
+                    selected.sumOf { it.metrics.coloredManaFailureTurns } / selected.size.toDouble(),
+            )
+        }
+
+        val report = ElvesPilotReport(
+            schemaVersion = 1,
+            evidenceClass = "preboard-matchup-capability-pilot",
+            promotionEligible = false,
+            namespace = ELVES_PILOT_NAMESPACE,
+            seedCount = seeds.size,
+            seedVectorSha256 = ELVES_PILOT_VECTOR_SHA256,
+            opponent = "Elves — Mogged, Top 4 (5-2), 2026-09-19",
+            source = "https://mtgdecks.net/Pauper/mtgo-pauper-challenge-16-12854501-tournament-270509",
+            opponentProfile = "elves-gate-10-pilot",
+            mulligans = "London mulligans enabled for both seats",
+            maxTurnsPerSeat = ELVES_PILOT_MAX_TURNS,
+            maxActions = ELVES_PILOT_MAX_ACTIONS,
+            outcomes = outcomes,
+            summaries = summaries,
+            valid = invalid.isEmpty(),
+        )
+
+        val output = root.resolve("results/gate-10-elves-pilot-v1.json")
+        output.parent?.let { Files.createDirectories(it) }
+        Files.writeString(output, Json { prettyPrint = true }.encodeToString(report) + "\n")
+
+        check(invalid.isEmpty()) {
+            "Elves pilot found ${invalid.size} invalid outcomes; see $output"
+        }
+        check(outcomes.size == 8) { "Elves pilot must produce exactly eight games" }
+        check(industrialDecks.keys == setOf("control", "pactdoll-a")) {
+            "Gate 10 identity set drifted"
+        }
+    }
+})
+
+private const val ELVES_PILOT_NAMESPACE = "IW-G10-ELVES-PILOT-V1"
+private const val ELVES_PILOT_SEED_COUNT = 2
+private val ELVES_PILOT_FROZEN_SEEDS =
+    listOf(3498944217495795827L, 2773263965288627783L)
+private const val ELVES_PILOT_VECTOR_SHA256 =
+    "259d99ee5308c600a9bc054653e2117623ddf64acebd337ebf19ff486d422a4f"
+private const val ELVES_OPPONENT_SHA256 =
+    "01f63d291f90fdd6956a37b5ec9bc6b411bff4d23ea87e4ff96c69be89c19cf6"
+private const val ELVES_PILOT_MAX_TURNS = 16
+private const val ELVES_PILOT_MAX_ACTIONS = 4_000
+
+@Serializable
+private data class ElvesPilotOutcome(
+    val deck: String,
+    val pair: Int,
+    val seed: Long,
+    val industrialSeat: Int,
+    val completed: Boolean,
+    val winnerSeat: Int?,
+    val industrialWon: Boolean,
+    val opponentWon: Boolean,
+    val turns: Int,
+    val actions: Int,
+    val drawReason: String,
+    val exception: String?,
+    val illegalActions: Map<String, Int>,
+    val metrics: IndustrialWasteGoldfishMetrics,
+)
+
+@Serializable
+private data class ElvesPilotSummary(
+    val deck: String,
+    val games: Int,
+    val industrialWins: Int,
+    val opponentWins: Int,
+    val draws: Int,
+    val tronByTurn5: Int,
+    val comboReady: Int,
+    val meanMulligans: Double,
+    val meanColoredManaFailureTurns: Double,
+)
+
+@Serializable
+private data class ElvesPilotReport(
+    val schemaVersion: Int,
+    val evidenceClass: String,
+    val promotionEligible: Boolean,
+    val namespace: String,
+    val seedCount: Int,
+    val seedVectorSha256: String,
+    val opponent: String,
+    val source: String,
+    val opponentProfile: String,
+    val mulligans: String,
+    val maxTurnsPerSeat: Int,
+    val maxActions: Int,
+    val outcomes: List<ElvesPilotOutcome>,
+    val summaries: List<ElvesPilotSummary>,
+    val valid: Boolean,
+)
+
+private fun elvesPilotRepositoryRoot(): Path {
+    var candidate: Path? = Path.of("").toAbsolutePath()
+    while (candidate != null) {
+        if (Files.isDirectory(candidate.resolve("industrial-waste"))) return candidate
+        candidate = candidate.parent
+    }
+    error("Cannot locate repository root containing industrial-waste")
+}
+
+private fun elvesPilotParseMain(path: Path): Deck {
+    var inMain = false
+    val cards = buildList {
+        Files.readAllLines(path).forEach { raw ->
+            val line = raw.trim()
+            when {
+                line == "[main]" -> inMain = true
+                line.startsWith("[") -> inMain = false
+                inMain && line.isNotEmpty() -> {
+                    val split = line.indexOf(' ')
+                    require(split > 0) { "Malformed deck line in $path: $line" }
+                    val count = line.substring(0, split).toInt()
+                    val name = line.substring(split + 1)
+                    repeat(count) { add(name) }
+                }
+            }
+        }
+    }
+    return Deck(cards)
+}
+
+private fun elvesPilotSeedFor(namespace: String, index: Int): Long {
+    val digest = MessageDigest.getInstance("SHA-256")
+        .digest("$namespace:$index".toByteArray(Charsets.UTF_8))
+    return ByteBuffer.wrap(digest, 0, Long.SIZE_BYTES).long.and(Long.MAX_VALUE)
+        .let { it.takeIf { value -> value != 0L } ?: 1L }
+}
+
+private fun elvesPilotVectorDigest(seeds: List<Long>): String =
+    MessageDigest.getInstance("SHA-256")
+        .digest(seeds.joinToString("\n").toByteArray(Charsets.UTF_8))
+        .joinToString("") { "%02x".format(it) }
+
+private fun elvesPilotFileDigest(path: Path): String =
+    MessageDigest.getInstance("SHA-256")
+        .digest(Files.readAllBytes(path))
+        .joinToString("") { "%02x".format(it) }

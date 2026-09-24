@@ -930,6 +930,9 @@ class CastZoneResolver(
                 is CardPredicate.HasAdventure -> card.hasAdventure
                 is CardPredicate.IsDoubleFaced -> card.isDoubleFaced
                 is CardPredicate.HasNoAbilities -> card.oracleText.isBlank()
+                // Resolution-context predicates cannot be answered from a bare CardComponent here.
+                // Fail closed, matching the existing policy for chosen subtype/list predicates.
+                is CardPredicate.HasCardTypeFromVariable -> false
                 // --- Supertypes ---
                 is CardPredicate.IsLegendary -> card.typeLine.isLegendary
                 is CardPredicate.IsNonlegendary -> !card.typeLine.isLegendary

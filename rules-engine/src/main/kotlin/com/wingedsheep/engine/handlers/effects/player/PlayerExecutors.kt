@@ -29,6 +29,10 @@ class PlayerExecutors(
         OpenLifeBidExecutor(executeEffect = effectExecutor)
     }
 
+    private val ventureIntoUndercityExecutor by lazy {
+        VentureIntoUndercityExecutor(executeEffect = effectExecutor)
+    }
+
     /**
      * Initialize the module with the parent registry's execute function.
      * Must be called before executors() is accessed.
@@ -87,6 +91,9 @@ class PlayerExecutors(
         SkipNextTurnExecutor(),
         SkipUntapExecutor(),
         TakeExtraTurnExecutor(),
-        TheRingTemptsYouExecutor()
+        TheRingTemptsYouExecutor(),
+        TakeInitiativeExecutor(),
+        ventureIntoUndercityExecutor,
+        EnterUndercityRoomExecutor()
     )
 }

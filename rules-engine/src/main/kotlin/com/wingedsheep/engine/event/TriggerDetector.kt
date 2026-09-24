@@ -14,6 +14,8 @@ import com.wingedsheep.engine.core.UntappedEvent
 import com.wingedsheep.engine.core.ControlChangedEvent
 import com.wingedsheep.engine.core.DoorUnlockedEvent
 import com.wingedsheep.engine.core.DamageDealtEvent
+import com.wingedsheep.engine.core.InitiativeTakenEvent
+import com.wingedsheep.engine.core.UndercityRoomEnteredEvent
 import com.wingedsheep.engine.core.PermanentsSacrificedEvent
 import com.wingedsheep.engine.core.ReflexiveAbilityTriggeredEvent
 import com.wingedsheep.engine.core.SpellCastEvent
@@ -45,6 +47,7 @@ import com.wingedsheep.engine.state.components.identity.RoomFaceId
 import com.wingedsheep.engine.state.components.identity.RoomFaceStatics
 import com.wingedsheep.engine.state.components.identity.TokenComponent
 import com.wingedsheep.engine.state.components.identity.OwnerComponent
+import com.wingedsheep.engine.state.components.player.PlayerInitiativeComponent
 import com.wingedsheep.engine.mechanics.layers.ProjectedState
 import com.wingedsheep.engine.state.ComponentContainer
 import com.wingedsheep.sdk.core.CounterType
@@ -342,6 +345,12 @@ class TriggerDetector(
         // and fires the trigger at most once per observer.
         detectCombatDamageBatchTriggers(state, events, triggers, state.projectedState, index)
 
+        // The initiative's inherent rules are not printed abilities on a permanent. They are
+        // synthesized from initiative-taking and combat-damage events, while room entry is its own
+        // stack trigger so opponents retain the normal response window.
+        detectInitiativeTriggers(state, events, triggers)
+        detectUndercityRoomTriggers(events, triggers)
+
         // Detect recipient-side "whenever one or more [creatures] are dealt [excess] damage"
         // batching triggers (DealsDamageEvent(batch = true), e.g. Magmatic Galleon). Fires the
         // trigger at most once per observer regardless of how many recipients were damaged
@@ -531,6 +540,59 @@ class TriggerDetector(
     }
 
     /**
+     * Initiative inherent triggers: taking the initiative ventures, and combat damage to the holder
+     * transfers the initiative to each qualifying damage-source controller.
+     */
+    private fun detectInitiativeTriggers(
+        state: GameState,
+        events: List<EngineGameEvent>,
+        triggers: MutableList<PendingTrigger>
+    ) {
+        for (event in events.filterIsInstance<InitiativeTakenEvent>()) {
+            triggers.add(
+                InitiativeTriggers.venture(
+                    event.playerId,
+                    "Whenever you take the initiative, venture into Undercity"
+                )
+            )
+        }
+
+        val holder = state.turnOrder.firstOrNull { playerId ->
+            state.getEntity(playerId)?.has<PlayerInitiativeComponent>() == true
+        } ?: return
+
+        val takers = linkedSetOf<EntityId>()
+        for (event in events.filterIsInstance<DamageDealtEvent>()) {
+            if (!event.isCombatDamage || event.targetId != holder || event.sourceId == null) continue
+            val source = state.getEntity(event.sourceId) ?: continue
+            val card = source.get<CardComponent>() ?: continue
+            if (!card.typeLine.isCreature) continue
+            val controller = source.get<ControllerComponent>()?.playerId
+                ?: source.get<OwnerComponent>()?.playerId
+                ?: card.ownerId
+                ?: continue
+            if (controller != holder &&
+                state.getEntity(controller)?.has<com.wingedsheep.engine.state.components.player.PlayerLostComponent>() != true
+            ) {
+                takers.add(controller)
+            }
+        }
+        for (playerId in takers) {
+            triggers.add(InitiativeTriggers.take(playerId))
+        }
+    }
+
+    /** Turn a room-entry signal into that room's triggered ability on the stack. */
+    private fun detectUndercityRoomTriggers(
+        events: List<EngineGameEvent>,
+        triggers: MutableList<PendingTrigger>
+    ) {
+        for (event in events.filterIsInstance<UndercityRoomEnteredEvent>()) {
+            triggers.add(InitiativeTriggers.room(event.playerId, event.room))
+        }
+    }
+
+    /**
      * Detect delayed triggers that should fire at the given step.
      * Returns the pending triggers and the IDs of consumed delayed triggers.
      */
@@ -677,6 +739,18 @@ class TriggerDetector(
                     )
                 )
             }
+        }
+
+        // The player who has the initiative ventures into Undercity at the beginning of their upkeep.
+        if (step == Step.UPKEEP &&
+            state.getEntity(activePlayerId)?.has<PlayerInitiativeComponent>() == true
+        ) {
+            triggers.add(
+                InitiativeTriggers.venture(
+                    activePlayerId,
+                    "At the beginning of your upkeep, venture into Undercity"
+                )
+            )
         }
 
         // Duplicate triggers for "all triggers from a filtered source trigger again" static

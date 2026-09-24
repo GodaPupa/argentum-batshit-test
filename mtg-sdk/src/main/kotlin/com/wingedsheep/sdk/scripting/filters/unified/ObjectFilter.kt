@@ -642,6 +642,11 @@ data class GameObjectFilter(
     )
 
     /** Must have a subtype matching the value stored in chosenValues[variableName] */
+    /** Match cards whose card type equals a value stored earlier in this resolution. */
+    fun withCardTypeFromVariable(variableName: String) = copy(
+        cardPredicates = cardPredicates + CardPredicate.HasCardTypeFromVariable(variableName)
+    )
+
     fun withSubtypeFromVariable(variableName: String) = copy(
         cardPredicates = cardPredicates + CardPredicate.HasSubtypeFromVariable(variableName)
     )

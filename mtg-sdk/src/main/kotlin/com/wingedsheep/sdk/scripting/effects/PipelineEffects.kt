@@ -1267,6 +1267,8 @@ enum class OptionType {
     COLOR,
     /** Choose from the five basic land types (Plains, Island, Swamp, Mountain, Forest) */
     BASIC_LAND_TYPE,
+    /** Choose from Magic card types (Creature, Land, Instant, Sorcery, etc.). */
+    CARD_TYPE,
     /**
      * Name a card. Options are every card name the engine knows about (the registry),
      * sorted alphabetically, so the player searches/filters a list rather than typing
@@ -1302,6 +1304,7 @@ data class ChooseOptionEffect(
             OptionType.CREATURE_TYPE -> "a creature type"
             OptionType.COLOR -> "a color"
             OptionType.BASIC_LAND_TYPE -> "a basic land type"
+            OptionType.CARD_TYPE -> "a card type"
             OptionType.CARD_NAME -> "a card name"
         })
     }

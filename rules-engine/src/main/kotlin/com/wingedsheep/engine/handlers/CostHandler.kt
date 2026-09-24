@@ -596,6 +596,7 @@ class CostHandler {
         // Always payable — an empty hand discards nothing, and a cost of nothing is a cost you can
         // pay (CR 118.3). Same answer the AbilityCost.DiscardHand branch gives above.
         is CostAtom.DiscardHand -> true
+        is CostAtom.RevealHand -> true
         is CostAtom.PayLife -> {
             // CR 810.9a — affordability uses the team's shared total in Two-Headed Giant.
             val life = state.lifeTotal(controllerId)
@@ -743,6 +744,24 @@ class CostHandler {
                 val result = ZoneTransitionService.discardCards(state, controllerId, cardsInHand)
                 CostPaymentResult.success(result.state, manaPool, result.events)
             }
+        }
+        is CostAtom.RevealHand -> {
+            val cardsInHand = state.getZone(ZoneKey(controllerId, Zone.HAND)).toList()
+            val names = cardsInHand.map {
+                state.getEntity(it)?.get<CardComponent>()?.name ?: "Unknown"
+            }
+            CostPaymentResult.success(
+                state,
+                manaPool,
+                events = listOf(
+                    CardsRevealedEvent(
+                        controllerId,
+                        cardsInHand,
+                        names,
+                        source = state.getEntity(sourceId)?.get<CardComponent>()?.name ?: "Cost payment"
+                    )
+                )
+            )
         }
         is CostAtom.PayLife -> {
             val (newState, events) = LifePaymentService.pay(state, controllerId, atom.amount)
@@ -1309,6 +1328,7 @@ class CostHandler {
             is AdditionalCost.Atom -> when (val atom = cost.atom) {
                 // An empty hand discards nothing, so this is always payable (CR 118.3).
                 is CostAtom.DiscardHand -> true
+                is CostAtom.RevealHand -> true
                 is CostAtom.Sacrifice ->
                     findMatchingPermanentsUnified(state, controllerId, atom.filter).size >= atom.count
                 is CostAtom.Discard ->

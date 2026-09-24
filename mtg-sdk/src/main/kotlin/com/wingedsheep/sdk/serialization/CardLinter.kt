@@ -659,6 +659,7 @@ object CardLinter {
         put("ExcludeOtherCollection" to "otherCollectionName", read(Space.COLLECTION))
         put("VariableReference" to "variableName", read(Space.NUMBER))
         put("NameEqualsChosen" to "variableName", read(Space.CHOSEN))
+        put("HasCardTypeFromVariable" to "variableName", read(Space.CHOSEN))
         put("HasSubtypeFromVariable" to "variableName", read(Space.CHOSEN))
         put("YouControlMostOfChosenType" to "chosenValueKey", read(Space.CHOSEN))
         put(null to "chosenSubtypeKey", read(Space.CHOSEN)) // GroupFilter (no discriminator)

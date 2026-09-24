@@ -164,6 +164,8 @@ val engineSerializersModule = SerializersModule {
         subclass(TransformedEvent::class)
         subclass(CreatureGoadedEvent::class)
         subclass(CreatureNoLongerGoadedEvent::class)
+        subclass(InitiativeTakenEvent::class)
+        subclass(UndercityRoomEnteredEvent::class)
     }
 
     // PendingDecision hierarchy
@@ -647,6 +649,8 @@ val engineSerializersModule = SerializersModule {
         subclass(PlayerCitysBlessingComponent::class)
         subclass(PlayerEnduringStoryComponent::class)
         subclass(PlayerSpeedComponent::class)
+        subclass(PlayerInitiativeComponent::class)
+        subclass(UndercityProgressComponent::class)
         subclass(PlayerNoMaximumHandSizeComponent::class)
         subclass(PlayerMaximumHandSizeReductionComponent::class)
         subclass(PlayerHexproofComponent::class)

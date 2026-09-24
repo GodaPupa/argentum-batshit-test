@@ -1239,6 +1239,14 @@ object Effects {
     fun TheRingTemptsYou(target: EffectTarget = EffectTarget.Controller): Effect =
         com.wingedsheep.sdk.scripting.effects.TheRingTemptsYouEffect(target)
 
+    /** Target player takes the initiative. */
+    fun TakeInitiative(target: EffectTarget = EffectTarget.Controller): Effect =
+        com.wingedsheep.sdk.scripting.effects.TakeInitiativeEffect(target)
+
+    /** Target player ventures into Undercity. */
+    fun VentureIntoUndercity(target: EffectTarget = EffectTarget.Controller): Effect =
+        com.wingedsheep.sdk.scripting.effects.VentureIntoUndercityEffect(target)
+
     /**
      * "Amass [subtype] N" (CR 701.47). The controller puts N +1/+1 counters on an Army they
      * control, creating a 0/0 black [subtype] Army token first if they control no Army, and the

@@ -87,3 +87,11 @@ produced the only Industrial win, assembling Tron on turn 5 and reaching combo-r
 7. Pactdoll-A trailed Control, so the predeclared replication trigger did not pass. Monster Tron
 sampling is closed with no replication, no promotion, no card changes, and no postboard
 authorization. Frozen v1.0 Control remains unchanged.
+
+
+Gate 10 now begins with Mogged's exact sourced Elves 75 from the 2026-09-19 MTGO Pauper Challenge
+16. The deck-file SHA-256 is
+`01f63d291f90fdd6956a37b5ec9bc6b411bff4d23ea87e4ff96c69be89c19cf6`.
+The current audit identifies six absent maindeck definitions: Masked Vandal, Avenging Hunter, Land
+Grant, Winding Way, Lead the Stampede, and Gingerbread Cabin. No Gate 10 seed namespace or gameplay
+run is authorized until the seed-free readiness protocol passes in full.

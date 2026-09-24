@@ -1861,6 +1861,9 @@ class CastSpellHandler(
                     // Nothing to validate: the payer selects nothing (every card goes) and an
                     // empty hand pays it for free (CR 118.3).
                     is CostAtom.DiscardHand -> Unit
+                    // "Reveal your hand" has no selection to validate; the self-alternative
+                    // condition, when present, is authorized separately above.
+                    is CostAtom.RevealHand -> Unit
                     is CostAtom.Sacrifice -> {
                         val sacrificed = action.additionalCostPayment?.sacrificedPermanents ?: emptyList()
                         val filterDesc = atom.filter.description
@@ -2768,6 +2771,28 @@ class CastSpellHandler(
         // null when every selection-requiring cost is already satisfied — the normal path.
         surfaceUnpaidAdditionalCostSelection(currentState, action, flattenedAllCosts)?.let { return it }
 
+        // Reveal-the-entire-hand costs carry no picker. The cast action itself is the decision
+        // to pay the alternative/additional cost, so publish the hand automatically before any
+        // selected costs are paid. Explicitly exclude the card being cast in case a caller reaches
+        // this point before its hand->stack move is reflected in the zone list.
+        for (additionalCost in flattenedAllCosts) {
+            val atom = (additionalCost as? AdditionalCost.Atom)?.atom
+            if (atom is CostAtom.RevealHand) {
+                val revealed = currentState.getZone(ZoneKey(action.playerId, Zone.HAND))
+                    .filter { it != action.cardId }
+                events.add(
+                    CardsRevealedEvent(
+                        revealingPlayerId = action.playerId,
+                        cardIds = revealed,
+                        cardNames = revealed.map {
+                            currentState.getEntity(it)?.get<CardComponent>()?.name ?: "Unknown"
+                        },
+                        source = currentState.getEntity(action.cardId)?.get<CardComponent>()?.name,
+                    )
+                )
+            }
+        }
+
         // PayLife additional costs (e.g., Timeline Culler's "Warp—{B}, Pay 2 life")
         // are auto-paid: the amount is fixed, so no player choice is required and the
         // payment is applied regardless of whether the client included an
@@ -2979,6 +3004,7 @@ class CastSpellHandler(
                         // ExileFromGraveyardForTotal is an activated-ability cost only: it is never
                         // offered as a spell's additional cost (canPayAdditionalCost reports it
                         // unpayable), so this branch is unreachable for the same reason Mill's is.
+                        is CostAtom.RevealHand,
                         is CostAtom.PayLife, is CostAtom.Mana,
                         is CostAtom.PutCountersOnPermanent,
                         is CostAtom.PutCountersOnSelf,
