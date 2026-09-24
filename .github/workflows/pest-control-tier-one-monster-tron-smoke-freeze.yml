@@ -6,6 +6,8 @@ on:
       - scripts/experiments/pest-control/generate_tier_one_monster_tron_smoke_freeze.py
       - .github/workflows/pest-control-tier-one-monster-tron-smoke-freeze.yml
       - docs/experiments/pest-control/tier-one-monster-tron-smoke-freeze-gate.md
+      - docs/experiments/pest-control/tier-one-monster-tron-auto-freeze-authorization.json
+      - .github/workflows/pest-control-tier-one-monster-tron-smoke-production-freeze.yml
 
 permissions:
   actions: read
@@ -37,6 +39,39 @@ jobs:
           echo "4d3a19ef7febacb336911ff1271c14ab83a6ea1f99ed34ae154ae154d6ef5f25  build/prior-terror-replication-freeze.zip" | sha256sum -c -
           unzip -q build/prior-terror-replication-freeze.zip -d build/prior-terror-replication-freeze
           (cd build/prior-terror-replication-freeze && sha256sum -c artifacts.sha256)
+
+      - name: Verify production freeze remains one-shot and merge-triggered
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "3934f18558cba9797bd888e6e5a194b72edb25e01e34c16b3cc900ce88a0621a  docs/experiments/pest-control/tier-one-monster-tron-auto-freeze-authorization.json" | sha256sum -c -
+          python3 - <<'PY'
+          from pathlib import Path
+          wf=Path(".github/workflows/pest-control-tier-one-monster-tron-smoke-production-freeze.yml").read_text()
+          assert "push:" in wf
+          assert "branches:" in wf and "- main" in wf
+          assert "tier-one-monster-tron-auto-freeze-authorization.json" in wf
+          assert "workflow_dispatch" not in wf
+          assert "pull_request" not in wf
+          assert wf.count("--generate") == 1
+          import ast
+          gen_path=Path("scripts/experiments/pest-control/generate_tier_one_monster_tron_smoke_freeze.py")
+          gen=gen_path.read_text()
+          tree=ast.parse(gen)
+          entropy_calls=[
+              node for node in ast.walk(tree)
+              if isinstance(node, ast.Call)
+              and isinstance(node.func, ast.Attribute)
+              and isinstance(node.func.value, ast.Name)
+              and node.func.value.id == "os"
+              and node.func.attr == "urandom"
+              and len(node.args) == 1
+              and isinstance(node.args[0], ast.Constant)
+              and node.args[0].value == 32
+          ]
+          assert len(entropy_calls) == 1, len(entropy_calls)
+          assert "official Monster Tron smoke vector is already frozen; regeneration prohibited" in gen
+          PY
 
       - name: Reconstruct complete retired Pest seed universe
         run: |

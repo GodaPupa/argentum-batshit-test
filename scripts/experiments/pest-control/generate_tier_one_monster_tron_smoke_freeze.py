@@ -1,10 +1,9 @@
 #!/usr/bin/env python3
-"""Entropy-free validation for the Pest Control vs Monster Tron four-game smoke-vector freeze.
+"""One-shot four-game Pest Control vs Monster Tron smoke-vector freeze.
 
-This gate deliberately cannot request production entropy. It reconstructs the complete retired Pest
-seed universe from accepted, pinned artifacts and validates the exact four-cell assignment shape
-against deterministic fixture bytes. Production entropy belongs to a later separately reviewed
-one-shot gate.
+Pull-request validation is entropy-free. The separately authorized production path may make exactly
+one os.urandom(32) call, quarantines the complete four-seed draw before validation, and has no reroll,
+replacement, partial-salvage, or regeneration path. No game initializer or outcome API is reachable.
 """
 
 from __future__ import annotations
@@ -14,7 +13,9 @@ import csv
 import hashlib
 import io
 import json
+import os
 import runpy
+from datetime import datetime, timezone
 from pathlib import Path
 
 PROTOCOL = "PEST_CONTROL_V10_VS_MEHANSKE_MONSTER_TRON_2026_09_21_PREBOARD_V1"
@@ -31,6 +32,12 @@ TERROR_REPLICATION_VECTOR_SHA256 = "445542e6cdf9902cc435b4db276a747e6b2200ff4f24
 
 PRIOR_EXCLUSION_COUNT = 554
 COMPLETE_EXCLUSION_COUNT = 566
+PRODUCTION_AUTH = "AUTOMATIC_SINGLE_MONSTER_TRON_SMOKE_FREEZE_NO_GAMEPLAY"
+AUTH_PATH = "docs/experiments/pest-control/tier-one-monster-tron-auto-freeze-authorization.json"
+AUTH_SHA256 = "3934f18558cba9797bd888e6e5a194b72edb25e01e34c16b3cc900ce88a0621a"
+FROZEN_PROVENANCE_PATH = (
+    "docs/experiments/pest-control/tier-one-monster-tron-smoke-freeze-provenance.json"
+)
 
 ASSIGNMENT_HEADER = (
     "protocol_id", "block_id", "game_number", "seed_decimal", "seed_hex", "pest_seat",
@@ -59,6 +66,20 @@ def seed_hex(seed: int) -> str:
 
 def vector_hash(values: list[int] | tuple[int, ...]) -> str:
     return sha256(("\n".join(str(seed) for seed in values) + "\n").encode())
+
+
+def write_new_fsynced(path: Path, data: bytes) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    descriptor = os.open(path, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o444)
+    with os.fdopen(descriptor, "wb") as stream:
+        stream.write(data)
+        stream.flush()
+        os.fsync(stream.fileno())
+    directory = os.open(path.parent, os.O_RDONLY)
+    try:
+        os.fsync(directory)
+    finally:
+        os.close(directory)
 
 
 def read_vector(path: Path, expected_sha256: str, expected_count: int, label: str) -> list[int]:
@@ -97,7 +118,6 @@ def complete_exclusion(
     overlap = prior.intersection(replication)
     if overlap:
         raise ValueError(f"accepted Terror replication vector overlaps prior exclusion: {sorted(overlap)}")
-
     complete = prior | set(replication)
     if len(complete) != COMPLETE_EXCLUSION_COUNT:
         raise ValueError("complete Monster Tron smoke exclusion set must contain exactly 566 values")
@@ -123,32 +143,65 @@ def csv_bytes(rows: list[dict[str, object]]) -> bytes:
     return output.getvalue().encode()
 
 
-def validate_fixture(
+def generate_bundle(
     root: Path,
     prior_terror_smoke_dir: Path,
     prior_terror_replication_dir: Path,
     output: Path,
+    entropy: bytes,
+    fixture: bool,
+    freeze_commit: str,
+    freeze_tree: str,
 ) -> dict[str, object]:
     excluded, exclusion_audit = complete_exclusion(
-        root,
-        prior_terror_smoke_dir,
-        prior_terror_replication_dir,
+        root, prior_terror_smoke_dir, prior_terror_replication_dir
     )
     if output.exists() and any(output.iterdir()):
         raise ValueError("output directory must be absent or empty")
-    output.mkdir(parents=True, exist_ok=True)
+    if len(entropy) != 32:
+        raise ValueError("entropy draw must be exactly 32 bytes")
 
-    entropy = hashlib.shake_256(
-        b"NONEXPERIMENTAL_PEST_CONTROL_MONSTER_TRON_SMOKE_4_FREEZE_FIXTURE_V1"
-    ).digest(32)
+    output.mkdir(parents=True, exist_ok=True)
     seeds = [
         int.from_bytes(entropy[offset:offset + 8], "big", signed=True)
         for offset in range(0, 32, 8)
     ]
-    if len(set(seeds)) != 4 or any(seed == 0 for seed in seeds):
-        raise ValueError("deterministic fixture seed shape invalid")
-    if set(seeds) & excluded:
-        raise ValueError("deterministic fixture collides with retired Pest seed universe")
+
+    quarantine = {
+        "block_id": BLOCK,
+        "entropy_byte_count": 32,
+        "entropy_sha256": sha256(entropy),
+        "generation_method": "one os.urandom(32) call; four signed big-endian 64-bit seeds in unchanged draw order",
+        "seeds_decimal": seeds,
+        "seeds_hex": [seed_hex(seed) for seed in seeds],
+        "status": "NONEXPERIMENTAL_FIXTURE" if fixture else "QUARANTINED_UNATTEMPTED",
+    }
+    if not fixture:
+        quarantine["drawn_at_utc"] = (
+            datetime.now(timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z")
+        )
+    quarantine_path = output / "quarantined-vector.json"
+    write_new_fsynced(quarantine_path, canonical_json(quarantine))
+
+    errors: list[str] = []
+    if any(seed == 0 for seed in seeds):
+        errors.append("zero seed")
+    if len(set(seeds)) != 4:
+        errors.append("duplicate seed")
+    overlap = sorted(set(seeds) & excluded)
+    if overlap:
+        errors.append(f"complete-registry overlap: {overlap}")
+    if errors:
+        write_new_fsynced(
+            output / "invalid-retired.json",
+            canonical_json({
+                "block_id": BLOCK,
+                "errors": errors,
+                "quarantine_sha256": sha256(quarantine_path.read_bytes()),
+                "status": "NONEXPERIMENTAL_FIXTURE_INVALID" if fixture else "INVALID_RETIRED",
+            }),
+        )
+        raise ValueError("; ".join(errors))
 
     rows = []
     for game, (seed, cell) in enumerate(zip(seeds, CELLS, strict=True), 1):
@@ -171,16 +224,14 @@ def validate_fixture(
     vector = ("\n".join(str(seed) for seed in seeds) + "\n").encode()
     assignments = csv_bytes(rows)
     manifest = {
-        "schema": "pest-control-tier-one-monster-tron-smoke-freeze-fixture@v1",
+        "schema": "pest-control-tier-one-monster-tron-smoke-freeze@v1",
         "protocol_id": PROTOCOL,
         "block_id": BLOCK,
-        "status": "NONEXPERIMENTAL_FIXTURE",
+        "status": "NONEXPERIMENTAL_FIXTURE" if fixture else "FROZEN_UNEXECUTED",
+        "production_entropy_requested": not fixture,
         "qualified_runner": QUALIFIED_RUNNER,
         "runner_state": "DISABLED",
-        "deck_hashes": {
-            "pest_main": PEST_MAIN,
-            "monster_tron_main": MONSTER_TRON_MAIN,
-        },
+        "deck_hashes": {"pest_main": PEST_MAIN, "monster_tron_main": MONSTER_TRON_MAIN},
         "collision_audit": {
             "excluded_seed_count": COMPLETE_EXCLUSION_COUNT,
             "new_seed_count": 4,
@@ -202,30 +253,67 @@ def validate_fixture(
             },
         },
         "exclusion_audit": exclusion_audit,
+        "freeze_source": {"commit": freeze_commit, "tree": freeze_tree},
+        "generation": {
+            "generator_sha256": sha256(Path(__file__).read_bytes()),
+            "method": "deterministic fixture" if fixture else "one os.urandom(32) call",
+            "regeneration_permitted": False,
+        },
         "official_counters": {
-            "seeds_generated": 0,
+            "seeds_generated": 0 if fixture else 4,
             "games_authorized": 0,
             "games_initialized": 0,
             "actions_submitted": 0,
             "outcome_exposure": 0,
         },
-        "production_entropy_requested": False,
-        "regeneration_permitted": False,
     }
 
-    (output / "ordered-seeds.txt").write_bytes(vector)
-    (output / "assignments.csv").write_bytes(assignments)
-    (output / "freeze-manifest.json").write_bytes(canonical_json(manifest))
+    artifacts = {
+        "ordered-seeds.txt": vector,
+        "assignments.csv": assignments,
+        "freeze-manifest.json": canonical_json(manifest),
+    }
+    for name, data in artifacts.items():
+        write_new_fsynced(output / name, data)
+
+    checksums = {name: sha256(data) for name, data in artifacts.items()}
+    checksums[quarantine_path.name] = sha256(quarantine_path.read_bytes())
+    write_new_fsynced(
+        output / "artifacts.sha256",
+        ("\n".join(f"{digest}  {name}" for name, digest in sorted(checksums.items())) + "\n").encode(),
+    )
 
     return {
-        "status": "READY_ENTROPY_NOT_REQUESTED",
+        "status": manifest["status"],
         "complete_exclusion_count": len(excluded),
-        "fixture_seed_count": len(seeds),
-        "fixture_ordered_vector_sha256": sha256(vector),
-        "fixture_assignment_csv_sha256": sha256(assignments),
-        "fixture_manifest_sha256": sha256(canonical_json(manifest)),
-        "production_entropy_requested": False,
+        "seed_count": len(seeds),
+        "ordered_vector_sha256": sha256(vector),
+        "assignment_csv_sha256": sha256(assignments),
+        "manifest_sha256": sha256(artifacts["freeze-manifest.json"]),
+        "quarantined_vector_sha256": sha256(quarantine_path.read_bytes()),
     }
+
+
+def verify_authorization(root: Path) -> None:
+    path = root / AUTH_PATH
+    data = path.read_bytes()
+    if sha256(data) != AUTH_SHA256:
+        raise ValueError("Monster Tron automatic freeze authorization bytes mismatch")
+    record = json.loads(data)
+    expected = {
+        "schema": "pest-control-tier-one-monster-tron-auto-freeze-authorization@v1",
+        "protocolId": PROTOCOL,
+        "blockId": BLOCK,
+        "authorization": PRODUCTION_AUTH,
+        "productionEntropyCalls": 1,
+        "productionEntropyBytes": 32,
+        "officialGamesAuthorized": 0,
+        "gamesInitialized": 0,
+        "actionsSubmitted": 0,
+        "outcomeExposure": 0,
+    }
+    if record != expected:
+        raise ValueError("Monster Tron automatic freeze authorization semantics mismatch")
 
 
 def main() -> None:
@@ -233,16 +321,17 @@ def main() -> None:
     modes = parser.add_mutually_exclusive_group(required=True)
     modes.add_argument("--preflight", action="store_true")
     modes.add_argument("--validate-fixture", action="store_true")
+    modes.add_argument("--generate", action="store_true")
     parser.add_argument("--prior-terror-smoke-dir", type=Path, required=True)
     parser.add_argument("--prior-terror-replication-dir", type=Path, required=True)
     parser.add_argument("--output-dir", type=Path)
+    parser.add_argument("--freeze-commit", default="0" * 40)
+    parser.add_argument("--freeze-tree", default="0" * 40)
     args = parser.parse_args()
 
     root = Path(__file__).resolve().parents[3]
     excluded, audit = complete_exclusion(
-        root,
-        args.prior_terror_smoke_dir,
-        args.prior_terror_replication_dir,
+        root, args.prior_terror_smoke_dir, args.prior_terror_replication_dir
     )
 
     if args.preflight:
@@ -254,12 +343,44 @@ def main() -> None:
         }
     else:
         if args.output_dir is None:
-            parser.error("--output-dir is required with --validate-fixture")
-        result = validate_fixture(
-            root,
-            args.prior_terror_smoke_dir,
-            args.prior_terror_replication_dir,
-            args.output_dir,
+            parser.error("--output-dir is required")
+
+        if args.generate:
+            if (root / FROZEN_PROVENANCE_PATH).exists():
+                raise ValueError("official Monster Tron smoke vector is already frozen; regeneration prohibited")
+            verify_authorization(root)
+            if os.environ.get("PEST_MONSTER_TRON_AUTO_FREEZE_AUTH") != PRODUCTION_AUTH:
+                raise ValueError("automatic Monster Tron freeze authorization mismatch")
+            if os.environ.get("GITHUB_EVENT_NAME") != "push":
+                raise ValueError("Monster Tron production entropy is restricted to an authorized push")
+            if os.environ.get("GITHUB_REF") != "refs/heads/main":
+                raise ValueError("Monster Tron production freeze requires main")
+            if os.environ.get("GITHUB_RUN_ATTEMPT") != "1":
+                raise ValueError("Monster Tron production freeze requires workflow attempt 1")
+            if os.environ.get("GITHUB_SHA") != args.freeze_commit:
+                raise ValueError("freeze commit must equal triggering GITHUB_SHA")
+            if any(
+                len(value) != 40 or any(char not in "0123456789abcdef" for char in value)
+                for value in (args.freeze_commit, args.freeze_tree)
+            ):
+                raise ValueError("freeze commit/tree must be lowercase 40-digit hashes")
+            entropy = os.urandom(32)
+            fixture = False
+        else:
+            entropy = hashlib.shake_256(
+                b"NONEXPERIMENTAL_PEST_CONTROL_MONSTER_TRON_SMOKE_4_FREEZE_FIXTURE_V2"
+            ).digest(32)
+            fixture = True
+
+        result = generate_bundle(
+            root=root,
+            prior_terror_smoke_dir=args.prior_terror_smoke_dir,
+            prior_terror_replication_dir=args.prior_terror_replication_dir,
+            output=args.output_dir,
+            entropy=entropy,
+            fixture=fixture,
+            freeze_commit=args.freeze_commit,
+            freeze_tree=args.freeze_tree,
         )
 
     print(json.dumps(result, sort_keys=True))
