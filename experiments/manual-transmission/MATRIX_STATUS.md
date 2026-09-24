@@ -5,10 +5,10 @@ Updated from live branch after Hashaton R3-HT and Magda R3-M promotion plus sour
 | Axis | Source/control status | Evidence status | Pilot overlay | Hardware |
 |---|---|---|---|---|
 | RogSi / turbo Oracle-Consult | inherited sourced checkpoint | ACCEPTED IMPORT; old raw GitHub provenance incomplete | R3 + R3-P context | KEEP v0.7 |
-| Blue Farm / Oracle + Breach | **exact Sep 19 2026 winner frozen** | PHASE A COMPLETE; Phase B running | none accepted | KEEP v0.7 |
+| Blue Farm / Oracle + Breach | **exact Sep 19 2026 winner frozen** | **PHASE B COMPLETE**; development screen green | none accepted | KEEP v0.7 |
 | Kinnan activated mana | corrected sourced Sterling Sellards checkpoint | ACCEPTED IMPORT; corrected legal pre-loop windows | R3-K accepted | KEEP v0.7 |
-| Shorikai / Scepter + Hullbreaker | **exact Sep 20 2026 contemporary control frozen** | PHASE A COMPLETE; Phase B running | R3-S/R3-H not accepted | KEEP v0.7 |
-| Sisay activated tutor | **exact Sep 23 2026 winner frozen** | PHASE A COMPLETE; Phase B running | R3-C/R3-F not accepted | KEEP v0.7 |
+| Shorikai / Scepter + Hullbreaker | **exact Sep 20 2026 contemporary control frozen** | **PHASE B COMPLETE**; development screen green | R3-S/R3-H not accepted | KEEP v0.7 |
+| Sisay activated tutor | **exact Sep 23 2026 winner frozen** | **PHASE B COMPLETE**; development screen pending | R3-C/R3-F not accepted | KEEP v0.7 |
 | Magda Treasure / Clock | exact Sep 19 2026 winner frozen | **QUALIFIED exact enumeration + independent audit** | **R3-M ACCEPTED** | KEEP v0.7 |
 | Hashaton discard trigger | exact Sep 19 2026 winner frozen | **QUALIFIED exact enumeration + independent audit** | **R3-HT ACCEPTED** | KEEP v0.7 |
 
@@ -68,8 +68,8 @@ Updated from live branch after Hashaton R3-HT and Magda R3-M promotion plus sour
 
 ## Next justified work
 
-1. Require all three new Phase-B fixture suites to pass in GitHub.
-2. Run DEVELOPMENT ONLY policy exploration for each passing axis.
+1. **Complete:** all three new Phase-B fixture suites pass in GitHub.
+2. Run DEVELOPMENT ONLY policy exploration for each passing axis; Blue Farm and Shorikai screens are green, Sisay remains pending.
 3. Predeclare and execute exact/replayable qualification independently.
 4. Consolidate final Race policy.
 5. Reproduce or explicitly limit the inherited RogSi/Kinnan raw-replay gap.
