@@ -51,5 +51,25 @@ card-specific rule.
 12. Official games/seeds/outcomes remain `0/0/0`.
 13. The exact frozen v0.7 control SHA remains unchanged.
 
+
+## Pre-qualification provenance
+
+- Initial Batch AI snapshot/rebless run **36067346017** failed only in the targeted fixture path
+  for the "source leaves before ETB resolves" scenario. The failure was an ETB response-window
+  sequencing assertion, not a linked-exile or Plainscycling rules defect.
+- Fixture correction commit:
+  `21ceacf1b21f67a14cce16ecd077b3787f3d324e`.
+- Retry trigger commit:
+  `7568834cca4ce09eee071c969227e8fcc69a77b5`.
+- Corrected fail-closed snapshot/rebless run **36067996431**: **SUCCESS**.
+- Canonical snapshot integration commit:
+  `0b07bc7fada66c24e57018f34ca2693a348a014f`.
+- The integration commit changes exactly
+  `mtg-sets/src/test/resources/snapshots/cards/MOM.json`.
+- Alabaster Host Intercessor linked-exile and Plainscycling semantics passed.
+- Exact real-engine readiness emitted `V09_REAL_ENGINE_UNRESOLVED_COUNT=18`, with Alabaster Host
+  Intercessor absent and no unresolved Izzet identity.
+- The unrelated-snapshot guard passed; frozen v0.7 remained exact; official state remained `0/0/0`.
+
 Infrastructure, compilation, fixture, snapshot, or semantic failures are qualification history only,
 not evidence about deck strength.
