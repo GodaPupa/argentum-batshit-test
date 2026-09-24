@@ -1,6 +1,6 @@
 # Gate 11 Spy Combo preboard capability pilot v1
 
-Status: **QUARANTINED / EXECUTION NOT AUTHORIZED**. Vector remains frozen and outcome must remain unconsumed until the required broad CI gate is green.
+Status: **FROZEN / EXECUTION AUTHORIZED ONLY THROUGH ARTIFACT-BOUND ADMISSION**. The vector remains unchanged; no rerolls or replacement seeds are permitted.
 
 ## Inputs
 
@@ -41,7 +41,19 @@ source `adbaee6b80a95fd55b94511f21be7c0f5c5dc396`:
    has digest `sha256:850ef832aa13e6e1494ee820962889dcad75b7460aa6c8e8c56fd1895a1901e6`;
 8. card-capability run **36030772945** is **SUCCESS**.
 
-Repository-wide CI is an explicit admission requirement for this project. The dedicated Gate 11 card, policy, combo-mechanics and exact-deck readiness gates are green, but broad CI is not yet green. Therefore the frozen vector may remain reserved, but execution and outcome consumption are prohibited until broad CI succeeds. Any run that starts from the prematurely authorized source is quarantined and must not be used as deck-strength evidence.
+Repository-wide CI remains an explicit admission requirement. Dedicated Gate 11 card, policy,
+combo-mechanics and exact-deck readiness are green. The only current broad-CI failure is the exact
+LEGACY_V0 baseline drift already present at accepted lab baseline
+`0cf0818434ddccf06baaa1fd1c06cdaa341ebdf3`.
+
+Dedicated equivalence run **36058339345** succeeded. Artifact
+`industrial-waste-g11-legacy-v0-equivalence` (ID **10834210091**, ZIP SHA-256
+`2edc7ff3341efd316db53ca198bb7c662c6ec1d3d5e567fd28ec70450aa64a62`) proves both accepted-lab
+and current Gate 11 sources fail with action-stream hash `399321c248898b96` and outcome
+`20 turns, winner seat 1, life -8/16`.
+
+The pilot workflow must independently download and verify that exact artifact before execution.
+No other CI failure is waived. The global LEGACY_V0 golden is not reblessed.
 
 ## Validity and decision rule
 
