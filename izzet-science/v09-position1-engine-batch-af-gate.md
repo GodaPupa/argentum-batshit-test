@@ -67,3 +67,30 @@ not evidence about deck strength.
   Rebuke absent and no unresolved Izzet identity.
 - The unrelated-snapshot guard admitted exactly the NEO golden change.
 - Frozen v0.7 remained verified; no official seed/game/outcome was consumed or exposed.
+
+
+## Formal qualification and acceptance
+
+- Formal Batch AF qualification run **36052446097**: **SUCCESS**.
+- Accepted source SHA:
+  `cdb88ab9b0a9d9e4555bf00c69bb242e08b61475`.
+- Accepted artifact:
+  `izzet-v09-position1-engine-batch-af`, artifact ID **10830783712**.
+- GitHub artifact ZIP SHA-256:
+  `7c9b285ea82f7bdacc44ab023bef88ba12631cee70253508524381635bb1fac6`.
+- Independent download reproduced that exact ZIP SHA-256 digest.
+- The archive contains exactly `manifest.txt` and `test-output.txt`.
+- The manifest binds:
+  - source SHA `cdb88ab9b0a9d9e4555bf00c69bb242e08b61475`;
+  - frozen-control SHA-256
+    `726f5e9458b46dda30b33a6ce9f3c3237b25d6e11b81dac85308c3065c108a01`;
+  - snapshot run **36044188188**;
+  - snapshot commit `9fe2a4eded6e6bf7d5fc67a869b9ec31d0ace219`;
+  - unresolved reduction **22 -> 21**;
+  - unresolved Izzet identities **0**;
+  - official seeds/games/outcome exposure **0/0/0**.
+- The downloaded test output independently emits
+  `V09_REAL_ENGINE_UNRESOLVED_COUNT=21` and contains no unresolved Izzet identity.
+- Formal qualification reverified Master's Rebuke semantics, canonical NEO snapshots, exact
+  real-engine coverage, the frozen-control hash, and untouched official state.
+- **Batch AF is accepted.**
