@@ -1,0 +1,27 @@
+name: Manual Transmission Final Race Policy
+
+on:
+  push:
+    branches:
+      - "manual-transmission/qualification"
+    paths:
+      - "experiments/manual-transmission/protocols/final-race-policy-r1.json"
+      - "experiments/manual-transmission/policies/RACE-FINAL-R1.md"
+      - "experiments/manual-transmission/policies/R3-*.md"
+      - "experiments/manual-transmission/qualification/final_race_policy_audit.py"
+      - "experiments/manual-transmission/control/v0.7.decklist.txt"
+      - ".github/workflows/manual-transmission-final-race-policy.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  audit-final-race-policy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Audit accepted overlays and frozen hardware
+        run: python experiments/manual-transmission/qualification/final_race_policy_audit.py
