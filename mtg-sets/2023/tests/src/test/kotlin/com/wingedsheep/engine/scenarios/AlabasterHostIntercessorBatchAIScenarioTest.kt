@@ -70,7 +70,12 @@ class AlabasterHostIntercessorBatchAIScenarioTest : ScenarioTestBase() {
             game.passPriority()
             game.passPriority()
             val intercessor = game.findPermanent("Alabaster Host Intercessor")!!
+            val giant = game.findPermanent("Hill Giant")!!
 
+            // The ETB trigger chooses its target as it is put on the stack. Only after that
+            // targeting decision exists does the opponent receive the response window in which
+            // killing the Intercessor can make the linked "until this leaves" exile do nothing.
+            game.selectTargets(listOf(giant))
             game.passPriority()
             game.castSpell(2, "Murder", intercessor).error shouldBe null
             game.resolveStack()
