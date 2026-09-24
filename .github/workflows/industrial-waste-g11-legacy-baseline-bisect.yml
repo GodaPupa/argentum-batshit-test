@@ -1,0 +1,51 @@
+name: Industrial Waste — Gate 11 Legacy Baseline Bisect
+
+on:
+  push:
+    branches:
+      - "industrial-waste/gate-11-spy-combo-readiness"
+    paths:
+      - ".github/workflows/industrial-waste-g11-legacy-baseline-bisect.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  baseline:
+    strategy:
+      fail-fast: false
+      matrix:
+        ref:
+          - f4e7bdb254aebc8a73e481202ce37f7b7d7492a3
+          - e5e4240f6b3ea76fcaa61f02b70522518416e8b0
+          - f08309f19a8327a62a84d8f54a8dad5ddbaf1a2f
+          - 19e0058de873c6db271ee59009cad2cdb76b8145
+          - ff8ecb85d2cfef80aa3806208ab10d7e2afee63f
+          - d7f6bb86ca18b4027e422530d3069c0007738bde
+          - 5a58df218d5676cf4b81bbd21f5694445eca0cf3
+          - 2939b4dadaa507d63cedef1d46445c42517962ca
+          - 52bf8d8a67c211cdf82da140c95d577efa7d7456
+          - f72925605e1d23a914bb1f767c9bb0c6f2cfe4ae
+          - 707e152f3a7bc7f8408abb25c7a611a9c7b711fb
+          - 0cf0818434ddccf06baaa1fd1c06cdaa341ebdf3
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ matrix.ref }}
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "21"
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Probe frozen baseline
+        shell: bash
+        run: |
+          set +e
+          ./gradlew :ai:test --tests '*FrozenBaselineTest' --stacktrace 2>&1 | tee /tmp/baseline.txt
+          rc=${PIPESTATUS[0]}
+          echo "ref=${{ matrix.ref }}"
+          grep -E "Actual hash:|LEGACY_V0 plays the frozen baseline game exactly as it always has (PASSED|FAILED)" /tmp/baseline.txt || true
+          echo "probe_exit=${rc}"
+          exit 0
