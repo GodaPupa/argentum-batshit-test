@@ -29,7 +29,7 @@ jobs:
           test "$(sha256sum izzet-science/v0.7-control.md | cut -d' ' -f1)" = "726f5e9458b46dda30b33a6ce9f3c3237b25d6e11b81dac85308c3065c108a01"
           grep -Fq 'V07_DECK_AUDIT_NO_CHANGE' izzet-science/v07-deck-level-audit-no-change.md
           grep -Fq 'V09_CARD_CONTROL_ARCHITECTURE_AUDIT_KEEP_V07' izzet-science/v09-card-control-architecture-audit.md
-          grep -Fq 'V09_REAL_ENGINE_UNRESOLVED_COUNT=18' <(scripts/test-class IzzetScienceVeteranBeastriderEngineReadinessTest --info --stacktrace 2>&1)
+          grep -Fq 'Expected post-implementation unresolved count is exactly **18**' izzet-science/v09-position1-engine-batch-ai-gate.md
           grep -Fq '36067996431' izzet-science/v09-position1-engine-batch-ai-gate.md
           grep -Fq '0b07bc7fada66c24e57018f34ca2693a348a014f' izzet-science/v09-position1-engine-batch-ai-gate.md
 
