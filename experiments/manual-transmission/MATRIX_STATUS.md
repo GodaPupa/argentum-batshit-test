@@ -4,9 +4,9 @@ Updated from live branch after the serialized evidence run at `1c321af73f6e04845
 
 | Axis | Source/control status | Evidence status | Pilot overlay | Hardware |
 |---|---|---|---|---|
-| RogSi / turbo Oracle-Consult | **contemporary exact control frozen** | Phase-B timing fixtures PASS; development screen PASS; formal qualification pending | R3-RS candidate | KEEP v0.7 |
+| RogSi / turbo Oracle-Consult | **contemporary exact control frozen** | **QUALIFIED exact enumeration + independent audit** | **R3-RS ACCEPTED** | KEEP v0.7 |
 | Blue Farm / Oracle + Breach | **exact Sep 19 2026 winner frozen** | **QUALIFIED exact enumeration + independent audit** | **R3-BF ACCEPTED** | KEEP v0.7 |
-| Kinnan / Basalt activated mana | **contemporary exact control frozen** | Phase-B timing fixtures PASS; development screen PASS; formal qualification pending | R3-KB candidate | KEEP v0.7 |
+| Kinnan / Basalt activated mana | **contemporary exact control frozen** | **QUALIFIED exact enumeration + independent audit** | **R3-KB ACCEPTED** | KEEP v0.7 |
 | Shorikai / Scepter + Hullbreaker | **exact Sep 20 2026 contemporary control frozen** | **QUALIFIED exact enumeration + independent audit** | **R3-SH ACCEPTED** | KEEP v0.7 |
 | Sisay activated tutor | **exact Sep 23 2026 winner frozen** | **QUALIFIED exact enumeration + independent audit** | **R3-SY ACCEPTED** | KEEP v0.7 |
 | Magda Treasure / Clock | exact Sep 19 2026 winner frozen | **QUALIFIED exact enumeration + independent audit** | **R3-M ACCEPTED** | KEEP v0.7 |
@@ -126,12 +126,33 @@ An independent download reproduced that digest.
 - random seeds / qualification outcomes exposed: **0 / 0**
 - disposition: contemporary raw timing/policy surface reproduced; candidate is not yet promoted.
 
+## Newly accepted contemporary overlays
+
+### RogSi — R3-RS
+- protocol: `MT_ROGSI_R3RS_QUAL_R1_2026_09_24`
+- exact states: **444**
+- candidate false stops / false-live / mana errors: **0 / 0 / 0**
+- independent audit errors: **0**
+- rows SHA-256: `ad73cf503ba1160e604c7cc1f5e9b24c49ab41c82bbd61bb2c7e1b1ca461cc66`
+
+### Kinnan / Basalt — R3-KB
+- protocol: `MT_KINNAN_BASALT_R3KB_QUAL_R1_2026_09_24`
+- exact states: **74**
+- candidate false stops / false-live / illegal windows / terminal errors: **0 / 0 / 0 / 0**
+- independent audit errors: **0**
+- rows SHA-256: `683129ac1a066bd2df5c9013af2bafaae6a4de5f78b80a6f904c12f5891628a8`
+
+Both promotions are bound to Actions run **36028662543**, source
+`641e605c44384744bd5c233055e8e557549e2149`, artifact
+`manual-transmission-active-evidence` ID **10820542784**, ZIP SHA-256
+`9b5ff0bc776a240016b96bcdfeb8246eca789e9f44de9502cfe0c7fa6db645f8`.
+An independent download reproduced that digest; every one of the 31 manifest entries independently
+matched its recorded SHA-256 and byte size. Same-source broad CI run **36028672513** succeeded.
+
 ## Next justified work
 
-1. Predeclare exact, replayable qualification for R3-RS (RogSi) and R3-KB (Kinnan/Basalt) independently of development results.
-2. Promote either overlay only after a clean primary run plus independent audit.
-3. Consolidate the accepted overlays into one final Race policy without changing the 100-card hardware.
-4. Run same-hardware Cruise / Sport / Race elasticity validation.
-5. Finish with `KEEP_V07` unless the elasticity evidence itself supports a hardware change.
+1. Consolidate all seven accepted opponent overlays into one final Race policy without changing the 100-card hardware.
+2. Run same-hardware Cruise / Sport / Race elasticity validation.
+3. Finish with `KEEP_V07` unless the elasticity evidence itself supports a hardware change.
 
 Exact policy enumerations are timing/classification evidence, not cEDH matchup win rates.
