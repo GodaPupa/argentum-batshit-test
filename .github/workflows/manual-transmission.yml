@@ -1,0 +1,38 @@
+name: Manual Transmission Qualification
+
+on:
+  pull_request:
+    paths:
+      - "experiments/manual-transmission/**"
+      - ".github/workflows/manual-transmission.yml"
+  push:
+    branches:
+      - "manual-transmission/qualification"
+    paths:
+      - "experiments/manual-transmission/**"
+      - ".github/workflows/manual-transmission.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  hashaton-legality-fixtures:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Run deterministic Hashaton timing fixtures
+        run: |
+          mkdir -p experiments/manual-transmission/results/hashaton
+          python experiments/manual-transmission/fixtures/hashaton_timing_fixtures.py \
+            | tee experiments/manual-transmission/results/hashaton/timing-fixtures-r1.json
+          grep -q '"status": "PASS"' experiments/manual-transmission/results/hashaton/timing-fixtures-r1.json
+          grep -q '"fixtures_passed": 18' experiments/manual-transmission/results/hashaton/timing-fixtures-r1.json
+      - name: Upload fixture evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: manual-transmission-hashaton-timing-fixtures
+          path: experiments/manual-transmission/results/hashaton/timing-fixtures-r1.json
+          if-no-files-found: error
