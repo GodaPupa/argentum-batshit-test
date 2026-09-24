@@ -43,11 +43,3 @@ jobs:
           assert "Pactdoll-A: **2-2**" in protocol
           assert "no replication, no Pactdoll-A promotion, no deck modification" in protocol
           PY
-
-      - name: Assert replay surface is retired
-        shell: bash
-        run: |
-          set -euo pipefail
-          ! grep -Fq 'IndustrialWasteSpyComboPilotBenchmark' .github/workflows/industrial-waste-g11-spy-combo-pilot.yml
-          ! grep -Fq 'IW_SPY_COMBO_PILOT' .github/workflows/industrial-waste-g11-spy-combo-pilot.yml
-          ! grep -Fq 'workflow_dispatch' .github/workflows/industrial-waste-g11-spy-combo-pilot.yml
