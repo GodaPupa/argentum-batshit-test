@@ -1,8 +1,8 @@
 # v0.9 Position 1 — Engine Coverage Batch AC Gate
 
-Purpose: qualify Veteran Beastrider's Whisperer of the Wilds by composing the already-qualified
-fixed green mana rail with a generic power-threshold activation restriction, without changing
-Izzet Science v0.7, Veteran Beastrider's frozen identity, or any gameplay engine primitive.
+Purpose: qualify Veteran Beastrider's Ilysian Caryatid by composing the already-qualified
+any-color mana rail with a generic projected-power condition and conditional mana amount, without
+changing Izzet Science v0.7, Veteran Beastrider's frozen identity, or any gameplay engine primitive.
 
 ## Frozen boundaries
 
@@ -21,38 +21,41 @@ Izzet Science v0.7, Veteran Beastrider's frozen identity, or any gameplay engine
 - No official game may be initialized.
 - No outcome may be exposed.
 
-## Why Whisperer of the Wilds is Batch AC
+## Why Ilysian Caryatid is Batch AC
 
-Whisperer of the Wilds is a small reusable-mechanic coverage gate among the remaining Veteran
-blockers. Its two abilities require only primitives the engine already exposes:
+Ilysian Caryatid is a small reusable-mechanic coverage gate among the remaining Veteran blockers.
+Its single mana ability requires only primitives the engine already exposes:
 
-- ordinary tap-for-green mana;
-- a second mana ability producing two green;
-- `ActivationRestriction.OnlyIfCondition`;
+- ordinary tap-cost mana abilities;
+- the existing any-color mana choice rail;
 - `Conditions.YouControl(GameObjectFilter.Creature.powerAtLeast(4))`;
-- projected-power reads already used by conditional mana-source qualification.
+- projected-power reads;
+- `ConditionalEffect` choosing between one and two mana of the chosen color.
 
 Current Oracle text:
-"{T}: Add {G}.
-Ferocious — {T}: Add {G}{G}. Activate only if you control a creature with power 4 or greater."
+"{T}: Add one mana of any color. If you control a creature with power 4 or greater, add two mana
+of any one color instead."
 
-No Whisperer-specific executor or special Ferocious engine primitive is justified.
+No Caryatid-specific executor, decision type, Ferocious keyword primitive, or card-specific mana
+solver rule is justified.
 
 ## Acceptance
 
-1. Whisperer of the Wilds is `{1}{G}`, Creature — Human Shaman, 0/2.
-2. Its first activated ability is a mana ability with tap cost and adds exactly `{G}`.
-3. Its Ferocious activated ability is a mana ability with tap cost and adds exactly `{G}{G}`.
-4. The Ferocious ability is not activatable unless its controller controls a creature whose
-   projected power is 4 or greater.
-5. When that condition becomes true, the generic ManaSolver can use Whisperer as a single source
-   capable of paying `{G}{G}`.
-6. Without the condition, the same source can still pay a single `{G}` through its base ability.
+1. Ilysian Caryatid is `{1}{G}`, Creature — Plant, 1/1.
+2. It has one tap-cost activated mana ability.
+3. Without a controlled creature of projected power 4 or greater, that source produces exactly one
+   mana of a chosen color.
+4. With a controlled creature of projected power 4 or greater, that same source produces exactly
+   two mana of one chosen color instead.
+5. The generic ManaSolver can use Caryatid as one source to pay a single colored pip when the
+   threshold is false.
+6. The generic ManaSolver can use Caryatid as one source to pay two same-color pips when the
+   threshold is true, and cannot do so when the threshold is false.
 7. No new engine executor, decision type, mana primitive, or card-specific restriction is introduced.
-8. Canonical FRF snapshot is reblessed through a fail-closed workflow.
+8. Canonical THB snapshot is reblessed through a fail-closed workflow.
 9. Full golden card snapshots pass.
 10. Expected post-implementation unresolved count is exactly 24.
-11. Whisperer of the Wilds is absent from unresolved output and no Izzet identity becomes unresolved.
+11. Ilysian Caryatid is absent from unresolved output and no Izzet identity becomes unresolved.
 12. Official games/seeds/outcomes remain `0/0/0` and the exact v0.7 control remains unchanged.
 
 Infrastructure, compilation, fixture, snapshot, or semantic failures are qualification history only,
