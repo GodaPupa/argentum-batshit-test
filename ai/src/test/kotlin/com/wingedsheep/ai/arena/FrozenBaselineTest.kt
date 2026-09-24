@@ -48,11 +48,6 @@ class FrozenBaselineTest : FunSpec({
             recordActionStream = true,
         )
 
-        println(
-            "FROZEN_BASELINE_DIAGNOSTIC hash=${outcome.actionStreamHash} turns=${outcome.turns} " +
-                "winner=${outcome.winnerSeat} life=${outcome.seat0Life}/${outcome.seat1Life}"
-        )
-
         withClue(
             "LEGACY_V0's behaviour moved. Actual hash: ${outcome.actionStreamHash} " +
                 "(${outcome.turns} turns, winner seat ${outcome.winnerSeat}, " +
@@ -111,11 +106,17 @@ class FrozenBaselineTest : FunSpec({
          * modal spells, so every recorded cast carries only the default `modalSelectionCompleted=false`.
          * The outcome is unchanged: seat 1 still wins on turn 20 at life -8 / 16.
          *
+         * Re-blessed 2026-09-24 for Prototype adding `CastSpell.castForPrototype`.
+         * **`LEGACY_V0` did not move.** The frozen Portal deck has no Prototype cards, so every
+         * recorded creature cast carries only the new default `castForPrototype=false`. A
+         * diagnostic run on the pre-rebless head produced hash `5e699f864486526a` with the exact
+         * historical outcome unchanged: seat 1 wins on turn 20 at life -8 / 16.
+         *
          * Note for whoever hits this next: hashing `GameAction.toString()` means *any* new field on
          * a cast/action data class moves this hash without the AI having changed. Check the outcome
          * line in the failure clue first — if turns/winner/life match the values above, you are
          * almost certainly in this benign case rather than a real behavioural drift.
          */
-        private const val GOLDEN_HASH = "1eee5cd6e601e4e8"
+        private const val GOLDEN_HASH = "5e699f864486526a"
     }
 }

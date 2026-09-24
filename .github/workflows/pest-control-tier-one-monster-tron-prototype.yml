@@ -41,9 +41,6 @@ jobs:
       - name: Validate generic Prototype rules and serialization
         run: scripts/test-class PrototypeKeywordTest --info --stacktrace
 
-      - name: Diagnose frozen baseline hash after CastSpell schema extension
-        run: scripts/test-class FrozenBaselineTest --info --stacktrace
-
       - name: Validate polymorphic serialization registration
         run: scripts/test-class SerializationPolymorphicRegistrationTest --info --stacktrace
 
