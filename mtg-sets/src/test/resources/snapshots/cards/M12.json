@@ -772,6 +772,42 @@
     ]
 }
 
+// Stave Off
+{
+    "name": "Stave Off",
+    "manaCost": "{W}",
+    "typeLine": "Instant",
+    "oracleText": "Target creature gains protection from the color of your choice until end of turn.",
+    "script": {
+        "spellEffect": {
+            "type": "ChooseColorThen",
+            "then": {
+                "type": "GrantProtectionFromChosenColor",
+                "target": {
+                    "type": "BoundVariable",
+                    "name": "target creature"
+                }
+            }
+        },
+        "targetRequirements": [
+            {
+                "type": "TargetObject",
+                "filter": {
+                    "baseFilter": "creature"
+                },
+                "id": "target creature"
+            }
+        ]
+    },
+    "metadata": {
+        "collectorNumber": "36",
+        "artist": "Mark Zug"
+    },
+    "colorIdentityOverride": [
+        "WHITE"
+    ]
+}
+
 // Stingerfling Spider
 {
     "name": "Stingerfling Spider",
