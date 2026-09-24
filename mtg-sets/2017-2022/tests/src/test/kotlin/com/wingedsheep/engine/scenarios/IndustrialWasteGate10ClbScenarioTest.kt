@@ -164,12 +164,13 @@ class IndustrialWasteGate10ClbScenarioTest : ScenarioTestBase() {
 
             game.passUntilPhase(Phase.COMBAT, Step.DECLARE_ATTACKERS)
             game.declareAttackers(mapOf("Elvish Mystic" to 2)).error shouldBe null
-            game.passUntilPhase(Phase.COMBAT, Step.END_COMBAT)
-            game.resolveStack()
 
-            val search = game.getPendingDecision().shouldBeInstanceOf<SelectCardsDecision>()
-            game.selectCards(emptyList()).error shouldBe null
-            game.resolveStack()
+            // passUntilPhase intentionally auto-resolves any decisions encountered while moving
+            // through combat. The initiative transfer resolves in the combat-damage step, then its
+            // inherent venture enters Secret Entrance; the room's optional basic-land search is
+            // therefore also auto-answered before END_COMBAT is reached. Assert the resulting
+            // rules state rather than looking for a decision that this helper already consumed.
+            game.passUntilPhase(Phase.COMBAT, Step.END_COMBAT)
 
             game.state.getEntity(game.player1Id)?.has<PlayerInitiativeComponent>() shouldBe true
             game.state.getEntity(game.player2Id)?.has<PlayerInitiativeComponent>() shouldBe false
