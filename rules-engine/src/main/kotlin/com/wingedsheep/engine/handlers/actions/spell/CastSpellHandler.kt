@@ -4122,7 +4122,7 @@ class CastSpellHandler(
         // ability below. Runtime-granted Cascade instances are still synthesized independently.
         val authoredCascadeCastTriggerCount = cardDef?.script?.effectiveTriggeredAbilities(null)?.count { ability ->
             ability.effect == CascadeEffect &&
-                ability.trigger is SdkGameEvent.SpellCastEvent &&
+                ability.trigger == SdkGameEvent.CastThisSpellEvent &&
                 ability.binding == TriggerBinding.SELF
         } ?: 0
         val printedCascadeCount =
