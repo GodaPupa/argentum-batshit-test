@@ -93,6 +93,12 @@ jobs:
 
       - uses: gradle/actions/setup-gradle@v6
 
+      - name: Enforce broad-CI admission lock
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -Fq 'BROAD_CI_STATUS=GREEN' industrial-waste/protocols/gate-11-spy-combo-readiness-v1.md
+
       - name: Execute frozen-vector Gate 11 pilot
         id: pilot
         continue-on-error: true
