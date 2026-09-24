@@ -39,10 +39,12 @@ import com.wingedsheep.engine.state.components.stack.ChosenTarget
 import com.wingedsheep.engine.state.components.stack.SpellOnStackComponent
 import com.wingedsheep.engine.state.components.stack.TargetsComponent
 import com.wingedsheep.engine.state.components.stack.TriggeredAbilityOnStackComponent
+import com.wingedsheep.sdk.core.Color
 import com.wingedsheep.sdk.core.Format
 import com.wingedsheep.sdk.core.ManaCost
 import com.wingedsheep.sdk.core.ManaSymbol
 import com.wingedsheep.sdk.core.Step
+import com.wingedsheep.sdk.core.Zone
 import com.wingedsheep.sdk.model.EntityId
 import com.wingedsheep.sdk.scripting.AdditionalCostPayment
 import com.wingedsheep.sdk.scripting.AlternativePaymentChoice
@@ -929,6 +931,38 @@ class Strategist(
     )
 
     /**
+     * Bind a color for an advised mana ability before simulation.
+     *
+     * Human clients get a color picker for `requiresManaColorChoice`; built-in AI action
+     * simulation must instead submit a concrete [ActivateAbility.manaColorChoice] or the simulator
+     * stops at the unresolved choice and drops the candidate before its card advisor can score it.
+     *
+     * Prefer a color represented by cards currently in hand, restricted to the enumerator's
+     * runtime-legal colors. This is public information and keeps the choice generic: Saruli
+     * Caretaker with a stranded black payoff chooses black, while a green-heavy hand chooses green.
+     * If hand demand is tied/empty, the legal color order provides a deterministic fallback.
+     */
+    private fun withAutomaticManaColorChoice(
+        state: GameState,
+        action: LegalAction,
+        playerId: EntityId,
+        gameAction: GameAction,
+    ): GameAction {
+        val activation = gameAction as? ActivateAbility ?: return gameAction
+        if (!action.requiresManaColorChoice || activation.manaColorChoice != null) return gameAction
+
+        val allowed = action.availableManaColors?.takeIf { it.isNotEmpty() } ?: Color.entries.toList()
+        val hand = state.getZone(playerId, Zone.HAND)
+        val chosen = allowed.maxByOrNull { color ->
+            hand.count { id ->
+                state.getEntity(id)?.get<CardComponent>()?.colors?.contains(color) == true
+            }
+        } ?: return gameAction
+
+        return activation.copy(manaColorChoice = chosen)
+    }
+
+    /**
      * Materialize deterministic payment choices carried by [LegalAction.additionalCostInfo].
      *
      * The enumerator exposes a Blight path as a distinct legal action, but the processor can only
@@ -942,7 +976,8 @@ class Strategist(
         action: LegalAction,
         playerId: EntityId,
     ): GameAction {
-        val gameAction = withAutomaticTapForGeneric(action, withAutomaticConvoke(action))
+        val paymentBase = withAutomaticTapForGeneric(action, withAutomaticConvoke(action))
+        val gameAction = withAutomaticManaColorChoice(state, action, playerId, paymentBase)
         val info = action.additionalCostInfo ?: return gameAction
         val existing = when (gameAction) {
             is CastSpell -> gameAction.additionalCostPayment
