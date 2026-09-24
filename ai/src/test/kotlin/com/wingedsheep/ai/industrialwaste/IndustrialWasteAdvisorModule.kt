@@ -139,6 +139,7 @@ private object AncientGrudgeAdvisor : CardAdvisor {
 
 private object AshnodsAltarAdvisor : CardAdvisor {
     override val cardNames = setOf("Ashnod's Altar")
+    override val strategicManaAbility = true
 
     override fun evaluateCast(context: CastContext): Double? {
         return if (retrieverEngineCanAdvance(context.state, context.playerId)) {
