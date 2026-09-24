@@ -119,6 +119,19 @@ data class CardComponent(
 /**
  * Marks an entity as a token (not a real card).
  */
+/**
+ * Marks a card cast using Prototype (CR 702.160) while it is on the stack or battlefield.
+ *
+ * [originalCardComponent] is the card's normal-zone identity. The cast pipeline replaces only the
+ * mana cost, colors, and base power/toughness in [CardComponent], preserving the card's name, types,
+ * abilities, and definition id. ZoneTransitionService restores this snapshot when the object moves
+ * anywhere other than the stack or battlefield.
+ */
+@Serializable
+data class PrototypeComponent(
+    val originalCardComponent: CardComponent
+) : Component
+
 @Serializable
 data object TokenComponent : Component
 
