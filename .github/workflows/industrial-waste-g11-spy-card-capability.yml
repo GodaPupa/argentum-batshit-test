@@ -5,8 +5,16 @@ on:
     branches: [industrial-waste/lab]
     paths:
       - .github/workflows/industrial-waste-g11-spy-card-capability.yml
+      - mtg-sets/1993-1999/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/mir/cards/WallOfRoots.kt
+      - mtg-sets/1993-1999/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/IndustrialWasteGate11MirScenarioTest.kt
+      - mtg-sets/2000-2002/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/tor/cards/MesmericFiend.kt
+      - mtg-sets/2000-2002/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/IndustrialWasteGate11TorScenarioTest.kt
       - mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/gtc/cards/BalustradeSpy.kt
+      - mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/roe/cards/OvergrownBattlement.kt
+      - mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/rtr/cards/GatecreeperVine.kt
       - mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/IndustrialWasteGate11GtcScenarioTest.kt
+      - mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/IndustrialWasteGate11RoeScenarioTest.kt
+      - mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/IndustrialWasteGate11RtrScenarioTest.kt
       - mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/grn/cards/LotlethGiant.kt
       - mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/IndustrialWasteGate11GrnScenarioTest.kt
   workflow_dispatch:
@@ -25,8 +33,16 @@ jobs:
       - uses: gradle/actions/setup-gradle@v6
       - name: Validate Gate 11 implemented cards
         run: |
+          ./gradlew :mtg-sets:1993-1999:tests:test \
+            --tests '*IndustrialWasteGate11MirScenarioTest' \
+            --no-daemon
+          ./gradlew :mtg-sets:2000-2002:tests:test \
+            --tests '*IndustrialWasteGate11TorScenarioTest' \
+            --no-daemon
           ./gradlew :mtg-sets:2008-2016:tests:test \
             --tests '*IndustrialWasteGate11GtcScenarioTest' \
+            --tests '*IndustrialWasteGate11RoeScenarioTest' \
+            --tests '*IndustrialWasteGate11RtrScenarioTest' \
             --no-daemon
           ./gradlew :mtg-sets:2017-2022:tests:test \
             --tests '*IndustrialWasteGate11GrnScenarioTest' \
