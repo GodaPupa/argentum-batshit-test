@@ -337,3 +337,92 @@ jobs:
           name: manual-transmission-sisay-policy-development-r1
           path: experiments/manual-transmission/results/sisay/policy-development-r1.json
           if-no-files-found: error
+
+
+  blue-farm-r3bf-qualification:
+    needs: blue-farm-policy-development
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Verify frozen Blue Farm qualification model identities
+        run: |
+          test "$(git hash-object experiments/manual-transmission/qualification/blue_farm_r3bf_qualification.py)" = "3b9a9d113a504188b3e3329242266e69ecb18074"
+          test "$(git hash-object experiments/manual-transmission/qualification/blue_farm_r3bf_audit.py)" = "0801956df44320363c161dbabd422bba1baab16a"
+      - name: Run exact R3-BF qualification
+        run: |
+          mkdir -p experiments/manual-transmission/results/blue-farm/qualification-r1
+          python experiments/manual-transmission/qualification/blue_farm_r3bf_qualification.py \
+            --rows experiments/manual-transmission/results/blue-farm/qualification-r1/rows.jsonl \
+            --summary experiments/manual-transmission/results/blue-farm/qualification-r1/summary.json
+          python experiments/manual-transmission/qualification/blue_farm_r3bf_audit.py \
+            --rows experiments/manual-transmission/results/blue-farm/qualification-r1/rows.jsonl \
+            --out experiments/manual-transmission/results/blue-farm/qualification-r1/audit.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          root=Path("experiments/manual-transmission")
+          protocol=json.loads((root/"protocols/blue-farm-r3bf-qualification-r1.json").read_text())
+          summary=json.loads((root/"results/blue-farm/qualification-r1/summary.json").read_text())
+          audit=json.loads((root/"results/blue-farm/qualification-r1/audit.json").read_text())
+          assert summary["pass"] is True
+          assert audit["pass"] is True
+          assert summary["rows"] == protocol["enumeration"]["expected_rows"] == 144
+          assert summary["rows_sha256"] == audit["rows_sha256"]
+          assert summary["candidate_false_stops"] == 0
+          assert summary["candidate_false_live"] == 0
+          assert summary["reference_false_stops"] > 0
+          assert audit["errors"] == 0
+          PY
+      - name: Upload R3-BF qualification evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: manual-transmission-blue-farm-r3bf-qualification-r1
+          path: experiments/manual-transmission/results/blue-farm/qualification-r1/
+          if-no-files-found: error
+
+  shorikai-r3sh-qualification:
+    needs: shorikai-policy-development
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Verify frozen Shorikai qualification model identities
+        run: |
+          test "$(git hash-object experiments/manual-transmission/qualification/shorikai_r3sh_qualification.py)" = "1221dc4d35a40b23f99629ecc9ac76333e54bdfb"
+          test "$(git hash-object experiments/manual-transmission/qualification/shorikai_r3sh_audit.py)" = "e97c028560a64071cef20040bd8b902b83cc8958"
+      - name: Run exact R3-SH qualification
+        run: |
+          mkdir -p experiments/manual-transmission/results/shorikai/qualification-r1
+          python experiments/manual-transmission/qualification/shorikai_r3sh_qualification.py \
+            --rows experiments/manual-transmission/results/shorikai/qualification-r1/rows.jsonl \
+            --summary experiments/manual-transmission/results/shorikai/qualification-r1/summary.json
+          python experiments/manual-transmission/qualification/shorikai_r3sh_audit.py \
+            --rows experiments/manual-transmission/results/shorikai/qualification-r1/rows.jsonl \
+            --out experiments/manual-transmission/results/shorikai/qualification-r1/audit.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          root=Path("experiments/manual-transmission")
+          protocol=json.loads((root/"protocols/shorikai-r3sh-qualification-r1.json").read_text())
+          summary=json.loads((root/"results/shorikai/qualification-r1/summary.json").read_text())
+          audit=json.loads((root/"results/shorikai/qualification-r1/audit.json").read_text())
+          assert summary["pass"] is True
+          assert audit["pass"] is True
+          assert summary["rows"] == protocol["enumeration"]["expected_rows"] == 120
+          assert summary["rows_sha256"] == audit["rows_sha256"]
+          assert summary["candidate_false_stops"] == 0
+          assert summary["candidate_false_live"] == 0
+          assert summary["reference_false_stops"] > 0
+          assert audit["errors"] == 0
+          PY
+      - name: Upload R3-SH qualification evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: manual-transmission-shorikai-r3sh-qualification-r1
+          path: experiments/manual-transmission/results/shorikai/qualification-r1/
+          if-no-files-found: error
