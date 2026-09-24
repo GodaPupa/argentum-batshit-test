@@ -40,7 +40,7 @@ Source-clean list:
 ```
 
 Canonical ordered `Name,count` main SHA-256:
-`f99a9830f0ec64f8ba900b7ffd57ff65a3b0bc9131158d2ed0e4723dbd7fd394`
+`8a0ac71dd9873b001d22a4ea73286c75d448e24a1b517772f836d6dd5f2db97f`
 
 ## Frozen sideboard — 15
 
@@ -61,7 +61,7 @@ Canonical ordered `Name,count` sideboard SHA-256:
 `e7f36bb14eec42b7967a33656c082861695da2d3c7a7d7d2f3d50060b2abff12`
 
 Canonical `MAIN\n...SIDEBOARD\n...` complete-75 SHA-256:
-`f1769f9a70fbd6a3e4087602e1ac4f1325108b15247aa39424401815cedc9561`
+`d6fc701b272ff15bc2baf9ec5b2acdaf75566d780ff6d499efbac4aa77b19b15`
 
 ## Boundary
 
@@ -70,3 +70,5 @@ seed-free rules/card-support and policy construction after Monster Tron has clos
 
 The list may not be substituted because of future Pest Control results. No sixth preboard opponent is
 authorized by this admission.
+
+Canonicalization note: source rendering `Sagu Wildling // Roost Seek` maps to executable registry identity `Sagu Wildling`; the corrected main/75 hashes above use that registry identity.
