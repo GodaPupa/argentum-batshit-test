@@ -127,3 +127,27 @@ jobs:
           name: manual-transmission-magda-timing-fixtures-r1
           path: experiments/manual-transmission/results/magda/timing-fixtures-r1.json
           if-no-files-found: error
+
+
+  magda-policy-development:
+    needs: magda-legality-fixtures
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Run exact Magda policy development screen
+        run: |
+          mkdir -p experiments/manual-transmission/results/magda
+          python experiments/manual-transmission/development/magda_policy_development.py \
+            | tee experiments/manual-transmission/results/magda/policy-development-r1.json
+          grep -q '"status": "DEVELOPMENT_ONLY"' experiments/manual-transmission/results/magda/policy-development-r1.json
+          grep -q '"qualification_eligible": false' experiments/manual-transmission/results/magda/policy-development-r1.json
+          grep -q '"qualification_outcomes_exposed": 0' experiments/manual-transmission/results/magda/policy-development-r1.json
+      - name: Upload Magda development evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: manual-transmission-magda-policy-development-r1
+          path: experiments/manual-transmission/results/magda/policy-development-r1.json
+          if-no-files-found: error
