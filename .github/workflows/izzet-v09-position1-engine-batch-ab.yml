@@ -1,0 +1,95 @@
+name: Izzet Position-1 Engine Batch AB
+
+on:
+  push:
+    branches:
+      - "mayhem/izzet-science"
+    paths:
+      - ".github/workflows/izzet-v09-position1-engine-batch-ab.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  qualify-batch-ab:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "21"
+
+      - uses: gradle/actions/setup-gradle@v6
+
+      - name: Verify frozen control and Batch AB gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(sha256sum izzet-science/v0.7-control.md | cut -d' ' -f1)" = "726f5e9458b46dda30b33a6ce9f3c3237b25d6e11b81dac85308c3065c108a01"
+          grep -Fq 'V07_DECK_AUDIT_NO_CHANGE' izzet-science/v07-deck-level-audit-no-change.md
+          grep -Fq 'V09_CARD_CONTROL_ARCHITECTURE_AUDIT_KEEP_V07' izzet-science/v09-card-control-architecture-audit.md
+          grep -Fq 'Expected post-implementation unresolved count is exactly 25' izzet-science/v09-position1-engine-batch-ab-gate.md
+          grep -Fq '36023879877' izzet-science/v09-position1-engine-batch-ab-gate.md
+          grep -Fq 'bfdd09c8506ad61c31af758811a1d82149c151a0' izzet-science/v09-position1-engine-batch-ab-gate.md
+
+      - name: Requalify canonical card snapshots
+        run: ./gradlew :mtg-sets:test --tests "*CardDefinitionSnapshotTest" --stacktrace
+
+      - name: Run Afterlife semantics
+        run: scripts/test-class AfterlifeScenarioTest --info --stacktrace
+
+      - name: Recheck target-controller token rail
+        run: scripts/test-class GenerousGiftScenarioTest --info --stacktrace
+
+      - name: Run exact real-engine coverage regression
+        shell: bash
+        run: |
+          set -euo pipefail
+          scripts/test-class IzzetScienceVeteranBeastriderEngineReadinessTest --info --stacktrace | tee /tmp/batch-ab.txt
+          grep -Fq 'V09_REAL_ENGINE_UNRESOLVED_COUNT=25' /tmp/batch-ab.txt
+          ! grep -Fq 'unresolved Veteran Beastrider card: Afterlife' /tmp/batch-ab.txt
+          ! grep -Fq 'V09_REAL_ENGINE_UNRESOLVED=unresolved Izzet card:' /tmp/batch-ab.txt
+
+      - name: Assert official experiment remains untouched
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -Fq 'officialGamesAuthorized: Int = 0' gym/src/main/kotlin/com/wingedsheep/gym/matchup/IzzetScienceVeteranBeastriderEngineReadiness.kt
+          grep -Fq 'officialSeedsConsumed: Int = 0' gym/src/main/kotlin/com/wingedsheep/gym/matchup/IzzetScienceVeteranBeastriderEngineReadiness.kt
+          grep -Fq 'outcomeExposure: Int = 0' gym/src/main/kotlin/com/wingedsheep/gym/matchup/IzzetScienceVeteranBeastriderEngineReadiness.kt
+
+      - name: Emit Batch AB manifest
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/izzet-batch-ab
+          cp /tmp/batch-ab.txt /tmp/izzet-batch-ab/test-output.txt
+          {
+            echo "schema=izzet-v09-position1-engine-batch-ab-v1"
+            echo "source_sha=${GITHUB_SHA}"
+            echo "frozen_control_sha256=726f5e9458b46dda30b33a6ce9f3c3237b25d6e11b81dac85308c3065c108a01"
+            echo "implemented=Afterlife;existing no-regeneration destroy+target-controller flying-token rails"
+            echo "snapshot_run=36023879877"
+            echo "snapshot_commit=bfdd09c8506ad61c31af758811a1d82149c151a0"
+            echo "unresolved_before=26"
+            echo "unresolved_after=25"
+            echo "unresolved_izzet_after=0"
+            echo "official_seeds_consumed=0"
+            echo "games_initialized=0"
+            echo "outcome_exposure=0"
+            sha256sum mtg-sets/1993-1999/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/mir/cards/Afterlife.kt
+            sha256sum mtg-sets/1993-1999/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/AfterlifeScenarioTest.kt
+            sha256sum gym/src/test/kotlin/com/wingedsheep/gym/IzzetScienceVeteranBeastriderEngineReadinessTest.kt
+            sha256sum izzet-science/v09-position1-engine-batch-ab-gate.md
+            sha256sum mtg-sets/src/test/resources/snapshots/cards/MIR.json
+            sha256sum /tmp/izzet-batch-ab/test-output.txt
+          } > /tmp/izzet-batch-ab/manifest.txt
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: izzet-v09-position1-engine-batch-ab
+          path: /tmp/izzet-batch-ab
+          if-no-files-found: error
