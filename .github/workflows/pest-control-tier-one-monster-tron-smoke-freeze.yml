@@ -54,8 +54,22 @@ jobs:
           assert "workflow_dispatch" not in wf
           assert "pull_request" not in wf
           assert wf.count("--generate") == 1
-          gen=Path("scripts/experiments/pest-control/generate_tier_one_monster_tron_smoke_freeze.py").read_text()
-          assert gen.count("os.urandom(32)") == 2  # docstring plus executable call
+          import ast
+          gen_path=Path("scripts/experiments/pest-control/generate_tier_one_monster_tron_smoke_freeze.py")
+          gen=gen_path.read_text()
+          tree=ast.parse(gen)
+          entropy_calls=[
+              node for node in ast.walk(tree)
+              if isinstance(node, ast.Call)
+              and isinstance(node.func, ast.Attribute)
+              and isinstance(node.func.value, ast.Name)
+              and node.func.value.id == "os"
+              and node.func.attr == "urandom"
+              and len(node.args) == 1
+              and isinstance(node.args[0], ast.Constant)
+              and node.args[0].value == 32
+          ]
+          assert len(entropy_calls) == 1, len(entropy_calls)
           assert "official Monster Tron smoke vector is already frozen; regeneration prohibited" in gen
           PY
 
