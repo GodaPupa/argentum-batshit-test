@@ -949,13 +949,21 @@ class Strategist(
         gameAction: GameAction,
     ): GameAction {
         val activation = gameAction as? ActivateAbility ?: return gameAction
-        if (!action.requiresManaColorChoice || activation.manaColorChoice != null) return gameAction
+        if (!considerAdvisedManaAbilities ||
+            !action.isManaAbility ||
+            resolveCardName(state, action)?.let(advisorRegistry::getAdvisor) == null ||
+            !action.requiresManaColorChoice ||
+            activation.manaColorChoice != null
+        ) return gameAction
 
         val allowed = action.availableManaColors?.takeIf { it.isNotEmpty() } ?: Color.entries.toList()
         val hand = state.getZone(playerId, Zone.HAND)
         val chosen = allowed.maxByOrNull { color ->
-            hand.count { id ->
-                state.getEntity(id)?.get<CardComponent>()?.colors?.contains(color) == true
+            hand.sumOf { id ->
+                val card = state.getEntity(id)?.get<CardComponent>() ?: return@sumOf 0
+                val pip = "{${color.symbol}}"
+                card.manaCost.toString().windowed(pip.length).count { it == pip } +
+                    if (color in card.colors) 1 else 0
             }
         } ?: return gameAction
 
