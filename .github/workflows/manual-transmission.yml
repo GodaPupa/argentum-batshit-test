@@ -59,3 +59,48 @@ jobs:
           name: manual-transmission-hashaton-policy-development-r1
           path: experiments/manual-transmission/results/hashaton/policy-development-r1.json
           if-no-files-found: error
+
+  hashaton-r3ht-qualification:
+    needs: hashaton-policy-development
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Verify frozen qualification model identities
+        run: |
+          test "$(git hash-object experiments/manual-transmission/qualification/hashaton_r3ht_qualification.py)" = "b3b8ae2aab9fb5dcc416520a2f424bd3924dcd95"
+          test "$(git hash-object experiments/manual-transmission/qualification/hashaton_r3ht_audit.py)" = "2395ff464f2e1c02f03864d3ec1ed9bd0dd15b5f"
+      - name: Run exact R3-HT qualification
+        run: |
+          mkdir -p experiments/manual-transmission/results/hashaton/qualification-r1
+          python experiments/manual-transmission/qualification/hashaton_r3ht_qualification.py \
+            --rows experiments/manual-transmission/results/hashaton/qualification-r1/rows.jsonl \
+            --summary experiments/manual-transmission/results/hashaton/qualification-r1/summary.json
+          python experiments/manual-transmission/qualification/hashaton_r3ht_audit.py \
+            --rows experiments/manual-transmission/results/hashaton/qualification-r1/rows.jsonl \
+            --out experiments/manual-transmission/results/hashaton/qualification-r1/audit.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          root=Path("experiments/manual-transmission")
+          protocol=json.loads((root/"protocols/hashaton-r3ht-qualification-r1.json").read_text())
+          summary=json.loads((root/"results/hashaton/qualification-r1/summary.json").read_text())
+          audit=json.loads((root/"results/hashaton/qualification-r1/audit.json").read_text())
+          assert summary["pass"] is True
+          assert audit["pass"] is True
+          assert summary["rows"] == protocol["enumeration"]["expected_rows"] == 2950
+          assert summary["rows_sha256"] == audit["rows_sha256"]
+          assert summary["candidate_false_stops"] == protocol["acceptance"]["candidate_false_stops"] == 0
+          assert summary["candidate_false_live"] == protocol["acceptance"]["candidate_false_live"] == 0
+          assert summary["led_multi_trigger_candidate_full_stop_errors"] == 0
+          assert summary["tidebinder_lifecycle_blank_errors"] == 0
+          assert audit["errors"] == 0
+          PY
+      - name: Upload R3-HT qualification evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: manual-transmission-hashaton-r3ht-qualification-r1
+          path: experiments/manual-transmission/results/hashaton/qualification-r1/
+          if-no-files-found: error
