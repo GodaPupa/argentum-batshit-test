@@ -472,6 +472,7 @@ val engineSerializersModule = SerializersModule {
         // Battlefield components
         subclass(TappedComponent::class)
         subclass(ExertedComponent::class)
+        subclass(SkipNextControllerUntapComponent::class)
         subclass(SummoningSicknessComponent::class)
         subclass(PhasedOutComponent::class)
         subclass(CastFromHandComponent::class)
