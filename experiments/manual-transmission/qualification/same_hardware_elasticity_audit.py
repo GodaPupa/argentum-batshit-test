@@ -45,8 +45,10 @@ def main() -> None:
         line = raw.strip()
         if not line or line.startswith("#"):
             continue
-        n, _ = line.split(" ", 1)
-        count += int(n)
+        parts = line.split(" ", 1)
+        if len(parts) != 2 or not parts[0].isdigit():
+            continue
+        count += int(parts[0])
     assert count == 100
 
     imported_path = ROOT / "imports/README_D2P.md"
