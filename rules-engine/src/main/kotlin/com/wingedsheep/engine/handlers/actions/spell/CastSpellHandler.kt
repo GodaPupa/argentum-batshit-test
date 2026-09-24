@@ -112,6 +112,7 @@ import com.wingedsheep.sdk.scripting.references.Player
 import com.wingedsheep.sdk.scripting.effects.DividedDamageEffect
 import com.wingedsheep.sdk.scripting.effects.ModalEffect
 import com.wingedsheep.sdk.scripting.effects.StormCopyEffect
+import com.wingedsheep.sdk.scripting.effects.CascadeEffect
 import com.wingedsheep.sdk.scripting.targets.TargetRequirement
 import com.wingedsheep.sdk.scripting.KeywordAbility
 import com.wingedsheep.sdk.scripting.GrantFlashToSpellType
@@ -4087,6 +4088,66 @@ class CastSpellHandler(
                 } else emptyList()
             } else emptyList()
 
+        // Handle Cascade (CR 702.85): each instance triggers separately when the spell is cast.
+        // Printed Cascade and battlefield/player grants are counted independently, mirroring the
+        // existing Storm keyword synthesis. CascadeEffect reads the triggering spell's mana value
+        // from TriggerContext when the ability resolves.
+        val cascadeGrantCount = run {
+            val playerContainer = currentCastState.getEntity(action.playerId)
+            val grants = playerContainer?.get<GrantedSpellKeywordsComponent>()?.grants ?: emptyList()
+            val evalContext = PredicateContext(controllerId = action.playerId)
+            val componentGrants = grants.count { grant ->
+                grant.keyword == Keyword.CASCADE &&
+                    predicateEvaluator.matches(
+                        currentCastState,
+                        currentCastState.projectedState,
+                        action.cardId,
+                        grant.spellFilter,
+                        evalContext,
+                    )
+            }
+            val staticGrants = if (cardDef != null) {
+                grantedKeywordResolver.countGrants(
+                    currentCastState,
+                    action.playerId,
+                    cardDef,
+                    Keyword.CASCADE,
+                )
+            } else 0
+            componentGrants + staticGrants
+        }
+        val printedCascadeCount = if (cardDef != null && cardDef.hasKeyword(Keyword.CASCADE)) 1 else 0
+        val cascadeInstanceCount = printedCascadeCount + cascadeGrantCount
+        val cascadePendingTriggers: List<PendingTrigger> =
+            if (!action.castFaceDown && cardDef != null && cascadeInstanceCount > 0) {
+                List(cascadeInstanceCount) {
+                    val ability = TriggeredAbility(
+                        id = AbilityId.generate(),
+                        trigger = SdkGameEvent.SpellCastEvent(player = Player.You),
+                        binding = TriggerBinding.SELF,
+                        effect = CascadeEffect,
+                        activeZones = setOf(Zone.STACK),
+                        descriptionOverride = "Cascade — ${cardComponent.name}",
+                    )
+                    PendingTrigger(
+                        ability = ability,
+                        sourceId = action.cardId,
+                        objectReferences = com.wingedsheep.engine.handlers.ObjectReferenceEnvironment(
+                            captured = true,
+                            origin = currentCastState.objectRef(action.cardId),
+                            source = currentCastState.objectRef(action.cardId),
+                            triggering = currentCastState.objectRef(action.cardId),
+                        ),
+                        sourceName = cardComponent.name,
+                        controllerId = action.playerId,
+                        triggerContext = TriggerContext(
+                            triggeringEntityId = action.cardId,
+                            triggeringPlayerId = action.playerId,
+                        ),
+                    )
+                }
+            } else emptyList()
+
         // Handle Conspire (CR 702.78): when the optional additional cost was paid, a reflexive
         // trigger goes on the stack above the spell: "When you do, copy it and you may choose
         // new targets for the copy." Reuses StormCopyEffect with copyCount=1 so the existing
@@ -4310,7 +4371,7 @@ class CastSpellHandler(
         // Other AP spell-cast triggers follow (placed higher on the stack), then NAP triggers on top,
         // matching APNAP ordering within processTriggers.
         val detectedTriggers = triggerDetector.detectTriggers(currentCastState, allEvents)
-        val triggers = riderPendingTriggers + conspirePendingTriggers + casualtyPendingTriggers + stormPendingTriggers + detectedTriggers
+        val triggers = riderPendingTriggers + conspirePendingTriggers + casualtyPendingTriggers + stormPendingTriggers + cascadePendingTriggers + detectedTriggers
         if (triggers.isNotEmpty()) {
             val triggerResult = triggerProcessor.processTriggers(currentCastState, triggers)
 
