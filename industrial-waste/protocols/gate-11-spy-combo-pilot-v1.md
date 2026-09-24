@@ -1,6 +1,6 @@
 # Gate 11 Spy Combo preboard capability pilot v1
 
-Status: frozen before execution; outcome unknown.
+Status: **QUARANTINED / EXECUTION NOT AUTHORIZED**. Vector remains frozen and outcome must remain unconsumed until the required broad CI gate is green.
 
 ## Inputs
 
@@ -26,7 +26,7 @@ rerolls, replacement seeds, identity changes, or postboard actions are permitted
 
 ## Admission evidence
 
-Gameplay is admitted only because every seed-free Gate 11 requirement is green at accepted readiness
+The pilot was provisionally staged from dedicated readiness at accepted source
 source `adbaee6b80a95fd55b94511f21be7c0f5c5dc396`:
 
 1. all six originally missing Spy maindeck cards are implemented with deterministic semantics;
@@ -41,9 +41,7 @@ source `adbaee6b80a95fd55b94511f21be7c0f5c5dc396`:
    has digest `sha256:850ef832aa13e6e1494ee820962889dcad75b7460aa6c8e8c56fd1895a1901e6`;
 8. card-capability run **36030772945** is **SUCCESS**.
 
-Repository-wide CI failures from the same source are not admission failures when they are independently
-identified as unrelated pre-existing serialization/snapshot/facade hygiene debt. Dedicated Gate 11
-card, policy, combo-mechanics and exact-deck readiness gates are the promotion authority.
+Repository-wide CI is an explicit admission requirement for this project. The dedicated Gate 11 card, policy, combo-mechanics and exact-deck readiness gates are green, but broad CI is not yet green. Therefore the frozen vector may remain reserved, but execution and outcome consumption are prohibited until broad CI succeeds. Any run that starts from the prematurely authorized source is quarantined and must not be used as deck-strength evidence.
 
 ## Validity and decision rule
 
