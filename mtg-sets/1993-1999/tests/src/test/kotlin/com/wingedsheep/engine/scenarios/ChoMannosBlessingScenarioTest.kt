@@ -5,6 +5,7 @@ import com.wingedsheep.engine.core.ColorChosenResponse
 import com.wingedsheep.engine.core.SubmitDecision
 import com.wingedsheep.engine.state.components.battlefield.AttachedToComponent
 import com.wingedsheep.engine.support.ScenarioTestBase
+import com.wingedsheep.mtg.sets.definitions.mmq.cards.ChoMannosBlessing
 import com.wingedsheep.sdk.core.Color
 import com.wingedsheep.sdk.core.Keyword
 import com.wingedsheep.sdk.core.Phase
@@ -55,9 +56,7 @@ class ChoMannosBlessingScenarioTest : ScenarioTestBase() {
                 .withActivePlayer(1)
                 .inPhase(Phase.PRECOMBAT_MAIN, Step.PRECOMBAT_MAIN)
                 .build()
-            val cardId = game.state.getHand(game.player1Id).single()
-            game.state.getEntity(cardId)!!.get<com.wingedsheep.engine.state.components.identity.CardComponent>()!!
-                .keywords.contains(Keyword.FLASH) shouldBe true
+            ChoMannosBlessing.keywords.contains(Keyword.FLASH) shouldBe true
         }
     }
 }
