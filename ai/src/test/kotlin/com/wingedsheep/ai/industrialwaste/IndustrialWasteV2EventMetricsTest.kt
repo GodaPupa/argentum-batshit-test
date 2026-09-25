@@ -163,6 +163,56 @@ class IndustrialWasteV2EventMetricsTest : FunSpec({
         metric.fullTronTurn shouldBe 1
     }
 
+    test("quiet checkpoint distinguishes colored-payment failure from total-mana shortage") {
+        run {
+            val game = driver()
+            val player = game.player1
+            repeat(2) { game.putPermanentOnBattlefield(player, "Urza's Mine") }
+            val rumble = game.putCardInHand(player, "Malevolent Rumble")
+            val legal = GameSimulator(game.cardRegistry).getLegalActions(game.state, player)
+            val metric = IndustrialWasteV2CheckpointManaClassifier.classify(
+                game.state, player, mapOf(rumble to "Malevolent Rumble#1"), legal, game.cardRegistry
+            )
+            metric.totalGenericEquivalentMana shouldBe 2
+            metric.cards.single().status shouldBe IndustrialWasteV2CheckpointCardStatus.UNAVAILABLE_COLORED_PAYMENT
+            metric.coloredManaFailure shouldBe true
+            metric.totalManaStranded shouldBe false
+            metric.unresolved shouldBe false
+        }
+
+        run {
+            val game = driver()
+            val player = game.player1
+            game.putPermanentOnBattlefield(player, "Urza's Mine")
+            val retriever = game.putCardInHand(player, "Myr Retriever")
+            val legal = GameSimulator(game.cardRegistry).getLegalActions(game.state, player)
+            val metric = IndustrialWasteV2CheckpointManaClassifier.classify(
+                game.state, player, mapOf(retriever to "Myr Retriever#1"), legal, game.cardRegistry
+            )
+            metric.totalGenericEquivalentMana shouldBe 1
+            metric.cards.single().status shouldBe IndustrialWasteV2CheckpointCardStatus.INSUFFICIENT_TOTAL_MANA
+            metric.coloredManaFailure shouldBe false
+            metric.totalManaStranded shouldBe true
+            metric.unresolved shouldBe false
+        }
+    }
+
+    test("quiet checkpoint recognizes an actually executable fixed-cost artifact") {
+        val game = driver()
+        val player = game.player1
+        repeat(2) { game.putPermanentOnBattlefield(player, "Urza's Mine") }
+        val retriever = game.putCardInHand(player, "Myr Retriever")
+        val legal = GameSimulator(game.cardRegistry).getLegalActions(game.state, player)
+        val metric = IndustrialWasteV2CheckpointManaClassifier.classify(
+            game.state, player, mapOf(retriever to "Myr Retriever#1"), legal, game.cardRegistry
+        )
+        metric.totalGenericEquivalentMana shouldBe 2
+        metric.cards.single().status shouldBe IndustrialWasteV2CheckpointCardStatus.EXECUTABLE
+        metric.coloredManaFailure shouldBe false
+        metric.totalManaStranded shouldBe false
+        metric.unresolved shouldBe false
+    }
+
     test("duplicated missing or rejected transitions cannot enter the metric stream") {
         val fixture = loop()
         fixture.submit(fixture.choose())
