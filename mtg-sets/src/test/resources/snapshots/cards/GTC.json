@@ -136,6 +136,80 @@
     ]
 }
 
+// Balustrade Spy
+{
+    "name": "Balustrade Spy",
+    "manaCost": "{3}{B}",
+    "typeLine": "Creature — Vampire Rogue",
+    "oracleText": "Flying\nWhen this creature enters, target player reveals cards from the top of their library until they reveal a land card, then puts those cards into their graveyard.",
+    "creatureStats": {
+        "power": 2,
+        "toughness": 3
+    },
+    "keywords": [
+        "FLYING"
+    ],
+    "script": {
+        "triggeredAbilities": [
+            {
+                "id": "ability_1",
+                "trigger": {
+                    "type": "ZoneChangeEvent",
+                    "to": "Battlefield"
+                },
+                "effect": {
+                    "type": "Composite",
+                    "effects": [
+                        {
+                            "type": "GatherUntilMatch",
+                            "player": "TargetPlayer",
+                            "filter": "land",
+                            "storeMatch": "matched0",
+                            "storeRevealed": "revealed0"
+                        },
+                        {
+                            "type": "RevealCollection",
+                            "from": "revealed0",
+                            "fromZone": "Library"
+                        },
+                        {
+                            "type": "MoveCollection",
+                            "from": "revealed0",
+                            "destination": {
+                                "type": "ToZone",
+                                "zone": "Graveyard",
+                                "player": "TargetPlayer"
+                            }
+                        }
+                    ]
+                },
+                "targetRequirement": {
+                    "type": "TargetPlayer",
+                    "id": "target player"
+                }
+            }
+        ]
+    },
+    "metadata": {
+        "collectorNumber": "57",
+        "artist": "Jaime Jones",
+        "imageUri": "https://cards.scryfall.io/normal/front/d/f/df8a3f05-864d-401d-a2f1-5f58358fe089.jpg?1783940132",
+        "rulings": [
+            {
+                "date": "2024-01-12",
+                "text": "The land card they reveal, if any, is included in the cards put into their graveyard."
+            },
+            {
+                "date": "2017-11-17",
+                "text": "If the target player has no land cards in their library, all cards from that library will be revealed and put into their graveyard."
+            }
+        ]
+    },
+    "colorIdentityOverride": [
+        "BLACK"
+    ]
+}
+
 // Boros Charm
 {
     "name": "Boros Charm",
