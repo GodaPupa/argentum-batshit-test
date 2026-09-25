@@ -66,3 +66,31 @@ Snapshot generation, full snapshot verification, behavioral tests, and manifest 
 coherent batch rather than one administrative cycle per card. Formal acceptance still requires an
 independent download and audit of the complete artifact. A successful workflow alone neither accepts
 the batch nor demonstrates a sampled game or deck-strength result.
+
+## Accepted artifact audit — 2026-09-25
+
+**Batch AK is accepted.** The downloaded success artifact was independently audited after the
+guarded snapshot integration. This is registry and deterministic semantic evidence, not sampled
+gameplay evidence.
+
+- Validation source: `e5f62cedb20efd26045070019c58fa1ebdfc964d`.
+- Validation run: [36080485515](https://github.com/GodaPupa/argentum-batshit-test/actions/runs/36080485515),
+  job `107901117124`; all six behavioral/readiness/snapshot transcripts report success.
+- Artifact: `10841649991`, `izzet-v09-position1-engine-batch-ak`, 284958 bytes.
+- Artifact ZIP SHA-256: `f715ae1ebee7ab47bedba2501533adbe2fe527a89ad8e3e1963404b67c88e806`.
+- Canonical snapshot commit: `f530d296b8f515161db55879bedb67d5f9ac94f7`; tree
+  `7815f419889af9d1f4a8f4843ff85e624c59f7c2`.
+- The exact seven-file artifact contract, all 21 recorded SHA-256 values, frozen deck/opponent
+  identities, source/tree identities, and official counters passed independent verification.
+- The snapshot commit changes exactly M20.json, MH2.json, and J25.json, adding only Brightwood
+  Tracker, Deepwood Denizen, and Shardless Outlander while preserving all preexisting card objects.
+
+Accepted coverage advances **17 → 14 unresolved Veteran identities; 0 unresolved Izzet identities**.
+Remaining: Benevolent Blessing; Cho-Manno's Blessing; Colossal Dreadmask; Cosmic Hunger; Forge of
+Heroes; Guardian Naga // Banishing Coils; Nyxborn Hydra; Opal Palace; Prismatic Strands; Ram Through;
+Snake Umbra; Temporal Isolation; Ulvenwald Captive // Ulvenwald Abomination; Vines of Vastwood.
+
+Official sampled counters remain **12 generated, 0 consumed, 0 initialized, 0 completed/12,
+0 outcome exposure/12**. Five independent PDH/ledger readiness guards remain closed; executable
+full-game pilots and the concrete authorized adapter still require qualification. Position 1 is
+not executed. Positions 2–12 remain unauthorized. Disposition remains **KEEP_V07 / NO CARD CHANGES**.

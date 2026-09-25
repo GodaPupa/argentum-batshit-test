@@ -122,16 +122,23 @@ class IzzetScienceVeteranBeastriderEngineReadinessTest : FunSpec({
         card.script.spellEffect shouldNotBe null
     }
 
+    test("frozen combined Veteran identities resolve their exact printed faces") {
+        registry.getCard("Guardian Naga // Banishing Coils")?.name shouldBe "Guardian Naga"
+        registry.getCard("Ulvenwald Captive // Ulvenwald Abomination")?.name shouldBe "Ulvenwald Captive"
+        registry.getCard("Guardian Naga // Wrong Face") shouldBe null
+        registry.getCard("Ulvenwald Captive // Wrong Face") shouldBe null
+    }
+
     test("freeze exact unresolved engine coverage count and emit identities") {
         val unresolved = IzzetScienceVeteranBeastriderEngineReadiness.unresolvedCardIdentities(registry)
         println("V09_REAL_ENGINE_UNRESOLVED_COUNT=" + unresolved.size)
         unresolved.forEach { println("V09_REAL_ENGINE_UNRESOLVED=" + it) }
-        unresolved.size shouldBe 14
+        unresolved.size shouldBe 11
     }
 
     test("full execution remains fail closed behind unresolved cards and PDH semantics") {
         val blockers = IzzetScienceVeteranBeastriderEngineReadiness.executionBlockers(registry)
-        blockers.size shouldBe 19
+        blockers.size shouldBe 16
         blockers.takeLast(5).shouldContainExactly(
             "PDH commander-zone initialization not qualified",
             "PDH commander recast/tax semantics not qualified",
