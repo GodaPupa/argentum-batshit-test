@@ -74,7 +74,7 @@ jobs:
           python3 - <<'PY'
           from pathlib import Path
           Path('build/pest-monster-tron-one-shot-validation/status.txt').write_text(
-              'status=CONSTRUCTION_VALIDATED_ACTIVATION_ABSENT\n'
+              'status=CONSTRUCTION_VALIDATED_NO_OFFICIAL_EXECUTION\n'
               'official_frozen_seeds=4\nofficial_initializations=0\nofficial_actions=0\noutcomes=0\n'
               'repository_claim_created=false\n')
           PY

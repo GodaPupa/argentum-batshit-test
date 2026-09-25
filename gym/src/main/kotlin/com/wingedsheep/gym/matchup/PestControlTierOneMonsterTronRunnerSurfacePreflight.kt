@@ -17,6 +17,7 @@ data class MonsterTronRunnerSurfacePreflightResult(
     val officialGamesInitialized: Int = 0,
     val officialActionsSubmitted: Int = 0,
     val outcomeExposure: Int = 0,
+    val guardedOfficialWorkflowPresent: Boolean = false,
 ) {
     val green: Boolean get() = errors.isEmpty()
 }
@@ -29,7 +30,10 @@ data class MonsterTronRunnerSurfacePreflightResult(
  */
 object PestControlTierOneMonsterTronRunnerSurfacePreflight {
     internal const val CONSTRUCTION_WORKFLOW_PATH = ".github/workflows/pest-control-tier-one-monster-tron-one-shot-construction.yml"
-    internal const val CONSTRUCTION_WORKFLOW_SHA256 = "855acc62245d09ac6fe2eb7884f2d434c56ae8db2df38613a980f2beb9ce65be"
+    internal const val CONSTRUCTION_WORKFLOW_SHA256 = "412a771569f7a3bad4e4e41a037953140b39fa8a5d3c71870dc21776fd01cccb"
+
+    internal const val OFFICIAL_WORKFLOW_PATH = ".github/workflows/pest-control-tier-one-monster-tron-official-smoke.yml"
+    internal const val OFFICIAL_WORKFLOW_SHA256 = "6f37cdb939ab310655f78d82ffd711c9f0f389b51e8bd6f6f1a84eb732b9fa3f"
 
     private val forbiddenContent = listOf(
         "tier-one-monster-tron-official-execution",
@@ -63,14 +67,17 @@ object PestControlTierOneMonsterTronRunnerSurfacePreflight {
         val errors = mutableListOf<String>()
 
         (inventory.workflowFiles + inventory.commandFiles).forEach { (path, content) ->
-            val constructionPath = path.replace('\\', '/').endsWith(CONSTRUCTION_WORKFLOW_PATH)
-            if (constructionPath) {
-                if (monsterTronDigest(content.toByteArray(Charsets.UTF_8)) != CONSTRUCTION_WORKFLOW_SHA256) {
-                    errors += "guarded construction workflow bytes changed: $path"
-                }
+            val normalizedPath = path.replace('\\', '/')
+            val expectedHash = when {
+                normalizedPath.endsWith(CONSTRUCTION_WORKFLOW_PATH) -> CONSTRUCTION_WORKFLOW_SHA256
+                normalizedPath.endsWith(OFFICIAL_WORKFLOW_PATH) -> OFFICIAL_WORKFLOW_SHA256
+                else -> null
+            }
+            if (expectedHash != null && monsterTronDigest(content.toByteArray(Charsets.UTF_8)) != expectedHash) {
+                errors += "guarded workflow bytes changed: $path"
             }
             forbiddenContent.forEach { token ->
-                if (!constructionPath && content.contains(token, ignoreCase = true)) {
+                if (expectedHash == null && content.contains(token, ignoreCase = true)) {
                     errors += "official Monster Tron runner surface reference in $path"
                 }
             }
@@ -98,6 +105,9 @@ object PestControlTierOneMonsterTronRunnerSurfacePreflight {
             workflowFilesAudited = inventory.workflowFiles.size,
             commandFilesAudited = inventory.commandFiles.size,
             classesAudited = inventory.publicMethods.size,
+            guardedOfficialWorkflowPresent = inventory.workflowFiles.keys.any {
+                it.replace('\\', '/').endsWith(OFFICIAL_WORKFLOW_PATH)
+            },
         )
     }
 }
