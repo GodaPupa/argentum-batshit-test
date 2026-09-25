@@ -38,15 +38,9 @@ val SomethingWorthSaving = card("Something Worth Saving") {
                     from = "milled",
                     destination = CardDestination.ToZone(Zone.GRAVEYARD)
                 ),
-                GatherCardsEffect(
-                    source = CardSource.FromZone(
-                        zone = Zone.GRAVEYARD,
-                        filter = GameObjectFilter.Permanent
-                    ),
-                    storeAs = "graveyardPermanents"
-                ),
                 SelectFromCollectionEffect(
-                    from = "graveyardPermanents",
+                    from = "milled",
+                    filter = GameObjectFilter.Permanent,
                     selection = SelectionMode.ChooseUpTo(DynamicAmount.Fixed(1)),
                     storeSelected = "toHand",
                     showAllCards = true,
