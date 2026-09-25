@@ -199,7 +199,8 @@ class BattlefieldEntrySnapshotTest : FunSpec({
         val target = d.putCreatureOnBattlefield(d.player1, "Centaur Courser")
         val source = d.putPermanentOnBattlefield(d.player1, anthem.name)
         val result = EngineServices(d.cardRegistry).effectExecutorRegistry.execute(d.state,
-            Effects.CreateTokenCopyOfTarget(EffectTarget.SpecificEntity(target), overridePower = 5),
+            Effects.CreateTokenCopyOfTarget(EffectTarget.SpecificEntity(target),
+                exceptions = com.wingedsheep.sdk.scripting.effects.CopyExceptions(powerOverride = 5)),
             EffectContext(sourceId = source, controllerId = d.player1))
         val event = enters(result.events).single()
         event.entrySnapshot!!.manaValue shouldBe 3

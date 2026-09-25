@@ -88,3 +88,16 @@ The [prospective queue findings](capability-drafts/remaining-queue-findings.md) 
 existing damage defects relevant to Ram Through and Prismatic Strands, including exact source
 locations and required distinguishing regressions. They are not fixes or accepted runtime results.
 The previously preserved Dreadmask draft remains historical; compiled source and this gate govern AN.
+
+## First validation diagnostic and fixture correction
+
+Run [36088494001](https://github.com/GodaPupa/argentum-batshit-test/actions/runs/36088494001), job
+`107925559245`, failed one of eleven entry scenarios at source `6716152aa7fcd1932051b889f2e354a513d7cc7e`.
+Kotlin compiled and the other ten entry scenarios passed. The failing copy fixture expected a
+five-power copy but used the legacy `overridePower` rider alone. `CreateTokenCopyOfTargetEffect`
+explicitly retains that legacy rider only when both P/T values are supplied; the supported
+half-specified override is `CopyExceptions(powerOverride = 5)`. The fixture is corrected to that
+existing API, preserving its expected copiable power 5, projected power 6 with anthem, mana value 3,
+and dynamic predicate assertions. Production copying, expected outcomes and safeguard code are not
+changed. Attachment/Dreadmask and later stages were skipped by fail-closed CI and remain unqualified.
+No official game or seed was used; full AN qualification and independent archive audit are required.
