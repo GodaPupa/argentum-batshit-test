@@ -1,0 +1,130 @@
+name: Pest Control Tier-1 Postboard Support Batch B
+
+on:
+  pull_request:
+    paths:
+      - .github/workflows/pest-control-tier-one-postboard-support-batch-b.yml
+      - docs/experiments/pest-control/tier-one-postboard-support-batch-b*
+      - docs/experiments/pest-control/card-sources/postboard-b/**
+      - '**/Pyroblast.kt'
+      - '**/Hydroblast.kt'
+      - '**/GutShot.kt'
+      - '**/PyroblastScenarioTest.kt'
+      - '**/HydroblastScenarioTest.kt'
+      - '**/GutShotScenarioTest.kt'
+      - '**/PestControlTierOnePostboardSupportBatchBTest.kt'
+      - '**/PestControlTierOnePostboardSupportBatchATest.kt'
+      - '**/PestControlTierOneMonoBlueTerrorReadinessTest.kt'
+      - mtg-sets/src/test/resources/snapshots/cards/ICE.json
+      - mtg-sets/src/test/resources/snapshots/cards/NPH.json
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Bind source and preserve existing definitions
+        env:
+          EXPECTED_HEAD: ${{ github.event.pull_request.head.sha }}
+        run: |
+          python - <<'PY'
+          import hashlib, json, os, pathlib, re, subprocess
+          root = pathlib.Path('.')
+          out = root / 'build/reports/pest-postboard-support-batch-b'
+          out.mkdir(parents=True, exist_ok=True)
+          manifest_path = root / 'docs/experiments/pest-control/tier-one-postboard-support-batch-b-sources.json'
+          manifest = json.loads(manifest_path.read_bytes())
+          head = subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip()
+          assert head == os.environ['EXPECTED_HEAD']
+          for path, expected in manifest['source_files_sha256'].items():
+              assert hashlib.sha256((root / path).read_bytes()).hexdigest() == expected, path
+          def blocks(raw):
+              result = {}
+              for block in re.split(r'(?m)^// ', raw)[1:]:
+                  name, body = block.split('\n', 1)
+                  assert name not in result, name
+                  json.loads(body)
+                  result[name] = body.rstrip('\n')
+              return result
+          preservation = {}
+          for code, names in manifest['snapshot_additions'].items():
+              path = f'mtg-sets/src/test/resources/snapshots/cards/{code}.json'
+              before_raw = subprocess.check_output(['git', 'show', manifest['base_commit'] + ':' + path], text=True)
+              after_raw = (root / path).read_text()
+              before, after = blocks(before_raw), blocks(after_raw)
+              assert all(after.get(name) == body for name, body in before.items()), code
+              if manifest['snapshot_review_status'] == 'PENDING_COMPILED_OUTPUT':
+                  assert after_raw == before_raw, code
+              else:
+                  assert manifest['snapshot_review_status'] == 'REVIEWED_EXACT_ADDITIONS'
+                  assert set(after) - set(before) == set(names), code
+              preservation[code] = {'existing_blocks_preserved': len(before), 'prospective_additions': names}
+          provenance = {
+              'schema': 'pest-postboard-support-batch-b-provenance-v1',
+              'source_head': head, 'base_commit': manifest['base_commit'],
+              'run_id': os.environ['GITHUB_RUN_ID'], 'run_attempt': os.environ['GITHUB_RUN_ATTEMPT'],
+              'source_manifest_sha256': hashlib.sha256(manifest_path.read_bytes()).hexdigest(),
+              'snapshot_review_status': manifest['snapshot_review_status'],
+              'snapshot_preservation': preservation,
+              'scope': 'DETERMINISTIC_CARD_AND_COVERAGE_VALIDATION_ONLY',
+              'official_seeds_generated': 0, 'official_games_initialized': 0,
+              'official_actions_submitted': 0, 'outcome_exposure': 0,
+          }
+          (out / 'source-provenance.json').write_text(json.dumps(provenance, indent=2) + '\n')
+          (out / 'card-sources.json').write_bytes(manifest_path.read_bytes())
+          print(json.dumps(provenance, indent=2))
+          PY
+      - name: Qualify actual card behavior and strict compiled snapshots
+        env:
+          PEST_POSTBOARD_BATCH_B_REPORT: ${{ github.workspace }}/build/reports/pest-postboard-support-batch-b/batch-report.txt
+          PEST_POSTBOARD_SUPPORT_REPORT: ${{ github.workspace }}/build/reports/pest-postboard-support-batch-b/full-inventory.txt
+        run: |
+          set -uo pipefail
+          run_stage() {
+            local stage="$1" test_class="$2" module="$3" status=0
+            scripts/test-class "$test_class" --info --stacktrace || status=$?
+            local dest="build/reports/pest-postboard-support-batch-b/tests/$stage"
+            mkdir -p "$dest" || return 1
+            if [ -d "$module/build/test-results/test" ]; then
+              cp -R "$module/build/test-results/test/." "$dest/" || return 1
+            else
+              printf '%s\n' "Missing XML for $test_class" >&2
+              return 1
+            fi
+            printf '%s\n' "$status" > "$dest/exit-status.txt" || return 1
+            return "$status"
+          }
+          failed=0
+          run_stage pyroblast PyroblastScenarioTest mtg-sets/1993-1999/tests || failed=1
+          run_stage hydroblast HydroblastScenarioTest mtg-sets/1993-1999/tests || failed=1
+          run_stage gut-shot GutShotScenarioTest mtg-sets/2008-2016/tests || failed=1
+          run_stage snapshots CardDefinitionSnapshotTest mtg-sets || failed=1
+          run_stage lint CardLintTest mtg-sets || failed=1
+          run_stage mono-blue-readiness PestControlTierOneMonoBlueTerrorReadinessTest gym || failed=1
+          run_stage prior-batch PestControlTierOnePostboardSupportBatchATest gym || failed=1
+          run_stage batch-coverage PestControlTierOnePostboardSupportBatchBTest gym || failed=1
+          run_stage full-inventory PestControlTierOnePostboardSupportAuditTest gym || failed=1
+          exit "$failed"
+      - name: Preserve validation evidence and any unaccepted compiled snapshot differences
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: pest-control-tier-one-postboard-support-batch-b
+          path: |
+            build/reports/pest-postboard-support-batch-b/
+            mtg-sets/build/snapshots-actual/
+            docs/experiments/pest-control/card-sources/postboard-b/
+          if-no-files-found: error
+          retention-days: 90

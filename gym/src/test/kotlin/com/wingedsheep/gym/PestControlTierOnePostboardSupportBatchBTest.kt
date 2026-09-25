@@ -18,8 +18,8 @@ import java.nio.file.Files
 import java.nio.file.Path
 
 /** Registry and frozen identities only; no game constructor, pilot, seed, or action path. */
-class PestControlTierOnePostboardSupportBatchATest : FunSpec({
-    test("four postboard definitions close eleven slots in the unchanged six frozen sideboards") {
+class PestControlTierOnePostboardSupportBatchBTest : FunSpec({
+    test("three postboard definitions close twelve slots in the unchanged six frozen sideboards") {
         val registry = CardRegistry().apply {
             register(PredefinedTokens.allTokens)
             MtgSetCatalog.all.forEach { set -> register(set.cards); register(set.basicLands) }
@@ -39,10 +39,10 @@ class PestControlTierOnePostboardSupportBatchATest : FunSpec({
             "spy_combo" to PestControlTierOneSpyComboAdmission.sideboardCounts,
         )
         sideboards.values.forEach { it.values.sum() shouldBe 15 }
-        val newCards = listOf("Smash to Smithereens", "Unexpected Fangs", "Murmuring Mystic", "Nylea's Disciple")
+        val newCards = listOf("Pyroblast", "Hydroblast", "Gut Shot")
         newCards.forEach { name -> registry.getCard(name)?.name shouldBe name }
         val changedSlots = sideboards.values.sumOf { counts -> counts.filterKeys { it in newCards }.values.sum() }
-        changedSlots shouldBe 11
+        changedSlots shouldBe 12
         val remaining = sideboards.mapValues { (_, counts) -> counts.filterKeys { registry.getCard(it) == null } }
         remaining shouldBe linkedMapOf(
             "pest_control" to emptyMap(),
@@ -54,7 +54,7 @@ class PestControlTierOnePostboardSupportBatchATest : FunSpec({
                 "Mesmeric Fiend" to 1, "Faerie Macabre" to 2, "Acorn Harvest" to 1),
         )
         val text = buildString {
-            appendLine("schema=pest-control-tier-one-postboard-support-batch-a-v1")
+            appendLine("schema=pest-control-tier-one-postboard-support-batch-b-v1")
             appendLine("accepted_inventory_artifact=10838516145")
             appendLine("accepted_inventory_zip_sha256=c0c08f915348a0512dd15a17d2edad1479b3f1d09d59948455fe3c81f94b10b7")
             appendLine("definitions_added=" + newCards.joinToString(";"))
@@ -72,7 +72,7 @@ class PestControlTierOnePostboardSupportBatchATest : FunSpec({
             appendLine("postboard_gameplay_authorized=false")
         }
         println(text)
-        System.getenv("PEST_POSTBOARD_BATCH_A_REPORT")?.let { raw ->
+        System.getenv("PEST_POSTBOARD_BATCH_B_REPORT")?.let { raw ->
             val path = Path.of(raw)
             Files.createDirectories(path.parent)
             Files.writeString(path, text)
