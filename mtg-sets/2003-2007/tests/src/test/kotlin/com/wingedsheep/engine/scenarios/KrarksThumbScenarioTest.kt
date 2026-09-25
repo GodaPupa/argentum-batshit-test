@@ -3,15 +3,23 @@ package com.wingedsheep.engine.scenarios
 import com.wingedsheep.engine.core.CoinFlipEvent
 import com.wingedsheep.engine.core.ExecutionResult
 import com.wingedsheep.engine.core.YesNoDecision
+import com.wingedsheep.engine.state.components.identity.CardComponent
+import com.wingedsheep.engine.state.components.identity.TokenComponent
 import com.wingedsheep.engine.support.GameTestDriver
 import com.wingedsheep.engine.support.TestCards
 import com.wingedsheep.mtg.sets.definitions.mrd.cards.FieryGambit
 import com.wingedsheep.mtg.sets.definitions.mrd.cards.KrarksThumb
 import com.wingedsheep.sdk.core.Color
 import com.wingedsheep.sdk.core.Step
+import com.wingedsheep.sdk.core.Supertype
+import com.wingedsheep.sdk.dsl.Targets
+import com.wingedsheep.sdk.dsl.card
 import com.wingedsheep.sdk.model.Deck
 import com.wingedsheep.sdk.model.EntityId
 import com.wingedsheep.sdk.model.GameRng
+import com.wingedsheep.sdk.scripting.effects.CopyExceptions
+import com.wingedsheep.sdk.scripting.effects.CreateTokenCopyOfTargetEffect
+import com.wingedsheep.sdk.scripting.targets.EffectTarget
 import io.kotest.assertions.withClue
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
@@ -33,6 +41,18 @@ import io.kotest.matchers.shouldBe
  */
 class KrarksThumbScenarioTest : FunSpec({
 
+    val copySpell = card("Test Nonlegendary Thumb Copy") {
+        manaCost = "{0}"
+        typeLine = "Sorcery"
+        spell {
+            target = Targets.PermanentYouControl
+            effect = CreateTokenCopyOfTargetEffect(
+                target = EffectTarget.ContextTarget(0),
+                exceptions = CopyExceptions(removedSupertypes = setOf(Supertype.LEGENDARY))
+            )
+        }
+    }
+
     class Board(val d: GameTestDriver, val opponent: EntityId, val bears: EntityId, val gambit: EntityId) {
         val me: EntityId get() = d.player1
         fun lands(): List<EntityId> = d.getLands(me)
@@ -46,7 +66,7 @@ class KrarksThumbScenarioTest : FunSpec({
     /** The Fiery Gambit board, with [thumbs] copies of Krark's Thumb already on the battlefield. */
     fun board(seed: Long, thumbs: Int = 1): Board {
         val d = GameTestDriver()
-        d.registerCards(TestCards.all + FieryGambit + KrarksThumb)
+        d.registerCards(TestCards.all + FieryGambit + KrarksThumb + copySpell)
         d.initMirrorMatch(deck = Deck.of("Mountain" to 40), startingPlayer = 0)
         d.passPriorityUntil(Step.PRECOMBAT_MAIN)
 
@@ -55,12 +75,28 @@ class KrarksThumbScenarioTest : FunSpec({
 
         repeat(3) { d.putLandOnBattlefield(d.player1, "Mountain") }
         d.getLands(d.player1).forEach { d.tapPermanent(it) }
-        repeat(thumbs) { d.putPermanentOnBattlefield(d.player1, "Krark's Thumb") }
+        if (thumbs > 0) {
+            val original = d.putPermanentOnBattlefield(d.player1, "Krark's Thumb")
+            repeat(thumbs - 1) {
+                val copy = d.putCardInHand(d.player1, copySpell.name)
+                d.castSpell(d.player1, copy, listOf(original)).error shouldBe null
+                d.bothPass().error shouldBe null
+                d.state.stack.isEmpty() shouldBe true
+                d.pendingDecision shouldBe null
+            }
+            val copies = d.state.getBattlefield().filter {
+                d.state.getEntity(it)?.get<CardComponent>()?.name == "Krark's Thumb"
+            }
+            copies.size shouldBe thumbs
+            copies.count { d.state.getEntity(it)?.get<TokenComponent>() != null } shouldBe thumbs - 1
+            copies.count { d.state.getEntity(it)!!.get<CardComponent>()!!.typeLine.isLegendary } shouldBe 1
+        }
 
         val gambit = d.putCardInHand(d.player1, "Fiery Gambit")
         d.giveMana(d.player1, Color.RED, 1)
         d.giveColorlessMana(d.player1, 2)
 
+        // Start the unchanged coin sequence after the legal nonlegendary-copy setup.
         d.replaceState(d.state.copy(rng = GameRng.seeded(seed)))
         return Board(d, opponent, bears, gambit)
     }

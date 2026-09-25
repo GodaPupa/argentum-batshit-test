@@ -224,6 +224,7 @@ class CastPrioritySbaTest : FunSpec({
             choice.playerId shouldBe owner
             driver.state.pendingCastPriority!!.playerId shouldBe caster
             driver.state.pendingCastPriority!!.triggers.size shouldBe 1
+            driver.state.pendingCastPriority!!.triggers.single().controllerId shouldBe caster
             val encoded = json.encodeToString(driver.state)
             val restored = json.decodeFromString<GameState>(encoded)
             restored shouldBe driver.state
@@ -246,6 +247,14 @@ class CastPrioritySbaTest : FunSpec({
             driver.priorityPlayer shouldBe caster
             driver.state.pendingCastPriority shouldBe null
             driver.state.stack.count { driver.state.getEntity(it)?.get<TriggeredAbilityOnStackComponent>()?.sourceId == controlled } shouldBe 1
+            val deathTrigger = driver.state.stack.mapNotNull {
+                driver.state.getEntity(it)?.get<TriggeredAbilityOnStackComponent>()
+            }.single { it.sourceId == controlled }
+            deathTrigger.controllerId shouldBe caster
+            val handBefore = driver.state.getHand(caster).size
+            resolveOne(driver)
+            driver.state.getHand(caster).size shouldBe handBefore + 1
+            driver.priorityPlayer shouldBe players[0]
         }
     }
 

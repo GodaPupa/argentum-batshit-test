@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.wingedsheep.engine.scenarios.StackResolutionPriorityTest" tests="17" skipped="0" failures="0" errors="0" timestamp="2026-09-25T04:27:24.048Z" hostname="runnervmtr4k5" time="18.124">
+  <properties/>
+  <testcase name="an opposing Bolt resolves before the active player legally casts Divination" classname="com.wingedsheep.engine.scenarios.StackResolutionPriorityTest" time="16.78"/>
+  <testcase name="an opposing activated response returns priority to the active player with another spell still on stack" classname="com.wingedsheep.engine.scenarios.StackResolutionPriorityTest" time="0.038"/>
+  <testcase name="resolution-trigger target selection belongs to its controller but priority returns to the active player" classname="com.wingedsheep.engine.scenarios.StackResolutionPriorityTest" time="0.057"/>
+  <testcase name="an opposing discard decision survives serialization and cannot seize the next priority window" classname="com.wingedsheep.engine.scenarios.StackResolutionPriorityTest" time="0.565"/>
+  <testcase name="an opposing legend-rule decision completes before the active player receives priority" classname="com.wingedsheep.engine.scenarios.StackResolutionPriorityTest" time="0.023"/>
+  <testcase name="four-player tax answer from a third seat returns to the active player (pay=false)" classname="com.wingedsheep.engine.scenarios.StackResolutionPriorityTest" time="0.05"/>
+  <testcase name="four-player tax answer from a third seat returns to the active player (pay=true)" classname="com.wingedsheep.engine.scenarios.StackResolutionPriorityTest" time="0.021"/>
+  <testcase name="a four-player cast-time modal decision retains the caster's priority instead of resetting to active" classname="com.wingedsheep.engine.scenarios.StackResolutionPriorityTest" time="0.024"/>
+  <testcase name="a cleanup-window resolution choice restores active priority without advancing or losing another spell" classname="com.wingedsheep.engine.scenarios.StackResolutionPriorityTest" time="0.016"/>
+  <testcase name="a nested modal cast completes the outer tail and preserves each trigger batch once (cancel=false)" classname="com.wingedsheep.engine.scenarios.StackResolutionPriorityTest" time="0.016"/>
+  <testcase name="a nested modal cast completes the outer tail and preserves each trigger batch once (cancel=true)" classname="com.wingedsheep.engine.scenarios.StackResolutionPriorityTest" time="0.01"/>
+  <testcase name="a departed active player is skipped after an opposing spell resolves" classname="com.wingedsheep.engine.scenarios.StackResolutionPriorityTest" time="0.016"/>
+  <testcase name="a departing decision owner clears the abandoned resolution boundary" classname="com.wingedsheep.engine.scenarios.StackResolutionPriorityTest" time="0.015"/>
+  <testcase name="ending the turn clears the resolution boundary before the next step's priority" classname="com.wingedsheep.engine.scenarios.StackResolutionPriorityTest" time="0.016"/>
+  <testcase name="a terminal resolution clears its boundary and grants no further priority" classname="com.wingedsheep.engine.scenarios.StackResolutionPriorityTest" time="0.01"/>
+  <testcase name="the false marker is absent from ordinary serialized states even with defaults enabled" classname="com.wingedsheep.engine.scenarios.StackResolutionPriorityTest" time="0.003"/>
+  <testcase name="a rejected malformed stack resolution cannot publish a marker or mutate the attempted pass" classname="com.wingedsheep.engine.scenarios.StackResolutionPriorityTest" time="0.01"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

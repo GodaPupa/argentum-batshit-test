@@ -76,10 +76,10 @@ The **12 focused runtime cases** exercise:
 - A nested modal life payment recovering during the remainder of its outer resolution.
 - An unaffordable life payment rejected atomically and omission of the new field from default state.
 
-The existing dedicated workflow retains all **16 predecessor stages** and adds eight stages:
+The existing dedicated workflow retains all **16 predecessor stages** and adds eleven stages:
 the new suite, free casting, modal additional costs, modal cost enumeration, revealed-card costs,
-commander-zone choices, Two-Headed Giant team loss and Team vs. Team. Every stage retains its XML
-and exit status before the next invocation, including failures. All 24 stages and full repository
+commander-zone choices, Two-Headed Giant team loss, Team vs. Team, the existing death-trigger suite and the two corrected legendary-copy fixtures.
+Every stage retains its XML and exit status before the next invocation, including failures. All 27 stages and full repository
 CI must qualify the exact candidate. The inherited Spy card-support gates remain enabled.
 
 No assertion is disabled, golden reblessing mode enabled, or source guard skipped. Any unexpected
@@ -107,3 +107,57 @@ activation, and requires separately recorded gates before any new official execu
 All official counters for this source qualification are **zero**: seeds generated, game
 initializations, submitted sampled actions and outcome exposure. Runtime evidence and project
 integration remain pending; no program stopping rule is satisfied by this source proposal.
+
+## First exact runtime result and controller repair
+
+Source `697e65d578bc212bb994a5ec323a8055c6e4f868` ran all 24 original stages in
+[36094276936](https://github.com/GodaPupa/argentum-batshit-test/actions/runs/36094276936):
+**208 tests, 207 passed, one failed, zero errors or skips**. All predecessor and added
+compatibility suites passed. Eleven of the twelve new post-cast cases passed, including both
+actual Phyrexian-life boundaries, trigger ordering, serialization, retained unrelated choices,
+terminal concession and the nested recovery boundary. The source manifest, all 30 pins and the
+full effective-rules bytes were independently verified.
+
+The [failure audit](engine-post-cast-sba-failure-audit-36094276936.json) preserves all 24 raw
+XML suites, stage exits and provenance. Artifact `10846589662` is 294,048 bytes; ZIP SHA-256
+`20a444dafd0542054a0765a538ae96818aeafdecf9d9e2f7a08c1785f364d0b6`.
+
+The owner-concedes fixture lost its expected death trigger. Source inspection found that
+`DeathAndLeaveTriggerDetector.detectDeathTriggers` assigned `event.ownerId`, although the
+sacrificed permanent's controller at departure was the surviving caster. The existing trigger
+processor correctly refuses to put a departed player's triggers onto the stack. The source
+repair therefore uses the captured last-known controller, with the original owner fallback only
+for legacy events lacking that snapshot, as required by CR 603.3a and 603.10. It does not bypass
+departed-player suppression or preserve an incorrectly owned trigger.
+
+All three commander-choice cases now check the captured and on-stack trigger controller and
+resolve the actual draw to verify its beneficiary, retaining the original trigger-count assertion.
+The existing `DeathTriggerTest` becomes a separately retained 25th stage. This is a prospective
+source qualification, not acceptance of the failed artifact. Other specialized simultaneous,
+attached-Aura, persist, undying, Enduring and leave-trigger controller combinations remain
+unqualified; this change is limited to the observed self-death detection route.
+
+## Full-CI legendary fixture corrections
+
+The same source's [full CI run 36094276920](https://github.com/GodaPupa/argentum-batshit-test/actions/runs/36094276920)
+also failed its rules-engine shard on the controller defect above and two card scenario shards.
+The [retained job excerpts](engine-post-cast-sba-evidence-36094276936/full-ci-failure-excerpts.json)
+record all three actual failures. The ordinary CI workflow uses the pull-request merge ref;
+the separate dedicated gate binds the exact branch source. Neither result is official gameplay.
+
+The two older scenarios directly inserted two legendary permanents with the same name and
+controller, then expected the tested spell to cast without a legend-rule choice. Their intended
+checks require two coexisting effect sources. Each now creates the second permanent through
+the canonical `CreateTokenCopyOfTargetEffect` with an explicit nonlegendary copy exception.
+The fixtures assert the original remains legendary, the copy is a token, both survive, and the
+stack and pending-decision state are clear before the tested spell. No state-based rule is bypassed.
+
+Krark's Thumb keeps every original coin-flip assertion and seeds the unchanged regression RNG
+only after the copy setup. Prismari resolves the setup spell's zero-copy storm trigger and the
+spell itself, then checks the real cast history of one; the tested Bolt must produce two distinct
+storm triggers, each with copy count one. No history counter is reset in this repaired case.
+Both complete scenario classes join the retained gate. With the four existing death-trigger
+cases, the prospective requirement is **220 cases across 27 stages**, plus full CI.
+
+Independent source review passed the controller repair and these two fixture corrections.
+Their successor runtime evidence remains pending. The failed predecessor evidence is unchanged.

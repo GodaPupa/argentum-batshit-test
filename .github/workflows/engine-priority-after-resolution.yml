@@ -20,6 +20,10 @@ on:
       - rules-engine/src/testFixtures/kotlin/com/wingedsheep/engine/support/ScenarioTestBase.kt
 
       - docs/engine-post-cast-sba*
+      - rules-engine/src/main/kotlin/com/wingedsheep/engine/event/DeathAndLeaveTriggerDetector.kt
+      - rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/DeathTriggerTest.kt
+      - mtg-sets/2003-2007/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/KrarksThumbScenarioTest.kt
+      - mtg-sets/2026/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/PrismariTheInspirationScenarioTest.kt
       - rules-engine/src/main/kotlin/com/wingedsheep/engine/state/PendingCastPriority.kt
       - rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/CastPriorityProcessor.kt
       - rules-engine/src/main/kotlin/com/wingedsheep/engine/core/ColorAndTypeContinuations.kt
@@ -123,6 +127,9 @@ jobs:
           run_stage mauler TaureanMaulerScenarioTest mtg-sets/2008-2016/tests || failed=1
           run_stage ai-decision-trace DecisionResponderCompletedBranchTest ai || failed=1
           run_stage cast-sba CastPrioritySbaTest || failed=1
+          run_stage death-trigger DeathTriggerTest || failed=1
+          run_stage krarks-thumb KrarksThumbScenarioTest mtg-sets/2003-2007/tests || failed=1
+          run_stage prismari PrismariTheInspirationScenarioTest mtg-sets/2026/tests || failed=1
           run_stage free-cast GrantNextSpellFreeCastTest || failed=1
           run_stage modal-cost ModalPerModeAdditionalCostTest || failed=1
           run_stage modal-cost-enumeration CastSpellEnumeratorModalAdditionalCostTest || failed=1
