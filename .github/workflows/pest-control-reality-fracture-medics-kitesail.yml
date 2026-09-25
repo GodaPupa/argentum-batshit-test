@@ -1,0 +1,88 @@
+name: Pest Control Reality Fracture Medic's Kitesail
+
+on:
+  push:
+    branches:
+      - "pest-control/reality-fracture-medics-kitesail"
+  pull_request:
+    paths:
+      - "mtg-sets/2026/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/fra/cards/MedicsKitesail.kt"
+      - "mtg-sets/2026/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/MedicsKitesailScenarioTest.kt"
+      - "docs/experiments/pest-control/reality-fracture-medics-kitesail.md"
+      - "docs/experiments/pest-control/reality-fracture/medics-kitesail-*"
+      - ".github/workflows/pest-control-reality-fracture-medics-kitesail.yml"
+
+jobs:
+  qualify-seed-free-kitesail:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "21"
+
+      - uses: gradle/actions/setup-gradle@v6
+
+      - name: Verify frozen challenger and pre-release fail-closed boundary
+        run: |
+          python3 - <<'PY'
+          import hashlib, json
+          from pathlib import Path
+
+          entry = "d0c78bb4cca79b7402ba65bd62b5cb621230a054"
+          expected_control = "7be61a66e2c7654428043d56b411afb4d406f02dfcc4eb7f15a62295d4e906f5"
+          expected_challenger = "fd12868a89704f278e604e052950ec694ca5aaa36021177420018dfb7ea91851"
+
+          control = """Essence Warden,4
+          Carrier Thrall,4
+          Blood Researcher,4
+          Pest Mascot,4
+          Fierce Witchstalker,4
+          Generous Ent,3
+          Follow the Lumarets,4
+          Weather the Storm,4
+          Cast Down,4
+          Bone Shards,2
+          Chainer's Edict,2
+          Forest,10
+          Swamp,7
+          Jungle Hollow,4
+          """.replace("          ", "")
+          assert hashlib.sha256(control.encode()).hexdigest() == expected_control
+
+          deck = Path("docs/experiments/pest-control/reality-fracture/medics-kitesail-challenger-main.dck").read_bytes()
+          assert hashlib.sha256(deck).hexdigest() == expected_challenger
+
+          receipt = json.loads(Path("docs/experiments/pest-control/reality-fracture/medics-kitesail-source.json").read_text())
+          gate = receipt["legality_gate"]
+          assert gate["status"] == "PRE_RELEASE_NOT_ADMITTED_FOR_OFFICIAL_CHALLENGER_GAMEPLAY"
+          assert gate["release_date"] == "2026-10-02"
+          assert receipt["repository_policy"]["fra_set_globally_registered"] is False
+          assert receipt["repository_policy"]["official_seeds_generated"] == 0
+          assert receipt["repository_policy"]["official_games_initialized"] == 0
+          assert receipt["repository_policy"]["outcomes_exposed"] == 0
+
+          # Deliberately no FRA set catalog object before release/legal admission.
+          fra_root = Path("mtg-sets/2026/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/fra")
+          assert not any(p.name.endswith("Set.kt") for p in fra_root.glob("*.kt"))
+          print("frozen seed-free Kitesail boundary verified")
+          PY
+          git merge-base --is-ancestor d0c78bb4cca79b7402ba65bd62b5cb621230a054 HEAD
+
+      - name: Qualify exact Medic's Kitesail interactions
+        run: |
+          ./gradlew :mtg-sets:2026:tests:test --tests "*MedicsKitesailScenarioTest" --stacktrace
+
+      - name: Requalify inherited Equipment primitives
+        run: |
+          ./gradlew :mtg-sets:2003-2007:tests:test --tests "*MirrodinEquipmentTest" --tests "*EquipPermissionsScenarioTest" --stacktrace
+          ./gradlew :mtg-sets:2008-2016:tests:test --tests "*EquipmentPersistsTest" --stacktrace
+
+      - name: Requalify Follow the Lumarets baseline
+        run: |
+          ./gradlew :mtg-sets:2026:tests:test --tests "*FollowTheLumaretsScenarioTest" --stacktrace
