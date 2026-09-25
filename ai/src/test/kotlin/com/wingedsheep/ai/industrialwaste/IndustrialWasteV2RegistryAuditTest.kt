@@ -39,6 +39,12 @@ class IndustrialWasteV2RegistryAuditTest : FunSpec({
         val unresolved = names.filter { registry.getCard(it) == null }
         unresolved shouldBe emptyList()
         names.size shouldBe 34
+        val headProcess = ProcessBuilder("git", "rev-parse", "HEAD")
+            .directory(root.toFile()).redirectErrorStream(true).start()
+        val actualHead = headProcess.inputStream.bufferedReader().use { it.readText() }.trim()
+        headProcess.waitFor() shouldBe 0
+        actualHead.matches(Regex("[0-9a-f]{40}")) shouldBe true
+        System.getenv("IW_V2_EXPECTED_HEAD")?.let { actualHead shouldBe it }
         val output = root.resolve("industrial-waste/v2/runtime-evidence/registry-audit.txt")
         Files.createDirectories(output.parent)
         Files.writeString(output, buildString {
@@ -47,7 +53,7 @@ class IndustrialWasteV2RegistryAuditTest : FunSpec({
             appendLine("unresolved=0")
             appendLine("gameplay_ready=false")
             appendLine("official_games_initialized=0")
-            appendLine("source_head=${System.getenv("GITHUB_SHA") ?: "local-unbound"}")
+            appendLine("source_head=$actualHead")
             names.sorted().forEach { appendLine("card=$it") }
         })
     }

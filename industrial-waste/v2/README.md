@@ -9,9 +9,13 @@ the real-engine structural screen and its numerical decision rule before any
 comparative output. Run `python3 industrial-waste/v2/validate_r0.py` from the
 repository root to verify the construction receipt.
 
-`support-audit.json` is a static source inventory, not a runtime coverage claim.
-At the construction source HEAD, Ancient Stirrings and Chromatic Star are absent.
-Exact card/pilot/telemetry qualification and a guarded runtime binding receipt
+`support-audit.json` preserves the original static source inventory. The later
+`card-qualification-36080619185.json` records actual compiled admission of all
+34 identities, four Chromatic Star scenarios, three Ancient Stirrings scenarios,
+and the unchanged legacy golden. Its artifact provenance limitation is explicit;
+the checkout log establishes the actual source and the receipt label is repaired
+prospectively. Dross Skullbomb qualification continues in the next validation
+batch. Exact pilot/telemetry qualification and a guarded runtime binding receipt
 remain necessary before R1 execution. Official counters remain zero.
 
 This is a new experimental program. It does not continue Gate 11 and it does not overwrite the
