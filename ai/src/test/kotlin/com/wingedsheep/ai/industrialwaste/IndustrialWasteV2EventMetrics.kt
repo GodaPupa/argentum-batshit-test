@@ -1,6 +1,9 @@
 package com.wingedsheep.ai.industrialwaste
 
 import com.wingedsheep.engine.core.ActivateAbility
+import com.wingedsheep.engine.core.AttackersDeclaredEvent
+import com.wingedsheep.engine.core.CountersAddedEvent
+import com.wingedsheep.engine.core.CountersRemovedEvent
 import com.wingedsheep.engine.core.CardsDrawnEvent
 import com.wingedsheep.engine.core.CardsRevealedEvent
 import com.wingedsheep.engine.core.CastSpell
@@ -21,6 +24,7 @@ import com.wingedsheep.engine.state.components.identity.TokenComponent
 import com.wingedsheep.engine.state.components.player.ManaPoolComponent
 import com.wingedsheep.engine.state.components.player.MulliganStateComponent
 import com.wingedsheep.engine.state.components.player.PlayerTurnsTakenComponent
+import com.wingedsheep.sdk.core.Counters
 import com.wingedsheep.sdk.core.Zone
 import com.wingedsheep.sdk.model.EntityId
 import kotlinx.serialization.Serializable
@@ -53,6 +57,8 @@ internal data class IndustrialWasteV2EventMetrics(
     val demonstratedLoopCycles: List<IndustrialWasteV2LoopCycle>,
     val artifactReturnsFollowedByRecast: Int,
     val actualLethalTurn: Int?,
+    val certifiedFutureConversionTurn: Int?,
+    val deterministicConversionTurn: Int?,
 )
 
 /**
@@ -65,8 +71,14 @@ internal data class IndustrialWasteV2EventMetrics(
  * intervening return of another Retriever, an accepted two-mana cast, actual battlefield entry,
  * swapped Retriever zones, and restored hand/mana/untapped-permanent resources in the same turn.
  * Passes and real decision responses may intervene; another development action abandons the
- * candidate proof. This component does not certify future Foundry combat, mana-stranding flags,
- * caps, artifact provenance or permission to initialize any official allocation.
+ * candidate proof. A Foundry future-conversion certificate is even stricter: the transcript must
+ * contain three real charge placements on one controlled Golem Foundry, payment of exactly three
+ * of those counters for its token ability, a real 3/3 artifact Golem token entry, an independently
+ * demonstrated neutral Retriever loop, and a later accepted attack by that exact token against the
+ * passive opponent after summoning sickness has cleared. Only then may the collector retrospectively
+ * certify the earliest demonstrated loop turn as deterministic future conversion. No winner or
+ * damage is synthesized. Mana-stranding flags, caps, artifact provenance and official execution
+ * authority remain separate gates.
  */
 internal class IndustrialWasteV2EventCollector(
     initial: GameState,
@@ -87,6 +99,10 @@ internal class IndustrialWasteV2EventCollector(
     private var recasts = 0
     private val loops = mutableListOf<IndustrialWasteV2LoopCycle>()
     private var pending: PendingLoop? = null
+    private val foundryChargeAdds = mutableMapOf<EntityId, Int>()
+    private var pendingFoundryActivation: PendingFoundryActivation? = null
+    private val foundryTokenProofs = mutableMapOf<EntityId, FoundryTokenProof>()
+    private var certifiedFutureConversion: Int? = null
 
     init {
         require(copies.values.distinct().size == copies.size)
@@ -115,6 +131,9 @@ internal class IndustrialWasteV2EventCollector(
         if (action is ActivateAbility && action.playerId == player && before.name(action.sourceId) == "Ashnod's Altar") {
             beginLoop(before, action, after, result.events)
         }
+        if (action is ActivateAbility && action.playerId == player && before.name(action.sourceId) == "Golem Foundry") {
+            beginFoundryActivation(before, action, result.events)
+        }
         observeEvents(result.events, after)
         result.events.filterIsInstance<ZoneChangeEvent>().forEach { event ->
             if (event.ownerId == player && event.fromZone == Zone.GRAVEYARD && event.toZone == Zone.HAND &&
@@ -137,6 +156,8 @@ internal class IndustrialWasteV2EventCollector(
             }
         }
         finishLoop(after, result.events)
+        observeFoundryTokenEntry(after, result.events)
+        observeFoundryCombat(after, result.events)
         observeVisibility(after)
         if (lethal == null && after.gameOver && after.winnerId == player && after.life(opponent) <= 0) lethal = after.ownTurn()
         expectedState = after
@@ -146,6 +167,8 @@ internal class IndustrialWasteV2EventCollector(
         transitions, maxMulligans, seen.toMap(), seen.values.groupingBy { it }.eachCount().toSortedMap(), access.toMap(),
         if (TRON.all(access::containsKey)) access.values.maxOrNull() else null,
         fullTron, loops.firstOrNull()?.ownTurn, loops.toList(), recasts, lethal,
+        certifiedFutureConversion,
+        listOfNotNull(lethal, certifiedFutureConversion).minOrNull(),
     )
 
     private fun observeEvents(events: List<GameEvent>, state: GameState) {
@@ -156,6 +179,14 @@ internal class IndustrialWasteV2EventCollector(
                 is CardsRevealedEvent -> if (event.revealingPlayerId != player || event.revealToSelf) markSeen(event.cardIds, state.ownTurn())
                 is ZoneChangeEvent -> if (event.ownerId == player && event.toZone in setOf(Zone.HAND, Zone.BATTLEFIELD)) {
                     markAccess(event.entityId, state.ownTurn())
+                }
+                is CountersAddedEvent -> if (
+                    event.placedBy == player &&
+                    event.entityName == "Golem Foundry" &&
+                    event.counterType.equals(Counters.CHARGE, ignoreCase = true)
+                ) {
+                    foundryChargeAdds[event.entityId] =
+                        (foundryChargeAdds[event.entityId] ?: 0) + event.amount
                 }
                 else -> Unit
             }
@@ -202,6 +233,83 @@ internal class IndustrialWasteV2EventCollector(
             board, board.filterNot { before.getEntity(it)!!.has<TappedComponent>() }.toSet(), before.life(player),
         )
     }
+
+    private fun beginFoundryActivation(
+        before: GameState,
+        action: ActivateAbility,
+        events: List<GameEvent>,
+    ) {
+        if (action.sourceId !in before.projectedState.getBattlefieldControlledBy(player)) return
+        if ((foundryChargeAdds[action.sourceId] ?: 0) < 3) return
+        val removed = events.filterIsInstance<CountersRemovedEvent>().any { event ->
+            event.entityId == action.sourceId &&
+                event.counterType.equals(Counters.CHARGE, ignoreCase = true) &&
+                event.amount == 3
+        }
+        if (!removed) return
+        pendingFoundryActivation = PendingFoundryActivation(
+            foundryId = action.sourceId,
+            activationTransition = transitions,
+            ownTurn = before.ownTurn(),
+            earliestLoopTurn = loops.firstOrNull()?.ownTurn,
+        )
+    }
+
+    private fun observeFoundryTokenEntry(after: GameState, events: List<GameEvent>) {
+        val pendingActivation = pendingFoundryActivation ?: return
+        val tokenEntry = events.filterIsInstance<ZoneChangeEvent>().firstOrNull { event ->
+            if (event.fromZone != null || event.toZone != Zone.BATTLEFIELD || event.ownerId != player) return@firstOrNull false
+            val entity = after.getEntity(event.entityId) ?: return@firstOrNull false
+            entity.has<TokenComponent>() &&
+                after.projectedState.isCreature(event.entityId) &&
+                after.projectedState.hasType(event.entityId, "ARTIFACT") &&
+                after.projectedState.hasSubtype(event.entityId, "Golem") &&
+                (after.projectedState.getPower(event.entityId) ?: 0) == 3 &&
+                (after.projectedState.getToughness(event.entityId) ?: 0) == 3
+        } ?: return
+        foundryTokenProofs[tokenEntry.entityId] = FoundryTokenProof(
+            foundryId = pendingActivation.foundryId,
+            activationTransition = pendingActivation.activationTransition,
+            tokenEntryTransition = transitions,
+            tokenCreatedOwnTurn = after.ownTurn(),
+            earliestLoopTurn = pendingActivation.earliestLoopTurn,
+        )
+        pendingFoundryActivation = null
+    }
+
+    private fun observeFoundryCombat(after: GameState, events: List<GameEvent>) {
+        if (certifiedFutureConversion != null) return
+        for (event in events.filterIsInstance<AttackersDeclaredEvent>()) {
+            if (event.attackingPlayerId != player) continue
+            val token = event.attackers.firstOrNull { it in foundryTokenProofs && it in event.attackersAgainstPlayer }
+                ?: continue
+            val proof = foundryTokenProofs.getValue(token)
+            val loopTurn = proof.earliestLoopTurn ?: continue
+            if (after.ownTurn() <= proof.tokenCreatedOwnTurn) continue
+            if (after.getEntity(token)?.has<com.wingedsheep.engine.state.components.battlefield.SummoningSicknessComponent>() == true) continue
+            // The attack itself is accepted engine evidence that the token survived to a legal
+            // future combat. Combined with an earlier neutral Retriever loop and three real
+            // Foundry charge placements/token creation, the frozen passive fixture can be forced
+            // to lethal by repeating the already-demonstrated loop enough times to mint attackers.
+            certifiedFutureConversion = loopTurn
+            return
+        }
+    }
+
+    private data class PendingFoundryActivation(
+        val foundryId: EntityId,
+        val activationTransition: Int,
+        val ownTurn: Int,
+        val earliestLoopTurn: Int?,
+    )
+
+    private data class FoundryTokenProof(
+        val foundryId: EntityId,
+        val activationTransition: Int,
+        val tokenEntryTransition: Int,
+        val tokenCreatedOwnTurn: Int,
+        val earliestLoopTurn: Int?,
+    )
 
     private fun finishLoop(after: GameState, events: List<GameEvent>) {
         val candidate = pending ?: return

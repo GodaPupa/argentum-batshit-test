@@ -5,6 +5,8 @@ import com.wingedsheep.ai.engine.DecisionResponder
 import com.wingedsheep.ai.engine.GameSimulator
 import com.wingedsheep.ai.engine.advisor.CardAdvisorRegistry
 import com.wingedsheep.engine.core.ActivateAbility
+import com.wingedsheep.engine.core.DeclareAttackers
+import com.wingedsheep.engine.core.DeclareBlockers
 import com.wingedsheep.engine.core.CardsSelectedResponse
 import com.wingedsheep.engine.core.CastSpell
 import com.wingedsheep.engine.core.DecisionResponse
@@ -13,12 +15,15 @@ import com.wingedsheep.engine.core.GameAction
 import com.wingedsheep.engine.core.PassPriority
 import com.wingedsheep.engine.core.PendingDecision
 import com.wingedsheep.engine.core.SelectCardsDecision
+import com.wingedsheep.engine.core.YesNoDecision
+import com.wingedsheep.engine.core.YesNoResponse
 import com.wingedsheep.engine.core.SubmitDecision
 import com.wingedsheep.engine.state.GameState
 import com.wingedsheep.engine.state.components.identity.CardComponent
 import com.wingedsheep.engine.state.components.identity.TokenComponent
 import com.wingedsheep.engine.support.GameTestDriver
 import com.wingedsheep.mtg.sets.MtgSetCatalog
+import com.wingedsheep.mtg.sets.definitions.som.cards.GolemFoundry
 import com.wingedsheep.sdk.core.Step
 import com.wingedsheep.sdk.core.Zone
 import com.wingedsheep.sdk.model.Deck
@@ -211,6 +216,66 @@ class IndustrialWasteV2EventMetricsTest : FunSpec({
         metric.coloredManaFailure shouldBe false
         metric.totalManaStranded shouldBe false
         metric.unresolved shouldBe false
+    }
+
+    test("Foundry future conversion requires real charges token creation and a later legal attack") {
+        val game = driver()
+        val player = game.player1
+        game.putPermanentOnBattlefield(player, "Ashnod's Altar")
+        val foundry = game.putPermanentOnBattlefield(player, "Golem Foundry")
+        game.putPermanentOnBattlefield(player, "Myr Retriever")
+        game.putCardInGraveyard(player, "Myr Retriever")
+        val fixture = MetricsFixture(game)
+        val acceptFoundry = { decision: PendingDecision ->
+            if (decision is YesNoDecision) YesNoResponse(decision.id, true) else null
+        }
+
+        repeat(3) {
+            fixture.submit(fixture.choose().shouldBeInstanceOf<ActivateAbility>())
+            fixture.resolve(acceptFoundry)
+            fixture.submit(fixture.choose().shouldBeInstanceOf<CastSpell>())
+            fixture.resolve(acceptFoundry)
+        }
+
+        fixture.collector.snapshot().demonstratedLoopCycles.size shouldBe 3
+        fixture.collector.snapshot().certifiedFutureConversionTurn shouldBe null
+        fixture.collector.snapshot().deterministicConversionTurn shouldBe null
+
+        fixture.submit(ActivateAbility(player, foundry, GolemFoundry.activatedAbilities.single().id))
+        fixture.resolve(acceptFoundry)
+        val token = game.state.getBattlefield().single { id ->
+            game.state.getEntity(id)?.has<TokenComponent>() == true &&
+                game.state.projectedState.hasSubtype(id, "Golem")
+        }
+        fixture.collector.snapshot().certifiedFutureConversionTurn shouldBe null
+
+        // Advance through the rest of this turn, the passive opponent's turn, and back to our next
+        // declare-attackers step while recording every accepted transition. Empty combat choices
+        // are submitted until the exact Foundry token is legally able to attack.
+        var guard = 0
+        while (!(game.state.activePlayerId == player &&
+                game.state.step == Step.DECLARE_ATTACKERS &&
+                game.state.getEntity(token)?.has<com.wingedsheep.engine.state.components.battlefield.SummoningSicknessComponent>() != true)) {
+            check(guard++ < 400)
+            val decision = game.pendingDecision
+            when {
+                decision != null -> fixture.resolve()
+                game.state.step == Step.DECLARE_ATTACKERS ->
+                    fixture.submit(DeclareAttackers(game.state.activePlayerId, emptyMap()))
+                game.state.step == Step.DECLARE_BLOCKERS ->
+                    fixture.submit(DeclareBlockers(game.state.activePlayerId, emptyMap()))
+                game.state.priorityPlayerId != null ->
+                    fixture.submit(PassPriority(game.state.priorityPlayerId!!))
+                else -> error("No deterministic advancement action at ${game.state.phase}/${game.state.step}")
+            }
+        }
+
+        fixture.collector.snapshot().certifiedFutureConversionTurn shouldBe null
+        fixture.submit(DeclareAttackers(player, mapOf(token to game.player2)))
+        val metric = fixture.collector.snapshot()
+        metric.certifiedFutureConversionTurn shouldBe metric.demonstratedLoopReadyTurn
+        metric.deterministicConversionTurn shouldBe metric.demonstratedLoopReadyTurn
+        metric.actualLethalTurn shouldBe null
     }
 
     test("duplicated missing or rejected transitions cannot enter the metric stream") {
