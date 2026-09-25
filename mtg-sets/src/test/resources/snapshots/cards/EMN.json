@@ -4974,6 +4974,98 @@
     ]
 }
 
+// Ulvenwald Captive
+{
+    "name": "Ulvenwald Captive",
+    "manaCost": "{1}{G}",
+    "typeLine": "Creature — Werewolf Horror",
+    "oracleText": "Defender\n{T}: Add {G}.\n{5}{G}{G}: Transform this creature.",
+    "creatureStats": {
+        "power": 1,
+        "toughness": 2
+    },
+    "keywords": [
+        "DEFENDER"
+    ],
+    "script": {
+        "activatedAbilities": [
+            {
+                "id": "ability_1",
+                "cost": "CostTap",
+                "effect": {
+                    "type": "AddMana",
+                    "color": "GREEN"
+                },
+                "timing": "ManaAbility",
+                "isManaAbility": true
+            },
+            {
+                "id": "ability_2",
+                "cost": {
+                    "type": "CostAtomWrapper",
+                    "atom": {
+                        "type": "AtomMana",
+                        "cost": "{5}{G}{G}"
+                    }
+                },
+                "effect": "Transform"
+            }
+        ]
+    },
+    "backFace": {
+        "name": "Ulvenwald Abomination",
+        "manaCost": "",
+        "typeLine": "Creature — Eldrazi Werewolf",
+        "oracleText": "{T}: Add {C}{C}.",
+        "creatureStats": {
+            "power": 4,
+            "toughness": 6
+        },
+        "script": {
+            "activatedAbilities": [
+                {
+                    "id": "ability_3",
+                    "cost": "CostTap",
+                    "effect": {
+                        "type": "AddColorlessMana",
+                        "amount": {
+                            "type": "Fixed",
+                            "amount": 2
+                        }
+                    },
+                    "timing": "ManaAbility",
+                    "isManaAbility": true
+                }
+            ]
+        },
+        "metadata": {
+            "collectorNumber": "175",
+            "artist": "Chris Rahn",
+            "flavorText": "\"The Eldrazi are all too practiced at twisting natural into unnatural.\"\n—Nissa Revane",
+            "imageUri": "https://cards.scryfall.io/normal/back/0/d/0dbaef61-fa39-4ea7-bc21-445401c373e7.jpg?1783937442"
+        },
+        "colorIdentityOverride": [
+            "GREEN"
+        ],
+        "hasNoManaCost": true
+    },
+    "metadata": {
+        "collectorNumber": "175",
+        "artist": "Chris Rahn",
+        "flavorText": "\"Even on a plane as dark as this one, nature will organize a defense against the unnatural.\"\n—Nissa Revane",
+        "imageUri": "https://cards.scryfall.io/normal/front/0/d/0dbaef61-fa39-4ea7-bc21-445401c373e7.jpg?1783937442",
+        "rulings": [
+            {
+                "date": "2016-07-13",
+                "text": "For more information on double-faced cards, see the Shadows over Innistrad mechanics article (http://magic.wizards.com/en/articles/archive/feature/shadows-over-innistrad-mechanics)."
+            }
+        ]
+    },
+    "colorIdentityOverride": [
+        "GREEN"
+    ]
+}
+
 // Weaver of Lightning
 {
     "name": "Weaver of Lightning",

@@ -3472,6 +3472,62 @@
     ]
 }
 
+// Temporal Isolation
+{
+    "name": "Temporal Isolation",
+    "manaCost": "{1}{W}",
+    "typeLine": "Enchantment — Aura",
+    "oracleText": "Flash\nEnchant creature\nEnchanted creature has shadow. (It can block or be blocked by only creatures with shadow.)\nPrevent all damage that would be dealt by enchanted creature.",
+    "keywords": [
+        "FLASH"
+    ],
+    "script": {
+        "staticAbilities": [
+            {
+                "type": "GrantKeyword",
+                "keyword": "SHADOW"
+            }
+        ],
+        "replacementEffects": [
+            {
+                "type": "PreventDamage",
+                "appliesTo": {
+                    "type": "DamageEvent",
+                    "source": "SourceEnchantedCreature"
+                }
+            }
+        ],
+        "auraTarget": {
+            "type": "TargetObject",
+            "filter": {
+                "baseFilter": "creature"
+            }
+        }
+    },
+    "metadata": {
+        "collectorNumber": "43",
+        "artist": "Stephen Tappin",
+        "imageUri": "https://cards.scryfall.io/normal/front/e/b/eb406292-1879-4aa9-a369-082822dae1d7.jpg?1783943249",
+        "rulings": [
+            {
+                "date": "2021-03-19",
+                "text": "Once a creature has been blocked, that creature remains blocked and will deal and be dealt combat damage even if it gains or loses shadow or if the blocking creature gains or loses shadow."
+            },
+            {
+                "date": "2021-03-19",
+                "text": "If an attacking creature has multiple evasion abilities, such as shadow and flying, a creature can block it only if that creature satisfies all of the appropriate evasion abilities."
+            },
+            {
+                "date": "2021-03-19",
+                "text": "Multiple instances of shadow on the same creature are redundant."
+            }
+        ]
+    },
+    "colorIdentityOverride": [
+        "WHITE"
+    ]
+}
+
 // Terramorphic Expanse
 {
     "name": "Terramorphic Expanse",
