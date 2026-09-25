@@ -2118,6 +2118,15 @@ class ClientStateTransformer(
                 is SerializableModification.PreventAllCombatDamage -> preventsAllCombatDamage = true
                 is SerializableModification.PreventCombatDamageFromGroup ->
                     preventedCombatDamageSources.add(modification.filter.description)
+                is SerializableModification.PreventAllDamageFromGroup -> effects.add(
+                    ClientPlayerEffect(
+                        effectId = "prevent_all_damage_group_${floatingEffect.id.value}",
+                        name = "Damage Shield",
+                        description = "All damage from ${modification.filter.description} is prevented" +
+                            (modification.chosenColor?.let { " (chosen color: ${it.displayName})" } ?: ""),
+                        icon = "prevent-damage"
+                    )
+                )
                 else -> {}
             }
             if (playerId !in floatingEffect.effect.affectedEntities) continue

@@ -207,6 +207,28 @@ object DamageUtils {
     ): EffectResult {
         if (amount <= 0) return EffectResult.success(state)
 
+        // CR 120.4a / 614.15: a spell's excess-damage clause is applied before ordinary
+        // redirection, amplification or prevention. Freeze the raw split against the original
+        // recipient now; each portion then passes through the existing damage pipeline once.
+        // No SBA/trigger processing occurs between the portions of this resolving instruction.
+        if (excessToController && state.projectedState.isCreature(targetId)) {
+            val splitProjection = state.projectedState
+            val controller = splitProjection.getController(targetId)
+                ?: return EffectResult.error(state, "Excess damage recipient has no controller")
+            val marked = state.getEntity(targetId)?.get<DamageComponent>()?.amount ?: 0
+            val lethal = if (sourceId != null && sourceHasDeathtouch(state, splitProjection, sourceId)) 1
+                else ((splitProjection.getToughness(targetId) ?: 0) - marked).coerceAtLeast(0)
+            val excess = (amount - lethal).coerceAtLeast(0)
+            val creatureResult = dealDamageToTarget(state, targetId, amount - excess, sourceId,
+                cantBePrevented = cantBePrevented, isCombatDamage = isCombatDamage,
+                appliedRedirects = appliedRedirects, excessToController = false)
+            if (!creatureResult.isSuccess) return creatureResult
+            val controllerResult = dealDamageToTarget(creatureResult.state, controller, excess, sourceId,
+                cantBePrevented = cantBePrevented, isCombatDamage = isCombatDamage,
+                appliedRedirects = appliedRedirects, excessToController = false)
+            return controllerResult.copy(events = creatureResult.events + controllerResult.events)
+        }
+
         // Check for global "damage can't be prevented" effects (Sunspine Lynx, Leyline of Punishment)
         @Suppress("NAME_SHADOWING")
         val cantBePrevented = cantBePrevented || isDamagePreventionDisabled(state, targetId, sourceId)
@@ -491,14 +513,9 @@ object DamageUtils {
                 val lethalNeeded = if (hasDeathtouch) 1
                 else (toughness - currentDamage).coerceAtLeast(0)
                 creatureExcessDamage = (effectiveAmount - lethalNeeded).coerceAtLeast(0)
-                // "Excess damage is dealt to that creature's controller instead" (Gandalf's
-                // Sanction): the creature is marked only with the lethal portion; the excess is
-                // dealt to its controller below.
-                val markedOnCreature = if (excessToController) effectiveAmount - creatureExcessDamage
-                else effectiveAmount
                 newState = newState.updateEntity(targetId) { container ->
                     container.with(DamageComponent(
-                        amount = currentDamage + markedOnCreature,
+                        amount = currentDamage + effectiveAmount,
                         deathtouchDamageReceived = hasDeathtouch || (existingDamage?.deathtouchDamageReceived == true)
                     ))
                 }
@@ -612,19 +629,6 @@ object DamageUtils {
                     if (gainEvent != null) events.add(gainEvent)
                 }
             }
-        }
-
-        // "Excess damage is dealt to that creature's controller instead" (CR-style redirect for
-        // Gandalf's Sanction). Deal the computed excess to the creature's controller, attributed
-        // to the same source. excessToController is not propagated to this player-damage call.
-        if (excessToController && targetWasCreature && creatureExcessDamage > 0 && targetControllerId != null) {
-            val excessResult = dealDamageToTarget(
-                newState, targetControllerId, creatureExcessDamage, sourceId,
-                cantBePrevented = cantBePrevented, isCombatDamage = isCombatDamage,
-                appliedRedirects = appliedRedirects, excessToController = false
-            )
-            newState = excessResult.state
-            events.addAll(excessResult.events)
         }
 
         return EffectResult.success(newState, events)
@@ -1332,6 +1336,8 @@ object DamageUtils {
         // one-shot (Fear, Fire, Foes!) is active, no shield applies and the damage passes through in full.
         if (isDamagePreventionDisabled(state, targetId, sourceId)) return state to amount
 
+        if (sourceId != null && isAllDamageFromGroupPrevented(state, sourceId)) return state to 0
+
         var remainingDamage = amount
         val updatedEffects = state.floatingEffects.toMutableList()
         val toRemove = mutableListOf<Int>()
@@ -1477,6 +1483,19 @@ object DamageUtils {
                 sourceId in floatingEffect.effect.affectedEntities
         }
     }
+
+    /** Shared all-damage source-group gate; the damage caller owns prevention-disable checks. */
+    fun isAllDamageFromGroupPrevented(state: GameState, sourceId: EntityId): Boolean =
+        state.floatingEffects.any { floating ->
+            val modification = floating.effect.modification as? SerializableModification.PreventAllDamageFromGroup
+                ?: return@any false
+            // PredicateEvaluator prefers projected battlefield characteristics, then a spell's
+            // CardComponent outside the battlefield. Never union stale printed colors into a
+            // projected color change, and never require every damage source to be a creature.
+            predicateEvaluator.matches(state, state.projectedState, sourceId, modification.filter,
+                PredicateContext(controllerId = floating.controllerId, sourceId = floating.sourceId,
+                    chosenColor = modification.chosenColor))
+        }
 
     /**
      * Check for damage redirection shields (Glarecaster, Zealous Inquisitor, Blood of the Martyr).

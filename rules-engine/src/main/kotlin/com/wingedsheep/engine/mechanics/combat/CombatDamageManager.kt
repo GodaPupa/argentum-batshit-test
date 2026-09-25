@@ -60,6 +60,7 @@ internal class CombatDamageManager(
         PreventAllDamageFromSourceModifier(),
         PreventCombatDamageToAndByModifier(),
         PreventCombatDamageFromGroupModifier(),
+        PreventAllDamageFromGroupModifier(),
         PreventDamageFromAttackingCreaturesModifier(),
         ProtectionModifier(),
         PlayerProtectionModifier(),

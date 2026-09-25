@@ -589,6 +589,17 @@ sealed interface SerializableModification {
     ) : SerializableModification
 
     /**
+     * Prevent all damage from sources matching a filter. Unlike the legacy combat-only sibling,
+     * this includes spell and ability sources. Filter characteristics are read at damage time;
+     * the resolution-time chosen color is captured because the creating spell can leave the stack.
+     */
+    @Serializable
+    data class PreventAllDamageFromGroup(
+        val filter: GameObjectFilter,
+        val chosenColor: com.wingedsheep.sdk.core.Color? = null,
+    ) : SerializableModification
+
+    /**
      * Damage prevention: prevent **all** damage that would be dealt to every permanent matching
      * [filter] this turn ("prevent all damage that would be dealt to creatures you control this
      * turn", Summon: Alexander). The recipient-side counterpart of [PreventCombatDamageFromGroup]:
@@ -827,6 +838,7 @@ fun SerializableModification.toModification(): Modification = when (this) {
     is SerializableModification.ExileControllerGraveyardOnDeath -> Modification.NoOp
     // PreventCombatDamageFromGroup doesn't map to a layer modification - it's checked by CombatManager directly
     is SerializableModification.PreventCombatDamageFromGroup -> Modification.NoOp
+    is SerializableModification.PreventAllDamageFromGroup -> Modification.NoOp
     // PreventAllDamageToGroup doesn't map to a layer modification - it's checked during damage resolution directly
     is SerializableModification.PreventAllDamageToGroup -> Modification.NoOp
     // PreventCombatDamageToAndBy doesn't map to a layer modification - it's checked by CombatManager directly

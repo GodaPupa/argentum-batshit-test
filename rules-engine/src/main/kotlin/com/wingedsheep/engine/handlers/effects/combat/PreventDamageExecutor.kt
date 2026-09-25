@@ -267,13 +267,18 @@ class PreventDamageExecutor(
                 modification = SerializableModification.PreventAllDamageTo(combatOnly = true)
             }
 
-            // Prevent combat damage from a group (e.g., non-Soldier creatures)
+            // The qualified source-only AllDamage shape also includes noncreature spells.
+            // Keep legacy recipient-scoped forms on their existing path; they require a
+            // separate recipient qualification, not a silently globalized new shield.
             effect.sourceFilter is PreventionSourceFilter.FromGroup -> {
                 val fromGroup = effect.sourceFilter as PreventionSourceFilter.FromGroup
                 affectedEntities = emptySet()
-                modification = SerializableModification.PreventCombatDamageFromGroup(
-                    filter = fromGroup.filter.baseFilter
-                )
+                modification = if (effect.scope != PreventionScope.AllDamage || effect.direction != PreventionDirection.FromTarget) {
+                    SerializableModification.PreventCombatDamageFromGroup(filter = fromGroup.filter.baseFilter)
+                } else {
+                    SerializableModification.PreventAllDamageFromGroup(
+                        filter = fromGroup.filter.baseFilter, chosenColor = context.chosenColor)
+                }
             }
 
             // Prevent damage from attacking creatures

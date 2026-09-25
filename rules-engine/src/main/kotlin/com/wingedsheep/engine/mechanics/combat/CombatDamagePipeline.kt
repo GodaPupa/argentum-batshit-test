@@ -79,6 +79,15 @@ internal class PreventCombatDamageFromGroupModifier : CombatDamageModifier {
     }
 }
 
+/** All-damage source groups apply before shield counters; unpreventable assignments survive. */
+internal class PreventAllDamageFromGroupModifier : CombatDamageModifier {
+    override fun modify(state: GameState, projected: ProjectedState, assignments: List<CombatDamageAssignment>): List<CombatDamageAssignment> =
+        assignments.filter { assignment ->
+            DamageUtils.isDamagePreventionDisabled(state, assignment.targetId, assignment.sourceId) ||
+                !DamageUtils.isAllDamageFromGroupPrevented(state, assignment.sourceId)
+        }
+}
+
 /** Prevents damage from attacking creatures to protected players (Deep Wood). */
 internal class PreventDamageFromAttackingCreaturesModifier : CombatDamageModifier {
     override fun modify(state: GameState, projected: ProjectedState, assignments: List<CombatDamageAssignment>): List<CombatDamageAssignment> {
