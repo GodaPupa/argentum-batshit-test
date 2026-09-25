@@ -5,6 +5,8 @@ on:
     paths:
       - 'experiments/manual-transmission-phase2/**'
       - 'rules-engine/src/main/kotlin/com/wingedsheep/engine/core/GameInitializer.kt'
+      - 'rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/spell/CastSpellHandler.kt'
+      - 'mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/ManualTransmissionLandSpellGuardScenarioTest.kt'
       - 'rules-engine/src/test/kotlin/com/wingedsheep/engine/core/CommanderSetupTest.kt'
       - 'rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/CommanderPodCapabilityTest.kt'
       - 'rules-engine/src/test/kotlin/com/wingedsheep/engine/multiplayer/CommanderPodTest.kt'
@@ -100,16 +102,17 @@ jobs:
         run: python3 experiments/manual-transmission-phase2/bootstrap_audit.py --phase1 .phase1-source --out build/reports/manual-transmission-phase2/source
       - name: Exact frozen hardware card scenarios
         run: |
-          scripts/gradle-locked :mtg-sets:2003-2007:tests:test --tests "*UtopiaSprawlScenarioTest" --tests "*PongifyScenarioTest" \
+          scripts/gradle-locked :mtg-sets:2003-2007:tests:test --tests "*KurgadonTest" --tests "*UtopiaSprawlScenarioTest" --tests "*PongifyScenarioTest" \
             :mtg-sets:1993-1999:tests:test --tests "*WildGrowthScenarioTest" --tests "*CloudOfFaeriesScenarioTest" --tests "*PeregrineDrakeScenarioTest" \
-            :mtg-sets:2008-2016:tests:test --tests "*ArborElfScenarioTest" --tests "*AnimarSoulOfElementsScenarioTest" --tests "*AncestralStatueScenarioTest" --tests "*RapidHybridizationScenarioTest" --tests "*NestInvaderScenarioTest" --tests "*EmrakulsHatcherScenarioTest" --tests "*EyelessWatcherScenarioTest" \
+            :mtg-sets:2008-2016:tests:test --tests "*ManualTransmissionLandSpellGuardScenarioTest" --tests "*ArborElfScenarioTest" --tests "*AnimarSoulOfElementsScenarioTest" --tests "*AncestralStatueScenarioTest" --tests "*RapidHybridizationScenarioTest" --tests "*NestInvaderScenarioTest" --tests "*EmrakulsHatcherScenarioTest" --tests "*EyelessWatcherScenarioTest" \
             :mtg-sets:2017-2022:tests:test --tests "*ParadiseDruidScenarioTest" \
-            :mtg-sets:2024:tests:test --tests "*EldraziRepurposerScenarioTest" --info --stacktrace
+            :mtg-sets:2024:tests:test --tests "*EldraziRepurposerScenarioTest" \
+            :mtg-sets:2025:tests:test --tests "*TownLandSpellAdventureScenarioTest" --info --stacktrace
       - name: Preserve per-card scenario evidence
         if: always()
         run: |
           mkdir -p build/reports/manual-transmission-phase2/card-scenarios
-          for era in 1993-1999 2003-2007 2008-2016 2017-2022 2024; do
+          for era in 1993-1999 2003-2007 2008-2016 2017-2022 2024 2025; do
             if [ -d "mtg-sets/$era/tests/build/test-results/test" ]; then
               cp -R "mtg-sets/$era/tests/build/test-results/test" "build/reports/manual-transmission-phase2/card-scenarios/$era"
             fi

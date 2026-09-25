@@ -431,6 +431,13 @@ class CastSpellHandler(
             ?.let { cardDef?.cardFaces?.getOrNull(it)?.typeLine }
             ?: transformedFace?.typeLine
             ?: cardComponent.typeLine
+        // CR 305.1/305.9: a land is played as a special action, even when it has
+        // another card type. Check the chosen spell face so land-primary
+        // Adventures and modal DFC spell faces remain castable. Morph/disguise
+        // already returned above with face-down creature characteristics.
+        if (effectiveTypeLine.isLand) {
+            return "Land cards can only be played as lands"
+        }
         // Sneak (CR 702.190a) grants an instant-speed casting permission during the active
         // player's declare blockers step — bypassing the normal sorcery-speed timing.
         val castingForSneak = action.useAlternativeCost &&

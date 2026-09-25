@@ -5071,6 +5071,46 @@
     ]
 }
 
+// Wild Growth
+{
+    "name": "Wild Growth",
+    "manaCost": "{G}",
+    "typeLine": "Enchantment — Aura",
+    "oracleText": "Enchant land\nWhenever enchanted land is tapped for mana, its controller adds an additional {G}.",
+    "script": {
+        "staticAbilities": [
+            {
+                "type": "AdditionalManaOnTap",
+                "color": "GREEN",
+                "amount": {
+                    "type": "Fixed",
+                    "amount": 1
+                }
+            }
+        ],
+        "auraTarget": {
+            "type": "TargetObject",
+            "filter": {
+                "baseFilter": "land"
+            }
+        }
+    },
+    "metadata": {
+        "collectorNumber": "229",
+        "artist": "Mark Poole",
+        "imageUri": "https://cards.scryfall.io/normal/front/f/d/fd896dfa-66c0-4327-8e5b-489bbe350c95.jpg?1783948670",
+        "rulings": [
+            {
+                "date": "2004-10-04",
+                "text": "The additional mana is not an ability of the land and is not something the land can produce."
+            }
+        ]
+    },
+    "colorIdentityOverride": [
+        "GREEN"
+    ]
+}
+
 // Will-o'-the-Wisp
 {
     "name": "Will-o'-the-Wisp",
