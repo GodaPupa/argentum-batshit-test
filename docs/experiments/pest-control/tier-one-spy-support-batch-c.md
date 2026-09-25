@@ -72,3 +72,22 @@ and snapshot audit. Only then can the main-card queue move from the accepted pri
 zero. Exact opponent policy, interaction, deterministic replay, guarded authorization, fresh seeds
 and later postboard stages remain required by the existing five-axis protocol. A green registry
 report alone cannot advance official gameplay.
+
+## Qualification checkpoint
+
+Batch B was independently accepted and merged in PR #148 as
+`c6953354b1b799fe4506eb9e44ff25523a132d8e`, from exact source
+`7a3f1429c027925c30ed7c1e329c3879e674574a`. Dedicated run **36087086060**, artifact
+**10843959361**, ZIP SHA-256
+`1c670bb133fc26e5ddbbabde6a7cfc3d2b32cecde8e23a1b3b08dae23de50d9f`, retained 362 passing
+JUnit cases with no failures/skips, including 338 strict snapshot cases. All five required
+workflows passed. The accepted main queue is therefore exactly Nyxborn Hydra ×2 before C.
+
+Initial C run **36088119316** at `158d4ce4a02ca65815f784d58c1ea2528979adb7` correctly
+failed when compiling the new 2024 scenario's direct JSON import: that shard consumes the engine
+fixtures but does not expose kotlinx.serialization on its own test compile classpath. The test now
+uses the existing `SerializationTestSupport.roundTrip` bridge already provided for this purpose.
+Both full-state equality and all Bestow counter/attachment/type assertions remain required; no
+new dependency or production change is introduced. The rejected artifact **10844708612** has ZIP
+SHA-256 `fc844601410767b442ba5add048f329d34e176678d9fb0391a12cc9b3506ca31`.
+No C coverage or gameplay result is accepted from this failed compilation.

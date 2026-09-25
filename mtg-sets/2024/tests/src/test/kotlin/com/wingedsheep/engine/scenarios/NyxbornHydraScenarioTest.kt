@@ -4,8 +4,6 @@ import com.wingedsheep.engine.core.AlternativeCostType
 import com.wingedsheep.engine.core.CastSpell
 import com.wingedsheep.engine.core.ManaSpentEvent
 import com.wingedsheep.engine.core.SpellCastEvent
-import com.wingedsheep.engine.core.engineSerializersModule
-import com.wingedsheep.engine.state.GameState
 import com.wingedsheep.engine.state.components.player.ManaPoolComponent
 import com.wingedsheep.engine.state.components.player.RestrictedManaEntry
 import com.wingedsheep.sdk.core.Color
@@ -14,7 +12,6 @@ import com.wingedsheep.sdk.dsl.card
 import com.wingedsheep.sdk.scripting.GameObjectFilter
 import com.wingedsheep.sdk.scripting.PlayersCantCastSpells
 import com.wingedsheep.sdk.scripting.references.Player
-import kotlinx.serialization.json.Json
 import com.wingedsheep.engine.mechanics.layers.StateProjector
 import com.wingedsheep.engine.state.ZoneKey
 import com.wingedsheep.engine.state.components.battlefield.AttachedToComponent
@@ -24,6 +21,7 @@ import com.wingedsheep.engine.state.components.identity.CardComponent
 import com.wingedsheep.engine.state.components.identity.ProtectionComponent
 import com.wingedsheep.engine.state.components.stack.ChosenTarget
 import com.wingedsheep.engine.support.ScenarioTestBase
+import com.wingedsheep.engine.support.SerializationTestSupport
 import com.wingedsheep.sdk.core.CounterType
 import com.wingedsheep.sdk.core.Keyword
 import com.wingedsheep.sdk.core.Phase
@@ -358,14 +356,13 @@ class NyxbornHydraScenarioTest : ScenarioTestBase() {
                 .withActivePlayer(1).inPhase(Phase.PRECOMBAT_MAIN, Step.PRECOMBAT_MAIN).build()
             val host = game.findPermanent("Myr Retriever")!!
             castBestow(game, 2, host).error shouldBe null
-            val json = Json { serializersModule = engineSerializersModule; allowStructuredMapKeys = true }
             val stackState = game.state
-            game.state = json.decodeFromString(GameState.serializer(), json.encodeToString(GameState.serializer(), stackState))
+            game.state = SerializationTestSupport.roundTrip(stackState)
             game.state shouldBe stackState
             game.resolveStack()
             val hydra = game.findPermanent("Nyxborn Hydra")!!
             val permanentState = game.state
-            game.state = json.decodeFromString(GameState.serializer(), json.encodeToString(GameState.serializer(), permanentState))
+            game.state = SerializationTestSupport.roundTrip(permanentState)
             game.state shouldBe permanentState
             plusOneCounters(game, hydra) shouldBe 2
             game.state.getEntity(hydra)?.get<AttachedToComponent>()?.targetId shouldBe host
