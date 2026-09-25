@@ -63,14 +63,34 @@ class SubmitDecisionHandler(
             // The answered suspension is consumed by resume. Only the frames beneath it can be
             // untouched outer work; a restored question must remain above deferred triggers too.
             val preResumeStack = clearedState.continuationStack.dropLast(1)
-            val result = continuationHandler.resume(clearedState, action.response)
+            var result = continuationHandler.resume(clearedState, action.response)
+            // A modal/additional-cost cast during resolution may finish its own prompt while
+            // leaving the outer spell's effect tail and finalizer pending. Drain that automatic
+            // work before SBAs/priority. Keep each event batch's trigger provenance separate:
+            // casting already scanned its events, but a newly drained tail has not necessarily.
+            var eventsNeedingTriggers = if (result.triggersAlreadyProcessed) emptyList() else result.events
+            while (result.isSuccess && result.state.stackResolutionPendingPriority &&
+                result.state.continuationStack.isNotEmpty() && !result.state.gameOver
+            ) {
+                val preceding = result
+                val tail = continuationHandler.drainAutomaticWork(preceding.state)
+                if (tail.isSuccess && tail.state.continuationStack == preceding.state.continuationStack) {
+                    return ExecutionResult.error(state, "Unfinished stack resolution has no resumable continuation")
+                }
+                eventsNeedingTriggers = eventsNeedingTriggers +
+                    if (tail.triggersAlreadyProcessed) emptyList() else tail.events
+                result = tail.copy(events = preceding.events + tail.events)
+            }
 
             // Handle cleanup step completion
             if (result.isSuccess && !result.isPaused &&
                 result.state.step == Step.CLEANUP &&
+                !result.state.stackResolutionPendingPriority &&
                 result.state.pendingDecision == null
             ) {
-                val cleanupAdvanceResult = turnManager.advanceStep(result.state)
+                val cleanupAdvanceResult = turnManager.advanceStep(
+                    result.state.copy(stackResolutionPendingPriority = false)
+                )
                 return advanceWithTriggerDetection(
                     cleanupAdvanceResult,
                     listOf(submittedEvent) + result.events
@@ -86,9 +106,12 @@ class SubmitDecisionHandler(
             // If you refactor either flow, make sure both still trigger this advance.
             if (result.isSuccess && !result.isPaused &&
                 result.state.step == Step.UNTAP &&
+                !result.state.stackResolutionPendingPriority &&
                 result.state.pendingDecision == null
             ) {
-                val untapAdvanceResult = turnManager.advanceStep(result.state)
+                val untapAdvanceResult = turnManager.advanceStep(
+                    result.state.copy(stackResolutionPendingPriority = false)
+                )
                 return advanceWithTriggerDetection(
                     untapAdvanceResult,
                     listOf(submittedEvent) + result.events,
@@ -112,11 +135,7 @@ class SubmitDecisionHandler(
                 // PassPriorityHandler.resolveTopOfStack, which handles the non-decision path.
                 // Skipped when the resumed chain already ran detection on its own emitted events
                 // (see the post-SBA note below).
-                val preSbaTriggers = if (result.triggersAlreadyProcessed) {
-                    emptyList()
-                } else {
-                    triggerDetector.detectTriggers(result.state, result.events)
-                }
+                val preSbaTriggers = triggerDetector.detectTriggers(result.state, eventsNeedingTriggers)
 
                 val preSbaStackSize = result.state.continuationStack.size
                 val sbaResult = sbaChecker.checkAndApply(result.state, preSbaTriggers.mapNotNull { it.objectReferences.origin }.toSet())
@@ -145,7 +164,9 @@ class SubmitDecisionHandler(
                 var combinedEvents = listOf(submittedEvent) + result.events + sbaResult.events
 
                 if (sbaResult.newState.gameOver) {
-                    return ExecutionResult.success(sbaResult.newState, combinedEvents)
+                    return ExecutionResult.success(
+                        sbaResult.newState.withPriorityAfterStackResolution(), combinedEvents
+                    )
                 }
 
                 // Detect the remaining triggers on the post-SBA state: the submitted decision and
@@ -172,16 +193,10 @@ class SubmitDecisionHandler(
                     }
 
                     combinedEvents = combinedEvents + triggerResult.events
-                    return ExecutionResult.success(
-                        triggerResult.newState.withPriority(action.playerId),
-                        combinedEvents
-                    )
+                    return restorePriority(triggerResult.newState, action.playerId, combinedEvents)
                 }
 
-                return ExecutionResult.success(
-                    sbaResult.newState.withPriority(action.playerId),
-                    combinedEvents
-                )
+                return restorePriority(sbaResult.newState, action.playerId, combinedEvents)
             }
 
             // The chain paused (or errored). When paused, events emitted during the
@@ -194,8 +209,8 @@ class SubmitDecisionHandler(
             // finishes (CR 603.3 — triggers wait for the next time a player would receive
             // priority), not between two of its own steps. Mirrors
             // PassPriorityHandler.resolveTopOfStack's mid-resolution handling.
-            if (result.isPaused && !result.triggersAlreadyProcessed) {
-                val deferredTriggers = triggerDetector.detectTriggers(result.state, result.events)
+            if (result.isPaused && eventsNeedingTriggers.isNotEmpty()) {
+                val deferredTriggers = triggerDetector.detectTriggers(result.state, eventsNeedingTriggers)
                 if (deferredTriggers.isNotEmpty()) {
                     val pending = PendingTriggersContinuation(
                         remainingTriggers = deferredTriggers
@@ -248,6 +263,22 @@ class SubmitDecisionHandler(
 
         // No continuation - just return with cleared state
         return ExecutionResult.success(clearedState, listOf(submittedEvent))
+    }
+
+    private fun restorePriority(
+        state: GameState,
+        decisionPlayer: com.wingedsheep.sdk.model.EntityId,
+        events: List<GameEvent>,
+    ): ExecutionResult {
+        // Choosing during resolution does not grant the answerer priority. A cast/activation
+        // choice has no pending resolution boundary and keeps the existing actor-retains path.
+        if (!state.stackResolutionPendingPriority) {
+            return ExecutionResult.success(state.withPriority(decisionPlayer), events)
+        }
+        val ready = state.withPriorityAfterStackResolution()
+        return ExecutionResult.success(
+            ready, events + listOfNotNull(ready.priorityPlayerId?.let(::PriorityChangedEvent))
+        )
     }
 
     /**

@@ -90,6 +90,14 @@ class ContinuationHandler(
     }
 
     /**
+     * Resume only automatic work left by a completed cast-time prompt inside stack resolution.
+     * The caller retains earlier events separately so their processed-trigger flag cannot hide
+     * triggers caused by this tail, or cause already processed cast events to be scanned twice.
+     */
+    fun drainAutomaticWork(state: GameState): ExecutionResult =
+        checkForMoreContinuations(state, emptyList())
+
+    /**
      * Drain the automatic work a resumer uncovered, then report where execution ended up.
      *
      * `pendingDecision` is derived from the stack, so a resumer that installed a suspension and

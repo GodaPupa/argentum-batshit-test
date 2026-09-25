@@ -160,7 +160,7 @@ object PlayerLeavesGameProcessor {
         val pending = state.pendingDecision ?: return state
         if (pending.playerId != leaver) return state
         return state
-            .copy(continuationStack = emptyList())
+            .copy(continuationStack = emptyList(), stackResolutionPendingPriority = false)
             .withPriority(state.activePlayerId)
     }
 

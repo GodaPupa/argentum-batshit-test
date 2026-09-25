@@ -1041,8 +1041,18 @@ When a player passes priority, the engine adds them to `priorityPassedBy` and ch
    active player.
 
 If not all players have passed, priority moves to the next player in turn order. This naturally
-implements Rule 117.3b — the game only advances when all players pass in succession without anyone
+implements Rule 117.4 — the game only advances when all players pass in succession without anyone
 taking an action.
+
+**Priority after a paused resolution.** `stackResolutionPendingPriority` records a stack-resolution
+boundary from the moment resolution starts through any effect, state-based-action or trigger-target
+decisions. Answering such a decision does not make its answerer the next priority holder: once the
+chain completes, priority returns to the active player under Rule 117.3b, after the Rule 117.5 checks.
+The marker survives serialization while true and clears on completion, end of turn, game end, or
+abandonment of a departed player's decision. A false marker is omitted even by writers that encode
+defaults, preserving ordinary snapshot bytes. Cast/activation decisions outside resolution keep
+the actor's existing Rule 117.3c priority behavior. The existing `PriorityChangedEvent` publishes the
+completed resolution's next priority recipient; no new client interaction is introduced.
 
 **Step-specific auto-actions.** The `TurnManager.advanceStep()` method handles each step's built-in
 behavior:
@@ -1066,7 +1076,7 @@ using the continuation system.
 - **Multiplayer-ready.** The `priorityPassedBy` set scales naturally to 3+ player games. The game
   advances only when all players in `turnOrder` have passed, not just two.
 - **Reset semantics.** Any player action (casting a spell, activating an ability) clears the set via
-  `withPriority()`, forcing all players to pass again — exactly matching Rule 117.3b.
+  `withPriority()`, forcing all players to pass again — exactly matching Rule 117.4.
 - **No hidden state.** Priority is fully captured in the immutable `GameState`. The server can
   serialize a paused game mid-priority-round and resume it later without losing track of who has
   passed.
