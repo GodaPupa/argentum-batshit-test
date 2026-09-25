@@ -35,6 +35,12 @@ on:
       - 'mtg-sets/**/scenarios/EyelessWatcherScenarioTest.kt'
       - 'mtg-sets/**/cards/EldraziRepurposer.kt'
       - 'mtg-sets/**/scenarios/EldraziRepurposerScenarioTest.kt'
+      - 'mtg-sets/**/cards/ArborElf.kt'
+      - 'mtg-sets/**/scenarios/ArborElfScenarioTest.kt'
+      - 'mtg-sets/**/cards/WildGrowth.kt'
+      - 'mtg-sets/**/scenarios/WildGrowthScenarioTest.kt'
+      - 'mtg-sets/**/cards/UtopiaSprawl.kt'
+      - 'mtg-sets/**/scenarios/UtopiaSprawlScenarioTest.kt'
       - 'mtg-sets/src/test/resources/snapshots/cards/**'
       - '.github/workflows/manual-transmission-phase2-capability.yml'
 
@@ -94,9 +100,9 @@ jobs:
         run: python3 experiments/manual-transmission-phase2/bootstrap_audit.py --phase1 .phase1-source --out build/reports/manual-transmission-phase2/source
       - name: Exact frozen hardware card scenarios
         run: |
-          scripts/gradle-locked :mtg-sets:2003-2007:tests:test --tests "*PongifyScenarioTest" \
-            :mtg-sets:1993-1999:tests:test --tests "*CloudOfFaeriesScenarioTest" --tests "*PeregrineDrakeScenarioTest" \
-            :mtg-sets:2008-2016:tests:test --tests "*AnimarSoulOfElementsScenarioTest" --tests "*AncestralStatueScenarioTest" --tests "*RapidHybridizationScenarioTest" --tests "*NestInvaderScenarioTest" --tests "*EmrakulsHatcherScenarioTest" --tests "*EyelessWatcherScenarioTest" \
+          scripts/gradle-locked :mtg-sets:2003-2007:tests:test --tests "*UtopiaSprawlScenarioTest" --tests "*PongifyScenarioTest" \
+            :mtg-sets:1993-1999:tests:test --tests "*WildGrowthScenarioTest" --tests "*CloudOfFaeriesScenarioTest" --tests "*PeregrineDrakeScenarioTest" \
+            :mtg-sets:2008-2016:tests:test --tests "*ArborElfScenarioTest" --tests "*AnimarSoulOfElementsScenarioTest" --tests "*AncestralStatueScenarioTest" --tests "*RapidHybridizationScenarioTest" --tests "*NestInvaderScenarioTest" --tests "*EmrakulsHatcherScenarioTest" --tests "*EyelessWatcherScenarioTest" \
             :mtg-sets:2017-2022:tests:test --tests "*ParadiseDruidScenarioTest" \
             :mtg-sets:2024:tests:test --tests "*EldraziRepurposerScenarioTest" --info --stacktrace
       - name: Preserve per-card scenario evidence
@@ -108,20 +114,13 @@ jobs:
               cp -R "mtg-sets/$era/tests/build/test-results/test" "build/reports/manual-transmission-phase2/card-scenarios/$era"
             fi
           done
-      - name: Phase 2 paired-commander and deterministic pod capability fixtures
-        run: scripts/test-class CommanderPodCapabilityTest --info --stacktrace
-      - name: Preserve paired-commander evidence before the next test invocation
+      - name: Generic commander and multiplayer capability fixtures
+        # One invocation preserves every requested class without later invocations overwriting XML.
         run: |
-          mkdir -p build/reports/manual-transmission-phase2/generic-tests
-          cp -R rules-engine/build/test-results/test build/reports/manual-transmission-phase2/generic-tests/paired-commanders
-      - name: Generic Commander setup and tax qualification
-        run: |
-          ./gradlew :rules-engine:test --tests "*CommanderSetupTest" --tests "*CommanderTaxTest" --info --stacktrace
-      - name: Preserve setup and tax evidence before the next test invocation
-        run: cp -R rules-engine/build/test-results/test build/reports/manual-transmission-phase2/generic-tests/setup-and-tax
-      - name: Generic four-player priority, APNAP-adjacent, mulligan and elimination qualification
-        run: |
-          ./gradlew :rules-engine:test \
+          scripts/gradle-locked :rules-engine:test \
+            --tests "*CommanderPodCapabilityTest" \
+            --tests "*CommanderSetupTest" \
+            --tests "*CommanderTaxTest" \
             --tests "*MultiplayerSmokeTest" \
             --tests "*MultiplayerMulliganTest" \
             --tests "*CommanderPodTest" \

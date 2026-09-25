@@ -56,23 +56,29 @@ rules release before the eventual official seed freeze.
 
 ## Current accepted evidence and remaining queue
 
-`accepted-capability-inventory-r3.json` records the independently audited seed-free
-card and multiplayer evidence from run `36083194606`, including the preserved raw
-artifact digests. It includes the accepted seven-card snapshots and complete required checks, and
-supersedes the remaining-card counts in inventory r1 without
-rewriting that historical record. The registry resolves 446 of 800 physical entries
-across the eight exact 100-card lists; 354 entries representing 223 unique identities
-remain unresolved. The Manual control itself has 32 unresolved identities. Registry
-presence remains separate from exact-deck semantic and pilot qualification.
+`accepted-capability-inventory-r4.json` records the independently audited seed-free
+card and multiplayer evidence from run `36085848485`, including raw artifact digests
+and all required checks. It preserves the earlier inventory receipts. The registry
+resolves 450 of 800 physical entries across the eight exact 100-card lists; 350 entries
+representing 219 unique identities remain unresolved. The Manual control itself has
+28 unresolved identities. Registry presence remains separate from exact-deck semantic
+and pilot qualification.
 
-Five formerly missing control identities now have definitions and passing card
-scenarios: Animar, Soul of Elements; Ancestral Statue; Paradise Druid; Pongify; and
-Rapid Hybridization. Cloud of Faeries and Peregrine Drake now choose lands at
-resolution without targeting, including lands controlled by other players. Their
-scenarios verify selection limits, zero choices, shroud, source removal, and Cloud
-cycling. All 33 card scenarios pass. The eight earlier token-ownership fixture
-failures are retained in `card-support-batch-r1-audit.json`; their corrected tests
-read the engine's actual token owner field and retain the expected assertions.
+Nine formerly missing control identities now have definitions and passing card
+scenarios: Animar, Soul of Elements; Ancestral Statue; Paradise Druid; Pongify;
+Rapid Hybridization; Nest Invader; Emrakul's Hatcher; Eyeless Watcher; and Eldrazi
+Repurposer. Cloud of Faeries and Peregrine Drake now choose lands at resolution
+without targeting, including lands controlled by other players. All 56 card scenarios
+pass, together with all 338 card snapshot and roundtrip cases. The retained batch
+r1/r2 audits distinguish fixture repairs and strictly reviewed snapshot additions from
+rules or performance outcomes; no unrelated card tree was reblessed.
+
+The next bounded support batch is recorded in `card-support-batch-r3.json`: Arbor
+Elf, Wild Growth and Utopia Sprawl, with 24 deterministic regression scenarios.
+These three additions remain pending compiled validation and strict snapshot review;
+they have not reduced the accepted remaining counts above. Existing generic test
+selectors are combined into one scoped invocation, retaining every requested class
+and its XML evidence.
 
 The same audited artifact preserves 56 passing generic commander/multiplayer tests
 and one passing registry audit. These are deterministic capability fixtures, not
