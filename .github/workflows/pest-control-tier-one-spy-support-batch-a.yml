@@ -1,0 +1,52 @@
+name: Pest Control Tier-1 Spy Support Batch A
+
+on:
+  pull_request:
+    paths:
+      - .github/workflows/pest-control-tier-one-spy-support-batch-a.yml
+      - docs/experiments/pest-control/tier-one-spy-support-batch-a*
+      - gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOneSpyComboSupportBatchATest.kt
+      - '**/GatecreeperVine.kt'
+      - '**/GatecreeperVineScenarioTest.kt'
+      - '**/OvergrownBattlement.kt'
+      - '**/OvergrownBattlementScenarioTest.kt'
+      - '**/LotlethGiant.kt'
+      - '**/LotlethGiantScenarioTest.kt'
+      - '**/LeadTheStampede.kt'
+      - '**/LeadTheStampedeScenarioTest.kt'
+      - '**/BalustradeSpy.kt'
+      - '**/BalustradeSpyScenarioTest.kt'
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Independently qualify reused card behavior
+        run: |
+          scripts/test-class GatecreeperVineScenarioTest --info --stacktrace
+          scripts/test-class OvergrownBattlementScenarioTest --info --stacktrace
+          scripts/test-class LotlethGiantScenarioTest --info --stacktrace
+          scripts/test-class LeadTheStampedeScenarioTest --info --stacktrace
+          scripts/test-class BalustradeSpyScenarioTest --info --stacktrace
+      - name: Verify frozen identity and remaining support queue
+        run: scripts/test-class PestControlTierOneSpyComboSupportBatchATest --info --stacktrace
+      - name: Emit the exact updated registry inventory
+        env:
+          PEST_SPY_ADMISSION_REPORT: ${{ github.workspace }}/build/reports/pest-spy-support-batch-a/report.txt
+        run: scripts/test-class PestControlTierOneSpyComboAdmissionTest --info --stacktrace
+      - uses: actions/upload-artifact@v7
+        with:
+          name: pest-control-tier-one-spy-support-batch-a
+          path: build/reports/pest-spy-support-batch-a/report.txt
+          if-no-files-found: error
+          retention-days: 90
