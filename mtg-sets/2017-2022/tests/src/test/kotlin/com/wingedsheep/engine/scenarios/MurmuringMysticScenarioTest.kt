@@ -42,16 +42,16 @@ class MurmuringMysticScenarioTest : ScenarioTestBase() {
             game.state.stack.size shouldBe 1
             game.resolveStack().forEach { it.error shouldBe null }
             game.findAllPermanents("Bird Illusion Token").size shouldBe 0
-            game.passPriority().error shouldBe null
-            game.castSpellTargetingPlayer(2, "Lightning Bolt", 1).error shouldBe null
-            game.state.stack.size shouldBe 1
-            game.resolveStack().forEach { it.error shouldBe null }
-            game.findAllPermanents("Bird Illusion Token").size shouldBe 0
             game.castSpell(1, "Divination").error shouldBe null
             game.state.stack.size shouldBe 2
             game.resolveStack().forEach { it.error shouldBe null }
             game.findAllPermanents("Bird Illusion Token").size shouldBe 1
             game.librarySize(1) shouldBe 0
+            game.passPriority().error shouldBe null
+            game.castSpellTargetingPlayer(2, "Lightning Bolt", 1).error shouldBe null
+            game.state.stack.size shouldBe 1
+            game.resolveStack().forEach { it.error shouldBe null }
+            game.findAllPermanents("Bird Illusion Token").size shouldBe 1
         }
 
         test("the trigger survives countering its spell") {

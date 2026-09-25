@@ -65,6 +65,33 @@ class PestControlTierOneMonoBlueTerrorReadinessTest : FunSpec({
             )
     }
 
+    test("current support advances explicitly while the historical inventory remains exact") {
+        PestControlTierOneMonoBlueTerrorReadiness.expectedUnsupportedSideboard shouldBe linkedMapOf(
+            "Gut Shot" to 3,
+            "Hydroblast" to 4,
+            "Murmuring Mystic" to 1,
+            "Spreading Seas" to 3,
+        )
+        PestControlTierOneMonoBlueTerrorReadiness.currentUnsupportedSideboard shouldBe linkedMapOf(
+            "Gut Shot" to 3,
+            "Hydroblast" to 4,
+            "Spreading Seas" to 3,
+        )
+        TierOneMonoBlueTerrorReadiness().sideboardStatus shouldBe
+            "FROZEN_15; NOT_INSTANTIATED; BLOCKED_4_IDENTITIES_11_SLOTS"
+    }
+
+    for (missingCard in listOf("Annul", "Murmuring Mystic")) {
+        test("current support rejects a missing required sideboard identity: $missingCard") {
+            val incompleteRegistry = CardRegistry().apply {
+                registry.allCardNames().filter { it != missingCard }.forEach { register(registry.requireCard(it)) }
+            }
+            PestControlTierOneMonoBlueTerrorReadiness.validationErrors(
+                TierOneMonoBlueTerrorReadiness(), incompleteRegistry,
+            ).shouldContainExactly("Mono-Blue Terror sideboard support audit drift")
+        }
+    }
+
     test("readiness is fail-closed and cannot activate execution") {
         val errors = PestControlTierOneMonoBlueTerrorReadiness.executionActivationErrors(
             TierOneMonoBlueTerrorReadiness(),

@@ -75,8 +75,43 @@ Spy retains Jack-o'-Lantern/Nyxborn Hydra/Flaring Pain/Mesmeric Fiend/Faerie Mac
 Concurrent accepted support batches must be reconciled before integration; their closures are
 attributed to those batches, not to these four definitions.
 
-The current Mono-Blue test drops Mystic from its remaining support assertion. Its frozen deck,
-historical readiness data, accepted results, and execution safeguards are unchanged.
+The current Mono-Blue test drops Mystic from its remaining support assertion. A separate current
+inventory in the readiness validator makes the same explicit change. The historical unsupported
+map, frozen sideboard status, deck hashes, accepted results, and execution safeguards are
+unchanged. Negative regressions reject losing either historically supported Annul or newly
+supported Mystic; all three disabled-execution errors remain mandatory.
+
+## Initial validation rejection and bounded repair
+
+The initial candidate `28b7cb4dd5b39bbd88409878a0f5ec8ea08c3579` was rejected by
+[dedicated run 36086800652](https://github.com/GodaPupa/argentum-batshit-test/actions/runs/36086800652)
+and [general CI 36086800247](https://github.com/GodaPupa/argentum-batshit-test/actions/runs/36086800247).
+Its retained artifact `10844627205` has downloaded ZIP SHA-256
+`ba8388b78271aa9132478a3fd0835dfe4710c85866d2f4b54f540faf2113d141`.
+The archive binds the exact candidate and source-manifest SHA-256
+`da8336bcc3e5fc7970038aef18ff780ef31b5e3f5acd81bcb1536acf62c990e6`.
+All nine stage reports are present. The 338 strict snapshot/round-trip tests, three lint tests,
+sixteen of seventeen card scenarios, and both inventory tests passed. Two Mono-Blue readiness
+assertions and one Mystic scenario failed; the complete batch was not accepted.
+
+The readiness failures came from comparing the current registry to the historical four-identity
+sideboard gap map even after Mystic was implemented. The bounded repair introduces the explicit
+three-identity current map described above, with missing-card regressions, while preserving the
+historical record and all identity and execution guards.
+
+The Mystic scenario failed with `You don't have priority` when the active player attempted
+Divination after an opposing Lightning Bolt resolved. Source inspection found an inherited
+rules defect in `PassPriorityHandler.resolveTopOfStack`: priority returns to the resolved stack
+item's controller. Current Comprehensive Rules 117.3b instead gives priority to the active player
+after resolution; 117.3c concerns retaining priority after casting or activating. This batch does
+not modify that shared engine path or any frozen gameplay source. Its combined card scenario
+now casts the active player's sorcery before the opposing instant, retaining the same positive
+and negative Mystic trigger assertions without asserting the incorrect priority rule. The
+priority defect is a separate canonical repair and gameplay-readiness consideration, not a card
+behavior repair or permission to use changed engine code in an active frozen block.
+
+No definition or snapshot was changed by this repair. A fresh validation and artifact audit are
+required; the initial rejected archive is neither replaced nor relabeled.
 
 ## No gameplay transition
 
