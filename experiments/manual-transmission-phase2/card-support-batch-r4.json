@@ -29,7 +29,7 @@
       },
       "scenario": "mtg-sets/2003-2007/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/CoilingOracleScenarioTest.kt",
       "scenario_cases": 8,
-      "scenario_sha256": "7aa7e93f9efd540499e5da0f0d8b6beba4957344a721728d7dbc6c25cbb62083",
+      "scenario_sha256": "f20c92f158b4278323cc9a28d1323b6ce78c279321bae9c6215b4aa9cfba19c1",
       "scryfall_id": "55a6ba2a-b372-4b15-9a1e-09b41316eab7",
       "source_response_sha256": "9d85b6ad51dd71c432badb1dc14a1b623ae19b8480f79fa86a70f9db229a1758",
       "source_url": "https://scryfall.com/card/dis/107/coiling-oracle?utm_source=api",
@@ -62,6 +62,11 @@
       "type_line": "Creature \u2014 Eldrazi Snake"
     }
   ],
+  "fixture_repair": {
+    "failure_run": 36089000307,
+    "previous_scenario_sha256": "7aa7e93f9efd540499e5da0f0d8b6beba4957344a721728d7dbc6c25cbb62083",
+    "scope": "Blink return auto-reveal and actual library reveal are separately bound to exact card IDs, sources and zones; require exactly one of each and no draw. No card definition or engine change."
+  },
   "fixture_seed_policy": "9250925014L and 9250925015L are deterministic regression fixture identifiers, excluded from official seed registries, samples and allocations. No official vector is generated.",
   "frozen_hardware_sha256": "2a9f47d2edcfbdb54a9ea15eadc719f85b36f74da9eb682233b85bd56f034da1",
   "gameplay_authorized": false,

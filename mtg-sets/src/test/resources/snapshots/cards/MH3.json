@@ -606,6 +606,81 @@
     ]
 }
 
+// Hope-Ender Coatl
+{
+    "name": "Hope-Ender Coatl",
+    "manaCost": "{2}{U}",
+    "typeLine": "Creature — Eldrazi Snake",
+    "oracleText": "Devoid (This card has no color.)\nFlash\nWhen you cast this spell, counter target spell an opponent controls unless they pay {1}.\nFlying",
+    "creatureStats": {
+        "power": 2,
+        "toughness": 2
+    },
+    "keywords": [
+        "DEVOID",
+        "FLASH",
+        "FLYING"
+    ],
+    "script": {
+        "triggeredAbilities": [
+            {
+                "id": "ability_1",
+                "trigger": "CastThisSpellEvent",
+                "effect": {
+                    "type": "Counter",
+                    "condition": {
+                        "type": "CounterCondition.UnlessPaysMana",
+                        "cost": "{1}"
+                    }
+                },
+                "targetRequirement": {
+                    "type": "TargetObject",
+                    "filter": {
+                        "baseFilter": "ctrl:opponent",
+                        "zone": "Stack"
+                    },
+                    "id": "opponent spell"
+                }
+            }
+        ]
+    },
+    "metadata": {
+        "collectorNumber": "64",
+        "rarity": "UNCOMMON",
+        "artist": "Filip Burburan",
+        "imageUri": "https://cards.scryfall.io/normal/front/2/6/26973cad-26d7-4d42-a58a-85c3dce3b9fd.jpg?1783911290",
+        "rulings": [
+            {
+                "date": "2024-06-07",
+                "text": "Hope-Ender Coatl's triggered ability will resolve before Hope-Ender Coatl does. If Hope-Ender Coatl is countered or otherwise leaves the stack in response to that triggered ability, the triggered ability will still resolve as normal."
+            },
+            {
+                "date": "2024-06-07",
+                "text": "A card with devoid is just colorless. It's not colorless and the colors of mana in its mana cost."
+            },
+            {
+                "date": "2024-06-07",
+                "text": "Other cards and abilities can give a card with devoid a color. If that happens, it's just the new color, not that color and colorless."
+            },
+            {
+                "date": "2024-06-07",
+                "text": "Devoid works in all zones, not just on the battlefield."
+            },
+            {
+                "date": "2024-06-07",
+                "text": "If a card loses devoid, it will still be colorless. This is because effects that change an object's color (like the one created by devoid) are considered before the object loses devoid."
+            },
+            {
+                "date": "2024-06-07",
+                "text": "Devoid doesn't affect the color identity of the card for the purposes of the Commander variant. For example, while Abstruse Appropriation is colorless because it has devoid, its color identity is still white and black, and it can't be included in a Commander deck where the commander's color identity doesn't include both white and black."
+            }
+        ]
+    },
+    "colorIdentityOverride": [
+        "BLUE"
+    ]
+}
+
 // Malevolent Rumble
 {
     "name": "Malevolent Rumble",

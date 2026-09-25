@@ -79,11 +79,22 @@ qualified for the exact control identities Forest and Command Tower, with preser
 face-down and spell-Adventure alternatives. These seven additional cases pass. This
 shared implementation evidence imports no Industrial Waste matchup result.
 
-The next bounded support batch is recorded in `card-support-batch-r4.json`: Coiling
-Oracle and Hope-Ender Coatl, with 17 deterministic regression scenarios. These two
-additions remain pending compiled validation and strict snapshot review; they have
-not reduced the accepted remaining counts above. Existing generic test selectors
-remain in one scoped invocation, retaining every requested class and its XML evidence.
+Two compatible support batches are pending complete qualification: Coiling Oracle
+and Hope-Ender Coatl (`card-support-batch-r4.json`, 17 cases), followed by Rejuvenating
+Springs, Training Center and Spire Garden (`card-support-batch-r5.json`, 30 cases).
+Their failures and review are retained in `card-support-batch-r4-audit.json`: the
+first run executed 421 cases and stopped after one blink-event fixture mismatch;
+the two other failures were the exact predeclared DIS/MH3 golden additions. The
+repair distinguishes the return overlay from Oracle's top-library reveal by exact
+card IDs, source and zones. No card or rules behavior is changed by that repair.
+
+The three lands exercise real entry and mana actions at two, three and four seats,
+live opponent counts after concessions, teammate exclusion and deterministic replay
+through the existing serialization bridge. A minimal incomplete Battlebond scaffold
+preserves Spire Garden's earliest commercial printing. New CMR/BBD goldens still
+require compiled review. None of these five pending identities has reduced the
+accepted counts above. Every earlier fixture selector and its XML evidence remains
+in the qualification workflow.
 
 The same audited artifact preserves 56 passing generic commander/multiplayer tests
 and one passing registry audit: 482 passing JUnit cases in total, without failures,

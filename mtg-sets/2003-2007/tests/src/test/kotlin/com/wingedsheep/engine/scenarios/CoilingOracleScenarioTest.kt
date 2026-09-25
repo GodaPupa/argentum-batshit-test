@@ -7,6 +7,7 @@ import com.wingedsheep.engine.core.GameEvent
 import com.wingedsheep.engine.core.PlayLand
 import com.wingedsheep.engine.state.components.battlefield.TappedComponent
 import com.wingedsheep.engine.support.ScenarioTestBase
+import com.wingedsheep.sdk.core.Zone
 import io.kotest.matchers.shouldBe
 
 /** Exact-card regression fixtures, excluded from the official Phase 2 seed registry and sample. */
@@ -102,11 +103,24 @@ class CoilingOracleScenarioTest : ScenarioTestBase() {
                 .withCardInLibrary(1, "Grizzly Bears")
                 .withCardInHand(1, "Momentary Blink")
                 .withLandsOnBattlefield(1, "Plains", 2).build()
-            game.castSpell(1, "Momentary Blink", game.findPermanent("Coiling Oracle")!!).error shouldBe null
+            val oracle = game.findPermanent("Coiling Oracle")!!
+            val bears = game.findCardsInLibrary(1, "Grizzly Bears").single()
+            game.castSpell(1, "Momentary Blink", oracle).error shouldBe null
             val events = game.resolveEvents()
             game.isOnBattlefield("Coiling Oracle") shouldBe true
             game.isInHand(1, "Grizzly Bears") shouldBe true
-            events.filterIsInstance<CardsRevealedEvent>().size shouldBe 1
+            // Returning the already-public Oracle from exile emits a separate presentation
+            // reveal. Its library reveal must still happen exactly once for the top card.
+            val reveals = events.filterIsInstance<CardsRevealedEvent>()
+            reveals.size shouldBe 2
+            val libraryReveal = reveals.single { it.cardIds == listOf(bears) }
+            libraryReveal.source shouldBe "Coiling Oracle"
+            libraryReveal.revealingPlayerId shouldBe game.player1Id
+            val returnedOracle = reveals.single { it.cardIds == listOf(oracle) }
+            returnedOracle.source shouldBe "Momentary Blink"
+            returnedOracle.fromZone shouldBe Zone.EXILE
+            returnedOracle.toZone shouldBe Zone.BATTLEFIELD
+            events.filterIsInstance<CardsDrawnEvent>().isEmpty() shouldBe true
         }
 
         test("an empty library causes no failed draw and no game loss") {
