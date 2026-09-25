@@ -323,7 +323,20 @@ class StackResolver(
 
         // Add spell components
         newState = newState.updateEntity(cardId) { c ->
-            var updated = c.with(SpellOnStackComponent(
+            var updated = c
+            // Bestow (CR 702.103b): while cast for its bestow cost, this spell is an
+            // Aura enchantment rather than its normal permanent types. Preserve the printed
+            // type line so the effect can end cleanly if the target becomes illegal or the
+            // resulting Aura later becomes unattached.
+            if (alternativeCost == com.wingedsheep.engine.core.AlternativeCostType.BESTOW) {
+                val printed = updated.get<CardComponent>()
+                if (printed != null && updated.get<com.wingedsheep.engine.state.components.identity.BestowComponent>() == null) {
+                    updated = updated
+                        .with(printed.copy(typeLine = com.wingedsheep.engine.state.components.identity.BestowComponent.auraType(printed.typeLine)))
+                        .with(com.wingedsheep.engine.state.components.identity.BestowComponent(printed.typeLine))
+                }
+            }
+            updated = updated.with(SpellOnStackComponent(
                 casterId = casterId,
                 xValue = boundXValue,
                 declaredCostSlot = declaredCostSlot,
@@ -789,18 +802,20 @@ class StackResolver(
         // name, types, colors, mana cost, and spellEffect (707.10).
         val copiedCardComp = sourceCard.copy(ownerId = copyController)
 
-        // Clone copyable cast-time state; per 707.10 the copy inherits choices made for
-        // the original (X, modes, optional-cost choices, distributions, etc.). Cast origin is
-        // deliberately NOT inherited: a spell copy is created directly on the stack and was not
-        // cast from any zone. Leaving castFromZone on the copy would make "if this spell wasn't
-        // cast from your hand" and other cast-origin conditions read the original cast instead of
-        // the copy object's own history. Payment events (ManaSpentEvent, SpellCastEvent) are
+        // Clone cast-time state; per 707.10 the copy inherits every decision made for
+        // the original. The data-class copy preserves: xValue, declaredCostSlot, wasBlightPaid,
+        // wasWarped, wasEvoked, sacrificedPermanents (snapshots of P/T + subtypes), damageDistribution,
+        // chosenCreatureType, exiledCardCount, beheldCards, and the
+        // manaSpent{White,Blue,Black,Red,Green,Colorless} colors. Only the caster
+        // (copy controller) and modal fields (which the caller may retarget) are
+        // overridden explicitly. Payment events (ManaSpentEvent, SpellCastEvent) are
         // deliberately not re-emitted — a copy isn't cast (707.10).
         val copiedSpellComp = sourceSpell.copy(
             casterId = copyController,
             chosenModes = effectiveModes,
             modeTargetsOrdered = effectiveModeTargets,
             modeTargetRequirements = effectiveModeRequirements,
+            // CR 707.10: a spell copy is created on the stack; it was not cast from any zone.
             castFromZone = null
         )
 
@@ -986,7 +1001,28 @@ class StackResolver(
                 targetEntryStamps = targetsComponent.targetEntryStamps
             )
             if (validTargets.isEmpty()) {
-                // All targets invalid - spell fizzles
+                // Bestow (CR 702.103e): if the only target is illegal as the spell resolves,
+                // the bestow effect ends instead of the spell fizzling. Restore the card's
+                // normal characteristics and resolve it as its ordinary permanent spell.
+                val bestow = container.get<com.wingedsheep.engine.state.components.identity.BestowComponent>()
+                if (spellComponent.alternativeCost == com.wingedsheep.engine.core.AlternativeCostType.BESTOW &&
+                    bestow != null
+                ) {
+                    val restoredState = state.updateEntity(spellId) { current ->
+                        var restored = current
+                            .without<com.wingedsheep.engine.state.components.identity.BestowComponent>()
+                            .without<TargetsComponent>()
+                        current.get<CardComponent>()?.let { card ->
+                            restored = restored.with(card.copy(typeLine = bestow.originalTypeLine))
+                        }
+                        restored
+                    }
+                    val restoredContainer = restoredState.getEntity(spellId)
+                        ?: return ExecutionResult.error(restoredState, "Bestow spell disappeared during resolution")
+                    return resolveSpell(restoredState, spellId, restoredContainer)
+                }
+
+                // All targets invalid - ordinary targeted spells fizzle.
                 return fizzleSpell(state, spellId, cardComponent, spellComponent)
             }
             resolvedTargets = validTargets
@@ -2634,7 +2670,9 @@ class StackResolver(
         val destZoneKey = ZoneKey(ownerId, destZone)
 
         var newState = state.updateEntity(spellId) { c ->
-            c.without<SpellOnStackComponent>().without<TargetsComponent>()
+            com.wingedsheep.engine.handlers.effects.ZoneMovementUtils.restoreBestowAfterZoneExit(
+                c.without<SpellOnStackComponent>().without<TargetsComponent>()
+            )
         }
         newState = newState.addToZone(destZoneKey, spellId)
         val destinationObject = newState.objectRef(spellId)
@@ -3025,7 +3063,9 @@ class StackResolver(
 
         // Remove stack components
         newState = newState.updateEntity(spellId) { c ->
-            c.without<SpellOnStackComponent>().without<TargetsComponent>()
+            com.wingedsheep.engine.handlers.effects.ZoneMovementUtils.restoreBestowAfterZoneExit(
+                c.without<SpellOnStackComponent>().without<TargetsComponent>()
+            )
         }
 
         return ExecutionResult.success(
@@ -3087,7 +3127,9 @@ class StackResolver(
         val destinationObject = newState.objectRef(spellId)
 
         newState = newState.updateEntity(spellId) { c ->
-            c.without<SpellOnStackComponent>().without<TargetsComponent>()
+            com.wingedsheep.engine.handlers.effects.ZoneMovementUtils.restoreBestowAfterZoneExit(
+                c.without<SpellOnStackComponent>().without<TargetsComponent>()
+            )
         }
 
         return ExecutionResult.success(
@@ -3142,7 +3184,9 @@ class StackResolver(
         val destinationObject = newState.objectRef(spellId)
 
         newState = newState.updateEntity(spellId) { c ->
-            c.without<SpellOnStackComponent>().without<TargetsComponent>()
+            com.wingedsheep.engine.handlers.effects.ZoneMovementUtils.restoreBestowAfterZoneExit(
+                c.without<SpellOnStackComponent>().without<TargetsComponent>()
+            )
         }
 
         return ExecutionResult.success(
@@ -3206,7 +3250,9 @@ class StackResolver(
         // Remove stack components and optionally grant the counter's controller a free recast
         // (Kheru Spellsnatcher).
         newState = newState.updateEntity(spellId) { c ->
-            var updated = c.without<SpellOnStackComponent>().without<TargetsComponent>()
+            var updated = com.wingedsheep.engine.handlers.effects.ZoneMovementUtils.restoreBestowAfterZoneExit(
+                c.without<SpellOnStackComponent>().without<TargetsComponent>()
+            )
             if (grantFreeCast) {
                 updated = updated
                     .with(PlayWithoutPayingCostComponent(controllerId = controllerId, permanent = true))
@@ -3285,7 +3331,9 @@ class StackResolver(
         val exileZone = ZoneKey(ownerId, Zone.EXILE)
         newState = newState.addToZone(exileZone, spellId)
         newState = newState.updateEntity(spellId) { c ->
-            c.without<SpellOnStackComponent>().without<TargetsComponent>()
+            com.wingedsheep.engine.handlers.effects.ZoneMovementUtils.restoreBestowAfterZoneExit(
+                c.without<SpellOnStackComponent>().without<TargetsComponent>()
+            )
         }
 
         val events = mutableListOf<GameEvent>(

@@ -256,6 +256,11 @@ enum class AlternativeCostType {
     /** Evoke ([com.wingedsheep.sdk.scripting.KeywordAbility.Evoke]) — hand. */
     EVOKE,
     /**
+     * Bestow ([com.wingedsheep.sdk.scripting.KeywordAbility.Bestow], CR 702.103) — an alternative
+     * cost that casts the permanent spell as an Aura enchantment targeting a creature.
+     */
+    BESTOW,
+    /**
      * Emerge ([com.wingedsheep.sdk.scripting.KeywordAbility.Emerge], CR 702.119) — hand, at the
      * spell's normal timing. Pays the emerge mana *reduced by the sacrificed creature's mana value*
      * (generic portion only) instead of the mana cost, plus sacrifices that creature

@@ -33,6 +33,7 @@ class LegalActionEnumerator(
         PlayLandEnumerator(),
         MorphCastEnumerator(),
         CastSpellEnumerator(),
+        BestowCastEnumerator(),
         SneakCastEnumerator(),
         EmergeCastEnumerator(),
         WebSlingingCastEnumerator(),
