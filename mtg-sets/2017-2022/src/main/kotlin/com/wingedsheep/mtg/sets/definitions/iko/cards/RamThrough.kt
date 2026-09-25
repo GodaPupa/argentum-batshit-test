@@ -21,7 +21,7 @@ val RamThrough = card("Ram Through") {
         val victim = target("creature you don't control", Targets.CreatureOpponentControls)
         val damage = DealDamageEffect(amount = DynamicAmounts.targetPower(0), target = victim, damageSource = source)
         effect = ConditionalEffect(
-            condition = Conditions.EntityMatches(source, GameObjectFilter.Creature.withKeyword(Keyword.TRAMPLE)),
+            condition = Conditions.TargetMatchesFilter(GameObjectFilter.Creature.withKeyword(Keyword.TRAMPLE), targetIndex = 0),
             effect = damage.copy(excessToController = true),
             elseEffect = damage
         )

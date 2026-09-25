@@ -134,3 +134,20 @@ and all six readiness guards are unchanged. No component scenarios, coverage sca
 or official games executed in the failed gate; downstream stages and artifact upload were skipped.
 The failed job/log remains a diagnostic record. Complete successful validation and independent
 archive audit are still required before accepting any AO registry reduction.
+
+## Second validation diagnostic and exact Ram condition repair
+
+Run [36092645417](https://github.com/GodaPupa/argentum-batshit-test/actions/runs/36092645417), job
+`107938118410`, passed the excess-damage, source-group prevention, floating-effect serialization and
+combat-badge qualification classes at source `42be09647a6a000b3a0615d25291a979c182f17c`.
+The seven Ram Through scenarios then ran; three trample scenarios failed because all damage stayed
+on the creature. The other four scenarios passed. Prismatic Strands and subsequent gates were
+skipped, and no artifact was uploaded.
+
+The exact card condition incorrectly supplied a named BoundVariable to EntityMatches. The existing
+SDK and ConditionEvaluator support a positional ContextTarget for this condition and deliberately
+reject unsupported entity roles. Ram Through now uses the existing TargetMatchesFilter facade at
+index zero, its first declared controlled-creature target. Damage attribution retains the named
+source binding, and power still reads that first target at resolution. No engine primitive, test
+expectation, legality requirement or readiness guard changes. This is a card-definition repair,
+not a waiver of the three failed scenarios; the full gate and archive audit remain mandatory.
