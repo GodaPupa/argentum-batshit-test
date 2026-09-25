@@ -51,20 +51,21 @@ class AttachmentTriggerDetector(
             for (entry in entries) {
                 for (ability in entry.abilities) {
                     if (ability.binding != TriggerBinding.ATTACHED) continue
+                    val trigger = ability.trigger
                     // For zone-change events on the attached creature (e.g., creature dies),
                     // skip auras — they go to graveyard with the creature and are handled by
                     // DeathAndLeaveTriggerDetector.detectDeadAuraAttachmentTriggers via the
                     // aura's own ZoneChangeEvent. Only equipment stays on the battlefield.
-                    if (isZoneChange && ability.trigger is EventPattern.ZoneChangeEvent &&
+                    if (isZoneChange && trigger is EventPattern.ZoneChangeEvent &&
                         !entry.cardComponent.typeLine.isEquipment) continue
                     val groupedUnrestrictedSourceDamage =
                         event is DamageDealtEvent &&
                             event.simultaneousDamageGroupIndex != null &&
                             event.simultaneousDamageGroupSize > 1 &&
-                            ability.trigger is EventPattern.DealsDamageEvent &&
-                            ability.trigger.recipient == RecipientFilter.Any
+                            trigger is EventPattern.DealsDamageEvent &&
+                            trigger.recipient == RecipientFilter.Any
                     if (groupedUnrestrictedSourceDamage) continue
-                    if (matchesAttachedTrigger(ability.trigger, event, entityId, entry.controllerId, entry.entityId, state)) {
+                    if (matchesAttachedTrigger(trigger, event, entityId, entry.controllerId, entry.entityId, state)) {
                         triggers.add(
                             PendingTrigger(
                                 ability = ability,
