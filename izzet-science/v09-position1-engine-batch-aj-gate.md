@@ -50,3 +50,23 @@ target primitive, or card-specific rule.
 
 Infrastructure, compilation, fixture, snapshot, or semantic failures are qualification history only,
 not evidence about deck strength.
+
+## Pre-qualification repair and canonical snapshot provenance
+
+- Initial snapshot run **36078361222** failed during test compilation because
+  SpiritLinkBatchAJScenarioTest referenced a builder-only card field and a nonexistent runtime
+  target class. No rules assertion or official game ran.
+- Repair commit **0363d76fc9ec8956a6e5a8ee7ea169d1f6762388** compares the compiled
+  script's Aura target to the exact existing Targets.Creature facade. No assertion was removed,
+  and the card definition and shared engine were unchanged.
+- The snapshot workflow now checks out its triggering SHA and refuses to integrate if the remote
+  branch moves. It no longer rebases an unqualified snapshot over concurrent source changes.
+- Corrected snapshot run **36079075518**: **SUCCESS**. Spirit Link semantics, real registry
+  readiness (17 unresolved Veteran identities, zero Izzet identities), full canonical snapshot
+  regeneration, and the unrelated-snapshot guard all passed.
+- Canonical snapshot commit **05f4cdb2047d0f9f810f978cf5471a8750bf7df6** changes exactly
+  mtg-sets/src/test/resources/snapshots/cards/10E.json.
+- Independent commit review confirms only Spirit Link's expected compiled tree was added.
+- This snapshot stage uploads no artifact. Formal qualification with a complete manifest and
+  transcript remains required before Batch AJ acceptance.
+- Official seeds consumed, games initialized, and outcome exposure remain **0/0/0**.
