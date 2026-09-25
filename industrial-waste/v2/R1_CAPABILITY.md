@@ -1,10 +1,17 @@
 # R1 seed-free card and infrastructure qualification
 
-Status: **116 SCOPED CAPABILITY FIXTURES ACCEPTED — CAP/STATUS EXTENSION IN VALIDATION / NO CORPUS EXECUTION**
+Status: **126 SCOPED CAPABILITY FIXTURES ACCEPTED — OFFICIAL R1 BLOCKED / NO CORPUS EXECUTION**
 
-## Current accepted checkpoint and cap/status extension
+## Current accepted checkpoint and cap/status qualification
 
-Runtime source `717b5e80f1116341a513d97acf12fd54c08327b0` passed all **116
+Current runtime source `19eb9c75357a6af920768506863a2b04c955a942` passed all
+**126 fixtures across 23 suites**, with zero failures/errors/skips, in run
+`36095959237`. `capability-qualification-36095959237.json` archives all 23 raw
+XML suites and exact status provenance. All seven source pins, compiled snapshots
+and the original legacy golden match; required CI and static/card-only gates
+also passed. The ten new cap/status cases are accepted only within the scope below.
+
+Predecessor runtime source `717b5e80f1116341a513d97acf12fd54c08327b0` passed all **116
 fixtures across 22 suites** in run `36090512239`. The receipt
 `capability-qualification-36090512239.json` preserves the original XML, exact
 source, ZIP digest, unchanged compiled snapshots and unchanged legacy golden.
@@ -13,7 +20,7 @@ required CI, static gate and dedicated validation `36091364346`. Accepted scope
 includes the thirteen Foundry/public-policy cases, fifteen ordering cases and
 eight event-metric cases; it does not establish complete R1 runtime readiness.
 
-The new finite batch implements a bounded submission/status component. Every
+The accepted finite batch implements a bounded submission/status component. Every
 submitted action from either player counts, including passes, mulligan responses,
 and other decision responses; initialization and internal engine events do not.
 Exactly 4000 submissions stop the component. Its eighth own turn may finish,
@@ -35,7 +42,7 @@ Ten new fixtures include an actual 4000-action neutral Retriever loop, a real
 eight-turn passive game for both play/draw seats, real London submission counting, actual terminal/draw/rejection results, a deliberately
 injected executor exception, missing-event guards and synthetic simultaneous
 boundary precedence. They reuse the already excluded seed `9250925005`; no seed
-or ordering row is generated. Runtime qualification is pending. This component
+or ordering row is generated. All ten cases passed in the audited run. This component
 has no complete metric flags or evidence-validity declaration and is not the durable
 official journal/replay/authorization boundary: mana checkpoint
 classification, qualified conversion certificates, full pilot/runner/replay,

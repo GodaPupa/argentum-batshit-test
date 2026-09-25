@@ -1,6 +1,6 @@
 # Industrial Waste v2 — Structural Redesign
 
-Status: **R0 AND R1 DESIGN FROZEN — 116 SCOPED CAPABILITY FIXTURES ACCEPTED / OFFICIAL R1 BLOCKED**
+Status: **R0 AND R1 DESIGN FROZEN — 126 SCOPED CAPABILITY FIXTURES ACCEPTED / OFFICIAL R1 BLOCKED**
 
 The three candidates, normalized counts, exact byte identities, current legality
 sources and prospective R1 ordering corpus are now recorded in `r0-freeze.json`.
@@ -54,6 +54,14 @@ and the two legacy card-only scenario gates passed at that source. The earlier
 mana/cap/conversion metrics, full replay, integration and qualification of the
 shared priority and post-cast state-based-action repairs, effective rules archive
 and guarded runtime bindings remain necessary before R1 execution.
+`capability-qualification-36095959237.json` adds accepted cap/status handling at
+`19eb9c75357a6af920768506863a2b04c955a942`: all 126 cases across 23 suites pass.
+The ten new fixtures execute a neutral 4000-action loop, both play/draw own-eight
+cleanup boundaries, real London counts and terminal/draw/rejection handling;
+errors and unresolved telemetry remain separate. The exact artifact, source pins
+and original XML are retained, with unchanged snapshots and baseline. This removes
+the scoped cap/status component from the capability queue; complete mana/checkpoint
+and conversion metrics, runner/replay and guarded runtime authority remain open.
 Official counters remain zero.
 
 This is a new experimental program. It does not continue Gate 11 and it does not overwrite the
