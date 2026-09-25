@@ -52,10 +52,11 @@ private val EXPECTED_UNSUPPORTED_SIDEBOARD = linkedMapOf(
     "Spreading Seas" to 3,
 )
 
-// Preserve the historical readiness inventory above. Postboard support batch A prospectively
-// qualifies Mystic in the current registry; this is not a change to the frozen 75, historical
+// Preserve the historical readiness inventory above. Postboard support batches A and B prospectively
+// qualify Mystic, Gut Shot and Hydroblast in the current registry; this does not change the frozen 75,
 // readiness record, or preboard execution authority.
-private val CURRENT_UNSUPPORTED_SIDEBOARD = EXPECTED_UNSUPPORTED_SIDEBOARD - "Murmuring Mystic"
+private val CURRENT_UNSUPPORTED_SIDEBOARD = EXPECTED_UNSUPPORTED_SIDEBOARD -
+    setOf("Murmuring Mystic", "Gut Shot", "Hydroblast")
 
 enum class TierOneMonoBlueTerrorRunnerState { DISABLED }
 
