@@ -56,36 +56,45 @@ rules release before the eventual official seed freeze.
 
 ## Current accepted evidence and remaining queue
 
-`accepted-capability-inventory-r4.json` records the independently audited seed-free
-card and multiplayer evidence from run `36085848485`, including raw artifact digests
-and all required checks. It preserves the earlier inventory receipts. The registry
-resolves 450 of 800 physical entries across the eight exact 100-card lists; 350 entries
-representing 219 unique identities remain unresolved. The Manual control itself has
-28 unresolved identities. Registry presence remains separate from exact-deck semantic
-and pilot qualification.
+`accepted-capability-inventory-r5.json` records the independently audited seed-free
+card, shared-component and multiplayer evidence from run `36087805569`, including
+raw artifact digests and all required checks. Earlier inventory receipts remain
+preserved. The registry resolves 453 of 800 physical entries across the eight exact
+100-card lists; 347 entries representing 216 unique identities remain unresolved.
+The Manual control itself has 25 unresolved identities. Registry presence remains
+separate from exact-deck semantic and pilot qualification.
 
-Nine formerly missing control identities now have definitions and passing card
+Twelve formerly missing control identities now have definitions and passing card
 scenarios: Animar, Soul of Elements; Ancestral Statue; Paradise Druid; Pongify;
-Rapid Hybridization; Nest Invader; Emrakul's Hatcher; Eyeless Watcher; and Eldrazi
-Repurposer. Cloud of Faeries and Peregrine Drake now choose lands at resolution
-without targeting, including lands controlled by other players. All 56 card scenarios
-pass, together with all 338 card snapshot and roundtrip cases. The retained batch
-r1/r2 audits distinguish fixture repairs and strictly reviewed snapshot additions from
-rules or performance outcomes; no unrelated card tree was reblessed.
+Rapid Hybridization; Nest Invader; Emrakul's Hatcher; Eyeless Watcher; Eldrazi
+Repurposer; Arbor Elf; Wild Growth; and Utopia Sprawl. Cloud of Faeries and Peregrine
+Drake now choose lands at resolution without targeting, including lands controlled
+by other players. All 80 exact-card scenarios pass, together with all 338 card
+snapshot and roundtrip cases. The retained batch r1/r2/r3 audits distinguish fixture
+repairs and strictly reviewed snapshot additions from rules or performance outcomes;
+no unrelated card tree was reblessed.
 
-The next bounded support batch is recorded in `card-support-batch-r3.json`: Arbor
-Elf, Wild Growth and Utopia Sprawl, with 24 deterministic regression scenarios.
-These three additions remain pending compiled validation and strict snapshot review;
-they have not reduced the accepted remaining counts above. Existing generic test
-selectors are combined into one scoped invocation, retaining every requested class
-and its XML evidence.
+The canonical ordinary-land CastSpell guard was selectively integrated and separately
+qualified for the exact control identities Forest and Command Tower, with preserved
+face-down and spell-Adventure alternatives. These seven additional cases pass. This
+shared implementation evidence imports no Industrial Waste matchup result.
+
+The next bounded support batch is recorded in `card-support-batch-r4.json`: Coiling
+Oracle and Hope-Ender Coatl, with 17 deterministic regression scenarios. These two
+additions remain pending compiled validation and strict snapshot review; they have
+not reduced the accepted remaining counts above. Existing generic test selectors
+remain in one scoped invocation, retaining every requested class and its XML evidence.
 
 The same audited artifact preserves 56 passing generic commander/multiplayer tests
-and one passing registry audit. These are deterministic capability fixtures, not
-any of the 36 initial actual-deck capability pilot games or 864 primary games. Both
-official gameplay counters remain zero. Full card coverage, exact executable gear
-and opponent pilots, multiplayer threat decisions, operational telemetry, and the
-frozen guarded execution package still block actual-deck admission.
+and one passing registry audit: 482 passing JUnit cases in total, without failures,
+errors or skips. These are deterministic capability fixtures, not any of the 36
+initial actual-deck capability pilot games or 864 primary games. Both official
+gameplay counters remain zero. Full card coverage, exact executable gear and opponent
+pilots, multiplayer threat decisions, operational telemetry and the frozen guarded
+execution package still block actual-deck admission. A separately discovered CR
+117.3b post-resolution priority defect also requires selective integration and
+qualification of its canonical shared repair; this component receipt does not
+certify unexercised priority paths.
 
 ## Prospective telemetry component
 

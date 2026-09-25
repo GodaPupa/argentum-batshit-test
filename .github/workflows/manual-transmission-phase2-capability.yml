@@ -43,6 +43,10 @@ on:
       - 'mtg-sets/**/scenarios/WildGrowthScenarioTest.kt'
       - 'mtg-sets/**/cards/UtopiaSprawl.kt'
       - 'mtg-sets/**/scenarios/UtopiaSprawlScenarioTest.kt'
+      - 'mtg-sets/**/cards/CoilingOracle.kt'
+      - 'mtg-sets/**/scenarios/CoilingOracleScenarioTest.kt'
+      - 'mtg-sets/**/cards/HopeEnderCoatl.kt'
+      - 'mtg-sets/**/scenarios/HopeEnderCoatlScenarioTest.kt'
       - 'mtg-sets/src/test/resources/snapshots/cards/**'
       - '.github/workflows/manual-transmission-phase2-capability.yml'
 
@@ -102,11 +106,11 @@ jobs:
         run: python3 experiments/manual-transmission-phase2/bootstrap_audit.py --phase1 .phase1-source --out build/reports/manual-transmission-phase2/source
       - name: Exact frozen hardware card scenarios
         run: |
-          scripts/gradle-locked :mtg-sets:2003-2007:tests:test --tests "*KurgadonTest" --tests "*UtopiaSprawlScenarioTest" --tests "*PongifyScenarioTest" \
+          scripts/gradle-locked :mtg-sets:2003-2007:tests:test --tests "*CoilingOracleScenarioTest" --tests "*KurgadonTest" --tests "*UtopiaSprawlScenarioTest" --tests "*PongifyScenarioTest" \
             :mtg-sets:1993-1999:tests:test --tests "*WildGrowthScenarioTest" --tests "*CloudOfFaeriesScenarioTest" --tests "*PeregrineDrakeScenarioTest" \
             :mtg-sets:2008-2016:tests:test --tests "*ManualTransmissionLandSpellGuardScenarioTest" --tests "*ArborElfScenarioTest" --tests "*AnimarSoulOfElementsScenarioTest" --tests "*AncestralStatueScenarioTest" --tests "*RapidHybridizationScenarioTest" --tests "*NestInvaderScenarioTest" --tests "*EmrakulsHatcherScenarioTest" --tests "*EyelessWatcherScenarioTest" \
             :mtg-sets:2017-2022:tests:test --tests "*ParadiseDruidScenarioTest" \
-            :mtg-sets:2024:tests:test --tests "*EldraziRepurposerScenarioTest" \
+            :mtg-sets:2024:tests:test --tests "*HopeEnderCoatlScenarioTest" --tests "*EldraziRepurposerScenarioTest" \
             :mtg-sets:2025:tests:test --tests "*TownLandSpellAdventureScenarioTest" --info --stacktrace
       - name: Preserve per-card scenario evidence
         if: always()

@@ -1,0 +1,97 @@
+{
+  "actual_deck_adapter_qualified": false,
+  "baseline_accepted_inventory": "accepted-capability-inventory-r5.json",
+  "baseline_audit": "card-support-batch-r3-audit.json",
+  "baseline_commit": "94b34d5c51cece560119e580c75d673286ce0fca",
+  "batch": "LIBRARY_REVEAL_AND_SELF_CAST_INTERACTION_R4",
+  "cards": [
+    {
+      "canonical_selection": "Earliest real-expansion printing; skipped promo/token/art_series/memorabilia per repository add-card protocol.",
+      "card": "Coiling Oracle",
+      "color_identity": [
+        "G",
+        "U"
+      ],
+      "colors": [
+        "G",
+        "U"
+      ],
+      "definition": "mtg-sets/2003-2007/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/dis/cards/CoilingOracle.kt",
+      "definition_sha256": "c1863993066d16bc4351a5f2b58a7bc31e7f036dab38dd1f2788b5dddb6341fb",
+      "lookup_url": "https://api.scryfall.com/cards/named?exact=Coiling%20Oracle&set=dis",
+      "mana_cost": "{G}{U}",
+      "oracle_id": "69fd4ddf-9ed8-4c56-bef3-9944daf05e4f",
+      "oracle_text": "When this creature enters, reveal the top card of your library. If it's a land card, put it onto the battlefield. Otherwise, put that card into your hand.",
+      "printing": {
+        "collector_number": "107",
+        "released_at": "2006-05-05",
+        "set": "dis"
+      },
+      "scenario": "mtg-sets/2003-2007/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/CoilingOracleScenarioTest.kt",
+      "scenario_cases": 8,
+      "scenario_sha256": "7aa7e93f9efd540499e5da0f0d8b6beba4957344a721728d7dbc6c25cbb62083",
+      "scryfall_id": "55a6ba2a-b372-4b15-9a1e-09b41316eab7",
+      "source_response_sha256": "9d85b6ad51dd71c432badb1dc14a1b623ae19b8480f79fa86a70f9db229a1758",
+      "source_url": "https://scryfall.com/card/dis/107/coiling-oracle?utm_source=api",
+      "type_line": "Creature \u2014 Snake Elf Druid"
+    },
+    {
+      "canonical_selection": "Earliest real-expansion printing; skipped promo/token/art_series/memorabilia per repository add-card protocol.",
+      "card": "Hope-Ender Coatl",
+      "color_identity": [
+        "U"
+      ],
+      "colors": [],
+      "definition": "mtg-sets/2024/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/mh3/cards/HopeEnderCoatl.kt",
+      "definition_sha256": "b782d0c2b52782440f5eadf8cc0ebb64bc143813f3d09d202f1b652f2e10abdd",
+      "lookup_url": "https://api.scryfall.com/cards/named?exact=Hope-Ender%20Coatl&set=mh3",
+      "mana_cost": "{2}{U}",
+      "oracle_id": "57cf576b-5a03-4c60-a531-544df2638323",
+      "oracle_text": "Devoid (This card has no color.)\nFlash\nWhen you cast this spell, counter target spell an opponent controls unless they pay {1}.\nFlying",
+      "printing": {
+        "collector_number": "64",
+        "released_at": "2024-06-14",
+        "set": "mh3"
+      },
+      "scenario": "mtg-sets/2024/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/HopeEnderCoatlScenarioTest.kt",
+      "scenario_cases": 9,
+      "scenario_sha256": "f993e46b8fff0e8503b140a11ae340f1278c16ef444849b9e515dde863b7663c",
+      "scryfall_id": "26973cad-26d7-4d42-a58a-85c3dce3b9fd",
+      "source_response_sha256": "88bfd47edca3add6dbaa5062294baf9b2da4d49974a3cccf53beea46ce9b072f",
+      "source_url": "https://scryfall.com/card/mh3/64/hope-ender-coatl?utm_source=api",
+      "type_line": "Creature \u2014 Eldrazi Snake"
+    }
+  ],
+  "fixture_seed_policy": "9250925014L and 9250925015L are deterministic regression fixture identifiers, excluded from official seed registries, samples and allocations. No official vector is generated.",
+  "frozen_hardware_sha256": "2a9f47d2edcfbdb54a9ea15eadc719f85b36f74da9eb682233b85bd56f034da1",
+  "gameplay_authorized": false,
+  "known_separate_readiness_blocker": "The CR 117.3b canonical post-resolution priority repair is separately owned and not included in these card definitions. Correct active-player continuation assertions are retained; any actual failure is implementation evidence requiring audit, never a deck loss or a reason to weaken them.",
+  "official_counters": {
+    "actions": 0,
+    "attempts": 0,
+    "games_initialized": 0,
+    "outcomes": 0,
+    "seeds_generated": 0
+  },
+  "schema": "mt-phase2-exact-card-support-batch-v1",
+  "seed_generation_authorized": false,
+  "shared_mechanics": [
+    "Existing public GatherCards reveal, exact land/nonland collection partition and zone moves",
+    "Existing self-cast trigger with opponent-controlled stack-spell targeting and UnlessPaysMana {1}",
+    "Existing Devoid, Flash, Flying and trigger independence from countered source spells"
+  ],
+  "snapshot_contract": {
+    "allowed_additions": {
+      "dis": [
+        "Coiling Oracle"
+      ],
+      "mh3": [
+        "Hope-Ender Coatl"
+      ]
+    },
+    "allowed_existing_card_changes": [],
+    "reject_unrelated_set_or_card_changes": true
+  },
+  "status": "IMPLEMENTED_PENDING_COMPILED_SCENARIOS_REGISTRY_AND_STRICT_SNAPSHOT_REVIEW",
+  "total_scenario_cases": 17
+}
