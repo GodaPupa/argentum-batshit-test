@@ -263,7 +263,7 @@
       "Gut Shot"
     ]
   },
-  "snapshot_review_status": "REVIEWED_EXACT_ADDITIONS",
+  "snapshot_review_status": "PENDING_COMPILED_OUTPUT",
   "excluded_regression_fixture_seeds": [
     "9250925021",
     "9250925022",
@@ -271,7 +271,7 @@
   ],
   "literal_collision_audit": "No prior occurrence in project docs, gym or card scenario sources before these three new fixtures; these are excluded regression identities, never official seeds.",
   "source_files_sha256": {
-    ".github/workflows/pest-control-tier-one-postboard-support-batch-b.yml": "9675dc35966096a20eccce7a02dbc5d6b45a44366a1716e7d869355aa6a82bbb",
+    ".github/workflows/pest-control-tier-one-postboard-support-batch-b.yml": "53d5065e534fdcac6475da6252215a8525aaa8f136803852cc5ae8f2e8ea888b",
     "docs/experiments/pest-control/card-sources/postboard-b/gut-shot-canonical.json": "14b301701dc0737c22b4ef0d7a4c4b2d671254173aea1b54acd78ffc61f56328",
     "docs/experiments/pest-control/card-sources/postboard-b/gut-shot-printings.json": "73deaf11f87c318f695bb29576f2d04e552c7009cf0da7374a11d5c8fba4b4dc",
     "docs/experiments/pest-control/card-sources/postboard-b/gut-shot-rulings.json": "4a9f4e6a51f12e7861a0861659e47cf5b23c29c10d25babab40e59c701e62287",
@@ -291,16 +291,8 @@
     "mtg-sets/1993-1999/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/HydroblastScenarioTest.kt": "e59b0210d89dfc557bcfa9609272fcd1c95881ca278968cf3b68310388401f8f",
     "mtg-sets/1993-1999/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/PyroblastScenarioTest.kt": "d8904617758207438ebf554cb50335cd6275c579e3cbf29aab30ffab6da5ce74",
     "mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/nph/cards/GutShot.kt": "cf91672c609caa7fedb67d45303ec16b7db87ca1c2baa1f63efb4e0dcc35c6f8",
-    "mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/GutShotScenarioTest.kt": "166574ba86ec7bed6c34ae897ab43214db0397d6ac2f1a665162a1295181f3be",
-    "gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOneSpyComboSupportBatchBTest.kt": "30d709d2d1f993a6fa59f9a6966ce698febe13f31edaf3de3700af2004a768d5",
-    "rules-engine/src/main/kotlin/com/wingedsheep/engine/legalactions/utils/TargetEnumerationUtils.kt": "987fa1b817642c423390aa6461e21e1eff3f58420e7d447fa8b9cc323d2674e4",
-    "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/targeting/TargetValidator.kt": "a67307ebe8577ffcc8b544759f63bac17d44eb9ef03e2c912faefdc6247b502a",
-    "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/stack/StackResolver.kt": "34ee5f07fab1f06ddad3835a57ea4226625b0dab97137e91c3a9c58c65e673b8",
-    "mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/scripting/targets/TargetRequirement.kt": "786a2f2c5ada9fd15992bdfa4239ae27fe164c3b3df43ac4312c42ea77914276",
-    "mtg-sets/src/test/resources/snapshots/cards/ICE.json": "dd05c266d119537bd89d0454b2014f2ddd3888e90060ced4c5254ae497a1911f",
-    "mtg-sets/src/test/resources/snapshots/cards/NPH.json": "8c5ca92e9674c4e03f2277fd04711f4d67a9a553c0a87d8894c0e2dee3b41a43",
-    "game-server/src/test/kotlin/com/wingedsheep/gameserver/FreeForAllLobbyTest.kt": "416eb14c312d706f6c125de5f70de8c5f1abf175f5bee813321260fd75271a73",
-    "docs/experiments/pest-control/tier-one-postboard-support-batch-b-failure-audit.json": "1ab97e2c34e2fe274c137a9b03caf996f1cad14223c7f248f5c28f1413d075ef"
+    "mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/GutShotScenarioTest.kt": "10f777dce74942f070776e74e3d03ae89d446bb9604cf5cf080c4abf60a028ee",
+    "gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOneSpyComboSupportBatchBTest.kt": "30d709d2d1f993a6fa59f9a6966ce698febe13f31edaf3de3700af2004a768d5"
   },
   "official_seeds_generated": 0,
   "official_games_initialized": 0,
@@ -308,16 +300,5 @@
   "outcome_exposure": 0,
   "boarding_plans_frozen": false,
   "gameplay_authorized": false,
-  "integrated_postboard_a_commit": "1cf29885757fae24aac05cfe2d1097e5088e5375",
-  "compiled_snapshot_review_artifact": 10845845066,
-  "compiled_snapshot_review_run": 36089250333,
-  "runtime_status": "REJECTED_PENDING_RULES_REPAIR_AND_STRICT_SNAPSHOT_VALIDATION",
-  "canonical_any_target_rules": {
-    "effective_date": "2026-09-25",
-    "rule": "115.4 and 608.2b",
-    "archive_sha256": "8d860e451f20f38865b725b42d82feb714c725373dd8f3b32b8652b3eeb070ca",
-    "archive_url": "https://media.wizards.com/2026/downloads/MagicCompRules%2020260925.txt",
-    "source_review_status": "PENDING_INDEPENDENT_REVIEW",
-    "runtime_status": "PENDING_SUCCESSOR_CI"
-  }
+  "integrated_postboard_a_commit": "1cf29885757fae24aac05cfe2d1097e5088e5375"
 }

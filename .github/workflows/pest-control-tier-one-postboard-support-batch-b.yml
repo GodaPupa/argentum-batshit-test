@@ -17,6 +17,10 @@ on:
       - '**/PestControlTierOneMonoBlueTerrorReadinessTest.kt'
       - mtg-sets/src/test/resources/snapshots/cards/ICE.json
       - mtg-sets/src/test/resources/snapshots/cards/NPH.json
+      - rules-engine/src/main/kotlin/com/wingedsheep/engine/legalactions/utils/TargetEnumerationUtils.kt
+      - rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/targeting/TargetValidator.kt
+      - rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/stack/StackResolver.kt
+      - game-server/src/test/kotlin/com/wingedsheep/gameserver/FreeForAllLobbyTest.kt
 
 permissions:
   contents: read
@@ -119,6 +123,9 @@ jobs:
           run_stage spy-b-compatibility PestControlTierOneSpyComboSupportBatchBTest gym || failed=1
           run_stage batch-coverage PestControlTierOnePostboardSupportBatchBTest gym || failed=1
           run_stage full-inventory PestControlTierOnePostboardSupportAuditTest gym || failed=1
+          # The first full CI reported this existing assertion without uploading its XML.
+          # Preserve its actual result on the successor; do not waive or increase its timeout.
+          run_stage premade-lobby-regression FreeForAllLobbyTest game-server || failed=1
           exit "$failed"
       - name: Preserve validation evidence and any unaccepted compiled snapshot differences
         if: always()

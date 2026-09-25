@@ -1,8 +1,11 @@
 package com.wingedsheep.engine.scenarios
 
+import com.wingedsheep.engine.core.ActivateAbility
 import com.wingedsheep.engine.core.CastSpell
 import com.wingedsheep.engine.core.DamageDealtEvent
+import com.wingedsheep.engine.core.GameEvent
 import com.wingedsheep.engine.core.PaymentStrategy
+import com.wingedsheep.engine.core.SpellFizzledEvent
 import com.wingedsheep.engine.state.components.battlefield.CountersComponent
 import com.wingedsheep.engine.state.components.stack.ChosenTarget
 import com.wingedsheep.engine.support.ScenarioTestBase
@@ -21,13 +24,16 @@ class GutShotScenarioTest : ScenarioTestBase() {
         paymentStrategy = PaymentStrategy.Explicit(emptyList(), phyrexianLifePayments = listOf(Color.RED))
     ))
 
-    private fun TestGame.damageEvents(): List<DamageDealtEvent> {
+    private fun TestGame.resolutionEvents(): List<GameEvent> {
         val results = resolveStack()
         results.forEach { it.error shouldBe null }
         state.stack.size shouldBe 0
         hasPendingDecision() shouldBe false
-        return results.flatMap { it.events }.filterIsInstance<DamageDealtEvent>()
+        return results.flatMap { it.events }
     }
+
+    private fun TestGame.damageEvents(): List<DamageDealtEvent> =
+        resolutionEvents().filterIsInstance<DamageDealtEvent>()
 
     init {
         test("one red mana pays the Phyrexian symbol without paying life") {
@@ -99,6 +105,11 @@ class GutShotScenarioTest : ScenarioTestBase() {
             val game = fixture().withCardOnBattlefield(2, "Invasion of Innistrad").build()
             game.checkStateBasedActions()
             val battle = game.findPermanent("Invasion of Innistrad")!!
+            game.getLegalActions(1).filter {
+                it.actionType == "CastSpell" && it.description.contains("Gut Shot") && it.isAffordable
+            }.any { battle in it.validTargets.orEmpty() ||
+                it.targetRequirements.orEmpty().any { requirement -> battle in requirement.validTargets }
+            } shouldBe true
             game.state.getEntity(battle)!!.get<CountersComponent>()!!.getCount(CounterType.DEFENSE) shouldBe 5
             game.payLife(ChosenTarget.Permanent(battle)).error shouldBe null
             game.damageEvents().single().amount shouldBe 1
@@ -108,10 +119,66 @@ class GutShotScenarioTest : ScenarioTestBase() {
 
         test("a noncreature land is illegal and does not spend the life cost") {
             val game = fixture().withLandsOnBattlefield(2, "Forest", 1).build()
+            val forest = game.findPermanent("Forest")!!
+            game.getLegalActions(1).filter {
+                it.actionType == "CastSpell" && it.description.contains("Gut Shot")
+            }.all { forest !in it.validTargets.orEmpty() &&
+                it.targetRequirements.orEmpty().all { requirement -> forest !in requirement.validTargets }
+            } shouldBe true
             val before = game.state
-            game.payLife(ChosenTarget.Permanent(game.findPermanent("Forest")!!)).error shouldNotBe null
+            game.payLife(ChosenTarget.Permanent(forest)).error shouldNotBe null
             game.state shouldBe before
             game.getLifeTotal(1) shouldBe 20
+        }
+
+        test("a noncreature artifact is illegal without spending life or moving the spell") {
+            val game = fixture().withCardOnBattlefield(2, "Darksteel Ingot").build()
+            val before = game.state
+            game.payLife(ChosenTarget.Permanent(game.findPermanent("Darksteel Ingot")!!)).error shouldNotBe null
+            game.state shouldBe before
+        }
+
+        test("a land animated by its actual ability is offered and damaged as a creature") {
+            val game = fixture().withCardOnBattlefield(1, "Mishra's Factory")
+                .withLandsOnBattlefield(1, "Forest", 1).build()
+            val factory = game.findPermanent("Mishra's Factory")!!
+            val animate = cardRegistry.getCard("Mishra's Factory")!!.activatedAbilities[1].id
+            game.execute(ActivateAbility(game.player1Id, factory, animate)).error shouldBe null
+            game.resolveStack().forEach { it.error shouldBe null }
+            game.state.projectedState.isCreature(factory) shouldBe true
+            game.getLegalActions(1).filter {
+                it.actionType == "CastSpell" && it.description.contains("Gut Shot") && it.isAffordable
+            }.any { factory in it.validTargets.orEmpty() ||
+                it.targetRequirements.orEmpty().any { requirement -> factory in requirement.validTargets }
+            } shouldBe true
+            game.payLife(ChosenTarget.Permanent(factory)).error shouldBe null
+            game.damageEvents().single().amount shouldBe 1
+            game.findPermanent("Mishra's Factory") shouldBe factory
+        }
+
+        test("a target that becomes only a land in response is illegal on resolution") {
+            val game = fixture().withCardOnBattlefield(2, "Llanowar Elves")
+                .withCardInHand(1, "Borne Upon a Wind")
+                .withCardInHand(1, "Imprisoned in the Moon")
+                .withCardInLibrary(1, "Forest")
+                .withLandsOnBattlefield(1, "Island", 5).build()
+            game.castSpell(1, "Borne Upon a Wind").error shouldBe null
+            game.resolveStack().forEach { it.error shouldBe null }
+            val victim = game.findPermanent("Llanowar Elves")!!
+            game.state.projectedState.isCreature(victim) shouldBe true
+            val shot = game.findCardsInHand(1, "Gut Shot").single()
+            game.payLife(ChosenTarget.Permanent(victim)).error shouldBe null
+            // The caster retained priority and has the actual instant-timing permission.
+            game.castSpell(1, "Imprisoned in the Moon", victim).error shouldBe null
+            val events = game.resolutionEvents()
+            events.filterIsInstance<DamageDealtEvent>() shouldBe emptyList()
+            events.filterIsInstance<SpellFizzledEvent>() shouldBe
+                listOf(SpellFizzledEvent(shot, "Gut Shot", "All targets are invalid"))
+            game.state.projectedState.isCreature(victim) shouldBe false
+            game.state.projectedState.hasType(victim, "LAND") shouldBe true
+            game.findPermanent("Llanowar Elves") shouldBe victim
+            game.getLifeTotal(1) shouldBe 18
+            game.getLifeTotal(2) shouldBe 20
         }
 
         test("a creature returned in response takes no damage and the paid life is not refunded") {

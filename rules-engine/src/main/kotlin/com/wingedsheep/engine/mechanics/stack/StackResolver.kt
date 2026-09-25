@@ -3597,6 +3597,16 @@ class StackResolver(
 
                     // Re-validate target filter (Rule 608.2b)
                     val requirement = getRequirementForTargetIndex(index, targetRequirements)
+                    // "Any target" includes only creatures, planeswalkers, battles and players
+                    // (CR 115.4). A permanent can remain on the battlefield but lose all three
+                    // qualifying types before resolution, e.g. by becoming only a land.
+                    if (requiresAnyTarget(requirement) &&
+                        !projected.isCreature(target.entityId) &&
+                        !projected.isPlaneswalker(target.entityId) &&
+                        !projected.isBattle(target.entityId)
+                    ) {
+                        return@filterIndexed false
+                    }
                     val filter = extractTargetFilter(requirement)
                     if (filter != null) {
                         if (!predicateEvaluator.matches(
@@ -3664,9 +3674,14 @@ class StackResolver(
         return null
     }
 
-    /**
-     * Extract the TargetFilter from a TargetRequirement, if it has one.
-     */
+    /** An "another target" wrapper retains its underlying CR 115.4 restriction. */
+    private fun requiresAnyTarget(requirement: TargetRequirement?): Boolean = when (requirement) {
+        is AnyTarget -> true
+        is TargetOther -> requiresAnyTarget(requirement.baseRequirement)
+        else -> false
+    }
+
+    /** Extract the TargetFilter from a TargetRequirement, if it has one. */
     private fun extractTargetFilter(requirement: TargetRequirement?): TargetFilter? {
         return when (requirement) {
             is TargetObject -> requirement.filter
