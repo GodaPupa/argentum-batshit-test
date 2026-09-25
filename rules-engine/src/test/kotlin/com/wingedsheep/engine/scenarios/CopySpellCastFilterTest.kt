@@ -2,9 +2,12 @@ package com.wingedsheep.engine.scenarios
 
 import com.wingedsheep.engine.state.PendingSpellCopy
 import com.wingedsheep.engine.state.components.stack.TriggeredAbilityOnStackComponent
+import com.wingedsheep.engine.state.components.stack.SpellOnStackComponent
+import com.wingedsheep.engine.mechanics.stack.StackResolver
 import com.wingedsheep.engine.support.GameTestDriver
 import com.wingedsheep.engine.support.TestCards
 import com.wingedsheep.sdk.core.Step
+import com.wingedsheep.sdk.core.Zone
 import com.wingedsheep.sdk.model.Deck
 import com.wingedsheep.sdk.scripting.GameObjectFilter
 import com.wingedsheep.sdk.scripting.effects.StormCopyEffect
@@ -117,4 +120,30 @@ class CopySpellCastFilterTest : FunSpec({
 
         driver.state.pendingSpellCopies.size shouldBe 0
     }
+    test("a spell copy has no cast origin even when the original was cast from hand") {
+        val driver = GameTestDriver()
+        driver.registerCards(TestCards.all)
+        driver.initMirrorMatch(deck = Deck.of("Mountain" to 20, "Forest" to 20))
+        driver.passPriorityUntil(Step.PRECOMBAT_MAIN)
+
+        val caster = driver.activePlayer!!
+        val opponent = driver.getOpponent(caster)
+        driver.giveMana(caster, com.wingedsheep.sdk.core.Color.RED, 1)
+
+        val bolt = driver.putCardInHand(caster, "Lightning Bolt")
+        driver.castSpell(caster, bolt, listOf(opponent)).isSuccess shouldBe true
+        driver.state.getEntity(bolt)!!.get<SpellOnStackComponent>()!!.castFromZone shouldBe Zone.HAND
+
+        val beforeStack = driver.state.stack.toSet()
+        val copied = StackResolver(driver.cardRegistry).putSpellCopy(
+            state = driver.state,
+            sourceSpellId = bolt,
+            controllerId = caster
+        )
+        copied.isSuccess shouldBe true
+
+        val copyId = (copied.newState.stack.toSet() - beforeStack).single()
+        copied.newState.getEntity(copyId)!!.get<SpellOnStackComponent>()!!.castFromZone shouldBe null
+    }
+
 })
