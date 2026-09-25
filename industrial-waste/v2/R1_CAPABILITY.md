@@ -1,8 +1,49 @@
 # R1 seed-free card and infrastructure qualification
 
-Status: **CARD, SHARED SELECTION AND DEVELOPMENT COMPONENTS QUALIFIED — FINITE COMBAT EXTENSION IN VALIDATION / NO CORPUS EXECUTION**
+Status: **116 SCOPED CAPABILITY FIXTURES ACCEPTED — CAP/STATUS EXTENSION IN VALIDATION / NO CORPUS EXECUTION**
 
-## Active Foundry combat and passive-fixture policy batch
+## Current accepted checkpoint and cap/status extension
+
+Runtime source `717b5e80f1116341a513d97acf12fd54c08327b0` passed all **116
+fixtures across 22 suites** in run `36090512239`. The receipt
+`capability-qualification-36090512239.json` preserves the original XML, exact
+source, ZIP digest, unchanged compiled snapshots and unchanged legacy golden.
+Receipt-only HEAD `0116ab24aab476cfe6a6dd47b0e575bb3cb7cb41` also passed its
+required CI, static gate and dedicated validation `36091364346`. Accepted scope
+includes the thirteen Foundry/public-policy cases, fifteen ordering cases and
+eight event-metric cases; it does not establish complete R1 runtime readiness.
+
+The new finite batch implements a bounded submission/status component. Every
+submitted action from either player counts, including passes, mulligan responses,
+and other decision responses; initialization and internal engine events do not.
+Exactly 4000 submissions stop the component. Its eighth own turn may finish,
+including real end-step and cleanup decisions; the actual engine transition out
+of that turn reaches the turn cap. The implementation uses the player's real
+turn counter and `TurnChangedEvent`, never global-turn arithmetic. This concrete
+prospective boundary is recorded before any comparative outcome exposure.
+
+Terminal state and its matching `GameEndedEvent` retain the real winner or draw
+and take precedence over simultaneous caps. A rejected action or executor
+exception still consumes its submitted attempt and stops immediately, without
+fallback or retry. Unresolved telemetry is separately quarantined and can
+invalidate a provisional terminal/cap classification. Separate cap flags retain
+simultaneous limits. No pending stack or decision is drained after the cap, and
+no capped state receives a synthetic winner. Snapshot serialization retains
+residual stack depth, the pending-decision flag and actual engine terminal diagnostics.
+
+Ten new fixtures include an actual 4000-action neutral Retriever loop, a real
+eight-turn passive game for both play/draw seats, real London submission counting, actual terminal/draw/rejection results, a deliberately
+injected executor exception, missing-event guards and synthetic simultaneous
+boundary precedence. They reuse the already excluded seed `9250925005`; no seed
+or ordering row is generated. Runtime qualification is pending. This component
+has no complete metric flags or evidence-validity declaration and is not the durable
+official journal/replay/authorization boundary: mana checkpoint
+classification, qualified conversion certificates, full pilot/runner/replay,
+runtime bindings, claim/journal/artifact contracts and exact authorization remain.
+The separately merged priority repair and pending post-cast repair are not
+implicitly integrated into this branch. All official counters remain zero.
+
+## Accepted Foundry combat and passive-fixture policy batch
 
 The public-action component now binds real engine-offered attack declarations
 against the sole passive opponent. It prioritizes paying Foundry's charge cost to
@@ -17,9 +58,8 @@ must stop with sufficient actual creature power, be unable to attack with its
 new creatures that turn, then attack through an engine-offered declaration and
 cause a real terminal loss on the next legal combat; the inert Forest pilot must
 play only its legal land drop and otherwise pass. The existing eleven public
-policy fixtures remain selected. These new thirteen policy cases are pending
-runtime acceptance. No R1 corpus row is loaded and no winner is assigned by test
-or policy code. All seven excluded regression seeds remain unchanged.
+policy fixtures remain selected. All thirteen policy cases passed in accepted run `36090512239`. No R1 corpus row is loaded and no winner is assigned by test
+or policy code. All nine excluded regression seeds remain unchanged.
 
 ## Verified ordinary land-cast boundary repair
 

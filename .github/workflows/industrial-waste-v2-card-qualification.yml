@@ -60,6 +60,30 @@ jobs:
               raise SystemExit('Checked-out source does not match the requested PR head')
           PY
           python3 industrial-waste/v2/validate_r0.py
+          python3 - <<'PY'
+          import hashlib, json, os, pathlib, subprocess
+          path = pathlib.Path('industrial-waste/v2/execution-status-capability.json')
+          capability = json.loads(path.read_text())
+          for name, digest in capability['source_sha256'].items():
+              if hashlib.sha256(pathlib.Path(name).read_bytes()).hexdigest() != digest:
+                  raise SystemExit('Status capability source binding drift: ' + name)
+          protocol = json.loads(pathlib.Path(capability['protocol']).read_text())
+          if capability['limits'] != {key: protocol['design'][key] for key in ('own_turn_cap', 'submitted_action_cap')}:
+              raise SystemExit('Status capability caps differ from the frozen protocol')
+          exclusions = json.loads(pathlib.Path('industrial-waste/v2/regression-fixtures.json').read_text())
+          if capability['fixtures']['seed'] not in exclusions['seeds']:
+              raise SystemExit('Status fixture seed is not excluded from official sampling')
+          provenance = {
+              'scope': 'SEED_FREE_STATUS_CAPABILITY_NOT_R1_EXECUTION',
+              'source_head': subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip(),
+              'expected_head': os.environ['IW_V2_EXPECTED_HEAD'],
+              'capability_sha256': hashlib.sha256(path.read_bytes()).hexdigest(),
+              'verified_source_pins': capability['source_sha256'],
+              'official_initializations_by_gate': 0,
+              'official_execution_authorized': False,
+          }
+          pathlib.Path('/tmp/iw-v2-status-provenance.json').write_text(json.dumps(provenance, indent=2) + '\n')
+          PY
       - name: Qualify cards, public-information selections and unchanged legacy golden
         run: |
           scripts/gradle-locked \
@@ -70,7 +94,7 @@ jobs:
             :mtg-sets:2023:tests:test --tests '*DrossSkullbombScenarioTest' --tests '*CandyTrailScenarioTest' --tests '*MyrKinsmithScenarioTest' \
             :mtg-sets:2024:tests:test --tests '*ConduitPylonsScenarioTest' \
             :mtg-sets:2025:tests:test --tests '*PactdollTerrorScenarioTest' --tests '*TownLandSpellAdventureScenarioTest' \
-            :ai:test --tests '*IndustrialWasteV2RegistryAuditTest' --tests '*IndustrialWasteV2SelectionAdvisorTest' --tests '*IndustrialWasteV2PublicActionPolicyTest' --tests '*IndustrialWasteV2OrderingIntegrationTest' --tests '*IndustrialWasteV2EventMetricsTest' --tests '*IndustrialWasteAdvisorModuleTest' --tests '*FrozenBaselineTest' \
+            :ai:test --tests '*IndustrialWasteV2RegistryAuditTest' --tests '*IndustrialWasteV2SelectionAdvisorTest' --tests '*IndustrialWasteV2PublicActionPolicyTest' --tests '*IndustrialWasteV2OrderingIntegrationTest' --tests '*IndustrialWasteV2EventMetricsTest' --tests '*IndustrialWasteV2ExecutionStatusTest' --tests '*IndustrialWasteAdvisorModuleTest' --tests '*FrozenBaselineTest' \
             --continue --no-daemon
       - name: Generate reviewable card snapshots for only the newly admitted cards
         run: |
@@ -99,6 +123,8 @@ jobs:
             mtg-sets/2025/tests/build/test-results/test/TEST-*.xml
             industrial-waste/v2/runtime-evidence/registry-audit.txt
             /tmp/iw-v2-card-snapshot.diff
+            /tmp/iw-v2-status-provenance.json
+            industrial-waste/v2/execution-status-capability.json
             mtg-sets/src/test/resources/snapshots/cards/TSP.json
             mtg-sets/src/test/resources/snapshots/cards/ROE.json
           if-no-files-found: error
