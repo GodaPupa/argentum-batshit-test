@@ -2422,6 +2422,72 @@
     ]
 }
 
+// Murmuring Mystic
+{
+    "name": "Murmuring Mystic",
+    "manaCost": "{3}{U}",
+    "typeLine": "Creature — Human Wizard",
+    "oracleText": "Whenever you cast an instant or sorcery spell, create a 1/1 blue Bird Illusion creature token with flying.",
+    "creatureStats": {
+        "power": 1,
+        "toughness": 5
+    },
+    "script": {
+        "triggeredAbilities": [
+            {
+                "id": "ability_1",
+                "trigger": {
+                    "type": "SpellCastEvent",
+                    "spellFilter": {
+                        "cardPredicates": [
+                            {
+                                "type": "Or",
+                                "predicates": [
+                                    "IsInstant",
+                                    "IsSorcery"
+                                ]
+                            }
+                        ]
+                    }
+                },
+                "binding": "ANY",
+                "effect": {
+                    "type": "CreateToken",
+                    "power": 1,
+                    "toughness": 1,
+                    "colors": [
+                        "BLUE"
+                    ],
+                    "creatureTypes": [
+                        "Bird",
+                        "Illusion"
+                    ],
+                    "keywords": [
+                        "FLYING"
+                    ],
+                    "imageUri": "https://cards.scryfall.io/normal/front/0/3/03c3dc23-d6f2-4209-82e1-a0b936c94231.jpg?1783934064"
+                }
+            }
+        ]
+    },
+    "metadata": {
+        "collectorNumber": "45",
+        "rarity": "UNCOMMON",
+        "artist": "Mark Winters",
+        "flavorText": "Rumors float through the city like crows, alighting on citizens seemingly at random.",
+        "imageUri": "https://cards.scryfall.io/normal/front/5/f/5fc6adff-dcb3-456d-a8c2-0e77b784ff89.jpg?1783934187",
+        "rulings": [
+            {
+                "date": "2018-10-05",
+                "text": "Murmuring Mystic's triggered ability resolves before the spell that caused it to trigger. It resolves even if that spell is countered."
+            }
+        ]
+    },
+    "colorIdentityOverride": [
+        "BLUE"
+    ]
+}
+
 // Muse Drake
 {
     "name": "Muse Drake",

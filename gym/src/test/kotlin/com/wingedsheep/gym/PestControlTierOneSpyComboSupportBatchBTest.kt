@@ -17,13 +17,14 @@ class PestControlTierOneSpyComboSupportBatchBTest : FunSpec({
         }
         PestControlTierOneSpyComboAdmission.validationErrors(TierOneSpyComboAdmission()) shouldBe emptyList()
         PestControlTierOneSpyComboAdmission.unresolvedMain(registry) shouldBe linkedMapOf("Nyxborn Hydra" to 2)
+        // Current support after postboard batch A; the accepted Batch B artifact retains
+        // its historical six-identity queue including Nylea's Disciple.
         PestControlTierOneSpyComboAdmission.unresolvedSideboard(registry) shouldBe linkedMapOf(
             "Jack-o'-Lantern" to 1,
             "Nyxborn Hydra" to 1,
             "Flaring Pain" to 1,
             "Faerie Macabre" to 2,
             "Acorn Harvest" to 1,
-            "Nylea's Disciple" to 4,
         )
     }
 })
