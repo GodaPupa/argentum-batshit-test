@@ -69,3 +69,10 @@ Deterministic qualification uses only invented observations labeled
 ```sh
 python3 -m unittest discover -s experiments/manual-transmission-phase2 -p 'test_metrics_contract.py' -v
 ```
+
+
+## Accepted deterministic component qualification
+
+Run `36107734876` completed successfully for branch source `b9355536ebc9a74aff2de77dafbc35dba8b86ff5`. Its telemetry artifact `10852172404` is 1,487 bytes with GitHub digest `sha256:08b6398a3ca4feadba48f3dc0b7900f1567de660d5ce88d598662692d9f0eb76`. The retained transcript reports **17 tests run, 17 passed**, with no failures or errors. The workflow also re-verified the frozen Phase 2 boundary and recorded exact source hashes for the contract, tests and this scope document. The concurrent Phase 2 capability audit `36107734749` and full CI `36107734819` passed on the same branch HEAD.
+
+Disposition: **ACCEPTED_FOR_EXERCISED_SEED_FREE_TELEMETRY_COMPONENT_ONLY**. This accepts the hash-linked record/audit/export component; it does not qualify the exact-engine adapter, typed complex collectors, Cruise/Sport/Race or opponent pilots, durable attempt-before-initialization journal, or any official capability/primary game. Official counters remain **0/36 capability games and 0/864 primary games**. The accepted canonical post-cast/state-based-action repair merged to main after this qualification and still requires exact Phase 2 integration and requalification before gameplay.
