@@ -133,12 +133,12 @@ class IzzetScienceVeteranBeastriderEngineReadinessTest : FunSpec({
         val unresolved = IzzetScienceVeteranBeastriderEngineReadiness.unresolvedCardIdentities(registry)
         println("V09_REAL_ENGINE_UNRESOLVED_COUNT=" + unresolved.size)
         unresolved.forEach { println("V09_REAL_ENGINE_UNRESOLVED=" + it) }
-        unresolved.size shouldBe 6
+        unresolved.size shouldBe 5
     }
 
     test("full execution remains fail closed behind unresolved cards and PDH semantics") {
         val blockers = IzzetScienceVeteranBeastriderEngineReadiness.executionBlockers(registry)
-        blockers.size shouldBe 11
+        blockers.size shouldBe 10
         blockers.takeLast(5).shouldContainExactly(
             "PDH commander-zone initialization not qualified",
             "PDH commander recast/tax semantics not qualified",
