@@ -1,6 +1,6 @@
 # Industrial Waste v2 — Structural Redesign
 
-Status: **R0 EXACT CANDIDATES AND R1 DESIGN FROZEN — CAPABILITY PENDING / NO GAMEPLAY**
+Status: **R0 AND R1 DESIGN FROZEN — 116 SCOPED CAPABILITY FIXTURES ACCEPTED / OFFICIAL R1 BLOCKED**
 
 The three candidates, normalized counts, exact byte identities, current legality
 sources and prospective R1 ordering corpus are now recorded in `r0-freeze.json`.
@@ -45,11 +45,15 @@ eight fixed fixtures for observed copies, actual Tron access, full Tron, complet
 resource-neutral Retriever cycles, recursion and real lethal resolution.
 Inventory alone cannot establish a loop, and unseen library copies cannot
 establish observation. Transcript extraction replay is distinct from full game
-initialization replay. These repairs and the metric component await runtime
-qualification; the failed 107-test run does not accept the complete ordering
-capability. Complete pilot integration, all checkpoint mana/cap/conversion
-metrics, full replay, the known shared priority-rule repair, effective rules
-archive and guarded runtime bindings remain necessary before R1 execution.
+initialization replay. `capability-qualification-36090512239.json` now accepts these scoped components
+at `717b5e80f1116341a513d97acf12fd54c08327b0`: all 116 fixtures across 22
+suites passed with zero skips, unchanged snapshots and unchanged legacy golden.
+The exact artifact and its raw XML are archived. Full CI, R0/static arithmetic
+and the two legacy card-only scenario gates passed at that source. The earlier
+107-test failure remains recorded. Complete pilot integration, all checkpoint
+mana/cap/conversion metrics, full replay, integration and qualification of the
+shared priority and post-cast state-based-action repairs, effective rules archive
+and guarded runtime bindings remain necessary before R1 execution.
 Official counters remain zero.
 
 This is a new experimental program. It does not continue Gate 11 and it does not overwrite the
