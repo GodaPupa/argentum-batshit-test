@@ -1,0 +1,66 @@
+name: Pest Control Tier-1 Spy Support Batch B
+
+on:
+  pull_request:
+    paths:
+      - .github/workflows/pest-control-tier-one-spy-support-batch-b.yml
+      - 'docs/experiments/pest-control/tier-one-spy-support-batch-b*'
+      - gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOneSpyComboSupportBatchATest.kt
+      - gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOneSpyComboSupportBatchBTest.kt
+      - '**/LandGrant.kt'
+      - '**/LandGrantScenarioTest.kt'
+      - '**/WindingWay.kt'
+      - '**/WindingWayScenarioTest.kt'
+      - '**/MesmericFiend.kt'
+      - '**/MesmericFiendScenarioTest.kt'
+      - '**/WallOfRoots.kt'
+      - '**/WallOfRootsScenarioTest.kt'
+      - 'mtg-sdk/src/main/**'
+      - 'rules-engine/src/main/**'
+      - '**/ChosenCardTypePredicateTest.kt'
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Qualify four cards and exact remaining capability queue
+        env:
+          PEST_SPY_ADMISSION_REPORT: ${{ github.workspace }}/build/reports/pest-spy-support-batch-b/report.txt
+        run: |
+          set -euo pipefail
+          run_stage() {
+            local stage="$1" class="$2" module="$3" status=0
+            scripts/test-class "$class" --info --stacktrace || status=$?
+            mkdir -p "build/reports/pest-spy-support-batch-b/test-results/$stage"
+            if [ -d "$module/build/test-results/test" ]; then
+              cp -a "$module/build/test-results/test/." "build/reports/pest-spy-support-batch-b/test-results/$stage/"
+            fi
+            return "$status"
+          }
+          run_stage chosen-type-predicate ChosenCardTypePredicateTest rules-engine
+          run_stage land-grant LandGrantScenarioTest mtg-sets/1993-1999/tests
+          run_stage winding-way WindingWayScenarioTest mtg-sets/2017-2022/tests
+          run_stage mesmeric-fiend MesmericFiendScenarioTest mtg-sets/2000-2002/tests
+          run_stage wall-of-roots WallOfRootsScenarioTest mtg-sets/1993-1999/tests
+          run_stage prior-support PestControlTierOneSpyComboSupportBatchATest gym
+          run_stage remaining-queue PestControlTierOneSpyComboSupportBatchBTest gym
+          run_stage frozen-admission PestControlTierOneSpyComboAdmissionTest gym
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: pest-control-tier-one-spy-support-batch-b
+          path: build/reports/pest-spy-support-batch-b
+          if-no-files-found: error
+          retention-days: 90
