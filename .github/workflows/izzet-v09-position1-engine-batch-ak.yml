@@ -1,0 +1,155 @@
+name: Izzet Position-1 Engine Batch AK
+
+on:
+  push:
+    branches: ["mayhem/izzet-science"]
+    paths:
+      - ".github/workflows/izzet-v09-position1-engine-batch-ak.yml"
+      - "mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/m20/cards/BrightwoodTracker.kt"
+      - "mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/mh2/cards/DeepwoodDenizen.kt"
+      - "mtg-sets/2024/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/j25/**"
+      - "mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/BrightwoodTrackerScenarioTest.kt"
+      - "mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/DeepwoodDenizenScenarioTest.kt"
+      - "mtg-sets/2024/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/ShardlessOutlanderScenarioTest.kt"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: izzet-position1-batch-ak
+  cancel-in-progress: false
+
+jobs:
+  qualify-batch-ak:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "21"
+      - uses: gradle/actions/setup-gradle@v6
+
+      - name: Verify frozen identities and preceding acceptance
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(sha256sum izzet-science/v0.7-control.md | cut -d' ' -f1)" = "726f5e9458b46dda30b33a6ce9f3c3237b25d6e11b81dac85308c3065c108a01"
+          test "$(sha256sum izzet-science/opponents/veteran-beastrider-commander-clash-2025.txt | cut -d' ' -f1)" = "c3ab6ee8e37a78219e7bbb7c6a75c634d78c1eb4965ab0db3abd5d853398b0be"
+          grep -Fq 'Batch AJ is accepted' izzet-science/v09-position1-engine-batch-aj-gate.md
+          grep -Fq 'V07_DECK_AUDIT_NO_CHANGE' izzet-science/v07-deck-level-audit-no-change.md
+          grep -Fq 'V09_CARD_CONTROL_ARCHITECTURE_AUDIT_KEEP_V07' izzet-science/v09-card-control-architecture-audit.md
+          grep -Fq 'Expected post-implementation unresolved count is exactly **14**' izzet-science/v09-position1-engine-batch-ak-gate.md
+          mkdir -p /tmp/izzet-batch-ak
+
+      - name: Qualify the three individual card behaviors
+        shell: bash
+        run: |
+          set -euo pipefail
+          scripts/test-class BrightwoodTrackerScenarioTest --info --stacktrace | tee /tmp/izzet-batch-ak/brightwood.txt
+          scripts/test-class DeepwoodDenizenScenarioTest --info --stacktrace | tee /tmp/izzet-batch-ak/deepwood.txt
+          scripts/test-class ShardlessOutlanderScenarioTest --info --stacktrace | tee /tmp/izzet-batch-ak/shardless.txt
+
+      - name: Verify exact real-engine registry coverage
+        shell: bash
+        run: |
+          set -euo pipefail
+          scripts/test-class IzzetScienceVeteranBeastriderEngineReadinessTest --info --stacktrace | tee /tmp/izzet-batch-ak/readiness.txt
+          grep -Fq 'V09_REAL_ENGINE_UNRESOLVED_COUNT=14' /tmp/izzet-batch-ak/readiness.txt
+          ! grep -Fq 'unresolved Izzet card:' /tmp/izzet-batch-ak/readiness.txt
+          ! grep -Eq 'unresolved Veteran Beastrider card: (Brightwood Tracker|Deepwood Denizen|Shardless Outlander)' /tmp/izzet-batch-ak/readiness.txt
+
+      - name: Regenerate canonical snapshots and reject unrelated changes
+        shell: bash
+        run: |
+          set -euo pipefail
+          scripts/gradle-locked :mtg-sets:test --tests "*CardDefinitionSnapshotTest" -DupdateSnapshots=true --stacktrace | tee /tmp/izzet-batch-ak/snapshot-generation.txt
+          python3 - <<'PY'
+          import json, pathlib, re, subprocess
+          expected = {'M20': 'Brightwood Tracker', 'MH2': 'Deepwood Denizen', 'J25': 'Shardless Outlander'}
+          paths = {f'mtg-sets/src/test/resources/snapshots/cards/{code}.json' for code in expected}
+          changed = set(subprocess.check_output(['git', 'diff', '--name-only'], text=True).splitlines())
+          changed |= set(subprocess.check_output(['git', 'ls-files', '--others', '--exclude-standard'], text=True).splitlines())
+          assert changed == paths, (changed, paths)
+          def records(text):
+              chunks = re.split(r'^// ([^\n]+)\n', text, flags=re.M)
+              assert not chunks[0].strip(), 'unexpected snapshot preamble'
+              result = {}
+              for i in range(1, len(chunks), 2):
+                  assert chunks[i] not in result, 'duplicate card in snapshot'
+                  result[chunks[i]] = json.loads(chunks[i + 1])
+              return result
+          for code, name in expected.items():
+              path = f'mtg-sets/src/test/resources/snapshots/cards/{code}.json'
+              prior = subprocess.run(['git', 'show', 'HEAD:' + path], text=True, capture_output=True)
+              if prior.returncode:
+                  assert code == 'J25', 'missing existing snapshot'
+              before = records(prior.stdout) if prior.returncode == 0 else {}
+              after = records(pathlib.Path(path).read_text())
+              assert set(after) == set(before) | {name}
+              assert name not in before
+              for old_name, old_card in before.items():
+                  assert after[old_name] == old_card, 'unrelated card changed: ' + old_name
+          print('BATCH_AK_ONLY_THREE_EXPECTED_CARD_ADDITIONS_PASS')
+          PY
+          git diff --check
+
+      - name: Requalify all canonical snapshots with updating disabled
+        shell: bash
+        run: |
+          set -euo pipefail
+          scripts/gradle-locked :mtg-sets:cleanTest :mtg-sets:test --tests "*CardDefinitionSnapshotTest" -DupdateSnapshots=false --stacktrace | tee /tmp/izzet-batch-ak/snapshot-verification.txt
+
+      - name: Verify untouched official execution and integrate exact snapshots
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -Fq 'officialGamesAuthorized: Int = 0' gym/src/main/kotlin/com/wingedsheep/gym/matchup/IzzetScienceVeteranBeastriderEngineReadiness.kt
+          grep -Fq 'officialSeedsConsumed: Int = 0' gym/src/main/kotlin/com/wingedsheep/gym/matchup/IzzetScienceVeteranBeastriderEngineReadiness.kt
+          grep -Fq 'outcomeExposure: Int = 0' gym/src/main/kotlin/com/wingedsheep/gym/matchup/IzzetScienceVeteranBeastriderEngineReadiness.kt
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add mtg-sets/src/test/resources/snapshots/cards/{M20,MH2,J25}.json
+          git commit -m "Qualify three-card Izzet coverage batch AK snapshots"
+          git fetch origin mayhem/izzet-science
+          test "$(git rev-parse origin/mayhem/izzet-science)" = "${GITHUB_SHA}"
+          git push origin HEAD:mayhem/izzet-science
+
+      - name: Emit complete batch provenance
+        shell: bash
+        run: |
+          set -euo pipefail
+          {
+            echo "schema=izzet-v09-position1-engine-batch-ak-v1"
+            echo "source_sha=${GITHUB_SHA}"
+            echo "snapshot_commit=$(git rev-parse HEAD)"
+            echo "snapshot_tree=$(git rev-parse HEAD^{tree})"
+            echo "implemented=Brightwood Tracker;Deepwood Denizen;Shardless Outlander"
+            echo "unresolved_before=17"
+            echo "unresolved_after=14"
+            echo "unresolved_izzet_after=0"
+            echo "official_seeds_consumed=0"
+            echo "games_initialized=0"
+            echo "outcome_exposure=0"
+            sha256sum izzet-science/v0.7-control.md izzet-science/opponents/veteran-beastrider-commander-clash-2025.txt
+            sha256sum izzet-science/v09-position1-engine-batch-ak-gate.md .github/workflows/izzet-v09-position1-engine-batch-ak.yml
+            sha256sum mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/m20/cards/BrightwoodTracker.kt
+            sha256sum mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/mh2/cards/DeepwoodDenizen.kt
+            sha256sum mtg-sets/2024/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/j25/FoundationsJumpstartSet.kt
+            sha256sum mtg-sets/2024/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/j25/cards/ShardlessOutlander.kt
+            sha256sum mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/{BrightwoodTracker,DeepwoodDenizen}ScenarioTest.kt
+            sha256sum mtg-sets/2024/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/ShardlessOutlanderScenarioTest.kt
+            sha256sum gym/src/test/kotlin/com/wingedsheep/gym/IzzetScienceVeteranBeastriderEngineReadinessTest.kt
+            sha256sum mtg-sets/src/test/resources/snapshots/cards/{M20,MH2,J25}.json
+            sha256sum /tmp/izzet-batch-ak/{brightwood,deepwood,shardless,readiness,snapshot-generation,snapshot-verification}.txt
+          } > /tmp/izzet-batch-ak/manifest.txt
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: izzet-v09-position1-engine-batch-ak
+          path: /tmp/izzet-batch-ak
+          if-no-files-found: error

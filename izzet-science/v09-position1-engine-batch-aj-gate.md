@@ -70,3 +70,21 @@ not evidence about deck strength.
 - This snapshot stage uploads no artifact. Formal qualification with a complete manifest and
   transcript remains required before Batch AJ acceptance.
 - Official seeds consumed, games initialized, and outcome exposure remain **0/0/0**.
+
+## Formal qualification and acceptance
+
+- Formal qualification run **36079800539**, job **107899029133**: **SUCCESS**.
+- Accepted source SHA: **bac4e0260e7ed3c6c4b68677be30d38269dbefac**.
+- Artifact **10841432827**, `izzet-v09-position1-engine-batch-aj`.
+- Artifact ZIP SHA-256:
+  `70762e65c8350b85c4536d1726aeff6c3a6a4ebbce4c4acc615fb512a4ae303e`.
+- Independent download reproduced GitHub's exact ZIP digest, found exactly manifest.txt and
+  test-output.txt, and verified the transcript digest and every source-file digest against the
+  accepted commit. The exact frozen v0.7 digest was independently reproduced.
+- Formal logs and the artifact confirm full canonical snapshots, Spirit Link semantics,
+  **18 -> 17** unresolved Veteran identities, **zero** unresolved Izzet identities,
+  and official seeds consumed / games initialized / outcome exposure of **0/0/0**.
+- **Batch AJ is accepted.** Card-control disposition remains **KEEP_V07 / NO CARD CHANGES**.
+- The frozen twelve-seed vector is unchanged. Official sampled games completed remain **0/12**.
+  Position 1 remains blocked by remaining exact card, PDH, concrete-pilot, and ledger readiness;
+  positions 2–12 remain unauthorized.
