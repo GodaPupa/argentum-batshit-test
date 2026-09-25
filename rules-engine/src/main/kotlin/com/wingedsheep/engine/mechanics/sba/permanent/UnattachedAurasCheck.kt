@@ -97,13 +97,13 @@ class UnattachedAurasCheck(
                 val current = container.get<AttachedToComponent>()
                 if (current == null || current.targetId == hostLeft.lastKnownHostId) {
                     if (isAura) {
-                        // CR 704.5m: an Aura whose host left is put into its owner's graveyard.
-                        val result = SbaZoneMovementHelper.putPermanentInGraveyard(
-                            newState, entityId, cardComponent,
-                            lastKnownAttachedTo = hostLeft.lastKnownHostId
+                        // Ordinary Auras go to graveyard. A bestowed permanent instead stops
+                        // being an Aura and remains on the battlefield as its normal permanent.
+                        val (next, auraEvents) = disposeIllegalAura(
+                            newState, entityId, cardComponent, hostLeft.lastKnownHostId
                         )
-                        newState = result.newState
-                        events.addAll(result.events)
+                        newState = next
+                        events.addAll(auraEvents)
                     } else {
                         // CR 704.5n: an Equipment whose host left becomes unattached but stays on
                         // the battlefield.
@@ -118,12 +118,9 @@ class UnattachedAurasCheck(
             val attachedTo = container.get<AttachedToComponent>()
             if (attachedTo == null) {
                 if (isAura) {
-                    // Aura not attached to anything - goes to graveyard
-                    val result = SbaZoneMovementHelper.putPermanentInGraveyard(
-                        newState, entityId, cardComponent
-                    )
-                    newState = result.newState
-                    events.addAll(result.events)
+                    val (next, auraEvents) = disposeIllegalAura(newState, entityId, cardComponent)
+                    newState = next
+                    events.addAll(auraEvents)
                 }
                 // Equipment not attached to anything is fine - stays on battlefield
             } else if (isAura && attachedTo.targetId in state.turnOrder) {
@@ -136,13 +133,11 @@ class UnattachedAurasCheck(
                 // Check if attached target still exists on battlefield
                 if (attachedTo.targetId !in state.getBattlefield()) {
                     if (isAura) {
-                        // Aura's target gone - goes to graveyard
-                        val result = SbaZoneMovementHelper.putPermanentInGraveyard(
-                            newState, entityId, cardComponent,
-                            lastKnownAttachedTo = attachedTo.targetId
+                        val (next, auraEvents) = disposeIllegalAura(
+                            newState, entityId, cardComponent, attachedTo.targetId
                         )
-                        newState = result.newState
-                        events.addAll(result.events)
+                        newState = next
+                        events.addAll(auraEvents)
                     } else {
                         // Equipment's target gone - just detach, stays on battlefield
                         val (detached, unattachEvents) = unattachEmittingEvent(newState, entityId)
@@ -167,17 +162,19 @@ class UnattachedAurasCheck(
                     newState = detached
                     events.addAll(unattachEvents)
                 } else if (
-                    isAura && hostFailsEnchantRestriction(state, projected, entityId, cardComponent, attachedTo.targetId)
-                ) {
-                    // CR 303.4c / 704.5m: the host no longer matches this Aura's "Enchant …"
-                    // restriction (control changed hands, the host stopped being a creature, …),
-                    // so the Aura is illegally attached and goes to its owner's graveyard.
-                    val result = SbaZoneMovementHelper.putPermanentInGraveyard(
-                        newState, entityId, cardComponent,
-                        lastKnownAttachedTo = attachedTo.targetId
+                    isAura && (
+                        // Bestow synthesizes "enchant creature" rather than storing it in the
+                        // card definition's printed auraTarget, so enforce that restriction here.
+                        (container.get<com.wingedsheep.engine.state.components.identity.BestowComponent>() != null &&
+                            !projected.isCreature(attachedTo.targetId)) ||
+                        hostFailsEnchantRestriction(state, projected, entityId, cardComponent, attachedTo.targetId)
                     )
-                    newState = result.newState
-                    events.addAll(result.events)
+                ) {
+                    val (next, auraEvents) = disposeIllegalAura(
+                        newState, entityId, cardComponent, attachedTo.targetId
+                    )
+                    newState = next
+                    events.addAll(auraEvents)
                 } else if (
                     hostProtectedFromAttachmentColor(projected, entityId, cardComponent, attachedTo.targetId)
                 ) {
@@ -186,12 +183,11 @@ class UnattachedAurasCheck(
                     // already-attached Holy Strength to the graveyard). Aura -> owner's graveyard
                     // (704.5m); Equipment -> unattaches, stays on the battlefield (704.5n).
                     if (isAura) {
-                        val result = SbaZoneMovementHelper.putPermanentInGraveyard(
-                            newState, entityId, cardComponent,
-                            lastKnownAttachedTo = attachedTo.targetId
+                        val (next, auraEvents) = disposeIllegalAura(
+                            newState, entityId, cardComponent, attachedTo.targetId
                         )
-                        newState = result.newState
-                        events.addAll(result.events)
+                        newState = next
+                        events.addAll(auraEvents)
                     } else {
                         val (detached, unattachEvents) = unattachEmittingEvent(newState, entityId)
                         newState = detached
@@ -202,6 +198,42 @@ class UnattachedAurasCheck(
         }
 
         return ExecutionResult.success(newState, events)
+    }
+
+    /**
+     * Handle an Aura that would be put into its owner's graveyard by attachment SBAs.
+     *
+     * CR 702.103f is the Bestow exception: when a bestowed permanent becomes unattached, the
+     * bestow effect ends and it resumes its normal permanent characteristics instead of being
+     * put into a graveyard for being an unattached Aura.
+     */
+    private fun disposeIllegalAura(
+        state: GameState,
+        auraId: EntityId,
+        cardComponent: CardComponent,
+        lastKnownAttachedTo: EntityId? = null
+    ): Pair<GameState, List<com.wingedsheep.engine.core.GameEvent>> {
+        val marker = state.getEntity(auraId)
+            ?.get<com.wingedsheep.engine.state.components.identity.BestowComponent>()
+
+        if (marker != null) {
+            val (detached, detachEvents) = unattachEmittingEvent(state, auraId)
+            val restored = detached.updateEntity(auraId) { c ->
+                var updated = c
+                    .without<com.wingedsheep.engine.state.components.identity.BestowComponent>()
+                    .without<AttachmentHostLeftComponent>()
+                c.get<CardComponent>()?.let { card ->
+                    updated = updated.with(card.copy(typeLine = marker.originalTypeLine))
+                }
+                updated
+            }
+            return restored to detachEvents
+        }
+
+        val result = SbaZoneMovementHelper.putPermanentInGraveyard(
+            state, auraId, cardComponent, lastKnownAttachedTo = lastKnownAttachedTo
+        )
+        return result.newState to result.events
     }
 
     /**
