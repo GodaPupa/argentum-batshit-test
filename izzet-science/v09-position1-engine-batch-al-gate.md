@@ -74,3 +74,20 @@ each card also has its own source/test commit. The existing validation-only PR r
 Accepted coverage must not advance from 14 to 11 until the complete artifact passes independent
 audit. Workflow success is validation evidence only. Official sampled counters remain 12 generated,
 0 consumed, 0 initialized, 0 completed/12, 0 outcome exposure/12. KEEP_V07 / NO CARD CHANGES.
+
+## Independent acceptance audit
+
+**Batch AL is accepted.** The artifact from [validation run 36083351936](https://github.com/GodaPupa/argentum-batshit-test/actions/runs/36083351936)
+and job `107909832391` passed independent archive and repository comparison. Source was
+`599fbbd45edf7d80d625f233601679d381e190b0`; guarded snapshot integration produced
+`5539c7a37e2e7c9febc291f041ee7925d083a309`, tree `316572fecc9a9211ec2ef687bc3c1bc00cf5874f`.
+Artifact `10842364915`, `izzet-v09-position1-engine-batch-al`, is 300476 bytes with ZIP SHA-256
+`dfc337d8c0c5b581107e2a0d2540a0a9fd1590d08bc7f279dd3a355ba8730674`.
+
+The archive has exactly the manifest and seven successful transcripts. All 24 manifest digests match
+the source, snapshot, frozen control files, or archived transcripts as appropriate. The snapshot diff
+contains exactly TSP, CLB, and EMN additions for these three cards; every preexisting card object is
+unchanged. Exact canonical combined-name lookup tests and existing registry regressions passed.
+Accepted unresolved coverage is **14 → 11**, all Veteran; Izzet remains at zero unresolved identities.
+The five full-readiness guards remain. This was deterministic qualification only: 12 official seeds
+generated, 0 consumed, 0 initialized, 0 completed/12 and 0 outcome exposure/12.
