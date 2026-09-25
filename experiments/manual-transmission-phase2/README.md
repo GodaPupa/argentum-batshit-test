@@ -56,9 +56,10 @@ rules release before the eventual official seed freeze.
 
 ## Current accepted evidence and remaining queue
 
-`accepted-capability-inventory-r2.json` records the independently audited seed-free
-card and multiplayer evidence from run `36080499999`, including the preserved raw
-artifact digests. It supersedes the remaining-card counts in inventory r1 without
+`accepted-capability-inventory-r3.json` records the independently audited seed-free
+card and multiplayer evidence from run `36083194606`, including the preserved raw
+artifact digests. It includes the accepted seven-card snapshots and complete required checks, and
+supersedes the remaining-card counts in inventory r1 without
 rewriting that historical record. The registry resolves 446 of 800 physical entries
 across the eight exact 100-card lists; 354 entries representing 223 unique identities
 remain unresolved. The Manual control itself has 32 unresolved identities. Registry

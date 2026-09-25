@@ -27,6 +27,14 @@ on:
       - 'mtg-sets/**/scenarios/RapidHybridizationScenarioTest.kt'
       - 'mtg-sets/**/scenarios/CloudOfFaeriesScenarioTest.kt'
       - 'mtg-sets/**/scenarios/PeregrineDrakeScenarioTest.kt'
+      - 'mtg-sets/**/cards/NestInvader.kt'
+      - 'mtg-sets/**/scenarios/NestInvaderScenarioTest.kt'
+      - 'mtg-sets/**/cards/EmrakulsHatcher.kt'
+      - 'mtg-sets/**/scenarios/EmrakulsHatcherScenarioTest.kt'
+      - 'mtg-sets/**/cards/EyelessWatcher.kt'
+      - 'mtg-sets/**/scenarios/EyelessWatcherScenarioTest.kt'
+      - 'mtg-sets/**/cards/EldraziRepurposer.kt'
+      - 'mtg-sets/**/scenarios/EldraziRepurposerScenarioTest.kt'
       - 'mtg-sets/src/test/resources/snapshots/cards/**'
       - '.github/workflows/manual-transmission-phase2-capability.yml'
 
@@ -88,13 +96,14 @@ jobs:
         run: |
           scripts/gradle-locked :mtg-sets:2003-2007:tests:test --tests "*PongifyScenarioTest" \
             :mtg-sets:1993-1999:tests:test --tests "*CloudOfFaeriesScenarioTest" --tests "*PeregrineDrakeScenarioTest" \
-            :mtg-sets:2008-2016:tests:test --tests "*AnimarSoulOfElementsScenarioTest" --tests "*AncestralStatueScenarioTest" --tests "*RapidHybridizationScenarioTest" \
-            :mtg-sets:2017-2022:tests:test --tests "*ParadiseDruidScenarioTest" --info --stacktrace
+            :mtg-sets:2008-2016:tests:test --tests "*AnimarSoulOfElementsScenarioTest" --tests "*AncestralStatueScenarioTest" --tests "*RapidHybridizationScenarioTest" --tests "*NestInvaderScenarioTest" --tests "*EmrakulsHatcherScenarioTest" --tests "*EyelessWatcherScenarioTest" \
+            :mtg-sets:2017-2022:tests:test --tests "*ParadiseDruidScenarioTest" \
+            :mtg-sets:2024:tests:test --tests "*EldraziRepurposerScenarioTest" --info --stacktrace
       - name: Preserve per-card scenario evidence
         if: always()
         run: |
           mkdir -p build/reports/manual-transmission-phase2/card-scenarios
-          for era in 1993-1999 2003-2007 2008-2016 2017-2022; do
+          for era in 1993-1999 2003-2007 2008-2016 2017-2022 2024; do
             if [ -d "mtg-sets/$era/tests/build/test-results/test" ]; then
               cp -R "mtg-sets/$era/tests/build/test-results/test" "build/reports/manual-transmission-phase2/card-scenarios/$era"
             fi
