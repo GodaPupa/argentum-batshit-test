@@ -97,7 +97,7 @@ class FlashbackCounterDestinationTest : FunSpec({
         d.replaceState(SerializationTestSupport.roundTrip(d.state))
         counter(d, id, Zone.LIBRARY) shouldBe before
     }
-    for (paid in listOf(null, AlternativeCostType.ESCAPE)) {
+    for (paid in listOf(null, AlternativeCostType.MAYHEM)) {
         test("graveyard origin and printed flashback do not override another paid identity: $paid") {
             val d = fixture()
             val id = cast(d, true)
