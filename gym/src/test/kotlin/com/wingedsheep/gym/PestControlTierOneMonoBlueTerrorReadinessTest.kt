@@ -59,8 +59,6 @@ class PestControlTierOneMonoBlueTerrorReadinessTest : FunSpec({
 
         PestControlTierOneMonoBlueTerrorReadiness.unresolvedSideboard(registry).entries.map { it.key to it.value }
             .shouldContainExactly(
-                "Gut Shot" to 3,
-                "Hydroblast" to 4,
                 "Spreading Seas" to 3,
             )
     }
@@ -73,15 +71,13 @@ class PestControlTierOneMonoBlueTerrorReadinessTest : FunSpec({
             "Spreading Seas" to 3,
         )
         PestControlTierOneMonoBlueTerrorReadiness.currentUnsupportedSideboard shouldBe linkedMapOf(
-            "Gut Shot" to 3,
-            "Hydroblast" to 4,
             "Spreading Seas" to 3,
         )
         TierOneMonoBlueTerrorReadiness().sideboardStatus shouldBe
             "FROZEN_15; NOT_INSTANTIATED; BLOCKED_4_IDENTITIES_11_SLOTS"
     }
 
-    for (missingCard in listOf("Annul", "Murmuring Mystic")) {
+    for (missingCard in listOf("Annul", "Murmuring Mystic", "Gut Shot", "Hydroblast")) {
         test("current support rejects a missing required sideboard identity: $missingCard") {
             val incompleteRegistry = CardRegistry().apply {
                 registry.allCardNames().filter { it != missingCard }.forEach { register(registry.requireCard(it)) }
