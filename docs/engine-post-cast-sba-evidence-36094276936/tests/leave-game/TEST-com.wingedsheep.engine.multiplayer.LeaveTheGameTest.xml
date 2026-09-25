@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.wingedsheep.engine.multiplayer.LeaveTheGameTest" tests="16" skipped="0" failures="0" errors="0" timestamp="2026-09-25T04:29:15.498Z" hostname="runnervmtr4k5" time="2.01">
+  <properties/>
+  <testcase name="conceding in a four-player pod marks the player left and continues the game" classname="com.wingedsheep.engine.multiplayer.LeaveTheGameTest" time="1.368"/>
+  <testcase name="conceding in a two-player game still ends the game with the other player winning" classname="com.wingedsheep.engine.multiplayer.LeaveTheGameTest" time="0.009"/>
+  <testcase name="the leaver's owned objects leave the game (CR 800.4a)" classname="com.wingedsheep.engine.multiplayer.LeaveTheGameTest" time="0.017"/>
+  <testcase name="a creature the leaver stole reverts to its owner (control effect ends, CR 800.4a)" classname="com.wingedsheep.engine.multiplayer.LeaveTheGameTest" time="0.037"/>
+  <testcase name="a creature the leaver owns but another player controls leaves the game (CR 800.4a)" classname="com.wingedsheep.engine.multiplayer.LeaveTheGameTest" time="0.008"/>
+  <testcase name="the leaver's spells and abilities on the stack cease to exist (CR 800.4a)" classname="com.wingedsheep.engine.multiplayer.LeaveTheGameTest" time="0.016"/>
+  <testcase name="combat continues when the leaver's attacker is removed (its blocker stops blocking it)" classname="com.wingedsheep.engine.multiplayer.LeaveTheGameTest" time="0.006"/>
+  <testcase name="attackers aimed at the leaver are removed from combat; the rest of the attack stands (CR 800.4e)" classname="com.wingedsheep.engine.multiplayer.LeaveTheGameTest" time="0.008"/>
+  <testcase name="a player who has left the game is not a legal attack target (CR 800.4a)" classname="com.wingedsheep.engine.multiplayer.LeaveTheGameTest" time="0.147"/>
+  <testcase name="a resolved spell's effect outlives its caster's departure (CR 611.2c) — only source-bound durations end (CR 800.4a)" classname="com.wingedsheep.engine.multiplayer.LeaveTheGameTest" time="0.008"/>
+  <testcase name="a departed player's 'until your next turn' effect lasts until that turn would have begun (CR 800.4m)" classname="com.wingedsheep.engine.multiplayer.LeaveTheGameTest" time="0.115"/>
+  <testcase name="priority held by the leaver passes to the next player still in the game (CR 800.4a)" classname="com.wingedsheep.engine.multiplayer.LeaveTheGameTest" time="0.004"/>
+  <testcase name="the active player conceding hands the turn forward without stalling" classname="com.wingedsheep.engine.multiplayer.LeaveTheGameTest" time="0.026"/>
+  <testcase name="conceding while owning the pending decision abandons it instead of deadlocking the table (CR 800.4f–h)" classname="com.wingedsheep.engine.multiplayer.LeaveTheGameTest" time="0.017"/>
+  <testcase name="a pending decision addressed to another player survives the leaver's departure" classname="com.wingedsheep.engine.multiplayer.LeaveTheGameTest" time="0.006"/>
+  <testcase name="the abandoned decision's priority skips an active player who has also left" classname="com.wingedsheep.engine.multiplayer.LeaveTheGameTest" time="0.005"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

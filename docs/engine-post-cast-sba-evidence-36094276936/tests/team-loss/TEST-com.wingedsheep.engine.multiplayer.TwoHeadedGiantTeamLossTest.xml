@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.wingedsheep.engine.multiplayer.TwoHeadedGiantTeamLossTest" tests="10" skipped="0" failures="0" errors="0" timestamp="2026-09-25T04:34:31.415Z" hostname="runnervmtr4k5" time="17.281">
+  <properties/>
+  <testcase name="a team at 0 shared life loses; the opposing team wins together (CR 810.8a/c)" classname="com.wingedsheep.engine.multiplayer.TwoHeadedGiantTeamLossTest" time="16.901"/>
+  <testcase name="conceding makes the whole team lose (CR 810.8b)" classname="com.wingedsheep.engine.multiplayer.TwoHeadedGiantTeamLossTest" time="0.036"/>
+  <testcase name="one teammate decking out loses the team, and the game-end reason is the real cause" classname="com.wingedsheep.engine.multiplayer.TwoHeadedGiantTeamLossTest" time="0.025"/>
+  <testcase name="poison is pooled by the team and the team loses at 15, not 10 (CR 810.8d / 810.10)" classname="com.wingedsheep.engine.multiplayer.TwoHeadedGiantTeamLossTest" time="0.024"/>
+  <testcase name="a team with 10 combined poison does NOT lose under the 15 threshold" classname="com.wingedsheep.engine.multiplayer.TwoHeadedGiantTeamLossTest" time="0.021"/>
+  <testcase name="a can't-lose grant on either teammate protects the whole team (CR 810.8a)" classname="com.wingedsheep.engine.multiplayer.TwoHeadedGiantTeamLossTest" time="0.022"/>
+  <testcase name="'you don't lose for having 0 or less life' on either head protects the whole team (CR 810.8a example)" classname="com.wingedsheep.engine.multiplayer.TwoHeadedGiantTeamLossTest" time="0.013"/>
+  <testcase name="'you win the game' wins for your whole team and defeats only opposing teams (CR 810.8a)" classname="com.wingedsheep.engine.multiplayer.TwoHeadedGiantTeamLossTest" time="0.032"/>
+  <testcase name="the game does not end while both teams still have a player standing" classname="com.wingedsheep.engine.multiplayer.TwoHeadedGiantTeamLossTest" time="0.019"/>
+  <testcase name="non-team game is unchanged: a player at 0 loses alone and poison threshold stays 10" classname="com.wingedsheep.engine.multiplayer.TwoHeadedGiantTeamLossTest" time="0.019"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

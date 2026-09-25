@@ -1,0 +1,54 @@
+{
+  "run_id": 36094276920,
+  "source_head": "697e65d578bc212bb994a5ec323a8055c6e4f868",
+  "conclusion": "failure",
+  "checkout": "Default pull_request merge ref; separate dedicated gate verifies exact branch HEAD",
+  "runtime_failure_artifacts_available": false,
+  "failed_jobs": [
+    {
+      "job_id": 107943093312,
+      "shard": "2025-2026 scenarios",
+      "tests": 1328,
+      "failures": 1,
+      "case": "two Prismaris produce two separate storm triggers (CR 702.40b)",
+      "cause": "Fixture constructs two same-name legendary permanents; replace the second with an actually cast and resolved nonlegendary token copy while preserving storm assertions.",
+      "log_excerpts": [
+        "2026-09-25T04:30:33.8088758Z > Task :mtg-sets:2026:tests:test FAILED",
+        "2026-09-25T04:30:34.0971241Z 1328 tests completed, 1 failed",
+        "2026-09-25T04:30:34.1023070Z PrismariTheInspirationScenarioTest > two Prismaris produce two separate storm triggers (CR 702.40b) FAILED",
+        "2026-09-25T04:30:34.1024497Z     org.opentest4j.AssertionFailedError at PrismariTheInspirationScenarioTest.kt:62",
+        "2026-09-25T04:30:42.0025192Z BUILD FAILED in 5m 11s"
+      ]
+    },
+    {
+      "job_id": 107943093373,
+      "shard": "2003-2007 scenarios",
+      "tests": 1406,
+      "failures": 1,
+      "case": "a second Thumb flips four coins per flip and still leaves exactly one counting",
+      "cause": "Fixture constructs two same-name legendary permanents; create a legal nonlegendary token copy before setting the unchanged coin RNG.",
+      "log_excerpts": [
+        "2026-09-25T04:32:48.9465988Z KrarksThumbScenarioTest > a second Thumb flips four coins per flip and still leaves exactly one counting FAILED",
+        "2026-09-25T04:32:48.9484075Z     org.opentest4j.AssertionFailedError at KrarksThumbScenarioTest.kt:70",
+        "2026-09-25T04:33:01.0674745Z 1406 tests completed, 1 failed",
+        "2026-09-25T04:33:01.5460446Z > Task :mtg-sets:2003-2007:tests:test FAILED",
+        "2026-09-25T04:33:25.2487827Z BUILD FAILED in 6m 41s"
+      ]
+    },
+    {
+      "job_id": 107943093545,
+      "shard": "rules engine",
+      "tests": 3625,
+      "failures": 1,
+      "case": "an opposing commander choice preserves the nonactive caster's priority and death trigger (owner-leaves)",
+      "cause": "Same death-trigger controller defect as the retained dedicated artifact.",
+      "log_excerpts": [
+        "2026-09-25T04:34:50.2208024Z CastPrioritySbaTest > an opposing commander choice preserves the nonactive caster's priority and death trigger (owner-leaves) FAILED",
+        "2026-09-25T04:34:50.2236351Z     org.opentest4j.AssertionFailedError at CastPrioritySbaTest.kt:248",
+        "2026-09-25T04:35:18.6156336Z 3625 tests completed, 1 failed",
+        "2026-09-25T04:35:19.7186424Z > Task :rules-engine:test FAILED",
+        "2026-09-25T04:35:19.9171010Z BUILD FAILED in 3m 30s"
+      ]
+    }
+  ]
+}

@@ -60,6 +60,10 @@ class AbundantMawScenarioTest : ScenarioTestBase() {
                     game.getLifeTotal(2) shouldBe -1
                     game.getLifeTotal(1) shouldBe 23
                 }
+                game.state.gameOver shouldBe true
+                game.state.priorityPlayerId shouldBe null
+                game.isOnBattlefield("Abundant Maw") shouldBe false
+                game.state.stack.isNotEmpty() shouldBe true // The lethal cast trigger ended the game first.
             }
         }
     }

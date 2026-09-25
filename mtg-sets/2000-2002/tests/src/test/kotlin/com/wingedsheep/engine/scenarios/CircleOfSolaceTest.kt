@@ -207,7 +207,9 @@ class CircleOfSolaceTest : FunSpec({
                 abilityId = circleAbilityId
             )
         )
-        driver.bothPass() // resolve first activation
+        driver.bothPass().isSuccess shouldBe true // resolve first activation
+        driver.priorityPlayer shouldBe activePlayer
+        driver.passPriority(activePlayer).isSuccess shouldBe true // CR 117.3b, then 117.3d.
 
         driver.submit(
             ActivateAbility(
@@ -215,8 +217,8 @@ class CircleOfSolaceTest : FunSpec({
                 sourceId = circle,
                 abilityId = circleAbilityId
             )
-        )
-        driver.bothPass() // resolve second activation
+        ).isSuccess shouldBe true
+        driver.bothPass().isSuccess shouldBe true // resolve second activation
 
         // Attack with both Goblins
         driver.passPriorityUntil(Step.DECLARE_ATTACKERS)

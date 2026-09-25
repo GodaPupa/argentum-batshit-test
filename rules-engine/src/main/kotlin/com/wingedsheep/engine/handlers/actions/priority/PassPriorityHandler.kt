@@ -23,9 +23,6 @@ import com.wingedsheep.engine.state.components.identity.TokenComponent
 import com.wingedsheep.engine.state.components.player.CreaturesDiedThisTurnComponent
 import com.wingedsheep.engine.state.components.player.EndTheTurnRequestedComponent
 import com.wingedsheep.engine.state.components.player.NonTokenCreaturesDiedThisTurnComponent
-import com.wingedsheep.engine.state.components.stack.ActivatedAbilityOnStackComponent
-import com.wingedsheep.engine.state.components.stack.SpellOnStackComponent
-import com.wingedsheep.engine.state.components.stack.TriggeredAbilityOnStackComponent
 import com.wingedsheep.sdk.core.Step
 import com.wingedsheep.sdk.core.Zone
 import kotlin.reflect.KClass
@@ -163,18 +160,12 @@ class PassPriorityHandler(
     }
 
     private fun resolveTopOfStack(state: GameState): ExecutionResult {
-        // Determine who controlled the top stack item (caster/activator) so priority
-        // returns to them after resolution, per MTG rule 117.3c
-        val topId = state.getTopOfStack()
-        val topContainer = topId?.let { state.getEntity(it) }
-        val stackItemController = topContainer?.let { container ->
-            container.get<SpellOnStackComponent>()?.casterId
-                ?: container.get<TriggeredAbilityOnStackComponent>()?.controllerId
-                ?: container.get<ActivatedAbilityOnStackComponent>()?.controllerId
-        } ?: state.activePlayerId
-
+        // CR 117.3b gives the active player priority after resolution. Preserve that boundary
+        // across every decision until effects, SBAs and trigger placement finish (CR 117.5).
+        // CR 117.3c instead concerns priority retained immediately after casting/activating.
+        val resolvingState = state.copy(stackResolutionPendingPriority = true)
         val preResolutionStackSize = state.continuationStack.size
-        val result = stackResolver.resolveTop(state)
+        val result = stackResolver.resolveTop(resolvingState)
 
         // If resolution paused mid-way (e.g., Broken Bond destroys a creature then asks
         // "may put a land from hand"), triggers from events emitted before the pause
@@ -204,7 +195,10 @@ class PassPriorityHandler(
         }
 
         if (!result.isSuccess) {
-            return result
+            // Do not publish the newly opened boundary on a rejected resolution. The public
+            // ActionProcessor also rolls back the entire attempted pass; preserve the input
+            // state and previous marker even for a direct handler caller.
+            return ExecutionResult.error(state, result.error ?: "Stack resolution did not complete")
         }
 
         // CR 720: an "end the turn" effect (e.g. Final Fantasy's Ultima) resolved. Divert to the
@@ -215,7 +209,7 @@ class PassPriorityHandler(
         if (endTheTurnPlayer != null &&
             result.newState.getEntity(endTheTurnPlayer)?.has<EndTheTurnRequestedComponent>() == true
         ) {
-            return endTheTurn(result.newState, result.events)
+            return endTheTurn(result.newState.copy(stackResolutionPendingPriority = false), result.events)
         }
 
         // Track nontoken creature deaths from resolution events
@@ -254,7 +248,7 @@ class PassPriorityHandler(
         var combinedEvents = result.events + sbaResult.events
 
         if (sbaResult.newState.gameOver) {
-            return ExecutionResult.success(sbaResult.newState, combinedEvents)
+            return finishResolutionPriority(sbaResult.newState, combinedEvents)
         }
 
         // Track nontoken creature deaths from SBA events
@@ -281,15 +275,16 @@ class PassPriorityHandler(
             }
 
             combinedEvents = combinedEvents + triggerResult.events
-            return ExecutionResult.success(
-                triggerResult.newState.withPriority(stackItemController),
-                combinedEvents
-            )
+            return finishResolutionPriority(triggerResult.newState, combinedEvents)
         }
 
+        return finishResolutionPriority(postPollState, combinedEvents)
+    }
+
+    private fun finishResolutionPriority(state: GameState, events: List<GameEvent>): ExecutionResult {
+        val ready = state.withPriorityAfterStackResolution()
         return ExecutionResult.success(
-            postPollState.withPriority(stackItemController),
-            combinedEvents
+            ready, events + listOfNotNull(ready.priorityPlayerId?.let(::PriorityChangedEvent))
         )
     }
 

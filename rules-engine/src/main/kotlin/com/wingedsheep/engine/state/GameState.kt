@@ -32,6 +32,7 @@ import com.wingedsheep.sdk.scripting.AbilityIdentity
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.KeepGeneratedSerializer
 import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.EncodeDefault
 
 /**
  * Immutable snapshot of the entire game state.
@@ -416,6 +417,23 @@ data class GameState(
      * on its controller's behalf without having asked.
      */
     val optionalDamageRedirectChoices: Map<String, Boolean> = emptyMap(),
+
+    /**
+     * A stack resolution is awaiting its next priority window (CR 117.3b, 117.5).
+     * Retained through effect, SBA and triggered-ability decisions so the answerer does not
+     * become the priority recipient. Cast/activation decisions outside resolution leave this
+     * false and retain their ordinary CR 117.3c behavior.
+     *
+     * Appended to preserve existing positional constructor calls. Omitting the default also
+     * preserves unrelated serialized fixture bytes when their writer uses encodeDefaults=true.
+     * A live paused resolution writes true and round-trips it.
+     */
+    @EncodeDefault(EncodeDefault.Mode.NEVER)
+    val stackResolutionPendingPriority: Boolean = false,
+
+    /** Completed ordinary cast: keep its caster and captured triggers through SBA/target choices. */
+    @EncodeDefault(EncodeDefault.Mode.NEVER)
+    val pendingCastPriority: PendingCastPriority? = null,
 ) {
     /**
      * Cached projection of the game state with all continuous effects (Rule 613) applied.
@@ -1240,6 +1258,15 @@ data class GameState(
      */
     fun withPriority(playerId: EntityId?): GameState =
         copy(priorityPlayerId = redirectPriorityIfLeft(playerId), priorityPassedBy = emptySet())
+
+    /** Complete the pending resolution window, including the existing departed-player redirect. */
+    fun withPriorityAfterStackResolution(): GameState =
+        copy(stackResolutionPendingPriority = false, pendingCastPriority = null)
+            .withPriority(if (gameOver) null else activePlayerId)
+
+    /** A completed cast keeps the casting player's priority, redirected if that player left. */
+    fun withPriorityAfterCasting(): GameState =
+        copy(pendingCastPriority = null).withPriority(if (gameOver) null else pendingCastPriority?.playerId)
 
     private fun redirectPriorityIfLeft(playerId: EntityId?): EntityId? {
         if (playerId == null) return null

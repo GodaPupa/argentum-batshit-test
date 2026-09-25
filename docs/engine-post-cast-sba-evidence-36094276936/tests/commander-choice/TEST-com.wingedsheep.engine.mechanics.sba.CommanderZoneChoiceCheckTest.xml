@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.wingedsheep.engine.mechanics.sba.CommanderZoneChoiceCheckTest" tests="17" skipped="0" failures="0" errors="0" timestamp="2026-09-25T04:34:27.199Z" hostname="runnervmtr4k5" time="0.407">
+  <properties/>
+  <testcase name="pauses with a YesNoDecision when a commander is in the graveyard" classname="com.wingedsheep.engine.mechanics.sba.CommanderZoneChoiceCheckTest" time="0.154"/>
+  <testcase name="pauses for a commander in exile, hand, or library too" classname="com.wingedsheep.engine.mechanics.sba.CommanderZoneChoiceCheckTest" time="0.003"/>
+  <testcase name="does not pause when the commander is in the command zone" classname="com.wingedsheep.engine.mechanics.sba.CommanderZoneChoiceCheckTest" time="0.002"/>
+  <testcase name="does not pause when the commander is on the battlefield" classname="com.wingedsheep.engine.mechanics.sba.CommanderZoneChoiceCheckTest" time="0.001"/>
+  <testcase name="does not pause when the asked marker is already attached" classname="com.wingedsheep.engine.mechanics.sba.CommanderZoneChoiceCheckTest" time="0.001"/>
+  <testcase name="does not pause when alwaysDivertToCommand is enabled" classname="com.wingedsheep.engine.mechanics.sba.CommanderZoneChoiceCheckTest" time="0.001"/>
+  <testcase name="does not pause when the format is not Commander" classname="com.wingedsheep.engine.mechanics.sba.CommanderZoneChoiceCheckTest" time="0.002"/>
+  <testcase name="Team vs Team prompts when Commander rules are enabled" classname="com.wingedsheep.engine.mechanics.sba.CommanderZoneChoiceCheckTest" time="0.002"/>
+  <testcase name="prompt text names both the commander and the source zone" classname="com.wingedsheep.engine.mechanics.sba.CommanderZoneChoiceCheckTest" time="0.004"/>
+  <testcase name="multiple eligible commanders only produce one prompt per SBA pass" classname="com.wingedsheep.engine.mechanics.sba.CommanderZoneChoiceCheckTest" time="0.003"/>
+  <testcase name="non-owner commander not asked about by this player's turn slot" classname="com.wingedsheep.engine.mechanics.sba.CommanderZoneChoiceCheckTest" time="0.001"/>
+  <testcase name="commander with the asked marker is invisible to the SBA — no events, no pause" classname="com.wingedsheep.engine.mechanics.sba.CommanderZoneChoiceCheckTest" time="0.004"/>
+  <testcase name="a non-commander legendary with the same name does not trigger the prompt" classname="com.wingedsheep.engine.mechanics.sba.CommanderZoneChoiceCheckTest" time="0.001"/>
+  <testcase name="commander already on the stack is not prompted (CR 903.9 entry zones only)" classname="com.wingedsheep.engine.mechanics.sba.CommanderZoneChoiceCheckTest" time="0.001"/>
+  <testcase name="commander entry is later 'forgotten' once the marker is stripped" classname="com.wingedsheep.engine.mechanics.sba.CommanderZoneChoiceCheckTest" time="0.001"/>
+  <testcase name="a commander that's been registered but has no zone slot is skipped silently" classname="com.wingedsheep.engine.mechanics.sba.CommanderZoneChoiceCheckTest" time="0.022"/>
+  <testcase name="owner with zero commanders does nothing" classname="com.wingedsheep.engine.mechanics.sba.CommanderZoneChoiceCheckTest" time="0.029"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

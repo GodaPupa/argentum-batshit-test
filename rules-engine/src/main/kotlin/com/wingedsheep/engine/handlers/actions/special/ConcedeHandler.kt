@@ -3,9 +3,14 @@ package com.wingedsheep.engine.handlers.actions.special
 import com.wingedsheep.engine.core.Concede
 import com.wingedsheep.engine.core.ExecutionResult
 import com.wingedsheep.engine.core.GameEndReason
+import com.wingedsheep.engine.core.GameEvent
 import com.wingedsheep.engine.core.PlayerLostEvent
 import com.wingedsheep.engine.handlers.actions.ActionHandler
 import com.wingedsheep.engine.mechanics.StateBasedActionChecker
+import com.wingedsheep.engine.mechanics.CastPriorityProcessor
+import com.wingedsheep.engine.mechanics.sba.game.GameEndCheck
+import com.wingedsheep.engine.mechanics.sba.player.PlayerLeavesGameCheck
+import com.wingedsheep.engine.mechanics.sba.player.TeamLossPropagationCheck
 import com.wingedsheep.engine.state.GameState
 import com.wingedsheep.engine.state.components.player.LossReason
 import com.wingedsheep.engine.state.components.player.PlayerLostComponent
@@ -22,7 +27,8 @@ import kotlin.reflect.KClass
  * game immediately, while in a multiplayer pod it continues for the others.
  */
 class ConcedeHandler(
-    private val sbaChecker: StateBasedActionChecker
+    private val sbaChecker: StateBasedActionChecker,
+    private val castPriorityProcessor: CastPriorityProcessor? = null,
 ) : ActionHandler<Concede> {
     override val actionType: KClass<Concede> = Concede::class
 
@@ -39,6 +45,15 @@ class ConcedeHandler(
         }
         val lostEvent = PlayerLostEvent(action.playerId, GameEndReason.CONCESSION)
 
+        if (marked.pendingCastPriority != null && !marked.stackResolutionPendingPriority) {
+            val processor = castPriorityProcessor
+                ?: return ExecutionResult.error(state, "Post-cast priority service is required for this pending concession")
+            // A commander/SBA question can already be pending. CR 800.4 departure processing
+            // happens immediately; running the full SBA list first would ask that question again
+            // before its late leave-game check could remove the departing chooser. Reuse the
+            // existing decision-free team/departure/end checks without changing global SBA order.
+            return processor.resume(applyImmediateDeparture(marked), listOf(lostEvent))
+        }
         val sbaResult = sbaChecker.checkAndApply(marked)
         if (sbaResult.isPaused) {
             return ExecutionResult.propagatePause(
@@ -50,5 +65,22 @@ class ConcedeHandler(
             sbaResult.newState,
             listOf(lostEvent) + sbaResult.events
         )
+    }
+
+    private fun applyImmediateDeparture(state: GameState): ExecutionResult {
+        val teamLoss = TeamLossPropagationCheck().check(state)
+        var current = teamLoss.state
+        val events = mutableListOf<GameEvent>().apply { addAll(teamLoss.events) }
+        val leaveCheck = PlayerLeavesGameCheck()
+        while (true) {
+            val departure = leaveCheck.check(current)
+            current = departure.state
+            events.addAll(departure.events)
+            // Each nonempty departure marks one player as processed. This also preserves the
+            // existing no-teardown behavior when at most one team remains and the game ends.
+            if (departure.events.isEmpty()) break
+        }
+        val end = GameEndCheck().check(current)
+        return end.copy(events = events + end.events)
     }
 }
