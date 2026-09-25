@@ -48,3 +48,29 @@ No combat-only approximation is accepted, and no existing prevention regression 
 Accepted coverage remains ten unresolved through AM. AN may reduce that to nine only after its full
 artifact audit. Full frozen-deck initialization, executable pilots, event-ledger extraction and
 Position-1 provenance remain separate prerequisites regardless of registry count.
+
+## AO prospective implementation boundary
+
+AO supplies canonical source fixes and distinguishing executable fixtures for Ram Through and
+Prismatic Strands, as specified in [the AO gate](../v09-position1-engine-batch-ao-gate.md). Neither
+identity is accepted by a source diff. The exact combined scope is ordinary-creature excess damage
+and source-only chosen-color all-damage prevention; creature/planeswalker/battle overlap, general
+recipient-scoped FromGroup forms and arbitrary departed-source color changes remain outside this
+qualification. No such overlap/type creator or color-changing source sequence occurs in the frozen
+pair. Existing combat-only and recipient-scoped representations are preserved.
+
+Registry closure still does not establish exact frozen initialization, pilots, interaction decisions,
+event-ledger extraction, deterministic full-game replay or official provenance. The separate active-
+player-priority repair identified by the shared engine audit must also be integrated and qualified
+before interactive sampled gameplay. No official seed or outcome is exposed by AO.
+
+
+## Explicit admitted-pair simultaneous-damage blocker
+
+AO source review found that per-recipient DamageDealtEvents from one split Ram Through instruction
+are independently converted into attached triggers for Spirit Link and Armadillo Cloak. The expected
+single total-5 trigger is currently represented as separate amount-2 and amount-3 contexts. Lifelink
+total is conserved, but its event grouping is likewise separate. This is a source finding; no
+sampled game is run or invalidated. The new explicit executionBlockers entry preserves all prior
+five guards and keeps this exact interaction unqualified even if both new card names resolve and
+all thirty-seven scoped component scenarios pass. See the AO gate for source locations and rules.

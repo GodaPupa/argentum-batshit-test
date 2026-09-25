@@ -133,18 +133,19 @@ class IzzetScienceVeteranBeastriderEngineReadinessTest : FunSpec({
         val unresolved = IzzetScienceVeteranBeastriderEngineReadiness.unresolvedCardIdentities(registry)
         println("V09_REAL_ENGINE_UNRESOLVED_COUNT=" + unresolved.size)
         unresolved.forEach { println("V09_REAL_ENGINE_UNRESOLVED=" + it) }
-        unresolved.size shouldBe 9
+        unresolved.size shouldBe 7
     }
 
     test("full execution remains fail closed behind unresolved cards and PDH semantics") {
         val blockers = IzzetScienceVeteranBeastriderEngineReadiness.executionBlockers(registry)
-        blockers.size shouldBe 14
-        blockers.takeLast(5).shouldContainExactly(
+        blockers.size shouldBe 13
+        blockers.takeLast(6).shouldContainExactly(
             "PDH commander-zone initialization not qualified",
             "PDH commander recast/tax semantics not qualified",
             "16-damage commander-loss accounting not qualified in gameplay engine",
             "30-life PDH game initialization not qualified",
             "Phase-29 event-ledger extraction from full engine game not qualified",
+            "Simultaneous same-source damage/lifelink and attached-trigger grouping not qualified",
         )
     }
 

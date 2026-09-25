@@ -101,3 +101,27 @@ existing API, preserving its expected copiable power 5, projected power 6 with a
 and dynamic predicate assertions. Production copying, expected outcomes and safeguard code are not
 changed. Attachment/Dreadmask and later stages were skipped by fail-closed CI and remain unqualified.
 No official game or seed was used; full AN qualification and independent archive audit are required.
+
+## Independent accepted-artifact audit
+
+**Batch AN is accepted.** Repair run
+[36089240215](https://github.com/GodaPupa/argentum-batshit-test/actions/runs/36089240215), job
+`107927830600`, completed the complete gate at source
+`636827cc11dd1f9c93925f3b814aeeb11d42b847`. Its guarded snapshot integration is commit
+`882117e4f37cee3a6a1d5c1b393728207e587104`, tree `33f2dca36f795a22d19774e5fa1430bf43b841f3`.
+Artifact `10845471915` contains 336,883 bytes; the independently downloaded ZIP has SHA-256
+`b9ea87ed0739ba14f65492e6ce4fa0d295f194846c6798628e57e3aa4ebf3a52`, matching GitHub's recorded digest.
+
+The independent archive audit verified exactly thirteen files, all thirty-seven digest bindings,
+all twelve successful validation transcripts, the full manifest contract, exact source/parent/tree
+identity, and the sole snapshot change: adding Colossal Dreadmask while preserving every previous
+MH3 record. All entry, attachment, exact Dreadmask and retained regression stages passed on the
+repaired fixture. No production copying rule, expected test result or execution safeguard was waived.
+The first failed run remains a diagnostic record, not accepted evidence or a deck loss.
+
+Accepted unresolved registry identities decrease **10 → 9**, all Veteran: Benevolent Blessing,
+Cho-Manno's Blessing, Forge of Heroes, Nyxborn Hydra, Opal Palace, Prismatic Strands, Ram Through,
+Snake Umbra and Vines of Vastwood. The exact frozen deck hashes and all five full-game readiness
+blocks remain intact. Official counters are still **12 generated, 0 consumed, 0 initialized,
+0 completed/12, 0 outcome exposure/12**. This acceptance permits the compatible seed-free AO
+successor; it does not open Position 1 or promote a hardware change.
