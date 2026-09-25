@@ -148,8 +148,9 @@ class SourceGroupDamagePreventionTest : FunSpec({
             val visible = transformer.transform(d.state, viewingPlayerId = player)
                 .players.single { it.playerId == player }.activeEffects
                 .single { it.effectId.startsWith("prevent_all_damage_group_") }
-            visible.description.contains("All damage") shouldBe true
-            visible.description.contains(Color.RED.displayName) shouldBe true
+            val description = requireNotNull(visible.description) { "Source-group shield must expose its public description" }
+            description.contains("All damage") shouldBe true
+            description.contains(Color.RED.displayName) shouldBe true
         }
     }
     test("legacy combat-only source groups retain their representation and do not prevent spell damage") {

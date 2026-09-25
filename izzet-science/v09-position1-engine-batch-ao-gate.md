@@ -122,3 +122,15 @@ all five earlier guards. The artifact records six closed guards, registry-only a
 under the existing identity criterion after audit, but it does not accept complete Ram Through /
 Spirit Link / Armadillo Cloak interaction or admit exact-pair gameplay. A prospective canonical
 event-grouping implementation and distinguishing regressions are required before that guard opens.
+
+## First validation diagnostic and fixture compilation repair
+
+Run [36091364965](https://github.com/GodaPupa/argentum-batshit-test/actions/runs/36091364965), job
+`107934310632`, failed at source `3535f2c391045b00eba3eaca9e892df65ba13955` during
+`:rules-engine:compileTestKotlin`. The public-badge fixture called String.contains on the nullable
+ClientPlayerEffect.description field. The fixture now explicitly requires that description to be
+present, then retains both expected text checks. Production source, expected behavior, frozen files
+and all six readiness guards are unchanged. No component scenarios, coverage scan, snapshot changes
+or official games executed in the failed gate; downstream stages and artifact upload were skipped.
+The failed job/log remains a diagnostic record. Complete successful validation and independent
+archive audit are still required before accepting any AO registry reduction.
