@@ -6,6 +6,8 @@ on:
       - .github/workflows/pest-control-tier-one-spy-policy.yml
       - 'docs/experiments/pest-control/tier-one-spy-policy*'
       - 'ai/src/main/kotlin/com/wingedsheep/ai/engine/**'
+      - '**/ActivatedAbilityEnumerator.kt'
+      - '**/CompositeTapCostEnumerationTest.kt'
       - 'ai/src/test/kotlin/com/wingedsheep/ai/pestcontrol/PestSpyComboPolicyAuditTest.kt'
 
 permissions:
@@ -51,6 +53,7 @@ jobs:
             fi
             return "$status"
           }
+          run_stage composite-tap-cost CompositeTapCostEnumerationTest rules-engine
           run_stage spy-policy PestSpyComboPolicyAuditTest ai
           run_stage default-payment-regression AutomaticAdditionalCostPaymentAiTest ai
           run_stage monster-pilot-regression PestMonsterTronPolicyAuditTest ai

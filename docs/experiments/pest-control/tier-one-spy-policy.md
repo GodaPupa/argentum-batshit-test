@@ -46,7 +46,7 @@ hidden-information determinization remains enabled.
 
 ## Required qualification
 
-The dedicated exact-HEAD workflow verifies seven source byte digests and retains separate XML
+The dedicated exact-HEAD workflow verifies nine source byte digests and retains separate XML
 for Spy policy, default additional-cost regression, accepted Monster pilot regression, exact Spy
 main closure and frozen admission; it uploads artifacts on failure. Eighteen fixtures include
 actual Dread Return flashback using three Gatecreeper copies, actual Quirion tapped-Forest payment,
@@ -57,3 +57,32 @@ entropy in the manifest. Semantic forks are information tests, not full-engine r
 Kotlin runtime and exact artifact audit are still pending. Registry closure or these fixtures
 alone cannot authorize games. Official Spy seeds, games, actions and outcomes remain zero. Future
 operational work must call the same shared production profile, rather than a separate test copy.
+
+
+## First validation failure and canonical tap-cost correction
+
+Candidate0d52052baddd3982d0c5acdadfc2a52a7382451a failed dedicated run36091495389 at its first
+Kotlin stage:17/18 policy cases passed, while Saruli Caretaker incorrectly fell back to passing.
+The original artifact10845294465 (7386bytes, SHA-256
+`def32b8f72d890b12f19fd4f63174e948dca90696bbc064743f38e4790a65d50`) and exact failed JUnit XML
+are preserved by the companion failure receipt. All four later workflow stages were unexecuted;
+they are not credited as passing. This was a capability validation defect, not a deck loss.
+
+The composite-cost enumerator offered the source itself for the second TapPermanents cost even
+though its separate tap symbol already required that source. Generic payment chose this first
+option; authoritative payment rejected tapping it twice, and the AI discarded the simulated line.
+The narrow canonical correction uses the existing hasTapCost flag to exclude that reserved source
+from the composite tap-permanent pool. It changes neither the card nor its pilot score.
+
+Three focused engine fixtures require refusal with only the source, an exact other-creature pool
+and successful real payment while a forged double tap leaves state/events unchanged, and preserved
+self-tapping eligibility for a composite without a separate tap symbol. The dedicated workflow
+retains this new stage and expands its source pins to the enumerator and fixture. All18 original
+policy cases remain unchanged and must pass before downstream regression stages can run.
+
+Separately, canonical Bestow/Spy registry closure is now accepted via PR151, merge
+`1c8bc618e8b3ca0b3b154e2ef3c87ca8ff779698`. Exact source1ad4079b passed435 JUnit cases and three
+source-verifier cases; artifact10846221712 has SHA-256
+`6a1339c66a2d5c1cfcf060e14501999e4eeeda4831cefccf4f9ae2da8bce3345`. Spy main gaps are zero;
+the current six-sideboard queue remains10 identities/28slots. That accepted support does not admit
+this failed policy candidate or authorize sampled gameplay.

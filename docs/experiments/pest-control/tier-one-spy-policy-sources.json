@@ -18,7 +18,9 @@
     "ai/src/main/kotlin/com/wingedsheep/ai/engine/Strategist.kt": "68807a9e124632e3c76140e48552381af31d92f65f6ae272e7a00a3acc217b8e",
     "ai/src/main/kotlin/com/wingedsheep/ai/engine/advisor/modules/SpyComboAdvisorModule.kt": "65fb521ade52a15956c314486164351ebbe37e941e6e4cfc27002334eb75abda",
     "ai/src/main/kotlin/com/wingedsheep/ai/engine/PestSpyComboPolicy.kt": "7dd9b42dbb5ab154fa9fa695c7bf1f6ba248aa3f99e08726ccfd18194c1234a7",
-    "ai/src/test/kotlin/com/wingedsheep/ai/pestcontrol/PestSpyComboPolicyAuditTest.kt": "24de60ba408fbd33b2dcd5df178b051525366d1991c7d074d7788e8d9ef19f0b"
+    "ai/src/test/kotlin/com/wingedsheep/ai/pestcontrol/PestSpyComboPolicyAuditTest.kt": "24de60ba408fbd33b2dcd5df178b051525366d1991c7d074d7788e8d9ef19f0b",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/legalactions/enumerators/ActivatedAbilityEnumerator.kt": "61e42436edb41218d23223a92a8c013d2bf6110e4699da9526e87db78131b818",
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/legalactions/CompositeTapCostEnumerationTest.kt": "68baaca003dd35f8af078ad6dcfe87d6e3ee540ace24d726bcc0c12b167ba9ac"
   },
   "official_seeds_generated": 0,
   "official_games_initialized": 0,
@@ -26,5 +28,10 @@
   "outcome_exposure": 0,
   "gameplay_ready": false,
   "historical_matchup_results_transferred": false,
-  "source_review": "Coordinator source PASS for bounded validation after explicit modal/multitarget fallback guard; Kotlin runtime unverified"
+  "source_review": "Coordinator source PASS for bounded validation after explicit modal/multitarget fallback guard; Kotlin runtime unverified",
+  "rejected_validation": {
+    "source_commit": "0d52052baddd3982d0c5acdadfc2a52a7382451a",
+    "workflow_run_id": 36091495389,
+    "receipt": "docs/experiments/pest-control/spy-policy-validation-failure-36091495389/receipt.json"
+  }
 }
