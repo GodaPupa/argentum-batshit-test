@@ -3,6 +3,7 @@ package com.wingedsheep.gym.matchup
 import com.wingedsheep.engine.registry.CardRegistry
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.*
+import java.io.ByteArrayOutputStream
 import java.nio.ByteBuffer
 import java.nio.channels.FileChannel
 import java.nio.file.Files
@@ -35,7 +36,23 @@ internal object PestControlTierOneMonsterTronOneShotBoundary {
 
     fun executeFromEnvironment(registry: CardRegistry) {
         check(entered.compareAndSet(false, true)) { "one-shot boundary already entered in this process" }
-        val sealed = loadSealedInput()
+        val sealed = try {
+            loadSealedInput()
+        } catch (failure: Exception) {
+            // The global claim may already exist, while sealing can fail before an execution
+            // directory or a game journal exists. Preserve that failure without inventing an
+            // attempt, retry, initialization, action or outcome.
+            try {
+                recordMonsterTronBoundaryEntryFailure(
+                    Path.of(System.getenv("PEST_MONSTER_TRON_OFFICIAL_OUTPUT_DIR")
+                        ?: error("official output directory required for entry-failure evidence")).toRealPath(),
+                    System.getenv("PEST_MONSTER_TRON_EXECUTION_SOURCE_SHA"), failure,
+                )
+            } catch (artifactFailure: Exception) {
+                failure.addSuppressed(artifactFailure)
+            }
+            throw failure
+        }
         val output = sealed.output
         var primaryFailure: Exception? = null
         try {
@@ -78,11 +95,12 @@ internal object PestControlTierOneMonsterTronOneShotBoundary {
         ))
         val source = env("PEST_MONSTER_TRON_EXECUTION_SOURCE_SHA")
         require(source.matches(Regex("[0-9a-f]{40}")) && source != "0".repeat(40))
-        require(runCommand(listOf("git", "rev-parse", "HEAD")).trim() == source)
-        require(runCommand(listOf("git", "status", "--porcelain", "--untracked-files=all")).isBlank()) {
+        val commands = MonsterTronRepositoryCommands.discover()
+        require(commands.required("CHECKOUT_IDENTITY", listOf("git", "rev-parse", "HEAD")).trim() == source)
+        require(commands.required("CLEAN_CHECKOUT", listOf("git", "status", "--porcelain", "--untracked-files=all")).isBlank()) {
             "execution checkout is not clean"
         }
-        verifyMonsterTronBaseline()
+        verifyMonsterTronBaseline(commands)
         val input = PestControlTierOneMonsterTronOfficialExecutionInputLoader
             .loadForAuthorizedExecutionFromEnvironment()
         require(monsterTronSealedInputErrors(input).isEmpty())
@@ -91,12 +109,12 @@ internal object PestControlTierOneMonsterTronOneShotBoundary {
         require(rules.toString(Charsets.UTF_8).contains("These rules are effective as of September 25, 2026."))
         require(!LocalDate.now(ZoneOffset.UTC).isBefore(LocalDate.of(2026, 9, 25)))
 
-        val receiptPath = Path.of(env("PEST_MONSTER_TRON_CLAIM_RECEIPT"))
+        val receiptPath = Path.of(env("PEST_MONSTER_TRON_CLAIM_RECEIPT")).toRealPath()
         val receipt = Json.parseToJsonElement(Files.readString(receiptPath)).jsonObject
         require(monsterTronClaimReceiptErrors(receipt, source, env("GITHUB_RUN_ID"), env("GITHUB_WORKFLOW_SHA")).isEmpty())
         // Read-only API authentication of canonical ref, commit, tree, blob and exact payload.
         // A locally invented receipt cannot authorize initialization.
-        runCommand(listOf(
+        commands.required("AUTHENTICATE_DURABLE_CLAIM", listOf(
             "python3", "scripts/pest-monster-tron-one-shot-claim.py",
             "--verify-receipt", receiptPath.toString(), "--source-sha", source,
             "--run-id", env("GITHUB_RUN_ID"), "--run-attempt", "1",
@@ -266,21 +284,153 @@ internal fun monsterTronClaimReceiptErrors(receipt: JsonObject, source: String, 
     if ((receipt["claim_payload_sha256"] as? JsonPrimitive)?.content?.matches(Regex("[0-9a-f]{64}")) != true) add("claim payload digest invalid")
 }
 
-private fun verifyMonsterTronBaseline() {
+/** The explicit root and top-anchored paths also cover invocations by a gym-module test JVM. */
+internal fun verifyMonsterTronBaseline(
+    commands: MonsterTronRepositoryCommands,
+    baseline: String = MONSTER_TRON_ENGINE_BASELINE,
+) {
+    require(baseline.matches(Regex("[0-9a-f]{40}")))
     // The wrapper, guard and added write-through trace instrumentation are separately qualified at
     // execution source C. All core engine, card, deck and pilot behavior remains the accepted base.
-    runCommand(listOf("git", "diff", "--exit-code", MONSTER_TRON_ENGINE_BASELINE, "HEAD", "--",
-        "mtg-sdk", "rules-engine", "ai/src/main", "mtg-sets", "gym/src/main",
-        ":!gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlTierOneMonsterTronOneShotBoundary.kt",
-        ":!gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlTierOneMonsterTronRunnerSurfacePreflight.kt",
-        ":!gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlTierOneMonsterTronOperationalStack.kt"))
+    // Only path names are diagnostic evidence: never print source contents from the baseline diff.
+    commands.required("ENGINE_BASELINE", listOf("git", "diff", "--name-only", "--exit-code", baseline, "HEAD", "--",
+        ":(top)mtg-sdk", ":(top)rules-engine", ":(top)ai/src/main", ":(top)mtg-sets", ":(top)gym/src/main",
+        ":(top,exclude)gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlTierOneMonsterTronOneShotBoundary.kt",
+        ":(top,exclude)gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlTierOneMonsterTronRunnerSurfacePreflight.kt",
+        ":(top,exclude)gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlTierOneMonsterTronOperationalStack.kt"))
 }
 
-private fun runCommand(command: List<String>): String {
-    val process = ProcessBuilder(command).redirectErrorStream(true).start()
-    val output = process.inputStream.bufferedReader().readText()
-    check(process.waitFor() == 0) { "required preexecution command failed: ${command.take(2).joinToString(" ")}" }
+private const val MONSTER_TRON_COMMAND_CAPTURE_BYTES = 16384
+private const val MONSTER_TRON_COMMAND_DIAGNOSTIC_CHARS = 8192
+
+/** Contains only bounded sanitized evidence, never raw arguments, environment, output or causes. */
+internal class MonsterTronRequiredCommandFailure(
+    val commandLabel: String,
+    val exitCode: Int?,
+    val sanitizedOutput: String,
+    val outputTruncated: Boolean,
+) : IllegalStateException("required preexecution command failed: $commandLabel; exit=${exitCode ?: "NOT_STARTED"}; " +
+    "output_truncated=$outputTruncated; output=$sanitizedOutput")
+
+/** One command context is discovered once and then shared by every boundary subprocess. */
+internal class MonsterTronRepositoryCommands private constructor(
+    val root: Path,
+    private val redactionValues: Set<String>,
+) {
+    companion object {
+        fun discover(
+            launchDirectory: Path = Path.of("").toAbsolutePath(),
+            additionalRedactionValues: Set<String> = emptySet(),
+        ): MonsterTronRepositoryCommands {
+            val secrets = monsterTronEnvironmentSecrets() + additionalRedactionValues
+            val launch = launchDirectory.toRealPath()
+            val root = Path.of(requiredMonsterTronCommand(launch, "REPOSITORY_ROOT",
+                listOf("git", "rev-parse", "--show-toplevel"), secrets).trim()).toRealPath()
+            check(Files.isDirectory(root) && launch.startsWith(root)) { "launch directory is outside discovered repository" }
+            return MonsterTronRepositoryCommands(root, secrets)
+        }
+    }
+
+    fun required(label: String, command: List<String>): String =
+        requiredMonsterTronCommand(root, label, command, redactionValues)
+}
+
+private fun monsterTronEnvironmentSecrets(): Set<String> = System.getenv().filterKeys {
+    Regex("TOKEN|SECRET|PASSWORD|CREDENTIAL|PRIVATE_KEY", RegexOption.IGNORE_CASE).containsMatchIn(it)
+}.values.filter(String::isNotEmpty).toSet()
+
+private fun sanitizeMonsterTronCommandText(text: String, secrets: Set<String>, captureTruncated: Boolean): String {
+    // A byte cap can split the final UTF-8 code point. Discard only its replacement marker
+    // before matching credential prefixes; otherwise that marker could conceal a partial secret.
+    val captured = if (captureTruncated) text.trimEnd('\uFFFD') else text
+    var safe = captured
+    // Compare all prefixes against the original captured text. Replacing one short overlapping
+    // prefix first must never prevent a longer secret from being redacted.
+    if (captureTruncated) {
+        var suffixLength = 0
+        secrets.filter(String::isNotEmpty).forEach { secret ->
+            val maximum = minOf(secret.length - 1, captured.length)
+            for (size in maximum downTo suffixLength + 1) {
+                if (captured.endsWith(secret.take(size))) {
+                    suffixLength = size
+                    break
+                }
+            }
+        }
+        if (suffixLength > 0) safe = captured.dropLast(suffixLength) + "[REDACTED]"
+    }
+    secrets.filter(String::isNotEmpty).sortedByDescending(String::length).forEach { safe = safe.replace(it, "[REDACTED]") }
+    safe = safe.replace(Regex("(?i)(authorization\\s*[:=]\\s*(?:bearer|token)\\s+)\\S+"), "$1[REDACTED]")
+        .replace(Regex("(?:gh[pousr]_|github_pat_)[A-Za-z0-9_]+"), "[REDACTED]")
+        .replace(Regex("(https?://)[^/\\s:@]+:[^/\\s@]+@"), "$1[REDACTED]@")
+    // Remove control characters (including terminal escape controls), retaining readable whitespace.
+    safe = safe.filter { !it.isISOControl() || it == '\n' || it == '\r' || it == '\t' }
+    return safe.take(MONSTER_TRON_COMMAND_DIAGNOSTIC_CHARS)
+}
+
+private fun requiredMonsterTronCommand(
+    root: Path,
+    label: String,
+    command: List<String>,
+    secrets: Set<String>,
+): String {
+    require(label.matches(Regex("[A-Z0-9_]+"))) { "command evidence label must be a fixed identifier" }
+    val process = try {
+        ProcessBuilder(command).directory(root.toFile()).redirectErrorStream(true).start()
+    } catch (failure: Exception) {
+        throw MonsterTronRequiredCommandFailure(label, null,
+            "process start failed (${failure.javaClass.simpleName})", false)
+    }
+    val capture = ByteArrayOutputStream(MONSTER_TRON_COMMAND_CAPTURE_BYTES)
+    var truncated = false
+    process.inputStream.use { stream ->
+        val buffer = ByteArray(4096)
+        while (true) {
+            val count = stream.read(buffer)
+            if (count < 0) break
+            val retained = minOf(count, MONSTER_TRON_COMMAND_CAPTURE_BYTES - capture.size())
+            if (retained > 0) capture.write(buffer, 0, retained)
+            if (retained < count) truncated = true
+            // Drain the rest even when the evidence cap is reached so a noisy child cannot block.
+        }
+    }
+    val exit = process.waitFor()
+    val output = capture.toString(Charsets.UTF_8)
+    // Truncated success is refused: incomplete output cannot prove a checkout or authorization.
+    if (exit != 0 || truncated) {
+        throw MonsterTronRequiredCommandFailure(label, exit,
+            sanitizeMonsterTronCommandText(output, secrets, truncated), truncated || output.length > MONSTER_TRON_COMMAND_DIAGNOSTIC_CHARS)
+    }
     return output
+}
+
+internal fun recordMonsterTronBoundaryEntryFailure(outputRoot: Path, source: String?, failure: Exception) {
+    require(Files.isDirectory(outputRoot)) { "entry failure requires the existing artifact directory" }
+    durableMonsterTronWrite(outputRoot.resolve("boundary-entry-error.json"), jsonBytes(buildJsonObject {
+        put("schema", "pest-monster-tron-boundary-entry-failure-v1")
+        put("block_id", PEST_MONSTER_TRON_SMOKE_BLOCK_ID)
+        put("execution_source_sha", source?.takeIf { it.matches(Regex("[0-9a-f]{40}")) }?.let(::JsonPrimitive) ?: JsonNull)
+        put("phase", "SEALED_INPUT_VALIDATION")
+        put("failure_type", failure.javaClass.name)
+        put("failure", sanitizeMonsterTronCommandText(failure.message ?: failure.javaClass.name,
+            monsterTronEnvironmentSecrets(), false))
+        if (failure is MonsterTronRequiredCommandFailure) {
+            putJsonObject("command") {
+                put("label", failure.commandLabel)
+                put("exit_code", failure.exitCode?.let(::JsonPrimitive) ?: JsonNull)
+                put("output", failure.sanitizedOutput)
+                put("output_truncated", failure.outputTruncated)
+            }
+        }
+        put("per_game_attempts_recorded", 0)
+        put("initialization_entries", 0)
+        put("official_games_initialized", 0)
+        put("official_actions_submitted", 0)
+        put("outcomes", 0)
+        put("canonical_claim_changed", false)
+        put("retry_authorized", false)
+        put("replacement_authorized", false)
+    }))
 }
 
 private fun jsonBytes(value: JsonObject): ByteArray = (value.toString() + "\n").toByteArray(Charsets.UTF_8)
