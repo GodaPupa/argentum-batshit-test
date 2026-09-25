@@ -1,0 +1,88 @@
+name: Izzet v0.7-T Twinned Vision Snapshot Qualification
+
+on:
+  push:
+    branches:
+      - "mayhem/izzet-science-v07-twinned-vision"
+    paths:
+      - ".github/workflows/izzet-v07t-twinned-vision-snapshot.yml"
+      - "mtg-sets/2026/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/fra/**"
+      - "mtg-sets/2026/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/TwinnedVisionScenarioTest.kt"
+      - "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/stack/StackResolver.kt"
+      - "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/CopySpellCastFilterTest.kt"
+
+permissions:
+  contents: write
+
+jobs:
+  qualify-and-rebless:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: mayhem/izzet-science-v07-twinned-vision
+          fetch-depth: 0
+
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "21"
+
+      - uses: gradle/actions/setup-gradle@v6
+
+      - name: Verify frozen control and challenger
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(sha256sum izzet-science/v0.7-control.md | cut -d' ' -f1)" = "726f5e9458b46dda30b33a6ce9f3c3237b25d6e11b81dac85308c3065c108a01"
+          test "$(sha256sum izzet-science/challengers/v0.7-T-twinned-vision.md | cut -d' ' -f1)" = "0da295e9fcf066728181323dd9acbc0c122f623c99a607709a1e8a85e8936f85"
+          grep -Fq 'V07_DECK_AUDIT_NO_CHANGE' izzet-science/v07-deck-level-audit-no-change.md
+          grep -Fq 'V09_CARD_CONTROL_ARCHITECTURE_AUDIT_KEEP_V07' izzet-science/v09-card-control-architecture-audit.md
+          grep -Fq -- '-1 Strategic Planning; +1 Twinned Vision' izzet-science/challengers/v0.7-T-twinned-vision.md
+
+      - name: Run Twinned Vision semantics
+        run: scripts/test-class TwinnedVisionScenarioTest --info --stacktrace
+
+      - name: Recheck Izzet Guildmage copy rail
+        run: scripts/test-class IzzetGuildmageScenarioTest --info --stacktrace
+
+      - name: Regress generic spell-copy cast origin
+        run: ./gradlew :rules-engine:test --tests "*CopySpellCastFilterTest" --stacktrace
+
+      - name: Recheck flashback stack destinations
+        run: ./gradlew :rules-engine:test --tests "*FlashbackCounterDestinationTest" --stacktrace
+
+      - name: Regenerate snapshots canonically
+        run: ./gradlew :mtg-sets:test --tests "*CardDefinitionSnapshotTest" -DupdateSnapshots=true --stacktrace
+
+      - name: Fail closed on unrelated snapshot changes
+        shell: bash
+        run: |
+          set -euo pipefail
+          mapfile -t changed < <(git diff --name-only | sort)
+          printf '%s\n' "${changed[@]}"
+          test "${#changed[@]}" -eq 1
+          test "${changed[0]}" = "mtg-sets/src/test/resources/snapshots/cards/FRA.json"
+          git diff --check
+          grep -Fq '// Twinned Vision' mtg-sets/src/test/resources/snapshots/cards/FRA.json
+
+      - name: Assert no experimental execution
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -Fq 'officialSeedsConsumed: Int = 0' gym/src/main/kotlin/com/wingedsheep/gym/matchup/IzzetScienceVeteranBeastriderEngineReadiness.kt
+          grep -Fq 'outcomeExposure: Int = 0' gym/src/main/kotlin/com/wingedsheep/gym/matchup/IzzetScienceVeteranBeastriderEngineReadiness.kt
+          ! find izzet-science -maxdepth 3 -type f -name '*twinned*' -o -name '*Twinned*' | xargs -r grep -lE 'official_seed=.*[^0]|games_initialized=[1-9]|outcome_exposure=[1-9]'
+
+      - name: Commit and safely integrate FRA snapshot
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add mtg-sets/src/test/resources/snapshots/cards/FRA.json
+          git commit -m "Rebless Twinned Vision FRA snapshot"
+          git fetch origin mayhem/izzet-science-v07-twinned-vision
+          git rebase origin/mayhem/izzet-science-v07-twinned-vision
+          git push origin HEAD:mayhem/izzet-science-v07-twinned-vision
