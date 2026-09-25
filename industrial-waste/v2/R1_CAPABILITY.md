@@ -292,3 +292,10 @@ R1 execution can be recorded under the user's existing continuation authority
 once every frozen protocol prerequisite is satisfied. This document does not
 generate official matchup seeds, authorize postboard play, promote a deck,
 or change any candidate, ordering or numerical decision margin.
+
+
+## Accepted cards-seen-by-turn metric qualification
+
+Branch source `5d593fc9973ba6d23f781a5acf99006e357fa765` adds only the derived `cardsSeenByTurn` view over already-qualified first-seen original-copy observations and strengthens the existing event-metric fixture to require that the per-turn counts exactly partition the observed-copy map. Run `36107704668` passed the complete **126-test / 23-suite** seed-free qualification with zero failures, errors or skips. Artifact `10852465611` is 63,355 bytes with GitHub digest `sha256:a8af8615ab1587ca53e3d0fc96a8c15d9f14b2138e40dd3d3634bc21dcaca6a2`; full CI `36107704596`, R0 static freeze `36107704594`, and both inherited Gate 9/10 card gates also passed on the exact branch HEAD.
+
+Disposition: **ACCEPTED_FOR_SCOPED_EVENT-METRIC EXTRACTION ONLY**. The metric uses only observed copies and does not infer hidden library contents. It does not complete checkpoint mana/conversion metrics, pilot/runner integration, full replay, durable claim/authorization, or shared priority/post-cast integration. Official R1 counters remain **0/512 allocations initialized and zero comparative outcomes exposed**.
