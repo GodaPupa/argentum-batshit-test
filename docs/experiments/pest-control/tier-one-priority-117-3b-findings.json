@@ -1,0 +1,3976 @@
+{
+  "schema": "pest-priority-117-3b-findings-v1",
+  "method": "CONSERVATIVE_LOWER_BOUND_NO_REPLAY_NO_COUNTERFACTUAL_WINNERS",
+  "source_handler_blob_sha": "3b1d4608694a7ba6fc314e1b66d90ff60312bfef",
+  "blocks": [
+    {
+      "block": "red",
+      "archive_sha256": "7e65e7feca23d9eb29754779d42a92f9aaed8388641f9d64a510f6d8c056d10c",
+      "artifact_id": 10613973303,
+      "workflow_run_id": 35536805887,
+      "execution_source_sha": "8d3895de38189ca16f18017eb84b5e5a3f060b3b",
+      "games_with_confirmed_violation": 37,
+      "confirmed_priority_violations": 114,
+      "games": [
+        {
+          "game_number": 1,
+          "raw_member": "aggregate-raw.json",
+          "raw_member_sha256": "8dd276453cccda391f27a9c3325184aaf7faec1689ac680aa276430cb3e924dc",
+          "actions": 340,
+          "confirmed_priority_violations": [
+            {
+              "sequence": 156,
+              "turn": 8,
+              "active_player": "e1",
+              "observed_next_priority_player": "e0",
+              "next_action_sequence": 157,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e0",
+              "resolution_events": [
+                {
+                  "type": "AbilityResolvedEvent",
+                  "sourceId": "e9",
+                  "description": "a card or permanent would die, create a Eldrazi Scion token."
+                }
+              ],
+              "mapped_spell_casts": [],
+              "evidence_kind": "AFTER_AUDIT_STATE"
+            }
+          ]
+        },
+        {
+          "game_number": 2,
+          "raw_member": "aggregate-raw.json",
+          "raw_member_sha256": "8dd276453cccda391f27a9c3325184aaf7faec1689ac680aa276430cb3e924dc",
+          "actions": 325,
+          "confirmed_priority_violations": []
+        },
+        {
+          "game_number": 3,
+          "raw_member": "aggregate-raw.json",
+          "raw_member_sha256": "8dd276453cccda391f27a9c3325184aaf7faec1689ac680aa276430cb3e924dc",
+          "actions": 189,
+          "confirmed_priority_violations": [
+            {
+              "sequence": 85,
+              "turn": 5,
+              "active_player": "e1",
+              "observed_next_priority_player": "e0",
+              "next_action_sequence": 86,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e0",
+              "resolution_events": [
+                {
+                  "type": "AbilityResolvedEvent",
+                  "sourceId": "e3",
+                  "description": "a creature would enter the battlefield, you gain 1 life."
+                }
+              ],
+              "mapped_spell_casts": [],
+              "evidence_kind": "AFTER_AUDIT_STATE"
+            }
+          ]
+        },
+        {
+          "game_number": 4,
+          "raw_member": "aggregate-raw.json",
+          "raw_member_sha256": "8dd276453cccda391f27a9c3325184aaf7faec1689ac680aa276430cb3e924dc",
+          "actions": 222,
+          "confirmed_priority_violations": [
+            {
+              "sequence": 135,
+              "turn": 7,
+              "active_player": "e1",
+              "observed_next_priority_player": "e0",
+              "next_action_sequence": 136,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e0",
+              "resolution_events": [
+                {
+                  "type": "AbilityResolvedEvent",
+                  "sourceId": "e4",
+                  "description": "a creature would enter the battlefield, you gain 1 life."
+                }
+              ],
+              "mapped_spell_casts": [],
+              "evidence_kind": "AFTER_AUDIT_STATE"
+            }
+          ]
+        },
+        {
+          "game_number": 5,
+          "raw_member": "aggregate-raw.json",
+          "raw_member_sha256": "8dd276453cccda391f27a9c3325184aaf7faec1689ac680aa276430cb3e924dc",
+          "actions": 465,
+          "confirmed_priority_violations": [
+            {
+              "sequence": 86,
+              "turn": 5,
+              "active_player": "e0",
+              "observed_next_priority_player": "e1",
+              "next_action_sequence": 87,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e1",
+              "resolution_events": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e95",
+                  "name": "Cast Down"
+                }
+              ],
+              "mapped_spell_casts": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e95",
+                  "name": "Cast Down",
+                  "cast": {
+                    "casterId": "e1",
+                    "cardName": "Cast Down"
+                  }
+                }
+              ],
+              "evidence_kind": "AFTER_AUDIT_STATE"
+            },
+            {
+              "sequence": 300,
+              "turn": 15,
+              "active_player": "e0",
+              "observed_next_priority_player": "e1",
+              "next_action_sequence": 301,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e1",
+              "resolution_events": [
+                {
+                  "type": "AbilityResolvedEvent",
+                  "sourceId": "e130",
+                  "description": "Food"
+                }
+              ],
+              "mapped_spell_casts": [],
+              "evidence_kind": "AFTER_AUDIT_STATE"
+            },
+            {
+              "sequence": 302,
+              "turn": 15,
+              "active_player": "e0",
+              "observed_next_priority_player": "e1",
+              "next_action_sequence": 303,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e1",
+              "resolution_events": [
+                {
+                  "type": "AbilityResolvedEvent",
+                  "sourceId": "e92",
+                  "description": "Storm \u2014 copy Weather the Storm 3 time(s)"
+                }
+              ],
+              "mapped_spell_casts": [],
+              "evidence_kind": "AFTER_AUDIT_STATE"
+            },
+            {
+              "sequence": 304,
+              "turn": 15,
+              "active_player": "e0",
+              "observed_next_priority_player": "e1",
+              "next_action_sequence": 305,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e1",
+              "resolution_events": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e137",
+                  "name": "Weather the Storm"
+                }
+              ],
+              "mapped_spell_casts": [],
+              "evidence_kind": "AFTER_AUDIT_STATE"
+            },
+            {
+              "sequence": 306,
+              "turn": 15,
+              "active_player": "e0",
+              "observed_next_priority_player": "e1",
+              "next_action_sequence": 307,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e1",
+              "resolution_events": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e136",
+                  "name": "Weather the Storm"
+                }
+              ],
+              "mapped_spell_casts": [],
+              "evidence_kind": "AFTER_AUDIT_STATE"
+            },
+            {
+              "sequence": 308,
+              "turn": 15,
+              "active_player": "e0",
+              "observed_next_priority_player": "e1",
+              "next_action_sequence": 309,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e1",
+              "resolution_events": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e135",
+                  "name": "Weather the Storm"
+                }
+              ],
+              "mapped_spell_casts": [],
+              "evidence_kind": "AFTER_AUDIT_STATE"
+            },
+            {
+              "sequence": 310,
+              "turn": 15,
+              "active_player": "e0",
+              "observed_next_priority_player": "e1",
+              "next_action_sequence": 311,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e1",
+              "resolution_events": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e92",
+                  "name": "Weather the Storm"
+                }
+              ],
+              "mapped_spell_casts": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e92",
+                  "name": "Weather the Storm",
+                  "cast": {
+                    "casterId": "e1",
+                    "cardName": "Weather the Storm"
+                  }
+                }
+              ],
+              "evidence_kind": "AFTER_AUDIT_STATE"
+            }
+          ]
+        },
+        {
+          "game_number": 6,
+          "raw_member": "aggregate-raw.json",
+          "raw_member_sha256": "8dd276453cccda391f27a9c3325184aaf7faec1689ac680aa276430cb3e924dc",
+          "actions": 185,
+          "confirmed_priority_violations": [
+            {
+              "sequence": 70,
+              "turn": 4,
+              "active_player": "e1",
+              "observed_next_priority_player": "e0",
+              "next_action_sequence": 71,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e0",
+              "resolution_events": [
+                {
+                  "type": "AbilityResolvedEvent",
+                  "sourceId": "e9",
+                  "description": "a card or permanent would die, create a Eldrazi Scion token."
+                }
+              ],
+              "mapped_spell_casts": [],
+              "evidence_kind": "AFTER_AUDIT_STATE"
+            }
+          ]
+        },
+        {
+          "game_number": 7,
+          "raw_member": "aggregate-raw.json",
+          "raw_member_sha256": "8dd276453cccda391f27a9c3325184aaf7faec1689ac680aa276430cb3e924dc",
+          "actions": 329,
+          "confirmed_priority_violations": [
+            {
+              "sequence": 111,
+              "turn": 6,
+              "active_player": "e1",
+              "observed_next_priority_player": "e0",
+              "next_action_sequence": 112,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e0",
+              "resolution_events": [
+                {
+                  "type": "AbilityResolvedEvent",
+                  "sourceId": "e9",
+                  "description": "a card or permanent would die, create a Eldrazi Scion token."
+                }
+              ],
+              "mapped_spell_casts": [],
+              "evidence_kind": "AFTER_AUDIT_STATE"
+            },
+            {
+              "sequence": 133,
+              "turn": 7,
+              "active_player": "e0",
+              "observed_next_priority_player": "e1",
+              "next_action_sequence": 134,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e1",
+              "resolution_events": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e113",
+                  "name": "Lava Dart"
+                }
+              ],
+              "mapped_spell_casts": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e113",
+                  "name": "Lava Dart",
+                  "cast": {
+                    "casterId": "e1",
+                    "cardName": "Lava Dart"
+                  }
+                }
+              ],
+              "evidence_kind": "AFTER_AUDIT_STATE"
+            }
+          ]
+        },
+        {
+          "game_number": 8,
+          "raw_member": "aggregate-raw.json",
+          "raw_member_sha256": "8dd276453cccda391f27a9c3325184aaf7faec1689ac680aa276430cb3e924dc",
+          "actions": 369,
+          "confirmed_priority_violations": [
+            {
+              "sequence": 163,
+              "turn": 9,
+              "active_player": "e0",
+              "observed_next_priority_player": "e1",
+              "next_action_sequence": 164,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e1",
+              "resolution_events": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e93",
+                  "name": "Cast Down"
+                }
+              ],
+              "mapped_spell_casts": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e93",
+                  "name": "Cast Down",
+                  "cast": {
+                    "casterId": "e1",
+                    "cardName": "Cast Down"
+                  }
+                }
+              ],
+              "evidence_kind": "AFTER_AUDIT_STATE"
+            },
+            {
+              "sequence": 208,
+              "turn": 11,
+              "active_player": "e0",
+              "observed_next_priority_player": "e1",
+              "next_action_sequence": 209,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e1",
+              "resolution_events": [
+                {
+                  "type": "AbilityResolvedEvent",
+                  "sourceId": "e69",
+                  "description": "a card or permanent would die, create a Eldrazi Scion token."
+                }
+              ],
+              "mapped_spell_casts": [],
+              "evidence_kind": "AFTER_AUDIT_STATE"
+            }
+          ]
+        },
+        {
+          "game_number": 9,
+          "raw_member": "aggregate-raw.json",
+          "raw_member_sha256": "8dd276453cccda391f27a9c3325184aaf7faec1689ac680aa276430cb3e924dc",
+          "actions": 385,
+          "confirmed_priority_violations": [
+            {
+              "sequence": 46,
+              "turn": 3,
+              "active_player": "e1",
+              "observed_next_priority_player": "e0",
+              "next_action_sequence": 47,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e0",
+              "resolution_events": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e51",
+                  "name": "Lava Dart"
+                }
+              ],
+              "mapped_spell_casts": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e51",
+                  "name": "Lava Dart",
+                  "cast": {
+                    "casterId": "e0",
+                    "cardName": "Lava Dart"
+                  }
+                }
+              ],
+              "evidence_kind": "AFTER_AUDIT_STATE"
+            },
+            {
+              "sequence": 150,
+              "turn": 8,
+              "active_player": "e0",
+              "observed_next_priority_player": "e1",
+              "next_action_sequence": 151,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e1",
+              "resolution_events": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e96",
+                  "name": "Cast Down"
+                }
+              ],
+              "mapped_spell_casts": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e96",
+                  "name": "Cast Down",
+                  "cast": {
+                    "casterId": "e1",
+                    "cardName": "Cast Down"
+                  }
+                }
+              ],
+              "evidence_kind": "AFTER_AUDIT_STATE"
+            },
+            {
+              "sequence": 152,
+              "turn": 8,
+              "active_player": "e0",
+              "observed_next_priority_player": "e1",
+              "next_action_sequence": 153,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e1",
+              "resolution_events": [
+                {
+                  "type": "AbilityResolvedEvent",
+                  "sourceId": "e64",
+                  "description": "a creature would enter the battlefield, you gain 1 life."
+                }
+              ],
+              "mapped_spell_casts": [],
+              "evidence_kind": "AFTER_AUDIT_STATE"
+            },
+            {
+              "sequence": 154,
+              "turn": 8,
+              "active_player": "e0",
+              "observed_next_priority_player": "e1",
+              "next_action_sequence": 155,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e1",
+              "resolution_events": [
+                {
+                  "type": "AbilityResolvedEvent",
+                  "sourceId": "e75",
+                  "description": "you would gain life, put 1 +1/+1 counter on this creature."
+                }
+              ],
+              "mapped_spell_casts": [],
+              "evidence_kind": "AFTER_AUDIT_STATE"
+            }
+          ]
+        },
+        {
+          "game_number": 10,
+          "raw_member": "aggregate-raw.json",
+          "raw_member_sha256": "8dd276453cccda391f27a9c3325184aaf7faec1689ac680aa276430cb3e924dc",
+          "actions": 339,
+          "confirmed_priority_violations": []
+        },
+        {
+          "game_number": 11,
+          "raw_member": "aggregate-raw.json",
+          "raw_member_sha256": "8dd276453cccda391f27a9c3325184aaf7faec1689ac680aa276430cb3e924dc",
+          "actions": 255,
+          "confirmed_priority_violations": [
+            {
+              "sequence": 244,
+              "turn": 12,
+              "active_player": "e0",
+              "observed_next_priority_player": "e1",
+              "next_action_sequence": 245,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e1",
+              "resolution_events": [
+                {
+                  "type": "AbilityResolvedEvent",
+                  "sourceId": "e126",
+                  "description": "Food"
+                }
+              ],
+              "mapped_spell_casts": [],
+              "evidence_kind": "AFTER_AUDIT_STATE"
+            }
+          ]
+        },
+        {
+          "game_number": 12,
+          "raw_member": "aggregate-raw.json",
+          "raw_member_sha256": "8dd276453cccda391f27a9c3325184aaf7faec1689ac680aa276430cb3e924dc",
+          "actions": 436,
+          "confirmed_priority_violations": [
+            {
+              "sequence": 154,
+              "turn": 9,
+              "active_player": "e0",
+              "observed_next_priority_player": "e1",
+              "next_action_sequence": 155,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e1",
+              "resolution_events": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e112",
+                  "name": "Lava Dart"
+                }
+              ],
+              "mapped_spell_casts": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e112",
+                  "name": "Lava Dart",
+                  "cast": {
+                    "casterId": "e1",
+                    "cardName": "Lava Dart"
+                  }
+                }
+              ],
+              "evidence_kind": "AFTER_AUDIT_STATE"
+            },
+            {
+              "sequence": 232,
+              "turn": 12,
+              "active_player": "e1",
+              "observed_next_priority_player": "e0",
+              "next_action_sequence": 233,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e0",
+              "resolution_events": [
+                {
+                  "type": "AbilityResolvedEvent",
+                  "sourceId": "e2",
+                  "description": "a creature would enter the battlefield, you gain 1 life."
+                }
+              ],
+              "mapped_spell_casts": [],
+              "evidence_kind": "AFTER_AUDIT_STATE"
+            },
+            {
+              "sequence": 314,
+              "turn": 14,
+              "active_player": "e1",
+              "observed_next_priority_player": "e0",
+              "next_action_sequence": 315,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e0",
+              "resolution_events": [
+                {
+                  "type": "AbilityResolvedEvent",
+                  "sourceId": "e6",
+                  "description": "a card or permanent would die, create a Eldrazi Scion token."
+                }
+              ],
+              "mapped_spell_casts": [],
+              "evidence_kind": "AFTER_AUDIT_STATE"
+            }
+          ]
+        },
+        {
+          "game_number": 13,
+          "raw_member": "aggregate-raw.json",
+          "raw_member_sha256": "8dd276453cccda391f27a9c3325184aaf7faec1689ac680aa276430cb3e924dc",
+          "actions": 380,
+          "confirmed_priority_violations": [
+            {
+              "sequence": 52,
+              "turn": 3,
+              "active_player": "e0",
+              "observed_next_priority_player": "e1",
+              "next_action_sequence": 53,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e1",
+              "resolution_events": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e112",
+                  "name": "Lava Dart"
+                }
+              ],
+              "mapped_spell_casts": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e112",
+                  "name": "Lava Dart",
+                  "cast": {
+                    "casterId": "e1",
+                    "cardName": "Lava Dart"
+                  }
+                }
+              ],
+              "evidence_kind": "AFTER_AUDIT_STATE"
+            },
+            {
+              "sequence": 68,
+              "turn": 4,
+              "active_player": "e1",
+              "observed_next_priority_player": "e0",
+              "next_action_sequence": 69,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e0",
+              "resolution_events": [
+                {
+                  "type": "AbilityResolvedEvent",
+                  "sourceId": "e2",
+                  "description": "a creature would enter the battlefield, you gain 1 life."
+                }
+              ],
+              "mapped_spell_casts": [],
+              "evidence_kind": "AFTER_AUDIT_STATE"
+            },
+            {
+              "sequence": 111,
+              "turn": 6,
+              "active_player": "e1",
+              "observed_next_priority_player": "e0",
+              "next_action_sequence": 112,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e0",
+              "resolution_events": [
+                {
+                  "type": "AbilityResolvedEvent",
+                  "sourceId": "e5",
+                  "description": "a creature would enter the battlefield, you gain 1 life."
+                }
+              ],
+              "mapped_spell_casts": [],
+              "evidence_kind": "AFTER_AUDIT_STATE"
+            },
+            {
+              "sequence": 113,
+              "turn": 6,
+              "active_player": "e1",
+              "observed_next_priority_player": "e0",
+              "next_action_sequence": 114,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e0",
+              "resolution_events": [
+                {
+                  "type": "AbilityResolvedEvent",
+                  "sourceId": "e2",
+                  "description": "a creature would enter the battlefield, you gain 1 life."
+                }
+              ],
+              "mapped_spell_casts": [],
+              "evidence_kind": "AFTER_AUDIT_STATE"
+            },
+            {
+              "sequence": 200,
+              "turn": 8,
+              "active_player": "e1",
+              "observed_next_priority_player": "e0",
+              "next_action_sequence": 201,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e0",
+              "resolution_events": [
+                {
+                  "type": "AbilityResolvedEvent",
+                  "sourceId": "e32",
+                  "description": "Storm \u2014 copy Weather the Storm 4 time(s)"
+                }
+              ],
+              "mapped_spell_casts": [],
+              "evidence_kind": "AFTER_AUDIT_STATE"
+            },
+            {
+              "sequence": 202,
+              "turn": 8,
+              "active_player": "e1",
+              "observed_next_priority_player": "e0",
+              "next_action_sequence": 203,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e0",
+              "resolution_events": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e142",
+                  "name": "Weather the Storm"
+                }
+              ],
+              "mapped_spell_casts": [],
+              "evidence_kind": "AFTER_AUDIT_STATE"
+            },
+            {
+              "sequence": 204,
+              "turn": 8,
+              "active_player": "e1",
+              "observed_next_priority_player": "e0",
+              "next_action_sequence": 205,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e0",
+              "resolution_events": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e141",
+                  "name": "Weather the Storm"
+                }
+              ],
+              "mapped_spell_casts": [],
+              "evidence_kind": "AFTER_AUDIT_STATE"
+            },
+            {
+              "sequence": 206,
+              "turn": 8,
+              "active_player": "e1",
+              "observed_next_priority_player": "e0",
+              "next_action_sequence": 207,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e0",
+              "resolution_events": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e140",
+                  "name": "Weather the Storm"
+                }
+              ],
+              "mapped_spell_casts": [],
+              "evidence_kind": "AFTER_AUDIT_STATE"
+            },
+            {
+              "sequence": 208,
+              "turn": 8,
+              "active_player": "e1",
+              "observed_next_priority_player": "e0",
+              "next_action_sequence": 209,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e0",
+              "resolution_events": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e139",
+                  "name": "Weather the Storm"
+                }
+              ],
+              "mapped_spell_casts": [],
+              "evidence_kind": "AFTER_AUDIT_STATE"
+            },
+            {
+              "sequence": 210,
+              "turn": 8,
+              "active_player": "e1",
+              "observed_next_priority_player": "e0",
+              "next_action_sequence": 211,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e0",
+              "resolution_events": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e32",
+                  "name": "Weather the Storm"
+                }
+              ],
+              "mapped_spell_casts": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e32",
+                  "name": "Weather the Storm",
+                  "cast": {
+                    "casterId": "e0",
+                    "cardName": "Weather the Storm"
+                  }
+                }
+              ],
+              "evidence_kind": "AFTER_AUDIT_STATE"
+            }
+          ]
+        },
+        {
+          "game_number": 14,
+          "raw_member": "aggregate-raw.json",
+          "raw_member_sha256": "8dd276453cccda391f27a9c3325184aaf7faec1689ac680aa276430cb3e924dc",
+          "actions": 284,
+          "confirmed_priority_violations": []
+        },
+        {
+          "game_number": 15,
+          "raw_member": "aggregate-raw.json",
+          "raw_member_sha256": "8dd276453cccda391f27a9c3325184aaf7faec1689ac680aa276430cb3e924dc",
+          "actions": 356,
+          "confirmed_priority_violations": [
+            {
+              "sequence": 96,
+              "turn": 6,
+              "active_player": "e0",
+              "observed_next_priority_player": "e1",
+              "next_action_sequence": 97,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e1",
+              "resolution_events": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e95",
+                  "name": "Cast Down"
+                }
+              ],
+              "mapped_spell_casts": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e95",
+                  "name": "Cast Down",
+                  "cast": {
+                    "casterId": "e1",
+                    "cardName": "Cast Down"
+                  }
+                }
+              ],
+              "evidence_kind": "AFTER_AUDIT_STATE"
+            },
+            {
+              "sequence": 154,
+              "turn": 9,
+              "active_player": "e1",
+              "observed_next_priority_player": "e0",
+              "next_action_sequence": 155,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e0",
+              "resolution_events": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e38",
+                  "name": "Fiery Temper"
+                }
+              ],
+              "mapped_spell_casts": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e38",
+                  "name": "Fiery Temper",
+                  "cast": {
+                    "casterId": "e0",
+                    "cardName": "Fiery Temper"
+                  }
+                }
+              ],
+              "evidence_kind": "AFTER_AUDIT_STATE"
+            }
+          ]
+        },
+        {
+          "game_number": 16,
+          "raw_member": "aggregate-raw.json",
+          "raw_member_sha256": "8dd276453cccda391f27a9c3325184aaf7faec1689ac680aa276430cb3e924dc",
+          "actions": 285,
+          "confirmed_priority_violations": [
+            {
+              "sequence": 247,
+              "turn": 11,
+              "active_player": "e0",
+              "observed_next_priority_player": "e1",
+              "next_action_sequence": 248,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e1",
+              "resolution_events": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e96",
+                  "name": "Cast Down"
+                }
+              ],
+              "mapped_spell_casts": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e96",
+                  "name": "Cast Down",
+                  "cast": {
+                    "casterId": "e1",
+                    "cardName": "Cast Down"
+                  }
+                }
+              ],
+              "evidence_kind": "AFTER_AUDIT_STATE"
+            },
+            {
+              "sequence": 249,
+              "turn": 11,
+              "active_player": "e0",
+              "observed_next_priority_player": "e1",
+              "next_action_sequence": 250,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e1",
+              "resolution_events": [
+                {
+                  "type": "AbilityResolvedEvent",
+                  "sourceId": "e64",
+                  "description": "a creature would enter the battlefield, you gain 1 life."
+                }
+              ],
+              "mapped_spell_casts": [],
+              "evidence_kind": "AFTER_AUDIT_STATE"
+            },
+            {
+              "sequence": 251,
+              "turn": 11,
+              "active_player": "e0",
+              "observed_next_priority_player": "e1",
+              "next_action_sequence": 252,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e1",
+              "resolution_events": [
+                {
+                  "type": "AbilityResolvedEvent",
+                  "sourceId": "e77",
+                  "description": "you would gain life, put 1 +1/+1 counter on this creature."
+                }
+              ],
+              "mapped_spell_casts": [],
+              "evidence_kind": "AFTER_AUDIT_STATE"
+            }
+          ]
+        },
+        {
+          "game_number": 17,
+          "raw_member": "aggregate-raw.json",
+          "raw_member_sha256": "8dd276453cccda391f27a9c3325184aaf7faec1689ac680aa276430cb3e924dc",
+          "actions": 387,
+          "confirmed_priority_violations": [
+            {
+              "sequence": 79,
+              "turn": 5,
+              "active_player": "e0",
+              "observed_next_priority_player": "e1",
+              "next_action_sequence": 80,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e1",
+              "resolution_events": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e95",
+                  "name": "Cast Down"
+                }
+              ],
+              "mapped_spell_casts": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e95",
+                  "name": "Cast Down",
+                  "cast": {
+                    "casterId": "e1",
+                    "cardName": "Cast Down"
+                  }
+                }
+              ],
+              "evidence_kind": "AFTER_AUDIT_STATE"
+            },
+            {
+              "sequence": 316,
+              "turn": 17,
+              "active_player": "e0",
+              "observed_next_priority_player": "e1",
+              "next_action_sequence": 317,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e1",
+              "resolution_events": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e96",
+                  "name": "Cast Down"
+                }
+              ],
+              "mapped_spell_casts": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e96",
+                  "name": "Cast Down",
+                  "cast": {
+                    "casterId": "e1",
+                    "cardName": "Cast Down"
+                  }
+                }
+              ],
+              "evidence_kind": "AFTER_AUDIT_STATE"
+            }
+          ]
+        },
+        {
+          "game_number": 18,
+          "raw_member": "aggregate-raw.json",
+          "raw_member_sha256": "8dd276453cccda391f27a9c3325184aaf7faec1689ac680aa276430cb3e924dc",
+          "actions": 253,
+          "confirmed_priority_violations": []
+        },
+        {
+          "game_number": 19,
+          "raw_member": "aggregate-raw.json",
+          "raw_member_sha256": "8dd276453cccda391f27a9c3325184aaf7faec1689ac680aa276430cb3e924dc",
+          "actions": 391,
+          "confirmed_priority_violations": [
+            {
+              "sequence": 205,
+              "turn": 11,
+              "active_player": "e1",
+              "observed_next_priority_player": "e0",
+              "next_action_sequence": 206,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e0",
+              "resolution_events": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e36",
+                  "name": "Cast Down"
+                }
+              ],
+              "mapped_spell_casts": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e36",
+                  "name": "Cast Down",
+                  "cast": {
+                    "casterId": "e0",
+                    "cardName": "Cast Down"
+                  }
+                }
+              ],
+              "evidence_kind": "AFTER_AUDIT_STATE"
+            }
+          ]
+        },
+        {
+          "game_number": 20,
+          "raw_member": "aggregate-raw.json",
+          "raw_member_sha256": "8dd276453cccda391f27a9c3325184aaf7faec1689ac680aa276430cb3e924dc",
+          "actions": 248,
+          "confirmed_priority_violations": [
+            {
+              "sequence": 44,
+              "turn": 3,
+              "active_player": "e1",
+              "observed_next_priority_player": "e0",
+              "next_action_sequence": 45,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e0",
+              "resolution_events": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e52",
+                  "name": "Lava Dart"
+                }
+              ],
+              "mapped_spell_casts": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e52",
+                  "name": "Lava Dart",
+                  "cast": {
+                    "casterId": "e0",
+                    "cardName": "Lava Dart"
+                  }
+                }
+              ],
+              "evidence_kind": "AFTER_AUDIT_STATE"
+            },
+            {
+              "sequence": 159,
+              "turn": 8,
+              "active_player": "e0",
+              "observed_next_priority_player": "e1",
+              "next_action_sequence": 160,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e1",
+              "resolution_events": [
+                {
+                  "type": "AbilityResolvedEvent",
+                  "sourceId": "e64",
+                  "description": "a creature would enter the battlefield, you gain 1 life."
+                }
+              ],
+              "mapped_spell_casts": [],
+              "evidence_kind": "AFTER_AUDIT_STATE"
+            },
+            {
+              "sequence": 161,
+              "turn": 8,
+              "active_player": "e0",
+              "observed_next_priority_player": "e1",
+              "next_action_sequence": 162,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e1",
+              "resolution_events": [
+                {
+                  "type": "AbilityResolvedEvent",
+                  "sourceId": "e74",
+                  "description": "you would gain life, put 1 +1/+1 counter on this creature."
+                }
+              ],
+              "mapped_spell_casts": [],
+              "evidence_kind": "AFTER_AUDIT_STATE"
+            },
+            {
+              "sequence": 163,
+              "turn": 8,
+              "active_player": "e0",
+              "observed_next_priority_player": "e1",
+              "next_action_sequence": 164,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e1",
+              "resolution_events": [
+                {
+                  "type": "AbilityResolvedEvent",
+                  "sourceId": "e75",
+                  "description": "you would gain life, put 1 +1/+1 counter on this creature."
+                }
+              ],
+              "mapped_spell_casts": [],
+              "evidence_kind": "AFTER_AUDIT_STATE"
+            }
+          ]
+        },
+        {
+          "game_number": 21,
+          "raw_member": "aggregate-raw.json",
+          "raw_member_sha256": "8dd276453cccda391f27a9c3325184aaf7faec1689ac680aa276430cb3e924dc",
+          "actions": 182,
+          "confirmed_priority_violations": []
+        },
+        {
+          "game_number": 22,
+          "raw_member": "aggregate-raw.json",
+          "raw_member_sha256": "8dd276453cccda391f27a9c3325184aaf7faec1689ac680aa276430cb3e924dc",
+          "actions": 218,
+          "confirmed_priority_violations": []
+        },
+        {
+          "game_number": 23,
+          "raw_member": "aggregate-raw.json",
+          "raw_member_sha256": "8dd276453cccda391f27a9c3325184aaf7faec1689ac680aa276430cb3e924dc",
+          "actions": 306,
+          "confirmed_priority_violations": []
+        },
+        {
+          "game_number": 24,
+          "raw_member": "aggregate-raw.json",
+          "raw_member_sha256": "8dd276453cccda391f27a9c3325184aaf7faec1689ac680aa276430cb3e924dc",
+          "actions": 386,
+          "confirmed_priority_violations": [
+            {
+              "sequence": 264,
+              "turn": 14,
+              "active_player": "e0",
+              "observed_next_priority_player": "e1",
+              "next_action_sequence": 265,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e1",
+              "resolution_events": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e93",
+                  "name": "Cast Down"
+                }
+              ],
+              "mapped_spell_casts": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e93",
+                  "name": "Cast Down",
+                  "cast": {
+                    "casterId": "e1",
+                    "cardName": "Cast Down"
+                  }
+                }
+              ],
+              "evidence_kind": "AFTER_AUDIT_STATE"
+            }
+          ]
+        },
+        {
+          "game_number": 25,
+          "raw_member": "aggregate-raw.json",
+          "raw_member_sha256": "8dd276453cccda391f27a9c3325184aaf7faec1689ac680aa276430cb3e924dc",
+          "actions": 264,
+          "confirmed_priority_violations": []
+        },
+        {
+          "game_number": 26,
+          "raw_member": "aggregate-raw.json",
+          "raw_member_sha256": "8dd276453cccda391f27a9c3325184aaf7faec1689ac680aa276430cb3e924dc",
+          "actions": 416,
+          "confirmed_priority_violations": [
+            {
+              "sequence": 53,
+              "turn": 3,
+              "active_player": "e0",
+              "observed_next_priority_player": "e1",
+              "next_action_sequence": 54,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e1",
+              "resolution_events": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e111",
+                  "name": "Lava Dart"
+                }
+              ],
+              "mapped_spell_casts": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e111",
+                  "name": "Lava Dart",
+                  "cast": {
+                    "casterId": "e1",
+                    "cardName": "Lava Dart"
+                  }
+                }
+              ],
+              "evidence_kind": "AFTER_AUDIT_STATE"
+            }
+          ]
+        },
+        {
+          "game_number": 27,
+          "raw_member": "aggregate-raw.json",
+          "raw_member_sha256": "8dd276453cccda391f27a9c3325184aaf7faec1689ac680aa276430cb3e924dc",
+          "actions": 259,
+          "confirmed_priority_violations": [
+            {
+              "sequence": 161,
+              "turn": 8,
+              "active_player": "e0",
+              "observed_next_priority_player": "e1",
+              "next_action_sequence": 162,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e1",
+              "resolution_events": [
+                {
+                  "type": "AbilityResolvedEvent",
+                  "sourceId": "e64",
+                  "description": "a creature would enter the battlefield, you gain 1 life."
+                }
+              ],
+              "mapped_spell_casts": [],
+              "evidence_kind": "AFTER_AUDIT_STATE"
+            },
+            {
+              "sequence": 163,
+              "turn": 8,
+              "active_player": "e0",
+              "observed_next_priority_player": "e1",
+              "next_action_sequence": 164,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e1",
+              "resolution_events": [
+                {
+                  "type": "AbilityResolvedEvent",
+                  "sourceId": "e62",
+                  "description": "a creature would enter the battlefield, you gain 1 life."
+                }
+              ],
+              "mapped_spell_casts": [],
+              "evidence_kind": "AFTER_AUDIT_STATE"
+            }
+          ]
+        },
+        {
+          "game_number": 28,
+          "raw_member": "aggregate-raw.json",
+          "raw_member_sha256": "8dd276453cccda391f27a9c3325184aaf7faec1689ac680aa276430cb3e924dc",
+          "actions": 275,
+          "confirmed_priority_violations": [
+            {
+              "sequence": 44,
+              "turn": 3,
+              "active_player": "e0",
+              "observed_next_priority_player": "e1",
+              "next_action_sequence": 45,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e1",
+              "resolution_events": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e114",
+                  "name": "Lava Dart"
+                }
+              ],
+              "mapped_spell_casts": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e114",
+                  "name": "Lava Dart",
+                  "cast": {
+                    "casterId": "e1",
+                    "cardName": "Lava Dart"
+                  }
+                }
+              ],
+              "evidence_kind": "AFTER_AUDIT_STATE"
+            },
+            {
+              "sequence": 149,
+              "turn": 8,
+              "active_player": "e1",
+              "observed_next_priority_player": "e0",
+              "next_action_sequence": 150,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e0",
+              "resolution_events": [
+                {
+                  "type": "AbilityResolvedEvent",
+                  "sourceId": "e2",
+                  "description": "a creature would enter the battlefield, you gain 1 life."
+                }
+              ],
+              "mapped_spell_casts": [],
+              "evidence_kind": "AFTER_AUDIT_STATE"
+            },
+            {
+              "sequence": 151,
+              "turn": 8,
+              "active_player": "e1",
+              "observed_next_priority_player": "e0",
+              "next_action_sequence": 152,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e0",
+              "resolution_events": [
+                {
+                  "type": "AbilityResolvedEvent",
+                  "sourceId": "e15",
+                  "description": "you would gain life, put 1 +1/+1 counter on this creature."
+                }
+              ],
+              "mapped_spell_casts": [],
+              "evidence_kind": "AFTER_AUDIT_STATE"
+            }
+          ]
+        },
+        {
+          "game_number": 29,
+          "raw_member": "aggregate-raw.json",
+          "raw_member_sha256": "8dd276453cccda391f27a9c3325184aaf7faec1689ac680aa276430cb3e924dc",
+          "actions": 269,
+          "confirmed_priority_violations": []
+        },
+        {
+          "game_number": 30,
+          "raw_member": "aggregate-raw.json",
+          "raw_member_sha256": "8dd276453cccda391f27a9c3325184aaf7faec1689ac680aa276430cb3e924dc",
+          "actions": 174,
+          "confirmed_priority_violations": []
+        },
+        {
+          "game_number": 31,
+          "raw_member": "aggregate-raw.json",
+          "raw_member_sha256": "8dd276453cccda391f27a9c3325184aaf7faec1689ac680aa276430cb3e924dc",
+          "actions": 331,
+          "confirmed_priority_violations": [
+            {
+              "sequence": 309,
+              "turn": 14,
+              "active_player": "e0",
+              "observed_next_priority_player": "e1",
+              "next_action_sequence": 310,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e1",
+              "resolution_events": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e112",
+                  "name": "Lava Dart"
+                }
+              ],
+              "mapped_spell_casts": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e112",
+                  "name": "Lava Dart",
+                  "cast": {
+                    "casterId": "e1",
+                    "cardName": "Lava Dart"
+                  }
+                }
+              ],
+              "evidence_kind": "AFTER_AUDIT_STATE"
+            }
+          ]
+        },
+        {
+          "game_number": 32,
+          "raw_member": "aggregate-raw.json",
+          "raw_member_sha256": "8dd276453cccda391f27a9c3325184aaf7faec1689ac680aa276430cb3e924dc",
+          "actions": 243,
+          "confirmed_priority_violations": [
+            {
+              "sequence": 127,
+              "turn": 7,
+              "active_player": "e1",
+              "observed_next_priority_player": "e0",
+              "next_action_sequence": 128,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e0",
+              "resolution_events": [
+                {
+                  "type": "AbilityResolvedEvent",
+                  "sourceId": "e6",
+                  "description": "a card or permanent would die, create a Eldrazi Scion token."
+                }
+              ],
+              "mapped_spell_casts": [],
+              "evidence_kind": "AFTER_AUDIT_STATE"
+            }
+          ]
+        },
+        {
+          "game_number": 33,
+          "raw_member": "aggregate-raw.json",
+          "raw_member_sha256": "8dd276453cccda391f27a9c3325184aaf7faec1689ac680aa276430cb3e924dc",
+          "actions": 371,
+          "confirmed_priority_violations": [
+            {
+              "sequence": 148,
+              "turn": 8,
+              "active_player": "e1",
+              "observed_next_priority_player": "e0",
+              "next_action_sequence": 149,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e0",
+              "resolution_events": [
+                {
+                  "type": "AbilityResolvedEvent",
+                  "sourceId": "e2",
+                  "description": "a creature would enter the battlefield, you gain 1 life."
+                }
+              ],
+              "mapped_spell_casts": [],
+              "evidence_kind": "AFTER_AUDIT_STATE"
+            },
+            {
+              "sequence": 150,
+              "turn": 8,
+              "active_player": "e1",
+              "observed_next_priority_player": "e0",
+              "next_action_sequence": 151,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e0",
+              "resolution_events": [
+                {
+                  "type": "AbilityResolvedEvent",
+                  "sourceId": "e4",
+                  "description": "a creature would enter the battlefield, you gain 1 life."
+                }
+              ],
+              "mapped_spell_casts": [],
+              "evidence_kind": "AFTER_AUDIT_STATE"
+            },
+            {
+              "sequence": 203,
+              "turn": 10,
+              "active_player": "e1",
+              "observed_next_priority_player": "e0",
+              "next_action_sequence": 204,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e0",
+              "resolution_events": [
+                {
+                  "type": "AbilityResolvedEvent",
+                  "sourceId": "e2",
+                  "description": "a creature would enter the battlefield, you gain 1 life."
+                }
+              ],
+              "mapped_spell_casts": [],
+              "evidence_kind": "AFTER_AUDIT_STATE"
+            },
+            {
+              "sequence": 229,
+              "turn": 11,
+              "active_player": "e0",
+              "observed_next_priority_player": "e1",
+              "next_action_sequence": 230,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e1",
+              "resolution_events": [
+                {
+                  "type": "AbilityResolvedEvent",
+                  "sourceId": "e86",
+                  "description": "you casts a noncreature spell, deal 1 damage to each opponent."
+                }
+              ],
+              "mapped_spell_casts": [],
+              "evidence_kind": "AFTER_AUDIT_STATE"
+            },
+            {
+              "sequence": 231,
+              "turn": 11,
+              "active_player": "e0",
+              "observed_next_priority_player": "e1",
+              "next_action_sequence": 232,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e1",
+              "resolution_events": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e111",
+                  "name": "Lava Dart"
+                }
+              ],
+              "mapped_spell_casts": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e111",
+                  "name": "Lava Dart",
+                  "cast": {
+                    "casterId": "e1",
+                    "cardName": "Lava Dart"
+                  }
+                }
+              ],
+              "evidence_kind": "AFTER_AUDIT_STATE"
+            }
+          ]
+        },
+        {
+          "game_number": 34,
+          "raw_member": "aggregate-raw.json",
+          "raw_member_sha256": "8dd276453cccda391f27a9c3325184aaf7faec1689ac680aa276430cb3e924dc",
+          "actions": 362,
+          "confirmed_priority_violations": [
+            {
+              "sequence": 50,
+              "turn": 3,
+              "active_player": "e1",
+              "observed_next_priority_player": "e0",
+              "next_action_sequence": 51,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e0",
+              "resolution_events": [
+                {
+                  "type": "AbilityResolvedEvent",
+                  "sourceId": "e5",
+                  "description": "a creature would enter the battlefield, you gain 1 life."
+                }
+              ],
+              "mapped_spell_casts": [],
+              "evidence_kind": "AFTER_AUDIT_STATE"
+            },
+            {
+              "sequence": 106,
+              "turn": 5,
+              "active_player": "e1",
+              "observed_next_priority_player": "e0",
+              "next_action_sequence": 107,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e0",
+              "resolution_events": [
+                {
+                  "type": "AbilityResolvedEvent",
+                  "sourceId": "e4",
+                  "description": "a creature would enter the battlefield, you gain 1 life."
+                }
+              ],
+              "mapped_spell_casts": [],
+              "evidence_kind": "AFTER_AUDIT_STATE"
+            },
+            {
+              "sequence": 108,
+              "turn": 5,
+              "active_player": "e1",
+              "observed_next_priority_player": "e0",
+              "next_action_sequence": 109,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e0",
+              "resolution_events": [
+                {
+                  "type": "AbilityResolvedEvent",
+                  "sourceId": "e5",
+                  "description": "a creature would enter the battlefield, you gain 1 life."
+                }
+              ],
+              "mapped_spell_casts": [],
+              "evidence_kind": "AFTER_AUDIT_STATE"
+            },
+            {
+              "sequence": 112,
+              "turn": 5,
+              "active_player": "e1",
+              "observed_next_priority_player": "e0",
+              "next_action_sequence": 113,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e0",
+              "resolution_events": [
+                {
+                  "type": "AbilityResolvedEvent",
+                  "sourceId": "e4",
+                  "description": "a creature would enter the battlefield, you gain 1 life."
+                }
+              ],
+              "mapped_spell_casts": [],
+              "evidence_kind": "AFTER_AUDIT_STATE"
+            },
+            {
+              "sequence": 114,
+              "turn": 5,
+              "active_player": "e1",
+              "observed_next_priority_player": "e0",
+              "next_action_sequence": 115,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e0",
+              "resolution_events": [
+                {
+                  "type": "AbilityResolvedEvent",
+                  "sourceId": "e5",
+                  "description": "a creature would enter the battlefield, you gain 1 life."
+                }
+              ],
+              "mapped_spell_casts": [],
+              "evidence_kind": "AFTER_AUDIT_STATE"
+            },
+            {
+              "sequence": 263,
+              "turn": 11,
+              "active_player": "e1",
+              "observed_next_priority_player": "e0",
+              "next_action_sequence": 264,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e0",
+              "resolution_events": [
+                {
+                  "type": "AbilityResolvedEvent",
+                  "sourceId": "e6",
+                  "description": "a card or permanent would die, create a Eldrazi Scion token."
+                }
+              ],
+              "mapped_spell_casts": [],
+              "evidence_kind": "AFTER_AUDIT_STATE"
+            }
+          ]
+        },
+        {
+          "game_number": 35,
+          "raw_member": "aggregate-raw.json",
+          "raw_member_sha256": "8dd276453cccda391f27a9c3325184aaf7faec1689ac680aa276430cb3e924dc",
+          "actions": 354,
+          "confirmed_priority_violations": [
+            {
+              "sequence": 97,
+              "turn": 6,
+              "active_player": "e1",
+              "observed_next_priority_player": "e0",
+              "next_action_sequence": 98,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e0",
+              "resolution_events": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e52",
+                  "name": "Lava Dart"
+                }
+              ],
+              "mapped_spell_casts": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e52",
+                  "name": "Lava Dart",
+                  "cast": {
+                    "casterId": "e0",
+                    "cardName": "Lava Dart"
+                  }
+                }
+              ],
+              "evidence_kind": "AFTER_AUDIT_STATE"
+            },
+            {
+              "sequence": 198,
+              "turn": 11,
+              "active_player": "e0",
+              "observed_next_priority_player": "e1",
+              "next_action_sequence": 199,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e1",
+              "resolution_events": [
+                {
+                  "type": "AbilityResolvedEvent",
+                  "sourceId": "e63",
+                  "description": "a creature would enter the battlefield, you gain 1 life."
+                }
+              ],
+              "mapped_spell_casts": [],
+              "evidence_kind": "AFTER_AUDIT_STATE"
+            },
+            {
+              "sequence": 200,
+              "turn": 11,
+              "active_player": "e0",
+              "observed_next_priority_player": "e1",
+              "next_action_sequence": 201,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e1",
+              "resolution_events": [
+                {
+                  "type": "AbilityResolvedEvent",
+                  "sourceId": "e75",
+                  "description": "you would gain life, put 1 +1/+1 counter on this creature."
+                }
+              ],
+              "mapped_spell_casts": [],
+              "evidence_kind": "AFTER_AUDIT_STATE"
+            },
+            {
+              "sequence": 310,
+              "turn": 15,
+              "active_player": "e0",
+              "observed_next_priority_player": "e1",
+              "next_action_sequence": 311,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e1",
+              "resolution_events": [
+                {
+                  "type": "AbilityResolvedEvent",
+                  "sourceId": "e63",
+                  "description": "a creature would enter the battlefield, you gain 1 life."
+                }
+              ],
+              "mapped_spell_casts": [],
+              "evidence_kind": "AFTER_AUDIT_STATE"
+            },
+            {
+              "sequence": 312,
+              "turn": 15,
+              "active_player": "e0",
+              "observed_next_priority_player": "e1",
+              "next_action_sequence": 313,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e1",
+              "resolution_events": [
+                {
+                  "type": "AbilityResolvedEvent",
+                  "sourceId": "e75",
+                  "description": "you would gain life, put 1 +1/+1 counter on this creature."
+                }
+              ],
+              "mapped_spell_casts": [],
+              "evidence_kind": "AFTER_AUDIT_STATE"
+            }
+          ]
+        },
+        {
+          "game_number": 36,
+          "raw_member": "aggregate-raw.json",
+          "raw_member_sha256": "8dd276453cccda391f27a9c3325184aaf7faec1689ac680aa276430cb3e924dc",
+          "actions": 291,
+          "confirmed_priority_violations": []
+        },
+        {
+          "game_number": 37,
+          "raw_member": "aggregate-raw.json",
+          "raw_member_sha256": "8dd276453cccda391f27a9c3325184aaf7faec1689ac680aa276430cb3e924dc",
+          "actions": 375,
+          "confirmed_priority_violations": []
+        },
+        {
+          "game_number": 38,
+          "raw_member": "aggregate-raw.json",
+          "raw_member_sha256": "8dd276453cccda391f27a9c3325184aaf7faec1689ac680aa276430cb3e924dc",
+          "actions": 383,
+          "confirmed_priority_violations": [
+            {
+              "sequence": 262,
+              "turn": 13,
+              "active_player": "e0",
+              "observed_next_priority_player": "e1",
+              "next_action_sequence": 263,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e1",
+              "resolution_events": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e94",
+                  "name": "Cast Down"
+                }
+              ],
+              "mapped_spell_casts": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e94",
+                  "name": "Cast Down",
+                  "cast": {
+                    "casterId": "e1",
+                    "cardName": "Cast Down"
+                  }
+                }
+              ],
+              "evidence_kind": "AFTER_AUDIT_STATE"
+            }
+          ]
+        },
+        {
+          "game_number": 39,
+          "raw_member": "aggregate-raw.json",
+          "raw_member_sha256": "8dd276453cccda391f27a9c3325184aaf7faec1689ac680aa276430cb3e924dc",
+          "actions": 390,
+          "confirmed_priority_violations": [
+            {
+              "sequence": 119,
+              "turn": 6,
+              "active_player": "e1",
+              "observed_next_priority_player": "e0",
+              "next_action_sequence": 120,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e0",
+              "resolution_events": [
+                {
+                  "type": "AbilityResolvedEvent",
+                  "sourceId": "e5",
+                  "description": "a creature would enter the battlefield, you gain 1 life."
+                }
+              ],
+              "mapped_spell_casts": [],
+              "evidence_kind": "AFTER_AUDIT_STATE"
+            },
+            {
+              "sequence": 386,
+              "turn": 16,
+              "active_player": "e1",
+              "observed_next_priority_player": "e0",
+              "next_action_sequence": 387,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e0",
+              "resolution_events": [
+                {
+                  "type": "AbilityResolvedEvent",
+                  "sourceId": "e9",
+                  "description": "a card or permanent would die, create a Eldrazi Scion token."
+                }
+              ],
+              "mapped_spell_casts": [],
+              "evidence_kind": "AFTER_AUDIT_STATE"
+            }
+          ]
+        },
+        {
+          "game_number": 40,
+          "raw_member": "aggregate-raw.json",
+          "raw_member_sha256": "8dd276453cccda391f27a9c3325184aaf7faec1689ac680aa276430cb3e924dc",
+          "actions": 561,
+          "confirmed_priority_violations": [
+            {
+              "sequence": 91,
+              "turn": 5,
+              "active_player": "e0",
+              "observed_next_priority_player": "e1",
+              "next_action_sequence": 92,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e1",
+              "resolution_events": [
+                {
+                  "type": "AbilityResolvedEvent",
+                  "sourceId": "e64",
+                  "description": "a creature would enter the battlefield, you gain 1 life."
+                }
+              ],
+              "mapped_spell_casts": [],
+              "evidence_kind": "AFTER_AUDIT_STATE"
+            },
+            {
+              "sequence": 340,
+              "turn": 15,
+              "active_player": "e0",
+              "observed_next_priority_player": "e1",
+              "next_action_sequence": 341,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e1",
+              "resolution_events": [
+                {
+                  "type": "AbilityResolvedEvent",
+                  "sourceId": "e69",
+                  "description": "a card or permanent would die, create a Eldrazi Scion token."
+                }
+              ],
+              "mapped_spell_casts": [],
+              "evidence_kind": "AFTER_AUDIT_STATE"
+            }
+          ]
+        },
+        {
+          "game_number": 41,
+          "raw_member": "aggregate-raw.json",
+          "raw_member_sha256": "8dd276453cccda391f27a9c3325184aaf7faec1689ac680aa276430cb3e924dc",
+          "actions": 475,
+          "confirmed_priority_violations": [
+            {
+              "sequence": 168,
+              "turn": 9,
+              "active_player": "e0",
+              "observed_next_priority_player": "e1",
+              "next_action_sequence": 169,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e1",
+              "resolution_events": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e93",
+                  "name": "Cast Down"
+                }
+              ],
+              "mapped_spell_casts": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e93",
+                  "name": "Cast Down",
+                  "cast": {
+                    "casterId": "e1",
+                    "cardName": "Cast Down"
+                  }
+                }
+              ],
+              "evidence_kind": "AFTER_AUDIT_STATE"
+            },
+            {
+              "sequence": 353,
+              "turn": 16,
+              "active_player": "e1",
+              "observed_next_priority_player": "e0",
+              "next_action_sequence": 354,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e0",
+              "resolution_events": [
+                {
+                  "type": "AbilityResolvedEvent",
+                  "sourceId": "e28",
+                  "description": "you casts a noncreature spell, deal 1 damage to each opponent."
+                }
+              ],
+              "mapped_spell_casts": [],
+              "evidence_kind": "AFTER_AUDIT_STATE"
+            },
+            {
+              "sequence": 355,
+              "turn": 16,
+              "active_player": "e1",
+              "observed_next_priority_player": "e0",
+              "next_action_sequence": 356,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e0",
+              "resolution_events": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e52",
+                  "name": "Lava Dart"
+                }
+              ],
+              "mapped_spell_casts": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e52",
+                  "name": "Lava Dart",
+                  "cast": {
+                    "casterId": "e0",
+                    "cardName": "Lava Dart"
+                  }
+                }
+              ],
+              "evidence_kind": "AFTER_AUDIT_STATE"
+            }
+          ]
+        },
+        {
+          "game_number": 42,
+          "raw_member": "aggregate-raw.json",
+          "raw_member_sha256": "8dd276453cccda391f27a9c3325184aaf7faec1689ac680aa276430cb3e924dc",
+          "actions": 247,
+          "confirmed_priority_violations": [
+            {
+              "sequence": 112,
+              "turn": 6,
+              "active_player": "e0",
+              "observed_next_priority_player": "e1",
+              "next_action_sequence": 113,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e1",
+              "resolution_events": [
+                {
+                  "type": "AbilityResolvedEvent",
+                  "sourceId": "e62",
+                  "description": "a creature would enter the battlefield, you gain 1 life."
+                }
+              ],
+              "mapped_spell_casts": [],
+              "evidence_kind": "AFTER_AUDIT_STATE"
+            },
+            {
+              "sequence": 114,
+              "turn": 6,
+              "active_player": "e0",
+              "observed_next_priority_player": "e1",
+              "next_action_sequence": 115,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e1",
+              "resolution_events": [
+                {
+                  "type": "AbilityResolvedEvent",
+                  "sourceId": "e71",
+                  "description": "you would gain life, put 1 +1/+1 counter on this creature."
+                }
+              ],
+              "mapped_spell_casts": [],
+              "evidence_kind": "AFTER_AUDIT_STATE"
+            },
+            {
+              "sequence": 231,
+              "turn": 11,
+              "active_player": "e1",
+              "observed_next_priority_player": "e0",
+              "next_action_sequence": 232,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e0",
+              "resolution_events": [
+                {
+                  "type": "AbilityResolvedEvent",
+                  "sourceId": "e61",
+                  "description": "Melded Moxite"
+                }
+              ],
+              "mapped_spell_casts": [],
+              "evidence_kind": "AFTER_AUDIT_STATE"
+            },
+            {
+              "sequence": 233,
+              "turn": 11,
+              "active_player": "e1",
+              "observed_next_priority_player": "e0",
+              "next_action_sequence": 234,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e0",
+              "resolution_events": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e53",
+                  "name": "Lava Dart"
+                }
+              ],
+              "mapped_spell_casts": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e53",
+                  "name": "Lava Dart",
+                  "cast": {
+                    "casterId": "e0",
+                    "cardName": "Lava Dart"
+                  }
+                }
+              ],
+              "evidence_kind": "AFTER_AUDIT_STATE"
+            }
+          ]
+        },
+        {
+          "game_number": 43,
+          "raw_member": "aggregate-raw.json",
+          "raw_member_sha256": "8dd276453cccda391f27a9c3325184aaf7faec1689ac680aa276430cb3e924dc",
+          "actions": 341,
+          "confirmed_priority_violations": [
+            {
+              "sequence": 102,
+              "turn": 6,
+              "active_player": "e0",
+              "observed_next_priority_player": "e1",
+              "next_action_sequence": 103,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e1",
+              "resolution_events": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e98",
+                  "name": "Fiery Temper"
+                }
+              ],
+              "mapped_spell_casts": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e98",
+                  "name": "Fiery Temper",
+                  "cast": {
+                    "casterId": "e1",
+                    "cardName": "Fiery Temper"
+                  }
+                }
+              ],
+              "evidence_kind": "AFTER_AUDIT_STATE"
+            }
+          ]
+        },
+        {
+          "game_number": 44,
+          "raw_member": "aggregate-raw.json",
+          "raw_member_sha256": "8dd276453cccda391f27a9c3325184aaf7faec1689ac680aa276430cb3e924dc",
+          "actions": 379,
+          "confirmed_priority_violations": [
+            {
+              "sequence": 65,
+              "turn": 4,
+              "active_player": "e0",
+              "observed_next_priority_player": "e1",
+              "next_action_sequence": 66,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e1",
+              "resolution_events": [
+                {
+                  "type": "AbilityResolvedEvent",
+                  "sourceId": "e62",
+                  "description": "a creature would enter the battlefield, you gain 1 life."
+                }
+              ],
+              "mapped_spell_casts": [],
+              "evidence_kind": "AFTER_AUDIT_STATE"
+            }
+          ]
+        },
+        {
+          "game_number": 45,
+          "raw_member": "aggregate-raw.json",
+          "raw_member_sha256": "8dd276453cccda391f27a9c3325184aaf7faec1689ac680aa276430cb3e924dc",
+          "actions": 282,
+          "confirmed_priority_violations": [
+            {
+              "sequence": 161,
+              "turn": 8,
+              "active_player": "e1",
+              "observed_next_priority_player": "e0",
+              "next_action_sequence": 162,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e0",
+              "resolution_events": [
+                {
+                  "type": "AbilityResolvedEvent",
+                  "sourceId": "e2",
+                  "description": "a creature would enter the battlefield, you gain 1 life."
+                }
+              ],
+              "mapped_spell_casts": [],
+              "evidence_kind": "AFTER_AUDIT_STATE"
+            },
+            {
+              "sequence": 163,
+              "turn": 8,
+              "active_player": "e1",
+              "observed_next_priority_player": "e0",
+              "next_action_sequence": 164,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e0",
+              "resolution_events": [
+                {
+                  "type": "AbilityResolvedEvent",
+                  "sourceId": "e10",
+                  "description": "you would gain life, put 1 +1/+1 counter on this creature."
+                }
+              ],
+              "mapped_spell_casts": [],
+              "evidence_kind": "AFTER_AUDIT_STATE"
+            },
+            {
+              "sequence": 177,
+              "turn": 8,
+              "active_player": "e1",
+              "observed_next_priority_player": "e0",
+              "next_action_sequence": 178,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e0",
+              "resolution_events": [
+                {
+                  "type": "AbilityResolvedEvent",
+                  "sourceId": "e2",
+                  "description": "a creature would enter the battlefield, you gain 1 life."
+                }
+              ],
+              "mapped_spell_casts": [],
+              "evidence_kind": "AFTER_AUDIT_STATE"
+            },
+            {
+              "sequence": 179,
+              "turn": 8,
+              "active_player": "e1",
+              "observed_next_priority_player": "e0",
+              "next_action_sequence": 180,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e0",
+              "resolution_events": [
+                {
+                  "type": "AbilityResolvedEvent",
+                  "sourceId": "e10",
+                  "description": "you would gain life, put 1 +1/+1 counter on this creature."
+                }
+              ],
+              "mapped_spell_casts": [],
+              "evidence_kind": "AFTER_AUDIT_STATE"
+            }
+          ]
+        },
+        {
+          "game_number": 46,
+          "raw_member": "aggregate-raw.json",
+          "raw_member_sha256": "8dd276453cccda391f27a9c3325184aaf7faec1689ac680aa276430cb3e924dc",
+          "actions": 323,
+          "confirmed_priority_violations": [
+            {
+              "sequence": 166,
+              "turn": 8,
+              "active_player": "e0",
+              "observed_next_priority_player": "e1",
+              "next_action_sequence": 167,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e1",
+              "resolution_events": [
+                {
+                  "type": "AbilityResolvedEvent",
+                  "sourceId": "e91",
+                  "description": "Storm \u2014 copy Weather the Storm 4 time(s)"
+                }
+              ],
+              "mapped_spell_casts": [],
+              "evidence_kind": "AFTER_AUDIT_STATE"
+            },
+            {
+              "sequence": 168,
+              "turn": 8,
+              "active_player": "e0",
+              "observed_next_priority_player": "e1",
+              "next_action_sequence": 169,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e1",
+              "resolution_events": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e131",
+                  "name": "Weather the Storm"
+                }
+              ],
+              "mapped_spell_casts": [],
+              "evidence_kind": "AFTER_AUDIT_STATE"
+            },
+            {
+              "sequence": 170,
+              "turn": 8,
+              "active_player": "e0",
+              "observed_next_priority_player": "e1",
+              "next_action_sequence": 171,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e1",
+              "resolution_events": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e130",
+                  "name": "Weather the Storm"
+                }
+              ],
+              "mapped_spell_casts": [],
+              "evidence_kind": "AFTER_AUDIT_STATE"
+            },
+            {
+              "sequence": 172,
+              "turn": 8,
+              "active_player": "e0",
+              "observed_next_priority_player": "e1",
+              "next_action_sequence": 173,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e1",
+              "resolution_events": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e129",
+                  "name": "Weather the Storm"
+                }
+              ],
+              "mapped_spell_casts": [],
+              "evidence_kind": "AFTER_AUDIT_STATE"
+            },
+            {
+              "sequence": 174,
+              "turn": 8,
+              "active_player": "e0",
+              "observed_next_priority_player": "e1",
+              "next_action_sequence": 175,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e1",
+              "resolution_events": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e128",
+                  "name": "Weather the Storm"
+                }
+              ],
+              "mapped_spell_casts": [],
+              "evidence_kind": "AFTER_AUDIT_STATE"
+            },
+            {
+              "sequence": 176,
+              "turn": 8,
+              "active_player": "e0",
+              "observed_next_priority_player": "e1",
+              "next_action_sequence": 177,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e1",
+              "resolution_events": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e91",
+                  "name": "Weather the Storm"
+                }
+              ],
+              "mapped_spell_casts": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e91",
+                  "name": "Weather the Storm",
+                  "cast": {
+                    "casterId": "e1",
+                    "cardName": "Weather the Storm"
+                  }
+                }
+              ],
+              "evidence_kind": "AFTER_AUDIT_STATE"
+            }
+          ]
+        },
+        {
+          "game_number": 47,
+          "raw_member": "aggregate-raw.json",
+          "raw_member_sha256": "8dd276453cccda391f27a9c3325184aaf7faec1689ac680aa276430cb3e924dc",
+          "actions": 365,
+          "confirmed_priority_violations": []
+        },
+        {
+          "game_number": 48,
+          "raw_member": "aggregate-raw.json",
+          "raw_member_sha256": "8dd276453cccda391f27a9c3325184aaf7faec1689ac680aa276430cb3e924dc",
+          "actions": 321,
+          "confirmed_priority_violations": [
+            {
+              "sequence": 45,
+              "turn": 3,
+              "active_player": "e1",
+              "observed_next_priority_player": "e0",
+              "next_action_sequence": 46,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e0",
+              "resolution_events": [
+                {
+                  "type": "AbilityResolvedEvent",
+                  "sourceId": "e5",
+                  "description": "a creature would enter the battlefield, you gain 1 life."
+                }
+              ],
+              "mapped_spell_casts": [],
+              "evidence_kind": "AFTER_AUDIT_STATE"
+            },
+            {
+              "sequence": 95,
+              "turn": 5,
+              "active_player": "e1",
+              "observed_next_priority_player": "e0",
+              "next_action_sequence": 96,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e0",
+              "resolution_events": [
+                {
+                  "type": "AbilityResolvedEvent",
+                  "sourceId": "e4",
+                  "description": "a creature would enter the battlefield, you gain 1 life."
+                }
+              ],
+              "mapped_spell_casts": [],
+              "evidence_kind": "AFTER_AUDIT_STATE"
+            },
+            {
+              "sequence": 97,
+              "turn": 5,
+              "active_player": "e1",
+              "observed_next_priority_player": "e0",
+              "next_action_sequence": 98,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e0",
+              "resolution_events": [
+                {
+                  "type": "AbilityResolvedEvent",
+                  "sourceId": "e5",
+                  "description": "a creature would enter the battlefield, you gain 1 life."
+                }
+              ],
+              "mapped_spell_casts": [],
+              "evidence_kind": "AFTER_AUDIT_STATE"
+            },
+            {
+              "sequence": 217,
+              "turn": 9,
+              "active_player": "e1",
+              "observed_next_priority_player": "e0",
+              "next_action_sequence": 218,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e0",
+              "resolution_events": [
+                {
+                  "type": "AbilityResolvedEvent",
+                  "sourceId": "e4",
+                  "description": "a creature would enter the battlefield, you gain 1 life."
+                }
+              ],
+              "mapped_spell_casts": [],
+              "evidence_kind": "AFTER_AUDIT_STATE"
+            },
+            {
+              "sequence": 219,
+              "turn": 9,
+              "active_player": "e1",
+              "observed_next_priority_player": "e0",
+              "next_action_sequence": 220,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e0",
+              "resolution_events": [
+                {
+                  "type": "AbilityResolvedEvent",
+                  "sourceId": "e11",
+                  "description": "you would gain life, put 1 +1/+1 counter on this creature."
+                }
+              ],
+              "mapped_spell_casts": [],
+              "evidence_kind": "AFTER_AUDIT_STATE"
+            }
+          ]
+        },
+        {
+          "game_number": 49,
+          "raw_member": "aggregate-raw.json",
+          "raw_member_sha256": "8dd276453cccda391f27a9c3325184aaf7faec1689ac680aa276430cb3e924dc",
+          "actions": 621,
+          "confirmed_priority_violations": [
+            {
+              "sequence": 65,
+              "turn": 4,
+              "active_player": "e0",
+              "observed_next_priority_player": "e1",
+              "next_action_sequence": 66,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e1",
+              "resolution_events": [
+                {
+                  "type": "AbilityResolvedEvent",
+                  "sourceId": "e65",
+                  "description": "a creature would enter the battlefield, you gain 1 life."
+                }
+              ],
+              "mapped_spell_casts": [],
+              "evidence_kind": "AFTER_AUDIT_STATE"
+            },
+            {
+              "sequence": 107,
+              "turn": 6,
+              "active_player": "e0",
+              "observed_next_priority_player": "e1",
+              "next_action_sequence": 108,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e1",
+              "resolution_events": [
+                {
+                  "type": "AbilityResolvedEvent",
+                  "sourceId": "e65",
+                  "description": "a creature would enter the battlefield, you gain 1 life."
+                }
+              ],
+              "mapped_spell_casts": [],
+              "evidence_kind": "AFTER_AUDIT_STATE"
+            },
+            {
+              "sequence": 160,
+              "turn": 8,
+              "active_player": "e0",
+              "observed_next_priority_player": "e1",
+              "next_action_sequence": 161,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e1",
+              "resolution_events": [
+                {
+                  "type": "AbilityResolvedEvent",
+                  "sourceId": "e65",
+                  "description": "a creature would enter the battlefield, you gain 1 life."
+                }
+              ],
+              "mapped_spell_casts": [],
+              "evidence_kind": "AFTER_AUDIT_STATE"
+            },
+            {
+              "sequence": 259,
+              "turn": 12,
+              "active_player": "e0",
+              "observed_next_priority_player": "e1",
+              "next_action_sequence": 260,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e1",
+              "resolution_events": [
+                {
+                  "type": "AbilityResolvedEvent",
+                  "sourceId": "e65",
+                  "description": "a creature would enter the battlefield, you gain 1 life."
+                }
+              ],
+              "mapped_spell_casts": [],
+              "evidence_kind": "AFTER_AUDIT_STATE"
+            },
+            {
+              "sequence": 543,
+              "turn": 22,
+              "active_player": "e0",
+              "observed_next_priority_player": "e1",
+              "next_action_sequence": 544,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e1",
+              "resolution_events": [
+                {
+                  "type": "AbilityResolvedEvent",
+                  "sourceId": "e67",
+                  "description": "a card or permanent would die, create a Eldrazi Scion token."
+                }
+              ],
+              "mapped_spell_casts": [],
+              "evidence_kind": "AFTER_AUDIT_STATE"
+            }
+          ]
+        },
+        {
+          "game_number": 50,
+          "raw_member": "aggregate-raw.json",
+          "raw_member_sha256": "8dd276453cccda391f27a9c3325184aaf7faec1689ac680aa276430cb3e924dc",
+          "actions": 336,
+          "confirmed_priority_violations": [
+            {
+              "sequence": 212,
+              "turn": 10,
+              "active_player": "e1",
+              "observed_next_priority_player": "e0",
+              "next_action_sequence": 213,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e0",
+              "resolution_events": [
+                {
+                  "type": "AbilityResolvedEvent",
+                  "sourceId": "e8",
+                  "description": "a card or permanent would die, create a Eldrazi Scion token."
+                }
+              ],
+              "mapped_spell_casts": [],
+              "evidence_kind": "AFTER_AUDIT_STATE"
+            },
+            {
+              "sequence": 228,
+              "turn": 10,
+              "active_player": "e1",
+              "observed_next_priority_player": "e0",
+              "next_action_sequence": 229,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e0",
+              "resolution_events": [
+                {
+                  "type": "AbilityResolvedEvent",
+                  "sourceId": "e29",
+                  "description": "Storm \u2014 copy Weather the Storm 3 time(s)"
+                }
+              ],
+              "mapped_spell_casts": [],
+              "evidence_kind": "AFTER_AUDIT_STATE"
+            },
+            {
+              "sequence": 230,
+              "turn": 10,
+              "active_player": "e1",
+              "observed_next_priority_player": "e0",
+              "next_action_sequence": 231,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e0",
+              "resolution_events": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e137",
+                  "name": "Weather the Storm"
+                }
+              ],
+              "mapped_spell_casts": [],
+              "evidence_kind": "AFTER_AUDIT_STATE"
+            },
+            {
+              "sequence": 232,
+              "turn": 10,
+              "active_player": "e1",
+              "observed_next_priority_player": "e0",
+              "next_action_sequence": 233,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e0",
+              "resolution_events": [
+                {
+                  "type": "AbilityResolvedEvent",
+                  "sourceId": "e15",
+                  "description": "you would gain life, put 1 +1/+1 counter on this creature."
+                }
+              ],
+              "mapped_spell_casts": [],
+              "evidence_kind": "AFTER_AUDIT_STATE"
+            },
+            {
+              "sequence": 234,
+              "turn": 10,
+              "active_player": "e1",
+              "observed_next_priority_player": "e0",
+              "next_action_sequence": 235,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e0",
+              "resolution_events": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e136",
+                  "name": "Weather the Storm"
+                }
+              ],
+              "mapped_spell_casts": [],
+              "evidence_kind": "AFTER_AUDIT_STATE"
+            },
+            {
+              "sequence": 236,
+              "turn": 10,
+              "active_player": "e1",
+              "observed_next_priority_player": "e0",
+              "next_action_sequence": 237,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e0",
+              "resolution_events": [
+                {
+                  "type": "AbilityResolvedEvent",
+                  "sourceId": "e15",
+                  "description": "you would gain life, put 1 +1/+1 counter on this creature."
+                }
+              ],
+              "mapped_spell_casts": [],
+              "evidence_kind": "AFTER_AUDIT_STATE"
+            },
+            {
+              "sequence": 238,
+              "turn": 10,
+              "active_player": "e1",
+              "observed_next_priority_player": "e0",
+              "next_action_sequence": 239,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e0",
+              "resolution_events": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e135",
+                  "name": "Weather the Storm"
+                }
+              ],
+              "mapped_spell_casts": [],
+              "evidence_kind": "AFTER_AUDIT_STATE"
+            },
+            {
+              "sequence": 240,
+              "turn": 10,
+              "active_player": "e1",
+              "observed_next_priority_player": "e0",
+              "next_action_sequence": 241,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e0",
+              "resolution_events": [
+                {
+                  "type": "AbilityResolvedEvent",
+                  "sourceId": "e15",
+                  "description": "you would gain life, put 1 +1/+1 counter on this creature."
+                }
+              ],
+              "mapped_spell_casts": [],
+              "evidence_kind": "AFTER_AUDIT_STATE"
+            },
+            {
+              "sequence": 242,
+              "turn": 10,
+              "active_player": "e1",
+              "observed_next_priority_player": "e0",
+              "next_action_sequence": 243,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e0",
+              "resolution_events": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e29",
+                  "name": "Weather the Storm"
+                }
+              ],
+              "mapped_spell_casts": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e29",
+                  "name": "Weather the Storm",
+                  "cast": {
+                    "casterId": "e0",
+                    "cardName": "Weather the Storm"
+                  }
+                }
+              ],
+              "evidence_kind": "AFTER_AUDIT_STATE"
+            },
+            {
+              "sequence": 244,
+              "turn": 10,
+              "active_player": "e1",
+              "observed_next_priority_player": "e0",
+              "next_action_sequence": 245,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e0",
+              "resolution_events": [
+                {
+                  "type": "AbilityResolvedEvent",
+                  "sourceId": "e15",
+                  "description": "you would gain life, put 1 +1/+1 counter on this creature."
+                }
+              ],
+              "mapped_spell_casts": [],
+              "evidence_kind": "AFTER_AUDIT_STATE"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "block": "grixis-smoke",
+      "archive_sha256": "9335e770e486d7f379fc9aa51aaa6e5857f71541ea6949bb81d90bf9fa6259ea",
+      "artifact_id": 10655603968,
+      "workflow_run_id": 35632206268,
+      "execution_source_sha": "d7051af65b30a6d5d2e35780e60ea5b5b4d5e055",
+      "games_with_confirmed_violation": 1,
+      "confirmed_priority_violations": 1,
+      "games": [
+        {
+          "game_number": 1,
+          "raw_member": "game-1.json",
+          "raw_member_sha256": "e4ace0b5f215bce5e76f1626214bcdcba17276a994c1ce2bcc1d01da1febefe6",
+          "actions": 268,
+          "confirmed_priority_violations": []
+        },
+        {
+          "game_number": 2,
+          "raw_member": "game-2.json",
+          "raw_member_sha256": "8ddb850b769273b92e67e40e3e74913e29288d87075da39f76cbf275787e571b",
+          "actions": 495,
+          "confirmed_priority_violations": [
+            {
+              "sequence": 268,
+              "turn": 12,
+              "active_player": "e0",
+              "observed_next_priority_player": "e1",
+              "next_action_sequence": 269,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e1",
+              "resolution_events": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e105",
+                  "name": "Reckoner's Bargain"
+                }
+              ],
+              "mapped_spell_casts": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e105",
+                  "name": "Reckoner's Bargain",
+                  "cast": {
+                    "casterId": "e1",
+                    "cardName": "Reckoner's Bargain"
+                  }
+                }
+              ],
+              "evidence_kind": "NEXT_ACCEPTED_PASS_PRIORITY_WITHOUT_PENDING_DECISION"
+            }
+          ]
+        },
+        {
+          "game_number": 3,
+          "raw_member": "game-3.json",
+          "raw_member_sha256": "5a838bde0bf5cc2f25041ae5ccc830fa81e192f3950173fbdb397f7f14b3727b",
+          "actions": 534,
+          "confirmed_priority_violations": []
+        },
+        {
+          "game_number": 4,
+          "raw_member": "game-4.json",
+          "raw_member_sha256": "fdbe85da0905be941f23be24286396aba451ec121c83611475f672ec1092af6d",
+          "actions": 512,
+          "confirmed_priority_violations": []
+        }
+      ]
+    },
+    {
+      "block": "grixis-salvage",
+      "archive_sha256": "7d2ba6a179d474c2840365f3cc90a72387f121ba496443712829393961f89d9c",
+      "artifact_id": 10673238745,
+      "workflow_run_id": 35670905674,
+      "execution_source_sha": "9e23b9cff24752f3278d8826ca2dfd4aba4ac6a6",
+      "games_with_confirmed_violation": 5,
+      "confirmed_priority_violations": 6,
+      "games": [
+        {
+          "game_number": 2,
+          "raw_member": "game-2.json",
+          "raw_member_sha256": "ef6f826168d43ab9831426d0e8d626f5cbfcd03dd5946b2ac93d5c266700f4d0",
+          "actions": 376,
+          "confirmed_priority_violations": []
+        },
+        {
+          "game_number": 3,
+          "raw_member": "game-3.json",
+          "raw_member_sha256": "3b4a9156a0539795841f9979b5036ac0fe9e0446c4e84fe9a5102ad8dec8f201",
+          "actions": 429,
+          "confirmed_priority_violations": [
+            {
+              "sequence": 207,
+              "turn": 11,
+              "active_player": "e1",
+              "observed_next_priority_player": "e0",
+              "next_action_sequence": 208,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e0",
+              "resolution_events": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e43",
+                  "name": "Reckoner's Bargain"
+                }
+              ],
+              "mapped_spell_casts": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e43",
+                  "name": "Reckoner's Bargain",
+                  "cast": {
+                    "casterId": "e0",
+                    "cardName": "Reckoner's Bargain"
+                  }
+                }
+              ],
+              "evidence_kind": "NEXT_ACCEPTED_PASS_PRIORITY_WITHOUT_PENDING_DECISION"
+            }
+          ]
+        },
+        {
+          "game_number": 4,
+          "raw_member": "game-4.json",
+          "raw_member_sha256": "3c211f1465de27924187980a33bcbe6e2d0e3e774d2e7c361c2b26181eb55122",
+          "actions": 640,
+          "confirmed_priority_violations": []
+        },
+        {
+          "game_number": 5,
+          "raw_member": "game-5.json",
+          "raw_member_sha256": "1ba06eb6f24f60741a2ffc23bd5f0251e3d079c3c037246934607db4810ab935",
+          "actions": 526,
+          "confirmed_priority_violations": []
+        },
+        {
+          "game_number": 6,
+          "raw_member": "game-6.json",
+          "raw_member_sha256": "42b8861ab70d7f103c89e415264b3905401b289535d480c7304dc96d266fdb8b",
+          "actions": 1282,
+          "confirmed_priority_violations": [
+            {
+              "sequence": 595,
+              "turn": 26,
+              "active_player": "e0",
+              "observed_next_priority_player": "e1",
+              "next_action_sequence": 596,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e1",
+              "resolution_events": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e104",
+                  "name": "Reckoner's Bargain"
+                }
+              ],
+              "mapped_spell_casts": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e104",
+                  "name": "Reckoner's Bargain",
+                  "cast": {
+                    "casterId": "e1",
+                    "cardName": "Reckoner's Bargain"
+                  }
+                }
+              ],
+              "evidence_kind": "NEXT_ACCEPTED_PASS_PRIORITY_WITHOUT_PENDING_DECISION"
+            }
+          ]
+        },
+        {
+          "game_number": 7,
+          "raw_member": "game-7.json",
+          "raw_member_sha256": "31b286f933e098e18a30c8406339b83cd57e8edb55184b04668809eda2193973",
+          "actions": 409,
+          "confirmed_priority_violations": []
+        },
+        {
+          "game_number": 8,
+          "raw_member": "game-8.json",
+          "raw_member_sha256": "18b594000cb16fa95d837035fcfa2c5c5e416f730e3fb8921912b4c130be9152",
+          "actions": 391,
+          "confirmed_priority_violations": [
+            {
+              "sequence": 355,
+              "turn": 13,
+              "active_player": "e0",
+              "observed_next_priority_player": "e1",
+              "next_action_sequence": 356,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e1",
+              "resolution_events": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e91",
+                  "name": "Weather the Storm"
+                }
+              ],
+              "mapped_spell_casts": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e91",
+                  "name": "Weather the Storm",
+                  "cast": {
+                    "casterId": "e1",
+                    "cardName": "Weather the Storm"
+                  }
+                }
+              ],
+              "evidence_kind": "NEXT_ACCEPTED_PASS_PRIORITY_WITHOUT_PENDING_DECISION"
+            }
+          ]
+        },
+        {
+          "game_number": 9,
+          "raw_member": "game-9.json",
+          "raw_member_sha256": "f15bb793cf558b09716f7d3ccb41a815f58389eb26dad3dda1358f98dd7becd8",
+          "actions": 813,
+          "confirmed_priority_violations": [
+            {
+              "sequence": 442,
+              "turn": 19,
+              "active_player": "e0",
+              "observed_next_priority_player": "e1",
+              "next_action_sequence": 443,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e1",
+              "resolution_events": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e102",
+                  "name": "Reckoner's Bargain"
+                }
+              ],
+              "mapped_spell_casts": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e102",
+                  "name": "Reckoner's Bargain",
+                  "cast": {
+                    "casterId": "e1",
+                    "cardName": "Reckoner's Bargain"
+                  }
+                }
+              ],
+              "evidence_kind": "NEXT_ACCEPTED_PASS_PRIORITY_WITHOUT_PENDING_DECISION"
+            },
+            {
+              "sequence": 719,
+              "turn": 28,
+              "active_player": "e1",
+              "observed_next_priority_player": "e0",
+              "next_action_sequence": 720,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e0",
+              "resolution_events": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e32",
+                  "name": "Weather the Storm"
+                }
+              ],
+              "mapped_spell_casts": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e32",
+                  "name": "Weather the Storm",
+                  "cast": {
+                    "casterId": "e0",
+                    "cardName": "Weather the Storm"
+                  }
+                }
+              ],
+              "evidence_kind": "NEXT_ACCEPTED_PASS_PRIORITY_WITHOUT_PENDING_DECISION"
+            }
+          ]
+        },
+        {
+          "game_number": 10,
+          "raw_member": "game-10.json",
+          "raw_member_sha256": "bddaa226f0cbd74be7930be6683a35098aaccdcc5c7b18cce9bffdd104eb9aca",
+          "actions": 475,
+          "confirmed_priority_violations": []
+        },
+        {
+          "game_number": 11,
+          "raw_member": "game-11.json",
+          "raw_member_sha256": "6bf3c29dba26a561ffe8bf766fe7481da52e0d484d3c80fbfedee1b40bffcf24",
+          "actions": 404,
+          "confirmed_priority_violations": []
+        },
+        {
+          "game_number": 12,
+          "raw_member": "game-12.json",
+          "raw_member_sha256": "6eec57f538a90fabdfbd17f2b24d9b63581c2c22be13745d0ac19ab6ab148adb",
+          "actions": 528,
+          "confirmed_priority_violations": [
+            {
+              "sequence": 360,
+              "turn": 15,
+              "active_player": "e0",
+              "observed_next_priority_player": "e1",
+              "next_action_sequence": 361,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e1",
+              "resolution_events": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e90",
+                  "name": "Weather the Storm"
+                }
+              ],
+              "mapped_spell_casts": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e90",
+                  "name": "Weather the Storm",
+                  "cast": {
+                    "casterId": "e1",
+                    "cardName": "Weather the Storm"
+                  }
+                }
+              ],
+              "evidence_kind": "NEXT_ACCEPTED_PASS_PRIORITY_WITHOUT_PENDING_DECISION"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "block": "blue-smoke",
+      "archive_sha256": "91c71fb9624e274e8b540e55a52be1ffe0e1deb7d334276b80993756d757b495",
+      "artifact_id": 10766612589,
+      "workflow_run_id": 35894018961,
+      "execution_source_sha": "d85ecb9281fc2c7993d9651e72484311af89b4d9",
+      "games_with_confirmed_violation": 3,
+      "confirmed_priority_violations": 8,
+      "games": [
+        {
+          "game_number": 1,
+          "raw_member": "durable-evidence/PEST_CONTROL_V10_VS_SERPICO_CC_MONO_BLUE_TERROR_2026_09_20_PREBOARD_V1_NONEXPERIMENTAL_SMOKE_4/game-1.raw",
+          "raw_member_sha256": "0a6d5683b834ee1e837afdb0de35c57da132ff49c0eb46eddc718ef1cdcf2321",
+          "actions": 373,
+          "confirmed_priority_violations": [
+            {
+              "sequence": 93,
+              "turn": 5,
+              "active_player": "e0",
+              "observed_next_priority_player": "e1",
+              "next_action_sequence": 94,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e1",
+              "resolution_events": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e115",
+                  "name": "Thought Scour"
+                }
+              ],
+              "mapped_spell_casts": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e115",
+                  "name": "Thought Scour",
+                  "cast": {
+                    "casterId": "e1",
+                    "cardName": "Thought Scour"
+                  }
+                }
+              ],
+              "evidence_kind": "NEXT_ACCEPTED_PASS_PRIORITY_WITHOUT_PENDING_DECISION"
+            }
+          ]
+        },
+        {
+          "game_number": 2,
+          "raw_member": "durable-evidence/PEST_CONTROL_V10_VS_SERPICO_CC_MONO_BLUE_TERROR_2026_09_20_PREBOARD_V1_NONEXPERIMENTAL_SMOKE_4/game-2.raw",
+          "raw_member_sha256": "c5a183f68a64f0792b11fea9fa315d40d5e57702f2c4d13381b3e2a32df3c0ff",
+          "actions": 837,
+          "confirmed_priority_violations": [
+            {
+              "sequence": 110,
+              "turn": 6,
+              "active_player": "e0",
+              "observed_next_priority_player": "e1",
+              "next_action_sequence": 111,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e1",
+              "resolution_events": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e118",
+                  "name": "Counterspell"
+                }
+              ],
+              "mapped_spell_casts": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e118",
+                  "name": "Counterspell",
+                  "cast": {
+                    "casterId": "e1",
+                    "cardName": "Counterspell"
+                  }
+                }
+              ],
+              "evidence_kind": "NEXT_ACCEPTED_PASS_PRIORITY_WITHOUT_PENDING_DECISION"
+            },
+            {
+              "sequence": 250,
+              "turn": 12,
+              "active_player": "e0",
+              "observed_next_priority_player": "e1",
+              "next_action_sequence": 251,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e1",
+              "resolution_events": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e119",
+                  "name": "Counterspell"
+                }
+              ],
+              "mapped_spell_casts": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e119",
+                  "name": "Counterspell",
+                  "cast": {
+                    "casterId": "e1",
+                    "cardName": "Counterspell"
+                  }
+                }
+              ],
+              "evidence_kind": "NEXT_ACCEPTED_PASS_PRIORITY_WITHOUT_PENDING_DECISION"
+            },
+            {
+              "sequence": 434,
+              "turn": 22,
+              "active_player": "e0",
+              "observed_next_priority_player": "e1",
+              "next_action_sequence": 435,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e1",
+              "resolution_events": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e120",
+                  "name": "Counterspell"
+                }
+              ],
+              "mapped_spell_casts": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e120",
+                  "name": "Counterspell",
+                  "cast": {
+                    "casterId": "e1",
+                    "cardName": "Counterspell"
+                  }
+                }
+              ],
+              "evidence_kind": "NEXT_ACCEPTED_PASS_PRIORITY_WITHOUT_PENDING_DECISION"
+            },
+            {
+              "sequence": 518,
+              "turn": 26,
+              "active_player": "e0",
+              "observed_next_priority_player": "e1",
+              "next_action_sequence": 519,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e1",
+              "resolution_events": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e117",
+                  "name": "Thought Scour"
+                }
+              ],
+              "mapped_spell_casts": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e117",
+                  "name": "Thought Scour",
+                  "cast": {
+                    "casterId": "e1",
+                    "cardName": "Thought Scour"
+                  }
+                }
+              ],
+              "evidence_kind": "NEXT_ACCEPTED_PASS_PRIORITY_WITHOUT_PENDING_DECISION"
+            },
+            {
+              "sequence": 523,
+              "turn": 26,
+              "active_player": "e0",
+              "observed_next_priority_player": "e1",
+              "next_action_sequence": 524,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e1",
+              "resolution_events": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e114",
+                  "name": "Thought Scour"
+                }
+              ],
+              "mapped_spell_casts": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e114",
+                  "name": "Thought Scour",
+                  "cast": {
+                    "casterId": "e1",
+                    "cardName": "Thought Scour"
+                  }
+                }
+              ],
+              "evidence_kind": "NEXT_ACCEPTED_PASS_PRIORITY_WITHOUT_PENDING_DECISION"
+            }
+          ]
+        },
+        {
+          "game_number": 3,
+          "raw_member": "durable-evidence/PEST_CONTROL_V10_VS_SERPICO_CC_MONO_BLUE_TERROR_2026_09_20_PREBOARD_V1_NONEXPERIMENTAL_SMOKE_4/game-3.raw",
+          "raw_member_sha256": "67a8e350e13f8ad13285dcd9bccba547e1b8b2665938b7d2479c46f6e97ea7a0",
+          "actions": 359,
+          "confirmed_priority_violations": [
+            {
+              "sequence": 77,
+              "turn": 5,
+              "active_player": "e1",
+              "observed_next_priority_player": "e0",
+              "next_action_sequence": 78,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e0",
+              "resolution_events": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e61",
+                  "name": "Counterspell"
+                }
+              ],
+              "mapped_spell_casts": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e61",
+                  "name": "Counterspell",
+                  "cast": {
+                    "casterId": "e0",
+                    "cardName": "Counterspell"
+                  }
+                }
+              ],
+              "evidence_kind": "NEXT_ACCEPTED_PASS_PRIORITY_WITHOUT_PENDING_DECISION"
+            },
+            {
+              "sequence": 191,
+              "turn": 10,
+              "active_player": "e0",
+              "observed_next_priority_player": "e1",
+              "next_action_sequence": 192,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e1",
+              "resolution_events": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e96",
+                  "name": "Cast Down"
+                }
+              ],
+              "mapped_spell_casts": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e96",
+                  "name": "Cast Down",
+                  "cast": {
+                    "casterId": "e1",
+                    "cardName": "Cast Down"
+                  }
+                }
+              ],
+              "evidence_kind": "NEXT_ACCEPTED_PASS_PRIORITY_WITHOUT_PENDING_DECISION"
+            }
+          ]
+        },
+        {
+          "game_number": 4,
+          "raw_member": "durable-evidence/PEST_CONTROL_V10_VS_SERPICO_CC_MONO_BLUE_TERROR_2026_09_20_PREBOARD_V1_NONEXPERIMENTAL_SMOKE_4/game-4.raw",
+          "raw_member_sha256": "89723528f421a19b185099008ee9a4910ce75c1582edcc2348f4eb4679e20dc5",
+          "actions": 398,
+          "confirmed_priority_violations": []
+        }
+      ]
+    },
+    {
+      "block": "blue-replication",
+      "archive_sha256": "f873c808fa12c9591e2ee9657a5e048cbf3862f3bcd63fa5b0f162740809cebb",
+      "artifact_id": 10780871469,
+      "workflow_run_id": 35927279604,
+      "execution_source_sha": "73b98896eeb4f47c4ed3ec97a10a9a3aeb5dc62e",
+      "games_with_confirmed_violation": 7,
+      "confirmed_priority_violations": 19,
+      "games": [
+        {
+          "game_number": 1,
+          "raw_member": "durable-evidence/PEST_CONTROL_V10_VS_SERPICO_CC_MONO_BLUE_TERROR_2026_09_20_PREBOARD_V1_REPLICATION_12/game-1.raw",
+          "raw_member_sha256": "fc09fd728c55edc5d7261cfde64a68850efcb72f4e4fed7675eb8aeeac09c738",
+          "actions": 350,
+          "confirmed_priority_violations": []
+        },
+        {
+          "game_number": 2,
+          "raw_member": "durable-evidence/PEST_CONTROL_V10_VS_SERPICO_CC_MONO_BLUE_TERROR_2026_09_20_PREBOARD_V1_REPLICATION_12/game-2.raw",
+          "raw_member_sha256": "a2fcde92916aca94c575da884316b02d8edd655b5f39d87474f8fc87d7e44c09",
+          "actions": 825,
+          "confirmed_priority_violations": [
+            {
+              "sequence": 64,
+              "turn": 4,
+              "active_player": "e0",
+              "observed_next_priority_player": "e1",
+              "next_action_sequence": 65,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e1",
+              "resolution_events": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e114",
+                  "name": "Thought Scour"
+                }
+              ],
+              "mapped_spell_casts": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e114",
+                  "name": "Thought Scour",
+                  "cast": {
+                    "casterId": "e1",
+                    "cardName": "Thought Scour"
+                  }
+                }
+              ],
+              "evidence_kind": "NEXT_ACCEPTED_PASS_PRIORITY_WITHOUT_PENDING_DECISION"
+            },
+            {
+              "sequence": 66,
+              "turn": 4,
+              "active_player": "e0",
+              "observed_next_priority_player": "e1",
+              "next_action_sequence": 67,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e1",
+              "resolution_events": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e115",
+                  "name": "Thought Scour"
+                }
+              ],
+              "mapped_spell_casts": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e115",
+                  "name": "Thought Scour",
+                  "cast": {
+                    "casterId": "e1",
+                    "cardName": "Thought Scour"
+                  }
+                }
+              ],
+              "evidence_kind": "NEXT_ACCEPTED_PASS_PRIORITY_WITHOUT_PENDING_DECISION"
+            },
+            {
+              "sequence": 107,
+              "turn": 6,
+              "active_player": "e0",
+              "observed_next_priority_player": "e1",
+              "next_action_sequence": 108,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e1",
+              "resolution_events": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e118",
+                  "name": "Counterspell"
+                }
+              ],
+              "mapped_spell_casts": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e118",
+                  "name": "Counterspell",
+                  "cast": {
+                    "casterId": "e1",
+                    "cardName": "Counterspell"
+                  }
+                }
+              ],
+              "evidence_kind": "NEXT_ACCEPTED_PASS_PRIORITY_WITHOUT_PENDING_DECISION"
+            },
+            {
+              "sequence": 206,
+              "turn": 10,
+              "active_player": "e0",
+              "observed_next_priority_player": "e1",
+              "next_action_sequence": 207,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e1",
+              "resolution_events": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e119",
+                  "name": "Counterspell"
+                }
+              ],
+              "mapped_spell_casts": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e119",
+                  "name": "Counterspell",
+                  "cast": {
+                    "casterId": "e1",
+                    "cardName": "Counterspell"
+                  }
+                }
+              ],
+              "evidence_kind": "NEXT_ACCEPTED_PASS_PRIORITY_WITHOUT_PENDING_DECISION"
+            },
+            {
+              "sequence": 257,
+              "turn": 12,
+              "active_player": "e0",
+              "observed_next_priority_player": "e1",
+              "next_action_sequence": 258,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e1",
+              "resolution_events": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e111",
+                  "name": "Mental Note"
+                }
+              ],
+              "mapped_spell_casts": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e111",
+                  "name": "Mental Note",
+                  "cast": {
+                    "casterId": "e1",
+                    "cardName": "Mental Note"
+                  }
+                }
+              ],
+              "evidence_kind": "NEXT_ACCEPTED_PASS_PRIORITY_WITHOUT_PENDING_DECISION"
+            },
+            {
+              "sequence": 471,
+              "turn": 19,
+              "active_player": "e1",
+              "observed_next_priority_player": "e0",
+              "next_action_sequence": 472,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e0",
+              "resolution_events": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e30",
+                  "name": "Weather the Storm"
+                }
+              ],
+              "mapped_spell_casts": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e30",
+                  "name": "Weather the Storm",
+                  "cast": {
+                    "casterId": "e0",
+                    "cardName": "Weather the Storm"
+                  }
+                }
+              ],
+              "evidence_kind": "NEXT_ACCEPTED_PASS_PRIORITY_WITHOUT_PENDING_DECISION"
+            }
+          ]
+        },
+        {
+          "game_number": 3,
+          "raw_member": "durable-evidence/PEST_CONTROL_V10_VS_SERPICO_CC_MONO_BLUE_TERROR_2026_09_20_PREBOARD_V1_REPLICATION_12/game-3.raw",
+          "raw_member_sha256": "06fbbb6cb8791e299753e40fdc4774d4fe5eb1130055fcda4104dfcb55ea20ba",
+          "actions": 368,
+          "confirmed_priority_violations": []
+        },
+        {
+          "game_number": 4,
+          "raw_member": "durable-evidence/PEST_CONTROL_V10_VS_SERPICO_CC_MONO_BLUE_TERROR_2026_09_20_PREBOARD_V1_REPLICATION_12/game-4.raw",
+          "raw_member_sha256": "21de585bdb7511ab54bf43dd014ff1e6945a81b144d34ddb0914d5cd9fb8c382",
+          "actions": 548,
+          "confirmed_priority_violations": [
+            {
+              "sequence": 233,
+              "turn": 10,
+              "active_player": "e1",
+              "observed_next_priority_player": "e0",
+              "next_action_sequence": 234,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e0",
+              "resolution_events": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e53",
+                  "name": "Mental Note"
+                }
+              ],
+              "mapped_spell_casts": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e53",
+                  "name": "Mental Note",
+                  "cast": {
+                    "casterId": "e0",
+                    "cardName": "Mental Note"
+                  }
+                }
+              ],
+              "evidence_kind": "NEXT_ACCEPTED_PASS_PRIORITY_WITHOUT_PENDING_DECISION"
+            },
+            {
+              "sequence": 301,
+              "turn": 14,
+              "active_player": "e1",
+              "observed_next_priority_player": "e0",
+              "next_action_sequence": 302,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e0",
+              "resolution_events": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e60",
+                  "name": "Counterspell"
+                }
+              ],
+              "mapped_spell_casts": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e60",
+                  "name": "Counterspell",
+                  "cast": {
+                    "casterId": "e0",
+                    "cardName": "Counterspell"
+                  }
+                }
+              ],
+              "evidence_kind": "NEXT_ACCEPTED_PASS_PRIORITY_WITHOUT_PENDING_DECISION"
+            }
+          ]
+        },
+        {
+          "game_number": 5,
+          "raw_member": "durable-evidence/PEST_CONTROL_V10_VS_SERPICO_CC_MONO_BLUE_TERROR_2026_09_20_PREBOARD_V1_REPLICATION_12/game-5.raw",
+          "raw_member_sha256": "f818ed46ce213b77c63e4fda1447704513735f591179cfa0ee4aad5546cb8cc6",
+          "actions": 369,
+          "confirmed_priority_violations": [
+            {
+              "sequence": 256,
+              "turn": 11,
+              "active_player": "e0",
+              "observed_next_priority_player": "e1",
+              "next_action_sequence": 257,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e1",
+              "resolution_events": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e109",
+                  "name": "Dispel"
+                }
+              ],
+              "mapped_spell_casts": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e109",
+                  "name": "Dispel",
+                  "cast": {
+                    "casterId": "e1",
+                    "cardName": "Dispel"
+                  }
+                }
+              ],
+              "evidence_kind": "NEXT_ACCEPTED_PASS_PRIORITY_WITHOUT_PENDING_DECISION"
+            }
+          ]
+        },
+        {
+          "game_number": 6,
+          "raw_member": "durable-evidence/PEST_CONTROL_V10_VS_SERPICO_CC_MONO_BLUE_TERROR_2026_09_20_PREBOARD_V1_REPLICATION_12/game-6.raw",
+          "raw_member_sha256": "ea0d9a3c9151a1535cb2a5bb86ead2d22105ca198476ba45a483d7eddc899639",
+          "actions": 500,
+          "confirmed_priority_violations": []
+        },
+        {
+          "game_number": 7,
+          "raw_member": "durable-evidence/PEST_CONTROL_V10_VS_SERPICO_CC_MONO_BLUE_TERROR_2026_09_20_PREBOARD_V1_REPLICATION_12/game-7.raw",
+          "raw_member_sha256": "2d87d2506d9d8a2ed97ed257ce7326bb56ba85e2f441b279a26be4404584dba2",
+          "actions": 351,
+          "confirmed_priority_violations": [
+            {
+              "sequence": 188,
+              "turn": 9,
+              "active_player": "e1",
+              "observed_next_priority_player": "e0",
+              "next_action_sequence": 189,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e0",
+              "resolution_events": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e48",
+                  "name": "Dispel"
+                }
+              ],
+              "mapped_spell_casts": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e48",
+                  "name": "Dispel",
+                  "cast": {
+                    "casterId": "e0",
+                    "cardName": "Dispel"
+                  }
+                }
+              ],
+              "evidence_kind": "NEXT_ACCEPTED_PASS_PRIORITY_WITHOUT_PENDING_DECISION"
+            }
+          ]
+        },
+        {
+          "game_number": 8,
+          "raw_member": "durable-evidence/PEST_CONTROL_V10_VS_SERPICO_CC_MONO_BLUE_TERROR_2026_09_20_PREBOARD_V1_REPLICATION_12/game-8.raw",
+          "raw_member_sha256": "89970613f2d53a557c85d759e813f3c0a26bc2c88fe34075fdf98be18fb2c613",
+          "actions": 330,
+          "confirmed_priority_violations": []
+        },
+        {
+          "game_number": 9,
+          "raw_member": "durable-evidence/PEST_CONTROL_V10_VS_SERPICO_CC_MONO_BLUE_TERROR_2026_09_20_PREBOARD_V1_REPLICATION_12/game-9.raw",
+          "raw_member_sha256": "adb31b34e5937dd889b9eead8d1965fc26740e39c137bcdb22567fe32572b609",
+          "actions": 384,
+          "confirmed_priority_violations": [
+            {
+              "sequence": 282,
+              "turn": 13,
+              "active_player": "e0",
+              "observed_next_priority_player": "e1",
+              "next_action_sequence": 283,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e1",
+              "resolution_events": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e121",
+                  "name": "Counterspell"
+                }
+              ],
+              "mapped_spell_casts": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e121",
+                  "name": "Counterspell",
+                  "cast": {
+                    "casterId": "e1",
+                    "cardName": "Counterspell"
+                  }
+                }
+              ],
+              "evidence_kind": "NEXT_ACCEPTED_PASS_PRIORITY_WITHOUT_PENDING_DECISION"
+            }
+          ]
+        },
+        {
+          "game_number": 10,
+          "raw_member": "durable-evidence/PEST_CONTROL_V10_VS_SERPICO_CC_MONO_BLUE_TERROR_2026_09_20_PREBOARD_V1_REPLICATION_12/game-10.raw",
+          "raw_member_sha256": "10ad36175aef49326ff964b63edb82008d05ea4f14d4f1f08005cd4d0b76832d",
+          "actions": 524,
+          "confirmed_priority_violations": [
+            {
+              "sequence": 32,
+              "turn": 2,
+              "active_player": "e0",
+              "observed_next_priority_player": "e1",
+              "next_action_sequence": 33,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e1",
+              "resolution_events": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e117",
+                  "name": "Thought Scour"
+                }
+              ],
+              "mapped_spell_casts": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e117",
+                  "name": "Thought Scour",
+                  "cast": {
+                    "casterId": "e1",
+                    "cardName": "Thought Scour"
+                  }
+                }
+              ],
+              "evidence_kind": "NEXT_ACCEPTED_PASS_PRIORITY_WITHOUT_PENDING_DECISION"
+            },
+            {
+              "sequence": 173,
+              "turn": 8,
+              "active_player": "e0",
+              "observed_next_priority_player": "e1",
+              "next_action_sequence": 174,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e1",
+              "resolution_events": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e120",
+                  "name": "Counterspell"
+                }
+              ],
+              "mapped_spell_casts": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e120",
+                  "name": "Counterspell",
+                  "cast": {
+                    "casterId": "e1",
+                    "cardName": "Counterspell"
+                  }
+                }
+              ],
+              "evidence_kind": "NEXT_ACCEPTED_PASS_PRIORITY_WITHOUT_PENDING_DECISION"
+            },
+            {
+              "sequence": 487,
+              "turn": 20,
+              "active_player": "e0",
+              "observed_next_priority_player": "e1",
+              "next_action_sequence": 488,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e1",
+              "resolution_events": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e121",
+                  "name": "Counterspell"
+                }
+              ],
+              "mapped_spell_casts": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e121",
+                  "name": "Counterspell",
+                  "cast": {
+                    "casterId": "e1",
+                    "cardName": "Counterspell"
+                  }
+                }
+              ],
+              "evidence_kind": "NEXT_ACCEPTED_PASS_PRIORITY_WITHOUT_PENDING_DECISION"
+            }
+          ]
+        },
+        {
+          "game_number": 11,
+          "raw_member": "durable-evidence/PEST_CONTROL_V10_VS_SERPICO_CC_MONO_BLUE_TERROR_2026_09_20_PREBOARD_V1_REPLICATION_12/game-11.raw",
+          "raw_member_sha256": "83ab4c2f873e59139ffb62df4de246b7b17b27d301836b562cc3b177a8d02f7a",
+          "actions": 299,
+          "confirmed_priority_violations": []
+        },
+        {
+          "game_number": 12,
+          "raw_member": "durable-evidence/PEST_CONTROL_V10_VS_SERPICO_CC_MONO_BLUE_TERROR_2026_09_20_PREBOARD_V1_REPLICATION_12/game-12.raw",
+          "raw_member_sha256": "9372e1f7b06ed4853ff76b10f59e3457de06120939aecd759a46e7b32e8efb26",
+          "actions": 574,
+          "confirmed_priority_violations": [
+            {
+              "sequence": 64,
+              "turn": 4,
+              "active_player": "e1",
+              "observed_next_priority_player": "e0",
+              "next_action_sequence": 65,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e0",
+              "resolution_events": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e51",
+                  "name": "Mental Note"
+                }
+              ],
+              "mapped_spell_casts": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e51",
+                  "name": "Mental Note",
+                  "cast": {
+                    "casterId": "e0",
+                    "cardName": "Mental Note"
+                  }
+                }
+              ],
+              "evidence_kind": "NEXT_ACCEPTED_PASS_PRIORITY_WITHOUT_PENDING_DECISION"
+            },
+            {
+              "sequence": 117,
+              "turn": 6,
+              "active_player": "e1",
+              "observed_next_priority_player": "e0",
+              "next_action_sequence": 118,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e0",
+              "resolution_events": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e56",
+                  "name": "Thought Scour"
+                }
+              ],
+              "mapped_spell_casts": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e56",
+                  "name": "Thought Scour",
+                  "cast": {
+                    "casterId": "e0",
+                    "cardName": "Thought Scour"
+                  }
+                }
+              ],
+              "evidence_kind": "NEXT_ACCEPTED_PASS_PRIORITY_WITHOUT_PENDING_DECISION"
+            },
+            {
+              "sequence": 255,
+              "turn": 12,
+              "active_player": "e1",
+              "observed_next_priority_player": "e0",
+              "next_action_sequence": 256,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e0",
+              "resolution_events": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e47",
+                  "name": "Dispel"
+                }
+              ],
+              "mapped_spell_casts": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e47",
+                  "name": "Dispel",
+                  "cast": {
+                    "casterId": "e0",
+                    "cardName": "Dispel"
+                  }
+                }
+              ],
+              "evidence_kind": "NEXT_ACCEPTED_PASS_PRIORITY_WITHOUT_PENDING_DECISION"
+            },
+            {
+              "sequence": 408,
+              "turn": 18,
+              "active_player": "e1",
+              "observed_next_priority_player": "e0",
+              "next_action_sequence": 409,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e0",
+              "resolution_events": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e58",
+                  "name": "Counterspell"
+                }
+              ],
+              "mapped_spell_casts": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e58",
+                  "name": "Counterspell",
+                  "cast": {
+                    "casterId": "e0",
+                    "cardName": "Counterspell"
+                  }
+                }
+              ],
+              "evidence_kind": "NEXT_ACCEPTED_PASS_PRIORITY_WITHOUT_PENDING_DECISION"
+            },
+            {
+              "sequence": 515,
+              "turn": 22,
+              "active_player": "e1",
+              "observed_next_priority_player": "e0",
+              "next_action_sequence": 516,
+              "next_action_type": "PassPriority",
+              "next_action_player": "e0",
+              "resolution_events": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e60",
+                  "name": "Counterspell"
+                }
+              ],
+              "mapped_spell_casts": [
+                {
+                  "type": "ResolvedEvent",
+                  "entityId": "e60",
+                  "name": "Counterspell",
+                  "cast": {
+                    "casterId": "e0",
+                    "cardName": "Counterspell"
+                  }
+                }
+              ],
+              "evidence_kind": "NEXT_ACCEPTED_PASS_PRIORITY_WITHOUT_PENDING_DECISION"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
