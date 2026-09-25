@@ -6,7 +6,7 @@ on:
     paths:
       - .github/workflows/industrial-waste-v2-card-qualification.yml
       - industrial-waste/v2/**
-      - ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteV2RegistryAuditTest.kt
+      - ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteV2*.kt
       - ai/src/test/kotlin/com/wingedsheep/ai/arena/TableGameRunner.kt
       - mtg-sets/**/ChromaticStar*.kt
       - mtg-sets/**/AncientStirrings*.kt
@@ -43,13 +43,13 @@ jobs:
               raise SystemExit('Checked-out source does not match the requested PR head')
           PY
           python3 industrial-waste/v2/validate_r0.py
-      - name: Qualify card behavior, compiled identities and unchanged legacy golden
+      - name: Qualify cards, public-information selections and unchanged legacy golden
         run: |
           scripts/gradle-locked \
             :mtg-sets:2003-2007:tests:test --tests '*ChromaticStarScenarioTest' \
             :mtg-sets:2008-2016:tests:test --tests '*AncientStirringsScenarioTest' \
             :mtg-sets:2023:tests:test --tests '*DrossSkullbombScenarioTest' \
-            :ai:test --tests '*IndustrialWasteV2RegistryAuditTest' --tests '*FrozenBaselineTest' \
+            :ai:test --tests '*IndustrialWasteV2RegistryAuditTest' --tests '*IndustrialWasteV2SelectionAdvisorTest' --tests '*IndustrialWasteAdvisorModuleTest' --tests '*FrozenBaselineTest' \
             --continue --no-daemon
       - name: Generate reviewable card snapshots for only the newly admitted cards
         run: |

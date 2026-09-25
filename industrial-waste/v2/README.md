@@ -14,8 +14,10 @@ repository root to verify the construction receipt.
 34 identities, four Chromatic Star scenarios, three Ancient Stirrings scenarios,
 and the unchanged legacy golden. Its artifact provenance limitation is explicit;
 the checkout log establishes the actual source and the receipt label is repaired
-prospectively. Dross Skullbomb qualification continues in the next validation
-batch. Exact pilot/telemetry qualification and a guarded runtime binding receipt
+prospectively. `card-qualification-36081473608.json` records the corrected actual
+source receipt, five passing Dross Skullbomb scenarios and matching compiled
+snapshots. The shared selection policy is the next validation batch. Exact
+pilot/telemetry qualification and a guarded runtime binding receipt
 remain necessary before R1 execution. Official counters remain zero.
 
 This is a new experimental program. It does not continue Gate 11 and it does not overwrite the

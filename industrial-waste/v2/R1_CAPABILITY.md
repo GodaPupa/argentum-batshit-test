@@ -1,6 +1,6 @@
 # R1 seed-free card and infrastructure qualification
 
-Status: **TWO NEW CARDS QUALIFIED; DROSS SKULLBOMB VALIDATION REQUESTED — NO R1 CORPUS EXECUTION**
+Status: **NEW CARDS AND DROSS SKULLBOMB QUALIFIED; SHARED SELECTION VALIDATION REQUESTED — NO R1 CORPUS EXECUTION**
 
 The R0 freeze is commit `87306412b78770f161366cf1565338c4daaf6e9e`.
 Its dedicated construction run `36079890615` succeeded. That job validated
@@ -64,13 +64,47 @@ its one-mana draw on the stack, black-mana recursion plus draw, sorcery timing,
 rejection when only generic-equivalent payment is available, and failure of the
 entire targeted ability when its sole target leaves the graveyard. These tests
 use fixed scenario fixtures, never a row from the R1 ordering corpus. No card
-definition or frozen candidate has changed. Runtime qualification is pending.
+definition or frozen candidate has changed. Run `36081473608` passed all five
+without skips; its downloaded artifact digest and raw Dross XML are recorded in
+`card-qualification-36081473608.json`. The corrected registry receipt binds actual
+source `dd28a99f261a8a24cef7a67e8fba71d75c817fe3`. Both compiled snapshots exactly
+match their committed bytes. Full CI `36081473619` and R0 static validation
+`36081473602` also passed at that same source.
 
 ## Remaining execution gates
 
+### Prospective shared selection capability
+
+`IndustrialWasteV2SelectionAdvisorModule` adds executable choices for Ancient
+Stirrings, Malevolent Rumble, Myr Kinsmith, Blood Fountain and Dross Skullbomb.
+It composes with the unchanged historical module without claiming any of that
+module's card identities. It uses the same decision rule for every frozen list;
+there is no candidate-family input, outcome feedback or deck-specific override.
+
+Its selection priority first supplies a second land or directly usable missing
+color, then a missing third Tron piece, missing loop pieces, a payoff and card
+flow. Mana filters receive a selection preference when fixing is useful; this
+does not count their output as free mana or establish that an activation is
+payable. Only the real engine can establish that during later pilot qualification.
+
+The selector reads its controller's hand, battlefield and graveyard, plus the
+card metadata offered by the current legal decision. It does not simulate a
+future state or inspect either library's unseen cards. Seven deterministic tests
+cover non-Tron black fixing, the third Tron piece, identical engine priorities
+across all four architectures, two-card recursion, Kinsmith search and Dross
+recursion, invariance under changed
+opponent hand identities and future library orders, and bounded selection with
+deterministic bottom ordering. Combined registration and inherited tutor/loop
+choices are also requalified in the same validation job. This batch is pending
+runtime validation and is not a complete executable R1 pilot.
+
+Casting and activation policy, scry, mulligans, payment choices, loop completion,
+exact ordering and shuffle adapters, telemetry, and replay remain prerequisites.
+No R1 ordering row is used by these fixtures and no allocation is initialized.
+
 The `industrial-waste-v2-card-qualification` workflow is validation only.
-After the follow-up succeeds, audit Dross Skullbomb and the corrected source
-receipt, then continue the seed-free work:
+After the selection follow-up succeeds, audit its decisions and invariance
+fixtures, then continue the seed-free work:
 exact candidate mechanics, structural pilot, ordering adapter, telemetry,
 loop certificate, replay, and durable exclusive attempt recording.
 
