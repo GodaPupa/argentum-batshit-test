@@ -4,6 +4,7 @@ import com.wingedsheep.gym.matchup.MonsterTronRunnerSurfaceInventory
 import com.wingedsheep.gym.matchup.PestControlTierOneMonsterTronOfficialInitializationBoundary
 import com.wingedsheep.gym.matchup.PestControlTierOneMonsterTronPolicyReadiness
 import com.wingedsheep.gym.matchup.PestControlTierOneMonsterTronRunnerContract
+import com.wingedsheep.gym.matchup.PestControlTierOneMonsterTronOneShotBoundary
 import com.wingedsheep.gym.matchup.PestControlTierOneMonsterTronRunnerSurfacePreflight
 import com.wingedsheep.gym.matchup.TierOneMonsterTronRunnerState
 import io.kotest.core.spec.style.FunSpec
@@ -13,7 +14,7 @@ import java.nio.file.Files
 import java.nio.file.Path
 
 class PestControlTierOneMonsterTronRunnerSurfacePreflightTest : FunSpec({
-    test("repository exposes only disabled Monster Tron construction boundaries and no execution surface") {
+    test("repository permits exactly the sealed construction surface while activation remains absent") {
         val root = monsterTronRepositoryRoot()
         val workflows = monsterTronTextFiles(root.resolve(".github/workflows"))
         val commands = listOf(
@@ -29,6 +30,8 @@ class PestControlTierOneMonsterTronRunnerSurfacePreflightTest : FunSpec({
                 workflowFiles = workflows,
                 commandFiles = commands,
                 publicMethods = mapOf(
+                    "PestControlTierOneMonsterTronOneShotBoundary" to
+                        monsterTronPublicMethods(PestControlTierOneMonsterTronOneShotBoundary::class.java),
                     "PestControlTierOneMonsterTronPolicyReadiness" to
                         monsterTronPublicMethods(
                             PestControlTierOneMonsterTronPolicyReadiness::class.java
@@ -49,7 +52,7 @@ class PestControlTierOneMonsterTronRunnerSurfacePreflightTest : FunSpec({
         result.green shouldBe true
         (result.workflowFilesAudited > 0) shouldBe true
         (result.commandFilesAudited > 0) shouldBe true
-        result.classesAudited shouldBe 3
+        result.classesAudited shouldBe 4
         result.runnerState shouldBe TierOneMonsterTronRunnerState.DISABLED
         result.officialGamesAuthorized shouldBe 0
         result.officialSeedsGenerated shouldBe 0
@@ -58,7 +61,7 @@ class PestControlTierOneMonsterTronRunnerSurfacePreflightTest : FunSpec({
         result.outcomeExposure shouldBe 0
 
         val report = buildString {
-            appendLine("schema=pest-monster-tron-runner-surface-preflight-v1")
+            appendLine("schema=pest-monster-tron-runner-surface-preflight-v2")
             appendLine("protocol_id=PEST_CONTROL_V10_VS_MEHANSKE_MONSTER_TRON_2026_09_21_PREBOARD_V1")
             appendLine("workflow_files_audited=${result.workflowFilesAudited}")
             appendLine("command_files_audited=${result.commandFilesAudited}")
@@ -69,7 +72,7 @@ class PestControlTierOneMonsterTronRunnerSurfacePreflightTest : FunSpec({
             appendLine("official_games_initialized=0")
             appendLine("official_actions=0")
             appendLine("outcome_exposure=0")
-            appendLine("status=DISABLED_CONSTRUCTION_BOUNDARY_NO_OFFICIAL_EXECUTION_SURFACE")
+            appendLine("status=SEALED_CONSTRUCTION_REVIEWED_ACTIVATION_ABSENT")
         }
         println(report)
         System.getenv("PEST_MONSTER_TRON_RUNNER_PREFLIGHT_REPORT")?.let { raw ->
@@ -77,6 +80,26 @@ class PestControlTierOneMonsterTronRunnerSurfacePreflightTest : FunSpec({
             Files.createDirectories(path.parent)
             Files.writeString(path, report)
         }
+    }
+
+    test("exact construction workflow allowlist rejects relocation mutation and activation") {
+        val root = monsterTronRepositoryRoot()
+        val path = PestControlTierOneMonsterTronRunnerSurfacePreflight.CONSTRUCTION_WORKFLOW_PATH
+        val content = Files.readString(root.resolve(path))
+        val methods = mapOf("PestControlTierOneMonsterTronPolicyReadiness" to
+            setOf("validationErrors", "executionActivationErrors"))
+        fun inspect(files: Map<String, String>) = PestControlTierOneMonsterTronRunnerSurfacePreflight.inspect(
+            MonsterTronRunnerSurfaceInventory(files, emptyMap(), methods))
+        inspect(mapOf(path to content)).green shouldBe true
+        inspect(mapOf(".github/workflows/invented.yml" to content)).green shouldBe false
+        inspect(mapOf(path to content.replace("contents: read", "contents: write"))).green shouldBe false
+        inspect(mapOf(path to (content + "\n# unauthorized activation\n"))).green shouldBe false
+        inspect(mapOf(".github/workflows/invented.yml" to "env: {PEST_MONSTER_TRON_OFFICIAL_MODE: EXECUTE}"))
+            .green shouldBe false
+        Files.exists(root.resolve(".github/workflows/pest-control-tier-one-monster-tron-official-smoke.yml")) shouldBe false
+        content.contains("workflow" + "_dispatch") shouldBe false
+        content.contains("\n  push:") shouldBe false
+        content.contains("AUTOMATIC_ONE_SHOT_" + "MONSTER_TRON_EXECUTION") shouldBe false
     }
 
     test("invented execution workflow and callable method fail closed") {
