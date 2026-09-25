@@ -75,8 +75,16 @@ class MesmericFiendScenarioTest : FunSpec({
         d.giveMana(p1, Color.BLACK, 2)
         d.castSpell(p1, fiendCard).isSuccess shouldBe true
         d.bothPass()
-        (d.pendingDecision is ChooseTargetsDecision) shouldBe true
-        d.submitTargetSelection(p1, listOf(p2))
+        // A sole legal opponent may be selected automatically. In either path the enter
+        // trigger must still be on the stack when we interrupt it, not already resolving.
+        when (d.pendingDecision) {
+            is ChooseTargetsDecision -> d.submitTargetSelection(p1, listOf(p2))
+            null -> Unit
+            else -> error("Enter trigger resolved before its intended interruption: ${d.pendingDecision}")
+        }
+        d.stackSize shouldBe 1
+        d.getHand(p2) shouldContain victim
+        d.getExile(p2) shouldNotContain victim
         val fiend = d.findPermanent(p1, "Mesmeric Fiend")!!
         val bolt = d.putCardInHand(p1, "Lightning Bolt")
         d.giveMana(p1, Color.RED, 1)

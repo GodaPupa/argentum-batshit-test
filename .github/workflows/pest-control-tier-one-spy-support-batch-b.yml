@@ -49,6 +49,7 @@ jobs:
             fi
             return "$status"
           }
+          run_stage cost-serialization CostAtomSerializationTest mtg-sdk
           run_stage chosen-type-predicate ChosenCardTypePredicateTest rules-engine
           run_stage land-grant LandGrantScenarioTest mtg-sets/1993-1999/tests
           run_stage winding-way WindingWayScenarioTest mtg-sets/2017-2022/tests

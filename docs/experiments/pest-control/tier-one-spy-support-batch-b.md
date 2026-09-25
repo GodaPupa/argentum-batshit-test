@@ -63,3 +63,15 @@ initialize games, freeze seeds, or authorize Spy gameplay. The only subsequent m
 is Nyxborn Hydra/Bestow; policy, interaction, runner and postboard qualification remain distinct
 required stages of the existing bounded protocol. Monster Tron keeps its independent frozen source
 and evidence.
+
+## Qualification repair before acceptance
+
+The first CI at `f32c6e563d4a3c68df3bb2814b683cde29e2f1d9` correctly rejected an omitted
+`RevealHand` representative in the exhaustive cost serialization test. The representative now
+round-trips through every existing wrapper; the exhaustive assertion is unchanged. The new Fiend
+ordering fixture also assumed that the only legal opponent always produces a target prompt. It
+now accepts the engine's automatic sole-target selection and additionally requires the enter
+trigger to remain on the stack, with the victim still in hand, before the intervening removal.
+The actual linked-trigger ordering and exile/return assertions remain required. The dedicated
+workflow preserves the cost serialization suite alongside the other eight stages. No official
+evidence or accepted result was affected.
