@@ -56,71 +56,54 @@ rules release before the eventual official seed freeze.
 
 ## Current accepted evidence and remaining queue
 
-`accepted-capability-inventory-r5.json` records the independently audited seed-free
-card, shared-component and multiplayer evidence from run `36087805569`, including
-raw artifact digests and all required checks. Earlier inventory receipts remain
-preserved. The registry resolves 453 of 800 physical entries across the eight exact
-100-card lists; 347 entries representing 216 unique identities remain unresolved.
-The Manual control itself has 25 unresolved identities. Registry presence remains
-separate from exact-deck semantic and pilot qualification.
+`accepted-capability-inventory-r6.json` records the independently audited seed-free
+component evidence at `079505eddebb1d7ea692da47ce92e64f2cdcdeaf`. Capability run
+`36094281416`, general CI `36094281371` and all five selected inherited support gates
+passed. The main artifact contains 531 passing JUnit cases across 31 suites, with
+zero failures, errors or skips: 127 exact-card scenarios, seven ordinary-land guard
+and positive alternative cases, 56 generic commander/multiplayer cases, one registry
+audit and all 340 strict card snapshot/roundtrip cases.
 
-Twelve formerly missing control identities now have definitions and passing card
-scenarios: Animar, Soul of Elements; Ancestral Statue; Paradise Druid; Pongify;
-Rapid Hybridization; Nest Invader; Emrakul's Hatcher; Eyeless Watcher; Eldrazi
-Repurposer; Arbor Elf; Wild Growth; and Utopia Sprawl. Cloud of Faeries and Peregrine
-Drake now choose lands at resolution without targeting, including lands controlled
-by other players. All 80 exact-card scenarios pass, together with all 338 card
-snapshot and roundtrip cases. The retained batch r1/r2/r3 audits distinguish fixture
-repairs and strictly reviewed snapshot additions from rules or performance outcomes;
-no unrelated card tree was reblessed.
+The registry resolves 459 of 800 physical entries across the eight frozen 100-card
+lists. The 341 unresolved entries represent 211 unique identities, including 20
+unresolved identities in the exact Manual control. The accepted receipt contains
+both finite queues and the per-deck counts. Registry presence remains separate from
+exact-deck semantic and pilot qualification.
 
-The canonical ordinary-land CastSpell guard was selectively integrated and separately
-qualified for the exact control identities Forest and Command Tower, with preserved
-face-down and spell-Adventure alternatives. These seven additional cases pass. This
-shared implementation evidence imports no Industrial Waste matchup result.
+Seventeen formerly missing control identities now have definitions and passing
+card scenarios. The latest five are Coiling Oracle, Hope-Ender Coatl, Rejuvenating
+Springs, Training Center and Spire Garden. Cloud of Faeries and Peregrine Drake also
+retain their separately qualified corrections: lands are chosen at resolution
+without targeting, including lands controlled by other players. The three latest
+lands exercise real entry and mana actions at two, three and four seats, opponent
+counts after concessions, teammate exclusion and deterministic serialization replay.
+The prior r1-r5 batch audits preserve fixture failures and narrowly reviewed golden
+additions; no unrelated card tree was reblessed.
 
-Two additional support batches have passed the exact-head component gate at
-`c09bc4b863d7eef26b7f824d5e6e6ace36e12456`: Coiling Oracle and Hope-Ender Coatl
-(`card-support-batch-r4.json`, 17 cases), followed by Rejuvenating Springs,
-Training Center and Spire Garden (`card-support-batch-r5.json`, 30 cases).
-`capability-component-audit-r6.json` records run `36093050016`, with 531 passing
-JUnit cases across 31 suites and zero failures, errors or skips. This includes
-all 134 card/guard cases, 56 generic cases, the registry case and all 340 strict
-snapshot/roundtrip cases. The earlier fixture and golden failures remain recorded
-in their original r4/r5 batch audits; their raw artifacts are preserved.
-
-The three lands exercise real entry and mana actions at two, three and four seats,
-live opponent counts after concessions, teammate exclusion and deterministic replay
-through the existing serialization bridge. The reviewed CMR/BBD snapshots add only
-these three lands and preserve all 15 prior CMR card trees. The observed registry is
-459 resolved / 341 unresolved physical entries, 211 unresolved unique identities and
-20 Manual control gaps. These are source-scoped component findings, not actual-deck
-readiness or cEDH gameplay results.
-
-The c09 component audit does not claim full integration acceptance: newer main Spy B/C
-workflows check out that older head, which lacks their newly introduced test class
-and compiled-source manifest. Their prerequisite failures are preserved without a
-waiver. `canonical-main-integration-r1.json` records the prospective integration of
-accepted main `1c8bc618e8b3ca0b3b154e2ef3c87ca8ff779698`, including exact before/after
-shared source digests and acceptance lineage. Thirty SDK/engine files match canonical
+`capability-component-audit-r6.json` preserves the preceding c09 exact-head gate and
+its two inherited Spy workflow/source prerequisite failures. The latter are resolved
+by the prospectively declared integration of accepted main
+`1c8bc618e8b3ca0b3b154e2ef3c87ca8ff779698`, recorded in
+`canonical-main-integration-r1.json`. Thirty shared SDK/engine files match canonical
 main exactly; CastSpellHandler additionally preserves the independently qualified
-seven-line ordinary-land guard. Exact paired initialization, hardware, protocol,
-serialization bridge and all Manual test assertions remain unchanged. Canonical
-workflow checkout, source verification and strict snapshot checks remain unchanged.
-The resulting exact head requires fresh Manual, general and inherited support gates
-and artifact audit before its source or updated coverage can be accepted. Neither
-unaccepted priority repairs nor another candidate/card batch are imported.
+seven-line ordinary-land guard. The integrated 079 source passes both inherited
+gates: Spy B run `36094281390` retains 364 passing cases, including the previously
+missing predicate suite; Spy C run `36094281376` retains 437 passing cases, including
+its exact compiled-source verification, 15 Hydra cases and strict snapshots. These
+are independently audited shared-component checks, with no matchup evidence transfer.
+Canonical exact-head checkout, source pins, selectors and strict snapshot checks
+remain unchanged.
 
-The accepted r5 artifact preserves 56 passing generic commander/multiplayer tests
-and one passing registry audit: 482 passing JUnit cases in total, without failures,
-errors or skips. These are deterministic capability fixtures, not any of the 36
-initial actual-deck capability pilot games or 864 primary games. Both official
-gameplay counters remain zero. Full card coverage, exact executable gear and opponent
-pilots, multiplayer threat decisions, operational telemetry and the frozen guarded
-execution package still block actual-deck admission. A separately discovered CR
-117.3b post-resolution priority defect also requires selective integration and
-qualification of its canonical shared repair; this component receipt does not
-certify unexercised priority paths.
+Paired initialization, the serialization bridge, exact hardware, Phase 1 history,
+all Phase 2 protocol authorizations and every official counter remain unchanged.
+No actual-deck capability pilot or primary game has run: the counters are still
+0/36 and 0/864. Remaining exact mechanics, executable Cruise/Sport/Race and opponent
+pilots, multiplayer decisions, typed telemetry, production replay and guarded
+execution authority block actual-deck admission. The separately owned canonical
+CR 117.3b priority repair and any consequent cast-priority correction still require
+integration and exact-deck qualification. No unaccepted priority repair is imported
+by this receipt. A green component gate is not cEDH or tournament performance and
+does not complete Phase 2.
 
 ## Prospective telemetry component
 
