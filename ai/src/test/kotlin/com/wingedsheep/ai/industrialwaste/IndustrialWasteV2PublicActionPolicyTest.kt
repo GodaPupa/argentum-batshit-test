@@ -12,6 +12,7 @@ import com.wingedsheep.engine.core.PlayLand
 import com.wingedsheep.engine.core.BottomCards
 import com.wingedsheep.engine.core.KeepHand
 import com.wingedsheep.engine.core.TakeMulligan
+import com.wingedsheep.engine.core.TurnManager
 import com.wingedsheep.engine.core.CardsSelectedResponse
 import com.wingedsheep.engine.core.DecisionContext
 import com.wingedsheep.engine.core.SelectCardsDecision
@@ -20,6 +21,7 @@ import com.wingedsheep.engine.state.ZoneKey
 import com.wingedsheep.engine.state.components.identity.CardComponent
 import com.wingedsheep.engine.state.components.identity.LifeTotalComponent
 import com.wingedsheep.engine.state.components.identity.TokenComponent
+import com.wingedsheep.engine.state.components.battlefield.SummoningSicknessComponent
 import com.wingedsheep.engine.state.components.player.ManaPoolComponent
 import com.wingedsheep.engine.state.components.player.MulliganStateComponent
 import com.wingedsheep.engine.support.GameTestDriver
@@ -174,11 +176,15 @@ class IndustrialWasteV2PublicActionPolicyTest : FunSpec({
         driver.state.gameOver shouldBe false
         driver.state.getEntity(opponent)!!.get<LifeTotalComponent>()!!.life shouldBe 20
 
-        driver.passPriorityUntil(Step.DECLARE_ATTACKERS)
-        val newbornAttack = choose(driver, player).shouldBeInstanceOf<DeclareAttackers>()
-        newbornAttack.attackers shouldBe emptyMap()
-        driver.submit(newbornAttack).error shouldBe null
+        // The real turn manager skips a declaration step with no valid attackers.
+        // Waiting for DECLARE_ATTACKERS here would reach the following own turn.
+        val creationTurn = driver.state.turnNumber
+        golems.all { driver.state.getEntity(it)!!.has<SummoningSicknessComponent>() } shouldBe true
+        TurnManager(driver.cardRegistry).getValidAttackers(driver.state, player) shouldBe emptyList()
         driver.passPriorityUntil(Step.POSTCOMBAT_MAIN)
+        driver.state.turnNumber shouldBe creationTurn
+        driver.activePlayer shouldBe player
+        driver.state.getEntity(opponent)!!.get<LifeTotalComponent>()!!.life shouldBe 20
         driver.passPriorityUntil(Step.PRECOMBAT_MAIN)
         driver.activePlayer shouldBe opponent
         driver.passPriorityUntil(Step.POSTCOMBAT_MAIN)

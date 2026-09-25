@@ -24,7 +24,14 @@ new card mechanics, eleven public development/London/privacy tests, ordinary
 land-cast rejection, real morph/land-Adventure compatibility and unchanged
 baseline. Full CI and both additional shared-card regression checks also passed.
 The R1 numerical core passed nine synthetic fixtures plus independent review.
-The next finite Foundry-combat/passive-policy extension is in validation.
+The finite Foundry-combat fixture exposed a traversal error: the real turn manager
+skips a declaration step with no legal attackers. The original failing XML and
+91/92 passing count are preserved in `validation-failure-36086878296.json`.
+The correction verifies sickness and the same-turn postcombat checkpoint before
+requiring an actual next-turn combat win. `ordering-capability.json` records an
+opt-in pre-draw ordering implementation and 15 prospective fixtures, including
+real Map/Crop/Kinsmith continuations and replay. Both changes await runtime
+qualification; no current receipt accepts them yet.
 Complete pilot integration, exact ordering/telemetry/replay, effective rules
 archive and guarded runtime bindings remain necessary before R1 execution.
 Official counters remain zero.

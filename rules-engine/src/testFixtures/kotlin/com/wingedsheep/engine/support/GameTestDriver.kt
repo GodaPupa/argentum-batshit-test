@@ -126,13 +126,15 @@ class GameTestDriver {
         startingLife: Int = 20,
         startingPlayer: Int = 0,
         seed: Long? = null,
+        libraryOrdering1: com.wingedsheep.engine.state.components.player.LibraryOrderingPlan? = null,
+        libraryOrdering2: com.wingedsheep.engine.state.components.player.LibraryOrderingPlan? = null,
     ) {
         val initializer = GameInitializer(cardRegistry)
         val result = initializer.initializeGame(
             GameConfig(
                 players = listOf(
-                    PlayerConfig("Player 1", deck1, startingLife),
-                    PlayerConfig("Player 2", deck2, startingLife)
+                    PlayerConfig("Player 1", deck1, startingLife, libraryOrdering = libraryOrdering1),
+                    PlayerConfig("Player 2", deck2, startingLife, libraryOrdering = libraryOrdering2)
                 ),
                 skipMulligans = skipMulligans,
                 startingPlayerIndex = startingPlayer,

@@ -9,7 +9,8 @@
     288858457177,
     345095556942,
     19790476173660761,
-    5424953345830376520
+    5424953345830376520,
+    9250925004
   ],
   "allowed_for_official_sampling": false,
   "official_initializations": 0,
@@ -70,6 +71,26 @@
       "seeds": [
         9250925003
       ]
+    },
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/library/LibraryOrderingServiceTest.kt",
+      "seeds": [
+        9250925004
+      ]
+    },
+    {
+      "path": "ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteV2OrderingIntegrationTest.kt",
+      "seeds": [
+        9250925004
+      ]
     }
+  ],
+  "ordering_domains": [
+    "IW_V2_ORDERING_REGRESSION_ONLY",
+    "IW_V2_ORDERING_SEARCH_REGRESSION_ONLY"
+  ],
+  "ordering_rows_excluded_from_official_use": [
+    999,
+    1000
   ]
 }

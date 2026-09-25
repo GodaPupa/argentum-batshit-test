@@ -10,6 +10,10 @@ import com.wingedsheep.engine.state.components.player.LandDropsComponent
 import com.wingedsheep.engine.state.components.player.PlayerTurnsTakenComponent
 import com.wingedsheep.engine.state.components.player.ManaPoolComponent
 import com.wingedsheep.engine.state.components.player.MulliganStateComponent
+import com.wingedsheep.engine.state.components.player.LibraryOrderingPlan
+import com.wingedsheep.engine.state.components.player.LibraryOrderingComponent
+import com.wingedsheep.engine.mechanics.library.LibraryOrderingCause
+import com.wingedsheep.engine.mechanics.library.LibraryOrderingService
 import com.wingedsheep.sdk.core.Color
 import com.wingedsheep.sdk.core.Format
 import com.wingedsheep.sdk.core.Zone
@@ -39,6 +43,8 @@ data class PlayerConfig(
      * Background pairings are Phase 4 territory.
      */
     val commanderCardName: String? = null,
+    /** Explicit frozen experimental input; null preserves ordinary random library shuffles. */
+    val libraryOrdering: LibraryOrderingPlan? = null,
 )
 
 /**
@@ -153,6 +159,10 @@ class GameInitializer(
      */
     fun initializeGame(config: GameConfig): InitializationResult {
         require(config.players.size >= 2) { "Need at least 2 players" }
+        if (config.players.any { it.libraryOrdering != null }) {
+            require(config.seed != null) { "Explicit library ordering requires a recorded RNG seed" }
+            require(!config.useHandSmoother) { "Hand smoothing cannot replace frozen opening orders" }
+        }
 
         val events = mutableListOf<GameEvent>()
         // Resolve the seed up front: explicit when supplied, otherwise fresh entropy. Either way it
@@ -345,6 +355,8 @@ class GameInitializer(
             val libraryEntries: List<CardEntry> = playerConfig.deck.cardEntries.ifEmpty {
                 playerConfig.deck.cards.map { CardEntry(it) }
             }
+            val copyCounts = mutableMapOf<String, Int>()
+            val originalCopies = linkedMapOf<EntityId, String>()
             for (entry in libraryEntries) {
                 val cardDef = cardRegistry.requireCard(entry.name)
                 val (cardId, stateWithId) = state.newEntity()
@@ -352,6 +364,17 @@ class GameInitializer(
                 val cardContainer = createCardEntity(cardDef, playerId, entry.printing)
                 state = state.withEntity(cardId, cardContainer)
                 state = state.addToZone(ZoneKey(playerId, Zone.LIBRARY), cardId)
+                if (playerConfig.libraryOrdering != null) {
+                    val occurrence = copyCounts.getOrDefault(entry.name, 0) + 1
+                    copyCounts[entry.name] = occurrence
+                    originalCopies[cardId] = "${entry.name}#$occurrence"
+                }
+            }
+            playerConfig.libraryOrdering?.let { plan ->
+                val frozenPlan = plan.copy(openingOrders = plan.openingOrders.map { it.toList() })
+                state = state.updateEntity(playerId) {
+                    it.with(LibraryOrderingComponent(frozenPlan, originalCopies.toMap()))
+                }
             }
 
             // Sideboard: the cards this player owns *outside the game* (CR 100.4). They begin in
@@ -426,9 +449,7 @@ class GameInitializer(
      * Shuffle a player's library.
      */
     private fun shuffleLibrary(state: GameState, playerId: EntityId): GameState {
-        val libraryKey = ZoneKey(playerId, Zone.LIBRARY)
-        val (library, newState) = state.nextRandom { shuffle(state.getZone(libraryKey)) }
-        return newState.reorderZone(libraryKey, library)
+        return LibraryOrderingService.shuffle(state, playerId, LibraryOrderingCause.GAME_SETUP)
     }
 
     /**

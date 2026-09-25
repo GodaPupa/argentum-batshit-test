@@ -1,0 +1,49 @@
+{
+  "schema": "iw-v2-prospective-ordering-capability-v1",
+  "status": "IMPLEMENTED_AWAITING_RUNTIME_QUALIFICATION",
+  "parent_head": "a38bea45a1dc6898482944a16beaa0d59eb707a5",
+  "execution_authorized": false,
+  "official_initializations": 0,
+  "comparative_outcomes_exposed": 0,
+  "algorithm": {
+    "id": "ORIGINAL_COPY_SHA256_LF_RANK_V1",
+    "initial_order": "Exact frozen original-card-copy permutation is installed by the real initializer before its opening draw and CardsDrawnEvent.",
+    "mulligans": "The real London handler returns the hand, installs the next complete frozen permutation, then draws and emits original event IDs. No order beyond the supplied finite list is allowed.",
+    "effect_rank_input_utf8": "namespace + LF + decimal(row) + LF + decimal(one-based effect shuffle ordinal) + LF + original card-copy label",
+    "rank_order": "ascending lowercase hex SHA-256 digest; full label lexical tiebreak",
+    "copy_label": "Exact frozen deck entry name + # + one-based occurrence. Entity-to-label map is serialized on the opted-in player and never reconstructed from current order or changed card characteristics.",
+    "scope": "Shared rank does not include family, play/draw schedule, seat, game entity IDs, current library order, pilot choices or outcomes.",
+    "rng": "The ordinary prior shuffle operation and RNG consumption are retained. Only the opted-in library order is selected from frozen input before draws or events."
+  },
+  "qualified_paths_pending": [
+    "GameInitializer library setup",
+    "MulliganHandler London shuffle",
+    "ShuffleLibraryEffect including exact Expedition Map, Crop Rotation and Myr Kinsmith shared search pipeline"
+  ],
+  "limitations": [
+    "Specialized shuffle paths outside these exact call sites are not qualified by this batch.",
+    "Full R1 runner, telemetry, effective rules archive, provenance bindings, exclusive durable claim, append-only journal and exact execution authorization remain required.",
+    "Pilots are not permitted to observe ordering plans, original library mappings or future library order.",
+    "The input does not prove a competitive result, complete engine coverage or program completion."
+  ],
+  "deterministic_fixture_classes": {
+    "com.wingedsheep.engine.library.LibraryOrderingServiceTest": 11,
+    "com.wingedsheep.ai.industrialwaste.IndustrialWasteV2OrderingIntegrationTest": 4
+  },
+  "regression_exclusions": "industrial-waste/v2/regression-fixtures.json",
+  "source_sha256": {
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/state/components/player/LibraryOrderingComponent.kt": "b7b29cae01c8db220cce54534fe940335b908f24617cf63917e834ab5cb371c3",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/library/LibraryOrderingService.kt": "f2d3201d1b151470b6ec4e384266575323a2b2713e40bbbde0f086784dbbf78b",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/GameInitializer.kt": "0cf1159a8e5e159703ccb85cef9db8ed7e75bd691e8cfa43b66068bf40bf260f",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/MulliganHandler.kt": "9ce7f2749f9c476b661709e4db9c9b1058da135f202c7e2533d0c581a792631f",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/library/ShuffleLibraryExecutor.kt": "985eb5d18d26b10681078cb1db3fcc9f81a17459848c53640c6a22845607537e",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/Serialization.kt": "fb4dbb4c3d64148888d064a3b5e78911e6eee6ff50885876876f5066fb1417c4",
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/library/LibraryOrderingServiceTest.kt": "9e875e4dc0cf39716c6b1b4e8aa648a38daae85eeaa18f4a4deb71bcf8f8a3b7",
+    "ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteV2OrderingIntegrationTest.kt": "3cf461852b3d0c717c28b96e352608c56a1264dc2086cc2ed1d2ee53e36792e2"
+  },
+  "independent_source_review": {
+    "reviewer": "coordinator agent /root/pest/root_command_repair",
+    "disposition": "PASS_FOR_CI_RUNTIME_UNVERIFIED",
+    "scope": "Read all15 fixtures, original default operation and event sites, R1 protocol, serialization/labels/ordinals and guards; independently recomputed all three reference ranks. No source/API blocker found."
+  }
+}
