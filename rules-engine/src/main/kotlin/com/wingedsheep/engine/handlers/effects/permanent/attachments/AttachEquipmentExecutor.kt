@@ -29,8 +29,24 @@ class AttachEquipmentExecutor : EffectExecutor<AttachEquipmentEffect> {
         val equipmentId = context.sourceId
             ?: return EffectResult.error(state, "No source for attach equipment")
 
+        // An ability remains on the stack after its source leaves, but cannot attach that
+        // card from another zone or follow it into a new battlefield visit (CR 400.7).
+        // Validate the actual source, not Self: iteration effects can deliberately bind Self
+        // to another entity, while AttachEquipment always attaches its originating Equipment.
+        if (!context.objectReferences.isCurrent(context.objectReferences.source, state) ||
+            equipmentId !in state.getBattlefield()
+        ) {
+            return EffectResult.success(state)
+        }
+        if (!context.objectReferences.captured && context.objectReferences.source == null &&
+            context.sourceBattlefieldTimestamp != null &&
+            state.getEntity(equipmentId)?.get<com.wingedsheep.engine.state.components.battlefield.BattlefieldEntryTimestampComponent>()?.timestamp !=
+                context.sourceBattlefieldTimestamp
+        ) return EffectResult.success(state)
+
         val targetId = context.resolveTarget(effect.target, state)
-            ?: return EffectResult.error(state, "No valid target for attach equipment")
+            ?: return EffectResult.success(state)
+        if (targetId !in state.getBattlefield()) return EffectResult.success(state)
 
         var newState = state
         val unattachEvents = mutableListOf<com.wingedsheep.engine.core.GameEvent>()

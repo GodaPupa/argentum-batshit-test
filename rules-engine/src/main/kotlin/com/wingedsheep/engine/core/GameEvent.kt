@@ -81,7 +81,14 @@ data class ZoneChangeEvent(
     val newObject: com.wingedsheep.engine.state.ObjectRef? = null,
     val transitionCause: ZoneTransitionCause = ZoneTransitionCause.PRIMARY,
     /** The move's requested destination, before any redirect chose [toZone]. */
-    val requestedDestination: Zone = toZone
+    val requestedDestination: Zone = toZone,
+    /**
+     * Projected characteristics at the completion of an entry instruction, before a later
+     * instruction can attach, pump, or otherwise change the entrant. Distinct from departure
+     * lastKnown information. Null means no qualified entry snapshot was captured; it must not
+     * be interpreted as a snapshot of the eventual trigger-detection state.
+     */
+    val entrySnapshot: com.wingedsheep.engine.event.BattlefieldEntrySnapshot? = null,
 ) : GameEvent
 
 @Serializable

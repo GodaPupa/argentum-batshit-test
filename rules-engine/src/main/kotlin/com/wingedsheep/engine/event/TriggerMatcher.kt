@@ -1057,6 +1057,7 @@ class TriggerMatcher(
                 }
             }
             val projected = state.projectedState
+            val entrySnapshot = event.entrySnapshot.takeIf { event.toZone == Zone.BATTLEFIELD }
             // Check card predicates (creature type, subtype, etc.)
             // Note: entity may not exist in state if it was a token cleaned up by SBAs.
             // In that case, fall back to lastKnownTypeLine from the event.
@@ -1079,6 +1080,12 @@ class TriggerMatcher(
             // before the matcher runs, so the generic cardComponent-based path returns false for
             // every predicate inside the composite and the trigger silently misses token deaths.
             fun matchesLkiPredicate(predicate: com.wingedsheep.sdk.scripting.predicates.CardPredicate): Boolean {
+                // Entry observation uses one producer-captured instant. Never mix that snapshot
+                // with the eventual entrant or turn unknown into a match under Not.
+                if (entrySnapshot != null) {
+                    return matchesEntryCardPredicate(predicate, entrySnapshot,
+                        chosenSubtype = state.getEntity(sourceId)?.chosenCreatureType()) == true
+                }
                 return when (predicate) {
                     is com.wingedsheep.sdk.scripting.predicates.CardPredicate.IsCreature -> {
                         // For dying creatures: use base state (they're already in graveyard)
@@ -1223,7 +1230,7 @@ class TriggerMatcher(
             //  - anything that never touched the battlefield (a mill, a discard) has no
             //    controller at all, and `ownerId` is the right and only reading.
             trigger.filter.controllerPredicate?.let { pred ->
-                val effectiveController = event.lastKnown?.controllerId
+                val effectiveController = entrySnapshot?.controllerId ?: event.lastKnown?.controllerId
                     ?: projected.getController(event.entityId)
                     ?: event.ownerId
                 val controllerMatches = pred.evaluateWith { leaf ->

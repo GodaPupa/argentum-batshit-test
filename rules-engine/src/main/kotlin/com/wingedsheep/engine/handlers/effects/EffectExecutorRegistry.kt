@@ -167,8 +167,10 @@ class EffectExecutorRegistry(
             )
         val instructionContext = context.withCurrentObjectReferences(state)
         val result = executor.execute(state, effect, instructionContext)
-        val references = instructionContext.objectReferences.authorize(result.events)
-        return result.copy(state = com.wingedsheep.engine.handlers.continuations.propagateObjectReferences(result.state, references))
+        val events = com.wingedsheep.engine.event.captureBattlefieldEntrySnapshots(result.state, result.events)
+        val references = instructionContext.objectReferences.authorize(events)
+        return result.copy(events = events,
+            state = com.wingedsheep.engine.handlers.continuations.propagateObjectReferences(result.state, references))
     }
 
     /**
