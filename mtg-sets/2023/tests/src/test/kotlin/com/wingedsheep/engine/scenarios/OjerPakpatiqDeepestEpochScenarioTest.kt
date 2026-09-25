@@ -116,8 +116,7 @@ class OjerPakpatiqDeepestEpochScenarioTest : ScenarioTestBase() {
                 val game = scenario()
                     .withPlayers("Player1", "Player2")
                     .withCardOnBattlefield(1, "Ojer Pakpatiq, Deepest Epoch", summoningSickness = false)
-                    .withLandsOnBattlefield(1, "Mountain", 2)
-                    .withCardInHand(1, "Lightning Bolt")
+                    .withLandsOnBattlefield(1, "Mountain", 1)
                     .withCardInHand(1, "Lightning Bolt")
                     .withActivePlayer(1)
                     .inPhase(Phase.PRECOMBAT_MAIN, Step.PRECOMBAT_MAIN)
@@ -125,11 +124,12 @@ class OjerPakpatiqDeepestEpochScenarioTest : ScenarioTestBase() {
 
                 val pakpatiq = game.findPermanent("Ojer Pakpatiq, Deepest Epoch")!!
 
-                repeat(2) { // 6 damage kills the 4/3
-                    game.castSpell(1, "Lightning Bolt", targetId = pakpatiq).error shouldBe null
-                    if (game.getPendingDecision() is SelectManaSourcesDecision) game.submitManaSourcesAutoPay()
-                    game.resolveStack()
-                }
+                // Ojer is 4/3, so one Lightning Bolt is already lethal. The post-resolution SBA
+                // immediately moves it through its dies trigger; a second Bolt would be targeting
+                // the returned land and is correctly illegal under CR 115.4.
+                game.castSpell(1, "Lightning Bolt", targetId = pakpatiq).error shouldBe null
+                if (game.getPendingDecision() is SelectManaSourcesDecision) game.submitManaSourcesAutoPay()
+                game.resolveStack()
                 var guard = 0
                 while (game.findPermanent("Temple of Cyclical Time") == null && guard++ < 10) game.resolveStack()
 
