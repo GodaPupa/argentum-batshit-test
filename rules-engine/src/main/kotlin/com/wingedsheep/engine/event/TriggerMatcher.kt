@@ -1101,6 +1101,13 @@ class TriggerMatcher(
                         typeLine?.isArtifact == true
                     is com.wingedsheep.sdk.scripting.predicates.CardPredicate.IsEnchantment ->
                         typeLine?.isEnchantment == true
+                    is com.wingedsheep.sdk.scripting.predicates.CardPredicate.HasCardType ->
+                        if (event.fromZone == Zone.BATTLEFIELD && event.lastKnown?.typeLine != null) {
+                            predicate.cardType in event.lastKnown.typeLine.cardTypes
+                        } else {
+                            projected.getProjectedValues(event.entityId)?.types?.contains(predicate.cardType.name)
+                                ?: (typeLine?.cardTypes?.contains(predicate.cardType) == true)
+                        }
                     is com.wingedsheep.sdk.scripting.predicates.CardPredicate.HasSubtype -> {
                         // For entering creatures: use projected state (they're on battlefield)
                         // For dying creatures: use base state (they're in graveyard, no projected subtypes)
@@ -1262,6 +1269,9 @@ class TriggerMatcher(
             is com.wingedsheep.sdk.scripting.predicates.CardPredicate.IsArtifact -> cardComponent.typeLine.isArtifact
             is com.wingedsheep.sdk.scripting.predicates.CardPredicate.IsEnchantment -> cardComponent.typeLine.isEnchantment
             is com.wingedsheep.sdk.scripting.predicates.CardPredicate.IsPlaneswalker -> com.wingedsheep.sdk.core.CardType.PLANESWALKER in cardComponent.typeLine.cardTypes
+            is com.wingedsheep.sdk.scripting.predicates.CardPredicate.HasCardType ->
+                projected.getProjectedValues(entityId)?.types?.contains(predicate.cardType.name)
+                    ?: (predicate.cardType in cardComponent.typeLine.cardTypes)
             is com.wingedsheep.sdk.scripting.predicates.CardPredicate.IsInstant -> cardComponent.typeLine.isInstant
             is com.wingedsheep.sdk.scripting.predicates.CardPredicate.IsSorcery -> cardComponent.typeLine.isSorcery
             is com.wingedsheep.sdk.scripting.predicates.CardPredicate.IsBasicLand -> cardComponent.typeLine.isLand && cardComponent.typeLine.supertypes.contains(com.wingedsheep.sdk.core.Supertype.BASIC)

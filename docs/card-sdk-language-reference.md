@@ -4148,6 +4148,13 @@ This is the player-arm prerequisite for the planned composable mixed `TargetUnio
 
 ## 7. Filters & predicates
 
+- `CardPredicate.HasCardType(cardType)` / `.withCardType(cardType)` — matches any fixed
+  `CardType`, including `BATTLE`. Live permanent matching reads projected types; card definitions,
+  cast records, and last-known snapshots use their stored type line. An unavailable snapshot type
+  remains unknown rather than making a negated predicate pass. The serialized payload field is
+  `cardType`, distinct from the polymorphic discriminator `type`. Cosmic Hunger composes this
+  with creature and planeswalker filters, wrapped in `TargetOther` for its second target.
+
 ### `GameObjectFilter` — for searches, sacrifice, group effects
 
 - `Filters.AnyCard` — any card.

@@ -1,5 +1,6 @@
 package com.wingedsheep.sdk.scripting.predicates
 
+import com.wingedsheep.sdk.core.CardType
 import com.wingedsheep.sdk.core.Color
 import com.wingedsheep.sdk.core.Keyword
 import com.wingedsheep.sdk.core.Subtype
@@ -26,6 +27,13 @@ sealed interface CardPredicate : TextReplaceable<CardPredicate> {
     // =============================================================================
     // Type Predicates
     // =============================================================================
+
+    /** A fixed card type, evaluated from projected characteristics for live permanents. */
+    @SerialName("HasCardType")
+    @Serializable
+    data class HasCardType(val cardType: CardType) : CardPredicate {
+        override val description: String = cardType.displayName.lowercase()
+    }
 
     @SerialName("IsCreature")
     @Serializable
