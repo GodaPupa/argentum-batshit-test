@@ -14,7 +14,7 @@ import java.nio.file.Files
 import java.nio.file.Path
 
 class PestControlTierOneMonsterTronRunnerSurfacePreflightTest : FunSpec({
-    test("repository permits exactly the sealed construction surface while activation remains absent") {
+    test("repository permits only the two reviewed guarded workflows without executing games") {
         val root = monsterTronRepositoryRoot()
         val workflows = monsterTronTextFiles(root.resolve(".github/workflows"))
         val commands = listOf(
@@ -59,20 +59,22 @@ class PestControlTierOneMonsterTronRunnerSurfacePreflightTest : FunSpec({
         result.officialGamesInitialized shouldBe 0
         result.officialActionsSubmitted shouldBe 0
         result.outcomeExposure shouldBe 0
+        result.guardedOfficialWorkflowPresent shouldBe true
 
         val report = buildString {
-            appendLine("schema=pest-monster-tron-runner-surface-preflight-v2")
+            appendLine("schema=pest-monster-tron-runner-surface-preflight-v3")
             appendLine("protocol_id=PEST_CONTROL_V10_VS_MEHANSKE_MONSTER_TRON_2026_09_21_PREBOARD_V1")
             appendLine("workflow_files_audited=${result.workflowFilesAudited}")
             appendLine("command_files_audited=${result.commandFilesAudited}")
             appendLine("classes_audited=${result.classesAudited}")
-            appendLine("runner_state=${result.runnerState}")
+            appendLine("legacy_construction_runner_state=${result.runnerState}")
+            appendLine("guarded_official_workflow_present=${result.guardedOfficialWorkflowPresent}")
             appendLine("official_games_authorized=0")
             appendLine("official_seeds_generated=0")
             appendLine("official_games_initialized=0")
             appendLine("official_actions=0")
             appendLine("outcome_exposure=0")
-            appendLine("status=SEALED_CONSTRUCTION_REVIEWED_ACTIVATION_ABSENT")
+            appendLine("status=GUARDED_ONE_SHOT_ACTIVATION_SURFACE_VERIFIED_NO_GAMEPLAY")
         }
         println(report)
         System.getenv("PEST_MONSTER_TRON_RUNNER_PREFLIGHT_REPORT")?.let { raw ->
@@ -96,10 +98,29 @@ class PestControlTierOneMonsterTronRunnerSurfacePreflightTest : FunSpec({
         inspect(mapOf(path to (content + "\n# unauthorized activation\n"))).green shouldBe false
         inspect(mapOf(".github/workflows/invented.yml" to "env: {PEST_MONSTER_TRON_OFFICIAL_MODE: EXECUTE}"))
             .green shouldBe false
-        Files.exists(root.resolve(".github/workflows/pest-control-tier-one-monster-tron-official-smoke.yml")) shouldBe false
+        Files.exists(root.resolve(".github/workflows/pest-control-tier-one-monster-tron-official-smoke.yml")) shouldBe true
         content.contains("workflow" + "_dispatch") shouldBe false
         content.contains("\n  push:") shouldBe false
         content.contains("AUTOMATIC_ONE_SHOT_" + "MONSTER_TRON_EXECUTION") shouldBe false
+    }
+
+    test("official workflow accepts only exact reviewed bytes and fixed source") {
+        val root = monsterTronRepositoryRoot()
+        val path = PestControlTierOneMonsterTronRunnerSurfacePreflight.OFFICIAL_WORKFLOW_PATH
+        val content = Files.readString(root.resolve(path))
+        val methods = mapOf("PestControlTierOneMonsterTronPolicyReadiness" to
+            setOf("validationErrors", "executionActivationErrors"))
+        fun inspect(files: Map<String, String>) = PestControlTierOneMonsterTronRunnerSurfacePreflight.inspect(
+            MonsterTronRunnerSurfaceInventory(files, emptyMap(), methods))
+        inspect(mapOf(path to content)).green shouldBe true
+        inspect(mapOf(path to content)).guardedOfficialWorkflowPresent shouldBe true
+        inspect(mapOf(".github/workflows/another-official.yml" to content)).green shouldBe false
+        inspect(mapOf(path to content.replace("8a425d8532395e3d4262fbb35cfbac71e96feeb5", "main"))).green shouldBe false
+        inspect(mapOf(path to content.replace("github.run_attempt == 1", "true"))).green shouldBe false
+        inspect(mapOf(path to content.replace("if: always()", "if: success()"))).green shouldBe false
+        content.contains("--verify-receipt") shouldBe false // The sealed source C performs remote verification.
+        content.contains("--rerun-tasks --no-build-cache") shouldBe true
+        content.contains("--kill-after=120s 5h") shouldBe true
     }
 
     test("invented execution workflow and callable method fail closed") {
