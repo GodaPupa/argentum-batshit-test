@@ -6,6 +6,7 @@ on:
       - "mayhem/izzet-science"
     paths:
       - ".github/workflows/izzet-v09-position1-batch-aj-snapshot-rebless.yml"
+      - "mtg-sets/2003-2007/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/SpiritLinkBatchAJScenarioTest.kt"
 
 permissions:
   contents: write
@@ -17,7 +18,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: mayhem/izzet-science
+          ref: ${{ github.sha }}
           fetch-depth: 0
       - uses: actions/setup-java@v5
         with:
@@ -68,5 +69,5 @@ jobs:
           git add mtg-sets/src/test/resources/snapshots/cards/10E.json
           git commit -m "Rebless Position-1 Batch AJ snapshot"
           git fetch origin mayhem/izzet-science
-          git rebase origin/mayhem/izzet-science
+          test "$(git rev-parse origin/mayhem/izzet-science)" = "${GITHUB_SHA}"
           git push origin HEAD:mayhem/izzet-science
