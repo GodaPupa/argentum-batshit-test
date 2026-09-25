@@ -112,6 +112,5 @@ object IzzetScienceVeteranBeastriderEngineReadiness {
         add("16-damage commander-loss accounting not qualified in gameplay engine")
         add("30-life PDH game initialization not qualified")
         add("Phase-29 event-ledger extraction from full engine game not qualified")
-        add("Simultaneous same-source damage/lifelink and attached-trigger grouping not qualified")
     }
 }

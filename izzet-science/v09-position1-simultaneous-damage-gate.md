@@ -1,6 +1,6 @@
 # v0.9 Position 1 — Simultaneous Source-Damage Grouping Gate
 
-Disposition: `PROSPECTIVE_SEED_FREE_QUALIFICATION`
+Disposition: `ACCEPTED_SEED_FREE_CAPABILITY`
 
 This successor to accepted Batch AO addresses the explicit frozen-pair blocker for one damage
 instruction that deals damage from the same source to more than one recipient. It does not change
@@ -42,3 +42,20 @@ real-engine readiness, and full CI remain required.
 No official iterator, claim, seed, allocation, game, or outcome is touched. A green workflow is
 capability evidence only; independent source/artifact review is required before the readiness guard
 may be opened.
+
+
+## Accepted qualification
+
+Run `36155027033` qualified exact source
+`3269007734128082fe7e582b4c824a410b0540c8`. Artifact
+`10873586790` contains the declared six files and has GitHub/downloaded ZIP SHA-256
+`a3f9ff19a04fe254fde7f75c17abf36f0e73c41a4ad4b2e7bd44c899dee95b6c`.
+Independent audit found no failed-build, failed-test, or nonzero-error marker in the five required
+transcripts; Ram Through, Spirit Link, excess-damage, damage-ledger, and readiness transcripts all
+completed successfully. The manifest binds the frozen control/opponent, Batch AO predecessor,
+grouping sources/tests, exact source SHA, and zero official seed/game/outcome counters.
+
+Disposition: **ACCEPTED FOR THE EXACT SIMULTANEOUS-SOURCE DAMAGE/LIFELINK AND UNRESTRICTED
+ATTACHED DEALS-DAMAGE SCOPE ONLY**. This removes that one readiness blocker. The seven unresolved
+Veteran Beastrider identities and the five PDH/full-game blockers remain. Official gameplay remains
+**0/12**, outcome exposure remains zero, and **KEEP_V07 / NO CARD CHANGES** remains in force.
