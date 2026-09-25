@@ -30,9 +30,25 @@ skips a declaration step with no legal attackers. The original failing XML and
 The correction verifies sickness and the same-turn postcombat checkpoint before
 requiring an actual next-turn combat win. `ordering-capability.json` records an
 opt-in pre-draw ordering implementation and 15 prospective fixtures, including
-real Map/Crop/Kinsmith continuations and replay. Both changes await runtime
-qualification; no current receipt accepts them yet.
-Complete pilot integration, exact ordering/telemetry/replay, effective rules
+real Map/Crop/Kinsmith continuations and replay. The next artifact executed
+107 fixtures: 103 passed, including all thirteen public policy/Foundry cases;
+four failed during test setup or an incorrect search-decision counter.
+`validation-failure-36088868312.json` preserves the original XML and diagnosis.
+The foreign-copy fixture now detaches its old zone before deliberately testing
+the ordering guard. The three search tests count the real source-scoped
+`SelectCardsDecision`; source review also exposed a real legacy tutor-dispatch
+gap. A separate v2 registry now qualifies those collection-shaped Map/Crop
+choices without changing the historical v1 registry or ordering algorithm.
+
+`event-metrics-capability.json` records an additional prospective component and
+eight fixed fixtures for observed copies, actual Tron access, full Tron, complete
+resource-neutral Retriever cycles, recursion and real lethal resolution.
+Inventory alone cannot establish a loop, and unseen library copies cannot
+establish observation. Transcript extraction replay is distinct from full game
+initialization replay. These repairs and the metric component await runtime
+qualification; the failed 107-test run does not accept the complete ordering
+capability. Complete pilot integration, all checkpoint mana/cap/conversion
+metrics, full replay, the known shared priority-rule repair, effective rules
 archive and guarded runtime bindings remain necessary before R1 execution.
 Official counters remain zero.
 

@@ -70,7 +70,7 @@ jobs:
             :mtg-sets:2023:tests:test --tests '*DrossSkullbombScenarioTest' --tests '*CandyTrailScenarioTest' --tests '*MyrKinsmithScenarioTest' \
             :mtg-sets:2024:tests:test --tests '*ConduitPylonsScenarioTest' \
             :mtg-sets:2025:tests:test --tests '*PactdollTerrorScenarioTest' --tests '*TownLandSpellAdventureScenarioTest' \
-            :ai:test --tests '*IndustrialWasteV2RegistryAuditTest' --tests '*IndustrialWasteV2SelectionAdvisorTest' --tests '*IndustrialWasteV2PublicActionPolicyTest' --tests '*IndustrialWasteV2OrderingIntegrationTest' --tests '*IndustrialWasteAdvisorModuleTest' --tests '*FrozenBaselineTest' \
+            :ai:test --tests '*IndustrialWasteV2RegistryAuditTest' --tests '*IndustrialWasteV2SelectionAdvisorTest' --tests '*IndustrialWasteV2PublicActionPolicyTest' --tests '*IndustrialWasteV2OrderingIntegrationTest' --tests '*IndustrialWasteV2EventMetricsTest' --tests '*IndustrialWasteAdvisorModuleTest' --tests '*FrozenBaselineTest' \
             --continue --no-daemon
       - name: Generate reviewable card snapshots for only the newly admitted cards
         run: |

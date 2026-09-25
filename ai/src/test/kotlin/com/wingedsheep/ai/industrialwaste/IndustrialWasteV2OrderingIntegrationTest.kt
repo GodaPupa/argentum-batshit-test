@@ -9,7 +9,7 @@ import com.wingedsheep.engine.core.CastSpell
 import com.wingedsheep.engine.core.GameEvent
 import com.wingedsheep.engine.core.LibrarySearchedEvent
 import com.wingedsheep.engine.core.LibraryShuffledEvent
-import com.wingedsheep.engine.core.SearchLibraryDecision
+import com.wingedsheep.engine.core.SelectCardsDecision
 import com.wingedsheep.engine.core.ShuffleCause
 import com.wingedsheep.engine.core.engineSerializersModule
 import com.wingedsheep.engine.state.GameState
@@ -51,8 +51,7 @@ class IndustrialWasteV2OrderingIntegrationTest : FunSpec({
         val driver = fixture()
         val player = driver.player1
         val advisors = CardAdvisorRegistry().also {
-            IndustrialWasteAdvisorModule.register(it)
-            IndustrialWasteV2SelectionAdvisorModule.register(it)
+            IndustrialWasteV2PilotAdvisorModule.register(it)
         }
         val responder = DecisionResponder(GameSimulator(driver.cardRegistry), AIPlayer.defaultEvaluator(), advisors)
         // Four real land plays on four real own turns; no minted cards or replacement state.
@@ -74,7 +73,7 @@ class IndustrialWasteV2OrderingIntegrationTest : FunSpec({
                 check(steps++ < 40)
                 val decision = driver.pendingDecision
                 if (decision != null) {
-                    if (decision is SearchLibraryDecision) searchDecisions++
+                    if (decision is SelectCardsDecision && decision.context.sourceName == sourceName) searchDecisions++
                     driver.submitDecision(decision.playerId, responder.respond(driver.state, decision, decision.playerId)).error shouldBe null
                 } else driver.bothPass().error shouldBe null
             }

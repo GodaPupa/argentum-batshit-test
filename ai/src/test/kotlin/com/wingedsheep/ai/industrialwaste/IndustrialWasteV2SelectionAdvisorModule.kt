@@ -31,27 +31,44 @@ internal object IndustrialWasteV2SelectionAdvisorModule : CardAdvisorModule {
     }
 }
 
+/**
+ * Exact v2 composition. Reuse the qualified legacy non-tutor instances while leaving the
+ * historical registry untouched. Map/Rotation's real collection decisions are owned by v2;
+ * registering the old tutor as well would both collide and lose one implementation.
+ */
+internal object IndustrialWasteV2PilotAdvisorModule : CardAdvisorModule {
+    override fun register(registry: CardAdvisorRegistry) {
+        val legacy = CardAdvisorRegistry().also(IndustrialWasteAdvisorModule::register)
+        listOf("Myr Retriever", "Ashnod's Altar", "Ancient Grudge").forEach { name ->
+            registry.register(requireNotNull(legacy.getAdvisor(name)))
+        }
+        IndustrialWasteV2SelectionAdvisorModule.register(registry)
+    }
+}
+
 internal object IndustrialWasteV2SelectionAdvisor : CardAdvisor {
     override val cardNames = setOf(
         "Ancient Stirrings", "Malevolent Rumble", "Myr Kinsmith",
         "Blood Fountain", "Dross Skullbomb",
         "Candy Trail", "Conduit Pylons", "Giant's Boulder", "Golem Foundry",
+        "Expedition Map", "Crop Rotation",
     )
 
     override fun respondToDecision(context: AdvisorDecisionContext) = with(context) {
         val view = selectionView(state, playerId)
+        val tutor = sourceCardName in setOf("Expedition Map", "Crop Rotation")
         when (val choice = decision) {
             is SearchLibraryDecision -> CardsSelectedResponse(
                 choice.id,
-                view.rank(choice.options) { choice.cards[it]?.name }
+                view.rank(choice.options, tutor) { choice.cards[it]?.name }
                     .take(choice.maxSelections),
             )
             is SelectCardsDecision -> {
                 val name = { id: EntityId -> choice.cardInfo?.get(id)?.name ?: state.visibleName(id) }
                 val bottomOrMill = sourceCardName in setOf("Candy Trail", "Conduit Pylons", "Giant's Boulder")
                 val ranked = if (bottomOrMill) {
-                    view.rank(choice.options, name).reversed().filter { view.score(name(it)) < 60 }
-                } else view.rank(choice.options, name)
+                    view.rank(choice.options, name = name).reversed().filter { view.score(name(it)) < 60 }
+                } else view.rank(choice.options, tutor, name)
                 CardsSelectedResponse(choice.id, ranked.take(choice.maxSelections))
             }
             is ReorderLibraryDecision -> OrderedResponse(
@@ -127,8 +144,12 @@ private data class SelectionView(
         }
     }
 
-    fun rank(options: List<EntityId>, name: (EntityId) -> String?): List<EntityId> =
-        options.sortedWith(compareByDescending<EntityId> { score(name(it)) }
+    fun rank(options: List<EntityId>, landTutor: Boolean = false, name: (EntityId) -> String?): List<EntityId> =
+        options.sortedWith(compareByDescending<EntityId> {
+            val card = name(it)
+            val ordinary = score(card)
+            if (landTutor && card in IW_V2_TRON && card !in accessible) maxOf(ordinary, 100) else ordinary
+        }
             .thenBy { name(it).orEmpty() }.thenBy { it.toString() })
 }
 

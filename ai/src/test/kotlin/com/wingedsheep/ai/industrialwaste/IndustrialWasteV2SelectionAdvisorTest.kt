@@ -38,8 +38,7 @@ class IndustrialWasteV2SelectionAdvisorTest : FunSpec({
             }))
         }
         val advisors = CardAdvisorRegistry().also {
-            IndustrialWasteAdvisorModule.register(it)
-            IndustrialWasteV2SelectionAdvisorModule.register(it)
+            IndustrialWasteV2PilotAdvisorModule.register(it)
         }
         return Triple(driver, driver.activePlayer!!, DecisionResponder(
             GameSimulator(driver.cardRegistry), AIPlayer.defaultEvaluator(), advisors,
@@ -63,6 +62,19 @@ class IndustrialWasteV2SelectionAdvisorTest : FunSpec({
         val altar = EntityId.of("altar")
         val choice = selection(player, "Malevolent Rumble", altar to "Ashnod's Altar", swamp to "Swamp")
         responder.respond(driver.state, choice, player) shouldBe CardsSelectedResponse(choice.id, listOf(swamp))
+    }
+
+    test("collection-shaped Map and Rotation decisions build missing Tron while fixing a visible black need first") {
+        val (driver, player, responder) = fixture()
+        repeat(4) { driver.putPermanentOnBattlefield(player, "Forest") }
+        val forest = EntityId.of("offered-forest")
+        val tower = EntityId.of("offered-tower")
+        val swamp = EntityId.of("offered-swamp")
+        val map = selection(player, "Expedition Map", forest to "Forest", tower to "Urza's Tower")
+        responder.respond(driver.state, map, player) shouldBe CardsSelectedResponse(map.id, listOf(tower))
+        driver.putCardInHand(player, "Pactdoll Terror")
+        val rotation = selection(player, "Crop Rotation", tower to "Urza's Tower", swamp to "Swamp")
+        responder.respond(driver.state, rotation, player) shouldBe CardsSelectedResponse(rotation.id, listOf(swamp))
     }
 
     test("Tron-capable Stirrings takes the missing third piece when colored access is sufficient") {

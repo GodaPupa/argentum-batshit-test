@@ -202,7 +202,8 @@ class LibraryOrderingServiceTest : FunSpec({
         val result = init()
         val player = result.playerIds[0]
         val foreign = result.state.getLibrary(result.playerIds[1]).first()
-        val bad = result.state.addToZone(ZoneKey(player, Zone.LIBRARY), foreign)
+        val bad = result.state.removeFromZone(ZoneKey(result.playerIds[1], Zone.LIBRARY), foreign)
+            .addToZone(ZoneKey(player, Zone.LIBRARY), foreign)
         shouldThrow<IllegalArgumentException> { effect(bad, player) }
         shouldThrow<IllegalArgumentException> { LibraryOrderingService.shuffle(result.state, player, LibraryOrderingCause.GAME_SETUP) }
     }

@@ -51,8 +51,7 @@ class IndustrialWasteV2PublicActionPolicyTest : FunSpec({
     fun responder(driver: GameTestDriver) = DecisionResponder(
         GameSimulator(driver.cardRegistry), AIPlayer.defaultEvaluator(),
         CardAdvisorRegistry().also {
-            IndustrialWasteAdvisorModule.register(it)
-            IndustrialWasteV2SelectionAdvisorModule.register(it)
+            IndustrialWasteV2PilotAdvisorModule.register(it)
         },
     )
     fun resolve(driver: GameTestDriver) {
