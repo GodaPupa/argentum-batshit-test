@@ -147,6 +147,8 @@ class IndustrialWasteV2EventMetricsTest : FunSpec({
         }
         val metric = fixture.collector.snapshot()
         metric.firstSeenTurnByOriginalCopy.keys shouldBe initiallySeen + fixture.copies.getValue(mine) + rumbleCopies
+        metric.cardsSeenByTurn shouldBe metric.firstSeenTurnByOriginalCopy.values.groupingBy { it }.eachCount().toSortedMap()
+        metric.cardsSeenByTurn.values.sum() shouldBe metric.firstSeenTurnByOriginalCopy.size
         metric.firstAccessTurnByTronName shouldBe mapOf("Urza's Tower" to 1)
         game.state.getGraveyard(player).contains(plant) shouldBe true
         metric.threeTronPieceAccessTurn shouldBe null
