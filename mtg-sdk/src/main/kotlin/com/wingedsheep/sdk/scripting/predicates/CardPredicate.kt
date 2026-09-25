@@ -845,6 +845,13 @@ sealed interface CardPredicate : TextReplaceable<CardPredicate> {
     // Context-relative Predicates (Pipeline Variable References)
     // =============================================================================
 
+    /** Matches cards whose card type matches a value stored in chosenValues[variableName]. */
+    @SerialName("HasCardTypeFromVariable")
+    @Serializable
+    data class HasCardTypeFromVariable(val variableName: String) : CardPredicate {
+        override val description: String = "of the chosen card type"
+    }
+
     /** Matches cards that have a subtype matching a value stored in chosenValues[variableName] */
     @SerialName("HasSubtypeFromVariable")
     @Serializable

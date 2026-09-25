@@ -50,6 +50,9 @@ fun CostAtom.repeated(times: Int): CostAtom {
         }
         is CostAtom.PutCountersOnSelf -> copy(count = count * times)
         is CostAtom.RevealFromHand -> copy(count = count * times)
+        // Revealing the whole hand is idempotent: after the first reveal there is no additional
+        // information to publish for a repeated copy of the same cost.
+        is CostAtom.RevealHand -> this
         // Revealing the noted type is idempotent — it is already public after the first reveal, and
         // there is no second note to publish — so repeating it is the same single payment.
         is CostAtom.RevealNotedCreatureType -> this

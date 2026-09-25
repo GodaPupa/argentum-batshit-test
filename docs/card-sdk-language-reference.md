@@ -793,6 +793,13 @@ definitions construct these through the facade, e.g. `Costs.additional.Sacrifice
   storeAs = storeAs), …)`; the behold path surfaces as a `costType = "Behold"` cost over one
   candidate pool spanning battlefield *and* hand, and stores the chosen cards under `storeAs` for
   downstream costs/effects exactly as a plain `Behold` does.
+- `Costs.additional.RevealHand` — `AdditionalCost.Atom(CostAtom.RevealHand)`: reveal the
+  caster's entire remaining hand as a cost, without choosing cards or moving them. The spell
+  being cast is excluded; an empty hand is payable. Used in Land Grant's conditional alternative
+  cost with `Conditions.NoLandCardsInHand`. The shared atom also supports ability-cost payment;
+  unsupported pay-or-suffer contexts fail closed. This is a selective reuse of the qualified
+  Industrial Waste implementation at `abfd806f6332c0da311e40b01c9d85eeb0962165`, with separate
+  Pest Control card and legal-action qualification.
 - `Costs.additional.RevealFromHand(filter = Filters.Any, count = 1)` — "as an additional cost to
   cast this spell, reveal a [filter] card from your hand". `Atom(CostAtom.RevealFromHand(filter,
   count))`; surfaces as a `costType = "RevealCard"` cost over `validRevealTargets` (the caster's
@@ -4398,6 +4405,12 @@ This is the player-arm prerequisite for the planned composable mixed `TargetUnio
 - `.notNamed(name)` — `CardPredicate.Not(NameEquals)`: matches cards whose name is **not** `name`. Use for
   "… that don't have the same name as this creature" wording (Marvin, Murderous Mimic — creatures you control
   not named "Marvin, Murderous Mimic").
+- `.withCardTypeFromVariable(variableName)` — `CardPredicate.HasCardTypeFromVariable`: match
+  the card type stored in this resolution's `chosenValues[variableName]`, case-insensitively.
+  Pair with `ChooseOptionEffect(OptionType.CARD_TYPE, storeAs = variableName)` for Winding Way.
+  Battlefield objects use their projected types; cards elsewhere use their card characteristics.
+  A missing or invalid choice, a supertype such as Basic, or a context without the stored choice
+  matches nothing. This transient choice is separate from `.ofChosenCardTypeComponent`.
 - `.namedFromVariable(variableName)` — `CardPredicate.NameEqualsChosen`: matches the card name stored in
   `chosenValues[variableName]` (case-insensitive). Set the name with `Effects.ChooseCardName` (player names it)
   or `Effects.StoreCardName` (captured from a chosen card). Fails closed in static/projection contexts. Used by
@@ -9766,6 +9779,13 @@ answer it and would silently return `false`.
   SDK surface), never added to the general condition files. The `add-feature` checklist asks this
   placement question explicitly.
 
+### Hand state
+
+- `Conditions.NoLandCardsInHand` — `Exists(Player.You, Zone.HAND, GameObjectFilter.Land,
+  negate = true)`: the evaluating player's hand contains no land cards. Used as Land Grant's
+  alternative-cost condition and checked during legal-action generation and authoritative cast
+  validation; having other nonland cards in hand is allowed.
+
 ### Battlefield state
 
 - `YouControl(filter, negate = false, excludeSelf = false)` — you control ≥1 matching permanent.
@@ -11972,6 +11992,12 @@ staticAbility { ability = GrantLandwalkOfChosenType() }
   `Effects.ForEachColorOf(source, ForEachInGroupEffect(group, GrantProtectionFromChosenColor(Self)))`
   — and, when `source` is the about-to-leave permanent, place it before the exile/destroy step
   (`Composite(ForEachColorOf(…), Exile(…))`) so its colors are still readable (Éowyn, Fearless Knight).
+- `ChooseOptionEffect(OptionType.CARD_TYPE, storeAs, excludedOptions = ...)` — pause to choose a
+  card type from `CardType.entries`, excluding the supplied names, then store its display name
+  in `chosenValues[storeAs]`. Supertypes and creature subtypes are not options. Winding Way
+  restricts this choice to Creature or Land before revealing cards, then filters with
+  `GameObjectFilter.Any.withCardTypeFromVariable(storeAs)`. Invalid responses do not advance
+  the pipeline or expose the library.
 - `ChooseCreatureTypeEffect(...)` — pause for creature-type selection.
 - `Effects.NoteCreatureType(storeAs = "notedType", prompt?)` — "note a creature type that hasn't been noted for this <source>" (LTR — Long List of the Ents). Same decision shape as `ChooseOption(OptionType.CREATURE_TYPE)`, but the source's *current* `NotedCreatureTypesComponent.types` are excluded from the option list (so the player can't pick a duplicate), and on resolution the chosen type is appended to that component on the source AND stored in `chosenValues[storeAs]` for any downstream pipeline step. The component lives on the source permanent's container, so it disappears when the source leaves play (CR 400.7 — a permanent that changes zones becomes a new object with no memory of its previous existence). Use this whenever a card's text says "note … for this permanent"; use plain `ChooseOption(OptionType.CREATURE_TYPE)` when the choice is one-shot and doesn't need to accumulate.
 - `Effects.SecretlyChooseCreatureType(options = emptyList(), storeAs = "notedType", prompt?)` — "Then secretly choose Human, Merfolk, or Goblin." (MKM — A Killer Among Us). The hidden-information sibling of `NoteCreatureType`, and the same `NoteCreatureTypeEffect` under the hood with `secret = true`: the type is noted on the source permanent exactly as above, but `NotedCreatureTypesComponent.secretTo` records *who* chose it, and two things key off that — the client view shows the note only to that player (badged "Chosen (secret)"; spectators never see it), and only that player can pay `Costs.RevealNotedCreatureType` (§ costs). This is CR 702.106a-b's hidden agenda — the piece of paper kept with the object — applied to a permanent, so a change of control neither hands the new controller the answer nor lets them reveal it. Pass `options` to narrow the choice to a named handful; the source's already-noted types are excluded from whichever set that is. Leave `options` empty for "secretly choose a creature type".
