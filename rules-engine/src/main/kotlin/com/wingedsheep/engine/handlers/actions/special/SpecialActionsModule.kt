@@ -19,7 +19,9 @@ class SpecialActionsModule(
     private val services: EngineServices
 ) : ActionHandlerModule {
     override fun handlers(): List<ActionHandler<*>> = listOf(
-        ConcedeHandler(services.sbaChecker),
+        ConcedeHandler(services.sbaChecker, com.wingedsheep.engine.mechanics.CastPriorityProcessor(
+            services.sbaChecker, services.triggerDetector, services.triggerProcessor
+        )),
         ChooseManaColorHandler()
     )
 }

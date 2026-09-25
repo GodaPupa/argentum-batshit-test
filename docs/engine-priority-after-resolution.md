@@ -1,5 +1,11 @@
 # Priority after stack resolution
 
+Current successor: [post-cast state-based action qualification](engine-post-cast-sba.md).
+It retains the 16-stage predecessor suite described below and prospectively adds eight stages,
+including 12 post-cast cases. The refreshed manifest binds the successor's changed source bytes
+and records the previous manifest digest; historical artifacts keep their original identities.
+Neither the predecessor nor successor grants sampled-game execution authority.
+
 ## Verified defect and rules boundary
 
 Pest postboard support batch A's rejected candidate

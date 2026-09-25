@@ -223,5 +223,9 @@ data class CastWithCreatureTypeContinuation(
     val sacrificedPermanents: List<com.wingedsheep.engine.state.components.stack.EntitySnapshot> = emptyList(),
     val targetRequirements: List<TargetRequirement> = emptyList(),
     val count: Int,
-    val creatureTypes: List<String>
+    val creatureTypes: List<String>,
+    /** Ordinary cast costs already paid before this choice; captured once, placed after SBAs. */
+    @OptIn(kotlinx.serialization.ExperimentalSerializationApi::class)
+    @kotlinx.serialization.EncodeDefault(kotlinx.serialization.EncodeDefault.Mode.NEVER)
+    val pendingCostTriggers: List<com.wingedsheep.engine.event.PendingTrigger> = emptyList(),
 ) : AnswerContinuation

@@ -7,6 +7,7 @@ import com.wingedsheep.engine.handlers.ContinuationHandler
 import com.wingedsheep.engine.core.EngineServices
 import com.wingedsheep.engine.handlers.actions.ActionHandler
 import com.wingedsheep.engine.mechanics.StateBasedActionChecker
+import com.wingedsheep.engine.mechanics.CastPriorityProcessor
 import com.wingedsheep.engine.state.GameState
 import com.wingedsheep.engine.state.nameVisibleToAll
 import com.wingedsheep.engine.state.components.identity.CardComponent
@@ -27,6 +28,7 @@ class SubmitDecisionHandler(
     private val triggerProcessor: TriggerProcessor
 ) : ActionHandler<SubmitDecision> {
     override val actionType: KClass<SubmitDecision> = SubmitDecision::class
+    private val castPriorityProcessor = CastPriorityProcessor(sbaChecker, triggerDetector, triggerProcessor)
 
     override fun validate(state: GameState, action: SubmitDecision): String? {
         val pending = state.pendingDecision
@@ -64,6 +66,13 @@ class SubmitDecisionHandler(
             // untouched outer work; a restored question must remain above deferred triggers too.
             val preResumeStack = clearedState.continuationStack.dropLast(1)
             var result = continuationHandler.resume(clearedState, action.response)
+            if (result.isSuccess && result.state.gameOver) {
+                return result.copy(state = result.state.withPriorityAfterStackResolution(),
+                    events = listOf(submittedEvent) + result.events)
+            }
+            if (result.state.pendingCastPriority != null && !result.state.stackResolutionPendingPriority) {
+                return castPriorityProcessor.resume(result, listOf(submittedEvent))
+            }
             // A modal/additional-cost cast during resolution may finish its own prompt while
             // leaving the outer spell's effect tail and finalizer pending. Drain that automatic
             // work before SBAs/priority. Keep each event batch's trigger provenance separate:
@@ -86,6 +95,7 @@ class SubmitDecisionHandler(
             if (result.isSuccess && !result.isPaused &&
                 result.state.step == Step.CLEANUP &&
                 !result.state.stackResolutionPendingPriority &&
+                result.state.pendingCastPriority == null &&
                 result.state.pendingDecision == null
             ) {
                 val cleanupAdvanceResult = turnManager.advanceStep(
@@ -107,6 +117,7 @@ class SubmitDecisionHandler(
             if (result.isSuccess && !result.isPaused &&
                 result.state.step == Step.UNTAP &&
                 !result.state.stackResolutionPendingPriority &&
+                result.state.pendingCastPriority == null &&
                 result.state.pendingDecision == null
             ) {
                 val untapAdvanceResult = turnManager.advanceStep(
