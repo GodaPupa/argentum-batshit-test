@@ -1,0 +1,33 @@
+// Shardless Outlander
+{
+    "name": "Shardless Outlander",
+    "manaCost": "{7}",
+    "typeLine": "Artifact Creature — Construct Scout",
+    "oracleText": "Trample (This creature can deal excess combat damage to the player or planeswalker it's attacking.)\nBasic landcycling {2} ({2}, Discard this card: Search your library for a basic land card, reveal it, put it into your hand, then shuffle.)",
+    "creatureStats": {
+        "power": 6,
+        "toughness": 5
+    },
+    "keywords": [
+        "TRAMPLE"
+    ],
+    "keywordAbilities": [
+        {
+            "type": "Cycling",
+            "cost": "{2}",
+            "searchFilter": {
+                "cardPredicates": [
+                    "IsBasicLand"
+                ]
+            },
+            "displayPrefix": "Basic landcycling"
+        }
+    ],
+    "metadata": {
+        "collectorNumber": "28",
+        "artist": "Leon Tukker",
+        "flavorText": "The Conflux proved that Alara's strength came from unity, not division.",
+        "imageUri": "https://cards.scryfall.io/normal/front/f/c/fccb51a4-cb78-4437-b9ab-cc77736af561.jpg?1783908862"
+    },
+    "colorIdentityOverride": []
+}
