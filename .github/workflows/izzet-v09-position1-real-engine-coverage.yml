@@ -1,6 +1,9 @@
 name: Izzet Position-1 Real Engine Coverage
 
 on:
+  push:
+    branches:
+      - "mayhem/izzet-science"
   pull_request:
     paths:
       - "gym/src/main/kotlin/com/wingedsheep/gym/matchup/IzzetScienceVeteranBeastriderEngineReadiness.kt"
