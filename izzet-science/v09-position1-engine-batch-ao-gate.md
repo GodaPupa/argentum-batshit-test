@@ -151,3 +151,16 @@ index zero, its first declared controlled-creature target. Damage attribution re
 source binding, and power still reads that first target at resolution. No engine primitive, test
 expectation, legality requirement or readiness guard changes. This is a card-definition repair,
 not a waiver of the three failed scenarios; the full gate and archive audit remain mandatory.
+
+## Third validation diagnostic and counter-target fixture repair
+
+Run [36093845097](https://github.com/GodaPupa/argentum-batshit-test/actions/runs/36093845097), job
+`107941756467`, passed the shared capability classes and all seven Ram Through scenarios at source
+`8b5164727eb138d2ff6cb4983b6f8bde6aa02e84`. Seven of eight Prismatic Strands scenarios also passed.
+The countering scenario stopped at its Counterspell cast assertion: GameTestDriver.castSpell
+intentionally treats nonplayer convenience targets as permanents, so that helper supplied the wrong
+ChosenTarget variant for a spell on the stack. The fixture now uses the existing castSpellWithTargets
+helper with ChosenTarget.Spell(strands). Its successful counter, exile, absence-of-choice/shield and
+subsequent unprevented-damage assertions are retained. No engine/card behavior or readiness guard
+changes. Later stages and artifact upload were skipped; the failed job/log is retained. Acceptance
+still requires the complete successful gate and independent artifact audit.

@@ -7,6 +7,7 @@ import com.wingedsheep.engine.core.ColorChosenResponse
 import com.wingedsheep.engine.core.DamageDealtEvent
 import com.wingedsheep.engine.core.PaymentStrategy
 import com.wingedsheep.engine.state.ZoneKey
+import com.wingedsheep.engine.state.components.stack.ChosenTarget
 import com.wingedsheep.engine.state.components.battlefield.DamageComponent
 import com.wingedsheep.engine.state.components.battlefield.SummoningSicknessComponent
 import com.wingedsheep.engine.support.GameTestDriver
@@ -159,7 +160,7 @@ class PrismaticStrandsScenarioTest : FunSpec({
         flashback(d, strands, listOf(payer)).isSuccess shouldBe true
         val counter = d.putCardInHand(d.player1, "Counterspell")
         d.giveMana(d.player1, Color.BLUE, 2)
-        d.castSpell(d.player1, counter, listOf(strands)).isSuccess shouldBe true
+        d.castSpellWithTargets(d.player1, counter, listOf(ChosenTarget.Spell(strands))).isSuccess shouldBe true
         d.bothPass().isSuccess shouldBe true
         d.pendingDecision shouldBe null
         d.state.getZone(ZoneKey(d.player1, Zone.EXILE)).contains(strands) shouldBe true
