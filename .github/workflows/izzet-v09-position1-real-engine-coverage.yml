@@ -13,6 +13,9 @@ on:
       - "mtg-sets/1993-1999/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/mmq/cards/ChoMannosBlessing.kt"
       - "mtg-sets/1993-1999/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/ChoMannosBlessingScenarioTest.kt"
       - "mtg-sets/src/test/resources/snapshots/cards/MMQ.json"
+      - "mtg-sets/2024/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/mh3/cards/NyxbornHydra.kt"
+      - "mtg-sets/2024/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/NyxbornHydraScenarioTest.kt"
+      - "mtg-sets/src/test/resources/snapshots/cards/MH3.json"
   workflow_dispatch:
 
 permissions:
@@ -40,6 +43,11 @@ jobs:
         run: |
           set -euo pipefail
           scripts/test-class ChoMannosBlessingScenarioTest --info --stacktrace | tee /tmp/cho-manno.txt
+      - name: Qualify Nyxborn Hydra independently for this matchup
+        shell: bash
+        run: |
+          set -euo pipefail
+          scripts/test-class NyxbornHydraScenarioTest --info --stacktrace | tee /tmp/nyxborn-hydra.txt
       - name: Run exact engine-coverage test
         shell: bash
         run: |
@@ -76,6 +84,10 @@ jobs:
             sha256sum mtg-sets/1993-1999/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/mmq/cards/ChoMannosBlessing.kt
             sha256sum mtg-sets/1993-1999/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/ChoMannosBlessingScenarioTest.kt
             sha256sum mtg-sets/src/test/resources/snapshots/cards/MMQ.json
+            sha256sum mtg-sets/2024/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/mh3/cards/NyxbornHydra.kt
+            sha256sum mtg-sets/2024/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/NyxbornHydraScenarioTest.kt
+            sha256sum mtg-sets/src/test/resources/snapshots/cards/MH3.json
+            sha256sum /tmp/nyxborn-hydra.txt
             sha256sum izzet-science/v09-position1-real-engine-coverage-gate.md
             sha256sum /tmp/engine-coverage-artifact/test-output.txt
           } > /tmp/engine-coverage-artifact/manifest.txt
