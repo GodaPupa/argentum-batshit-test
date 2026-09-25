@@ -71,6 +71,8 @@ def main() -> None:
     for path, expected in ((DECK, DECK_BLOB), (FINAL, FINAL_BLOB)):
         if git(prior, 'rev-parse', f'HEAD:{path}') != expected:
             raise ValueError(f'Phase 1 blob mismatch: {path}')
+        if (root / path).read_bytes() != (prior / path).read_bytes():
+            raise ValueError(f'Frozen Phase 1 file changed on Phase 2 branch: {path}')
     deck_bytes = (prior / DECK).read_bytes()
     text = deck_bytes.decode('utf-8')
     if HARDWARE not in text:
@@ -91,13 +93,25 @@ def main() -> None:
         raise ValueError('Frozen v0.7 must contain one commander plus 99')
     decks = [{'id': 'manual-transmission-v07', 'commanders': commanders, 'mainboard': mainboard}]
     sources = {'control': {'git_blob_sha1': DECK_BLOB, 'plaintext_sha256': sha(deck_bytes), 'inherited_identifier': HARDWARE}}
+    admission_bytes = (root / 'experiments/manual-transmission-phase2/opponent-admission-r1.json').read_bytes()
+    admission = json.loads(admission_bytes)
+    if admission['phase1_source_commit'] != PHASE1:
+        raise ValueError('Opponent admission uses a different Phase 1 source')
+    admitted = {entry['id']: entry for entry in admission['decks']}
+    if len(admission['decks']) != len(AXES) or set(admitted) != set(AXES):
+        raise ValueError('Opponent admission does not contain exactly the seven frozen identities')
     for axis in AXES:
         path = prior / f'experiments/manual-transmission/opponents/{axis}/source-freeze.json'
         raw = path.read_bytes()
         obj = json.loads(raw)
         names, cards, calculated = source_cards(obj, axis)
         decks.append({'id': axis, 'commanders': names, 'mainboard': cards})
-        sources[axis] = {'source_file_sha256': sha(raw), 'source_metadata': obj['opponent'], 'verified_digests': calculated, 'phase2_admission': 'REVALIDATION_PENDING'}
+        complete_key = 'commanders_plus_98_sha256' if len(names) == 2 else 'commander_plus_99_sha256'
+        if (admitted[axis]['complete_100_sha256'] != calculated[complete_key]
+                or admitted[axis]['commanders'] != names
+                or admitted[axis]['disposition'] != 'ADMITTED_EXACT_IDENTITY'):
+            raise ValueError(f'Exact opponent admission mismatch: {axis}')
+        sources[axis] = {'source_file_sha256': sha(raw), 'source_metadata': obj['opponent'], 'verified_digests': calculated, 'phase2_admission': 'ADMITTED_EXACT_IDENTITY', 'rules_and_pilot_qualification': 'PENDING'}
     request = {'schema': 'mt-phase2-registry-requests-v1', 'phase1_commit': PHASE1, 'decks': decks}
     write(out / 'registry-requests.json', request)
     tracked = git(root, 'ls-files').splitlines()
@@ -116,6 +130,7 @@ def main() -> None:
         'phase1_commit': PHASE1,
         'phase1_preserved': True,
         'sources': sources,
+        'opponent_admission_manifest_sha256': sha(admission_bytes),
         'registry_request_sha256': sha((out / 'registry-requests.json').read_bytes()),
         'deck_count': len(decks),
         'requested_physical_cards': sum(len(x['commanders']) + len(x['mainboard']) for x in decks),
