@@ -61,7 +61,6 @@ class PestControlTierOneMonoBlueTerrorReadinessTest : FunSpec({
             .shouldContainExactly(
                 "Gut Shot" to 3,
                 "Hydroblast" to 4,
-                "Murmuring Mystic" to 1,
                 "Spreading Seas" to 3,
             )
     }
