@@ -2,6 +2,28 @@
 
 Status: **CARD AND SHARED SELECTION COMPONENTS QUALIFIED — FULL R1 READINESS STILL PENDING / NO CORPUS EXECUTION**
 
+## Artifact lands and actual drain qualification
+
+The next compatible exact-mechanic batch adds 19 fixed cases for Tree of Tales,
+Vault of Whispers, Darkmoss Bridge and Pactdoll Terror, and reuses the existing
+two Blood Fountain cases. Artifact lands must execute as land plays with real
+land-drop restrictions, never as artifact spells. The tests also distinguish
+colorless characteristics from mana color identity, verify immediate or tapped
+mana availability, and distinguish destruction from sacrifice and exile.
+Pactdoll tests use real entry triggers for itself, artifact lands and Blood
+Fountain's token, exclude opponent artifacts and nonartifact creatures, and
+verify an actual terminal loss at zero life. They introduce no structural corpus
+allocation and no card-definition change. Runtime qualification is pending.
+
+The preceding run `36084559249` at `c63e836da71a52d3d188817eb619e80b7b09a3c1`
+failed because the new Foundry fixture used the DSL string `Counters.CHARGE`
+where engine state requires the `CounterType.CHARGE` enum. The import and three
+references are corrected without changing the assertions, engine or card.
+Full CI `36084559120` reported the same compile failure in its old-era shard;
+all other required shards passed. This is a validation-source failure. No R1
+allocation was initialized or invalidated, and no failed batch is accepted as
+complete capability evidence.
+
 ## Active development-action and exact-mechanics batch
 
 The next validation batch adds four dedicated scenario classes for Candy Trail,
@@ -29,8 +51,8 @@ remains pending runtime validation until its own artifact is audited.
 
 The shared `GameTestDriver` receives an optional explicit seed parameter on its
 two-player helpers; its default remains null, preserving historical behavior.
-`regression-fixtures.json` excludes the two fixed regression seeds from official
-sampling. These fixtures do not read the R1 ordering corpus. A deterministic
+`regression-fixtures.json` excludes every fixed regression seed in these new
+capability fixtures from official sampling. These fixtures do not read the R1 ordering corpus. A deterministic
 fixture is not a sampled structural result.
 
 This still does not qualify a complete R1 runner: combat conversion, all remaining

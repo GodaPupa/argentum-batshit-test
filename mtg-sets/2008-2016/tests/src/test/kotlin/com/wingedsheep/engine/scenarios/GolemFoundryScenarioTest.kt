@@ -11,7 +11,7 @@ import com.wingedsheep.engine.state.components.identity.ControllerComponent
 import com.wingedsheep.engine.state.components.identity.TokenComponent
 import com.wingedsheep.engine.support.ScenarioTestBase
 import com.wingedsheep.mtg.sets.definitions.som.cards.GolemFoundry
-import com.wingedsheep.sdk.core.Counters
+import com.wingedsheep.sdk.core.CounterType
 import com.wingedsheep.sdk.core.Phase
 import com.wingedsheep.sdk.core.Step
 import com.wingedsheep.sdk.model.EntityId
@@ -21,7 +21,7 @@ import io.kotest.matchers.types.shouldBeInstanceOf
 /** Fixed, excluded engine fixtures for the existing Foundry; no candidate games are loaded. */
 class GolemFoundryScenarioTest : ScenarioTestBase() {
     private fun charges(game: TestGame, foundry: EntityId): Int =
-        game.state.getEntity(foundry)!!.get<CountersComponent>()?.getCount(Counters.CHARGE) ?: 0
+        game.state.getEntity(foundry)!!.get<CountersComponent>()?.getCount(CounterType.CHARGE) ?: 0
 
     private fun tokens(game: TestGame): List<EntityId> = game.state.getBattlefield().filter {
         game.state.getEntity(it)!!.has<TokenComponent>() && game.state.projectedState.hasSubtype(it, "Golem")
@@ -140,7 +140,7 @@ class GolemFoundryScenarioTest : ScenarioTestBase() {
                 .withCardOnBattlefield(1, "Golem Foundry", tapped = true, enteredThisTurn = true)
                 .build()
             val foundry = game.findPermanent("Golem Foundry")!!
-            game.state = game.state.updateEntity(foundry) { it.with(CountersComponent(mapOf(Counters.CHARGE to 4))) }
+            game.state = game.state.updateEntity(foundry) { it.with(CountersComponent(mapOf(CounterType.CHARGE to 4))) }
 
             game.execute(ActivateAbility(game.player1Id, foundry, GolemFoundry.activatedAbilities.single().id)).error shouldBe null
             charges(game, foundry) shouldBe 1
@@ -157,7 +157,7 @@ class GolemFoundryScenarioTest : ScenarioTestBase() {
                 .withCardOnBattlefield(1, "Golem Foundry")
                 .build()
             val foundry = game.findPermanent("Golem Foundry")!!
-            game.state = game.state.updateEntity(foundry) { it.with(CountersComponent(mapOf(Counters.CHARGE to 2))) }
+            game.state = game.state.updateEntity(foundry) { it.with(CountersComponent(mapOf(CounterType.CHARGE to 2))) }
             val before = game.state
 
             game.execute(ActivateAbility(game.player1Id, foundry, GolemFoundry.activatedAbilities.single().id)).isSuccess shouldBe false
