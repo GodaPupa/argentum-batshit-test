@@ -547,6 +547,7 @@ val engineSerializersModule = SerializersModule {
         subclass(StateTriggerLatchesComponent::class)
         subclass(WarpedComponent::class)
         subclass(EvokedComponent::class)
+        subclass(BestowComponent::class)
         subclass(SaddledComponent::class)
         subclass(SolvedComponent::class)
         subclass(RenownedComponent::class)

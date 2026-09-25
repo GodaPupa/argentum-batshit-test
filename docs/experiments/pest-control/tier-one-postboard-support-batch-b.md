@@ -99,3 +99,15 @@ its assertions or timeouts. A green source check does not waive any of these run
 These repairs do not amend the original Monster attempt or qualify an engine for any official
 block. Post-resolution priority, post-cast state-based actions, exact pilots and each program's
 frozen engine admission remain separate requirements.
+
+## Accepted Spy C integration
+
+While the targeting repair was published, main admitted Spy C at merge
+`1c8bc618e8b3ca0b3b154e2ef3c87ca8ff779698` (source `1ad4079b8fbdbc79ec5bb88dad343aad7d417f96`,
+run `36091157502`, artifact `10846221712`, 435 passing JUnit cases plus three source-verifier tests).
+This successor preserves that canonical Bestow implementation and removes Nyxborn Hydra from
+current sideboard gaps. The prospective combined queue is seven identities and sixteen slots;
+the accepted main checkpoint remains ten identities and twenty-eight slots until postboard B is
+qualified. Only the two current A manifest/coverage conflicts were reconciled. Historical source
+manifests and raw evidence are unchanged. Source bindings are refreshed explicitly for this
+integration, and required CI must qualify the exact combined tree.

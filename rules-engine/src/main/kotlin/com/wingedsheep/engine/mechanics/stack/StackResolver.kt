@@ -354,7 +354,20 @@ class StackResolver(
 
         // Add spell components
         newState = newState.updateEntity(cardId) { c ->
-            var updated = c.with(SpellOnStackComponent(
+            var updated = c
+            // Bestow (CR 702.103b): while cast for its bestow cost, this spell is an
+            // Aura enchantment rather than its normal permanent types. Preserve the printed
+            // type line so the effect can end cleanly if the target becomes illegal or the
+            // resulting Aura later becomes unattached.
+            if (alternativeCost == com.wingedsheep.engine.core.AlternativeCostType.BESTOW) {
+                val printed = updated.get<CardComponent>()
+                if (printed != null && updated.get<com.wingedsheep.engine.state.components.identity.BestowComponent>() == null) {
+                    updated = updated
+                        .with(printed.copy(typeLine = com.wingedsheep.engine.state.components.identity.BestowComponent.auraType(printed.typeLine)))
+                        .with(com.wingedsheep.engine.state.components.identity.BestowComponent(printed.typeLine))
+                }
+            }
+            updated = updated.with(SpellOnStackComponent(
                 casterId = casterId,
                 xValue = boundXValue,
                 declaredCostSlot = declaredCostSlot,
@@ -1017,7 +1030,30 @@ class StackResolver(
                 targetEntryStamps = targetsComponent.targetEntryStamps
             )
             if (validTargets.isEmpty()) {
-                // All targets invalid - spell fizzles
+                // Bestow (CR 702.103e): if the only target is illegal as the spell resolves,
+                // the bestow effect ends instead of the spell fizzling. Restore the card's
+                // normal characteristics and resolve it as its ordinary permanent spell.
+                val bestow = container.get<com.wingedsheep.engine.state.components.identity.BestowComponent>()
+                if (spellComponent.alternativeCost == com.wingedsheep.engine.core.AlternativeCostType.BESTOW &&
+                    bestow != null
+                ) {
+                    val restoredState = state.updateEntity(spellId) { current ->
+                        var restored = current
+                            .without<com.wingedsheep.engine.state.components.identity.BestowComponent>()
+                            .without<TargetsComponent>()
+                        current.get<CardComponent>()?.let { card ->
+                            restored = restored.with(card.copy(typeLine = bestow.originalTypeLine))
+                        }
+                        // Ending the bestowed effect does not change the alternative cost
+                        // actually paid, X, or mana-spent provenance on the stack record.
+                        restored
+                    }
+                    val restoredContainer = restoredState.getEntity(spellId)
+                        ?: return ExecutionResult.error(restoredState, "Bestow spell disappeared during resolution")
+                    return resolveSpell(restoredState, spellId, restoredContainer)
+                }
+
+                // All targets invalid - ordinary targeted spells fizzle.
                 return fizzleSpell(state, spellId, cardComponent, spellComponent)
             }
             resolvedTargets = validTargets
@@ -2997,17 +3033,19 @@ class StackResolver(
      * Counter a spell on the stack.
      */
     /**
-     * Restore printed characteristics when a Prototype spell leaves the stack for a non-battlefield
-     * zone. Direct counter/exile paths in this resolver do not pass through ZoneTransitionService,
-     * so they must perform the same CR 400.7 / Prototype reset explicitly.
+     * Restore temporary casting characteristics when a spell leaves the stack for another zone.
+     * Direct counter/return/exile paths do not pass through ZoneTransitionService, so they must
+     * apply the same CR 400.7 reset to both Prototype and Bestow explicitly.
      */
-    private fun restorePrototypeAfterStackExit(state: GameState, spellId: EntityId): GameState {
+    private fun restoreTemporaryCastCharacteristicsAfterStackExit(state: GameState, spellId: EntityId): GameState {
         val prototype = state.getEntity(spellId)
             ?.get<com.wingedsheep.engine.state.components.identity.PrototypeComponent>()
-            ?: return state
         return state.updateEntity(spellId) { container ->
-            container.with(prototype.originalCardComponent)
-                .without<com.wingedsheep.engine.state.components.identity.PrototypeComponent>()
+            val restoredPrototype = if (prototype != null) {
+                container.with(prototype.originalCardComponent)
+                    .without<com.wingedsheep.engine.state.components.identity.PrototypeComponent>()
+            } else container
+            com.wingedsheep.engine.handlers.effects.ZoneMovementUtils.restoreBestowAfterZoneExit(restoredPrototype)
         }
     }
 
@@ -3070,7 +3108,7 @@ class StackResolver(
         newState = newState.updateEntity(spellId) { c ->
             c.without<SpellOnStackComponent>().without<TargetsComponent>()
         }
-        newState = restorePrototypeAfterStackExit(newState, spellId)
+        newState = restoreTemporaryCastCharacteristicsAfterStackExit(newState, spellId)
 
         return ExecutionResult.success(
             newState,
@@ -3134,7 +3172,7 @@ class StackResolver(
         newState = newState.updateEntity(spellId) { c ->
             c.without<SpellOnStackComponent>().without<TargetsComponent>()
         }
-        newState = restorePrototypeAfterStackExit(newState, spellId)
+        newState = restoreTemporaryCastCharacteristicsAfterStackExit(newState, spellId)
 
         return ExecutionResult.success(
             newState,
@@ -3197,7 +3235,7 @@ class StackResolver(
         newState = newState.updateEntity(spellId) { c ->
             c.without<SpellOnStackComponent>().without<TargetsComponent>()
         }
-        newState = restorePrototypeAfterStackExit(newState, spellId)
+        newState = restoreTemporaryCastCharacteristicsAfterStackExit(newState, spellId)
         if (grantFreeCast) {
             newState = newState.updateEntity(spellId) { c ->
                 c.with(PlayWithoutPayingCostComponent(controllerId = controllerId, permanent = true))
@@ -3275,7 +3313,7 @@ class StackResolver(
         newState = newState.updateEntity(spellId) { c ->
             c.without<SpellOnStackComponent>().without<TargetsComponent>()
         }
-        newState = restorePrototypeAfterStackExit(newState, spellId)
+        newState = restoreTemporaryCastCharacteristicsAfterStackExit(newState, spellId)
 
         val events = mutableListOf<GameEvent>(
             ZoneChangeEvent(spellId, cardComponent?.name ?: "Unknown", Zone.STACK, Zone.EXILE, ownerId,

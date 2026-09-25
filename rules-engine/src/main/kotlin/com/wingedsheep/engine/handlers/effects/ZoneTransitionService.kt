@@ -805,6 +805,10 @@ object ZoneTransitionService {
                             .without<com.wingedsheep.engine.state.components.identity.PrototypeComponent>()
                     }
                 }
+                // Bestow also ends on stack exits through the canonical zone pipeline.
+                newState = newState.updateEntity(entityId) { c ->
+                    ZoneMovementUtils.restoreBestowAfterZoneExit(c)
+                }
             }
         }
 

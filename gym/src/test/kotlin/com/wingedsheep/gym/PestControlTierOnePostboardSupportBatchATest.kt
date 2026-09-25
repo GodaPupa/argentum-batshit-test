@@ -50,7 +50,7 @@ class PestControlTierOnePostboardSupportBatchATest : FunSpec({
             "grixis_affinity" to emptyMap(),
             "mono_blue_terror" to linkedMapOf("Spreading Seas" to 3),
             "monster_tron" to linkedMapOf("Kaervek's Torch" to 1, "Relic of Progenitus" to 4),
-            "spy_combo" to linkedMapOf("Jack-o'-Lantern" to 1, "Nyxborn Hydra" to 1, "Flaring Pain" to 1,
+            "spy_combo" to linkedMapOf("Jack-o'-Lantern" to 1, "Flaring Pain" to 1,
                 "Faerie Macabre" to 2, "Acorn Harvest" to 1),
         )
         val text = buildString {
