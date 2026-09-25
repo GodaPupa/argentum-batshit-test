@@ -18,9 +18,16 @@ prospectively. `card-qualification-36081473608.json` records the corrected actua
 source receipt, five passing Dross Skullbomb scenarios and matching compiled
 snapshots. `selection-qualification-36082520836.json` records 28 passing tests,
 including eight shared-policy tests with real card continuations and privacy
-invariance. The complete casting/activation/mulligan/scry pilot, exact
-ordering/telemetry/replay and guarded runtime binding receipt
-remain necessary before R1 execution. Official counters remain zero.
+invariance. `capability-qualification-36086006295.json` records 90 passing
+fixtures at source `63d262a32d4f92525ccd4f167b43038936bc2f76`: the exact
+new card mechanics, eleven public development/London/privacy tests, ordinary
+land-cast rejection, real morph/land-Adventure compatibility and unchanged
+baseline. Full CI and both additional shared-card regression checks also passed.
+The R1 numerical core passed nine synthetic fixtures plus independent review.
+The next finite Foundry-combat/passive-policy extension is in validation.
+Complete pilot integration, exact ordering/telemetry/replay, effective rules
+archive and guarded runtime bindings remain necessary before R1 execution.
+Official counters remain zero.
 
 This is a new experimental program. It does not continue Gate 11 and it does not overwrite the
 completed v1.0 control.

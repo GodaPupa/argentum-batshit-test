@@ -6,6 +6,9 @@ import com.wingedsheep.ai.engine.GameSimulator
 import com.wingedsheep.ai.engine.advisor.CardAdvisorRegistry
 import com.wingedsheep.engine.core.ActivateAbility
 import com.wingedsheep.engine.core.CastSpell
+import com.wingedsheep.engine.core.DeclareAttackers
+import com.wingedsheep.engine.core.PassPriority
+import com.wingedsheep.engine.core.PlayLand
 import com.wingedsheep.engine.core.BottomCards
 import com.wingedsheep.engine.core.KeepHand
 import com.wingedsheep.engine.core.TakeMulligan
@@ -15,6 +18,8 @@ import com.wingedsheep.engine.core.SelectCardsDecision
 import com.wingedsheep.engine.core.SearchCardInfo
 import com.wingedsheep.engine.state.ZoneKey
 import com.wingedsheep.engine.state.components.identity.CardComponent
+import com.wingedsheep.engine.state.components.identity.LifeTotalComponent
+import com.wingedsheep.engine.state.components.identity.TokenComponent
 import com.wingedsheep.engine.state.components.player.ManaPoolComponent
 import com.wingedsheep.engine.state.components.player.MulliganStateComponent
 import com.wingedsheep.engine.support.GameTestDriver
@@ -141,6 +146,73 @@ class IndustrialWasteV2PublicActionPolicyTest : FunSpec({
         resolve(driver)
         driver.state.getHand(player).contains(retriever) shouldBe true
         driver.state.getHand(player).size shouldBe 2
+    }
+
+    test("Foundry loop creates lethal power then wins through the next legal combat") {
+        val (driver, player) = fixture()
+        val opponent = driver.state.getOpponents(player).single()
+        driver.putPermanentOnBattlefield(player, "Ashnod's Altar")
+        driver.putPermanentOnBattlefield(player, "Golem Foundry")
+        driver.putPermanentOnBattlefield(player, "Myr Retriever")
+        driver.putCardInGraveyard(player, "Myr Retriever")
+        var actions = 0
+        while (true) {
+            val action = choose(driver, player)
+            if (action is PassPriority) break
+            check(actions++ < 100) { "Public policy failed to stop its Foundry loop" }
+            driver.submit(action).error shouldBe null
+            resolve(driver)
+        }
+        val golems = driver.state.getBattlefield().filter {
+            driver.state.getEntity(it)!!.has<TokenComponent>() && driver.state.projectedState.hasSubtype(it, "Golem")
+        }
+        golems.isNotEmpty() shouldBe true
+        val prospectivePower = driver.state.projectedState.getBattlefieldControlledBy(player)
+            .filter { driver.state.projectedState.isCreature(it) }
+            .sumOf { driver.state.projectedState.getPower(it) ?: 0 }
+        (prospectivePower >= 20) shouldBe true
+        driver.state.gameOver shouldBe false
+        driver.state.getEntity(opponent)!!.get<LifeTotalComponent>()!!.life shouldBe 20
+
+        driver.passPriorityUntil(Step.DECLARE_ATTACKERS)
+        val newbornAttack = choose(driver, player).shouldBeInstanceOf<DeclareAttackers>()
+        newbornAttack.attackers shouldBe emptyMap()
+        driver.submit(newbornAttack).error shouldBe null
+        driver.passPriorityUntil(Step.POSTCOMBAT_MAIN)
+        driver.passPriorityUntil(Step.PRECOMBAT_MAIN)
+        driver.activePlayer shouldBe opponent
+        driver.passPriorityUntil(Step.POSTCOMBAT_MAIN)
+        driver.passPriorityUntil(Step.PRECOMBAT_MAIN)
+        driver.activePlayer shouldBe player
+        driver.passPriorityUntil(Step.DECLARE_ATTACKERS)
+        val attack = choose(driver, player).shouldBeInstanceOf<DeclareAttackers>()
+        attack.attackers.keys.containsAll(golems) shouldBe true
+        attack.attackers.values.toSet() shouldBe setOf(opponent)
+        driver.submit(attack).error shouldBe null
+        var passes = 0
+        while (!driver.state.gameOver) {
+            check(passes++ < 30)
+            val who = driver.state.priorityPlayerId!!
+            val legal = GameSimulator(driver.cardRegistry).getLegalActions(driver.state, who)
+            val action = if (who == opponent) IndustrialWasteV2PublicActionPolicy.choosePassive(driver.state, who, legal)
+                else IndustrialWasteV2PublicActionPolicy.choose(driver.state, who, legal)
+            driver.submit(action).error shouldBe null
+        }
+        driver.state.winnerId shouldBe player
+        (driver.state.getEntity(opponent)!!.get<LifeTotalComponent>()!!.life <= 0) shouldBe true
+    }
+
+    test("passive Forest fixture plays one land and then passes without a second land drop") {
+        val (driver, player) = fixture()
+        driver.putCardInHand(player, "Forest")
+        driver.putCardInHand(player, "Forest")
+        val simulator = GameSimulator(driver.cardRegistry)
+        val action = IndustrialWasteV2PublicActionPolicy.choosePassive(driver.state, player, simulator.getLegalActions(driver.state, player))
+            .shouldBeInstanceOf<PlayLand>()
+        driver.submit(action).error shouldBe null
+        driver.state.getHand(player).size shouldBe 1
+        IndustrialWasteV2PublicActionPolicy.choosePassive(driver.state, player, simulator.getLegalActions(driver.state, player))
+            .shouldBeInstanceOf<PassPriority>()
     }
 
     test("scry and surveil keep an engine card while discarding surplus mana") {

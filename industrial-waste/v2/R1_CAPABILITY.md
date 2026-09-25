@@ -1,6 +1,25 @@
 # R1 seed-free card and infrastructure qualification
 
-Status: **CARD AND SHARED SELECTION COMPONENTS QUALIFIED — FULL R1 READINESS STILL PENDING / NO CORPUS EXECUTION**
+Status: **CARD, SHARED SELECTION AND DEVELOPMENT COMPONENTS QUALIFIED — FINITE COMBAT EXTENSION IN VALIDATION / NO CORPUS EXECUTION**
+
+## Active Foundry combat and passive-fixture policy batch
+
+The public-action component now binds real engine-offered attack declarations
+against the sole passive opponent. It prioritizes paying Foundry's charge cost to
+create actual tokens, and stops making further neutral Foundry loops once the
+known public board has enough power for a future attack against that opponent's
+current life. This is a policy choice, not a telemetry or lethal certificate.
+The game must still enforce summoning sickness, legal combat and actual damage.
+Pactdoll loops retain their immediate real-drain plan.
+
+Two additional deterministic fixtures qualify this extension: the Foundry loop
+must stop with sufficient actual creature power, be unable to attack with its
+new creatures that turn, then attack through an engine-offered declaration and
+cause a real terminal loss on the next legal combat; the inert Forest pilot must
+play only its legal land drop and otherwise pass. The existing eleven public
+policy fixtures remain selected. These new thirteen policy cases are pending
+runtime acceptance. No R1 corpus row is loaded and no winner is assigned by test
+or policy code. All seven excluded regression seeds remain unchanged.
 
 ## Verified ordinary land-cast boundary repair
 
@@ -18,7 +37,13 @@ The existing two Kurgadon/morph cases and three Town land/Adventure cases join
 the direct qualification, bringing the expected total to 90. The original
 Tree/Vault assertions remain unchanged. This narrow shared-engine repair was
 coordinated with the Pest worker; no frozen Pest block is modified by it.
-Acceptance requires its own complete runtime artifact and checks. All R1
+Run `36086006295` at `63d262a32d4f92525ccd4f167b43038936bc2f76`
+passed all 90 cases without failures, errors or skips. The downloaded artifact,
+all 19 raw XML suites, exact source receipt and unchanged compiled snapshots are
+audited in `capability-qualification-36086006295.json`. Full CI `36086006165`,
+R0/arithmetic validation `36086006048`, and the automatically triggered legacy
+card-capability checks `36086006049` and `36086006047` also passed. The legacy
+checks run deterministic card fixtures, not old official samples. All R1
 allocations remain uninitialized, and closed v1 artifacts are unchanged.
 
 ## Prospective numerical decision rule
@@ -40,7 +65,7 @@ It grants neither execution authority nor deck promotion.
 
 ## Artifact lands and actual drain qualification
 
-The next compatible exact-mechanic batch adds 19 fixed cases for Tree of Tales,
+The accepted exact-mechanic batch adds 19 fixed cases for Tree of Tales,
 Vault of Whispers, Darkmoss Bridge and Pactdoll Terror, and reuses the existing
 two Blood Fountain cases. Artifact lands must execute as land plays with real
 land-drop restrictions, never as artifact spells. The tests also distinguish
@@ -49,7 +74,8 @@ mana availability, and distinguish destruction from sacrifice and exile.
 Pactdoll tests use real entry triggers for itself, artifact lands and Blood
 Fountain's token, exclude opponent artifacts and nonartifact creatures, and
 verify an actual terminal loss at zero life. They introduce no structural corpus
-allocation and no card-definition change. Runtime qualification is pending.
+allocation and no card-definition change. All 19 cases and the reused Fountain
+cases passed in accepted run `36086006295`.
 
 The preceding run `36084559249` at `c63e836da71a52d3d188817eb619e80b7b09a3c1`
 failed because the new Foundry fixture used the DSL string `Counters.CHARGE`
@@ -60,9 +86,9 @@ all other required shards passed. This is a validation-source failure. No R1
 allocation was initialized or invalidated, and no failed batch is accepted as
 complete capability evidence.
 
-## Active development-action and exact-mechanics batch
+## Accepted development-action and exact-mechanics batch
 
-The next validation batch adds four dedicated scenario classes for Candy Trail,
+The accepted validation batch adds four dedicated scenario classes for Candy Trail,
 Conduit Pylons, Golem Foundry and Myr Kinsmith. Their 25 cases exercise actual
 cast/entry triggers, optional decisions, scry/surveil continuations, target and
 search restrictions, shuffle/reveal events, paid mana filters, counter spending,
@@ -82,8 +108,9 @@ Eleven new public-action tests submit real casts and activations, demonstrate
 Retriever sacrifice/return/recast with actual generated mana, exercise scry
 continuations, pay Dross's recursion cost, preserve hardware while sacrificing
 Wellspring, apply the three-mulligan/keep-four bound through the real two-player
-London handlers, and test privacy and explicit-seed repeatability. This batch
-remains pending runtime validation until its own artifact is audited.
+London handlers, and test privacy and explicit-seed initial-state repeatability.
+These eleven tests and all 25 exact-card cases passed in run `36086006295`;
+the acceptance receipt preserves their raw XML and exact source identity.
 
 The shared `GameTestDriver` receives an optional explicit seed parameter on its
 two-player helpers; its default remains null, preserving historical behavior.

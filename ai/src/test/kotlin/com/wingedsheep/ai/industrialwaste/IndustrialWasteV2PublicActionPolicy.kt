@@ -2,12 +2,15 @@ package com.wingedsheep.ai.industrialwaste
 
 import com.wingedsheep.engine.core.ActivateAbility
 import com.wingedsheep.engine.core.CastSpell
+import com.wingedsheep.engine.core.DeclareAttackers
+import com.wingedsheep.engine.core.DeclareBlockers
 import com.wingedsheep.engine.core.GameAction
 import com.wingedsheep.engine.core.PassPriority
 import com.wingedsheep.engine.core.PlayLand
 import com.wingedsheep.engine.legalactions.LegalAction
 import com.wingedsheep.engine.state.GameState
 import com.wingedsheep.engine.state.components.identity.CardComponent
+import com.wingedsheep.engine.state.components.identity.LifeTotalComponent
 import com.wingedsheep.engine.state.components.stack.ChosenTarget
 import com.wingedsheep.sdk.core.Color
 import com.wingedsheep.sdk.core.Zone
@@ -18,7 +21,8 @@ import com.wingedsheep.sdk.scripting.AdditionalCostPayment
  * Prospective development-action component for R1. No one-ply simulation or
  * generic evaluator is consulted. The input is the real engine's legal action
  * list; only supported ordinary cast, land and activation shapes are materialized.
- * Combat, complete runner integration and metric extraction remain separate gates.
+ * Combat targets the sole passive opponent with only engine-offered attackers.
+ * Complete runner integration and metric extraction remain separate gates.
  */
 internal object IndustrialWasteV2PublicActionPolicy {
     fun choose(state: GameState, player: EntityId, legal: List<LegalAction>): GameAction {
@@ -32,6 +36,13 @@ internal object IndustrialWasteV2PublicActionPolicy {
 
     private fun bind(state: GameState, player: EntityId, entry: LegalAction): GameAction? {
         var action = entry.action
+        if (action is DeclareAttackers) {
+            val attackers = entry.validAttackers.orEmpty()
+            val opponent = entry.validAttackTargets.orEmpty().singleOrNull { it in state.getOpponents(player) }
+            if (opponent == null && attackers.isNotEmpty()) return null
+            return action.copy(attackers = if (opponent == null) emptyMap() else attackers.associateWith { opponent })
+        }
+        if (action is DeclareBlockers) return action.copy(blockers = emptyMap())
         if (action !is CastSpell && action !is ActivateAbility && action !is PlayLand && action !is PassPriority) return null
         if (entry.hasXCost || entry.targetRequirements?.size?.let { it > 1 } == true) return null
         val source = when (action) {
@@ -88,8 +99,20 @@ internal object IndustrialWasteV2PublicActionPolicy {
         val grave = state.getZone(player, Zone.GRAVEYARD).mapNotNull { state.name(it) }
         val accessible = board + hand + grave
         val loop = "Ashnod's Altar" in board && accessible.count { it == "Myr Retriever" } >= 2
+        // The R1 passive fixture has no creatures or interaction. Once the public
+        // board supplies lethal power for the next legal attack, stop making
+        // further Foundry loops. New tokens must still wait for legal combat;
+        // this preference is never itself a lethal or loop certificate.
+        val opponent = state.getOpponents(player).singleOrNull()
+        val life = opponent?.let { state.getEntity(it)?.get<LifeTotalComponent>()?.life }
+        val publicPower = state.projectedState.getBattlefieldControlledBy(player)
+            .filter { state.projectedState.isCreature(it) }
+            .sumOf { (state.projectedState.getPower(it) ?: 0).coerceAtLeast(0) }
+        val foundryCombatReady = "Golem Foundry" in board && "Pactdoll Terror" !in board &&
+            life != null && publicPower >= life
         return when (action) {
             is PassPriority -> 0
+            is DeclareAttackers, is DeclareBlockers -> 900
             is PlayLand -> {
                 val name = state.name(action.cardId)
                 val missingTron = TRON - board.toSet()
@@ -113,8 +136,8 @@ internal object IndustrialWasteV2PublicActionPolicy {
                 else -> -100
             }
             is ActivateAbility -> when (state.name(action.sourceId)) {
-                "Ashnod's Altar" -> if (loop && board.any { it in PAYOFFS }) 760 else -100
-                "Golem Foundry" -> 740
+                "Ashnod's Altar" -> if (loop && board.any { it in PAYOFFS } && !foundryCombatReady) 760 else -100
+                "Golem Foundry" -> 780
                 "Blood Fountain" -> if (action.targets.isEmpty()) -100 else if (grave.any { it == "Myr Retriever" }) 500 else 250
                 "Dross Skullbomb" -> if (entry.requiresTargets && grave.any { it == "Myr Retriever" }) 500 else 160
                 "Chromatic Star" -> 250
@@ -124,6 +147,20 @@ internal object IndustrialWasteV2PublicActionPolicy {
             }
             else -> -1000
         }
+    }
+
+    /** Exact inert 60-Forest fixture policy; no opponent cards or future draws are inspected. */
+    fun choosePassive(state: GameState, player: EntityId, legal: List<LegalAction>): GameAction {
+        require(state.getZone(player, Zone.HAND).all { state.name(it) == "Forest" })
+        val offered = legal.filter { it.affordable }
+        offered.map { it.action }.filterIsInstance<PlayLand>()
+            .minByOrNull { it.cardId.toString() }?.let { return it }
+        offered.map { it.action }.filterIsInstance<DeclareAttackers>()
+            .firstOrNull()?.let { return it.copy(attackers = emptyMap()) }
+        offered.map { it.action }.filterIsInstance<DeclareBlockers>()
+            .firstOrNull()?.let { return it.copy(blockers = emptyMap()) }
+        return offered.map { it.action }.filterIsInstance<PassPriority>().firstOrNull()
+            ?: error("Passive fixture has no supported legal action")
     }
 
     private fun sacrificePriority(state: GameState, player: EntityId, source: String?, id: EntityId): Int {
