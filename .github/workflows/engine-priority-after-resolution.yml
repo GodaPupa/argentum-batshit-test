@@ -11,6 +11,13 @@ on:
       - rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/decision/SubmitDecisionHandler.kt
       - rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/sba/player/PlayerLeavesGameProcessor.kt
       - rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/StackResolutionPriorityTest.kt
+      - mtg-sets/2000-2002/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/CircleOfSolaceTest.kt
+      - mtg-sets/1993-1999/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/ScarecrowScenarioTest.kt
+      - mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/AbundantMawScenarioTest.kt
+      - mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/SpellQuellerScenarioTest.kt
+      - mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/TaureanMaulerScenarioTest.kt
+      - ai/src/test/kotlin/com/wingedsheep/ai/engine/DecisionResponderCompletedBranchTest.kt
+      - rules-engine/src/testFixtures/kotlin/com/wingedsheep/engine/support/ScenarioTestBase.kt
 
 permissions:
   contents: read
@@ -75,12 +82,12 @@ jobs:
         run: |
           set -uo pipefail
           run_stage() {
-            local stage="$1" test_class="$2" status=0
+            local stage="$1" test_class="$2" module="${3:-rules-engine}" status=0
             scripts/test-class "$test_class" --info --stacktrace || status=$?
             local dest="build/reports/engine-priority-after-resolution/tests/$stage"
             mkdir -p "$dest" || return 1
-            if [ -d rules-engine/build/test-results/test ]; then
-              cp -R rules-engine/build/test-results/test/. "$dest/" || return 1
+            if [ -d "$module/build/test-results/test" ]; then
+              cp -R "$module/build/test-results/test/." "$dest/" || return 1
             else
               printf '%s\n' "Missing XML for $test_class" >&2
               return 1
@@ -99,6 +106,12 @@ jobs:
           run_stage flash-permission ConditionalFlashGrantTest || failed=1
           run_stage legacy-traces SuspensionTraceTest || failed=1
           run_stage legacy-serialization LegacySuspensionMigrationTest || failed=1
+          run_stage circle-solace CircleOfSolaceTest mtg-sets/2000-2002/tests || failed=1
+          run_stage scarecrow ScarecrowScenarioTest mtg-sets/1993-1999/tests || failed=1
+          run_stage abundant-maw AbundantMawScenarioTest mtg-sets/2008-2016/tests || failed=1
+          run_stage spell-queller SpellQuellerScenarioTest mtg-sets/2008-2016/tests || failed=1
+          run_stage mauler TaureanMaulerScenarioTest mtg-sets/2008-2016/tests || failed=1
+          run_stage ai-decision-trace DecisionResponderCompletedBranchTest ai || failed=1
           exit "$failed"
       - name: Preserve complete validation evidence
         if: always()

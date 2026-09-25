@@ -26,7 +26,7 @@ retrieves and retains those bytes and refuses a digest mismatch or a future-effe
 ## Canonical repair
 
 The prospective implementation base is accepted main
-`c6953354b1b799fe4506eb9e44ff25523a132d8e`. This is one shared engine repair, with no card,
+`324da8834e6a943ce2a712c11cd32f1e2e767f35`, including accepted Pest postboard batch A. This is one shared engine repair, with no card,
 SDK, deck, pilot, sample-plan, seed, or official-execution changes.
 
 `GameState.stackResolutionPendingPriority` records that a stack resolution has started and is
@@ -79,7 +79,7 @@ Seventeen focused engine cases exercise actual public actions and decisions:
 
 The dedicated workflow also runs existing stack-war, continuation, legend-rule, leave-game,
 shared-team priority, conditional-flash, legacy trace and legacy serialization tests. Each of its
-ten stages preserves XML before the next test invocation, including failures. General CI remains
+sixteen stages preserves XML before the next test invocation, including failures. General CI remains
 required. There is no blanket test waiver, golden update mode, or official gameplay path. A failed
 existing expectation must be inspected against its actual rules and trace before any correction.
 
@@ -87,6 +87,38 @@ The local environment has no approved Kotlin build runtime. Static review and fi
 checks prepare the change; compilation, behavioral results, and the retained artifact audit are
 required for acceptance. The existing server and client already consume the priority state and
 event, so no new prompt, DTO or UI control is introduced.
+
+## First runtime result and required fixture repairs
+
+The first source, `dbdbc3b017ecae07f0f8733757c6bd70af124baf`, passed the dedicated
+[run 36090425804](https://github.com/GodaPupa/argentum-batshit-test/actions/runs/36090425804):
+artifact `10846315050`, ZIP SHA-256
+`cd83e241f337e7a567061b06cbeb6b3fc69950930564ee2dbb707702d971c6f4`.
+Independent audit found all **103 tests passing**, including all 17 focused cases, zero skips,
+ten zero-exit stages, exact source hashes, and the effective rules bytes. All official counters
+were zero. This artifact remains the first-source regression evidence; it does not establish
+full CI acceptance.
+
+[General CI 36090425624](https://github.com/GodaPupa/argentum-batshit-test/actions/runs/36090425624)
+rejected that source with seven failures in six existing classes. The engine, server, 2023–24,
+2025–26, and tools groups passed. The failed jobs were content `107931482701` and
+older scenarios `107931482739`; the aggregate backend gate consequently failed.
+
+The seven failures were checked against their source and the new passing priority cases:
+
+| Existing fixture | Verified cause | Narrow correction |
+| --- | --- | --- |
+| Circle of Solace, second activation | Nonactive player activated again after resolution without receiving priority | Assert active priority, then submit the active player's pass before the next activation |
+| Scarecrow, noncreature damage | Nonactive Bolt caster acted immediately after their ability resolved | Assert active priority and pass it to the caster |
+| Taurean Mauler, second opposing spell | Second nonactive cast relied on the old resolved-controller priority | Assert active priority and pass before casting |
+| Spell Queller, owner accepts or declines | Both cases attempted the nonactive owner's Bolt after the exile trigger resolved | Assert active opponent priority and pass before Bolt; preserve both original outcomes |
+| Abundant Maw, lethal cast trigger | `ScenarioTestBase.resolveStack` tried to pass after game over while the creature spell remained on the stack | Stop this test helper at game over; assert terminal state, null priority, full independent life amounts, and the unresolved creature body |
+| AI exact-one no-candidate equivalence | The no-payoff trace was required to be empty even though resolution now emits its authentic priority event | Require the identical single active-player `PriorityChangedEvent` in both branches; retain exact response-trace and state equivalence checks |
+
+No production implementation or focused priority case changed in response to these failures.
+The successor retains the old failure references, runs all six affected classes as separate
+stages, and preserves their XML alongside the ten original stages. Existing required CI remains
+mandatory. Accepted postboard A is integrated prospectively; no historical frozen record is edited.
 
 ## Experimental consequences
 
