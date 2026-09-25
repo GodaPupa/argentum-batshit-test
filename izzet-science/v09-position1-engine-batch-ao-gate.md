@@ -186,7 +186,7 @@ resolution/fizzle inference or general stack-exit behavior is qualified by this 
 
 Ten new deterministic counter scenarios cover the three destinations with actual paid flashback
 casts and ordinary hand casts of the same printed-flashback card, uncounterability, serialized
-state equivalence, and explicit null/ESCAPE counter-input negative probes. The latter exercise only
+state equivalence, and explicit null/MAYHEM counter-input negative probes. The latter exercise only
 the counter's provenance decision and do not claim qualification of another graveyard-cast route.
 Existing Memory Lapse and Remand scenarios join the required regression set. The original thirty-
 seven AO component scenarios and all their assertions remain intact. The expanded artifact contract
