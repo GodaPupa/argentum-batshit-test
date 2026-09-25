@@ -1265,6 +1265,83 @@
     ]
 }
 
+// Prismatic Strands
+{
+    "name": "Prismatic Strands",
+    "manaCost": "{2}{W}",
+    "typeLine": "Instant",
+    "oracleText": "Prevent all damage that sources of the color of your choice would deal this turn.\nFlashback—Tap an untapped white creature you control. (You may cast this card from your graveyard for its flashback cost. Then exile it.)",
+    "keywords": [
+        "FLASHBACK"
+    ],
+    "keywordAbilities": [
+        {
+            "type": "Flashback",
+            "cost": "",
+            "additionalCost": {
+                "type": "AdditionalAtom",
+                "atom": {
+                    "type": "AtomTapPermanents",
+                    "filter": "creature white ctrl:you"
+                }
+            }
+        }
+    ],
+    "script": {
+        "spellEffect": {
+            "type": "ChooseColorThen",
+            "then": {
+                "type": "PreventDamageShield",
+                "direction": "FromTarget",
+                "sourceFilter": {
+                    "type": "FromGroup",
+                    "filter": {
+                        "baseFilter": {
+                            "cardPredicates": [
+                                "HasChosenColor"
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "metadata": {
+        "collectorNumber": "18",
+        "artist": "Eric Peterson",
+        "imageUri": "https://cards.scryfall.io/normal/front/3/4/3454ef42-2e0b-4ce4-945f-e4ec3e83c39d.jpg?1783945134",
+        "rulings": [
+            {
+                "date": "2021-03-19",
+                "text": "\"Flashback [cost]\" means \"You may cast this card from your graveyard by paying [cost] rather than paying its mana cost\" and \"If the flashback cost was paid, exile this card instead of putting it anywhere else any time it would leave the stack.\""
+            },
+            {
+                "date": "2021-03-19",
+                "text": "You must still follow any timing restrictions and permissions, including those based on the card's type. For instance, you can cast a sorcery using flashback only when you could normally cast a sorcery."
+            },
+            {
+                "date": "2021-03-19",
+                "text": "To determine the total cost of a spell, start with the mana cost or alternative cost (such as a flashback cost) you're paying, add any cost increases, then apply any cost reductions. The mana value of the spell is determined only by its mana cost, no matter what the total cost to cast the spell was."
+            },
+            {
+                "date": "2021-03-19",
+                "text": "A spell cast using flashback will always be exiled afterward, whether it resolves, is countered, or leaves the stack in some other way."
+            },
+            {
+                "date": "2021-03-19",
+                "text": "You can cast a spell using flashback even if it was somehow put into your graveyard without having been cast."
+            },
+            {
+                "date": "2021-03-19",
+                "text": "If a card with flashback is put into your graveyard during your turn, you can cast it if it's legal to do so before any other player can take any actions."
+            }
+        ]
+    },
+    "colorIdentityOverride": [
+        "WHITE"
+    ]
+}
+
 // Ray of Revelation
 {
     "name": "Ray of Revelation",

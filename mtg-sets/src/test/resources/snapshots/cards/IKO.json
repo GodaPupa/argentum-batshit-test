@@ -1760,6 +1760,106 @@
     ]
 }
 
+// Ram Through
+{
+    "name": "Ram Through",
+    "manaCost": "{1}{G}",
+    "typeLine": "Instant",
+    "oracleText": "Target creature you control deals damage equal to its power to target creature you don't control. If the creature you control has trample, excess damage is dealt to that creature's controller instead.",
+    "script": {
+        "spellEffect": {
+            "type": "Gated",
+            "gate": {
+                "type": "Gate.WhenCondition",
+                "condition": {
+                    "type": "EntityMatches",
+                    "entity": {
+                        "type": "ContextTarget",
+                        "index": 0
+                    },
+                    "filter": "creature kw:trample"
+                }
+            },
+            "then": {
+                "type": "DealDamage",
+                "amount": {
+                    "type": "EntityProperty",
+                    "entity": "Target",
+                    "numericProperty": "Power"
+                },
+                "target": {
+                    "type": "BoundVariable",
+                    "name": "creature you don't control"
+                },
+                "damageSource": {
+                    "type": "BoundVariable",
+                    "name": "creature you control"
+                },
+                "excessToController": true
+            },
+            "otherwise": {
+                "type": "DealDamage",
+                "amount": {
+                    "type": "EntityProperty",
+                    "entity": "Target",
+                    "numericProperty": "Power"
+                },
+                "target": {
+                    "type": "BoundVariable",
+                    "name": "creature you don't control"
+                },
+                "damageSource": {
+                    "type": "BoundVariable",
+                    "name": "creature you control"
+                }
+            }
+        },
+        "targetRequirements": [
+            {
+                "type": "TargetObject",
+                "filter": {
+                    "baseFilter": "creature ctrl:you"
+                },
+                "id": "creature you control"
+            },
+            {
+                "type": "TargetObject",
+                "filter": {
+                    "baseFilter": "creature ctrl:opponent"
+                },
+                "id": "creature you don't control"
+            }
+        ]
+    },
+    "metadata": {
+        "collectorNumber": "170",
+        "artist": "Zoltan Boros",
+        "flavorText": "\"Need a medic! And some stonemasons!\"\n—Wyllon, Drannith merchant",
+        "imageUri": "https://cards.scryfall.io/normal/front/a/c/ac0b24e7-14e7-45ee-b5d8-bdb8674b669c.jpg?1783931030",
+        "rulings": [
+            {
+                "date": "2020-04-17",
+                "text": "If either creature is an illegal target as Ram Through tries to resolve, the creature you control won’t deal damage to any creature or player."
+            },
+            {
+                "date": "2020-04-17",
+                "text": "Excess damage caused by a spell or ability is similar to how combat damage from a creature with trample is handled. Start with the amount of damage being dealt to the creature and determine what is “lethal.” This is the creature’s toughness minus the amount of damage that it already has marked on it, but ignoring any replacement or prevention effects that will modify this damage. Also ignore whether the creature has an ability such as indestructible that will result in it not being destroyed by this damage."
+            },
+            {
+                "date": "2020-04-17",
+                "text": "If the target creature you control has deathtouch, 1 damage from it is lethal."
+            },
+            {
+                "date": "2020-04-17",
+                "text": "Once you’ve determined how much damage is excess, the creature you control simultaneously deals damage to the creature and to its controller. This damage may be modified by replacement or prevention effects."
+            }
+        ]
+    },
+    "colorIdentityOverride": [
+        "GREEN"
+    ]
+}
+
 // Raugrin Crystal
 {
     "name": "Raugrin Crystal",
