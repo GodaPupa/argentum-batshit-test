@@ -2,6 +2,43 @@
 
 Status: **CARD AND SHARED SELECTION COMPONENTS QUALIFIED — FULL R1 READINESS STILL PENDING / NO CORPUS EXECUTION**
 
+## Active development-action and exact-mechanics batch
+
+The next validation batch adds four dedicated scenario classes for Candy Trail,
+Conduit Pylons, Golem Foundry and Myr Kinsmith. Their 25 cases exercise actual
+cast/entry triggers, optional decisions, scry/surveil continuations, target and
+search restrictions, shuffle/reveal events, paid mana filters, counter spending,
+token characteristics and summoning sickness. Existing card definitions are
+unchanged; compiled names alone were insufficient to establish these paths.
+
+`IndustrialWasteV2PublicActionPolicy` is a prospective common development-action
+component. It chooses among real engine legal actions without calling a simulator
+or evaluator, binds offered sacrifice and graveyard targets, chooses Star's mana
+color from its own hand, develops artifact engines and performs Retriever loop
+actions. It supplies bounded London keep/bottom decisions. The shared selection
+component now also handles Candy Trail/Boulder scry, Pylons surveil and Foundry's
+optional charge trigger. None of these decisions takes a candidate-family label
+or observes a comparative result.
+
+Eleven new public-action tests submit real casts and activations, demonstrate
+Retriever sacrifice/return/recast with actual generated mana, exercise scry
+continuations, pay Dross's recursion cost, preserve hardware while sacrificing
+Wellspring, apply the three-mulligan/keep-four bound through the real two-player
+London handlers, and test privacy and explicit-seed repeatability. This batch
+remains pending runtime validation until its own artifact is audited.
+
+The shared `GameTestDriver` receives an optional explicit seed parameter on its
+two-player helpers; its default remains null, preserving historical behavior.
+`regression-fixtures.json` excludes the two fixed regression seeds from official
+sampling. These fixtures do not read the R1 ordering corpus. A deterministic
+fixture is not a sampled structural result.
+
+This still does not qualify a complete R1 runner: combat conversion, all remaining
+exact mechanics, the ordering/shuffle adapter, complete decision routing, precise
+telemetry and loop certificates, replay capture, effective rules/runtime bindings,
+and durable exclusive attempt authorization remain necessary. Historical v1
+pilot and telemetry files remain unchanged.
+
 The R0 freeze is commit `87306412b78770f161366cf1565338c4daaf6e9e`.
 Its dedicated construction run `36079890615` succeeded. That job validated
 candidate identities, legality source archives and the prospective screen; it

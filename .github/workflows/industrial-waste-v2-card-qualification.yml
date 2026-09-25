@@ -8,9 +8,14 @@ on:
       - industrial-waste/v2/**
       - ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteV2*.kt
       - ai/src/test/kotlin/com/wingedsheep/ai/arena/TableGameRunner.kt
+      - rules-engine/src/testFixtures/kotlin/com/wingedsheep/engine/support/GameTestDriver.kt
       - mtg-sets/**/ChromaticStar*.kt
       - mtg-sets/**/AncientStirrings*.kt
       - mtg-sets/**/DrossSkullbomb*.kt
+      - mtg-sets/**/CandyTrailScenarioTest.kt
+      - mtg-sets/**/ConduitPylonsScenarioTest.kt
+      - mtg-sets/**/GolemFoundryScenarioTest.kt
+      - mtg-sets/**/MyrKinsmithScenarioTest.kt
       - mtg-sets/src/test/resources/snapshots/cards/TSP.json
       - mtg-sets/src/test/resources/snapshots/cards/ROE.json
 
@@ -47,9 +52,10 @@ jobs:
         run: |
           scripts/gradle-locked \
             :mtg-sets:2003-2007:tests:test --tests '*ChromaticStarScenarioTest' \
-            :mtg-sets:2008-2016:tests:test --tests '*AncientStirringsScenarioTest' \
-            :mtg-sets:2023:tests:test --tests '*DrossSkullbombScenarioTest' \
-            :ai:test --tests '*IndustrialWasteV2RegistryAuditTest' --tests '*IndustrialWasteV2SelectionAdvisorTest' --tests '*IndustrialWasteAdvisorModuleTest' --tests '*FrozenBaselineTest' \
+            :mtg-sets:2008-2016:tests:test --tests '*AncientStirringsScenarioTest' --tests '*GolemFoundryScenarioTest' \
+            :mtg-sets:2023:tests:test --tests '*DrossSkullbombScenarioTest' --tests '*CandyTrailScenarioTest' --tests '*MyrKinsmithScenarioTest' \
+            :mtg-sets:2024:tests:test --tests '*ConduitPylonsScenarioTest' \
+            :ai:test --tests '*IndustrialWasteV2RegistryAuditTest' --tests '*IndustrialWasteV2SelectionAdvisorTest' --tests '*IndustrialWasteV2PublicActionPolicyTest' --tests '*IndustrialWasteAdvisorModuleTest' --tests '*FrozenBaselineTest' \
             --continue --no-daemon
       - name: Generate reviewable card snapshots for only the newly admitted cards
         run: |
@@ -72,6 +78,7 @@ jobs:
             mtg-sets/2003-2007/tests/build/test-results/test/TEST-*.xml
             mtg-sets/2008-2016/tests/build/test-results/test/TEST-*.xml
             mtg-sets/2023/tests/build/test-results/test/TEST-*.xml
+            mtg-sets/2024/tests/build/test-results/test/TEST-*.xml
             industrial-waste/v2/runtime-evidence/registry-audit.txt
             /tmp/iw-v2-card-snapshot.diff
             mtg-sets/src/test/resources/snapshots/cards/TSP.json

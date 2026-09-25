@@ -35,6 +35,7 @@ internal object IndustrialWasteV2SelectionAdvisor : CardAdvisor {
     override val cardNames = setOf(
         "Ancient Stirrings", "Malevolent Rumble", "Myr Kinsmith",
         "Blood Fountain", "Dross Skullbomb",
+        "Candy Trail", "Conduit Pylons", "Giant's Boulder", "Golem Foundry",
     )
 
     override fun respondToDecision(context: AdvisorDecisionContext) = with(context) {
@@ -45,11 +46,14 @@ internal object IndustrialWasteV2SelectionAdvisor : CardAdvisor {
                 view.rank(choice.options) { choice.cards[it]?.name }
                     .take(choice.maxSelections),
             )
-            is SelectCardsDecision -> CardsSelectedResponse(
-                choice.id,
-                view.rank(choice.options) { choice.cardInfo?.get(it)?.name ?: state.visibleName(it) }
-                    .take(choice.maxSelections),
-            )
+            is SelectCardsDecision -> {
+                val name = { id: EntityId -> choice.cardInfo?.get(id)?.name ?: state.visibleName(id) }
+                val bottomOrMill = sourceCardName in setOf("Candy Trail", "Conduit Pylons", "Giant's Boulder")
+                val ranked = if (bottomOrMill) {
+                    view.rank(choice.options, name).reversed().filter { view.score(name(it)) < 60 }
+                } else view.rank(choice.options, name)
+                CardsSelectedResponse(choice.id, ranked.take(choice.maxSelections))
+            }
             is ReorderLibraryDecision -> OrderedResponse(
                 choice.id,
                 view.rank(choice.cards) { choice.cardInfo[it]?.name },
@@ -66,7 +70,7 @@ internal object IndustrialWasteV2SelectionAdvisor : CardAdvisor {
                     requirement.index to ranked
                 })
             }
-            is YesNoDecision -> if (sourceCardName == "Myr Kinsmith") {
+            is YesNoDecision -> if (sourceCardName in setOf("Myr Kinsmith", "Golem Foundry")) {
                 YesNoResponse(choice.id, choice = true)
             } else null
             else -> null
@@ -139,3 +143,6 @@ private fun selectionView(state: GameState, player: EntityId): SelectionView {
 }
 
 private fun GameState.visibleName(id: EntityId): String? = getEntity(id)?.get<CardComponent>()?.name
+
+internal fun industrialWasteV2VisiblePriority(state: GameState, player: EntityId, name: String?): Int =
+    selectionView(state, player).score(name)
