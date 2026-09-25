@@ -3461,3 +3461,86 @@
         "BLUE"
     ]
 }
+
+// Winding Way
+{
+    "name": "Winding Way",
+    "manaCost": "{1}{G}",
+    "typeLine": "Sorcery",
+    "oracleText": "Choose creature or land. Reveal the top four cards of your library. Put all cards of the chosen type revealed this way into your hand and the rest into your graveyard.",
+    "script": {
+        "spellEffect": {
+            "type": "Composite",
+            "effects": [
+                {
+                    "type": "ChooseOption",
+                    "optionType": "CARD_TYPE",
+                    "storeAs": "chosenType",
+                    "prompt": "Choose creature or land",
+                    "excludedOptions": [
+                        "Artifact",
+                        "Battle",
+                        "Enchantment",
+                        "Instant",
+                        "Kindred",
+                        "Planeswalker",
+                        "Sorcery",
+                        "Vanguard"
+                    ]
+                },
+                {
+                    "type": "GatherCards",
+                    "source": {
+                        "type": "TopOfLibrary",
+                        "count": {
+                            "type": "Fixed",
+                            "amount": 4
+                        }
+                    },
+                    "storeAs": "revealed",
+                    "revealed": true
+                },
+                {
+                    "type": "FilterCollection",
+                    "from": "revealed",
+                    "filter": {
+                        "type": "MatchesFilter",
+                        "filter": {
+                            "cardPredicates": [
+                                {
+                                    "type": "HasCardTypeFromVariable",
+                                    "variableName": "chosenType"
+                                }
+                            ]
+                        }
+                    },
+                    "storeMatching": "matching",
+                    "storeNonMatching": "rest"
+                },
+                {
+                    "type": "MoveCollection",
+                    "from": "matching",
+                    "destination": {
+                        "type": "ToZone",
+                        "zone": "Hand"
+                    },
+                    "revealed": true
+                },
+                {
+                    "type": "MoveCollection",
+                    "from": "rest",
+                    "destination": {
+                        "type": "ToZone",
+                        "zone": "Graveyard"
+                    }
+                }
+            ]
+        }
+    },
+    "metadata": {
+        "collectorNumber": "193"
+    },
+    "colorIdentityOverride": [
+        "GREEN"
+    ]
+}
