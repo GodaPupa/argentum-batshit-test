@@ -9,6 +9,7 @@ on:
       - "mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/RamThroughScenarioTest.kt"
       - "mtg-sets/2000-2002/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/jud/cards/PrismaticStrands.kt"
       - "mtg-sets/2000-2002/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/PrismaticStrandsScenarioTest.kt"
+      - "rules-engine/src/test/kotlin/com/wingedsheep/engine/mechanics/stack/FlashbackCounterDestinationTest.kt"
       - "rules-engine/src/test/kotlin/com/wingedsheep/engine/handlers/effects/ExcessDamageSelfReplacementTest.kt"
       - "rules-engine/src/test/kotlin/com/wingedsheep/engine/handlers/effects/SourceGroupDamagePreventionTest.kt"
 
@@ -50,12 +51,15 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          scripts/test-class FlashbackCounterDestinationTest --info --stacktrace | tee /tmp/izzet-batch-ao/flashback-counters.txt
           scripts/test-class ExcessDamageSelfReplacementTest --info --stacktrace | tee /tmp/izzet-batch-ao/excess.txt
           scripts/test-class SourceGroupDamagePreventionTest --info --stacktrace | tee /tmp/izzet-batch-ao/prevention.txt
           scripts/test-class FloatingEffectSerializationRoundTripTest --info --stacktrace | tee /tmp/izzet-batch-ao/serialization.txt
           scripts/test-class CombatDamagePreventionBadgeTest --info --stacktrace | tee /tmp/izzet-batch-ao/badges.txt
           scripts/test-class RamThroughScenarioTest --info --stacktrace | tee /tmp/izzet-batch-ao/ram.txt
           scripts/test-class PrismaticStrandsScenarioTest --info --stacktrace | tee /tmp/izzet-batch-ao/strands.txt
+          scripts/test-class MemoryLapseScenarioTest --info --stacktrace | tee /tmp/izzet-batch-ao/memory-lapse.txt
+          scripts/test-class RemandScenarioTest --info --stacktrace | tee /tmp/izzet-batch-ao/remand.txt
           scripts/test-class GandalfsSanctionScenarioTest --info --stacktrace | tee /tmp/izzet-batch-ao/gandalf.txt
           scripts/test-class ExcessDamageTriggerScenarioTest --info --stacktrace | tee /tmp/izzet-batch-ao/excess-triggers.txt
           scripts/test-class PreventAllDamageToGroupScenarioTest --info --stacktrace | tee /tmp/izzet-batch-ao/recipient-shields.txt
@@ -145,6 +149,7 @@ jobs:
             echo "full_readiness_guards_remaining=6"
             echo "registry_only_acceptance=true"
             echo "simultaneous_damage_interaction_qualified=false"
+            echo "flashback_counter_scope=EXPLICIT_PAID_FLASHBACK_THREE_NONEXILE_COUNTER_DESTINATIONS"
             echo "official_seeds_consumed=0"
             echo "games_initialized=0"
             echo "outcome_exposure=0"
@@ -153,6 +158,10 @@ jobs:
             sha256sum izzet-science/v09-position1-engine-batch-an-gate.md
             sha256sum izzet-science/v09-position1-engine-batch-ao-gate.md
             sha256sum .github/workflows/izzet-v09-position1-engine-batch-ao.yml
+            sha256sum rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/stack/StackResolver.kt
+            sha256sum rules-engine/src/test/kotlin/com/wingedsheep/engine/mechanics/stack/FlashbackCounterDestinationTest.kt
+            sha256sum mtg-sets/1993-1999/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/MemoryLapseScenarioTest.kt
+            sha256sum mtg-sets/2003-2007/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/RemandScenarioTest.kt
             sha256sum rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/DamageUtils.kt
             sha256sum rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/combat/PreventDamageExecutor.kt
             sha256sum rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/combat/CombatDamageManager.kt
@@ -179,7 +188,7 @@ jobs:
             sha256sum izzet-science/capability-drafts/remaining-queue-findings.md
             sha256sum mtg-sets/src/test/resources/snapshots/cards/IKO.json
             sha256sum mtg-sets/src/test/resources/snapshots/cards/JUD.json
-            sha256sum /tmp/izzet-batch-ao/{excess,prevention,serialization,badges,ram,strands,gandalf,excess-triggers,recipient-shields,protection,damage-ledger,pdh,readiness,snapshot-generation,snapshot-verification}.txt
+            sha256sum /tmp/izzet-batch-ao/{flashback-counters,memory-lapse,remand,excess,prevention,serialization,badges,ram,strands,gandalf,excess-triggers,recipient-shields,protection,damage-ledger,pdh,readiness,snapshot-generation,snapshot-verification}.txt
           } > /tmp/izzet-batch-ao/manifest.txt
 
       - uses: actions/upload-artifact@v4

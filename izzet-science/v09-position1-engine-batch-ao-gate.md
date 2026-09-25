@@ -89,10 +89,11 @@ from registry resolution.
 
 ## Artifact and guarded integration
 
-The artifact contains exactly **16 files**: a manifest and fifteen transcripts (excess, prevention,
+The artifact contains exactly **19 files**: a manifest and eighteen transcripts (flashback counters,
+Memory Lapse, Remand, excess, prevention,
 serialization, badges, Ram, Strands, Gandalf, excess triggers, recipient shields, protection, damage
-ledger, PDH, readiness, snapshot generation and snapshot verification). The manifest has **46
-SHA-256 bindings** for thirty-one repository files and those fifteen transcripts, plus source SHA,
+ledger, PDH, readiness, snapshot generation and snapshot verification). The manifest has **53
+SHA-256 bindings** for thirty-five repository files and those eighteen transcripts, plus source SHA,
 snapshot commit/tree, exact implemented names, unresolved counts, scoped capability and zero official
 counters.
 
@@ -164,3 +165,30 @@ helper with ChosenTarget.Spell(strands). Its successful counter, exile, absence-
 subsequent unprevented-damage assertions are retained. No engine/card behavior or readiness guard
 changes. Later stages and artifact upload were skipped; the failed job/log is retained. Acceptance
 still requires the complete successful gate and independent artifact audit.
+
+
+## Fourth validation diagnostic and paid-flashback counter repair
+
+Run [36094670750](https://github.com/GodaPupa/argentum-batshit-test/actions/runs/36094670750), job
+`107944297814`, passed the shared capability classes, all seven Ram Through scenarios and seven of
+eight Prismatic Strands scenarios at source `9b60fdcf8a3111d658ef8525545a223c78c6a279`. The typed
+Counterspell cast and resolution succeeded, exposing the preserved assertion that a countered
+flashback spell must be exiled. The spell instead followed the ordinary graveyard counter path.
+No successful artifact was produced; the failed log remains evidence of this engine defect.
+
+The canonical repair is limited to StackResolver's graveyard, hand and library-top counter exits.
+A shared destination helper reads the existing serialized stack provenance: graveyard origin and
+explicitly paid AlternativeCostType.FLASHBACK. CR 702.34a then requires exile instead of those other
+counter destinations. Merely having printed flashback or coming from a graveyard is insufficient.
+The helper runs after the existing cannot-be-countered checks and retains the existing destination
+riders and zone redirects for other casts. No casting API/schema, counter-to-exile behavior, normal
+resolution/fizzle inference or general stack-exit behavior is qualified by this narrow repair.
+
+Ten new deterministic counter scenarios cover the three destinations with actual paid flashback
+casts and ordinary hand casts of the same printed-flashback card, uncounterability, serialized
+state equivalence, and explicit null/ESCAPE counter-input negative probes. The latter exercise only
+the counter's provenance decision and do not claim qualification of another graveyard-cast route.
+Existing Memory Lapse and Remand scenarios join the required regression set. The original thirty-
+seven AO component scenarios and all their assertions remain intact. The expanded artifact contract
+above binds the added source, tests and three transcripts. All six full-game guards remain closed,
+including simultaneous-damage grouping; a passing counter repair does not open exact-pair gameplay.

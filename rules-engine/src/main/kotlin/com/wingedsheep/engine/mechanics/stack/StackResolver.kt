@@ -2956,6 +2956,17 @@ class StackResolver(
         else counterAbility(state, entityId)
     }
 
+    /** Counter exits honor a paid flashback cost, not merely the card's available abilities. */
+    private fun counterDestinationOverride(container: ComponentContainer): Zone? {
+        val spell = container.get<SpellOnStackComponent>()
+        // CR 702.34a: the paid cost replaces every non-exile stack exit. The origin check
+        // prevents a hand cast from inheriting this behavior from an unrelated cost marker.
+        if (spell?.castFromZone == Zone.GRAVEYARD && spell.alternativeCost == AlternativeCostType.FLASHBACK) {
+            return Zone.EXILE
+        }
+        return container.get<AfterResolveDestinationComponent>()?.takeIf { !it.onlyIfResolved }?.zone
+    }
+
     /**
      * Counter a spell on the stack.
      */
@@ -2990,12 +3001,11 @@ class StackResolver(
         // Put in graveyard (or exile if AfterResolveDestinationComponent is present)
         // Goliath Daydreamer-style components only exile on actual resolution; if the spell
         // is countered they go to graveyard normally.
-        val riderOnCounter = container.get<AfterResolveDestinationComponent>()
-            ?.takeIf { !it.onlyIfResolved }
+        val destinationOverride = counterDestinationOverride(container)
         // A countered spell heading to its owner's graveyard is still a card being put into a
         // graveyard "from anywhere" — honor RedirectZoneChange replacements (Valgavoth, Leyline).
-        val counterRedirect = if (riderOnCounter != null) {
-            com.wingedsheep.engine.handlers.effects.ZoneChangeRedirectResult(riderOnCounter.zone)
+        val counterRedirect = if (destinationOverride != null) {
+            com.wingedsheep.engine.handlers.effects.ZoneChangeRedirectResult(destinationOverride)
         } else {
             com.wingedsheep.engine.handlers.effects.ZoneMovementUtils
                 .checkZoneChangeRedirect(state, spellId, Zone.STACK, Zone.GRAVEYARD)
@@ -3071,9 +3081,8 @@ class StackResolver(
 
         // A flashback/foretell-style "exile it instead" rider that applies on a counter still
         // overrides the printed destination — the same precedence [counterSpell] gives it.
-        val riderOnCounter = container.get<AfterResolveDestinationComponent>()
-            ?.takeIf { !it.onlyIfResolved }
-        val destZone = riderOnCounter?.zone ?: Zone.HAND
+        val destinationOverride = counterDestinationOverride(container)
+        val destZone = destinationOverride ?: Zone.HAND
         newState = newState.addToZone(ZoneKey(ownerId, destZone), spellId)
         val destinationObject = newState.objectRef(spellId)
 
@@ -3123,9 +3132,8 @@ class StackResolver(
             ?: return ExecutionResult.error(state, "Cannot determine spell owner")
 
         var newState = state.removeFromStack(spellId)
-        val riderOnCounter = container.get<AfterResolveDestinationComponent>()
-            ?.takeIf { !it.onlyIfResolved }
-        val destZone = riderOnCounter?.zone ?: Zone.LIBRARY
+        val destinationOverride = counterDestinationOverride(container)
+        val destZone = destinationOverride ?: Zone.LIBRARY
         newState = if (destZone == Zone.LIBRARY) {
             newState.insertIntoZone(ZoneKey(ownerId, Zone.LIBRARY), spellId, 0)
         } else {
