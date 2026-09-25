@@ -45,6 +45,7 @@ internal data class IndustrialWasteV2EventMetrics(
     val acceptedTransitions: Int,
     val mulligans: Int,
     val firstSeenTurnByOriginalCopy: Map<String, Int>,
+    val cardsSeenByTurn: Map<Int, Int>,
     val firstAccessTurnByTronName: Map<String, Int>,
     val threeTronPieceAccessTurn: Int?,
     val fullTronTurn: Int?,
@@ -142,7 +143,7 @@ internal class IndustrialWasteV2EventCollector(
     }
 
     fun snapshot() = IndustrialWasteV2EventMetrics(
-        transitions, maxMulligans, seen.toMap(), access.toMap(),
+        transitions, maxMulligans, seen.toMap(), seen.values.groupingBy { it }.eachCount().toSortedMap(), access.toMap(),
         if (TRON.all(access::containsKey)) access.values.maxOrNull() else null,
         fullTron, loops.firstOrNull()?.ownTurn, loops.toList(), recasts, lethal,
     )
