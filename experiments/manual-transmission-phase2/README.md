@@ -47,9 +47,53 @@ Phase 1 Python classifications remain policy evidence only and are not assumed t
 be executable four-player Argentum pilots. Executable pilots and telemetry still
 block actual-deck gameplay.
 
-Ruleset admission remains fail-closed: the repository-discovered September 25,
-2026 rules snapshot cannot be labeled effective for a September 24 source freeze
-without an explicitly sourced effective snapshot and digest.
+The historical September 24 rules admission remains in `rules-provenance-r1.md`.
+For prospective admission on or after September 25, `rules-source-r2.json` pins the
+current effective official source and `verify_rules_archive.py` verifies and
+archives its exact bytes with an integrity report. Source verification does not
+qualify engine semantics or authorize a capability game. Re-evaluate the applicable
+rules release before the eventual official seed freeze.
+
+## Current accepted evidence and remaining queue
+
+`accepted-capability-inventory-r2.json` records the independently audited seed-free
+card and multiplayer evidence from run `36080499999`, including the preserved raw
+artifact digests. It supersedes the remaining-card counts in inventory r1 without
+rewriting that historical record. The registry resolves 446 of 800 physical entries
+across the eight exact 100-card lists; 354 entries representing 223 unique identities
+remain unresolved. The Manual control itself has 32 unresolved identities. Registry
+presence remains separate from exact-deck semantic and pilot qualification.
+
+Five formerly missing control identities now have definitions and passing card
+scenarios: Animar, Soul of Elements; Ancestral Statue; Paradise Druid; Pongify; and
+Rapid Hybridization. Cloud of Faeries and Peregrine Drake now choose lands at
+resolution without targeting, including lands controlled by other players. Their
+scenarios verify selection limits, zero choices, shroud, source removal, and Cloud
+cycling. All 33 card scenarios pass. The eight earlier token-ownership fixture
+failures are retained in `card-support-batch-r1-audit.json`; their corrected tests
+read the engine's actual token owner field and retain the expected assertions.
+
+The same audited artifact preserves 56 passing generic commander/multiplayer tests
+and one passing registry audit. These are deterministic capability fixtures, not
+any of the 36 initial actual-deck capability pilot games or 864 primary games. Both
+official gameplay counters remain zero. Full card coverage, exact executable gear
+and opponent pilots, multiplayer threat decisions, operational telemetry, and the
+frozen guarded execution package still block actual-deck admission.
+
+## Prospective telemetry component
+
+`metrics_contract.py` supplies a hash-linked observation recorder, an independent
+component replay auditor and an exclusive export of the exact audited bytes. Its
+17 deterministic tests cover provenance bindings, per-player turns, distinct partner
+commander casts, collector completeness, event tampering and contradictory outcomes.
+Caps and timeouts remain unresolved. Missing collectors produce `null` with a reason;
+missing mandatory action or elimination collection remains an admission blocker.
+
+`telemetry-component-r1.md` distinguishes the implemented component from the future
+qualified engine adapter and typed collectors. All 22 protocol metric names retain
+their definitions. Complex measurements remain unavailable until their typed evidence
+and extraction logic are qualified. The component supplies no execution authority,
+actual-deck pilot, official seed, sampled game, or durable attempt journal.
 
 ## Completion
 

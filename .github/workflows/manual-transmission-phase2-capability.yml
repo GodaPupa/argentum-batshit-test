@@ -50,6 +50,8 @@ jobs:
           persist-credentials: false
       - name: Read-only provenance and source inventory
         run: python3 experiments/manual-transmission-phase2/bootstrap_audit.py --phase1 .phase1-source --out build/reports/manual-transmission-phase2/source --bundle
+      - name: Validate prospective telemetry contract without gameplay
+        run: python3 -m unittest discover -s experiments/manual-transmission-phase2 -p test_metrics_contract.py -v
       - name: Verify and archive the effective rules source without qualifying engine semantics
         run: |
           python3 -m unittest discover -s experiments/manual-transmission-phase2 -p test_rules_archive.py
