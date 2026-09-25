@@ -159,9 +159,18 @@ object PlayerLeavesGameProcessor {
     private fun abandonLeaversDecision(state: GameState, leaver: EntityId): GameState {
         val pending = state.pendingDecision ?: return state
         if (pending.playerId != leaver) return state
+        val recipient = if (state.stackResolutionPendingPriority) state.activePlayerId
+            else state.pendingCastPriority?.playerId ?: state.activePlayerId
+        val castBoundary = state.pendingCastPriority?.takeUnless { state.stackResolutionPendingPriority }?.let {
+            // The departed chooser's unanswered operation is abandoned, but other controllers'
+            // queued cast triggers still belong to the surviving post-cast priority boundary.
+            it.copy(triggers = it.triggers + state.continuationStack
+                .filterIsInstance<com.wingedsheep.engine.core.PendingTriggersContinuation>()
+                .flatMap { frame -> frame.remainingTriggers })
+        }
         return state
-            .copy(continuationStack = emptyList(), stackResolutionPendingPriority = false)
-            .withPriority(state.activePlayerId)
+            .copy(continuationStack = emptyList(), stackResolutionPendingPriority = false, pendingCastPriority = castBoundary)
+            .withPriority(if (state.gameOver) null else recipient)
     }
 
     /**

@@ -19,6 +19,20 @@ on:
       - ai/src/test/kotlin/com/wingedsheep/ai/engine/DecisionResponderCompletedBranchTest.kt
       - rules-engine/src/testFixtures/kotlin/com/wingedsheep/engine/support/ScenarioTestBase.kt
 
+      - docs/engine-post-cast-sba*
+      - rules-engine/src/main/kotlin/com/wingedsheep/engine/event/DeathAndLeaveTriggerDetector.kt
+      - rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/DeathTriggerTest.kt
+      - mtg-sets/2003-2007/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/KrarksThumbScenarioTest.kt
+      - mtg-sets/2026/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/PrismariTheInspirationScenarioTest.kt
+      - rules-engine/src/main/kotlin/com/wingedsheep/engine/state/PendingCastPriority.kt
+      - rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/CastPriorityProcessor.kt
+      - rules-engine/src/main/kotlin/com/wingedsheep/engine/core/ColorAndTypeContinuations.kt
+      - rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/spell/CastSpellHandler.kt
+      - rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/special/ConcedeHandler.kt
+      - rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/special/SpecialActionsModule.kt
+      - rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/ModalAndCloneContinuationResumer.kt
+      - rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/CastPrioritySbaTest.kt
+
 permissions:
   contents: read
 
@@ -78,7 +92,7 @@ jobs:
           (out / 'source-provenance.json').write_text(json.dumps(provenance, indent=2) + '\n')
           (out / 'source-manifest.json').write_bytes(manifest_path.read_bytes())
           PY
-      - name: Qualify ordinary and paused priority boundaries
+      - name: Qualify ordinary, post-cast and paused priority boundaries
         run: |
           set -uo pipefail
           run_stage() {
@@ -112,6 +126,17 @@ jobs:
           run_stage spell-queller SpellQuellerScenarioTest mtg-sets/2008-2016/tests || failed=1
           run_stage mauler TaureanMaulerScenarioTest mtg-sets/2008-2016/tests || failed=1
           run_stage ai-decision-trace DecisionResponderCompletedBranchTest ai || failed=1
+          run_stage cast-sba CastPrioritySbaTest || failed=1
+          run_stage death-trigger DeathTriggerTest || failed=1
+          run_stage krarks-thumb KrarksThumbScenarioTest mtg-sets/2003-2007/tests || failed=1
+          run_stage prismari PrismariTheInspirationScenarioTest mtg-sets/2026/tests || failed=1
+          run_stage free-cast GrantNextSpellFreeCastTest || failed=1
+          run_stage modal-cost ModalPerModeAdditionalCostTest || failed=1
+          run_stage modal-cost-enumeration CastSpellEnumeratorModalAdditionalCostTest || failed=1
+          run_stage reveal-cost RevealFromHandAdditionalCostTest || failed=1
+          run_stage commander-choice CommanderZoneChoiceCheckTest || failed=1
+          run_stage team-loss TwoHeadedGiantTeamLossTest || failed=1
+          run_stage team-versus-team TeamVsTeamTest || failed=1
           exit "$failed"
       - name: Preserve complete validation evidence
         if: always()

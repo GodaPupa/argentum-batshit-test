@@ -430,6 +430,10 @@ data class GameState(
      */
     @EncodeDefault(EncodeDefault.Mode.NEVER)
     val stackResolutionPendingPriority: Boolean = false,
+
+    /** Completed ordinary cast: keep its caster and captured triggers through SBA/target choices. */
+    @EncodeDefault(EncodeDefault.Mode.NEVER)
+    val pendingCastPriority: PendingCastPriority? = null,
 ) {
     /**
      * Cached projection of the game state with all continuous effects (Rule 613) applied.
@@ -1257,7 +1261,12 @@ data class GameState(
 
     /** Complete the pending resolution window, including the existing departed-player redirect. */
     fun withPriorityAfterStackResolution(): GameState =
-        copy(stackResolutionPendingPriority = false).withPriority(if (gameOver) null else activePlayerId)
+        copy(stackResolutionPendingPriority = false, pendingCastPriority = null)
+            .withPriority(if (gameOver) null else activePlayerId)
+
+    /** A completed cast keeps the casting player's priority, redirected if that player left. */
+    fun withPriorityAfterCasting(): GameState =
+        copy(pendingCastPriority = null).withPriority(if (gameOver) null else pendingCastPriority?.playerId)
 
     private fun redirectPriorityIfLeft(playerId: EntityId?): EntityId? {
         if (playerId == null) return null
