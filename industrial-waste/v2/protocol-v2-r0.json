@@ -1,0 +1,59 @@
+{
+  "schema": "industrial-waste-v2-structural-redesign-r0-v1",
+  "protocol_id": "IW_V2_STRUCTURAL_REDESIGN_R0_2026_09_24",
+  "state": "PREDECLARED_CONSTRUCTION_ONLY",
+  "historical_control": {
+    "path": "industrial-waste/control/industrial-waste-v1.0-submitted.dck",
+    "sha256": "9b8a2932d78c99dd13f5c4834066bfa644f065137ee90efa75f3418ab56d1f1a",
+    "mutable": false
+  },
+  "candidate_families": [
+    "COMPACT_LOOP",
+    "RECURSIVE_EGGS",
+    "LEAN_TRON_HYBRID"
+  ],
+  "candidate_count": 3,
+  "minimum_mainboard_slot_difference_from_v1": 8,
+  "candidate_freeze_required_before_comparative_output": true,
+  "opponent_specific_tuning_before_structural_close": false,
+  "official_matchup_seed_generation_authorized": false,
+  "official_gameplay_authorized": false,
+  "retired_v1_seed_reuse_allowed": false,
+  "r0_work": [
+    "construct exactly one legal 60/15 candidate for each predeclared family",
+    "audit live registry/card/mechanic support",
+    "freeze exact list bytes, normalized card manifests and SHA-256 identities",
+    "define one matched deterministic structural screen before exposing comparative results"
+  ],
+  "r1_structural_screen": {
+    "status": "NOT_YET_AUTHORIZED_UNTIL_ALL_THREE_CANDIDATES_FROZEN",
+    "matched_orderings_required": true,
+    "opponents": 0,
+    "metrics": [
+      "turn_of_first_three-Tron-piece_access",
+      "turn_of_first_full_Tron",
+      "turn_of_first_loop-ready_state",
+      "turn_of_first_deterministic_lethal_or_locked_conversion",
+      "cards_seen_by_turn",
+      "dead_or_stranded_cards_by_turn",
+      "colored_mana_failures",
+      "artifact_recursion_cycles_completed"
+    ],
+    "promotion_rule": "At most two families advance. A family must improve loop-ready or deterministic-conversion access on the matched corpus without a material regression in mana/color failure. Exact numerical margins and the matched ordering corpus must be frozen before R1 execution.",
+    "no_outcome_conditioned_extra_sampling": true
+  },
+  "future_matchup_program": {
+    "status": "OUT_OF_SCOPE_UNTIL_R1_CLOSES",
+    "new_seed_namespace_required": true,
+    "fresh_seed_collision_audit_required": true,
+    "reuse_retired_v1_seeds": false,
+    "postboard_initially_authorized": false
+  },
+  "stopping_rule": "R0 closes after exactly three candidates and the R1 screen are frozen. R1 closes under its predeclared promotion rule. Failure of all three candidates is an accepted result and ends the redesign attempt rather than admitting a fourth post-result family.",
+  "official_counters": {
+    "seeds_generated": 0,
+    "games_initialized": 0,
+    "actions_submitted": 0,
+    "outcomes_exposed": 0
+  }
+}
