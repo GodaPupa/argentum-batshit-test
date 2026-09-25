@@ -669,6 +669,17 @@ sealed interface CostAtom : TextReplaceable<CostAtom> {
         override val description: String get() = "unattach this Equipment"
     }
 
+    /**
+     * Reveal your entire hand. The cards stay in hand; there is no selection because every card
+     * currently in the hand is published. This is the non-mana half of Land Grant's alternative
+     * cost and is generally reusable for any printed "reveal your hand" cost.
+     */
+    @SerialName("AtomRevealHand")
+    @Serializable
+    data object RevealHand : CostAtom {
+        override val description: String get() = "reveal your hand"
+    }
+
     /** Reveal [count] cards matching [filter] from your hand (the cards stay in hand). */
     @SerialName("AtomRevealFromHand")
     @Serializable
