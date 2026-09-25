@@ -27,6 +27,21 @@ interface CardAdvisor {
      */
     val cardNames: Set<String>
 
+    /** Opt in to evaluating this card's mana ability as a strategic action. */
+    val strategicManaAbility: Boolean get() = false
+
+    /** Rank only engine-admitted target instances; null retains generic target selection. */
+    fun targetPreference(state: GameState, targetId: EntityId, playerId: EntityId): Double? = null
+
+    /**
+     * Rank an engine-admitted additional-cost payment instance. Higher means spend it first.
+     * The cost type is the enumerator's existing AdditionalCostInfo.costType; no new cost
+     * legality is inferred here. Null retains the existing generic payment path.
+     */
+    fun costPaymentPreference(
+        state: GameState, entityId: EntityId, playerId: EntityId, costType: String,
+    ): Double? = null
+
     /**
      * Adjust the score for casting this spell or activated ability.
      *
