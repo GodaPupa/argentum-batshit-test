@@ -2002,6 +2002,55 @@
     "colorIdentityOverride": []
 }
 
+// Overgrown Battlement
+{
+    "name": "Overgrown Battlement",
+    "manaCost": "{1}{G}",
+    "typeLine": "Creature — Wall",
+    "oracleText": "Defender\n{T}: Add {G} for each creature you control with defender.",
+    "creatureStats": {
+        "power": 0,
+        "toughness": 4
+    },
+    "keywords": [
+        "DEFENDER"
+    ],
+    "script": {
+        "activatedAbilities": [
+            {
+                "id": "ability_1",
+                "cost": "CostTap",
+                "effect": {
+                    "type": "AddMana",
+                    "color": "GREEN",
+                    "amount": {
+                        "type": "AggregateBattlefield",
+                        "player": "You",
+                        "filter": "creature kw:defender"
+                    }
+                },
+                "timing": "ManaAbility",
+                "isManaAbility": true
+            }
+        ]
+    },
+    "metadata": {
+        "collectorNumber": "203",
+        "artist": "Franz Vohwinkel",
+        "flavorText": "\"Our enemy is nothing less than the end of all life. We shall not want for allies.\"\n—*The War Diaries*",
+        "imageUri": "https://cards.scryfall.io/normal/front/f/2/f2e3d197-e978-4ec6-ab69-3c5fd8ac3fc1.jpg?1783941961",
+        "rulings": [
+            {
+                "date": "2017-11-17",
+                "text": "Overgrown Battlement's last ability is a mana ability. It doesn't use the stack and can't be responded to (such as by removing creatures with defender you control)."
+            }
+        ]
+    },
+    "colorIdentityOverride": [
+        "GREEN"
+    ]
+}
+
 // Pathrazer of Ulamog
 {
     "name": "Pathrazer of Ulamog",
