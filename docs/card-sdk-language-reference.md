@@ -8836,11 +8836,24 @@ Flying, Menace, Intimidate, Fear, Shadow, Horsemanship, all basic landwalks (Pla
 `LandwalkRule` checks `typeLine.isLand && !isBasicLand`; Trailblazer's Boots), First Strike, Double
 Strike, Trample, Deathtouch, Lifelink, Vigilance, Reach, Provoke, Defender, Indestructible, Hexproof, Shroud, Haste,
 Flash, Prowess, Flurry, Changeling, Devoid (**not** display-only — see the note above: the engine
-derives `CardDefinition.colors` from it), Convoke, Delve, Improvise, Affinity, Emerge, Storm, Flashback, Harmonize, Mayhem, Disturb, Evoke, Sneak, Ninjutsu, Web-slinging, Impending, Conspire, Casualty, Miracle, Hideaway, Cascade, Plot,
+derives `CardDefinition.colors` from it), Convoke, Delve, Improvise, Affinity, Emerge, Storm, Flashback, Harmonize, Mayhem, Disturb, Evoke, Bestow, Sneak, Ninjutsu, Web-slinging, Impending, Conspire, Casualty, Miracle, Hideaway, Cascade, Plot,
 Offspring, Persist, Undying, Enduring, Ascend, Storied, Start your engines!, Max speed, Wither, Toxic, Eerie, Vivid, Fateful Bite, Exploit, Champion, Soulbond, Daybound, Nightbound, … (display-only — engine effect lives in handlers or
 composite abilities).
 
 **Parameterized `KeywordAbility.*`**
+
+- `Bestow(cost: ManaCost)` / `KeywordAbility.bestow("{X}{G}{G}")` — the parameterized
+  alternative cost for a Bestow card (CR 702.103). Declare it with `keywordAbility(...)`;
+  the display enum `Keyword.BESTOW` alone does not supply a cost. The card still declares its
+  normal creature characteristics and its own effects while attached. Nyxborn Hydra uses
+  ordinary counter, attached-creature stat, and keyword effects for that text.
+  The current canonical engine capability qualifies hand casting, actual alternative payment
+  (including X and Aura-sensitive restricted mana), creature targeting, Aura-aware filtered cast prohibitions, illegal-target
+  creature resolution, detachment, and restoration when leaving stack or battlefield.
+  `BestowComponent` stores the original type line; it is transient object state, not a card
+  definition or a new lasting permission. Cast history retains the cost actually paid.
+  Copying, phasing, and casting through other-zone permissions require separate qualification;
+  this entry does not claim those interactions are covered by the Nyxborn scenarios.
 
 - `Ward(amount)` — opponent pays a mana cost to target this (CR 702.21). This is the shape for a card's
   **own printed** ward; granting ward to *other* permanents is the `GrantWard` static ability instead
@@ -13201,6 +13214,13 @@ Card authors rarely reference these directly; they are created/updated by the ma
   the end step is a new object and stays on the battlefield; one that already left (died, was
   bounced) is left where it is, per the official ruling.
 - **Evoke** — `evoke = "{U}"`; pay alt cost, sacrifice on ETB.
+- **Bestow** — `keywordAbility(KeywordAbility.bestow("{X}{G}{G}"))`; the explicit
+  `AlternativeCostType.BESTOW` hand action pays that alternative cost and becomes an
+  Enchantment — Aura with enchant creature before cost and target validation (CR 702.103b).
+  It keeps original supertypes, mana value, and X. An illegal target on resolution ends the
+  bestowed effect and resolves the creature; later detachment also ends that effect.
+  A new object outside stack/battlefield restores printed type and removes its Bestow marker.
+  See the parameterized keyword entry for this implementation's independently tested scope.
 - **Sneak** — `sneak("{1}{U}")`; declare-blockers-step alt cost (pay mana + return an unblocked attacker you control to hand); a resolving permanent enters tapped and attacking the same defender. `Conditions.SneakCostWasPaid` reads the rider flag.
 - **Ninjutsu** — `ninjutsu("{1}{U}{B}")`; the canonical CR 702.49 keyword that **Sneak** reflavors. Same declare-blockers alt cost and tapped-and-attacking entry, shared via `KeywordAbility.ninjutsuStyleCost`. *Kaito, Bane of Nightmares* (DSK).
 - **Splice** — `splice("{2}{R}{R}")` (CR 702.47); reveal from hand as you cast an Arcane spell, pay the splice cost as an *additional* cost, and that spell gains this card's rules text — the card itself stays in hand. The spell keeps its own characteristics (702.47c); the spliced text resolves after the main spell's (702.47b) with its own targets. *Through the Breach* (CHK / INR).

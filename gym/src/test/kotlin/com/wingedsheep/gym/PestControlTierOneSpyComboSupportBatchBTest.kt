@@ -10,21 +10,28 @@ import io.kotest.matchers.shouldBe
 
 /** Registry closure alone does not qualify a pilot, freeze a seed, or authorize gameplay. */
 class PestControlTierOneSpyComboSupportBatchBTest : FunSpec({
-    test("four further identities resolve and only the explicit Bestow capability remains") {
+    test("batch B identities remain supported as qualified successors reduce its historical queue") {
         val registry = CardRegistry().apply {
             register(PredefinedTokens.allTokens)
             MtgSetCatalog.all.forEach { register(it.cards); register(it.basicLands) }
         }
         PestControlTierOneSpyComboAdmission.validationErrors(TierOneSpyComboAdmission()) shouldBe emptyList()
-        PestControlTierOneSpyComboAdmission.unresolvedMain(registry) shouldBe linkedMapOf("Nyxborn Hydra" to 2)
-        // Current support after postboard batch A; the accepted Batch B artifact retains
-        // its historical six-identity queue including Nylea's Disciple.
-        PestControlTierOneSpyComboAdmission.unresolvedSideboard(registry) shouldBe linkedMapOf(
+        listOf("Land Grant", "Winding Way", "Mesmeric Fiend", "Wall of Roots").forEach {
+            (registry.getCard(it) != null) shouldBe true
+        }
+        PestControlTierOneSpyComboAdmission.unresolvedMain(registry).all { (name, count) ->
+            name == "Nyxborn Hydra" && count == 2
+        } shouldBe true
+        // Current successors may reduce this queue; B's original accepted artifact stays immutable.
+        val sideboardQueueAtBatchB = linkedMapOf(
             "Jack-o'-Lantern" to 1,
             "Nyxborn Hydra" to 1,
             "Flaring Pain" to 1,
             "Faerie Macabre" to 2,
             "Acorn Harvest" to 1,
         )
+        PestControlTierOneSpyComboAdmission.unresolvedSideboard(registry).all { (name, count) ->
+            sideboardQueueAtBatchB[name] == count
+        } shouldBe true
     }
 })

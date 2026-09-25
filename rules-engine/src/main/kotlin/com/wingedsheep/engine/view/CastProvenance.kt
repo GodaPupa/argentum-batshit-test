@@ -120,6 +120,7 @@ object CastProvenance {
         AlternativeCostType.WARP -> "warp"
         AlternativeCostType.DASH -> "dash"
         AlternativeCostType.EVOKE -> "evoke"
+        AlternativeCostType.BESTOW -> "bestow"
         AlternativeCostType.EMERGE -> "emerge"
         AlternativeCostType.SNEAK -> "sneak"
         AlternativeCostType.WEB_SLINGING -> "web-slinging"
