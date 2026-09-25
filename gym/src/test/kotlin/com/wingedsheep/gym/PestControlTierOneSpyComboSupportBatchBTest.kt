@@ -22,13 +22,13 @@ class PestControlTierOneSpyComboSupportBatchBTest : FunSpec({
         PestControlTierOneSpyComboAdmission.unresolvedMain(registry).all { (name, count) ->
             name == "Nyxborn Hydra" && count == 2
         } shouldBe true
+        // Current successors may reduce this queue; B's original accepted artifact stays immutable.
         val sideboardQueueAtBatchB = linkedMapOf(
             "Jack-o'-Lantern" to 1,
             "Nyxborn Hydra" to 1,
             "Flaring Pain" to 1,
             "Faerie Macabre" to 2,
             "Acorn Harvest" to 1,
-            "Nylea's Disciple" to 4,
         )
         PestControlTierOneSpyComboAdmission.unresolvedSideboard(registry).all { (name, count) ->
             sideboardQueueAtBatchB[name] == count

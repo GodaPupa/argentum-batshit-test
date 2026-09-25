@@ -2701,6 +2701,57 @@
     ]
 }
 
+// Unexpected Fangs
+{
+    "name": "Unexpected Fangs",
+    "manaCost": "{1}{B}",
+    "typeLine": "Instant",
+    "oracleText": "Put a +1/+1 counter and a lifelink counter on target creature.",
+    "script": {
+        "spellEffect": {
+            "type": "Composite",
+            "effects": [
+                {
+                    "type": "AddCounters",
+                    "counterType": "+1/+1",
+                    "count": 1,
+                    "target": {
+                        "type": "BoundVariable",
+                        "name": "creature"
+                    }
+                },
+                {
+                    "type": "AddCounters",
+                    "counterType": "lifelink",
+                    "count": 1,
+                    "target": {
+                        "type": "BoundVariable",
+                        "name": "creature"
+                    }
+                }
+            ]
+        },
+        "targetRequirements": [
+            {
+                "type": "TargetObject",
+                "filter": {
+                    "baseFilter": "creature"
+                },
+                "id": "creature"
+            }
+        ]
+    },
+    "metadata": {
+        "collectorNumber": "102",
+        "artist": "Jesper Ejsing",
+        "flavorText": "\"With the frequent mutations, predator-prey relationships seem to change every moment. I already like it here.\"\n—Vivien Reid",
+        "imageUri": "https://cards.scryfall.io/normal/front/a/a/aa6494ad-a35e-4b09-8623-7740f3c20b0b.jpg?1783931057"
+    },
+    "colorIdentityOverride": [
+        "BLACK"
+    ]
+}
+
 // Void Beckoner
 {
     "name": "Void Beckoner",

@@ -758,6 +758,7 @@ object PestControlTierOneMonsterTronProductionDriver {
         maxActions: Int = 12_000,
         maxTurns: Int = 60,
         maxActionsPerTurn: Int = 500,
+        evidenceSink: (MonsterTronActionEvidencePhase, MonsterTronOfficialActionTrace) -> Unit = { _, _ -> },
     ): MonsterTronOfficialRawGame {
         val environment = officialGame.environment
         val traces = mutableListOf<MonsterTronOfficialActionTrace>()
@@ -781,7 +782,7 @@ object PestControlTierOneMonsterTronProductionDriver {
 
             driveMulligans(environment, environment.playerIds, controllers) { action ->
                 try {
-                    submitExactlyOne(environment, action, traces)
+                    submitExactlyOne(environment, action, traces, evidenceSink = evidenceSink)
                 } finally {
                     mulliganActionCount = traces.size
                 }
@@ -817,7 +818,7 @@ object PestControlTierOneMonsterTronProductionDriver {
                 } else {
                     agent.chooseAction(state)
                 }
-                submitExactlyOne(environment, action, traces)
+                submitExactlyOne(environment, action, traces, evidenceSink = evidenceSink)
             }
 
             val raw = snapshot()
@@ -882,10 +883,23 @@ object PestControlTierOneMonsterTronProductionDriver {
         environment: GameEnvironment,
         action: GameAction,
         traces: MutableList<MonsterTronOfficialActionTrace>,
+        evidenceSink: (MonsterTronActionEvidencePhase, MonsterTronOfficialActionTrace) -> Unit = { _, _ -> },
         submit: (GameAction) -> ExactlyOneSubmissionResult = environment::stepExactlyOne,
     ) {
         val before = environment.state
         val acting = action.playerId
+        val intent = MonsterTronOfficialActionTrace(
+            sequence = traces.size + 1,
+            turn = before.turnNumber,
+            actingPlayerId = acting,
+            pendingDecisionType = before.pendingDecision?.let { it::class.simpleName },
+            selectedAction = PROTOCOL_JSON.encodeToJsonElement(GameAction.serializer(), action),
+            emittedEvents = emptyList(),
+            accepted = false,
+        )
+        // A durable INTENT is not proof of submission or acceptance. It survives a process exit
+        // inside the engine; RESULT is recorded separately only after the call returns or throws.
+        evidenceSink(MonsterTronActionEvidencePhase.INTENT, intent)
         val result = try {
             submit(action)
         } catch (failure: Exception) {
@@ -899,6 +913,7 @@ object PestControlTierOneMonsterTronProductionDriver {
                 accepted = false,
                 executionError = failure.message ?: failure::class.simpleName ?: "unknown engine failure",
             )
+            evidenceSink(MonsterTronActionEvidencePhase.RESULT, traces.last())
             throw failure
         }
         val rejected = result as? ExactlyOneSubmissionResult.Rejected
@@ -917,9 +932,12 @@ object PestControlTierOneMonsterTronProductionDriver {
             accepted = rejected == null,
             rejectionReason = rejected?.reason,
         )
+        evidenceSink(MonsterTronActionEvidencePhase.RESULT, traces.last())
         check(rejected == null) { "rejected official action: ${rejected?.reason}" }
     }
 }
+
+enum class MonsterTronActionEvidencePhase { INTENT, RESULT }
 
 private fun monsterTronCardSummaries(
     state: GameState,

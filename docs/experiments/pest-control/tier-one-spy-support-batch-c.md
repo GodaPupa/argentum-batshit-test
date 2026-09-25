@@ -91,3 +91,29 @@ Both full-state equality and all Bestow counter/attachment/type assertions remai
 new dependency or production change is introduced. The rejected artifact **10844708612** has ZIP
 SHA-256 `fc844601410767b442ba5add048f329d34e176678d9fb0391a12cc9b3506ca31`.
 No C coverage or gameplay result is accepted from this failed compilation.
+
+
+## Exact integration after accepted postboard A
+
+Source `9964764b212233e9c900dad166509906b483ed01` passed all required workflows. Its dedicated
+run36088736003 produced artifact10844463864 (30989bytes; ZIP SHA-256
+`2b4286c7faa66e48917c18f444a81f21cec45af8e7ec04407800e3f8b98fe232`). Independent audit confirmed
+434 passing cases with no failures/errors/skips, including15 actual Hydra cases and338 strict
+snapshots, exact source checkout,60/15 frozen admission and zero unresolved Spy main identities.
+This qualifies the tested card source, subject to the current integration gate below; no policy
+or sampled gameplay evidence was created.
+
+The required integration incorporates main `324da8834e6a943ce2a712c11cd32f1e2e767f35`, including
+accepted postboard A (#149 source1cf29885757fae24aac05cfe2d1097e5088e5375) and the supplemental
+historical-evidence quarantine (#153). Current predecessor assertions compose the separately
+qualified Nyxborn sideboard slot; they preserve each original accepted artifact. The resulting
+current six-sideboard queue is10 identities/28slots, with no boarding plan or gameplay admission.
+
+The source manifest now explicitly distinguishes the original Industrial definition hash
+`c06870de76e4ea024695b524311ad995c52afa86652bf118cd15ecaa2f3ecff4` from the current compiled
+Oracle/metadata-corrected definition hash
+`b67f8cbcb3a791a934c83db1ee096575e065bf3d7520f42224b13c1a0a6fbd4b`. A standard-library verifier
+checks the exact current file path and byte digest before Kotlin qualification; three adversarial
+fixtures reject changed bytes, ambiguous provenance and substituted paths. The dedicated workflow
+retains its source-verification receipt and tests plus a separate accepted-postboard compatibility
+XML stage. This fresh exact-head gate must pass and its artifact be audited before final integration.

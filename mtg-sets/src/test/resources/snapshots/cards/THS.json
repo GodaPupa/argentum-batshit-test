@@ -1580,6 +1580,52 @@
     ]
 }
 
+// Nylea's Disciple
+{
+    "name": "Nylea's Disciple",
+    "manaCost": "{2}{G}{G}",
+    "typeLine": "Creature — Centaur Archer",
+    "oracleText": "When this creature enters, you gain life equal to your devotion to green. (Each {G} in the mana costs of permanents you control counts toward your devotion to green.)",
+    "creatureStats": {
+        "power": 3,
+        "toughness": 3
+    },
+    "script": {
+        "triggeredAbilities": [
+            {
+                "id": "ability_1",
+                "trigger": {
+                    "type": "ZoneChangeEvent",
+                    "to": "Battlefield"
+                },
+                "effect": {
+                    "type": "GainLife",
+                    "amount": {
+                        "type": "DevotionTo",
+                        "colors": [
+                            "GREEN"
+                        ]
+                    }
+                }
+            }
+        ]
+    },
+    "metadata": {
+        "collectorNumber": "167",
+        "artist": "Trevor Claxton",
+        "imageUri": "https://cards.scryfall.io/normal/front/3/6/365d716a-1435-48ac-b85f-2cceca1056dd.jpg?1783939742",
+        "rulings": [
+            {
+                "date": "2013-09-15",
+                "text": "If an activated ability or triggered ability has an effect that depends on your devotion to a color, you count the number of mana symbols of that color among the mana costs of permanents you control as the ability resolves. The permanent with that ability will be counted if it's still on the battlefield at that time."
+            }
+        ]
+    },
+    "colorIdentityOverride": [
+        "GREEN"
+    ]
+}
+
 // Omenspeaker
 {
     "name": "Omenspeaker",
