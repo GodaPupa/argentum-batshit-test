@@ -261,9 +261,9 @@ class IndustrialWasteV2EventMetricsTest : FunSpec({
             when {
                 decision != null -> fixture.resolve()
                 game.state.step == Step.DECLARE_ATTACKERS ->
-                    fixture.submit(DeclareAttackers(game.state.activePlayerId, emptyMap()))
+                    fixture.submit(DeclareAttackers(game.state.activePlayerId ?: error("Missing active player"), emptyMap()))
                 game.state.step == Step.DECLARE_BLOCKERS ->
-                    fixture.submit(DeclareBlockers(game.state.activePlayerId, emptyMap()))
+                    fixture.submit(DeclareBlockers(game.state.activePlayerId ?: error("Missing active player"), emptyMap()))
                 game.state.priorityPlayerId != null ->
                     fixture.submit(PassPriority(game.state.priorityPlayerId!!))
                 else -> error("No deterministic advancement action at ${game.state.phase}/${game.state.step}")
