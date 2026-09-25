@@ -26,8 +26,9 @@ retrieves and retains those bytes and refuses a digest mismatch or a future-effe
 ## Canonical repair
 
 The prospective implementation base is accepted main
-`324da8834e6a943ce2a712c11cd32f1e2e767f35`, including accepted Pest postboard batch A. This is one shared engine repair, with no card,
-SDK, deck, pilot, sample-plan, seed, or official-execution changes.
+`1c8bc618e8b3ca0b3b154e2ef3c87ca8ff779698`, including accepted Pest postboard batch A
+and Spy support batch C. This priority repair adds no card, SDK, deck, pilot, sample-plan, seed,
+or official-execution changes; the integration carries the independently accepted support source.
 
 `GameState.stackResolutionPendingPriority` records that a stack resolution has started and is
 still awaiting its next priority window. `PassPriorityHandler` establishes this boundary before
@@ -119,6 +120,24 @@ No production implementation or focused priority case changed in response to the
 The successor retains the old failure references, runs all six affected classes as separate
 stages, and preserves their XML alongside the ten original stages. Existing required CI remains
 mandatory. Accepted postboard A is integrated prospectively; no historical frozen record is edited.
+
+## Accepted support integration
+
+Candidate `ef866be0dc063c61a1ffd5d6a6a0090daef149f3` integrated accepted postboard A,
+but main subsequently accepted Spy support batch C. The newly inherited
+[Spy C workflow 36092409871](https://github.com/GodaPupa/argentum-batshit-test/actions/runs/36092409871)
+failed before Kotlin execution in job `107937411105`: its exact-head checkout lacked
+`tier-one-spy-support-batch-c-sources.json`. This was a source-lineage mismatch, not an
+observed Bestow rules failure or gameplay result.
+
+The successor prospectively integrates accepted main
+`1c8bc618e8b3ca0b3b154e2ef3c87ca8ff779698` as a second parent. All five priority
+production files, all 17 focused cases, the six reviewed fixture repairs, and the dedicated
+16-stage workflow remain byte-identical to `ef866be0`. Only the current base/candidate
+provenance and this integration record change within the priority repair. Accepted Spy C
+source and its verifier are retained intact; no missing-file skip, source-guard waiver,
+result replacement, or historical evidence change is used. Fresh dedicated and full CI
+checks, including the inherited support gates, must qualify the integrated source.
 
 ## Experimental consequences
 
