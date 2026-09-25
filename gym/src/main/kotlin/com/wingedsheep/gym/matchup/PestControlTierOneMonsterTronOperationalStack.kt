@@ -2,6 +2,7 @@ package com.wingedsheep.gym.matchup
 
 import com.wingedsheep.ai.engine.AIPlayer
 import com.wingedsheep.ai.engine.AiProfile
+import com.wingedsheep.ai.engine.PestMonsterTronPolicy
 import com.wingedsheep.ai.engine.EngineAiPlayerController
 import com.wingedsheep.ai.llm.BottomCardsInfo
 import com.wingedsheep.ai.llm.CardSummary
@@ -538,12 +539,20 @@ internal class MonsterTronDurableAttempts private constructor(
     }
 
     @Synchronized
-    fun reject(game: Int, reasonCode: String) = transition {
+    fun reject(game: Int, reasonCode: String, failedRaw: ByteArray? = null) = transition {
         check(stage != Stage.TERMINAL && game == nextGame)
         require(reasonCode.matches(Regex("[A-Z][A-Z0-9_]{0,127}")))
+        val snapshot = failedRaw?.copyOf()
+        if (snapshot != null) {
+            require(snapshot.isNotEmpty())
+            persist("game-$game.failed.raw", snapshot)
+        }
         persist(
             "rejected.txt",
-            "game=$game\nreason=$reasonCode\n".toByteArray()
+            (
+                "game=$game\nreason=$reasonCode\n" +
+                    "failedRawSha256=${snapshot?.let(::monsterTronDigest) ?: ""}\n"
+                ).toByteArray()
         )
         ledger += MonsterTronCoordinatorEvent(game, MonsterTronCoordinatorEventType.REJECTED)
         stage = Stage.TERMINAL
@@ -619,6 +628,7 @@ data class MonsterTronAuthorizedExecutionOutcome(
     val recordedGames: List<Int>,
     val perGameRaw: List<ByteArray>,
     val failure: String? = null,
+    val failedGameRaw: ByteArray? = null,
 )
 
 class PestControlTierOneMonsterTronAuthorizedExecutionCoordinator(
@@ -672,6 +682,9 @@ class PestControlTierOneMonsterTronAuthorizedExecutionCoordinator(
                 recordedGames = recorded.toList(),
                 perGameRaw = raws.map(ByteArray::copyOf),
                 failure = failure.message ?: failure::class.simpleName ?: "unknown execution failure",
+                failedGameRaw = (failure as? MonsterTronGameplayFailure)?.raw?.let {
+                    PestControlTierOneMonsterTronProductionDriver.encode(it)
+                },
             )
         }
     }
@@ -704,6 +717,7 @@ data class MonsterTronOfficialActionTrace(
     val emittedEvents: List<JsonElement>,
     val accepted: Boolean,
     val rejectionReason: String? = null,
+    val executionError: String? = null,
 )
 
 @Serializable
@@ -719,9 +733,25 @@ data class MonsterTronOfficialRawGame(
     val actions: List<MonsterTronOfficialActionTrace>,
     val mulliganActionCount: Int,
     val terminal: MonsterTronOfficialTerminal?,
+    val failure: String? = null,
 )
 
+/** A rejected execution retains its observed actions and state without manufacturing an outcome. */
+class MonsterTronGameplayFailure(
+    val raw: MonsterTronOfficialRawGame,
+    cause: Exception,
+) : IllegalStateException(raw.failure, cause)
+
 object PestControlTierOneMonsterTronProductionDriver {
+    internal fun profileFor(provenance: MonsterTronSmokeProvenance, playerIndex: Int): AiProfile {
+        require(playerIndex in 0..1)
+        return if (playerIndex == provenance.monsterTronSeat.index) {
+            PestMonsterTronPolicy.profile
+        } else {
+            AiProfile.PRODUCTION_CANDIDATE_EXPIRING
+        }
+    }
+
     fun drive(
         registry: CardRegistry,
         officialGame: MonsterTronAuthorizedOfficialGame,
@@ -731,45 +761,8 @@ object PestControlTierOneMonsterTronProductionDriver {
     ): MonsterTronOfficialRawGame {
         val environment = officialGame.environment
         val traces = mutableListOf<MonsterTronOfficialActionTrace>()
-        val controllers = environment.playerIds.associateWith { player ->
-            EngineAiPlayerController(registry, player, gameStateProvider = { environment.state })
-        }
-
-        driveMulligans(environment, environment.playerIds, controllers) { action ->
-            submitExactlyOne(environment, action, traces)
-        }
-        val mulliganActionCount = traces.size
-
-        val agents = environment.playerIds.associateWith { player ->
-            AIPlayer.create(registry, player, AiProfile.PRODUCTION_CANDIDATE_EXPIRING)
-        }
-        var lastTurn = environment.turnNumber
-        var actionsThisTurn = 0
-        while (!environment.isTerminal) {
-            check(traces.size < maxActions) { "reached $maxActions actions" }
-            check(environment.turnNumber <= maxTurns) { "reached turn ${environment.turnNumber}" }
-            if (environment.turnNumber != lastTurn) {
-                lastTurn = environment.turnNumber
-                actionsThisTurn = 0
-            }
-            check(++actionsThisTurn <= maxActionsPerTurn) {
-                "more than $maxActionsPerTurn exact-one actions on turn $lastTurn"
-            }
-
-            val state = environment.state
-            val decision = state.pendingDecision
-            val acting = decision?.playerId ?: state.priorityPlayerId
-                ?: error("no pending decision or priority holder")
-            val agent = agents.getValue(acting)
-            val action = if (decision != null) {
-                SubmitDecision(acting, agent.respondToDecision(state, decision))
-            } else {
-                agent.chooseAction(state)
-            }
-            submitExactlyOne(environment, action, traces)
-        }
-
-        val raw = MonsterTronOfficialRawGame(
+        var mulliganActionCount = 0
+        fun snapshot(failure: String? = null) = MonsterTronOfficialRawGame(
             provenance = officialGame.provenance,
             actions = traces.toList(),
             mulliganActionCount = mulliganActionCount,
@@ -778,10 +771,65 @@ object PestControlTierOneMonsterTronProductionDriver {
                 winnerId = environment.state.winnerId,
                 turn = environment.state.turnNumber,
             ),
+            failure = failure,
         )
-        check(raw.terminal?.gameOver == true)
-        check(raw.actions.all { it.accepted && it.rejectionReason == null })
-        return raw
+
+        try {
+            val controllers = environment.playerIds.associateWith { player ->
+                EngineAiPlayerController(registry, player, gameStateProvider = { environment.state })
+            }
+
+            driveMulligans(environment, environment.playerIds, controllers) { action ->
+                try {
+                    submitExactlyOne(environment, action, traces)
+                } finally {
+                    mulliganActionCount = traces.size
+                }
+            }
+
+            val agents = environment.playerIds.associateWith { player ->
+                AIPlayer.create(
+                    registry,
+                    player,
+                    profileFor(officialGame.provenance, environment.playerIds.indexOf(player)),
+                )
+            }
+            var lastTurn = environment.turnNumber
+            var actionsThisTurn = 0
+            while (!environment.isTerminal) {
+                check(traces.size < maxActions) { "reached $maxActions actions" }
+                check(environment.turnNumber <= maxTurns) { "reached turn ${environment.turnNumber}" }
+                if (environment.turnNumber != lastTurn) {
+                    lastTurn = environment.turnNumber
+                    actionsThisTurn = 0
+                }
+                check(++actionsThisTurn <= maxActionsPerTurn) {
+                    "more than $maxActionsPerTurn exact-one actions on turn $lastTurn"
+                }
+
+                val state = environment.state
+                val decision = state.pendingDecision
+                val acting = decision?.playerId ?: state.priorityPlayerId
+                    ?: error("no pending decision or priority holder")
+                val agent = agents.getValue(acting)
+                val action = if (decision != null) {
+                    SubmitDecision(acting, agent.respondToDecision(state, decision))
+                } else {
+                    agent.chooseAction(state)
+                }
+                submitExactlyOne(environment, action, traces)
+            }
+
+            val raw = snapshot()
+            check(raw.terminal?.gameOver == true)
+            check(raw.actions.all { it.accepted && it.rejectionReason == null })
+            return raw
+        } catch (failure: Exception) {
+            throw MonsterTronGameplayFailure(
+                snapshot(failure.message ?: failure::class.simpleName ?: "unknown execution failure"),
+                failure,
+            )
+        }
     }
 
     fun encode(raw: MonsterTronOfficialRawGame): ByteArray =
@@ -830,14 +878,29 @@ object PestControlTierOneMonsterTronProductionDriver {
         }
     }
 
-    private fun submitExactlyOne(
+    internal fun submitExactlyOne(
         environment: GameEnvironment,
         action: GameAction,
         traces: MutableList<MonsterTronOfficialActionTrace>,
+        submit: (GameAction) -> ExactlyOneSubmissionResult = environment::stepExactlyOne,
     ) {
         val before = environment.state
         val acting = action.playerId
-        val result = environment.stepExactlyOne(action)
+        val result = try {
+            submit(action)
+        } catch (failure: Exception) {
+            traces += MonsterTronOfficialActionTrace(
+                sequence = traces.size + 1,
+                turn = before.turnNumber,
+                actingPlayerId = acting,
+                pendingDecisionType = before.pendingDecision?.let { it::class.simpleName },
+                selectedAction = PROTOCOL_JSON.encodeToJsonElement(GameAction.serializer(), action),
+                emittedEvents = emptyList(),
+                accepted = false,
+                executionError = failure.message ?: failure::class.simpleName ?: "unknown engine failure",
+            )
+            throw failure
+        }
         val rejected = result as? ExactlyOneSubmissionResult.Rejected
         traces += MonsterTronOfficialActionTrace(
             sequence = traces.size + 1,

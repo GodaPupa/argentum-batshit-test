@@ -1,4 +1,4 @@
-package com.wingedsheep.ai.arena
+package com.wingedsheep.ai.engine.advisor.modules
 
 import com.wingedsheep.ai.engine.advisor.AdvisorDecisionContext
 import com.wingedsheep.ai.engine.advisor.CardAdvisor
@@ -18,13 +18,13 @@ import com.wingedsheep.sdk.core.Zone
 import com.wingedsheep.sdk.model.EntityId
 
 /**
- * Seedless, test-only opponent policy for the exact mehanske Monster Tron 60 frozen by
+ * Qualified opponent policy for the exact mehanske Monster Tron 60 frozen by
  * PEST_CONTROL_V10_VS_MEHANSKE_MONSTER_TRON_2026_09_21_PREBOARD_V1.
  *
  * This module does not alter either deck and is not an execution authorization. It supplies only
  * the deterministic public-state decisions generic one-ply evaluation is known to mis-sequence.
  */
-internal object PestMonsterTronAdvisorModule : CardAdvisorModule {
+object PestMonsterTronAdvisorModule : CardAdvisorModule {
     override fun register(registry: CardAdvisorRegistry) {
         registry.register(PestMonsterTronTutorAdvisor)
         registry.register(PestMonsterTronOrnamentAdvisor)

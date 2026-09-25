@@ -5,6 +5,11 @@ on:
     paths:
       - gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlTierOneMonsterTronOperationalStack.kt
       - gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOneMonsterTronOperationalStackTest.kt
+      - gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOneMonsterTronFailureEvidenceTest.kt
+      - ai/src/main/kotlin/com/wingedsheep/ai/engine/PestMonsterTronPolicy.kt
+      - ai/src/main/kotlin/com/wingedsheep/ai/engine/advisor/modules/PestMonsterTronAdvisorModule.kt
+      - ai/src/test/kotlin/com/wingedsheep/ai/arena/PestMonsterTronPolicyAuditTest.kt
+      - docs/experiments/pest-control/tier-one-monster-tron-operational-stack.md
       - gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOneMonsterTronOfficialArtifactValidationTest.kt
       - docs/experiments/pest-control/tier-one-qualification-stopping-rule.md
       - docs/experiments/pest-control/tier-one-spy-combo-admission.md
@@ -34,6 +39,12 @@ jobs:
 
       - name: Validate synthetic operational stack
         run: scripts/test-class PestControlTierOneMonsterTronOperationalStackTest --info --stacktrace
+
+      - name: Validate durable failures and actual production pilot seats
+        run: scripts/test-class PestControlTierOneMonsterTronFailureEvidenceTest --info --stacktrace
+
+      - name: Requalify the production Monster Tron policy
+        run: scripts/test-class PestMonsterTronPolicyAuditTest --info --stacktrace
 
       - name: Download exact frozen Monster Tron vector read-only
         env:
