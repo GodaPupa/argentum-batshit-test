@@ -15,7 +15,7 @@
       "pauper_legality": "legal",
       "mana_cost": "{R}",
       "type_line": "Instant",
-      "oracle_text": "Choose one —\n• Counter target spell if it's blue.\n• Destroy target permanent if it's blue.",
+      "oracle_text": "Choose one \u2014\n\u2022 Counter target spell if it's blue.\n\u2022 Destroy target permanent if it's blue.",
       "image_uri": "https://cards.scryfall.io/normal/front/c/3/c342cac5-08ae-4428-9c2c-f6c5904e54d2.jpg?1783947483",
       "image_http_status": 200,
       "rulings": [
@@ -100,7 +100,7 @@
       "pauper_legality": "legal",
       "mana_cost": "{U}",
       "type_line": "Instant",
-      "oracle_text": "Choose one —\n• Counter target spell if it's red.\n• Destroy target permanent if it's red.",
+      "oracle_text": "Choose one \u2014\n\u2022 Counter target spell if it's red.\n\u2022 Destroy target permanent if it's red.",
       "image_uri": "https://cards.scryfall.io/normal/front/f/6/f62716f0-fde2-49ef-b8a4-c1b03f451194.jpg?1783947514",
       "image_http_status": 200,
       "rulings": [
@@ -271,7 +271,7 @@
   ],
   "literal_collision_audit": "No prior occurrence in project docs, gym or card scenario sources before these three new fixtures; these are excluded regression identities, never official seeds.",
   "source_files_sha256": {
-    ".github/workflows/pest-control-tier-one-postboard-support-batch-b.yml": "f304b5b4007d6ba51aed68a49ad9a39895d3cb1ab9dd75a5a3a56c75eec871b4",
+    ".github/workflows/pest-control-tier-one-postboard-support-batch-b.yml": "53d5065e534fdcac6475da6252215a8525aaa8f136803852cc5ae8f2e8ea888b",
     "docs/experiments/pest-control/card-sources/postboard-b/gut-shot-canonical.json": "14b301701dc0737c22b4ef0d7a4c4b2d671254173aea1b54acd78ffc61f56328",
     "docs/experiments/pest-control/card-sources/postboard-b/gut-shot-printings.json": "73deaf11f87c318f695bb29576f2d04e552c7009cf0da7374a11d5c8fba4b4dc",
     "docs/experiments/pest-control/card-sources/postboard-b/gut-shot-rulings.json": "4a9f4e6a51f12e7861a0861659e47cf5b23c29c10d25babab40e59c701e62287",
@@ -281,22 +281,24 @@
     "docs/experiments/pest-control/card-sources/postboard-b/pyroblast-canonical.json": "15344353fb0a8047372c969713e3e3dc79fbd3bc39e74b3c6bb20dc8caf40e82",
     "docs/experiments/pest-control/card-sources/postboard-b/pyroblast-printings.json": "29f52f20ae2b08123cb41533d2cf328e5b05d6fb0faa677b72967562ad65611f",
     "docs/experiments/pest-control/card-sources/postboard-b/pyroblast-rulings.json": "8bc7ea4144e5a3f9fbbfb9b4f2bcb2b9896efa3f7b9d5a24e5432ac983ae23c1",
-    "docs/experiments/pest-control/tier-one-postboard-support-batch-a-sources.json": "c46590f24fc1c1e69f80fe0fd306cbb1d7d4a2bfc7d7785233140768583411c0",
+    "docs/experiments/pest-control/tier-one-postboard-support-batch-a-sources.json": "30b572cb4f04f290f26a925afa0652265b1b0916939dff624c62b0c04eedde56",
     "gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlTierOneMonoBlueTerrorReadiness.kt": "16ff729bf1cce9fcd5a9d3a46233efe73a2ff3f2bb61f105a48054489266fb11",
     "gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOneMonoBlueTerrorReadinessTest.kt": "0d40cf181af08bceb799e9c5b71278cca528792af87f53e508eb9d9eb28033ee",
-    "gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOnePostboardSupportBatchATest.kt": "f412f78cb46c006261888279e197fc4d3cf5aa165b86f4c4bfac404e5acadf7e",
-    "gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOnePostboardSupportBatchBTest.kt": "c158665c0c84477c7ab355dc2ba3e42209f00f35206342613ab8accaa6a978f0",
+    "gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOnePostboardSupportBatchATest.kt": "a99f93b5c3c9e10b21e5d99aecbf08407dd92b2b3dc712f46ebe2ed4a2e43b01",
+    "gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOnePostboardSupportBatchBTest.kt": "b4f996b7790ce14c3161e94120c56004980c7a80ab9d7d8713606e5d8c846721",
     "mtg-sets/1993-1999/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/ice/cards/Hydroblast.kt": "76e79693617b666af54141bdcd783c289e8fb5d347d89f642d60e9fbec332dc1",
     "mtg-sets/1993-1999/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/ice/cards/Pyroblast.kt": "6c0c30859f3a295992f9b37c4611c771791e1b85404295ae71ebe2ba6b8b4478",
     "mtg-sets/1993-1999/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/HydroblastScenarioTest.kt": "e59b0210d89dfc557bcfa9609272fcd1c95881ca278968cf3b68310388401f8f",
     "mtg-sets/1993-1999/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/PyroblastScenarioTest.kt": "d8904617758207438ebf554cb50335cd6275c579e3cbf29aab30ffab6da5ce74",
     "mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/nph/cards/GutShot.kt": "cf91672c609caa7fedb67d45303ec16b7db87ca1c2baa1f63efb4e0dcc35c6f8",
-    "mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/GutShotScenarioTest.kt": "10f777dce74942f070776e74e3d03ae89d446bb9604cf5cf080c4abf60a028ee"
+    "mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/GutShotScenarioTest.kt": "10f777dce74942f070776e74e3d03ae89d446bb9604cf5cf080c4abf60a028ee",
+    "gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOneSpyComboSupportBatchBTest.kt": "30d709d2d1f993a6fa59f9a6966ce698febe13f31edaf3de3700af2004a768d5"
   },
   "official_seeds_generated": 0,
   "official_games_initialized": 0,
   "official_actions_submitted": 0,
   "outcome_exposure": 0,
   "boarding_plans_frozen": false,
-  "gameplay_authorized": false
+  "gameplay_authorized": false,
+  "integrated_postboard_a_commit": "1cf29885757fae24aac05cfe2d1097e5088e5375"
 }

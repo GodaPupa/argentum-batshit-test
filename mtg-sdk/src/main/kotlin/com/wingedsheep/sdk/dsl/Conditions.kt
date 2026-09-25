@@ -747,6 +747,10 @@ object Conditions {
     val EmptyHand: ConditionInterface =
         Exists(Player.You, Zone.HAND, negate = true)
 
+    /** If you have no land cards in hand. */
+    val NoLandCardsInHand: ConditionInterface =
+        Exists(Player.You, Zone.HAND, GameObjectFilter.Land, negate = true)
+
     /**
      * If you have N or more cards in hand.
      */

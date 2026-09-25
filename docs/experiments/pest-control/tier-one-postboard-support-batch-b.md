@@ -2,8 +2,9 @@
 
 This is a three-card deterministic support batch for the existing five-axis program. It introduces
 no deck change, seed generation, boarding policy or official gameplay. The initial source is stacked
-on postboard batch A at `8d401bda54a39ad75814b89b04c2bd42b4324843`; accepted Spy batch B4 must be
-reconciled before final integration. A's current source bindings advance explicitly with these three
+on postboard batch A at `8d401bda54a39ad75814b89b04c2bd42b4324843`. The first executable gate also
+reconciles A/accepted Spy B4 integration `1cf29885757fae24aac05cfe2d1097e5088e5375`; the same
+accepted Fiend support is credited explicitly in both current inventories. A's current source bindings advance explicitly with these three
 identities, while A's immutable source commits and earlier artifacts remain unchanged.
 
 ## Exact mechanics and qualification
@@ -57,3 +58,8 @@ remain prerequisites to the program's bounded postboard samples.
 card and scenario files. No local Kotlin runtime pass is claimed. All official counters for this batch
 are zero, and no existing frozen deck, original Monster vector, consumed claim or historical artifact
 has changed.
+
+The initial PR commit `eaa43a4f6f0daacab12e75871b7b2a27343da1b1` conflicted with concurrent
+A integration before any workflow ran. The two-parent successor retains both changes, updates only
+current source bindings/queues, and requires the integrated A commit as an ancestor. No failed or
+missing workflow is represented as a card result.

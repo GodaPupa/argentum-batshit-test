@@ -64,7 +64,7 @@
       "rulings": [
         {
           "date": "2015-06-22",
-          "text": "Smash to Smithereens targets only the artifact, not any player. If that artifact becomes an illegal target by the time Smash to Smithereens tries to resolve, Smash to Smithereens won’t resolve and none of its effects will happen. No damage will be dealt."
+          "text": "Smash to Smithereens targets only the artifact, not any player. If that artifact becomes an illegal target by the time Smash to Smithereens tries to resolve, Smash to Smithereens won\u2019t resolve and none of its effects will happen. No damage will be dealt."
         }
       ]
     },
@@ -130,7 +130,7 @@
       "rulings_payload_sha256": "d65c892660866d943ccec58535ff6c1f55c2680e6efe5919e982954ad4747918",
       "oracle_text": "Whenever you cast an instant or sorcery spell, create a 1/1 blue Bird Illusion creature token with flying.",
       "mana_cost": "{3}{U}",
-      "type_line": "Creature — Human Wizard",
+      "type_line": "Creature \u2014 Human Wizard",
       "power": "1",
       "toughness": "5",
       "pauper_legality": "legal",
@@ -199,7 +199,7 @@
       "rulings_payload_sha256": "76c364a5ba798d4a3df2add1bba89db23451f055c6d232bdf8909cf92ec63f89",
       "oracle_text": "When this creature enters, you gain life equal to your devotion to green. (Each {G} in the mana costs of permanents you control counts toward your devotion to green.)",
       "mana_cost": "{2}{G}{G}",
-      "type_line": "Creature — Centaur Archer",
+      "type_line": "Creature \u2014 Centaur Archer",
       "power": "3",
       "toughness": "3",
       "pauper_legality": "legal",
@@ -254,23 +254,30 @@
     "mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/MurmuringMysticScenarioTest.kt": "b14c970c8868a6d2e8aee58f16b4f3b12f8ea9d819c660984eb91531f1c21d5f",
     "mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/ths/cards/NyleasDisciple.kt": "78ec5846cfaff0bd23c1f94992a3053b042dc5425603df94fa73f4fca0eca321",
     "mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/NyleasDiscipleScenarioTest.kt": "fc62d8d6d7e8186d142aef33e742cb26444feb60c6d3ac5132b663ede42c35eb",
-    "gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOnePostboardSupportBatchATest.kt": "f412f78cb46c006261888279e197fc4d3cf5aa165b86f4c4bfac404e5acadf7e",
+    "gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOnePostboardSupportBatchATest.kt": "a99f93b5c3c9e10b21e5d99aecbf08407dd92b2b3dc712f46ebe2ed4a2e43b01",
     "gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOneMonoBlueTerrorReadinessTest.kt": "0d40cf181af08bceb799e9c5b71278cca528792af87f53e508eb9d9eb28033ee",
-    ".github/workflows/pest-control-tier-one-postboard-support-batch-a.yml": "91e20315db8a9ccc5966e26d4b8c9d304d1f428134a8f01f6a6371395b886aed",
+    ".github/workflows/pest-control-tier-one-postboard-support-batch-a.yml": "ae0c74da029e89f060ac70d01b5f943a44a4292b0f5a5e9e07f191ef76789719",
     "mtg-sets/src/test/resources/snapshots/cards/SHM.json": "6f56256a287a893d95ed66f4919bd12b130907cda83039bdf328ddd006e9bb11",
     "mtg-sets/src/test/resources/snapshots/cards/IKO.json": "192f313dda525e248ea08273c47ad17c58ddb382e0762652c99121eb8e8df204",
     "mtg-sets/src/test/resources/snapshots/cards/GRN.json": "01c0352f5631bb2264af1e9aa42e85279dac483d7093ed7e1b57beff6a5fe5b9",
     "mtg-sets/src/test/resources/snapshots/cards/THS.json": "8cd0c2797a4258e42b5ed86d6e1345cc2c0cb69fd70d26ba8256fff5375aaa42",
-    "gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlTierOneMonoBlueTerrorReadiness.kt": "16ff729bf1cce9fcd5a9d3a46233efe73a2ff3f2bb61f105a48054489266fb11"
+    "gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlTierOneMonoBlueTerrorReadiness.kt": "16ff729bf1cce9fcd5a9d3a46233efe73a2ff3f2bb61f105a48054489266fb11",
+    "gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOneSpyComboSupportBatchBTest.kt": "30d709d2d1f993a6fa59f9a6966ce698febe13f31edaf3de3700af2004a768d5"
   },
   "official_seeds_generated": 0,
   "official_games_initialized": 0,
   "official_actions_submitted": 0,
   "outcome_exposure": 0,
+  "integration_main_commit": "c6953354b1b799fe4506eb9e44ff25523a132d8e",
+  "independent_spy_batch_b": {
+    "source_commit": "7a3f1429c027925c30ed7c1e329c3879e674574a",
+    "merge_commit": "c6953354b1b799fe4506eb9e44ff25523a132d8e",
+    "newly_supported_sideboard_slots": 3
+  },
   "current_support_successor": {
     "program": "postboard_support_batch_b",
-    "predecessor_source": "8d401bda54a39ad75814b89b04c2bd42b4324843",
-    "predecessor_manifest_sha256": "bf1c6473598a77b7d39fa183f2cb6d6be4967a7cbc10c434961404649803d817",
+    "predecessor_source": "1cf29885757fae24aac05cfe2d1097e5088e5375",
+    "predecessor_manifest_sha256": "7a99a8f4ea94f4eda8cc3e318d5f60e96ab1ef195bf7363adda32d167537a715",
     "new_registry_identities": [
       "Pyroblast",
       "Hydroblast",
