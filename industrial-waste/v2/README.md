@@ -16,8 +16,10 @@ and the unchanged legacy golden. Its artifact provenance limitation is explicit;
 the checkout log establishes the actual source and the receipt label is repaired
 prospectively. `card-qualification-36081473608.json` records the corrected actual
 source receipt, five passing Dross Skullbomb scenarios and matching compiled
-snapshots. The shared selection policy is the next validation batch. Exact
-pilot/telemetry qualification and a guarded runtime binding receipt
+snapshots. `selection-qualification-36082520836.json` records 28 passing tests,
+including eight shared-policy tests with real card continuations and privacy
+invariance. The complete casting/activation/mulligan/scry pilot, exact
+ordering/telemetry/replay and guarded runtime binding receipt
 remain necessary before R1 execution. Official counters remain zero.
 
 This is a new experimental program. It does not continue Gate 11 and it does not overwrite the

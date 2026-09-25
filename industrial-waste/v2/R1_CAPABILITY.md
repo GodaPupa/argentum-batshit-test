@@ -1,6 +1,6 @@
 # R1 seed-free card and infrastructure qualification
 
-Status: **NEW CARDS AND DROSS SKULLBOMB QUALIFIED; SHARED SELECTION VALIDATION REQUESTED — NO R1 CORPUS EXECUTION**
+Status: **CARD AND SHARED SELECTION COMPONENTS QUALIFIED — FULL R1 READINESS STILL PENDING / NO CORPUS EXECUTION**
 
 The R0 freeze is commit `87306412b78770f161366cf1565338c4daaf6e9e`.
 Its dedicated construction run `36079890615` succeeded. That job validated
@@ -98,8 +98,12 @@ deterministic bottom ordering. One test also casts Stirrings, Rumble and Kinsmit
 in real engine fixtures and submits the selector's responses through the actual
 pending-decision continuation to verify that the selected copy reaches hand.
 Combined registration and inherited tutor/loop
-choices are also requalified in the same validation job. This batch is pending
-runtime validation and is not a complete executable R1 pilot.
+choices are also requalified in the same validation job. Run `36082520836`
+passed all 28 selected tests without failures, errors or skips: eight selection
+tests, six inherited advisor tests, twelve card scenarios, the registry and the
+unchanged baseline. Its ZIP digest, raw XML, actual source identity and snapshot
+comparison are audited in `selection-qualification-36082520836.json`.
+This qualifies the selection component and is not a complete executable R1 pilot.
 
 The first selection-batch CI, `36082136891`, failed at compilation because its
 fixture assigned the read-only `GameTestDriver.state` property. The fixture now
@@ -111,8 +115,7 @@ exact ordering and shuffle adapters, telemetry, and replay remain prerequisites.
 No R1 ordering row is used by these fixtures and no allocation is initialized.
 
 The `industrial-waste-v2-card-qualification` workflow is validation only.
-After the selection follow-up succeeds, audit its decisions and invariance
-fixtures, then continue the seed-free work:
+The selection artifact is accepted. Continue the seed-free work:
 exact candidate mechanics, structural pilot, ordering adapter, telemetry,
 loop certificate, replay, and durable exclusive attempt recording.
 
