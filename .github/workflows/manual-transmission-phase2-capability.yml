@@ -123,7 +123,8 @@ jobs:
         run: scripts/test-class ManualTransmissionPhaseTwoRegistryAuditTest --info --stacktrace
       - name: Validate snapshots and preserve reviewable actual output
         if: success() || failure()
-        run: scripts/test-class CardDefinitionSnapshotTest --info --stacktrace
+        # The historical provenance checkout contains the same test class; select only this Gradle module.
+        run: scripts/gradle-locked :mtg-sets:test --tests "*CardDefinitionSnapshotTest" --info --stacktrace
       - uses: actions/upload-artifact@v7
         if: always()
         with:
