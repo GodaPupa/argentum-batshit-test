@@ -28,3 +28,11 @@ observer, doubled-token choice, removed-source, or equip-payment cases to obtain
 Canonical card: [MH3 #148](https://scryfall.com/card/mh3/148/colossal-dreadmask).
 Definition and ruling metadata were retrieved from Scryfall before drafting. All official counters
 remain unchanged; this draft authorizes no gameplay and alters no frozen deck.
+
+## Prospective AN integration
+
+The preserved `.pending` files and patch above are the AM historical draft. Batch AN copies the
+card and regression work into compiled source paths and prospectively qualifies a canonical
+effect-entry snapshot capability plus the actual-source attachment fix. See
+[the AN gate](../../v09-position1-engine-batch-an-gate.md). Acceptance requires the AN workflow and
+independent full artifact audit; this note does not itself change accepted coverage.

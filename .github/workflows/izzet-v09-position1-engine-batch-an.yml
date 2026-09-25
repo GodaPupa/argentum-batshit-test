@@ -1,0 +1,175 @@
+name: Izzet Position-1 Engine Batch AN
+
+on:
+  push:
+    branches: ["mayhem/izzet-science"]
+    paths:
+      - ".github/workflows/izzet-v09-position1-engine-batch-an.yml"
+      - "mtg-sets/2024/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/mh3/cards/ColossalDreadmask.kt"
+      - "mtg-sets/2024/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/ColossalDreadmaskScenarioTest.kt"
+      - "rules-engine/src/test/kotlin/com/wingedsheep/engine/event/BattlefieldEntrySnapshotTest.kt"
+      - "rules-engine/src/test/kotlin/com/wingedsheep/engine/handlers/effects/AttachEquipmentObjectIdentityTest.kt"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: izzet-position1-batch-an
+  cancel-in-progress: false
+
+jobs:
+  qualify-batch-an:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "21"
+      - uses: gradle/actions/setup-gradle@v6
+
+      - name: Verify frozen identities and preceding acceptance
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(sha256sum izzet-science/v0.7-control.md | cut -d' ' -f1)" = "726f5e9458b46dda30b33a6ce9f3c3237b25d6e11b81dac85308c3065c108a01"
+          test "$(sha256sum izzet-science/opponents/veteran-beastrider-commander-clash-2025.txt | cut -d' ' -f1)" = "c3ab6ee8e37a78219e7bbb7c6a75c634d78c1eb4965ab0db3abd5d853398b0be"
+          grep -Fq 'Batch AM is accepted' izzet-science/v09-position1-engine-batch-am-gate.md
+          grep -Fq 'V07_DECK_AUDIT_NO_CHANGE' izzet-science/v07-deck-level-audit-no-change.md
+          grep -Fq 'V09_CARD_CONTROL_ARCHITECTURE_AUDIT_KEEP_V07' izzet-science/v09-card-control-architecture-audit.md
+          grep -Fq 'Expected post-implementation unresolved count is exactly **9**' izzet-science/v09-position1-engine-batch-an-gate.md
+          mkdir -p /tmp/izzet-batch-an
+
+      - name: Qualify entry snapshots, source attachment and exact Dreadmask behavior
+        shell: bash
+        run: |
+          set -euo pipefail
+          scripts/test-class BattlefieldEntrySnapshotTest --info --stacktrace | tee /tmp/izzet-batch-an/entry.txt
+          scripts/test-class AttachEquipmentObjectIdentityTest --info --stacktrace | tee /tmp/izzet-batch-an/attachment.txt
+          scripts/test-class ColossalDreadmaskScenarioTest --info --stacktrace | tee /tmp/izzet-batch-an/dreadmask.txt
+          scripts/test-class TriggerMatcherIsPermanentTest --info --stacktrace | tee /tmp/izzet-batch-an/permanent-departure.txt
+          scripts/test-class TriggerMatcherIsNontokenTest --info --stacktrace | tee /tmp/izzet-batch-an/token-departure.txt
+          scripts/test-class CreateAdditionalTokenBatchScenarioTest --info --stacktrace | tee /tmp/izzet-batch-an/additional-tokens.txt
+          scripts/test-class MirkwoodBatsTokenCreationTest --info --stacktrace | tee /tmp/izzet-batch-an/token-observer.txt
+          scripts/test-class FixedCardTypePredicateTest --info --stacktrace | tee /tmp/izzet-batch-an/fixed-types.txt
+          scripts/test-class IzzetSciencePdhMechanicsQualificationTest --info --stacktrace | tee /tmp/izzet-batch-an/pdh.txt
+
+      - name: Verify exact real-engine registry coverage
+        shell: bash
+        run: |
+          set -euo pipefail
+          scripts/test-class IzzetScienceVeteranBeastriderEngineReadinessTest --info --stacktrace | tee /tmp/izzet-batch-an/readiness.txt
+          grep -Fq 'V09_REAL_ENGINE_UNRESOLVED_COUNT=9' /tmp/izzet-batch-an/readiness.txt
+          ! grep -Fq 'unresolved Izzet card:' /tmp/izzet-batch-an/readiness.txt
+          ! grep -Fq 'unresolved Veteran Beastrider card: Colossal Dreadmask' /tmp/izzet-batch-an/readiness.txt
+
+      - name: Regenerate canonical snapshots and reject unrelated changes
+        shell: bash
+        run: |
+          set -euo pipefail
+          scripts/gradle-locked :mtg-sets:test --tests "*CardDefinitionSnapshotTest" -DupdateSnapshots=true --stacktrace | tee /tmp/izzet-batch-an/snapshot-generation.txt
+          python3 - <<'PY'
+          import json, pathlib, re, subprocess
+          expected = {'MH3': 'Colossal Dreadmask'}
+          paths = {f'mtg-sets/src/test/resources/snapshots/cards/{code}.json' for code in expected}
+          changed = set(subprocess.check_output(['git', 'diff', '--name-only'], text=True).splitlines())
+          changed |= set(subprocess.check_output(['git', 'ls-files', '--others', '--exclude-standard'], text=True).splitlines())
+          assert changed == paths, (changed, paths)
+          def records(text):
+              chunks = re.split(r'^// ([^\n]+)\n', text, flags=re.M)
+              assert not chunks[0].strip(), 'unexpected snapshot preamble'
+              result = {}
+              for i in range(1, len(chunks), 2):
+                  assert chunks[i] not in result, 'duplicate card in snapshot'
+                  result[chunks[i]] = json.loads(chunks[i + 1])
+              return result
+          for code, name in expected.items():
+              path = f'mtg-sets/src/test/resources/snapshots/cards/{code}.json'
+              prior = subprocess.run(['git', 'show', 'HEAD:' + path], text=True, capture_output=True)
+              assert prior.returncode == 0, 'missing existing snapshot'
+              before = records(prior.stdout)
+              after = records(pathlib.Path(path).read_text())
+              assert set(after) == set(before) | {name}
+              assert name not in before
+              for old_name, old_card in before.items():
+                  assert after[old_name] == old_card, 'unrelated card changed: ' + old_name
+          print('BATCH_AN_ONLY_DREADMASK_ADDITION_PASS')
+          PY
+          git diff --check
+
+      - name: Requalify all canonical snapshots with updating disabled
+        shell: bash
+        run: |
+          set -euo pipefail
+          scripts/gradle-locked :mtg-sets:cleanTest :mtg-sets:test --tests "*CardDefinitionSnapshotTest" -DupdateSnapshots=false --stacktrace | tee /tmp/izzet-batch-an/snapshot-verification.txt
+
+      - name: Verify untouched official execution and integrate exact snapshots
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -Fq 'officialGamesAuthorized: Int = 0' gym/src/main/kotlin/com/wingedsheep/gym/matchup/IzzetScienceVeteranBeastriderEngineReadiness.kt
+          grep -Fq 'officialSeedsConsumed: Int = 0' gym/src/main/kotlin/com/wingedsheep/gym/matchup/IzzetScienceVeteranBeastriderEngineReadiness.kt
+          grep -Fq 'outcomeExposure: Int = 0' gym/src/main/kotlin/com/wingedsheep/gym/matchup/IzzetScienceVeteranBeastriderEngineReadiness.kt
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add mtg-sets/src/test/resources/snapshots/cards/MH3.json
+          git commit -m "Qualify Colossal Dreadmask Izzet batch AN snapshot"
+          git fetch origin mayhem/izzet-science
+          test "$(git rev-parse origin/mayhem/izzet-science)" = "${GITHUB_SHA}"
+          git push origin HEAD:mayhem/izzet-science
+
+      - name: Emit complete batch provenance
+        shell: bash
+        run: |
+          set -euo pipefail
+          {
+            echo "schema=izzet-v09-position1-engine-batch-an-v1"
+            echo "source_sha=${GITHUB_SHA}"
+            echo "snapshot_commit=$(git rev-parse HEAD)"
+            echo "snapshot_tree=$(git rev-parse HEAD^{tree})"
+            echo "implemented=Colossal Dreadmask"
+            echo "unresolved_before=10"
+            echo "unresolved_after=9"
+            echo "unresolved_izzet_after=0"
+            echo "entry_scope=EFFECT_INSTRUCTION_CARD_CHARACTERISTICS_ONLY"
+            echo "full_readiness_guards_remaining=5"
+            echo "official_seeds_consumed=0"
+            echo "games_initialized=0"
+            echo "outcome_exposure=0"
+            sha256sum izzet-science/v0.7-control.md
+            sha256sum izzet-science/opponents/veteran-beastrider-commander-clash-2025.txt
+            sha256sum izzet-science/v09-position1-engine-batch-am-gate.md
+            sha256sum izzet-science/v09-position1-engine-batch-an-gate.md
+            sha256sum .github/workflows/izzet-v09-position1-engine-batch-an.yml
+            sha256sum rules-engine/src/main/kotlin/com/wingedsheep/engine/core/GameEvent.kt
+            sha256sum rules-engine/src/main/kotlin/com/wingedsheep/engine/event/BattlefieldEntrySnapshots.kt
+            sha256sum rules-engine/src/main/kotlin/com/wingedsheep/engine/event/EntryCardPredicateMatcher.kt
+            sha256sum rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerMatcher.kt
+            sha256sum rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/EffectExecutorRegistry.kt
+            sha256sum rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/permanent/attachments/AttachEquipmentExecutor.kt
+            sha256sum rules-engine/src/test/kotlin/com/wingedsheep/engine/event/BattlefieldEntrySnapshotTest.kt
+            sha256sum rules-engine/src/test/kotlin/com/wingedsheep/engine/handlers/effects/AttachEquipmentObjectIdentityTest.kt
+            sha256sum mtg-sets/2024/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/mh3/cards/ColossalDreadmask.kt
+            sha256sum mtg-sets/2024/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/ColossalDreadmaskScenarioTest.kt
+            sha256sum rules-engine/src/test/kotlin/com/wingedsheep/engine/event/TriggerMatcherIsPermanentTest.kt
+            sha256sum rules-engine/src/test/kotlin/com/wingedsheep/engine/event/TriggerMatcherIsNontokenTest.kt
+            sha256sum rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/CreateAdditionalTokenBatchScenarioTest.kt
+            sha256sum rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/MirkwoodBatsTokenCreationTest.kt
+            sha256sum rules-engine/src/test/kotlin/com/wingedsheep/engine/predicates/FixedCardTypePredicateTest.kt
+            sha256sum gym/src/test/kotlin/com/wingedsheep/gym/IzzetSciencePdhMechanicsQualificationTest.kt
+            sha256sum gym/src/test/kotlin/com/wingedsheep/gym/IzzetScienceVeteranBeastriderEngineReadinessTest.kt
+            sha256sum izzet-science/capability-drafts/colossal-dreadmask/README.md
+            sha256sum izzet-science/capability-drafts/remaining-queue-findings.md
+            sha256sum mtg-sets/src/test/resources/snapshots/cards/MH3.json
+            sha256sum /tmp/izzet-batch-an/{entry,attachment,dreadmask,permanent-departure,token-departure,additional-tokens,token-observer,fixed-types,pdh,readiness,snapshot-generation,snapshot-verification}.txt
+          } > /tmp/izzet-batch-an/manifest.txt
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: izzet-v09-position1-engine-batch-an
+          path: /tmp/izzet-batch-an
+          if-no-files-found: error

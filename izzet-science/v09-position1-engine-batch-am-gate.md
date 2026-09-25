@@ -84,3 +84,18 @@ existing draft validation-only PR. Independent archive audit is required before 
 
 Official counters remain **12 generated, 0 consumed, 0 initialized, 0 completed/12, 0 outcome
 exposure/12**. This gate cannot authorize official gameplay.
+
+## Independent acceptance audit — September 25, 2026
+
+**Batch AM is accepted.** Validation run [36086281992](https://github.com/GodaPupa/argentum-batshit-test/actions/runs/36086281992),
+job `107918802939`, completed successfully at source `79e21463d2e7b0760a70f9a994073abd6a076b4a`.
+The guarded snapshot integration produced `203a5cb6f278443b121f90eac474cbc879755677`, tree
+`41bed3c5d5f30aa73fff72c7ecd14c4b658523e8`. Artifact `10843892659` was independently downloaded:
+306,457 bytes, archive SHA-256 `964accae4f06bf615f3f72d79fa0024c429d2be9c5979faf0e652900ac75645c`.
+
+The audit verified the exact ten-file contract, all 38 manifest digests against source/snapshot/archive
+bytes, nine successful transcripts, frozen identities and zero official execution counters. The only
+snapshot change was the new Cosmic Hunger record in MOM.json; every preceding record was unchanged.
+The accepted unresolved count is **11 → 10**, all Veteran, with zero Izzet identities. Scoped PDH
+fixtures passed; all five full-readiness guards remain closed. This was seed-free validation, with
+**0/12 initialized, completed, or exposed** official games. Position 1 remains unexecuted.
