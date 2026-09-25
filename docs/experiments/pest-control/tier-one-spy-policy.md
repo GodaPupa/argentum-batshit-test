@@ -110,3 +110,23 @@ are checked before and after actual stack resolution; mana effects are checked
 through actual mana-pool output. The original eighteen policy cases remain
 unchanged. Runtime qualification is pending; ten exact source hashes cover
 both enumerators, the expanded regression, and the policy implementation.
+
+### Disabled-action fixture correction: 36094006493
+
+Source `b98e1eb17f8478cb0bf847c418664804aaa005dd` ran all six engine
+cases: four passed, including actual helper payment, forged atomic rejection,
+and legitimate self-tapping in both mana and nonmana paths. Two lone-source
+cases failed because they assumed an unavailable action disappears from the
+menu. The established engine contract intentionally retains disabled actions
+with `affordable = false`; the production pilot filters out those entries.
+The eighteen policy cases and four downstream stages did not execute.
+
+Artifact `10846399521` (6,861 bytes), SHA-256
+`fae5741f16a466158d8842da559b176b17c9245ba207f492a185bb311fa8f6b1`,
+is recorded with its original XML in
+[the failure receipt](spy-policy-validation-failure-36094006493/receipt.json).
+The correction changes only the two new lone-source fixtures: require the
+retained entry to be unaffordable, then submit a forged double payment and
+require an error, no events, and unchanged state. This verifies the actual
+menu and payment contracts without changing production code, the six-case
+scope, or the original eighteen policy cases. Qualification remains pending.

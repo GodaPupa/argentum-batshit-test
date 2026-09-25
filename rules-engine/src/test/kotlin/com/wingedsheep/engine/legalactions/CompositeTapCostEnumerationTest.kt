@@ -78,7 +78,15 @@ class CompositeTapCostEnumerationTest : ScenarioTestBase() {
         test("a separate source tap and another tap cannot be paid by a lone creature") {
             val game = setup().withCardOnBattlefield(1, separateTap.name).build()
             val source = game.findPermanent(separateTap.name)!!
-            actions(game).any { (it.action as? ActivateAbility)?.sourceId == source } shouldBe false
+            val offered = actions(game).single { (it.action as? ActivateAbility)?.sourceId == source }
+            // The menu intentionally retains disabled entries; affordability is the legality gate.
+            offered.affordable shouldBe false
+            val action = offered.action.shouldBeInstanceOf<ActivateAbility>()
+            val before = game.state
+            val forged = game.execute(action.copy(costPayment = AdditionalCostPayment(tappedPermanents = listOf(source))))
+            forged.error shouldNotBe null
+            forged.events shouldBe emptyList()
+            game.state shouldBe before
         }
 
         test("the complete offered tap pool excludes the reserved source and executes legally") {
@@ -115,7 +123,15 @@ class CompositeTapCostEnumerationTest : ScenarioTestBase() {
         test("a nonmana composite with two tap legs is unavailable on a lone creature") {
             val game = setup().withCardOnBattlefield(1, separateNonManaTap.name).build()
             val source = game.findPermanent(separateNonManaTap.name)!!
-            actions(game).any { (it.action as? ActivateAbility)?.sourceId == source } shouldBe false
+            val offered = actions(game).single { (it.action as? ActivateAbility)?.sourceId == source }
+            // The menu intentionally retains disabled entries; affordability is the legality gate.
+            offered.affordable shouldBe false
+            val action = offered.action.shouldBeInstanceOf<ActivateAbility>()
+            val before = game.state
+            val forged = game.execute(action.copy(costPayment = AdditionalCostPayment(tappedPermanents = listOf(source))))
+            forged.error shouldNotBe null
+            forged.events shouldBe emptyList()
+            game.state shouldBe before
         }
 
         test("a nonmana composite excludes its reserved source and resolves after legal payment") {
