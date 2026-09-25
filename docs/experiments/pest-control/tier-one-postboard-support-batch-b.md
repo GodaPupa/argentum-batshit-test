@@ -62,7 +62,7 @@ remain prerequisites to the program's bounded postboard samples.
 
 ## Current disposition
 
-`REJECTED_PENDING_RULES_REPAIR_AND_STRICT_SNAPSHOT_VALIDATION`. Independent source review passed the initial six
+`REJECTED_PENDING_BATTLE_PREDICATE_AND_POST_CAST_SBA_REPAIR`. Independent source review passed the initial six
 card and scenario files. No local Kotlin runtime pass is claimed. All official counters for this batch
 are zero, and no existing frozen deck, original Monster vector, consumed claim or historical artifact
 has changed.
@@ -111,3 +111,32 @@ the accepted main checkpoint remains ten identities and twenty-eight slots until
 qualified. Only the two current A manifest/coverage conflicts were reconciled. Historical source
 manifests and raw evidence are unchanged. Source bindings are refreshed explicitly for this
 integration, and required CI must qualify the exact combined tree.
+
+## Integrated a66 artifact audit and projected permanent correction
+
+Run [36092747077](https://github.com/GodaPupa/argentum-batshit-test/actions/runs/36092747077),
+source `a66c80ba9b664778cde69b670feeb78a241ea890`, executed **396 cases across eleven suites:**
+**394 passed and two failed**, with zero errors or skips. All thirty source pins and nine card
+payload pins match the exact source. The [successor failure audit](tier-one-postboard-support-batch-b-failure-audit-36092747077.json)
+preserves every raw XML, all eleven stage statuses, source provenance and both coverage reports.
+Artifact `10846239519` has ZIP SHA-256
+`5befa27e001d94bb85101722ff52a31ab735df2e15f9e1076fc03d1b82baf313`.
+
+The strict snapshot stage now passes all 338 cases. The incidental `FreeForAllLobbyTest`
+passes all fourteen cases with its original assertions and timeouts; this does not erase or
+explain its earlier eventual-assertion failure. The remaining failures are both in Gut Shot:
+the unchanged exact-two-life post-cast loss assertion, and the newly required battle legal-action
+offer. Ten Gut Shot cases pass, including illegal ordinary-land/artifact rejection, actual
+Factory animation and the exact fizzle after Imprisoned in the Moon changes the target's type.
+
+The battle failure exposed a deeper shared predicate: enumeration requests `TargetFilter.Permanent`
+before selecting battles, but projected `CardPredicate.IsPermanent` omits `BATTLE`. The other
+predicate paths already delegate to `TypeLine.isPermanent`, which includes it. The prospective
+correction adds `BATTLE` to that shared projected-type set. It preserves every Gut Shot assertion
+and requires exact successor CI; the source review of the outer AnyTarget paths did not prove
+this downstream predicate. Post-cast state-based actions remain a separate repair.
+
+The rules manifest binds the official September 25, 2026 archive URL and SHA-256. That digest
+and effective header were checked against the separately archived official bytes; the workflow
+artifact does not itself include the entire rules file. The combined seven-identity/sixteen-slot
+coverage queue remains prospective. No official execution or original Monster claim changed.

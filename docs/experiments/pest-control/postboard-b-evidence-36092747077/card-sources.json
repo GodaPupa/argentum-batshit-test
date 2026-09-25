@@ -300,9 +300,7 @@
     "mtg-sets/src/test/resources/snapshots/cards/ICE.json": "dd05c266d119537bd89d0454b2014f2ddd3888e90060ced4c5254ae497a1911f",
     "mtg-sets/src/test/resources/snapshots/cards/NPH.json": "8c5ca92e9674c4e03f2277fd04711f4d67a9a553c0a87d8894c0e2dee3b41a43",
     "game-server/src/test/kotlin/com/wingedsheep/gameserver/FreeForAllLobbyTest.kt": "416eb14c312d706f6c125de5f70de8c5f1abf175f5bee813321260fd75271a73",
-    "docs/experiments/pest-control/tier-one-postboard-support-batch-b-failure-audit.json": "1ab97e2c34e2fe274c137a9b03caf996f1cad14223c7f248f5c28f1413d075ef",
-    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/PredicateEvaluator.kt": "ac9604c03754dffdd06e294e30f6a3379a7bfd7129a9ce31abba879576a75496",
-    "docs/experiments/pest-control/tier-one-postboard-support-batch-b-failure-audit-36092747077.json": "69cdf06b2532fd94b9856fddcc968d86e6f86751f73e74027d98fe2dcc311c4a"
+    "docs/experiments/pest-control/tier-one-postboard-support-batch-b-failure-audit.json": "1ab97e2c34e2fe274c137a9b03caf996f1cad14223c7f248f5c28f1413d075ef"
   },
   "official_seeds_generated": 0,
   "official_games_initialized": 0,
@@ -313,15 +311,14 @@
   "integrated_postboard_a_commit": "1cf29885757fae24aac05cfe2d1097e5088e5375",
   "compiled_snapshot_review_artifact": 10845845066,
   "compiled_snapshot_review_run": 36089250333,
-  "runtime_status": "REJECTED_PENDING_BATTLE_PREDICATE_AND_POST_CAST_SBA_REPAIR",
+  "runtime_status": "REJECTED_PENDING_RULES_REPAIR_AND_STRICT_SNAPSHOT_VALIDATION",
   "canonical_any_target_rules": {
     "effective_date": "2026-09-25",
     "rule": "115.4 and 608.2b",
     "archive_sha256": "8d860e451f20f38865b725b42d82feb714c725373dd8f3b32b8652b3eeb070ca",
     "archive_url": "https://media.wizards.com/2026/downloads/MagicCompRules%2020260925.txt",
-    "source_review_status": "ANY_TARGET_HUNKS_SOURCE_REVIEWED_PROJECTED_PERMANENT_GAP_IDENTIFIED_BY_RUNTIME",
-    "runtime_status": "TEN_OF_TWELVE_GUT_CASES_PASSED_CORRECTIVE_CI_REQUIRED",
-    "projected_permanent_correction": "Include BATTLE in shared CardPredicate.IsPermanent; keep the real battle-offer assertion unchanged."
+    "source_review_status": "PENDING_INDEPENDENT_REVIEW",
+    "runtime_status": "PENDING_SUCCESSOR_CI"
   },
   "integrated_spy_batch_c": {
     "source_commit": "1ad4079b8fbdbc79ec5bb88dad343aad7d417f96",
@@ -332,6 +329,5 @@
     "newly_supported_sideboard_slots": 1,
     "accepted_main_unresolved": 0,
     "scope": "Accepted Bestow/Hydra support only; no imported matchup or pilot evidence"
-  },
-  "latest_failure_audit": "docs/experiments/pest-control/tier-one-postboard-support-batch-b-failure-audit-36092747077.json"
+  }
 }

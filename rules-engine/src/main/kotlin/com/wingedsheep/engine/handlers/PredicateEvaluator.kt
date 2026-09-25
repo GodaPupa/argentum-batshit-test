@@ -459,7 +459,7 @@ class PredicateEvaluator {
             CardPredicate.IsDoubleFaced -> card.isDoubleFaced
             CardPredicate.HasNoAbilities -> card.oracleText.isBlank()
             CardPredicate.IsBasicLand -> "LAND" in types && card.typeLine.supertypes.any { it.name == "BASIC" }
-            CardPredicate.IsPermanent -> types.any { it in setOf("CREATURE", "LAND", "ARTIFACT", "ENCHANTMENT", "PLANESWALKER") }
+            CardPredicate.IsPermanent -> types.any { it in setOf("CREATURE", "LAND", "ARTIFACT", "ENCHANTMENT", "PLANESWALKER", "BATTLE") }
             CardPredicate.IsNonland -> "LAND" !in types
             CardPredicate.IsNoncreature -> "CREATURE" !in types
             CardPredicate.IsNonenchantment -> "ENCHANTMENT" !in types
