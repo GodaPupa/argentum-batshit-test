@@ -74,7 +74,17 @@ internal object IndustrialWasteV2CheckpointManaClassifier {
                     else -> false
                 }
             }
-            classifyCard(card.name, originalCopy, totalMana, entries)
+            classifyCard(
+                state = state,
+                player = player,
+                cardId = cardId,
+                cardName = card.name,
+                originalCopy = originalCopy,
+                totalMana = totalMana,
+                entries = entries,
+                cardRegistry = cardRegistry,
+                manaSolver = manaSolver,
+            )
         }.sortedBy { it.originalCopy }
 
         return IndustrialWasteV2CheckpointMana(
@@ -95,10 +105,15 @@ internal object IndustrialWasteV2CheckpointManaClassifier {
     }
 
     private fun classifyCard(
+        state: GameState,
+        player: EntityId,
+        cardId: EntityId,
         cardName: String,
         originalCopy: String,
         totalMana: Int,
         entries: List<LegalAction>,
+        cardRegistry: CardRegistry,
+        manaSolver: ManaSolver,
     ): IndustrialWasteV2CheckpointCard {
         if (entries.any { it.affordable && !it.hasUnfillableTargetRequirement }) {
             val cost = entries.firstOrNull { it.affordable && !it.hasUnfillableTargetRequirement }?.manaCostString
@@ -116,8 +131,41 @@ internal object IndustrialWasteV2CheckpointManaClassifier {
 
         val casts = entries.filter { it.action is CastSpell && !it.hasUnfillableTargetRequirement }
         if (casts.isEmpty()) {
+            // CastSpellEnumerator deliberately omits an ordinary primary face when no payment path
+            // is affordable. That omission must not be confused with a timing restriction. Recover
+            // only the narrow shape whose exact payment semantics are independently knowable here:
+            // a normal, fixed-cost, targetless hand spell with no additional cost or cast
+            // restriction. Everything more complex remains fail-closed.
+            val definition = cardRegistry.getCard(cardName)
+            val plainFixedPrimary = definition != null &&
+                definition.layout == com.wingedsheep.sdk.model.CardLayout.NORMAL &&
+                !definition.hasNoManaCost &&
+                !definition.typeLine.isLand &&
+                !definition.manaCost.hasX &&
+                definition.script.additionalCosts.isEmpty() &&
+                definition.script.targetRequirements.isEmpty() &&
+                definition.script.auraTarget == null &&
+                definition.script.castRestrictions.isEmpty()
+            if (!plainFixedPrimary) {
+                return IndustrialWasteV2CheckpointCard(
+                    originalCopy, cardName,
+                    IndustrialWasteV2CheckpointCardStatus.TIMING_OR_OTHER_LEGALITY, null
+                )
+            }
+
+            val definitionCost = definition!!.manaCost
+            val exactlyPayable = manaSolver.canPay(state, player, definitionCost)
+            val status = when {
+                // If the engine can pay the exact fixed cost but the enumerator emitted no cast,
+                // the missing action is caused by some legality/timing surface outside this narrow
+                // classifier; never relabel it as a mana failure.
+                exactlyPayable -> IndustrialWasteV2CheckpointCardStatus.TIMING_OR_OTHER_LEGALITY
+                totalMana >= definitionCost.cmc ->
+                    IndustrialWasteV2CheckpointCardStatus.UNAVAILABLE_COLORED_PAYMENT
+                else -> IndustrialWasteV2CheckpointCardStatus.INSUFFICIENT_TOTAL_MANA
+            }
             return IndustrialWasteV2CheckpointCard(
-                originalCopy, cardName, IndustrialWasteV2CheckpointCardStatus.TIMING_OR_OTHER_LEGALITY, null
+                originalCopy, cardName, status, definitionCost.toString()
             )
         }
 
