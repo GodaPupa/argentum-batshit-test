@@ -34,7 +34,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          python -m unittest -v experiments/manual-transmission-phase2/test_metrics_contract.py 2>&1 | tee telemetry-tests.txt
+          (cd experiments/manual-transmission-phase2 && python -m unittest -v test_metrics_contract.py) 2>&1 | tee telemetry-tests.txt
       - name: Record exact source provenance
         shell: bash
         run: |
