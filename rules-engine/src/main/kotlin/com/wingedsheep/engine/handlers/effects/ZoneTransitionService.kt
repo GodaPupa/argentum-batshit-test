@@ -552,7 +552,13 @@ object ZoneTransitionService {
         // player's battlefield zone (e.g., control-changed permanents in some zone layouts).
         val removeZoneKey = currentZoneKey
         newState = newState.removeFromZone(removeZoneKey, entityId)
-        if (fromZone == Zone.STACK) newState = newState.removeFromStack(entityId)
+        if (fromZone == Zone.STACK) {
+            newState = newState.removeFromStack(entityId)
+            // Bestow's type-changing effect ends whenever the spell becomes a new zone object.
+            newState = newState.updateEntity(entityId) { c ->
+                ZoneMovementUtils.restoreBestowAfterZoneExit(c)
+            }
+        }
 
         // Drop any remaining linked-exile reference held by a granter still on the
         // battlefield (e.g. Maralen, Fae Ascendant). The card has just left exile by
