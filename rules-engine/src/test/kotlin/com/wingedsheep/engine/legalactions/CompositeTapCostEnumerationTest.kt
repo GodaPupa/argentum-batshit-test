@@ -53,7 +53,27 @@ class CompositeTapCostEnumerationTest : ScenarioTestBase() {
                 timing = TimingRule.ManaAbility
             }
         }
-        cardRegistry.register(listOf(separateTap, batchOnly))
+        val separateNonManaTap = card("Separate Nonmana Tap Fixture") {
+            manaCost = "{G}"
+            typeLine = "Creature — Dryad"
+            power = 0
+            toughness = 3
+            activatedAbility {
+                cost = Costs.Composite(Costs.Tap, Costs.TapPermanents(count = 1, filter = GameObjectFilter.Creature))
+                effect = Effects.GainLife(1)
+            }
+        }
+        val nonManaBatchOnly = card("Nonmana Tap Batch Fixture") {
+            manaCost = "{G}"
+            typeLine = "Creature — Dryad"
+            power = 0
+            toughness = 3
+            activatedAbility {
+                cost = Costs.Composite(Costs.Mana("{0}"), Costs.TapPermanents(count = 1, filter = GameObjectFilter.Creature))
+                effect = Effects.GainLife(1)
+            }
+        }
+        cardRegistry.register(listOf(separateTap, batchOnly, separateNonManaTap, nonManaBatchOnly))
 
         test("a separate source tap and another tap cannot be paid by a lone creature") {
             val game = setup().withCardOnBattlefield(1, separateTap.name).build()
@@ -90,6 +110,49 @@ class CompositeTapCostEnumerationTest : ScenarioTestBase() {
             game.execute(action.copy(costPayment = AdditionalCostPayment(tappedPermanents = listOf(source)))).error shouldBe null
             game.state.getEntity(source)!!.has<TappedComponent>() shouldBe true
             game.state.getEntity(game.player1Id)!!.get<ManaPoolComponent>()!!.green shouldBe 1
+        }
+
+        test("a nonmana composite with two tap legs is unavailable on a lone creature") {
+            val game = setup().withCardOnBattlefield(1, separateNonManaTap.name).build()
+            val source = game.findPermanent(separateNonManaTap.name)!!
+            actions(game).any { (it.action as? ActivateAbility)?.sourceId == source } shouldBe false
+        }
+
+        test("a nonmana composite excludes its reserved source and resolves after legal payment") {
+            val game = setup().withCardOnBattlefield(1, separateNonManaTap.name)
+                .withCardOnBattlefield(1, "Gatecreeper Vine").build()
+            val source = game.findPermanent(separateNonManaTap.name)!!
+            val helper = game.findPermanent("Gatecreeper Vine")!!
+            val offered = actions(game).single { (it.action as? ActivateAbility)?.sourceId == source }
+            offered.additionalCostInfo!!.tapCount shouldBe 1
+            offered.additionalCostInfo!!.validTapTargets shouldBe listOf(helper)
+            val action = offered.action.shouldBeInstanceOf<ActivateAbility>()
+            val before = game.state
+            val forged = game.execute(action.copy(costPayment = AdditionalCostPayment(tappedPermanents = listOf(source))))
+            forged.error shouldNotBe null
+            forged.events shouldBe emptyList()
+            game.state shouldBe before
+            val lifeBefore = game.getLifeTotal(1)
+            game.execute(action.copy(costPayment = AdditionalCostPayment(tappedPermanents = listOf(helper)))).error shouldBe null
+            game.state.getEntity(source)!!.has<TappedComponent>() shouldBe true
+            game.state.getEntity(helper)!!.has<TappedComponent>() shouldBe true
+            game.getLifeTotal(1) shouldBe lifeBefore
+            game.resolveStack()
+            game.getLifeTotal(1) shouldBe lifeBefore + 1
+        }
+
+        test("a nonmana composite without a tap symbol may tap itself and resolve") {
+            val game = setup().withCardOnBattlefield(1, nonManaBatchOnly.name).build()
+            val source = game.findPermanent(nonManaBatchOnly.name)!!
+            val offered = actions(game).single { (it.action as? ActivateAbility)?.sourceId == source }
+            offered.additionalCostInfo!!.validTapTargets shouldBe listOf(source)
+            val action = offered.action.shouldBeInstanceOf<ActivateAbility>()
+            val lifeBefore = game.getLifeTotal(1)
+            game.execute(action.copy(costPayment = AdditionalCostPayment(tappedPermanents = listOf(source)))).error shouldBe null
+            game.state.getEntity(source)!!.has<TappedComponent>() shouldBe true
+            game.getLifeTotal(1) shouldBe lifeBefore
+            game.resolveStack()
+            game.getLifeTotal(1) shouldBe lifeBefore + 1
         }
     }
 }

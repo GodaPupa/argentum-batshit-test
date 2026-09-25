@@ -86,3 +86,27 @@ source-verifier cases; artifact10846221712 has SHA-256
 `6a1339c66a2d5c1cfcf060e14501999e4eeeda4831cefccf4f9ae2da8bce3345`. Spy main gaps are zero;
 the current six-sideboard queue remains10 identities/28slots. That accepted support does not admit
 this failed policy candidate or authorize sampled gameplay.
+
+### Follow-up enumeration failure: 36092918322
+
+Source `245ed48e9da4f4eb1bc553c7ec8c0b91cd3e2051` compiled but failed the
+first engine regression stage: three cases ran, one passed and two failed.
+The eighteen Spy policy cases and all four later regression/admission stages
+**did not execute**. Artifact `10846199399` (6,721 bytes), SHA-256
+`5307ef95f0960ed9991f36139cb1f6ff1f1a219cc43f974cefb1d8fad3bb0406`,
+and its original failed XML are recorded in
+[the immutable failure receipt](spy-policy-validation-failure-36092918322/receipt.json).
+This capability failure produced no official gameplay.
+
+The first correction was incomplete: `ActivatedAbilityEnumerator` handles
+nonmana abilities, whereas Saruli Caretaker runs through the separate
+`ManaAbilityEnumerator`. The latter retained the same composite tap-pool
+defect. The successor applies the same source-reservation condition to that
+mana branch and retains the nonmana correction. Six fixed regressions now
+exercise both real enumeration paths: a lone source cannot pay both tap legs;
+a helper pays legally while forged double payment remains atomic; and a
+composite without a separate tap symbol may still tap itself. Nonmana effects
+are checked before and after actual stack resolution; mana effects are checked
+through actual mana-pool output. The original eighteen policy cases remain
+unchanged. Runtime qualification is pending; ten exact source hashes cover
+both enumerators, the expanded regression, and the policy implementation.
