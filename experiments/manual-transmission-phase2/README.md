@@ -91,12 +91,22 @@ card IDs, source and zones. No card or rules behavior is changed by that repair.
 The three lands exercise real entry and mana actions at two, three and four seats,
 live opponent counts after concessions, teammate exclusion and deterministic replay
 through the existing serialization bridge. A minimal incomplete Battlebond scaffold
-preserves Spire Garden's earliest commercial printing. New CMR/BBD goldens still
-require compiled review. None of these five pending identities has reduced the
-accepted counts above. Every earlier fixture selector and its XML evidence remains
-in the qualification workflow.
+preserves Spire Garden's earliest commercial printing. Run `36090117073` executes all 531 retained cases: all 134 card/guard cases,
+56 generic cases, the registry case and 338 of 340 snapshot/roundtrip cases pass.
+The only failures are the two predeclared CMR/BBD golden additions. The strict
+review in `card-support-batch-r5-audit.json` admits exactly these three lands and
+preserves all 15 existing CMR card trees. The Oracle fixture repair and all nine
+Coatl cases pass. The observed registry is now 459 resolved / 341 unresolved
+physical entries, 211 unresolved unique identities and 20 Manual control gaps;
+these provisional counts become accepted only after complete required validation
+of the reviewed goldens and the resulting artifact audit. Every earlier fixture
+selector and its XML evidence remains in the qualification workflow. An incidental
+Spy support workflow separately fails test discovery because its selected
+`ChosenCardTypePredicateTest` is absent from this Manual source. That workflow/source
+prerequisite is retained in the r5 batch audit and is not waived or counted as a
+game result.
 
-The same audited artifact preserves 56 passing generic commander/multiplayer tests
+The accepted r5 artifact preserves 56 passing generic commander/multiplayer tests
 and one passing registry audit: 482 passing JUnit cases in total, without failures,
 errors or skips. These are deterministic capability fixtures, not any of the 36
 initial actual-deck capability pilot games or 864 primary games. Both official
