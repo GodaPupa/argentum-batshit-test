@@ -63,8 +63,8 @@ class CostPaymentContinuationResumer(
             is CostAtom.Mana, is CostAtom.PayLife, is CostAtom.Mill,
             // Exiling the top N takes no selection either, for the same reason Mill doesn't.
             is CostAtom.ExileTopOfLibrary,
-            // Discarding the whole hand takes no selection — every card goes.
-            is CostAtom.DiscardHand ->
+            // Discarding or revealing the whole hand takes no selection — every card participates.
+            is CostAtom.DiscardHand, is CostAtom.RevealHand ->
                 resumeYesNo(state, continuation, cost, response, checkForMore)
             is CostAtom.Discard ->
                 if (atom.random) resumeYesNo(state, continuation, cost, response, checkForMore)

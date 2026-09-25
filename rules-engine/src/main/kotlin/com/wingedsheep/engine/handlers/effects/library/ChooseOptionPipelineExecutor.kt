@@ -6,6 +6,7 @@ import com.wingedsheep.engine.handlers.effects.EffectExecutor
 import com.wingedsheep.engine.registry.CardRegistry
 import com.wingedsheep.engine.state.GameState
 import com.wingedsheep.engine.state.components.identity.CardComponent
+import com.wingedsheep.sdk.core.CardType
 import com.wingedsheep.sdk.core.Subtype
 import com.wingedsheep.sdk.scripting.effects.ChooseOptionEffect
 import com.wingedsheep.sdk.scripting.effects.OptionType
@@ -42,6 +43,7 @@ class ChooseOptionPipelineExecutor(
             OptionType.CREATURE_TYPE -> Subtype.ALL_CREATURE_TYPES
             OptionType.COLOR -> listOf("White", "Blue", "Black", "Red", "Green")
             OptionType.BASIC_LAND_TYPE -> Subtype.ALL_BASIC_LAND_TYPES.toList()
+            OptionType.CARD_TYPE -> CardType.entries.map { it.displayName }
             OptionType.CARD_NAME -> cardRegistry.allCardNames().sorted()
         }
 
@@ -52,6 +54,7 @@ class ChooseOptionPipelineExecutor(
             OptionType.CREATURE_TYPE -> "Choose a creature type"
             OptionType.COLOR -> "Choose a color"
             OptionType.BASIC_LAND_TYPE -> "Choose a basic land type"
+            OptionType.CARD_TYPE -> "Choose a card type"
             OptionType.CARD_NAME -> "Name a card"
         }
 

@@ -113,6 +113,34 @@ behavior repair or permission to use changed engine code in an active frozen blo
 No definition or snapshot was changed by this repair. A fresh validation and artifact audit are
 required; the initial rejected archive is neither replaced nor relabeled.
 
+## Qualified repair and concurrent main integration
+
+The repaired source `8d401bda54a39ad75814b89b04c2bd42b4324843` passed
+[dedicated run 36087840809](https://github.com/GodaPupa/argentum-batshit-test/actions/runs/36087840809).
+Artifact `10844573655` was downloaded and audited with ZIP SHA-256
+`fcb8943840ba23ee748061bba96ca920425ae7468d27318320dd6dee7e26d29d`.
+Its source-manifest digest is
+`bf1c6473598a77b7d39fa183f2cb6d6be4967a7cbc10c434961404649803d817`;
+all sixteen bound source files match, all nine stages have exit status zero, and all 367 tests
+passed with no skipped tests: seventeen card scenarios, seven readiness tests, two inventory
+tests, 338 strict snapshot/round-trip tests, and three lint tests. All official execution counters
+remain zero. This establishes that repair's dedicated validation, not final integration approval.
+
+While it ran, main advanced to `c6953354b1b799fe4506eb9e44ff25523a132d8e`, incorporating the
+independently qualified [Spy support PR #148](https://github.com/GodaPupa/argentum-batshit-test/pull/148)
+at `7a3f1429c027925c30ed7c1e329c3879e674574a` and the separate command repair. The integration
+keeps both parents and all accepted production changes. Mesmeric Fiend is now supported in
+Grixis's two sideboard slots and Spy's one; those three slots are attributed to Spy batch B,
+separately from this batch's eleven. The combined current inventory is eleven unique unresolved
+identities across twenty-nine slots. Grixis's sideboard is fully registered; Spy retains
+Jack-o'-Lantern, Nyxborn Hydra, Flaring Pain, Faerie Macabre and Acorn Harvest.
+
+The existing Spy B current-coverage test prospectively drops Nylea's Disciple, and the dedicated
+workflow adds an independently retained compatibility stage for that test. Its original accepted
+six-identity sideboard artifact and documents remain historical evidence. The integrated source
+must pass fresh dedicated validation, relevant Spy regression checks, general CI, and artifact
+audit before this PR can merge.
+
 ## No gameplay transition
 
 Official seeds generated, games initialized, actions submitted, and outcome exposure by this

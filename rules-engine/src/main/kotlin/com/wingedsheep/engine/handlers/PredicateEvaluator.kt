@@ -1053,6 +1053,16 @@ class PredicateEvaluator {
             is CardPredicate.OriginallyPrintedInSet ->
                 card.originalSetCode?.equals(predicate.setCode, ignoreCase = true) == true
 
+            is CardPredicate.HasCardTypeFromVariable -> {
+                val chosenType = context?.chosenValues?.get(predicate.variableName) ?: return false
+                val cardType = CardType.entries.firstOrNull {
+                    it.displayName.equals(chosenType, ignoreCase = true)
+                } ?: return false
+                // Resolution-time type choices use the same projected characteristics as the
+                // fixed type predicates. Library cards naturally fall back to printed types.
+                cardType.name in types
+            }
+
             is CardPredicate.HasSubtypeFromVariable -> {
                 val chosenType = context?.chosenValues?.get(predicate.variableName) ?: return false
                 val entitySubtypes = projectedValues?.subtypes ?: card.typeLine.subtypes.map { it.value }.toSet()
@@ -2174,6 +2184,7 @@ class PredicateEvaluator {
             is CardPredicate.SharesNameWithPermanentYouControl,
             is CardPredicate.DoesNotShareCreatureTypeWithPermanentYouControl,
             is CardPredicate.DoesNotShareLandTypeWithPermanentYouControl -> false
+            is CardPredicate.HasCardTypeFromVariable,
             is CardPredicate.HasSubtypeFromVariable, is CardPredicate.HasSubtypeInStoredList,
             is CardPredicate.HasSubtypeInEachStoredGroup -> false
             // Source-component name/card-type references are permanent-static predicates, not

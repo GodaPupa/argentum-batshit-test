@@ -762,6 +762,9 @@ object Costs {
             count: Int = 1,
         ): AdditionalCost = AdditionalCost.Atom(CostAtom.RevealFromHand(filter, count))
 
+        /** Reveal your entire hand. No picker is needed because every card in hand is revealed. */
+        val RevealHand: AdditionalCost = AdditionalCost.Atom(CostAtom.RevealHand)
+
         /**
          * Reveal a [filter] card from your hand, or pay [alternativeManaCost] instead — Lorwyn's
          * tribal "reveal an Elf card from your hand or pay {3}" (Wren's Run Vanquisher, Silvergill

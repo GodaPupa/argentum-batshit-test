@@ -4936,6 +4936,59 @@
     ]
 }
 
+// Wall of Roots
+{
+    "name": "Wall of Roots",
+    "manaCost": "{1}{G}",
+    "typeLine": "Creature — Plant Wall",
+    "oracleText": "Defender\nPut a -0/-1 counter on this creature: Add {G}. Activate only once each turn.",
+    "creatureStats": {
+        "power": 0,
+        "toughness": 5
+    },
+    "keywords": [
+        "DEFENDER"
+    ],
+    "script": {
+        "activatedAbilities": [
+            {
+                "id": "ability_1",
+                "cost": {
+                    "type": "CostAtomWrapper",
+                    "atom": {
+                        "type": "AtomPutCountersOnSelf",
+                        "counterType": "-0/-1"
+                    }
+                },
+                "effect": {
+                    "type": "AddMana",
+                    "color": "GREEN"
+                },
+                "timing": "ManaAbility",
+                "restrictions": [
+                    "OncePerTurn"
+                ],
+                "isManaAbility": true
+            }
+        ]
+    },
+    "metadata": {
+        "collectorNumber": "253",
+        "artist": "John Matson",
+        "flavorText": "Sometimes the wise ones wove their magic into living plants; as the plant grew, so grew the magic.",
+        "imageUri": "https://cards.scryfall.io/normal/front/a/e/aeb151d2-c313-44d2-972e-33487f070c23.jpg?1783947057",
+        "rulings": [
+            {
+                "date": "2017-11-17",
+                "text": "If you must sacrifice a creature to pay a casting or activation cost that also includes mana, such as that of Bubbling Cauldron's abilities, you may put a -0/-1 counter on Wall of Roots to make its toughness 0 and then sacrifice it to pay that cost."
+            }
+        ]
+    },
+    "colorIdentityOverride": [
+        "GREEN"
+    ]
+}
+
 // Wave Elemental
 {
     "name": "Wave Elemental",
