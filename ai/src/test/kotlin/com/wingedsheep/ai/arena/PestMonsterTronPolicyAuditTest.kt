@@ -1,7 +1,7 @@
 package com.wingedsheep.ai.arena
 
 import com.wingedsheep.ai.engine.AIPlayer
-import com.wingedsheep.ai.engine.AiProfile
+import com.wingedsheep.ai.engine.PestMonsterTronPolicy
 import com.wingedsheep.engine.core.ActivateAbility
 import com.wingedsheep.engine.core.CardsSelectedResponse
 import com.wingedsheep.engine.core.DecisionContext
@@ -22,11 +22,7 @@ import io.kotest.matchers.types.shouldBeInstanceOf
  * These tests consume no official seed namespace and expose no game outcome.
  */
 class PestMonsterTronPolicyAuditTest : ScenarioTestBase() {
-    private val baseProfile = AiProfile.PRODUCTION_CANDIDATE_EXPIRING
-    private val profile = baseProfile.copy(
-        id = "pest-monster-tron-policy-audit",
-        advisorModules = baseProfile.advisorModules + PestMonsterTronAdvisorModule,
-    )
+    private val profile = PestMonsterTronPolicy.profile
 
     private fun ai(game: TestGame) = AIPlayer.create(cardRegistry, game.player1Id, profile)
 

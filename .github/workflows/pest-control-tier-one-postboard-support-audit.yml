@@ -1,0 +1,32 @@
+name: Pest Control Tier-1 Postboard Support Audit
+
+on:
+  pull_request:
+    paths:
+      - gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOnePostboardSupportAuditTest.kt
+      - docs/experiments/pest-control/tier-one-postboard-support-audit.md
+      - .github/workflows/pest-control-tier-one-postboard-support-audit.yml
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Audit all fixed sideboards
+        env:
+          PEST_POSTBOARD_SUPPORT_REPORT: ${{ github.workspace }}/build/reports/pest-postboard-support/report.txt
+        run: scripts/test-class PestControlTierOnePostboardSupportAuditTest --info --stacktrace
+      - name: Upload support report
+        uses: actions/upload-artifact@v7
+        with:
+          name: pest-control-tier-one-postboard-support-audit
+          path: build/reports/pest-postboard-support/report.txt
+          if-no-files-found: error

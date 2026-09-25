@@ -793,6 +793,13 @@ definitions construct these through the facade, e.g. `Costs.additional.Sacrifice
   storeAs = storeAs), …)`; the behold path surfaces as a `costType = "Behold"` cost over one
   candidate pool spanning battlefield *and* hand, and stores the chosen cards under `storeAs` for
   downstream costs/effects exactly as a plain `Behold` does.
+- `Costs.additional.RevealHand` — `AdditionalCost.Atom(CostAtom.RevealHand)`: reveal the
+  caster's entire remaining hand as a cost, without choosing cards or moving them. The spell
+  being cast is excluded; an empty hand is payable. Used in Land Grant's conditional alternative
+  cost with `Conditions.NoLandCardsInHand`. The shared atom also supports ability-cost payment;
+  unsupported pay-or-suffer contexts fail closed. This is a selective reuse of the qualified
+  Industrial Waste implementation at `abfd806f6332c0da311e40b01c9d85eeb0962165`, with separate
+  Pest Control card and legal-action qualification.
 - `Costs.additional.RevealFromHand(filter = Filters.Any, count = 1)` — "as an additional cost to
   cast this spell, reveal a [filter] card from your hand". `Atom(CostAtom.RevealFromHand(filter,
   count))`; surfaces as a `costType = "RevealCard"` cost over `validRevealTargets` (the caster's
@@ -4398,6 +4405,12 @@ This is the player-arm prerequisite for the planned composable mixed `TargetUnio
 - `.notNamed(name)` — `CardPredicate.Not(NameEquals)`: matches cards whose name is **not** `name`. Use for
   "… that don't have the same name as this creature" wording (Marvin, Murderous Mimic — creatures you control
   not named "Marvin, Murderous Mimic").
+- `.withCardTypeFromVariable(variableName)` — `CardPredicate.HasCardTypeFromVariable`: match
+  the card type stored in this resolution's `chosenValues[variableName]`, case-insensitively.
+  Pair with `ChooseOptionEffect(OptionType.CARD_TYPE, storeAs = variableName)` for Winding Way.
+  Battlefield objects use their projected types; cards elsewhere use their card characteristics.
+  A missing or invalid choice, a supertype such as Basic, or a context without the stored choice
+  matches nothing. This transient choice is separate from `.ofChosenCardTypeComponent`.
 - `.namedFromVariable(variableName)` — `CardPredicate.NameEqualsChosen`: matches the card name stored in
   `chosenValues[variableName]` (case-insensitive). Set the name with `Effects.ChooseCardName` (player names it)
   or `Effects.StoreCardName` (captured from a chosen card). Fails closed in static/projection contexts. Used by
@@ -8823,11 +8836,24 @@ Flying, Menace, Intimidate, Fear, Shadow, Horsemanship, all basic landwalks (Pla
 `LandwalkRule` checks `typeLine.isLand && !isBasicLand`; Trailblazer's Boots), First Strike, Double
 Strike, Trample, Deathtouch, Lifelink, Vigilance, Reach, Provoke, Defender, Indestructible, Hexproof, Shroud, Haste,
 Flash, Prowess, Flurry, Changeling, Devoid (**not** display-only — see the note above: the engine
-derives `CardDefinition.colors` from it), Convoke, Delve, Improvise, Affinity, Emerge, Storm, Flashback, Harmonize, Mayhem, Disturb, Evoke, Sneak, Ninjutsu, Web-slinging, Impending, Conspire, Casualty, Miracle, Hideaway, Cascade, Plot,
+derives `CardDefinition.colors` from it), Convoke, Delve, Improvise, Affinity, Emerge, Storm, Flashback, Harmonize, Mayhem, Disturb, Evoke, Bestow, Sneak, Ninjutsu, Web-slinging, Impending, Conspire, Casualty, Miracle, Hideaway, Cascade, Plot,
 Offspring, Persist, Undying, Enduring, Ascend, Storied, Start your engines!, Max speed, Wither, Toxic, Eerie, Vivid, Fateful Bite, Exploit, Champion, Soulbond, Daybound, Nightbound, … (display-only — engine effect lives in handlers or
 composite abilities).
 
 **Parameterized `KeywordAbility.*`**
+
+- `Bestow(cost: ManaCost)` / `KeywordAbility.bestow("{X}{G}{G}")` — the parameterized
+  alternative cost for a Bestow card (CR 702.103). Declare it with `keywordAbility(...)`;
+  the display enum `Keyword.BESTOW` alone does not supply a cost. The card still declares its
+  normal creature characteristics and its own effects while attached. Nyxborn Hydra uses
+  ordinary counter, attached-creature stat, and keyword effects for that text.
+  The current canonical engine capability qualifies hand casting, actual alternative payment
+  (including X and Aura-sensitive restricted mana), creature targeting, Aura-aware filtered cast prohibitions, illegal-target
+  creature resolution, detachment, and restoration when leaving stack or battlefield.
+  `BestowComponent` stores the original type line; it is transient object state, not a card
+  definition or a new lasting permission. Cast history retains the cost actually paid.
+  Copying, phasing, and casting through other-zone permissions require separate qualification;
+  this entry does not claim those interactions are covered by the Nyxborn scenarios.
 
 - `Ward(amount)` — opponent pays a mana cost to target this (CR 702.21). This is the shape for a card's
   **own printed** ward; granting ward to *other* permanents is the `GrantWard` static ability instead
@@ -9765,6 +9791,13 @@ answer it and would silently return `false`.
 - **Set-mechanic conditions are quarantined** in mechanic-named files (next to the mechanic's other
   SDK surface), never added to the general condition files. The `add-feature` checklist asks this
   placement question explicitly.
+
+### Hand state
+
+- `Conditions.NoLandCardsInHand` — `Exists(Player.You, Zone.HAND, GameObjectFilter.Land,
+  negate = true)`: the evaluating player's hand contains no land cards. Used as Land Grant's
+  alternative-cost condition and checked during legal-action generation and authoritative cast
+  validation; having other nonland cards in hand is allowed.
 
 ### Battlefield state
 
@@ -11972,6 +12005,12 @@ staticAbility { ability = GrantLandwalkOfChosenType() }
   `Effects.ForEachColorOf(source, ForEachInGroupEffect(group, GrantProtectionFromChosenColor(Self)))`
   — and, when `source` is the about-to-leave permanent, place it before the exile/destroy step
   (`Composite(ForEachColorOf(…), Exile(…))`) so its colors are still readable (Éowyn, Fearless Knight).
+- `ChooseOptionEffect(OptionType.CARD_TYPE, storeAs, excludedOptions = ...)` — pause to choose a
+  card type from `CardType.entries`, excluding the supplied names, then store its display name
+  in `chosenValues[storeAs]`. Supertypes and creature subtypes are not options. Winding Way
+  restricts this choice to Creature or Land before revealing cards, then filters with
+  `GameObjectFilter.Any.withCardTypeFromVariable(storeAs)`. Invalid responses do not advance
+  the pipeline or expose the library.
 - `ChooseCreatureTypeEffect(...)` — pause for creature-type selection.
 - `Effects.NoteCreatureType(storeAs = "notedType", prompt?)` — "note a creature type that hasn't been noted for this <source>" (LTR — Long List of the Ents). Same decision shape as `ChooseOption(OptionType.CREATURE_TYPE)`, but the source's *current* `NotedCreatureTypesComponent.types` are excluded from the option list (so the player can't pick a duplicate), and on resolution the chosen type is appended to that component on the source AND stored in `chosenValues[storeAs]` for any downstream pipeline step. The component lives on the source permanent's container, so it disappears when the source leaves play (CR 400.7 — a permanent that changes zones becomes a new object with no memory of its previous existence). Use this whenever a card's text says "note … for this permanent"; use plain `ChooseOption(OptionType.CREATURE_TYPE)` when the choice is one-shot and doesn't need to accumulate.
 - `Effects.SecretlyChooseCreatureType(options = emptyList(), storeAs = "notedType", prompt?)` — "Then secretly choose Human, Merfolk, or Goblin." (MKM — A Killer Among Us). The hidden-information sibling of `NoteCreatureType`, and the same `NoteCreatureTypeEffect` under the hood with `secret = true`: the type is noted on the source permanent exactly as above, but `NotedCreatureTypesComponent.secretTo` records *who* chose it, and two things key off that — the client view shows the note only to that player (badged "Chosen (secret)"; spectators never see it), and only that player can pay `Costs.RevealNotedCreatureType` (§ costs). This is CR 702.106a-b's hidden agenda — the piece of paper kept with the object — applied to a permanent, so a change of control neither hands the new controller the answer nor lets them reveal it. Pass `options` to narrow the choice to a named handful; the source's already-noted types are excluded from whichever set that is. Leave `options` empty for "secretly choose a creature type".
@@ -13175,6 +13214,13 @@ Card authors rarely reference these directly; they are created/updated by the ma
   the end step is a new object and stays on the battlefield; one that already left (died, was
   bounced) is left where it is, per the official ruling.
 - **Evoke** — `evoke = "{U}"`; pay alt cost, sacrifice on ETB.
+- **Bestow** — `keywordAbility(KeywordAbility.bestow("{X}{G}{G}"))`; the explicit
+  `AlternativeCostType.BESTOW` hand action pays that alternative cost and becomes an
+  Enchantment — Aura with enchant creature before cost and target validation (CR 702.103b).
+  It keeps original supertypes, mana value, and X. An illegal target on resolution ends the
+  bestowed effect and resolves the creature; later detachment also ends that effect.
+  A new object outside stack/battlefield restores printed type and removes its Bestow marker.
+  See the parameterized keyword entry for this implementation's independently tested scope.
 - **Sneak** — `sneak("{1}{U}")`; declare-blockers-step alt cost (pay mana + return an unblocked attacker you control to hand); a resolving permanent enters tapped and attacking the same defender. `Conditions.SneakCostWasPaid` reads the rider flag.
 - **Ninjutsu** — `ninjutsu("{1}{U}{B}")`; the canonical CR 702.49 keyword that **Sneak** reflavors. Same declare-blockers alt cost and tapped-and-attacking entry, shared via `KeywordAbility.ninjutsuStyleCost`. *Kaito, Bane of Nightmares* (DSK).
 - **Splice** — `splice("{2}{R}{R}")` (CR 702.47); reveal from hand as you cast an Arcane spell, pay the splice cost as an *additional* cost, and that spell gains this card's rules text — the card itself stays in hand. The spell keeps its own characteristics (702.47c); the spliced text resolves after the main spell's (702.47b) with its own targets. *Through the Breach* (CHK / INR).

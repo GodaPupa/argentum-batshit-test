@@ -79,32 +79,37 @@ qualified for the exact control identities Forest and Command Tower, with preser
 face-down and spell-Adventure alternatives. These seven additional cases pass. This
 shared implementation evidence imports no Industrial Waste matchup result.
 
-Two compatible support batches are pending complete qualification: Coiling Oracle
-and Hope-Ender Coatl (`card-support-batch-r4.json`, 17 cases), followed by Rejuvenating
-Springs, Training Center and Spire Garden (`card-support-batch-r5.json`, 30 cases).
-Their failures and review are retained in `card-support-batch-r4-audit.json`: the
-first run executed 421 cases and stopped after one blink-event fixture mismatch;
-the two other failures were the exact predeclared DIS/MH3 golden additions. The
-repair distinguishes the return overlay from Oracle's top-library reveal by exact
-card IDs, source and zones. No card or rules behavior is changed by that repair.
+Two additional support batches have passed the exact-head component gate at
+`c09bc4b863d7eef26b7f824d5e6e6ace36e12456`: Coiling Oracle and Hope-Ender Coatl
+(`card-support-batch-r4.json`, 17 cases), followed by Rejuvenating Springs,
+Training Center and Spire Garden (`card-support-batch-r5.json`, 30 cases).
+`capability-component-audit-r6.json` records run `36093050016`, with 531 passing
+JUnit cases across 31 suites and zero failures, errors or skips. This includes
+all 134 card/guard cases, 56 generic cases, the registry case and all 340 strict
+snapshot/roundtrip cases. The earlier fixture and golden failures remain recorded
+in their original r4/r5 batch audits; their raw artifacts are preserved.
 
 The three lands exercise real entry and mana actions at two, three and four seats,
 live opponent counts after concessions, teammate exclusion and deterministic replay
-through the existing serialization bridge. A minimal incomplete Battlebond scaffold
-preserves Spire Garden's earliest commercial printing. Run `36090117073` executes all 531 retained cases: all 134 card/guard cases,
-56 generic cases, the registry case and 338 of 340 snapshot/roundtrip cases pass.
-The only failures are the two predeclared CMR/BBD golden additions. The strict
-review in `card-support-batch-r5-audit.json` admits exactly these three lands and
-preserves all 15 existing CMR card trees. The Oracle fixture repair and all nine
-Coatl cases pass. The observed registry is now 459 resolved / 341 unresolved
-physical entries, 211 unresolved unique identities and 20 Manual control gaps;
-these provisional counts become accepted only after complete required validation
-of the reviewed goldens and the resulting artifact audit. Every earlier fixture
-selector and its XML evidence remains in the qualification workflow. An incidental
-Spy support workflow separately fails test discovery because its selected
-`ChosenCardTypePredicateTest` is absent from this Manual source. That workflow/source
-prerequisite is retained in the r5 batch audit and is not waived or counted as a
-game result.
+through the existing serialization bridge. The reviewed CMR/BBD snapshots add only
+these three lands and preserve all 15 prior CMR card trees. The observed registry is
+459 resolved / 341 unresolved physical entries, 211 unresolved unique identities and
+20 Manual control gaps. These are source-scoped component findings, not actual-deck
+readiness or cEDH gameplay results.
+
+The c09 component audit does not claim full integration acceptance: newer main Spy B/C
+workflows check out that older head, which lacks their newly introduced test class
+and compiled-source manifest. Their prerequisite failures are preserved without a
+waiver. `canonical-main-integration-r1.json` records the prospective integration of
+accepted main `1c8bc618e8b3ca0b3b154e2ef3c87ca8ff779698`, including exact before/after
+shared source digests and acceptance lineage. Thirty SDK/engine files match canonical
+main exactly; CastSpellHandler additionally preserves the independently qualified
+seven-line ordinary-land guard. Exact paired initialization, hardware, protocol,
+serialization bridge and all Manual test assertions remain unchanged. Canonical
+workflow checkout, source verification and strict snapshot checks remain unchanged.
+The resulting exact head requires fresh Manual, general and inherited support gates
+and artifact audit before its source or updated coverage can be accepted. Neither
+unaccepted priority repairs nor another candidate/card batch are imported.
 
 The accepted r5 artifact preserves 56 passing generic commander/multiplayer tests
 and one passing registry audit: 482 passing JUnit cases in total, without failures,

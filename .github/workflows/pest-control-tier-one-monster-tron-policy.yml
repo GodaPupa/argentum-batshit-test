@@ -6,7 +6,8 @@ on:
       - "pest-control/tier1-monster-tron-policy"
   pull_request:
     paths:
-      - "ai/src/test/kotlin/com/wingedsheep/ai/arena/PestMonsterTronAdvisorModule.kt"
+      - "ai/src/main/kotlin/com/wingedsheep/ai/engine/advisor/modules/PestMonsterTronAdvisorModule.kt"
+      - "ai/src/main/kotlin/com/wingedsheep/ai/engine/PestMonsterTronPolicy.kt"
       - "ai/src/test/kotlin/com/wingedsheep/ai/arena/PestMonsterTronPolicyAuditTest.kt"
       - "gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlTierOneMonsterTronPolicyReadiness.kt"
       - "gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOneMonsterTronPolicyReadinessTest.kt"

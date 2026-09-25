@@ -1,0 +1,62 @@
+{
+  "schema": "pest-spy-support-batch-c-source-v1",
+  "scope": "SEED_FREE_CARD_AND_CANONICAL_BESTOW_CAPABILITY",
+  "accepted_prior_source": "abfd806f6332c0da311e40b01c9d85eeb0962165",
+  "transferred_matchup_evidence": false,
+  "target_card": {
+    "name": "Nyxborn Hydra",
+    "source_path": "mtg-sets/2024/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/mh3/cards/NyxbornHydra.kt",
+    "oracle_id": "4d1b655f-05b8-4b82-9cb9-67660f570a9b",
+    "set": "mh3",
+    "collector_number": "164",
+    "printing_release_date": "2024-06-14",
+    "scryfall_uri": "https://scryfall.com/card/mh3/164/nyxborn-hydra?utm_source=api",
+    "oracle_text": "Bestow {X}{G}{G} (If you cast this card for its bestow cost, it's an Aura spell with enchant creature. It becomes a creature again if it's not attached.)\nReach, trample\nThis permanent enters with X +1/+1 counters on it.\nEnchanted creature gets +1/+1 for each +1/+1 counter on this Aura and has reach and trample.",
+    "pauper_legality": "legal",
+    "source_payload_sha256": "c3c5a96158d6691a35f7486f1ad43a07453a3d6751ef91ba7d44d1a75d9f7e55",
+    "printings_payload_sha256": "a9b4a7358fa25a686dceb46355211eb6575c0a42b3a91014d8df2dd6236d84d2",
+    "rulings_payload_sha256": "946b5e4e8b1fd62c13b9c704e885ff65a73d15dfa364d0a4333022c50921d80b",
+    "prior_definition_sha256": "c06870de76e4ea024695b524311ad995c52afa86652bf118cd15ecaa2f3ecff4",
+    "compiled_definition_sha256": "b67f8cbcb3a791a934c83db1ee096575e065bf3d7520f42224b13c1a0a6fbd4b"
+  },
+  "rules_source": {
+    "url": "https://media.wizards.com/2026/downloads/MagicCompRules%2020260925.txt",
+    "effective_date": "2026-09-25",
+    "sha256": "8d860e451f20f38865b725b42d82feb714c725373dd8f3b32b8652b3eeb070ca",
+    "relevant_rules": [
+      "702.103a",
+      "702.103b",
+      "702.103d",
+      "702.103e",
+      "702.103f",
+      "608.3b",
+      "400.7"
+    ],
+    "qualification_scope": "Exact tested Bestow interactions only, not general rules conformance"
+  },
+  "selective_reuse": {
+    "preserved_existing_mechanics": [
+      "Prototype",
+      "Cascade",
+      "Escape"
+    ],
+    "corrected_inherited_defects": [
+      "Actual alternative-cost payment uses XGG instead of printed XG",
+      "Conditional mana context sees Aura spell rather than creature",
+      "Filtered cast prohibitions see Aura characteristics in enumerator and handler",
+      "All covered stack and battlefield exits restore printed types and remove transient Bestow marker",
+      "Ending bestowed effect preserves actual paid-cost provenance"
+    ],
+    "unqualified_interactions": [
+      "Copying bestowed spells or permanents",
+      "Phasing interactions",
+      "Other-zone cast-permission combinations"
+    ]
+  },
+  "qualification_required": true,
+  "gameplay_ready": false,
+  "official_seeds_generated": 0,
+  "official_games_initialized": 0,
+  "official_actions_submitted": 0,
+  "outcome_exposure": 0
+}

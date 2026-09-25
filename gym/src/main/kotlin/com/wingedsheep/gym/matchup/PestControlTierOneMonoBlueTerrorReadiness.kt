@@ -52,6 +52,11 @@ private val EXPECTED_UNSUPPORTED_SIDEBOARD = linkedMapOf(
     "Spreading Seas" to 3,
 )
 
+// Preserve the historical readiness inventory above. Postboard support batch A prospectively
+// qualifies Mystic in the current registry; this is not a change to the frozen 75, historical
+// readiness record, or preboard execution authority.
+private val CURRENT_UNSUPPORTED_SIDEBOARD = EXPECTED_UNSUPPORTED_SIDEBOARD - "Murmuring Mystic"
+
 enum class TierOneMonoBlueTerrorRunnerState { DISABLED }
 
 data class TierOneMonoBlueTerrorReadiness(
@@ -79,6 +84,7 @@ object PestControlTierOneMonoBlueTerrorReadiness {
     val sideboardCounts: Map<String, Int> get() = MONO_BLUE_TERROR_SIDEBOARD.toMap()
     val expectedUnsupportedMain: Map<String, Int> get() = EXPECTED_UNSUPPORTED_MAIN.toMap()
     val expectedUnsupportedSideboard: Map<String, Int> get() = EXPECTED_UNSUPPORTED_SIDEBOARD.toMap()
+    val currentUnsupportedSideboard: Map<String, Int> get() = CURRENT_UNSUPPORTED_SIDEBOARD.toMap()
 
     fun mainDeck(): Deck = Deck.of(*MONO_BLUE_TERROR_MAIN.map { it.key to it.value }.toTypedArray())
 
@@ -123,7 +129,7 @@ object PestControlTierOneMonoBlueTerrorReadiness {
             if (unresolvedMain(cards) != EXPECTED_UNSUPPORTED_MAIN) {
                 add("Mono-Blue Terror maindeck support audit drift")
             }
-            if (unresolvedSideboard(cards) != EXPECTED_UNSUPPORTED_SIDEBOARD) {
+            if (unresolvedSideboard(cards) != CURRENT_UNSUPPORTED_SIDEBOARD) {
                 add("Mono-Blue Terror sideboard support audit drift")
             }
         }

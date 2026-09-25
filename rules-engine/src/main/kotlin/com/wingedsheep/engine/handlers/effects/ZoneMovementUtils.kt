@@ -443,6 +443,16 @@ object ZoneMovementUtils {
         return newState
     }
 
+    /** Restore Bestow's temporary type when a spell/permanent becomes a new zone object. */
+    fun restoreBestowAfterZoneExit(container: ComponentContainer): ComponentContainer {
+        val bestow = container.get<com.wingedsheep.engine.state.components.identity.BestowComponent>()
+            ?: return container
+        val restored = container.get<CardComponent>()?.let { card ->
+            container.with(card.copy(typeLine = bestow.originalTypeLine))
+        } ?: container
+        return restored.without<com.wingedsheep.engine.state.components.identity.BestowComponent>()
+    }
+
     /**
      * Strip all battlefield-specific components from an entity leaving the battlefield.
      * Per MTG Rule 400.7, when an object changes zones it becomes a new object with no
@@ -450,7 +460,7 @@ object ZoneMovementUtils {
      * tapped, damage, counters, summoning sickness, combat state, attachments, etc.
      */
     fun stripBattlefieldComponents(container: ComponentContainer): ComponentContainer {
-        return container
+        return restoreBestowAfterZoneExit(container)
             // Identity
             .without<ControllerComponent>()
             .without<FaceDownComponent>()
