@@ -870,6 +870,43 @@
     "colorIdentityOverride": []
 }
 
+// Emrakul's Hatcher
+{
+    "name": "Emrakul's Hatcher",
+    "manaCost": "{4}{R}",
+    "typeLine": "Creature — Eldrazi Drone",
+    "oracleText": "When this creature enters, create three 0/1 colorless Eldrazi Spawn creature tokens. They have \"Sacrifice this token: Add {C}.\"",
+    "creatureStats": {
+        "power": 3,
+        "toughness": 3
+    },
+    "script": {
+        "triggeredAbilities": [
+            {
+                "id": "ability_1",
+                "trigger": {
+                    "type": "ZoneChangeEvent",
+                    "to": "Battlefield"
+                },
+                "effect": {
+                    "type": "CreatePredefinedToken",
+                    "tokenType": "Eldrazi Spawn",
+                    "count": 3
+                }
+            }
+        ]
+    },
+    "metadata": {
+        "collectorNumber": "142",
+        "artist": "Jaime Jones",
+        "flavorText": "Wordlessly it leads its abhorrent brood.",
+        "imageUri": "https://cards.scryfall.io/normal/front/1/a/1a901c3f-313d-495e-96a0-29f1a33b8225.jpg?1786135383"
+    },
+    "colorIdentityOverride": [
+        "RED"
+    ]
+}
+
 // Enatu Golem
 {
     "name": "Enatu Golem",
@@ -1877,6 +1914,42 @@
         "artist": "Wayne Reynolds",
         "flavorText": "In one gargantuan bite, it will swallow not only you but also the riverbank you were standing on.",
         "imageUri": "https://cards.scryfall.io/normal/front/a/4/a477e081-949f-4cf0-b0d2-b9bdff6c760d.jpg?1783941961"
+    },
+    "colorIdentityOverride": [
+        "GREEN"
+    ]
+}
+
+// Nest Invader
+{
+    "name": "Nest Invader",
+    "manaCost": "{1}{G}",
+    "typeLine": "Creature — Eldrazi Drone",
+    "oracleText": "When this creature enters, create a 0/1 colorless Eldrazi Spawn creature token. It has \"Sacrifice this token: Add {C}.\"",
+    "creatureStats": {
+        "power": 2,
+        "toughness": 2
+    },
+    "script": {
+        "triggeredAbilities": [
+            {
+                "id": "ability_1",
+                "trigger": {
+                    "type": "ZoneChangeEvent",
+                    "to": "Battlefield"
+                },
+                "effect": {
+                    "type": "CreatePredefinedToken",
+                    "tokenType": "Eldrazi Spawn"
+                }
+            }
+        ]
+    },
+    "metadata": {
+        "collectorNumber": "201",
+        "artist": "Trevor Claxton",
+        "flavorText": "It nurtures its masters' glorious future.",
+        "imageUri": "https://cards.scryfall.io/normal/front/2/4/24517d9c-6cde-41e8-9e82-ee73f069379a.jpg?1783941961"
     },
     "colorIdentityOverride": [
         "GREEN"
