@@ -75,3 +75,20 @@ trigger to remain on the stack, with the victim still in hand, before the interv
 The actual linked-trigger ordering and exile/return assertions remain required. The dedicated
 workflow preserves the cost serialization suite alongside the other eight stages. No official
 evidence or accepted result was affected.
+
+The follow-up run **36085952377** at `ba1be6de37b38d8d6cb188cb0d16d9510ff4e0b7`
+passed five cost-serialization, three chosen-type, five Land Grant and four Winding Way cases.
+It correctly rejected the Fiend fixture's second automatic-choice assumption: with only one
+eligible nonland card, no card-choice prompt is needed. The interrupted-trigger fixture now
+supplies two eligible cards and requires both in the later choice, preserving all stack-order
+and permanent-exile assertions. Its rejected artifact **10844110675** has ZIP SHA-256
+`1e90e4a9e7e5daf3e2c99a011653d79138c8957923996b25848cfb9e2df9d802`.
+
+Strict CI **36085952351** also rejected the two new MIR/TOR snapshot blocks because their
+manually added metadata followed `colorIdentityOverride`; the canonical serializer declares
+metadata first. Only that field ordering in those two new blocks is corrected. Prior card bytes,
+card semantics and the strict snapshot comparator are unchanged. The dedicated workflow now
+retains the complete strict snapshot XML and any generated actual snapshots, without update or
+blessing flags, to make any further mismatch directly auditable. Acceptance still requires the
+repaired exact source to pass all required gates; no coverage result is promoted from these
+rejected runs.

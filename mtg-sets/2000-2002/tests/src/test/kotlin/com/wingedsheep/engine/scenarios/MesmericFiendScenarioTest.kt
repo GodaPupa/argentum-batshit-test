@@ -44,6 +44,7 @@ class MesmericFiendScenarioTest : FunSpec({
 
         val choose = d.pendingDecision as SelectCardsDecision
         choose.options shouldContain victim
+        choose.options shouldContain alternative
         choose.options shouldNotContain land
         d.submitCardSelection(p1, listOf(victim))
 
@@ -71,6 +72,9 @@ class MesmericFiendScenarioTest : FunSpec({
         val p2 = d.getOpponent(p1)
         d.passPriorityUntil(Step.PRECOMBAT_MAIN)
         val victim = d.putCardInHand(p2, "Lightning Bolt")
+        // Two eligible cards keep the later enter-trigger choice explicit after the leave
+        // trigger has resolved; a sole eligible card is correctly selected automatically.
+        val alternative = d.putCardInHand(p2, "Centaur Courser")
         val fiendCard = d.putCardInHand(p1, "Mesmeric Fiend")
         d.giveMana(p1, Color.BLACK, 2)
         d.castSpell(p1, fiendCard).isSuccess shouldBe true
@@ -95,6 +99,7 @@ class MesmericFiendScenarioTest : FunSpec({
         d.bothPass()
         val choose = d.pendingDecision as SelectCardsDecision
         choose.options shouldContain victim
+        choose.options shouldContain alternative
         d.submitCardSelection(p1, listOf(victim))
         d.getExile(p2) shouldContain victim
         d.getHand(p2) shouldNotContain victim
