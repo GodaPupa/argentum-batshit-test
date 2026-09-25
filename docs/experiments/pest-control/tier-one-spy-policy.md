@@ -1,5 +1,15 @@
 # Pest Control: exact Spy opponent policy qualification
 
+> Current audited disposition — 2026-09-25: **accepted seed-free policy
+> capability at `947b0bc63310b05ceca7c8396d44a0a347878619`**, limited to the
+> exact retained 33-case artifact and source below. [Machine-readable acceptance
+> receipt](tier-one-spy-policy-accepted-947b0bc.json). All four required workflows
+> passed; all twelve executed checks passed and optional coverage was skipped.
+> PR #155 remains intentionally draft. This is **not official pilot admission**,
+> integrated-engine readiness, sampling authority, or matchup evidence. The
+> original consumed Monster claim is unchanged. The following sections retain
+> the prospective candidate and failed-validation history.
+
 ## Scope
 
 This seed-free executable policy candidate targets the unchanged Dr_dej96 Spy Combo preboard60
