@@ -1,5 +1,23 @@
 # Project Pest Control experiments
 
+## Current evidence disposition — 2026-09-25
+
+The [supplemental priority-rule audit](tier-one-priority-117-3b-evidence-audit.md) places all
+81 historical games in the five Red, Grixis and Mono-Blue blocks under
+`QUARANTINED_PENDING_PROTOCOL_DISPOSITION`. Their original results and artifacts remain
+preserved, but they cannot currently support clean Tier-1 inference. This is an interim
+evidence disposition, not a final conclusion for the whole program.
+
+The [Monster Tron failed-attempt audit](tier-one-monster-tron-one-shot-failure-audit.md)
+records one consumed block claim with zero game initializations, actions or outcomes. The
+original four reservations are retired. Neither audit authorizes a rerun, replacement vector,
+reopened opponent or deck change.
+
+## Historical checkpoint chronology
+
+The remaining text preserves the earlier checkpoints verbatim. Its historical acceptance
+labels and “next authorized” statements must be read with the current dispositions above.
+
 The controlling V2 qualification block executed exactly once in run `35536805887` and is accepted as
 `ACCEPTED_MATCHUP_QUALIFICATION`: 50/50 clean terminals, zero protocol defects, zero rejected or
 fallback actions, and Pest Control 32-18 SoterX Mono Red Madness. The complete disposition and
