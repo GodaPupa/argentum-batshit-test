@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.wingedsheep.engine.multiplayer.TeamVsTeamTest" tests="14" skipped="0" failures="0" errors="0" timestamp="2026-09-25T04:34:52.554Z" hostname="runnervmtr4k5" time="20.78">
+  <properties/>
+  <testcase name="a randomly chosen first team starts with the seat left of its midpoint, and turn order wraps the table (CR 808.4)" classname="com.wingedsheep.engine.multiplayer.TeamVsTeamTest" time="19.243"/>
+  <testcase name="each player has their own life total; damaging one teammate doesn't touch the other (CR 808.5)" classname="com.wingedsheep.engine.multiplayer.TeamVsTeamTest" time="0.905"/>
+  <testcase name="teammates have distinct life owners (no canonical pooling)" classname="com.wingedsheep.engine.multiplayer.TeamVsTeamTest" time="0.027"/>
+  <testcase name="a player at 0 life loses ALONE; the teammate plays on and the game continues (CR 104.3b)" classname="com.wingedsheep.engine.multiplayer.TeamVsTeamTest" time="0.061"/>
+  <testcase name="a team loses only once ALL its members are out; the other team wins together (CR 104.2c)" classname="com.wingedsheep.engine.multiplayer.TeamVsTeamTest" time="0.029"/>
+  <testcase name="conceding eliminates only the conceding player; the teammate fights on (no 810.8a propagation)" classname="com.wingedsheep.engine.multiplayer.TeamVsTeamTest" time="0.031"/>
+  <testcase name="a can't-lose grant protects only its controller, not the whole team (CR 808 / normal 104)" classname="com.wingedsheep.engine.multiplayer.TeamVsTeamTest" time="0.03"/>
+  <testcase name="poison is per-player at threshold 10; one poisoned player loses alone" classname="com.wingedsheep.engine.multiplayer.TeamVsTeamTest" time="0.034"/>
+  <testcase name="poison does NOT pool across the team — 8 + 7 = 15 kills no one (each is below 10)" classname="com.wingedsheep.engine.multiplayer.TeamVsTeamTest" time="0.046"/>
+  <testcase name="opponents exclude teammates; teammates are recognised" classname="com.wingedsheep.engine.multiplayer.TeamVsTeamTest" time="0.023"/>
+  <testcase name="turn ownership is individual: only the active player owns the turn; a teammate does not" classname="com.wingedsheep.engine.multiplayer.TeamVsTeamTest" time="0.017"/>
+  <testcase name="each player draws on their own turn; no first-turn draw skip in a 4-player game (CR 103.8c)" classname="com.wingedsheep.engine.multiplayer.TeamVsTeamTest" time="0.061"/>
+  <testcase name="the turn passes to the next individual player, not skipping the whole team" classname="com.wingedsheep.engine.multiplayer.TeamVsTeamTest" time="0.102"/>
+  <testcase name="only the directly-attacked player defends; a teammate is not pulled in as a defender" classname="com.wingedsheep.engine.multiplayer.TeamVsTeamTest" time="0.022"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

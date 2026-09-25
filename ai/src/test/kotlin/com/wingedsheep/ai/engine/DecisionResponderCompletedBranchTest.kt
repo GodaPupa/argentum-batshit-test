@@ -2,6 +2,7 @@ package com.wingedsheep.ai.engine
 
 import com.wingedsheep.engine.core.CardsSelectedResponse
 import com.wingedsheep.engine.core.DecisionSubmittedEvent
+import com.wingedsheep.engine.core.PriorityChangedEvent
 import com.wingedsheep.engine.core.SelectCardsDecision
 import com.wingedsheep.engine.core.YesNoResponse
 import com.wingedsheep.engine.state.components.identity.CardComponent
@@ -262,8 +263,10 @@ class DecisionResponderCompletedBranchTest : ScenarioTestBase() {
             }
             withClue("audit-distinct traces must be gameplay-outcome-equivalent") {
                 acceptGameplayEvents shouldBe declineGameplayEvents
-                acceptGameplayEvents.shouldBeEmpty()
+                acceptGameplayEvents shouldBe listOf(PriorityChangedEvent(game.state.activePlayerId!!))
             }
+            accept.state.priorityPlayerId shouldBe game.state.activePlayerId
+            accept.state.stackResolutionPendingPriority shouldBe false
             accept.state shouldBe decline.state
             accept.state.getHand(game.player1Id) shouldBe decline.state.getHand(game.player1Id)
             accept.state.getLibrary(game.player1Id) shouldBe decline.state.getLibrary(game.player1Id)

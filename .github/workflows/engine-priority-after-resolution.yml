@@ -1,0 +1,148 @@
+name: Engine Priority After Resolution
+
+on:
+  pull_request:
+    paths:
+      - .github/workflows/engine-priority-after-resolution.yml
+      - docs/engine-priority-after-resolution*
+      - rules-engine/src/main/kotlin/com/wingedsheep/engine/state/GameState.kt
+      - rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/ContinuationHandler.kt
+      - rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/priority/PassPriorityHandler.kt
+      - rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/decision/SubmitDecisionHandler.kt
+      - rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/sba/player/PlayerLeavesGameProcessor.kt
+      - rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/StackResolutionPriorityTest.kt
+      - mtg-sets/2000-2002/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/CircleOfSolaceTest.kt
+      - mtg-sets/1993-1999/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/ScarecrowScenarioTest.kt
+      - mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/AbundantMawScenarioTest.kt
+      - mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/SpellQuellerScenarioTest.kt
+      - mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/TaureanMaulerScenarioTest.kt
+      - ai/src/test/kotlin/com/wingedsheep/ai/engine/DecisionResponderCompletedBranchTest.kt
+      - rules-engine/src/testFixtures/kotlin/com/wingedsheep/engine/support/ScenarioTestBase.kt
+
+      - docs/engine-post-cast-sba*
+      - rules-engine/src/main/kotlin/com/wingedsheep/engine/event/DeathAndLeaveTriggerDetector.kt
+      - rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/DeathTriggerTest.kt
+      - mtg-sets/2003-2007/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/KrarksThumbScenarioTest.kt
+      - mtg-sets/2026/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/PrismariTheInspirationScenarioTest.kt
+      - rules-engine/src/main/kotlin/com/wingedsheep/engine/state/PendingCastPriority.kt
+      - rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/CastPriorityProcessor.kt
+      - rules-engine/src/main/kotlin/com/wingedsheep/engine/core/ColorAndTypeContinuations.kt
+      - rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/spell/CastSpellHandler.kt
+      - rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/special/ConcedeHandler.kt
+      - rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/special/SpecialActionsModule.kt
+      - rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/ModalAndCloneContinuationResumer.kt
+      - rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/CastPrioritySbaTest.kt
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Bind exact source and effective rules archive
+        env:
+          EXPECTED_HEAD: ${{ github.event.pull_request.head.sha }}
+        run: |
+          python - <<'PY'
+          import datetime, hashlib, json, os, pathlib, subprocess, urllib.request
+          root = pathlib.Path('.')
+          out = root / 'build/reports/engine-priority-after-resolution'
+          out.mkdir(parents=True, exist_ok=True)
+          manifest_path = root / 'docs/engine-priority-after-resolution-sources.json'
+          manifest = json.loads(manifest_path.read_text())
+          head = subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip()
+          assert head == os.environ['EXPECTED_HEAD']
+          subprocess.check_call(['git', 'merge-base', '--is-ancestor', manifest['base_commit'], head])
+          for path, digest in manifest['source_files_sha256'].items():
+              assert hashlib.sha256((root / path).read_bytes()).hexdigest() == digest, path
+          rules = manifest['rules']
+          request = urllib.request.Request(rules['source_url'], headers={'User-Agent': 'Argentum-rules-validation/1.0'})
+          with urllib.request.urlopen(request, timeout=60) as response:
+              raw = response.read()
+          assert len(raw) == rules['byte_length']
+          assert hashlib.sha256(raw).hexdigest() == rules['sha256']
+          verified_date = datetime.datetime.now(datetime.timezone.utc).date().isoformat()
+          assert rules['effective_date'] <= verified_date
+          (out / 'effective-rules.txt').write_bytes(raw)
+          provenance = {
+              'schema': 'engine-priority-after-resolution-validation-v1',
+              'candidate_head': head, 'base_commit': manifest['base_commit'],
+              'github_run_id': os.environ['GITHUB_RUN_ID'],
+              'github_run_attempt': os.environ['GITHUB_RUN_ATTEMPT'],
+              'github_event_name': os.environ['GITHUB_EVENT_NAME'],
+              'manifest_sha256': hashlib.sha256(manifest_path.read_bytes()).hexdigest(),
+              'source_files_sha256': manifest['source_files_sha256'], 'rules': rules,
+              'rules_verified_utc_date': verified_date,
+              'scope': 'DETERMINISTIC_RULES_REGRESSION_ONLY',
+              'official_seeds_generated': 0, 'official_games_initialized': 0,
+              'official_actions_submitted': 0, 'outcome_exposure': 0,
+              'official_execution_authorized': False,
+          }
+          (out / 'source-provenance.json').write_text(json.dumps(provenance, indent=2) + '\n')
+          (out / 'source-manifest.json').write_bytes(manifest_path.read_bytes())
+          PY
+      - name: Qualify ordinary, post-cast and paused priority boundaries
+        run: |
+          set -uo pipefail
+          run_stage() {
+            local stage="$1" test_class="$2" module="${3:-rules-engine}" status=0
+            scripts/test-class "$test_class" --info --stacktrace || status=$?
+            local dest="build/reports/engine-priority-after-resolution/tests/$stage"
+            mkdir -p "$dest" || return 1
+            if [ -d "$module/build/test-results/test" ]; then
+              cp -R "$module/build/test-results/test/." "$dest/" || return 1
+            else
+              printf '%s\n' "Missing XML for $test_class" >&2
+              return 1
+            fi
+            printf '%s\n' "$status" > "$dest/exit-status.txt" || return 1
+            return "$status"
+          }
+          failed=0
+          run_stage priority StackResolutionPriorityTest || failed=1
+          run_stage stack-war StackWarTest || failed=1
+          run_stage continuations ContinuationSystemTest || failed=1
+          run_stage ordinary-cleanup CleanupHandSizeDiscardDamageRemovalTest || failed=1
+          run_stage legend-rule LegendRuleTest || failed=1
+          run_stage leave-game LeaveTheGameTest || failed=1
+          run_stage team-priority TwoHeadedGiantTeamPriorityTest || failed=1
+          run_stage flash-permission ConditionalFlashGrantTest || failed=1
+          run_stage legacy-traces SuspensionTraceTest || failed=1
+          run_stage legacy-serialization LegacySuspensionMigrationTest || failed=1
+          run_stage circle-solace CircleOfSolaceTest mtg-sets/2000-2002/tests || failed=1
+          run_stage scarecrow ScarecrowScenarioTest mtg-sets/1993-1999/tests || failed=1
+          run_stage abundant-maw AbundantMawScenarioTest mtg-sets/2008-2016/tests || failed=1
+          run_stage spell-queller SpellQuellerScenarioTest mtg-sets/2008-2016/tests || failed=1
+          run_stage mauler TaureanMaulerScenarioTest mtg-sets/2008-2016/tests || failed=1
+          run_stage ai-decision-trace DecisionResponderCompletedBranchTest ai || failed=1
+          run_stage cast-sba CastPrioritySbaTest || failed=1
+          run_stage death-trigger DeathTriggerTest || failed=1
+          run_stage krarks-thumb KrarksThumbScenarioTest mtg-sets/2003-2007/tests || failed=1
+          run_stage prismari PrismariTheInspirationScenarioTest mtg-sets/2026/tests || failed=1
+          run_stage free-cast GrantNextSpellFreeCastTest || failed=1
+          run_stage modal-cost ModalPerModeAdditionalCostTest || failed=1
+          run_stage modal-cost-enumeration CastSpellEnumeratorModalAdditionalCostTest || failed=1
+          run_stage reveal-cost RevealFromHandAdditionalCostTest || failed=1
+          run_stage commander-choice CommanderZoneChoiceCheckTest || failed=1
+          run_stage team-loss TwoHeadedGiantTeamLossTest || failed=1
+          run_stage team-versus-team TeamVsTeamTest || failed=1
+          exit "$failed"
+      - name: Preserve complete validation evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: engine-priority-after-resolution
+          path: build/reports/engine-priority-after-resolution/
+          if-no-files-found: error
+          retention-days: 90
