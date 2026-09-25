@@ -636,6 +636,85 @@
     ]
 }
 
+// Cosmic Hunger
+{
+    "name": "Cosmic Hunger",
+    "manaCost": "{1}{G}",
+    "typeLine": "Instant",
+    "oracleText": "Target creature you control deals damage equal to its power to another target creature, planeswalker, or battle.",
+    "script": {
+        "spellEffect": {
+            "type": "DealDamage",
+            "amount": {
+                "type": "EntityProperty",
+                "entity": "Target",
+                "numericProperty": "Power"
+            },
+            "target": {
+                "type": "BoundVariable",
+                "name": "another creature, planeswalker, or battle"
+            },
+            "damageSource": {
+                "type": "BoundVariable",
+                "name": "creature you control"
+            }
+        },
+        "targetRequirements": [
+            {
+                "type": "TargetObject",
+                "filter": {
+                    "baseFilter": "creature ctrl:you"
+                },
+                "id": "creature you control"
+            },
+            {
+                "type": "TargetOther",
+                "baseRequirement": {
+                    "type": "TargetObject",
+                    "filter": {
+                        "baseFilter": {
+                            "cardPredicates": [
+                                {
+                                    "type": "Or",
+                                    "predicates": [
+                                        {
+                                            "type": "Or",
+                                            "predicates": [
+                                                "IsCreature",
+                                                "IsPlaneswalker"
+                                            ]
+                                        },
+                                        {
+                                            "type": "HasCardType",
+                                            "cardType": "BATTLE"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    }
+                },
+                "id": "another creature, planeswalker, or battle"
+            }
+        ]
+    },
+    "metadata": {
+        "collectorNumber": "182",
+        "artist": "Konstantin Porubov",
+        "flavorText": "The Copper Host sought only the strongest converts. In Koma, it found perfection.",
+        "imageUri": "https://cards.scryfall.io/normal/front/b/8/b8eef541-6851-4312-ad2b-74f45c7ede6c.jpg?1783916972",
+        "rulings": [
+            {
+                "date": "2023-04-14",
+                "text": "If either target is an illegal target as Cosmic Hunger tries to resolve, the creature you control won’t deal damage."
+            }
+        ]
+    },
+    "colorIdentityOverride": [
+        "GREEN"
+    ]
+}
+
 // Deadly Derision
 {
     "name": "Deadly Derision",
