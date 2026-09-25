@@ -1,0 +1,95 @@
+name: Izzet Position-1 Simultaneous Damage Grouping
+
+on:
+  push:
+    branches: ["mayhem/izzet-science"]
+    paths:
+      - ".github/workflows/izzet-v09-position1-simultaneous-damage.yml"
+      - "izzet-science/v09-position1-simultaneous-damage-gate.md"
+      - "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/GameEvent.kt"
+      - "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/DamageUtils.kt"
+      - "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/AttachmentTriggerDetector.kt"
+      - "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerDetector.kt"
+      - "mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/RamThroughScenarioTest.kt"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: izzet-position1-simultaneous-damage
+  cancel-in-progress: false
+
+jobs:
+  qualify-simultaneous-damage:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "21"
+      - uses: gradle/actions/setup-gradle@v6
+
+      - name: Verify frozen identities and accepted predecessor
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(sha256sum izzet-science/v0.7-control.md | cut -d' ' -f1)" = "726f5e9458b46dda30b33a6ce9f3c3237b25d6e11b81dac85308c3065c108a01"
+          test "$(sha256sum izzet-science/opponents/veteran-beastrider-commander-clash-2025.txt | cut -d' ' -f1)" = "c3ab6ee8e37a78219e7bbb7c6a75c634d78c1eb4965ab0db3abd5d853398b0be"
+          grep -Fq 'BATCH AO ACCEPTED FOR REGISTRY/CAPABILITY SCOPE ONLY' izzet-science/v09-position1-engine-batch-ao-gate.md
+          grep -Fq 'KEEP_V07 / NO CARD CHANGES' izzet-science/v09-position1-simultaneous-damage-gate.md
+          mkdir -p /tmp/izzet-simultaneous-damage
+
+      - name: Qualify exact simultaneous source event
+        shell: bash
+        run: |
+          set -euo pipefail
+          scripts/test-class RamThroughScenarioTest --info --stacktrace | tee /tmp/izzet-simultaneous-damage/ram.txt
+          scripts/test-class SpiritLinkBatchAJScenarioTest --info --stacktrace | tee /tmp/izzet-simultaneous-damage/spirit-link.txt
+          scripts/test-class ExcessDamageSelfReplacementTest --info --stacktrace | tee /tmp/izzet-simultaneous-damage/excess.txt
+          scripts/test-class DamageDealtThisTurnTest --info --stacktrace | tee /tmp/izzet-simultaneous-damage/damage-ledger.txt
+          scripts/test-class IzzetScienceVeteranBeastriderEngineReadinessTest --info --stacktrace | tee /tmp/izzet-simultaneous-damage/readiness.txt
+
+      - name: Verify no gameplay authority or deck change
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -Fq 'officialGamesAuthorized: Int = 0' gym/src/main/kotlin/com/wingedsheep/gym/matchup/IzzetScienceVeteranBeastriderEngineReadiness.kt
+          grep -Fq 'officialSeedsConsumed: Int = 0' gym/src/main/kotlin/com/wingedsheep/gym/matchup/IzzetScienceVeteranBeastriderEngineReadiness.kt
+          grep -Fq 'outcomeExposure: Int = 0' gym/src/main/kotlin/com/wingedsheep/gym/matchup/IzzetScienceVeteranBeastriderEngineReadiness.kt
+          git diff --check
+          test -z "$(git status --porcelain)"
+
+      - name: Emit source-bound capability receipt
+        shell: bash
+        run: |
+          set -euo pipefail
+          {
+            echo "schema=izzet-v09-simultaneous-source-damage-v1"
+            echo "source_sha=${GITHUB_SHA}"
+            echo "scope=RAM_THROUGH_SPLIT_LIFELINK_AND_UNRESTRICTED_ATTACHED_DEALS_DAMAGE"
+            echo "official_seeds_consumed=0"
+            echo "games_initialized=0"
+            echo "outcome_exposure=0"
+            sha256sum izzet-science/v0.7-control.md
+            sha256sum izzet-science/opponents/veteran-beastrider-commander-clash-2025.txt
+            sha256sum izzet-science/v09-position1-engine-batch-ao-gate.md
+            sha256sum izzet-science/v09-position1-simultaneous-damage-gate.md
+            sha256sum .github/workflows/izzet-v09-position1-simultaneous-damage.yml
+            sha256sum rules-engine/src/main/kotlin/com/wingedsheep/engine/core/GameEvent.kt
+            sha256sum rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/DamageUtils.kt
+            sha256sum rules-engine/src/main/kotlin/com/wingedsheep/engine/event/AttachmentTriggerDetector.kt
+            sha256sum rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerDetector.kt
+            sha256sum mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/RamThroughScenarioTest.kt
+            sha256sum /tmp/izzet-simultaneous-damage/{ram,spirit-link,excess,damage-ledger,readiness}.txt
+          } > /tmp/izzet-simultaneous-damage/manifest.txt
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: izzet-v09-simultaneous-source-damage
+          path: /tmp/izzet-simultaneous-damage
+          if-no-files-found: error

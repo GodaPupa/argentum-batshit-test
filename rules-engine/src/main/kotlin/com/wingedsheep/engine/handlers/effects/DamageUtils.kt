@@ -203,7 +203,9 @@ object DamageUtils {
          * lethal (CR 120.4a) is dealt to that creature's controller instead (Gandalf's Sanction:
          * "Excess damage is dealt to that creature's controller instead.").
          */
-        excessToController: Boolean = false
+        excessToController: Boolean = false,
+        /** Internal recursion rail used only while one simultaneous source-damage event is split. */
+        deferLifelink: Boolean = false
     ): EffectResult {
         if (amount <= 0) return EffectResult.success(state)
 
@@ -221,12 +223,50 @@ object DamageUtils {
             val excess = (amount - lethal).coerceAtLeast(0)
             val creatureResult = dealDamageToTarget(state, targetId, amount - excess, sourceId,
                 cantBePrevented = cantBePrevented, isCombatDamage = isCombatDamage,
-                appliedRedirects = appliedRedirects, excessToController = false)
+                appliedRedirects = appliedRedirects, excessToController = false, deferLifelink = true)
             if (!creatureResult.isSuccess) return creatureResult
             val controllerResult = dealDamageToTarget(creatureResult.state, controller, excess, sourceId,
                 cantBePrevented = cantBePrevented, isCombatDamage = isCombatDamage,
-                appliedRedirects = appliedRedirects, excessToController = false)
-            return controllerResult.copy(events = creatureResult.events + controllerResult.events)
+                appliedRedirects = appliedRedirects, excessToController = false, deferLifelink = true)
+            if (!controllerResult.isSuccess) return controllerResult
+
+            val combinedEvents = creatureResult.events + controllerResult.events
+            val sourceDamageEvents = combinedEvents.filterIsInstance<DamageDealtEvent>()
+                .filter { it.sourceId == sourceId }
+            var nextGroupIndex = 0
+            val groupedEvents = if (sourceDamageEvents.size > 1) {
+                combinedEvents.map { event ->
+                    if (event is DamageDealtEvent && event.sourceId == sourceId) {
+                        event.copy(
+                            simultaneousDamageGroupIndex = nextGroupIndex++,
+                            simultaneousDamageGroupSize = sourceDamageEvents.size
+                        )
+                    } else {
+                        event
+                    }
+                }.toMutableList()
+            } else {
+                combinedEvents.toMutableList()
+            }
+
+            var finalState = controllerResult.state
+            val totalDamageDealt = sourceDamageEvents.sumOf { it.amount }
+            if (!deferLifelink && sourceId != null && totalDamageDealt > 0) {
+                val finalProjection = finalState.projectedState
+                if (finalProjection.hasKeyword(sourceId, Keyword.LIFELINK.name) ||
+                    sourceHasGrantedDamageKeyword(finalState, sourceId, Keyword.LIFELINK)
+                ) {
+                    val sourceControllerId = finalProjection.getController(sourceId)
+                        ?: finalState.getEntity(sourceId)?.get<ControllerComponent>()?.playerId
+                        ?: finalState.getEntity(sourceId)?.get<SpellOnStackComponent>()?.casterId
+                    if (sourceControllerId != null) {
+                        val (gainedState, gainEvent) = gainLife(finalState, sourceControllerId, totalDamageDealt)
+                        finalState = gainedState
+                        if (gainEvent != null) groupedEvents.add(gainEvent)
+                    }
+                }
+            }
+            return controllerResult.copy(state = finalState, events = groupedEvents)
         }
 
         // Check for global "damage can't be prevented" effects (Sunspine Lynx, Leyline of Punishment)
@@ -243,12 +283,12 @@ object DamageUtils {
                 checkDamageRedirection(state, targetId, amount, sourceId = sourceId)
             }
         if (redirectTargetId != null) {
-            val redirectResult = dealDamageToTarget(redirectState, redirectTargetId, redirectAmount, sourceId, cantBePrevented, isCombatDamage, appliedRedirects)
+            val redirectResult = dealDamageToTarget(redirectState, redirectTargetId, redirectAmount, sourceId, cantBePrevented, isCombatDamage, appliedRedirects, deferLifelink = deferLifelink)
             val remainingDamage = amount - redirectAmount
             return if (remainingDamage > 0) {
                 // Partial redirection — deal remaining damage to original target
                 val afterRedirect = redirectResult.state
-                val remainingResult = dealDamageToTarget(afterRedirect, targetId, remainingDamage, sourceId, cantBePrevented, isCombatDamage, appliedRedirects)
+                val remainingResult = dealDamageToTarget(afterRedirect, targetId, remainingDamage, sourceId, cantBePrevented, isCombatDamage, appliedRedirects, deferLifelink = deferLifelink)
                 EffectResult.success(remainingResult.state, redirectResult.events + remainingResult.events)
             } else {
                 redirectResult
@@ -264,7 +304,7 @@ object DamageUtils {
             if (staticRedirectTo != null && staticRedirectSource != null) {
                 return dealDamageToTarget(
                     state, staticRedirectTo, amount, sourceId, cantBePrevented, isCombatDamage,
-                    appliedRedirects + staticRedirectSource
+                    appliedRedirects + staticRedirectSource, deferLifelink = deferLifelink
                 )
             }
         }
@@ -614,7 +654,7 @@ object DamageUtils {
         // Lifelink: if the source has lifelink, its controller gains life equal to the damage dealt
         // (CR 120.3f / 702.15b). The lifelink damage causes a life-gain event, so ModifyLifeGain
         // (Alhammarret's Archive, Leyline of Hope) replaces the actual amount gained.
-        if (sourceId != null) {
+        if (!deferLifelink && sourceId != null) {
             val projected = newState.projectedState
             if (projected.hasKeyword(sourceId, Keyword.LIFELINK.name) ||
                 sourceHasGrantedDamageKeyword(newState, sourceId, Keyword.LIFELINK)

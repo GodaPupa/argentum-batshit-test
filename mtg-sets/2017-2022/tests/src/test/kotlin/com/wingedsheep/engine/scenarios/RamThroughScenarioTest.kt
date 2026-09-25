@@ -1,10 +1,13 @@
 package com.wingedsheep.engine.scenarios
 
 import com.wingedsheep.engine.core.DamageDealtEvent
+import com.wingedsheep.engine.core.LifeChangedEvent
+import com.wingedsheep.engine.core.LifeChangeReason
 import com.wingedsheep.engine.state.components.battlefield.DamageComponent
 import com.wingedsheep.engine.support.GameTestDriver
 import com.wingedsheep.engine.support.TestCards
 import com.wingedsheep.mtg.sets.definitions.iko.cards.RamThrough
+import com.wingedsheep.mtg.sets.definitions.`10e`.cards.SpiritLink
 import com.wingedsheep.sdk.core.Color
 import com.wingedsheep.sdk.core.Keyword
 import com.wingedsheep.sdk.core.Step
@@ -30,6 +33,13 @@ class RamThroughScenarioTest : FunSpec({
         toughness = 5
         keywords(Keyword.LIFELINK)
     }
+    val linkedTrampler = card("Ram Fixture Linked Trampler") {
+        manaCost = "{4}{G}"
+        typeLine = "Creature — Beast"
+        power = 5
+        toughness = 5
+        keywords(Keyword.TRAMPLE)
+    }
     val bounce = card("Ram Fixture Bounce") {
         manaCost = "{U}"
         typeLine = "Instant"
@@ -41,7 +51,7 @@ class RamThroughScenarioTest : FunSpec({
         spell { target = Targets.Creature; effect = Effects.GrantKeyword(Keyword.TRAMPLE) }
     }
     fun fixture() = GameTestDriver().apply {
-        registerCards(TestCards.all + listOf(RamThrough, trampler, ordinary, bounce, grantTrample))
+        registerCards(TestCards.all + listOf(RamThrough, SpiritLink, trampler, ordinary, linkedTrampler, bounce, grantTrample))
         initMirrorMatch(Deck.of("Forest" to 40), skipMulligans = true, startingPlayer = 0)
         passPriorityUntil(Step.PRECOMBAT_MAIN)
     }
@@ -65,6 +75,13 @@ class RamThroughScenarioTest : FunSpec({
             damage.map { it.targetId to it.amount } shouldBe if (trample)
                 listOf(target to 2, d.player2 to 3) else listOf(target to 5)
             damage.all { it.sourceId == source && !it.isCombatDamage } shouldBe true
+            if (trample) {
+                damage.map { it.simultaneousDamageGroupIndex } shouldBe listOf(0, 1)
+                damage.map { it.simultaneousDamageGroupSize } shouldBe listOf(2, 2)
+                d.events.filterIsInstance<LifeChangedEvent>()
+                    .filter { it.reason == LifeChangeReason.LIFE_GAIN }
+                    .map { it.newLife - it.oldLife } shouldBe listOf(5)
+            }
         }
     }
     test("marked damage determines excess without rerouting more damage than source power") {
@@ -111,6 +128,26 @@ class RamThroughScenarioTest : FunSpec({
             d.getLifeTotal(d.player2) shouldBe 20
         }
     }
+    test("split excess damage fires Spirit Link once for the combined source event") {
+        val d = fixture()
+        val source = d.putCreatureOnBattlefield(d.player1, linkedTrampler.name)
+        val target = d.putCreatureOnBattlefield(d.player2, "Grizzly Bears")
+
+        val link = d.putCardInHand(d.player1, SpiritLink.name)
+        d.giveMana(d.player1, Color.WHITE, 1)
+        d.castSpell(d.player1, link, listOf(source)).isSuccess shouldBe true
+        d.bothPass().isSuccess shouldBe true
+
+        castRam(d, source, target)
+        d.bothPass().isSuccess shouldBe true
+        d.bothPass().isSuccess shouldBe true
+
+        d.getLifeTotal(d.player1) shouldBe 25
+        d.events.filterIsInstance<LifeChangedEvent>()
+            .filter { it.reason == LifeChangeReason.LIFE_GAIN }
+            .map { it.newLife - it.oldLife } shouldBe listOf(5)
+    }
+
     test("only a controlled first creature and an opposing second creature form legal targets") {
         val d = fixture()
         val own = d.putCreatureOnBattlefield(d.player1, trampler.name)

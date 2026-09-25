@@ -176,7 +176,18 @@ data class DamageDealtEvent(
      * their TargetsComponent before event-trigger detection, so target/recipient relationship
      * predicates consume this event-side snapshot instead of consulting later state.
      */
-    val sourceTargetIdsAtDamage: List<EntityId>? = null
+    val sourceTargetIdsAtDamage: List<EntityId>? = null,
+    /**
+     * Membership in one simultaneous source-damage event that was split across multiple
+     * recipients before replacement/prevention (for example Ram Through's excess-damage
+     * self-replacement). Ordinary damage leaves these defaults untouched.
+     *
+     * [simultaneousDamageGroupIndex] is zero-based within the source event and is non-null only
+     * when [simultaneousDamageGroupSize] is greater than one. The pair is local to the returned
+     * event batch: index 0 begins a group and following marked damage records advance to size - 1.
+     */
+    val simultaneousDamageGroupIndex: Int? = null,
+    val simultaneousDamageGroupSize: Int = 1
 ) : GameEvent
 
 /**

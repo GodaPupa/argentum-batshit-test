@@ -13,6 +13,7 @@ import com.wingedsheep.engine.state.GameState
 import com.wingedsheep.sdk.core.Zone
 import com.wingedsheep.sdk.scripting.EventPattern
 import com.wingedsheep.sdk.scripting.TriggerBinding
+import com.wingedsheep.sdk.scripting.events.RecipientFilter
 import com.wingedsheep.engine.core.GameEvent as EngineGameEvent
 
 /**
@@ -56,6 +57,13 @@ class AttachmentTriggerDetector(
                     // aura's own ZoneChangeEvent. Only equipment stays on the battlefield.
                     if (isZoneChange && ability.trigger is EventPattern.ZoneChangeEvent &&
                         !entry.cardComponent.typeLine.isEquipment) continue
+                    val groupedUnrestrictedSourceDamage =
+                        event is DamageDealtEvent &&
+                            event.simultaneousDamageGroupIndex != null &&
+                            event.simultaneousDamageGroupSize > 1 &&
+                            ability.trigger is EventPattern.DealsDamageEvent &&
+                            ability.trigger.recipient == RecipientFilter.Any
+                    if (groupedUnrestrictedSourceDamage) continue
                     if (matchesAttachedTrigger(ability.trigger, event, entityId, entry.controllerId, entry.entityId, state)) {
                         triggers.add(
                             PendingTrigger(
@@ -69,6 +77,71 @@ class AttachmentTriggerDetector(
                     }
                 }
             }
+        }
+    }
+
+    /**
+     * Recombine only producer-marked split damage for unrestricted ATTACHED source triggers.
+     * Malformed/incomplete local group sequences fail closed; recipient triggers stay per record.
+     */
+    fun detectSimultaneousSourceDamageTriggers(
+        state: GameState,
+        events: List<EngineGameEvent>,
+        triggers: MutableList<PendingTrigger>,
+        index: TriggerIndex
+    ) {
+        val marked = events.filterIsInstance<DamageDealtEvent>()
+            .filter { it.simultaneousDamageGroupIndex != null && it.simultaneousDamageGroupSize > 1 }
+        var cursor = 0
+        while (cursor < marked.size) {
+            val first = marked[cursor]
+            val size = first.simultaneousDamageGroupSize
+            if (first.simultaneousDamageGroupIndex != 0 || cursor + size > marked.size) {
+                cursor += 1
+                continue
+            }
+            val group = marked.subList(cursor, cursor + size)
+            val wellFormed = group.withIndex().all { (groupIndex, event) ->
+                event.simultaneousDamageGroupSize == size &&
+                    event.simultaneousDamageGroupIndex == groupIndex
+            }
+            if (!wellFormed) {
+                cursor += 1
+                continue
+            }
+
+            val sourceId = first.sourceId
+            if (sourceId != null && group.all { it.sourceId == sourceId }) {
+                for (entry in index.aurasByTarget[sourceId].orEmpty()) {
+                    for (ability in entry.abilities) {
+                        val trigger = ability.trigger
+                        if (ability.binding != TriggerBinding.ATTACHED ||
+                            trigger !is EventPattern.DealsDamageEvent ||
+                            trigger.recipient != RecipientFilter.Any
+                        ) continue
+
+                        val matching = group.filter { event ->
+                            matchesAttachedTrigger(
+                                trigger, event, sourceId, entry.controllerId, entry.entityId, state
+                            )
+                        }
+                        if (matching.isEmpty()) continue
+
+                        triggers.add(
+                            PendingTrigger(
+                                ability = ability,
+                                sourceId = entry.entityId,
+                                sourceName = entry.cardComponent.name,
+                                controllerId = entry.controllerId,
+                                triggerContext = TriggerContext.fromEvent(matching.first()).copy(
+                                    damageAmount = matching.sumOf { it.amount }
+                                )
+                            )
+                        )
+                    }
+                }
+            }
+            cursor += size
         }
     }
 

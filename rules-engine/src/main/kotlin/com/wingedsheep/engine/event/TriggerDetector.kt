@@ -286,6 +286,10 @@ class TriggerDetector(
             })
         }
 
+        // Producer-marked split source damage is one event for unrestricted ATTACHED
+        // "deals damage" triggers, while recipient-side triggers above remain per recipient.
+        attachmentDetector.detectSimultaneousSourceDamageTriggers(state, events, triggers, index)
+
         // Rule 603.10: "Look back in time" for simultaneous deaths.
         // When multiple creatures die at the same time (e.g., from Infest),
         // each creature's death triggers should still see the others dying.
