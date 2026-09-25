@@ -256,10 +256,10 @@ object TableGameRunner {
         val maxPlayerTurns = maxTurns * setup.seats
         val stream = if (recordActionStream) MessageDigest.getInstance("SHA-256") else null
         val recentActions = ArrayDeque<String>()
-        fun record(entry: String) {
+        fun record(entry: String, diagnosticEntry: String = entry) {
             stream?.update(entry.toByteArray(Charsets.UTF_8))
             if (recordActionStream) {
-                recentActions.addLast(entry.trim())
+                recentActions.addLast(diagnosticEntry.trim())
                 while (recentActions.size > 40) recentActions.removeFirst()
             }
         }
@@ -344,7 +344,12 @@ object TableGameRunner {
                             else -> action.toString()
                         }
                     } else action.toString()
-                    record("A$actionCount|${seatOf(priorityPlayer)}|${state.step.name}|$traceAction\n")
+                    // Preserve the original frozen action fingerprint. Card names and sacrifice
+                    // labels enrich failure diagnostics without changing the canonical stream.
+                    record(
+                        "A$actionCount|${seatOf(priorityPlayer)}|${state.step.name}|$action\n",
+                        "A$actionCount|${seatOf(priorityPlayer)}|${state.step.name}|$traceAction\n",
+                    )
                     val r = processor.process(state, action).result
                     val accepted = if (r.error != null) {
                         val subjectId = when (action) {

@@ -1,0 +1,67 @@
+name: Industrial Waste v2 card qualification
+
+on:
+  pull_request:
+    branches: [industrial-waste/lab]
+    paths:
+      - .github/workflows/industrial-waste-v2-card-qualification.yml
+      - industrial-waste/v2/**
+      - ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteV2RegistryAuditTest.kt
+      - ai/src/test/kotlin/com/wingedsheep/ai/arena/TableGameRunner.kt
+      - mtg-sets/**/ChromaticStar*.kt
+      - mtg-sets/**/AncientStirrings*.kt
+      - mtg-sets/src/test/resources/snapshots/cards/TSP.json
+      - mtg-sets/src/test/resources/snapshots/cards/ROE.json
+
+permissions:
+  contents: read
+
+concurrency:
+  group: industrial-waste-v2-cards-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  seed-free-card-qualification:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+      - uses: actions/setup-java@v5
+        with: {distribution: temurin, java-version: 21}
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Verify immutable construction inputs
+        run: python3 industrial-waste/v2/validate_r0.py
+      - name: Qualify card behavior, compiled identities and unchanged legacy golden
+        run: |
+          scripts/gradle-locked \
+            :mtg-sets:2003-2007:tests:test --tests '*ChromaticStarScenarioTest' \
+            :mtg-sets:2008-2016:tests:test --tests '*AncientStirringsScenarioTest' \
+            :ai:test --tests '*IndustrialWasteV2RegistryAuditTest' --tests '*FrozenBaselineTest' \
+            --continue --no-daemon
+      - name: Generate reviewable card snapshots for only the newly admitted cards
+        run: |
+          scripts/gradle-locked :mtg-sets:test --tests '*CardDefinitionSnapshotTest' -DupdateSnapshots=true --no-daemon
+          python3 - <<'PY'
+          import subprocess
+          expected = {'mtg-sets/src/test/resources/snapshots/cards/TSP.json', 'mtg-sets/src/test/resources/snapshots/cards/ROE.json'}
+          changed = set(subprocess.check_output(['git', 'diff', '--name-only'], text=True).splitlines())
+          if not changed <= expected:
+              raise SystemExit('Unexpected snapshot or source drift: ' + repr(sorted(changed - expected)))
+          PY
+          git diff -- mtg-sets/src/test/resources/snapshots/cards/TSP.json mtg-sets/src/test/resources/snapshots/cards/ROE.json > /tmp/iw-v2-card-snapshot.diff
+      - name: Preserve exact validation and snapshot evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: industrial-waste-v2-card-qualification
+          path: |
+            ai/build/test-results/test/TEST-*.xml
+            mtg-sets/2003-2007/tests/build/test-results/test/TEST-*.xml
+            mtg-sets/2008-2016/tests/build/test-results/test/TEST-*.xml
+            industrial-waste/v2/runtime-evidence/registry-audit.txt
+            /tmp/iw-v2-card-snapshot.diff
+            mtg-sets/src/test/resources/snapshots/cards/TSP.json
+            mtg-sets/src/test/resources/snapshots/cards/ROE.json
+          if-no-files-found: error
