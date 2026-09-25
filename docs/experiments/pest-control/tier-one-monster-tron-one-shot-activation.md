@@ -1,5 +1,10 @@
 # Monster Tron: exact-source one-shot activation
 
+**Current disposition:** the original one-shot attempt was consumed and rejected before any game
+initialized. All four original assignments are retired. See the
+[failure audit and repair boundary](tier-one-monster-tron-one-shot-failure-audit.md); this historical
+activation is not a retry or replacement authorization.
+
 ## Accepted construction and immutable execution source
 
 The separately reviewed construction source is frozen at
