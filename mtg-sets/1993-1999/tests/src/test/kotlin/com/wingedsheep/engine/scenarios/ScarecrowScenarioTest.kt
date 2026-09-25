@@ -121,6 +121,8 @@ class ScarecrowScenarioTest : ScenarioTestBase() {
                 game.resolveStack()
 
                 val before = game.getLifeTotal(1)
+                game.state.priorityPlayerId shouldBe game.player2Id
+                game.passPriority().error shouldBe null // The active player passes to the Bolt caster.
                 game.castSpellTargetingPlayer(1, "Lightning Bolt", 1).error shouldBe null
                 game.resolveStack()
 

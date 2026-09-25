@@ -1052,18 +1052,20 @@ abstract class ScenarioTestBase : FunSpec() {
 
         /**
          * Pass priority for both players to resolve the stack.
-         * Note: This stops when a pending decision is created (the caller should handle it).
+         * Stops for a pending decision, an execution error, or game over. A lethal cast trigger
+         * can end the game while its creature spell remains on the stack; nobody gets priority
+         * to finish that spell after the game ends.
          */
         fun resolveStack(): List<ExecutionResult> {
             val results = mutableListOf<ExecutionResult>()
             var iterations = 0
-            while (state.stack.isNotEmpty() && state.pendingDecision == null && iterations++ < 20) {
+            while (!state.gameOver && state.stack.isNotEmpty() && state.pendingDecision == null && iterations++ < 20) {
                 val result = passPriority()
                 results.add(result)
                 if (result.error != null) {
                     break  // Stop on error
                 }
-                if (state.stack.isNotEmpty() && state.pendingDecision == null) {
+                if (!state.gameOver && state.stack.isNotEmpty() && state.pendingDecision == null) {
                     val result2 = passPriority()
                     results.add(result2)
                     if (result2.error != null) {
