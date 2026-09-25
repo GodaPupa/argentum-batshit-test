@@ -8,6 +8,10 @@ import io.kotest.matchers.shouldBe
 
 class PestControlTierOneMonsterTronOfficialArtifactValidationTest : FunSpec({
     test("official frozen ZIP is read-only validated without gameplay") {
+        val zip = System.getenv("PEST_MONSTER_TRON_EXECUTION_INPUT_ZIP")
+        val ack = System.getenv("PEST_MONSTER_TRON_EXECUTION_INPUT_ACK")
+        if (zip.isNullOrBlank() && ack.isNullOrBlank()) return@test
+
         val input = PestControlTierOneMonsterTronOfficialExecutionInputLoader.loadValidatedFromEnvironment()
         input.archiveSha256 shouldBe PEST_MONSTER_TRON_FROZEN_SMOKE_ARCHIVE_SHA256
         input.vectorIdentity.orderedVectorSha256 shouldBe PEST_MONSTER_TRON_FROZEN_SMOKE_VECTOR_SHA256
