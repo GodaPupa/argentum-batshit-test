@@ -2,6 +2,42 @@
 
 Status: **CARD AND SHARED SELECTION COMPONENTS QUALIFIED — FULL R1 READINESS STILL PENDING / NO CORPUS EXECUTION**
 
+## Verified ordinary land-cast boundary repair
+
+Run `36085248521` at `c9573d18c59c3b2a1b20c128811b1f515cb3fb2e`
+executed all 85 selected fixtures: 83 passed and the Tree/Vault direct-casting
+rejection cases failed. Their exact XML shows that `CastSpell` incorrectly
+succeeded. The earlier Foundry fixture repair passed all six cases. The artifact
+and its two raw failures are preserved in `validation-failure-36085248521.json`.
+
+The authoritative `CastSpellHandler` now rejects a land in its computed effective
+spell face, as required by current CR305.1/305.9. The check is after the separate
+morph/disguise face-down branch, and its effective-face lookup preserves
+land-primary Adventure and modal-DFC spell faces. `PlayLand` is untouched.
+The existing two Kurgadon/morph cases and three Town land/Adventure cases join
+the direct qualification, bringing the expected total to 90. The original
+Tree/Vault assertions remain unchanged. This narrow shared-engine repair was
+coordinated with the Pest worker; no frozen Pest block is modified by it.
+Acceptance requires its own complete runtime artifact and checks. All R1
+allocations remain uninitialized, and closed v1 artifacts are unchanged.
+
+## Prospective numerical decision rule
+
+`r1_decision_rule.py` implements the frozen numerical screen for a complete
+512-member grid: all four decks, 64 rows and both play/draw schedules. It rejects
+duplicates, partial grids, unresolved metrics and invalid execution statuses.
+Valid caps count their observed metrics without creating an artificial winner.
+The exact +8/128 loop-or-conversion margin, both +4/128 failure limits, maximum
+two survivors and all five ranking keys are implemented without new parameters.
+
+Nine synthetic regression cases exercise boundary failures, net paired gains and
+regressions, the two-survivor limit and tiebreaks, and uncertainty from 64 paired
+row-cluster means. This numerical core reads no ordering corpus or gameplay file,
+initializes no games, and has no official analysis command. Runtime telemetry
+truth, identity/provenance checks and the complete evidence audit must be
+qualified separately before any output can support an experimental disposition.
+It grants neither execution authority nor deck promotion.
+
 ## Artifact lands and actual drain qualification
 
 The next compatible exact-mechanic batch adds 19 fixed cases for Tree of Tales,

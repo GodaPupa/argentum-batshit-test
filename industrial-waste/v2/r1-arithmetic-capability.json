@@ -1,0 +1,19 @@
+{
+  "schema": "iw-v2-r1-arithmetic-capability-audit-v1",
+  "status": "QUALIFIED_SYNTHETIC_NUMERICAL_CORE_NOT_OFFICIAL_ANALYSIS",
+  "governing_protocol": "industrial-waste/v2/protocol-v2-r1.json",
+  "protocol_sha256": "fd697b6d56b5a5451f4dc6f9ee4bd20584a705570c6f99861dd64f0086ed95bc",
+  "source_sha256": {
+    "industrial-waste/v2/r1_decision_rule.py": "dcf075e8d9a61830ea8b05acad6b91f6ee222d85ae953acb3215404e52c33f1b",
+    "industrial-waste/v2/test_r1_decision_rule.py": "a76585c4163e0db7f9a788f43f654b39e1187084a1d46b62cdf81969aaa11139"
+  },
+  "executed_unit_cases": 9,
+  "failures": 0,
+  "errors": 0,
+  "skips": 0,
+  "independent_review": "Separate coordinator agent checked exact margins, paired discordance, all five ranking keys, maximum two survivors, 64-cluster sample variance, invalid-data rejection, reverse input-order invariance and opposite PLAY/DRAW cancellation.",
+  "data_scope": "Synthetic Boolean fixtures only; no frozen ordering content, candidate decks or gameplay outcomes are loaded.",
+  "remaining_requirement": "Runtime extraction, provenance and full evidence acceptance must precede an official application.",
+  "official_allocations_initialized": 0,
+  "deck_promoted": false
+}

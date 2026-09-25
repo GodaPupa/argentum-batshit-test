@@ -29,6 +29,8 @@ jobs:
         run: python3 industrial-waste/v2/validate_r0.py --output /tmp/iw-v2-r0-validation.json
       - name: Reject altered candidate, history, corpus and deck limits
         run: python3 -m unittest discover -s industrial-waste/v2 -p 'test_validate_r0.py' -v
+      - name: Qualify frozen R1 arithmetic on synthetic paired fixtures
+        run: python3 -m unittest discover -s industrial-waste/v2 -p 'test_r1_decision_rule.py' -v
       - name: Preserve construction validation receipt; no gameplay
         uses: actions/upload-artifact@v4
         with:
