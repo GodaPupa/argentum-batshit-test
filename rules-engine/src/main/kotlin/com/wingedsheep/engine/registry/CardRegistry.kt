@@ -28,6 +28,8 @@ class CardRegistry(private val parent: CardRegistry? = null) {
     private val cardsByNameAndNumber = mutableMapOf<String, CardDefinition>()
     // Reverse DFC index: back face name -> front face name
     private val backFaceToFrontFace = mutableMapOf<String, String>()
+    // Deck export aliases are lookups only, not additional card identities or name-choice options.
+    private val cardsByCombinedName = mutableMapOf<String, CardDefinition>()
 
     /**
      * Register a single card definition.
@@ -37,7 +39,10 @@ class CardRegistry(private val parent: CardRegistry? = null) {
      * carries no further `backFace` pointer — it stands alone as the back-face identity.
      */
     fun register(card: CardDefinition) {
+        // Replacing a front definition must not leave an alias for its previous secondary face.
+        cardsByName[card.name]?.let(::combinedName)?.let { cardsByCombinedName.remove(it) }
         cardsByName[card.name] = card
+        combinedName(card)?.let { cardsByCombinedName[it] = card }
         // Also register by name#collectorNumber for variants.
         // When setCode is present, use "Name#SetCode-CollectorNumber" to avoid collisions
         // between sets that share collector numbers (e.g., Khans and Dominaria both use 250-269).
@@ -73,18 +78,43 @@ class CardRegistry(private val parent: CardRegistry? = null) {
     /**
      * Look up a card by name or by name#collectorNumber.
      *
-     * Supports two formats:
+     * Supports these formats:
      * - "Lightning Bolt" - returns the card by name
      * - "Plains#196" - returns the specific variant by collector number
+     * - "Front // Back" - returns the front definition only when both names exactly match a
+     *   registered double-faced card or a card with one Adventure face
      *
-     * @param name The card name or name#collectorNumber (case-sensitive)
+     * @param name The card name, exact combined face name, or name#collectorNumber (case-sensitive)
      * @return The card definition, or null if not found
      */
     fun getCard(name: String): CardDefinition? {
         // First try exact match with collector number format
         cardsByNameAndNumber[name]?.let { return it }
-        // Fall back to name-only lookup, then to the parent registry for an overlay.
-        return cardsByName[name] ?: parent?.getCard(name)
+        // Actual registered names take precedence over generated aliases, independent of order.
+        cardsByName[name]?.let { return it }
+        cardsByCombinedName[name]?.let { return it }
+
+        val inherited = parent?.getCard(name) ?: return null
+        // A replay overlay pins the front definition. Its parent's alias must not bypass that
+        // pin, or resolve a secondary face that the pinned definition does not actually have.
+        if (combinedName(inherited) == name) {
+            cardsByName[inherited.name]?.let { own ->
+                return own.takeIf { combinedName(it) == name }
+            }
+        }
+        return inherited
+    }
+
+    private fun combinedName(card: CardDefinition): String? {
+        val secondName = card.backFace?.name
+            ?: (if (card.isAdventure) card.cardFaces.singleOrNull()?.name else null)
+            ?: return null
+        // Only complete two-face metadata creates an alias. Never split a requested name or
+        // accept a prefix, and do not invent nested aliases for already-combined card names.
+        if (card.name.isBlank() || secondName.isBlank() || "//" in card.name || "//" in secondName) {
+            return null
+        }
+        return "${card.name} // $secondName"
     }
 
     /**
@@ -186,5 +216,6 @@ class CardRegistry(private val parent: CardRegistry? = null) {
         cardsByName.clear()
         cardsByNameAndNumber.clear()
         backFaceToFrontFace.clear()
+        cardsByCombinedName.clear()
     }
 }
