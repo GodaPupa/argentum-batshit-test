@@ -1387,6 +1387,48 @@
     ]
 }
 
+// Cho-Manno's Blessing
+{
+    "name": "Cho-Manno's Blessing",
+    "manaCost": "{W}{W}",
+    "typeLine": "Enchantment — Aura",
+    "oracleText": "Flash\nEnchant creature\nAs this Aura enters, choose a color.\nEnchanted creature has protection from the chosen color. This effect doesn't remove this Aura.",
+    "keywords": [
+        "FLASH"
+    ],
+    "script": {
+        "staticAbilities": [
+            {
+                "type": "GrantProtectionFromChosenColorToGroup",
+                "filter": {
+                    "baseFilter": "permanent",
+                    "scope": "AttachedTo"
+                }
+            }
+        ],
+        "replacementEffects": [
+            {
+                "type": "EntersWithChoice",
+                "choiceType": "COLOR"
+            }
+        ],
+        "auraTarget": {
+            "type": "TargetObject",
+            "filter": {
+                "baseFilter": "creature"
+            }
+        }
+    },
+    "metadata": {
+        "collectorNumber": "12",
+        "rarity": "COMMON",
+        "artist": "John Matson"
+    },
+    "colorIdentityOverride": [
+        "WHITE"
+    ]
+}
+
 // Cinder Elemental
 {
     "name": "Cinder Elemental",
