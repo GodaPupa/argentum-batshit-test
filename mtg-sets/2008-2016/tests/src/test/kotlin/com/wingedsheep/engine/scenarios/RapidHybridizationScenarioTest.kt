@@ -2,6 +2,7 @@ package com.wingedsheep.engine.scenarios
 
 import com.wingedsheep.engine.core.ActivateAbility
 import com.wingedsheep.engine.mechanics.layers.SerializableModification
+import com.wingedsheep.engine.state.components.identity.CardComponent
 import com.wingedsheep.engine.state.components.identity.OwnerComponent
 import com.wingedsheep.engine.state.components.identity.TokenComponent
 import com.wingedsheep.engine.state.components.stack.ChosenTarget
@@ -30,7 +31,7 @@ class RapidHybridizationScenarioTest : ScenarioTestBase() {
         val expectedController = if (controllerNumber == 1) player1Id else player2Id
         val projected = state.projectedState
         projected.getController(token) shouldBe expectedController
-        state.getEntity(token)?.get<OwnerComponent>()?.playerId shouldBe expectedController
+        state.getEntity(token)?.get<CardComponent>()?.ownerId shouldBe expectedController
         projected.isCreature(token) shouldBe true
         projected.getPower(token) shouldBe 3
         projected.getToughness(token) shouldBe 3
@@ -160,4 +161,3 @@ class RapidHybridizationScenarioTest : ScenarioTestBase() {
         }
     }
 }
-

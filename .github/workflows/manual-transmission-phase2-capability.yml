@@ -18,11 +18,15 @@ on:
       - 'mtg-sets/**/cards/ParadiseDruid.kt'
       - 'mtg-sets/**/cards/Pongify.kt'
       - 'mtg-sets/**/cards/RapidHybridization.kt'
+      - 'mtg-sets/**/cards/CloudOfFaeries.kt'
+      - 'mtg-sets/**/cards/PeregrineDrake.kt'
       - 'mtg-sets/**/scenarios/AnimarSoulOfElementsScenarioTest.kt'
       - 'mtg-sets/**/scenarios/AncestralStatueScenarioTest.kt'
       - 'mtg-sets/**/scenarios/ParadiseDruidScenarioTest.kt'
       - 'mtg-sets/**/scenarios/PongifyScenarioTest.kt'
       - 'mtg-sets/**/scenarios/RapidHybridizationScenarioTest.kt'
+      - 'mtg-sets/**/scenarios/CloudOfFaeriesScenarioTest.kt'
+      - 'mtg-sets/**/scenarios/PeregrineDrakeScenarioTest.kt'
       - 'mtg-sets/src/test/resources/snapshots/cards/**'
       - '.github/workflows/manual-transmission-phase2-capability.yml'
 
@@ -81,13 +85,14 @@ jobs:
       - name: Exact frozen hardware card scenarios
         run: |
           scripts/gradle-locked :mtg-sets:2003-2007:tests:test --tests "*PongifyScenarioTest" \
+            :mtg-sets:1993-1999:tests:test --tests "*CloudOfFaeriesScenarioTest" --tests "*PeregrineDrakeScenarioTest" \
             :mtg-sets:2008-2016:tests:test --tests "*AnimarSoulOfElementsScenarioTest" --tests "*AncestralStatueScenarioTest" --tests "*RapidHybridizationScenarioTest" \
             :mtg-sets:2017-2022:tests:test --tests "*ParadiseDruidScenarioTest" --info --stacktrace
       - name: Preserve per-card scenario evidence
         if: always()
         run: |
           mkdir -p build/reports/manual-transmission-phase2/card-scenarios
-          for era in 2003-2007 2008-2016 2017-2022; do
+          for era in 1993-1999 2003-2007 2008-2016 2017-2022; do
             if [ -d "mtg-sets/$era/tests/build/test-results/test" ]; then
               cp -R "mtg-sets/$era/tests/build/test-results/test" "build/reports/manual-transmission-phase2/card-scenarios/$era"
             fi
@@ -117,6 +122,7 @@ jobs:
           MT_P2_AUDIT_OUTPUT: ${{ github.workspace }}/build/reports/manual-transmission-phase2/registry
         run: scripts/test-class ManualTransmissionPhaseTwoRegistryAuditTest --info --stacktrace
       - name: Validate snapshots and preserve reviewable actual output
+        if: success() || failure()
         run: scripts/test-class CardDefinitionSnapshotTest --info --stacktrace
       - uses: actions/upload-artifact@v7
         if: always()
