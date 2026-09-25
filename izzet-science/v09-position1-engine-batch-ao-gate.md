@@ -192,3 +192,10 @@ Existing Memory Lapse and Remand scenarios join the required regression set. The
 seven AO component scenarios and all their assertions remain intact. The expanded artifact contract
 above binds the added source, tests and three transcripts. All six full-game guards remain closed,
 including simultaneous-damage grouping; a passing counter repair does not open exact-pair gameplay.
+
+
+## Accepted AO artifact
+
+Run `36105991487` completed successfully from source `7428d1a56d95ee5434059773b657cf3a56f937c1` and produced snapshot commit `8db12e975a74a26c4ad828ac5a28d074dd3d5f0b`. Artifact `10851492664` is 394,556 bytes; GitHub and the independently downloaded archive agree on SHA-256 `24b4a1c7def234a284bfb20777463bbf3036d00243ed5dbe2a1cdca4aeec672b`. The archive contains the declared manifest plus all eighteen transcripts; each transcript was independently scanned with no failed-build or nonzero-exit marker. The manifest binds the frozen control/opponent identities, exact source and snapshot commits, Ram Through and Prismatic Strands, unresolved registry counts **9 → 7**, zero unresolved Izzet identities, all six readiness guards still closed, and zero official seed consumption/game initialization/outcome exposure.
+
+Disposition: **BATCH AO ACCEPTED FOR REGISTRY/CAPABILITY SCOPE ONLY**. The seven remaining unresolved identities are all Veteran Beastrider identities listed above. This acceptance does not qualify the simultaneous same-source damage/lifelink attachment interaction, does not open Position 1, does not authorize positions 2–12, and does not change KEEP_V07 / NO CARD CHANGES.
