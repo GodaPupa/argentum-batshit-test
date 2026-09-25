@@ -89,14 +89,22 @@ payable. Only the real engine can establish that during later pilot qualificatio
 
 The selector reads its controller's hand, battlefield and graveyard, plus the
 card metadata offered by the current legal decision. It does not simulate a
-future state or inspect either library's unseen cards. Seven deterministic tests
+future state or inspect either library's unseen cards. Eight deterministic tests
 cover non-Tron black fixing, the third Tron piece, identical engine priorities
 across all four architectures, two-card recursion, Kinsmith search and Dross
 recursion, invariance under changed
 opponent hand identities and future library orders, and bounded selection with
-deterministic bottom ordering. Combined registration and inherited tutor/loop
+deterministic bottom ordering. One test also casts Stirrings, Rumble and Kinsmith
+in real engine fixtures and submits the selector's responses through the actual
+pending-decision continuation to verify that the selected copy reaches hand.
+Combined registration and inherited tutor/loop
 choices are also requalified in the same validation job. This batch is pending
 runtime validation and is not a complete executable R1 pilot.
+
+The first selection-batch CI, `36082136891`, failed at compilation because its
+fixture assigned the read-only `GameTestDriver.state` property. The fixture now
+uses the supported `replaceState` method. No policy or assertion was weakened;
+this is a validation-code defect, with no R1 sample initialized or invalidated.
 
 Casting and activation policy, scry, mulligans, payment choices, loop completion,
 exact ordering and shuffle adapters, telemetry, and replay remain prerequisites.

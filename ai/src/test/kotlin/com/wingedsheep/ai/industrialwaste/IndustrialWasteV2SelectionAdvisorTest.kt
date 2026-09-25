@@ -21,6 +21,7 @@ import com.wingedsheep.engine.state.components.identity.CardComponent
 import com.wingedsheep.engine.support.GameTestDriver
 import com.wingedsheep.mtg.sets.MtgSetCatalog
 import com.wingedsheep.sdk.core.Zone
+import com.wingedsheep.sdk.core.Step
 import com.wingedsheep.sdk.model.Deck
 import com.wingedsheep.sdk.model.EntityId
 import io.kotest.core.spec.style.FunSpec
@@ -32,9 +33,9 @@ class IndustrialWasteV2SelectionAdvisorTest : FunSpec({
         val driver = GameTestDriver().apply {
             MtgSetCatalog.all.forEach { set -> registerCards(set.cards); registerCards(set.basicLands) }
             initMirrorMatch(Deck.of("Forest" to 40), skipMulligans = true, startingPlayer = 0)
-            state = state.copy(zones = state.zones.mapValues { (key, cards) ->
+            replaceState(state.copy(zones = state.zones.mapValues { (key, cards) ->
                 if (key.zoneType == Zone.HAND) emptyList() else cards
-            })
+            }))
         }
         val advisors = CardAdvisorRegistry().also {
             IndustrialWasteAdvisorModule.register(it)
@@ -119,14 +120,17 @@ class IndustrialWasteV2SelectionAdvisorTest : FunSpec({
             context = DecisionContext(sourceName = "Myr Kinsmith"),
         )
         responder.respond(driver.state, may, player) shouldBe YesNoResponse(may.id, choice = true)
+        val libraryKinsmith = driver.putCardOnTopOfLibrary(player, "Myr Kinsmith")
+        val libraryRetriever = driver.putCardOnTopOfLibrary(player, "Myr Retriever")
         val search = SearchLibraryDecision(
             id = "kinsmith-search", playerId = player, prompt = "Choose a Myr",
             context = DecisionContext(sourceName = "Myr Kinsmith"),
-            options = listOf(kinsmith, retriever), minSelections = 0, maxSelections = 1,
-            cards = mapOf(kinsmith to SearchCardInfo("Myr Kinsmith", "", ""), retriever to SearchCardInfo("Myr Retriever", "", "")),
+            options = listOf(libraryKinsmith, libraryRetriever),
+            minSelections = 0, maxSelections = 1,
+            cards = mapOf(libraryKinsmith to SearchCardInfo("Myr Kinsmith", "", ""), libraryRetriever to SearchCardInfo("Myr Retriever", "", "")),
             filterDescription = "Myr card",
         )
-        responder.respond(driver.state, search, player) shouldBe CardsSelectedResponse(search.id, listOf(retriever))
+        responder.respond(driver.state, search, player) shouldBe CardsSelectedResponse(search.id, listOf(libraryRetriever))
         val recur = ChooseTargetsDecision(
             id = "dross-recur", playerId = player, prompt = "Return a creature card",
             context = DecisionContext(sourceName = "Dross Skullbomb"),
@@ -134,6 +138,34 @@ class IndustrialWasteV2SelectionAdvisorTest : FunSpec({
             legalTargets = mapOf(0 to listOf(kinsmith, retriever)),
         )
         responder.respond(driver.state, recur, player) shouldBe TargetsResponse(recur.id, mapOf(0 to listOf(retriever)))
+    }
+
+    test("real Stirrings Rumble and Kinsmith decisions accept the shared selector responses") {
+        for ((source, wanted) in listOf(
+            "Ancient Stirrings" to "Ashnod's Altar",
+            "Malevolent Rumble" to "Ashnod's Altar",
+            "Myr Kinsmith" to "Myr Retriever",
+        )) {
+            val (driver, player, responder) = fixture()
+            driver.passPriorityUntil(Step.PRECOMBAT_MAIN)
+            repeat(4) { driver.putPermanentOnBattlefield(player, "Forest") }
+            val spell = driver.putCardInHand(player, source)
+            val selected = driver.putCardOnTopOfLibrary(player, wanted)
+            driver.castSpell(player, spell).error shouldBe null
+            var transitions = 0
+            while (driver.state.stack.isNotEmpty() || driver.pendingDecision != null) {
+                check(transitions++ < 30) { "$source did not complete its deterministic fixture" }
+                val decision = driver.pendingDecision
+                if (decision != null) {
+                    driver.submitDecision(decision.playerId, responder.respond(driver.state, decision, decision.playerId))
+                        .error shouldBe null
+                } else {
+                    driver.bothPass().error shouldBe null
+                }
+            }
+            driver.state.getHand(player).contains(selected) shouldBe true
+            driver.pendingDecision shouldBe null
+        }
     }
 
     test("opponent hidden identities and future library order cannot change an offered choice") {
