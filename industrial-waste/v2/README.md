@@ -1,6 +1,18 @@
 # Industrial Waste v2 — Structural Redesign
 
-Status: **R0 PREDECLARATION — NO GAMEPLAY / NO OFFICIAL SEEDS**
+Status: **R0 EXACT CANDIDATES AND R1 DESIGN FROZEN — CAPABILITY PENDING / NO GAMEPLAY**
+
+The three candidates, normalized counts, exact byte identities, current legality
+sources and prospective R1 ordering corpus are now recorded in `r0-freeze.json`.
+`R0_CANDIDATES.md` explains the construction choices. `protocol-v2-r1.json` fixes
+the real-engine structural screen and its numerical decision rule before any
+comparative output. Run `python3 industrial-waste/v2/validate_r0.py` from the
+repository root to verify the construction receipt.
+
+`support-audit.json` is a static source inventory, not a runtime coverage claim.
+At the construction source HEAD, Ancient Stirrings and Chromatic Star are absent.
+Exact card/pilot/telemetry qualification and a guarded runtime binding receipt
+remain necessary before R1 execution. Official counters remain zero.
 
 This is a new experimental program. It does not continue Gate 11 and it does not overwrite the
 completed v1.0 control.

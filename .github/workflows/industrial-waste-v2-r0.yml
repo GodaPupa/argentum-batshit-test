@@ -1,0 +1,37 @@
+name: Industrial Waste v2 R0 static freeze
+
+on:
+  pull_request:
+    branches: [industrial-waste/lab]
+    paths:
+      - industrial-waste/v2/**
+      - industrial-waste/control/industrial-waste-v1.0-submitted.dck
+      - industrial-waste/FINAL_CONCLUSION.md
+      - industrial-waste/seed-registry.json
+      - .github/workflows/industrial-waste-v2-r0.yml
+
+permissions:
+  contents: read
+
+concurrency:
+  group: industrial-waste-v2-r0-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  construction-freeze:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+      - name: Validate exact candidate and prospective screen freeze
+        run: python3 industrial-waste/v2/validate_r0.py --output /tmp/iw-v2-r0-validation.json
+      - name: Reject altered candidate, history, corpus and deck limits
+        run: python3 -m unittest discover -s industrial-waste/v2 -p 'test_validate_r0.py' -v
+      - name: Preserve construction validation receipt; no gameplay
+        uses: actions/upload-artifact@v4
+        with:
+          name: industrial-waste-v2-r0-static-validation
+          path: /tmp/iw-v2-r0-validation.json
+          if-no-files-found: error
