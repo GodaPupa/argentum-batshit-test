@@ -1,6 +1,6 @@
 # State-based actions before post-cast priority
 
-Status: **SOURCE REVIEWED; RUNTIME QUALIFICATION PENDING**.
+Status: **RUNTIME QUALIFIED — ACCEPTED FOR EXERCISED SEED-FREE COMPONENTS ONLY**.
 
 This prospective successor extends the canonical priority implementation at
 `21e9f2a82ea9d5292054b937456396e00060eb8d` ([PR #154](https://github.com/GodaPupa/argentum-batshit-test/pull/154)).
@@ -161,3 +161,10 @@ cases, the prospective requirement is **220 cases across 27 stages**, plus full 
 
 Independent source review passed the controller repair and these two fixture corrections.
 Their successor runtime evidence remains pending. The failed predecessor evidence is unchanged.
+
+
+## Accepted successor runtime evidence
+
+Exact source `8908e51fb17c8c05c71cfbd23f5e623eb2bb79dd` completed the prospective qualification in run `36096423463`. Artifact `10847304481` is 296,473 bytes with GitHub digest and independently downloaded ZIP SHA-256 `ea84978bcccdf5f2af4c2d189044899ec20eaf584d50a98cfc188814429d4d83`. The archive contains 111 files; all 27 retained stages are present and the JUnit XML totals are **220 tests, 220 passed, zero failures/errors/skips**. Its provenance binds candidate HEAD `8908e51fb17c8c05c71cfbd23f5e623eb2bb79dd`, run `36096423463`, the effective 2026-09-25 rules digest, and zero official seeds, game initializations, sampled actions, or outcome exposure. Full repository CI run `36096423537` also passed on the same exact source, as did the inherited Monster and Spy compatibility workflows.
+
+Disposition: **ACCEPTED_FOR_EXERCISED_SEED_FREE_COMPONENTS_ONLY**. This accepts the scoped post-cast/state-based-action successor for integration; it does not requalify any historical Pest game, authorize a Monster replacement run, accept postboard B automatically, or establish Commander/Pauper Commander readiness beyond the exercised cases. The 81 historical Pest games remain quarantined, the consumed Monster claim and retired assignments remain unchanged, and each project must separately qualify this accepted shared source before official gameplay.
