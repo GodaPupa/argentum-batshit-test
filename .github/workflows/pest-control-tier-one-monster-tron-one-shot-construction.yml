@@ -1,0 +1,87 @@
+name: Pest Control Tier-1 Monster Tron One-Shot Construction Validation
+
+on:
+  pull_request:
+    paths:
+      - .github/workflows/pest-control-tier-one-monster-tron-one-shot-construction.yml
+      - 'docs/experiments/pest-control/tier-one-monster-tron-one-shot*'
+      - scripts/pest-monster-tron-one-shot-claim.py
+      - tools/tests/test_pest_monster_tron_one_shot_claim.py
+      - 'gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlTierOneMonsterTron*'
+      - 'gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOneMonsterTron*'
+
+permissions:
+  actions: read
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Test exclusive claim logic without network or mutation
+        run: python3 -m unittest discover -s tools/tests -p test_pest_monster_tron_one_shot_claim.py -v
+      - name: Retrieve immutable validation inputs
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p build/pest-monster-tron-one-shot-validation
+          curl -fsSL -H "Authorization: Bearer ${GH_TOKEN}" -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/artifacts/10836436268/zip" \
+            -o build/pest-monster-tron-one-shot-validation/freeze.zip
+          echo "70b9a665fbb154342e2789c1b6b2c2fd912579431a6ae1f9ab289984d5e7801c  build/pest-monster-tron-one-shot-validation/freeze.zip" | sha256sum -c -
+          curl -fsSL 'https://media.wizards.com/2026/downloads/MagicCompRules%2020260925.txt' \
+            -o build/pest-monster-tron-one-shot-validation/effective-rules.txt
+          echo "8d860e451f20f38865b725b42d82feb714c725373dd8f3b32b8652b3eeb070ca  build/pest-monster-tron-one-shot-validation/effective-rules.txt" | sha256sum -c -
+          python3 - <<'PY'
+          from datetime import date
+          from pathlib import Path
+          assert date.today() >= date(2026, 9, 25)
+          data = Path('build/pest-monster-tron-one-shot-validation/effective-rules.txt').read_text()
+          assert 'These rules are effective as of September 25, 2026.' in data
+          PY
+      - name: Qualify bindings evidence replay pilot and exact permitted surface
+        env:
+          PEST_MONSTER_TRON_EXECUTION_INPUT_ACK: LOAD_FROZEN_TIER_ONE_MONSTER_TRON_4_FOR_VALIDATION_ONLY
+          PEST_MONSTER_TRON_EXECUTION_INPUT_ZIP: ${{ github.workspace }}/build/pest-monster-tron-one-shot-validation/freeze.zip
+        run: |
+          set -euo pipefail
+          run_stage() {
+            local stage="$1" class="$2" module="$3" status=0
+            scripts/test-class "$class" --info --stacktrace || status=$?
+            mkdir -p "build/pest-monster-tron-one-shot-validation/test-results/$stage"
+            if [ -d "$module/build/test-results/test" ]; then
+              cp -a "$module/build/test-results/test/." "build/pest-monster-tron-one-shot-validation/test-results/$stage/"
+            fi
+            return "$status"
+          }
+          run_stage sealed-boundary PestControlTierOneMonsterTronOneShotBoundaryTest gym
+          run_stage durable-failures PestControlTierOneMonsterTronFailureEvidenceTest gym
+          run_stage calibrated-policy PestMonsterTronPolicyAuditTest ai
+          run_stage surface-preflight PestControlTierOneMonsterTronRunnerSurfacePreflightTest gym
+          run_stage disabled-official-runner PestControlTierOneMonsterTronOfficialExecutionRunnerTest gym
+      - name: Record zero official execution
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          Path('build/pest-monster-tron-one-shot-validation/status.txt').write_text(
+              'status=CONSTRUCTION_VALIDATED_ACTIVATION_ABSENT\n'
+              'official_frozen_seeds=4\nofficial_initializations=0\nofficial_actions=0\noutcomes=0\n'
+              'repository_claim_created=false\n')
+          PY
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: pest-control-tier-one-monster-tron-one-shot-construction
+          path: build/pest-monster-tron-one-shot-validation
+          if-no-files-found: error
+          retention-days: 90
