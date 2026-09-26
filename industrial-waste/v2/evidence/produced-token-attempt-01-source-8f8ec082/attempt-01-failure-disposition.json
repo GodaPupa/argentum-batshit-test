@@ -1,0 +1,68 @@
+{
+  "schema": "industrial-produced-token-failed-attempt-disposition-v1",
+  "status": "FAILED_SOFTWARE_QUALIFICATION_PRESERVED_NOT_GAMEPLAY",
+  "source_head": "8f8ec082343b0fedcbb6956aeb875cbe29b6ae62",
+  "source_tree": "9b2da7cfa8aebe891861c5378d824583f507efca",
+  "card_run": 36278796607,
+  "card_job": 108506559135,
+  "attempt": 1,
+  "original_artifact": {
+    "id": 10918640760,
+    "bytes": 55540,
+    "sha256": "f83ef1fcdce0dc823f16efb3be93b50e2d153c7332da1176a76f832cda2c6049"
+  },
+  "focused": {
+    "unique_cases": 18,
+    "passed": 14,
+    "failed": 4,
+    "errors": 0,
+    "skipped": 0
+  },
+  "broad152_executed": false,
+  "failure_groups": [
+    {
+      "cases": 1,
+      "identity": "Blood foreign discard",
+      "cause": "Nonrandom CostAtom.Discard selected prefix is sent to canonical discard movement without verifying distinct eligible cards in the payer hand; foreign hand insertion throws.",
+      "classification": "GENUINE_COST_VALIDATION_DEFECT",
+      "proposed_fix": "Validate prefix against current eligible owned-hand set and reject via normal CostPaymentResult before any transition."
+    },
+    {
+      "cases": 2,
+      "identity": "Map nonland keep and mill",
+      "cause": "Existing ExploreEffectExecutor suspends with YesNoDecision (yes=top, no=graveyard), but test submitted SelectCardsDecision response.",
+      "classification": "FIXTURE_RESPONSE_API_DEFECT",
+      "proposed_fix": "Use submitYesNo(me,!mill), retaining exact original names and every zone/counter assertion."
+    },
+    {
+      "cases": 1,
+      "identity": "Map empty library counter",
+      "cause": "ExploreEffectExecutor returns only exploredEvent(null) when library empty, omitting required counter.",
+      "classification": "GENUINE_EXPLORE_DEFECT",
+      "proposed_fix": "Reuse existing addPlusOneCounter and preserve counter modifiers/prohibition plus null-reveal explored event."
+    }
+  ],
+  "full_ci": {
+    "run": 36278796741,
+    "conclusion": "failure",
+    "same_four_failed_case_names": true,
+    "failed_test_jobs": [
+      108506559685,
+      108506559773
+    ],
+    "other_five_test_jobs": "success",
+    "frontend": "success",
+    "backend_aggregate": "failure",
+    "coverage": "skipped",
+    "raw_test_logs_retained": 7
+  },
+  "review_required_before_successor_activation": true,
+  "unchanged_rerun_authorized": false,
+  "experimental_rules_or_policy_changes": false,
+  "official_allocations_initialized": 0,
+  "official_outcomes": 0,
+  "rules_sources": [
+    "https://magic.wizards.com/en/news/feature/the-lost-caverns-of-ixalan-release-notes",
+    "https://magic.wizards.com/en/news/feature/innistrad-crimson-vow-release-notes-2021-11-10"
+  ]
+}

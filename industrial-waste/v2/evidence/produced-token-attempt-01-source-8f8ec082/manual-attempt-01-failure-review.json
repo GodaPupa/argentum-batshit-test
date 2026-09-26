@@ -1,0 +1,94 @@
+{
+  "schema": "industrial-v2-produced-token-attempt01-independent-failed-artifact-review-v1",
+  "reviewer": "actual /root/manual",
+  "source_author": false,
+  "disposition": "ACCEPTED_FOR_LOSSLESS_FAILURE_PRESERVATION_ONLY_NO_CAPABILITY_ACCEPTANCE",
+  "source": "8f8ec082343b0fedcbb6956aeb875cbe29b6ae62",
+  "tree": "9b2da7cfa8aebe891861c5378d824583f507efca",
+  "run_id": 36278796607,
+  "attempt": 1,
+  "job_id": 108506559135,
+  "artifact_id": 10918640760,
+  "bound_files": [
+    {
+      "path": "industrial/produced-token-qualification/attempt-01-original.zip",
+      "bytes": 55540,
+      "sha256": "f83ef1fcdce0dc823f16efb3be93b50e2d153c7332da1176a76f832cda2c6049"
+    },
+    {
+      "path": "industrial/produced-token-qualification/attempt-01-raw-audit.json",
+      "bytes": 136310,
+      "sha256": "5651bd8ca355c0dfc3138dd715b73f68f6cd325d8418a8fdd3b5ba5176a7d932"
+    },
+    {
+      "path": "industrial/produced-token-qualification/attempt-01-job.log",
+      "bytes": 78955,
+      "sha256": "7ba94495d70addfec5579364712d89ae098b0ac2a5a4a9c890a92fd03b75940e"
+    },
+    {
+      "path": "industrial/produced-token-qualification/manual-failed-attempt-live.json",
+      "bytes": 19599,
+      "sha256": "9e04397bb1758443c46d54844bf92702aec53740e201e566110475cd9762fe00"
+    },
+    {
+      "path": "industrial/produced-token-qualification/manual-failed-attempt-source.json",
+      "bytes": 36921,
+      "sha256": "c81d7dfe150b5b1d3f5f67a99ff90cfce074617cb9767c344d1c11debd13b191"
+    }
+  ],
+  "checks": [
+    "Independently fetched exact source commit tree and completed run/job/artifact metadata. Original55540-byte ZIP matches live SHA256, all10 members and CRC; author member lengths/hashes recomputed.",
+    "Source-bound status provenance agrees with8f8ec082. Independently fetched workflow and both test bodies and verified Gitblob/SHA256 against retained produced-token pins; no claim to refetch all other production pins.",
+    "Parsed7 Blood and11 Offering actual XML cases,14 passes4 failures,0 errors0 skips. Counts match children; XML timestamps within failed focused step. Complete failure stacks retained.",
+    "Focused raw log records7 tests/1failure and11 tests/3failures, BUILD FAILED; decoded job log retains exact checkout, uploaded digest and exit1.",
+    "Live broader receiving152 step and snapshot step skipped. XML at default Gradle paths does not imply broad receiving execution. Original focused pipefail boundary read; no assertion weakened."
+  ],
+  "focused_results": {
+    "classes": 2,
+    "cases": 18,
+    "passes": 14,
+    "failures": 4,
+    "errors": 0,
+    "skips": 0
+  },
+  "failed_cases": [
+    {
+      "class": "com.wingedsheep.engine.scenarios.BloodFountainScenarioTest",
+      "name": "rejects opponent discard without spending resources or drawing",
+      "message": "java.lang.IllegalArgumentException: Remove fe6d12e4-19b5-4551-a6e3-092a0941b4eb from its current zone before inserting it into another zone",
+      "type": "java.lang.IllegalArgumentException"
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.FanaticalOfferingScenarioTest",
+      "name": "produced Map explores a nonland with keep on top=true",
+      "message": "java.lang.IllegalStateException: No pending SelectCardsDecision",
+      "type": "java.lang.IllegalStateException"
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.FanaticalOfferingScenarioTest",
+      "name": "produced Map explores a nonland with keep on top=false",
+      "message": "java.lang.IllegalStateException: No pending SelectCardsDecision",
+      "type": "java.lang.IllegalStateException"
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.FanaticalOfferingScenarioTest",
+      "name": "produced Map exploring an empty library gives one counter without drawing or a choice",
+      "message": "org.opentest4j.AssertionFailedError: expected:<1> but was:<0>",
+      "type": "org.opentest4j.AssertionFailedError"
+    }
+  ],
+  "broad_receiving_results": {
+    "prospective_cases": 152,
+    "executed": false,
+    "actual_cases": 0
+  },
+  "limits": [
+    "Failure preservation publication only: no code correction or test pass accepted, no second event or rerun.",
+    "No complete runtime, official512 allocations, entropy/claim, policy/hardware change, gameplay admission or GitHub approval.",
+    "A failed software fixture is a technical finding, not a negative deck result."
+  ],
+  "official_games": 0,
+  "allocations_consumed": 0,
+  "outcomes_exposed": 0,
+  "deck_performance_evidence_changed": false
+}
