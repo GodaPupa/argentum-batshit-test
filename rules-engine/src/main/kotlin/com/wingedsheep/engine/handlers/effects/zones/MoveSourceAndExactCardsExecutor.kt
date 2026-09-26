@@ -75,7 +75,8 @@ class MoveSourceAndExactCardsExecutor(
                 val primaryMoveHappened = moved.transitions.any { transition ->
                     transition.cause == ZoneTransitionCause.PRIMARY &&
                         transition.oldObject?.entityId == id &&
-                        transition.requestedDestination == effect.destination
+                        transition.requestedDestination == effect.destination &&
+                        transition.toZone == effect.destination
                 }
                 if (!primaryMoveHappened) return EffectResult.success(state)
                 current = moved.state
