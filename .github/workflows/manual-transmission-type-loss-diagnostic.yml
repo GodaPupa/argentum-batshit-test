@@ -2,7 +2,7 @@ name: Manual Phase 2 Type Loss Diagnostic
 
 on:
   push:
-    branches: [lab/manual-etb-receiving-20260926]
+    branches: [lab/manual-etb-receiving-20260926, lab/shared-type-loss-repair-20260926]
     paths:
       - rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/RemoveCardTypeCapabilityTest.kt
       - rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/layers/EffectApplicator.kt
@@ -53,28 +53,37 @@ jobs:
               'files':{p:hashlib.sha256(pathlib.Path(p).read_bytes()).hexdigest() for p in paths}}
           pathlib.Path('build/reports/manual-type-loss/source-binding.json').write_text(json.dumps(receipt,indent=2)+'\n')
           PY
-      - name: Run seven actual subtype and combat cases
+      - name: Run exact subtype and combat cases with adjacent type-loss regressions
         shell: bash
         run: |
           set -euo pipefail
-          just test-class RemoveCardTypeCapabilityTest --rerun --max-workers=1 -PkotlinCompileParallelism=1 -Pkotlin.compiler.execution.strategy=in-process -Dorg.gradle.jvmargs=-Xmx4g --info --stacktrace 2>&1 | tee build/reports/manual-type-loss/diagnostic.txt
+          just test-class RemoveCardTypeCapabilityTest --tests '*ImpendingMechanicTest' --tests '*ImpendingClientViewTest' --tests '*AuraEnchantRestrictionStateBasedActionTest' --tests '*EquipmentHostNotCreatureUnattachTest' --tests '*ProjectedTypeNamesTest' --rerun --max-workers=1 -PkotlinCompileParallelism=1 -Pkotlin.compiler.execution.strategy=in-process -Dorg.gradle.jvmargs=-Xmx4g --info --stacktrace 2>&1 | tee build/reports/manual-type-loss/diagnostic.txt
       - name: Record actual XML verdict without recategorizing failures
         if: always()
         shell: bash
         run: |
           python3 - <<'PY'
           import hashlib, json, pathlib, xml.etree.ElementTree as ET
-          paths = list(pathlib.Path('rules-engine/build/test-results/test').glob('TEST-*RemoveCardTypeCapabilityTest.xml'))
-          assert len(paths) == 1, paths
-          p = paths[0]
-          cases = ET.parse(p).getroot().findall('testcase')
-          assert len(cases) == 7, len(cases)
-          rows = [{'name':c.attrib['name'],'failure':c.find('failure') is not None,
-              'error':c.find('error') is not None,'skipped':c.find('skipped') is not None} for c in cases]
-          out = {'actual_cases':rows,'xml_sha256':hashlib.sha256(p.read_bytes()).hexdigest(),
-              'scope':'DIAGNOSTIC_ONLY_NOT_GAMEPLAY_EVIDENCE'}
+          expected = {'RemoveCardTypeCapabilityTest':7,'ImpendingMechanicTest':5,
+              'ImpendingClientViewTest':2,'AuraEnchantRestrictionStateBasedActionTest':3,
+              'EquipmentHostNotCreatureUnattachTest':1,'ProjectedTypeNamesTest':1}
+          paths = sorted(pathlib.Path('rules-engine/build/test-results/test').glob('TEST-*.xml'))
+          rows, seen = [], set()
+          for p in paths:
+              tree = ET.parse(p).getroot()
+              name = tree.attrib['name'].rsplit('.',1)[-1]
+              assert name in expected, name
+              cases = tree.findall('testcase')
+              assert len(cases) == expected[name], (name,len(cases))
+              seen.add(name)
+              rows.append({'class':name,'xml_sha256':hashlib.sha256(p.read_bytes()).hexdigest(),
+                  'cases':[{'name':c.attrib['name'],'failure':c.find('failure') is not None,
+                      'error':c.find('error') is not None,'skipped':c.find('skipped') is not None} for c in cases]})
+          assert seen == set(expected), seen
+          out = {'suites':rows,'total_actual_cases':sum(len(r['cases']) for r in rows),
+              'scope':'COMPONENT_QUALIFICATION_ONLY_NOT_GAMEPLAY_EVIDENCE'}
           pathlib.Path('build/reports/manual-type-loss/actual-cases.json').write_text(json.dumps(out,indent=2)+'\n')
-          assert not any(r['failure'] or r['error'] or r['skipped'] for r in rows), rows
+          assert not any(c['failure'] or c['error'] or c['skipped'] for r in rows for c in r['cases']), rows
           PY
       - uses: actions/upload-artifact@v7
         if: always()
@@ -82,5 +91,5 @@ jobs:
           name: manual-type-loss-${{ github.sha }}
           path: |
             build/reports/manual-type-loss
-            rules-engine/build/test-results/test/TEST-*RemoveCardTypeCapabilityTest.xml
+            rules-engine/build/test-results/test/TEST-*.xml
           retention-days: 30
