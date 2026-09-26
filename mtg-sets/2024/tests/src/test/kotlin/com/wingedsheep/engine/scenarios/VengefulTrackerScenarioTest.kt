@@ -1,5 +1,9 @@
 package com.wingedsheep.engine.scenarios
 
+import com.wingedsheep.engine.support.hasPendingTriggerOrder
+
+import com.wingedsheep.engine.support.chooseTriggerOrderInListedOrder
+
 import com.wingedsheep.engine.core.SelectCardsDecision
 import com.wingedsheep.engine.support.ScenarioTestBase
 import com.wingedsheep.mtg.sets.definitions.mkm.cards.VengefulTracker
@@ -51,6 +55,7 @@ class VengefulTrackerScenarioTest : ScenarioTestBase() {
     private fun TestGame.resolveAll() {
         var guard = 0
         while ((state.stack.isNotEmpty() || hasPendingDecision()) && guard++ < 60) {
+            if (state.hasPendingTriggerOrder()) return
             when (val d = getPendingDecision()) {
                 is SelectCardsDecision -> selectCards(d.options.take(d.minSelections))
                 null -> resolveStack()
@@ -121,7 +126,9 @@ class VengefulTrackerScenarioTest : ScenarioTestBase() {
                     .inPhase(Phase.PRECOMBAT_MAIN, Step.PRECOMBAT_MAIN)
                     .build()
 
-                game.castSpell(2, "Scrap Two")
+                game.castSpell(2, "Scrap Two").error shouldBe null
+                game.resolveAll()
+                game.chooseTriggerOrderInListedOrder()
                 game.resolveAll()
 
                 withClue("'an artifact' is per-permanent: two sacrifices, two triggers, 4 damage") {

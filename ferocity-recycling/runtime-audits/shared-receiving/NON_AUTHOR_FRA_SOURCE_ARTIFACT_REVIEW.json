@@ -1,0 +1,38 @@
+{
+  "reviewer": "/root/sphinx",
+  "author_of_reviewed_sources": false,
+  "disposition": "ACCEPT_ORIGINAL_FRA_SNAPSHOT_PROVENANCE_AND_RECEIVING_SOURCE_ONLY",
+  "receiving_source": "ab0d14d744222cdcc5f4ce97230600cd103694c5",
+  "receiving_tree": "0996186b204efb1f555b3aae931b4597f99f6891",
+  "original_source": "7052de0b64d5d01c3a31465d19157d95089b7d40",
+  "run": 36242268725,
+  "job": 108404879192,
+  "run_conclusion": "success",
+  "artifact": {
+    "id": 10906791498,
+    "bytes": 811,
+    "sha256": "2578e7b58e14513a1cbe259b1bcad25326e1c6f332b2b0b1626ef32a86b94187",
+    "crc_valid": true,
+    "member": "FRA.json",
+    "member_bytes": 1702,
+    "member_sha256": "6fd1ff068b3459f99287357522c75cde6de31baa5f81d901af42ab5e0a1ecb43",
+    "receiving_bytes_exactly_equal": true
+  },
+  "source_sha256": {
+    ".github/workflows/ferocity-fra-snapshot-capture.yml": "95a28c37f6961923734d6c40eb8ea1f50de1b3bdff8ea6b79f07c7efe348b166",
+    "mtg-sets/2026/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/fra/RealityFractureSet.kt": "d155ce23fd2fc0d429412a33b1294dab65a895aefd1dccef5165ddf15a7d91cf",
+    "mtg-sets/2026/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/fra/cards/FerocityOfTheHunt.kt": "64bff47c7cd6ebb16dd62b745fe10d32a228d11054438a9499caf7e08c9d48a0"
+  },
+  "findings": [
+    "Independently fetched actual workflow/job/artifact metadata; local ZIP digest and byte count exactly match.",
+    "Raw job log pins actual7052 checkout, original updateSnapshots command, FRA snapshot tree/roundtrip output and same uploaded artifact.",
+    "All three source additions are byte-identical to original7052; receiving diff against b8bc contains only those three and the original generated FRA snapshot.",
+    "Sole parsed snapshot record is Ferocity of the Hunt and matches the research definition serialized cost, Aura target, flash, +1/+0, deathtouch and attached death return tapped effect.",
+    "This audits the received FRA member only. It does not claim no other source goldens were rewritten during original updateSnapshots generation.",
+    "Normal receiving snapshot comparison without updateSnapshots, full combined CI, other project gates and gameplay admission remain required."
+  ],
+  "github_approval": false,
+  "runtime_acceptance": false,
+  "sanctioned_legality_acceptance": false,
+  "gameplay_admission": false
+}

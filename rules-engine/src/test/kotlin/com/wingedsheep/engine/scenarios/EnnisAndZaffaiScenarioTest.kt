@@ -1,5 +1,7 @@
 package com.wingedsheep.engine.scenarios
 
+import com.wingedsheep.engine.support.chooseTriggerOrderInListedOrder
+
 import com.wingedsheep.engine.core.CastSpell
 import com.wingedsheep.engine.state.components.battlefield.CountersComponent
 import com.wingedsheep.engine.state.components.battlefield.MayCastWithoutPayingCostUsedThisTurnComponent
@@ -61,8 +63,9 @@ class EnnisAndZaffaiScenarioTest : ScenarioTestBase() {
                     game.findPermanent("Grizzly Bears") shouldBe null
                 }
 
-                // Advance to Ennis's end step: the delayed return and the counter trigger resolve.
+                // Advance to Ennis's end step and order the delayed return and counter trigger.
                 game.passUntilPhase(Phase.ENDING, Step.END)
+                game.chooseTriggerOrderInListedOrder()
                 game.resolveStack()
 
                 withClue("the exiled creature returns to the battlefield") {

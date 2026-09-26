@@ -61,7 +61,7 @@ data class PendingTrigger(
     val opponentTargetChooserId: EntityId? = null,
     /** Placement order has been selected for this simultaneous controller group (CR 603.3b). */
     val placementOrderChosen: Boolean = false,
-    /** Original source's departure while this trigger awaits the block-declaration boundary. */
+    /** Original source's departure while this trigger waits for a priority boundary. */
     @kotlinx.serialization.EncodeDefault(kotlinx.serialization.EncodeDefault.Mode.NEVER)
     val lastKnownSourceSnapshot: com.wingedsheep.engine.state.components.stack.EntitySnapshot? = null,
 )

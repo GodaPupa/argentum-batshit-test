@@ -67,8 +67,12 @@ class CastPriorityProcessor(
             val sba = sbaChecker.checkAndApply(state, pending.triggers.mapNotNull { it.objectReferences.origin }.toSet())
             if (sba.error != null) return sba
             events = events + sba.events
-            val triggers = pending.triggers + triggerDetector.detectTriggers(sba.state, sba.events)
-            state = sba.state.copy(pendingCastPriority = pending.copy(triggers = triggers))
+            if (sba.state.gameOver) return finishTerminal(sba.state, events)
+            // Zone transitions may stamp a waiting observer's own departure snapshot during
+            // SBAs. Retain that updated batch even when the observed event was another object.
+            val afterSbas = requireNotNull(sba.state.pendingCastPriority)
+            val triggers = afterSbas.triggers + triggerDetector.detectTriggers(sba.state, sba.events)
+            state = sba.state.copy(pendingCastPriority = afterSbas.copy(triggers = triggers))
             if (state.gameOver) return finishTerminal(state, events)
             if (sba.isPaused) {
                 return ExecutionResult.propagatePause(state, events).copy(triggersAlreadyProcessed = true)

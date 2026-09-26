@@ -249,6 +249,9 @@ class LeaOracleFidelityFixesScenarioTest : ScenarioTestBase() {
                 game.declareAttackers(mapOf("Gray Ogre" to 2)).error shouldBe null
                 game.passUntilPhase(Phase.COMBAT, Step.DECLARE_BLOCKERS)
                 game.declareBlockers(mapOf("Grizzly Bears" to listOf("Gray Ogre"))).error shouldBe null
+                game.state.priorityPlayerId shouldBe game.player1Id
+                game.passPriority().error shouldBe null
+                game.state.priorityPlayerId shouldBe game.player2Id
 
                 val bears = game.findPermanent("Grizzly Bears")!!
                 val result = game.castSpell(2, "Righteousness", bears)

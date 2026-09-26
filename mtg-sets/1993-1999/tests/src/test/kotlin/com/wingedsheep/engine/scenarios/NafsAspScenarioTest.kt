@@ -1,7 +1,11 @@
 package com.wingedsheep.engine.scenarios
 
 import com.wingedsheep.engine.core.DeclareAttackers
+import com.wingedsheep.engine.core.CombatResolutionDecision
+import com.wingedsheep.engine.core.CombatResolutionResponse
+import com.wingedsheep.engine.core.DamageEdgeAmount
 import com.wingedsheep.engine.support.ScenarioTestBase
+import com.wingedsheep.engine.support.chooseTriggerOrderInListedOrder
 import com.wingedsheep.sdk.core.Phase
 import com.wingedsheep.sdk.core.Step
 import io.kotest.assertions.withClue
@@ -179,8 +183,16 @@ class NafsAspScenarioTest : ScenarioTestBase() {
                 game.execute(
                     DeclareAttackers(game.player1Id, asps.associateWith { game.player2Id })
                 ).error shouldBe null
-                game.passUntilPhase(Phase.COMBAT, Step.END_COMBAT)
+                game.passUntilPhase(Phase.COMBAT, Step.COMBAT_DAMAGE)
+                // Preserve the original default damage assignment, then explicitly order both bites.
+                while (game.state.pendingDecision is CombatResolutionDecision) {
+                    val decision = game.state.pendingDecision as CombatResolutionDecision
+                    game.submitDecision(CombatResolutionResponse(decision.id,
+                        decision.edges.map { DamageEdgeAmount(it.id, it.amount) })).error shouldBe null
+                }
+                game.chooseTriggerOrderInListedOrder()
                 game.resolveStack()
+                game.passUntilPhase(Phase.COMBAT, Step.END_COMBAT)
 
                 val lifeAfterCombat = game.getLifeTotal(2)
 
@@ -197,6 +209,7 @@ class NafsAspScenarioTest : ScenarioTestBase() {
                 // Advance to P2's draw step: both bites fire and, with no mana to pay {1},
                 // both auto-suffer — P2 loses 1 life per bite.
                 game.passUntilPhase(Phase.BEGINNING, Step.DRAW)
+                game.chooseTriggerOrderInListedOrder()
                 game.resolveStack()
 
                 withClue("Both deferred bites resolve at the draw step → P2 loses 2 more life") {

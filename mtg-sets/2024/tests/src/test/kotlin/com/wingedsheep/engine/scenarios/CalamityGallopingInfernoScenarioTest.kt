@@ -1,5 +1,7 @@
 package com.wingedsheep.engine.scenarios
 
+import com.wingedsheep.engine.support.chooseTriggerOrderInListedOrder
+
 import com.wingedsheep.engine.core.ChooseTargetsDecision
 import com.wingedsheep.engine.core.SaddleMount
 import com.wingedsheep.engine.state.components.battlefield.SaddledComponent
@@ -84,6 +86,7 @@ class CalamityGallopingInfernoScenarioTest : FunSpec({
 
         // Advance past the next end step; the tokens are sacrificed.
         driver.passPriorityUntil(Step.END)
+        driver.chooseTriggerOrderInListedOrder() // Both token-sacrifice triggers fire together.
         driver.passPriorityUntil(Step.UPKEEP) // next turn — past the end step the tokens die at
         driver.tokenCopiesOf(me, "Grizzly Bears").size shouldBe 0
     }

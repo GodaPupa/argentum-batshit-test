@@ -1,5 +1,8 @@
 package com.wingedsheep.engine.scenarios
 
+import com.wingedsheep.engine.support.chooseTriggerOrderInListedOrder
+import com.wingedsheep.engine.support.hasPendingTriggerOrder
+
 import com.wingedsheep.engine.core.ActivateAbility
 import com.wingedsheep.engine.state.components.battlefield.CountersComponent
 import com.wingedsheep.engine.support.GameTestDriver
@@ -60,6 +63,7 @@ class HoofprintsOfTheStagScenarioTest : FunSpec({
         var guard = 0
         while (guard++ < 20) {
             when {
+                d.state.hasPendingTriggerOrder() -> d.chooseTriggerOrderInListedOrder()
                 d.isPaused -> d.submitYesNo(player, yes)
                 d.stackSize > 0 -> d.bothPass()
                 else -> return

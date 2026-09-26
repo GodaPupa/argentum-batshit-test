@@ -2,6 +2,7 @@ package com.wingedsheep.engine.scenarios
 
 import com.wingedsheep.engine.core.ReorderLibraryDecision
 import com.wingedsheep.engine.core.SelectCardsDecision
+import com.wingedsheep.engine.support.chooseTriggerOrderInListedOrder
 import com.wingedsheep.engine.support.GameTestDriver
 import com.wingedsheep.engine.support.TestCards
 import com.wingedsheep.sdk.core.Color
@@ -112,6 +113,8 @@ class StarvingRevenantScenarioTest : FunSpec({
 
         d.castRevenant(you)
         d.submitCardSelection(you, emptyList()) // keep both on top ⇒ draw two
+        d.finishResolution(you)
+        d.chooseTriggerOrderInListedOrder() // Each draw creates its own descend trigger.
         d.finishResolution(you)
 
         d.isPaused shouldBe false

@@ -4,6 +4,7 @@ import com.wingedsheep.engine.core.ActivateAbility
 import com.wingedsheep.engine.state.components.stack.ChosenTarget
 import com.wingedsheep.engine.support.GameTestDriver
 import com.wingedsheep.engine.support.TestCards
+import com.wingedsheep.engine.support.chooseTriggerOrderInListedOrder
 import com.wingedsheep.mtg.sets.definitions.hob.cards.WizardsStaff
 import com.wingedsheep.sdk.core.Color
 import com.wingedsheep.sdk.core.Keyword
@@ -107,9 +108,10 @@ class WizardsStaffScenarioTest : FunSpec({
         driver.bothPass()
 
         driver.passPriorityUntil(Step.DECLARE_ATTACKERS)
-        driver.declareAttackers(player, listOf(skirge), opponent).isSuccess shouldBe true
+        driver.declareAttackers(player, listOf(skirge), opponent).error shouldBe null
 
         // Resolve both copies of "whenever this creature attacks, it gets +2/+0".
+        driver.chooseTriggerOrderInListedOrder()
         repeat(4) { if (driver.stackSize > 0) driver.bothPass() }
 
         // Base 1/1, doubled +2/+0 → 5/1. Without the Staff it would be 3/1.

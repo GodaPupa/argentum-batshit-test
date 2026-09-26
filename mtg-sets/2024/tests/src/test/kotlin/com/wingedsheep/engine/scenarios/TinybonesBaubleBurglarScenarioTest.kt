@@ -1,5 +1,9 @@
 package com.wingedsheep.engine.scenarios
 
+import com.wingedsheep.engine.support.hasPendingTriggerOrder
+
+import com.wingedsheep.engine.support.chooseTriggerOrderInListedOrder
+
 import com.wingedsheep.engine.core.ActivateAbility
 import com.wingedsheep.engine.core.CastSpell
 import com.wingedsheep.engine.core.PlayLand
@@ -104,6 +108,7 @@ class TinybonesBaubleBurglarScenarioTest : FunSpec({
      */
     fun GameTestDriver.settle(discards: List<EntityId> = emptyList(), maxSteps: Int = 40) {
         repeat(maxSteps) {
+            if (state.hasPendingTriggerOrder()) return
             val decision = pendingDecision
             when {
                 decision is SelectCardsDecision && discards.isNotEmpty() ->
@@ -150,6 +155,8 @@ class TinybonesBaubleBurglarScenarioTest : FunSpec({
 
         driver.castSpell(me, duress).isSuccess shouldBe true
         driver.settle(discards = listOf(first, second))
+        driver.chooseTriggerOrderInListedOrder()
+        driver.settle()
 
         driver.state.getZone(opponent, Zone.EXILE).containsAll(listOf(first, second)).shouldBeTrue()
         driver.stashCounters(first) shouldBe 1

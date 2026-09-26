@@ -1,5 +1,7 @@
 package com.wingedsheep.engine.scenarios
 
+import com.wingedsheep.engine.support.chooseTriggerOrderInListedOrder
+
 import com.wingedsheep.engine.core.CastSpell
 import com.wingedsheep.engine.core.PaymentStrategy
 import com.wingedsheep.engine.state.components.stack.ChosenTarget
@@ -174,6 +176,7 @@ class CircuDimirLobotomistScenarioTest : FunSpec({
         d.giveMana(me, Color.BLACK, 2)
         d.giveColorlessMana(me, 2)
         d.castSpell(me, card).error shouldBe null
+        d.chooseTriggerOrderInListedOrder()
 
         val victims = mutableListOf(opp, me)
         var guard = 0

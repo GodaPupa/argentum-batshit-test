@@ -1,5 +1,8 @@
 package com.wingedsheep.engine.scenarios
 
+import com.wingedsheep.engine.support.chooseTriggerOrderInListedOrder
+import com.wingedsheep.engine.support.hasPendingTriggerOrder
+
 import com.wingedsheep.engine.core.OrderObjectsDecision
 import com.wingedsheep.engine.core.OrderedResponse
 import com.wingedsheep.engine.core.SelectCardsDecision
@@ -78,6 +81,10 @@ class LinkedExileSourceInstanceTest : FunSpec({
         var guard = 0
         while (stackSize > 0 || pendingDecision != null) {
             check(guard++ < 16) { "Resolution did not settle" }
+            if (state.hasPendingTriggerOrder()) {
+                chooseTriggerOrderInListedOrder()
+                continue
+            }
             when (val decision = pendingDecision) {
                 null -> bothPass().error shouldBe null
                 is SelectCardsDecision -> submitCardSelection(decision.playerId,
@@ -241,6 +248,10 @@ class LinkedExileSourceInstanceTest : FunSpec({
         var guard = 0
         while (d.stackSize > 1 || d.pendingDecision != null) {
             check(guard++ < 16)
+            if (d.state.hasPendingTriggerOrder()) {
+                d.chooseTriggerOrderInListedOrder()
+                continue
+            }
             when (val decision = d.pendingDecision) {
                 null -> d.bothPass().error shouldBe null
                 is SelectCardsDecision -> d.submitCardSelection(decision.playerId, emptyList()).error shouldBe null

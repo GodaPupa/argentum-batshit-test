@@ -1,5 +1,9 @@
 package com.wingedsheep.engine.scenarios
 
+import com.wingedsheep.engine.core.SelectManaSourcesDecision
+
+import com.wingedsheep.engine.support.chooseTriggerOrderInListedOrder
+
 import com.wingedsheep.engine.support.ScenarioTestBase
 import com.wingedsheep.sdk.core.Phase
 import com.wingedsheep.sdk.core.Step
@@ -112,7 +116,8 @@ class MagmakinArtilleristScenarioTest : ScenarioTestBase() {
 
                 val cycle = game.cycleCard(1, "Magmakin Artillerist")
                 withClue("Cycling should succeed: ${cycle.error}") { cycle.error shouldBe null }
-                if (game.hasPendingDecision()) game.submitManaSourcesAutoPay()
+                if (game.getPendingDecision() is SelectManaSourcesDecision) game.submitManaSourcesAutoPay()
+                game.chooseTriggerOrderInListedOrder()
                 game.resolveStack()
 
                 withClue("1 from the cycled card's own trigger + 1 from the battlefield copy") {

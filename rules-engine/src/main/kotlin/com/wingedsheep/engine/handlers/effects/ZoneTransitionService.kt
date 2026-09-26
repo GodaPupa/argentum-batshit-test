@@ -466,6 +466,12 @@ object ZoneTransitionService {
                 if (pending.objectReferences.origin == sourceSnapshot.objectRef &&
                     pending.lastKnownSourceSnapshot == null
                 ) pending.copy(lastKnownSourceSnapshot = sourceSnapshot) else pending
+            }, pendingCastPriority = newState.pendingCastPriority?.let { boundary ->
+                boundary.copy(triggers = boundary.triggers.map { pending ->
+                    if (pending.objectReferences.origin == sourceSnapshot.objectRef &&
+                        pending.lastKnownSourceSnapshot == null
+                    ) pending.copy(lastKnownSourceSnapshot = sourceSnapshot) else pending
+                })
             })
             for ((stackId, stackEntity) in state.entities) {
                 val activated = stackEntity.get<ActivatedAbilityOnStackComponent>()

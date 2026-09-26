@@ -1,5 +1,8 @@
 package com.wingedsheep.engine.scenarios
 
+import com.wingedsheep.engine.support.chooseTriggerOrderInListedOrder
+import com.wingedsheep.engine.support.hasPendingTriggerOrder
+
 import com.wingedsheep.engine.support.ScenarioTestBase
 import com.wingedsheep.sdk.core.Phase
 import com.wingedsheep.sdk.core.Step
@@ -83,6 +86,18 @@ private val TriggerCapWarden = card("Trigger Cap Warden") {
 
 class EffectOncePerTurnTest : ScenarioTestBase() {
 
+    /** Choose only explicit placement order; leave every other decision visible to the fixture. */
+    private fun TestGame.resolveWithTriggerOrder() {
+        var batches = 0
+        resolveStack().forEach { it.error shouldBe null }
+        while (state.hasPendingTriggerOrder()) {
+            check(batches++ < 64) { "Fixture trigger order did not settle" }
+            chooseTriggerOrderInListedOrder()
+            resolveStack().forEach { it.error shouldBe null }
+        }
+    }
+
+
     init {
         cardRegistry.register(listOf(EffectCapWarden, TriggerCapWarden))
 
@@ -97,7 +112,7 @@ class EffectOncePerTurnTest : ScenarioTestBase() {
             while (game.hasPendingDecision() && guard++ < 20) {
                 game.answerYesNo(choice)
                 asked++
-                game.resolveStack()
+                game.resolveWithTriggerOrder()
             }
             return asked
         }
@@ -120,7 +135,7 @@ class EffectOncePerTurnTest : ScenarioTestBase() {
                     .build()
 
                 game.castSpell(1, "Pyroclasm").error shouldBe null
-                game.resolveStack()
+                game.resolveWithTriggerOrder()
                 return game
             }
 
@@ -134,7 +149,7 @@ class EffectOncePerTurnTest : ScenarioTestBase() {
                 while (game.hasPendingDecision() && guard++ < 20) {
                     asked++
                     game.answerYesNo(asked == 3)
-                    game.resolveStack()
+                    game.resolveWithTriggerOrder()
                 }
 
                 withClue("CR 603.2h: while the action is untaken, every matching event triggers") {
@@ -173,7 +188,7 @@ class EffectOncePerTurnTest : ScenarioTestBase() {
                     .build()
 
                 game.castSpell(1, "Pyroclasm").error shouldBe null
-                game.resolveStack()
+                game.resolveWithTriggerOrder()
                 val declined = answerAllMayQuestions(game, false)
 
                 withClue("both damaged creatures offered their trigger") { declined shouldBe 2 }
@@ -183,7 +198,7 @@ class EffectOncePerTurnTest : ScenarioTestBase() {
                 // (Pyroclasm's 2 damage killed the 2/2 Bears; the 3/3 Courser survived it.)
                 val courser = game.findPermanent("Centaur Courser")!!
                 game.castSpell(1, "Lightning Bolt", targetId = courser).error shouldBe null
-                game.resolveStack()
+                game.resolveWithTriggerOrder()
                 val asked = answerAllMayQuestions(game, true)
 
                 withClue("the declined instances left the budget intact") { asked shouldBe 1 }
@@ -204,12 +219,12 @@ class EffectOncePerTurnTest : ScenarioTestBase() {
 
                 val wall = game.findPermanent("Force of Nature")!!
                 game.castSpell(1, "Lightning Bolt", targetId = wall).error shouldBe null
-                game.resolveStack()
+                game.resolveWithTriggerOrder()
                 answerAllMayQuestions(game, true) shouldBe 1
                 game.getLifeTotal(1) shouldBe 22
 
                 game.castSpell(1, "Lightning Bolt", targetId = wall).error shouldBe null
-                game.resolveStack()
+                game.resolveWithTriggerOrder()
 
                 withClue("the budget is spent, so no pointless may-question is raised") {
                     game.hasPendingDecision() shouldBe false
@@ -237,7 +252,7 @@ class EffectOncePerTurnTest : ScenarioTestBase() {
 
                 val wall = game.findPermanent("Force of Nature")!!
                 game.castSpell(1, "Lightning Bolt", targetId = wall).error shouldBe null
-                game.resolveStack()
+                game.resolveWithTriggerOrder()
                 answerAllMayQuestions(game, true) shouldBe 1
                 game.getLifeTotal(1) shouldBe 22
 
@@ -250,7 +265,7 @@ class EffectOncePerTurnTest : ScenarioTestBase() {
                 game.passUntilPhase(Phase.PRECOMBAT_MAIN, Step.PRECOMBAT_MAIN)
                 game.passPriority() // active player (Player2) passes; Player1 gets priority
                 game.castSpell(1, "Lightning Bolt", targetId = wall).error shouldBe null
-                game.resolveStack()
+                game.resolveWithTriggerOrder()
 
                 withClue("a new turn restores the budget") {
                     answerAllMayQuestions(game, true) shouldBe 1
@@ -273,7 +288,7 @@ class EffectOncePerTurnTest : ScenarioTestBase() {
 
                 val wall = game.findPermanent("Force of Nature")!!
                 game.castSpell(1, "Lightning Bolt", targetId = wall).error shouldBe null
-                game.resolveStack()
+                game.resolveWithTriggerOrder()
 
                 withClue("one trigger per Warden — the budget is per (source, ability)") {
                     answerAllMayQuestions(game, true) shouldBe 2
@@ -301,7 +316,7 @@ class EffectOncePerTurnTest : ScenarioTestBase() {
                     .build()
 
                 game.castSpell(1, "Pyroclasm").error shouldBe null
-                game.resolveStack()
+                game.resolveWithTriggerOrder()
 
                 withClue("the trigger cap collapses the batch to a single instance") {
                     answerAllMayQuestions(game, true) shouldBe 1
@@ -323,11 +338,11 @@ class EffectOncePerTurnTest : ScenarioTestBase() {
 
                 val wall = game.findPermanent("Force of Nature")!!
                 game.castSpell(1, "Lightning Bolt", targetId = wall).error shouldBe null
-                game.resolveStack()
+                game.resolveWithTriggerOrder()
                 answerAllMayQuestions(game, true) shouldBe 1
 
                 game.castSpell(1, "Lightning Bolt", targetId = wall).error shouldBe null
-                game.resolveStack()
+                game.resolveWithTriggerOrder()
 
                 withClue("the trigger cap blocks the second event entirely") {
                     game.hasPendingDecision() shouldBe false
@@ -349,11 +364,11 @@ class EffectOncePerTurnTest : ScenarioTestBase() {
 
                 val wall = game.findPermanent("Force of Nature")!!
                 game.castSpell(1, "Lightning Bolt", targetId = wall).error shouldBe null
-                game.resolveStack()
+                game.resolveWithTriggerOrder()
                 answerAllMayQuestions(game, false) shouldBe 1
 
                 game.castSpell(1, "Lightning Bolt", targetId = wall).error shouldBe null
-                game.resolveStack()
+                game.resolveWithTriggerOrder()
 
                 withClue("the trigger fired (and was declined), so it can't fire again this turn") {
                     game.hasPendingDecision() shouldBe false

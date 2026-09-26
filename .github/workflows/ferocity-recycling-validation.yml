@@ -210,6 +210,13 @@ jobs:
           (base / 'selection-result.json').write_text(json.dumps(result, indent=2) + '\n')
           assert receipt['status'] == 'PASS' and receipt['compiled_inputs_unchanged'] and counts_match
           PYCI
+      - name: Preserve the already observed gym runtime for bounded calibration and export
+        if: success() && matrix.suite == 'gym'
+        run: |
+          python ferocity-recycling/tools/archive_observed_gym_runtime.py \
+            --root "$GITHUB_WORKSPACE" \
+            --attempt build/reports/ferocity-recycling/qualification \
+            --gradle-home "${GRADLE_USER_HOME:-$HOME/.gradle}"
       - name: Preserve qualification evidence even on failure
         if: always()
         uses: actions/upload-artifact@v7

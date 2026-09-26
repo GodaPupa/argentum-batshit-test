@@ -4,6 +4,7 @@ import com.wingedsheep.engine.core.ChooseTargetsDecision
 import com.wingedsheep.engine.mechanics.enduringstory.EnduringStoryService
 import com.wingedsheep.engine.state.components.battlefield.CountersComponent
 import com.wingedsheep.engine.support.ScenarioTestBase
+import com.wingedsheep.engine.support.chooseTriggerOrderInListedOrder
 import com.wingedsheep.sdk.core.CounterType
 import com.wingedsheep.sdk.core.Phase
 import com.wingedsheep.sdk.core.Step
@@ -86,6 +87,7 @@ class BifurMelodicRiderScenarioTest : ScenarioTestBase() {
             }
 
             // Two independent triggers, each choosing its own target — both aimed at the Bears here.
+            game.chooseTriggerOrderInListedOrder()
             game.selectTargets(listOf(bears)).error shouldBe null
             game.resolveStack()
             withClue("the doubler produced a second instance of Bifur's own enters trigger") {
@@ -112,6 +114,8 @@ class BifurMelodicRiderScenarioTest : ScenarioTestBase() {
             EnduringStoryService.has(game.state, game.player1Id) shouldBe true
 
             game.castSpell(1, "Dwarven Mauler").error shouldBe null
+            game.resolveStack()
+            game.chooseTriggerOrderInListedOrder()
             game.resolveStack()
 
             withClue("Fíli's Dwarf-entering trigger is doubled by Bifur, so two tokens, not one") {

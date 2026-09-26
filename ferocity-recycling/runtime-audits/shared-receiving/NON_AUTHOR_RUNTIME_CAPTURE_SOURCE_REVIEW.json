@@ -1,0 +1,29 @@
+{
+  "schema": "non-author-runtime-preservation-source-review-v1",
+  "reviewer": "Izzet agent, non-author of archiver and workflow hunk",
+  "reviewed_at": "2026-09-26T17:53:28.150625+00:00",
+  "source_base": "ab0d14d744222cdcc5f4ce97230600cd103694c5",
+  "disposition": "ACCEPT_FOR_READ_ONLY_POST_QUALIFICATION_CAPTURE",
+  "reviewed_files": {
+    "ferocity-recycling/tools/archive_observed_gym_runtime.py": "49fab24b2c66a1174f2a4372943dfc639264d5009700a6a891638f34cd8be39b",
+    ".github/workflows/ferocity-recycling-validation.yml": "37e442f49b39fa12f6dc1d4bf10bdf7bbebf42f6fe3edf575a70777b8b237048"
+  },
+  "verified": [
+    "Workflow adds only7-line gym-only post-success archiver step after original exact qualification reconciliation; existing validator/observation producer unchanged",
+    "Collector requires source-matching PASS receipt, compiled_inputs_unchanged, receipt-bound OBSERVED manifest and exactly one actual gym worker",
+    "Archive preserves observed classpath entry order and exact observed bytes/member paths; no build, test, initializer, gameplay or entropy operation exists",
+    "Top-level aliases, escaped paths, duplicate entries and archive-output overlap rejected; directory sets/member aliases checked before and after capture",
+    "Every archived file byte length andSHA checked before adding and again afterward; receipt/observation bytes and sourceHEAD remain unchanged",
+    "Archive and report use exclusive writes; failures stay incomplete and propagate nonzero status into existing always-upload evidence boundary",
+    "Runtime archive disposition requires later independent review and does not claim calibration or execution acceptance"
+  ],
+  "limitations": [
+    "Source review only; no new runtime archiver run was executed by this reviewer",
+    "Actual archive member completeness, ordered runtime identity and dependency provenance require independent artifact audit after CI",
+    "Observed classpath remains a post-qualification observation; this does not retroactively elevate historical evidence or replace frozen execution admission",
+    "Batched calibration/export and official gameplay are separate gates; this collector launches neither"
+  ],
+  "runtime_accepted": false,
+  "gameplay_authorized": false,
+  "github_approval_fabricated": false
+}
