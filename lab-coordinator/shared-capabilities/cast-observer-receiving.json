@@ -1,7 +1,7 @@
 {
   "schema": "shared-cast-observer-receiving-v1",
   "source_base": "b35d4778dada69476da0f67549be7e70424c18bd",
-  "status": "PROSPECTIVE_INDEPENDENTLY_SOURCE_REVIEWED_135_CASE_QUALIFICATION",
+  "status": "PROSPECTIVE_COMBINED_RECEIVING_135_CASE_QUALIFICATION",
   "production_overrides": {
     "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/ZoneTransitionService.kt": "0b6b44e9598e10c86222f455c9fe3c6e13d6fdcdc75809bf0d88f343310ac4e7",
     "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/CastPriorityProcessor.kt": "9939278edba7d26c850e4c36199165349f9889a7e92b8507dfaa3d53ae6f9ece",
@@ -27,9 +27,30 @@
   },
   "rule_source": "https://media.wizards.com/2026/downloads/MagicCompRules%2020260925.txt",
   "original_127_cases_unchanged": true,
-  "known_gap_status": "SOURCE_REPAIR_UNEXECUTED",
+  "known_gap_status": "EXACT_B6A_COMPONENT_135_ACCEPTED; COMBINED_RECEIVING_PENDING",
   "gameplay_authorized": false,
   "official_allocations_initialized": 0,
   "official_outcomes_exposed": 0,
-  "comment_only_override": "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/PendingTrigger.kt"
+  "comment_only_override": "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/PendingTrigger.kt",
+  "accepted_prior_component": {
+    "head": "b6aef3afede89f2044f26b0af9d5bdd4efe751c6",
+    "run_id": 36258696556,
+    "actual_cases": 135,
+    "independent_reviewer": "/root/manual",
+    "independent_review": "evidence/cast-observer-36258696556/independent-artifact-review.json",
+    "scope": "Exact prior component only; no combined-source acceptance transferred."
+  },
+  "combined_receiving": {
+    "base": "77c7aad0bb2ded2c0372087d94f66ccbde0f7d09",
+    "production_overrides": {
+      "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/combat/CombatDefenders.kt": "87543b443ca4f637617f1cbe7613c37f1c577a7754aa272786cf5c0d7be68920",
+      "rules-engine/src/main/kotlin/com/wingedsheep/engine/legalactions/enumerators/CombatEnumerator.kt": "806c3e20163072b7b96588c695e6d6913cc39a7c70deec88f1ff31a5bc5e0c1b",
+      "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/Serialization.kt": "bcc6321f1ef85416859bff716b1446498a62917208cc7f7a65b4cd39b0333b68",
+      "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/ContinuationHandler.kt": "a8091ebb5e745e48765d38f01f6f21052b98ec4b0f52da34076882bbd90edccc",
+      "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/CoreAutoResumerModule.kt": "d191e92ce6bf2c27d33f5ae9f80ff2b7ce8b0d94aa6493887c9739faea9292b3"
+    },
+    "source_manifest_path": "lab-coordinator/shared-capabilities/priority-receiving-sources.json",
+    "source_manifest_sha256": "81c1fb44b49069dbb5ee26e9409d60c662883cb6e576abad4d1404adae6d3eb4",
+    "scope": "Original36 production bindings with original three observer overrides plus the five explicitly reviewed token-defender receiving changes. All55 original component pins and the extended combined source map are checked before and after execution. Original18 suites135 cases remain unchanged."
+  }
 }

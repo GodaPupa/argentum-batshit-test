@@ -97,6 +97,7 @@ class DalkovanEncampmentScenarioTest : ScenarioTestBase() {
                     warriors.forEach { token ->
                         game.state.getEntity(token)?.has<TappedComponent>() shouldBe true
                         game.state.getEntity(token)?.has<AttackingComponent>() shouldBe true
+                        game.state.getEntity(token)?.get<AttackingComponent>()?.defenderId shouldBe game.player2Id
                     }
                 }
             }
@@ -130,6 +131,9 @@ class DalkovanEncampmentScenarioTest : ScenarioTestBase() {
 
                 withClue("Two Warrior tokens exist during combat") {
                     game.findPermanents("Warrior Token").size shouldBe 2
+                    game.findPermanents("Warrior Token").forEach { token ->
+                        game.state.getEntity(token)?.get<AttackingComponent>()?.defenderId shouldBe game.player2Id
+                    }
                 }
 
                 // Finish the real declaration round before advancing to the delayed sacrifices.
