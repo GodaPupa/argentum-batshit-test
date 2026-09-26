@@ -1,0 +1,85 @@
+{
+  "schema": "izzet-c47e-failure-diagnostic-v1",
+  "disposition": "REGRESSION_DIAGNOSTIC_ONLY",
+  "sources": {
+    "accepted-base": {
+      "source": "50eca5fb955013d70ea26c3c6a09efabef4bcff4",
+      "tree": "bb352ebb432555191e1c4d74673e0e4371651989",
+      "pins": {
+        "ai/src/test/kotlin/com/wingedsheep/ai/arena/TableGameRunner.kt": "36c5348e3d59d569001c9b5d85db3f5ae89683d10eeab704ff6a8c1636835bf6",
+        "ai/src/test/kotlin/com/wingedsheep/ai/arena/FrozenBaselineTest.kt": "efa2fdb1186bd4db3d761d85234e56abe963d8170da430e3ebc5033eb8ea6714"
+      },
+      "stages": [
+        {
+          "class": "com.wingedsheep.ai.arena.FrozenBaselineTest",
+          "module": "ai",
+          "source": "ai/src/test/kotlin/com/wingedsheep/ai/arena/FrozenBaselineTest.kt",
+          "cases": 1,
+          "case_names": [
+            "LEGACY_V0 plays the frozen baseline game exactly as it always has"
+          ]
+        }
+      ]
+    },
+    "candidate": {
+      "source": "c47e9dbafc1fd582f81be1db04e9f35a09f067b5",
+      "tree": "f92cdeaed8be104d98b1a971347cd9c2f089f779",
+      "pins": {
+        "ai/src/test/kotlin/com/wingedsheep/ai/arena/TableGameRunner.kt": "36c5348e3d59d569001c9b5d85db3f5ae89683d10eeab704ff6a8c1636835bf6",
+        "ai/src/test/kotlin/com/wingedsheep/ai/arena/FrozenBaselineTest.kt": "87978d468ff109f88378607fec34b4ad825ed91671069a62c0f7eb6fb2a60b52",
+        "ai/src/test/kotlin/com/wingedsheep/ai/arena/ArenaGameRunner.kt": "cbe958711f2e1e85b7364c3cf00e456e9e307152673009c2298d664527074c17",
+        "mtg-sets/1993-1999/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/ArcaneDenialScenarioTest.kt": "2c898e708e6b7da9e9a322ddaecbfb7d72ecd1d5938b6729c6f14274b657f062",
+        "mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/MnemonicWallScenarioTest.kt": "44bda959e4227a43380c51f70b8d2fc60aa0eea89ea07e13c86881f096d68f20",
+        "mtg-sets/2025/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/DalkovanEncampmentScenarioTest.kt": "6bea74e63c516c647bea6ad3530d44c7a94dd56959465adc3c689f5e0aaf4d3e"
+      },
+      "stages": [
+        {
+          "class": "com.wingedsheep.ai.arena.FrozenBaselineTest",
+          "module": "ai",
+          "source": "ai/src/test/kotlin/com/wingedsheep/ai/arena/FrozenBaselineTest.kt",
+          "cases": 1,
+          "case_names": [
+            "LEGACY_V0 plays the frozen baseline game exactly as it always has"
+          ]
+        },
+        {
+          "class": "com.wingedsheep.engine.scenarios.ArcaneDenialScenarioTest",
+          "module": "mtg-sets/1993-1999/tests",
+          "source": "mtg-sets/1993-1999/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/ArcaneDenialScenarioTest.kt",
+          "cases": 3,
+          "case_names": [
+            "counter schedules two one-shot triggers for the next turn's upkeep and captures target controller",
+            "on the next turn's upkeep target controller may draw 0 to 2 and Denial caster draws one",
+            "uncounterable target still gets Arcane Denial's delayed draw abilities"
+          ]
+        },
+        {
+          "class": "com.wingedsheep.engine.scenarios.MnemonicWallScenarioTest",
+          "module": "mtg-sets/2008-2016/tests",
+          "source": "mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/MnemonicWallScenarioTest.kt",
+          "cases": 2,
+          "case_names": [
+            "ETB may return a targeted instant from your graveyard",
+            "ETB may be declined without returning the targeted card"
+          ]
+        },
+        {
+          "class": "com.wingedsheep.engine.scenarios.DalkovanEncampmentScenarioTest",
+          "module": "mtg-sets/2025/tests",
+          "source": "mtg-sets/2025/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/DalkovanEncampmentScenarioTest.kt",
+          "cases": 2,
+          "case_names": [
+            "activating the ability then attacking creates two tapped, attacking Warrior tokens",
+            "the tokens are sacrificed at the next end step"
+          ]
+        }
+      ]
+    }
+  },
+  "permitted_instrumented_path": "ai/src/test/kotlin/com/wingedsheep/ai/arena/TableGameRunner.kt",
+  "frozen_golden_may_change": false,
+  "official_vector_access": false,
+  "official_games": 0,
+  "new_experimental_allocations": 0,
+  "purpose": "Recover exact baseline hash-input streams and existing failing test XML; no source acceptance, policy tuning, card change or golden reblessing."
+}
