@@ -2131,6 +2131,18 @@ class ClientStateTransformer(
             }
             if (playerId !in floatingEffect.effect.affectedEntities) continue
             when (modification) {
+                is SerializableModification.PreventTargeting -> {
+                    if (modification.targetObject != null && modification.targetObject != state.objectRef(playerId)) continue
+                    val names = modification.controllers.map { blockedPlayer ->
+                        state.getEntity(blockedPlayer)?.get<PlayerComponent>()?.name ?: "another player"
+                    }.joinToString(", ")
+                    effects.add(ClientPlayerEffect(
+                        effectId = "targeting_restriction_${floatingEffect.id}",
+                        name = "Targeting restricted",
+                        description = "Can't be targeted by spells or abilities controlled by $names",
+                        icon = "hexproof"
+                    ))
+                }
                 is SerializableModification.PreventAllDamageTo -> {
                     preventsAllDamage = true
                 }
@@ -2865,6 +2877,18 @@ class ClientStateTransformer(
                 }
                 // The restriction mirror. Same reason to badge it: the defender otherwise discovers
                 // the pairwise ban only when the block declaration bounces back.
+                is SerializableModification.PreventTargeting -> {
+                    if (modification.targetObject != null && modification.targetObject != state.objectRef(entityId)) continue
+                    val names = modification.controllers.map { playerId ->
+                        state.getEntity(playerId)?.get<PlayerComponent>()?.name ?: "another player"
+                    }.joinToString(", ")
+                    effects.add(ClientCardEffect(
+                        effectId = "targeting_restriction_${floatingEffect.id}",
+                        name = "Targeting restricted",
+                        description = "Can't be targeted by spells or abilities controlled by $names",
+                        icon = "hexproof"
+                    ))
+                }
                 is SerializableModification.CantBlockSpecificAttacker -> {
                     val attackerName = state.getEntity(modification.attackerId)
                         ?.get<CardComponent>()?.name

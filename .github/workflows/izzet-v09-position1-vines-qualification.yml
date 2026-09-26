@@ -1,0 +1,164 @@
+name: Izzet Position-1 Vines Qualification
+
+on:
+  push:
+    branches: [mayhem/izzet-vines-targeting]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: izzet-position1-vines-qualification
+  cancel-in-progress: false
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      GRADLE_LOCK_SLOTS: '1'
+      JAVA_TOOL_OPTIONS: -XX:MaxMetaspaceSize=768m
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.sha }}
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: gradle/actions/setup-gradle@v6
+      - uses: extractions/setup-just@f8a3cce218d9f83db3a2ecd90e41ac3de6cdfd9b
+
+      - name: Bind exact clean source and frozen decks without accessing a gameplay seed
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/reports/izzet-vines
+          python3 - <<'PY'
+          import hashlib, json, os, pathlib, subprocess
+          hashes = {
+            'izzet-science/v0.7-control.md': '726f5e9458b46dda30b33a6ce9f3c3237b25d6e11b81dac85308c3065c108a01',
+            'izzet-science/opponents/veteran-beastrider-commander-clash-2025.txt': 'c3ab6ee8e37a78219e7bbb7c6a75c634d78c1eb4965ab0db3abd5d853398b0be',
+          }
+          observed = {p: hashlib.sha256(pathlib.Path(p).read_bytes()).hexdigest() for p in hashes}
+          source = subprocess.check_output(['git','rev-parse','HEAD'], text=True).strip()
+          tree = subprocess.check_output(['git','rev-parse','HEAD^{tree}'], text=True).strip()
+          status = subprocess.check_output(['git','status','--porcelain'], text=True)
+          binding = {'head': source, 'tree': tree, 'frozen_hashes': observed, 'checkout_status': status}
+          pathlib.Path('build/reports/izzet-vines/source-binding.json').write_text(json.dumps(binding, indent=2)+'\n')
+          assert observed == hashes and source == os.environ['GITHUB_SHA'] and not status.strip(), binding
+          PY
+
+      - name: Qualify generic targeting restriction and serialization
+        shell: bash
+        run: |
+          set -euo pipefail
+          just test-class PreventTargetingSerializationTest --rerun --max-workers=1 -PkotlinCompileParallelism=1 -Pkotlin.compiler.execution.strategy=in-process -Dorg.gradle.jvmargs=-Xmx4g --info --stacktrace 2>&1 | tee build/reports/izzet-vines/sdk.txt
+          just test-class PreventTargetingScenarioTest --tests '*FloatingEffectSerializationRoundTripTest' --tests '*SerializationPolymorphicRegistrationTest' --tests '*CastSpellSourceHexproofEnumerationTest' --tests '*CommanderStatePredicateTest' --tests '*AffectsFilterResolverStatePredicateTest' --rerun --max-workers=1 -PkotlinCompileParallelism=1 -Pkotlin.compiler.execution.strategy=in-process -Dorg.gradle.jvmargs=-Xmx4g --info --stacktrace 2>&1 | tee build/reports/izzet-vines/engine.txt
+
+      - name: Qualify exact Vines reachable behavior and receiving Position-1 guards
+        shell: bash
+        run: |
+          set -euo pipefail
+          just test-class VinesOfVastwoodScenarioTest --tests '*IntoTheRoilScenarioTest' --rerun --max-workers=1 -PkotlinCompileParallelism=1 -Pkotlin.compiler.execution.strategy=in-process -Dorg.gradle.jvmargs=-Xmx4g --info --stacktrace 2>&1 | tee build/reports/izzet-vines/exact-vines.txt
+          just test-class IzzetSciencePosition1BootstrapTest --tests '*IzzetSciencePdhMechanicsQualificationTest' --tests '*IzzetScienceVeteranBeastriderEngineReadinessTest' --rerun --max-workers=1 -PkotlinCompileParallelism=1 -Pkotlin.compiler.execution.strategy=in-process -Dorg.gradle.jvmargs=-Xmx4g --info --stacktrace 2>&1 | tee build/reports/izzet-vines/receiving-pdh.txt
+          just test-class ForgeOfHeroesScenarioTest --rerun --max-workers=1 -PkotlinCompileParallelism=1 -Pkotlin.compiler.execution.strategy=in-process -Dorg.gradle.jvmargs=-Xmx4g --info --stacktrace 2>&1 | tee build/reports/izzet-vines/receiving-forge.txt
+
+      - name: Generate ordinary snapshots and require only the intended Vines record
+        shell: bash
+        run: |
+          set -euo pipefail
+          just rebless-cards 2>&1 | tee build/reports/izzet-vines/snapshot-generation.txt
+          python3 - <<'PY'
+          import json, pathlib, re, shutil, subprocess
+          path = 'mtg-sets/src/test/resources/snapshots/cards/ZEN.json'
+          before = subprocess.check_output(['git','show','HEAD:'+path], text=True)
+          after = pathlib.Path(path).read_text()
+          def records(text):
+              parts = re.split(r'^// (.+)\n', text, flags=re.M)
+              assert not parts[0].strip()
+              return {parts[i]: json.loads(parts[i+1]) for i in range(1,len(parts),2)}
+          old, new = records(before), records(after)
+          card = new.pop('Vines of Vastwood')
+          prior = old.pop('Vines of Vastwood', None)
+          assert old == new, 'An unrelated ZEN record changed'
+          assert card['name'] == 'Vines of Vastwood' and card['manaCost'] == '{G}'
+          if prior is not None:
+              assert prior == card, 'Committed Vines snapshot changed unexpectedly'
+          changed = set(subprocess.check_output(['git','diff','--name-only'], text=True).splitlines())
+          changed |= set(subprocess.check_output(['git','ls-files','--others','--exclude-standard'],text=True).splitlines())
+          assert changed == ({path} if prior is None else set()), changed
+          report = pathlib.Path('build/reports/izzet-vines')
+          shutil.copyfile(path, report / 'ZEN.json')
+          (report / 'snapshot-diff.patch').write_bytes(subprocess.check_output(['git','diff','--',path]))
+          (report / 'snapshot-check.json').write_text(json.dumps({'changed_paths':sorted(changed), 'only_record_added':'Vines of Vastwood' if prior is None else None},indent=2)+'\n')
+          print('VINES_ONLY_ZEN_SNAPSHOT_PASS')
+          PY
+
+      - name: Verify snapshots without updates and preserve content boundaries
+        shell: bash
+        run: |
+          set -euo pipefail
+          just test-class CardDefinitionSnapshotTest --tests '*CardLintTest' --tests '*FacadeBoundaryTest' --rerun -DupdateSnapshots=false --max-workers=1 -PkotlinCompileParallelism=1 -Pkotlin.compiler.execution.strategy=in-process -Dorg.gradle.jvmargs=-Xmx4g --info --stacktrace 2>&1 | tee build/reports/izzet-vines/content.txt
+
+      - name: Require actual complete cases and retain component-only disposition
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import hashlib, json, os, pathlib, xml.etree.ElementTree as ET
+          expected = {
+            'PreventTargetingSerializationTest': ('mtg-sdk', 3),
+            'PreventTargetingScenarioTest': ('rules-engine', 5),
+            'FloatingEffectSerializationRoundTripTest': ('rules-engine', None),
+            'SerializationPolymorphicRegistrationTest': ('rules-engine', None),
+            'CastSpellSourceHexproofEnumerationTest': ('rules-engine', None),
+            'CommanderStatePredicateTest': ('rules-engine', 3),
+            'AffectsFilterResolverStatePredicateTest': ('rules-engine', 36),
+            'VinesOfVastwoodScenarioTest': ('mtg-sets/2008-2016/tests', 16),
+            'IntoTheRoilScenarioTest': ('mtg-sets/2008-2016/tests', 2),
+            'ForgeOfHeroesScenarioTest': ('mtg-sets/2017-2022/tests', 10),
+            'IzzetSciencePosition1BootstrapTest': ('gym', 7),
+            'IzzetSciencePdhMechanicsQualificationTest': ('gym', 7),
+            'IzzetScienceVeteranBeastriderEngineReadinessTest': ('gym', 16),
+            'CardDefinitionSnapshotTest': ('mtg-sets', None),
+            'CardLintTest': ('mtg-sets', None),
+            'FacadeBoundaryTest': ('mtg-sets', None),
+          }
+          suites = {}
+          for name, (module, count) in expected.items():
+              files = list(pathlib.Path(module+'/build/test-results/test').glob('TEST-*.'+name+'.xml'))
+              assert len(files) == 1, (name, files)
+              suite = ET.parse(files[0]).getroot()
+              cases = suite.findall('testcase')
+              assert cases and (count is None or len(cases) == count), (name, len(cases), count)
+              assert int(suite.attrib['tests']) == len(cases)
+              assert all(int(suite.attrib.get(k,0)) == 0 for k in ('failures','errors','skipped'))
+              assert all(not any(c.find(t) is not None for t in ('failure','error','skipped')) for c in cases)
+              suites[name] = {'cases':[c.attrib['name'] for c in cases], 'xml_path':str(files[0]), 'xml_sha256':hashlib.sha256(files[0].read_bytes()).hexdigest()}
+          report = pathlib.Path('build/reports/izzet-vines')
+          binding = json.loads((report/'source-binding.json').read_text())
+          manifest = {'schema':'izzet-position1-vines-qualification-v1', 'status':'TARGETED_COMPONENT_QUALIFICATION_ONLY',
+            'source_head':binding['head'], 'source_tree':binding['tree'], 'run_id':os.environ['GITHUB_RUN_ID'],
+            'suites':suites, 'total_actual_cases':sum(len(s['cases']) for s in suites.values()),
+            'snapshot_sha256':hashlib.sha256((report/'ZEN.json').read_bytes()).hexdigest(),
+            'remaining_registry_gaps':['Benevolent Blessing','Opal Palace','Snake Umbra'],
+            'full_game_guards_remaining':5, 'full_integration_accepted':False, 'gameplay_authorized':False,
+            'official_seeds_consumed':0, 'official_games_initialized':0, 'official_games_completed':0, 'outcomes_exposed':0}
+          (report/'manifest.json').write_text(json.dumps(manifest,indent=2)+'\n')
+          PY
+
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: izzet-position1-vines-qualification
+          path: |
+            build/reports/izzet-vines
+            mtg-sdk/build/test-results/test/*.xml
+            rules-engine/build/test-results/test/*.xml
+            mtg-sets/2008-2016/tests/build/test-results/test/*.xml
+            mtg-sets/2017-2022/tests/build/test-results/test/*.xml
+            gym/build/test-results/test/TEST-*IzzetScience*Test.xml
+            mtg-sets/build/test-results/test/*.xml
+          if-no-files-found: error
+          retention-days: 90

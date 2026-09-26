@@ -5,6 +5,7 @@ import com.wingedsheep.engine.handlers.EffectContext
 import com.wingedsheep.engine.handlers.PredicateContext
 import com.wingedsheep.engine.handlers.PredicateEvaluator
 import com.wingedsheep.engine.legalactions.TargetInfo
+import com.wingedsheep.engine.mechanics.targeting.FloatingTargetingRestriction
 import com.wingedsheep.engine.mechanics.targeting.ControllerHexproof
 import com.wingedsheep.engine.mechanics.targeting.ControllerShroud
 import com.wingedsheep.engine.mechanics.targeting.HexproofSuppression
@@ -37,7 +38,7 @@ class TargetEnumerationUtils(
         requirement: TargetRequirement,
         sourceId: EntityId? = null
     ): List<EntityId> {
-        return when (requirement) {
+        val targets = when (requirement) {
             is TargetPlayer -> state.turnOrder.filter { state.hasEntity(it) && !playerHasShroud(state, it) &&
                 !playerHasHexproofAgainst(state, it, playerId) && !playerHasProtectionFrom(state, it, sourceId, playerId) &&
                 PlayerTargetRestriction.isSatisfied(state, requirement.restriction, it, playerId, sourceId) }
@@ -114,6 +115,7 @@ class TargetEnumerationUtils(
                 permanents + spells
             }
         }
+        return targets.filterNot { FloatingTargetingRestriction.prevents(state, it, playerId) }
     }
 
     /**
@@ -142,6 +144,7 @@ class TargetEnumerationUtils(
         val battlefield = state.getBattlefield()
         val context = PredicateContext(controllerId = playerId, sourceId = sourceId)
         return battlefield.filter { entityId ->
+            if (FloatingTargetingRestriction.prevents(state, entityId, playerId)) return@filter false
             if (filter.excludeSelf && entityId == sourceId) return@filter false
             val entityController = state.getEntity(entityId)?.get<ControllerComponent>()?.playerId
             if (projected.hasKeyword(entityId, Keyword.HEXPROOF) && entityController != playerId &&
@@ -181,6 +184,7 @@ class TargetEnumerationUtils(
         val context = PredicateContext(controllerId = playerId, sourceId = sourceId)
         return playerIds.flatMap { pid ->
             state.getGraveyard(pid).filter { entityId ->
+                if (FloatingTargetingRestriction.prevents(state, entityId, playerId)) return@filter false
                 if (filter.excludeSelf && entityId == sourceId) return@filter false
                 predicateEvaluator.matches(state, state.projectedState, entityId, filter.baseFilter, context)
             }
@@ -228,6 +232,7 @@ class TargetEnumerationUtils(
         val context = PredicateContext(controllerId = playerId, sourceId = sourceId)
         return playerIds.flatMap { pid ->
             state.getExile(pid).filter { entityId ->
+                if (FloatingTargetingRestriction.prevents(state, entityId, playerId)) return@filter false
                 if (filter.excludeSelf && entityId == sourceId) return@filter false
                 predicateEvaluator.matches(state, state.projectedState, entityId, filter.baseFilter, context)
             }
@@ -254,6 +259,7 @@ class TargetEnumerationUtils(
         // answer as the authoritative target set in `TargetFinder` — see [StackObjectTargeting].
         val abilitiesAllowed = StackObjectTargeting.permitsAbilities(filter.baseFilter)
         return state.stack.filter { stackId ->
+            if (FloatingTargetingRestriction.prevents(state, stackId, playerId)) return@filter false
             if (!abilitiesAllowed && !state.isSpellOnStack(stackId)) return@filter false
             predicateEvaluator.matches(state, state.projectedState, stackId, filter.baseFilter, context)
         }

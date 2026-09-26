@@ -272,6 +272,15 @@ data class StatsModifiedEvent(
     val sourceName: String
 ) : GameEvent
 
+/** A targeting rule was established; the effect is represented in public state. */
+@Serializable
+@SerialName("TargetingRestrictionCreatedEvent")
+data class TargetingRestrictionCreatedEvent(
+    val targetId: EntityId,
+    val restrictedControllers: Set<EntityId>,
+    val sourceId: EntityId?
+) : GameEvent
+
 /**
  * A keyword was granted (e.g., "gains flying until end of turn").
  */

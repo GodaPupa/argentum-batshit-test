@@ -132,6 +132,7 @@ val engineSerializersModule = SerializersModule {
         subclass(DoorLockedEvent::class)
         subclass(TurnHijackedEvent::class)
         subclass(HandRevealedEvent::class)
+        subclass(TargetingRestrictionCreatedEvent::class)
         subclass(KeywordGrantedEvent::class)
         subclass(CitysBlessingGainedEvent::class)
         subclass(EnduringStoryGainedEvent::class)

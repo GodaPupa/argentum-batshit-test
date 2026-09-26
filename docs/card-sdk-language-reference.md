@@ -1502,6 +1502,7 @@ Atomic effect factories. For library/zone manipulation, prefer the pipelines in 
   Pair with `AddCreatureType`/`AddCardType` for "becomes a [color] [type] in addition to its other
   colors and types" (Possessed Goat).
 - `GrantHexproof(target, duration)` / `GrantShroud(target, duration)` — temporary hexproof / shroud.
+- `PreventTargeting(target = ContextTarget(0), fromPlayers = Player.EachOpponent, duration = EndOfTurn)` — creates a rule restriction preventing spells and abilities controlled by the selected players from targeting that object or player. The player set is resolved when the effect resolves. It is independent of the target's later controller and of ability removal, and does not grant hexproof. Card targets are bound to their current object identity, so leaving and returning does not preserve the restriction. Vines of Vastwood composes this with `ConditionalEffect(Conditions.WasKicked, Effects.ModifyStats(4, 4, target))`.
   Both are facades lowering onto the player-aware `GrantEvasionKeywordEffect(keyword, target, duration)`:
   for player targets it attaches the matching player protection component; for permanents it grants the
   keyword via a Layer-6 floating effect (like `GrantKeyword`).

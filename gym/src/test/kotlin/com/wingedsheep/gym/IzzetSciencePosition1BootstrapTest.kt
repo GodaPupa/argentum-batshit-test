@@ -99,12 +99,11 @@ class IzzetSciencePosition1BootstrapTest : FunSpec({
         }
     }
 
-    test("all four unresolved identities block the real initializer without touching its seed supplier") {
+    test("all three unresolved identities block the real initializer without touching its seed supplier") {
         val expected = listOf(
             "unresolved Veteran Beastrider card: Benevolent Blessing",
             "unresolved Veteran Beastrider card: Opal Palace",
             "unresolved Veteran Beastrider card: Snake Umbra",
-            "unresolved Veteran Beastrider card: Vines of Vastwood",
         )
         IzzetScienceVeteranBeastriderEngineReadiness.unresolvedCardIdentities(registry).shouldContainExactly(expected)
         var seedReads = 0
