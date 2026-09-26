@@ -163,7 +163,9 @@ class PassPriorityHandler(
         // CR 117.3b gives the active player priority after resolution. Preserve that boundary
         // across every decision until effects, SBAs and trigger placement finish (CR 117.5).
         // CR 117.3c instead concerns priority retained immediately after casting/activating.
-        val resolvingState = state.copy(stackResolutionPendingPriority = true)
+        // CR 117.2e: the former priority holder cannot act while resolution is paused.
+        // The retained boundary restores the active player's priority only after completion.
+        val resolvingState = state.copy(stackResolutionPendingPriority = true).withPriority(null)
         val preResolutionStackSize = state.continuationStack.size
         val result = stackResolver.resolveTop(resolvingState)
 

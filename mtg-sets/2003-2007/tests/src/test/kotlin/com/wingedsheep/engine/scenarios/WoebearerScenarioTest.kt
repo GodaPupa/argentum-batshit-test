@@ -31,7 +31,7 @@ class WoebearerScenarioTest : ScenarioTestBase() {
         }
         passUntilPhase(Phase.COMBAT, Step.COMBAT_DAMAGE)
         resolveStack()
-        // Anything that is not already the trigger's own decision (its "you may", then its target)
+        // Anything that is not already the trigger's target-placement or optional-effect decision
         // is a combat-damage assignment still owed.
         if (hasPendingDecision() &&
             getPendingDecision() !is ChooseTargetsDecision &&
@@ -60,8 +60,7 @@ class WoebearerScenarioTest : ScenarioTestBase() {
                     game.getLifeTotal(2) shouldBe 18
                 }
 
-                // The "you may" is answered before targeting is reached.
-                game.answerYesNo(true)
+                // The target is chosen before the optional return resolves.
                 val decision = game.getPendingDecision()
                 withClue("The trigger should ask for a target; got $decision") {
                     decision.shouldBeInstanceOf<ChooseTargetsDecision>()
@@ -70,8 +69,10 @@ class WoebearerScenarioTest : ScenarioTestBase() {
                 withClue("Grizzly Bears in your graveyard should be a legal target") {
                     (decision as ChooseTargetsDecision).legalTargets[0].orEmpty() shouldContain bears
                 }
-                game.selectTargets(listOf(bears))
+                game.selectTargets(listOf(bears)).error shouldBe null
                 game.resolveStack()
+                game.getPendingDecision().shouldBeInstanceOf<YesNoDecision>()
+                game.answerYesNo(true).error shouldBe null
 
                 withClue("Grizzly Bears should be back in Alice's hand") {
                     game.isInHand(1, "Grizzly Bears") shouldBe true
@@ -90,13 +91,16 @@ class WoebearerScenarioTest : ScenarioTestBase() {
 
                 game.connectWithWoebearer()
 
-                // A "you may" is a consent gate on the effect, so the decline is its own yes/no and
-                // comes before any target is chosen — no picking a card you mean to leave behind.
+                // Place the targeted trigger, then decline the return on resolution.
+                val bears = game.findCardsInGraveyard(1, "Grizzly Bears").single()
+                game.getPendingDecision().shouldBeInstanceOf<ChooseTargetsDecision>()
+                game.selectTargets(listOf(bears)).error shouldBe null
+                game.resolveStack()
                 val decision = game.getPendingDecision()
                 withClue("The trigger should ask the may; got $decision") {
                     decision.shouldBeInstanceOf<YesNoDecision>()
                 }
-                game.answerYesNo(false)
+                game.answerYesNo(false).error shouldBe null
                 game.resolveStack()
 
                 withClue("Grizzly Bears should still be in the graveyard") {
@@ -117,8 +121,7 @@ class WoebearerScenarioTest : ScenarioTestBase() {
 
                 game.connectWithWoebearer()
 
-                // The "you may" is answered before targeting is reached.
-                game.answerYesNo(true)
+                // The target is chosen before the optional return resolves.
                 val decision = game.getPendingDecision()
                 withClue("The trigger should ask for a target; got $decision") {
                     decision.shouldBeInstanceOf<ChooseTargetsDecision>()

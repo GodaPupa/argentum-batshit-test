@@ -1,5 +1,7 @@
 package com.wingedsheep.engine.scenarios
 
+import com.wingedsheep.engine.support.chooseTriggerOrderInListedOrder
+
 import com.wingedsheep.engine.core.engineSerializersModule
 import com.wingedsheep.engine.handlers.EffectContext
 import com.wingedsheep.engine.handlers.ObjectReferenceEnvironment
@@ -68,7 +70,7 @@ class DelayedIterationObjectIdentityTest : FunSpec({
                 }
                 roundTrip(d)
                 d.passPriorityUntil(Step.END)
-                while (d.pendingDecision != null) d.autoResolveDecision()
+                d.chooseTriggerOrderInListedOrder()
                 d.stackSize shouldBe 2
                 roundTrip(d)
                 repeat(2) { d.bothPass().error shouldBe null }

@@ -1,5 +1,8 @@
 package com.wingedsheep.engine.scenarios
 
+import com.wingedsheep.engine.support.chooseTriggerOrderInListedOrder
+import com.wingedsheep.engine.support.hasPendingTriggerOrder
+
 import com.wingedsheep.engine.core.CastSpell
 import com.wingedsheep.engine.core.ChooseColorDecision
 import com.wingedsheep.engine.core.ColorChosenResponse
@@ -131,6 +134,7 @@ private fun GameTestDriver.drainDecisionsChoosingRed(player: EntityId) {
     while (guard++ < 40 && (stackSize > 0 || pendingDecision != null)) {
         val decision = pendingDecision
         when {
+            state.hasPendingTriggerOrder() -> chooseTriggerOrderInListedOrder()
             decision is ChooseColorDecision ->
                 submitDecision(player, ColorChosenResponse(decision.id, Color.RED))
             decision != null -> declinePendingDecision(player)

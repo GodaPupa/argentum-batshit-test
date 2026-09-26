@@ -1,0 +1,22 @@
+{
+  "schema": "ai-postblock-independent-diagnostic-review-v1",
+  "reviewer": "independent non-author /root/sphinx agent",
+  "decision": "ACCEPT_DIAGNOSTIC_EVIDENCE_ONLY",
+  "run_id": 36256592910,
+  "control_head": "929b8a975438c405c6c0310b781b953f573726a2",
+  "control_tree": "08a6d541d0f1a593a62995de5495fab971c32329",
+  "verified": [
+    "Both raw ZIP byte counts and SHA256s match independently fetched GitHub metadata; CRCs pass.",
+    "All 268 original files in each binding match its immutable Git source; both original hash maps are identical.",
+    "The sole runner observer overlay reconstructs the exact reviewed SHA256 and preserves original digest input.",
+    "Actual XML: accepted main 5/5 pass; receiver 3 pass and original two assertion failures; no errors or skips.",
+    "Exactly 413 trace records: seven adjacent post-block pass swaps change 14 records; 399 remaining records are identical.",
+    "Reconstructing only those seven swaps reproduces the complete receiver stream and its original digest.",
+    "Only activate-05 and instants-05 leave the failure set; 15 becomes 13 and no new puzzle fails."
+  ],
+  "limitations": [
+    "Diagnostic evidence does not itself authorize a hash successor or failure-set update.",
+    "No pilot adaptation, experimental budget change, gameplay admission or GitHub approval is implied."
+  ],
+  "official_gameplay_authorized": false
+}

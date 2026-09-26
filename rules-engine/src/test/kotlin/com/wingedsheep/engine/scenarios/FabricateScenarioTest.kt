@@ -1,5 +1,8 @@
 package com.wingedsheep.engine.scenarios
 
+import com.wingedsheep.engine.support.chooseTriggerOrderInListedOrder
+import com.wingedsheep.engine.support.hasPendingTriggerOrder
+
 import com.wingedsheep.engine.core.CastSpell
 import com.wingedsheep.engine.core.YesNoDecision
 import com.wingedsheep.engine.state.components.battlefield.CountersComponent
@@ -110,6 +113,7 @@ class FabricateScenarioTest : FunSpec({
      * Returns the prompt so a caller can check it names both outcomes.
      */
     fun answerFabricate(driver: GameTestDriver, player: EntityId, takeCounters: Boolean): String {
+        if (driver.state.hasPendingTriggerOrder()) driver.chooseTriggerOrderInListedOrder()
         withClue("Fabricate must not ask anything before the trigger resolves") {
             driver.pendingDecision shouldBe null
         }

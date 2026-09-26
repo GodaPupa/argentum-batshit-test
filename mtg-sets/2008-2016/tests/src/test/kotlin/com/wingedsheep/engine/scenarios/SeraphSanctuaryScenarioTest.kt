@@ -1,5 +1,7 @@
 package com.wingedsheep.engine.scenarios
 
+import com.wingedsheep.engine.support.chooseTriggerOrderInListedOrder
+
 import com.wingedsheep.engine.support.GameTestDriver
 import com.wingedsheep.engine.support.TestCards
 import com.wingedsheep.mtg.sets.definitions.avr.cards.GoldnightRedeemer
@@ -34,6 +36,7 @@ class SeraphSanctuaryScenarioTest : FunSpec({
         driver.giveColorlessMana(you, 4)
         driver.castSpell(you, angel)
         driver.bothPass() // resolve angel (Sanctuary + Redeemer triggers stack)
+        driver.chooseTriggerOrderInListedOrder()
         driver.bothPass() // resolve one ETB trigger
         driver.bothPass() // resolve the other ETB trigger
 

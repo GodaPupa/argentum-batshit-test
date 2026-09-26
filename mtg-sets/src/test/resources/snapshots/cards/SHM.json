@@ -856,6 +856,64 @@
     }
 }
 
+// Faerie Macabre
+{
+    "name": "Faerie Macabre",
+    "manaCost": "{1}{B}{B}",
+    "typeLine": "Creature — Faerie Rogue",
+    "oracleText": "Flying\nDiscard this card: Exile up to two target cards from graveyards.",
+    "creatureStats": {
+        "power": 2,
+        "toughness": 2
+    },
+    "keywords": [
+        "FLYING"
+    ],
+    "script": {
+        "activatedAbilities": [
+            {
+                "id": "ability_1",
+                "cost": "CostDiscardSelf",
+                "effect": {
+                    "type": "ForEach",
+                    "space": "IterationSpace.Targets",
+                    "body": {
+                        "type": "MoveToZone",
+                        "target": {
+                            "type": "ContextTarget",
+                            "index": 0
+                        },
+                        "destination": "Exile",
+                        "fromZone": "Graveyard"
+                    }
+                },
+                "targetRequirements": [
+                    {
+                        "type": "TargetObject",
+                        "count": 2,
+                        "minCount": 0,
+                        "optional": true,
+                        "filter": {
+                            "baseFilter": {},
+                            "zone": "Graveyard"
+                        },
+                        "id": "up to two target cards from graveyards"
+                    }
+                ],
+                "activateFromZone": "Hand"
+            }
+        ]
+    },
+    "metadata": {
+        "collectorNumber": "66",
+        "artist": "rk post",
+        "flavorText": "The line between dream and death is gauzy and fragile. She leads those too near it from one side to the other."
+    },
+    "colorIdentityOverride": [
+        "BLACK"
+    ]
+}
+
 // Faerie Swarm
 {
     "name": "Faerie Swarm",

@@ -1,0 +1,32 @@
+{
+  "schema": "shared-postblock-fixture-receiving-v1",
+  "status": "PROSPECTIVE_FIXTURE_DEPENDENCY_CORRECTION_PENDING_127_CASE_EXECUTION",
+  "original_manifest": "lab-coordinator/shared-capabilities/postblock-source-extraction.json",
+  "original_manifest_sha256": "a24e602e4af03d3baa8bff1a2efe6581b4106b05a27dec9f4c4508cea288863a",
+  "original_published_head": "9e05974cf1a27ef8668e880f30f492f6814e5215",
+  "original_source": "d50e66dc12a58e1276b56bdf9ce78daecda51e1a",
+  "runtime_production_files_unchanged": 36,
+  "expected_cases": {
+    "engine": 115,
+    "server": 12
+  },
+  "test_import_overrides": [
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/ActivationPriorityScenarioTest.kt",
+      "original_sha256": "dcd9af37dabad5f3aa29f9485946f65a1b2d5fd2848eecade5c7fecbabaf30b0",
+      "receiving_sha256": "d14fe20f774f650d132f679966dc4eefe556cf48fb67d34fffdadd88fefda978",
+      "change": "One direct aliased import of the exact original canonical fixture; removing that import recovers the original test byte-for-byte. All cases and assertions are unchanged."
+    }
+  ],
+  "fixture_files": [
+    {
+      "path": "rules-engine/src/testFixtures/kotlin/com/wingedsheep/engine/research/ferocity/FerocityOfTheHuntPrerelease.kt",
+      "sha256": "e4d4c081c89788af1fad06708a35ad447a93444b2fe4ba038131b7f7222bea8b",
+      "source_head": "d50e66dc12a58e1276b56bdf9ce78daecda51e1a",
+      "source_bytes_unchanged": true,
+      "scope": "testFixtures only; not registered in MtgSetCatalog or a production deck"
+    }
+  ],
+  "gameplay_authorized": false,
+  "official_games": 0
+}

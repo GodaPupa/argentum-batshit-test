@@ -54,13 +54,9 @@ class PestControlTierOneMonoBlueTerrorReadinessTest : FunSpec({
         PestControlTierOneMonoBlueTerrorReadiness.validationErrors(readiness, registry).shouldBeEmpty()
     }
 
-    test("readiness records the exact current preboard support blocker") {
+    test("current registry resolves both frozen lists without changing historical readiness") {
         PestControlTierOneMonoBlueTerrorReadiness.unresolvedMain(registry) shouldBe emptyMap()
-
-        PestControlTierOneMonoBlueTerrorReadiness.unresolvedSideboard(registry).entries.map { it.key to it.value }
-            .shouldContainExactly(
-                "Spreading Seas" to 3,
-            )
+        PestControlTierOneMonoBlueTerrorReadiness.unresolvedSideboard(registry) shouldBe emptyMap()
     }
 
     test("current support advances explicitly while the historical inventory remains exact") {
@@ -70,14 +66,12 @@ class PestControlTierOneMonoBlueTerrorReadinessTest : FunSpec({
             "Murmuring Mystic" to 1,
             "Spreading Seas" to 3,
         )
-        PestControlTierOneMonoBlueTerrorReadiness.currentUnsupportedSideboard shouldBe linkedMapOf(
-            "Spreading Seas" to 3,
-        )
+        PestControlTierOneMonoBlueTerrorReadiness.currentUnsupportedSideboard shouldBe emptyMap()
         TierOneMonoBlueTerrorReadiness().sideboardStatus shouldBe
             "FROZEN_15; NOT_INSTANTIATED; BLOCKED_4_IDENTITIES_11_SLOTS"
     }
 
-    for (missingCard in listOf("Annul", "Murmuring Mystic", "Gut Shot", "Hydroblast")) {
+    for (missingCard in listOf("Annul", "Murmuring Mystic", "Gut Shot", "Hydroblast", "Spreading Seas")) {
         test("current support rejects a missing required sideboard identity: $missingCard") {
             val incompleteRegistry = CardRegistry().apply {
                 registry.allCardNames().filter { it != missingCard }.forEach { register(registry.requireCard(it)) }

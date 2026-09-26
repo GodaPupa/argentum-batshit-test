@@ -1,0 +1,59 @@
+{
+  "schema": "shared-attacking-token-defender-author-audit/v1",
+  "reviewer": "/root/sphinx",
+  "independent": false,
+  "source_head": "4a04bc43f9b72fcd734b67b4516d203189baf822",
+  "source_tree": "f86b7f81df143bbc04e74a05701fec0eb86a9221",
+  "run_id": 36264019331,
+  "artifact_id": 10912484812,
+  "archive_sha256": "1efcc68af28224fcfdfd5ca94604ea731130859a12895e12ee0fdc71f61810f4",
+  "archive_bytes": 252225,
+  "status": "INCOMPLETE_TOKEN_BANK_TEST_COMPILATION",
+  "actual_cases": 2,
+  "passing_cases": 2,
+  "failing_cases": 0,
+  "errored_cases": 0,
+  "skipped_cases": 0,
+  "unexecuted_cases": 14,
+  "diagnosis": "Two unparenthesized Kotlin is type checks before infix shouldBe in fixed token fixture at lines220 and259 do not parse. Production compiled; original Dalkovan2 ran and both passed with exact legal-defender and final assertions.",
+  "correction": "Only parenthesize the two existing Boolean type-check expressions; retain all16 original names, criteria, assertions and geometry.",
+  "raw_audit": {
+    "status": "INCOMPLETE_OR_FAILED",
+    "stages": [
+      {
+        "stage": "token-defender-14",
+        "module": "rules-engine",
+        "class": "com.wingedsheep.engine.handlers.effects.token.AttackingTokenDefenderChoiceTest",
+        "expected_cases": 14,
+        "exit_status": 1
+      },
+      {
+        "stage": "dalkovan-2",
+        "module": "mtg-sets/2025/tests",
+        "class": "com.wingedsheep.engine.scenarios.DalkovanEncampmentScenarioTest",
+        "expected_cases": 2,
+        "exit_status": 0,
+        "xml_sha256": "a57b34e9076d73d1caff58f45a6791ec43308bd13828e1f9f25baf8b4c13c14a",
+        "actual_cases": 2,
+        "case_names": [
+          "activating the ability then attacking creates two tapped, attacking Warrior tokens",
+          "the tokens are sacrificed at the next end step"
+        ]
+      }
+    ],
+    "actual_cases": 2,
+    "errors": [
+      "Failed command: token-defender-14",
+      "token-defender-14: Expected exactly one class XML",
+      "Fixed two-bank16 scope incomplete",
+      "Frozen case identities differ: com.wingedsheep.engine.handlers.effects.token.AttackingTokenDefenderChoiceTest"
+    ],
+    "official_games": 0,
+    "gameplay_authorized": false
+  },
+  "original_budget_sha256": "829e772f41ba375b676154c374668775d1a7551e217d5c98e2d76ea58e96291f",
+  "official_games": 0,
+  "outcomes_exposed": 0,
+  "runtime_accepted": false,
+  "full_receiving_accepted": false
+}

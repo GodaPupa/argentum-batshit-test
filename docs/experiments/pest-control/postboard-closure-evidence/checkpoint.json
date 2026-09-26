@@ -1,0 +1,72 @@
+{
+  "schema": "pest-postboard-local-qualification-checkpoint-v1",
+  "status": "PARTIAL_DETERMINISTIC_QUALIFICATION_BLOCKED_BY_INODE_EXHAUSTION",
+  "source_parents": [
+    "878fe1f860c748782ae8c22b994e4c68141166d9",
+    "f24d715f5929c4f328b526de7d0551c825114db3"
+  ],
+  "source_state": "Combined working tree with explicit Spreading Seas fixture repair; no official source freeze or gameplay acceptance.",
+  "runtime_and_scenario_sha256": {
+    "mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/scripting/CostStaticAbilities.kt": "ce539c14073499aea38e5f42ff7d2831917690cac7e3401bc448f7b41bc9f776",
+    "mtg-sets/1993-1999/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/mir/cards/KaerveksTorch.kt": "b3a6b3d9e13e6a15769735ce6790849fa274351d4b7a4f72fe4bf3cab9339bce",
+    "mtg-sets/1993-1999/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/KaerveksTorchScenarioTest.kt": "d25cdce1d08c2b58e1befdb938a1bf29427f0a036bfae2024be825e3c33cf280",
+    "mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/ala/cards/RelicOfProgenitus.kt": "3eb9df8f6f75306a7875bef4146083e2ba6085fa04244f19b8e134ebe409db6c",
+    "mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/shm/cards/FaerieMacabre.kt": "96ca35a6f118b1130dad4565422bfd863348a26b1dd8f9b1f5ba6c6dcd13e5c6",
+    "mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/zen/cards/SpreadingSeas.kt": "86664a535d1e53cc451d12375e885ba998ce738ae785226395d98ea2093a154b",
+    "mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/FaerieMacabreScenarioTest.kt": "e0326658d1f39d386f3f47fbf7e65e083513bea0a62451f658e49cc58b5ddd5b",
+    "mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/RelicOfProgenitusScenarioTest.kt": "c6341e0942f455b0c7f635f205cc964fb82f26ce5bac79836a29f9089bac3968",
+    "mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/SpreadingSeasScenarioTest.kt": "03b6f722dc0dad78e921b6121a4cbe5e051fcc390626fbd1cc365e75183e2b81",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/spell/CastSpellHandler.kt": "c0c50de6b7384bbf8e1e890e6aafe6733824e4f9a3c0e1b41fbacc20b9ca5529",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/mana/CostCalculator.kt": "a9b6ba64f35215840ab117c0a11527526f903687d0b326925fa05d7f8be540ac"
+  },
+  "passing_latest_cases": {
+    "FaerieMacabreScenarioTest": 3,
+    "RelicOfProgenitusScenarioTest": 3,
+    "SpreadingSeasScenarioTest": 2,
+    "KaerveksTorchScenarioTest": 4
+  },
+  "latest_case_evidence": "attempt-03/",
+  "fixture_failures_preserved": [
+    "attempt-01/",
+    "attempt-02/"
+  ],
+  "infrastructure_failures_preserved": [
+    "attempt-03/build.log.gz",
+    "attempt-04-infrastructure/build.log.gz"
+  ],
+  "not_completed": [
+    "JackOLanternScenarioTest",
+    "AcornHarvestScenarioTest on combined source",
+    "FlaringPainScenarioTest on combined source",
+    "combined six-deck registry audit",
+    "SHM snapshot generation and inspection",
+    "strict snapshot/lint/facade checks on combined source",
+    "full integration regression and independent review"
+  ],
+  "official": {
+    "new_seeds": 0,
+    "new_games": 0,
+    "new_actions": 0,
+    "new_outcomes": 0
+  },
+  "historical_quarantined_games": 81,
+  "deck_changes": false,
+  "preserved_logs": {
+    "attempt-03/build.log.gz": {
+      "raw_sha256": "0486599da0a4160df4450a5352eb8dec50eb93908b0a86a070d399ead1109885",
+      "gzip_sha256": "03d483478dbd189c4af9f2990a856f5cccee058272943b45844d02fc514a0a88"
+    },
+    "attempt-02/build.log.gz": {
+      "raw_sha256": "112485875be117806e5594e73fdf853c5d932ee26bbd53b4bcfc827cf83c2afe",
+      "gzip_sha256": "41f740a9203b444e0e98164075a04b48767d0516a06e91a15085efb1723b7261"
+    },
+    "attempt-01/build.log.gz": {
+      "raw_sha256": "23d0518ed3ca4c4d4b17decf1433f4124ee201d1c419d3c757d58b5a4607ef41",
+      "gzip_sha256": "ed408bf3b9fb000a2b511425dd82f089f87a5aca72974219d8478e10cf2231e3"
+    },
+    "attempt-04-infrastructure/build.log.gz": {
+      "raw_sha256": "8ebd6a73f965cebbad4ea182e605ee16a3bb4ec759175ff7caedddd657c2affc",
+      "gzip_sha256": "f70680799679cd208d640a3aff03e8877fb19195d3c10e761b430597e5da8bbf"
+    }
+  }
+}

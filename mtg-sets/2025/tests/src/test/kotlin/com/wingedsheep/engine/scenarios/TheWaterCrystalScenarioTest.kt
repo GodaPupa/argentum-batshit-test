@@ -1,5 +1,21 @@
 package com.wingedsheep.engine.scenarios
 
+import com.wingedsheep.sdk.scripting.targets.EffectTarget
+
+import com.wingedsheep.sdk.scripting.effects.CreateTokenCopyOfTargetEffect
+
+import com.wingedsheep.sdk.scripting.effects.CopyExceptions
+
+import com.wingedsheep.sdk.dsl.card
+
+import com.wingedsheep.sdk.dsl.Targets
+
+import com.wingedsheep.sdk.core.Supertype
+
+import com.wingedsheep.engine.state.components.identity.TokenComponent
+
+import com.wingedsheep.engine.state.components.identity.CardComponent
+
 import com.wingedsheep.engine.core.ActivateAbility
 import com.wingedsheep.engine.handlers.continuations.entityIdToChosenTarget
 import com.wingedsheep.engine.support.ScenarioTestBase
@@ -25,6 +41,18 @@ import io.kotest.matchers.shouldBe
 class TheWaterCrystalScenarioTest : ScenarioTestBase() {
 
     init {
+        val copySpell = card("Test Nonlegendary Water Crystal Copy") {
+            manaCost = "{0}"
+            typeLine = "Sorcery"
+            spell {
+                target = Targets.PermanentYouControl
+                effect = CreateTokenCopyOfTargetEffect(
+                    target = EffectTarget.ContextTarget(0),
+                    exceptions = CopyExceptions(removedSupertypes = setOf(Supertype.LEGENDARY))
+                )
+            }
+        }
+        cardRegistry.register(copySpell)
         context("The Water Crystal") {
 
             test("opponent who would mill 2 mills 6 instead (Millstone + the +4 replacement)") {
@@ -103,9 +131,10 @@ class TheWaterCrystalScenarioTest : ScenarioTestBase() {
             test("two copies of The Water Crystal stack: opponent's 2-card mill becomes 2 + 4 + 4 = 10") {
                 val game = scenario()
                     .withPlayers("Player", "Opponent")
-                    // Two crystals, each contributing its own +4 replacement (Scryfall ruling).
+                    // Create the second crystal through a nonlegendary-copy effect so both
+                    // replacements can coexist through the activation's state-based actions.
                     .withCardOnBattlefield(1, "The Water Crystal")
-                    .withCardOnBattlefield(1, "The Water Crystal")
+                    .withCardInHand(1, copySpell.name)
                     .withCardOnBattlefield(1, "Millstone")
                     .withLandsOnBattlefield(1, "Island", 2)
                     .also { b -> repeat(15) { b.withCardInLibrary(2, "Forest") } }
@@ -113,7 +142,16 @@ class TheWaterCrystalScenarioTest : ScenarioTestBase() {
                     .inPhase(Phase.PRECOMBAT_MAIN, Step.PRECOMBAT_MAIN)
                     .build()
 
-                game.findPermanents("The Water Crystal").size shouldBe 2
+                val original = game.findPermanent("The Water Crystal")!!
+                game.castSpell(1, copySpell.name, original).error shouldBe null
+                game.resolveStack()
+                game.getPendingDecision() shouldBe null
+                game.state.stack.size shouldBe 0
+                val crystals = game.findPermanents("The Water Crystal")
+                crystals.size shouldBe 2
+                val token = crystals.single { game.state.getEntity(it)?.get<TokenComponent>() != null }
+                game.state.getEntity(original)!!.get<CardComponent>()!!.typeLine.isLegendary shouldBe true
+                game.state.getEntity(token)!!.get<CardComponent>()!!.typeLine.isLegendary shouldBe false
 
                 val millstoneId = game.findPermanent("Millstone")!!
                 val ability = cardRegistry.getCard("Millstone")!!.script.activatedAbilities[0]

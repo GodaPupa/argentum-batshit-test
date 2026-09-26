@@ -1,0 +1,65 @@
+name: Pest Control Tier-1 Kaervek's Torch Support
+
+on:
+  push:
+    branches:
+      - pest-control/tier1-postboard-support-kaerveks-torch
+    paths:
+      - .github/workflows/pest-control-tier-one-postboard-kaerveks-torch.yml
+
+permissions:
+  contents: write
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: pest-control/tier1-postboard-support-kaerveks-torch
+          fetch-depth: 0
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: gradle/actions/setup-gradle@v6
+
+      - name: Qualify exact Kaervek's Torch behavior
+        run: ./gradlew :mtg-sets:1993-1999:tests:test --tests "*KaerveksTorchScenarioTest"
+
+      - name: Verify postboard inventory reduction
+        shell: bash
+        run: |
+          set -euo pipefail
+          ./gradlew :gym:test --tests "*PestControlTierOnePostboardSupportAuditTest" --info | tee /tmp/pest-postboard-kaervek-audit.txt
+          ! grep -Fq "Kaervek's Torch" /tmp/pest-postboard-kaervek-audit.txt
+          grep -Fq "Jack-o'-Lantern:1" /tmp/pest-postboard-kaervek-audit.txt
+          grep -Fq "Faerie Macabre:2" /tmp/pest-postboard-kaervek-audit.txt
+
+      - name: Regenerate exact MIR snapshot
+        run: ./gradlew :mtg-sets:test --tests "*CardDefinitionSnapshotTest" -DupdateSnapshots=true
+
+      - name: Fail closed on unrelated snapshot drift
+        shell: bash
+        run: |
+          set -euo pipefail
+          changed="$(git diff --name-only)"
+          printf '%s\n' "$changed"
+          test "$changed" = "mtg-sets/src/test/resources/snapshots/cards/MIR.json"
+          git diff --check
+          grep -Fq "// Kaervek's Torch" mtg-sets/src/test/resources/snapshots/cards/MIR.json
+
+      - name: Qualify card lint
+        run: ./gradlew :mtg-sets:test --tests "*CardLintTest"
+
+      - name: Commit exact generated MIR bytes
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add mtg-sets/src/test/resources/snapshots/cards/MIR.json
+          git commit -m "Synchronize Kaervek's Torch snapshot"
+          git fetch origin pest-control/tier1-postboard-support-kaerveks-torch
+          test "$(git rev-parse origin/pest-control/tier1-postboard-support-kaerveks-torch)" = "${GITHUB_SHA}"
+          git push origin HEAD:pest-control/tier1-postboard-support-kaerveks-torch

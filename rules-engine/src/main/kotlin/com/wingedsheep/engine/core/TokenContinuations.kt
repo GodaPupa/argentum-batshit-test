@@ -25,5 +25,28 @@ data class TokenCreationReplacementContinuation(
     val attachedPermanentId: EntityId,
     val originalEffect: Effect,
     val tokenCount: Int,
-    val effectContext: EffectContext
+    val effectContext: EffectContext,
+    /** New prepared batches retain the actual recipient and already-replaced count on decline. */
+    val tokenControllerId: EntityId? = null,
+    val preparedCount: Boolean = false,
 ) : AnswerContinuation
+
+/** One non-targeting defender choice per token, before the already-counted batch is created. */
+@Serializable
+data class AttackingTokenDefenderContinuation(
+    val effect: Effect,
+    val context: EffectContext,
+    val controllerId: EntityId,
+    val count: Int,
+    val legalDefenders: List<EntityId>,
+) : AnswerContinuation
+
+/** Remaining recipients of one effect; the current recipient's paused output drains into this frame. */
+@Serializable
+data class CreateTokenRecipientsContinuation(
+    val effect: com.wingedsheep.sdk.scripting.effects.CreateTokenEffect,
+    val context: EffectContext,
+    val baseCount: Int,
+    val remainingControllers: List<EntityId>,
+    val createdTokens: List<EntityId> = emptyList(),
+) : AutomaticContinuation

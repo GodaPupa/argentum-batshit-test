@@ -1,0 +1,58 @@
+{
+  "schema": "shared-cast-observer-receiving-v1",
+  "source_base": "b35d4778dada69476da0f67549be7e70424c18bd",
+  "status": "PROSPECTIVE_COMBINED_RECEIVING_135_CASE_QUALIFICATION",
+  "production_overrides": {
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/ZoneTransitionService.kt": "0b6b44e9598e10c86222f455c9fe3c6e13d6fdcdc75809bf0d88f343310ac4e7",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/CastPriorityProcessor.kt": "9939278edba7d26c850e4c36199165349f9889a7e92b8507dfaa3d53ae6f9ece",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/PendingTrigger.kt": "1df77a7df84d006ae7db58a461d28c091d22aeb26b6b880616058e77fd927cff"
+  },
+  "test_file": {
+    "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/CastObserverSourceLkiTest.kt",
+    "class_name": "com.wingedsheep.engine.scenarios.CastObserverSourceLkiTest",
+    "scope": "engine",
+    "expected_cases": 8,
+    "receiving_sha256": "29622301652a19f6f9b73aaf7cc700524f5f23a91764f5596c6520dbc3d6da96"
+  },
+  "expected_cases": {
+    "engine": 123,
+    "server": 12
+  },
+  "review": {
+    "reviewer": "/root/izzet",
+    "role": "non-author source reviewer",
+    "finding": "ACCEPT FOR TARGETED QUALIFICATION ONLY; exact origin and first departure, durable SBA-updated batch, both seats and target types, surviving and departed observers, serialized target pause.",
+    "execution_evidence_at_review": false,
+    "github_approval_created": false
+  },
+  "rule_source": "https://media.wizards.com/2026/downloads/MagicCompRules%2020260925.txt",
+  "original_127_cases_unchanged": true,
+  "known_gap_status": "EXACT_B6A_COMPONENT_135_ACCEPTED; COMBINED_RECEIVING_PENDING",
+  "gameplay_authorized": false,
+  "official_allocations_initialized": 0,
+  "official_outcomes_exposed": 0,
+  "comment_only_override": "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/PendingTrigger.kt",
+  "accepted_prior_component": {
+    "head": "b6aef3afede89f2044f26b0af9d5bdd4efe751c6",
+    "run_id": 36258696556,
+    "actual_cases": 135,
+    "independent_reviewer": "/root/manual",
+    "independent_review": "evidence/cast-observer-36258696556/independent-artifact-review.json",
+    "scope": "Exact prior component only; no combined-source acceptance transferred."
+  },
+  "combined_receiving": {
+    "base": "77c7aad0bb2ded2c0372087d94f66ccbde0f7d09",
+    "production_overrides": {
+      "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/combat/CombatDefenders.kt": "87543b443ca4f637617f1cbe7613c37f1c577a7754aa272786cf5c0d7be68920",
+      "rules-engine/src/main/kotlin/com/wingedsheep/engine/legalactions/enumerators/CombatEnumerator.kt": "806c3e20163072b7b96588c695e6d6913cc39a7c70deec88f1ff31a5bc5e0c1b",
+      "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/Serialization.kt": "bcc6321f1ef85416859bff716b1446498a62917208cc7f7a65b4cd39b0333b68",
+      "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/ContinuationHandler.kt": "a8091ebb5e745e48765d38f01f6f21052b98ec4b0f52da34076882bbd90edccc",
+      "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/CoreAutoResumerModule.kt": "d191e92ce6bf2c27d33f5ae9f80ff2b7ce8b0d94aa6493887c9739faea9292b3",
+      "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/GameEvent.kt": "e7a8dc304b75af8365d14f8585afb4cb6db2d9e4176e0a29e20eec68af259cb1"
+    },
+    "source_manifest_path": "lab-coordinator/shared-capabilities/priority-receiving-sources.json",
+    "source_manifest_sha256": "235cbb5790e59fe7f4d634542b16efcf59ddfb56721a18e948024618e2d4e957",
+    "scope": "Original36 production bindings and all55 legacy pins with the existing observer overrides, five token-defender overrides and explicit GameEvent provenance override. Complete extended source map checked before/after; original135 unchanged."
+  },
+  "entry_provenance_source": "1bc66b276f5db54640df1f956a32fa3d188628e3"
+}

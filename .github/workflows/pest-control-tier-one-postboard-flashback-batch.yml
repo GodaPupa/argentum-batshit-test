@@ -1,0 +1,129 @@
+name: Pest Control Tier-1 Postboard Flashback Batch
+
+on:
+  push:
+    branches:
+      - "pest-control/tier1-postboard-support-flaring-pain"
+  pull_request:
+    paths:
+      - .github/workflows/pest-control-tier-one-postboard-flashback-batch.yml
+      - docs/experiments/pest-control/tier-one-postboard-support-flashback-batch.md
+      - '**/FlaringPain.kt'
+      - '**/FlaringPainScenarioTest.kt'
+      - '**/AcornHarvest.kt'
+      - '**/AcornHarvestScenarioTest.kt'
+      - mtg-sets/src/test/resources/snapshots/cards/JUD.json
+      - mtg-sets/src/test/resources/snapshots/cards/TOR.json
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: gradle/actions/setup-gradle@v6
+
+      - name: Verify accepted Postboard B predecessor and frozen counters
+        run: |
+          python - <<'PY'
+          import json, pathlib, subprocess
+          root = pathlib.Path('.')
+          receipt_path = root / 'docs/experiments/pest-control/tier-one-postboard-support-batch-b-accepted-7d3f0b3.json'
+          receipt = json.loads(receipt_path.read_text())
+          assert receipt['status'] == 'ACCEPTED_SEED_FREE_CARD_AND_COVERAGE_CAPABILITY_ONLY'
+          assert receipt['remaining_unique_identities'] == 7
+          assert receipt['remaining_sideboard_slots'] == 16
+          assert receipt['historical_evidence']['quarantined_pest_games'] == 81
+          assert receipt['historical_evidence']['usable_as_clean_tier1_evidence'] is False
+          assert receipt['monster_replacement_authority'] is False
+          official = receipt['official']
+          assert official['seeds_generated'] == 0
+          assert official['games_initialized'] == 0
+          assert official['actions_submitted'] == 0
+          assert official['outcomes_exposed'] == 0
+          assert official['boarding_plans_frozen'] is False
+          assert official['postboard_gameplay_authorized'] is False
+          head = subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip()
+          subprocess.check_call([
+              'git','merge-base','--is-ancestor',
+              'd0c78bb4cca79b7402ba65bd62b5cb621230a054', head
+          ])
+          print('accepted_postboard_b_predecessor_ok', head)
+          PY
+
+      - name: Qualify Flaring Pain and Acorn Harvest exact behavior
+        run: |
+          set -o pipefail
+          mkdir -p build/reports/pest-postboard-flashback
+          failed=0
+          scripts/test-class FlaringPainScenarioTest --info --stacktrace             | tee build/reports/pest-postboard-flashback/flaring-pain.txt || failed=1
+          scripts/test-class AcornHarvestScenarioTest --info --stacktrace             | tee build/reports/pest-postboard-flashback/acorn-harvest.txt || failed=1
+          scripts/test-class CardDefinitionSnapshotTest --info --stacktrace             | tee build/reports/pest-postboard-flashback/snapshots.txt || failed=1
+          scripts/test-class CardLintTest --info --stacktrace             | tee build/reports/pest-postboard-flashback/lint.txt || failed=1
+          exit "$failed"
+
+      - name: Emit seed-free source-bound receipt
+        if: always()
+        run: |
+          python - <<'PY'
+          import hashlib, json, pathlib, subprocess
+          root = pathlib.Path('.')
+          report = root / 'build/reports/pest-postboard-flashback'
+          report.mkdir(parents=True, exist_ok=True)
+          paths = [
+              'mtg-sets/2000-2002/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/jud/cards/FlaringPain.kt',
+              'mtg-sets/2000-2002/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/FlaringPainScenarioTest.kt',
+              'mtg-sets/2000-2002/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/tor/cards/AcornHarvest.kt',
+              'mtg-sets/2000-2002/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/AcornHarvestScenarioTest.kt',
+              'mtg-sets/src/test/resources/snapshots/cards/JUD.json',
+              'mtg-sets/src/test/resources/snapshots/cards/TOR.json',
+              'docs/experiments/pest-control/tier-one-postboard-support-flashback-batch.md',
+          ]
+          hashes = {
+              path: hashlib.sha256((root / path).read_bytes()).hexdigest()
+              for path in paths
+          }
+          receipt = {
+              'schema': 'pest-postboard-flashback-batch-capability-v1',
+              'source_head': subprocess.check_output(['git','rev-parse','HEAD'], text=True).strip(),
+              'predecessor_main': 'd0c78bb4cca79b7402ba65bd62b5cb621230a054',
+              'scope': 'FLARING_PAIN_ACORN_HARVEST_SEED_FREE_SUPPORT_ONLY',
+              'source_sha256': hashes,
+              'expected_remaining_unique_identities': 5,
+              'expected_remaining_sideboard_slots': 14,
+              'official': {
+                  'seeds_generated': 0,
+                  'games_initialized': 0,
+                  'actions_submitted': 0,
+                  'outcomes_exposed': 0,
+                  'boarding_plans_frozen': False,
+                  'postboard_gameplay_authorized': False,
+              },
+              'historical_quarantine_preserved': 81,
+              'monster_replacement_authority': False,
+              'deck_list_changes': False,
+          }
+          (report / 'receipt.json').write_text(json.dumps(receipt, indent=2) + '\n')
+          print(json.dumps(receipt, indent=2))
+          PY
+
+      - name: Preserve flashback-batch evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: pest-control-tier-one-postboard-flashback-batch
+          path: |
+            build/reports/pest-postboard-flashback/
+            mtg-sets/build/snapshots-actual/
+          if-no-files-found: warn
+          retention-days: 90

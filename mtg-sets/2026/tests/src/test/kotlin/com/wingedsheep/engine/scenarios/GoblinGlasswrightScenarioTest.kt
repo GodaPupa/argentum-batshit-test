@@ -10,6 +10,7 @@ import com.wingedsheep.engine.state.components.identity.CardComponent
 import com.wingedsheep.engine.state.components.player.ManaPoolComponent
 import com.wingedsheep.engine.state.components.stack.TriggeredAbilityOnStackComponent
 import com.wingedsheep.engine.support.ScenarioTestBase
+import com.wingedsheep.engine.support.chooseTriggerOrderInListedOrder
 import com.wingedsheep.sdk.core.Color
 import com.wingedsheep.sdk.core.Phase
 import com.wingedsheep.sdk.core.Step
@@ -178,6 +179,8 @@ class GoblinGlasswrightScenarioTest : ScenarioTestBase() {
                     game.preparedCopies().shouldHaveSize(0)
                     game.handSize(1) shouldBe handBeforeRites - 1
                 }
+                // Place the simultaneous return and cast triggers before inspecting their stack.
+                game.chooseTriggerOrderInListedOrder()
 
                 var flamebreatherResolved = false
                 var returnResolved = false

@@ -521,6 +521,16 @@ data object ExileOpponentsGraveyardsEffect : Effect {
 }
 
 /**
+ * Exile every player's entire graveyard.
+ * Used for Relic of Progenitus and other effects that say "Exile all graveyards."
+ */
+@SerialName("ExileAllGraveyards")
+@Serializable
+data object ExileAllGraveyardsEffect : Effect {
+    override val description: String = "Exile all graveyards"
+}
+
+/**
  * Force a player to exile cards from multiple zones (battlefield, hand, graveyard).
  * The player chooses which to exile from any combination of those zones.
  *

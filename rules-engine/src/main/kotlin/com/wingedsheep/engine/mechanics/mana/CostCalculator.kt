@@ -45,6 +45,7 @@ import com.wingedsheep.engine.handlers.EffectContext
 import com.wingedsheep.engine.handlers.PredicateEvaluator
 import com.wingedsheep.sdk.scripting.values.DynamicAmount
 import com.wingedsheep.engine.state.components.stack.ChosenTarget
+import com.wingedsheep.engine.state.components.stack.SpellOnStackComponent
 import com.wingedsheep.engine.handlers.PredicateContext
 import com.wingedsheep.sdk.scripting.predicates.CardPredicate
 
@@ -150,6 +151,22 @@ class CostCalculator(
             )
         }
 
+        // Stack-sourced ModifySpellCost abilities. These are opt-in only: ordinary permanent
+        // static abilities retain the default battlefield-only source zone.
+        for ((sourceId, ability) in scanStackModifySpellCost(state)) {
+            if (!targetMatchesSpell(ability.target, cardDef, casterId, sourceId, state, chosenTargets, fromZone)) continue
+            if (!gatingApplies(state, casterId, cardDef, ability, declaredCostSlot)) continue
+            applyToSpellCast(
+                state, cardDef, casterId, ability.modification, chosenTargets, sourceId = sourceId,
+                addGenericReduction = { totalReduction += it },
+                addGenericIncrease = { totalIncrease += it },
+                addColoredReduction = { coloredReductionSymbols += it },
+                addColoredReductionWithOverflow = { coloredReductionWithOverflow += it },
+                addColoredIncrease = { coloredIncreaseSymbols += it },
+                abilitySourceId = sourceId,
+            )
+        }
+
         // Commander tax (CR 903.8).
         totalIncrease += calculateCommanderTax(state, cardDef, casterId, fromZone)
 
@@ -214,7 +231,7 @@ class CostCalculator(
                 val permanentDef = cardRegistry.getCard(card.cardDefinitionId) ?: continue
                 val classLevel = container.get<ClassLevelComponent>()?.currentLevel
                 for (ability in permanentDef.script.effectiveStaticAbilities(classLevel)) {
-                    if (ability is ModifySpellCost) {
+                    if (ability is ModifySpellCost && Zone.BATTLEFIELD in ability.sourceZones) {
                         results += entityId to ability
                     }
                 }
@@ -222,6 +239,27 @@ class CostCalculator(
         }
         return results
     }
+
+    /** Stack-native [ModifySpellCost] abilities explicitly opted into [Zone.STACK]. */
+    private fun scanStackModifySpellCost(state: GameState): List<Pair<EntityId, ModifySpellCost>> {
+        val results = mutableListOf<Pair<EntityId, ModifySpellCost>>()
+        for (entityId in state.stack) {
+            val container = state.getEntity(entityId) ?: continue
+            if (container.get<SpellOnStackComponent>() == null) continue
+            val card = container.get<CardComponent>() ?: continue
+            val spellDef = cardRegistry.getCard(card.cardDefinitionId) ?: continue
+            for (ability in spellDef.script.staticAbilities) {
+                if (ability is ModifySpellCost && Zone.STACK in ability.sourceZones) {
+                    results += entityId to ability
+                }
+            }
+        }
+        return results
+    }
+
+    private fun sourceController(state: GameState, sourceId: EntityId): EntityId? =
+        state.projectedState.getController(sourceId)
+            ?: state.getEntity(sourceId)?.get<SpellOnStackComponent>()?.casterId
 
     /**
      * Whether [cardDef] (cast by [casterId]) is a target of [target] for the given
@@ -239,18 +277,20 @@ class CostCalculator(
         return when (target) {
             SpellCostTarget.SelfCast -> false
             is SpellCostTarget.YouCast -> {
-                val controller = state.projectedState.getController(sourceId)
+                val controller = sourceController(state, sourceId)
                 controller == casterId &&
                     matchesCardDefinition(cardDef, target.filter, sourceId, state, state.projectedState)
             }
             is SpellCostTarget.AnyCaster -> matchesCardDefinition(cardDef, target.filter, sourceId, state, state.projectedState)
+            is SpellCostTarget.AnyCasterTargeting ->
+                castTargetingMatches(state, sourceId, target.targetFilter, chosenTargets)
             is SpellCostTarget.OpponentsCastTargeting ->
                 opponentsCastTargetingMatches(state, casterId, sourceId, target.targetFilter, chosenTargets)
             is SpellCostTarget.OpponentsCastFromZones -> {
                 // Source must be controlled by an opponent of the caster, the spell must be cast
                 // from one of the named zones, and the card must match the filter.
                 if (fromZone == null || fromZone !in target.zones) return false
-                val sourceController = state.projectedState.getController(sourceId) ?: return false
+                val sourceController = sourceController(state, sourceId) ?: return false
                 if (sourceController == casterId) return false
                 matchesCardDefinition(cardDef, target.filter, sourceId, state, state.projectedState)
             }
@@ -258,7 +298,7 @@ class CostCalculator(
                 // Source must be controlled by the caster, the spell must be cast from one of the
                 // named zones, and the card must match the filter (Doc Aurlock).
                 if (fromZone == null || fromZone !in target.zones) return false
-                val sourceController = state.projectedState.getController(sourceId) ?: return false
+                val sourceController = sourceController(state, sourceId) ?: return false
                 if (sourceController != casterId) return false
                 matchesCardDefinition(cardDef, target.filter, sourceId, state, state.projectedState)
             }
@@ -267,6 +307,35 @@ class CostCalculator(
             // calculateFaceDownCost / calculateMorphCostIncrease.
             SpellCostTarget.FaceDownYouCast -> false
             SpellCostTarget.MorphActivation -> false
+        }
+    }
+
+    /** True iff one chosen target matches [targetFilter] relative to [sourceId]. */
+    private fun castTargetingMatches(
+        state: GameState,
+        sourceId: EntityId,
+        targetFilter: GroupFilter,
+        chosenTargets: List<EntityId>,
+    ): Boolean {
+        if (chosenTargets.isEmpty()) return false
+        val controller = sourceController(state, sourceId) ?: return false
+        val context = PredicateContext(controllerId = controller, sourceId = sourceId)
+        val projected = state.projectedState
+        return chosenTargets.any { targetId ->
+            when (val scope = targetFilter.scope) {
+                is Scope.Self -> targetId == sourceId
+                is Scope.Specific -> targetId == scope.entityId
+                is Scope.AttachedTo -> {
+                    val attached = state.getEntity(sourceId)
+                        ?.get<com.wingedsheep.engine.state.components.battlefield.AttachedToComponent>()
+                        ?.targetId
+                    attached != null && targetId == attached
+                }
+                is Scope.SoulbondPair ->
+                    com.wingedsheep.engine.mechanics.SoulbondPairing.isInPairOf(state, sourceId, targetId)
+                is Scope.Battlefield ->
+                    predicateEvaluator.matches(state, projected, targetId, targetFilter.baseFilter, context)
+            }
         }
     }
 
@@ -1776,7 +1845,8 @@ class CostCalculator(
         state: GameState,
         cardDef: CardDefinition,
         alternativeCost: ManaCost,
-        casterId: EntityId? = null
+        casterId: EntityId? = null,
+        chosenTargets: List<EntityId> = emptyList(),
     ): ManaCost {
         var totalIncrease = 0
         for ((sourceId, ability) in scanBattlefieldModifySpellCost(state)) {
@@ -1799,6 +1869,22 @@ class CostCalculator(
                     }
                 }
                 else -> { /* AnyCaster reductions don't apply to alternative casting costs. */ }
+            }
+        }
+        // Stack-native targeting taxes also apply to alternative/free base costs.
+        if (casterId != null) {
+            for ((sourceId, ability) in scanStackModifySpellCost(state)) {
+                if (!targetMatchesSpell(ability.target, cardDef, casterId, sourceId, state, chosenTargets)) continue
+                when (val mod = ability.modification) {
+                    is CostModification.IncreaseGeneric -> totalIncrease += mod.amount
+                    is CostModification.IncreaseGenericBy ->
+                        totalIncrease += evaluateReduction(state, mod.source, casterId, chosenTargets, sourceId, cardDef)
+                    is CostModification.IncreaseGenericPerOtherSpellThisTurn -> {
+                        val spellsCast = state.playerSpellsCastThisTurn[casterId] ?: 0
+                        totalIncrease += spellsCast * mod.amountPerSpell
+                    }
+                    else -> { /* Batch U needs only generic stack-source increases. */ }
+                }
             }
         }
         return increaseGenericCost(alternativeCost, totalIncrease)

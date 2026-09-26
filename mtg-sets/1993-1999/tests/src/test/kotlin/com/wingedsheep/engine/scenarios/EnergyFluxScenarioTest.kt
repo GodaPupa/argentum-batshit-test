@@ -1,10 +1,17 @@
 package com.wingedsheep.engine.scenarios
 
+import com.wingedsheep.engine.core.SelectManaSourcesDecision
+import com.wingedsheep.engine.core.YesNoDecision
+import com.wingedsheep.engine.state.components.battlefield.TappedComponent
+import com.wingedsheep.engine.state.components.player.ManaPoolComponent
+import com.wingedsheep.engine.state.components.stack.TriggeredAbilityOnStackComponent
 import com.wingedsheep.engine.support.ScenarioTestBase
 import com.wingedsheep.sdk.core.Phase
 import com.wingedsheep.sdk.core.Step
 import io.kotest.assertions.withClue
+import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
+import io.kotest.matchers.types.shouldBeInstanceOf
 
 /**
  * Scenario tests for Energy Flux (ATQ #9).
@@ -41,9 +48,34 @@ class EnergyFluxScenarioTest : ScenarioTestBase() {
                 // presents the pay-{2}-or-sacrifice decision.
                 game.passUntilPhase(Phase.ENDING, Step.END)
                 game.passUntilPhase(Phase.BEGINNING, Step.UPKEEP)
-                game.resolveStack()
+                val artifact = game.findPermanent("Ornithopter").shouldNotBeNull()
+                val islands = game.findPermanents("Island")
+                islands.size shouldBe 2
+                game.state.activePlayerId shouldBe game.player1Id
+                // The enchantment and both lands must receive no granted artifact trigger.
+                game.state.pendingDecision shouldBe null
+                game.state.stack.size shouldBe 1
+                val trigger = game.state.getEntity(game.state.stack.single())
+                    ?.get<TriggeredAbilityOnStackComponent>().shouldNotBeNull()
+                trigger.sourceId shouldBe artifact
+                trigger.controllerId shouldBe game.player1Id
+                game.resolveStack().forEach { it.error shouldBe null }
 
-                game.answerYesNo(true) // pay {2}
+                val consent = game.state.pendingDecision.shouldBeInstanceOf<YesNoDecision>()
+                consent.playerId shouldBe game.player1Id
+                game.answerYesNo(true).error shouldBe null
+                val payment = game.state.pendingDecision.shouldBeInstanceOf<SelectManaSourcesDecision>()
+                payment.playerId shouldBe game.player1Id
+                payment.requiredCost shouldBe "{2}"
+                islands.forEach { game.state.getEntity(it)?.has<TappedComponent>() shouldBe false }
+                game.submitManaSourcesDecision(selectedSources = islands).error shouldBe null
+                game.resolveStack().forEach { it.error shouldBe null }
+                game.state.pendingDecision shouldBe null
+                game.state.stack shouldBe emptyList()
+                islands.forEach { game.state.getEntity(it)?.has<TappedComponent>() shouldBe true }
+                (game.state.getEntity(game.player1Id)?.get<ManaPoolComponent>()?.total ?: 0) shouldBe 0
+                game.isOnBattlefield("Energy Flux") shouldBe true
+                game.findPermanents("Island") shouldBe islands
 
                 withClue("Paying {2} keeps the artifact") {
                     game.isOnBattlefield("Ornithopter") shouldBe true
@@ -64,9 +96,27 @@ class EnergyFluxScenarioTest : ScenarioTestBase() {
 
                 game.passUntilPhase(Phase.ENDING, Step.END)
                 game.passUntilPhase(Phase.BEGINNING, Step.UPKEEP)
-                game.resolveStack()
-                game.answerYesNo(false) // decline
-                game.resolveStack()
+                val artifact = game.findPermanent("Ornithopter").shouldNotBeNull()
+                val islands = game.findPermanents("Island")
+                islands.size shouldBe 2
+                game.state.activePlayerId shouldBe game.player1Id
+                game.state.pendingDecision shouldBe null
+                game.state.stack.size shouldBe 1
+                val trigger = game.state.getEntity(game.state.stack.single())
+                    ?.get<TriggeredAbilityOnStackComponent>().shouldNotBeNull()
+                trigger.sourceId shouldBe artifact
+                trigger.controllerId shouldBe game.player1Id
+                game.resolveStack().forEach { it.error shouldBe null }
+                val consent = game.state.pendingDecision.shouldBeInstanceOf<YesNoDecision>()
+                consent.playerId shouldBe game.player1Id
+                game.answerYesNo(false).error shouldBe null
+                game.resolveStack().forEach { it.error shouldBe null }
+                game.state.pendingDecision shouldBe null
+                game.state.stack shouldBe emptyList()
+                game.isInGraveyard(1, "Ornithopter") shouldBe true
+                game.isOnBattlefield("Energy Flux") shouldBe true
+                game.findPermanents("Island") shouldBe islands
+                islands.forEach { game.state.getEntity(it)?.has<TappedComponent>() shouldBe false }
 
                 withClue("Declining the {2} sacrifices the artifact") {
                     game.isOnBattlefield("Ornithopter") shouldBe false
@@ -94,7 +144,18 @@ class EnergyFluxScenarioTest : ScenarioTestBase() {
                 // auto-suffers and the opponent's artifact is sacrificed.
                 game.passUntilPhase(Phase.ENDING, Step.END)
                 game.passUntilPhase(Phase.BEGINNING, Step.UPKEEP)
-                game.resolveStack()
+                val artifact = game.findPermanent("Ornithopter").shouldNotBeNull()
+                game.state.activePlayerId shouldBe game.player2Id
+                game.state.pendingDecision shouldBe null
+                game.state.stack.size shouldBe 1
+                val trigger = game.state.getEntity(game.state.stack.single())
+                    ?.get<TriggeredAbilityOnStackComponent>().shouldNotBeNull()
+                trigger.sourceId shouldBe artifact
+                trigger.controllerId shouldBe game.player2Id
+                game.resolveStack().forEach { it.error shouldBe null }
+                game.state.pendingDecision shouldBe null
+                game.state.stack shouldBe emptyList()
+                game.isInGraveyard(2, "Ornithopter") shouldBe true
 
                 withClue("Unable to pay {2}, the opponent's artifact is sacrificed on their upkeep") {
                     game.isOnBattlefield("Ornithopter") shouldBe false

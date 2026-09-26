@@ -5,6 +5,7 @@ import com.wingedsheep.engine.core.TurnFaceUp
 import com.wingedsheep.engine.handlers.effects.FaceDownTurnUp
 import com.wingedsheep.engine.state.components.identity.FaceDownComponent
 import com.wingedsheep.engine.state.components.identity.FaceDownModeComponent
+import com.wingedsheep.engine.support.chooseTriggerOrderInListedOrder
 import com.wingedsheep.engine.support.GameTestDriver
 import com.wingedsheep.engine.support.TestCards
 import com.wingedsheep.mtg.sets.definitions.mkm.cards.MuseumNightwatch
@@ -75,6 +76,8 @@ class PerimeterEnforcerScenarioTest : FunSpec({
             val inspector = driver.putCardInHand(player, "Novice Inspector")
             driver.giveMana(player, Color.WHITE, 1)
             driver.castSpell(player, inspector).error shouldBe null
+            driver.bothPass().error shouldBe null
+            driver.chooseTriggerOrderInListedOrder() // Inspector and Enforcer trigger together.
             driver.settle()
 
             driver.state.projectedState.getPower(enforcer) shouldBe 2
@@ -93,6 +96,8 @@ class PerimeterEnforcerScenarioTest : FunSpec({
                 val inspector = driver.putCardInHand(player, "Novice Inspector")
                 driver.giveMana(player, Color.WHITE, 1)
                 driver.castSpell(player, inspector).error shouldBe null
+                driver.bothPass().error shouldBe null
+                driver.chooseTriggerOrderInListedOrder() // Inspector and Enforcer trigger together.
                 driver.settle()
             }
 
@@ -241,6 +246,8 @@ class PerimeterEnforcerScenarioTest : FunSpec({
             val inspector = driver.putCardInHand(player, "Novice Inspector")
             driver.giveMana(player, Color.WHITE, 1)
             driver.castSpell(player, inspector).error shouldBe null
+            driver.bothPass().error shouldBe null
+            driver.chooseTriggerOrderInListedOrder() // Inspector and Enforcer trigger together.
             driver.settle()
             driver.state.projectedState.getPower(enforcer) shouldBe 2
 
