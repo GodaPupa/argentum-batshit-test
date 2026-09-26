@@ -4,7 +4,6 @@ import com.wingedsheep.sdk.core.Step
 import com.wingedsheep.sdk.dsl.Effects
 import com.wingedsheep.sdk.dsl.card
 import com.wingedsheep.sdk.model.Rarity
-import com.wingedsheep.sdk.scripting.effects.CompositeEffect
 import com.wingedsheep.sdk.scripting.effects.CounterEffect
 import com.wingedsheep.sdk.scripting.effects.CreateDelayedTriggerEffect
 import com.wingedsheep.sdk.scripting.effects.DelayedTriggerTiming
@@ -33,7 +32,7 @@ val ArcaneDenial = card("Arcane Denial") {
 
     spell {
         target("target", TargetSpell())
-        effect = CompositeEffect(
+        effect = Effects.Composite(
             listOf(
                 CreateDelayedTriggerEffect(
                     step = Step.UPKEEP,
