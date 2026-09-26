@@ -1057,6 +1057,7 @@ class TriggerMatcher(
                 }
             }
             val projected = state.projectedState
+            val entrySnapshot = event.entrySnapshot.takeIf { event.toZone == Zone.BATTLEFIELD }
             // Check card predicates (creature type, subtype, etc.)
             // Note: entity may not exist in state if it was a token cleaned up by SBAs.
             // In that case, fall back to lastKnownTypeLine from the event.
@@ -1079,6 +1080,12 @@ class TriggerMatcher(
             // before the matcher runs, so the generic cardComponent-based path returns false for
             // every predicate inside the composite and the trigger silently misses token deaths.
             fun matchesLkiPredicate(predicate: com.wingedsheep.sdk.scripting.predicates.CardPredicate): Boolean {
+                // Entry observation uses one producer-captured instant. Never mix that snapshot
+                // with the eventual entrant or turn unknown into a match under Not.
+                if (entrySnapshot != null) {
+                    return matchesEntryCardPredicate(predicate, entrySnapshot,
+                        chosenSubtype = state.getEntity(sourceId)?.chosenCreatureType()) == true
+                }
                 // An entering permanent is observed after continuous effects apply (CR 603.6a).
                 // Use the canonical projected predicate evaluator for every entering card
                 // predicate, including composite/negative types. Battlefield departures retain
@@ -1112,6 +1119,13 @@ class TriggerMatcher(
                         typeLine?.isArtifact == true
                     is com.wingedsheep.sdk.scripting.predicates.CardPredicate.IsEnchantment ->
                         typeLine?.isEnchantment == true
+                    is com.wingedsheep.sdk.scripting.predicates.CardPredicate.HasCardType ->
+                        if (event.fromZone == Zone.BATTLEFIELD && event.lastKnown?.typeLine != null) {
+                            predicate.cardType in event.lastKnown.typeLine.cardTypes
+                        } else {
+                            projected.getProjectedValues(event.entityId)?.types?.contains(predicate.cardType.name)
+                                ?: (typeLine?.cardTypes?.contains(predicate.cardType) == true)
+                        }
                     is com.wingedsheep.sdk.scripting.predicates.CardPredicate.HasSubtype -> {
                         // For entering creatures: use projected state (they're on battlefield)
                         // For dying creatures: use base state (they're in graveyard, no projected subtypes)
@@ -1227,7 +1241,7 @@ class TriggerMatcher(
             //  - anything that never touched the battlefield (a mill, a discard) has no
             //    controller at all, and `ownerId` is the right and only reading.
             trigger.filter.controllerPredicate?.let { pred ->
-                val effectiveController = event.lastKnown?.controllerId
+                val effectiveController = entrySnapshot?.controllerId ?: event.lastKnown?.controllerId
                     ?: projected.getController(event.entityId)
                     ?: event.ownerId
                 val controllerMatches = pred.evaluateWith { leaf ->
@@ -1273,6 +1287,9 @@ class TriggerMatcher(
             is com.wingedsheep.sdk.scripting.predicates.CardPredicate.IsArtifact -> cardComponent.typeLine.isArtifact
             is com.wingedsheep.sdk.scripting.predicates.CardPredicate.IsEnchantment -> cardComponent.typeLine.isEnchantment
             is com.wingedsheep.sdk.scripting.predicates.CardPredicate.IsPlaneswalker -> com.wingedsheep.sdk.core.CardType.PLANESWALKER in cardComponent.typeLine.cardTypes
+            is com.wingedsheep.sdk.scripting.predicates.CardPredicate.HasCardType ->
+                projected.getProjectedValues(entityId)?.types?.contains(predicate.cardType.name)
+                    ?: (predicate.cardType in cardComponent.typeLine.cardTypes)
             is com.wingedsheep.sdk.scripting.predicates.CardPredicate.IsInstant -> cardComponent.typeLine.isInstant
             is com.wingedsheep.sdk.scripting.predicates.CardPredicate.IsSorcery -> cardComponent.typeLine.isSorcery
             is com.wingedsheep.sdk.scripting.predicates.CardPredicate.IsBasicLand -> cardComponent.typeLine.isLand && cardComponent.typeLine.supertypes.contains(com.wingedsheep.sdk.core.Supertype.BASIC)
