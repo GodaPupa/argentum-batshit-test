@@ -409,6 +409,33 @@
     ]
 }
 
+// Flaring Pain
+{
+    "name": "Flaring Pain",
+    "manaCost": "{1}{R}",
+    "typeLine": "Instant",
+    "oracleText": "Damage can't be prevented this turn.\nFlashback {R} (You may cast this card from your graveyard for its flashback cost. Then exile it.)",
+    "keywords": [
+        "FLASHBACK"
+    ],
+    "keywordAbilities": [
+        {
+            "type": "Flashback",
+            "cost": "{R}"
+        }
+    ],
+    "script": {
+        "spellEffect": "DamageCantBePreventedThisTurn"
+    },
+    "metadata": {
+        "collectorNumber": "89",
+        "artist": "Glen Angus"
+    },
+    "colorIdentityOverride": [
+        "RED"
+    ]
+}
+
 // Folk Medicine
 {
     "name": "Folk Medicine",
@@ -531,33 +558,6 @@
     },
     "colorIdentityOverride": [
         "GREEN"
-    ]
-}
-
-// Flaring Pain
-{
-    "name": "Flaring Pain",
-    "manaCost": "{1}{R}",
-    "typeLine": "Instant",
-    "oracleText": "Damage can't be prevented this turn.\nFlashback {R} (You may cast this card from your graveyard for its flashback cost. Then exile it.)",
-    "keywords": [
-        "FLASHBACK"
-    ],
-    "keywordAbilities": [
-        {
-            "type": "Flashback",
-            "cost": "{R}"
-        }
-    ],
-    "script": {
-        "spellEffect": "DamageCantBePreventedThisTurn"
-    },
-    "metadata": {
-        "collectorNumber": "89",
-        "artist": "Glen Angus"
-    },
-    "colorIdentityOverride": [
-        "RED"
     ]
 }
 
