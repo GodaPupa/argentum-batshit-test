@@ -42,7 +42,7 @@ jobs:
       - name: Bind source and preserve existing definitions
         env:
           EXPECTED_HEAD: ${{ github.event.pull_request.head.sha }}
-          SOURCE_MANIFEST: docs/experiments/pest-control/tier-one-postboard-support-batch-b-receiving-sources.json
+          SOURCE_MANIFEST: docs/experiments/pest-control/tier-one-postboard-support-batch-b-shared-receiving-sources.json
         run: |
           python - <<'PY'
           import hashlib, json, os, pathlib, re, subprocess
