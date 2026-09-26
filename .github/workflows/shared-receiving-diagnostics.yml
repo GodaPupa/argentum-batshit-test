@@ -1,0 +1,52 @@
+name: Shared Receiving Regression Diagnostics
+on:
+  push:
+    branches: [lab/shared-receiving-diagnostics]
+permissions:
+  contents: read
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Bind source
+        run: |
+          mkdir -p build/reports/shared-receiving-diagnostics
+          git rev-parse HEAD > build/reports/shared-receiving-diagnostics/head.txt
+          git rev-parse HEAD^{tree} > build/reports/shared-receiving-diagnostics/tree.txt
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          git diff --exit-code
+      - name: Reproduce three existing failing classes
+        run: |
+          set -uo pipefail
+          status=0
+          for test_class in EnergyFluxScenarioTest LegacySuspensionMigrationTest SuspensionTraceTest; do
+            current=0
+            scripts/test-class "$test_class" --rerun-tasks --info --stacktrace > "build/reports/shared-receiving-diagnostics/$test_class.log" 2>&1 || current=$?
+            printf '%s\n' "$current" > "build/reports/shared-receiving-diagnostics/$test_class.exit"
+            if [ "$current" != 0 ]; then status=1; fi
+            python - "$test_class" <<'PY'
+          import pathlib, shutil, sys
+          root=pathlib.Path('.')
+          dest=root/'build/reports/shared-receiving-diagnostics'/sys.argv[1]
+          for path in root.glob('**/build/test-results/test/TEST-*.xml'):
+              if sys.argv[1] in path.name:
+                  dest.mkdir(parents=True,exist_ok=True)
+                  shutil.copy2(path,dest/path.name)
+          PY
+          done
+          exit "$status"
+      - name: Preserve diagnostic failures and exact source
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: shared-receiving-diagnostics-${{ github.run_id }}
+          path: build/reports/shared-receiving-diagnostics/
+          if-no-files-found: error
+          retention-days: 30

@@ -65,7 +65,7 @@ class EnergyFluxScenarioTest : ScenarioTestBase() {
                 game.passUntilPhase(Phase.ENDING, Step.END)
                 game.passUntilPhase(Phase.BEGINNING, Step.UPKEEP)
                 game.resolveStack()
-                game.answerYesNo(false) // decline
+                game.answerYesNo(false).error shouldBe null // decline must execute, not silently reject
                 game.resolveStack()
 
                 withClue("Declining the {2} sacrifices the artifact") {
