@@ -1,0 +1,163 @@
+{
+  "schema": "root-independent-source08-ci-original-byte-checks-v1",
+  "source": "3a4f99a7653839506e96d19e6639f58d9e8c5ced",
+  "merge": "9cdbee73b8b024d4d1eaf71abd5ac790d6a44913",
+  "tree": "56c6b8dd46dc112cdb70db496fd9d0c3e915e8a6",
+  "original_archives": [
+    {
+      "id": 10915365754,
+      "bytes": 152034,
+      "sha256": "4a8845ee8b546ec55986d59e6a2c0ecbe3da01568d0dbb3e34a619dd811a1e63",
+      "members": 175
+    },
+    {
+      "id": 10915325697,
+      "bytes": 133452,
+      "sha256": "6d225b10e20176e2e793ae1c07e2a1b8326372df532e30cf71591bf8b2946cd7",
+      "members": 155
+    },
+    {
+      "id": 10915320620,
+      "bytes": 715350,
+      "sha256": "f0f73eab10d7ca27cc07c0995af73f259f8f84661a2b6fa544c9c8806bf082fc",
+      "members": 1043
+    },
+    {
+      "id": 10914823003,
+      "bytes": 167299,
+      "sha256": "9297cd74f113bda40aa30822ed6a0dac280c3e445e533591e794a6859b130134",
+      "members": 82
+    },
+    {
+      "id": 10914747965,
+      "bytes": 965114,
+      "sha256": "ee79f4c4ba13ea4dbb94d2e2921f8e1e240e95f91deb466ba10370ff7d67c234",
+      "members": 1408
+    },
+    {
+      "id": 10914379264,
+      "bytes": 779860,
+      "sha256": "7b6d54ba1bc1813a28c106831b35cc8d6afc0ea67b869ec8526ce6c825b695fc",
+      "members": 1127
+    },
+    {
+      "id": 10913534916,
+      "bytes": 481144,
+      "sha256": "ae385ade7ca5b258d7f0a544200f3068e2c55c9fea6dbfadca1f4766ce93c34d",
+      "members": 609
+    }
+  ],
+  "xml_count": 4599,
+  "raw_records": 17710,
+  "actual_records": 17709,
+  "marker": [
+    {
+      "artifact": 10915325697,
+      "path": "mtg-sets/build/test-results/test/TEST-Gradle-Test-Run--mtg-sets-test.xml",
+      "case": {
+        "name": "CardImageUriTest",
+        "classname": "Gradle Test Run :mtg-sets:test",
+        "time": "0.001"
+      }
+    }
+  ],
+  "fresh": {
+    "actual": 17562,
+    "pass": 17513,
+    "skip": 49
+  },
+  "cached": {
+    "actual": 147,
+    "pass": 144,
+    "skip": 3
+  },
+  "tasks": {
+    ":mtgish-tooling:test": "FROM-CACHE",
+    ":gym-trainer:test": "FRESH",
+    ":gym-server:test": "FRESH",
+    ":gym:test": "FRESH",
+    ":rules-engine:test": "FRESH",
+    ":mtg-sets:2023:tests:test": "FRESH",
+    ":mtg-sets:2024:tests:test": "FRESH",
+    ":mtg-sets:2026:tests:test": "FRESH",
+    ":mtg-sets:2025:tests:test": "FRESH",
+    ":mtg-sdk:test": "FRESH",
+    ":mtg-search:test": "FRESH",
+    ":mtg-sets:test": "FRESH",
+    ":ai:test": "FRESH",
+    ":mtg-sets:2000-2002:tests:test": "FRESH",
+    ":mtg-sets:1993-1999:tests:test": "FRESH",
+    ":mtg-sets:2008-2016:tests:test": "FRESH",
+    ":mtg-sets:2003-2007:tests:test": "FRESH",
+    ":mtg-sets:2017-2022:tests:test": "FRESH",
+    ":game-server:test": "FRESH"
+  },
+  "logs": [
+    {
+      "job_id": 108477324801,
+      "sha256": "0c59dde381d2bd69bc03730c641db126e6bd320453d04d31778c48237da96911",
+      "bytes": 189989,
+      "group": "tools"
+    },
+    {
+      "job_id": 108477324825,
+      "sha256": "e19b27f3da60ea46a40cb767a45eea4488d31d3513a7872e526ada91857e4254",
+      "bytes": 730173,
+      "group": "engine"
+    },
+    {
+      "job_id": 108477324836,
+      "sha256": "67f5a1f5b8f0da33ca93565466cee443348f681884d3a4bb87587fccf3227318",
+      "bytes": 648662,
+      "group": "scenarios-2023-24"
+    },
+    {
+      "job_id": 108477324894,
+      "sha256": "59853db86f92ba6041907bf5ab8aedde09bc09a249a173e869383c1bc4c5feb9",
+      "bytes": 581596,
+      "group": "scenarios-2025-26"
+    },
+    {
+      "job_id": 108477324940,
+      "sha256": "b6b48ae60aff6597369ebd17e1d35c59f6b7883f3289d42651f69169f77df468",
+      "bytes": 346968,
+      "group": "content"
+    },
+    {
+      "job_id": 108477324961,
+      "sha256": "7e71835a8564b8851d97af1c14c16561d170eaf1fbfae900f63007f4e68ac3c7",
+      "bytes": 776937,
+      "group": "scenarios-old"
+    },
+    {
+      "job_id": 108477324962,
+      "sha256": "152710ecb77063ff1affad7fb5b552444a142459d2dd39dcbb89f29f77bfad9c",
+      "bytes": 153645,
+      "group": "server"
+    }
+  ],
+  "receiving_banks": [
+    {
+      "class": "com.wingedsheep.engine.handlers.effects.token.AttackingTokenDefenderChoiceTest",
+      "cases": 14,
+      "source_path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/handlers/effects/token/AttackingTokenDefenderChoiceTest.kt",
+      "sha256": "becb1edcc7a08998ca0dab03ebc83b2fb4f484339859e0c771bc7a08851578ee"
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.DalkovanEncampmentScenarioTest",
+      "cases": 2,
+      "source_path": "mtg-sets/2025/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/DalkovanEncampmentScenarioTest.kt",
+      "sha256": "acb9cd9a32346e5867740305c79f42783f37e5d4202dadf1d7b8b051f60b5532"
+    },
+    {
+      "class": "com.wingedsheep.engine.event.EntryChoiceEventProvenanceTest",
+      "cases": 4,
+      "source_path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/event/EntryChoiceEventProvenanceTest.kt",
+      "sha256": "73c761176e87fdb40add594b7591c508784cadcbc2c47bc247d5b18658f6e44d"
+    }
+  ],
+  "source_files_independently_fetched": 9,
+  "failures": 0,
+  "errors": 0,
+  "result": "RAW_BYTES_AND_RECEIVING20_PASS_CACHED147_DISPOSITION_SEPARATE"
+}

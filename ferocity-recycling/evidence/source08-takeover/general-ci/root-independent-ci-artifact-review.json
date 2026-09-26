@@ -1,0 +1,54 @@
+{
+  "schema": "ferocity-source08-bounded-independent-ci-artifact-review-v1",
+  "reviewer": "actual /root",
+  "source_author": false,
+  "source": "3a4f99a7653839506e96d19e6639f58d9e8c5ced",
+  "tree": "56c6b8dd46dc112cdb70db496fd9d0c3e915e8a6",
+  "run_id": 36268324392,
+  "attempt": 1,
+  "event": "pull_request",
+  "actual_test_merge": "9cdbee73b8b024d4d1eaf71abd5ac790d6a44913",
+  "status": "ACCEPTED_RECEIVING_TOKEN20_AND_BROAD_RAW_EVIDENCE_CACHED147_GATE_DISPOSITION_PENDING",
+  "bound_files": {
+    "raw-ci-audit.json": "6afd900d4f3fce2c19c2b73473b8a019f05acc9587dd858e95c91187793f95fc",
+    "README.md": "9945a23529c436a225fc83b1ca04f7b4bf2cb948876d014aff66e13a3deef34b",
+    "audit_existing_ci.py": "c66879b407f03eb435d41c61211ae209522d4bfeff2a84a8e25bb0782b3bfd75",
+    "root-original-ci-checks.json": "d55ee3948786d992f703177677dc54ea9fee20f77209a3128503ef1e49bb32a2",
+    "root-verify-original-ci.py": "ead944f3a872fb871530188b4791a9ea2b87c35be4c943d1eac7958ea0f98cea",
+    "root-live-metadata.json": "2561dfb4da1fce90bc641a0185eb20a36bdfaea8d7b824c28691edc28768aa02",
+    "root-source-evidence.json": "a3414759b8ab731bbfecef894b2e36522ca2ab9de0ce41ae4398a952f84be5b2"
+  },
+  "independent_checks": [
+    "Fresh GitHub run/artifact metadata and both immutable commit trees independently fetched; merge tree equals exact source08",
+    "All seven original ZIP whole-byte sizes/SHA256 match actual GitHub digests; CRC and every member hash checked",
+    "All4599 raw XML files independently parsed; every declared count matches actual children; no failures/errors",
+    "17710 raw records comprise17709 actual test records and one preserved zero-test Gradle disabled-class marker",
+    "17513 fresh passes plus49 fresh unchanged skips;147 mtgish-tooling records remain cached (144 reported passes,3 skips)",
+    "All19 actual test-task lines re-parsed with exact task boundaries; only mtgish-tooling is FROM-CACHE; all noncached XML timestamps fall within the corresponding job windows",
+    "All seven backend decoded gzip logs rehashed, with exact checkout recorded in every group",
+    "Nine source/authority bodies independently fetched at3a4; Gitblob identities checked; three receiving test-source SHA256 and exact literal originalcase names independently matched raw XML",
+    "Required original token14/Dalkovan2 and additional Entry4 all executed freshly with no failures/errors/skips; they remain a subset of CI and are not added to508"
+  ],
+  "reporting_marker": {
+    "class": "Gradle Test Run :mtg-sets:test",
+    "name": "CardImageUriTest",
+    "actual_tests": 0,
+    "basis": "Exact source enabled only by verifyImageUris property, absent in original command; neither real case name appears. Preserve original marker without counting a pass or changing it to a skip."
+  },
+  "cached_gate": {
+    "cases": 147,
+    "status": "PENDING_PROSPECTIVE_FRESH_SOFTWARE_SUPPLEMENT_OR_VALID_INPUT_EQUIVALENCE",
+    "reason": "These tooling tests read live SDK and set sources. Source08 differs from the earlier fresh shared source in11 relevant SDK blobs, so donor freshness alone is insufficient. No new validation was executed by this review."
+  },
+  "postboard_b_scope": "The retained Pest-specific source-binder failure is not listed in the exact Ferocity first-cell receiving contract. Its three named cards are absent from the independently checked33-name preboard first-cell pool. This is not a Pest pin waiver, generic StackResolver exemption or future-sideboard admission. The original failure remains retained.",
+  "limits": [
+    "No separate source-after map was emitted by this historical generalCI; do not invent one",
+    "No proof of generalCI binary equality with the dedicated gym build",
+    "No complete runtime, pilot, resource capacity, restoration, export, official gameplay or GitHub approval",
+    "All historical calibration attempts remain consumed/stopped; this review grants no resource command"
+  ],
+  "official_games": 0,
+  "allocations_consumed": 0,
+  "outcomes_exposed": 0,
+  "deck_performance_evidence_changed": false
+}

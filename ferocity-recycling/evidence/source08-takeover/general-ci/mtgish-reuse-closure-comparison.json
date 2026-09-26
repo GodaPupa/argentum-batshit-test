@@ -1,0 +1,473 @@
+{
+  "schema": "ferocity-mtgish-receiving-reuse-input-comparison-v1",
+  "receiver_source": "3a4f99a7653839506e96d19e6639f58d9e8c5ced",
+  "donor_source": "994383d4a9495bcb34d5aae0e69181bcf4c04d45",
+  "same_module_build_files": [
+    {
+      "path": "build.gradle.kts",
+      "git_blob": "8c5298acbab5eae78f5ee612046317889666c83e"
+    },
+    {
+      "path": "buildSrc/build.gradle.kts",
+      "git_blob": "6f476b8598831073d79a9cee7cc3c43a721650b1"
+    },
+    {
+      "path": "buildSrc/settings.gradle.kts",
+      "git_blob": "705bfb5e577139e4a0f0c38abfc3749dcf26e12a"
+    },
+    {
+      "path": "buildSrc/src/main/kotlin/buildsrc/convention/KotlinCompileThrottle.kt",
+      "git_blob": "f1ba096ecd5046720d6d51d1ac04b6eb7938e7f2"
+    },
+    {
+      "path": "buildSrc/src/main/kotlin/kotlin-jvm.gradle.kts",
+      "git_blob": "8ae6b2f3ea66a4baac1ee83c8ca2f11a3eb565ab"
+    },
+    {
+      "path": "gradle.properties",
+      "git_blob": "130112f13f0f90b7f8ca587ecdbb960adb8b5aca"
+    },
+    {
+      "path": "gradle/init.d/argentum-cache-retention.init.gradle.kts",
+      "git_blob": "935455013cdc4a408bc17481f8b96040cc1bb6cb"
+    },
+    {
+      "path": "gradle/libs.versions.toml",
+      "git_blob": "1c9d36482bf902b332df50bd2d2332f4d6ad623a"
+    },
+    {
+      "path": "gradle/wrapper/gradle-wrapper.jar",
+      "git_blob": "b1b8ef56b44f16b14dc800fa8103a6d89abb526f"
+    },
+    {
+      "path": "gradle/wrapper/gradle-wrapper.properties",
+      "git_blob": "a9db11550c6202b666ed9c44cafdc6726fd5b264"
+    },
+    {
+      "path": "mtgish-tooling/.gitignore",
+      "git_blob": "b029fe24eed27687e9ec33da56bd19f4015cd2ab"
+    },
+    {
+      "path": "mtgish-tooling/AGENTS.md",
+      "git_blob": "db6db1e27de81925a8f97fce8a80e28ae0f84e89"
+    },
+    {
+      "path": "mtgish-tooling/CLAUDE.md",
+      "git_blob": "43c994c2d3617f947bcb5adf1933e21dabe46bb5"
+    },
+    {
+      "path": "mtgish-tooling/README.md",
+      "git_blob": "d73c649d4dfe2d13ca9f6adfefb7117e179df44b"
+    },
+    {
+      "path": "mtgish-tooling/build.gradle.kts",
+      "git_blob": "7579e53acd0201f1e81416497d57fb81defe8053"
+    },
+    {
+      "path": "mtgish-tooling/src/main/kotlin/com/wingedsheep/tooling/coverage/Autogen.kt",
+      "git_blob": "3636e563c14d524afdb911c0544816a630f8a5eb"
+    },
+    {
+      "path": "mtgish-tooling/src/main/kotlin/com/wingedsheep/tooling/coverage/Cards.kt",
+      "git_blob": "b35c4d2825822fc12e1563b83ea7cb3a3be68e37"
+    },
+    {
+      "path": "mtgish-tooling/src/main/kotlin/com/wingedsheep/tooling/coverage/Dsl.kt",
+      "git_blob": "4712687ce9e15c9c8458a1cb2d3db6a4bcf7a3f5"
+    },
+    {
+      "path": "mtgish-tooling/src/main/kotlin/com/wingedsheep/tooling/coverage/Fidelity.kt",
+      "git_blob": "6b76c004dee3482591fcbdc67872cf1bd4b28946"
+    },
+    {
+      "path": "mtgish-tooling/src/main/kotlin/com/wingedsheep/tooling/coverage/Fixtures.kt",
+      "git_blob": "522099c620f5a7e4c9455159a8b049e0e485fc3e"
+    },
+    {
+      "path": "mtgish-tooling/src/main/kotlin/com/wingedsheep/tooling/coverage/IrQuery.kt",
+      "git_blob": "ad8dc622e2d7d50ef9185e8a44140769f87c6b44"
+    },
+    {
+      "path": "mtgish-tooling/src/main/kotlin/com/wingedsheep/tooling/coverage/Main.kt",
+      "git_blob": "a7d6023b7160ad4173b8fc08e1d0caac7d183d43"
+    },
+    {
+      "path": "mtgish-tooling/src/main/kotlin/com/wingedsheep/tooling/coverage/Mtgish.kt",
+      "git_blob": "9d15321b78ab6329dfcc3dd23a0540bb9794a348"
+    },
+    {
+      "path": "mtgish-tooling/src/main/kotlin/com/wingedsheep/tooling/coverage/Printings.kt",
+      "git_blob": "450506f3284fd8dfe2560e403b132fd27e5d0a11"
+    },
+    {
+      "path": "mtgish-tooling/src/main/kotlin/com/wingedsheep/tooling/coverage/Probe.kt",
+      "git_blob": "50e234e7be796648f5ac42396c6a2a287904141b"
+    },
+    {
+      "path": "mtgish-tooling/src/main/kotlin/com/wingedsheep/tooling/coverage/Registry.kt",
+      "git_blob": "526a9a6d8b7cc7bf26d649b7fb3841bb9469c92e"
+    },
+    {
+      "path": "mtgish-tooling/src/main/kotlin/com/wingedsheep/tooling/coverage/Scryfall.kt",
+      "git_blob": "a3381f8ee220ae62585724351f16416ab9eef12c"
+    },
+    {
+      "path": "mtgish-tooling/src/main/kotlin/com/wingedsheep/tooling/coverage/Support.kt",
+      "git_blob": "b16d49ca25c68370d775db68dca26d8d974f2239"
+    },
+    {
+      "path": "mtgish-tooling/src/main/kotlin/com/wingedsheep/tooling/coverage/bridge/Bridge.kt",
+      "git_blob": "f5c0869672c195c1fd8ac01bbf7ef71b469ff964"
+    },
+    {
+      "path": "mtgish-tooling/src/main/kotlin/com/wingedsheep/tooling/coverage/bridge/DamageLifeAndCards.kt",
+      "git_blob": "a39eaa6480cb3f555d9ab7f42be120ce760e0c6e"
+    },
+    {
+      "path": "mtgish-tooling/src/main/kotlin/com/wingedsheep/tooling/coverage/bridge/Energy.kt",
+      "git_blob": "5ca01ad21f98d0dd1d041c8e3e83bdb505ebd78e"
+    },
+    {
+      "path": "mtgish-tooling/src/main/kotlin/com/wingedsheep/tooling/coverage/bridge/Envelopes.kt",
+      "git_blob": "872e47041d606b237fc828041a3c7a0e65d4f8a5"
+    },
+    {
+      "path": "mtgish-tooling/src/main/kotlin/com/wingedsheep/tooling/coverage/bridge/Keywords.kt",
+      "git_blob": "85f4238b78afe9f171fd6ef8860c27252a07dd81"
+    },
+    {
+      "path": "mtgish-tooling/src/main/kotlin/com/wingedsheep/tooling/coverage/bridge/ManaCountersAndState.kt",
+      "git_blob": "4db4ea86390cfab6b524fb5d6311588d4aa22575"
+    },
+    {
+      "path": "mtgish-tooling/src/main/kotlin/com/wingedsheep/tooling/coverage/bridge/Speed.kt",
+      "git_blob": "3deb406fc5fa67f33e12b8c984ca77de1066beed"
+    },
+    {
+      "path": "mtgish-tooling/src/main/kotlin/com/wingedsheep/tooling/coverage/bridge/TriggersCostsAndContinuous.kt",
+      "git_blob": "82277fa4a886fa9e598c89ccba61b027ffb9ea88"
+    },
+    {
+      "path": "mtgish-tooling/src/main/kotlin/com/wingedsheep/tooling/coverage/bridge/ZoneMovement.kt",
+      "git_blob": "c62aae93fc9c6bc26973d19290189dfebb4a3c45"
+    },
+    {
+      "path": "mtgish-tooling/src/main/kotlin/com/wingedsheep/tooling/coverage/dashboard/Analyzer.kt",
+      "git_blob": "9932d09bd52ada3e2af2cfc22e567f9b97dcb92b"
+    },
+    {
+      "path": "mtgish-tooling/src/main/kotlin/com/wingedsheep/tooling/coverage/dashboard/Dashboard.kt",
+      "git_blob": "19449214cb962184a9d35eb9f456718d85d4322b"
+    },
+    {
+      "path": "mtgish-tooling/src/main/kotlin/com/wingedsheep/tooling/coverage/dashboard/KotlinHighlight.kt",
+      "git_blob": "c1cf580675e3c031e7a392540dc88fb52d095450"
+    },
+    {
+      "path": "mtgish-tooling/src/main/kotlin/com/wingedsheep/tooling/coverage/dashboard/Tui.kt",
+      "git_blob": "d6ad329e589736f7fbf12f48f1db6a2d391811bf"
+    },
+    {
+      "path": "mtgish-tooling/src/main/kotlin/com/wingedsheep/tooling/coverage/emitter/ActionHandlers.kt",
+      "git_blob": "62ac41efe3608dc55491334bad29c3dceb5c3f37"
+    },
+    {
+      "path": "mtgish-tooling/src/main/kotlin/com/wingedsheep/tooling/coverage/emitter/CardStructure.kt",
+      "git_blob": "54119827b74710121d3ff386d42f4813f99e658b"
+    },
+    {
+      "path": "mtgish-tooling/src/main/kotlin/com/wingedsheep/tooling/coverage/emitter/DamageDrawLifeHandlers.kt",
+      "git_blob": "4b5853867a3526e8aeb4ecb96e3d7d141cd7ec50"
+    },
+    {
+      "path": "mtgish-tooling/src/main/kotlin/com/wingedsheep/tooling/coverage/emitter/EmitCtx.kt",
+      "git_blob": "94d831f133ffa76f578a756321c06452f7b1c8c1"
+    },
+    {
+      "path": "mtgish-tooling/src/main/kotlin/com/wingedsheep/tooling/coverage/emitter/Emitter.kt",
+      "git_blob": "281957ec625f9e610e0ae8d23f4ec271ab3a8f98"
+    },
+    {
+      "path": "mtgish-tooling/src/main/kotlin/com/wingedsheep/tooling/coverage/emitter/ManaHandlers.kt",
+      "git_blob": "ef029a8ff6f56e46f034b6b004dc4239b585d6b8"
+    },
+    {
+      "path": "mtgish-tooling/src/main/kotlin/com/wingedsheep/tooling/coverage/emitter/PlayerContinuousHandlers.kt",
+      "git_blob": "116304f7373bab600a73ed2579d74e62adc52017"
+    },
+    {
+      "path": "mtgish-tooling/src/main/kotlin/com/wingedsheep/tooling/coverage/emitter/PrintingRow.kt",
+      "git_blob": "6235d8957df31ae6904558854a9223f2dad51728"
+    },
+    {
+      "path": "mtgish-tooling/src/main/kotlin/com/wingedsheep/tooling/coverage/emitter/Shells.kt",
+      "git_blob": "f49b4abf5ee11382e4e1b935fa86e351b2504f5d"
+    },
+    {
+      "path": "mtgish-tooling/src/main/kotlin/com/wingedsheep/tooling/coverage/emitter/SosRecognizers.kt",
+      "git_blob": "383aaf0d5f9048b6de2d796ad2fb79b0263ffa50"
+    },
+    {
+      "path": "mtgish-tooling/src/main/kotlin/com/wingedsheep/tooling/coverage/emitter/SpeedHandlers.kt",
+      "git_blob": "d0d86f6fb5960272a4af7b898e03fd77fdb9fdc3"
+    },
+    {
+      "path": "mtgish-tooling/src/main/kotlin/com/wingedsheep/tooling/coverage/emitter/SpellShortcuts.kt",
+      "git_blob": "5c06f80bbe4dfcb7b4ff87512236f92c9bd1e9b7"
+    },
+    {
+      "path": "mtgish-tooling/src/main/kotlin/com/wingedsheep/tooling/coverage/emitter/StaticAbilities.kt",
+      "git_blob": "b7f994b81474aca28cc204498fdeecb529650463"
+    },
+    {
+      "path": "mtgish-tooling/src/main/kotlin/com/wingedsheep/tooling/coverage/emitter/TapLayerStateHandlers.kt",
+      "git_blob": "2bb5b63087781bbc9ad0bf1b9a3d427ad959ddf1"
+    },
+    {
+      "path": "mtgish-tooling/src/main/kotlin/com/wingedsheep/tooling/coverage/emitter/TargetRecovery.kt",
+      "git_blob": "9d4c425dcde2cb04691fe76ee1babd1e0fd5fe60"
+    },
+    {
+      "path": "mtgish-tooling/src/main/kotlin/com/wingedsheep/tooling/coverage/emitter/TokenHandlers.kt",
+      "git_blob": "91d6a0d45feaaa042a4b5566d71e6743ef8c0dce"
+    },
+    {
+      "path": "mtgish-tooling/src/main/kotlin/com/wingedsheep/tooling/coverage/emitter/ZoneHandlers.kt",
+      "git_blob": "495e6b3f8d5b75a40e13fcc254dd1d0721f12b3f"
+    },
+    {
+      "path": "mtgish-tooling/src/test/kotlin/com/wingedsheep/tooling/coverage/AsPermanentEntersCounterTest.kt",
+      "git_blob": "af80071627c57a57505aab0723624a51d9e88fd5"
+    },
+    {
+      "path": "mtgish-tooling/src/test/kotlin/com/wingedsheep/tooling/coverage/CastTimeCaptureEmitterTest.kt",
+      "git_blob": "3292ac2021ce8c8e258f986e4e008940b1cfc059"
+    },
+    {
+      "path": "mtgish-tooling/src/test/kotlin/com/wingedsheep/tooling/coverage/DredgeEmitterTest.kt",
+      "git_blob": "1c0b162bbf97c4b9c040749ef93eda2701f0794f"
+    },
+    {
+      "path": "mtgish-tooling/src/test/kotlin/com/wingedsheep/tooling/coverage/DslTest.kt",
+      "git_blob": "1f69b1373a4b4c0bc01826215df63b63d998d453"
+    },
+    {
+      "path": "mtgish-tooling/src/test/kotlin/com/wingedsheep/tooling/coverage/EmitterGoldenTest.kt",
+      "git_blob": "ede48e692b97d9eb90742aafd0c5f0bb19f5cf43"
+    },
+    {
+      "path": "mtgish-tooling/src/test/kotlin/com/wingedsheep/tooling/coverage/EmitterPartialTest.kt",
+      "git_blob": "efd8fefb492d458d54fca02375d3cc51633963ef"
+    },
+    {
+      "path": "mtgish-tooling/src/test/kotlin/com/wingedsheep/tooling/coverage/EmitterSmokeTest.kt",
+      "git_blob": "7d11e1c149ce0abb7d915bc8453b98dac052bbac"
+    },
+    {
+      "path": "mtgish-tooling/src/test/kotlin/com/wingedsheep/tooling/coverage/IrQueryTest.kt",
+      "git_blob": "b0433c05e6e27289f1f82655a33121998942c0d4"
+    },
+    {
+      "path": "mtgish-tooling/src/test/kotlin/com/wingedsheep/tooling/coverage/ProwessEmitterTest.kt",
+      "git_blob": "870ab57df3e6e7811d20c3c3d718e0cd634b1b6f"
+    },
+    {
+      "path": "mtgish-tooling/src/test/kotlin/com/wingedsheep/tooling/coverage/SwitchPowerToughnessEmitterTest.kt",
+      "git_blob": "f3c2af66c032a7fa3293567d3e5476988794b6c3"
+    },
+    {
+      "path": "mtgish-tooling/src/test/kotlin/com/wingedsheep/tooling/coverage/UpkeepTriggerScopeTest.kt",
+      "git_blob": "7bd298e77baf076dc9d0e8794741b50b20fef998"
+    },
+    {
+      "path": "mtgish-tooling/src/test/kotlin/com/wingedsheep/tooling/coverage/YouTapTriggerEmitterTest.kt",
+      "git_blob": "1ffe46b64693235d37ecf159fb8d5b17e4650d65"
+    },
+    {
+      "path": "mtgish-tooling/src/test/kotlin/com/wingedsheep/tooling/coverage/bridge/BridgeResolveTest.kt",
+      "git_blob": "fc95c9d6920dc4d851c52941b91d160d03fd73d3"
+    },
+    {
+      "path": "mtgish-tooling/src/test/kotlin/com/wingedsheep/tooling/coverage/dashboard/DashboardTest.kt",
+      "git_blob": "39c7dc489cfbec36ee4001be54776bf4a6566df1"
+    },
+    {
+      "path": "mtgish-tooling/src/test/kotlin/com/wingedsheep/tooling/coverage/emitter/EffectHandlerTest.kt",
+      "git_blob": "ad5f32d5590effe8f165d321a01f55329ccb9f7f"
+    },
+    {
+      "path": "mtgish-tooling/src/test/kotlin/com/wingedsheep/tooling/coverage/emitter/EmitterFormatTest.kt",
+      "git_blob": "2913873cfdba6ef5760b7cc9e4a1e3e3f420f9ad"
+    },
+    {
+      "path": "mtgish-tooling/src/test/kotlin/com/wingedsheep/tooling/coverage/emitter/FilterPredicatesTest.kt",
+      "git_blob": "9aad0516f18a8261dcd6ba4588a6ec666cc21af6"
+    },
+    {
+      "path": "mtgish-tooling/src/test/kotlin/com/wingedsheep/tooling/coverage/emitter/InterveningIfConditionTest.kt",
+      "git_blob": "10ec95923ef2836e746f59dd7f5ec9d5a8fe38b4"
+    },
+    {
+      "path": "mtgish-tooling/src/test/kotlin/com/wingedsheep/tooling/coverage/emitter/PrintingRowTest.kt",
+      "git_blob": "5f90b29ee668a2e551d37b63854c5df63d71bad5"
+    },
+    {
+      "path": "mtgish-tooling/src/test/kotlin/com/wingedsheep/tooling/coverage/emitter/TargetRecoveryTest.kt",
+      "git_blob": "3f253e99e0aaa9346b09cbbb7fd2cede4aea8be8"
+    },
+    {
+      "path": "mtgish-tooling/src/test/resources/fixtures/10e.emitted.golden.txt",
+      "git_blob": "cd7f8cbbc296874653b1185ae969cf035f501424"
+    },
+    {
+      "path": "mtgish-tooling/src/test/resources/fixtures/10e.fixture.json",
+      "git_blob": "1acc8f1fa381b7e2ed3a821fc61052956c84fec8"
+    },
+    {
+      "path": "mtgish-tooling/src/test/resources/fixtures/chk.emitted.golden.txt",
+      "git_blob": "203e15da1ef09fb4aeef78180cb668e56ef0d7e2"
+    },
+    {
+      "path": "mtgish-tooling/src/test/resources/fixtures/chk.fixture.json",
+      "git_blob": "561896a2e2ab3d0ef5b9f2094a4b48dc4710b1e8"
+    },
+    {
+      "path": "mtgish-tooling/src/test/resources/fixtures/eoe.emitted.golden.txt",
+      "git_blob": "966f61cf192b867712c6e0b6797b3e5878d1cb99"
+    },
+    {
+      "path": "mtgish-tooling/src/test/resources/fixtures/eoe.fixture.json",
+      "git_blob": "f6d82aafba7c25f3603b4025d8a2e4e63407c86c"
+    },
+    {
+      "path": "mtgish-tooling/src/test/resources/fixtures/hob.emitted.golden.txt",
+      "git_blob": "fe30a466e65d349a155820e886b2fb1ba166531d"
+    },
+    {
+      "path": "mtgish-tooling/src/test/resources/fixtures/hob.fixture.json",
+      "git_blob": "4c47168c5e1130e71aa8a2c6533e09576e3e8149"
+    },
+    {
+      "path": "mtgish-tooling/src/test/resources/fixtures/inr.emitted.golden.txt",
+      "git_blob": "c95e381f86e3a7f6bf821aef921cacc52c271559"
+    },
+    {
+      "path": "mtgish-tooling/src/test/resources/fixtures/inr.fixture.json",
+      "git_blob": "c13a544dc41f50c33a03225e2bf7a0b01697219c"
+    },
+    {
+      "path": "mtgish-tooling/src/test/resources/fixtures/isd.emitted.golden.txt",
+      "git_blob": "13860c4a6542e0f1920f797a418a22e438bd4593"
+    },
+    {
+      "path": "mtgish-tooling/src/test/resources/fixtures/isd.fixture.json",
+      "git_blob": "e1857c6a3b596c74a63d866722c23e3391549417"
+    },
+    {
+      "path": "mtgish-tooling/src/test/resources/fixtures/ons.emitted.golden.txt",
+      "git_blob": "390ac6e3c4b842a4918dc3236857971120726619"
+    },
+    {
+      "path": "mtgish-tooling/src/test/resources/fixtures/ons.fixture.json",
+      "git_blob": "4e4936c614d22f697dcebc377e8008a099862730"
+    },
+    {
+      "path": "mtgish-tooling/src/test/resources/fixtures/por.emitted.golden.txt",
+      "git_blob": "40c263ded08096e03089738359b7a14741dce5ca"
+    },
+    {
+      "path": "mtgish-tooling/src/test/resources/fixtures/por.fixture.json",
+      "git_blob": "eff3e10eee090a9369716efc20a36a976f999a0b"
+    },
+    {
+      "path": "mtgish-tooling/src/test/resources/fixtures/rav.emitted.golden.txt",
+      "git_blob": "4dee6fdd5d8eaaa3a6df4d9fcafd1790c990af6d"
+    },
+    {
+      "path": "mtgish-tooling/src/test/resources/fixtures/rav.fixture.json",
+      "git_blob": "0e40d4fd9f9ed54eb75debfc1b771e1c6fbf943f"
+    },
+    {
+      "path": "mtgish-tooling/src/test/resources/fixtures/sos.emitted.golden.txt",
+      "git_blob": "1b9f7d1d3502414408cb1ea96a6a884dd084c6d3"
+    },
+    {
+      "path": "mtgish-tooling/src/test/resources/fixtures/sos.fixture.json",
+      "git_blob": "593243782e15e634ff3e8a281a36c3e0719626c1"
+    },
+    {
+      "path": "mtgish-tooling/src/test/resources/fixtures/tmp.emitted.golden.txt",
+      "git_blob": "5755a64fbded790b617ed8110cecfb5c0283c815"
+    },
+    {
+      "path": "mtgish-tooling/src/test/resources/fixtures/tmp.fixture.json",
+      "git_blob": "9557ed4ac62b4de269d297c8812e96049b09cad9"
+    },
+    {
+      "path": "settings.gradle.kts",
+      "git_blob": "b3cf7d0b70c58c6c4d5b214588f48ca5660d902e"
+    }
+  ],
+  "runtime_sdk_text_blob_differences": [
+    {
+      "path": "mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/dsl/CardBuilder.kt",
+      "shared_git_blob": "40c05dfb0e1f5c4b588f7230f45adce349803da6",
+      "ferocity_git_blob": "c43f7f6b13957abfc15f130fa148bd2b59f3d9cd"
+    },
+    {
+      "path": "mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/dsl/Conditions.kt",
+      "shared_git_blob": "9f8c8aa9c93e83ecc7b7b2327b168beb374d808e",
+      "ferocity_git_blob": "7436c8b4ff71b90629ffa404990963e1b0d63136"
+    },
+    {
+      "path": "mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/dsl/Effects.kt",
+      "shared_git_blob": "1904846d3b5ad489224784b5d9687c68f8b207ee",
+      "ferocity_git_blob": "68da39cfc6c03be52b2062dadff30f84d18e98e1"
+    },
+    {
+      "path": "mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/dsl/MechanicPatterns.kt",
+      "shared_git_blob": "3d1b4aad50124ae4debae92eabac32b8ac183439",
+      "ferocity_git_blob": "d98e1b107181a7a9861976fbfdea9df29c8ab351"
+    },
+    {
+      "path": "mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/dsl/mechanics/GiftDsl.kt",
+      "shared_git_blob": "7367ba0aaa8d18a4fd7a8456b11e30ba0e15dd71",
+      "ferocity_git_blob": "35be55c14a1e70b5ed74319cebc0bf76c45ca873"
+    },
+    {
+      "path": "mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/model/CardScript.kt",
+      "shared_git_blob": "c29f0a850e23ecb20fd5bd4ef1967e210949c6ac",
+      "ferocity_git_blob": "de601a551ebf321320be19037b796107a20dceda"
+    },
+    {
+      "path": "mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/scripting/CostStaticAbilities.kt",
+      "shared_git_blob": "8a7fca50b3b635c8edfb89c6e5ec384a73ebba3c",
+      "ferocity_git_blob": "1eb97a9a4d18233491f6954b3a8ff1f3027da6b1"
+    },
+    {
+      "path": "mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/scripting/KeywordAbility.kt",
+      "shared_git_blob": "130f77d7583fc2fb6a4c3ad397aaf152c622ee90",
+      "ferocity_git_blob": "8a14156d2a560264046a8d99d365595bf5d3a1a6"
+    },
+    {
+      "path": "mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/scripting/effects/RemovalEffects.kt",
+      "shared_git_blob": "e43ecb1bd43f575d244b17316ba75418eaf2a5a8",
+      "ferocity_git_blob": "651bde8f489ed915a03fed76af843275064410ee"
+    },
+    {
+      "path": "mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/serialization/CardLinter.kt",
+      "shared_git_blob": "46534179ab8279b2a3f1877ff6bf6886fe195ca3",
+      "ferocity_git_blob": "fbbf658a71a323f4426664320862efd8aed4a83a"
+    },
+    {
+      "path": "mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/serialization/CardValidator.kt",
+      "shared_git_blob": "92ac8ed5240e155a6463d1e347e000d2ed3a5fc0",
+      "ferocity_git_blob": "92255cb3d44fc78d6456867ec42451520fad8e3f"
+    }
+  ],
+  "disposition": "NO_EXACT_RUNTIME_INPUT_IDENTITY_REUSE_CLAIM",
+  "reason": "Registry loads SDK source text during tests; identical module compilation/build files alone do not establish identical runtime input closure. Prospective fresh147 software qualification proposed instead. No new command executed.",
+  "new_test_runs": 0,
+  "resource_calibration_authorized": false,
+  "gameplay_authorized": false
+}
