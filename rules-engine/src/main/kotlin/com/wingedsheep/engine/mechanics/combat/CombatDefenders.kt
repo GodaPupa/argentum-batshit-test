@@ -19,6 +19,28 @@ import com.wingedsheep.sdk.model.EntityId
  */
 object CombatDefenders {
 
+    /** Public defender domain shared by attack declaration and creatures entering attacking.
+     * Entry does not apply declaration requirements, restrictions, or attack costs (CR 508.4c).
+     */
+    fun legalAttackDefenders(
+        state: GameState,
+        attackingPlayer: EntityId,
+        projected: com.wingedsheep.engine.mechanics.layers.ProjectedState =
+            state.projectedState,
+    ): List<EntityId> {
+        val opponents = legalDefendingPlayers(state, attackingPlayer)
+            .intersect(state.getOpponents(attackingPlayer).toSet())
+        val permanents = state.getBattlefield().filter { id ->
+            when {
+                projected.isBattle(id) -> com.wingedsheep.engine.mechanics.battle.Battles
+                    .canBeAttackedBy(state, id, attackingPlayer, opponents)
+                projected.isPlaneswalker(id) -> projected.getController(id) in opponents
+                else -> false
+            }
+        }
+        return opponents.toList() + permanents
+    }
+
     /**
      * The next required declaration is a turn-based action, not priority (CR 509.1, 802.4).
      * Use the same query for authoritative action permission and declaration routing.

@@ -1,0 +1,22 @@
+{
+  "created_utc": "2026-09-26T09:15:53.765079+00:00",
+  "source_freeze_sha256": "9f2f2167b2648159f43ed924d3339cde32b9bb4dcf208153a916a104c282ce5e",
+  "author_review_sha256": "26cd0c08f185393c939365ff62a69193834d11ed35cb83deaa7e7a7314a57223",
+  "reviewer": "/root/ferocity_mechanics",
+  "recorded_by": "/root/benchmark_audit/hidden_api_audit",
+  "status": "STATIC_REVIEW_CLEAR_WITHIN_DECLARED_SCOPE_NOT_EXECUTED",
+  "reviewer_statements": [
+    "Read-only review of DecisionValidators, CombatContinuationResumer, and the twelve-case bank found no concrete API/logic blocker for free division, exact full assignment, or edge ownership.",
+    "Long sums prevent overflow. Unknown, duplicate, and changed-other edges reject before the resumer. Omitted edges retain defaults. Both current and legacy paths preserve zero assignment when no recipients exist.",
+    "Removing legacy row-order overrides is appropriate for the corrected current rule.",
+    "Separate read-only delta review verified aggregate ATTACKER_TO_BLOCKER assignments use Long arithmetic and positive deathtouch assignments only. Zero assigned deathtouch no longer makes a partner's nonlethal damage satisfy trample.",
+    "Both added case9 subscenarios retain actual ActionProcessor rejection or resolution checks. No concrete API/logic blocker found in the amendment."
+  ],
+  "new_test_declarations": 12,
+  "case9_additional_fixed_subscenarios": 2,
+  "retained_test_declarations": 20,
+  "reviewer_executions": 0,
+  "author_executions": 0,
+  "all_frozen_source_hashes_verified_before_receipt": true,
+  "limits": "Static review is not compilation or rules-engine/client regression qualification. Source-freeze scope and legacy per-source aggregation limitation remain explicit."
+}

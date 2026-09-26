@@ -2,6 +2,7 @@ package com.wingedsheep.ai.industrialwaste
 
 import com.wingedsheep.ai.engine.AIPlayer
 import com.wingedsheep.ai.engine.DecisionResponder
+import com.wingedsheep.ai.engine.YesNoDecisionStrategy
 import com.wingedsheep.ai.engine.GameSimulator
 import com.wingedsheep.ai.engine.advisor.CardAdvisorRegistry
 import com.wingedsheep.engine.core.CardsSelectedResponse
@@ -42,6 +43,7 @@ class IndustrialWasteV2SelectionAdvisorTest : FunSpec({
         }
         return Triple(driver, driver.activePlayer!!, DecisionResponder(
             GameSimulator(driver.cardRegistry), AIPlayer.defaultEvaluator(), advisors,
+        yesNoStrategy = YesNoDecisionStrategy.LEGACY_SIMULATE_BOTH_V1,
         ))
     }
 

@@ -6,12 +6,13 @@ on:
       - industrial-waste/r1-runtime-composition
       - industrial-waste/v2-structural-redesign
     paths:
-      - ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/**
+      - ai/src/**
       - rules-engine/src/**
       - mtg-sets/2000-2002/tests/**
       - industrial-waste/v2/**
       - tools/evidence_durability.py
       - tools/repository_claim.py
+      - tools/observed_test_runtime.py
       - .github/workflows/industrial-waste-v2-r1-runtime-composition.yml
 
 permissions:
@@ -47,7 +48,8 @@ jobs:
             industrial-waste/v2/test_r1_artifact_contract.py \
             industrial-waste/v2/test_r1_execution_guard.py \
             tools/tests/test_evidence_durability.py \
-            tools/tests/test_repository_claim.py -v \
+            tools/tests/test_repository_claim.py \
+            industrial-waste/v2/test_capture_ai_runtime.py -v \
             > build/reports/industrial-waste-v2/runtime-composition/python-tests.txt 2>&1
       - name: Qualify canonical payment and flashback receiving source
         run: |
@@ -104,15 +106,10 @@ jobs:
           assert all(int(suite.attrib.get(k,0)) == 0 for k in ['failures','errors','skipped']), suite.attrib
           assert all(c.find(k) is None for c in suite.findall('testcase') for k in ['failure','error','skipped'])
           PY
-      - name: Qualify combined real-engine runtime and accepted predecessor fixtures
+      - name: Qualify the same combined runtime and capture its actual AI worker bytes
         run: |
-          set -o pipefail
-          just test-class IndustrialWasteV2AllocationRunnerTest \
-            --tests '*IndustrialWasteV2*Test' \
-            --tests '*IndustrialWasteAdvisorModuleTest' \
-            --tests '*FrozenBaselineTest' \
-            --max-workers=1 -PkotlinCompileParallelism=1 \
-            2>&1 | tee build/reports/industrial-waste-v2/runtime-composition/runtime.log
+          python3 industrial-waste/v2/capture_ai_runtime.py \
+            --attempt build/reports/industrial-waste-v2/runtime-composition/ai-worker
       - name: Preserve exact source and scope
         if: always()
         run: |
@@ -122,6 +119,7 @@ jobs:
           files = sorted(Path('ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste').glob('IndustrialWasteV2*.kt'))
           files += list(Path('rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/mana').glob('Mana*kt'))
           files += [Path(p) for p in ['rules-engine/src/main/kotlin/com/wingedsheep/engine/legalactions/utils/FixedSacrificePayment.kt','rules-engine/src/main/kotlin/com/wingedsheep/engine/legalactions/enumerators/CastSpellEnumerator.kt','rules-engine/src/main/kotlin/com/wingedsheep/engine/legalactions/enumerators/CastFromZoneEnumerator.kt','rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/ability/ActivateAbilityHandler.kt','game-server/src/test/kotlin/com/wingedsheep/gameserver/session/AiUndoDecisionFreshnessTest.kt','industrial-waste/v2/r1_execute.py','industrial-waste/v2/r1_metric_projection.py','tools/evidence_durability.py','tools/repository_claim.py']]
+          files += [Path(p) for p in ['ai/src/main/kotlin/com/wingedsheep/ai/engine/DecisionResponder.kt','ai/src/main/kotlin/com/wingedsheep/ai/engine/YesNoDecisionStrategy.kt','ai/src/main/kotlin/com/wingedsheep/ai/engine/GameSimulator.kt','ai/src/test/kotlin/com/wingedsheep/ai/engine/IndustrialWasteV2FrozenResponderEquivalenceTest.kt','rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/mana/OptionalCastAffordability.kt','tools/observed_test_runtime.py','industrial-waste/v2/capture_ai_runtime.py','industrial-waste/v2/runtime-ai-case-bank.json','industrial-waste/v2/frozen-responder-equivalence-v1.json']]
           receipt = {'status':'QUALIFICATION_OUTPUT_REQUIRES_INDEPENDENT_AUDIT',
               'source_commit':subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),
               'shared_capability_source':'2ec67cd048f89a735655f24d7fa90c81e6664785',
@@ -160,5 +158,6 @@ jobs:
             ai/build/test-results/test/TEST-com.wingedsheep.ai.industrialwaste.IndustrialWasteV2*.xml
             ai/build/test-results/test/TEST-com.wingedsheep.ai.industrialwaste.IndustrialWasteAdvisorModuleTest.xml
             ai/build/test-results/test/TEST-com.wingedsheep.ai.arena.FrozenBaselineTest.xml
+            ai/build/test-results/test/TEST-com.wingedsheep.ai.engine.IndustrialWasteV2FrozenResponderEquivalenceTest.xml
           if-no-files-found: error
           retention-days: 90

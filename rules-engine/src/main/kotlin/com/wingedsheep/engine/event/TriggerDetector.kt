@@ -243,18 +243,33 @@ class TriggerDetector(
     fun detectTriggers(
         state: GameState,
         events: List<EngineGameEvent>
+    ): List<PendingTrigger> = detectUnprocessedTriggers(
+        state,
+        events.filterNot {
+            it is ZoneChangeEvent && it.toZone == Zone.BATTLEFIELD && it.entryTriggersAlreadyProcessed
+        },
+        contextEvents = events,
+    )
+
+    /** Suppress processed causes without erasing their historical object-reference context. */
+    private fun detectUnprocessedTriggers(
+        state: GameState,
+        events: List<EngineGameEvent>,
+        contextEvents: List<EngineGameEvent>,
     ): List<PendingTrigger> {
         val index = buildTriggerIndex(state)
         val triggers = mutableListOf<PendingTrigger>()
 
-        for ((eventIndex, event) in events.withIndex()) {
+        for ((eventIndex, event) in contextEvents.withIndex()) {
+            if (event is ZoneChangeEvent && event.toZone == Zone.BATTLEFIELD &&
+                event.entryTriggersAlreadyProcessed) continue
             // DrawEvent firing counts are derived from CardsDrawnThisTurnComponent, which `state`
             // holds at its POST-batch value. When one execution emits several CardsDrawnEvents for
             // the same player, each event needs to know how many of those draws happened after it
             // so the matcher can reconstruct the count as of that event (exceptFirstInDrawStep
             // exemption boundary).
             val samePlayerDrawsLaterInBatch = if (event is CardsDrawnEvent) {
-                events.subList(eventIndex + 1, events.size)
+                contextEvents.subList(eventIndex + 1, contextEvents.size)
                     .filterIsInstance<CardsDrawnEvent>()
                     .filter { it.playerId == event.playerId }
                     .sumOf { it.count }
@@ -265,12 +280,12 @@ class TriggerDetector(
                 val attachedDeparture = selfZoneEvent && pending.ability.binding == TriggerBinding.ATTACHED &&
                     pending.triggerContext.triggeringEntityId != pending.sourceId
                 val triggeringZoneEvent = if (event is ZoneChangeEvent && pending.triggerContext.triggeringEntityId == event.entityId) event
-                    else if (attachedDeparture) events.take(eventIndex).filterIsInstance<ZoneChangeEvent>().lastOrNull {
+                    else if (attachedDeparture) contextEvents.take(eventIndex).filterIsInstance<ZoneChangeEvent>().lastOrNull {
                         it.entityId == pending.triggerContext.triggeringEntityId && it.fromZone == Zone.BATTLEFIELD
                     } else null
                 val eventContext = triggeringZoneEvent?.let(TriggerContext::fromEvent) ?: pending.triggerContext
                 val sourceEventContext = (event as? ZoneChangeEvent)?.takeIf { selfZoneEvent }?.let(TriggerContext::fromEvent)
-                val sourceAtEvent = events.subList(eventIndex + 1, events.size)
+                val sourceAtEvent = contextEvents.subList(eventIndex + 1, contextEvents.size)
                     .filterIsInstance<ZoneChangeEvent>().firstOrNull { it.entityId == pending.sourceId }?.oldObject
                     ?: state.objectRef(pending.sourceId)
                 pending.copy(triggerContext = eventContext, objectReferences = com.wingedsheep.engine.handlers.ObjectReferenceEnvironment(
@@ -282,7 +297,7 @@ class TriggerDetector(
                     else if (selfZoneEvent) sourceEventContext?.triggeringObject else sourceAtEvent,
                     triggering = if (triggeringZoneEvent != null) eventContext.triggeringObject
                     else eventContext.triggeringObject ?: pending.triggerContext.triggeringEntityId?.let { id ->
-                        events.subList(eventIndex + 1, events.size).filterIsInstance<ZoneChangeEvent>()
+                        contextEvents.subList(eventIndex + 1, contextEvents.size).filterIsInstance<ZoneChangeEvent>()
                             .firstOrNull { it.entityId == id }?.oldObject ?: state.objectRef(id)
                     },
                 ))
@@ -435,7 +450,7 @@ class TriggerDetector(
         // Rule 603.4: Filter out triggers with unmet intervening-if conditions
         return matcher.sortByApnapOrder(
             state,
-            matcher.filterByTriggerCondition(state, assignGranterIds(state, filteredTriggers, events))
+            matcher.filterByTriggerCondition(state, assignGranterIds(state, filteredTriggers, contextEvents))
         )
     }
 

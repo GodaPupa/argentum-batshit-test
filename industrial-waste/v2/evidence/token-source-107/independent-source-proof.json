@@ -1,0 +1,181 @@
+{
+  "schema": "independent-industrial-token-source-proof-v1",
+  "reviewer": "/root/ferocity",
+  "source": "107d10aca021c179674f1ec73bea422d3bca2ba4",
+  "tree": "c39cc071ead899015b485366b9059f964250bc1b",
+  "parent": "3760edab907c66d3f41773fd3065b7993f837ebb",
+  "canonical_source": "1bc66b276f5db54640df1f956a32fa3d188628e3",
+  "canonical_tree": "9a634d5b1acde2d2d80e1b3a347d0ec31b03e6c9",
+  "canonical_base": "77c7aad0bb2ded2c0372087d94f66ccbde0f7d09",
+  "source_manifest": {
+    "path": "industrial-waste/v2/shared-attacking-token-receiving.json",
+    "sha256": "c55e36ed7db906c92c40ed69fbe797836d9279789b5ac32ea478d95ae9e574c5"
+  },
+  "all_source_pins_verified": 48,
+  "compatibility": [
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/GameEvent.kt",
+      "receiving_before_sha256": "1c355fc1c7a92606ea24dced8109ff15b1b2c757cb2879d13aaa4c53b57514e2",
+      "donor_sha256": "e7a8dc304b75af8365d14f8585afb4cb6db2d9e4176e0a29e20eec68af259cb1",
+      "receiving_after_sha256": "e7a8dc304b75af8365d14f8585afb4cb6db2d9e4176e0a29e20eec68af259cb1",
+      "integration": "EXACT_CANONICAL_BYTES",
+      "hashes_verified": true,
+      "receiving_prior_equal_canonical_base": true
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/ModalAndCloneContinuations.kt",
+      "receiving_before_sha256": "ef5a11541639d273904bd878ded0004182b64e9b66c308c221d7d8ad355b73ed",
+      "donor_sha256": "1e87d845aa1f284838bb6bea6cc6281f626e887e21f626fe302fe47eadeffdd4",
+      "receiving_after_sha256": "1e87d845aa1f284838bb6bea6cc6281f626e887e21f626fe302fe47eadeffdd4",
+      "integration": "EXACT_CANONICAL_BYTES",
+      "hashes_verified": true,
+      "receiving_prior_equal_canonical_base": true
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/Serialization.kt",
+      "receiving_before_sha256": "c0b9d2429463cdce240048b549d02c97e92d301d6ef75521f989723dda294dbd",
+      "donor_sha256": "bcc6321f1ef85416859bff716b1446498a62917208cc7f7a65b4cd39b0333b68",
+      "receiving_after_sha256": "c53b05c54338b9a35d56b500d385a16605ed641dad19e179d8604cfb7d5db320",
+      "integration": "PRESERVED_RECEIVING_OVERLAP",
+      "hashes_verified": true,
+      "all_prior_receiving_divergences_retained_exactly": true,
+      "divergence_block_count": 5
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/TokenContinuations.kt",
+      "receiving_before_sha256": "91d0103a5ced3151b48780add95595121cad676ae3bb7321165b863c457336d3",
+      "donor_sha256": "c1856c5d7165cfe596b09be849faa855d9d7ec5b7bcf3deeb36c8a01bdaf4cd0",
+      "receiving_after_sha256": "c1856c5d7165cfe596b09be849faa855d9d7ec5b7bcf3deeb36c8a01bdaf4cd0",
+      "integration": "EXACT_CANONICAL_BYTES",
+      "hashes_verified": true,
+      "receiving_prior_equal_canonical_base": true
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerDetector.kt",
+      "receiving_before_sha256": "5416f5cec66e8dd2fc9d65985b31ac052a08336e36a6445105b494a312cbcd24",
+      "donor_sha256": "fdea959b808ee7c6942bc2391b5d6d9ea04ee26cd984ec7b86382f02414b7623",
+      "receiving_after_sha256": "9a2841cc5ca01acaaf655f5bb7259742e500f4a78cf6848677faf8f91768e92d",
+      "integration": "PRESERVED_RECEIVING_OVERLAP",
+      "hashes_verified": true,
+      "all_prior_receiving_divergences_retained_exactly": true,
+      "divergence_block_count": 5
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/ContinuationHandler.kt",
+      "receiving_before_sha256": "41e483dccbf19148ea5d266176532b8e3689f56e0193d57e7de1a6bb4ccf30aa",
+      "donor_sha256": "a8091ebb5e745e48765d38f01f6f21052b98ec4b0f52da34076882bbd90edccc",
+      "receiving_after_sha256": "a8091ebb5e745e48765d38f01f6f21052b98ec4b0f52da34076882bbd90edccc",
+      "integration": "EXACT_CANONICAL_BYTES",
+      "hashes_verified": true,
+      "receiving_prior_equal_canonical_base": true
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/CoreAutoResumerModule.kt",
+      "receiving_before_sha256": "685ab54058fc2e25e9b4e1dc352642080623b785781c7b2161a411eaad0360f6",
+      "donor_sha256": "d191e92ce6bf2c27d33f5ae9f80ff2b7ce8b0d94aa6493887c9739faea9292b3",
+      "receiving_after_sha256": "d191e92ce6bf2c27d33f5ae9f80ff2b7ce8b0d94aa6493887c9739faea9292b3",
+      "integration": "EXACT_CANONICAL_BYTES",
+      "hashes_verified": true,
+      "receiving_prior_equal_canonical_base": true
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/ModalAndCloneContinuationResumer.kt",
+      "receiving_before_sha256": "faa1889a252b70e1306ff4db95236ecf71ebade4706c6907e32bb4159ac5932a",
+      "donor_sha256": "7d546e8c590c9dbc541c50cd43cfd7436354a4b7be6108a882176cb0d3131190",
+      "receiving_after_sha256": "7d546e8c590c9dbc541c50cd43cfd7436354a4b7be6108a882176cb0d3131190",
+      "integration": "EXACT_CANONICAL_BYTES",
+      "hashes_verified": true,
+      "receiving_prior_equal_canonical_base": true
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/ObjectReferencePropagation.kt",
+      "receiving_before_sha256": "7e3ce6488e5349dc84494315cf4feec7571c0657bbb6e2e63a6d2de5e80829de",
+      "donor_sha256": "44754cc29fd5abe7b850f819811a1a26af25b845396dd3439135172cb0733393",
+      "receiving_after_sha256": "44754cc29fd5abe7b850f819811a1a26af25b845396dd3439135172cb0733393",
+      "integration": "EXACT_CANONICAL_BYTES",
+      "hashes_verified": true,
+      "receiving_prior_equal_canonical_base": true
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/PipelineCollectionPropagation.kt",
+      "receiving_before_sha256": "3f14b0e3145585fe82d4529b9c511f648921d612654b7b0d70ac10a34055f239",
+      "donor_sha256": "2347f1dc0bcd3c6dbdf7c8753bd5ff892eaf80e5da7041cc8c8aaee42d534278",
+      "receiving_after_sha256": "2347f1dc0bcd3c6dbdf7c8753bd5ff892eaf80e5da7041cc8c8aaee42d534278",
+      "integration": "EXACT_CANONICAL_BYTES",
+      "hashes_verified": true,
+      "receiving_prior_equal_canonical_base": true
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/TokenContinuationResumer.kt",
+      "receiving_before_sha256": "1d824810723abdb44456a9a07cf66669243d80bb0442e6143483afd1233a897e",
+      "donor_sha256": "9213e0e9e7e79c10fd49b2162d38e5b31b369ed0c398f33ff6569b3e66f0a773",
+      "receiving_after_sha256": "9213e0e9e7e79c10fd49b2162d38e5b31b369ed0c398f33ff6569b3e66f0a773",
+      "integration": "EXACT_CANONICAL_BYTES",
+      "hashes_verified": true,
+      "receiving_prior_equal_canonical_base": true
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/token/AttackingTokenDefenderChooser.kt",
+      "receiving_before_sha256": null,
+      "donor_sha256": "86ad9102ffaeb07333ae2cd18261430d223b945ad0206ef44f2daa8d24057a05",
+      "receiving_after_sha256": "86ad9102ffaeb07333ae2cd18261430d223b945ad0206ef44f2daa8d24057a05",
+      "integration": "EXACT_CANONICAL_BYTES",
+      "hashes_verified": true,
+      "prior_path_absent_in_both": true
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/token/CreateTokenCopyOfTargetExecutor.kt",
+      "receiving_before_sha256": "844cd24f7987bb1b4bcd8fee7d729df6bb0298b6519b75ff03c2aa9a54092087",
+      "donor_sha256": "21e171a049be9b361df00fd8ddceb4638b82dcd3549a16cfc994e434cdc66f38",
+      "receiving_after_sha256": "21e171a049be9b361df00fd8ddceb4638b82dcd3549a16cfc994e434cdc66f38",
+      "integration": "EXACT_CANONICAL_BYTES",
+      "hashes_verified": true,
+      "receiving_prior_equal_canonical_base": true
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/token/CreateTokenExecutor.kt",
+      "receiving_before_sha256": "a160942be352e9ee0e27a07a022f728e115458a6f82a3a3083912a00e2031239",
+      "donor_sha256": "73b714ca3613e9b31c1c6d749e2a481a045c9087f0d05b2f18d6dd1abd8dd6d1",
+      "receiving_after_sha256": "73b714ca3613e9b31c1c6d749e2a481a045c9087f0d05b2f18d6dd1abd8dd6d1",
+      "integration": "EXACT_CANONICAL_BYTES",
+      "hashes_verified": true,
+      "receiving_prior_equal_canonical_base": true
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/token/TokenCreationReplacementHelper.kt",
+      "receiving_before_sha256": "2fea303c76a5476c5367f0d52a37f138ffa4dca4e7b599d0f0fc7a9856068c16",
+      "donor_sha256": "cbcd4b4cf9d8a47c38babd9bb2bb4623f7c5cd77be6e4f53b825a9da1062aa1a",
+      "receiving_after_sha256": "cbcd4b4cf9d8a47c38babd9bb2bb4623f7c5cd77be6e4f53b825a9da1062aa1a",
+      "integration": "EXACT_CANONICAL_BYTES",
+      "hashes_verified": true,
+      "receiving_prior_equal_canonical_base": true
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/legalactions/enumerators/CombatEnumerator.kt",
+      "receiving_before_sha256": "6fe9da8a33999c557eecbf7ca8e64dea4a7e11cd06d5493404f2d7afc36013f8",
+      "donor_sha256": "806c3e20163072b7b96588c695e6d6913cc39a7c70deec88f1ff31a5bc5e0c1b",
+      "receiving_after_sha256": "806c3e20163072b7b96588c695e6d6913cc39a7c70deec88f1ff31a5bc5e0c1b",
+      "integration": "EXACT_CANONICAL_BYTES",
+      "hashes_verified": true,
+      "receiving_prior_equal_canonical_base": true
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/combat/CombatDefenders.kt",
+      "receiving_before_sha256": "19e46ab82c959375752046940f0dc8e39a34513eac26d687cc835b6bf91622fe",
+      "donor_sha256": "87543b443ca4f637617f1cbe7613c37f1c577a7754aa272786cf5c0d7be68920",
+      "receiving_after_sha256": "87543b443ca4f637617f1cbe7613c37f1c577a7754aa272786cf5c0d7be68920",
+      "integration": "EXACT_CANONICAL_BYTES",
+      "hashes_verified": true,
+      "receiving_prior_equal_canonical_base": true
+    }
+  ],
+  "exact_donor_fixture_and_budget_paths": [
+    "lab-coordinator/shared-capabilities/attacking-token-defender-budget.json",
+    "lab-coordinator/shared-capabilities/entry-choice-event-provenance-budget.json",
+    "mtg-sets/2025/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/DalkovanEncampmentScenarioTest.kt",
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/event/EntryChoiceEventProvenanceTest.kt",
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/handlers/effects/token/AttackingTokenDefenderChoiceTest.kt"
+  ],
+  "current_combat_pending_decision_and_validators_unchanged": true,
+  "no_compilation_tests_or_runtime_executed": true
+}

@@ -639,6 +639,9 @@ data class CreateTokenCopyRemainingContinuation(
     val context: com.wingedsheep.engine.handlers.EffectContext,
     val controllerId: EntityId,
     val remaining: Int,
+    /** Null retains the legacy path; a present list is the exact already-chosen remaining batch. */
+    val attackingDefenders: List<EntityId?>? = null,
+    val createdTokens: List<EntityId> = emptyList(),
 ) : AutomaticContinuation
 
 /**

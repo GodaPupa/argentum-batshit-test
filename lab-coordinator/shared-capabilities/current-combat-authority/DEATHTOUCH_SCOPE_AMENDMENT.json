@@ -1,0 +1,37 @@
+{
+  "created_utc": "2026-09-26T09:02:35.728841+00:00",
+  "authorization": "Root explicitly approved adjacent aggregate deathtouch/trample correction within existing case9 as paired fixed subassertions, before any run.",
+  "reason": "A zero deathtouch assignment must not turn another source's nonlethal damage into lethal damage; a positive deathtouch assignment from another attacker does count lethal for trample.",
+  "case_count_before": 12,
+  "case_count_after": 12,
+  "case9_new_fixed_subassertions": 2,
+  "tests_or_builds_run_before_amendment": 0,
+  "preserved": [
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/decision/DecisionValidators.kt",
+      "sha256": "bd5cec7514c36bd8f0fe5564b04bbebf30091b1da155d1f3479c2a6739db8129",
+      "archive": "ferocity-recycling/support-audits/combat-assignment-current-rules/before-deathtouch-amendment/rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/decision/DecisionValidators.kt.before"
+    },
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/CombatAssignmentCurrentRulesTest.kt",
+      "sha256": "c65bb1effac5d63e1c806907eb271d28d020ea9d33b5909ad575d3e9314260bd",
+      "archive": "ferocity-recycling/support-audits/combat-assignment-current-rules/before-deathtouch-amendment/rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/CombatAssignmentCurrentRulesTest.kt.before"
+    },
+    {
+      "path": "ferocity-recycling/support-audits/combat-assignment-current-rules/REPAIR_PLAN.md",
+      "sha256": "db4be593aefb1aac92d49c37a4f2754e3ab2e184ded2bd5b82189c845da9fa61",
+      "archive": "ferocity-recycling/support-audits/combat-assignment-current-rules/before-deathtouch-amendment/ferocity-recycling/support-audits/combat-assignment-current-rules/REPAIR_PLAN.md.before"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/CombatResolution.kt",
+      "sha256": "1fc29cf95cbc43d5ba5d32cd15fe673539cfad6dd644fe6e96aad57bd9eda199",
+      "archive": "ferocity-recycling/support-audits/combat-assignment-current-rules/before-deathtouch-amendment/rules-engine/src/main/kotlin/com/wingedsheep/engine/core/CombatResolution.kt.before"
+    },
+    {
+      "path": "web-client/src/components/decisions/CombatResolutionBoard.tsx",
+      "sha256": "b3c82866f5a127ee8dde97b84b68686ccfb8d4abfc12a801ba0f5c7f23b8cb04",
+      "archive": "ferocity-recycling/support-audits/combat-assignment-current-rules/before-deathtouch-amendment/web-client/src/components/decisions/CombatResolutionBoard.tsx.before"
+    }
+  ],
+  "adjacent_doc_ui_change": "Document source-specific lethal metadata accurately; display shared-target aggregate as a raw amount without a misleading lethal threshold/check mark. No client legality added."
+}

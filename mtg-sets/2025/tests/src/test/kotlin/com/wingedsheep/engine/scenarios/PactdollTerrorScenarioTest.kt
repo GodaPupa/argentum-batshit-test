@@ -1,6 +1,7 @@
 package com.wingedsheep.engine.scenarios
 
 import com.wingedsheep.engine.core.PlayLand
+import com.wingedsheep.engine.support.chooseTriggerOrderInListedOrder
 import com.wingedsheep.engine.support.ScenarioTestBase
 import io.kotest.matchers.shouldBe
 
@@ -37,6 +38,8 @@ class PactdollTerrorScenarioTest : ScenarioTestBase() {
                 .withCardOnBattlefield(1, "Pactdoll Terror")
                 .withCardInHand(1, "Blood Fountain").withLandsOnBattlefield(1, "Swamp", 1).build()
             game.castSpell(1, "Blood Fountain").error shouldBe null
+            game.resolveStack()
+            game.chooseTriggerOrderInListedOrder() // Fountain's Blood creation and Pactdoll's entry drain
             game.resolveStack()
             game.findPermanents("Blood").size shouldBe 1
             game.getLifeTotal(1) shouldBe 22

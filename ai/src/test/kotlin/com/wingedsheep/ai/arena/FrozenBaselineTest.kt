@@ -101,11 +101,19 @@ class FrozenBaselineTest : FunSpec({
          * action text, this branch reproduces the previous golden `6ff9ded1403d59ac` exactly. The
          * outcome is untouched: seat 1 still wins on turn 20 at life -8 / 16.
          *
+         * Re-blessed 2026-09-26 on the Industrial receiving lineage for the canonical post-block
+         * priority correction. Exact 1fe2118 and eb4127c raw traces contain only seven swapped
+         * DECLARE_BLOCKERS pass pairs: the attacking active player now receives priority first.
+         * The other 399 lines, all chosen actions and blocker maps, and the turn-20 seat-1 outcome
+         * at life -8 / 16 are identical. Root independently audited both raw artifacts and all
+         * source pins. Evidence: industrial-waste/v2/evidence/baseline-eb412-1fe/.
+         * This changes a software regression expectation; it authorizes no Industrial R1 game.
+         *
          * Note for whoever hits this next: hashing `GameAction.toString()` means *any* new field on
          * a cast/action data class moves this hash without the AI having changed. Check the outcome
          * line in the failure clue first — if turns/winner/life match the values above, you are
          * almost certainly in this benign case rather than a real behavioural drift.
          */
-        private const val GOLDEN_HASH = "47e993c61a57ebbd"
+        private const val GOLDEN_HASH = "634376c1259f8db7"
     }
 }

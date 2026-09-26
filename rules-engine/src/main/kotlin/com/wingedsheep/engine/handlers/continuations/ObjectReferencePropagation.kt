@@ -83,6 +83,7 @@ internal fun AnswerContinuation.objectReferences(): ObjectReferenceEnvironment? 
     is BudgetModalContinuation -> objectReferences
     is CreateTokenCopyOfChosenContinuation -> objectReferences
     is CreateTokenCopyAuraHostContinuation -> context.objectReferences
+    is AttackingTokenDefenderContinuation -> context.objectReferences
     is ChooseActionContinuation -> objectReferences
     is TriggeredAbilityContinuation -> objectReferences
     is TriggerDamageDistributionContinuation -> objectReferences
@@ -102,6 +103,7 @@ internal fun AutomaticContinuation.objectReferences(): ObjectReferenceEnvironmen
     is SpliceTailContinuation -> objectReferences
     is ModalChosenModeTailContinuation -> objectReferences
     is CreateTokenCopyRemainingContinuation -> context.objectReferences
+    is CreateTokenRecipientsContinuation -> context.objectReferences
     is EffectContinuation -> effectContext.objectReferences
     is GatedActionContinuation -> effectContext.objectReferences
     is ForEachContinuation -> effectContext.objectReferences
@@ -191,6 +193,7 @@ internal fun AnswerContinuation.withObjectReferences(refs: ObjectReferenceEnviro
     is BudgetModalContinuation -> copy(objectReferences = refs)
     is CreateTokenCopyOfChosenContinuation -> copy(objectReferences = refs)
     is CreateTokenCopyAuraHostContinuation -> copy(context = context.copy(objectReferences = refs))
+    is AttackingTokenDefenderContinuation -> copy(context = context.copy(objectReferences = refs))
     is ChooseActionContinuation -> copy(objectReferences = refs)
     is TriggeredAbilityContinuation -> copy(objectReferences = refs)
     is TriggerDamageDistributionContinuation -> copy(objectReferences = refs)
@@ -210,6 +213,7 @@ internal fun AutomaticContinuation.withObjectReferences(refs: ObjectReferenceEnv
     is SpliceTailContinuation -> copy(objectReferences = refs)
     is ModalChosenModeTailContinuation -> copy(objectReferences = refs)
     is CreateTokenCopyRemainingContinuation -> copy(context = context.copy(objectReferences = refs))
+    is CreateTokenRecipientsContinuation -> copy(context = context.copy(objectReferences = refs))
     is EffectContinuation -> copy(effectContext = effectContext.copy(objectReferences = refs))
     is GatedActionContinuation -> copy(effectContext = effectContext.copy(objectReferences = refs))
     is ForEachContinuation -> copy(effectContext = effectContext.copy(objectReferences = refs))

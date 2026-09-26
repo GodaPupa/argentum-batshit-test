@@ -2,6 +2,7 @@ package com.wingedsheep.ai.industrialwaste
 
 import com.wingedsheep.ai.engine.AIPlayer
 import com.wingedsheep.ai.engine.DecisionResponder
+import com.wingedsheep.ai.engine.YesNoDecisionStrategy
 import com.wingedsheep.ai.engine.GameSimulator
 import com.wingedsheep.ai.engine.advisor.CardAdvisorRegistry
 import com.wingedsheep.engine.core.ActivateAbility
@@ -53,7 +54,9 @@ class IndustrialWasteV2OrderingIntegrationTest : FunSpec({
         val advisors = CardAdvisorRegistry().also {
             IndustrialWasteV2PilotAdvisorModule.register(it)
         }
-        val responder = DecisionResponder(GameSimulator(driver.cardRegistry), AIPlayer.defaultEvaluator(), advisors)
+        val responder = DecisionResponder(GameSimulator(driver.cardRegistry), AIPlayer.defaultEvaluator(), advisors,
+        yesNoStrategy = YesNoDecisionStrategy.LEGACY_SIMULATE_BOTH_V1,
+    )
         // Four real land plays on four real own turns; no minted cards or replacement state.
         repeat(4) { index ->
             driver.activePlayer shouldBe player

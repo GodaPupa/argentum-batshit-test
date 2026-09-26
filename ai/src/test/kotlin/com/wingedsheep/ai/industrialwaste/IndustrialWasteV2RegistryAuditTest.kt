@@ -3,10 +3,14 @@ package com.wingedsheep.ai.industrialwaste
 import com.wingedsheep.engine.registry.CardRegistry
 import com.wingedsheep.mtg.sets.MtgSetCatalog
 import com.wingedsheep.mtg.sets.tokens.PredefinedTokens
+import com.wingedsheep.sdk.serialization.CardExporter
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
+import kotlinx.serialization.json.*
 import java.nio.file.Files
 import java.nio.file.Path
+import java.nio.file.StandardOpenOption
+import java.security.MessageDigest
 
 /** Compiled-catalog admission only: no seed, pilot, action or matchup execution. */
 class IndustrialWasteV2RegistryAuditTest : FunSpec({
@@ -20,8 +24,8 @@ class IndustrialWasteV2RegistryAuditTest : FunSpec({
             "industrial-waste/v2/candidates/lean-tron-hybrid.dck",
         )
         val registry = CardRegistry().apply {
-            register(PredefinedTokens.allTokens)
             MtgSetCatalog.all.forEach { set -> register(set.cards); register(set.basicLands) }
+            register(PredefinedTokens.allTokens)
         }
         val names = linkedSetOf<String>()
         for (relative in paths) {
@@ -56,5 +60,30 @@ class IndustrialWasteV2RegistryAuditTest : FunSpec({
             appendLine("source_head=$actualHead")
             names.sorted().forEach { appendLine("card=$it") }
         })
+        // Resolve through the same catalog-then-token registration order as the allocation and
+        // replay drivers. These are the actual compiled definitions, including their AbilityIds;
+        // no name-only projection or normalized semantic hash substitutes for their bytes.
+        val tokenNames = PredefinedTokens.allTokens.map { it.name }.distinct().sorted()
+        val definitions = (names + tokenNames).sorted().map { name ->
+            val raw = CardExporter.exportToJson(registry.requireCard(name))
+            buildJsonObject {
+                put("name", name)
+                put("raw_definition_json", raw)
+                put("raw_definition_sha256", MessageDigest.getInstance("SHA-256")
+                    .digest(raw.toByteArray(Charsets.UTF_8)).joinToString("") { "%02x".format(it) })
+            }
+        }
+        val compiled = buildJsonObject {
+            put("schema", "industrial-compiled-card-registry-observation-v1")
+            put("source_head", actualHead)
+            put("registration_order", "MtgSetCatalog set cards then basic lands; PredefinedTokens last")
+            put("frozen_card_names", JsonArray(names.sorted().map(::JsonPrimitive)))
+            put("registered_token_names", JsonArray(tokenNames.map(::JsonPrimitive)))
+            put("definitions", JsonArray(definitions))
+            put("gameplay_authorized", false)
+            put("official_games_initialized", 0)
+        }
+        Files.writeString(output.parent.resolve("compiled-card-registry.json"), compiled.toString() + "\n",
+            StandardOpenOption.CREATE_NEW)
     }
 })

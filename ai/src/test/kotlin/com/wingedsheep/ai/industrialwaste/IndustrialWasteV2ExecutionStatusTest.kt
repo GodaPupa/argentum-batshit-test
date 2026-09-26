@@ -2,6 +2,7 @@ package com.wingedsheep.ai.industrialwaste
 
 import com.wingedsheep.ai.engine.AIPlayer
 import com.wingedsheep.ai.engine.DecisionResponder
+import com.wingedsheep.ai.engine.YesNoDecisionStrategy
 import com.wingedsheep.ai.engine.GameSimulator
 import com.wingedsheep.ai.engine.advisor.CardAdvisorRegistry
 import com.wingedsheep.engine.core.ActivateAbility
@@ -45,7 +46,9 @@ class IndustrialWasteV2ExecutionStatusTest : FunSpec({
             game.submit(actual)
         }
     fun responder(game: GameTestDriver) = DecisionResponder(GameSimulator(game.cardRegistry),
-        AIPlayer.defaultEvaluator(), CardAdvisorRegistry().also { IndustrialWasteV2PilotAdvisorModule.register(it) })
+        AIPlayer.defaultEvaluator(), CardAdvisorRegistry().also { IndustrialWasteV2PilotAdvisorModule.register(it) },
+        yesNoStrategy = YesNoDecisionStrategy.LEGACY_SIMULATE_BOTH_V1,
+    )
 
     test("initialization does not count but both players London submissions each count once") {
         val game = GameTestDriver().apply {

@@ -2,6 +2,7 @@ package com.wingedsheep.ai.industrialwaste
 
 import com.wingedsheep.ai.engine.AIPlayer
 import com.wingedsheep.ai.engine.DecisionResponder
+import com.wingedsheep.ai.engine.YesNoDecisionStrategy
 import com.wingedsheep.ai.engine.GameSimulator
 import com.wingedsheep.ai.engine.advisor.CardAdvisorRegistry
 import com.wingedsheep.engine.core.ActivateAbility
@@ -53,6 +54,7 @@ class IndustrialWasteV2PublicActionPolicyTest : FunSpec({
         CardAdvisorRegistry().also {
             IndustrialWasteV2PilotAdvisorModule.register(it)
         },
+        yesNoStrategy = YesNoDecisionStrategy.LEGACY_SIMULATE_BOTH_V1,
     )
     fun resolve(driver: GameTestDriver) {
         val policy = responder(driver)

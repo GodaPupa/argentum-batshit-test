@@ -265,9 +265,13 @@ class CoreAutoResumerModule(
         // as-enters choice (printed EntersWithChoice or granted riot). That token's choice, every
         // granted-riot instance, and its ETB triggers have now resolved — create the remaining
         // token copies, each of which runs its own as-enters pipeline and may pause again.
-        autoResumer(CreateTokenCopyRemainingContinuation::class, canResume = { it.remaining > 0 }) { state, continuation, events, checkForMore ->
+        autoResumer(CreateTokenCopyRemainingContinuation::class, canResume = { it.remaining >= 0 }) { state, continuation, events, checkForMore ->
             val staticAbilityHandler = com.wingedsheep.engine.mechanics.layers.StaticAbilityHandler(services.cardRegistry)
-            val result = when (val e = continuation.effect) {
+            val result = if (continuation.remaining == 0) {
+                com.wingedsheep.engine.core.EffectResult(state, updatedCollections = mapOf(
+                    com.wingedsheep.sdk.scripting.effects.CREATED_TOKENS to continuation.createdTokens,
+                ))
+            } else when (val e = continuation.effect) {
                 is com.wingedsheep.sdk.scripting.effects.CreateTokenCopyOfTargetEffect ->
                     com.wingedsheep.engine.handlers.effects.token.CreateTokenCopyOfTargetExecutor(
                         staticAbilityHandler = staticAbilityHandler,
@@ -275,6 +279,8 @@ class CoreAutoResumerModule(
                     ).createTokens(
                         state, e, continuation.context, continuation.controllerId,
                         continuation.remaining, auraHostId = null,
+                        attackingDefenders = continuation.attackingDefenders,
+                        previouslyCreatedTokens = continuation.createdTokens,
                     )
                 is com.wingedsheep.sdk.scripting.effects.CreateTokenCopyOfSourceEffect ->
                     com.wingedsheep.engine.handlers.effects.token.CreateTokenCopyOfSourceExecutor(
@@ -284,7 +290,10 @@ class CoreAutoResumerModule(
                     )
                 else -> com.wingedsheep.engine.core.EffectResult.success(state)
             }
-            mergeAndContinue(result.toExecutionResult(), events, checkForMore)
+            val published = if (result.isSuccess) result.copy(
+                state = exposeCollectionsToNextFrame(result.state, result.updatedCollections),
+            ) else result
+            mergeAndContinue(published.toExecutionResult(), events, checkForMore)
         },
 
         // CR 605.3a — the player activated a mana ability while the engine was asking them for a
