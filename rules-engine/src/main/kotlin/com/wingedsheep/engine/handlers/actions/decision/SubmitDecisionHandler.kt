@@ -8,6 +8,8 @@ import com.wingedsheep.engine.core.EngineServices
 import com.wingedsheep.engine.handlers.actions.ActionHandler
 import com.wingedsheep.engine.mechanics.StateBasedActionChecker
 import com.wingedsheep.engine.mechanics.CastPriorityProcessor
+import com.wingedsheep.engine.mechanics.combat.BlockDeclarationProcessor
+import com.wingedsheep.engine.mechanics.combat.CombatDefenders
 import com.wingedsheep.engine.state.GameState
 import com.wingedsheep.engine.state.nameVisibleToAll
 import com.wingedsheep.engine.state.components.identity.CardComponent
@@ -29,6 +31,7 @@ class SubmitDecisionHandler(
 ) : ActionHandler<SubmitDecision> {
     override val actionType: KClass<SubmitDecision> = SubmitDecision::class
     private val castPriorityProcessor = CastPriorityProcessor(sbaChecker, triggerDetector, triggerProcessor)
+    private val blockDeclarationProcessor = BlockDeclarationProcessor(sbaChecker, triggerDetector, triggerProcessor)
 
     override fun validate(state: GameState, action: SubmitDecision): String? {
         val pending = state.pendingDecision
@@ -65,7 +68,13 @@ class SubmitDecisionHandler(
             // The answered suspension is consumed by resume. Only the frames beneath it can be
             // untouched outer work; a restored question must remain above deferred triggers too.
             val preResumeStack = clearedState.continuationStack.dropLast(1)
+            // Test the input boundary: paying the final block tax may remove the last outstanding
+            // declaration in the result. Nested mana-cost/color choices still belong here too.
+            val completingBlockDeclaration = CombatDefenders.nextUndeclaredDefender(clearedState) != null
             var result = continuationHandler.resume(clearedState, action.response)
+            if (completingBlockDeclaration) {
+                return blockDeclarationProcessor.complete(result, listOf(submittedEvent))
+            }
             if (result.isSuccess && result.state.gameOver) {
                 return result.copy(state = result.state.withPriorityAfterStackResolution(),
                     events = listOf(submittedEvent) + result.events)
@@ -223,6 +232,13 @@ class SubmitDecisionHandler(
             if (result.isPaused && eventsNeedingTriggers.isNotEmpty()) {
                 val deferredTriggers = triggerDetector.detectTriggers(result.state, eventsNeedingTriggers)
                 if (deferredTriggers.isNotEmpty()) {
+                    if (com.wingedsheep.engine.mechanics.mana.ManaPaymentWindow.paymentInProgress(result.state)) {
+                        return ExecutionResult.propagatePause(
+                            com.wingedsheep.engine.mechanics.mana.ManaPaymentWindow.deferTriggers(
+                                result.state, deferredTriggers),
+                            listOf(submittedEvent) + result.events,
+                        ).copy(triggersAlreadyProcessed = true)
+                    }
                     val pending = PendingTriggersContinuation(
                         remainingTriggers = deferredTriggers
                     )

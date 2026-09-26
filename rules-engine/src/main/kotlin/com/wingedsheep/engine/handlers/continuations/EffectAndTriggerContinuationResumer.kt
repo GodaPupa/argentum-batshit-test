@@ -86,7 +86,8 @@ class EffectAndTriggerContinuationResumer(
             val elseComponent = TriggeredAbilityOnStackComponent(
                 sourceId = continuation.sourceId,
                 sourceName = continuation.sourceName,
-                sourceBattlefieldTimestamp = continuation.sourceBattlefieldTimestamp,
+                lastKnownSourceSnapshot = continuation.lastKnownSourceSnapshot,
+            sourceBattlefieldTimestamp = continuation.sourceBattlefieldTimestamp,
                 objectReferences = continuation.objectReferences,
                 controllerId = continuation.controllerId,
                 effect = continuation.elseEffect,
@@ -148,6 +149,7 @@ class EffectAndTriggerContinuationResumer(
         val abilityComponent = TriggeredAbilityOnStackComponent(
             sourceId = continuation.sourceId,
             sourceName = continuation.sourceName,
+            lastKnownSourceSnapshot = continuation.lastKnownSourceSnapshot,
             sourceBattlefieldTimestamp = continuation.sourceBattlefieldTimestamp,
             objectReferences = continuation.objectReferences,
             controllerId = continuation.controllerId,
@@ -239,6 +241,7 @@ class EffectAndTriggerContinuationResumer(
         val distributionContinuation = TriggerDamageDistributionContinuation(
             sourceId = continuation.sourceId,
             sourceName = continuation.sourceName,
+            lastKnownSourceSnapshot = continuation.lastKnownSourceSnapshot,
             sourceBattlefieldTimestamp = continuation.sourceBattlefieldTimestamp,
             objectReferences = continuation.objectReferences,
             controllerId = continuation.controllerId,
@@ -282,6 +285,7 @@ class EffectAndTriggerContinuationResumer(
         val abilityComponent = TriggeredAbilityOnStackComponent(
             sourceId = continuation.sourceId,
             sourceName = continuation.sourceName,
+            lastKnownSourceSnapshot = continuation.lastKnownSourceSnapshot,
             sourceBattlefieldTimestamp = continuation.sourceBattlefieldTimestamp,
             objectReferences = continuation.objectReferences,
             controllerId = continuation.controllerId,

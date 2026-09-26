@@ -2631,6 +2631,57 @@
     ]
 }
 
+// Kaervek's Torch
+{
+    "name": "Kaervek's Torch",
+    "manaCost": "{X}{R}",
+    "typeLine": "Sorcery",
+    "oracleText": "As long as Kaervek's Torch is on the stack, spells that target it cost {2} more to cast.\nKaervek's Torch deals X damage to any target.",
+    "script": {
+        "spellEffect": {
+            "type": "DealDamage",
+            "amount": "XValue",
+            "target": {
+                "type": "BoundVariable",
+                "name": "any target"
+            }
+        },
+        "targetRequirements": [
+            {
+                "type": "AnyTarget",
+                "id": "any target"
+            }
+        ],
+        "staticAbilities": [
+            {
+                "type": "ModifySpellCost",
+                "target": {
+                    "type": "AnyCasterTargeting",
+                    "targetFilter": {
+                        "baseFilter": "permanent",
+                        "scope": "Self"
+                    }
+                },
+                "modification": {
+                    "type": "IncreaseGeneric",
+                    "amount": 2
+                },
+                "sourceZones": [
+                    "Stack"
+                ]
+            }
+        ]
+    },
+    "metadata": {
+        "collectorNumber": "185",
+        "artist": "John Coulthart",
+        "flavorText": "The pulsing heat of the midday Sun burns in the Lion's eye.\n—Stone inscription, source unknown"
+    },
+    "colorIdentityOverride": [
+        "RED"
+    ]
+}
+
 // Karoo Meerkat
 {
     "name": "Karoo Meerkat",

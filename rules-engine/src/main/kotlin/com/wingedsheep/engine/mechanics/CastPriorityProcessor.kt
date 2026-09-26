@@ -11,9 +11,10 @@ import com.wingedsheep.engine.state.PendingCastPriority
 import com.wingedsheep.sdk.model.EntityId
 
 /**
- * The ordinary post-cast priority boundary (CR 117.3c, 117.5, 704.3).
- * Costs and the cast have completed. Captured cast triggers wait through every SBA choice and
- * repeat pass before being placed. A cast made during stack resolution must not enter this path.
+ * The ordinary post-cast or post-activation priority boundary (CR 117.3c, 117.5, 704.3).
+ * Costs and the cast/activation have completed. Captured triggers wait through every SBA choice
+ * and repeat pass before being placed. An action nested inside a payment or stack resolution must
+ * not enter this path. Standalone mana abilities enter only after their mana effect completes.
  * Existing events and decisions carry the whole interaction; no caller may synthesize a pass.
  */
 class CastPriorityProcessor(
@@ -29,7 +30,10 @@ class CastPriorityProcessor(
     ): ExecutionResult {
         check(!state.stackResolutionPendingPriority)
         check(state.pendingCastPriority == null)
-        return settle(state.copy(pendingCastPriority = PendingCastPriority(caster, triggers)), events)
+        // The recipient is retained in pendingCastPriority; no priority exists during an SBA
+        // or trigger-target choice before the boundary finishes (CR 117.5).
+        return settle(state.copy(pendingCastPriority = PendingCastPriority(caster, triggers))
+            .withPriority(null), events)
     }
 
     /** Resume only this boundary, preserving already captured/processed event batches. */

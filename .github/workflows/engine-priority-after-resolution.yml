@@ -5,6 +5,8 @@ on:
     paths:
       - .github/workflows/engine-priority-after-resolution.yml
       - docs/engine-priority-after-resolution*
+      - docs/experiments/pest-control/tier-one-postboard-engine-priority-sources.json
+      - docs/experiments/pest-control/tier-one-postboard-engine-priority-shared-receiving-sources.json
       - rules-engine/src/main/kotlin/com/wingedsheep/engine/state/GameState.kt
       - rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/ContinuationHandler.kt
       - rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/priority/PassPriorityHandler.kt
@@ -53,28 +55,45 @@ jobs:
       - name: Bind exact source and effective rules archive
         env:
           EXPECTED_HEAD: ${{ github.event.pull_request.head.sha }}
+          SOURCE_MANIFEST: docs/experiments/pest-control/tier-one-postboard-engine-priority-shared-receiving-sources.json
         run: |
           python - <<'PY'
           import datetime, hashlib, json, os, pathlib, subprocess, urllib.request
           root = pathlib.Path('.')
           out = root / 'build/reports/engine-priority-after-resolution'
           out.mkdir(parents=True, exist_ok=True)
-          manifest_path = root / 'docs/engine-priority-after-resolution-sources.json'
+          manifest_path = root / os.environ['SOURCE_MANIFEST']
           manifest = json.loads(manifest_path.read_text())
           head = subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip()
+          # Record rejected bindings too; a failed source guard is evidence.
+          observed = {path: hashlib.sha256((root / path).read_bytes()).hexdigest()
+                      if (root / path).is_file() else None
+                      for path in manifest['source_files_sha256']}
+          (out / 'source-manifest.json').write_bytes(manifest_path.read_bytes())
+          (out / 'binding-attempt.json').write_text(json.dumps({
+              'candidate_head': head, 'expected_head': os.environ['EXPECTED_HEAD'],
+              'github_run_id': os.environ['GITHUB_RUN_ID'],
+              'github_run_attempt': os.environ['GITHUB_RUN_ATTEMPT'],
+              'manifest_path': str(manifest_path),
+              'manifest_sha256': hashlib.sha256(manifest_path.read_bytes()).hexdigest(),
+              'expected_source_files_sha256': manifest['source_files_sha256'],
+              'observed_source_files_sha256': observed,
+              'scope': 'DETERMINISTIC_RULES_REGRESSION_ONLY',
+              'official_execution_authorized': False,
+          }, indent=2) + '\n')
           assert head == os.environ['EXPECTED_HEAD']
           subprocess.check_call(['git', 'merge-base', '--is-ancestor', manifest['base_commit'], head])
           for path, digest in manifest['source_files_sha256'].items():
-              assert hashlib.sha256((root / path).read_bytes()).hexdigest() == digest, path
+              assert observed[path] == digest, path
           rules = manifest['rules']
           request = urllib.request.Request(rules['source_url'], headers={'User-Agent': 'Argentum-rules-validation/1.0'})
           with urllib.request.urlopen(request, timeout=60) as response:
               raw = response.read()
+          (out / 'effective-rules.txt').write_bytes(raw)
           assert len(raw) == rules['byte_length']
           assert hashlib.sha256(raw).hexdigest() == rules['sha256']
           verified_date = datetime.datetime.now(datetime.timezone.utc).date().isoformat()
           assert rules['effective_date'] <= verified_date
-          (out / 'effective-rules.txt').write_bytes(raw)
           provenance = {
               'schema': 'engine-priority-after-resolution-validation-v1',
               'candidate_head': head, 'base_commit': manifest['base_commit'],

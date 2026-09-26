@@ -265,6 +265,7 @@ val engineSerializersModule = SerializersModule {
         subclass(ReturnFromGraveyardContinuation::class)
         subclass(PayOrSufferManaSelectionContinuation::class)
         subclass(ChooseDoorContinuation::class)
+        subclass(TriggerOrderingContinuation::class)
         subclass(ReplacementChoiceContinuation::class)
         subclass(TriggerModalModeSelectionContinuation::class)
         subclass(TriggerModalTargetSelectionContinuation::class)

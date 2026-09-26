@@ -3397,6 +3397,115 @@
     ]
 }
 
+// Relic of Progenitus
+{
+    "name": "Relic of Progenitus",
+    "manaCost": "{1}",
+    "typeLine": "Artifact",
+    "oracleText": "{T}: Target player exiles a card from their graveyard.\n{1}, Exile this artifact: Exile all graveyards. Draw a card.",
+    "script": {
+        "activatedAbilities": [
+            {
+                "id": "ability_1",
+                "cost": "CostTap",
+                "effect": {
+                    "type": "Composite",
+                    "effects": [
+                        {
+                            "type": "GatherCards",
+                            "source": {
+                                "type": "FromZone",
+                                "zone": "Graveyard",
+                                "player": {
+                                    "type": "ContextPlayer",
+                                    "index": 0
+                                }
+                            },
+                            "storeAs": "relicGraveyard"
+                        },
+                        {
+                            "type": "SelectFromCollection",
+                            "from": "relicGraveyard",
+                            "selection": {
+                                "type": "ChooseExactly",
+                                "count": {
+                                    "type": "Fixed",
+                                    "amount": 1
+                                }
+                            },
+                            "chooser": "TargetPlayer",
+                            "storeSelected": "relicExiled",
+                            "prompt": "Exile a card from your graveyard"
+                        },
+                        {
+                            "type": "MoveCollection",
+                            "from": "relicExiled",
+                            "destination": {
+                                "type": "ToZone",
+                                "zone": "Exile",
+                                "player": {
+                                    "type": "ContextPlayer",
+                                    "index": 0
+                                }
+                            }
+                        }
+                    ]
+                },
+                "targetRequirements": [
+                    "TargetPlayer"
+                ],
+                "descriptionOverride": "{T}: Target player exiles a card from their graveyard."
+            },
+            {
+                "id": "ability_2",
+                "cost": {
+                    "type": "CostComposite",
+                    "costs": [
+                        {
+                            "type": "CostAtomWrapper",
+                            "atom": {
+                                "type": "AtomMana",
+                                "cost": "{1}"
+                            }
+                        },
+                        "CostExileSelf"
+                    ]
+                },
+                "effect": {
+                    "type": "Composite",
+                    "effects": [
+                        "ExileAllGraveyards",
+                        {
+                            "type": "DrawCards",
+                            "count": {
+                                "type": "Fixed",
+                                "amount": 1
+                            }
+                        }
+                    ]
+                },
+                "descriptionOverride": "{1}, Exile this artifact: Exile all graveyards. Draw a card."
+            }
+        ]
+    },
+    "metadata": {
+        "collectorNumber": "218",
+        "artist": "Jean-Sébastien Rossbach",
+        "flavorText": "Elves believe the hydra-god Progenitus sleeps beneath Naya, feeding on forgotten magics.",
+        "rulings": [
+            {
+                "date": "2016-06-08",
+                "text": "If you activate Relic of Progenitus's first ability, the targeted player chooses which card to exile. The choice is made as the ability resolves."
+            },
+            {
+                "date": "2016-06-08",
+                "text": "You can activate Relic of Progenitus's second ability even if no players have any cards in their graveyards. You'll still draw a card."
+            }
+        ]
+    },
+    "colorIdentityOverride": []
+}
+
 // Resounding Roar
 {
     "name": "Resounding Roar",

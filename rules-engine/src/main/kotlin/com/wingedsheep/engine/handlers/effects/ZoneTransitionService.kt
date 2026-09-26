@@ -50,6 +50,8 @@ import com.wingedsheep.engine.state.components.player.CreatureCardsPutIntoGravey
 import com.wingedsheep.engine.state.components.player.PlayerDescendedThisTurnComponent
 import com.wingedsheep.engine.state.components.player.SacrificedArtifactThisTurnComponent
 import com.wingedsheep.engine.state.components.player.SacrificedFoodThisTurnComponent
+import com.wingedsheep.engine.state.components.stack.ActivatedAbilityOnStackComponent
+import com.wingedsheep.engine.state.components.stack.TriggeredAbilityOnStackComponent
 import com.wingedsheep.sdk.core.CardType
 import com.wingedsheep.sdk.core.CounterType
 import com.wingedsheep.sdk.core.Subtype
@@ -409,6 +411,13 @@ object ZoneTransitionService {
             com.wingedsheep.engine.state.components.stack.EntitySnapshot(
                 entityId = entityId,
                 battlefieldEntryTimestamp = container.get<BattlefieldEntryTimestampComponent>()?.timestamp,
+                objectRef = oldObject,
+                colors = state.projectedState.getColors(entityId),
+                ownerId = ownerId,
+                name = cardComponent.name,
+                supertypes = state.projectedState.getSupertypes(entityId),
+                grantedStaticAbilities = state.grantedStaticAbilities
+                    .filter { it.entityId == entityId }.map { it.ability },
                 power = lastKnownPower,
                 toughness = lastKnownToughness,
                 // Mirror the projected type line's subtypes into the snapshot's own `subtypes`
@@ -439,6 +448,41 @@ object ZoneTransitionService {
 
         var newState = state
         val events = mutableListOf<EngineGameEvent>()
+
+        // A pending ability refers to the original source object (CR 113.7a, 608.2h).
+        // Freeze at departure, so changes since activation count, and retain the snapshot on
+        // the stack object so exile, token cleanup or a return cannot erase or overwrite it.
+        // A dies trigger can have been stacked after the departure; carry its matching snapshot
+        // forward before a subsequent graveyard move strips LastKnownPermanentComponent.
+        val sourceSnapshot = lastKnownSnapshot ?: container.get<LastKnownPermanentComponent>()?.snapshot
+        if (sourceSnapshot?.objectRef != null) {
+            // A previous defender's trigger can still be waiting when a later defender pays
+            // costs. Preserve the original source before token cleanup or another zone move;
+            // this is independent of the event's triggering-object snapshot.
+            newState = newState.copy(pendingBlockTriggers = newState.pendingBlockTriggers.map { pending ->
+                if (pending.objectReferences.origin == sourceSnapshot.objectRef &&
+                    pending.lastKnownSourceSnapshot == null
+                ) pending.copy(lastKnownSourceSnapshot = sourceSnapshot) else pending
+            })
+            for ((stackId, stackEntity) in state.entities) {
+                val activated = stackEntity.get<ActivatedAbilityOnStackComponent>()
+                val triggered = stackEntity.get<TriggeredAbilityOnStackComponent>()
+                if (activated != null && activated.objectReferences.origin == sourceSnapshot.objectRef &&
+                    activated.lastKnownSourceSnapshot == null
+                ) {
+                    newState = newState.updateEntity(stackId) {
+                        it.with(activated.copy(lastKnownSourceSnapshot = sourceSnapshot))
+                    }
+                }
+                if (triggered != null && triggered.objectReferences.origin == sourceSnapshot.objectRef &&
+                    triggered.lastKnownSourceSnapshot == null
+                ) {
+                    newState = newState.updateEntity(stackId) {
+                        it.with(triggered.copy(lastKnownSourceSnapshot = sourceSnapshot))
+                    }
+                }
+            }
+        }
 
         // 4. EXIT CLEANUP if leaving battlefield
         if (leavingBattlefield) {

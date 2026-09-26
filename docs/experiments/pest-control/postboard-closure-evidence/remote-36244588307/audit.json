@@ -1,0 +1,78 @@
+{
+  "schema": "pest-postboard-integration-failure-audit-v1",
+  "candidate_head": "3785964e46ac2b37331a0b7ce14cb815293b781d",
+  "github_run_id": 36244588307,
+  "github_job_id": 108411295495,
+  "artifact_id": 10907226338,
+  "artifact_sha256": "6161d0321bae219e83cc408cf56b876a88aed45d40c7694129a570a3eccd2be3",
+  "classification": "EXPECTED_GENERATED_SNAPSHOT_DRIFT",
+  "reason": "Faerie source is present but ordinary generated SHM golden is not integrated yet. Snapshot stage fails; prior card/runtime and inventory stages pass.",
+  "tests": [
+    {
+      "path": "test-results/accepted-postboard-compatibility/TEST-com.wingedsheep.gym.PestControlTierOnePostboardSupportBatchATest.xml",
+      "cases": 1,
+      "bad": []
+    },
+    {
+      "path": "test-results/card-lint/TEST-com.wingedsheep.sdk.serialization.CardLinterTest.xml",
+      "cases": 43,
+      "bad": []
+    },
+    {
+      "path": "test-results/card-serialization/TEST-com.wingedsheep.sdk.serialization.CardSerializationRoundTripTest.xml",
+      "cases": 21,
+      "bad": []
+    },
+    {
+      "path": "test-results/cascade-regression/TEST-com.wingedsheep.engine.scenarios.CascadeKeywordTest.xml",
+      "cases": 3,
+      "bad": []
+    },
+    {
+      "path": "test-results/component-registration/TEST-com.wingedsheep.engine.hygiene.SerializationPolymorphicRegistrationTest.xml",
+      "cases": 8,
+      "bad": []
+    },
+    {
+      "path": "test-results/frozen-admission/TEST-com.wingedsheep.gym.PestControlTierOneSpyComboAdmissionTest.xml",
+      "cases": 1,
+      "bad": []
+    },
+    {
+      "path": "test-results/main-closure/TEST-com.wingedsheep.gym.PestControlTierOneSpyComboSupportBatchCTest.xml",
+      "cases": 1,
+      "bad": []
+    },
+    {
+      "path": "test-results/nyxborn-hydra/TEST-com.wingedsheep.engine.scenarios.NyxbornHydraScenarioTest.xml",
+      "cases": 15,
+      "bad": []
+    },
+    {
+      "path": "test-results/prior-support/TEST-com.wingedsheep.gym.PestControlTierOneSpyComboSupportBatchBTest.xml",
+      "cases": 1,
+      "bad": []
+    },
+    {
+      "path": "test-results/prototype-regression/TEST-com.wingedsheep.engine.scenarios.PrototypeKeywordTest.xml",
+      "cases": 3,
+      "bad": []
+    },
+    {
+      "path": "test-results/strict-snapshots/TEST-com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest.xml",
+      "cases": 338,
+      "bad": [
+        {
+          "name": "SHM (Shadowmoor): card trees match golden",
+          "type": "failure",
+          "message": "java.lang.AssertionError: Snapshot mismatch for snapshots/cards/SHM.json. Fresh output written to build/snapshots-actual/snapshots/cards/SHM.json.\nReview the diff. If the change is intentional, re-ble"
+        }
+      ]
+    }
+  ],
+  "resolution": "Independently review the ordinarily generated exact SHM bytes from combined gate36244588321, integrate only the Faerie record, then requalify final source. Do not alter runtime to satisfy stale snapshot.",
+  "official_seeds_generated": 0,
+  "official_games_initialized": 0,
+  "official_actions_submitted": 0,
+  "outcome_exposure": 0
+}
