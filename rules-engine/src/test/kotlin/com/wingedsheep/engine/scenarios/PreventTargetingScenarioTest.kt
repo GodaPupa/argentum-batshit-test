@@ -40,7 +40,7 @@ class PreventTargetingScenarioTest : FunSpec({
         val d = game()
         val land = d.putLandOnBattlefield(d.player2, "Forest")
         val result = PreventTargetingExecutor().execute(d.state,
-            PreventTargetingEffect(EffectTarget.SpecificEntity(land)), EffectContext(controllerId = d.player1))
+            PreventTargetingEffect(EffectTarget.SpecificEntity(land)), EffectContext(sourceId = null, controllerId = d.player1))
         val state = result.newState
         for (sourceType in listOf(TargetingSourceType.SPELL, TargetingSourceType.ABILITY)) {
             (TargetValidator().validateTargets(state, listOf(ChosenTarget.Permanent(land)),
@@ -55,7 +55,7 @@ class PreventTargetingScenarioTest : FunSpec({
     test("generic player target is enforced and visible through state serialization") {
         val d = game()
         val result = PreventTargetingExecutor().execute(d.state,
-            PreventTargetingEffect(EffectTarget.Controller), EffectContext(controllerId = d.player1))
+            PreventTargetingEffect(EffectTarget.Controller), EffectContext(sourceId = null, controllerId = d.player1))
         val state = SerializationTestSupport.roundTrip(result.newState)
         (d.player1 in TargetFinder().findLegalTargets(state, Targets.Player, d.player2)) shouldBe false
         (d.player1 in TargetEnumerationUtils(PredicateEvaluator()).findValidTargets(state, d.player2,
@@ -72,7 +72,7 @@ class PreventTargetingScenarioTest : FunSpec({
         val target = d.putCreatureOnBattlefield(d.player2, "Centaur Courser")
         val result = PreventTargetingExecutor().execute(d.state,
             PreventTargetingEffect(EffectTarget.SpecificEntity(target), Player.Each, Duration.Permanent),
-            EffectContext(controllerId = d.player1))
+            EffectContext(sourceId = null, controllerId = d.player1))
         listOf(d.player1, d.player2).forEach { FloatingTargetingRestriction.prevents(result.newState, target, it) shouldBe true }
         result.newState.floatingEffects.last().duration shouldBe Duration.Permanent
     }
@@ -81,7 +81,7 @@ class PreventTargetingScenarioTest : FunSpec({
         val d = game()
         for (target in listOf(EffectTarget.ContextTarget(0), EffectTarget.SpecificEntity(EntityId("absent")))) {
             val result = PreventTargetingExecutor().execute(d.state, PreventTargetingEffect(target),
-                EffectContext(controllerId = d.player1))
+                EffectContext(sourceId = null, controllerId = d.player1))
             result.newState shouldBe d.state
             result.events shouldBe emptyList()
         }
