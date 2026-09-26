@@ -8,6 +8,7 @@ on:
       - rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/mana/ManaPaymentFeasibility.kt
       - rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/mana/ManaSolver.kt
       - rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/ManaPaymentFeasibilityTest.kt
+      - rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/ManaPaymentPolicyWitnessTest.kt
 
 permissions:
   contents: read
@@ -32,6 +33,7 @@ jobs:
           distribution: temurin
           java-version: '21'
       - uses: gradle/actions/setup-gradle@v6
+      - uses: extractions/setup-just@v3
       - name: Retain exact source binding before validation
         shell: bash
         run: |
@@ -40,7 +42,8 @@ jobs:
           python3 - <<'PYTHON'
           import hashlib, json, os, pathlib, subprocess
           expected = {
-              'rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/mana/ManaPaymentFeasibility.kt': '68ed797fe8032233fddaa3878a3109afcefbfe70db20ea54ca77efced2040bf3',
+              'rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/ManaPaymentPolicyWitnessTest.kt': '9c81b0eeae9a1deaa9223edd3d070bcb43a8aeb368032e09a704a1e7666dd047',
+              'rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/mana/ManaPaymentFeasibility.kt': '6d5d6e2561bdf3560e4390cfc4b5563852509ea7e7e2acdbf7d217665962b379',
               'rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/mana/ManaSolver.kt': '8d01d433f402067e29e91e57907d9460408f72e7d35230e3e35cb439b6277daa',
               'rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/ManaPaymentFeasibilityTest.kt': '1bbbd84048be49cf676f0e9222d5b44735f323ccd11add4322d51ba0f93f0641',
               'rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/PaidFilterManaSolverTest.kt': '5d8590e625f46e98ad6e4eaef4787443dd09dbbe41215f6e8d1ec47ef227ffd9',
@@ -64,7 +67,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          scripts/gradle-locked :rules-engine:test --tests '*ManaPaymentFeasibilityTest' \
+          just test-class ManaPaymentFeasibilityTest --tests '*ManaPaymentPolicyWitnessTest' \
             --max-workers=1 -PkotlinCompileParallelism=1 \
             -Pkotlin.compiler.execution.strategy=in-process -Dorg.gradle.jvmargs=-Xmx4g \
             --info --stacktrace 2>&1 | tee build/reports/payment-feasibility/focused.log
@@ -80,7 +83,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          scripts/gradle-locked :rules-engine:test \
+          just test-class PaidFilterManaSolverTest \
             --tests '*PaidFilterManaSolverTest' --tests '*RestrictedXManaReconciliationTest' \
             --tests '*MultiManaSourceTest' --tests '*MonocolorHybridManaSolverTest' \
             --tests '*DynamicManaAmountAutoTapTest' --tests '*ManaSpendRestrictionAnyAbilityTest' \
@@ -97,7 +100,7 @@ jobs:
           import hashlib, json, os, pathlib, xml.etree.ElementTree as ET
           root = pathlib.Path('build/reports/payment-feasibility')
           expected = {
-              'focused': {'ManaPaymentFeasibilityTest': 21},
+              'focused': {'ManaPaymentFeasibilityTest': 21, 'ManaPaymentPolicyWitnessTest': 4},
               'compatibility': {'PaidFilterManaSolverTest': 14, 'RestrictedXManaReconciliationTest': 4,
                   'MultiManaSourceTest': 7, 'MonocolorHybridManaSolverTest': 4,
                   'DynamicManaAmountAutoTapTest': 6, 'ManaSpendRestrictionAnyAbilityTest': 5,
@@ -122,11 +125,11 @@ jobs:
                       'case_names': names, 'xml_sha256': hashlib.sha256(path.read_bytes()).hexdigest()})
                   seen.add(name)
               assert seen == set(expected[stage]), (stage, seen)
-          assert sum(suite['tests'] for suite in suites) == 73
+          assert sum(suite['tests'] for suite in suites) == 77
           report = {'schema': 'shared-payment-feasibility-target-v1', 'run_id': os.environ['GITHUB_RUN_ID'],
               'disposition': 'COMPONENT_TARGET_ONLY_PENDING_INDEPENDENT_AUDIT_FULL_INTEGRATION_AND_RECEIVING_WIRING',
               'binding': json.loads((root/'source-binding.json').read_text()), 'suites': suites,
-              'actual_cases': 73, 'legal_menu_wired': False, 'pilot_witness_wired': False,
+              'actual_cases': 77, 'legal_menu_wired': False, 'pilot_witness_wired': False,
               'checkpoint_collector_wired': False, 'full_integration': False,
               'official_gameplay': 0, 'seeds_consumed': 0, 'gameplay_admission': False}
           (root/'result.json').write_text(json.dumps(report, indent=2) + '\n')
