@@ -5,6 +5,7 @@ import com.wingedsheep.engine.core.DecisionContext
 import com.wingedsheep.engine.core.LegendRuleContinuation
 import com.wingedsheep.engine.core.PassPriority
 import com.wingedsheep.engine.core.YesNoDecision
+import com.wingedsheep.engine.core.suspendForDecision
 import com.wingedsheep.engine.legalactions.LegalActionEnumerator
 import com.wingedsheep.engine.state.GameState
 import com.wingedsheep.engine.state.ZoneKey

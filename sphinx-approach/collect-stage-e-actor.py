@@ -12,7 +12,7 @@ ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "build/reports/sphinx-stage-e-actor"
 BUDGET = "sphinx-approach/STAGE_E_ACTOR_FIXTURE_BUDGET.json"
 SCOPE = "sphinx-approach/STAGE_E_ACTOR_RECEIVING_SCOPE.json"
-BUDGET_SHA256 = "6f162994a176e83431939e509d7611132192fbc969891fc04ff1372eee831cc7"
+BUDGET_SHA256 = "6ecf7d56345261a0776b2d0f4fb72b37d50d33ab48fcb32a279562ffb508c3df"
 SCOPE_SHA256 = "1602ca99f7be5f80e486e7353994be8e4aba95049b17ff55261beb18372a15c8"
 BANKS = {
     "com.wingedsheep.gym.actorinput.ActorObservationBoundaryTest": 28,

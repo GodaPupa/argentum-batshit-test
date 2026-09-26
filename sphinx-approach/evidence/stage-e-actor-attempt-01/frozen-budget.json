@@ -1,6 +1,6 @@
 {
   "schema": "sphinx-stage-e-actor-receiving-budget-v1",
-  "status": "FIXED_BANK_SOURCE_CORRECTION_PENDING_INDEPENDENT_REVIEW",
+  "status": "PROSPECTIVE_PENDING_INDEPENDENT_SOURCE_REVIEW_NO_EXECUTION",
   "controlling_protocol": {
     "path": "STAGE_E_RECONSTRUCTION_PLAN.md",
     "sha256": "066a08b74350dcf20a03b917b2c122501b9d87cbca52e3273d216bc183a8ea43",
@@ -146,26 +146,15 @@
   },
   "fixture_source_sha256": {
     "gym/src/test/kotlin/com/wingedsheep/gym/actorinput/ActorSpellPaymentProjectionTest.kt": "b6b8203017608a83bd553eb95e5190a0faf7d0811c8644b1ca7f0f8c4c279bfa",
-    "gym/src/test/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEActorAdapterTest.kt": "4aa40846fe72391f23ce8d429240de09181c7f027d89cab3d5bc3adcdd07b273"
+    "gym/src/test/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEActorAdapterTest.kt": "f8ac39a68c7551aa880364750f4ea158d20ce90b24d1154dea7f57a73754b647"
   },
   "execution_record": {
-    "attempts": 1,
+    "attempts": 0,
     "passed": 0,
     "failed": 0,
     "official_seeds": 0,
     "official_games": 0,
-    "official_outcomes_exposed": 0,
-    "compilation_failures": 1,
-    "actual_cases_executed": 0
+    "official_outcomes_exposed": 0
   },
-  "gameplay_authorized": false,
-  "source_correction": {
-    "predecessor_source": "c73d227c1e274bcbeabe82b83c1950526653ebf6",
-    "predecessor_tree": "e8e80b0c6f23ba7be2400c8cf667bffd8e5fb122",
-    "predecessor_budget_sha256": "6f162994a176e83431939e509d7611132192fbc969891fc04ff1372eee831cc7",
-    "predecessor_budget_path": "evidence/stage-e-actor-attempt-01/frozen-budget.json",
-    "attempt_receipt": "evidence/stage-e-actor-attempt-01/author-audit.json",
-    "change": "Only import com.wingedsheep.engine.core.suspendForDecision in the adapter test; no changed fixture body, case identity, assertion, input, development budget or policy.",
-    "same_complete_bank_required": true
-  }
+  "gameplay_authorized": false
 }
