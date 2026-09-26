@@ -1,0 +1,69 @@
+{
+  "artifact_id": 10914678223,
+  "chunks": [
+    {
+      "bytes": 25165824,
+      "file": "part-00.bin",
+      "index": 0,
+      "offset": 0,
+      "sha256": "2dc472a6bf6bb29e7a8c4803d5e9f268753b4c17a8a017e2e741172a20dd91a2"
+    },
+    {
+      "bytes": 25165824,
+      "file": "part-01.bin",
+      "index": 1,
+      "offset": 25165824,
+      "sha256": "d8cec61ab52ab0bf8e55c2361bf6c3c6ab974835cab73bf8c080838221a4efda"
+    },
+    {
+      "bytes": 25165824,
+      "file": "part-02.bin",
+      "index": 2,
+      "offset": 50331648,
+      "sha256": "7b8b2cf6ec3d6828d0160eed52e3ede74f7970e7a45acf8da91e45080540d71f"
+    },
+    {
+      "bytes": 19627208,
+      "file": "part-03.bin",
+      "index": 3,
+      "offset": 75497472,
+      "sha256": "16d1d30561c9013bd6641e77e6a1fcb1d0d3cf7b172d9207202fe9e5a9114601"
+    }
+  ],
+  "evidence_source_branch": "ferocity-recycling/qualification-review",
+  "evidence_source_head": "3a4f99a7653839506e96d19e6639f58d9e8c5ced",
+  "expected_original": {
+    "bytes": 95124680,
+    "name": "ferocity-recycling-gym-36268324461-1",
+    "run_id": 36268324461,
+    "sha256": "9849c7aade4ffe015fd5ab859ae57e4ba3c4e5461514bbc72bc6ffa355be0816"
+  },
+  "repository": "GodaPupa/argentum-batshit-test",
+  "retrieval_run_attempt": "1",
+  "retrieval_run_id": "36270532730",
+  "retrieval_source_files": {
+    ".github/workflows/ferocity-source08-artifact-transfer.yml": "55128a319d8e7a4ab182aae5f2b16ae2dc4a6b941126465a96f0e2cf5053093d",
+    "ferocity-recycling/tools/split-source08-artifacts.py": "b2f9b8232c2a53da1d69dedbb989eccc9b29b83f3922247fe861ef40b2c2641c"
+  },
+  "retrieval_source_head": "45bd52f967d9880e9792f30e1f00d40c68711c66",
+  "schema": "ferocity-existing-artifact-byte-transport-v1",
+  "scope": "Transport of already-generated original ZIP bytes only; no qualification or gameplay execution.",
+  "status": "VERIFIED_ORIGINAL_ZIP_SPLIT",
+  "verified_original_metadata": {
+    "created_at": "2026-09-26T20:18:24Z",
+    "digest": "sha256:9849c7aade4ffe015fd5ab859ae57e4ba3c4e5461514bbc72bc6ffa355be0816",
+    "expired": false,
+    "id": 10914678223,
+    "name": "ferocity-recycling-gym-36268324461-1",
+    "size_in_bytes": 95124680
+  },
+  "verified_original_run": {
+    "conclusion": "success",
+    "head_branch": "ferocity-recycling/qualification-review",
+    "head_sha": "3a4f99a7653839506e96d19e6639f58d9e8c5ced",
+    "id": 36268324461,
+    "run_attempt": 1,
+    "status": "completed"
+  },
+  "verified_reassembly_sha256": "9849c7aade4ffe015fd5ab859ae57e4ba3c4e5461514bbc72bc6ffa355be0816"
+}
