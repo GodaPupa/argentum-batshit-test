@@ -146,8 +146,7 @@ class PredicateEvaluator {
      * questions about it).
      *
      * **Partial by construction**, and deliberately so: what is answered here is card types,
-     * sub/supertypes, keywords, token-ness and controller — the characteristics an "…from an X
-     * source" clause is ever written against. A predicate outside that set (mana value, colors,
+     * sub/supertypes, colors, keywords, token-ness, controller and owner. A predicate outside that set (mana value,
      * P/T comparisons, "has a non-mana activated ability", …) reports
      * *unanswerable* rather than guessing — see [matchesSnapshotPredicate] — and an unanswerable
      * predicate makes the whole filter fail to match, which is the same answer the caller got before
@@ -170,17 +169,46 @@ class PredicateEvaluator {
         state: GameState,
         snapshot: EntitySnapshot,
         filter: GameObjectFilter,
-        context: PredicateContext
+        context: PredicateContext,
+        requireComplete: Boolean = false,
     ): Boolean {
         filter.controllerPredicate?.let { controllerPred ->
+            if (requireComplete) {
+                check(snapshot.controllerId != null && snapshot.ownerId != null) {
+                    "Missing controller or owner for damage-source snapshot"
+                }
+                check(snapshotControllerPredicateSupported(controllerPred)) {
+                    "Unsupported controller predicate for damage-source snapshot: $controllerPred"
+                }
+            }
             if (!matchesSnapshotController(state, snapshot, controllerPred, context)) return false
         }
-        if (filter.statePredicates.isNotEmpty()) return false
-        if (!filter.cardPredicates.all { matchesSnapshotPredicate(snapshot, it) == true }) return false
+        if (filter.statePredicates.isNotEmpty()) {
+            check(!requireComplete) { "Unsupported state predicates for damage-source snapshot: ${filter.statePredicates}" }
+            return false
+        }
+        val predicateResults = filter.cardPredicates.map { matchesSnapshotPredicate(snapshot, it) }
+        if (false in predicateResults) return false
+        if (null in predicateResults) {
+            check(!requireComplete) { "Incomplete or unsupported damage-source snapshot predicates: ${filter.cardPredicates}" }
+            return false
+        }
         if (filter.anyOf.isNotEmpty()) {
-            return filter.anyOf.any { matchesSnapshot(state, snapshot, it, context) }
+            return filter.anyOf.any { matchesSnapshot(state, snapshot, it, context, requireComplete) }
         }
         return true
+    }
+
+    private fun snapshotControllerPredicateSupported(predicate: ControllerPredicate): Boolean = when (predicate) {
+        is ControllerPredicate.And -> predicate.predicates.all(::snapshotControllerPredicateSupported)
+        is ControllerPredicate.Or -> predicate.predicates.all(::snapshotControllerPredicateSupported)
+        is ControllerPredicate.Not -> snapshotControllerPredicateSupported(predicate.predicate)
+        ControllerPredicate.ControlledByYou, ControllerPredicate.ControlledByOpponent,
+        ControllerPredicate.ControlledByAny, ControllerPredicate.ControlledByActivePlayer,
+        ControllerPredicate.ControlledByTargetOpponent, ControllerPredicate.ControlledByTargetPlayer,
+        ControllerPredicate.OwnedByYou, ControllerPredicate.OwnedByOpponent,
+        ControllerPredicate.OwnedByTargetPlayer -> true
+        else -> false
     }
 
     /**
@@ -207,6 +235,12 @@ class PredicateEvaluator {
             CardPredicate.IsNonlegendary -> typeLine?.isLegendary?.not()
             CardPredicate.IsToken -> snapshot.wasToken
             CardPredicate.IsNontoken -> !snapshot.wasToken
+            is CardPredicate.HasColor -> snapshot.colors?.contains(predicate.color.name)
+            is CardPredicate.NotColor -> snapshot.colors?.contains(predicate.color.name)?.not()
+            CardPredicate.IsColorless -> snapshot.colors?.isEmpty()
+            CardPredicate.IsColored -> snapshot.colors?.isNotEmpty()
+            CardPredicate.IsMulticolored -> snapshot.colors?.let { it.size > 1 }
+            CardPredicate.IsMonocolored -> snapshot.colors?.let { it.size == 1 }
             is CardPredicate.HasSubtype ->
                 typeLine?.hasSubtype(predicate.subtype)
                     ?: snapshot.subtypes.any { it.equals(predicate.subtype.value, ignoreCase = true) }
@@ -233,10 +267,8 @@ class PredicateEvaluator {
     }
 
     /**
-     * [ControllerPredicate] against a snapshot's frozen [EntitySnapshot.controllerId]. Only the
-     * control-based predicates can be answered — ownership isn't frozen — and an unfrozen
-     * controller (or an owner-based predicate) is a non-match, matching [matchesSnapshotPredicate]'s
-     * conservative default.
+     * [ControllerPredicate] against a snapshot's frozen controller/owner. Missing historical
+     * information remains a non-match rather than borrowing a returned object's controller.
      */
     private fun matchesSnapshotController(
         state: GameState,
@@ -244,7 +276,7 @@ class PredicateEvaluator {
         predicate: ControllerPredicate,
         context: PredicateContext
     ): Boolean {
-        val controllerId = snapshot.controllerId ?: return false
+        val controllerId = snapshot.controllerId
         return when (predicate) {
             is ControllerPredicate.And ->
                 predicate.predicates.all { matchesSnapshotController(state, snapshot, it, context) }
@@ -253,13 +285,17 @@ class PredicateEvaluator {
             is ControllerPredicate.Not ->
                 !matchesSnapshotController(state, snapshot, predicate.predicate, context)
             ControllerPredicate.ControlledByYou -> controllerId == context.controllerId
-            ControllerPredicate.ControlledByOpponent -> controllerId != context.controllerId
-            ControllerPredicate.ControlledByAny -> true
+            ControllerPredicate.ControlledByOpponent -> controllerId?.let { it != context.controllerId } ?: false
+            ControllerPredicate.ControlledByAny -> controllerId != null
             ControllerPredicate.ControlledByActivePlayer -> controllerId == state.activePlayerId
             ControllerPredicate.ControlledByTargetOpponent ->
                 context.targetOpponentId?.let { controllerId == it } ?: false
             ControllerPredicate.ControlledByTargetPlayer ->
                 context.targetPlayerId?.let { controllerId == it } ?: false
+            ControllerPredicate.OwnedByYou -> snapshot.ownerId == context.controllerId
+            ControllerPredicate.OwnedByOpponent -> snapshot.ownerId?.let { it != context.controllerId } ?: false
+            ControllerPredicate.OwnedByTargetPlayer ->
+                context.targetPlayerId?.let { snapshot.ownerId == it } ?: false
             else -> false
         }
     }

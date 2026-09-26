@@ -1,5 +1,7 @@
 package com.wingedsheep.engine.scenarios
 
+import com.wingedsheep.engine.support.chooseTriggerOrderInListedOrder
+
 import com.wingedsheep.engine.core.ActivateAbility
 import com.wingedsheep.engine.core.ChooseTargetsDecision
 import com.wingedsheep.engine.core.SelectCardsDecision
@@ -430,6 +432,7 @@ class DireFlailScenarioTest : FunSpec({
         // two granters.
         driver.passPriorityUntil(Step.DECLARE_ATTACKERS)
         driver.declareAttackers(p1, listOf(courser), opponent).error shouldBe null
+        driver.chooseTriggerOrderInListedOrder() // Preserve both distinct granters' attack triggers.
 
         driver.resolveUntilDecision()
         var guard = 0

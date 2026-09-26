@@ -84,6 +84,8 @@ class SpellQuellerScenarioTest : FunSpec({
     test("when the Queller leaves, the exiled card's owner may cast it for free") {
         val (driver, me, opp) = quellTheBears()
         val queller = driver.findPermanent(me, "Spell Queller")!!
+        driver.priorityPlayer shouldBe opp
+        driver.passPriority(opp).error shouldBe null // CR 117.3b restores the active opponent first.
 
         // Kill our own Queller with a Lightning Bolt (2/3 takes 3 damage).
         val bolt = driver.putCardInHand(me, "Lightning Bolt")
@@ -107,6 +109,8 @@ class SpellQuellerScenarioTest : FunSpec({
     test("the owner may decline, and the card stays exiled") {
         val (driver, me, opp) = quellTheBears()
         val queller = driver.findPermanent(me, "Spell Queller")!!
+        driver.priorityPlayer shouldBe opp
+        driver.passPriority(opp).error shouldBe null // CR 117.3b restores the active opponent first.
 
         val bolt = driver.putCardInHand(me, "Lightning Bolt")
         driver.giveMana(me, Color.RED, 1)

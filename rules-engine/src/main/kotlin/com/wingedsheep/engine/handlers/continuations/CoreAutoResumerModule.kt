@@ -25,8 +25,34 @@ class CoreAutoResumerModule(
             mergeAndContinue(result, events, checkForMore)
         },
         autoResumer(PendingTriggersContinuation::class) { state, continuation, events, _ ->
-            val result = services.triggerProcessor.processTriggers(state, continuation.remainingTriggers)
-            mergeAndContinue(result, events)
+            if (continuation.settleAfterManaPayment) {
+                check(state.continuationStack.isEmpty()) {
+                    "Deferred mana-payment triggers reached placement before the outer action finished"
+                }
+                // This batch was captured while no player could receive priority. Reuse the
+                // ordinary boundary so token cleanup, lethal damage and all other SBAs happen
+                // before target selection/placement. Existing untagged ordering queues below
+                // are not reinterpreted as completed resolutions.
+                val triggers = continuation.remainingTriggers + services.triggerDetector.detectTriggers(state, events)
+                val processor = com.wingedsheep.engine.mechanics.CastPriorityProcessor(
+                    services.sbaChecker, services.triggerDetector, services.triggerProcessor,
+                )
+                val pending = state.pendingCastPriority
+                if (pending != null) {
+                    check(!state.stackResolutionPendingPriority)
+                    processor.resume(ExecutionResult.success(state.copy(pendingCastPriority =
+                        pending.copy(triggers = pending.triggers + triggers)), events)
+                        .copy(triggersAlreadyProcessed = true), emptyList())
+                } else {
+                    val recipient = if (state.stackResolutionPendingPriority) state.activePlayerId
+                        else state.priorityPlayerId
+                    requireNotNull(recipient) { "Completed mana payment has no priority recipient" }
+                    processor.start(state.copy(stackResolutionPendingPriority = false), recipient, events, triggers)
+                }
+            } else {
+                val result = services.triggerProcessor.processTriggers(state, continuation.remainingTriggers)
+                mergeAndContinue(result, events)
+            }
         },
 
         autoResumer(ForEachContinuation::class, canResume = {

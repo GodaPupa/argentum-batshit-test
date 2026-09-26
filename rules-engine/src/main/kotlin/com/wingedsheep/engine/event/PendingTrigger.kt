@@ -7,6 +7,7 @@ import com.wingedsheep.sdk.scripting.TriggeredAbility
  * A triggered ability that is waiting to go on the stack.
  */
 @kotlinx.serialization.Serializable
+@OptIn(kotlinx.serialization.ExperimentalSerializationApi::class)
 data class PendingTrigger(
     val ability: TriggeredAbility,
     val sourceId: EntityId,
@@ -57,7 +58,12 @@ data class PendingTrigger(
      *
      * Null on every other trigger, which is every trigger without an opponent chooser.
      */
-    val opponentTargetChooserId: EntityId? = null
+    val opponentTargetChooserId: EntityId? = null,
+    /** Placement order has been selected for this simultaneous controller group (CR 603.3b). */
+    val placementOrderChosen: Boolean = false,
+    /** Original source's departure while this trigger waits for a priority boundary. */
+    @kotlinx.serialization.EncodeDefault(kotlinx.serialization.EncodeDefault.Mode.NEVER)
+    val lastKnownSourceSnapshot: com.wingedsheep.engine.state.components.stack.EntitySnapshot? = null,
 )
 
 /**

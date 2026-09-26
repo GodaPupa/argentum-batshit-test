@@ -1,6 +1,9 @@
 package com.wingedsheep.engine.scenarios
 
+import com.wingedsheep.engine.support.chooseTriggerOrderInListedOrder
+
 import com.wingedsheep.engine.core.ActivateAbility
+import com.wingedsheep.engine.core.DeclareBlockers
 import com.wingedsheep.engine.state.components.battlefield.TappedComponent
 import com.wingedsheep.engine.state.components.combat.AttackingComponent
 import com.wingedsheep.engine.support.ScenarioTestBase
@@ -105,6 +108,14 @@ class DalkovanEncampmentScenarioTest : ScenarioTestBase() {
                     game.findPermanents("Warrior Token").size shouldBe 2
                 }
 
+                // Finish the real declaration round before advancing to the delayed sacrifices.
+                // The final defender hands priority back to the active player.
+                game.passUntilPhase(Phase.COMBAT, Step.DECLARE_BLOCKERS)
+                game.execute(DeclareBlockers(game.player2Id, emptyMap())).error shouldBe null
+                game.state.priorityPlayerId shouldBe game.player1Id
+                game.passUntilPhase(Phase.ENDING, Step.END)
+                game.chooseTriggerOrderInListedOrder()
+                game.resolveStack()
                 game.passUntilPhase(Phase.PRECOMBAT_MAIN, Step.PRECOMBAT_MAIN)
 
                 withClue("Warrior tokens are sacrificed by the next end step") {

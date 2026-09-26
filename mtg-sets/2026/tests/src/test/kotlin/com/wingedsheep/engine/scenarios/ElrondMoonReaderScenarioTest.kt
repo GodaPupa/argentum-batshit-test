@@ -4,6 +4,7 @@ import com.wingedsheep.engine.core.ActivateAbility
 import com.wingedsheep.engine.state.components.stack.ChosenTarget
 import com.wingedsheep.engine.support.ScenarioTestBase
 import com.wingedsheep.engine.support.TestCards
+import com.wingedsheep.engine.support.chooseTriggerOrderInListedOrder
 import com.wingedsheep.mtg.sets.definitions.hob.cards.AlongTheCrookedWay
 import com.wingedsheep.mtg.sets.definitions.hob.cards.ElrondMoonReader
 import com.wingedsheep.mtg.sets.definitions.inv.cards.Firescreamer
@@ -227,6 +228,7 @@ class ElrondMoonReaderScenarioTest : ScenarioTestBase() {
                 }
 
                 game.passUntilPhase(Phase.ENDING, Step.END)
+                game.chooseTriggerOrderInListedOrder()
                 game.resolveStack()
 
                 withClue("each exiled card gets its own delayed return at the next end step") {

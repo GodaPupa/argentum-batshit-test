@@ -1,0 +1,2035 @@
+{
+  "schema": "argentum-independent-artifact-review-v1",
+  "reviewer": "non-author agent /root",
+  "review_is_not_github_approval": true,
+  "source": "1fe2118348b83bc9eacb9160c55ec52af67007b3",
+  "tree": "bd0d869f1cbea1f845ea98ab11726864abdd9511",
+  "run": 36261613117,
+  "job": 108458399191,
+  "run_attempt": 1,
+  "artifact_id": 10913056160,
+  "artifact_bytes": 4593114,
+  "artifact_sha256": "20f7ed7d9940a06700847762df57e0792ca87929a0148b84d6629b577d63a44c",
+  "artifact_members": 525,
+  "crc_verified": true,
+  "verdict": "ACCEPT_BOUNDED_RUNTIME_COMPOSITION_EVIDENCE",
+  "actual_counts": {
+    "shared": 150,
+    "shared_skipped": 0,
+    "ai_runtime": 134,
+    "ai_runtime_skipped": 1
+  },
+  "python_unittest_cases": 72,
+  "python_output_sha256": "087ea280664a03296e85b474f85cd140bc2f24d679f119423fc92b8740194f55",
+  "source_pins_verified_against_exact_git": {
+    "ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteV2ActivatedCheckpointTest.kt": "59ccd1a0b6b3ec00e1cacf02dc37df255bf69ecb5786eda5710a8ce63242df62",
+    "ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteV2AllocationRunner.kt": "bd3faf6f7e2a16a18f2f2b4e79b451e22f1d14f6179210d92cc38c954ee9d1e9",
+    "ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteV2AllocationRunnerTest.kt": "6da21dc3c5eb93de7420d3f39ee744f74de21f432444adf9754057151443bd40",
+    "ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteV2CapabilityRunner.kt": "9768e8ded95deb2faf7f0da75aa72733105454ac52a267bbce703cfe4e889f76",
+    "ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteV2CapabilityRunnerTest.kt": "dc3afa4f0fb9498b4b76deae31a173c475cc0582db611dbace356d0c2ba0848c",
+    "ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteV2CheckpointMana.kt": "0d30249a68692568a37763ecbda34799f130fe094ec4e07a060477fc8ad87565",
+    "ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteV2EventMetrics.kt": "244d7ede64194e2cb7903a26210e236a5b019d3516da02ed41527e62ab56f95a",
+    "ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteV2EventMetricsTest.kt": "f7267f90ce4865fc3ca54d830edbb076b809b85673f1789180b4e8c6baac5af6",
+    "ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteV2ExecutionStatus.kt": "1fd22f8539dd089ef1e10d7b140a6cbc3653b97120df4b61e27a49e1def0a263",
+    "ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteV2ExecutionStatusTest.kt": "ec832d228162d4528ed28c1502786a3580bb31ec4e65b6edb4fb61f2d2e9a0b6",
+    "ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteV2FullHorizonRunner.kt": "ea17a33a52040458cdec0929bea6dc7890c6438cf387fa35c4cb9c77d6df9773",
+    "ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteV2FullHorizonRunnerTest.kt": "da69c97d4e9c2a7d3ac93d9c1c1f582b914f9647bfb58d781a056935e3ca9ecf",
+    "ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteV2OrderingIntegrationTest.kt": "0da3af618c76673376267a919e585713776415644b07c4a7bce621f0450021a9",
+    "ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteV2PaymentIntent.kt": "c0dfa693e5ad4778daba4fa455d898b79559a3ce8b16cc3dafff1b975d1b82b5",
+    "ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteV2PaymentIntentTest.kt": "0cb05ab1562758eb62030dc1d7ddef6352aeab521cdca95f10a07ee411c7bd8a",
+    "ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteV2PublicActionPolicy.kt": "3b553149d1a4ff03a6ef04cd0d24b510866eb818d455ef42fb01482b90bfbf8d",
+    "ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteV2PublicActionPolicyTest.kt": "54730179128f8c91f57938b7d8fae5dfc350b94eebd649d0b6bfbfee4a91ce68",
+    "ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteV2QuietCheckpointReplayTest.kt": "4e844dd2c3de3505f0bf7b3210b25476bb8ff56faa067d582352e82c55b80136",
+    "ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteV2R1OfficialExecutionTest.kt": "a5e43f6d1dfb60df74bec7dc2686167d1e811d64f827448924f948c674c618cc",
+    "ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteV2RegistryAuditTest.kt": "95099ab4c464623fc7eb7765a996367c2df74b1a67849f7efb65491df064c16a",
+    "ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteV2RuntimeFailureTest.kt": "655d935dd5419fa094f411810225b8b3c5d4f6e0baed3c0a2c06208d179e2b80",
+    "ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteV2SacrificeCheckpointTest.kt": "cec02c3701801dbd17e0a590b1ffd6a54514f48c4c9370dadc6fa60877a92cb6",
+    "ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteV2SelectionAdvisorModule.kt": "4512d4b1c508d76345a1bb6b0fead8b547b58326e7eca481bd41a6dd58569b60",
+    "ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteV2SelectionAdvisorTest.kt": "68e19cf91becc8ea47d56e9f8380a2bde106183eb68c9d4f3fa6185a8e0eaf0f",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/mana/ManaSolver.kt": "f2190818cd6fdd2dfdeb0a0e69bb226d9339821174969e00d0ffffd24340947e",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/mana/ManaColorSetResolver.kt": "4f957539143d90651786ca08394637d882f3f570f530efc9ffd7c2423679f4f4",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/mana/ManaPool.kt": "b26330c105839a33285f4280758a44403d8b6d31e451b84482649396b647e6eb",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/mana/ManaPaymentWindow.kt": "f7cb7c0c85da1837a68e724f0c8c862282fd977ec1476ec3254e9375edb93c14",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/mana/ManaAbilitySideEffectExecutor.kt": "cd9ae45c0a4adb4a057f9ca1f01d1271b9819f8b2c458f53494a3a46559cdb06",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/mana/ManaPaymentFeasibility.kt": "c3092ac2e0d8fcdd6f9dfb09fc8b2ce5fbd11049c12def4527a9162bbd872a79",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/mana/ManaStaticsIndex.kt": "62d45528c09986ec968d08130cbc52fefae27db9acd06d88c3007e44e455996f",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/legalactions/utils/FixedSacrificePayment.kt": "75b2bb4b15ffd3ab7c9ee50121ce9b6b0c1765f7efa70bdc1aad89e095cf7d5d",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/legalactions/enumerators/CastSpellEnumerator.kt": "c7ff67a58a9ace67a2adac3183130a605266b20b8dda9e982c4cd6d68e9ad9ae",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/legalactions/enumerators/CastFromZoneEnumerator.kt": "19a7a0a93d5973bdd73ac8b9cf6ac82b9d716237dfa19a1a1fc18595007d96f9",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/ability/ActivateAbilityHandler.kt": "f70c9e93e57ed11fb5c0de23934036939eab7a298971127ba8b7f0081051d312",
+    "game-server/src/test/kotlin/com/wingedsheep/gameserver/session/AiUndoDecisionFreshnessTest.kt": "a12c0a6e669fd2dcee0d2f852f06c7d7ed5ee3c5cbb6e6449254e004706fed03",
+    "industrial-waste/v2/r1_execute.py": "61bf0e3f7006b32891b1afe6b0e669a0d77fdda77c60f5defc4d8569ecf0f053",
+    "industrial-waste/v2/r1_metric_projection.py": "88d3d8fc58c4be011761827223a151b5b6fe47fb3cbc9376faef4c42907cb5ef",
+    "tools/evidence_durability.py": "4a8cc9a00a73ca45734b58686dce72287c7c33d383e48827fe6f300df3a405c3",
+    "tools/repository_claim.py": "80b32a6851c6212ef8584af7a525bebd0d718349cafe8bc606b53abbbc97741b"
+  },
+  "suites": [
+    {
+      "path": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.handlers.mana.ManaSpendRestrictionAnyAbilityTest.xml",
+      "sha256": "60eb1321075ab25724f892719b1aab2cfdd14a3295004192dd73c9756c1b8977",
+      "cases": [
+        {
+          "name": "any-ability mana pays for an ability of a NON-artifact source",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "any-ability mana is rejected for a spell cast",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "Purple Dragon Punks mana pays for an artifact spell",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "Purple Dragon Punks mana pays for any ability activation",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "Purple Dragon Punks mana does NOT pay for a non-artifact spell",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "path": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.legalactions.CastFromZoneEnumeratorTest.xml",
+      "sha256": "1f6874a952aea4f0dbea2ac3b0fde9008602af1ae612558b869e3743836f6584",
+      "cases": [
+        {
+          "name": "Otterball Antics in graveyard with sufficient mana surfaces a CastWithFlashback action",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "flashback action is unaffordable when insufficient mana but still listed",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "sorcery flashback is blocked at instant speed (upkeep step)",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "an empty graveyard produces no flashback actions",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "Lightning Bolt in exile with MayPlayFromExile produces a CastSpell action",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "an exiled card without the permission component is NOT castable",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "exile permission belonging to opponent does not authorize me to cast",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "with Future Sight in play, the top card of library is castable",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "without Future Sight, the top card of library is NOT castable",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "Squee in graveyard with sufficient mana is castable from graveyard",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "Squee in exile is also castable (intrinsic permission covers both zones)",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "Squee with no mana is shown as unaffordable",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "Squee as a creature is sorcery-speed-only \u2014 no upkeep cast",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "Muldrotha on battlefield \u2014 a creature in graveyard is castable from GRAVEYARD",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "without Muldrotha \u2014 the same creature in graveyard is NOT castable from GRAVEYARD",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "Muldrotha's permission is active-player-only \u2014 opponent cannot cast from their graveyard",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "Festival of Embers + instant in graveyard + life available \u2014 cast emitted with life cost info",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "Festival of Embers + insufficient life \u2014 cast is NOT emitted (life-check `continue`s)",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "Festival of Embers + instant in graveyard without mana \u2014 cast emitted as unaffordable",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "non-instant/sorcery in graveyard \u2014 filter excludes it from the life-cost path",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "path": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.legalactions.FixedSacrificePaymentTest.xml",
+      "sha256": "c514ca172e64558b9ee6564fb3c0d6ba6fadc4352f0c20b84f02711fc818fc4e",
+      "cases": [
+        {
+          "name": "two Altars sharing one creature cannot advertise a three-mana spell",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "one Altar with two distinct creatures advertises its repeated legal funding",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "a hand cast cannot consume its sole material both for black mana and its final sacrifice",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "flashback checks printed final sacrifice against the same black funding resource",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "path": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.legalactions.FlashbackAdditionalCostEnumerationTest.xml",
+      "sha256": "fd6e4d81ee6aebe309de73aba53952194ca1e5f5e281e6112ebf72dd8d4da406",
+      "cases": [
+        {
+          "name": "mana-only flashback keeps its existing offer and no selection",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "printed sacrifice is required even when all flashback mana is available",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "menu exposes both legal sacrifice types and submits only the actor's chosen payment",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "unaffordable mana retains the printed sacrifice picker",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "sacrifice candidates use projected type and control and refresh with state",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "keyword Mountain sacrifice remains required with zero flashback mana",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "keyword tap cost counts only controlled untapped creatures and allows summoning sickness",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "keyword Behold retains counted battlefield and own-hand choices",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "fixed keyword life payment gates the offer and is auto-paid by the existing executor",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "nested printed costs and keyword life are all required alongside one picker",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "two selection costs are an explicit capability failure rather than dropping either leg",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "an unsupported mandatory cost never falls through as a free flashback",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "path": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.legalactions.utils.CostEnumerationUtilsTest.xml",
+      "sha256": "4bbfb07c07bf00444a184fbf800848e7b36da0a2ee0b45a8b841acd330e71fa6",
+      "cases": [
+        {
+          "name": "findAbilityTapTargets returns only untapped creatures matching the filter",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "findAbilitySacrificeTargets excludes the excluded entity id",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "findAbilityBounceTargets returns all permanents matching filter (tapped or not)",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "findAbilityTapTargets returns empty when nothing matches the filter",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "findExileTargets from GRAVEYARD returns matching graveyard cards",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "findExileTargets from HAND returns matching hand cards",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "findConvokeCreatures excludes tapped and non-creature permanents",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "canAffordWithConvoke: enough total resources to pay {2} with 2 creatures, no mana",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "canAffordWithConvoke: insufficient total resources is not affordable",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "findDelveCards returns every graveyard card with name populated",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "calculateMinDelveNeeded returns 0 when cost is already affordable without delve",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "calculateMinDelveNeeded returns the minimum graveyard cards needed to afford",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "returns false when the source is already tapped",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "returns false when a creature has summoning sickness and no haste",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "returns true for an untapped creature with no summoning sickness",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "returns true when an as-though-hasty permission covers the sick creature",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "returns true for a land even with summoning sickness (skip-for-lands branch)",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "returns only creatures with +1/+1 counters, tagged with the available count",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "returns empty when no creature has +1/+1 counters",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "caps X by available mana when the mana cost has X",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "caps X by graveyard size when cost includes ExileXFromGraveyard",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "caps X by total +1/+1 counters for RemoveXPlusOnePlusOneCounters",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "caps X by untapped matching permanents for TapXPermanents",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "path": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.AlternativeCostChoiceScenarioTest.xml",
+      "sha256": "480c9124c4361a11dd1bcb8ece7c6e2282b2ac39d8e80c358f704ba0df5566f3",
+      "cases": [
+        {
+          "name": "the enumerated Evoke and Cast (Warp) actions carry distinct discriminators",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "executing the Evoke action charges the evoke cost ({R}), not warp ({2}{R})",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "executing the Cast (Warp) action charges the warp cost ({2}{R}) and marks it warped",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "a null-discriminator alternative cast still resolves (legacy priority fallback)",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "path": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.EscapeTest.xml",
+      "sha256": "5078dbae772cddc72dfb6132b8072141c61d546249ec743fd1a18c2bf161fe88",
+      "cases": [
+        {
+          "name": "Escape is offered from graveyard only when mana and other-card payment are available",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "Escape grants no timing permission to a sorcery",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "Escape pays exact other-card exile cost and resolved sorcery returns to graveyard",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "Escape rejects using the escaping card itself as payment",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "Escape rejects duplicate exile payment IDs",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "path": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.ManaAbilityActivationTriggerScenarioTest.xml",
+      "sha256": "da200ab20876545d7eef331bd5d79a920ffd98f692480a7092ad09685f8d7e18",
+      "cases": [
+        {
+          "name": "tapping a land for mana by hand fires an includeManaAbilities trigger",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "the default wording stays blind to that same mana ability",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "auto-tapping a land to pay an ability cost fires it too",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "path": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.mechanics.mana.DynamicManaAmountAutoTapTest.xml",
+      "sha256": "2e0807b56bcacc9cd30f9c88c2ee5fca62f61a203f1a455a20fedf351284c8b8",
+      "cases": [
+        {
+          "name": "mana source reports the dynamic amount its ability produces",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "available mana count includes every mana a dynamic ability makes",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "a cost payable off one dynamic tap is solved by tapping that source alone",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "auto-pay floats every mana the tap makes, so the spell it planned for actually resolves",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "a land whose dynamic ability is dry right now is not offered as a mana source",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "the same land is a full source again as soon as the count is nonzero",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "path": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.ManaPaymentFeasibilityTest.xml",
+      "sha256": "ed6ceb1c0f1ebec97ba28974b04383734781689c245f66c6e4154684ce1e2719",
+      "cases": [
+        {
+          "name": "lone unfunded Star cannot bootstrap the {2} Compact checkpoint",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "lone unfunded Star cannot bootstrap the {3} Compact checkpoint",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "two unfunded reusable filters have no circular black payment",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "one Altar repeatedly sacrifices three distinct creatures for six mana",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "two Altars cannot share the same creature twice",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "a reserved Spawn cannot also fund its spell through itself or Altar",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "a second Spawn can fund while the selected nonmana material is preserved",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "Tron funds a reserved Prism before the same Prism pays the final spell sacrifice",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "the one reserved Forest may tap before being sacrificed as a final cost",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "an explicitly bound final material is never replaced with another legal sacrifice",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "excluded sources cannot activate or enter another mana ability's fodder pool",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "large generic Golem fodder has a prompt exhaustive negative colored proof",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "a freshly entered Spawn can sacrifice itself without paying a tap cost",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "two-mana filtering consumes both funding units before output",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "Star's future death draw is never used as a payment resource",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "unsupported nonmana activation metadata cannot produce a negative claim",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "an already entered tapped artifact land has a complete payment proof after untapping",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "an activation discount cannot be ignored when proving a negative",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "a finite search cap produces unsupported rather than impossible",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "future library order cannot change a payment witness",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "serialized funding actions replay the exact real states and ordered events",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "path": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.ManaPaymentPolicyWitnessTest.xml",
+      "sha256": "7f4d486d5e33abc8124bbfe69d488a239390c1af90b52d08008dc6be203733ee",
+      "cases": [
+        {
+          "name": "funding sacrifice follows the caller's selected material instead of planner identity order",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "a declined funding choice is unsupported and never an exhaustive negative",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "the callback cannot consume or replace the original final sacrifice",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "a policy response outside current legal materials fails closed without submitting an action",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "a frozen black-only funding choice cannot certify an unchosen green payment",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "an allowed color witness executes through the real selected funding action",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "an action-policy refusal stays unsupported while an already floated payment needs no action",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "path": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.ManaSourceProvenanceScenarioTest.xml",
+      "sha256": "f081c1676a6c15bf5f4af31ea1c689c5d2fb31de116d4d4d33cb4a22f2076fd1",
+      "cases": [
+        {
+          "name": "mana tapped from the source fires its own cast trigger",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "mana from another source does not fire the trigger",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "floating mana from a second source does not wipe the first source's provenance",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "path": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.MonocolorHybridManaSolverTest.xml",
+      "sha256": "9c4e4e661cff6dbe7f1e5a23dafff7e64aa62efc3adee493205192fcf52ae33a",
+      "cases": [
+        {
+          "name": "{2/B}{2/G}{2/U} is payable with one Swamp, Forest, and Island",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "{2/B}{2/G}{2/U} is payable with six generic-only lands",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "{2/B}{2/G}{2/U} is NOT payable with only five generic-only lands",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "auto-pay casts the twobrid creature, tapping one land per colour",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "path": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.MultiManaSourceTest.xml",
+      "sha256": "bcf0773c6778db91434c9cdeab26f0e3d2215384fcac800ef1a32360e0358b3d",
+      "cases": [
+        {
+          "name": "Elvish Aberration produces 3 green mana for auto-pay",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "Elvish Aberration + 4 forests can cast a 7-CMC spell",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "auto-pay fails when multi-mana source is not enough",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "4 forests + Elvish Aberration taps Aberration + 2 forests for 5 CMC",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "5 forests + Elvish Aberration taps 5 forests to preserve creature for attacks",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "getAvailableManaCount includes multi-mana production",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "Palladium Myr producing 2 colorless counts correctly",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "path": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.PaidFilterManaSolverTest.xml",
+      "sha256": "32a6de296f6253d3d10f3c6dc70f129d7db5bcd01a5c1c4918b711861a6b617a",
+      "cases": [
+        {
+          "name": "an unfunded filter cannot pay {1}",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "an unfunded filter cannot pay {B}",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "two unfunded filters cannot finance one another",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "free colorless mode of a mixed filter remains ordinary mana",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "a real source funds the filter before its colored output is used by a cast",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "excluding either the filter or its only funder removes the colored plan",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "a two-mana filter requires two independently available funding units",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "multi-mana funding returns correct excess for spell payment",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "multi-mana funding returns correct excess for ability payment",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "previous colored excess funding is deducted once for spell payment",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "previous colored excess funding is deducted once for ability payment",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "two filters may share distinct already-funded units without creating a cycle",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "creature-spell-only excess cannot pay a filter's activation cost",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "serialized funded-filter cast replays identical state and ordered events",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "path": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.RestrictedXManaReconciliationTest.xml",
+      "sha256": "44f664c136de448596de9c454d2257e2e65885772dfe38d31d36db7db7064af3",
+      "cases": [
+        {
+          "name": "an explicit any-color sacrifice source may fund black-only X once",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "an any-color fallback does not convert disallowed floating mana into black X",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "ordinary sources after the explicit fallback retain the restricted X color",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "an excluded sacrifice source contributes neither restricted X nor ordinary generic mana",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "path": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.XSpellFloatingRestrictedManaTest.xml",
+      "sha256": "ca4e4e1d95018d93fad94a68c2105c453fc1c83ead8ddf3a486ad3a56dee694f",
+      "cases": [
+        {
+          "name": "maxAffordableX is 10 with untapped sources and {U}{R}{R}{R} floating",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "casting with X=10 via auto-pay succeeds and puts 20 stun counters",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "explicit source selection with floating mana covering part of X succeeds",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "maxAffordableX is still 10 after floating all mana into the pool",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "casting with X=10 entirely from the floating pool succeeds",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "ineligible restricted mana does not inflate maxAffordableX for a creature spell",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "path": "ai/build/test-results/test/TEST-com.wingedsheep.ai.arena.FrozenBaselineTest.xml",
+      "sha256": "c03e620cc179efcd679d43ddf31b175a2662bc29aa91a36e0a397e90c1e1bc15",
+      "cases": [
+        {
+          "name": "LEGACY_V0 plays the frozen baseline game exactly as it always has",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "path": "mtg-sets/2000-2002/tests/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.LavaDartScenarioTest.xml",
+      "sha256": "0192f129d4aff559280a3e6b5153d239eb45ef2bef9566850307953b1501f20d",
+      "cases": [
+        {
+          "name": "cast from hand deals 1 damage to a player",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "flashback sacrifices a Mountain, deals 1 damage, and exiles Lava Dart",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "path": "ai/build/test-results/test/TEST-com.wingedsheep.ai.industrialwaste.IndustrialWasteAdvisorModuleTest.xml",
+      "sha256": "10431aee441c0314caf13719819cd802ce3ba194f436f2c913da2b6f07573dd0",
+      "cases": [
+        {
+          "name": "Expedition Map selects the missing Tron piece independent of library order",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "Crop Rotation uses the same missing-piece policy",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "Myr Retriever death trigger returns the other Retriever",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "Ashnod's Altar sacrifices Retriever when the payoff loop is assembled",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "Ashnod's Altar seeds the loop when the second Retriever is in hand",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "policy prefers staging the Retriever loop over passing",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "path": "ai/build/test-results/test/TEST-com.wingedsheep.ai.industrialwaste.IndustrialWasteV2ActivatedCheckpointTest.xml",
+      "sha256": "9b09f394cdbd5bd1cdabbd079043846523ffaca6fdafa4524291be5dacb5a0e8",
+      "cases": [
+        {
+          "name": "Blood Fountain recovery with legal target and enough colorless mana records a colored failure",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "Blood Fountain with no graveyard creature is not a relevant colored recovery failure",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "Blood Fountain recovery payable with a black source is executable",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "Dross Skullbomb recovery with legal target and enough colorless mana records a colored failure",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "Dross Skullbomb with no graveyard creature is not a relevant colored recovery failure",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "Dross Skullbomb recovery payable with a black source is executable",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "tapped Fountain does not become a color failure when its non-mana cost is unavailable",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "path": "ai/build/test-results/test/TEST-com.wingedsheep.ai.industrialwaste.IndustrialWasteV2AllocationRunnerTest.xml",
+      "sha256": "392b2c802cc8382cb5bd5373e9272b1de7acf769953c55be3eace4079b81c526",
+      "cases": [
+        {
+          "name": "complete excluded allocation preserves exact actions events checkpoints and replay",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "allocation directory is create-once and a second invocation cannot replace evidence",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "frozen Compact Loop spell-bearing fixture composes the public pilot typed metrics and snapshot replay",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "official namespace or official allocation id is rejected before any filesystem mutation",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "path": "ai/build/test-results/test/TEST-com.wingedsheep.ai.industrialwaste.IndustrialWasteV2CapabilityRunnerTest.xml",
+      "sha256": "954ccc0b6e9b6a515f92c2c76368790dd0ab029a9e87532309de3e63734fe650",
+      "cases": [
+        {
+          "name": "all four frozen R1 lists complete one measured own turn through the composed real runner",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "composed one-turn capability runner replays identically for all four frozen lists",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "captured one-turn action transcript replays exactly for all four frozen lists",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "path": "ai/build/test-results/test/TEST-com.wingedsheep.ai.industrialwaste.IndustrialWasteV2EventMetricsTest.xml",
+      "sha256": "4bc7c535f4f584d20389aebfc046b8a2a7f99401a76d1be67a1883e97b76054e",
+      "cases": [
+        {
+          "name": "inventory is not a loop but a real neutral sacrifice return cast and entry is",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "actual Pactdoll lethal is counted only after the engine ends the game",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "Blood Fountain return and recast is recursion without inventing an Altar loop",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "a development action spending loop resources abandons the partial cycle proof",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "Scry and Rumble count only observed copies and distinguish seeing from land access",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "all three controlled real Tron lands establish access and full Tron",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "quiet checkpoint distinguishes colored-payment failure from total-mana shortage",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "quiet checkpoint recognizes an actually executable fixed-cost artifact",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "Foundry future conversion requires real charges token creation and a later legal attack",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "duplicated missing or rejected transitions cannot enter the metric stream",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "replaying the same complete accepted transcript reproduces metric evidence",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "path": "ai/build/test-results/test/TEST-com.wingedsheep.ai.industrialwaste.IndustrialWasteV2ExecutionStatusTest.xml",
+      "sha256": "ec7c82e1dc80c7e02ea7c41ea48b362451643396e588d1eafb24dd36520d5084",
+      "cases": [
+        {
+          "name": "initialization does not count but both players London submissions each count once",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "PLAY and DRAW own eighth turns include end and cleanup decisions before turn-cap status",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "four thousand actual neutral-loop submissions stop without resolving an extra action",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "real concession is terminal with its actual engine winner and reason",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "real SBA settlement of a zero-life setup produces draw and never a synthetic winner",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "rejected action counts once stops exposure and preserves last accepted state",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "throwing executor records a submitted exception without retry or engine winner",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "unresolved observer overrides provisional terminal while preserving actual terminal diagnostics",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "forged terminal and missing turn-event provenance remain unresolved",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "synthetic simultaneous boundary precedence preserves genuine terminal and quarantines faults",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "path": "ai/build/test-results/test/TEST-com.wingedsheep.ai.industrialwaste.IndustrialWasteV2FullHorizonRunnerTest.xml",
+      "sha256": "1756cc3fc5f8ddda52b83cf9a393edabe855861eb5eee4e5e9da7c32eb9b7082",
+      "cases": [
+        {
+          "name": "full-horizon capability reaches exact own-turn-eight cap for industrial-waste/control/industrial-waste-v1.0-submitted.dck on the play schedule",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "full-horizon capability reaches exact own-turn-eight cap for industrial-waste/control/industrial-waste-v1.0-submitted.dck on the draw schedule",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "full-horizon capability reaches exact own-turn-eight cap for industrial-waste/v2/candidates/compact-loop.dck on the play schedule",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "full-horizon capability reaches exact own-turn-eight cap for industrial-waste/v2/candidates/compact-loop.dck on the draw schedule",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "full-horizon capability reaches exact own-turn-eight cap for industrial-waste/v2/candidates/recursive-eggs.dck on the play schedule",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "full-horizon capability reaches exact own-turn-eight cap for industrial-waste/v2/candidates/recursive-eggs.dck on the draw schedule",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "full-horizon capability reaches exact own-turn-eight cap for industrial-waste/v2/candidates/lean-tron-hybrid.dck on the play schedule",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "full-horizon capability reaches exact own-turn-eight cap for industrial-waste/v2/candidates/lean-tron-hybrid.dck on the draw schedule",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "full-horizon capability is deterministic for an identical excluded ordering fixture",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "runner refuses the frozen official R1 namespace before submitting an action",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "path": "ai/build/test-results/test/TEST-com.wingedsheep.ai.industrialwaste.IndustrialWasteV2OrderingIntegrationTest.xml",
+      "sha256": "559fc9ce3efe42e2ef9822ac0d4d00b355e147a9a9c8ee005faf704ce76241cf",
+      "cases": [
+        {
+          "name": "Expedition Map uses the frozen shuffle through its real continuation with deterministic replay",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "Crop Rotation uses the frozen shuffle through its real continuation with deterministic replay",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "Myr Kinsmith uses the frozen shuffle through its real continuation with deterministic replay",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "the public action policy cannot observe a changed future ordering plan or library order",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "path": "ai/build/test-results/test/TEST-com.wingedsheep.ai.industrialwaste.IndustrialWasteV2PaymentIntentTest.xml",
+      "sha256": "330e9fa091be3dd725f3f6438ee062ec6f164095e81354dec2e7631cfc748100",
+      "cases": [
+        {
+          "name": "already automatic payment submits the unchanged selected action without funding",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "Altar funding retains selected Star across death trigger instead of rescoring returned Retriever",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "one Spawn cannot be both spell sacrifice and explicit funding resource",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "real Rumble Spawn funds the selected Star through its exact predefined ability",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "Insight explicitly floats its selected Prism before the additional sacrifice",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "an unfunded Prism automatic solution does not authorize a selected generic spell",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "unassembled Tower funds the bound Prism sacrifice through its canonical conditional output",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "assembled Tower funds the bound Prism sacrifice through its canonical conditional output",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "a policy-ineligible second creature never authorizes partial funding for a three-mana spell",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "delegated automatic Prism payment may choose green while explicit policy would choose black",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "explicit Retriever funding retains delegated automatic green payment at its witnessed suffix",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "complete repeated Retriever funding keeps the original three-mana spell and both real payments",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "lost selected source invalidates retained intent without selecting a replacement",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "colorless Altar mana alone does not admit black recovery",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "path": "ai/build/test-results/test/TEST-com.wingedsheep.ai.industrialwaste.IndustrialWasteV2PublicActionPolicyTest.xml",
+      "sha256": "c9e5cb5529c8d1b95e49b0947bb29241c83a861c2e2295033b695e8b9903454d",
+      "cases": [
+        {
+          "name": "public development policy casts an affordable missing Altar through the real engine",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "Star activation pays one mana and chooses an observed hand's black pip",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "Insight pays with Wellspring and preserves live loop hardware",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "public loop actions sacrifice return and recast a Retriever using real generated mana",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "Dross binds an offered graveyard target and pays black recursion mana",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "Foundry loop creates lethal power then wins through the next legal combat",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "passive Forest fixture plays one land and then passes without a second land drop",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "scry and surveil keep an engine card while discarding surplus mana",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "real Candy Trail and Boulder scry continuations keep Altar above a surplus land",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "opening policy has one common keep rule and honors the three-mulligan bound",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "real two-player London mulligans draw seven then bottom three at the forced keep",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "action choice ignores opponent hidden identity and both future library orders",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "explicit regression seed repeats initial state and identities while another seed changes shuffle",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "path": "ai/build/test-results/test/TEST-com.wingedsheep.ai.industrialwaste.IndustrialWasteV2QuietCheckpointReplayTest.xml",
+      "sha256": "f9d2361af177bd1d13198860f0d2192f23f17e947234b9c401637de48d701aea",
+      "cases": [
+        {
+          "name": "snapshot replay certifies every quiet state and the first-per-turn compatibility view on the draw",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "missing the first eligible quiet state cannot pass replay",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "missing a later state from the same own turn cannot hide behind the compatibility view",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "extra quiet observations after the final eligible state are rejected",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "reordered quiet observations are rejected even when every row is intact",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "duplicate action indices cannot certify two observations of one accepted state",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "a well-formed substituted state digest is rejected against the real replayed state",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "altered checkpoint values fail semantic replay despite intact action state and event hashes",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "a valid later same-turn checkpoint cannot replace the first-per-turn compatibility row",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "a real terminal has no quiet priority even when the engine retains its prior main-step fields",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "the final real four-thousandth action preserves its eligible quiet checkpoint before the cap stops execution",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "path": "ai/build/test-results/test/TEST-com.wingedsheep.ai.industrialwaste.IndustrialWasteV2R1OfficialExecutionTest.xml",
+      "sha256": "90ec326f3c043c84ffd57b993511db4b7c47bc163611ff327541cbd9d6a17cc5",
+      "cases": [
+        {
+          "name": "execute the frozen R1 corpus only under independently verified durable authority",
+          "failure": false,
+          "error": false,
+          "skipped": true
+        }
+      ]
+    },
+    {
+      "path": "ai/build/test-results/test/TEST-com.wingedsheep.ai.industrialwaste.IndustrialWasteV2RegistryAuditTest.xml",
+      "sha256": "762d39f67a507bb1b21207e2df9204240a3bdb9c3937e302a391fa19ec1a3edf",
+      "cases": [
+        {
+          "name": "all frozen v2 candidates and historical comparator resolve in the compiled catalog",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "path": "ai/build/test-results/test/TEST-com.wingedsheep.ai.industrialwaste.IndustrialWasteV2RuntimeFailureTest.xml",
+      "sha256": "80688ee1a7fa0eb35bf8ffeb57b3932a7763d26ebdd8e12f26c594af7239a9c5",
+      "cases": [
+        {
+          "name": "a real selection failure retains accepted actions and typed invalid final artifacts without another action",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "a real checkpoint identity failure stops before submitting or fabricating any action",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "checkpoint evidence writer failure propagates before any action",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "payment intent writer failure propagates before its planned funding action",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "path": "ai/build/test-results/test/TEST-com.wingedsheep.ai.industrialwaste.IndustrialWasteV2SacrificeCheckpointTest.xml",
+      "sha256": "177c8425801e43e4e3e351e1e38dbe0133ab9eb3f267aee8e6ab6fcba9dd38ea",
+      "cases": [
+        {
+          "name": "Eviscerator's Insight omitted for missing black still records the frozen colored failure",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "Eviscerator's Insight without a sacrifice is not misattributed to colored mana",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "Eviscerator's Insight with a sacrifice but only one mana is a total shortfall",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "Eviscerator's Insight ordinary payment witness keeps its sacrifice for the actual cast",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "Fanatical Offering omitted for missing black still records the frozen colored failure",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "Fanatical Offering without a sacrifice is not misattributed to colored mana",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "Fanatical Offering with a sacrifice but only one mana is a total shortfall",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "Fanatical Offering ordinary payment witness keeps its sacrifice for the actual cast",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "Crop Rotation needs a sacrificable land and a real green payment",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "Crop Rotation cannot spend floating green without its additional land sacrifice",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "Crop Rotation can use one Forest for ordinary mana and then sacrifice that tapped Forest",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "Insight flashback missing black is a five-mana graveyard failure and never hand stranding",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "Insight flashback total shortfall never strands a card in hand",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "Insight flashback still needs its ordinary sacrifice even when enumeration omits its metadata",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "Insight flashback with actual ordinary mana and sacrifice is executable",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "Chromatic Star cannot be assumed to supply color and remain the spell's sacrifice",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "repeatable Altar mana proves the generic flashback payment and missing black",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "ordinary spell cannot count two Altars consuming the same creature as four mana",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "ordinary spell cannot treat one Altar as a maximum of one activation",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "recovery activation proves repeated explicit funding without inventing black",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "ordinary positive payment does not become unresolved merely because an Altar also exists",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "real Rumble Spawn cannot pay and remain the additional sacrifice",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "unfunded Prophetic Prism cannot be a positive generic-mana witness",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "two unfunded Prisms cannot establish a circular colored payment witness",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "a genuine basic-land witness remains executable with an unrelated paid filter present",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "path": "ai/build/test-results/test/TEST-com.wingedsheep.ai.industrialwaste.IndustrialWasteV2SelectionAdvisorTest.xml",
+      "sha256": "3f7cd588bb9c86a344651ed53a2e6334d511812ca7ed6166df64d17b5ad06cb0",
+      "cases": [
+        {
+          "name": "Recursive Eggs Rumble fixes black access without inventing Tron in the list",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "collection-shaped Map and Rotation decisions build missing Tron while fixing a visible black need first",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "Tron-capable Stirrings takes the missing third piece when colored access is sufficient",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "one shared Rumble policy selects the missing engine across all four mana architectures",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "Blood Fountain returns both offered Retrievers before a redundant expensive creature",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "Kinsmith takes its optional search and Dross recursion prefers the accessible loop creature",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "real Stirrings Rumble and Kinsmith decisions accept the shared selector responses",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "opponent hidden identities and future library order cannot change an offered choice",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        },
+        {
+          "name": "Stirrings bottom order is deterministic and never selects a nonselectable card",
+          "failure": false,
+          "error": false,
+          "skipped": false
+        }
+      ]
+    }
+  ],
+  "excluded_replays": [
+    {
+      "root": "build/reports/industrial-waste-v2/runtime-composition/excluded-traces/iw-v2-allocation-trace16844952639842867712/allocation/",
+      "replay": {
+        "status": "EXACT_ACTION_EVENT_STATE_REPLAY",
+        "actions": 227,
+        "checkpointReplay": "EXACT_EVERY_QUIET_CHECKPOINT_REPLAY",
+        "quietCheckpointObservations": 16
+      },
+      "actions_and_journal_bound": true,
+      "every_quiet_observation_hash_matches_original_returned_state": true,
+      "final_state_hash_matches_last_returned_transition": true
+    },
+    {
+      "root": "build/reports/industrial-waste-v2/runtime-composition/excluded-traces/iw-v2-quiet-baseline15156056145205483170/allocation/",
+      "replay": {
+        "status": "EXACT_ACTION_EVENT_STATE_REPLAY",
+        "actions": 242,
+        "checkpointReplay": "EXACT_EVERY_QUIET_CHECKPOINT_REPLAY",
+        "quietCheckpointObservations": 16
+      },
+      "actions_and_journal_bound": true,
+      "every_quiet_observation_hash_matches_original_returned_state": true,
+      "final_state_hash_matches_last_returned_transition": true
+    },
+    {
+      "root": "build/reports/industrial-waste-v2/runtime-composition/excluded-traces/iw-v2-spell-trace9678971426068209900/allocation/",
+      "replay": {
+        "status": "EXACT_ACTION_EVENT_STATE_REPLAY",
+        "actions": 428,
+        "checkpointReplay": "EXACT_EVERY_QUIET_CHECKPOINT_REPLAY",
+        "quietCheckpointObservations": 60
+      },
+      "actions_and_journal_bound": true,
+      "every_quiet_observation_hash_matches_original_returned_state": true,
+      "final_state_hash_matches_last_returned_transition": true
+    }
+  ],
+  "freshness": [
+    "Exact source HEAD/tree and clean initial checkout recorded.",
+    "All three original test task lines lack UP-TO-DATE/FROM-CACHE; each has BUILD SUCCESSFUL; actual XML timestamps fall inside the observed run.",
+    "The live run and all required full-CI jobs on identical source completed successfully."
+  ],
+  "full_ci_run": 36261616214,
+  "preserved_limits": [
+    "Official-execution test is the sole deliberate skip: 133 actual AI passes plus one skip, not 134 passes.",
+    "Three traces are fixed excluded fixtures, never official R1 samples or matchup outcomes.",
+    "Canonical post-block combined-source compatibility, exact runtime identity and every frozen admission requirement still govern R1.",
+    "This receipt does not qualify later source mutations or authorize official execution."
+  ],
+  "official_r1_allocations": 0,
+  "official_geometry": 512,
+  "gameplay_authorized": false
+}

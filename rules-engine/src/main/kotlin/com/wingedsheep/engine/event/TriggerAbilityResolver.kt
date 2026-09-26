@@ -213,9 +213,8 @@ class TriggerAbilityResolver(
     private fun getStaticGrantedTriggeredAbilities(entityId: EntityId, state: GameState): List<TriggeredAbility> {
         val registry = cardRegistry
         val targetContainer = state.getEntity(entityId) ?: return emptyList()
-        val targetCard = targetContainer.get<CardComponent>() ?: return emptyList()
+        if (targetContainer.get<CardComponent>() == null) return emptyList()
         val projected = state.projectedState
-        val targetControllerId = projected.getController(entityId)
 
         val result = mutableListOf<TriggeredAbility>()
 
@@ -238,28 +237,13 @@ class TriggerAbilityResolver(
                 }
                 if (ability.filter.scope !is Scope.Battlefield) continue
 
-                // Check if the target entity matches the filter's card predicates
-                val filter = ability.filter.baseFilter
-                val matchesAll = filter.cardPredicates.all { predicate ->
-                    when (predicate) {
-                        is com.wingedsheep.sdk.scripting.predicates.CardPredicate.IsCreature ->
-                            targetCard.typeLine.isCreature
-                        is com.wingedsheep.sdk.scripting.predicates.CardPredicate.HasSubtype ->
-                            targetCard.typeLine.hasSubtype(predicate.subtype)
-                        else -> true
-                    }
-                }
-                if (!matchesAll) continue
-
-                // Check controller predicate relative to the source permanent's controller
-                val controllerMatch = filter.controllerPredicate?.evaluateWith { leaf ->
-                    when (leaf) {
-                        is ControllerPredicate.ControlledByYou -> targetControllerId == sourceControllerId
-                        is ControllerPredicate.ControlledByOpponent -> targetControllerId != null && targetControllerId != sourceControllerId
-                        else -> null // leaf kinds this fast path can't evaluate don't constrain
-                    }
-                } ?: true
-                if (controllerMatch) {
+                if (ability.filter.excludeSelf && entityId == permanentId) continue
+                // Use the shared projected filter evaluator: an unhandled predicate must not
+                // silently grant this ability to every permanent (for example, IsArtifact).
+                if (predicateEvaluator.matches(
+                        state, projected, entityId, ability.filter.baseFilter,
+                        PredicateContext(controllerId = sourceControllerId, sourceId = permanentId),
+                    )) {
                     result.add(ability.ability)
                 }
             }
@@ -405,9 +389,8 @@ class TriggerAbilityResolver(
         grantProviders: List<TriggerIndex.GrantProviderEntry>
     ): List<TriggeredAbility> {
         val targetContainer = state.getEntity(entityId) ?: return emptyList()
-        val targetCard = targetContainer.get<CardComponent>() ?: return emptyList()
+        if (targetContainer.get<CardComponent>() == null) return emptyList()
         val projected = state.projectedState
-        val targetControllerId = projected.getController(entityId)
 
         return buildList {
             for (entry in grantProviders) {
@@ -426,27 +409,15 @@ class TriggerAbilityResolver(
                 // path previously omitted it, so the source double-triggered (e.g. Bria,
                 // Riptide Rogue got prowess twice).
                 if (entry.grant.filter.excludeSelf && entityId == entry.sourceEntityId) continue
-                val filter = entry.grant.filter.baseFilter
-                val matchesAll = filter.cardPredicates.all { predicate ->
-                    when (predicate) {
-                        is com.wingedsheep.sdk.scripting.predicates.CardPredicate.IsCreature ->
-                            targetCard.typeLine.isCreature
-                        is com.wingedsheep.sdk.scripting.predicates.CardPredicate.HasSubtype ->
-                            targetCard.typeLine.hasSubtype(predicate.subtype)
-                        else -> true
-                    }
+                if (predicateEvaluator.matches(
+                        state, projected, entityId, entry.grant.filter.baseFilter,
+                        PredicateContext(
+                            controllerId = entry.sourceControllerId,
+                            sourceId = entry.sourceEntityId,
+                        ),
+                    )) {
+                    add(entry.grant.ability)
                 }
-                if (!matchesAll) continue
-
-                // Check controller predicate relative to the source permanent's controller
-                val controllerMatch = filter.controllerPredicate?.evaluateWith { leaf ->
-                    when (leaf) {
-                        is ControllerPredicate.ControlledByYou -> targetControllerId == entry.sourceControllerId
-                        is ControllerPredicate.ControlledByOpponent -> targetControllerId != null && targetControllerId != entry.sourceControllerId
-                        else -> null // leaf kinds this fast path can't evaluate don't constrain
-                    }
-                } ?: true
-                if (controllerMatch) add(entry.grant.ability)
             }
         }
     }

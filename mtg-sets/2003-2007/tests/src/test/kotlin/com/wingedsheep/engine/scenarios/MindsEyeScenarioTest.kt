@@ -1,5 +1,8 @@
 package com.wingedsheep.engine.scenarios
 
+import com.wingedsheep.engine.support.chooseTriggerOrderInListedOrder
+import com.wingedsheep.engine.support.hasPendingTriggerOrder
+
 import com.wingedsheep.engine.core.SelectManaSourcesDecision
 import com.wingedsheep.engine.core.YesNoDecision
 import com.wingedsheep.engine.support.GameTestDriver
@@ -53,6 +56,10 @@ class MindsEyeScenarioTest : FunSpec({
         var offers = 0
         var guard = 0
         while ((stackSize > 0 || isPaused) && guard++ < 40) {
+            if (state.hasPendingTriggerOrder()) {
+                chooseTriggerOrderInListedOrder()
+                continue
+            }
             when (pendingDecision) {
                 is YesNoDecision -> {
                     submitYesNo(me, pay); offers++

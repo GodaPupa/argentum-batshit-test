@@ -169,7 +169,11 @@ data class DamageDealtEvent(
      * their TargetsComponent before event-trigger detection, so target/recipient relationship
      * predicates consume this event-side snapshot instead of consulting later state.
      */
-    val sourceTargetIdsAtDamage: List<EntityId>? = null
+    val sourceTargetIdsAtDamage: List<EntityId>? = null,
+    /** Damage-source characteristics, preserving the old object across return or token cleanup. */
+    val sourceSnapshot: com.wingedsheep.engine.state.components.stack.EntitySnapshot? = null,
+    /** False for damage dealt by an already-departed permanent; null on older event producers. */
+    val sourceWasOnBattlefield: Boolean? = null,
 ) : GameEvent
 
 /**

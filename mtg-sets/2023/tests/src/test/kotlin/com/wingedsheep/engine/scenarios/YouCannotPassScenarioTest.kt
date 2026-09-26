@@ -29,7 +29,8 @@ class YouCannotPassScenarioTest : ScenarioTestBase() {
             game.declareAttackers(mapOf("Naban, Dean of Iteration" to 2))
             game.passUntilPhase(Phase.COMBAT, Step.DECLARE_BLOCKERS)
             game.declareBlockers(mapOf("Grizzly Bears" to listOf("Naban, Dean of Iteration")))
-            game.passPriority() // blocking player passes; active player (P1) gets priority
+            game.state.priorityPlayerId shouldBe game.player1Id
+            game.state.step shouldBe Step.DECLARE_BLOCKERS
 
             val target = game.findPermanent("Grizzly Bears")!!
             game.castSpell(1, "You Cannot Pass!", target).error shouldBe null
@@ -53,7 +54,8 @@ class YouCannotPassScenarioTest : ScenarioTestBase() {
             game.declareAttackers(mapOf("Grizzly Bears" to 2))
             game.passUntilPhase(Phase.COMBAT, Step.DECLARE_BLOCKERS)
             game.declareBlockers(mapOf("Naban, Dean of Iteration" to listOf("Grizzly Bears")))
-            game.passPriority()
+            game.state.priorityPlayerId shouldBe game.player1Id
+            game.state.step shouldBe Step.DECLARE_BLOCKERS
 
             // The attacker (blocked by a legendary) is a legal target.
             game.castSpell(1, "You Cannot Pass!", game.findPermanent("Grizzly Bears")!!).error shouldBe null
@@ -77,7 +79,8 @@ class YouCannotPassScenarioTest : ScenarioTestBase() {
             game.declareAttackers(mapOf("Naban, Dean of Iteration" to 2))
             game.passUntilPhase(Phase.COMBAT, Step.DECLARE_BLOCKERS)
             game.declareBlockers(mapOf("Grizzly Bears" to listOf("Naban, Dean of Iteration")))
-            game.passPriority()
+            game.state.priorityPlayerId shouldBe game.player1Id
+            game.state.step shouldBe Step.DECLARE_BLOCKERS
 
             // The bystander did not block or get blocked by anything — illegal target.
             val bystander = game.findPermanent("Savannah Lions")!!

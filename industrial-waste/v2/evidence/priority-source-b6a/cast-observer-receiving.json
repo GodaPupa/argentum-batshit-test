@@ -1,0 +1,35 @@
+{
+  "schema": "shared-cast-observer-receiving-v1",
+  "source_base": "b35d4778dada69476da0f67549be7e70424c18bd",
+  "status": "PROSPECTIVE_INDEPENDENTLY_SOURCE_REVIEWED_135_CASE_QUALIFICATION",
+  "production_overrides": {
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/ZoneTransitionService.kt": "0b6b44e9598e10c86222f455c9fe3c6e13d6fdcdc75809bf0d88f343310ac4e7",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/CastPriorityProcessor.kt": "9939278edba7d26c850e4c36199165349f9889a7e92b8507dfaa3d53ae6f9ece",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/PendingTrigger.kt": "1df77a7df84d006ae7db58a461d28c091d22aeb26b6b880616058e77fd927cff"
+  },
+  "test_file": {
+    "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/CastObserverSourceLkiTest.kt",
+    "class_name": "com.wingedsheep.engine.scenarios.CastObserverSourceLkiTest",
+    "scope": "engine",
+    "expected_cases": 8,
+    "receiving_sha256": "29622301652a19f6f9b73aaf7cc700524f5f23a91764f5596c6520dbc3d6da96"
+  },
+  "expected_cases": {
+    "engine": 123,
+    "server": 12
+  },
+  "review": {
+    "reviewer": "/root/izzet",
+    "role": "non-author source reviewer",
+    "finding": "ACCEPT FOR TARGETED QUALIFICATION ONLY; exact origin and first departure, durable SBA-updated batch, both seats and target types, surviving and departed observers, serialized target pause.",
+    "execution_evidence_at_review": false,
+    "github_approval_created": false
+  },
+  "rule_source": "https://media.wizards.com/2026/downloads/MagicCompRules%2020260925.txt",
+  "original_127_cases_unchanged": true,
+  "known_gap_status": "SOURCE_REPAIR_UNEXECUTED",
+  "gameplay_authorized": false,
+  "official_allocations_initialized": 0,
+  "official_outcomes_exposed": 0,
+  "comment_only_override": "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/PendingTrigger.kt"
+}

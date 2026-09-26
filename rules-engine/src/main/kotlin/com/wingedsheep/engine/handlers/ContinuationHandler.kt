@@ -22,6 +22,7 @@ class ContinuationHandler(
     private val registry = ContinuationResumerRegistry().apply {
         // Core engine resumers
         registerModule(EffectAndTriggerContinuationResumer(services, effectRunner))
+        registerModule(TriggerOrderingResumer(services))
         registerModule(MiscContinuationResumer(services, effectRunner))
 
         // Core engine auto-resumers
@@ -88,6 +89,14 @@ class ContinuationHandler(
         val (_, stateAfterPop) = state.popContinuation()
         return registry.resume(stateAfterPop, suspension.answer, suspension.question, response, ::checkForMoreContinuations)
     }
+
+    /**
+     * Resume only automatic work left by a completed cast-time prompt inside stack resolution.
+     * The caller retains earlier events separately so their processed-trigger flag cannot hide
+     * triggers caused by this tail, or cause already processed cast events to be scanned twice.
+     */
+    fun drainAutomaticWork(state: GameState): ExecutionResult =
+        checkForMoreContinuations(state, emptyList())
 
     /**
      * Drain the automatic work a resumer uncovered, then report where execution ended up.
