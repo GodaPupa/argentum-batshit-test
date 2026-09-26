@@ -1,0 +1,183 @@
+name: Manual Phase 2 ETB Batch Qualification
+
+on:
+  push:
+    branches: [lab/manual-etb-receiving-20260926, lab/manual-purphoros-qualification-20260926]
+    paths:
+      - mtg-sets/**/cards/PurphorosGodOfTheForge.kt
+      - mtg-sets/**/scenarios/PurphorosGodOfTheForgeScenarioTest.kt
+      - mtg-sets/**/cards/AetherChanneler.kt
+      - mtg-sets/**/scenarios/AetherChannelerScenarioTest.kt
+      - rules-engine/src/main/**
+      - .github/workflows/manual-transmission-etb-qualification.yml
+
+permissions:
+  contents: read
+
+concurrency:
+  group: manual-phase2-etb-qualification
+  cancel-in-progress: false
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 70
+    env:
+      GRADLE_LOCK_SLOTS: '1'
+      JAVA_TOOL_OPTIONS: -XX:MaxMetaspaceSize=768m
+      GRADLE_OPTS: -Dorg.gradle.jvmargs=-Xmx4g
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: gradle/actions/setup-gradle@v6
+      - uses: extractions/setup-just@f8a3cce218d9f83db3a2ecd90e41ac3de6cdfd9b
+      - name: Bind exact receiving source and unchanged experimental inputs
+        shell: bash
+        run: |
+          mkdir -p build/reports/manual-etb
+          python3 - <<'PY'
+          import hashlib, json, os, pathlib, subprocess
+          base = '6abfb6bb7f3b11bea778b5e0b1040b058bcdcdaf'
+          source = subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()
+          tree = subprocess.check_output(['git','rev-parse','HEAD^{tree}'],text=True).strip()
+          assert source == os.environ['GITHUB_SHA']
+          assert not subprocess.check_output(['git','status','--porcelain'],text=True).strip()
+          subprocess.run(['git','merge-base','--is-ancestor',base,'HEAD'],check=True)
+          frozen = ['experiments/manual-transmission-phase2/protocol-r1.json',
+              'experiments/manual-transmission/control', 'experiments/manual-transmission/opponents']
+          subprocess.run(['git','diff','--exit-code',base,'--',*frozen],check=True)
+          paths = [
+              'mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/ths/cards/PurphorosGodOfTheForge.kt',
+              'mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/PurphorosGodOfTheForgeScenarioTest.kt',
+              'mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/dmu/cards/AetherChanneler.kt',
+              'mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/AetherChannelerScenarioTest.kt',
+              'rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/layers/EffectApplicator.kt',
+              'rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/sba/creature/ControlChangedRemovesFromCombatCheck.kt',
+              'rules-engine/src/testFixtures/kotlin/com/wingedsheep/engine/support/SerializationTestSupport.kt',
+              'experiments/manual-transmission-phase2/purphoros-prospective-r1.json',
+              'manual-scenarios/cards/p/purphoros-god-of-the-forge.json',
+              '.github/workflows/manual-transmission-etb-qualification.yml']
+          paths += [str(p) for p in sorted(pathlib.Path('experiments/manual-transmission-phase2/sources/purphoros-r1').glob('*.json'))]
+          out = {'source':source,'tree':tree,'accepted_manual_base':base,
+              'scope':'EXCLUDED_FIXED_COMPONENT_QUALIFICATION','official_initializations':0,
+              'gameplay_authorized':False,'files':{p:hashlib.sha256(pathlib.Path(p).read_bytes()).hexdigest() for p in paths}}
+          pathlib.Path('build/reports/manual-etb/source-binding.json').write_text(json.dumps(out,indent=2)+'\n')
+          PY
+      - name: Reverify exact THS source and image
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import hashlib, json, pathlib, urllib.request
+          out = pathlib.Path('build/reports/manual-etb')
+          source = json.loads(pathlib.Path('experiments/manual-transmission-phase2/sources/purphoros-r1/ths-135.json').read_text())
+          url = 'https://api.scryfall.com/cards/named?exact=Purphoros%2C%20God%20of%20the%20Forge&set=ths'
+          raw = urllib.request.urlopen(url,timeout=60).read()
+          fresh = json.loads(raw)
+          fields = ['id','oracle_id','name','mana_cost','type_line','oracle_text','power','toughness',
+              'colors','color_identity','rarity','collector_number','artist','image_uris','released_at','set']
+          assert all(fresh.get(k) == source.get(k) for k in fields)
+          request = urllib.request.Request(fresh['image_uris']['normal'],method='HEAD')
+          with urllib.request.urlopen(request,timeout=60) as response:
+              assert response.status == 200
+          (out/'purphoros-scryfall-reverified.json').write_bytes(raw)
+          (out/'source-reverification.json').write_text(json.dumps({'fields':fields,
+              'sha256':hashlib.sha256(raw).hexdigest(),'image_http_status':200},indent=2)+'\n')
+          PY
+      - name: Exercise every prospective exact Purphoros case
+        shell: bash
+        run: |
+          set -euo pipefail
+          just test-class PurphorosGodOfTheForgeScenarioTest --rerun --max-workers=1 -PkotlinCompileParallelism=1 -Pkotlin.compiler.execution.strategy=in-process -Dorg.gradle.jvmargs=-Xmx4g --info --stacktrace 2>&1 | tee build/reports/manual-etb/purphoros.log
+      - name: Requalify Aether and adjacent modal trigger behavior on the combined source
+        shell: bash
+        run: |
+          set -euo pipefail
+          just test-class AetherChannelerScenarioTest --tests '*CharmingPrinceScenarioTest' --rerun --max-workers=1 -PkotlinCompileParallelism=1 -Pkotlin.compiler.execution.strategy=in-process -Dorg.gradle.jvmargs=-Xmx4g --info --stacktrace 2>&1 | tee build/reports/manual-etb/aether.log
+      - name: Generate ordinary snapshots and run corpus lint
+        shell: bash
+        run: |
+          set -euo pipefail
+          just test-class CardDefinitionSnapshotTest --tests '*CardLintTest' -DupdateSnapshots=true --rerun --max-workers=1 -PkotlinCompileParallelism=1 -Pkotlin.compiler.execution.strategy=in-process -Dorg.gradle.jvmargs=-Xmx4g --info --stacktrace 2>&1 | tee build/reports/manual-etb/content.log
+      - name: Preserve only the intended generated THS record
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import hashlib, json, pathlib, re, subprocess
+          target = 'mtg-sets/src/test/resources/snapshots/cards/THS.json'
+          changed = subprocess.check_output(['git','diff','--name-only'],text=True).splitlines()
+          assert changed in ([target],[]), changed
+          def records(raw):
+              result = {}
+              for block in re.split(r'\n\n(?=// )',raw.strip()):
+                  heading, body = block.split('\n',1)
+                  assert heading.startswith('// ') and heading[3:] not in result
+                  result[heading[3:]] = (body,json.loads(body))
+              return result
+          old = records(subprocess.check_output(['git','show','HEAD:'+target],text=True))
+          new = records(pathlib.Path(target).read_text())
+          assert set(new)-set(old) in ({'Purphoros, God of the Forge'},set())
+          assert not set(old)-set(new)
+          assert all(old[k] == new[k] for k in old), 'Existing record changed'
+          assert new['Purphoros, God of the Forge'][1]['manaCost'] == '{3}{R}'
+          out = pathlib.Path('build/reports/manual-etb')
+          (out/'THS.json').write_bytes(pathlib.Path(target).read_bytes())
+          (out/'generated-delta.patch').write_bytes(subprocess.check_output(['git','diff','--',target]))
+          (out/'generated-binding.json').write_text(json.dumps({'path':target,
+              'sha256':hashlib.sha256(pathlib.Path(target).read_bytes()).hexdigest(),
+              'added_records':sorted(set(new)-set(old)),'unchanged_existing_records':len(old),
+              'independent_review_required':True},indent=2)+'\n')
+          PY
+          git diff --check
+      - name: Canonical printings and independent Assay differential
+        shell: bash
+        run: |
+          set -euo pipefail
+          just check-card-printing 'Purphoros, God of the Forge' 2>&1 | tee build/reports/manual-etb/purphoros-printing.log
+          just check-card-printing 'Aether Channeler' 2>&1 | tee build/reports/manual-etb/aether-printing.log
+          just assay-differential --set THS 2>&1 | tee build/reports/manual-etb/assay-differential.log
+      - name: Preserve actual cases without converting missing or failed cases to passes
+        if: always()
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import hashlib, json, pathlib, xml.etree.ElementTree as ET
+          expected = {'PurphorosGodOfTheForgeScenarioTest':25,'AetherChannelerScenarioTest':10,
+              'CharmingPrinceScenarioTest':2,'CardDefinitionSnapshotTest':340,'CardLintTest':3}
+          roots = ['mtg-sets/2008-2016/tests','mtg-sets/2017-2022/tests','mtg-sets']
+          seen, rows = set(), []
+          for module in roots:
+              for p in sorted(pathlib.Path(module,'build/test-results/test').glob('TEST-*.xml')):
+                  root = ET.parse(p).getroot()
+                  name = root.attrib['name'].rsplit('.',1)[-1]
+                  assert name in expected and name not in seen, name
+                  seen.add(name)
+                  cases = root.findall('testcase')
+                  rows.append({'class':name,'xml_sha256':hashlib.sha256(p.read_bytes()).hexdigest(),
+                      'cases':[{'name':c.attrib['name'],'failure':c.find('failure') is not None,
+                          'error':c.find('error') is not None,'skipped':c.find('skipped') is not None} for c in cases]})
+          out = {'scope':'COMPONENT_ONLY_NOT_GAMEPLAY','suites':rows,
+              'actual_cases':sum(len(r['cases']) for r in rows),'expected_cases':expected,
+              'missing_suites':sorted(set(expected)-seen),'gameplay_authorized':False,'official_initializations':0}
+          pathlib.Path('build/reports/manual-etb/actual-cases.json').write_text(json.dumps(out,indent=2)+'\n')
+          assert seen == set(expected), out['missing_suites']
+          assert all(len(r['cases']) == expected[r['class']] for r in rows)
+          assert not any(c['failure'] or c['error'] or c['skipped'] for r in rows for c in r['cases'])
+          PY
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: manual-etb-${{ github.sha }}
+          path: |
+            build/reports/manual-etb
+            mtg-sets/2008-2016/tests/build/test-results/test/TEST-*.xml
+            mtg-sets/2017-2022/tests/build/test-results/test/TEST-*.xml
+            mtg-sets/build/test-results/test/TEST-*.xml
+          if-no-files-found: error
+          retention-days: 90
