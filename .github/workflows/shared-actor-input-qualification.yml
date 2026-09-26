@@ -1,0 +1,78 @@
+name: Shared Actor Input Qualification
+
+on:
+  push:
+    branches: [lab/shared-actor-input-qualification]
+    paths:
+      - .github/workflows/shared-actor-input-qualification.yml
+      - gym/src/main/kotlin/com/wingedsheep/gym/actorinput/**
+      - gym/src/main/kotlin/com/wingedsheep/gym/contract/ObservationBuilder.kt
+      - gym/src/test/kotlin/com/wingedsheep/gym/actorinput/**
+      - gym/build.gradle.kts
+      - lab-coordinator/shared-capabilities/actor-input-extraction.json
+      - lab-coordinator/shared-capabilities/collect-actor-input.py
+      - rules-engine/**
+      - mtg-sdk/**
+      - mtg-sets/**
+  pull_request:
+    paths:
+      - .github/workflows/shared-actor-input-qualification.yml
+      - gym/src/main/kotlin/com/wingedsheep/gym/actorinput/**
+      - gym/src/test/kotlin/com/wingedsheep/gym/actorinput/**
+      - lab-coordinator/shared-capabilities/actor-input-extraction.json
+      - lab-coordinator/shared-capabilities/collect-actor-input.py
+
+permissions:
+  contents: read
+
+concurrency:
+  group: shared-actor-input-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      GRADLE_LOCK_SLOTS: '1'
+      JAVA_TOOL_OPTIONS: -XX:MaxMetaspaceSize=768m
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.sha }}
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: gradle/actions/setup-gradle@v6
+      - uses: extractions/setup-just@f8a3cce218d9f83db3a2ecd90e41ac3de6cdfd9b
+
+      - name: Bind exact source and unchanged canonical extraction
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 lab-coordinator/shared-capabilities/collect-actor-input.py bind
+
+      - name: Execute all 50 existing actor projection checks
+        shell: bash
+        run: |
+          set -euo pipefail
+          just test-class ActorObservationBoundaryTest --tests '*ActorStackSourceObservationTest' --tests '*ActorTriggerOrderObservationTest' --tests '*ActorPriorityObservationTest' --rerun --max-workers=1 -PkotlinCompileParallelism=1 -Pkotlin.compiler.execution.strategy=in-process -Dorg.gradle.jvmargs=-Xmx4g --info --stacktrace 2>&1 | tee build/reports/shared-actor-input/actor.log
+
+      - name: Audit actual complete XML banks and stable source
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 lab-coordinator/shared-capabilities/collect-actor-input.py collect
+
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: shared-actor-input-qualification-${{ github.sha }}
+          if-no-files-found: error
+          path: |
+            build/reports/shared-actor-input
+            gym/build/test-results/test/TEST-*.ActorObservationBoundaryTest.xml
+            gym/build/test-results/test/TEST-*.ActorStackSourceObservationTest.xml
+            gym/build/test-results/test/TEST-*.ActorTriggerOrderObservationTest.xml
+            gym/build/test-results/test/TEST-*.ActorPriorityObservationTest.xml
