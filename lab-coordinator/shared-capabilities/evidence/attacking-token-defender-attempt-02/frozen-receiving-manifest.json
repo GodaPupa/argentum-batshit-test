@@ -1,9 +1,9 @@
 {
-  "schema": "shared-attacking-token-defender-receiving/v2",
-  "status": "SAME_FIXED16_PLUS_SEPARATE_PROSPECTIVE4_AWAITING_NON_AUTHOR_GATE_REVIEW",
+  "schema": "shared-attacking-token-defender-receiving/v1",
+  "status": "SAME_FIXED_16_RETRY_AFTER_NON_AUTHOR_REVIEWED_SYNTAX_CORRECTION",
   "receiving_base": "77c7aad0bb2ded2c0372087d94f66ccbde0f7d09",
-  "local_source_candidate": "145b31ba41a0914207d91f6f939c869b97ded7bf",
-  "budget_sha256": "b3fc75093350389f92d9cf44e02ad0bff4c6c621fc19ef13260000cf3fc92363",
+  "local_source_candidate": "a1dde857585da211f6e0743ae6a2999927c84456",
+  "budget_sha256": "27c151b1484872717175b978dbdcdf46b287c3a556296d726305428c93e93390",
   "banks": [
     {
       "class": "com.wingedsheep.engine.handlers.effects.token.AttackingTokenDefenderChoiceTest",
@@ -30,15 +30,6 @@
         "activating the ability then attacking creates two tapped, attacking Warrior tokens",
         "the tokens are sacrificed at the next end step"
       ]
-    },
-    {
-      "class": "com.wingedsheep.engine.event.EntryChoiceEventProvenanceTest",
-      "case_names": [
-        "EP01 a real as-enters token publishes its entry and resolves exactly one self ETB trigger",
-        "EP02 entry-time observer survives its automatic-tail removal and the distinct leave trigger is not suppressed",
-        "EP03 serialized pending token tail and repeated answers preserve exact entry records, state and two ETB effects",
-        "EP04 serialized provenance skips only the marked occurrence and preserves identical unmarked occurrences"
-      ]
     }
   ],
   "stages": [
@@ -53,20 +44,13 @@
       "module": "mtg-sets/2025/tests",
       "class": "com.wingedsheep.engine.scenarios.DalkovanEncampmentScenarioTest",
       "expected_cases": 2
-    },
-    {
-      "stage": "entry-event-provenance-4",
-      "module": "rules-engine",
-      "class": "com.wingedsheep.engine.event.EntryChoiceEventProvenanceTest",
-      "expected_cases": 4
     }
   ],
   "source_files_sha256": {
     "build.gradle.kts": "986599d2c2ff91066e01a660a0f95e6c982ddef029171350f944be549730e40c",
     "justfile": "70ed255981a941b260b8eeba4acf90abf32956126ef9672f5cf6e0b5840167e3",
-    "lab-coordinator/shared-capabilities/attacking-token-defender-budget.json": "b3fc75093350389f92d9cf44e02ad0bff4c6c621fc19ef13260000cf3fc92363",
+    "lab-coordinator/shared-capabilities/attacking-token-defender-budget.json": "27c151b1484872717175b978dbdcdf46b287c3a556296d726305428c93e93390",
     "lab-coordinator/shared-capabilities/collect-priority-receiving.py": "2c158a62f1898dcc7cb3c00a3cf2497a42d87e3a4e3a2a1e37926b2a4483352f",
-    "lab-coordinator/shared-capabilities/entry-choice-event-provenance-budget.json": "b80b4bff7dfc49e0ba0e2748e7c12ac93b1fbc40ebb361fa4e10aff0ff4bb6d6",
     "lab-coordinator/shared-capabilities/receiving-case-banks-v1.json": "fbcd17ca4beda7da01a58fed7c627c66dc154bf4955d6b5556b02de9e0a82a97",
     "lab-coordinator/shared-capabilities/receiving-collector-independent-source-review.json": "cebe19436469e4eefad3f8165675e97dfb860c33325c7a4762f5ccd91e7ac1ea",
     "mtg-sdk/build.gradle.kts": "5e6927db0f8188dc9bf3817d55d105774d9b12dff9a3fd39fbaa2288ef3bc78c",
@@ -76,19 +60,16 @@
     "mtg-sets/2025/tests/build.gradle.kts": "2ba465279fe10d46ff61a56834f002bd2bdb1ff7aaaed22fb607a4085df1ccd7",
     "mtg-sets/2025/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/DalkovanEncampmentScenarioTest.kt": "acb9cd9a32346e5867740305c79f42783f37e5d4202dadf1d7b8b051f60b5532",
     "rules-engine/build.gradle.kts": "6ede083da0d089b6a8b7010e3710067ab8fb4738a6f9e2425ddb09cf62576523",
-    "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/GameEvent.kt": "e7a8dc304b75af8365d14f8585afb4cb6db2d9e4176e0a29e20eec68af259cb1",
     "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/ModalAndCloneContinuations.kt": "1e87d845aa1f284838bb6bea6cc6281f626e887e21f626fe302fe47eadeffdd4",
     "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/PendingDecision.kt": "bbb02cbedf200c396d4d6e6884d42b3a93e0b3bfea20acc07e31f6c361ccbd40",
     "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/Serialization.kt": "bcc6321f1ef85416859bff716b1446498a62917208cc7f7a65b4cd39b0333b68",
     "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/TokenContinuations.kt": "c1856c5d7165cfe596b09be849faa855d9d7ec5b7bcf3deeb36c8a01bdaf4cd0",
-    "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerDetector.kt": "fdea959b808ee7c6942bc2391b5d6d9ea04ee26cd984ec7b86382f02414b7623",
     "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/ContinuationHandler.kt": "a8091ebb5e745e48765d38f01f6f21052b98ec4b0f52da34076882bbd90edccc",
     "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/EffectContext.kt": "ab14c3d79c6bf842313b948af585642b80b96d40834925af5cfa75fda084c155",
     "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/ObjectReferenceEnvironment.kt": "06433f5ab70350b9d7b30c0e29f84c7f434ea595d52cb9ede573c8fce606b693",
     "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/decision/DecisionValidators.kt": "196ebb04000a73080287fc4fab9a3cc5d8198a704cb51b2f61a2ee18d22de014",
     "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/decision/SubmitDecisionHandler.kt": "ec9e7aef1d5a02c228e8614d8a5fb442cd8d7c2fdf397dd681bfb7073ce50614",
     "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/CoreAutoResumerModule.kt": "d191e92ce6bf2c27d33f5ae9f80ff2b7ce8b0d94aa6493887c9739faea9292b3",
-    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/ModalAndCloneContinuationResumer.kt": "7d546e8c590c9dbc541c50cd43cfd7436354a4b7be6108a882176cb0d3131190",
     "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/ObjectReferencePropagation.kt": "44754cc29fd5abe7b850f819811a1a26af25b845396dd3439135172cb0733393",
     "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/PipelineCollectionPropagation.kt": "2347f1dc0bcd3c6dbdf7c8753bd5ff892eaf80e5da7041cc8c8aaee42d534278",
     "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/TokenContinuationResumer.kt": "9213e0e9e7e79c10fd49b2162d38e5b31b369ed0c398f33ff6569b3e66f0a773",
@@ -102,8 +83,7 @@
     "rules-engine/src/main/kotlin/com/wingedsheep/engine/legalactions/enumerators/CombatEnumerator.kt": "806c3e20163072b7b96588c695e6d6913cc39a7c70deec88f1ff31a5bc5e0c1b",
     "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/battle/Battles.kt": "d709d7fbc4ffd0967eac3ac3834cbe18e4c088ee8214618169cce85df1e74555",
     "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/combat/CombatDefenders.kt": "87543b443ca4f637617f1cbe7613c37f1c577a7754aa272786cf5c0d7be68920",
-    "rules-engine/src/test/kotlin/com/wingedsheep/engine/event/EntryChoiceEventProvenanceTest.kt": "73c761176e87fdb40add594b7591c508784cadcbc2c47bc247d5b18658f6e44d",
-    "rules-engine/src/test/kotlin/com/wingedsheep/engine/handlers/effects/token/AttackingTokenDefenderChoiceTest.kt": "becb1edcc7a08998ca0dab03ebc83b2fb4f484339859e0c771bc7a08851578ee",
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/handlers/effects/token/AttackingTokenDefenderChoiceTest.kt": "643de45bd48aed39706026d02ad92f8a5b2339269589f0976ede41c5013f2446",
     "rules-engine/src/testFixtures/kotlin/com/wingedsheep/engine/support/ScenarioTestBase.kt": "ef59cd04e877e787aa446b3240cb012a9527505d2e1df75e0e3fb82f925f0408",
     "rules-engine/src/testFixtures/kotlin/com/wingedsheep/engine/support/TriggerOrderTestSupport.kt": "c7aba22d7937c395075c00f8710cb072a0ec1e3932a5fe55b441c9b1a7da0f71",
     "scripts/gradle-locked": "9e39342ad1826c8baf176f6e7b0c38664aad5a4a88cd6a90252dd619e4b829f1",
@@ -115,19 +95,5 @@
   "gameplay_authorized": false,
   "whole_token_runtime_accepted": false,
   "full_receiving_accepted": false,
-  "prior_attempt_evidence": [
-    "lab-coordinator/shared-capabilities/evidence/attacking-token-defender-attempt-01",
-    "lab-coordinator/shared-capabilities/evidence/attacking-token-defender-attempt-02"
-  ],
-  "additional_budget": {
-    "path": "lab-coordinator/shared-capabilities/entry-choice-event-provenance-budget.json",
-    "sha256": "b80b4bff7dfc49e0ba0e2748e7c12ac93b1fbc40ebb361fa4e10aff0ff4bb6d6",
-    "expected_actual_cases": 4
-  },
-  "scope_partition": {
-    "unchanged_original_token_bank_cases": 16,
-    "separate_prospective_event_provenance_cases": 4,
-    "receiving_total_cases": 20,
-    "experimental_policy_budget_consumed": 0
-  }
+  "prior_attempt_evidence": "lab-coordinator/shared-capabilities/evidence/attacking-token-defender-attempt-01"
 }
