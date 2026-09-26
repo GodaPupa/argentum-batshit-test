@@ -1,0 +1,46 @@
+{
+  "schema": "argentum-independent-component-artifact-review-v1",
+  "reviewer": "/root/ferocity",
+  "source": "801557005300f059a95adc670b944b82a24addae",
+  "source_tree": "bb65b42114468753fae0c1dc956f0e73c0b6e530",
+  "run_id": 36254238302,
+  "artifact_id": 10910455470,
+  "artifact_bytes": 251639,
+  "artifact_sha256": "a746dc837abbf96a57bf3e68624f9a6b1bebcea720aa91abbde56a4eaf05111e",
+  "workflow": ".github/workflows/shared-payment-feasibility-qualification.yml",
+  "workflow_sha256": "b9aaebad4baa9f45cc56ee15fdad4c7e0c8275cdb701c360aa7edaa4f5f04dc8",
+  "decision": "ACCEPT_ACTUAL_TARGETED_COMPONENT_ARTIFACT_ONLY",
+  "verification": {
+    "requested_actual_head_and_tree_match_git": true,
+    "checkout_clean": true,
+    "all_six_source_pins_match_git": true,
+    "expected_and_observed_source_pins_identical": true,
+    "all_11_raw_xml_digests_match_receipt": true,
+    "all_case_names_and_counts_match_raw_xml": true,
+    "actual_cases": 77,
+    "actual_passed": 77,
+    "failures": 0,
+    "errors": 0,
+    "skips": 0
+  },
+  "counts": {
+    "ManaPaymentFeasibilityTest": 21,
+    "ManaPaymentPolicyWitnessTest": 4,
+    "ManaSpendRestrictionAnyAbilityTest": 5,
+    "DynamicManaAmountAutoTapTest": 6,
+    "ManaAbilityActivationTriggerScenarioTest": 3,
+    "ManaSourceProvenanceScenarioTest": 3,
+    "MonocolorHybridManaSolverTest": 4,
+    "MultiManaSourceTest": 7,
+    "PaidFilterManaSolverTest": 14,
+    "RestrictedXManaReconciliationTest": 4,
+    "XSpellFloatingRestrictedManaTest": 6
+  },
+  "limitations": [
+    "Artifact audit does not replace independent canonical source review.",
+    "No receiving-project combined-source, menu wiring, pilot witness, checkpoint collector or full integration accepted by this artifact.",
+    "No gameplay or seed allocation was used or accepted."
+  ],
+  "github_pull_request_approval": false,
+  "gameplay_admission": false
+}
