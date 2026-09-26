@@ -1,0 +1,18 @@
+{
+  "schema": "izzet-receiving-control-nonauthor-packaging-review-v1",
+  "reviewer": "actual nonauthor /root/manual",
+  "at_utc": "2026-09-26T22:18:27.393272+00:00",
+  "decision": "PASS_ONE_LINE_RETENTION_SUCCESSOR_BEFORE_FIRST_EXECUTION",
+  "parent_review_sha256": "7627f8ed232fb42ff823484b9103f3dee2a3bacc1e457341e8edf1efad880076",
+  "original_workflow_sha256": "2a8fdd289e0257914e5eb6de1c6ef197224b6c9be70da464ed6cd09f9e998153",
+  "successor_workflow_sha256": "a16ce49a49cf001c19553f1fbed99d6c193ab2d9f060d7a85e4588c91616fc88",
+  "exact_delta": "Only adds include-hidden-files: true under actions/upload-artifact@v7 scoped to output/. Removing that one line exactly reproduces reviewed predecessor bytes.",
+  "reason": "Ensure copied output/control/.github/workflows/izzet-shared-receiving.yml is retained in original artifact alongside other2controlfiles and hashes.",
+  "boundary": "Source checkout uses persist-credentials:false. output/ is owned by collector and contains only copied3controlfiles, explicitly written source/dependency/audit records, commandlogs andXML. This change does not widen upload to checkout or workspace.",
+  "unchanged_script_sha256": "4472055535f616e80a048654fd2367ef70a653be9f4e49332ba4695490fffae7",
+  "unchanged_unready_gate_sha256": "526b5cfd816ecdf35d6736be11fdcf6b72ebe0246c2723645dedc6afd95cadc6",
+  "scope": "Supersedes predecessor workflow binding only before same sole prospective branch-creation event. All parent restrictions and independent raw/fullCI requirements preserved. Allows ready/review-only gate activation referring to parent and this supplement.",
+  "new_attempts_authorized": 1,
+  "duplicate_attempt_authorized": false,
+  "gameplay_authorized": false
+}
