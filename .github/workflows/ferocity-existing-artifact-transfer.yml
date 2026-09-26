@@ -1,0 +1,75 @@
+name: Retrieve existing Ferocity qualification bytes
+
+on:
+  push:
+    branches: [lab/ferocity-existing-artifact-transfer-20260926]
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  split-existing-artifact:
+    if: ${{ github.event.before == '0000000000000000000000000000000000000000' && github.run_attempt == 1 }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        artifact_id: [10911949741, 10912261986]
+    steps:
+      - name: Check out only this reviewed retrieval source
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - name: Download original immutable artifact and split verified ZIP bytes
+        env:
+          GH_TOKEN: ${{ github.token }}
+          EXPECTED_SOURCE: ${{ github.sha }}
+          ARTIFACT_ID: ${{ matrix.artifact_id }}
+        run: python3 lab-coordinator/shared-capabilities/split-existing-ferocity-artifacts.py "$ARTIFACT_ID"
+      - name: Preserve retrieval manifest and source binding
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: ferocity-existing-${{ matrix.artifact_id }}-manifest
+          path: output/${{ matrix.artifact_id }}/manifest.json
+          if-no-files-found: error
+          retention-days: 30
+      - name: Preserve original ZIP byte range 0
+        if: success()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: ferocity-existing-${{ matrix.artifact_id }}-part-00
+          path: output/${{ matrix.artifact_id }}/part-00.bin
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 30
+      - name: Preserve original ZIP byte range 1
+        if: success()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: ferocity-existing-${{ matrix.artifact_id }}-part-01
+          path: output/${{ matrix.artifact_id }}/part-01.bin
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 30
+      - name: Preserve original ZIP byte range 2
+        if: success()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: ferocity-existing-${{ matrix.artifact_id }}-part-02
+          path: output/${{ matrix.artifact_id }}/part-02.bin
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 30
+      - name: Preserve original ZIP byte range 3
+        if: success()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: ferocity-existing-${{ matrix.artifact_id }}-part-03
+          path: output/${{ matrix.artifact_id }}/part-03.bin
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 30
