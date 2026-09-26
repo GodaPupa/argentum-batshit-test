@@ -59,7 +59,11 @@ jobs:
               'mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/dmu/cards/AetherChanneler.kt',
               'mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/AetherChannelerScenarioTest.kt',
               'rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/layers/EffectApplicator.kt',
+              'rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/layers/ProjectionModels.kt',
+              'rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/ability/ActivateAbilityHandler.kt',
               'rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/sba/creature/ControlChangedRemovesFromCombatCheck.kt',
+              'rules-engine/src/test/kotlin/com/wingedsheep/engine/hygiene/FloatingEffectSerializationRoundTripTest.kt',
+              'game-server/src/test/kotlin/com/wingedsheep/gameserver/session/AiUndoDecisionFreshnessTest.kt',
               'rules-engine/src/testFixtures/kotlin/com/wingedsheep/engine/support/SerializationTestSupport.kt',
               'experiments/manual-transmission-phase2/purphoros-prospective-r1.json',
               'manual-scenarios/cards/p/purphoros-god-of-the-forge.json',
@@ -97,6 +101,11 @@ jobs:
           (out/'source-reverification.json').write_text(json.dumps({'fields':fields,
               'sha256':hashlib.sha256(raw).hexdigest(),'image_http_status':200},indent=2)+'\n')
           PY
+      - name: Qualify static and floating type-effect persistence
+        shell: bash
+        run: |
+          set -euo pipefail
+          just test-class FloatingEffectSerializationRoundTripTest --rerun --max-workers=1 -PkotlinCompileParallelism=1 -Pkotlin.compiler.execution.strategy=in-process -Dorg.gradle.jvmargs=-Xmx4g --info --stacktrace 2>&1 | tee build/reports/manual-etb/type-effect-persistence.log
       - name: Exercise every prospective exact Purphoros case
         shell: bash
         run: |
@@ -156,8 +165,9 @@ jobs:
           python3 - <<'PY'
           import hashlib, json, pathlib, xml.etree.ElementTree as ET
           expected = {'PurphorosGodOfTheForgeScenarioTest':25,'AetherChannelerScenarioTest':10,
-              'CharmingPrinceScenarioTest':2,'CardDefinitionSnapshotTest':340,'CardLintTest':3}
-          roots = ['mtg-sets/2008-2016/tests','mtg-sets/2017-2022/tests','mtg-sets']
+              'CharmingPrinceScenarioTest':2,'CardDefinitionSnapshotTest':340,'CardLintTest':3,
+              'FloatingEffectSerializationRoundTripTest':6}
+          roots = ['rules-engine','mtg-sets/2008-2016/tests','mtg-sets/2017-2022/tests','mtg-sets']
           seen, rows = set(), []
           for module in roots:
               for p in sorted(pathlib.Path(module,'build/test-results/test').glob('TEST-*.xml')):
@@ -183,6 +193,7 @@ jobs:
           name: manual-etb-${{ github.sha }}
           path: |
             build/reports/manual-etb
+            rules-engine/build/test-results/test/TEST-*.xml
             mtg-sets/2008-2016/tests/build/test-results/test/TEST-*.xml
             mtg-sets/2017-2022/tests/build/test-results/test/TEST-*.xml
             mtg-sets/build/test-results/test/TEST-*.xml

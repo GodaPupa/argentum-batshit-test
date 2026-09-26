@@ -2,9 +2,14 @@ package com.wingedsheep.engine.hygiene
 
 import com.wingedsheep.engine.core.engineSerializersModule
 import com.wingedsheep.engine.mechanics.layers.ActiveFloatingEffect
+import com.wingedsheep.engine.mechanics.layers.AffectsFilter
+import com.wingedsheep.engine.mechanics.layers.ContinuousEffectData
+import com.wingedsheep.engine.mechanics.layers.ContinuousEffectSourceComponent
 import com.wingedsheep.engine.mechanics.layers.FloatingEffectData
 import com.wingedsheep.engine.mechanics.layers.Layer
+import com.wingedsheep.engine.mechanics.layers.Modification
 import com.wingedsheep.engine.mechanics.layers.SerializableModification
+import com.wingedsheep.engine.state.ComponentContainer
 import com.wingedsheep.sdk.model.EntityId
 import com.wingedsheep.sdk.scripting.Duration
 import io.kotest.assertions.withClue
@@ -55,6 +60,31 @@ class FloatingEffectSerializationRoundTripTest : FunSpec({
             withClue("${leaf.simpleName} would throw JsonEncodingException on save — rename the field with @SerialName") {
                 fieldNames shouldNotContain "type"
             }
+        }
+    }
+
+    test("no static Modification leaf has a JSON field colliding with the 'type' class discriminator") {
+        val leaves = sealedLeaves(Modification::class)
+        leaves.isNotEmpty() shouldBe true
+        leaves.forEach { leaf ->
+            val descriptor = serializer(leaf.createType()).descriptor
+            val fieldNames = (0 until descriptor.elementsCount).map { descriptor.getElementName(it) }
+            withClue("${leaf.simpleName} static effect cannot persist with a colliding field") {
+                fieldNames shouldNotContain "type"
+            }
+        }
+    }
+
+    for (modification in listOf<Modification>(Modification.AddType("CREATURE"), Modification.RemoveType("CREATURE"))) {
+        test("a static ${modification::class.simpleName} component round-trips through persistence-shaped JSON") {
+            val effect = ContinuousEffectSourceComponent(listOf(
+                ContinuousEffectData(modification = modification, affectsFilter = AffectsFilter.Self)
+            ))
+            val original = ComponentContainer.of(effect)
+            val encoded = json.encodeToString(ComponentContainer.serializer(), original)
+            val restored = json.decodeFromString(ComponentContainer.serializer(), encoded)
+            restored shouldBe original
+            restored.get<ContinuousEffectSourceComponent>() shouldBe effect
         }
     }
 

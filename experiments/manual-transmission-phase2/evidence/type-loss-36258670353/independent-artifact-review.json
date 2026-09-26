@@ -1,0 +1,41 @@
+{
+  "schema": "shared-type-loss-independent-artifact-review-v1",
+  "reviewer": "/root",
+  "role": "non-author agent",
+  "github_approval_created": false,
+  "disposition": "ACCEPT_TARGETED_19_CASE_COMPONENT_ONLY",
+  "source": "8d76bbb7a8f6a8ea5332f2f1d88dadb12b289c39",
+  "tree": "21429f9ecc7f9c00827aba6d12211397eb7606b7",
+  "run_id": 36258670353,
+  "job_id": 108450177513,
+  "artifact_id": 10911004149,
+  "archive_bytes": 236765,
+  "archive_sha256": "12e951430026943557ecc521e30b7dbacb9c3b99209f869b660e88bf92de27ee",
+  "source_pins_verified": {
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/RemoveCardTypeCapabilityTest.kt": "8d7f595fa5999f827a408d4b45a16f4563878c2c4643b98579220df0f9abce63",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/layers/EffectApplicator.kt": "94341baba766378c248daa7476bde4fb9cf8265db606e0c26a3333ca36bd923a",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/sba/creature/ControlChangedRemovesFromCombatCheck.kt": "cfdcacf6c4e33369626f298b66ba37604536a347bfb5efdcc2836c16c01b36ce",
+    ".github/workflows/manual-transmission-type-loss-diagnostic.yml": "3369ca7e51f054d0631d776b23f4bf6e9ae121abfca992461c3ea9a4955817bb"
+  },
+  "actual_suites": {
+    "ProjectedTypeNamesTest": 1,
+    "AuraEnchantRestrictionStateBasedActionTest": 3,
+    "EquipmentHostNotCreatureUnattachTest": 1,
+    "ImpendingClientViewTest": 2,
+    "ImpendingMechanicTest": 5,
+    "RemoveCardTypeCapabilityTest": 7
+  },
+  "cases": 19,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "all_raw_xml_hashes_and_case_identities_verified": true,
+  "execution_log_proof": [
+    "> Task :rules-engine:test",
+    "Starting process 'Gradle Test Executor 1'. Working directory: /home/runner/work/argentum-batshit-test/argentum-batshit-test/rules-engine Command: /usr/lib/jvm/temurin-21-jdk-amd64/bin/java -Dbenchmark=false -DbenchmarkGames=10 -DbenchmarkMaxTurns=50 -DbenchmarkOutputDir=/tmp -DbenchmarkSet=POR -Dorg.gradle.internal.worker.tmpdir=/home/runner/work/argentum-batshit-test/argentum-batshit-test/rules-engine/build/tmp/test/work -javaagent:/home/runner/work/argentum-batshit-test/argentum-batshit-test/rules-engine/build/kover/kover-jvm-agent-0.9.8.jar=file:/home/runner/work/argentum-batshit-test/argentum-batshit-test/rules-engine/build/tmp/test/kover-agent.args @/home/runner/.gradle/.tmp/gradle-worker-classpath13911712113481343985txt -Xmx2g -Dfile.encoding=UTF-8 -Duser.country -Duser.language=en -Duser.variant -ea worker.org.gradle.process.internal.worker.GradleWorkerMain 'Gradle Test Executor 1'",
+    "> Task :rules-engine:test"
+  ],
+  "full_ci_accepted": false,
+  "receiving_projects_accepted": false,
+  "gameplay_authorized": false
+}
