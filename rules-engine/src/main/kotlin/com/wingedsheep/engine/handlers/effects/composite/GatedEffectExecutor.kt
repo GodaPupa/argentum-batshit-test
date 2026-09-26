@@ -126,8 +126,16 @@ class GatedEffectExecutor(
             // Source must still be in its required zone (e.g. a dies-trigger "may" whose source
             // has since left) — otherwise the may-action is impossible, so skip silently.
             if (gate.sourceRequiredZone != null && context.sourceId != null) {
-                val inRequiredZone = state.zones.any { (zoneKey, entities) ->
-                    zoneKey.zoneType == gate.sourceRequiredZone && context.sourceId in entities
+                val inRequiredZone = if (gate.sourceRequiredZone == Zone.STACK) {
+                    // A resolving spell has already been popped from the visible stack list, but
+                    // its object identity deliberately remains logically in STACK until the
+                    // resolution finalizer moves it. Optional text on that resolving spell must
+                    // therefore read the logical zone, not physical stack membership.
+                    state.logicalZone(context.sourceId)?.zoneType == Zone.STACK
+                } else {
+                    state.zones.any { (zoneKey, entities) ->
+                        zoneKey.zoneType == gate.sourceRequiredZone && context.sourceId in entities
+                    }
                 }
                 if (!inRequiredZone) return EffectResult.success(state)
             }
