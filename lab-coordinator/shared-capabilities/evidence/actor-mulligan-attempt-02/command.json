@@ -1,0 +1,27 @@
+{
+  "command": [
+    "just",
+    "test-class",
+    "ActorObservationBoundaryTest",
+    "--tests",
+    "*ActorStackSourceObservationTest",
+    "--tests",
+    "*ActorTriggerOrderObservationTest",
+    "--tests",
+    "*ActorPriorityObservationTest",
+    "--tests",
+    "*ActorMulliganEligibilityTest",
+    "--rerun",
+    "--no-build-cache",
+    "--info",
+    "--stacktrace",
+    "--max-workers=1",
+    "-PkotlinCompileParallelism=1",
+    "-Pkotlin.compiler.execution.strategy=in-process",
+    "-Dorg.gradle.jvmargs=-Xmx4g"
+  ],
+  "exit_status": 0,
+  "started_epoch_ns": 1790455683108436809,
+  "finished_epoch_ns": 1790456049604483948,
+  "scope": "One actual command runs the five fixed banks; no independent class invocations are implied."
+}

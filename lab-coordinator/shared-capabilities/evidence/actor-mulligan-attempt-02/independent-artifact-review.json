@@ -1,0 +1,286 @@
+{
+  "schema": "canonical-actor-mulligan-non-author-artifact-review-v1",
+  "reviewer": "/root/industrial",
+  "independent_of_source_and_constructor_correction_authors": true,
+  "disposition": "ACCEPT_BOUNDED_MECHANICAL_ACTOR_MULLIGAN_COMPONENT_EVIDENCE",
+  "source_commit": "c38fd8028c8b3587e0bca39a42ea8ca8f838f129",
+  "source_tree": "b0eb2b10538e4d25cc81ecc2c90fc08a81171ec8",
+  "run": {
+    "id": 36270726522,
+    "attempt": 1,
+    "event": "push",
+    "job_id": 108484039495,
+    "conclusion": "success"
+  },
+  "artifact": {
+    "id": 10915009967,
+    "bytes": 249145,
+    "sha256": "77b0bbb84552c95677948e5ef59f586f8464780a872fdc25e95f27db87045fe1",
+    "all_zip_members_read_and_crc_validated": true
+  },
+  "checks": [
+    "Live immutable commit/tree, run/attempt/event and GitHub artifact digest agree with the actual local ZIP.",
+    "Independently refetched all40 exact source files from GitHub at c38fd802 and recomputed their SHA256 and Git blob identities; all match source-before/source-after.",
+    "Source-before and source-after bytes are identical and checkout status is clean.",
+    "All five raw XML suites match exact prospective names and counts28+12+6+4+14;64 unique actual cases, zero failure/error/skip, all five exit files are zero.",
+    "Each XML timestamp lies within the one actual command interval; one logged gym Gradle Test Executor starts and finishes. Fresh :gym:test marker and BUILD SUCCESSFUL; no UP-TO-DATE, FROM-CACHE, NO-SOURCE or skipped test task substituted.",
+    "The complete fixed banks equal the prior executed fed505 gate byte-for-byte as parsed JSON. Constructor correction source review is present at the exact pinned digest and remains scoped to same64 qualification.",
+    "The seven extracted evidence JSON files equal original ZIP bytes; raw ZIP SHA256 matches both GitHub and the proposed source-author audit."
+  ],
+  "actual_cases": 64,
+  "passed": 64,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "inherited_actor_cases": 50,
+  "prospective_mulligan_cases": 14,
+  "verified_source_pins": [
+    {
+      "path": ".github/workflows/shared-actor-mulligan-qualification.yml",
+      "sha256": "f44d6514944ebb7d5634ba453b3f1fb40454c91476c82b3e92fd2249f9b7ce02",
+      "git_blob": "bd5e772d1d70877e13f963993ef7777788988ac3"
+    },
+    {
+      "path": "gradle/libs.versions.toml",
+      "sha256": "c60de8fc02e2c4d3ff92ef418e3b0bbe9fada040a1c7f6c0656b152d89aa7cad",
+      "git_blob": "1c9d36482bf902b332df50bd2d2332f4d6ad623a"
+    },
+    {
+      "path": "gym/build.gradle.kts",
+      "sha256": "2cecbe04b789a073bda42e7b12266bfaf8085280fd6e22619386b26d9d3adf44",
+      "git_blob": "bc2eac391cdc90fd231f14c5dbd3be77f81b86a0"
+    },
+    {
+      "path": "gym/src/main/kotlin/com/wingedsheep/gym/GameEnvironment.kt",
+      "sha256": "8101b0bc53778f9790b7c7f034ee2e0df20294b6d96e09c2b6721f8afc9be4de",
+      "git_blob": "eed224a76b4102892a40652f74cb843e042765d2"
+    },
+    {
+      "path": "gym/src/main/kotlin/com/wingedsheep/gym/actorinput/ActorActionMenu.kt",
+      "sha256": "e10e187587e7c77a75902bd32521e18cdf8f8ff709ba85254e132a85f65c65b7",
+      "git_blob": "91d25d450c60124bc6db6e9a9fbeba0a5f15ca58"
+    },
+    {
+      "path": "gym/src/main/kotlin/com/wingedsheep/gym/actorinput/ActorChoiceSupport.kt",
+      "sha256": "6adefd58499c0ec2610f078cd78696f4ba6b33b47c5043093a2e77f392c493a0",
+      "git_blob": "9b37061e1515e0927ddafe0906381f7281a95ef1"
+    },
+    {
+      "path": "gym/src/main/kotlin/com/wingedsheep/gym/actorinput/ActorDecisionProjection.kt",
+      "sha256": "aeeac553568cdc30239d5040a2cf784d338e4d9d9f4def45c6eeccece077eb66",
+      "git_blob": "35d974020e6f377258224eccca028b97543cf627"
+    },
+    {
+      "path": "gym/src/main/kotlin/com/wingedsheep/gym/actorinput/ActorInput.kt",
+      "sha256": "31bc5320ee24e8af512b3babc7908eee0d62aa6e360e4a4582a753562392f907",
+      "git_blob": "87489b2b70d2c9fc8bca31d1dbee6e9d2d297c3f"
+    },
+    {
+      "path": "gym/src/main/kotlin/com/wingedsheep/gym/actorinput/ActorInputEligibility.kt",
+      "sha256": "f5b4f27f825cf1a50c1d7e480368974aa3e7cb8f90b3dc48b61da865d6c54a99",
+      "git_blob": "7c0aa20561c5ac90c244106fad790e6ae22cc64e"
+    },
+    {
+      "path": "gym/src/main/kotlin/com/wingedsheep/gym/actorinput/ActorLegalAction.kt",
+      "sha256": "aa127db249b75bbb2cfa52c88bc3a4d8a29d6def300200593c29004f31138974",
+      "git_blob": "fa120fc41d39e38b068a09040838ed8c3f6384f5"
+    },
+    {
+      "path": "gym/src/main/kotlin/com/wingedsheep/gym/actorinput/ActorObservation.kt",
+      "sha256": "860ef853e182bdec3c397bfe069889973cc0f6c8c3756fe65ce32f8ed45c4442",
+      "git_blob": "1813fed0af9e69cc14def65e22a965209b78448a"
+    },
+    {
+      "path": "gym/src/main/kotlin/com/wingedsheep/gym/actorinput/ActorPayloadSchemas.kt",
+      "sha256": "b20050c28bb0eebd83b8bf8517932f9f66c33d933f26b98432a2a3fcbd90cd96",
+      "git_blob": "0c7bb597ed1617bf1063ed7db7fc000a9fbc147c"
+    },
+    {
+      "path": "gym/src/main/kotlin/com/wingedsheep/gym/actorinput/ActorPublicCards.kt",
+      "sha256": "186d1f5fc2d3d8be2754ff0a029dd1fdd58348422514fb06ce45690140aea748",
+      "git_blob": "f69cedd6c6d7aa841fb1917a842febd13adbba46"
+    },
+    {
+      "path": "gym/src/main/kotlin/com/wingedsheep/gym/actorinput/ActorQuestionSchemas.kt",
+      "sha256": "6c9a87f34c3c4a0dd281466556236c11f49f91fde1ab17e7a89d627f05d26a9a",
+      "git_blob": "62c19a25c06800c45ab0a4502ed700459ad4ba31"
+    },
+    {
+      "path": "gym/src/main/kotlin/com/wingedsheep/gym/actorinput/ActorStackSource.kt",
+      "sha256": "554535f07b8978797153ef051ef21635d6e22f9d9e9981e2a7fc0947bf56663f",
+      "git_blob": "700e4a0192a3084f9046a80aa3a214b0bde2a27c"
+    },
+    {
+      "path": "gym/src/main/kotlin/com/wingedsheep/gym/actorinput/ActorTriggerOrderQuestion.kt",
+      "sha256": "3e9ee1f963b420af764def51e502c654bd4e92df522c97c29287c2c2e2b99da0",
+      "git_blob": "7300beb200ee92ed334dd373102c5e9713509cf6"
+    },
+    {
+      "path": "gym/src/main/kotlin/com/wingedsheep/gym/actorinput/ObservationAdapter.kt",
+      "sha256": "04cbb0ddf9d32400e4b7f517e5da7ca35c4f31ba9e51a3275a8b57f4499ec73a",
+      "git_blob": "299114bd875c9403b3b4af5c55a654c408422310"
+    },
+    {
+      "path": "gym/src/main/kotlin/com/wingedsheep/gym/contract/ObservationBuilder.kt",
+      "sha256": "7de2a0c1bc4f148727ced99da733cd6eec049a250148c07f26357a4b5a422a7c",
+      "git_blob": "0a8cb7c1b26cb65bd9dd5ada9bfb4812662744c7"
+    },
+    {
+      "path": "gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlTierOneMonsterTronOperationalStack.kt",
+      "sha256": "af78e3f08b8729f5271ee8ebe2190a89614951dc72183264f9e2987808dabf26",
+      "git_blob": "5192fb0190cf44f6b766ee7c296d3c1e2a8244e2"
+    },
+    {
+      "path": "gym/src/test/kotlin/com/wingedsheep/gym/actorinput/ActorMulliganEligibilityTest.kt",
+      "sha256": "b055203de6f4807eeb324ed31edefa99c34637513c1d25590c79c8a69b0b9434",
+      "git_blob": "a756e3d31ac00e716eb5ade0f359f027beafabd4"
+    },
+    {
+      "path": "gym/src/test/kotlin/com/wingedsheep/gym/actorinput/ActorObservationBoundaryTest.kt",
+      "sha256": "b65dfe87c9f88dca6eaa8754c46dc16a6ef76d1266f829c4e1743b3f5fb17f5d",
+      "git_blob": "5d9ebb717697fafdd166fa1c5468fb57922e4d0f"
+    },
+    {
+      "path": "gym/src/test/kotlin/com/wingedsheep/gym/actorinput/ActorPriorityObservationTest.kt",
+      "sha256": "30617fec9bf58e0360622e1b6e26c36603ccaeae308819217b73f9b29875dfae",
+      "git_blob": "526b21d188ffdfe2f08e92ea7514f7ac111d6b1a"
+    },
+    {
+      "path": "gym/src/test/kotlin/com/wingedsheep/gym/actorinput/ActorStackSourceObservationTest.kt",
+      "sha256": "ab6962cc61d66971a39d9ec674ee2c442705c17a365671bd8b9a9b0a590cf0af",
+      "git_blob": "f100da80a5ed01dfe37a688705b9e36a42f4265f"
+    },
+    {
+      "path": "gym/src/test/kotlin/com/wingedsheep/gym/actorinput/ActorTriggerOrderObservationTest.kt",
+      "sha256": "01c84c1e963801702696b15187cb3d1c24f2f47367f54c0c9c8c77e05a26a4cb",
+      "git_blob": "d03475fd6bffc93685f80d978f17c9f0a28d39cb"
+    },
+    {
+      "path": "justfile",
+      "sha256": "70ed255981a941b260b8eeba4acf90abf32956126ef9672f5cf6e0b5840167e3",
+      "git_blob": "8e3c25afce213f719e7b9d9ac723e33b288b06a9"
+    },
+    {
+      "path": "lab-coordinator/shared-capabilities/actor-input-extraction.json",
+      "sha256": "9689048782254600b748bf9f135f4e62c598efa1df3f42a128b5df83c1ac16f2",
+      "git_blob": "d17f61f8fa882ee221070f26c271292b86e916cf"
+    },
+    {
+      "path": "lab-coordinator/shared-capabilities/actor-mulligan-gate-freeze.json",
+      "sha256": "a62686e62da0714ed3e4972c0bdc4f8fedf924ec48934bcca92ffb66b2711a30",
+      "git_blob": "4afe7a4225c9e9d0cfcfc29a027a38b886ea97df"
+    },
+    {
+      "path": "lab-coordinator/shared-capabilities/actor-mulligan-receiving.json",
+      "sha256": "b9fee0bc342bb4df931671f6211f8ca9fa12f8628c3cf947e63a91c53ed3b6f1",
+      "git_blob": "fd99df5740926cf7aba0486aef994c368c7d2610"
+    },
+    {
+      "path": "lab-coordinator/shared-capabilities/actor-mulligan-source-bank-review.json",
+      "sha256": "7825ef0a42f70830da9ee7d250e663704c599643151dfe84a90afdfd984c233a",
+      "git_blob": "acabce30d174ce82e604597d0ee3ac225da710f9"
+    },
+    {
+      "path": "lab-coordinator/shared-capabilities/collect-actor-mulligan.py",
+      "sha256": "174c5103bd44e903e4c40fef426b390efef0cd61bf330dfd4a6c64b30d2cb2af",
+      "git_blob": "bd5c34f3c596bcf0a49ae290fc247ab99e7d71de"
+    },
+    {
+      "path": "lab-coordinator/shared-capabilities/collect-priority-receiving.py",
+      "sha256": "2c158a62f1898dcc7cb3c00a3cf2497a42d87e3a4e3a2a1e37926b2a4483352f",
+      "git_blob": "ac5f0cc91072196dd79c52784924f44e5d2f8234"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/GameInitializer.kt",
+      "sha256": "4b9a42f9e7de7400ef12bf6598981ca741c05644113844baa43a4e2e90ecbb71",
+      "git_blob": "4d10601e7401f58f4f5f2d31a690004ca1427519"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/MulliganHandler.kt",
+      "sha256": "c11b1265fe7ad6ba18daaf4fd89a1af95640febea77ee5fc689360f803d8ce7e",
+      "git_blob": "4298c7eb8eedecfe3c5695ee5d2bd9270f248fef"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/mulligan/BottomCardsHandler.kt",
+      "sha256": "ccb49e1be0062b762db922a1ea75975d28a2cb9eee123454daf4d13696f751a1",
+      "git_blob": "80db5ca47e2e319733c088dcdc72b6b0478fba56"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/mulligan/KeepHandHandler.kt",
+      "sha256": "e9ec477f87b4eae53457b509857a8dd2a846a3bcc0990838306dcba500cad114",
+      "git_blob": "cd773e3ede6a4d600f130ea10a3d43b78c3d09d5"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/mulligan/TakeMulliganHandler.kt",
+      "sha256": "198b6b6f9da35b3d03f73a62f2fedeca8b4779c98071ca47a2d913b472cf3a8f",
+      "git_blob": "f63834d1c5781af72731f6cce014f6fa05dad831"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/state/components/player/PlayerComponents.kt",
+      "sha256": "7abd0ec3e625d15ee23bb120c13a45a38a8cff1c8c008be8c2d9dbe8481e9d72",
+      "git_blob": "3a375f2d1a53976acf587bfa2f23f9e290add040"
+    },
+    {
+      "path": "scripts/gradle-locked",
+      "sha256": "9e39342ad1826c8baf176f6e7b0c38664aad5a4a88cd6a90252dd619e4b829f1",
+      "git_blob": "cc9068f411a40af2ba47ed2bbbf8031cc26d8d5d"
+    },
+    {
+      "path": "scripts/test-class",
+      "sha256": "17b9629bc4e1526107e432fa440208ea66588acdf4855ee50685df03223c5c81",
+      "git_blob": "bbc870dc1590dddf04648efa1c0d8810eb835653"
+    },
+    {
+      "path": "settings.gradle.kts",
+      "sha256": "20bb45f9e99f9cd82df3e8aee01f06bbd116915ae99c4acc0b69a47f4a6a789b",
+      "git_blob": "b3cf7d0b70c58c6c4d5b214588f48ca5660d902e"
+    }
+  ],
+  "suites": [
+    {
+      "stage": "actor-boundary-28",
+      "class": "com.wingedsheep.gym.actorinput.ActorObservationBoundaryTest",
+      "cases": 28,
+      "sha256": "5bd30e6071265569a0f4425eeed00f63b471cec57c66af3b4a71460f85c0cbd7"
+    },
+    {
+      "stage": "actor-stack-12",
+      "class": "com.wingedsheep.gym.actorinput.ActorStackSourceObservationTest",
+      "cases": 12,
+      "sha256": "a497206890d2aeb0826e4a688443cdbe8e924bd2a3b6a56eca07b5d2f70af789"
+    },
+    {
+      "stage": "actor-trigger-6",
+      "class": "com.wingedsheep.gym.actorinput.ActorTriggerOrderObservationTest",
+      "cases": 6,
+      "sha256": "7611651fe1e52b1e0c38eef2a62f12739a9d3797cc66fb0845018e4dc01c447e"
+    },
+    {
+      "stage": "actor-priority-4",
+      "class": "com.wingedsheep.gym.actorinput.ActorPriorityObservationTest",
+      "cases": 4,
+      "sha256": "b06546d8e7ef45202f5c44e73f9117b255a31955cdf42aef7534c2029b7575e6"
+    },
+    {
+      "stage": "actor-mulligan-14",
+      "class": "com.wingedsheep.gym.actorinput.ActorMulliganEligibilityTest",
+      "cases": 14,
+      "sha256": "ef26211a7a532df8ad579991cd91e53f20c30d2e4131477730070f150a655cfc"
+    }
+  ],
+  "qualification_log_sha256": "c1ac4e137edcb87c9a1ab44a27652f43f49b2885abfdf06c36a138ce6e487eb0",
+  "author_audit_sha256": "a81edea942e23d55dafb3db9545ed44652a21adcc2fea278b0b97da7827fe5d0",
+  "limits": [
+    "Mechanical input eligibility only; no scheduler, pilot or gameplay qualification.",
+    "Full combined source994383 receiving integration and each project-specific receiving scope remain separate gates.",
+    "Prior fed505 compile failure remains failed and retained in source parent history; no failed case is relabeled as a pass.",
+    "This non-author tool-assisted audit is not a GitHub approval or independent gameplay admission. No JVM or game was executed locally by this reviewer."
+  ],
+  "github_approval": false,
+  "combined_source_admission": false,
+  "scheduler_qualified": false,
+  "pilot_qualified": false,
+  "gameplay_authorized": false,
+  "official_games": 0,
+  "outcomes_exposed": 0
+}

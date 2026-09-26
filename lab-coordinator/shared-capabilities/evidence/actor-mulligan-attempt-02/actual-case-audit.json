@@ -1,0 +1,133 @@
+{
+  "status": "PASS_REQUIRES_INDEPENDENT_ARTIFACT_REVIEW",
+  "banks": [
+    {
+      "stage": "actor-boundary-28",
+      "module": "gym",
+      "class": "com.wingedsheep.gym.actorinput.ActorObservationBoundaryTest",
+      "expected_cases": 28,
+      "case_names": [
+        "nullable inline references preserve absence and still reject inaccessible present IDs",
+        "complete actor input is invariant to unknown opponent hand identities",
+        "complete actor input is invariant to both unseen library orders and identities",
+        "hidden exile identity and unrelated entity ID do not enter actor input",
+        "authoritative RNG never changes actor payload or supplied policy stream",
+        "known opponent card remains visible while its unknown neighbor changes",
+        "known library subset is sorted independently of hidden positions",
+        "drawing a previously hidden card exposes its identity to its owner",
+        "public discard exposes the former hidden opponent card",
+        "wrong actor is rejected before current private question is projected",
+        "current own library search reveals options without library order or future draws",
+        "reorder decision preserves its authorized top group but omits unseen remainder",
+        "raw face-down selection metadata is masked while the public option survives",
+        "unauthorized opponent-library cardInfo and extra metadata keys fail visibly",
+        "complete nested target sacrifice discard and mode domains survive detached projection",
+        "inaccessible nested cost reference is rejected instead of removed",
+        "very large mandatory numeric domain is copied without enumeration or auto-answer",
+        "target constraints and nonselectable look cards are retained",
+        "pending mana payment includes actual mana ability menu and rejects ordinary spells",
+        "mulligan public counts do not expose another hand's pending pregame cards",
+        "public spell X and chosen modes are retained",
+        "epoch actor menu and policy-state tampering invalidate response binding",
+        "empty ordinary menu and terminal state fail rather than inventing a pass or winner",
+        "raw authority objects and continuations are rejected by payload graph audit",
+        "all eighteen current decision variants cross as complete typed questions",
+        "real pre-block input identifies vigilant attacker and defender with an empty blocker template",
+        "authorized nonbattlefield power survives power-constrained selection metadata",
+        "unlisted data types and enum values fail closed instead of using package fallbacks"
+      ],
+      "exit_status": 0,
+      "xml_sha256": "5bd30e6071265569a0f4425eeed00f63b471cec57c66af3b4a71460f85c0cbd7",
+      "actual_cases": 28
+    },
+    {
+      "stage": "actor-stack-12",
+      "module": "gym",
+      "class": "com.wingedsheep.gym.actorinput.ActorStackSourceObservationTest",
+      "expected_cases": 12,
+      "case_names": [
+        "real pending Shaman activation reads current bonuses gained after activation",
+        "two real queued Shaman activations keep old properties after a same-ID blink return",
+        "actual sacrificed token source remains public after token entity cleanup",
+        "actual own death trigger has the departed source identity and public characteristics",
+        "full pending-source input ignores unknown hand library identities order and authoritative RNG",
+        "synthetic absent uncaptured or wrong-entity source origins fail explicitly",
+        "synthetic missing or wrong-incarnation LKI never falls back to the returned creature",
+        "synthetic partial last-known public fields fail rather than invent values",
+        "synthetic face-down departure summary omits raw identity definition and private attachments",
+        "synthetic nonbattlefield ability exposes no private origin generation or fabricated characteristics",
+        "actual hand activation input is invariant to hidden hand and library incarnation permutations",
+        "synthetic stale snapshot cannot override properties of the still-current original"
+      ],
+      "exit_status": 0,
+      "xml_sha256": "a497206890d2aeb0826e4a688443cdbe8e924bd2a3b6a56eca07b5d2f70af789",
+      "actual_cases": 12
+    },
+    {
+      "stage": "actor-trigger-6",
+      "module": "gym",
+      "class": "com.wingedsheep.gym.actorinput.ActorTriggerOrderObservationTest",
+      "expected_cases": 6,
+      "case_names": [
+        "real Red simultaneous triggers retain the proved label and selected order seat 1",
+        "real Red simultaneous triggers retain the proved label and selected order seat 2",
+        "successive real three-trigger choices preserve distinct same-name sources and ordering",
+        "system-label lookalike without its typed continuation is rejected while unrelated names stay concealed",
+        "forged controller option preview private source and missing provenance fail without leaking labels",
+        "real ordering question roundtrips and ignores hidden cards library order and authoritative RNG"
+      ],
+      "exit_status": 0,
+      "xml_sha256": "7611651fe1e52b1e0c38eef2a62f12739a9d3797cc66fb0845018e4dc01c447e",
+      "actual_cases": 6
+    },
+    {
+      "stage": "actor-priority-4",
+      "module": "gym",
+      "class": "com.wingedsheep.gym.actorinput.ActorPriorityObservationTest",
+      "expected_cases": 4,
+      "case_names": [
+        "HP01 ordinary priority and its actual pass agree in direct and actor observations",
+        "HP02 a real declaration baton has no priority until blockers finish",
+        "HP03 a serialized real block-tax payment retains its actor without priority",
+        "HP04 actual shared-team priority is visible on both teammates"
+      ],
+      "exit_status": 0,
+      "xml_sha256": "b06546d8e7ef45202f5c44e73f9117b255a31955cdf42aef7534c2029b7575e6",
+      "actual_cases": 4
+    },
+    {
+      "stage": "actor-mulligan-14",
+      "module": "gym",
+      "class": "com.wingedsheep.gym.actorinput.ActorMulliganEligibilityTest",
+      "expected_cases": 14,
+      "case_names": [
+        "MU01 real initializer admits each own setup menu with starting seat 0",
+        "MU02 real KeepHand retains priority and exposes only the remaining unkept seat starting 0",
+        "MU03 real redraw and own kept-bottom choice survive serialization starting 0",
+        "MU04 prescribed final bottom returns to sole ordinary priority starting 0",
+        "MU05 real serialized opening typed question takes precedence over setup and priority starting 0",
+        "MU06 setup input ignores unavailable identities order and authoritative RNG starting 0",
+        "MU07 four-player free mulligan exposes every remaining seat without scheduling a pilot starting 0",
+        "MU01 real initializer admits each own setup menu with starting seat 1",
+        "MU02 real KeepHand retains priority and exposes only the remaining unkept seat starting 1",
+        "MU03 real redraw and own kept-bottom choice survive serialization starting 1",
+        "MU04 prescribed final bottom returns to sole ordinary priority starting 1",
+        "MU05 real serialized opening typed question takes precedence over setup and priority starting 1",
+        "MU06 setup input ignores unavailable identities order and authoritative RNG starting 1",
+        "MU07 four-player free mulligan exposes every remaining seat without scheduling a pilot starting 1"
+      ],
+      "exit_status": 0,
+      "xml_sha256": "ef26211a7a532df8ad579991cd91e53f20c30d2e4131477730070f150a655cfc",
+      "actual_cases": 14
+    }
+  ],
+  "actual_cases": 64,
+  "errors": [],
+  "original_actor_cases": 50,
+  "new_mechanical_cases": 14,
+  "pilot_qualified": false,
+  "scheduler_integration_qualified": false,
+  "receiving_runtime_accepted": false,
+  "gameplay_authorized": false,
+  "official_games": 0
+}
