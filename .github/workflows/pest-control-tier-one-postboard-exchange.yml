@@ -1,0 +1,135 @@
+name: Pest Control Tier-1 Postboard Exchange
+
+on:
+  push:
+    branches: [lab/pest-receiving-closure-20260926]
+    paths:
+      - .github/workflows/pest-control-tier-one-postboard-exchange.yml
+      - gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlTierOnePostboardExchange.kt
+      - gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOnePostboardExchangeTest.kt
+  pull_request:
+    paths:
+      - .github/workflows/pest-control-tier-one-postboard-exchange.yml
+      - gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlTierOnePostboardExchange.kt
+      - gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOnePostboardExchangeTest.kt
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pest-postboard-exchange-${{ github.event.pull_request.head.sha || github.sha }}
+  cancel-in-progress: false
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    env:
+      GRADLE_LOCK_SLOTS: '1'
+      SOURCE_HEAD: ${{ github.event.pull_request.head.sha || github.sha }}
+      PEST_POSTBOARD_SUPPORT_REPORT: ${{ github.workspace }}/build/reports/pest-postboard-exchange/inventory.txt
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ env.SOURCE_HEAD }}
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: gradle/actions/setup-gradle@v6
+      - uses: extractions/setup-just@f8a3cce218d9f83db3a2ecd90e41ac3de6cdfd9b
+        with:
+          just-version: '1.58.0'
+
+      - name: Bind exact source before deterministic construction
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import hashlib, json, os, pathlib, subprocess
+          def git(*args):
+              return subprocess.check_output(['git', *args], text=True).strip()
+          assert git('rev-parse', 'HEAD') == os.environ['SOURCE_HEAD']
+          assert not git('status', '--porcelain')
+          report = pathlib.Path('build/reports/pest-postboard-exchange')
+          report.mkdir(parents=True, exist_ok=True)
+          paths = [
+              '.github/workflows/pest-control-tier-one-postboard-exchange.yml',
+              'docs/experiments/pest-control/tier-one-qualification-stopping-rule.md',
+              'gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlPreboardContract.kt',
+              'gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlTierOneGrixisReadiness.kt',
+              'gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlTierOneMonoBlueTerrorReadiness.kt',
+              'gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlTierOneMonsterTronAdmission.kt',
+              'gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlTierOneSpyComboAdmission.kt',
+              'gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlTierOnePostboardExchange.kt',
+              'gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOnePostboardExchangeTest.kt',
+              'gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOnePostboardSupportAuditTest.kt',
+          ]
+          (report / 'source-binding.json').write_text(json.dumps({
+              'source_head': git('rev-parse', 'HEAD'),
+              'source_tree': git('rev-parse', 'HEAD^{tree}'),
+              'source_files_sha256': {p: hashlib.sha256(pathlib.Path(p).read_bytes()).hexdigest() for p in paths},
+          }, indent=2) + '\n')
+          PY
+
+      - name: Qualify pure exchanges and the receiving six-deck inventory
+        shell: bash
+        run: |
+          set -euo pipefail
+          just test-class PestControlTierOnePostboardExchangeTest \
+            --tests '*PestControlTierOnePostboardSupportAuditTest' --rerun \
+            --max-workers=1 -PkotlinCompileParallelism=1 \
+            -Pkotlin.compiler.execution.strategy=in-process -Dorg.gradle.jvmargs=-Xmx4g \
+            --info --stacktrace 2>&1 | tee build/reports/pest-postboard-exchange/qualification.log
+
+      - name: Require every actual case and preserve the component boundary
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import hashlib, json, os, pathlib, subprocess, xml.etree.ElementTree as ET
+          report = pathlib.Path('build/reports/pest-postboard-exchange')
+          binding = json.loads((report / 'source-binding.json').read_text())
+          assert subprocess.check_output(['git','rev-parse','HEAD'], text=True).strip() == binding['source_head']
+          assert not subprocess.check_output(['git','status','--porcelain'], text=True).strip()
+          assert all(hashlib.sha256(pathlib.Path(p).read_bytes()).hexdigest() == h for p,h in binding['source_files_sha256'].items())
+          expected = {
+              'com.wingedsheep.gym.PestControlTierOnePostboardExchangeTest': 20,
+              'com.wingedsheep.gym.PestControlTierOnePostboardSupportAuditTest': 1,
+          }
+          suites = {}
+          for name, count in expected.items():
+              path = pathlib.Path('gym/build/test-results/test/TEST-' + name + '.xml')
+              root = ET.parse(path).getroot()
+              cases = root.findall('testcase')
+              assert root.attrib['name'] == name
+              assert len(cases) == int(root.attrib['tests']) == count
+              assert all(int(root.attrib.get(k,0)) == 0 for k in ('failures','errors','skipped'))
+              assert all(not any(c.find(t) is not None for t in ('failure','error','skipped')) for c in cases)
+              suites[name] = {'cases': [c.attrib['name'] for c in cases], 'xml_sha256': hashlib.sha256(path.read_bytes()).hexdigest()}
+          inventory = dict(line.split('=',1) for line in (report / 'inventory.txt').read_text().splitlines())
+          assert inventory['schema'] == 'pest-control-tier-one-postboard-support-audit-v1'
+          for name in ('pest_control','mono_red_madness','grixis_affinity','mono_blue_terror','monster_tron','spy_combo'):
+              assert inventory[name] == '', (name,inventory[name])
+          for name in ('official_seeds_generated','official_games_initialized','official_actions_submitted','outcome_exposure'):
+              assert inventory[name] == '0'
+          (report / 'qualification.json').write_text(json.dumps({
+              'schema': 'pest-postboard-exchange-qualification-v1',
+              'status': 'DETERMINISTIC_EXCHANGE_COMPONENT_ONLY',
+              'source': binding, 'run_id': os.environ['GITHUB_RUN_ID'],
+              'run_attempt': os.environ['GITHUB_RUN_ATTEMPT'], 'suites': suites,
+              'actual_cases': 21, 'sideboard_strategy_frozen': False,
+              'sideboard_pilots_qualified': False, 'combined_runtime_admitted': False,
+              'gameplay_authorized': False, 'official_seeds_generated': 0,
+              'official_games_initialized': 0, 'official_outcomes_exposed': 0,
+          }, indent=2) + '\n')
+          PY
+
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: pest-postboard-exchange-qualification
+          if-no-files-found: error
+          path: |
+            build/reports/pest-postboard-exchange
+            gym/build/test-results/test/*.xml
