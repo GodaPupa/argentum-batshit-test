@@ -148,7 +148,6 @@ class SetScopedTokenArtScenarioTest : ScenarioTestBase() {
                 "/images/tokens/jmp-dog4.jpeg",
             )
         }
-    }
 
         test("Modern Horizons 3 resolves Colossal Dreadmask's Phyrexian Germ to tmh3 #16") {
             val registry = TokenArtRegistry().apply {
@@ -170,6 +169,6 @@ class SetScopedTokenArtScenarioTest : ScenarioTestBase() {
             art shouldNotBe null
             art!! shouldContain "5ec719dc-6b07-4b1d-a79c-84ebced33422"
         }
-
+    }
 }
 
