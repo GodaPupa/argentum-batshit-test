@@ -2,7 +2,7 @@ name: Industrial Waste v2 card qualification
 
 on:
   pull_request:
-    branches: [industrial-waste/lab]
+    branches: [industrial-waste/lab, industrial-waste/v2-structural-redesign]
     paths:
       - .github/workflows/industrial-waste-v2-card-qualification.yml
       - industrial-waste/v2/**
@@ -28,6 +28,8 @@ on:
       - mtg-sets/**/VaultOfWhispersScenarioTest.kt
       - mtg-sets/**/DarkmossBridgeScenarioTest.kt
       - mtg-sets/**/PactdollTerrorScenarioTest.kt
+      - mtg-sets/**/BloodFountainScenarioTest.kt
+      - mtg-sets/**/FanaticalOfferingScenarioTest.kt
       - mtg-sets/src/test/resources/snapshots/cards/TSP.json
       - mtg-sets/src/test/resources/snapshots/cards/ROE.json
 
@@ -113,17 +115,56 @@ jobs:
           }
           pathlib.Path('/tmp/iw-v2-status-provenance.json').write_text(json.dumps(provenance, indent=2) + '\n')
           PY
+          python3 - <<'PY'
+          import hashlib, json, pathlib
+          path = pathlib.Path('industrial-waste/v2/produced-token-qualification-source.json')
+          manifest = json.loads(path.read_text())
+          assert manifest['scope'] == 'DETERMINISTIC_PRODUCED_TOKEN_FIXTURES_NO_R1_AUTHORITY'
+          assert manifest['official_execution_authorized'] is False
+          assert manifest['expected_cases'] == {'BloodFountainScenarioTest': 7, 'FanaticalOfferingScenarioTest': 11}
+          for name, digest in manifest['source_sha256'].items():
+              assert hashlib.sha256(pathlib.Path(name).read_bytes()).hexdigest() == digest, name
+          pathlib.Path('/tmp/iw-v2-produced-token-provenance.json').write_text(json.dumps({
+              'manifest_sha256': hashlib.sha256(path.read_bytes()).hexdigest(),
+              'verified_source_sha256': manifest['source_sha256'],
+              'expected_cases': manifest['expected_cases'],
+              'official_initializations': 0,
+              'official_execution_authorized': False,
+          }, indent=2) + '\n')
+          PY
+      - name: Qualify produced Blood and Map transactions first
+        run: |
+          set -o pipefail
+          just test-class BloodFountainScenarioTest \
+            :mtg-sets:2023:tests:test --tests '*FanaticalOfferingScenarioTest' \
+            --rerun-tasks --no-build-cache --no-daemon 2>&1 | tee /tmp/iw-v2-produced-token-focused.log
+          python3 - <<'PY'
+          import pathlib, shutil, xml.etree.ElementTree as ET
+          out = pathlib.Path('/tmp/iw-v2-produced-token-focused-xml')
+          out.mkdir()
+          for era, name, count in [('2017-2022', 'BloodFountainScenarioTest', 7), ('2023', 'FanaticalOfferingScenarioTest', 11)]:
+              paths = list(pathlib.Path('mtg-sets/' + era + '/tests/build/test-results/test').glob('TEST-*.' + name + '.xml'))
+              assert len(paths) == 1, (name, paths)
+              suite = ET.parse(paths[0]).getroot()
+              cases = suite.findall('testcase')
+              assert len(cases) == int(suite.attrib['tests']) == count, suite.attrib
+              assert len({c.attrib['name'] for c in cases}) == count, name
+              assert all(int(suite.attrib.get(k, 0)) == 0 for k in ('failures', 'errors', 'skipped')), suite.attrib
+              assert all(c.find(k) is None for c in cases for k in ('failure', 'error', 'skipped')), name
+              shutil.copyfile(paths[0], out / paths[0].name)
+          PY
       - name: Qualify cards, public-information selections and unchanged legacy golden
         run: |
+          set -o pipefail
           just test-class LibraryOrderingServiceTest \
             :mtg-sets:2003-2007:tests:test --tests '*ChromaticStarScenarioTest' --tests '*TreeOfTalesScenarioTest' --tests '*VaultOfWhispersScenarioTest' --tests '*KurgadonTest' \
             :mtg-sets:2008-2016:tests:test --tests '*AncientStirringsScenarioTest' --tests '*GolemFoundryScenarioTest' \
             :mtg-sets:2017-2022:tests:test --tests '*DarkmossBridgeScenarioTest' --tests '*BloodFountainScenarioTest' \
-            :mtg-sets:2023:tests:test --tests '*DrossSkullbombScenarioTest' --tests '*CandyTrailScenarioTest' --tests '*MyrKinsmithScenarioTest' \
+            :mtg-sets:2023:tests:test --tests '*DrossSkullbombScenarioTest' --tests '*CandyTrailScenarioTest' --tests '*MyrKinsmithScenarioTest' --tests '*FanaticalOfferingScenarioTest' \
             :mtg-sets:2024:tests:test --tests '*ConduitPylonsScenarioTest' \
             :mtg-sets:2025:tests:test --tests '*PactdollTerrorScenarioTest' --tests '*TownLandSpellAdventureScenarioTest' \
             :ai:test --tests '*IndustrialWasteV2RegistryAuditTest' --tests '*IndustrialWasteV2SelectionAdvisorTest' --tests '*IndustrialWasteV2PublicActionPolicyTest' --tests '*IndustrialWasteV2OrderingIntegrationTest' --tests '*IndustrialWasteV2EventMetricsTest' --tests '*IndustrialWasteV2ExecutionStatusTest' --tests '*IndustrialWasteV2RuntimeFailureTest' --tests '*IndustrialWasteV2CapabilityRunnerTest' --tests '*IndustrialWasteAdvisorModuleTest' --tests '*FrozenBaselineTest' \
-            --continue --no-daemon
+            --continue --rerun-tasks --no-build-cache --no-daemon 2>&1 | tee /tmp/iw-v2-card-receiving.log
           python3 - <<'PY'
           import pathlib, xml.etree.ElementTree as ET
           for name, count in {'IndustrialWasteV2ExecutionStatusTest':10,'IndustrialWasteV2RuntimeFailureTest':4}.items():
@@ -163,6 +204,11 @@ jobs:
             industrial-waste/v2/runtime-evidence/registry-audit.txt
             /tmp/iw-v2-card-snapshot.diff
             /tmp/iw-v2-status-provenance.json
+            /tmp/iw-v2-produced-token-provenance.json
+            /tmp/iw-v2-produced-token-focused.log
+            /tmp/iw-v2-card-receiving.log
+            /tmp/iw-v2-produced-token-focused-xml/TEST-*.xml
+            industrial-waste/v2/produced-token-qualification-source.json
             industrial-waste/v2/execution-status-capability.json
             industrial-waste/v2/execution-status-receiving-source.json
             mtg-sets/src/test/resources/snapshots/cards/TSP.json
