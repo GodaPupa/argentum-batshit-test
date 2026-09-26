@@ -1,0 +1,15 @@
+# Retained source08 runtime byte binding
+
+This is a read-only verification of the runtime bytes already archived after the source08 gym qualification. The source remains candidate `3a4f99a7653839506e96d19e6639f58d9e8c5ced`, tree `56c6b8dd46dc112cdb70db496fd9d0c3e915e8a6`. No runtime was restored, extracted, loaded or executed during this audit.
+
+The original gym ZIP is artifact `10914678223`: 95,124,680 bytes, SHA-256 `9849c7aade4ffe015fd5ab859ae57e4ba3c4e5461514bbc72bc6ffa355be0816`. Its complete original bytes were published losslessly in the parent evidence lineage. The nested `qualification/observed-gym-runtime/runtime-files.tar.gz` contains 92,698,282 bytes, SHA-256 `0e9ea0c6c3f2e29230148d330b6b7961aeba1fa44985876b90f68bc8ca7e28d5`.
+
+The source author and an actual non-author root reviewer each streamed the retained ZIP and compressed tar. All **2,159 regular files**, totaling **112,164,180 payload bytes**, match their receipt SHA-256 and lengths. Their complete member set matches the **56 ordered classpath entries** recorded in the single matching observed test worker. No extra members, symlinks or hardlinks were accepted.
+
+The runtime receipt, observation and qualification receipt hashes agree. The original before/after compiled-source maps contain the same 20,275 entries and identical bytes; the qualification record reports a clean source08 checkout. This is verification of the retained maps, not a fresh independent fetch of all 20,275 Git files. The audit records the Java executable identity reported by the original receipt; Java is not included in the nested runtime tar and was not observed running in this audit.
+
+`observed-runtime-byte-audit.json.gz` retains the exact ordered classpath and source/receipt identities. `root-observed-runtime-peer-review.json` records the separate actual non-author verification and its limits. The author's report remains labeled pending non-author review so its original self-audit disposition is not rewritten; the separate peer record supplies the completed byte-binding review.
+
+To reproduce the read-only audit, reassemble the original gym ZIP according to the parent `publication-manifest.json`, verify its complete SHA-256, and place it at `../original-10914678223.zip` relative to this directory before running `python3 audit_observed_runtime.py`. The script streams existing containers and writes its derived JSON only. No Java, Gradle, exporter, calibration or game command is part of that audit.
+
+This evidence does not establish complete source08 runtime admission, equivalence with the standard priority CI runtime, exported card definitions, semantic replay, resource capacity or gameplay permission. The recovered calibration sequence remains consumed/stopped, scope 44 adoption remains unresolved, and **no new calibration command is admitted**. A source-bound accepted runtime, reviewed export plan, complete dependency/policy/protocol closure and final independent admission remain prerequisites for the first D2 cell. No performance evidence changed.

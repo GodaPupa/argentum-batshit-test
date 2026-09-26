@@ -1,0 +1,42 @@
+{
+  "schema": "ferocity-source08-root-offline-source-inventory-peer-review-v1",
+  "reviewer": "/root",
+  "source_author": false,
+  "decision": "ACCEPT_SOURCE_BYTE_AND_DECK_GEOMETRY_INVENTORY_ONLY",
+  "source": "3a4f99a7653839506e96d19e6639f58d9e8c5ced",
+  "tree": "56c6b8dd46dc112cdb70db496fd9d0c3e915e8a6",
+  "files_independently_refetched_from_immutable_source": 43,
+  "positive_count_60_card_decks": [
+    "A3-F4",
+    "A3-N0",
+    "mono_red_madness_mistertwin_20260924"
+  ],
+  "main_deck_union": 33,
+  "getter_names": 36,
+  "getter_source_files": 34,
+  "historical_freeze_differences_preserved": [
+    {
+      "path": "ferocity-recycling/tools/first-cell-export/export_first_cell.py",
+      "historical_freeze_sha256": "1bac0bad2c0977a36805398a3dd7872e5f72934c28b74eb1abdf287f5d7fac95",
+      "source08_sha256": "29d753603a7b25a6410d834060872146c799ec0c4008b6ab978007aa55b57b69"
+    }
+  ],
+  "author_script_sha256": "1d2a5a83d2d0a050963016a578969aeaee33508982c3d1018cbd9167aecd7d8d",
+  "author_report_sha256": "e16eb5bb7cb63325d8d3710231f5185a943c1ecba0f51b72f221c10f8589de75",
+  "checks": [
+    "All43 source bytes freshly fetched at immutable3a4f99 and compared byte-for-byte with retained inputs; independently recomputed Gitblob and SHA256 identifiers.",
+    "Independently recomputed three positive-count exact60s, unique main entries,33-name union and exact Blood/Clue/WickedRole36-getter closure.",
+    "All34 getter source bytes match archived observed gym compiled-input map. This does not establish actual exported card definitions.",
+    "Exactly one old SOURCE_FREEZE discrepancy remains: exporter wrapper changed. It is reported and not rebound or silently authorized."
+  ],
+  "limits": [
+    "Inventory only: no runtime loaded/restored/executed, no getter evaluated and no offline bundle emitted.",
+    "No source-bound export plan, complete runtime/policy/protocol acceptance or gameplay permit is supplied.",
+    "Recovered finite resource calibration remains exhausted with unresolvedscope44 adoption; this inventory grants no additional command."
+  ],
+  "new_exports": 0,
+  "new_jvms": 0,
+  "new_resource_commands": 0,
+  "new_games": 0,
+  "gameplay_authorized": false
+}
