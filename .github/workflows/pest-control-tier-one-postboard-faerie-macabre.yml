@@ -46,12 +46,12 @@ jobs:
           from pathlib import Path
           import re
           patterns = [
-              (re.compile(r"\\bCompositeEffect\\s*\\("), "CompositeEffect"),
-              (re.compile(r"\\bMoveToZoneEffect\\s*\\("), "MoveToZoneEffect"),
-              (re.compile(r"\\bForEachInGroupEffect\\s*\\("), "ForEachInGroupEffect"),
-              (re.compile(r"\\bAdditionalCost\\.[A-Z]"), "AdditionalCost"),
-              (re.compile(r"\\bPayCost\\.[A-Z]"), "PayCost"),
-              (re.compile(r"(?<!Conditions\\.)\\bEntityMatches\\s*\\("), "EntityMatches"),
+              (re.compile(r"\bCompositeEffect\s*\("), "CompositeEffect"),
+              (re.compile(r"\bMoveToZoneEffect\s*\("), "MoveToZoneEffect"),
+              (re.compile(r"\bForEachInGroupEffect\s*\("), "ForEachInGroupEffect"),
+              (re.compile(r"\bAdditionalCost\.[A-Z]"), "AdditionalCost"),
+              (re.compile(r"\bPayCost\.[A-Z]"), "PayCost"),
+              (re.compile(r"(?<!Conditions\.)\bEntityMatches\s*\("), "EntityMatches"),
           ]
           violations = []
           for path in Path("mtg-sets").glob("*/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/**/*.kt"):
