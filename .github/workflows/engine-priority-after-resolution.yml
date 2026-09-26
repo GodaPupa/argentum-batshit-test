@@ -7,6 +7,9 @@ on:
       - docs/engine-priority-after-resolution*
       - docs/experiments/pest-control/tier-one-postboard-engine-priority-sources.json
       - docs/experiments/pest-control/tier-one-postboard-engine-priority-shared-receiving-sources.json
+      - lab-coordinator/shared-capabilities/priority-receiving-sources.json
+      - lab-coordinator/shared-capabilities/collect-priority-receiving.py
+      - rules-engine/src/testFixtures/kotlin/com/wingedsheep/engine/support/TriggerOrderTestSupport.kt
       - rules-engine/src/main/kotlin/com/wingedsheep/engine/state/GameState.kt
       - rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/ContinuationHandler.kt
       - rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/priority/PassPriorityHandler.kt
@@ -55,7 +58,7 @@ jobs:
       - name: Bind exact source and effective rules archive
         env:
           EXPECTED_HEAD: ${{ github.event.pull_request.head.sha }}
-          SOURCE_MANIFEST: docs/experiments/pest-control/tier-one-postboard-engine-priority-shared-receiving-sources.json
+          SOURCE_MANIFEST: lab-coordinator/shared-capabilities/priority-receiving-sources.json
         run: |
           python - <<'PY'
           import datetime, hashlib, json, os, pathlib, subprocess, urllib.request
@@ -85,6 +88,8 @@ jobs:
           subprocess.check_call(['git', 'merge-base', '--is-ancestor', manifest['base_commit'], head])
           for path, digest in manifest['source_files_sha256'].items():
               assert observed[path] == digest, path
+          for item in manifest['preserved_manifests']:
+              assert hashlib.sha256((root / item['path']).read_bytes()).hexdigest() == item['sha256'], item['path']
           rules = manifest['rules']
           request = urllib.request.Request(rules['source_url'], headers={'User-Agent': 'Argentum-rules-validation/1.0'})
           with urllib.request.urlopen(request, timeout=60) as response:
@@ -157,6 +162,9 @@ jobs:
           run_stage team-loss TwoHeadedGiantTeamLossTest || failed=1
           run_stage team-versus-team TeamVsTeamTest || failed=1
           exit "$failed"
+      - name: Audit all original stages and exact receiving source
+        if: always()
+        run: python3 lab-coordinator/shared-capabilities/collect-priority-receiving.py
       - name: Preserve complete validation evidence
         if: always()
         uses: actions/upload-artifact@v7

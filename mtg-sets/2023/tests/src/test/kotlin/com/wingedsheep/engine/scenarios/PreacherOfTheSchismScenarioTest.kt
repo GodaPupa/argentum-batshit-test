@@ -1,5 +1,7 @@
 package com.wingedsheep.engine.scenarios
 
+import com.wingedsheep.engine.support.chooseTriggerOrderInListedOrder
+
 import com.wingedsheep.engine.support.ScenarioTestBase
 import com.wingedsheep.sdk.core.Phase
 import com.wingedsheep.sdk.core.Step
@@ -91,6 +93,7 @@ class PreacherOfTheSchismScenarioTest : ScenarioTestBase() {
 
                 game.passUntilPhase(Phase.COMBAT, Step.DECLARE_ATTACKERS)
                 game.declareAttackers(mapOf("Preacher of the Schism" to 2)).error shouldBe null
+                game.chooseTriggerOrderInListedOrder()
                 game.resolveStack()
 
                 withClue("tied: the attacked player counts as most → Vampire token") {

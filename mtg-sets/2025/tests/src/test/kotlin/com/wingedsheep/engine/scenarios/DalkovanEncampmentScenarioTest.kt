@@ -1,8 +1,14 @@
 package com.wingedsheep.engine.scenarios
 
+import com.wingedsheep.engine.support.chooseTriggerOrderInListedOrder
+
 import com.wingedsheep.engine.core.ActivateAbility
+import com.wingedsheep.engine.core.DeclareBlockers
+import com.wingedsheep.engine.mechanics.combat.CombatDefenders
 import com.wingedsheep.engine.state.components.battlefield.TappedComponent
 import com.wingedsheep.engine.state.components.combat.AttackingComponent
+import com.wingedsheep.engine.state.components.combat.BlockersDeclaredThisCombatComponent
+import com.wingedsheep.engine.state.components.identity.CardComponent
 import com.wingedsheep.engine.support.ScenarioTestBase
 import com.wingedsheep.sdk.core.Phase
 import com.wingedsheep.sdk.core.Step
@@ -25,6 +31,27 @@ class DalkovanEncampmentScenarioTest : ScenarioTestBase() {
     // The {2}{W},{T} mobilize-grant ability is the non-mana activated ability.
     private val mobilizeAbilityId =
         cardRegistry.getCard("Dalkovan Encampment")!!.activatedAbilities[1].id
+
+    private fun TestGame.combatDiagnostic(): String = mapOf(
+        "turn" to state.turnNumber,
+        "phase" to state.phase,
+        "step" to state.step,
+        "active" to state.activePlayerId,
+        "priority" to state.priorityPlayerId,
+        "pending" to state.pendingDecision?.javaClass?.simpleName,
+        "stack" to state.stack,
+        "defenders" to CombatDefenders.defendingPlayersInApnapOrder(state),
+        "nextDefender" to CombatDefenders.nextUndeclaredDefender(state),
+        "declared" to state.turnOrder.associateWith {
+            state.getEntity(it)?.has<BlockersDeclaredThisCombatComponent>()
+        },
+        "attackers" to state.getBattlefield().mapNotNull { id ->
+            val entity = state.getEntity(id)!!
+            entity.get<AttackingComponent>()?.let {
+                listOf(id, entity.get<CardComponent>()?.name, it.defenderId)
+            }
+        },
+    ).toString()
 
     init {
         context("Dalkovan Encampment whenever-you-attack token ability") {
@@ -105,6 +132,17 @@ class DalkovanEncampmentScenarioTest : ScenarioTestBase() {
                     game.findPermanents("Warrior Token").size shouldBe 2
                 }
 
+                // Finish the real declaration round before advancing to the delayed sacrifices.
+                // The final defender hands priority back to the active player.
+                val beforeBlocks = game.combatDiagnostic()
+                game.passUntilPhase(Phase.COMBAT, Step.DECLARE_BLOCKERS)
+                withClue("Before reaching blocks: $beforeBlocks; after: ${game.combatDiagnostic()}") {
+                    game.execute(DeclareBlockers(game.player2Id, emptyMap())).error shouldBe null
+                }
+                game.state.priorityPlayerId shouldBe game.player1Id
+                game.passUntilPhase(Phase.ENDING, Step.END)
+                game.chooseTriggerOrderInListedOrder()
+                game.resolveStack()
                 game.passUntilPhase(Phase.PRECOMBAT_MAIN, Step.PRECOMBAT_MAIN)
 
                 withClue("Warrior tokens are sacrificed by the next end step") {

@@ -1,5 +1,7 @@
 package com.wingedsheep.engine.scenarios
 
+import com.wingedsheep.engine.support.chooseTriggerOrderInListedOrder
+
 import com.wingedsheep.engine.support.GameTestDriver
 import com.wingedsheep.engine.support.TestCards
 import com.wingedsheep.sdk.core.*
@@ -110,6 +112,7 @@ class LookBackTriggerTest : FunSpec({
         // Rule 603.10: The artifact was on the battlefield when the creatures died,
         // so its "Whenever a creature dies" trigger should fire 3 times (once per creature).
         // The artifact dying does NOT count (it's not a creature).
+        driver.chooseTriggerOrderInListedOrder()
         driver.stackSize shouldBeGreaterThanOrEqual 3
 
         // Resolve all three triggers

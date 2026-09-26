@@ -1,0 +1,52 @@
+{
+  "schema": "non-author-priority-successor-binding-review-v1",
+  "reviewer": "Izzet agent; non-author of successor binding or receiving fixtures",
+  "reviewed_at": "2026-09-26T17:54:51.634435+00:00",
+  "disposition": "ACCEPT_BINDING_FOR_RECEIVING_QUALIFICATION_ONLY",
+  "source_head": "8e759452a797d5cbd28341dee95dfe21d4b8f7e9",
+  "source_tree": "b7d3562d7957dea5c40f3a9e3437dbdbbc0268c8",
+  "manifest_sha256": "22244dd611a0f9b169e235b885e60236b704a2275f05d602265fb643ed926e34",
+  "pins_verified": 196,
+  "new_binding_paths": [
+    "mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/DaringArchaeologistScenarioTest.kt",
+    "mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/ExploitTest.kt",
+    "mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/GrolnokTheOmnivoreScenarioTest.kt",
+    "mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/LaidToRestScenarioTest.kt",
+    "mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/LilianaDreadhordeGeneralScenarioTest.kt",
+    "mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/LindenTheSteadfastQueenScenarioTest.kt",
+    "mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/OliviasAttendantsScenarioTest.kt",
+    "mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/PanickedBystanderScenarioTest.kt",
+    "mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/SoulcipherBoardScenarioTest.kt",
+    "mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/TrainingTest.kt"
+  ],
+  "changed_binding_paths": [
+    "mtg-sets/2025/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/DalkovanEncampmentScenarioTest.kt"
+  ],
+  "stages_unchanged": 27,
+  "cases_unchanged": 220,
+  "historical_resources_unchanged": 80,
+  "preserved_authorities": 3,
+  "unchanged_workflow_collector_and_fullci": true,
+  "previous_b6a_archive_sha256": "92e3259bda30cd0f293b0a375411085218cb76299070f71ad95ad547b754bf63",
+  "previous_b6a_nonauthor_review_sha256": "a4efa265361fd41bc5d43f641d27df97bf17939e543df07f2192127ebcdb7a4c",
+  "separate_root_nonauthor_fixture_review_sha256": "72a7cb5101c3b4e11e6eaac007ed2a6898e12c63f1596172f0b08d4977718507",
+  "verification": [
+    "Ten2017 fixture bindings added and one existing Dalkovan diagnostic pin updated; no other prior binding changes",
+    "All196 hashes match exact source tree",
+    "Original ordered27-stage220-case bank, workflow/collector and80 original resources retained",
+    "Prior b6a accepted targeted archive and exact non-author review copied byte-for-byte",
+    "Separate review correctly attributes fixture authorship to Pest/Sphinx and non-author review to coordinator; no GitHub approval claimed",
+    "Dalkovan remains explicitly unresolved; diagnostic change is not reported as runtime acceptance"
+  ],
+  "limitations": [
+    "This is binding-only review; it does not replace the separate independent reviews of fixture source",
+    "New196-pin source requires actual targeted and full receiving CI/artifact audits",
+    "Prior220 acceptance applies only to b6a; no gameplay or deck inference"
+  ],
+  "runtime_accepted": false,
+  "full_integration_accepted": false,
+  "official_execution_authorized": false,
+  "official_games": 0,
+  "outcomes_exposed": 0,
+  "github_approval": false
+}

@@ -1,0 +1,25 @@
+{
+  "schema": "ai-postblock-regression-receiving-source-review-v1",
+  "reviewer": "/root/sphinx",
+  "reviewer_role": "non-author agent",
+  "github_approval_created": false,
+  "reviewed_local_head": "090ef8639ce1b5619da295dada32ce9e11c6c2e1",
+  "reviewed_tree": "94a4592708d74ee3f80cbadf166b41afbc6f82a4",
+  "disposition": "ACCEPT_FOR_RECEIVING_QUALIFICATION_UNDER_EXISTING_SOFTWARE_TEST_GOVERNANCE",
+  "reviewed_test_sha256": {
+    "ai/src/test/kotlin/com/wingedsheep/ai/arena/FrozenBaselineTest.kt": "49e7770f7b55b24fb4a265ddf84afd86c51c1d6e1d467ed051b8334c60c45b86",
+    "ai/src/test/kotlin/com/wingedsheep/ai/puzzles/PuzzleSuiteTest.kt": "14ccfcfe749cbbbffb88f0d9e8f748d9707e4ff8cfc352e23f591859824273ec"
+  },
+  "findings": [
+    "FrozenBaselineTest's existing KDoc permits a hash successor for engine/combat changes. The receiving test accepts only raw 2dfcfc67eb3eaab0, preserves historical 5e699f864486526a, and keeps deck, seed and profile unchanged while adding the exact unchanged terminal assertions.",
+    "PuzzleSuiteTest's existing equality governance requires removing a diagnosed unexpected fix. Only activate-05 and instants-05 are removed; all 98 puzzle positions and four original case declarations remain unchanged, as does production AI.",
+    "The reviewer read the two unchanged puzzle positions and simulator quiet-state logic. The documented post-block pass horizons agree with source.",
+    "The reviewer reran the evidence-only verifier: exactly seven swaps, 14 changed records and 399 identical records. Raw ZIP hashes and the separately retained stream bytes match. The verifier is not imported by runtime or tests.",
+    "The earlier independent diagnostic review is accurately attributed to the non-author agent /root/sphinx."
+  ],
+  "receiving_fixture_qualification": "PENDING",
+  "combined_runtime_admitted": false,
+  "experimental_pilot_changed": false,
+  "experimental_budget_changed": false,
+  "gameplay_authorized": false
+}

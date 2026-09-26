@@ -72,7 +72,8 @@ class InsidiousFungusScenarioTest : ScenarioTestBase() {
                 val game = scenario()
                     .withPlayers("Player1", "Player2")
                     .withCardOnBattlefield(1, "Insidious Fungus")
-                    .withCardOnBattlefield(2, "Pacifism") // an enchantment
+                    .withCardOnBattlefield(2, "Grizzly Bears")
+                    .withCardAttachedTo(2, "Pacifism", "Grizzly Bears") // a legally attached enchantment
                     .withLandsOnBattlefield(1, "Forest", 2)
                     .withActivePlayer(1)
                     .inPhase(Phase.PRECOMBAT_MAIN, Step.PRECOMBAT_MAIN)
@@ -86,7 +87,8 @@ class InsidiousFungusScenarioTest : ScenarioTestBase() {
 
                 val modeDecision = game.state.pendingDecision as? ChooseOptionDecision
                     ?: error("expected a ChooseOptionDecision; got ${game.state.pendingDecision}")
-                game.submitDecision(OptionChosenResponse(modeDecision.id, optionIndex = 1))
+                game.submitDecision(OptionChosenResponse(modeDecision.id, optionIndex = 1)).error shouldBe null
+                game.isOnBattlefield("Pacifism") shouldBe true
 
                 val targetDecision = game.state.pendingDecision as? ChooseTargetsDecision
                     ?: error("expected a ChooseTargetsDecision after mode pick")

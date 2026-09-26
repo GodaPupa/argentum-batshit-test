@@ -1,5 +1,7 @@
 package com.wingedsheep.engine.scenarios
 
+import com.wingedsheep.engine.support.chooseTriggerOrderInListedOrder
+
 import com.wingedsheep.engine.mechanics.layers.StateProjector
 import com.wingedsheep.engine.support.ScenarioTestBase
 import com.wingedsheep.sdk.core.Keyword
@@ -115,6 +117,8 @@ class TheMasamuneScenarioTest : ScenarioTestBase() {
                     .build()
 
                 game.castSpell(1, "Pyroclasm").error shouldBe null
+                game.resolveStack()
+                game.chooseTriggerOrderInListedOrder()
                 game.resolveStack()
 
                 withClue("The 2/2 Grizzly Bears died; the 3/3 Chronicler survived") {

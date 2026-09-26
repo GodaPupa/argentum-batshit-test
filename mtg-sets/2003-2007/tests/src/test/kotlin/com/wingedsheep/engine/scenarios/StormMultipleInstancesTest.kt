@@ -1,5 +1,7 @@
 package com.wingedsheep.engine.scenarios
 
+import com.wingedsheep.engine.support.chooseTriggerOrderInListedOrder
+
 import com.wingedsheep.engine.state.components.player.GrantedSpellKeywordsComponent
 import com.wingedsheep.engine.state.components.player.SpellKeywordGrant
 import com.wingedsheep.engine.state.components.stack.SpellOnStackComponent
@@ -52,7 +54,9 @@ class StormMultipleInstancesTest : FunSpec({
         val tendrils = driver.putCardInHand(caster, "Tendrils of Agony")
 
         val result = driver.castSpell(caster, tendrils, listOf(opponent))
-        result.isSuccess shouldBe true
+        result.error shouldBe null
+
+        driver.chooseTriggerOrderInListedOrder()
 
         // Stack should contain: original Tendrils spell + 2 Storm trigger abilities.
         val stack = driver.state.stack

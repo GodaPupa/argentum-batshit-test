@@ -5,6 +5,7 @@ import com.wingedsheep.engine.core.ChooseColorDecision
 import com.wingedsheep.engine.core.ChooseNumberDecision
 import com.wingedsheep.engine.core.ColorChosenResponse
 import com.wingedsheep.engine.core.NumberChosenResponse
+import com.wingedsheep.engine.state.components.player.ManaPoolComponent
 import com.wingedsheep.sdk.core.Color
 import com.wingedsheep.engine.support.GameTestDriver
 import com.wingedsheep.engine.support.TestCards
@@ -52,17 +53,21 @@ class WizardsRocketsXChoiceScenarioTest : FunSpec({
         d.pendingDecision.shouldBeInstanceOf<ChooseNumberDecision>()
 
         // Choose X = 2.
-        d.submitDecision(active, NumberChosenResponse(d.pendingDecision!!.id, 2))
-        // Resolve the remaining flow: "add 2 mana in any combination of colors" pauses per mana for
-        // a color choice; then the sacrifice's draw trigger goes on the stack.
-        repeat(12) {
-            val dec = d.pendingDecision
-            when {
-                dec is ChooseColorDecision -> d.submitDecision(active, ColorChosenResponse(dec.id, Color.RED))
-                dec != null -> d.autoResolveDecision()
-                else -> d.bothPass()
-            }
+        d.submitDecision(active, NumberChosenResponse(d.pendingDecision!!.id, 2)).error shouldBe null
+        // Complete exactly the two mana-color choices. A standalone mana ability finishes
+        // before priority returns and its sacrifice trigger is put on the stack.
+        repeat(2) {
+            val color = d.pendingDecision.shouldBeInstanceOf<ChooseColorDecision>()
+            d.submitDecision(active, ColorChosenResponse(color.id, Color.RED)).error shouldBe null
         }
+        d.pendingDecision shouldBe null
+        d.state.priorityPlayerId shouldBe active
+        d.state.step shouldBe Step.PRECOMBAT_MAIN
+        d.state.getEntity(active)?.get<ManaPoolComponent>()?.red shouldBe 2
+        d.state.stack.size shouldBe 1
+        d.getHandSize(active) shouldBe handBefore
+        d.bothPass().error shouldBe null // Resolve only the sacrifice's draw trigger.
+        d.state.stack.size shouldBe 0
 
         // The artifact was sacrificed to pay the cost, and its dies-trigger drew a card.
         d.getGraveyard(active).any { d.getCardName(it) == "Wizard's Rockets" } shouldBe true

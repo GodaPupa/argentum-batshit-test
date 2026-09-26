@@ -1,5 +1,7 @@
 package com.wingedsheep.engine.scenarios
 
+import com.wingedsheep.engine.support.chooseTriggerOrderInListedOrder
+
 import com.wingedsheep.engine.state.components.battlefield.CastChoicesComponent
 import com.wingedsheep.engine.state.components.battlefield.ChoiceValue
 import com.wingedsheep.engine.support.ScenarioTestBase
@@ -85,6 +87,8 @@ class RoamingThroneScenarioTest : ScenarioTestBase() {
                 game.chooseType("Goblin")
 
                 game.castSpell(1, "Pyroclasm").error shouldBe null
+                game.resolveStack()
+                game.chooseTriggerOrderInListedOrder()
                 game.resolveStack()
 
                 withClue("Only the 2/2 Grizzly Bears died; Chronicler (3/3) and Throne (4/4) survived") {

@@ -1,5 +1,7 @@
 package com.wingedsheep.engine.scenarios
 
+import com.wingedsheep.engine.support.chooseTriggerOrderInListedOrder
+
 import com.wingedsheep.engine.state.components.battlefield.TappedComponent
 import com.wingedsheep.engine.state.components.combat.AttackingComponent
 import com.wingedsheep.engine.state.components.identity.CardComponent
@@ -126,6 +128,7 @@ class MobilizeTest : FunSpec({
         driver.state.delayedTriggers.size shouldBe 2
 
         driver.passPriorityUntil(com.wingedsheep.sdk.core.Step.END)
+        driver.chooseTriggerOrderInListedOrder()
         while (driver.state.stack.isNotEmpty()) driver.bothPass()
 
         driver.warriorTokens(attacker).size shouldBe 0

@@ -1,5 +1,7 @@
 package com.wingedsheep.engine.scenarios
 
+import com.wingedsheep.engine.support.chooseTriggerOrderInListedOrder
+
 import com.wingedsheep.engine.core.ZoneChangeEvent
 import com.wingedsheep.engine.core.engineSerializersModule
 import com.wingedsheep.engine.state.GameState
@@ -61,6 +63,7 @@ class PausedSpellTriggerFinalizationTest : FunSpec({
                         json.encodeToString(GameState.serializer(), d.state)))
                     d.submitYesNo(d.player1, true).error shouldBe null
                 }
+                if (initialDraw) d.chooseTriggerOrderInListedOrder()
                 d.pendingDecision shouldBe null
                 d.state.continuationStack shouldBe emptyList()
                 (id in d.state.getZone(ZoneKey(d.player1, Zone.GRAVEYARD))) shouldBe true

@@ -1,5 +1,9 @@
 package com.wingedsheep.engine.scenarios
 
+import com.wingedsheep.engine.support.hasPendingTriggerOrder
+
+import com.wingedsheep.engine.support.chooseTriggerOrderInListedOrder
+
 import com.wingedsheep.engine.core.SelectCardsDecision
 import com.wingedsheep.engine.state.components.battlefield.AttachedToComponent
 import com.wingedsheep.engine.state.components.battlefield.AttachmentsComponent
@@ -72,6 +76,8 @@ class CloudMidgarMercenaryScenarioTest : FunSpec({
     /** Advance to the active player's *next* precombat main (through their untap + upkeep). */
     fun advanceToNextTurnMain(driver: GameTestDriver) {
         driver.passPriorityUntil(Step.END, maxPasses = 300)
+        driver.passPriorityUntil(Step.UPKEEP, maxPasses = 300)
+        if (driver.state.hasPendingTriggerOrder()) driver.chooseTriggerOrderInListedOrder()
         driver.passPriorityUntil(Step.PRECOMBAT_MAIN, maxPasses = 300)
     }
 

@@ -2,6 +2,7 @@ package com.wingedsheep.engine.scenarios
 
 import com.wingedsheep.engine.state.components.battlefield.CountersComponent
 import com.wingedsheep.engine.support.ScenarioTestBase
+import com.wingedsheep.engine.support.chooseTriggerOrderInListedOrder
 import com.wingedsheep.sdk.core.CounterType
 import com.wingedsheep.sdk.core.Phase
 import com.wingedsheep.sdk.core.Step
@@ -111,6 +112,8 @@ class LaidToRestScenarioTest : ScenarioTestBase() {
                 val handBefore = game.handSize(1)
 
                 game.castSpell(1, "Lightning Bolt", human).error shouldBe null
+                game.resolveStack()
+                game.chooseTriggerOrderInListedOrder() // the Human draw and counter-bearing life gain
                 game.resolveStack()
 
                 withClue("Human is dead") { game.findPermanent("Glory Seeker") shouldBe null }

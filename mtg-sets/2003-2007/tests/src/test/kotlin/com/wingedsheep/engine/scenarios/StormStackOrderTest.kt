@@ -1,5 +1,7 @@
 package com.wingedsheep.engine.scenarios
 
+import com.wingedsheep.engine.support.chooseTriggerOrderInListedOrder
+
 import com.wingedsheep.engine.state.components.stack.SpellOnStackComponent
 import com.wingedsheep.engine.state.components.stack.TriggeredAbilityOnStackComponent
 import com.wingedsheep.engine.support.GameTestDriver
@@ -74,8 +76,9 @@ class StormStackOrderTest : FunSpec({
 
         repeat(4) { driver.putLandOnBattlefield(caster, "Swamp") }
         val tendrils = driver.putCardInHand(caster, "Tendrils of Agony")
-        driver.castSpell(caster, tendrils, listOf(opponent)).isSuccess shouldBe true
+        driver.castSpell(caster, tendrils, listOf(opponent)).error shouldBe null
 
+        driver.chooseTriggerOrderInListedOrder()
         val stack = driver.state.stack
         stack.first() shouldBe tendrils
 

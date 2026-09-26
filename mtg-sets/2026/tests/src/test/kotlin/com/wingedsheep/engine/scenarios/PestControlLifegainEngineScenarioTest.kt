@@ -4,6 +4,8 @@ import com.wingedsheep.engine.core.ActivateAbility
 import com.wingedsheep.engine.state.components.battlefield.CountersComponent
 import com.wingedsheep.engine.state.components.player.ManaPoolComponent
 import com.wingedsheep.engine.support.ScenarioTestBase
+import com.wingedsheep.engine.support.chooseTriggerOrderInListedOrder
+import com.wingedsheep.engine.support.hasPendingTriggerOrder
 import com.wingedsheep.sdk.core.CounterType
 import com.wingedsheep.sdk.core.Phase
 import com.wingedsheep.sdk.core.Step
@@ -14,6 +16,19 @@ class PestControlLifegainEngineScenarioTest : ScenarioTestBase() {
     private fun counters(game: TestGame, entity: com.wingedsheep.sdk.model.EntityId): Int =
         game.state.getEntity(entity)?.get<CountersComponent>()
             ?.getCount(CounterType.PLUS_ONE_PLUS_ONE) ?: 0
+
+    /** Fixed fixture ordering only; every other decision remains an explicit test failure. */
+    private fun TestGame.resolveWithTriggerOrder() {
+        var batches = 0
+        resolveStack().forEach { it.error shouldBe null }
+        while (state.hasPendingTriggerOrder()) {
+            check(batches++ < 64) { "Fixture trigger ordering did not settle within 64 batches" }
+            chooseTriggerOrderInListedOrder()
+            resolveStack().forEach { it.error shouldBe null }
+        }
+        state.pendingDecision shouldBe null
+        state.stack.isEmpty() shouldBe true
+    }
 
     init {
         test("Warden and Lumaret create separate events for Researcher Mascot and Blight-Priest") {
@@ -35,7 +50,7 @@ class PestControlLifegainEngineScenarioTest : ScenarioTestBase() {
             val life = game.getLifeTotal(1)
             val opponentLife = game.getLifeTotal(2)
             game.castSpell(1, "Carrier Thrall").error shouldBe null
-            game.resolveStack()
+            game.resolveWithTriggerOrder()
 
             game.getLifeTotal(1) shouldBe life + 2
             counters(game, researcher) shouldBe 2
@@ -59,7 +74,7 @@ class PestControlLifegainEngineScenarioTest : ScenarioTestBase() {
             val researcher = game.findPermanent("Blood Researcher")!!
             val life = game.getLifeTotal(1)
             game.castSpell(1, "Ornithopter").error shouldBe null
-            game.resolveStack()
+            game.resolveWithTriggerOrder()
 
             game.getLifeTotal(1) shouldBe life + 4
             counters(game, researcher) shouldBe 4
@@ -105,7 +120,7 @@ class PestControlLifegainEngineScenarioTest : ScenarioTestBase() {
             val opponentLife = game.getLifeTotal(2)
 
             game.castSpell(1, "Weather the Storm").error shouldBe null
-            game.resolveStack()
+            game.resolveWithTriggerOrder()
 
             game.getLifeTotal(1) shouldBe life + 9
             counters(game, researcher) shouldBe 3
@@ -130,7 +145,7 @@ class PestControlLifegainEngineScenarioTest : ScenarioTestBase() {
             val researcher = game.findPermanent("Blood Researcher")!!
             val life = game.getLifeTotal(1)
             game.castSpell(1, "Lightning Bolt", thrall).error shouldBe null
-            game.resolveStack()
+            game.resolveWithTriggerOrder()
 
             val scion = game.findPermanent("Eldrazi Scion")!!
             game.findPermanents("Eldrazi Scion").size shouldBe 1

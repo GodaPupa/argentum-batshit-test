@@ -3,6 +3,8 @@ package com.wingedsheep.engine.scenarios
 import com.wingedsheep.engine.core.ChooseTargetsDecision
 import com.wingedsheep.engine.core.YesNoDecision
 import com.wingedsheep.engine.support.ScenarioTestBase
+import com.wingedsheep.engine.support.chooseTriggerOrderInListedOrder
+import com.wingedsheep.engine.support.hasPendingTriggerOrder
 import com.wingedsheep.sdk.core.Phase
 import com.wingedsheep.sdk.core.Step
 import com.wingedsheep.sdk.dsl.card
@@ -68,6 +70,10 @@ class JenniferWaltersScenarioTest : ScenarioTestBase() {
             var asked = 0
             var guard = 0
             while (guard++ < 40) {
+                if (game.state.hasPendingTriggerOrder()) {
+                    game.chooseTriggerOrderInListedOrder()
+                    continue
+                }
                 when (val decision = game.getPendingDecision()) {
                     is ChooseTargetsDecision -> game.selectTargets(listOf(targetId))
                     is YesNoDecision -> {
@@ -183,6 +189,10 @@ class JenniferWaltersScenarioTest : ScenarioTestBase() {
                 val hints = mutableListOf<String>()
                 var guard = 0
                 while (guard++ < 40) {
+                    if (game.state.hasPendingTriggerOrder()) {
+                        game.chooseTriggerOrderInListedOrder()
+                        continue
+                    }
                     when (val decision = game.getPendingDecision()) {
                         is ChooseTargetsDecision -> game.selectTargets(listOf(game.player2Id))
                         is YesNoDecision -> {

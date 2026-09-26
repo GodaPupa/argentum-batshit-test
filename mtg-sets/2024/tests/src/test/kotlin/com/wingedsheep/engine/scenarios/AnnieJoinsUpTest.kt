@@ -1,6 +1,7 @@
 package com.wingedsheep.engine.scenarios
 
 import com.wingedsheep.engine.core.ChooseTargetsDecision
+import com.wingedsheep.engine.support.chooseTriggerOrderInListedOrder
 import com.wingedsheep.engine.support.GameTestDriver
 import com.wingedsheep.engine.support.TestCards
 import com.wingedsheep.mtg.sets.definitions.otj.cards.AnnieJoinsUp
@@ -100,6 +101,8 @@ class AnnieJoinsUpTest : FunSpec({
         driver.giveColorlessMana(you, 2)
         val before = driver.getHandSize(you)
         driver.castSpell(you, drawer).isSuccess shouldBe true
+        driver.bothPass().error shouldBe null // Resolve the creature before ordering its ETB triggers.
+        driver.chooseTriggerOrderInListedOrder()
         var guard = 0
         while (driver.state.stack.isNotEmpty() && guard++ < 20) {
             driver.bothPass()

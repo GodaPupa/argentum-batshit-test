@@ -1,5 +1,8 @@
 package com.wingedsheep.engine.scenarios
 
+import com.wingedsheep.engine.support.chooseTriggerOrderInListedOrder
+import com.wingedsheep.engine.support.hasPendingTriggerOrder
+
 import com.wingedsheep.engine.core.CombatResolutionDecision
 import com.wingedsheep.engine.core.CombatResolutionResponse
 import com.wingedsheep.engine.core.DamageEdgeAmount
@@ -68,6 +71,10 @@ class FlankingCombatTest : FunSpec({
     fun resolveThroughCombat(driver: GameTestDriver) {
         var guard = 0
         while (driver.currentStep != Step.POSTCOMBAT_MAIN && guard++ < 300) {
+            if (driver.state.hasPendingTriggerOrder()) {
+                driver.chooseTriggerOrderInListedOrder()
+                continue
+            }
             when (val decision = driver.state.pendingDecision) {
                 is OrderObjectsDecision ->
                     driver.submitDecision(decision.playerId, OrderedResponse(decision.id, decision.objects))
@@ -171,7 +178,8 @@ class FlankingCombatTest : FunSpec({
         driver.declareBlockers(
             defender,
             mapOf(footsoldier to listOf(sentinel), militia to listOf(sentinel)),
-        ).isSuccess shouldBe true
+        ).error shouldBe null
+        driver.state.hasPendingTriggerOrder() shouldBe true
 
         resolveThroughCombat(driver)
 

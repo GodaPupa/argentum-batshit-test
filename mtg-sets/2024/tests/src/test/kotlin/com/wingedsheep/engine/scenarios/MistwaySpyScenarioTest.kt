@@ -1,5 +1,9 @@
 package com.wingedsheep.engine.scenarios
 
+import com.wingedsheep.engine.core.CombatResolutionDecision
+
+import com.wingedsheep.engine.support.chooseTriggerOrderInListedOrder
+
 import com.wingedsheep.engine.core.PaymentStrategy
 import com.wingedsheep.engine.core.TurnFaceUp
 import com.wingedsheep.engine.handlers.effects.FaceDownTurnUp
@@ -90,7 +94,7 @@ class MistwaySpyScenarioTest : FunSpec({
         bothPass()
         declareNoBlockers(player2).error shouldBe null
         passPriorityUntil(Step.COMBAT_DAMAGE)
-        if (state.pendingDecision != null) confirmCombatDamage()
+        if (state.pendingDecision is CombatResolutionDecision) confirmCombatDamage()
         var guard = 0
         while (state.stack.isNotEmpty() && state.pendingDecision == null && guard++ < 20) bothPass()
     }
@@ -136,6 +140,8 @@ class MistwaySpyScenarioTest : FunSpec({
         unmaskedSpy(driver)
 
         driver.attackAndResolveDamage(listOf(first, second))
+        driver.chooseTriggerOrderInListedOrder()
+        repeat(2) { driver.bothPass().error shouldBe null }
 
         withClue("this is a repeating trigger, not a one-shot delayed trigger") {
             clueCount(driver) shouldBe 2
