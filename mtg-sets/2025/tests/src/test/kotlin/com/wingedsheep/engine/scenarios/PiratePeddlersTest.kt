@@ -1,5 +1,7 @@
 package com.wingedsheep.engine.scenarios
 
+import com.wingedsheep.engine.support.chooseTriggerOrderInListedOrder
+
 import com.wingedsheep.engine.state.components.battlefield.CountersComponent
 import com.wingedsheep.engine.support.GameTestDriver
 import com.wingedsheep.engine.support.TestCards
@@ -66,7 +68,9 @@ class PiratePeddlersTest : FunSpec({
         val spell = driver.putCardInHand(player, "Cull the Cats")
         driver.giveMana(player, Color.BLACK, 1)
 
-        driver.castSpell(player, spell)
+        driver.castSpell(player, spell).error shouldBe null
+        driver.bothPass().error shouldBe null
+        driver.chooseTriggerOrderInListedOrder()
         driver.resolveStack()   // sorcery sacrifices both Cats; two per-permanent triggers resolve
 
         plusCounters(driver, peddlers) shouldBe 2

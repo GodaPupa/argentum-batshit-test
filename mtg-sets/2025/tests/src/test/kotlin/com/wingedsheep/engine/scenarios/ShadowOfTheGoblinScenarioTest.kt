@@ -1,5 +1,7 @@
 package com.wingedsheep.engine.scenarios
 
+import com.wingedsheep.engine.support.chooseTriggerOrderInListedOrder
+
 import com.wingedsheep.engine.core.PlayLand
 import com.wingedsheep.engine.state.components.player.CardsDiscardedThisTurnComponent
 import com.wingedsheep.engine.support.GameTestDriver
@@ -50,6 +52,7 @@ class ShadowOfTheGoblinScenarioTest : FunSpec({
         markDiscarded(driver, player, oscorp)
 
         driver.submit(PlayLand(player, oscorp)).error shouldBe null
+        driver.chooseTriggerOrderInListedOrder()
         resolveStack(driver) // Shadow's damage trigger + Oscorp's enters-from-graveyard both resolve
 
         // Shadow dealt 1 to the opponent; Oscorp's −2 hit the player (its controller), not the opponent.

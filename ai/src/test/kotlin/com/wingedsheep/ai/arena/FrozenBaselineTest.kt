@@ -58,6 +58,10 @@ class FrozenBaselineTest : FunSpec({
                 "life ${outcome.seat0Life}/${outcome.seat1Life}). See this test's KDoc before re-blessing."
         ) {
             outcome.actionStreamHash shouldBe GOLDEN_HASH
+            outcome.turns shouldBe 20
+            outcome.winnerSeat shouldBe 1
+            outcome.seat0Life shouldBe -8
+            outcome.seat1Life shouldBe 16
         }
     }
 }) {
@@ -104,6 +108,10 @@ class FrozenBaselineTest : FunSpec({
          * way as the two entries above: with `", asBackFace=false"` stripped from the recorded
          * action text, this branch reproduces the previous golden `6ff9ded1403d59ac` exactly. The
          * outcome is untouched: seat 1 still wins on turn 20 at life -8 / 16.
+         *
+         * The canonical post-block receiving source now changes the first priority handoff.
+         * This Izzet lineage retains its own golden until the exact old/new raw action streams
+         * have been independently compared. A donor lineage's accepted hash is not substituted.
          *
          * Note for whoever hits this next: hashing `GameAction.toString()` means *any* new field on
          * a cast/action data class moves this hash without the AI having changed. Check the outcome

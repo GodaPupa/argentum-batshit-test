@@ -61,6 +61,7 @@ class LegacySuspensionMigrationTest : ScenarioTestBase() {
                     result.error shouldBe null
                     state = result.state
                     val expected = json.decodeFromString<GameState>(fixtureText(fixture, "after-${index + 1}.json"))
+                        .withReceivingFreeCastDepartureSnapshot(fixture, index + 1)
                     normalizeRouting(encodeState(state), root = true) shouldBe
                         normalizeRouting(encodeState(expected), root = true)
                     assertCurrentRoundTrip(state)

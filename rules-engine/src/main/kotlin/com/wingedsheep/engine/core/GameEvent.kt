@@ -187,7 +187,11 @@ data class DamageDealtEvent(
      * event batch: index 0 begins a group and following marked damage records advance to size - 1.
      */
     val simultaneousDamageGroupIndex: Int? = null,
-    val simultaneousDamageGroupSize: Int = 1
+    val simultaneousDamageGroupSize: Int = 1,
+    /** Damage-source characteristics, preserving the old object across return or token cleanup. */
+    val sourceSnapshot: com.wingedsheep.engine.state.components.stack.EntitySnapshot? = null,
+    /** False for damage dealt by an already-departed permanent; null on older event producers. */
+    val sourceWasOnBattlefield: Boolean? = null,
 ) : GameEvent
 
 /**

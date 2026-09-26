@@ -72,6 +72,8 @@ class TaureanMaulerScenarioTest : FunSpec({
 
         d.castSpell(p2, d.putCardInHand(p2, "Zap")).error shouldBe null
         resolveStack(d)
+        d.priorityPlayer shouldBe p1
+        d.passPriority(p1).error shouldBe null // A second opponent spell needs another priority window.
         d.castSpell(p2, d.putCardInHand(p2, "Zap")).error shouldBe null
         resolveStack(d)
 

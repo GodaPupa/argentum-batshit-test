@@ -14,7 +14,7 @@ concurrency:
 jobs:
   qualify:
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    timeout-minutes: 90
     env:
       GRADLE_LOCK_SLOTS: '1'
       JAVA_TOOL_OPTIONS: -XX:MaxMetaspaceSize=768m
@@ -54,7 +54,7 @@ jobs:
         run: |
           set -euo pipefail
           just test-class PreventTargetingSerializationTest --rerun --max-workers=1 -PkotlinCompileParallelism=1 -Pkotlin.compiler.execution.strategy=in-process -Dorg.gradle.jvmargs=-Xmx4g --info --stacktrace 2>&1 | tee build/reports/izzet-vines/sdk.txt
-          just test-class PreventTargetingScenarioTest --tests '*FloatingEffectSerializationRoundTripTest' --tests '*SerializationPolymorphicRegistrationTest' --tests '*CastSpellSourceHexproofEnumerationTest' --tests '*CommanderStatePredicateTest' --tests '*AffectsFilterResolverStatePredicateTest' --tests '*InterveningIfBeforeTargetLegalityTest' --tests '*ReflexiveTriggerFeasibilityTest' --tests '*ModalTriggeredAbilityOnStackTest' --rerun --max-workers=1 -PkotlinCompileParallelism=1 -Pkotlin.compiler.execution.strategy=in-process -Dorg.gradle.jvmargs=-Xmx4g --info --stacktrace 2>&1 | tee build/reports/izzet-vines/engine.txt
+          just test-class PreventTargetingScenarioTest --tests '*FloatingEffectSerializationRoundTripTest' --tests '*SerializationPolymorphicRegistrationTest' --tests '*CastSpellSourceHexproofEnumerationTest' --tests '*CommanderStatePredicateTest' --tests '*AffectsFilterResolverStatePredicateTest' --tests '*InterveningIfBeforeTargetLegalityTest' --tests '*ReflexiveTriggerFeasibilityTest' --tests '*ModalTriggeredAbilityOnStackTest' --tests '*BattlefieldEntrySnapshotTest' --tests '*AttachEquipmentObjectIdentityTest' --tests '*ExcessDamageSelfReplacementTest' --tests '*DamageDealtThisTurnTest' --tests '*LifelinkTest' --tests '*WitherLifelinkDeathtouchTest' --rerun --max-workers=1 -PkotlinCompileParallelism=1 -Pkotlin.compiler.execution.strategy=in-process -Dorg.gradle.jvmargs=-Xmx4g --info --stacktrace 2>&1 | tee build/reports/izzet-vines/engine.txt
 
       - name: Qualify exact Vines reachable behavior and receiving Position-1 guards
         shell: bash
@@ -62,7 +62,17 @@ jobs:
           set -euo pipefail
           just test-class VinesOfVastwoodScenarioTest --tests '*IntoTheRoilScenarioTest' --rerun --max-workers=1 -PkotlinCompileParallelism=1 -Pkotlin.compiler.execution.strategy=in-process -Dorg.gradle.jvmargs=-Xmx4g --info --stacktrace 2>&1 | tee build/reports/izzet-vines/exact-vines.txt
           just test-class IzzetSciencePosition1BootstrapTest --tests '*IzzetSciencePdhMechanicsQualificationTest' --tests '*IzzetScienceVeteranBeastriderEngineReadinessTest' --rerun --max-workers=1 -PkotlinCompileParallelism=1 -Pkotlin.compiler.execution.strategy=in-process -Dorg.gradle.jvmargs=-Xmx4g --info --stacktrace 2>&1 | tee build/reports/izzet-vines/receiving-pdh.txt
-          just test-class ForgeOfHeroesScenarioTest --rerun --max-workers=1 -PkotlinCompileParallelism=1 -Pkotlin.compiler.execution.strategy=in-process -Dorg.gradle.jvmargs=-Xmx4g --info --stacktrace 2>&1 | tee build/reports/izzet-vines/receiving-forge.txt
+          just test-class ForgeOfHeroesScenarioTest --tests '*RamThroughScenarioTest' --rerun --max-workers=1 -PkotlinCompileParallelism=1 -Pkotlin.compiler.execution.strategy=in-process -Dorg.gradle.jvmargs=-Xmx4g --info --stacktrace 2>&1 | tee build/reports/izzet-vines/receiving-forge.txt
+
+      - name: Requalify Izzet damage, protection, entry and bestow overlaps
+        shell: bash
+        run: |
+          set -euo pipefail
+          just test-class SpiritLinkBatchAJScenarioTest --rerun --max-workers=1 -PkotlinCompileParallelism=1 -Pkotlin.compiler.execution.strategy=in-process -Dorg.gradle.jvmargs=-Xmx4g --info --stacktrace 2>&1 | tee build/reports/izzet-vines/receiving-spirit-link.txt
+          just test-class PrismaticStrandsScenarioTest --rerun --max-workers=1 -PkotlinCompileParallelism=1 -Pkotlin.compiler.execution.strategy=in-process -Dorg.gradle.jvmargs=-Xmx4g --info --stacktrace 2>&1 | tee build/reports/izzet-vines/receiving-strands.txt
+          just test-class GandalfsSanctionScenarioTest --rerun --max-workers=1 -PkotlinCompileParallelism=1 -Pkotlin.compiler.execution.strategy=in-process -Dorg.gradle.jvmargs=-Xmx4g --info --stacktrace 2>&1 | tee build/reports/izzet-vines/receiving-excess-damage.txt
+          just test-class ColossalDreadmaskScenarioTest --tests '*NyxbornHydraScenarioTest' --rerun --max-workers=1 -PkotlinCompileParallelism=1 -Pkotlin.compiler.execution.strategy=in-process -Dorg.gradle.jvmargs=-Xmx4g --info --stacktrace 2>&1 | tee build/reports/izzet-vines/receiving-entry-bestow.txt
+          just test-class ChoMannosBlessingScenarioTest --rerun --max-workers=1 -PkotlinCompileParallelism=1 -Pkotlin.compiler.execution.strategy=in-process -Dorg.gradle.jvmargs=-Xmx4g --info --stacktrace 2>&1 | tee build/reports/izzet-vines/receiving-aura-protection.txt
 
       - name: Generate ordinary snapshots and require only the intended Vines record
         shell: bash
@@ -148,6 +158,19 @@ jobs:
             'IzzetSciencePosition1BootstrapTest': ('gym', 7),
             'IzzetSciencePdhMechanicsQualificationTest': ('gym', 7),
             'IzzetScienceVeteranBeastriderEngineReadinessTest': ('gym', 16),
+            'BattlefieldEntrySnapshotTest': ('rules-engine', None),
+            'AttachEquipmentObjectIdentityTest': ('rules-engine', None),
+            'ExcessDamageSelfReplacementTest': ('rules-engine', None),
+            'DamageDealtThisTurnTest': ('rules-engine', None),
+            'LifelinkTest': ('rules-engine', None),
+            'WitherLifelinkDeathtouchTest': ('rules-engine', None),
+            'RamThroughScenarioTest': ('mtg-sets/2017-2022/tests', None),
+            'SpiritLinkBatchAJScenarioTest': ('mtg-sets/2003-2007/tests', None),
+            'PrismaticStrandsScenarioTest': ('mtg-sets/2000-2002/tests', None),
+            'GandalfsSanctionScenarioTest': ('mtg-sets/2023/tests', None),
+            'ColossalDreadmaskScenarioTest': ('mtg-sets/2024/tests', None),
+            'NyxbornHydraScenarioTest': ('mtg-sets/2024/tests', None),
+            'ChoMannosBlessingScenarioTest': ('mtg-sets/1993-1999/tests', None),
             'CardDefinitionSnapshotTest': ('mtg-sets', None),
             'CardLintTest': ('mtg-sets', None),
             'FacadeBoundaryTest': ('mtg-sets', None),
@@ -184,6 +207,11 @@ jobs:
             mtg-sdk/build/test-results/test/*.xml
             rules-engine/build/test-results/test/*.xml
             mtg-sets/2008-2016/tests/build/test-results/test/*.xml
+            mtg-sets/1993-1999/tests/build/test-results/test/*.xml
+            mtg-sets/2000-2002/tests/build/test-results/test/*.xml
+            mtg-sets/2003-2007/tests/build/test-results/test/*.xml
+            mtg-sets/2023/tests/build/test-results/test/*.xml
+            mtg-sets/2024/tests/build/test-results/test/*.xml
             mtg-sets/2017-2022/tests/build/test-results/test/*.xml
             gym/build/test-results/test/TEST-*IzzetScience*Test.xml
             mtg-sets/build/test-results/test/*.xml

@@ -1,5 +1,7 @@
 package com.wingedsheep.engine.scenarios
 
+import com.wingedsheep.engine.support.chooseTriggerOrderInListedOrder
+
 import com.wingedsheep.engine.support.GameTestDriver
 import com.wingedsheep.engine.support.TestCards
 import com.wingedsheep.sdk.core.Step
@@ -78,6 +80,7 @@ class HideOnTheCeilingTest : FunSpec({
         // Two triggers go on the stack, so resolve them all by advancing into
         // the cleanup step (everything in END must resolve before then).
         driver.passPriorityUntil(Step.END, maxPasses = 200)
+        driver.chooseTriggerOrderInListedOrder()
         driver.passPriorityUntil(Step.CLEANUP, maxPasses = 200)
 
         driver.getPermanents(driver.player2) shouldContainAll listOf(creature, artifact)
