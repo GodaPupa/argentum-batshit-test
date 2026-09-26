@@ -1,15 +1,3 @@
-# Mechanical qualification checkpoint — 2026-09-26 11:53 UTC
-
-The current execution/status record is [CURRENT_STATUS.md](CURRENT_STATUS.md). New compact evidence is now published under the nine closed archive groups listed there. Accepted results are strictly source-specific: LKI97 plus a separate genuinely fresh14,269 all-era pass; literal1,406 repetition; combat32; isolated monarch72; artifact policy24; diagnostics12; raw bundle16; Brew25; Highway8. All earlier failed source/fixture/compiler attempts remain visible.
-
-**Combined pre-snapshot source3b20744e has0 executed tests.** Its first attempt failed compilation because the compiler selected stale SDK loose classes despite the current source and JAR exposing the required Gift methods. No source/test/golden relaxation is warranted for that discrepancy. Binary identities and the actual compiler classpath were preserved before regeneration.
-
-The53-class/440 prospective common bank, SDK gate, actual snapshot review and broad shared regression remain pending on the final source. Earlier independent passes are not transferred across an integration. No production admission, randomized seed or game exists. Historical detailed records follow without rewriting their original version boundaries.
-
-Environment follow-up: the forced SDK regeneration itself failed before tests on a disappearing synchronization temporary directory; a clean outside-workspace checkout with identical frozen source is being provisioned. The original attempt, binary discrepancy and regeneration failure remain preserved; no test or rule change is used to address this race.
-
----
-
 # Mechanical qualification
 
 Current cut: **2026-09-26 10:20 UTC**. **First-cell gameplay admission remains blocked pending combined-source qualification.** The original baseline record is preserved at `history/checkpoint-53c68e95/MECHANICAL_QUALIFICATION.md`. Its38/41 result describes the historical baseline, not the latest targeted status.

@@ -1,0 +1,914 @@
+﻿2026-09-26T10:26:19.5501465Z Current runner version: '2.337.0'
+2026-09-26T10:26:19.5529569Z ##[group]Runner Image Provisioner
+2026-09-26T10:26:19.5530767Z Hosted Compute Agent
+2026-09-26T10:26:19.5531484Z Version: 20260828.587
+2026-09-26T10:26:19.5532144Z Commit: abac92662cab4cc7352de4f9f9d2e2419aad9c29
+2026-09-26T10:26:19.5532933Z Build Date: 2026-08-28T16:44:25Z
+2026-09-26T10:26:19.5533698Z Worker ID: {825d9cd6-d795-4f7b-9c41-7eae30582e0d}
+2026-09-26T10:26:19.5534446Z Azure Region: westus
+2026-09-26T10:26:19.5535080Z ##[endgroup]
+2026-09-26T10:26:19.5536610Z ##[group]Operating System
+2026-09-26T10:26:19.5537268Z Ubuntu
+2026-09-26T10:26:19.5537940Z 24.04.5
+2026-09-26T10:26:19.5538503Z LTS
+2026-09-26T10:26:19.5539074Z ##[endgroup]
+2026-09-26T10:26:19.5539647Z ##[group]Runner Image
+2026-09-26T10:26:19.5540459Z Image: ubuntu-24.04
+2026-09-26T10:26:19.5541170Z Version: 20260920.314.1
+2026-09-26T10:26:19.5542539Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20260920.314/images/ubuntu/Ubuntu2404-Readme.md
+2026-09-26T10:26:19.5544163Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20260920.314
+2026-09-26T10:26:19.5545122Z ##[endgroup]
+2026-09-26T10:26:19.5546368Z ##[group]GITHUB_TOKEN Permissions
+2026-09-26T10:26:19.5548279Z Contents: read
+2026-09-26T10:26:19.5549012Z Metadata: read
+2026-09-26T10:26:19.5549593Z ##[endgroup]
+2026-09-26T10:26:19.5552299Z Secret source: Actions
+2026-09-26T10:26:19.5553367Z Cache mode: write
+2026-09-26T10:26:19.5554128Z Prepare workflow directory
+2026-09-26T10:26:19.5906844Z Prepare all required actions
+2026-09-26T10:26:19.5958019Z Getting action download info
+2026-09-26T10:26:19.9539166Z Download action repository 'actions/checkout@v6' (SHA:d23441a48e516b6c34aea4fa41551a30e30af803)
+2026-09-26T10:26:20.1038364Z Download action repository 'gradle/actions@v6' (SHA:9c971963bec38e04b3d30dcc455b5382be2fdbfb)
+2026-09-26T10:26:21.0565465Z Download action repository 'actions/upload-artifact@v7' (SHA:043fb46d1a93c77aae656e7c1c64a875d1fc6a0a)
+2026-09-26T10:26:21.2508490Z Complete job name: deterministic (canonical-support, CryptRatsScenarioTest GlintHawkScenarioTest KorSkyfisherScenari...
+2026-09-26T10:26:21.3465522Z ##[group]Run actions/checkout@v6
+2026-09-26T10:26:21.3466576Z with:
+2026-09-26T10:26:21.3467118Z   ref: 2a99c52bcfb869ecc0c32443c2b77765abde4b65
+2026-09-26T10:26:21.3467804Z   fetch-depth: 0
+2026-09-26T10:26:21.3468341Z   repository: GodaPupa/argentum-batshit-test
+2026-09-26T10:26:21.3473578Z   token: ***
+2026-09-26T10:26:21.3474066Z   ssh-strict: true
+2026-09-26T10:26:21.3474543Z   ssh-user: git
+2026-09-26T10:26:21.3475035Z   persist-credentials: true
+2026-09-26T10:26:21.3475579Z   clean: true
+2026-09-26T10:26:21.3476056Z   sparse-checkout-cone-mode: true
+2026-09-26T10:26:21.3476652Z   fetch-tags: false
+2026-09-26T10:26:21.3477141Z   show-progress: true
+2026-09-26T10:26:21.3477647Z   lfs: false
+2026-09-26T10:26:21.3478093Z   submodules: false
+2026-09-26T10:26:21.3478583Z   set-safe-directory: true
+2026-09-26T10:26:21.3479144Z   allow-unsafe-pr-checkout: false
+2026-09-26T10:26:21.3480305Z ##[endgroup]
+2026-09-26T10:26:21.4561147Z Syncing repository: GodaPupa/argentum-batshit-test
+2026-09-26T10:26:21.4564329Z ##[group]Getting Git version info
+2026-09-26T10:26:21.4565957Z Working directory is '/home/runner/work/argentum-batshit-test/argentum-batshit-test'
+2026-09-26T10:26:21.4568254Z [command]/usr/bin/git version
+2026-09-26T10:26:21.4690487Z git version 2.55.0
+2026-09-26T10:26:21.4715519Z ##[endgroup]
+2026-09-26T10:26:21.4731043Z Temporarily overriding HOME='/home/runner/work/_temp/5cfc6557-454b-44ba-b1f2-3d326ec69ca3' before making global git config changes
+2026-09-26T10:26:21.4734173Z Adding repository directory to the temporary git global config as a safe directory
+2026-09-26T10:26:21.4736999Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/argentum-batshit-test/argentum-batshit-test
+2026-09-26T10:26:21.4794535Z Deleting the contents of '/home/runner/work/argentum-batshit-test/argentum-batshit-test'
+2026-09-26T10:26:21.4799159Z ##[group]Determining repository object format
+2026-09-26T10:26:21.4802094Z ##[endgroup]
+2026-09-26T10:26:21.4803490Z ##[group]Initializing the repository
+2026-09-26T10:26:21.4806741Z [command]/usr/bin/git init /home/runner/work/argentum-batshit-test/argentum-batshit-test
+2026-09-26T10:26:21.4966390Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-09-26T10:26:21.4969009Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-09-26T10:26:21.4971382Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-09-26T10:26:21.4973094Z hint: call:
+2026-09-26T10:26:21.4973870Z hint:
+2026-09-26T10:26:21.4975198Z hint: 	git config --global init.defaultBranch <name>
+2026-09-26T10:26:21.4976160Z hint:
+2026-09-26T10:26:21.4976975Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-09-26T10:26:21.4978285Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-09-26T10:26:21.4979306Z hint:
+2026-09-26T10:26:21.4979937Z hint: 	git branch -m <name>
+2026-09-26T10:26:21.4981085Z hint:
+2026-09-26T10:26:21.4982228Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-09-26T10:26:21.4984248Z Initialized empty Git repository in /home/runner/work/argentum-batshit-test/argentum-batshit-test/.git/
+2026-09-26T10:26:21.5078194Z [command]/usr/bin/git remote add origin https://github.com/GodaPupa/argentum-batshit-test
+2026-09-26T10:26:21.5081834Z ##[endgroup]
+2026-09-26T10:26:21.5083190Z ##[group]Disabling automatic garbage collection
+2026-09-26T10:26:21.5084536Z [command]/usr/bin/git config --local gc.auto 0
+2026-09-26T10:26:21.5099058Z ##[endgroup]
+2026-09-26T10:26:21.5101481Z ##[group]Setting up auth
+2026-09-26T10:26:21.5103368Z Removing SSH command configuration
+2026-09-26T10:26:21.5114256Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-09-26T10:26:21.5159159Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-09-26T10:26:21.5602926Z Removing HTTP extra header
+2026-09-26T10:26:21.5609023Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-09-26T10:26:21.5646635Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-09-26T10:26:21.5867163Z Removing includeIf entries pointing to credentials config files
+2026-09-26T10:26:21.5873721Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-09-26T10:26:21.5912111Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-09-26T10:26:21.6159800Z [command]/usr/bin/git config --file /home/runner/work/_temp/git-credentials-aa8d3b90-c6df-4ff5-b3d6-70c8031d8a96.config http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-09-26T10:26:21.6210654Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/argentum-batshit-test/argentum-batshit-test/.git.path /home/runner/work/_temp/git-credentials-aa8d3b90-c6df-4ff5-b3d6-70c8031d8a96.config
+2026-09-26T10:26:21.6253422Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/argentum-batshit-test/argentum-batshit-test/.git/worktrees/*.path /home/runner/work/_temp/git-credentials-aa8d3b90-c6df-4ff5-b3d6-70c8031d8a96.config
+2026-09-26T10:26:21.6297734Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-aa8d3b90-c6df-4ff5-b3d6-70c8031d8a96.config
+2026-09-26T10:26:21.6344937Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-aa8d3b90-c6df-4ff5-b3d6-70c8031d8a96.config
+2026-09-26T10:26:21.6379131Z ##[endgroup]
+2026-09-26T10:26:21.6381504Z ##[group]Fetching the repository
+2026-09-26T10:26:21.6390799Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules origin +refs/heads/*:refs/remotes/origin/* +refs/tags/*:refs/tags/*
+2026-09-26T10:26:45.3033055Z From https://github.com/GodaPupa/argentum-batshit-test
+2026-09-26T10:26:45.3034551Z  * [new branch]            affinity/grixis-policy-regression -> origin/affinity/grixis-policy-regression
+2026-09-26T10:26:45.3036112Z  * [new branch]            affinity/grixis-preboard-sample-1 -> origin/affinity/grixis-preboard-sample-1
+2026-09-26T10:26:45.3037699Z  * [new branch]            affinity/grixis-readiness -> origin/affinity/grixis-readiness
+2026-09-26T10:26:45.3038817Z  * [new branch]            affinity/grixis-smoke-10 -> origin/affinity/grixis-smoke-10
+2026-09-26T10:26:45.3039744Z  * [new branch]            engine/ojer-pakpatiq-lethal-fixture -> origin/engine/ojer-pakpatiq-lethal-fixture
+2026-09-26T10:26:45.3041342Z  * [new branch]            engine/post-cast-sba -> origin/engine/post-cast-sba
+2026-09-26T10:26:45.3042797Z  * [new branch]            engine/priority-after-resolution -> origin/engine/priority-after-resolution
+2026-09-26T10:26:45.3044237Z  * [new branch]            experiment/optimization-a-preflight -> origin/experiment/optimization-a-preflight
+2026-09-26T10:26:45.3045813Z  * [new branch]            experiment/paired-counterfactual-framework -> origin/experiment/paired-counterfactual-framework
+2026-09-26T10:26:45.3047113Z  * [new branch]            experiment/preboard-100-v1 -> origin/experiment/preboard-100-v1
+2026-09-26T10:26:45.3048519Z  * [new branch]            experiment/preboard-100-v2 -> origin/experiment/preboard-100-v2
+2026-09-26T10:26:45.3049893Z  * [new branch]            face-value-edh/r1-reconstruction -> origin/face-value-edh/r1-reconstruction
+2026-09-26T10:26:45.3051345Z  * [new branch]            face-value/lab       -> origin/face-value/lab
+2026-09-26T10:26:45.3052801Z  * [new branch]            ferocity-recycling/archetype-research -> origin/ferocity-recycling/archetype-research
+2026-09-26T10:26:45.3054727Z  * [new branch]            ferocity-recycling/qualification-review -> origin/ferocity-recycling/qualification-review
+2026-09-26T10:26:45.3056000Z  * [new branch]            fix/bats-rescue-readiness -> origin/fix/bats-rescue-readiness
+2026-09-26T10:26:45.3057463Z  * [new branch]            fix/tapped-land-sequencing -> origin/fix/tapped-land-sequencing
+2026-09-26T10:26:45.3058844Z  * [new branch]            fix/trace-format-assertion -> origin/fix/trace-format-assertion
+2026-09-26T10:26:45.3060484Z  * [new branch]            industrial-waste/gate-10-elves-readiness -> origin/industrial-waste/gate-10-elves-readiness
+2026-09-26T10:26:45.3062093Z  * [new branch]            industrial-waste/gate-11-spy-combo-readiness -> origin/industrial-waste/gate-11-spy-combo-readiness
+2026-09-26T10:26:45.3063681Z  * [new branch]            industrial-waste/gate-9-monster-tron-readiness -> origin/industrial-waste/gate-9-monster-tron-readiness
+2026-09-26T10:26:45.3064970Z  * [new branch]            industrial-waste/lab -> origin/industrial-waste/lab
+2026-09-26T10:26:45.3066514Z  * [new branch]            industrial-waste/v2-reality-fracture-challengers -> origin/industrial-waste/v2-reality-fracture-challengers
+2026-09-26T10:26:45.3068037Z  * [new branch]            industrial-waste/v2-structural-redesign -> origin/industrial-waste/v2-structural-redesign
+2026-09-26T10:26:45.3069546Z  * [new branch]            izzet-science/twinned-vision-challenger -> origin/izzet-science/twinned-vision-challenger
+2026-09-26T10:26:45.3070904Z  * [new branch]            lilysplash/lab       -> origin/lilysplash/lab
+2026-09-26T10:26:45.3071742Z  * [new branch]            main                 -> origin/main
+2026-09-26T10:26:45.3072921Z  * [new branch]            manual-transmission/emrakul-exigent-doom-challenger -> origin/manual-transmission/emrakul-exigent-doom-challenger
+2026-09-26T10:26:45.3074690Z  * [new branch]            manual-transmission/phase2-cedh -> origin/manual-transmission/phase2-cedh
+2026-09-26T10:26:45.3092086Z  * [new branch]            manual-transmission/phase2-reality-shift -> origin/manual-transmission/phase2-reality-shift
+2026-09-26T10:26:45.3093777Z  * [new branch]            manual-transmission/qualification -> origin/manual-transmission/qualification
+2026-09-26T10:26:45.3095418Z  * [new branch]            mayhem/izzet-baseline-bestow-diagnostic -> origin/mayhem/izzet-baseline-bestow-diagnostic
+2026-09-26T10:26:45.3097081Z  * [new branch]            mayhem/izzet-baseline-control-diagnostic -> origin/mayhem/izzet-baseline-control-diagnostic
+2026-09-26T10:26:45.3098641Z  * [new branch]            mayhem/izzet-bestow-integration -> origin/mayhem/izzet-bestow-integration
+2026-09-26T10:26:45.3099846Z  * [new branch]            mayhem/izzet-science -> origin/mayhem/izzet-science
+2026-09-26T10:26:45.3101471Z  * [new branch]            mayhem/izzet-science-v07-twinned-vision -> origin/mayhem/izzet-science-v07-twinned-vision
+2026-09-26T10:26:45.3103068Z  * [new branch]            mayhem/project-x     -> origin/mayhem/project-x
+2026-09-26T10:26:45.3104756Z  * [new branch]            optimization/experiment-a -> origin/optimization/experiment-a
+2026-09-26T10:26:45.3106375Z  * [new branch]            optimization/experiment-b -> origin/optimization/experiment-b
+2026-09-26T10:26:45.3107890Z  * [new branch]            optimization/experiment-c -> origin/optimization/experiment-c
+2026-09-26T10:26:45.3109313Z  * [new branch]            optimization/experiment-c-replication -> origin/optimization/experiment-c-replication
+2026-09-26T10:26:45.3111037Z  * [new branch]            optimization/experiment-d -> origin/optimization/experiment-d
+2026-09-26T10:26:45.3112294Z  * [new branch]            optimization/experiment-e -> origin/optimization/experiment-e
+2026-09-26T10:26:45.3113730Z  * [new branch]            optimization/experiment-e-results -> origin/optimization/experiment-e-results
+2026-09-26T10:26:45.3115310Z  * [new branch]            optimization/greedy-freebooter-readiness -> origin/optimization/greedy-freebooter-readiness
+2026-09-26T10:26:45.3117237Z  * [new branch]            pest-control/gate3-validation-bridge -> origin/pest-control/gate3-validation-bridge
+2026-09-26T10:26:45.3119309Z  * [new branch]            pest-control/gate4-sideboard-validation-bridge -> origin/pest-control/gate4-sideboard-validation-bridge
+2026-09-26T10:26:45.3121454Z  * [new branch]            pest-control/gate4-validation-bridge -> origin/pest-control/gate4-validation-bridge
+2026-09-26T10:26:45.3123382Z  * [new branch]            pest-control/gate5-block-a-validation-bridge -> origin/pest-control/gate5-block-a-validation-bridge
+2026-09-26T10:26:45.3125214Z  * [new branch]            pest-control/gate6-block-a-execution -> origin/pest-control/gate6-block-a-execution
+2026-09-26T10:26:45.3127222Z  * [new branch]            pest-control/gate6-readiness-validation-bridge -> origin/pest-control/gate6-readiness-validation-bridge
+2026-09-26T10:26:45.3128819Z  * [new branch]            pest-control/lab     -> origin/pest-control/lab
+2026-09-26T10:26:45.3130871Z  * [new branch]            pest-control/official-attempts/monster-tron-smoke-v1 -> origin/pest-control/official-attempts/monster-tron-smoke-v1
+2026-09-26T10:26:45.3133186Z  * [new branch]            pest-control/pass-terminal-validation-bridge -> origin/pest-control/pass-terminal-validation-bridge
+2026-09-26T10:26:45.3135081Z  * [new branch]            pest-control/reality-fracture-challengers -> origin/pest-control/reality-fracture-challengers
+2026-09-26T10:26:45.3137033Z  * [new branch]            pest-control/reality-fracture-medics-kitesail -> origin/pest-control/reality-fracture-medics-kitesail
+2026-09-26T10:26:45.3139184Z  * [new branch]            pest-control/tier-one-grixis-execution-authorization -> origin/pest-control/tier-one-grixis-execution-authorization
+2026-09-26T10:26:45.3141655Z  * [new branch]            pest-control/tier-one-grixis-execution-coordinator -> origin/pest-control/tier-one-grixis-execution-coordinator
+2026-09-26T10:26:45.3144188Z  * [new branch]            pest-control/tier-one-grixis-execution-implementation -> origin/pest-control/tier-one-grixis-execution-implementation
+2026-09-26T10:26:45.3146390Z  * [new branch]            pest-control/tier-one-grixis-execution-preflight-fix -> origin/pest-control/tier-one-grixis-execution-preflight-fix
+2026-09-26T10:26:45.3148587Z  * [new branch]            pest-control/tier-one-grixis-execution-preflight-v3 -> origin/pest-control/tier-one-grixis-execution-preflight-v3
+2026-09-26T10:26:45.3150988Z  * [new branch]            pest-control/tier-one-grixis-execution-preflight-v4 -> origin/pest-control/tier-one-grixis-execution-preflight-v4
+2026-09-26T10:26:45.3153239Z  * [new branch]            pest-control/tier-one-grixis-execution-preflight-v5 -> origin/pest-control/tier-one-grixis-execution-preflight-v5
+2026-09-26T10:26:45.3155404Z  * [new branch]            pest-control/tier-one-grixis-execution-preflight-v6 -> origin/pest-control/tier-one-grixis-execution-preflight-v6
+2026-09-26T10:26:45.3157670Z  * [new branch]            pest-control/tier-one-grixis-final-composed-validation -> origin/pest-control/tier-one-grixis-final-composed-validation
+2026-09-26T10:26:45.3160294Z  * [new branch]            pest-control/tier-one-grixis-official-integration -> origin/pest-control/tier-one-grixis-official-integration
+2026-09-26T10:26:45.3162491Z  * [new branch]            pest-control/tier-one-grixis-one-shot-execution -> origin/pest-control/tier-one-grixis-one-shot-execution
+2026-09-26T10:26:45.3164785Z  * [new branch]            pest-control/tier-one-grixis-production-driver -> origin/pest-control/tier-one-grixis-production-driver
+2026-09-26T10:26:45.3167047Z  * [new branch]            pest-control/tier-one-grixis-replication-artifact-validation -> origin/pest-control/tier-one-grixis-replication-artifact-validation
+2026-09-26T10:26:45.3169608Z  * [new branch]            pest-control/tier-one-grixis-replication-continuation-methodology -> origin/pest-control/tier-one-grixis-replication-continuation-methodology
+2026-09-26T10:26:45.3172665Z  * [new branch]            pest-control/tier-one-grixis-replication-execution-harness -> origin/pest-control/tier-one-grixis-replication-execution-harness
+2026-09-26T10:26:45.3174982Z  * [new branch]            pest-control/tier-one-grixis-replication-freeze-gate -> origin/pest-control/tier-one-grixis-replication-freeze-gate
+2026-09-26T10:26:45.3179837Z  * [new branch]            pest-control/tier-one-grixis-replication-freeze-provenance -> origin/pest-control/tier-one-grixis-replication-freeze-provenance
+2026-09-26T10:26:45.3182570Z  * [new branch]            pest-control/tier-one-grixis-replication-game1-incident -> origin/pest-control/tier-one-grixis-replication-game1-incident
+2026-09-26T10:26:45.3184846Z  * [new branch]            pest-control/tier-one-grixis-replication-initializer-fix -> origin/pest-control/tier-one-grixis-replication-initializer-fix
+2026-09-26T10:26:45.3187224Z  * [new branch]            pest-control/tier-one-grixis-replication-official-execution -> origin/pest-control/tier-one-grixis-replication-official-execution
+2026-09-26T10:26:45.3189724Z  * [new branch]            pest-control/tier-one-grixis-replication-production-freeze -> origin/pest-control/tier-one-grixis-replication-production-freeze
+2026-09-26T10:26:45.3192452Z  * [new branch]            pest-control/tier-one-grixis-salvage-11-artifact-validation -> origin/pest-control/tier-one-grixis-salvage-11-artifact-validation
+2026-09-26T10:26:45.3194570Z  * [new branch]            pest-control/tier-one-grixis-salvage-11-harness -> origin/pest-control/tier-one-grixis-salvage-11-harness
+2026-09-26T10:26:45.3196590Z  * [new branch]            pest-control/tier-one-grixis-salvage-11-official-execution -> origin/pest-control/tier-one-grixis-salvage-11-official-execution
+2026-09-26T10:26:45.3198581Z  * [new branch]            pest-control/tier-one-grixis-salvage-11-result -> origin/pest-control/tier-one-grixis-salvage-11-result
+2026-09-26T10:26:45.3200481Z  * [new branch]            pest-control/tier-one-grixis-smoke-result -> origin/pest-control/tier-one-grixis-smoke-result
+2026-09-26T10:26:45.3202268Z  * [new branch]            pest-control/tier1-grixis-adapter-contract -> origin/pest-control/tier1-grixis-adapter-contract
+2026-09-26T10:26:45.3203815Z  * [new branch]            pest-control/tier1-grixis-artifact-envelope -> origin/pest-control/tier1-grixis-artifact-envelope
+2026-09-26T10:26:45.3205414Z  * [new branch]            pest-control/tier1-grixis-construction-closure -> origin/pest-control/tier1-grixis-construction-closure
+2026-09-26T10:26:45.3207275Z  * [new branch]            pest-control/tier1-grixis-coordinator-ledger -> origin/pest-control/tier1-grixis-coordinator-ledger
+2026-09-26T10:26:45.3208313Z  * [new branch]            pest-control/tier1-grixis-disabled-assignment-schema -> origin/pest-control/tier1-grixis-disabled-assignment-schema
+2026-09-26T10:26:45.3209667Z  * [new branch]            pest-control/tier1-grixis-disabled-durability -> origin/pest-control/tier1-grixis-disabled-durability
+2026-09-26T10:26:45.3211597Z  * [new branch]            pest-control/tier1-grixis-disabled-four-cell-plan -> origin/pest-control/tier1-grixis-disabled-four-cell-plan
+2026-09-26T10:26:45.3213433Z  * [new branch]            pest-control/tier1-grixis-disabled-official-initializer -> origin/pest-control/tier1-grixis-disabled-official-initializer
+2026-09-26T10:26:45.3215436Z  * [new branch]            pest-control/tier1-grixis-disabled-preexecution-manifest -> origin/pest-control/tier1-grixis-disabled-preexecution-manifest
+2026-09-26T10:26:45.3217222Z  * [new branch]            pest-control/tier1-grixis-disabled-runner -> origin/pest-control/tier1-grixis-disabled-runner
+2026-09-26T10:26:45.3218995Z  * [new branch]            pest-control/tier1-grixis-disabled-single-game -> origin/pest-control/tier1-grixis-disabled-single-game
+2026-09-26T10:26:45.3221136Z  * [new branch]            pest-control/tier1-grixis-disabled-synthetic-provenance -> origin/pest-control/tier1-grixis-disabled-synthetic-provenance
+2026-09-26T10:26:45.3223182Z  * [new branch]            pest-control/tier1-grixis-execution-admission -> origin/pest-control/tier1-grixis-execution-admission
+2026-09-26T10:26:45.3224915Z  * [new branch]            pest-control/tier1-grixis-execution-contract -> origin/pest-control/tier1-grixis-execution-contract
+2026-09-26T10:26:45.3226530Z  * [new branch]            pest-control/tier1-grixis-final-readiness -> origin/pest-control/tier1-grixis-final-readiness
+2026-09-26T10:26:45.3228178Z  * [new branch]            pest-control/tier1-grixis-frozen-vector-binding -> origin/pest-control/tier1-grixis-frozen-vector-binding
+2026-09-26T10:26:45.3229886Z  * [new branch]            pest-control/tier1-grixis-initializer-contract -> origin/pest-control/tier1-grixis-initializer-contract
+2026-09-26T10:26:45.3231917Z  * [new branch]            pest-control/tier1-grixis-official-init-boundary -> origin/pest-control/tier1-grixis-official-init-boundary
+2026-09-26T10:26:45.3233632Z  * [new branch]            pest-control/tier1-grixis-official-loader -> origin/pest-control/tier1-grixis-official-loader
+2026-09-26T10:26:45.3235169Z  * [new branch]            pest-control/tier1-grixis-official-loader-provenance -> origin/pest-control/tier1-grixis-official-loader-provenance
+2026-09-26T10:26:45.3236232Z  * [new branch]            pest-control/tier1-grixis-opaque-execution-plan -> origin/pest-control/tier1-grixis-opaque-execution-plan
+2026-09-26T10:26:45.3237150Z  * [new branch]            pest-control/tier1-grixis-private-parser -> origin/pest-control/tier1-grixis-private-parser
+2026-09-26T10:26:45.3238316Z  * [new branch]            pest-control/tier1-grixis-readiness -> origin/pest-control/tier1-grixis-readiness
+2026-09-26T10:26:45.3239560Z  * [new branch]            pest-control/tier1-grixis-runner-surface-preflight -> origin/pest-control/tier1-grixis-runner-surface-preflight
+2026-09-26T10:26:45.3240844Z  * [new branch]            pest-control/tier1-grixis-smoke-harness -> origin/pest-control/tier1-grixis-smoke-harness
+2026-09-26T10:26:45.3242276Z  * [new branch]            pest-control/tier1-grixis-turn-zero-preflight -> origin/pest-control/tier1-grixis-turn-zero-preflight
+2026-09-26T10:26:45.3243831Z  * [new branch]            pest-control/tier1-grixis-vector-freeze -> origin/pest-control/tier1-grixis-vector-freeze
+2026-09-26T10:26:45.3245331Z  * [new branch]            pest-control/tier1-grixis-vector-provenance -> origin/pest-control/tier1-grixis-vector-provenance
+2026-09-26T10:26:45.3247030Z  * [new branch]            pest-control/tier1-mono-blue-terror-ack-normalization -> origin/pest-control/tier1-mono-blue-terror-ack-normalization
+2026-09-26T10:26:45.3248893Z  * [new branch]            pest-control/tier1-mono-blue-terror-adapter-contract -> origin/pest-control/tier1-mono-blue-terror-adapter-contract
+2026-09-26T10:26:45.3250983Z  * [new branch]            pest-control/tier1-mono-blue-terror-assignment-journal -> origin/pest-control/tier1-mono-blue-terror-assignment-journal
+2026-09-26T10:26:45.3252971Z  * [new branch]            pest-control/tier1-mono-blue-terror-authorized-initializer -> origin/pest-control/tier1-mono-blue-terror-authorized-initializer
+2026-09-26T10:26:45.3254890Z  * [new branch]            pest-control/tier1-mono-blue-terror-auto-execution -> origin/pest-control/tier1-mono-blue-terror-auto-execution
+2026-09-26T10:26:45.3256667Z  * [new branch]            pest-control/tier1-mono-blue-terror-automatic-freeze -> origin/pest-control/tier1-mono-blue-terror-automatic-freeze
+2026-09-26T10:26:45.3258437Z  * [new branch]            pest-control/tier1-mono-blue-terror-card-support-a -> origin/pest-control/tier1-mono-blue-terror-card-support-a
+2026-09-26T10:26:45.3260459Z  * [new branch]            pest-control/tier1-mono-blue-terror-composed-validation -> origin/pest-control/tier1-mono-blue-terror-composed-validation
+2026-09-26T10:26:45.3262420Z  * [new branch]            pest-control/tier1-mono-blue-terror-construction-closure -> origin/pest-control/tier1-mono-blue-terror-construction-closure
+2026-09-26T10:26:45.3264552Z  * [new branch]            pest-control/tier1-mono-blue-terror-coordinator-ledger -> origin/pest-control/tier1-mono-blue-terror-coordinator-ledger
+2026-09-26T10:26:45.3266621Z  * [new branch]            pest-control/tier1-mono-blue-terror-disabled-assignment-schema -> origin/pest-control/tier1-mono-blue-terror-disabled-assignment-schema
+2026-09-26T10:26:45.3268737Z  * [new branch]            pest-control/tier1-mono-blue-terror-disabled-four-cell-plan -> origin/pest-control/tier1-mono-blue-terror-disabled-four-cell-plan
+2026-09-26T10:26:45.3271622Z  * [new branch]            pest-control/tier1-mono-blue-terror-disabled-official-initializer -> origin/pest-control/tier1-mono-blue-terror-disabled-official-initializer
+2026-09-26T10:26:45.3273976Z  * [new branch]            pest-control/tier1-mono-blue-terror-disabled-preexecution-manifest -> origin/pest-control/tier1-mono-blue-terror-disabled-preexecution-manifest
+2026-09-26T10:26:45.3276110Z  * [new branch]            pest-control/tier1-mono-blue-terror-disabled-single-game -> origin/pest-control/tier1-mono-blue-terror-disabled-single-game
+2026-09-26T10:26:45.3278319Z  * [new branch]            pest-control/tier1-mono-blue-terror-disabled-synthetic-provenance -> origin/pest-control/tier1-mono-blue-terror-disabled-synthetic-provenance
+2026-09-26T10:26:45.3280566Z  * [new branch]            pest-control/tier1-mono-blue-terror-dispatch-guard-v2 -> origin/pest-control/tier1-mono-blue-terror-dispatch-guard-v2
+2026-09-26T10:26:45.3282436Z  * [new branch]            pest-control/tier1-mono-blue-terror-dispatch-order-fix -> origin/pest-control/tier1-mono-blue-terror-dispatch-order-fix
+2026-09-26T10:26:45.3284468Z  * [new branch]            pest-control/tier1-mono-blue-terror-engine-evidence-rehearsal -> origin/pest-control/tier1-mono-blue-terror-engine-evidence-rehearsal
+2026-09-26T10:26:45.3286418Z  * [new branch]            pest-control/tier1-mono-blue-terror-escape-support -> origin/pest-control/tier1-mono-blue-terror-escape-support
+2026-09-26T10:26:45.3288604Z  * [new branch]            pest-control/tier1-mono-blue-terror-execution-authorization -> origin/pest-control/tier1-mono-blue-terror-execution-authorization
+2026-09-26T10:26:45.3290840Z  * [new branch]            pest-control/tier1-mono-blue-terror-execution-contract -> origin/pest-control/tier1-mono-blue-terror-execution-contract
+2026-09-26T10:26:45.3292815Z  * [new branch]            pest-control/tier1-mono-blue-terror-execution-coordinator -> origin/pest-control/tier1-mono-blue-terror-execution-coordinator
+2026-09-26T10:26:45.3294726Z  * [new branch]            pest-control/tier1-mono-blue-terror-freeze-guard-fix -> origin/pest-control/tier1-mono-blue-terror-freeze-guard-fix
+2026-09-26T10:26:45.3296693Z  * [new branch]            pest-control/tier1-mono-blue-terror-frozen-artifact-binding -> origin/pest-control/tier1-mono-blue-terror-frozen-artifact-binding
+2026-09-26T10:26:45.3298708Z  * [new branch]            pest-control/tier1-mono-blue-terror-initializer-contract -> origin/pest-control/tier1-mono-blue-terror-initializer-contract
+2026-09-26T10:26:45.3300927Z  * [new branch]            pest-control/tier1-mono-blue-terror-official-init-boundary -> origin/pest-control/tier1-mono-blue-terror-official-init-boundary
+2026-09-26T10:26:45.3302896Z  * [new branch]            pest-control/tier1-mono-blue-terror-policy-calibration -> origin/pest-control/tier1-mono-blue-terror-policy-calibration
+2026-09-26T10:26:45.3304760Z  * [new branch]            pest-control/tier1-mono-blue-terror-production-driver -> origin/pest-control/tier1-mono-blue-terror-production-driver
+2026-09-26T10:26:45.3306483Z  * [new branch]            pest-control/tier1-mono-blue-terror-readiness -> origin/pest-control/tier1-mono-blue-terror-readiness
+2026-09-26T10:26:45.3308377Z  * [new branch]            pest-control/tier1-mono-blue-terror-replication-auto-execution -> origin/pest-control/tier1-mono-blue-terror-replication-auto-execution
+2026-09-26T10:26:45.3310714Z  * [new branch]            pest-control/tier1-mono-blue-terror-replication-auto-freeze -> origin/pest-control/tier1-mono-blue-terror-replication-auto-freeze
+2026-09-26T10:26:45.3313225Z  * [new branch]            pest-control/tier1-mono-blue-terror-replication-execution-authorization -> origin/pest-control/tier1-mono-blue-terror-replication-execution-authorization
+2026-09-26T10:26:45.3315600Z  * [new branch]            pest-control/tier1-mono-blue-terror-replication-execution-stack -> origin/pest-control/tier1-mono-blue-terror-replication-execution-stack
+2026-09-26T10:26:45.3317732Z  * [new branch]            pest-control/tier1-mono-blue-terror-replication-freeze-gate -> origin/pest-control/tier1-mono-blue-terror-replication-freeze-gate
+2026-09-26T10:26:45.3319903Z  * [new branch]            pest-control/tier1-mono-blue-terror-replication-freeze-provenance -> origin/pest-control/tier1-mono-blue-terror-replication-freeze-provenance
+2026-09-26T10:26:45.3322428Z  * [new branch]            pest-control/tier1-mono-blue-terror-replication-harness-validation -> origin/pest-control/tier1-mono-blue-terror-replication-harness-validation
+2026-09-26T10:26:45.3324569Z  * [new branch]            pest-control/tier1-mono-blue-terror-replication-result -> origin/pest-control/tier1-mono-blue-terror-replication-result
+2026-09-26T10:26:45.3326571Z  * [new branch]            pest-control/tier1-mono-blue-terror-runner-surface-preflight -> origin/pest-control/tier1-mono-blue-terror-runner-surface-preflight
+2026-09-26T10:26:45.3328482Z  * [new branch]            pest-control/tier1-mono-blue-terror-smoke-harness -> origin/pest-control/tier1-mono-blue-terror-smoke-harness
+2026-09-26T10:26:45.3330423Z  * [new branch]            pest-control/tier1-mono-blue-terror-smoke-result -> origin/pest-control/tier1-mono-blue-terror-smoke-result
+2026-09-26T10:26:45.3332268Z  * [new branch]            pest-control/tier1-mono-blue-terror-turn-zero-preflight -> origin/pest-control/tier1-mono-blue-terror-turn-zero-preflight
+2026-09-26T10:26:45.3334121Z  * [new branch]            pest-control/tier1-mono-blue-terror-vector-freeze -> origin/pest-control/tier1-mono-blue-terror-vector-freeze
+2026-09-26T10:26:45.3336142Z  * [new branch]            pest-control/tier1-mono-blue-terror-vector-provenance -> origin/pest-control/tier1-mono-blue-terror-vector-provenance
+2026-09-26T10:26:45.3337836Z  * [new branch]            pest-control/tier1-monster-tron-admission -> origin/pest-control/tier1-monster-tron-admission
+2026-09-26T10:26:45.3339291Z  * [new branch]            pest-control/tier1-monster-tron-cascade -> origin/pest-control/tier1-monster-tron-cascade
+2026-09-26T10:26:45.3341082Z  * [new branch]            pest-control/tier1-monster-tron-cascade-readiness -> origin/pest-control/tier1-monster-tron-cascade-readiness
+2026-09-26T10:26:45.3342788Z  * [new branch]            pest-control/tier1-monster-tron-command-repair -> origin/pest-control/tier1-monster-tron-command-repair
+2026-09-26T10:26:45.3344575Z  * [new branch]            pest-control/tier1-monster-tron-execution-authorization -> origin/pest-control/tier1-monster-tron-execution-authorization
+2026-09-26T10:26:45.3346382Z  * [new branch]            pest-control/tier1-monster-tron-official-smoke -> origin/pest-control/tier1-monster-tron-official-smoke
+2026-09-26T10:26:45.3348133Z  * [new branch]            pest-control/tier1-monster-tron-one-shot-construction -> origin/pest-control/tier1-monster-tron-one-shot-construction
+2026-09-26T10:26:45.3349940Z  * [new branch]            pest-control/tier1-monster-tron-operational-stack -> origin/pest-control/tier1-monster-tron-operational-stack
+2026-09-26T10:26:45.3351714Z  * [new branch]            pest-control/tier1-monster-tron-policy -> origin/pest-control/tier1-monster-tron-policy
+2026-09-26T10:26:45.3353184Z  * [new branch]            pest-control/tier1-monster-tron-prototype -> origin/pest-control/tier1-monster-tron-prototype
+2026-09-26T10:26:45.3354683Z  * [new branch]            pest-control/tier1-monster-tron-readiness -> origin/pest-control/tier1-monster-tron-readiness
+2026-09-26T10:26:45.3356308Z  * [new branch]            pest-control/tier1-monster-tron-runner-construction -> origin/pest-control/tier1-monster-tron-runner-construction
+2026-09-26T10:26:45.3358268Z  * [new branch]            pest-control/tier1-monster-tron-runner-preflight -> origin/pest-control/tier1-monster-tron-runner-preflight
+2026-09-26T10:26:45.3359927Z  * [new branch]            pest-control/tier1-monster-tron-smoke-freeze -> origin/pest-control/tier1-monster-tron-smoke-freeze
+2026-09-26T10:26:45.3361945Z  * [new branch]            pest-control/tier1-monster-tron-smoke-production-freeze -> origin/pest-control/tier1-monster-tron-smoke-production-freeze
+2026-09-26T10:26:45.3363625Z  * [new branch]            pest-control/tier1-monster-tron-support -> origin/pest-control/tier1-monster-tron-support
+2026-09-26T10:26:45.3365119Z  * [new branch]            pest-control/tier1-postboard-support-audit -> origin/pest-control/tier1-postboard-support-audit
+2026-09-26T10:26:45.3366678Z  * [new branch]            pest-control/tier1-postboard-support-batch-a -> origin/pest-control/tier1-postboard-support-batch-a
+2026-09-26T10:26:45.3368293Z  * [new branch]            pest-control/tier1-postboard-support-batch-b -> origin/pest-control/tier1-postboard-support-batch-b
+2026-09-26T10:26:45.3370191Z  * [new branch]            pest-control/tier1-postboard-support-faerie-macabre -> origin/pest-control/tier1-postboard-support-faerie-macabre
+2026-09-26T10:26:45.3372002Z  * [new branch]            pest-control/tier1-postboard-support-flaring-pain -> origin/pest-control/tier1-postboard-support-flaring-pain
+2026-09-26T10:26:45.3373796Z  * [new branch]            pest-control/tier1-postboard-support-jack-o-lantern -> origin/pest-control/tier1-postboard-support-jack-o-lantern
+2026-09-26T10:26:45.3375591Z  * [new branch]            pest-control/tier1-postboard-support-kaerveks-torch -> origin/pest-control/tier1-postboard-support-kaerveks-torch
+2026-09-26T10:26:45.3377261Z  * [new branch]            pest-control/tier1-postboard-support-relic -> origin/pest-control/tier1-postboard-support-relic
+2026-09-26T10:26:45.3379240Z  * [new branch]            pest-control/tier1-postboard-support-spreading-seas -> origin/pest-control/tier1-postboard-support-spreading-seas
+2026-09-26T10:26:45.3381113Z  * [new branch]            pest-control/tier1-priority-evidence-audit -> origin/pest-control/tier1-priority-evidence-audit
+2026-09-26T10:26:45.3382495Z  * [new branch]            pest-control/tier1-spy-admission -> origin/pest-control/tier1-spy-admission
+2026-09-26T10:26:45.3383688Z  * [new branch]            pest-control/tier1-spy-policy -> origin/pest-control/tier1-spy-policy
+2026-09-26T10:26:45.3384968Z  * [new branch]            pest-control/tier1-spy-support-batch-a -> origin/pest-control/tier1-spy-support-batch-a
+2026-09-26T10:26:45.3386379Z  * [new branch]            pest-control/tier1-spy-support-batch-b -> origin/pest-control/tier1-spy-support-batch-b
+2026-09-26T10:26:45.3387770Z  * [new branch]            pest-control/tier1-spy-support-batch-c -> origin/pest-control/tier1-spy-support-batch-c
+2026-09-26T10:26:45.3389290Z  * [new branch]            pest-control/tier1-terror-simple-card-support -> origin/pest-control/tier1-terror-simple-card-support
+2026-09-26T10:26:45.3390914Z  * [new branch]            pest-control/v2-acceptance-audit -> origin/pest-control/v2-acceptance-audit
+2026-09-26T10:26:45.3392090Z  * [new branch]            pest-control/v2-calibration -> origin/pest-control/v2-calibration
+2026-09-26T10:26:45.3393243Z  * [new branch]            pest-control/v2-official-results -> origin/pest-control/v2-official-results
+2026-09-26T10:26:45.3394582Z  * [new branch]            pest-control/v2-qualification-acceptance -> origin/pest-control/v2-qualification-acceptance
+2026-09-26T10:26:45.3396104Z  * [new branch]            pest-control/v2-qualification-authorization -> origin/pest-control/v2-qualification-authorization
+2026-09-26T10:26:45.3397627Z  * [new branch]            pest-control/v2-qualification-coordinator -> origin/pest-control/v2-qualification-coordinator
+2026-09-26T10:26:45.3399270Z  * [new branch]            pest-control/v2-qualification-execution-harness -> origin/pest-control/v2-qualification-execution-harness
+2026-09-26T10:26:45.3401253Z  * [new branch]            pest-control/v2-qualification-freeze -> origin/pest-control/v2-qualification-freeze
+2026-09-26T10:26:45.3402805Z  * [new branch]            pest-control/v2-qualification-freeze-provenance -> origin/pest-control/v2-qualification-freeze-provenance
+2026-09-26T10:26:45.3404321Z  * [new branch]            pest-control/v2-qualification-harness -> origin/pest-control/v2-qualification-harness
+2026-09-26T10:26:45.3405684Z  * [new branch]            pest-control/v2-qualification-runner -> origin/pest-control/v2-qualification-runner
+2026-09-26T10:26:45.3407029Z  * [new branch]            smoke/experimental-preboard-100-v1 -> origin/smoke/experimental-preboard-100-v1
+2026-09-26T10:26:45.3408358Z  * [new branch]            smoke/experimental-preboard-100-v2 -> origin/smoke/experimental-preboard-100-v2
+2026-09-26T10:26:45.3409621Z  * [new branch]            smoke/fresh-preboard-10-20260909 -> origin/smoke/fresh-preboard-10-20260909
+2026-09-26T10:26:45.3411346Z  * [new branch]            smoke/frozen-ten-damage-trigger-replay-20260909 -> origin/smoke/frozen-ten-damage-trigger-replay-20260909
+2026-09-26T10:26:45.3412978Z  * [new branch]            smoke/frozen-ten-telemetry-replay-20260909 -> origin/smoke/frozen-ten-telemetry-replay-20260909
+2026-09-26T10:26:45.3414467Z  * [new branch]            sphinx-approach/reconstruction-stage-e -> origin/sphinx-approach/reconstruction-stage-e
+2026-09-26T10:26:45.3417171Z [command]/usr/bin/git rev-parse --verify --quiet 2a99c52bcfb869ecc0c32443c2b77765abde4b65^{object}
+2026-09-26T10:26:45.3418112Z 2a99c52bcfb869ecc0c32443c2b77765abde4b65
+2026-09-26T10:26:45.3419570Z ##[endgroup]
+2026-09-26T10:26:45.3420492Z ##[group]Determining the checkout info
+2026-09-26T10:26:45.3421320Z ##[endgroup]
+2026-09-26T10:26:45.3421824Z [command]/usr/bin/git sparse-checkout disable
+2026-09-26T10:26:45.3423211Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-09-26T10:26:45.3425172Z ##[group]Checking out the ref
+2026-09-26T10:26:45.3426096Z [command]/usr/bin/git checkout --progress --force 2a99c52bcfb869ecc0c32443c2b77765abde4b65
+2026-09-26T10:26:46.3613442Z Updating files:  49% (14155/28473)
+2026-09-26T10:26:46.3740470Z Updating files:  50% (14237/28473)
+2026-09-26T10:26:46.3882868Z Updating files:  51% (14522/28473)
+2026-09-26T10:26:46.4003427Z Updating files:  52% (14806/28473)
+2026-09-26T10:26:46.4120442Z Updating files:  53% (15091/28473)
+2026-09-26T10:26:46.4239308Z Updating files:  54% (15376/28473)
+2026-09-26T10:26:46.4358127Z Updating files:  55% (15661/28473)
+2026-09-26T10:26:46.4479158Z Updating files:  56% (15945/28473)
+2026-09-26T10:26:46.4597393Z Updating files:  57% (16230/28473)
+2026-09-26T10:26:46.4723155Z Updating files:  58% (16515/28473)
+2026-09-26T10:26:46.4861116Z Updating files:  59% (16800/28473)
+2026-09-26T10:26:46.4997250Z Updating files:  60% (17084/28473)
+2026-09-26T10:26:46.5167577Z Updating files:  61% (17369/28473)
+2026-09-26T10:26:46.5329884Z Updating files:  62% (17654/28473)
+2026-09-26T10:26:46.5484279Z Updating files:  63% (17938/28473)
+2026-09-26T10:26:46.5624549Z Updating files:  64% (18223/28473)
+2026-09-26T10:26:46.5794737Z Updating files:  65% (18508/28473)
+2026-09-26T10:26:46.5975633Z Updating files:  66% (18793/28473)
+2026-09-26T10:26:46.6138189Z Updating files:  67% (19077/28473)
+2026-09-26T10:26:46.6273142Z Updating files:  68% (19362/28473)
+2026-09-26T10:26:46.6418880Z Updating files:  69% (19647/28473)
+2026-09-26T10:26:46.6581771Z Updating files:  70% (19932/28473)
+2026-09-26T10:26:46.6712642Z Updating files:  71% (20216/28473)
+2026-09-26T10:26:46.6869819Z Updating files:  72% (20501/28473)
+2026-09-26T10:26:46.7028110Z Updating files:  73% (20786/28473)
+2026-09-26T10:26:46.7209702Z Updating files:  74% (21071/28473)
+2026-09-26T10:26:46.7381181Z Updating files:  75% (21355/28473)
+2026-09-26T10:26:46.7542379Z Updating files:  76% (21640/28473)
+2026-09-26T10:26:46.7686698Z Updating files:  77% (21925/28473)
+2026-09-26T10:26:46.7835814Z Updating files:  78% (22209/28473)
+2026-09-26T10:26:46.7963054Z Updating files:  79% (22494/28473)
+2026-09-26T10:26:46.8100793Z Updating files:  80% (22779/28473)
+2026-09-26T10:26:46.8245071Z Updating files:  81% (23064/28473)
+2026-09-26T10:26:46.8392603Z Updating files:  82% (23348/28473)
+2026-09-26T10:26:46.8570818Z Updating files:  83% (23633/28473)
+2026-09-26T10:26:46.8742085Z Updating files:  84% (23918/28473)
+2026-09-26T10:26:46.8891251Z Updating files:  85% (24203/28473)
+2026-09-26T10:26:46.9032952Z Updating files:  86% (24487/28473)
+2026-09-26T10:26:46.9189557Z Updating files:  87% (24772/28473)
+2026-09-26T10:26:46.9333195Z Updating files:  88% (25057/28473)
+2026-09-26T10:26:46.9506118Z Updating files:  89% (25341/28473)
+2026-09-26T10:26:46.9675823Z Updating files:  90% (25626/28473)
+2026-09-26T10:26:47.0995160Z Updating files:  91% (25911/28473)
+2026-09-26T10:26:47.1703654Z Updating files:  92% (26196/28473)
+2026-09-26T10:26:47.1924683Z Updating files:  93% (26480/28473)
+2026-09-26T10:26:47.2175896Z Updating files:  94% (26765/28473)
+2026-09-26T10:26:47.2402425Z Updating files:  95% (27050/28473)
+2026-09-26T10:26:47.2620687Z Updating files:  96% (27335/28473)
+2026-09-26T10:26:47.2820965Z Updating files:  97% (27619/28473)
+2026-09-26T10:26:47.3586852Z Updating files:  98% (27904/28473)
+2026-09-26T10:26:47.3645382Z Updating files:  98% (28133/28473)
+2026-09-26T10:26:47.3889807Z Updating files:  99% (28189/28473)
+2026-09-26T10:26:47.3892859Z Updating files: 100% (28473/28473)
+2026-09-26T10:26:47.3893357Z Updating files: 100% (28473/28473), done.
+2026-09-26T10:26:47.4279803Z Note: switching to '2a99c52bcfb869ecc0c32443c2b77765abde4b65'.
+2026-09-26T10:26:47.4280534Z 
+2026-09-26T10:26:47.4280813Z You are in 'detached HEAD' state. You can look around, make experimental
+2026-09-26T10:26:47.4281423Z changes and commit them, and you can discard any commits you make in this
+2026-09-26T10:26:47.4282119Z state without impacting any branches by switching back to a branch.
+2026-09-26T10:26:47.4282701Z 
+2026-09-26T10:26:47.4282931Z If you want to create a new branch to retain commits you create, you may
+2026-09-26T10:26:47.4283471Z do so (now or later) by using -c with the switch command. Example:
+2026-09-26T10:26:47.4283782Z 
+2026-09-26T10:26:47.4283901Z   git switch -c <new-branch-name>
+2026-09-26T10:26:47.4284105Z 
+2026-09-26T10:26:47.4284216Z Or undo this operation with:
+2026-09-26T10:26:47.4284403Z 
+2026-09-26T10:26:47.4284503Z   git switch -
+2026-09-26T10:26:47.4284637Z 
+2026-09-26T10:26:47.4284882Z Turn off this advice by setting config variable advice.detachedHead to false
+2026-09-26T10:26:47.4285242Z 
+2026-09-26T10:26:47.4285633Z HEAD is now at 2a99c52bcf Preserve Ferocity qualification failures, freshness correction, and replay evidence
+2026-09-26T10:26:47.4393128Z ##[endgroup]
+2026-09-26T10:26:47.4446022Z [command]/usr/bin/git log -1 --format=%H
+2026-09-26T10:26:47.4478795Z 2a99c52bcfb869ecc0c32443c2b77765abde4b65
+2026-09-26T10:26:47.4720587Z ##[group]Run python - <<'PY'
+2026-09-26T10:26:47.4721048Z [36;1mpython - <<'PY'[0m
+2026-09-26T10:26:47.4721397Z [36;1mimport datetime, json, os, pathlib, subprocess[0m
+2026-09-26T10:26:47.4721829Z [36;1mout = pathlib.Path('build/reports/ferocity-recycling')[0m
+2026-09-26T10:26:47.4722199Z [36;1mout.mkdir(parents=True)[0m
+2026-09-26T10:26:47.4722459Z [36;1mrecord = {[0m
+2026-09-26T10:26:47.4722741Z [36;1m    'schema': 'ferocity-recycling-ci-setup-v1',[0m
+2026-09-26T10:26:47.4723251Z [36;1m    'source_head': subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip(),[0m
+2026-09-26T10:26:47.4723748Z [36;1m    'run_id': os.environ['GITHUB_RUN_ID'],[0m
+2026-09-26T10:26:47.4724126Z [36;1m    'run_attempt': os.environ['GITHUB_RUN_ATTEMPT'],[0m
+2026-09-26T10:26:47.4724497Z [36;1m    'event': os.environ['GITHUB_EVENT_NAME'],[0m
+2026-09-26T10:26:47.4724853Z [36;1m    'runner_image_os': os.environ.get('ImageOS'),[0m
+2026-09-26T10:26:47.4725286Z [36;1m    'runner_image_version': os.environ.get('ImageVersion'),[0m
+2026-09-26T10:26:47.4725687Z [36;1m    'runner_arch': os.environ.get('RUNNER_ARCH'),[0m
+2026-09-26T10:26:47.4726140Z [36;1m    'started_at_utc': datetime.datetime.now(datetime.timezone.utc).isoformat(),[0m
+2026-09-26T10:26:47.4726615Z [36;1m    'scope': 'DETERMINISTIC_QUALIFICATION_ONLY',[0m
+2026-09-26T10:26:47.4726950Z [36;1m    'suite': 'canonical-support',[0m
+2026-09-26T10:26:47.4727402Z [36;1m    'interactive_development_games': 0, 'evaluation_games': 0, 'confirmation_games': 0,[0m
+2026-09-26T10:26:47.4727846Z [36;1m}[0m
+2026-09-26T10:26:47.4728193Z [36;1m(out / 'setup-provenance.json').write_text(json.dumps(record, indent=2) + '\n')[0m
+2026-09-26T10:26:47.4728607Z [36;1mPY[0m
+2026-09-26T10:26:47.5048422Z shell: /usr/bin/bash -e {0}
+2026-09-26T10:26:47.5048738Z ##[endgroup]
+2026-09-26T10:26:47.5535392Z ##[group]Run set -euo pipefail
+2026-09-26T10:26:47.5535764Z [36;1mset -euo pipefail[0m
+2026-09-26T10:26:47.5536065Z [36;1mmkdir -p "$RUNNER_TEMP/ferocity-tools"[0m
+2026-09-26T10:26:47.5536439Z [36;1mcurl --fail --location --max-time 180 \[0m
+2026-09-26T10:26:47.5536846Z [36;1m  --output "$RUNNER_TEMP/ferocity-tools/temurin-jdk.tar.gz" \[0m
+2026-09-26T10:26:47.5537630Z [36;1m  https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.12.1%2B1/OpenJDK21U-jdk_x64_linux_hotspot_21.0.12.1_1.tar.gz[0m
+2026-09-26T10:26:47.5538663Z [36;1mecho 'ce79869e1307ed8ee1e2baa86a412b1eb5b75d10a01006d788a6f968bcfaee94  '"$RUNNER_TEMP/ferocity-tools/temurin-jdk.tar.gz" | sha256sum --check[0m
+2026-09-26T10:26:47.5539536Z [36;1mtar -xzf "$RUNNER_TEMP/ferocity-tools/temurin-jdk.tar.gz" -C "$RUNNER_TEMP/ferocity-tools"[0m
+2026-09-26T10:26:47.5540443Z [36;1mecho "JAVA_HOME=$RUNNER_TEMP/ferocity-tools/jdk-21.0.12.1+1" >> "$GITHUB_ENV"[0m
+2026-09-26T10:26:47.5541040Z [36;1mecho "$RUNNER_TEMP/ferocity-tools/jdk-21.0.12.1+1/bin" >> "$GITHUB_PATH"[0m
+2026-09-26T10:26:47.5541547Z [36;1m"$RUNNER_TEMP/ferocity-tools/jdk-21.0.12.1+1/bin/java" -version[0m
+2026-09-26T10:26:47.5542106Z [36;1mpython - <<'PY'[0m
+2026-09-26T10:26:47.5542352Z [36;1mimport json, pathlib[0m
+2026-09-26T10:26:47.5542822Z [36;1mpathlib.Path('build/reports/ferocity-recycling/jdk-provenance.json').write_text(json.dumps({[0m
+2026-09-26T10:26:47.5543409Z [36;1m    'distribution': 'Eclipse Temurin', 'version': '21.0.12.1+1',[0m
+2026-09-26T10:26:47.5544207Z [36;1m    'archive_url': 'https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.12.1%2B1/OpenJDK21U-jdk_x64_linux_hotspot_21.0.12.1_1.tar.gz',[0m
+2026-09-26T10:26:47.5545157Z [36;1m    'verified_archive_sha256': 'ce79869e1307ed8ee1e2baa86a412b1eb5b75d10a01006d788a6f968bcfaee94',[0m
+2026-09-26T10:26:47.5545710Z [36;1m    'installation_status': 'VERIFIED_AND_EXECUTED',[0m
+2026-09-26T10:26:47.5546038Z [36;1m}, indent=2) + '\n')[0m
+2026-09-26T10:26:47.5546273Z [36;1mPY[0m
+2026-09-26T10:26:47.5612691Z shell: /usr/bin/bash -e {0}
+2026-09-26T10:26:47.5612964Z ##[endgroup]
+2026-09-26T10:26:47.5795776Z   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+2026-09-26T10:26:47.5796599Z                                  Dload  Upload   Total   Spent    Left  Speed
+2026-09-26T10:26:47.5797079Z 
+2026-09-26T10:26:47.6410688Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+2026-09-26T10:26:47.6411404Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+2026-09-26T10:26:47.6830498Z 
+2026-09-26T10:26:48.3429809Z   0  197M    0 1349k    0     0  12.7M      0  0:00:15 --:--:--  0:00:15 12.7M
+2026-09-26T10:26:48.3430749Z 100  197M  100  197M    0     0   259M      0 --:--:-- --:--:-- --:--:--  298M
+2026-09-26T10:26:48.5003179Z /home/runner/work/_temp/ferocity-tools/temurin-jdk.tar.gz: OK
+2026-09-26T10:26:50.8616632Z openjdk version "21.0.12.1" 2026-08-18 LTS
+2026-09-26T10:26:50.8622050Z OpenJDK Runtime Environment Temurin-21.0.12.1+1 (build 21.0.12.1+1-LTS)
+2026-09-26T10:26:50.8623025Z OpenJDK 64-Bit Server VM Temurin-21.0.12.1+1 (build 21.0.12.1+1-LTS, mixed mode, sharing)
+2026-09-26T10:26:50.9205594Z ##[group]Run gradle/actions/setup-gradle@v6
+2026-09-26T10:26:50.9205934Z with:
+2026-09-26T10:26:50.9206161Z   cache-provider: enhanced
+2026-09-26T10:26:50.9206414Z   cache-disabled: false
+2026-09-26T10:26:50.9206651Z   cache-read-only: true
+2026-09-26T10:26:50.9206889Z   cache-write-only: false
+2026-09-26T10:26:50.9207143Z   cache-overwrite-existing: false
+2026-09-26T10:26:50.9207424Z   cache-cleanup: on-success
+2026-09-26T10:26:50.9207728Z   gradle-home-cache-includes: caches
+notifications
+
+2026-09-26T10:26:50.9208066Z   add-job-summary: always
+2026-09-26T10:26:50.9208327Z   add-job-summary-as-pr-comment: never
+2026-09-26T10:26:50.9208619Z   dependency-graph: disabled
+2026-09-26T10:26:50.9208935Z   dependency-graph-report-dir: dependency-graph-reports
+2026-09-26T10:26:50.9209307Z   dependency-graph-continue-on-failure: true
+2026-09-26T10:26:50.9209619Z   build-scan-publish: false
+2026-09-26T10:26:50.9209870Z   validate-wrappers: true
+2026-09-26T10:26:50.9210518Z   allow-snapshot-wrappers: false
+2026-09-26T10:26:50.9210827Z   gradle-home-cache-strict-match: false
+2026-09-26T10:26:50.9212131Z   workflow-job-context: {
+  "suite": "canonical-support",
+  "classes": "CryptRatsScenarioTest GlintHawkScenarioTest KorSkyfisherScenarioTest JourneyToNowhereScenarioTest WitchsCottageScenarioTest BonePickerScenarioTest CutDownScenarioTest DefileScenarioTest EvisceratorsInsightScenarioTest DispatchScenarioTest"
+}
+2026-09-26T10:26:50.9215883Z   github-token: ***
+2026-09-26T10:26:50.9216118Z env:
+2026-09-26T10:26:50.9216427Z   JAVA_HOME: /home/runner/work/_temp/ferocity-tools/jdk-21.0.12.1+1
+2026-09-26T10:26:50.9216792Z ##[endgroup]
+2026-09-26T10:26:51.3581562Z Wrote default JDK locations to /home/runner/.m2/toolchains.xml
+2026-09-26T10:26:51.3592185Z Enhanced Caching: This build is using the proprietary 'gradle-actions-caching' provider for optimized caching support. See https://github.com/gradle/actions/blob/main/DISTRIBUTION.md for terms of use and opt-out instructions.
+2026-09-26T10:26:51.4593903Z ##[group]Restore Gradle state from cache
+2026-09-26T10:26:51.7155365Z Cache hit for restore-key: gradle-home-v2|Linux-X64|test[a7652eeb27038373de7edb820b63f121]-d0c78bb4cca79b7402ba65bd62b5cb621230a054
+2026-09-26T10:26:52.6860922Z Received 646996 of 646996 (100.0%), 0.9 MBs/sec
+2026-09-26T10:26:52.6861667Z Cache Size: ~1 MB (646996 B)
+2026-09-26T10:26:52.7046146Z [command]/usr/bin/tar -xf /home/runner/work/_temp/f7ce99d1-f3ef-4b20-8c33-b355588069b0/cache.tzst -P -C /home/runner/work/argentum-batshit-test/argentum-batshit-test --use-compress-program unzstd
+2026-09-26T10:26:52.8149026Z Cache restored successfully
+2026-09-26T10:26:52.8153574Z Restored cache entry with key gradle-home-v2|Linux-X64|deterministic[14f40e3f555cb8d67a41439efed6354a]-9b7330192a42ea274ed81cdaedce80cfa2f80a4e in 1355ms
+2026-09-26T10:26:53.0649339Z Cache hit for: gradle-generated-gradle-jars-v2-aab574994eb421acff6809687eadd5de
+2026-09-26T10:26:53.0661845Z Cache hit for: gradle-instrumented-jars-v2-bb910fcacf708cb42c10c2b5b22b5d19
+2026-09-26T10:26:53.0709871Z Cache hit for: gradle-transforms-v2-ce64cf56aee45f6401b975af0bc9e903
+2026-09-26T10:26:53.0715614Z Cache hit for: gradle-dependencies-v2-c31afde829c33f835a1f29cbcfae9ddc
+2026-09-26T10:26:53.0762031Z Cache hit for: gradle-kotlin-dsl-v2-47bb15ab9d1d244419f88a8f7d95ae8a
+2026-09-26T10:26:53.0796251Z Cache hit for: gradle-groovy-dsl-v2-f899aff15c2d37ebc18315a6bfe61114
+2026-09-26T10:26:53.0800479Z Cache hit for: gradle-wrapper-zips-v2-852daf033b54d6f5dd2552660ef7de60
+2026-09-26T10:26:53.5574532Z Received 101824 of 101824 (100.0%), 0.5 MBs/sec
+2026-09-26T10:26:53.5575256Z Cache Size: ~0 MB (101824 B)
+2026-09-26T10:26:53.5604423Z [command]/usr/bin/tar -xf /home/runner/work/_temp/5c061019-d3b4-4c8c-a580-ff60b63f7be1/cache.tzst -P -C /home/runner/work/argentum-batshit-test/argentum-batshit-test --use-compress-program unzstd
+2026-09-26T10:26:53.6032610Z Cache restored successfully
+2026-09-26T10:26:53.6042998Z Restored cache entry with key gradle-groovy-dsl-v2-f899aff15c2d37ebc18315a6bfe61114 in 787ms
+2026-09-26T10:26:53.6663623Z Received 60281 of 60281 (100.0%), 0.2 MBs/sec
+2026-09-26T10:26:53.6664186Z Cache Size: ~0 MB (60281 B)
+2026-09-26T10:26:53.6690916Z [command]/usr/bin/tar -xf /home/runner/work/_temp/6ce75530-41c9-42f9-b0f3-df5d8851417b/cache.tzst -P -C /home/runner/work/argentum-batshit-test/argentum-batshit-test --use-compress-program unzstd
+2026-09-26T10:26:53.6811330Z Cache restored successfully
+2026-09-26T10:26:53.6813123Z Restored cache entry with key gradle-instrumented-jars-v2-bb910fcacf708cb42c10c2b5b22b5d19 in 864ms
+2026-09-26T10:26:53.9619796Z Received 338388 of 338388 (100.0%), 0.5 MBs/sec
+2026-09-26T10:26:53.9620847Z Cache Size: ~0 MB (338388 B)
+2026-09-26T10:26:53.9646202Z [command]/usr/bin/tar -xf /home/runner/work/_temp/83d0fd7a-0a21-4eae-a49d-3eeecd7ec729/cache.tzst -P -C /home/runner/work/argentum-batshit-test/argentum-batshit-test --use-compress-program unzstd
+2026-09-26T10:26:54.1309815Z Received 4194304 of 42158673 (9.9%), 4.0 MBs/sec
+2026-09-26T10:26:54.1369392Z Cache restored successfully
+2026-09-26T10:26:54.1372419Z Restored cache entry with key gradle-kotlin-dsl-v2-47bb15ab9d1d244419f88a8f7d95ae8a in 1320ms
+2026-09-26T10:26:54.3294458Z Received 0 of 116480350 (0.0%), 0.0 MBs/sec
+2026-09-26T10:26:54.3413390Z Received 0 of 264801627 (0.0%), 0.0 MBs/sec
+2026-09-26T10:26:54.3737067Z Received 0 of 139934591 (0.0%), 0.0 MBs/sec
+2026-09-26T10:26:54.5158407Z Received 42158673 of 42158673 (100.0%), 29.0 MBs/sec
+2026-09-26T10:26:54.5160462Z Cache Size: ~40 MB (42158673 B)
+2026-09-26T10:26:54.5526208Z [command]/usr/bin/tar -xf /home/runner/work/_temp/d1b05e65-c508-4f90-ae89-7139b13993e0/cache.tzst -P -C /home/runner/work/argentum-batshit-test/argentum-batshit-test --use-compress-program unzstd
+2026-09-26T10:26:55.0011337Z Cache restored successfully
+2026-09-26T10:26:55.0041128Z Restored cache entry with key gradle-generated-gradle-jars-v2-aab574994eb421acff6809687eadd5de in 2185ms
+2026-09-26T10:26:55.3296274Z Received 88080384 of 116480350 (75.6%), 42.0 MBs/sec
+2026-09-26T10:26:55.3416424Z Received 88080384 of 264801627 (33.3%), 42.0 MBs/sec
+2026-09-26T10:26:55.3752625Z Received 96468992 of 139934591 (68.9%), 45.9 MBs/sec
+2026-09-26T10:26:55.6103731Z Received 116480350 of 116480350 (100.0%), 48.7 MBs/sec
+2026-09-26T10:26:55.6107125Z Cache Size: ~111 MB (116480350 B)
+2026-09-26T10:26:55.6333528Z [command]/usr/bin/tar -xf /home/runner/work/_temp/a0c797b4-5faf-432a-8331-8483302c934e/cache.tzst -P -C /home/runner/work/argentum-batshit-test/argentum-batshit-test --use-compress-program unzstd
+2026-09-26T10:26:55.9601292Z Received 139934591 of 139934591 (100.0%), 51.6 MBs/sec
+2026-09-26T10:26:55.9602404Z Cache Size: ~133 MB (139934591 B)
+2026-09-26T10:26:56.0519700Z [command]/usr/bin/tar -xf /home/runner/work/_temp/7f5e24d1-1f99-42e1-9a8a-7fd63638f81b/cache.tzst -P -C /home/runner/work/argentum-batshit-test/argentum-batshit-test --use-compress-program unzstd
+2026-09-26T10:26:56.3534698Z Received 180355072 of 264801627 (68.1%), 57.1 MBs/sec
+2026-09-26T10:26:56.5154688Z Cache restored successfully
+2026-09-26T10:26:56.5341904Z Restored cache entry with key gradle-wrapper-zips-v2-852daf033b54d6f5dd2552660ef7de60 in 3715ms
+2026-09-26T10:26:56.9614120Z Received 264801627 of 264801627 (100.0%), 69.8 MBs/sec
+2026-09-26T10:26:56.9621104Z Cache Size: ~253 MB (264801627 B)
+2026-09-26T10:26:56.9702329Z [command]/usr/bin/tar -xf /home/runner/work/_temp/6a0f8bd5-4816-4d96-bfd1-52ec0af4e926/cache.tzst -P -C /home/runner/work/argentum-batshit-test/argentum-batshit-test --use-compress-program unzstd
+2026-09-26T10:26:57.7611001Z Cache restored successfully
+2026-09-26T10:26:57.9916015Z Cache restored successfully
+2026-09-26T10:26:58.2367560Z Restored cache entry with key gradle-transforms-v2-ce64cf56aee45f6401b975af0bc9e903 in 5418ms
+2026-09-26T10:26:58.3431764Z Restored cache entry with key gradle-dependencies-v2-c31afde829c33f835a1f29cbcfae9ddc in 5526ms
+2026-09-26T10:26:58.3438629Z ##[endgroup]
+2026-09-26T10:26:58.7176510Z ##[group]All Gradle Wrapper jars are valid
+2026-09-26T10:26:58.7178188Z ✓ Found known Gradle Wrapper JAR files:
+2026-09-26T10:26:58.7179216Z   497c8c2a7e5031f6aa847f88104aa80a93532ec32ee17bdb8d1d2f67a194a9c7 gradle/wrapper/gradle-wrapper.jar
+2026-09-26T10:26:58.7180713Z ##[endgroup]
+2026-09-26T10:26:58.7414636Z ##[group]Run set -euo pipefail
+2026-09-26T10:26:58.7415238Z [36;1mset -euo pipefail[0m
+2026-09-26T10:26:58.7415892Z [36;1mpython -m unittest discover -s ferocity-recycling/tests -v[0m
+2026-09-26T10:26:58.7416726Z [36;1mpython ferocity-recycling/tools/project.py validate[0m
+2026-09-26T10:26:58.7417638Z [36;1mif [ -f ferocity-recycling/protocols/initial-search-manifest.json ]; then[0m
+2026-09-26T10:26:58.7418554Z [36;1m  python ferocity-recycling/tools/project.py verify[0m
+2026-09-26T10:26:58.7419174Z [36;1mfi[0m
+2026-09-26T10:26:58.7504004Z shell: /usr/bin/bash -e {0}
+2026-09-26T10:26:58.7504490Z env:
+2026-09-26T10:26:58.7505051Z   JAVA_HOME: /home/runner/work/_temp/ferocity-tools/jdk-21.0.12.1+1
+2026-09-26T10:26:58.7505803Z   GRADLE_ACTION_ID: gradle/actions/setup-gradle
+2026-09-26T10:26:58.7506418Z   GRADLE_USER_HOME: /home/runner/.gradle
+2026-09-26T10:26:58.7506982Z   GRADLE_BUILD_ACTION_SETUP_COMPLETED: true
+2026-09-26T10:26:58.7507897Z   DEVELOCITY_INJECTION_INIT_SCRIPT_NAME: gradle-actions.inject-develocity.init.gradle
+2026-09-26T10:26:58.7508817Z   DEVELOCITY_INJECTION_CUSTOM_VALUE: gradle-actions
+2026-09-26T10:26:58.7509440Z   GITHUB_DEPENDENCY_GRAPH_ENABLED: false
+2026-09-26T10:26:58.7509967Z ##[endgroup]
+2026-09-26T10:26:58.9723972Z test_disjoint_required_and_forbidden_sets (test_inventory_math.ExactInventoryArithmeticTest.test_disjoint_required_and_forbidden_sets) ... ok
+2026-09-26T10:26:58.9759233Z test_hypergeometric_matches_exhaustive_subsets (test_inventory_math.ExactInventoryArithmeticTest.test_hypergeometric_matches_exhaustive_subsets) ... ok
+2026-09-26T10:26:58.9761500Z test_joint_presence_inclusion_exclusion (test_inventory_math.ExactInventoryArithmeticTest.test_joint_presence_inclusion_exclusion) ... ok
+2026-09-26T10:26:58.9839370Z test_cached_success_xml_cannot_count_as_executed_assertions (test_validate_build_guards.BuildEvidenceGuardsTest.test_cached_success_xml_cannot_count_as_executed_assertions) ... ok
+2026-09-26T10:26:58.9882468Z test_deleted_tracked_source_rejects_expected_head (test_validate_build_guards.BuildEvidenceGuardsTest.test_deleted_tracked_source_rejects_expected_head) ... ok
+2026-09-26T10:26:58.9945846Z test_executed_task_and_new_xml_can_pass_the_guard (test_validate_build_guards.BuildEvidenceGuardsTest.test_executed_task_and_new_xml_can_pass_the_guard) ... ok
+2026-09-26T10:26:59.0020517Z test_final_capture_error_records_failure_instead_of_leaving_running (test_validate_build_guards.BuildEvidenceGuardsTest.test_final_capture_error_records_failure_instead_of_leaving_running) ... ok
+2026-09-26T10:26:59.0063351Z test_java_kts_resources_and_removed_paths_are_covered (test_validate_build_guards.BuildEvidenceGuardsTest.test_java_kts_resources_and_removed_paths_are_covered) ... ok
+2026-09-26T10:26:59.0064647Z 
+2026-09-26T10:26:59.0065186Z ----------------------------------------------------------------------
+2026-09-26T10:26:59.0065862Z Ran 8 tests in 0.034s
+2026-09-26T10:26:59.0066257Z 
+2026-09-26T10:26:59.0066601Z OK
+2026-09-26T10:26:59.0564605Z {
+2026-09-26T10:26:59.0565165Z   "valid_lists": 18
+2026-09-26T10:26:59.0565628Z }
+2026-09-26T10:26:59.0960643Z {
+2026-09-26T10:26:59.0961337Z   "schema": "ferocity-recycling-initial-search-v1",
+2026-09-26T10:26:59.0962179Z   "source_base": "d0c78bb4cca79b7402ba65bd62b5cb621230a054",
+2026-09-26T10:26:59.0963038Z   "scope": "INITIAL_DEVELOPMENT_INPUTS_NOT_GAMEPLAY_ADMISSION",
+2026-09-26T10:26:59.0963789Z   "randomized_outcomes_before_freeze": 0,
+2026-09-26T10:26:59.0964388Z   "files_sha256": {
+2026-09-26T10:26:59.0965318Z     "ferocity-recycling/DECK_DEVELOPMENT.md": "68427cb2c373c538abc89a7747ec7b3fe7635143a27c0cb0c12db41d6e9f8055",
+2026-09-26T10:26:59.0966914Z     "ferocity-recycling/decks/DECK_MANIFEST.json": "80be4e33dc1b4c3eb5e2921b2d8a61a6f43e4958892d0e9fdd8a8df554bb35ef",
+2026-09-26T10:26:59.0968515Z     "ferocity-recycling/decks/candidates/A1-F2.json": "973f9facfb1ed9ae19eaf315e000cad20fe673815ede58284c59b169a76c29a6",
+2026-09-26T10:26:59.0970748Z     "ferocity-recycling/decks/candidates/A1-F2.txt": "ba66aa13c50dc1564ace7ddf3a5892007a38dcd1a9e051416bf162213ab435b4",
+2026-09-26T10:26:59.0972430Z     "ferocity-recycling/decks/candidates/A2-F3.json": "26efd5bce628db1c069af5868609c92d36e527ac83c1ff4c6bc2516dcdafa475",
+2026-09-26T10:26:59.0974012Z     "ferocity-recycling/decks/candidates/A2-F3.txt": "c79db739624abf9599602f38072b4aff24937a2a82ad96ed1465f313e5e1d0b2",
+2026-09-26T10:26:59.0975572Z     "ferocity-recycling/decks/candidates/A3-F4.json": "41d3ea465858649cea3aa21d0ea7d82513c6461a3f7d94c98c089e04c4ea2ad7",
+2026-09-26T10:26:59.0977130Z     "ferocity-recycling/decks/candidates/A3-F4.txt": "f7568e5f68e97f1ce5f56dbe11db76b1f0f27bb54b373994d178420e0944f7d7",
+2026-09-26T10:26:59.0978684Z     "ferocity-recycling/decks/candidates/B1-F1.json": "2dd4959c9516b9fa24caecaac154b365ef0219a3993616910a6ca547851477ee",
+2026-09-26T10:26:59.0980412Z     "ferocity-recycling/decks/candidates/B1-F1.txt": "d237df4c25a5f45f90c845782378702a134b314d8c449950b678385c95557521",
+2026-09-26T10:26:59.0981981Z     "ferocity-recycling/decks/candidates/B2-F2.json": "af29a7348886df0abf52ea34608a8511548a65883038bc0663b87597f1e43b7a",
+2026-09-26T10:26:59.0983548Z     "ferocity-recycling/decks/candidates/B2-F2.txt": "558e940290ed8fa11b44dfb8d98ea2d7e7e81e0cfb4a75ebc907adec8d470650",
+2026-09-26T10:26:59.0985116Z     "ferocity-recycling/decks/candidates/B3-F3.json": "6980c7f66f1ffb2026b56a84262ffc8e5aadd3cd8f4570d657894da9f8b3ba43",
+2026-09-26T10:26:59.0986659Z     "ferocity-recycling/decks/candidates/B3-F3.txt": "49c8c8f9167659e2d8c143e2cd5d977fb4ccd4785677df23014181e57c1407fc",
+2026-09-26T10:26:59.0988190Z     "ferocity-recycling/decks/candidates/C1-F2.json": "0df2fed848c975e63da144059531316b29994d4da73180d4fcc98096f7933f50",
+2026-09-26T10:26:59.0989734Z     "ferocity-recycling/decks/candidates/C1-F2.txt": "66e1207799a4ba4ad9a5069848d6215b28e47290546409bdafd7920137e0b750",
+2026-09-26T10:26:59.0992184Z     "ferocity-recycling/decks/candidates/C2-F3.json": "7bc9a74e6cd4851d5980b179e194b7499dbddb5e213e5615a93cfd464db6143e",
+2026-09-26T10:26:59.0993709Z     "ferocity-recycling/decks/candidates/C2-F3.txt": "9a13aee767b82c5a2400b181cb93eab03b2b1f64d5e2c67f1da7df7f5554a783",
+2026-09-26T10:26:59.0995233Z     "ferocity-recycling/decks/candidates/C3-F4.json": "9f3a26c26c2d2ab597e4f8826bda80c2d7a8d74f3673a2297bae5b893a39e2c2",
+2026-09-26T10:26:59.0996744Z     "ferocity-recycling/decks/candidates/C3-F4.txt": "3b38566f12417e383bd05e3fe6d12acffbef8ed5ceb3bcc8ee2ef8a38736c732",
+2026-09-26T10:26:59.0998241Z     "ferocity-recycling/decks/card_roles.json": "51bbe9e3d7b7eeb5e0a1481ab8dea49211fcffe388844d9bfcf4f90d7202820a",
+2026-09-26T10:26:59.0999768Z     "ferocity-recycling/decks/comparators/A1-N0.json": "7c1f8a085ffb02a08cb504aebbf1a598f5a6cdf8f71c19d3f87ac04693ee0577",
+2026-09-26T10:26:59.1001540Z     "ferocity-recycling/decks/comparators/A1-N0.txt": "f83bda51996fada3958e790a510add2497a6c17d055a1f1fb0fe1caf99610c94",
+2026-09-26T10:26:59.1003093Z     "ferocity-recycling/decks/comparators/A2-N0.json": "e14b69a4896f7647a7e22fa04c52d974404d2bf1867292bd47444cd4cb714ec8",
+2026-09-26T10:26:59.1004599Z     "ferocity-recycling/decks/comparators/A2-N0.txt": "019c1c0f57a5ec8dc20d57e62f954830708d35cace087a4a180959067b5471cc",
+2026-09-26T10:26:59.1006113Z     "ferocity-recycling/decks/comparators/A3-N0.json": "95aa88b0f66524250588fdb0226e9792b9bef2f8dd0e411809689aec04f73aea",
+2026-09-26T10:26:59.1007637Z     "ferocity-recycling/decks/comparators/A3-N0.txt": "6eeb132ec10e88469f1097650cddf7df3f5fd77cdbfa3419731eeef15e1438a8",
+2026-09-26T10:26:59.1009167Z     "ferocity-recycling/decks/comparators/B1-N0.json": "8bf6014dc7f25930a6caa80996be2ebbebe8e146b5251e8d76e1d1cbed9c256a",
+2026-09-26T10:26:59.1010873Z     "ferocity-recycling/decks/comparators/B1-N0.txt": "3eca11993ad82bd9e717f470943645122a84ae70bcd47fb010561fc089ed3591",
+2026-09-26T10:26:59.1012393Z     "ferocity-recycling/decks/comparators/B2-N0.json": "a6f150d6423da348cfd6e74420327ef0089befec53db4868dd17df5e8c9c7df3",
+2026-09-26T10:26:59.1014145Z     "ferocity-recycling/decks/comparators/B2-N0.txt": "633d3053ded77917a462d8a42ea4255fcf7fdcc849d1ae46feac5dc0300e3e98",
+2026-09-26T10:26:59.1015710Z     "ferocity-recycling/decks/comparators/B3-N0.json": "09125aa8a580dd494ca94e4b3a8ffcd06eec3fc8f97ff913e3ee6ef91f3e0093",
+2026-09-26T10:26:59.1017290Z     "ferocity-recycling/decks/comparators/B3-N0.txt": "2c89f8b0bcace5580f8c1f48134e4e157126365953f9be96709f1fc84b955158",
+2026-09-26T10:26:59.1019531Z     "ferocity-recycling/decks/comparators/C1-N0.json": "fca07ac836fc180b7fd0181f56ae92aeed00b14abfa33812750eb5495b04b330",
+2026-09-26T10:26:59.1021326Z     "ferocity-recycling/decks/comparators/C1-N0.txt": "0f712b04de9036b4bc6204ca3aa2ff8203cb6200da131e4284b0da142aa47751",
+2026-09-26T10:26:59.1022871Z     "ferocity-recycling/decks/comparators/C2-N0.json": "3f14f444fab0c3d109ded782b696cba48b55b4d0068e9dbe8a4390a797f7dfdf",
+2026-09-26T10:26:59.1024433Z     "ferocity-recycling/decks/comparators/C2-N0.txt": "ccd297234ec7eef1bc7a7bdc8c0d3a468ba0ad609fbd50b38695bfb4410ba107",
+2026-09-26T10:26:59.1025995Z     "ferocity-recycling/decks/comparators/C3-N0.json": "6c8bf41e22c17f20521fa7832b6a3886bb44fcafe5fe1a47cd7cf610df381dab",
+2026-09-26T10:26:59.1027701Z     "ferocity-recycling/decks/comparators/C3-N0.txt": "dffb729e5834c24871b57ea508c577939eed7bda392bb9c5dee0be9e8b3e1c72",
+2026-09-26T10:26:59.1029292Z     "ferocity-recycling/protocols/RESEARCH_PROTOCOL.md": "ab663b6b5f3d4761469bb2a9fcfd73a0bffd74efd9bfdb80b2de94640b59cee5",
+2026-09-26T10:26:59.1030972Z     "ferocity-recycling/tools/project.py": "b51e5e771322c04e55b6d51bc0b356631906a9d9a41e77b883a9a1cfb9040354"
+2026-09-26T10:26:59.1031905Z   },
+2026-09-26T10:26:59.1032334Z   "maximum_initial_ferocity_configurations": 9,
+2026-09-26T10:26:59.1032980Z   "maximum_initial_no_ferocity_configurations": 9,
+2026-09-26T10:26:59.1033596Z   "development_games_per_list": 40,
+2026-09-26T10:26:59.1034138Z   "initial_development_game_ceiling": 720,
+2026-09-26T10:26:59.1034932Z   "maximum_advancing_ferocity_configurations": 2,
+2026-09-26T10:26:59.1035518Z   "refinement_rounds": 1
+2026-09-26T10:26:59.1036184Z }
+2026-09-26T10:26:59.1114065Z ##[group]Run set -euo pipefail
+2026-09-26T10:26:59.1114646Z [36;1mset -euo pipefail[0m
+2026-09-26T10:26:59.1115189Z [36;1mmkdir -p "$RUNNER_TEMP/ferocity-tools"[0m
+2026-09-26T10:26:59.1115835Z [36;1mcurl --fail --location --max-time 120 \[0m
+2026-09-26T10:26:59.1116543Z [36;1m  --output "$RUNNER_TEMP/ferocity-tools/just.tar.gz" \[0m
+2026-09-26T10:26:59.1117642Z [36;1m  https://github.com/casey/just/releases/download/1.58.0/just-1.58.0-x86_64-unknown-linux-musl.tar.gz[0m
+2026-09-26T10:26:59.1119251Z [36;1mecho '4a5cc2f53e6f0f8c59092a6cc38291eb729d46a7dd95d3ae582008881b84931d  '"$RUNNER_TEMP/ferocity-tools/just.tar.gz" | sha256sum --check[0m
+2026-09-26T10:26:59.1120998Z [36;1mtar -xzf "$RUNNER_TEMP/ferocity-tools/just.tar.gz" -C "$RUNNER_TEMP/ferocity-tools" just[0m
+2026-09-26T10:26:59.1122000Z [36;1mecho "$RUNNER_TEMP/ferocity-tools" >> "$GITHUB_PATH"[0m
+2026-09-26T10:26:59.1203100Z shell: /usr/bin/bash -e {0}
+2026-09-26T10:26:59.1203494Z env:
+2026-09-26T10:26:59.1203979Z   JAVA_HOME: /home/runner/work/_temp/ferocity-tools/jdk-21.0.12.1+1
+2026-09-26T10:26:59.1204566Z   GRADLE_ACTION_ID: gradle/actions/setup-gradle
+2026-09-26T10:26:59.1205027Z   GRADLE_USER_HOME: /home/runner/.gradle
+2026-09-26T10:26:59.1205458Z   GRADLE_BUILD_ACTION_SETUP_COMPLETED: true
+2026-09-26T10:26:59.1206114Z   DEVELOCITY_INJECTION_INIT_SCRIPT_NAME: gradle-actions.inject-develocity.init.gradle
+2026-09-26T10:26:59.1206817Z   DEVELOCITY_INJECTION_CUSTOM_VALUE: gradle-actions
+2026-09-26T10:26:59.1207287Z   GITHUB_DEPENDENCY_GRAPH_ENABLED: false
+2026-09-26T10:26:59.1207688Z ##[endgroup]
+2026-09-26T10:26:59.1358740Z   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+2026-09-26T10:26:59.1362912Z                                  Dload  Upload   Total   Spent    Left  Speed
+2026-09-26T10:26:59.1363455Z 
+2026-09-26T10:26:59.2969975Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+2026-09-26T10:26:59.2971230Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+2026-09-26T10:26:59.3515152Z 
+2026-09-26T10:26:59.3515831Z 100 2469k  100 2469k    0     0  11.1M      0 --:--:-- --:--:-- --:--:-- 11.1M
+2026-09-26T10:26:59.3592371Z /home/runner/work/_temp/ferocity-tools/just.tar.gz: OK
+2026-09-26T10:26:59.4195441Z ##[group]Run python ferocity-recycling/tools/validate_build.py \
+2026-09-26T10:26:59.4196339Z [36;1mpython ferocity-recycling/tools/validate_build.py \[0m
+2026-09-26T10:26:59.4197053Z [36;1m  --expected-head "$EXPECTED_HEAD" \[0m
+2026-09-26T10:26:59.4199205Z [36;1m  --classes CryptRatsScenarioTest GlintHawkScenarioTest KorSkyfisherScenarioTest JourneyToNowhereScenarioTest WitchsCottageScenarioTest BonePickerScenarioTest CutDownScenarioTest DefileScenarioTest EvisceratorsInsightScenarioTest DispatchScenarioTest \[0m
+2026-09-26T10:26:59.4201682Z [36;1m  --out build/reports/ferocity-recycling/qualification[0m
+2026-09-26T10:26:59.4283918Z shell: /usr/bin/bash -e {0}
+2026-09-26T10:26:59.4284399Z env:
+2026-09-26T10:26:59.4284944Z   JAVA_HOME: /home/runner/work/_temp/ferocity-tools/jdk-21.0.12.1+1
+2026-09-26T10:26:59.4285685Z   GRADLE_ACTION_ID: gradle/actions/setup-gradle
+2026-09-26T10:26:59.4286286Z   GRADLE_USER_HOME: /home/runner/.gradle
+2026-09-26T10:26:59.4286899Z   GRADLE_BUILD_ACTION_SETUP_COMPLETED: true
+2026-09-26T10:26:59.4287744Z   DEVELOCITY_INJECTION_INIT_SCRIPT_NAME: gradle-actions.inject-develocity.init.gradle
+2026-09-26T10:26:59.4288654Z   DEVELOCITY_INJECTION_CUSTOM_VALUE: gradle-actions
+2026-09-26T10:26:59.4289273Z   GITHUB_DEPENDENCY_GRAPH_ENABLED: false
+2026-09-26T10:26:59.4289901Z   EXPECTED_HEAD: 2a99c52bcfb869ecc0c32443c2b77765abde4b65
+2026-09-26T10:26:59.4290745Z ##[endgroup]
+2026-09-26T10:27:06.2878317Z Running CryptRatsScenarioTest
+2026-09-26T10:32:06.2675719Z Running GlintHawkScenarioTest
+2026-09-26T10:32:38.2192295Z Running KorSkyfisherScenarioTest
+2026-09-26T10:33:00.1260946Z Running JourneyToNowhereScenarioTest
+2026-09-26T10:33:22.0456266Z Running WitchsCottageScenarioTest
+2026-09-26T10:34:00.6973418Z WitchsCottageScenarioTest did not qualify; preserve logs and diagnose before any successor
+2026-09-26T10:34:07.0307156Z {"status": "FAIL", "receipt": "/home/runner/work/argentum-batshit-test/argentum-batshit-test/build/reports/ferocity-recycling/qualification/receipt.json"}
+2026-09-26T10:34:07.0416679Z ##[error]Process completed with exit code 1.
+2026-09-26T10:34:07.0502174Z ##[group]Run actions/upload-artifact@v7
+2026-09-26T10:34:07.0502523Z with:
+2026-09-26T10:34:07.0502849Z   name: ferocity-recycling-canonical-support-36235781936-1
+2026-09-26T10:34:07.0503268Z   path: build/reports/ferocity-recycling/
+2026-09-26T10:34:07.0503616Z   if-no-files-found: error
+2026-09-26T10:34:07.0503884Z   retention-days: 90
+2026-09-26T10:34:07.0504139Z   compression-level: 6
+2026-09-26T10:34:07.0504388Z   overwrite: false
+2026-09-26T10:34:07.0504663Z   include-hidden-files: false
+2026-09-26T10:34:07.0504939Z   archive: true
+2026-09-26T10:34:07.0505168Z env:
+2026-09-26T10:34:07.0505487Z   JAVA_HOME: /home/runner/work/_temp/ferocity-tools/jdk-21.0.12.1+1
+2026-09-26T10:34:07.0505920Z   GRADLE_ACTION_ID: gradle/actions/setup-gradle
+2026-09-26T10:34:07.0506274Z   GRADLE_USER_HOME: /home/runner/.gradle
+2026-09-26T10:34:07.0506601Z   GRADLE_BUILD_ACTION_SETUP_COMPLETED: true
+2026-09-26T10:34:07.0507126Z   DEVELOCITY_INJECTION_INIT_SCRIPT_NAME: gradle-actions.inject-develocity.init.gradle
+2026-09-26T10:34:07.0507655Z   DEVELOCITY_INJECTION_CUSTOM_VALUE: gradle-actions
+2026-09-26T10:34:07.0508013Z   GITHUB_DEPENDENCY_GRAPH_ENABLED: false
+2026-09-26T10:34:07.0508316Z ##[endgroup]
+2026-09-26T10:34:07.1960230Z With the provided path, there will be 15 files uploaded
+2026-09-26T10:34:07.1966078Z Artifact name is valid!
+2026-09-26T10:34:07.1966607Z Root directory input is valid!
+2026-09-26T10:34:07.5643779Z Uploading artifact: ferocity-recycling-canonical-support-36235781936-1.zip
+2026-09-26T10:34:07.5688435Z Beginning upload of artifact content to blob storage
+2026-09-26T10:34:08.5416993Z Uploaded bytes 2182372
+2026-09-26T10:34:08.6157832Z Finished uploading artifact content to blob storage!
+2026-09-26T10:34:08.6158954Z SHA256 digest of uploaded artifact is b8eae6e0e2a49742c1946a6805f006955538964d10900160e103c72001e2f344
+2026-09-26T10:34:08.6159966Z Finalizing artifact upload
+2026-09-26T10:34:09.0078545Z Artifact ferocity-recycling-canonical-support-36235781936-1 successfully finalized. Artifact ID 10904520079
+2026-09-26T10:34:09.0080822Z Artifact ferocity-recycling-canonical-support-36235781936-1 has been successfully uploaded! Final size is 2182372 bytes. Artifact ID is 10904520079
+2026-09-26T10:34:09.0083680Z Artifact download URL: https://github.com/GodaPupa/argentum-batshit-test/actions/runs/36235781936/artifacts/10904520079
+2026-09-26T10:34:09.0318158Z Post job cleanup.
+2026-09-26T10:34:09.2873228Z In post-action step
+2026-09-26T10:34:09.2884406Z Enhanced Caching: This build is using the proprietary 'gradle-actions-caching' provider for optimized caching support. See https://github.com/gradle/actions/blob/main/DISTRIBUTION.md for terms of use and opt-out instructions.
+2026-09-26T10:34:09.3674534Z Cache is read-only: will not save state for use in subsequent builds.
+2026-09-26T10:34:09.3679303Z ##[group]Generating Job Summary
+2026-09-26T10:34:09.3685583Z 
+2026-09-26T10:34:09.3685591Z 
+2026-09-26T10:34:09.3685838Z <table>
+2026-09-26T10:34:09.3686225Z     <tr>
+2026-09-26T10:34:09.3686662Z         <th>Gradle Root Project</th>
+2026-09-26T10:34:09.3687210Z         <th>Requested Tasks</th>
+2026-09-26T10:34:09.3687749Z         <th>Gradle Version</th>
+2026-09-26T10:34:09.3688259Z         <th>Build Outcome</th>
+2026-09-26T10:34:09.3689106Z         <th>Build&nbsp;Scan®</th>
+2026-09-26T10:34:09.3689638Z     </tr>
+2026-09-26T10:34:09.3690348Z     <tr>
+2026-09-26T10:34:09.3690800Z         <td>argentum-engine</td>
+2026-09-26T10:34:09.3692442Z         <td><div title=':mtg-sets:1993-1999:tests:test --tests CryptRatsScenarioTest --rerun'>:mtg-sets:1993-1999:tests:test --tests CryptRatsScenarioTes…</div></td>
+2026-09-26T10:34:09.3694237Z         <td align='center'>9.6.1</td>
+2026-09-26T10:34:09.3694829Z         <td align='center'>:white_check_mark:</td>
+2026-09-26T10:34:09.3696266Z         <td><a href="https://scans.gradle.com" rel="nofollow" target="_blank"><img src="https://img.shields.io/badge/Not%20published-lightgrey" alt="Build Scan not published" /></a></td>
+2026-09-26T10:34:09.3697613Z     </tr>
+2026-09-26T10:34:09.3697986Z     <tr>
+2026-09-26T10:34:09.3698385Z         <td>argentum-engine</td>
+2026-09-26T10:34:09.3699967Z         <td><div title=':mtg-sets:2008-2016:tests:test --tests GlintHawkScenarioTest --rerun'>:mtg-sets:2008-2016:tests:test --tests GlintHawkScenarioTes…</div></td>
+2026-09-26T10:34:09.3701039Z         <td align='center'>9.6.1</td>
+2026-09-26T10:34:09.3701395Z         <td align='center'>:white_check_mark:</td>
+2026-09-26T10:34:09.3702225Z         <td><a href="https://scans.gradle.com" rel="nofollow" target="_blank"><img src="https://img.shields.io/badge/Not%20published-lightgrey" alt="Build Scan not published" /></a></td>
+2026-09-26T10:34:09.3702997Z     </tr>
+2026-09-26T10:34:09.3703218Z     <tr>
+2026-09-26T10:34:09.3703449Z         <td>argentum-engine</td>
+2026-09-26T10:34:09.3704312Z         <td><div title=':mtg-sets:2008-2016:tests:test --tests KorSkyfisherScenarioTest --rerun'>:mtg-sets:2008-2016:tests:test --tests KorSkyfisherScenario…</div></td>
+2026-09-26T10:34:09.3705047Z         <td align='center'>9.6.1</td>
+2026-09-26T10:34:09.3705385Z         <td align='center'>:white_check_mark:</td>
+2026-09-26T10:34:09.3706205Z         <td><a href="https://scans.gradle.com" rel="nofollow" target="_blank"><img src="https://img.shields.io/badge/Not%20published-lightgrey" alt="Build Scan not published" /></a></td>
+2026-09-26T10:34:09.3706974Z     </tr>
+2026-09-26T10:34:09.3707188Z     <tr>
+2026-09-26T10:34:09.3707421Z         <td>argentum-engine</td>
+2026-09-26T10:34:09.3708296Z         <td><div title=':mtg-sets:2008-2016:tests:test --tests JourneyToNowhereScenarioTest --rerun'>:mtg-sets:2008-2016:tests:test --tests JourneyToNowhereScen…</div></td>
+2026-09-26T10:34:09.3709050Z         <td align='center'>9.6.1</td>
+2026-09-26T10:34:09.3709382Z         <td align='center'>:white_check_mark:</td>
+2026-09-26T10:34:09.3710690Z         <td><a href="https://scans.gradle.com" rel="nofollow" target="_blank"><img src="https://img.shields.io/badge/Not%20published-lightgrey" alt="Build Scan not published" /></a></td>
+2026-09-26T10:34:09.3711508Z     </tr>
+2026-09-26T10:34:09.3711721Z     <tr>
+2026-09-26T10:34:09.3711949Z         <td>argentum-engine</td>
+2026-09-26T10:34:09.3712818Z         <td><div title=':mtg-sets:2017-2022:tests:test --tests WitchsCottageScenarioTest --rerun'>:mtg-sets:2017-2022:tests:test --tests WitchsCottageScenari…</div></td>
+2026-09-26T10:34:09.3713814Z         <td align='center'>9.6.1</td>
+2026-09-26T10:34:09.3714141Z         <td align='center'>:x:</td>
+2026-09-26T10:34:09.3714946Z         <td><a href="https://scans.gradle.com" rel="nofollow" target="_blank"><img src="https://img.shields.io/badge/Not%20published-lightgrey" alt="Build Scan not published" /></a></td>
+2026-09-26T10:34:09.3715714Z     </tr>
+2026-09-26T10:34:09.3715930Z </table>
+2026-09-26T10:34:09.3716138Z     
+2026-09-26T10:34:09.3716353Z ============================
+2026-09-26T10:34:09.3716757Z <h4>Gradle State Caching - ⚡ Enhanced (read-only)</h4>
+2026-09-26T10:34:09.3717046Z 
+2026-09-26T10:34:09.3718051Z **[Enhanced Caching](https://github.com/gradle/actions/blob/main/docs/setup-gradle.md#enhanced-caching)** uses the proprietary `gradle-actions-caching` provider. See [DISTRIBUTION.md](https://github.com/gradle/actions/blob/main/DISTRIBUTION.md) for terms of use and opt-out instructions.
+2026-09-26T10:34:09.3719144Z 
+2026-09-26T10:34:09.3719240Z <details>
+2026-09-26T10:34:09.3719691Z <summary>Entries: 8 restored (538Mb), 0 saved (0Mb) - Expand for more details</summary>
+2026-09-26T10:34:09.3720572Z 
+2026-09-26T10:34:09.3721619Z [Cache was read-only](https://github.com/gradle/actions/blob/main/docs/setup-gradle.md#using-the-cache-read-only) — by default, the action only writes to the cache for jobs running on the default branch.
+2026-09-26T10:34:09.3722493Z 
+2026-09-26T10:34:09.3722666Z <table>
+2026-09-26T10:34:09.3723027Z     <tr><td></td><th>Count</th><th>Total Size (Mb)</th><th>Total Time (ms)</th></tr>
+2026-09-26T10:34:09.3723467Z     <tr><td>Entries Restored</td>
+2026-09-26T10:34:09.3723900Z         <td>8</td>
+2026-09-26T10:34:09.3724151Z         <td>538</td>
+2026-09-26T10:34:09.3724393Z         <td>21170</td>
+2026-09-26T10:34:09.3724635Z     </tr>
+2026-09-26T10:34:09.3725001Z     <tr><td>Entries Saved</td>
+2026-09-26T10:34:09.3725290Z         <td>0</td>
+2026-09-26T10:34:09.3725522Z         <td>0</td>
+2026-09-26T10:34:09.3725751Z         <td>0</td>
+2026-09-26T10:34:09.3726061Z     </tr>
+2026-09-26T10:34:09.3726341Z </table>
+2026-09-26T10:34:09.3726469Z 
+2026-09-26T10:34:09.3726565Z <pre>
+2026-09-26T10:34:09.3726796Z Entry: Gradle User Home
+2026-09-26T10:34:09.3727557Z     Requested Key : gradle-home-v2|Linux-X64|deterministic[14f40e3f555cb8d67a41439efed6354a]-9b7330192a42ea274ed81cdaedce80cfa2f80a4e
+2026-09-26T10:34:09.3728717Z     Restored  Key : gradle-home-v2|Linux-X64|test[a7652eeb27038373de7edb820b63f121]-d0c78bb4cca79b7402ba65bd62b5cb621230a054
+2026-09-26T10:34:09.3729336Z               Size: 1 MB (646996 B)
+2026-09-26T10:34:09.3729721Z               Time: 1355 ms
+2026-09-26T10:34:09.3730233Z               (Entry restored: partial match found)
+2026-09-26T10:34:09.3730581Z     Saved     Key : 
+2026-09-26T10:34:09.3730974Z               Size: 
+2026-09-26T10:34:09.3731239Z               Time: 
+2026-09-26T10:34:09.3731620Z               (Entry not saved: cache is read-only)
+2026-09-26T10:34:09.3732182Z ---
+2026-09-26T10:34:09.3732717Z Entry: caches/9.6.1/generated-gradle-jars/gradle-api-9.6.1.jar
+2026-09-26T10:34:09.3733685Z     Requested Key : gradle-generated-gradle-jars-v2-aab574994eb421acff6809687eadd5de
+2026-09-26T10:34:09.3734825Z     Restored  Key : gradle-generated-gradle-jars-v2-aab574994eb421acff6809687eadd5de
+2026-09-26T10:34:09.3735658Z               Size: 40 MB (42158673 B)
+2026-09-26T10:34:09.3736367Z               Time: 2185 ms
+2026-09-26T10:34:09.3736888Z               (Entry restored: exact match found)
+2026-09-26T10:34:09.3737443Z     Saved     Key : 
+2026-09-26T10:34:09.3737827Z               Size: 
+2026-09-26T10:34:09.3738217Z               Time: 
+2026-09-26T10:34:09.3738654Z               (Entry not saved: cache is read-only)
+2026-09-26T10:34:09.3739173Z ---
+2026-09-26T10:34:09.3739684Z Entry: wrapper/dists/gradle-9.6.1-bin/4ticwg1pgcbps2hj28r8so764
+2026-09-26T10:34:09.3740751Z     Requested Key : gradle-wrapper-zips-v2-852daf033b54d6f5dd2552660ef7de60
+2026-09-26T10:34:09.3741898Z     Restored  Key : gradle-wrapper-zips-v2-852daf033b54d6f5dd2552660ef7de60
+2026-09-26T10:34:09.3742735Z               Size: 133 MB (139934591 B)
+2026-09-26T10:34:09.3743267Z               Time: 3715 ms
+2026-09-26T10:34:09.3743724Z               (Entry restored: exact match found)
+2026-09-26T10:34:09.3744064Z     Saved     Key : 
+2026-09-26T10:34:09.3744306Z               Size: 
+2026-09-26T10:34:09.3744663Z               Time: 
+2026-09-26T10:34:09.3744978Z               (Entry not saved: cache is read-only)
+2026-09-26T10:34:09.3745401Z ---
+2026-09-26T10:34:09.3745792Z Entry: dependencies
+2026-09-26T10:34:09.3746444Z     Requested Key : gradle-dependencies-v2-c31afde829c33f835a1f29cbcfae9ddc
+2026-09-26T10:34:09.3747500Z     Restored  Key : gradle-dependencies-v2-c31afde829c33f835a1f29cbcfae9ddc
+2026-09-26T10:34:09.3748287Z               Size: 253 MB (264801627 B)
+2026-09-26T10:34:09.3748806Z               Time: 5526 ms
+2026-09-26T10:34:09.3749315Z               (Entry restored: exact match found)
+2026-09-26T10:34:09.3749875Z     Saved     Key : 
+2026-09-26T10:34:09.3750785Z               Size: 
+2026-09-26T10:34:09.3751211Z               Time: 
+2026-09-26T10:34:09.3751706Z               (Entry not saved: cache is read-only)
+2026-09-26T10:34:09.3752481Z ---
+2026-09-26T10:34:09.3752888Z Entry: instrumented-jars
+2026-09-26T10:34:09.3753427Z     Requested Key : gradle-instrumented-jars-v2-bb910fcacf708cb42c10c2b5b22b5d19
+2026-09-26T10:34:09.3754350Z     Restored  Key : gradle-instrumented-jars-v2-bb910fcacf708cb42c10c2b5b22b5d19
+2026-09-26T10:34:09.3754825Z               Size: 0 MB (60281 B)
+2026-09-26T10:34:09.3755312Z               Time: 864 ms
+2026-09-26T10:34:09.3755619Z               (Entry restored: exact match found)
+2026-09-26T10:34:09.3755945Z     Saved     Key : 
+2026-09-26T10:34:09.3756228Z               Size: 
+2026-09-26T10:34:09.3756657Z               Time: 
+2026-09-26T10:34:09.3757174Z               (Entry not saved: cache is read-only)
+2026-09-26T10:34:09.3757730Z ---
+2026-09-26T10:34:09.3758145Z Entry: kotlin-dsl
+2026-09-26T10:34:09.3758965Z     Requested Key : gradle-kotlin-dsl-v2-47bb15ab9d1d244419f88a8f7d95ae8a
+2026-09-26T10:34:09.3760331Z     Restored  Key : gradle-kotlin-dsl-v2-47bb15ab9d1d244419f88a8f7d95ae8a
+2026-09-26T10:34:09.3761297Z               Size: 0 MB (338388 B)
+2026-09-26T10:34:09.3761956Z               Time: 1320 ms
+2026-09-26T10:34:09.3762657Z               (Entry restored: exact match found)
+2026-09-26T10:34:09.3763081Z     Saved     Key : 
+2026-09-26T10:34:09.3763371Z               Size: 
+2026-09-26T10:34:09.3763806Z               Time: 
+2026-09-26T10:34:09.3764210Z               (Entry not saved: cache is read-only)
+2026-09-26T10:34:09.3764652Z ---
+2026-09-26T10:34:09.3765148Z Entry: groovy-dsl
+2026-09-26T10:34:09.3765553Z     Requested Key : gradle-groovy-dsl-v2-f899aff15c2d37ebc18315a6bfe61114
+2026-09-26T10:34:09.3766205Z     Restored  Key : gradle-groovy-dsl-v2-f899aff15c2d37ebc18315a6bfe61114
+2026-09-26T10:34:09.3766630Z               Size: 0 MB (101824 B)
+2026-09-26T10:34:09.3766922Z               Time: 787 ms
+2026-09-26T10:34:09.3767217Z               (Entry restored: exact match found)
+2026-09-26T10:34:09.3767548Z     Saved     Key : 
+2026-09-26T10:34:09.3767784Z               Size: 
+2026-09-26T10:34:09.3768020Z               Time: 
+2026-09-26T10:34:09.3768292Z               (Entry not saved: cache is read-only)
+2026-09-26T10:34:09.3768606Z ---
+2026-09-26T10:34:09.3768820Z Entry: transforms
+2026-09-26T10:34:09.3769184Z     Requested Key : gradle-transforms-v2-ce64cf56aee45f6401b975af0bc9e903
+2026-09-26T10:34:09.3769713Z     Restored  Key : gradle-transforms-v2-ce64cf56aee45f6401b975af0bc9e903
+2026-09-26T10:34:09.3770733Z               Size: 111 MB (116480350 B)
+2026-09-26T10:34:09.3771129Z               Time: 5418 ms
+2026-09-26T10:34:09.3771441Z               (Entry restored: exact match found)
+2026-09-26T10:34:09.3771914Z     Saved     Key : 
+2026-09-26T10:34:09.3772196Z               Size: 
+2026-09-26T10:34:09.3772429Z               Time: 
+2026-09-26T10:34:09.3772699Z               (Entry not saved: cache is read-only)
+2026-09-26T10:34:09.3773214Z </pre>
+2026-09-26T10:34:09.3773450Z </details>
+2026-09-26T10:34:09.3773585Z 
+2026-09-26T10:34:09.3773934Z ##[endgroup]
+2026-09-26T10:34:09.3774191Z Completed post-action step
+2026-09-26T10:34:09.4032279Z Post job cleanup.
+2026-09-26T10:34:09.4935034Z [command]/usr/bin/git version
+2026-09-26T10:34:09.4977617Z git version 2.55.0
+2026-09-26T10:34:09.5018430Z Temporarily overriding HOME='/home/runner/work/_temp/bd0e48cc-a62d-4e69-8a6a-49ec644e6e2b' before making global git config changes
+2026-09-26T10:34:09.5019988Z Adding repository directory to the temporary git global config as a safe directory
+2026-09-26T10:34:09.5024809Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/argentum-batshit-test/argentum-batshit-test
+2026-09-26T10:34:09.5058597Z Removing SSH command configuration
+2026-09-26T10:34:09.5066183Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-09-26T10:34:09.5103876Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-09-26T10:34:09.5390902Z Removing HTTP extra header
+2026-09-26T10:34:09.5391946Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-09-26T10:34:09.5432143Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-09-26T10:34:09.5704248Z Removing includeIf entries pointing to credentials config files
+2026-09-26T10:34:09.5714629Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-09-26T10:34:09.5747077Z includeif.gitdir:/home/runner/work/argentum-batshit-test/argentum-batshit-test/.git.path
+2026-09-26T10:34:09.5748947Z includeif.gitdir:/home/runner/work/argentum-batshit-test/argentum-batshit-test/.git/worktrees/*.path
+2026-09-26T10:34:09.5750651Z includeif.gitdir:/github/workspace/.git.path
+2026-09-26T10:34:09.5751657Z includeif.gitdir:/github/workspace/.git/worktrees/*.path
+2026-09-26T10:34:09.5759808Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/argentum-batshit-test/argentum-batshit-test/.git.path
+2026-09-26T10:34:09.5789308Z /home/runner/work/_temp/git-credentials-aa8d3b90-c6df-4ff5-b3d6-70c8031d8a96.config
+2026-09-26T10:34:09.5803783Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/argentum-batshit-test/argentum-batshit-test/.git.path /home/runner/work/_temp/git-credentials-aa8d3b90-c6df-4ff5-b3d6-70c8031d8a96.config
+2026-09-26T10:34:09.5847207Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/argentum-batshit-test/argentum-batshit-test/.git/worktrees/*.path
+2026-09-26T10:34:09.5874687Z /home/runner/work/_temp/git-credentials-aa8d3b90-c6df-4ff5-b3d6-70c8031d8a96.config
+2026-09-26T10:34:09.5886199Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/argentum-batshit-test/argentum-batshit-test/.git/worktrees/*.path /home/runner/work/_temp/git-credentials-aa8d3b90-c6df-4ff5-b3d6-70c8031d8a96.config
+2026-09-26T10:34:09.5932896Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git.path
+2026-09-26T10:34:09.5958025Z /github/runner_temp/git-credentials-aa8d3b90-c6df-4ff5-b3d6-70c8031d8a96.config
+2026-09-26T10:34:09.5968291Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-aa8d3b90-c6df-4ff5-b3d6-70c8031d8a96.config
+2026-09-26T10:34:09.6013209Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git/worktrees/*.path
+2026-09-26T10:34:09.6041805Z /github/runner_temp/git-credentials-aa8d3b90-c6df-4ff5-b3d6-70c8031d8a96.config
+2026-09-26T10:34:09.6054117Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-aa8d3b90-c6df-4ff5-b3d6-70c8031d8a96.config
+2026-09-26T10:34:09.6138366Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-09-26T10:34:09.6388936Z Removing credentials config '/home/runner/work/_temp/git-credentials-aa8d3b90-c6df-4ff5-b3d6-70c8031d8a96.config'
+2026-09-26T10:34:09.6531759Z Cleaning up orphan processes
+2026-09-26T10:34:09.6857546Z Terminate orphan process: pid (2487) (java)
+2026-09-26T10:34:09.6902302Z Terminate orphan process: pid (2651) (java)
+2026-09-26T10:34:09.6928166Z Terminate orphan process: pid (2710) (java)

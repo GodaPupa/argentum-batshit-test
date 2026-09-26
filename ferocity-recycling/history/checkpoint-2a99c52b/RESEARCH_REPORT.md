@@ -1,17 +1,3 @@
-# Research checkpoint — 2026-09-26 11:53 UTC
-
-**No deck-strength conclusion is supported yet.** A/B/C remain unresolved, all randomized stage counts are0, and all18 initial sixties remain unchanged. The research stopping rule has not been reached. The authoritative current execution record is [CURRENT_STATUS.md](CURRENT_STATUS.md).
-
-This checkpoint publishes fresh source-bound LKI97 and all-era14,269 passing assertions, the separately repeated literal1,406, combat32, monarch72, artifact policy24, diagnostics12, bundle16, Brew25 and Highway8, with all predecessor failures and actual source boundaries. These are mechanical/policy/process results. They do not select a deck, establish a matchup win rate, or demonstrate a Ferocity advantage.
-
-The combined first-cell source encountered an actual stale-loose-class versus correct-JAR SDK output discrepancy before its snapshot tests. That failure is being repaired as a build-output provenance issue. The planned53-class/440 common bank, full SDK/shared regression, final source publication/admission, and all16 first-cell interactive games remain outstanding. A successful one-action fresh replay is explicitly capped/unresolved and is not a completed game.
-
-The full earlier research narrative follows for history; its older checkpoint-specific pending statements are superseded by the current record above. It retains the bounded card-pool/search rationale and earlier evidence rather than silently rewriting accepted history.
-
-Environment follow-up: the forced SDK regeneration itself failed before tests on a disappearing synchronization temporary directory; a clean outside-workspace checkout with identical frozen source is being provisioned. The original attempt, binary discrepancy and regeneration failure remain preserved; no test or rule change is used to address this race.
-
----
-
 # Ferocity Recycling — research report
 
 ## Present conclusion
