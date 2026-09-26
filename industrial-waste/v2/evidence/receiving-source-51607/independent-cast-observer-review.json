@@ -1,0 +1,161 @@
+{
+  "schema": "industrial-cast-observer-independent-artifact-review-v1",
+  "reviewer": "actual nonauthor /root/manual",
+  "at_utc": "2026-09-26T22:07:34.714282+00:00",
+  "decision": "PASS_BOUNDED_135_CASE_RECEIVING_ARTIFACT_DISPOSITION",
+  "source": "51607c9d54ce402aca3a0e6f1c4e5a33e242154e",
+  "tree": "686cef8ddcb2cd3291cb465cf780bd0cbd774754",
+  "run": 36273004544,
+  "artifact": 10915639702,
+  "artifact_sha256": "b39ad75e094d73a25ddd5cf648d7b55a24c5d5f2d2b2aa5f0c26704b28f2e12d",
+  "artifact_bytes": 588422,
+  "live_github_artifact_metadata_verified": true,
+  "manifest_sha256": "6dbc3e128077d73c9ab04194eefdfe4a1bc8e616f9208f4daee47bd813191ce7",
+  "case_bank_sha256": "fbcd17ca4beda7da01a58fed7c627c66dc154bf4955d6b5556b02de9e0a82a97",
+  "cases": 135,
+  "stages": 18,
+  "failures": 0,
+  "errors": 0,
+  "skips": 0,
+  "commands": [
+    {
+      "command": 1,
+      "task": ":rules-engine:test",
+      "classes": 16,
+      "fresh_workers": 1,
+      "exit": 0,
+      "log_sha256": "17edfdcc74785226abc0ebd52d4a92262cc8b1febc7ced57a227e28ea897f7b6"
+    },
+    {
+      "command": 2,
+      "task": ":game-server:test",
+      "classes": 2,
+      "fresh_workers": 1,
+      "exit": 0,
+      "log_sha256": "0ba034177745bbd78fcb0f14d9c7c9be8721a83d8999209c690bd364b5a4e136"
+    }
+  ],
+  "recorded_source_pins_reconciled": 324,
+  "test_source_bytes_independently_rehashed": 18,
+  "actual_case_identity_comparison": "All135 exact class/name identities match the preserved original shared observer archive; all18 test-source byte hashes match independently fetched immutable Industrial manifest. No shared gameplay claim is transferred.",
+  "stages_verified": [
+    {
+      "class": "com.wingedsheep.engine.scenarios.PostBlockDeclarationPriorityScenarioTest",
+      "cases": 16,
+      "xml_sha256": "13b91d50b4049e562f344dc70d54504d0e28b6f2911b4970767010e3278100c1",
+      "test_sha256": "a73890b33b97ba47097fe86a22cf851a75ad8f3843b35f58cf4eb2439c82691d"
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.DeclareBlockersPriorityWindowTest",
+      "cases": 3,
+      "xml_sha256": "c0f18ffdadba22f67f7d51a9aa73a4195fb28795f526366ad0a9063d644f4cba",
+      "test_sha256": "cca06f4c7fa7f9dda5cd5001cbb31ac5e39b7c3b4f588e38ee5c170abba5870d"
+    },
+    {
+      "class": "com.wingedsheep.engine.multiplayer.MultiDefenderCombatTest",
+      "cases": 4,
+      "xml_sha256": "2a228508791f51df5c3cec1eadb2ad005b639567350bd63f951c5f360ba82ec3",
+      "test_sha256": "f434f2d0e81aea2040efe499f91c336531a8b347fc16c2f3d6a431df552f8e1d"
+    },
+    {
+      "class": "com.wingedsheep.engine.multiplayer.TwoHeadedGiantCombatTest",
+      "cases": 9,
+      "xml_sha256": "349a74a756203a1ae591ff12182d01d9a4f69495e1242cf790049758c817f8c7",
+      "test_sha256": "9f5c5205ea4539b5904c3342682510b40aadd4691291c599c8ef6f812a8b9855"
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.ActivationPriorityScenarioTest",
+      "cases": 9,
+      "xml_sha256": "f3c455e118c959a53b3fb88d84ca6249bfb000c2ef7c28f39883f6e2414dd4bf",
+      "test_sha256": "d14fe20f774f650d132f679966dc4eefe556cf48fb67d34fffdadd88fefda978"
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.NestedManaPaymentBoundaryScenarioTest",
+      "cases": 12,
+      "xml_sha256": "b4f888a5ed787a0c42778218d7e7d91c44ca6bfdd3e0cbe1bf63ea172393fe48",
+      "test_sha256": "d45876c5e64d3be6c6882c4317fbb192913c91b89b540b221eb43d03c96604a6"
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.BatchMayQuestionTest",
+      "cases": 7,
+      "xml_sha256": "cd844b9033b85b5f8f098e65cba1ba83bc57b2460cb89f31ac091795f5a85423",
+      "test_sha256": "11ef82e18f8d2a02ee83b874fb89d8567f7bc810e69709662ff2fedf9ac5cec4"
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.TriggerOrderingScenarioTest",
+      "cases": 6,
+      "xml_sha256": "3c8c9c12214cbe16f3f9f09905892896cd6d095386e36d2a26b8b4c84bf705b6",
+      "test_sha256": "e4d8ce58696a968126bb17d0e9403ff59ff99ce51e1efdba05a3c0ec846bfee5"
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.TriggerOrderingConcessionScenarioTest",
+      "cases": 1,
+      "xml_sha256": "8940b33ce24e54b087a1758428d8ec2edecee307e7e3bcf6a8814b1fe114b132",
+      "test_sha256": "b8f72093ef6b966e37616e14dec673bf79f13ffab8bcca7385b67d6134fdd167"
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.DamageSourceIdentityScenarioTest",
+      "cases": 5,
+      "xml_sha256": "4548bdfb40740cb60d5658aee4a1237f78376fc55062eef07b12a00798fdfbfa",
+      "test_sha256": "0a674ab29cf2d263dcccdec2ee0e599df1418db7fd11767b692cc4d2522da736"
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.DamageSourceTriggerScenarioTest",
+      "cases": 6,
+      "xml_sha256": "2c351456d74b3780f626f7e7a7bc27dffcf3e8454aaca6a6db44871e9c34c0b2",
+      "test_sha256": "f6ffca9fb9a75998ceb0854df4f49847e53d9a61c9d5a2d76ae9c790e3f63c86"
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.TargetedDepartedSourceLkiTest",
+      "cases": 4,
+      "xml_sha256": "53fc04686ab03c45ee96136e34f517d8abd656241a48dd6e91c1b26107f113f5",
+      "test_sha256": "25125e95e9029c8f5aaed32897ddaa91bd29d562083af59262b32aec4761c342"
+    },
+    {
+      "class": "com.wingedsheep.engine.handlers.PredicateEvaluatorRecordTest",
+      "cases": 19,
+      "xml_sha256": "270eee7520998d2dcb6c25676fae68a028c8d8d56487a196adebde864e2f568f",
+      "test_sha256": "8b17caf224042dccd16fb438133c0eadc00697d9de4350962c49df925eb6adde"
+    },
+    {
+      "class": "com.wingedsheep.gameserver.session.PostBlockDeclarationSessionTest",
+      "cases": 2,
+      "xml_sha256": "7f9ae29fcc1df2dcbe8aa69e91d6ffab8e36199b529e41d7538ee389277a2e71",
+      "test_sha256": "4d996d5d850abcfe0f7a6300fb85d71efe0d68968ac6284031b8a3491c70ae06"
+    },
+    {
+      "class": "com.wingedsheep.gameserver.session.TwoHeadedGiantSessionTest",
+      "cases": 10,
+      "xml_sha256": "b9f030828e4d024d1afe49ceb3cec4478340979dbece9a30bd4b2fa93e135b94",
+      "test_sha256": "13d3447a79da2e154b6819f8718ff444013235c71e6ed6210c946f2af4aa2604"
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.ManaAbilityColorChoicePipelineTest",
+      "cases": 4,
+      "xml_sha256": "4666a7b1de54f05dcd8769c689d2376d467476ff22908a21aca63e7ccfabd5c8",
+      "test_sha256": "a9ae644130670d4ca9d7fca149f8f13d82f4ac83b04ee6788f0e304bd772b28e"
+    },
+    {
+      "class": "com.wingedsheep.engine.handlers.effects.zones.MoveToZoneEffectExecutorTest",
+      "cases": 10,
+      "xml_sha256": "30c2c3fe0bb25498d90a77f62837a24b821697e9a6d2a93473289804231efc96",
+      "test_sha256": "c37bbf20129b0a3cb0edd043f0a341b3d8a47abb627d01568a10dc265e0c32f7"
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.CastObserverSourceLkiTest",
+      "cases": 8,
+      "xml_sha256": "14dac2b65b2f7342abd4a3f1e52e96294ad57863c6e7c1da16a2add03fa1594d",
+      "test_sha256": "29622301652a19f6f9b73aaf7cc700524f5f23a91764f5596c6520dbc3d6da96"
+    }
+  ],
+  "source_boundary": "All324 recorded receiving bindings match the independently fetched immutable source manifest and both archived binding records. This review does not independently refetch all324 production files or replace whole-runtime source/dependency review. Exact source tree equals previously independently reviewed94af runtime tree.",
+  "limitations": [
+    "Two actual fresh commands cover16engine classes and2server classes; this is not18 independent command executions.",
+    "This is bounded raw source-bound135-case receiving evidence only; full Industrial combined-source readiness, additional priority/token/runtime/artifact gates and separate R1 execution authority remain required.",
+    "No local JVM replay, resource probe, new workflow dispatch, official allocation or gameplay was executed by this review.",
+    "Non-author agent review is not GitHub approval or complete R1 admission."
+  ],
+  "gameplay_authorized": false,
+  "official_allocations_initialized": 0,
+  "new_tests_executed": 0
+}
