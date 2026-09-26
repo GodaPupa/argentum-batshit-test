@@ -1,31 +1,44 @@
-# Argentum critical path
+# Argentum six-project critical path
 
-Remote reconstruction: 2026-09-26 12:54 UTC; execution update 13:04 UTC. This ledger records source and
-execution state; deterministic qualification is not deck-performance evidence.
+Checkpoint: **2026-09-26 22:01 UTC**. Continue the existing bounded programs. Frozen protocols and amendments, exact-source acceptance, durable claims and actual attempt records govern. **No official research games, seed consumption, exposed matchup outcomes, deck changes or promotions occurred during this takeover.**
 
-| Project / exact remote HEAD | Next gameplay gate | Exact blockers / immediate action | Official counters | Running workflow |
-|---|---|---|---|---|
-| Pest — `878fe1f860c748782ae8c22b994e4c68141166d9` (`pest-control/tier1-postboard-support-faerie-macabre`); Torch `f24d715f5929c4f328b526de7d0551c825114db3` | Fresh frozen Tier-1/postboard block | Integrate Torch/Faerie; correct NO-SOURCE task routing for Faerie, Torch, Relic, Jack, Seas and verify actual JUnit cases; then boarding/pilot/execution freeze | Fresh games/actions/outcomes 0; historical 81 quarantined | None at reconstruction |
-| Izzet — `33e8ee64c6e1752f6c5593531117ea2e85002d82` (`mayhem/izzet-bestow-integration`) | Conditional Position 1 / 12 | Five exact identities (Benevolent Blessing, Forge of Heroes, Opal Palace, Snake Umbra, Vines of Vastwood); frozen-deck PDH initializer, pilot/ledger/replay binding | Generated 12; consumed/initialized/completed/exposed 0 | None at reconstruction |
-| Manual — `8f50c5d4fcee177fa6477d75c43e70794d75ddb6` (`manual-transmission/phase2-cedh`) | Capability 36, then primary 864 | Exact card/opponent coverage; real three-gear/opponent pilots; typed engine collectors, replay, durable journal, guarded admission. Reality Shift artifact audited: 538 cases pass, Manual 85/100; acceptance receipt prepared | Capability 0/36; primary 0/864; exposure 0 | None; all nine HEAD workflows successful |
-| Industrial — `0b92793e6e19ca53c105f08ff26da511f2593853` (`industrial-waste/v2-structural-redesign`) | R1 512 | Accept audited artifact contract; compose official allocation runner; complete frozen metric projection including activated colored costs; remote claim + durable journal + runtime authorization | Allocations/actions/outcomes 0 | None; HEAD CI 36240909625 and contract 36240907615 successful |
-| Sphinx — `4a97265559e989df937e8c09f9a42d58a4e9d79d` (`sphinx-approach/reconstruction-stage-e`) | Reconstructed Stage E | Repair unsupported card metadata builder properties; exact Approach/Goliath/Snap scenarios and linter registration; prospective lists/pilots/competent comparator/benchmark/execution freeze. Actor-information compatibility also required | Seeds/initialized/outcomes 0 | CI 36242920611 failed compilation; failed evidence preserved |
-| Ferocity — research `7052de0b64d5d01c3a31465d19157d95089b7d40`; review `8102098e830f1740d02e99e959b5a45cd1a5e110` | A3-F4/A3-N0 vs Red, first D2 16 | Exact combined runtime source publication/qualification; actor information/replay/admission. Combined source currently owned by another active execution context; coordinator audit only | All randomized development/evaluation/confirmation/postboard 0 | No remote job at reconstruction; separate local combined-source work active |
+## Shared receiving
 
-## Shared work and ownership
+Combined runtime `994383d4a9495bcb34d5aae0e69181bcf4c04d45`, tree `4b8f4d155a37e6b66ab623d344b19cedf435d845`, has independently reviewed **407 passes** (priority220, observer135, combat32, token20), 250 exact source bindings, and successful full CI. Four originally cached modules were then freshly executed: **1210 passes, three unchanged skips, 87 real suites**. The disabled-spec reporting marker contributes zero tests. [Complete original archives and reviews](https://github.com/GodaPupa/argentum-batshit-test/tree/9bed397f31f6125d79982e07a78f960197c06269/lab-coordinator/shared-capabilities/evidence/combined-994383-takeover) are preserved at `9bed397f`.
 
-- Root: this ledger; shared create-only evidence files/hash-linked append journal;
-  remote one-shot claim reuse published at `2ec67cd048f89a735655f24d7fa90c81e6664785`
-  on `lab-coordinator/critical-path` (PR #176), independently reviewed, 39 deterministic
-  integrity/provenance tests passed; build scheduling. No gameplay authorization.
-- Pest: accepted Torch integration in `CostStaticAbilities.kt`, `CastSpellHandler.kt`,
-  `CostCalculator.kt`; exact-card closure gate. Preserve other branch deltas.
-- Sphinx: three exact-card scenario files and narrow `CardLinter.kt` registration.
-- Industrial: R1 runtime/metric adapter and project evidence only.
-- Izzet: exact frozen-deck bootstrap and required replay fixtures only.
-- Manual: project typed engine-to-telemetry adapter; no duplicate generic journal.
-- Ferocity: independent read-only admission/first-cell audit; no competing edits to
-  the other active context's combined source.
+[PR203](https://github.com/GodaPupa/argentum-batshit-test/pull/203) repaired the inherited postblock gate’s nine obsolete donor hashes and merged into PR191 at `bb42622219df3275c21ebf597ea1edaa82d15ec1`, tree `3d6a178f3b8168444d7f09b7dd212d3e4d567036`. It preserves the original donor/fixture manifests, 54 original bindings and 115-engine/12-server commands; all250 combined pins are checked before and after. Actual127 run `36273169569` and CI `36273169580` succeeded; independent raw review and complete evidence are published at [7115ceb7](https://github.com/GodaPupa/argentum-batshit-test/commit/7115ceb7). PR191 itself remains unmerged. Nine new source-bound receiving checks are active on its exact merged head; their actual results and normal merge gates still control further integration.
 
-Heavy local tests use the repository's `just` semaphore with one build slot.
-Deck identities, seed namespaces, results, promotion rules and budgets stay isolated.
+Shared actor/mulligan source `c38fd802` passed64/64. [Evidence675d8092](https://github.com/GodaPupa/argentum-batshit-test/commit/675d80921d0a7577458b83abe4c9d8e9154db12d) retains the original compile failure. These component passes do not admit complete project runtimes. Main remains `9ca83110`, accepting reusable claim/journal capability only.
+
+## What prevents each next admissible experiment?
+
+| Project | Verified official counters | Current progress and next gate |
+|---|---|---|
+| Pest | Fresh0; historical81 quarantined; original Monster claim consumed and four reservations retired | [Actor72 evidence98377f06](https://github.com/GodaPupa/argentum-batshit-test/commit/98377f068b005b9b46e288dd98dfc7baca5e4259) preserves the original failure. MC10 proves raw/canonical option-order nonequivalence, not policy acceptance. Ten boarding plans already have construction evidence. Need a proper policy disposition, complete pair pilots/shared/replay, C2/A2 replacement authority and complete exclusions. |
+| Izzet | Existing12 seeds; consumed/initialized/completed/exposed0 | KEEP_V07 and accepted Forge base50eca remain. [Diagnosticsbff4de45](https://github.com/GodaPupa/argentum-batshit-test/commit/bff4de452a6fca076e3c42fe7c2590862c0c234d) retain exact base1pass and candidate3pass/5fail. Baseline drift is seven postblock pass pairs; Dalkovan tokens attack their controller on c47e. No golden changed. Receive scoped shared fixes, resolve remaining decisions/opponent mechanics, then complete pilots/replay and conditional Position1 admission. |
+| Manual | Capability0/36; primary0/864 | PR200/201 merged receiving `ffbfaa383eba59ae7c129f651769fdf388caedb4`; canonical6abfb remains unchanged. [Raw receipt52095c6d](https://github.com/GodaPupa/argentum-batshit-test/commit/52095c6d93988258a0c6cbca787fa73a2b78ed16) verifies540/35: precisely old538 plus WorldBreaker2, zero failures/errors/skips. Inventory87/100 own;334 unresolved physical entries across all8 decks,321 opponent-only. Need remaining mechanics, lawful gear/opponent pilots, collectors and complete canonical/shared/replay/durable admission. |
+| Industrial v2 | R1 0/512; no R1 claim | Reviewed runtime correction merged at51607, with [complete original evidence0de8a955](https://github.com/GodaPupa/argentum-batshit-test/commit/0de8a955b8f81f6ce48304bcde42eaa6116ae4e9). A newly exposed receiving-card allowed-key defect was preserved and prospectively repaired at `e5a0facd17af60f099463f5ebe3e5e4afbe4bd0d`. Card run36273718882 succeeded; actual raw artifact review remains required. Need complete receiving/metric/replay/journal acceptance and separate R1 permit. |
+| Sphinx | Stage-E seeds/initializations/outcomes0 | Coherent receiver `a0c5b995c2829c0b4069562b1f1eede8a820dd97` preserves shared runtime, generic actor/mulligan and Sphinx blue/seat extensions under independent source review. The reviewed999 existing-case receiving run36273602269 is active. This is software qualification, not a Stage-E sample. Complete equal pilot competence and the execution freeze remain required. Original A–D bytes remain unrecovered. |
+| Ferocity | Randomized D2/D3/E/C/S/P0 at verified records | [Source08 and recovered-attempt evidence37f325ce](https://github.com/GodaPupa/argentum-batshit-test/commit/37f325ce6e0e55417ef45d7a0dab2b29ea9f2abd) preserve508 deterministic passes, the consumed4-case browser attempt, exact Gift template and later resource attempts. **No calibration commands are currently admitted.** Reconcile scope44 adoption and the required prospective environment disposition; continue independent source08 receiving/offline-bundle work before first16-game D2 admission. |
+
+## Ferocity authority and actual resource attempts
+
+**Effective D3 is240, and S precedes E.** Adopted amendment `901729f259d044dfa157f745b8d764cb454922ef`, the active contract and adopted independent review override the retained480-game detailed draft. New variants receive30 games; incumbents retain D2 without resampling. This reporting correction creates no new budget.
+
+The recorded historical checkout existed. Its exact Gift journal is471219 bytes, SHA256 `fa4cbc67fc5482d298ddf7e92968349b6eba584c4328c851d2bda86ce0277c5a`. Later scope41/44 records were recovered and independently checked against original paths, complete hash chains and all receipt-listed files:
+
+- Scope41 write supervisor failed a641449984-byte free-space preflight; no JVM started.
+- Scope44's extra write supervisor ran and exited0, producing134166907 bytes/2302 records. Its single-reader supervisor then failed a608174080-byte preflight before JVM startup; double-reader was retired under the strict stop.
+- Three supervisor claims and one writer JVM are observed. **There is no reader measurement and no remaining admitted calibration command.**
+- Scope44 adoption remains unresolved. Its plan/assessment requires a new explicit environment disposition after the reader preflight failure. Preserve actual attempts without inventing retroactive approval or a budget reset.
+
+The recovered checkout is a different historical source, not source08 runtime identity. Its56 recovered files, full synthetic journal and independent preservation reviews are now durable at37f325ce. Do not mutate or clean the historical checkout. The former remote “unspent” inference is superseded; this is a technical admission gap, not a deck result.
+
+## Jobs, ownership and continuity
+
+PR203’s127-case artifact is independently reviewed and published; PR203 merged into PR191, whose nine new checks are active. Sphinx999 is active. Industrial’s seven e5a0 card/CI/runtime and related receiving runs succeeded; receiving raw artifact dispositions remain separate. Predecessor51607 runtime and CI also succeeded. That predecessor CI had18 cached test tasks and one fresh AI task; the independently reviewed fresh94af same-tree CI remains its evidence basis. Do not call the cached tasks freshly executed.
+
+Manual and Izzet have no remaining jobs from their completed attempts. Root owns shared integration and the separate continuation branch. External `lab-coordinator/critical-path` remains8076; its prior status/handoff are preserved in history. PR202's first checkpointbc6df981 passed CI36272444032; the current update reconciles subsequent evidence.
+
+Local space is exhausted or nearly exhausted. Use small reads and reviewed remote validation; owners may remove only verified, reproducible copies after durable preservation. **No Ferocity calibration is currently admitted, locally or in CI.** No automation changed. See [NEXT_CHAT_HANDOFF.md](NEXT_CHAT_HANDOFF.md) for exact refs, attempts, evidence locations and current actions. **No deck-performance evidence changed, and no program reached its scientific stopping rule.**
+
