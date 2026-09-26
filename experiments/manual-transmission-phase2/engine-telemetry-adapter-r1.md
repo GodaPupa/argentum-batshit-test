@@ -82,3 +82,14 @@ Its Python cross-language step was skipped because Kotlin qualification failed.
 These failed deterministic attempts do not initialize any official allocation or
 change any outcome counter. The exact post-block priority receiver blocker is
 recorded separately in `post-block-priority-receiver-blocker-r1.json`.
+
+At source `ca024f7723138ea4f0e7fbeb5264f3dd234d5d22`, focused run
+[36245828702](https://github.com/GodaPupa/argentum-batshit-test/actions/runs/36245828702)
+compiled and ran ten cases: nine passed, and the personal-turn fixture failed
+when it tried to pass through cleanup while owing a discard from an eight-card
+hand. The adapter correctly retained the engine rejection. This is a fixture
+defect: the successor makes an ordinary first-turn land play, then keeps the same
+departed-seat clock and exact replay assertions. The failed artifact is retained
+as `10908065202` (16,335 bytes), GitHub SHA-256
+`4725694b6b1359cfa08bb682f13c752f6a46f536b3be9ef5fc4305cde6e539f5`.
+Passing individual cases do not make the failed suite an accepted component.

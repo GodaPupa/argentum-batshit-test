@@ -118,6 +118,9 @@ class PhaseTwoTelemetryAdapterTest : FunSpec({
         val initial = initial()
         val a = adapter(initial)
         toMain(a, initial)
+        // Commander draws on the first turn. Make a normal land play so this clock fixture
+        // reaches cleanup with seven cards and does not owe an unrelated discard decision.
+        a.process(PlayLand(initial.playerIds[0], a.state.getHand(initial.playerIds[0]).first())).error shouldBe null
         a.process(Concede(initial.playerIds[1])).error shouldBe null
         var passes = 0
         while (a.state.turnNumber < 2) {
