@@ -21,5 +21,6 @@ dependencies {
     testImplementation(libs.kotestRunner)
     testImplementation(libs.kotestAssertions)
     testImplementation(libs.kotestProperty)
-    testImplementation(kotlin("reflect"))
+    // Canonical actor schema allowlists inspect exact runtime data-class fields and enum entries.
+    implementation(kotlin("reflect"))
 }
