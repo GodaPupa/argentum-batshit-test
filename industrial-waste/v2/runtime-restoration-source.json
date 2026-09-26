@@ -1,0 +1,27 @@
+{
+  "schema": "shared-observed-runtime-restoration-source-v1",
+  "status": "PROSPECTIVE_SOURCE_REVIEW_REQUIRED",
+  "donor_path": "ferocity-recycling/tools/restore_observed_runtime.py",
+  "donor_sha256": "1acd8dc088352000b5a29434f8584eb575f3bb664addc68612d90cc93916439f",
+  "donor_independent_review_sha256": "2673cfb6cfe5788d589a944cb0399887303a2945cfc5a2d1d26a5e7ccf56474f",
+  "shared_core": "tools/restore_observed_runtime.py",
+  "changes": [
+    "Extract the reviewed relocation body into a function with immutable request inputs and explicit receiving prefix, capture folder, schemas, module and caller identity.",
+    "Preserve exact ZIP/receipt/observation/capture chain, ordered classpath, tar order, member bytes, Java identity and exclusive destination checks.",
+    "Add caller and shared-core source hashes to the relocation receipt.",
+    "Industrial wrapper binds only the observed AI capture paths and refuses the official prepared environment."
+  ],
+  "source_sha256": {
+    "tools/restore_observed_runtime.py": "f9998ba56796467680e18fde6423047dfe1db2348d07e2c08574b0876d664329",
+    "industrial-waste/v2/restore_ai_runtime.py": "6fd9a239dcaeba9aaaef676b54c54c2400e1cca0085f5abed26f257dbc3f28ef"
+  },
+  "limits": [
+    "Original Ferocity wrapper source and tests remain unchanged; receiving adoption remains separate.",
+    "Read-only original artifacts are relocated to a new exclusive directory; no build, download, JVM launch, engine initialization, seed or game execution.",
+    "The source-head parameter is bound to capture receipts, not authenticated against repository HEAD by this helper; downstream identity/admission remains required.",
+    "Java executable identity is checked, not the complete JDK distribution or environment.",
+    "No restoration, runtime or gameplay acceptance is asserted before actual artifact verification and independent review."
+  ],
+  "official_games": 0,
+  "official_execution_authorized": false
+}

@@ -1,0 +1,34 @@
+{
+  "schema": "shared-runtime-relocation-non-author-source-review/v1",
+  "reviewer": "/root/sphinx",
+  "independent_non_author": true,
+  "source_author": "/root/industrial",
+  "source": "bf4a8b83383f84d805931991271c10d07735e968",
+  "tree": "733fbb62e0e8343a5216507c4a87b41701432b4c",
+  "disposition": "ACCEPT_SHARED_EXTRACTION_AND_INDUSTRIAL_WRAPPER_SOURCE_ONLY",
+  "donor_sha256": "1acd8dc088352000b5a29434f8584eb575f3bb664addc68612d90cc93916439f",
+  "preserved_donor_review_sha256": "2673cfb6cfe5788d589a944cb0399887303a2945cfc5a2d1d26a5e7ccf56474f",
+  "source_sha256": {
+    "tools/restore_observed_runtime.py": "f9998ba56796467680e18fde6423047dfe1db2348d07e2c08574b0876d664329",
+    "industrial-waste/v2/restore_ai_runtime.py": "6fd9a239dcaeba9aaaef676b54c54c2400e1cca0085f5abed26f257dbc3f28ef",
+    "industrial-waste/v2/runtime-restoration-source.json": "4b2ee31b29ee4869b89c534080543a4310f9371ec2867391dbd66ddeb7b2dd34"
+  },
+  "verified": [
+    "Full195line core,33line wrapper, source manifest and exact earlier donor review read. Mechanical diff against exact reviewed185line Ferocity helper preserves every extraction/hash/path/order/member check.",
+    "Immutable request replaces CLI parsing in shared core. Explicit receiver prefix/folder both validated as safe relative paths; expected module and schemas are fixed by Industrial wrapper.",
+    "Exact ZIP/receipt/observation/capture/source/Java chain, single observed worker, classpath ordering and compressed tar identity remain required before member writes.",
+    "Regular-file-only streaming, exact names/order/sizes, exclusive output and writes, duplicate JSON/ZIP/member rejection, no symlinks or archive extractall, final hashes and pre/post input checks unchanged.",
+    "New receipt fields bind caller/core source byte hashes; no runtime/process/JVM call added. Industrial wrapper rejects its official prepared environment and binds observed AI producer folder/schema/module.",
+    "Both Python sources AST-parse without helper invocation. Original Ferocity source and tests are untouched."
+  ],
+  "limitations": [
+    "Source-head is capture-receipt binding, not verification of current repository HEAD; downstream compiled-source identity and admission remain required.",
+    "Java pin is executable binary, not complete JDK distribution/environment.",
+    "Runtime archive restoration, raw artifact validity, restored classpath execution, project pilot/runtime admission and gameplay are not accepted by this source review.",
+    "A receiving artifact must actually contain the explicit receiver prefix; this review does not fabricate or relocate a ZIP."
+  ],
+  "helpers_executed": 0,
+  "jvm_launches": 0,
+  "games": 0,
+  "github_approval_submitted": false
+}
