@@ -117,4 +117,58 @@ class IndustrialWasteV2CapabilityRunnerTest : FunSpec({
         }
     }
 
+
+    test("captured one-turn action transcript replays exactly for all four frozen lists") {
+        val frozen = listOf(
+            "industrial-waste/control/industrial-waste-v1.0-submitted.dck",
+            "industrial-waste/v2/candidates/compact-loop.dck",
+            "industrial-waste/v2/candidates/recursive-eggs.dck",
+            "industrial-waste/v2/candidates/lean-tron-hybrid.dck",
+        )
+        val json = Json {
+            serializersModule = engineSerializersModule
+            allowStructuredMapKeys = true
+            encodeDefaults = true
+        }
+
+        fun fresh(path: String) = GameTestDriver().apply {
+            MtgSetCatalog.all.forEach { set ->
+                registerCards(set.cards)
+                registerCards(set.basicLands)
+            }
+            initGame(
+                loadMain(path),
+                Deck.of("Forest" to 60),
+                skipMulligans = true,
+                startingLife = 20,
+                startingPlayer = 0,
+                seed = regressionSeed,
+            )
+        }
+
+        for (path in frozen) {
+            val source = fresh(path)
+            val transcript = IndustrialWasteV2CapabilityRunner(
+                source,
+                source.player1,
+                source.player2,
+            ).runOneMeasuredTurnWithTranscript()
+
+            transcript.actions.size shouldBe transcript.status.submittedActions
+            transcript.status.submittedActions shouldBe transcript.status.acceptedActions
+            val expectedState = json.encodeToString(GameState.serializer(), source.state)
+            val expectedEvents = source.events.map { it.toString() }
+
+            val replay = fresh(path)
+            for (action in transcript.actions) {
+                val result = replay.submit(action)
+                result.error shouldBe null
+                (result.isSuccess || result.isPaused) shouldBe true
+            }
+
+            json.encodeToString(GameState.serializer(), replay.state) shouldBe expectedState
+            replay.events.map { it.toString() } shouldBe expectedEvents
+        }
+    }
+
 })
