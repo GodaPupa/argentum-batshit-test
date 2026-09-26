@@ -1,0 +1,177 @@
+name: Izzet Position-1 Forge Qualification
+
+on:
+  push:
+    branches: [mayhem/izzet-forge-commander]
+    paths:
+      - .github/workflows/izzet-v09-position1-forge-qualification.yml
+      - mtg-sdk/src/main/kotlin/**
+      - rules-engine/src/**
+      - mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/c18/**
+      - mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/ForgeOfHeroesScenarioTest.kt
+      - gym/src/test/kotlin/com/wingedsheep/gym/IzzetScience*Test.kt
+
+permissions:
+  contents: read
+
+concurrency:
+  group: izzet-position1-forge-qualification
+  cancel-in-progress: false
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      GRADLE_LOCK_SLOTS: '1'
+      JAVA_TOOL_OPTIONS: -XX:MaxMetaspaceSize=768m
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.sha }}
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: gradle/actions/setup-gradle@v6
+
+      - name: Bind exact source and frozen deck identities without loading a gameplay seed
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/reports/izzet-forge
+          python3 - <<'PY'
+          import hashlib, json, os, pathlib, subprocess
+          expected = {
+            'izzet-science/v0.7-control.md': '726f5e9458b46dda30b33a6ce9f3c3237b25d6e11b81dac85308c3065c108a01',
+            'izzet-science/opponents/veteran-beastrider-commander-clash-2025.txt': 'c3ab6ee8e37a78219e7bbb7c6a75c634d78c1eb4965ab0db3abd5d853398b0be',
+          }
+          source = subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip()
+          tree = subprocess.check_output(['git', 'rev-parse', 'HEAD^{tree}'], text=True).strip()
+          observed = {path: hashlib.sha256(pathlib.Path(path).read_bytes()).hexdigest()
+              if pathlib.Path(path).is_file() else None for path in expected}
+          status = subprocess.check_output(['git', 'status', '--porcelain'], text=True)
+          identity = {'requested_head': os.environ['GITHUB_SHA'], 'actual_head': source,
+              'actual_tree': tree, 'expected_deck_hashes': expected,
+              'observed_deck_hashes': observed, 'checkout_status': status}
+          pathlib.Path('build/reports/izzet-forge/source-binding.json').write_text(json.dumps(identity, indent=2) + '\n')
+          assert source == os.environ['GITHUB_SHA'], identity
+          assert observed == expected, identity
+          assert not status.strip(), identity
+          PY
+
+      - name: Qualify commander designation and projection before compiling the card corpus
+        shell: bash
+        run: |
+          set -euo pipefail
+          scripts/gradle-locked :rules-engine:test --tests '*CommanderStatePredicateTest' --tests '*AffectsFilterResolverStatePredicateTest' --max-workers=1 -PkotlinCompileParallelism=1 -Pkotlin.compiler.execution.strategy=in-process -Dorg.gradle.jvmargs=-Xmx4g --info --stacktrace 2>&1 | tee build/reports/izzet-forge/predicates.txt
+
+      - name: Qualify exact Forge behavior and the receiving PDH bootstrap and readiness guards
+        shell: bash
+        run: |
+          set -euo pipefail
+          scripts/gradle-locked :mtg-sets:2017-2022:tests:test --tests '*ForgeOfHeroesScenarioTest' :gym:test --tests '*IzzetSciencePosition1BootstrapTest' --tests '*IzzetSciencePdhMechanicsQualificationTest' --tests '*IzzetScienceVeteranBeastriderEngineReadinessTest' --max-workers=1 -PkotlinCompileParallelism=1 -Pkotlin.compiler.execution.strategy=in-process -Dorg.gradle.jvmargs=-Xmx4g --info --stacktrace 2>&1 | tee build/reports/izzet-forge/exact-card-and-pdh.txt
+
+      - name: Generate ordinary snapshots and reject every change except the new C18 Forge record
+        shell: bash
+        run: |
+          set -euo pipefail
+          scripts/gradle-locked :mtg-sets:test --tests '*CardDefinitionSnapshotTest' -DupdateSnapshots=true --max-workers=1 -PkotlinCompileParallelism=1 -Pkotlin.compiler.execution.strategy=in-process -Dorg.gradle.jvmargs=-Xmx4g --info --stacktrace 2>&1 | tee build/reports/izzet-forge/snapshot-generation.txt
+          python3 - <<'PY'
+          import json, pathlib, shutil, subprocess
+          path = 'mtg-sets/src/test/resources/snapshots/cards/C18.json'
+          changed = set(subprocess.check_output(['git', 'diff', '--name-only'], text=True).splitlines())
+          changed |= set(subprocess.check_output(['git', 'ls-files', '--others', '--exclude-standard'], text=True).splitlines())
+          report = pathlib.Path('build/reports/izzet-forge')
+          (report / 'generated-changed-paths.json').write_text(json.dumps(sorted(changed), indent=2) + '\n')
+          (report / 'generated-diff.patch').write_bytes(subprocess.check_output(['git', 'diff', '--binary']))
+          snapshot_root = pathlib.Path('mtg-sets/src/test/resources/snapshots/cards')
+          for candidate in changed:
+              file = pathlib.Path(candidate)
+              if file.is_file() and file.is_relative_to(snapshot_root):
+                  destination = report / 'snapshot-candidates' / file.relative_to(snapshot_root)
+                  destination.parent.mkdir(parents=True, exist_ok=True)
+                  shutil.copyfile(file, destination)
+          if pathlib.Path(path).is_file():
+              shutil.copyfile(path, report / 'C18.json')
+          assert changed == {path}, changed
+          assert subprocess.run(['git', 'cat-file', '-e', 'HEAD:' + path], capture_output=True).returncode != 0
+          text = pathlib.Path(path).read_text()
+          assert text.startswith('// Forge of Heroes\n') and text.count('\n// ') == 0
+          assert json.loads(text.split('\n', 1)[1])['name'] == 'Forge of Heroes'
+          print('FORGE_ONLY_C18_ADDITION_PASS')
+          PY
+
+      - name: Verify all snapshots with updating disabled and preserve lint and facade boundaries
+        shell: bash
+        run: |
+          set -euo pipefail
+          scripts/gradle-locked :mtg-sets:cleanTest :mtg-sets:test --tests '*CardDefinitionSnapshotTest' --tests '*CardLintTest' --tests '*FacadeBoundaryTest' -DupdateSnapshots=false --max-workers=1 -PkotlinCompileParallelism=1 -Pkotlin.compiler.execution.strategy=in-process -Dorg.gradle.jvmargs=-Xmx4g --info --stacktrace 2>&1 | tee build/reports/izzet-forge/snapshot-verification-and-lint.txt
+
+      - name: Require actual test cases and emit component-only evidence
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import hashlib, json, os, pathlib, subprocess, xml.etree.ElementTree as ET
+          expected = {
+            'CommanderStatePredicateTest': ('rules-engine', 3),
+            'AffectsFilterResolverStatePredicateTest': ('rules-engine', None),
+            'ForgeOfHeroesScenarioTest': ('mtg-sets/2017-2022/tests', 10),
+            'IzzetSciencePosition1BootstrapTest': ('gym', 7),
+            'IzzetSciencePdhMechanicsQualificationTest': ('gym', 7),
+            'IzzetScienceVeteranBeastriderEngineReadinessTest': ('gym', 16),
+            'CardDefinitionSnapshotTest': ('mtg-sets', None),
+            'CardLintTest': ('mtg-sets', None),
+            'FacadeBoundaryTest': ('mtg-sets', None),
+          }
+          suites = {}
+          for name, (module, count) in expected.items():
+              files = list(pathlib.Path(module + '/build/test-results/test').glob('TEST-*.' + name + '.xml'))
+              assert len(files) == 1, (name, files)
+              suite = ET.parse(files[0]).getroot()
+              cases = suite.findall('testcase')
+              assert cases and (count is None or len(cases) == count), (name, len(cases), count)
+              assert all(not any(case.find(tag) is not None for tag in ('failure', 'error', 'skipped')) for case in cases), name
+              names = [case.attrib['name'] for case in cases]
+              if name == 'AffectsFilterResolverStatePredicateTest':
+                  assert any('IsCommander projection matches designated cards' in case for case in names)
+              if name == 'CardDefinitionSnapshotTest':
+                  assert any('C18 (Commander 2018): card trees match golden' in case for case in names)
+              suites[name] = {'cases': names, 'xml_path': str(files[0]), 'xml_sha256': hashlib.sha256(files[0].read_bytes()).hexdigest()}
+          report = pathlib.Path('build/reports/izzet-forge')
+          manifest = {
+            'schema': 'izzet-position1-forge-qualification-v1',
+            'status': 'TARGETED_COMPONENT_QUALIFICATION_ONLY',
+            'source_head': os.environ['GITHUB_SHA'],
+            'source_tree': subprocess.check_output(['git', 'rev-parse', 'HEAD^{tree}'], text=True).strip(),
+            'run_id': os.environ['GITHUB_RUN_ID'],
+            'suites': suites,
+            'snapshot_sha256': hashlib.sha256((report / 'C18.json').read_bytes()).hexdigest(),
+            'remaining_registry_gaps': ['Benevolent Blessing', 'Opal Palace', 'Snake Umbra', 'Vines of Vastwood'],
+            'full_game_guards_remaining': 5,
+            'full_integration_accepted': False,
+            'gameplay_authorized': False,
+            'official_seeds_consumed': 0,
+            'official_games_initialized': 0,
+            'official_games_completed': 0,
+            'outcomes_exposed': 0,
+          }
+          (report / 'manifest.json').write_text(json.dumps(manifest, indent=2) + '\n')
+          PY
+
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: izzet-position1-forge-qualification
+          path: |
+            build/reports/izzet-forge
+            rules-engine/build/test-results/test/TEST-*CommanderStatePredicateTest.xml
+            rules-engine/build/test-results/test/TEST-*AffectsFilterResolverStatePredicateTest.xml
+            mtg-sets/2017-2022/tests/build/test-results/test/TEST-*ForgeOfHeroesScenarioTest.xml
+            gym/build/test-results/test/TEST-*IzzetScience*Test.xml
+            mtg-sets/build/test-results/test/TEST-*CardDefinitionSnapshotTest.xml
+            mtg-sets/build/test-results/test/TEST-*CardLintTest.xml
+            mtg-sets/build/test-results/test/TEST-*FacadeBoundaryTest.xml
+          if-no-files-found: error
+          retention-days: 90
