@@ -1,0 +1,155 @@
+{
+  "schema": "shared-payment-independent-artifact-review-v1",
+  "reviewed_utc": "2026-09-26T17:18:20.336442+00:00",
+  "reviewer": "/root/ferocity",
+  "review_type": "NON_AUTHOR_AGENT_ARTIFACT_REVIEW",
+  "status": "ACCEPT_SHARED_80_COMPONENT_ONLY",
+  "source_head": "cdd710c951450da9ac14a8ad1646c4e1ae937610",
+  "source_tree": "a1b239b6e1a6dd1bcff09051e7d7f25c2788ca09",
+  "run_id": 36257784643,
+  "run_attempt": 1,
+  "job_id": 108447737834,
+  "artifact_id": 10910653613,
+  "live_run_job_conclusion": "success",
+  "archive_path": "/workspace/scratch/dcc9d005d11f/attachments/b3975b2c-dc2b-4cbb-b4d2-34e91a2ba4ef/shared-payment-36257784643.zip",
+  "archive_bytes": 251846,
+  "archive_sha256": "7d7ffe70be0c471dfbb1482ec14167531cdf5ce3df8097ee81bfbdb1f78a7962",
+  "result_sha256": "0d4f912bef70def99ea126433d047602fab35078ff2bed8115d687a78cb454fb",
+  "source_binding_sha256": "588c3166c363182e1f826c4f8fbe531958e77be1cbe8aa51ff47621a31175ffb",
+  "six_source_pins_verified_against_exact_git": {
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/ManaPaymentPolicyWitnessTest.kt": "8dff0d27e275955932f3873fe4f54c352c4da390d5dc95b837999a24b2a65cab",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/mana/ManaPaymentFeasibility.kt": "c3092ac2e0d8fcdd6f9dfb09fc8b2ce5fbd11049c12def4527a9162bbd872a79",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/mana/ManaSolver.kt": "8d01d433f402067e29e91e57907d9460408f72e7d35230e3e35cb439b6277daa",
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/ManaPaymentFeasibilityTest.kt": "1bbbd84048be49cf676f0e9222d5b44735f323ccd11add4322d51ba0f93f0641",
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/PaidFilterManaSolverTest.kt": "5d8590e625f46e98ad6e4eaef4787443dd09dbbe41215f6e8d1ec47ef227ffd9",
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/RestrictedXManaReconciliationTest.kt": "add15adc5eb1f7a5e93243a1f7fcd8a84707a7442fb30a3dbc73b6ef746569c3"
+  },
+  "workflow_path": ".github/workflows/shared-payment-feasibility-qualification.yml",
+  "workflow_sha256": "05d6bdf99d33d6e17f3d078ee8e1cebfbabc4660c83d162205bdf338c286a384",
+  "suites": [
+    {
+      "class": "com.wingedsheep.engine.scenarios.ManaPaymentFeasibilityTest",
+      "stage": "focused",
+      "actual_cases": 21,
+      "xml": "build/reports/payment-feasibility/focused-xml/TEST-com.wingedsheep.engine.scenarios.ManaPaymentFeasibilityTest.xml",
+      "xml_sha256": "9043ff174d69272f7b47c31a5b6acaeafd6695cbf2341235b00a0d1d79ddde8e"
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.ManaPaymentPolicyWitnessTest",
+      "stage": "focused",
+      "actual_cases": 7,
+      "xml": "build/reports/payment-feasibility/focused-xml/TEST-com.wingedsheep.engine.scenarios.ManaPaymentPolicyWitnessTest.xml",
+      "xml_sha256": "d877ef79f854267c2768de4ede07df338a2479e0590177b1e29469eb8e3f74fa"
+    },
+    {
+      "class": "com.wingedsheep.engine.handlers.mana.ManaSpendRestrictionAnyAbilityTest",
+      "stage": "compatibility",
+      "actual_cases": 5,
+      "xml": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.handlers.mana.ManaSpendRestrictionAnyAbilityTest.xml",
+      "xml_sha256": "a4845fd674adf6169135763e07e9dd10b546db3b74863080de3a5e1f2656f75b"
+    },
+    {
+      "class": "com.wingedsheep.engine.mechanics.mana.DynamicManaAmountAutoTapTest",
+      "stage": "compatibility",
+      "actual_cases": 6,
+      "xml": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.mechanics.mana.DynamicManaAmountAutoTapTest.xml",
+      "xml_sha256": "7188dc6de07ac717badb6ba2a1d5c8ae20477558665eb47d5c834fb0d2f4ecee"
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.ManaAbilityActivationTriggerScenarioTest",
+      "stage": "compatibility",
+      "actual_cases": 3,
+      "xml": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.ManaAbilityActivationTriggerScenarioTest.xml",
+      "xml_sha256": "774839ca10ecc5b29d14b9767c7b9aba6ab19e79bdbbb3e1fd7eb57ce007df2d"
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.ManaSourceProvenanceScenarioTest",
+      "stage": "compatibility",
+      "actual_cases": 3,
+      "xml": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.ManaSourceProvenanceScenarioTest.xml",
+      "xml_sha256": "97758347435c4a82467fd2967aced9da4a5c3ae713b0a92fd7309641aea1a067"
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.MonocolorHybridManaSolverTest",
+      "stage": "compatibility",
+      "actual_cases": 4,
+      "xml": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.MonocolorHybridManaSolverTest.xml",
+      "xml_sha256": "b7e3f0aa0dbd63349836cb760b5fb2920f8296a03c32bf40de2c1946b1933540"
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.MultiManaSourceTest",
+      "stage": "compatibility",
+      "actual_cases": 7,
+      "xml": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.MultiManaSourceTest.xml",
+      "xml_sha256": "1fe8f167925ea983604cabe8ea960aa4e01c24a24f998eabd9af46cbef85f4ff"
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.PaidFilterManaSolverTest",
+      "stage": "compatibility",
+      "actual_cases": 14,
+      "xml": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.PaidFilterManaSolverTest.xml",
+      "xml_sha256": "761bb677c2cf35ecf8827c2a9d90b161d480566a8e567acf2e3c020687f8e84f"
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.RestrictedXManaReconciliationTest",
+      "stage": "compatibility",
+      "actual_cases": 4,
+      "xml": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.RestrictedXManaReconciliationTest.xml",
+      "xml_sha256": "ea3b67ce10cfca470f883cfdc63c9c4ea03fb92d90db30989f82109bbcfe13a1"
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.XSpellFloatingRestrictedManaTest",
+      "stage": "compatibility",
+      "actual_cases": 6,
+      "xml": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.XSpellFloatingRestrictedManaTest.xml",
+      "xml_sha256": "9ba0175ed6a67eaf7fa6d2376170bdc3c80966b41580de5d8ae4ca48434b001a"
+    }
+  ],
+  "actual_cases": 80,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "prior77_actual_case_identities_retained": true,
+  "new3_policy_cases": [
+    {
+      "class": "com.wingedsheep.engine.scenarios.ManaPaymentPolicyWitnessTest",
+      "name": "a frozen black-only funding choice cannot certify an unchosen green payment"
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.ManaPaymentPolicyWitnessTest",
+      "name": "an action-policy refusal stays unsupported while an already floated payment needs no action"
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.ManaPaymentPolicyWitnessTest",
+      "name": "an allowed color witness executes through the real selected funding action"
+    }
+  ],
+  "source_review_attribution": {
+    "reviewer": "/root",
+    "path": "shared-engine/payment-feasibility/source-review-resource-policy.json",
+    "sha256": "fd009d9c7c611057b43189f38822e27c559bf470dc56e24477d6af5f13822284",
+    "scope": "Non-author source review previously accepted receiving qualification only; no source pass inferred from that review."
+  },
+  "all_archive_member_hashes": {
+    "build/reports/payment-feasibility/compatibility.log": "89d9dfed98b75f6665f9e424972a1d826ce2b6e7b7102dae6eb74aa9b58f2121",
+    "build/reports/payment-feasibility/focused-xml/TEST-com.wingedsheep.engine.scenarios.ManaPaymentPolicyWitnessTest.xml": "d877ef79f854267c2768de4ede07df338a2479e0590177b1e29469eb8e3f74fa",
+    "build/reports/payment-feasibility/focused-xml/TEST-com.wingedsheep.engine.scenarios.ManaPaymentFeasibilityTest.xml": "9043ff174d69272f7b47c31a5b6acaeafd6695cbf2341235b00a0d1d79ddde8e",
+    "build/reports/payment-feasibility/focused.log": "2abaacda9c42a8ca723a70181d102eb030c8fad28c3f5c0974686e85bb285c12",
+    "build/reports/payment-feasibility/result.json": "0d4f912bef70def99ea126433d047602fab35078ff2bed8115d687a78cb454fb",
+    "build/reports/payment-feasibility/source-binding.json": "588c3166c363182e1f826c4f8fbe531958e77be1cbe8aa51ff47621a31175ffb",
+    "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.handlers.mana.ManaSpendRestrictionAnyAbilityTest.xml": "a4845fd674adf6169135763e07e9dd10b546db3b74863080de3a5e1f2656f75b",
+    "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.mechanics.mana.DynamicManaAmountAutoTapTest.xml": "7188dc6de07ac717badb6ba2a1d5c8ae20477558665eb47d5c834fb0d2f4ecee",
+    "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.ManaAbilityActivationTriggerScenarioTest.xml": "774839ca10ecc5b29d14b9767c7b9aba6ab19e79bdbbb3e1fd7eb57ce007df2d",
+    "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.ManaSourceProvenanceScenarioTest.xml": "97758347435c4a82467fd2967aced9da4a5c3ae713b0a92fd7309641aea1a067",
+    "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.MonocolorHybridManaSolverTest.xml": "b7e3f0aa0dbd63349836cb760b5fb2920f8296a03c32bf40de2c1946b1933540",
+    "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.MultiManaSourceTest.xml": "1fe8f167925ea983604cabe8ea960aa4e01c24a24f998eabd9af46cbef85f4ff",
+    "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.PaidFilterManaSolverTest.xml": "761bb677c2cf35ecf8827c2a9d90b161d480566a8e567acf2e3c020687f8e84f",
+    "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.XSpellFloatingRestrictedManaTest.xml": "9ba0175ed6a67eaf7fa6d2376170bdc3c80966b41580de5d8ae4ca48434b001a",
+    "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.RestrictedXManaReconciliationTest.xml": "ea3b67ce10cfca470f883cfdc63c9c4ea03fb92d90db30989f82109bbcfe13a1"
+  },
+  "scope": "Shared finite payment target component only. Industrial receiving menu, pilot witness, checkpoint/journal/provenance/finalization, full CI, canonical priority and independent admission remain required; no general gameplay conclusion.",
+  "github_approval_created": false,
+  "official_allocations_initialized": 0,
+  "outcomes_exposed": 0,
+  "gameplay_authorized": false
+}
