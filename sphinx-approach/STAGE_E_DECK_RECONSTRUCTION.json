@@ -1,6 +1,6 @@
 {
   "schema": "sphinx-stage-e-reconstruction-v1",
-  "status": "PROSPECTIVE_CONFIGURATIONS_PENDING_CARD_AND_PILOT_QUALIFICATION",
+  "status": "PROSPECTIVE_STAGE_E_INPUT_IDENTITIES_FROZEN_QUALIFICATION_PENDING",
   "source_head": "4a97265559e989df937e8c09f9a42d58a4e9d79d",
   "historical_bytes_recovered": false,
   "official_seeds_generated": 0,
@@ -46,5 +46,50 @@
     "recorded_release_date": "2026-10-02",
     "recorded_source": "https://scryfall.com/card/fra/41/sphinxs-approach",
     "metadata_builder_note": "scryfallId and releaseDate are not fields of MetadataBuilder; release date belongs to RealityFractureSet, identity retained here"
+  },
+  "input_identity_freeze": {
+    "frozen_utc": "2026-09-26T14:13:26.706013+00:00",
+    "scope": "Exactly the four already introduced 60-card main-deck row files; no pilot, opponent allocation, sample size, or execution authority is frozen by this record.",
+    "source_before_freeze": "dc5e3c7d884766aeb3195fbe6aa43f97fa9a1654",
+    "prior_manifest_sha256": "a09a44241e37b66f25b1d9dec9cdaa6d0af3e29dc45e66acbe8c1f887642e8c1",
+    "row_digest_format": "SHA-256 of exact UTF-8 CSV bytes, Name,count per line, LF terminators, existing row order retained. This is a deck-row identity, not a randomized library ordering.",
+    "protocol_path": "STAGE_E_RECONSTRUCTION_PLAN.md",
+    "protocol_sha256": "066a08b74350dcf20a03b917b2c122501b9d87cbca52e3273d216bc183a8ea43",
+    "protocol_basis": "Readiness gate 3 binds reconstructed deck rows before pilot qualification in gate 4. Comparator and benchmark inputs must be frozen before outcomes; they may be bound prospectively without asserting competence.",
+    "provenance_path": "RECONSTRUCTION_PROVENANCE.md",
+    "provenance_sha256": "b68dc25f8aca78e37fcd8cb537bd8ff274605c5299c78b408b0b76bc9e06588b",
+    "historical_limitation": "Original unpublished A-D deck/evidence bytes remain unrecovered. These are fresh prospective Stage-E identities reconstructed from recorded counts, never replacements for lost original bytes. No historical sweep was rerun.",
+    "card_component_source": {
+      "head": "dc5e3c7d884766aeb3195fbe6aa43f97fa9a1654",
+      "combined_runtime": "e4594b8e1b06a3e3031d223e627a72d79940d13d",
+      "tree": "dd94dcb00b20b16dff98c8aec1d94e479adc8dfb",
+      "focused_run": 36247008549,
+      "full_ci_run": 36247008494
+    },
+    "verification": {
+      "decks": 4,
+      "cards_per_deck": 60,
+      "all_previously_introduced_row_hashes_unchanged": true,
+      "added_architectures": 0,
+      "removed_architectures": 0,
+      "changed_card_rows": 0
+    },
+    "identity_policy": "The four IDs below now identify immutable row bytes. No silent card substitutions or in-place retuning are allowed. Any prospective successor needs explicit protocol disposition and a distinct identity before outcomes.",
+    "competence_and_admission": {
+      "candidate_pilots_qualified": false,
+      "closest_comparator_competence_established": false,
+      "benchmark_pilot_qualified": false,
+      "receiving_actor_boundary_qualified": false,
+      "post_block_priority_qualified": false,
+      "experimental_execution_freeze_complete": false,
+      "official_gameplay_authorized": false
+    },
+    "remaining_gates": [
+      "Canonical actor source-LKI and typed trigger-order dependencies, then receiving decision/public-information/replay qualification.",
+      "Canonical post-block-declaration priority repair on the receiving source.",
+      "Competent candidate, closest comparator and benchmark pilots under equivalent bounded development budgets.",
+      "Execution freeze of opponents/allocations, exact engine and pilot bindings, matched randomness, sample sizes, endpoints and stopping rules.",
+      "Noncircular admission before generating or consuming Stage-E seeds."
+    ]
   }
 }
