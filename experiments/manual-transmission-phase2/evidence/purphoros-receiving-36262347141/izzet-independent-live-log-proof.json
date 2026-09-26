@@ -1,0 +1,182 @@
+{
+  "run": {
+    "id": 36262347141,
+    "head_sha": "3c453a01f40993633100824f393bb18fd54ea208",
+    "run_attempt": 1,
+    "conclusion": "success",
+    "event": "push"
+  },
+  "job": {
+    "id": 108460445032,
+    "name": "qualify",
+    "status": "completed",
+    "conclusion": "success",
+    "run_id": 36262347141,
+    "logs_url": null,
+    "steps": [
+      {
+        "name": "Set up job",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 1
+      },
+      {
+        "name": "Run actions/checkout@v6",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 2
+      },
+      {
+        "name": "Run actions/setup-java@v5",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 3
+      },
+      {
+        "name": "Run gradle/actions/setup-gradle@v6",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 4
+      },
+      {
+        "name": "Run extractions/setup-just@f8a3cce218d9f83db3a2ecd90e41ac3de6cdfd9b",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 5
+      },
+      {
+        "name": "Bind exact receiving source and unchanged experimental inputs",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 6
+      },
+      {
+        "name": "Reverify exact THS source and image",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 7
+      },
+      {
+        "name": "Qualify type persistence and numeric projection with preserved departure regressions",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 8
+      },
+      {
+        "name": "Exercise every prospective exact Purphoros case",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 9
+      },
+      {
+        "name": "Requalify Aether and adjacent modal trigger behavior on the combined source",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 10
+      },
+      {
+        "name": "Generate ordinary snapshots and run corpus lint",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 11
+      },
+      {
+        "name": "Preserve only the intended generated THS record",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 12
+      },
+      {
+        "name": "Canonical printings and independent Assay differential",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 13
+      },
+      {
+        "name": "Preserve actual cases without converting missing or failed cases to passes",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 14
+      },
+      {
+        "name": "Run actions/upload-artifact@v7",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 15
+      },
+      {
+        "name": "Post Run gradle/actions/setup-gradle@v6",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 28
+      },
+      {
+        "name": "Post Run actions/setup-java@v5",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 29
+      },
+      {
+        "name": "Post Run actions/checkout@v6",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 30
+      },
+      {
+        "name": "Complete job",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 31
+      }
+    ]
+  },
+  "artifact": {
+    "id": 10913007711,
+    "name": "manual-etb-3c453a01f40993633100824f393bb18fd54ea208",
+    "size_in_bytes": 318610,
+    "url": "https://api.github.com/repos/GodaPupa/argentum-batshit-test/actions/artifacts/10913007711",
+    "archive_download_url": "https://api.github.com/repos/GodaPupa/argentum-batshit-test/actions/artifacts/10913007711/zip",
+    "expired": false,
+    "created_at": "2026-09-26T18:33:15Z",
+    "expires_at": "2026-12-25T18:23:07Z",
+    "updated_at": "2026-09-26T18:33:15Z",
+    "digest": "sha256:dfac60251421b7dd9827944a64fe7e21fd81e89f59722c01b5d6b85e3d7e43cf",
+    "workflow_run": {
+      "id": 36262347141,
+      "repository_id": 1361473449,
+      "head_repository_id": 1361473449,
+      "head_branch": "lab/manual-purphoros-qualification-20260926",
+      "head_sha": "3c453a01f40993633100824f393bb18fd54ea208"
+    }
+  },
+  "authenticated_log_character_count": 4069609,
+  "execution_evidence": [
+    "2026-09-26T18:23:43.4502204Z \u001b[36;1mjust test-class FloatingEffectSerializationRoundTripTest --tests '*ProjectionNumericConditionTest' --tests '*BattlefieldEntryProjectionTest' --tests '*SelfEntersTappedOffStackEntryScenarioTest' --tests '*TriggerMatcherIsNontokenTest' --tests '*TriggerMatcherIsPermanentTest' --tests '*TriggerMatcherNotSubtypeTest' --rerun --max-workers=1 -PkotlinCompileParallelism=1 -Pkotlin.compiler.execution.strategy=in-process -Dorg.gradle.jvmargs=-Xmx4g --info --stacktrace 2>&1 | tee build/reports/manual-etb/type-effect-persistence.log\u001b[0m",
+    "2026-09-26T18:29:46.6680837Z > Task :rules-engine:test",
+    "2026-09-26T18:29:47.1689492Z Gradle Test Executor 1 started executing tests.",
+    "2026-09-26T18:30:33.1680478Z Gradle Test Executor 1 finished executing tests.",
+    "2026-09-26T18:30:33.9678604Z > Task :rules-engine:test",
+    "2026-09-26T18:30:34.7544725Z BUILD SUCCESSFUL in 6m 50s",
+    "2026-09-26T18:30:35.0871593Z \u001b[36;1mjust test-class PurphorosGodOfTheForgeScenarioTest --tests '*AuthorityOfTheConsulsScenarioTest' --rerun --max-workers=1 -PkotlinCompileParallelism=1 -Pkotlin.compiler.execution.strategy=in-process -Dorg.gradle.jvmargs=-Xmx4g --info --stacktrace 2>&1 | tee build/reports/manual-etb/purphoros.log\u001b[0m",
+    "2026-09-26T18:30:50.9491549Z Gradle Test Executor 2 started executing tests.",
+    "2026-09-26T18:30:52.3494042Z > Task :mtg-sets:2008-2016:tests:test",
+    "2026-09-26T18:31:12.2505907Z Gradle Test Executor 2 finished executing tests.",
+    "2026-09-26T18:31:12.2507081Z > Task :mtg-sets:2008-2016:tests:test",
+    "2026-09-26T18:31:12.3449974Z BUILD SUCCESSFUL in 36s",
+    "2026-09-26T18:31:12.3724733Z \u001b[36;1mjust test-class AetherChannelerScenarioTest --tests '*CharmingPrinceScenarioTest' --rerun --max-workers=1 -PkotlinCompileParallelism=1 -Pkotlin.compiler.execution.strategy=in-process -Dorg.gradle.jvmargs=-Xmx4g --info --stacktrace 2>&1 | tee build/reports/manual-etb/aether.log\u001b[0m",
+    "2026-09-26T18:31:33.7111392Z Gradle Test Executor 3 started executing tests.",
+    "2026-09-26T18:31:35.2138152Z > Task :mtg-sets:2017-2022:tests:test",
+    "2026-09-26T18:31:54.8178230Z Gradle Test Executor 3 finished executing tests.",
+    "2026-09-26T18:31:54.8207791Z > Task :mtg-sets:2017-2022:tests:test",
+    "2026-09-26T18:31:54.9829407Z BUILD SUCCESSFUL in 42s",
+    "2026-09-26T18:31:55.0060146Z \u001b[36;1mjust test-class CardDefinitionSnapshotTest --tests '*CardLintTest' -DupdateSnapshots=true --rerun --max-workers=1 -PkotlinCompileParallelism=1 -Pkotlin.compiler.execution.strategy=in-process -Dorg.gradle.jvmargs=-Xmx4g --info --stacktrace 2>&1 | tee build/reports/manual-etb/content.log\u001b[0m",
+    "2026-09-26T18:32:00.5246632Z Gradle Test Executor 4 started executing tests.",
+    "2026-09-26T18:32:02.0298173Z > Task :mtg-sets:test",
+    "2026-09-26T18:32:27.9278746Z > Task :mtg-sets:test",
+    "2026-09-26T18:32:28.3246685Z Gradle Test Executor 4 finished executing tests.",
+    "2026-09-26T18:32:28.6247464Z > Task :mtg-sets:test",
+    "2026-09-26T18:32:28.6264366Z BUILD SUCCESSFUL in 33s"
+  ],
+  "all_actual_pass_line_count": 0
+}
+

@@ -1,0 +1,70 @@
+{
+  "schema": "pest-postboard-a-manual-receiving-independent-source-review-v1",
+  "reviewer": "/root/pest",
+  "reviewer_is_source_author": false,
+  "source": "d2ed3a3450d9a516d578d622d080fd7a1a61f9e5",
+  "tree": "eac16ee9e8034fd55df82d4565de85ca1fface08",
+  "disposition": "ACCEPT_FOR_PEST_BATCH_A_RECEIVING_QUALIFICATION_ONLY",
+  "reviewed_files_sha256": {
+    ".github/workflows/pest-control-tier-one-postboard-support-batch-a.yml": "1da307055612deb6dbc72c67f6313a5feef452ffe7c4acfbe9acfeb16336cf0c",
+    "docs/experiments/pest-control/tier-one-postboard-support-batch-a-receiving-sources.json": "fba39988cc8fae4cdd8462f718bb386902065cbf975e73dd4600ca1ae665b573"
+  },
+  "preserved_historical_manifest": {
+    "path": "docs/experiments/pest-control/tier-one-postboard-support-batch-a-sources.json",
+    "sha256": "88eceb48094277bfc20c7baef6bfd5b2cc22da022094343e30d72aab581b51e2"
+  },
+  "verified_source_pins": 20,
+  "original_source_pins_retained": 17,
+  "changed_original_source_bindings": [
+    ".github/workflows/pest-control-tier-one-postboard-support-batch-a.yml",
+    "mtg-sets/src/test/resources/snapshots/cards/THS.json"
+  ],
+  "original_card_and_protocol_fields_unchanged": true,
+  "canonical_workflow_donor": "77c7aad0bb2ded2c0372087d94f66ccbde0f7d09",
+  "canonical_workflow_byte_identical": true,
+  "existing_execution_stages_retained": 10,
+  "snapshot_preservation": {
+    "SHM": {
+      "old_records_unchanged": 95,
+      "added": [
+        "Smash to Smithereens"
+      ]
+    },
+    "IKO": {
+      "old_records_unchanged": 62,
+      "added": [
+        "Unexpected Fangs"
+      ]
+    },
+    "GRN": {
+      "old_records_unchanged": 84,
+      "added": [
+        "Murmuring Mystic"
+      ]
+    },
+    "THS": {
+      "old_records_unchanged": 75,
+      "added": [
+        "Nylea's Disciple",
+        "Purphoros, God of the Forge"
+      ]
+    }
+  },
+  "findings": [
+    "Read complete two-file diff and independently checked all20 exact Git file hashes. Only the existing workflow and THS snapshot receiving bindings change among the original17; historical manifest bytes are preserved and newly bound.",
+    "Workflow receives the existing canonical list-additions guard without changing the original ten stage commands. Exact expected source binding, historical records and complete snapshot additions remain enforced; rejected source observations are retained.",
+    "Separate Manual receiving manifest derives from its own original88ece authority. It does not transplant the different canonical historical source manifest or additional Faerie/closure state.",
+    "Independent parsing of all four snapshots against the original684f base found exactly the declared additions, all prior record bodies byte-identical and no missing old records. Current THS b5e09 is the exact snapshot independently accepted in Izzet Manual415 evidence.",
+    "No production card, test body, deck, opponent, policy, experimental sample or stopping rule is changed by this source-gate repair."
+  ],
+  "scope_limitations": [
+    "This accepts only source compatibility and the receiving gate before its fresh execution.",
+    "Complete actual receiving cases and full CI remain required; no gameplay, deck strength or cross-project conclusion is transferred.",
+    "No GitHub approval is created or implied."
+  ],
+  "runtime_accepted": false,
+  "full_receiving_accepted": false,
+  "gameplay_authorized": false,
+  "official_games_initialized": 0,
+  "official_outcomes_exposed": 0
+}
