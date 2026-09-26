@@ -37,7 +37,7 @@ jobs:
           git diff --check
 
       - name: Qualify exact Relic behavior
-        run: ./gradlew :mtg-sets:2008-2016:test --tests "*RelicOfProgenitusScenarioTest"
+        run: ./gradlew :mtg-sets:2008-2016:tests:test --tests "*RelicOfProgenitusScenarioTest"
 
       - name: Qualify card lint
         run: ./gradlew :mtg-sets:test --tests "*CardLintTest"

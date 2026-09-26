@@ -2,6 +2,7 @@ package com.wingedsheep.engine.scenarios
 
 import com.wingedsheep.engine.core.ActivateAbility
 import com.wingedsheep.engine.core.CastSpell
+import com.wingedsheep.engine.core.PaymentStrategy
 import com.wingedsheep.engine.state.components.battlefield.AttachedToComponent
 import com.wingedsheep.engine.state.components.player.ManaPoolComponent
 import com.wingedsheep.engine.state.components.stack.ChosenTarget
@@ -65,12 +66,23 @@ class SpreadingSeasScenarioTest : ScenarioTestBase() {
             game.state.projectedState.hasSubtype(forest, "Island") shouldBe true
 
             game.passPriority().error shouldBe null
-            game.castSpell(2, "Boomerang", aura).error shouldBe null
+            // Preserve the enchanted land for the post-resolution mana-ability check.
+            game.execute(CastSpell(
+                game.player2Id,
+                game.findCardsInHand(2, "Boomerang").single(),
+                listOf(ChosenTarget.Permanent(aura)),
+                paymentStrategy = PaymentStrategy.Explicit(game.findPermanents("Island")),
+            )).error shouldBe null
             game.resolveStack()
 
             game.isInHand(1, "Spreading Seas") shouldBe true
             game.state.projectedState.hasSubtype(forest, "Forest") shouldBe true
             game.state.projectedState.hasSubtype(forest, "Island") shouldBe false
+
+            // Resolution returns priority to the active player, not Boomerang's caster.
+            game.state.priorityPlayerId shouldBe game.player1Id
+            game.passPriority().error shouldBe null
+            game.state.priorityPlayerId shouldBe game.player2Id
 
             val beforeIllegalBlue = game.state
             game.execute(ActivateAbility(game.player2Id, forest, AbilityId.intrinsicMana('U'))).error shouldNotBe null

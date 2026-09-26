@@ -37,7 +37,7 @@ jobs:
           git diff --check
 
       - name: Qualify exact Jack-o'-Lantern behavior
-        run: ./gradlew :mtg-sets:2017-2022:test --tests "*JackOLanternScenarioTest"
+        run: ./gradlew :mtg-sets:2017-2022:tests:test --tests "*JackOLanternScenarioTest"
 
       - name: Qualify card lint
         run: ./gradlew :mtg-sets:test --tests "*CardLintTest"
