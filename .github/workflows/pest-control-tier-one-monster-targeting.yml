@@ -1,0 +1,104 @@
+name: Pest Control Tier-1 Monster Exact-Deck Targeting
+
+on:
+  push:
+    branches:
+      - lab/pest-monster-targeting-20260926
+  pull_request:
+    paths:
+      - .github/workflows/pest-control-tier-one-monster-targeting.yml
+      - gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOneMonsterTronTargetingQualificationTest.kt
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env:
+      GRADLE_LOCK_SLOTS: '1'
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: gradle/actions/setup-gradle@v6
+      - uses: extractions/setup-just@f8a3cce218d9f83db3a2ecd90e41ac3de6cdfd9b
+        with:
+          just-version: '1.58.0'
+      - name: Bind exact seed-free qualification source
+        env:
+          EXPECTED_HEAD: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          python3 - <<'PY'
+          import json, os, pathlib, subprocess
+          head = subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()
+          assert head == os.environ['EXPECTED_HEAD']
+          assert not subprocess.check_output(['git','status','--porcelain'],text=True)
+          out = pathlib.Path('build/reports/pest-monster-targeting')
+          out.mkdir(parents=True,exist_ok=True)
+          (out/'source.json').write_text(json.dumps({
+              'source_head':head,
+              'source_tree':subprocess.check_output(['git','rev-parse','HEAD^{tree}'],text=True).strip(),
+              'run_id':os.environ['GITHUB_RUN_ID'], 'run_attempt':os.environ['GITHUB_RUN_ATTEMPT'],
+              'scope':'DETERMINISTIC_EXACT_DECK_TARGETING_AND_EXISTING_POLICY_REGRESSION_ONLY',
+              'official_seeds_generated':0, 'official_games_initialized':0,
+              'official_actions_submitted':0, 'outcome_exposure':0,
+              'C2_or_A2_acceptance':False, 'official_execution_authorized':False
+          },indent=2)+'\n')
+          PY
+      - name: Execute exact interaction, frozen policy and canonical AnyTarget regressions
+        shell: bash
+        run: |
+          set -euo pipefail
+          just test-class PestControlTierOneMonsterTronTargetingQualificationTest \
+            --tests PestControlTierOneMonsterTronPolicyCalibrationTest \
+            :ai:test --tests PestMonsterTronPolicyAuditTest \
+            :mtg-sets:2008-2016:tests:test --tests GutShotScenarioTest \
+            --max-workers=2 --continue \
+            2>&1 | tee build/reports/pest-monster-targeting/qualification.log
+      - name: Audit exact nonzero JUnit classes without ignored failures
+        if: always()
+        run: |
+          python3 - <<'PY'
+          import hashlib,json,pathlib,xml.etree.ElementTree as ET
+          expected = {
+              'com.wingedsheep.gym.PestControlTierOneMonsterTronTargetingQualificationTest':('gym',6),
+              'com.wingedsheep.gym.PestControlTierOneMonsterTronPolicyCalibrationTest':('gym',7),
+              'com.wingedsheep.ai.arena.PestMonsterTronPolicyAuditTest':('ai',5),
+              'com.wingedsheep.engine.scenarios.GutShotScenarioTest':('mtg-sets/2008-2016/tests',12),
+          }
+          failures,classes = [],{}
+          for name,(module,count) in expected.items():
+              path=pathlib.Path(module)/'build/test-results/test'/f'TEST-{name}.xml'
+              try:
+                  raw=path.read_bytes();suite=ET.fromstring(raw);cases=suite.findall('.//testcase')
+                  assert len(cases)==count and int(suite.attrib['tests'])==count
+                  assert all(c.attrib.get('classname')==name for c in cases)
+                  assert not any(int(suite.attrib.get(k,'0')) for k in ['failures','errors','skipped'])
+                  assert not any(c.find(k) is not None for c in cases for k in ['failure','error','skipped'])
+                  classes[name]={'cases':count,'sha256':hashlib.sha256(raw).hexdigest(),'path':str(path)}
+              except (OSError,ValueError,KeyError,ET.ParseError,AssertionError) as error:
+                  failures.append(f'{name}: {type(error).__name__}: {error}')
+          out=pathlib.Path('build/reports/pest-monster-targeting');out.mkdir(parents=True,exist_ok=True)
+          (out/'audit.json').write_text(json.dumps({'status':'PASS' if not failures else 'FAIL_CLOSED',
+              'classes':classes,'failures':failures,'official_execution_authorized':False},indent=2)+'\n')
+          assert not failures, failures
+          PY
+      - name: Preserve all qualification output including failed attempts
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: pest-control-tier-one-monster-exact-deck-targeting
+          path: |
+            build/reports/pest-monster-targeting/
+            gym/build/test-results/test/TEST-*.xml
+            ai/build/test-results/test/TEST-*.xml
+            mtg-sets/2008-2016/tests/build/test-results/test/TEST-*.xml
+          if-no-files-found: error
+          retention-days: 90
