@@ -1,0 +1,25 @@
+{
+  "schema": "coordinator-post-main-merge-publication-preflight-v1",
+  "author": "/root",
+  "at_utc": "2026-09-26T23:47:19.454460+00:00",
+  "base_source": "ff34ac8fa2efbd41f233e877cb2908c2cab5929a",
+  "base_tree": "88967f3a9ba0479661f02150f82ddcc9a2066e42",
+  "additional_parent": "684ad254e0675c55e6cfc1e4c520e0f4f85b1676",
+  "expected_branch": "lab-coordinator/critical-path",
+  "expected_current_ref": "684ad254e0675c55e6cfc1e4c520e0f4f85b1676",
+  "tree_plan": "Use actual newmain tree, apply exact16 prior critical-path reviewed files, replace two current navigation docs, retain exact22:51 docs under history, append current review/live/merge records. Preserve all main shared source and all earlier coordinator evidence.",
+  "ref_update": "Normal nonforcefastforward; currentcritical is the additional parent, main is first parent. No reset or lost ancestry.",
+  "scope": "All new/changed paths confined to lab-coordinator; no source/deck/pilot/protocol/seed/result/lock/control changes.",
+  "workflow_source": "Compared all80 actualdefault-main header Gitblob IDs to exact already-reviewed sharedb6 workflowinventory (mainff same .github root); parsed all80 trigger headers including branch/path filters and nonmanual chains.",
+  "matching_push_workflows": [],
+  "manual_dispatch": false,
+  "open_pr_condition": "No openPR head/basecritical atlivecheck; recheckbeforeupdate",
+  "main_jobs": "Existing mainCI andArgentum separatebranches/groups; inertcriticalpublicationcannotcancelortrigger them.",
+  "review_conditions": [
+    "Actual nonauthor finalreview must bind exact CURRENT/NEXT and thispreflight; retain supplied reviews ratherthaninventapproval",
+    "Recheckmain/criticalheads beforecreatecommit/update; stopifforeignrefmoved",
+    "Verify finaltree source roots unchanged and every suppliedblob, finalparent/ref andzeroeventcount"
+  ],
+  "official_games": 0,
+  "gameplay_authorized": false
+}
