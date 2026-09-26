@@ -1,51 +1,35 @@
-# Mechanical qualification checkpoint — 2026-09-26 11:53 UTC
+# Mechanical qualification — 2026-09-26 13:24 UTC
 
-The current execution/status record is [CURRENT_STATUS.md](CURRENT_STATUS.md). New compact evidence is now published under the nine closed archive groups listed there. Accepted results are strictly source-specific: LKI97 plus a separate genuinely fresh14,269 all-era pass; literal1,406 repetition; combat32; isolated monarch72; artifact policy24; diagnostics12; raw bundle16; Brew25; Highway8. All earlier failed source/fixture/compiler attempts remain visible.
+**Interactive admission remains closed.** Current source/results are summarized in [CURRENT_STATUS.md](CURRENT_STATUS.md). The complete preceding mechanical record is preserved at `history/checkpoint-8102098e/MECHANICAL_QUALIFICATION.md`; its earlier version-specific passes are not inherited by the current runtime.
 
-**Combined pre-snapshot source3b20744e has0 executed tests.** Its first attempt failed compilation because the compiler selected stale SDK loose classes despite the current source and JAR exposing the required Gift methods. No source/test/golden relaxation is warranted for that discrepancy. Binary identities and the actual compiler classpath were preserved before regeneration.
+## Actual current-source results
 
-The53-class/440 prospective common bank, SDK gate, actual snapshot review and broad shared regression remain pending on the final source. Earlier independent passes are not transferred across an integration. No production admission, randomized seed or game exists. Historical detailed records follow without rewriting their original version boundaries.
+| Evidence | Fresh executed cases | Passed | Failed | Scope |
+|---|---:|---:|---:|---|
+| Common13 engine batch | 202 | 190 | 12 | Frozen combined source |
+| Remainder14 eight module batches | 256 | 251 | 5 | Same184 authored/golden inputs |
+| Original55-class selection | 458 | 441 | 17 | All selected cases executed once |
+| Ordinary content17 | 342 | 342 | 0 | 338 snapshot/roundtrip,3 lint,1 facade |
+| Whole SDK18 | 531 | 531 | 0 | Entire SDK module |
+| Process admission20 | 34 | 34 | 0 | Process04 successor: Admission14 and Journal20 |
+| Unrepaired combat baseline24 | 13 | 0 | 13 | Eleven runtime assertions; two early serializer fixture stops |
 
-Environment follow-up: the forced SDK regeneration itself failed before tests on a disappearing synchronization temporary directory; a clean outside-workspace checkout with identical frozen source is being provisioned. The original attempt, binary discrepancy and regeneration failure remain preserved; no test or rule change is used to address this race.
+Counts overlap across modules/versions and are not games. The original common selection remains failed. No skipped, restored stale or up-to-date XML is represented as a fresh passing assertion. Each per-module receipt includes exact command, source before/after maps, runner, Java and actual XML/log provenance.
 
----
+The12 ordinary golden failures were inspected before updating exactly12 intended files. The successful later ordinary content gate ran comparisons, not golden generation. Clean outside-synchronization provisioning and JAR/loose-class correspondence resolved the earlier output mismatch; those provenance checks do not replace rules tests.
 
-# Mechanical qualification
+## Known failures and review boundaries
 
-Current cut: **2026-09-26 10:20 UTC**. **First-cell gameplay admission remains blocked pending combined-source qualification.** The original baseline record is preserved at `history/checkpoint-53c68e95/MECHANICAL_QUALIFICATION.md`. Its38/41 result describes the historical baseline, not the latest targeted status.
+Fifteen fixed cases require typed flow/setup successors: Gift6, activation/damage/paired triggers6, Red2 and Mako1. Original final assertions and failed sources are retained. Red24's gameplay policy is unchanged. Responses must match the actual pending question and submission errors must be checked; no global automatic ordering choice is introduced.
 
-## Source-specific status
+Red's remaining failure exposes active-player priority after blockers. A dedicated bounded pre-repair mechanics bank retains the original expectation and covers both seats, real combat tricks, declaration/cost/target/order pauses, serialization, multiple defenders and direct illegal priority actions. Relevant historical tests that encoded defender-first behavior must receive explicit rule-based expectation successors, not removal. Any new departure-snapshot branch requires prospective actual coverage. The actual13-case baseline ran before any runtime repair. PB08/PB09 stopped at the test serializer missing `allowStructuredMapKeys`, while eleven cases reached priority/trigger assertions. A one-line serializer-only successor is independently reviewed and retains all13 bodies and round-trip assertions. Original failures remain preserved. The new waiting-state design also needs a bounded three-case pre-outcome concession amendment so it cannot strand retained triggers; this does not expand a pilot or research allocation.
 
-| Requirement | Executed evidence | Current boundary |
-|---|---|---|
-| Ferocity hybrid/flash/target/attachment/continuous bonus, Aura-owned trigger, owner return tapped, new identity, token/exile/bounce/hate and queued sweeps | Original24 now24/24 on integratedv2 | Exact integrated source only; returned creature has no retained Aura, haste or bonuses |
-| Crypt Rats black-only X, player/flying damage, life pressure | Original8 now8/8 integratedv2; restricted-X18/18 on its exact source | Legal-action/payment and integration source pins remain explicit |
-| Departure-aware Shaman deathtouch/lifelink, source colors/controller/ownership, retained old object | LKI original73/73 plus nested-payment12/12 on frozen40 Kotlin files | Broad gate still failed; no activation-time keyword shortcut |
-| Sacrifice costs and nested mana windows, deferred triggers and priority | Nested12/12 plus relevant retained cases | Atomic costs cannot be interrupted; full-source regression required |
-| Targeted departed token | Four new fixed scenarios authored/peered | Snapshot previously dropped by target-choice continuation; patched handoff awaiting execution |
-| Optional targeted triggers | Historical failures identified across22 classes | Target before stack placement, optional effect during resolution; original outcome assertions retained |
-| Paid flashback through all stack exits, including counter/bounce/library |35/35 targeted plus34/34 existing cases on v1.2 | Exact paid-cost status persists before ability grants disappear; broad integration pending |
-| Gift timing/cost/target choice and card behavior |36 SDK/engine passed;22 card cases20 passed/2 failed after explicit dependency repair | Missing player shroud/hexproof revalidation is a real runtime gap being repaired |
-| Current combat damage distribution and banding/trample constraints |32 executed30 passed/2 incomplete fixture-submission failures | Two fixtures corrected; new12-case rules bank and runtime unchanged; rerun pending |
-| Actor hidden-information boundary |Original28 passed; corrected stack-source12 subsequently passed | Pilots receive detached actor-visible data only, no hand/library/private source generations |
-| Durable journal/replay |20/20 on integratedv2 | Bundle16 fresh-process identity tests and inline Fish provenance12 still pending |
-| External process watchdog |9/9 fixed process cases | Stops are unresolved unless real engine terminal evidence exists; no fake draws/winners |
-| Artifact pilot D1 |24 executed22 passed/2 setup failures | Fixture-only correction pending; unchanged policy,0 tactical revisions |
-| Red pilot D1 |24 authored/frozen | Runtime dependencies and initial execution pending |
-| Monarch/initiative |72/72 isolated successor | Newer-source integration/public projection and broad checks remain; not first-cell support |
+The Admission14 child fails before game initialization because Java process metadata is unavailable under the current PID namespace/procfs mapping. The reviewed strict process successor uses independently observed exact self/parent metadata and retains executable hashes, full argv, spec, caps, ledger and input pins. Available Java metadata must agree; absence alone is not authority. Those actual14-case admission and20-case journal gates now pass on process04 (receipt `cec0c067a3944142512c46eb070ca2db22281d26645c9d91ab076ecb32245d26`). Their original failed before-images remain archived. This does not satisfy the remaining whole-source gates or create production admission.
 
-The initial life-pressure and comparison tests charge all real mana/cards. Toxin's lifelink and Clue are qualified functions, not presumed irrelevant. Returning Rats does not refund player damage. A Shaman sweep kills friendly nonfliers as well as opposing ones. A returned creature is a new object, and older queued damage must still use the departed source's actual last-known characteristics.
+## Gates and evidence separation
 
-## Broad regression and failed-source preservation
+After reviewed corrections, repeat the necessary common fixed bank on the exact merged source and run the required shared-engine/all-era regression plus concrete changed-consumer checks. Old-source server/client/Assay compilation or public CI cannot qualify the new source. Source-specific SDK/content compatibility must be explicit if only engine/test inputs change.
 
-LKI full14 executed4,998 fresh cases with12 failures. Collector15 legitimately executed9,872 cases across eight later eras with40 failures. The3,696 up-to-date engine cases and695 restored old XML cases do not enter that fresh count. Original receipts and the correction are archived together. Historical fixture timing, two invalid legendary test setups, a genuine nontarget-sacrifice card definition, and the targeted-token handoff are separately diagnosed; no blanket relabeling of failures is accepted.
+The offline bundle exporter is reviewed but has not exported production admission material. Exact published source, classpath/JDK, direct canonical getters, raw definition identities, inline-token provenance and passed evidence must be pinned before the admission verifier allows random allocation. An actual first-cell journal must receive a fresh-JVM replay and direct-event diagnostics. Fixed single-action or supervisor probes remain unresolved/process evidence, not completed games.
 
-Public53c68e95 remains red: five Witch's Cottage timing cases, Insight paid-flashback counter/exile, and nine golden snapshots changed by intentional new canonical content. Newly passing isolated fixes are not inherited by that public source. Applicable full `just test-rules`, content/snapshot and other changed-layer gates still apply to the final integrated source.
-
-## Replay and evidence classes
-
-Use the exact source archive/base commit, dependency record and command in each receipt. Focused commands run through `just test-class <ClassName>`; the shared runtime gate is `just test-rules`. The fresh collector additionally establishes actual task execution and in-window XML timestamps. Up-to-date tasks, skipped cases, parse errors and failed compile attempts remain visible but are not passing fresh assertions.
-
-Compact source/evidence manifests are under `evidence/build/`; current source hashes and acceptance limits are summarized in `CURRENT_STATUS.md`. Source archives preserve artificial fixture cards explicitly as fixtures. Ferocity is a project-only verified-text prerelease definition, not a released canonical catalog entry.
-
-Fixed deterministic fixtures are not randomized games or pilot win-rate evidence. **Development0, evaluation0, confirmation0, postboard0.** No technical pass answers which architecture is strongest or whether Ferocity improves it.
+**D2 development0, refinement0, evaluation0, confirmation0, postboard0.** Ferocity remains a project-only verified-text prerelease definition. Mechanical qualification does not establish sanctioned legality, a new archetype or a competitive advantage.

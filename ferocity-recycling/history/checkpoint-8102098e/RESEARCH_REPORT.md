@@ -1,12 +1,14 @@
-# Research checkpoint — 2026-09-26 13:24 UTC
+# Research checkpoint — 2026-09-26 11:53 UTC
 
-**No deck-strength conclusion is supported yet.** The strongest Ferocity configuration, Ferocity's causal contribution and competitiveness remain unresolved. All randomized stages remain0; all18 initial sixties are unchanged. [CURRENT_STATUS.md](CURRENT_STATUS.md) records exact current source and game counts.
+**No deck-strength conclusion is supported yet.** A/B/C remain unresolved, all randomized stage counts are0, and all18 initial sixties remain unchanged. The research stopping rule has not been reached. The authoritative current execution record is [CURRENT_STATUS.md](CURRENT_STATUS.md).
 
-The combined fixed selection has now actually executed458 cases:441 passed and17 failed. Fresh ordinary content342 and the complete SDK531 passed on their recorded source. Fifteen failures concern explicit fixture flow/setup; one exposes a real combat-priority defect; one exposes unavailable JVM process metadata in this environment. Every failure remains recorded. The reviewed process04 successor subsequently passed34 fresh Admission/Journal cases. The unchanged-engine combat baseline executed13 cases: eleven failed priority/trigger assertions and two stopped at serializer fixture configuration. Those two cases require a separate fixture correction before their later assertions can be interpreted. The earlier cache-lock attempt executed zero cases. These findings qualify infrastructure and diagnose interactions; they do not select a deck or estimate a win rate.
+This checkpoint publishes fresh source-bound LKI97 and all-era14,269 passing assertions, the separately repeated literal1,406, combat32, monarch72, artifact policy24, diagnostics12, bundle16, Brew25 and Highway8, with all predecessor failures and actual source boundaries. These are mechanical/policy/process results. They do not select a deck, establish a matchup win rate, or demonstrate a Ferocity advantage.
 
-The clean-build repair and reviewed golden changes have actual subsequent ordinary comparison evidence. Runtime/fixture successors remain separately versioned and must pass fresh gates. Initial Red gameplay policy and all decklists remain unchanged. A working effect, legal return or successful board wipe is still not a game win.
+The combined first-cell source encountered an actual stale-loose-class versus correct-JAR SDK output discrepancy before its snapshot tests. That failure is being repaired as a build-output provenance issue. The planned53-class/440 common bank, full SDK/shared regression, final source publication/admission, and all16 first-cell interactive games remain outstanding. A successful one-action fresh replay is explicitly capped/unresolved and is not a completed game.
 
-The earlier narrative below is historical and retains the search rationale and D0 arithmetic. Its checkpoint-specific pending statements are superseded by the current record; original complete text is archived at `history/checkpoint-8102098e/RESEARCH_REPORT.md`.
+The full earlier research narrative follows for history; its older checkpoint-specific pending statements are superseded by the current record above. It retains the bounded card-pool/search rationale and earlier evidence rather than silently rewriting accepted history.
+
+Environment follow-up: the forced SDK regeneration itself failed before tests on a disappearing synchronization temporary directory; a clean outside-workspace checkout with identical frozen source is being provisioned. The original attempt, binary discrepancy and regeneration failure remain preserved; no test or rule change is used to address this race.
 
 ---
 
