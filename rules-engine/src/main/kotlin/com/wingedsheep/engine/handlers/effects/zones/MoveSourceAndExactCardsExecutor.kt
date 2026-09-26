@@ -50,7 +50,14 @@ class MoveSourceAndExactCardsExecutor(
         }
 
         fun isInRequiredZone(state: GameState, sourceId: EntityId, playerId: EntityId, zone: Zone): Boolean =
-            if (zone == Zone.STACK) sourceId in state.stack else sourceId in state.getZone(ZoneKey(playerId, zone))
+            if (zone == Zone.STACK) {
+                // StackResolver removes the resolving spell from the visible stack list before
+                // executing its text, but GameState.logicalZone deliberately remains STACK until
+                // the resolution finalizer moves it. Use that durable object-zone identity here.
+                state.logicalZone(sourceId)?.zoneType == Zone.STACK
+            } else {
+                sourceId in state.getZone(ZoneKey(playerId, zone))
+            }
 
         fun commit(state: GameState, sourceId: EntityId, selected: List<EntityId>, effect: MoveSourceAndExactCardsEffect): EffectResult {
             if (selected.size != effect.additionalCount || selected.toSet().size != selected.size) {

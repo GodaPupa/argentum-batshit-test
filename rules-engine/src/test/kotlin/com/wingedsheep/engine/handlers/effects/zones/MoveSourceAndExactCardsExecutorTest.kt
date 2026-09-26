@@ -120,6 +120,20 @@ class MoveSourceAndExactCardsExecutorTest : FunSpec({
         allTrackedCards(result.state, f.playerId) shouldBe before
     }
 
+    test("a resolving source popped from visible stack still qualifies through logical STACK identity") {
+        val f = fixture(4)
+        val (_, resolvingState) = f.state.popFromStack()
+
+        resolvingState.stack shouldBe emptyList()
+        resolvingState.logicalZone(f.sourceId)?.zoneType shouldBe Zone.STACK
+
+        val result = executor.execute(resolvingState, effect(), context(f))
+        val moved = listOf(f.sourceId) + f.candidates
+
+        result.state.getZone(f.playerId, Zone.EXILE) shouldContainExactlyInAnyOrder moved
+        result.updatedCollections["atomicMoved"]!! shouldContainExactlyInAnyOrder moved
+    }
+
     test("exact count atomically moves source plus all required cards and emits ordinary zone changes") {
         val f = fixture(4)
         val before = allTrackedCards(f.state, f.playerId)
