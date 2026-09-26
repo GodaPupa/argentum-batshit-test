@@ -216,11 +216,12 @@ class PhaseTwoTelemetryAdapter(
             require(ends.size <= 1) { "Multiple terminal engine events" }
             require(result.state.gameOver == ends.isNotEmpty()) { "Terminal state/event mismatch" }
             ends.singleOrNull()?.let { event ->
-                require(result.state.winnerId == event.winnerId) { "Terminal winner mismatch" }
+                val winnerId = event.winnerId
+                require(result.state.winnerId == winnerId) { "Terminal winner mismatch" }
                 observations += when {
-                    event.winnerId != null -> observation("GAME_WON") {
-                        require(event.winnerId in playerIds)
-                        put("winner", event.winnerId.value)
+                    winnerId != null -> observation("GAME_WON") {
+                        require(winnerId in playerIds)
+                        put("winner", winnerId.value)
                         put("engine_trace_ref", traceRef)
                     }
                     event.reason == GameEndReason.DRAW -> observation("RULES_DRAW") {
