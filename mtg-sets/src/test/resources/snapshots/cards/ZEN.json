@@ -3790,6 +3790,58 @@
     ]
 }
 
+// Spreading Seas
+{
+    "name": "Spreading Seas",
+    "manaCost": "{1}{U}",
+    "typeLine": "Enchantment — Aura",
+    "oracleText": "Enchant land\nWhen this Aura enters, draw a card.\nEnchanted land is an Island.",
+    "script": {
+        "triggeredAbilities": [
+            {
+                "id": "ability_1",
+                "trigger": {
+                    "type": "ZoneChangeEvent",
+                    "to": "Battlefield"
+                },
+                "effect": {
+                    "type": "DrawCards",
+                    "count": {
+                        "type": "Fixed",
+                        "amount": 1
+                    }
+                }
+            }
+        ],
+        "staticAbilities": [
+            {
+                "type": "SetEnchantedLandType",
+                "landType": "Island"
+            }
+        ],
+        "auraTarget": {
+            "type": "TargetObject",
+            "filter": {
+                "baseFilter": "land"
+            }
+        }
+    },
+    "metadata": {
+        "collectorNumber": "70",
+        "artist": "Jung Park",
+        "flavorText": "Most inhabitants of Zendikar have given up on the idea of an accurate map.",
+        "rulings": [
+            {
+                "date": "2009-10-01",
+                "text": "The enchanted land loses its existing land types and any abilities printed on it. It now has the land type Island and the intrinsic blue-mana ability. Its name and legendary, basic, or snow supertypes are unchanged."
+            }
+        ]
+    },
+    "colorIdentityOverride": [
+        "BLUE"
+    ]
+}
+
 // Steppe Lynx
 {
     "name": "Steppe Lynx",
