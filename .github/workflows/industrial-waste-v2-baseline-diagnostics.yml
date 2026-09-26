@@ -1,0 +1,77 @@
+name: Industrial Same-Lineage Baseline Diagnostics
+
+on:
+  push:
+    branches: [industrial-waste/v2-baseline-diagnostics]
+
+permissions:
+  contents: read
+
+jobs:
+  diagnose:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: accepted-industrial
+            source: 1fe2118348b83bc9eacb9160c55ec52af67007b3
+          - name: priority-industrial
+            source: eb4127cc4ef2a34a740d8bd7a4e623a64b9e7132
+    name: diagnose (${{ matrix.name }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    env:
+      GRADLE_LOCK_SLOTS: '1'
+      SOURCE_HEAD: ${{ matrix.source }}
+      ARGENTUM_AI_ACTION_TRACE: ${{ github.workspace }}/subject/build/reports/industrial-baseline-diagnostics/action-stream.txt
+    defaults:
+      run:
+        working-directory: subject
+    steps:
+      - name: Check out the immutable source under diagnosis
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ matrix.source }}
+          path: subject
+      - name: Check out this diagnostic control
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ github.sha }}
+          path: diagnostic-control
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            .github/workflows/industrial-waste-v2-baseline-diagnostics.yml
+            industrial-waste/v2/baseline-diagnostics.py
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: gradle/actions/setup-gradle@v6
+      - uses: extractions/setup-just@f8a3cce218d9f83db3a2ecd90e41ac3de6cdfd9b
+        with:
+          just-version: '1.58.0'
+      - name: Bind originals and instrument only the existing action digest
+        run: |
+          python3 ../diagnostic-control/industrial-waste/v2/baseline-diagnostics.py instrument \
+            --source "$SOURCE_HEAD" --report build/reports/industrial-baseline-diagnostics
+      - name: Reproduce the same existing case without changing their expectations
+        run: |
+          set -euo pipefail
+          just test-class FrozenBaselineTest --rerun \
+            --max-workers=1 -PkotlinCompileParallelism=1 \
+            -Pkotlin.compiler.execution.strategy=in-process -Dorg.gradle.jvmargs=-Xmx4g \
+            --info --stacktrace 2>&1 | tee build/reports/industrial-baseline-diagnostics/tests.log
+      - name: Bind raw failure evidence and check that trace bytes match the original digest
+        if: always()
+        run: |
+          python3 ../diagnostic-control/industrial-waste/v2/baseline-diagnostics.py collect \
+            --source "$SOURCE_HEAD" --report build/reports/industrial-baseline-diagnostics
+      - name: Preserve both source-specific diagnostic attempts
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: industrial-baseline-diagnostics-${{ matrix.name }}-${{ github.run_id }}
+          path: subject/build/reports/industrial-baseline-diagnostics/
+          if-no-files-found: error
+          retention-days: 30
+
