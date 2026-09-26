@@ -1,0 +1,108 @@
+name: Ferocity Recycling combat browser qualification
+
+on:
+  push:
+    branches: [ferocity-recycling/qualification-review]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ferocity-combat-browser-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  combat-browser:
+    # This bank admits only the next reviewed publication from source06. Later
+    # evidence commits and workflow reruns cannot spend another four-case attempt.
+    if: ${{ github.event.before == '667fd916f04dab372a482ffa7d4697e2f42d18e4' && github.run_attempt == '1' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    env:
+      CI: 'true'
+      EXPECTED_HEAD: ${{ github.sha }}
+      GAME_DEV_ENDPOINTS_ENABLED: 'true'
+      E2E_SERVER_URL: http://localhost:8080
+      E2E_BASE_URL: http://localhost:5173
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - name: Set isolated runner paths for later steps
+        shell: bash
+        run: |
+          set -euo pipefail
+          printf 'GRADLE_USER_HOME=%s/ferocity-combat-gradle\n' "$RUNNER_TEMP" >> "$GITHUB_ENV"
+          printf 'PLAYWRIGHT_BROWSERS_PATH=%s/ferocity-combat-browsers\n' "$RUNNER_TEMP" >> "$GITHUB_ENV"
+      - name: Record exact source and frozen browser inputs
+        run: python3 ferocity-recycling/tools/record_combat_browser.py before
+      - name: Install exact previously verified JDK and just archives
+        shell: bash
+        run: |
+          set -euo pipefail
+          tools_dir="$RUNNER_TEMP/ferocity-combat-tools"
+          mkdir -p "$tools_dir"
+          curl --fail --location --max-time 180 --output "$tools_dir/temurin-jdk.tar.gz" \
+            https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.12.1%2B1/OpenJDK21U-jdk_x64_linux_hotspot_21.0.12.1_1.tar.gz
+          echo 'ce79869e1307ed8ee1e2baa86a412b1eb5b75d10a01006d788a6f968bcfaee94  '"$tools_dir/temurin-jdk.tar.gz" | sha256sum --check
+          tar -xzf "$tools_dir/temurin-jdk.tar.gz" -C "$tools_dir"
+          echo "JAVA_HOME=$tools_dir/jdk-21.0.12.1+1" >> "$GITHUB_ENV"
+          echo "$tools_dir/jdk-21.0.12.1+1/bin" >> "$GITHUB_PATH"
+          curl --fail --location --max-time 120 --output "$tools_dir/just.tar.gz" \
+            https://github.com/casey/just/releases/download/1.58.0/just-1.58.0-x86_64-unknown-linux-musl.tar.gz
+          echo '4a5cc2f53e6f0f8c59092a6cc38291eb729d46a7dd95d3ae582008881b84931d  '"$tools_dir/just.tar.gz" | sha256sum --check
+          tar -xzf "$tools_dir/just.tar.gz" -C "$tools_dir" just
+          echo "$tools_dir" >> "$GITHUB_PATH"
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+      - name: Provision exact lockfile dependencies and Chromium
+        id: provision
+        shell: bash
+        run: |
+          set -euo pipefail
+          evidence="$GITHUB_WORKSPACE/ferocity-recycling/evidence/browser/combat"
+          npm ci --prefix web-client 2>&1 | tee "$evidence/npm-web-client.log"
+          npm ci --prefix e2e-scenarios 2>&1 | tee "$evidence/npm-e2e.log"
+          (cd e2e-scenarios && npx --no-install playwright install --with-deps chromium) 2>&1 | tee "$evidence/chromium-install.log"
+          python3 ferocity-recycling/tools/record_combat_browser.py runtime
+      - name: Build current web client
+        id: client
+        shell: bash
+        run: |
+          set -euo pipefail
+          (cd web-client && npm run build) 2>&1 | tee ferocity-recycling/evidence/browser/combat/web-client-build.log
+      - name: Run exactly four fixed browser cases without retry
+        id: browser
+        shell: bash
+        run: |
+          set -uo pipefail
+          evidence="$GITHUB_WORKSPACE/ferocity-recycling/evidence/browser/combat"
+          # GitHub invokes bash with errexit. Retain an unsuccessful browser's exact
+          # status before returning failure to the job and the admission recorder.
+          set +e
+          (cd e2e-scenarios && npx --no-install playwright test --config ferocity-combat.config.ts) 2>&1 | tee "$evidence/browser.log"
+          pipeline_status=("${PIPESTATUS[@]}")
+          set -e
+          browser_status=${pipeline_status[0]}
+          printf '%s\n' "$browser_status" > "$evidence/browser-exit-code.txt"
+          printf '%s\n' "${pipeline_status[1]}" > "$evidence/browser-tee-exit-code.txt"
+          if [[ ${pipeline_status[1]} -ne 0 ]]; then exit "${pipeline_status[1]}"; fi
+          exit "$browser_status"
+      - name: Verify source and runtime guards plus exact case results
+        if: always()
+        run: >-
+          python3 ferocity-recycling/tools/record_combat_browser.py finish
+          --provision-status '${{ steps.provision.outcome }}'
+          --client-status '${{ steps.client.outcome }}'
+          --browser-status '${{ steps.browser.outcome }}'
+      - name: Preserve every generated result and failure artifact
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: ferocity-combat-browser-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ferocity-recycling/evidence/browser/combat/
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 30

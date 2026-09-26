@@ -1,5 +1,7 @@
 package com.wingedsheep.engine.scenarios
 
+import com.wingedsheep.engine.support.chooseTriggerOrderInListedOrder
+
 import com.wingedsheep.engine.core.CardsSelectedResponse
 import com.wingedsheep.engine.core.OrderedResponse
 import com.wingedsheep.engine.core.ReorderLibraryDecision
@@ -194,6 +196,8 @@ class ScryTriggerScenarioTest : FunSpec({
 
         val before = driver.events.size
         driver.castScry(active, "Scry Three")
+        driver.resolveStack()
+        driver.chooseTriggerOrderInListedOrder()
         driver.resolveStack()
 
         val scried = driver.events.drop(before).filterIsInstance<ScriedEvent>().single()

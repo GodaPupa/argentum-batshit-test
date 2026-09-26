@@ -1,5 +1,7 @@
 package com.wingedsheep.engine.scenarios
 
+import com.wingedsheep.engine.support.chooseTriggerOrderInListedOrder
+
 import com.wingedsheep.engine.core.CastSpell
 import com.wingedsheep.engine.core.PaymentStrategy
 import com.wingedsheep.engine.state.components.battlefield.CountersComponent
@@ -96,10 +98,12 @@ class InsidiousRootsScenarioTest : FunSpec({
 
         val first = driver.putCardInGraveyard(player, "Grizzly Bears")
         driver.raiseDead(player, first)
+        driver.chooseTriggerOrderInListedOrder() // Roots and Chalk Outline both saw the departure.
         while (driver.stackSize > 0) driver.bothPass()
 
         val second = driver.putCardInGraveyard(player, "Centaur Courser")
         driver.raiseDead(player, second)
+        driver.chooseTriggerOrderInListedOrder()
         while (driver.stackSize > 0) driver.bothPass()
 
         val plants = driver.plants(player)

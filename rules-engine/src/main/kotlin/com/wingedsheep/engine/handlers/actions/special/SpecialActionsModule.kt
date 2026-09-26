@@ -21,6 +21,8 @@ class SpecialActionsModule(
     override fun handlers(): List<ActionHandler<*>> = listOf(
         ConcedeHandler(services.sbaChecker, com.wingedsheep.engine.mechanics.CastPriorityProcessor(
             services.sbaChecker, services.triggerDetector, services.triggerProcessor
+        ), com.wingedsheep.engine.mechanics.combat.BlockDeclarationProcessor(
+            services.sbaChecker, services.triggerDetector, services.triggerProcessor
         )),
         ChooseManaColorHandler()
     )

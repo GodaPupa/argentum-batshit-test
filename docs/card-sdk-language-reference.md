@@ -735,6 +735,11 @@ exist in the cost and charges the life through the shared life-payment service.
   payment path. Per-color amount spent on X is then readable via `DynamicAmount.ManaSpentOnX(color)`.
   Soul Burn (`spell { xManaRestriction = setOf(Color.BLACK, Color.RED) }`) and Atalya, Samite Master
   (`activatedAbility { xManaRestriction = setOf(Color.WHITE) }`) are the first users.
+  Activated-X action ceilings apply those colors and the ability payment context, count every X
+  symbol, exclude a source needed for a tap cost, and retain nonmana caps. Eligible restricted
+  floating mana is consumed under the same context; an unpaid X is rejected atomically.
+  Pure-X and fixed resource cases are covered by `RestrictedActivatedXScenarioTest`; mixed fixed
+  generic/hybrid mana optimization remains a separate solver qualification boundary.
 
 **`Costs.additional.*`** (wraps `AdditionalCost`) — extra costs paid alongside the mana cost. Card
 definitions construct these through the facade, e.g. `Costs.additional.SacrificePermanent(Filters.Creature)`.
@@ -3033,9 +3038,10 @@ Atomic effect factories. For library/zone manipulation, prefer the pipelines in 
   `CastChoicesComponent`) and read back through `Player.ChosenOpponent`. Forced (promptless) with a
   single opponent, so 2-player games see no extra decision. The source may be a spell on the stack
   (the choice lives on the spell entity for its resolution) or a permanent (recorded durably).
-  `Patterns.Mechanic.giftSpell` prefixes its gift mode with this automatically — gift recipients
-  address `Player.ChosenOpponent`. (Permanent gift cards don't need it: `gift(kind)` records the
-  promised opponent in the same slot as part of the cast — see § 11 "Gift".) The *as-enters* analogue
+  Legacy `Patterns.Mechanic.giftSpell` prefixes its gift mode with this; that chooses its recipient
+  too late for real Gift. Use `gift(kind)`, which records the promised opponent as part of casting
+  and provides it to either the permanent's gift trigger or the instant/sorcery resolution — see
+  § 11 "Gift". The *as-enters* analogue
   is `EntersWithChoice(ChoiceType.OPPONENT)`,
   which writes the same slot (Jihad, The Rack).
 - `Effects.ChooseCardTypeForSource(allowedCardTypes=null, lookAtOpponentHand=false, slot=ChoiceSlot.CARD_TYPE, prompt)`
@@ -5263,12 +5269,12 @@ owns a consent gate is rejected at build time rather than prompting twice.
 
 What that gets you, uniformly, for targeted and untargeted triggers alike:
 
-- **The yes/no is its own decision.** For a **no-target** trigger the unified gated executor asks it
-  at resolution and runs the gate's `otherwise` on "no" (or nothing when there is none, e.g. Song of
-  Stupefaction's "you may mill two cards"). For a **targeted** trigger `TriggerProcessor` asks it as
-  the ability goes on the stack and only then selects targets, so declining never costs you a target
-  choice first — and the trigger becomes eligible for batching and for a remembered auto-answer, both
-  of which key on the gate.
+- **The yes/no is its own resolution decision.** For targeted and untargeted bare optional
+  effects, the gated executor asks when the ability resolves (CR 603.5). Targets are selected
+  when the trigger is put on the stack (CR 603.3d); the player cannot decline in advance to skip
+  that placement or an opponent's response window. Each separately resolving ability retains
+  its own choice. Remembered auto-answers operate at that same resolution boundary. The older
+  pre-stack batch-may path is not used for new triggers.
 - **Targets follow CR 603.3d.** A slot's minimum is the *requirement's*: "target creature" stays
   mandatory and the ability is removed from the stack when nothing is legal. "Up to one target
   creature" is an optional **requirement** (`TargetCreature(optional = true)`), which is a different
@@ -6494,6 +6500,16 @@ Dominant back faces that "stay" instead self-exile on their final chapter, dodgi
   copy itself; copying a permanent spell yields a token (CR 707.10f), and the copy isn't cast so it
   doesn't re-trigger (CR 707.10).
 - `Expend(threshold)` — Expend N (CLB mechanic).
+
+### Simultaneous trigger placement
+
+Before placing two or more simultaneous triggers controlled by one player on the stack, the engine
+asks that player to choose their placement order (CR 603.3b). First chosen is placed lowest and resolves
+last. APNAP still orders different controllers' groups. Each exact pending trigger carries its original
+source identity, event payload and chosen-placement marker through later target decisions; a pause does
+not repeat the ordering question. Same card definitions and identical text do not collapse distinct
+source objects. Bare optional effects retain their own resolution-time consent decisions (CR 603.5).
+
 
 ### Delayed & granted triggers
 
@@ -8745,11 +8761,28 @@ copy of it (CR 707.10e). The activated-ability analogue of the spell-level `cant
 > The promise rides *every* cost path, since it's an additional cost (CR 601.2b, 601.2f–h): the
 > enumerator clones alternative-cost and free casts too, not just the plain one.
 >
-> *Instants and sorceries* have no permanent to trigger off — their gift-paid branch is part of the
-> spell's own effect, so they keep `Patterns.Mechanic.giftSpell(noGiftMode, giftMode)`: a two-mode
-> `ModalEffect` (`countsAsModalSpell = false`) whose mode is chosen **at cast time** by the engine's
-> cast-time mode picker, which is what makes the choice legal there (Long River's Pull, Crumb and Get It).
-> The gift mode is prefixed with `Effects.ChooseOpponent(...)` and addresses `Player.ChosenOpponent`.
+> *Instants and sorceries:* `gift(kind)` adds the real keyword without an enters trigger. The
+> engine gives the gift **before** the spell's other effects (CR 702.174j), and emits `GiftGiven`
+> when the promised spell resolves (CR 702.174c). For a conditional rider, `spell { }` supplies
+> `giftEffect` and named `giftTarget(name, requirement)` declarations: the **complete** promised
+> target/effect shape, serialized as `CardScript.giftSpellEffect` / `giftTargetRequirements`.
+> Keep the base targets as an exact prefix and append conditional targets. These targets are chosen
+> before costs, including discard. Example: Brew's base player/draw-two shape becomes
+> player+own-creature/draw-two-and-+2/+0. Do not create the gift in `giftEffect`; the keyword already
+> does it. No legal own creature suppresses only the promised menu variant. Ordinary resolution
+> revalidation retains the surviving target if the other is illegal. Countered/all-illegal spells
+> give no gift. Copies inherit the promise and recipient without paying another cost.
+>
+> The new fields default to absent/base behavior in old serialized definitions. The current bounded
+> cast enumerator explicitly rejects disjoint replacement targets and combined Gift/modal/kicker/
+> cleave/face shapes; it does not silently omit a gift-only legal cast. `GiftWasPromised` remains
+> the durable permanent-condition facade; an instant/sorcery uses the paired spell shape.
+> Give-gift is finalized after all ordinary and spliced text, including paused resolutions and
+> copies. An authored effect that moves its own resolving stack object needs separate completion
+> qualification; the captured-object finalizer intentionally will not follow a later incarnation.
+> `Patterns.Mechanic.giftSpell` is a **legacy approximation**: its modes/targets are cast-time,
+> but its opponent selection is resolution-time. Unmigrated cards keep their old source version;
+> they are not qualified by the real Gift repair and should not be newly admitted through that helper.
 
 > **Converge** (ability word, CR 207.2c — flavor only, no keyword, like Opus/Vivid). Scales an effect
 > by the number of distinct colors of mana spent to cast the spell. Three shapes:

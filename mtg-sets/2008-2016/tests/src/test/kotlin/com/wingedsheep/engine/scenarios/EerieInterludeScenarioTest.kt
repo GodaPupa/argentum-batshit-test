@@ -1,5 +1,7 @@
 package com.wingedsheep.engine.scenarios
 
+import com.wingedsheep.engine.support.chooseTriggerOrderInListedOrder
+
 import com.wingedsheep.engine.core.CastSpell
 import com.wingedsheep.engine.handlers.continuations.entityIdToChosenTarget
 import com.wingedsheep.engine.support.ScenarioTestBase
@@ -75,6 +77,7 @@ class EerieInterludeScenarioTest : ScenarioTestBase() {
             }
 
             game.passUntilPhase(Phase.ENDING, Step.END)
+            game.chooseTriggerOrderInListedOrder()
             game.resolveStack()
 
             withClue("each gets its own delayed return, not just the first target") {

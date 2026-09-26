@@ -1,11 +1,14 @@
 package com.wingedsheep.engine.scenarios
 
+import com.wingedsheep.engine.core.ChooseTargetsDecision
+import com.wingedsheep.engine.core.YesNoDecision
 import com.wingedsheep.engine.support.ScenarioTestBase
 import com.wingedsheep.sdk.core.Phase
 import com.wingedsheep.sdk.core.Step
 import io.kotest.assertions.withClue
+import io.kotest.matchers.collections.shouldContain
 import io.kotest.matchers.shouldBe
-import io.kotest.matchers.shouldNotBe
+import io.kotest.matchers.types.shouldBeInstanceOf
 
 /**
  * Scenario tests for Necrite (Fallen Empires).
@@ -35,15 +38,29 @@ class NecriteScenarioTest : ScenarioTestBase() {
                 game.passUntilPhase(Phase.COMBAT, Step.DECLARE_ATTACKERS)
                 game.declareAttackers(mapOf("Necrite" to 2)).error shouldBe null
                 game.passUntilPhase(Phase.COMBAT, Step.DECLARE_BLOCKERS)
-                game.declareNoBlockers()
+                game.declareNoBlockers().error shouldBe null
 
-                withClue("the unblocked trigger must ask whether to sacrifice") {
-                    game.state.pendingDecision shouldNotBe null
-                }
                 val bears = game.findPermanent("Grizzly Bears")!!
-                game.answerYesNo(true)
-                game.selectTargets(listOf(bears))
-                game.resolveStack()
+                val targetDecision = game.getPendingDecision().shouldBeInstanceOf<ChooseTargetsDecision>()
+                targetDecision.playerId shouldBe game.player1Id
+                targetDecision.legalTargets.getValue(0) shouldContain bears
+                targetDecision.targetRequirements.single().minTargets shouldBe 1
+                game.selectTargets(listOf(bears)).error shouldBe null
+                game.getPendingDecision() shouldBe null
+                game.state.stack.size shouldBe 1
+                game.passPriority().error shouldBe null
+                game.getPendingDecision() shouldBe null
+                game.state.stack.size shouldBe 1
+                game.passPriority().error shouldBe null
+
+                withClue("the optional sacrifice is chosen when the targeted trigger resolves") {
+                    game.getPendingDecision().shouldBeInstanceOf<YesNoDecision>().playerId shouldBe game.player1Id
+                    game.isOnBattlefield("Necrite") shouldBe true
+                }
+                game.answerYesNo(true).error shouldBe null
+                game.resolveStack().forEach { it.error shouldBe null }
+                game.getPendingDecision() shouldBe null
+                game.state.stack.size shouldBe 0
 
                 withClue("Necrite paid for the kill with itself") {
                     game.isOnBattlefield("Necrite") shouldBe false
@@ -63,12 +80,27 @@ class NecriteScenarioTest : ScenarioTestBase() {
                     .build()
 
                 game.passUntilPhase(Phase.COMBAT, Step.DECLARE_ATTACKERS)
-                game.declareAttackers(mapOf("Necrite" to 2))
+                game.declareAttackers(mapOf("Necrite" to 2)).error shouldBe null
                 game.passUntilPhase(Phase.COMBAT, Step.DECLARE_BLOCKERS)
-                game.declareNoBlockers()
+                game.declareNoBlockers().error shouldBe null
 
-                game.answerYesNo(false)
-                game.resolveStack()
+                val bears = game.findPermanent("Grizzly Bears")!!
+                val targetDecision = game.getPendingDecision().shouldBeInstanceOf<ChooseTargetsDecision>()
+                targetDecision.playerId shouldBe game.player1Id
+                targetDecision.legalTargets.getValue(0) shouldContain bears
+                targetDecision.targetRequirements.single().minTargets shouldBe 1
+                game.selectTargets(listOf(bears)).error shouldBe null
+                game.getPendingDecision() shouldBe null
+                game.state.stack.size shouldBe 1
+                game.passPriority().error shouldBe null
+                game.getPendingDecision() shouldBe null
+                game.state.stack.size shouldBe 1
+                game.passPriority().error shouldBe null
+                game.getPendingDecision().shouldBeInstanceOf<YesNoDecision>().playerId shouldBe game.player1Id
+                game.answerYesNo(false).error shouldBe null
+                game.resolveStack().forEach { it.error shouldBe null }
+                game.getPendingDecision() shouldBe null
+                game.state.stack.size shouldBe 0
 
                 game.isOnBattlefield("Necrite") shouldBe true
                 game.isOnBattlefield("Grizzly Bears") shouldBe true

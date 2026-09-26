@@ -1,5 +1,7 @@
 package com.wingedsheep.engine.scenarios
 
+import com.wingedsheep.engine.support.chooseTriggerOrderInListedOrder
+
 import com.wingedsheep.engine.core.ActivateAbility
 import com.wingedsheep.engine.support.GameTestDriver
 import com.wingedsheep.engine.support.TestCards
@@ -91,6 +93,7 @@ class ConnectingTheDotsScenarioTest : FunSpec({
 
         driver.passPriorityUntil(Step.DECLARE_ATTACKERS)
         driver.declareAttackers(active, listOf(first, second), opponent).error shouldBe null
+        driver.chooseTriggerOrderInListedOrder()
         driver.bothPass() // resolve the first trigger
         driver.bothPass() // resolve the second
 

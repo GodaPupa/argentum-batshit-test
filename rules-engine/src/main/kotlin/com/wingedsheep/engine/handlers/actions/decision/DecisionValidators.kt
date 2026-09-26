@@ -86,17 +86,14 @@ object DecisionValidators {
     /**
      * Validate a [CombatResolutionResponse] against its [CombatResolutionDecision].
      *
-     * Geometric checks only (the resumer enforces per-edge ownership by filtering to the current
-     * chooser's [DamageEdge.editableBy], so this stays submitter-agnostic):
+     * The question identifies the current chooser; an unchanged echo of another chooser's edge is
+     * harmless, but a response cannot alter that chooser's assignments.
      * - Each submitted amount lies in `[0, maximum]` for its edge.
-     * - Per source, the total assigned across its edges doesn't exceed its power.
-     * - CR 510.1c damage-assignment order: the attacking player picks the order, so an assignment is
-     *   legal iff it's legal under *some* order — i.e. for an [DamageEdge.orderConstrained] source,
-     *   at most one blocker it damages may be left below lethal (counting cross-source damage this
-     *   step, which is what lets a band cooperate). Banding edges (orderConstrained = false) don't gate.
+     * - Each represented source assigns its full available damage (CR 510.1a).
+     * - Division among eligible creatures is unrestricted by lethal thresholds (CR 510.1c/d).
      * - CR 702.19b trample lethal-first: a trample drain may carry damage only once every blocker
      *   the trampling attacker assigns to is at lethal (aggregated across the step). Independent of
-     *   CR 510.1c order, so banding never relaxes it.
+     *   ordinary creature-to-creature division, so banding never relaxes it.
      */
     private fun validateCombatResolution(
         decision: CombatResolutionDecision,
@@ -107,53 +104,36 @@ object DecisionValidators {
         }
 
         val edgesById = decision.edges.associateBy { it.id }
+        if (edgesById.size != decision.edges.size) return "Combat decision contains duplicate edge ids"
         val submitted = response.edges.associateBy { it.edgeId }
+        if (submitted.size != response.edges.size) return "Combat response contains duplicate edge ids"
 
         for ((edgeId, entry) in submitted) {
             val edge = edgesById[edgeId] ?: return "Unknown edge id: $edgeId"
+            if (edge.editableBy != decision.playerId && entry.amount != edge.amount) {
+                return "Edge $edgeId: only its chooser may change the assigned amount"
+            }
             if (entry.amount < 0) return "Edge $edgeId: amount ${entry.amount} below 0"
             if (entry.amount > edge.maximum) return "Edge $edgeId: amount ${entry.amount} exceeds maximum ${edge.maximum}"
         }
 
         fun amountOf(edge: DamageEdge): Int = submitted[edge.id]?.amount ?: edge.amount
 
-        // Per-source budget — every edge from a source caps at that source's power (its `maximum`).
-        val edgesBySource = decision.edges.groupBy { it.sourceId }
-        for ((sourceId, sourceEdges) in edgesBySource) {
-            val total = sourceEdges.sumOf { amountOf(it) }
-            val power = sourceEdges.maxOf { it.maximum }
-            if (total > power) return "Source $sourceId: damage total $total exceeds available power $power"
-        }
-
-        // Aggregate damage reaching each target this step (CR 510.1c cross-source lethal counting).
-        val aggregate = mutableMapOf<EntityId, Int>()
-        for (edge in decision.edges) {
-            if (edge.isTrampleDrain) continue
-            aggregate.merge(edge.targetId, amountOf(edge), Int::plus)
-        }
-
-        // CR 510.1c: the attacking player chooses the damage-assignment order, so there is no fixed
-        // order to gate against — an assignment is legal iff it's legal under *some* order. Walking
-        // the chosen order, every blocker a source damages except the last (where it runs out) must
-        // be at lethal; blockers it skips are unconstrained. Equivalently: at most one blocker a
-        // source assigns damage to may be left below its lethal need (counting cross-source damage
-        // this step). Banding (orderConstrained = false) lifts even this — the chooser divides freely.
-        for ((sourceId, sourceEdges) in edgesBySource) {
-            val belowLethal = sourceEdges.count { edge ->
-                edge.orderConstrained && !edge.isTrampleDrain &&
-                    amountOf(edge) > 0 && (aggregate[edge.targetId] ?: 0) < edge.lethal
-            }
-            if (belowLethal > 1) {
-                return "Source $sourceId: must assign lethal damage to all but one blocker before " +
-                    "spreading damage further"
-            }
-        }
-
-        // CR 702.19b trample lethal-first.
-        val damageToBlocker = mutableMapOf<EntityId, Int>()
+        // CR 702.19b counts marked damage and all concurrent assignments. A positive assignment
+        // from any deathtouch source is lethal (CR 702.2c); a zero assignment contributes nothing.
+        // A source-specific edge.lethal cannot express this aggregate test: a deathtouch trampler
+        // assigning zero must not make another source's one damage lethal.
+        val attackersById = decision.attackers.associateBy { it.id }
+        val blockersById = decision.blockers.associateBy { it.id }
+        val damageToBlocker = mutableMapOf<EntityId, Long>()
+        val blockersAssignedDeathtouch = mutableSetOf<EntityId>()
         for (edge in decision.edges) {
             if (edge.direction != DamageEdgeDirection.ATTACKER_TO_BLOCKER) continue
-            damageToBlocker.merge(edge.targetId, amountOf(edge), Int::plus)
+            val source = attackersById[edge.sourceId]
+                ?: return "Combat decision is missing attacker ${edge.sourceId}"
+            val amount = amountOf(edge)
+            damageToBlocker.merge(edge.targetId, amount.toLong(), Long::plus)
+            if (amount > 0 && source.hasDeathtouch) blockersAssignedDeathtouch.add(edge.targetId)
         }
         for (drain in decision.edges) {
             if (!drain.isTrampleDrain) continue
@@ -161,9 +141,23 @@ object DecisionValidators {
             for (blockerEdge in decision.edges) {
                 if (blockerEdge.sourceId != drain.sourceId) continue
                 if (blockerEdge.direction != DamageEdgeDirection.ATTACKER_TO_BLOCKER) continue
-                if ((damageToBlocker[blockerEdge.targetId] ?: 0) < blockerEdge.lethal) {
+                val blocker = blockersById[blockerEdge.targetId]
+                    ?: return "Combat decision is missing blocker ${blockerEdge.targetId}"
+                val remainingLethal = (blocker.toughness.toLong() - blocker.markedDamage.toLong()).coerceAtLeast(0L)
+                if (blocker.id !in blockersAssignedDeathtouch &&
+                    (damageToBlocker[blocker.id] ?: 0L) < remainingLethal) {
                     return "Trample drain ${drain.id}: preceding blocker not at lethal"
                 }
+            }
+        }
+
+        // A represented source has eligible recipients. It must assign all its available damage;
+        // declining to assign damage is not an option. Sources without recipients have no edges.
+        for ((sourceId, sourceEdges) in decision.edges.groupBy { it.sourceId }) {
+            val total = sourceEdges.sumOf { amountOf(it).toLong() }
+            val available = sourceEdges.maxOf { it.maximum }.toLong()
+            if (total != available) {
+                return "Source $sourceId: damage total $total must equal available damage $available"
             }
         }
 
@@ -495,9 +489,8 @@ object DecisionValidators {
             return "Expected damage assignment response"
         }
 
-        val totalDamage = response.assignments.values.sum()
-        if (totalDamage > decision.availablePower) {
-            return "Total damage ($totalDamage) exceeds available power (${decision.availablePower})"
+        if (response.assignments.values.any { it < 0 }) {
+            return "Combat damage assignments cannot be negative"
         }
 
         val validTargets = decision.orderedTargets.toSet() + listOfNotNull(decision.defenderId)
@@ -507,39 +500,27 @@ object DecisionValidators {
             }
         }
 
-        // Validate damage assignment order
-        var allPreviousHaveLethal = true
-        for (blockerId in decision.orderedTargets) {
-            val assignedDamage = response.assignments[blockerId] ?: 0
-            val lethalRequired = decision.minimumAssignments[blockerId] ?: 0
-            val hasLethal = assignedDamage >= lethalRequired
-
-            if (!hasLethal && !allPreviousHaveLethal) {
-                // Fine - can assign 0 to later blockers
-            } else if (!hasLethal) {
-                allPreviousHaveLethal = false
-            }
-
-            // Check no subsequent blocker has damage if this one doesn't have lethal
-            if (!hasLethal) {
-                val laterBlockers = decision.orderedTargets.dropWhile { it != blockerId }.drop(1)
-                for (laterBlocker in laterBlockers) {
-                    if ((response.assignments[laterBlocker] ?: 0) > 0) {
-                        return "Cannot assign damage to later blocker until earlier blockers have lethal damage"
-                    }
-                }
-            }
-        }
-
-        // Validate trample damage
+        // The legacy target list still supplies eligible recipients and trample thresholds.
+        // Its order imposes no restriction on ordinary division (CR 510.1c/d).
         val damageToDefender = response.assignments[decision.defenderId] ?: 0
         if (damageToDefender > 0) {
             if (!decision.hasTrample) {
                 return "Cannot assign damage to defending player without trample"
             }
-            if (!allPreviousHaveLethal) {
+            val allBlockersHaveLethal = decision.orderedTargets.all { blockerId ->
+                (response.assignments[blockerId] ?: 0) >= (decision.minimumAssignments[blockerId] ?: 0)
+            }
+            if (!allBlockersHaveLethal) {
                 return "Cannot assign trample damage until all blockers have lethal damage"
             }
+        }
+
+        val hasRecipients = decision.orderedTargets.isNotEmpty() ||
+            (decision.hasTrample && decision.defenderId != null)
+        val requiredDamage = if (hasRecipients) decision.availablePower.coerceAtLeast(0).toLong() else 0L
+        val totalDamage = response.assignments.values.sumOf { it.toLong() }
+        if (totalDamage != requiredDamage) {
+            return "Total damage ($totalDamage) must equal available damage ($requiredDamage)"
         }
         return null
     }

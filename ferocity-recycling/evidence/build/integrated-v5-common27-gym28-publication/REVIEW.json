@@ -1,0 +1,76 @@
+{
+  "schema": "ferocity-compact-evidence-review-v1",
+  "created_utc": "2026-09-26T14:21:49.185786+00:00",
+  "attempts": [
+    {
+      "attempt": "integrated-v5-common-post-block-27",
+      "status": "FAIL",
+      "receipt_sha256": "2e778e5c75260809f195a0818ecadca9f1beab42fa8a2fe9ae36b73bb22cbadc",
+      "compiled_inputs_unchanged": true,
+      "fresh_fixed_case_executions": {
+        "tests": 246,
+        "failures": 12,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "attempt": "integrated-v5-unchanged-common-remainder-28",
+      "status": "FAIL",
+      "receipt_sha256": "1464a0b973c0acfa0a2d3c622810f6c7f79de531ef559b548a958a872cc528e9",
+      "compiled_inputs_unchanged": true,
+      "fresh_fixed_case_executions": {
+        "tests": 176,
+        "failures": 2,
+        "errors": 0,
+        "skipped": 0
+      }
+    }
+  ],
+  "scope": "Closed exact-source deterministic evidence only:27 rules-engine234 fresh PASS and12 server MockK setup failures;28 gym176 fresh174PASS2Red fixture failures. Shared authored source freeze8cb6896 unchanged throughout, scoped dependency maps differ by selected modules. Remaining era80 unexecuted here and independently running in29. No whole502 PASS, no independent matchup sample, no games or deck-performance result.",
+  "repeated_fixed_case_executions_across_versions": 422,
+  "failures_across_versions": 14,
+  "not_independent_samples": true,
+  "research_development_games": 0,
+  "evaluation_games": 0,
+  "confirmation_games": 0,
+  "scan": {
+    "text_members_checked": 431,
+    "recursive_zip_members_checked": 364,
+    "high_confidence_findings": [],
+    "future_keyword_occurrences": [
+      {
+        "member": "ferocity-recycling/evidence/build/integrated-v5-common-post-block-27/receipt.json",
+        "line": "  \"confirmation_games\": 0,"
+      },
+      {
+        "member": "ferocity-recycling/evidence/build/integrated-v5-common-post-block-27/receipt.json",
+        "line": "  \"randomized_experimental_seeds\": 0,"
+      },
+      {
+        "member": "ferocity-recycling/evidence/build/integrated-v5-common-post-block-27/validator-attempt.py",
+        "line": "        \"confirmation_games\": 0, \"randomized_experimental_seeds\": 0,"
+      },
+      {
+        "member": "ferocity-recycling/evidence/build/integrated-v5-unchanged-common-remainder-28/receipt.json",
+        "line": "  \"confirmation_games\": 0,"
+      },
+      {
+        "member": "ferocity-recycling/evidence/build/integrated-v5-unchanged-common-remainder-28/receipt.json",
+        "line": "  \"randomized_experimental_seeds\": 0,"
+      },
+      {
+        "member": "ferocity-recycling/evidence/build/integrated-v5-unchanged-common-remainder-28/validator-attempt.py",
+        "line": "        \"confirmation_games\": 0, \"randomized_experimental_seeds\": 0,"
+      },
+      {
+        "member": "ferocity-recycling/support-audits/combined-priority-source-import-29/before-after-owned-source.zip!before/ferocity-recycling/tools/validate_build.py.before",
+        "line": "        \"confirmation_games\": 0, \"randomized_experimental_seeds\": 0,"
+      },
+      {
+        "member": "ferocity-recycling/support-audits/combined-priority-source-import-29/before-after-owned-source.zip!after/ferocity-recycling/tools/validate_build.py.after",
+        "line": "        \"confirmation_games\": 0, \"randomized_experimental_seeds\": 0,"
+      }
+    ]
+  }
+}

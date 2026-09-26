@@ -655,7 +655,7 @@ export interface DamageEdge {
   readonly maximum: number
   /** True lethal need for the target from this source (deathtouch -> 1, else toughness - marked). */
   readonly lethal: number
-  /** Whether this edge participates in CR 510.1c assignment-order gating (banding lifts it). */
+  /** Legacy presentation marker; never a constraint on legal damage division. */
   readonly orderConstrained: boolean
   /** Trample overflow edge to a player / planeswalker / battle (CR 702.19b lethal-first). */
   readonly isTrampleDrain: boolean

@@ -1,5 +1,8 @@
 package com.wingedsheep.engine.scenarios
 
+import com.wingedsheep.engine.support.chooseTriggerOrderInListedOrder
+import com.wingedsheep.engine.support.hasPendingTriggerOrder
+
 import com.wingedsheep.engine.core.ChampionedEvent
 import com.wingedsheep.engine.core.OrderObjectsDecision
 import com.wingedsheep.engine.core.OrderedResponse
@@ -160,6 +163,10 @@ class ChampionKeywordTest : FunSpec({
         var guard = 0
         while (stackSize > 0 || pendingDecision != null) {
             check(guard++ < 24) { "Resolution did not settle" }
+            if (state.hasPendingTriggerOrder()) {
+                chooseTriggerOrderInListedOrder()
+                continue
+            }
             when (val decision = pendingDecision) {
                 null -> bothPass().error shouldBe null
                 is SelectCardsDecision -> submitCardSelection(

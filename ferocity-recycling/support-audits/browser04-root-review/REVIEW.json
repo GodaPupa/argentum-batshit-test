@@ -1,0 +1,19 @@
+{
+  "schema": "ferocity-browser04-root-delta-peer-v1",
+  "reviewed_utc": "2026-09-26T14:52:00.943438+00:00",
+  "status": "CLEAR_FOR_NEXT_EXACT_SOURCE_PR_EXECUTION",
+  "source_freeze_sha256": "169ab1d6989c2abbe3b6a55eaa674da11ea716c0bd5ddef983440734a6a4b146",
+  "workflow_sha256": "ffc4e114b56a6545e221d99c3bf9590aafb66b9a4a3742ebc6bf30bbfe7c197d",
+  "independent_peer_sha256": "30f772a040e1d0631080e696001f2631fa446f94701c6d774c1ea39188aa81aa",
+  "checks": [
+    "Exact complete delta equals removal of the two forbidden job.env runner references and addition of one post-checkout/pre-recorder shell step.",
+    "The two task-scoped directories are identical to source03; setup writes them through GITHUB_ENV for subsequent steps.",
+    "YAML parsed, added shell fragment passes bash -n; no setup command/browser/game executed by review.",
+    "All five other source files, four test bodies, exact-head checks, scope, caps, zero retries and artifact guards remain unchanged.",
+    "Actual original failed run36249215930 has zerojobs; source schema violation is independently verified against primary GitHub context table. Annotation text was unavailable and is not invented."
+  ],
+  "official_context_source": "https://docs.github.com/en/actions/reference/workflows-and-actions/contexts#context-availability",
+  "retrieved_date": "2026-09-26",
+  "browser_cases": 0,
+  "research_games": 0
+}

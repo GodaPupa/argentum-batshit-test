@@ -1,6 +1,7 @@
 package com.wingedsheep.engine.scenarios
 
 import com.wingedsheep.engine.core.ChooseTargetsDecision
+import com.wingedsheep.engine.core.YesNoDecision
 import com.wingedsheep.engine.state.components.stack.ChosenTarget
 import com.wingedsheep.engine.support.GameTestDriver
 import com.wingedsheep.engine.support.TestCards
@@ -72,11 +73,10 @@ class AphettoVultureTest : FunSpec({
         // Vulture should be dead
         driver.findPermanent(activePlayer, "Aphetto Vulture") shouldBe null
 
-        // Death trigger should fire. "You may …" is a consent gate on the effect, so the yes/no
-        // comes first and target selection follows the acceptance.
+        // The death trigger requires its target while it is put on the stack.
+        // The optional effect is chosen only when that trigger resolves.
         driver.isPaused shouldBe true
         driver.pendingDecision.shouldNotBeNull()
-        driver.submitYesNo(activePlayer, true)
         driver.pendingDecision.shouldBeInstanceOf<ChooseTargetsDecision>()
 
         val targetDecision = driver.pendingDecision as ChooseTargetsDecision
@@ -85,6 +85,13 @@ class AphettoVultureTest : FunSpec({
         // Legal targets should include the Zombie in graveyard
         val legalTargets = targetDecision.legalTargets[0] ?: emptyList()
         legalTargets shouldContain zombieInGraveyard
+
+        // Lock the required target before the optional choice at resolution (CR 603.3d/603.5).
+        driver.submitTargetSelection(activePlayer, listOf(zombieInGraveyard)).error shouldBe null
+        driver.stackSize shouldBe 1
+        driver.bothPass().error shouldBe null
+        driver.pendingDecision.shouldBeInstanceOf<YesNoDecision>().playerId shouldBe activePlayer
+        driver.submitYesNo(activePlayer, true).error shouldBe null
     }
 
     test("Aphetto Vulture can target itself when it dies") {
@@ -113,7 +120,6 @@ class AphettoVultureTest : FunSpec({
 
         // Death trigger should fire
         driver.isPaused shouldBe true
-        driver.submitYesNo(activePlayer, true)
         driver.pendingDecision.shouldBeInstanceOf<ChooseTargetsDecision>()
 
         val targetDecision = driver.pendingDecision as ChooseTargetsDecision
@@ -121,6 +127,13 @@ class AphettoVultureTest : FunSpec({
         // Aphetto Vulture itself should be a legal target (it's a Zombie in your graveyard)
         val legalTargets = targetDecision.legalTargets[0] ?: emptyList()
         legalTargets shouldContain vulture
+
+        // Lock the required target before the optional choice at resolution (CR 603.3d/603.5).
+        driver.submitTargetSelection(activePlayer, listOf(vulture)).error shouldBe null
+        driver.stackSize shouldBe 1
+        driver.bothPass().error shouldBe null
+        driver.pendingDecision.shouldBeInstanceOf<YesNoDecision>().playerId shouldBe activePlayer
+        driver.submitYesNo(activePlayer, true).error shouldBe null
     }
 
     test("Aphetto Vulture dies - resolving puts Zombie on top of library") {
@@ -149,13 +162,15 @@ class AphettoVultureTest : FunSpec({
         // Resolve bolt
         driver.bothPass()
 
-        // Accept the "you may", then select the zombie as target
-        driver.submitYesNo(activePlayer, true)
+        // Select the required Zombie target before the optional effect resolves.
         driver.pendingDecision.shouldBeInstanceOf<ChooseTargetsDecision>()
         driver.submitTargetSelection(activePlayer, listOf(zombieInGraveyard))
 
-        // Resolve the trigger
-        driver.bothPass()
+        // Resolve the trigger, then exercise its optional effect.
+        driver.stackSize shouldBe 1
+        driver.bothPass().error shouldBe null
+        driver.pendingDecision.shouldBeInstanceOf<YesNoDecision>().playerId shouldBe activePlayer
+        driver.submitYesNo(activePlayer, true).error shouldBe null
 
         // The zombie should no longer be in the graveyard
         driver.getGraveyardCardNames(activePlayer) shouldNotContain "Festering Goblin"
@@ -195,7 +210,6 @@ class AphettoVultureTest : FunSpec({
         // Vulture itself is a Zombie, so it's now in the graveyard and is a valid target.
         // The trigger should still fire because Aphetto Vulture itself is a Zombie in the graveyard.
         driver.isPaused shouldBe true
-        driver.submitYesNo(activePlayer, true)
         driver.pendingDecision.shouldBeInstanceOf<ChooseTargetsDecision>()
 
         val targetDecision = driver.pendingDecision as ChooseTargetsDecision
@@ -209,6 +223,13 @@ class AphettoVultureTest : FunSpec({
 
         // But Aphetto Vulture itself should be a legal target
         legalTargets shouldContain vulture
+
+        // Lock the required target before the optional choice at resolution (CR 603.3d/603.5).
+        driver.submitTargetSelection(activePlayer, listOf(vulture)).error shouldBe null
+        driver.stackSize shouldBe 1
+        driver.bothPass().error shouldBe null
+        driver.pendingDecision.shouldBeInstanceOf<YesNoDecision>().playerId shouldBe activePlayer
+        driver.submitYesNo(activePlayer, true).error shouldBe null
     }
 
     test("Aphetto Vulture does not target Zombies in opponent's graveyard") {
@@ -240,7 +261,6 @@ class AphettoVultureTest : FunSpec({
 
         // Trigger should fire (Aphetto Vulture itself is a Zombie in our graveyard)
         driver.isPaused shouldBe true
-        driver.submitYesNo(activePlayer, true)
         driver.pendingDecision.shouldBeInstanceOf<ChooseTargetsDecision>()
 
         val targetDecision = driver.pendingDecision as ChooseTargetsDecision
@@ -248,5 +268,12 @@ class AphettoVultureTest : FunSpec({
 
         // Opponent's Zombie should NOT be a legal target
         legalTargets shouldNotContain opponentZombie
+
+        // Lock the required target before the optional choice at resolution (CR 603.3d/603.5).
+        driver.submitTargetSelection(activePlayer, listOf(vulture)).error shouldBe null
+        driver.stackSize shouldBe 1
+        driver.bothPass().error shouldBe null
+        driver.pendingDecision.shouldBeInstanceOf<YesNoDecision>().playerId shouldBe activePlayer
+        driver.submitYesNo(activePlayer, true).error shouldBe null
     }
 })

@@ -1,6 +1,10 @@
 package com.wingedsheep.engine.scenarios
 
 import com.wingedsheep.engine.core.ActivateAbility
+import com.wingedsheep.engine.core.ChooseOptionDecision
+import com.wingedsheep.engine.core.OptionChosenResponse
+import com.wingedsheep.engine.support.hasPendingTriggerOrder
+import io.kotest.matchers.types.shouldBeInstanceOf
 import com.wingedsheep.engine.core.YesNoDecision
 import com.wingedsheep.engine.state.components.identity.CardComponent
 import com.wingedsheep.engine.state.components.identity.TokenComponent
@@ -36,6 +40,18 @@ class EsotericDuplicatorScenarioTest : FunSpec({
                 e.get<CardComponent>()?.name == cardName
         }
 
+    // This pair specifically qualifies the surviving Duplicator's "another artifact" trigger.
+    // Place it last so it resolves first; choose only from the offered public source-card map.
+    fun GameTestDriver.orderSurvivingDuplicatorLast(survivor: EntityId) {
+        state.hasPendingTriggerOrder() shouldBe true
+        val question = pendingDecision.shouldBeInstanceOf<ChooseOptionDecision>()
+        question.options.size shouldBe 2
+        val survivorIndex = question.optionCardIds.orEmpty().entries.single { survivor in it.value }.key
+        val sacrificedIndex = question.options.indices.single { it != survivorIndex }
+        submitDecision(question.playerId, OptionChosenResponse(question.id, sacrificedIndex)).error shouldBe null
+        pendingDecision shouldBe null
+    }
+
     test("sacrificing ANOTHER artifact, paying {2}, makes an end-step copy of it") {
         val driver = GameTestDriver()
         driver.registerCards(TestCards.all)
@@ -43,7 +59,7 @@ class EsotericDuplicatorScenarioTest : FunSpec({
         val player = driver.activePlayer!!
         driver.passPriorityUntil(Step.PRECOMBAT_MAIN)
 
-        driver.putPermanentOnBattlefield(player, "Esoteric Duplicator")
+        val survivor = driver.putPermanentOnBattlefield(player, "Esoteric Duplicator")
         // Another artifact (also a Clue) we will sacrifice via its own draw ability.
         val fodder = driver.putPermanentOnBattlefield(player, "Esoteric Duplicator")
         driver.giveMana(player, Color.BLUE, 4)
@@ -52,14 +68,16 @@ class EsotericDuplicatorScenarioTest : FunSpec({
         driver.submit(
             ActivateAbility(playerId = player, sourceId = fodder, abilityId = clueDrawAbilityId)
         ).error shouldBe null
-        driver.bothPass() // resolve the draw ability → fodder is sacrificed → trigger fires
-
-        // The Duplicator's trigger now asks "you may pay {2}".
-        val mayPay = driver.pendingDecision
-        (mayPay is YesNoDecision) shouldBe true
-        driver.submitYesNo(player, true)
-        // Pay the {2} from the pool (auto), then both pass to finish.
-        driver.bothPass()
+        // Sacrifice is an activation cost. Both Duplicators trigger before the draw resolves.
+        driver.orderSurvivingDuplicatorLast(survivor)
+        driver.bothPass().error shouldBe null
+        val mayPay = driver.pendingDecision.shouldBeInstanceOf<YesNoDecision>()
+        mayPay.context.sourceId shouldBe survivor
+        driver.submitYesNo(player, true).error shouldBe null // Pay the remaining {2} from the pool.
+        driver.bothPass().error shouldBe null // The dying copy's trigger cannot be paid now.
+        driver.pendingDecision shouldBe null
+        driver.bothPass().error shouldBe null // Resolve the original activated draw ability.
+        driver.stackSize shouldBe 0
 
         // No token yet — it's scheduled for the next end step.
         tokenCopiesOf(driver, player, "Esoteric Duplicator").size shouldBe 0
@@ -78,19 +96,25 @@ class EsotericDuplicatorScenarioTest : FunSpec({
         val player = driver.activePlayer!!
         driver.passPriorityUntil(Step.PRECOMBAT_MAIN)
 
-        driver.putPermanentOnBattlefield(player, "Esoteric Duplicator")
+        val survivor = driver.putPermanentOnBattlefield(player, "Esoteric Duplicator")
         val fodder = driver.putPermanentOnBattlefield(player, "Esoteric Duplicator")
         driver.giveMana(player, Color.BLUE, 4)
 
         driver.submit(
             ActivateAbility(playerId = player, sourceId = fodder, abilityId = clueDrawAbilityId)
         ).error shouldBe null
-        driver.bothPass()
-
-        val mayPay = driver.pendingDecision
-        (mayPay is YesNoDecision) shouldBe true
-        driver.submitYesNo(player, false)
-        driver.bothPass()
+        driver.orderSurvivingDuplicatorLast(survivor)
+        driver.bothPass().error shouldBe null
+        val mayPay = driver.pendingDecision.shouldBeInstanceOf<YesNoDecision>()
+        mayPay.context.sourceId shouldBe survivor
+        driver.submitYesNo(player, false).error shouldBe null
+        driver.bothPass().error shouldBe null
+        // Mana remains available, so explicitly decline the dying copy's independent trigger too.
+        val selfMayPay = driver.pendingDecision.shouldBeInstanceOf<YesNoDecision>()
+        selfMayPay.context.sourceId shouldBe fodder
+        driver.submitYesNo(player, false).error shouldBe null
+        driver.bothPass().error shouldBe null // Resolve the original activated draw ability.
+        driver.stackSize shouldBe 0
 
         driver.passPriorityUntil(Step.END)
         driver.bothPass()

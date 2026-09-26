@@ -6,6 +6,7 @@ import com.wingedsheep.engine.state.FACE_DOWN_DISPLAY_NAME
 import com.wingedsheep.engine.state.GameState
 import com.wingedsheep.engine.state.components.identity.CardComponent
 import com.wingedsheep.engine.state.components.identity.FaceDownComponent
+import com.wingedsheep.engine.state.components.identity.PlayerComponent
 import com.wingedsheep.engine.view.Visibility
 import com.wingedsheep.gameserver.protocol.ServerMessage
 import com.wingedsheep.sdk.core.Zone
@@ -103,6 +104,12 @@ class DecisionEnricher(private val cardRegistry: CardRegistry) {
                 decision.copy(
                     attackers = maskedAttackers,
                     blockers = maskedBlockers,
+                    defenders = decision.defenders.map { defender ->
+                        if (defender.kind == ResolutionTargetKind.PLAYER) {
+                            val name = state.getEntity(defender.id)?.get<PlayerComponent>()?.name
+                            if (name != null) defender.copy(name = name) else defender
+                        } else defender
+                    },
                     prompt = maskedPrompt,
                     context = decision.context.copy(sourceName = maskedSourceName(decision, state, viewerId)),
                 )

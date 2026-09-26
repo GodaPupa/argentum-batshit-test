@@ -1,5 +1,6 @@
 package com.wingedsheep.engine.scenarios
 
+import com.wingedsheep.engine.core.ChooseTargetsDecision
 import com.wingedsheep.engine.core.CardsSelectedResponse
 import com.wingedsheep.engine.core.SelectCardsDecision
 import com.wingedsheep.engine.core.TargetsResponse
@@ -21,11 +22,12 @@ import io.kotest.matchers.shouldNotBe
  * to target creature you control.
  *
  * The ability is a pure composition: a begin-combat trigger targeting a creature you control,
- * wrapped in a "you may" (a yes/no decided before targeting). On "yes" its resolution gathers the
+ * wrapped in a "you may" chosen on resolution after its mandatory target was chosen. On "yes"
+ * its resolution gathers the
  * Equipment you control, lets you choose any number (0..all) of them, and attaches each chosen
  * Equipment to the target creature via a ForEach over the selection. These tests prove the
  * multi-attach (two Equipment onto one creature), the zero-choice no-op (the "any number = 0"
- * path), and declining the optional trigger up front.
+ * path), and declining the optional action after the target has been chosen.
  */
 class BeatrixLoyalGeneralScenarioTest : ScenarioTestBase() {
 
@@ -49,20 +51,19 @@ class BeatrixLoyalGeneralScenarioTest : ScenarioTestBase() {
 
             game.passUntilPhase(Phase.COMBAT, Step.BEGIN_COMBAT)
 
-            // The begin-combat "you may" asks yes/no first.
-            val mayDecision = game.getPendingDecision()
-            withClue("begin-combat trigger asks the 'you may' yes/no") {
-                (mayDecision is YesNoDecision) shouldBe true
-            }
-            game.answerYesNo(true)
-
-            // Then choose the target creature you control (slot 0).
+            // Choose the target creature before the trigger receives priority (CR 603.3d).
             val targetDecision = game.getPendingDecision()
             targetDecision shouldNotBe null
-            game.submitDecision(TargetsResponse(targetDecision!!.id, mapOf(0 to listOf(bears))))
+            (targetDecision is ChooseTargetsDecision) shouldBe true
+            game.submitDecision(TargetsResponse(targetDecision!!.id, mapOf(0 to listOf(bears)))).error shouldBe null
             game.resolveStack()
+            val mayDecision = game.getPendingDecision()
+            withClue("resolution asks the optional attach question (CR 603.5)") {
+                (mayDecision is YesNoDecision) shouldBe true
+            }
+            game.answerYesNo(true).error shouldBe null
 
-            // The ability resolves and pauses to choose any number of Equipment you control.
+            // Accepting the action pauses to choose any number of Equipment you control.
             val selectDecision = game.getPendingDecision()
             withClue("resolution pauses to choose any number of Equipment") {
                 (selectDecision is SelectCardsDecision) shouldBe true
@@ -92,12 +93,12 @@ class BeatrixLoyalGeneralScenarioTest : ScenarioTestBase() {
 
             game.passUntilPhase(Phase.COMBAT, Step.BEGIN_COMBAT)
 
-            (game.getPendingDecision() is YesNoDecision) shouldBe true
-            game.answerYesNo(true)
-
             val targetDecision = game.getPendingDecision()!!
-            game.submitDecision(TargetsResponse(targetDecision.id, mapOf(0 to listOf(bears))))
+            (targetDecision is ChooseTargetsDecision) shouldBe true
+            game.submitDecision(TargetsResponse(targetDecision.id, mapOf(0 to listOf(bears)))).error shouldBe null
             game.resolveStack()
+            (game.getPendingDecision() is YesNoDecision) shouldBe true
+            game.answerYesNo(true).error shouldBe null
 
             val selectDecision = game.getPendingDecision()
             (selectDecision is SelectCardsDecision) shouldBe true
@@ -111,7 +112,7 @@ class BeatrixLoyalGeneralScenarioTest : ScenarioTestBase() {
             }
         }
 
-        test("declining the 'you may' up front does nothing") {
+        test("declining the 'you may' on resolution after targeting does nothing") {
             val game = scenario()
                 .withPlayers()
                 .withCardOnBattlefield(1, "Beatrix, Loyal General", summoningSickness = false)
@@ -125,9 +126,13 @@ class BeatrixLoyalGeneralScenarioTest : ScenarioTestBase() {
 
             game.passUntilPhase(Phase.COMBAT, Step.BEGIN_COMBAT)
 
-            // Decline the "you may" — no targeting, no Equipment selection, no attach.
+            // Targeting remains mandatory; declining on resolution skips Equipment selection.
+            val targetDecision = game.getPendingDecision()!!
+            (targetDecision is ChooseTargetsDecision) shouldBe true
+            game.submitDecision(TargetsResponse(targetDecision.id, mapOf(0 to listOf(bears)))).error shouldBe null
+            game.resolveStack()
             (game.getPendingDecision() is YesNoDecision) shouldBe true
-            game.answerYesNo(false)
+            game.answerYesNo(false).error shouldBe null
             game.resolveStack()
 
             withClue("declined — no Equipment-selection decision, Grizzly Bears stays 2/2") {

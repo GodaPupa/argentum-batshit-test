@@ -1,0 +1,26 @@
+{
+  "schema": "ferocity-root-publication-scan-v1",
+  "created_utc": "2026-09-26T10:53:59.512418+00:00",
+  "files": 35,
+  "bytes": 74699653,
+  "recursive_entries": 13961,
+  "upstream_manifest_hashes": [
+    "b65f5052e71f80d7c56a81dc9263e9d860f595c39fe1e4f03e4e6bf9010ddfdb",
+    "3d8165855fac3f32aad2f9bc1c9f7d5df0e745f860f4dae2d9b318dcf98dfb2d",
+    "e078ecae5c37f3a96e3a96a4fb68f5af835ddb8cdd1cd62f31e8f61cbefb2007",
+    "e3caf7c4ed4ce628d44197d0832021e5782aa54b76cebada3dad8e7b65e47e9f"
+  ],
+  "sha256_and_crc_verified": true,
+  "credential_patterns": [
+    "-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY",
+    "\\bgh[pousr]_[A-Za-z0-9]{24,}\\b",
+    "\\bgithub_pat_[A-Za-z0-9_]{30,}\\b",
+    "\\bAKIA[A-Z0-9]{16}\\b",
+    "(?:authorization: Bearer|x-amz-signature=|[?&]sig=)[A-Za-z0-9%+/=]{15,}",
+    "\\bsk-(?:proj-)?[A-Za-z0-9_-]{30,}\\b"
+  ],
+  "credential_findings": [],
+  "future_material_path_signals": [],
+  "status": "AWAITING_FINAL_SOURCE_AND_EVIDENCE_PUBLICATION_REVIEW",
+  "research_games": 0
+}

@@ -1,3 +1,15 @@
+# Research checkpoint — 2026-09-26 15:16 UTC
+
+**No deck-strength conclusion is supported yet.** Questions A (strongest bounded configuration), B (Ferocity's contribution) and C (competitiveness) remain unresolved. Actual randomized development, evaluation, confirmation and postboard counts are all zero; all 18 prototype sixties remain unchanged. [CURRENT_STATUS.md](CURRENT_STATUS.md) records exact versions, counts, limitations and continuing actions.
+
+M1 has passed **527 fresh JVM cases: 496 primary qualification cases and 31 existing regressions**. Thirteen process cases and ten inventory/validator guards passed separately. Twelve final-source server cases, four browser cases and finite resource calibration remain pending. Broad Q3 general-CI failures also require classification; passing the selected project suite alone does not establish shared-engine compatibility.
+
+Red policy v0.2 consumes its first allowed revision and passes all 24 fixed scenarios. It handles the actual qualified Fish token; its fixture correction states an already-used land drop. The Artifact policy, tactical tails and decklists are unchanged. The public-priority correction and hard resource boundaries now have fresh fixed evidence. None of these outcomes ranks a deck or establishes a simulated win rate.
+
+This reviewed checkpoint publishes the complete current exporter/assembler/protocol closure and lossless source/evidence archives through PR174. Production admission and trial allocation remain pending. Original failures, canceled runs and source histories are preserved. The narrative below retains the search rationale and D0 arithmetic; older checkpoint-specific pending statements are historical, superseded by the current record. The prior complete report is in [history/checkpoint-d50e66dc/RESEARCH_REPORT.md](history/checkpoint-d50e66dc/RESEARCH_REPORT.md).
+
+---
+
 # Ferocity Recycling — research report
 
 ## Present conclusion
@@ -55,3 +67,31 @@ Concurrent remote initialization at `3afd83c8` is preserved in history and recon
 The provisioned real engine compiled the SDK, rules engine, complete canonical card corpus and scenario sources. Stable-source fixtures executed 41 distinct cases: Ferocity 22/24 passed, Crypt Rats 8/8 passed, Toxin Analysis 8/9 passed. Every invocation recorded zero errors/skips and unchanged compiled inputs. The earlier drifted 24-case Ferocity attempt remains preserved debugging evidence. No randomized game has run.
 
 The three failures demonstrate lost departed-source deathtouch/lifelink on queued Shaman damage. Live-source gain/loss of deathtouch passed, excluding an activation-time snapshot as a valid shortcut. A narrow generic repair is isolated for review and regression testing. These failures block interactive admission and give no evidence that Ferocity is weak or strong. `BUILD_AND_ENGINE_AUDIT.md`, `MECHANICAL_QUALIFICATION.md` and the raw receipts under `evidence/build/` specify exact source, dependencies, assertions and replay commands.
+
+## Publication and CI setup evidence
+
+The complete reviewed baseline tree was published at `901729f2` through existing PR #173 with the original initialization as parent; the remote tree was independently matched to local reviewed bytes. Two automatically triggered qualification jobs failed before assertions because the Java setup action rejected the exact version's SemVer notation. Their logs are retained; this adds zero mechanical or gameplay outcomes. The workflow correction uses the same verified official archive as the working local environment and removes duplicate push/PR triggering. A successful installer or green CI alone will not resolve the three deckbuilding questions.
+
+## Support publication and continuing qualification
+
+The qualification checkpoint at `14ec21b8` preserved all concurrent research history and now has two successful workflow statuses (`36226502281`, `36226502312`). This establishes that the pinned Java installer works remotely; exact cases and source scope are recorded separately before acceptance. No randomized game has run.
+
+The first ten missing canonical support cards are now frozen with 58 authored cases, eight printing rows and archived fresh source verification. Their runtime gates remain pending on this integration. The original eight Rats interaction bodies now use the canonical card and a distinct engine-level class name; their previous fixture pass is not inherited.
+
+Additional deterministic execution has exposed generic faults that could bias deck comparison: wrong restricted-X legal-action ceilings, token cleanup before priority, optional targeted-trigger timing, and insufficient public combat information for a pilot. The source corrections, failed runs and requalification boundaries are explicit. These findings concern the simulation environment; they do not favor or disfavor any architecture. The deck lists and experimental budgets remain frozen, and all development/evaluation/confirmation game counts remain zero.
+
+## Evidence checkpoint — 2026-09-26 09:20 UTC
+
+The preceding support-publication section describes its earlier boundary. The current source-specific results, including failed public CI at2e7e7865, are superseded by `CURRENT_STATUS.md` and the newly published compact evidence archives. Restricted-X18 and actor-observation28 now have passing targeted gates; full LKI targeted73 passed on its earlier exact source, while its subsequent broad4,379-case run exposed14 failures and is not accepted as a green broad gate. Fresh nested-payment fixes and historical fixture corrections are being qualified, with every failed attempt retained.
+
+All18 prototype/comparator lists and the bounded search protocol remain unchanged. Both first-cell pilots now have24 fixed qualification scenarios authored; none has executed at this checkpoint. Static review has corrected draft cost assumptions against actual card definitions before the initial policy freeze. This is policy construction, not evidence that one deck wins more.
+
+The research questions still require real interactive outcomes. No development, evaluation, confirmation or postboard sample has been consumed. A technically successful mechanism or pilot fixture cannot support a Ferocity advantage, competitive win rate, final archetype promotion or tournament claim.
+
+## Evidence checkpoint — 2026-09-26 10:20 UTC
+
+The new current qualification matrix is in `MECHANICAL_QUALIFICATION.md`; the prior baseline/status is preserved under `history/checkpoint-53c68e95/`. The departed-source and nested-payment targeted gates now pass85 complementary fixed cases, and paid-flashback support passes69 complementary cases. These improvements have exposed further broad-suite fixture and runtime defects, whose failures and exact version boundaries remain preserved. The corrected collector15 fresh count is9,872 cases with40 failures; stale695 XML and up-to-date3,696 engine cases are excluded. This correction changes an infrastructure evidence count, not a randomized deck result.
+
+The artifact pilot's first24 cases produced22 passes and two setup failures. Its policy remains unchanged while the fixture issues are repaired. Real Gift testing also exposed missing player shroud/hexproof checks on resolution; that failure is receiving a runtime correction, not relaxed card assertions. The project has not spent any of its720 initial interactive development games or240 refinement games. A small16-game first cell is being made executable under the exact-source admission, journal, replay and watchdog contract.
+
+A, B and C remain unanswered because they require interactive comparisons. No card/package changes, candidate promotion, no-Ferocity handicap, competitive claim or new-archetype label follows from these mechanical results. The published60s remain prototypes. The finite search and the final independent evaluation/confirmation boundaries are unchanged.

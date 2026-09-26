@@ -1,5 +1,6 @@
 package com.wingedsheep.engine.scenarios
 
+import com.wingedsheep.engine.core.ChooseTargetsDecision
 import com.wingedsheep.engine.core.YesNoDecision
 import com.wingedsheep.engine.state.components.battlefield.CountersComponent
 import com.wingedsheep.engine.support.ScenarioTestBase
@@ -100,18 +101,19 @@ class ArcboundCondorScenarioTest : ScenarioTestBase() {
                     game.isInGraveyard(1, "Arcbound Condor") shouldBe true
                 }
 
-                // Modular's death half is a "you may": the consent question comes first, then the
-                // target choice (CR 603.3d — a may-trigger still targets like any other).
-                withClue("the optional modular trigger asks whether to move the counters") {
+                // Modular chooses its target before priority; the optional counter move is
+                // chosen only when that trigger resolves (CR 603.3d and 603.5).
+                withClue("the modular trigger requires a target artifact creature") {
+                    game.hasPendingDecision() shouldBe true
+                }
+                game.getPendingDecision().shouldBeInstanceOf<ChooseTargetsDecision>()
+                game.selectTargets(listOf(thopter)).error shouldBe null
+                game.resolveStack()
+                withClue("resolution asks whether to move the counters") {
                     game.hasPendingDecision() shouldBe true
                 }
                 game.getPendingDecision().shouldBeInstanceOf<YesNoDecision>()
                 game.answerYesNo(true).error shouldBe null
-
-                withClue("saying yes then asks for the target artifact creature") {
-                    game.hasPendingDecision() shouldBe true
-                }
-                game.selectTargets(listOf(thopter)).error shouldBe null
                 game.resolveStack()
 
                 withClue("all three of the Condor's last-known +1/+1 counters moved to Ornithopter") {

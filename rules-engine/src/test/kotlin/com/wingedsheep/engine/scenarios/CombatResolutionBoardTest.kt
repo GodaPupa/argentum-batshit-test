@@ -194,9 +194,12 @@ class CombatResolutionBoardTest : FunSpec({
         neToGiant.targetId shouldBe giantId
         partnerToGiant.targetId shouldBe giantId
         drain.targetId shouldBe defender
-        // Trample drain stays gated even though banding relaxes lethal-first
-        // ordering on the ATK→BLK edges (CR 702.19b is independent of 702.22).
+        // Banding changes the chooser; the separate trample lethal requirement still applies.
         drain.isTrampleDrain shouldBe true
+        val giantEdges = decision.edges.filter { it.sourceId == giantId }
+        giantEdges.map { it.direction }.toSet() shouldBe setOf(DamageEdgeDirection.BLOCKER_TO_ATTACKER)
+        giantEdges.map { it.editableBy }.toSet() shouldBe setOf(attacker)
+        giantEdges.sumOf { it.amount } shouldBe 3
 
         fun planEdges(
             neToGiantDmg: Int,
@@ -207,7 +210,8 @@ class CombatResolutionBoardTest : FunSpec({
                 neToGiant.id -> neToGiantDmg
                 partnerToGiant.id -> partnerToGiantDmg
                 drain.id -> drainDmg
-                else -> 0
+                // The active player also assigns the blocker's full damage because of banding.
+                else -> edge.amount
             }
             DamageEdgeAmount(edge.id, amount)
         }

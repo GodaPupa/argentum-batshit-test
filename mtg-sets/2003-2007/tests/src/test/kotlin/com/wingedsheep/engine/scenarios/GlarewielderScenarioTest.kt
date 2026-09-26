@@ -1,5 +1,7 @@
 package com.wingedsheep.engine.scenarios
 
+import com.wingedsheep.engine.support.chooseTriggerOrderInListedOrder
+
 import com.wingedsheep.engine.support.ScenarioTestBase
 import com.wingedsheep.sdk.core.Phase
 import com.wingedsheep.sdk.core.Step
@@ -84,6 +86,7 @@ class GlarewielderScenarioTest : ScenarioTestBase() {
 
                 game.castSpellWithAlternativeCost(1, "Glarewielder").error shouldBe null
                 game.resolveStack()
+                game.chooseTriggerOrderInListedOrder()
 
                 withClue("the enters trigger still happens on an evoked cast") {
                     game.hasPendingDecision() shouldBe true

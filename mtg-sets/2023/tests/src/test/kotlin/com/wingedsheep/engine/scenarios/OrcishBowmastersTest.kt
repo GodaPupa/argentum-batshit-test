@@ -1,5 +1,7 @@
 package com.wingedsheep.engine.scenarios
 
+import com.wingedsheep.engine.support.chooseTriggerOrderInListedOrder
+
 import com.wingedsheep.engine.core.ChooseTargetsDecision
 import com.wingedsheep.engine.mechanics.layers.StateProjector
 import com.wingedsheep.engine.state.components.battlefield.CountersComponent
@@ -187,7 +189,9 @@ class OrcishBowmastersTest : FunSpec({
         driver.passPriorityUntil(Step.PRECOMBAT_MAIN)
 
         val draw2 = driver.putCardInHand(p2, "Draw Two Test")
-        driver.castSpell(p2, draw2)
+        driver.castSpell(p2, draw2).error shouldBe null
+        driver.bothPass().error shouldBe null // Draw both cards before ordering their two triggers.
+        driver.chooseTriggerOrderInListedOrder()
         val pings = driver.resolveStackPinging(p1, p2)
 
         pings shouldBe 2

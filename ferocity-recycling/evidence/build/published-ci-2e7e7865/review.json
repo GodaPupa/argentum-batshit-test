@@ -1,0 +1,354 @@
+{
+  "schema": "ferocity-published-ci-diagnostic-review-v1",
+  "reviewed_at_utc": "2026-09-26T08:12:35.915321+00:00",
+  "repo": "GodaPupa/argentum-batshit-test",
+  "source_head": "2e7e78653ed1c7e56fc609b993a79b68ecca33c6",
+  "source_tree": "61672841c47ae521358b552e8d0955e88f9075c4",
+  "general_checked_out_merge": {
+    "sha": "4eb36f0579246b18bbf96ab77b6726b2f7b15ce0",
+    "tree": "61672841c47ae521358b552e8d0955e88f9075c4",
+    "parents": [
+      "c771be5679cc1e9b25363c95ef50979961ac9f16",
+      "2e7e78653ed1c7e56fc609b993a79b68ecca33c6"
+    ]
+  },
+  "same_tree": true,
+  "scope": "DETERMINISTIC_CARD_AND_REGRESSION_DIAGNOSTIC_ONLY",
+  "existing_lane": {
+    "run_id": 36228299940,
+    "job_id": 108366447501,
+    "artifact_id": 10901587238,
+    "artifact_sha256": "8f527b791bc2a86e6dcf25e8676ce366548ce34d281dce3d49d5d09924a25635",
+    "status": "PASS",
+    "totals": {
+      "tests": 71,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "source_unchanged": true,
+    "all_recorded_xml_and_log_hashes_verified": true,
+    "source_boundary": "Legacy eight-case CryptRats test was renamed RatsSweeperInteractionTest and now uses canonical CryptRats; those assertions were rerun here."
+  },
+  "canonical_lane": {
+    "reviewed_at_utc": "2026-09-26T08:08:00.959434+00:00",
+    "source_head": "2e7e78653ed1c7e56fc609b993a79b68ecca33c6",
+    "source_tree": "61672841c47ae521358b552e8d0955e88f9075c4",
+    "run_id": 36228299940,
+    "job_id": 108366447568,
+    "artifact_id": 10901344474,
+    "artifact_sha256": "b3bb9b73cb122b50bbef97dce38731e2d299b21d822f785cbbb48e6c029502ee",
+    "compiled_inputs_unchanged": true,
+    "recorded_xml_and_log_hashes_verified": true,
+    "totals": {
+      "tests": 35,
+      "failures": 5,
+      "errors": 0,
+      "skipped": 0
+    },
+    "classes": [
+      {
+        "class": "CryptRatsScenarioTest",
+        "status": "PASS",
+        "tests": 9,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "class": "GlintHawkScenarioTest",
+        "status": "PASS",
+        "tests": 8,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "class": "KorSkyfisherScenarioTest",
+        "status": "PASS",
+        "tests": 5,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "class": "JourneyToNowhereScenarioTest",
+        "status": "PASS",
+        "tests": 7,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "class": "WitchsCottageScenarioTest",
+        "status": "FAIL",
+        "tests": 6,
+        "failures": 5,
+        "errors": 0,
+        "skipped": 0
+      }
+    ],
+    "unexecuted_dedicated_classes": [
+      "BonePickerScenarioTest",
+      "CutDownScenarioTest",
+      "DefileScenarioTest",
+      "EvisceratorsInsightScenarioTest",
+      "DispatchScenarioTest"
+    ],
+    "scope": "Fail-fast dedicated card scenarios only; later classes were executed by independent generalCI logs but are not contained in this artifact. No gameplay evidence."
+  },
+  "new_card_general_ci_logged_events": {
+    "BonePickerScenarioTest": {
+      "passed": 5,
+      "failed": 0,
+      "skipped": 0
+    },
+    "CryptRatsScenarioTest": {
+      "passed": 9,
+      "failed": 0,
+      "skipped": 0
+    },
+    "CutDownScenarioTest": {
+      "passed": 5,
+      "failed": 0,
+      "skipped": 0
+    },
+    "DefileScenarioTest": {
+      "passed": 4,
+      "failed": 0,
+      "skipped": 0
+    },
+    "DispatchScenarioTest": {
+      "passed": 4,
+      "failed": 0,
+      "skipped": 0
+    },
+    "EvisceratorsInsightScenarioTest": {
+      "passed": 4,
+      "failed": 1,
+      "skipped": 0
+    },
+    "GlintHawkScenarioTest": {
+      "passed": 8,
+      "failed": 0,
+      "skipped": 0
+    },
+    "JourneyToNowhereScenarioTest": {
+      "passed": 7,
+      "failed": 0,
+      "skipped": 0
+    },
+    "KorSkyfisherScenarioTest": {
+      "passed": 5,
+      "failed": 0,
+      "skipped": 0
+    },
+    "WitchsCottageScenarioTest": {
+      "passed": 1,
+      "failed": 5,
+      "skipped": 0
+    }
+  },
+  "new_card_general_ci_totals": {
+    "passed": 52,
+    "failed": 6,
+    "skipped": 0
+  },
+  "general_jobs": [
+    {
+      "job_id": 108366447477,
+      "name": "test (scenarios-2025-26)",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/GodaPupa/argentum-batshit-test/actions/runs/36228299949/job/108366447477",
+      "logged_test_result_events": {
+        "passed": 2934,
+        "failed": 0,
+        "skipped": 0
+      },
+      "failures": []
+    },
+    {
+      "job_id": 108366447488,
+      "name": "test (content)",
+      "status": "completed",
+      "conclusion": "failure",
+      "url": "https://github.com/GodaPupa/argentum-batshit-test/actions/runs/36228299949/job/108366447488",
+      "logged_test_result_events": {
+        "passed": 1798,
+        "failed": 9,
+        "skipped": 11
+      },
+      "failures": [
+        "CardDefinitionSnapshotTest > VIS (Visions): card trees match golden",
+        "CardDefinitionSnapshotTest > ZEN (Zendikar): card trees match golden",
+        "CardDefinitionSnapshotTest > SOM (Scars of Mirrodin): card trees match golden",
+        "CardDefinitionSnapshotTest > NPH (New Phyrexia): card trees match golden",
+        "CardDefinitionSnapshotTest > AKH (Amonkhet): card trees match golden",
+        "CardDefinitionSnapshotTest > MH1 (Modern Horizons): card trees match golden",
+        "CardDefinitionSnapshotTest > ELD (Throne of Eldraine): card trees match golden",
+        "CardDefinitionSnapshotTest > DMU (Dominaria United): card trees match golden",
+        "CardDefinitionSnapshotTest > MH3 (Modern Horizons 3): card trees match golden"
+      ]
+    },
+    {
+      "job_id": 108366447502,
+      "name": "test (server)",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/GodaPupa/argentum-batshit-test/actions/runs/36228299949/job/108366447502",
+      "logged_test_result_events": {
+        "passed": 554,
+        "failed": 0,
+        "skipped": 4
+      },
+      "failures": []
+    },
+    {
+      "job_id": 108366447516,
+      "name": "test (scenarios-old)",
+      "status": "completed",
+      "conclusion": "failure",
+      "url": "https://github.com/GodaPupa/argentum-batshit-test/actions/runs/36228299949/job/108366447516",
+      "logged_test_result_events": {
+        "passed": 4337,
+        "failed": 5,
+        "skipped": 0
+      },
+      "failures": [
+        "WitchsCottageScenarioTest > three other Swamps permit untapped entry and the selected creature returns to library top",
+        "WitchsCottageScenarioTest > a nonbasic Swamp counts toward the three other Swamps",
+        "WitchsCottageScenarioTest > the return can be declined on resolution after choosing its target",
+        "WitchsCottageScenarioTest > tapping the Cottage for black mana in response does not cancel its untapped-entry trigger",
+        "WitchsCottageScenarioTest > graveyard exile before resolution prevents the targeted return"
+      ]
+    },
+    {
+      "job_id": 108366447525,
+      "name": "test (scenarios-2023-24)",
+      "status": "completed",
+      "conclusion": "failure",
+      "url": "https://github.com/GodaPupa/argentum-batshit-test/actions/runs/36228299949/job/108366447525",
+      "logged_test_result_events": {
+        "passed": 3348,
+        "failed": 1,
+        "skipped": 0
+      },
+      "failures": [
+        "EvisceratorsInsightScenarioTest > countering a flashback spell keeps its cost paid and exiles it without drawing"
+      ]
+    },
+    {
+      "job_id": 108366447536,
+      "name": "test (engine)",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/GodaPupa/argentum-batshit-test/actions/runs/36228299949/job/108366447536",
+      "logged_test_result_events": {
+        "passed": 3657,
+        "failed": 0,
+        "skipped": 0
+      },
+      "failures": []
+    },
+    {
+      "job_id": 108366447553,
+      "name": "test (tools)",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/GodaPupa/argentum-batshit-test/actions/runs/36228299949/job/108366447553",
+      "logged_test_result_events": {
+        "passed": 483,
+        "failed": 0,
+        "skipped": 34
+      },
+      "failures": []
+    },
+    {
+      "job_id": 108368109968,
+      "name": "backend",
+      "status": "completed",
+      "conclusion": "failure",
+      "url": "https://github.com/GodaPupa/argentum-batshit-test/actions/runs/36228299949/job/108368109968",
+      "logged_test_result_events": {
+        "passed": 0,
+        "failed": 0,
+        "skipped": 0
+      },
+      "failures": []
+    }
+  ],
+  "general_limit": "These are decoded-log result events, not XML-verified unique-case counts. No general test artifact was available at retrieval. Backend failed as an aggregate check because test groups failed; it did not discover another compile or test defect.",
+  "failures_requiring_action": [
+    "WitchsCottage: five target-decision assertions fail at line29; known optional-target ordering is under separate engine qualification, exact unchanged card fixtures retained.",
+    "EvisceratorsInsight: countered flashback final exile assertion fails at line105; author traced to StackResolver.counterSpell; separate diagnosis/repair, no assertion removal.",
+    "Nine intentional new-card snapshot deltas require generated snapshot review and reblessing after source changes qualify; this is not resolved in the current tree."
+  ],
+  "decoded_logs": {
+    "archive": "decoded-job-logs.zip",
+    "sha256": "125332705d239cb6f6fdbecd474419185e6533925b19c843a6b7be814e553264",
+    "files": [
+      {
+        "path": "raw-logs/108366447477.log",
+        "sha256": "fc9da04fd9352e509a6140955574c8f4da3e38884d2dcec96c67e76e8512f59d",
+        "bytes": 574050
+      },
+      {
+        "path": "raw-logs/108366447488.log",
+        "sha256": "63385d57e166b16d10722551a280020c6d1078bcc8035bc860ca86ab236ed441",
+        "bytes": 341229
+      },
+      {
+        "path": "raw-logs/108366447501.log",
+        "sha256": "cd724370b3c45df26b4b34e6553676c0a5a606754d4075d43357427961f56d06",
+        "bytes": 98625
+      },
+      {
+        "path": "raw-logs/108366447502.log",
+        "sha256": "0b92ae78363ad11d46d6fc554129b4b1f56e14d13f1189fc8193aabfffe37226",
+        "bytes": 146958
+      },
+      {
+        "path": "raw-logs/108366447516.log",
+        "sha256": "6ee7bf0d976e28b3366dcaeae42eba5db9b6c44a5ead024774b3748ab66dcb51",
+        "bytes": 772193
+      },
+      {
+        "path": "raw-logs/108366447525.log",
+        "sha256": "60fc7f55d0a72f6b2dc95d361f53b94c240a20bff087cf754d96c660b6294e48",
+        "bytes": 639243
+      },
+      {
+        "path": "raw-logs/108366447536.log",
+        "sha256": "6f2fe98412cea58dac7b772444afe44b4ab4bc25c518eb4d425a0a0997ad36a6",
+        "bytes": 695568
+      },
+      {
+        "path": "raw-logs/108366447553.log",
+        "sha256": "640742e2f21e7d622f21b5bdff6aba8f06394ed88f7e2b7c9e718c4af365d613",
+        "bytes": 149685
+      },
+      {
+        "path": "raw-logs/108366447568.log",
+        "sha256": "7ccebe04d90d7742c4f36c91372b5f81d7748f428d973d9228b2e46ca1d8ce91",
+        "bytes": 92408
+      },
+      {
+        "path": "raw-logs/108368109968.log",
+        "sha256": "2be29b686ecf5ff826e46e00020afe80867dd3ca08f1f49f5d3523ce3238f7fb",
+        "bytes": 2450
+      }
+    ],
+    "normalization": "Decoded connector text with terminal newline normalization; raw GitHub log archive byte identity is not claimed."
+  },
+  "publication_scan": {
+    "credential_pattern_matches": 0,
+    "signed_query_matches": 0,
+    "temporary_download_urls_excluded": true
+  },
+  "interactive_development_games": 0,
+  "evaluation_games": 0,
+  "confirmation_games": 0,
+  "randomized_experimental_seeds": 0,
+  "no_reruns_requested": true
+}

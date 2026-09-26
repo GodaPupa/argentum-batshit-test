@@ -1,6 +1,9 @@
 package com.wingedsheep.engine.scenarios
 
 import com.wingedsheep.engine.core.ChooseTargetsDecision
+import com.wingedsheep.engine.core.AssignDamageDecision
+import com.wingedsheep.engine.core.CombatResolutionDecision
+import com.wingedsheep.engine.core.DecisionPhase
 import com.wingedsheep.engine.core.YesNoDecision
 import com.wingedsheep.engine.support.ScenarioTestBase
 import com.wingedsheep.sdk.core.Phase
@@ -9,6 +12,7 @@ import io.kotest.assertions.withClue
 import io.kotest.matchers.collections.shouldContain
 import io.kotest.matchers.collections.shouldNotContain
 import io.kotest.matchers.shouldBe
+import io.kotest.matchers.shouldNotBe
 import io.kotest.matchers.types.shouldBeInstanceOf
 
 /**
@@ -30,15 +34,11 @@ class WoebearerScenarioTest : ScenarioTestBase() {
             declareAttackers(mapOf("Woebearer" to 2)).error shouldBe null
         }
         passUntilPhase(Phase.COMBAT, Step.COMBAT_DAMAGE)
-        resolveStack()
-        // Anything that is not already the trigger's own decision (its "you may", then its target)
-        // is a combat-damage assignment still owed.
-        if (hasPendingDecision() &&
-            getPendingDecision() !is ChooseTargetsDecision &&
-            getPendingDecision() !is YesNoDecision
-        ) {
-            submitDefaultCombatDamage()
-            resolveStack()
+        resolveStack().forEach { it.error shouldBe null }
+        // Complete a real combat assignment if needed; the trigger then chooses its target.
+        if (getPendingDecision() is CombatResolutionDecision || getPendingDecision() is AssignDamageDecision) {
+            submitDefaultCombatDamage().error shouldBe null
+            resolveStack().forEach { it.error shouldBe null }
         }
     }
 
@@ -60,18 +60,26 @@ class WoebearerScenarioTest : ScenarioTestBase() {
                     game.getLifeTotal(2) shouldBe 18
                 }
 
-                // The "you may" is answered before targeting is reached.
-                game.answerYesNo(true)
+                // Target selection occurs on placement, before the optional return resolves.
                 val decision = game.getPendingDecision()
                 withClue("The trigger should ask for a target; got $decision") {
                     decision.shouldBeInstanceOf<ChooseTargetsDecision>()
                 }
                 val bears = game.findCardsInGraveyard(1, "Grizzly Bears").single()
+                (decision as ChooseTargetsDecision).playerId shouldBe game.player1Id
+                decision.context.phase shouldNotBe DecisionPhase.RESOLUTION
                 withClue("Grizzly Bears in your graveyard should be a legal target") {
-                    (decision as ChooseTargetsDecision).legalTargets[0].orEmpty() shouldContain bears
+                    decision.legalTargets[0].orEmpty() shouldContain bears
                 }
-                game.selectTargets(listOf(bears))
-                game.resolveStack()
+                game.selectTargets(listOf(bears)).error shouldBe null
+                game.getPendingDecision() shouldBe null
+                game.resolveStack().forEach { it.error shouldBe null }
+                val may = game.getPendingDecision().shouldBeInstanceOf<YesNoDecision>()
+                may.playerId shouldBe game.player1Id
+                may.context.phase shouldBe DecisionPhase.RESOLUTION
+                game.answerYesNo(true).error shouldBe null
+                game.getPendingDecision() shouldBe null
+                game.state.stack shouldBe emptyList()
 
                 withClue("Grizzly Bears should be back in Alice's hand") {
                     game.isInHand(1, "Grizzly Bears") shouldBe true
@@ -90,14 +98,21 @@ class WoebearerScenarioTest : ScenarioTestBase() {
 
                 game.connectWithWoebearer()
 
-                // A "you may" is a consent gate on the effect, so the decline is its own yes/no and
-                // comes before any target is chosen — no picking a card you mean to leave behind.
-                val decision = game.getPendingDecision()
-                withClue("The trigger should ask the may; got $decision") {
-                    decision.shouldBeInstanceOf<YesNoDecision>()
-                }
-                game.answerYesNo(false)
-                game.resolveStack()
+                // A target is mandatory even when the player will decline during resolution.
+                val target = game.getPendingDecision().shouldBeInstanceOf<ChooseTargetsDecision>()
+                target.playerId shouldBe game.player1Id
+                target.context.phase shouldNotBe DecisionPhase.RESOLUTION
+                val bears = game.findCardsInGraveyard(1, "Grizzly Bears").single()
+                target.legalTargets.getValue(0) shouldContain bears
+                game.selectTargets(listOf(bears)).error shouldBe null
+                game.getPendingDecision() shouldBe null
+                game.resolveStack().forEach { it.error shouldBe null }
+                val may = game.getPendingDecision().shouldBeInstanceOf<YesNoDecision>()
+                may.playerId shouldBe game.player1Id
+                may.context.phase shouldBe DecisionPhase.RESOLUTION
+                game.answerYesNo(false).error shouldBe null
+                game.getPendingDecision() shouldBe null
+                game.state.stack shouldBe emptyList()
 
                 withClue("Grizzly Bears should still be in the graveyard") {
                     game.isInGraveyard(1, "Grizzly Bears") shouldBe true
@@ -117,15 +132,15 @@ class WoebearerScenarioTest : ScenarioTestBase() {
 
                 game.connectWithWoebearer()
 
-                // The "you may" is answered before targeting is reached.
-                game.answerYesNo(true)
                 val decision = game.getPendingDecision()
                 withClue("The trigger should ask for a target; got $decision") {
                     decision.shouldBeInstanceOf<ChooseTargetsDecision>()
                 }
                 val hillGiant = game.findCardsInGraveyard(2, "Hill Giant").single()
+                (decision as ChooseTargetsDecision).playerId shouldBe game.player1Id
+                decision.context.phase shouldNotBe DecisionPhase.RESOLUTION
                 withClue("Bob's Hill Giant is not a legal target for Alice's Woebearer") {
-                    (decision as ChooseTargetsDecision).legalTargets[0].orEmpty() shouldNotContain hillGiant
+                    decision.legalTargets[0].orEmpty() shouldNotContain hillGiant
                 }
             }
         }

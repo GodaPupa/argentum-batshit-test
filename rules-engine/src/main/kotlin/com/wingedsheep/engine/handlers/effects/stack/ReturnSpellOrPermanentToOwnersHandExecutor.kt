@@ -4,6 +4,7 @@ import com.wingedsheep.engine.core.EffectResult
 import com.wingedsheep.engine.core.ZoneChangeEvent
 import com.wingedsheep.engine.handlers.EffectContext
 import com.wingedsheep.engine.handlers.effects.EffectExecutor
+import com.wingedsheep.engine.handlers.effects.ZoneMovementUtils
 import com.wingedsheep.engine.handlers.effects.zones.MoveToZoneEffectExecutor
 import com.wingedsheep.engine.registry.CardRegistry
 import com.wingedsheep.engine.state.GameState
@@ -66,8 +67,10 @@ class ReturnSpellOrPermanentToOwnersHandExecutor(
                 ?: spellComponent?.casterId
                 ?: return EffectResult.error(state, "Cannot determine spell owner")
 
+            val destination = ZoneMovementUtils.paidStackExitRedirect(state, targetId, Zone.STACK, Zone.HAND)
+                ?.destinationZone ?: Zone.HAND
             var newState = state.removeFromStack(targetId)
-            newState = newState.addToZone(ZoneKey(ownerId, Zone.HAND), targetId)
+            newState = newState.addToZone(ZoneKey(ownerId, destination), targetId)
             newState = newState.updateEntity(targetId) { c ->
                 c.without<SpellOnStackComponent>().without<TargetsComponent>()
             }
@@ -79,7 +82,7 @@ class ReturnSpellOrPermanentToOwnersHandExecutor(
                         targetId,
                         cardComponent?.name ?: "Unknown",
                         Zone.STACK,
-                        Zone.HAND,
+                        destination,
                         ownerId,
                         oldObject = state.objectRef(targetId),
                         newObject = newState.objectRef(targetId)

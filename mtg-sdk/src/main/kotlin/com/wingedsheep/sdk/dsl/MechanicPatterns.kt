@@ -347,7 +347,11 @@ object MechanicPatterns {
     // =========================================================================
 
     /**
-     * Bloomburrow Gift: "You may promise an opponent a gift as you cast this spell."
+     * Legacy modal approximation of Bloomburrow Gift. Do not use for new card admission.
+     * The top-level mode/targets are selected while casting, but this helper chooses the recipient
+     * during resolution. Real Gift locks that opponent in as an additional cost (CR 702.174a).
+     * Use `gift(kind)` plus [SpellBuilder.giftEffect] / [SpellBuilder.giftTarget] for supported
+     * instant/sorcery shapes. Existing callers remain for separate reviewed migrations.
      *
      * Modelled as a two-mode [ModalEffect] where mode 0 is "don't promise a gift" and
      * mode 1 is the gift-promised branch (whose effect chain should end in

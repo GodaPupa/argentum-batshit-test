@@ -113,12 +113,16 @@ class DamageTriggerDetector(
         triggers: MutableList<PendingTrigger>,
         projected: ProjectedState
     ) {
+        // A departed source can still deal damage, but its battlefield triggered abilities
+        // no longer exist when that later damage occurs. In particular, a returned object's
+        // "whenever this deals damage" does not see the original object's queued ability.
+        if (event.sourceWasOnBattlefield == false) return
         val sourceId = event.sourceId ?: return
         val container = state.getEntity(sourceId) ?: return
         val cardComponent = container.get<CardComponent>() ?: return
         // Fall back to ownerId if ControllerComponent was stripped (e.g., creature died to SBA
         // during combat damage, but its damage trigger should still fire per Rule 603.10)
-        val controllerId = projected.getController(sourceId)
+        val controllerId = event.sourceSnapshot?.controllerId ?: projected.getController(sourceId)
             ?: container.get<ControllerComponent>()?.playerId
             ?: cardComponent.ownerId ?: return
 
@@ -183,14 +187,15 @@ class DamageTriggerDetector(
         val abilities = abilityResolver.getTriggeredAbilities(damagedEntityId, cardComponent.cardDefinitionId, state, statics)
 
         // Determine source type
-        val sourceContainer = state.getEntity(sourceId) ?: return
-        val sourceCard = sourceContainer.get<CardComponent>()
+        val sourceContainer = state.getEntity(sourceId)
+        val sourceCard = sourceContainer?.get<CardComponent>()
         // Do NOT require the source to still be on the battlefield: combat damage is dealt
         // simultaneously, so the attacker may have died from Tephraderm's damage in the same
         // combat step (Rule 603.10 look-back). We check the card's type line instead of
         // current zone to determine what it was when it dealt the damage.
-        val isCreatureSource = sourceCard?.typeLine?.isCreature == true
-        val isSpellSource = sourceCard != null && (sourceCard.typeLine.isInstant || sourceCard.typeLine.isSorcery)
+        val sourceTypeLine = event.sourceSnapshot?.typeLine ?: sourceCard?.typeLine
+        val isCreatureSource = sourceTypeLine?.isCreature == true
+        val isSpellSource = sourceTypeLine != null && (sourceTypeLine.isInstant || sourceTypeLine.isSorcery)
 
         for (ability in abilities) {
             val trigger = ability.trigger

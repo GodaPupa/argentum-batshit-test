@@ -1,0 +1,60 @@
+{
+  "schema": "ferocity-combat-browser-source-freeze-v3",
+  "status": "SOURCE_ONLY_READY_FOR_PEER_AND_PUBLISHED_PR_GATE",
+  "prior_freeze_sha256": "8e4e098941e6e19310a0bb0843e12230e92deb313fc21eb6b80ab0f06ec21359",
+  "original_freeze_sha256": "fabc748bd02cf58cfe6f9415d0bc27ae837ed4f4f3ff8cfaa8aaaeb586ad031a",
+  "created_utc": "2026-09-26T14:14:53.744208+00:00",
+  "owned_sources": {
+    "e2e-scenarios/tests/ferocity-recycling/combat-current-rules.spec.ts": "ed003d97c237e33c3484356be194ba341926774a223929786076e64194cc96ff",
+    "e2e-scenarios/ferocity-combat.config.ts": "dd24f05697334fb9c775eac2145debb1ae2172bc8ba470327ab8ba9af47920e5",
+    "ferocity-recycling/tools/record_combat_browser.py": "1e5792812c8cdc72baaf4c6039af713da3aa2d99cf71a7060386cf4f5ffcf7e6",
+    ".github/workflows/ferocity-recycling-combat-browser.yml": "27b922b16eac82cc3760a2ee2e32c477a309e038a4e3b4e59f904483cb2c73bf",
+    "ferocity-recycling/combat-browser.just": "0d93dfb805c889d8af3db97d7006c0fd342896435778d29ca085eb4e6d79ce42",
+    "ferocity-recycling/runtime-audits/combat-browser/README.md": "dd897d1b6cd84c03ce9a7b613941e684759d769199d9ab5c071725277b36cad7"
+  },
+  "changed_files_from02": [
+    "ferocity-recycling/tools/record_combat_browser.py",
+    "ferocity-recycling/runtime-audits/combat-browser/README.md"
+  ],
+  "patch_sha256": "205d21907f190727151e9916f426195461e6fa0d7381e298fcf3b7cf60f9d8ce",
+  "prior_source_archive_sha256": "8c8928fc337b2dc8f7a69f529e3f14befa4de49c6db925e371bf30ac259e54ea",
+  "plan_sha256": "73cc159037f002960d2c483447c2e267bc7a84e3a9adf71385756d368f5df6bb",
+  "plan_successor_sha256": "b97e444341f2a5f8a58ec862daf2977cec7d80824ded992c31668377cde2bfd3",
+  "package_source_review_sha256": "6c28413622252018bbcabbeff769c324c8069bbc897edbf542fe311b3c723511",
+  "observed_dependencies": {
+    "e2e-scenarios/tests/general/trample-damage-assignment.spec.ts": "0cdc596611d3a146fcc4069f2a413d565364778cf013b7b596dfc3e5ba75cc9e",
+    "e2e-scenarios/tests/general/multiple-blockers.spec.ts": "8366835978cc6aa3997e6252ad664cdbb4e2751c7c9d38b0c9f453f8cdc79525",
+    "e2e-scenarios/helpers/gamePage.ts": "ffa86d81656eea97d3d8e09b6b737e16405193984a38bfd8c331fe7959a7f865",
+    "e2e-scenarios/helpers/scenarioApi.ts": "858da9bc885b4dfd0f031705d73086e36ab884b921d8e72055a22a73f7d13c7e",
+    "e2e-scenarios/helpers/selectors.ts": "b1a33d49f6b7a2b8f084f051b191518947510b719e062bdc9ff4f702ccf4cda5",
+    "e2e-scenarios/fixtures/scenarioFixture.ts": "6f671e431c8a12716d9353823893a0156ae909181c3d979a3c3198618430c5c9",
+    "e2e-scenarios/playwright.config.ts": "9e3811b77ab23877819ac609ad179319d3aa22a5d394e1d8bd6a88c258eff397",
+    "e2e-scenarios/package.json": "d875ab16487cef3f661360d6158989a9870183b46e2f85a7259c5824b2d875a7",
+    "e2e-scenarios/package-lock.json": "440214ced56e615281a2d4cd37b56183ceda8a4443de51bb62948b0ed12f2948",
+    "e2e-scenarios/tsconfig.json": "04b1dbc7c43889c52d55e73a24be4aa886ba1eda6a93a401a9b4413d3256ccc3",
+    "web-client/package.json": "fbe46e5d61d85aff433eaaca5e153fe696356af76d2e35ac9dac6797dba4e91f",
+    "web-client/package-lock.json": "025036f70ef42825102791289c938a118e3367fa784f14cc82a8b0f6268a7a80",
+    "web-client/src/components/decisions/CombatDamageAssignmentModal.tsx": "d69df880395bb1f5ac0dd555da6dd85be881e7b2e2a193c3a7d3b1aa9d719c6d",
+    "web-client/src/components/decisions/CombatResolutionBoard.tsx": "2d33194b0888be09bb8639c7fc5cdbad0bf45bfe043f4257a0a0f8f689dc9341",
+    "web-client/src/components/decisions/DecisionUI.tsx": "6f36736d7edca487daa12ec1e81654b009b65572246d9971ef22cc82dd2a69d2",
+    "web-client/src/types/messages.ts": "125f6a62f24010c30aef9423bd191951074e7213b6b56f0bdc9443c84729c351",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/combat/CombatDamageManager.kt": "8450597833a6b23dbdd2966b71a8a03d43e0debfa6509baf938afc0364112924",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/combat/DamageCalculator.kt": "651f1e507d8fd99c8aa972c1a1b2e45aa04570b39ce84f7e209e0dd5c2909a08",
+    "game-server/src/main/kotlin/com/wingedsheep/gameserver/scenario/ScenarioDtos.kt": "c9687d0b6fcc74042a0a32cd257ea58d92ee263faab5704a04d4c06cabee3bad",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/combat/CombatDamageUtils.kt": "88c0205e05d03fd753aace27dbdcfd1399aeff3b4d652a6ea85299ecc95c4172",
+    "scripts/gradle-locked": "9e39342ad1826c8baf176f6e7b0c38664aad5a4a88cd6a90252dd619e4b829f1",
+    "AGENTS.md": "385fb98e3f592aa6d56abd92633940dcfcb9555b31c8f473fc932e71ddd6c8d3",
+    "e2e-scenarios/AGENTS.md": "212340b34daabe8f5e9a28d78b1b1211eab06a6798584604fea2b1dc628994b8"
+  },
+  "changes_from_original": [
+    "Source02 adds automatic target-branch PR trigger, exact head checkout/EXPECTED_HEAD check and trigger event/SHA record.",
+    "Source03 removes extension filtering and captures every tracked production/harness/build/script file plus root build/just/owned inputs. Untracked generated/dependency directories remain separately scoped runtime provenance."
+  ],
+  "unchanged": "All4 browser bodies, 60-second per-case/45-minute global/90-minute job caps, zero retries, one worker, both UI sources, config, just recipe, observed dependencies and resource package observations.",
+  "static_checks_executed": [
+    "Python AST parse passed",
+    "Exact unchanged case/config/just source hashes matched initial source01; neither UI component was edited."
+  ],
+  "executed_browser_cases": 0,
+  "research_games": 0
+}

@@ -655,10 +655,14 @@ class CostEnumerationUtils(
          * "remove any number of +1/+1 counters from ~" cost filters with `sourceItself()`
          * (`StatePredicate.IsSource`), which can never match without this, capping X at 0.
          */
-        sourceId: EntityId? = null
+        sourceId: EntityId? = null,
+        xManaRestriction: Set<Color> = emptySet(),
+        spellContext: SpellPaymentContext? = null
     ): Int {
         var maxX = if (manaCost != null && manaCost.hasX) {
-            val availableSources = manaSolver.getAvailableManaCount(state, playerId, precomputedSources)
+            val availableSources = manaSolver.getAvailableManaCount(
+                state, playerId, precomputedSources, spellContext
+            )
             val fixedCost = manaCost.cmc
             // Each X symbol is charged once, so a cost like {X}{X}{X} (Momir) consumes 3 mana per
             // point of X — divide the spare mana by the number of X symbols, not just subtract the
@@ -766,6 +770,28 @@ class CostEnumerationUtils(
         if (hasPayXLife) {
             val life = state.lifeTotal(playerId) // CR 810.9a — team's shared total
             maxX = minOf(maxX, life.coerceAtLeast(0))
+        }
+
+        if (manaCost?.hasX == true && xManaRestriction.isNotEmpty()) {
+            // Total mana is only an upper bound. Check the same color and spending restrictions
+            // as payment, and do not tap the ability's source twice to fund a {T}, {X} cost.
+            fun tapsSource(cost: AbilityCost): Boolean = when (cost) {
+                is AbilityCost.Tap -> true
+                is AbilityCost.Composite -> cost.costs.any { tapsSource(it) }
+                else -> false
+            }
+            val excluded = if (sourceId != null && tapsSource(abilityCost)) setOf(sourceId) else emptySet()
+            var low = 0
+            var high = maxX
+            while (low < high) {
+                val mid = low + (high - low + 1) / 2
+                if (manaSolver.canPay(
+                        state, playerId, manaCost, xValue = mid,
+                        excludeSources = excluded, spellContext = spellContext,
+                        precomputedSources = precomputedSources, xManaRestriction = xManaRestriction
+                    )) low = mid else high = mid - 1
+            }
+            maxX = low
         }
 
         return maxX

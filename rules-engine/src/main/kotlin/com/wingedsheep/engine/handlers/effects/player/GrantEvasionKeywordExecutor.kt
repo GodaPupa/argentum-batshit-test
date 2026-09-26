@@ -55,7 +55,7 @@ class GrantEvasionKeywordExecutor : EffectExecutor<GrantEvasionKeywordEffect> {
                     "Keyword ${effect.keyword.displayName} cannot be granted to a player"
                 )
             }
-            val newState = state.updateEntity(targetId) { container -> container.with(component) }
+            val newState = state.updateEntity(targetId) { container -> container.withComponent(component) }
             return EffectResult.success(newState)
         }
 

@@ -4,6 +4,8 @@ import com.wingedsheep.engine.core.ChooseTargetsDecision
 import com.wingedsheep.engine.core.SelectCardsDecision
 import com.wingedsheep.engine.support.GameTestDriver
 import com.wingedsheep.engine.support.TestCards
+import com.wingedsheep.engine.support.chooseTriggerOrderInListedOrder
+import com.wingedsheep.engine.support.hasPendingTriggerOrder
 import com.wingedsheep.mtg.sets.definitions.hob.cards.CelebrateTheMountainKing
 import com.wingedsheep.sdk.core.Color
 import com.wingedsheep.sdk.core.Step
@@ -37,7 +39,9 @@ class CelebrateTheMountainKingScenarioTest : FunSpec({
     fun GameTestDriver.drain(onDecision: (GameTestDriver) -> Unit) {
         var guard = 0
         while ((state.stack.isNotEmpty() || state.pendingDecision != null) && guard < 50) {
-            if (state.pendingDecision != null) onDecision(this) else bothPass()
+            if (state.hasPendingTriggerOrder()) chooseTriggerOrderInListedOrder()
+            else if (state.pendingDecision != null) onDecision(this)
+            else bothPass()
             guard++
         }
     }

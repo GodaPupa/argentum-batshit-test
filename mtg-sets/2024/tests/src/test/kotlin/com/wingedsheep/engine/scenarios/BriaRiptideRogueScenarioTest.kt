@@ -1,7 +1,9 @@
 package com.wingedsheep.engine.scenarios
 
-import com.wingedsheep.engine.core.OrderObjectsDecision
-import com.wingedsheep.engine.core.OrderedResponse
+import com.wingedsheep.engine.support.chooseTriggerOrderInListedOrder
+
+import com.wingedsheep.engine.core.ChooseTargetsDecision
+import io.kotest.matchers.types.shouldBeInstanceOf
 import com.wingedsheep.engine.mechanics.layers.StateProjector
 import com.wingedsheep.engine.support.ScenarioTestBase
 import com.wingedsheep.sdk.core.AbilityFlag
@@ -37,15 +39,11 @@ class BriaRiptideRogueScenarioTest : ScenarioTestBase() {
      */
     private fun TestGame.castNoncreatureResolving(spell: String, unblockableTarget: EntityId) {
         castSpell(1, spell).error shouldBe null
+        chooseTriggerOrderInListedOrder() // Prowess and Bria's targeted trigger are simultaneous.
+        getPendingDecision().shouldBeInstanceOf<ChooseTargetsDecision>()
+        selectTargets(listOf(unblockableTarget)).error shouldBe null
         resolveStack()
-        var guard = 0
-        while (getPendingDecision() != null && guard++ < 12) {
-            when (val decision = getPendingDecision()!!) {
-                is OrderObjectsDecision -> submitDecision(OrderedResponse(decision.id, decision.objects))
-                else -> selectTargets(listOf(unblockableTarget))
-            }
-            resolveStack()
-        }
+        getPendingDecision() shouldBe null
     }
 
     init {

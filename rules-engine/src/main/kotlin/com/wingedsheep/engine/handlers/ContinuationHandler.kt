@@ -22,6 +22,7 @@ class ContinuationHandler(
     private val registry = ContinuationResumerRegistry().apply {
         // Core engine resumers
         registerModule(EffectAndTriggerContinuationResumer(services, effectRunner))
+        registerModule(TriggerOrderingResumer(services))
         registerModule(MiscContinuationResumer(services, effectRunner))
 
         // Core engine auto-resumers

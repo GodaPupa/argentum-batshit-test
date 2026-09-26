@@ -5,6 +5,7 @@ import com.wingedsheep.engine.state.components.battlefield.LinkedExileComponent
 import com.wingedsheep.engine.state.components.battlefield.MayCastFromLinkedExileUsedThisTurnComponent
 import com.wingedsheep.engine.state.components.identity.CardComponent
 import com.wingedsheep.engine.support.ScenarioTestBase
+import com.wingedsheep.engine.support.chooseTriggerOrderInListedOrder
 import com.wingedsheep.sdk.core.Phase
 import com.wingedsheep.sdk.core.Step
 import com.wingedsheep.sdk.core.ManaCost
@@ -217,6 +218,7 @@ class MaralenFaeAscendantScenarioTest : ScenarioTestBase() {
 
                 game.castSpell(1, "Sample Faerie")
                 game.resolveStack()  // Sample Faerie resolves and enters
+                game.chooseTriggerOrderInListedOrder() // Maralen and Virulent Emissary trigger together.
                 game.resolveStack()  // Maralen ETB exiles top 2
 
                 game.isInExile(2, "Beefy Filler") shouldBe true

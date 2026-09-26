@@ -265,6 +265,53 @@
     ]
 }
 
+// Bone Picker
+{
+    "name": "Bone Picker",
+    "manaCost": "{3}{B}",
+    "typeLine": "Creature — Bird",
+    "oracleText": "This spell costs {3} less to cast if a creature died this turn.\nFlying, deathtouch",
+    "creatureStats": {
+        "power": 3,
+        "toughness": 2
+    },
+    "keywords": [
+        "FLYING",
+        "DEATHTOUCH"
+    ],
+    "script": {
+        "staticAbilities": [
+            {
+                "type": "ModifySpellCost",
+                "target": "SelfCast",
+                "modification": {
+                    "type": "ReduceGenericBy",
+                    "source": {
+                        "type": "FixedIfCreatureDiedThisTurn",
+                        "amount": 3
+                    }
+                }
+            }
+        ]
+    },
+    "metadata": {
+        "collectorNumber": "81",
+        "rarity": "UNCOMMON",
+        "artist": "Yeong-Hao Han",
+        "flavorText": "They are the first to greet dissenters on their journey into exile.",
+        "imageUri": "https://cards.scryfall.io/normal/front/b/d/bdc6a825-43f7-40a4-95f0-335dc538b6cd.jpg?1783936510",
+        "rulings": [
+            {
+                "date": "2020-08-07",
+                "text": "In a multiplayer game, a player may lose the game at the same time that their creatures die. If so, Bone Picker's cost reduction applies."
+            }
+        ]
+    },
+    "colorIdentityOverride": [
+        "BLACK"
+    ]
+}
+
 // Bontu's Monument
 {
     "name": "Bontu's Monument",

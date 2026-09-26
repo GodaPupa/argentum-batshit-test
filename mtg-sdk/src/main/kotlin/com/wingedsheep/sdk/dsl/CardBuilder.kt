@@ -951,6 +951,8 @@ class CardBuilder(private val name: String) {
             conditionalFlash = conditionalFlash,
             kickerTargetRequirements = spellBuilder?.kickerTargetRequirements ?: emptyList(),
             kickerSpellEffect = spellBuilder?.kickerEffect,
+            giftTargetRequirements = spellBuilder?.giftTargetRequirements ?: emptyList(),
+            giftSpellEffect = spellBuilder?.giftEffect,
             cleaveTargetRequirements = spellBuilder?.cleaveTargetRequirements ?: emptyList(),
             cleaveSpellEffect = spellBuilder?.cleaveEffect,
             classLevels = classLevelsList.toList(),
@@ -1188,6 +1190,24 @@ class SpellBuilder {
         } else {
             listOfNotNull(kickerTarget)
         }
+
+    /** Complete promised-Gift effect, excluding the gift itself (CR 702.174j). */
+    var giftEffect: Effect? = null
+
+    private val namedGiftTargets: MutableList<Pair<String, TargetRequirement>> = mutableListOf()
+
+    /**
+     * A cast-time target in the complete promised-Gift shape (CR 702.174m).
+     * Declare the base targets again, followed by any conditional targets, and use the returned
+     * binding in [giftEffect]. No target is chosen for this shape when Gift is not promised.
+     */
+    fun giftTarget(name: String, requirement: TargetRequirement): EffectTarget.BoundVariable {
+        namedGiftTargets.add(name to requirement.withId(name))
+        return EffectTarget.BoundVariable(name)
+    }
+
+    internal val giftTargetRequirements: List<TargetRequirement>
+        get() = namedGiftTargets.map { it.second }
 
     /**
      * Alternate effect used when this spell is cast for its cleave cost (CR 702.148). When set, the
@@ -2152,6 +2172,9 @@ class CardFaceBuilder(private val name: String) {
     }
 
     fun build(): CardFace {
+        require(spellBuilder?.giftEffect == null && spellBuilder?.giftTargetRequirements.orEmpty().isEmpty()) {
+            "Gift shapes on individual card faces need explicit shared support"
+        }
         val parsedManaCost = if (manaCost.isNotEmpty()) ManaCost.parse(manaCost) else ManaCost.ZERO
         val parsedTypeLine = TypeLine.parse(typeLine)
         val rawSpellEffect = spellBuilder?.effect

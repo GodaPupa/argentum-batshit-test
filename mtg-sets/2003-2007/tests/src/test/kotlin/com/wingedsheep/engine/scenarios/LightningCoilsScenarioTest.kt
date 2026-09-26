@@ -1,5 +1,7 @@
 package com.wingedsheep.engine.scenarios
 
+import com.wingedsheep.engine.support.chooseTriggerOrderInListedOrder
+
 import com.wingedsheep.engine.state.components.battlefield.CountersComponent
 import com.wingedsheep.engine.state.components.identity.TokenComponent
 import com.wingedsheep.engine.support.GameTestDriver
@@ -45,6 +47,7 @@ class LightningCoilsScenarioTest : FunSpec({
         tokenCount(driver, controller) shouldBe 6
 
         driver.passPriorityUntil(Step.END)
+        driver.chooseTriggerOrderInListedOrder()
         while (driver.stackSize > 0) driver.bothPass()
 
         tokenCount(driver, controller) shouldBe 0

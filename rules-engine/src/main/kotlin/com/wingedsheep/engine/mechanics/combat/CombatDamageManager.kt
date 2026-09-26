@@ -325,11 +325,11 @@ internal class CombatDamageManager(
     // Builds and pauses on a single [CombatResolutionDecision] — the bipartite
     // attacker/blocker/defender damage graph — covering every attacker that needs a
     // manual damage-assignment choice this step, plus the blocker→attacker edges for
-    // any blocker that blocks two or more attackers. Banding flips edge ownership and
-    // lifts ordering via [CombatDamageUtils.combatDamageChooser] (CR 702.22j/k).
+    // any blocker that blocks two or more attackers. Banding flips edge ownership via
+    // [CombatDamageUtils.combatDamageChooser] (CR 702.22j/k); all sources can divide freely.
     // =========================================================================
 
-    /** One attacker's contribution to the board: its blockers, defaults, chooser, and ordering. */
+    /** One attacker's contribution: its blockers, default amounts, chooser, and legacy metadata. */
     private data class PlanCandidate(
         val attackerId: EntityId,
         val attackerName: String,
@@ -401,8 +401,7 @@ internal class CombatDamageManager(
             val liveBlockerIds = blockedBy.blockerIds.filter { it in battlefield }
             if (liveBlockerIds.isEmpty()) continue
 
-            // CR 702.22j: a banding blocker hands the division to the defender even at exact
-            // lethal (where requiresManualAssignment would normally say "no choice").
+            // CR 702.22j: a banding blocker hands the division to the defender.
             val bandingOverride = liveBlockerIds.size >= 2 &&
                 liveBlockerIds.any { projected.hasKeyword(it, Keyword.BANDING) }
             val bipartitePull = attackerId in attackersWithBipartiteBlocker
@@ -511,7 +510,7 @@ internal class CombatDamageManager(
         val edges = mutableListOf<DamageEdge>()
 
         // Attacker -> blocker edges, plus a trample drain to the defender. Defaults come from the
-        // lethal-first auto distribution (CR 510.1c order); the player may re-divide within budget.
+        // lethal-first default heuristic; the player may freely re-divide the full available damage.
         for (c in candidates) {
             val auto = damageCalculator.calculateAutoDamageDistribution(state, c.attackerId).assignments
             for (blockerId in c.liveBlockers) {
@@ -557,7 +556,7 @@ internal class CombatDamageManager(
             }
         }
 
-        // Blocker -> attacker edges for any blocker that blocks 2+ attackers (CR 510.1c). Seed the
+        // Blocker -> attacker edges for any blocker that blocks 2+ attackers (CR 510.1d). Seed the
         // running pending-damage map with the attacker-side amounts so successive blockers see what
         // each attacker is already taking (Ironfist crossover).
         val pendingDamage = mutableMapOf<EntityId, Int>()
@@ -599,7 +598,7 @@ internal class CombatDamageManager(
             }
         }
 
-        // CR 510.1c sequences assignment: attacker-side choosers act first, then any blocker-side
+        // CR 510.1 sequences assignment: attacker-side choosers act first, then any blocker-side
         // editor that isn't already queued. The resumer hands off to each chooser in turn.
         val attackerChoosers = candidates.map { it.chooser }.distinct()
         val blockerChoosers = edges
@@ -645,7 +644,7 @@ internal class CombatDamageManager(
 
     /**
      * Re-pause the same logical combat-damage step for the next chooser, carrying the prior
-     * chooser's locked-in amounts into the edges. Used by the resumer to sequence CR 510.1c
+     * chooser's locked-in amounts into the edges. Used by the resumer to sequence CR 510.1
      * (attacker side then blocker side) and the CR 702.22j/k two-actor banding flow without
      * recomputing the graph.
      */
@@ -752,8 +751,8 @@ internal class CombatDamageManager(
         }
 
         // Blocker counterattack damage — each blocker divides its damage among attackers it blocks.
-        // Per CR 510.1c, lethal damage checks must account for damage being assigned by other
-        // creatures in the same combat damage step, so we track pending damage across all blockers.
+        // The default heuristic considers concurrent damage to avoid unnecessary overkill.
+        // Manual divisions are honored directly; they do not have a lethal-order restriction.
         val pendingDamage = mutableMapOf<EntityId, Int>()
         val processedBlockers = mutableSetOf<EntityId>()
         for ((attackerId, _) in attackers) {
@@ -778,7 +777,7 @@ internal class CombatDamageManager(
                 val blockingComponent = blockerContainer.get<BlockingComponent>()
                 val blockedAttackerIds = blockingComponent?.blockedAttackerIds ?: listOf(attackerId)
 
-                // Honor a manual blocker assignment (CR 510.1c): the combat resolution board's
+                // Honor a manual blocker assignment (CR 510.1d): the combat resolution board's
                 // resumer writes the chosen blocker→attacker amounts into the blocker's
                 // DamageAssignmentComponent. Targets no longer on the battlefield are dropped,
                 // mirroring the attacker-side handling above.
@@ -801,7 +800,7 @@ internal class CombatDamageManager(
                         pendingDamage[targetId] = (pendingDamage[targetId] ?: 0) + blockerPower
                     }
                 } else {
-                    // Blocking multiple attackers — divide damage among them in order
+                    // Blocking multiple attackers — use the default full-power division heuristic
                     val autoDist = damageCalculator.calculateBlockerDamageDistribution(
                         state, blockerId, pendingDamage
                     )

@@ -1,0 +1,10 @@
+--- before.yml
++++ after.yml
+@@ -2,6 +2,7 @@
+ 
+ on:
+   pull_request:
++    branches: [ferocity-recycling/archetype-research]
+     paths:
+       - ferocity-recycling/**
+       - .github/workflows/ferocity-recycling-validation.yml

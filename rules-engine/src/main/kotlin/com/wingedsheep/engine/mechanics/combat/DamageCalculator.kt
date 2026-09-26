@@ -21,14 +21,13 @@ import com.wingedsheep.sdk.scripting.PreventDamage
 import com.wingedsheep.sdk.scripting.events.RecipientFilter
 
 /**
- * Calculates combat damage assignments according to MTG rules (CR 510).
+ * Calculates legal full-power default combat damage assignments (CR 510).
  *
  * Key rules:
- * - CR 510.1c: Damage must be assigned in order; can't assign to creature N+1
- *   until creature N has been assigned lethal damage.
- * - CR 510.1b: Attacker's controller chooses how to divide damage.
- * - CR 702.2b: Deathtouch - any amount of damage is considered lethal.
- * - CR 702.19: Trample - excess damage can be assigned to defending player.
+ * - CR 510.1a: A source assigns its full available damage when it has recipients.
+ * - CR 510.1c/d: Damage can be freely divided among eligible creatures.
+ * - CR 702.2c: A positive deathtouch assignment is lethal for assignment purposes.
+ * - CR 702.19b: Trample requires lethal assignment to blockers before a defender drain.
  */
 class DamageCalculator(
     private val cardRegistry: CardRegistry? = null,
@@ -62,7 +61,7 @@ class DamageCalculator(
     /**
      * Calculate the minimum damage needed to be considered "lethal" for a creature.
      *
-     * Per CR 510.1c: Damage is lethal if it equals or exceeds toughness minus
+     * For trample (CR 702.19b), damage is lethal if it equals or exceeds toughness minus
      * damage already marked, OR if the source has deathtouch (any nonzero amount).
      *
      * @param state Current game state
@@ -102,10 +101,10 @@ class DamageCalculator(
     }
 
     /**
-     * Auto-calculate optimal damage distribution for an attacker.
+     * Calculate a suggested complete damage distribution for an attacker.
      *
-     * This implements the default "assign lethal to each blocker in order" behavior.
-     * Players can override this with manual assignment.
+     * This heuristic favors lethal damage in presentation order. It is not a restriction on
+     * player choices: CR 510.1c permits free division among eligible blockers.
      *
      * @param state Current game state
      * @param attackerId The attacking creature
@@ -130,7 +129,7 @@ class DamageCalculator(
 
         val hasTrample = projected.hasKeyword(attackerId, Keyword.TRAMPLE)
 
-        // Get blockers in damage assignment order, filtering out dead blockers
+        // Get blockers in the stable default order, filtering out departed blockers.
         val blockedComponent = attackerContainer.get<BlockedComponent>()
         val orderedBlockers = (attackerContainer.get<DamageAssignmentOrderComponent>()?.orderedBlockers
             ?: blockedComponent?.blockerIds
@@ -148,7 +147,7 @@ class DamageCalculator(
         // The default assignment includes extra damage to overcome prevention effects
         // (e.g., Daunting Defender preventing 1 damage to Clerics) so that the default
         // actually kills the blocker, matching what a player would do in a physical game.
-        // Per CR 510.1d, without trample ALL damage must be assigned to blockers.
+        // Per CR 510.1c, without trample ALL damage must be assigned to blockers.
         // The last blocker receives all remaining damage (not just lethal).
         for ((index, blockerId) in orderedBlockers.withIndex()) {
             if (remainingPower <= 0) break
@@ -190,7 +189,7 @@ class DamageCalculator(
      *
      * Manual assignment is needed when:
      * - Attacker has trample and is blocked (player can choose split)
-     * - Attacker has enough power to kill multiple blockers with options
+     * - Attacker has multiple eligible blockers, regardless of whether its damage can be lethal
      * - User preference is set to always manually assign
      */
     fun requiresManualAssignment(
@@ -216,9 +215,8 @@ class DamageCalculator(
         }
 
         // Trample (choose how much spills over) or 2+ blockers always present a choice: the
-        // attacking player picks the damage-assignment order, which decides *which* blockers die
-        // when power is short and where any overkill goes (CR 510.1c) — not just whether there's
-        // excess to spread. So surface the board whenever there is more than one way to assign.
+        // controller may freely divide damage among blockers (CR 510.1c), including multiple
+        // nonlethal amounts. Surface the board whenever there is more than one way to assign.
         return true
     }
 
@@ -228,18 +226,15 @@ class DamageCalculator(
      * Similar to [calculateAutoDamageDistribution] but for the reverse case: a single
      * blocker dividing its damage among multiple attackers it's blocking.
      *
-     * Uses [AttackerOrderComponent] for the damage assignment order. Assigns lethal
-     * damage to each attacker in order, with the last attacker receiving all remaining damage.
-     *
-     * Per CR 510.1c, "in checking for assigned lethal damage, take into account damage
-     * already marked on the creature and damage from other creatures that's being assigned
-     * during the same combat damage step." The [pendingDamage] parameter tracks damage
-     * being assigned by other blockers in this same step.
+     * Uses [AttackerOrderComponent] as a stable default order. The heuristic favors lethal damage,
+     * with the last attacker receiving all remaining damage. CR 510.1d permits the player to
+     * choose any complete division among those attackers instead. [pendingDamage] lets the
+     * heuristic account for other blockers' suggested assignments.
      *
      * @param state Current game state
      * @param blockerId The blocking creature
      * @param pendingDamage Damage already being assigned to each creature by other sources
-     *        in this same combat damage step (per CR 510.1c)
+     *        in this same combat damage step
      * @return DamageDistribution with assignments to attackers
      */
     fun calculateBlockerDamageDistribution(
@@ -262,7 +257,7 @@ class DamageCalculator(
         val blockingComponent = blockerContainer.get<BlockingComponent>()
             ?: return DamageDistribution(emptyMap(), 0, 0)
 
-        // Get attackers in damage assignment order, filtering out dead attackers
+        // Get attackers in stable default order, filtering out departed attackers.
         val orderedAttackers = (blockerContainer.get<AttackerOrderComponent>()?.orderedAttackers
             ?: blockingComponent.blockedAttackerIds).filter { it in state.getBattlefield() }
 
@@ -279,7 +274,7 @@ class DamageCalculator(
             val isLastAttacker = index == orderedAttackers.size - 1
             val lethalInfo = calculateLethalDamage(state, attackerId, blockerId)
             val preventionAmount = estimateDamagePrevention(state, projected, attackerId)
-            // Account for damage already being assigned by other sources this step (CR 510.1c)
+            // The default heuristic accounts for concurrent damage from other sources.
             val alreadyPending = pendingDamage[attackerId] ?: 0
             val effectiveLethal = (lethalInfo.lethalAmount + preventionAmount - alreadyPending).coerceAtLeast(0)
             val damageToAssign = if (isLastAttacker) {
@@ -301,8 +296,8 @@ class DamageCalculator(
     }
 
     /**
-     * Get the minimum damage requirements for each target.
-     * Used for UI to show what the minimum valid assignment is.
+     * Get lethal thresholds for each blocker. These constrain trample overflow; they are not
+     * minimum amounts for ordinary division among creatures.
      */
     fun getMinimumAssignments(
         state: GameState,

@@ -1,6 +1,7 @@
 package com.wingedsheep.engine.scenarios
 
 import com.wingedsheep.engine.core.ChooseTargetsDecision
+import com.wingedsheep.engine.core.YesNoDecision
 import com.wingedsheep.engine.support.GameTestDriver
 import com.wingedsheep.engine.support.TestCards
 import com.wingedsheep.sdk.core.Color
@@ -8,7 +9,6 @@ import com.wingedsheep.sdk.core.Step
 import com.wingedsheep.sdk.model.Deck
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.collections.shouldContain
-import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
 import io.kotest.matchers.types.shouldBeInstanceOf
@@ -82,22 +82,37 @@ class GravediggerCombatDeathTest : FunSpec({
         castResult.isSuccess shouldBe true
 
         // Resolve the spell
-        driver.bothPass()
+        driver.bothPass().error shouldBe null
 
         // Gravedigger should be on battlefield
         driver.findPermanent(activePlayer, "Gravedigger") shouldNotBe null
 
-        // The ETB trigger fires and asks its "you may" first; accepting prompts for the target
+        // Choose the target while putting the ETB trigger on the stack.
         driver.isPaused shouldBe true
-        driver.pendingDecision.shouldNotBeNull()
-        driver.submitYesNo(activePlayer, true)
-        driver.pendingDecision.shouldBeInstanceOf<ChooseTargetsDecision>()
-
-        val targetDecision = driver.pendingDecision as ChooseTargetsDecision
+        val targetDecision = driver.pendingDecision.shouldBeInstanceOf<ChooseTargetsDecision>()
         targetDecision.playerId shouldBe activePlayer
+        targetDecision.targetRequirements.single().minTargets shouldBe 1
 
         // Our Grizzly Bears that died in combat should be a legal target
         val legalTargets = targetDecision.legalTargets[0] ?: emptyList()
         legalTargets shouldContain attackerBears
+
+        driver.submitTargetSelection(activePlayer, listOf(attackerBears)).error shouldBe null
+        driver.pendingDecision shouldBe null
+        driver.stackSize shouldBe 1
+
+        // Both players receive priority before the optional return is offered on resolution.
+        driver.passPriority(driver.priorityPlayer!!).error shouldBe null
+        driver.pendingDecision shouldBe null
+        driver.stackSize shouldBe 1
+        driver.passPriority(driver.priorityPlayer!!).error shouldBe null
+        driver.pendingDecision.shouldBeInstanceOf<YesNoDecision>().playerId shouldBe activePlayer
+        driver.getGraveyard(activePlayer) shouldContain attackerBears
+
+        driver.submitYesNo(activePlayer, true).error shouldBe null
+        driver.pendingDecision shouldBe null
+        driver.stackSize shouldBe 0
+        driver.getHand(activePlayer) shouldContain attackerBears
+        driver.getGraveyard(activePlayer).contains(attackerBears) shouldBe false
     }
 })

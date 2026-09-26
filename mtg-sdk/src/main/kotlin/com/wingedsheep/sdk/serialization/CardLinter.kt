@@ -976,16 +976,20 @@ object CardLinter {
         val baseReqs = script["targetRequirements"] as? JsonArray ?: JsonArray(emptyList())
         val kickerReqs = script["kickerTargetRequirements"] as? JsonArray ?: JsonArray(emptyList())
         val cleaveReqs = script["cleaveTargetRequirements"] as? JsonArray ?: JsonArray(emptyList())
+        val giftReqs = script["giftTargetRequirements"] as? JsonArray ?: JsonArray(emptyList())
         val spellScope = state.newScope(
             label = "spell effect",
             targetCount = maxOf(
                 requirementSlotCount(baseReqs),
                 requirementSlotCount(kickerReqs),
                 requirementSlotCount(cleaveReqs),
+                requirementSlotCount(giftReqs),
             ),
-            targetIds = requirementIds(baseReqs) + requirementIds(kickerReqs) + requirementIds(cleaveReqs),
+            targetIds = requirementIds(baseReqs) + requirementIds(kickerReqs) + requirementIds(cleaveReqs) +
+                requirementIds(giftReqs),
             multiSlotTargetIds = multiSlotRequirementIds(baseReqs) +
-                multiSlotRequirementIds(kickerReqs) + multiSlotRequirementIds(cleaveReqs),
+                multiSlotRequirementIds(kickerReqs) + multiSlotRequirementIds(cleaveReqs) +
+                multiSlotRequirementIds(giftReqs),
         )
 
         // Spell-resolution scope, in execution order: cast-time writers (captures, additional
@@ -995,7 +999,7 @@ object CardLinter {
             "staticAbilities", "replacementEffects", "sagaChapters", "classLevels",
         )
         val orderedSpellFields = listOf("castTimeCaptures", "additionalCosts", "selfAlternativeCost")
-        val deferredSpellFields = listOf("spellEffect", "kickerSpellEffect", "cleaveSpellEffect")
+        val deferredSpellFields = listOf("spellEffect", "kickerSpellEffect", "cleaveSpellEffect", "giftSpellEffect")
 
         // A declared cast-time creature-type choice writes the chosen type before resolution.
         if (script["castTimeCreatureTypeChoice"]?.takeIf { it !is JsonNull } != null) {

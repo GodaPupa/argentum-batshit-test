@@ -1,9 +1,13 @@
 package com.wingedsheep.engine.scenarios
 
-import com.wingedsheep.engine.core.BatchYesNoDecision
 import com.wingedsheep.engine.core.ChooseTargetsDecision
+import com.wingedsheep.engine.core.ChooseOptionDecision
+import com.wingedsheep.engine.core.OptionChosenResponse
 import com.wingedsheep.engine.core.YesNoDecision
 import com.wingedsheep.engine.state.components.stack.TriggeredAbilityOnStackComponent
+import com.wingedsheep.engine.state.components.identity.CardComponent
+import com.wingedsheep.sdk.core.Color
+import com.wingedsheep.sdk.model.GameRng
 import com.wingedsheep.engine.support.GameTestDriver
 import com.wingedsheep.engine.support.TestCards
 import com.wingedsheep.sdk.core.Step
@@ -20,16 +24,12 @@ import io.kotest.matchers.shouldBe
 import io.kotest.matchers.types.shouldBeInstanceOf
 
 /**
- * Tests for feature B — batched may-question (backlog/stack-collapse-and-batch-decisions.md §B).
- *
- * When a run of structurally identical optional ("you may … target …") triggers fires off one
- * event, the controller answers a single [BatchYesNoDecision] instead of one yes/no per trigger.
- * The guard (MTGO "auto-stack identical triggers"): only same-controller, same-[AbilityIdentity]
- * triggers are batched, and only the *yes/no* is shared — each instance still picks its own target.
- *
- * The board: N copies of "Batch Pinger" ("Whenever another creature you control enters, you may
- * have Batch Pinger deal 1 damage to any target") plus a vanilla creature whose entry fires them
- * all at once.
+ * Separately resolving optional triggers cannot share a pre-stack consent answer.
+ * CR 603.3d and 603.5 verified against the official 2026-09-25 rules archive.
+ * The original five tests encoded the incorrect early-consent behavior; exact old bytes
+ * are retained under ferocity-recycling/evidence/source-boundaries/before-optional-target-timing/.
+ * Targets are chosen on placement and each effect's may choice occurs on its resolution.
+ * These fixed rules scenarios are not randomized matchup games.
  */
 class BatchMayQuestionTest : FunSpec({
 
@@ -55,11 +55,21 @@ class BatchMayQuestionTest : FunSpec({
         toughness = 2
     }
 
+    val responseBolt = card("Optional Timing Response Fixture") {
+        manaCost = "{R}"
+        typeLine = "Instant"
+        spell {
+            val t = target("target creature", Targets.Creature)
+            effect = Effects.DealDamage(3, t)
+        }
+    }
+
     fun driverWithPingers(count: Int): Triple<GameTestDriver, EntityId, EntityId> {
         val driver = GameTestDriver()
-        driver.registerCards(TestCards.all + listOf(batchPinger, batchBear))
+        driver.registerCards(TestCards.all + listOf(batchPinger, batchBear, responseBolt))
         driver.initMirrorMatch(deck = Deck.of("Plains" to 40))
         driver.passPriorityUntil(Step.PRECOMBAT_MAIN)
+        driver.replaceState(driver.state.copy(rng = GameRng.seeded(0xFE000007)))
 
         val player = driver.activePlayer!!
         val opponent = driver.getOpponent(player)
@@ -72,78 +82,113 @@ class BatchMayQuestionTest : FunSpec({
         return Triple(driver, player, opponent)
     }
 
-    test("two identical may+target triggers raise ONE BatchYesNoDecision, not two yes/no prompts") {
-        val (driver, player, _) = driverWithPingers(2)
-
-        val decision = driver.pendingDecision.shouldBeInstanceOf<BatchYesNoDecision>()
-        decision.count shouldBe 2
-        decision.playerId shouldBe player
-        // Carries the shared ability identity (the C.2 key the grouping is built on).
-        val identity = decision.context.abilityIdentity.shouldNotBeNull()
-        identity.cardDefinitionId shouldBe "Batch Pinger"
+    // Used explicitly by the four two-trigger cases; no generic decision auto-answering.
+    fun orderTwoPings(driver: GameTestDriver, player: EntityId) {
+        val ordering = driver.pendingDecision.shouldBeInstanceOf<ChooseOptionDecision>()
+        ordering.playerId shouldBe player
+        ordering.options.size shouldBe 2
+        ordering.options.all { it.contains("Batch Pinger") } shouldBe true
+        driver.submitDecision(player, OptionChosenResponse(ordering.id, 0)).error shouldBe null
+        driver.pendingDecision.shouldBeInstanceOf<ChooseTargetsDecision>()
     }
 
-    test("yes to all — each instance still targets individually, both resolve") {
-        val (driver, player, opponent) = driverWithPingers(2)
-
-        driver.submitBatchYesNo(player, choice = true, applyToAll = true)
-
-        // Each of the two triggers now asks for its own target.
-        val t1 = driver.pendingDecision.shouldBeInstanceOf<ChooseTargetsDecision>()
-        driver.submitTargetSelection(t1.playerId, listOf(opponent))
-        val t2 = driver.pendingDecision.shouldBeInstanceOf<ChooseTargetsDecision>()
-        driver.submitTargetSelection(t2.playerId, listOf(opponent))
-
-        // Both pings are on the stack; resolve them.
-        val onStack = driver.state.stack.mapNotNull {
-            driver.state.getEntity(it)?.get<TriggeredAbilityOnStackComponent>()
-        }.filter { it.sourceName == "Batch Pinger" }
-        onStack.size shouldBe 2
-
-        driver.bothPass()
-        driver.bothPass()
-
-        driver.assertLifeTotal(opponent, 18) // 20 - 1 - 1
-    }
-
-    test("no to all — the whole run is declined, no targets asked, no damage") {
-        val (driver, player, opponent) = driverWithPingers(2)
-
-        driver.submitBatchYesNo(player, choice = false, applyToAll = true)
-
-        // No further decision, nothing on the stack from the pingers, opponent untouched.
+    fun chooseAllTargets(driver: GameTestDriver, count: Int, target: EntityId) {
+        repeat(count) {
+            val question = driver.pendingDecision.shouldBeInstanceOf<ChooseTargetsDecision>()
+            driver.submitTargetSelection(question.playerId, listOf(target)).error shouldBe null
+        }
         driver.pendingDecision shouldBe null
-        driver.state.stack.mapNotNull {
-            driver.state.getEntity(it)?.get<TriggeredAbilityOnStackComponent>()
-        }.none { it.sourceName == "Batch Pinger" } shouldBe true
+    }
+
+    fun stackedPings(driver: GameTestDriver) = driver.state.stack.mapNotNull {
+        driver.state.getEntity(it)?.get<TriggeredAbilityOnStackComponent>()
+    }.count { it.sourceName == "Batch Pinger" }
+
+    fun resolveChoice(driver: GameTestDriver, player: EntityId, answer: Boolean) {
+        driver.bothPass()
+        driver.pendingDecision.shouldBeInstanceOf<YesNoDecision>().playerId shouldBe player
+        driver.submitYesNo(player, answer).error shouldBe null
+    }
+
+    test("two optional triggers choose targets before either consent decision") {
+        val (driver, player, opponent) = driverWithPingers(2)
+        orderTwoPings(driver, player)
+        driver.pendingDecision.shouldBeInstanceOf<ChooseTargetsDecision>()
+        chooseAllTargets(driver, 2, opponent)
+        stackedPings(driver) shouldBe 2
         driver.assertLifeTotal(opponent, 20)
     }
 
-    test("peel-off — yes to this one targets it, the remaining run re-batches") {
-        val (driver, player, opponent) = driverWithPingers(3)
-
-        val batch = driver.pendingDecision.shouldBeInstanceOf<BatchYesNoDecision>()
-        batch.count shouldBe 3
-
-        // "Yes" (this one): peel one off and target it.
-        driver.submitBatchYesNo(player, choice = true, applyToAll = false)
-        val firstTarget = driver.pendingDecision.shouldBeInstanceOf<ChooseTargetsDecision>()
-        driver.submitTargetSelection(firstTarget.playerId, listOf(opponent))
-
-        // The remaining two re-raise as a fresh batch of 2.
-        val reBatch = driver.pendingDecision.shouldBeInstanceOf<BatchYesNoDecision>()
-        reBatch.count shouldBe 2
-
-        // Decline the rest; only the peeled ping resolves.
-        driver.submitBatchYesNo(player, choice = false, applyToAll = true)
-        driver.bothPass()
-        driver.assertLifeTotal(opponent, 19) // exactly one ping landed
+    test("each targeted trigger asks at its own resolution and both may be accepted") {
+        val (driver, player, opponent) = driverWithPingers(2)
+        orderTwoPings(driver, player)
+        chooseAllTargets(driver, 2, opponent)
+        resolveChoice(driver, player, true)
+        stackedPings(driver) shouldBe 1
+        driver.assertLifeTotal(opponent, 19)
+        resolveChoice(driver, player, true)
+        stackedPings(driver) shouldBe 0
+        driver.assertLifeTotal(opponent, 18)
     }
 
-    test("a single trigger is never batched — it raises an ordinary yes/no") {
-        val (driver, _, _) = driverWithPingers(1)
+    test("declining both effects still requires both triggers to resolve") {
+        val (driver, player, opponent) = driverWithPingers(2)
+        orderTwoPings(driver, player)
+        chooseAllTargets(driver, 2, opponent)
+        stackedPings(driver) shouldBe 2
+        resolveChoice(driver, player, false)
+        stackedPings(driver) shouldBe 1
+        resolveChoice(driver, player, false)
+        stackedPings(driver) shouldBe 0
+        driver.assertLifeTotal(opponent, 20)
+    }
 
-        // One pinger → one may+target trigger → the plain per-trigger path, not a batch.
-        driver.pendingDecision.shouldBeInstanceOf<YesNoDecision>()
+    test("identical triggers retain independent resolution choices") {
+        val (driver, player, opponent) = driverWithPingers(2)
+        orderTwoPings(driver, player)
+        chooseAllTargets(driver, 2, opponent)
+        resolveChoice(driver, player, false)
+        driver.assertLifeTotal(opponent, 20)
+        resolveChoice(driver, player, true)
+        driver.assertLifeTotal(opponent, 19)
+    }
+
+    test("a single optional trigger chooses its target before offering yes or no") {
+        val (driver, player, opponent) = driverWithPingers(1)
+        driver.pendingDecision.shouldBeInstanceOf<ChooseTargetsDecision>()
+        chooseAllTargets(driver, 1, opponent)
+        stackedPings(driver) shouldBe 1
+        resolveChoice(driver, player, false)
+        driver.assertLifeTotal(opponent, 20)
+    }
+
+    test("may does not make a required target optional") {
+        val (driver, player, opponent) = driverWithPingers(1)
+        driver.pendingDecision.shouldBeInstanceOf<ChooseTargetsDecision>()
+        val before = driver.state
+        driver.submitTargetSelection(player, emptyList()).error.shouldNotBeNull()
+        driver.state shouldBe before
+        chooseAllTargets(driver, 1, opponent)
+        resolveChoice(driver, player, true)
+        driver.assertLifeTotal(opponent, 19)
+    }
+
+    test("removing the chosen target in response causes a fizzle without a may decision") {
+        val (driver, player, opponent) = driverWithPingers(1)
+        val target = driver.state.getBattlefield().single {
+            driver.state.getEntity(it)?.get<CardComponent>()?.name == "Batch Bear"
+        }
+        chooseAllTargets(driver, 1, target)
+        driver.giveMana(opponent, Color.RED, 1)
+        val bolt = driver.putCardInHand(opponent, responseBolt.name)
+        driver.passPriority(player).error shouldBe null
+        driver.castSpell(opponent, bolt, listOf(target)).error shouldBe null
+        driver.bothPass()
+        driver.pendingDecision shouldBe null
+        stackedPings(driver) shouldBe 1
+        driver.bothPass()
+        driver.pendingDecision shouldBe null
+        stackedPings(driver) shouldBe 0
+        driver.assertLifeTotal(opponent, 20)
     }
 })

@@ -7,6 +7,7 @@ import com.wingedsheep.engine.mechanics.mana.ManaSolver
 import com.wingedsheep.engine.mechanics.modal.ChosenModeMemory
 import com.wingedsheep.engine.mechanics.stack.StackResolver
 import com.wingedsheep.engine.state.GameState
+import com.wingedsheep.engine.state.components.identity.CardComponent
 import com.wingedsheep.engine.state.components.battlefield.TriggeredAbilityEffectAppliedThisTurnComponent
 import com.wingedsheep.engine.state.components.battlefield.TriggeredAbilityFiredEverComponent
 import com.wingedsheep.engine.state.components.battlefield.TriggeredAbilityFiredThisTurnComponent
@@ -14,7 +15,6 @@ import com.wingedsheep.engine.state.components.stack.TriggeredAbilityOnStackComp
 import com.wingedsheep.engine.state.components.stack.triggerIdentityFromCurrentCardDefinition
 import com.wingedsheep.engine.handlers.DynamicAmountEvaluator
 import com.wingedsheep.engine.handlers.EffectContext
-import com.wingedsheep.engine.handlers.effects.TargetResolutionUtils
 import com.wingedsheep.sdk.dsl.LibraryPatterns
 import com.wingedsheep.sdk.model.EntityId
 import com.wingedsheep.sdk.scripting.AbilityId
@@ -28,7 +28,6 @@ import com.wingedsheep.sdk.scripting.effects.isConsentGate
 import com.wingedsheep.sdk.scripting.effects.ModalEffect
 import com.wingedsheep.sdk.scripting.effects.SacrificeEffect
 import com.wingedsheep.engine.handlers.effects.composite.ModalEffectExecutor
-import com.wingedsheep.engine.handlers.effects.composite.asMayDecide
 import com.wingedsheep.engine.handlers.effects.composite.asOptionalManaPayment
 import com.wingedsheep.sdk.scripting.effects.SelectFromCollectionEffect
 import com.wingedsheep.sdk.scripting.effects.SelectionMode
@@ -79,9 +78,12 @@ class TriggerProcessor(
         if (state.gameOver) {
             return ExecutionResult.success(state)
         }
+        // Capture batches may be individually ordered without their concatenation being
+        // ordered. Stable cyclic APNAP sorting keeps each controller's selected order intact.
+        val apnap = state.apnapOrder.withIndex().associate { it.value to it.index }
         val liveTriggers = triggers.filterNot { trigger ->
             state.getEntity(trigger.controllerId)?.has<PlayerLostComponent>() == true
-        }
+        }.sortedBy { apnap[it.controllerId] ?: Int.MAX_VALUE }
         if (liveTriggers.isEmpty()) {
             return ExecutionResult.success(state)
         }
@@ -91,16 +93,16 @@ class TriggerProcessor(
 
         var index = 0
         while (index < liveTriggers.size) {
-            // Batch the may-question for a run of structurally identical optional ("you may …
-            // target …") triggers (MTGO's auto-stack-identical-triggers affordance). A run of ≥ 2
-            // is answered once with a BatchYesNoDecision instead of one yes/no per trigger; the
-            // remainder of the list resumes (and re-batches) after the answer.
-            val run = batchRunAt(currentState, liveTriggers, index)
-            if (run != null) {
-                val remainingTriggers = liveTriggers.drop(index + run.size)
-                return raiseBatchMayDecision(currentState, run, remainingTriggers, allEvents)
+            val first = liveTriggers[index]
+            val controllerGroup = liveTriggers.drop(index).takeWhile { it.controllerId == first.controllerId }
+            if (controllerGroup.size > 1 && controllerGroup.any { !it.placementOrderChosen }) {
+                var orderingState = currentState
+                val laterControllers = liveTriggers.drop(index + controllerGroup.size)
+                if (laterControllers.isNotEmpty()) orderingState = orderingState.pushContinuation(
+                    PendingTriggersContinuation(laterControllers)
+                )
+                return presentTriggerOrdering(orderingState, emptyList(), controllerGroup, allEvents)
             }
-
             val trigger = liveTriggers[index]
             val result = processSingleTrigger(currentState, trigger)
 
@@ -146,134 +148,35 @@ class TriggerProcessor(
         return ExecutionResult.success(currentState, allEvents)
     }
 
-    /**
-     * Stable key for "the same batchable may-question": same controller + same definition-scoped
-     * [com.wingedsheep.sdk.scripting.AbilityIdentity]. Two such triggers share an identical "you may
-     * …" prompt (the prompt is the ability's static effect description, identical per identity), so
-     * one answer can cover both.
-     */
-    private data class BatchKey(
-        val controllerId: EntityId,
-        val abilityIdentity: com.wingedsheep.sdk.scripting.AbilityIdentity,
-    )
-
-    /**
-     * The [BatchKey] for a trigger that would raise a put-on-stack may-question, or null if it is
-     * not batchable. A trigger is batchable iff it is an optional ("may") trigger that *also* targets
-     * (so the may-question is asked at put-on-stack time, the only point all simultaneous instances
-     * are in hand before priority — see backlog §B.4), it has a definition-scoped ability identity
-     * (synthesized sources like spell copies have none and are never grouped), and it would actually
-     * raise the question rather than fizzle for lack of legal targets.
-     */
-    private fun batchKeyOf(state: GameState, trigger: PendingTrigger): BatchKey? {
-        val ability = trigger.ability
-        val targetRequirement = ability.targetRequirement ?: return null
-        if (ability.effect.asMayDecide() == null) return null
-        // An `effectOncePerTurn` ability is never batched: its whole point is picking *which* of the
-        // simultaneous instances gets the turn's single action (which damaged creature's number to
-        // mirror, which Villain connives). One shared yes/no would answer for all of them and take
-        // that choice away. It also never reaches the put-on-stack may-question at all — the
-        // lowering in `withEffectBudgetGate` moves consent to resolution time — but this guard reads
-        // the *un-lowered* ability, so it is still load-bearing.
-        if (ability.effectOncePerTurn) return null
-        val identity = state.triggerIdentityFromCurrentCardDefinition(trigger.sourceId, ability.id)
-            ?: return null
-        // Mirror processMayThenTargetTrigger's fizzle guard: a trigger with no legal targets (for a
-        // mandatory-target requirement) fizzles without asking, so it must not join a batch.
-        val legalTargets = targetFinder.findLegalTargets(
-            state = state,
-            requirement = targetRequirement,
-            controllerId = trigger.controllerId,
-            sourceId = trigger.sourceId,
-            triggeringEntityId = trigger.triggerContext.triggeringEntityId,
-            // Carry the triggering player so a "target … that player controls" filter
-            // (ControllerPredicate.ControlledByTriggeringPlayer / ControlledByReferencedPlayer over
-            // Player.TriggeringPlayer) resolves identically here to the on-stack targeting path — a
-            // trigger whose associated player rides on triggeringPlayerId must reach the same
-            // legal-target verdict in this pre-check, or the may/pay question is wrongly skipped.
-            pipelineContext = com.wingedsheep.engine.handlers.PredicateContext(
-                controllerId = trigger.controllerId,
-                triggeringEntityId = trigger.triggerContext.triggeringEntityId,
-                triggeringPlayerId = trigger.triggerContext.triggeringPlayerId,
-                // The X carried by the triggering event (an {X} cycling cost, a megamorph turn-up)
-                // so an X-relative target filter — `manaValueEqualsX()` on Webstrike Elite's
-                // "artifact or enchantment with mana value X" — finds targets at legality time.
-                // Without it those predicates read an unbound X and match nothing.
-                xValue = trigger.triggerContext.xValue,
-                storedCollections = trigger.carriedPipeline?.storedCollections ?: emptyMap(),
-                chosenValues = trigger.carriedPipeline?.chosenValues ?: emptyMap(),
-                storedStringLists = trigger.carriedPipeline?.storedStringLists ?: emptyMap(),
-                storedSubtypeGroups = trigger.carriedPipeline?.storedSubtypeGroups ?: emptyMap(),
-            )
-        )
-        if (legalTargets.isEmpty() && targetRequirement.effectiveMinCount > 0) return null
-        // Keyed on who is *asked*, not who controls the ability. A card whose "may" names someone
-        // else (Farrel's Mantle's "its controller may") can produce two triggers with the same
-        // controller and the same identity while the question belongs to two different players —
-        // batching those would fan one player's answer onto the other's decision.
-        return BatchKey(askedPlayerFor(state, trigger), identity)
-    }
-
-    /**
-     * The maximal contiguous run of batchable triggers starting at [index] that all share one
-     * [BatchKey], or null if fewer than two such triggers start there. Contiguous-only (matching the
-     * stack's LIFO order); a later identical run is re-batched when the remainder resumes.
-     */
-    private fun batchRunAt(
+    /** CR 603.3b: the controller orders every simultaneous trigger, not the engine's entity map. */
+    internal fun presentTriggerOrdering(
         state: GameState,
-        triggers: List<PendingTrigger>,
-        index: Int
-    ): List<PendingTrigger>? {
-        val key = batchKeyOf(state, triggers[index]) ?: return null
-        var end = index + 1
-        while (end < triggers.size && batchKeyOf(state, triggers[end]) == key) {
-            end++
-        }
-        return if (end - index >= 2) triggers.subList(index, end).toList() else null
-    }
-
-    /**
-     * Raise one [BatchYesNoDecision] for a [run] of identical optional triggers, queueing
-     * [remainingTriggers] (the triggers after the run) beneath it so they resume in order once the
-     * batch is answered. The [BatchMayTriggerContinuation] carries the whole run; the resumer fans
-     * the single answer back out (see [BatchMayTriggerContinuation]).
-     */
-    private fun raiseBatchMayDecision(
-        state: GameState,
-        run: List<PendingTrigger>,
-        remainingTriggers: List<PendingTrigger>,
-        priorEvents: List<GameEvent>
+        chosen: List<PendingTrigger>,
+        remaining: List<PendingTrigger>,
+        priorEvents: List<GameEvent> = emptyList(),
     ): ExecutionResult {
-        val first = run.first()
-        val ability = first.ability
-        val question = { decisionId: String -> BatchYesNoDecision(
-            id = decisionId,
-            // Same player the BatchKey was built on, so the auto-answer store is keyed identically
-            // on the batched and single paths.
-            playerId = askedPlayerFor(state, first),
-            prompt = ability.effect.description,
-            context = DecisionContext(
-                sourceId = first.sourceId,
-                sourceName = first.sourceName,
-                phase = DecisionPhase.RESOLUTION,
-                abilityIdentity = state.triggerIdentityFromCurrentCardDefinition(first.sourceId, ability.id)
-            ),
-            count = run.size
-        ) }
-
-        // Queue the triggers after the run first (deepest), then the batch frame on top, so the
-        // batch resolves before the trailing triggers (APNAP order preserved).
-        var stateWithContinuations = state
-        if (remainingTriggers.isNotEmpty()) {
-            stateWithContinuations = stateWithContinuations.pushContinuation(
-                PendingTriggersContinuation(
-                    remainingTriggers = remainingTriggers
-                )
-            )
-        }
-        return stateWithContinuations.suspendForDecision(
-            question = question,
-            answer = BatchMayTriggerContinuation(triggers = run),
+        require(remaining.size > 1)
+        require((chosen + remaining).map { it.controllerId }.distinct().size == 1)
+        return state.suspendForDecision(
+            question = { decisionId -> ChooseOptionDecision(
+                id = decisionId,
+                playerId = remaining.first().controllerId,
+                prompt = "Choose the next triggered ability to put on the stack (first chosen resolves last)",
+                context = DecisionContext(sourceId = null, sourceName = "Triggered abilities", phase = DecisionPhase.CASTING),
+                options = remaining.mapIndexed { index, trigger ->
+                    val source = com.wingedsheep.engine.state.nameVisibleToAll(state, trigger.sourceId, trigger.sourceName)
+                    val eventObject = trigger.triggerContext.triggeringEntityId?.takeIf { it in state.getBattlefield() }
+                    val eventName = eventObject?.let {
+                        com.wingedsheep.engine.state.nameVisibleToAll(state, it,
+                            state.getEntity(it)?.get<CardComponent>()?.name ?: "Creature")
+                    }
+                    "${index + 1}. $source${eventName?.let { " ($it)" } ?: ""}: ${trigger.ability.description}"
+                },
+                optionCardIds = remaining.mapIndexedNotNull { index, trigger ->
+                    trigger.sourceId?.takeIf { it in state.getBattlefield() }?.let { index to listOf(it) }
+                }.toMap().takeIf { it.isNotEmpty() },
+            ) },
+            answer = TriggerOrderingContinuation(chosen, remaining),
             events = priorEvents,
         )
     }
@@ -334,11 +237,9 @@ class TriggerProcessor(
             return processMayPayManaThenTargetTrigger(currentState, trigger, targetRequirement)
         }
 
-        // If the effect is a bare "may" (lowered MayEffect) AND has targets, ask may first before
-        // target selection. This gives the player a chance to decline before having to pick targets.
-        if (targetRequirement != null && ability.effect.asMayDecide() != null) {
-            return processMayThenTargetTrigger(currentState, trigger, targetRequirement)
-        }
+        // A bare optional effect stays on the ability. Targets are chosen as the trigger
+        // is put on the stack; consent is requested only during resolution (CR 603.3d/603.5).
+        // Declining in advance must not remove a trigger or skip an opponent's response window.
 
         // Check if this ability requires targets
         if (targetRequirement != null) {
@@ -381,137 +282,6 @@ class TriggerProcessor(
             else -> return this
         }
         return gated.copy(gate = gate.copy(feasibility = implied))
-    }
-
-    /**
-     * Process a triggered ability that has both MayEffect and targets.
-     *
-     * Asks the player yes/no first. If they say yes, proceeds to target selection
-     * via MayTriggerContinuation. If they say no, the trigger is skipped.
-     *
-     * Before asking, checks if legal targets exist — if not, the ability fizzles
-     * without even asking the may question.
-     */
-    /**
-     * The player who answers a "you may" on a triggered ability: the ability's `decisionMaker` when
-     * it names one, else its controller.
-     *
-     * Routed through the shared [TargetResolutionUtils.resolvePlayerTarget] rather than a local
-     * `when`, so every [EffectTarget] player shape it already understands works here too and cannot
-     * drift from the resolution-time answer [GatedEffectExecutor] gives. Anything it cannot resolve
-     * falls back to the controller — what every card without a `decisionMaker` already gets.
-     */
-    private fun askedPlayerFor(state: GameState, trigger: PendingTrigger): EntityId {
-        val chooser = trigger.ability.effect.asMayDecide()?.decisionMaker ?: return trigger.controllerId
-        val context = EffectContext(
-            sourceId = trigger.sourceId,
-            objectReferences = trigger.objectReferences,
-            controllerId = trigger.controllerId,
-            triggeringEntityId = trigger.triggerContext.triggeringEntityId,
-            triggeringPlayerId = trigger.triggerContext.triggeringPlayerId,
-        )
-        return TargetResolutionUtils.resolvePlayerTarget(chooser, context, state) ?: trigger.controllerId
-    }
-
-    private fun processMayThenTargetTrigger(
-        state: GameState,
-        trigger: PendingTrigger,
-        targetRequirement: TargetRequirement
-    ): ExecutionResult {
-        val ability = trigger.ability
-
-        // Check if legal targets exist before asking the may question
-        val legalTargets = targetFinder.findLegalTargets(
-            state = state,
-            requirement = targetRequirement,
-            controllerId = trigger.controllerId,
-            sourceId = trigger.sourceId,
-            triggeringEntityId = trigger.triggerContext.triggeringEntityId,
-            // Carry the triggering player so a "target … that player controls" filter
-            // (ControllerPredicate.ControlledByTriggeringPlayer / ControlledByReferencedPlayer over
-            // Player.TriggeringPlayer) resolves identically here to the on-stack targeting path — a
-            // trigger whose associated player rides on triggeringPlayerId must reach the same
-            // legal-target verdict in this pre-check, or the may/pay question is wrongly skipped.
-            pipelineContext = com.wingedsheep.engine.handlers.PredicateContext(
-                controllerId = trigger.controllerId,
-                triggeringEntityId = trigger.triggerContext.triggeringEntityId,
-                triggeringPlayerId = trigger.triggerContext.triggeringPlayerId,
-                // The X carried by the triggering event (an {X} cycling cost, a megamorph turn-up)
-                // so an X-relative target filter — `manaValueEqualsX()` on Webstrike Elite's
-                // "artifact or enchantment with mana value X" — finds targets at legality time.
-                // Without it those predicates read an unbound X and match nothing.
-                xValue = trigger.triggerContext.xValue,
-                storedCollections = trigger.carriedPipeline?.storedCollections ?: emptyMap(),
-                chosenValues = trigger.carriedPipeline?.chosenValues ?: emptyMap(),
-                storedStringLists = trigger.carriedPipeline?.storedStringLists ?: emptyMap(),
-                storedSubtypeGroups = trigger.carriedPipeline?.storedSubtypeGroups ?: emptyMap(),
-            )
-        )
-
-        if (legalTargets.isEmpty() && targetRequirement.effectiveMinCount > 0) {
-            // No legal targets - ability doesn't go on stack
-            return ExecutionResult.success(
-                state,
-                listOf(
-                    AbilityFizzledEvent(
-                        trigger.sourceId,
-                        ability.description,
-                        "No legal targets available"
-                    )
-                )
-            )
-        }
-
-        // The gated "may" effect's own text is the prompt (GatedEffect.description renders
-        // "You may …" for a Gate.MayDecide).
-        val sourceName = trigger.sourceName
-        val abilityIdentity =
-            state.triggerIdentityFromCurrentCardDefinition(trigger.sourceId, ability.id)
-
-        // Who is asked. Normally the ability's controller, but a card can name someone else —
-        // Farrel's Mantle's "its controller may", where "it" is the enchanted creature and the Aura
-        // may sit on an opponent's permanent. This path asks the question before the effect runs,
-        // so GatedEffectExecutor's own decisionMaker handling never gets the chance.
-        val askedPlayerId = askedPlayerFor(state, trigger)
-
-        // Persistent auto-answer yield (backlog §C): a remembered yes/no for this ability resolves
-        // the may-question without prompting. "Yes" still proceeds to per-instance target selection
-        // (only the yes/no is batched, never the targeting — §C.6); "no" skips the trigger.
-        abilityIdentity?.let { state.autoAnswerFor(askedPlayerId, it) }?.let { auto ->
-            val note = AbilityAutoAnsweredEvent(trigger.sourceId, sourceName, askedPlayerId, auto)
-            if (!auto) return ExecutionResult.success(state, listOf(note))
-            val innerEffect = ability.effect.asMayDecide()!!.then
-            val unwrappedTrigger = trigger.copy(ability = ability.copy(effect = innerEffect))
-            val result = processTargetedTrigger(state, unwrappedTrigger, targetRequirement)
-            return result.copy(events = listOf(note) + result.events)
-        }
-
-        // Create yes/no decision.
-        //
-        // The card's own `description` wins over the generated effect text. A generated description
-        // is assembled bottom-up from pipeline steps, so a composed effect reads like plumbing —
-        // Safe Haven's upkeep trigger rendered as "You may sacrifice this creature. If you do, look
-        // at cards exiled by this permanent. Put those cards onto the battlefield" instead of its
-        // printed text. Whenever an author wrote the clause out, that is the prompt.
-        val decisionResult = decisionHandler.createYesNoDecision(
-            state = state,
-            playerId = askedPlayerId,
-            sourceId = trigger.sourceId,
-            sourceName = sourceName,
-            prompt = ability.descriptionOverride ?: ability.effect.description,
-            phase = DecisionPhase.RESOLUTION,
-            abilityIdentity = abilityIdentity,
-            answer = MayTriggerContinuation(
-                trigger = trigger,
-                targetRequirement = targetRequirement
-            ),
-        )
-
-        if (!decisionResult.isPaused || decisionResult.pendingDecision == null) {
-            return ExecutionResult.error(state, "Failed to create yes/no decision for may trigger")
-        }
-
-        return decisionResult
     }
 
     /**
@@ -687,10 +457,8 @@ class TriggerProcessor(
         // Auto-select player targets when there's exactly one legal target and requirement is for exactly one target.
         // Only applies for single-target abilities (not multi-target).
         //
-        // Safe for a "you may" ability now that consent is a gate rather than a flag: either the
-        // yes/no was already asked and answered before this ran (`processMayThenTargetTrigger`
-        // unwraps the gate and calls back in), or the gate is still on the effect and will ask at
-        // resolution. Neither reading is "there is only one choice, so don't prompt" applied to the
+        // Safe for a "you may" ability: its consent gate remains on the effect and asks at
+        // resolution. Auto-selecting the single mandatory player target never answers the
         // decline — which is what made this branch fail open while the flag existed, so that
         // "you may have target opponent discard a card" (Ebon Dragon) never asked in a two-player
         // game. An "up to one target player" requirement skips this via `effectiveMinCount == 0`.
@@ -718,8 +486,7 @@ class TriggerProcessor(
         // wrong twice over. CR 603.3d chooses targets for a "you may" trigger like any other and
         // puts the choice at resolution, and an ability whose target is mandatory has to be removed
         // from the stack when there is no legal one (the loop above) rather than resolve targetless.
-        // Consent is now a gate on the effect, answered on its own — either before this method runs
-        // (`processMayThenTargetTrigger`) or as the ability resolves.
+        // Consent is a gate on the effect, answered separately when the ability resolves.
         val requirementInfos = allRequirements.mapIndexed { index, req ->
             // "Any number of target ..." (unlimited) caps at however many legal targets exist,
             // mirroring the cast-time path (TargetEnumerationUtils). Using req.count (always 1
@@ -794,6 +561,7 @@ class TriggerProcessor(
             answer = TriggeredAbilityContinuation(
                 sourceId = trigger.sourceId,
                 sourceName = trigger.sourceName,
+                lastKnownSourceSnapshot = sourceSnapshotForTrigger(state, trigger),
                 sourceBattlefieldTimestamp = trigger.sourceBattlefieldTimestamp,
                 objectReferences = trigger.objectReferences,
                 controllerId = trigger.controllerId,
@@ -843,6 +611,17 @@ class TriggerProcessor(
         return decisionResult
     }
 
+    /** Shared by immediate placement and the target-selection continuation. */
+    private fun sourceSnapshotForTrigger(
+        state: GameState,
+        trigger: PendingTrigger,
+    ): com.wingedsheep.engine.state.components.stack.EntitySnapshot? = listOfNotNull(
+        trigger.lastKnownSourceSnapshot,
+        trigger.triggerContext.triggeringSnapshot,
+        state.getEntity(trigger.sourceId)
+            ?.get<com.wingedsheep.engine.state.components.battlefield.LastKnownPermanentComponent>()?.snapshot
+    ).firstOrNull { it.objectRef != null && it.objectRef == trigger.objectReferences.origin }
+
     /**
      * Put a triggered ability directly on the stack (no targets required).
      *
@@ -860,6 +639,7 @@ class TriggerProcessor(
 
         val abilityComponent = TriggeredAbilityOnStackComponent(
             sourceId = trigger.sourceId,
+            lastKnownSourceSnapshot = sourceSnapshotForTrigger(state, trigger),
             sourceBattlefieldTimestamp = trigger.sourceBattlefieldTimestamp,
             objectReferences = trigger.objectReferences,
             sourceName = trigger.sourceName,
@@ -1663,9 +1443,8 @@ class TriggerProcessor(
      * Riveteers Ascendancy rulings) instead of raising a yes/no whose answer cannot matter — the
      * trap of accepting three She-Hulk prompts in one multi-block and getting one mirror.
      *
-     * A consequence worth stating: with a gate on the outside, `asMayDecide()` no longer matches at
-     * the top of the effect, so `processSingleTrigger` routes a *targeted* capped trigger through
-     * `processTargetedTrigger` rather than `processMayThenTargetTrigger`. Consent therefore moves
+     * A targeted capped trigger follows `processTargetedTrigger`, just like other targeted
+     * optional effects. Consent occurs
      * from put-on-stack time to resolution time, which is where CR puts it anyway: targets are
      * chosen on announcement (CR 603.3d) and the "you may" is chosen as the ability resolves (the
      * Legolas, Counter of Kills ruling says so in as many words). Without that move the three

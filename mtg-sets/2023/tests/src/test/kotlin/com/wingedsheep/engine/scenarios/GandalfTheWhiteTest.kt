@@ -1,5 +1,7 @@
 package com.wingedsheep.engine.scenarios
 
+import com.wingedsheep.engine.support.chooseTriggerOrderInListedOrder
+
 import com.wingedsheep.engine.core.CastSpell
 import com.wingedsheep.engine.core.PaymentStrategy
 import com.wingedsheep.engine.support.GameTestDriver
@@ -272,6 +274,7 @@ class GandalfTheWhiteTest : FunSpec({
         val handBefore = driver.getHandSize(p1)
         driver.castSpell(p1, legendary).isSuccess shouldBe true
         driver.bothPass()  // resolve the legendary
+        driver.chooseTriggerOrderInListedOrder()
         driver.bothPass()  // first ETB Witness draw
         driver.bothPass()  // duplicated ETB Witness draw
 
@@ -320,6 +323,7 @@ class GandalfTheWhiteTest : FunSpec({
         val handBefore = driver.getHandSize(p1)
         driver.castSpell(p2, legendary).isSuccess shouldBe true
         driver.bothPass()  // resolve legendary
+        driver.chooseTriggerOrderInListedOrder()
         driver.bothPass()  // first ETB Witness draw (p1)
         driver.bothPass()  // duplicated ETB Witness draw (p1)
 
@@ -364,6 +368,7 @@ class GandalfTheWhiteTest : FunSpec({
         val handBefore = driver.getHandSize(p1)
         driver.castSpell(p1, doomBlade, listOf(construct)).isSuccess shouldBe true
         driver.bothPass()  // resolve Doom Blade — Test Construct dies
+        driver.chooseTriggerOrderInListedOrder()
         driver.bothPass()  // first LTB Witness draw
         driver.bothPass()  // duplicated LTB Witness draw
 
@@ -397,6 +402,7 @@ class GandalfTheWhiteTest : FunSpec({
         val handBefore = driver.getHandSize(p1)
         driver.castSpell(p1, doomBlade, listOf(token)).isSuccess shouldBe true
         driver.bothPass()  // resolve Doom Blade — the legendary token dies and is swept (704.5d)
+        driver.chooseTriggerOrderInListedOrder()
         driver.bothPass()  // first LTB Witness draw
         driver.bothPass()  // duplicated LTB Witness draw (Gandalf, matching the token's last-known Legendary)
 
@@ -428,6 +434,7 @@ class GandalfTheWhiteTest : FunSpec({
         driver.castSpell(p1, doomBlade, listOf(bear)).isSuccess shouldBe true
         driver.bothPass()  // resolve Doom Blade — the (now-artifact) bear dies; in the graveyard it
                            // is a plain creature again, so only last-known info records the artifact type
+        driver.chooseTriggerOrderInListedOrder()
         driver.bothPass()  // first LTB Witness draw
         driver.bothPass()  // duplicated LTB Witness draw (Gandalf matches the bear's last-known Artifact type)
 
@@ -473,6 +480,7 @@ class GandalfTheWhiteTest : FunSpec({
         val handBefore = driver.getHandSize(p1)
         driver.castSpell(p1, construct).isSuccess shouldBe true
         driver.bothPass()  // resolve Test Construct ETB
+        driver.chooseTriggerOrderInListedOrder()
         driver.bothPass()  // original ETB Witness draw
         driver.bothPass()  // duplicated by Gandalf
         driver.bothPass()  // duplicated by Test Extra-Trigger

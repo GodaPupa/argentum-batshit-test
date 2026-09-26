@@ -1,5 +1,7 @@
 package com.wingedsheep.engine.scenarios
 
+import com.wingedsheep.engine.support.chooseTriggerOrderInListedOrder
+
 import com.wingedsheep.engine.mechanics.layers.StateProjector
 import com.wingedsheep.engine.state.components.identity.CardComponent
 import com.wingedsheep.engine.support.ScenarioTestBase
@@ -31,7 +33,8 @@ class LassoedByTheLawScenarioTest : ScenarioTestBase() {
                 withClue("Cast should succeed: ${cast.error}") { cast.error shouldBe null }
                 // Two ETB triggers go on the stack; the exile trigger asks for a target.
                 game.resolveStack()
-                game.selectTargets(listOf(victim))
+                game.chooseTriggerOrderInListedOrder()
+                game.selectTargets(listOf(victim)).error shouldBe null
                 game.resolveStack()
 
                 withClue("Hill Giant should be exiled") {

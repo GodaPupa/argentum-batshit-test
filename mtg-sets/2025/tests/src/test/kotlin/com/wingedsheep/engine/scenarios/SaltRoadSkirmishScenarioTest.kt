@@ -1,5 +1,7 @@
 package com.wingedsheep.engine.scenarios
 
+import com.wingedsheep.engine.support.chooseTriggerOrderInListedOrder
+
 import com.wingedsheep.engine.support.ScenarioTestBase
 import com.wingedsheep.sdk.core.Keyword
 import com.wingedsheep.sdk.core.Phase
@@ -42,6 +44,7 @@ class SaltRoadSkirmishScenarioTest : ScenarioTestBase() {
 
                 // They are sacrificed at the beginning of the next end step.
                 game.passUntilPhase(Phase.ENDING, Step.END)
+                game.chooseTriggerOrderInListedOrder()
                 game.resolveStack()
                 withClue("Warriors should be sacrificed at the next end step") {
                     game.findPermanents("Warrior Token").size shouldBe 0

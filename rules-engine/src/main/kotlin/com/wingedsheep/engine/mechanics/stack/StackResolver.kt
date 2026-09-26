@@ -1,6 +1,10 @@
 package com.wingedsheep.engine.mechanics.stack
 import com.wingedsheep.sdk.core.AbilityFlag
 import com.wingedsheep.sdk.dsl.Patterns
+import com.wingedsheep.sdk.dsl.giftEffect
+import com.wingedsheep.sdk.dsl.giftKeyword
+import com.wingedsheep.sdk.dsl.giftShapeError
+import com.wingedsheep.engine.handlers.RESOLUTION_CHOSEN_OPPONENT
 
 import com.wingedsheep.engine.core.*
 import com.wingedsheep.engine.handlers.EffectContext
@@ -9,10 +13,10 @@ import com.wingedsheep.engine.handlers.EffectHandler
 import com.wingedsheep.engine.handlers.effects.composite.PreTargetedEffectContext
 import com.wingedsheep.engine.handlers.effects.composite.processPreTargetedEffectQueue
 import com.wingedsheep.engine.mechanics.ControllerGrants
-import com.wingedsheep.engine.mechanics.FlashbackGrants
-import com.wingedsheep.engine.mechanics.HarmonizeGrants
 import com.wingedsheep.engine.mechanics.SpliceCasts
 import com.wingedsheep.engine.mechanics.targeting.TargetValidator
+import com.wingedsheep.engine.mechanics.targeting.ControllerHexproof
+import com.wingedsheep.engine.mechanics.targeting.ControllerShroud
 import com.wingedsheep.engine.mechanics.daynight.DayNightService
 import com.wingedsheep.engine.mechanics.layers.ContinuousEffectSourceComponent
 import com.wingedsheep.engine.mechanics.layers.StaticAbilityHandler
@@ -2151,6 +2155,8 @@ class StackResolver(
             resolvedCardDef?.cardFaces?.getOrNull(idx)?.script?.spellEffect
         }
         val baseSpellEffect = when {
+            spellComponent.giftRecipient != null && resolvedCardDef?.script?.giftSpellEffect != null ->
+                resolvedCardDef.script.giftSpellEffect
             faceSpellEffect != null -> faceSpellEffect
             spellComponent.declaredCostSlot != null && cardComponent != null ->
                 resolvedCardDef?.script?.kickerSpellEffect ?: cardComponent.spellEffect
@@ -2171,7 +2177,7 @@ class StackResolver(
         // A completed cast-time choice of zero modes is a resolved no-op, not evidence that modal
         // selection was never performed. Execute an empty composite so the ordinary spell
         // finalizer and any spliced tail still run exactly once without reopening mode selection.
-        val spellEffect = if (
+        val mainSpellEffect = if (
             spellComponent.modalSelectionCompleted &&
             spellComponent.chosenModes.isEmpty() &&
             replacedSpellEffect is com.wingedsheep.sdk.scripting.effects.ModalEffect
@@ -2180,6 +2186,24 @@ class StackResolver(
         } else {
             replacedSpellEffect
         }
+        // Gift is paid while casting, but given first during resolution (CR 702.174a/j).
+        // The spell already survived 608.2b target validation before reaching this method.
+        val giftKind = if (spellComponent.giftRecipient != null) resolvedCardDef?.giftKeyword()?.kind else null
+        check(spellComponent.giftRecipient == null || giftKind != null) {
+            "A promised Gift spell must retain its Gift keyword: ${resolvedCardDef?.name}"
+        }
+        check(resolvedCardDef?.giftShapeError() == null) {
+            "Unsupported Gift shape for ${resolvedCardDef?.name}: ${resolvedCardDef?.giftShapeError()}"
+        }
+        val spellEffect = if (giftKind != null) {
+            CompositeEffect(listOfNotNull(
+                giftEffect(giftKind).takeIf {
+                    val recipient = spellComponent.giftRecipient
+                    recipient != null && state.hasEntity(recipient) && recipient in state.activePlayers
+                },
+                mainSpellEffect
+            ))
+        } else mainSpellEffect
         // Splice (CR 702.47): the spliced cards' text is a tail that runs after the main spell's own
         // effects (CR 702.47b). Its targets were appended to the end of the flat list at cast time, so
         // the same tail is peeled off here — the main spell must see only its own targets, or an effect
@@ -2253,7 +2277,9 @@ class StackResolver(
                     // references a target dropped by 608.2b through its BoundVariable id
                     // resolves to null and fizzles (CR 608.2b).
                     namedTargets = EffectContext.buildNamedTargets(targetRequirements, mainAlignedTargets),
-                    storedCollections = buildBeheldStoredCollections(spellComponent.beheldCards, resolvedCardDef)
+                    storedCollections = buildBeheldStoredCollections(spellComponent.beheldCards, resolvedCardDef) +
+                        (spellComponent.giftRecipient?.let { mapOf(RESOLUTION_CHOSEN_OPPONENT to listOf(it)) }
+                            ?: emptyMap())
                 )
             )
 
@@ -2346,6 +2372,11 @@ class StackResolver(
         if (state.logicalZone(spellId)?.zoneType != Zone.STACK) return ExecutionResult.success(state)
         var newState = if (spellId in state.stack) state.copy(stack = state.stack.filterNot { it == spellId }) else state
         val events = mutableListOf<GameEvent>()
+        // The whole promised spell has resolved, including any spliced text (CR 702.174c).
+        // Both synchronous and paused resolution finish here; counter/fizzle paths do not.
+        if (spellComponent.giftRecipient != null) {
+            events.add(GiftGivenEvent(spellComponent.casterId, spellId, cardComponent?.name))
+        }
         // Rule 112.3b: a copy of a spell ceases to exist when it leaves the stack —
         // it does not go to a graveyard or exile.
         val isCopy = newState.getEntity(spellId)?.has<CopyOfComponent>() == true
@@ -2376,14 +2407,6 @@ class StackResolver(
         }
 
         val selfExile = resolvedScript?.selfExileOnResolve == true
-        // Flashback (printed or granted — Archmage's Newt) or Harmonize (printed or granted —
-        // Songcrafter Mage): a graveyard cast exiles on resolution instead of returning to the
-        // graveyard.
-        val flashbackExile = spellComponent.castFromZone == Zone.GRAVEYARD &&
-            (FlashbackGrants.effectiveFlashback(
-                state, spellId, cardDef, spellComponent.casterId, cardRegistry, predicateEvaluator
-            ) != null ||
-                HarmonizeGrants.effectiveHarmonize(state, spellId, cardDef) != null)
         val exileAfterResolveComp = newState.getEntity(spellId)?.get<AfterResolveDestinationComponent>()
         // Adventure face (CR 715.3d): when an Adventure resolves, exile it instead of putting
         // it in its owner's graveyard, and grant the caster permission to cast it as the
@@ -2402,29 +2425,15 @@ class StackResolver(
         // on resolution instead of going to the graveyard, and arms a next-upkeep free recast.
         val reboundExile = spellComponent.castFromZone == Zone.HAND &&
             spellHasRebound(newState, spellId, cardDef)
-        // Not a plain priority order, because the underlying replacements aren't totally ordered:
-        // the rider loses to the printed self-shuffle clause, the self-shuffle clause loses to
-        // flashback, and flashback loses to the rider. What breaks the cycle is *what each
-        // replacement is worded to replace*, which is what the guards below encode:
-        //
-        //  - the rider and rebound/adventure/omen all replace "…instead of putting it into its
-        //    owner's **graveyard**", so a spell that shuffles itself into its owner's library
-        //    gives them nothing to replace;
-        //  - flashback and harmonize replace "…instead of putting it **anywhere else** any time it
-        //    would leave the stack", which covers the library move too, so they still apply.
-        //
-        // Countered and fizzled spells really are put into a graveyard, and those paths don't read
-        // the self-shuffle flag at all, so every clause here applies to them as usual.
+        // These clauses specify this spell's intended destination. A paid flashback/harmonize
+        // replacement applies afterward through the shared zone check, including a library move.
+        // A clause that only replaces a graveyard destination does not replace a printed shuffle.
         val intendedDestination = when {
             // The rider is the most specific instruction on this one spell, so it outranks the
             // card-intrinsic exile reasons below rather than being OR'd into them — it is the only
             // one that can send the card somewhere other than exile (Kylox's Voltstrider — "put it
             // on the bottom of its owner's library instead"). The guard is the graveyard wording.
             exileAfterResolveComp != null && !selfShuffleIntoLibrary -> exileAfterResolveComp.zone
-            // Flashback (CR 702.34a) / harmonize (CR 702.180a) — "anywhere else". Above the printed
-            // clause, below the rider, which leaves the pre-existing rider-vs-flashback precedence
-            // exactly as it was.
-            flashbackExile -> Zone.EXILE
             selfShuffleIntoLibrary -> Zone.LIBRARY
             selfExile || adventureFaceExile || reboundExile -> Zone.EXILE
             omenFaceShuffle -> Zone.LIBRARY
@@ -2680,29 +2689,14 @@ class StackResolver(
         }
 
         val ownerId = cardComponent?.ownerId ?: spellComponent.casterId
-        val cardDef = cardComponent?.let { cardRegistry.getCard(it.name) }
-        // Flashback (printed or granted — Archmage's Newt) or Harmonize (printed or granted —
-        // Songcrafter Mage): a graveyard cast exiles on resolution instead of returning to the
-        // graveyard.
-        val flashbackExile = spellComponent.castFromZone == Zone.GRAVEYARD &&
-            (FlashbackGrants.effectiveFlashback(
-                state, spellId, cardDef, spellComponent.casterId, cardRegistry, predicateEvaluator
-            ) != null ||
-                HarmonizeGrants.effectiveHarmonize(state, spellId, cardDef) != null)
         val exileAfterResolveComp = state.getEntity(spellId)?.get<AfterResolveDestinationComponent>()
         // Goliath Daydreamer-style components only redirect on actual resolution; if the spell
         // fizzles or is countered they go to graveyard normally.
         val riderOnFizzle = exileAfterResolveComp?.takeIf { !it.onlyIfResolved }
         // A fizzled spell heading to its owner's graveyard is a card put into a graveyard
         // "from anywhere" — honor RedirectZoneChange replacements (Valgavoth, Leyline).
-        val fizzleRedirect = if (flashbackExile || riderOnFizzle != null) {
-            com.wingedsheep.engine.handlers.effects.ZoneChangeRedirectResult(
-                riderOnFizzle?.zone ?: Zone.EXILE
-            )
-        } else {
-            com.wingedsheep.engine.handlers.effects.ZoneMovementUtils
-                .checkZoneChangeRedirect(state, spellId, Zone.STACK, Zone.GRAVEYARD)
-        }
+        val fizzleRedirect = com.wingedsheep.engine.handlers.effects.ZoneMovementUtils
+            .checkZoneChangeRedirect(state, spellId, Zone.STACK, riderOnFizzle?.zone ?: Zone.GRAVEYARD)
         val destZone = fizzleRedirect.destinationZone
         val destZoneKey = ZoneKey(ownerId, destZone)
 
@@ -3084,12 +3078,8 @@ class StackResolver(
             ?.takeIf { !it.onlyIfResolved }
         // A countered spell heading to its owner's graveyard is still a card being put into a
         // graveyard "from anywhere" — honor RedirectZoneChange replacements (Valgavoth, Leyline).
-        val counterRedirect = if (riderOnCounter != null) {
-            com.wingedsheep.engine.handlers.effects.ZoneChangeRedirectResult(riderOnCounter.zone)
-        } else {
-            com.wingedsheep.engine.handlers.effects.ZoneMovementUtils
-                .checkZoneChangeRedirect(state, spellId, Zone.STACK, Zone.GRAVEYARD)
-        }
+        val counterRedirect = com.wingedsheep.engine.handlers.effects.ZoneMovementUtils
+            .checkZoneChangeRedirect(state, spellId, Zone.STACK, riderOnCounter?.zone ?: Zone.GRAVEYARD)
         val destZone = counterRedirect.destinationZone
         val destZoneKey = ZoneKey(ownerId, destZone)
         newState = newState.addToZone(destZoneKey, spellId)
@@ -3132,13 +3122,13 @@ class StackResolver(
      *
      * The sibling of [counterSpellToExile] on the other destination, and it keeps the two things
      * that make this a counter rather than a bounce: the [SpellCounteredEvent] still fires, and
-     * an [AfterResolveDestinationComponent] that applies on a counter (a flashback card's exile
-     * replacement) still wins over the hand, exactly as it does over the graveyard in
-     * [counterSpell].
+     * a paid flashback/harmonize cost replaces the hand destination with exile, as it does for
+     * every other non-exile destination. This follows actual payment recorded on the spell,
+     * independently of the ordinary [AfterResolveDestinationComponent] graveyard riders.
      *
      * A hand is not a public zone reachable by `RedirectZoneChange` replacements the way a
      * graveyard is (those key on "put into a graveyard from anywhere"), so no redirect check runs
-     * here; the rider is the only thing that can move the destination.
+     * here; the paid-cost stack-exit replacement is checked explicitly.
      */
     fun counterSpellToHand(state: GameState, spellId: EntityId): ExecutionResult {
         if (spellId !in state.stack) {
@@ -3161,11 +3151,13 @@ class StackResolver(
 
         var newState = state.removeFromStack(spellId)
 
-        // A flashback/foretell-style "exile it instead" rider that applies on a counter still
-        // overrides the printed destination — the same precedence [counterSpell] gives it.
+        // Preserve the existing counter rider, then apply the paid-cost any-stack-exit rule.
         val riderOnCounter = container.get<AfterResolveDestinationComponent>()
             ?.takeIf { !it.onlyIfResolved }
-        val destZone = riderOnCounter?.zone ?: Zone.HAND
+        val intendedDestination = riderOnCounter?.zone ?: Zone.HAND
+        val destZone = com.wingedsheep.engine.handlers.effects.ZoneMovementUtils
+            .paidStackExitRedirect(state, spellId, Zone.STACK, intendedDestination)
+            ?.destinationZone ?: intendedDestination
         newState = newState.addToZone(ZoneKey(ownerId, destZone), spellId)
         val destinationObject = newState.objectRef(spellId)
 
@@ -3510,8 +3502,15 @@ class StackResolver(
         return targets.filterIndexed { index, target ->
             when (target) {
                 is ChosenTarget.Player -> {
-                    // Player is valid if they exist and haven't lost...
+                    // The targeted player entity must still exist.
                     if (!state.hasEntity(target.playerId)) return@filterIndexed false
+                    // CR 608.2b rechecks targeting protection as well as restrictions. Reuse
+                    // the same player-level grants as casting: shroud blocks every controller,
+                    // while hexproof still permits this player's own spells and abilities.
+                    if (ControllerShroud.appliesTo(state, target.playerId)) return@filterIndexed false
+                    if (ControllerHexproof.appliesAgainst(state, target.playerId, controllerId)) {
+                        return@filterIndexed false
+                    }
                     // ...and (CR 608.2b) the player-target restriction still holds. A player who
                     // gained life above the threshold, or whose "lost life this turn" never
                     // happened, is removed at resolution.

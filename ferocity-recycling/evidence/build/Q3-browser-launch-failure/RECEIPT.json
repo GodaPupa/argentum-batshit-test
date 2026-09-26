@@ -1,0 +1,43 @@
+{
+  "schema": "ferocity-Q3-browser-launch-failure-v1",
+  "observed_utc": "2026-09-26T14:49:50.619Z",
+  "source_commit": "d50e66dc12a58e1276b56bdf9ce78daecda51e1a",
+  "run_id": 36249215930,
+  "event": "push",
+  "name": ".github/workflows/ferocity-recycling-combat-browser.yml",
+  "status": "completed",
+  "conclusion": "failure",
+  "check_suite_id": 98163831272,
+  "html_url": "https://github.com/GodaPupa/argentum-batshit-test/actions/runs/36249215930",
+  "jobs": [],
+  "browser_initializations": 0,
+  "gameplay_games": 0,
+  "discovery": "The connector workflow-run wrapper filters pull_request events; the all-events REST list exposed the separate failed push validation run.",
+  "schema_defect": {
+    "path": ".github/workflows/ferocity-recycling-combat-browser.yml",
+    "locations": [
+      "jobs.combat-browser.env.GRADLE_USER_HOME",
+      "jobs.combat-browser.env.PLAYWRIGHT_BROWSERS_PATH"
+    ],
+    "invalid_context": "runner.temp",
+    "official_source": "https://docs.github.com/en/actions/reference/workflows-and-actions/contexts#context-availability",
+    "retrieved_date": "2026-09-26",
+    "observed_rule": "jobs.<job_id>.env permits github, needs, strategy, matrix, vars, secrets and inputs; runner is permitted in execution step contexts.",
+    "assessment": "These two references violate the documented workflow schema and explain a pre-job validation failure; the exact GitHub annotation text was not obtained."
+  },
+  "lookup_failures": [
+    {
+      "operation": "GitHub connector fetch workflow by filename",
+      "result": "400 INVALID_ARGUMENT: endpoint unsupported by connector; not a GitHub404."
+    },
+    {
+      "operation": "GitHub connector fetch check-suites/{id}/check-runs",
+      "result": "400 INVALID_ARGUMENT: endpoint unsupported by connector."
+    },
+    {
+      "operation": "web open public action run",
+      "result": "Internal Error; no annotation retrieved."
+    }
+  ],
+  "next_action": "Reviewed workflow-only successor moves identical isolated runtime paths into an initial shell setup step; all4 cases and acceptance guards remain."
+}

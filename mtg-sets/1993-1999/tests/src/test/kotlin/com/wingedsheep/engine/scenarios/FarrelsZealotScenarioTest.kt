@@ -1,10 +1,14 @@
 package com.wingedsheep.engine.scenarios
 
+import com.wingedsheep.engine.core.ChooseTargetsDecision
+import com.wingedsheep.engine.core.YesNoDecision
 import com.wingedsheep.engine.support.ScenarioTestBase
 import com.wingedsheep.sdk.core.Phase
 import com.wingedsheep.sdk.core.Step
 import io.kotest.assertions.withClue
 import io.kotest.matchers.shouldBe
+import io.kotest.matchers.collections.shouldContain
+import io.kotest.matchers.types.shouldBeInstanceOf
 
 /**
  * Scenario tests for Farrel's Zealot (Fallen Empires).
@@ -32,14 +36,28 @@ class FarrelsZealotScenarioTest : ScenarioTestBase() {
                 game.passUntilPhase(Phase.COMBAT, Step.DECLARE_ATTACKERS)
                 game.declareAttackers(mapOf("Farrel's Zealot" to 2)).error shouldBe null
                 game.passUntilPhase(Phase.COMBAT, Step.DECLARE_BLOCKERS)
-                game.declareNoBlockers()
+                game.declareNoBlockers().error shouldBe null
 
-                // The gate asks whether to take the trade first; targets are locked in only on
-                // the "yes" branch, so a decline never asks for one.
+                // The trigger needs a target before players receive priority.
                 val warrior = game.findPermanent("Elvish Warrior")!!
-                game.answerYesNo(true)
-                game.selectTargets(listOf(warrior))
-                game.resolveStack()
+                val targetDecision = game.getPendingDecision().shouldBeInstanceOf<ChooseTargetsDecision>()
+                targetDecision.playerId shouldBe game.player1Id
+                targetDecision.legalTargets.getValue(0) shouldContain warrior
+                targetDecision.targetRequirements.single().minTargets shouldBe 1
+                game.selectTargets(listOf(warrior)).error shouldBe null
+                game.getPendingDecision() shouldBe null
+                game.state.stack.size shouldBe 1
+                game.passPriority().error shouldBe null
+                game.getPendingDecision() shouldBe null
+                game.state.stack.size shouldBe 1
+                game.passPriority().error shouldBe null
+
+                // Accepting during resolution performs the trade.
+                game.getPendingDecision().shouldBeInstanceOf<YesNoDecision>().playerId shouldBe game.player1Id
+                game.answerYesNo(true).error shouldBe null
+                game.resolveStack().forEach { it.error shouldBe null }
+                game.getPendingDecision() shouldBe null
+                game.state.stack.size shouldBe 0
 
                 game.passUntilPhase(Phase.POSTCOMBAT_MAIN, Step.POSTCOMBAT_MAIN)
 
@@ -61,12 +79,28 @@ class FarrelsZealotScenarioTest : ScenarioTestBase() {
                     .build()
 
                 game.passUntilPhase(Phase.COMBAT, Step.DECLARE_ATTACKERS)
-                game.declareAttackers(mapOf("Farrel's Zealot" to 2))
+                game.declareAttackers(mapOf("Farrel's Zealot" to 2)).error shouldBe null
                 game.passUntilPhase(Phase.COMBAT, Step.DECLARE_BLOCKERS)
-                game.declareNoBlockers()
+                game.declareNoBlockers().error shouldBe null
 
-                game.answerYesNo(false)
-                game.resolveStack()
+                // A target is mandatory even when the player intends to decline on resolution.
+                val warrior = game.findPermanent("Elvish Warrior")!!
+                val targetDecision = game.getPendingDecision().shouldBeInstanceOf<ChooseTargetsDecision>()
+                targetDecision.playerId shouldBe game.player1Id
+                targetDecision.legalTargets.getValue(0) shouldContain warrior
+                targetDecision.targetRequirements.single().minTargets shouldBe 1
+                game.selectTargets(listOf(warrior)).error shouldBe null
+                game.getPendingDecision() shouldBe null
+                game.state.stack.size shouldBe 1
+                game.passPriority().error shouldBe null
+                game.getPendingDecision() shouldBe null
+                game.state.stack.size shouldBe 1
+                game.passPriority().error shouldBe null
+                game.getPendingDecision().shouldBeInstanceOf<YesNoDecision>().playerId shouldBe game.player1Id
+                game.answerYesNo(false).error shouldBe null
+                game.resolveStack().forEach { it.error shouldBe null }
+                game.getPendingDecision() shouldBe null
+                game.state.stack.size shouldBe 0
 
                 withClue("the Warrior was never damaged") {
                     game.isOnBattlefield("Elvish Warrior") shouldBe true
