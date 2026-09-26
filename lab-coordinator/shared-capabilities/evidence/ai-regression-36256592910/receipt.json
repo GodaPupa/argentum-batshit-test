@@ -1,0 +1,59 @@
+{
+  "schema": "ai-postblock-regression-receiving-receipt-v1",
+  "status": "DIAGNOSTIC_EVIDENCE_ACCEPTED_RECEIVING_FIXTURE_SUCCESSOR_PENDING_QUALIFICATION",
+  "run_id": 36256592910,
+  "control_head": "929b8a975438c405c6c0310b781b953f573726a2",
+  "control_tree": "08a6d541d0f1a593a62995de5495fab971c32329",
+  "artifacts": {
+    "accepted-main.zip": {
+      "artifact_id": 10911221562,
+      "bytes": 251658,
+      "sha256": "d22491cb58b0058e6c0cd5038327dc12e5292313be0861a65c27aa81da69eff9",
+      "source_head": "9ca83110f5907e66a0c289f8205ed1e24575535c",
+      "source_tree": "a04ad021f1fb51ead1e1ad1b3d726147e07a9768",
+      "actual_cases": 5,
+      "passed": 5,
+      "failed": 0
+    },
+    "failed-shared-receiver.zip": {
+      "artifact_id": 10910309815,
+      "bytes": 260894,
+      "sha256": "b70d243fa0befebe9ccd6ac5bf3fc9be81541fbae89ba020a05e5f2b0dbe55c5",
+      "source_head": "b35d4778dada69476da0f67549be7e70424c18bd",
+      "source_tree": "fd3ecab4ab115cc21556c0ec89fb9cc704cf0a22",
+      "actual_cases": 5,
+      "passed": 3,
+      "failed": 2
+    }
+  },
+  "errors": 0,
+  "skipped": 0,
+  "historical_hash": "5e699f864486526a",
+  "proposed_successor_hash": "2dfcfc67eb3eaab0",
+  "total_trace_records_each": 413,
+  "changed_records": 14,
+  "unchanged_records": 399,
+  "changed_postblock_pass_pairs": 7,
+  "unchanged_terminal": "END|turns=20|winner=1|life=-8/16",
+  "puzzle_passes_before": 83,
+  "puzzle_passes_after": 85,
+  "puzzles_total": 98,
+  "only_newly_passing_puzzles": ["activate-05", "instants-05"],
+  "newly_failing_puzzles": [],
+  "governance": {
+    "baseline": "FrozenBaselineTest KDoc explicitly permits a hash successor for changed engine behavior in vanilla combat.",
+    "puzzles": "PuzzleSuiteTest KDoc explicitly requires removing a newly solved id after an unexpected fix is diagnosed.",
+    "scope": "Software receiving compatibility under those existing tests; no experimental protocol or profile is amended.",
+    "runtime_accepts_both_hashes": false,
+    "normalization_used_in_runtime_test": false,
+    "diagnostic_decks_seeds_profiles_golden_and_failure_set_unchanged": true
+  },
+  "independent_diagnostic_review": "independent-diagnostic-review.json",
+  "receiving_fixture_source_review": "independent-source-review.json",
+  "receiving_fixture_qualification": "PENDING",
+  "combined_runtime_admitted": false,
+  "official_seeds_generated": 0,
+  "official_games": 0,
+  "official_outcomes_exposed": 0,
+  "gameplay_authorized": false
+}

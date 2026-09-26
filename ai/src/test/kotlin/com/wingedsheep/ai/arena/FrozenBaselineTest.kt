@@ -54,6 +54,10 @@ class FrozenBaselineTest : FunSpec({
                 "life ${outcome.seat0Life}/${outcome.seat1Life}). See this test's KDoc before re-blessing."
         ) {
             outcome.actionStreamHash shouldBe GOLDEN_HASH
+            outcome.turns shouldBe 20
+            outcome.winnerSeat shouldBe 1
+            outcome.seat0Life shouldBe -8
+            outcome.seat1Life shouldBe 16
         }
     }
 }) {
@@ -112,11 +116,23 @@ class FrozenBaselineTest : FunSpec({
          * diagnostic run on the pre-rebless head produced hash `5e699f864486526a` with the exact
          * historical outcome unchanged: seat 1 wins on turn 20 at life -8 / 16.
          *
+         * Re-blessed 2026-09-26 for the active player's first priority after blockers (CR 509.2).
+         * **`LEGACY_V0` did not move.** Exact-source diagnostics on accepted main `9ca83110` and
+         * receiving source `b35d4778` recorded the same 413 records. The only differences are
+         * seven adjacent post-block `PassPriority` pairs: defender-first became active-first.
+         * All 399 other records, including every land/spell/combat choice and the terminal record,
+         * are byte-identical. Reversing only those seven pairs in the preserved comparison
+         * reproduces the complete old stream and historical golden `5e699f864486526a` exactly.
+         * That reversal is evidence analysis only; this test accepts only the new raw stream hash.
+         * Deck, seed, profile, turns, winner and life remain unchanged. Raw archives, exact source
+         * bindings and independent non-author review are preserved in
+         * `lab-coordinator/shared-capabilities/evidence/ai-regression-36256592910/`.
+         *
          * Note for whoever hits this next: hashing `GameAction.toString()` means *any* new field on
          * a cast/action data class moves this hash without the AI having changed. Check the outcome
          * line in the failure clue first — if turns/winner/life match the values above, you are
          * almost certainly in this benign case rather than a real behavioural drift.
          */
-        private const val GOLDEN_HASH = "5e699f864486526a"
+        private const val GOLDEN_HASH = "2dfcfc67eb3eaab0"
     }
 }

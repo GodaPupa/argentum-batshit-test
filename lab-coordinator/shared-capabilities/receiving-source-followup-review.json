@@ -1,0 +1,62 @@
+{
+  "schema": "shared-receiving-source-review-record-v1",
+  "base_source_head": "cbca096e2727120d9b4f33f9529af637adf6f173",
+  "github_approval_created": false,
+  "scope": "Source review for receiving qualification only; no broad integration or gameplay admission.",
+  "reviews": [
+    {
+      "source_commit": "673c23733016ca101e08a26d66eecfa4b6b5c8a2",
+      "author": "/root/ferocity",
+      "reviewer": "/root",
+      "reviewer_role": "non-author agent",
+      "disposition": "ACCEPT_FOR_RECEIVING_QUALIFICATION",
+      "findings": [
+        "Both static granted-trigger discovery paths use the canonical projected PredicateEvaluator rather than treating unhandled predicates as true. Soulbond and source-relative controller/excludeSelf behavior remain explicit.",
+        "All three original Energy Flux cases are retained with exact single-trigger and accepted mana-decision assertions; the original resolver case remains and one focused projected-filter case is added."
+      ]
+    },
+    {
+      "source_commit": "50b94ba8a4d",
+      "author": "/root",
+      "reviewer": "/root/sphinx",
+      "reviewer_role": "non-author agent",
+      "disposition": "ACCEPT_FOR_RECEIVING_QUALIFICATION",
+      "findings": [
+        "Dalkovan explicitly reaches DECLARE_BLOCKERS and submits an accepted empty blocker declaration before the original end-step assertions. No generic helper behavior or original case count changes."
+      ]
+    },
+    {
+      "source_commit": "98859d3c08572566d27710845ffed21149643f42",
+      "author": "/root/pest",
+      "reviewer": "/root",
+      "reviewer_role": "non-author agent",
+      "disposition": "ACCEPT_FOR_RECEIVING_QUALIFICATION",
+      "findings": [
+        "Vodalian resolves both existing abilities and an actual registered Terror; the accepted battlefield-to-graveyard transition reaches delayed-trigger ordering. The original sole case and payer/bystander final assertions remain."
+      ]
+    },
+    {
+      "source_commit": "428f7964e7865b490c9e0d3477ec3f5e93003e38",
+      "author": "/root/manual",
+      "reviewer": "/root",
+      "reviewer_role": "non-author agent",
+      "disposition": "ACCEPT_FOR_RECEIVING_QUALIFICATION",
+      "findings": [
+        "The server fixture repeats the same accepted mana activation after exact undo to reproduce the intended routing-ID collision. Both original cases and all callback epoch/state/action/replay assertions remain."
+      ]
+    }
+  ],
+  "reviewed_source_sha256": {
+    "ai/src/test/kotlin/com/wingedsheep/ai/arena/FrozenBaselineTest.kt": "49e7770f7b55b24fb4a265ddf84afd86c51c1d6e1d467ed051b8334c60c45b86",
+    "ai/src/test/kotlin/com/wingedsheep/ai/puzzles/PuzzleSuiteTest.kt": "14ccfcfe749cbbbffb88f0d9e8f748d9707e4ff8cfc352e23f591859824273ec",
+    "game-server/src/test/kotlin/com/wingedsheep/gameserver/session/AiUndoDecisionFreshnessTest.kt": "beb4daa7bfdc998a35b8796c189f39485fe0ef6d726ef0a93c3950bd050e5db4",
+    "mtg-sets/1993-1999/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/EnergyFluxScenarioTest.kt": "19678e0e547c4fc4e7938041fdbb6412f60b64afc1a7bdace964e9b52372549d",
+    "mtg-sets/1993-1999/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/VodalianWarMachineScenarioTest.kt": "9cb20bbf10661baa3650bc02783d3113578394c210e408901c8222f8be458f63",
+    "mtg-sets/2025/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/DalkovanEncampmentScenarioTest.kt": "9036c52571af5f70f7c3eceef2f5bffeef83e5e0a9baaab60244b0d506c4885d",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerAbilityResolver.kt": "f66661fa23a54f53dfe43ac140b608d0c63972168193f82ac01e8faf0739e20c",
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/event/TriggerAbilityResolverTest.kt": "35dcc456ab3185c377033d95ae62d6a135cb602348a328271d5f65d5eed5f0be"
+  },
+  "ai_independent_source_review": "evidence/ai-regression-36256592910/independent-source-review.json",
+  "receiving_runtime_accepted": false,
+  "gameplay_authorized": false
+}

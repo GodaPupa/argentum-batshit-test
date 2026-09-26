@@ -1,16 +1,15 @@
 package com.wingedsheep.engine.scenarios
 
 import com.wingedsheep.engine.core.ActivateAbility
-import com.wingedsheep.engine.handlers.EffectContext
-import com.wingedsheep.engine.mechanics.layers.Layer
-import com.wingedsheep.engine.mechanics.layers.SerializableModification
-import com.wingedsheep.engine.mechanics.layers.addFloatingEffect
-import com.wingedsheep.sdk.scripting.Duration
+import com.wingedsheep.engine.core.ZoneChangeEvent
 import com.wingedsheep.engine.support.GameTestDriver
 import com.wingedsheep.engine.support.chooseTriggerOrderInListedOrder
 import com.wingedsheep.engine.support.TestCards
 import com.wingedsheep.mtg.sets.definitions.fem.cards.VodalianWarMachine
+import com.wingedsheep.mtg.sets.definitions.lea.cards.Terror
+import com.wingedsheep.sdk.core.Color
 import com.wingedsheep.sdk.core.Step
+import com.wingedsheep.sdk.core.Zone
 import com.wingedsheep.sdk.model.Deck
 import io.kotest.assertions.withClue
 import io.kotest.core.spec.style.FunSpec
@@ -32,6 +31,7 @@ class VodalianWarMachineScenarioTest : FunSpec({
         val driver = GameTestDriver()
         driver.registerCards(TestCards.all)
         driver.registerCard(VodalianWarMachine)
+        driver.registerCard(Terror)
         return driver
     }
 
@@ -65,24 +65,21 @@ class VodalianWarMachineScenarioTest : FunSpec({
                 )
             )
         )
-        driver.bothPass()
-        driver.bothPass()
+        driver.bothPass().isSuccess shouldBe true
+        driver.bothPass().isSuccess shouldBe true
 
-        // Kill it for real — `moveToGraveyard` is a blunt zone move that deliberately skips dies
-        // triggers, and the dies trigger is the whole point here. -0/-8 covers the 0/4 Wall plus
-        // the +2/+1 it just gave itself.
-        driver.replaceState(
-            driver.state.addFloatingEffect(
-                layer = Layer.POWER_TOUGHNESS,
-                modification = SerializableModification.ModifyPowerToughness(powerMod = 0, toughnessMod = -8),
-                affectedEntities = setOf(machine),
-                duration = Duration.EndOfTurn,
-                context = EffectContext(sourceId = machine, controllerId = alice),
-            )
-        )
-        // Let the engine notice it: passing priority runs state-based actions *and* the trigger
-        // detection that follows them, which a direct StateBasedActionChecker call would skip.
-        driver.passPriority(driver.state.priorityPlayerId!!).error shouldBe null
+        // Resolve an actual destruction spell. An injected lethal toughness state followed by a
+        // single pass only hands priority to the other player; it does not establish this death
+        // and its trigger-placement boundary. Terror's accepted resolution supplies both.
+        val terror = driver.putCardInHand(alice, "Terror")
+        driver.giveMana(alice, Color.BLACK, 2)
+        driver.castSpell(alice, terror, listOf(machine)).isSuccess shouldBe true
+        val death = driver.bothPass()
+        death.error shouldBe null
+        death.isPaused shouldBe true
+        death.events.filterIsInstance<ZoneChangeEvent>().any {
+            it.entityId == machine && it.fromZone == Zone.BATTLEFIELD && it.toZone == Zone.GRAVEYARD
+        } shouldBe true
         driver.chooseTriggerOrderInListedOrder()
         driver.passPriorityUntil(Step.END)
 

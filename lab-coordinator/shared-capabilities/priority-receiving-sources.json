@@ -2,7 +2,7 @@
   "schema": "shared-priority-receiving-sources-v1",
   "status": "PROSPECTIVE_RECEIVING_BINDING_INDEPENDENT_REVIEW_AND_RUNTIME_PENDING",
   "base_commit": "1c8bc618e8b3ca0b3b154e2ef3c87ca8ff779698",
-  "source_base": "e2e426adbef1dcc2e94c1a55227ffd1ebad600b1",
+  "source_base": "cbca096e2727120d9b4f33f9529af637adf6f173",
   "scope": "DETERMINISTIC_RULES_REGRESSION_ONLY",
   "rules": {
     "source_url": "https://media.wizards.com/2026/downloads/MagicCompRules%2020260925.txt",
@@ -399,7 +399,15 @@
     "rules-engine/src/test/resources/suspension-traces/suspended-mana-window/state.json": "c2671964ac8cd0e904f5d87344ba0ebf95d333ee5c6bff6b97c3e30fa922474f",
     "rules-engine/src/testFixtures/kotlin/com/wingedsheep/engine/support/GameTestDriver.kt": "34cb7972a73c3cc90dddaf43749adcc6dd1bd8495c8b3e3dae23ec78fe9c5df0",
     "rules-engine/src/testFixtures/kotlin/com/wingedsheep/engine/support/ScenarioTestBase.kt": "ef59cd04e877e787aa446b3240cb012a9527505d2e1df75e0e3fb82f925f0408",
-    "rules-engine/src/testFixtures/kotlin/com/wingedsheep/engine/support/TriggerOrderTestSupport.kt": "c7aba22d7937c395075c00f8710cb072a0ec1e3932a5fe55b441c9b1a7da0f71"
+    "rules-engine/src/testFixtures/kotlin/com/wingedsheep/engine/support/TriggerOrderTestSupport.kt": "c7aba22d7937c395075c00f8710cb072a0ec1e3932a5fe55b441c9b1a7da0f71",
+    "ai/src/test/kotlin/com/wingedsheep/ai/arena/FrozenBaselineTest.kt": "49e7770f7b55b24fb4a265ddf84afd86c51c1d6e1d467ed051b8334c60c45b86",
+    "ai/src/test/kotlin/com/wingedsheep/ai/puzzles/PuzzleSuiteTest.kt": "14ccfcfe749cbbbffb88f0d9e8f748d9707e4ff8cfc352e23f591859824273ec",
+    "game-server/src/test/kotlin/com/wingedsheep/gameserver/session/AiUndoDecisionFreshnessTest.kt": "beb4daa7bfdc998a35b8796c189f39485fe0ef6d726ef0a93c3950bd050e5db4",
+    "mtg-sets/1993-1999/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/EnergyFluxScenarioTest.kt": "19678e0e547c4fc4e7938041fdbb6412f60b64afc1a7bdace964e9b52372549d",
+    "mtg-sets/1993-1999/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/VodalianWarMachineScenarioTest.kt": "9cb20bbf10661baa3650bc02783d3113578394c210e408901c8222f8be458f63",
+    "mtg-sets/2025/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/DalkovanEncampmentScenarioTest.kt": "9036c52571af5f70f7c3eceef2f5bffeef83e5e0a9baaab60244b0d506c4885d",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerAbilityResolver.kt": "f66661fa23a54f53dfe43ac140b608d0c63972168193f82ac01e8faf0739e20c",
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/event/TriggerAbilityResolverTest.kt": "35dcc456ab3185c377033d95ae62d6a135cb602348a328271d5f65d5eed5f0be"
   },
   "changed_previous_bindings": [
     {
@@ -427,7 +435,10 @@
     "Pending cast observer source history preserves exact first departure, including token cleanup and serialization.",
     "Regression fixtures submit actual typed controller ordering decisions and placement targets before optional resolution consent.",
     "Captured historical trace bytes are unchanged; exact named departure snapshot additions are checked by a separate compatibility expectation.",
-    "Original 27 stage commands, case counts, effective rules bytes, ancestor and source guards remain required. Actual XML and command exits are audited."
+    "Original 27 stage commands, case counts, effective rules bytes, ancestor and source guards remain required. Actual XML and command exits are audited.",
+    "An adjacent Energy Flux failure exposed an incomplete static granted-trigger filter. Both discovery paths now use the existing projected PredicateEvaluator; three original Energy Flux cases and one added resolver case qualify the change.",
+    "AI software regression expectations follow their existing governance: a raw successor digest after exactly seven priority-pass pair changes, unchanged terminal result, and two diagnosed puzzle fixes. Original raw diagnostics and non-author reviews are retained separately. No experimental policy is changed.",
+    "Vodalian, Dalkovan and server stale-callback fixtures establish their intended boundaries using accepted actual actions; their original cases and behavioral assertions are retained."
   ],
   "independent_source_review": "PENDING_FOR_THIS_MANIFEST_AND_COLLECTOR",
   "targeted_receiving_qualification": "PENDING",
@@ -437,5 +448,12 @@
   "official_games_initialized": 0,
   "official_actions_submitted": 0,
   "outcome_exposure": 0,
-  "historical_captured_fixture_bytes_unchanged": true
+  "historical_captured_fixture_bytes_unchanged": true,
+  "previous_receiving_binding": {
+    "source_head": "cbca096e2727120d9b4f33f9529af637adf6f173",
+    "manifest_sha256": "4cc1211845923dc3966bd8dcfc1a8ff59d01baf17f2421f946cb65a155b7be0b",
+    "priority_run_id": 36257075249,
+    "broad_ci_run_id": 36257075247,
+    "scope": "Prior receiving attempt remains preserved; no previous source or runtime acceptance is transferred."
+  }
 }
