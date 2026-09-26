@@ -122,6 +122,12 @@ actual-deck pilot, official seed, sampled game, or durable attempt journal.
 
 ## Completion
 
+The prospective `attempt_journal.py` component now composes canonical shared
+durability with the accepted trace/metric boundary. Its exact receiving scope and
+remaining remote-claim/runtime integration are recorded in `attempt-journal-r1.md`.
+This is pending combined-source deterministic qualification and independent review;
+it changes no official counter, seed authorization, pilot or hardware.
+
 Phase 2 ends only at the bounded protocol's stopping rule followed by artifact and
 strategic-integrity audit and a final report. A capability/CI checkpoint is not
 completion. Simulated performance is never described as tournament performance.
