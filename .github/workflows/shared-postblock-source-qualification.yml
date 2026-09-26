@@ -1,6 +1,10 @@
 name: Shared Post-block Source Qualification
 
 on:
+  pull_request:
+    paths:
+      - .github/workflows/shared-postblock-source-qualification.yml
+      - lab-coordinator/shared-capabilities/postblock-combined-receiving.json
   push:
     branches: [lab/shared-core-integration]
     paths:
@@ -28,7 +32,9 @@ jobs:
     steps:
       - uses: actions/checkout@v6
         with:
-          ref: ${{ github.sha }}
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
       - uses: actions/setup-java@v5
         with:
           distribution: temurin
@@ -36,7 +42,9 @@ jobs:
       - uses: gradle/actions/setup-gradle@v6
       - uses: extractions/setup-just@f8a3cce218d9f83db3a2ecd90e41ac3de6cdfd9b
 
-      - name: Bind the exact clean source and unchanged original fixtures
+      - name: Bind the exact combined source and unchanged original fixtures
+        env:
+          EXPECTED_SOURCE: ${{ github.event.pull_request.head.sha || github.sha }}
         shell: bash
         run: |
           set -euo pipefail
@@ -56,12 +64,57 @@ jobs:
           for override in fixture_manifest['test_import_overrides']:
               original_override_hashes[override['path']] = expected[override['path']]
               expected[override['path']] = override['receiving_sha256']
+          receiving_path = pathlib.Path('lab-coordinator/shared-capabilities/postblock-combined-receiving.json')
+          receiving_raw = receiving_path.read_bytes()
+          receiving = json.loads(receiving_raw)
+          pathlib.Path('build/reports/shared-postblock-source/binding-attempt.json').write_text(json.dumps({
+              'requested_head': os.environ['EXPECTED_SOURCE'], 'actual_head': git('rev-parse', 'HEAD'),
+              'tree': git('rev-parse', 'HEAD^{tree}'), 'checkout_status': git('status', '--porcelain'),
+              'receiving_manifest_sha256': hashlib.sha256(receiving_raw).hexdigest(),
+          }, indent=2) + '\n')
+          for filename, digest in receiving['original_manifests_sha256'].items():
+              assert hashlib.sha256(pathlib.Path(filename).read_bytes()).hexdigest() == digest, filename
+          assert set(receiving['original_manifests_sha256']) == {str(manifest_path), str(fixture_manifest_path)}
+          assert git('rev-parse', receiving['reference_source'] + '^{tree}') == receiving['reference_tree']
+          subprocess.run(['git', 'merge-base', '--is-ancestor', receiving['reference_source'], 'HEAD'], check=True)
+          combined_spec = receiving['combined_source_manifest']
+          combined_raw = pathlib.Path(combined_spec['path']).read_bytes()
+          assert hashlib.sha256(combined_raw).hexdigest() == combined_spec['sha256']
+          combined = json.loads(combined_raw)
+          assert len(combined['source_files_sha256']) == combined_spec['source_binding_count'] == 250
+          combined_actual = {p: hashlib.sha256(pathlib.Path(p).read_bytes()).hexdigest()
+              for p in combined['source_files_sha256']}
+          assert combined_actual == combined['source_files_sha256']
+          observer_spec = receiving['observer_receiving_manifest']
+          observer_raw = pathlib.Path(observer_spec['path']).read_bytes()
+          assert hashlib.sha256(observer_raw).hexdigest() == observer_spec['sha256']
+          observer = json.loads(observer_raw)
+          reviewed_overrides = {**observer['production_overrides'], **observer['combined_receiving']['production_overrides']}
+          assert observer['combined_receiving']['source_manifest_sha256'] == combined_spec['sha256']
+          overrides = receiving['production_overrides']
+          assert len(overrides) == len({item['path'] for item in overrides}) == 9
+          assert {item['path']: item['receiving_sha256'] for item in overrides} == reviewed_overrides
+          production_paths = {item['path'] for item in manifest['production_files']}
+          for item in overrides:
+              assert item['path'] in production_paths
+              assert expected[item['path']] == item['original_sha256'], item
+              assert item['receiving_sha256'] == combined_actual[item['path']], item
+              expected[item['path']] = item['receiving_sha256']
+          assert receiving['retained_source_bindings'] == len(files) == 54
+          assert receiving['expected_cases'] == manifest['expected_cases'] == {'engine': 115, 'server': 12}
+          assert receiving['expected_total_cases'] == sum(receiving['expected_cases'].values()) == 127
+          workflow_path = '.github/workflows/shared-postblock-source-qualification.yml'
           binding = {
-              'requested_head': os.environ['GITHUB_SHA'], 'actual_head': git('rev-parse', 'HEAD'),
+              'requested_head': os.environ['EXPECTED_SOURCE'], 'actual_head': git('rev-parse', 'HEAD'),
               'tree': git('rev-parse', 'HEAD^{tree}'), 'checkout_status': git('status', '--porcelain'),
               'extraction_manifest_sha256': hashlib.sha256(manifest_path.read_bytes()).hexdigest(),
               'fixture_receiving_manifest_sha256': hashlib.sha256(fixture_manifest_path.read_bytes()).hexdigest(),
               'source_files_sha256': actual, 'expected_cases': manifest['expected_cases'],
+              'combined_source_files_sha256': combined_actual,
+              'receiving_manifest_sha256': hashlib.sha256(receiving_raw).hexdigest(),
+              'receiving_control_files_sha256': {str(receiving_path): hashlib.sha256(receiving_raw).hexdigest(),
+                  combined_spec['path']: combined_spec['sha256'], observer_spec['path']: observer_spec['sha256'],
+                  workflow_path: hashlib.sha256(pathlib.Path(workflow_path).read_bytes()).hexdigest()},
           }
           pathlib.Path('build/reports/shared-postblock-source/source-binding.json').write_text(json.dumps(binding, indent=2) + '\n')
           assert binding['extraction_manifest_sha256'] == fixture_manifest['original_manifest_sha256']
@@ -120,6 +173,12 @@ jobs:
                   'xml_path': str(path), 'xml_sha256': hashlib.sha256(path.read_bytes()).hexdigest()}
           current = {p: hashlib.sha256(pathlib.Path(p).read_bytes()).hexdigest() for p in binding['source_files_sha256']}
           assert current == binding['source_files_sha256'], current
+          combined_current = {p: hashlib.sha256(pathlib.Path(p).read_bytes()).hexdigest()
+              for p in binding['combined_source_files_sha256']}
+          assert combined_current == binding['combined_source_files_sha256']
+          for p, digest in binding['receiving_control_files_sha256'].items():
+              assert hashlib.sha256(pathlib.Path(p).read_bytes()).hexdigest() == digest, p
+          assert subprocess.check_output(['git', 'rev-parse', 'HEAD^{tree}'], text=True).strip() == binding['tree']
           assert hashlib.sha256(manifest_path.read_bytes()).hexdigest() == binding['extraction_manifest_sha256']
           fixture_manifest_path = pathlib.Path('lab-coordinator/shared-capabilities/postblock-fixture-receiving.json')
           assert hashlib.sha256(fixture_manifest_path.read_bytes()).hexdigest() == binding['fixture_receiving_manifest_sha256']

@@ -1,0 +1,48 @@
+{
+  "schema": "shared-postblock-candidate-event-preflight-v1",
+  "reviewer": "/root/pest",
+  "reviewer_is_candidate_gate_author": true,
+  "branch": "lab/shared-postblock-receiving-binding-20260926",
+  "pr_base": "lab/shared-cast-observer-lki",
+  "source_parent": "994383d4a9495bcb34d5aae0e69181bcf4c04d45",
+  "changed_paths": [
+    ".github/workflows/shared-postblock-source-qualification.yml",
+    "lab-coordinator/shared-capabilities/postblock-combined-receiving.json",
+    "lab-coordinator/shared-capabilities/evidence/postblock-receiving-binding/static-source-review.json",
+    "lab-coordinator/shared-capabilities/evidence/postblock-receiving-binding/trigger-review.json",
+    "lab-coordinator/shared-capabilities/evidence/postblock-receiving-binding/root-source-review.json"
+  ],
+  "evidence_path_scope": "Any JSON-only evidence underlab-coordinator/shared-capabilities/evidence/postblock-receiving-binding/; no workflow-directory additions.",
+  "inherited_workflows_examined": 80,
+  "candidate_workflow_sha256": "9f537115726c4da1e2fbcae167eacc1436e5438559ae40eab07f0ed78a681f45",
+  "matching_push_workflows": 0,
+  "matching_pr_workflows": [
+    {
+      "event": "pull_request",
+      "workflow": ".github/workflows/ci.yml",
+      "matched_paths": [],
+      "concurrency": {
+        "group": "${{ github.workflow }}-${{ github.head_ref || github.ref }}",
+        "cancel-in-progress": true
+      }
+    },
+    {
+      "event": "pull_request",
+      "workflow": ".github/workflows/shared-postblock-source-qualification.yml",
+      "matched_paths": [
+        ".github/workflows/shared-postblock-source-qualification.yml",
+        "lab-coordinator/shared-capabilities/postblock-combined-receiving.json"
+      ],
+      "concurrency": {
+        "group": "shared-postblock-source-qualification",
+        "cancel-in-progress": false
+      }
+    }
+  ],
+  "official_gameplay_entropy_claim_browser_trigger": false,
+  "cancellation": "CI key is CI-lab/shared-postblock-receiving-binding-20260926. This new candidate branch has no earlier CI to cancel; it does not share any previously observed foreign branch key. New postblock gate has cancel-in-progress:false and retains its existing shared-postblock-source-qualification group, so it may queue behind an existing gate but does not cancel it.",
+  "code_test_execution": "PR runs broad existing CI plus original127 postblock mechanical cases. No snapshot-generation job matches these changed paths.",
+  "independent_review": "Root is independently reviewing this gate source; this author-produced event preflight is not a separate nonauthor approval.",
+  "games_authorized": false,
+  "source_mutation_performed": false
+}
