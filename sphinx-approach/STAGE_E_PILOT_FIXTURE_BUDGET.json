@@ -1,0 +1,141 @@
+{
+  "schema": "sphinx-stage-e-pilot-component-budget-v1",
+  "status": "PROSPECTIVE_DETERMINISTIC_COMPONENT_BUDGET_NOT_GAMEPLAY_ADMISSION",
+  "controlling_protocol": {
+    "path": "STAGE_E_RECONSTRUCTION_PLAN.md",
+    "sha256": "066a08b74350dcf20a03b917b2c122501b9d87cbca52e3273d216bc183a8ea43",
+    "gates": [
+      4,
+      5
+    ]
+  },
+  "frozen_input_identities": [
+    {
+      "id": "reconstructed-v01",
+      "path": "decks/reconstructed-v01.csv",
+      "rows_sha256": "274521097cc731ac5f5aa9b7645a20b13d4546fd73b17dbcd14af0b0a25c4486"
+    },
+    {
+      "id": "reconstructed-hybrid",
+      "path": "decks/reconstructed-hybrid.csv",
+      "rows_sha256": "f4cf2c64bb07847bd013e9984480f5b0fa76ac3a40dc5a47894a3609e9cb3b2e"
+    },
+    {
+      "id": "closest-no-approach-v01",
+      "path": "decks/closest-no-approach-v01.csv",
+      "rows_sha256": "548998c77f5f688d793d36cdb9f21ae8b3b63963856875c4b84d82c271196a83"
+    },
+    {
+      "id": "serpico-terror-benchmark",
+      "path": "decks/serpico-terror-benchmark.csv",
+      "rows_sha256": "6c678f94112c56b0856c1fe4c008f77e7d0897bdeb290f3e2a0ec9d034147c62"
+    }
+  ],
+  "equal_budget": {
+    "distinct_component_checks_per_identity": 14,
+    "identities": 4,
+    "total_distinct_component_checks": 56,
+    "randomized_development_games": 0,
+    "official_seeds": 0,
+    "official_games": 0,
+    "official_outcome_exposure": 0
+  },
+  "checks": [
+    {
+      "requirement": "draw-stop",
+      "id": "D1",
+      "criterion": "Safe self-mill-plus-draw within the known library count can be chosen."
+    },
+    {
+      "requirement": "draw-stop",
+      "id": "D2",
+      "criterion": "A draw that exhausts the known library before a required draw is declined."
+    },
+    {
+      "requirement": "cleanup-dependence",
+      "id": "C1",
+      "criterion": "Only presently available graveyard material or presently affordable offers support the current action."
+    },
+    {
+      "requirement": "cleanup-dependence",
+      "id": "C2",
+      "criterion": "An anticipated cleanup discard cannot make a current payment or current cast affordable."
+    },
+    {
+      "requirement": "interaction-versus-setup",
+      "id": "I1",
+      "criterion": "Setup preserves blue mana for a known counter in hand when the declared reserve would otherwise be lost."
+    },
+    {
+      "requirement": "interaction-versus-setup",
+      "id": "I2",
+      "criterion": "Setup may use excess mana after that reserve is preserved."
+    },
+    {
+      "requirement": "deployment-timing",
+      "id": "P1",
+      "criterion": "A legal deployment is taken at its competent window: an Approach search on the opposing end step, or a sorcery-speed threat in the actor main phase."
+    },
+    {
+      "requirement": "deployment-timing",
+      "id": "P2",
+      "criterion": "The policy waits outside that window and does not invent a legal sorcery-speed offer on the opposing turn."
+    },
+    {
+      "requirement": "immediate-cost-refresh",
+      "id": "T1",
+      "criterion": "After graveyard movement or mana spending, the current offered cost controls the next cast."
+    },
+    {
+      "requirement": "immediate-cost-refresh",
+      "id": "T2",
+      "criterion": "An offer from a previous observation epoch is rejected rather than reused."
+    },
+    {
+      "requirement": "target-availability",
+      "id": "A1",
+      "criterion": "Counterspell selects an offered opposing stack target using only its supplied public target facts."
+    },
+    {
+      "requirement": "target-availability",
+      "id": "A2",
+      "criterion": "No offered target means no counter cast; an unavailable preferred identity cannot become a target."
+    },
+    {
+      "requirement": "information-scope",
+      "id": "H1",
+      "criterion": "Strict serialization round-trip of the typed own/public facts preserves the decision."
+    },
+    {
+      "requirement": "information-scope",
+      "id": "H2",
+      "criterion": "Undeclared opponent-hand or future-library-order fields are rejected by the component input decoder."
+    }
+  ],
+  "fixture_construction": [
+    "Each identity receives both declared checks in each of the seven protocol requirements. Inputs may differ only to represent cards and timing actually available in its frozen 60.",
+    "The policy receives no deck identity, architecture label, opponent hidden hand, future library order, engine GameState, or initializer callback.",
+    "Approach identities use their existing Approach payment/deployment; no-Approach identities use their existing Terror cost/deployment. The pure Approach list does not receive an invented Terror card.",
+    "Library and target choices use only identities explicitly supplied to a future qualified actor; these component checks do not certify that future adapter."
+  ],
+  "correction_and_selection_rule": [
+    "Freeze and publish this bank before its first execution. Authoring and independent source review consume no fixture attempt.",
+    "Run the same complete 14-check bank for each of the four identities. Retain all executed failures and source heads. A source correction reruns the same complete bank for all four; no unfavorable fixture is removed or replaced.",
+    "The component advances only if all 56 distinct checks pass on one exact source. A failure is a pilot/component defect, never a deck loss.",
+    "No deck ranking, list selection, comparator improvement, gameplay sample, or strength conclusion follows from this bank. No new architecture or card row is authorized.",
+    "Any added distinct fixture or randomized pilot rehearsal requires a separate prospective equal budget before exposure; this bank does not authorize it."
+  ],
+  "still_required_before_complete_pilot_acceptance": [
+    "Integrate the published, independently qualified canonical actor dependencies; no competing engine or masking implementation.",
+    "Qualify every reachable actor decision and library/search/reorder/May/selection/target/payment/combat surface on the final receiving source.",
+    "Integrate and qualify the canonical post-block-declaration priority repair.",
+    "Qualify the complete candidate, closest comparator and benchmark pilots and replay under equivalent bounded development; this component is not a whole-game pilot.",
+    "Freeze the remaining Stage-E execution protocol and pass noncircular admission before any official seed."
+  ],
+  "execution_record": {
+    "fixture_attempts": 0,
+    "passed": 0,
+    "failed": 0,
+    "source_receipts": []
+  }
+}
