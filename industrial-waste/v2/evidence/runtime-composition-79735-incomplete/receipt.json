@@ -1,0 +1,143 @@
+{
+  "claim_creation_authorized": false,
+  "deck_changes": [],
+  "execution_authorized": false,
+  "files_sha256": {
+    "TEST-com.wingedsheep.ai.industrialwaste.IndustrialWasteV2ActivatedCheckpointTest.xml": "4c382f393d631f8cc63155826ace1a34ffcd59e5679bf105be4d3885cd7804eb",
+    "TEST-com.wingedsheep.ai.industrialwaste.IndustrialWasteV2AllocationRunnerTest.xml": "5e43e1e651d8bffac0a71897e1495a3f14333d0acf2b85246670ed622224afc8",
+    "TEST-com.wingedsheep.ai.industrialwaste.IndustrialWasteV2EventMetricsTest.xml": "9a7f959bf2b0d95931bedfbd6dc94893194f023ae1c94120e29ea595ac35b11b",
+    "TEST-com.wingedsheep.ai.industrialwaste.IndustrialWasteV2FullHorizonRunnerTest.xml": "355563a1e7a481f7e5f020f089674d86e35901620fd744d313f242edb58d6c55",
+    "TEST-com.wingedsheep.ai.industrialwaste.IndustrialWasteV2PaymentIntentTest.xml": "282fe2edf842cce642ebe2d074c4def06ba46e0d20b78e4c02661221ff0df545",
+    "TEST-com.wingedsheep.ai.industrialwaste.IndustrialWasteV2SacrificeCheckpointTest.xml": "f675a808f90264d9b6e863e66b3348ab11a21c98c9dc219e6845f562d61911d1",
+    "excluded-compact-trace/actions.json": "af9aa48436eceffb5f47183b5f77dace759e41470f6031b99d21f4ef17696818",
+    "excluded-compact-trace/attempt-before-initialization.json": "cb0799dabc4488ee73d0d52892e5cbd0f80c86fc43d58259e8c3fc9560ecd217",
+    "excluded-compact-trace/checkpoints.json": "1772dd931d01ce7a556f691c3a63c0bec16f8366eb757956a46b55426018694b",
+    "excluded-compact-trace/event-metrics.json": "3939b5024a3b9112df96739ee910cfe258477d01bbee3e63d76c290ed5e97e19",
+    "excluded-compact-trace/execution-status.json": "38097507001364a69280dde6819181e150b7941b74b12e6708ec77008575a368",
+    "excluded-compact-trace/failure.txt": "bf3cd078b15e711b31f15c3eaae4b4901710dc8f6abb037871441c43c59426b6",
+    "excluded-compact-trace/final-state.json": "f653d10019e2e29120f75924a72b1ac1bd73379675575d5a2fdf59bbeb6e9d88",
+    "excluded-compact-trace/initial-events.json": "2edeec9186cb36703029106a9b54ac6f35fa0bf12f9f17a2d07bd19ffbc7dac7",
+    "excluded-compact-trace/initial-state.json": "6bffda2fef3d2c9a3aacecf6e27fcd1e97228755e63f1fd44056271f7cea3b54",
+    "excluded-compact-trace/input.json": "1eacf3305c4438b255d69a262931f099b63ed262b503318882259dae7ac660ea",
+    "excluded-compact-trace/payment-intents.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "excluded-compact-trace/transitions.jsonl": "33c70ba95578ade77a96e2a145e67b0ef1dc1b0678830cc4f0fad1a38b39793b",
+    "focused-python-c169.txt": "67981d2a91cf95800a1e18c91c50aad1dbaa95f229963b2717a72c0c3fabd815",
+    "focused-python-fa076.txt": "e94e8698bfe3f510cb0d8aecbc65510851b5d211fc50e7a1b9cfa196fb426cbe",
+    "historical-binding-guard-rejection-fa076.txt": "79c4e5bdb0ef687dd10e2986696e56a03942b2808a651630ff53ebb26d84ba3c",
+    "targeted-build.txt": "04d409909ab1f00b17e8f571f163f1e6420048b0e90c889e7bf0c496a00c30d9"
+  },
+  "independent_source_reviews": {
+    "kotlin_checkpoint_metrics": "Manual-authored patch independently reviewed by Izzet",
+    "kotlin_payment_intent": "fa076 reviewed by Sphinx; corrected registered-Spawn fixture931645 reviewed by Sphinx",
+    "predefined_registry_factory": "79735 reviewed by Manual",
+    "python_authority": "48d5fe and 0079d799 reviewed by Ferocity",
+    "python_projection_and_payment_stream_binding": "0079d799 to fa076 reviewed by Ferocity",
+    "quiet_observation_preservation": "c169 reviewed by Manual"
+  },
+  "initialization_admitted": false,
+  "junit": {
+    "errors": 0,
+    "failures": 1,
+    "passed": 64,
+    "skipped": 0,
+    "suites": [
+      {
+        "errors": 0,
+        "failures": 0,
+        "skipped": 0,
+        "suite": "com.wingedsheep.ai.industrialwaste.IndustrialWasteV2ActivatedCheckpointTest",
+        "tests": 7
+      },
+      {
+        "errors": 0,
+        "failures": 1,
+        "skipped": 0,
+        "suite": "com.wingedsheep.ai.industrialwaste.IndustrialWasteV2AllocationRunnerTest",
+        "tests": 4
+      },
+      {
+        "errors": 0,
+        "failures": 0,
+        "skipped": 0,
+        "suite": "com.wingedsheep.ai.industrialwaste.IndustrialWasteV2EventMetricsTest",
+        "tests": 11
+      },
+      {
+        "errors": 0,
+        "failures": 0,
+        "skipped": 0,
+        "suite": "com.wingedsheep.ai.industrialwaste.IndustrialWasteV2FullHorizonRunnerTest",
+        "tests": 10
+      },
+      {
+        "errors": 0,
+        "failures": 0,
+        "skipped": 0,
+        "suite": "com.wingedsheep.ai.industrialwaste.IndustrialWasteV2PaymentIntentTest",
+        "tests": 8
+      },
+      {
+        "errors": 0,
+        "failures": 0,
+        "skipped": 0,
+        "suite": "com.wingedsheep.ai.industrialwaste.IndustrialWasteV2SacrificeCheckpointTest",
+        "tests": 25
+      }
+    ],
+    "tests": 65
+  },
+  "official_counters": {
+    "actions_submitted": 0,
+    "allocations_initialized": 0,
+    "comparative_outcomes_exposed": 0
+  },
+  "performance_evidence_changed": false,
+  "protocol_id": "IW_V2_R1_ENGINE_STRUCTURAL_2026_09_25",
+  "python": {
+    "focused_receiving_and_shared_tests": 62,
+    "historical_binding_discovery": {
+      "classification": "EXPECTED_HISTORICAL_ACCEPTED_BLOB_GUARD_REJECTION_FOR_UNACCEPTED_SOURCE_CHANGE",
+      "errors": 2,
+      "old_receipt_pins_modified": false,
+      "passed": 58,
+      "tests": 60
+    },
+    "passed": 62,
+    "source_files_unchanged_between_fa076_and_79735": true
+  },
+  "rejected_excluded_fixture": {
+    "accepted_actions": 10,
+    "allocation_id": "SYNTHETIC_COMPACT_SPELL_TRACE",
+    "assertion_relaxed": false,
+    "diagnostic": "Quiet-precombat checkpoint 1 contains an unresolved payment shape",
+    "initializer_seed": 9250925110,
+    "integrity_finding": "The predecessor runner recomputed later quiet observations but retained only the first row per own turn; its saved row therefore differs from the final unresolved observation. Complete raw action/event/state evidence is preserved. Successor c169 records every computed quiet observation before invalidation.",
+    "namespace": "IW_V2_R1_SYNTHETIC_COMPACT_SPELL_TRACE_ONLY",
+    "own_turn": 1,
+    "own_turns_completed": 0,
+    "replacement_attempt_authorized": false,
+    "row": 20002,
+    "source_witness": "After playing a land and casting/resolving Chromatic Star, the pool is empty and the land is tapped. Supplemental source classification cannot prove that Star activation is unavailable without qualified resource-aware payment reasoning. The attempt fails closed. This is not a deck-performance outcome.",
+    "status": "UNRESOLVED_TELEMETRY",
+    "submitted_actions": 10
+  },
+  "remaining_blockers": [
+    "Canonical exact mana feasibility and funded-filter/source-resource repair, received and qualified on this branch",
+    "Canonical Insight flashback ordinary-additional-cost menu repair, with exact receiving card fixture",
+    "Canonical post-block priority repair and receiving compatibility",
+    "Every-quiet color metric and prospectively resolved T4 aggregation, including semantic checkpoint replay",
+    "Complete combined-source spell-bearing runtime, snapshot/provenance qualification and independent acceptance",
+    "Exact accepted runtime binding, separately published execution authorization, canonical create-only claim and consumption authority"
+  ],
+  "schema": "industrial-waste-v2-runtime-composition-incomplete-receipt-v1",
+  "status": "INCOMPLETE_RECEIVING_COMPOSITION_NOT_ADMITTED",
+  "successor_observation_source": {
+    "commit": "c169e600c93d47796abafc49beefab8c6aca07e8",
+    "kotlin_successor_run": false,
+    "python_passed": 62,
+    "python_tests": 62,
+    "scope": "Preserve every already-computed quiet observation with accepted action index and exact state hash; existing first-per-turn compatibility view is unchanged. Final metric aggregation remains unqualified.",
+    "source_review": "ACCEPTED_FOR_TARGETED_QUALIFICATION_BY_INDEPENDENT_MANUAL_AGENT"
+  },
+  "tested_source_commit": "79735c9f4e5cc459ad9745e23bba2337bcf8189b"
+}

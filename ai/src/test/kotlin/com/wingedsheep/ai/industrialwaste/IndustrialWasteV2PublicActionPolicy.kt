@@ -26,15 +26,19 @@ import com.wingedsheep.sdk.scripting.AdditionalCostPayment
  */
 internal object IndustrialWasteV2PublicActionPolicy {
     fun choose(state: GameState, player: EntityId, legal: List<LegalAction>): GameAction {
+        return chooseBound(state, player, legal).second
+    }
+
+    fun chooseBound(state: GameState, player: EntityId, legal: List<LegalAction>): Pair<LegalAction, GameAction> {
         val candidates = legal.filter { it.affordable }.mapNotNull { entry ->
             bind(state, player, entry)?.let { action -> Triple(score(state, player, entry, action), action, entry) }
         }
         return candidates.sortedWith(compareByDescending<Triple<Int, GameAction, LegalAction>> { it.first }
-            .thenBy { it.second.toString() }).firstOrNull()?.second
+            .thenBy { it.second.toString() }).firstOrNull()?.let { it.third to it.second }
             ?: error("No supported legal action; R1 readiness must fail closed")
     }
 
-    private fun bind(state: GameState, player: EntityId, entry: LegalAction): GameAction? {
+    internal fun bind(state: GameState, player: EntityId, entry: LegalAction): GameAction? {
         var action = entry.action
         if (action is DeclareAttackers) {
             val attackers = entry.validAttackers.orEmpty()
@@ -93,7 +97,7 @@ internal object IndustrialWasteV2PublicActionPolicy {
         return action
     }
 
-    private fun score(state: GameState, player: EntityId, entry: LegalAction, action: GameAction): Int {
+    internal fun score(state: GameState, player: EntityId, entry: LegalAction, action: GameAction): Int {
         val board = state.projectedState.getBattlefieldControlledBy(player).mapNotNull { state.name(it) }
         val hand = state.getZone(player, Zone.HAND).mapNotNull { state.name(it) }
         val grave = state.getZone(player, Zone.GRAVEYARD).mapNotNull { state.name(it) }

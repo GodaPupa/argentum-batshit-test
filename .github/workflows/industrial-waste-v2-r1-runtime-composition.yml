@@ -1,0 +1,79 @@
+name: Industrial Waste v2 R1 Runtime Composition
+
+on:
+  push:
+    branches:
+      - industrial-waste/r1-runtime-composition
+    paths:
+      - ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/**
+      - industrial-waste/v2/**
+      - tools/evidence_durability.py
+      - tools/repository_claim.py
+      - .github/workflows/industrial-waste-v2-r1-runtime-composition.yml
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: gradle/actions/setup-gradle@v6
+      - uses: extractions/setup-just@v3
+      - name: Refuse official execution environment
+        run: |
+          test -z "${IW_V2_R1_PREPARED_DIRECTORY:-}"
+          mkdir -p build/reports/industrial-waste-v2/runtime-composition
+          git rev-parse HEAD > build/reports/industrial-waste-v2/runtime-composition/source-head.txt
+      - name: Qualify frozen projection and receiving-project durability composition
+        run: |
+          python3 -m unittest \
+            industrial-waste/v2/test_r1_metric_projection.py \
+            industrial-waste/v2/test_r1_execute.py \
+            industrial-waste/v2/test_r1_artifact_contract.py \
+            industrial-waste/v2/test_r1_execution_guard.py \
+            tools/tests/test_evidence_durability.py \
+            tools/tests/test_repository_claim.py -v \
+            > build/reports/industrial-waste-v2/runtime-composition/python-tests.txt 2>&1
+      - name: Qualify combined real-engine runtime and accepted predecessor fixtures
+        run: |
+          just test-class IndustrialWasteV2AllocationRunnerTest \
+            --tests '*IndustrialWasteV2*Test' \
+            --tests '*IndustrialWasteAdvisorModuleTest' \
+            --tests '*FrozenBaselineTest' \
+            --max-workers=1 -PkotlinCompileParallelism=1
+      - name: Preserve exact source and scope
+        if: always()
+        run: |
+          python3 - <<'PY'
+          import hashlib,json,subprocess
+          from pathlib import Path
+          files = sorted(Path('ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste').glob('IndustrialWasteV2*.kt'))
+          files += [Path(p) for p in ['industrial-waste/v2/r1_execute.py','industrial-waste/v2/r1_metric_projection.py','tools/evidence_durability.py','tools/repository_claim.py']]
+          receipt = {'status':'QUALIFICATION_OUTPUT_REQUIRES_INDEPENDENT_AUDIT',
+              'source_commit':subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),
+              'shared_capability_source':'2ec67cd048f89a735655f24d7fa90c81e6664785',
+              'source_sha256':{str(p):hashlib.sha256(p.read_bytes()).hexdigest() for p in files},
+              'official_allocations_initialized':0,'official_actions_submitted':0,'comparative_outcomes_exposed':0,
+              'execution_authorized':False}
+          Path('build/reports/industrial-waste-v2/runtime-composition/provenance.json').write_text(json.dumps(receipt,indent=2)+'\n')
+          PY
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: industrial-waste-v2-r1-runtime-composition
+          path: |
+            build/reports/industrial-waste-v2/runtime-composition/
+            ai/build/test-results/test/TEST-com.wingedsheep.ai.industrialwaste.IndustrialWasteV2*.xml
+            ai/build/test-results/test/TEST-com.wingedsheep.ai.industrialwaste.IndustrialWasteAdvisorModuleTest.xml
+            ai/build/test-results/test/TEST-com.wingedsheep.ai.arena.FrozenBaselineTest.xml
+          if-no-files-found: error
+          retention-days: 90

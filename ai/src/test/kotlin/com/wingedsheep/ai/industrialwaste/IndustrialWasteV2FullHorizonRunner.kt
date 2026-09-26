@@ -5,7 +5,9 @@ import com.wingedsheep.ai.engine.DecisionResponder
 import com.wingedsheep.ai.engine.GameSimulator
 import com.wingedsheep.ai.engine.advisor.CardAdvisorRegistry
 import com.wingedsheep.engine.core.GameAction
+import com.wingedsheep.engine.core.ExecutionResult
 import com.wingedsheep.engine.core.SubmitDecision
+import com.wingedsheep.engine.state.GameState
 import com.wingedsheep.engine.state.components.player.LibraryOrderingComponent
 import com.wingedsheep.engine.support.GameTestDriver
 import com.wingedsheep.sdk.core.Step
@@ -24,6 +26,11 @@ internal class IndustrialWasteV2FullHorizonRunner(
     private val driver: GameTestDriver,
     private val measuredPlayer: EntityId,
     private val passivePlayer: EntityId,
+    private val beforeSubmission: (GameAction) -> Unit = {},
+    private val afterSubmission: (ExecutionResult) -> Unit = {},
+    private val paymentIntentRecord: (IndustrialWasteV2PaymentIntentRecord) -> Unit = {},
+    private val checkpointObservation: (IndustrialWasteV2CheckpointMana, Int, GameState) -> Unit = { _, _, _ -> },
+    private val officialAdmission: IndustrialWasteV2OfficialAdmission? = null,
 ) {
     private val simulator = GameSimulator(driver.cardRegistry)
     private val responder = DecisionResponder(
@@ -43,7 +50,8 @@ internal class IndustrialWasteV2FullHorizonRunner(
         val ordering = requireNotNull(
             driver.state.getEntity(measuredPlayer)?.get<LibraryOrderingComponent>()
         ) { "Full-horizon capability requires an explicit excluded ordering fixture" }
-        check(ordering.plan.namespace != "IW_V2_R1_ORDERINGS_2026_09_25") {
+        check(ordering.plan.namespace != "IW_V2_R1_ORDERINGS_2026_09_25" ||
+            officialAdmission?.matches(ordering.plan) == true) {
             "Capability runner refuses the frozen official R1 ordering namespace"
         }
 
@@ -56,6 +64,7 @@ internal class IndustrialWasteV2FullHorizonRunner(
         )
         val checkpoints = linkedMapOf<Int, IndustrialWasteV2CheckpointMana>()
         val actions = mutableListOf<GameAction>()
+        val payments = IndustrialWasteV2PaymentBinder(driver.cardRegistry, paymentIntentRecord)
 
         while (tracker.snapshot().status == IndustrialWasteV2StopStatus.RUNNING) {
             val state = driver.state
@@ -75,10 +84,13 @@ internal class IndustrialWasteV2FullHorizonRunner(
                     legalActions = legal,
                     cardRegistry = driver.cardRegistry,
                 )
+                // Keep the accepted component's first-per-turn view for compatibility, but
+                // preserve every observed quiet state before it can invalidate the attempt.
+                checkpointObservation(checkpoint, tracker.snapshot().acceptedActions, state)
                 checkpoints.putIfAbsent(checkpoint.ownTurn, checkpoint)
                 if (checkpoint.unresolved) {
                     tracker.markUnresolved(
-                        "Quiet-precombat checkpoint ${checkpoint.ownTurn} contains an unresolved payment shape"
+                        "Quiet-precombat checkpoint ${checkpoint.ownTurn} after ${tracker.snapshot().acceptedActions} accepted actions contains an unresolved payment shape"
                     )
                     break
                 }
@@ -96,7 +108,7 @@ internal class IndustrialWasteV2FullHorizonRunner(
                 }
                 val legal = simulator.getLegalActions(state, priority)
                 if (priority == measuredPlayer) {
-                    IndustrialWasteV2PublicActionPolicy.choose(state, priority, legal)
+                    payments.choose(state, priority, legal)
                 } else {
                     check(priority == passivePlayer) {
                         "Unexpected player at two-seat full-horizon capability table"
@@ -107,12 +119,14 @@ internal class IndustrialWasteV2FullHorizonRunner(
 
             actions += action
             val before = driver.state
+            beforeSubmission(action)
             val result = tracker.submit(action) { expectedBefore, submitted ->
                 check(expectedBefore == driver.state) {
                     "Tracker and real driver state diverged before submission"
                 }
                 driver.submit(submitted)
             }
+            if (result != null) afterSubmission(result)
             if (result == null || result.error != null) break
 
             collector.record(before, action, result)
