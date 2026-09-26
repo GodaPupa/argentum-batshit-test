@@ -1,0 +1,99 @@
+{
+  "schema": "pest-monster-targeting-artifact-audit-v1",
+  "status": "SCOPED_DETERMINISTIC_TARGETING_COMPONENT_ACCEPTED_RECEIVING_AND_GAMEPLAY_GATES_PENDING",
+  "source": {
+    "source_head": "27033cefd4bb717bb7167f315492aad1ce78c853",
+    "source_tree": "da3316576a9d830bb388d511bd33f2a76a83750d",
+    "run_id": "36246057202",
+    "run_attempt": "1",
+    "scope": "DETERMINISTIC_EXACT_DECK_TARGETING_AND_EXISTING_POLICY_REGRESSION_ONLY",
+    "official_seeds_generated": 0,
+    "official_games_initialized": 0,
+    "official_actions_submitted": 0,
+    "outcome_exposure": 0,
+    "C2_or_A2_acceptance": false,
+    "official_execution_authorized": false
+  },
+  "run_id": 36246057202,
+  "artifact_id": 10908210126,
+  "artifact_zip_sha256": "5cd1451668de41a2ced06ab4b6d9d1c5afcd179581b18668edfc4ed94d2c2426",
+  "actual_cases": 30,
+  "classes": {
+    "com.wingedsheep.gym.PestControlTierOneMonsterTronTargetingQualificationTest": {
+      "cases": 6,
+      "sha256": "587e8cb98d9e4e02464d2fce6fea209ef17a87792c58f9f255b0b3f519061be9",
+      "path": "gym/build/test-results/test/TEST-com.wingedsheep.gym.PestControlTierOneMonsterTronTargetingQualificationTest.xml"
+    },
+    "com.wingedsheep.gym.PestControlTierOneMonsterTronPolicyCalibrationTest": {
+      "cases": 7,
+      "sha256": "1fff45cfdea1d2b2c6bf8da0d98982271430dd952906b7603eb16f74d5902db2",
+      "path": "gym/build/test-results/test/TEST-com.wingedsheep.gym.PestControlTierOneMonsterTronPolicyCalibrationTest.xml"
+    },
+    "com.wingedsheep.ai.arena.PestMonsterTronPolicyAuditTest": {
+      "cases": 5,
+      "sha256": "c26693c0826b679dafac823b033c14fd4d00f11358fab0356a924481ec12551c",
+      "path": "ai/build/test-results/test/TEST-com.wingedsheep.ai.arena.PestMonsterTronPolicyAuditTest.xml"
+    },
+    "com.wingedsheep.engine.scenarios.GutShotScenarioTest": {
+      "cases": 12,
+      "sha256": "d1a731f278c794ddbec57c2760c587b579d9873fc05fcb4f5717409382916620",
+      "path": "mtg-sets/2008-2016/tests/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.GutShotScenarioTest.xml"
+    }
+  },
+  "testcases": {
+    "com.wingedsheep.gym.PestControlTierOneMonsterTronTargetingQualificationTest": [
+      "the frozen mains and generated Food and Scion definitions contain no AnyTarget requirement",
+      "Barrels offers creatures and rejects Forest and noncreature artifacts before paying costs",
+      "Giant's Boulder offers and destroys the frozen Forest and noncreature artifact targets",
+      "Pinnacle trigger and the frozen Monster pilot select only an offered creature",
+      "Pest Cast Down rejects an unstationed Kill-Ship without spending mana or moving the spell",
+      "actual Station changes Kill-Ship projected type before Pest Cast Down is enumerated and resolves"
+    ],
+    "com.wingedsheep.gym.PestControlTierOneMonsterTronPolicyCalibrationTest": [
+      "calibration is bound to the frozen exact-60 identities and consumes no official state",
+      "Expedition Map completes two-piece Tron",
+      "Crop Rotation preserves unique Tron pieces and converts a spare land into the missing piece",
+      "Ancient Stirrings takes the missing Tron piece over generic value",
+      "Bojuka Bog targets the opposing graveyard with the most cards",
+      "free Cascade never shrinks Boulderbranch to Prototype and declines an uncastable hit",
+      "policy acceptance does not open execution on its own"
+    ],
+    "com.wingedsheep.ai.arena.PestMonsterTronPolicyAuditTest": [
+      "Crop Rotation preserves a live Tron piece then selects the missing piece",
+      "Expedition Map activates and tutors the missing Tron piece",
+      "Ancient Stirrings selection prefers a missing Tron piece over a redundant colorless card",
+      "Bonder's Ornament takes the draw mode with four other mana sources and a low hand",
+      "Bojuka Bog targets the opponent graveyard"
+    ],
+    "com.wingedsheep.engine.scenarios.GutShotScenarioTest": [
+      "one red mana pays the Phyrexian symbol without paying life",
+      "two life pays the symbol with no mana while the spell remains red",
+      "a player at one life cannot pay two life and a rejected cast changes nothing",
+      "paying from exactly two life is legal but the caster loses before spell damage",
+      "one actual damage kills a one toughness creature",
+      "a planeswalker is a legal target and damage removes one loyalty counter",
+      "a battle is a legal target and damage removes one defense counter",
+      "a noncreature land is illegal and does not spend the life cost",
+      "a noncreature artifact is illegal without spending life or moving the spell",
+      "a land animated by its actual ability is offered and damaged as a creature",
+      "a target that becomes only a land in response is illegal on resolution",
+      "a creature returned in response takes no damage and the paid life is not refunded"
+    ]
+  },
+  "source_peer_review": "docs/experiments/pest-control/tier-one-monster-targeting-source-review.json",
+  "limitations": [
+    "No C2 construction/protocol acceptance, entropy draw, sampled gameplay or A2 activation.",
+    "Receiving engine still contains reachable post-block priority defect; canonical repair and exact receiving-source qualification required.",
+    "Actor-information, replay, current admission, durable claim and seed/activation gates remain separate."
+  ],
+  "official": {
+    "new_seeds": 0,
+    "new_games": 0,
+    "new_actions": 0,
+    "new_outcomes": 0
+  },
+  "deck_changes": false,
+  "pilot_changes": false,
+  "official_execution_authorized": false,
+  "independent_artifact_review": "docs/experiments/pest-control/monster-targeting-evidence/remote-36246057202/independent-artifact-review.json"
+}
