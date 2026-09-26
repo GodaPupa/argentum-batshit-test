@@ -1,33 +1,88 @@
-# NEXT CHAT HANDOFF — Argentum six-project lab
+# Argentum continuation — execution, evidence and authority
 
-Checkpoint parent: `8584b26527254a40eb6cc8e8204d44fc9c6ee45e` on `lab-coordinator/critical-path`.
-Read `lab-coordinator/CURRENT_STATUS.md` first, then each project's governing protocol/receipt. Do not infer permission from branch freshness.
+Checkpoint: **2026-09-26 22:01 UTC**. This is continuation of six existing programs. Read CURRENT_STATUS.md, then each governing protocol and effective amendment. A branch/CI result is not gameplay permission. All failed attempts and original authority bytes remain preserved.
 
-## Verified cross-lab evidence
-- main accepted reusable claim/journal capability: `9ca83110f5907e66a0c289f8205ed1e24575535c`.
-- shared combined candidate: `994383d4a9495bcb34d5aae0e69181bcf4c04d45`.
-- green CI: `36267982979`.
-- green component runs: cast observer `36267979180`; priority `36267982967`; combat `36267982988`; attacking-token defender `36267982980`.
-- failed actor-mulligan source/run: `fed5057352021d6cedc6d8e3f4357a41f074419d` / `36268551401`. Preserve artifact `10913974991` (sha256 `90fb049f1b555b2dbb1e490171b317200f16bd1113fa949d6d62e8d58566df5f`). Collector saw zero cases because all five expected class-XML groups were absent. Do not unchanged-rerun.
-- no in-progress Actions jobs were found during the takeover audit.
+## Exact live source and evidence map
 
-## Allocation integrity
-Pest fresh 0; historical 81 quarantined and original Monster claim/reservations not reusable. Izzet 12 generated / 0 consumed / 0 initialized / 0 completed / 0 exposed. Manual capability 0/36 and primary 0/864. Industrial R1 0/512. Sphinx Stage E zero. Ferocity randomized D2/D3/E/C/S/P zero at this checkpoint. Verify live ledgers again before any official initialization.
+| Surface | Current source and tree | Qualified evidence / boundary |
+|---|---|---|
+| Main/shared | Main`9ca83110f5907e66a0c289f8205ed1e24575535c`. Shared receiving base`b35d4778dada69476da0f67549be7e70424c18bd`. Combined`994383d4a9495bcb34d5aae0e69181bcf4c04d45`, tree`4b8f4d155a37e6b66ab623d344b19cedf435d845`. | Main accepts claim/journal capability only. Combined407 + fullCI + fresh four-module evidence: `9bed397f31f6125d79982e07a78f960197c06269`, tree`72ef2c090e34af8777b1b7fb0eae1f750bbb69fb`, on lab/shared-receiving-evidence-20260926. PR191 has not merged. |
+| Shared receiving-gate correction | PR203`96b2a98e8944fded43ccfae8453457b77fb724f4`, tree`3d6a178f3b8168444d7f09b7dd212d3e4d567036`, parent994383; branch lab/shared-postblock-receiving-binding-20260926. | Two gate/descriptor files + five reviews only. Original donor manifests and127 cases unchanged. Actual127 qualification and CI succeeded; independent raw review and original evidence are published at`7115ceb73d3288b3c29822438c638d3c54ffda8d`, tree`7893a4d849a3dd5b84457d73cd42dad5f8e596e0`. PR203 merged at`bb42622219df3275c21ebf597ea1edaa82d15ec1`, identical tree`3d6a178f3b8168444d7f09b7dd212d3e4d567036`; this is PR191’s current head. PR191 itself remains unmerged with nine new receiving checks active. |
+| Actor/mulligan | Corrected`c38fd8028c8b3587e0bca39a42ea8ca8f838f129`, tree`b0eb2b10538e4d25cc81ecc2c90fc08a81171ec8`. | Raw64 + reviews at`675d80921d0a7577458b83abe4c9d8e9154db12d`, tree`f4f9ddb809e554262eb00a59c2abb068c9aa4235`. Earlier fed505 compile failure remains. |
+| Pest | Postboard support`5c2034b1e581fcc9877790f2893f80a38ec11d80`; actor`edfde68ae2005b5e480aca194051b982069d8439`, tree`7d9cd0c62cfbe21f83557c069bae893266d6bcde`. | Actor72 evidence`98377f068b005b9b46e288dd98dfc7baca5e4259`, tree`d8973aa6c90519e65c6faa411e31584a1429c393`. Boarding construction3add5c45, receipt9b89c9d8. C2/A2 prospective`d08cd906d39ad72e4214a1cafaea2b3ff0f7ee99` still needs proper disposition. |
+| Izzet | Accepted Forge/control integration`50eca5fb955013d70ea26c3c6a09efabef4bcff4`. Vines candidate`c47e9dbafc1fd582f81be1db04e9f35a09f067b5`, tree`f92cdeaed8be104d98b1a971347cd9c2f089f779`. | Completed exact diagnostics and declined Benevolent scaffold at`bff4de452a6fca076e3c42fe7c2590862c0c234d`, tree`dc13f019c80656b03523fcc054486b088364b8f3`, branch review/izzet-c47e-diagnostic-evidence-20260926. Candidate receiving remains rejected. |
+| Manual | Canonical`6abfb6bb7f3b11bea778b5e0b1040b058bcdcdaf`, tree`d424071009722a8c0dbc01c3929332fb9d5a941e`, unchanged. Receiving`ffbfaa383eba59ae7c129f651769fdf388caedb4`, tree`e1b4e74d9ed4d8412762ae24863b59b79b2dc0be`. | PR200/201 merged receiving only. Raw540/538 receipt`52095c6d93988258a0c6cbca787fa73a2b78ed16`, tree`accfdc31b92a73d47656e5b0a4bd86e94bf8213d`, lab/manual-world-breaker-receipt-20260926. |
+| Industrial | Canonical`e5a0facd17af60f099463f5ebe3e5e4afbe4bd0d`, tree`6ce05ad36bb6cfaf322a7df66fb5bbc4590b292f`. Parent accepted correction merge`51607c9d54ce402aca3a0e6f1c4e5a33e242154e`, tree`686cef8ddcb2cd3291cb465cf780bd0cbd774754`. | Fresh94af runtime/fullCI original evidence`0de8a955b8f81f6ce48304bcde42eaa6116ae4e9`, tree`cdc1ad4b25c5e5e6f2b1c2ad07bb998190f6d5a3`. e5a0 is a reviewed two-file receiving-card gate correction plus preserved failure/reviews, under actual qualification. |
+| Sphinx | Canonical reconstruction`fae4f5f61260a3e99109b38328afc31894bac8d4`; actor ancestor`c0ffc71449068e8b6329d7c437127d800474884c`. New coherent candidate`a0c5b995c2829c0b4069562b1f1eede8a820dd97`, tree`1ee5590bacf2f6507fff6487be9d3e20df8b5e40`. | Candidate parents557b5221/994383/675d8092 preserve Sphinx seat, shared and actor histories. Inert source branch lab/sphinx-shared-receiving-candidate-20260926. The999 receiving run is active; no complete runtime admission. Seat16 original evidence remains557b5221695fcd8374650f40e500583df9dc011c. |
+| Ferocity | Research`7052de0b64d5d01c3a31465d19157d95089b7d40`; runtime candidate`3a4f99a7653839506e96d19e6639f58d9e8c5ced`, tree`56c6b8dd46dc112cdb70db496fd9d0c3e915e8a6`. | Source08 and recovered resource evidence`37f325ce6e0e55417ef45d7a0dab2b29ea9f2abd`, tree`ce547f4571e2593955c7c4951bf04ce8e01b6345`, branch ferocity-recycling/source08-evidence-20260926. No currently admitted calibration command or D2 initialization. |
 
-## Protocol discrepancy resolved
-Ferocity D3 governing protocol says maximum 480 games (12 lists x 40), not the stale coordinator 240. This is a reporting correction, not D3 authority.
+## Official allocation integrity and contracts
 
-## First concrete actions
-1. Diagnose the shared actor-mulligan XML/test-routing failure from the preserved artifact/source; create a prospective corrected source only if the defect is real and independently reviewable.
-2. For each receiver, compose the already-green shared source rather than duplicating mechanics, then run its exact receiving gate.
-3. Pest: reconcile Monster actor option-order equivalence, C2/A2/replacement authority, boarding plans and complete exclusion universe before fresh gameplay.
-4. Izzet: reconcile newer Forge/remaining-card acceptances against the five blockers recorded by the bootstrap gate, then complete exact Veteran Beastrider full-pair runtime/pilots/replay.
-5. Manual: integrate accepted telemetry/journal + ETB components into canonical Phase-2 source; finish remaining hardware/opponent mechanics and gear/opponent pilots before capability admission.
-6. Industrial: finish exact paid-resource/menu/metric consistency, quiet-observation replay and complete R1 runtime binding; create separate R1 execution authority only after all gates pass.
-7. Sphinx: finish comparable pilot competence and full Stage-E execution freeze (including actual sample/stopping rules) before any seed.
-8. Ferocity: finish source08 receiving/resource/offline-card-bundle binding and independent admission, then execute the original 16-game D2 cell exactly once.
+- **Pest:** CURRENT section of docs/experiments/pest-control/README.md governs. Fresh games0; historical81 quarantined. Original Monster claim`1c2e253ad7f5a7652304f7c9aaafc30e547a481e` consumed despite zero initialized games; four original reservations retired. Known573 exclusions are a minimum, not a completed universe.
+- **Izzet:** v09-position1-bootstrap-gate.md, CI audit and accepted adapter/conditional chain. Twelve existing seeds; consumed/initialized/completed/exposed0. KEEP_V07. Conditional Position1 is not a twelve-game permit.
+- **Manual:** experiments/manual-transmission-phase2/protocol-r1.json. Capability0/36, primary0/864. Fixed100 and exact pods unchanged. Registry87/100 own and466/800 total;334 unresolved physical entries include13 own and321 opponents. Inventory is not completion.
+- **Industrial:** immutable v1 conclusion; protocol-v2-r0.json, r0-freeze.json, protocol-v2-r1.json and effective metric/runtime amendments. R1 0/512; no R1 claim or separate permit. The passive Forest opponent is not a competitive matchup.
+- **Sphinx:** reconstruction provenance, Stage-E reconstruction/deck/pilot-budget files. Stage-E seeds/initializations/outcomes0. Complete execution freeze still missing. The999 mechanical/pilot-component cases are not a Stage-E sample budget. Original A–D bytes remain unrecovered.
+- **Ferocity:** ACTIVE_CONTRACT.json, RECONCILIATION_AMENDMENT.md, adopted review, research protocol and effective resource/admission records. All randomized stages0. Red v0.2 used D1 revision1/2. Source08 browser attempt is consumed.
 
-## Environment caveats
-Repository guidance says heavy builds go through `just` and the Gradle semaphore. This chat's local container did not expose `just` or `gh`; GitHub connector workflows/artifacts were used for exact-source audit. Never substitute raw local Gradle. Workflow-success alone is insufficient: inspect source pins, raw XML/logs, counts and artifact hashes. One-use browser/entropy attempts must not be duplicated.
+### Ferocity D3 authority is resolved
 
-No deck-performance evidence changed in the takeover turn.
+Effective D3 is240 and S precedes E. Adopted amendment`901729f259d044dfa157f745b8d764cb454922ef`, parent3afd83c8741c5b3d89f231543e951c5f204ca4ef, is an ancestor of source08. Amendment SHA256`2829d4623e142cdf427339b4e19f8bc8f96747410eeccb1abe1287986b35458f`; active contract SHA256`8d0551bb3fc5e4a9492540412fec17284bb8311d3501d0baf014da3969cc15d4`. Four bound files were independently rehashed. New variants get30 games; incumbents retain D2 without resampling and unequal precision remains explicit. Preserve the original480 detailed draft as superseded history.
+
+### Critical Ferocity resource recovery: no fresh command is admitted
+
+The recorded path /tmp/ferocity-qualified-build-a63kaiqe/checkout exists. Exact original Gift journal:471219 bytes, SHA256`fa4cbc67fc5482d298ddf7e92968349b6eba584c4328c851d2bda86ce0277c5a`. Later local scope41/44 records were also present, changing the apparent remaining budget.
+
+Scope41 write supervisor at15:34UTC failed a641449984-byte free-space preflight; no JVM. Scope44's extra write at15:47UTC ran/exit0 and produced134166907 bytes/2302 records, SHA256`b45815c56592d2dc6bce43963590518a2b2d83510e1ea6aecb4b14a3bfe91752`. The single-reader supervisor then failed a608174080-byte preflight before JVM startup; double-reader was retired under the strict stop. There are three supervisor claims, one writer JVM and **no reader observation or remaining admitted calibration command**.
+
+Scope44 adoption remains unresolved. Its recovered plan/final assessment requires a new explicit environment disposition after that failure. Do not invent retroactive approval, repeat the old three-command plan, or reset its finite budget. The detached historical source(prefix2a99c52b) differs from source08; later untracked files are not a new source freeze. No active process under the historical path was observed. Keep it read-only.
+
+All10 Gift files plus46 resource files, the complete134MB synthetic trace, claim/event chains,21 receipt-listed artifacts, source freezes and independent reviews are preserved at37f325ce under evidence/source08-takeover/gift-template-recovery/. The earlier GET-only search36272829768 found other journals; direct recorded-path recovery then found the exact bytes. No new probe/game was run. Earlier “unspent” wording is superseded.
+
+## Completed evidence — never redispatch to recover it
+
+- Shared407 original runs: priority36267982967, observer36267979180, combat36267982988, token36267982980. FullCI36267982979. Fresh four-module supplement36271229739, artifact10915817448,311481bytes,SHA256`2f0c0ada4bf294b45cff33205439de44c9f325e5e4032fb3cc32814244c95bb6`. All raw originals and independent reviews are at9bed397f. Freshness1210pass/3skip; disabled-spec marker0tests.
+- Mulligan failed36268551401(compilation0 cases) and corrected36270726522(64passes) both preserved at675d8092. Pest actor36264267437(72passes) at98377f06; MC10 is explicit policy nonequivalence, not a correction permit.
+- Izzet diagnostic36271994873, control`298a4a1ac0586c20c4983c5ee64513e1bee3ed18`, treec5b788d5d412735dac0c162ac79f6044b2801827, completed with original candidate failures. Exact accepted-base1pass/candidate3pass5fail. Two413-entry/26613-byte streams differ in14 lines: seven adjacent postblock pass pairs; END is equal. Dalkovan self-defender defect is explicit. Root review653b0094; original ZIPs/full errors/streams atbff4de45. Arcane/Wall causes remain unresolved; no golden was changed. Benevolent predictive output remains DECLINED/SCAFFOLD.
+- Manual capability36271198273(538) and36271506443(540) plus fullCI36271198279/36271506441 completed. Root raw review`c675d96914f925fde1305a42e92e962e106864686062d6a8548ac86bdad9aaa4`; raw540 artifact10915773548,SHA256`a6dd8dc72eeac47363c86f843d1b230dd88cfcfdf09ca017e30604eead99791c`. Exact539th/540th cases are unchanged WorldBreaker tests, not new games. No active Manual jobs; receipt52095c6d.
+- Industrial fresh94af runtime36270946050/fullCI36270965658:80Python,148engine,2LavaDart and143AI passes plus one guarded official skip. Exact excluded227/242/428-action replays with16/16/60 observations. Independent review5964b091;21065 compiled-input bindings and2549 nested runtime-member hashes verified. Original99452675-byte artifact10916165660,SHA256`f07849de5f2d7c535017b41cccb158c506d3936266746b4f9e8545d6c6a35c34`, lossless12 parts at0de8a955. Predecessor51607 runtime36273004535 succeeded; its new raw artifact audit is separate. Its fullCI36273008713 had18 cached test tasks and one fresh AI task; cite the earlier fresh same-tree evidence honestly.
+- Source08 Ferocity original ten deterministic archives508passes and consumed browser36268319777(4passes/0retries/4traces) are losslessly preserved in32 parts at1aa3e76 parent of37f325ce. No browser rerun. Postboard-B36268324422 failed a source pin before tests and remains unresolved.
+
+## Actual outstanding jobs at this cut
+
+1. Shared PR203:127 qualification36273169569 and CI36273169580, attempt1, succeeded and received independent raw review. Complete evidence7115ceb7; PR203 merged into PR191 at`bb42622219df3275c21ebf597ea1edaa82d15ec1`, exact tree`3d6a178f3b8168444d7f09b7dd212d3e4d567036`. PR191 is still unmerged. Its nine new checks are active: priority36274829394, token36274829459, combat36274829348, Spy-B36274829365, postblock36274829357, Monster prototype36274829367, CI36274829377, Spy-C36274829374 and push observer36274825140. No redispatch.
+2. Sphinx999: run36273602269, attempt1, active. Isolated control`5b92b8f28b4023420bd510ec354ceef6d763d99d`, tree`83e376ca1911dca2388a52aa9fe11ef781fca4ea`, branch lab/sphinx-shared-receiving-qualification-20260926. Exactly three reviewed control files test a0c5b995.69 existing classes/999 exact names,11 frozen authority/deck hashes; no gameplay.
+3. Industrial e5a0: all seven actual attempt1 successors succeeded: card36273718882, fullCI36273718910, runtime36273714874, executionguard36273718916, Pulse36273718943, Elves36273718969 and R036273719128. Raw artifact dispositions remain separate. Predecessor priority36273004544 remains separate. Card failure36273008745 is preserved at e5a0 under evidence/card-gate-scope-51607/; its exact two-file repair passed Manual review0027a75c. Do not rerun unchanged.
+4. Coordinator PR202 first checkpointbc6df981 CI36272444032 succeeded. Current records are being updated prospectively. Manual/Izzet completed their jobs; no official gameplay job is running.
+
+Check live statuses and all relevant event pages before dispatch. Do not infer absence from PR-only or capped queries.
+
+## First concrete next actions
+
+1. Root: audit the nine actual receiving checks now running on PR191 headbb426222. PR203’s127 artifact review and merge are complete; do not repeat them. When required current-head gates and receiving acceptance pass, integrate191 into shared receiving under normal protected merge rules, with exact-head/tree checks and current trigger audit. Existing agent reviews are not GitHub approvals. Protection query403 means unknown, not absent. Preserve any newly exposed receiving failure. Do not adopt disposable snapshots generated by inherited PR workflows.
+2. Industrial: finish the actual e5a0 card/receiving results and retained predecessor priority/runtime audit. Bind the complete receiving source/metrics/replay/journal and independent acceptance before any separate R1 permit or claim. No new comparative allocations.
+3. Sphinx: audit the running999 bank against its original inventory and source/authority pins; preserve every failure. Complete required fullCI/receiving disposition, then equal pilot competence, exact opponent/allocation/outcome/stopping freeze and runner/replay/journal admission. Do not turn fixture count into sample size.
+4. Izzet: complete the scoped shared receiver. The distant global forks diverge1083/757 commits; do not wholesale merge. Actual shared component comparison has150/256 identical paths,95 donor-base paths,3 donor-new and8 divergent. Preserve Izzet entrySnapshot together with shared entryTriggersAlreadyProcessed; retain Izzet-specific cards and original Arcane/Wall/Dalkovan assertions. Source-review the composed candidate, then qualify; use the exact diagnostic proof for any separate prospective golden disposition.
+5. Manual: complete remaining13 own identities and321 opponent physical gaps, lawful gear/opponent pilots and collectors, canonical/shared composition, semantic replay and durable global claim/runtime identity. Receiving540 is complete evidence; do not rerun it merely to recreate a receipt. Capability admission is still separate.
+6. Ferocity: reconcile scope44 adoption and the required prospective environment disposition, preserving the exhausted/stopped attempts. No resource command is currently admitted. Audit already-completed source08 priority receiving evidence and develop exact offline-export/source/runtime/policy/protocol closure independently where authorized. The existing exporter references an older freeze; do not substitute historical compiled code for source08.
+7. Pest: obtain the proper prospective actor-order disposition, C2/A2 replacement authority and complete exclusions while finishing permitted-information pair pilots/replay. The held unpublished option-order proposal is not adopted; never reuse retired reservations.
+
+## Ownership, environment and recovery
+
+Root's continuation branch is lab/conductor-continuation-20260926; first reviewed commit`bc6df9816e622a1cc8da365dc5b00227b0030b76`, tree`e71589a169fb602e944c94bcbc067c3b797aa4ea`, PR202. External critical-path remained`8076f16a1043d1411cfefbb7e66c68a1d5e66aa1`; its20:45 files are preserved under history/20260926-2045-concurrent/. Do not overwrite external changes or force-push. Source ownership is root shared gates; project agents own their scoped files. Rediscover live workers next turn.
+
+Workspace /workspace/scratch/94f5141e9448 has Git, Java17, no just/gh and nearly zero free disk. Repository AGENTS.md, CONTRIBUTING.md and relevant add-card/add-feature/verify instructions were read. Heavy validation uses prescribed just/locked Gradle in bound CI. Never bypass the semaphore. Do not delete another worker's files or lock; do not clean the recovered historical checkout. Some deleted published duplicates reappeared with new inodes; ownership/cause is unresolved. Keep current unpublished originals until verified durable preservation.
+
+Recoverable local work:
+- shared-audit/postblock-gate-candidate/ is published and merged via203; its127 original artifact, source proof and independent review are durable at7115ceb7. Root source copies/reviews remain; the duplicate priority-job.log was removed only after byte-match to the published decoded-job-logs.zip. New PR191 current-head checks are the pending work.
+- industrial/ contains current predecessor51607 raw/runtime audit and latest receiving work. Fresh94af99MB original is durable at0de8a955 and its working copy was removed after verification. Do not restore that duplicate unnecessarily.
+- manual-routing/receipt-publish/ is fully published52095c6d; no pending Manual artifact.
+- izzet-takeover/ retains completed diagnostics (remote bff4de45) and unpublished narrow receiving composition. No new diagnostic event is authorized.
+- sphinx-audit/receiving-composition/ and receiving-gate/ are published a0c5b995/5b92b8f2; actual999 artifact is pending.
+- ferocity-takeover/ recovered originals and reviews are durable37f325ce; historical checkout stays read-only. Further source08 priority audit/offline-export planning remains prospective.
+- Pest policy-ordering-disposition-proposal.json under pest-takeover/publication/.../monster-actor-component/ remains unreviewed/unpublished, SHA256`edfa3be58cf9effffc0ce717fad36a29f66dd8612443d0a72051b7885e77c330`; do not adopt it.
+
+GitHub connector reads: immutable git refs/commits/trees, run/jobs/artifacts and complete pagination. Structured content may contain a JSON string; decode it. download_file is limited to32MiB; use reviewed GET-only retrieval of existing artifacts when necessary, never rerun tests for bytes. Restore lossless parts by recorded offsets and verify part/whole hashes and ZIP CRC. Fresh test route uses just test-class with --rerun and appropriate no-cache options; avoid bare-star shell expansion. Preserve raw failures, real exits and actual class identities.
+
+No alert automation changed. External workflows can continue after the response; this chat cannot. **No deck-performance evidence changed and no scientific stopping rule was reached.**
+
