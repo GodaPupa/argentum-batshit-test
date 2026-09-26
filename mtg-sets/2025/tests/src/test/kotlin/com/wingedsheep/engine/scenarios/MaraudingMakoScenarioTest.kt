@@ -1,5 +1,11 @@
 package com.wingedsheep.engine.scenarios
 
+import com.wingedsheep.engine.core.ChooseTargetsDecision
+
+import com.wingedsheep.engine.core.SelectManaSourcesDecision
+
+import com.wingedsheep.engine.support.chooseTriggerOrderInListedOrder
+
 import com.wingedsheep.engine.state.components.battlefield.CountersComponent
 import com.wingedsheep.engine.support.ScenarioTestBase
 import com.wingedsheep.sdk.core.CounterType
@@ -65,9 +71,11 @@ class MaraudingMakoScenarioTest : ScenarioTestBase() {
 
             val cycle = game.cycleCard(1, "Agonasaur Rex")
             withClue("Cycling should succeed: ${cycle.error}") { cycle.error shouldBe null }
-            if (game.hasPendingDecision()) game.submitManaSourcesAutoPay()
+            if (game.getPendingDecision() is SelectManaSourcesDecision) game.submitManaSourcesAutoPay()
+            game.chooseTriggerOrderInListedOrder()
             // The Rex's own cycle trigger targets "up to one" — decline it, we only care about the Mako.
-            if (game.hasPendingDecision()) game.skipTargets()
+            (game.getPendingDecision() is ChooseTargetsDecision) shouldBe true
+            game.skipTargets().error shouldBe null
             game.resolveStack()
 
             withClue("One card discarded → one counter") { game.counters(mako) shouldBe 1 }

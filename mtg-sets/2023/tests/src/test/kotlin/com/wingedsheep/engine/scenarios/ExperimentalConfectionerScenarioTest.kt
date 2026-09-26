@@ -1,5 +1,7 @@
 package com.wingedsheep.engine.scenarios
 
+import com.wingedsheep.engine.support.chooseTriggerOrderInListedOrder
+
 import com.wingedsheep.engine.support.ScenarioTestBase
 import com.wingedsheep.sdk.core.Phase
 import com.wingedsheep.sdk.core.Step
@@ -127,6 +129,8 @@ class ExperimentalConfectionerScenarioTest : ScenarioTestBase() {
                 }
 
                 game.castSpell(1, "Clean Out the Pantry").error shouldBe null
+                game.resolveStack()
+                game.chooseTriggerOrderInListedOrder()
                 game.resolveStack()
 
                 withClue("all three Foods went at once") {

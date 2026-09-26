@@ -1,5 +1,6 @@
 package com.wingedsheep.engine.scenarios
 
+import com.wingedsheep.engine.core.ChooseTargetsDecision
 import com.wingedsheep.engine.core.TargetsResponse
 import com.wingedsheep.engine.core.YesNoDecision
 import com.wingedsheep.engine.state.components.battlefield.CountersComponent
@@ -59,17 +60,19 @@ class IrohTeaMasterScenarioTest : ScenarioTestBase() {
 
             val bears = game.findPermanent("Grizzly Bears")!!
 
-            // Advance to begin-of-combat. The optional "you may" is asked first (the trigger is
-            // optional), then — only if accepted — the two targets are chosen (slot 0 = target
-            // opponent, slot 1 = target permanent you control).
+            // Choose both targets on placement (opponent, then your permanent); consent waits
+            // until resolution after the normal response window.
             game.passUntilPhase(Phase.COMBAT, Step.BEGIN_COMBAT)
-            (game.getPendingDecision() is YesNoDecision) shouldBe true
-            game.answerYesNo(true).error shouldBe null
-
             val td = game.getPendingDecision()!!
+            (td is ChooseTargetsDecision) shouldBe true
             game.submitDecision(
                 TargetsResponse(td.id, mapOf(0 to listOf(game.player2Id), 1 to listOf(bears)))
             ).error shouldBe null
+            game.state.stack.size shouldBe 1
+            game.getPendingDecision() shouldBe null
+            game.resolveStack()
+            (game.getPendingDecision() is YesNoDecision) shouldBe true
+            game.answerYesNo(true).error shouldBe null
             game.resolveStack()
 
             withClue("the opponent now controls the donated Grizzly Bears") {
@@ -98,9 +101,16 @@ class IrohTeaMasterScenarioTest : ScenarioTestBase() {
 
             val bears = game.findPermanent("Grizzly Bears")!!
 
-            // Declining the optional "you may" at begin-of-combat: no targets are requested and the
-            // payoff never fires.
+            // Decline only after the targets are chosen and the ability can be responded to.
             game.passUntilPhase(Phase.COMBAT, Step.BEGIN_COMBAT)
+            val td = game.getPendingDecision()!!
+            (td is ChooseTargetsDecision) shouldBe true
+            game.submitDecision(
+                TargetsResponse(td.id, mapOf(0 to listOf(game.player2Id), 1 to listOf(bears)))
+            ).error shouldBe null
+            game.state.stack.size shouldBe 1
+            game.getPendingDecision() shouldBe null
+            game.resolveStack()
             (game.getPendingDecision() is YesNoDecision) shouldBe true
             game.answerYesNo(false).error shouldBe null
             game.resolveStack()

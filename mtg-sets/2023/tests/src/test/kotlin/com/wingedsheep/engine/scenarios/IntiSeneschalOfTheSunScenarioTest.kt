@@ -1,5 +1,9 @@
 package com.wingedsheep.engine.scenarios
 
+import com.wingedsheep.engine.support.hasPendingTriggerOrder
+
+import com.wingedsheep.engine.support.chooseTriggerOrderInListedOrder
+
 import com.wingedsheep.engine.core.ChooseTargetsDecision
 import com.wingedsheep.engine.core.SelectCardsDecision
 import com.wingedsheep.engine.core.SelectManaSourcesDecision
@@ -68,6 +72,7 @@ class IntiSeneschalOfTheSunScenarioTest : FunSpec({
         var targeted = false
         var guard = 0
         while (guard++ < 80) {
+            if (state.hasPendingTriggerOrder()) return targeted
             when (val dec = pendingDecision) {
                 is YesNoDecision -> submitYesNo(you, discard)          // "you may discard a card"
                 is SelectCardsDecision -> submitCardSelection(you, dec.options.take(dec.minSelections.coerceAtLeast(1)))
@@ -95,6 +100,9 @@ class IntiSeneschalOfTheSunScenarioTest : FunSpec({
         d.passPriorityUntil(Step.DECLARE_ATTACKERS)
         d.declareAttackers(you, listOf(inti), opponent)
 
+        d.resolveAttackTriggers(you, target = inti, discard = true)
+        // Discard fires the reflexive counter trigger and the impulse trigger together.
+        d.chooseTriggerOrderInListedOrder()
         val targeted = d.resolveAttackTriggers(you, target = inti, discard = true)
         targeted shouldBe true
 

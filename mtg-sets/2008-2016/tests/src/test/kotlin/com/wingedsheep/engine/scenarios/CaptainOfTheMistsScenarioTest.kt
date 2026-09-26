@@ -1,5 +1,7 @@
 package com.wingedsheep.engine.scenarios
 
+import com.wingedsheep.engine.support.chooseTriggerOrderInListedOrder
+
 import com.wingedsheep.engine.core.ActivateAbility
 import com.wingedsheep.engine.core.ChooseOptionDecision
 import com.wingedsheep.engine.core.OptionChosenResponse
@@ -36,6 +38,7 @@ class CaptainOfTheMistsScenarioTest : FunSpec({
         driver.giveMana(you, Color.WHITE, 1)
         driver.castSpell(you, human)
         driver.bothPass() // resolve Human
+        driver.chooseTriggerOrderInListedOrder()
         driver.bothPass() // resolve one ETB trigger
         driver.bothPass() // resolve the other ETB trigger
 

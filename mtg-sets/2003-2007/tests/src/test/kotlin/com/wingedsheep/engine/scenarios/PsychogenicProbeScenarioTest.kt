@@ -1,5 +1,8 @@
 package com.wingedsheep.engine.scenarios
 
+import com.wingedsheep.engine.support.chooseTriggerOrderInListedOrder
+import com.wingedsheep.engine.support.hasPendingTriggerOrder
+
 import com.wingedsheep.engine.core.ActivateAbility
 import com.wingedsheep.engine.core.LibraryShuffledEvent
 import com.wingedsheep.engine.core.SelectCardsDecision
@@ -73,6 +76,7 @@ class PsychogenicProbeScenarioTest : FunSpec({
         while (priorityPlayer != playerId) passPriority(priorityPlayer!!)
         submit(ActivateAbility(playerId, myr, mindservantAbility)).isSuccess shouldBe true
         bothPass()
+        if (state.hasPendingTriggerOrder()) chooseTriggerOrderInListedOrder()
         while (stackSize > 0) bothPass()
     }
 

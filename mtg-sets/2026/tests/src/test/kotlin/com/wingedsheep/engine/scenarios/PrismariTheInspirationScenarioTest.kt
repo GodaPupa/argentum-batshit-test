@@ -5,6 +5,7 @@ import com.wingedsheep.engine.state.components.identity.TokenComponent
 import com.wingedsheep.engine.state.components.stack.TriggeredAbilityOnStackComponent
 import com.wingedsheep.engine.support.GameTestDriver
 import com.wingedsheep.engine.support.TestCards
+import com.wingedsheep.engine.support.chooseTriggerOrderInListedOrder
 import com.wingedsheep.mtg.sets.definitions.sos.cards.PrismariTheInspiration
 import com.wingedsheep.sdk.core.Step
 import com.wingedsheep.sdk.core.Supertype
@@ -92,8 +93,11 @@ class PrismariTheInspirationScenarioTest : FunSpec({
         driver.putLandOnBattlefield(caster, "Mountain")
         val bolt = driver.putCardInHand(caster, "Lightning Bolt")
 
-        driver.castSpell(caster, bolt, listOf(opponent)).isSuccess shouldBe true
+        driver.castSpell(caster, bolt, listOf(opponent)).error shouldBe null
 
+        // Both granted storm abilities trigger together. The caster places them in the
+        // offered order before receiving priority; the original two-trigger assertions follow.
+        driver.chooseTriggerOrderInListedOrder()
         stormTriggers(driver).size shouldBe 2
         stormTriggers(driver).map { it.copyCount } shouldBe listOf(1, 1)
     }

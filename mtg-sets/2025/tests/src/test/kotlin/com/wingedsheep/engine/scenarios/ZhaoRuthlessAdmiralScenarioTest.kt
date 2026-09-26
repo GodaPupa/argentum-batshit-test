@@ -1,5 +1,7 @@
 package com.wingedsheep.engine.scenarios
 
+import com.wingedsheep.engine.support.chooseTriggerOrderInListedOrder
+
 import com.wingedsheep.engine.state.components.player.ManaPoolComponent
 import com.wingedsheep.engine.support.ScenarioTestBase
 import com.wingedsheep.mtg.sets.definitions.tla.cards.ZhaoRuthlessAdmiral
@@ -164,6 +166,8 @@ class ZhaoRuthlessAdmiralScenarioTest : ScenarioTestBase() {
                 // Sacrifice all three Rats simultaneously — one batch, three sacrifice occurrences.
                 game.castSpell(1, "Cull the Rats").error shouldBe null
                 game.resolveStack()
+                game.chooseTriggerOrderInListedOrder()
+                game.resolveStack()
 
                 withClue("all three Rats are gone") {
                     game.isOnBattlefield("Sewer Rat") shouldBe false
@@ -194,6 +198,8 @@ class ZhaoRuthlessAdmiralScenarioTest : ScenarioTestBase() {
 
                 // Sacrifice Zhao + both Raw Recruits simultaneously (all Soldiers).
                 game.castSpell(1, "Draft the Soldiers").error shouldBe null
+                game.resolveStack()
+                game.chooseTriggerOrderInListedOrder()
                 game.resolveStack()
 
                 withClue("Zhao sacrificed itself along with the fodder") {

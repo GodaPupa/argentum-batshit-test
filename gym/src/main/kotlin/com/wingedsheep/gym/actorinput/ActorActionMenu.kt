@@ -13,6 +13,9 @@ import com.wingedsheep.sdk.model.EntityId
 
 /** London setup is its own action surface; the generic enumerator does not enumerate it. */
 internal fun completeActorLegalActions(state: GameState, actor: EntityId, enumerator: LegalActionEnumerator): List<LegalAction> {
+    if (actor !in actorsEligibleForInput(state)) {
+        throw ObservationBoundaryException(BoundaryFailure.WRONG_ACTOR, "Actor has no current input window")
+    }
     if (state.pendingDecision != null) return if (ManaPaymentWindow.openFor(state, actor) != null)
         enumerator.enumerateManaAbilities(state, actor, EnumerationMode.FULL) else emptyList()
     val mulligan = state.getEntity(actor)?.get<MulliganStateComponent>()
