@@ -1,0 +1,64 @@
+name: Izzet frozen remaining card sources
+
+on:
+  push:
+    branches: [mayhem/izzet-remaining-card-sources]
+    paths:
+      - .github/workflows/izzet-remaining-card-sources.yml
+
+permissions:
+  contents: read
+
+jobs:
+  retrieve:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Fetch only the four frozen unresolved opponent identities
+        run: |
+          python - <<'PY'
+          import datetime, hashlib, json, pathlib, time, urllib.parse, urllib.request
+          out = pathlib.Path("build/reports/izzet-remaining-card-sources")
+          out.mkdir(parents=True, exist_ok=True)
+          manifest = {"scope": "PUBLIC_CARD_METADATA_ONLY_NO_GAMEPLAY", "retrieved_utc": datetime.datetime.now(datetime.timezone.utc).isoformat(), "cards": []}
+          def get(url):
+              request = urllib.request.Request(url, headers={"User-Agent": "Argentum-Frozen-Card-Qualification/1.0", "Accept": "application/json"})
+              with urllib.request.urlopen(request, timeout=30) as response:
+                  value = response.read()
+              time.sleep(0.12)
+              return value
+          for name, code, number in [
+              ("Benevolent Blessing", "cmr", "13"),
+              ("Opal Palace", "c13", "310"),
+              ("Snake Umbra", "roe", "207"),
+              ("Vines of Vastwood", "zen", "193"),
+          ]:
+              url = "https://api.scryfall.com/cards/named?exact=" + urllib.parse.quote(name) + "&set=" + code
+              raw = get(url)
+              card = json.loads(raw)
+              assert card["name"] == name and card["set"] == code and card["collector_number"] == number
+              prefix = code + "-" + number
+              paths = []
+              for suffix, data in [
+                  ("card.json", raw),
+                  ("rulings.json", get(card["rulings_uri"])),
+                  ("printings.json", get(card["prints_search_uri"] + "&order=released&dir=asc")),
+              ]:
+                  path = out / (prefix + "-" + suffix)
+                  path.write_bytes(data)
+                  paths.append({"path": path.name, "bytes": len(data), "sha256": hashlib.sha256(data).hexdigest()})
+              printings = json.loads((out / (prefix + "-printings.json")).read_bytes())
+              assert printings["has_more"] is False, "All printings must be retained before placement review"
+              request = urllib.request.Request(card["image_uris"]["normal"], method="HEAD")
+              with urllib.request.urlopen(request, timeout=30) as response:
+                  image_status = response.status
+              assert image_status == 200
+              manifest["cards"].append({"name": name, "source": url, "image": card["image_uris"]["normal"], "image_status": image_status, "files": paths})
+          (out / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")
+          print("Retrieved metadata, rulings, every printing, and image status for exactly four frozen opponent identities.")
+          PY
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: izzet-remaining-card-sources
+          path: build/reports/izzet-remaining-card-sources/
