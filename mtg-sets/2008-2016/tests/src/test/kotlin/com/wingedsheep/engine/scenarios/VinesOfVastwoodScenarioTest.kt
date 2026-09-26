@@ -18,6 +18,7 @@ import com.wingedsheep.engine.support.GameTestDriver
 import com.wingedsheep.engine.support.SerializationTestSupport
 import com.wingedsheep.engine.support.TestCards
 import com.wingedsheep.engine.view.ClientStateTransformer
+import com.wingedsheep.mtg.sets.definitions.apc.cards.FireIce
 import com.wingedsheep.mtg.sets.definitions.gpt.cards.IzzetGuildmage
 import com.wingedsheep.mtg.sets.definitions.zen.cards.VinesOfVastwood
 import com.wingedsheep.sdk.core.Color
@@ -98,7 +99,7 @@ class VinesOfVastwoodScenarioTest : FunSpec({
     }
 
     fun game(): GameTestDriver = GameTestDriver().also { d ->
-        d.registerCards(TestCards.all + listOf(VinesOfVastwood, IzzetGuildmage, wand, strip, control, bounce, sweeper,
+        d.registerCards(TestCards.all + listOf(VinesOfVastwood, IzzetGuildmage, FireIce, wand, strip, control, bounce, sweeper,
             arrivalDamage, splitArrival, splitDamage))
         d.initMirrorMatch(Deck.of("Forest" to 40), startingPlayer = 0)
         d.passPriorityUntil(Step.PRECOMBAT_MAIN)
@@ -290,6 +291,26 @@ class VinesOfVastwoodScenarioTest : FunSpec({
         d.events.filterIsInstance<DamageDealtEvent>().none { it.targetId == first } shouldBe true
         d.events.filterIsInstance<DamageDealtEvent>().filter { it.targetId == second }.sumOf { it.amount } shouldBe 2
         d.events.filterIsInstance<AbilityFizzledEvent>().none { it.sourceId == artifact } shouldBe true
+    }
+
+    test("Vines drops Fire's illegal damage share without reallocating it to the surviving player target") {
+        val d = game()
+        val creature = d.putCreatureOnBattlefield(d.player1, "Centaur Courser")
+        val spell = d.putCardInHand(d.player2, "Fire // Ice")
+        val lifeBefore = d.getLifeTotal(d.player1)
+        d.passPriority(d.player1).isSuccess shouldBe true
+        d.giveMana(d.player2, Color.RED, 2)
+        d.submitSuccess(CastSpell(d.player2, spell, faceIndex = 0,
+            targets = listOf(ChosenTarget.Permanent(creature), ChosenTarget.Player(d.player1)),
+            damageDistribution = mapOf(creature to 1, d.player1 to 1),
+            paymentStrategy = PaymentStrategy.FromPool))
+        d.passPriority(d.player2).isSuccess shouldBe true
+        vines(d, d.player1, creature)
+        resolves(d)
+        d.events.filterIsInstance<DamageDealtEvent>().none { it.targetId == creature } shouldBe true
+        d.events.filterIsInstance<DamageDealtEvent>().filter { it.targetId == d.player1 }.sumOf { it.amount } shouldBe 1
+        d.getLifeTotal(d.player1) shouldBe lifeBefore - 1
+        d.events.filterIsInstance<SpellFizzledEvent>().none { it.spellEntityId == spell } shouldBe true
     }
 
     test("removing Vines' target in response leaves no boost or targeting restriction") {

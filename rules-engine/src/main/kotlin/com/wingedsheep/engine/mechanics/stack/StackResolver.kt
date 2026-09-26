@@ -6,6 +6,7 @@ import com.wingedsheep.engine.core.*
 import com.wingedsheep.engine.handlers.EffectContext
 import com.wingedsheep.engine.handlers.PipelineState
 import com.wingedsheep.engine.handlers.EffectHandler
+import com.wingedsheep.engine.handlers.effects.TargetResolutionUtils.toEntityId
 import com.wingedsheep.engine.handlers.effects.composite.PreTargetedEffectContext
 import com.wingedsheep.engine.handlers.effects.composite.processPreTargetedEffectQueue
 import com.wingedsheep.engine.mechanics.ControllerGrants
