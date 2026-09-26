@@ -1,0 +1,136 @@
+name: Shared Flashback Cost Menu Qualification
+
+on:
+  push:
+    branches: [lab/shared-flashback-additional-costs]
+    paths:
+      - .github/workflows/shared-flashback-cost-menu.yml
+      - rules-engine/src/**
+      - mtg-sdk/src/main/**
+      - mtg-sets/2000-2002/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/jud/cards/LavaDart.kt
+      - mtg-sets/2000-2002/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/LavaDartScenarioTest.kt
+      - lab-coordinator/shared-capabilities/flashback-*.md
+      - lab-coordinator/shared-capabilities/flashback-*.json
+
+permissions:
+  contents: read
+
+concurrency:
+  group: shared-flashback-cost-menu-qualification
+  cancel-in-progress: false
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      GRADLE_LOCK_SLOTS: '1'
+      JAVA_TOOL_OPTIONS: -XX:MaxMetaspaceSize=768m
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.sha }}
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: gradle/actions/setup-gradle@v6
+
+      - name: Bind the exact clean checkout before deterministic qualification
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/reports/shared-flashback-cost-menu
+          python3 - <<'PY'
+          import hashlib, json, os, pathlib, subprocess
+          def git(*args):
+              return subprocess.check_output(['git', *args], text=True).strip()
+          source = git('rev-parse', 'HEAD')
+          paths = [
+              'rules-engine/src/main/kotlin/com/wingedsheep/engine/legalactions/enumerators/CastFromZoneEnumerator.kt',
+              'rules-engine/src/main/kotlin/com/wingedsheep/engine/legalactions/utils/SelectionCostPresentation.kt',
+              'rules-engine/src/test/kotlin/com/wingedsheep/engine/legalactions/FlashbackAdditionalCostEnumerationTest.kt',
+              'mtg-sets/2000-2002/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/jud/cards/LavaDart.kt',
+              'mtg-sets/2000-2002/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/LavaDartScenarioTest.kt',
+              'lab-coordinator/shared-capabilities/flashback-scope-inventory.json',
+          ]
+          binding = {
+              'requested_head': os.environ['GITHUB_SHA'], 'actual_head': source,
+              'tree': git('rev-parse', 'HEAD^{tree}'),
+              'checkout_status': git('status', '--porcelain'),
+              'source_files_sha256': {p: hashlib.sha256(pathlib.Path(p).read_bytes()).hexdigest() for p in paths},
+          }
+          pathlib.Path('build/reports/shared-flashback-cost-menu/source-binding.json').write_text(json.dumps(binding, indent=2) + '\n')
+          assert source == os.environ['GITHUB_SHA'], binding
+          assert not binding['checkout_status'], binding
+          PY
+
+      - name: Qualify the menu and adjacent cost and Escape behavior
+        shell: bash
+        run: |
+          set -euo pipefail
+          scripts/gradle-locked :rules-engine:test --rerun --tests '*FlashbackAdditionalCostEnumerationTest' --tests '*CastFromZoneEnumeratorTest' --tests '*CostEnumerationUtilsTest' --tests '*AlternativeCostChoiceScenarioTest' --tests '*EscapeTest' --max-workers=1 -PkotlinCompileParallelism=1 -Pkotlin.compiler.execution.strategy=in-process -Dorg.gradle.jvmargs=-Xmx4g --info --stacktrace 2>&1 | tee build/reports/shared-flashback-cost-menu/engine.txt
+
+      - name: Qualify the exact Lava Dart menu-to-payment path
+        shell: bash
+        run: |
+          set -euo pipefail
+          scripts/gradle-locked :mtg-sets:2000-2002:tests:test --rerun --tests '*LavaDartScenarioTest' --max-workers=1 -PkotlinCompileParallelism=1 -Pkotlin.compiler.execution.strategy=in-process -Dorg.gradle.jvmargs=-Xmx4g --info --stacktrace 2>&1 | tee build/reports/shared-flashback-cost-menu/lava-dart.txt
+
+      - name: Require all 66 actual cases and preserve component-only disposition
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import hashlib, json, os, pathlib, subprocess, xml.etree.ElementTree as ET
+          expected = {
+              'FlashbackAdditionalCostEnumerationTest': ('rules-engine', 12),
+              'CastFromZoneEnumeratorTest': ('rules-engine', 20),
+              'CostEnumerationUtilsTest': ('rules-engine', 23),
+              'AlternativeCostChoiceScenarioTest': ('rules-engine', 4),
+              'EscapeTest': ('rules-engine', 5),
+              'LavaDartScenarioTest': ('mtg-sets/2000-2002/tests', 2),
+          }
+          suites = {}
+          for name, (module, count) in expected.items():
+              files = list(pathlib.Path(module + '/build/test-results/test').glob('TEST-*.' + name + '.xml'))
+              assert len(files) == 1, (name, files)
+              suite = ET.parse(files[0]).getroot()
+              cases = suite.findall('testcase')
+              assert len(cases) == count and int(suite.attrib['tests']) == count, (name, len(cases), count)
+              assert all(int(suite.attrib.get(k, 0)) == 0 for k in ('failures', 'errors', 'skipped')), name
+              assert all(not any(case.find(tag) is not None for tag in ('failure', 'error', 'skipped')) for case in cases), name
+              suites[name] = {'cases': [case.attrib['name'] for case in cases],
+                  'xml_path': str(files[0]), 'xml_sha256': hashlib.sha256(files[0].read_bytes()).hexdigest()}
+          report = pathlib.Path('build/reports/shared-flashback-cost-menu')
+          binding = json.loads((report / 'source-binding.json').read_text())
+          current = {p: hashlib.sha256(pathlib.Path(p).read_bytes()).hexdigest() for p in binding['source_files_sha256']}
+          status = subprocess.check_output(['git', 'status', '--porcelain'], text=True).strip()
+          assert current == binding['source_files_sha256'] and not status, (current, status)
+          assert subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip() == binding['actual_head']
+          manifest = {
+              'schema': 'shared-flashback-cost-menu-qualification-v1',
+              'status': 'TARGETED_COMPONENT_QUALIFICATION_ONLY',
+              'source_head': binding['actual_head'], 'source_tree': binding['tree'],
+              'run_id': os.environ['GITHUB_RUN_ID'], 'run_attempt': os.environ['GITHUB_RUN_ATTEMPT'],
+              'suites': suites, 'total_cases': sum(count for _, count in expected.values()),
+              'full_integration_accepted': False, 'receiving_insight_qualified': False,
+              'gameplay_authorized': False, 'official_allocations_initialized': 0,
+              'official_outcomes_exposed': 0,
+          }
+          (report / 'manifest.json').write_text(json.dumps(manifest, indent=2) + '\n')
+          PY
+
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: shared-flashback-cost-menu-qualification
+          if-no-files-found: error
+          path: |
+            build/reports/shared-flashback-cost-menu
+            rules-engine/build/test-results/test/TEST-*FlashbackAdditionalCostEnumerationTest.xml
+            rules-engine/build/test-results/test/TEST-*CastFromZoneEnumeratorTest.xml
+            rules-engine/build/test-results/test/TEST-*CostEnumerationUtilsTest.xml
+            rules-engine/build/test-results/test/TEST-*AlternativeCostChoiceScenarioTest.xml
+            rules-engine/build/test-results/test/TEST-*EscapeTest.xml
+            mtg-sets/2000-2002/tests/build/test-results/test/TEST-*LavaDartScenarioTest.xml
