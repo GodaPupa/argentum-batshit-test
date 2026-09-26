@@ -249,7 +249,9 @@ class VinesOfVastwoodScenarioTest : FunSpec({
         val artifact = d.putCardInHand(d.player2, arrivalDamage.name)
         d.passPriority(d.player1).isSuccess shouldBe true
         d.castSpell(d.player2, artifact).isSuccess shouldBe true
-        d.bothPass().isSuccess shouldBe true
+        val placement = d.bothPass()
+        placement.error shouldBe null
+        placement.isPaused shouldBe true
         (d.pendingDecision is ChooseTargetsDecision) shouldBe true
         d.submitTargetSelection(d.player2, listOf(creature)).isSuccess shouldBe true
         d.priorityPlayer shouldBe d.player1
@@ -282,7 +284,9 @@ class VinesOfVastwoodScenarioTest : FunSpec({
         val artifact = d.putCardInHand(d.player2, splitArrival.name)
         d.passPriority(d.player1).isSuccess shouldBe true
         d.castSpell(d.player2, artifact).isSuccess shouldBe true
-        d.bothPass().isSuccess shouldBe true
+        val placement = d.bothPass()
+        placement.error shouldBe null
+        placement.isPaused shouldBe true
         (d.pendingDecision is ChooseTargetsDecision) shouldBe true
         d.submitMultiTargetSelection(d.player2, mapOf(0 to listOf(first), 1 to listOf(second))).isSuccess shouldBe true
         d.priorityPlayer shouldBe d.player1
