@@ -1,0 +1,122 @@
+{
+  "schema": "SPHINX_EXACT_FULL_CI_PROSPECTIVE_GATE_V1",
+  "ready_for_execution": true,
+  "source_review": {
+    "sha256": "64879f03090bfb32c4c6f4be8b6f0a981dc9574cfa181a65b1e5157f623e2b45",
+    "record": {
+      "schema": "sphinx-exact-full-ci-control-independent-source-review-v1",
+      "reviewer": "Actual non-author /root/izzet",
+      "at_utc": "2026-09-26T22:38:45.854975+00:00",
+      "disposition": "PASS_ONE_PROSPECTIVE_FRESH_STANDARD_CI_EXECUTION",
+      "reviewed_control_sha256": {
+        "sphinx-full-ci.py": "f1275c8d9348a8455d3ec3eabcefec10b691177aef66997064ab79cec21a40fe",
+        "sphinx-full-ci.yml": "ac91983128ff628572f5268eae80731428119e276c45f030f892e77085b3d34f",
+        "full-ci-gate.json": "00772eebac1748942be29d25ed8b3e8d7bcbde08cc6acbc85bae3244e44c17c6"
+      },
+      "source_head": "a0c5b995c2829c0b4069562b1f1eede8a820dd97",
+      "source_tree": "1ee5590bacf2f6507fff6487be9d3e20df8b5e40",
+      "branch": "lab/sphinx-full-ci-20260926",
+      "exact_scope": {
+        "backend_groups": 7,
+        "test_tasks": 19,
+        "frontend_commands": [
+          "npm ci",
+          "npm run typecheck",
+          "npm run build"
+        ],
+        "main_only_nongating_coverage_excluded": true,
+        "commented_e2e_excluded": true
+      },
+      "checks": [
+        "Independently fetched original ci.yml from exact immutable source. Verified Git blob dbf5723e and SHA25634d0827a, parsed all seven task groups and all three frontend commands, and compared gate for exact equality. All19 modules have tracked test source files. Repository AGENTS/CONTRIBUTING/verify instructions and canonical lock wrapper are byte-identical to already read guidance.",
+        "Read complete collector and workflow, including prospective timeout correction. Exact clean source/head/tree/CI SHA and control identity before/after; only three tracked control files; repository/event/attempt and ready review checks; no source, card, pilot, golden, budget or official-runner changes.",
+        "Isolated one named creation-push branch, attempt1 guard, read-only contents permission, no dispatch/schedule/PR trigger. Matrix fail-fast false retains independent groups; aggregate requires all eight groups. Concurrency has no cancellation of foreign work. Proposed branch live lookup returned404 during review.",
+        "Java21 backend through canonical scripts/gradle-locked with slot1/maxworkers1, fresh --rerun-tasks --no-build-cache and cache disabled. All required modules must produce actual fresh XML; logs, command/exit, every produced XML and skipped-case counts remain available. Existing skips require actual artifact review and are not mislabeled zero. Node22 frontend matches standard CI commands.",
+        "Original20minute backend timeout retained. Corrected helper starts an owned process session, retains bounded jps/jstack diagnostics, TERM/KILLs only owned group and waits before XML collection; timeout remains exit124/failure. Independently executed a Python-only parent/child writer check: child output stopped and remained stable after timeout, recorded124, no engine/Gradle/gameplay execution.",
+        "All three controls are copied under output; uploader includes hidden files so .github workflow is preserved. Only output/ is uploaded, not checkout credentials or arbitrary workspace content.",
+        "The999 original deterministic receiving bank has actual independent raw review6180a9ba. This control supplies its separate CI successor, without treating either review as full runtime/pilot/gameplay admission."
+      ],
+      "independent_timeout_selfcheck": "izzet-takeover/sphinx-full-ci-timeout-review/independent-selfcheck.json",
+      "activation_scope": {
+        "allowed_gate_changes_only": [
+          "ready_for_execution",
+          "source_review"
+        ],
+        "instruction": "Set ready=true and bind this exact review; preserve all other gate values and final reviewed script/workflow. Archive review, record activated gate hash, create exactly one prospective isolated three-file control branch/attempt.",
+        "no_rerun_or_extra_push": true
+      },
+      "limits": [
+        "Source/control approval only; no engine/CI result is inferred.",
+        "Actual full logs/XML counts, skips, exits, source pins and all eight artifacts need independent review after completion.",
+        "No GitHub approval, canonical integration, complete runtime/pilot, StageE freeze or gameplay authority is granted."
+      ],
+      "official_seeds": 0,
+      "official_games": 0,
+      "github_approval": false
+    }
+  },
+  "source_head": "a0c5b995c2829c0b4069562b1f1eede8a820dd97",
+  "source_tree": "1ee5590bacf2f6507fff6487be9d3e20df8b5e40",
+  "source_ci_git_blob": "dbf5723efa463b87c94c1a1ea23c08d641c13e3a",
+  "original_ci_sha256": "34d0827ab766254f738ec4c903a09ea4e2e8ca3510096b31d0488d942605f43a",
+  "backend_groups": {
+    "engine": [
+      ":rules-engine:test"
+    ],
+    "scenarios-old": [
+      ":mtg-sets:1993-1999:tests:test",
+      ":mtg-sets:2000-2002:tests:test",
+      ":mtg-sets:2003-2007:tests:test",
+      ":mtg-sets:2008-2016:tests:test",
+      ":mtg-sets:2017-2022:tests:test"
+    ],
+    "scenarios-2023-24": [
+      ":mtg-sets:2023:tests:test",
+      ":mtg-sets:2024:tests:test"
+    ],
+    "scenarios-2025-26": [
+      ":mtg-sets:2025:tests:test",
+      ":mtg-sets:2026:tests:test"
+    ],
+    "server": [
+      ":game-server:test"
+    ],
+    "content": [
+      ":mtg-sdk:test",
+      ":mtg-sets:test",
+      ":ai:test",
+      ":mtg-search:test"
+    ],
+    "tools": [
+      ":gym:test",
+      ":gym-server:test",
+      ":gym-trainer:test",
+      ":mtgish-tooling:test"
+    ]
+  },
+  "frontend_commands": [
+    "npm ci",
+    "npm run typecheck",
+    "npm run build"
+  ],
+  "forbidden_execution_environment": [
+    "IW_V2_R1_PREPARED_DIRECTORY",
+    "IW_V2_R1_EXECUTION_AUTHORIZATION",
+    "ARGENTUM_OFFICIAL_EXECUTION"
+  ],
+  "scope": "Original standard PR CI: all7 backend module groups (19 module test tasks) and Node22 frontend. Main-only nongating coverage and commented e2e are not original PR gates.",
+  "execution_rule": "One isolated exact control branch creation; attempt1 only. No rerun or hidden retry. Ordinary regression failures retained; no golden, policy, deck or source changes.",
+  "freshness_rule": "New exact clean checkout; setup-gradle cache disabled, --rerun-tasks --no-build-cache, one Gradle invocation/runner with canonical scripts/gradle-locked. Require actual XML for all19 test-bearing modules and fresh task markers, retain all rawXML/logs/exits. Existing skipped cases are counted and require raw review; no fixed inherited total or zero-skip claim.",
+  "failure_rule": "Preserve original command log/XML/status. Each independent CI group continues by matrix fail-fast=false. Gradle --continue collects independent task failures. No source correction/rerun authorized by this control.",
+  "full_ci_semantics": "A successful workflow still requires raw artifact/source review. Full CI does not admit a whole pilot/runtime or experimental gameplay.",
+  "prerequisite_999": {
+    "run": 36273602269,
+    "artifact": 10916917146,
+    "sha256": "1894feb1549e9f9a5ede3ff710635772e5f392b7c4a93b8bcdf9a1019ab6da1c",
+    "unique_cases": 999,
+    "independent_review_sha256": "6180a9ba65fa9adb5e836230771b371134d370e8524e429d31faadd168f42541"
+  },
+  "official_seeds": 0,
+  "official_games": 0,
+  "permit_created": false
+}

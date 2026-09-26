@@ -1,0 +1,60 @@
+name: Sphinx exact full receiving CI
+on:
+  push:
+    branches: [lab/sphinx-full-ci-20260926]
+permissions:
+  contents: read
+concurrency:
+  group: sphinx-full-ci-20260926
+  cancel-in-progress: false
+jobs:
+  qualify:
+    if: github.event.created == true && github.run_attempt == 1
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        group: [engine, scenarios-old, scenarios-2023-24, scenarios-2025-26, server, content, tools, frontend]
+    env:
+      GRADLE_LOCK_SLOTS: 1
+      GRADLE_LOCK_TIMEOUT: 1800
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          path: control
+      - uses: actions/checkout@v6
+        with:
+          ref: a0c5b995c2829c0b4069562b1f1eede8a820dd97
+          path: source
+      - uses: actions/setup-java@v5
+        if: matrix.group != 'frontend'
+        with:
+          distribution: temurin
+          java-version: 21
+      - uses: gradle/actions/setup-gradle@v6
+        if: matrix.group != 'frontend'
+        with:
+          cache-disabled: true
+      - uses: actions/setup-node@v6
+        if: matrix.group == 'frontend'
+        with:
+          node-version: 22
+      - name: Execute exact standard CI scope with fresh test tasks
+        run: python3 control/sphinx-full-ci.py '${{ matrix.group }}'
+      - name: Preserve complete commands and actual XML including failures
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: sphinx-full-ci-${{ matrix.group }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: output/
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 90
+  backend:
+    if: always() && github.event.created == true && github.run_attempt == 1
+    needs: [qualify]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Require every original module group and frontend
+        run: test '${{ needs.qualify.result }}' = success
