@@ -1,0 +1,193 @@
+{
+  "created_utc": "2026-09-26T10:14:01.642229+00:00",
+  "status": "FIXTURE_ONLY_SUCCESSOR_FROZEN_NOT_YET_EXECUTED",
+  "worktree": "/workspace/scratch/7ef98cd0475e/ferocity-combat-assignment",
+  "branch": "engine/ferocity-combat-assignment",
+  "base": "2e7e78653ed1c7e56fc609b993a79b68ecca33c6",
+  "modified_or_new_source_files": [
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/CombatResolution.kt",
+      "sha256": "e52549532d4c8805f8ba90198840b29786d84ff281c1509a2845ae38b6afb90a",
+      "bytes": 6938,
+      "role": "modified source",
+      "archive": "ferocity-recycling/support-audits/combat-assignment-current-rules/after/rules-engine/src/main/kotlin/com/wingedsheep/engine/core/CombatResolution.kt.after"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/PendingDecision.kt",
+      "sha256": "c350956d4a65bc9f2b164450eea8424bc12162aa3aa34a21737931cc8222c0e4",
+      "bytes": 34583,
+      "role": "modified source",
+      "archive": "ferocity-recycling/support-audits/combat-assignment-current-rules/after/rules-engine/src/main/kotlin/com/wingedsheep/engine/core/PendingDecision.kt.after"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/decision/DecisionValidators.kt",
+      "sha256": "d2f82ea8237dc6a642005e6a6e12a2148555240a2ed93786a24df02af650d3ee",
+      "bytes": 27917,
+      "role": "modified source",
+      "archive": "ferocity-recycling/support-audits/combat-assignment-current-rules/after/rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/decision/DecisionValidators.kt.after"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/CombatContinuationResumer.kt",
+      "sha256": "d447fe5fa911f5decad26f7071abb9c51ba4863837cf0ff5a4f25de34ec86951",
+      "bytes": 17768,
+      "role": "modified source",
+      "archive": "ferocity-recycling/support-audits/combat-assignment-current-rules/after/rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/CombatContinuationResumer.kt.after"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/combat/CombatDamageManager.kt",
+      "sha256": "8450597833a6b23dbdd2966b71a8a03d43e0debfa6509baf938afc0364112924",
+      "bytes": 97208,
+      "role": "modified source",
+      "archive": "ferocity-recycling/support-audits/combat-assignment-current-rules/after/rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/combat/CombatDamageManager.kt.after"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/combat/CombatDamageUtils.kt",
+      "sha256": "88c0205e05d03fd753aace27dbdcfd1399aeff3b4d652a6ea85299ecc95c4172",
+      "bytes": 12135,
+      "role": "modified source",
+      "archive": "ferocity-recycling/support-audits/combat-assignment-current-rules/after/rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/combat/CombatDamageUtils.kt.after"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/combat/DamageCalculator.kt",
+      "sha256": "651f1e507d8fd99c8aa972c1a1b2e45aa04570b39ce84f7e209e0dd5c2909a08",
+      "bytes": 16942,
+      "role": "modified source",
+      "archive": "ferocity-recycling/support-audits/combat-assignment-current-rules/after/rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/combat/DamageCalculator.kt.after"
+    },
+    {
+      "path": "web-client/src/components/decisions/CombatDamageAssignmentModal.tsx",
+      "sha256": "d69df880395bb1f5ac0dd555da6dd85be881e7b2e2a193c3a7d3b1aa9d719c6d",
+      "bytes": 16151,
+      "role": "modified source",
+      "archive": "ferocity-recycling/support-audits/combat-assignment-current-rules/after/web-client/src/components/decisions/CombatDamageAssignmentModal.tsx.after"
+    },
+    {
+      "path": "web-client/src/components/decisions/CombatResolutionBoard.tsx",
+      "sha256": "2d33194b0888be09bb8639c7fc5cdbad0bf45bfe043f4257a0a0f8f689dc9341",
+      "bytes": 16220,
+      "role": "modified source",
+      "archive": "ferocity-recycling/support-audits/combat-assignment-current-rules/after/web-client/src/components/decisions/CombatResolutionBoard.tsx.after"
+    },
+    {
+      "path": "web-client/src/types/messages.ts",
+      "sha256": "125f6a62f24010c30aef9423bd191951074e7213b6b56f0bdc9443c84729c351",
+      "bytes": 115753,
+      "role": "modified source",
+      "archive": "ferocity-recycling/support-audits/combat-assignment-current-rules/after/web-client/src/types/messages.ts.after"
+    },
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/CombatAssignmentCurrentRulesTest.kt",
+      "sha256": "8a786f585755bedbc9b84a7ddea0e26d26908b3e6cb51a8a670bc42414177d1e",
+      "bytes": 20165,
+      "role": "new deterministic fixture",
+      "archive": "ferocity-recycling/support-audits/combat-assignment-current-rules/after/rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/CombatAssignmentCurrentRulesTest.kt.after"
+    }
+  ],
+  "source_file_count": 11,
+  "retained_regressions": [
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/CombatResolutionBoardTest.kt",
+      "sha256": "2ec3488cbeac903f5f72a34e7611ed3fe1bba657a67313f4a44b07d20b369bc0",
+      "test_declarations": 10,
+      "before_sha256": "4f9d99e55dff45791cf2f89314b01921e6dd762cd1727187c57e480fb563bfe1",
+      "archive": "ferocity-recycling/support-audits/combat-assignment-current-rules/retained-fixture-successor-02/after/rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/CombatResolutionBoardTest.kt.after",
+      "role": "corrected retained fixture; original test count and assertions preserved"
+    },
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/CombatDamageAssignmentTest.kt",
+      "sha256": "f93b4021f58896e4f7cdbcba6f7a3ba565afb48ab177a1020038df1305e7fcb5",
+      "test_declarations": 9
+    },
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/BandingTrampleDrainScenarioTest.kt",
+      "sha256": "897184ce5e5b2be1f07abea4c56b7d8167c7d9782c401ad65273404d9ef97140",
+      "test_declarations": 1,
+      "before_sha256": "a703ee13a50284bc49c2470f4b7d16560dcda91308e54b3eec4f8cbb4e13f5ae",
+      "archive": "ferocity-recycling/support-audits/combat-assignment-current-rules/retained-fixture-successor-02/after/rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/BandingTrampleDrainScenarioTest.kt.after",
+      "role": "corrected retained fixture; original test count and assertions preserved"
+    }
+  ],
+  "new_test_declarations": 12,
+  "case9_additional_fixed_subscenarios": 2,
+  "retained_test_declarations": 20,
+  "builds_run": 0,
+  "tests_executed": 0,
+  "gameplay_runs": 0,
+  "patch": {
+    "path": "ferocity-recycling/support-audits/combat-assignment-current-rules/combat-assignment-current-rules.patch",
+    "sha256": "e06e78059ebf70b6523b4702312eafaedae089b0923b8d4ac35d8c60a5d9779c"
+  },
+  "evidence": [
+    {
+      "path": "ferocity-recycling/support-audits/combat-assignment-current-rules/SOURCE_BEFORE.json",
+      "sha256": "f76fcb4b6eda6c1422534c5c383eb6c753edff4b889a8fb9ee2d3d062626bfa1"
+    },
+    {
+      "path": "ferocity-recycling/support-audits/combat-assignment-current-rules/REPAIR_PLAN.md",
+      "sha256": "97e546af5fa057adee956597803d91b40b1a0cc63feb2e4a04efb98c69c2454b"
+    },
+    {
+      "path": "ferocity-recycling/support-audits/combat-assignment-current-rules/RULES_EXCERPT.txt",
+      "sha256": "02dc75c6f7b09e411c33cb1602c8729a479c438a1184271f83ed2e4038dbe526"
+    },
+    {
+      "path": "ferocity-recycling/support-audits/combat-assignment-current-rules/FIXTURE_BANK_BEFORE_MAIN.json",
+      "sha256": "19c9683208da1d14be32077dee55ee6a8ae0349f002839cb000d809d4b9ff1d6"
+    },
+    {
+      "path": "ferocity-recycling/support-audits/combat-assignment-current-rules/DEATHTOUCH_SCOPE_AMENDMENT.json",
+      "sha256": "e8dc8e0167466a250c93c80c4ed6cf210ff6bec9ebd2025fec0a56666732b1e1"
+    },
+    {
+      "path": "ferocity-recycling/support-audits/combat-assignment-current-rules/DEATHTOUCH_PRE_OUTCOME_BOUNDARY.json",
+      "sha256": "1dc3426443f2403c7afd5b1e2ef4c0ebc5d356c338ee005cb0f01fc6709dc2f9"
+    }
+  ],
+  "prior_source_freeze_sha256": "9f2f2167b2648159f43ed924d3339cde32b9bb4dcf208153a916a104c282ce5e",
+  "fixture_only_correction": {
+    "changed_files": [
+      {
+        "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/CombatResolutionBoardTest.kt",
+        "before_sha256": "4f9d99e55dff45791cf2f89314b01921e6dd762cd1727187c57e480fb563bfe1",
+        "sha256": "2ec3488cbeac903f5f72a34e7611ed3fe1bba657a67313f4a44b07d20b369bc0",
+        "archive": "ferocity-recycling/support-audits/combat-assignment-current-rules/retained-fixture-successor-02/after/rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/CombatResolutionBoardTest.kt.after",
+        "test_declarations": 10
+      },
+      {
+        "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/BandingTrampleDrainScenarioTest.kt",
+        "before_sha256": "a703ee13a50284bc49c2470f4b7d16560dcda91308e54b3eec4f8cbb4e13f5ae",
+        "sha256": "897184ce5e5b2be1f07abea4c56b7d8167c7d9782c401ad65273404d9ef97140",
+        "archive": "ferocity-recycling/support-audits/combat-assignment-current-rules/retained-fixture-successor-02/after/rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/BandingTrampleDrainScenarioTest.kt.after",
+        "test_declarations": 1
+      }
+    ],
+    "before_receipt_sha256": "96498c49806f4d5c87742043593d7bbb2f8d624fd8ae2bb2891e08fc01a93604",
+    "patch": {
+      "path": "ferocity-recycling/support-audits/combat-assignment-current-rules/retained-fixture-successor-02/retained-fixture-correction.patch",
+      "sha256": "9a8fc7a6a2b6a49aff24c9e9b9f7ad30a6613ce11f181b6bcdc6c17259ecacca"
+    },
+    "prior_gate": {
+      "receipt_sha256": "d497ca2e0cd15209e2b8e4300666e5ed3651382fe9b5d98494fd8e7b116beef9",
+      "failure_inventory_sha256": "d0e9a55ec0e27f37dd59220d8f169a5cfd6f2acbba2c15f3ee5a31443b5c6a47",
+      "total": 32,
+      "passed": 30,
+      "failed": 2
+    },
+    "diagnosis": "Both helpers replaced all unrelated board edges with zero, suppressing blocker full damage despite active-player banding ownership. Current full-assignment validation correctly rejects the positive inputs.",
+    "repair": "Preserve edge.amount for every unrelated edge; explicitly assert blocker directions, active-player ownership, and total default power3/6. Original trample rejection strings and final creature death/life assertions unchanged.",
+    "unchanged_initial_source_files": 11,
+    "new_fixed_bank_unchanged": true,
+    "new_cases": 0,
+    "changed_existing_cases": 2,
+    "retained_total": 20,
+    "total_case_count": 32,
+    "successor_executions": 0,
+    "runtime_source_changes": 0,
+    "rules": [
+      "510.1d",
+      "702.22h",
+      "702.22k"
+    ]
+  },
+  "prior_execution_note": "Previous boundary had one actual32-case gate,30pass2fail, preserved above. The zeros here mean no successor execution."
+}
