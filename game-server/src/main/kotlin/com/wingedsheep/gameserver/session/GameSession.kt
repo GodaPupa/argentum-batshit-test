@@ -14,6 +14,7 @@ import com.wingedsheep.gameserver.protocol.ServerMessage
 import com.wingedsheep.gameserver.priority.AutoPassManager
 import com.wingedsheep.engine.core.*
 import com.wingedsheep.engine.legalactions.LegalActionEnumerator
+import com.wingedsheep.engine.mechanics.combat.CombatDefenders
 import com.wingedsheep.engine.mechanics.mana.ManaPaymentWindow
 import com.wingedsheep.engine.registry.CardRegistry
 import com.wingedsheep.engine.state.GameState
@@ -971,6 +972,20 @@ class GameSession(
         ManaPaymentWindow.openFor(state, playerId)?.let { window ->
             val manaActions = legalActionEnumerator.enumerateManaAbilities(state, window.playerId)
             return legalActionEnricher.enrich(manaActions, state, window.playerId)
+        }
+
+        // Block declarations precede priority. Under shared team turns either undeclared
+        // defending teammate may submit their own block (CR 805.10d); priorityTeam is empty
+        // here and must not be used as declaration permission. Keep the raw baton first for
+        // a connection acting for multiple seats, then consult the same engine query as the
+        // declaration handler and enumerator. A pending payment was handled above.
+        if (CombatDefenders.nextUndeclaredDefender(state) != null) {
+            val declarationSeat = (listOfNotNull(state.priorityPlayerId) + state.turnOrder)
+                .distinct()
+                .firstOrNull { CombatDefenders.canDeclareBlockers(state, it) && state.actorFor(it) == playerId }
+                ?: return emptyList()
+            val engineActions = legalActionEnumerator.enumerate(state, declarationSeat)
+            return legalActionEnricher.enrich(engineActions, state, declarationSeat)
         }
 
         val priorityPlayer = state.priorityPlayerId ?: return emptyList()

@@ -1,0 +1,104 @@
+{
+  "source": "700b06d319f2bc491ac3112d06e3b495bd49bc64",
+  "tree": "7424fafc0df68bd68aa22385aa1ffcb492f5c0ac",
+  "run": 36260583882,
+  "artifact": 10912266290,
+  "artifact_sha256": "d9486d4a3e04de2eb9688bce07b76dc40d235dcedeab1af6dc4ecf7a1e811902",
+  "scope": "Failed deterministic Vines receiving attempt. Active player priority assertion preserved. No gameplay or seed consumption.",
+  "members": 16,
+  "suites": [
+    {
+      "path": "mtg-sdk/build/test-results/test/TEST-com.wingedsheep.sdk.serialization.PreventTargetingSerializationTest.xml",
+      "cases": 3,
+      "failures": [],
+      "errors": 0,
+      "skips": 0
+    },
+    {
+      "path": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.hygiene.FloatingEffectSerializationRoundTripTest.xml",
+      "cases": 3,
+      "failures": [],
+      "errors": 0,
+      "skips": 0
+    },
+    {
+      "path": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.hygiene.SerializationPolymorphicRegistrationTest.xml",
+      "cases": 8,
+      "failures": [],
+      "errors": 0,
+      "skips": 0
+    },
+    {
+      "path": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.legalactions.CastSpellSourceHexproofEnumerationTest.xml",
+      "cases": 1,
+      "failures": [],
+      "errors": 0,
+      "skips": 0
+    },
+    {
+      "path": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.mechanics.layers.AffectsFilterResolverStatePredicateTest.xml",
+      "cases": 36,
+      "failures": [],
+      "errors": 0,
+      "skips": 0
+    },
+    {
+      "path": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.predicates.CommanderStatePredicateTest.xml",
+      "cases": 3,
+      "failures": [],
+      "errors": 0,
+      "skips": 0
+    },
+    {
+      "path": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.ModalTriggeredAbilityOnStackTest.xml",
+      "cases": 3,
+      "failures": [],
+      "errors": 0,
+      "skips": 0
+    },
+    {
+      "path": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.PreventTargetingScenarioTest.xml",
+      "cases": 8,
+      "failures": [],
+      "errors": 0,
+      "skips": 0
+    },
+    {
+      "path": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.ReflexiveTriggerFeasibilityTest.xml",
+      "cases": 10,
+      "failures": [],
+      "errors": 0,
+      "skips": 0
+    },
+    {
+      "path": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.triggers.InterveningIfBeforeTargetLegalityTest.xml",
+      "cases": 3,
+      "failures": [],
+      "errors": 0,
+      "skips": 0
+    },
+    {
+      "path": "mtg-sets/2008-2016/tests/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.IntoTheRoilScenarioTest.xml",
+      "cases": 2,
+      "failures": [],
+      "errors": 0,
+      "skips": 0
+    },
+    {
+      "path": "mtg-sets/2008-2016/tests/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.VinesOfVastwoodScenarioTest.xml",
+      "cases": 21,
+      "failures": [
+        {
+          "name": "Vines in response makes an opponent's targeted enters ability fizzle",
+          "message": "org.opentest4j.AssertionFailedError: expected:<e0> but was:<e1>"
+        },
+        {
+          "name": "a partially restricted enters ability preserves the surviving target's original named slot",
+          "message": "org.opentest4j.AssertionFailedError: expected:<e0> but was:<e1>"
+        }
+      ],
+      "errors": 0,
+      "skips": 0
+    }
+  ]
+}

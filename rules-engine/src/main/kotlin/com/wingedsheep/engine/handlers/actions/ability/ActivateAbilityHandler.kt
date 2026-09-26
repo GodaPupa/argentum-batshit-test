@@ -30,6 +30,9 @@ import com.wingedsheep.engine.mechanics.mana.AlternativePaymentHandler
 import com.wingedsheep.engine.mechanics.mana.IntrinsicManaAbilities
 import com.wingedsheep.engine.core.SelectManaSourcesDecision
 import com.wingedsheep.engine.mechanics.mana.ManaPaymentWindow
+import com.wingedsheep.engine.mechanics.CastPriorityProcessor
+import com.wingedsheep.engine.mechanics.StateBasedActionChecker
+import com.wingedsheep.engine.state.PendingCastPriority
 import com.wingedsheep.engine.mechanics.mana.ManaPool
 import com.wingedsheep.engine.mechanics.mana.ManaSolver
 import com.wingedsheep.engine.mechanics.mana.SpellPaymentContext
@@ -157,8 +160,10 @@ class ActivateAbilityHandler(
     private val castPermissionUtils: CastPermissionUtils,
     private val manaAbilitySideEffectExecutor:
         com.wingedsheep.engine.mechanics.mana.ManaAbilitySideEffectExecutor,
+    private val sbaChecker: StateBasedActionChecker = StateBasedActionChecker(cardRegistry = cardRegistry),
 ) : ActionHandler<ActivateAbility> {
     override val actionType: KClass<ActivateAbility> = ActivateAbility::class
+    private val activationPriorityProcessor = CastPriorityProcessor(sbaChecker, triggerDetector, triggerProcessor)
 
     /** The first [CostAtom.TapPermanents] atom anywhere in this cost, or null if it has none. */
     private fun AbilityCost.firstTapPermanentsAtomOrNull(): CostAtom.TapPermanents? = when (this) {
@@ -644,8 +649,12 @@ class ActivateAbilityHandler(
 
     override fun execute(state: GameState, action: ActivateAbility): ExecutionResult {
         val window = ManaPaymentWindow.openFor(state, action.playerId)
-            ?: return executeActivation(state, action)
-        return executeInManaPaymentWindow(state, action, window)
+        return when {
+            window != null -> executeInManaPaymentWindow(state, action, window)
+            ManaPaymentWindow.suspendedFor(state, action.playerId) ->
+                executeInManaPaymentWindow(state, action, null)
+            else -> executeActivation(state, action)
+        }
     }
 
     /**
@@ -654,9 +663,8 @@ class ActivateAbilityHandler(
      *
      * The window is set aside for the duration so the ability resolves against a decision-free
      * state, then re-raised. Two things must survive the round trip:
-     *  - **Priority.** The mana-ability path ends with `withPriority(activatingPlayer)` when the
-     *    activation cost fired a trigger. That's right at priority and wrong here — the payment
-     *    resumer will hand priority back itself once the payment completes — so it's restored.
+     *  - **Priority.** No activation boundary may run inside payment, including after a nested
+     *    sacrifice/color choice re-enters this handler. The outer boundary retains its recipient.
      *  - **The window.** If the ability paused for a decision of its own, the
      *    [ReopenManaPaymentDecisionContinuation] pushed by [ManaPaymentWindow.suspend] re-raises it
      *    afterwards; otherwise it's re-raised here.
@@ -664,32 +672,34 @@ class ActivateAbilityHandler(
     private fun executeInManaPaymentWindow(
         state: GameState,
         action: ActivateAbility,
-        window: SelectManaSourcesDecision
+        window: SelectManaSourcesDecision?
     ): ExecutionResult {
-        val result = executeActivation(ManaPaymentWindow.suspend(state, window), action)
+        val suspended = if (window != null) ManaPaymentWindow.suspend(state, window) else state
+        val result = executeActivation(suspended, action, settleAtPriority = false)
 
         // A failed activation must not eat the window — roll all the way back.
         result.error?.let { return ExecutionResult.error(state, it) }
 
-        val restored = if (result.state.priorityPlayerId == state.priorityPlayerId) result.state
-        else result.state.copy(
+        val captured = ManaPaymentWindow.deferTriggers(result.state,
+            if (result.triggersAlreadyProcessed) emptyList()
+            else triggerDetector.detectTriggers(result.state, result.events))
+        val restored = if (captured.priorityPlayerId == state.priorityPlayerId) captured
+        else captured.copy(
             priorityPlayerId = state.priorityPlayerId,
             priorityPassedBy = state.priorityPassedBy
         )
         if (result.isPaused) {
-            return ExecutionResult.propagatePause(restored, result.events)
+            return ExecutionResult.propagatePause(restored, result.events).copy(triggersAlreadyProcessed = true)
         }
-        return ManaPaymentWindow.resumeIfPending(restored, result.events, cardRegistry)
-            ?: ExecutionResult.success(restored, result.events)
+        return (ManaPaymentWindow.resumeIfPending(restored, result.events, cardRegistry)
+            ?: ExecutionResult.success(restored, result.events)).copy(triggersAlreadyProcessed = true)
     }
 
-    private fun executeActivation(state: GameState, action: ActivateAbility): ExecutionResult {
-        val abilityEntityId = EntityId.generate()
-        val sourceObject = state.objectRef(action.sourceId)
-        val activationReferences = com.wingedsheep.engine.handlers.ObjectReferenceEnvironment(
-            captured = true, origin = sourceObject, source = sourceObject, resolutionKey = abilityEntityId.value,
-        )
-
+    private fun executeActivation(
+        state: GameState,
+        action: ActivateAbility,
+        settleAtPriority: Boolean = true,
+    ): ExecutionResult {
         val container = state.getEntity(action.sourceId)
             ?: return ExecutionResult.error(state, "Source not found")
 
@@ -1195,7 +1205,14 @@ class ActivateAbilityHandler(
 
         val executeAbilityContext = buildAbilityPaymentContext(cardComponent, state.projectedState, action.sourceId, ability)
 
-        var currentState = state
+        // Resolution routing is authoritative replay state. Allocate only when activation
+        // reaches payment, and carry the advanced game-local counter rather than a UUID.
+        val (resolutionKey, allocatedState) = state.newRoutingId()
+        val sourceObject = state.objectRef(action.sourceId)
+        val activationReferences = com.wingedsheep.engine.handlers.ObjectReferenceEnvironment(
+            captured = true, origin = sourceObject, source = sourceObject, resolutionKey = resolutionKey,
+        )
+        var currentState = allocatedState
         val events = mutableListOf<GameEvent>()
 
         // Get player's mana pool
@@ -1735,32 +1752,18 @@ class ActivateAbilityHandler(
 
             val effectResult = effectExecutorRegistry.execute(currentState, finalEffect, context).toExecutionResult()
             if (effectResult.isPaused) {
-                // The mana ability's effect paused for a decision (e.g. choosing colors for
-                // "add X mana in any combination of colors"). Any triggered ability that fired
-                // from the cost payment (e.g. the source's dies trigger when sacrificed —
-                // Wizard's Rockets: "When this artifact is put into a graveyard..., draw a card")
-                // must survive that pause. Queue it as a PendingTriggersContinuation beneath the
-                // in-flight decision so it's put on the stack once the ability finishes resolving
-                // (mirrors PassPriorityHandler / SubmitDecisionHandler mid-resolution handling).
-                val deferred = triggerDetector.detectTriggers(
-                    effectResult.state, costPaymentEvents + manaAbilityActivatedEvent
-                )
-                if (deferred.isNotEmpty()) {
-                    val pending = com.wingedsheep.engine.core.PendingTriggersContinuation(
-                        remainingTriggers = deferred
-                    )
-                    // Insert at the BOTTOM of the continuation stack so the cost trigger is put on
-                    // the stack only after the whole mana ability finishes resolving — including a
-                    // multi-step "any combination of colors" effect that pauses once per mana. The
-                    // stack here holds only frames pushed by this activation's effect, so bottom
-                    // insertion can't jump ahead of unrelated work.
-                    val newStack = listOf(pending) + effectResult.state.continuationStack
-                    return ExecutionResult.propagatePause(
-                        effectResult.state.copy(continuationStack = newStack),
-                        events + effectResult.events
+                if (settleAtPriority) {
+                    // The standalone mana ability has not finished resolving. Preserve its
+                    // actor and triggered events now, but defer SBAs until its choice resumes.
+                    return pauseBeforeActivationPriority(
+                        effectResult, action.playerId,
+                        activationCostEvents + manaAbilityActivatedEvent + effectResult.events,
+                        events + effectResult.events,
                     )
                 }
-                return effectResult
+                // The outer payment wrapper captures the entire emitted batch once, including
+                // costs preceding this choice, and retains it until the enclosing action ends.
+                return ExecutionResult.propagatePause(effectResult.state, events + effectResult.events)
             }
             if (!effectResult.isSuccess) {
                 return effectResult
@@ -1891,7 +1894,11 @@ class ActivateAbilityHandler(
                 currentState, action.sourceId, cardComponent, action.playerId,
                 manaEvent, events + effectResult.events
             )
-            if (bonusResult.isPaused) return bonusResult
+            if (bonusResult.isPaused) {
+                return if (settleAtPriority) pauseBeforeActivationPriority(
+                    bonusResult, action.playerId, bonusResult.events, bonusResult.events,
+                ) else bonusResult
+            }
 
             // Detect and queue any triggered abilities from the activation — the cost-side events
             // (a sacrificed source's dies trigger, the {T} TappedEvent for an artifact-tap trigger),
@@ -1909,19 +1916,13 @@ class ActivateAbilityHandler(
                 activationCostEvents + manaAbilityActivatedEvent + effectResult.events
             val resultEvents = bonusResult.events
             val costTriggers = triggerDetector.detectTriggers(bonusResult.newState, activationTriggerEvents)
-            if (costTriggers.isNotEmpty()) {
-                val triggerResult = triggerProcessor.processTriggers(bonusResult.newState, costTriggers)
-                if (triggerResult.isPaused) {
-                    return ExecutionResult.propagatePause(
-                        triggerResult.state.withPriority(action.playerId),
-                        resultEvents + triggerResult.events
-                    )
-                }
-                return ExecutionResult.success(
-                    triggerResult.newState.withPriority(action.playerId),
-                    resultEvents + triggerResult.events
+            if (settleAtPriority) {
+                return activationPriorityProcessor.start(
+                    bonusResult.newState, action.playerId, resultEvents, costTriggers,
                 )
             }
+            // The enclosing mana-payment wrapper captures these events without placing triggers
+            // or checking SBAs in the middle of payment.
             return bonusResult
         }
 
@@ -1943,7 +1944,13 @@ class ActivateAbilityHandler(
             // nothing, so nothing else changes.
             exiledAsCostCards = if (effectiveCost.hasExileAtom()) exileChoices else emptyList(),
             lastKnownSourceCounters = lastKnownSourceCounters,
-            lastKnownSourceSnapshot = lastKnownSourceSnapshot,
+            // A generic sacrifice cost can consume the source too (for example an animated
+            // artifact Shaman). Use its actual departure, after earlier cost steps, before
+            // token cleanup; the stack object did not exist yet for zone-exit stamping.
+            lastKnownSourceSnapshot = activationCostEvents
+                .filterIsInstance<com.wingedsheep.engine.core.ZoneChangeEvent>()
+                .firstOrNull { it.oldObject != null && it.oldObject == activationReferences.origin }
+                ?.lastKnown ?: lastKnownSourceSnapshot,
             lastKnownSourceAttachments = lastKnownSourceAttachments,
             revealedNotedCreatureType = revealedNotedCreatureType,
             descriptionOverride = ability.descriptionOverride,
@@ -2075,25 +2082,28 @@ class ActivateAbilityHandler(
 
         val allEvents = events.toList()
 
-        // Detect and process triggers from cost payment (e.g., sacrifice death triggers)
+        // CR 117.3c/117.5: cost and activation triggers wait while SBAs settle. In particular,
+        // sacrificed tokens cease to exist and newly zero-toughness creatures die before any
+        // trigger targets are chosen or the activating player receives priority again.
         val triggers = triggerDetector.detectTriggers(currentState, allEvents)
-        if (triggers.isNotEmpty()) {
-            val triggerResult = triggerProcessor.processTriggers(currentState, triggers)
+        return activationPriorityProcessor.start(currentState, action.playerId, allEvents, triggers)
+    }
 
-            if (triggerResult.isPaused) {
-                return ExecutionResult.propagatePause(
-                    triggerResult.state.withPriority(action.playerId),
-                    allEvents + triggerResult.events
-                )
-            }
-
-            return ExecutionResult.success(
-                triggerResult.newState.withPriority(action.playerId),
-                allEvents + triggerResult.events
-            )
-        }
-
-        return ExecutionResult.success(currentState, allEvents)
+    /** An unresolved standalone mana choice owns the same eventual priority boundary as a cast. */
+    private fun pauseBeforeActivationPriority(
+        result: ExecutionResult,
+        actorId: EntityId,
+        triggerEvents: List<GameEvent>,
+        publishedEvents: List<GameEvent>,
+    ): ExecutionResult {
+        check(!result.state.stackResolutionPendingPriority)
+        check(result.state.pendingCastPriority == null)
+        val captured = triggerDetector.detectTriggers(result.state, triggerEvents)
+        return ExecutionResult.propagatePause(
+            result.state.copy(pendingCastPriority = PendingCastPriority(actorId, captured))
+                .withPriority(null),
+            publishedEvents,
+        ).copy(triggersAlreadyProcessed = true)
     }
 
     /**
@@ -2880,7 +2890,8 @@ class ActivateAbilityHandler(
                 services.triggerDetector,
                 services.triggerProcessor,
                 services.castPermissionUtils,
-                services.manaAbilitySideEffectExecutor
+                services.manaAbilitySideEffectExecutor,
+                services.sbaChecker,
             )
         }
     }

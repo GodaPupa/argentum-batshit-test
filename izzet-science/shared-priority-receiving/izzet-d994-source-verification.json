@@ -1,0 +1,857 @@
+{
+  "head": "d994f17ab4cc1a83f503ffd0a8e44f1f93848659",
+  "base": "700b06d319f2bc491ac3112d06e3b495bd49bc64",
+  "donor": "77c7aad0bb2ded2c0372087d94f66ccbde0f7d09",
+  "manifests": {
+    "priority": {
+      "pins": 364,
+      "stage_count": 27,
+      "expected_cases": 220
+    },
+    "cast-observer": {
+      "pins": 364,
+      "stage_count": 18,
+      "expected_cases": 135
+    }
+  },
+  "production": [
+    {
+      "path": "game-server/src/main/kotlin/com/wingedsheep/gameserver/session/GameSession.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/ColorAndTypeContinuations.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/CoreContinuations.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/GameEvent.kt",
+      "exact_donor": false
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/Serialization.kt",
+      "exact_donor": false
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/TriggerOrderingContinuation.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/AttachmentTriggerDetector.kt",
+      "exact_donor": false
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/DamageTriggerDetector.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/DeathAndLeaveTriggerDetector.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/PendingTrigger.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerAbilityResolver.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerContext.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerMatcher.kt",
+      "exact_donor": false
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerProcessor.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/ContinuationHandler.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/EffectContext.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/PredicateEvaluator.kt",
+      "exact_donor": false
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/ability/ActivateAbilityHandler.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/combat/DeclareBlockersHandler.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/decision/SubmitDecisionHandler.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/priority/PassPriorityHandler.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/special/ConcedeHandler.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/special/SpecialActionsModule.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/spell/CastSpellHandler.kt",
+      "exact_donor": false
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/CoreAutoResumerModule.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/EffectAndTriggerContinuationResumer.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/ModalAndCloneContinuationResumer.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/TriggerOrderingResumer.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/DamageUtils.kt",
+      "exact_donor": false
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/ZoneTransitionService.kt",
+      "exact_donor": false
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/damage/DealDamageExecutor.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/legalactions/enumerators/CombatEnumerator.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/CastPriorityProcessor.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/combat/BlockDeclarationProcessor.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/combat/CombatDefenders.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/mana/ManaPaymentWindow.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/sba/player/PlayerLeavesGameProcessor.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/targeting/PlayerProtectionRules.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/state/GameState.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/state/PendingCastPriority.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/state/components/stack/EntitySnapshot.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/state/components/stack/StackComponents.kt",
+      "exact_donor": false
+    }
+  ],
+  "fixtures": [
+    {
+      "path": "ai/src/test/kotlin/com/wingedsheep/ai/arena/FrozenBaselineTest.kt",
+      "exact_donor": false
+    },
+    {
+      "path": "ai/src/test/kotlin/com/wingedsheep/ai/engine/DecisionResponderCompletedBranchTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "ai/src/test/kotlin/com/wingedsheep/ai/puzzles/PuzzleSuiteTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "game-server/src/test/kotlin/com/wingedsheep/gameserver/session/AiUndoDecisionFreshnessTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "game-server/src/test/kotlin/com/wingedsheep/gameserver/session/PostBlockDeclarationSessionTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "mtg-sets/1993-1999/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/EnergyFluxScenarioTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "mtg-sets/1993-1999/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/FarrelsMantleScenarioTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "mtg-sets/1993-1999/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/FarrelsZealotScenarioTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "mtg-sets/1993-1999/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/FastingScenarioTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "mtg-sets/1993-1999/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/GravediggerTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "mtg-sets/1993-1999/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/HeroismScenarioTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "mtg-sets/1993-1999/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/NafsAspScenarioTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "mtg-sets/1993-1999/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/NecriteScenarioTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "mtg-sets/1993-1999/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/ScarecrowScenarioTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "mtg-sets/1993-1999/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/SerpentAssassinTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "mtg-sets/1993-1999/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/SorrowsPathScenarioTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "mtg-sets/1993-1999/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/TetravusScenarioTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "mtg-sets/1993-1999/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/TidalFlatsScenarioTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "mtg-sets/1993-1999/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/VodalianWarMachineScenarioTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "mtg-sets/2000-2002/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/AphettoVultureTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "mtg-sets/2000-2002/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/CircleOfSolaceTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "mtg-sets/2000-2002/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/DawningPuristTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "mtg-sets/2000-2002/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/OversoldCemeteryTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "mtg-sets/2000-2002/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/RiptideEntrancerTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "mtg-sets/2003-2007/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/BladewingTheRisenTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "mtg-sets/2003-2007/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/BurrentonForgeTenderScenarioTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "mtg-sets/2003-2007/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/CircuDimirLobotomistScenarioTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "mtg-sets/2003-2007/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/EternalWitnessScenarioTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "mtg-sets/2003-2007/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/GlarewielderScenarioTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "mtg-sets/2003-2007/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/HoofprintsOfTheStagScenarioTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "mtg-sets/2003-2007/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/KrarksThumbScenarioTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "mtg-sets/2003-2007/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/LightningCoilsScenarioTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "mtg-sets/2003-2007/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/MindsEyeScenarioTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "mtg-sets/2003-2007/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/PsychogenicProbeScenarioTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "mtg-sets/2003-2007/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/StormMultipleInstancesTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "mtg-sets/2003-2007/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/StormStackOrderTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "mtg-sets/2003-2007/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/TrygonPredatorScenarioTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "mtg-sets/2003-2007/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/VulturousZombieScenarioTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "mtg-sets/2003-2007/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/WoebearerScenarioTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/AbundantMawScenarioTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/ArchangelAvacynScenarioTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/BrunaTheFadingLightScenarioTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/CaptainOfTheMistsScenarioTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/EerieInterludeScenarioTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/SeraphSanctuaryScenarioTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/SpellQuellerScenarioTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/TaureanMaulerScenarioTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/DaringArchaeologistScenarioTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/ExploitTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/GrolnokTheOmnivoreScenarioTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/LaidToRestScenarioTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/LilianaDreadhordeGeneralScenarioTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/LindenTheSteadfastQueenScenarioTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/OliviasAttendantsScenarioTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/PanickedBystanderScenarioTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/SoulcipherBoardScenarioTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/TrainingTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "mtg-sets/2023/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/AshiokWickedManipulatorScenarioTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "mtg-sets/2023/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/BreechesEagerPillagerScenarioTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "mtg-sets/2023/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/DireFlailScenarioTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "mtg-sets/2023/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/ExperimentalConfectionerScenarioTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "mtg-sets/2023/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/GandalfTheWhiteTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "mtg-sets/2023/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/IntiSeneschalOfTheSunScenarioTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "mtg-sets/2023/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/InvertedIcebergScenarioTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "mtg-sets/2023/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/OrcishBowmastersTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "mtg-sets/2023/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/PreacherOfTheSchismScenarioTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "mtg-sets/2023/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/RoamingThroneScenarioTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "mtg-sets/2023/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/StarvingRevenantScenarioTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "mtg-sets/2023/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/VirtueOfKnowledgeScenarioTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "mtg-sets/2023/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/WizardsRocketsXChoiceScenarioTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "mtg-sets/2023/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/YouCannotPassScenarioTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "mtg-sets/2024/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/AffectionateIndrikScenarioTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "mtg-sets/2024/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/AnnieJoinsUpTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "mtg-sets/2024/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/ArcboundCondorScenarioTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "mtg-sets/2024/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/BriaRiptideRogueScenarioTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "mtg-sets/2024/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/CalamityGallopingInfernoScenarioTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "mtg-sets/2024/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/ConnectingTheDotsScenarioTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "mtg-sets/2024/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/CrimeNovelistScenarioTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "mtg-sets/2024/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/EsotericDuplicatorScenarioTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "mtg-sets/2024/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/InsidiousFungusScenarioTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "mtg-sets/2024/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/InsidiousRootsScenarioTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "mtg-sets/2024/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/LassoedByTheLawScenarioTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "mtg-sets/2024/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/LilahUndefeatedSlickshotScenarioTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "mtg-sets/2024/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/ManifoldMouseValiantTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "mtg-sets/2024/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/MirrorRoomFracturedRealmTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "mtg-sets/2024/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/MistwaySpyScenarioTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "mtg-sets/2024/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/PerimeterEnforcerScenarioTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "mtg-sets/2024/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/QuilledGreatwurmScenarioTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "mtg-sets/2024/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/StormsplitterTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "mtg-sets/2024/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/TinybonesBaubleBurglarScenarioTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "mtg-sets/2024/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/VengefulTrackerScenarioTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "mtg-sets/2025/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/BeatrixLoyalGeneralScenarioTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "mtg-sets/2025/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/CloudMidgarMercenaryScenarioTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "mtg-sets/2025/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/DalkovanEncampmentScenarioTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "mtg-sets/2025/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/EddieBrockScenarioTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "mtg-sets/2025/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/FirebendingScenarioTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "mtg-sets/2025/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/GogoMasterOfMimicryScenarioTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "mtg-sets/2025/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/HideOnTheCeilingTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "mtg-sets/2025/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/IrohTeaMasterScenarioTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "mtg-sets/2025/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/LadyOctopusInspiredInventorScenarioTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "mtg-sets/2025/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/MagitekScytheScenarioTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "mtg-sets/2025/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/MagmakinArtilleristScenarioTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "mtg-sets/2025/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/MaraudingMakoScenarioTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "mtg-sets/2025/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/MobilizeTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "mtg-sets/2025/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/PiratePeddlersTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "mtg-sets/2025/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/PushTheLimitScenarioTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "mtg-sets/2025/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/RandomEncounterScenarioTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "mtg-sets/2025/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/SaltRoadSkirmishScenarioTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "mtg-sets/2025/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/SecludedStarforgeTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "mtg-sets/2025/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/ShadowOfTheGoblinScenarioTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "mtg-sets/2025/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/TheMasamuneScenarioTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "mtg-sets/2025/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/TheWaterCrystalScenarioTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "mtg-sets/2025/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/UltrosObnoxiousOctopusScenarioTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "mtg-sets/2025/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/WeaponsManufacturingScenarioTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "mtg-sets/2025/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/WindcragSiegeTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "mtg-sets/2025/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/ZhaoRuthlessAdmiralScenarioTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "mtg-sets/2026/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/BelladonnaTookScenarioTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "mtg-sets/2026/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/BifurMelodicRiderScenarioTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "mtg-sets/2026/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/CelebrateTheMountainKingScenarioTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "mtg-sets/2026/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/ElrondMoonReaderScenarioTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "mtg-sets/2026/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/GoblinGlasswrightScenarioTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "mtg-sets/2026/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/JenniferWaltersScenarioTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "mtg-sets/2026/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/MaralenFaeAscendantScenarioTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "mtg-sets/2026/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/MorningtidesLightScenarioTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "mtg-sets/2026/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/PrismariTheInspirationScenarioTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "mtg-sets/2026/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/RavenhillFlockScenarioTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "mtg-sets/2026/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/WizardsStaffScenarioTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/event/TriggerAbilityResolverTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/multiplayer/MultiDefenderCombatTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/AbilityIdentityTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/ActivationPriorityScenarioTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/AshlingRimeboundConvokeScenarioTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/BatchMayQuestionTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/CastObserverSourceLkiTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/CastPrioritySbaTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/ChampionKeywordTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/DamageSourceIdentityScenarioTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/DamageSourceTriggerScenarioTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/DeclareBlockersPriorityWindowTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/DelayedIterationObjectIdentityTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/EffectOncePerTurnTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/EnnisAndZaffaiScenarioTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/FabricateScenarioTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/FlankingCombatTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/GiftPromisedAtCastTimeTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/GravediggerCombatDeathTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/LeaOracleFidelityFixesScenarioTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/LinkedExileSourceInstanceTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/LookBackTriggerTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/MirkwoodBatsTokenCreationTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/NestedManaPaymentBoundaryScenarioTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/PausedSpellTriggerFinalizationTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/PostBlockDeclarationPriorityScenarioTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/RenownKeywordTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/ScryTriggerScenarioTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/StackResolutionPriorityTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/SurveilTriggerScenarioTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/TargetedDepartedSourceLkiTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/TdmCardsGroupAScenarioTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/TriggerOrderingConcessionScenarioTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/TriggerOrderingScenarioTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/WoeCardsScenarioTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/state/CapturedFreeCastTraceExpectations.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/state/LegacySuspensionMigrationTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/state/SuspensionTraceTest.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "rules-engine/src/testFixtures/kotlin/com/wingedsheep/engine/support/ScenarioTestBase.kt",
+      "exact_donor": true
+    },
+    {
+      "path": "rules-engine/src/testFixtures/kotlin/com/wingedsheep/engine/support/TriggerOrderTestSupport.kt",
+      "exact_donor": true
+    }
+  ]
+}

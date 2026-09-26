@@ -1,5 +1,7 @@
 package com.wingedsheep.engine.scenarios
 
+import com.wingedsheep.engine.support.chooseTriggerOrderInListedOrder
+
 import com.wingedsheep.engine.core.ActivateAbility
 import com.wingedsheep.engine.core.ChooseNumberDecision
 import com.wingedsheep.engine.core.PendingDecision
@@ -107,7 +109,8 @@ class SecludedStarforgeTest : ScenarioTestBase() {
                     }
                 }
 
-                // Resolve the pump ability on the stack.
+                // Place both Chrome Companion tap triggers above the pump ability.
+                game.chooseTriggerOrderInListedOrder()
                 game.resolveStack()
 
                 // (2) Effect: Grizzly Bears (2/2) should be 4/2 after +X/+0 with X = 2.
@@ -264,6 +267,7 @@ class SecludedStarforgeTest : ScenarioTestBase() {
                 // (We only get here if the failing assertion above is fixed.)
                 // ------------------------------------------------------------
                 game.selectCards(chromes).error shouldBe null
+                game.chooseTriggerOrderInListedOrder()
                 game.resolveStack()
 
                 chromes.forEach { id ->

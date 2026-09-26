@@ -1042,7 +1042,12 @@ class ModalAndCloneContinuationResumer(
         var allEvents = castResult.events
 
         // Detect and process triggers from casting (same as CastSpellHandler does)
-        val triggers = services.triggerDetector.detectTriggers(castResult.newState, allEvents)
+        val triggers = continuation.pendingCostTriggers + services.triggerDetector.detectTriggers(castResult.newState, allEvents)
+        if (!castResult.state.stackResolutionPendingPriority) {
+            return com.wingedsheep.engine.mechanics.CastPriorityProcessor(
+                services.sbaChecker, services.triggerDetector, services.triggerProcessor
+            ).start(castResult.state, continuation.casterId, allEvents, triggers)
+        }
         if (triggers.isNotEmpty()) {
             val triggerResult = services.triggerProcessor.processTriggers(castResult.newState, triggers)
 

@@ -1,0 +1,28 @@
+{
+  "schema": "independent-ancestry-receiving-source-review-v1",
+  "reviewer": "/root/industrial",
+  "role": "non-author of Izzet correction",
+  "source": "063682e4e942652b4791e5d0bba4c071cc1f752a",
+  "tree": "b108295538a70c09b135e995f9600d82c22d146a",
+  "parents": [
+    "77724e82c02ecf42874710cee90848b932eaa1ce",
+    "50eca5fb955013d70ea26c3c6a09efabef4bcff4"
+  ],
+  "decision": "ACCEPT_FOR_RECEIVING_QUALIFICATION_ONLY",
+  "receipt_sha256": "ca2369a139df9390018a03d801c308642f03bd062b62d762401d0b657b6890cd",
+  "verified": [
+    "Exact published50eca merge commit treebb352 and parents verified through GitHub; local05008 accepted receipt source has identical tree.",
+    "Current concrete merge has777 as first parent and50eca as second parent; actual ancestry guard passes without any guard edit.",
+    "Exact diff contains only receipt.json and two original failed ZIP archives. ZIP bytes/SHA/CRC/member set verified and both actual-case audits report0. Immutable original bank manifests in archives match unchanged current banks.",
+    "No executable, fixture, workflow, frozen input, threshold, source pin or collector byte changes."
+  ],
+  "earlier_rejected_candidate": {
+    "source": "2089de0517ce0463c3d92a044a2a713799576bb2",
+    "finding": "Two ignored ZIPs were absent from committed tree despite receipt saying they were preserved. Both are correctly force-added in reviewed063682."
+  },
+  "runtime_accepted": false,
+  "gameplay_authorized": false,
+  "official_games_initialized": 0,
+  "outcomes_exposed": 0,
+  "github_approval_submitted": false
+}

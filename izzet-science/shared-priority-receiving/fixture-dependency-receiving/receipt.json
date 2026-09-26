@@ -1,0 +1,43 @@
+{
+  "schema": "izzet-shared-fixture-dependency-correction-v1",
+  "failed_source": "77724e82c02ecf42874710cee90848b932eaa1ce",
+  "failed_source_tree": "c25a3994dbdb2c582506c411d536f1c4fe12e18d",
+  "run_id": 36263920495,
+  "job_id": 108464833731,
+  "artifact_id": 10913560242,
+  "archive_sha256": "79b787595ba84e167db909a51f1e62d78e778289ca62c90d597c061ec2792b35",
+  "archive_bytes": 239541,
+  "archive_path": "izzet-science/shared-priority-receiving/fixture-dependency-receiving/original-vines-compile-failure.zip",
+  "actual_prior_suites": [
+    {
+      "xml": "mtg-sdk/build/test-results/test/TEST-com.wingedsheep.sdk.serialization.PreventTargetingSerializationTest.xml",
+      "class": "com.wingedsheep.sdk.serialization.PreventTargetingSerializationTest",
+      "cases": 3,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0
+    }
+  ],
+  "failed_task": ":rules-engine:compileTestKotlin",
+  "exact_vines_cases_executed": 0,
+  "diagnosis": "The unchanged canonical ActivationPriorityScenarioTest imports FerocityOfTheHuntPrerelease at five callsites. The receiving assembly excluded that test-only definition, so all rules-engine test compilation was blocked.",
+  "correction": {
+    "donor_source": "77c7aad0bb2ded2c0372087d94f66ccbde0f7d09",
+    "path": "rules-engine/src/testFixtures/kotlin/com/wingedsheep/engine/research/ferocity/FerocityOfTheHuntPrerelease.kt",
+    "sha256": "e4d4c081c89788af1fad06708a35ad447a93444b2fe4ba038131b7f7222bea8b",
+    "exact_donor_bytes": true,
+    "original_test_bodies_unchanged": true,
+    "production_registry_or_deck_changes": false,
+    "priority_stages": 27,
+    "priority_cases": 220,
+    "cast_observer_stages": 18,
+    "cast_observer_cases": 135,
+    "source_pins_per_bank": 365
+  },
+  "scope": "Fixed shared test-bank dependency only; no Ferocity research deck, pilot policy, seed or gameplay conclusion is received.",
+  "prior_ancestry_failure_preserved": true,
+  "gameplay_authorized": false,
+  "official_seeds_consumed": 0,
+  "official_games_initialized": 0,
+  "outcomes_exposed": 0
+}

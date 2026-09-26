@@ -1,5 +1,7 @@
 package com.wingedsheep.engine.scenarios
 
+import com.wingedsheep.engine.support.chooseTriggerOrderInListedOrder
+
 import com.wingedsheep.engine.support.ScenarioTestBase
 import com.wingedsheep.sdk.dsl.Effects
 import com.wingedsheep.sdk.dsl.card
@@ -61,6 +63,8 @@ class MirkwoodBatsTokenCreationTest : ScenarioTestBase() {
                 .build()
 
             game.castSpell(1, "Make Three Tokens").error shouldBe null
+            game.resolveStack()
+            game.chooseTriggerOrderInListedOrder()
             game.resolveStack()
 
             game.findPermanents("Spirit Token").size shouldBe 3

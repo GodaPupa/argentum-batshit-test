@@ -1,0 +1,32 @@
+{
+  "schema": "industrial-immutable-responder-root-source-review/v1",
+  "reviewer": "/root",
+  "author": "/root/industrial",
+  "independent_of_author": true,
+  "github_approval": false,
+  "source": "8dc597494bbff5cf89c65c1a6f1d5605f0517b64",
+  "tree": "19a45580dbc70825d045fc3c0482869a7a25006c",
+  "disposition": "ACCEPT_FOR_FROZEN_MECHANICAL_EQUIVALENCE_AND_RECEIVING_QUALIFICATION",
+  "source_pins": {
+    "ai/src/main/kotlin/com/wingedsheep/ai/engine/DecisionResponder.kt": "a7a444f594bef0477230b39e7c8f822b0148ecb7c0e454fd0cb570433e57347f",
+    "ai/src/main/kotlin/com/wingedsheep/ai/engine/GameSimulator.kt": "e82460f8bf5554dd938355a711fbec5031e61d20638610859067d87752ac418a",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/mana/OptionalCastAffordability.kt": "5102111629a564fa99e170714c7053bf0b8785b15f350af7447a677608a00c58",
+    "ai/src/main/kotlin/com/wingedsheep/ai/engine/YesNoDecisionStrategy.kt": "8a6b0197a183b9f02d33cce8a710cc30ed298913df1a6b5572e3e3fefedea93e"
+  },
+  "verified": [
+    "Complete DecisionResponder delta and full GameSimulator delta/OptionalCastAffordability/immutable enum read.",
+    "Removing exactly four version-selection additions reconstructs canonical77 DecisionResponder byte-for-byte.",
+    "Legacy respondYesNo function is byte-identical to accepted1fe after only its method-name change.",
+    "GameSimulator and OptionalCastAffordability are byte-identical to canonical77.",
+    "Legacy early return precedes affordability/completed-branch logic; followup read is current-strategy-only and legacy never writes it.",
+    "Unchanged default strategy preserves canonical current behavior; immutable constructor selection does not alter engine legality or card definitions.",
+    "Fixed10/nine bindings separately reviewed by non-author Ferocity at SHA5ec10af287243223bcd9d984b1b9eef3b4e2da3ef0d297c887b2ae8e1ec13244."
+  ],
+  "limitations": [
+    "Source review only: fixed10 and all original receiving/runtime gates still required.",
+    "Passing canonical default-strategy tests does not qualify the explicitly selected Industrial legacy instance.",
+    "No pilot tuning, development budget change or official gameplay is authorized."
+  ],
+  "official_games": 0,
+  "gameplay_authorized": false
+}

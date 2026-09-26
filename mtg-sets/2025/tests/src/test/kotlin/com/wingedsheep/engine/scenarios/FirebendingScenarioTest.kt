@@ -1,5 +1,7 @@
 package com.wingedsheep.engine.scenarios
 
+import com.wingedsheep.engine.support.chooseTriggerOrderInListedOrder
+
 import com.wingedsheep.engine.state.components.player.ManaPoolComponent
 import com.wingedsheep.engine.support.GameTestDriver
 import com.wingedsheep.engine.support.TestCards
@@ -111,7 +113,8 @@ class FirebendingScenarioTest : FunSpec({
         driver.removeSummoningSickness(fb)
 
         driver.passPriorityUntil(Step.DECLARE_ATTACKERS)
-        driver.declareAttackers(attacker, listOf(sages, fb), defender)
+        driver.declareAttackers(attacker, listOf(sages, fb), defender).error shouldBe null
+        driver.chooseTriggerOrderInListedOrder()
         driver.resolveStack()
 
         driver.combatMana(attacker).size shouldBe 3

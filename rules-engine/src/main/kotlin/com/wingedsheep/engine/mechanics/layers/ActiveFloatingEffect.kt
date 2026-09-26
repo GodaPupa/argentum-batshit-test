@@ -194,6 +194,13 @@ sealed interface SerializableModification {
     @Serializable
     data class GrantKeyword(val keyword: String) : SerializableModification
 
+    /** Rule restriction, read by targeting rather than projected as a removable ability. */
+    @Serializable
+    data class PreventTargeting(
+        val controllers: Set<EntityId>,
+        val targetObject: com.wingedsheep.engine.state.ObjectRef? = null
+    ) : SerializableModification
+
     @Serializable
     data class RemoveKeyword(val keyword: String) : SerializableModification
 
@@ -857,5 +864,6 @@ fun SerializableModification.toModification(): Modification = when (this) {
     is SerializableModification.DoubleDamageToPlayer -> Modification.NoOp
     // OverrideImage is display-only - it changes no characteristic, read directly by ClientStateTransformer
     is SerializableModification.OverrideImage -> Modification.NoOp
+    is SerializableModification.PreventTargeting -> Modification.NoOp
     is SerializableModification.RemoveAllAbilities -> Modification.RemoveAllAbilities
 }

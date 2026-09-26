@@ -1,0 +1,436 @@
+{
+  "schema": "izzet-shared-ai-closure-receiving-v1",
+  "status": "PROSPECTIVE_REQUIRES_INDEPENDENT_SOURCE_AND_ACTUAL_RECEIVING_REVIEW",
+  "author": "/root/izzet",
+  "predecessor": "0aae3a480870c437b47fef8b8641bde83bb11079",
+  "predecessor_tree": "9f617df1ed940522a87b6ad46d92212a04adfcd2",
+  "original_run": 36265243204,
+  "original_artifacts": {
+    "priority": {
+      "artifact": 10914447175,
+      "archive": "priority-artifact.zip",
+      "bytes": 784185,
+      "sha256": "14b8991cb788e2a2547c20d9e634e50fe1d836acbc113bfc3c545be8076fec31",
+      "members": 60,
+      "actual_cases": 220,
+      "stage_count": 27,
+      "failures": [
+        {
+          "stage": "ai-decision-trace",
+          "case": "genuine up-to-one branch chooses a beneficial legal singleton",
+          "kind": "failure",
+          "message": "org.opentest4j.AssertionFailedError: Missing elements from index 0\nexpected:<[card-1002]> but was:<[]>"
+        },
+        {
+          "stage": "ai-decision-trace",
+          "case": "genuine up-to-one branch declines when harmful singleton and empty equals decline",
+          "kind": "failure",
+          "message": "org.opentest4j.AssertionFailedError: true should equal false"
+        },
+        {
+          "stage": "ai-decision-trace",
+          "case": "genuine up-to-one branch preserves the superior singleton among multiple candidates",
+          "kind": "failure",
+          "message": "org.opentest4j.AssertionFailedError: Element differ at index: [0]\nexpected:<[card-1002]> but was:<[card-1003]>"
+        }
+      ],
+      "errors": 0,
+      "skipped": 0,
+      "source_pins": 365,
+      "stages": [
+        {
+          "stage": "priority",
+          "cases": 17,
+          "exit": 0,
+          "xml_sha256": "37a9952eb98ed6f3eb8c2299644fdb242a868d2f3ac5fb278107e72112349141"
+        },
+        {
+          "stage": "stack-war",
+          "cases": 15,
+          "exit": 0,
+          "xml_sha256": "3fcabcff6e8a8e70a8313116990fec8d7dc66eea7aa036bf90fc278a51fa54c3"
+        },
+        {
+          "stage": "continuations",
+          "cases": 4,
+          "exit": 0,
+          "xml_sha256": "7a9da36b78a121aed7345708c763efbbbc40c10de19952bfd0cb3be2ce99b857"
+        },
+        {
+          "stage": "ordinary-cleanup",
+          "cases": 2,
+          "exit": 0,
+          "xml_sha256": "3ab736e51904db14c6ff79a32ddd8c037396d287edc0a854225744cba0f85e24"
+        },
+        {
+          "stage": "legend-rule",
+          "cases": 4,
+          "exit": 0,
+          "xml_sha256": "6d5e0c93dfb4795c8dce5f8e52d5a91f0dac3e281576915b1601487035b0e7fe"
+        },
+        {
+          "stage": "leave-game",
+          "cases": 16,
+          "exit": 0,
+          "xml_sha256": "f57ec776d537660131acf5d3e4cf47b1566e875c295adcb908d34c35fa26cfa3"
+        },
+        {
+          "stage": "team-priority",
+          "cases": 12,
+          "exit": 0,
+          "xml_sha256": "41bf8e628859124e028286e4331573affde96d30d16b7a97d137c80fe5f7034e"
+        },
+        {
+          "stage": "flash-permission",
+          "cases": 9,
+          "exit": 0,
+          "xml_sha256": "2c0b6ac4fd2272c22e5e352080df43a22ea1cc41a8dfd2a0902ec3fcb8b8c5f9"
+        },
+        {
+          "stage": "legacy-traces",
+          "cases": 5,
+          "exit": 0,
+          "xml_sha256": "1d7560f826182fefa65d3289d3f61719eb249f0c9d0eae1dc00adc98c8705224"
+        },
+        {
+          "stage": "legacy-serialization",
+          "cases": 19,
+          "exit": 0,
+          "xml_sha256": "8daadabc2b610738283538ab79d030e5d18cbf500fadecc7ea68f293abbdde3a"
+        },
+        {
+          "stage": "circle-solace",
+          "cases": 4,
+          "exit": 0,
+          "xml_sha256": "1d0b100f6318a3678a7d432a43d16e6b5977a8b4b1ab658be39d2454c81d8d27"
+        },
+        {
+          "stage": "scarecrow",
+          "cases": 4,
+          "exit": 0,
+          "xml_sha256": "396addc811111efb7d23475c551808177b779d431bea0cc081873f5db0992f38"
+        },
+        {
+          "stage": "abundant-maw",
+          "cases": 2,
+          "exit": 0,
+          "xml_sha256": "d83618bed96c4dc209cf70b0e0c4ec949ba2f7a227dfe71ddc08a372d578b401"
+        },
+        {
+          "stage": "spell-queller",
+          "cases": 4,
+          "exit": 0,
+          "xml_sha256": "cdd1626c9f097b7db5b1cb5d12bec988910788903f417de141ec67678b161224"
+        },
+        {
+          "stage": "mauler",
+          "cases": 3,
+          "exit": 0,
+          "xml_sha256": "86a3c3509292a7a0e28e220e6034b125d703d9fd050e6f653d30a4fa58096b8b"
+        },
+        {
+          "stage": "ai-decision-trace",
+          "cases": 7,
+          "exit": 1,
+          "xml_sha256": "4c15aff3366f8ce1f5609c2d7c17b5310816f4eb915a4f5af0ea34e617d03edd"
+        },
+        {
+          "stage": "cast-sba",
+          "cases": 12,
+          "exit": 0,
+          "xml_sha256": "3de0aa3ae0a5862c6e89e839ffc1d8b176ebf2b77d5c44ffdf6322388205fba5"
+        },
+        {
+          "stage": "death-trigger",
+          "cases": 4,
+          "exit": 0,
+          "xml_sha256": "37fa97ac13cb7c1ac7c9e958742d1da4d27352b05ad0bc7e51c7bd05b41d40ff"
+        },
+        {
+          "stage": "krarks-thumb",
+          "cases": 5,
+          "exit": 0,
+          "xml_sha256": "279d8c5c505d73f235572b54244f81974c3d8f5b6e9763484df81c3fc8771a31"
+        },
+        {
+          "stage": "prismari",
+          "cases": 3,
+          "exit": 0,
+          "xml_sha256": "67e131f3b1591e8c5cd0ab7d11617d274b079bc362d7c793b6bf542121beec87"
+        },
+        {
+          "stage": "free-cast",
+          "cases": 8,
+          "exit": 0,
+          "xml_sha256": "d6608e4f995ef703bf563540d8cbd02a2ebbcab13728879f6f704d209726be18"
+        },
+        {
+          "stage": "modal-cost",
+          "cases": 8,
+          "exit": 0,
+          "xml_sha256": "eb5369fbc5b637eceb2280c1f54c3494da62399edf0e8943fc4e5b5e441c5c01"
+        },
+        {
+          "stage": "modal-cost-enumeration",
+          "cases": 2,
+          "exit": 0,
+          "xml_sha256": "888fcdc9d9afbecf0a9d0ce719382b508811825f1a1c9ce94c8f927917c8fabb"
+        },
+        {
+          "stage": "reveal-cost",
+          "cases": 10,
+          "exit": 0,
+          "xml_sha256": "17a7a2649a141c9a47d41c6d64e95c13fd6588444ff43664ea917d3565a2d5ee"
+        },
+        {
+          "stage": "commander-choice",
+          "cases": 17,
+          "exit": 0,
+          "xml_sha256": "a3f83e687c37ad81dbced0c69cb52c07cf25fa20bb9bf4d966411dc3c44bb1bd"
+        },
+        {
+          "stage": "team-loss",
+          "cases": 10,
+          "exit": 0,
+          "xml_sha256": "37ef2d3ab943e34f4a92681e9455616784018cf7d8094a25a4c23e212a6d77d7"
+        },
+        {
+          "stage": "team-versus-team",
+          "cases": 14,
+          "exit": 0,
+          "xml_sha256": "10103d3a38a90819df799db0406fb889af9b0b8b16644c5a9c84f1e9d5d9580e"
+        }
+      ],
+      "independent_artifact_review_required": true
+    },
+    "cast-observer": {
+      "artifact": 10913912512,
+      "archive": "cast-observer-artifact.zip",
+      "bytes": 581505,
+      "sha256": "6c228bd4f3d81257f307357dd20b34b565599d28e0270b610e00a3573eeea8e8",
+      "members": 42,
+      "actual_cases": 135,
+      "stage_count": 18,
+      "failures": [],
+      "errors": 0,
+      "skipped": 0,
+      "source_pins": 365,
+      "stages": [
+        {
+          "stage": "PostBlockDeclarationPriorityScenarioTest",
+          "cases": 16,
+          "exit": 0,
+          "xml_sha256": "aa2abd91125550b261be1ac026d4e98cbb93c515d7835391bf048a0565e7d182"
+        },
+        {
+          "stage": "DeclareBlockersPriorityWindowTest",
+          "cases": 3,
+          "exit": 0,
+          "xml_sha256": "5026c0715bcddc63ce08e256aca671b5dc0829118e5e3b46c40571e39d28870d"
+        },
+        {
+          "stage": "MultiDefenderCombatTest",
+          "cases": 4,
+          "exit": 0,
+          "xml_sha256": "3689d0d1c601c9341da8ea52a6f1edea1610a1685c6e3b93c2ec14b77f47849f"
+        },
+        {
+          "stage": "TwoHeadedGiantCombatTest",
+          "cases": 9,
+          "exit": 0,
+          "xml_sha256": "9e2a848a057e26dbf2e282f395a634fe4fda334253a1147d33318de5a0b58ebc"
+        },
+        {
+          "stage": "ActivationPriorityScenarioTest",
+          "cases": 9,
+          "exit": 0,
+          "xml_sha256": "51a7c7ccd6296fbb2c455338806a824426fe71e22a76182b76cef78d13b41cda"
+        },
+        {
+          "stage": "NestedManaPaymentBoundaryScenarioTest",
+          "cases": 12,
+          "exit": 0,
+          "xml_sha256": "16cd9927f22d014837a5e6d2250971af56722d33d952d60464c93fa961f3280e"
+        },
+        {
+          "stage": "BatchMayQuestionTest",
+          "cases": 7,
+          "exit": 0,
+          "xml_sha256": "e61c662b100f77443719b21af0baf1688957fbd6cbec69e7ca00d035e2d6b054"
+        },
+        {
+          "stage": "TriggerOrderingScenarioTest",
+          "cases": 6,
+          "exit": 0,
+          "xml_sha256": "2eb26ec2a00a72cf7a22f659bcf1622ae0abb243d6cc1fd2e42df08a94c11a58"
+        },
+        {
+          "stage": "TriggerOrderingConcessionScenarioTest",
+          "cases": 1,
+          "exit": 0,
+          "xml_sha256": "7e85b5c933e15eeaf9bae4e04587232997000f710aefe1c923de3f4c193870ef"
+        },
+        {
+          "stage": "DamageSourceIdentityScenarioTest",
+          "cases": 5,
+          "exit": 0,
+          "xml_sha256": "f59517113bc84f384770c6cd65c301a10c89444963419836d44c3029144ec41b"
+        },
+        {
+          "stage": "DamageSourceTriggerScenarioTest",
+          "cases": 6,
+          "exit": 0,
+          "xml_sha256": "5c6a58ac1b6e7c8896b4dc1c2f162ae7041fdad405958498f29ac2d4eb271122"
+        },
+        {
+          "stage": "TargetedDepartedSourceLkiTest",
+          "cases": 4,
+          "exit": 0,
+          "xml_sha256": "11d3f370a47878fef50af1bf0358cd46803cb39de20f891aeaf893495e589e61"
+        },
+        {
+          "stage": "PredicateEvaluatorRecordTest",
+          "cases": 19,
+          "exit": 0,
+          "xml_sha256": "c560dcdd38fe59048ffdaf59ce976c1151d0959d58d30e0d77a7af6bfb0799d0"
+        },
+        {
+          "stage": "PostBlockDeclarationSessionTest",
+          "cases": 2,
+          "exit": 0,
+          "xml_sha256": "b51c7d0fbf98d4b220ee9550dd220583afdca746a18feeb2c69f121cfab659a1"
+        },
+        {
+          "stage": "TwoHeadedGiantSessionTest",
+          "cases": 10,
+          "exit": 0,
+          "xml_sha256": "1f156e820005ad70594d7e60d93cfe1c42c4cf0b88862e254dafd01f501cff07"
+        },
+        {
+          "stage": "ManaAbilityColorChoicePipelineTest",
+          "cases": 4,
+          "exit": 0,
+          "xml_sha256": "897369a0053368f3c9175288f78e9fef3c3092ee532634e48fdddc85193ef9ce"
+        },
+        {
+          "stage": "MoveToZoneEffectExecutorTest",
+          "cases": 10,
+          "exit": 0,
+          "xml_sha256": "23478207bc085b28c51e0b5ab26ad7144559c64046a85d2301f67b1d15630bab"
+        },
+        {
+          "stage": "CastObserverSourceLkiTest",
+          "cases": 8,
+          "exit": 0,
+          "xml_sha256": "95e4bc9ec0cc04fdd560dae93795ecc344761ed230d1c9d914307e63eac7c376"
+        }
+      ],
+      "independent_artifact_review_required": true
+    }
+  },
+  "diagnosis": "The original27/220 bank executed completely:217pass,3failure in completed-single-card optional selection. The receiving source lacked canonical GameSimulator/DecisionResponder/OptionalCastAffordability closure; original test declarations remain unchanged.",
+  "shared_donor": {
+    "source": "8dc597494bbff5cf89c65c1a6f1d5605f0517b64",
+    "tree": "19a45580dbc70825d045fc3c0482869a7a25006c",
+    "exact_generic_files_sha256": {
+      "ai/src/main/kotlin/com/wingedsheep/ai/engine/DecisionResponder.kt": "a7a444f594bef0477230b39e7c8f822b0148ecb7c0e454fd0cb570433e57347f",
+      "ai/src/main/kotlin/com/wingedsheep/ai/engine/GameSimulator.kt": "e82460f8bf5554dd938355a711fbec5031e61d20638610859067d87752ac418a",
+      "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/mana/OptionalCastAffordability.kt": "5102111629a564fa99e170714c7053bf0b8785b15f350af7447a677608a00c58",
+      "ai/src/main/kotlin/com/wingedsheep/ai/engine/YesNoDecisionStrategy.kt": "8a6b0197a183b9f02d33cce8a710cc30ed298913df1a6b5572e3e3fefedea93e"
+    },
+    "reviewer": "/root, non-author of Industrial implementation",
+    "review_scope": "Source accepted for receiving qualification only; no donor runtime or project-policy acceptance is transplanted."
+  },
+  "izzet_policy_governance": {
+    "accepted_behavior": "Phase14 Capsize tutor policy plus accepted Phase19 response and Phase25-28 public action pipeline remain frozen.",
+    "accepted_runtime_boundary": "Phase30-33 Python runner/journal/authorization/adapter remain unchanged. No accepted Izzet Kotlin gameplay actor or responder construction exists; bootstrap/readiness do not instantiate AIPlayer or DecisionResponder.",
+    "generic_test_scope": "Current canonical default responder is received for original deterministic repository compatibility tests. The immutable legacy strategy is preserved as generic capability, but no Izzet runtime strategy is selected or authorized.",
+    "future_admission": "Complete actor/opponent policy, original accepted semantics, development budget, replay and exact runtime identity must be independently qualified and frozen before official Position1.",
+    "unchanged_python_source_sha256": {
+      "izzet-science/sim/audit_v09_capsize_interaction_artifact.py": "b935787a16806a3c86739b353e326096766640d82127e6e72e89cc334d279358",
+      "izzet-science/sim/audit_v09_capsize_interaction_output.py": "8f59c831f611e39d4b723714e764dae1ac2b4b1ce11d40052bcdd336bcd86583",
+      "izzet-science/sim/audit_v09_capsize_paired_artifact.py": "a704165fc56dfedbf006bb3bfd2d910560ed38e5835a66cfcf0b3b288f3e165b",
+      "izzet-science/sim/audit_v09_capsize_paired_output.py": "4a78a6607fb8275fab1dd40b09d4b2adab4618b97e55af02534a421018f6fe4d",
+      "izzet-science/sim/audit_v09_output.py": "357773e021c3dbb2adc8ec40afcaae095342876bec88ecff0b3cfa506d590cfc",
+      "izzet-science/sim/audit_v09_tutor_opportunity_output.py": "35b753eb3aaeeab8ae080790fafd9f06762490e42a18b7b8a10837234467e52b",
+      "izzet-science/sim/capsize_event_ledger.py": "810082856bd9bcd1dd4e74bfa03255d8bac437a0f424a16b8a34cee82f207977",
+      "izzet-science/sim/capsize_fixture_action_generator.py": "5e206280c5adf38e1085b07a0e887eb5f2bc4e25c035ed5d8e946f5cc3ab5959",
+      "izzet-science/sim/capsize_interaction.py": "df914d8149c0f264ee84732bfb269dd04818c6e1ef23d82c8972b25d7bf439ad",
+      "izzet-science/sim/capsize_opponent_action_policy.py": "ae98059481dde833a2777093c83e28cb67e5c7f23d9876cab6227b7fd05cdc6a",
+      "izzet-science/sim/capsize_response_policy.py": "65b605fd0c62c5dbf9973997f4ddb55c9d026814aeba7f3d7a87a679c0987197",
+      "izzet-science/sim/capsize_state_adapter.py": "fa43d97dc761a380bc8128b866e5f665bb645966571839a27c4b50a853fb4679",
+      "izzet-science/sim/capture_v09_phase24_veteran_beastrider.py": "673b0c07959937a549823b8a410cdc764649e40e6f8237060b3eca12c4c08261",
+      "izzet-science/sim/capture_v09_phase25_veteran_beastrider_rules.py": "f09fcdfb5b9aba27a30b11b84c9142c2295d7483df7b798d298e19306a132bed",
+      "izzet-science/sim/compare_v07d.py": "0f3265a128ee896f771a7a956c36dc796a02c382ed38f3a30f5bc7b135b859ed",
+      "izzet-science/sim/compare_v08a.py": "2df9f8afb6424a696b58fa6a4d86089aaa7e9f1ecc132ac4a15d7facc8c3bad9",
+      "izzet-science/sim/mana_harness.py": "9d4eab04e694acba246528419a2d5667c31e056348d58f0bf5c8628d7d35d470",
+      "izzet-science/sim/observed_action_behavior.py": "82df64d6d0dcc8da367f2c3a7f6d298900f97e8b4973c68a3f94172158370f2b",
+      "izzet-science/sim/paired_capsize_contract.py": "b5025863791e36fa3beb69a8b429b06e13b2e782841b408d750cf3cfcf4c55ca",
+      "izzet-science/sim/paired_capsize_interaction_contract.py": "136b8b43d1c7e42352b783fa2058f706bcd2737228d674ff76c10e14c1460c9e",
+      "izzet-science/sim/phase31_seed_vector.py": "4c2870d7f01238dfe4317e057f0788c2ba7f434335e820140b62c3fb1442e54a",
+      "izzet-science/sim/phase32_execution_readiness.py": "ef7b07c3b87d7b7f37cd901b177231a1e25f21992abce0b802e1a06906cbca5b",
+      "izzet-science/sim/phase33_position1_authorization.py": "cd1384d8bee4ad8786b1457247b1872fa5e1e7c0b68e56babd2664156a434273",
+      "izzet-science/sim/phase33_position1_execution_adapter.py": "624dd671b6cc14b445ba13448f928f91aeffc65d78cc21a5c12e7e49d2aab115",
+      "izzet-science/sim/public_action_compiler.py": "131bdd91bd04e479fdc4a6bb55ea4f394e459ac825284754046f93cac1aefce6",
+      "izzet-science/sim/public_integration.py": "3cc0d8b14b5f3f3b0cb57e859b8875abe2347a4e432ae06b5b3e6562196ebf4a",
+      "izzet-science/sim/run_v09_capsize_interaction_paired_pilot.py": "824dd8dadc2cb1c1475c9349ad769d2d568024e5d3899d01010f746823e02e2a",
+      "izzet-science/sim/run_v09_capsize_paired_pilot.py": "24c6c6e6e77a212abef8f82fb0ae73463b61fb2b50bb3d2443a3b7a5d4813049",
+      "izzet-science/sim/run_v09_capsize_paired_pilot_v2.py": "21e98f9764d7c0b0ed906c45adea05e441d2b02ee8f3279ef29e8c32510afe97",
+      "izzet-science/sim/run_v09_capsize_paired_pilot_v3.py": "fa6e3c7a0de99ed2620c2d401370c7bface89f0a1e6ceb37103678c2090f51d8",
+      "izzet-science/sim/sampled_pilot_runner.py": "864d46745c7ffd1c1e9c8eef48c5a0ad14b34938aa0a6066d94ab7a394516fc3",
+      "izzet-science/sim/validate_backup_tutor_connectivity.py": "a2b92b24518a1947572ded353e81ac57d44ef6d9785bf005aee7d90ae871d9e3",
+      "izzet-science/sim/validate_backup_tutor_opportunities.py": "04070d506573b9b1fbdf3c380a9d8b7861f64729e4e2b6f2bac2b4d898966d00",
+      "izzet-science/sim/validate_capsize_tutor_instrumentation.py": "81017eb2164ef13e01c515d68c40f4024c219d1506ac78faac0fab509e3d144f",
+      "izzet-science/sim/validate_capsize_tutor_policy.py": "2f6bbd700bbe2362c751e5ad500b38bff4c675a267d89bc2e9ed15c9a81cbd77",
+      "izzet-science/sim/validate_commander_independent.py": "6f59558bf72fffcbdbef2be949c55b534291fd2c003a0cd72554a2cc8b239e18",
+      "izzet-science/sim/validate_multiplayer_kill.py": "ad91a5ac0a0c2e6e8b377ee3c5014612d51dad6ea7269b9b6d78b07622c9af9d",
+      "izzet-science/sim/validate_paired_capsize_contract.py": "9dd8a38be3f78c81dfb266d3bb7cd396a9fdeb149d74633ef5f1a72d60e6959c",
+      "izzet-science/sim/validate_paired_rng_isolation.py": "2cde4f6923538da0c03aef4dd01a6bab88035af8ff6adffa804429735e778717",
+      "izzet-science/sim/validate_v08a.py": "333b49ca5d8edc643c4e54feec30c0625f31be5ec368de7c4daafa633943f7aa",
+      "izzet-science/sim/validate_v09_capsize_event_ledger.py": "ef08f454e96e340d3dd5fcad01cc8ee48b256b38d39ef996be1b514a483f295c",
+      "izzet-science/sim/validate_v09_capsize_fixture_action_generator.py": "36b72b8eadfb2d98c403e750dc0b8fa7ee7c048e63fd25cd442ef2832b9a36c3",
+      "izzet-science/sim/validate_v09_capsize_interaction.py": "5b2afa73fb9635f6ef4d171a129d63b93ffc4a8a7d449560f21933408eac566f",
+      "izzet-science/sim/validate_v09_capsize_interaction_contract.py": "5f3e472015d44710df1335a687bc2b582073554a5c279e468b7728ae62f15465",
+      "izzet-science/sim/validate_v09_capsize_interaction_execution.py": "160dd66019e43c130f4cb61bdb68c142ed460e39677e0d187f4cdbc9a023a19b",
+      "izzet-science/sim/validate_v09_capsize_opponent_action_policy.py": "edf91bc77d9eeb02a3d6f0f80170e2a43edcaf6261102931c2e0db9faf6da38a",
+      "izzet-science/sim/validate_v09_capsize_paired_execution.py": "0ffecc2114558d638d63f83f294062ee8a60c0aeca73d1b8cf5e425a68ed991f",
+      "izzet-science/sim/validate_v09_capsize_paired_execution_v2.py": "a4bcc1fca4aedc8b785e9a1cd6f3a79dac49a2270042e358a9056c0854c79f43",
+      "izzet-science/sim/validate_v09_capsize_paired_execution_v3.py": "7cf02bff4de0f8f233560330784078001dace73479e60a59d6c3f2524776ac6d",
+      "izzet-science/sim/validate_v09_capsize_response_policy.py": "b6fb9d6a84a6ce84c875d2320d6e847cc9f3abbce81b4153f0c004e1d52cb82e",
+      "izzet-science/sim/validate_v09_capsize_state_adapter.py": "93143ea067103352e5f78cac61ab480888cee8500f35bf82de705a5330957f66",
+      "izzet-science/sim/validate_v09_interaction_integrity_sweep.py": "aa8f92cab4b06e6117fd45b458ddaa9983582b9cfdb559fc72cfc96da791f215",
+      "izzet-science/sim/validate_v09_paired_integrity_sweep.py": "ec95e1fb3d8a618d80db514e4ebcbb6b8815668816cb47ed7db3a90fa1f4141d",
+      "izzet-science/sim/validate_v09_payment_recovery.py": "1f01a1fb4f79907285740cab95aa2a563ca5c6ccd5954dd0001517c83ec61c82",
+      "izzet-science/sim/validate_v09_phase24_veteran_beastrider_identity.py": "a4d768af9da73420b805065b34a66247b45f96388359563449cdf8bd670bcd22",
+      "izzet-science/sim/validate_v09_phase25_veteran_beastrider_action_surfaces.py": "19aeaeeedcf0727c9d3a929e8496fc7db539009b5cfb7459ec60a449c49032ea",
+      "izzet-science/sim/validate_v09_phase26_public_state_compiler.py": "fe855f7cf5b68b7097838d64479320f28f3fb39a3560ce932ec8332af254860e",
+      "izzet-science/sim/validate_v09_phase27_observed_action_behavior.py": "6db79423cde02f529567a0676c0f8f46e00380885a4579306616a35043cf4d8c",
+      "izzet-science/sim/validate_v09_phase28_public_integration.py": "d86af7d9226712bf33a1482988e4c6185e69041c91f43d0326afdce162701430",
+      "izzet-science/sim/validate_v09_phase29_sampled_pilot_design.py": "6b56da1af4861d23092c2d3772b4fad6d6bdd3eb750ee48df91ad82b63796ed0",
+      "izzet-science/sim/validate_v09_phase30_runner_construction.py": "4e98c3b7579fa76fad392800a98b755c0e132823243d4f6dd8e0c99b6d0b6989",
+      "izzet-science/sim/validate_v09_phase31_metadata_repair.py": "5271770c5e99f6d695746987c5ab15fb5a841ddc2189362b7e2e049afca5b33f",
+      "izzet-science/sim/validate_v09_phase31_seed_tooling.py": "2fe72e3b27fe264234611606f92a171ae1fbf13aa16d6cbf8b56cb4b10f8f02f",
+      "izzet-science/sim/validate_v09_phase32_execution_readiness.py": "8c412cfbaa495e5d28354d9d0e2020aebc868fd0274fa8fadefb4c488be8a40d",
+      "izzet-science/sim/validate_v09_phase33_position1_authorization.py": "ca6799e3e1cddf3b29aee844586417c52667b8d2e39e70f35404e577a04a9393",
+      "izzet-science/sim/validate_v09_position1_engine_gap_inventory.py": "cdb08dbcc7b07bc0f272f70673c2b9f708a33ef7a1b087e7440fb75286318f74",
+      "izzet-science/sim/validate_v09_position1_engine_gap_triage.py": "cc6535e8d040d3d579c27898ad4628ffd73305e241010f37770090d46462f34a",
+      "izzet-science/sim/validate_v09_position1_execution_adapter.py": "3b89992b3feccfd8a5b70e338a65f5971f20d0e970ebf98c1aa0bc14b8132049"
+    }
+  },
+  "unchanged_banks": {
+    "priority": {
+      "stages": 27,
+      "cases": 220
+    },
+    "cast-observer": {
+      "stages": 18,
+      "cases": 135
+    }
+  },
+  "full_ci_required": true,
+  "frozen_baseline_test_unchanged": true,
+  "gameplay_authorized": false,
+  "official_seeds_consumed": 0,
+  "official_games_initialized": 0,
+  "outcomes_exposed": 0
+}

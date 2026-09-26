@@ -89,7 +89,9 @@ class DeathAndLeaveTriggerDetector(
         // For "When this creature dies" - the creature might be in graveyard now
         // Look up abilities by card definition
         val abilities = abilityResolver.getTriggeredAbilities(entityId, info.cardDefinitionId, state, statics)
-        val controllerId = event.ownerId
+        // CR 603.3a / 603.10: the death trigger belongs to the controller immediately
+        // before departure, even though the card is now in its owner's graveyard.
+        val controllerId = event.lastKnown?.controllerId ?: event.ownerId
 
         for (ability in abilities) {
             if (!matcher.isDeathTrigger(ability.trigger)) continue
