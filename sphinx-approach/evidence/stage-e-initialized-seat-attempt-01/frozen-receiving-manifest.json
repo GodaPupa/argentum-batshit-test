@@ -1,9 +1,9 @@
 {
   "schema": "sphinx-initialized-seat-receiving/v1",
-  "status": "SAME_FIXED16_RETRY_AFTER_MULLIGAN_FIXTURE_CORRECTION",
+  "status": "PROSPECTIVE_AWAIT_NON_AUTHOR_SOURCE_GATE_REVIEW",
   "receiving_base": "c0ffc71449068e8b6329d7c437127d800474884c",
-  "local_source_candidate": "d0bdf273b06e58d06d6388f814dd09af91d5ae23",
-  "budget_sha256": "8346efb688909227b06967ce39f703f17455de2412e0897915109d739a359b19",
+  "local_source_candidate": "62479c5c4f59cfaabc28293c14ea738d08073d23",
+  "budget_sha256": "45bec13617d2d80af4f5107d7aa268284bcfa57db3663f820e9f3e6f3c789b9c",
   "banks": [
     {
       "class": "com.wingedsheep.gym.sphinx.SphinxStageEInitializedSeatTest",
@@ -63,7 +63,7 @@
     "gym/src/test/kotlin/com/wingedsheep/gym/actorinput/ActorStackSourceObservationTest.kt": "ab6962cc61d66971a39d9ec674ee2c442705c17a365671bd8b9a9b0a590cf0af",
     "gym/src/test/kotlin/com/wingedsheep/gym/actorinput/ActorTriggerOrderObservationTest.kt": "01c84c1e963801702696b15187cb3d1c24f2f47367f54c0c9c8c77e05a26a4cb",
     "gym/src/test/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEActorAdapterTest.kt": "4aa40846fe72391f23ce8d429240de09181c7f027d89cab3d5bc3adcdd07b273",
-    "gym/src/test/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEInitializedSeatTest.kt": "25b84363470a3b4421fa8b7532f29e569942febd95a1a9bfd6f24f3ebcad3967",
+    "gym/src/test/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEInitializedSeatTest.kt": "45d323e17ec952cbce5a82014edb6618dc65d2f83cf1b0e0ed23ae6baa598800",
     "gym/src/test/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEPilotComponentTest.kt": "e461c4defb01a4389de6aff480b317273f9f95b183bea73ea370ec3cd4490897",
     "justfile": "70ed255981a941b260b8eeba4acf90abf32956126ef9672f5cf6e0b5840167e3",
     "lab-coordinator/shared-capabilities/collect-priority-receiving.py": "2c158a62f1898dcc7cb3c00a3cf2497a42d87e3a4e3a2a1e37926b2a4483352f",
@@ -86,7 +86,7 @@
     "sphinx-approach/STAGE_E_ACTOR_COMPONENT_RECEIPT.json": "2e949dd72af8723a53dc037fc9e4ba631c639e87536ccb012757178d2e86af71",
     "sphinx-approach/STAGE_E_ACTOR_FIXTURE_BUDGET.json": "e01864d8d22f228f5ea6c9a3a830cf524290297487c85970471553620af9f5ad",
     "sphinx-approach/STAGE_E_ACTOR_RECEIVING_SCOPE.json": "1602ca99f7be5f80e486e7353994be8e4aba95049b17ff55261beb18372a15c8",
-    "sphinx-approach/STAGE_E_INITIALIZED_SEAT_FIXTURE_BUDGET.json": "8346efb688909227b06967ce39f703f17455de2412e0897915109d739a359b19",
+    "sphinx-approach/STAGE_E_INITIALIZED_SEAT_FIXTURE_BUDGET.json": "45bec13617d2d80af4f5107d7aa268284bcfa57db3663f820e9f3e6f3c789b9c",
     "sphinx-approach/STAGE_E_PILOT_FIXTURE_BUDGET.json": "24f0826253411d9f97e151da3f941d58c0dafd13083e7159c0b90ac017b32c2d",
     "sphinx-approach/STAGE_E_RECONSTRUCTION_PLAN.md": "066a08b74350dcf20a03b917b2c122501b9d87cbca52e3273d216bc183a8ea43",
     "sphinx-approach/decks/closest-no-approach-v01.csv": "548998c77f5f688d793d36cdb9f21ae8b3b63963856875c4b84d82c271196a83",
@@ -101,6 +101,5 @@
   "gameplay_authorized": false,
   "whole_pilot_accepted": false,
   "full_receiving_accepted": false,
-  "stage_e_admitted": false,
-  "prior_attempt_evidence": "sphinx-approach/evidence/stage-e-initialized-seat-attempt-01"
+  "stage_e_admitted": false
 }

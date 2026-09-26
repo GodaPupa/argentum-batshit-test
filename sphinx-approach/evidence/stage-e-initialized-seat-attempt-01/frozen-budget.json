@@ -1,6 +1,6 @@
 {
   "schema": "sphinx-stage-e-initial-seat-fixture-budget/v1",
-  "status": "SAME_FIXED16_RETRY_AFTER_NON_AUTHOR_REVIEWED_MULLIGAN_FIXTURE_CORRECTION",
+  "status": "PROSPECTIVE_AWAIT_NON_AUTHOR_SOURCE_AND_GOVERNANCE_REVIEW",
   "purpose": "Bind a supplied frozen own list to the actual GameInitializer opening seat, then preserve actor/source/trial identity at the existing adapter boundary.",
   "required_receiving_predecessor": "c0ffc71449068e8b6329d7c437127d800474884c",
   "receiving_predecessor_qualification": {
@@ -50,7 +50,7 @@
   ],
   "source_sha256": {
     "gym/src/main/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEInitializedSeat.kt": "cab2e241e37f48c9ad16e6769f3684808cbeec676c2f2089bb8878cd81311770",
-    "gym/src/test/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEInitializedSeatTest.kt": "25b84363470a3b4421fa8b7532f29e569942febd95a1a9bfd6f24f3ebcad3967"
+    "gym/src/test/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEInitializedSeatTest.kt": "45d323e17ec952cbce5a82014edb6618dc65d2f83cf1b0e0ed23ae6baa598800"
   },
   "frozen_inputs_sha256": {
     "sphinx-approach/decks/reconstructed-v01.csv": "274521097cc731ac5f5aa9b7645a20b13d4546fd73b17dbcd14af0b0a25c4486",
@@ -71,25 +71,9 @@
     "Trusted initializer/caller provenance is still a required runner gate; this component cannot authenticate arbitrary fabricated data objects",
     "No whole pilot, complete choice surface, replay runner or Stage-E execution admission is granted",
     "Stage-E opponents, evaluation geometry, endpoints and stopping-rule gate remain incomplete",
-    "No official seed allocation, gameplay action loop or terminal outcome is created",
-    "Canonical observation of every eligible simultaneous-mulligan seat remains a concrete required actor-routing qualification; the other seat cannot be excluded because the priority marker is unchanged."
+    "No official seed allocation, gameplay action loop or terminal outcome is created"
   ],
   "official_games": 0,
   "outcomes_exposed": 0,
-  "pilot_development_checks_added": 0,
-  "prior_attempts": [
-    {
-      "source": "704361a8062cbe235b4c3f67241bab7bbb573a7d",
-      "tree": "3f281311e1c428f9e37801e2041cf2b3db1922d5",
-      "run": 36265670603,
-      "artifact": 10914342020,
-      "archive_sha256": "367b2713ba6baa8074169de9d8e0ea006d4fbca6d4b328f4fad706ecb96b0a7e",
-      "actual_cases": 16,
-      "passing": 8,
-      "failing": 8,
-      "status": "FAILED_FIXED16",
-      "evidence": "sphinx-approach/evidence/stage-e-initialized-seat-attempt-01"
-    }
-  ],
-  "fixture_boundary_clarification": "KeepHand mutates hasKept while the priority marker stays unchanged. A separate deterministic opposite-start initializer supplies the wrong-actor payload solely for binding rejection; this does not qualify simultaneous-mulligan actor routing."
+  "pilot_development_checks_added": 0
 }

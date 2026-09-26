@@ -7,6 +7,7 @@ import com.wingedsheep.engine.core.KeepHand
 import com.wingedsheep.engine.core.PlayerConfig
 import com.wingedsheep.engine.legalactions.LegalActionEnumerator
 import com.wingedsheep.engine.state.GameState
+import com.wingedsheep.engine.state.components.player.MulliganStateComponent
 import com.wingedsheep.engine.support.ScenarioTestBase
 import com.wingedsheep.gym.actorinput.ActorEpoch
 import com.wingedsheep.gym.actorinput.ActorInput
@@ -38,7 +39,7 @@ class SphinxStageEInitializedSeatTest : ScenarioTestBase() {
     private val observation = ObservationAdapter(cardRegistry)
     private val enumerator = LegalActionEnumerator.create(cardRegistry)
 
-    private fun initialize(bytes: ByteArray, ownSeat: Int): InitializationResult {
+    private fun initialize(bytes: ByteArray, ownSeat: Int, startingSeat: Int = ownSeat): InitializationResult {
         val own = SphinxStageEOwnDeck.fromFrozenCsv(bytes)
         val ownNames = own.cards.flatMap { (name, count) -> List(count) { name } }
         val seats = (0..1).map { seat -> PlayerConfig(
@@ -48,7 +49,7 @@ class SphinxStageEInitializedSeatTest : ScenarioTestBase() {
         ) }
         return GameInitializer(cardRegistry).initializeGame(GameConfig(
             players = seats, startingHandSize = 7, skipMulligans = false,
-            useHandSmoother = false, startingPlayerIndex = ownSeat,
+            useHandSmoother = false, startingPlayerIndex = startingSeat,
             seed = 0x5350_4849_4E58_0001L,
         ))
     }
@@ -105,13 +106,22 @@ class SphinxStageEInitializedSeatTest : ScenarioTestBase() {
                     val kept = actionProcessor.process(initialized.state, KeepHand(actor)).result
                     kept.error shouldBe null
                     val other = initialized.playerIds[1 - seat]
-                    kept.state.priorityPlayerId shouldBe other
+                    kept.state.getEntity(actor)!!.get<MulliganStateComponent>()!!.hasKept shouldBe true
+                    kept.state.getEntity(other)!!.get<MulliganStateComponent>()!!.hasKept shouldBe false
+                    // Mulligans are simultaneous: keeping changes this seat's state, not priority.
+                    kept.state.priorityPlayerId shouldBe initialized.state.priorityPlayerId
+                    completeActorLegalActions(kept.state, other, enumerator)
+                        .any { it.action == KeepHand(other) } shouldBe true
                     shouldThrow<IllegalArgumentException> {
                         SphinxStageEInitializedSeat.bindOpening(initialized.copy(state = kept.state),
                             actor, bytes, epoch)
                     }
                     val nextEpoch = epoch.copy(step = 1)
-                    val otherInput = input(kept.state, other, nextEpoch)
+                    // A real opposite-start opening supplies an authentic other-actor payload.
+                    // This tests this binding's rejection; it does not qualify simultaneous-mulligan
+                    // routing, which the canonical observation adapter still must implement.
+                    val oppositeStart = initialize(bytes, seat, startingSeat = 1 - seat)
+                    val otherInput = input(oppositeStart.state, other, nextEpoch)
                     shouldThrow<ObservationBoundaryException> {
                         bound.decideCurrentCast(otherInput, nextEpoch, 0,
                             SphinxStageEComponentCall.CURRENT_CAST)
