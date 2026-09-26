@@ -1,0 +1,190 @@
+{
+  "schema": "shared-paid-filter-targeted-audit-v1",
+  "disposition": "ACCEPTED_TARGETED_COMPONENT_ONLY_PENDING_FULL_INTEGRATION",
+  "run_id": 36249185297,
+  "job_id": 108423893885,
+  "run_url": "https://github.com/GodaPupa/argentum-batshit-test/actions/runs/36249185297",
+  "binding": {
+    "requested_head": "2eb9307bd081757c49f62a645125025270b8e83f",
+    "actual_head": "2eb9307bd081757c49f62a645125025270b8e83f",
+    "actual_tree": "a5f35af096ff6a6b120efd0780dc5687a92327f6",
+    "checkout_status": "",
+    "files": {
+      "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/mana/ManaSolver.kt": "1c2776853d06b3761d016e5b13fea557c48e158ca9c5af6bc8de3ca94aacec82",
+      "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/PaidFilterManaSolverTest.kt": "5d8590e625f46e98ad6e4eaef4787443dd09dbbe41215f6e8d1ec47ef227ffd9",
+      ".github/workflows/shared-paid-filter-mana-qualification.yml": "0510aec97c964702ee2cb30afa99ed92ef1ce73f112fba56d6e2f836e2003dc0"
+    },
+    "base": "9ca83110f5907e66a0c289f8205ed1e24575535c"
+  },
+  "artifact": {
+    "id": 10908607724,
+    "name": "shared-paid-filter-mana-qualification",
+    "retained": "artifact.zip",
+    "bytes": 246895,
+    "sha256": "416128a15e56bf103e72d3492d2321b02623fa8c27c6701c0629f7ac7a142ee4",
+    "members": [
+      {
+        "path": "build/reports/paid-filter/compatibility.log",
+        "bytes": 76747,
+        "sha256": "249e665f95d0c3b034728d1626b0df352be10c8022fdcea396e6544a46f172bf"
+      },
+      {
+        "path": "build/reports/paid-filter/focused-xml/TEST-com.wingedsheep.engine.scenarios.PaidFilterManaSolverTest.xml",
+        "bytes": 2670,
+        "sha256": "5ff6f1138d17527de56fc953856e8ac7a56b11a798d8cc85c61a03d71c18e2fd"
+      },
+      {
+        "path": "build/reports/paid-filter/focused.log",
+        "bytes": 3421634,
+        "sha256": "998e45e011476032bb2c2210bd4c462b7a0bc5d271e5c21154824bbfe3772fe0"
+      },
+      {
+        "path": "build/reports/paid-filter/source-binding.json",
+        "bytes": 741,
+        "sha256": "c363b5304d31fbe11087c0fb5c0bf5de97752520f894a5953083aca7a1b6d09e"
+      },
+      {
+        "path": "build/reports/paid-filter/targeted-qualification.json",
+        "bytes": 6768,
+        "sha256": "ce6e8aabfd9e54b0c7611ff858503104344d26caf5390354ca7363ed3af552b4"
+      },
+      {
+        "path": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.handlers.mana.ManaSpendRestrictionAnyAbilityTest.xml",
+        "bytes": 1230,
+        "sha256": "de5b37c742104ef2c1223247e0b1849f0260879dd5e0458371005e483757eb6b"
+      },
+      {
+        "path": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.mechanics.mana.DynamicManaAmountAutoTapTest.xml",
+        "bytes": 1466,
+        "sha256": "bfb9a8509291f220e355a3c03a1d33da001c3a2d77134d310fd54c4faaa3a47d"
+      },
+      {
+        "path": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.ManaAbilityActivationTriggerScenarioTest.xml",
+        "bytes": 905,
+        "sha256": "65210e59e26a8619cb7ab5506e166534b3a1679ad854e5b56670fca2f55875cb"
+      },
+      {
+        "path": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.ManaSourceProvenanceScenarioTest.xml",
+        "bytes": 874,
+        "sha256": "3815d97df86a4ac58a58981950e683c47a9e47ca7a12bb6a73c5d1589be5328d"
+      },
+      {
+        "path": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.MonocolorHybridManaSolverTest.xml",
+        "bytes": 1034,
+        "sha256": "0a57329510283600ba83e7ddf51462fbdc15f49255042ba011f0db7567be9f4c"
+      },
+      {
+        "path": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.MultiManaSourceTest.xml",
+        "bytes": 1443,
+        "sha256": "f57d3dee84f65f7102a44b0fa4486214d1b1426abcad70cff757e0a0c114222e"
+      },
+      {
+        "path": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.XSpellFloatingRestrictedManaTest.xml",
+        "bytes": 1437,
+        "sha256": "764f040fed6b1d430ec6193e06b8d967ec7f90c00b64be32c041925934ab4e3a"
+      }
+    ]
+  },
+  "actual_suites": [
+    {
+      "class": "com.wingedsheep.engine.scenarios.PaidFilterManaSolverTest",
+      "tests": 14,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "xml_path": "build/reports/paid-filter/focused-xml/TEST-com.wingedsheep.engine.scenarios.PaidFilterManaSolverTest.xml",
+      "xml_sha256": "5ff6f1138d17527de56fc953856e8ac7a56b11a798d8cc85c61a03d71c18e2fd"
+    },
+    {
+      "class": "com.wingedsheep.engine.handlers.mana.ManaSpendRestrictionAnyAbilityTest",
+      "tests": 5,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "xml_path": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.handlers.mana.ManaSpendRestrictionAnyAbilityTest.xml",
+      "xml_sha256": "de5b37c742104ef2c1223247e0b1849f0260879dd5e0458371005e483757eb6b"
+    },
+    {
+      "class": "com.wingedsheep.engine.mechanics.mana.DynamicManaAmountAutoTapTest",
+      "tests": 6,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "xml_path": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.mechanics.mana.DynamicManaAmountAutoTapTest.xml",
+      "xml_sha256": "bfb9a8509291f220e355a3c03a1d33da001c3a2d77134d310fd54c4faaa3a47d"
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.ManaAbilityActivationTriggerScenarioTest",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "xml_path": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.ManaAbilityActivationTriggerScenarioTest.xml",
+      "xml_sha256": "65210e59e26a8619cb7ab5506e166534b3a1679ad854e5b56670fca2f55875cb"
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.ManaSourceProvenanceScenarioTest",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "xml_path": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.ManaSourceProvenanceScenarioTest.xml",
+      "xml_sha256": "3815d97df86a4ac58a58981950e683c47a9e47ca7a12bb6a73c5d1589be5328d"
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.MonocolorHybridManaSolverTest",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "xml_path": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.MonocolorHybridManaSolverTest.xml",
+      "xml_sha256": "0a57329510283600ba83e7ddf51462fbdc15f49255042ba011f0db7567be9f4c"
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.MultiManaSourceTest",
+      "tests": 7,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "xml_path": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.MultiManaSourceTest.xml",
+      "xml_sha256": "f57d3dee84f65f7102a44b0fa4486214d1b1426abcad70cff757e0a0c114222e"
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.XSpellFloatingRestrictedManaTest",
+      "tests": 6,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "xml_path": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.XSpellFloatingRestrictedManaTest.xml",
+      "xml_sha256": "764f040fed6b1d430ec6193e06b8d967ec7f90c00b64be32c041925934ab4e3a"
+    }
+  ],
+  "actual_cases": 48,
+  "focused_cases": 14,
+  "compatibility_cases": 34,
+  "capability": "Ordinary solve plans fund paid filter activations before crediting their production; zero-output funders preserve activation side effects without contributing spent-mana provenance. Explicit sacrifice is not automated.",
+  "source_review": {
+    "solver_and_focused_tests": "Independent Manual review accepted exact recorded source hashes for targeted qualification.",
+    "workflow": "Independent Pest review accepted exact recorded workflow hash for targeted qualification."
+  },
+  "independent_evidence_audit": {
+    "reviewer": "Sphinx project agent, non-author of this capability",
+    "disposition": "ACCEPTED_TARGETED_COMPONENT_ONLY",
+    "source_head": "2eb9307bd081757c49f62a645125025270b8e83f",
+    "source_tree": "a5f35af096ff6a6b120efd0780dc5687a92327f6",
+    "artifact_id": 10908607724,
+    "artifact_sha256": "416128a15e56bf103e72d3492d2321b02623fa8c27c6701c0629f7ac7a142ee4",
+    "checks": "Independently fetched GitHub artifact metadata, matched retained ZIP bytes and all eight actual XML case names/digests, verified 48 PASS with no failure/error/skip and actual executor logs from both stages, and compared all three bound source hashes with exact git blobs.",
+    "github_review_submitted": false
+  },
+  "limits": [
+    "Full shared integration and receiving-source qualification are still required.",
+    "This is not an exhaustive mana feasibility proof; the independent finite-resource query remains unqualified.",
+    "No project pilot, allocation, seed, gameplay or outcome is admitted by this component."
+  ],
+  "full_integration_accepted": false,
+  "complete_resource_feasibility_qualified": false,
+  "gameplay_admitted": false,
+  "gameplay_initializations": 0,
+  "gameplay_outcomes_exposed": 0
+}
