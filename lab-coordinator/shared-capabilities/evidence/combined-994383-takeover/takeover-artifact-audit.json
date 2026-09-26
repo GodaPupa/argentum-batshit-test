@@ -1,0 +1,81 @@
+{
+  "schema": "shared-combined-source-takeover-artifact-audit-v1",
+  "auditor": "/root successor conductor",
+  "review_type": "SOURCE_BOUND_ARTIFACT_AUDIT_NOT_INDEPENDENT_SOURCE_AUTHOR_APPROVAL_OR_GAMEPLAY_ADMISSION",
+  "source": "994383d4a9495bcb34d5aae0e69181bcf4c04d45",
+  "tree": "4b8f4d155a37e6b66ab623d344b19cedf435d845",
+  "base": "b35d4778dada69476da0f67549be7e70424c18bd",
+  "ci_merge": "add15d9a46c890f861a12126f6e2fc85611ff1c5",
+  "ci_merge_tree_equal": true,
+  "scoped_components": [
+    {
+      "component": "priority",
+      "actual_cases": 220,
+      "suites": 27,
+      "sha256": "c9e99a060f253cdaf93b7ae36eef92b4d3b5b00d37cdbc798d216322962413ae"
+    },
+    {
+      "component": "observer",
+      "actual_cases": 135,
+      "suites": 18,
+      "sha256": "b99caa8d481335f840705040f593629cc3744881336286eb5ad69376b960f17d"
+    },
+    {
+      "component": "combat",
+      "actual_cases": 32,
+      "suites": 4,
+      "sha256": "d9ea44a905412e9a166a90afcb21dbdca3c7e129b4bd5f62c495326167cd785e"
+    },
+    {
+      "component": "token",
+      "actual_cases": 20,
+      "suites": 3,
+      "sha256": "cc9b519aea5af1e5a8566113b8850cb88fdb239df53c3c1738a8070cdc1362e9"
+    }
+  ],
+  "source_binding": {
+    "priority_manifest_independent_byte_and_git_blob_checks": 250,
+    "preserved_authority_manifests": 3,
+    "observer_direct_bindings": 55,
+    "observer_combined_bindings": 250,
+    "combat_and_token_source_bindings_recomputed": true,
+    "effective_rules_archive_hash_and_length_verified": true,
+    "all_original_stage_counts_and_fixed_case_names_preserved": true
+  },
+  "ci": {
+    "run_id": 36267982979,
+    "status": "SUCCESS_WITH_FOUR_TEST_TASKS_FROM_CACHE",
+    "raw_testcase_records": 17347,
+    "skipped_records": 52,
+    "marker_records": 1,
+    "freshness_supplement_required_tasks": [
+      ":mtg-sdk:test",
+      ":mtg-sets:test",
+      ":mtg-search:test",
+      ":mtgish-tooling:test"
+    ],
+    "cached_raw_records": 1214,
+    "cached_real_declared_cases": 1213,
+    "cached_intentionally_skipped_real_cases": 3,
+    "disabled_CardImageUri_reporting_marker": 1,
+    "supplement_status": "PREPARED_UNEXECUTED"
+  },
+  "preservation": {
+    "raw_scoped_archives": 4,
+    "raw_ci_archives": 7,
+    "decoded_logs": "Complete decoded priority and nine CI job logs; not original downloaded log ZIP."
+  },
+  "limits": [
+    "Scoped407 deterministic checks are not deck-performance games.",
+    "Source author review is not independent; separate nonauthor artifact review must retain scope.",
+    "No full receiving runtime, actor/pilot, experiment admission, allocation or deck conclusion is granted.",
+    "Initial counters with attached-copy token replacement remain unqualified; receiving projects must qualify reachable original token-batch context.",
+    "The original failed548 source evidence and donor attempts remain in parent history.",
+    "Four cached CI modules require fresh original-scope execution; CardImageUri disabled-spec reporting marker is not counted as an executed test."
+  ],
+  "official_games": 0,
+  "allocations_consumed": 0,
+  "outcomes_exposed": 0,
+  "deck_changes": 0,
+  "gameplay_authorized": false
+}

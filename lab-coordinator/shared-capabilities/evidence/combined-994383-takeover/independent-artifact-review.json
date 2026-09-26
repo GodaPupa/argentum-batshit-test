@@ -1,0 +1,183 @@
+{
+  "schema": "shared-combined-nonauthor-artifact-review-v1",
+  "reviewer": "/root/sphinx successor takeover agent",
+  "reviewer_is_non_author_of_combined_source": true,
+  "source_author_review_status": "Root successor authored the takeover report and historical root authored source work; root author audit is not independent source approval. This record is a scoped non-author raw artifact review, not source-code correctness review or GitHub approval.",
+  "disposition": "PASS_SCOPED_FOUR_COMPONENT_ARTIFACTS_AND_PRESERVATION_ONLY",
+  "source": "994383d4a9495bcb34d5aae0e69181bcf4c04d45",
+  "tree": "4b8f4d155a37e6b66ab623d344b19cedf435d845",
+  "ci_merge": "add15d9a46c890f861a12126f6e2fc85611ff1c5",
+  "ci_merge_tree_verified_equal": true,
+  "reviewed_report_path": "lab-coordinator/shared-capabilities/evidence/combined-994383-takeover/takeover-artifact-audit.json",
+  "reviewed_report_sha256": "dbecbd7c469c5324449d0acd7fa365f6b0f37637dabad6368091ab73880adf3d",
+  "live_metadata_checks": [
+    {
+      "run": 36267982967,
+      "head": "994383d4a9495bcb34d5aae0e69181bcf4c04d45",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-09-26T20:00:15Z",
+      "completed_at": "2026-09-26T20:15:55Z",
+      "artifacts": [
+        {
+          "id": 10914856939,
+          "digest": "sha256:c9e99a060f253cdaf93b7ae36eef92b4d3b5b00d37cdbc798d216322962413ae",
+          "bytes": 358419,
+          "head": "994383d4a9495bcb34d5aae0e69181bcf4c04d45",
+          "run": 36267982967
+        }
+      ]
+    },
+    {
+      "run": 36267979180,
+      "head": "994383d4a9495bcb34d5aae0e69181bcf4c04d45",
+      "event": "push",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-09-26T20:00:11Z",
+      "completed_at": "2026-09-26T20:11:03Z",
+      "artifacts": [
+        {
+          "id": 10915210469,
+          "digest": "sha256:b99caa8d481335f840705040f593629cc3744881336286eb5ad69376b960f17d",
+          "bytes": 292285,
+          "head": "994383d4a9495bcb34d5aae0e69181bcf4c04d45",
+          "run": 36267979180
+        }
+      ]
+    },
+    {
+      "run": 36267982988,
+      "head": "994383d4a9495bcb34d5aae0e69181bcf4c04d45",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-09-26T20:00:15Z",
+      "completed_at": "2026-09-26T20:07:40Z",
+      "artifacts": [
+        {
+          "id": 10914473280,
+          "digest": "sha256:d9ea44a905412e9a166a90afcb21dbdca3c7e129b4bd5f62c495326167cd785e",
+          "bytes": 239084,
+          "head": "994383d4a9495bcb34d5aae0e69181bcf4c04d45",
+          "run": 36267982988
+        }
+      ]
+    },
+    {
+      "run": 36267982980,
+      "head": "994383d4a9495bcb34d5aae0e69181bcf4c04d45",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-09-26T20:00:15Z",
+      "completed_at": "2026-09-26T20:07:32Z",
+      "artifacts": [
+        {
+          "id": 10915020753,
+          "digest": "sha256:cc9b519aea5af1e5a8566113b8850cb88fdb239df53c3c1738a8070cdc1362e9",
+          "bytes": 262486,
+          "head": "994383d4a9495bcb34d5aae0e69181bcf4c04d45",
+          "run": 36267982980
+        }
+      ]
+    }
+  ],
+  "checks": {
+    "four_original_archives_match_live_GitHub_digests_and_sizes": true,
+    "all_raw_xml_counts_and_case_names_reconciled": true,
+    "all_required_stage_exit_codes_zero": true,
+    "no_focused_test_task_up_to_date_from_cache_no_source_or_skipped": true,
+    "actual_fixture_executor_starts_observed": true,
+    "source_pin_sha256_and_live_tree_git_blob_matches": 250,
+    "three_preserved_authority_manifest_hashes_and_tree_blobs_verified": true,
+    "observer_direct_and_combined_bindings_verified": [
+      55,
+      250
+    ],
+    "combat_bindings_verified": 31,
+    "token_bindings_verified": 48,
+    "archived_rules_bytes": 977752,
+    "archived_rules_sha256": "8d860e451f20f38865b725b42d82feb714c725373dd8f3b32b8652b3eeb070ca",
+    "independently_fetched_decoded_priority_job_log_sha256": "e7b60d9878e590881b129e9d887a66f7866f8aeacc1a251500bf5e64e05360b9",
+    "seven_original_CI_archives_match_live_GitHub_digests_and_sizes": true,
+    "decoded_log_ZIP_exactly_preserves_ten_provided_complete_decoded_files": true
+  },
+  "scoped_components": [
+    {
+      "component": "priority",
+      "run_id": 36267982967,
+      "artifact_id": 10914856939,
+      "archive_sha256": "c9e99a060f253cdaf93b7ae36eef92b4d3b5b00d37cdbc798d216322962413ae",
+      "archive_bytes": 358419,
+      "cases": 220,
+      "suites": 27,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "actual_fresh_executor_starts": 27
+    },
+    {
+      "component": "observer",
+      "run_id": 36267979180,
+      "artifact_id": 10915210469,
+      "archive_sha256": "b99caa8d481335f840705040f593629cc3744881336286eb5ad69376b960f17d",
+      "archive_bytes": 292285,
+      "cases": 135,
+      "suites": 18,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "actual_fresh_executor_starts": 2
+    },
+    {
+      "component": "combat",
+      "run_id": 36267982988,
+      "artifact_id": 10914473280,
+      "archive_sha256": "d9ea44a905412e9a166a90afcb21dbdca3c7e129b4bd5f62c495326167cd785e",
+      "archive_bytes": 239084,
+      "cases": 32,
+      "suites": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "actual_fresh_executor_starts": 1
+    },
+    {
+      "component": "token",
+      "run_id": 36267982980,
+      "artifact_id": 10915020753,
+      "archive_sha256": "cc9b519aea5af1e5a8566113b8850cb88fdb239df53c3c1738a8070cdc1362e9",
+      "archive_bytes": 262486,
+      "cases": 20,
+      "suites": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "actual_fresh_executor_starts": 3
+    }
+  ],
+  "case_instances": 407,
+  "distinct_test_identities": 407,
+  "preservation_review": {
+    "four_scoped_raw_archives": 4,
+    "seven_CI_raw_archives": 7,
+    "ten_decoded_logs": "Retained exactly as decoded files, not represented as an original GitHub log ZIP."
+  },
+  "limits": [
+    "This review accepts the four bounded deterministic component artifacts only, not gameplay, experiment performance, whole pilots or a full receiving runtime.",
+    "Full CI four-module cache freshness supplement is separately required; this review does not call restored test records freshly executed.",
+    "No initial-counters/attached-copy token behavior or receiver-specific integration is added to qualification.",
+    "No official seed, allocation, game or outcome is created."
+  ],
+  "github_approval": false,
+  "independent_gameplay_admission": false,
+  "receiving_runtime_admitted": false,
+  "official_games": 0,
+  "outcomes_exposed": 0
+}

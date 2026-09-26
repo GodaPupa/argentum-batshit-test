@@ -1,0 +1,906 @@
+[
+  {
+    "component": "priority",
+    "zip_name": "shared-priority-36267982967.zip",
+    "sha256": "c9e99a060f253cdaf93b7ae36eef92b4d3b5b00d37cdbc798d216322962413ae",
+    "bytes": 358419,
+    "cases": 220,
+    "suites": [
+      {
+        "xml": "tests/abundant-maw/TEST-com.wingedsheep.engine.scenarios.AbundantMawScenarioTest.xml",
+        "class": "com.wingedsheep.engine.scenarios.AbundantMawScenarioTest",
+        "count": 2,
+        "sha256": "dba12711a629215b88e63bd8fed0095aa3daf97b7ad48aaa89a2b55bbe1c4ec6",
+        "case_names": [
+          "emerge cast drains the targeted opponent for 3 before the Leech resolves",
+          "the two amounts are independent \u2014 you gain 3 even if the opponent had less to lose"
+        ]
+      },
+      {
+        "xml": "tests/ai-decision-trace/TEST-com.wingedsheep.ai.engine.DecisionResponderCompletedBranchTest.xml",
+        "class": "com.wingedsheep.ai.engine.DecisionResponderCompletedBranchTest",
+        "count": 7,
+        "sha256": "96034fc731b7147a98f23ad65bd8b5f4d1de301ee427872cacca9842d36decaf",
+        "case_names": [
+          "exact one singleton auto-completes without a follow-up decision",
+          "exact one empty result can produce a superior if-you-dont branch without a follow-up",
+          "exact one no-candidate no-payoff acceptance is outcome-equivalent to declining",
+          "genuine up-to-one branch chooses a beneficial legal singleton",
+          "genuine up-to-one branch preserves a superior beneficial empty selection",
+          "genuine up-to-one branch declines when harmful singleton and empty equals decline",
+          "genuine up-to-one branch preserves the superior singleton among multiple candidates"
+        ]
+      },
+      {
+        "xml": "tests/cast-sba/TEST-com.wingedsheep.engine.scenarios.CastPrioritySbaTest.xml",
+        "class": "com.wingedsheep.engine.scenarios.CastPrioritySbaTest",
+        "count": 12,
+        "sha256": "ed139704d35d2c658a93afa48ed4eaca9fc31602ce43ceba469accfaaa62ddda",
+        "case_names": [
+          "a real Phyrexian life payment settles SBAs before returning priority (life=2)",
+          "a real Phyrexian life payment settles SBAs before returning priority (life=3)",
+          "a caster who paid their last life never receives a cast-trigger target prompt",
+          "cost-sacrifice and subsequent zero-toughness death precede cast-trigger target selection",
+          "a nonactive cast trigger and active player's SBA death trigger form one APNAP batch",
+          "an opposing commander choice preserves the nonactive caster's priority and death trigger (answer)",
+          "an opposing commander choice preserves the nonactive caster's priority and death trigger (owner-leaves)",
+          "an opposing commander choice preserves the nonactive caster's priority and death trigger (third-party-leaves)",
+          "concession ending a game clears a pending commander question and both priority markers",
+          "the creature-type casting continuation cannot bypass the last-life SBA boundary",
+          "a nested modal life payment may recover within the same outer resolution before SBAs",
+          "an unaffordable life payment is rejected atomically and ordinary serialized states gain no field"
+        ]
+      },
+      {
+        "xml": "tests/circle-solace/TEST-com.wingedsheep.engine.scenarios.CircleOfSolaceTest.xml",
+        "class": "com.wingedsheep.engine.scenarios.CircleOfSolaceTest",
+        "count": 4,
+        "sha256": "6eb9d6c5450a868dc1b5faf5bd6821f390646bb29bd2fd762866efc6005db1eb",
+        "case_names": [
+          "prevents combat damage from creature of chosen type to controller",
+          "does not prevent damage from creature of different type",
+          "shield is consumed after preventing damage once",
+          "multiple activations prevent damage from multiple creatures"
+        ]
+      },
+      {
+        "xml": "tests/commander-choice/TEST-com.wingedsheep.engine.mechanics.sba.CommanderZoneChoiceCheckTest.xml",
+        "class": "com.wingedsheep.engine.mechanics.sba.CommanderZoneChoiceCheckTest",
+        "count": 17,
+        "sha256": "c64252be36479b011889e137b0c83ce8925215dce0d7a2008abe4e27d3d00c44",
+        "case_names": [
+          "pauses with a YesNoDecision when a commander is in the graveyard",
+          "pauses for a commander in exile, hand, or library too",
+          "does not pause when the commander is in the command zone",
+          "does not pause when the commander is on the battlefield",
+          "does not pause when the asked marker is already attached",
+          "does not pause when alwaysDivertToCommand is enabled",
+          "does not pause when the format is not Commander",
+          "Team vs Team prompts when Commander rules are enabled",
+          "prompt text names both the commander and the source zone",
+          "multiple eligible commanders only produce one prompt per SBA pass",
+          "non-owner commander not asked about by this player's turn slot",
+          "commander with the asked marker is invisible to the SBA \u2014 no events, no pause",
+          "a non-commander legendary with the same name does not trigger the prompt",
+          "commander already on the stack is not prompted (CR 903.9 entry zones only)",
+          "commander entry is later 'forgotten' once the marker is stripped",
+          "a commander that's been registered but has no zone slot is skipped silently",
+          "owner with zero commanders does nothing"
+        ]
+      },
+      {
+        "xml": "tests/continuations/TEST-com.wingedsheep.engine.scenarios.ContinuationSystemTest.xml",
+        "class": "com.wingedsheep.engine.scenarios.ContinuationSystemTest",
+        "count": 4,
+        "sha256": "c92ef1fcc7e97dff48f5d419bd61a35e91410f55db93392429077bf1c06e61e7",
+        "case_names": [
+          "discard effect with choice pauses for player decision",
+          "submitting card selection resumes and discards selected cards",
+          "discard all cards when hand size is less than or equal to discard count",
+          "composite effect (draw then discard) handles pause correctly"
+        ]
+      },
+      {
+        "xml": "tests/death-trigger/TEST-com.wingedsheep.engine.scenarios.DeathTriggerTest.xml",
+        "class": "com.wingedsheep.engine.scenarios.DeathTriggerTest",
+        "count": 4,
+        "sha256": "d86ad4c6535c2b70af248ce3735b9febb433f098b2d359f4d084c3aafb9d6a3c",
+        "case_names": [
+          "death trigger fires when creature is destroyed by lethal damage",
+          "filtered ANY-binding death trigger fires when source creature itself dies",
+          "token death trigger fires when token is destroyed by lethal damage",
+          "filtered death trigger fires for creature with toughness boosted by +1/+1 counter"
+        ]
+      },
+      {
+        "xml": "tests/flash-permission/TEST-com.wingedsheep.engine.scenarios.ConditionalFlashGrantTest.xml",
+        "class": "com.wingedsheep.engine.scenarios.ConditionalFlashGrantTest",
+        "count": 9,
+        "sha256": "8ab8996020567d4fcba77429f8ead2c44edda16ef2f36092b70d26232be47d8a",
+        "case_names": [
+          "a gated flash grant offers nothing while its condition is false",
+          "the grant switches on mid-turn the moment its condition becomes true",
+          "with the condition true the spell is both offered and actually castable",
+          "an open gate does not leak flash to spells outside the grant's filter",
+          "the gate reads the granter's controller's board, not the caster's",
+          "an enabler on the caster's side does not open someone else's gate",
+          "a stolen granter grants to its new controller, not to its owner",
+          "a phased-out granter grants nothing (CR 702.26b)",
+          "the permission goes away with the granter even while the condition still holds"
+        ]
+      },
+      {
+        "xml": "tests/free-cast/TEST-com.wingedsheep.engine.scenarios.GrantNextSpellFreeCastTest.xml",
+        "class": "com.wingedsheep.engine.scenarios.GrantNextSpellFreeCastTest",
+        "count": 8,
+        "sha256": "f203e50ffb27b113cac437fdb633ba11dfebcf8fcbd7ea194aaf34fc3d843091",
+        "case_names": [
+          "the next spell can be cast without paying its mana cost, with the source in the graveyard",
+          "the rider is consumed by the next matching cast even when the free cast isn't taken",
+          "an unused rider is cleared at the start of the next turn",
+          "a creature-only rider ignores a noncreature spell and pays for the next creature spell",
+          "a rider-funded free cast doesn't burn a once-per-turn battlefield permission",
+          "the rider belongs to its controller: the opponent is neither offered it nor spends it",
+          "the enumerated free cast has no X \u2014 a free cast pays no mana cost, so X is 0 (CR 107.3b)",
+          "a free cast still pays a mandatory additional cost (CR 118.9 \u2014 only the mana cost is replaced)"
+        ]
+      },
+      {
+        "xml": "tests/krarks-thumb/TEST-com.wingedsheep.engine.scenarios.KrarksThumbScenarioTest.xml",
+        "class": "com.wingedsheep.engine.scenarios.KrarksThumbScenarioTest",
+        "count": 5,
+        "sha256": "81ae5386da00ff3df764dedd9031e1fe7b749392ace04a786e5ec3f9dc4726df",
+        "case_names": [
+          "the Thumb turns the Gambit's first coin into two, and asks which one to keep",
+          "keeping the heads coin wins the flip, so the run continues",
+          "keeping the tails coin loses the flip, which ends the run with nothing",
+          "the won-flip tally survives both of the run's pauses and pays out all three tiers",
+          "a second Thumb flips four coins per flip and still leaves exactly one counting"
+        ]
+      },
+      {
+        "xml": "tests/leave-game/TEST-com.wingedsheep.engine.multiplayer.LeaveTheGameTest.xml",
+        "class": "com.wingedsheep.engine.multiplayer.LeaveTheGameTest",
+        "count": 16,
+        "sha256": "605c0900ec885a070cd59bfdbd326a27d284f348a0ef0141860be5a2706c23ef",
+        "case_names": [
+          "conceding in a four-player pod marks the player left and continues the game",
+          "conceding in a two-player game still ends the game with the other player winning",
+          "the leaver's owned objects leave the game (CR 800.4a)",
+          "a creature the leaver stole reverts to its owner (control effect ends, CR 800.4a)",
+          "a creature the leaver owns but another player controls leaves the game (CR 800.4a)",
+          "the leaver's spells and abilities on the stack cease to exist (CR 800.4a)",
+          "combat continues when the leaver's attacker is removed (its blocker stops blocking it)",
+          "attackers aimed at the leaver are removed from combat; the rest of the attack stands (CR 800.4e)",
+          "a player who has left the game is not a legal attack target (CR 800.4a)",
+          "a resolved spell's effect outlives its caster's departure (CR 611.2c) \u2014 only source-bound durations end (CR 800.4a)",
+          "a departed player's 'until your next turn' effect lasts until that turn would have begun (CR 800.4m)",
+          "priority held by the leaver passes to the next player still in the game (CR 800.4a)",
+          "the active player conceding hands the turn forward without stalling",
+          "conceding while owning the pending decision abandons it instead of deadlocking the table (CR 800.4f\u2013h)",
+          "a pending decision addressed to another player survives the leaver's departure",
+          "the abandoned decision's priority skips an active player who has also left"
+        ]
+      },
+      {
+        "xml": "tests/legacy-serialization/TEST-com.wingedsheep.engine.state.LegacySuspensionMigrationTest.xml",
+        "class": "com.wingedsheep.engine.state.LegacySuspensionMigrationTest",
+        "count": 19,
+        "sha256": "de3aeacc1cdb931c4fe70a34cba225827b37b100eb3d64e56fead50bc3e9948f",
+        "case_names": [
+          "legacy nested-may loads without allocation and resumes the captured response trace",
+          "legacy repeat-while loads without allocation and resumes the captured response trace",
+          "legacy suspended-mana-window loads without allocation and resumes the captured response trace",
+          "legacy free-cast-target loads without allocation and resumes the captured response trace",
+          "default-omitting parent cycling snapshot loads and completes its deferred draw",
+          "legacy active answer still requires its response identity",
+          "legacy mana reopen still requires its saved association identity",
+          "legacy repeat decision becomes an answer carrying an automatic loop",
+          "legacy hidden payment question is paired inside its reopen frame",
+          "legacy combat question is retained once and the duplicate answer shape is removed",
+          "legacy combat answer cannot silently replace a different represented question",
+          "legacy active question with a mismatched top answer fails explicitly",
+          "legacy active question without an answer fails explicitly",
+          "legacy unanswered frame without any represented question fails explicitly",
+          "legacy active question cannot skip automatic work to find an answer",
+          "legacy mana reopen cannot claim a different lower answer",
+          "legacy mana reopen requires its saved question",
+          "legacy repeat with an unknown phase fails explicitly",
+          "legacy migration does not silently ignore unrelated unknown payload fields"
+        ]
+      },
+      {
+        "xml": "tests/legacy-traces/TEST-com.wingedsheep.engine.state.SuspensionTraceTest.xml",
+        "class": "com.wingedsheep.engine.state.SuspensionTraceTest",
+        "count": 5,
+        "sha256": "76ad654ea593db0b2046b607b94386e93ffb53ce12b771f069b962e04788399f",
+        "case_names": [
+          "current nested-may suspension reproduces the captured parent response trace",
+          "current repeat-while suspension reproduces the captured parent response trace",
+          "current suspended-mana-window suspension reproduces the captured parent response trace",
+          "current free-cast-target suspension reproduces the captured parent response trace",
+          "current cycling suspension reproduces the captured parent deferred draw and events"
+        ]
+      },
+      {
+        "xml": "tests/legend-rule/TEST-com.wingedsheep.engine.scenarios.LegendRuleTest.xml",
+        "class": "com.wingedsheep.engine.scenarios.LegendRuleTest",
+        "count": 4,
+        "sha256": "3c98bfbb41c8e568b600d06216d9d101e07f1f1a1adec31344c11e84e5fe0a38",
+        "case_names": [
+          "legend rule asks player to choose which legendary to keep",
+          "legend rule lets player keep the older legendary",
+          "legend rule does not trigger for different legendary names",
+          "legend rule only affects the same player"
+        ]
+      },
+      {
+        "xml": "tests/mauler/TEST-com.wingedsheep.engine.scenarios.TaureanMaulerScenarioTest.xml",
+        "class": "com.wingedsheep.engine.scenarios.TaureanMaulerScenarioTest",
+        "count": 3,
+        "sha256": "0f36f77ab476285ea67e44a428a4aac4fd128222880434a5e75faa8d8c6a2ee6",
+        "case_names": [
+          "opponent casts a spell: a +1/+1 counter is added (2/2 -> 3/3)",
+          "a second opponent spell grows it again (3/3 -> 4/4)",
+          "your own spell does not trigger it (stays 2/2)"
+        ]
+      },
+      {
+        "xml": "tests/modal-cost/TEST-com.wingedsheep.engine.scenarios.ModalPerModeAdditionalCostTest.xml",
+        "class": "com.wingedsheep.engine.scenarios.ModalPerModeAdditionalCostTest",
+        "count": 8,
+        "sha256": "e311d72238cfabe52d24469d19aa9ecd52b67fc51b733f7828f071749e8e815b",
+        "case_names": [
+          "H1 \u2014 picking the {1}-cost mode drains one extra colorless from the pool",
+          "H1 \u2014 mode 1 cannot be cast without the additional {1}",
+          "H2 \u2014 mode with SacrificePermanent additional cost forces the creature into the graveyard",
+          "H3 \u2014 Spree-style: choosing two modes stacks their additionalManaCosts",
+          "H3 \u2014 with stacked costs unpayable, cast fails",
+          "Escalate \u2014 the first chosen mode adds no mana cost",
+          "Escalate \u2014 its cost is paid once for each mode beyond the first",
+          "Escalate \u2014 a second mode is illegal when its one escalate payment is unaffordable"
+        ]
+      },
+      {
+        "xml": "tests/modal-cost-enumeration/TEST-com.wingedsheep.engine.legalactions.CastSpellEnumeratorModalAdditionalCostTest.xml",
+        "class": "com.wingedsheep.engine.legalactions.CastSpellEnumeratorModalAdditionalCostTest",
+        "count": 2,
+        "sha256": "e044661ebfb0d1c6a76a5b0701ad8bc809062acc1f0b5dfa54e097685dd06bc9",
+        "case_names": [
+          "E3 \u2014 mode with unpayable additionalManaCost is flagged unavailable; others stay available",
+          "E3 \u2014 when enough Islands are in play, the {5}{U} mode becomes available"
+        ]
+      },
+      {
+        "xml": "tests/ordinary-cleanup/TEST-com.wingedsheep.engine.scenarios.CleanupHandSizeDiscardDamageRemovalTest.xml",
+        "class": "com.wingedsheep.engine.scenarios.CleanupHandSizeDiscardDamageRemovalTest",
+        "count": 2,
+        "sha256": "00b23a326d98e7ceaf1ceac671d989096f4995eb436bb79e0a021673773a1924",
+        "case_names": [
+          "deathtouch damage is cleared at cleanup despite a hand-size discard \u2014 creature survives next turn",
+          "ordinary marked damage is removed at cleanup even when a hand-size discard interrupts the step"
+        ]
+      },
+      {
+        "xml": "tests/priority/TEST-com.wingedsheep.engine.scenarios.StackResolutionPriorityTest.xml",
+        "class": "com.wingedsheep.engine.scenarios.StackResolutionPriorityTest",
+        "count": 17,
+        "sha256": "75236e261e6b4ee5f85f2f2828762d7b058db863e0494e19235a79457934d439",
+        "case_names": [
+          "an opposing Bolt resolves before the active player legally casts Divination",
+          "an opposing activated response returns priority to the active player with another spell still on stack",
+          "resolution-trigger target selection belongs to its controller but priority returns to the active player",
+          "an opposing discard decision survives serialization and cannot seize the next priority window",
+          "an opposing legend-rule decision completes before the active player receives priority",
+          "four-player tax answer from a third seat returns to the active player (pay=false)",
+          "four-player tax answer from a third seat returns to the active player (pay=true)",
+          "a four-player cast-time modal decision retains the caster's priority instead of resetting to active",
+          "a cleanup-window resolution choice restores active priority without advancing or losing another spell",
+          "a nested modal cast completes the outer tail and preserves each trigger batch once (cancel=false)",
+          "a nested modal cast completes the outer tail and preserves each trigger batch once (cancel=true)",
+          "a departed active player is skipped after an opposing spell resolves",
+          "a departing decision owner clears the abandoned resolution boundary",
+          "ending the turn clears the resolution boundary before the next step's priority",
+          "a terminal resolution clears its boundary and grants no further priority",
+          "the false marker is absent from ordinary serialized states even with defaults enabled",
+          "a rejected malformed stack resolution cannot publish a marker or mutate the attempted pass"
+        ]
+      },
+      {
+        "xml": "tests/prismari/TEST-com.wingedsheep.engine.scenarios.PrismariTheInspirationScenarioTest.xml",
+        "class": "com.wingedsheep.engine.scenarios.PrismariTheInspirationScenarioTest",
+        "count": 3,
+        "sha256": "90e36423e6b03dc0ebd9ac56a6b7a0753266b582c319144978db20847dea8c2b",
+        "case_names": [
+          "instant cast with Prismari in play gets a storm trigger with copyCount = spells cast before it",
+          "two Prismaris produce two separate storm triggers (CR 702.40b)",
+          "without Prismari, an instant produces no storm trigger"
+        ]
+      },
+      {
+        "xml": "tests/reveal-cost/TEST-com.wingedsheep.engine.scenarios.RevealFromHandAdditionalCostTest.xml",
+        "class": "com.wingedsheep.engine.scenarios.RevealFromHandAdditionalCostTest",
+        "count": 10,
+        "sha256": "d4e0ca4a3d4f592874bba73f5515565ff429355ea888f60824ec463072332df6",
+        "case_names": [
+          "both the reveal path and the pay path are enumerated when the hand has an Elf and mana for either",
+          "CR 701.20b \u2014 the revealed Elf stays in hand and can still be cast afterwards",
+          "the pay path costs {3} more and reveals nothing",
+          "with no Elf in hand only the pay path is offered, and the spell is still castable",
+          "CR 701.4a \u2014 an Elf on the battlefield is not an Elf card in hand and cannot pay the reveal",
+          "a Kindred noncreature Elf card pays it \u2014 the filter is 'an Elf card', not 'an Elf creature card'",
+          "a non-Elf card in hand is rejected as the reveal",
+          "the cost is offered with its own picker when the hand holds a matching card",
+          "the spell is uncastable with nothing to reveal \u2014 a mandatory cost fails closed",
+          "the spell can't pay the cost with itself"
+        ]
+      },
+      {
+        "xml": "tests/scarecrow/TEST-com.wingedsheep.engine.scenarios.ScarecrowScenarioTest.xml",
+        "class": "com.wingedsheep.engine.scenarios.ScarecrowScenarioTest",
+        "count": 4,
+        "sha256": "ca225ad9e3bad1c9b75830699baa74c5e0de8b71e8b7d594354c5e7ba9bbaefc",
+        "case_names": [
+          "a flying attacker deals you no combat damage",
+          "a non-flying attacker still hits you for full",
+          "a non-creature source is unaffected",
+          "your own creatures are not protected \u2014 only you"
+        ]
+      },
+      {
+        "xml": "tests/spell-queller/TEST-com.wingedsheep.engine.scenarios.SpellQuellerScenarioTest.xml",
+        "class": "com.wingedsheep.engine.scenarios.SpellQuellerScenarioTest",
+        "count": 4,
+        "sha256": "18712effd17beb331ea9c58529f806c1a7c73e9fa1d075c51afa255f81ffb62a",
+        "case_names": [
+          "ETB exiles the target spell and links it to the Queller",
+          "when the Queller leaves, the exiled card's owner may cast it for free",
+          "the owner may decline, and the card stays exiled",
+          "a Queller that exiled nothing does nothing when it leaves"
+        ]
+      },
+      {
+        "xml": "tests/stack-war/TEST-com.wingedsheep.engine.scenarios.StackWarTest.xml",
+        "class": "com.wingedsheep.engine.scenarios.StackWarTest",
+        "count": 15,
+        "sha256": "73c20768f15687e759d9d20887e1446a3c3d177287687fc9188ee187d488f8ab",
+        "case_names": [
+          "stack is empty at start of game",
+          "casting a spell puts it on the stack",
+          "priority passes after casting a spell",
+          "passing priority with empty stack advances the game",
+          "cannot cast spell without priority",
+          "passing priority to opponent",
+          "both players passing resolves top of stack",
+          "stack resolution order is LIFO",
+          "instant can be cast in response",
+          "sorcery cannot be cast in response",
+          "countered spell goes to graveyard",
+          "can respond to opponent's spell",
+          "after resolving top of stack, active player gets priority",
+          "spell targeting a spell on the stack",
+          "multiple spells on stack resolve in order"
+        ]
+      },
+      {
+        "xml": "tests/team-loss/TEST-com.wingedsheep.engine.multiplayer.TwoHeadedGiantTeamLossTest.xml",
+        "class": "com.wingedsheep.engine.multiplayer.TwoHeadedGiantTeamLossTest",
+        "count": 10,
+        "sha256": "64acf31ee04fceefd4e38b5ee7b8d43fd49d5338a1deb86942b1ced58dbe04ac",
+        "case_names": [
+          "a team at 0 shared life loses; the opposing team wins together (CR 810.8a/c)",
+          "conceding makes the whole team lose (CR 810.8b)",
+          "one teammate decking out loses the team, and the game-end reason is the real cause",
+          "poison is pooled by the team and the team loses at 15, not 10 (CR 810.8d / 810.10)",
+          "a team with 10 combined poison does NOT lose under the 15 threshold",
+          "a can't-lose grant on either teammate protects the whole team (CR 810.8a)",
+          "'you don't lose for having 0 or less life' on either head protects the whole team (CR 810.8a example)",
+          "'you win the game' wins for your whole team and defeats only opposing teams (CR 810.8a)",
+          "the game does not end while both teams still have a player standing",
+          "non-team game is unchanged: a player at 0 loses alone and poison threshold stays 10"
+        ]
+      },
+      {
+        "xml": "tests/team-priority/TEST-com.wingedsheep.engine.multiplayer.TwoHeadedGiantTeamPriorityTest.xml",
+        "class": "com.wingedsheep.engine.multiplayer.TwoHeadedGiantTeamPriorityTest",
+        "count": 12,
+        "sha256": "dd6c47aca96ef7b9dda6d22f8736f8d56d9e14a02183dbb796c5f2b22b7f2631",
+        "case_names": [
+          "hasPriority admits the baton holder's whole team, and nobody else (CR 805.5)",
+          "a free-for-all pod is untouched: priority is still one seat",
+          "Team vs. Team takes individual turns (CR 808.4), so priority stays individual too",
+          "a teammate may respond to their partner's spell while it is still on the stack",
+          "an opposing player still cannot act on the active team's priority",
+          "the chain: partner acts at sorcery speed without the baton making a lap (CR 805.5a)",
+          "an out-of-order action re-arms the whole team: every seat still gets its own window",
+          "the baton skips seats that already passed this round",
+          "a teammate who already passed this round can't pass again until someone acts",
+          "nextUnpassedPriorityAfter is plain getNextPlayer while nobody has passed",
+          "a teammate's cast is a real spell of theirs, not of the baton holder",
+          "priorityTeam is empty when nobody holds priority"
+        ]
+      },
+      {
+        "xml": "tests/team-versus-team/TEST-com.wingedsheep.engine.multiplayer.TeamVsTeamTest.xml",
+        "class": "com.wingedsheep.engine.multiplayer.TeamVsTeamTest",
+        "count": 14,
+        "sha256": "0d47fde8ab0db49dda30b3d9da0841d1ca9094d08b638811c6d5a3d8679ed8c2",
+        "case_names": [
+          "a randomly chosen first team starts with the seat left of its midpoint, and turn order wraps the table (CR 808.4)",
+          "each player has their own life total; damaging one teammate doesn't touch the other (CR 808.5)",
+          "teammates have distinct life owners (no canonical pooling)",
+          "a player at 0 life loses ALONE; the teammate plays on and the game continues (CR 104.3b)",
+          "a team loses only once ALL its members are out; the other team wins together (CR 104.2c)",
+          "conceding eliminates only the conceding player; the teammate fights on (no 810.8a propagation)",
+          "a can't-lose grant protects only its controller, not the whole team (CR 808 / normal 104)",
+          "poison is per-player at threshold 10; one poisoned player loses alone",
+          "poison does NOT pool across the team \u2014 8 + 7 = 15 kills no one (each is below 10)",
+          "opponents exclude teammates; teammates are recognised",
+          "turn ownership is individual: only the active player owns the turn; a teammate does not",
+          "each player draws on their own turn; no first-turn draw skip in a 4-player game (CR 103.8c)",
+          "the turn passes to the next individual player, not skipping the whole team",
+          "only the directly-attacked player defends; a teammate is not pulled in as a defender"
+        ]
+      }
+    ],
+    "exit_files": [
+      "tests/abundant-maw/exit-status.txt",
+      "tests/ai-decision-trace/exit-status.txt",
+      "tests/cast-sba/exit-status.txt",
+      "tests/circle-solace/exit-status.txt",
+      "tests/commander-choice/exit-status.txt",
+      "tests/continuations/exit-status.txt",
+      "tests/death-trigger/exit-status.txt",
+      "tests/flash-permission/exit-status.txt",
+      "tests/free-cast/exit-status.txt",
+      "tests/krarks-thumb/exit-status.txt",
+      "tests/leave-game/exit-status.txt",
+      "tests/legacy-serialization/exit-status.txt",
+      "tests/legacy-traces/exit-status.txt",
+      "tests/legend-rule/exit-status.txt",
+      "tests/mauler/exit-status.txt",
+      "tests/modal-cost/exit-status.txt",
+      "tests/modal-cost-enumeration/exit-status.txt",
+      "tests/ordinary-cleanup/exit-status.txt",
+      "tests/priority/exit-status.txt",
+      "tests/prismari/exit-status.txt",
+      "tests/reveal-cost/exit-status.txt",
+      "tests/scarecrow/exit-status.txt",
+      "tests/spell-queller/exit-status.txt",
+      "tests/stack-war/exit-status.txt",
+      "tests/team-loss/exit-status.txt",
+      "tests/team-priority/exit-status.txt",
+      "tests/team-versus-team/exit-status.txt"
+    ]
+  },
+  {
+    "component": "observer",
+    "zip_name": "shared-36267979180.zip",
+    "sha256": "b99caa8d481335f840705040f593629cc3744881336286eb5ad69376b960f17d",
+    "bytes": 292285,
+    "cases": 135,
+    "suites": [
+      {
+        "xml": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.handlers.PredicateEvaluatorRecordTest.xml",
+        "class": "com.wingedsheep.engine.handlers.PredicateEvaluatorRecordTest",
+        "count": 19,
+        "sha256": "fd00a4be335bea3a1617d3e7a6ddb1c5b31023305a2cb9538a2297c79d95f791",
+        "case_names": [
+          "empty predicate list matches anything",
+          "face-down cast records never match any non-empty filter",
+          "conjunction (AND) requires every predicate to match",
+          "CardPredicate.Or matches when any inner predicate matches (OR)",
+          "positive type matches",
+          "negation predicates",
+          "token predicates: spells are never tokens",
+          "legendary predicates read the supertype set",
+          "HasColor and NotColor inspect the recorded color set",
+          "Colorless, Monocolored, Multicolored",
+          "HasSubtype / NotSubtype / HasAnyOfSubtypes",
+          "HasBasicLandType treats the landType string as a subtype",
+          "equals / at-most / at-least",
+          "power / toughness predicates all return false",
+          "name / keyword / ability predicates return false",
+          "source-relative and context predicates return false",
+          "And: all sub-predicates must match",
+          "Or: any sub-predicate matches",
+          "Not inverts the wrapped predicate"
+        ]
+      },
+      {
+        "xml": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.handlers.effects.zones.MoveToZoneEffectExecutorTest.xml",
+        "class": "com.wingedsheep.engine.handlers.effects.zones.MoveToZoneEffectExecutorTest",
+        "count": 10,
+        "sha256": "41846e51a45d576b8e68f7592d0a22b76b0be5ecdca8f38143c0ffa4987b0ed2",
+        "case_names": [
+          "move from battlefield to graveyard (default)",
+          "move from battlefield to hand (bounce)",
+          "move from battlefield to exile",
+          "move to library top",
+          "move to library bottom",
+          "move to library shuffled emits LibraryShuffledEvent",
+          "move to battlefield tapped",
+          "byDestruction = true destroys the permanent",
+          "byDestruction = true on indestructible creature is a no-op",
+          "battlefield components are cleaned up when leaving battlefield"
+        ]
+      },
+      {
+        "xml": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.multiplayer.MultiDefenderCombatTest.xml",
+        "class": "com.wingedsheep.engine.multiplayer.MultiDefenderCombatTest",
+        "count": 4,
+        "sha256": "83768fee7e151707bce273d6ba2487858d6a9091a0b4f34a6f48182209888947",
+        "case_names": [
+          "CombatDefenders reports the right defending players in APNAP order",
+          "a defender can only block an attacker that is attacking them (CR 509.1b)",
+          "no seat gets a priority window between two defenders' block declarations (CR 802.4)",
+          "both defenders declare blockers (APNAP) and damage lands on the right players"
+        ]
+      },
+      {
+        "xml": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.multiplayer.TwoHeadedGiantCombatTest.xml",
+        "class": "com.wingedsheep.engine.multiplayer.TwoHeadedGiantCombatTest",
+        "count": 9,
+        "sha256": "4ee14d43c3a721f35cc145107202a328d81648c1476c0464483cc62e4d89b67d",
+        "case_names": [
+          "a creature attacks the opposing team, never a teammate (CR 805.10b)",
+          "the combined attack may include creatures controlled by BOTH active-team members (CR 805.10b)",
+          "one declaration is the whole team's \u2014 the teammate may pass and can't add a second wave (CR 805.10b)",
+          "the whole nonactive team defends \u2014 even an un-attacked teammate is a defending player (CR 805.10a)",
+          "a defending creature may block an attacker aimed at its TEAMMATE (CR 805.10d)",
+          "a member of the attacking team cannot declare blockers (CR 805.10a)",
+          "the teammate's attackers survive a state-based-action pass (CR 805.10a / CR 506.4)",
+          "both defenders' blockers survive a state-based-action pass (CR 805.10d / CR 506.4)",
+          "an attacker stolen by the DEFENDING team is still removed from combat (CR 506.4)"
+        ]
+      },
+      {
+        "xml": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.ActivationPriorityScenarioTest.xml",
+        "class": "com.wingedsheep.engine.scenarios.ActivationPriorityScenarioTest",
+        "count": 9,
+        "sha256": "31cf4c884e800fdf65c8d2cef4c082d54800d34e6f377715ea929a78d64ffe09",
+        "case_names": [
+          "nonactive activation removes its sacrificed token before returning priority",
+          "cost and SBA deaths join one APNAP batch above a nonactive player's activation",
+          "SBA death occurs before choosing targets for a cost-triggered ability",
+          "Ferocity's cost-death return waits above the activated ability after Aura cleanup",
+          "paying the last life loses before an activated life gain can resolve",
+          "standalone Spawn mana removes the token before nonactive player receives priority",
+          "standalone Treasure with explicit color settles token cleanup before priority",
+          "Treasure color-choice pause completes its mana effect before SBA and restores activator priority",
+          "Spawn activation inside ward payment does not run SBA until the outer payment completes"
+        ]
+      },
+      {
+        "xml": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.BatchMayQuestionTest.xml",
+        "class": "com.wingedsheep.engine.scenarios.BatchMayQuestionTest",
+        "count": 7,
+        "sha256": "283ad9a98bf90627a6c5627c7557678eb6fbeaf09a1697ebc45996dd2ace5fad",
+        "case_names": [
+          "two optional triggers choose targets before either consent decision",
+          "each targeted trigger asks at its own resolution and both may be accepted",
+          "declining both effects still requires both triggers to resolve",
+          "identical triggers retain independent resolution choices",
+          "a single optional trigger chooses its target before offering yes or no",
+          "may does not make a required target optional",
+          "removing the chosen target in response causes a fizzle without a may decision"
+        ]
+      },
+      {
+        "xml": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.CastObserverSourceLkiTest.xml",
+        "class": "com.wingedsheep.engine.scenarios.CastObserverSourceLkiTest",
+        "count": 8,
+        "sha256": "c55b6959e90098685fcfb47cf1790767fa06e9ab9ae1cfc22965be893a317828",
+        "case_names": [
+          "cast observer keeps its own source history seat 1 player target true survives false",
+          "cast observer keeps its own source history seat 1 player target true survives true",
+          "cast observer keeps its own source history seat 1 player target false survives false",
+          "cast observer keeps its own source history seat 1 player target false survives true",
+          "cast observer keeps its own source history seat 2 player target true survives false",
+          "cast observer keeps its own source history seat 2 player target true survives true",
+          "cast observer keeps its own source history seat 2 player target false survives false",
+          "cast observer keeps its own source history seat 2 player target false survives true"
+        ]
+      },
+      {
+        "xml": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.DamageSourceIdentityScenarioTest.xml",
+        "class": "com.wingedsheep.engine.scenarios.DamageSourceIdentityScenarioTest",
+        "count": 5,
+        "sha256": "80fa17633d3132b2387abbe83d47599cc719d9f178fcdae1587cc17d68facf7e",
+        "case_names": [
+          "a live original source gains effective damage keywords after activation",
+          "a live original source uses its new projected controller and color",
+          "departed source uses final controller color and keywords after serialization; token=false",
+          "departed source uses final controller color and keywords after serialization; token=true",
+          "old damage does not borrow deathtouch or lifelink newly granted to the returned source"
+        ]
+      },
+      {
+        "xml": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.DamageSourceTriggerScenarioTest.xml",
+        "class": "com.wingedsheep.engine.scenarios.DamageSourceTriggerScenarioTest",
+        "count": 6,
+        "sha256": "c24244c7cbfdbe0e22d5123858e47f3c36eb384436217266dd88dcd3a0e32f36",
+        "case_names": [
+          "a dies trigger retains source damage characteristics before token cleanup; token=false",
+          "a dies trigger retains source damage characteristics before token cleanup; token=true",
+          "a triggered ability already on the stack gains departure LKI when its source later dies",
+          "generic sacrifice cost retains a token source before its ability enters the stack",
+          "missing required source snapshot fails visibly instead of a silent damage result",
+          "old source damage triggers the matching observer but not a returned object's own ability"
+        ]
+      },
+      {
+        "xml": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.DeclareBlockersPriorityWindowTest.xml",
+        "class": "com.wingedsheep.engine.scenarios.DeclareBlockersPriorityWindowTest",
+        "count": 3,
+        "sha256": "082915d1993a7a7fb196102586c64b373beac34309093b875765d37c2233453b",
+        "case_names": [
+          "active player gets a priority window in declare blockers before combat damage",
+          "attacker's combat trick is an affordable, targetable legal action at the declare-blockers window",
+          "combat trick is detectable in the two-blockers-block-two-attackers board shape"
+        ]
+      },
+      {
+        "xml": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.ManaAbilityColorChoicePipelineTest.xml",
+        "class": "com.wingedsheep.engine.scenarios.ManaAbilityColorChoicePipelineTest",
+        "count": 4,
+        "sha256": "b4fab10825f03c1526c91ffe7deb3efc7eee65f5101cfb6b1110cad07a13bd31",
+        "case_names": [
+          "Damping Sphere replaces the two mana with one {C}",
+          "a mirror bonus and its rider both resolve",
+          "an attached 'additional mana on tap' aura fires",
+          "the land-tapped-for-mana event is still emitted"
+        ]
+      },
+      {
+        "xml": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.NestedManaPaymentBoundaryScenarioTest.xml",
+        "class": "com.wingedsheep.engine.scenarios.NestedManaPaymentBoundaryScenarioTest",
+        "count": 12,
+        "sha256": "f103076a5e0ff4447faaa13ff2a4a6a6a1d108e8de4e5b38250549cbe0b7b9b4",
+        "case_names": [
+          "seat 1 nested sacrifice choice restores the same payment without priority",
+          "seat 1 deferred death target is chosen only after payment and lethal toughness SBA",
+          "seat 1 preselected sacrifice defers its death trigger exactly once",
+          "seat 1 mana color pause preserves cost events and defers the draw",
+          "seat 1 declined outer payment retains the already paid death trigger",
+          "seat 1 illegal interrupt during nested sacrifice is atomic and does not pay a cost",
+          "seat 2 nested sacrifice choice restores the same payment without priority",
+          "seat 2 deferred death target is chosen only after payment and lethal toughness SBA",
+          "seat 2 preselected sacrifice defers its death trigger exactly once",
+          "seat 2 mana color pause preserves cost events and defers the draw",
+          "seat 2 declined outer payment retains the already paid death trigger",
+          "seat 2 illegal interrupt during nested sacrifice is atomic and does not pay a cost"
+        ]
+      },
+      {
+        "xml": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.PostBlockDeclarationPriorityScenarioTest.xml",
+        "class": "com.wingedsheep.engine.scenarios.PostBlockDeclarationPriorityScenarioTest",
+        "count": 16,
+        "sha256": "d1f01201689f6d9d9918ce2bf041ee36754b365a6e3c37fc9b2c881a5fa66717",
+        "case_names": [
+          "PB01 empty final declaration gives active seat 1 first priority",
+          "PB03 actual blocks give active seat 1 an immediate combat trick",
+          "PB02 empty final declaration gives active seat 2 first priority",
+          "PB04 actual blocks give active seat 2 an immediate combat trick",
+          "PB05 a targeted block trigger preserves active priority across serialized target choice",
+          "PB06 simultaneous block triggers keep ordering and targets before active priority",
+          "PB07 paid block tax restores active priority after a serialized mana selection",
+          "PB08 declining a block tax preserves declaration duty and grants no priority",
+          "PB09 nested block-tax mana pays before SBA and targeted death-trigger placement",
+          "PB10 multiple defenders have only an APNAP declaration baton before active priority",
+          "PB11 first defender's target choice waits until every block declaration is complete",
+          "PB12 multiple defenders' block triggers wait through paid tax then stack in APNAP order",
+          "PB13 a queued block-trigger token retains exact departure LKI through later payment and cleanup",
+          "PB14 a final defender's concession abandons tax but preserves the prior defender's trigger",
+          "PB15 owner concession preserves a remaining controller's queued source LKI without early placement",
+          "PB16 concession during two-player block payment clears the actual waiting batch at game end"
+        ]
+      },
+      {
+        "xml": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.TargetedDepartedSourceLkiTest.xml",
+        "class": "com.wingedsheep.engine.scenarios.TargetedDepartedSourceLkiTest",
+        "count": 4,
+        "sha256": "8179144b5fb791622409c48d55bdad963502e5c47313756176f5aac6a486243c",
+        "case_names": [
+          "departed token target pause preserves full source LKI seat 1 player target true",
+          "departed token target pause preserves full source LKI seat 1 player target false",
+          "departed token target pause preserves full source LKI seat 2 player target true",
+          "departed token target pause preserves full source LKI seat 2 player target false"
+        ]
+      },
+      {
+        "xml": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.TriggerOrderingConcessionScenarioTest.xml",
+        "class": "com.wingedsheep.engine.scenarios.TriggerOrderingConcessionScenarioTest",
+        "count": 1,
+        "sha256": "18a92c1e2472f703493d1746ae64fcea324fd72147b749b381b37a45550427dd",
+        "case_names": [
+          "a conceding ordering chooser leaves the surviving controller's exact APNAP group and priority recipient intact"
+        ]
+      },
+      {
+        "xml": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.TriggerOrderingScenarioTest.xml",
+        "class": "com.wingedsheep.engine.scenarios.TriggerOrderingScenarioTest",
+        "count": 6,
+        "sha256": "ab6e32b9302a78a1b0a12dc1eafb2c469ca88fc89f14059bbff7e080fbc5008a",
+        "case_names": [
+          "putting life loss below life gain permits surviving at one life",
+          "the other legal ordering resolves life loss first and loses before the gain",
+          "invalid ordering choices fail without altering the game or consuming a trigger",
+          "ordering is preserved through serialization and two separate target decisions",
+          "active and nonactive controllers order their own groups in APNAP placement order",
+          "two copies of a card retain all four source identities and trigger payloads"
+        ]
+      },
+      {
+        "xml": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.session.PostBlockDeclarationSessionTest.xml",
+        "class": "com.wingedsheep.gameserver.session.PostBlockDeclarationSessionTest",
+        "count": 2,
+        "sha256": "b6833502b3a3c9da4c286bbf810bcefe89152ebf7508294ca70e863bc4ccff34",
+        "case_names": [
+          "GS-PB01 both defending teammates get their own declaration without ordinary priority",
+          "GS-PB02 block-tax payment exposes only the payer's mana actions before declarations resume"
+        ]
+      },
+      {
+        "xml": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.session.TwoHeadedGiantSessionTest.xml",
+        "class": "com.wingedsheep.gameserver.session.TwoHeadedGiantSessionTest",
+        "count": 10,
+        "sha256": "c66e931a70b9414863a54941a4b23f98215d63012ceec00fd2deadbc96305d2c",
+        "case_names": [
+          "seat roster carries each seat's team index, with teammates in adjacent seats (CR 805.1)",
+          "both heads of the surviving team are winners, not just the representative (CR 810.8a)",
+          "a teammate is not an opponent (CR 810): getOpponentIds returns only the other team",
+          "life totals are the shared team total for both teammates, not each raw component",
+          "a player sees their teammate's hand but not an opponent's (CR 810.2)",
+          "the seat roster carries the shared-turn flag, which the client needs to answer \"may I act?\"",
+          "a teammate is offered their OWN actions while their partner holds the baton (CR 805.5)",
+          "a Free-for-All pod stays one seat at a time \u2014 only the baton holder is offered actions",
+          "a revealed card in an opponent's hand still reaches the viewer, count and all",
+          "non-team game is unchanged: no team index, every other seat is an opponent"
+        ]
+      }
+    ],
+    "exit_files": []
+  },
+  {
+    "component": "combat",
+    "zip_name": "shared-36267982988.zip",
+    "sha256": "d9ea44a905412e9a166a90afcb21dbdca3c7e129b4bd5f62c495326167cd785e",
+    "bytes": 239084,
+    "cases": 32,
+    "suites": [
+      {
+        "xml": "tests/BandingTrampleDrainScenarioTest/TEST-com.wingedsheep.engine.scenarios.BandingTrampleDrainScenarioTest.xml",
+        "class": "com.wingedsheep.engine.scenarios.BandingTrampleDrainScenarioTest",
+        "count": 1,
+        "sha256": "7c188e1bfd27bcba8f30bd307e21fea1f208263b5ab9fc0fd8779da26274fd05",
+        "case_names": [
+          "banded trampler may drain its full 2 to the player when a non-trample band-mate covers lethal"
+        ]
+      },
+      {
+        "xml": "tests/CombatAssignmentCurrentRulesTest/TEST-com.wingedsheep.engine.scenarios.CombatAssignmentCurrentRulesTest.xml",
+        "class": "com.wingedsheep.engine.scenarios.CombatAssignmentCurrentRulesTest",
+        "count": 12,
+        "sha256": "b7d6a73f88d094f123b10e8d259ee889ccb0d0c9e2821539b3bbbbfa3b8e3744",
+        "case_names": [
+          "attacker freely divides four damage as two each among three-toughness blockers",
+          "blocker freely divides four damage as two each among three-toughness attackers",
+          "all damage may be assigned to one creature even beyond lethal",
+          "board underassignment overassignment and negative assignments reject atomically",
+          "serialized legacy assignment accepts a nonlethal split without imposing target order",
+          "legacy underassignment overassignment and negative amounts reject atomically",
+          "trample cannot assign to the defender before every blocker has lethal damage",
+          "marked and concurrent lethal damage permit trample and preserve the other chooser's plan",
+          "deathtouch trample assigns one lethal damage per blocker and the remainder to the defender",
+          "banding changes the chooser while preserving the same free nonlethal division",
+          "changed nonowned unknown and duplicate edges reject while unchanged full-board echoes remain valid",
+          "a blocked source with no remaining recipients assigns zero and cannot invent targets"
+        ]
+      },
+      {
+        "xml": "tests/CombatDamageAssignmentTest/TEST-com.wingedsheep.engine.scenarios.CombatDamageAssignmentTest.xml",
+        "class": "com.wingedsheep.engine.scenarios.CombatDamageAssignmentTest",
+        "count": 9,
+        "sha256": "d8126c52781baf85717e582db6db20814e846107d646422232b8ed2be43d7b85",
+        "case_names": [
+          "trample creature with single blocker presents a damage board with a drain edge",
+          "trample creature with custom damage assignment - all to blocker",
+          "multiple blockers: board defaults to lethal-first order then drains",
+          "deathtouch + trample assigns 1 damage per blocker, rest to player",
+          "deathtouch 1/1 kills larger creature via 704.5h",
+          "single blocker without trample - no decision needed, auto-assigned",
+          "auto-resolve uses default assignments for trample",
+          "Daunting Defender - default assignment accounts for prevention and kills Cleric",
+          "Daunting Defender - player assigns minimum (toughness only) and Cleric survives"
+        ]
+      },
+      {
+        "xml": "tests/CombatResolutionBoardTest/TEST-com.wingedsheep.engine.scenarios.CombatResolutionBoardTest.xml",
+        "class": "com.wingedsheep.engine.scenarios.CombatResolutionBoardTest",
+        "count": 10,
+        "sha256": "23758f69d56f44cfbfdab259bcd661b8c3a94d7f0e0b5d95779c82666c485c83",
+        "case_names": [
+          "trample attacker blocked by two creatures emits a CombatResolutionDecision with a drain edge",
+          "banded trampler cannot drain damage to player while the blocker is below band-lethal",
+          "bipartite crusher between two manually-assigned attackers emits BLOCKER_TO_ATTACKER edges",
+          "pure bipartite (no trample, no banding) still emits a CombatResolutionDecision",
+          "banding attacker: BLOCKER_TO_ATTACKER edges have minimum=0 (lethal-first bypassed)",
+          "two 8/4 tramplers double-blocked: emits two-step CR 510.1c flow with defender second",
+          "two 8/4 tramplers double-blocked: defender concentrates damage and kills one attacker",
+          "non-trample attacker with single blocker does not emit a resolution decision",
+          "non-trample attacker with power < blocker lethal: defaults validate cleanly",
+          "banding overassignment: 3-attacker band cooperates to kill two 3/3 blockers"
+        ]
+      }
+    ],
+    "exit_files": [
+      "command-exit-status.txt",
+      "tests/BandingTrampleDrainScenarioTest/exit-status.txt",
+      "tests/CombatAssignmentCurrentRulesTest/exit-status.txt",
+      "tests/CombatDamageAssignmentTest/exit-status.txt",
+      "tests/CombatResolutionBoardTest/exit-status.txt"
+    ]
+  },
+  {
+    "component": "token",
+    "zip_name": "shared-36267982980.zip",
+    "sha256": "cc9b519aea5af1e5a8566113b8850cb88fdb239df53c3c1738a8070cdc1362e9",
+    "bytes": 262486,
+    "cases": 20,
+    "suites": [
+      {
+        "xml": "tests/dalkovan-2/TEST-com.wingedsheep.engine.scenarios.DalkovanEncampmentScenarioTest.xml",
+        "class": "com.wingedsheep.engine.scenarios.DalkovanEncampmentScenarioTest",
+        "count": 2,
+        "sha256": "24ce2b9b98d85e9dd93f128cfbbd636bb0071207a57731d1f31c5da9ceeb259c",
+        "case_names": [
+          "activating the ability then attacking creates two tapped, attacking Warrior tokens",
+          "the tokens are sacrificed at the next end step"
+        ]
+      },
+      {
+        "xml": "tests/entry-event-provenance-4/TEST-com.wingedsheep.engine.event.EntryChoiceEventProvenanceTest.xml",
+        "class": "com.wingedsheep.engine.event.EntryChoiceEventProvenanceTest",
+        "count": 4,
+        "sha256": "6f7d85ab83df6da198f0dac0d06d39371d4ee9c865dd8049ff30b89b4d2e7c22",
+        "case_names": [
+          "EP01 a real as-enters token publishes its entry and resolves exactly one self ETB trigger",
+          "EP02 entry-time observer survives its automatic-tail removal and the distinct leave trigger is not suppressed",
+          "EP03 serialized pending token tail and repeated answers preserve exact entry records, state and two ETB effects",
+          "EP04 serialized provenance skips only the marked occurrence and preserves identical unmarked occurrences"
+        ]
+      },
+      {
+        "xml": "tests/token-defender-14/TEST-com.wingedsheep.engine.handlers.effects.token.AttackingTokenDefenderChoiceTest.xml",
+        "class": "com.wingedsheep.engine.handlers.effects.token.AttackingTokenDefenderChoiceTest",
+        "count": 14,
+        "sha256": "91fc056cb8ad1f03a442a86c2033a8c94acb4a62f0aabb4db53e8cdab85b072a",
+        "case_names": [
+          "TD01 land attack trigger creates two tokens attacking the sole opponent, never its controller",
+          "TD02 multiple opponents require a separate controller choice for every not-yet-created token",
+          "TD03 public planeswalkers and protected battles are nontargeting defender choices",
+          "TD04 attack-left and attack-right preserve the legal neighboring seat",
+          "TD05 recipient fanout suspends once, retains all token collections and does not make nonactive players attack",
+          "TD06 doubled plain batch freezes four defender choices and four delayed riders across serialization",
+          "TD07 target-copy batch uses the same once-only count replacement and selected defenders",
+          "TD08 noncreature target copies enter tapped without attacking or asking for a defender",
+          "TD09 wrong actor and malformed defender submissions preserve the exact pending state",
+          "TD10 serialized pending choice and identical answer replay preserve state and events exactly",
+          "TD11 copy as-enters choices retain chosen defender tail, token collection, entry events and delayed riders",
+          "TD12 declining token replacement keeps the prepared count and actual recipient across the next choice",
+          "TD13 accepting replacement preserves attacking state, actual recipient, collection and delayed riders",
+          "TD14 active teammate chooses its own legal defenders while declaration restrictions do not prevent entry"
+        ]
+      }
+    ],
+    "exit_files": [
+      "dalkovan-2-exit-status.txt",
+      "entry-event-provenance-4-exit-status.txt",
+      "tests/dalkovan-2/exit-status.txt",
+      "tests/entry-event-provenance-4/exit-status.txt",
+      "tests/token-defender-14/exit-status.txt",
+      "token-defender-14-exit-status.txt"
+    ]
+  }
+]
