@@ -42,6 +42,7 @@ jobs:
       - name: Bind source and preserve every existing snapshot block
         env:
           EXPECTED_HEAD: ${{ github.event.pull_request.head.sha }}
+          SOURCE_MANIFEST: docs/experiments/pest-control/tier-one-postboard-support-batch-a-receiving-sources.json
         run: |
           python - <<'PY'
           import hashlib, json, os, pathlib, re, subprocess
@@ -49,13 +50,27 @@ jobs:
           out = root / 'build/reports/pest-postboard-support-batch-a'
           out.mkdir(parents=True, exist_ok=True)
           head = subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip()
-          assert head == os.environ['EXPECTED_HEAD']
-          manifest_path = root / 'docs/experiments/pest-control/tier-one-postboard-support-batch-a-sources.json'
+          manifest_path = root / os.environ['SOURCE_MANIFEST']
           manifest = json.loads(manifest_path.read_text())
+          observed = {path: hashlib.sha256((root / path).read_bytes()).hexdigest()
+                      if (root / path).is_file() else None
+                      for path in manifest['source_files_sha256']}
+          (out / 'card-sources.json').write_bytes(manifest_path.read_bytes())
+          (out / 'binding-attempt.json').write_text(json.dumps({
+              'candidate_head': head, 'expected_head': os.environ['EXPECTED_HEAD'],
+              'github_run_id': os.environ['GITHUB_RUN_ID'],
+              'github_run_attempt': os.environ['GITHUB_RUN_ATTEMPT'],
+              'manifest_path': str(manifest_path),
+              'expected_source_files_sha256': manifest['source_files_sha256'],
+              'observed_source_files_sha256': observed,
+              'scope': 'DETERMINISTIC_CARD_AND_REGISTRY_VALIDATION_ONLY',
+              'official_execution_authorized': False,
+          }, indent=2) + '\n')
+          assert head == os.environ['EXPECTED_HEAD']
           integrated_main = manifest['integration_main_commit']
           subprocess.check_call(['git', 'merge-base', '--is-ancestor', integrated_main, head])
           for path, digest in manifest['source_files_sha256'].items():
-              assert hashlib.sha256((root / path).read_bytes()).hexdigest() == digest, path
+              assert observed[path] == digest, path
           snapshot_results = {}
           def blocks(raw):
               result = {}
@@ -65,16 +80,17 @@ jobs:
                   json.loads(body)
                   result[name] = body.rstrip('\n')
               return result
-          for code, added_name in manifest['snapshot_additions'].items():
+          for code, added_names in manifest['snapshot_additions'].items():
+              assert isinstance(added_names, list) and added_names, code
               path = f'mtg-sets/src/test/resources/snapshots/cards/{code}.json'
               before = blocks(subprocess.check_output(['git', 'show', manifest['base_commit'] + ':' + path], text=True))
               after = blocks((root / path).read_text())
-              assert set(after) - set(before) == {added_name}, code
+              assert set(after) - set(before) == set(added_names), code
               assert set(before) <= set(after), code
               assert all(after[name] == body for name, body in before.items()), code
-              snapshot_results[code] = {'unchanged_existing_blocks': len(before), 'added': added_name}
+              snapshot_results[code] = {'unchanged_existing_blocks': len(before), 'added': added_names}
           provenance = {
-              'schema': 'pest-postboard-support-batch-a-provenance-v1',
+              'schema': 'pest-postboard-support-batch-a-receiving-provenance-v1',
               'candidate_head': head,
               'base_commit': manifest['base_commit'],
               'integrated_main_commit': integrated_main,

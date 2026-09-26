@@ -1,0 +1,21 @@
+{
+  "schema": "pest-postboard-priority-binding-failure-audit-v1",
+  "candidate_head": "3785964e46ac2b37331a0b7ce14cb815293b781d",
+  "github_run_id": 36244588441,
+  "github_job_id": 108411296178,
+  "run_url": "https://github.com/GodaPupa/argentum-batshit-test/actions/runs/36244588441",
+  "conclusion": "failure",
+  "failing_stage": "Bind exact source and effective rules archive",
+  "classification": "PROVENANCE_BINDING_DRIFT",
+  "failed_path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/spell/CastSpellHandler.kt",
+  "reason": "Historical priority manifest pins pre-Torch source; the combined candidate intentionally includes the canonical Torch targeting-cost delta. The unchanged old manifest rejects that receiving source before any regression test.",
+  "regression_stage_executed": false,
+  "artifact_upload": "FAILED_NO_FILES_BECAUSE_BINDING_CHECK_PRECEDED_PROVENANCE_WRITE",
+  "raw_log_sha256": "beeea0365595af98995ee2c2774fe559d5fe9c5077b91de76a51a64b94077ad3",
+  "compressed_log_sha256": "e586a0986f7c2c3b114c3c8ae41f43de12ab2ffddfca1006916c0f6ba84d323b",
+  "resolution": "Preserve historical manifest and accepted receipts. Bind a separate prospective receiving-source manifest, retain all 27 priority/SBA stages, and preserve binding attempts even when rejected. Runtime acceptance remains pending.",
+  "official_seeds_generated": 0,
+  "official_games_initialized": 0,
+  "official_actions_submitted": 0,
+  "outcome_exposure": 0
+}

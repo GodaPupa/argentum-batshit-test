@@ -1060,10 +1060,13 @@ class CastSpellHandler(
         val faceManaCostOverride: ManaCost? = action.faceIndex?.let { idx ->
             cardDef?.cardFaces?.getOrNull(idx)?.manaCost
         }
+        val chosenTargetIds = action.targets.map { it.toEntityId() }
         var effectiveCost = if (playForFree) {
-            ManaCost.ZERO
+            if (cardDef != null) costCalculator.calculateEffectiveCostWithAlternativeBase(
+                state, cardDef, ManaCost.ZERO, action.playerId, chosenTargetIds
+            ) else ManaCost.ZERO
         } else if (faceManaCostOverride != null && cardDef != null) {
-            costCalculator.calculateEffectiveCostWithAlternativeBase(state, cardDef, faceManaCostOverride, action.playerId)
+            costCalculator.calculateEffectiveCostWithAlternativeBase(state, cardDef, faceManaCostOverride, action.playerId, chosenTargetIds)
         } else if (action.castForPrototype && !action.useAlternativeCost && cardDef != null) {
             val prototype = cardDef.keywordAbilities
                 .filterIsInstance<KeywordAbility.Prototype>()
@@ -1071,7 +1074,7 @@ class CastSpellHandler(
                 ?: return null
             costCalculator.calculateEffectiveCostWithAlternativeBase(
                 state, cardDef, prototype.cost, action.playerId
-            )
+            , chosenTargetIds)
         } else if (action.useAlternativeCost && cardDef != null) {
             // Check flashback cost first (printed, granted per-entity by Archmage's Newt, or
             // granted to the whole graveyard by a battlefield static — Iroh, Grand Lotus).
@@ -1092,24 +1095,24 @@ class CastSpellHandler(
             // (e.g. a granted warp). With no choice recorded, every gate is open and this falls
             // back to the original priority order.
             if (action.altAllows(AlternativeCostType.FLASHBACK) && flashbackAbility != null && zoneResolver.hasFlashbackPermission(state, action.playerId, action.cardId)) {
-                costCalculator.calculateEffectiveCostWithAlternativeBase(state, cardDef, flashbackAbility.cost, action.playerId)
+                costCalculator.calculateEffectiveCostWithAlternativeBase(state, cardDef, flashbackAbility.cost, action.playerId, chosenTargetIds)
             } else if (action.altAllows(AlternativeCostType.HARMONIZE) && harmonizeAbility != null && zoneResolver.hasHarmonizePermission(state, action.playerId, action.cardId)) {
                 // Harmonize cost (printed or granted). The per-creature power reduction is
                 // applied afterward via alternativePayment.
-                costCalculator.calculateEffectiveCostWithAlternativeBase(state, cardDef, harmonizeAbility.cost, action.playerId)
+                costCalculator.calculateEffectiveCostWithAlternativeBase(state, cardDef, harmonizeAbility.cost, action.playerId, chosenTargetIds)
             } else if (action.altAllows(AlternativeCostType.MAYHEM) &&
                 MayhemGrants.effectiveMayhem(state, action.cardId, cardDef, action.playerId, cardRegistry, predicateEvaluator) != null &&
                 zoneResolver.hasMayhemPermission(state, action.playerId, action.cardId)) {
                 // Mayhem cost (CR 702.187) — cast from graveyard for its mayhem cost.
                 costCalculator.calculateEffectiveCostWithAlternativeBase(
                     state, cardDef, MayhemGrants.effectiveMayhem(state, action.cardId, cardDef, action.playerId, cardRegistry, predicateEvaluator)!!.cost, action.playerId
-                )
+                , chosenTargetIds)
             } else if (action.altAllows(AlternativeCostType.ESCAPE) && escapeAbility != null) {
                 // Escape cost (CR 702.138a). The non-mana "exile other cards" portion is
                 // validated and paid separately through the additional-cost rail.
                 costCalculator.calculateEffectiveCostWithAlternativeBase(
                     state, cardDef, escapeAbility.cost, action.playerId
-                )
+                , chosenTargetIds)
             } else if (action.altAllows(AlternativeCostType.DISTURB) &&
                 DisturbCasts.printedDisturb(cardDef) != null &&
                 zoneResolver.disturbCastFace(state, action.playerId, action.cardId) != null) {
@@ -1118,7 +1121,7 @@ class CastSpellHandler(
                 // from the front face, CR 712.8c).
                 costCalculator.calculateEffectiveCostWithAlternativeBase(
                     state, cardDef, DisturbCasts.printedDisturb(cardDef)!!.cost, action.playerId
-                )
+                , chosenTargetIds)
             } else if (action.altAllows(AlternativeCostType.MODAL_BACK_FACE) && modalBackFace != null) {
                 // Modal DFC back face (CR 712.11b) — you pay that face's *own* printed mana cost,
                 // not an alternative one. It still runs through the alternative-base path so
@@ -1126,7 +1129,7 @@ class CastSpellHandler(
                 // cost, because CR 712.8f gives a modal back face its own mana value.
                 costCalculator.calculateEffectiveCostWithAlternativeBase(
                     state, cardDef, modalBackFace.manaCost, action.playerId
-                )
+                , chosenTargetIds)
             } else {
                 // Check warp cost (hand only — CR 702.185a). Re-casts from exile pay the regular
                 // mana cost. Printed warp wins; a battlefield grant ([GrantWarpToCardsInHand])
@@ -1135,7 +1138,7 @@ class CastSpellHandler(
                     state, action.cardId, cardDef, action.playerId, cardRegistry, predicateEvaluator
                 )
                 if (action.altAllows(AlternativeCostType.WARP) && warpAbility != null && zoneResolver.hasWarpPermission(state, action.playerId, action.cardId)) {
-                    costCalculator.calculateEffectiveCostWithAlternativeBase(state, cardDef, warpAbility.cost, action.playerId)
+                    costCalculator.calculateEffectiveCostWithAlternativeBase(state, cardDef, warpAbility.cost, action.playerId, chosenTargetIds)
                 } else {
                     // Check sneak cost (CR 702.190 — mana portion; the bounce is paid separately).
                     // The effective sneak cost is the printed Sneak, or a granted graveyard sneak
@@ -1151,11 +1154,11 @@ class CastSpellHandler(
                     // Check emerge cost (CR 702.119 — mana portion; the sacrifice is paid separately).
                     val emergeAbility = EmergeCasts.printedEmerge(cardDef)
                     if (action.altAllows(AlternativeCostType.SNEAK) && sneakCost != null) {
-                        costCalculator.calculateEffectiveCostWithAlternativeBase(state, cardDef, sneakCost, action.playerId)
+                        costCalculator.calculateEffectiveCostWithAlternativeBase(state, cardDef, sneakCost, action.playerId, chosenTargetIds)
                     } else if (action.altAllows(AlternativeCostType.WEB_SLINGING) && webSlingingAbility != null) {
-                        costCalculator.calculateEffectiveCostWithAlternativeBase(state, cardDef, webSlingingAbility.cost, action.playerId)
+                        costCalculator.calculateEffectiveCostWithAlternativeBase(state, cardDef, webSlingingAbility.cost, action.playerId, chosenTargetIds)
                     } else if (action.altAllows(AlternativeCostType.EVOKE) && evokeAbility != null) {
-                        costCalculator.calculateEffectiveCostWithAlternativeBase(state, cardDef, evokeAbility.cost, action.playerId)
+                        costCalculator.calculateEffectiveCostWithAlternativeBase(state, cardDef, evokeAbility.cost, action.playerId, chosenTargetIds)
                     } else if (action.altAllows(AlternativeCostType.EMERGE) && emergeAbility != null) {
                         // CR 702.119a — the emerge cost, then reduced by an amount of *generic*
                         // mana equal to the sacrificed creature's mana value. The reduction lands
@@ -1164,12 +1167,12 @@ class CastSpellHandler(
                         // creature is still on the battlefield here: it is sacrificed only as the
                         // total cost is paid (CR 601.2h), which execute() does after mana payment.
                         EmergeCasts.reduceForSacrifice(
-                            costCalculator.calculateEffectiveCostWithAlternativeBase(state, cardDef, emergeAbility.cost, action.playerId),
+                            costCalculator.calculateEffectiveCostWithAlternativeBase(state, cardDef, emergeAbility.cost, action.playerId, chosenTargetIds),
                             state,
                             action.additionalCostPayment?.sacrificedPermanents?.firstOrNull()
                         )
                     } else if (action.altAllows(AlternativeCostType.DASH) && dashAbility != null && zoneResolver.hasDashPermission(state, action.playerId, action.cardId)) {
-                        costCalculator.calculateEffectiveCostWithAlternativeBase(state, cardDef, dashAbility.cost, action.playerId)
+                        costCalculator.calculateEffectiveCostWithAlternativeBase(state, cardDef, dashAbility.cost, action.playerId, chosenTargetIds)
                     } else {
                         // Check bestow / impending alternative costs.
                         val bestowAbility = cardDef.keywordAbilities.filterIsInstance<KeywordAbility.Bestow>().firstOrNull()
@@ -1193,19 +1196,19 @@ class CastSpellHandler(
                             val bestowDef = cardDef.copy(typeLine = com.wingedsheep.engine.state.components.identity.BestowComponent.auraType(cardDef.typeLine))
                             costCalculator.calculateEffectiveCostWithAlternativeBase(
                                 state, bestowDef, bestowAbility.cost, action.playerId
-                            )
+                            , chosenTargetIds)
                         } else if (action.altAllows(AlternativeCostType.IMPENDING) && impendingAbility != null) {
-                            costCalculator.calculateEffectiveCostWithAlternativeBase(state, cardDef, impendingAbility.cost, action.playerId)
+                            costCalculator.calculateEffectiveCostWithAlternativeBase(state, cardDef, impendingAbility.cost, action.playerId, chosenTargetIds)
                         } else if (action.altAllows(AlternativeCostType.CLEAVE) && cleaveAbility != null) {
-                            costCalculator.calculateEffectiveCostWithAlternativeBase(state, cardDef, cleaveAbility.cost, action.playerId)
+                            costCalculator.calculateEffectiveCostWithAlternativeBase(state, cardDef, cleaveAbility.cost, action.playerId, chosenTargetIds)
                         } else if (action.altAllows(AlternativeCostType.MIRACLE) && miracleAbility != null) {
-                            costCalculator.calculateEffectiveCostWithAlternativeBase(state, cardDef, miracleAbility.cost, action.playerId)
+                            costCalculator.calculateEffectiveCostWithAlternativeBase(state, cardDef, miracleAbility.cost, action.playerId, chosenTargetIds)
                         } else {
                             // Check self-alternative cost (e.g., Zahid's {3}{U} + tap artifact)
                             val selfAltCost = cardDef.script.selfAlternativeCost
                             if (action.altAllows(AlternativeCostType.SELF_ALTERNATIVE) && selfAltCost != null) {
                                 val altMana = selfAltCost.manaCost
-                                costCalculator.calculateEffectiveCostWithAlternativeBase(state, cardDef, altMana, action.playerId)
+                                costCalculator.calculateEffectiveCostWithAlternativeBase(state, cardDef, altMana, action.playerId, chosenTargetIds)
                             } else if (action.altAllows(AlternativeCostType.GRANTED)) {
                                 // Fall back to battlefield-granted alternative cost (e.g., Jodah's
                                 // {W}{U}{B}{R}{G}). Only the mana half is priced here; the grant's
@@ -1213,7 +1216,7 @@ class CastSpellHandler(
                                 // paid with the other additional costs in `execute`.
                                 val altCosts = costCalculator.findAlternativeCastingCosts(state, action.playerId)
                                 if (altCosts.isEmpty()) return null
-                                costCalculator.calculateEffectiveCostWithAlternativeBase(state, cardDef, altCosts.first().manaCost)
+                                costCalculator.calculateEffectiveCostWithAlternativeBase(state, cardDef, altCosts.first().manaCost, action.playerId, chosenTargetIds)
                             } else {
                                 // A specific alternative cost was requested (e.g. DASH) but its own
                                 // permission gate failed — never silently fall back to an unrelated
@@ -2514,10 +2517,13 @@ class CastSpellHandler(
         val faceManaCostOverrideExecute: ManaCost? = action.faceIndex?.let { idx ->
             cardDef?.cardFaces?.getOrNull(idx)?.manaCost
         }
+        val chosenTargetIdsForPayment = action.targets.map { it.toEntityId() }
         var effectiveCost = if (playForFreeInExecute) {
-            ManaCost.ZERO
+            if (cardDef != null) costCalculator.calculateEffectiveCostWithAlternativeBase(
+                currentState, cardDef, ManaCost.ZERO, action.playerId, chosenTargetIdsForPayment
+            ) else ManaCost.ZERO
         } else if (faceManaCostOverrideExecute != null && cardDef != null) {
-            costCalculator.calculateEffectiveCostWithAlternativeBase(currentState, cardDef, faceManaCostOverrideExecute, action.playerId)
+            costCalculator.calculateEffectiveCostWithAlternativeBase(currentState, cardDef, faceManaCostOverrideExecute, action.playerId, chosenTargetIdsForPayment)
         } else if (action.castForPrototype && !action.useAlternativeCost && cardDef != null) {
             val prototype = cardDef.keywordAbilities
                 .filterIsInstance<KeywordAbility.Prototype>()
@@ -2525,7 +2531,7 @@ class CastSpellHandler(
                 ?: return ExecutionResult.error(currentState, "Prototype is not available for this card")
             costCalculator.calculateEffectiveCostWithAlternativeBase(
                 currentState, cardDef, prototype.cost, action.playerId
-            )
+            , chosenTargetIdsForPayment)
         } else if (action.useAlternativeCost && cardDef != null) {
             // Check flashback cost first (printed, granted per-entity by Archmage's Newt, or
             // granted to the whole graveyard by a battlefield static — Iroh, Grand Lotus).
@@ -2537,16 +2543,16 @@ class CastSpellHandler(
             // Branches gated by [CastSpell.altAllows] — mirrors validate(); honors the player's
             // explicit alternative-cost choice instead of a fixed priority order.
             if (action.altAllows(AlternativeCostType.FLASHBACK) && flashbackAbility != null && zoneResolver.hasFlashbackPermission(currentState, action.playerId, action.cardId)) {
-                costCalculator.calculateEffectiveCostWithAlternativeBase(currentState, cardDef, flashbackAbility.cost, action.playerId)
+                costCalculator.calculateEffectiveCostWithAlternativeBase(currentState, cardDef, flashbackAbility.cost, action.playerId, chosenTargetIdsForPayment)
             } else if (action.altAllows(AlternativeCostType.HARMONIZE) && harmonizeAbility != null && zoneResolver.hasHarmonizePermission(currentState, action.playerId, action.cardId)) {
-                costCalculator.calculateEffectiveCostWithAlternativeBase(currentState, cardDef, harmonizeAbility.cost, action.playerId)
+                costCalculator.calculateEffectiveCostWithAlternativeBase(currentState, cardDef, harmonizeAbility.cost, action.playerId, chosenTargetIdsForPayment)
             } else if (action.altAllows(AlternativeCostType.MAYHEM) &&
                 MayhemGrants.effectiveMayhem(currentState, action.cardId, cardDef, action.playerId, cardRegistry, predicateEvaluator) != null &&
                 zoneResolver.hasMayhemPermission(currentState, action.playerId, action.cardId)) {
                 // Mayhem cost (CR 702.187) — cast from graveyard for its mayhem cost.
                 costCalculator.calculateEffectiveCostWithAlternativeBase(
                     currentState, cardDef, MayhemGrants.effectiveMayhem(currentState, action.cardId, cardDef, action.playerId, cardRegistry, predicateEvaluator)!!.cost, action.playerId
-                )
+                , chosenTargetIdsForPayment)
             } else if (action.altAllows(AlternativeCostType.ESCAPE) &&
                 zoneResolver.hasEscapePermission(currentState, action.playerId, action.cardId)) {
                 // Escape cost (CR 702.138a) — mirror validate() exactly. The non-mana exile
@@ -2555,19 +2561,19 @@ class CastSpellHandler(
                     ?: return ExecutionResult.error(currentState, "Escape is not available for this card")
                 costCalculator.calculateEffectiveCostWithAlternativeBase(
                     currentState, cardDef, escapeAbility.cost, action.playerId
-                )
+                , chosenTargetIdsForPayment)
             } else if (action.altAllows(AlternativeCostType.DISTURB) &&
                 DisturbCasts.printedDisturb(cardDef) != null &&
                 zoneResolver.disturbCastFace(currentState, action.playerId, action.cardId) != null) {
                 // Disturb cost (CR 702.146a) — mirrors validate().
                 costCalculator.calculateEffectiveCostWithAlternativeBase(
                     currentState, cardDef, DisturbCasts.printedDisturb(cardDef)!!.cost, action.playerId
-                )
+                , chosenTargetIdsForPayment)
             } else if (action.altAllows(AlternativeCostType.MODAL_BACK_FACE) && modalBackFace != null) {
                 // Modal DFC back face (CR 712.11b) — mirrors validate().
                 costCalculator.calculateEffectiveCostWithAlternativeBase(
                     currentState, cardDef, modalBackFace.manaCost, action.playerId
-                )
+                , chosenTargetIdsForPayment)
             } else {
                 // Check warp cost (hand only — CR 702.185a). Re-casts from exile pay the regular
                 // mana cost. Printed warp wins; a battlefield grant ([GrantWarpToCardsInHand])
@@ -2576,7 +2582,7 @@ class CastSpellHandler(
                     currentState, action.cardId, cardDef, action.playerId, cardRegistry, predicateEvaluator
                 )
                 if (action.altAllows(AlternativeCostType.WARP) && warpAbility != null && zoneResolver.hasWarpPermission(currentState, action.playerId, action.cardId)) {
-                    costCalculator.calculateEffectiveCostWithAlternativeBase(currentState, cardDef, warpAbility.cost, action.playerId)
+                    costCalculator.calculateEffectiveCostWithAlternativeBase(currentState, cardDef, warpAbility.cost, action.playerId, chosenTargetIdsForPayment)
                 } else {
                     // Check sneak cost (CR 702.190 — mana portion; the bounce is paid separately).
                     // Printed Sneak, or a granted graveyard sneak (Ninja Teen).
@@ -2592,21 +2598,21 @@ class CastSpellHandler(
                     // after the mana payment, per CR 601.2f–h).
                     val emergeAbility = EmergeCasts.printedEmerge(cardDef)
                     if (action.altAllows(AlternativeCostType.SNEAK) && sneakCost != null) {
-                        costCalculator.calculateEffectiveCostWithAlternativeBase(currentState, cardDef, sneakCost, action.playerId)
+                        costCalculator.calculateEffectiveCostWithAlternativeBase(currentState, cardDef, sneakCost, action.playerId, chosenTargetIdsForPayment)
                     } else if (action.altAllows(AlternativeCostType.WEB_SLINGING) && webSlingingAbility != null) {
-                        costCalculator.calculateEffectiveCostWithAlternativeBase(currentState, cardDef, webSlingingAbility.cost, action.playerId)
+                        costCalculator.calculateEffectiveCostWithAlternativeBase(currentState, cardDef, webSlingingAbility.cost, action.playerId, chosenTargetIdsForPayment)
                     } else if (action.altAllows(AlternativeCostType.EVOKE) && evokeAbility != null) {
-                        costCalculator.calculateEffectiveCostWithAlternativeBase(currentState, cardDef, evokeAbility.cost, action.playerId)
+                        costCalculator.calculateEffectiveCostWithAlternativeBase(currentState, cardDef, evokeAbility.cost, action.playerId, chosenTargetIdsForPayment)
                     } else if (action.altAllows(AlternativeCostType.EMERGE) && emergeAbility != null) {
                         // CR 702.119a — mirrors validate(): emerge cost reduced by an amount of
                         // generic mana equal to the sacrificed creature's mana value.
                         EmergeCasts.reduceForSacrifice(
-                            costCalculator.calculateEffectiveCostWithAlternativeBase(currentState, cardDef, emergeAbility.cost, action.playerId),
+                            costCalculator.calculateEffectiveCostWithAlternativeBase(currentState, cardDef, emergeAbility.cost, action.playerId, chosenTargetIdsForPayment),
                             currentState,
                             action.additionalCostPayment?.sacrificedPermanents?.firstOrNull()
                         )
                     } else if (action.altAllows(AlternativeCostType.DASH) && dashAbility != null && zoneResolver.hasDashPermission(currentState, action.playerId, action.cardId)) {
-                        costCalculator.calculateEffectiveCostWithAlternativeBase(currentState, cardDef, dashAbility.cost, action.playerId)
+                        costCalculator.calculateEffectiveCostWithAlternativeBase(currentState, cardDef, dashAbility.cost, action.playerId, chosenTargetIdsForPayment)
                     } else {
                         // Bestow changes the spell's type before pricing its alternative cost.
                         val bestowAbility = cardDef.keywordAbilities.filterIsInstance<KeywordAbility.Bestow>().firstOrNull()
@@ -2625,22 +2631,22 @@ class CastSpellHandler(
                             )
                             costCalculator.calculateEffectiveCostWithAlternativeBase(
                                 currentState, bestowDef, bestowAbility.cost, action.playerId
-                            )
+                            , chosenTargetIdsForPayment)
                         } else if (action.altAllows(AlternativeCostType.IMPENDING) && impendingAbility != null) {
-                            costCalculator.calculateEffectiveCostWithAlternativeBase(currentState, cardDef, impendingAbility.cost, action.playerId)
+                            costCalculator.calculateEffectiveCostWithAlternativeBase(currentState, cardDef, impendingAbility.cost, action.playerId, chosenTargetIdsForPayment)
                         } else if (action.altAllows(AlternativeCostType.CLEAVE) && cleaveAbility != null) {
-                            costCalculator.calculateEffectiveCostWithAlternativeBase(currentState, cardDef, cleaveAbility.cost, action.playerId)
+                            costCalculator.calculateEffectiveCostWithAlternativeBase(currentState, cardDef, cleaveAbility.cost, action.playerId, chosenTargetIdsForPayment)
                         } else if (action.altAllows(AlternativeCostType.MIRACLE) && miracleAbility != null) {
-                            costCalculator.calculateEffectiveCostWithAlternativeBase(currentState, cardDef, miracleAbility.cost, action.playerId)
+                            costCalculator.calculateEffectiveCostWithAlternativeBase(currentState, cardDef, miracleAbility.cost, action.playerId, chosenTargetIdsForPayment)
                         } else {
                             val selfAltCost = cardDef.script.selfAlternativeCost
                             if (action.altAllows(AlternativeCostType.SELF_ALTERNATIVE) && selfAltCost != null) {
                                 val altMana = selfAltCost.manaCost
-                                costCalculator.calculateEffectiveCostWithAlternativeBase(currentState, cardDef, altMana, action.playerId)
+                                costCalculator.calculateEffectiveCostWithAlternativeBase(currentState, cardDef, altMana, action.playerId, chosenTargetIdsForPayment)
                             } else if (action.altAllows(AlternativeCostType.GRANTED)) {
                                 val altCosts = costCalculator.findAlternativeCastingCosts(currentState, action.playerId)
                                 if (altCosts.isNotEmpty()) {
-                                    costCalculator.calculateEffectiveCostWithAlternativeBase(currentState, cardDef, altCosts.first().manaCost)
+                                    costCalculator.calculateEffectiveCostWithAlternativeBase(currentState, cardDef, altCosts.first().manaCost, action.playerId, chosenTargetIdsForPayment)
                                 } else {
                                     cardComponent.manaCost
                                 }

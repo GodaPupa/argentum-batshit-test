@@ -1,0 +1,224 @@
+{
+  "schema": "pest-priority-source-specific-artifact-audit-v1",
+  "status": "ACTUAL_27_STAGE_DETERMINISTIC_PASS_FULL_RECEIVING_ACCEPTANCE_PENDING",
+  "source_head": "1669cc465bf1530d744f9b5612cf733240154ea3",
+  "run_id": 36245631588,
+  "artifact_id": 10907627603,
+  "zip_sha256": "7cf2109aad24b4c55fe9310dbde6a96dda0c617387c0df9245fba1ea57dbd193",
+  "bytes": 300439,
+  "provenance": {
+    "schema": "engine-priority-after-resolution-validation-v1",
+    "candidate_head": "1669cc465bf1530d744f9b5612cf733240154ea3",
+    "base_commit": "1c8bc618e8b3ca0b3b154e2ef3c87ca8ff779698",
+    "github_run_id": "36245631588",
+    "github_run_attempt": "1",
+    "github_event_name": "pull_request",
+    "manifest_sha256": "dec18c6039d52df801f0ae32d0026f018d307f2fa449ca4a5f28c21b82634850",
+    "source_files_sha256": {
+      ".github/workflows/engine-priority-after-resolution.yml": "120aa09283004c0a69fb354eb32f2406f68fae8e913f5b2c2ff5fa17e540d0f3",
+      "ai/src/test/kotlin/com/wingedsheep/ai/engine/DecisionResponderCompletedBranchTest.kt": "650deed7e9b3b9100ccfa69e73d20d0ee5bf601ed87c240b6d727f74c4b65a57",
+      "docs/architecture-principles.md": "bbfb3f990b17b1f003718c9bb31fa6d1e16fb08e5eafcbc1c8d2da60f73fdc65",
+      "docs/engine-post-cast-sba-failure-audit-36094276936.json": "ab50e6e53fcc4de89eae06783b6d95583e7a5f480efacbb9b5ebd4a626c15531",
+      "mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/scripting/CostStaticAbilities.kt": "ce539c14073499aea38e5f42ff7d2831917690cac7e3401bc448f7b41bc9f776",
+      "mtg-sets/1993-1999/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/mir/cards/KaerveksTorch.kt": "b3a6b3d9e13e6a15769735ce6790849fa274351d4b7a4f72fe4bf3cab9339bce",
+      "mtg-sets/1993-1999/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/KaerveksTorchScenarioTest.kt": "d25cdce1d08c2b58e1befdb938a1bf29427f0a036bfae2024be825e3c33cf280",
+      "mtg-sets/1993-1999/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/ScarecrowScenarioTest.kt": "32d0774fe1edba0d28442f50ce6b1f11b0d1e52bdfa9a1ee9e33a5c7d6f397c5",
+      "mtg-sets/2000-2002/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/CircleOfSolaceTest.kt": "5889ed7df46d7b45ce265d18d271aa08df7015f4f748c3f6dd35c10451cd1011",
+      "mtg-sets/2003-2007/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/KrarksThumbScenarioTest.kt": "dbdcefdd6611f55cf85ba428a9807b5a7df2b57914fdf0b15e6175e71626caf3",
+      "mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/AbundantMawScenarioTest.kt": "b2115113f3911b95f553e46d0460d8e80783c7865205fc9e890cc4defa7519c1",
+      "mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/SpellQuellerScenarioTest.kt": "34e6e79abf33fb3e431919a4fbaa2449c4280d485376f56571c94a7cd9d09289",
+      "mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/TaureanMaulerScenarioTest.kt": "50abd1af867c13c5eb0a0011929650238e458c4c83e925397c60b791ed391af9",
+      "mtg-sets/2026/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/PrismariTheInspirationScenarioTest.kt": "98643d5a3df6a2888676a20f44e80b2cc5802b769493575b7de9c4060bc11d1a",
+      "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/ColorAndTypeContinuations.kt": "85282b0545efc80d1ef571b3fe02811504f9963c51f37997b2fbbbaf7e0f355a",
+      "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/DeathAndLeaveTriggerDetector.kt": "819656b73e5b3d82023c9d8f536effeebabbbad2de7695e7b45e406d4015ccf5",
+      "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/ContinuationHandler.kt": "53d405a42d0fa5cd1d042cde1c1a8a89f7c4d2240fb003664493261ce7cd22d7",
+      "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/decision/SubmitDecisionHandler.kt": "37f1c4d74677e2b965e64c15f14e660a0ff6998700b905496dbb0548f419d7c8",
+      "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/priority/PassPriorityHandler.kt": "5f866d6773ee6d56c059bf30ff54376e398a1b9f984201eaef4c7301f2d4a6b2",
+      "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/special/ConcedeHandler.kt": "fc1385b34a7a8df604da7bc26a609b8270d3d931b07a214ee47ff55053c462dd",
+      "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/special/SpecialActionsModule.kt": "04c7e2cc154d0a200ffb13c1447c66f88175aa40ba2f3638829aad244d61850a",
+      "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/spell/CastSpellHandler.kt": "c0c50de6b7384bbf8e1e890e6aafe6733824e4f9a3c0e1b41fbacc20b9ca5529",
+      "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/ModalAndCloneContinuationResumer.kt": "faa1889a252b70e1306ff4db95236ecf71ebade4706c6907e32bb4159ac5932a",
+      "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/CastPriorityProcessor.kt": "1aec94b051c983deacf4a7a22f6d94aa40336e2d2b158096ed6c2305d20a8d35",
+      "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/mana/CostCalculator.kt": "a9b6ba64f35215840ab117c0a11527526f903687d0b326925fa05d7f8be540ac",
+      "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/sba/player/PlayerLeavesGameProcessor.kt": "36c20cb35af78d707dc77c8acc6b2835e226c25afd995b45c2fcff409436bacc",
+      "rules-engine/src/main/kotlin/com/wingedsheep/engine/state/GameState.kt": "027dc178e12668e447eb9cea6f6b8d95305c74683ff135dad41be1b4417b864f",
+      "rules-engine/src/main/kotlin/com/wingedsheep/engine/state/PendingCastPriority.kt": "1a68f23158544b1fee9e772956c0153b2c6d3e34376f9ce5935b9b1db1e79832",
+      "rules-engine/src/test/kotlin/com/wingedsheep/engine/legalactions/CastSpellEnumeratorModalAdditionalCostTest.kt": "a50878ae8a9247f5ba043390a111a26bdce3c90699164f366f2bb45346022e10",
+      "rules-engine/src/test/kotlin/com/wingedsheep/engine/mechanics/sba/CommanderZoneChoiceCheckTest.kt": "48a16c068191e4f88004e19eb8a6ba480a74c841d6f792355402e2af488d0455",
+      "rules-engine/src/test/kotlin/com/wingedsheep/engine/multiplayer/TeamVsTeamTest.kt": "97884dc1e62bc83bdc2f80f104857fe8019d32d7077769f0f7f04226f0316fa8",
+      "rules-engine/src/test/kotlin/com/wingedsheep/engine/multiplayer/TwoHeadedGiantTeamLossTest.kt": "354c18023186b1f247519b34fb382a9910600e53bc9a35cc12c49ba3564e1f04",
+      "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/CastPrioritySbaTest.kt": "b25929c2e55dd768f8efb38986c117ad1eb6bde123ad72e9504a95eadb3776c1",
+      "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/DeathTriggerTest.kt": "ab620239c070d78af59ea9c935a2c2caf8ca9fc11faa96b122195caca839bfef",
+      "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/GrantNextSpellFreeCastTest.kt": "28580979cb66d5c8c29704eae477921db9708e4f9efb5e56323ddb520830de62",
+      "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/ModalPerModeAdditionalCostTest.kt": "7a885c085ea11702eb371c5c8f50125b887dc179b4b17aa9924c7f2d9272d9c8",
+      "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/RevealFromHandAdditionalCostTest.kt": "675222c58b2b3071914e3bb9b54efd135876e3c6cc38b7b8ecf1f251b4a13c32",
+      "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/StackResolutionPriorityTest.kt": "515a2da89211cb1cad0278bcd7c8c365cc611ab9e643d1fa05fcec670060ad63",
+      "rules-engine/src/testFixtures/kotlin/com/wingedsheep/engine/support/ScenarioTestBase.kt": "ef59cd04e877e787aa446b3240cb012a9527505d2e1df75e0e3fb82f925f0408"
+    },
+    "rules": {
+      "source_url": "https://media.wizards.com/2026/downloads/MagicCompRules%2020260925.txt",
+      "rules_landing_page": "https://magic.wizards.com/en/rules",
+      "effective_date": "2026-09-25",
+      "sha256": "8d860e451f20f38865b725b42d82feb714c725373dd8f3b32b8652b3eeb070ca",
+      "byte_length": 977752
+    },
+    "rules_verified_utc_date": "2026-09-26",
+    "scope": "DETERMINISTIC_RULES_REGRESSION_ONLY",
+    "official_seeds_generated": 0,
+    "official_games_initialized": 0,
+    "official_actions_submitted": 0,
+    "outcome_exposure": 0,
+    "official_execution_authorized": false
+  },
+  "stages": 27,
+  "actual_xml_files": 27,
+  "actual_cases": 220,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "xml": [
+    {
+      "path": "tests/abundant-maw/TEST-com.wingedsheep.engine.scenarios.AbundantMawScenarioTest.xml",
+      "cases": 2,
+      "sha256": "a5228f6dfae5ab97f868c51e744e4c340c4f324e8a9ea3937fb83649a8028b26"
+    },
+    {
+      "path": "tests/ai-decision-trace/TEST-com.wingedsheep.ai.engine.DecisionResponderCompletedBranchTest.xml",
+      "cases": 7,
+      "sha256": "ff950c921dfb10b855d54aa26edfc5510d09c2604a5ab5d4ff3fff30d2f52133"
+    },
+    {
+      "path": "tests/cast-sba/TEST-com.wingedsheep.engine.scenarios.CastPrioritySbaTest.xml",
+      "cases": 12,
+      "sha256": "46db4c7a434c3e5a8ba9551bd109a40ee80599bb8212b48a988f3416a93f1113"
+    },
+    {
+      "path": "tests/circle-solace/TEST-com.wingedsheep.engine.scenarios.CircleOfSolaceTest.xml",
+      "cases": 4,
+      "sha256": "ae3caa138e184ebe90f3cad4348dccaf462722b8e90316c813a28a292c5d89a6"
+    },
+    {
+      "path": "tests/commander-choice/TEST-com.wingedsheep.engine.mechanics.sba.CommanderZoneChoiceCheckTest.xml",
+      "cases": 17,
+      "sha256": "57a0a8abb8c1f2c3f1a488f6314c4e849b5155f44b451fed45cb9daa7c87cfc5"
+    },
+    {
+      "path": "tests/continuations/TEST-com.wingedsheep.engine.scenarios.ContinuationSystemTest.xml",
+      "cases": 4,
+      "sha256": "32b816e004ee05b61d136f1370ec1ed8a476b1319b7418cf969f0c6bbd51e5c6"
+    },
+    {
+      "path": "tests/death-trigger/TEST-com.wingedsheep.engine.scenarios.DeathTriggerTest.xml",
+      "cases": 4,
+      "sha256": "57eff9a0c8b6c77e0b3b8b44ae11c9e5bfa5b95de960dd2ba9b0f16c0dd8a172"
+    },
+    {
+      "path": "tests/flash-permission/TEST-com.wingedsheep.engine.scenarios.ConditionalFlashGrantTest.xml",
+      "cases": 9,
+      "sha256": "b0d72fef4d7b965d2ac18ab44b15b42745a0bb701c614c0fe718220ef688fea4"
+    },
+    {
+      "path": "tests/free-cast/TEST-com.wingedsheep.engine.scenarios.GrantNextSpellFreeCastTest.xml",
+      "cases": 8,
+      "sha256": "d6a1328b9aa2d1ea8c1621788c43fd56ec10920b2f48bb53aa8c0c9ddc437fe5"
+    },
+    {
+      "path": "tests/krarks-thumb/TEST-com.wingedsheep.engine.scenarios.KrarksThumbScenarioTest.xml",
+      "cases": 5,
+      "sha256": "abe95249c509138ac18e4ace489a62b2f1171904aa5c17e9fcdc46c9a2ed05d6"
+    },
+    {
+      "path": "tests/leave-game/TEST-com.wingedsheep.engine.multiplayer.LeaveTheGameTest.xml",
+      "cases": 16,
+      "sha256": "490d880346571be69172b10c8b7ee30c6f5f6ea94626dbadaad20a1d6e604d0d"
+    },
+    {
+      "path": "tests/legacy-serialization/TEST-com.wingedsheep.engine.state.LegacySuspensionMigrationTest.xml",
+      "cases": 19,
+      "sha256": "660feb2fb0e41ecd80b39fd40688cecdbd16a411d4549e05237ab89dc1842a8d"
+    },
+    {
+      "path": "tests/legacy-traces/TEST-com.wingedsheep.engine.state.SuspensionTraceTest.xml",
+      "cases": 5,
+      "sha256": "ef10770436fd4238d603672fac55a831cd6e7e849d13347de63f101b1f316a45"
+    },
+    {
+      "path": "tests/legend-rule/TEST-com.wingedsheep.engine.scenarios.LegendRuleTest.xml",
+      "cases": 4,
+      "sha256": "b6b9e5f893571450dcee68b25f2a553119073e1e9b5721179a357d74352b76bd"
+    },
+    {
+      "path": "tests/mauler/TEST-com.wingedsheep.engine.scenarios.TaureanMaulerScenarioTest.xml",
+      "cases": 3,
+      "sha256": "a892e75f694f845cd00b584d7017585aefe24de64ccf3f69a5450938dd3021cc"
+    },
+    {
+      "path": "tests/modal-cost-enumeration/TEST-com.wingedsheep.engine.legalactions.CastSpellEnumeratorModalAdditionalCostTest.xml",
+      "cases": 2,
+      "sha256": "40ebe095e639f0f1fdcb10e252cdcc0f272862923887423f377307a5a62b47e6"
+    },
+    {
+      "path": "tests/modal-cost/TEST-com.wingedsheep.engine.scenarios.ModalPerModeAdditionalCostTest.xml",
+      "cases": 8,
+      "sha256": "0fdd521ac15092deb11cc092ed582a8b705b910aa016e222c325baaafb659c92"
+    },
+    {
+      "path": "tests/ordinary-cleanup/TEST-com.wingedsheep.engine.scenarios.CleanupHandSizeDiscardDamageRemovalTest.xml",
+      "cases": 2,
+      "sha256": "1b624040b2d092be43e474b6acbda4c86d7af58f4c8ac0e623ba376e34fb06f5"
+    },
+    {
+      "path": "tests/priority/TEST-com.wingedsheep.engine.scenarios.StackResolutionPriorityTest.xml",
+      "cases": 17,
+      "sha256": "804c353f967cf0fdc0d580aeabfc0dbb18a6b83ef60ab4163fda28d8a96de75b"
+    },
+    {
+      "path": "tests/prismari/TEST-com.wingedsheep.engine.scenarios.PrismariTheInspirationScenarioTest.xml",
+      "cases": 3,
+      "sha256": "55bdc0469be0f5ebad5508e665503016ca501768ffd727ad415aee9826ba7884"
+    },
+    {
+      "path": "tests/reveal-cost/TEST-com.wingedsheep.engine.scenarios.RevealFromHandAdditionalCostTest.xml",
+      "cases": 10,
+      "sha256": "c3870a43c1d6b7ebc49da38b6098e62b8bfd3c7950301e99e25d7587b14bd1d5"
+    },
+    {
+      "path": "tests/scarecrow/TEST-com.wingedsheep.engine.scenarios.ScarecrowScenarioTest.xml",
+      "cases": 4,
+      "sha256": "f55cd8a09378ffcd49f4aa0aeb8a0b65f7c628da6218ee40f87208ca1859d5ea"
+    },
+    {
+      "path": "tests/spell-queller/TEST-com.wingedsheep.engine.scenarios.SpellQuellerScenarioTest.xml",
+      "cases": 4,
+      "sha256": "1673d9049130c79bdc01e18d8f3fa33834d7b0c727fc88d67a8702a921f0eb87"
+    },
+    {
+      "path": "tests/stack-war/TEST-com.wingedsheep.engine.scenarios.StackWarTest.xml",
+      "cases": 15,
+      "sha256": "45cf94e76d4fe9686420e38a9cd07f3c384b87a3098bfd04da144163ad65032b"
+    },
+    {
+      "path": "tests/team-loss/TEST-com.wingedsheep.engine.multiplayer.TwoHeadedGiantTeamLossTest.xml",
+      "cases": 10,
+      "sha256": "850d95f71bfef0486dedcaa02276b094db14373bbb0e0ea0bbb22eda5c74e5a7"
+    },
+    {
+      "path": "tests/team-priority/TEST-com.wingedsheep.engine.multiplayer.TwoHeadedGiantTeamPriorityTest.xml",
+      "cases": 12,
+      "sha256": "b3f292e5cf6e36bab0966ea235e7ae4c98e6003b4b10f4de7e60db916fdac338"
+    },
+    {
+      "path": "tests/team-versus-team/TEST-com.wingedsheep.engine.multiplayer.TeamVsTeamTest.xml",
+      "cases": 14,
+      "sha256": "a2f6cb946cd697be11c7ea2e4efc76e1977325ea95e211298b1253ac2d64677e"
+    }
+  ],
+  "limitation": "This is the existing after-resolution/post-cast qualification surface. It does not qualify reachable post-block priority or actor information guards and does not repair the separate full-CI readiness failure.",
+  "official": {
+    "new_seeds": 0,
+    "new_games": 0,
+    "new_actions": 0,
+    "new_outcomes": 0
+  },
+  "official_execution_authorized": false
+}

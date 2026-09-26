@@ -46,6 +46,54 @@
     ]
 }
 
+// Acorn Harvest
+{
+    "name": "Acorn Harvest",
+    "manaCost": "{3}{G}",
+    "typeLine": "Sorcery",
+    "oracleText": "Create two 1/1 green Squirrel creature tokens.\nFlashback—{1}{G}, Pay 3 life.",
+    "keywords": [
+        "FLASHBACK"
+    ],
+    "keywordAbilities": [
+        {
+            "type": "Flashback",
+            "cost": "{1}{G}",
+            "additionalCost": {
+                "type": "AdditionalAtom",
+                "atom": {
+                    "type": "AtomPayLife",
+                    "amount": 3
+                }
+            }
+        }
+    ],
+    "script": {
+        "spellEffect": {
+            "type": "CreateToken",
+            "count": {
+                "type": "Fixed",
+                "amount": 2
+            },
+            "power": 1,
+            "toughness": 1,
+            "colors": [
+                "GREEN"
+            ],
+            "creatureTypes": [
+                "Squirrel"
+            ]
+        }
+    },
+    "metadata": {
+        "collectorNumber": "118",
+        "artist": "Edward P. Beard, Jr."
+    },
+    "colorIdentityOverride": [
+        "GREEN"
+    ]
+}
+
 // Angel of Retribution
 {
     "name": "Angel of Retribution",
