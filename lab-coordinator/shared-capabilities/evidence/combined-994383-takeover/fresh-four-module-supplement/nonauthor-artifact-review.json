@@ -1,0 +1,80 @@
+{
+  "schema": "shared-existing-four-module-independent-artifact-review-v1",
+  "reviewer": "/root/pest successor conductor agent",
+  "reviewer_is_control_source_author": false,
+  "review_scope": "Original ZIP and exact frozen identity inventory, raw XML, command exits/freshness and source-bound control comparison; not gameplay or GitHub approval.",
+  "disposition": "ACCEPT_FOUR_EXISTING_MODULE_FRESHNESS_SUPPLEMENT",
+  "source": "994383d4a9495bcb34d5aae0e69181bcf4c04d45",
+  "tree": "4b8f4d155a37e6b66ab623d344b19cedf435d845",
+  "control_head": "b2e99f13d19dc5d0d25617b9d113830adbb0fdb4",
+  "run_id": 36271229739,
+  "attempt": 1,
+  "artifact_id": 10915817448,
+  "artifact_bytes": 311481,
+  "artifact_sha256": "2f0c0ada4bf294b45cff33205439de44c9f325e5e4032fb3cc32814244c95bb6",
+  "members": 97,
+  "modules": {
+    ":mtg-sdk:test": {
+      "real_suites": 50,
+      "real_cases": 527,
+      "passed": 527,
+      "skipped": 0
+    },
+    ":mtg-sets:test": {
+      "real_suites": 15,
+      "real_cases": 376,
+      "passed": 376,
+      "skipped": 0
+    },
+    ":mtg-search:test": {
+      "real_suites": 2,
+      "real_cases": 163,
+      "passed": 163,
+      "skipped": 0
+    },
+    ":mtgish-tooling:test": {
+      "real_suites": 20,
+      "real_cases": 147,
+      "passed": 144,
+      "skipped": 3
+    }
+  },
+  "real_suites": 87,
+  "declared_real_cases": 1213,
+  "actual_passed_cases": 1210,
+  "unchanged_intentional_skips": 3,
+  "failures": 0,
+  "errors": 0,
+  "reporting_markers": [
+    {
+      "module": ":mtg-sets:test",
+      "suite": "Gradle Test Run :mtg-sets:test",
+      "report_records": 1,
+      "actual_tests": 0,
+      "sha256": "2e13653ccdda0af01181cd1668135a0144ad611f45f6d8aad2deef8e14348b67"
+    }
+  ],
+  "reviewed_control_sha256": {
+    "fresh-ci-supplement.py": "0d2f7fa220000bc70a279b260333e24a8e54006e14365f462d137361e6498c7a",
+    "shared-existing-ci-freshness.yml": "d36ed02c5623689847fd15c535c789e7599525e10141c67530f3475f829f171d",
+    "cached-ci-case-identities.json": "ab490ccd8659bc0f3e3c8f16dab913bf7e936faee245ced902306d2702699995"
+  },
+  "verified": [
+    "All ZIP members CRC checked; all 88 raw XML members parsed independently with numeric totals, duplicate identity, failure/error/skip checks.",
+    "All original suite, case and skip identity sets match the frozen pre-supplement inventory exactly. No newly skipped case and no dropped suite.",
+    "Every raw XML hash matches both retained stage audit and root raw audit.",
+    "Four actual expected Gradle test-task execution lines are fresh, exits are zero, and commands use just, --tests=*, --rerun and --no-build-cache.",
+    "Exact source/tree, original run, control commit and attempt match retained audit; all three control hashes match the nonauthor-reviewed source."
+  ],
+  "limitations": [
+    "Source cleanliness and immutable source/tree pre/post checks are assertions in the reviewed control that completed successfully, not independently emitted full before/after source maps.",
+    "The three original intentional skips and the disabled CardImageUri spec were not executed and are not passes.",
+    "This closes only the four cached-task freshness gap on exact 994383. Existing 407-case and broader CI artifact acceptance are separate retained evidence.",
+    "No full receiving project runtime, pilot competence, experimental allocation, gameplay admission, performance conclusion or GitHub approval is granted."
+  ],
+  "official_games": 0,
+  "allocations_consumed": 0,
+  "outcomes_exposed": 0,
+  "github_approval": false,
+  "gameplay_authorized": false
+}

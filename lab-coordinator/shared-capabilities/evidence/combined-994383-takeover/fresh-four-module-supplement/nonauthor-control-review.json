@@ -1,0 +1,41 @@
+{
+  "schema": "shared-four-module-freshness-non-author-source-review-v1",
+  "reviewer": "/root/pest successor agent",
+  "non_author_agent_review": true,
+  "source_author": "/root conductor",
+  "disposition": "ACCEPT_FOR_ONE_SOURCE_BOUND_FRESH_SOFTWARE_VALIDATION_ATTEMPT_ONLY",
+  "reviewed_control_files_sha256": {
+    "fresh-ci-supplement.py": "0d2f7fa220000bc70a279b260333e24a8e54006e14365f462d137361e6498c7a",
+    "shared-existing-ci-freshness.yml": "d36ed02c5623689847fd15c535c789e7599525e10141c67530f3475f829f171d",
+    "cached-ci-case-identities.json": "ab490ccd8659bc0f3e3c8f16dab913bf7e936faee245ced902306d2702699995"
+  },
+  "immutable_test_source": "994383d4a9495bcb34d5aae0e69181bcf4c04d45",
+  "immutable_test_tree": "4b8f4d155a37e6b66ab623d344b19cedf435d845",
+  "original_ci_run": 36267982979,
+  "scope": "Four existing software CI tasks restored from cache on original source. No experimental runner,card rule,pilot or scientific expectation changes.",
+  "reviewed_findings": [
+    "Fixed dedicated push branch; only creation event and attempt1 run the job. Control tree must contain exactly3reviewed files; runtime source is checked out separately at immutable994383 and tree verified.",
+    "The exact repository just recipe expands ARGS through shell. Final command uses --tests=* as one argument rather than a bare star, avoiding repository filename expansion while running the full selected module.",
+    "All XML files from each executed bank are preserved before parsing,so a failing assertion does not prevent retaining later raw XML. Actual command log/exit and audit status are retained on failure.",
+    "Numeric tests/failures/errors and nested failure/error nodes are checked before marker handling. Duplicate suite identities are rejected across actual suites and reporting markers.",
+    "Every actual suite and case identity,and exactly the original3skips,must match; stale XML,nonzero exits,FROM-CACHE,UP-TO-DATE,NO-SOURCE,SKIPPED or changed source/control bytes fail.",
+    "Four sequential just routes preserve the repository build semaphore; dependencies are recorded; source remains unchanged before and after.",
+    "Inspected original cached mtg-sets marker XML and fetched exact994383 CardImageUriTest.kt. Its2test bodies are disabled by @EnabledIf unless verifyImageUris istrue. The synthetic GradleTestRun/CardImageUriTest marker contributes0actual tests and may be absent or present with unchanged content.",
+    "Correct expectation is87actual suites with1213declared cases:1210expected executed and3existing intentional skips. The original88/1214report inventory additionally includes1nonexecuted disabled-spec marker; no test budget is removed or reclassified as a pass.",
+    "Python AST parsing passes; no Gradle test execution or fresh result is claimed by this source review."
+  ],
+  "execution_boundary": {
+    "branch": "lab/shared-existing-ci-freshness-20260926",
+    "control_tree_files": 3,
+    "workflow_permissions": "contents: read",
+    "run_attempt": 1,
+    "runtime_source_changed": false,
+    "official_games": 0,
+    "gameplay_authorized": false
+  },
+  "limits": [
+    "Acceptance is for this bounded source validation attempt only; actual fresh results and complete artifact audit remain required before software integration acceptance.",
+    "This is a non-author agent review,not a GitHub approval or independent experimental gameplay admission.",
+    "The source conditional image-URI network suite is not enabled or claimed tested. Existing3skips remain explicitly unexecuted."
+  ]
+}

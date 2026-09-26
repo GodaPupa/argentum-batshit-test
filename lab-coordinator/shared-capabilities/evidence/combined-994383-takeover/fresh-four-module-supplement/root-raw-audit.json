@@ -1,0 +1,674 @@
+{
+  "schema": "shared-existing-four-module-root-raw-audit-v1",
+  "reviewer": "/root",
+  "source_author_of_supplement": true,
+  "source": "994383d4a9495bcb34d5aae0e69181bcf4c04d45",
+  "source_tree": "4b8f4d155a37e6b66ab623d344b19cedf435d845",
+  "control_head": "b2e99f13d19dc5d0d25617b9d113830adbb0fdb4",
+  "run_id": 36271229739,
+  "attempt": 1,
+  "artifact_id": 10915817448,
+  "artifact_bytes": 311481,
+  "artifact_sha256": "2f0c0ada4bf294b45cff33205439de44c9f325e5e4032fb3cc32814244c95bb6",
+  "members": 97,
+  "status": "PASS_RAW_AND_EXISTING_CASE_IDENTITIES",
+  "modules": {
+    ":mtg-sdk:test": {
+      "real_suites": 50,
+      "real_cases": 527,
+      "passed": 527,
+      "skipped": 0
+    },
+    ":mtg-sets:test": {
+      "real_suites": 15,
+      "real_cases": 376,
+      "passed": 376,
+      "skipped": 0
+    },
+    ":mtg-search:test": {
+      "real_suites": 2,
+      "real_cases": 163,
+      "passed": 163,
+      "skipped": 0
+    },
+    ":mtgish-tooling:test": {
+      "real_suites": 20,
+      "real_cases": 147,
+      "passed": 144,
+      "skipped": 3
+    }
+  },
+  "real_suites": 87,
+  "real_cases": 1213,
+  "passed": 1210,
+  "skipped": 3,
+  "reporting_markers": [
+    {
+      "module": ":mtg-sets:test",
+      "suite": "Gradle Test Run :mtg-sets:test",
+      "cases": 1,
+      "skipped": 0,
+      "xml_sha256": "2e13653ccdda0af01181cd1668135a0144ad611f45f6d8aad2deef8e14348b67"
+    }
+  ],
+  "failures": 0,
+  "errors": 0,
+  "xml": [
+    {
+      "module": ":mtg-sdk:test",
+      "suite": "com.wingedsheep.sdk.core.CounterTypeClientMirrorTest",
+      "cases": 5,
+      "skipped": 0,
+      "xml_sha256": "ea5c33843684222257677060a13b48f7616a7a1990468bdfb8ebc4558d926710"
+    },
+    {
+      "module": ":mtg-sdk:test",
+      "suite": "com.wingedsheep.sdk.core.CounterTypeStatCoverageTest",
+      "cases": 3,
+      "skipped": 0,
+      "xml_sha256": "0e21a25624826e8bea9f329121484bf8724ab48aebd5e86317c5e7819fa90598"
+    },
+    {
+      "module": ":mtg-sdk:test",
+      "suite": "com.wingedsheep.sdk.core.KeywordTest",
+      "cases": 6,
+      "skipped": 0,
+      "xml_sha256": "6295073e953920d65243f4d41ec0565f4403bf874c218ec9355ca1fd4477c746"
+    },
+    {
+      "module": ":mtg-sdk:test",
+      "suite": "com.wingedsheep.sdk.core.ManaCostColoredSymbolCountTest",
+      "cases": 22,
+      "skipped": 0,
+      "xml_sha256": "0b3f5800624858a15836064b57e10c405dbcb5f43b52fde0cc6208a7b65defc0"
+    },
+    {
+      "module": ":mtg-sdk:test",
+      "suite": "com.wingedsheep.sdk.core.ManaCostReduceFloorTest",
+      "cases": 9,
+      "skipped": 0,
+      "xml_sha256": "42b4855bb3c56edff7a3153778713515333b583ed3f6b52aca54cfe89745c41f"
+    },
+    {
+      "module": ":mtg-sdk:test",
+      "suite": "com.wingedsheep.sdk.core.ManaCostSubtractTest",
+      "cases": 48,
+      "skipped": 0,
+      "xml_sha256": "8e18189b5940d4b1aaa0f2e6aa93542b82d56af5fd9af5fc4f4b46fee29e049a"
+    },
+    {
+      "module": ":mtg-sdk:test",
+      "suite": "com.wingedsheep.sdk.core.ManaCostWithXAsTest",
+      "cases": 9,
+      "skipped": 0,
+      "xml_sha256": "18b1e6d7c090bc6d16c4c7e249975107ac9d2b27191da083235958c4416a7ea8"
+    },
+    {
+      "module": ":mtg-sdk:test",
+      "suite": "com.wingedsheep.sdk.core.MonocolorHybridManaTest",
+      "cases": 7,
+      "skipped": 0,
+      "xml_sha256": "b38f87cb167e3fecea64d391a1d526fa4b5cd25fb845cf46c56a30fafd4c94e2"
+    },
+    {
+      "module": ":mtg-sdk:test",
+      "suite": "com.wingedsheep.sdk.core.TypeLineTest",
+      "cases": 3,
+      "skipped": 0,
+      "xml_sha256": "035e23c8b2900cba3490470b7787bed82cd4ba4b665a1f4e4ad18c628117128b"
+    },
+    {
+      "module": ":mtg-sdk:test",
+      "suite": "com.wingedsheep.sdk.dsl.CardDslTest",
+      "cases": 47,
+      "skipped": 0,
+      "xml_sha256": "07d499c6e867e3e6b3359f4580570f835d80d0e68f7727c1fffc5e0ca888be52"
+    },
+    {
+      "module": ":mtg-sdk:test",
+      "suite": "com.wingedsheep.sdk.dsl.CreateEldraziScionTest",
+      "cases": 2,
+      "skipped": 0,
+      "xml_sha256": "b1740bccb5150eec70e7d9de30a3d61e739ec3e802f197d64946ea8f0470fc62"
+    },
+    {
+      "module": ":mtg-sdk:test",
+      "suite": "com.wingedsheep.sdk.dsl.CreateEldraziSpawnTest",
+      "cases": 1,
+      "skipped": 0,
+      "xml_sha256": "0db3f5105ffde603e18facdc0856127812800efb633a267df7a88699b3959a63"
+    },
+    {
+      "module": ":mtg-sdk:test",
+      "suite": "com.wingedsheep.sdk.dsl.DifferentCounterKindsConditionTest",
+      "cases": 3,
+      "skipped": 0,
+      "xml_sha256": "fb554117ec56f34ac2d76c457f4a4e0eae501fa2d9ac481b022d24e8dc9790da"
+    },
+    {
+      "module": ":mtg-sdk:test",
+      "suite": "com.wingedsheep.sdk.dsl.GiftDslTest",
+      "cases": 14,
+      "skipped": 0,
+      "xml_sha256": "6aac0ac6d3955f6910047ca34daebe873b95ff493bfc433be5cdb4cde7dd31a7"
+    },
+    {
+      "module": ":mtg-sdk:test",
+      "suite": "com.wingedsheep.sdk.dsl.DomainDslTest",
+      "cases": 4,
+      "skipped": 0,
+      "xml_sha256": "3a7b4193ca964fae578d13662947b19d14b5754accb89c766209c12aa1d095ea"
+    },
+    {
+      "module": ":mtg-sdk:test",
+      "suite": "com.wingedsheep.sdk.dsl.PipelineBuilderTest",
+      "cases": 14,
+      "skipped": 0,
+      "xml_sha256": "78ed538b2ec27978ffcec89962abab66aaf91b45e8c02d2fae494af62472d0b7"
+    },
+    {
+      "module": ":mtg-sdk:test",
+      "suite": "com.wingedsheep.sdk.dsl.SwitchPowerToughnessTest",
+      "cases": 1,
+      "skipped": 0,
+      "xml_sha256": "3667ffc7eb3cd8b171e1ac872c88b9ee322b277e1306892a425e64c1d012cc55"
+    },
+    {
+      "module": ":mtg-sdk:test",
+      "suite": "com.wingedsheep.sdk.dsl.StationDslTest",
+      "cases": 3,
+      "skipped": 0,
+      "xml_sha256": "db6b39ba6eb8334072973ed47561477b8e0fd9d988aa7de19d1e2b9a586fff0b"
+    },
+    {
+      "module": ":mtg-sdk:test",
+      "suite": "com.wingedsheep.sdk.limited.CommanderDraftBoosterTest",
+      "cases": 8,
+      "skipped": 0,
+      "xml_sha256": "ec0741dd35caf92d95869d62aae35d11ef00c390ba850cf72bf193f8048a4998"
+    },
+    {
+      "module": ":mtg-sdk:test",
+      "suite": "com.wingedsheep.sdk.limited.PlayBoosterTest",
+      "cases": 6,
+      "skipped": 0,
+      "xml_sha256": "067563a60e0b785e548734b33abb3e66b207c524dd05204707f8f58aee22025a"
+    },
+    {
+      "module": ":mtg-sdk:test",
+      "suite": "com.wingedsheep.sdk.model.ColorIdentityTest",
+      "cases": 14,
+      "skipped": 0,
+      "xml_sha256": "9e81f03f8475707e0558979c8aa9cd89527e59c1b98a055e40383f01f8ef34e4"
+    },
+    {
+      "module": ":mtg-sdk:test",
+      "suite": "com.wingedsheep.sdk.model.CommanderEligibilityTest",
+      "cases": 6,
+      "skipped": 0,
+      "xml_sha256": "d406d0ba49146d994e6548afcffb706d393320d0255fe275aa784bbd250bbd2a"
+    },
+    {
+      "module": ":mtg-sdk:test",
+      "suite": "com.wingedsheep.sdk.model.DevoidColorsTest",
+      "cases": 7,
+      "skipped": 0,
+      "xml_sha256": "411ce27af869296c640dfbbcfcd8a0dc8f47b57d5bfa8302aae7b3265454dc95"
+    },
+    {
+      "module": ":mtg-sdk:test",
+      "suite": "com.wingedsheep.sdk.model.GameRngTest",
+      "cases": 15,
+      "skipped": 0,
+      "xml_sha256": "52946c0615dc409be3e2c1f5dd742201c639ba9ed0859947ce1a253b963fb370"
+    },
+    {
+      "module": ":mtg-sdk:test",
+      "suite": "com.wingedsheep.sdk.model.MtgSetBoosterEraTest",
+      "cases": 4,
+      "skipped": 0,
+      "xml_sha256": "d60987cd41df40de5105a91d6c0f3c0555b013dbf40652767b9102815251fd01"
+    },
+    {
+      "module": ":mtg-sdk:test",
+      "suite": "com.wingedsheep.sdk.model.PrintingTest",
+      "cases": 14,
+      "skipped": 0,
+      "xml_sha256": "1b445d8c96ce3abdfef390e99ca0d8d0b166f7a9b8c7b1d893ac8c26012fc233"
+    },
+    {
+      "module": ":mtg-sdk:test",
+      "suite": "com.wingedsheep.sdk.model.TokenPrintingTest",
+      "cases": 7,
+      "skipped": 0,
+      "xml_sha256": "42f2b89e03e7322c93265635a667c85532bedaf9350430c0e4751352367dcd0b"
+    },
+    {
+      "module": ":mtg-sdk:test",
+      "suite": "com.wingedsheep.sdk.scripting.DescribeObjectsForEventTest",
+      "cases": 12,
+      "skipped": 0,
+      "xml_sha256": "039d27af2dd667aac7f85d01ade52cc3aa5f55fff85bb534f55bc0166823ac08"
+    },
+    {
+      "module": ":mtg-sdk:test",
+      "suite": "com.wingedsheep.sdk.scripting.GameObjectFilterCompositionTest",
+      "cases": 10,
+      "skipped": 0,
+      "xml_sha256": "f2a4a3ff93f819940fa9326fe771fd0c36c4388a9fdca6a43fd8d8e75b673842"
+    },
+    {
+      "module": ":mtg-sdk:test",
+      "suite": "com.wingedsheep.sdk.scripting.CompareDescriptionTest",
+      "cases": 11,
+      "skipped": 0,
+      "xml_sha256": "117f89a2b70e84234d2a905cff8519d31b09c928e11c36a2c33a1a367469c75e"
+    },
+    {
+      "module": ":mtg-sdk:test",
+      "suite": "com.wingedsheep.sdk.scripting.ManaStaticDescriptionTest",
+      "cases": 5,
+      "skipped": 0,
+      "xml_sha256": "c7abe1709750175bd36d815210f61188f45b656f00b5d8ca5df69fac9f0e2b14"
+    },
+    {
+      "module": ":mtg-sdk:test",
+      "suite": "com.wingedsheep.sdk.scripting.ModifySpellCostDescriptionTest",
+      "cases": 3,
+      "skipped": 0,
+      "xml_sha256": "d85809240cf933b38f31669e32e26f0a64a8a99e7c73be1b09a9a8dc7fc92917"
+    },
+    {
+      "module": ":mtg-sdk:test",
+      "suite": "com.wingedsheep.sdk.scripting.ReplaceDrawWithEffectDescriptionTest",
+      "cases": 3,
+      "skipped": 0,
+      "xml_sha256": "557b5ed102223dd73c0299bd827795c30eb4012009ac8f5e27cf929b7382a88a"
+    },
+    {
+      "module": ":mtg-sdk:test",
+      "suite": "com.wingedsheep.sdk.scripting.TriggeredAbilityDescriptionTest",
+      "cases": 3,
+      "skipped": 0,
+      "xml_sha256": "a96ea8c1df3915fa1285cea0d986f12b5f6ba5113d5218eda8ee9249e8698dda"
+    },
+    {
+      "module": ":mtg-sdk:test",
+      "suite": "com.wingedsheep.sdk.scripting.costs.CostAtomRepeatedTest",
+      "cases": 6,
+      "skipped": 0,
+      "xml_sha256": "95cea6d84d59656217746d3487291fd3bccd97dfa1b6e592c3fe081e8c739f78"
+    },
+    {
+      "module": ":mtg-sdk:test",
+      "suite": "com.wingedsheep.sdk.scripting.effects.CreateTokenCopyOfSourceEffectTest",
+      "cases": 3,
+      "skipped": 0,
+      "xml_sha256": "203fe4692d56f74dbc9b835bdff44dbc9a211b3f7ba9ec8595f104539a88368e"
+    },
+    {
+      "module": ":mtg-sdk:test",
+      "suite": "com.wingedsheep.sdk.scripting.effects.SelfReferentialDescriptionTest",
+      "cases": 8,
+      "skipped": 0,
+      "xml_sha256": "3aeccafbe204d1f1f5a73a2b1bb9cffa8cf05ebdeef526d9d6940e7b1ba28bf7"
+    },
+    {
+      "module": ":mtg-sdk:test",
+      "suite": "com.wingedsheep.sdk.scripting.effects.PipelineDescriptionLeakTest",
+      "cases": 4,
+      "skipped": 0,
+      "xml_sha256": "8ab904c3128c7b19a6cb1b8ae1c53654021998e6c95355fa71a66e195ba2df5d"
+    },
+    {
+      "module": ":mtg-sdk:test",
+      "suite": "com.wingedsheep.sdk.scripting.targets.RequiresExactlyOneTargetTest",
+      "cases": 5,
+      "skipped": 0,
+      "xml_sha256": "6ca2e2131a78641d3c2113505ac3ca325ee5e1866c1f5cb93fcbb0b6b243707b"
+    },
+    {
+      "module": ":mtg-sdk:test",
+      "suite": "com.wingedsheep.sdk.scripting.targets.TargetRequirementWithCountTest",
+      "cases": 4,
+      "skipped": 0,
+      "xml_sha256": "3e65226f1e68b1c75f813e48cf04f2759949cb95b7200f2eee0b2859e7832802"
+    },
+    {
+      "module": ":mtg-sdk:test",
+      "suite": "com.wingedsheep.sdk.serialization.CardLinterTest",
+      "cases": 43,
+      "skipped": 0,
+      "xml_sha256": "fc51f642d0609f3200672c09f0b2411dc0138af07c59bae9f2d3bc145343a613"
+    },
+    {
+      "module": ":mtg-sdk:test",
+      "suite": "com.wingedsheep.sdk.serialization.CardSerializationRoundTripTest",
+      "cases": 21,
+      "skipped": 0,
+      "xml_sha256": "bf938b043d1bfd9107e29f965a26eb7b8cde144b96d214a81a947c035dc5ea1a"
+    },
+    {
+      "module": ":mtg-sdk:test",
+      "suite": "com.wingedsheep.sdk.serialization.CardValidatorTest",
+      "cases": 25,
+      "skipped": 0,
+      "xml_sha256": "b6d6eb7fc932c0a6f6185747283120b4226d70e9beea2c68ab54258498e5670d"
+    },
+    {
+      "module": ":mtg-sdk:test",
+      "suite": "com.wingedsheep.sdk.serialization.CharacteristicValueSerializerTest",
+      "cases": 14,
+      "skipped": 0,
+      "xml_sha256": "c192d41749c39ea88f2185f51c8a046424e0414baf55ff55ac4f8e3f8dcad1bf"
+    },
+    {
+      "module": ":mtg-sdk:test",
+      "suite": "com.wingedsheep.sdk.serialization.DredgeSerializationTest",
+      "cases": 2,
+      "skipped": 0,
+      "xml_sha256": "6fbda9195ea9066e7716a36272304bbc970e4612a30f1df2ac3add9304a7e83b"
+    },
+    {
+      "module": ":mtg-sdk:test",
+      "suite": "com.wingedsheep.sdk.serialization.CostAtomSerializationTest",
+      "cases": 5,
+      "skipped": 0,
+      "xml_sha256": "1dcdccedb5ce1ca9b65cb70b8b4719ab4454355f7257868d0abb65e8ba9fdde3"
+    },
+    {
+      "module": ":mtg-sdk:test",
+      "suite": "com.wingedsheep.sdk.serialization.FilterQueryLanguageTest",
+      "cases": 48,
+      "skipped": 0,
+      "xml_sha256": "87979b0fd8fde41cf23b432d37aec96154e4736a361de7531d09fa722b5d5823"
+    },
+    {
+      "module": ":mtg-sdk:test",
+      "suite": "com.wingedsheep.sdk.serialization.LibraryMacroEffectTest",
+      "cases": 5,
+      "skipped": 0,
+      "xml_sha256": "a3831ee625a76052886eb34f668fd5f4a99a00e3d8597fc518342ead918a93ae"
+    },
+    {
+      "module": ":mtg-sdk:test",
+      "suite": "com.wingedsheep.sdk.serialization.MoveUntilSourceLeavesSerializationTest",
+      "cases": 1,
+      "skipped": 0,
+      "xml_sha256": "d226946c3f07565198902dc0aab01ee376ab2f6ecc86c706e16f26956ab65144"
+    },
+    {
+      "module": ":mtg-sdk:test",
+      "suite": "com.wingedsheep.sdk.serialization.PlayerTargetRestrictionSerializationTest",
+      "cases": 4,
+      "skipped": 0,
+      "xml_sha256": "8b26b638fa4c8beabdb24123ca4b6c15d93e45778ba1636ce1c36190d76aabcb"
+    },
+    {
+      "module": ":mtg-sets:test",
+      "suite": "com.wingedsheep.mtg.sets.BasicLandArtOrderTest",
+      "cases": 2,
+      "skipped": 0,
+      "xml_sha256": "de7d71714aa91aceb7eca87c301db2120485464a112cb1871e8dc5b6945438a2"
+    },
+    {
+      "module": ":mtg-sets:test",
+      "suite": "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "cases": 338,
+      "skipped": 0,
+      "xml_sha256": "4c71cfd43b715901d6e586db4e4fe1a766f21af2b98cb15dc0d4be5eb83d8af6"
+    },
+    {
+      "module": ":mtg-sets:test",
+      "suite": "com.wingedsheep.mtg.sets.CardLintTest",
+      "cases": 3,
+      "skipped": 0,
+      "xml_sha256": "7db27db27d568772c787d6132eabcc0af1c9bf8f1b25377e4b6c90df4c0a379c"
+    },
+    {
+      "module": ":mtg-sets:test",
+      "suite": "com.wingedsheep.mtg.sets.DoubleFacedPrintingArtTest",
+      "cases": 1,
+      "skipped": 0,
+      "xml_sha256": "eb3982c29aa2424330bb11c0c377218b084a6eb032c100c20e21715e9c8ba17d"
+    },
+    {
+      "module": ":mtg-sets:test",
+      "suite": "com.wingedsheep.mtg.sets.EquipQualityVariantTest",
+      "cases": 3,
+      "skipped": 0,
+      "xml_sha256": "0b0e16994b8b2a4b1931267e3bd1e4036c1d9c733311481cfeb8b8042d63d9f2"
+    },
+    {
+      "module": ":mtg-sets:test",
+      "suite": "com.wingedsheep.mtg.sets.FacadeBoundaryTest",
+      "cases": 1,
+      "skipped": 0,
+      "xml_sha256": "723fc5da35f463d3b602555d46b5eee321cdd6dbe29f369158fd4fe507ecf75f"
+    },
+    {
+      "module": ":mtg-sets:test",
+      "suite": "com.wingedsheep.mtg.sets.InterveningIfClassificationTest",
+      "cases": 2,
+      "skipped": 0,
+      "xml_sha256": "5af1e6d1cc9a74d1eb57d856c444468addf0332b86e1eb00b75ff3dacd2e197a"
+    },
+    {
+      "module": ":mtg-sets:test",
+      "suite": "com.wingedsheep.mtg.sets.MeldResultFlagTest",
+      "cases": 3,
+      "skipped": 0,
+      "xml_sha256": "e5ee1b178f470d2101ef567b1ebcdf62334f98319b276bb6cc2680d8aec06d3d"
+    },
+    {
+      "module": ":mtg-sets:test",
+      "suite": "com.wingedsheep.mtg.sets.MtgSetCatalogTest",
+      "cases": 6,
+      "skipped": 0,
+      "xml_sha256": "a700090651f702f0fbaaad5fefa3b9ed14c948f41db535bbc6d7824ecc8c3b89"
+    },
+    {
+      "module": ":mtg-sets:test",
+      "suite": "com.wingedsheep.mtg.sets.PatternsNamespaceTest",
+      "cases": 1,
+      "skipped": 0,
+      "xml_sha256": "9fd91396d1dc811d4395c5ab618f7c0553b0d520842b4fa218c74a8339beadae"
+    },
+    {
+      "module": ":mtg-sets:test",
+      "suite": "com.wingedsheep.mtg.sets.SuccessCriterionValidationTest",
+      "cases": 1,
+      "skipped": 0,
+      "xml_sha256": "8695204fa50d28d141f92e79c723ea9bc7c09f6a1de4567641676becd5f31d31"
+    },
+    {
+      "module": ":mtg-sets:test",
+      "suite": "com.wingedsheep.mtg.sets.definitions.ecl.LorwynEclipsedVariantPrintingsTest",
+      "cases": 5,
+      "skipped": 0,
+      "xml_sha256": "48109acae99d8aaa63e6a621fbf2b19958a33d7d61a1e99ae78443b9b7dc0925"
+    },
+    {
+      "module": ":mtg-sets:test",
+      "suite": "com.wingedsheep.mtg.sets.discovery.CardDiscoveryEquivalenceTest",
+      "cases": 2,
+      "skipped": 0,
+      "xml_sha256": "1ad29bf15bd2b6d4366b36ad13212000207ee9a51799bfdc68a3208bb1d57b27"
+    },
+    {
+      "module": ":mtg-sets:test",
+      "suite": "com.wingedsheep.mtg.sets.legality.LegalityDataTest",
+      "cases": 4,
+      "skipped": 0,
+      "xml_sha256": "07e7fe35f8571f6a1ea9695b273863179ebbdacac14830414763ac9dfc55bac4"
+    },
+    {
+      "module": ":mtg-sets:test",
+      "suite": "com.wingedsheep.mtg.sets.discovery.CardDiscoveryTest",
+      "cases": 4,
+      "skipped": 0,
+      "xml_sha256": "6a5f4a817ac390f091132110220fbacfbcb3434fef8b0f593fe1579d87ba2c14"
+    },
+    {
+      "module": ":mtg-search:test",
+      "suite": "com.wingedsheep.search.ScryfallSyntaxComplianceTest",
+      "cases": 138,
+      "skipped": 0,
+      "xml_sha256": "a043309e8e9f9cf33ece7df55d2503e0238231cdb182aa52dd417197c1a903f8"
+    },
+    {
+      "module": ":mtg-search:test",
+      "suite": "com.wingedsheep.search.SearchServiceTest",
+      "cases": 25,
+      "skipped": 0,
+      "xml_sha256": "4d99b2ee52fe3e9c282ab4536630994acfd4fd09e34da381bfd86d9ba7919bda"
+    },
+    {
+      "module": ":mtgish-tooling:test",
+      "suite": "com.wingedsheep.tooling.coverage.CastTimeCaptureEmitterTest",
+      "cases": 1,
+      "skipped": 0,
+      "xml_sha256": "f6a25776be08416bb91ecf59292f322f99194282ff650458d7b309f66fa48f05"
+    },
+    {
+      "module": ":mtgish-tooling:test",
+      "suite": "com.wingedsheep.tooling.coverage.AsPermanentEntersCounterTest",
+      "cases": 3,
+      "skipped": 0,
+      "xml_sha256": "680f8a46560f2d5ff3cea7b7d2d994996ea916c605017a67220a7ce8833d2d4c"
+    },
+    {
+      "module": ":mtgish-tooling:test",
+      "suite": "com.wingedsheep.tooling.coverage.DredgeEmitterTest",
+      "cases": 2,
+      "skipped": 0,
+      "xml_sha256": "10e56ac103dc0bbb85fcc9e4ad7e00ab861e1aaf998e8832aef8fb1a17589b85"
+    },
+    {
+      "module": ":mtgish-tooling:test",
+      "suite": "com.wingedsheep.tooling.coverage.DslTest",
+      "cases": 14,
+      "skipped": 0,
+      "xml_sha256": "bc756346d394840a950ff8e1eb2d8aa50543a0356a06d90f3d2e363df7f83601"
+    },
+    {
+      "module": ":mtgish-tooling:test",
+      "suite": "com.wingedsheep.tooling.coverage.EmitterGoldenTest",
+      "cases": 11,
+      "skipped": 0,
+      "xml_sha256": "6fb93c897132c5a5267e4021afb17d9b47cbe841459f8d110f221bc3d906f883"
+    },
+    {
+      "module": ":mtgish-tooling:test",
+      "suite": "com.wingedsheep.tooling.coverage.EmitterPartialTest",
+      "cases": 2,
+      "skipped": 0,
+      "xml_sha256": "6e3bf156d82d684af7d6af4c3e0dae6eca6b4256bb48b4383217b0c68a3a9129"
+    },
+    {
+      "module": ":mtgish-tooling:test",
+      "suite": "com.wingedsheep.tooling.coverage.EmitterSmokeTest",
+      "cases": 1,
+      "skipped": 1,
+      "xml_sha256": "521cd8896cae97fe1a08ad8650f62ea0a44edfb2b5a655f8cea48069a0c489b6"
+    },
+    {
+      "module": ":mtgish-tooling:test",
+      "suite": "com.wingedsheep.tooling.coverage.IrQueryTest",
+      "cases": 6,
+      "skipped": 0,
+      "xml_sha256": "82819fd05d70ac063161f9135a53fa195d17f96c1aac7589b0c7bc0876a678db"
+    },
+    {
+      "module": ":mtgish-tooling:test",
+      "suite": "com.wingedsheep.tooling.coverage.ProwessEmitterTest",
+      "cases": 2,
+      "skipped": 0,
+      "xml_sha256": "d164128dc8ed7fc3bda691dc16985b40ac1b77806509a47e6b45603a8d9fd1de"
+    },
+    {
+      "module": ":mtgish-tooling:test",
+      "suite": "com.wingedsheep.tooling.coverage.SwitchPowerToughnessEmitterTest",
+      "cases": 2,
+      "skipped": 0,
+      "xml_sha256": "ae51ca0ef55d965429622321ac763f93ff788be01ee80fe56f16fc0385fc7568"
+    },
+    {
+      "module": ":mtgish-tooling:test",
+      "suite": "com.wingedsheep.tooling.coverage.UpkeepTriggerScopeTest",
+      "cases": 4,
+      "skipped": 0,
+      "xml_sha256": "38b5374456f02d07ea5f9423650520413d0b00e430b78541c1facda239937617"
+    },
+    {
+      "module": ":mtgish-tooling:test",
+      "suite": "com.wingedsheep.tooling.coverage.YouTapTriggerEmitterTest",
+      "cases": 4,
+      "skipped": 0,
+      "xml_sha256": "90312c26aa470d5981b1dc8eb7ec3294accddb3fd6cd107b1001857efbc6f9bd"
+    },
+    {
+      "module": ":mtgish-tooling:test",
+      "suite": "com.wingedsheep.tooling.coverage.bridge.BridgeResolveTest",
+      "cases": 8,
+      "skipped": 0,
+      "xml_sha256": "89ec9793639238101f9cfaee13ea90c6de6577fb53cf781384f933d71100fff7"
+    },
+    {
+      "module": ":mtgish-tooling:test",
+      "suite": "com.wingedsheep.tooling.coverage.dashboard.DashboardTest",
+      "cases": 3,
+      "skipped": 2,
+      "xml_sha256": "7e3909b1cd819d6006a018224777ac894a33de29225a98ac4284d7400c2be433"
+    },
+    {
+      "module": ":mtgish-tooling:test",
+      "suite": "com.wingedsheep.tooling.coverage.emitter.EffectHandlerTest",
+      "cases": 23,
+      "skipped": 0,
+      "xml_sha256": "0159002f8a10dfe6ce16f421ac295ed6ff88579bcaaf98f48134d4366695a7d6"
+    },
+    {
+      "module": ":mtgish-tooling:test",
+      "suite": "com.wingedsheep.tooling.coverage.emitter.EmitterFormatTest",
+      "cases": 8,
+      "skipped": 0,
+      "xml_sha256": "154bbc4f27cb6f21da11423b66463366ad0bb1456f53cd9b5af6e66da690077e"
+    },
+    {
+      "module": ":mtgish-tooling:test",
+      "suite": "com.wingedsheep.tooling.coverage.emitter.FilterPredicatesTest",
+      "cases": 6,
+      "skipped": 0,
+      "xml_sha256": "0767b4f9b3aa42f71ce11e3acdb9eb81eee54711eb7b73b71c90770a1dc65c8b"
+    },
+    {
+      "module": ":mtgish-tooling:test",
+      "suite": "com.wingedsheep.tooling.coverage.emitter.InterveningIfConditionTest",
+      "cases": 3,
+      "skipped": 0,
+      "xml_sha256": "01699b39fdd3de3a2733c41ca69ed46bc41f8b4d56d142c5da1cafdca06d8739"
+    },
+    {
+      "module": ":mtgish-tooling:test",
+      "suite": "com.wingedsheep.tooling.coverage.emitter.PrintingRowTest",
+      "cases": 4,
+      "skipped": 0,
+      "xml_sha256": "30458e515a7e039271c88707186bb0ca6a510e6bc09ca72857f1c9e23293a26c"
+    },
+    {
+      "module": ":mtgish-tooling:test",
+      "suite": "com.wingedsheep.tooling.coverage.emitter.TargetRecoveryTest",
+      "cases": 40,
+      "skipped": 0,
+      "xml_sha256": "2904f267617ff192f0ff6e0485704719982482983782dfa8ad669095097fb328"
+    }
+  ],
+  "limits": [
+    "Root authored supplement; separate nonauthor artifact review required.",
+    "Three original intentional skips and conditional image-URI disabled spec were not executed or counted as passes.",
+    "Fresh test tasks, original identity sets and raw XML verified; clean source checks are source-bound script assertions, not a separately emitted before/after source map.",
+    "Component software validation only. No project runtime or gameplay admission."
+  ],
+  "official_games": 0
+}

@@ -1,0 +1,5485 @@
+{
+  "source": "994383d4a9495bcb34d5aae0e69181bcf4c04d45",
+  "merge_tree": "4b8f4d155a37e6b66ab623d344b19cedf435d845",
+  "original_ci_run": 36267982979,
+  "modules": {
+    ":mtg-sdk:test": "mtg-sdk/",
+    ":mtg-sets:test": "mtg-sets/",
+    ":mtg-search:test": "mtg-search/",
+    ":mtgish-tooling:test": "mtgish-tooling/"
+  },
+  "rows": [
+    {
+      "module": ":mtgish-tooling:test",
+      "path": "mtgish-tooling/build/test-results/test/TEST-com.wingedsheep.tooling.coverage.AsPermanentEntersCounterTest.xml",
+      "class": "com.wingedsheep.tooling.coverage.AsPermanentEntersCounterTest",
+      "cases": [
+        {
+          "name": "a self-scoped +1/+1 EntersWithACounter renders EntersWithCounters(count = 1, selfOnly = true)",
+          "skipped": false
+        },
+        {
+          "name": "a non-+1/+1 counter kind declines to a scaffold",
+          "skipped": false
+        },
+        {
+          "name": "a group scope (not this permanent) declines to a scaffold",
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "module": ":mtgish-tooling:test",
+      "path": "mtgish-tooling/build/test-results/test/TEST-com.wingedsheep.tooling.coverage.CastTimeCaptureEmitterTest.xml",
+      "class": "com.wingedsheep.tooling.coverage.CastTimeCaptureEmitterTest",
+      "cases": [
+        {
+          "name": "Steer Clear renders the cast-time capture form whole (AUTO)",
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "module": ":mtgish-tooling:test",
+      "path": "mtgish-tooling/build/test-results/test/TEST-com.wingedsheep.tooling.coverage.DredgeEmitterTest.xml",
+      "class": "com.wingedsheep.tooling.coverage.DredgeEmitterTest",
+      "cases": [
+        {
+          "name": "dredge renders its numeric ability rather than a bare keyword",
+          "skipped": false
+        },
+        {
+          "name": "missing or negative dredge amounts decline to scaffolds",
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "module": ":mtgish-tooling:test",
+      "path": "mtgish-tooling/build/test-results/test/TEST-com.wingedsheep.tooling.coverage.EmitterGoldenTest.xml",
+      "class": "com.wingedsheep.tooling.coverage.EmitterGoldenTest",
+      "cases": [
+        {
+          "name": "10E: emitter output matches the committed golden, card-for-card",
+          "skipped": false
+        },
+        {
+          "name": "CHK: emitter output matches the committed golden, card-for-card",
+          "skipped": false
+        },
+        {
+          "name": "EOE: emitter output matches the committed golden, card-for-card",
+          "skipped": false
+        },
+        {
+          "name": "HOB: emitter output matches the committed golden, card-for-card",
+          "skipped": false
+        },
+        {
+          "name": "INR: emitter output matches the committed golden, card-for-card",
+          "skipped": false
+        },
+        {
+          "name": "ISD: emitter output matches the committed golden, card-for-card",
+          "skipped": false
+        },
+        {
+          "name": "ONS: emitter output matches the committed golden, card-for-card",
+          "skipped": false
+        },
+        {
+          "name": "POR: emitter output matches the committed golden, card-for-card",
+          "skipped": false
+        },
+        {
+          "name": "RAV: emitter output matches the committed golden, card-for-card",
+          "skipped": false
+        },
+        {
+          "name": "SOS: emitter output matches the committed golden, card-for-card",
+          "skipped": false
+        },
+        {
+          "name": "TMP: emitter output matches the committed golden, card-for-card",
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "module": ":mtgish-tooling:test",
+      "path": "mtgish-tooling/build/test-results/test/TEST-com.wingedsheep.tooling.coverage.DslTest.xml",
+      "class": "com.wingedsheep.tooling.coverage.DslTest",
+      "cases": [
+        {
+          "name": "a literal renders verbatim",
+          "skipped": false
+        },
+        {
+          "name": "a no-arg call renders as callee()",
+          "skipped": false
+        },
+        {
+          "name": "positional args join with ', '",
+          "skipped": false
+        },
+        {
+          "name": "a named arg renders as 'name = value'",
+          "skipped": false
+        },
+        {
+          "name": "nested calls render inline (downstream wrapLine handles width)",
+          "skipped": false
+        },
+        {
+          "name": "a chain renders base.method(args).method(args)",
+          "skipped": false
+        },
+        {
+          "name": "an infix joins with the operator, parenthesized when asked",
+          "skipped": false
+        },
+        {
+          "name": "a Composite lays each element at 12 spaces with an 8-space close (matches the old composite())",
+          "skipped": false
+        },
+        {
+          "name": "Raw passes its text through untouched",
+          "skipped": false
+        },
+        {
+          "name": "a block renders `header { body }` with the body one indent level deeper",
+          "skipped": false
+        },
+        {
+          "name": "statements: Eval is bare, Sub nests, RawLine is verbatim (ignoring the block indent)",
+          "skipped": false
+        },
+        {
+          "name": "a HoleLine renders as a greppable TODO comment at the block indent",
+          "skipped": false
+        },
+        {
+          "name": "an irShape annotates the hole when present",
+          "skipped": false
+        },
+        {
+          "name": "holesIn collects every hole reason in document order, recursing into nested blocks",
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "module": ":mtgish-tooling:test",
+      "path": "mtgish-tooling/build/test-results/test/TEST-com.wingedsheep.tooling.coverage.EmitterPartialTest.xml",
+      "class": "com.wingedsheep.tooling.coverage.EmitterPartialTest",
+      "cases": [
+        {
+          "name": "a WHOLE card renders identically in partial mode, with no holes",
+          "skipped": false
+        },
+        {
+          "name": "an injected un-renderable rule holes ONLY that part; the rest still renders",
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "module": ":mtgish-tooling:test",
+      "path": "mtgish-tooling/build/test-results/test/TEST-com.wingedsheep.tooling.coverage.EmitterSmokeTest.xml",
+      "class": "com.wingedsheep.tooling.coverage.EmitterSmokeTest",
+      "cases": [
+        {
+          "name": "Portal renders a high rate of whole, well-formed cards",
+          "skipped": true
+        }
+      ]
+    },
+    {
+      "module": ":mtgish-tooling:test",
+      "path": "mtgish-tooling/build/test-results/test/TEST-com.wingedsheep.tooling.coverage.IrQueryTest.xml",
+      "class": "com.wingedsheep.tooling.coverage.IrQueryTest",
+      "cases": [
+        {
+          "name": "argWordsTagged collects each tagged node's word arg in document order",
+          "skipped": false
+        },
+        {
+          "name": "argWordsTagged skips non-word args, mirroring the (\\w+) capture",
+          "skipped": false
+        },
+        {
+          "name": "hasTag matches a discriminator value, not a substring of a longer tag",
+          "skipped": false
+        },
+        {
+          "name": "wordsAtKey / firstColorOf read values at a key, scoping the colour to its clause",
+          "skipped": false
+        },
+        {
+          "name": "hasStringValue matches a string VALUE anywhere, the typed form of a quoted-token blob check",
+          "skipped": false
+        },
+        {
+          "name": "firstArgStringTagged returns the full arg string (a [^\"]+ capture, not just a word)",
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "module": ":mtgish-tooling:test",
+      "path": "mtgish-tooling/build/test-results/test/TEST-com.wingedsheep.tooling.coverage.ProwessEmitterTest.xml",
+      "class": "com.wingedsheep.tooling.coverage.ProwessEmitterTest",
+      "cases": [
+        {
+          "name": "a printed Prowess keyword renders via prowess(), not a bare keywords(Keyword.PROWESS)",
+          "skipped": false
+        },
+        {
+          "name": "\"other creatures you control have prowess\" declines to a scaffold, not a no-op GrantKeyword",
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "module": ":mtgish-tooling:test",
+      "path": "mtgish-tooling/build/test-results/test/TEST-com.wingedsheep.tooling.coverage.SwitchPowerToughnessEmitterTest.xml",
+      "class": "com.wingedsheep.tooling.coverage.SwitchPowerToughnessEmitterTest",
+      "cases": [
+        {
+          "name": "switch preserves target and end-of-turn duration",
+          "skipped": false
+        },
+        {
+          "name": "unknown duration declines",
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "module": ":mtgish-tooling:test",
+      "path": "mtgish-tooling/build/test-results/test/TEST-com.wingedsheep.tooling.coverage.UpkeepTriggerScopeTest.xml",
+      "class": "com.wingedsheep.tooling.coverage.UpkeepTriggerScopeTest",
+      "cases": [
+        {
+          "name": "the SinglePlayer/You scope maps to Triggers.YourUpkeep",
+          "skipped": false
+        },
+        {
+          "name": "the AnyPlayer scope maps to Triggers.EachUpkeep",
+          "skipped": false
+        },
+        {
+          "name": "the Opponent scope maps to Triggers.EachOpponentUpkeep",
+          "skipped": false
+        },
+        {
+          "name": "the host-relative HostController scope declines to a scaffold, not a named scope",
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "module": ":mtgish-tooling:test",
+      "path": "mtgish-tooling/build/test-results/test/TEST-com.wingedsheep.tooling.coverage.YouTapTriggerEmitterTest.xml",
+      "class": "com.wingedsheep.tooling.coverage.YouTapTriggerEmitterTest",
+      "cases": [
+        {
+          "name": "the You scope maps to Triggers.YouTap with the recovered permanent filter",
+          "skipped": false
+        },
+        {
+          "name": "the IR's IsUntapped clause is dropped \u2014 it would invert the filter at detection time",
+          "skipped": false
+        },
+        {
+          "name": "the filter still renders when the IR omits IsUntapped",
+          "skipped": false
+        },
+        {
+          "name": "a non-You tapper scope declines to a scaffold rather than widening the trigger",
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "module": ":mtgish-tooling:test",
+      "path": "mtgish-tooling/build/test-results/test/TEST-com.wingedsheep.tooling.coverage.bridge.BridgeResolveTest.xml",
+      "class": "com.wingedsheep.tooling.coverage.bridge.BridgeResolveTest",
+      "cases": [
+        {
+          "name": "a Keyword entry present in the registry resolves ok and contributes the keyword",
+          "skipped": false
+        },
+        {
+          "name": "a Keyword entry absent from the registry is MISSING and blocking, contributing nothing",
+          "skipped": false
+        },
+        {
+          "name": "an unmapped tag whose PascalCase is a Keyword enum member auto-resolves ok",
+          "skipped": false
+        },
+        {
+          "name": "a fully unmapped tag is UNMAPPED and blocking",
+          "skipped": false
+        },
+        {
+          "name": "a composed entry reports its kind, never blocks, and contributes its registry-present primitives",
+          "skipped": false
+        },
+        {
+          "name": "a composed primitive absent from the registry is dropped from the contributed capabilities",
+          "skipped": false
+        },
+        {
+          "name": "an envelope entry reports the ignore kind and never blocks",
+          "skipped": false
+        },
+        {
+          "name": "the disc:value composite key wins over the bare value key",
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "module": ":mtgish-tooling:test",
+      "path": "mtgish-tooling/build/test-results/test/TEST-com.wingedsheep.tooling.coverage.dashboard.DashboardTest.xml",
+      "class": "com.wingedsheep.tooling.coverage.dashboard.DashboardTest",
+      "cases": [
+        {
+          "name": "Analyzer classifies a set's cards into a partition that sums to the whole",
+          "skipped": true
+        },
+        {
+          "name": "cross-set index carries the blocked cards behind each ranked capability",
+          "skipped": true
+        },
+        {
+          "name": "Ansi.fit pads or ellipsis-truncates to an exact visible width",
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "module": ":mtgish-tooling:test",
+      "path": "mtgish-tooling/build/test-results/test/TEST-com.wingedsheep.tooling.coverage.emitter.EffectHandlerTest.xml",
+      "class": "com.wingedsheep.tooling.coverage.emitter.EffectHandlerTest",
+      "cases": [
+        {
+          "name": "constant 1:1 effects render as their fixed token (a Lit)",
+          "skipped": false
+        },
+        {
+          "name": "mana production maps the produce tag to the Add*Mana facade",
+          "skipped": false
+        },
+        {
+          "name": "a mixed mana pool composites inline (single line, not the multi-line Composite)",
+          "skipped": false
+        },
+        {
+          "name": "an unrecognised action declines (-> SCAFFOLD)",
+          "skipped": false
+        },
+        {
+          "name": "CopySpell(Trigger_ThatSpell) renders 'copy that spell' on a cast trigger (Double Down)",
+          "skipped": false
+        },
+        {
+          "name": "CopySpell with a non-triggering-spell subject declines (-> SCAFFOLD)",
+          "skipped": false
+        },
+        {
+          "name": "SetPT sets base P/T, and the end-of-turn case emits an EXPLICIT Duration.EndOfTurn",
+          "skipped": false
+        },
+        {
+          "name": "SetPT carries a non-default expiration verbatim (for as long as it remains tapped)",
+          "skipped": false
+        },
+        {
+          "name": "the each-permanent SetPT form wraps the set over a group",
+          "skipped": false
+        },
+        {
+          "name": "a SetPT riding an unsupported AddCardtype still scaffolds (no silently-dropped 'becomes an artifact')",
+          "skipped": false
+        },
+        {
+          "name": "'becomes a white Rabbit with base P/T 0/1' renders the atomic BecomeCreature (Metamorphic Blast)",
+          "skipped": false
+        },
+        {
+          "name": "'becomes a Fractal with base P/T each equal to X plus 1' renders dynamic BecomeCreature",
+          "skipped": false
+        },
+        {
+          "name": "the bare under-owner's-control return renders a plain Move to the battlefield",
+          "skipped": false
+        },
+        {
+          "name": "a return with a +1/+1 counter renders the Move then a chained AddCountersEffect (Daydream)",
+          "skipped": false
+        },
+        {
+          "name": "a return with a non-\u00b11/\u00b11 counter kind declines (-> SCAFFOLD) rather than guess the counter",
+          "skipped": false
+        },
+        {
+          "name": "a return entering tapped still declines (the tapped flag would be silently dropped)",
+          "skipped": false
+        },
+        {
+          "name": "ShuffleEachPermanentIntoLibrary renders self + target as two ShuffleIntoLibrary moves",
+          "skipped": false
+        },
+        {
+          "name": "ShuffleEachPermanentIntoLibrary declines a group that isn't self + one bound target",
+          "skipped": false
+        },
+        {
+          "name": "End the Festivities: player-FIRST then permanent, opponent-scoped -> PlayerRef(EachOpponent)",
+          "skipped": false
+        },
+        {
+          "name": "Dry Spell: permanent-FIRST then any-player -> creature group then ForEachPlayerEffect(Player.Each)",
+          "skipped": false
+        },
+        {
+          "name": "a lone EachPlayer(Opponent) recipient renders the single each-opponent deal (no Composite)",
+          "skipped": false
+        },
+        {
+          "name": "a lone EachPlayer(AnyPlayer) recipient renders the single each-player ForEachPlayerEffect",
+          "skipped": false
+        },
+        {
+          "name": "an unmodeled EachPlayer scope declines the whole card (-> SCAFFOLD), never a widened recipient set",
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "module": ":mtgish-tooling:test",
+      "path": "mtgish-tooling/build/test-results/test/TEST-com.wingedsheep.tooling.coverage.emitter.EmitterFormatTest.xml",
+      "class": "com.wingedsheep.tooling.coverage.emitter.EmitterFormatTest",
+      "cases": [
+        {
+          "name": "short lines are left untouched",
+          "skipped": false
+        },
+        {
+          "name": "a long call wraps its top-level args one per line, with trailing-comma-free last arg",
+          "skipped": false
+        },
+        {
+          "name": "commas inside string literals never trigger a split",
+          "skipped": false
+        },
+        {
+          "name": "comment / KDoc lines are never wrapped",
+          "skipped": false
+        },
+        {
+          "name": "nested over-long args wrap recursively and every emitted line fits the width",
+          "skipped": false
+        },
+        {
+          "name": "subtypeArg uses the typed constant when the SDK names it, else falls back to a string",
+          "skipped": false
+        },
+        {
+          "name": "subtypeCtorArg keeps the argument a Subtype even when the SDK doesn't name it",
+          "skipped": false
+        },
+        {
+          "name": "no emitter source hand-rolls a subtype literal instead of subtypeArg / subtypeCtorArg",
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "module": ":mtgish-tooling:test",
+      "path": "mtgish-tooling/build/test-results/test/TEST-com.wingedsheep.tooling.coverage.emitter.FilterPredicatesTest.xml",
+      "class": "com.wingedsheep.tooling.coverage.emitter.FilterPredicatesTest",
+      "cases": [
+        {
+          "name": "power bounds recover from the scoped PowerIs node",
+          "skipped": false
+        },
+        {
+          "name": "a power range keeps its two bounds distinct (scoped per PowerIs node)",
+          "skipped": false
+        },
+        {
+          "name": "tap / attack state predicates map to their fluent suffixes",
+          "skipped": false
+        },
+        {
+          "name": "nontoken recovers from the IsNonToken marker",
+          "skipped": false
+        },
+        {
+          "name": "power-or-toughness recovers from the Or of equal >= bounds, declining a mismatch or a lone bound",
+          "skipped": false
+        },
+        {
+          "name": "flying recovers as with/without keyword, distinguished by the DoesntHaveAbility marker",
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "module": ":mtgish-tooling:test",
+      "path": "mtgish-tooling/build/test-results/test/TEST-com.wingedsheep.tooling.coverage.emitter.InterveningIfConditionTest.xml",
+      "class": "com.wingedsheep.tooling.coverage.emitter.InterveningIfConditionTest",
+      "cases": [
+        {
+          "name": "Packsong Pup: 'another Wolf or Werewolf' lifts the Other(ThisPermanent) clause to excludeSelf",
+          "skipped": false
+        },
+        {
+          "name": "Resistance Squad: 'another Human' lifts the Other(ThatEnteringPermanent) clause to excludeSelf",
+          "skipped": false
+        },
+        {
+          "name": "without an Other(self) clause, 'you control a Spirit' renders WITHOUT excludeSelf (single line)",
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "module": ":mtgish-tooling:test",
+      "path": "mtgish-tooling/build/test-results/test/TEST-com.wingedsheep.tooling.coverage.emitter.PrintingRowTest.xml",
+      "class": "com.wingedsheep.tooling.coverage.emitter.PrintingRowTest",
+      "cases": [
+        {
+          "name": "reprint row carries set metadata and points at the canonical set",
+          "skipped": false
+        },
+        {
+          "name": "missing artist / image fields are simply omitted, rarity defaults to COMMON",
+          "skipped": false
+        },
+        {
+          "name": "val name is the PascalCase identifier of multi-word names",
+          "skipped": false
+        },
+        {
+          "name": "rarity mapping covers the Scryfall vocabulary",
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "module": ":mtgish-tooling:test",
+      "path": "mtgish-tooling/build/test-results/test/TEST-com.wingedsheep.tooling.coverage.emitter.TargetRecoveryTest.xml",
+      "class": "com.wingedsheep.tooling.coverage.emitter.TargetRecoveryTest",
+      "cases": [
+        {
+          "name": "creatureFilterDsl composes the plain-creature base with recovered suffixes",
+          "skipped": false
+        },
+        {
+          "name": "creatureFilterDsl distributes an Or of per-subtype creature filters",
+          "skipped": false
+        },
+        {
+          "name": "creatureFilterDsl renders power-or-toughness and suppresses the standalone power bound",
+          "skipped": false
+        },
+        {
+          "name": "gameObjectFilterDsl renders an Or of creature subtypes as withAnyOfSubtypes",
+          "skipped": false
+        },
+        {
+          "name": "gameObjectFilterDsl appends nontoken from the IsNonToken marker",
+          "skipped": false
+        },
+        {
+          "name": "targetExpr renders a nonland permanent target",
+          "skipped": false
+        },
+        {
+          "name": "gameObjectFilterDsl reads the base cardtype and appends the tapped suffix",
+          "skipped": false
+        },
+        {
+          "name": "gameObjectFilterDsl declines a filter with no recoverable base type",
+          "skipped": false
+        },
+        {
+          "name": "targetExpr maps the player / spell / graveyard target shapes",
+          "skipped": false
+        },
+        {
+          "name": "creatureFilterDsl recovers a multi-colour Or as withAnyColor (Escape Routes, Hunting Drake)",
+          "skipped": false
+        },
+        {
+          "name": "creatureFilterDsl declines a source-relative blocking relation (Cromat)",
+          "skipped": false
+        },
+        {
+          "name": "targetExpr restricts a counter to a colour-bound spell (Gainsay)",
+          "skipped": false
+        },
+        {
+          "name": "targetExpr restricts a counter to a noncreature spell (Spell Pierce)",
+          "skipped": false
+        },
+        {
+          "name": "targetExpr declines a spell whose filter is about what it targets, not its type (Confound)",
+          "skipped": false
+        },
+        {
+          "name": "creatureFilterDsl recovers a bare 'another' creature target as TargetFilter.OtherCreature (Rimekin Recluse)",
+          "skipped": false
+        },
+        {
+          "name": "creatureFilterDsl declines an 'another' creature target with an extra predicate (excludeSelf + state not composed)",
+          "skipped": false
+        },
+        {
+          "name": "gameObjectFilterDsl declines a '+1/+1 counters on them' group (Badgermole's trample lord)",
+          "skipped": false
+        },
+        {
+          "name": "gameObjectFilterDsl declines an enchantment subtype (Shrine triggers, The Spirit Oasis)",
+          "skipped": false
+        },
+        {
+          "name": "gameObjectFilterDsl declines a creature-subtype + non-creature-type union (Great Divide Guide)",
+          "skipped": false
+        },
+        {
+          "name": "targetExpr declines a bare permanent target carrying a dropped controller restriction (North Pole Patrol)",
+          "skipped": false
+        },
+        {
+          "name": "targetExpr renders an artifact-subtype target via withSubtype (Turn to Dust, Rustspore Ram)",
+          "skipped": false
+        },
+        {
+          "name": "targetExpr declines a lowest-mana-value permanent target (Culling Scales)",
+          "skipped": false
+        },
+        {
+          "name": "targetExpr declines a noncreature-artifact target (Blinkmoth Well)",
+          "skipped": false
+        },
+        {
+          "name": "landSearchFilterDsl recovers an artifact-card search filter (Fabricate)",
+          "skipped": false
+        },
+        {
+          "name": "creatureFilterDsl renders a negated creature subtype via notSubtype (Sterling Keykeeper)",
+          "skipped": false
+        },
+        {
+          "name": "creatureFilterDsl renders a 'with a stun counter on it' restriction (Floodpits Drowner)",
+          "skipped": false
+        },
+        {
+          "name": "creatureFilterDsl declines a counter restriction whose kind it can't name exactly",
+          "skipped": false
+        },
+        {
+          "name": "creatureFilterDsl renders a 'was dealt damage this turn' restriction (Rooftop Assassin)",
+          "skipped": false
+        },
+        {
+          "name": "creatureFilterDsl renders an active 'dealt damage this turn' restriction (Red Guardian)",
+          "skipped": false
+        },
+        {
+          "name": "creatureFilterDsl declines 'dealt damage this turn' combined with an unrenderable shape",
+          "skipped": false
+        },
+        {
+          "name": "creatureFilterDsl renders a non-outlaw creature via notAnyOfSubtypes (Shoot the Sheriff)",
+          "skipped": false
+        },
+        {
+          "name": "creatureFilterDsl renders 'defending player controls' as opponentControls (Spring Splasher)",
+          "skipped": false
+        },
+        {
+          "name": "gameObjectFilterDsl renders an outlaw filter via withAnyOfSubtypes (Vial Smasher)",
+          "skipped": false
+        },
+        {
+          "name": "gameObjectFilterDsl binds a group controlled by a target player to ContextTarget(0) (Neutralize the Guards)",
+          "skipped": false
+        },
+        {
+          "name": "gameObjectFilterDsl renders 'a player other than you' as opponentControls (Artistic Process)",
+          "skipped": false
+        },
+        {
+          "name": "gameObjectFilterDsl renders the creature+planeswalker union (Splatter Technique's 'each creature and planeswalker')",
+          "skipped": false
+        },
+        {
+          "name": "creatureFilterDsl renders 'target creature you don't control' as opponentControls",
+          "skipped": false
+        },
+        {
+          "name": "creatureFilterDsl still renders the plain 'you control' and 'an opponent controls' scopes",
+          "skipped": false
+        },
+        {
+          "name": "creatureFilterDsl declines a controller scope it cannot render exactly",
+          "skipped": false
+        },
+        {
+          "name": "a non-creature target still declines a trigger's implied-opponent player ref (Dawning Purist)",
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "module": ":mtg-sdk:test",
+      "path": "mtg-sdk/build/test-results/test/TEST-com.wingedsheep.sdk.core.CounterTypeClientMirrorTest.xml",
+      "class": "com.wingedsheep.sdk.core.CounterTypeClientMirrorTest",
+      "cases": [
+        {
+          "name": "It: parses a plausible enum out of enums.ts",
+          "skipped": false
+        },
+        {
+          "name": "It: declares every engine counter type",
+          "skipped": false
+        },
+        {
+          "name": "It: declares no counter type the engine does not have",
+          "skipped": false
+        },
+        {
+          "name": "It: gives every counter type a display name",
+          "skipped": false
+        },
+        {
+          "name": "It: names the counters that were invisible before",
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "module": ":mtg-sdk:test",
+      "path": "mtg-sdk/build/test-results/test/TEST-com.wingedsheep.sdk.core.CounterTypeStatCoverageTest.xml",
+      "class": "com.wingedsheep.sdk.core.CounterTypeStatCoverageTest",
+      "cases": [
+        {
+          "name": "It: finds a plausible set of stat-named constants in Counters",
+          "skipped": false
+        },
+        {
+          "name": "It: resolves every stat counter name declared in Counters",
+          "skipped": false
+        },
+        {
+          "name": "It: resolves the asymmetric kinds that regressed",
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "module": ":mtg-sdk:test",
+      "path": "mtg-sdk/build/test-results/test/TEST-com.wingedsheep.sdk.core.ManaCostColoredSymbolCountTest.xml",
+      "class": "com.wingedsheep.sdk.core.ManaCostColoredSymbolCountTest",
+      "cases": [
+        {
+          "name": "a mono-blue cost counts its one blue pip",
+          "skipped": false
+        },
+        {
+          "name": "several blue pips are counted separately",
+          "skipped": false
+        },
+        {
+          "name": "off-colour pips are not counted",
+          "skipped": false
+        },
+        {
+          "name": "a generic-only cost counts nothing",
+          "skipped": false
+        },
+        {
+          "name": "colorless {C} is not a colour and counts nothing",
+          "skipped": false
+        },
+        {
+          "name": "{X} is generic (CR 107.4b) and counts nothing, whatever X was announced",
+          "skipped": false
+        },
+        {
+          "name": "a spell with no mana cost at all counts nothing",
+          "skipped": false
+        },
+        {
+          "name": "a hybrid {U/R} is a blue mana symbol",
+          "skipped": false
+        },
+        {
+          "name": "the same hybrid {U/R} is also a red mana symbol",
+          "skipped": false
+        },
+        {
+          "name": "a hybrid of two other colours is neither",
+          "skipped": false
+        },
+        {
+          "name": "hybrids mix with plain pips",
+          "skipped": false
+        },
+        {
+          "name": "a monocolored hybrid {2/U} is a blue mana symbol (CR 107.4e)",
+          "skipped": false
+        },
+        {
+          "name": "a Phyrexian {U/P} is a blue mana symbol",
+          "skipped": false
+        },
+        {
+          "name": "a Phyrexian pip of another colour is not blue",
+          "skipped": false
+        },
+        {
+          "name": "asking for two colours counts a pip of either",
+          "skipped": false
+        },
+        {
+          "name": "a hybrid that is both requested colours is still one symbol",
+          "skipped": false
+        },
+        {
+          "name": "an empty colour set counts nothing",
+          "skipped": false
+        },
+        {
+          "name": "ManaSymbol.colors: a hybrid is all of its component colours (CR 107.4e)",
+          "skipped": false
+        },
+        {
+          "name": "ManaSymbol.colors: a Phyrexian pip is its colour (CR 107.4f)",
+          "skipped": false
+        },
+        {
+          "name": "ManaSymbol.colors: a twobrid is its colour, not colourless",
+          "skipped": false
+        },
+        {
+          "name": "ManaSymbol.colors: generic, colorless and X are no colour",
+          "skipped": false
+        },
+        {
+          "name": "ManaCost.colors reads the same symbol rule \u2014 hybrids and Phyrexians colour the object",
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "module": ":mtg-sdk:test",
+      "path": "mtg-sdk/build/test-results/test/TEST-com.wingedsheep.sdk.core.KeywordTest.xml",
+      "class": "com.wingedsheep.sdk.core.KeywordTest",
+      "cases": [
+        {
+          "name": "It: recognises the Fateful Bite ability word case-insensitively",
+          "skipped": false
+        },
+        {
+          "name": "It: returns null for unknown text",
+          "skipped": false
+        },
+        {
+          "name": "It: surfaces the new Fateful Bite ability word",
+          "skipped": false
+        },
+        {
+          "name": "It: surfaces the pre-existing Eerie ability word (regression guard for the em-dash branch)",
+          "skipped": false
+        },
+        {
+          "name": "It: does not invent a keyword when the em-dash prefix is not a known ability word",
+          "skipped": false
+        },
+        {
+          "name": "It: still parses comma-separated keyword lines alongside an ability-word prefix",
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "module": ":mtg-sdk:test",
+      "path": "mtg-sdk/build/test-results/test/TEST-com.wingedsheep.sdk.core.ManaCostReduceFloorTest.xml",
+      "class": "com.wingedsheep.sdk.core.ManaCostReduceFloorTest",
+      "cases": [
+        {
+          "name": "{2} reduced by {2} floored at 1 stays {1}, never {0}",
+          "skipped": false
+        },
+        {
+          "name": "{1} reduced by {2} floored at 1 is unchanged",
+          "skipped": false
+        },
+        {
+          "name": "{6} reduced by {2} floored at 1 lands well above the floor at {4}",
+          "skipped": false
+        },
+        {
+          "name": "{3}{U} reduced by {2} floored at 1 becomes {1}{U} (colored pip untouched)",
+          "skipped": false
+        },
+        {
+          "name": "{2}{U} reduced by {2} floored at 1 becomes {U} \u2014 the floor is already met by the colored pip",
+          "skipped": false
+        },
+        {
+          "name": "{1}{U} reduced by {2} floored at 1 becomes {U} (never drops the colored pip)",
+          "skipped": false
+        },
+        {
+          "name": "{U} reduced by {2} floored at 1 is unchanged \u2014 no generic to remove",
+          "skipped": false
+        },
+        {
+          "name": "{3}{U} reduced by {5} floored at 2 keeps {1}{U} (colored covers 1, generic floored at 1)",
+          "skipped": false
+        },
+        {
+          "name": "{2}{U} reduced by {2} floored at 0 becomes {U}, matching reduceGeneric",
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "module": ":mtg-sdk:test",
+      "path": "mtg-sdk/build/test-results/test/TEST-com.wingedsheep.sdk.core.ManaCostSubtractTest.xml",
+      "class": "com.wingedsheep.sdk.core.ManaCostSubtractTest",
+      "cases": [
+        {
+          "name": "Brave Brawler {4}{W} reduced by {1}{W} is {3}",
+          "skipped": false
+        },
+        {
+          "name": "Captain Marvel {5}{W}{W} reduced by {3}{W}{W} is {2}",
+          "skipped": false
+        },
+        {
+          "name": "Nick Fury {W}{U}{B}{R}{G} reduced by {W} is {U}{B}{R}{G}",
+          "skipped": false
+        },
+        {
+          "name": "Aerial Doombot {5}{U} reduced by {U} is {5}",
+          "skipped": false
+        },
+        {
+          "name": "Bold Biochemist {5}{U} reduced by {1}{U} is {4}",
+          "skipped": false
+        },
+        {
+          "name": "Kang {5}{U}{U}{U} reduced by {2}{U}{U} is {3}{U}",
+          "skipped": false
+        },
+        {
+          "name": "Ninja of the Hand {4}{B} reduced by {2}{B} is {2}",
+          "skipped": false
+        },
+        {
+          "name": "Unliving Legionnaire {5}{B}{B} reduced by {3}{B} is {2}{B}",
+          "skipped": false
+        },
+        {
+          "name": "Human Torch {6}{R} reduced by {2}{R} is {4}",
+          "skipped": false
+        },
+        {
+          "name": "Loki Laufeyson {4}{R} reduced by {1}{R} is {3}",
+          "skipped": false
+        },
+        {
+          "name": "Quicksilver {4}{R} reduced by {R} is {4}",
+          "skipped": false
+        },
+        {
+          "name": "Volcanic Villain {5}{R} reduced by {2}{R} is {3}",
+          "skipped": false
+        },
+        {
+          "name": "Wonder Man {5}{R}{R} reduced by {3}{R}{R} is {2}",
+          "skipped": false
+        },
+        {
+          "name": "Hercules {4}{G} reduced by {2}{G} is {2}",
+          "skipped": false
+        },
+        {
+          "name": "Pet Avengers {6}{G} reduced by {3}{G} is {3}",
+          "skipped": false
+        },
+        {
+          "name": "Serpent Specialist {3}{G} reduced by {G} is {3}",
+          "skipped": false
+        },
+        {
+          "name": "She-Hulk {4}{G}{G} reduced by {3}{G} is {1}{G}",
+          "skipped": false
+        },
+        {
+          "name": "White Tiger {5}{G} reduced by {1}{G} is {4}",
+          "skipped": false
+        },
+        {
+          "name": "Hulk {6}{R}{G} reduced by {3}{R}{G} is {3}",
+          "skipped": false
+        },
+        {
+          "name": "Ultron Drone {6} reduced by {3} is {3}",
+          "skipped": false
+        },
+        {
+          "name": "Viv Vision {7} reduced by {3} is {4}",
+          "skipped": false
+        },
+        {
+          "name": "Stature {X}{U}{U} reduced by {U} keeps the X: {X}{U}",
+          "skipped": false
+        },
+        {
+          "name": "Abomination {5}{R/G}{R/G} reduced by {3}{R/G} is {2}{R/G} \u2014 hybrid cancels hybrid",
+          "skipped": false
+        },
+        {
+          "name": "Thanos {C}{W}{U}{B}{R}{G} reduced by {R}{W}{B} is {C}{U}{G} \u2014 colorless pip survives",
+          "skipped": false
+        },
+        {
+          "name": "generic reduction never touches a colored pip",
+          "skipped": false
+        },
+        {
+          "name": "generic reduction never touches a colorless pip",
+          "skipped": false
+        },
+        {
+          "name": "a cost reduced to nothing is {0}, never negative (CR 118.7)",
+          "skipped": false
+        },
+        {
+          "name": "colored reduction with no matching pip reduces one generic instead",
+          "skipped": false
+        },
+        {
+          "name": "excess colored reduction spills the difference into generic (CR 118.7c)",
+          "skipped": false
+        },
+        {
+          "name": "colored spill is floored at zero rather than eating colored pips",
+          "skipped": false
+        },
+        {
+          "name": "colorless reduction cancels a colorless pip",
+          "skipped": false
+        },
+        {
+          "name": "excess colorless reduction spills into generic (CR 118.7d)",
+          "skipped": false
+        },
+        {
+          "name": "a colorless reduction does not pay a colored pip",
+          "skipped": false
+        },
+        {
+          "name": "an unmatched hybrid pays one of its colored halves",
+          "skipped": false
+        },
+        {
+          "name": "a hybrid prefers an identical hybrid over a colored half",
+          "skipped": false
+        },
+        {
+          "name": "hybrids are assigned to cancel as many pips as possible, not first-fit",
+          "skipped": false
+        },
+        {
+          "name": "a hybrid with neither half present spills one generic",
+          "skipped": false
+        },
+        {
+          "name": "a Phyrexian reduction pays a pip of its color (CR 118.7f)",
+          "skipped": false
+        },
+        {
+          "name": "a colored reduction pays a Phyrexian pip of the same color",
+          "skipped": false
+        },
+        {
+          "name": "a monocolored hybrid with no pip of its color spills its generic half",
+          "skipped": false
+        },
+        {
+          "name": "a monocolored hybrid takes its generic half when that half reduces more (CR 118.7e)",
+          "skipped": false
+        },
+        {
+          "name": "a monocolored hybrid takes its colored half when the generic half can't be spent in full",
+          "skipped": false
+        },
+        {
+          "name": "a monocolored hybrid takes its colored half when the cost has no generic at all",
+          "skipped": false
+        },
+        {
+          "name": "an X in the reduction contributes nothing \u2014 a permanent's printed X is 0 (CR 202.3b)",
+          "skipped": false
+        },
+        {
+          "name": "an X in the cost is never consumed by a colored reduction",
+          "skipped": false
+        },
+        {
+          "name": "subtracting nothing is identity",
+          "skipped": false
+        },
+        {
+          "name": "subtracting from nothing is nothing",
+          "skipped": false
+        },
+        {
+          "name": "subtracting a cost from itself is {0}",
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "module": ":mtg-sdk:test",
+      "path": "mtg-sdk/build/test-results/test/TEST-com.wingedsheep.sdk.core.ManaCostWithXAsTest.xml",
+      "class": "com.wingedsheep.sdk.core.ManaCostWithXAsTest",
+      "cases": [
+        {
+          "name": "{X}{G}{G} with X=2 becomes {2}{G}{G}",
+          "skipped": false
+        },
+        {
+          "name": "{X}{2}{W} with X=3 folds into the printed generic as {5}{W}",
+          "skipped": false
+        },
+        {
+          "name": "X=0 drops the symbol entirely rather than leaving {0}",
+          "skipped": false
+        },
+        {
+          "name": "a bare {X} with X=0 is the empty cost",
+          "skipped": false
+        },
+        {
+          "name": "each X symbol is charged separately \u2014 {X}{X}{R} with X=3 is {6}{R}",
+          "skipped": false
+        },
+        {
+          "name": "a cost with no X is returned unchanged",
+          "skipped": false
+        },
+        {
+          "name": "a negative X is clamped to 0 rather than underflowing the generic",
+          "skipped": false
+        },
+        {
+          "name": "the substituted cost carries no X left for downstream payment",
+          "skipped": false
+        },
+        {
+          "name": "mana value reflects the announced X",
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "module": ":mtg-sdk:test",
+      "path": "mtg-sdk/build/test-results/test/TEST-com.wingedsheep.sdk.core.MonocolorHybridManaTest.xml",
+      "class": "com.wingedsheep.sdk.core.MonocolorHybridManaTest",
+      "cases": [
+        {
+          "name": "parses a monocolored hybrid pip into MonocolorHybrid",
+          "skipped": false
+        },
+        {
+          "name": "parses Gurmag Nightwatch's full cost",
+          "skipped": false
+        },
+        {
+          "name": "does not confuse a monocolored hybrid with a two-color hybrid or phyrexian pip",
+          "skipped": false
+        },
+        {
+          "name": "mana value of a monocolored hybrid is its generic component",
+          "skipped": false
+        },
+        {
+          "name": "round-trips through toString and parse",
+          "skipped": false
+        },
+        {
+          "name": "reports the colored side in the cost's colors",
+          "skipped": false
+        },
+        {
+          "name": "relaxing colors treats the colored side as one generic mana",
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "module": ":mtg-sdk:test",
+      "path": "mtg-sdk/build/test-results/test/TEST-com.wingedsheep.sdk.core.TypeLineTest.xml",
+      "class": "com.wingedsheep.sdk.core.TypeLineTest",
+      "cases": [
+        {
+          "name": "It: preserves hyphens inside subtype names",
+          "skipped": false
+        },
+        {
+          "name": "It: splits Urza's Power-Plant into two land types, keeping the hyphen",
+          "skipped": false
+        },
+        {
+          "name": "It: still accepts an ASCII hyphen as a spaced type-subtype separator",
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "module": ":mtg-sdk:test",
+      "path": "mtg-sdk/build/test-results/test/TEST-com.wingedsheep.sdk.dsl.CreateEldraziScionTest.xml",
+      "class": "com.wingedsheep.sdk.dsl.CreateEldraziScionTest",
+      "cases": [
+        {
+          "name": "fixed count delegates to the authoritative predefined token",
+          "skipped": false
+        },
+        {
+          "name": "dynamic count delegates to the authoritative predefined token",
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "module": ":mtg-sdk:test",
+      "path": "mtg-sdk/build/test-results/test/TEST-com.wingedsheep.sdk.dsl.CardDslTest.xml",
+      "class": "com.wingedsheep.sdk.dsl.CardDslTest",
+      "cases": [
+        {
+          "name": "It: should define Forest with implicit mana ability",
+          "skipped": false
+        },
+        {
+          "name": "It: should define Grizzly Bears",
+          "skipped": false
+        },
+        {
+          "name": "It: should define Serra Angel with flying and vigilance",
+          "skipped": false
+        },
+        {
+          "name": "It: should define a creature with Ward mana cost",
+          "skipped": false
+        },
+        {
+          "name": "It: should define a creature with Protection from color",
+          "skipped": false
+        },
+        {
+          "name": "It: should define a creature with Protection from multiple colors",
+          "skipped": false
+        },
+        {
+          "name": "It: should define a creature with Ward discard",
+          "skipped": false
+        },
+        {
+          "name": "It: should define a creature with Annihilator",
+          "skipped": false
+        },
+        {
+          "name": "It: should define a creature with multiple parameterized keywords",
+          "skipped": false
+        },
+        {
+          "name": "It: should define a creature with Bushido",
+          "skipped": false
+        },
+        {
+          "name": "It: should define an artifact creature with Modular",
+          "skipped": false
+        },
+        {
+          "name": "It: should define a creature with Afflict",
+          "skipped": false
+        },
+        {
+          "name": "It: should define a vehicle with Crew",
+          "skipped": false
+        },
+        {
+          "name": "It: should define a card with Cycling",
+          "skipped": false
+        },
+        {
+          "name": "It: should define Flametongue Kavu with ETB trigger",
+          "skipped": false
+        },
+        {
+          "name": "It: should define Thragtusk with multiple triggers",
+          "skipped": false
+        },
+        {
+          "name": "It: should define Lightning Bolt with targeted damage",
+          "skipped": false
+        },
+        {
+          "name": "It: should define Divination drawing cards",
+          "skipped": false
+        },
+        {
+          "name": "It: should define Sol Ring with mana ability",
+          "skipped": false
+        },
+        {
+          "name": "It: should define Glorious Anthem with static ability",
+          "skipped": false
+        },
+        {
+          "name": "It: should define Rancor as an Aura with recursion",
+          "skipped": false
+        },
+        {
+          "name": "It: should define Loxodon Warhammer with equip ability",
+          "skipped": false
+        },
+        {
+          "name": "It: should define Liliana of the Veil with loyalty abilities",
+          "skipped": false
+        },
+        {
+          "name": "It: should define Compulsive Research with composite effect",
+          "skipped": false
+        },
+        {
+          "name": "It: should define Gift of Estates with condition",
+          "skipped": false
+        },
+        {
+          "name": "It: should define Electrolyze with two named targets",
+          "skipped": false
+        },
+        {
+          "name": "It: should define Cryptic Command with mode-specific targets",
+          "skipped": false
+        },
+        {
+          "name": "It: should define Charm with simple mode choices",
+          "skipped": false
+        },
+        {
+          "name": "It: should define Tarmogoyf with dynamic power and toughness",
+          "skipped": false
+        },
+        {
+          "name": "It: should define Lhurgoyf with creature-count based stats",
+          "skipped": false
+        },
+        {
+          "name": "It: should define a power-only CDA, leaving toughness printed",
+          "skipped": false
+        },
+        {
+          "name": "It: should define power and toughness from two different dynamic sources",
+          "skipped": false
+        },
+        {
+          "name": "It: dynamicStats composes dynamicPower and dynamicToughness over one source",
+          "skipped": false
+        },
+        {
+          "name": "It: should define Doubling Season with token doubling",
+          "skipped": false
+        },
+        {
+          "name": "It: should have compositional ReplacementEffect types available",
+          "skipped": false
+        },
+        {
+          "name": "It: should support CardScript with replacement effects",
+          "skipped": false
+        },
+        {
+          "name": "It: should support may-pay pattern",
+          "skipped": false
+        },
+        {
+          "name": "It: should support may-pay-or-else pattern",
+          "skipped": false
+        },
+        {
+          "name": "It: should support reflexive triggers",
+          "skipped": false
+        },
+        {
+          "name": "It: should define Karakyk Guardian with conditional hexproof",
+          "skipped": false
+        },
+        {
+          "name": "It: should support conditional stat bonuses",
+          "skipped": false
+        },
+        {
+          "name": "It: should support conditional blocking restrictions",
+          "skipped": false
+        },
+        {
+          "name": "It: should describe conditional abilities correctly",
+          "skipped": false
+        },
+        {
+          "name": "It: should default to NORMAL layout with no faces for ordinary cards",
+          "skipped": false
+        },
+        {
+          "name": "It: should define a SPLIT card with two faces and per-face abilities",
+          "skipped": false
+        },
+        {
+          "name": "It: should reject SPLIT layout with fewer than two faces",
+          "skipped": false
+        },
+        {
+          "name": "It: should reject blocks(attackerFilter) with a non-SELF binding",
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "module": ":mtg-sdk:test",
+      "path": "mtg-sdk/build/test-results/test/TEST-com.wingedsheep.sdk.dsl.CreateEldraziSpawnTest.xml",
+      "class": "com.wingedsheep.sdk.dsl.CreateEldraziSpawnTest",
+      "cases": [
+        {
+          "name": "dynamic count delegates to the predefined-token effect",
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "module": ":mtg-sdk:test",
+      "path": "mtg-sdk/build/test-results/test/TEST-com.wingedsheep.sdk.dsl.DifferentCounterKindsConditionTest.xml",
+      "class": "com.wingedsheep.sdk.dsl.DifferentCounterKindsConditionTest",
+      "cases": [
+        {
+          "name": "It: renders an Oracle-style description",
+          "skipped": false
+        },
+        {
+          "name": "It: defaults to creatures you control and compares against a fixed threshold with GTE",
+          "skipped": false
+        },
+        {
+          "name": "It: is parameterized over the group filter",
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "module": ":mtg-sdk:test",
+      "path": "mtg-sdk/build/test-results/test/TEST-com.wingedsheep.sdk.dsl.GiftDslTest.xml",
+      "class": "com.wingedsheep.sdk.dsl.GiftDslTest",
+      "cases": [
+        {
+          "name": "It: CARD \u2014 the chosen player draws a card (CR 702.174e)",
+          "skipped": false
+        },
+        {
+          "name": "It: FOOD \u2014 the chosen player creates a Food token (CR 702.174d)",
+          "skipped": false
+        },
+        {
+          "name": "It: TREASURE \u2014 the chosen player creates a Treasure token (CR 702.174h)",
+          "skipped": false
+        },
+        {
+          "name": "It: TAPPED_FISH \u2014 a tapped 1/1 blue Fish for the chosen player (CR 702.174f)",
+          "skipped": false
+        },
+        {
+          "name": "It: OCTOPUS \u2014 an 8/8 blue Octopus for the chosen player (CR 702.174i)",
+          "skipped": false
+        },
+        {
+          "name": "It: EXTRA_TURN \u2014 the chosen player takes an extra turn (CR 702.174g)",
+          "skipped": false
+        },
+        {
+          "name": "It: covers every kind the rules list, so a new one can't ship unmapped",
+          "skipped": false
+        },
+        {
+          "name": "It: adds the keyword and exactly one derived enters ability (CR 702.174a\u2013b)",
+          "skipped": false
+        },
+        {
+          "name": "It: gates the enters ability on the promise as an intervening if (CR 603.4)",
+          "skipped": false
+        },
+        {
+          "name": "It: closes with the GiftGiven marker so \"whenever you give a gift\" fires (CR 702.174c)",
+          "skipped": false
+        },
+        {
+          "name": "It: names the permanent the way the printed card does",
+          "skipped": false
+        },
+        {
+          "name": "It: falls back to the rule's own wording when the type line isn't set yet",
+          "skipped": false
+        },
+        {
+          "name": "It: is rejected on an instant, which has no enters trigger to fire (CR 702.174b)",
+          "skipped": false
+        },
+        {
+          "name": "It: accepts a permanent",
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "module": ":mtg-sdk:test",
+      "path": "mtg-sdk/build/test-results/test/TEST-com.wingedsheep.sdk.dsl.DomainDslTest.xml",
+      "class": "com.wingedsheep.sdk.dsl.DomainDslTest",
+      "cases": [
+        {
+          "name": "It: builds an AggregateBattlefield over lands you control with the basic-subtype aggregation",
+          "skipped": false
+        },
+        {
+          "name": "It: renders Oracle-style description",
+          "skipped": false
+        },
+        {
+          "name": "It: supports counting domain for an opponent",
+          "skipped": false
+        },
+        {
+          "name": "It: compares domain against a fixed threshold with GTE",
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "module": ":mtg-sdk:test",
+      "path": "mtg-sdk/build/test-results/test/TEST-com.wingedsheep.sdk.dsl.PipelineBuilderTest.xml",
+      "class": "com.wingedsheep.sdk.dsl.PipelineBuilderTest",
+      "cases": [
+        {
+          "name": "It: reproduces Lobotomy's hand-built pipeline exactly via name= overrides",
+          "skipped": false
+        },
+        {
+          "name": "It: reproduces the Ancestral Memories shape (look at 7, keep 2, rest to graveyard)",
+          "skipped": false
+        },
+        {
+          "name": "It: reproduces the branch-on-gathered idiom (draw-reveal, creature to hand, else graveyard)",
+          "skipped": false
+        },
+        {
+          "name": "It: keys are verb-prefixed and positional per builder instance",
+          "skipped": false
+        },
+        {
+          "name": "It: renaming the Kotlin val does not change the serialized tree",
+          "skipped": false
+        },
+        {
+          "name": "It: nested branch scopes share the key counter, so keys never collide",
+          "skipped": false
+        },
+        {
+          "name": "It: rejects duplicate explicit slot names",
+          "skipped": false
+        },
+        {
+          "name": "It: rejects an empty pipeline",
+          "skipped": false
+        },
+        {
+          "name": "It: rejects an empty branch block",
+          "skipped": false
+        },
+        {
+          "name": "It: rejects chaining orElse twice",
+          "skipped": false
+        },
+        {
+          "name": "It: chooseExactly leaves storeRemainder null; chooseExactlySplit sets it",
+          "skipped": false
+        },
+        {
+          "name": "It: NumberSlot.amount reads back as a VariableReference",
+          "skipped": false
+        },
+        {
+          "name": "It: whenMatches builds a CollectionContainsMatch over the slot's key",
+          "skipped": false
+        },
+        {
+          "name": "It: forEachCaptured wires the three collections and exposes the per-controller tally",
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "module": ":mtg-sdk:test",
+      "path": "mtg-sdk/build/test-results/test/TEST-com.wingedsheep.sdk.dsl.StationDslTest.xml",
+      "class": "com.wingedsheep.sdk.dsl.StationDslTest",
+      "cases": [
+        {
+          "name": "It: emits exactly one activated ability with the CR 702.184a cost and effect",
+          "skipped": false
+        },
+        {
+          "name": "It: round-trips through JSON",
+          "skipped": false
+        },
+        {
+          "name": "It: is the {N+} charge-counter threshold gate (CR 721.2a)",
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "module": ":mtg-sdk:test",
+      "path": "mtg-sdk/build/test-results/test/TEST-com.wingedsheep.sdk.limited.CommanderDraftBoosterTest.xml",
+      "class": "com.wingedsheep.sdk.limited.CommanderDraftBoosterTest",
+      "cases": [
+        {
+          "name": "It: produces packs of exactly 20 cards with a well-stocked pool",
+          "skipped": false
+        },
+        {
+          "name": "It: ships exactly 2 legendary cards (creature or planeswalker) per pack",
+          "skipped": false
+        },
+        {
+          "name": "It: ships 13 commons, 3 uncommons, and 1 non-legendary R/M slot when the pool has them",
+          "skipped": false
+        },
+        {
+          "name": "It: falls back to Piper when the pool has no legendaries",
+          "skipped": false
+        },
+        {
+          "name": "It: backfills with non-legendary uncommons when no legendaries and no Piper are available",
+          "skipped": false
+        },
+        {
+          "name": "It: never duplicates a card name within a single pack",
+          "skipped": false
+        },
+        {
+          "name": "It: accepts legendary planeswalkers in the legendary slots",
+          "skipped": false
+        },
+        {
+          "name": "It: does not pull legendary creatures into the non-legendary rare-or-mythic slot",
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "module": ":mtg-sdk:test",
+      "path": "mtg-sdk/build/test-results/test/TEST-com.wingedsheep.sdk.dsl.SwitchPowerToughnessTest.xml",
+      "class": "com.wingedsheep.sdk.dsl.SwitchPowerToughnessTest",
+      "cases": [
+        {
+          "name": "target and duration survive effect serialization",
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "module": ":mtg-sdk:test",
+      "path": "mtg-sdk/build/test-results/test/TEST-com.wingedsheep.sdk.limited.PlayBoosterTest.xml",
+      "class": "com.wingedsheep.sdk.limited.PlayBoosterTest",
+      "cases": [
+        {
+          "name": "It: produces packs of exactly 13 cards with a well-stocked pool",
+          "skipped": false
+        },
+        {
+          "name": "It: ships 7 commons, 3 uncommons, 1 rare/mythic, and 2 wildcards",
+          "skipped": false
+        },
+        {
+          "name": "It: never duplicates a card name within a single pack",
+          "skipped": false
+        },
+        {
+          "name": "It: rolls roughly 20% of wildcards as rare or mythic, so some packs carry extra rares",
+          "skipped": false
+        },
+        {
+          "name": "It: falls back gracefully when the pool has no mythics",
+          "skipped": false
+        },
+        {
+          "name": "It: fills wildcard slots from other rarities when commons run dry",
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "module": ":mtg-sdk:test",
+      "path": "mtg-sdk/build/test-results/test/TEST-com.wingedsheep.sdk.model.ColorIdentityTest.xml",
+      "class": "com.wingedsheep.sdk.model.ColorIdentityTest",
+      "cases": [
+        {
+          "name": "It: vanilla colorless artifact has empty identity",
+          "skipped": false
+        },
+        {
+          "name": "It: mono-coloured spell picks up its mana cost colour",
+          "skipped": false
+        },
+        {
+          "name": "It: multi-coloured legendary picks up every mana-cost colour",
+          "skipped": false
+        },
+        {
+          "name": "It: hybrid mana symbol contributes both colours",
+          "skipped": false
+        },
+        {
+          "name": "It: Phyrexian mana symbol contributes its colour",
+          "skipped": false
+        },
+        {
+          "name": "It: activated ability with colored cost adds that colour to identity",
+          "skipped": false
+        },
+        {
+          "name": "It: multiple distinct colored symbols accumulate",
+          "skipped": false
+        },
+        {
+          "name": "It: generic / X / colourless symbols do not contribute identity",
+          "skipped": false
+        },
+        {
+          "name": "It: basic Mountain has red identity from its Mountain subtype",
+          "skipped": false
+        },
+        {
+          "name": "It: basic Forest has green identity",
+          "skipped": false
+        },
+        {
+          "name": "It: dual land with two basic land subtypes contributes both colours",
+          "skipped": false
+        },
+        {
+          "name": "It: non-basic-land subtypes (e.g. Forest creature subtypes) \u2014 only land-subtype names match by string",
+          "skipped": false
+        },
+        {
+          "name": "It: Wastes-style colourless basic still has empty identity",
+          "skipped": false
+        },
+        {
+          "name": "It: card with cost and oracle in different colours unions them",
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "module": ":mtg-sdk:test",
+      "path": "mtg-sdk/build/test-results/test/TEST-com.wingedsheep.sdk.model.CommanderEligibilityTest.xml",
+      "class": "com.wingedsheep.sdk.model.CommanderEligibilityTest",
+      "cases": [
+        {
+          "name": "legendary creature is a legal commander",
+          "skipped": false
+        },
+        {
+          "name": "non-legendary creature is not a legal commander by default",
+          "skipped": false
+        },
+        {
+          "name": "planeswalker without override clause is not a legal commander",
+          "skipped": false
+        },
+        {
+          "name": "planeswalker with 'can be your commander' clause is a legal commander",
+          "skipped": false
+        },
+        {
+          "name": "non-creature non-planeswalker with override clause is a legal commander",
+          "skipped": false
+        },
+        {
+          "name": "oracle text is matched case-insensitively",
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "module": ":mtg-sdk:test",
+      "path": "mtg-sdk/build/test-results/test/TEST-com.wingedsheep.sdk.model.DevoidColorsTest.xml",
+      "class": "com.wingedsheep.sdk.model.DevoidColorsTest",
+      "cases": [
+        {
+          "name": "It: a devoid card is colorless despite its coloured pips (CR 702.114a)",
+          "skipped": false
+        },
+        {
+          "name": "It: the same card without devoid is its mana cost's colours",
+          "skipped": false
+        },
+        {
+          "name": "It: reads devoid in either SDK spelling \u2014 the keyword set or a keyword ability",
+          "skipped": false
+        },
+        {
+          "name": "It: overrides an explicit colour indicator too \u2014 the CDA says colorless, full stop",
+          "skipped": false
+        },
+        {
+          "name": "It: leaves an already-colorless card alone",
+          "skipped": false
+        },
+        {
+          "name": "It: is untouched by devoid \u2014 a colorless card can still be blue-identity",
+          "skipped": false
+        },
+        {
+          "name": "It: still picks up colours from the rules text of a devoid card",
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "module": ":mtg-sdk:test",
+      "path": "mtg-sdk/build/test-results/test/TEST-com.wingedsheep.sdk.model.GameRngTest.xml",
+      "class": "com.wingedsheep.sdk.model.GameRngTest",
+      "cases": [
+        {
+          "name": "It: produces the same sequence from the same seed",
+          "skipped": false
+        },
+        {
+          "name": "It: produces different sequences from different seeds",
+          "skipped": false
+        },
+        {
+          "name": "It: never mutates the receiver \u2014 re-drawing yields the same value",
+          "skipped": false
+        },
+        {
+          "name": "It: stays within [0, bound)",
+          "skipped": false
+        },
+        {
+          "name": "It: rejects a non-positive bound",
+          "skipped": false
+        },
+        {
+          "name": "It: is roughly uniform across buckets",
+          "skipped": false
+        },
+        {
+          "name": "It: stays within [0, 1)",
+          "skipped": false
+        },
+        {
+          "name": "It: is a permutation \u2014 preserves the multiset of elements",
+          "skipped": false
+        },
+        {
+          "name": "It: does not mutate the input list",
+          "skipped": false
+        },
+        {
+          "name": "It: is deterministic for a given seed",
+          "skipped": false
+        },
+        {
+          "name": "It: handles empty and singleton lists",
+          "skipped": false
+        },
+        {
+          "name": "It: returns an element of the list",
+          "skipped": false
+        },
+        {
+          "name": "It: yields a child stream that diverges from the parent",
+          "skipped": false
+        },
+        {
+          "name": "It: is deterministic \u2014 same seed splits the same way",
+          "skipped": false
+        },
+        {
+          "name": "It: round-trips through JSON preserving stream position",
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "module": ":mtg-sdk:test",
+      "path": "mtg-sdk/build/test-results/test/TEST-com.wingedsheep.sdk.model.MtgSetBoosterEraTest.xml",
+      "class": "com.wingedsheep.sdk.model.MtgSetBoosterEraTest",
+      "cases": [
+        {
+          "name": "It: uses the classic 11-common booster for pre-mythic sets",
+          "skipped": false
+        },
+        {
+          "name": "It: uses the 10-common booster from Shards of Alara through 2023",
+          "skipped": false
+        },
+        {
+          "name": "It: uses the Play Booster from Murders at Karlov Manor onward",
+          "skipped": false
+        },
+        {
+          "name": "It: falls back to the classic booster when the release date is unknown",
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "module": ":mtg-sdk:test",
+      "path": "mtg-sdk/build/test-results/test/TEST-com.wingedsheep.sdk.model.PrintingTest.xml",
+      "class": "com.wingedsheep.sdk.model.PrintingTest",
+      "cases": [
+        {
+          "name": "It: formats identifier as SET-CN",
+          "skipped": false
+        },
+        {
+          "name": "It: round-trips through JSON",
+          "skipped": false
+        },
+        {
+          "name": "It: exposes a PrintingRef view",
+          "skipped": false
+        },
+        {
+          "name": "It: round-trips through JSON with optional metadata",
+          "skipped": false
+        },
+        {
+          "name": "It: treats showcase frame as alternate",
+          "skipped": false
+        },
+        {
+          "name": "It: treats borderless border as alternate even without a showcase frame",
+          "skipped": false
+        },
+        {
+          "name": "It: treats plain black-border / full-art printings as not alternate",
+          "skipped": false
+        },
+        {
+          "name": "It: overlays the printing's presentation onto the card",
+          "skipped": false
+        },
+        {
+          "name": "It: leaves oracle identity untouched",
+          "skipped": false
+        },
+        {
+          "name": "It: ignores a printing's back-face image on a single-faced card",
+          "skipped": false
+        },
+        {
+          "name": "It: overlays the back-face art on a genuine double-faced card",
+          "skipped": false
+        },
+        {
+          "name": "It: derives from setCode + metadata.collectorNumber",
+          "skipped": false
+        },
+        {
+          "name": "It: is null when setCode missing",
+          "skipped": false
+        },
+        {
+          "name": "It: is null when collector number missing",
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "module": ":mtg-sdk:test",
+      "path": "mtg-sdk/build/test-results/test/TEST-com.wingedsheep.sdk.model.TokenPrintingTest.xml",
+      "class": "com.wingedsheep.sdk.model.TokenPrintingTest",
+      "cases": [
+        {
+          "name": "every row printed for one token identity is returned, in declaration order",
+          "skipped": false
+        },
+        {
+          "name": "bestMatch stays the first of those, for callers that only need one",
+          "skipped": false
+        },
+        {
+          "name": "a pinned identity wins outright \u2014 a same-name row for another token is not in the run",
+          "skipped": false
+        },
+        {
+          "name": "name-only rows stand in when nothing pins the identity",
+          "skipped": false
+        },
+        {
+          "name": "a token the set never printed matches nothing",
+          "skipped": false
+        },
+        {
+          "name": "a bare row matches every token of that name the set mints",
+          "skipped": false
+        },
+        {
+          "name": "names match across word order, since a token name is joined from an unordered set",
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "module": ":mtg-sdk:test",
+      "path": "mtg-sdk/build/test-results/test/TEST-com.wingedsheep.sdk.scripting.CompareDescriptionTest.xml",
+      "class": "com.wingedsheep.sdk.scripting.CompareDescriptionTest",
+      "cases": [
+        {
+          "name": "It: renders every operator as an English comparative that follows an 'is'",
+          "skipped": false
+        },
+        {
+          "name": "It: keeps the mathematical symbols available for diagnostics",
+          "skipped": false
+        },
+        {
+          "name": "It: reads as a sentence rather than an operator dump",
+          "skipped": false
+        },
+        {
+          "name": "It: compares two dynamic amounts without leaking a symbol (Goblin Goon)",
+          "skipped": false
+        },
+        {
+          "name": "It: renders the whole CantAttackUnless message for Chief Warg's Company",
+          "skipped": false
+        },
+        {
+          "name": "It: templates the subtype ahead of the card type, as Magic does",
+          "skipped": false
+        },
+        {
+          "name": "It: keeps the controller qualifier in front of the type words",
+          "skipped": false
+        },
+        {
+          "name": "It: agrees the indefinite article with the word the description now leads on",
+          "skipped": false
+        },
+        {
+          "name": "It: uses -ves for the f-ending creature types Magic actually prints",
+          "skipped": false
+        },
+        {
+          "name": "It: uses -es after a sibilant",
+          "skipped": false
+        },
+        {
+          "name": "It: still handles the plain and -y cases",
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "module": ":mtg-sdk:test",
+      "path": "mtg-sdk/build/test-results/test/TEST-com.wingedsheep.sdk.scripting.DescribeObjectsForEventTest.xml",
+      "class": "com.wingedsheep.sdk.scripting.DescribeObjectsForEventTest",
+      "cases": [
+        {
+          "name": "It: applies the regular English rules",
+          "skipped": false
+        },
+        {
+          "name": "It: adds -es after a sibilant",
+          "skipped": false
+        },
+        {
+          "name": "It: leaves a noun that is already plural, or invariant in -s, alone",
+          "skipped": false
+        },
+        {
+          "name": "It: uses the curated table for -f/-fe subtypes the regular rules get wrong",
+          "skipped": false
+        },
+        {
+          "name": "It: uses the curated table for the genuinely irregular subtypes",
+          "skipped": false
+        },
+        {
+          "name": "It: keeps WotC's invariant plurals invariant",
+          "skipped": false
+        },
+        {
+          "name": "It: renders the KDoc's documented examples",
+          "skipped": false
+        },
+        {
+          "name": "It: pluralizes only the head noun, leaving the qualifiers singular",
+          "skipped": false
+        },
+        {
+          "name": "It: keeps the controller as a suffix, never a prefix",
+          "skipped": false
+        },
+        {
+          "name": "It: falls back to the generic wording for an unconstrained filter",
+          "skipped": false
+        },
+        {
+          "name": "It: reads as English for the shipped batch filter",
+          "skipped": false
+        },
+        {
+          "name": "It: differs from the per-permanent template only in the recipient's multiplicity",
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "module": ":mtg-sdk:test",
+      "path": "mtg-sdk/build/test-results/test/TEST-com.wingedsheep.sdk.scripting.GameObjectFilterCompositionTest.xml",
+      "class": "com.wingedsheep.sdk.scripting.GameObjectFilterCompositionTest",
+      "cases": [
+        {
+          "name": "It: keeps the predicate when only one side has one",
+          "skipped": false
+        },
+        {
+          "name": "It: keeps a predicate both sides share",
+          "skipped": false
+        },
+        {
+          "name": "It: rejects two different controller predicates instead of silently discarding one",
+          "skipped": false
+        },
+        {
+          "name": "It: rejects a right-hand side whose anyOf union would be silently dropped",
+          "skipped": false
+        },
+        {
+          "name": "It: And requires every branch",
+          "skipped": false
+        },
+        {
+          "name": "It: Or requires any branch",
+          "skipped": false
+        },
+        {
+          "name": "It: Not inverts, including when nested",
+          "skipped": false
+        },
+        {
+          "name": "It: unsupported leaves (null) don't constrain \u2014 even under Not",
+          "skipped": false
+        },
+        {
+          "name": "It: survives a JSON round-trip inside a filter",
+          "skipped": false
+        },
+        {
+          "name": "It: describes composed predicates readably",
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "module": ":mtg-sdk:test",
+      "path": "mtg-sdk/build/test-results/test/TEST-com.wingedsheep.sdk.scripting.ManaStaticDescriptionTest.xml",
+      "class": "com.wingedsheep.sdk.scripting.ManaStaticDescriptionTest",
+      "cases": [
+        {
+          "name": "It: keeps the controller clause after the noun (Deep Water)",
+          "skipped": false
+        },
+        {
+          "name": "It: renders the free-choice form the same way (Pulse of Llanowar)",
+          "skipped": false
+        },
+        {
+          "name": "It: still reads correctly with no controller clause at all",
+          "skipped": false
+        },
+        {
+          "name": "It: keeps the controller clause after the noun",
+          "skipped": false
+        },
+        {
+          "name": "It: picks the article from the noun, not from the controller clause",
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "module": ":mtg-sdk:test",
+      "path": "mtg-sdk/build/test-results/test/TEST-com.wingedsheep.sdk.scripting.ModifySpellCostDescriptionTest.xml",
+      "class": "com.wingedsheep.sdk.scripting.ModifySpellCostDescriptionTest",
+      "cases": [
+        {
+          "name": "It: renders the unconstrained Any filter without a leaked 'card' adjective (Uthros Psionicist)",
+          "skipped": false
+        },
+        {
+          "name": "It: keeps the filter adjective for a typed filter (Eluge, the Shoreless Sea)",
+          "skipped": false
+        },
+        {
+          "name": "It: keeps the plural form when ungated",
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "module": ":mtg-sdk:test",
+      "path": "mtg-sdk/build/test-results/test/TEST-com.wingedsheep.sdk.scripting.ReplaceDrawWithEffectDescriptionTest.xml",
+      "class": "com.wingedsheep.sdk.scripting.ReplaceDrawWithEffectDescriptionTest",
+      "cases": [
+        {
+          "name": "It: reads naturally when there are no restrictions",
+          "skipped": false
+        },
+        {
+          "name": "It: reads naturally when the replacement is optional and unrestricted",
+          "skipped": false
+        },
+        {
+          "name": "It: keeps the 'while <condition>' clause when restrictions are present",
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "module": ":mtg-sdk:test",
+      "path": "mtg-sdk/build/test-results/test/TEST-com.wingedsheep.sdk.scripting.TriggeredAbilityDescriptionTest.xml",
+      "class": "com.wingedsheep.sdk.scripting.TriggeredAbilityDescriptionTest",
+      "cases": [
+        {
+          "name": "It: appends the printed rider when effectOncePerTurn is set and no override is given",
+          "skipped": false
+        },
+        {
+          "name": "It: does not append it for the trigger cap (oncePerTurn), which prints different text",
+          "skipped": false
+        },
+        {
+          "name": "It: lets descriptionOverride win, as both shipped cards rely on",
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "module": ":mtg-sdk:test",
+      "path": "mtg-sdk/build/test-results/test/TEST-com.wingedsheep.sdk.scripting.costs.CostAtomRepeatedTest.xml",
+      "class": "com.wingedsheep.sdk.scripting.costs.CostAtomRepeatedTest",
+      "cases": [
+        {
+          "name": "repeating a sum-gated exile multiplies the threshold, not a card count",
+          "skipped": false
+        },
+        {
+          "name": "collecting evidence N twice is collecting evidence 2N",
+          "skipped": false
+        },
+        {
+          "name": "a derived collect-evidence threshold can't be repeated \u2014 there is no number to double",
+          "skipped": false
+        },
+        {
+          "name": "the atom rejects an amount no cost-time evaluator could price",
+          "skipped": false
+        },
+        {
+          "name": "a literal threshold prints its number; a derived one prints X, as both cards are worded",
+          "skipped": false
+        },
+        {
+          "name": "repeating once returns the atom unchanged",
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "module": ":mtg-sdk:test",
+      "path": "mtg-sdk/build/test-results/test/TEST-com.wingedsheep.sdk.scripting.effects.CreateTokenCopyOfSourceEffectTest.xml",
+      "class": "com.wingedsheep.sdk.scripting.effects.CreateTokenCopyOfSourceEffectTest",
+      "cases": [
+        {
+          "name": "default addCardTypes is empty and omitted from the description",
+          "skipped": false
+        },
+        {
+          "name": "addCardTypes renders the 'except it's a TYPE in addition to its other types' clause",
+          "skipped": false
+        },
+        {
+          "name": "addCardTypes combines cleanly with P/T overrides",
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "module": ":mtg-sdk:test",
+      "path": "mtg-sdk/build/test-results/test/TEST-com.wingedsheep.sdk.scripting.effects.PipelineDescriptionLeakTest.xml",
+      "class": "com.wingedsheep.sdk.scripting.effects.PipelineDescriptionLeakTest",
+      "cases": [
+        {
+          "name": "It: Wash Out's gather\u2192bounce pipeline reads naturally (issue #710)",
+          "skipped": false
+        },
+        {
+          "name": "It: MoveCollection picks the right preposition per destination",
+          "skipped": false
+        },
+        {
+          "name": "It: a return under its owner's control says so (Safe Haven)",
+          "skipped": false
+        },
+        {
+          "name": "It: collection-referencing effects don't echo their key",
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "module": ":mtg-sdk:test",
+      "path": "mtg-sdk/build/test-results/test/TEST-com.wingedsheep.sdk.scripting.effects.SelfReferentialDescriptionTest.xml",
+      "class": "com.wingedsheep.sdk.scripting.effects.SelfReferentialDescriptionTest",
+      "cases": [
+        {
+          "name": "a Self-targeting effect emits the placeholder token in its template",
+          "skipped": false
+        },
+        {
+          "name": "description default-resolves the token to the type-neutral default; no token leaks",
+          "skipped": false
+        },
+        {
+          "name": "resolveSelfNoun substitutes the requested noun for the placeholder",
+          "skipped": false
+        },
+        {
+          "name": "a non-Self target carries no token and keeps its own noun",
+          "skipped": false
+        },
+        {
+          "name": "ExileAndReturnTransformed carries the token per return face",
+          "skipped": false
+        },
+        {
+          "name": "a self-sacrifice adapts its noun instead of calling a land a creature",
+          "skipped": false
+        },
+        {
+          "name": "sacrificing a chosen target keeps that target's own wording",
+          "skipped": false
+        },
+        {
+          "name": "serialization round-trips the effect; description recomputes (template is not serialized)",
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "module": ":mtg-sdk:test",
+      "path": "mtg-sdk/build/test-results/test/TEST-com.wingedsheep.sdk.scripting.targets.TargetRequirementWithCountTest.xml",
+      "class": "com.wingedsheep.sdk.scripting.targets.TargetRequirementWithCountTest",
+      "cases": [
+        {
+          "name": "narrows the max count and clamps the minCount field down with it",
+          "skipped": false
+        },
+        {
+          "name": "clamps a non-optional minCount that would exceed the new count",
+          "skipped": false
+        },
+        {
+          "name": "is a no-op when the count is unchanged",
+          "skipped": false
+        },
+        {
+          "name": "recurses through TargetOther into its base requirement",
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "module": ":mtg-sdk:test",
+      "path": "mtg-sdk/build/test-results/test/TEST-com.wingedsheep.sdk.scripting.targets.RequiresExactlyOneTargetTest.xml",
+      "class": "com.wingedsheep.sdk.scripting.targets.RequiresExactlyOneTargetTest",
+      "cases": [
+        {
+          "name": "a plain single target is settled once one legal object exists",
+          "skipped": false
+        },
+        {
+          "name": "up to one leaves the empty selection, so it is never settled",
+          "skipped": false
+        },
+        {
+          "name": "any number is never settled even though count stays at its default of one",
+          "skipped": false
+        },
+        {
+          "name": "a multi-target requirement is not settled by one legal object",
+          "skipped": false
+        },
+        {
+          "name": "narrowing an optional slot to one target does not make it mandatory",
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "module": ":mtg-sdk:test",
+      "path": "mtg-sdk/build/test-results/test/TEST-com.wingedsheep.sdk.serialization.CardLinterTest.xml",
+      "class": "com.wingedsheep.sdk.serialization.CardLinterTest",
+      "cases": [
+        {
+          "name": "It: accepts a well-formed gather \u2192 select \u2192 move pipeline",
+          "skipped": false
+        },
+        {
+          "name": "It: flags a typo'd collection read as an error with a suggestion",
+          "skipped": false
+        },
+        {
+          "name": "It: flags a read whose writer lives in a different ability as a warning",
+          "skipped": false
+        },
+        {
+          "name": "It: flags a store nothing reads as a warning",
+          "skipped": false
+        },
+        {
+          "name": "It: connects cast-time additional-cost stores to the spell effect",
+          "skipped": false
+        },
+        {
+          "name": "It: bridges a collection write to its _count numeric read",
+          "skipped": false
+        },
+        {
+          "name": "It: scopes a granted ability's ContextTarget to the granted ability",
+          "skipped": false
+        },
+        {
+          "name": "It: flags a BoundVariable that matches no requirement id",
+          "skipped": false
+        },
+        {
+          "name": "It: accepts indexed BoundVariable names against the base id",
+          "skipped": false
+        },
+        {
+          "name": "It: flags a bare BoundVariable on a multi-slot requirement",
+          "skipped": false
+        },
+        {
+          "name": "It: accepts a per-slot BoundVariable on a multi-slot requirement",
+          "skipped": false
+        },
+        {
+          "name": "It: flags a slot read with no declaration",
+          "skipped": false
+        },
+        {
+          "name": "It: accepts a KICKED read when a kicker effect is declared",
+          "skipped": false
+        },
+        {
+          "name": "It: flags a TargetChooser.Opponent target on a spell \u2014 the controller would pick it",
+          "skipped": false
+        },
+        {
+          "name": "It: accepts a TargetChooser.Opponent target on a triggered ability (Mausoleum Turnkey)",
+          "skipped": false
+        },
+        {
+          "name": "It: accepts a TargetChooser.Opponent target on an activated ability (Cuombajj Witches)",
+          "skipped": false
+        },
+        {
+          "name": "It: accepts the trigger-side choosers on a triggered ability (Quicksilver Fountain)",
+          "skipped": false
+        },
+        {
+          "name": "It: flags a trigger-side chooser on a spell \u2014 nothing would route it",
+          "skipped": false
+        },
+        {
+          "name": "It: flags an entity role the ConditionEvaluator doesn't dispatch \u2014 a silent constant false",
+          "skipped": false
+        },
+        {
+          "name": "It: accepts the dispatched roles, including EquippedCreature (no facade names it)",
+          "skipped": false
+        },
+        {
+          "name": "It: accepts a plain tap-for-mana ability flagged as one",
+          "skipped": false
+        },
+        {
+          "name": "It: flags a mana ability whose effect draws a card",
+          "skipped": false
+        },
+        {
+          "name": "It: flags a mana ability whose cost mills",
+          "skipped": false
+        },
+        {
+          "name": "It: flags a mana ability whose cost exiles from a library",
+          "skipped": false
+        },
+        {
+          "name": "It: accepts a mana ability whose cost exiles from a graveyard",
+          "skipped": false
+        },
+        {
+          "name": "It: flags a mana ability that mills as part of its effect",
+          "skipped": false
+        },
+        {
+          "name": "It: flags a mana ability that searches its library",
+          "skipped": false
+        },
+        {
+          "name": "It: accepts a mana ability with a scry rider",
+          "skipped": false
+        },
+        {
+          "name": "It: accepts a mana ability that looks at the top of the library and puts it back",
+          "skipped": false
+        },
+        {
+          "name": "It: flags a mana ability that looks at the top of the library and keeps a card",
+          "skipped": false
+        },
+        {
+          "name": "It: flags a mana ability that puts a card from hand on top of the library",
+          "skipped": false
+        },
+        {
+          "name": "It: flags a mana ability that gathers from a library and casts what it found",
+          "skipped": false
+        },
+        {
+          "name": "It: flags a mana ability that is also a loyalty ability",
+          "skipped": false
+        },
+        {
+          "name": "It: flags a mana ability that requires a target",
+          "skipped": false
+        },
+        {
+          "name": "It: does not ask an ability disqualified by its cost to be flagged",
+          "skipped": false
+        },
+        {
+          "name": "It: still asks a plain unflagged tap-for-mana ability to be flagged",
+          "skipped": false
+        },
+        {
+          "name": "It: flags a creature whose ward grant kept the default attached-creature filter",
+          "skipped": false
+        },
+        {
+          "name": "It: accepts the same grant on an Aura, where attach scope is the point",
+          "skipped": false
+        },
+        {
+          "name": "It: accepts the same grant on an Equipment",
+          "skipped": false
+        },
+        {
+          "name": "It: accepts a creature's own printed ward, which is the correct fix",
+          "skipped": false
+        },
+        {
+          "name": "It: accepts a lord-style grant with an explicit battlefield-scoped filter",
+          "skipped": false
+        },
+        {
+          "name": "It: does not flag attach scope nested inside an effect that first makes it an Equipment",
+          "skipped": false
+        },
+        {
+          "name": "It: does not flag a creature that transforms into an Aura on its back face",
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "module": ":mtg-sdk:test",
+      "path": "mtg-sdk/build/test-results/test/TEST-com.wingedsheep.sdk.serialization.CardSerializationRoundTripTest.xml",
+      "class": "com.wingedsheep.sdk.serialization.CardSerializationRoundTripTest",
+      "cases": [
+        {
+          "name": "It: should round-trip player-iteration collection reducers",
+          "skipped": false
+        },
+        {
+          "name": "It: should round-trip a simple damage spell",
+          "skipped": false
+        },
+        {
+          "name": "It: should round-trip the unified SetBaseStats effect, preserving a null stat",
+          "skipped": false
+        },
+        {
+          "name": "It: should round-trip a tracked battlefield-object move",
+          "skipped": false
+        },
+        {
+          "name": "It: should round-trip a creature with triggered ability",
+          "skipped": false
+        },
+        {
+          "name": "It: should round-trip a GrantHarmonize effect (Songcrafter Mage)",
+          "skipped": false
+        },
+        {
+          "name": "It: should round-trip a composite effect",
+          "skipped": false
+        },
+        {
+          "name": "It: should round-trip a creature with upkeep trigger",
+          "skipped": false
+        },
+        {
+          "name": "It: should round-trip card predicates",
+          "skipped": false
+        },
+        {
+          "name": "It: should round-trip keyword abilities",
+          "skipped": false
+        },
+        {
+          "name": "It: should round-trip morph keyword",
+          "skipped": false
+        },
+        {
+          "name": "It: should round-trip duration types",
+          "skipped": false
+        },
+        {
+          "name": "It: should round-trip static abilities",
+          "skipped": false
+        },
+        {
+          "name": "It: should round-trip replacement effects",
+          "skipped": false
+        },
+        {
+          "name": "It: should round-trip ModalEffect with minChooseCount and allowRepeat",
+          "skipped": false
+        },
+        {
+          "name": "It: should default minChooseCount = chooseCount and allowRepeat = false for older payloads",
+          "skipped": false
+        },
+        {
+          "name": "It: should round-trip a card built with the vividEtb DSL helper",
+          "skipped": false
+        },
+        {
+          "name": "It: should round-trip a card built with the vividCostReduction DSL helper",
+          "skipped": false
+        },
+        {
+          "name": "It: should round-trip a source-relative cost reduction",
+          "skipped": false
+        },
+        {
+          "name": "It: should round-trip activated ability costs",
+          "skipped": false
+        },
+        {
+          "name": "It: should round-trip a SPLIT card with two faces",
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "module": ":mtg-sdk:test",
+      "path": "mtg-sdk/build/test-results/test/TEST-com.wingedsheep.sdk.serialization.CardValidatorTest.xml",
+      "class": "com.wingedsheep.sdk.serialization.CardValidatorTest",
+      "cases": [
+        {
+          "name": "It: returns no errors for a simple creature",
+          "skipped": false
+        },
+        {
+          "name": "It: returns no errors for an instant with a target",
+          "skipped": false
+        },
+        {
+          "name": "It: returns no errors for an Aura with auraTarget",
+          "skipped": false
+        },
+        {
+          "name": "It: returns no errors for Equipment with equipCost",
+          "skipped": false
+        },
+        {
+          "name": "It: returns no errors for a planeswalker with loyalty",
+          "skipped": false
+        },
+        {
+          "name": "It: flags a spell effect that references a non-existent target index",
+          "skipped": false
+        },
+        {
+          "name": "It: flags a spell with targets referenced inside a CompositeEffect",
+          "skipped": false
+        },
+        {
+          "name": "It: flags nested MayEffect inside ConditionalEffect + elseEffect",
+          "skipped": false
+        },
+        {
+          "name": "It: flags targeted triggered abilities with a bad target index",
+          "skipped": false
+        },
+        {
+          "name": "It: flags triggered abilities that reference any ContextTarget when no target is declared",
+          "skipped": false
+        },
+        {
+          "name": "It: collects indices inside ModalEffect modes",
+          "skipped": false
+        },
+        {
+          "name": "It: accepts ContextTarget(0) with exactly one target declared",
+          "skipped": false
+        },
+        {
+          "name": "It: flags an Aura subtype without an auraTarget in the script",
+          "skipped": false
+        },
+        {
+          "name": "It: flags an auraTarget on a card that isn't an Aura",
+          "skipped": false
+        },
+        {
+          "name": "It: flags an equipCost on a card that isn't Equipment",
+          "skipped": false
+        },
+        {
+          "name": "It: flags a planeswalker without startingLoyalty",
+          "skipped": false
+        },
+        {
+          "name": "It: flags a battle without startingDefense",
+          "skipped": false
+        },
+        {
+          "name": "It: accepts a battle that declares its printed defense",
+          "skipped": false
+        },
+        {
+          "name": "It: validates effects with MoveToZone (destroy)",
+          "skipped": false
+        },
+        {
+          "name": "It: flags a Gate.DoAction whose Auto criterion can't infer from the action shape",
+          "skipped": false
+        },
+        {
+          "name": "It: finds the gate in nested containers (mode inside a triggered ability)",
+          "skipped": false
+        },
+        {
+          "name": "It: accepts Auto on a terminal collection move to a zone",
+          "skipped": false
+        },
+        {
+          "name": "It: accepts Auto on a terminal single move of Self",
+          "skipped": false
+        },
+        {
+          "name": "It: accepts an uninferable action shape when the criterion is explicit",
+          "skipped": false
+        },
+        {
+          "name": "It: collects errors from several issues at once",
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "module": ":mtg-sdk:test",
+      "path": "mtg-sdk/build/test-results/test/TEST-com.wingedsheep.sdk.serialization.CostAtomSerializationTest.xml",
+      "class": "com.wingedsheep.sdk.serialization.CostAtomSerializationTest",
+      "cases": [
+        {
+          "name": "every concrete CostAtom subtype has a representative in this test",
+          "skipped": false
+        },
+        {
+          "name": "each CostAtom round-trips through the polymorphic serializer",
+          "skipped": false
+        },
+        {
+          "name": "each CostAtom round-trips inside a PayCost.Atom wrapper",
+          "skipped": false
+        },
+        {
+          "name": "each CostAtom round-trips inside an AdditionalCost.Atom wrapper",
+          "skipped": false
+        },
+        {
+          "name": "selectionCount is the per-atom selection size and 0 for non-selection atoms",
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "module": ":mtg-sdk:test",
+      "path": "mtg-sdk/build/test-results/test/TEST-com.wingedsheep.sdk.serialization.CharacteristicValueSerializerTest.xml",
+      "class": "com.wingedsheep.sdk.serialization.CharacteristicValueSerializerTest",
+      "cases": [
+        {
+          "name": "It: encodes Fixed as a bare JSON number",
+          "skipped": false
+        },
+        {
+          "name": "It: encodes Dynamic as an object with type=Dynamic and nested source",
+          "skipped": false
+        },
+        {
+          "name": "It: encodes DynamicWithOffset including the offset",
+          "skipped": false
+        },
+        {
+          "name": "It: reads bare integers as Fixed",
+          "skipped": false
+        },
+        {
+          "name": "It: reads Dynamic objects",
+          "skipped": false
+        },
+        {
+          "name": "It: reads DynamicWithOffset objects",
+          "skipped": false
+        },
+        {
+          "name": "It: throws for unknown type discriminator",
+          "skipped": false
+        },
+        {
+          "name": "It: throws for unexpected JSON shapes",
+          "skipped": false
+        },
+        {
+          "name": "It: round-trips Fixed(value=0)",
+          "skipped": false
+        },
+        {
+          "name": "It: round-trips Fixed(value=-5)",
+          "skipped": false
+        },
+        {
+          "name": "It: round-trips Fixed(value=99)",
+          "skipped": false
+        },
+        {
+          "name": "It: round-trips Dynamic(source=XValue)",
+          "skipped": false
+        },
+        {
+          "name": "It: round-trips DynamicWithOffset(source=XValue, offset=1)",
+          "skipped": false
+        },
+        {
+          "name": "It: round-trips DynamicWithOffset(source=XValue, offset=-3)",
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "module": ":mtg-sdk:test",
+      "path": "mtg-sdk/build/test-results/test/TEST-com.wingedsheep.sdk.serialization.DredgeSerializationTest.xml",
+      "class": "com.wingedsheep.sdk.serialization.DredgeSerializationTest",
+      "cases": [
+        {
+          "name": "dredge retains its number and display keyword through serialization",
+          "skipped": false
+        },
+        {
+          "name": "negative dredge is rejected",
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "module": ":mtg-sdk:test",
+      "path": "mtg-sdk/build/test-results/test/TEST-com.wingedsheep.sdk.serialization.FilterQueryLanguageTest.xml",
+      "class": "com.wingedsheep.sdk.serialization.FilterQueryLanguageTest",
+      "cases": [
+        {
+          "name": "It: parses a single type predicate",
+          "skipped": false
+        },
+        {
+          "name": "It: parses combined terms as a conjunction",
+          "skipped": false
+        },
+        {
+          "name": "It: parses OR expressions into a single CardPredicate.Or",
+          "skipped": false
+        },
+        {
+          "name": "It: parses mana value comparisons (>=, <=, =)",
+          "skipped": false
+        },
+        {
+          "name": "It: parses power comparisons",
+          "skipped": false
+        },
+        {
+          "name": "It: parses toughness comparisons",
+          "skipped": false
+        },
+        {
+          "name": "It: parses keyword predicates as HasKeyword with uppercased keyword",
+          "skipped": false
+        },
+        {
+          "name": "It: parses color predicates",
+          "skipped": false
+        },
+        {
+          "name": "It: parses colorless, multicolored, and monocolored",
+          "skipped": false
+        },
+        {
+          "name": "It: parses name predicate",
+          "skipped": false
+        },
+        {
+          "name": "It: parses subtype predicates (capitalized tokens)",
+          "skipped": false
+        },
+        {
+          "name": "It: parses all state predicates",
+          "skipped": false
+        },
+        {
+          "name": "It: parses all controller predicates",
+          "skipped": false
+        },
+        {
+          "name": "It: parses every type keyword",
+          "skipped": false
+        },
+        {
+          "name": "It: parses OR with comparisons, keywords, colors, and subtypes",
+          "skipped": false
+        },
+        {
+          "name": "It: tokenizes with extra whitespace",
+          "skipped": false
+        },
+        {
+          "name": "It: throws on an unrecognized term",
+          "skipped": false
+        },
+        {
+          "name": "It: throws on OR children containing unknown terms",
+          "skipped": false
+        },
+        {
+          "name": "It: formats a minimal creature filter",
+          "skipped": false
+        },
+        {
+          "name": "It: formats a singleton string predicate",
+          "skipped": false
+        },
+        {
+          "name": "It: formats a filter with state and controller",
+          "skipped": false
+        },
+        {
+          "name": "It: formats an Or expression",
+          "skipped": false
+        },
+        {
+          "name": "It: formats mana value / power / toughness comparisons",
+          "skipped": false
+        },
+        {
+          "name": "It: formats HasSubtype, HasColor, and HasKeyword",
+          "skipped": false
+        },
+        {
+          "name": "It: formats IsColorless / IsMulticolored / IsMonocolored",
+          "skipped": false
+        },
+        {
+          "name": "It: formats NameEquals",
+          "skipped": false
+        },
+        {
+          "name": "It: formats state predicates from singleton strings and objects",
+          "skipped": false
+        },
+        {
+          "name": "It: formats controller predicates from singleton strings and objects",
+          "skipped": false
+        },
+        {
+          "name": "It: returns null for an empty filter",
+          "skipped": false
+        },
+        {
+          "name": "It: returns null for card predicates the language cannot express",
+          "skipped": false
+        },
+        {
+          "name": "It: returns null for singleton-string predicates that aren't type names",
+          "skipped": false
+        },
+        {
+          "name": "It: returns null when Or contains an unformattable sub-predicate",
+          "skipped": false
+        },
+        {
+          "name": "It: returns null for array predicates (non-object, non-string)",
+          "skipped": false
+        },
+        {
+          "name": "It: round-trips 'creature'",
+          "skipped": false
+        },
+        {
+          "name": "It: round-trips 'creature tapped'",
+          "skipped": false
+        },
+        {
+          "name": "It: round-trips 'creature tapped ctrl:you'",
+          "skipped": false
+        },
+        {
+          "name": "It: round-trips 'artifact|enchantment'",
+          "skipped": false
+        },
+        {
+          "name": "It: round-trips 'mv>=6'",
+          "skipped": false
+        },
+        {
+          "name": "It: round-trips 'pow<=2 tou>=4'",
+          "skipped": false
+        },
+        {
+          "name": "It: round-trips 'kw:flying'",
+          "skipped": false
+        },
+        {
+          "name": "It: round-trips 'red'",
+          "skipped": false
+        },
+        {
+          "name": "It: round-trips 'colorless'",
+          "skipped": false
+        },
+        {
+          "name": "It: round-trips 'name:Sol Ring'",
+          "skipped": false
+        },
+        {
+          "name": "It: round-trips 'creature Goblin'",
+          "skipped": false
+        },
+        {
+          "name": "It: round-trips 'creature Dragon ctrl:opponent'",
+          "skipped": false
+        },
+        {
+          "name": "It: round-trips 'permanent untapped own:you'",
+          "skipped": false
+        },
+        {
+          "name": "It: returns true for objects with any filter key",
+          "skipped": false
+        },
+        {
+          "name": "It: returns false for unrelated objects",
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "module": ":mtg-sdk:test",
+      "path": "mtg-sdk/build/test-results/test/TEST-com.wingedsheep.sdk.serialization.LibraryMacroEffectTest.xml",
+      "class": "com.wingedsheep.sdk.serialization.LibraryMacroEffectTest",
+      "cases": [
+        {
+          "name": "Patterns.Library.scry/surveil and the Effects facade return the compact macro node",
+          "skipped": false
+        },
+        {
+          "name": "the macro nodes serialize compactly and round-trip to the same object",
+          "skipped": false
+        },
+        {
+          "name": "expandMacro produces the scry pipeline, tail-terminated by the scried event",
+          "skipped": false
+        },
+        {
+          "name": "a literal scry/surveil 0 expands without an emit-event tail (CR 701.22b / 701.25c)",
+          "skipped": false
+        },
+        {
+          "name": "expandMacro returns null for a non-macro effect",
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "module": ":mtg-sdk:test",
+      "path": "mtg-sdk/build/test-results/test/TEST-com.wingedsheep.sdk.serialization.MoveUntilSourceLeavesSerializationTest.xml",
+      "class": "com.wingedsheep.sdk.serialization.MoveUntilSourceLeavesSerializationTest",
+      "cases": [
+        {
+          "name": "zone-return effect round trips with a named target",
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "module": ":mtg-sdk:test",
+      "path": "mtg-sdk/build/test-results/test/TEST-com.wingedsheep.sdk.serialization.PlayerTargetRestrictionSerializationTest.xml",
+      "class": "com.wingedsheep.sdk.serialization.PlayerTargetRestrictionSerializationTest",
+      "cases": [
+        {
+          "name": "It: round-trips a TargetPlayer carrying a Player.Candidate restriction",
+          "skipped": false
+        },
+        {
+          "name": "It: round-trips a TargetOpponent carrying a LIFE_LOST tracker restriction",
+          "skipped": false
+        },
+        {
+          "name": "It: renders the descriptionOverride for a restricted target",
+          "skipped": false
+        },
+        {
+          "name": "It: preserves the restriction when an id is stamped via withId",
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "module": ":mtg-search:test",
+      "path": "mtg-search/build/test-results/test/TEST-com.wingedsheep.search.ScryfallSyntaxComplianceTest.xml",
+      "class": "com.wingedsheep.search.ScryfallSyntaxComplianceTest",
+      "cases": [
+        {
+          "name": "color: c (single letter)",
+          "skipped": false
+        },
+        {
+          "name": "color: alias `color:`",
+          "skipped": false
+        },
+        {
+          "name": "color: alias `id:`",
+          "skipped": false
+        },
+        {
+          "name": "color: alias `identity:`",
+          "skipped": false
+        },
+        {
+          "name": "color: multiple letters c:rg",
+          "skipped": false
+        },
+        {
+          "name": "color: guild name azorius",
+          "skipped": false
+        },
+        {
+          "name": "color: shard name bant",
+          "skipped": false
+        },
+        {
+          "name": "color: wedge name abzan",
+          "skipped": false
+        },
+        {
+          "name": "color: colorless",
+          "skipped": false
+        },
+        {
+          "name": "color: multicolor",
+          "skipped": false
+        },
+        {
+          "name": "color: count `c=2`",
+          "skipped": false
+        },
+        {
+          "name": "color: comparator `color>=uw -c:red`",
+          "skipped": false
+        },
+        {
+          "name": "color: identity for lands",
+          "skipped": false
+        },
+        {
+          "name": "color: c=2 is:bear",
+          "skipped": false
+        },
+        {
+          "name": "color: id<=esper t:instant",
+          "skipped": false
+        },
+        {
+          "name": "type: t:legendary",
+          "skipped": false
+        },
+        {
+          "name": "type: alias `type:`",
+          "skipped": false
+        },
+        {
+          "name": "type: t:fish (subtype substring)",
+          "skipped": false
+        },
+        {
+          "name": "type: t:merfolk t:legend (composite)",
+          "skipped": false
+        },
+        {
+          "name": "type: t:goblin -t:creature (negated)",
+          "skipped": false
+        },
+        {
+          "name": "oracle: o:draw t:creature",
+          "skipped": false
+        },
+        {
+          "name": "oracle: alias `oracle:`",
+          "skipped": false
+        },
+        {
+          "name": "oracle: kw:flying",
+          "skipped": false
+        },
+        {
+          "name": "oracle: alias keyword:",
+          "skipped": false
+        },
+        {
+          "name": "oracle: kw:flying -t:creature",
+          "skipped": false
+        },
+        {
+          "name": "oracle: regex name:/\\bizzet\\b/",
+          "skipped": false
+        },
+        {
+          "name": "mana: alias `m:`",
+          "skipped": false
+        },
+        {
+          "name": "mana: alias `mana`",
+          "skipped": false
+        },
+        {
+          "name": "mana: literal {G}",
+          "skipped": false
+        },
+        {
+          "name": "mana: bare letters G",
+          "skipped": false
+        },
+        {
+          "name": "mana: hybrid {2/G} accepted literally",
+          "skipped": false
+        },
+        {
+          "name": "mana: phyrexian {R/P} accepted literally",
+          "skipped": false
+        },
+        {
+          "name": "mana: 2WW bare letters",
+          "skipped": false
+        },
+        {
+          "name": "mana: m:{G}{U}",
+          "skipped": false
+        },
+        {
+          "name": "mana: m>3WU",
+          "skipped": false
+        },
+        {
+          "name": "mana value: alias `mv` and `manavalue`",
+          "skipped": false
+        },
+        {
+          "name": "mana value: cmc alias",
+          "skipped": false
+        },
+        {
+          "name": "mana value: comparators",
+          "skipped": false
+        },
+        {
+          "name": "mana value: c:u mv=5",
+          "skipped": false
+        },
+        {
+          "name": "pt: pow>=8",
+          "skipped": false
+        },
+        {
+          "name": "pt: pow>tou c:w t:creature (cross-field)",
+          "skipped": false
+        },
+        {
+          "name": "pt: alias power: / toughness:",
+          "skipped": false
+        },
+        {
+          "name": "layout: is:dfc",
+          "skipped": false
+        },
+        {
+          "name": "layout: is:mdfc",
+          "skipped": false
+        },
+        {
+          "name": "layout: is:transform",
+          "skipped": false
+        },
+        {
+          "name": "layout: layout:transform",
+          "skipped": false
+        },
+        {
+          "name": "is: spell",
+          "skipped": false
+        },
+        {
+          "name": "is: permanent",
+          "skipped": false
+        },
+        {
+          "name": "is: vanilla",
+          "skipped": false
+        },
+        {
+          "name": "is: bear (2/2 for 2)",
+          "skipped": false
+        },
+        {
+          "name": "is: legendary (supertype shortcut)",
+          "skipped": false
+        },
+        {
+          "name": "is: historic (legendary | artifact | saga)",
+          "skipped": false
+        },
+        {
+          "name": "is: frenchvanilla",
+          "skipped": false
+        },
+        {
+          "name": "is: monocolor / multicolor / colorless",
+          "skipped": false
+        },
+        {
+          "name": "rarity: r:common",
+          "skipped": false
+        },
+        {
+          "name": "rarity: alias `rarity:`",
+          "skipped": false
+        },
+        {
+          "name": "rarity: every rarity name",
+          "skipped": false
+        },
+        {
+          "name": "rarity: r:common t:artifact",
+          "skipped": false
+        },
+        {
+          "name": "rarity: r>=r (comparators)",
+          "skipped": false
+        },
+        {
+          "name": "set: s:lea",
+          "skipped": false
+        },
+        {
+          "name": "set: aliases e: edition: set:",
+          "skipped": false
+        },
+        {
+          "name": "format: f:standard",
+          "skipped": false
+        },
+        {
+          "name": "format: alias `format:` and `legal:`",
+          "skipped": false
+        },
+        {
+          "name": "format: every format name parses",
+          "skipped": false
+        },
+        {
+          "name": "format: c:g t:creature f:pauper",
+          "skipped": false
+        },
+        {
+          "name": "name: bareword (substring)",
+          "skipped": false
+        },
+        {
+          "name": "name: !exact",
+          "skipped": false
+        },
+        {
+          "name": "name: !\"sift through sands\"",
+          "skipped": false
+        },
+        {
+          "name": "name: regex slashes",
+          "skipped": false
+        },
+        {
+          "name": "name: regex t:creature o:/^{T}:/",
+          "skipped": false
+        },
+        {
+          "name": "bool: t:fish or t:bird",
+          "skipped": false
+        },
+        {
+          "name": "bool: OR uppercase",
+          "skipped": false
+        },
+        {
+          "name": "bool: parens with OR",
+          "skipped": false
+        },
+        {
+          "name": "bool: through (depths or sands or mists)",
+          "skipped": false
+        },
+        {
+          "name": "bool: leading dash negation",
+          "skipped": false
+        },
+        {
+          "name": "bool: o:changeling -t:creature",
+          "skipped": false
+        },
+        {
+          "name": "bool: not keyword",
+          "skipped": false
+        },
+        {
+          "name": "bool: deeply nested",
+          "skipped": false
+        },
+        {
+          "name": "loy: t:planeswalker loy=3 (loyalty not surfaced \u2014 matches nothing)",
+          "skipped": false
+        },
+        {
+          "name": "loy: alias `loyalty:`",
+          "skipped": false
+        },
+        {
+          "name": "rejected: artist a:",
+          "skipped": false
+        },
+        {
+          "name": "rejected: artist alias artist:",
+          "skipped": false
+        },
+        {
+          "name": "rejected: artists>1",
+          "skipped": false
+        },
+        {
+          "name": "rejected: flavor ft:",
+          "skipped": false
+        },
+        {
+          "name": "rejected: flavor: alias",
+          "skipped": false
+        },
+        {
+          "name": "rejected: watermark wm:",
+          "skipped": false
+        },
+        {
+          "name": "rejected: watermark: alias",
+          "skipped": false
+        },
+        {
+          "name": "rejected: border:",
+          "skipped": false
+        },
+        {
+          "name": "rejected: frame:",
+          "skipped": false
+        },
+        {
+          "name": "rejected: stamp:",
+          "skipped": false
+        },
+        {
+          "name": "rejected: prices usd",
+          "skipped": false
+        },
+        {
+          "name": "rejected: prices eur",
+          "skipped": false
+        },
+        {
+          "name": "rejected: prices tix",
+          "skipped": false
+        },
+        {
+          "name": "rejected: cheapest:",
+          "skipped": false
+        },
+        {
+          "name": "rejected: cube:",
+          "skipped": false
+        },
+        {
+          "name": "rejected: game:",
+          "skipped": false
+        },
+        {
+          "name": "rejected: year=",
+          "skipped": false
+        },
+        {
+          "name": "rejected: date>=",
+          "skipped": false
+        },
+        {
+          "name": "rejected: art tag",
+          "skipped": false
+        },
+        {
+          "name": "rejected: atag:",
+          "skipped": false
+        },
+        {
+          "name": "rejected: arttag:",
+          "skipped": false
+        },
+        {
+          "name": "rejected: function:",
+          "skipped": false
+        },
+        {
+          "name": "rejected: otag:",
+          "skipped": false
+        },
+        {
+          "name": "rejected: oracletag:",
+          "skipped": false
+        },
+        {
+          "name": "rejected: lang:",
+          "skipped": false
+        },
+        {
+          "name": "rejected: language:",
+          "skipped": false
+        },
+        {
+          "name": "rejected: in:",
+          "skipped": false
+        },
+        {
+          "name": "rejected: cn: collector number",
+          "skipped": false
+        },
+        {
+          "name": "rejected: number: alias",
+          "skipped": false
+        },
+        {
+          "name": "rejected: block b:",
+          "skipped": false
+        },
+        {
+          "name": "rejected: block: alias",
+          "skipped": false
+        },
+        {
+          "name": "rejected: st: set type",
+          "skipped": false
+        },
+        {
+          "name": "rejected: banned:",
+          "skipped": false
+        },
+        {
+          "name": "rejected: restricted:",
+          "skipped": false
+        },
+        {
+          "name": "rejected: new: prefix",
+          "skipped": false
+        },
+        {
+          "name": "rejected: has:",
+          "skipped": false
+        },
+        {
+          "name": "rejected: include:",
+          "skipped": false
+        },
+        {
+          "name": "rejected: devotion:",
+          "skipped": false
+        },
+        {
+          "name": "rejected: produces:",
+          "skipped": false
+        },
+        {
+          "name": "rejected: prints=",
+          "skipped": false
+        },
+        {
+          "name": "rejected: sets=",
+          "skipped": false
+        },
+        {
+          "name": "rejected: paperprints=",
+          "skipped": false
+        },
+        {
+          "name": "rejected: papersets=",
+          "skipped": false
+        },
+        {
+          "name": "rejected: unique: display modifier",
+          "skipped": false
+        },
+        {
+          "name": "rejected: order:",
+          "skipped": false
+        },
+        {
+          "name": "rejected: direction:",
+          "skipped": false
+        },
+        {
+          "name": "rejected: prefer:",
+          "skipped": false
+        },
+        {
+          "name": "rejected: display:",
+          "skipped": false
+        },
+        {
+          "name": "rejected: not: prefix (we use - or `not` keyword)",
+          "skipped": false
+        },
+        {
+          "name": "rejected: parity manavalue:even",
+          "skipped": false
+        },
+        {
+          "name": "rejected: is:reprint (print metadata not stamped)",
+          "skipped": false
+        },
+        {
+          "name": "rejected: is:hybrid (mana-symbol metadata not stamped)",
+          "skipped": false
+        },
+        {
+          "name": "rejected: is:phyrexian",
+          "skipped": false
+        },
+        {
+          "name": "rejected: is:funny",
+          "skipped": false
+        },
+        {
+          "name": "rejected: is:bikeland (named land cycle)",
+          "skipped": false
+        },
+        {
+          "name": "rejected: is:digital",
+          "skipped": false
+        },
+        {
+          "name": "rejected: is:promo",
+          "skipped": false
+        },
+        {
+          "name": "rejected: is:foil",
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "module": ":mtg-search:test",
+      "path": "mtg-search/build/test-results/test/TEST-com.wingedsheep.search.SearchServiceTest.xml",
+      "class": "com.wingedsheep.search.SearchServiceTest",
+      "cases": [
+        {
+          "name": "empty query matches everything",
+          "skipped": false
+        },
+        {
+          "name": "bareword does substring name match",
+          "skipped": false
+        },
+        {
+          "name": "exact-name shortcut",
+          "skipped": false
+        },
+        {
+          "name": "regex name match",
+          "skipped": false
+        },
+        {
+          "name": "type matches union of cardTypes/supertypes/subtypes",
+          "skipped": false
+        },
+        {
+          "name": "type AND-words across the type line (quoted multi-word value)",
+          "skipped": false
+        },
+        {
+          "name": "cmc comparison",
+          "skipped": false
+        },
+        {
+          "name": "color identity",
+          "skipped": false
+        },
+        {
+          "name": "cost queries printed mana-cost colors",
+          "skipped": false
+        },
+        {
+          "name": "mana cost multiset",
+          "skipped": false
+        },
+        {
+          "name": "cross-field numeric (pow vs tou)",
+          "skipped": false
+        },
+        {
+          "name": "rarity / set / format",
+          "skipped": false
+        },
+        {
+          "name": "set: matches reprints, not just the canonical printing",
+          "skipped": false
+        },
+        {
+          "name": "set: filter combines with name match for 's:EOE Banishing Light'",
+          "skipped": false
+        },
+        {
+          "name": "keywords and is: shortcuts",
+          "skipped": false
+        },
+        {
+          "name": "negation forms",
+          "skipped": false
+        },
+        {
+          "name": "boolean OR alternation",
+          "skipped": false
+        },
+        {
+          "name": "parens override default precedence",
+          "skipped": false
+        },
+        {
+          "name": "unknown filter produces error with suggestion",
+          "skipped": false
+        },
+        {
+          "name": "invalid color value reports error and matches nothing",
+          "skipped": false
+        },
+        {
+          "name": "non-numeric cmc reports error",
+          "skipped": false
+        },
+        {
+          "name": "unsupported operator on a key",
+          "skipped": false
+        },
+        {
+          "name": "isAdvancedQuery flags or / parens / not keyword",
+          "skipped": false
+        },
+        {
+          "name": "unmatched paren reported with span",
+          "skipped": false
+        },
+        {
+          "name": "top-level OR and parens parse",
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "module": ":mtg-sets:test",
+      "path": "mtg-sets/build/test-results/test/TEST-Gradle-Test-Run--mtg-sets-test.xml",
+      "class": "Gradle Test Run :mtg-sets:test",
+      "cases": [
+        {
+          "name": "CardImageUriTest",
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "module": ":mtg-sets:test",
+      "path": "mtg-sets/build/test-results/test/TEST-com.wingedsheep.mtg.sets.BasicLandArtOrderTest.xml",
+      "class": "com.wingedsheep.mtg.sets.BasicLandArtOrderTest",
+      "cases": [
+        {
+          "name": "every set orders each basic land type standard-art first",
+          "skipped": false
+        },
+        {
+          "name": "sets that print both regular and special art lead with the regular art",
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "module": ":mtg-sets:test",
+      "path": "mtg-sets/build/test-results/test/TEST-com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest.xml",
+      "class": "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "cases": [
+        {
+          "name": "LEA (Limited Edition Alpha): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "LEA (Limited Edition Alpha): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "LEB (Limited Edition Beta): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "LEB (Limited Edition Beta): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "ARN (Arabian Nights): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "ARN (Arabian Nights): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "ATQ (Antiquities): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "ATQ (Antiquities): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "LEG (Legends): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "LEG (Legends): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "DRK (The Dark): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "DRK (The Dark): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "FEM (Fallen Empires): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "FEM (Fallen Empires): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "ICE (Ice Age): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "ICE (Ice Age): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "HML (Homelands): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "HML (Homelands): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "ALL (Alliances): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "ALL (Alliances): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "MIR (Mirage): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "MIR (Mirage): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "VIS (Visions): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "VIS (Visions): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "POR (Portal): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "POR (Portal): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "WTH (Weatherlight): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "WTH (Weatherlight): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "TMP (Tempest): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "TMP (Tempest): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "STH (Stronghold): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "STH (Stronghold): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "EXO (Exodus): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "EXO (Exodus): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "P02 (Portal Second Age): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "P02 (Portal Second Age): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "USG (Urza's Saga): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "USG (Urza's Saga): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "ULG (Urza's Legacy): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "ULG (Urza's Legacy): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "PTK (Portal Three Kingdoms): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "PTK (Portal Three Kingdoms): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "UDS (Urza's Destiny): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "UDS (Urza's Destiny): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "S99 (Starter 1999): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "S99 (Starter 1999): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "MMQ (Mercadian Masques): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "MMQ (Mercadian Masques): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "NEM (Nemesis): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "NEM (Nemesis): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "PCY (Prophecy): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "PCY (Prophecy): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "INV (Invasion): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "INV (Invasion): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "PLS (Planeshift): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "PLS (Planeshift): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "APC (Apocalypse): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "APC (Apocalypse): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "ODY (Odyssey): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "ODY (Odyssey): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "TOR (Torment): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "TOR (Torment): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "JUD (Judgment): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "JUD (Judgment): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "ONS (Onslaught): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "ONS (Onslaught): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "LGN (Legions): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "LGN (Legions): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "SCG (Scourge): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "SCG (Scourge): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "8ED (Eighth Edition): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "8ED (Eighth Edition): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "MRD (Mirrodin): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "MRD (Mirrodin): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "DST (Darksteel): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "DST (Darksteel): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "5DN (Fifth Dawn): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "5DN (Fifth Dawn): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "CHK (Champions of Kamigawa): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "CHK (Champions of Kamigawa): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "BOK (Betrayers of Kamigawa): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "BOK (Betrayers of Kamigawa): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "SOK (Saviors of Kamigawa): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "SOK (Saviors of Kamigawa): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "RAV (Ravnica: City of Guilds): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "RAV (Ravnica: City of Guilds): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "GPT (Guildpact): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "GPT (Guildpact): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "DIS (Dissension): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "DIS (Dissension): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "CSP (Coldsnap): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "CSP (Coldsnap): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "TSP (Time Spiral): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "TSP (Time Spiral): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "PLC (Planar Chaos): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "PLC (Planar Chaos): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "FUT (Future Sight): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "FUT (Future Sight): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "10E (Tenth Edition): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "10E (Tenth Edition): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "LRW (Lorwyn): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "LRW (Lorwyn): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "MOR (Morningtide): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "MOR (Morningtide): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "SHM (Shadowmoor): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "SHM (Shadowmoor): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "EVE (Eventide): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "EVE (Eventide): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "DRB (From the Vault: Dragons): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "DRB (From the Vault: Dragons): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "ALA (Shards of Alara): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "ALA (Shards of Alara): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "CON (Conflux): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "CON (Conflux): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "ARB (Alara Reborn): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "ARB (Alara Reborn): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "M10 (Magic 2010): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "M10 (Magic 2010): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "HOP (Planechase): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "HOP (Planechase): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "ZEN (Zendikar): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "ZEN (Zendikar): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "WWK (Worldwake): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "WWK (Worldwake): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "ROE (Rise of the Eldrazi): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "ROE (Rise of the Eldrazi): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "ARC (Archenemy): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "ARC (Archenemy): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "M11 (Magic 2011): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "M11 (Magic 2011): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "DDF (Duel Decks: Elspeth vs. Tezzeret): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "DDF (Duel Decks: Elspeth vs. Tezzeret): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "SOM (Scars of Mirrodin): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "SOM (Scars of Mirrodin): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "MBS (Mirrodin Besieged): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "MBS (Mirrodin Besieged): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "NPH (New Phyrexia): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "NPH (New Phyrexia): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "CMD (Commander 2011): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "CMD (Commander 2011): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "M12 (Magic 2012): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "M12 (Magic 2012): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "ISD (Innistrad): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "ISD (Innistrad): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "DKA (Dark Ascension): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "DKA (Dark Ascension): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "AVR (Avacyn Restored): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "AVR (Avacyn Restored): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "PC2 (Planechase 2012): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "PC2 (Planechase 2012): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "M13 (Magic 2013): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "M13 (Magic 2013): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "RTR (Return to Ravnica): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "RTR (Return to Ravnica): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "GTC (Gatecrash): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "GTC (Gatecrash): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "DGM (Dragon's Maze): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "DGM (Dragon's Maze): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "M14 (Magic 2014): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "M14 (Magic 2014): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "DDL (Duel Decks: Heroes vs. Monsters): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "DDL (Duel Decks: Heroes vs. Monsters): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "THS (Theros): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "THS (Theros): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "C13 (Commander 2013): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "C13 (Commander 2013): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "BNG (Born of the Gods): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "BNG (Born of the Gods): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "JOU (Journey into Nyx): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "JOU (Journey into Nyx): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "M15 (Magic 2015): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "M15 (Magic 2015): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "KTK (Khans of Tarkir): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "KTK (Khans of Tarkir): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "C14 (Commander 2014): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "C14 (Commander 2014): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "FRF (Fate Reforged): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "FRF (Fate Reforged): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "DTK (Dragons of Tarkir): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "DTK (Dragons of Tarkir): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "ORI (Magic Origins): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "ORI (Magic Origins): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "DDP (Duel Decks: Zendikar vs. Eldrazi): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "DDP (Duel Decks: Zendikar vs. Eldrazi): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "BFZ (Battle for Zendikar): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "BFZ (Battle for Zendikar): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "C15 (Commander 2015): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "C15 (Commander 2015): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "OGW (Oath of the Gatewatch): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "OGW (Oath of the Gatewatch): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "DDQ (Duel Decks: Blessed vs. Cursed): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "DDQ (Duel Decks: Blessed vs. Cursed): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "SOI (Shadows over Innistrad): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "SOI (Shadows over Innistrad): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "EMN (Eldritch Moon): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "EMN (Eldritch Moon): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "KLD (Kaladesh): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "KLD (Kaladesh): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "C16 (Commander 2016): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "C16 (Commander 2016): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "PZ2 (Treasure Chest): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "PZ2 (Treasure Chest): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "AER (Aether Revolt): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "AER (Aether Revolt): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "AKH (Amonkhet): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "AKH (Amonkhet): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "HOU (Hour of Devastation): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "HOU (Hour of Devastation): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "C17 (Commander 2017): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "C17 (Commander 2017): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "XLN (Ixalan): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "XLN (Ixalan): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "RIX (Rivals of Ixalan): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "RIX (Rivals of Ixalan): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "DOM (Dominaria): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "DOM (Dominaria): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "GS1 (Global Series: Jiang Yanggu & Mu Yanling): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "GS1 (Global Series: Jiang Yanggu & Mu Yanling): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "M19 (Core Set 2019): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "M19 (Core Set 2019): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "OANA (Arena New Player Experience Cards): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "OANA (Arena New Player Experience Cards): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "GRN (Guilds of Ravnica): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "GRN (Guilds of Ravnica): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "RNA (Ravnica Allegiance): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "RNA (Ravnica Allegiance): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "WAR (War of the Spark): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "WAR (War of the Spark): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "MH1 (Modern Horizons): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "MH1 (Modern Horizons): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "M20 (Core Set 2020): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "M20 (Core Set 2020): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "ELD (Throne of Eldraine): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "ELD (Throne of Eldraine): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "THB (Theros Beyond Death): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "THB (Theros Beyond Death): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "C20 (Commander 2020): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "C20 (Commander 2020): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "IKO (Ikoria: Lair of Behemoths): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "IKO (Ikoria: Lair of Behemoths): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "M21 (Core Set 2021): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "M21 (Core Set 2021): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "JMP (Jumpstart): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "JMP (Jumpstart): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "ANB (Arena Beginner Set): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "ANB (Arena Beginner Set): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "ZNR (Zendikar Rising): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "ZNR (Zendikar Rising): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "CMR (Commander Legends): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "CMR (Commander Legends): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "KHC (Kaldheim Commander): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "KHC (Kaldheim Commander): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "KHM (Kaldheim): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "KHM (Kaldheim): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "STX (Strixhaven: School of Mages): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "STX (Strixhaven: School of Mages): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "MH2 (Modern Horizons 2): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "MH2 (Modern Horizons 2): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "AFR (Adventures in the Forgotten Realms): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "AFR (Adventures in the Forgotten Realms): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "MID (Innistrad: Midnight Hunt): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "MID (Innistrad: Midnight Hunt): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "VOC (Innistrad: Crimson Vow Commander): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "VOC (Innistrad: Crimson Vow Commander): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "VOW (Innistrad: Crimson Vow): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "VOW (Innistrad: Crimson Vow): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "NEO (Kamigawa: Neon Dynasty): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "NEO (Kamigawa: Neon Dynasty): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "NCC (New Capenna Commander): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "NCC (New Capenna Commander): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "SNC (Streets of New Capenna): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "SNC (Streets of New Capenna): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "CLB (Commander Legends: Battle for Baldur's Gate): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "CLB (Commander Legends: Battle for Baldur's Gate): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "DMU (Dominaria United): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "DMU (Dominaria United): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "BRO (The Brothers' War): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "BRO (The Brothers' War): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "J22 (Jumpstart 2022): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "J22 (Jumpstart 2022): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "ONE (Phyrexia: All Will Be One): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "ONE (Phyrexia: All Will Be One): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "MOM (March of the Machine): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "MOM (March of the Machine): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "LTR (The Lord of the Rings: Tales of Middle-earth): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "LTR (The Lord of the Rings: Tales of Middle-earth): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "WOE (Wilds of Eldraine): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "WOE (Wilds of Eldraine): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "LCI (The Lost Caverns of Ixalan): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "LCI (The Lost Caverns of Ixalan): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "MKM (Murders at Karlov Manor): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "MKM (Murders at Karlov Manor): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "BIG (The Big Score): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "BIG (The Big Score): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "OTJ (Outlaws of Thunder Junction): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "OTJ (Outlaws of Thunder Junction): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "MH3 (Modern Horizons 3): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "MH3 (Modern Horizons 3): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "BLB (Bloomburrow): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "BLB (Bloomburrow): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "BLC (Bloomburrow Commander): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "BLC (Bloomburrow Commander): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "DSK (Duskmourn: House of Horror): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "DSK (Duskmourn: House of Horror): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "FDN (Foundations): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "FDN (Foundations): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "INR (Innistrad Remastered): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "INR (Innistrad Remastered): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "DFT (Aetherdrift): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "DFT (Aetherdrift): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "TDM (Tarkir: Dragonstorm): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "TDM (Tarkir: Dragonstorm): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "FIN (Final Fantasy): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "FIN (Final Fantasy): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "EOE (Edge of Eternities): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "EOE (Edge of Eternities): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "SPM (Marvel's Spider-Man): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "SPM (Marvel's Spider-Man): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "TLA (Avatar: The Last Airbender): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "TLA (Avatar: The Last Airbender): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "TLE (Avatar: The Last Airbender Eternal): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "TLE (Avatar: The Last Airbender Eternal): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "ECL (Lorwyn Eclipsed): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "ECL (Lorwyn Eclipsed): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "TRC (Star Trek Commander): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "TRC (Star Trek Commander): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "TMC (Teenage Mutant Ninja Turtles Eternal): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "TMC (Teenage Mutant Ninja Turtles Eternal): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "TMT (Teenage Mutant Ninja Turtles): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "TMT (Teenage Mutant Ninja Turtles): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "SOS (Secrets of Strixhaven): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "SOS (Secrets of Strixhaven): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "MSC (Marvel Super Heroes Commander): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "MSC (Marvel Super Heroes Commander): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "MSH (Marvel Super Heroes): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "MSH (Marvel Super Heroes): cards survive a JSON round-trip",
+          "skipped": false
+        },
+        {
+          "name": "HOB (The Hobbit): card trees match golden",
+          "skipped": false
+        },
+        {
+          "name": "HOB (The Hobbit): cards survive a JSON round-trip",
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "module": ":mtg-sets:test",
+      "path": "mtg-sets/build/test-results/test/TEST-com.wingedsheep.mtg.sets.CardLintTest.xml",
+      "class": "com.wingedsheep.mtg.sets.CardLintTest",
+      "cases": [
+        {
+          "name": "every card's pipeline variables, target bindings, and choice slots resolve",
+          "skipped": false
+        },
+        {
+          "name": "the lint allowlist contains no stale entries",
+          "skipped": false
+        },
+        {
+          "name": "print lint warnings for review (never fails)",
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "module": ":mtg-sets:test",
+      "path": "mtg-sets/build/test-results/test/TEST-com.wingedsheep.mtg.sets.DoubleFacedPrintingArtTest.xml",
+      "class": "com.wingedsheep.mtg.sets.DoubleFacedPrintingArtTest",
+      "cases": [
+        {
+          "name": "every printing of a two-faced card carries back-face art",
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "module": ":mtg-sets:test",
+      "path": "mtg-sets/build/test-results/test/TEST-com.wingedsheep.mtg.sets.EquipQualityVariantTest.xml",
+      "class": "com.wingedsheep.mtg.sets.EquipQualityVariantTest",
+      "cases": [
+        {
+          "name": "every equip ability is sorcery-speed and targets a single creature you control",
+          "skipped": false
+        },
+        {
+          "name": "every equip ability renders as its printed 'Equip [quality] [cost]' line",
+          "skipped": false
+        },
+        {
+          "name": "a target-restricted equip declares its quality \u2014 it is never restricted but unlabelled",
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "module": ":mtg-sets:test",
+      "path": "mtg-sets/build/test-results/test/TEST-com.wingedsheep.mtg.sets.FacadeBoundaryTest.xml",
+      "class": "com.wingedsheep.mtg.sets.FacadeBoundaryTest",
+      "cases": [
+        {
+          "name": "card definitions construct effects/costs via the Effects/Costs facades, not raw types",
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "module": ":mtg-sets:test",
+      "path": "mtg-sets/build/test-results/test/TEST-com.wingedsheep.mtg.sets.InterveningIfClassificationTest.xml",
+      "class": "com.wingedsheep.mtg.sets.InterveningIfClassificationTest",
+      "cases": [
+        {
+          "name": "a printed intervening-\"if\" is modelled as interveningIf, not as a trigger restriction",
+          "skipped": false
+        },
+        {
+          "name": "the gate covers the cards it is supposed to cover",
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "module": ":mtg-sets:test",
+      "path": "mtg-sets/build/test-results/test/TEST-com.wingedsheep.mtg.sets.MeldResultFlagTest.xml",
+      "class": "com.wingedsheep.mtg.sets.MeldResultFlagTest",
+      "cases": [
+        {
+          "name": "meld parts name their results (the derivation this test rests on)",
+          "skipped": false
+        },
+        {
+          "name": "every authored meld result is flagged meldResult",
+          "skipped": false
+        },
+        {
+          "name": "only meld results are flagged",
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "module": ":mtg-sets:test",
+      "path": "mtg-sets/build/test-results/test/TEST-com.wingedsheep.mtg.sets.MtgSetCatalogTest.xml",
+      "class": "com.wingedsheep.mtg.sets.MtgSetCatalogTest",
+      "cases": [
+        {
+          "name": "every <Name>Set.kt under definitions is discovered into MtgSetCatalog.all",
+          "skipped": false
+        },
+        {
+          "name": "set codes are unique",
+          "skipped": false
+        },
+        {
+          "name": "no registered set is hollow",
+          "skipped": false
+        },
+        {
+          "name": "every Printing row in a set's package is exposed via MtgSet.printings",
+          "skipped": false
+        },
+        {
+          "name": "no card name has a canonical CardDefinition in more than one set",
+          "skipped": false
+        },
+        {
+          "name": "release dates, when present, are parseable ISO YYYY-MM-DD",
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "module": ":mtg-sets:test",
+      "path": "mtg-sets/build/test-results/test/TEST-com.wingedsheep.mtg.sets.PatternsNamespaceTest.xml",
+      "class": "com.wingedsheep.mtg.sets.PatternsNamespaceTest",
+      "cases": [
+        {
+          "name": "card definitions reach pattern recipes through the Patterns index, not the bare objects",
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "module": ":mtg-sets:test",
+      "path": "mtg-sets/build/test-results/test/TEST-com.wingedsheep.mtg.sets.SuccessCriterionValidationTest.xml",
+      "class": "com.wingedsheep.mtg.sets.SuccessCriterionValidationTest",
+      "cases": [
+        {
+          "name": "no registered card relies on SuccessCriterion.Auto's former fail-open default",
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "module": ":mtg-sets:test",
+      "path": "mtg-sets/build/test-results/test/TEST-com.wingedsheep.mtg.sets.definitions.ecl.LorwynEclipsedVariantPrintingsTest.xml",
+      "class": "com.wingedsheep.mtg.sets.definitions.ecl.LorwynEclipsedVariantPrintingsTest",
+      "cases": [
+        {
+          "name": "set opts into the booster variant slot at 15%",
+          "skipped": false
+        },
+        {
+          "name": "contributes a non-empty pool of alternate-frame printings",
+          "skipped": false
+        },
+        {
+          "name": "every variant printing is showcase or borderless",
+          "skipped": false
+        },
+        {
+          "name": "every variant printing names a real ECL card and carries the set code",
+          "skipped": false
+        },
+        {
+          "name": "excludes collector-only treatments: reversible shocklands, Japanese Showcase, Fracture Foil, serialized",
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "module": ":mtg-sets:test",
+      "path": "mtg-sets/build/test-results/test/TEST-com.wingedsheep.mtg.sets.discovery.CardDiscoveryEquivalenceTest.xml",
+      "class": "com.wingedsheep.mtg.sets.discovery.CardDiscoveryEquivalenceTest",
+      "cases": [
+        {
+          "name": "CardDiscovery.findIn agrees with the non-basic part of every MtgSet.cards list",
+          "skipped": false
+        },
+        {
+          "name": "CardDiscovery.findBasicLandsIn agrees with every MtgSet.basicLands list",
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "module": ":mtg-sets:test",
+      "path": "mtg-sets/build/test-results/test/TEST-com.wingedsheep.mtg.sets.discovery.CardDiscoveryTest.xml",
+      "class": "com.wingedsheep.mtg.sets.discovery.CardDiscoveryTest",
+      "cases": [
+        {
+          "name": "discovers a non-empty set of cards from the Scourge package",
+          "skipped": false
+        },
+        {
+          "name": "discovery matches the hand-maintained ScourgeSet.cards by name",
+          "skipped": false
+        },
+        {
+          "name": "discovery picks up Printing reprints declared in the cards package",
+          "skipped": false
+        },
+        {
+          "name": "discovery skips Printing-typed vals as cards (and vice versa)",
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "module": ":mtg-sets:test",
+      "path": "mtg-sets/build/test-results/test/TEST-com.wingedsheep.mtg.sets.legality.LegalityDataTest.xml",
+      "class": "com.wingedsheep.mtg.sets.legality.LegalityDataTest",
+      "cases": [
+        {
+          "name": "buckets a..z when card name starts with an ASCII letter",
+          "skipped": false
+        },
+        {
+          "name": "non-ASCII first letters fall into the 'other' bucket",
+          "skipped": false
+        },
+        {
+          "name": "unknown card names resolve to no formats (not legal anywhere)",
+          "skipped": false
+        },
+        {
+          "name": "a known card from the bundled dataset returns its formats",
+          "skipped": false
+        }
+      ]
+    }
+  ]
+}
