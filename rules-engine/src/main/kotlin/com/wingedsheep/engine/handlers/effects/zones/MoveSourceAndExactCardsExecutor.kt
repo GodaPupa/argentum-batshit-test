@@ -53,15 +53,34 @@ class MoveSourceAndExactCardsExecutor(
             if (zone == Zone.STACK) sourceId in state.stack else sourceId in state.getZone(ZoneKey(playerId, zone))
 
         fun commit(state: GameState, sourceId: EntityId, selected: List<EntityId>, effect: MoveSourceAndExactCardsEffect): EffectResult {
-            if (selected.size != effect.additionalCount) return EffectResult.success(state)
+            if (selected.size != effect.additionalCount || selected.toSet().size != selected.size) {
+                return EffectResult.success(state)
+            }
+
+            // Build the whole transaction in immutable local state first. If any requested
+            // primary move cannot happen, discard the tentative state/events and return the exact
+            // input state: this primitive is deliberately all-or-nothing.
+            val movedIds = listOf(sourceId) + selected
             var current = state
             val events = mutableListOf<GameEvent>()
-            for (id in listOf(sourceId) + selected) {
+            for (id in movedIds) {
                 val moved = ZoneTransitionService.moveToZone(current, id, effect.destination)
+                val primaryMoveHappened = moved.transitions.any { transition ->
+                    transition.cause == ZoneTransitionCause.PRIMARY &&
+                        transition.oldObject?.entityId == id &&
+                        transition.requestedDestination == effect.destination
+                }
+                if (!primaryMoveHappened) return EffectResult.success(state)
                 current = moved.state
                 events.addAll(moved.events)
             }
-            return EffectResult.success(current, events)
+
+            val published = effect.storeMovedAs?.let { mapOf(it to movedIds) } ?: emptyMap()
+            return EffectResult(
+                state = current,
+                events = events,
+                updatedCollections = published,
+            )
         }
     }
 }

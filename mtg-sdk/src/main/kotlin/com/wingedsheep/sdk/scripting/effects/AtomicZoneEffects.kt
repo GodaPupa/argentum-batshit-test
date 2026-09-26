@@ -18,6 +18,12 @@ data class MoveSourceAndExactCardsEffect(
     val additionalFilter: GameObjectFilter,
     val additionalCount: Int,
     val destination: Zone = Zone.EXILE,
+    /**
+     * Optional pipeline collection published only after the complete transaction commits.
+     * A surrounding Gate.DoAction can score this with SuccessCriterion.CollectionNonEmpty
+     * without inferring success from partial zone changes.
+     */
+    val storeMovedAs: String? = null,
 ) : Effect {
     init { require(additionalCount > 0) { "additionalCount must be positive" } }
     override val description: String =

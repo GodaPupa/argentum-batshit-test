@@ -644,6 +644,24 @@ class GatedEffectExecutor(
         context: EffectContext
     ): Boolean {
         val criterion = gate.successCriterion as? SuccessCriterion.CollectionNonEmpty ?: return true
+
+        // Generic atomic source-plus-exact-cards actions publish their success collection only
+        // after a complete commit. Preflight the same source/zone/filter requirements here so a
+        // surrounding "you may" is not offered when the exact transaction is impossible.
+        (gate.action as? com.wingedsheep.sdk.scripting.effects.MoveSourceAndExactCardsEffect)?.let { atomic ->
+            if (atomic.storeMovedAs == criterion.name) {
+                if (criterion.min > atomic.additionalCount + 1) return false
+                val sourceId = context.sourceId ?: return false
+                if (!com.wingedsheep.engine.handlers.effects.zones.MoveSourceAndExactCardsExecutor.isInRequiredZone(
+                        state, sourceId, context.controllerId, atomic.sourceRequiredZone
+                    )
+                ) return false
+                return com.wingedsheep.engine.handlers.effects.zones.MoveSourceAndExactCardsExecutor
+                    .matchingCandidates(state, context.controllerId, atomic)
+                    .size >= atomic.additionalCount
+            }
+        }
+
         val steps = (gate.action as? CompositeEffect)?.effects ?: listOf(gate.action)
         val select = steps.filterIsInstance<SelectFromCollectionEffect>()
             .firstOrNull { it.storeSelected == criterion.name } ?: return true

@@ -156,7 +156,13 @@ class SacrificeAndPayContinuationResumer(
         if (!selected.all { it in valid }) return checkForMore(state, emptyList())
         val result = com.wingedsheep.engine.handlers.effects.zones.MoveSourceAndExactCardsExecutor.commit(
             state, continuation.sourceId, selected, effect)
-        return checkForMore(result.state, result.events.toList())
+        val stateWithCollections = exposeCollectionsToNextFrame(
+            result.state,
+            result.updatedCollections,
+            result.updatedStoredNumbers,
+            result.updatedChosenValues,
+        )
+        return checkForMore(stateWithCollections, result.events.toList())
     }
     fun resumeExileMultiZone(
         state: GameState,
