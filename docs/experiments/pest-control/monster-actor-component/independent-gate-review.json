@@ -1,0 +1,142 @@
+{
+  "schema": "independent-source-gate-review-v1",
+  "reviewer": "/root/manual",
+  "author": "/root/pest",
+  "independent_non_author_agent": true,
+  "reviewed_source": "af8cb10de819f450af8bdcdf7dc00015b027f2f9",
+  "reviewed_tree": "fe108d2b04cbaff4651d3822f4fa106907038466",
+  "disposition": "ACCEPT_FOR_FIXED_72_CASE_RECEIVING_DIAGNOSTIC_EXECUTION_ONLY",
+  "scope": "Workflow, collector, freeze and corrected component-scope binding; source review only, no runtime acceptance.",
+  "gate_files_sha256": {
+    ".github/workflows/pest-monster-actor-receiving.yml": "8bf2f040490f43593b6e55e70fbfec554ff3fb93c2f708f9ad205cefdacc9cf7",
+    "docs/experiments/pest-control/monster-actor-component/collect-receiving.py": "61973871c4d4823cb2379108923f02e434d73dfd43e9a30b1a515c09446ed99b",
+    "docs/experiments/pest-control/monster-actor-component/receiving-bank.json": "b28545f7c40f06f5bb904ed797a05cfde0279e2af0ba84d752066c1f282987c4",
+    "docs/experiments/pest-control/monster-actor-component/receiving-freeze.json": "5f4961e5a57e920fb48f4a21142b91c9375f51f346cdfe08daf18a7c1af0903e",
+    "docs/experiments/pest-control/monster-actor-component/source-candidate.json": "7b9584dc799404a1569bfc9ce2ae68c403d8016e6c8bfccbd2eff94e867cb968"
+  },
+  "exact_git_source_pins_verified": {
+    "ai/src/main/kotlin/com/wingedsheep/ai/engine/AiProfile.kt": "e17daa32352d5a297f92869d5eaea8e777a4ce23249241db2c9f704a8ae0a36a",
+    "ai/src/main/kotlin/com/wingedsheep/ai/engine/PestMonsterTronPolicy.kt": "8cc6db916f50233331c72a9e603c8b887365fc625776d5a429ed9fc6ec63f513",
+    "ai/src/main/kotlin/com/wingedsheep/ai/engine/advisor/modules/PestMonsterTronAdvisorModule.kt": "bdd75d21bc7c8807b11027e78f1a87f84adfefeb28be11e4edcabb66e3c66f17",
+    "ai/src/main/kotlin/com/wingedsheep/ai/engine/advisor/modules/PestMonsterTronPublicPolicy.kt": "74026da5dd1ad93bf29327e5adf4753668426123f97f7fc57e784937c2b3a124",
+    "ai/src/test/kotlin/com/wingedsheep/ai/arena/PestMonsterTronPolicyAuditTest.kt": "6369feeb0ecfdf76a08b7e7960b16431aed8f86250c822eb445813fbdc8fe2f9",
+    "docs/experiments/pest-control/tier-one-qualification-stopping-rule.md": "eb7097c94d9c1f40e31c738ba6162351034f40a99ec6e53393cabd374eda08be",
+    "gym/build.gradle.kts": "2cecbe04b789a073bda42e7b12266bfaf8085280fd6e22619386b26d9d3adf44",
+    "gym/src/main/kotlin/com/wingedsheep/gym/actorinput/ActorActionMenu.kt": "319b92760360183d2ad082f08104aa28c95cf16c7cca3edc80bce0797573639d",
+    "gym/src/main/kotlin/com/wingedsheep/gym/actorinput/ActorChoiceSupport.kt": "6adefd58499c0ec2610f078cd78696f4ba6b33b47c5043093a2e77f392c493a0",
+    "gym/src/main/kotlin/com/wingedsheep/gym/actorinput/ActorDecisionProjection.kt": "aeeac553568cdc30239d5040a2cf784d338e4d9d9f4def45c6eeccece077eb66",
+    "gym/src/main/kotlin/com/wingedsheep/gym/actorinput/ActorInput.kt": "31bc5320ee24e8af512b3babc7908eee0d62aa6e360e4a4582a753562392f907",
+    "gym/src/main/kotlin/com/wingedsheep/gym/actorinput/ActorLegalAction.kt": "aa127db249b75bbb2cfa52c88bc3a4d8a29d6def300200593c29004f31138974",
+    "gym/src/main/kotlin/com/wingedsheep/gym/actorinput/ActorObservation.kt": "860ef853e182bdec3c397bfe069889973cc0f6c8c3756fe65ce32f8ed45c4442",
+    "gym/src/main/kotlin/com/wingedsheep/gym/actorinput/ActorPayloadSchemas.kt": "b20050c28bb0eebd83b8bf8517932f9f66c33d933f26b98432a2a3fcbd90cd96",
+    "gym/src/main/kotlin/com/wingedsheep/gym/actorinput/ActorPublicCards.kt": "186d1f5fc2d3d8be2754ff0a029dd1fdd58348422514fb06ce45690140aea748",
+    "gym/src/main/kotlin/com/wingedsheep/gym/actorinput/ActorQuestionSchemas.kt": "6c9a87f34c3c4a0dd281466556236c11f49f91fde1ab17e7a89d627f05d26a9a",
+    "gym/src/main/kotlin/com/wingedsheep/gym/actorinput/ActorStackSource.kt": "554535f07b8978797153ef051ef21635d6e22f9d9e9981e2a7fc0947bf56663f",
+    "gym/src/main/kotlin/com/wingedsheep/gym/actorinput/ActorTriggerOrderQuestion.kt": "3e9ee1f963b420af764def51e502c654bd4e92df522c97c29287c2c2e2b99da0",
+    "gym/src/main/kotlin/com/wingedsheep/gym/actorinput/ObservationAdapter.kt": "cf73082a0ff188a1f89aff11a6c3a8685b5c88c62a1fff7ea38e367910f6c100",
+    "gym/src/main/kotlin/com/wingedsheep/gym/contract/ObservationBuilder.kt": "7de2a0c1bc4f148727ced99da733cd6eec049a250148c07f26357a4b5a422a7c",
+    "gym/src/main/kotlin/com/wingedsheep/gym/contract/TrainingObservation.kt": "95feb4bd3053572ad1064a1b4e3202152b631e13fbb7b86b93ba4d8087818e84",
+    "gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlPreboardContract.kt": "2ef7f1a8712dfa7600d7100e96463bac2a86f61969ac91c6a09bf8bda60192d9",
+    "gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlTierOneMonsterTronAdmission.kt": "5356f73ff61cafa87f809ab0c20cc2f2f2cf9b8dd50c89761d2d05b5f11b494c",
+    "gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlTierOneMonsterTronPolicyCalibration.kt": "e8f18774487b254c913140724262e607437d60465a3eac7b96650e34f8e11816",
+    "gym/src/main/kotlin/com/wingedsheep/gym/pest/PestMonsterTronActorDecisions.kt": "1be1e07171ddba54536a1453232da2d2f1426241394a0b43018bf94fc738b0db",
+    "gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOneMonsterTronPolicyCalibrationTest.kt": "652c08bd419a5d0a374f2ee5def606cf945ed432f4aa19037cb6e6cc1b4ad28a",
+    "gym/src/test/kotlin/com/wingedsheep/gym/actorinput/ActorObservationBoundaryTest.kt": "b65dfe87c9f88dca6eaa8754c46dc16a6ef76d1266f829c4e1743b3f5fb17f5d",
+    "gym/src/test/kotlin/com/wingedsheep/gym/actorinput/ActorPriorityObservationTest.kt": "30617fec9bf58e0360622e1b6e26c36603ccaeae308819217b73f9b29875dfae",
+    "gym/src/test/kotlin/com/wingedsheep/gym/actorinput/ActorStackSourceObservationTest.kt": "ab6962cc61d66971a39d9ec674ee2c442705c17a365671bd8b9a9b0a590cf0af",
+    "gym/src/test/kotlin/com/wingedsheep/gym/actorinput/ActorTriggerOrderObservationTest.kt": "01c84c1e963801702696b15187cb3d1c24f2f47367f54c0c9c8c77e05a26a4cb",
+    "gym/src/test/kotlin/com/wingedsheep/gym/pest/PestMonsterTronActorDecisionsTest.kt": "80dc519bcb768c5ad0ced4a33ef582a93b098cd7160075961c560e31efbef502",
+    "justfile": "70ed255981a941b260b8eeba4acf90abf32956126ef9672f5cf6e0b5840167e3",
+    "mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/dsl/LibraryPatterns.kt": "15a4990530c711460c2e16baf1dd05432d17b864e6007f1680aa8b968e83e05e",
+    "mtg-sets/1993-1999/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/ulg/cards/CropRotation.kt": "af2416d8d071bb1d50c55a54f68b792789d069e6c19ba2d8707d9431092cbf01",
+    "mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/roe/cards/AncientStirrings.kt": "87914e283b954f4f05a5107529ef302a2e07d5dcf79c2dc9ce759f029440e9a4",
+    "mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/wwk/cards/BojukaBog.kt": "6439e88a9c6bc71901e4b7feb445f039b14f5ea7c9243fa88bcd2070db8fec6e",
+    "mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/zen/cards/ExpeditionMap.kt": "862f38a3f0b940bbd7661c7bb6a2b698a178a86605ba0d36ab4c600dc8a58bb3",
+    "mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/cmr/cards/MaelstromColossus.kt": "d615a30d4253050559f64e3223d3277429f65f8ea4989df44b13e8ea4ca9bbe5",
+    "mtg-sets/2024/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/fdn/cards/ExpeditionMap.kt": "c2f29df17664f3dccc8c7c3f0f84528d64992e40482c2449def8692fbf6ecc79",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/spell/CastSpellHandler.kt": "c0c50de6b7384bbf8e1e890e6aafe6733824e4f9a3c0e1b41fbacc20b9ca5529",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/library/GatherCardsExecutor.kt": "326e46010bce5ad7feab0b19333828db787418ac5e444c7016f27c562c5b18ca",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/library/SelectFromCollectionExecutor.kt": "eb9764c6420b1e2674f5948b4d442249232315177d5179e38cd1e98b6695018c",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/legalactions/utils/CostEnumerationUtils.kt": "9767c8aed284e17a83e8efe04b46cbc5e7f46c01531be353d1d5046aa017a65e",
+    "rules-engine/src/testFixtures/kotlin/com/wingedsheep/engine/support/ScenarioTestBase.kt": "ef59cd04e877e787aa446b3240cb012a9527505d2e1df75e0e3fb82f925f0408",
+    "scripts/gradle-locked": "9e39342ad1826c8baf176f6e7b0c38664aad5a4a88cd6a90252dd619e4b829f1",
+    "scripts/test-class": "17b9629bc4e1526107e432fa440208ea66588acdf4855ee50685df03223c5c81"
+  },
+  "banks": [
+    {
+      "module": "ai",
+      "class": "com.wingedsheep.ai.arena.PestMonsterTronPolicyAuditTest",
+      "expected_cases": 5,
+      "source_path": "ai/src/test/kotlin/com/wingedsheep/ai/arena/PestMonsterTronPolicyAuditTest.kt"
+    },
+    {
+      "module": "gym",
+      "class": "com.wingedsheep.gym.pest.PestMonsterTronActorDecisionsTest",
+      "expected_cases": 10,
+      "source_path": "gym/src/test/kotlin/com/wingedsheep/gym/pest/PestMonsterTronActorDecisionsTest.kt"
+    },
+    {
+      "module": "gym",
+      "class": "com.wingedsheep.gym.PestControlTierOneMonsterTronPolicyCalibrationTest",
+      "expected_cases": 7,
+      "source_path": "gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOneMonsterTronPolicyCalibrationTest.kt"
+    },
+    {
+      "module": "gym",
+      "class": "com.wingedsheep.gym.actorinput.ActorObservationBoundaryTest",
+      "expected_cases": 28,
+      "source_path": "gym/src/test/kotlin/com/wingedsheep/gym/actorinput/ActorObservationBoundaryTest.kt"
+    },
+    {
+      "module": "gym",
+      "class": "com.wingedsheep.gym.actorinput.ActorStackSourceObservationTest",
+      "expected_cases": 12,
+      "source_path": "gym/src/test/kotlin/com/wingedsheep/gym/actorinput/ActorStackSourceObservationTest.kt"
+    },
+    {
+      "module": "gym",
+      "class": "com.wingedsheep.gym.actorinput.ActorTriggerOrderObservationTest",
+      "expected_cases": 6,
+      "source_path": "gym/src/test/kotlin/com/wingedsheep/gym/actorinput/ActorTriggerOrderObservationTest.kt"
+    },
+    {
+      "module": "gym",
+      "class": "com.wingedsheep.gym.actorinput.ActorPriorityObservationTest",
+      "expected_cases": 4,
+      "source_path": "gym/src/test/kotlin/com/wingedsheep/gym/actorinput/ActorPriorityObservationTest.kt"
+    }
+  ],
+  "required_actual_unique_cases": 72,
+  "retained_originals": {
+    "source-candidate.json": {
+      "source": "c543648c2eb27ff496b81e3ef3a4ac6d8fb718e7",
+      "sha256": "2704c99fea964c55452c56e9eba42dbefa1a5658a7841d03a610da12f9e074ee"
+    },
+    "receiving-bank.json": {
+      "source": "b8bcc332349258525d35eff632cc347022ddec9a",
+      "sha256": "921e5e9a4e482cfb3afcb96a42da5ac7d6e9c02194273297ff65fc7c3bee39ba"
+    },
+    "PestMonsterTronActorDecisions.kt.txt": {
+      "source": "c543648c2eb27ff496b81e3ef3a4ac6d8fb718e7",
+      "sha256": "160c6fee587e14e1a66952487d01bd918506dd9b7f3ff3d12aa315f5b852ce97"
+    }
+  },
+  "findings": [
+    "All 46 frozen source hashes reconcile to exact Git blobs. Three candidate and eight preserved hashes also reconcile. The seven bank counts are 5+10+7+28+12+6+4=72.",
+    "Compared the preserved original bank, source-candidate and adapter bytes to their original exact Git sources; all three are exact. The adapter delta is comment-only; only its corresponding bank hash, source-manifest hash and correction provenance changed. The ten test bodies and all other frozen bank pins remain identical.",
+    "The workflow checks out github.sha; bind requires exact clean HEAD and no prior ai/gym XML. Collector repeats clean HEAD/tree and all source/control byte checks after execution and requires the before/after snapshots to match.",
+    "The first test selector is pinned and checked to select exactly the ai and gym files. The pinned test-class helper appends all other filters to the final gym task; all six gym banks and one ai bank must be present. The --rerun command captures its actual exit code; compile failure or nonzero test exit cannot become acceptance.",
+    "Collector requires exactly the seven expected XML banks, expected per-bank counts, unique nonempty classname/name identities, zero failures/errors/skips including testcase nodes, unchanged ten new names and 72 total distinct actual cases. Missing, unexpected, duplicate and unsuccessful evidence fail the gate. Raw XML and command output are uploaded under always(), including failed attempts.",
+    "MC10 creates a real complete-Tron Map search with reversed hidden option order, compares actual legacy and actor CardsSelectedResponse selections, requires first raw versus minimum canonical identifier and inequality, and logs actual card names with REQUIRES_PROSPECTIVE_PROTOCOL_DISPOSITION. Both answers are constructed but neither is submitted. The collector requires one distinguishing diagnostic record.",
+    "The freeze currently remains ready_for_execution=false. This independent source review permits the author to record this review and set the gate-ready field true in a source-identical successor; any executable source, workflow, collector or bank change requires follow-up review."
+  ],
+  "limitations": [
+    "No fixture executed during this review. Actual case identities, fresh execution and artifact bytes still require independent receiving evidence review.",
+    "MC10 completion demonstrates a difference; it cannot establish actor-choice equivalence or authorize a changed frozen pilot. Tied copies and multiple eligible sacrifice choices remain unresolved reachable scope.",
+    "No full pilot, combined runtime, C2, A2, replacement authority or gameplay admission is accepted. The 81 historical games remain quarantined; official games and outcomes remain zero."
+  ],
+  "gameplay_authorized": false,
+  "actor_choice_equivalence_accepted": false,
+  "official_games": 0,
+  "official_outcomes_exposed": 0
+}

@@ -1,0 +1,63 @@
+{
+  "schema": "pest-monster-public-policy-extraction-source-candidate-v1",
+  "status": "SOURCE_CANDIDATE_NO_FIXTURE_EXECUTION",
+  "component_base": "7015d243df250bcb1660d4a7b76c937c3c0a4ada",
+  "component_base_tree": "4418e39b82c4eb314521b94b3f509f24bbb5af8a",
+  "component_base_note": "Canonical actor component source; not a C2 execution construction or a moving-main admission.",
+  "historical_frozen_advisor_source": "a224ef0008a2b85e2c2c106df9959678782e765d",
+  "original_advisor_path": "ai/src/main/kotlin/com/wingedsheep/ai/engine/advisor/modules/PestMonsterTronAdvisorModule.kt",
+  "original_advisor_sha256": "21d60a04da428312ede8aa05f29d16f0b7a3baa0a4a077fe47b9455857341912",
+  "original_advisor_bytes_equal_component_base": true,
+  "candidate_files_sha256": {
+    "ai/src/main/kotlin/com/wingedsheep/ai/engine/advisor/modules/PestMonsterTronAdvisorModule.kt": "bdd75d21bc7c8807b11027e78f1a87f84adfefeb28be11e4edcabb66e3c66f17",
+    "ai/src/main/kotlin/com/wingedsheep/ai/engine/advisor/modules/PestMonsterTronPublicPolicy.kt": "74026da5dd1ad93bf29327e5adf4753668426123f97f7fc57e784937c2b3a124",
+    "gym/src/main/kotlin/com/wingedsheep/gym/pest/PestMonsterTronActorDecisions.kt": "160c6fee587e14e1a66952487d01bd918506dd9b7f3ff3d12aa315f5b852ce97"
+  },
+  "preserved_source_sha256": {
+    "ai/src/main/kotlin/com/wingedsheep/ai/engine/PestMonsterTronPolicy.kt": "8cc6db916f50233331c72a9e603c8b887365fc625776d5a429ed9fc6ec63f513",
+    "ai/src/main/kotlin/com/wingedsheep/ai/engine/AiProfile.kt": "e17daa32352d5a297f92869d5eaea8e777a4ce23249241db2c9f704a8ae0a36a",
+    "ai/src/test/kotlin/com/wingedsheep/ai/arena/PestMonsterTronPolicyAuditTest.kt": "6369feeb0ecfdf76a08b7e7960b16431aed8f86250c822eb445813fbdc8fe2f9",
+    "gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlTierOneMonsterTronPolicyCalibration.kt": "e8f18774487b254c913140724262e607437d60465a3eac7b96650e34f8e11816",
+    "gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOneMonsterTronPolicyCalibrationTest.kt": "652c08bd419a5d0a374f2ee5def606cf945ed432f4aa19037cb6e6cc1b4ad28a",
+    "gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlTierOneMonsterTronAdmission.kt": "5356f73ff61cafa87f809ab0c20cc2f2f2cf9b8dd50c89761d2d05b5f11b494c",
+    "gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlPreboardContract.kt": "2ef7f1a8712dfa7600d7100e96463bac2a86f61969ac91c6a09bf8bda60192d9",
+    "docs/experiments/pest-control/tier-one-qualification-stopping-rule.md": "eb7097c94d9c1f40e31c738ba6162351034f40a99ec6e53393cabd374eda08be"
+  },
+  "preserved_behavior": [
+    "The ordered Mine/Power Plant/Tower missing-piece list, first matching option and fallback-to-first-Tron option remain unchanged.",
+    "Crop Rotation keeps the same first non-Tron sacrifice selection and null/defer if none exists.",
+    "Tutor cast scores retain passScore-25 or passScore+35 with the same conditions. Ornament retains passScore+14 only for handSize<=2 and otherMana>=4.",
+    "Bojuka Bog retains legal-opponent filtering, public graveyard size and the original maxByOrNull tie order.",
+    "The existing five real advisor tests and seven gym calibration tests are byte-identical and have not been rerun for this candidate."
+  ],
+  "actor_adapter_scope": [
+    "Accept only the detached canonical ActorInput, bound to expected actor/epoch.",
+    "Reuse the extracted calculations for actual SearchLibraryDecision, eligible SelectCardsDecision and Bojuka Bog ChooseTargetsDecision.",
+    "NoOverride exactly represents the legacy advisor returning null; it never invents a pass or response.",
+    "The actor adapter does not expose scoring because the base-profile evaluator is not yet available through the qualified information boundary.",
+    "Two-player Pest/Monster scope only. Opponent relationship, initialized exact deck, name-changing effects outside these frozen lists and whole-runtime admission are not inferred from this component."
+  ],
+  "canonical_helpers_requiring_receiving_qualification": [
+    "ActorPublicCards own/public fields used by this component.",
+    "ActorChoiceSupport.submit for the three declared typed decision surfaces and ActorChoiceSupport.proposal. These were excluded from the original actor50 acceptance."
+  ],
+  "remaining_requirements": [
+    "Independent source compatibility and behavioral-equivalence review of this explicit extraction.",
+    "Prospectively freeze the complete additional receiving fixture inventory before execution; preserve every attempt and existing policy banks.",
+    "Complete base-profile own/public search, action ranking, mulligans and every reachable choice for both frozen pilots; no strategic retuning is authorized here.",
+    "Canonical receiving priority/card integration, replay/journals and the separate reviewed C2/A2 gates."
+  ],
+  "new_fixture_attempts": 0,
+  "new_policy_development_attempts": 0,
+  "c2_created_or_accepted": false,
+  "a2_created_or_accepted": false,
+  "whole_pilot_qualified": false,
+  "combined_runtime_admitted": false,
+  "gameplay_authorized": false,
+  "official_seeds_generated": 0,
+  "official_claims_created": 0,
+  "official_games_initialized": 0,
+  "official_actions_submitted": 0,
+  "official_outcomes_exposed": 0,
+  "historical_games_quarantined": 81
+}
