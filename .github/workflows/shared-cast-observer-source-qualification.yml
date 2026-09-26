@@ -67,6 +67,7 @@ jobs:
               'rules-engine/src/main/kotlin/com/wingedsheep/engine/core/Serialization.kt',
               'rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/ContinuationHandler.kt',
               'rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/CoreAutoResumerModule.kt',
+              'rules-engine/src/main/kotlin/com/wingedsheep/engine/core/GameEvent.kt',
           }
           for item in manifest['production_files']:
               if item['path'] in combined['production_overrides']:

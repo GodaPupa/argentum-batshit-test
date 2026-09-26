@@ -1,6 +1,6 @@
 {
   "schema": "shared-priority-receiving-sources-v1",
-  "status": "PROSPECTIVE_RECEIVING_BINDING_INDEPENDENT_REVIEW_AND_RUNTIME_PENDING",
+  "status": "PROSPECTIVE_ENTRY_PROVENANCE_COMBINED_RECEIVING_REQUIRED",
   "base_commit": "1c8bc618e8b3ca0b3b154e2ef3c87ca8ff779698",
   "source_base": "77c7aad0bb2ded2c0372087d94f66ccbde0f7d09",
   "scope": "DETERMINISTIC_RULES_REGRESSION_ONLY",
@@ -222,8 +222,9 @@
     }
   ],
   "source_files_sha256": {
+    ".github/workflows/attacking-token-defender-qualification.yml": "cd255fc80a0be71b3e4f05242e2faf97e9e5b96d4c2af89c7538fae70cd04e8e",
     ".github/workflows/engine-priority-after-resolution.yml": "4c77ea98f0fa921946e28b53a0288af953566c620e07a11c338ec262783cc35f",
-    ".github/workflows/shared-cast-observer-source-qualification.yml": "6290d6f314ed26461bb6eb3be74cbe53ead7d06746a589eaebad8d15202a0aa9",
+    ".github/workflows/shared-cast-observer-source-qualification.yml": "a771b7375924986dac339c19658cf9abf4719e26279b6b891c5916a682e963dc",
     "ai/src/test/kotlin/com/wingedsheep/ai/arena/FrozenBaselineTest.kt": "49e7770f7b55b24fb4a265ddf84afd86c51c1d6e1d467ed051b8334c60c45b86",
     "ai/src/test/kotlin/com/wingedsheep/ai/engine/DecisionResponderCompletedBranchTest.kt": "650deed7e9b3b9100ccfa69e73d20d0ee5bf601ed87c240b6d727f74c4b65a57",
     "ai/src/test/kotlin/com/wingedsheep/ai/puzzles/PuzzleSuiteTest.kt": "14ccfcfe749cbbbffb88f0d9e8f748d9707e4ff8cfc352e23f591859824273ec",
@@ -235,7 +236,7 @@
     "game-server/src/test/kotlin/com/wingedsheep/gameserver/session/PostBlockDeclarationSessionTest.kt": "4d996d5d850abcfe0f7a6300fb85d71efe0d68968ac6284031b8a3491c70ae06",
     "game-server/src/test/kotlin/com/wingedsheep/gameserver/session/TwoHeadedGiantSessionTest.kt": "13d3447a79da2e154b6819f8718ff444013235c71e6ed6210c946f2af4aa2604",
     "justfile": "70ed255981a941b260b8eeba4acf90abf32956126ef9672f5cf6e0b5840167e3",
-    "lab-coordinator/shared-capabilities/attacking-token-defender-budget.json": "27c151b1484872717175b978dbdcdf46b287c3a556296d726305428c93e93390",
+    "lab-coordinator/shared-capabilities/attacking-token-defender-budget.json": "b3fc75093350389f92d9cf44e02ad0bff4c6c621fc19ef13260000cf3fc92363",
     "lab-coordinator/shared-capabilities/collect-priority-receiving.py": "2c158a62f1898dcc7cb3c00a3cf2497a42d87e3a4e3a2a1e37926b2a4483352f",
     "lab-coordinator/shared-capabilities/current-combat-authority/CURRENT_COMBAT_SOURCE_PROVENANCE.json": "cd59a4d99df7d0e2fadbb238c626b6d1d1f8600f18513c1a36daf39a7532ce57",
     "lab-coordinator/shared-capabilities/current-combat-authority/DEATHTOUCH_SCOPE_AMENDMENT.json": "e8dc8e0167466a250c93c80c4ed6cf210ff6bec9ebd2025fec0a56666732b1e1",
@@ -245,6 +246,7 @@
     "lab-coordinator/shared-capabilities/current-combat-authority/RULES_EXCERPT.txt": "02dc75c6f7b09e411c33cb1602c8729a479c438a1184271f83ed2e4038dbe526",
     "lab-coordinator/shared-capabilities/current-combat-authority/SOURCE_FREEZE_02.json": "412f5841a1442ebcd395891b95e4ca0b5d84f1f5e3f97cf99bf33aeedbf2d946",
     "lab-coordinator/shared-capabilities/current-combat-authority/retained-fixture-non-author-review.json": "69a3ab0452e5ab4ec3cf56163452ca9e7b69084989912026677b53c0326d8847",
+    "lab-coordinator/shared-capabilities/entry-choice-event-provenance-budget.json": "b80b4bff7dfc49e0ba0e2748e7c12ac93b1fbc40ebb361fa4e10aff0ff4bb6d6",
     "lab-coordinator/shared-capabilities/receiving-case-banks-v1.json": "fbcd17ca4beda7da01a58fed7c627c66dc154bf4955d6b5556b02de9e0a82a97",
     "lab-coordinator/shared-capabilities/receiving-collector-independent-source-review.json": "cebe19436469e4eefad3f8165675e97dfb860c33325c7a4762f5ccd91e7ac1ea",
     "mtg-sdk/build.gradle.kts": "5e6927db0f8188dc9bf3817d55d105774d9b12dff9a3fd39fbaa2288ef3bc78c",
@@ -279,7 +281,7 @@
     "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/ColorAndTypeContinuations.kt": "85282b0545efc80d1ef571b3fe02811504f9963c51f37997b2fbbbaf7e0f355a",
     "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/CombatResolution.kt": "e52549532d4c8805f8ba90198840b29786d84ff281c1509a2845ae38b6afb90a",
     "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/CoreContinuations.kt": "fa14c5a3abea93a6cfc6a4c3395105e32fe971691186a250ec9311359087083f",
-    "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/GameEvent.kt": "1c355fc1c7a92606ea24dced8109ff15b1b2c757cb2879d13aaa4c53b57514e2",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/GameEvent.kt": "e7a8dc304b75af8365d14f8585afb4cb6db2d9e4176e0a29e20eec68af259cb1",
     "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/ModalAndCloneContinuations.kt": "1e87d845aa1f284838bb6bea6cc6281f626e887e21f626fe302fe47eadeffdd4",
     "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/PendingDecision.kt": "c350956d4a65bc9f2b164450eea8424bc12162aa3aa34a21737931cc8222c0e4",
     "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/Serialization.kt": "bcc6321f1ef85416859bff716b1446498a62917208cc7f7a65b4cd39b0333b68",
@@ -291,6 +293,7 @@
     "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/PendingTrigger.kt": "1df77a7df84d006ae7db58a461d28c091d22aeb26b6b880616058e77fd927cff",
     "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerAbilityResolver.kt": "f66661fa23a54f53dfe43ac140b608d0c63972168193f82ac01e8faf0739e20c",
     "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerContext.kt": "17d8bd3576b97ca63ac573427dfc08ebbef14e31ba3ff80de4e369b886932d0c",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerDetector.kt": "fdea959b808ee7c6942bc2391b5d6d9ea04ee26cd984ec7b86382f02414b7623",
     "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerMatcher.kt": "1401491fe5292ec746fd991fbcd89fe82914d1e07428bdae0487ed0487e0e517",
     "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerProcessor.kt": "4203df9bac92685480e694f2ad882d700abe8f78c311e852548138add8fbe5e9",
     "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/ContinuationHandler.kt": "a8091ebb5e745e48765d38f01f6f21052b98ec4b0f52da34076882bbd90edccc",
@@ -308,7 +311,7 @@
     "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/CombatContinuationResumer.kt": "d447fe5fa911f5decad26f7071abb9c51ba4863837cf0ff5a4f25de34ec86951",
     "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/CoreAutoResumerModule.kt": "d191e92ce6bf2c27d33f5ae9f80ff2b7ce8b0d94aa6493887c9739faea9292b3",
     "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/EffectAndTriggerContinuationResumer.kt": "6980996cc6cc4481d5f53bc12785724b38a7f9eaa6c986be5692999d691a87c5",
-    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/ModalAndCloneContinuationResumer.kt": "faa1889a252b70e1306ff4db95236ecf71ebade4706c6907e32bb4159ac5932a",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/ModalAndCloneContinuationResumer.kt": "7d546e8c590c9dbc541c50cd43cfd7436354a4b7be6108a882176cb0d3131190",
     "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/ObjectReferencePropagation.kt": "44754cc29fd5abe7b850f819811a1a26af25b845396dd3439135172cb0733393",
     "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/PipelineCollectionPropagation.kt": "2347f1dc0bcd3c6dbdf7c8753bd5ff892eaf80e5da7041cc8c8aaee42d534278",
     "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/TokenContinuationResumer.kt": "9213e0e9e7e79c10fd49b2162d38e5b31b369ed0c398f33ff6569b3e66f0a773",
@@ -339,9 +342,10 @@
     "rules-engine/src/main/kotlin/com/wingedsheep/engine/state/PendingCastPriority.kt": "1a68f23158544b1fee9e772956c0153b2c6d3e34376f9ce5935b9b1db1e79832",
     "rules-engine/src/main/kotlin/com/wingedsheep/engine/state/components/stack/EntitySnapshot.kt": "7bf956fc068bcfef7ddacffca0f08372e7ac4e3576f9f0f8ace416e1abaffe46",
     "rules-engine/src/main/kotlin/com/wingedsheep/engine/state/components/stack/StackComponents.kt": "a24ee46915d62b7dc36a42bef5e049867360a4f53b97f877c4c304dc0958b224",
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/event/EntryChoiceEventProvenanceTest.kt": "73c761176e87fdb40add594b7591c508784cadcbc2c47bc247d5b18658f6e44d",
     "rules-engine/src/test/kotlin/com/wingedsheep/engine/event/TriggerAbilityResolverTest.kt": "35dcc456ab3185c377033d95ae62d6a135cb602348a328271d5f65d5eed5f0be",
     "rules-engine/src/test/kotlin/com/wingedsheep/engine/handlers/PredicateEvaluatorRecordTest.kt": "8b17caf224042dccd16fb438133c0eadc00697d9de4350962c49df925eb6adde",
-    "rules-engine/src/test/kotlin/com/wingedsheep/engine/handlers/effects/token/AttackingTokenDefenderChoiceTest.kt": "643de45bd48aed39706026d02ad92f8a5b2339269589f0976ede41c5013f2446",
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/handlers/effects/token/AttackingTokenDefenderChoiceTest.kt": "becb1edcc7a08998ca0dab03ebc83b2fb4f484339859e0c771bc7a08851578ee",
     "rules-engine/src/test/kotlin/com/wingedsheep/engine/handlers/effects/zones/MoveToZoneEffectExecutorTest.kt": "c37bbf20129b0a3cb0edd043f0a341b3d8a47abb627d01568a10dc265e0c32f7",
     "rules-engine/src/test/kotlin/com/wingedsheep/engine/legalactions/CastSpellEnumeratorModalAdditionalCostTest.kt": "a50878ae8a9247f5ba043390a111a26bdce3c90699164f366f2bb45346022e10",
     "rules-engine/src/test/kotlin/com/wingedsheep/engine/mechanics/sba/CommanderZoneChoiceCheckTest.kt": "48a16c068191e4f88004e19eb8a6ba480a74c841d6f792355402e2af488d0455",
@@ -502,7 +506,7 @@
     "Ten 2017\u20132022 scenario classes retain all46 cases and effect assertions while explicitly answering simultaneous-trigger ordering and placing targets before may-resolution. Two misleading Daring Archaeologist case names now describe the canonical order. These eleven pinned scenario files are receiving/full-CI cases and are not added to the original27-stage220-case priority count.",
     "Receive the exact canonical current-combat engine component and the independently source-reviewed attacking-token defender component. Retain original27/220 and all127+8 cast-observer cases. Component32 and16 have separate fixed banks; no case is substituted for the originals. All changed and newly received source files are bound in this successor manifest."
   ],
-  "independent_source_review": "PENDING_FOR_CURRENT_BINDING_ONLY; fixture-source reviews are recorded separately",
+  "independent_source_review": "PENDING_FOR_THIS_EXACT_COMBINED_BINDING",
   "targeted_receiving_qualification": "PENDING",
   "broad_receiving_integration": "PENDING",
   "official_execution_authorized": false,
@@ -830,5 +834,110 @@
       "previous_sha256": null,
       "receiving_sha256": "20bb45f9e99f9cd82df3e8aee01f06bbd116915ae99c4acc0b69a47f4a6a789b"
     }
-  ]
+  ],
+  "entry_event_receiving": {
+    "donor_source": "1bc66b276f5db54640df1f956a32fa3d188628e3",
+    "donor_tree": "9a634d5b1acde2d2d80e1b3a347d0ec31b03e6c9",
+    "local_reviewed_source": "145b31ba41a0914207d91f6f939c869b97ded7bf",
+    "source_gate_review_sha256": "979d233b01354a2e1b3c24920516d614f65fc91f8a2211f88da83f4f6947e9d2",
+    "scope": "Reviewed source only: outward entry provenance, original16 fixture builder correction and separateprospective4. No actual20 acceptance yet.",
+    "changes": [
+      {
+        "path": ".github/workflows/attacking-token-defender-qualification.yml",
+        "previous_sha256": null,
+        "receiving_sha256": "cd255fc80a0be71b3e4f05242e2faf97e9e5b96d4c2af89c7538fae70cd04e8e"
+      },
+      {
+        "path": ".github/workflows/shared-cast-observer-source-qualification.yml",
+        "previous_sha256": "6290d6f314ed26461bb6eb3be74cbe53ead7d06746a589eaebad8d15202a0aa9",
+        "receiving_sha256": "a771b7375924986dac339c19658cf9abf4719e26279b6b891c5916a682e963dc"
+      },
+      {
+        "path": "lab-coordinator/shared-capabilities/attacking-token-defender-budget.json",
+        "previous_sha256": "27c151b1484872717175b978dbdcdf46b287c3a556296d726305428c93e93390",
+        "receiving_sha256": "b3fc75093350389f92d9cf44e02ad0bff4c6c621fc19ef13260000cf3fc92363"
+      },
+      {
+        "path": "lab-coordinator/shared-capabilities/entry-choice-event-provenance-budget.json",
+        "previous_sha256": null,
+        "receiving_sha256": "b80b4bff7dfc49e0ba0e2748e7c12ac93b1fbc40ebb361fa4e10aff0ff4bb6d6"
+      },
+      {
+        "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/GameEvent.kt",
+        "previous_sha256": "1c355fc1c7a92606ea24dced8109ff15b1b2c757cb2879d13aaa4c53b57514e2",
+        "receiving_sha256": "e7a8dc304b75af8365d14f8585afb4cb6db2d9e4176e0a29e20eec68af259cb1"
+      },
+      {
+        "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerDetector.kt",
+        "previous_sha256": null,
+        "receiving_sha256": "fdea959b808ee7c6942bc2391b5d6d9ea04ee26cd984ec7b86382f02414b7623"
+      },
+      {
+        "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/ModalAndCloneContinuationResumer.kt",
+        "previous_sha256": "faa1889a252b70e1306ff4db95236ecf71ebade4706c6907e32bb4159ac5932a",
+        "receiving_sha256": "7d546e8c590c9dbc541c50cd43cfd7436354a4b7be6108a882176cb0d3131190"
+      },
+      {
+        "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/event/EntryChoiceEventProvenanceTest.kt",
+        "previous_sha256": null,
+        "receiving_sha256": "73c761176e87fdb40add594b7591c508784cadcbc2c47bc247d5b18658f6e44d"
+      },
+      {
+        "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/handlers/effects/token/AttackingTokenDefenderChoiceTest.kt",
+        "previous_sha256": "643de45bd48aed39706026d02ad92f8a5b2339269589f0976ede41c5013f2446",
+        "receiving_sha256": "becb1edcc7a08998ca0dab03ebc83b2fb4f484339859e0c771bc7a08851578ee"
+      }
+    ]
+  },
+  "prior_combined_attempt": {
+    "source": "548dc458cbd07ea0d9e07de421cb1b1bc63318d3",
+    "tree": "a4f7f2a7b9b00589aea4d4e7a3ad77b5321fa4a2",
+    "components": [
+      {
+        "component": "priority",
+        "archive": "lab-coordinator/shared-capabilities/evidence/combined-548/priority/qualification.zip",
+        "sha256": "b453fcc00ef476fef3e6ba180943b718d7d925f1a21bbbed79a17517ac8f47e1",
+        "bytes": 356056,
+        "independent_review": "lab-coordinator/shared-capabilities/evidence/combined-548/priority/independent-artifact-review.json",
+        "independent_review_sha256": "8101a76e8fa6d92dc6cefd9582dc7343a849992e961fbc1a6477dddab6656c0b"
+      },
+      {
+        "component": "cast-observer",
+        "archive": "lab-coordinator/shared-capabilities/evidence/combined-548/cast-observer/qualification.zip",
+        "sha256": "3800b4fa29c4dfec4bf94e6eafe9754795e64fe3162f3e0941c4002b61a81d90",
+        "bytes": 292032,
+        "independent_review": "lab-coordinator/shared-capabilities/evidence/combined-548/cast-observer/independent-artifact-review.json",
+        "independent_review_sha256": "a036594cb3347d7455eb1f0353771c91bc6d1a020c61cd40685e65231b11b80f"
+      },
+      {
+        "component": "current-combat",
+        "archive": "lab-coordinator/shared-capabilities/evidence/combined-548/current-combat/qualification.zip",
+        "sha256": "01478a8c14169ab5c3b69e6a667bd85a705f14d67ff5181b65fc11706739b7b3",
+        "bytes": 239081,
+        "independent_review": "lab-coordinator/shared-capabilities/evidence/combined-548/current-combat/independent-artifact-review.json",
+        "independent_review_sha256": "c8b8794113dfb742af45d483b1340b022c7b6c05e696ed94ad08481bf2580866"
+      },
+      {
+        "component": "token",
+        "archive": "lab-coordinator/shared-capabilities/evidence/combined-548/token/qualification.zip",
+        "sha256": "43ef0960d837bcab17a463904e4a2e42093fd7f55c73bf0d9154aaf367689b4b",
+        "bytes": 258726
+      }
+    ],
+    "actual_original_priority": 220,
+    "actual_original_cast_observer": 135,
+    "actual_original_current_combat": 32,
+    "actual_original_token": 16,
+    "token_failures": 4,
+    "token_failure_cases": [
+      "TD03",
+      "TD11",
+      "TD12",
+      "TD13"
+    ],
+    "full_ci_run": 36265308412,
+    "full_ci_result": "FAILED only engine group:3721 actual tests,4same token failures; all other required groups succeeded.",
+    "full_combined_acceptance": false,
+    "gameplay_authorized": false
+  }
 }

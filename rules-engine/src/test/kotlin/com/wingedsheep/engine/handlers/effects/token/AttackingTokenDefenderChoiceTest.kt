@@ -72,7 +72,7 @@ class AttackingTokenDefenderChoiceTest : FunSpec({
             OwnerComponent(owner), ControllerComponent(owner),
         )
         container = StaticAbilityHandler(registry).addReplacementEffectComponent(container)
-        for (component in extra) container = container.with(component)
+        for (component in extra) container = container.withComponent(component)
         return next.withEntity(id, container).addToZone(ZoneKey(owner, Zone.BATTLEFIELD), id) to id
     }
     fun effect(count: Int = 2) = CreateTokenEffect(
