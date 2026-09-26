@@ -1,0 +1,25 @@
+{
+  "schema": "pest-postboard-construction-independent-source-review-v1",
+  "reviewer": "/root",
+  "reviewer_role": "non-author agent",
+  "github_approval_created": false,
+  "reviewed_local_head": "9fef95fe5d48eeeef9aa29ed84d4e33795a4f96b",
+  "reviewed_tree": "8d84d6edf6ef6a23048cec833d464b27d98011df",
+  "disposition": "ACCEPT_BEFORE_CONSTRUCTION_EXECUTION",
+  "reviewed_files_sha256": {
+    ".github/workflows/pest-control-tier-one-postboard-policies.yml": "7e72145d01829533602990ec94bfe58e0607c62a58b85497cb66a34a38244d52",
+    "gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOnePostboardPoliciesTest.kt": "3d8df9921f6ae028c6603c0a7bbde5ff79df733299a75422a97c994046a9552d",
+    "docs/experiments/pest-control/tier-one-postboard-policy-freeze.json": "f0fc00ddc2b48580997daee6fca7d3feaf8b71ae75ec8d982ab0f6f323a605e3"
+  },
+  "findings": [
+    "Read the full workflow, ten-case test and freeze; independently verified that the reviewed policy and input digests are unchanged.",
+    "The freeze accurately records the preceding strategy-review scope and retains all ten binding rows.",
+    "The gate binds twelve source files and a clean exact source head/tree before and after execution. It requires ten distinct expected case identities, both full ordered60/15 zones and all six binding digests, with no failures, errors or skips.",
+    "The construction path generates no engine-game seed and performs no pilot-development attempt. Independent raw artifact review and broader receiving qualification remain required."
+  ],
+  "source_qualification_only": true,
+  "actual_construction_tests_at_review": 0,
+  "sideboard_pilots_qualified": false,
+  "combined_runtime_admitted": false,
+  "gameplay_authorized": false
+}

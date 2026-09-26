@@ -1,0 +1,172 @@
+{
+  "schema": "pest-tier-one-postboard-policy-freeze-v1",
+  "status": "BOARDING_STRATEGY_AND_DECK_DIGESTS_FROZEN",
+  "reviewed_local_head": "fa55b5bec5c29c0feabd850fc9fdda023cc20ab7",
+  "reviewed_tree": "806a2e9c7fc5120f6a0ac9bb9f216fd37d35abf4",
+  "policy_inputs_file": "docs/experiments/pest-control/tier-one-postboard-policy-inputs.json",
+  "policy_inputs_sha256": "85b028e0f65967b86e07a56bf352a237c7e6b0659ecfa9b6b0e5564834ce0829",
+  "policy_source_file": "gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlTierOnePostboardPolicies.kt",
+  "policy_source_sha256": "dc3955e2b9d313d200e08ca323fcc700902ab65e3e09658c929f2b72db5e3993",
+  "governing_protocol": "docs/experiments/pest-control/tier-one-qualification-stopping-rule.md",
+  "governing_protocol_sha256": "eb7097c94d9c1f40e31c738ba6162351034f40a99ec6e53393cabd374eda08be",
+  "scope": "Exactly the ten directed Pest/opponent pairs in the immutable input manifest; one policy for both seats and play/draw.",
+  "independent_review": {
+    "reviewer": "/root",
+    "role": "non-author agent",
+    "disposition": "ACCEPT_FOR_PROSPECTIVE_BOARDING_FREEZE",
+    "github_approval_created": false,
+    "findings": [
+      "Reviewed all ten exchanges and rationales, all resulting lists, the original compiler and stopping rule, and relevant exact card definitions.",
+      "Independently reconstructed each original source map and all60 original/result zone-and-75 digests, donor ordering, simultaneous conservation,60/15 quantities, the exact ten directed pairs, and all source/protocol pins.",
+      "Each opponent retains its main role and engine with credible interaction from the submitted75. Red’s no-exchange policy is justified by its narrow available sideboard rather than an invented handicap.",
+      "Pest Fumes has concrete Spy Elf/Quirion/Fiend targets and its defender limitations remain explicit. No reachable sideboard mechanic is excluded.",
+      "This accepts a prospective judgment and exact digest freeze, not optimality, pilot qualification or gameplay strength."
+    ]
+  },
+  "construction_qualification": {
+    "expected_cases": 10,
+    "attempts_at_freeze": 0,
+    "accepted_at_freeze": false
+  },
+  "pilot_development_budget_changed": false,
+  "pilot_qualification_attempts_at_freeze": 0,
+  "sideboard_pilots_qualified": false,
+  "combined_runtime_admitted": false,
+  "official_seeds_generated": 0,
+  "official_games_initialized": 0,
+  "official_outcomes_exposed": 0,
+  "gameplay_authorized": false,
+  "frozen_bindings": [
+    {
+      "deck": "PEST_CONTROL",
+      "opponent": "MONO_RED_MADNESS",
+      "binding": {
+        "deck": "PEST_CONTROL",
+        "originalMainSha256": "7be61a66e2c7654428043d56b411afb4d406f02dfcc4eb7f15a62295d4e906f5",
+        "originalSideboardSha256": "c1910468c228662b21647eb7ca8481cd11691906e56e0a37990e00f22886368c",
+        "originalComplete75Sha256": "2927737eb084657cda58fd1877db933037c383273062f0bd209c7ff3046c1cf5",
+        "postboardMainSha256": "dd6ee98a4d18566f3b5e8d42a04103ac4f588bf4c2d6bd95b48d63cb2e19dc6e",
+        "postboardSideboardSha256": "e3071723416ada93715202a4e66e2d3b2b1b4f11de1ef6b54e41a2e42ad13e9e",
+        "postboardComplete75Sha256": "b47660a899774fd36025d3eb9735b2dbc3689f16982950484b8ec119ef06f2f0"
+      }
+    },
+    {
+      "deck": "MONO_RED_MADNESS",
+      "opponent": "PEST_CONTROL",
+      "binding": {
+        "deck": "MONO_RED_MADNESS",
+        "originalMainSha256": "38c7850d1b9b070637502cedfffc6116d3504a525db8b51223505d7935134258",
+        "originalSideboardSha256": "d0aab592e6c82ad019dba0eadc028db75ef5cf13c9b3e4e0531a04d513bfc77a",
+        "originalComplete75Sha256": "e9ff7ecbdbc8f41ebe526fe8fee4f87f706e0630491f9d78121677922fbd647d",
+        "postboardMainSha256": "38c7850d1b9b070637502cedfffc6116d3504a525db8b51223505d7935134258",
+        "postboardSideboardSha256": "d0aab592e6c82ad019dba0eadc028db75ef5cf13c9b3e4e0531a04d513bfc77a",
+        "postboardComplete75Sha256": "e9ff7ecbdbc8f41ebe526fe8fee4f87f706e0630491f9d78121677922fbd647d"
+      }
+    },
+    {
+      "deck": "PEST_CONTROL",
+      "opponent": "GRIXIS_AFFINITY",
+      "binding": {
+        "deck": "PEST_CONTROL",
+        "originalMainSha256": "7be61a66e2c7654428043d56b411afb4d406f02dfcc4eb7f15a62295d4e906f5",
+        "originalSideboardSha256": "c1910468c228662b21647eb7ca8481cd11691906e56e0a37990e00f22886368c",
+        "originalComplete75Sha256": "2927737eb084657cda58fd1877db933037c383273062f0bd209c7ff3046c1cf5",
+        "postboardMainSha256": "ef93cf065b9e217d9d3c901227b53debc9852b8e83eea45e04917cfbcc3c14b6",
+        "postboardSideboardSha256": "61ae3fef209b200e354a84b476b88edf7f903bc18c002c94b155cc992b8853e3",
+        "postboardComplete75Sha256": "ab27805f8ba791f9ae19482178da00c9459e0c45bfc15304fbe57478f98c17b3"
+      }
+    },
+    {
+      "deck": "GRIXIS_AFFINITY",
+      "opponent": "PEST_CONTROL",
+      "binding": {
+        "deck": "GRIXIS_AFFINITY",
+        "originalMainSha256": "2e20ec68c58dda1f913f99e8c97b7458f920a9be18bb4ee2c09784326cc2896c",
+        "originalSideboardSha256": "19c64bb94ef1dbdd953409dede79b02a478e9cf959bb230fe0c67a9b43d3177a",
+        "originalComplete75Sha256": "b73fe84ec0dd11961f45cf0ab39f155c92d99636ff1ad961bbc8f4774504bdcd",
+        "postboardMainSha256": "8964a6f4c49a856617227a595acc94f33904d0b590c8042933abf04efd8b70db",
+        "postboardSideboardSha256": "2f631c9e35a5538e25357cef7738b4139fcc8ec1e832e08783737d56e49d6534",
+        "postboardComplete75Sha256": "03486312430bb19504be4dbc524d9506a46770d0ad42d4d1a27948b70f67eeea"
+      }
+    },
+    {
+      "deck": "PEST_CONTROL",
+      "opponent": "MONO_BLUE_TERROR",
+      "binding": {
+        "deck": "PEST_CONTROL",
+        "originalMainSha256": "7be61a66e2c7654428043d56b411afb4d406f02dfcc4eb7f15a62295d4e906f5",
+        "originalSideboardSha256": "c1910468c228662b21647eb7ca8481cd11691906e56e0a37990e00f22886368c",
+        "originalComplete75Sha256": "2927737eb084657cda58fd1877db933037c383273062f0bd209c7ff3046c1cf5",
+        "postboardMainSha256": "54455598b572370c7db241b3548851c956aba68666bc306e68e7cca11a51c7ec",
+        "postboardSideboardSha256": "2ffca2b6bf70d7b8c2d2693bfc9f15bd9489169041a393733d57185f92802d7f",
+        "postboardComplete75Sha256": "3495112467af14add67553af90fcd863e265beae3333d93ebbe984808a4e3ba9"
+      }
+    },
+    {
+      "deck": "MONO_BLUE_TERROR",
+      "opponent": "PEST_CONTROL",
+      "binding": {
+        "deck": "MONO_BLUE_TERROR",
+        "originalMainSha256": "6c678f94112c56b0856c1fe4c008f77e7d0897bdeb290f3e2a0ec9d034147c62",
+        "originalSideboardSha256": "af4296c5e6af4be3b05b96d0267bd04da12188126e774ef8e63bb16c00bc908c",
+        "originalComplete75Sha256": "ae25ede2663cbc2fa41b4413381485df962b272791e1b3f49e2d69c45054e7d9",
+        "postboardMainSha256": "362aae9a50f3a754ed896b7f5cf749d01efcce257976e818ea7a22adc820d928",
+        "postboardSideboardSha256": "b40019ab60c5816f8f5d9de460ce43fbd992d6c584208b699a8e4cdc75aec0a3",
+        "postboardComplete75Sha256": "6424ab7f7d114eefb72a69dac9af48877ae780c0cd7b88534413f22dc29e3ccc"
+      }
+    },
+    {
+      "deck": "PEST_CONTROL",
+      "opponent": "MONSTER_TRON",
+      "binding": {
+        "deck": "PEST_CONTROL",
+        "originalMainSha256": "7be61a66e2c7654428043d56b411afb4d406f02dfcc4eb7f15a62295d4e906f5",
+        "originalSideboardSha256": "c1910468c228662b21647eb7ca8481cd11691906e56e0a37990e00f22886368c",
+        "originalComplete75Sha256": "2927737eb084657cda58fd1877db933037c383273062f0bd209c7ff3046c1cf5",
+        "postboardMainSha256": "80daa4f57bed8f2c8488fbec2398453b6640f86433f464ddebc9129e014d5c9b",
+        "postboardSideboardSha256": "7f64b1c2e1faede946c22fc244ebf715799ed4f54394caaa943291301de8149c",
+        "postboardComplete75Sha256": "579fa5d1c45c9c2704187db6224a9cb2fb4ae0bb4409e807d2be4d36522c024f"
+      }
+    },
+    {
+      "deck": "MONSTER_TRON",
+      "opponent": "PEST_CONTROL",
+      "binding": {
+        "deck": "MONSTER_TRON",
+        "originalMainSha256": "79ffc53ac331beafeb1ef4510ce174d01fb2685d963a4c1485f04edbf47c064f",
+        "originalSideboardSha256": "af793fd3c1b39104f8d7f880cec010e8c0ab3233d68c552e60bb8f4455b67be5",
+        "originalComplete75Sha256": "f2ed1d8a0bc55e66a815ff0bb7c0219965089ab1f401a2cc14eee17105717e2a",
+        "postboardMainSha256": "13326278ee7eecfa2600f3b18629150e53dabc4652e90a0d0cb54e4944b18c1b",
+        "postboardSideboardSha256": "024d318add596612c33375afab0d052f0da3913c2f271c6bbf0584eed03fa825",
+        "postboardComplete75Sha256": "395007515bf3b602ff318b2af9aab5447f5bec34af773da211b923024bff0910"
+      }
+    },
+    {
+      "deck": "PEST_CONTROL",
+      "opponent": "SPY_COMBO",
+      "binding": {
+        "deck": "PEST_CONTROL",
+        "originalMainSha256": "7be61a66e2c7654428043d56b411afb4d406f02dfcc4eb7f15a62295d4e906f5",
+        "originalSideboardSha256": "c1910468c228662b21647eb7ca8481cd11691906e56e0a37990e00f22886368c",
+        "originalComplete75Sha256": "2927737eb084657cda58fd1877db933037c383273062f0bd209c7ff3046c1cf5",
+        "postboardMainSha256": "a1f86e5ec8b1c1d5533bb66c50f907ae9a56d553b01d22778b1361410288a084",
+        "postboardSideboardSha256": "e4cd897c8f5cdd55abab06ba5cb04bbf4069f1330c3d5a0f1ade923f87b0d275",
+        "postboardComplete75Sha256": "c8fd4d2fa305f32c29393423fe577107f2e3f89bdfc08315b0c076072604e79e"
+      }
+    },
+    {
+      "deck": "SPY_COMBO",
+      "opponent": "PEST_CONTROL",
+      "binding": {
+        "deck": "SPY_COMBO",
+        "originalMainSha256": "8a0ac71dd9873b001d22a4ea73286c75d448e24a1b517772f836d6dd5f2db97f",
+        "originalSideboardSha256": "e7f36bb14eec42b7967a33656c082861695da2d3c7a7d7d2f3d50060b2abff12",
+        "originalComplete75Sha256": "d6fc701b272ff15bc2baf9ec5b2acdaf75566d780ff6d499efbac4aa77b19b15",
+        "postboardMainSha256": "959014a0fc8af5a495679c40b79477c2dbe1e771baa2e37d41f444f64f358066",
+        "postboardSideboardSha256": "133ea92bcff0f0a233a95131e2c21e109a3aefd48f8832f2edb803245f044ad0",
+        "postboardComplete75Sha256": "9c076bc4a9fffc3d87a699f90c7c979b8aa3377402c15f1e294a49f5505c396f"
+      }
+    }
+  ],
+  "input_snapshot_status_note": "The immutable inputs retain their original prospective status fields. This separate reviewed receipt explicitly freezes those exact bytes and digests; it grants no pilot/runtime or gameplay admission."
+}

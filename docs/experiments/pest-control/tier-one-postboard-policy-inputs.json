@@ -1,0 +1,527 @@
+{
+  "schema": "pest-tier-one-postboard-policy-inputs-v1",
+  "status": "PROPOSED_PENDING_INDEPENDENT_STRATEGY_REVIEW_AND_CONSTRUCTION_QUALIFICATION",
+  "source_head": "232f4904f3929fec917f87b9565f8adb4047487c",
+  "source_tree": "a7356f15ea5900592cf06ff4e4858929fa5b15ea",
+  "governing_protocol": "docs/experiments/pest-control/tier-one-qualification-stopping-rule.md",
+  "governing_protocol_sha256": "eb7097c94d9c1f40e31c738ba6162351034f40a99ec6e53393cabd374eda08be",
+  "source_files_sha256": {
+    "gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlPreboardContract.kt": "2ef7f1a8712dfa7600d7100e96463bac2a86f61969ac91c6a09bf8bda60192d9",
+    "gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlTierOneGrixisReadiness.kt": "ffc2128aa18c62809dd5f5f08d7539e39a9b1028c68ca519122922b03d447556",
+    "gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlTierOneMonoBlueTerrorReadiness.kt": "9cc5694d80620d163a6f6c6da8d59434cea309cf238f5623c75f0dd66ceb4b30",
+    "gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlTierOneMonsterTronAdmission.kt": "5356f73ff61cafa87f809ab0c20cc2f2f2cf9b8dd50c89761d2d05b5f11b494c",
+    "gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlTierOneSpyComboAdmission.kt": "23ec486618dca50cfa6034c36752d94d7b605c07c51c0ea66d0f1626827821a4"
+  },
+  "qualified_exchange_source_sha256": "9d9e700320f60499f34ad93eb30d5def99ffa6c2d763886609299279eb24fbf6",
+  "candidate_policy_source_sha256": "dc3955e2b9d313d200e08ca323fcc700902ab65e3e09658c929f2b72db5e3993",
+  "inputs": "Only the exact frozen deck and opposing deck identity plus their public matchup roles.",
+  "same_policy_for_both_seats_and_play_draw": true,
+  "outcome_conditioning": false,
+  "frozen_original_decks_changed": false,
+  "complete_75_multisets_preserved": true,
+  "independent_strategy_review": "PENDING",
+  "construction_qualification": "PENDING",
+  "prospective_construction_cases": 10,
+  "policy_development_games": 0,
+  "pilot_qualification_attempts": 0,
+  "boarding_deck_digests_frozen": false,
+  "runtime_pilots_frozen": false,
+  "full_receiving_accepted": false,
+  "official_seeds_generated": 0,
+  "official_games": 0,
+  "official_outcomes_exposed": 0,
+  "gameplay_authorized": false,
+  "plans": [
+    {
+      "deck": "PEST_CONTROL",
+      "opponent": "MONO_RED_MADNESS",
+      "to_main": {
+        "Suffocating Fumes": 3,
+        "Pulse of Murasa": 2
+      },
+      "to_sideboard": {
+        "Chainer's Edict": 2,
+        "Bone Shards": 2,
+        "Generous Ent": 1
+      },
+      "binding": {
+        "deck": "PEST_CONTROL",
+        "originalMainSha256": "7be61a66e2c7654428043d56b411afb4d406f02dfcc4eb7f15a62295d4e906f5",
+        "originalSideboardSha256": "c1910468c228662b21647eb7ca8481cd11691906e56e0a37990e00f22886368c",
+        "originalComplete75Sha256": "2927737eb084657cda58fd1877db933037c383273062f0bd209c7ff3046c1cf5",
+        "postboardMainSha256": "dd6ee98a4d18566f3b5e8d42a04103ac4f588bf4c2d6bd95b48d63cb2e19dc6e",
+        "postboardSideboardSha256": "e3071723416ada93715202a4e66e2d3b2b1b4f11de1ef6b54e41a2e42ad13e9e",
+        "postboardComplete75Sha256": "b47660a899774fd36025d3eb9735b2dbc3689f16982950484b8ec119ef06f2f0"
+      },
+      "postboard_main": {
+        "Essence Warden": 4,
+        "Carrier Thrall": 4,
+        "Blood Researcher": 4,
+        "Pest Mascot": 4,
+        "Fierce Witchstalker": 4,
+        "Generous Ent": 2,
+        "Follow the Lumarets": 4,
+        "Weather the Storm": 4,
+        "Cast Down": 4,
+        "Forest": 10,
+        "Swamp": 7,
+        "Jungle Hollow": 4,
+        "Suffocating Fumes": 3,
+        "Pulse of Murasa": 2
+      },
+      "postboard_sideboard": {
+        "Tamiyo's Safekeeping": 4,
+        "Nature's Claim": 3,
+        "Snuff Out": 3,
+        "Generous Ent": 1,
+        "Bone Shards": 2,
+        "Chainer's Edict": 2
+      }
+    },
+    {
+      "deck": "MONO_RED_MADNESS",
+      "opponent": "PEST_CONTROL",
+      "to_main": {},
+      "to_sideboard": {},
+      "binding": {
+        "deck": "MONO_RED_MADNESS",
+        "originalMainSha256": "38c7850d1b9b070637502cedfffc6116d3504a525db8b51223505d7935134258",
+        "originalSideboardSha256": "d0aab592e6c82ad019dba0eadc028db75ef5cf13c9b3e4e0531a04d513bfc77a",
+        "originalComplete75Sha256": "e9ff7ecbdbc8f41ebe526fe8fee4f87f706e0630491f9d78121677922fbd647d",
+        "postboardMainSha256": "38c7850d1b9b070637502cedfffc6116d3504a525db8b51223505d7935134258",
+        "postboardSideboardSha256": "d0aab592e6c82ad019dba0eadc028db75ef5cf13c9b3e4e0531a04d513bfc77a",
+        "postboardComplete75Sha256": "e9ff7ecbdbc8f41ebe526fe8fee4f87f706e0630491f9d78121677922fbd647d"
+      },
+      "postboard_main": {
+        "Mountain": 20,
+        "Guttersnipe": 4,
+        "Kessig Flamebreather": 3,
+        "Sneaky Snacker": 4,
+        "Faithless Looting": 2,
+        "Fiery Temper": 4,
+        "Fireblast": 4,
+        "Grab the Prize": 4,
+        "Highway Robbery": 4,
+        "Lava Dart": 4,
+        "Lightning Bolt": 4,
+        "Melded Moxite": 3
+      },
+      "postboard_sideboard": {
+        "Campfire": 3,
+        "Pyroblast": 2,
+        "Red Elemental Blast": 3,
+        "Relic of Progenitus": 3,
+        "Smash to Smithereens": 4
+      }
+    },
+    {
+      "deck": "PEST_CONTROL",
+      "opponent": "GRIXIS_AFFINITY",
+      "to_main": {
+        "Nature's Claim": 3,
+        "Snuff Out": 3,
+        "Pulse of Murasa": 2,
+        "Tamiyo's Safekeeping": 2
+      },
+      "to_sideboard": {
+        "Weather the Storm": 4,
+        "Bone Shards": 2,
+        "Chainer's Edict": 2,
+        "Fierce Witchstalker": 2
+      },
+      "binding": {
+        "deck": "PEST_CONTROL",
+        "originalMainSha256": "7be61a66e2c7654428043d56b411afb4d406f02dfcc4eb7f15a62295d4e906f5",
+        "originalSideboardSha256": "c1910468c228662b21647eb7ca8481cd11691906e56e0a37990e00f22886368c",
+        "originalComplete75Sha256": "2927737eb084657cda58fd1877db933037c383273062f0bd209c7ff3046c1cf5",
+        "postboardMainSha256": "ef93cf065b9e217d9d3c901227b53debc9852b8e83eea45e04917cfbcc3c14b6",
+        "postboardSideboardSha256": "61ae3fef209b200e354a84b476b88edf7f903bc18c002c94b155cc992b8853e3",
+        "postboardComplete75Sha256": "ab27805f8ba791f9ae19482178da00c9459e0c45bfc15304fbe57478f98c17b3"
+      },
+      "postboard_main": {
+        "Essence Warden": 4,
+        "Carrier Thrall": 4,
+        "Blood Researcher": 4,
+        "Pest Mascot": 4,
+        "Fierce Witchstalker": 2,
+        "Generous Ent": 3,
+        "Follow the Lumarets": 4,
+        "Cast Down": 4,
+        "Forest": 10,
+        "Swamp": 7,
+        "Jungle Hollow": 4,
+        "Tamiyo's Safekeeping": 2,
+        "Nature's Claim": 3,
+        "Snuff Out": 3,
+        "Pulse of Murasa": 2
+      },
+      "postboard_sideboard": {
+        "Tamiyo's Safekeeping": 2,
+        "Suffocating Fumes": 3,
+        "Fierce Witchstalker": 2,
+        "Weather the Storm": 4,
+        "Bone Shards": 2,
+        "Chainer's Edict": 2
+      }
+    },
+    {
+      "deck": "GRIXIS_AFFINITY",
+      "opponent": "PEST_CONTROL",
+      "to_main": {
+        "Duress": 4,
+        "Unexpected Fangs": 2
+      },
+      "to_sideboard": {
+        "Nihil Spellbomb": 2,
+        "Fanatical Offering": 2,
+        "Utrom Monitor": 1,
+        "Galvanic Blast": 1
+      },
+      "binding": {
+        "deck": "GRIXIS_AFFINITY",
+        "originalMainSha256": "2e20ec68c58dda1f913f99e8c97b7458f920a9be18bb4ee2c09784326cc2896c",
+        "originalSideboardSha256": "19c64bb94ef1dbdd953409dede79b02a478e9cf959bb230fe0c67a9b43d3177a",
+        "originalComplete75Sha256": "b73fe84ec0dd11961f45cf0ab39f155c92d99636ff1ad961bbc8f4774504bdcd",
+        "postboardMainSha256": "8964a6f4c49a856617227a595acc94f33904d0b590c8042933abf04efd8b70db",
+        "postboardSideboardSha256": "2f631c9e35a5538e25357cef7738b4139fcc8ec1e832e08783737d56e49d6534",
+        "postboardComplete75Sha256": "03486312430bb19504be4dbc524d9506a46770d0ad42d4d1a27948b70f67eeea"
+      },
+      "postboard_main": {
+        "Drossforge Bridge": 3,
+        "Great Furnace": 2,
+        "Mistvault Bridge": 3,
+        "Seat of the Synod": 3,
+        "Silverbluff Bridge": 2,
+        "Swamp": 1,
+        "Vault of Whispers": 4,
+        "Krark-Clan Shaman": 2,
+        "Myr Enforcer": 4,
+        "Refurbished Familiar": 4,
+        "Utrom Monitor": 2,
+        "Cast Down": 3,
+        "Galvanic Blast": 3,
+        "Reckoner's Bargain": 4,
+        "Thoughtcast": 4,
+        "Toxin Analysis": 2,
+        "Blood Fountain": 3,
+        "Ichor Wellspring": 4,
+        "Makeshift Munitions": 1,
+        "Duress": 4,
+        "Unexpected Fangs": 2
+      },
+      "postboard_sideboard": {
+        "Blue Elemental Blast": 2,
+        "Mesmeric Fiend": 2,
+        "Nihil Spellbomb": 3,
+        "Red Elemental Blast": 4,
+        "Utrom Monitor": 1,
+        "Fanatical Offering": 2,
+        "Galvanic Blast": 1
+      }
+    },
+    {
+      "deck": "PEST_CONTROL",
+      "opponent": "MONO_BLUE_TERROR",
+      "to_main": {
+        "Snuff Out": 3,
+        "Pulse of Murasa": 2,
+        "Tamiyo's Safekeeping": 2
+      },
+      "to_sideboard": {
+        "Weather the Storm": 4,
+        "Bone Shards": 2,
+        "Fierce Witchstalker": 1
+      },
+      "binding": {
+        "deck": "PEST_CONTROL",
+        "originalMainSha256": "7be61a66e2c7654428043d56b411afb4d406f02dfcc4eb7f15a62295d4e906f5",
+        "originalSideboardSha256": "c1910468c228662b21647eb7ca8481cd11691906e56e0a37990e00f22886368c",
+        "originalComplete75Sha256": "2927737eb084657cda58fd1877db933037c383273062f0bd209c7ff3046c1cf5",
+        "postboardMainSha256": "54455598b572370c7db241b3548851c956aba68666bc306e68e7cca11a51c7ec",
+        "postboardSideboardSha256": "2ffca2b6bf70d7b8c2d2693bfc9f15bd9489169041a393733d57185f92802d7f",
+        "postboardComplete75Sha256": "3495112467af14add67553af90fcd863e265beae3333d93ebbe984808a4e3ba9"
+      },
+      "postboard_main": {
+        "Essence Warden": 4,
+        "Carrier Thrall": 4,
+        "Blood Researcher": 4,
+        "Pest Mascot": 4,
+        "Fierce Witchstalker": 3,
+        "Generous Ent": 3,
+        "Follow the Lumarets": 4,
+        "Cast Down": 4,
+        "Chainer's Edict": 2,
+        "Forest": 10,
+        "Swamp": 7,
+        "Jungle Hollow": 4,
+        "Tamiyo's Safekeeping": 2,
+        "Snuff Out": 3,
+        "Pulse of Murasa": 2
+      },
+      "postboard_sideboard": {
+        "Tamiyo's Safekeeping": 2,
+        "Nature's Claim": 3,
+        "Suffocating Fumes": 3,
+        "Fierce Witchstalker": 1,
+        "Weather the Storm": 4,
+        "Bone Shards": 2
+      }
+    },
+    {
+      "deck": "MONO_BLUE_TERROR",
+      "opponent": "PEST_CONTROL",
+      "to_main": {
+        "Gut Shot": 3,
+        "Murmuring Mystic": 1
+      },
+      "to_sideboard": {
+        "Sleep of the Dead": 2,
+        "Artful Dodge": 1,
+        "Deem Inferior": 1
+      },
+      "binding": {
+        "deck": "MONO_BLUE_TERROR",
+        "originalMainSha256": "6c678f94112c56b0856c1fe4c008f77e7d0897bdeb290f3e2a0ec9d034147c62",
+        "originalSideboardSha256": "af4296c5e6af4be3b05b96d0267bd04da12188126e774ef8e63bb16c00bc908c",
+        "originalComplete75Sha256": "ae25ede2663cbc2fa41b4413381485df962b272791e1b3f49e2d69c45054e7d9",
+        "postboardMainSha256": "362aae9a50f3a754ed896b7f5cf749d01efcce257976e818ea7a22adc820d928",
+        "postboardSideboardSha256": "b40019ab60c5816f8f5d9de460ce43fbd992d6c584208b699a8e4cdc75aec0a3",
+        "postboardComplete75Sha256": "6424ab7f7d114eefb72a69dac9af48877ae780c0cd7b88534413f22dc29e3ccc"
+      },
+      "postboard_main": {
+        "Island": 13,
+        "Snow-Covered Island": 1,
+        "Cryptic Serpent": 4,
+        "Tolarian Terror": 4,
+        "Deem Inferior": 1,
+        "Lórien Revealed": 4,
+        "Artful Dodge": 1,
+        "Ponder": 4,
+        "Preordain": 4,
+        "Brainstorm": 4,
+        "Dispel": 4,
+        "Mental Note": 4,
+        "Thought Scour": 4,
+        "Counterspell": 4,
+        "Gut Shot": 3,
+        "Murmuring Mystic": 1
+      },
+      "postboard_sideboard": {
+        "Annul": 4,
+        "Hydroblast": 4,
+        "Spreading Seas": 3,
+        "Deem Inferior": 1,
+        "Artful Dodge": 1,
+        "Sleep of the Dead": 2
+      }
+    },
+    {
+      "deck": "PEST_CONTROL",
+      "opponent": "MONSTER_TRON",
+      "to_main": {
+        "Nature's Claim": 3,
+        "Snuff Out": 3,
+        "Tamiyo's Safekeeping": 2
+      },
+      "to_sideboard": {
+        "Weather the Storm": 4,
+        "Fierce Witchstalker": 2,
+        "Bone Shards": 1,
+        "Chainer's Edict": 1
+      },
+      "binding": {
+        "deck": "PEST_CONTROL",
+        "originalMainSha256": "7be61a66e2c7654428043d56b411afb4d406f02dfcc4eb7f15a62295d4e906f5",
+        "originalSideboardSha256": "c1910468c228662b21647eb7ca8481cd11691906e56e0a37990e00f22886368c",
+        "originalComplete75Sha256": "2927737eb084657cda58fd1877db933037c383273062f0bd209c7ff3046c1cf5",
+        "postboardMainSha256": "80daa4f57bed8f2c8488fbec2398453b6640f86433f464ddebc9129e014d5c9b",
+        "postboardSideboardSha256": "7f64b1c2e1faede946c22fc244ebf715799ed4f54394caaa943291301de8149c",
+        "postboardComplete75Sha256": "579fa5d1c45c9c2704187db6224a9cb2fb4ae0bb4409e807d2be4d36522c024f"
+      },
+      "postboard_main": {
+        "Essence Warden": 4,
+        "Carrier Thrall": 4,
+        "Blood Researcher": 4,
+        "Pest Mascot": 4,
+        "Fierce Witchstalker": 2,
+        "Generous Ent": 3,
+        "Follow the Lumarets": 4,
+        "Cast Down": 4,
+        "Bone Shards": 1,
+        "Chainer's Edict": 1,
+        "Forest": 10,
+        "Swamp": 7,
+        "Jungle Hollow": 4,
+        "Tamiyo's Safekeeping": 2,
+        "Nature's Claim": 3,
+        "Snuff Out": 3
+      },
+      "postboard_sideboard": {
+        "Tamiyo's Safekeeping": 2,
+        "Suffocating Fumes": 3,
+        "Pulse of Murasa": 2,
+        "Fierce Witchstalker": 2,
+        "Weather the Storm": 4,
+        "Bone Shards": 1,
+        "Chainer's Edict": 1
+      }
+    },
+    {
+      "deck": "MONSTER_TRON",
+      "opponent": "PEST_CONTROL",
+      "to_main": {
+        "Breath Weapon": 1,
+        "Scour from Existence": 2,
+        "Call Damage Control": 2
+      },
+      "to_sideboard": {
+        "Candy Trail": 2,
+        "Unfathomable Truths": 1,
+        "Bramble Wurm": 1,
+        "Rooftop Percher": 1
+      },
+      "binding": {
+        "deck": "MONSTER_TRON",
+        "originalMainSha256": "79ffc53ac331beafeb1ef4510ce174d01fb2685d963a4c1485f04edbf47c064f",
+        "originalSideboardSha256": "af793fd3c1b39104f8d7f880cec010e8c0ab3233d68c552e60bb8f4455b67be5",
+        "originalComplete75Sha256": "f2ed1d8a0bc55e66a815ff0bb7c0219965089ab1f401a2cc14eee17105717e2a",
+        "postboardMainSha256": "13326278ee7eecfa2600f3b18629150e53dabc4652e90a0d0cb54e4944b18c1b",
+        "postboardSideboardSha256": "024d318add596612c33375afab0d052f0da3913c2f271c6bbf0584eed03fa825",
+        "postboardComplete75Sha256": "395007515bf3b602ff318b2af9aab5447f5bec34af773da211b923024bff0910"
+      },
+      "postboard_main": {
+        "Rooftop Percher": 1,
+        "Generous Ent": 2,
+        "Boulderbranch Golem": 2,
+        "Bramble Wurm": 3,
+        "Maelstrom Colossus": 4,
+        "Ancient Stirrings": 4,
+        "Crop Rotation": 3,
+        "Breath Weapon": 3,
+        "Unfathomable Truths": 1,
+        "Barrels of Blasting Jelly": 1,
+        "Expedition Map": 4,
+        "Giant's Boulder": 4,
+        "Bonder's Ornament": 2,
+        "Pinnacle Kill-Ship": 4,
+        "Bojuka Bog": 1,
+        "Conduit Pylons": 2,
+        "Forest": 2,
+        "Haunted Fengraf": 1,
+        "Urza's Mine": 4,
+        "Urza's Power Plant": 4,
+        "Urza's Tower": 4,
+        "Call Damage Control": 2,
+        "Scour from Existence": 2
+      },
+      "postboard_sideboard": {
+        "Blue Elemental Blast": 2,
+        "Hydroblast": 2,
+        "Kaervek's Torch": 1,
+        "Pyroblast": 1,
+        "Relic of Progenitus": 4,
+        "Rooftop Percher": 1,
+        "Bramble Wurm": 1,
+        "Unfathomable Truths": 1,
+        "Candy Trail": 2
+      }
+    },
+    {
+      "deck": "PEST_CONTROL",
+      "opponent": "SPY_COMBO",
+      "to_main": {
+        "Suffocating Fumes": 3,
+        "Snuff Out": 3
+      },
+      "to_sideboard": {
+        "Chainer's Edict": 2,
+        "Bone Shards": 2,
+        "Fierce Witchstalker": 2
+      },
+      "binding": {
+        "deck": "PEST_CONTROL",
+        "originalMainSha256": "7be61a66e2c7654428043d56b411afb4d406f02dfcc4eb7f15a62295d4e906f5",
+        "originalSideboardSha256": "c1910468c228662b21647eb7ca8481cd11691906e56e0a37990e00f22886368c",
+        "originalComplete75Sha256": "2927737eb084657cda58fd1877db933037c383273062f0bd209c7ff3046c1cf5",
+        "postboardMainSha256": "a1f86e5ec8b1c1d5533bb66c50f907ae9a56d553b01d22778b1361410288a084",
+        "postboardSideboardSha256": "e4cd897c8f5cdd55abab06ba5cb04bbf4069f1330c3d5a0f1ade923f87b0d275",
+        "postboardComplete75Sha256": "c8fd4d2fa305f32c29393423fe577107f2e3f89bdfc08315b0c076072604e79e"
+      },
+      "postboard_main": {
+        "Essence Warden": 4,
+        "Carrier Thrall": 4,
+        "Blood Researcher": 4,
+        "Pest Mascot": 4,
+        "Fierce Witchstalker": 2,
+        "Generous Ent": 3,
+        "Follow the Lumarets": 4,
+        "Weather the Storm": 4,
+        "Cast Down": 4,
+        "Forest": 10,
+        "Swamp": 7,
+        "Jungle Hollow": 4,
+        "Snuff Out": 3,
+        "Suffocating Fumes": 3
+      },
+      "postboard_sideboard": {
+        "Tamiyo's Safekeeping": 4,
+        "Nature's Claim": 3,
+        "Pulse of Murasa": 2,
+        "Fierce Witchstalker": 2,
+        "Bone Shards": 2,
+        "Chainer's Edict": 2
+      }
+    },
+    {
+      "deck": "SPY_COMBO",
+      "opponent": "PEST_CONTROL",
+      "to_main": {
+        "Mesmeric Fiend": 1,
+        "Nyxborn Hydra": 1,
+        "Acorn Harvest": 1
+      },
+      "to_sideboard": {
+        "Masked Vandal": 3
+      },
+      "binding": {
+        "deck": "SPY_COMBO",
+        "originalMainSha256": "8a0ac71dd9873b001d22a4ea73286c75d448e24a1b517772f836d6dd5f2db97f",
+        "originalSideboardSha256": "e7f36bb14eec42b7967a33656c082861695da2d3c7a7d7d2f3d50060b2abff12",
+        "originalComplete75Sha256": "d6fc701b272ff15bc2baf9ec5b2acdaf75566d780ff6d499efbac4aa77b19b15",
+        "postboardMainSha256": "959014a0fc8af5a495679c40b79477c2dbe1e771baa2e37d41f444f64f358066",
+        "postboardSideboardSha256": "133ea92bcff0f0a233a95131e2c21e109a3aefd48f8832f2edb803245f044ad0",
+        "postboardComplete75Sha256": "9c076bc4a9fffc3d87a699f90c7c979b8aa3377402c15f1e294a49f5505c396f"
+      },
+      "postboard_main": {
+        "Elves of Deep Shadow": 2,
+        "Nyxborn Hydra": 3,
+        "Quirion Ranger": 3,
+        "Saruli Caretaker": 4,
+        "Gatecreeper Vine": 4,
+        "Mesmeric Fiend": 4,
+        "Overgrown Battlement": 4,
+        "Wall of Roots": 3,
+        "Balustrade Spy": 4,
+        "Sagu Wildling": 4,
+        "Generous Ent": 4,
+        "Lotleth Giant": 2,
+        "Land Grant": 4,
+        "Winding Way": 4,
+        "Lead the Stampede": 4,
+        "Dread Return": 2,
+        "Forest": 3,
+        "Swamp": 1,
+        "Acorn Harvest": 1
+      },
+      "postboard_sideboard": {
+        "Swamp": 1,
+        "Jack-o'-Lantern": 1,
+        "Flaring Pain": 1,
+        "Masked Vandal": 4,
+        "Undergrowth Leopard": 2,
+        "Faerie Macabre": 2,
+        "Nylea's Disciple": 4
+      }
+    }
+  ]
+}

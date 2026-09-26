@@ -1,7 +1,20 @@
 # Pest Tier-1 postboard exchange construction
 
-Status: candidate deterministic component; independent source review and exact-source JVM
-qualification are pending. No boarding strategy is accepted by this component.
+Status: the exact-source deterministic component passed all 21 declared checks and received
+independent non-author source and raw-artifact review. Combined receiving CI remains unaccepted;
+inherited failures are being diagnosed. No boarding strategy is accepted by this component.
+
+The qualified source is `232f4904f3929fec917f87b9565f8adb4047487c`, tree
+`a7356f15ea5900592cf06ff4e4858929fa5b15ea`. The accepted component evidence is
+[run 36254534260](https://github.com/GodaPupa/argentum-batshit-test/actions/runs/36254534260),
+artifact `10909039961` (232,053 bytes, SHA-256
+`c3651fe85b4c8f195b82b9e8a9a7ab551768f36becb4cd442bc8c28184d933f7`).
+The [durable receipt](postboard-exchange-evidence/remote-36254534260/receipt.json),
+raw source binding, actual XMLs, inventory and losslessly compressed qualification log preserve
+the exact 20 exchange + 1 inventory cases, all with zero failures, errors or skips. The independent
+reviewer was the non-author `/root/sphinx` agent; no GitHub approval is asserted. The earlier author
+audit is retained as an initial checkpoint, whose pending review is superseded by the independent
+receipt.
 
 The frozen qualification stopping rule requires every postboard plan to preserve exact 60/15
 quantities and the complete 75-card pool, and to freeze its deck digests before a postboard seed

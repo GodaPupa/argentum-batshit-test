@@ -1,0 +1,134 @@
+name: Pest Control Tier-1 Frozen Postboard Policies
+
+on:
+  push:
+    branches: [lab/pest-postboard-policies-20260926]
+    paths:
+      - .github/workflows/pest-control-tier-one-postboard-policies.yml
+      - docs/experiments/pest-control/tier-one-postboard-policy-inputs.json
+      - docs/experiments/pest-control/tier-one-postboard-policy-freeze.json
+      - gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlTierOnePostboardPolicies.kt
+      - gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlTierOnePostboardExchange.kt
+      - gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOnePostboardPoliciesTest.kt
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pest-postboard-frozen-policies-${{ github.sha }}
+  cancel-in-progress: false
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    env:
+      GRADLE_LOCK_SLOTS: '1'
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.sha }}
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: gradle/actions/setup-gradle@v6
+      - uses: extractions/setup-just@f8a3cce218d9f83db3a2ecd90e41ac3de6cdfd9b
+        with:
+          just-version: '1.58.0'
+
+      - name: Bind exact source and independently frozen policy inputs
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import hashlib, json, os, pathlib, subprocess
+          def git(*args):
+              return subprocess.check_output(['git', *args], text=True).strip()
+          report = pathlib.Path('build/reports/pest-postboard-policies')
+          report.mkdir(parents=True, exist_ok=True)
+          input_path = 'docs/experiments/pest-control/tier-one-postboard-policy-inputs.json'
+          freeze_path = 'docs/experiments/pest-control/tier-one-postboard-policy-freeze.json'
+          inputs = json.loads(pathlib.Path(input_path).read_text())
+          freeze = json.loads(pathlib.Path(freeze_path).read_text())
+          policy_path = freeze['policy_source_file']
+          compiler_path = 'gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlTierOnePostboardExchange.kt'
+          paths = [input_path, freeze_path, policy_path, compiler_path, freeze['governing_protocol'],
+              '.github/workflows/pest-control-tier-one-postboard-policies.yml',
+              'gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOnePostboardPoliciesTest.kt',
+              *inputs['source_files_sha256']]
+          actual = {p: hashlib.sha256(pathlib.Path(p).read_bytes()).hexdigest() for p in paths}
+          binding = {'source_head': git('rev-parse', 'HEAD'), 'source_tree': git('rev-parse', 'HEAD^{tree}'),
+              'requested_head': os.environ['GITHUB_SHA'], 'checkout_status': git('status', '--porcelain'),
+              'source_files_sha256': actual}
+          (report / 'source-binding.json').write_text(json.dumps(binding, indent=2) + '\n')
+          assert binding['source_head'] == binding['requested_head'] and not binding['checkout_status']
+          assert len(actual) == len(paths) == 12
+          assert actual[input_path] == freeze['policy_inputs_sha256'] == '85b028e0f65967b86e07a56bf352a237c7e6b0659ecfa9b6b0e5564834ce0829'
+          assert actual[policy_path] == freeze['policy_source_sha256'] == 'dc3955e2b9d313d200e08ca323fcc700902ab65e3e09658c929f2b72db5e3993'
+          assert actual[compiler_path] == inputs['qualified_exchange_source_sha256']
+          assert actual[freeze['governing_protocol']] == inputs['governing_protocol_sha256'] == freeze['governing_protocol_sha256']
+          assert all(actual[p] == h for p, h in inputs['source_files_sha256'].items())
+          assert freeze['status'] == 'BOARDING_STRATEGY_AND_DECK_DIGESTS_FROZEN'
+          assert freeze['independent_review']['reviewer'] == '/root'
+          assert freeze['independent_review']['disposition'] == 'ACCEPT_FOR_PROSPECTIVE_BOARDING_FREEZE'
+          assert freeze['construction_qualification']['expected_cases'] == 10
+          assert len(inputs['plans']) == len(freeze['frozen_bindings']) == 10
+          for plan, frozen in zip(inputs['plans'], freeze['frozen_bindings']):
+              assert all(plan[k] == frozen[k] for k in ('deck', 'opponent', 'binding'))
+          assert freeze['gameplay_authorized'] is False and freeze['combined_runtime_admitted'] is False
+          PY
+
+      - name: Execute the ten frozen deck-construction cases
+        shell: bash
+        run: |
+          set -euo pipefail
+          just test-class PestControlTierOnePostboardPoliciesTest --rerun \
+            --max-workers=1 -PkotlinCompileParallelism=1 \
+            -Pkotlin.compiler.execution.strategy=in-process -Dorg.gradle.jvmargs=-Xmx4g \
+            --info --stacktrace 2>&1 | tee build/reports/pest-postboard-policies/qualification.log
+
+      - name: Require actual completeness and preserve the construction-only scope
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import hashlib, json, os, pathlib, subprocess, xml.etree.ElementTree as ET
+          report = pathlib.Path('build/reports/pest-postboard-policies')
+          binding = json.loads((report / 'source-binding.json').read_text())
+          assert subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip() == binding['source_head']
+          assert subprocess.check_output(['git', 'rev-parse', 'HEAD^{tree}'], text=True).strip() == binding['source_tree']
+          assert not subprocess.check_output(['git', 'status', '--porcelain'], text=True).strip()
+          assert all(hashlib.sha256(pathlib.Path(p).read_bytes()).hexdigest() == h for p, h in binding['source_files_sha256'].items())
+          inputs = json.loads(pathlib.Path('docs/experiments/pest-control/tier-one-postboard-policy-inputs.json').read_text())
+          expected = {f"frozen postboard construction {p['deck']} versus {p['opponent']}" for p in inputs['plans']}
+          name = 'com.wingedsheep.gym.PestControlTierOnePostboardPoliciesTest'
+          path = pathlib.Path('gym/build/test-results/test/TEST-' + name + '.xml')
+          root = ET.parse(path).getroot()
+          cases = root.findall('testcase')
+          assert root.attrib['name'] == name
+          assert len(cases) == int(root.attrib['tests']) == len(expected) == 10
+          assert {case.attrib['name'] for case in cases} == expected
+          assert all(case.attrib['classname'] == name for case in cases)
+          assert all(int(root.attrib.get(k, 0)) == 0 for k in ('failures', 'errors', 'skipped'))
+          assert all(not any(case.find(tag) is not None for tag in ('failure', 'error', 'skipped')) for case in cases)
+          result = {'schema': 'pest-postboard-policy-construction-qualification-v1',
+              'status': 'FROZEN_BOARDING_CONSTRUCTION_ONLY', 'source': binding,
+              'run_id': os.environ['GITHUB_RUN_ID'], 'run_attempt': os.environ['GITHUB_RUN_ATTEMPT'],
+              'class_name': name, 'cases': [case.attrib['name'] for case in cases],
+              'xml_path': str(path), 'xml_sha256': hashlib.sha256(path.read_bytes()).hexdigest(),
+              'actual_cases': 10, 'sideboard_strategy_frozen': True, 'sideboard_deck_digests_frozen': True,
+              'sideboard_pilots_qualified': False, 'combined_runtime_admitted': False,
+              'gameplay_authorized': False, 'official_seeds_generated': 0,
+              'official_games_initialized': 0, 'official_outcomes_exposed': 0}
+          (report / 'qualification.json').write_text(json.dumps(result, indent=2) + '\n')
+          PY
+
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: pest-postboard-policy-construction
+          if-no-files-found: error
+          path: |
+            build/reports/pest-postboard-policies
+            gym/build/test-results/test/*.xml
