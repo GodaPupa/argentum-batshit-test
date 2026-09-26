@@ -1,0 +1,90 @@
+{
+  "schema": "pest-readiness-successor-receiving-guard-audit-v1",
+  "status": "PROSPECTIVE_SOURCE_REVIEW_AND_RUNTIME_REQUIRED",
+  "failed_source_head": "1669cc465bf1530d744f9b5612cf733240154ea3",
+  "failed_run": 36245631665,
+  "failed_job": 108414823225,
+  "prior_guard_audit": "docs/experiments/pest-control/postboard-closure-evidence/inherited-receiving-guard-audit.json",
+  "newly_triggered_workflow": ".github/workflows/pest-control-tier-one-postboard-support-batch-b.yml",
+  "prospective_rebindings": {
+    "a": {
+      "manifest": "docs/experiments/pest-control/tier-one-postboard-support-batch-a-receiving-sources.json",
+      "manifest_sha256": "9ea4953302aeeac2a0b539c6ddc369c6404e3a291ed8a131a7976068e95c67e7",
+      "workflow_sha256": "1da307055612deb6dbc72c67f6313a5feef452ffe7c4acfbe9acfeb16336cf0c",
+      "source_bindings": 24,
+      "historical_bindings_changed": [
+        {
+          "path": "gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOnePostboardSupportBatchATest.kt",
+          "prior_sha256": "dd41dccfc2ca704ba9cb92139450ca634538d971524295ea042c2de085c8ddb8",
+          "candidate_sha256": "68c0676cc90575e23af2bddfb899b8d0fe5ceeedade9936afb5e2792ad4cc24b"
+        },
+        {
+          "path": "gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOneMonoBlueTerrorReadinessTest.kt",
+          "prior_sha256": "0d40cf181af08bceb799e9c5b71278cca528792af87f53e508eb9d9eb28033ee",
+          "candidate_sha256": "a665ccc7c8067b52ae42a49b75c24f62a3d348289d23807ce140fc327884508e"
+        },
+        {
+          "path": ".github/workflows/pest-control-tier-one-postboard-support-batch-a.yml",
+          "prior_sha256": "ae0c74da029e89f060ac70d01b5f943a44a4292b0f5a5e9e07f191ef76789719",
+          "candidate_sha256": "1da307055612deb6dbc72c67f6313a5feef452ffe7c4acfbe9acfeb16336cf0c"
+        },
+        {
+          "path": "mtg-sets/src/test/resources/snapshots/cards/SHM.json",
+          "prior_sha256": "6f56256a287a893d95ed66f4919bd12b130907cda83039bdf328ddd006e9bb11",
+          "candidate_sha256": "bd54ea40b29985e202f1b8622cf5dcef83e71dbde6db6f71007fe954275b3b1b"
+        },
+        {
+          "path": "gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlTierOneMonoBlueTerrorReadiness.kt",
+          "prior_sha256": "16ff729bf1cce9fcd5a9d3a46233efe73a2ff3f2bb61f105a48054489266fb11",
+          "candidate_sha256": "9cc5694d80620d163a6f6c6da8d59434cea309cf238f5623c75f0dd66ceb4b30"
+        }
+      ],
+      "original_regression_stages_retained": 10,
+      "snapshot_original_bodies_unchanged": true,
+      "snapshot_delta_exact": true,
+      "historical_manifest_unchanged": true,
+      "runtime_pending": true
+    },
+    "b": {
+      "manifest": "docs/experiments/pest-control/tier-one-postboard-support-batch-b-receiving-sources.json",
+      "manifest_sha256": "062272c2d343c004f71b73411465bef391ccb1f6b9f275a95924b17344f33ac1",
+      "workflow_sha256": "7d39a116dd3ab141563b4f1811dd5f4badbf53df64ab737e964af6fa6d35cf5d",
+      "source_bindings": 36,
+      "historical_bindings_changed": [
+        {
+          "path": ".github/workflows/pest-control-tier-one-postboard-support-batch-b.yml",
+          "prior_sha256": "9675dc35966096a20eccce7a02dbc5d6b45a44366a1716e7d869355aa6a82bbb",
+          "candidate_sha256": "7d39a116dd3ab141563b4f1811dd5f4badbf53df64ab737e964af6fa6d35cf5d"
+        },
+        {
+          "path": "gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlTierOneMonoBlueTerrorReadiness.kt",
+          "prior_sha256": "16ff729bf1cce9fcd5a9d3a46233efe73a2ff3f2bb61f105a48054489266fb11",
+          "candidate_sha256": "9cc5694d80620d163a6f6c6da8d59434cea309cf238f5623c75f0dd66ceb4b30"
+        },
+        {
+          "path": "gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOneMonoBlueTerrorReadinessTest.kt",
+          "prior_sha256": "0d40cf181af08bceb799e9c5b71278cca528792af87f53e508eb9d9eb28033ee",
+          "candidate_sha256": "a665ccc7c8067b52ae42a49b75c24f62a3d348289d23807ce140fc327884508e"
+        },
+        {
+          "path": "gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOnePostboardSupportBatchATest.kt",
+          "prior_sha256": "dd41dccfc2ca704ba9cb92139450ca634538d971524295ea042c2de085c8ddb8",
+          "candidate_sha256": "68c0676cc90575e23af2bddfb899b8d0fe5ceeedade9936afb5e2792ad4cc24b"
+        },
+        {
+          "path": "gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOnePostboardSupportBatchBTest.kt",
+          "prior_sha256": "f9f6035131cc98a280d29fba153a1533e345b31c6f8d1c801dccea0a31a1db46",
+          "candidate_sha256": "eb2e10cd2a3bb6d774e4046838b7a234b359fff7c347ff2545378a2d30b41b3c"
+        }
+      ],
+      "original_regression_stages_retained": 11,
+      "snapshot_original_bodies_unchanged": true,
+      "snapshot_delta_exact": true,
+      "historical_manifest_unchanged": true,
+      "runtime_pending": true
+    }
+  },
+  "unchanged_other_receiving_guards": "Existing priority39-file manifest and combined snapshot guard remain byte-correct. Monster Cascade/Prototype and Spy B/C have no independent fixed source manifest. Full CI remains required; no historical execution source guards are rebound.",
+  "historical_authority": "Closed Mono-Blue Terror gameplay and its original historical inventory/status remain unchanged; this repairs a current registry assertion in dormant deterministic construction only.",
+  "official_execution_authorized": false
+}
