@@ -1,16 +1,18 @@
 # Pest Tier-1 deterministic postboard policy inputs
 
-These are the concrete boarding choices for independent strategy review within the existing
+These are the independently reviewed boarding choices within the existing
 [five-matchup stopping rule](tier-one-qualification-stopping-rule.md). The exact ten resulting
-60-card decks, residual 15-card sideboards, original identities and proposed result digests are in
+60-card decks, residual 15-card sideboards, original identities and frozen result digests are in
 [the policy inputs](tier-one-postboard-policy-inputs.json). The Kotlin policy selects only by the
 two frozen deck identities and uses the independently qualified exchange compiler from source
 `232f4904f3929fec917f87b9565f8adb4047487c`.
 
-**Status: independent strategy review accepted; exact boarding digests frozen; construction
-qualification pending.** The [separate freeze receipt](tier-one-postboard-policy-freeze.json)
+**Status: independent strategy review accepted; exact boarding digests frozen; all ten construction
+cases passed and independently audited.** The [separate freeze receipt](tier-one-postboard-policy-freeze.json)
 records the non-author coordinator review of `fa55b5bec5c29c0feabd850fc9fdda023cc20ab7` and freezes
 the immutable input snapshot without changing any of its ten choices or sixty identity digests.
+The [construction receipt](postboard-policy-evidence/remote-36259438559/receipt.json) preserves the
+original run36259438559 artifact and the separate non-author `/root/manual` artifact review.
 The choices below are prospective judgments about the public lists. No matchup result, pilot
 trial, seed or future draw was used to select or revise them. The same exchange applies on the
 play and draw and in either seat. Original preboard decks and all six complete-75 card pools are
@@ -110,10 +112,11 @@ not removed.
 
 ## Acceptance and continuation boundary
 
-Independent strategy review has accepted these exact inputs and their digest freeze. The next
-mechanical qualification is ten construction cases, one for each
-table row, against the fixed input manifest and the existing exchange compiler. Those cases are
-deck-construction checks, not pilot-development fixtures or matchup games.
+Independent strategy review accepted these exact inputs and their digest freeze before execution.
+Source `3add5c455608ddd5115acfbde7c23408f802de46` then passed all ten construction cases, one per
+table row, against the fixed input manifest and existing exchange compiler. The original XML has
+ten distinct passing cases with no failures, errors or skips; the non-author artifact audit verified
+the exact source and all twelve file pins. This accepts the bounded construction component only.
 
 The receiving source still needs the complete sideboard pilots, every reachable choice and
 interaction, replay/runtime and journal checks, canonical post-block receiving qualification,
