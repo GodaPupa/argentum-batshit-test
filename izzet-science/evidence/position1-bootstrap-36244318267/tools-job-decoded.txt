@@ -1,0 +1,1319 @@
+﻿2026-09-26T13:11:15.2547332Z Current runner version: '2.337.0'
+2026-09-26T13:11:15.2567419Z ##[group]Runner Image Provisioner
+2026-09-26T13:11:15.2568076Z Hosted Compute Agent
+2026-09-26T13:11:15.2568440Z Version: 20260828.587
+2026-09-26T13:11:15.2568891Z Commit: abac92662cab4cc7352de4f9f9d2e2419aad9c29
+2026-09-26T13:11:15.2569346Z Build Date: 2026-08-28T16:44:25Z
+2026-09-26T13:11:15.2569765Z Worker ID: {ae15bf32-6599-4432-b706-cacc841f3fe4}
+2026-09-26T13:11:15.2570232Z Azure Region: centralus
+2026-09-26T13:11:15.2570598Z ##[endgroup]
+2026-09-26T13:11:15.2571466Z ##[group]Operating System
+2026-09-26T13:11:15.2572067Z Ubuntu
+2026-09-26T13:11:15.2572388Z 24.04.5
+2026-09-26T13:11:15.2572740Z LTS
+2026-09-26T13:11:15.2573062Z ##[endgroup]
+2026-09-26T13:11:15.2573423Z ##[group]Runner Image
+2026-09-26T13:11:15.2573827Z Image: ubuntu-24.04
+2026-09-26T13:11:15.2574172Z Version: 20260920.314.1
+2026-09-26T13:11:15.2574992Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20260920.314/images/ubuntu/Ubuntu2404-Readme.md
+2026-09-26T13:11:15.2575931Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20260920.314
+2026-09-26T13:11:15.2576553Z ##[endgroup]
+2026-09-26T13:11:15.2577275Z ##[group]GITHUB_TOKEN Permissions
+2026-09-26T13:11:15.2578570Z Contents: read
+2026-09-26T13:11:15.2578958Z Metadata: read
+2026-09-26T13:11:15.2579341Z Packages: read
+2026-09-26T13:11:15.2579727Z ##[endgroup]
+2026-09-26T13:11:15.2581139Z Secret source: Actions
+2026-09-26T13:11:15.2581751Z Cache mode: write
+2026-09-26T13:11:15.2582328Z Prepare workflow directory
+2026-09-26T13:11:15.2956984Z Prepare all required actions
+2026-09-26T13:11:15.2990759Z Getting action download info
+2026-09-26T13:11:15.5545894Z Download action repository 'actions/checkout@v6' (SHA:d23441a48e516b6c34aea4fa41551a30e30af803)
+2026-09-26T13:11:15.6309173Z Download action repository 'actions/setup-java@v5' (SHA:b6effb05e454b25005698d916606bdc6ffcbf961)
+2026-09-26T13:11:16.1870693Z Download action repository 'gradle/actions@v6' (SHA:9c971963bec38e04b3d30dcc455b5382be2fdbfb)
+2026-09-26T13:11:17.7342089Z Download action repository 'actions/cache@v4' (SHA:0057852bfaa89a56745cba8c7296529d2fc39830)
+2026-09-26T13:11:17.9234192Z Complete job name: test (tools)
+2026-09-26T13:11:17.9684062Z ##[group]Run actions/checkout@v6
+2026-09-26T13:11:17.9684586Z with:
+2026-09-26T13:11:17.9684841Z   repository: GodaPupa/argentum-batshit-test
+2026-09-26T13:11:17.9686704Z   token: ***
+2026-09-26T13:11:17.9686984Z   ssh-strict: true
+2026-09-26T13:11:17.9687274Z   ssh-user: git
+2026-09-26T13:11:17.9687547Z   persist-credentials: true
+2026-09-26T13:11:17.9687802Z   clean: true
+2026-09-26T13:11:17.9688029Z   sparse-checkout-cone-mode: true
+2026-09-26T13:11:17.9688337Z   fetch-depth: 1
+2026-09-26T13:11:17.9688594Z   fetch-tags: false
+2026-09-26T13:11:17.9688848Z   show-progress: true
+2026-09-26T13:11:17.9689103Z   lfs: false
+2026-09-26T13:11:17.9689335Z   submodules: false
+2026-09-26T13:11:17.9689604Z   set-safe-directory: true
+2026-09-26T13:11:17.9689922Z   allow-unsafe-pr-checkout: false
+2026-09-26T13:11:17.9690306Z env:
+2026-09-26T13:11:17.9690676Z   GRADLE_BUILD_CACHE_DIR: /home/runner/work/argentum-batshit-test/argentum-batshit-test/.gradle/build-cache
+2026-09-26T13:11:17.9691190Z ##[endgroup]
+2026-09-26T13:11:18.0509291Z Syncing repository: GodaPupa/argentum-batshit-test
+2026-09-26T13:11:18.0510486Z ##[group]Getting Git version info
+2026-09-26T13:11:18.0510808Z Working directory is '/home/runner/work/argentum-batshit-test/argentum-batshit-test'
+2026-09-26T13:11:18.0511314Z [command]/usr/bin/git version
+2026-09-26T13:11:18.0565613Z git version 2.55.0
+2026-09-26T13:11:18.0581615Z ##[endgroup]
+2026-09-26T13:11:18.0594409Z Temporarily overriding HOME='/home/runner/work/_temp/7e198d96-1aa9-4f1c-9dd0-c22a1f610da1' before making global git config changes
+2026-09-26T13:11:18.0595334Z Adding repository directory to the temporary git global config as a safe directory
+2026-09-26T13:11:18.0599000Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/argentum-batshit-test/argentum-batshit-test
+2026-09-26T13:11:18.0649539Z Deleting the contents of '/home/runner/work/argentum-batshit-test/argentum-batshit-test'
+2026-09-26T13:11:18.0652536Z ##[group]Determining repository object format
+2026-09-26T13:11:18.0653992Z ##[endgroup]
+2026-09-26T13:11:18.0654406Z ##[group]Initializing the repository
+2026-09-26T13:11:18.0658450Z [command]/usr/bin/git init /home/runner/work/argentum-batshit-test/argentum-batshit-test
+2026-09-26T13:11:18.0762372Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-09-26T13:11:18.0763606Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-09-26T13:11:18.0764296Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-09-26T13:11:18.0764911Z hint: call:
+2026-09-26T13:11:18.0765334Z hint:
+2026-09-26T13:11:18.0765986Z hint: 	git config --global init.defaultBranch <name>
+2026-09-26T13:11:18.0766518Z hint:
+2026-09-26T13:11:18.0767145Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-09-26T13:11:18.0767931Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-09-26T13:11:18.0768492Z hint:
+2026-09-26T13:11:18.0768899Z hint: 	git branch -m <name>
+2026-09-26T13:11:18.0769413Z hint:
+2026-09-26T13:11:18.0769917Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-09-26T13:11:18.0770930Z Initialized empty Git repository in /home/runner/work/argentum-batshit-test/argentum-batshit-test/.git/
+2026-09-26T13:11:18.0772920Z [command]/usr/bin/git remote add origin https://github.com/GodaPupa/argentum-batshit-test
+2026-09-26T13:11:18.0825643Z ##[endgroup]
+2026-09-26T13:11:18.0826303Z ##[group]Disabling automatic garbage collection
+2026-09-26T13:11:18.0827557Z [command]/usr/bin/git config --local gc.auto 0
+2026-09-26T13:11:18.0865091Z ##[endgroup]
+2026-09-26T13:11:18.0866255Z ##[group]Setting up auth
+2026-09-26T13:11:18.0866847Z Removing SSH command configuration
+2026-09-26T13:11:18.0870047Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-09-26T13:11:18.0905351Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-09-26T13:11:18.1217924Z Removing HTTP extra header
+2026-09-26T13:11:18.1223223Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-09-26T13:11:18.1252958Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-09-26T13:11:18.1433630Z Removing includeIf entries pointing to credentials config files
+2026-09-26T13:11:18.1439191Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-09-26T13:11:18.1470188Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-09-26T13:11:18.1658724Z [command]/usr/bin/git config --file /home/runner/work/_temp/git-credentials-15f831d9-f706-4cda-a84a-b6d9f668ef2c.config http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-09-26T13:11:18.1696391Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/argentum-batshit-test/argentum-batshit-test/.git.path /home/runner/work/_temp/git-credentials-15f831d9-f706-4cda-a84a-b6d9f668ef2c.config
+2026-09-26T13:11:18.1727625Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/argentum-batshit-test/argentum-batshit-test/.git/worktrees/*.path /home/runner/work/_temp/git-credentials-15f831d9-f706-4cda-a84a-b6d9f668ef2c.config
+2026-09-26T13:11:18.1767912Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-15f831d9-f706-4cda-a84a-b6d9f668ef2c.config
+2026-09-26T13:11:18.1797544Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-15f831d9-f706-4cda-a84a-b6d9f668ef2c.config
+2026-09-26T13:11:18.1824098Z ##[endgroup]
+2026-09-26T13:11:18.1824593Z ##[group]Fetching the repository
+2026-09-26T13:11:18.1830760Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +2029ab158862b274c710fc17c7e531704fa890d3:refs/remotes/pull/177/merge
+2026-09-26T13:11:24.6913835Z From https://github.com/GodaPupa/argentum-batshit-test
+2026-09-26T13:11:24.6914617Z  * [new ref]           2029ab158862b274c710fc17c7e531704fa890d3 -> pull/177/merge
+2026-09-26T13:11:24.6917783Z ##[endgroup]
+2026-09-26T13:11:24.6918209Z ##[group]Determining the checkout info
+2026-09-26T13:11:24.6918647Z ##[endgroup]
+2026-09-26T13:11:24.6922890Z [command]/usr/bin/git sparse-checkout disable
+2026-09-26T13:11:24.6971303Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-09-26T13:11:24.7001267Z ##[group]Checking out the ref
+2026-09-26T13:11:24.7004307Z [command]/usr/bin/git checkout --progress --force refs/remotes/pull/177/merge
+2026-09-26T13:11:25.7806252Z Updating files:  91% (25189/27587)
+2026-09-26T13:11:25.8048690Z Updating files:  92% (25381/27587)
+2026-09-26T13:11:25.8176790Z Updating files:  93% (25656/27587)
+2026-09-26T13:11:25.8337672Z Updating files:  94% (25932/27587)
+2026-09-26T13:11:25.8502188Z Updating files:  95% (26208/27587)
+2026-09-26T13:11:25.8640895Z Updating files:  96% (26484/27587)
+2026-09-26T13:11:25.8800427Z Updating files:  97% (26760/27587)
+2026-09-26T13:11:25.9388098Z Updating files:  98% (27036/27587)
+2026-09-26T13:11:25.9546730Z Updating files:  99% (27312/27587)
+2026-09-26T13:11:25.9547189Z Updating files: 100% (27587/27587)
+2026-09-26T13:11:25.9547490Z Updating files: 100% (27587/27587), done.
+2026-09-26T13:11:25.9722254Z Note: switching to 'refs/remotes/pull/177/merge'.
+2026-09-26T13:11:25.9722670Z 
+2026-09-26T13:11:25.9722815Z You are in 'detached HEAD' state. You can look around, make experimental
+2026-09-26T13:11:25.9723152Z changes and commit them, and you can discard any commits you make in this
+2026-09-26T13:11:25.9723647Z state without impacting any branches by switching back to a branch.
+2026-09-26T13:11:25.9723808Z 
+2026-09-26T13:11:25.9723925Z If you want to create a new branch to retain commits you create, you may
+2026-09-26T13:11:25.9724218Z do so (now or later) by using -c with the switch command. Example:
+2026-09-26T13:11:25.9724377Z 
+2026-09-26T13:11:25.9724485Z   git switch -c <new-branch-name>
+2026-09-26T13:11:25.9724604Z 
+2026-09-26T13:11:25.9724672Z Or undo this operation with:
+2026-09-26T13:11:25.9724819Z 
+2026-09-26T13:11:25.9724912Z   git switch -
+2026-09-26T13:11:25.9724993Z 
+2026-09-26T13:11:25.9725118Z Turn off this advice by setting config variable advice.detachedHead to false
+2026-09-26T13:11:25.9725347Z 
+2026-09-26T13:11:25.9725547Z HEAD is now at 2029ab15 Merge a31d4eac79bd6eb50a3890e90fe50e68862bf565 into 33e8ee64c6e1752f6c5593531117ea2e85002d82
+2026-09-26T13:11:25.9793462Z ##[endgroup]
+2026-09-26T13:11:25.9840551Z [command]/usr/bin/git log -1 --format=%H
+2026-09-26T13:11:25.9866879Z 2029ab158862b274c710fc17c7e531704fa890d3
+2026-09-26T13:11:26.0084095Z ##[group]Run actions/setup-java@v5
+2026-09-26T13:11:26.0084263Z with:
+2026-09-26T13:11:26.0084386Z   distribution: temurin
+2026-09-26T13:11:26.0084517Z   java-version: 21
+2026-09-26T13:11:26.0084640Z   java-package: jdk
+2026-09-26T13:11:26.0084767Z   check-latest: false
+2026-09-26T13:11:26.0084892Z   set-default: true
+2026-09-26T13:11:26.0085016Z   verify-signature: false
+2026-09-26T13:11:26.0085150Z   server-id: github
+2026-09-26T13:11:26.0085281Z   server-username: GITHUB_ACTOR
+2026-09-26T13:11:26.0085432Z   server-password: GITHUB_TOKEN
+2026-09-26T13:11:26.0085581Z   overwrite-settings: true
+2026-09-26T13:11:26.0085716Z   job-status: success
+2026-09-26T13:11:26.0087324Z   token: ***
+2026-09-26T13:11:26.0087452Z   show-download-progress: false
+2026-09-26T13:11:26.0087594Z env:
+2026-09-26T13:11:26.0087840Z   GRADLE_BUILD_CACHE_DIR: /home/runner/work/argentum-batshit-test/argentum-batshit-test/.gradle/build-cache
+2026-09-26T13:11:26.0088260Z ##[endgroup]
+2026-09-26T13:11:26.1129553Z ##[group]Installed distributions
+2026-09-26T13:11:26.1177918Z Resolved Java 21.0.12+1 from tool-cache
+2026-09-26T13:11:26.1178227Z Setting Java 21.0.12+1 as the default
+2026-09-26T13:11:26.1186241Z Creating toolchains.xml for JDK version 21 from temurin
+2026-09-26T13:11:26.1235557Z Writing to /home/runner/.m2/toolchains.xml
+2026-09-26T13:11:26.1235991Z 
+2026-09-26T13:11:26.1236104Z Java configuration:
+2026-09-26T13:11:26.1236324Z   Distribution: temurin
+2026-09-26T13:11:26.1236529Z   Version: 21.0.12+1
+2026-09-26T13:11:26.1236835Z   Path: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.12-1/x64
+2026-09-26T13:11:26.1237097Z 
+2026-09-26T13:11:26.1237588Z ##[endgroup]
+2026-09-26T13:11:26.1274922Z Creating settings.xml with server-id: github
+2026-09-26T13:11:26.1275291Z Writing to /home/runner/.m2/settings.xml
+2026-09-26T13:11:26.1275954Z Configured MAVEN_ARGS to include -ntp to suppress Maven transfer progress logs. Set 'show-download-progress: true' to keep the download progress output.
+2026-09-26T13:11:26.1483996Z ##[group]Run gradle/actions/setup-gradle@v6
+2026-09-26T13:11:26.1484187Z with:
+2026-09-26T13:11:26.1484319Z   cache-provider: enhanced
+2026-09-26T13:11:26.1484461Z   cache-disabled: false
+2026-09-26T13:11:26.1484592Z   cache-read-only: true
+2026-09-26T13:11:26.1484725Z   cache-write-only: false
+2026-09-26T13:11:26.1484871Z   cache-overwrite-existing: false
+2026-09-26T13:11:26.1485025Z   cache-cleanup: on-success
+2026-09-26T13:11:26.1485193Z   gradle-home-cache-includes: caches
+notifications
+
+2026-09-26T13:11:26.1485379Z   add-job-summary: always
+2026-09-26T13:11:26.1485528Z   add-job-summary-as-pr-comment: never
+2026-09-26T13:11:26.1485692Z   dependency-graph: disabled
+2026-09-26T13:11:26.1485874Z   dependency-graph-report-dir: dependency-graph-reports
+2026-09-26T13:11:26.1486084Z   dependency-graph-continue-on-failure: true
+2026-09-26T13:11:26.1486278Z   build-scan-publish: false
+2026-09-26T13:11:26.1486424Z   validate-wrappers: true
+2026-09-26T13:11:26.1486608Z   allow-snapshot-wrappers: false
+2026-09-26T13:11:26.1486777Z   gradle-home-cache-strict-match: false
+2026-09-26T13:11:26.1487075Z   workflow-job-context: {
+  "name": "tools",
+  "tasks": ":gym:test :gym-server:test :gym-trainer:test :mtgish-tooling:test"
+}
+2026-09-26T13:11:26.1488852Z   github-token: ***
+2026-09-26T13:11:26.1488978Z env:
+2026-09-26T13:11:26.1489224Z   GRADLE_BUILD_CACHE_DIR: /home/runner/work/argentum-batshit-test/argentum-batshit-test/.gradle/build-cache
+2026-09-26T13:11:26.1489566Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.12-1/x64
+2026-09-26T13:11:26.1489836Z   JAVA_HOME_21_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.12-1/x64
+2026-09-26T13:11:26.1490060Z   MAVEN_ARGS: -ntp
+2026-09-26T13:11:26.1490182Z ##[endgroup]
+2026-09-26T13:11:26.4981671Z Merged default JDK locations into /home/runner/.m2/toolchains.xml
+2026-09-26T13:11:26.4985270Z Enhanced Caching: This build is using the proprietary 'gradle-actions-caching' provider for optimized caching support. See https://github.com/gradle/actions/blob/main/DISTRIBUTION.md for terms of use and opt-out instructions.
+2026-09-26T13:11:26.5552729Z ##[group]Restore Gradle state from cache
+2026-09-26T13:11:26.6790463Z Cache hit for restore-key: gradle-home-v2|Linux-X64|test[a7652eeb27038373de7edb820b63f121]-d0c78bb4cca79b7402ba65bd62b5cb621230a054
+2026-09-26T13:11:27.2347086Z Received 646996 of 646996 (100.0%), 1.6 MBs/sec
+2026-09-26T13:11:27.2347515Z Cache Size: ~1 MB (646996 B)
+2026-09-26T13:11:27.2390771Z [command]/usr/bin/tar -xf /home/runner/work/_temp/78856968-757b-4f65-ba2c-5217d93414be/cache.tzst -P -C /home/runner/work/argentum-batshit-test/argentum-batshit-test --use-compress-program unzstd
+2026-09-26T13:11:27.4612143Z Cache restored successfully
+2026-09-26T13:11:27.4616022Z Restored cache entry with key gradle-home-v2|Linux-X64|test[a7652eeb27038373de7edb820b63f121]-2029ab158862b274c710fc17c7e531704fa890d3 in 906ms
+2026-09-26T13:11:27.5880171Z Cache hit for: gradle-kotlin-dsl-v2-47bb15ab9d1d244419f88a8f7d95ae8a
+2026-09-26T13:11:27.5927975Z Cache hit for: gradle-instrumented-jars-v2-bb910fcacf708cb42c10c2b5b22b5d19
+2026-09-26T13:11:27.5978098Z Cache hit for: gradle-dependencies-v2-c31afde829c33f835a1f29cbcfae9ddc
+2026-09-26T13:11:27.6009842Z Cache hit for: gradle-wrapper-zips-v2-852daf033b54d6f5dd2552660ef7de60
+2026-09-26T13:11:27.6069493Z Cache hit for: gradle-generated-gradle-jars-v2-aab574994eb421acff6809687eadd5de
+2026-09-26T13:11:27.6101665Z Cache hit for: gradle-groovy-dsl-v2-f899aff15c2d37ebc18315a6bfe61114
+2026-09-26T13:11:27.6116732Z Cache hit for: gradle-transforms-v2-ce64cf56aee45f6401b975af0bc9e903
+2026-09-26T13:11:27.9813260Z Received 101824 of 101824 (100.0%), 0.4 MBs/sec
+2026-09-26T13:11:27.9813750Z Cache Size: ~0 MB (101824 B)
+2026-09-26T13:11:27.9843957Z [command]/usr/bin/tar -xf /home/runner/work/_temp/946f0692-8e25-44c1-bd2e-74a8c8c1a7e6/cache.tzst -P -C /home/runner/work/argentum-batshit-test/argentum-batshit-test --use-compress-program unzstd
+2026-09-26T13:11:27.9999185Z Cache restored successfully
+2026-09-26T13:11:28.0004092Z Restored cache entry with key gradle-groovy-dsl-v2-f899aff15c2d37ebc18315a6bfe61114 in 538ms
+2026-09-26T13:11:28.0320594Z Received 338388 of 338388 (100.0%), 1.1 MBs/sec
+2026-09-26T13:11:28.0321106Z Cache Size: ~0 MB (338388 B)
+2026-09-26T13:11:28.0348284Z [command]/usr/bin/tar -xf /home/runner/work/_temp/7ecd0b76-d36d-4325-afb6-02c5e3f60829/cache.tzst -P -C /home/runner/work/argentum-batshit-test/argentum-batshit-test --use-compress-program unzstd
+2026-09-26T13:11:28.0617151Z Received 60281 of 60281 (100.0%), 0.2 MBs/sec
+2026-09-26T13:11:28.0617728Z Cache Size: ~0 MB (60281 B)
+2026-09-26T13:11:28.0637954Z [command]/usr/bin/tar -xf /home/runner/work/_temp/f551ca46-89d8-4630-a7a7-0410442af53a/cache.tzst -P -C /home/runner/work/argentum-batshit-test/argentum-batshit-test --use-compress-program unzstd
+2026-09-26T13:11:28.0739685Z Cache restored successfully
+2026-09-26T13:11:28.0741117Z Restored cache entry with key gradle-instrumented-jars-v2-bb910fcacf708cb42c10c2b5b22b5d19 in 612ms
+2026-09-26T13:11:28.1480656Z Cache restored successfully
+2026-09-26T13:11:28.1484159Z Restored cache entry with key gradle-kotlin-dsl-v2-47bb15ab9d1d244419f88a8f7d95ae8a in 686ms
+2026-09-26T13:11:28.4188016Z Received 42158673 of 42158673 (100.0%), 51.8 MBs/sec
+2026-09-26T13:11:28.4188451Z Cache Size: ~40 MB (42158673 B)
+2026-09-26T13:11:28.4419557Z [command]/usr/bin/tar -xf /home/runner/work/_temp/d0038198-6ad3-450a-bcea-e8c6f81f46c6/cache.tzst -P -C /home/runner/work/argentum-batshit-test/argentum-batshit-test --use-compress-program unzstd
+2026-09-26T13:11:28.7107997Z Cache restored successfully
+2026-09-26T13:11:28.7127673Z Restored cache entry with key gradle-generated-gradle-jars-v2-aab574994eb421acff6809687eadd5de in 1250ms
+2026-09-26T13:11:28.7495622Z Received 67108864 of 264801627 (25.3%), 63.4 MBs/sec
+2026-09-26T13:11:28.7687395Z Received 75497472 of 139934591 (54.0%), 70.9 MBs/sec
+2026-09-26T13:11:28.7687770Z Received 33554432 of 116480350 (28.8%), 31.9 MBs/sec
+2026-09-26T13:11:29.2203069Z Received 116480350 of 116480350 (100.0%), 76.3 MBs/sec
+2026-09-26T13:11:29.2203697Z Cache Size: ~111 MB (116480350 B)
+2026-09-26T13:11:29.2284793Z [command]/usr/bin/tar -xf /home/runner/work/_temp/b7443725-2a93-4307-bd57-0694e171a32a/cache.tzst -P -C /home/runner/work/argentum-batshit-test/argentum-batshit-test --use-compress-program unzstd
+2026-09-26T13:11:29.7613432Z Received 248024411 of 264801627 (93.7%), 117.6 MBs/sec
+2026-09-26T13:11:29.7713243Z Received 135740287 of 139934591 (97.0%), 64.2 MBs/sec
+2026-09-26T13:11:29.8735805Z Received 139934591 of 139934591 (100.0%), 62.9 MBs/sec
+2026-09-26T13:11:29.8736871Z Cache Size: ~133 MB (139934591 B)
+2026-09-26T13:11:29.8867480Z [command]/usr/bin/tar -xf /home/runner/work/_temp/23786f0e-2688-4e73-b366-29a737b546c1/cache.tzst -P -C /home/runner/work/argentum-batshit-test/argentum-batshit-test --use-compress-program unzstd
+2026-09-26T13:11:29.9764660Z Received 264801627 of 264801627 (100.0%), 112.9 MBs/sec
+2026-09-26T13:11:29.9765457Z Cache Size: ~253 MB (264801627 B)
+2026-09-26T13:11:29.9784308Z [command]/usr/bin/tar -xf /home/runner/work/_temp/a24c3436-62b5-4663-a290-a30933be0587/cache.tzst -P -C /home/runner/work/argentum-batshit-test/argentum-batshit-test --use-compress-program unzstd
+2026-09-26T13:11:30.0596636Z Cache restored successfully
+2026-09-26T13:11:30.0673971Z Restored cache entry with key gradle-transforms-v2-ce64cf56aee45f6401b975af0bc9e903 in 2604ms
+2026-09-26T13:11:30.1495576Z Cache restored successfully
+2026-09-26T13:11:30.1605411Z Restored cache entry with key gradle-wrapper-zips-v2-852daf033b54d6f5dd2552660ef7de60 in 2698ms
+2026-09-26T13:11:30.3944198Z Cache restored successfully
+2026-09-26T13:11:30.4049733Z Restored cache entry with key gradle-dependencies-v2-c31afde829c33f835a1f29cbcfae9ddc in 2942ms
+2026-09-26T13:11:30.4074873Z ##[endgroup]
+2026-09-26T13:11:30.6348505Z ##[group]All Gradle Wrapper jars are valid
+2026-09-26T13:11:30.6354090Z ✓ Found known Gradle Wrapper JAR files:
+2026-09-26T13:11:30.6403238Z   497c8c2a7e5031f6aa847f88104aa80a93532ec32ee17bdb8d1d2f67a194a9c7 gradle/wrapper/gradle-wrapper.jar
+2026-09-26T13:11:30.6445934Z ##[endgroup]
+2026-09-26T13:11:30.6728993Z ##[group]Run actions/cache@v4
+2026-09-26T13:11:30.6729203Z with:
+2026-09-26T13:11:30.6729466Z   path: /home/runner/work/argentum-batshit-test/argentum-batshit-test/.gradle/build-cache
+2026-09-26T13:11:30.6729848Z   key: gradle-build-cache-Linux-tools-2029ab158862b274c710fc17c7e531704fa890d3
+2026-09-26T13:11:30.6730199Z   restore-keys: gradle-build-cache-Linux-tools-
+gradle-build-cache-Linux-
+
+2026-09-26T13:11:30.6730465Z   enableCrossOsArchive: false
+2026-09-26T13:11:30.6730651Z   fail-on-cache-miss: false
+2026-09-26T13:11:30.6730826Z   lookup-only: false
+2026-09-26T13:11:30.6730984Z   save-always: false
+2026-09-26T13:11:30.6731137Z env:
+2026-09-26T13:11:30.6731412Z   GRADLE_BUILD_CACHE_DIR: /home/runner/work/argentum-batshit-test/argentum-batshit-test/.gradle/build-cache
+2026-09-26T13:11:30.6731805Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.12-1/x64
+2026-09-26T13:11:30.6732339Z   JAVA_HOME_21_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.12-1/x64
+2026-09-26T13:11:30.6732621Z   MAVEN_ARGS: -ntp
+2026-09-26T13:11:30.6732802Z   GRADLE_ACTION_ID: gradle/actions/setup-gradle
+2026-09-26T13:11:30.6733014Z   GRADLE_USER_HOME: /home/runner/.gradle
+2026-09-26T13:11:30.6733213Z   GRADLE_BUILD_ACTION_SETUP_COMPLETED: true
+2026-09-26T13:11:30.6733509Z   DEVELOCITY_INJECTION_INIT_SCRIPT_NAME: gradle-actions.inject-develocity.init.gradle
+2026-09-26T13:11:30.6733818Z   DEVELOCITY_INJECTION_CUSTOM_VALUE: gradle-actions
+2026-09-26T13:11:30.6734035Z   GITHUB_DEPENDENCY_GRAPH_ENABLED: false
+2026-09-26T13:11:30.6734221Z ##[endgroup]
+2026-09-26T13:11:30.7519281Z (node:2133) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-09-26T13:11:30.7519978Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-09-26T13:11:30.8863089Z Cache not found for input keys: gradle-build-cache-Linux-tools-2029ab158862b274c710fc17c7e531704fa890d3, gradle-build-cache-Linux-tools-, gradle-build-cache-Linux-
+2026-09-26T13:11:30.8957195Z ##[group]Run set -uo pipefail
+2026-09-26T13:11:30.8957488Z [36;1mset -uo pipefail[0m
+2026-09-26T13:11:30.8957682Z [36;1mJPS="${JAVA_HOME}/bin/jps"[0m
+2026-09-26T13:11:30.8957886Z [36;1mJSTACK="${JAVA_HOME}/bin/jstack"[0m
+2026-09-26T13:11:30.8958084Z [36;1mWATCHDOG_TIMEOUT=$((20 * 60))[0m
+2026-09-26T13:11:30.8958267Z [36;1m[0m
+2026-09-26T13:11:30.8958506Z [36;1m./gradlew :gym:test :gym-server:test :gym-trainer:test :mtgish-tooling:test &[0m
+2026-09-26T13:11:30.8958786Z [36;1mBUILD_PID=$![0m
+2026-09-26T13:11:30.8958940Z [36;1m[0m
+2026-09-26T13:11:30.8959069Z [36;1m([0m
+2026-09-26T13:11:30.8959220Z [36;1m  sleep "${WATCHDOG_TIMEOUT}"[0m
+2026-09-26T13:11:30.8959576Z [36;1m  echo "::error::Tests exceeded ${WATCHDOG_TIMEOUT}s — assuming the forked test-worker hang. Dumping JVM threads."[0m
+2026-09-26T13:11:30.8960100Z [36;1m  for pid in $("${JPS}" -q); do[0m
+2026-09-26T13:11:30.8960379Z [36;1m    echo "===================== jstack ${pid} ====================="[0m
+2026-09-26T13:11:30.8960627Z [36;1m    "${JSTACK}" -l "${pid}" 2>&1 || true[0m
+2026-09-26T13:11:30.8960819Z [36;1m  done[0m
+2026-09-26T13:11:30.8961008Z [36;1m  echo "::error::Killing hung run."[0m
+2026-09-26T13:11:30.8961227Z [36;1m  kill -9 "${BUILD_PID}" 2>/dev/null || true[0m
+2026-09-26T13:11:30.8961428Z [36;1m) &[0m
+2026-09-26T13:11:30.8961576Z [36;1mWATCHDOG_PID=$![0m
+2026-09-26T13:11:30.8961738Z [36;1m[0m
+2026-09-26T13:11:30.8962200Z [36;1mwait "${BUILD_PID}"[0m
+2026-09-26T13:11:30.8962377Z [36;1mSTATUS=$?[0m
+2026-09-26T13:11:30.8962557Z [36;1mkill "${WATCHDOG_PID}" 2>/dev/null || true[0m
+2026-09-26T13:11:30.8962758Z [36;1mexit "${STATUS}"[0m
+2026-09-26T13:11:30.9811091Z shell: /usr/bin/bash -e {0}
+2026-09-26T13:11:30.9811410Z env:
+2026-09-26T13:11:30.9812027Z   GRADLE_BUILD_CACHE_DIR: /home/runner/work/argentum-batshit-test/argentum-batshit-test/.gradle/build-cache
+2026-09-26T13:11:30.9812625Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.12-1/x64
+2026-09-26T13:11:30.9813129Z   JAVA_HOME_21_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.12-1/x64
+2026-09-26T13:11:30.9813516Z   MAVEN_ARGS: -ntp
+2026-09-26T13:11:30.9813792Z   GRADLE_ACTION_ID: gradle/actions/setup-gradle
+2026-09-26T13:11:30.9814118Z   GRADLE_USER_HOME: /home/runner/.gradle
+2026-09-26T13:11:30.9814425Z   GRADLE_BUILD_ACTION_SETUP_COMPLETED: true
+2026-09-26T13:11:30.9814873Z   DEVELOCITY_INJECTION_INIT_SCRIPT_NAME: gradle-actions.inject-develocity.init.gradle
+2026-09-26T13:11:30.9815343Z   DEVELOCITY_INJECTION_CUSTOM_VALUE: gradle-actions
+2026-09-26T13:11:30.9815685Z   GITHUB_DEPENDENCY_GRAPH_ENABLED: false
+2026-09-26T13:11:30.9815973Z ##[endgroup]
+2026-09-26T13:11:31.6267113Z Starting a Gradle Daemon (subsequent builds will be faster)
+2026-09-26T13:11:33.2269939Z Calculating task graph as no cached configuration is available for tasks: :gym:test :gym-server:test :gym-trainer:test :mtgish-tooling:test
+2026-09-26T13:11:37.5270331Z > Task :buildSrc:checkKotlinGradlePluginConfigurationErrors SKIPPED
+2026-09-26T13:11:38.0262175Z > Task :buildSrc:generateExternalPluginSpecBuilders
+2026-09-26T13:11:38.0262967Z > Task :buildSrc:extractPrecompiledScriptPluginPlugins
+2026-09-26T13:11:38.4273254Z > Task :buildSrc:generateScriptPluginAdapters
+2026-09-26T13:11:38.5277905Z > Task :buildSrc:pluginDescriptors
+2026-09-26T13:11:38.5292777Z > Task :buildSrc:processResources
+2026-09-26T13:11:42.9263136Z > Task :buildSrc:compilePluginsBlocks
+2026-09-26T13:11:43.5272151Z > Task :buildSrc:generatePrecompiledScriptPluginAccessors
+2026-09-26T13:11:48.2262048Z > Task :buildSrc:compileKotlin
+2026-09-26T13:11:48.2262736Z > Task :buildSrc:compileJava NO-SOURCE
+2026-09-26T13:11:48.2263381Z > Task :buildSrc:compileGroovy NO-SOURCE
+2026-09-26T13:11:48.2263684Z > Task :buildSrc:classes
+2026-09-26T13:11:48.3273309Z > Task :buildSrc:jar
+2026-09-26T13:11:52.1279520Z > Task :ai:checkKotlinGradlePluginConfigurationErrors SKIPPED
+2026-09-26T13:11:52.1322693Z > Task :mtg-sdk:checkKotlinGradlePluginConfigurationErrors SKIPPED
+2026-09-26T13:11:52.1323564Z > Task :rules-engine:checkKotlinGradlePluginConfigurationErrors SKIPPED
+2026-09-26T13:11:52.1362788Z > Task :gym:checkKotlinGradlePluginConfigurationErrors SKIPPED
+2026-09-26T13:11:52.1392583Z > Task :mtg-sets:checkKotlinGradlePluginConfigurationErrors SKIPPED
+2026-09-26T13:11:52.1422604Z > Task :mtg-sets:1993-1999:checkKotlinGradlePluginConfigurationErrors SKIPPED
+2026-09-26T13:11:52.1452405Z > Task :gym:processResources NO-SOURCE
+2026-09-26T13:11:52.1453881Z > Task :mtg-sets:core:checkKotlinGradlePluginConfigurationErrors SKIPPED
+2026-09-26T13:11:52.1480279Z > Task :mtg-sets:2000-2002:checkKotlinGradlePluginConfigurationErrors SKIPPED
+2026-09-26T13:11:52.1502444Z > Task :mtg-sets:2008-2016:checkKotlinGradlePluginConfigurationErrors SKIPPED
+2026-09-26T13:11:52.1532529Z > Task :mtg-sets:2017-2022:checkKotlinGradlePluginConfigurationErrors SKIPPED
+2026-09-26T13:11:52.1562517Z > Task :mtg-sets:2003-2007:checkKotlinGradlePluginConfigurationErrors SKIPPED
+2026-09-26T13:11:52.1563292Z > Task :mtg-sets:2023:checkKotlinGradlePluginConfigurationErrors SKIPPED
+2026-09-26T13:11:52.1592576Z > Task :mtg-sets:2024:checkKotlinGradlePluginConfigurationErrors SKIPPED
+2026-09-26T13:11:52.1622382Z > Task :mtg-sets:2025:checkKotlinGradlePluginConfigurationErrors SKIPPED
+2026-09-26T13:11:52.1634705Z > Task :mtg-sets:2026:checkKotlinGradlePluginConfigurationErrors SKIPPED
+2026-09-26T13:11:52.1652315Z > Task :gym:processTestResources NO-SOURCE
+2026-09-26T13:11:52.1682656Z > Task :mtg-sdk:processResources NO-SOURCE
+2026-09-26T13:11:52.2280062Z > Task :rules-engine:processResources
+2026-09-26T13:11:52.2306230Z > Task :rules-engine:processTestFixturesResources NO-SOURCE
+2026-09-26T13:11:52.2310426Z > Task :mtg-sets:processResources
+2026-09-26T13:11:52.2311261Z > Task :mtg-sets:2000-2002:processResources NO-SOURCE
+2026-09-26T13:11:52.2311651Z > Task :mtg-sets:1993-1999:processResources NO-SOURCE
+2026-09-26T13:11:52.2312209Z > Task :mtg-sets:2008-2016:processResources NO-SOURCE
+2026-09-26T13:11:52.2312655Z > Task :mtg-sets:2017-2022:processResources NO-SOURCE
+2026-09-26T13:11:52.2312997Z > Task :mtg-sets:2023:processResources NO-SOURCE
+2026-09-26T13:11:52.2313334Z > Task :mtg-sets:2024:processResources NO-SOURCE
+2026-09-26T13:11:52.2313594Z > Task :mtg-sets:2025:processResources NO-SOURCE
+2026-09-26T13:11:52.2313820Z > Task :mtg-sets:2026:processResources NO-SOURCE
+2026-09-26T13:11:52.2314027Z > Task :mtg-sets:core:processResources
+2026-09-26T13:11:52.2314296Z > Task :gym-server:checkKotlinGradlePluginConfigurationErrors SKIPPED
+2026-09-26T13:11:52.2314952Z > Task :mtg-sets:2003-2007:processResources NO-SOURCE
+2026-09-26T13:11:52.2315312Z > Task :ai:processResources
+2026-09-26T13:11:52.2315703Z > Task :gym-trainer:checkKotlinGradlePluginConfigurationErrors SKIPPED
+2026-09-26T13:11:52.2316059Z > Task :gym-server:processTestResources NO-SOURCE
+2026-09-26T13:11:52.2316418Z > Task :gym-server:processResources
+2026-09-26T13:11:52.2316857Z > Task :mtgish-tooling:checkKotlinGradlePluginConfigurationErrors SKIPPED
+2026-09-26T13:11:52.2317235Z > Task :gym-trainer:processResources NO-SOURCE
+2026-09-26T13:11:52.2317574Z > Task :mtgish-tooling:processResources NO-SOURCE
+2026-09-26T13:11:52.2317905Z > Task :gym-trainer:processTestResources NO-SOURCE
+2026-09-26T13:11:52.3268895Z > Task :mtgish-tooling:processTestResources
+2026-09-26T13:12:19.3273072Z > Task :mtgish-tooling:compileKotlin
+2026-09-26T13:12:19.4262992Z > Task :mtgish-tooling:compileJava NO-SOURCE
+2026-09-26T13:12:19.4263478Z > Task :mtgish-tooling:classes UP-TO-DATE
+2026-09-26T13:12:19.4322724Z > Task :mtgish-tooling:jar
+2026-09-26T13:12:22.1276055Z > Task :mtg-sdk:compileKotlin
+2026-09-26T13:12:22.2266566Z > Task :mtgish-tooling:compileTestKotlin
+2026-09-26T13:12:22.2291216Z > Task :mtgish-tooling:compileTestJava NO-SOURCE
+2026-09-26T13:12:22.2312376Z > Task :mtgish-tooling:testClasses
+2026-09-26T13:12:24.2268840Z 
+2026-09-26T13:12:24.2283150Z > Task :mtgish-tooling:test
+2026-09-26T13:12:24.2312154Z 
+2026-09-26T13:12:24.2316256Z AsPermanentEntersCounterTest > a self-scoped +1/+1 EntersWithACounter renders EntersWithCounters(count = 1, selfOnly = true) PASSED
+2026-09-26T13:12:24.2372318Z 
+2026-09-26T13:12:24.2373021Z AsPermanentEntersCounterTest > a non-+1/+1 counter kind declines to a scaffold PASSED
+2026-09-26T13:12:24.2402264Z 
+2026-09-26T13:12:24.2432759Z AsPermanentEntersCounterTest > a group scope (not this permanent) declines to a scaffold PASSED
+2026-09-26T13:12:24.4282808Z 
+2026-09-26T13:12:24.4314717Z CastTimeCaptureEmitterTest > Steer Clear renders the cast-time capture form whole (AUTO) PASSED
+2026-09-26T13:12:24.5283087Z 
+2026-09-26T13:12:24.5414638Z DredgeEmitterTest > dredge renders its numeric ability rather than a bare keyword PASSED
+2026-09-26T13:12:24.5473113Z 
+2026-09-26T13:12:24.5565880Z DredgeEmitterTest > missing or negative dredge amounts decline to scaffolds PASSED
+2026-09-26T13:12:24.5654775Z 
+2026-09-26T13:12:24.5683057Z DslTest > a literal renders verbatim PASSED
+2026-09-26T13:12:24.5742224Z 
+2026-09-26T13:12:24.5833255Z DslTest > a no-arg call renders as callee() PASSED
+2026-09-26T13:12:24.5862192Z 
+2026-09-26T13:12:24.5966496Z DslTest > positional args join with ', ' PASSED
+2026-09-26T13:12:24.5992490Z 
+2026-09-26T13:12:24.6073091Z DslTest > a named arg renders as 'name = value' PASSED
+2026-09-26T13:12:24.6132517Z 
+2026-09-26T13:12:24.6183099Z DslTest > nested calls render inline (downstream wrapLine handles width) PASSED
+2026-09-26T13:12:24.6212263Z 
+2026-09-26T13:12:24.6273160Z DslTest > a chain renders base.method(args).method(args) PASSED
+2026-09-26T13:12:24.6302342Z 
+2026-09-26T13:12:24.6393164Z DslTest > an infix joins with the operator, parenthesized when asked PASSED
+2026-09-26T13:12:24.6452193Z 
+2026-09-26T13:12:24.6483267Z DslTest > a Composite lays each element at 12 spaces with an 8-space close (matches the old composite()) PASSED
+2026-09-26T13:12:24.6532410Z 
+2026-09-26T13:12:24.6563179Z DslTest > Raw passes its text through untouched PASSED
+2026-09-26T13:12:24.6599008Z 
+2026-09-26T13:12:24.6659868Z DslTest > a block renders `header { body }` with the body one indent level deeper PASSED
+2026-09-26T13:12:24.6682264Z 
+2026-09-26T13:12:24.6682863Z DslTest > statements: Eval is bare, Sub nests, RawLine is verbatim (ignoring the block indent) PASSED
+2026-09-26T13:12:24.6683278Z 
+2026-09-26T13:12:24.6683556Z DslTest > a HoleLine renders as a greppable TODO comment at the block indent PASSED
+2026-09-26T13:12:24.6683893Z 
+2026-09-26T13:12:24.6684081Z DslTest > an irShape annotates the hole when present PASSED
+2026-09-26T13:12:24.6684337Z 
+2026-09-26T13:12:24.6684630Z DslTest > holesIn collects every hole reason in document order, recursing into nested blocks PASSED
+2026-09-26T13:12:25.1272633Z 
+2026-09-26T13:12:25.1293124Z EmitterGoldenTest > 10E: emitter output matches the committed golden, card-for-card PASSED
+2026-09-26T13:12:25.4282381Z 
+2026-09-26T13:12:25.4283622Z EmitterGoldenTest > CHK: emitter output matches the committed golden, card-for-card PASSED
+2026-09-26T13:12:25.5263360Z 
+2026-09-26T13:12:25.5293433Z EmitterGoldenTest > EOE: emitter output matches the committed golden, card-for-card PASSED
+2026-09-26T13:12:25.6261050Z 
+2026-09-26T13:12:25.6273159Z EmitterGoldenTest > HOB: emitter output matches the committed golden, card-for-card PASSED
+2026-09-26T13:12:25.7332623Z 
+2026-09-26T13:12:25.7363426Z EmitterGoldenTest > INR: emitter output matches the committed golden, card-for-card PASSED
+2026-09-26T13:12:25.8292918Z 
+2026-09-26T13:12:25.8333310Z EmitterGoldenTest > ISD: emitter output matches the committed golden, card-for-card PASSED
+2026-09-26T13:12:26.0274569Z 
+2026-09-26T13:12:26.0296751Z EmitterGoldenTest > ONS: emitter output matches the committed golden, card-for-card PASSED
+2026-09-26T13:12:26.0337994Z 
+2026-09-26T13:12:26.0363198Z EmitterGoldenTest > POR: emitter output matches the committed golden, card-for-card PASSED
+2026-09-26T13:12:26.2262364Z 
+2026-09-26T13:12:26.2303488Z EmitterGoldenTest > RAV: emitter output matches the committed golden, card-for-card PASSED
+2026-09-26T13:12:26.3261318Z 
+2026-09-26T13:12:26.3294005Z EmitterGoldenTest > SOS: emitter output matches the committed golden, card-for-card PASSED
+2026-09-26T13:12:26.5262782Z 
+2026-09-26T13:12:26.5353320Z EmitterGoldenTest > TMP: emitter output matches the committed golden, card-for-card PASSED
+2026-09-26T13:12:26.6315636Z 
+2026-09-26T13:12:26.6343400Z EmitterPartialTest > a WHOLE card renders identically in partial mode, with no holes PASSED
+2026-09-26T13:12:26.7260982Z 
+2026-09-26T13:12:26.7293653Z EmitterPartialTest > an injected un-renderable rule holes ONLY that part; the rest still renders PASSED
+2026-09-26T13:12:26.7332334Z 
+2026-09-26T13:12:26.7363031Z EmitterSmokeTest > Portal renders a high rate of whole, well-formed cards SKIPPED
+2026-09-26T13:12:26.7392238Z 
+2026-09-26T13:12:26.7423174Z IrQueryTest > argWordsTagged collects each tagged node's word arg in document order PASSED
+2026-09-26T13:12:26.7452364Z 
+2026-09-26T13:12:26.7512825Z IrQueryTest > argWordsTagged skips non-word args, mirroring the (\w+) capture PASSED
+2026-09-26T13:12:26.7612535Z 
+2026-09-26T13:12:26.7618655Z IrQueryTest > hasTag matches a discriminator value, not a substring of a longer tag PASSED
+2026-09-26T13:12:26.7674445Z 
+2026-09-26T13:12:26.7725282Z IrQueryTest > wordsAtKey / firstColorOf read values at a key, scoping the colour to its clause PASSED
+2026-09-26T13:12:26.7782402Z 
+2026-09-26T13:12:26.7835957Z IrQueryTest > hasStringValue matches a string VALUE anywhere, the typed form of a quoted-token blob check PASSED
+2026-09-26T13:12:26.7862159Z 
+2026-09-26T13:12:26.7894385Z IrQueryTest > firstArgStringTagged returns the full arg string (a [^"]+ capture, not just a word) PASSED
+2026-09-26T13:12:26.7894973Z 
+2026-09-26T13:12:26.7897975Z ProwessEmitterTest > a printed Prowess keyword renders via prowess(), not a bare keywords(Keyword.PROWESS) PASSED
+2026-09-26T13:12:26.8272481Z 
+2026-09-26T13:12:26.8333196Z ProwessEmitterTest > "other creatures you control have prowess" declines to a scaffold, not a no-op GrantKeyword PASSED
+2026-09-26T13:12:26.8361311Z 
+2026-09-26T13:12:26.8392893Z SwitchPowerToughnessEmitterTest > switch preserves target and end-of-turn duration PASSED
+2026-09-26T13:12:26.8418927Z 
+2026-09-26T13:12:26.8446693Z SwitchPowerToughnessEmitterTest > unknown duration declines PASSED
+2026-09-26T13:12:26.8472133Z 
+2026-09-26T13:12:26.8502087Z UpkeepTriggerScopeTest > the SinglePlayer/You scope maps to Triggers.YourUpkeep PASSED
+2026-09-26T13:12:26.8562185Z 
+2026-09-26T13:12:26.8562711Z UpkeepTriggerScopeTest > the AnyPlayer scope maps to Triggers.EachUpkeep PASSED
+2026-09-26T13:12:26.8592290Z 
+2026-09-26T13:12:26.8592934Z UpkeepTriggerScopeTest > the Opponent scope maps to Triggers.EachOpponentUpkeep PASSED
+2026-09-26T13:12:26.8602360Z 
+2026-09-26T13:12:26.8603235Z UpkeepTriggerScopeTest > the host-relative HostController scope declines to a scaffold, not a named scope PASSED
+2026-09-26T13:12:26.9273739Z 
+2026-09-26T13:12:26.9313221Z YouTapTriggerEmitterTest > the You scope maps to Triggers.YouTap with the recovered permanent filter PASSED
+2026-09-26T13:12:26.9372237Z 
+2026-09-26T13:12:26.9393942Z YouTapTriggerEmitterTest > the IR's IsUntapped clause is dropped — it would invert the filter at detection time PASSED
+2026-09-26T13:12:26.9422107Z 
+2026-09-26T13:12:26.9446553Z YouTapTriggerEmitterTest > the filter still renders when the IR omits IsUntapped PASSED
+2026-09-26T13:12:26.9472322Z 
+2026-09-26T13:12:26.9502814Z YouTapTriggerEmitterTest > a non-You tapper scope declines to a scaffold rather than widening the trigger PASSED
+2026-09-26T13:12:26.9503264Z 
+2026-09-26T13:12:26.9503587Z BridgeResolveTest > a Keyword entry present in the registry resolves ok and contributes the keyword PASSED
+2026-09-26T13:12:26.9503982Z 
+2026-09-26T13:12:26.9504322Z BridgeResolveTest > a Keyword entry absent from the registry is MISSING and blocking, contributing nothing PASSED
+2026-09-26T13:12:26.9504782Z 
+2026-09-26T13:12:26.9505083Z BridgeResolveTest > an unmapped tag whose PascalCase is a Keyword enum member auto-resolves ok PASSED
+2026-09-26T13:12:26.9505464Z 
+2026-09-26T13:12:26.9506282Z BridgeResolveTest > a fully unmapped tag is UNMAPPED and blocking PASSED
+2026-09-26T13:12:26.9506594Z 
+2026-09-26T13:12:26.9506969Z BridgeResolveTest > a composed entry reports its kind, never blocks, and contributes its registry-present primitives PASSED
+2026-09-26T13:12:26.9507414Z 
+2026-09-26T13:12:26.9507755Z BridgeResolveTest > a composed primitive absent from the registry is dropped from the contributed capabilities PASSED
+2026-09-26T13:12:26.9508170Z 
+2026-09-26T13:12:26.9508423Z BridgeResolveTest > an envelope entry reports the ignore kind and never blocks PASSED
+2026-09-26T13:12:26.9508754Z 
+2026-09-26T13:12:26.9509014Z BridgeResolveTest > the disc:value composite key wins over the bare value key PASSED
+2026-09-26T13:12:26.9509338Z 
+2026-09-26T13:12:26.9509619Z DashboardTest > Analyzer classifies a set's cards into a partition that sums to the whole SKIPPED
+2026-09-26T13:12:26.9510136Z 
+2026-09-26T13:12:26.9510412Z DashboardTest > cross-set index carries the blocked cards behind each ranked capability SKIPPED
+2026-09-26T13:12:26.9510771Z 
+2026-09-26T13:12:26.9511022Z DashboardTest > Ansi.fit pads or ellipsis-truncates to an exact visible width PASSED
+2026-09-26T13:12:27.0268220Z 
+2026-09-26T13:12:27.0283388Z BattleCardPredicateEmitterTest > Battle card filtering emits a parameterized fixed type and resolves its enum import PASSED
+2026-09-26T13:12:27.0312280Z 
+2026-09-26T13:12:27.0328455Z BattleCardPredicateEmitterTest > an unknown card type still declines rather than dropping the selection restriction PASSED
+2026-09-26T13:12:27.0342165Z 
+2026-09-26T13:12:27.0372571Z EffectHandlerTest > constant 1:1 effects render as their fixed token (a Lit) PASSED
+2026-09-26T13:12:27.0402210Z 
+2026-09-26T13:12:27.0403462Z EffectHandlerTest > mana production maps the produce tag to the Add*Mana facade PASSED
+2026-09-26T13:12:27.0454423Z 
+2026-09-26T13:12:27.0482582Z EffectHandlerTest > a mixed mana pool composites inline (single line, not the multi-line Composite) PASSED
+2026-09-26T13:12:27.0483017Z 
+2026-09-26T13:12:27.0483281Z EffectHandlerTest > an unrecognised action declines (-> SCAFFOLD) PASSED
+2026-09-26T13:12:27.0483575Z 
+2026-09-26T13:12:27.0483916Z EffectHandlerTest > CopySpell(Trigger_ThatSpell) renders 'copy that spell' on a cast trigger (Double Down) PASSED
+2026-09-26T13:12:27.0484329Z 
+2026-09-26T13:12:27.0484615Z EffectHandlerTest > CopySpell with a non-triggering-spell subject declines (-> SCAFFOLD) PASSED
+2026-09-26T13:12:27.0484983Z 
+2026-09-26T13:12:27.0485305Z EffectHandlerTest > SetPT sets base P/T, and the end-of-turn case emits an EXPLICIT Duration.EndOfTurn PASSED
+2026-09-26T13:12:27.0485695Z 
+2026-09-26T13:12:27.0486014Z EffectHandlerTest > SetPT carries a non-default expiration verbatim (for as long as it remains tapped) PASSED
+2026-09-26T13:12:27.0486413Z 
+2026-09-26T13:12:27.0486663Z EffectHandlerTest > the each-permanent SetPT form wraps the set over a group PASSED
+2026-09-26T13:12:27.0487005Z 
+2026-09-26T13:12:27.0487387Z EffectHandlerTest > a SetPT riding an unsupported AddCardtype still scaffolds (no silently-dropped 'becomes an artifact') PASSED
+2026-09-26T13:12:27.0487837Z 
+2026-09-26T13:12:27.0488196Z EffectHandlerTest > 'becomes a white Rabbit with base P/T 0/1' renders the atomic BecomeCreature (Metamorphic Blast) PASSED
+2026-09-26T13:12:27.0488620Z 
+2026-09-26T13:12:27.0488940Z EffectHandlerTest > 'becomes a Fractal with base P/T each equal to X plus 1' renders dynamic BecomeCreature PASSED
+2026-09-26T13:12:27.0489341Z 
+2026-09-26T13:12:27.0489652Z EffectHandlerTest > the bare under-owner's-control return renders a plain Move to the battlefield PASSED
+2026-09-26T13:12:27.0490031Z 
+2026-09-26T13:12:27.0490363Z EffectHandlerTest > a return with a +1/+1 counter renders the Move then a chained AddCountersEffect (Daydream) PASSED
+2026-09-26T13:12:27.0490766Z 
+2026-09-26T13:12:27.0492068Z EffectHandlerTest > a return with a non-±1/±1 counter kind declines (-> SCAFFOLD) rather than guess the counter PASSED
+2026-09-26T13:12:27.0492511Z 
+2026-09-26T13:12:27.0493408Z EffectHandlerTest > a return entering tapped still declines (the tapped flag would be silently dropped) PASSED
+2026-09-26T13:12:27.0493824Z 
+2026-09-26T13:12:27.0494180Z EffectHandlerTest > ShuffleEachPermanentIntoLibrary renders self + target as two ShuffleIntoLibrary moves PASSED
+2026-09-26T13:12:27.0494607Z 
+2026-09-26T13:12:27.0494969Z EffectHandlerTest > ShuffleEachPermanentIntoLibrary declines a group that isn't self + one bound target PASSED
+2026-09-26T13:12:27.0495396Z 
+2026-09-26T13:12:27.0495767Z EffectHandlerTest > End the Festivities: player-FIRST then permanent, opponent-scoped -> PlayerRef(EachOpponent) PASSED
+2026-09-26T13:12:27.0496207Z 
+2026-09-26T13:12:27.0496663Z EffectHandlerTest > Dry Spell: permanent-FIRST then any-player -> creature group then ForEachPlayerEffect(Player.Each) PASSED
+2026-09-26T13:12:27.0552105Z 
+2026-09-26T13:12:27.0571515Z EffectHandlerTest > a lone EachPlayer(Opponent) recipient renders the single each-opponent deal (no Composite) PASSED
+2026-09-26T13:12:27.0632220Z 
+2026-09-26T13:12:27.0642730Z EffectHandlerTest > a lone EachPlayer(AnyPlayer) recipient renders the single each-player ForEachPlayerEffect PASSED
+2026-09-26T13:12:27.0693004Z 
+2026-09-26T13:12:27.0748758Z EffectHandlerTest > an unmodeled EachPlayer scope declines the whole card (-> SCAFFOLD), never a widened recipient set PASSED
+2026-09-26T13:12:27.0802188Z 
+2026-09-26T13:12:27.0808309Z EmitterFormatTest > short lines are left untouched PASSED
+2026-09-26T13:12:27.0866926Z 
+2026-09-26T13:12:27.0914594Z EmitterFormatTest > a long call wraps its top-level args one per line, with trailing-comma-free last arg PASSED
+2026-09-26T13:12:27.0952191Z 
+2026-09-26T13:12:27.0952716Z EmitterFormatTest > commas inside string literals never trigger a split PASSED
+2026-09-26T13:12:27.0953057Z 
+2026-09-26T13:12:27.0953259Z EmitterFormatTest > comment / KDoc lines are never wrapped PASSED
+2026-09-26T13:12:27.0953575Z 
+2026-09-26T13:12:27.0953865Z EmitterFormatTest > nested over-long args wrap recursively and every emitted line fits the width PASSED
+2026-09-26T13:12:27.0954224Z 
+2026-09-26T13:12:27.0954545Z EmitterFormatTest > subtypeArg uses the typed constant when the SDK names it, else falls back to a string PASSED
+2026-09-26T13:12:27.0954929Z 
+2026-09-26T13:12:27.0955231Z EmitterFormatTest > subtypeCtorArg keeps the argument a Subtype even when the SDK doesn't name it PASSED
+2026-09-26T13:12:27.1272379Z 
+2026-09-26T13:12:27.1288644Z EmitterFormatTest > no emitter source hand-rolls a subtype literal instead of subtypeArg / subtypeCtorArg PASSED
+2026-09-26T13:12:27.1385586Z 
+2026-09-26T13:12:27.1404381Z FilterPredicatesTest > power bounds recover from the scoped PowerIs node PASSED
+2026-09-26T13:12:27.1435581Z 
+2026-09-26T13:12:27.1492860Z FilterPredicatesTest > a power range keeps its two bounds distinct (scoped per PowerIs node) PASSED
+2026-09-26T13:12:27.1514599Z 
+2026-09-26T13:12:27.1572803Z FilterPredicatesTest > tap / attack state predicates map to their fluent suffixes PASSED
+2026-09-26T13:12:27.1614253Z 
+2026-09-26T13:12:27.1614725Z FilterPredicatesTest > nontoken recovers from the IsNonToken marker PASSED
+2026-09-26T13:12:27.1615067Z 
+2026-09-26T13:12:27.1615480Z FilterPredicatesTest > power-or-toughness recovers from the Or of equal >= bounds, declining a mismatch or a lone bound PASSED
+2026-09-26T13:12:27.1617246Z 
+2026-09-26T13:12:27.1617980Z FilterPredicatesTest > flying recovers as with/without keyword, distinguished by the DoesntHaveAbility marker PASSED
+2026-09-26T13:12:27.1618893Z 
+2026-09-26T13:12:27.1619251Z InterveningIfConditionTest > Packsong Pup: 'another Wolf or Werewolf' lifts the Other(ThisPermanent) clause to excludeSelf PASSED
+2026-09-26T13:12:27.1621172Z 
+2026-09-26T13:12:27.1622442Z InterveningIfConditionTest > Resistance Squad: 'another Human' lifts the Other(ThatEnteringPermanent) clause to excludeSelf PASSED
+2026-09-26T13:12:27.1622894Z 
+2026-09-26T13:12:27.1623267Z InterveningIfConditionTest > without an Other(self) clause, 'you control a Spirit' renders WITHOUT excludeSelf (single line) PASSED
+2026-09-26T13:12:27.2364153Z 
+2026-09-26T13:12:27.2383207Z PrintingRowTest > reprint row carries set metadata and points at the canonical set PASSED
+2026-09-26T13:12:27.2383975Z 
+2026-09-26T13:12:27.2384513Z PrintingRowTest > missing artist / image fields are simply omitted, rarity defaults to COMMON PASSED
+2026-09-26T13:12:27.2385219Z 
+2026-09-26T13:12:27.2385668Z PrintingRowTest > val name is the PascalCase identifier of multi-word names PASSED
+2026-09-26T13:12:27.2386162Z 
+2026-09-26T13:12:27.2386526Z PrintingRowTest > rarity mapping covers the Scryfall vocabulary PASSED
+2026-09-26T13:12:27.2395707Z 
+2026-09-26T13:12:27.2396297Z TargetRecoveryTest > creatureFilterDsl composes the plain-creature base with recovered suffixes PASSED
+2026-09-26T13:12:27.2396866Z 
+2026-09-26T13:12:27.2397326Z TargetRecoveryTest > creatureFilterDsl distributes an Or of per-subtype creature filters PASSED
+2026-09-26T13:12:27.2398177Z 
+2026-09-26T13:12:27.2398671Z TargetRecoveryTest > creatureFilterDsl renders power-or-toughness and suppresses the standalone power bound PASSED
+2026-09-26T13:12:27.2399384Z 
+2026-09-26T13:12:27.2399822Z TargetRecoveryTest > gameObjectFilterDsl renders an Or of creature subtypes as withAnyOfSubtypes PASSED
+2026-09-26T13:12:27.2400639Z 
+2026-09-26T13:12:27.2401076Z TargetRecoveryTest > gameObjectFilterDsl appends nontoken from the IsNonToken marker PASSED
+2026-09-26T13:12:27.2401638Z 
+2026-09-26T13:12:27.2402247Z TargetRecoveryTest > targetExpr renders a nonland permanent target PASSED
+2026-09-26T13:12:27.2402715Z 
+2026-09-26T13:12:27.2460707Z TargetRecoveryTest > gameObjectFilterDsl reads the base cardtype and appends the tapped suffix PASSED
+2026-09-26T13:12:27.2482429Z 
+2026-09-26T13:12:27.2483041Z TargetRecoveryTest > gameObjectFilterDsl declines a filter with no recoverable base type PASSED
+2026-09-26T13:12:27.2483865Z 
+2026-09-26T13:12:27.2484364Z TargetRecoveryTest > targetExpr maps the player / spell / graveyard target shapes PASSED
+2026-09-26T13:12:27.3268229Z 
+2026-09-26T13:12:27.3283363Z TargetRecoveryTest > creatureFilterDsl recovers a multi-colour Or as withAnyColor (Escape Routes, Hunting Drake) PASSED
+2026-09-26T13:12:27.3284197Z 
+2026-09-26T13:12:27.3292990Z TargetRecoveryTest > creatureFilterDsl declines a source-relative blocking relation (Cromat) PASSED
+2026-09-26T13:12:27.3293682Z 
+2026-09-26T13:12:27.3294413Z TargetRecoveryTest > targetExpr restricts a counter to a colour-bound spell (Gainsay) PASSED
+2026-09-26T13:12:27.3294914Z 
+2026-09-26T13:12:27.3295353Z TargetRecoveryTest > targetExpr restricts a counter to a noncreature spell (Spell Pierce) PASSED
+2026-09-26T13:12:27.3295872Z 
+2026-09-26T13:12:27.3296372Z TargetRecoveryTest > targetExpr declines a spell whose filter is about what it targets, not its type (Confound) PASSED
+2026-09-26T13:12:27.3296964Z 
+2026-09-26T13:12:27.3297522Z TargetRecoveryTest > creatureFilterDsl recovers a bare 'another' creature target as TargetFilter.OtherCreature (Rimekin Recluse) PASSED
+2026-09-26T13:12:27.3298188Z 
+2026-09-26T13:12:27.3298779Z TargetRecoveryTest > creatureFilterDsl declines an 'another' creature target with an extra predicate (excludeSelf + state not composed) PASSED
+2026-09-26T13:12:27.3299443Z 
+2026-09-26T13:12:27.3299952Z TargetRecoveryTest > gameObjectFilterDsl declines a '+1/+1 counters on them' group (Badgermole's trample lord) PASSED
+2026-09-26T13:12:27.3300584Z 
+2026-09-26T13:12:27.3301088Z TargetRecoveryTest > gameObjectFilterDsl declines an enchantment subtype (Shrine triggers, The Spirit Oasis) PASSED
+2026-09-26T13:12:27.3301664Z 
+2026-09-26T13:12:27.3302295Z TargetRecoveryTest > gameObjectFilterDsl declines a creature-subtype + non-creature-type union (Great Divide Guide) PASSED
+2026-09-26T13:12:27.3303021Z 
+2026-09-26T13:12:27.3303577Z TargetRecoveryTest > targetExpr declines a bare permanent target carrying a dropped controller restriction (North Pole Patrol) PASSED
+2026-09-26T13:12:27.3304220Z 
+2026-09-26T13:12:27.3304725Z TargetRecoveryTest > targetExpr renders an artifact-subtype target via withSubtype (Turn to Dust, Rustspore Ram) PASSED
+2026-09-26T13:12:27.3305318Z 
+2026-09-26T13:12:27.3306294Z TargetRecoveryTest > targetExpr declines a lowest-mana-value permanent target (Culling Scales) PASSED
+2026-09-26T13:12:27.3306839Z 
+2026-09-26T13:12:27.3307271Z TargetRecoveryTest > targetExpr declines a noncreature-artifact target (Blinkmoth Well) PASSED
+2026-09-26T13:12:27.3307784Z 
+2026-09-26T13:12:27.3308227Z TargetRecoveryTest > landSearchFilterDsl recovers an artifact-card search filter (Fabricate) PASSED
+2026-09-26T13:12:27.3308768Z 
+2026-09-26T13:12:27.3309258Z TargetRecoveryTest > creatureFilterDsl renders a negated creature subtype via notSubtype (Sterling Keykeeper) PASSED
+2026-09-26T13:12:27.3309844Z 
+2026-09-26T13:12:27.3310325Z TargetRecoveryTest > creatureFilterDsl renders a 'with a stun counter on it' restriction (Floodpits Drowner) PASSED
+2026-09-26T13:12:27.3311096Z 
+2026-09-26T13:12:27.3311554Z TargetRecoveryTest > creatureFilterDsl declines a counter restriction whose kind it can't name exactly PASSED
+2026-09-26T13:12:27.3312210Z 
+2026-09-26T13:12:27.3312682Z TargetRecoveryTest > creatureFilterDsl renders a 'was dealt damage this turn' restriction (Rooftop Assassin) PASSED
+2026-09-26T13:12:27.3313314Z 
+2026-09-26T13:12:27.3313841Z TargetRecoveryTest > creatureFilterDsl renders an active 'dealt damage this turn' restriction (Red Guardian) PASSED
+2026-09-26T13:12:27.3314409Z 
+2026-09-26T13:12:27.3314891Z TargetRecoveryTest > creatureFilterDsl declines 'dealt damage this turn' combined with an unrenderable shape PASSED
+2026-09-26T13:12:27.3315446Z 
+2026-09-26T13:12:27.3315938Z TargetRecoveryTest > creatureFilterDsl renders a non-outlaw creature via notAnyOfSubtypes (Shoot the Sheriff) PASSED
+2026-09-26T13:12:27.3316511Z 
+2026-09-26T13:12:27.3317010Z TargetRecoveryTest > creatureFilterDsl renders 'defending player controls' as opponentControls (Spring Splasher) PASSED
+2026-09-26T13:12:27.3317595Z 
+2026-09-26T13:12:27.3318060Z TargetRecoveryTest > gameObjectFilterDsl renders an outlaw filter via withAnyOfSubtypes (Vial Smasher) PASSED
+2026-09-26T13:12:27.3318604Z 
+2026-09-26T13:12:27.3319142Z TargetRecoveryTest > gameObjectFilterDsl binds a group controlled by a target player to ContextTarget(0) (Neutralize the Guards) PASSED
+2026-09-26T13:12:27.3319754Z 
+2026-09-26T13:12:27.3320257Z TargetRecoveryTest > gameObjectFilterDsl renders 'a player other than you' as opponentControls (Artistic Process) PASSED
+2026-09-26T13:12:27.3320838Z 
+2026-09-26T13:12:27.3321444Z TargetRecoveryTest > gameObjectFilterDsl renders the creature+planeswalker union (Splatter Technique's 'each creature and planeswalker') PASSED
+2026-09-26T13:12:27.3322238Z 
+2026-09-26T13:12:27.3322720Z TargetRecoveryTest > creatureFilterDsl renders 'target creature you don't control' as opponentControls PASSED
+2026-09-26T13:12:27.3323264Z 
+2026-09-26T13:12:27.3323739Z TargetRecoveryTest > creatureFilterDsl still renders the plain 'you control' and 'an opponent controls' scopes PASSED
+2026-09-26T13:12:27.3324311Z 
+2026-09-26T13:12:27.3324748Z TargetRecoveryTest > creatureFilterDsl declines a controller scope it cannot render exactly PASSED
+2026-09-26T13:12:27.3325262Z 
+2026-09-26T13:12:27.3325753Z TargetRecoveryTest > a non-creature target still declines a trigger's implied-opponent player ref (Dawning Purist) PASSED
+2026-09-26T13:12:32.5272371Z 
+2026-09-26T13:12:32.5303062Z > Task :mtg-sdk:compileKotlin
+2026-09-26T13:12:32.5323159Z w: file:///home/runner/work/argentum-batshit-test/argentum-batshit-test/mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/serialization/CardLinter.kt:341:9 'when' is exhaustive so 'else' is redundant here.
+2026-09-26T13:12:33.9271258Z 
+2026-09-26T13:12:33.9292511Z > Task :mtg-sdk:compileJava NO-SOURCE
+2026-09-26T13:12:33.9312517Z > Task :mtg-sdk:classes UP-TO-DATE
+2026-09-26T13:12:34.9260627Z > Task :mtg-sdk:jar
+2026-09-26T13:12:36.7265036Z > Task :mtg-sets:core:compileKotlin
+2026-09-26T13:12:36.8283066Z > Task :mtg-sets:core:compileJava NO-SOURCE
+2026-09-26T13:12:36.8312499Z > Task :mtg-sets:core:classes
+2026-09-26T13:12:36.8342474Z > Task :mtg-sets:core:jar
+2026-09-26T13:12:49.3315603Z > Task :mtg-sets:1993-1999:compileKotlin
+2026-09-26T13:12:49.3352735Z > Task :mtg-sets:1993-1999:compileJava NO-SOURCE
+2026-09-26T13:12:49.3353602Z > Task :mtg-sets:1993-1999:classes UP-TO-DATE
+2026-09-26T13:12:49.8264056Z > Task :mtg-sets:1993-1999:jar
+2026-09-26T13:12:55.4285160Z > Task :mtg-sets:2000-2002:compileKotlin
+2026-09-26T13:12:55.4302789Z > Task :mtg-sets:2000-2002:compileJava NO-SOURCE
+2026-09-26T13:12:55.4332504Z > Task :mtg-sets:2000-2002:classes UP-TO-DATE
+2026-09-26T13:12:55.7291066Z > Task :mtg-sets:2000-2002:jar
+2026-09-26T13:13:03.9261554Z > Task :rules-engine:compileKotlin
+2026-09-26T13:13:04.6265249Z > Task :mtg-sets:2003-2007:compileKotlin
+2026-09-26T13:13:04.7275506Z > Task :mtg-sets:2003-2007:compileJava NO-SOURCE
+2026-09-26T13:13:04.7322802Z > Task :mtg-sets:2003-2007:classes UP-TO-DATE
+2026-09-26T13:13:05.2289649Z > Task :mtg-sets:2003-2007:jar
+2026-09-26T13:13:17.0261062Z > Task :mtg-sets:2008-2016:compileKotlin
+2026-09-26T13:13:17.0283088Z > Task :mtg-sets:2008-2016:compileJava NO-SOURCE
+2026-09-26T13:13:17.0312798Z > Task :mtg-sets:2008-2016:classes UP-TO-DATE
+2026-09-26T13:13:17.5279751Z > Task :mtg-sets:2008-2016:jar
+2026-09-26T13:13:27.5265355Z > Task :mtg-sets:2017-2022:compileKotlin
+2026-09-26T13:13:27.5302685Z > Task :mtg-sets:2017-2022:compileJava NO-SOURCE
+2026-09-26T13:13:27.5332460Z > Task :mtg-sets:2017-2022:classes UP-TO-DATE
+2026-09-26T13:13:27.8261381Z > Task :mtg-sets:2017-2022:jar
+2026-09-26T13:13:28.2285919Z 
+2026-09-26T13:13:28.2308758Z > Task :rules-engine:compileKotlin
+2026-09-26T13:13:28.2312842Z w: file:///home/runner/work/argentum-batshit-test/argentum-batshit-test/rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerDetector.kt:277:62 No cast needed.
+2026-09-26T13:13:28.2314190Z w: file:///home/runner/work/argentum-batshit-test/argentum-batshit-test/rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/DamageUtils.kt:535:21 Condition is always 'true'.
+2026-09-26T13:13:28.2315878Z w: file:///home/runner/work/argentum-batshit-test/argentum-batshit-test/rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/library/ExileTopCardMayPlayFreeExecutor.kt:79:60 Unnecessary non-null assertion (!!) on a non-null receiver of type 'EntityId'.
+2026-09-26T13:13:28.2317684Z w: file:///home/runner/work/argentum-batshit-test/argentum-batshit-test/rules-engine/src/main/kotlin/com/wingedsheep/engine/legalactions/enumerators/CastSpellEnumerator.kt:820:49 Unnecessary safe call on a non-null receiver of type 'CardDefinition'.
+2026-09-26T13:13:28.2319436Z w: file:///home/runner/work/argentum-batshit-test/argentum-batshit-test/rules-engine/src/main/kotlin/com/wingedsheep/engine/legalactions/enumerators/CastSpellEnumerator.kt:2605:25 Condition is always 'true'.
+2026-09-26T13:13:28.2321322Z w: file:///home/runner/work/argentum-batshit-test/argentum-batshit-test/rules-engine/src/main/kotlin/com/wingedsheep/engine/state/GameState.kt:604:27 Unnecessary non-null assertion (!!) on a non-null receiver of type 'ObjectIdentity'.
+2026-09-26T13:13:30.1262471Z 
+2026-09-26T13:13:30.1283264Z > Task :rules-engine:compileJava NO-SOURCE
+2026-09-26T13:13:30.1312777Z > Task :rules-engine:classes
+2026-09-26T13:13:31.0269562Z > Task :rules-engine:jar
+2026-09-26T13:13:33.1293262Z > Task :mtg-sets:2023:compileKotlin
+2026-09-26T13:13:33.1332703Z > Task :mtg-sets:2023:compileJava NO-SOURCE
+2026-09-26T13:13:33.1362673Z > Task :mtg-sets:2023:classes UP-TO-DATE
+2026-09-26T13:13:33.3273190Z > Task :mtg-sets:2023:jar
+2026-09-26T13:13:38.3275349Z > Task :ai:compileKotlin
+2026-09-26T13:13:38.3299484Z > Task :ai:compileJava NO-SOURCE
+2026-09-26T13:13:38.3322576Z > Task :ai:classes
+2026-09-26T13:13:38.4293210Z > Task :ai:jar
+2026-09-26T13:13:40.1261130Z > Task :gym:compileKotlin
+2026-09-26T13:13:40.1261812Z > Task :gym:compileJava NO-SOURCE
+2026-09-26T13:13:40.1262535Z > Task :gym:classes UP-TO-DATE
+2026-09-26T13:13:40.1263009Z > Task :gym:jar
+2026-09-26T13:13:40.6283101Z > Task :mtg-sets:2024:compileKotlin
+2026-09-26T13:13:40.7268214Z > Task :mtg-sets:2024:compileJava NO-SOURCE
+2026-09-26T13:13:40.7292619Z > Task :mtg-sets:2024:classes UP-TO-DATE
+2026-09-26T13:13:40.9263272Z > Task :mtg-sets:2024:jar
+2026-09-26T13:13:41.2263275Z > Task :gym-trainer:compileKotlin
+2026-09-26T13:13:41.2263701Z > Task :gym-trainer:compileJava NO-SOURCE
+2026-09-26T13:13:41.2264014Z > Task :gym-trainer:classes UP-TO-DATE
+2026-09-26T13:13:41.2264304Z > Task :gym-trainer:jar
+2026-09-26T13:13:46.2261064Z > Task :mtg-sets:2025:compileKotlin
+2026-09-26T13:13:46.2261468Z > Task :mtg-sets:2025:compileJava NO-SOURCE
+2026-09-26T13:13:46.2261802Z > Task :mtg-sets:2025:classes UP-TO-DATE
+2026-09-26T13:13:46.4260869Z > Task :mtg-sets:2025:jar
+2026-09-26T13:13:50.1261132Z > Task :mtg-sets:2026:compileKotlin
+2026-09-26T13:13:50.1261528Z > Task :mtg-sets:2026:compileJava NO-SOURCE
+2026-09-26T13:13:50.1261836Z > Task :mtg-sets:2026:classes UP-TO-DATE
+2026-09-26T13:13:50.3261411Z > Task :mtg-sets:2026:jar
+2026-09-26T13:13:51.0292869Z > Task :mtg-sets:compileKotlin
+2026-09-26T13:13:51.0345342Z > Task :mtg-sets:compileJava NO-SOURCE
+2026-09-26T13:13:51.0452685Z > Task :mtg-sets:classes
+2026-09-26T13:13:51.1283287Z > Task :mtg-sets:jar
+2026-09-26T13:13:53.6283231Z > Task :rules-engine:compileTestFixturesKotlin
+2026-09-26T13:13:53.6313110Z > Task :rules-engine:compileTestFixturesJava NO-SOURCE
+2026-09-26T13:13:53.8273304Z > Task :rules-engine:testFixturesClasses UP-TO-DATE
+2026-09-26T13:13:53.8302700Z > Task :rules-engine:testFixturesJar
+2026-09-26T13:13:56.6323186Z > Task :gym:compileTestKotlin
+2026-09-26T13:13:56.6362577Z > Task :gym:compileTestJava NO-SOURCE
+2026-09-26T13:13:56.6392404Z > Task :gym:testClasses UP-TO-DATE
+2026-09-26T13:13:58.4283209Z > Task :gym-trainer:compileTestKotlin
+2026-09-26T13:13:58.4312817Z > Task :gym-trainer:compileTestJava NO-SOURCE
+2026-09-26T13:13:58.4342800Z > Task :gym-trainer:testClasses UP-TO-DATE
+2026-09-26T13:14:00.4337393Z 
+2026-09-26T13:14:00.4492306Z > Task :gym-trainer:test
+2026-09-26T13:14:00.4515122Z 
+2026-09-26T13:14:00.4643415Z ExactStructuredDecisionExpanderTest > required single-target expansion is complete PASSED
+2026-09-26T13:14:00.4692235Z 
+2026-09-26T13:14:00.4693363Z ExactStructuredDecisionExpanderTest > optional single-target expansion offers the empty selection PASSED
+2026-09-26T13:14:00.4722200Z 
+2026-09-26T13:14:00.4722780Z ExactStructuredDecisionExpanderTest > cancellation is never offered as a response PASSED
+2026-09-26T13:14:00.4752352Z 
+2026-09-26T13:14:00.4782941Z ExactStructuredDecisionExpanderTest > duplicate legal targets collapse to one response each PASSED
+2026-09-26T13:14:00.4805496Z 
+2026-09-26T13:14:00.4832935Z ExactStructuredDecisionExpanderTest > variable-cardinality target expansion is explicitly unsupported PASSED
+2026-09-26T13:14:00.4833420Z 
+2026-09-26T13:14:00.4862769Z ExactStructuredDecisionExpanderTest > multi-requirement target expansion is explicitly unsupported PASSED
+2026-09-26T13:14:00.4892183Z 
+2026-09-26T13:14:00.4909353Z ExactStructuredDecisionExpanderTest > supported family with no legal response reports unsupported PASSED
+2026-09-26T13:14:00.4932225Z 
+2026-09-26T13:14:00.4948919Z ExactStructuredDecisionExpanderTest > small object ordering expands every validator-accepted permutation deterministically PASSED
+2026-09-26T13:14:00.4972179Z 
+2026-09-26T13:14:00.4997336Z ExactStructuredDecisionExpanderTest > small library reorder expands every validator-accepted permutation PASSED
+2026-09-26T13:14:00.5042176Z 
+2026-09-26T13:14:00.5062897Z ExactStructuredDecisionExpanderTest > ordering materializes exactly through the response ceiling and not beyond it PASSED
+2026-09-26T13:14:00.5092062Z 
+2026-09-26T13:14:00.5149379Z ExactStructuredDecisionExpanderTest > duplicate ordering IDs are unsupported rather than conflated into fewer permutations PASSED
+2026-09-26T13:14:00.5192179Z 
+2026-09-26T13:14:00.5252918Z ExactStructuredDecisionExpanderTest > degenerate unique orderings retain their single validator-approved response PASSED
+2026-09-26T13:14:00.5292151Z 
+2026-09-26T13:14:00.5363521Z ExactStructuredDecisionExpanderTest > a caller-supplied ceiling narrows ordering fan-out without touching legality PASSED
+2026-09-26T13:14:00.5392269Z 
+2026-09-26T13:14:00.5422622Z ExactStructuredDecisionExpanderTest > unrelated structured family remains unsupported PASSED
+2026-09-26T13:14:02.6272657Z 
+2026-09-26T13:14:02.6363124Z AlphaZeroSearchTest > run expands the root and sums visits to exactly `simulations` PASSED
+2026-09-26T13:14:02.7282921Z 
+2026-09-26T13:14:02.7363018Z AlphaZeroSearchTest > bestEdge is the most-visited edge PASSED
+2026-09-26T13:14:02.7395127Z 
+2026-09-26T13:14:02.7473086Z AlphaZeroSearchTest > enabling Dirichlet noise is accepted and does not break search PASSED
+2026-09-26T13:14:08.0260211Z 
+2026-09-26T13:14:08.0273151Z > Task :gym-server:compileKotlin
+2026-09-26T13:14:08.0273730Z > Task :gym-server:compileJava NO-SOURCE
+2026-09-26T13:14:08.0274159Z > Task :gym-server:classes
+2026-09-26T13:14:08.0275074Z > Task :gym-server:jar
+2026-09-26T13:14:12.0261483Z > Task :gym-server:compileTestKotlin
+2026-09-26T13:14:12.0263606Z > Task :gym-server:compileTestJava NO-SOURCE
+2026-09-26T13:14:12.0264265Z > Task :gym-server:testClasses UP-TO-DATE
+2026-09-26T13:14:26.6275071Z > Task :gym:test
+2026-09-26T13:14:26.9302638Z 
+2026-09-26T13:14:26.9393347Z BatshitEconomicsGymInteractionTest > Gym reports Craft Treasure creation and separate Bats creation and sacrifice triggers PASSED
+2026-09-26T13:14:26.9422280Z 
+2026-09-26T13:14:26.9453002Z BatshitEconomicsGymInteractionTest > Gym distinguishes Offering's nontoken sacrifice from Map creation and later sacrifice PASSED
+2026-09-26T13:14:26.9512133Z 
+2026-09-26T13:14:26.9542817Z BatshitEconomicsGymInteractionTest > Gym end state contains no Bats after both Game 2 permanents leave PASSED
+2026-09-26T13:14:26.9572183Z 
+2026-09-26T13:14:26.9632902Z BatshitEconomicsPreboardSmokeTest > five seeded preboard Argentum agent self-play games SKIPPED
+2026-09-26T13:14:27.0314222Z 
+2026-09-26T13:14:27.0343106Z GameEnvironmentExactlyOneSubmissionTest > exactly one cast leaves the spell on the stack with priority unresolved PASSED
+2026-09-26T13:14:27.0383221Z 
+2026-09-26T13:14:27.0406715Z GameEnvironmentExactlyOneSubmissionTest > exactly one priority pass hands priority over without resolving the stack PASSED
+2026-09-26T13:14:27.0440719Z 
+2026-09-26T13:14:27.0472984Z GameEnvironmentExactlyOneSubmissionTest > exactly one decision response leaves the following genuine decision unresolved PASSED
+2026-09-26T13:14:27.0517089Z 
+2026-09-26T13:14:27.0568534Z GameEnvironmentExactlyOneSubmissionTest > rejection is explicit and state-atomic PASSED
+2026-09-26T13:14:27.0622874Z 
+2026-09-26T13:14:27.0626164Z GameEnvironmentExactlyOneSubmissionTest > an accepted terminal action keeps ordinary terminal rewards PASSED
+2026-09-26T13:14:27.0626817Z 
+2026-09-26T13:14:27.0627155Z GameEnvironmentTest > create returns a usable environment PASSED
+2026-09-26T13:14:27.0627519Z 
+2026-09-26T13:14:27.0627945Z GameEnvironmentTest > the environment and its forks expose the registry they were created with PASSED
+2026-09-26T13:14:27.1259878Z 
+2026-09-26T13:14:27.1275028Z GameEnvironmentTest > reset initializes a game with two players PASSED
+2026-09-26T13:14:27.1297402Z 
+2026-09-26T13:14:27.1323047Z GameEnvironmentTest > legalActions returns non-empty list when player has priority PASSED
+2026-09-26T13:14:27.1352245Z 
+2026-09-26T13:14:27.1389451Z GameEnvironmentTest > step advances the game state PASSED
+2026-09-26T13:14:27.1391733Z 
+2026-09-26T13:14:27.1424873Z GameEnvironmentTest > restore clears a rejection from an abandoned transition PASSED
+2026-09-26T13:14:27.1482130Z 
+2026-09-26T13:14:27.1482678Z GameEnvironmentTest > fork creates an independent copy PASSED
+2026-09-26T13:14:27.1486103Z 
+2026-09-26T13:14:27.1514697Z GameEnvironmentTest > evaluate returns finite scores for non-terminal states PASSED
+2026-09-26T13:14:27.1536717Z 
+2026-09-26T13:14:27.1537741Z GameEnvironmentTest > terminalRewards returns zeros during game PASSED
+2026-09-26T13:14:28.1266691Z 
+2026-09-26T13:14:28.1349705Z GameEnvironmentTest > playGame with sealed Bloomburrow decks runs to completion PASSED
+2026-09-26T13:14:30.6292502Z 
+2026-09-26T13:14:30.6323425Z > Task :gym-trainer:test
+2026-09-26T13:14:30.6372300Z 
+2026-09-26T13:14:30.6389648Z RandomStructuredResolverTest > a draw that violates a state-dependent restriction is redrawn, not submitted PASSED
+2026-09-26T13:14:30.6392855Z 
+2026-09-26T13:14:30.6393426Z StructuredDecisionSearchTest > MCTS exposes exact target responses as independent edges and executes each branch PASSED
+2026-09-26T13:14:30.6393980Z 
+2026-09-26T13:14:30.6394428Z StructuredDecisionSearchTest > default MCTS exposes every small library ordering and selects the best-evaluated one PASSED
+2026-09-26T13:14:30.6394943Z 
+2026-09-26T13:14:30.6395325Z StructuredDecisionSearchTest > existing yes-no folding remains a complete two-edge decision PASSED
+2026-09-26T13:14:30.6395780Z 
+2026-09-26T13:14:30.6396176Z StructuredDecisionSearchTest > unsupported multi-card decision keeps one resolver-selected edge PASSED
+2026-09-26T13:14:30.6397179Z 
+2026-09-26T13:14:30.6397561Z SelfPlayLoopTest > self-play with defaults runs a full game and writes a JSONL row per move PASSED
+2026-09-26T13:14:32.0261177Z 
+2026-09-26T13:14:32.0307710Z > Task :gym:test
+2026-09-26T13:14:32.0308631Z 
+2026-09-26T13:14:32.0325860Z GameEnvironmentTest > playGame with random agents and sealed decks completes PASSED
+2026-09-26T13:14:32.0326416Z 
+2026-09-26T13:14:32.0326758Z GameEnvironmentTest > MCTS-style fork and rollout pattern works PASSED
+2026-09-26T13:14:32.0327160Z 
+2026-09-26T13:14:32.0327492Z GameEnvironmentTest > multiple forks from same state are independent PASSED
+2026-09-26T13:14:32.0327902Z 
+2026-09-26T13:14:32.0328199Z GameEnvironmentTest > reset can be called multiple times PASSED
+2026-09-26T13:14:32.4302314Z 
+2026-09-26T13:14:32.4323320Z GameGymEnvCombatTest > attackers declared through step params deal combat damage PASSED
+2026-09-26T13:14:32.5282626Z 
+2026-09-26T13:14:32.5313281Z GameGymEnvCombatTest > an illegal attacker declaration is rejected, not silently dropped PASSED
+2026-09-26T13:14:32.5358716Z 
+2026-09-26T13:14:32.5372872Z GameGymEnvCombatTest > params an action cannot use are rejected PASSED
+2026-09-26T13:14:32.5402234Z 
+2026-09-26T13:14:32.5422831Z GameGymEnvCombatTest > stepping without params still means 'attack with nobody' PASSED
+2026-09-26T13:14:32.6282796Z 
+2026-09-26T13:14:32.6333879Z GameGymEnvCombatTest > targets and X — the CastSpell / ActivateAbility branch > a targeted X spell resolves for the X and at the target the params name PASSED
+2026-09-26T13:14:32.6392268Z 
+2026-09-26T13:14:32.6453848Z GameGymEnvCombatTest > targets and X — the CastSpell / ActivateAbility branch > a bare entity id in targets resolves to the zone variant the state implies PASSED
+2026-09-26T13:14:32.6492434Z 
+2026-09-26T13:14:32.6503242Z GameGymEnvCombatTest > blockers — the DeclareBlockers branch > blockers params complete the template the enumerator could only offer empty PASSED
+2026-09-26T13:14:32.6532237Z 
+2026-09-26T13:14:32.6569847Z GameGymEnvCombatTest > blockers — the DeclareBlockers branch > a DeclareBlockers action rejects attacker / target / X params PASSED
+2026-09-26T13:14:32.6582625Z 
+2026-09-26T13:14:32.6605402Z IzzetSciencePdhMechanicsQualificationTest > exact nonlegendary commanders initialize in their own command zones at 30 life PASSED
+2026-09-26T13:14:33.0272349Z 
+2026-09-26T13:14:33.0303082Z IzzetSciencePdhMechanicsQualificationTest > Izzet Guildmage is offered legally, casts for printed cost, and requires two more mana on recast PASSED
+2026-09-26T13:14:33.1260190Z 
+2026-09-26T13:14:33.1353438Z IzzetSciencePdhMechanicsQualificationTest > Veteran Beastrider is offered legally, casts for printed cost, and requires two more mana on recast PASSED
+2026-09-26T13:14:33.2259806Z 
+2026-09-26T13:14:33.2283139Z IzzetSciencePdhMechanicsQualificationTest > the actual commander owner can decline command-zone return PASSED
+2026-09-26T13:14:33.2291109Z 
+2026-09-26T13:14:33.2291781Z IzzetSciencePdhMechanicsQualificationTest > actual Guildmage combat reaches 15 commander damage under the 16 threshold PASSED
+2026-09-26T13:14:33.2292436Z 
+2026-09-26T13:14:33.2294611Z IzzetSciencePdhMechanicsQualificationTest > actual Guildmage combat reaches 16 commander damage under the 16 threshold PASSED
+2026-09-26T13:14:33.3282289Z 
+2026-09-26T13:14:33.3340844Z IzzetSciencePdhMechanicsQualificationTest > 16 noncombat damage by the actual commander never increments commander combat damage PASSED
+2026-09-26T13:14:33.3372155Z 
+2026-09-26T13:14:33.3373024Z IzzetSciencePosition1BootstrapTest > frozen byte identities and translated lists produce an unseeded unsmoothed PDH config PASSED
+2026-09-26T13:14:33.3402202Z 
+2026-09-26T13:14:33.3411566Z IzzetSciencePosition1BootstrapTest > play and draw change the starting player without swapping stable deck seats PASSED
+2026-09-26T13:14:33.3482314Z 
+2026-09-26T13:14:33.3502856Z IzzetSciencePosition1BootstrapTest > changed control or opponent bytes and unknown assignments reject before seed access PASSED
+2026-09-26T13:14:33.3532196Z 
+2026-09-26T13:14:33.3562836Z IzzetSciencePosition1BootstrapTest > all five unresolved identities block the real initializer without touching its seed supplier PASSED
+2026-09-26T13:14:33.4283741Z 
+2026-09-26T13:14:33.4343160Z IzzetSciencePosition1BootstrapTest > play fixture reuses the real configuration with exact command zones and deterministic initialization PASSED
+2026-09-26T13:14:33.4372121Z 
+2026-09-26T13:14:33.4402741Z IzzetSciencePosition1BootstrapTest > draw fixture reuses the real configuration with exact command zones and deterministic initialization PASSED
+2026-09-26T13:14:33.5276146Z 
+2026-09-26T13:14:33.5333269Z IzzetSciencePosition1BootstrapTest > a charged London mulligan survives serialized state and action replay without automatic decisions PASSED
+2026-09-26T13:14:33.5385920Z 
+2026-09-26T13:14:33.5403378Z IzzetScienceVeteranBeastriderEngineReadinessTest > exact frozen 99-card identities have correct counts PASSED
+2026-09-26T13:14:33.5432114Z 
+2026-09-26T13:14:33.5432839Z IzzetScienceVeteranBeastriderEngineReadinessTest > Boreal Druid resolves with exact colorless mana ability PASSED
+2026-09-26T13:14:33.5462316Z 
+2026-09-26T13:14:33.5482175Z IzzetScienceVeteranBeastriderEngineReadinessTest > Llanowar Visionary resolves as ETB draw mana creature PASSED
+2026-09-26T13:14:33.5553058Z 
+2026-09-26T13:14:33.5564773Z IzzetScienceVeteranBeastriderEngineReadinessTest > Owlbear resolves as trample ETB draw creature PASSED
+2026-09-26T13:14:33.5565574Z 
+2026-09-26T13:14:33.5566286Z IzzetScienceVeteranBeastriderEngineReadinessTest > Murmuring Mystic resolves as instant-sorcery cast token engine PASSED
+2026-09-26T13:14:33.5566840Z 
+2026-09-26T13:14:33.5567334Z IzzetScienceVeteranBeastriderEngineReadinessTest > Goblin Electromancer resolves with generic instant-sorcery cost reduction PASSED
+2026-09-26T13:14:33.5567910Z 
+2026-09-26T13:14:33.5568386Z IzzetScienceVeteranBeastriderEngineReadinessTest > Memory Lapse resolves through counter-to-library-top destination PASSED
+2026-09-26T13:14:33.5569067Z 
+2026-09-26T13:14:33.5569607Z IzzetScienceVeteranBeastriderEngineReadinessTest > Izzet Guildmage resolves with two capped spell-copy abilities PASSED
+2026-09-26T13:14:33.5570116Z 
+2026-09-26T13:14:33.5570519Z IzzetScienceVeteranBeastriderEngineReadinessTest > Echoing Truth resolves as same-name nonland-permanent bounce PASSED
+2026-09-26T13:14:33.5581820Z 
+2026-09-26T13:14:33.5582393Z IzzetScienceVeteranBeastriderEngineReadinessTest > Snap resolves as creature bounce with resolution-time land choice PASSED
+2026-09-26T13:14:33.5582846Z 
+2026-09-26T13:14:33.5583172Z IzzetScienceVeteranBeastriderEngineReadinessTest > Capsize resolves as permanent bounce with buyback PASSED
+2026-09-26T13:14:33.5583597Z 
+2026-09-26T13:14:33.5584002Z IzzetScienceVeteranBeastriderEngineReadinessTest > Frantic Search resolves as draw-discard with resolution-time land choice PASSED
+2026-09-26T13:14:33.5584510Z 
+2026-09-26T13:14:33.5584898Z IzzetScienceVeteranBeastriderEngineReadinessTest > frozen combined Veteran identities resolve their exact printed faces PASSED
+2026-09-26T13:14:33.5585383Z 
+2026-09-26T13:14:33.5586280Z IzzetScienceVeteranBeastriderEngineReadinessTest > freeze exact unresolved engine coverage count and emit identities PASSED
+2026-09-26T13:14:33.5586772Z 
+2026-09-26T13:14:33.5587218Z IzzetScienceVeteranBeastriderEngineReadinessTest > full execution remains fail closed behind unresolved cards and PDH semantics PASSED
+2026-09-26T13:14:33.5587728Z 
+2026-09-26T13:14:33.5588100Z IzzetScienceVeteranBeastriderEngineReadinessTest > readiness consumes no official seed and exposes no outcome PASSED
+2026-09-26T13:14:33.5588542Z 
+2026-09-26T13:14:33.5588803Z SmokeTriggerTelemetryTest > Guttersnipe combat damage does not become trigger damage PASSED
+2026-09-26T13:14:33.5589140Z 
+2026-09-26T13:14:33.5589400Z SmokeTriggerTelemetryTest > Flamebreather combat and triggered damage remain separate PASSED
+2026-09-26T13:14:33.5589705Z 
+2026-09-26T13:14:33.5590210Z SmokeTriggerTelemetryTest > an unrelated trigger granted to Flamebreather is not counted as its damage trigger PASSED
+2026-09-26T13:14:33.5590602Z 
+2026-09-26T13:14:33.5590899Z SmokeTriggerTelemetryTest > created trigger is counted when the game ends before its damage resolves PASSED
+2026-09-26T13:14:33.6287963Z 
+2026-09-26T13:14:33.6303252Z ObservationProjectedStateTest > battlefield names follow the layer projection PASSED
+2026-09-26T13:14:33.6326979Z 
+2026-09-26T13:14:33.6352635Z ObservationProjectedStateTest > an uncrewed Vehicle has no public power or toughness PASSED
+2026-09-26T13:14:33.6364431Z 
+2026-09-26T13:14:33.6392624Z ObservationProjectedStateTest > crewing a Vehicle makes its power and toughness public PASSED
+2026-09-26T13:14:33.6419870Z 
+2026-09-26T13:14:33.6442629Z ObservationProjectedStateTest > haste suppresses effective summoning sickness in the observation PASSED
+2026-09-26T13:14:33.6462127Z 
+2026-09-26T13:14:33.6472557Z ObservationProjectedStateTest > a creature without haste still reports the restriction PASSED
+2026-09-26T13:14:33.6492485Z 
+2026-09-26T13:14:33.6493069Z ObservationProjectedStateTest > a face-down permanent reveals its card only to the player who may look PASSED
+2026-09-26T13:14:33.6493674Z 
+2026-09-26T13:14:33.6494162Z ObservationProjectedStateTest > stack controller and kind come from stack components rather than battlefield projection PASSED
+2026-09-26T13:14:33.6494707Z 
+2026-09-26T13:14:33.6495105Z ObservationProjectedStateTest > a face-down spell on the stack is nameless to its opponent PASSED
+2026-09-26T13:14:33.6495553Z 
+2026-09-26T13:14:33.6495910Z ObservationVisibilityTest > a hidden hand reports its size and none of its cards PASSED
+2026-09-26T13:14:33.6496351Z 
+2026-09-26T13:14:33.6496753Z ObservationVisibilityTest > a whole-hand reveal drops the hidden flag for the entitled perspective PASSED
+2026-09-26T13:14:33.6497216Z 
+2026-09-26T13:14:33.6497615Z ObservationVisibilityTest > a hidden zone carries its known subset while still reporting its full size PASSED
+2026-09-26T13:14:33.7259896Z 
+2026-09-26T13:14:33.7303028Z ObservationVisibilityTest > a known top card is the library's only entry, public or private PASSED
+2026-09-26T13:14:33.7303476Z 
+2026-09-26T13:14:33.7332626Z ObservationVisibilityTest > every modeled player zone is represented with engine-owned visibility PASSED
+2026-09-26T13:14:33.7355089Z 
+2026-09-26T13:14:33.7412739Z ObservationVisibilityTest > a face-down object keeps its public characteristics and loses its identity PASSED
+2026-09-26T13:14:33.7442022Z 
+2026-09-26T13:14:33.7472567Z TrainingObservationTest > observation includes all basic state fields and round-trips through JSON PASSED
+2026-09-26T13:14:33.7502011Z 
+2026-09-26T13:14:33.7523125Z TrainingObservationTest > per-player zones have an explicit complete schema order PASSED
+2026-09-26T13:14:33.7556335Z 
+2026-09-26T13:14:33.7606523Z TrainingObservationTest > an actionId from the observation resolves to a steppable action PASSED
+2026-09-26T13:14:33.7682180Z 
+2026-09-26T13:14:33.7705476Z TrainingObservationTest > opponent hand is hidden by default, visible when revealAll=true PASSED
+2026-09-26T13:14:33.7730670Z 
+2026-09-26T13:14:33.7732717Z TrainingObservationTest > oracle text is serialized for cards in visible zones PASSED
+2026-09-26T13:14:33.7756849Z 
+2026-09-26T13:14:33.7853139Z TrainingObservationTest > a card revealed to this perspective is visible inside its still-hidden zone PASSED
+2026-09-26T13:14:33.7853765Z 
+2026-09-26T13:14:33.7882713Z TrainingObservationTest > stateDigest distinguishes which card is known inside a hidden zone PASSED
+2026-09-26T13:14:33.7900949Z 
+2026-09-26T13:14:33.7904531Z TrainingObservationTest > a spell on the stack reports its chosen targets, and they reach the digest PASSED
+2026-09-26T13:14:33.7905150Z 
+2026-09-26T13:14:33.7905575Z TrainingObservationTest > a triggered ability on the stack reports its source and controller PASSED
+2026-09-26T13:14:33.8264901Z 
+2026-09-26T13:14:33.8323322Z TrainingObservationTest > stateDigest reflects every observable field of a stack item PASSED
+2026-09-26T13:14:33.8351423Z 
+2026-09-26T13:14:33.8371396Z TrainingObservationTest > stateDigest is unambiguous when a card name contains the encoding's delimiters PASSED
+2026-09-26T13:14:33.8372241Z 
+2026-09-26T13:14:33.8372746Z TrainingObservationTest > stateDigest is stable for equivalent observations and changes when state changes PASSED
+2026-09-26T13:14:33.8373267Z 
+2026-09-26T13:14:33.8373656Z DeckbuildEnvironmentTest > opening observation lists the pooled cards with their copy counts PASSED
+2026-09-26T13:14:33.8374099Z 
+2026-09-26T13:14:33.8374460Z DeckbuildEnvironmentTest > adding a card decrements its remaining count and grows the deck PASSED
+2026-09-26T13:14:33.8374907Z 
+2026-09-26T13:14:33.8375208Z DeckbuildEnvironmentTest > cannot add more copies than the pool holds PASSED
+2026-09-26T13:14:33.8375582Z 
+2026-09-26T13:14:33.8375857Z DeckbuildEnvironmentTest > basics can be added without limit PASSED
+2026-09-26T13:14:33.8376203Z 
+2026-09-26T13:14:33.8376435Z DeckbuildEnvironmentTest > remove undoes an add PASSED
+2026-09-26T13:14:33.8376766Z 
+2026-09-26T13:14:33.8377125Z DeckbuildEnvironmentTest > FINALIZE is gated on reaching the target size, then terminates with a score PASSED
+2026-09-26T13:14:33.8377551Z 
+2026-09-26T13:14:33.8377884Z DeckbuildEnvironmentTest > fork preserves the in-progress selection but diverges after PASSED
+2026-09-26T13:14:33.8378311Z 
+2026-09-26T13:14:33.8378560Z EnvWorkerPoolTest > results come back in submission order PASSED
+2026-09-26T13:14:33.8378870Z 
+2026-09-26T13:14:33.8379217Z EnvWorkerPoolTest > a failing task propagates its own exception type, not ExecutionException PASSED
+2026-09-26T13:14:33.8379633Z 
+2026-09-26T13:14:33.8379996Z EnvWorkerPoolTest > an IllegalStateException keeps its identity too, so it can still map to 409 PASSED
+2026-09-26T13:14:33.9292542Z 
+2026-09-26T13:14:33.9323087Z MultiEnvServiceTest > create returns an envId and an opening observation PASSED
+2026-09-26T13:14:33.9323955Z 
+2026-09-26T13:14:33.9324334Z MultiEnvServiceTest > observe returns the current state without advancing PASSED
+2026-09-26T13:14:33.9324799Z 
+2026-09-26T13:14:33.9325141Z MultiEnvServiceTest > reset on an existing envId reinitializes the game PASSED
+2026-09-26T13:14:33.9325545Z 
+2026-09-26T13:14:33.9325874Z MultiEnvServiceTest > dispose removes envs and makes them unknown PASSED
+2026-09-26T13:14:33.9326258Z 
+2026-09-26T13:14:33.9326566Z MultiEnvServiceTest > unknown envId throws on any operation PASSED
+2026-09-26T13:14:33.9326956Z 
+2026-09-26T13:14:33.9327349Z MultiEnvServiceTest > step advances the game using an action ID from the current observation PASSED
+2026-09-26T13:14:33.9327826Z 
+2026-09-26T13:14:33.9328186Z MultiEnvServiceTest > the returned registry maps IDs to matching engine actions PASSED
+2026-09-26T13:14:33.9328634Z 
+2026-09-26T13:14:33.9329017Z MultiEnvServiceTest > action IDs from a stale observation become invalid after stepping PASSED
+2026-09-26T13:14:33.9329482Z 
+2026-09-26T13:14:33.9329915Z MultiEnvServiceTest > stepBatch advances multiple envs in parallel PASSED
+2026-09-26T13:14:33.9330374Z 
+2026-09-26T13:14:33.9330783Z MultiEnvServiceTest > stepBatch with an empty request list returns an empty list PASSED
+2026-09-26T13:14:33.9331442Z 
+2026-09-26T13:14:33.9332543Z MultiEnvServiceTest > fork creates independent envs that diverge on step PASSED
+2026-09-26T13:14:33.9346809Z 
+2026-09-26T13:14:33.9347197Z MultiEnvServiceTest > fork with a non-positive count throws PASSED
+2026-09-26T13:14:33.9347586Z 
+2026-09-26T13:14:33.9347920Z MultiEnvServiceTest > snapshot and restore round-trips the game state PASSED
+2026-09-26T13:14:34.3259825Z 
+2026-09-26T13:14:34.3283353Z MultiEnvServiceTest > DeckResolver produces a 40+ card sealed deck when a BoosterGenerator is wired up PASSED
+2026-09-26T13:14:34.3314571Z 
+2026-09-26T13:14:34.3342987Z MultiEnvServiceTest > RandomSealed without a BoosterGenerator fails fast PASSED
+2026-09-26T13:14:34.3372548Z 
+2026-09-26T13:14:34.3373093Z MultiEnvServiceTest > DeckResolver.validate flags unknown cards and too-small decks PASSED
+2026-09-26T13:14:34.3374080Z 
+2026-09-26T13:14:34.3374546Z MultiEnvServiceTest > submitDecision rejects when the env has no pending decision PASSED
+2026-09-26T13:14:34.3375031Z 
+2026-09-26T13:14:34.3375469Z MultiEnvServiceTest > opening observation uses the configured perspective and reveal flag PASSED
+2026-09-26T13:14:34.4260211Z 
+2026-09-26T13:14:34.4261618Z MultiEnvServiceTest > stepping the same env multiple times keeps turnNumber monotonically non-decreasing PASSED
+2026-09-26T13:14:35.9260410Z 
+2026-09-26T13:14:35.9261126Z > Task :gym-server:test
+2026-09-26T13:14:35.9261340Z 
+2026-09-26T13:14:35.9261569Z GymBeansConfigTest > the gym card registry resolves every predefined token by name PASSED
+2026-09-26T13:14:39.9266868Z 
+2026-09-26T13:14:39.9269830Z OpenJDK 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended
+2026-09-26T13:14:40.1260322Z 
+2026-09-26T13:14:40.1261159Z > Task :gym-server:test
+2026-09-26T13:14:40.1261548Z 
+2026-09-26T13:14:40.1262094Z EnvControllerTest > GET /schema-hash returns the current schema PASSED
+2026-09-26T13:14:40.1262500Z 
+2026-09-26T13:14:40.1262746Z EnvControllerTest > GET /health returns ok PASSED
+2026-09-26T13:14:40.7260361Z 
+2026-09-26T13:14:40.7261199Z EnvControllerTest > GET /v3/api-docs serves the OpenAPI spec PASSED
+2026-09-26T13:14:40.7261608Z 
+2026-09-26T13:14:40.7262114Z EnvControllerTest > OpenAPI spec has no Kotlin inline-class mangled property names PASSED
+2026-09-26T13:14:40.7262459Z 
+2026-09-26T13:14:40.7262659Z EnvControllerTest > GET /swagger-ui/index.html serves the UI PASSED
+2026-09-26T13:14:41.0272572Z 
+2026-09-26T13:14:41.0273686Z EnvControllerTest > create -> observe -> step -> dispose round-trips over HTTP PASSED
+2026-09-26T13:14:41.0274458Z 
+2026-09-26T13:14:41.0275013Z EnvControllerTest > POST /envs with an unknown set code surfaces 400 PASSED
+2026-09-26T13:14:41.1263831Z 
+2026-09-26T13:14:41.1265666Z EnvControllerTest > GET /envs/{unknown} returns 404 PASSED
+2026-09-26T13:14:41.1266078Z 
+2026-09-26T13:14:41.1266445Z EnvControllerTest > step with an out-of-range actionId returns 400 PASSED
+2026-09-26T13:14:41.2259443Z 
+2026-09-26T13:14:41.2259735Z EnvControllerTest > turnNumber advances after several steps PASSED
+2026-09-26T13:14:41.2259960Z 
+2026-09-26T13:14:41.2260331Z 2026-09-26T13:14:41.147Z  INFO 3559 --- [argentum-gym-server] [ionShutdownHook] o.s.boot.tomcat.GracefulShutdown         : Commencing graceful shutdown. Waiting for active requests to complete
+2026-09-26T13:14:41.2260954Z 2026-09-26T13:14:41.149Z  INFO 3559 --- [argentum-gym-server] [tomcat-shutdown] o.s.boot.tomcat.GracefulShutdown         : Graceful shutdown complete
+2026-09-26T13:14:41.6283428Z gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__run-1790428293837.json
+2026-09-26T13:14:41.8126461Z Kotlin build report is written to file:///home/runner/work/argentum-batshit-test/argentum-batshit-test/build/reports/kotlin-build/argentum-engine-build-2026-09-26-13-14-41-0.txt
+2026-09-26T13:14:41.8135044Z 
+2026-09-26T13:14:41.8144066Z [Incubating] Problems report is available at: file:///home/runner/work/argentum-batshit-test/argentum-batshit-test/build/reports/problems/problems-report.html
+2026-09-26T13:14:41.8144950Z 
+2026-09-26T13:14:41.8145255Z Deprecated Gradle features were used in this build, making it incompatible with Gradle 10.
+2026-09-26T13:14:41.8145619Z 
+2026-09-26T13:14:41.8152902Z You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+2026-09-26T13:14:41.8153441Z 
+2026-09-26T13:14:41.8154044Z For more on this, please refer to https://docs.gradle.org/9.6.1/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+2026-09-26T13:14:41.8154636Z 
+2026-09-26T13:14:41.8154848Z BUILD SUCCESSFUL in 3m 10s
+2026-09-26T13:14:41.8155207Z 61 actionable tasks: 61 executed
+2026-09-26T13:14:41.8155576Z Configuration cache entry stored.
+2026-09-26T13:14:47.1384855Z Post job cleanup.
+2026-09-26T13:14:47.2060230Z (node:6988) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-09-26T13:14:47.2060759Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-09-26T13:14:47.2172977Z [command]/usr/bin/tar --posix -cf cache.tzst --exclude cache.tzst -P -C /home/runner/work/argentum-batshit-test/argentum-batshit-test --files-from manifest.txt --use-compress-program zstdmt
+2026-09-26T13:14:47.4125433Z (node:6988) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+2026-09-26T13:14:48.4106221Z Sent 56077662 of 56077662 (100.0%), 53.5 MBs/sec
+2026-09-26T13:14:48.5777147Z Cache saved with key: gradle-build-cache-Linux-tools-2029ab158862b274c710fc17c7e531704fa890d3
+2026-09-26T13:14:48.5864565Z Post job cleanup.
+2026-09-26T13:14:48.7524753Z In post-action step
+2026-09-26T13:14:48.7525341Z Enhanced Caching: This build is using the proprietary 'gradle-actions-caching' provider for optimized caching support. See https://github.com/gradle/actions/blob/main/DISTRIBUTION.md for terms of use and opt-out instructions.
+2026-09-26T13:14:48.8061180Z Cache is read-only: will not save state for use in subsequent builds.
+2026-09-26T13:14:48.8062186Z ##[group]Generating Job Summary
+2026-09-26T13:14:48.8062594Z 
+2026-09-26T13:14:48.8064238Z 
+2026-09-26T13:14:48.8064392Z <table>
+2026-09-26T13:14:48.8064606Z     <tr>
+2026-09-26T13:14:48.8064867Z         <th>Gradle Root Project</th>
+2026-09-26T13:14:48.8065170Z         <th>Requested Tasks</th>
+2026-09-26T13:14:48.8065450Z         <th>Gradle Version</th>
+2026-09-26T13:14:48.8065721Z         <th>Build Outcome</th>
+2026-09-26T13:14:48.8066239Z         <th>Build&nbsp;Scan®</th>
+2026-09-26T13:14:48.8066501Z     </tr>
+2026-09-26T13:14:48.8066778Z     <tr>
+2026-09-26T13:14:48.8066992Z         <td>argentum-engine</td>
+2026-09-26T13:14:48.8067886Z         <td><div title=':gym:test :gym-server:test :gym-trainer:test :mtgish-tooling:test'>:gym:test :gym-server:test :gym-trainer:test :mtgish-toolin…</div></td>
+2026-09-26T13:14:48.8068783Z         <td align='center'>9.6.1</td>
+2026-09-26T13:14:48.8069250Z         <td align='center'>:white_check_mark:</td>
+2026-09-26T13:14:48.8069987Z         <td><a href="https://scans.gradle.com" rel="nofollow" target="_blank"><img src="https://img.shields.io/badge/Not%20published-lightgrey" alt="Build Scan not published" /></a></td>
+2026-09-26T13:14:48.8070652Z     </tr>
+2026-09-26T13:14:48.8070858Z </table>
+2026-09-26T13:14:48.8071072Z     
+2026-09-26T13:14:48.8071275Z ============================
+2026-09-26T13:14:48.8071671Z <h4>Gradle State Caching - ⚡ Enhanced (read-only)</h4>
+2026-09-26T13:14:48.8072018Z 
+2026-09-26T13:14:48.8072893Z **[Enhanced Caching](https://github.com/gradle/actions/blob/main/docs/setup-gradle.md#enhanced-caching)** uses the proprietary `gradle-actions-caching` provider. See [DISTRIBUTION.md](https://github.com/gradle/actions/blob/main/DISTRIBUTION.md) for terms of use and opt-out instructions.
+2026-09-26T13:14:48.8073814Z 
+2026-09-26T13:14:48.8073910Z <details>
+2026-09-26T13:14:48.8074256Z <summary>Entries: 8 restored (538Mb), 0 saved (0Mb) - Expand for more details</summary>
+2026-09-26T13:14:48.8074563Z 
+2026-09-26T13:14:48.8075271Z [Cache was read-only](https://github.com/gradle/actions/blob/main/docs/setup-gradle.md#using-the-cache-read-only) — by default, the action only writes to the cache for jobs running on the default branch.
+2026-09-26T13:14:48.8075907Z 
+2026-09-26T13:14:48.8075997Z <table>
+2026-09-26T13:14:48.8076307Z     <tr><td></td><th>Count</th><th>Total Size (Mb)</th><th>Total Time (ms)</th></tr>
+2026-09-26T13:14:48.8076687Z     <tr><td>Entries Restored</td>
+2026-09-26T13:14:48.8076954Z         <td>8</td>
+2026-09-26T13:14:48.8077181Z         <td>538</td>
+2026-09-26T13:14:48.8077422Z         <td>12236</td>
+2026-09-26T13:14:48.8077645Z     </tr>
+2026-09-26T13:14:48.8077855Z     <tr><td>Entries Saved</td>
+2026-09-26T13:14:48.8078438Z         <td>0</td>
+2026-09-26T13:14:48.8078652Z         <td>0</td>
+2026-09-26T13:14:48.8078869Z         <td>0</td>
+2026-09-26T13:14:48.8079080Z     </tr>
+2026-09-26T13:14:48.8079277Z </table>
+2026-09-26T13:14:48.8079353Z 
+2026-09-26T13:14:48.8079412Z <pre>
+2026-09-26T13:14:48.8079550Z Entry: Gradle User Home
+2026-09-26T13:14:48.8079856Z     Requested Key : gradle-home-v2|Linux-X64|test[a7652eeb27038373de7edb820b63f121]-2029ab158862b274c710fc17c7e531704fa890d3
+2026-09-26T13:14:48.8080304Z     Restored  Key : gradle-home-v2|Linux-X64|test[a7652eeb27038373de7edb820b63f121]-d0c78bb4cca79b7402ba65bd62b5cb621230a054
+2026-09-26T13:14:48.8080614Z               Size: 1 MB (646996 B)
+2026-09-26T13:14:48.8080789Z               Time: 906 ms
+2026-09-26T13:14:48.8080967Z               (Entry restored: partial match found)
+2026-09-26T13:14:48.8081157Z     Saved     Key : 
+2026-09-26T13:14:48.8081509Z               Size: 
+2026-09-26T13:14:48.8081650Z               Time: 
+2026-09-26T13:14:48.8081821Z               (Entry not saved: cache is read-only)
+2026-09-26T13:14:48.8082202Z ---
+2026-09-26T13:14:48.8082448Z Entry: caches/9.6.1/generated-gradle-jars/gradle-api-9.6.1.jar
+2026-09-26T13:14:48.8082765Z     Requested Key : gradle-generated-gradle-jars-v2-aab574994eb421acff6809687eadd5de
+2026-09-26T13:14:48.8083194Z     Restored  Key : gradle-generated-gradle-jars-v2-aab574994eb421acff6809687eadd5de
+2026-09-26T13:14:48.8083455Z               Size: 40 MB (42158673 B)
+2026-09-26T13:14:48.8083688Z               Time: 1250 ms
+2026-09-26T13:14:48.8083953Z               (Entry restored: exact match found)
+2026-09-26T13:14:48.8084286Z     Saved     Key : 
+2026-09-26T13:14:48.8084427Z               Size: 
+2026-09-26T13:14:48.8084619Z               Time: 
+2026-09-26T13:14:48.8084806Z               (Entry not saved: cache is read-only)
+2026-09-26T13:14:48.8084981Z ---
+2026-09-26T13:14:48.8085169Z Entry: wrapper/dists/gradle-9.6.1-bin/4ticwg1pgcbps2hj28r8so764
+2026-09-26T13:14:48.8085539Z     Requested Key : gradle-wrapper-zips-v2-852daf033b54d6f5dd2552660ef7de60
+2026-09-26T13:14:48.8085839Z     Restored  Key : gradle-wrapper-zips-v2-852daf033b54d6f5dd2552660ef7de60
+2026-09-26T13:14:48.8086078Z               Size: 133 MB (139934591 B)
+2026-09-26T13:14:48.8086322Z               Time: 2698 ms
+2026-09-26T13:14:48.8086493Z               (Entry restored: exact match found)
+2026-09-26T13:14:48.8086672Z     Saved     Key : 
+2026-09-26T13:14:48.8086813Z               Size: 
+2026-09-26T13:14:48.8087029Z               Time: 
+2026-09-26T13:14:48.8087272Z               (Entry not saved: cache is read-only)
+2026-09-26T13:14:48.8087550Z ---
+2026-09-26T13:14:48.8087765Z Entry: dependencies
+2026-09-26T13:14:48.8088113Z     Requested Key : gradle-dependencies-v2-c31afde829c33f835a1f29cbcfae9ddc
+2026-09-26T13:14:48.8088612Z     Restored  Key : gradle-dependencies-v2-c31afde829c33f835a1f29cbcfae9ddc
+2026-09-26T13:14:48.8089005Z               Size: 253 MB (264801627 B)
+2026-09-26T13:14:48.8089277Z               Time: 2942 ms
+2026-09-26T13:14:48.8089557Z               (Entry restored: exact match found)
+2026-09-26T13:14:48.8089830Z     Saved     Key : 
+2026-09-26T13:14:48.8090041Z               Size: 
+2026-09-26T13:14:48.8090267Z               Time: 
+2026-09-26T13:14:48.8090517Z               (Entry not saved: cache is read-only)
+2026-09-26T13:14:48.8090793Z ---
+2026-09-26T13:14:48.8091011Z Entry: instrumented-jars
+2026-09-26T13:14:48.8091410Z     Requested Key : gradle-instrumented-jars-v2-bb910fcacf708cb42c10c2b5b22b5d19
+2026-09-26T13:14:48.8092034Z     Restored  Key : gradle-instrumented-jars-v2-bb910fcacf708cb42c10c2b5b22b5d19
+2026-09-26T13:14:48.8092444Z               Size: 0 MB (60281 B)
+2026-09-26T13:14:48.8092713Z               Time: 612 ms
+2026-09-26T13:14:48.8092981Z               (Entry restored: exact match found)
+2026-09-26T13:14:48.8093259Z     Saved     Key : 
+2026-09-26T13:14:48.8093489Z               Size: 
+2026-09-26T13:14:48.8093684Z               Time: 
+2026-09-26T13:14:48.8093895Z               (Entry not saved: cache is read-only)
+2026-09-26T13:14:48.8094364Z ---
+2026-09-26T13:14:48.8094564Z Entry: kotlin-dsl
+2026-09-26T13:14:48.8094930Z     Requested Key : gradle-kotlin-dsl-v2-47bb15ab9d1d244419f88a8f7d95ae8a
+2026-09-26T13:14:48.8095223Z     Restored  Key : gradle-kotlin-dsl-v2-47bb15ab9d1d244419f88a8f7d95ae8a
+2026-09-26T13:14:48.8095453Z               Size: 0 MB (338388 B)
+2026-09-26T13:14:48.8109409Z               Time: 686 ms
+2026-09-26T13:14:48.8109731Z               (Entry restored: exact match found)
+2026-09-26T13:14:48.8110008Z     Saved     Key : 
+2026-09-26T13:14:48.8110222Z               Size: 
+2026-09-26T13:14:48.8110422Z               Time: 
+2026-09-26T13:14:48.8110586Z               (Entry not saved: cache is read-only)
+2026-09-26T13:14:48.8110773Z ---
+2026-09-26T13:14:48.8110909Z Entry: groovy-dsl
+2026-09-26T13:14:48.8111294Z     Requested Key : gradle-groovy-dsl-v2-f899aff15c2d37ebc18315a6bfe61114
+2026-09-26T13:14:48.8111608Z     Restored  Key : gradle-groovy-dsl-v2-f899aff15c2d37ebc18315a6bfe61114
+2026-09-26T13:14:48.8112032Z               Size: 0 MB (101824 B)
+2026-09-26T13:14:48.8112248Z               Time: 538 ms
+2026-09-26T13:14:48.8112425Z               (Entry restored: exact match found)
+2026-09-26T13:14:48.8112604Z     Saved     Key : 
+2026-09-26T13:14:48.8112750Z               Size: 
+2026-09-26T13:14:48.8112892Z               Time: 
+2026-09-26T13:14:48.8113052Z               (Entry not saved: cache is read-only)
+2026-09-26T13:14:48.8113234Z ---
+2026-09-26T13:14:48.8113363Z Entry: transforms
+2026-09-26T13:14:48.8113576Z     Requested Key : gradle-transforms-v2-ce64cf56aee45f6401b975af0bc9e903
+2026-09-26T13:14:48.8113864Z     Restored  Key : gradle-transforms-v2-ce64cf56aee45f6401b975af0bc9e903
+2026-09-26T13:14:48.8114097Z               Size: 111 MB (116480350 B)
+2026-09-26T13:14:48.8114277Z               Time: 2604 ms
+2026-09-26T13:14:48.8114457Z               (Entry restored: exact match found)
+2026-09-26T13:14:48.8114638Z     Saved     Key : 
+2026-09-26T13:14:48.8114783Z               Size: 
+2026-09-26T13:14:48.8114925Z               Time: 
+2026-09-26T13:14:48.8115085Z               (Entry not saved: cache is read-only)
+2026-09-26T13:14:48.8115276Z </pre>
+2026-09-26T13:14:48.8115460Z </details>
+2026-09-26T13:14:48.8115539Z 
+2026-09-26T13:14:48.8116247Z ##[endgroup]
+2026-09-26T13:14:48.8116596Z Completed post-action step
+2026-09-26T13:14:48.8314609Z Post job cleanup.
+2026-09-26T13:14:48.9260933Z Post job cleanup.
+2026-09-26T13:14:48.9846295Z [command]/usr/bin/git version
+2026-09-26T13:14:48.9881630Z git version 2.55.0
+2026-09-26T13:14:48.9914507Z Temporarily overriding HOME='/home/runner/work/_temp/7d8e741c-4ebf-469d-98f6-a7eea9cf2961' before making global git config changes
+2026-09-26T13:14:48.9915207Z Adding repository directory to the temporary git global config as a safe directory
+2026-09-26T13:14:48.9915841Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/argentum-batshit-test/argentum-batshit-test
+2026-09-26T13:14:48.9937102Z Removing SSH command configuration
+2026-09-26T13:14:48.9942148Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-09-26T13:14:48.9976285Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-09-26T13:14:49.0314242Z Removing HTTP extra header
+2026-09-26T13:14:49.0318680Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-09-26T13:14:49.0375839Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-09-26T13:14:49.0604462Z Removing includeIf entries pointing to credentials config files
+2026-09-26T13:14:49.0610097Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-09-26T13:14:49.0638737Z includeif.gitdir:/home/runner/work/argentum-batshit-test/argentum-batshit-test/.git.path
+2026-09-26T13:14:49.0640103Z includeif.gitdir:/home/runner/work/argentum-batshit-test/argentum-batshit-test/.git/worktrees/*.path
+2026-09-26T13:14:49.0640681Z includeif.gitdir:/github/workspace/.git.path
+2026-09-26T13:14:49.0641096Z includeif.gitdir:/github/workspace/.git/worktrees/*.path
+2026-09-26T13:14:49.0648242Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/argentum-batshit-test/argentum-batshit-test/.git.path
+2026-09-26T13:14:49.0669542Z /home/runner/work/_temp/git-credentials-15f831d9-f706-4cda-a84a-b6d9f668ef2c.config
+2026-09-26T13:14:49.0679653Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/argentum-batshit-test/argentum-batshit-test/.git.path /home/runner/work/_temp/git-credentials-15f831d9-f706-4cda-a84a-b6d9f668ef2c.config
+2026-09-26T13:14:49.0715487Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/argentum-batshit-test/argentum-batshit-test/.git/worktrees/*.path
+2026-09-26T13:14:49.0738208Z /home/runner/work/_temp/git-credentials-15f831d9-f706-4cda-a84a-b6d9f668ef2c.config
+2026-09-26T13:14:49.0744270Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/argentum-batshit-test/argentum-batshit-test/.git/worktrees/*.path /home/runner/work/_temp/git-credentials-15f831d9-f706-4cda-a84a-b6d9f668ef2c.config
+2026-09-26T13:14:49.0774466Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git.path
+2026-09-26T13:14:49.0797177Z /github/runner_temp/git-credentials-15f831d9-f706-4cda-a84a-b6d9f668ef2c.config
+2026-09-26T13:14:49.0801296Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-15f831d9-f706-4cda-a84a-b6d9f668ef2c.config
+2026-09-26T13:14:49.0831137Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git/worktrees/*.path
+2026-09-26T13:14:49.0853792Z /github/runner_temp/git-credentials-15f831d9-f706-4cda-a84a-b6d9f668ef2c.config
+2026-09-26T13:14:49.0858347Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-15f831d9-f706-4cda-a84a-b6d9f668ef2c.config
+2026-09-26T13:14:49.0892992Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-09-26T13:14:49.1085034Z Removing credentials config '/home/runner/work/_temp/git-credentials-15f831d9-f706-4cda-a84a-b6d9f668ef2c.config'
+2026-09-26T13:14:49.1200196Z Cleaning up orphan processes
+2026-09-26T13:14:49.1437701Z Terminate orphan process: pid (2149) (sleep)
+2026-09-26T13:14:49.1452040Z Terminate orphan process: pid (2183) (java)
+2026-09-26T13:14:49.1475891Z Terminate orphan process: pid (2331) (java)
+2026-09-26T13:14:49.1497180Z Terminate orphan process: pid (2388) (java)
+2026-09-26T13:14:49.1519352Z Terminate orphan process: pid (2605) (java)
+2026-09-26T13:14:49.1534275Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/cache@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
