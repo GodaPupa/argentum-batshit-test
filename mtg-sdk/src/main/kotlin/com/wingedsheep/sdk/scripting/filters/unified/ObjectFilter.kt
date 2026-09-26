@@ -1156,6 +1156,11 @@ data class GameObjectFilter(
         )
     )
 
+    /** Must be a designated commander, irrespective of current card type or controller. */
+    fun commander() = copy(
+        statePredicates = statePredicates + StatePredicate.IsCommander
+    )
+
     /** Must have entered the battlefield this turn */
     fun enteredThisTurn() = copy(
         statePredicates = statePredicates + StatePredicate.EnteredThisTurn

@@ -4771,6 +4771,12 @@ work for abilities-on-stack (which carry no `CardComponent`).
 
 ### `StatePredicate` — battlefield state checks
 
+- `IsCommander` (filter builder `commander()`) — the card is a designated commander, read from
+  `CommanderComponent`. It does not require a legendary card, a creature, a particular controller,
+  or a particular zone. The designation survives zone changes and changes to copiable characteristics;
+  copying a commander does not copy its designation. For Forge of Heroes, use a battlefield target
+  with `GameObjectFilter.Any.commander().enteredThisTurn()`, then test current projected creature and
+  planeswalker types independently when placing counters.
 - `IsTapped` — currently tapped.
 - `IsUntapped` — currently untapped.
 - `IsOnBattlefield` (filter builder `onBattlefield()`) — the object is on the battlefield **right

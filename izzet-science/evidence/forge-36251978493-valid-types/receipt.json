@@ -1,0 +1,159 @@
+{
+  "schema": "izzet-forge-valid-type-fixture-audit-v1",
+  "disposition": "ACCEPTED_STRENGTHENED_TARGETED_COMPONENT_PENDING_FULL_RECEIVING_CI",
+  "source_head": "2bbcfe579d19510af0067ab90fc691ae0147db67",
+  "source_tree": "cc0eb20b20d764f595a64b1baf8502e417366f74",
+  "run_id": 36251978493,
+  "job_id": 108431587044,
+  "run_url": "https://github.com/GodaPupa/argentum-batshit-test/actions/runs/36251978493",
+  "binding": {
+    "requested_head": "2bbcfe579d19510af0067ab90fc691ae0147db67",
+    "actual_head": "2bbcfe579d19510af0067ab90fc691ae0147db67",
+    "actual_tree": "cc0eb20b20d764f595a64b1baf8502e417366f74",
+    "checkout_status": "",
+    "expected": {
+      "izzet-science/v0.7-control.md": "726f5e9458b46dda30b33a6ce9f3c3237b25d6e11b81dac85308c3065c108a01",
+      "izzet-science/opponents/veteran-beastrider-commander-clash-2025.txt": "c3ab6ee8e37a78219e7bbb7c6a75c634d78c1eb4965ab0db3abd5d853398b0be",
+      "mtg-sets/src/test/resources/snapshots/cards/C18.json": "8956f2db1a40917015600b29eece16803fb2c929d669a84661ed5d2cde0ceeaa",
+      "mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/ForgeOfHeroesScenarioTest.kt": "d5b9b096054d0f05d547720e33aa59cc723989ab2f4bd4cb207482c1b83808a7"
+    },
+    "observed": {
+      "izzet-science/v0.7-control.md": "726f5e9458b46dda30b33a6ce9f3c3237b25d6e11b81dac85308c3065c108a01",
+      "izzet-science/opponents/veteran-beastrider-commander-clash-2025.txt": "c3ab6ee8e37a78219e7bbb7c6a75c634d78c1eb4965ab0db3abd5d853398b0be",
+      "mtg-sets/src/test/resources/snapshots/cards/C18.json": "8956f2db1a40917015600b29eece16803fb2c929d669a84661ed5d2cde0ceeaa",
+      "mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/ForgeOfHeroesScenarioTest.kt": "d5b9b096054d0f05d547720e33aa59cc723989ab2f4bd4cb207482c1b83808a7"
+    },
+    "prior_target_source": "4aae1f9669769649e989735b4170f9bded15bc13",
+    "prior_423_case_run": 36249667143,
+    "scope": "TEN_EXACT_FORGE_SCENARIOS_WITH_EXPLICIT_VALID_SYNTHETIC_TYPES_AND_SUBTYPES"
+  },
+  "artifact": {
+    "id": 10908973965,
+    "name": "izzet-forge-valid-types-qualification",
+    "retained": "artifact.zip",
+    "bytes": 230281,
+    "sha256": "0746e8b63d2531b3820b9a53b3384cbbfe5716150a8836352f54cfb53b9f27d4",
+    "members": [
+      {
+        "path": "build/reports/izzet-forge-valid-types/exact-card.log",
+        "bytes": 3397714,
+        "sha256": "02f617597414f3720f274e945362fd7f0d28f96eb85f2e4d74342436332b1314"
+      },
+      {
+        "path": "build/reports/izzet-forge-valid-types/result.json",
+        "bytes": 1222,
+        "sha256": "d34fd4dd5d4d437a2a84e9131472545c7dbc78d2e6a85bec253085706ad48cc8"
+      },
+      {
+        "path": "build/reports/izzet-forge-valid-types/source-binding.json",
+        "bytes": 1557,
+        "sha256": "3a0ff97b88948c28da1ecde7fa4442b2408b8d26a8a9190be669b024d0ca0066"
+      },
+      {
+        "path": "mtg-sets/2017-2022/tests/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.ForgeOfHeroesScenarioTest.xml",
+        "bytes": 2209,
+        "sha256": "7a9d9c53290d34708c25032d038c966d7a93ff40675c6c04d5f18b54d3a5e032"
+      }
+    ]
+  },
+  "actual_cases": 10,
+  "case_names": [
+    "colorless mana is immediate and taps Forge without using the stack",
+    "exact nonlegendary PDH commander in seat 0 receives its counter only on resolution",
+    "exact nonlegendary PDH commander in seat 1 receives its counter only on resolution",
+    "an opponent's newly entered commander is a legal target",
+    "ordinary same-name creature and prior-turn commander are rejected without tapping Forge",
+    "counter resolution reads projected types [PLANESWALKER] rather than printed creature type",
+    "counter resolution reads projected types [CREATURE, PLANESWALKER] rather than printed creature type",
+    "counter resolution reads projected types [LAND] rather than printed creature type",
+    "commander leaving in response invalidates the target and preserves the paid tap",
+    "pending Forge ability serializes and replays identical state and ordered events"
+  ],
+  "xml_sha256": "7a9d9c53290d34708c25032d038c966d7a93ff40675c6c04d5f18b54d3a5e032",
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "fixture_contract": {
+    "purpose": "Exercise Forge resolution against explicitly valid synthetic current types and subtypes, while printed creature identity and commander designation remain intact.",
+    "planeswalker_only": {
+      "types": [
+        "PLANESWALKER"
+      ],
+      "subtypes": []
+    },
+    "land_only": {
+      "types": [
+        "LAND"
+      ],
+      "subtypes": []
+    },
+    "creature_and_planeswalker": {
+      "types": [
+        "CREATURE",
+        "PLANESWALKER",
+        "Human",
+        "Wizard"
+      ],
+      "subtypes": [
+        "Human",
+        "Wizard"
+      ]
+    },
+    "operation": "Existing SetCardTypes plus explicit SetCreatureSubtypes; exact complete projected type and subtype equality precedes unchanged independent counter assertions.",
+    "general_type_change_qualification": false,
+    "bestow_distinction": "Frozen Nyxborn Hydra uses existing BestowComponent.auraType, replacing its type line with TypeLine.aura and preserving only supertypes; the synthetic SetCardTypes fixture is not that gameplay pathway."
+  },
+  "previous_source_evidence": [
+    {
+      "source": "4772071bf90c00494e3e009c0aa1b25249edf069",
+      "receipt": "../forge-36248505240-rejected/receipt.json",
+      "scope": "49 actual cases,46 passed and3 invalid fixture preconditions failed; preserved."
+    },
+    {
+      "source": "4aae1f9669769649e989735b4170f9bded15bc13",
+      "receipt": "../forge-36249667143-targeted/receipt.json",
+      "scope": "423 actual passed cases and ordinary reviewed C18 bytes; retained at their exact earlier source."
+    }
+  ],
+  "independent_reviews": [
+    {
+      "reviewer": "Sphinx agent, non-author",
+      "scope": "Exact strengthened fixture and existing setter semantics",
+      "disposition": "ACCEPTED_FOR_TARGETED_QUALIFICATION"
+    },
+    {
+      "reviewer": "Manual agent, non-author",
+      "scope": "Ten-case workflow and gate source, source/golden/deck bindings and evidence preservation",
+      "disposition": "ACCEPTED_FOR_TARGETED_QUALIFICATION"
+    },
+    {
+      "reviewer": "Pest agent, non-author",
+      "scope": "Independent GitHub artifact/job metadata, exact ZIP bytes and all four member hashes, actual ten XML cases and source/deck/golden/test bindings, full strengthened type/subtype preconditions before unchanged counter assertions, historical evidence and scope limits",
+      "disposition": "ACCEPTED_STRENGTHENED_TARGETED_COMPONENT_ONLY",
+      "github_review_submitted": false
+    }
+  ],
+  "remaining_gates": [
+    "Full receiving-source CI and independent Forge acceptance",
+    "Four other exact opponent identities",
+    "Full game pilot, public actor input, replay, typed runtime ledger and guarded execution qualification"
+  ],
+  "official_counters": {
+    "seeds_generated": 12,
+    "seeds_consumed": 0,
+    "games_initialized": 0,
+    "games_completed": 0,
+    "frozen_block_size": 12,
+    "outcomes_exposed": 0
+  },
+  "hardware": "v0.7 / KEEP_V07",
+  "deck_changes": false,
+  "gameplay_admission": false,
+  "accepted_registry_gaps_until_full_forge_acceptance": [
+    "Benevolent Blessing",
+    "Forge of Heroes",
+    "Opal Palace",
+    "Snake Umbra",
+    "Vines of Vastwood"
+  ]
+}

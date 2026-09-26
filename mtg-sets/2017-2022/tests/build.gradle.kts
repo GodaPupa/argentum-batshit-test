@@ -20,6 +20,8 @@ dependencies {
     testImplementation(testFixtures(project(":rules-engine")))
     // The whole card corpus — scenario tests import the definitions they exercise.
     testImplementation(project(":mtg-sets"))
+    // Exact-card replay fixtures serialize engine state using the pinned repository dependency.
+    testImplementation(libs.kotlinxSerialization)
 
     testImplementation(libs.kotestRunner)
     testImplementation(libs.kotestAssertions)
