@@ -111,7 +111,9 @@ jobs:
           probes = {}
           for name, args in [('assay-parse', ['just','assay','parse','"Vines of Vastwood"']),
                              ('assay-explain', ['just','assay','explain','"Vines of Vastwood"']),
-                             ('draftability', ['just','coverage-fidelity','--emit','"Vines of Vastwood"'])]:
+                             ('draftability', ['just','coverage-fidelity','--emit','"Vines of Vastwood"']),
+                             ('assay-differential', ['just','assay-differential','--set','ZEN']),
+                             ('canonical-printing', ['just','check-card-printing','Vines of Vastwood'])]:
               try:
                   result = subprocess.run(args, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, timeout=240)
                   output, code, timed_out = result.stdout, result.returncode, False
@@ -119,7 +121,7 @@ jobs:
                   output, code, timed_out = exc.stdout or b'', None, True
               (report/(name+'.txt')).write_bytes(output)
               probes[name] = {'command':args, 'exit_code':code, 'timed_out':timed_out,
-                  'scope':'Predictive authoring probe only; no behavioral or gameplay acceptance'}
+                  'scope':'Authoring/printing check only; no behavioral or gameplay acceptance'}
           (report/'authoring-probes.json').write_text(json.dumps(probes,indent=2)+'\n')
           PY
 

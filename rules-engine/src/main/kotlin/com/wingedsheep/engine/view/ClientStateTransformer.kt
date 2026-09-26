@@ -2875,8 +2875,6 @@ class ClientStateTransformer(
                         )
                     )
                 }
-                // The restriction mirror. Same reason to badge it: the defender otherwise discovers
-                // the pairwise ban only when the block declaration bounces back.
                 is SerializableModification.PreventTargeting -> {
                     if (!com.wingedsheep.engine.mechanics.targeting.FloatingTargetingRestriction.appliesTo(state, floatingEffect, entityId)) continue
                     val names = modification.controllers.map { playerId ->
@@ -2889,6 +2887,8 @@ class ClientStateTransformer(
                         icon = "hexproof"
                     ))
                 }
+                // The restriction mirror. Same reason to badge it: the defender otherwise discovers
+                // the pairwise ban only when the block declaration bounces back.
                 is SerializableModification.CantBlockSpecificAttacker -> {
                     val attackerName = state.getEntity(modification.attackerId)
                         ?.get<CardComponent>()?.name

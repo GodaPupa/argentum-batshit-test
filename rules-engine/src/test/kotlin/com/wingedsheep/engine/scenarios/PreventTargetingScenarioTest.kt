@@ -105,7 +105,7 @@ class PreventTargetingScenarioTest : FunSpec({
             val target = if (playerTarget) d.player1 else d.putCreatureOnBattlefield(d.player1, "Centaur Courser")
             val initial = d.state.updateEntity(source) { it.with(TappedComponent) }
             val restricted = PreventTargetingExecutor().execute(initial,
-                PreventTargetingEffect(EffectTarget.SpecificEntity(target), duration = Duration.WhileSourceTapped),
+                PreventTargetingEffect(EffectTarget.SpecificEntity(target), duration = Duration.WhileSourceTapped()),
                 EffectContext(sourceId = source, controllerId = d.player1)).newState
             FloatingTargetingRestriction.prevents(restricted, target, d.player2) shouldBe true
             val untapped = restricted.updateEntity(source) { it.without<TappedComponent>() }
