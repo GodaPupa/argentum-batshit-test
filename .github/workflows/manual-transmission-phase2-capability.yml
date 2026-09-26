@@ -39,6 +39,8 @@ on:
       - 'mtg-sets/**/scenarios/EldraziRepurposerScenarioTest.kt'
       - 'mtg-sets/**/cards/WrithingChrysalis.kt'
       - 'mtg-sets/**/scenarios/WrithingChrysalisScenarioTest.kt'
+      - 'mtg-sets/**/cards/WalkingBallista.kt'
+      - 'mtg-sets/**/scenarios/WalkingBallistaScenarioTest.kt'
       - 'mtg-sets/**/cards/ArborElf.kt'
       - 'mtg-sets/**/scenarios/ArborElfScenarioTest.kt'
       - 'mtg-sets/**/cards/WildGrowth.kt'
@@ -120,7 +122,7 @@ jobs:
           scripts/gradle-locked :mtg-sets:2003-2007:tests:test --tests "*CoilingOracleScenarioTest" --tests "*KurgadonTest" --tests "*UtopiaSprawlScenarioTest" --tests "*PongifyScenarioTest" \
             :mtg-sets:1993-1999:tests:test --tests "*WildGrowthScenarioTest" --tests "*CloudOfFaeriesScenarioTest" --tests "*PeregrineDrakeScenarioTest" \
             :mtg-sets:2008-2016:tests:test --tests "*ManualTransmissionLandSpellGuardScenarioTest" --tests "*ArborElfScenarioTest" --tests "*AnimarSoulOfElementsScenarioTest" --tests "*AncestralStatueScenarioTest" --tests "*RapidHybridizationScenarioTest" --tests "*NestInvaderScenarioTest" --tests "*EmrakulsHatcherScenarioTest" --tests "*EyelessWatcherScenarioTest" \
-            :mtg-sets:2017-2022:tests:test --tests "*ParadiseDruidScenarioTest" --tests "*RejuvenatingSpringsScenarioTest" --tests "*TrainingCenterScenarioTest" --tests "*SpireGardenScenarioTest" \
+            :mtg-sets:2017-2022:tests:test --tests "*ParadiseDruidScenarioTest" --tests "*RejuvenatingSpringsScenarioTest" --tests "*TrainingCenterScenarioTest" --tests "*SpireGardenScenarioTest" --tests "*WalkingBallistaScenarioTest" \
             :mtg-sets:2024:tests:test --tests "*HopeEnderCoatlScenarioTest" --tests "*EldraziRepurposerScenarioTest" --tests "*WrithingChrysalisScenarioTest" \
             :mtg-sets:2025:tests:test --tests "*TownLandSpellAdventureScenarioTest" --info --stacktrace
       - name: Preserve per-card scenario evidence
