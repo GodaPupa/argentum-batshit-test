@@ -1,7 +1,6 @@
 package com.wingedsheep.engine.scenarios
 
 import com.wingedsheep.engine.core.EngineServices
-import com.wingedsheep.engine.core.PassPriority
 import com.wingedsheep.engine.legalactions.LegalActionEnumerator
 import com.wingedsheep.engine.support.GameTestDriver
 import com.wingedsheep.engine.support.TestCards
@@ -20,7 +19,7 @@ import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
 
 /**
- * CR 509.3 / 508.4 — after the defending player declares blockers, the ACTIVE player
+ * CR 509.2 / 509.2a — after the defending player declares blockers, the ACTIVE player
  * receives priority in the declare-blockers step. That window is where combat tricks
  * (e.g. Giant Growth) are cast, BEFORE the combat damage step. This pins down whether
  * the combat-board refactor preserved it.
@@ -52,13 +51,12 @@ class DeclareBlockersPriorityWindowTest : FunSpec({
         // applied automatically when the step advances to COMBAT_DAMAGE.
         driver.declareBlockers(defender, mapOf(blocker to listOf(beast)))
 
-        // After blocks are committed, the defending player holds priority (no pending decision).
+        // After blocks and any pre-priority work finish, the active player has the first window.
         driver.state.pendingDecision.shouldBeNull()
-        driver.state.priorityPlayerId shouldBe defender
+        driver.state.priorityPlayerId shouldBe attacker
 
-        // Defending player passes. CR: priority should now pass to the ACTIVE player,
-        // still in the declare-blockers step, with NO combat damage dealt yet.
-        driver.submit(PassPriority(defender))
+        // No defending-player pass is needed or permitted before this first active-player window.
+        // The game is still in declare blockers, with no combat damage dealt yet.
 
         driver.state.pendingDecision.shouldBeNull()
         driver.currentStep shouldBe Step.DECLARE_BLOCKERS
@@ -86,7 +84,6 @@ class DeclareBlockersPriorityWindowTest : FunSpec({
         driver.declareAttackers(attacker, listOf(beast), defender)
         driver.passPriorityUntil(Step.DECLARE_BLOCKERS)
         driver.declareBlockers(defender, mapOf(blocker to listOf(beast)))
-        driver.submit(PassPriority(defender))
 
         // Active player now holds priority in declare blockers (pre-damage window).
         driver.state.priorityPlayerId shouldBe attacker
@@ -145,7 +142,6 @@ class DeclareBlockersPriorityWindowTest : FunSpec({
         // Both blockers block both attackers (the user's exact board shape).
         driver.declareBlockers(defender, mapOf(b1 to listOf(a1, a2), b2 to listOf(a1, a2)))
         driver.state.pendingDecision.shouldBeNull()  // ordering folded into the board, no pause
-        driver.submit(PassPriority(defender))
 
         // The active player must get the pre-damage window with the trick available.
         driver.state.priorityPlayerId shouldBe attacker

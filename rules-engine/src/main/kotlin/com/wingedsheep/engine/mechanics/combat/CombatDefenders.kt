@@ -2,7 +2,9 @@ package com.wingedsheep.engine.mechanics.combat
 
 import com.wingedsheep.engine.state.GameState
 import com.wingedsheep.engine.state.components.combat.AttackingComponent
+import com.wingedsheep.engine.state.components.combat.BlockersDeclaredThisCombatComponent
 import com.wingedsheep.engine.state.components.identity.ControllerComponent
+import com.wingedsheep.sdk.core.Step
 import com.wingedsheep.sdk.model.EntityId
 
 /**
@@ -16,6 +18,28 @@ import com.wingedsheep.sdk.model.EntityId
  * order starting from the active player (APNAP, CR 101.4).
  */
 object CombatDefenders {
+
+    /**
+     * The next required declaration is a turn-based action, not priority (CR 509.1, 802.4).
+     * Use the same query for authoritative action permission and declaration routing.
+     */
+    fun nextUndeclaredDefender(state: GameState): EntityId? {
+        if (state.step != Step.DECLARE_BLOCKERS) return null
+        return defendingPlayersInApnapOrder(state).firstOrNull { defender ->
+            state.getEntity(defender)?.has<BlockersDeclaredThisCombatComponent>() != true
+        }
+    }
+
+    /**
+     * Shared-turn teammates may submit their defending team's block (CR 805.10d). Preserve
+     * that existing permission while individual-turn games still require the exact next seat.
+     * The engine's existing per-seat declaration records remain separate from this team gate.
+     */
+    fun canDeclareBlockers(state: GameState, playerId: EntityId): Boolean {
+        val next = nextUndeclaredDefender(state) ?: return false
+        return state.pendingDecision == null && playerId in state.sharedTurnTeam(next) &&
+            state.getEntity(playerId)?.has<BlockersDeclaredThisCombatComponent>() != true
+    }
 
     /**
      * The player defending against an attack aimed at [defenderId]: a player defends as

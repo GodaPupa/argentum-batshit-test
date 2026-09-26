@@ -1,6 +1,7 @@
 package com.wingedsheep.engine.scenarios
 
-import com.wingedsheep.engine.core.CastSpell
+import com.wingedsheep.engine.core.*
+import com.wingedsheep.engine.state.GameState
 import com.wingedsheep.engine.state.components.battlefield.AttachedToComponent
 import com.wingedsheep.engine.state.components.battlefield.CountersComponent
 import com.wingedsheep.engine.state.components.battlefield.TappedComponent
@@ -17,10 +18,13 @@ import com.wingedsheep.sdk.core.Phase
 import com.wingedsheep.sdk.core.Step
 import com.wingedsheep.sdk.core.Zone
 import com.wingedsheep.sdk.model.EntityId
+import com.wingedsheep.sdk.scripting.effects.CompositeEffect
+import com.wingedsheep.sdk.scripting.effects.GiftGivenEffect
 import io.kotest.assertions.withClue
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
+import io.kotest.matchers.types.shouldBeInstanceOf
 
 /**
  * Gift on a **permanent** spell is promised as an additional cost while casting
@@ -45,6 +49,41 @@ class GiftPromisedAtCastTimeTest : ScenarioTestBase() {
 
     private fun TestGame.stunCounters(entityId: EntityId): Int =
         state.getEntity(entityId)?.get<CountersComponent>()?.getCount(CounterType.STUN) ?: 0
+
+    /**
+     * These three permanent cards have a gift ETB and a separate rider ETB. The caster chooses
+     * their placement order (CR 603.3b), before any rider target (CR 603.3d). This fixture chooses
+     * the actual gift trigger first, so it resolves last; it never answers a gift promise here.
+     */
+    private fun giftBeforeRider(
+        state: GameState,
+        caster: EntityId,
+        sourceId: EntityId,
+        sourceName: String,
+    ): SubmitDecision {
+        (sourceName in setOf("Kitnap", "Scrapshooter", "Starforged Sword")) shouldBe true
+        val suspension = state.continuationStack.last().shouldBeInstanceOf<Suspension>()
+        val question = suspension.question.shouldBeInstanceOf<ChooseOptionDecision>()
+        question.playerId shouldBe caster
+        question.context.sourceName shouldBe "Triggered abilities"
+        question.context.phase shouldBe DecisionPhase.CASTING
+        question.options.size shouldBe 2
+        val ordering = suspension.answer.shouldBeInstanceOf<TriggerOrderingContinuation>()
+        ordering.chosen shouldBe emptyList()
+        ordering.remaining.size shouldBe 2
+        ordering.remaining.map { it.sourceId }.toSet() shouldBe setOf(sourceId)
+        ordering.remaining.map { it.sourceName }.toSet() shouldBe setOf(sourceName)
+        ordering.remaining.map { it.controllerId }.toSet() shouldBe setOf(caster)
+        val giftIndex = ordering.remaining.indices.single { index ->
+            val effect = ordering.remaining[index].ability.effect as? CompositeEffect
+            effect?.effects?.lastOrNull() == GiftGivenEffect
+        }
+        ordering.remaining[giftIndex].ability.targetRequirement shouldBe null
+        val rider = ordering.remaining[1 - giftIndex].ability
+        if (sourceName == "Kitnap") rider.targetRequirement shouldBe null
+        else rider.targetRequirement.shouldNotBeNull()
+        return SubmitDecision(caster, OptionChosenResponse(question.id, giftIndex))
+    }
 
     init {
         context("gift is elected while casting, never after the permanent enters") {
@@ -99,7 +138,11 @@ class GiftPromisedAtCastTimeTest : ScenarioTestBase() {
 
                 game.execute(freeGift.action).error shouldBe null
                 game.resolveStack()
-                game.selectTargets(listOf(game.findPermanent("Sol Ring").shouldNotBeNull()))
+                game.execute(giftBeforeRider(game.state, game.player1Id, scrapshooter, "Scrapshooter"))
+                    .error shouldBe null
+                game.getPendingDecision().shouldBeInstanceOf<ChooseTargetsDecision>()
+                    .context.sourceName shouldBe "Scrapshooter"
+                game.selectTargets(listOf(game.findPermanent("Sol Ring").shouldNotBeNull())).error shouldBe null
                 game.resolveStack()
 
                 withClue("promised on a free cast, the gift and its rider both happen") {
@@ -108,7 +151,7 @@ class GiftPromisedAtCastTimeTest : ScenarioTestBase() {
                 }
             }
 
-            test("Kitnap with the gift promised: opponent draws, no stun counters, nothing asked at ETB") {
+            test("Kitnap with the gift promised: opponent draws, no stun counters, no new gift choice at ETB") {
                 val game = scenario()
                     .withPlayers("Caster", "Opponent")
                     .withCardInHand(1, "Kitnap")
@@ -134,6 +177,9 @@ class GiftPromisedAtCastTimeTest : ScenarioTestBase() {
                     cast.error shouldBe null
                 }
                 game.resolveStack()
+                game.execute(giftBeforeRider(game.state, game.player1Id,
+                    game.findPermanent("Kitnap").shouldNotBeNull(), "Kitnap")).error shouldBe null
+                game.resolveStack().forEach { it.error shouldBe null }
 
                 withClue("the gift must not be a question asked after the Aura entered") {
                     game.hasPendingDecision() shouldBe false
@@ -203,7 +249,12 @@ class GiftPromisedAtCastTimeTest : ScenarioTestBase() {
                     // (CR 603.3d) — pick the only legal artifact, then finish resolving.
                     if (promise) {
                         game.getPendingDecision().shouldNotBeNull()
-                        game.selectTargets(listOf(game.findPermanent("Sol Ring").shouldNotBeNull()))
+                        game.execute(giftBeforeRider(game.state, game.player1Id,
+                            game.findPermanent("Scrapshooter").shouldNotBeNull(), "Scrapshooter"))
+                            .error shouldBe null
+                        game.getPendingDecision().shouldBeInstanceOf<ChooseTargetsDecision>()
+                            .context.sourceName shouldBe "Scrapshooter"
+                        game.selectTargets(listOf(game.findPermanent("Sol Ring").shouldNotBeNull())).error shouldBe null
                         game.resolveStack()
                     }
                     return game
@@ -244,7 +295,12 @@ class GiftPromisedAtCastTimeTest : ScenarioTestBase() {
                     )
                 ).error shouldBe null
                 game.resolveStack()
-                game.selectTargets(listOf(lions))
+                game.execute(giftBeforeRider(game.state, game.player1Id,
+                    game.findPermanent("Starforged Sword").shouldNotBeNull(), "Starforged Sword"))
+                    .error shouldBe null
+                game.getPendingDecision().shouldBeInstanceOf<ChooseTargetsDecision>()
+                    .context.sourceName shouldBe "Starforged Sword"
+                game.selectTargets(listOf(lions)).error shouldBe null
                 game.resolveStack()
 
                 withClue("gift a tapped Fish (CR 702.174f) goes to the promised opponent") {
@@ -281,6 +337,13 @@ class GiftPromisedAtCastTimeTest : ScenarioTestBase() {
                     )
                 ).error shouldBe null
                 game.resolveStack()
+                game.execute(giftBeforeRider(game.state, game.player1Id,
+                    game.findPermanent("Scrapshooter").shouldNotBeNull(), "Scrapshooter"))
+                    .error shouldBe null
+                // There is no legal artifact/enchantment target here. The rider is removed at
+                // placement; the independently promised gift still resolves and triggers Gerbils.
+                game.getPendingDecision() shouldBe null
+                game.resolveStack().forEach { it.error shouldBe null }
 
                 withClue("the gift ability resolving is what gives the gift, so Gerbils draws") {
                     game.handSize(1) shouldBe casterHandBefore + 1
@@ -346,6 +409,15 @@ class GiftPromisedAtCastTimeTest : ScenarioTestBase() {
                 while (driver.state.stack.isNotEmpty() && driver.state.pendingDecision == null && passes++ < 30) {
                     driver.passPriority(driver.priorityPlayer!!)
                 }
+                driver.submitSuccess(giftBeforeRider(driver.state, caster, scrapshooter, "Scrapshooter"))
+                driver.state.pendingDecision shouldBe null
+                // The targeted rider cannot be placed on this all-land board. Resolve the
+                // independent gift with all three players retaining their actual priority turns.
+                while (driver.state.stack.isNotEmpty() && driver.state.pendingDecision == null && passes++ < 30) {
+                    driver.passPriority(driver.priorityPlayer!!)
+                }
+                driver.state.stack.isEmpty() shouldBe true
+                driver.state.pendingDecision shouldBe null
 
                 withClue("only the promised opponent draws") {
                     driver.state.getZone(secondOpponent, Zone.HAND).size shouldBe handsBefore.getValue(secondOpponent) + 1

@@ -169,7 +169,11 @@ data class DamageDealtEvent(
      * their TargetsComponent before event-trigger detection, so target/recipient relationship
      * predicates consume this event-side snapshot instead of consulting later state.
      */
-    val sourceTargetIdsAtDamage: List<EntityId>? = null
+    val sourceTargetIdsAtDamage: List<EntityId>? = null,
+    /** Damage-source characteristics, preserving the old object across return or token cleanup. */
+    val sourceSnapshot: com.wingedsheep.engine.state.components.stack.EntitySnapshot? = null,
+    /** False for damage dealt by an already-departed permanent; null on older event producers. */
+    val sourceWasOnBattlefield: Boolean? = null,
 ) : GameEvent
 
 /**
@@ -2091,7 +2095,7 @@ data class CardExiledWithMadnessEvent(
 
 /**
  * A player gave a gift (Bloomburrow gift mechanic).
- * Emitted when a gift mode is chosen and the gift effect resolves.
+ * Emitted when a promised instant/sorcery or a permanent's gift triggered ability resolves.
  *
  * @property controllerId The player who gave the gift
  * @property sourceId The card/spell that provided the gift

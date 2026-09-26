@@ -15502,111 +15502,85 @@
     "manaCost": "{1}{R}",
     "typeLine": "Instant",
     "oracleText": "Gift a tapped Fish (You may promise an opponent a gift as you cast this spell. If you do, they create a tapped 1/1 blue Fish creature token before its other effects.)\nAs an additional cost to cast this spell, discard a card.\nTarget player draws two cards. If the gift was promised, target creature you control gets +2/+0 until end of turn.",
+    "keywordAbilities": [
+        {
+            "type": "Gift",
+            "kind": "TAPPED_FISH"
+        }
+    ],
     "script": {
         "spellEffect": {
-            "type": "Modal",
-            "modes": [
-                {
-                    "effect": {
-                        "type": "DrawCards",
-                        "count": {
-                            "type": "Fixed",
-                            "amount": 2
-                        },
-                        "target": {
-                            "type": "ContextTarget",
-                            "index": 0
-                        }
-                    },
-                    "targetRequirements": [
-                        "TargetPlayer"
-                    ],
-                    "description": "Don't promise a gift — target player draws two cards"
-                },
-                {
-                    "effect": {
-                        "type": "Composite",
-                        "effects": [
-                            {
-                                "type": "ChooseOpponentForSource",
-                                "prompt": "Choose an opponent to receive the gift"
-                            },
-                            {
-                                "type": "Composite",
-                                "effects": [
-                                    {
-                                        "type": "CreateToken",
-                                        "power": 1,
-                                        "toughness": 1,
-                                        "colors": [
-                                            "BLUE"
-                                        ],
-                                        "creatureTypes": [
-                                            "Fish"
-                                        ],
-                                        "imageUri": "https://cards.scryfall.io/normal/front/d/e/de0d6700-49f0-4233-97ba-cef7821c30ed.jpg?1721431109",
-                                        "controller": {
-                                            "type": "PlayerRef",
-                                            "player": "ChosenOpponent"
-                                        },
-                                        "tapped": true
-                                    },
-                                    {
-                                        "type": "DrawCards",
-                                        "count": {
-                                            "type": "Fixed",
-                                            "amount": 2
-                                        },
-                                        "target": {
-                                            "type": "ContextTarget",
-                                            "index": 0
-                                        }
-                                    },
-                                    {
-                                        "type": "ModifyStats",
-                                        "powerModifier": {
-                                            "type": "Fixed",
-                                            "amount": 2
-                                        },
-                                        "toughnessModifier": {
-                                            "type": "Fixed",
-                                            "amount": 0
-                                        },
-                                        "target": {
-                                            "type": "ContextTarget",
-                                            "index": 1
-                                        }
-                                    },
-                                    "GiftGiven"
-                                ]
-                            }
-                        ]
-                    },
-                    "targetRequirements": [
-                        "TargetPlayer",
-                        {
-                            "type": "TargetObject",
-                            "filter": {
-                                "baseFilter": "creature ctrl:you"
-                            }
-                        }
-                    ],
-                    "description": "Promise a gift — opponent creates a tapped 1/1 blue Fish token, target player draws two cards, target creature you control gets +2/+0 until end of turn"
-                }
-            ],
-            "countsAsModalSpell": false
+            "type": "DrawCards",
+            "count": {
+                "type": "Fixed",
+                "amount": 2
+            },
+            "target": {
+                "type": "BoundVariable",
+                "name": "player"
+            }
         },
+        "targetRequirements": [
+            {
+                "type": "TargetPlayer",
+                "id": "player"
+            }
+        ],
         "additionalCosts": [
             {
                 "type": "AdditionalAtom",
                 "atom": "AtomDiscard"
             }
-        ]
+        ],
+        "giftTargetRequirements": [
+            {
+                "type": "TargetPlayer",
+                "id": "player"
+            },
+            {
+                "type": "TargetObject",
+                "filter": {
+                    "baseFilter": "creature ctrl:you"
+                },
+                "id": "creature"
+            }
+        ],
+        "giftSpellEffect": {
+            "type": "Composite",
+            "effects": [
+                {
+                    "type": "DrawCards",
+                    "count": {
+                        "type": "Fixed",
+                        "amount": 2
+                    },
+                    "target": {
+                        "type": "BoundVariable",
+                        "name": "player"
+                    }
+                },
+                {
+                    "type": "ModifyStats",
+                    "powerModifier": {
+                        "type": "Fixed",
+                        "amount": 2
+                    },
+                    "toughnessModifier": {
+                        "type": "Fixed",
+                        "amount": 0
+                    },
+                    "target": {
+                        "type": "BoundVariable",
+                        "name": "creature"
+                    }
+                }
+            ]
+        }
     },
     "metadata": {
         "collectorNumber": "151",
         "artist": "Sam Guay",
-        "imageUri": "https://cards.scryfall.io/normal/front/6/d/6d963080-b3ec-467d-82f7-39db6ecd6bbc.jpg?1721426699"
+        "imageUri": "https://cards.scryfall.io/normal/front/6/d/6d963080-b3ec-467d-82f7-39db6ecd6bbc.jpg?1783910815"
     },
     "colorIdentityOverride": [
         "RED"

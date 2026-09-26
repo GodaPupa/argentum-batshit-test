@@ -101,9 +101,12 @@ class TheWaterCrystalScenarioTest : ScenarioTestBase() {
             }
 
             test("two copies of The Water Crystal stack: opponent's 2-card mill becomes 2 + 4 + 4 = 10") {
+                cardRegistry.register(RepeatedLegendEffectsFixture)
                 val game = scenario()
                     .withPlayers("Player", "Opponent")
-                    // Two crystals, each contributing its own +4 replacement (Scryfall ruling).
+                    // Keep both canonical legendary permanents legally with an explicit test
+                    // exemption; each then contributes its own +4 replacement.
+                    .withCardOnBattlefield(1, RepeatedLegendEffectsFixture.name)
                     .withCardOnBattlefield(1, "The Water Crystal")
                     .withCardOnBattlefield(1, "The Water Crystal")
                     .withCardOnBattlefield(1, "Millstone")

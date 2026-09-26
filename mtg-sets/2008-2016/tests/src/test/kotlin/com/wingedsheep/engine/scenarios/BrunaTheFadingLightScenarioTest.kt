@@ -1,6 +1,7 @@
 package com.wingedsheep.engine.scenarios
 
 import com.wingedsheep.engine.core.ChooseTargetsDecision
+import com.wingedsheep.engine.core.DecisionPhase
 import com.wingedsheep.engine.core.TargetsResponse
 import com.wingedsheep.engine.core.YesNoDecision
 import com.wingedsheep.engine.support.ScenarioTestBase
@@ -8,6 +9,7 @@ import io.kotest.assertions.withClue
 import io.kotest.matchers.collections.shouldContain
 import io.kotest.matchers.collections.shouldNotContain
 import io.kotest.matchers.shouldBe
+import io.kotest.matchers.shouldNotBe
 import io.kotest.matchers.types.shouldBeInstanceOf
 
 /**
@@ -35,11 +37,11 @@ class BrunaTheFadingLightScenarioTest : ScenarioTestBase() {
                     cast.error shouldBe null
                 }
 
-                game.resolveStack()
-                // "you may return …" — the consent gate is answered before targeting.
-                game.getPendingDecision().shouldBeInstanceOf<YesNoDecision>()
-                game.answerYesNo(true)
+                // The cast trigger chooses its target before either it or Bruna can resolve.
                 val targetDecision = game.getPendingDecision().shouldBeInstanceOf<ChooseTargetsDecision>()
+                targetDecision.playerId shouldBe game.player1Id
+                targetDecision.context.phase shouldNotBe DecisionPhase.RESOLUTION
+                game.isOnBattlefield("Bruna, the Fading Light") shouldBe false
                 val human = game.findCardsInGraveyard(1, "Glory Seeker").single()
                 val bear = game.findCardsInGraveyard(1, "Grizzly Bears").single()
                 withClue("the Human is legal and the non-Angel, non-Human creature is not") {
@@ -50,7 +52,21 @@ class BrunaTheFadingLightScenarioTest : ScenarioTestBase() {
                 game.submitDecision(
                     TargetsResponse(targetDecision.id, mapOf(0 to listOf(human))),
                 ).error shouldBe null
-                game.resolveStack()
+                game.getPendingDecision() shouldBe null
+                game.resolveStack().forEach { it.error shouldBe null }
+                val may = game.getPendingDecision().shouldBeInstanceOf<YesNoDecision>()
+                may.playerId shouldBe game.player1Id
+                may.context.phase shouldBe DecisionPhase.RESOLUTION
+                game.isOnBattlefield("Glory Seeker") shouldBe false
+                game.isOnBattlefield("Bruna, the Fading Light") shouldBe false
+                game.answerYesNo(true).error shouldBe null
+                game.getPendingDecision() shouldBe null
+
+                // The returned Human is already present while the original creature spell waits.
+                game.isOnBattlefield("Glory Seeker") shouldBe true
+                game.isOnBattlefield("Bruna, the Fading Light") shouldBe false
+                game.state.stack.size shouldBe 1
+                game.resolveStack().forEach { it.error shouldBe null }
 
                 withClue("the cast trigger reanimates the chosen Human before Bruna resolves") {
                     game.isOnBattlefield("Glory Seeker") shouldBe true

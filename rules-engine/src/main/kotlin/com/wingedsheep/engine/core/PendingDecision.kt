@@ -497,16 +497,16 @@ data class ChooseReplacementDecision(
 /**
  * Player must assign combat damage from an attacker to blockers.
  *
- * Per CR 510.1c: Damage must be assigned in order. A creature cannot be
- * assigned damage until all creatures before it in the order have been
- * assigned lethal damage.
+ * Legacy serialized question; the live combat path uses [CombatResolutionDecision]. Under current
+ * CR 510.1a/c, all available damage is divided freely among eligible blockers. Trample separately
+ * requires lethal assignment to every blocker before assigning damage to the defender.
  *
  * @property attackerId The attacking creature assigning damage
  * @property availablePower Total damage available to assign
- * @property orderedTargets Blockers in damage assignment order (first = first to receive damage)
+ * @property orderedTargets Eligible blockers in presentation/default order; this imposes no restriction
  * @property defenderId The defending player (only receives damage if attacker has trample)
- * @property minimumAssignments Minimum damage each blocker must receive (lethal damage)
- * @property defaultAssignments Pre-computed optimal damage distribution (lethal to each blocker in order, remainder to last/player)
+ * @property minimumAssignments Lethal thresholds for the trample check, not mandatory per-target amounts
+ * @property defaultAssignments A suggested complete damage distribution
  * @property hasTrample Whether excess damage can go to defending player
  * @property hasDeathtouch If true, 1 damage is lethal to any creature
  */

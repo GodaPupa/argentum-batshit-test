@@ -1,0 +1,21 @@
+test_disjoint_required_and_forbidden_sets (test_inventory_math.ExactInventoryArithmeticTest.test_disjoint_required_and_forbidden_sets) ... ok
+test_hypergeometric_matches_exhaustive_subsets (test_inventory_math.ExactInventoryArithmeticTest.test_hypergeometric_matches_exhaustive_subsets) ... ok
+test_joint_presence_inclusion_exclusion (test_inventory_math.ExactInventoryArithmeticTest.test_joint_presence_inclusion_exclusion) ... ok
+test_cached_success_xml_cannot_count_as_executed_assertions (test_validate_build_guards.BuildEvidenceGuardsTest.test_cached_success_xml_cannot_count_as_executed_assertions) ... ok
+test_deleted_tracked_source_rejects_expected_head (test_validate_build_guards.BuildEvidenceGuardsTest.test_deleted_tracked_source_rejects_expected_head) ... ok
+test_executed_task_and_new_xml_can_pass_the_guard (test_validate_build_guards.BuildEvidenceGuardsTest.test_executed_task_and_new_xml_can_pass_the_guard) ... FAIL
+test_final_capture_error_records_failure_instead_of_leaving_running (test_validate_build_guards.BuildEvidenceGuardsTest.test_final_capture_error_records_failure_instead_of_leaving_running) ... ok
+test_java_kts_resources_and_removed_paths_are_covered (test_validate_build_guards.BuildEvidenceGuardsTest.test_java_kts_resources_and_removed_paths_are_covered) ... ok
+
+======================================================================
+FAIL: test_executed_task_and_new_xml_can_pass_the_guard (test_validate_build_guards.BuildEvidenceGuardsTest.test_executed_task_and_new_xml_can_pass_the_guard)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/ferocity-qualified-build-a63kaiqe/checkout/ferocity-recycling/tests/test_validate_build_guards.py", line 85, in test_executed_task_and_new_xml_can_pass_the_guard
+    self.assertEqual(status, 0)
+AssertionError: 1 != 0
+
+----------------------------------------------------------------------
+Ran 8 tests in 0.042s
+
+FAILED (failures=1)

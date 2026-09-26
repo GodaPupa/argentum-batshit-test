@@ -13,12 +13,12 @@ import { ResponsiveContext } from '@/components/game/board'
 
 /**
  * The combat resolution board (CR 510 / 702.22). Shows only the damage the local player gets to
- * assign — the sources whose edges they own ({@link DamageEdge.editableBy}). Per CR 510.1c the
+ * assign — the sources whose edges they own ({@link DamageEdge.editableBy}). Per CR 510.1 the
  * attacker assigns its creatures' damage and the defender assigns its blockers' damage as separate
  * steps, so the opponent's half isn't rendered (it's chosen on their own board). Each owned edge is
  * pre-filled with the engine's lethal-first default and adjusted with +/- steppers. The server is
  * authoritative — the board only clamps to `[0, maximum]` and the per-source power budget;
- * CR 510.1c / 702.19b legality is enforced on submit by the engine.
+ * Full assignment and the separate trample condition are enforced on submit by the engine.
  */
 export function CombatResolutionBoard({ decision }: { decision: CombatResolutionDecision }) {
   const submit = useGameStore((s) => s.submitCombatResolutionDecision)
@@ -46,7 +46,8 @@ export function CombatResolutionBoard({ decision }: { decision: CombatResolution
   // When several of the player's sources pile onto one creature (gang blocks, bipartite blocks,
   // attacking bands) that creature appears as a target under multiple source rows. A single edge's
   // amount then doesn't tell the whole story, so we surface the *combined* damage all the player's
-  // edges are assigning to that target and whether it collectively reaches lethal.
+  // edges are assigning to that target. The server evaluates combined lethal damage because
+  // deathtouch depends on which sources actually assign positive damage.
   const targetEdgeCount = (targetId: EntityId) =>
     myEdges.reduce((n, e) => (e.targetId === targetId ? n + 1 : n), 0)
   const combinedOnTarget = (targetId: EntityId) =>
@@ -58,9 +59,8 @@ export function CombatResolutionBoard({ decision }: { decision: CombatResolution
   // nor blocker payloads carry it, so read it off the masked client state.
   const hasBanding = (id: EntityId): boolean =>
     gameState?.cards[id]?.keywords?.includes(Keyword.BANDING) ?? false
-  // A source's edges are "banding-inverted" for this player when banding handed them the division:
-  // the order constraint is lifted (CR 702.22j/k) and they're a real combat edge, not a trample
-  // drain. On defense this is how the defender ends up assigning an attacker's damage.
+  // Retained engine metadata identifies a banding-inverted chooser (CR 702.22j/k).
+  // It never limits ordinary divisions: every source can divide freely among eligible creatures.
   const sourceBandingInverted = (sourceId: EntityId): boolean =>
     myEdges.some((e) => e.sourceId === sourceId && !e.orderConstrained && !e.isTrampleDrain)
   const bandingActive =
@@ -68,7 +68,7 @@ export function CombatResolutionBoard({ decision }: { decision: CombatResolution
     [...decision.attackers, ...decision.blockers].some((c) => hasBanding(c.id))
 
   // Initial / reset assignment. Starts from the engine's lethal-first defaults, but for any source
-  // whose division banding handed to this player (order lifted) we instead dump the source's whole
+  // whose division banding handed to this player we instead place the source's whole
   // power onto its FIRST target and zero the rest — the canonical banding line: sponge everything
   // onto one creature. This covers both directions symmetrically:
   //   - Defense (CR 702.22j): you block with a banding creature, so you assign the attacker's
@@ -224,7 +224,6 @@ export function CombatResolutionBoard({ decision }: { decision: CombatResolution
     // the player's edges (otherwise the per-edge amount already is the total).
     const sharedTarget = !isDrain && targetEdgeCount(edge.targetId) > 1
     const combined = sharedTarget ? combinedOnTarget(edge.targetId) : 0
-    const combinedAtLethal = sharedTarget && edge.lethal > 0 && combined >= edge.lethal
     return (
       <div key={edge.id} style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
         <span style={{ color: '#888', fontSize: responsive.fontSize.small, minWidth: 56, textAlign: 'right' }}>
@@ -240,12 +239,12 @@ export function CombatResolutionBoard({ decision }: { decision: CombatResolution
           </div>
           {!isDrain && (
             <span style={{ color: atLethal ? '#4ade80' : '#f59e0b', fontSize: responsive.fontSize.small }}>
-              lethal: {edge.lethal}{atLethal ? ' ✓' : ''}{edge.orderConstrained ? '' : ' (any order)'}
+              lethal: {edge.lethal}{atLethal ? ' ✓' : ''}
             </span>
           )}
           {sharedTarget && (
-            <span style={{ color: combinedAtLethal ? '#4ade80' : '#f59e0b', fontSize: responsive.fontSize.small, fontWeight: 600 }}>
-              combined: {combined}{edge.lethal > 0 ? ` / ${edge.lethal}` : ''}{combinedAtLethal ? ' ✓' : ''}
+            <span style={{ color: '#aaa', fontSize: responsive.fontSize.small, fontWeight: 600 }}>
+              combined: {combined}
             </span>
           )}
           {isDrain && (

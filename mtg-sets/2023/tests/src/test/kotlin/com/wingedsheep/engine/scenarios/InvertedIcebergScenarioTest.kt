@@ -185,16 +185,14 @@ class InvertedIcebergScenarioTest : FunSpec({
         val attackResult = driver.declareAttackers(p1, listOf(iceberg), p2)
         attackResult.error shouldBe null
 
-        // Optional targeted trigger: the engine asks the may-question at put-on-stack time
-        // (before targeting — see TriggerProcessor.processMayThenTargetTrigger), then the
-        // target, then the trigger waits on the stack for priority.
-        driver.pendingDecision.shouldBeInstanceOf<YesNoDecision>()
-        driver.submitYesNo(p1, true)
-
+        // Choose the mandatory trigger target before priority (CR 603.3d).
         driver.pendingDecision.shouldBeInstanceOf<ChooseTargetsDecision>()
-        driver.submitTargetSelection(p1, listOf(victim))
-
-        driver.bothPass() // resolve the trigger — pauses on the tap-or-untap choice
+        driver.submitTargetSelection(p1, listOf(victim)).error shouldBe null
+        driver.stackSize shouldBe 1
+        driver.bothPass() // the optional action is chosen on resolution (CR 603.5)
+        driver.pendingDecision.shouldBeInstanceOf<YesNoDecision>()
+        driver.submitYesNo(p1, true).error shouldBe null
+        // Accepting the action now asks whether to tap or untap the chosen target.
 
         val modeDecision = driver.pendingDecision.shouldBeInstanceOf<ChooseOptionDecision>()
         val tapIndex = modeDecision.options.indexOfFirst { it.startsWith("Tap") }

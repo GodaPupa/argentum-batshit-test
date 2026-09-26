@@ -1,0 +1,184 @@
+--- before.yml
++++ after.yml
+@@ -5,41 +5,24 @@
+     paths:
+       - ferocity-recycling/**
+       - .github/workflows/ferocity-recycling-validation.yml
+-      - rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/FerocityOfTheHuntScenarioTest.kt
+-      - rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/CryptRatsScenarioTest.kt
+-      - rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/RatsSweeperInteractionTest.kt
+-      - mtg-sets/2024/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/ToxinAnalysisScenarioTest.kt
+-      - rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/ZoneTransitionService.kt
+-      - rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/DamageUtils.kt
+-      - rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/damage/DealDamageExecutor.kt
+-      - mtg-sets/1993-1999/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/vis/cards/CryptRats.kt
+-      - mtg-sets/1993-1999/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/CryptRatsScenarioTest.kt
+-      - mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/cmd/cards/JourneyToNowhereReprint.kt
+-      - mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/ddf/cards/JourneyToNowhereReprint.kt
+-      - mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/ddf/cards/KorSkyfisherReprint.kt
+-      - mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/nph/cards/Dispatch.kt
+-      - mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/som/cards/GlintHawk.kt
+-      - mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/zen/cards/JourneyToNowhere.kt
+-      - mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/zen/cards/KorSkyfisher.kt
+-      - mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/DispatchScenarioTest.kt
+-      - mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/GlintHawkScenarioTest.kt
+-      - mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/JourneyToNowhereScenarioTest.kt
+-      - mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/KorSkyfisherScenarioTest.kt
+-      - mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/akh/cards/BonePicker.kt
+-      - mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/dmu/cards/CutDown.kt
+-      - mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/eld/cards/WitchsCottage.kt
+-      - mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/j22/cards/BonePickerReprint.kt
+-      - mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/j22/cards/CryptRatsReprint.kt
+-      - mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/jmp/cards/BonePickerReprint.kt
+-      - mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/mh1/cards/CryptRatsReprint.kt
+-      - mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/mh1/cards/Defile.kt
+-      - mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/BonePickerScenarioTest.kt
+-      - mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/CutDownScenarioTest.kt
+-      - mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/DefileScenarioTest.kt
+-      - mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/WitchsCottageScenarioTest.kt
+-      - mtg-sets/2024/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/mh3/cards/EvisceratorsInsight.kt
+-      - mtg-sets/2024/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/EvisceratorsInsightScenarioTest.kt
+-      - mtg-sets/2026/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/msc/cards/DispatchReprint.kt
++      - mtg-sdk/**
++      - rules-engine/**
++      - ai/**
++      - gym/**
++      - game-server/**
++      - mtg-search/**
++      - oracle-assay/**
++      - mtg-sets/**
++      - buildSrc/**
++      - gradle/**
++      - build.gradle.kts
++      - settings.gradle.kts
++      - gradle.properties
++      - gradlew
++      - gradlew.bat
++      - justfile
++      - scripts/test-class
++      - scripts/gradle-locked
+ 
+ permissions:
+   contents: read
+@@ -56,10 +39,46 @@
+       fail-fast: false
+       matrix:
+         include:
+-          - suite: engine-and-existing-support
+-            classes: "FerocityOfTheHuntScenarioTest RatsSweeperInteractionTest ToxinAnalysisScenarioTest KrarkClanShamanScenarioTest NotDeadAfterAllScenarioTest RefurbishedFamiliarScenarioTest MalevolentRumbleScenarioTest FanaticalOfferingScenarioTest IchorWellspringScenarioTest ShamblingGhastScenarioTest BloodFountainScenarioTest MakeshiftMunitionsScenarioTest GrixisAffinityAgentDecisionTest"
+-          - suite: canonical-support
+-            classes: "CryptRatsScenarioTest GlintHawkScenarioTest KorSkyfisherScenarioTest JourneyToNowhereScenarioTest WitchsCottageScenarioTest BonePickerScenarioTest CutDownScenarioTest DefileScenarioTest EvisceratorsInsightScenarioTest DispatchScenarioTest"
++          - suite: rules-engine
++            module: rules-engine
++            expected_cases: 234
++            classes: "PostBlockDeclarationPriorityScenarioTest DeclareBlockersPriorityWindowTest MultiDefenderCombatTest TwoHeadedGiantCombatTest ActivationPriorityScenarioTest BandingTrampleDrainScenarioTest BatchMayQuestionTest CombatAssignmentCurrentRulesTest CombatDamageAssignmentTest CombatResolutionBoardTest DamageSourceIdentityScenarioTest DamageSourceTriggerScenarioTest FerocityOfTheHuntScenarioTest FerocityPrereleaseDefinitionIdentityTest ManaAbilityColorChoicePipelineTest MoveToZoneEffectExecutorTest NestedManaPaymentBoundaryScenarioTest PaidFlashbackStackExitScenarioTest PlayerTargetRevalidationScenarioTest PredicateEvaluatorRecordTest SelfEntersTappedOffStackEntryScenarioTest TargetedDepartedSourceLkiTest TriggerOrderingConcessionScenarioTest TriggerOrderingScenarioTest GiftSpellResolutionTest GiftPromisedAtCastTimeTest"
++          - suite: game-server
++            module: game-server
++            expected_cases: 12
++            classes: "PostBlockDeclarationSessionTest TwoHeadedGiantSessionTest"
++          - suite: gym
++            module: gym
++            expected_cases: 176
++            classes: "ArtifactControlPolicyTest FerocityBloodActivationTest FerocityCardDefinitionBundleTest FerocityDevelopmentAdmissionTest FerocityDiagnosticsTest FerocityInlineTokenProvenanceTest FerocityObservationBoundaryTest FerocityStackSourceObservationTest FerocityTrialJournalTest FerocityTriggerOrderObservationTest FerocityWickedRoleSourceTest RedMadnessPilotScenarioTest"
++          - suite: mtg-sets-2000-2002-tests
++            module: mtg-sets/2000-2002/tests
++            expected_cases: 4
++            classes: "FieryTemperScenarioTest LavaDartScenarioTest"
++          - suite: mtg-sets-2003-2007-tests
++            module: mtg-sets/2003-2007/tests
++            expected_cases: 5
++            classes: "KrarkClanShamanScenarioTest ThoughtcastScenarioTest"
++          - suite: mtg-sets-2008-2016-tests
++            module: mtg-sets/2008-2016/tests
++            expected_cases: 6
++            classes: "GalvanicBlastScenarioTest IchorWellspringScenarioTest NihilSpellbombScenarioTest"
++          - suite: mtg-sets-2017-2022-tests
++            module: mtg-sets/2017-2022/tests
++            expected_cases: 11
++            classes: "BloodFountainScenarioTest CastDownScenarioTest KessigFlamebreatherScenarioTest MakeshiftMunitionsScenarioTest ReckonersBargainScenarioTest"
++          - suite: mtg-sets-2023-tests
++            module: mtg-sets/2023/tests
++            expected_cases: 3
++            classes: "NotDeadAfterAllScenarioTest"
++          - suite: mtg-sets-2024-tests
++            module: mtg-sets/2024/tests
++            expected_cases: 48
++            classes: "GiftChosenOpponentTest GrabThePrizeScenarioTest HighwayRobberyScenarioTest RefurbishedFamiliarScenarioTest SazacapsBrewScenarioTest SneakySnackerScenarioTest ToxinAnalysisScenarioTest"
++          - suite: mtg-sets-2025-tests
++            module: mtg-sets/2025/tests
++            expected_cases: 3
++            classes: "MaraudingMakoScenarioTest"
+     steps:
+       - uses: actions/checkout@v6
+         with:
+@@ -117,6 +136,28 @@
+           if [ -f ferocity-recycling/protocols/initial-search-manifest.json ]; then
+             python ferocity-recycling/tools/project.py verify
+           fi
++      - name: Bind the exact selected class sources and reviewed guard
++        env:
++          SELECTED_CLASSES: ${{ matrix.classes }}
++          SELECTED_MODULE: ${{ matrix.module }}
++          EXPECTED_CASES: ${{ matrix.expected_cases }}
++        run: |
++          python - <<'PYCI'
++          import hashlib, json, os, pathlib
++          root = pathlib.Path('.')
++          plan = json.loads((root / 'ferocity-recycling/ci/common-fixed-selection-v1.json').read_text())
++          rows = plan['classes']
++          assert len(rows) == len({r['class'] for r in rows}) == plan['class_count'] == 61
++          assert sum(r['expected_count'] for r in rows) == plan['expected_cases'] == 502
++          selected = [r for r in rows if r['module'] == os.environ['SELECTED_MODULE']]
++          assert [r['class'] for r in selected] == os.environ['SELECTED_CLASSES'].split()
++          assert sum(r['expected_count'] for r in selected) == int(os.environ['EXPECTED_CASES'])
++          for row in selected:
++              assert hashlib.sha256((root / row['path']).read_bytes()).hexdigest() == row['sha256'], row['path']
++          runner = root / 'ferocity-recycling/tools/validate_build.py'
++          assert hashlib.sha256(runner.read_bytes()).hexdigest() == 'f02459b6b7f5a559a5267a4f4ee0259395635036d3a35ed1c13c85336c8db058'
++          (root / 'build/reports/ferocity-recycling/selection.json').write_text(json.dumps(selected, indent=2) + '\n')
++          PYCI
+       - name: Install exact verified just release
+         run: |
+           set -euo pipefail
+@@ -133,8 +174,41 @@
+         run: |
+           python ferocity-recycling/tools/validate_build.py \
+             --expected-head "$EXPECTED_HEAD" \
++            --batch \
+             --classes ${{ matrix.classes }} \
+             --out build/reports/ferocity-recycling/qualification
++      - name: Retain observed runtime dependency identities after the attempted gate
++        if: always()
++        run: |
++          if [ -f build/reports/ferocity-recycling/qualification/receipt.json ]; then
++            python ferocity-recycling/tools/record_runtime_classpath.py \
++              --root "$GITHUB_WORKSPACE" \
++              --attempt build/reports/ferocity-recycling/qualification \
++              --gradle-home "${GRADLE_USER_HOME:-$HOME/.gradle}"
++          fi
++      - name: Reconcile exact fresh case counts with the selected module
++        if: always()
++        run: |
++          python - <<'PYCI'
++          import json, pathlib
++          base = pathlib.Path('build/reports/ferocity-recycling')
++          receipt_path = base / 'qualification/receipt.json'
++          if not receipt_path.exists():
++              raise SystemExit(0)  # Earlier setup failure remains visible in its own step.
++          receipt = json.loads(receipt_path.read_text())
++          selected = json.loads((base / 'selection.json').read_text())
++          expected = {r['class']: r['expected_count'] for r in selected}
++          actual = {}
++          for stage in receipt.get('stages', []):
++              for name, counts in stage.get('class_fresh_test_task_totals', {}).items():
++                  assert name not in actual, 'duplicate class result'
++                  actual[name] = counts
++          counts_match = set(actual) == set(expected) and all(actual[n]['tests'] == c for n, c in expected.items())
++          result = {'expected': expected, 'actual_fresh': actual, 'counts_match': counts_match,
++                    'original_receipt_status': receipt['status'], 'research_games': 0}
++          (base / 'selection-result.json').write_text(json.dumps(result, indent=2) + '\n')
++          assert receipt['status'] == 'PASS' and receipt['compiled_inputs_unchanged'] and counts_match
++          PYCI
+       - name: Preserve qualification evidence even on failure
+         if: always()
+         uses: actions/upload-artifact@v7

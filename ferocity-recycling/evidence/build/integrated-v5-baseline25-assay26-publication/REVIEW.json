@@ -1,0 +1,64 @@
+{
+  "schema": "ferocity-compact-evidence-review-v1",
+  "created_utc": "2026-09-26T13:55:39.547947+00:00",
+  "attempts": [
+    {
+      "attempt": "integrated-v5-post-block-serializer-baseline-25",
+      "status": "FAIL",
+      "receipt_sha256": "1893116388ce89c108bce84d0f11c060efb08b124c4b4fe7c067007d4b85f651",
+      "compiled_inputs_unchanged": true,
+      "fresh_fixed_case_executions": {
+        "tests": 13,
+        "failures": 13,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "attempt": "integrated-v5-assay-consumer-26",
+      "status": "EXECUTED_AWAITING_DIVERGENCE_CLASSIFICATION",
+      "receipt_sha256": "0c8fe7c2c183dad2d3a7597c7b7b94fd74380ea992df5e11b83c4a09cca26bb0",
+      "compiled_inputs_unchanged": null,
+      "fresh_fixed_case_executions": {
+        "tests": 0,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    }
+  ],
+  "scope": "Baseline25 is13 repeated fixed assertions, all FAIL, with only the serializer fixture correction and unchanged runtime; those are not research games. Assay26 is SDK parser/data consumer evidence, separately713 decoded goldens/167 comparisons/162 agree/five reviewed divergences and2,000-card touchstone. No Assay card counts enter fixed-case totals. Retain the exact original classification-pending receipt plus separate complete assessment; changed Brew/Highway grammar-decline and Eddie multi-face exclusion remain explicit. One eight-card same-input diagnostic adds zero fresh qualification cards. All development/evaluation/confirmation games remain0.",
+  "repeated_fixed_case_executions_across_versions": 13,
+  "failures_across_versions": 13,
+  "not_independent_samples": true,
+  "research_development_games": 0,
+  "evaluation_games": 0,
+  "confirmation_games": 0,
+  "scan": {
+    "text_members_checked": 158,
+    "recursive_zip_members_checked": 121,
+    "high_confidence_findings": [],
+    "future_keyword_occurrences": [
+      {
+        "member": "ferocity-recycling/evidence/build/integrated-v5-post-block-serializer-baseline-25/receipt.json",
+        "line": "  \"confirmation_games\": 0,"
+      },
+      {
+        "member": "ferocity-recycling/evidence/build/integrated-v5-post-block-serializer-baseline-25/receipt.json",
+        "line": "  \"randomized_experimental_seeds\": 0,"
+      },
+      {
+        "member": "ferocity-recycling/evidence/build/integrated-v5-post-block-serializer-baseline-25/validator-attempt.py",
+        "line": "        \"confirmation_games\": 0, \"randomized_experimental_seeds\": 0,"
+      },
+      {
+        "member": "ferocity-recycling/evidence/build/integrated-v5-assay-consumer-26/ASSESSMENT.json",
+        "line": "  \"confirmation_games\": 0"
+      },
+      {
+        "member": "ferocity-recycling/support-audits/assay-consumer-gate-26/BLB_DIVERGENCE_REVIEW.json",
+        "line": "  \"confirmation_games\": 0"
+      }
+    ]
+  }
+}

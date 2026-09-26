@@ -10,6 +10,7 @@ import com.wingedsheep.sdk.core.Step
 import com.wingedsheep.sdk.model.Deck
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
+import io.kotest.matchers.types.shouldBeInstanceOf
 
 /**
  * Tests for Riptide Entrancer.
@@ -22,9 +23,8 @@ import io.kotest.matchers.shouldBe
  * (This effect lasts indefinitely.)
  * Morph {U}{U}
  *
- * Engine flow: The trigger has both MayEffect and target, so the engine uses
- * processMayThenTargetTrigger: asks "may sacrifice?" first, then if yes, asks for
- * target selection, then puts the unwrapped composite effect on the stack.
+ * Targets are chosen while the trigger is put on the stack (CR 603.3d).
+ * The optional sacrifice is chosen during resolution (CR 603.5), then the effect proceeds.
  */
 class RiptideEntrancerTest : FunSpec({
 
@@ -37,8 +37,8 @@ class RiptideEntrancerTest : FunSpec({
     }
 
     /**
-     * Drive combat through first strike to combat damage step.
-     * After this, a YesNoDecision is pending (the "may sacrifice?" question).
+     * Drive combat to its normal damage step; no creature here has first strike.
+     * After damage, the required creature target is chosen before the trigger is stacked.
      */
     fun driveToCombatDamage(driver: GameTestDriver, attacker: com.wingedsheep.sdk.model.EntityId, defender: com.wingedsheep.sdk.model.EntityId, entrancer: com.wingedsheep.sdk.model.EntityId) {
         driver.passPriorityUntil(Step.DECLARE_ATTACKERS)
@@ -47,12 +47,8 @@ class RiptideEntrancerTest : FunSpec({
         driver.declareNoBlockers(defender)
         driver.bothPass()
 
-        // Skip first strike damage → combat damage dealt → trigger fires
-        // processMayThenTargetTrigger asks "may sacrifice?" first
-        driver.bothPass()
-
         driver.currentStep shouldBe Step.COMBAT_DAMAGE
-        driver.pendingDecision shouldBe YesNoDecision::class.java.let { driver.pendingDecision }
+        driver.pendingDecision.shouldBeInstanceOf<ChooseTargetsDecision>().playerId shouldBe attacker
     }
 
     test("gain control of opponent creature when choosing to sacrifice after combat damage") {
@@ -72,17 +68,17 @@ class RiptideEntrancerTest : FunSpec({
 
         driveToCombatDamage(driver, attacker, defender, entrancer)
 
-        // Step 1: "May sacrifice?" — answer yes
-        val yesNoDecision = driver.pendingDecision as YesNoDecision
-        driver.submitYesNo(yesNoDecision.playerId, true)
-
-        // Step 2: Choose target creature for gain control
-        val chooseTargets = driver.pendingDecision as ChooseTargetsDecision
-        driver.submitTargetSelection(chooseTargets.playerId, listOf(targetCreature))
-
-        // Step 3: Trigger is now on the stack — resolve it
+        // Choose the required creature target before the trigger is put on the stack.
+        val chooseTargets = driver.pendingDecision.shouldBeInstanceOf<ChooseTargetsDecision>()
+        driver.submitTargetSelection(chooseTargets.playerId, listOf(targetCreature)).error shouldBe null
         driver.stackSize shouldBe 1
-        driver.bothPass()
+
+        // At resolution, choose to sacrifice; the creature has remained alive until now.
+        driver.bothPass().error shouldBe null
+        val yesNoDecision = driver.pendingDecision.shouldBeInstanceOf<YesNoDecision>()
+        yesNoDecision.playerId shouldBe attacker
+        driver.getController(entrancer) shouldBe attacker
+        driver.submitYesNo(yesNoDecision.playerId, true).error shouldBe null
 
         // Entrancer should be in graveyard (sacrificed)
         driver.assertInGraveyard(attacker, "Riptide Entrancer")
@@ -112,9 +108,14 @@ class RiptideEntrancerTest : FunSpec({
 
         driveToCombatDamage(driver, attacker, defender, entrancer)
 
-        // Choose no - don't sacrifice
-        val yesNoDecision = driver.pendingDecision as YesNoDecision
-        driver.submitYesNo(yesNoDecision.playerId, false)
+        // Target selection is required even when the later optional sacrifice is declined.
+        val chooseTargets = driver.pendingDecision.shouldBeInstanceOf<ChooseTargetsDecision>()
+        driver.submitTargetSelection(chooseTargets.playerId, listOf(targetCreature)).error shouldBe null
+        driver.stackSize shouldBe 1
+        driver.bothPass().error shouldBe null
+        val yesNoDecision = driver.pendingDecision.shouldBeInstanceOf<YesNoDecision>()
+        yesNoDecision.playerId shouldBe attacker
+        driver.submitYesNo(yesNoDecision.playerId, false).error shouldBe null
 
         // Entrancer should still be on battlefield
         driver.getController(entrancer) shouldBe attacker

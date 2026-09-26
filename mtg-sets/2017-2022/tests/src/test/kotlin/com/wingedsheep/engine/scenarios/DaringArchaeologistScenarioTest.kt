@@ -2,6 +2,7 @@ package com.wingedsheep.engine.scenarios
 
 import com.wingedsheep.engine.core.CastSpell
 import com.wingedsheep.engine.core.ChooseTargetsDecision
+import com.wingedsheep.engine.core.YesNoDecision
 import com.wingedsheep.engine.core.PaymentStrategy
 import com.wingedsheep.engine.support.GameTestDriver
 import com.wingedsheep.engine.support.TestCards
@@ -26,9 +27,8 @@ import io.kotest.matchers.types.shouldBeInstanceOf
  * phrasing for "up to one target" — a strictly different ability, since it lets the controller
  * decline to target at all and never asks for consent. Argentum Assay's differential reported it.
  *
- * Two artifact cards go in the graveyard rather than one, deliberately: with a single legal target
- * the engine auto-selects it and no `ChooseTargetsDecision` is raised at all, so the requirement's
- * minimum — the thing that changed — would not be observable.
+ * Two artifact cards make both the mandatory minimum and the offered target domain observable.
+ * Target selection precedes priority; the separate consent is chosen on resolution (CR 603.5).
  */
 class DaringArchaeologistScenarioTest : FunSpec({
 
@@ -39,7 +39,7 @@ class DaringArchaeologistScenarioTest : FunSpec({
         return d
     }
 
-    /** Cast the Archaeologist over two artifact cards in the graveyard, stopping at its ETB consent. */
+    /** Cast the Archaeologist over two artifact cards in the graveyard, stopping at its mandatory ETB target choice. */
     fun GameTestDriver.castOverTwoArtifacts(): Triple<EntityId, EntityId, EntityId> {
         val you = player1
         passPriorityUntil(Step.PRECOMBAT_MAIN)
@@ -54,15 +54,13 @@ class DaringArchaeologistScenarioTest : FunSpec({
                 paymentStrategy = PaymentStrategy.AutoPay,
             ),
         ).isSuccess shouldBe true
-        bothPass() // the creature resolves and its ETB trigger asks whether you want to do this
+        bothPass() // the creature resolves; choose the trigger target before priority (CR 603.3d)
         return Triple(you, golem, myr)
     }
 
-    test("consenting then asks for a target, and the target is mandatory") {
+    test("the mandatory target is chosen before resolution-time consent") {
         val d = driver()
         val (you, golem, myr) = d.castOverTwoArtifacts()
-
-        d.submitYesNo(you, true)
 
         val decision = d.pendingDecision.shouldBeInstanceOf<ChooseTargetsDecision>()
         decision.legalTargets[0].shouldNotBeNull() shouldContainAll listOf(golem, myr)
@@ -70,17 +68,28 @@ class DaringArchaeologistScenarioTest : FunSpec({
         // that spelling makes this 0, i.e. "up to one target artifact card".
         decision.targetRequirements.single().minTargets shouldBe 1
 
-        d.submitTargetSelection(you, listOf(golem))
+        d.submitTargetSelection(you, listOf(golem)).error shouldBe null
+        d.stackSize shouldBe 1
+        d.bothPass()
+        d.pendingDecision.shouldBeInstanceOf<YesNoDecision>()
+        d.submitYesNo(you, true).error shouldBe null
         while (d.stackSize > 0) d.bothPass()
 
         d.getHand(you) shouldContain golem
     }
 
-    test("declining asks for no target at all and both cards stay in the graveyard") {
+    test("declining after the required target choice leaves both cards in the graveyard") {
         val d = driver()
         val (you, golem, myr) = d.castOverTwoArtifacts()
 
-        d.submitYesNo(you, false)
+        val target = d.pendingDecision.shouldBeInstanceOf<ChooseTargetsDecision>()
+        target.targetRequirements.single().minTargets shouldBe 1
+        target.legalTargets.getValue(0) shouldContainAll listOf(golem, myr)
+        d.submitTargetSelection(you, listOf(golem)).error shouldBe null
+        d.stackSize shouldBe 1
+        d.bothPass()
+        d.pendingDecision.shouldBeInstanceOf<YesNoDecision>()
+        d.submitYesNo(you, false).error shouldBe null
         while (d.stackSize > 0) d.bothPass()
 
         d.getGraveyard(you) shouldContainAll listOf(golem, myr)

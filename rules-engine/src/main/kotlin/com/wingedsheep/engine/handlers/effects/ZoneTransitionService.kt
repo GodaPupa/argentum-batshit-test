@@ -34,7 +34,6 @@ import com.wingedsheep.engine.state.components.identity.PlayWithFixedAlternative
 import com.wingedsheep.engine.state.components.identity.MorphDataComponent
 import com.wingedsheep.engine.state.components.identity.RevealedToComponent
 import com.wingedsheep.engine.state.components.identity.TokenComponent
-import com.wingedsheep.engine.state.components.stack.ActivatedAbilityOnStackComponent
 import com.wingedsheep.engine.state.components.player.CardsDiscardedThisTurnComponent
 import com.wingedsheep.engine.state.components.player.CardsLeftGraveyardThisTurnComponent
 import com.wingedsheep.engine.state.components.player.CardsPutIntoExileThisTurnComponent
@@ -51,6 +50,8 @@ import com.wingedsheep.engine.state.components.player.CreatureCardsPutIntoGravey
 import com.wingedsheep.engine.state.components.player.PlayerDescendedThisTurnComponent
 import com.wingedsheep.engine.state.components.player.SacrificedArtifactThisTurnComponent
 import com.wingedsheep.engine.state.components.player.SacrificedFoodThisTurnComponent
+import com.wingedsheep.engine.state.components.stack.ActivatedAbilityOnStackComponent
+import com.wingedsheep.engine.state.components.stack.TriggeredAbilityOnStackComponent
 import com.wingedsheep.sdk.core.CardType
 import com.wingedsheep.sdk.core.CounterType
 import com.wingedsheep.sdk.core.Subtype
@@ -301,7 +302,10 @@ object ZoneTransitionService {
         val redirectResult = if (!options.skipZoneChangeRedirect) {
             ZoneMovementUtils.checkZoneChangeRedirect(state, entityId, fromZone, destinationZone)
         } else {
-            ZoneChangeRedirectResult(destinationZone)
+            // A caller may already have selected another destination, but a paid flashback or
+            // harmonize cost still replaces a non-exile departure from this stack incarnation.
+            ZoneMovementUtils.paidStackExitRedirect(state, entityId, fromZone, destinationZone)
+                ?: ZoneChangeRedirectResult(destinationZone)
         }
         val actualDestZone = redirectResult.destinationZone
 
@@ -410,6 +414,13 @@ object ZoneTransitionService {
             com.wingedsheep.engine.state.components.stack.EntitySnapshot(
                 entityId = entityId,
                 battlefieldEntryTimestamp = container.get<BattlefieldEntryTimestampComponent>()?.timestamp,
+                objectRef = oldObject,
+                colors = state.projectedState.getColors(entityId),
+                ownerId = ownerId,
+                name = cardComponent.name,
+                supertypes = state.projectedState.getSupertypes(entityId),
+                grantedStaticAbilities = state.grantedStaticAbilities
+                    .filter { it.entityId == entityId }.map { it.ability },
                 power = lastKnownPower,
                 toughness = lastKnownToughness,
                 // Mirror the projected type line's subtypes into the snapshot's own `subtypes`
@@ -440,6 +451,41 @@ object ZoneTransitionService {
 
         var newState = state
         val events = mutableListOf<EngineGameEvent>()
+
+        // A pending ability refers to the original source object (CR 113.7a, 608.2h).
+        // Freeze at departure, so changes since activation count, and retain the snapshot on
+        // the stack object so exile, token cleanup or a return cannot erase or overwrite it.
+        // A dies trigger can have been stacked after the departure; carry its matching snapshot
+        // forward before a subsequent graveyard move strips LastKnownPermanentComponent.
+        val sourceSnapshot = lastKnownSnapshot ?: container.get<LastKnownPermanentComponent>()?.snapshot
+        if (sourceSnapshot?.objectRef != null) {
+            // A previous defender's trigger can still be waiting when a later defender pays
+            // costs. Preserve the original source before token cleanup or another zone move;
+            // this is independent of the event's triggering-object snapshot.
+            newState = newState.copy(pendingBlockTriggers = newState.pendingBlockTriggers.map { pending ->
+                if (pending.objectReferences.origin == sourceSnapshot.objectRef &&
+                    pending.lastKnownSourceSnapshot == null
+                ) pending.copy(lastKnownSourceSnapshot = sourceSnapshot) else pending
+            })
+            for ((stackId, stackEntity) in state.entities) {
+                val activated = stackEntity.get<ActivatedAbilityOnStackComponent>()
+                val triggered = stackEntity.get<TriggeredAbilityOnStackComponent>()
+                if (activated != null && activated.objectReferences.origin == sourceSnapshot.objectRef &&
+                    activated.lastKnownSourceSnapshot == null
+                ) {
+                    newState = newState.updateEntity(stackId) {
+                        it.with(activated.copy(lastKnownSourceSnapshot = sourceSnapshot))
+                    }
+                }
+                if (triggered != null && triggered.objectReferences.origin == sourceSnapshot.objectRef &&
+                    triggered.lastKnownSourceSnapshot == null
+                ) {
+                    newState = newState.updateEntity(stackId) {
+                        it.with(triggered.copy(lastKnownSourceSnapshot = sourceSnapshot))
+                    }
+                }
+            }
+        }
 
         // 4. EXIT CLEANUP if leaving battlefield
         if (leavingBattlefield) {
@@ -493,22 +539,6 @@ object ZoneTransitionService {
                             } else copy
                         }
                     )
-                }
-
-                // An activated ability is independent of its source once activated (CR 113.7a),
-                // but source characteristics used by its resolving damage still come from the
-                // permanent as it last existed on the battlefield (CR 608.2h). Stamp that LKI at
-                // departure, not at activation: the source may gain or lose deathtouch/lifelink
-                // while the ability is waiting on the stack. Preserve the first departure so a
-                // later return using the same EntityId cannot overwrite the old object's identity.
-                for (stackId in newState.stack) {
-                    val stackEntity = newState.getEntity(stackId) ?: continue
-                    val activated = stackEntity.get<ActivatedAbilityOnStackComponent>() ?: continue
-                    if (activated.sourceId == entityId && activated.lastKnownSourceSnapshot == null) {
-                        newState = newState.updateEntity(stackId) { c ->
-                            c.with(activated.copy(lastKnownSourceSnapshot = lastKnownSnapshot))
-                        }
-                    }
                 }
             }
         }
@@ -569,7 +599,16 @@ object ZoneTransitionService {
         // player's battlefield zone (e.g., control-changed permanents in some zone layouts).
         val removeZoneKey = currentZoneKey
         newState = newState.removeFromZone(removeZoneKey, entityId)
-        if (fromZone == Zone.STACK) newState = newState.removeFromStack(entityId)
+        if (fromZone == Zone.STACK) {
+            newState = newState.removeFromStack(entityId)
+            // CR 400.7: the paid alternative belongs to the departed spell, not the card in its
+            // destination. Generic bounce/library moves need the same cleanup as StackResolver.
+            newState = newState.updateEntity(entityId) { c ->
+                c.without<com.wingedsheep.engine.state.components.stack.SpellOnStackComponent>()
+                    .without<com.wingedsheep.engine.state.components.stack.TargetsComponent>()
+                    .without<com.wingedsheep.engine.state.components.identity.AfterResolveDestinationComponent>()
+            }
+        }
 
         // Drop any remaining linked-exile reference held by a granter still on the
         // battlefield (e.g. Maralen, Fae Ascendant). The card has just left exile by

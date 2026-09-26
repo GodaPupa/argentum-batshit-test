@@ -1,13 +1,16 @@
 package com.wingedsheep.engine.scenarios
 
+import com.wingedsheep.engine.core.ChooseTargetsDecision
+import com.wingedsheep.engine.core.YesNoDecision
 import com.wingedsheep.engine.support.ScenarioTestBase
 import com.wingedsheep.sdk.core.Phase
 import com.wingedsheep.sdk.core.Step
 import com.wingedsheep.engine.state.components.battlefield.DamageComponent
 import com.wingedsheep.sdk.dsl.card
 import io.kotest.assertions.withClue
+import io.kotest.matchers.collections.shouldContain
 import io.kotest.matchers.shouldBe
-import io.kotest.matchers.shouldNotBe
+import io.kotest.matchers.types.shouldBeInstanceOf
 
 /**
  * Scenario test for Farrel's Mantle (Fallen Empires).
@@ -21,8 +24,8 @@ import io.kotest.matchers.shouldNotBe
  * do-nothing Aura. Nothing failed — an ability that never fires looks exactly like an ability whose
  * condition was not met.
  *
- * The second case is the reason "its controller" is load-bearing: the Aura may sit on an opponent's
- * creature, and the choice is still that creature's controller's to make.
+ * The Aura's controller chooses the trigger's target. If the Aura enchants an opponent's creature,
+ * that creature's controller makes the separate "may" choice during resolution.
  */
 class FarrelsMantleScenarioTest : ScenarioTestBase() {
 
@@ -60,15 +63,28 @@ class FarrelsMantleScenarioTest : ScenarioTestBase() {
 
                 game.declareAttackers(mapOf("Mantle Bearer" to 2)).error shouldBe null
                 game.passUntilPhase(Phase.COMBAT, Step.DECLARE_BLOCKERS)
-                game.declareNoBlockers()
+                game.declareNoBlockers().error shouldBe null
 
                 withClue("the trigger must actually fire — this is the bug that made the card inert") {
                     game.hasPendingDecision() shouldBe true
                 }
-                game.answerYesNo(true)
                 val target = game.findPermanent("Mantle Bystander")!!
-                game.selectTargets(listOf(target))
-                game.resolveStack()
+                val targetDecision = game.getPendingDecision().shouldBeInstanceOf<ChooseTargetsDecision>()
+                targetDecision.playerId shouldBe game.player1Id
+                targetDecision.legalTargets.getValue(0) shouldContain target
+                targetDecision.targetRequirements.single().minTargets shouldBe 1
+                game.selectTargets(listOf(target)).error shouldBe null
+                game.getPendingDecision() shouldBe null
+                game.state.stack.size shouldBe 1
+                game.passPriority().error shouldBe null
+                game.getPendingDecision() shouldBe null
+                game.state.stack.size shouldBe 1
+                game.passPriority().error shouldBe null
+                game.getPendingDecision().shouldBeInstanceOf<YesNoDecision>().playerId shouldBe game.player1Id
+                game.answerYesNo(true).error shouldBe null
+                game.resolveStack().forEach { it.error shouldBe null }
+                game.getPendingDecision() shouldBe null
+                game.state.stack.size shouldBe 0
 
                 withClue("3 power plus 2 = 5 damage to the chosen creature") {
                     game.state.getEntity(target)?.get<DamageComponent>()?.amount shouldBe 5
@@ -93,11 +109,25 @@ class FarrelsMantleScenarioTest : ScenarioTestBase() {
 
                 game.declareAttackers(mapOf("Mantle Bearer" to 2)).error shouldBe null
                 game.passUntilPhase(Phase.COMBAT, Step.DECLARE_BLOCKERS)
-                game.declareNoBlockers()
+                game.declareNoBlockers().error shouldBe null
 
-                game.hasPendingDecision() shouldBe true
-                game.answerYesNo(false)
-                game.resolveStack()
+                val target = game.findPermanent("Mantle Bystander")!!
+                val targetDecision = game.getPendingDecision().shouldBeInstanceOf<ChooseTargetsDecision>()
+                targetDecision.playerId shouldBe game.player1Id
+                targetDecision.legalTargets.getValue(0) shouldContain target
+                targetDecision.targetRequirements.single().minTargets shouldBe 1
+                game.selectTargets(listOf(target)).error shouldBe null
+                game.getPendingDecision() shouldBe null
+                game.state.stack.size shouldBe 1
+                game.passPriority().error shouldBe null
+                game.getPendingDecision() shouldBe null
+                game.state.stack.size shouldBe 1
+                game.passPriority().error shouldBe null
+                game.getPendingDecision().shouldBeInstanceOf<YesNoDecision>().playerId shouldBe game.player1Id
+                game.answerYesNo(false).error shouldBe null
+                game.resolveStack().forEach { it.error shouldBe null }
+                game.getPendingDecision() shouldBe null
+                game.state.stack.size shouldBe 0
 
                 game.passUntilPhase(Phase.POSTCOMBAT_MAIN, Step.POSTCOMBAT_MAIN)
                 withClue("declined, so the 3/3 connects normally") {
@@ -122,15 +152,34 @@ class FarrelsMantleScenarioTest : ScenarioTestBase() {
 
                 game.declareAttackers(mapOf("Mantle Bearer" to 1)).error shouldBe null
                 game.passUntilPhase(Phase.COMBAT, Step.DECLARE_BLOCKERS)
-                game.declareNoBlockers()
+                game.declareNoBlockers().error shouldBe null
 
-                val decision = game.getPendingDecision()
-                withClue("the trigger fired") {
-                    decision shouldNotBe null
+                val target = game.findPermanent("Mantle Bystander")!!
+                val targetDecision = game.getPendingDecision().shouldBeInstanceOf<ChooseTargetsDecision>()
+                withClue("the Aura's controller chooses the triggered ability's target") {
+                    targetDecision.playerId shouldBe game.player1Id
                 }
-                withClue("\"its controller\" is the enchanted creature's controller, not the Aura's") {
-                    decision!!.playerId shouldBe game.player2Id
+                targetDecision.legalTargets.getValue(0) shouldContain target
+                targetDecision.targetRequirements.single().minTargets shouldBe 1
+                game.selectTargets(listOf(target)).error shouldBe null
+                game.getPendingDecision() shouldBe null
+                game.state.stack.size shouldBe 1
+                game.passPriority().error shouldBe null
+                game.getPendingDecision() shouldBe null
+                game.state.stack.size shouldBe 1
+                game.passPriority().error shouldBe null
+
+                val mayDecision = game.getPendingDecision().shouldBeInstanceOf<YesNoDecision>()
+                withClue("the enchanted creature's controller makes the resolution-time may choice") {
+                    mayDecision.playerId shouldBe game.player2Id
                 }
+                game.answerYesNo(true).error shouldBe null
+                game.resolveStack().forEach { it.error shouldBe null }
+                game.getPendingDecision() shouldBe null
+                game.state.stack.size shouldBe 0
+                game.state.getEntity(target)?.get<DamageComponent>()?.amount shouldBe 5
+                game.passUntilPhase(Phase.POSTCOMBAT_MAIN, Step.POSTCOMBAT_MAIN)
+                game.getLifeTotal(1) shouldBe 20
             }
 
             test("a blocked enchanted attacker does not trigger") {

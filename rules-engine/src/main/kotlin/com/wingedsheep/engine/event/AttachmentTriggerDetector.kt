@@ -143,7 +143,7 @@ class AttachmentTriggerDetector(
                 // auras for that id, so non-enchant-player damage stays a no-op lookup.
                 buildList {
                     add(event.targetId)
-                    event.sourceId?.let { add(it) }
+                    if (event.sourceWasOnBattlefield != false) event.sourceId?.let { add(it) }
                 }
             }
             is AttackersDeclaredEvent -> event.attackers
@@ -184,6 +184,8 @@ class AttachmentTriggerDetector(
             }
             is EventPattern.DealsDamageEvent -> {
                 event is DamageDealtEvent &&
+                    event.sourceWasOnBattlefield != false &&
+                    event.sourceSnapshot?.objectRef?.let { state.isCurrentObject(it) } != false &&
                     event.sourceId == attachedEntityId &&
                     matcher.matchesDealsDamageTrigger(trigger, event, state, auraControllerId, auraId)
             }

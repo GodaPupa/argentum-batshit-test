@@ -8,6 +8,8 @@ import com.wingedsheep.engine.core.PlayerLostEvent
 import com.wingedsheep.engine.handlers.actions.ActionHandler
 import com.wingedsheep.engine.mechanics.StateBasedActionChecker
 import com.wingedsheep.engine.mechanics.CastPriorityProcessor
+import com.wingedsheep.engine.mechanics.combat.BlockDeclarationProcessor
+import com.wingedsheep.engine.mechanics.combat.CombatDefenders
 import com.wingedsheep.engine.mechanics.sba.game.GameEndCheck
 import com.wingedsheep.engine.mechanics.sba.player.PlayerLeavesGameCheck
 import com.wingedsheep.engine.mechanics.sba.player.TeamLossPropagationCheck
@@ -29,6 +31,7 @@ import kotlin.reflect.KClass
 class ConcedeHandler(
     private val sbaChecker: StateBasedActionChecker,
     private val castPriorityProcessor: CastPriorityProcessor? = null,
+    private val blockDeclarationProcessor: BlockDeclarationProcessor? = null,
 ) : ActionHandler<Concede> {
     override val actionType: KClass<Concede> = Concede::class
 
@@ -45,6 +48,17 @@ class ConcedeHandler(
         }
         val lostEvent = PlayerLostEvent(action.playerId, GameEndReason.CONCESSION)
 
+        if (CombatDefenders.nextUndeclaredDefender(state) != null) {
+            val processor = blockDeclarationProcessor
+                ?: return ExecutionResult.error(state, "Block-declaration service is required for this pending concession")
+            // Departure is immediate; other SBAs and trigger placement still wait for the whole
+            // declaration round. Existing cancellation removes only the departed chooser's pause.
+            val departure = applyImmediateDeparture(marked)
+            return processor.complete(departure.copy(
+                state = processor.preserveDepartedSources(state, departure.state),
+            ), listOf(lostEvent))
+        }
+
         if (marked.pendingCastPriority != null && !marked.stackResolutionPendingPriority) {
             val processor = castPriorityProcessor
                 ?: return ExecutionResult.error(state, "Post-cast priority service is required for this pending concession")
@@ -55,6 +69,15 @@ class ConcedeHandler(
             return processor.resume(applyImmediateDeparture(marked), listOf(lostEvent))
         }
         val sbaResult = sbaChecker.checkAndApply(marked)
+        // A chooser may have left while simultaneous triggers were being ordered after a
+        // resolution. Departure retains the other controllers' exact waiting batch in the
+        // existing boundary; finish it before handing out priority.
+        if (!sbaResult.state.gameOver && sbaResult.state.pendingCastPriority != null &&
+            !sbaResult.state.stackResolutionPendingPriority) {
+            val processor = castPriorityProcessor
+                ?: return ExecutionResult.error(state, "Priority service is required for surviving triggered abilities")
+            return processor.resume(sbaResult, listOf(lostEvent))
+        }
         if (sbaResult.isPaused) {
             return ExecutionResult.propagatePause(
                 sbaResult.state,

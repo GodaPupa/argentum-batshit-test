@@ -72,7 +72,9 @@ class InsidiousFungusScenarioTest : ScenarioTestBase() {
                 val game = scenario()
                     .withPlayers("Player1", "Player2")
                     .withCardOnBattlefield(1, "Insidious Fungus")
-                    .withCardOnBattlefield(2, "Pacifism") // an enchantment
+                    // A bare Aura would die to SBA before this activation receives priority.
+                    .withCardOnBattlefield(2, "Grizzly Bears")
+                    .withCardAttachedTo(2, "Pacifism", "Grizzly Bears")
                     .withLandsOnBattlefield(1, "Forest", 2)
                     .withActivePlayer(1)
                     .inPhase(Phase.PRECOMBAT_MAIN, Step.PRECOMBAT_MAIN)
@@ -86,7 +88,8 @@ class InsidiousFungusScenarioTest : ScenarioTestBase() {
 
                 val modeDecision = game.state.pendingDecision as? ChooseOptionDecision
                     ?: error("expected a ChooseOptionDecision; got ${game.state.pendingDecision}")
-                game.submitDecision(OptionChosenResponse(modeDecision.id, optionIndex = 1))
+                game.isOnBattlefield("Pacifism") shouldBe true
+                game.submitDecision(OptionChosenResponse(modeDecision.id, optionIndex = 1)).error shouldBe null
 
                 val targetDecision = game.state.pendingDecision as? ChooseTargetsDecision
                     ?: error("expected a ChooseTargetsDecision after mode pick")

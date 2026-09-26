@@ -8,7 +8,7 @@ import com.wingedsheep.sdk.scripting.KeywordAbility
 /**
  * Single source of truth for "does this card have harmonize, and at what cost?" — used by every
  * harmonize read site (the cast-from-graveyard enumerator, the cast handler, the
- * alternative-payment handler, and the stack resolver's exile-on-resolution clause).
+ * alternative-payment handler). Stack departure reads the selected paid cost on the spell.
  *
  * Harmonize (CR 702.180) can be either printed on the card ([KeywordAbility.Harmonize] in the
  * card's keyword abilities) or granted at runtime to a specific card entity (Songcrafter Mage:
