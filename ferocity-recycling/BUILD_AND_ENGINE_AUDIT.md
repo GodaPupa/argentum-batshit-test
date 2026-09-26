@@ -165,8 +165,8 @@ source/deck/policy identities, and an independently frozen development allocatio
 
 ## Qualification workflow and evidence contract
 
-`.github/workflows/ferocity-recycling-validation.yml` runs on project-branch pushes and scoped pull
-requests. It uses JDK 21.0.12.1+1 and the exact checked just archive. It runs project integrity and
+`.github/workflows/ferocity-recycling-validation.yml` runs on scoped pull requests. It uses JDK
+21.0.12.1+1 and the exact checked just archive. It runs project integrity and
 arithmetic tests, verifies an existing freeze if present, then calls `tools/validate_build.py`.
 It does not create an experimental freeze, allocate seeds, launch randomized simulations, or
 initialize games. Project evidence uploads run even when a test fails.
@@ -204,6 +204,27 @@ The current default class set is Ferocity, Rats, Toxin, Shaman, Not Dead After A
 Offering, Wellspring, Ghast, Fountain, Munitions, and the fixed Grixis decision probes. This selection
 checks useful available primitives; it is not a substitute for the final chosen-pool interaction
 matrix or complete gameplay-policy qualification. A green workflow must retain this limited claim.
+
+### First published CI setup incident
+
+At published source `901729f259d044dfa157f745b8d764cb454922ef`, push run `36224992267`
+and PR run `36224994898` both failed before compilation or assertions. `actions/setup-java@v5`
+rejected the official four-component Temurin release string `21.0.12.1+1` as invalid SemVer.
+Exact job logs, action revisions, runner identity and uploaded provenance-artifact identities are
+retained in `evidence/build/ci-setup-semver-incident-01/`. Both jobs executed **zero** engine cases
+and **zero** research games; they neither add to nor invalidate the local stable-source 38/41
+baseline. The workflow's early provenance upload worked on this failure path.
+
+The scoped repair replaces that version parser with installation of the exact official Temurin
+archive already used successfully locally. It verifies the same SHA-256 before extraction, then
+exports its `JAVA_HOME` and executable path and preserves a JDK provenance record. No Java release,
+test assertion or TLS policy changed. The installer has passed static review at this checkpoint;
+fresh CI execution after publication must establish its hosted-runner result. No blind rerun was
+dispatched. Because the project already has PR #173, the revised workflow keeps its path-scoped PR
+trigger and removes its redundant push trigger; one source update no longer launches two identical
+qualification jobs. Both original failed setup jobs remain preserved. Known baseline mechanical
+failures remain expected until the separately reviewed engine
+repair is accepted and tested against this project's exact inputs.
 
 ## Admission status
 

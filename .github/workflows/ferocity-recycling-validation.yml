@@ -1,18 +1,6 @@
 name: Ferocity Recycling deterministic qualification
 
 on:
-  push:
-    branches:
-      - ferocity-recycling/archetype-research
-    paths:
-      - ferocity-recycling/**
-      - .github/workflows/ferocity-recycling-validation.yml
-      - rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/FerocityOfTheHuntScenarioTest.kt
-      - rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/CryptRatsScenarioTest.kt
-      - mtg-sets/2024/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/ToxinAnalysisScenarioTest.kt
-      - rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/ZoneTransitionService.kt
-      - rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/DamageUtils.kt
-      - rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/damage/DealDamageExecutor.kt
   pull_request:
     paths:
       - ferocity-recycling/**
@@ -61,12 +49,27 @@ jobs:
           }
           (out / 'setup-provenance.json').write_text(json.dumps(record, indent=2) + '\n')
           PY
-      - uses: actions/setup-java@v5
-        with:
-          distribution: temurin
-          # Hosted runners currently resolve 21.0.12+1; the previous overly
-          # specific 21.0.12.1+1 selector failed before qualification began.
-          java-version: '21'
+      - name: Install exact verified Temurin JDK archive
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/ferocity-tools"
+          curl --fail --location --max-time 180 \
+            --output "$RUNNER_TEMP/ferocity-tools/temurin-jdk.tar.gz" \
+            https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.12.1%2B1/OpenJDK21U-jdk_x64_linux_hotspot_21.0.12.1_1.tar.gz
+          echo 'ce79869e1307ed8ee1e2baa86a412b1eb5b75d10a01006d788a6f968bcfaee94  '"$RUNNER_TEMP/ferocity-tools/temurin-jdk.tar.gz" | sha256sum --check
+          tar -xzf "$RUNNER_TEMP/ferocity-tools/temurin-jdk.tar.gz" -C "$RUNNER_TEMP/ferocity-tools"
+          echo "JAVA_HOME=$RUNNER_TEMP/ferocity-tools/jdk-21.0.12.1+1" >> "$GITHUB_ENV"
+          echo "$RUNNER_TEMP/ferocity-tools/jdk-21.0.12.1+1/bin" >> "$GITHUB_PATH"
+          "$RUNNER_TEMP/ferocity-tools/jdk-21.0.12.1+1/bin/java" -version
+          python - <<'PY'
+          import json, pathlib
+          pathlib.Path('build/reports/ferocity-recycling/jdk-provenance.json').write_text(json.dumps({
+              'distribution': 'Eclipse Temurin', 'version': '21.0.12.1+1',
+              'archive_url': 'https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.12.1%2B1/OpenJDK21U-jdk_x64_linux_hotspot_21.0.12.1_1.tar.gz',
+              'verified_archive_sha256': 'ce79869e1307ed8ee1e2baa86a412b1eb5b75d10a01006d788a6f968bcfaee94',
+              'installation_status': 'VERIFIED_AND_EXECUTED',
+          }, indent=2) + '\n')
+          PY
       - uses: gradle/actions/setup-gradle@v6
       - name: Validate project arithmetic and frozen inputs without generating evidence
         run: |
