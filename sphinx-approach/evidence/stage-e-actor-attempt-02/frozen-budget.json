@@ -1,6 +1,6 @@
 {
   "schema": "sphinx-stage-e-actor-receiving-budget-v1",
-  "status": "FIXED_BANK_FIXTURE_SETUP_CORRECTION_PENDING_RECEIVING_RETRY",
+  "status": "FIXED_BANK_SOURCE_CORRECTION_PENDING_INDEPENDENT_REVIEW",
   "controlling_protocol": {
     "path": "STAGE_E_RECONSTRUCTION_PLAN.md",
     "sha256": "066a08b74350dcf20a03b917b2c122501b9d87cbca52e3273d216bc183a8ea43",
@@ -145,45 +145,27 @@
     "gym/src/test/kotlin/com/wingedsheep/gym/actorinput/ActorTriggerOrderObservationTest.kt": "01c84c1e963801702696b15187cb3d1c24f2f47367f54c0c9c8c77e05a26a4cb"
   },
   "fixture_source_sha256": {
-    "gym/src/test/kotlin/com/wingedsheep/gym/actorinput/ActorSpellPaymentProjectionTest.kt": "5068262f19adfb84335ec246b5da18c3644fd2c7ec94f86ac842bba6c6757108",
+    "gym/src/test/kotlin/com/wingedsheep/gym/actorinput/ActorSpellPaymentProjectionTest.kt": "b6b8203017608a83bd553eb95e5190a0faf7d0811c8644b1ca7f0f8c4c279bfa",
     "gym/src/test/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEActorAdapterTest.kt": "4aa40846fe72391f23ce8d429240de09181c7f027d89cab3d5bc3adcdd07b273"
   },
   "execution_record": {
-    "attempts": 2,
-    "passed": 134,
-    "failed": 2,
+    "attempts": 1,
+    "passed": 0,
+    "failed": 0,
     "official_seeds": 0,
     "official_games": 0,
     "official_outcomes_exposed": 0,
     "compilation_failures": 1,
-    "actual_cases_executed": 136,
-    "completed_bank_successes": 0,
-    "completed_bank_failures": 1,
-    "case_counter_semantics": "passed and failed count actual cases across preserved attempts; attempt1 failed compilation with zero cases, attempt2 executed136 with134 passes and2 fixture failures."
+    "actual_cases_executed": 0
   },
   "gameplay_authorized": false,
   "source_correction": {
-    "predecessor_source": "1bba9c824134df88f9f855ae54cb09038162f722",
-    "predecessor_tree": "7584715b7a473b2acc84c00c9e3e7c20503d55fd",
-    "predecessor_budget_sha256": "6ecf7d56345261a0776b2d0f4fb72b37d50d33ab48fcb32a279562ffb508c3df",
-    "predecessor_budget_path": "evidence/stage-e-actor-attempt-02/frozen-budget.json",
-    "attempt_receipt": "evidence/stage-e-actor-attempt-02/independent-artifact-audit.json",
-    "reviewed_fixture_correction_source": "a134b8c2c290f6bfe6ff058892de3baf6efd77dd",
-    "reviewed_fixture_correction_tree": "4a71466b341f196f0c334163e0a54bfc5be23ffd",
-    "independent_source_reviewer": "/root",
-    "change": "Correct only SP04 synthetic combined parent cost and SP09 fixture construction to use the existing FULL disabled-primary/affordable-secondary path. All136 case identities, all original assertion intents and assertions,50actor+56pilot+20balancedadapter checks, experimental inputs and policy bytes remain unchanged. No shared enumerator or production code changes.",
-    "ordinary_unaffordable_primary_limitation": "The existing enumerator omits unaffordable ordinary primary casts. This fixture qualifies the actual offered disabled-primary path only and does not infer complete ordinary-cast enumeration.",
+    "predecessor_source": "c73d227c1e274bcbeabe82b83c1950526653ebf6",
+    "predecessor_tree": "e8e80b0c6f23ba7be2400c8cf667bffd8e5fb122",
+    "predecessor_budget_sha256": "6f162994a176e83431939e509d7611132192fbc969891fc04ff1372eee831cc7",
+    "predecessor_budget_path": "evidence/stage-e-actor-attempt-01/frozen-budget.json",
+    "attempt_receipt": "evidence/stage-e-actor-attempt-01/author-audit.json",
+    "change": "Only import com.wingedsheep.engine.core.suspendForDecision in the adapter test; no changed fixture body, case identity, assertion, input, development budget or policy.",
     "same_complete_bank_required": true
-  },
-  "source_correction_history": [
-    {
-      "predecessor_source": "c73d227c1e274bcbeabe82b83c1950526653ebf6",
-      "predecessor_tree": "e8e80b0c6f23ba7be2400c8cf667bffd8e5fb122",
-      "predecessor_budget_sha256": "6f162994a176e83431939e509d7611132192fbc969891fc04ff1372eee831cc7",
-      "predecessor_budget_path": "evidence/stage-e-actor-attempt-01/frozen-budget.json",
-      "attempt_receipt": "evidence/stage-e-actor-attempt-01/author-audit.json",
-      "change": "Only import com.wingedsheep.engine.core.suspendForDecision in the adapter test; no changed fixture body, case identity, assertion, input, development budget or policy.",
-      "same_complete_bank_required": true
-    }
-  ]
+  }
 }

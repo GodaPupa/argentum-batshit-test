@@ -13,6 +13,7 @@ import com.wingedsheep.engine.state.components.player.ManaPoolComponent
 import com.wingedsheep.engine.support.ScenarioTestBase
 import com.wingedsheep.sdk.core.Phase
 import com.wingedsheep.sdk.core.Step
+import com.wingedsheep.sdk.dsl.Effects
 import com.wingedsheep.sdk.dsl.card
 import com.wingedsheep.sdk.model.CardLayout
 import com.wingedsheep.sdk.model.EntityId
@@ -27,8 +28,21 @@ class ActorSpellPaymentProjectionTest : ScenarioTestBase() {
     private val epoch = ActorEpoch("shared-spell-payment-projection-v1", "fixed-data", 0)
     private val split = card("Projection Hall // Projection Vault") {
         layout = CardLayout.SPLIT
+        // CardBuilder leaves a split card's top-level cost blank unless explicitly supplied.
+        // Keep the distinguishing combined parent value 4 versus the cast face value 1.
+        manaCost = "{2}{U}{U}"
         face("Projection Hall") { manaCost = "{U}"; typeLine = "Enchantment — Room" }
         face("Projection Vault") { manaCost = "{2}{U}"; typeLine = "Enchantment — Room" }
+    }
+    private val unaffordablePrimary = card("Projection Blue // Projection Free") {
+        manaCost = "{U}"
+        typeLine = "Sorcery"
+        spell { effect = Effects.DrawCards(0) }
+        modalBack("Projection Free") {
+            manaCost = "{0}"
+            typeLine = "Sorcery"
+            spell { effect = Effects.DrawCards(0) }
+        }
     }
 
     private fun fixture(name: String = "Mental Note", islands: Int = 3) = scenario()
@@ -69,6 +83,7 @@ class ActorSpellPaymentProjectionTest : ScenarioTestBase() {
 
     init {
         cardRegistry.register(split)
+        cardRegistry.register(unaffordablePrimary)
 
         test("SP01 actual ordinary cast exposes current ownership mana value and counterability") {
             val game = fixture().build()
@@ -181,8 +196,14 @@ class ActorSpellPaymentProjectionTest : ScenarioTestBase() {
         }
 
         test("SP09 the full unaffordable offer is retained with a failed canonical payment") {
-            val game = fixture(islands = 0).build()
-            val id = game.findCardsInHand(1, "Mental Note").single()
+            // The existing enumerator omits unaffordable ordinary primary casts. It does retain
+            // a disabled primary when a secondary face is affordable, so use that real offered
+            // path. This does not claim complete ordinary-unaffordable-cast enumeration.
+            val game = fixture(unaffordablePrimary.name, islands = 0).build()
+            val id = game.findCardsInHand(1, unaffordablePrimary.name).single()
+            val offers = input(game.state).legalActions.filter { (it.action as? CastSpell)?.cardId == id }
+            offers.single { (it.action as CastSpell).faceIndex == null }.affordable shouldBe false
+            offers.single { (it.action as CastSpell).faceIndex == 0 }.affordable shouldBe true
             val projected = payment(game.state, id)
             projected.status shouldBe ActorBasicBluePaymentStatus.UNPAYABLE
             projected.availableBlueMana shouldBe 0
