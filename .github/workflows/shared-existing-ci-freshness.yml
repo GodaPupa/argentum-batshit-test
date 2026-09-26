@@ -1,0 +1,43 @@
+name: Shared exact-source CI freshness supplement
+
+on:
+  push:
+    branches: [lab/shared-existing-ci-freshness-20260926]
+
+permissions:
+  contents: read
+
+jobs:
+  verify-existing-cached-suites:
+    if: ${{ github.event.before == '0000000000000000000000000000000000000000' && github.run_attempt == 1 }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      GRADLE_LOCK_SLOTS: '1'
+      JAVA_TOOL_OPTIONS: -XX:MaxMetaspaceSize=768m
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.sha }}
+          path: control
+          persist-credentials: false
+      - uses: actions/checkout@v6
+        with:
+          ref: 994383d4a9495bcb34d5aae0e69181bcf4c04d45
+          path: source
+          persist-credentials: false
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: gradle/actions/setup-gradle@v6
+      - uses: extractions/setup-just@f8a3cce218d9f83db3a2ecd90e41ac3de6cdfd9b
+      - name: Execute only the four previously cached software test modules
+        run: python3 control/fresh-ci-supplement.py
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: shared-existing-ci-fresh-${{ github.run_id }}-${{ github.run_attempt }}
+          path: output/
+          if-no-files-found: error
+          retention-days: 90
