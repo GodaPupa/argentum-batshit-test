@@ -2,11 +2,10 @@ package com.wingedsheep.mtg.sets.definitions.tor.cards
 
 import com.wingedsheep.sdk.core.Color
 import com.wingedsheep.sdk.dsl.Effects
+import com.wingedsheep.sdk.dsl.Costs
 import com.wingedsheep.sdk.dsl.card
 import com.wingedsheep.sdk.model.Rarity
-import com.wingedsheep.sdk.scripting.AdditionalCost
 import com.wingedsheep.sdk.scripting.KeywordAbility
-import com.wingedsheep.sdk.scripting.costs.CostAtom
 
 /**
  * Acorn Harvest
@@ -35,7 +34,7 @@ val AcornHarvest = card("Acorn Harvest") {
     keywordAbility(
         KeywordAbility.flashback(
             "{1}{G}",
-            AdditionalCost.Atom(CostAtom.PayLife(3))
+            Costs.additional.PayLife(3)
         )
     )
 
