@@ -6,6 +6,7 @@ on:
       - .github/workflows/engine-priority-after-resolution.yml
       - docs/engine-priority-after-resolution*
       - docs/experiments/pest-control/tier-one-postboard-engine-priority-sources.json
+      - docs/experiments/pest-control/tier-one-postboard-engine-priority-shared-receiving-sources.json
       - rules-engine/src/main/kotlin/com/wingedsheep/engine/state/GameState.kt
       - rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/ContinuationHandler.kt
       - rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/priority/PassPriorityHandler.kt
@@ -54,7 +55,7 @@ jobs:
       - name: Bind exact source and effective rules archive
         env:
           EXPECTED_HEAD: ${{ github.event.pull_request.head.sha }}
-          SOURCE_MANIFEST: docs/experiments/pest-control/tier-one-postboard-engine-priority-sources.json
+          SOURCE_MANIFEST: docs/experiments/pest-control/tier-one-postboard-engine-priority-shared-receiving-sources.json
         run: |
           python - <<'PY'
           import datetime, hashlib, json, os, pathlib, subprocess, urllib.request
