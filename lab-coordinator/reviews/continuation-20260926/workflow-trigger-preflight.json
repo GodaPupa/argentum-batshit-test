@@ -1,0 +1,360 @@
+{
+  "base": "8076f16a1043d1411cfefbb7e66c68a1d5e66aa1",
+  "tree": "f3edcbd2641ba2966fef9546e6377cf62a4bb7ab",
+  "head_branch": "lab/conductor-continuation-20260926",
+  "pr_base": "lab-coordinator/critical-path",
+  "scope": "lab-coordinator status/handoff/retained snapshots and bounded review only",
+  "workflows": [
+    {
+      "path": ".github/workflows/argentum-test.yml",
+      "trigger": "on:\n  workflow_dispatch:\n  push:\n    branches: [ \"main\" ]\n\n",
+      "complete": true,
+      "reused_same_git_blob": true
+    },
+    {
+      "path": ".github/workflows/batshit-grixis-affinity-regression-replay.yml",
+      "trigger": "on:\n  push:\n    branches: [\"main\"]\n    paths:\n      - \".github/workflows/batshit-grixis-affinity-regression-replay.yml\"\n  workflow_dispatch:\n\n",
+      "complete": true,
+      "reused_same_git_blob": true
+    },
+    {
+      "path": ".github/workflows/batshit-grixis-policy-focused.yml",
+      "trigger": "on:\n  push:\n    branches: [\"main\"]\n    paths:\n      - \".github/workflows/batshit-grixis-policy-focused.yml\"\n  workflow_dispatch:\n\n",
+      "complete": true,
+      "reused_same_git_blob": true
+    },
+    {
+      "path": ".github/workflows/batshit-preboard-smoke.yml",
+      "trigger": "on:\n  workflow_dispatch:\n  push:\n    branches:\n      - 'smoke/**'\n\n",
+      "complete": true,
+      "reused_same_git_blob": true
+    },
+    {
+      "path": ".github/workflows/ci.yml",
+      "trigger": "on:\n  push:\n    branches: [ \"main\" ]\n  pull_request:\n    # Run on all pull requests (create and update)\n    types: [opened, synchronize, reopened]\n\n# Cancel any in-progress run for the same branch/PR when a new commit is pushed, so superseded\n# builds don't keep occupying runners. head_ref is set on pull_request events (the PR's source\n# branch); for pushes it's empty, so we fall back to ref (e.g. refs/heads/main). Including the\n# workflow name keeps groups from colliding with other workflows.",
+      "complete": true
+    },
+    {
+      "path": ".github/workflows/deploy.yml",
+      "trigger": "on:\n  workflow_dispatch:\n\n",
+      "complete": true,
+      "reused_same_git_blob": true
+    },
+    {
+      "path": ".github/workflows/e2e-nightly.yml",
+      "trigger": "on:\n  schedule:\n    - cron: '0 3 * * *'  # 3:00 AM UTC daily\n  workflow_dispatch:       # Allow manual triggers\n\n",
+      "complete": true,
+      "reused_same_git_blob": true
+    },
+    {
+      "path": ".github/workflows/engine-priority-after-resolution.yml",
+      "trigger": "on:\n  pull_request:\n    paths:\n      - .github/workflows/engine-priority-after-resolution.yml\n      - docs/engine-priority-after-resolution*\n      - rules-engine/src/main/kotlin/com/wingedsheep/engine/state/GameState.kt\n      - rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/ContinuationHandler.kt\n      - rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/priority/PassPriorityHandler.kt\n      - rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/decision/SubmitDecisionHandler.kt\n      - rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/sba/player/PlayerLeavesGameProcessor.kt\n      - rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/StackResolutionPriorityTest.kt\n      - mtg-sets/2000-2002/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/CircleOfSolaceTest.kt\n      - mtg-sets/1993-1999/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/ScarecrowScenarioTest.kt\n      - mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/AbundantMawScenarioTest.kt\n      - mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/SpellQuellerScenarioTest.kt\n      - mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/TaureanMaulerScenarioTest.kt\n      - ai/src/test/kotlin/com/wingedsheep/ai/engine/DecisionResponderCompletedBranchTest.kt\n      - rules-engine/src/testFixtures/kotlin/com/wingedsheep/engine/support/ScenarioTestBase.kt\n\n      - docs/engine-post-cast-sba*\n      - rules-engine/src/main/kotlin/com/wingedsheep/engine/event/DeathAndLeaveTriggerDetector.kt\n      - rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/DeathTriggerTest.kt\n      - mtg-sets/2003-2007/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/KrarksThumbScenarioTest.kt\n      - mtg-sets/2026/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/PrismariTheInspirationScenarioTest.kt\n      - rules-engine/src/main/kotlin/com/wingedsheep/engine/state/PendingCastPriority.kt\n      - rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/CastPriorityProcessor.kt\n      - rules-engine/src/main/kotlin/com/wingedsheep/engine/core/ColorAndTypeContinuations.kt\n      - rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/spell/CastSpellHandler.kt\n      - rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/special/ConcedeHandler.kt\n      - rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/special/SpecialActionsModule.kt\n      - rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/ModalAndCloneContinuationResumer.kt\n      - rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/CastPrioritySbaTest.kt\n",
+      "complete": true
+    },
+    {
+      "path": ".github/workflows/face-value-edh-r1-a-validation.yml",
+      "trigger": "on:\n  workflow_dispatch:",
+      "complete": true
+    },
+    {
+      "path": ".github/workflows/izzet-snapshot-rebless.yml",
+      "trigger": "on:\n  workflow_dispatch:\n",
+      "complete": true
+    },
+    {
+      "path": ".github/workflows/manual-transmission-elasticity.yml",
+      "trigger": "on:\n  push:\n    branches:\n      - \"manual-transmission/qualification\"\n    paths:\n      - \"experiments/manual-transmission/imports/README_D2P.md\"\n      - \"experiments/manual-transmission/protocols/same-hardware-elasticity-r1.json\"\n      - \"experiments/manual-transmission/qualification/same_hardware_elasticity_audit.py\"\n      - \".github/workflows/manual-transmission-elasticity.yml\"\n",
+      "complete": true
+    },
+    {
+      "path": ".github/workflows/manual-transmission-final-race-policy.yml",
+      "trigger": "on:\n  push:\n    branches:\n      - \"manual-transmission/qualification\"\n    paths:\n      - \"experiments/manual-transmission/protocols/final-race-policy-r1.json\"\n      - \"experiments/manual-transmission/policies/RACE-FINAL-R1.md\"\n      - \"experiments/manual-transmission/policies/R3-*.md\"\n      - \"experiments/manual-transmission/qualification/final_race_policy_audit.py\"\n      - \"experiments/manual-transmission/control/v0.7.decklist.txt\"\n      - \".github/workflows/manual-transmission-final-race-policy.yml\"\n",
+      "complete": true
+    },
+    {
+      "path": ".github/workflows/manual-transmission.yml",
+      "trigger": "on:\n  push:\n    branches:\n      - \"manual-transmission/qualification\"\n    paths:\n      - \"experiments/manual-transmission/**\"\n      - \".github/workflows/manual-transmission.yml\"\n",
+      "complete": true
+    },
+    {
+      "path": ".github/workflows/pest-control-tier-one-grixis-admission-gate.yml",
+      "trigger": "on:\n  pull_request:\n    paths:\n      - gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlTierOneGrixisExecutionAdmissionGate.kt\n      - gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOneGrixisExecutionAdmissionGateTest.kt\n      - .github/workflows/pest-control-tier-one-grixis-admission-gate.yml\n      - docs/experiments/pest-control/tier-one-grixis-admission-gate.md\n      - docs/experiments/pest-control/tier-one-grixis-official-loader-validation-provenance.json\n",
+      "complete": true
+    },
+    {
+      "path": ".github/workflows/pest-control-tier-one-grixis-composed-validate.yml",
+      "trigger": "on:\n  pull_request:\n    types: [opened, synchronize, reopened]\n    paths:\n      - gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOneGrixisComposedValidationTest.kt\n      - .github/workflows/pest-control-tier-one-grixis-composed-validate.yml\n",
+      "complete": true
+    },
+    {
+      "path": ".github/workflows/pest-control-tier-one-grixis-disabled-durability.yml",
+      "trigger": "on:\n  pull_request:\n    paths:\n      - gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlTierOneGrixisDisabledDurabilityGate.kt\n      - gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOneGrixisDisabledDurabilityGateTest.kt\n      - gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOneGrixisFinalHarnessReadinessTest.kt\n      - .github/workflows/pest-control-tier-one-grixis-disabled-durability.yml\n      - docs/experiments/pest-control/tier-one-grixis-disabled-durability.md\n",
+      "complete": true
+    },
+    {
+      "path": ".github/workflows/pest-control-tier-one-grixis-disabled-runner.yml",
+      "trigger": "on:\n  pull_request:\n    paths:\n      - gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlTierOneGrixisDisabledPrivateRunner.kt\n      - gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOneGrixisDisabledPrivateRunnerTest.kt\n      - gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOneGrixisFinalHarnessReadinessTest.kt\n      - .github/workflows/pest-control-tier-one-grixis-disabled-runner.yml\n      - docs/experiments/pest-control/tier-one-grixis-disabled-runner.md\n",
+      "complete": true
+    },
+    {
+      "path": ".github/workflows/pest-control-tier-one-grixis-execute-v2.yml",
+      "trigger": "on:\n  workflow_dispatch:\n    inputs:\n      execution_commit:\n        description: Exact green replacement-authorization commit (40 lowercase hex characters).\n        required: true\n        type: string\n      execution_tree:\n        description: Exact tree of the green replacement-authorization commit (40 lowercase hex characters).\n        required: true\n        type: string\n      execution_ack:\n        description: Exact one-shot Grixis acknowledgement.\n        required: true\n        type: string\n",
+      "complete": true
+    },
+    {
+      "path": ".github/workflows/pest-control-tier-one-grixis-execute-v3.yml",
+      "trigger": "on:\n  workflow_dispatch:\n    inputs:\n      execution_commit:\n        description: Exact green replacement-authorization commit (40 lowercase hex characters).\n        required: true\n        type: string\n      execution_tree:\n        description: Exact tree of the green replacement-authorization commit (40 lowercase hex characters).\n        required: true\n        type: string\n      execution_ack:\n        description: Exact one-shot Grixis acknowledgement.\n        required: true\n        type: string\n",
+      "complete": true
+    },
+    {
+      "path": ".github/workflows/pest-control-tier-one-grixis-execute-v4.yml",
+      "trigger": "on:\n  workflow_dispatch:\n    inputs:\n      execution_commit:\n        description: Exact green replacement-authorization commit.\n        required: true\n        type: string\n      execution_tree:\n        description: Exact tree of the green replacement-authorization commit.\n        required: true\n        type: string\n      execution_ack:\n        description: Exact one-shot Grixis acknowledgement.\n        required: true\n        type: string\n",
+      "complete": true
+    },
+    {
+      "path": ".github/workflows/pest-control-tier-one-grixis-execute-v5.yml",
+      "trigger": "on:\n  workflow_dispatch:\n    inputs:\n      execution_commit:\n        description: Exact green replacement-authorization commit.\n        required: true\n        type: string\n      execution_tree:\n        description: Exact tree of the green replacement-authorization commit.\n        required: true\n        type: string\n",
+      "complete": true
+    },
+    {
+      "path": ".github/workflows/pest-control-tier-one-grixis-execute-v6.yml",
+      "trigger": "on:\n  workflow_dispatch:\n",
+      "complete": true
+    },
+    {
+      "path": ".github/workflows/pest-control-tier-one-grixis-execute.yml",
+      "trigger": "on:\n  workflow_dispatch:\n    inputs:\n      execution_commit:\n        description: Exact green authorization commit (40 lowercase hex characters).\n        required: true\n        type: string\n      execution_tree:\n        description: Exact tree of the green authorization commit (40 lowercase hex characters).\n        required: true\n        type: string\n      execution_ack:\n        description: Exact one-shot Grixis acknowledgement.\n        required: true\n        type: string\n",
+      "complete": true
+    },
+    {
+      "path": ".github/workflows/pest-control-tier-one-grixis-final-readiness.yml",
+      "trigger": "on:\n  pull_request:\n    paths:\n      - gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlTierOneGrixisFinalHarnessReadiness.kt\n      - gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOneGrixisFinalHarnessReadinessTest.kt\n      - .github/workflows/pest-control-tier-one-grixis-final-readiness.yml\n      - docs/experiments/pest-control/tier-one-grixis-final-readiness.md\n",
+      "complete": true
+    },
+    {
+      "path": ".github/workflows/pest-control-tier-one-grixis-official-loader-validate.yml",
+      "trigger": "on:\n  pull_request:\n    paths:\n      - gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlTierOneGrixisDisabledOfficialArtifactLoader.kt\n      - gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOneGrixisDisabledOfficialArtifactLoaderTest.kt\n      - gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOneGrixisOfficialLoaderValidationProvenanceTest.kt\n      - .github/workflows/pest-control-tier-one-grixis-official-loader-validate.yml\n      - docs/experiments/pest-control/tier-one-grixis-disabled-official-artifact-loader.md\n      - docs/experiments/pest-control/tier-one-grixis-official-loader-validation-provenance.json\n",
+      "complete": true
+    },
+    {
+      "path": ".github/workflows/pest-control-tier-one-grixis-opaque-plan.yml",
+      "trigger": "on:\n  pull_request:\n    paths:\n      - gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlTierOneGrixisOpaqueExecutionPlan.kt\n      - gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOneGrixisOpaqueExecutionPlanTest.kt\n      - .github/workflows/pest-control-tier-one-grixis-opaque-plan.yml\n      - docs/experiments/pest-control/tier-one-grixis-opaque-plan.md\n",
+      "complete": true
+    },
+    {
+      "path": ".github/workflows/pest-control-tier-one-grixis-replication-artifact-validate.yml",
+      "trigger": "on:\n  pull_request:\n    paths:\n      - gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOneGrixisReplicationOfficialArtifactValidationTest.kt\n      - .github/workflows/pest-control-tier-one-grixis-replication-artifact-validate.yml\n      - docs/experiments/pest-control/tier-one-grixis-replication-artifact-validation.md\n",
+      "complete": true
+    },
+    {
+      "path": ".github/workflows/pest-control-tier-one-grixis-replication-execute.yml",
+      "trigger": "on:\n  pull_request:\n    paths:\n      - .github/workflows/pest-control-tier-one-grixis-replication-execute.yml\n      - docs/experiments/pest-control/tier-one-grixis-replication-game1-incident.md\n",
+      "complete": true
+    },
+    {
+      "path": ".github/workflows/pest-control-tier-one-grixis-replication-freeze.yml",
+      "trigger": "on:\n  pull_request:\n    paths:\n      - scripts/experiments/pest-control/generate_tier_one_grixis_replication_freeze.py\n      - .github/workflows/pest-control-tier-one-grixis-replication-freeze.yml\n      - docs/experiments/pest-control/tier-one-grixis-replication-freeze-gate.md\n",
+      "complete": true
+    },
+    {
+      "path": ".github/workflows/pest-control-tier-one-grixis-replication-production-freeze.yml",
+      "trigger": "on:\n  pull_request:\n    paths:\n      - .github/workflows/pest-control-tier-one-grixis-replication-production-freeze.yml\n      - docs/experiments/pest-control/tier-one-grixis-replication-freeze-provenance.json\n",
+      "complete": true
+    },
+    {
+      "path": ".github/workflows/pest-control-tier-one-grixis-salvage-11-artifact-validate.yml",
+      "trigger": "on:\n  pull_request:\n    paths:\n      - gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOneGrixisSalvageContinuationOfficialArtifactValidationTest.kt\n      - .github/workflows/pest-control-tier-one-grixis-salvage-11-artifact-validate.yml\n      - docs/experiments/pest-control/tier-one-grixis-salvage-11-artifact-validation.md\n",
+      "complete": true
+    },
+    {
+      "path": ".github/workflows/pest-control-tier-one-grixis-salvage-11-execute.yml",
+      "trigger": "on:\n  pull_request:\n    paths:\n      - .github/workflows/pest-control-tier-one-grixis-salvage-11-execute.yml\n      - docs/experiments/pest-control/tier-one-grixis-salvage-11-result.md\n",
+      "complete": true
+    },
+    {
+      "path": ".github/workflows/pest-control-tier-one-grixis-smoke-freeze.yml",
+      "trigger": "on:\n  pull_request:\n    paths:\n      - scripts/experiments/pest-control/generate_tier_one_grixis_smoke_freeze.py\n      - .github/workflows/pest-control-tier-one-grixis-smoke-freeze.yml\n      - docs/experiments/pest-control/tier-one-grixis-vector-freeze-gate.md\n",
+      "complete": true
+    },
+    {
+      "path": ".github/workflows/pest-control-tier-one-mono-blue-terror-composed-validate.yml",
+      "trigger": "on:\n  pull_request:\n    types: [opened, synchronize, reopened]\n    paths:\n      - gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlTierOneMonoBlueTerrorOfficialExecutionInputLoader.kt\n      - gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOneMonoBlueTerrorOfficialExecutionInputLoaderTest.kt\n      - gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOneMonoBlueTerrorComposedValidationTest.kt\n      - .github/workflows/pest-control-tier-one-mono-blue-terror-composed-validate.yml\n",
+      "complete": true
+    },
+    {
+      "path": ".github/workflows/pest-control-tier-one-mono-blue-terror-official-execute.yml",
+      "trigger": "on:\n  pull_request:\n    paths:\n      - .github/workflows/pest-control-tier-one-mono-blue-terror-official-execute.yml\n      - docs/experiments/pest-control/tier-one-mono-blue-terror-auto-execution-authorization.json\n      - docs/experiments/pest-control/tier-one-mono-blue-terror-official-smoke-result.md\n",
+      "complete": true
+    },
+    {
+      "path": ".github/workflows/pest-control-tier-one-mono-blue-terror-replication-artifact-validate.yml",
+      "trigger": "on:\n  pull_request:\n    paths:\n      - gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlTierOneMonoBlueTerrorReplicationExecutionInputLoader.kt\n      - gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlTierOneMonoBlueTerrorReplicationExecutionCoordinator.kt\n      - gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOneMonoBlueTerrorReplicationExecutionHarnessTest.kt\n      - gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOneMonoBlueTerrorReplicationOfficialArtifactValidationTest.kt\n      - .github/workflows/pest-control-tier-one-mono-blue-terror-replication-artifact-validate.yml\n      - docs/experiments/pest-control/tier-one-mono-blue-terror-replication-harness-validation.md\n",
+      "complete": true
+    },
+    {
+      "path": ".github/workflows/pest-control-tier-one-mono-blue-terror-replication-execution-stack-validate.yml",
+      "trigger": "on:\n  pull_request:\n    paths:\n      - .github/workflows/pest-control-tier-one-mono-blue-terror-replication-execution-stack-validate.yml\n      - docs/experiments/pest-control/tier-one-mono-blue-terror-replication-execution-stack.md\n",
+      "complete": true
+    },
+    {
+      "path": ".github/workflows/pest-control-tier-one-mono-blue-terror-replication-freeze.yml",
+      "trigger": "on:\n  pull_request:\n    paths:\n      - scripts/experiments/pest-control/generate_tier_one_mono_blue_terror_replication_freeze.py\n      - .github/workflows/pest-control-tier-one-mono-blue-terror-replication-freeze.yml\n      - docs/experiments/pest-control/tier-one-mono-blue-terror-replication-freeze-gate.md\n",
+      "complete": true
+    },
+    {
+      "path": ".github/workflows/pest-control-tier-one-mono-blue-terror-replication-official-execute.yml",
+      "trigger": "on:\n  pull_request:\n    paths:\n      - .github/workflows/pest-control-tier-one-mono-blue-terror-replication-official-execute.yml\n      - docs/experiments/pest-control/tier-one-mono-blue-terror-replication-result.md\n      - docs/experiments/pest-control/README.md\n",
+      "complete": true
+    },
+    {
+      "path": ".github/workflows/pest-control-tier-one-mono-blue-terror-replication-production-freeze.yml",
+      "trigger": "on:\n  pull_request:\n    paths:\n      - .github/workflows/pest-control-tier-one-mono-blue-terror-replication-production-freeze.yml\n      - docs/experiments/pest-control/tier-one-mono-blue-terror-replication-freeze-provenance.json\n      - scripts/experiments/pest-control/generate_tier_one_mono_blue_terror_replication_freeze.py\n",
+      "complete": true
+    },
+    {
+      "path": ".github/workflows/pest-control-tier-one-mono-blue-terror-smoke-freeze.yml",
+      "trigger": "on:\n  pull_request:\n    paths:\n      - scripts/experiments/pest-control/generate_tier_one_mono_blue_terror_smoke_freeze.py\n      - .github/workflows/pest-control-tier-one-mono-blue-terror-smoke-freeze.yml\n      - docs/experiments/pest-control/tier-one-mono-blue-terror-auto-freeze-authorization.json\n      - docs/experiments/pest-control/tier-one-mono-blue-terror-vector-freeze-gate.md\n      - docs/experiments/pest-control/tier-one-mono-blue-terror-vector-freeze-provenance.json\n",
+      "complete": true
+    },
+    {
+      "path": ".github/workflows/pest-control-tier-one-monster-tron-admission.yml",
+      "trigger": "on:\n  pull_request:\n    paths:\n      - gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlTierOneMonsterTronAdmission.kt\n      - gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOneMonsterTronAdmissionTest.kt\n      - .github/workflows/pest-control-tier-one-monster-tron-admission.yml\n      - docs/experiments/pest-control/tier-one-monster-tron-admission.md\n",
+      "complete": true
+    },
+    {
+      "path": ".github/workflows/pest-control-tier-one-monster-tron-cascade.yml",
+      "trigger": "on:\n  pull_request:\n    paths:\n      - rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/spell/CastSpellHandler.kt\n      - rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/library/CascadeExecutor.kt\n      - rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/LibraryAndZoneContinuationResumer.kt\n      - rules-engine/src/main/kotlin/com/wingedsheep/engine/core/LibraryAndZoneContinuations.kt\n      - rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/CascadeKeywordTest.kt\n      - mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/MaelstromColossusCascadeScenarioTest.kt\n      - gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOneMonsterTronCascadeReadinessTest.kt\n      - docs/experiments/pest-control/tier-one-monster-tron-cascade.md\n      - .github/workflows/pest-control-tier-one-monster-tron-cascade.yml\n",
+      "complete": true
+    },
+    {
+      "path": ".github/workflows/pest-control-tier-one-monster-tron-execution-authorization.yml",
+      "trigger": "on:\n  pull_request:\n    paths:\n      - gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlTierOneMonsterTronExecutionAuthorization.kt\n      - gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOneMonsterTronExecutionAuthorizationTest.kt\n      - docs/experiments/pest-control/tier-one-monster-tron-execution-authorization.md\n      - .github/workflows/pest-control-tier-one-monster-tron-execution-authorization.yml\n",
+      "complete": true
+    },
+    {
+      "path": ".github/workflows/pest-control-tier-one-monster-tron-official-smoke.yml",
+      "trigger": "on:\n  workflow_dispatch:\n  pull_request:\n    paths:\n      - .github/workflows/pest-control-tier-one-monster-tron-official-smoke.yml\n      - docs/experiments/pest-control/tier-one-monster-tron-one-shot-activation.md\n      - gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlTierOneMonsterTronRunnerSurfacePreflight.kt\n      - gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOneMonsterTronRunnerSurfacePreflightTest.kt\n",
+      "complete": true
+    },
+    {
+      "path": ".github/workflows/pest-control-tier-one-monster-tron-one-shot-construction.yml",
+      "trigger": "on:\n  pull_request:\n    paths:\n      - .github/workflows/pest-control-tier-one-monster-tron-one-shot-construction.yml\n      - 'docs/experiments/pest-control/tier-one-monster-tron-one-shot*'\n      - scripts/pest-monster-tron-one-shot-claim.py\n      - tools/tests/test_pest_monster_tron_one_shot_claim.py\n      - 'gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlTierOneMonsterTron*'\n      - 'gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOneMonsterTron*'\n",
+      "complete": true
+    },
+    {
+      "path": ".github/workflows/pest-control-tier-one-monster-tron-operational-stack.yml",
+      "trigger": "on:\n  pull_request:\n    paths:\n      - gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlTierOneMonsterTronOperationalStack.kt\n      - gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOneMonsterTronOperationalStackTest.kt\n      - gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOneMonsterTronFailureEvidenceTest.kt\n      - ai/src/main/kotlin/com/wingedsheep/ai/engine/PestMonsterTronPolicy.kt\n      - ai/src/main/kotlin/com/wingedsheep/ai/engine/advisor/modules/PestMonsterTronAdvisorModule.kt\n      - ai/src/test/kotlin/com/wingedsheep/ai/arena/PestMonsterTronPolicyAuditTest.kt\n      - docs/experiments/pest-control/tier-one-monster-tron-operational-stack.md\n      - gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOneMonsterTronOfficialArtifactValidationTest.kt\n      - docs/experiments/pest-control/tier-one-qualification-stopping-rule.md\n      - docs/experiments/pest-control/tier-one-spy-combo-admission.md\n      - .github/workflows/pest-control-tier-one-monster-tron-operational-stack.yml\n",
+      "complete": true
+    },
+    {
+      "path": ".github/workflows/pest-control-tier-one-monster-tron-policy.yml",
+      "trigger": "on:\n  push:\n    branches:\n      - \"pest-control/tier1-monster-tron-policy\"\n  pull_request:\n    paths:\n      - \"ai/src/main/kotlin/com/wingedsheep/ai/engine/advisor/modules/PestMonsterTronAdvisorModule.kt\"\n      - \"ai/src/main/kotlin/com/wingedsheep/ai/engine/PestMonsterTronPolicy.kt\"\n      - \"ai/src/test/kotlin/com/wingedsheep/ai/arena/PestMonsterTronPolicyAuditTest.kt\"\n      - \"gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlTierOneMonsterTronPolicyReadiness.kt\"\n      - \"gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOneMonsterTronPolicyReadinessTest.kt\"\n      - \"docs/experiments/pest-control/tier-one-monster-tron-policy.md\"\n      - \".github/workflows/pest-control-tier-one-monster-tron-policy.yml\"\n",
+      "complete": true
+    },
+    {
+      "path": ".github/workflows/pest-control-tier-one-monster-tron-prototype.yml",
+      "trigger": "on:\n  pull_request:\n    paths:\n      - mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/core/Keyword.kt\n      - mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/scripting/KeywordAbility.kt\n      - rules-engine/src/main/kotlin/com/wingedsheep/engine/core/GameAction.kt\n      - rules-engine/src/main/kotlin/com/wingedsheep/engine/core/Serialization.kt\n      - rules-engine/src/main/kotlin/com/wingedsheep/engine/state/components/identity/CardComponents.kt\n      - rules-engine/src/main/kotlin/com/wingedsheep/engine/legalactions/LegalActionEnumerator.kt\n      - rules-engine/src/main/kotlin/com/wingedsheep/engine/legalactions/enumerators/PrototypeCastEnumerator.kt\n      - rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/spell/CastSpellHandler.kt\n      - rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/stack/StackResolver.kt\n      - rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/ZoneTransitionService.kt\n      - mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/bro/cards/BoulderbranchGolem.kt\n      - mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/BoulderbranchGolemPrototypeScenarioTest.kt\n      - rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/PrototypeKeywordTest.kt\n      - rules-engine/src/test/kotlin/com/wingedsheep/engine/hygiene/SerializationPolymorphicRegistrationTest.kt\n      - gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOneMonsterTronPrototypeReadinessTest.kt\n      - docs/experiments/pest-control/tier-one-monster-tron-prototype.md\n      - .github/workflows/pest-control-tier-one-monster-tron-prototype.yml\n",
+      "complete": true
+    },
+    {
+      "path": ".github/workflows/pest-control-tier-one-monster-tron-readiness.yml",
+      "trigger": "on:\n  push:\n    branches:\n      - \"pest-control/tier1-monster-tron-readiness\"\n  pull_request:\n    paths:\n      - \"gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlTierOneMonsterTronReadiness.kt\"\n      - \"gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOneMonsterTronReadinessTest.kt\"\n      - \"docs/experiments/pest-control/tier-one-monster-tron-readiness.md\"\n      - \".github/workflows/pest-control-tier-one-monster-tron-readiness.yml\"\n",
+      "complete": true
+    },
+    {
+      "path": ".github/workflows/pest-control-tier-one-monster-tron-runner-construction.yml",
+      "trigger": "on:\n  pull_request:\n    paths:\n      - gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlTierOneMonsterTronRunnerContract.kt\n      - gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlTierOneMonsterTronSmokeHarness.kt\n      - gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlTierOneMonsterTronOfficialInitializationBoundary.kt\n      - gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOneMonsterTronRunnerConstructionTest.kt\n      - docs/experiments/pest-control/tier-one-monster-tron-runner-construction.md\n      - .github/workflows/pest-control-tier-one-monster-tron-runner-construction.yml\n",
+      "complete": true
+    },
+    {
+      "path": ".github/workflows/pest-control-tier-one-monster-tron-runner-preflight.yml",
+      "trigger": "on:\n  push:\n    branches:\n      - \"pest-control/tier1-monster-tron-runner-preflight\"\n    paths:\n      - \".github/workflows/pest-control-tier-one-monster-tron-runner-preflight.yml\"\n      - \"gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlTierOneMonsterTronRunnerSurfacePreflight.kt\"\n      - \"gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOneMonsterTronRunnerSurfacePreflightTest.kt\"\n      - \"docs/experiments/pest-control/tier-one-monster-tron-runner-surface-preflight.md\"\n  pull_request:\n    branches: [main]\n    paths:\n      - \".github/workflows/pest-control-tier-one-monster-tron-runner-preflight.yml\"\n      - \"gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlTierOneMonsterTronRunnerSurfacePreflight.kt\"\n      - \"gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOneMonsterTronRunnerSurfacePreflightTest.kt\"\n      - \"docs/experiments/pest-control/tier-one-monster-tron-runner-surface-preflight.md\"\n",
+      "complete": true
+    },
+    {
+      "path": ".github/workflows/pest-control-tier-one-monster-tron-smoke-freeze.yml",
+      "trigger": "on:\n  pull_request:\n    paths:\n      - scripts/experiments/pest-control/generate_tier_one_monster_tron_smoke_freeze.py\n      - .github/workflows/pest-control-tier-one-monster-tron-smoke-freeze.yml\n      - docs/experiments/pest-control/tier-one-monster-tron-smoke-freeze-gate.md\n      - docs/experiments/pest-control/tier-one-monster-tron-auto-freeze-authorization.json\n      - .github/workflows/pest-control-tier-one-monster-tron-smoke-production-freeze.yml\n",
+      "complete": true
+    },
+    {
+      "path": ".github/workflows/pest-control-tier-one-monster-tron-smoke-production-freeze.yml",
+      "trigger": "on:\n  push:\n    branches:\n      - main\n    paths:\n      - docs/experiments/pest-control/tier-one-monster-tron-auto-freeze-authorization.json\n",
+      "complete": true
+    },
+    {
+      "path": ".github/workflows/pest-control-tier-one-monster-tron-support-closure.yml",
+      "trigger": "on:\n  pull_request:\n    paths:\n      - mtg-sets/1993-1999/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/ulg/cards/CropRotation.kt\n      - mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/wwk/cards/BojukaBog.kt\n      - mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/c20/**\n      - mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/roe/cards/AncientStirrings.kt\n      - mtg-sets/2024/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/mh3/cards/UnfathomableTruths.kt\n      - mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/dka/cards/HauntedFengraf.kt\n      - mtg-sets/src/test/resources/snapshots/cards/ULG.json\n      - mtg-sets/src/test/resources/snapshots/cards/WWK.json\n      - mtg-sets/src/test/resources/snapshots/cards/ROE.json\n      - mtg-sets/src/test/resources/snapshots/cards/DKA.json\n      - mtg-sets/src/test/resources/snapshots/cards/C20.json\n      - mtg-sets/src/test/resources/snapshots/cards/MH3.json\n      - gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOneMonsterTronSupportClosureTest.kt\n      - docs/experiments/pest-control/tier-one-monster-tron-support-closure.md\n      - .github/workflows/pest-control-tier-one-monster-tron-support-closure.yml\n",
+      "complete": true
+    },
+    {
+      "path": ".github/workflows/pest-control-tier-one-postboard-support-audit.yml",
+      "trigger": "on:\n  pull_request:\n    paths:\n      - gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOnePostboardSupportAuditTest.kt\n      - docs/experiments/pest-control/tier-one-postboard-support-audit.md\n      - .github/workflows/pest-control-tier-one-postboard-support-audit.yml\n",
+      "complete": true
+    },
+    {
+      "path": ".github/workflows/pest-control-tier-one-postboard-support-batch-a.yml",
+      "trigger": "on:\n  pull_request:\n    paths:\n      - .github/workflows/pest-control-tier-one-postboard-support-batch-a.yml\n      - docs/experiments/pest-control/tier-one-postboard-support-batch-a*\n      - gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOnePostboardSupportBatchATest.kt\n      - gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOneMonoBlueTerrorReadinessTest.kt\n      - gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlTierOneMonoBlueTerrorReadiness.kt\n      - gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOneSpyComboSupportBatchBTest.kt\n      - '**/SmashToSmithereens.kt'\n      - '**/SmashToSmithereensScenarioTest.kt'\n      - '**/UnexpectedFangs.kt'\n      - '**/UnexpectedFangsScenarioTest.kt'\n      - '**/MurmuringMystic.kt'\n      - '**/MurmuringMysticScenarioTest.kt'\n      - '**/NyleasDisciple.kt'\n      - '**/NyleasDiscipleScenarioTest.kt'\n      - mtg-sets/src/test/resources/snapshots/cards/SHM.json\n      - mtg-sets/src/test/resources/snapshots/cards/IKO.json\n      - mtg-sets/src/test/resources/snapshots/cards/GRN.json\n      - mtg-sets/src/test/resources/snapshots/cards/THS.json\n",
+      "complete": true
+    },
+    {
+      "path": ".github/workflows/pest-control-tier-one-postboard-support-batch-b.yml",
+      "trigger": "on:\n  pull_request:\n    paths:\n      - .github/workflows/pest-control-tier-one-postboard-support-batch-b.yml\n      - docs/experiments/pest-control/tier-one-postboard-support-batch-b*\n      - docs/experiments/pest-control/card-sources/postboard-b/**\n      - '**/Pyroblast.kt'\n      - '**/Hydroblast.kt'\n      - '**/GutShot.kt'\n      - '**/PyroblastScenarioTest.kt'\n      - '**/HydroblastScenarioTest.kt'\n      - '**/GutShotScenarioTest.kt'\n      - '**/PestControlTierOnePostboardSupportBatchBTest.kt'\n      - '**/PestControlTierOnePostboardSupportBatchATest.kt'\n      - '**/PestControlTierOneMonoBlueTerrorReadinessTest.kt'\n      - mtg-sets/src/test/resources/snapshots/cards/ICE.json\n      - mtg-sets/src/test/resources/snapshots/cards/NPH.json\n      - rules-engine/src/main/kotlin/com/wingedsheep/engine/legalactions/utils/TargetEnumerationUtils.kt\n      - rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/targeting/TargetValidator.kt\n      - rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/stack/StackResolver.kt\n      - game-server/src/test/kotlin/com/wingedsheep/gameserver/FreeForAllLobbyTest.kt\n",
+      "complete": true
+    },
+    {
+      "path": ".github/workflows/pest-control-tier-one-spy-admission.yml",
+      "trigger": "on:\n  pull_request:\n    paths:\n      - gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlTierOneSpyComboAdmission.kt\n      - gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOneSpyComboAdmissionTest.kt\n      - docs/experiments/pest-control/tier-one-spy-combo-source-freeze.md\n      - .github/workflows/pest-control-tier-one-spy-admission.yml\n",
+      "complete": true
+    },
+    {
+      "path": ".github/workflows/pest-control-tier-one-spy-support-batch-a.yml",
+      "trigger": "on:\n  pull_request:\n    paths:\n      - .github/workflows/pest-control-tier-one-spy-support-batch-a.yml\n      - docs/experiments/pest-control/tier-one-spy-support-batch-a*\n      - gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOneSpyComboSupportBatchATest.kt\n      - '**/GatecreeperVine.kt'\n      - '**/GatecreeperVineScenarioTest.kt'\n      - '**/OvergrownBattlement.kt'\n      - '**/OvergrownBattlementScenarioTest.kt'\n      - '**/LotlethGiant.kt'\n      - '**/LotlethGiantScenarioTest.kt'\n      - '**/LeadTheStampede.kt'\n      - '**/LeadTheStampedeScenarioTest.kt'\n      - '**/BalustradeSpy.kt'\n      - '**/BalustradeSpyScenarioTest.kt'\n",
+      "complete": true
+    },
+    {
+      "path": ".github/workflows/pest-control-tier-one-spy-support-batch-b.yml",
+      "trigger": "on:\n  pull_request:\n    paths:\n      - .github/workflows/pest-control-tier-one-spy-support-batch-b.yml\n      - 'docs/experiments/pest-control/tier-one-spy-support-batch-b*'\n      - gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOneSpyComboSupportBatchATest.kt\n      - gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOneSpyComboSupportBatchBTest.kt\n      - '**/LandGrant.kt'\n      - '**/LandGrantScenarioTest.kt'\n      - '**/WindingWay.kt'\n      - '**/WindingWayScenarioTest.kt'\n      - '**/MesmericFiend.kt'\n      - '**/MesmericFiendScenarioTest.kt'\n      - '**/WallOfRoots.kt'\n      - '**/WallOfRootsScenarioTest.kt'\n      - 'mtg-sdk/src/main/**'\n      - 'rules-engine/src/main/**'\n      - '**/ChosenCardTypePredicateTest.kt'\n      - 'mtg-sets/src/test/resources/snapshots/cards/MIR.json'\n      - 'mtg-sets/src/test/resources/snapshots/cards/TOR.json'\n      - 'mtg-sets/src/test/resources/snapshots/cards/MMQ.json'\n      - 'mtg-sets/src/test/resources/snapshots/cards/MH1.json'\n",
+      "complete": true
+    },
+    {
+      "path": ".github/workflows/pest-control-tier-one-spy-support-batch-c.yml",
+      "trigger": "on:\n  pull_request:\n    paths:\n      - .github/workflows/pest-control-tier-one-spy-support-batch-c.yml\n      - 'docs/experiments/pest-control/tier-one-spy-support-batch-c*'\n      - scripts/verify-pest-spy-batch-c-sources.py\n      - tools/tests/test_pest_spy_batch_c_sources.py\n      - '**/NyxbornHydra.kt'\n      - '**/NyxbornHydraScenarioTest.kt'\n      - '**/BestowComponent.kt'\n      - '**/BestowCastEnumerator.kt'\n      - '**/PestControlTierOneSpyComboSupportBatchBTest.kt'\n      - '**/PestControlTierOneSpyComboSupportBatchCTest.kt'\n      - 'mtg-sdk/src/main/**'\n      - 'rules-engine/src/main/**'\n      - 'mtg-sets/src/test/resources/snapshots/cards/MH3.json'\n",
+      "complete": true
+    },
+    {
+      "path": ".github/workflows/pest-control-v2-execute.yml",
+      "trigger": "on:\n  pull_request:\n    types: [opened, synchronize, reopened]\n    paths:\n      - .github/workflows/pest-control-v2-execute.yml\n  workflow_dispatch:\n    inputs:\n      mode:\n        description: Validation never initializes a game; execution consumes the frozen vector once.\n        required: true\n        default: VALIDATE_ONLY\n        type: choice\n        options:\n          - VALIDATE_ONLY\n          - EXECUTE\n      execution_ack:\n        description: Required only for EXECUTE.\n        required: false\n        type: string\n",
+      "complete": true
+    },
+    {
+      "path": ".github/workflows/pest-control-v2-freeze.yml",
+      "trigger": "on:\n  workflow_dispatch:\n",
+      "complete": true
+    },
+    {
+      "path": ".github/workflows/pest-control-v2-qualification-execute.yml",
+      "trigger": "on:\n  workflow_dispatch:\n    inputs:\n      execution_commit:\n        description: Exact green authorization commit (40 lowercase hex characters).\n        required: true\n        type: string\n      execution_tree:\n        description: Exact tree of the green authorization commit (40 lowercase hex characters).\n        required: true\n        type: string\n      execution_ack:\n        description: Exact one-shot qualification acknowledgement.\n        required: true\n        type: string\n",
+      "complete": true
+    },
+    {
+      "path": ".github/workflows/pest-control-v2-qualification-freeze.yml",
+      "trigger": "on:\n  pull_request:\n    paths:\n      - scripts/experiments/pest-control/generate_v2_qualification_freeze.py\n      - .github/workflows/pest-control-v2-qualification-freeze.yml\n      - docs/experiments/pest-control/v2-qualification-seed-freeze-gate.md\n  workflow_dispatch:\n    inputs:\n      freeze_ack:\n        description: Exact one-time seed-freeze acknowledgement; this never runs games\n        required: true\n        type: string\n",
+      "complete": true
+    },
+    {
+      "path": ".github/workflows/pest-control-v2-qualification-runner-validate.yml",
+      "trigger": "on:\n  pull_request:\n    paths:\n      - .github/workflows/pest-control-v2-qualification-runner-validate.yml\n      - gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlV2QualificationGameAdapter.kt\n      - gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlV2QualificationCoordinator.kt\n      - gym/src/test/kotlin/com/wingedsheep/gym/PestControlV2QualificationShardRunnerTest.kt\n      - gym/src/test/kotlin/com/wingedsheep/gym/PestControlV2QualificationReconcilerTest.kt\n      - .github/workflows/pest-control-v2-qualification-execute.yml\n      - docs/experiments/pest-control/v2-qualification-execution-harness.md\n  workflow_dispatch:\n",
+      "complete": true
+    },
+    {
+      "path": ".github/workflows/pest-control-v2-qualification-validate.yml",
+      "trigger": "on:\n  pull_request:\n    paths:\n      - .github/workflows/pest-control-v2-qualification-validate.yml\n      - gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlV2QualificationExecutionPreflight.kt\n      - gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlV2QualificationCoordinator.kt\n      - gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlMatchupSharding.kt\n      - gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlV2QualificationReadiness.kt\n      - gym/src/test/kotlin/com/wingedsheep/gym/PestControlV2QualificationHarnessValidationTest.kt\n      - docs/experiments/pest-control/v2-qualification-execution-harness.md\n      - docs/experiments/pest-control/v2-matchup-qualification-readiness.md\n  workflow_dispatch:\n",
+      "complete": true
+    },
+    {
+      "path": ".github/workflows/pest-control-v2-smoke.yml",
+      "trigger": "on:\n  workflow_dispatch:\n",
+      "complete": true
+    }
+  ]
+}
