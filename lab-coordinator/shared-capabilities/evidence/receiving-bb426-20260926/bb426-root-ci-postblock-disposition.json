@@ -1,0 +1,59 @@
+{
+  "schema": "shared-bb426-root-receiving-ci-postblock-disposition-v1",
+  "reviewer": "/root",
+  "source_author_of_receiving_gate": false,
+  "disposition": "ACCEPT_UNCHANGED_EXECUTABLE_CI_EVIDENCE_AND_FRESH_ORIGINAL127_ONLY",
+  "source": "bb42622219df3275c21ebf597ea1edaa82d15ec1",
+  "tree": "3d6a178f3b8168444d7f09b7dd212d3e4d567036",
+  "ci_merge": "70dc7d7bbf3ca6f7710f57e9d33e493d6c13670a",
+  "receiving_base": "b35d4778dada69476da0f67549be7e70424c18bd",
+  "prior_source": "994383d4a9495bcb34d5aae0e69181bcf4c04d45",
+  "prior_evidence": "9bed397f31f6125d79982e07a78f960197c06269",
+  "ci": {
+    "run": 36274829377,
+    "attempt": 1,
+    "raw_archives": 7,
+    "raw_testcase_records": 17347,
+    "unchanged_skips": 52,
+    "unchanged_non_test_reporting_markers": 1,
+    "failures": 0,
+    "errors": 0,
+    "fresh_records": 3335,
+    "fresh_modules": [
+      "mtg-sets:2023:tests:test",
+      "mtg-sets:2024:tests:test"
+    ],
+    "cached_groups": 6,
+    "all_case_and_skip_multisets_equal_to_prior": true
+  },
+  "postblock": {
+    "run": 36274829357,
+    "attempt": 1,
+    "artifact": 10917515664,
+    "bytes": 292158,
+    "sha256": "a08a5eb3c1633b5c39a5a0faf110ab3491c3a09beefd74df4ddcb8ed11788022",
+    "suites": 17,
+    "cases": 127,
+    "failures": 0,
+    "errors": 0,
+    "skips": 0,
+    "original_source_pins": 54,
+    "combined_source_pins": 250
+  },
+  "checks": [
+    "Independently fetched complete Git compare994383...bb426. Exactly seven changes: one receiving workflow, one receiving descriptor and five review JSON files. No runtime, card, test, fixture, dependency, lockfile or build input changed.",
+    "Independently fetched actual CI merge70dc: its exact tree3d6 matches reviewed candidate96b2 and currentbb426; actual parents are b35 andbb426.",
+    "Read all seven original CI ZIPs, verified CRC/whole-file hashes, parsed every XML, and compared exact case/skip/failure/error multiplicities with preserved original994383 ZIPs. Six groups are byte-identical reused XML; the3335 records from2023/2024 are freshly emitted with matching identities.",
+    "Read actual decoded job task lines: six groups are FROM-CACHE and only2023/2024 broad test modules are fresh. Existing independently reviewed fresh994383 evidence plus the targeted four-module freshness supplement supplies the unchanged-input evidence; this run is not labeled freshly executed in full.",
+    "Read original127 ZIP and all17 XMLs, checked every original case identity against independently accepted source96b2 artifact, verified zero failures/errors/skips and actual new run timestamps.",
+    "Recomputed54 original and250 combined source hashes from retained immutable bytes. Every non-head binding value, tree and control pin matches the independently accepted96b2 artifact. Actual engine/server commands executed freshly and report BUILD SUCCESSFUL."
+  ],
+  "limits": [
+    "This is a bounded independent source/artifact disposition, not GitHub approval or gameplay admission.",
+    "Current priority220, observer135, combat32 and token20 receiving artifacts retain their separate verification requirements before combined integration disposition.",
+    "No fresh broad rerun is needed solely because a source-equivalent receiving gate/evidence successor has a different commit hash; no cached run is called fresh.",
+    "No statement of full project pilot/runtime/replay admission, no expansion of unqualified attached-copy/initial-counter token scope, and no official allocation or outcome."
+  ],
+  "official_games": 0,
+  "gameplay_authorized": false
+}

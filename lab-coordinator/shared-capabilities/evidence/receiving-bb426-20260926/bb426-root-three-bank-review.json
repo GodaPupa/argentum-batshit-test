@@ -1,0 +1,67 @@
+{
+  "schema": "shared-bb426-root-three-bank-raw-checks-v1",
+  "reviewer": "/root",
+  "source": "bb42622219df3275c21ebf597ea1edaa82d15ec1",
+  "tree": "3d6a178f3b8168444d7f09b7dd212d3e4d567036",
+  "decision": "PASS_BOUNDED_187_EXISTING_CASES",
+  "components": [
+    {
+      "component": "token",
+      "artifact_id": 10917450984,
+      "bytes": 262718,
+      "sha256": "46f0f2e1a71478fd038ddadcb4c97011d89e76fa9c5c9b321d773d7f15a75a5e",
+      "suites": 3,
+      "cases": 20,
+      "pins_rehashed": {
+        "source_sha256": 48
+      },
+      "explicit_zero_exit_files": 6,
+      "fresh_test_tasks": [
+        ":mtg-sets:2025:tests:test",
+        ":rules-engine:test"
+      ],
+      "all_original_case_identities_preserved": true
+    },
+    {
+      "component": "combat",
+      "artifact_id": 10916686930,
+      "bytes": 239327,
+      "sha256": "ecc138e041b11d35dc3ab8f8dc6281816516f70484fbc8de553a18339e4a01e4",
+      "suites": 4,
+      "cases": 32,
+      "pins_rehashed": {
+        "source_sha256": 31
+      },
+      "explicit_zero_exit_files": 5,
+      "fresh_test_tasks": [
+        ":rules-engine:test"
+      ],
+      "all_original_case_identities_preserved": true
+    },
+    {
+      "component": "observer",
+      "artifact_id": 10916457609,
+      "bytes": 292454,
+      "sha256": "b0ebcfbc8ccfc93516ab1b966a7966c04fb1387cf211b27d53795f9f033c03ff",
+      "suites": 18,
+      "cases": 135,
+      "pins_rehashed": {
+        "source_files_sha256": 55,
+        "combined_source_files_sha256": 250
+      },
+      "explicit_zero_exit_files": 0,
+      "fresh_test_tasks": [
+        ":game-server:test",
+        ":rules-engine:test"
+      ],
+      "all_original_case_identities_preserved": true
+    }
+  ],
+  "limits": [
+    "Original components only; priority220 and overall combined integration disposition remain separate.",
+    "All emitted source bindings independently rehashed; no extra unrecorded after-map claimed.",
+    "No gameplay authority, pilot policy acceptance, full project admission or new official outcomes."
+  ],
+  "official_games": 0,
+  "gameplay_authorized": false
+}
