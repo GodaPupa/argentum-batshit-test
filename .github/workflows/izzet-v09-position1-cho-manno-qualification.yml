@@ -1,0 +1,58 @@
+name: Izzet Position-1 Cho-Manno Qualification
+
+on:
+  push:
+    branches:
+      - mayhem/izzet-bestow-integration
+    paths:
+      - .github/workflows/izzet-v09-position1-cho-manno-qualification.yml
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: gradle/actions/setup-gradle@v6
+
+      - name: Qualify exact Cho-Manno's Blessing behavior
+        run: ./gradlew :mtg-sets:1993-1999:test --tests "*ChoMannosBlessingScenarioTest"
+
+      - name: Verify canonical snapshots without reblessing
+        run: ./gradlew :mtg-sets:test --tests "*CardDefinitionSnapshotTest"
+
+      - name: Verify card lint and facade boundary
+        run: ./gradlew :mtg-sets:test --tests "*CardLintTest" --tests "*FacadeBoundaryTest"
+
+      - name: Emit seed-free qualification manifest
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/reports/izzet-position1
+          cat > build/reports/izzet-position1/cho-manno-qualification.json <<JSON
+          {
+            "schema": "izzet-v09-position1-cho-manno-qualification-v1",
+            "status": "QUALIFIED_SEED_FREE_EXACT_CARD_ONLY",
+            "source_head": "$GITHUB_SHA",
+            "card": "Cho-Manno's Blessing",
+            "printing": "MMQ #12",
+            "exact_scenario": "ChoMannosBlessingScenarioTest",
+            "snapshot_verification": "PASS",
+            "card_lint": "PASS",
+            "facade_boundary": "PASS",
+            "official_seeds_consumed": 0,
+            "official_games_initialized": 0,
+            "outcomes_exposed": 0,
+            "gameplay_authorized": false
+          }
+          JSON
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: izzet-v09-position1-cho-manno-qualification
+          path: build/reports/izzet-position1/cho-manno-qualification.json
+          if-no-files-found: error
+          retention-days: 90
