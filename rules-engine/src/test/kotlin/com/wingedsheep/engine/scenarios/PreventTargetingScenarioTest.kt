@@ -11,6 +11,9 @@ import com.wingedsheep.engine.handlers.effects.permanent.protection.PreventTarge
 import com.wingedsheep.engine.legalactions.utils.TargetEnumerationUtils
 import com.wingedsheep.engine.mechanics.targeting.FloatingTargetingRestriction
 import com.wingedsheep.engine.mechanics.targeting.TargetValidator
+import com.wingedsheep.engine.mechanics.StateBasedActionChecker
+import com.wingedsheep.engine.state.components.battlefield.TappedComponent
+import com.wingedsheep.engine.state.components.identity.ControllerComponent
 import com.wingedsheep.engine.state.components.stack.ChosenTarget
 import com.wingedsheep.engine.support.GameTestDriver
 import com.wingedsheep.engine.support.SerializationTestSupport
@@ -93,5 +96,56 @@ class PreventTargetingScenarioTest : FunSpec({
         val json = Json { serializersModule = engineSerializersModule }
         val encoded = json.encodeToString(GameEvent.serializer(), event)
         json.decodeFromString(GameEvent.serializer(), encoded) shouldBe event
+    }
+
+    test("source-tapped duration gates both card and player reads before SBA and never revives after pruning") {
+        for (playerTarget in listOf(false, true)) {
+            val d = game()
+            val source = d.putLandOnBattlefield(d.player1, "Forest")
+            val target = if (playerTarget) d.player1 else d.putCreatureOnBattlefield(d.player1, "Centaur Courser")
+            val initial = d.state.updateEntity(source) { it.with(TappedComponent) }
+            val restricted = PreventTargetingExecutor().execute(initial,
+                PreventTargetingEffect(EffectTarget.SpecificEntity(target), duration = Duration.WhileSourceTapped),
+                EffectContext(sourceId = source, controllerId = d.player1)).newState
+            FloatingTargetingRestriction.prevents(restricted, target, d.player2) shouldBe true
+            val untapped = restricted.updateEntity(source) { it.without<TappedComponent>() }
+            FloatingTargetingRestriction.prevents(untapped, target, d.player2) shouldBe false
+            val visible = ClientStateTransformer(d.cardRegistry).transform(untapped, d.player2)
+            val badgeCount = if (playerTarget) visible.players.single { it.playerId == target }.activeEffects
+                .count { it.name == "Targeting restricted" }
+            else visible.cards.getValue(target).activeEffects.count { it.name == "Targeting restricted" }
+            badgeCount shouldBe 0
+            val pruned = StateBasedActionChecker(cardRegistry = d.cardRegistry).checkAndApply(untapped).newState
+            val retapped = pruned.updateEntity(source) { it.with(TappedComponent) }
+            FloatingTargetingRestriction.prevents(retapped, target, d.player2) shouldBe false
+        }
+    }
+
+    test("affected-tapped duration stops immediately and stays ended when the object retaps") {
+        val d = game()
+        val target = d.putCreatureOnBattlefield(d.player1, "Centaur Courser")
+        val initial = d.state.updateEntity(target) { it.with(TappedComponent) }
+        val restricted = PreventTargetingExecutor().execute(initial,
+            PreventTargetingEffect(EffectTarget.SpecificEntity(target), duration = Duration.WhileAffectedTapped),
+            EffectContext(sourceId = null, controllerId = d.player1)).newState
+        FloatingTargetingRestriction.prevents(restricted, target, d.player2) shouldBe true
+        val untapped = restricted.updateEntity(target) { it.without<TappedComponent>() }
+        FloatingTargetingRestriction.prevents(untapped, target, d.player2) shouldBe false
+        val pruned = StateBasedActionChecker(cardRegistry = d.cardRegistry).checkAndApply(untapped).newState
+        FloatingTargetingRestriction.prevents(pruned.updateEntity(target) { it.with(TappedComponent) }, target, d.player2) shouldBe false
+    }
+
+    test("controller-keyed duration uses projected control and expires permanently after control is lost") {
+        val d = game()
+        val target = d.putCreatureOnBattlefield(d.player1, "Centaur Courser")
+        val restricted = PreventTargetingExecutor().execute(d.state,
+            PreventTargetingEffect(EffectTarget.SpecificEntity(target), duration = Duration.WhileControlledByController),
+            EffectContext(sourceId = null, controllerId = d.player1)).newState
+        FloatingTargetingRestriction.prevents(restricted, target, d.player2) shouldBe true
+        val changed = restricted.updateEntity(target) { it.with(ControllerComponent(d.player2)) }
+        FloatingTargetingRestriction.prevents(changed, target, d.player2) shouldBe false
+        val pruned = StateBasedActionChecker(cardRegistry = d.cardRegistry).checkAndApply(changed).newState
+        val regained = pruned.updateEntity(target) { it.with(ControllerComponent(d.player1)) }
+        FloatingTargetingRestriction.prevents(regained, target, d.player2) shouldBe false
     }
 })

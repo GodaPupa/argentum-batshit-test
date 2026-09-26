@@ -121,8 +121,10 @@ class VinesOfVastwoodScenarioTest : FunSpec({
         d.giveMana(d.player1, Color.GREEN, 1)
         val spell = d.putCardInHand(d.player1, "Vines of Vastwood")
         val before = d.state
-        d.submit(CastSpell(d.player1, spell, targets = listOf(ChosenTarget.Permanent(creature)),
-            declaredCostSlot = ChoiceSlot.KICKED, paymentStrategy = PaymentStrategy.FromPool)).isSuccess shouldBe false
+        val rejected = d.submit(CastSpell(d.player1, spell, targets = listOf(ChosenTarget.Permanent(creature)),
+            declaredCostSlot = ChoiceSlot.KICKED, paymentStrategy = PaymentStrategy.FromPool))
+        rejected.isSuccess shouldBe false
+        rejected.newState shouldBe before
         d.state shouldBe before
     }
 
@@ -134,8 +136,10 @@ class VinesOfVastwoodScenarioTest : FunSpec({
             val spell = d.putCardInHand(d.player1, "Vines of Vastwood")
             val before = d.state
             val target = if (playerTarget) ChosenTarget.Player(d.player2) else ChosenTarget.Permanent(land)
-            d.submit(CastSpell(d.player1, spell, targets = listOf(target),
-                paymentStrategy = PaymentStrategy.FromPool)).isSuccess shouldBe false
+            val rejected = d.submit(CastSpell(d.player1, spell, targets = listOf(target),
+                paymentStrategy = PaymentStrategy.FromPool))
+            rejected.isSuccess shouldBe false
+            rejected.newState shouldBe before
             d.state shouldBe before
         }
     }
@@ -150,10 +154,14 @@ class VinesOfVastwoodScenarioTest : FunSpec({
         d.giveMana(d.player2, Color.GREEN, 1)
         val growth = d.putCardInHand(d.player2, "Giant Growth")
         val before = d.state
-        d.castSpell(d.player2, growth, listOf(creature)).isSuccess shouldBe false
+        val rejectedSpell = d.castSpell(d.player2, growth, listOf(creature))
+        rejectedSpell.isSuccess shouldBe false
+        rejectedSpell.newState shouldBe before
         d.state shouldBe before
-        d.submit(ActivateAbility(d.player2, artifact, wand.activatedAbilities.single().id,
-            targets = listOf(ChosenTarget.Permanent(creature)))).isSuccess shouldBe false
+        val rejectedAbility = d.submit(ActivateAbility(d.player2, artifact, wand.activatedAbilities.single().id,
+            targets = listOf(ChosenTarget.Permanent(creature))))
+        rejectedAbility.isSuccess shouldBe false
+        rejectedAbility.newState shouldBe before
         d.state shouldBe before
     }
 

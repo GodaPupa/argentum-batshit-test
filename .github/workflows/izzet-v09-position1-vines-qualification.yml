@@ -101,6 +101,28 @@ jobs:
           set -euo pipefail
           just test-class CardDefinitionSnapshotTest --tests '*CardLintTest' --tests '*FacadeBoundaryTest' --rerun -DupdateSnapshots=false --max-workers=1 -PkotlinCompileParallelism=1 -Pkotlin.compiler.execution.strategy=in-process -Dorg.gradle.jvmargs=-Xmx4g --info --stacktrace 2>&1 | tee build/reports/izzet-vines/content.txt
 
+      - name: Retain the mandatory read-only authoring probes separately from behavioral evidence
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json, pathlib, subprocess
+          report = pathlib.Path('build/reports/izzet-vines')
+          probes = {}
+          for name, args in [('assay-parse', ['just','assay','parse','"Vines of Vastwood"']),
+                             ('assay-explain', ['just','assay','explain','"Vines of Vastwood"']),
+                             ('draftability', ['just','coverage-fidelity','--emit','"Vines of Vastwood"'])]:
+              try:
+                  result = subprocess.run(args, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, timeout=240)
+                  output, code, timed_out = result.stdout, result.returncode, False
+              except subprocess.TimeoutExpired as exc:
+                  output, code, timed_out = exc.stdout or b'', None, True
+              (report/(name+'.txt')).write_bytes(output)
+              probes[name] = {'command':args, 'exit_code':code, 'timed_out':timed_out,
+                  'scope':'Predictive authoring probe only; no behavioral or gameplay acceptance'}
+          (report/'authoring-probes.json').write_text(json.dumps(probes,indent=2)+'\n')
+          PY
+
       - name: Require actual complete cases and retain component-only disposition
         shell: bash
         run: |
@@ -109,7 +131,7 @@ jobs:
           import hashlib, json, os, pathlib, xml.etree.ElementTree as ET
           expected = {
             'PreventTargetingSerializationTest': ('mtg-sdk', 3),
-            'PreventTargetingScenarioTest': ('rules-engine', 5),
+            'PreventTargetingScenarioTest': ('rules-engine', 8),
             'FloatingEffectSerializationRoundTripTest': ('rules-engine', None),
             'SerializationPolymorphicRegistrationTest': ('rules-engine', None),
             'CastSpellSourceHexproofEnumerationTest': ('rules-engine', None),

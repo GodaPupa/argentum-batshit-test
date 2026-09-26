@@ -2132,7 +2132,7 @@ class ClientStateTransformer(
             if (playerId !in floatingEffect.effect.affectedEntities) continue
             when (modification) {
                 is SerializableModification.PreventTargeting -> {
-                    if (modification.targetObject != null && modification.targetObject != state.objectRef(playerId)) continue
+                    if (!com.wingedsheep.engine.mechanics.targeting.FloatingTargetingRestriction.appliesTo(state, floatingEffect, playerId)) continue
                     val names = modification.controllers.map { blockedPlayer ->
                         state.getEntity(blockedPlayer)?.get<PlayerComponent>()?.name ?: "another player"
                     }.joinToString(", ")
@@ -2878,7 +2878,7 @@ class ClientStateTransformer(
                 // The restriction mirror. Same reason to badge it: the defender otherwise discovers
                 // the pairwise ban only when the block declaration bounces back.
                 is SerializableModification.PreventTargeting -> {
-                    if (modification.targetObject != null && modification.targetObject != state.objectRef(entityId)) continue
+                    if (!com.wingedsheep.engine.mechanics.targeting.FloatingTargetingRestriction.appliesTo(state, floatingEffect, entityId)) continue
                     val names = modification.controllers.map { playerId ->
                         state.getEntity(playerId)?.get<PlayerComponent>()?.name ?: "another player"
                     }.joinToString(", ")

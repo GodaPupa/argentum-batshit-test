@@ -1503,6 +1503,7 @@ Atomic effect factories. For library/zone manipulation, prefer the pipelines in 
   colors and types" (Possessed Goat).
 - `GrantHexproof(target, duration)` / `GrantShroud(target, duration)` — temporary hexproof / shroud.
 - `PreventTargeting(target = ContextTarget(0), fromPlayers = Player.EachOpponent, duration = EndOfTurn)` — creates a rule restriction preventing spells and abilities controlled by the selected players from targeting that object or player. The player set is resolved when the effect resolves. It is independent of the target's later controller and of ability removal, and does not grant hexproof. Card targets are bound to their current object identity, so leaving and returning does not preserve the restriction. Vines of Vastwood composes this with `ConditionalEffect(Conditions.WasKicked, Effects.ModifyStats(4, 4, target))`.
+  Conditional durations share the engine's existing live-duration predicate and expiry latch; targeting and public badges stop applying immediately when that predicate is false.
   Both are facades lowering onto the player-aware `GrantEvasionKeywordEffect(keyword, target, duration)`:
   for player targets it attaches the matching player protection component; for permanents it grants the
   keyword via a Layer-6 floating effect (like `GrantKeyword`).
