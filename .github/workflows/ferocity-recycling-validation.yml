@@ -58,7 +58,9 @@ jobs:
       - uses: actions/setup-java@v5
         with:
           distribution: temurin
-          java-version: '21.0.12.1+1'
+          # Hosted runners currently resolve 21.0.12+1; the previous overly
+          # specific 21.0.12.1+1 selector failed before qualification began.
+          java-version: '21'
       - uses: gradle/actions/setup-gradle@v6
       - name: Validate project arithmetic and frozen inputs without generating evidence
         run: |
