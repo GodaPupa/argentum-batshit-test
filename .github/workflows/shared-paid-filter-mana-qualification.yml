@@ -1,0 +1,132 @@
+name: Shared Paid Filter Mana Qualification
+
+on:
+  push:
+    branches: [shared/paid-filter-mana-qualification]
+    paths:
+      - .github/workflows/shared-paid-filter-mana-qualification.yml
+      - rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/mana/ManaSolver.kt
+      - rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/PaidFilterManaSolverTest.kt
+
+permissions:
+  contents: read
+
+concurrency:
+  group: shared-paid-filter-mana-qualification
+  cancel-in-progress: false
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      GRADLE_LOCK_SLOTS: '1'
+      JAVA_TOOL_OPTIONS: -XX:MaxMetaspaceSize=768m
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.sha }}
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Retain and verify exact source identity
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/reports/paid-filter
+          python3 - <<'PY'
+          import hashlib, json, os, pathlib, subprocess
+          paths = [
+              'rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/mana/ManaSolver.kt',
+              'rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/PaidFilterManaSolverTest.kt',
+              '.github/workflows/shared-paid-filter-mana-qualification.yml',
+          ]
+          receipt = {
+              'requested_head': os.environ['GITHUB_SHA'],
+              'actual_head': subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip(),
+              'actual_tree': subprocess.check_output(['git', 'rev-parse', 'HEAD^{tree}'], text=True).strip(),
+              'checkout_status': subprocess.check_output(['git', 'status', '--porcelain'], text=True),
+              'files': {p: hashlib.sha256(pathlib.Path(p).read_bytes()).hexdigest() for p in paths},
+              'base': '9ca83110f5907e66a0c289f8205ed1e24575535c',
+          }
+          pathlib.Path('build/reports/paid-filter/source-binding.json').write_text(json.dumps(receipt, indent=2)+'\n')
+          assert receipt['actual_head'] == receipt['requested_head'], receipt
+          assert receipt['checkout_status'] == '', receipt
+          PY
+      - name: Execute distinguishing paid-filter regressions first
+        shell: bash
+        run: |
+          set -euo pipefail
+          scripts/gradle-locked :rules-engine:test --tests '*PaidFilterManaSolverTest' \
+            --max-workers=1 -PkotlinCompileParallelism=1 \
+            -Pkotlin.compiler.execution.strategy=in-process -Dorg.gradle.jvmargs=-Xmx4g \
+            --info --stacktrace 2>&1 | tee build/reports/paid-filter/focused.log
+      - name: Preserve distinguishing XML even on failure
+        if: always()
+        shell: bash
+        run: |
+          mkdir -p build/reports/paid-filter/focused-xml
+          if test -d rules-engine/build/test-results/test; then
+            cp rules-engine/build/test-results/test/TEST-*.xml build/reports/paid-filter/focused-xml/ || true
+          fi
+      - name: Execute affected ordinary mana compatibility suites
+        shell: bash
+        run: |
+          set -euo pipefail
+          scripts/gradle-locked :rules-engine:test \
+            --tests '*MultiManaSourceTest' --tests '*MonocolorHybridManaSolverTest' \
+            --tests '*DynamicManaAmountAutoTapTest' --tests '*ManaSpendRestrictionAnyAbilityTest' \
+            --tests '*ManaAbilityActivationTriggerScenarioTest' --tests '*ManaSourceProvenanceScenarioTest' \
+            --tests '*XSpellFloatingRestrictedManaTest' \
+            --max-workers=1 -PkotlinCompileParallelism=1 \
+            -Pkotlin.compiler.execution.strategy=in-process -Dorg.gradle.jvmargs=-Xmx4g \
+            --info --stacktrace 2>&1 | tee build/reports/paid-filter/compatibility.log
+      - name: Require actual cases and retain the scoped disposition
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import hashlib, json, os, pathlib, xml.etree.ElementTree as ET
+          base = pathlib.Path('build/reports/paid-filter')
+          roots = {'focused': base/'focused-xml', 'compatibility': pathlib.Path('rules-engine/build/test-results/test')}
+          expected = {
+              'focused': ['PaidFilterManaSolverTest'],
+              'compatibility': ['MultiManaSourceTest', 'MonocolorHybridManaSolverTest',
+                  'DynamicManaAmountAutoTapTest', 'ManaSpendRestrictionAnyAbilityTest',
+                  'ManaAbilityActivationTriggerScenarioTest', 'ManaSourceProvenanceScenarioTest',
+                  'XSpellFloatingRestrictedManaTest'],
+          }
+          suites = []
+          for stage, root in roots.items():
+              seen = set()
+              for path in sorted(root.glob('TEST-*.xml')):
+                  tree = ET.parse(path).getroot()
+                  name = tree.attrib['name'].rsplit('.', 1)[-1]
+                  assert name in expected[stage], (stage, name)
+                  cases = tree.findall('testcase')
+                  assert cases, (stage, name, 'zero cases')
+                  assert all(all(c.find(k) is None for k in ('failure', 'error', 'skipped')) for c in cases), path
+                  if stage == 'focused': assert len(cases) == 14, len(cases)
+                  seen.add(name)
+                  suites.append({'stage': stage, 'class': tree.attrib['name'], 'tests': len(cases),
+                      'case_names': [c.attrib['name'] for c in cases],
+                      'xml_sha256': hashlib.sha256(path.read_bytes()).hexdigest()})
+              assert seen == set(expected[stage]), (stage, seen)
+          receipt = {'schema': 'shared-paid-filter-targeted-qualification-v1',
+              'disposition': 'TARGETED_COMPONENT_ONLY_PENDING_FULL_INTEGRATION_AND_INDEPENDENT_AUDIT',
+              'binding': json.loads((base/'source-binding.json').read_text()),
+              'run_id': os.environ['GITHUB_RUN_ID'], 'suites': suites,
+              'complete_resource_feasibility_qualified': False, 'gameplay_admitted': False,
+              'gameplay_initializations': 0, 'gameplay_outcomes_exposed': 0}
+          (base/'targeted-qualification.json').write_text(json.dumps(receipt, indent=2)+'\n')
+          PY
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: shared-paid-filter-mana-qualification
+          path: |
+            build/reports/paid-filter/**
+            rules-engine/build/test-results/test/TEST-*.xml
+          if-no-files-found: error
