@@ -59,3 +59,26 @@ The [targeted receipt](evidence/forge-36249667143-targeted/receipt.json) retains
 the complete original artifact and the independent Pest audit. Earlier dependency
 and fixture-precondition failures remain preserved beside it. Publishing this
 golden opens the broad receiving-source gate; it does not close that gate.
+
+## Explicit type-fixture boundary
+
+The three projected-type cases are synthetic inputs to Forge's resolution logic.
+`SerializableModification.SetCardTypes` explicitly preserves subtypes; its lone use
+in the earlier fixtures therefore left Human/Wizard on the noncreature inputs.
+The successor fixture pairs it with the existing `SetCreatureSubtypes` operation:
+planeswalker-only and land-only inputs have no creature subtypes, while the
+creature/planeswalker input retains Human/Wizard. Exact equality of the complete
+projected type collection and the separate subtype collection is now required,
+as are the unchanged printed-creature identity and commander designation. The
+same counter outcomes and ten scenarios remain mandatory. The earlier 49-case
+rejected artifact and 423-case target artifact remain historical evidence of
+their exact sources; they do not qualify these strengthened successor bytes.
+
+This does not qualify general type/subtype removal. Production type changes must
+supply their own complete semantics; a bare type operation is not evidence that
+inappropriate subtypes disappear automatically. In the frozen opponent, Nyxborn
+Hydra's bestow path uses `BestowComponent.auraType`, which replaces its type line
+with `TypeLine.aura()` and preserves only supertypes. That existing pathway does
+not use the synthetic `SetCardTypes` fixture. No policy restriction is introduced.
+The dedicated successor runs only the ten changed exact-card scenarios; full
+receiving-source CI and independent acceptance are still required afterward.

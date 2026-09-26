@@ -23,7 +23,6 @@ import com.wingedsheep.engine.support.TestCards
 import com.wingedsheep.mtg.sets.definitions.c18.cards.ForgeOfHeroes
 import com.wingedsheep.mtg.sets.definitions.dft.cards.VeteranBeastrider
 import com.wingedsheep.mtg.sets.definitions.gpt.cards.IzzetGuildmage
-import com.wingedsheep.sdk.core.CardType
 import com.wingedsheep.sdk.core.Color
 import com.wingedsheep.sdk.core.CounterType
 import com.wingedsheep.sdk.core.Format
@@ -142,9 +141,13 @@ class ForgeOfHeroesScenarioTest : FunSpec({
             val id = castActiveCommander(d)
             val forge = d.putLandOnBattlefield(d.player1, ForgeOfHeroes.name)
             if ("LAND" !in types) d.submitSuccess(counterAction(d.player1, forge, id))
-            // A deterministic layer fixture changes characteristics before announcement or resolution.
+            // This is an explicit synthetic characteristic fixture, not a qualification of a
+            // gameplay type-changing card. SetCardTypes changes card types only; pair it with
+            // an explicit creature-subtype replacement so a noncreature does not retain Human
+            // or Wizard. The creature/planeswalker case legitimately retains both subtypes.
             // Printed card data and the commander designation stay intact. Initial loyalty avoids
             // the unrelated zero-loyalty SBA when the fixture creates a planeswalker.
+            val subtypes = if ("CREATURE" in types) setOf("Human", "Wizard") else emptySet()
             val typeChange = ActiveFloatingEffect(
                 id = EntityId.generate(),
                 effect = FloatingEffectData(Layer.TYPE, modification = SerializableModification.SetCardTypes(types),
@@ -154,14 +157,19 @@ class ForgeOfHeroesScenarioTest : FunSpec({
                 controllerId = d.player1,
                 timestamp = 100L
             )
+            val subtypeChange = typeChange.copy(
+                id = EntityId.generate(),
+                effect = FloatingEffectData(Layer.TYPE,
+                    modification = SerializableModification.SetCreatureSubtypes(subtypes),
+                    affectedEntities = setOf(id)),
+                timestamp = 101L
+            )
             val typed = d.state.updateEntity(id) { it.with(CountersComponent(mapOf(CounterType.LOYALTY to 3))) }
-            d.replaceState(typed.copy(floatingEffects = typed.floatingEffects + typeChange))
+            d.replaceState(typed.copy(floatingEffects = typed.floatingEffects + listOf(typeChange, subtypeChange)))
             d.state.getEntity(id)!!.get<CardComponent>()!!.typeLine.isCreature shouldBe true
-            // The projection stores supertypes and legacy subtype strings alongside card types.
-            // Assert the exact card-type membership changed by this fixture, not that other
-            // characteristic strings were erased by SetCardTypes.
-            val cardTypeNames = CardType.entries.map { it.name }.toSet()
-            d.state.projectedState.getTypes(id).intersect(cardTypeNames) shouldBe types
+            d.state.getEntity(id)!!.has<CommanderComponent>() shouldBe true
+            d.state.projectedState.getTypes(id) shouldBe types + subtypes
+            d.state.projectedState.getSubtypes(id) shouldBe subtypes
             // A commander that is neither relevant type is still eligible on announcement.
             if ("LAND" in types) d.submitSuccess(counterAction(d.player1, forge, id))
             d.bothPass().error shouldBe null
