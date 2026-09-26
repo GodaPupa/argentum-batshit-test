@@ -94,3 +94,16 @@ unchanged. These input identities do not establish qualified pilots or replace t
   unrelated-drift rejection and generated-byte verification on GitHub. It creates no gameplay allocation.
 
 No new deck-performance evidence, official seed, initialized game, or outcome has been produced.
+
+## Next pilot component
+
+`STAGE_E_PILOT_FIXTURE_BUDGET.json` prospectively fixes 14 deterministic checks for each of the four
+existing identities (56 total), paired across the seven protocol pilot requirements. A source correction
+must rerun the same complete bank for every identity and preserve prior failures. This bank allocates
+no randomized development game and cannot rank decks or establish comparator improvement.
+
+The project-only `SphinxStageEPilotComponent` accepts explicit typed own/public facts and current offers;
+it has no engine-state adapter, initializer, seed access or architecture input. Its fixture bank and
+push-only qualification workflow are authored; **no component fixture has yet executed**. This work
+does not accept a complete pilot. Canonical actor integration, all reachable choice surfaces, emergency
+combat/deployment lines, replay, the shared priority repair and final execution admission remain required.
