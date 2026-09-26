@@ -1,0 +1,330 @@
+[
+  {
+    "run": 36277029829,
+    "artifact": {
+      "id": 10916739875,
+      "node_id": "MDg6QXJ0aWZhY3QxMDkxNjczOTg3NQ==",
+      "name": "engine-priority-after-resolution",
+      "size_in_bytes": 358518,
+      "url": "https://api.github.com/repos/GodaPupa/argentum-batshit-test/actions/artifacts/10916739875",
+      "archive_download_url": "https://api.github.com/repos/GodaPupa/argentum-batshit-test/actions/artifacts/10916739875/zip",
+      "expired": false,
+      "digest": "sha256:79115dffeecb1be549087f03f0bc6eeeae00f740a462df8fe6b1a58ac0b5dc6a",
+      "created_at": "2026-09-26T23:02:26Z",
+      "updated_at": "2026-09-26T23:02:26Z",
+      "expires_at": "2026-12-25T22:40:17Z",
+      "workflow_run": {
+        "id": 36277029829,
+        "repository_id": 1361473449,
+        "head_repository_id": 1361473449,
+        "head_branch": "lab/shared-core-integration",
+        "head_sha": "b6fc446543d3ce566bb12c60d1ab6b84e1c96d8c"
+      }
+    },
+    "job": {
+      "id": 108501665168,
+      "run_id": 36277029829,
+      "workflow_name": "Engine Priority After Resolution",
+      "head_branch": "lab/shared-core-integration",
+      "run_url": "https://api.github.com/repos/GodaPupa/argentum-batshit-test/actions/runs/36277029829",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOUSZvqc8AAAAZQzQFkA",
+      "head_sha": "b6fc446543d3ce566bb12c60d1ab6b84e1c96d8c",
+      "url": "https://api.github.com/repos/GodaPupa/argentum-batshit-test/actions/jobs/108501665168",
+      "html_url": "https://github.com/GodaPupa/argentum-batshit-test/actions/runs/36277029829/job/108501665168",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T22:40:17Z",
+      "started_at": "2026-09-26T22:40:55Z",
+      "completed_at": "2026-09-26T23:02:28Z",
+      "name": "qualify",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-09-26T22:40:55Z",
+          "completed_at": "2026-09-26T22:40:57Z"
+        },
+        {
+          "name": "Run actions/checkout@v6",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-09-26T22:40:57Z",
+          "completed_at": "2026-09-26T22:41:34Z"
+        },
+        {
+          "name": "Run actions/setup-java@v5",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-09-26T22:41:34Z",
+          "completed_at": "2026-09-26T22:41:35Z"
+        },
+        {
+          "name": "Run gradle/actions/setup-gradle@v6",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-09-26T22:41:35Z",
+          "completed_at": "2026-09-26T22:41:40Z"
+        },
+        {
+          "name": "Bind exact source and effective rules archive",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5,
+          "started_at": "2026-09-26T22:41:40Z",
+          "completed_at": "2026-09-26T22:41:41Z"
+        },
+        {
+          "name": "Qualify ordinary, post-cast and paused priority boundaries",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6,
+          "started_at": "2026-09-26T22:41:41Z",
+          "completed_at": "2026-09-26T23:02:25Z"
+        },
+        {
+          "name": "Audit all original stages and exact receiving source",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7,
+          "started_at": "2026-09-26T23:02:25Z",
+          "completed_at": "2026-09-26T23:02:25Z"
+        },
+        {
+          "name": "Preserve complete validation evidence",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 8,
+          "started_at": "2026-09-26T23:02:25Z",
+          "completed_at": "2026-09-26T23:02:26Z"
+        },
+        {
+          "name": "Post Run gradle/actions/setup-gradle@v6",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 14,
+          "started_at": "2026-09-26T23:02:26Z",
+          "completed_at": "2026-09-26T23:02:26Z"
+        },
+        {
+          "name": "Post Run actions/setup-java@v5",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 15,
+          "started_at": "2026-09-26T23:02:26Z",
+          "completed_at": "2026-09-26T23:02:26Z"
+        },
+        {
+          "name": "Post Run actions/checkout@v6",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 16,
+          "started_at": "2026-09-26T23:02:26Z",
+          "completed_at": "2026-09-26T23:02:27Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 17,
+          "started_at": "2026-09-26T23:02:27Z",
+          "completed_at": "2026-09-26T23:02:27Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/GodaPupa/argentum-batshit-test/check-runs/108501665168",
+      "labels": [
+        "ubuntu-latest"
+      ],
+      "runner_id": 1000017199,
+      "runner_name": "GitHub Actions 1000017199",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    },
+    "log": {
+      "job": 108501665168,
+      "run": 36277029829,
+      "bytes": 6721904,
+      "sha256": "afd409c59102f3001a5434f94943a829db4456a9f8bae13d7ebbc9b08174e4e6",
+      "gzip_bytes": 621201,
+      "gzip_sha256": "baedc5c5311c93de47549f428d97af635fda3f3cb9ebf239bb92ca81991c7cbc",
+      "filename": "decoded-job-108501665168.log.gz"
+    }
+  },
+  {
+    "run": 36277029821,
+    "artifact": {
+      "id": 10917980789,
+      "node_id": "MDg6QXJ0aWZhY3QxMDkxNzk4MDc4OQ==",
+      "name": "shared-postblock-source-qualification",
+      "size_in_bytes": 291946,
+      "url": "https://api.github.com/repos/GodaPupa/argentum-batshit-test/actions/artifacts/10917980789",
+      "archive_download_url": "https://api.github.com/repos/GodaPupa/argentum-batshit-test/actions/artifacts/10917980789/zip",
+      "expired": false,
+      "digest": "sha256:8544437b271cd3a97b106e67e6476927a78294e82c94bf08133b193349f3593f",
+      "created_at": "2026-09-26T22:58:22Z",
+      "updated_at": "2026-09-26T22:58:22Z",
+      "expires_at": "2026-12-25T22:40:17Z",
+      "workflow_run": {
+        "id": 36277029821,
+        "repository_id": 1361473449,
+        "head_repository_id": 1361473449,
+        "head_branch": "lab/shared-core-integration",
+        "head_sha": "b6fc446543d3ce566bb12c60d1ab6b84e1c96d8c"
+      }
+    },
+    "job": {
+      "id": 108503034738,
+      "run_id": 36277029821,
+      "workflow_name": "Shared Post-block Source Qualification",
+      "head_branch": "lab/shared-core-integration",
+      "run_url": "https://api.github.com/repos/GodaPupa/argentum-batshit-test/actions/runs/36277029821",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOUSZvqc8AAAAZQ0jrcg",
+      "head_sha": "b6fc446543d3ce566bb12c60d1ab6b84e1c96d8c",
+      "url": "https://api.github.com/repos/GodaPupa/argentum-batshit-test/actions/jobs/108503034738",
+      "html_url": "https://github.com/GodaPupa/argentum-batshit-test/actions/runs/36277029821/job/108503034738",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T22:49:47Z",
+      "started_at": "2026-09-26T22:49:49Z",
+      "completed_at": "2026-09-26T22:58:26Z",
+      "name": "qualify",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-09-26T22:49:50Z",
+          "completed_at": "2026-09-26T22:49:55Z"
+        },
+        {
+          "name": "Run actions/checkout@v6",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-09-26T22:49:55Z",
+          "completed_at": "2026-09-26T22:50:32Z"
+        },
+        {
+          "name": "Run actions/setup-java@v5",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-09-26T22:50:32Z",
+          "completed_at": "2026-09-26T22:50:32Z"
+        },
+        {
+          "name": "Run gradle/actions/setup-gradle@v6",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-09-26T22:50:32Z",
+          "completed_at": "2026-09-26T22:50:39Z"
+        },
+        {
+          "name": "Run extractions/setup-just@f8a3cce218d9f83db3a2ecd90e41ac3de6cdfd9b",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5,
+          "started_at": "2026-09-26T22:50:39Z",
+          "completed_at": "2026-09-26T22:50:40Z"
+        },
+        {
+          "name": "Bind the exact combined source and unchanged original fixtures",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6,
+          "started_at": "2026-09-26T22:50:40Z",
+          "completed_at": "2026-09-26T22:50:41Z"
+        },
+        {
+          "name": "Execute the 115 exact engine cases",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7,
+          "started_at": "2026-09-26T22:50:41Z",
+          "completed_at": "2026-09-26T22:55:58Z"
+        },
+        {
+          "name": "Execute the 12 exact server cases",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 8,
+          "started_at": "2026-09-26T22:55:58Z",
+          "completed_at": "2026-09-26T22:58:21Z"
+        },
+        {
+          "name": "Require actual case completeness and retain component-only disposition",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 9,
+          "started_at": "2026-09-26T22:58:21Z",
+          "completed_at": "2026-09-26T22:58:21Z"
+        },
+        {
+          "name": "Run actions/upload-artifact@v7",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 10,
+          "started_at": "2026-09-26T22:58:21Z",
+          "completed_at": "2026-09-26T22:58:23Z"
+        },
+        {
+          "name": "Post Run gradle/actions/setup-gradle@v6",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 18,
+          "started_at": "2026-09-26T22:58:23Z",
+          "completed_at": "2026-09-26T22:58:23Z"
+        },
+        {
+          "name": "Post Run actions/setup-java@v5",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 19,
+          "started_at": "2026-09-26T22:58:23Z",
+          "completed_at": "2026-09-26T22:58:23Z"
+        },
+        {
+          "name": "Post Run actions/checkout@v6",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 20,
+          "started_at": "2026-09-26T22:58:23Z",
+          "completed_at": "2026-09-26T22:58:23Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 21,
+          "started_at": "2026-09-26T22:58:23Z",
+          "completed_at": "2026-09-26T22:58:23Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/GodaPupa/argentum-batshit-test/check-runs/108503034738",
+      "labels": [
+        "ubuntu-latest"
+      ],
+      "runner_id": 1000017223,
+      "runner_name": "GitHub Actions 1000017223",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    },
+    "log": {
+      "job": 108503034738,
+      "run": 36277029821,
+      "bytes": 3871506,
+      "sha256": "0e57b0b324f2a2a55cf45aa296977afc752732a8e1c92cbe57a805993d322db4",
+      "gzip_bytes": 292414,
+      "gzip_sha256": "bfccbfac2949aae013cad19973b8932161b53d27625e57f532f3a83bf60863f8",
+      "filename": "decoded-job-108503034738.log.gz"
+    }
+  }
+]

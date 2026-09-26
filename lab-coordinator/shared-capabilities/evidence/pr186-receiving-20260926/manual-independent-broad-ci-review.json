@@ -1,0 +1,311 @@
+{
+  "schema": "pr186-manual-independent-broad-ci-review-v1",
+  "reviewer": "actual nonauthor /root/manual",
+  "at_utc": "2026-09-26T23:06:28.523616+00:00",
+  "disposition": "ACCEPT_BOUNDED_RECEIVING_CI_WITH_EXPLICIT_UNCHANGED_INPUT_CACHE_REUSE",
+  "run": 36277029868,
+  "attempt": 1,
+  "head": "b6fc446543d3ce566bb12c60d1ab6b84e1c96d8c",
+  "actual_checkout": "fc5c443fc9d674d85dc1942a553319fee8b69d87",
+  "actual_tree": "88967f3a9ba0479661f02150f82ddcc9a2066e42",
+  "raw_archives": 7,
+  "raw_xml_suites": 4569,
+  "raw_testcase_records": 17347,
+  "actual_tests": 17346,
+  "non_test_reporting_markers": 1,
+  "failures": 0,
+  "errors": 0,
+  "skips": 52,
+  "fresh_actual_tests": 17036,
+  "fresh_passes": 16987,
+  "fresh_skips": 49,
+  "cached_actual_tests": 310,
+  "cached_passes": 307,
+  "cached_skips": 3,
+  "artifacts": [
+    {
+      "artifact": 10917811003,
+      "sha256": "97c77e6933dc7624f270dd3d602e4091bba14b323a161e5932dac1b5763065a0",
+      "bytes": 133297,
+      "job": 108501665700,
+      "log_sha256": "560281f468c12cdfa95d41198bf7ca0cbfbe5ed57782f563bfe0aaf135a62bda",
+      "raw_records": 1819,
+      "freshness": {
+        "mtg-search": "CACHED",
+        "mtg-sdk": "FRESH",
+        "ai": "FRESH",
+        "mtg-sets": "FRESH"
+      }
+    },
+    {
+      "artifact": 10917494103,
+      "sha256": "590a67cea6daf206014e2a666274c4ffcd3361b15fa72ddb07f61a5eb0f29002",
+      "bytes": 167707,
+      "job": 108501665622,
+      "log_sha256": "b072f48118daeae12435e71e990afa91c6e1b7876415673c7f1dba961a3825cf",
+      "raw_records": 560,
+      "freshness": {
+        "game-server": "FRESH"
+      }
+    },
+    {
+      "artifact": 10917352801,
+      "sha256": "6d3b572676ee28f3d330afad39180770afed43af9c284a7efdc8555b040ed57b",
+      "bytes": 777072,
+      "job": 108501665707,
+      "log_sha256": "a0840f2eb812cad8e8dbd04788bf81d26cd909b3faf708b7d15cfd731cc358f3",
+      "raw_records": 3335,
+      "freshness": {
+        "mtg-sets/2023/tests": "FRESH",
+        "mtg-sets/2024/tests": "FRESH"
+      }
+    },
+    {
+      "artifact": 10917259835,
+      "sha256": "b80aa4a8d492a9beb061bb0b145faa2c0e4dc3fa9982051a84850264e71afb19",
+      "bytes": 963231,
+      "job": 108501665631,
+      "log_sha256": "ee98f825ed98bf2eb3d95c924690bd16f1a539793d847ffd5553330ac19c2bdf",
+      "raw_records": 4309,
+      "freshness": {
+        "mtg-sets/2000-2002/tests": "FRESH",
+        "mtg-sets/2003-2007/tests": "FRESH",
+        "mtg-sets/1993-1999/tests": "FRESH",
+        "mtg-sets/2008-2016/tests": "FRESH",
+        "mtg-sets/2017-2022/tests": "FRESH"
+      }
+    },
+    {
+      "artifact": 10916749222,
+      "sha256": "3665104e20423d87874c14f779a1450b4dc926f5e07fe08f7a84cd0405e45d5b",
+      "bytes": 715492,
+      "job": 108501665655,
+      "log_sha256": "bb107550664792a4148b3689f0c2cb9d0b45e4c936fc0fef1e1c182ff829dbbb",
+      "raw_records": 2934,
+      "freshness": {
+        "mtg-sets/2026/tests": "FRESH",
+        "mtg-sets/2025/tests": "FRESH"
+      }
+    },
+    {
+      "artifact": 10916734169,
+      "sha256": "b47d9142cf3a4afa474b1c783038cd939a685efbc7a4c86f0ad8e43c661faca6",
+      "bytes": 473858,
+      "job": 108501665661,
+      "log_sha256": "2080a43c518fa3a920c935c46ea290b574e71fc7d70eb5587bca3fdaf5401284",
+      "raw_records": 3725,
+      "freshness": {
+        "rules-engine": "FRESH"
+      }
+    },
+    {
+      "artifact": 10916559813,
+      "sha256": "a42d74e545d0b71b09ef4d43eabb5233a9235f23088de304422704985f8c1433",
+      "bytes": 121039,
+      "job": 108501665714,
+      "log_sha256": "06ae81640f589cca443c2bff355d899b7490f3c8cda0273f5addf70239d04138",
+      "raw_records": 665,
+      "freshness": {
+        "mtgish-tooling": "CACHED",
+        "gym-trainer": "FRESH",
+        "gym": "FRESH",
+        "gym-server": "FRESH"
+      }
+    }
+  ],
+  "modules": {
+    "ai": {
+      "raw_records": 752,
+      "actual_tests": 752,
+      "skipped": 11,
+      "reporting_markers": 0,
+      "suites": 87,
+      "freshness": "FRESH"
+    },
+    "mtg-sdk": {
+      "raw_records": 527,
+      "actual_tests": 527,
+      "skipped": 0,
+      "reporting_markers": 0,
+      "suites": 50,
+      "freshness": "FRESH"
+    },
+    "mtg-search": {
+      "raw_records": 163,
+      "actual_tests": 163,
+      "skipped": 0,
+      "reporting_markers": 0,
+      "suites": 2,
+      "freshness": "CACHED"
+    },
+    "mtg-sets": {
+      "raw_records": 377,
+      "actual_tests": 376,
+      "skipped": 0,
+      "reporting_markers": 1,
+      "suites": 16,
+      "freshness": "FRESH"
+    },
+    "game-server": {
+      "raw_records": 560,
+      "actual_tests": 560,
+      "skipped": 4,
+      "reporting_markers": 0,
+      "suites": 81,
+      "freshness": "FRESH"
+    },
+    "mtg-sets/2023/tests": {
+      "raw_records": 1283,
+      "actual_tests": 1283,
+      "skipped": 0,
+      "reporting_markers": 0,
+      "suites": 404,
+      "freshness": "FRESH"
+    },
+    "mtg-sets/2024/tests": {
+      "raw_records": 2052,
+      "actual_tests": 2052,
+      "skipped": 0,
+      "reporting_markers": 0,
+      "suites": 720,
+      "freshness": "FRESH"
+    },
+    "mtg-sets/1993-1999/tests": {
+      "raw_records": 699,
+      "actual_tests": 699,
+      "skipped": 0,
+      "reporting_markers": 0,
+      "suites": 248,
+      "freshness": "FRESH"
+    },
+    "mtg-sets/2000-2002/tests": {
+      "raw_records": 612,
+      "actual_tests": 612,
+      "skipped": 0,
+      "reporting_markers": 0,
+      "suites": 162,
+      "freshness": "FRESH"
+    },
+    "mtg-sets/2003-2007/tests": {
+      "raw_records": 1406,
+      "actual_tests": 1406,
+      "skipped": 0,
+      "reporting_markers": 0,
+      "suites": 426,
+      "freshness": "FRESH"
+    },
+    "mtg-sets/2008-2016/tests": {
+      "raw_records": 562,
+      "actual_tests": 562,
+      "skipped": 0,
+      "reporting_markers": 0,
+      "suites": 205,
+      "freshness": "FRESH"
+    },
+    "mtg-sets/2017-2022/tests": {
+      "raw_records": 1030,
+      "actual_tests": 1030,
+      "skipped": 0,
+      "reporting_markers": 0,
+      "suites": 364,
+      "freshness": "FRESH"
+    },
+    "mtg-sets/2025/tests": {
+      "raw_records": 1606,
+      "actual_tests": 1606,
+      "skipped": 0,
+      "reporting_markers": 0,
+      "suites": 591,
+      "freshness": "FRESH"
+    },
+    "mtg-sets/2026/tests": {
+      "raw_records": 1328,
+      "actual_tests": 1328,
+      "skipped": 0,
+      "reporting_markers": 0,
+      "suites": 452,
+      "freshness": "FRESH"
+    },
+    "rules-engine": {
+      "raw_records": 3725,
+      "actual_tests": 3725,
+      "skipped": 0,
+      "reporting_markers": 0,
+      "suites": 600,
+      "freshness": "FRESH"
+    },
+    "gym": {
+      "raw_records": 484,
+      "actual_tests": 484,
+      "skipped": 34,
+      "reporting_markers": 0,
+      "suites": 134,
+      "freshness": "FRESH"
+    },
+    "gym-server": {
+      "raw_records": 11,
+      "actual_tests": 11,
+      "skipped": 0,
+      "reporting_markers": 0,
+      "suites": 2,
+      "freshness": "FRESH"
+    },
+    "gym-trainer": {
+      "raw_records": 23,
+      "actual_tests": 23,
+      "skipped": 0,
+      "reporting_markers": 0,
+      "suites": 5,
+      "freshness": "FRESH"
+    },
+    "mtgish-tooling": {
+      "raw_records": 147,
+      "actual_tests": 147,
+      "skipped": 3,
+      "reporting_markers": 0,
+      "suites": 20,
+      "freshness": "CACHED"
+    }
+  },
+  "author_audit_sha256": "4d76ed7ab7fe6e84827c275c2a5550bc9dfc9f9083c5d06df77310cd1fcea5c8",
+  "live_input_metadata_sha256": "be1653553970f0e519864d0022cea05bdfc9f55fde5d215ba282ceee250ca09c",
+  "source_proof": {
+    "actual_vs_admitted_shared_equal_root_entries": 43,
+    "root_entries": 44,
+    "only_different_root": "lab-coordinator",
+    "comparison_to_994383": "Independently fetched complete untruncated994383/bb426 trees; exact7file difference is one postblock qualification workflow plus6coordinator files, no executable/test/build/dependency/CI input changes. Actualmerge88967 equals admittedshared3d6 at all43noncoordinator roots.",
+    "delta_sha256": "947df4157ed23c3845108311b4ab3822c0fae0551adcb9bcb471a61343494710"
+  },
+  "case_comparison": "Every raw suite and case/name/status multiplicity matches original bb426 sevenZIPs. No case removed/newly skipped; both cached modules preserve exact prior case/status multisets, but all22 cached XML bytes differ from bb426 originals (timestamps22:18/22:19 versus17:28), so no byte-identical-XML claim is made. Disabled CardImageUri reporting marker is excluded from actual tests.",
+  "cache_reuse": {
+    "decision": "ACCEPT_EXPLICIT_UNCHANGED_INPUT_FRESH_ANCESTOR_REUSE_ONLY",
+    "fresh_source": "994383d4a9495bcb34d5aae0e69181bcf4c04d45",
+    "run": 36271229739,
+    "artifact": 10915817448,
+    "sha256": "2f0c0ada4bf294b45cff33205439de44c9f325e5e4032fb3cc32814244c95bb6",
+    "prior_independent_review_sha256": "1d0b4b88b964e39d898c8ac1101acd6b2afb2b0d71070b7c39dc143c2bf60e0b",
+    "rechecked_modules": [
+      {
+        "module": "mtg-search",
+        "cases": 163,
+        "skips": 0,
+        "log_sha256": "5b7cc97888ce5fde433aab383192cbbb2e9a203320d10b2b05358f2e08633516"
+      },
+      {
+        "module": "mtgish-tooling",
+        "cases": 147,
+        "skips": 3,
+        "log_sha256": "432096fe05a5faf32a846d18e25304b746c694860b0905e2dceb4ad146f48c0e"
+      }
+    ],
+    "scope": "Read complete supplementZIP CRC/hash and independently rechecked both cached module originalcases, zeroexit fresh commands andXMLtimes. The already-accepted1210pass/3skip supplement supplies fresh evidence for exact unchanged executable inputs; current310cachedcases are not labeled fresh."
+  },
+  "additional_ci_status": "Live10jobs:7backendtestgroups,frontend andaggregatebackend success;optionalcoverage skipped. Read frontend decodedlog confirming actualcheckoutfc5c and typecheck/build commands; aggregatebackend reports allgroupspassed. No new frontend unit-test count asserted.",
+  "limitations": [
+    "Bounded broad CI receiving disposition only; component gates and repository merge process remain separate. No PR merged or published by this reviewer.",
+    "This does not admit any complete project pilot/runtime/replay, expand attached-copy/initial-counter scope, or authorize experimental games.",
+    "Non-author agent review is not formal GitHub approval. No rerun, localJVM, seed/claim/action or gameplay executed."
+  ],
+  "official_games": 0,
+  "gameplay_authorized": false
+}

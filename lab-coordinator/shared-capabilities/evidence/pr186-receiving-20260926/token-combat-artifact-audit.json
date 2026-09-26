@@ -1,0 +1,111 @@
+{
+  "schema": "shared-pr186-token-combat-raw-audit-v1",
+  "auditor": "/root/pest",
+  "source_author_of_token_or_combat": false,
+  "source_author_of_separate_postblock_gate": true,
+  "source": "b6fc446543d3ce566bb12c60d1ab6b84e1c96d8c",
+  "tree": "3d6a178f3b8168444d7f09b7dd212d3e4d567036",
+  "status": "PASS_BOUNDED_52_CASE_RECEIVING_ARTIFACTS",
+  "components": [
+    {
+      "component": "combat",
+      "run_id": 36277029835,
+      "attempt": 1,
+      "artifact_id": 10916579358,
+      "artifact_bytes": 239100,
+      "artifact_sha256": "0f6845650440e604c88e7929061fe865258100359fb16a4d8d2cb717c11206e2",
+      "members": 12,
+      "source_bindings_verified": 31,
+      "manifest_sha256": "dbadcc20e29857aefc3014b3dae493bc419c2ff11ebb15cd228a5046dc717b43",
+      "stages": [
+        {
+          "stage": "CombatAssignmentCurrentRulesTest",
+          "class": "com.wingedsheep.engine.scenarios.CombatAssignmentCurrentRulesTest",
+          "cases": 12,
+          "xml_sha256": "06eb71494037a248e7c7a24c5830452c07cc7d3ba4e8fffd59a5d1d9632eed1b",
+          "exit_status": 0,
+          "fresh_test_task": ":rules-engine:test"
+        },
+        {
+          "stage": "CombatResolutionBoardTest",
+          "class": "com.wingedsheep.engine.scenarios.CombatResolutionBoardTest",
+          "cases": 10,
+          "xml_sha256": "61472a4a38286a011d080392fe1b0fd680ba6c7030deffe55853207d057302e7",
+          "exit_status": 0,
+          "fresh_test_task": ":rules-engine:test"
+        },
+        {
+          "stage": "CombatDamageAssignmentTest",
+          "class": "com.wingedsheep.engine.scenarios.CombatDamageAssignmentTest",
+          "cases": 9,
+          "xml_sha256": "1a83eba3187791bb353be33cb4b41b4f7797a56bc1ec1451d6a76bc1d7400919",
+          "exit_status": 0,
+          "fresh_test_task": ":rules-engine:test"
+        },
+        {
+          "stage": "BandingTrampleDrainScenarioTest",
+          "class": "com.wingedsheep.engine.scenarios.BandingTrampleDrainScenarioTest",
+          "cases": 1,
+          "xml_sha256": "22d9baf9ca7a3bbf94e253a728588eb2aff2b501875ba20385c042ca5005e4b0",
+          "exit_status": 0,
+          "fresh_test_task": ":rules-engine:test"
+        }
+      ],
+      "actual_cases": 32,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0
+    },
+    {
+      "component": "token",
+      "run_id": 36277029881,
+      "attempt": 1,
+      "artifact_id": 10917414511,
+      "artifact_bytes": 262495,
+      "artifact_sha256": "e838e107a96130bbd22bb0c9f756da5a2f0373c6d6e74614370a23ee420ae5d5",
+      "members": 14,
+      "source_bindings_verified": 48,
+      "manifest_sha256": "e1e01f033145ce3d70ed7174d38643f77ef7a091c804b8c4834ceb1c16be74e3",
+      "stages": [
+        {
+          "stage": "token-defender-14",
+          "class": "com.wingedsheep.engine.handlers.effects.token.AttackingTokenDefenderChoiceTest",
+          "cases": 14,
+          "xml_sha256": "ea24e3fe7421950304e9b2b87fe4a0a0a5d57bdeb6e1122b43441ab8c01d557b",
+          "exit_status": 0,
+          "fresh_test_task": ":rules-engine:test"
+        },
+        {
+          "stage": "dalkovan-2",
+          "class": "com.wingedsheep.engine.scenarios.DalkovanEncampmentScenarioTest",
+          "cases": 2,
+          "xml_sha256": "885d5da31bba9139bb48a9243d4dd1bbb1d9e04497414ad42985c68dfc8ac158",
+          "exit_status": 0,
+          "fresh_test_task": ":mtg-sets:2025:tests:test"
+        },
+        {
+          "stage": "entry-event-provenance-4",
+          "class": "com.wingedsheep.engine.event.EntryChoiceEventProvenanceTest",
+          "cases": 4,
+          "xml_sha256": "26cfd1522183db8f379dfb9e69b4715c7c535bf387b3ac338f7fca3b375d1ce6",
+          "exit_status": 0,
+          "fresh_test_task": ":rules-engine:test"
+        }
+      ],
+      "actual_cases": 20,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0
+    }
+  ],
+  "limits": [
+    "Only original16token+separate4provenance and original32combat cases are accepted by this raw audit.",
+    "InitialCounters attached-copy interaction, paused-token original pre-entry context, frontend/browser and comprehensive banding remain outside qualified scope.",
+    "Full shared receiving disposition and each experiment runtime admission remain separate.",
+    "Source controls check before/after unchanged bytes; emitted source map is before, with successful final assertions rather than a separately emitted after map."
+  ],
+  "official_games": 0,
+  "allocations_consumed": 0,
+  "outcomes_exposed": 0,
+  "gameplay_authorized": false
+}

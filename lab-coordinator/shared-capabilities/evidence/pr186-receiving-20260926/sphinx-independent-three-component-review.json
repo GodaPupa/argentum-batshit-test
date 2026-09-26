@@ -1,0 +1,291 @@
+{
+  "schema": "pr186-three-component-independent-artifact-review-v1",
+  "reviewer": "/root/sphinx",
+  "disposition": "PASS_BOUNDED_COMPONENT_ARTIFACTS_ONLY",
+  "reviewer_is_author_of_reviewed_shared_components_or_receiving_gate": false,
+  "authorship_disclosure": "Authored later c38fd802 actor/mulligan constructor correction and Sphinx composition/control outside b6fc; no authored code or gate is the subject of this review.",
+  "source_head": "b6fc446543d3ce566bb12c60d1ab6b84e1c96d8c",
+  "source_tree": "3d6a178f3b8168444d7f09b7dd212d3e4d567036",
+  "pr_test_merge": "fc5c443fc9d674d85dc1942a553319fee8b69d87",
+  "pr_test_merge_tree": "88967f3a9ba0479661f02150f82ddcc9a2066e42",
+  "root_entries_equal_between_head_and_pr_merge": 43,
+  "root_difference": [
+    "lab-coordinator"
+  ],
+  "source_binding_method": "Fresh immutable GitHub head/root trees and control bodies; local source SHA256 and Git blob SHA1 matched previously independently fetched complete shared994 tree, with identical production/test/build root subtree hashes at b6fc. Changed control-root files independently refetched at b6fc.",
+  "unique_source_or_control_pins_verified": 255,
+  "source_pins_sha256": "e7d2d11561af79e8ab77357344739c6cedeed1ed0d612001458d27275b20c338",
+  "case_identity_method": "Combat and token original names independently matched accepted original999 XML; postblock names independently matched accepted original994 observer XML. Exact command blocks retained from shared994.",
+  "components": [
+    {
+      "component": "combat",
+      "run_id": 36277029835,
+      "event": "pull_request",
+      "attempt": 1,
+      "job_id": 108501665116,
+      "artifact_id": 10916579358,
+      "original_sha256": "0f6845650440e604c88e7929061fe865258100359fb16a4d8d2cb717c11206e2",
+      "original_bytes": 239100,
+      "members": 12,
+      "crc": "PASS",
+      "raw_cases": 32,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0,
+      "suites": [
+        {
+          "class": "com.wingedsheep.engine.scenarios.CombatAssignmentCurrentRulesTest",
+          "cases": 12,
+          "xml_sha256": "06eb71494037a248e7c7a24c5830452c07cc7d3ba4e8fffd59a5d1d9632eed1b",
+          "timestamp": "2026-09-26T22:48:02.667Z"
+        },
+        {
+          "class": "com.wingedsheep.engine.scenarios.CombatResolutionBoardTest",
+          "cases": 10,
+          "xml_sha256": "61472a4a38286a011d080392fe1b0fd680ba6c7030deffe55853207d057302e7",
+          "timestamp": "2026-09-26T22:48:04.122Z"
+        },
+        {
+          "class": "com.wingedsheep.engine.scenarios.CombatDamageAssignmentTest",
+          "cases": 9,
+          "xml_sha256": "1a83eba3187791bb353be33cb4b41b4f7797a56bc1ec1451d6a76bc1d7400919",
+          "timestamp": "2026-09-26T22:48:03.674Z"
+        },
+        {
+          "class": "com.wingedsheep.engine.scenarios.BandingTrampleDrainScenarioTest",
+          "cases": 1,
+          "xml_sha256": "22d9baf9ca7a3bbf94e253a728588eb2aff2b501875ba20385c042ca5005e4b0",
+          "timestamp": "2026-09-26T22:47:28.510Z"
+        }
+      ],
+      "logs": [
+        {
+          "sha256": "124028b6c6f47079064dd97bb9617259e76c6cf4ae051e598cf771a505494de3",
+          "command": "scripts/test-class \"CombatAssignmentCurrentRulesTest\" --tests *CombatResolutionBoardTest --tests *CombatDamageAssignmentTest --tests *BandingTrampleDrainScenarioTest --rerun --info --stacktrace --max-workers=1 -PkotlinCompileParallelism=1 -Pkotlin.compiler.execution.strategy=in-process -Dorg.gradle.jvmargs=-Xmx4g",
+          "fresh_task": ":rules-engine:test",
+          "fresh_worker": "1",
+          "shlock_unavailable_route_fallback_observed": true
+        }
+      ],
+      "exit_evidence": "Retained command and per-bank exit-status files all zero"
+    },
+    {
+      "component": "token",
+      "run_id": 36277029881,
+      "event": "pull_request",
+      "attempt": 1,
+      "job_id": 108501665428,
+      "artifact_id": 10917414511,
+      "original_sha256": "e838e107a96130bbd22bb0c9f756da5a2f0373c6d6e74614370a23ee420ae5d5",
+      "original_bytes": 262495,
+      "members": 14,
+      "crc": "PASS",
+      "raw_cases": 20,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0,
+      "suites": [
+        {
+          "class": "com.wingedsheep.engine.handlers.effects.token.AttackingTokenDefenderChoiceTest",
+          "cases": 14,
+          "xml_sha256": "ea24e3fe7421950304e9b2b87fe4a0a0a5d57bdeb6e1122b43441ab8c01d557b",
+          "timestamp": "2026-09-26T22:47:30.170Z"
+        },
+        {
+          "class": "com.wingedsheep.engine.scenarios.DalkovanEncampmentScenarioTest",
+          "cases": 2,
+          "xml_sha256": "885d5da31bba9139bb48a9243d4dd1bbb1d9e04497414ad42985c68dfc8ac158",
+          "timestamp": "2026-09-26T22:48:38.256Z"
+        },
+        {
+          "class": "com.wingedsheep.engine.event.EntryChoiceEventProvenanceTest",
+          "cases": 4,
+          "xml_sha256": "26cfd1522183db8f379dfb9e69b4715c7c535bf387b3ac338f7fca3b375d1ce6",
+          "timestamp": "2026-09-26T22:49:06.690Z"
+        }
+      ],
+      "logs": [
+        {
+          "sha256": "1f45b7fdb865da51605b6b2d135f80a71c45e148455fceb3ffb064a2f1118cad",
+          "command": "scripts/test-class \"AttackingTokenDefenderChoiceTest\" --rerun --info --stacktrace --max-workers=1 -PkotlinCompileParallelism=1 -Pkotlin.compiler.execution.strategy=in-process -Dorg.gradle.jvmargs=-Xmx4g",
+          "fresh_task": ":rules-engine:test",
+          "fresh_worker": "1",
+          "shlock_unavailable_route_fallback_observed": true
+        },
+        {
+          "sha256": "541648baaec2e3c8c240882687ad5815c9fcc29934fe1b6d17161f993a17b1c9",
+          "command": "scripts/test-class \"DalkovanEncampmentScenarioTest\" --rerun --info --stacktrace --max-workers=1 -PkotlinCompileParallelism=1 -Pkotlin.compiler.execution.strategy=in-process -Dorg.gradle.jvmargs=-Xmx4g",
+          "fresh_task": ":mtg-sets:2025:tests:test",
+          "fresh_worker": "2",
+          "shlock_unavailable_route_fallback_observed": true
+        },
+        {
+          "sha256": "967ee0919d9c3f9fc3be19c5ce1e4bc5eabe1bf30cff631339ea41cb36ee381e",
+          "command": "scripts/test-class \"EntryChoiceEventProvenanceTest\" --rerun --info --stacktrace --max-workers=1 -PkotlinCompileParallelism=1 -Pkotlin.compiler.execution.strategy=in-process -Dorg.gradle.jvmargs=-Xmx4g",
+          "fresh_task": ":rules-engine:test",
+          "fresh_worker": "3",
+          "shlock_unavailable_route_fallback_observed": true
+        }
+      ],
+      "exit_evidence": "Retained command and per-bank exit-status files all zero"
+    },
+    {
+      "component": "postblock-push",
+      "run_id": 36277026049,
+      "event": "push",
+      "attempt": 1,
+      "job_id": 108501654575,
+      "artifact_id": 10917771412,
+      "original_sha256": "a227398dd2179725dced6318e340a23b0adca9a6efb24ebd128eb7c378c79c09",
+      "original_bytes": 291915,
+      "members": 22,
+      "crc": "PASS",
+      "raw_cases": 127,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0,
+      "suites": [
+        {
+          "class": "com.wingedsheep.engine.handlers.PredicateEvaluatorRecordTest",
+          "cases": 19,
+          "xml_sha256": "395ecf151579759dfbe73de0e79e4f1f880028db458b73d3c9b1d66c6e147ce0",
+          "timestamp": "2026-09-26T22:45:35.120Z"
+        },
+        {
+          "class": "com.wingedsheep.engine.handlers.effects.zones.MoveToZoneEffectExecutorTest",
+          "cases": 10,
+          "xml_sha256": "29b95bf2dbc289cf39daa34f230813a359c17c7dbc5f18aabeb1561a6dc1e1bd",
+          "timestamp": "2026-09-26T22:45:37.469Z"
+        },
+        {
+          "class": "com.wingedsheep.engine.multiplayer.MultiDefenderCombatTest",
+          "cases": 4,
+          "xml_sha256": "1e5e9a19b543e14ec5b6783db81e2c0882f8e87960b71030b268bd8825bc13a3",
+          "timestamp": "2026-09-26T22:45:39.359Z"
+        },
+        {
+          "class": "com.wingedsheep.engine.multiplayer.TwoHeadedGiantCombatTest",
+          "cases": 9,
+          "xml_sha256": "0b308666f55016ceee3cfbc17949e72568196823cd16ac11e7ece8d8f98637fe",
+          "timestamp": "2026-09-26T22:45:40.996Z"
+        },
+        {
+          "class": "com.wingedsheep.engine.scenarios.ActivationPriorityScenarioTest",
+          "cases": 9,
+          "xml_sha256": "aa6444b450271f15bdc8ef855ef9804b7fbea40ce68b75dce83ec2b7bd29c131",
+          "timestamp": "2026-09-26T22:45:41.509Z"
+        },
+        {
+          "class": "com.wingedsheep.engine.scenarios.BatchMayQuestionTest",
+          "cases": 7,
+          "xml_sha256": "5b727b7eeef2cc936beae4b334291257de4d8b6b707b0ab77c9cd042c3468c2a",
+          "timestamp": "2026-09-26T22:46:24.960Z"
+        },
+        {
+          "class": "com.wingedsheep.engine.scenarios.DamageSourceTriggerScenarioTest",
+          "cases": 6,
+          "xml_sha256": "ecee5f862fc4ab3f59265662abb666000a949d97bf3ffd265da3148c14cd7d2c",
+          "timestamp": "2026-09-26T22:46:26.900Z"
+        },
+        {
+          "class": "com.wingedsheep.engine.scenarios.DeclareBlockersPriorityWindowTest",
+          "cases": 3,
+          "xml_sha256": "1077b8df76cef933fb97a296ed32bbfa7cebbc79669835771c100382d676a40f",
+          "timestamp": "2026-09-26T22:46:27.649Z"
+        },
+        {
+          "class": "com.wingedsheep.engine.scenarios.DamageSourceIdentityScenarioTest",
+          "cases": 5,
+          "xml_sha256": "20d91583f93e7c0b67179b174e01fefe48411d8ae064f17677881117d6f5aac6",
+          "timestamp": "2026-09-26T22:46:25.829Z"
+        },
+        {
+          "class": "com.wingedsheep.engine.scenarios.ManaAbilityColorChoicePipelineTest",
+          "cases": 4,
+          "xml_sha256": "5c58d6c7bab585fd3ec0beea8cf2e2f2b1c6074ffa657947cc653d8cf99b3859",
+          "timestamp": "2026-09-26T22:46:29.207Z"
+        },
+        {
+          "class": "com.wingedsheep.engine.scenarios.NestedManaPaymentBoundaryScenarioTest",
+          "cases": 12,
+          "xml_sha256": "a39c024cefd0e3c50ff5b26ba30de065885e1df7c0299e8d15a4bfed853e1927",
+          "timestamp": "2026-09-26T22:46:30.475Z"
+        },
+        {
+          "class": "com.wingedsheep.engine.scenarios.PostBlockDeclarationPriorityScenarioTest",
+          "cases": 16,
+          "xml_sha256": "eb23173639ee8eba83f24a8640d1547c9a04b4c00266ab590415c40c388634a2",
+          "timestamp": "2026-09-26T22:46:31.880Z"
+        },
+        {
+          "class": "com.wingedsheep.engine.scenarios.TargetedDepartedSourceLkiTest",
+          "cases": 4,
+          "xml_sha256": "685d24ded501d62708c79875b07a99bd52d9f2a7120b8a4d377d28792fe1f4f2",
+          "timestamp": "2026-09-26T22:46:34.784Z"
+        },
+        {
+          "class": "com.wingedsheep.engine.scenarios.TriggerOrderingConcessionScenarioTest",
+          "cases": 1,
+          "xml_sha256": "c926582b7d74faee1f88ebd90449bc05eeec2eace1bf9e92f102073fbb849cb8",
+          "timestamp": "2026-09-26T22:46:35.476Z"
+        },
+        {
+          "class": "com.wingedsheep.engine.scenarios.TriggerOrderingScenarioTest",
+          "cases": 6,
+          "xml_sha256": "215a1098938547494fbd0f5e8f2a51ce47df503d25ea80c234cdddc6b72120f8",
+          "timestamp": "2026-09-26T22:46:35.894Z"
+        },
+        {
+          "class": "com.wingedsheep.gameserver.session.PostBlockDeclarationSessionTest",
+          "cases": 2,
+          "xml_sha256": "82141c7d757b3d045f9b5e61d5a1a9a9609458a34d68b4590ba46ab898f44923",
+          "timestamp": "2026-09-26T22:48:20.028Z"
+        },
+        {
+          "class": "com.wingedsheep.gameserver.session.TwoHeadedGiantSessionTest",
+          "cases": 10,
+          "xml_sha256": "399d23848dcb39f1aaeba8b416c474accc3dc325de20d3f721278e0f4b8a01b3",
+          "timestamp": "2026-09-26T22:49:39.971Z"
+        }
+      ],
+      "logs": [
+        {
+          "sha256": "3e47cc459df478ab355773ae5c8d7134d546ecb0923de23ff561fbe334d9eea4",
+          "command": "scripts/test-class \"PostBlockDeclarationPriorityScenarioTest\" --tests *DeclareBlockersPriorityWindowTest --tests *MultiDefenderCombatTest --tests *TwoHeadedGiantCombatTest --tests *ActivationPriorityScenarioTest --tests *NestedManaPaymentBoundaryScenarioTest --tests *BatchMayQuestionTest --tests *TriggerOrderingScenarioTest --tests *TriggerOrderingConcessionScenarioTest --tests *DamageSourceIdentityScenarioTest --tests *DamageSourceTriggerScenarioTest --tests *TargetedDepartedSourceLkiTest --tests *PredicateEvaluatorRecordTest --tests *ManaAbilityColorChoicePipelineTest --tests *MoveToZoneEffectExecutorTest --rerun --max-workers=1 -PkotlinCompileParallelism=1 -Pkotlin.compiler.execution.strategy=in-process -Dorg.gradle.jvmargs=-Xmx4g --info --stacktrace",
+          "fresh_task": ":rules-engine:test",
+          "fresh_worker": "1",
+          "shlock_unavailable_route_fallback_observed": true
+        },
+        {
+          "sha256": "7d5ba4cde28d91052702ffe18af6cc2e714ec4fb83aa3f8c2ad98747355f68c9",
+          "command": "scripts/test-class \"PostBlockDeclarationSessionTest\" --tests *TwoHeadedGiantSessionTest --rerun --max-workers=1 -PkotlinCompileParallelism=1 -Pkotlin.compiler.execution.strategy=in-process -Dorg.gradle.jvmargs=-Xmx4g --info --stacktrace",
+          "fresh_task": ":game-server:test",
+          "fresh_worker": "2",
+          "shlock_unavailable_route_fallback_observed": true
+        }
+      ],
+      "exit_evidence": "No standalone exit-status file; unchanged set -euo pipefail / subprocess check=True commands, successful individual GitHub steps, BUILD SUCCESSFUL, and subsequent verified result manifest establish successful exit."
+    }
+  ],
+  "total_testcase_records": 179,
+  "limitations": [
+    "Push postblock run36277026049 only; separate PR postblock run36277029821 is not covered.",
+    "Only bounded original32 combat, original16 token plus separately admitted4 provenance, and original127 postblock case scopes. No broader reachable-behavior qualification inferred.",
+    "Before-source maps are retained; final successful collectors rehash unchanged source and clean HEAD. Archives do not contain independent after maps.",
+    "All six fresh Gradle invocations used the prescribed just/test-class/gradle-locked route but explicitly reported shlock absent and its unlocked fallback on isolated GitHub runners; no working interprocess semaphore is claimed.",
+    "Postblock has no standalone numeric exit files; successful exits are established by unchanged fail-fast command structure, GitHub step results and original logs.",
+    "Full CI, priority bank, project runtime/pilots/replay/durability, independent gameplay admission, repository approval and merge remain separate."
+  ],
+  "official_games_initialized": 0,
+  "allocations_consumed": 0,
+  "outcomes_exposed": 0,
+  "gameplay_authorized": false,
+  "github_approval": false,
+  "inputs": {
+    "sphinx-live-review-inputs.json": "7767fed80b6b0825240e1a7dbc2efeacd6059c0c4b1af8e2ebe569da81aef1c4",
+    "sphinx-live-review-extra.json": "c2f8e83607f797526c564335b1c9634f1122ebeb3feb34c9298de432b82b292c",
+    "sphinx-live-review-authorities.json": "26c9c9e06a0859b244faf65c699a2771b453d280f0c4980eb195587f55a966aa",
+    "token-combat-artifact-audit.json": "8c1038e2db85456abc0380d9131a371d878788efb6fca0b64135a57c91ab7fb7",
+    "postblock-push-author-artifact-audit.json": "09bfa12efd37545cda3653f58ebe32aa5c5d655d44ec2f71f86f504da6dce926"
+  }
+}

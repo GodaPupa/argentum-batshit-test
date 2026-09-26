@@ -1,0 +1,15 @@
+{
+  "schema": "pr186-publication-transport-scan-v1",
+  "files_checked": 75,
+  "decoded_utf8_parts_checked": 4925,
+  "decoded_utf8_bytes_checked": 102289659,
+  "patterns": {
+    "private_transport": "(?:sediment://|oaisdmntpr[^\\s\"<>]*|oaisdsorpr[^\\s\"<>]*|sdmntpr[^\\s\"<>]*|sig=[A-Za-z0-9%+/]{12,}|X-Amz-(?:Signature|Credential|Security-Token)=)",
+    "github_token": "\\b(?:gh[pousr]_[A-Za-z0-9]{20,}|github_pat_[A-Za-z0-9_]{30,})",
+    "credential_value": "\"(?:access_token|refresh_token|authorization|client_secret)\"\\s*:\\s*\"[^\"\\s]{12,}\""
+  },
+  "findings": [],
+  "sanitized_files": [],
+  "original_result_material_modified": false,
+  "limit": "Pattern-based publication preflight; not a general secret-detection guarantee. Source fixtures and public GitHub metadata retained unchanged."
+}
