@@ -1,7 +1,7 @@
 # Flashback mandatory-cost menu repair
 
-Status: authored; independent source review and execution qualification pending. This is a shared
-engine capability, with no gameplay allocation, seed use, outcome, policy, or deck change.
+Status: **66 actual targeted cases passed and independently audited; full integration pending.**
+This is a shared engine capability, with no gameplay allocation, seed use, outcome, policy, or deck change.
 
 ## Source and scope
 
@@ -128,3 +128,21 @@ its expected message. The runtime raised the intended `UnsupportedOperationExcep
 description `Discard a card`. The successor requires that exact description; no runtime behavior or
 exception assertion changes. Lava Dart's step had not run. Its [failed-attempt receipt](evidence/flashback-cost-menu-36249869762/receipt.json)
 preserves the complete artifact and all five XML suites; the 66-case gate remains unpassed.
+
+## Actual targeted qualification
+
+[Run 36251194132](https://github.com/GodaPupa/argentum-batshit-test/actions/runs/36251194132)
+passed on exact source `009ba46d3a678df6295624d357b53a80e5b55ca0`, tree
+`6e97250e629f54d15a0c4e3af4060d0e8a0b576f`. The six actual XML suites contain
+12 + 20 + 23 + 4 + 5 + 2 = **66 cases**, with zero failures, errors or skips.
+Pest independently verified the downloaded artifact, actual executor logs, per-case XML and
+exact source bindings. Sphinx had separately reviewed the source and both fixture corrections.
+The [review receipt and complete artifact](evidence/flashback-cost-menu-36251194132/receipt.json)
+retain the exact bytes and the bounded disposition.
+
+Both earlier failed attempts remain preserved above; their outcomes are not relabelled. This
+accepts targeted menu/cost/Lava Dart qualification only. Full receiving integration, existing
+Acorn Harvest/Flaring Pain compatibility, the separately reviewed exact Industrial Insight
+receiver, and each project's gameplay admission remain required. No Deep Analysis card or
+Industrial fixture is added: it is absent from all four frozen R1 sixties and their generation
+routes. No official allocation or deck-performance outcome has been exposed.
