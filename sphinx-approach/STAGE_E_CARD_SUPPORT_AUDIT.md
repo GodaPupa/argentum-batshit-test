@@ -83,3 +83,37 @@ Before Stage-E deck freeze:
 - zone-card conservation and event emission remain exact.
 
 Until these pass, reconstructed v0.1 and hybrid are configuration records only, not qualified interactive decks.
+
+
+## Composition-first correction — 2026-09-25
+
+A deeper SDK audit found that a new engine primitive is **not yet justified**.
+
+`CardSource.Self` is explicitly defined to gather the spell/ability's own source card regardless of its
+current zone. The generic pipeline can therefore reference the resolving Approach while it is still on the
+stack. `CardSource.FromZone(GRAVEYARD, ..., filter)`, `SelectFromCollection(ChooseExactly(4))`, and
+`MoveCollection(EXILE)` already cover the four named graveyard cards and both exile moves. The library
+pattern already covers filtered Sphinx search -> battlefield -> shuffle.
+
+The SDK documentation also explicitly warns that `ChooseExactly(N)` clamps when fewer than N eligible
+cards exist and instructs authors to gate all-or-nothing effects on an eligibility/count precondition before
+moving anything. That warning matches Approach's requirement exactly.
+
+Revised preferred implementation shape:
+
+1. Draw two cards (mandatory).
+2. Evaluate the optional action's feasibility *after* those draws.
+3. If at least four OTHER cards named Sphinx's Approach are in the controller's graveyard, offer the may
+   decision; otherwise skip the impossible decision.
+4. On acceptance: gather eligible graveyard Approaches, choose exactly four, gather `CardSource.Self`,
+   move the four and self to exile, then execute filtered Sphinx search -> battlefield -> shuffle.
+5. On decline: do none of the optional pipeline; normal spell-resolution cleanup sends the resolving spell
+   to its ordinary destination.
+6. Countering the spell prevents the entire spell effect from resolving.
+
+This composition must still be proven by deterministic engine scenarios, especially that
+`MoveCollection` can move `CardSource.Self` from the resolving stack without the normal post-resolution
+cleanup moving it again, and that the feasibility check can express a filtered graveyard count of four at
+the correct post-draw resolution point.
+
+Until those fixtures pass, this is a design finding rather than qualified card support.
