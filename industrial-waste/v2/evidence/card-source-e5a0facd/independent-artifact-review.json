@@ -1,0 +1,38 @@
+{
+  "schema": "industrial-e5a0-card-root-independent-artifact-review-v1",
+  "reviewer": "/root",
+  "source_author": false,
+  "decision": "ACCEPT_BOUNDED_CARD_STATUS_RECEIVING_GATE",
+  "source": "e5a0facd17af60f099463f5ebe3e5e4afbe4bd0d",
+  "tree": "6ce05ad36bb6cfaf322a7df66fb5bbc4590b292f",
+  "run": 36273718882,
+  "attempt": 1,
+  "job": 108492341547,
+  "artifact_id": 10916427942,
+  "artifact_bytes": 67027,
+  "artifact_sha256": "3f92aa8b035817ac3dffe7c658e75e2fbc7bc068544ac8f65eab000903581848",
+  "archive_members": 32,
+  "actual_classes": 25,
+  "actual_unique_cases": 136,
+  "failures": 0,
+  "errors": 0,
+  "skips": 0,
+  "checks": [
+    "Read the complete original ZIP, verified CRC and whole-file SHA against actual GitHub artifact metadata.",
+    "Independently parsed all 25 raw XML suites and 136 unique class/name identities. Exact selected workflow class set is present; all XML timestamps fall within this actual run. ExecutionStatus retains10 cases and RuntimeFailure4.",
+    "Fetched and SHA-256 checked all seven current receiving pins plus the accepted predecessor capability and current receiving manifest directly at immutable e5a0 source.",
+    "Read the exact workflow, actual decoded job log and completed step metadata. All eight qualification test tasks executed without cached/up-to-date/no-source suffixes; the separate card snapshot task also executed. Both commands report BUILD SUCCESSFUL.",
+    "The original card-snapshot diff is empty. No snapshot acceptance or replacement is inferred from the rebless command.",
+    "Registry audit explicitly records34 compiled identities, zero unresolved, gameplay_ready=false and official_games_initialized=0."
+  ],
+  "limitations": [
+    "Bounded card/status receiving acceptance only; no full R1 runtime, metrics, replay, pilot, exclusive claim, complete source or gameplay admission.",
+    "The25 classes and136 cases are software evidence, not any of512 official R1 allocations.",
+    "Fresh qualification and snapshot tasks are distinguished; no additional unpublished XML from the snapshot task is claimed.",
+    "Current full CI and runtime runs require their own applicable artifact/source dispositions. Earlier failed preflight and all original outcomes remain preserved.",
+    "The first local audit regex matched prefixes inside Gradle task names; it was corrected to parse complete task tokens. That audit-script error did not change CI, assertions or results."
+  ],
+  "official_allocations": 0,
+  "gameplay_authorized": false,
+  "github_approval": false
+}

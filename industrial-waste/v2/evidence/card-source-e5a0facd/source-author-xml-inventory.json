@@ -1,0 +1,338 @@
+[
+  {
+    "name": "com.wingedsheep.ai.arena.FrozenBaselineTest",
+    "count": 1,
+    "timestamp": "2026-09-26T21:46:03.136Z",
+    "sha256": "d74cabd2f4fe3aea572e4112fbf95d8f0af61916aefc7bde7b569b2a45f9da19",
+    "cases": [
+      "LEGACY_V0 plays the frozen baseline game exactly as it always has"
+    ]
+  },
+  {
+    "name": "com.wingedsheep.ai.industrialwaste.IndustrialWasteAdvisorModuleTest",
+    "count": 6,
+    "timestamp": "2026-09-26T21:46:08.224Z",
+    "sha256": "64831eb53977887df574b9de888aadbe7ccb0024cc7a34cbbddfaa39eed59488",
+    "cases": [
+      "Expedition Map selects the missing Tron piece independent of library order",
+      "Crop Rotation uses the same missing-piece policy",
+      "Myr Retriever death trigger returns the other Retriever",
+      "Ashnod's Altar sacrifices Retriever when the payoff loop is assembled",
+      "Ashnod's Altar seeds the loop when the second Retriever is in hand",
+      "policy prefers staging the Retriever loop over passing"
+    ]
+  },
+  {
+    "name": "com.wingedsheep.ai.industrialwaste.IndustrialWasteV2CapabilityRunnerTest",
+    "count": 3,
+    "timestamp": "2026-09-26T21:46:23.682Z",
+    "sha256": "015e4f18b237b1896a2f4411c5010ff46ce2c777e1d9dc04e2e593732105dae6",
+    "cases": [
+      "all four frozen R1 lists complete one measured own turn through the composed real runner",
+      "composed one-turn capability runner replays identically for all four frozen lists",
+      "captured one-turn action transcript replays exactly for all four frozen lists"
+    ]
+  },
+  {
+    "name": "com.wingedsheep.ai.industrialwaste.IndustrialWasteV2EventMetricsTest",
+    "count": 11,
+    "timestamp": "2026-09-26T21:46:24.550Z",
+    "sha256": "d75a85a4a5e69c8eac044e3e25ded3adb49e432fd483533040bba9fb94386402",
+    "cases": [
+      "inventory is not a loop but a real neutral sacrifice return cast and entry is",
+      "actual Pactdoll lethal is counted only after the engine ends the game",
+      "Blood Fountain return and recast is recursion without inventing an Altar loop",
+      "a development action spending loop resources abandons the partial cycle proof",
+      "Scry and Rumble count only observed copies and distinguish seeing from land access",
+      "all three controlled real Tron lands establish access and full Tron",
+      "quiet checkpoint distinguishes colored-payment failure from total-mana shortage",
+      "quiet checkpoint recognizes an actually executable fixed-cost artifact",
+      "Foundry future conversion requires real charges token creation and a later legal attack",
+      "duplicated missing or rejected transitions cannot enter the metric stream",
+      "replaying the same complete accepted transcript reproduces metric evidence"
+    ]
+  },
+  {
+    "name": "com.wingedsheep.ai.industrialwaste.IndustrialWasteV2ExecutionStatusTest",
+    "count": 10,
+    "timestamp": "2026-09-26T21:46:24.939Z",
+    "sha256": "fbf9ac668bb30d0820a4ceb110fe75658786326f2b1ee5fdab9ef12f587aadac",
+    "cases": [
+      "initialization does not count but both players London submissions each count once",
+      "PLAY and DRAW own eighth turns include end and cleanup decisions before turn-cap status",
+      "four thousand actual neutral-loop submissions stop without resolving an extra action",
+      "real concession is terminal with its actual engine winner and reason",
+      "real SBA settlement of a zero-life setup produces draw and never a synthetic winner",
+      "rejected action counts once stops exposure and preserves last accepted state",
+      "throwing executor records a submitted exception without retry or engine winner",
+      "unresolved observer overrides provisional terminal while preserving actual terminal diagnostics",
+      "forged terminal and missing turn-event provenance remain unresolved",
+      "synthetic simultaneous boundary precedence preserves genuine terminal and quarantines faults"
+    ]
+  },
+  {
+    "name": "com.wingedsheep.ai.industrialwaste.IndustrialWasteV2OrderingIntegrationTest",
+    "count": 4,
+    "timestamp": "2026-09-26T21:46:27.611Z",
+    "sha256": "787bd2fa702ca654f46a0dde6adba3d8f4c404ce6a3404f265f14c822c8996e7",
+    "cases": [
+      "Expedition Map uses the frozen shuffle through its real continuation with deterministic replay",
+      "Crop Rotation uses the frozen shuffle through its real continuation with deterministic replay",
+      "Myr Kinsmith uses the frozen shuffle through its real continuation with deterministic replay",
+      "the public action policy cannot observe a changed future ordering plan or library order"
+    ]
+  },
+  {
+    "name": "com.wingedsheep.ai.industrialwaste.IndustrialWasteV2PublicActionPolicyTest",
+    "count": 13,
+    "timestamp": "2026-09-26T21:46:28.478Z",
+    "sha256": "ce50bab6c993ee547d369a5198d8fa8a3067e605679de782e2070a2abd13e189",
+    "cases": [
+      "public development policy casts an affordable missing Altar through the real engine",
+      "Star activation pays one mana and chooses an observed hand's black pip",
+      "Insight pays with Wellspring and preserves live loop hardware",
+      "public loop actions sacrifice return and recast a Retriever using real generated mana",
+      "Dross binds an offered graveyard target and pays black recursion mana",
+      "Foundry loop creates lethal power then wins through the next legal combat",
+      "passive Forest fixture plays one land and then passes without a second land drop",
+      "scry and surveil keep an engine card while discarding surplus mana",
+      "real Candy Trail and Boulder scry continuations keep Altar above a surplus land",
+      "opening policy has one common keep rule and honors the three-mulligan bound",
+      "real two-player London mulligans draw seven then bottom three at the forced keep",
+      "action choice ignores opponent hidden identity and both future library orders",
+      "explicit regression seed repeats initial state and identities while another seed changes shuffle"
+    ]
+  },
+  {
+    "name": "com.wingedsheep.ai.industrialwaste.IndustrialWasteV2RegistryAuditTest",
+    "count": 1,
+    "timestamp": "2026-09-26T21:46:29.947Z",
+    "sha256": "76c7a1c40325743f605cbe700695d1548411b3b2ac5d4f194b3a4c1c78d15c5c",
+    "cases": [
+      "all frozen v2 candidates and historical comparator resolve in the compiled catalog"
+    ]
+  },
+  {
+    "name": "com.wingedsheep.ai.industrialwaste.IndustrialWasteV2RuntimeFailureTest",
+    "count": 4,
+    "timestamp": "2026-09-26T21:46:30.172Z",
+    "sha256": "0cf931709b1f0a638cddc53f17d1d1b17fdaced9cad95709190b996172215a1b",
+    "cases": [
+      "a real selection failure retains accepted actions and typed invalid final artifacts without another action",
+      "a real checkpoint identity failure stops before submitting or fabricating any action",
+      "checkpoint evidence writer failure propagates before any action",
+      "payment intent writer failure propagates before its planned funding action"
+    ]
+  },
+  {
+    "name": "com.wingedsheep.ai.industrialwaste.IndustrialWasteV2SelectionAdvisorTest",
+    "count": 9,
+    "timestamp": "2026-09-26T21:46:30.620Z",
+    "sha256": "fc364fde82fb5d2edc34e2423526d4905a7517a5e278685f1a273901e5b4c602",
+    "cases": [
+      "Recursive Eggs Rumble fixes black access without inventing Tron in the list",
+      "collection-shaped Map and Rotation decisions build missing Tron while fixing a visible black need first",
+      "Tron-capable Stirrings takes the missing third piece when colored access is sufficient",
+      "one shared Rumble policy selects the missing engine across all four mana architectures",
+      "Blood Fountain returns both offered Retrievers before a redundant expensive creature",
+      "Kinsmith takes its optional search and Dross recursion prefers the accessible loop creature",
+      "real Stirrings Rumble and Kinsmith decisions accept the shared selector responses",
+      "opponent hidden identities and future library order cannot change an offered choice",
+      "Stirrings bottom order is deterministic and never selects a nonselectable card"
+    ]
+  },
+  {
+    "name": "com.wingedsheep.engine.library.LibraryOrderingServiceTest",
+    "count": 11,
+    "timestamp": "2026-09-26T21:45:09.853Z",
+    "sha256": "6249f15e59b7af4d887f43064d034e20e6a595061aa473bb59d6761316e8e9c0",
+    "cases": [
+      "frozen initialization orders the actual opening draw and its event IDs",
+      "three real London mulligans consume the next frozen orders then legally keep four",
+      "a fourth mulligan fails closed without changing the immutable input state",
+      "absent component preserves the exact prior shuffle state RNG and JSON bytes",
+      "effect shuffles use independently computed hash ranks and clear positional reveals",
+      "effect ordering ignores current order and retains copy labels after zone changes",
+      "whole state serialization resumes a real London action and shuffle deterministically",
+      "matched original copy ranks remain coupled across different card counts and seats",
+      "duplicate missing or wrong-domain opening labels are rejected",
+      "opt-in rejects entropy seeds hand smoothing and cards outside the frozen original domain",
+      "empty and singleton effect shuffles still record one actual shuffle event"
+    ]
+  },
+  {
+    "name": "com.wingedsheep.engine.scenarios.ChromaticStarScenarioTest",
+    "count": 4,
+    "timestamp": "2026-09-26T21:44:02.185Z",
+    "sha256": "da9516362f765ee185e9a54ea389c0f64deb53603866f4c98a01546468d95d13",
+    "cases": [
+      "mana is immediate while the independent draw trigger waits on the stack",
+      "sacrificing Star to Eviscerators Insight draws one in addition to the spell's two",
+      "destroying Star draws without adding mana",
+      "milling Star with Malevolent Rumble does not trigger its battlefield departure ability"
+    ]
+  },
+  {
+    "name": "com.wingedsheep.engine.scenarios.KurgadonTest",
+    "count": 2,
+    "timestamp": "2026-09-26T21:44:40.726Z",
+    "sha256": "d03d7104929b828abaa100d76db92b96040019a408f6e56e880bb3b1861f9566",
+    "cases": [
+      "casting face-down morph with high CMC does not trigger Kurgadon",
+      "casting creature with CMC 6 or greater triggers Kurgadon"
+    ]
+  },
+  {
+    "name": "com.wingedsheep.engine.scenarios.TreeOfTalesScenarioTest",
+    "count": 3,
+    "timestamp": "2026-09-26T21:44:42.039Z",
+    "sha256": "b5e039bfb282db941ce7621370c30e2a188a96d76d824849a48ab89157b29653",
+    "cases": [
+      "playing Tree produces an untapped colorless artifact land with immediate green mana",
+      "Tree cannot be cast and its land play consumes the one available land drop",
+      "Naturalize can destroy a played Tree because it is an artifact"
+    ]
+  },
+  {
+    "name": "com.wingedsheep.engine.scenarios.VaultOfWhispersScenarioTest",
+    "count": 3,
+    "timestamp": "2026-09-26T21:44:42.317Z",
+    "sha256": "d4188f1c0ced53b786416e5e3d11bc3aae97f25cb18c647fd9685f23bb433b78",
+    "cases": [
+      "playing Vault produces an untapped colorless artifact land with immediate black mana",
+      "Vault cannot be cast and its land play consumes the one available land drop",
+      "Naturalize can destroy a played Vault because it is an artifact"
+    ]
+  },
+  {
+    "name": "com.wingedsheep.engine.scenarios.AncientStirringsScenarioTest",
+    "count": 3,
+    "timestamp": "2026-09-26T21:44:17.526Z",
+    "sha256": "51e786f2b60c30a0be75601180a61f77f1c522452496c43d377102f12dba76e6",
+    "cases": [
+      "colorless artifacts and lands qualify while a green land and black artifact do not",
+      "the optional selection may be declined and every seen card is ordered on the bottom",
+      "an empty library produces no card and no unresolved choice"
+    ]
+  },
+  {
+    "name": "com.wingedsheep.engine.scenarios.GolemFoundryScenarioTest",
+    "count": 6,
+    "timestamp": "2026-09-26T21:44:50.045Z",
+    "sha256": "3e7822cd0885ecac85bf1a9a41b63b7108c76dadcea831735defea8bb31c29f8",
+    "cases": [
+      "three accepted artifact cast triggers fund a new Foundry's exact token ability",
+      "declining a cast trigger leaves no counter when the artifact subsequently enters",
+      "an opponent's artifact spell does not trigger this Foundry",
+      "a nonartifact spell and the artifact it returns do not trigger Foundry",
+      "a tapped Foundry removes exactly three counters without paying a tap cost",
+      "fewer than three charge counters cannot create a token or partially pay"
+    ]
+  },
+  {
+    "name": "com.wingedsheep.engine.scenarios.BloodFountainScenarioTest",
+    "count": 2,
+    "timestamp": "2026-09-26T21:44:01.039Z",
+    "sha256": "14e8c06d428be27327203db36511889277653aa3192d5fb8147c2f6b27805edd",
+    "cases": [
+      "entering the battlefield creates a Blood token",
+      "the {3}{B}, tap, sacrifice ability returns two graveyard creatures to hand"
+    ]
+  },
+  {
+    "name": "com.wingedsheep.engine.scenarios.DarkmossBridgeScenarioTest",
+    "count": 6,
+    "timestamp": "2026-09-26T21:44:39.303Z",
+    "sha256": "fb45b4bc173ffd7968bb6104b603b7dd9e8d514e3f2ab07097bbd3a2a48fb3b4",
+    "cases": [
+      "playing Bridge enters tapped and does not briefly offer mana",
+      "an untapped Bridge adds exactly one BLACK immediately",
+      "an untapped Bridge adds exactly one GREEN immediately",
+      "Naturalize can target the artifact land but cannot destroy it",
+      "indestructible does not prevent paying Insight's artifact sacrifice",
+      "Revoke Existence exiles Bridge despite indestructible"
+    ]
+  },
+  {
+    "name": "com.wingedsheep.engine.scenarios.CandyTrailScenarioTest",
+    "count": 5,
+    "timestamp": "2026-09-26T21:45:03.146Z",
+    "sha256": "fd0c67fb335e61aedd48831f787b6eb20ed34f7412b4c8575faa0eef69d94233",
+    "cases": [
+      "entry looks at exactly two cards and bottoms only the chosen card",
+      "keeping both scried cards permits their chosen top order",
+      "a newly entered Trail pays two mana and sacrifices before gaining life and drawing",
+      "one mana cannot pay the activation and does not sacrifice the Trail",
+      "an already tapped Trail cannot pay its tap cost even with two available mana"
+    ]
+  },
+  {
+    "name": "com.wingedsheep.engine.scenarios.DrossSkullbombScenarioTest",
+    "count": 5,
+    "timestamp": "2026-09-26T21:45:31.381Z",
+    "sha256": "57e82e66b83b583c072bfb2cd2db2196617e9c43b977cbb6010cc64d1c297719",
+    "cases": [
+      "one generic mana sacrifices the Skullbomb and draws through the stack",
+      "two generic and one black return a creature and then draw one card",
+      "recursion is unavailable in the end step but the draw ability remains legal",
+      "generic mana cannot pay the black recursion pip and a rejected attempt pays no costs",
+      "an illegal sole recursion target prevents both return and draw on resolution"
+    ]
+  },
+  {
+    "name": "com.wingedsheep.engine.scenarios.MyrKinsmithScenarioTest",
+    "count": 5,
+    "timestamp": "2026-09-26T21:45:32.166Z",
+    "sha256": "9707d08be73d9dd2b0adc690a2d1002016b897302d1bfb7527314a5c1ba172ff",
+    "cases": [
+      "accepting the optional search offers only own library Myr cards and reveals the chosen card",
+      "declining the optional search preserves library order and emits no search reveal or shuffle",
+      "accepting then finding no card still searches and shuffles even when a Myr is available",
+      "a library with no Myr still completes an accepted search and shuffle",
+      "non-Myr foreign-library and graveyard selections are rejected without consuming the choice"
+    ]
+  },
+  {
+    "name": "com.wingedsheep.engine.scenarios.ConduitPylonsScenarioTest",
+    "count": 9,
+    "timestamp": "2026-09-26T21:45:42.524Z",
+    "sha256": "e3096f6c026e3fa97f457d42d9e461acc650cdb7be281e4ed7d6d26ee754d879",
+    "cases": [
+      "playing Pylons triggers surveil one and can put the top card in its owner's graveyard",
+      "declining the surveil graveyard choice keeps the same top card",
+      "the colorless ability adds one colorless mana immediately and taps Pylons",
+      "filtering to WHITE consumes another land's one mana and adds only one chosen mana",
+      "filtering to BLUE consumes another land's one mana and adds only one chosen mana",
+      "filtering to BLACK consumes another land's one mana and adds only one chosen mana",
+      "filtering to RED consumes another land's one mana and adds only one chosen mana",
+      "filtering to GREEN consumes another land's one mana and adds only one chosen mana",
+      "Pylons cannot fund its own filter activation through auto or explicit payment"
+    ]
+  },
+  {
+    "name": "com.wingedsheep.engine.scenarios.PactdollTerrorScenarioTest",
+    "count": 7,
+    "timestamp": "2026-09-26T21:45:41.577Z",
+    "sha256": "ddbb558a43031eaecb5b4c1ede8a4d282fd40b25b629b3ffad4694d626be7a46",
+    "cases": [
+      "Pactdoll's own resolved entry drains once and gains once",
+      "playing Tree of Tales triggers its controller's Pactdoll without casting a spell",
+      "playing Darkmoss Bridge triggers its controller's Pactdoll without casting a spell",
+      "Fountain and its created Blood token each cause one separate drain",
+      "an opponent's artifact entry does not trigger our Pactdoll",
+      "our nonartifact creature entry does not trigger Pactdoll",
+      "a resolved drain produces a real terminal loss at zero life"
+    ]
+  },
+  {
+    "name": "com.wingedsheep.engine.scenarios.TownLandSpellAdventureScenarioTest",
+    "count": 3,
+    "timestamp": "2026-09-26T21:46:10.489Z",
+    "sha256": "64185f27fa3715cf755e6d8639b741049bb0752b4da72e96701fd869f3cdce45",
+    "cases": [
+      "the land primary can be played from hand and enters tapped",
+      "casting the Adventure spell resolves its effect, exiles the card, then the land is playable from exile",
+      "playing the land from exile consumes the turn's land drop"
+    ]
+  }
+]
