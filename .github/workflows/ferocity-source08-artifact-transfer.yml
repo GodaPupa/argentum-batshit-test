@@ -1,8 +1,8 @@
-name: Retrieve existing Ferocity qualification bytes
+name: Retrieve existing Ferocity source08 qualification bytes
 
 on:
   push:
-    branches: [lab/ferocity-existing-artifact-transfer-20260926]
+    branches: [lab/ferocity-source08-artifact-transfer-20260926]
 
 permissions:
   contents: read
@@ -16,7 +16,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        artifact_id: [10911949741, 10912261986]
+        artifact_id: [10914867198, 10914678223]
     steps:
       - name: Check out only this reviewed retrieval source
         uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
@@ -28,12 +28,12 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           EXPECTED_SOURCE: ${{ github.sha }}
           ARTIFACT_ID: ${{ matrix.artifact_id }}
-        run: python3 lab-coordinator/shared-capabilities/split-existing-ferocity-artifacts.py "$ARTIFACT_ID"
+        run: python3 ferocity-recycling/tools/split-source08-artifacts.py "$ARTIFACT_ID"
       - name: Preserve retrieval manifest and source binding
         if: always()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         with:
-          name: ferocity-existing-${{ matrix.artifact_id }}-manifest
+          name: ferocity-source08-${{ matrix.artifact_id }}-manifest
           path: output/${{ matrix.artifact_id }}/manifest.json
           if-no-files-found: error
           retention-days: 30
@@ -41,7 +41,7 @@ jobs:
         if: success()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         with:
-          name: ferocity-existing-${{ matrix.artifact_id }}-part-00
+          name: ferocity-source08-${{ matrix.artifact_id }}-part-00
           path: output/${{ matrix.artifact_id }}/part-00.bin
           if-no-files-found: error
           compression-level: 0
@@ -50,7 +50,7 @@ jobs:
         if: success()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         with:
-          name: ferocity-existing-${{ matrix.artifact_id }}-part-01
+          name: ferocity-source08-${{ matrix.artifact_id }}-part-01
           path: output/${{ matrix.artifact_id }}/part-01.bin
           if-no-files-found: error
           compression-level: 0
@@ -59,7 +59,7 @@ jobs:
         if: success()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         with:
-          name: ferocity-existing-${{ matrix.artifact_id }}-part-02
+          name: ferocity-source08-${{ matrix.artifact_id }}-part-02
           path: output/${{ matrix.artifact_id }}/part-02.bin
           if-no-files-found: error
           compression-level: 0
@@ -68,7 +68,7 @@ jobs:
         if: success()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         with:
-          name: ferocity-existing-${{ matrix.artifact_id }}-part-03
+          name: ferocity-source08-${{ matrix.artifact_id }}-part-03
           path: output/${{ matrix.artifact_id }}/part-03.bin
           if-no-files-found: error
           compression-level: 0

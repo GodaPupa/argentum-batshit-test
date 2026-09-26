@@ -13,21 +13,21 @@ import sys
 import zipfile
 
 REPOSITORY = "GodaPupa/argentum-batshit-test"
-HEAD = "d097c9eff09dd402dfacb644351bfb9d62f35aff"
+HEAD = "3a4f99a7653839506e96d19e6639f58d9e8c5ced"
 BRANCH = "ferocity-recycling/qualification-review"
 CHUNK_BYTES = 24 * 1024 * 1024
 BANK = {
-    10911949741: {
-        "run_id": 36260766617,
-        "name": "ferocity-combat-browser-36260766617-1",
-        "bytes": 80849874,
-        "sha256": "75fa18e454d96e65ff5a6c33930864b18bb0ec1701de1a1453742556dc97c968",
+    10914867198: {
+        "run_id": 36268319777,
+        "name": "ferocity-combat-browser-36268319777-1",
+        "bytes": 91430659,
+        "sha256": "9a1093f50b46f049504459de237aa83ffb631131453b7c0f7761647ed484b71f",
     },
-    10912261986: {
-        "run_id": 36260771329,
-        "name": "ferocity-recycling-gym-36260771329-1",
-        "bytes": 95091910,
-        "sha256": "2b09d576f10efdcf836100665fc2660dc6320d555ac3a42caa850de3210fd1ca",
+    10914678223: {
+        "run_id": 36268324461,
+        "name": "ferocity-recycling-gym-36268324461-1",
+        "bytes": 95124680,
+        "sha256": "9849c7aade4ffe015fd5ab859ae57e4ba3c4e5461514bbc72bc6ffa355be0816",
     },
 }
 
@@ -76,8 +76,8 @@ def main():
         actual_source = subprocess.check_output(["git", "rev-parse", "HEAD"], text=True).strip()
         assert actual_source == os.environ["EXPECTED_SOURCE"]
         source_files = [
-            ".github/workflows/ferocity-existing-artifact-transfer.yml",
-            "lab-coordinator/shared-capabilities/split-existing-ferocity-artifacts.py",
+            ".github/workflows/ferocity-source08-artifact-transfer.yml",
+            "ferocity-recycling/tools/split-source08-artifacts.py",
         ]
         tracked = subprocess.check_output(["git", "ls-files"], text=True).splitlines()
         assert sorted(tracked) == sorted(source_files), "Retrieval source must contain only its two reviewed files"
