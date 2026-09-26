@@ -1,0 +1,138 @@
+{
+  "schema": "izzet-position1-bootstrap-ci-audit-v1",
+  "status": "ACCEPTED_SEED_FREE_BOOTSTRAP_COMPONENT_ONLY",
+  "source_branch": "mayhem/izzet-position1-bootstrap",
+  "source_commit": "a31d4eac79bd6eb50a3890e90fe50e68862bf565",
+  "receiving_base": "33e8ee64c6e1752f6c5593531117ea2e85002d82",
+  "combined_source_commit": "2029ab158862b274c710fc17c7e531704fa890d3",
+  "source_and_combined_tree": "7287bf827dd611af27ef2b57cdeca0b212e217c9",
+  "pull_request": 177,
+  "workflow": {
+    "run_id": 36244318267,
+    "status": "completed",
+    "conclusion": "success",
+    "backend_job": 108411899871,
+    "tools_job": 108410534539,
+    "all_seven_test_groups": "success",
+    "frontend": "success",
+    "artifacts": [],
+    "test_jobs": {
+      "server": 108410534484,
+      "scenarios-old": 108410534519,
+      "scenarios-2025-26": 108410534525,
+      "tools": 108410534539,
+      "engine": 108410534541,
+      "scenarios-2023-24": 108410534543,
+      "content": 108410534553
+    },
+    "frontend_job": 108410534368,
+    "coverage": {
+      "job_id": 108410534980,
+      "conclusion": "skipped",
+      "required_for_pr": false
+    },
+    "job_conclusions": {
+      "108410534484": "success",
+      "108410534519": "success",
+      "108410534525": "success",
+      "108410534539": "success",
+      "108410534541": "success",
+      "108410534543": "success",
+      "108410534553": "success",
+      "108410534368": "success",
+      "108411899871": "success"
+    }
+  },
+  "tests": {
+    "IzzetSciencePosition1BootstrapTest": [
+      "frozen byte identities and translated lists produce an unseeded unsmoothed PDH config",
+      "play and draw change the starting player without swapping stable deck seats",
+      "changed control or opponent bytes and unknown assignments reject before seed access",
+      "all five unresolved identities block the real initializer without touching its seed supplier",
+      "play fixture reuses the real configuration with exact command zones and deterministic initialization",
+      "draw fixture reuses the real configuration with exact command zones and deterministic initialization",
+      "a charged London mulligan survives serialized state and action replay without automatic decisions"
+    ],
+    "IzzetSciencePdhMechanicsQualificationTest": [
+      "exact nonlegendary commanders initialize in their own command zones at 30 life",
+      "Izzet Guildmage is offered legally, casts for printed cost, and requires two more mana on recast",
+      "Veteran Beastrider is offered legally, casts for printed cost, and requires two more mana on recast",
+      "the actual commander owner can decline command-zone return",
+      "actual Guildmage combat reaches 15 commander damage under the 16 threshold",
+      "actual Guildmage combat reaches 16 commander damage under the 16 threshold",
+      "16 noncombat damage by the actual commander never increments commander combat damage"
+    ],
+    "IzzetScienceVeteranBeastriderEngineReadinessTest": [
+      "exact frozen 99-card identities have correct counts",
+      "Boreal Druid resolves with exact colorless mana ability",
+      "Llanowar Visionary resolves as ETB draw mana creature",
+      "Owlbear resolves as trample ETB draw creature",
+      "Murmuring Mystic resolves as instant-sorcery cast token engine",
+      "Goblin Electromancer resolves with generic instant-sorcery cost reduction",
+      "Memory Lapse resolves through counter-to-library-top destination",
+      "Izzet Guildmage resolves with two capped spell-copy abilities",
+      "Echoing Truth resolves as same-name nonland-permanent bounce",
+      "Snap resolves as creature bounce with resolution-time land choice",
+      "Capsize resolves as permanent bounce with buyback",
+      "Frantic Search resolves as draw-discard with resolution-time land choice",
+      "frozen combined Veteran identities resolve their exact printed faces",
+      "freeze exact unresolved engine coverage count and emit identities",
+      "full execution remains fail closed behind unresolved cards and PDH semantics",
+      "readiness consumes no official seed and exposes no outcome"
+    ]
+  },
+  "source_sha256": {
+    "gym/src/main/kotlin/com/wingedsheep/gym/matchup/IzzetSciencePosition1Bootstrap.kt": "8eb29ffdc0894aa7037ddf30d56f6778f5ab133bb6f5059ce5900f48ccd149bb",
+    "gym/src/test/kotlin/com/wingedsheep/gym/IzzetSciencePosition1BootstrapTest.kt": "00395fb6509749c48c9171f86298892cbe1dc2d650ced01f3ba2767af6541f9f",
+    "izzet-science/v09-position1-bootstrap-gate.md": "22a61db18385b4fd5f028af4ac0d70d0c0a93798a58e7ab6dbd661176e3340c2"
+  },
+  "transcript": {
+    "kind": "complete decoded GitHub tools-job log preserved as exact UTF-8 text",
+    "path": "izzet-science/evidence/position1-bootstrap-36244318267/tools-job-decoded.txt",
+    "sha256": "c7224820b21e287e4df43b1cd2f6224fbf9c406dd4b98cdc11926ecfd640bde4",
+    "bytes": 105788,
+    "failed_markers": 0,
+    "scope": "full tools job, including all seven new cases and both adjacent classes",
+    "transport_note": "Initial scratch copy added one trailing newline; durable transcript matches the connector returned string exactly."
+  },
+  "independent_review": {
+    "reviewer_role": "non-author sibling agent, Ferocity coordinator task",
+    "source_review": "Reviewed exact three-file source before publication; no blocking source finding.",
+    "evidence_audit": "Independently fetched GitHub workflow/jobs/tools log; verified tested merge/base/source/tree, all seven CI groups plus frontend/backend, exact 7 bootstrap + 7 PDH + 16 readiness passes, zero failures, source-file hashes and exact decoded UTF-8 transcript SHA-256/byte length.",
+    "governing_requirements": "Read bootstrap gate, repository verify instructions and existing Phase-32/33 execution-adapter boundaries; no additional ZIP-artifact mandate applies to this component.",
+    "disposition": "ACCEPT_BOOTSTRAP_COMPONENT_ONLY",
+    "github_review_submissions": 0,
+    "execution_admission": false,
+    "unchanged_prerequisites": [
+      "five unresolved registry identities",
+      "full frozen-pair PDH qualification",
+      "competent executable pilots and actor information",
+      "full-game replay and Phase-29 collector",
+      "source binding and durable seed adapter",
+      "canonical post-block-declaration priority repair receiving-source qualification"
+    ]
+  },
+  "official": {
+    "seeds_generated": 12,
+    "seeds_consumed": 0,
+    "games_initialized": 0,
+    "games_completed": 0,
+    "outcomes_exposed": 0,
+    "deck_changes": false,
+    "control_disposition": "KEEP_V07"
+  },
+  "remaining_registry_gaps": [
+    "Benevolent Blessing",
+    "Forge of Heroes",
+    "Opal Palace",
+    "Snake Umbra",
+    "Vines of Vastwood"
+  ],
+  "limitations": [
+    "Only initialization and mulligan fixtures use public regression coordinate 1 and 99 existing basics; no frozen-pair game was initialized.",
+    "Full execution remains behind unchanged five registry and five PDH/extraction guards.",
+    "No executable pilot, full-game replay, official adapter binding, merge or gameplay admission is asserted.",
+    "Read-only source inspection confirms the known final-blocker-declaration priority path still returns the last defender; the externally owned canonical repair requires receiving-source qualification before interactive gameplay. This initialization-only component does not exercise or clear that blocker."
+  ],
+  "accepted_at_utc": "2026-09-26T13:28:09Z"
+}

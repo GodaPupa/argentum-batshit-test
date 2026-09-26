@@ -16,6 +16,7 @@ import com.wingedsheep.engine.state.components.combat.AttackersDeclaredThisTurnC
 import com.wingedsheep.engine.state.components.combat.AttackingComponent
 import com.wingedsheep.engine.state.components.combat.BlockingComponent
 import com.wingedsheep.engine.state.components.identity.CardComponent
+import com.wingedsheep.engine.state.components.identity.CommanderComponent
 import com.wingedsheep.engine.state.components.identity.ControllerComponent
 import com.wingedsheep.engine.state.components.identity.FaceDownComponent
 import com.wingedsheep.engine.state.components.identity.HasMorphAbilityComponent
@@ -123,6 +124,19 @@ class AffectsFilterResolverStatePredicateTest : FunSpec({
 
     fun filterWith(predicate: StatePredicate): AffectsFilter =
         AffectsFilter.Generic(GroupFilter(GameObjectFilter(statePredicates = listOf(predicate))))
+
+    test("IsCommander projection matches designated cards of either controller and not same-name copies") {
+        val yourCommander = EntityId.generate()
+        val theirCommander = EntityId.generate()
+        val ordinaryCopy = EntityId.generate()
+        val state = battlefield(listOf(
+            yourCommander to container(playerA, creature(playerA), CommanderComponent(playerA)),
+            theirCommander to container(playerB, equipmentCard(playerB), CommanderComponent(playerB)),
+            ordinaryCopy to container(playerA, creature(playerA))
+        ))
+        resolver.resolveAffectedEntities(state, ordinaryCopy, filterWith(StatePredicate.IsCommander))
+            .shouldContainExactlyInAnyOrder(yourCommander, theirCommander)
+    }
 
     // =========================================================================
     // Tap state

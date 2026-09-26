@@ -6,6 +6,7 @@ import com.wingedsheep.engine.state.components.identity.CardComponent
 import com.wingedsheep.engine.support.ScenarioTestBase
 import com.wingedsheep.mtg.sets.definitions.fdn.FoundationsSet
 import com.wingedsheep.mtg.sets.definitions.jmp.JumpstartSet
+import com.wingedsheep.mtg.sets.definitions.mh3.ModernHorizons3Set
 import com.wingedsheep.mtg.sets.tokens.TokenArtData
 import com.wingedsheep.sdk.core.Color
 import io.kotest.matchers.collections.shouldHaveSize
@@ -146,6 +147,27 @@ class SetScopedTokenArtScenarioTest : ScenarioTestBase() {
                 "/images/tokens/jmp-dog3.jpeg",
                 "/images/tokens/jmp-dog4.jpeg",
             )
+        }
+
+        test("Modern Horizons 3 resolves Colossal Dreadmask's Phyrexian Germ to tmh3 #16") {
+            val registry = TokenArtRegistry().apply {
+                register(
+                    ModernHorizons3Set.code,
+                    TokenArtData.forSet(ModernHorizons3Set),
+                    ModernHorizons3Set.cards.map { it.name },
+                )
+            }
+
+            val art = registry.resolve(
+                sourceCardDefinitionId = "Colossal Dreadmask#MH3-148",
+                tokenName = "Phyrexian Germ",
+                power = 0,
+                toughness = 0,
+                colors = setOf(Color.BLACK),
+            )
+
+            art shouldNotBe null
+            art!! shouldContain "5ec719dc-6b07-4b1d-a79c-84ebced33422"
         }
     }
 }

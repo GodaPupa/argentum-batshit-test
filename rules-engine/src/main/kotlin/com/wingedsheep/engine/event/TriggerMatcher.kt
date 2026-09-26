@@ -2264,6 +2264,8 @@ class TriggerMatcher(
         state: GameState,
         entityId: EntityId
     ): Boolean = when (predicate) {
+        com.wingedsheep.sdk.scripting.predicates.StatePredicate.IsCommander ->
+            state.getEntity(entityId)?.has<com.wingedsheep.engine.state.components.identity.CommanderComponent>() == true
         is com.wingedsheep.sdk.scripting.predicates.StatePredicate.IsFaceDown -> {
             val entity = state.getEntity(entityId) ?: return false
             entity.has<FaceDownComponent>()

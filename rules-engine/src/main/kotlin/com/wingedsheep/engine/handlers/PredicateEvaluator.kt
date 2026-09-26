@@ -32,6 +32,7 @@ import com.wingedsheep.engine.state.components.combat.BlockingComponent
 import com.wingedsheep.engine.state.components.combat.PlayerAttackersThisTurnComponent
 import com.wingedsheep.engine.state.components.combat.PlayerAttackersLastTurnComponent
 import com.wingedsheep.engine.state.components.identity.CardComponent
+import com.wingedsheep.engine.state.components.identity.CommanderComponent
 import com.wingedsheep.engine.state.components.identity.ControllerComponent
 import com.wingedsheep.engine.state.components.identity.FaceDownComponent
 import com.wingedsheep.engine.state.components.identity.RoomComponent
@@ -1364,6 +1365,9 @@ class PredicateEvaluator {
             // Zone. Deliberately a *live* read with no last-known fallback — this predicate exists
             // to cancel the fallbacks the combat predicates below carry.
             StatePredicate.IsOnBattlefield -> entityId in state.getBattlefield()
+
+            // Commander is a designation of the card, not a copiable characteristic or ability.
+            StatePredicate.IsCommander -> container.has<CommanderComponent>()
 
             // Tap state
             StatePredicate.IsTapped -> container.has<TappedComponent>()

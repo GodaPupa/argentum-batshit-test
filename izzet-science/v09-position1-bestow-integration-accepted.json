@@ -1,0 +1,62 @@
+{
+  "schema": "izzet-v09-position1-bestow-integration-acceptance-v1",
+  "status": "ACCEPTED_SEED_FREE_BESTOW_INTEGRATION_AND_BASELINE_INTEGRITY",
+  "source_branch": "mayhem/izzet-bestow-integration",
+  "source_commit": "41026a19ae65692f7249f90aab51e3cfb9fa963b",
+  "control_disposition": "KEEP_V07",
+  "deck_changes": false,
+  "bestow_port": {
+    "component_commit": "5c83ccff3fa8c04abf39886cf6610b2e26b698e5",
+    "enumerator_commit": "f4eeeb4f3a377a85827fe1b366b075f3d3b867d5",
+    "zone_movement_commit": "0d6a97e3febc086daa3fdc76e2b1c25b418ba769",
+    "unattached_aura_commit": "7916c9710ebe3b619e3de99a6cea85154a1905aa",
+    "stack_exit_restore_commit": "9ff6f9b21d52591a99c90e6d5cbdaaa29fbab25e",
+    "resolution_commit": "7b9317b3f4b339f77b3b7e14e483b1b7d3d4bf01",
+    "cast_validation_commit": "94d4edb091313b0a1e7484958902bff269ac04de",
+    "snapshot_sync_commit": "9057ea2854f86c4d4c88e9310328a2d08209ba08"
+  },
+  "integration_repairs": {
+    "facade_equivalent_serialization_commits": [
+      "01d626653ad471a593464c912deda40875779eed",
+      "cede350d1bd8e86cd37c9829523f39e66329d0ec",
+      "939b952a59e6f25aa26e36c89c2a7844f8772cc9",
+      "16665c5721df8da8e1ccab6c1ae09d3f33db55f8",
+      "931c1a902e995507502ab469e819104d75e2960b"
+    ],
+    "ichor_wellspring_definition_commit": "e44108a96aeee2446f2ea7a80bce31efae9a78e0",
+    "ichor_wellspring_snapshot_commit": "137d4e642609dc04a66f757e5fee4cba1d01662f",
+    "nihil_spellbomb_definition_commit": "71a77ef3c625bf0ae255b129b9bc7cb2514abd9b",
+    "nihil_spellbomb_snapshot_commit": "5dde6bb81225104e4e10e2690d73cb717daf84bd",
+    "mh3_germ_token_art_commit": "67e2d2e9e95dda1e3966c2454eba04c7f6ad03cd",
+    "mh3_token_art_regression_commit": "03bc8232fbd4e28296dc54eb23791c0a8b39acd2"
+  },
+  "frozen_baseline": {
+    "expected_hash": "47e993c61a57ebbd",
+    "observed_pre_repair_hash": "4ad82771c7dc54ca",
+    "turns": 20,
+    "winner_seat": 1,
+    "life": "-8/16",
+    "diagnostic_run": 36220061933,
+    "diagnostic_job": 108343501283,
+    "root_cause": "CastSpell.toString() gained the default serialization field declaredCostRepeatCount=null; removing only that inert default text from the 413-entry diagnostic stream reproduces the golden hash exactly.",
+    "canonicalization_commit": "41026a19ae65692f7249f90aab51e3cfb9fa963b",
+    "golden_hash_reblessed": false
+  },
+  "validation": {
+    "full_ci_run": 36222235149,
+    "full_ci_conclusion": "success",
+    "content_job": 108349532626,
+    "engine_job": 108349532675,
+    "old_scenarios_job": 108349532724,
+    "2023_2024_scenarios_job": 108349532650,
+    "2025_2026_scenarios_job": 108349532648,
+    "backend_job": 108350058473
+  },
+  "official": {
+    "seeds_consumed": 0,
+    "games_initialized": 0,
+    "outcomes_exposed": 0,
+    "position1_gameplay_authorized": false
+  },
+  "next_gate": "Return to the authoritative Position-1 engine-gap inventory, remove only identities independently proven qualified by accepted evidence, and implement the next unresolved exact identity without changing Izzet Science v0.7."
+}

@@ -43,6 +43,12 @@ class FacadeBoundaryTest : FunSpec({
             }
         }
 
+        if (violations.isNotEmpty()) {
+            println("FACADE_BOUNDARY_VIOLATIONS_BEGIN")
+            violations.forEach(::println)
+            println("FACADE_BOUNDARY_VIOLATIONS_END")
+        }
+
         withClue(
             "Card definitions must go through the Effects.*/Costs.* facades (SDK review §2.3).\n" +
                 violations.joinToString("\n")
