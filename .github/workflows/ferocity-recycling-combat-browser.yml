@@ -102,5 +102,6 @@ jobs:
         with:
           name: ferocity-combat-browser-${{ github.run_id }}-${{ github.run_attempt }}
           path: ferocity-recycling/evidence/browser/combat/
+          include-hidden-files: true
           if-no-files-found: error
           retention-days: 30
