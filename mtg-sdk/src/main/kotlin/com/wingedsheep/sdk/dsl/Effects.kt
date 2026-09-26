@@ -148,6 +148,7 @@ import com.wingedsheep.sdk.scripting.effects.PutOnLibraryPositionOfChoiceEffect
 import com.wingedsheep.sdk.scripting.effects.ExileFromTopRepeatingEffect
 import com.wingedsheep.sdk.scripting.effects.ExileLibraryUntilManaValueEffect
 import com.wingedsheep.sdk.scripting.effects.ExileOpponentsGraveyardsEffect
+import com.wingedsheep.sdk.scripting.effects.ExileAllGraveyardsEffect
 import com.wingedsheep.sdk.scripting.effects.ExileUntilLeavesEffect
 import com.wingedsheep.sdk.scripting.effects.ExileAndGrantOwnerPlayPermissionEffect
 import com.wingedsheep.sdk.scripting.effects.CreateGlobalTriggeredAbilityEffect
@@ -948,6 +949,9 @@ object Effects {
      * Exile all cards in each opponent's graveyard.
      */
     fun ExileOpponentsGraveyards(): Effect = ExileOpponentsGraveyardsEffect
+
+    /** Exile every card from every player's graveyard. */
+    fun ExileAllGraveyards(): Effect = ExileAllGraveyardsEffect
 
     /** Move out of a zone and return immediately when this source leaves, without a return trigger. */
     fun MoveUntilSourceLeaves(target: EffectTarget, destination: Zone): Effect =
