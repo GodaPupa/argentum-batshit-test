@@ -1,10 +1,13 @@
 package com.wingedsheep.ai.industrialwaste
 
+import com.wingedsheep.engine.core.engineSerializersModule
+import com.wingedsheep.engine.state.GameState
 import com.wingedsheep.engine.support.GameTestDriver
 import com.wingedsheep.mtg.sets.MtgSetCatalog
 import com.wingedsheep.sdk.model.Deck
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
+import kotlinx.serialization.json.Json
 import java.nio.file.Files
 import java.nio.file.Path
 
@@ -68,4 +71,50 @@ class IndustrialWasteV2CapabilityRunnerTest : FunSpec({
             status.diagnostic shouldBe null
         }
     }
+
+    test("composed one-turn capability runner replays identically for all four frozen lists") {
+        val frozen = listOf(
+            "industrial-waste/control/industrial-waste-v1.0-submitted.dck",
+            "industrial-waste/v2/candidates/compact-loop.dck",
+            "industrial-waste/v2/candidates/recursive-eggs.dck",
+            "industrial-waste/v2/candidates/lean-tron-hybrid.dck",
+        )
+        val json = Json {
+            serializersModule = engineSerializersModule
+            allowStructuredMapKeys = true
+            encodeDefaults = true
+        }
+
+        fun execute(path: String): Triple<IndustrialWasteV2ExecutionStatus, String, List<String>> {
+            val driver = GameTestDriver().apply {
+                MtgSetCatalog.all.forEach { set ->
+                    registerCards(set.cards)
+                    registerCards(set.basicLands)
+                }
+                initGame(
+                    loadMain(path),
+                    Deck.of("Forest" to 60),
+                    skipMulligans = true,
+                    startingLife = 20,
+                    startingPlayer = 0,
+                    seed = regressionSeed,
+                )
+            }
+            val status = IndustrialWasteV2CapabilityRunner(
+                driver,
+                driver.player1,
+                driver.player2,
+            ).runOneMeasuredTurn()
+            return Triple(
+                status,
+                json.encodeToString(GameState.serializer(), driver.state),
+                driver.events.map { it.toString() },
+            )
+        }
+
+        for (path in frozen) {
+            execute(path) shouldBe execute(path)
+        }
+    }
+
 })
