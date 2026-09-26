@@ -144,7 +144,7 @@ class AetherChannelerScenarioTest : FunSpec({
         val driver = game()
         val other = driver.putPermanentOnBattlefield(driver.firstSeat, "Aether Channeler")
         val land = driver.state.projectedState.getBattlefieldControlledBy(driver.firstSeat).first {
-            driver.state.projectedState.isLand(it)
+            driver.state.projectedState.hasType(it, "LAND")
         }
         val source = enter(driver)
         choose(driver, bounceMode)
