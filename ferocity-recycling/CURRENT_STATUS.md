@@ -1,6 +1,6 @@
 # Ferocity Recycling — current status
 
-Record cut: 2026-09-26 UTC, successor conductor source08 artifact audit. **Research incomplete; no research stopping rule reached.** All questions (strongest Ferocity configuration, Ferocity contribution, competitiveness) remain unresolved.
+Record cut: 2026-09-26 21:35 UTC, source08 artifact audit and recovered historical resource attempts. **Research incomplete; no research stopping rule reached.** All questions (strongest Ferocity configuration, Ferocity contribution, competitiveness) remain unresolved.
 
 ## Sources and actual execution
 
@@ -23,10 +23,15 @@ Record cut: 2026-09-26 UTC, successor conductor source08 artifact audit. **Resea
 
 ## What prevents the next admitted experimental step?
 
-The first scheduled cell remains A3-F4/A3-N0 against frozen MisterTwin Red, sixteen D2 games. No family is declared best. Its next steps are complete receiving-source/admission review; recovery of the exact already-declared fixed Gift journal for the three-command finite resource calibration; exact qualified JDK/runtime restoration; offline card export with the approved source/dependency/policy/protocol closure; and the independent final admission/verify chain before any entropy.
+The first scheduled cell remains A3-F4/A3-N0 against frozen MisterTwin Red, sixteen D2 games. No family is declared best. Its next steps are complete receiving-source/admission review; reconciliation of the recovered resource-calibration attempt/disposition history and a valid prospective technical remedy; exact qualified runtime restoration; offline card export with the approved source/dependency/policy/protocol closure; and the independent final admission/verify chain before any entropy.
 
-The existing resource probe pins template SHA-256 `fa4cbc67fc5482d298ddf7e92968349b6eba584c4328c851d2bda86ce0277c5a`. It admits write/read-single/read-double only, a 127–128 MiB synthetic shape and an exact 2 GiB heap. This template must be recovered, not replaced by a newly generated trace. The observed runtime archive is now preserved in source08 original gym evidence. The takeover executor has Java 17 and no just; the preserved runtime requires the exact observed Java 21.0.12.1 executable. A correctly bound CI invocation may resolve that environment requirement.
+The exact historical Gift template (471,219 bytes, SHA-256 `fa4cbc67fc5482d298ddf7e92968349b6eba584c4328c851d2bda86ce0277c5a`), original matching claim/allocation and original Java executable SHA-256 `2a207f5e7d075afa01d97f8048389a64432a44c4a5af0f5e77d6e286ec5f401d` were recovered read-only from the recorded historical checkout. [Recovery and actual attempt evidence](evidence/source08-takeover/gift-template-recovery/README.md) correct the earlier incomplete assumption that all calibration purposes were unspent.
+
+Actual historical resource accounting: scope 41 write supervisor claimed, free-space preflight refused, zero JVMs; scope 44 write supervisor claimed and one JVM completed a 134,166,907-byte synthetic journal; scope 44 read-single supervisor claimed, free-space preflight refused, zero reader JVMs; read-double retired by the frozen stop. **No calibration command is currently admitted.** Scope 44's distinct environment-disposition adoption provenance remains unresolved and is not retroactively approved here. There is no reader memory observation, replay qualification or gameplay result from that synthetic trace. Its complete original bytes and all 21 receipt-listed artifacts were recovered and verified.
+
+The detached historical checkout HEAD is `2a99c52bcfb869ecc0c32443c2b77765abde4b65` with later untracked resource records, separately bound to their M1 source/runner freezes; it is not the source08 receiving runtime. No historical checkout mutation or new probe execution occurred. The source08 observed runtime remains preserved in the original gym evidence. Reviewed read-only archive retrieval `36272829768`, attempt 1, completed at isolated source `5771a2cd5343610f2a4f5142269ca6a235ed9aec`; no retrieval job remains active. Source08 runtime restoration/bundle closure and any valid prospective resource remedy remain distinct gates.
 
 All 18 prototype/comparator sixties and the frozen benchmarks remain unchanged. Red v0.2's first of two D1 revisions stays consumed. Prerelease research and sanctioned legality remain separate; no fresh legality admission is claimed. No deck-performance evidence changed.
 
 The previous status text is retained at `history/checkpoint-source08-before-takeover/CURRENT_STATUS.md`. Governing contracts and older failed/accepted evidence remain intact.
+

@@ -1,0 +1,28 @@
+{
+  "schema": "ferocity-historical-archive-retrieval-artifact-peer-review-v1",
+  "reviewer": "actual nonauthor /root/sphinx",
+  "decision": "PASS_EXISTING_BYTE_RETRIEVAL_AND_PRESERVATION_ONLY",
+  "source": "5771a2cd5343610f2a4f5142269ca6a235ed9aec",
+  "source_tree": "5670f1a78a53c8c36b3e45a6f2aa26c648397cc4",
+  "run_id": 36272829768,
+  "attempt": 1,
+  "artifact_id": 10915908757,
+  "original_artifact_sha256": "1bc6598d892115c59f9f6a152d994a87a31db47a93b61681ea8af80af8d641ce",
+  "original_artifact_bytes": 3312109,
+  "checks": [
+    "Independently fetched live run/artifact/tree metadata; exact source, event, attempt1, successful conclusion, archive size/digest agree.",
+    "Complete original Actions archive has exactly3members, validated CRC;13outer and23inner originalarchive members all match actual recorded sizes/SHA256 and CRC.",
+    "Outer Gitblob/size/SHA and nestedfixedZIP size/SHA match independently fetched immutable publication authority from earlier source review.",
+    "Manifest binds exact two previously reviewed source file hashes; live isolated tree has exactly those two blobs.",
+    "Target match set is actually empty; archived definition-bundle journals are not the Gift template and are not substituted.",
+    "Source review and this archive review remain distinct from subsequent successful original local Gift recovery."
+  ],
+  "limits": [
+    "No runtime/resource-probe/calibration/engine-replay or gameplay admission.",
+    "This exact retrieval did not recover the requestedGift journal; legitimate local recovery is reviewed separately.",
+    "Not a formalGitHubapproval."
+  ],
+  "new_games": 0,
+  "new_entropy": 0,
+  "new_probe_commands": 0
+}

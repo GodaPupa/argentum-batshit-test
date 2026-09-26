@@ -1,0 +1,112 @@
+{
+  "new_entropy": 0,
+  "new_games": 0,
+  "new_probe_commands": 0,
+  "schema": "ferocity-recovered-calibration-static-integrity-audit-v1",
+  "scope": "Read-only SHA256/JSON envelope inspection of original existing bytes; no JVM codec/replayer/resource measurement or engine execution.",
+  "supervisor_attempts": [
+    {
+      "chain_valid": true,
+      "child_started": 0,
+      "event_kinds": [
+        "RESOURCE_PREFLIGHT",
+        "SUPERVISOR_FAILURE"
+      ],
+      "events": 2,
+      "path": "ferocity-recycling/evidence/resource-calibration/scope-41/processes/resource-calibration-41-write/events.jsonl",
+      "scope": "41",
+      "terminal_data": {
+        "elapsed_ns": 110001,
+        "failure_type": "OSError",
+        "game_outcome": null,
+        "message": "Insufficient evidence space: 768 MiB free is required before child launch",
+        "pid": null,
+        "returncode": null,
+        "signals": []
+      },
+      "terminal_kind": "SUPERVISOR_FAILURE"
+    },
+    {
+      "chain_valid": true,
+      "child_started": 0,
+      "event_kinds": [
+        "RESOURCE_PREFLIGHT",
+        "SUPERVISOR_FAILURE"
+      ],
+      "events": 2,
+      "path": "ferocity-recycling/evidence/resource-calibration/scope-44/processes/resource-calibration-44-read-single/events.jsonl",
+      "scope": "44",
+      "terminal_data": {
+        "elapsed_ns": 110087,
+        "failure_type": "OSError",
+        "game_outcome": null,
+        "message": "Insufficient evidence space: 768 MiB free is required before child launch",
+        "pid": null,
+        "returncode": null,
+        "signals": []
+      },
+      "terminal_kind": "SUPERVISOR_FAILURE"
+    },
+    {
+      "chain_valid": true,
+      "child_started": 1,
+      "event_kinds": [
+        "RESOURCE_PREFLIGHT",
+        "LAUNCH_INTENT",
+        "CHILD_STARTED",
+        "PROCESS_RESULT"
+      ],
+      "events": 4,
+      "path": "ferocity-recycling/evidence/resource-calibration/scope-44/processes/resource-calibration-44-write/events.jsonl",
+      "scope": "44",
+      "terminal_data": {
+        "admission": "REQUIRES_SEPARATE_ENGINE_REPLAY_AND_PROTOCOL_ACCEPTANCE",
+        "classification": "EXIT_ZERO_REQUIRES_ENGINE_REPLAY",
+        "descendants_after_leader_exit": false,
+        "elapsed_ns": 16522779358,
+        "game_outcome": null,
+        "input_pins_unchanged": true,
+        "journal": {
+          "classification": "NO_JOURNAL_CONFIGURED",
+          "engine_verified": false
+        },
+        "new_gameplay_games": 0,
+        "pid": 7,
+        "process_group_absent_after_cleanup": null,
+        "returncode": 0,
+        "signals": [],
+        "stderr": {
+          "path": "/tmp/ferocity-qualified-build-a63kaiqe/checkout/ferocity-recycling/evidence/resource-calibration/scope-44/processes/resource-calibration-44-write/stderr.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size": 0,
+          "state": "READ_ONLY_SNAPSHOT"
+        },
+        "stdout": {
+          "path": "/tmp/ferocity-qualified-build-a63kaiqe/checkout/ferocity-recycling/evidence/resource-calibration/scope-44/processes/resource-calibration-44-write/stdout.log",
+          "sha256": "c4ccbf9a3cc47a8ae512e92ab263a691b6f62819f1fdc4848be3285d531f4054",
+          "size": 570,
+          "state": "READ_ONLY_SNAPSHOT"
+        },
+        "timed_out": false
+      },
+      "terminal_kind": "PROCESS_RESULT"
+    }
+  ],
+  "synthetic_journal": {
+    "allocation_matches_claim": true,
+    "bytes": 134166907,
+    "claim_sha256": "8cf4198f786feade0ae64e288418000c08dce3d33c9812ee0064bc893cc41bb7",
+    "envelope_chain_valid": true,
+    "gameplay_evidence": false,
+    "no_END": true,
+    "path": "ferocity-recycling/evidence/resource-calibration/scope-44/fixed-shape/synthetic-prefix/journals/779daae134013889557af9e478061407f73ce3d4ba3483706164ca4e299a9aed.jsonl",
+    "record_types": {
+      "HEADER": 1,
+      "INITIALIZED": 1,
+      "INTENT": 1150,
+      "RESULT": 1150
+    },
+    "records": 2302,
+    "sha256": "b45815c56592d2dc6bce43963590518a2b2d83510e1ea6aecb4b14a3bfe91752"
+  }
+}

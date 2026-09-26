@@ -1,0 +1,43 @@
+{
+  "schema": "ferocity-historical-gift-retrieval-source-peer-review-v1",
+  "reviewer_role": "actual nonauthor subagent /root/sphinx",
+  "decision": "PASS_BOUNDED_READ_ONLY_ARCHIVE_RETRIEVAL",
+  "reviewed_files_sha256": {
+    "ferocity-takeover/retrieve-historical-gift-template.py": "ff7c9169d1afb0fd306fac84a355f43359b5e14266729639ce0c988b3332377f",
+    "ferocity-takeover/ferocity-historical-gift-retrieval.yml": "d0d2554d8983e9b2239f51bde8f5baa923f84a2b19a85e1799dfcdbedcd46716"
+  },
+  "workflow_branch": "lab/ferocity-historical-gift-retrieval-20260926",
+  "branch_observation": "GitHub ref read returned404 before publication during this review. Recheck before create.",
+  "original_source": "3a4f99a7653839506e96d19e6639f58d9e8c5ced",
+  "source_tree": "56c6b8dd46dc112cdb70db496fd9d0c3e915e8a6",
+  "original_outer": {
+    "path": "ferocity-recycling/evidence/build/integrated-bundle-publication-v4-2/integrated-v4-2-bundle-04-part-01.zip",
+    "bytes": 3077462,
+    "sha256": "b99335efcfc04767cce9ea34b074b76a73f1ce47050787f9c89fc90763c66e11"
+  },
+  "original_git_blob": "a2d9f217df8112094bdb49f1319d6ae7d0f4d7f6",
+  "original_inner": {
+    "path": "ferocity-recycling/evidence/build/integrated-v4-2-bundle-04/fixed-process-artifacts.zip",
+    "sha256": "004da1b12dde092b96623b31531f10d8291ad16fdba3c7d001c74d03fd6410de",
+    "bytes": 223731
+  },
+  "checks": [
+    "Read entire exact workflow and Python source. AST parsing only; retrieval was not executed by reviewer.",
+    "Live immutable publication manifest pins both original archive sizes and SHA256. Independently fetched complete untruncated source08 Git tree confirms outer Git blob and3077462B size.",
+    "Workflow is push on one absent isolated branch, creation-only plus run_attempt1. Read-only contents permission, checkout credentials not persisted, exact SHA checkout, pinned actions.",
+    "Script checks repository, attempt1, exact control HEAD, exactly two tracked reviewed files, and before/after source hashes.",
+    "Single fixed public raw GitHub GET; redirect prohibited; read bounded to expected bytes+1; exact size/SHA256/Git blob validated before preservation.",
+    "ZIP member count, aggregate expansion and per-file limits; in-memory CRC-verified reads; no path extraction or archive code execution.",
+    "Original outer and inner bytes are preserved; inner SHA256/size pinned; output records exact member digests and target matches without inventing/reconstructing a missing journal.",
+    "Only local subprocess invocations are Git identity/inventory reads. No runtime, engine, build, browser, probe, random allocation or game command.",
+    "Failure manifest and existing bytes upload under always step; absence of target is not a deck verdict and does not authorize substitute bytes."
+  ],
+  "scope_exclusions": [
+    "Not archive-content validation until retrieval completes.",
+    "No assurance target journal exists in selected archive.",
+    "No resource-calibration admission, gameplay permit, GitHub approval or experiment result."
+  ],
+  "new_resource_probe_commands": 0,
+  "new_game_initializations": 0,
+  "new_entropy": 0
+}
