@@ -1069,9 +1069,6 @@ target choices and serialization. Optional effects still choose whether to act a
 If a chooser departs, surviving controllers' pending batches remain in the priority boundary.
 Source snapshots retain the exact object reference at departure, so queued damage and target
 choices cannot borrow the characteristics of a returned object with the same entity ID.
-The same departure capture stamps the durable `pendingCastPriority` batch during state-based
-actions. The cast boundary reads that updated batch after the check, so an observer token's
-own source history survives cleanup even when the triggering event concerned another object.
 
 **Step-specific auto-actions.** The `TurnManager.advanceStep()` method handles each step's built-in
 behavior:
