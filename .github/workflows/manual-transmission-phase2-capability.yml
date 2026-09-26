@@ -27,6 +27,8 @@ on:
       - 'mtg-sets/**/scenarios/ParadiseDruidScenarioTest.kt'
       - 'mtg-sets/**/scenarios/PongifyScenarioTest.kt'
       - 'mtg-sets/**/scenarios/RapidHybridizationScenarioTest.kt'
+      - 'mtg-sets/**/cards/WorldBreaker.kt'
+      - 'mtg-sets/**/scenarios/WorldBreakerScenarioTest.kt'
       - 'mtg-sets/**/cards/RealityShift.kt'
       - 'mtg-sets/**/scenarios/RealityShiftScenarioTest.kt'
       - 'mtg-sets/**/scenarios/CloudOfFaeriesScenarioTest.kt'
@@ -119,14 +121,22 @@ jobs:
       - uses: gradle/actions/setup-gradle@v6
       - name: Prepare exact registry requests without seeds
         run: python3 experiments/manual-transmission-phase2/bootstrap_audit.py --phase1 .phase1-source --out build/reports/manual-transmission-phase2/source
+      - name: Bind the existing World Breaker source before scenario execution
+        run: |
+          python3 - <<'PYTHON'
+          import hashlib, json, pathlib
+          gate = json.loads(pathlib.Path('experiments/manual-transmission-phase2/world-breaker-routing-correction-r1.json').read_text())
+          for path, digest in gate['source_sha256'].items():
+              assert hashlib.sha256(pathlib.Path(path).read_bytes()).hexdigest() == digest, path
+          PYTHON
       - name: Exact frozen hardware card scenarios
         run: |
-          scripts/gradle-locked :mtg-sets:2003-2007:tests:test --tests "*CoilingOracleScenarioTest" --tests "*KurgadonTest" --tests "*UtopiaSprawlScenarioTest" --tests "*PongifyScenarioTest" \
-            :mtg-sets:1993-1999:tests:test --tests "*WildGrowthScenarioTest" --tests "*CloudOfFaeriesScenarioTest" --tests "*PeregrineDrakeScenarioTest" \
-            :mtg-sets:2008-2016:tests:test --tests "*ManualTransmissionLandSpellGuardScenarioTest" --tests "*ArborElfScenarioTest" --tests "*AnimarSoulOfElementsScenarioTest" --tests "*AncestralStatueScenarioTest" --tests "*RapidHybridizationScenarioTest" --tests "*RealityShiftScenarioTest" --tests "*NestInvaderScenarioTest" --tests "*EmrakulsHatcherScenarioTest" --tests "*EyelessWatcherScenarioTest" \
-            :mtg-sets:2017-2022:tests:test --tests "*ParadiseDruidScenarioTest" --tests "*RejuvenatingSpringsScenarioTest" --tests "*TrainingCenterScenarioTest" --tests "*SpireGardenScenarioTest" --tests "*WalkingBallistaScenarioTest" --tests "*WorldBreakerScenarioTest" \
-            :mtg-sets:2024:tests:test --tests "*HopeEnderCoatlScenarioTest" --tests "*EldraziRepurposerScenarioTest" --tests "*WrithingChrysalisScenarioTest" \
-            :mtg-sets:2025:tests:test --tests "*TownLandSpellAdventureScenarioTest" --info --stacktrace
+          scripts/gradle-locked :mtg-sets:2003-2007:tests:test --rerun --tests "*CoilingOracleScenarioTest" --tests "*KurgadonTest" --tests "*UtopiaSprawlScenarioTest" --tests "*PongifyScenarioTest" \
+            :mtg-sets:1993-1999:tests:test --rerun --tests "*WildGrowthScenarioTest" --tests "*CloudOfFaeriesScenarioTest" --tests "*PeregrineDrakeScenarioTest" \
+            :mtg-sets:2008-2016:tests:test --rerun --tests "*ManualTransmissionLandSpellGuardScenarioTest" --tests "*ArborElfScenarioTest" --tests "*AnimarSoulOfElementsScenarioTest" --tests "*AncestralStatueScenarioTest" --tests "*RapidHybridizationScenarioTest" --tests "*WorldBreakerScenarioTest" --tests "*RealityShiftScenarioTest" --tests "*NestInvaderScenarioTest" --tests "*EmrakulsHatcherScenarioTest" --tests "*EyelessWatcherScenarioTest" \
+            :mtg-sets:2017-2022:tests:test --rerun --tests "*ParadiseDruidScenarioTest" --tests "*RejuvenatingSpringsScenarioTest" --tests "*TrainingCenterScenarioTest" --tests "*SpireGardenScenarioTest" --tests "*WalkingBallistaScenarioTest" \
+            :mtg-sets:2024:tests:test --rerun --tests "*HopeEnderCoatlScenarioTest" --tests "*EldraziRepurposerScenarioTest" --tests "*WrithingChrysalisScenarioTest" \
+            :mtg-sets:2025:tests:test --rerun --tests "*TownLandSpellAdventureScenarioTest" --info --stacktrace
       - name: Preserve per-card scenario evidence
         if: always()
         run: |
@@ -136,6 +146,38 @@ jobs:
               cp -R "mtg-sets/$era/tests/build/test-results/test" "build/reports/manual-transmission-phase2/card-scenarios/$era"
             fi
           done
+      - name: Require the exact World Breaker cases in fresh raw XML
+        if: always()
+        run: |
+          python3 - <<'PYTHON'
+          import hashlib, json, pathlib, xml.etree.ElementTree as ET
+          gate = json.loads(pathlib.Path('experiments/manual-transmission-phase2/world-breaker-routing-correction-r1.json').read_text())
+          path = pathlib.Path(gate['required_xml'])
+          out = pathlib.Path('build/reports/manual-transmission-phase2/world-breaker-routing-audit.json')
+          audit = {'scope': 'EXCLUDED_EXISTING_CARD_FIXTURE_ROUTING_ONLY',
+              'official_initializations': 0, 'execution_allowed': False,
+              'required_class': gate['required_class'], 'required_cases': gate['required_cases'],
+              'xml_exists': path.is_file(), 'actual_cases': [], 'failures': None,
+              'errors': None, 'skips': None}
+          if path.is_file():
+              raw = path.read_bytes()
+              suite = ET.fromstring(raw)
+              cases = suite.findall('testcase')
+              audit.update(xml_sha256=hashlib.sha256(raw).hexdigest(),
+                  actual_class=suite.attrib['name'], actual_cases=[c.attrib['name'] for c in cases],
+                  failures=sum(c.find('failure') is not None for c in cases),
+                  errors=sum(c.find('error') is not None for c in cases),
+                  skips=sum(c.find('skipped') is not None for c in cases))
+          out.parent.mkdir(parents=True, exist_ok=True)
+          out.write_text(json.dumps(audit, indent=2)+'\n')
+          assert audit['xml_exists'], 'Required World Breaker test class did not execute'
+          assert audit['actual_class'] == gate['required_class']
+          assert len(audit['actual_cases']) == len(set(audit['actual_cases'])) == 2
+          assert set(audit['actual_cases']) == set(gate['required_cases'])
+          assert audit['failures'] == audit['errors'] == audit['skips'] == 0
+          assert int(suite.attrib['tests']) == 2
+          assert all(int(suite.attrib[k]) == 0 for k in ('failures', 'errors', 'skipped'))
+          PYTHON
       - name: Generic commander and multiplayer capability fixtures
         # One invocation preserves every requested class without later invocations overwriting XML.
         run: |
