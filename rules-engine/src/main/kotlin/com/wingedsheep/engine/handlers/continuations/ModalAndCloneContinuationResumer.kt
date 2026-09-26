@@ -875,13 +875,13 @@ class ModalAndCloneContinuationResumer(
             if (triggerResult.isPaused) {
                 return ExecutionResult.propagatePause(
                     triggerResult.state,
-                    syntheticRiotEvents + triggerResult.events
+                    syntheticRiotEvents + zoneChangeEvent + triggerResult.events
                 )
             }
-            return checkForMore(triggerResult.newState, syntheticRiotEvents + triggerResult.events)
+            return checkForMore(triggerResult.newState, syntheticRiotEvents + zoneChangeEvent + triggerResult.events)
         }
 
-        return checkForMore(newState, syntheticRiotEvents)
+        return checkForMore(newState, syntheticRiotEvents + zoneChangeEvent)
     }
 
     /**
