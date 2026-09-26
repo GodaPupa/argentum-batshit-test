@@ -303,7 +303,7 @@ class IndustrialWasteV2FrozenResponderEquivalenceTest : ScenarioTestBase() {
             calls shouldBe 1
         }
 
-        test("legacy unaffordable optional cast retains the original simulation tie without preflight") {
+        test("legacy unaffordable optional cast retains the original evaluated decline without preflight") {
             val game = seeded().withLifeTotal(2, 20).withLandsOnBattlefield(1, "Mountain", 2)
                 .withCardInHand(1, "Grab the Prize").withCardInHand(1, "Fiery Temper")
                 .withCardInLibrary(1, "Mountain").withCardInLibrary(1, "Mountain").build()
@@ -316,7 +316,9 @@ class IndustrialWasteV2FrozenResponderEquivalenceTest : ScenarioTestBase() {
                 game.execute(PassPriority(game.state.priorityPlayerId!!)).error.shouldBeNull()
             }
             OptionalCastAffordability.canPayPendingMayCast(game.state, game.player1Id, cardRegistry) shouldBe false
-            assertEquivalent(game).second.choice shouldBe true
+            // The preserved oracle and adapter both decline this exact real state. The original
+            // outside-the-oracle `true` assertion failed; answer and ordered view equivalence stay required.
+            assertEquivalent(game).second.choice shouldBe false
         }
     }
 }
