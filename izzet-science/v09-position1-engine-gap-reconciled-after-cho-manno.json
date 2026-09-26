@@ -1,0 +1,43 @@
+{
+  "schema": "izzet-v09-position1-engine-gap-reconciliation-after-cho-manno-v1",
+  "status": "ACCEPTED_SEED_FREE_ENGINE_GAP_RECONCILIATION",
+  "source_branch": "mayhem/izzet-bestow-integration",
+  "source_commit": "4740931d860adc6a0d92223cab4988865511424e",
+  "predecessor": "v09-position1-engine-gap-reconciled-after-bestow.json",
+  "control_disposition": "KEEP_V07",
+  "deck_changes": false,
+  "newly_qualified_identity": {
+    "card": "Cho-Manno's Blessing",
+    "printing": "MMQ #12",
+    "definition": "mtg-sets/1993-1999/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/mmq/cards/ChoMannosBlessing.kt",
+    "scenario": "mtg-sets/1993-1999/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/ChoMannosBlessingScenarioTest.kt",
+    "dedicated_run": 36226774550,
+    "dedicated_job": 108362223744,
+    "artifact_id": 10900229214,
+    "artifact_size_bytes": 481,
+    "artifact_sha256": "57f46b599eb5c9ea95680f11b173d85a7d0082eaddae676aac715756c9fa6853",
+    "snapshot_verification": "PASS",
+    "card_lint": "PASS",
+    "facade_boundary": "PASS",
+    "full_ci_run": 36226776927,
+    "full_ci_conclusion": "success"
+  },
+  "remaining_unresolved_count": 5,
+  "remaining_unresolved_identities": [
+    "Benevolent Blessing",
+    "Forge of Heroes",
+    "Opal Palace",
+    "Snake Umbra",
+    "Vines of Vastwood"
+  ],
+  "official": {
+    "seeds_generated": 12,
+    "seeds_consumed": 0,
+    "games_initialized": 0,
+    "games_completed": "0/12",
+    "outcomes_exposed": "0/12",
+    "position1_gameplay_authorized": false
+  },
+  "disposition": "Accept only the finite-queue reduction 6 -> 5 by removing Cho-Manno's Blessing from the unresolved Position-1 identity set. No sampled gameplay authority is created.",
+  "next_gate": "Implement and independently qualify one of the five remaining exact Position-1 identities or close a separate full-game readiness guard, without changing Izzet Science v0.7."
+}
