@@ -1,0 +1,157 @@
+name: Industrial Waste v2 card qualification
+
+on:
+  pull_request:
+    branches: [industrial-waste/lab]
+    paths:
+      - .github/workflows/industrial-waste-v2-card-qualification.yml
+      - industrial-waste/v2/**
+      - ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteV2*.kt
+      - ai/src/test/kotlin/com/wingedsheep/ai/arena/TableGameRunner.kt
+      - rules-engine/src/testFixtures/kotlin/com/wingedsheep/engine/support/GameTestDriver.kt
+      - rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/spell/CastSpellHandler.kt
+      - rules-engine/src/main/kotlin/com/wingedsheep/engine/core/GameInitializer.kt
+      - rules-engine/src/main/kotlin/com/wingedsheep/engine/core/Serialization.kt
+      - rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/MulliganHandler.kt
+      - rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/library/ShuffleLibraryExecutor.kt
+      - rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/library/LibraryOrderingService.kt
+      - rules-engine/src/main/kotlin/com/wingedsheep/engine/state/components/player/LibraryOrderingComponent.kt
+      - rules-engine/src/test/kotlin/com/wingedsheep/engine/library/LibraryOrderingServiceTest.kt
+      - mtg-sets/**/ChromaticStar*.kt
+      - mtg-sets/**/AncientStirrings*.kt
+      - mtg-sets/**/DrossSkullbomb*.kt
+      - mtg-sets/**/CandyTrailScenarioTest.kt
+      - mtg-sets/**/ConduitPylonsScenarioTest.kt
+      - mtg-sets/**/GolemFoundryScenarioTest.kt
+      - mtg-sets/**/MyrKinsmithScenarioTest.kt
+      - mtg-sets/**/TreeOfTalesScenarioTest.kt
+      - mtg-sets/**/VaultOfWhispersScenarioTest.kt
+      - mtg-sets/**/DarkmossBridgeScenarioTest.kt
+      - mtg-sets/**/PactdollTerrorScenarioTest.kt
+      - mtg-sets/src/test/resources/snapshots/cards/TSP.json
+      - mtg-sets/src/test/resources/snapshots/cards/ROE.json
+
+permissions:
+  contents: read
+
+concurrency:
+  group: industrial-waste-v2-cards-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  seed-free-card-qualification:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      IW_V2_EXPECTED_HEAD: ${{ github.event.pull_request.head.sha }}
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+      - uses: actions/setup-java@v5
+        with: {distribution: temurin, java-version: 21}
+      - uses: gradle/actions/setup-gradle@v6
+      - uses: extractions/setup-just@v3
+      - name: Verify immutable construction inputs
+        run: |
+          python3 - <<'PY'
+          import os, subprocess
+          actual = subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip()
+          if actual != os.environ['IW_V2_EXPECTED_HEAD']:
+              raise SystemExit('Checked-out source does not match the requested PR head')
+          PY
+          python3 industrial-waste/v2/validate_r0.py
+          python3 - <<'PY'
+          import hashlib, json, os, pathlib, subprocess
+          path = pathlib.Path('industrial-waste/v2/execution-status-capability.json')
+          capability = json.loads(path.read_text())
+          receiving_path = pathlib.Path('industrial-waste/v2/execution-status-receiving-source.json')
+          receiving = json.loads(receiving_path.read_text())
+          if hashlib.sha256(path.read_bytes()).hexdigest() != receiving['predecessor_capability_sha256']:
+              raise SystemExit('Accepted predecessor capability bytes changed')
+          changed = {'ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteV2ExecutionStatus.kt',
+              '.github/workflows/industrial-waste-v2-card-qualification.yml'}
+          if set(receiving['source_sha256']) != changed:
+              raise SystemExit('Unexpected receiving status source scope')
+          review = pathlib.Path(receiving['independent_source_review']['path'])
+          if hashlib.sha256(review.read_bytes()).hexdigest() != receiving['independent_source_review']['sha256']:
+              raise SystemExit('Receiving independent source review bytes changed')
+          for name, digest in capability['source_sha256'].items():
+              expected = receiving['source_sha256'].get(name, digest)
+              if hashlib.sha256(pathlib.Path(name).read_bytes()).hexdigest() != expected:
+                  raise SystemExit('Status capability source binding drift: ' + name)
+          protocol = json.loads(pathlib.Path(capability['protocol']).read_text())
+          if capability['limits'] != {key: protocol['design'][key] for key in ('own_turn_cap', 'submitted_action_cap')}:
+              raise SystemExit('Status capability caps differ from the frozen protocol')
+          exclusions = json.loads(pathlib.Path('industrial-waste/v2/regression-fixtures.json').read_text())
+          if capability['fixtures']['seed'] not in exclusions['seeds']:
+              raise SystemExit('Status fixture seed is not excluded from official sampling')
+          provenance = {
+              'scope': 'SEED_FREE_STATUS_CAPABILITY_NOT_R1_EXECUTION',
+              'source_head': subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip(),
+              'expected_head': os.environ['IW_V2_EXPECTED_HEAD'],
+              'capability_sha256': hashlib.sha256(path.read_bytes()).hexdigest(),
+              'accepted_predecessor_pins': capability['source_sha256'],
+              'verified_receiving_pins': {**capability['source_sha256'], **receiving['source_sha256']},
+              'receiving_source_manifest_sha256': hashlib.sha256(receiving_path.read_bytes()).hexdigest(),
+              'disposition': 'RECEIVING_QUALIFICATION_ONLY_PENDING_ACTUAL_RESULTS_AND_INDEPENDENT_ARTIFACT_REVIEW',
+              'official_initializations_by_gate': 0,
+              'official_execution_authorized': False,
+          }
+          pathlib.Path('/tmp/iw-v2-status-provenance.json').write_text(json.dumps(provenance, indent=2) + '\n')
+          PY
+      - name: Qualify cards, public-information selections and unchanged legacy golden
+        run: |
+          just test-class LibraryOrderingServiceTest \
+            :mtg-sets:2003-2007:tests:test --tests '*ChromaticStarScenarioTest' --tests '*TreeOfTalesScenarioTest' --tests '*VaultOfWhispersScenarioTest' --tests '*KurgadonTest' \
+            :mtg-sets:2008-2016:tests:test --tests '*AncientStirringsScenarioTest' --tests '*GolemFoundryScenarioTest' \
+            :mtg-sets:2017-2022:tests:test --tests '*DarkmossBridgeScenarioTest' --tests '*BloodFountainScenarioTest' \
+            :mtg-sets:2023:tests:test --tests '*DrossSkullbombScenarioTest' --tests '*CandyTrailScenarioTest' --tests '*MyrKinsmithScenarioTest' \
+            :mtg-sets:2024:tests:test --tests '*ConduitPylonsScenarioTest' \
+            :mtg-sets:2025:tests:test --tests '*PactdollTerrorScenarioTest' --tests '*TownLandSpellAdventureScenarioTest' \
+            :ai:test --tests '*IndustrialWasteV2RegistryAuditTest' --tests '*IndustrialWasteV2SelectionAdvisorTest' --tests '*IndustrialWasteV2PublicActionPolicyTest' --tests '*IndustrialWasteV2OrderingIntegrationTest' --tests '*IndustrialWasteV2EventMetricsTest' --tests '*IndustrialWasteV2ExecutionStatusTest' --tests '*IndustrialWasteV2RuntimeFailureTest' --tests '*IndustrialWasteV2CapabilityRunnerTest' --tests '*IndustrialWasteAdvisorModuleTest' --tests '*FrozenBaselineTest' \
+            --continue --no-daemon
+          python3 - <<'PY'
+          import pathlib, xml.etree.ElementTree as ET
+          for name, count in {'IndustrialWasteV2ExecutionStatusTest':10,'IndustrialWasteV2RuntimeFailureTest':4}.items():
+              paths = list(pathlib.Path('ai/build/test-results/test').glob('TEST-*.' + name + '.xml'))
+              assert len(paths) == 1, (name, paths)
+              suite = ET.parse(paths[0]).getroot()
+              cases = suite.findall('testcase')
+              assert len(cases) == int(suite.attrib['tests']) == count, suite.attrib
+              assert all(int(suite.attrib.get(k,0)) == 0 for k in ['failures','errors','skipped']), suite.attrib
+              assert all(c.find(k) is None for c in cases for k in ['failure','error','skipped']), name
+          PY
+      - name: Generate reviewable card snapshots for only the newly admitted cards
+        run: |
+          just rebless-cards
+          python3 - <<'PY'
+          import subprocess
+          expected = {'mtg-sets/src/test/resources/snapshots/cards/TSP.json', 'mtg-sets/src/test/resources/snapshots/cards/ROE.json'}
+          changed = set(subprocess.check_output(['git', 'diff', '--name-only'], text=True).splitlines())
+          if not changed <= expected:
+              raise SystemExit('Unexpected snapshot or source drift: ' + repr(sorted(changed - expected)))
+          PY
+          git diff -- mtg-sets/src/test/resources/snapshots/cards/TSP.json mtg-sets/src/test/resources/snapshots/cards/ROE.json > /tmp/iw-v2-card-snapshot.diff
+      - name: Preserve exact validation and snapshot evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: industrial-waste-v2-card-qualification
+          path: |
+            ai/build/test-results/test/TEST-*.xml
+            rules-engine/build/test-results/test/TEST-*.xml
+            mtg-sets/2003-2007/tests/build/test-results/test/TEST-*.xml
+            mtg-sets/2008-2016/tests/build/test-results/test/TEST-*.xml
+            mtg-sets/2017-2022/tests/build/test-results/test/TEST-*.xml
+            mtg-sets/2023/tests/build/test-results/test/TEST-*.xml
+            mtg-sets/2024/tests/build/test-results/test/TEST-*.xml
+            mtg-sets/2025/tests/build/test-results/test/TEST-*.xml
+            industrial-waste/v2/runtime-evidence/registry-audit.txt
+            /tmp/iw-v2-card-snapshot.diff
+            /tmp/iw-v2-status-provenance.json
+            industrial-waste/v2/execution-status-capability.json
+            industrial-waste/v2/execution-status-receiving-source.json
+            mtg-sets/src/test/resources/snapshots/cards/TSP.json
+            mtg-sets/src/test/resources/snapshots/cards/ROE.json
+          if-no-files-found: error

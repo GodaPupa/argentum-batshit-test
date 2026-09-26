@@ -1,0 +1,37 @@
+{
+  "schema": "industrial-waste-v2-canonical-payment-receiving-candidate-v1",
+  "status": "PENDING_COMBINED_QUALIFICATION_NO_OFFICIAL_AUTHORITY",
+  "remote_base": "0b92793e6e19ca53c105f08ff26da511f2593853",
+  "published_component_sources": {
+    "payment": "801557005300f059a95adc670b944b82a24addae",
+    "flashback": "4aa0f3ee65caa857d1017fa4e522c43cf8946b99"
+  },
+  "prior_local_runtime_source": "561656acb886392c95df36b2d65f1779fcc69776",
+  "source_sha256": {
+    "ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteV2CheckpointMana.kt": "0d30249a68692568a37763ecbda34799f130fe094ec4e07a060477fc8ad87565",
+    "ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteV2PaymentIntent.kt": "b98572c6a9d2ec44b01e774665fdf27d1f50c90843982e5e4b728a39baf21021",
+    "ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteV2PaymentIntentTest.kt": "ece4501fd252cad703041780b2215725aede568e25c2bb28d85fcbd59a1785bd",
+    "ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteV2SacrificeCheckpointTest.kt": "cec02c3701801dbd17e0a590b1ffd6a54514f48c4c9370dadc6fa60877a92cb6",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/legalactions/utils/FixedSacrificePayment.kt": "75b2bb4b15ffd3ab7c9ee50121ce9b6b0c1765f7efa70bdc1aad89e095cf7d5d",
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/legalactions/FixedSacrificePaymentTest.kt": "3768f53bc7784db05df461e2ed3c45f8a74ab6840dddf40f8a975abf458cb0cb",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/legalactions/enumerators/CastFromZoneEnumerator.kt": "19a7a0a93d5973bdd73ac8b9cf6ac82b9d716237dfa19a1a1fc18595007d96f9"
+  },
+  "source_changes": [
+    "Receive canonical paid-filter and finite-resource proof; preserve old 52/73-case component limits.",
+    "Replace provisional unresolved checkpoint labels only where the new exact resource proof decides the frozen metric; retain unsupported as unresolved.",
+    "Account for the same final sacrifice and excluded activation source in exact-colored and all-generic queries.",
+    "Joint fixed-sacrifice affordability composes into hand and flashback menus; ordinary canPay uses finite explicit-resource fallback.",
+    "Keep pilot score functions, material rankings, tie breaks and frozen deck/protocol/corpus bytes unchanged.",
+    "Receive independently reviewed prospective first-quiet T4 clarification and every-quiet replay candidate; preserve component-only review scope.",
+    "Retain original Industrial Escape method and enumeration order for receiving SDK compatibility; canonical flashback delta and joint-payment helper remain unchanged."
+  ],
+  "rules_basis": "https://media.wizards.com/2026/downloads/MagicCompRules%2020260925.txt",
+  "rules_basis_scope": "Mana ability activation precedes final payment; a cost payment cannot be reused for another spell or ability. No effective-rules binding or governance scope is amended.",
+  "python_checks": 72,
+  "kotlin_qualification": "PENDING",
+  "runtime_accepted": false,
+  "execution_authorized": false,
+  "official_allocations_initialized": 0,
+  "outcomes_exposed": 0,
+  "seeds_consumed": 0
+}

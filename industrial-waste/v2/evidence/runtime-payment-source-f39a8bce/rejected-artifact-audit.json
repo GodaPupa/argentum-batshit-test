@@ -1,0 +1,2187 @@
+{
+  "schema": "industrial-v2-rejected-receiving-runtime-artifact-audit-v1",
+  "auditor": "/root/industrial",
+  "role": "source author; artifact count and failure audit only, not independent receiving approval",
+  "source_commit": "f39a8bcecaea1baebe3edb1d648ccb9bfbe7173a",
+  "source_tree": "ea1c065402f0ddabc912824da4989bc82a33f630",
+  "run_id": 36255671012,
+  "job_id": 108441874375,
+  "artifact_id": 10910462882,
+  "artifact_sha256": "9a5552da91356974f2ff7afe9d67faeeb257b2c13684478f52fcc5cb75f1284c",
+  "artifact_bytes": 165669,
+  "disposition": "REJECTED_RECEIVING_RUNTIME_INCOMPLETE",
+  "actual_results": {
+    "python_checks": 72,
+    "engine_cases": 140,
+    "lava_dart_cases": 2,
+    "ai_cases": 124,
+    "ai_failures": 2,
+    "ai_intentional_official_skips": 1
+  },
+  "selector_gap": "EscapeTest matched no receiving source class; its five required flashback-adjacent cases were not executed. The passing component subtotal is142, not147.",
+  "failures": [
+    {
+      "class": "IndustrialWasteV2AllocationRunnerTest",
+      "test": "frozen Compact Loop spell-bearing fixture composes the public pilot typed metrics and snapshot replay",
+      "cause": "Public general payment was legal, but the frozen pilot bound a three-mana action whose remaining explicit Altar funding materials were policy-ineligible after its first Retriever sacrifice. Complete policy payment needs qualification before spending any material."
+    },
+    {
+      "class": "IndustrialWasteV2PaymentIntentTest",
+      "test": "one Spawn cannot be both spell sacrifice and explicit funding resource",
+      "cause": "The fixture incorrectly expected no general Insight menu: sacrificing Altar as final material and Spawn for mana is a legal alternative. The already policy-bound Spawn cannot be consumed twice; that bound payment requires separate rejection without removing general legal alternatives."
+    }
+  ],
+  "source_status_note": "The registry fixture generated untracked industrial-waste/v2/runtime-evidence; raw provenance records this. Initial exact source is bound by checkout head/tree and per-file hashes; no clean final checkout claim.",
+  "technical_invalid_trace_note": "The failing excluded allocation preserves357 accepted actions in transition journal but a selection exception escaped before typed status/actions/final-state finalization; its partial trace is retained as invalid evidence only.",
+  "suites": [
+    {
+      "path": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.handlers.mana.ManaSpendRestrictionAnyAbilityTest.xml",
+      "sha256": "a2c980784fe028165a26a1b05b5ad18d5a49882b0e27ec042c77a8946001fd70",
+      "attributes": {
+        "name": "com.wingedsheep.engine.handlers.mana.ManaSpendRestrictionAnyAbilityTest",
+        "tests": "5",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-26T16:37:52.688Z",
+        "hostname": "runnervmtr4k5",
+        "time": "0.533"
+      },
+      "cases": [
+        {
+          "name": "any-ability mana pays for an ability of a NON-artifact source",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "any-ability mana is rejected for a spell cast",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "Purple Dragon Punks mana pays for an artifact spell",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "Purple Dragon Punks mana pays for any ability activation",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "Purple Dragon Punks mana does NOT pay for a non-artifact spell",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "path": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.legalactions.CastFromZoneEnumeratorTest.xml",
+      "sha256": "3ba12a6a73c8e7e890d21cdddcb7972d88b02e9f29947173be865235547c6e1b",
+      "attributes": {
+        "name": "com.wingedsheep.engine.legalactions.CastFromZoneEnumeratorTest",
+        "tests": "20",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-26T16:37:53.473Z",
+        "hostname": "runnervmtr4k5",
+        "time": "18.457"
+      },
+      "cases": [
+        {
+          "name": "Otterball Antics in graveyard with sufficient mana surfaces a CastWithFlashback action",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "flashback action is unaffordable when insufficient mana but still listed",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "sorcery flashback is blocked at instant speed (upkeep step)",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "an empty graveyard produces no flashback actions",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "Lightning Bolt in exile with MayPlayFromExile produces a CastSpell action",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "an exiled card without the permission component is NOT castable",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "exile permission belonging to opponent does not authorize me to cast",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "with Future Sight in play, the top card of library is castable",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "without Future Sight, the top card of library is NOT castable",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "Squee in graveyard with sufficient mana is castable from graveyard",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "Squee in exile is also castable (intrinsic permission covers both zones)",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "Squee with no mana is shown as unaffordable",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "Squee as a creature is sorcery-speed-only \u2014 no upkeep cast",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "Muldrotha on battlefield \u2014 a creature in graveyard is castable from GRAVEYARD",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "without Muldrotha \u2014 the same creature in graveyard is NOT castable from GRAVEYARD",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "Muldrotha's permission is active-player-only \u2014 opponent cannot cast from their graveyard",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "Festival of Embers + instant in graveyard + life available \u2014 cast emitted with life cost info",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "Festival of Embers + insufficient life \u2014 cast is NOT emitted (life-check `continue`s)",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "Festival of Embers + instant in graveyard without mana \u2014 cast emitted as unaffordable",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "non-instant/sorcery in graveyard \u2014 filter excludes it from the life-cost path",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "path": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.legalactions.FixedSacrificePaymentTest.xml",
+      "sha256": "d5a3961d911bba3ca93f14e935a24dc9a5a028348b6ab7fc70c731c539da3a6a",
+      "attributes": {
+        "name": "com.wingedsheep.engine.legalactions.FixedSacrificePaymentTest",
+        "tests": "4",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-26T16:38:11.993Z",
+        "hostname": "runnervmtr4k5",
+        "time": "0.407"
+      },
+      "cases": [
+        {
+          "name": "two Altars sharing one creature cannot advertise a three-mana spell",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "one Altar with two distinct creatures advertises its repeated legal funding",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "a hand cast cannot consume its sole material both for black mana and its final sacrifice",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "flashback checks printed final sacrifice against the same black funding resource",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "path": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.legalactions.FlashbackAdditionalCostEnumerationTest.xml",
+      "sha256": "d501d358dce92a7a550765281af26fa8aafaee84c5206d3ff0a6bfdf5931b7f6",
+      "attributes": {
+        "name": "com.wingedsheep.engine.legalactions.FlashbackAdditionalCostEnumerationTest",
+        "tests": "12",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-26T16:38:12.411Z",
+        "hostname": "runnervmtr4k5",
+        "time": "0.913"
+      },
+      "cases": [
+        {
+          "name": "mana-only flashback keeps its existing offer and no selection",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "printed sacrifice is required even when all flashback mana is available",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "menu exposes both legal sacrifice types and submits only the actor's chosen payment",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "unaffordable mana retains the printed sacrifice picker",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "sacrifice candidates use projected type and control and refresh with state",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "keyword Mountain sacrifice remains required with zero flashback mana",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "keyword tap cost counts only controlled untapped creatures and allows summoning sickness",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "keyword Behold retains counted battlefield and own-hand choices",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "fixed keyword life payment gates the offer and is auto-paid by the existing executor",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "nested printed costs and keyword life are all required alongside one picker",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "two selection costs are an explicit capability failure rather than dropping either leg",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "an unsupported mandatory cost never falls through as a free flashback",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "path": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.legalactions.utils.CostEnumerationUtilsTest.xml",
+      "sha256": "70e7a3251e787acfb66eef296b9412c301d143092c973eb0aa0c4b7038f9f6c0",
+      "attributes": {
+        "name": "com.wingedsheep.engine.legalactions.utils.CostEnumerationUtilsTest",
+        "tests": "23",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-26T16:38:13.461Z",
+        "hostname": "runnervmtr4k5",
+        "time": "1.904"
+      },
+      "cases": [
+        {
+          "name": "findAbilityTapTargets returns only untapped creatures matching the filter",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "findAbilitySacrificeTargets excludes the excluded entity id",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "findAbilityBounceTargets returns all permanents matching filter (tapped or not)",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "findAbilityTapTargets returns empty when nothing matches the filter",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "findExileTargets from GRAVEYARD returns matching graveyard cards",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "findExileTargets from HAND returns matching hand cards",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "findConvokeCreatures excludes tapped and non-creature permanents",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "canAffordWithConvoke: enough total resources to pay {2} with 2 creatures, no mana",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "canAffordWithConvoke: insufficient total resources is not affordable",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "findDelveCards returns every graveyard card with name populated",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "calculateMinDelveNeeded returns 0 when cost is already affordable without delve",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "calculateMinDelveNeeded returns the minimum graveyard cards needed to afford",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "returns false when the source is already tapped",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "returns false when a creature has summoning sickness and no haste",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "returns true for an untapped creature with no summoning sickness",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "returns true when an as-though-hasty permission covers the sick creature",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "returns true for a land even with summoning sickness (skip-for-lands branch)",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "returns only creatures with +1/+1 counters, tagged with the available count",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "returns empty when no creature has +1/+1 counters",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "caps X by available mana when the mana cost has X",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "caps X by graveyard size when cost includes ExileXFromGraveyard",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "caps X by total +1/+1 counters for RemoveXPlusOnePlusOneCounters",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "caps X by untapped matching permanents for TapXPermanents",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "path": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.mechanics.mana.DynamicManaAmountAutoTapTest.xml",
+      "sha256": "4de5aa38ccdcfbf4248e37e507ac03ef1bd4f1be6beb8088555fbc26eb86120e",
+      "attributes": {
+        "name": "com.wingedsheep.engine.mechanics.mana.DynamicManaAmountAutoTapTest",
+        "tests": "6",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-26T16:38:15.550Z",
+        "hostname": "runnervmtr4k5",
+        "time": "0.354"
+      },
+      "cases": [
+        {
+          "name": "mana source reports the dynamic amount its ability produces",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "available mana count includes every mana a dynamic ability makes",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "a cost payable off one dynamic tap is solved by tapping that source alone",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "auto-pay floats every mana the tap makes, so the spell it planned for actually resolves",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "a land whose dynamic ability is dry right now is not offered as a mana source",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "the same land is a full source again as soon as the count is nonzero",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "path": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.AlternativeCostChoiceScenarioTest.xml",
+      "sha256": "26de2f990dc206cfd2005831b2b1a2b1bba9a3c1dc2e78e71e076a196fd94bc5",
+      "attributes": {
+        "name": "com.wingedsheep.engine.scenarios.AlternativeCostChoiceScenarioTest",
+        "tests": "4",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-26T16:38:16.304Z",
+        "hostname": "runnervmtr4k5",
+        "time": "0.292"
+      },
+      "cases": [
+        {
+          "name": "the enumerated Evoke and Cast (Warp) actions carry distinct discriminators",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "executing the Evoke action charges the evoke cost ({R}), not warp ({2}{R})",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "executing the Cast (Warp) action charges the warp cost ({2}{R}) and marks it warped",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "a null-discriminator alternative cast still resolves (legacy priority fallback)",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "path": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.ManaPaymentFeasibilityTest.xml",
+      "sha256": "3e663fda3af9cca4d265b0e25e05773bf6ee11f5ecead96a2d8d054ff19b06be",
+      "attributes": {
+        "name": "com.wingedsheep.engine.scenarios.ManaPaymentFeasibilityTest",
+        "tests": "21",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-26T16:38:18.266Z",
+        "hostname": "runnervmtr4k5",
+        "time": "1.732"
+      },
+      "cases": [
+        {
+          "name": "lone unfunded Star cannot bootstrap the {2} Compact checkpoint",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "lone unfunded Star cannot bootstrap the {3} Compact checkpoint",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "two unfunded reusable filters have no circular black payment",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "one Altar repeatedly sacrifices three distinct creatures for six mana",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "two Altars cannot share the same creature twice",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "a reserved Spawn cannot also fund its spell through itself or Altar",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "a second Spawn can fund while the selected nonmana material is preserved",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "Tron funds a reserved Prism before the same Prism pays the final spell sacrifice",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "the one reserved Forest may tap before being sacrificed as a final cost",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "an explicitly bound final material is never replaced with another legal sacrifice",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "excluded sources cannot activate or enter another mana ability's fodder pool",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "large generic Golem fodder has a prompt exhaustive negative colored proof",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "a freshly entered Spawn can sacrifice itself without paying a tap cost",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "two-mana filtering consumes both funding units before output",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "Star's future death draw is never used as a payment resource",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "unsupported nonmana activation metadata cannot produce a negative claim",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "an already entered tapped artifact land has a complete payment proof after untapping",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "an activation discount cannot be ignored when proving a negative",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "a finite search cap produces unsupported rather than impossible",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "future library order cannot change a payment witness",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "serialized funding actions replay the exact real states and ordered events",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "path": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.ManaPaymentPolicyWitnessTest.xml",
+      "sha256": "4e467d001933a9a1d7c298bee911dede7a894ec2e03a851cd49572bd8074ea29",
+      "attributes": {
+        "name": "com.wingedsheep.engine.scenarios.ManaPaymentPolicyWitnessTest",
+        "tests": "4",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-26T16:38:20.008Z",
+        "hostname": "runnervmtr4k5",
+        "time": "0.38"
+      },
+      "cases": [
+        {
+          "name": "funding sacrifice follows the caller's selected material instead of planner identity order",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "a declined funding choice is unsupported and never an exhaustive negative",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "the callback cannot consume or replace the original final sacrifice",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "a policy response outside current legal materials fails closed without submitting an action",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "path": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.ManaAbilityActivationTriggerScenarioTest.xml",
+      "sha256": "9d7a8f21b4c8f17554e3b12d34b2fec8734d47dd12c0fa5e813ff7c686a3e80d",
+      "attributes": {
+        "name": "com.wingedsheep.engine.scenarios.ManaAbilityActivationTriggerScenarioTest",
+        "tests": "3",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-26T16:38:18.134Z",
+        "hostname": "runnervmtr4k5",
+        "time": "0.107"
+      },
+      "cases": [
+        {
+          "name": "tapping a land for mana by hand fires an includeManaAbilities trigger",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "the default wording stays blind to that same mana ability",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "auto-tapping a land to pay an ability cost fires it too",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "path": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.ManaSourceProvenanceScenarioTest.xml",
+      "sha256": "63f5ed978fb67be3405780712c40fd587bbcccc765c298e19f6fca48c0e29a22",
+      "attributes": {
+        "name": "com.wingedsheep.engine.scenarios.ManaSourceProvenanceScenarioTest",
+        "tests": "3",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-26T16:38:20.395Z",
+        "hostname": "runnervmtr4k5",
+        "time": "0.31"
+      },
+      "cases": [
+        {
+          "name": "mana tapped from the source fires its own cast trigger",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "mana from another source does not fire the trigger",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "floating mana from a second source does not wipe the first source's provenance",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "path": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.MonocolorHybridManaSolverTest.xml",
+      "sha256": "b60107cf319d9d9db7b0a4adba24d8bfb6680e75e89d20d0245bdbecfc549a72",
+      "attributes": {
+        "name": "com.wingedsheep.engine.scenarios.MonocolorHybridManaSolverTest",
+        "tests": "4",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-26T16:38:20.798Z",
+        "hostname": "runnervmtr4k5",
+        "time": "0.089"
+      },
+      "cases": [
+        {
+          "name": "{2/B}{2/G}{2/U} is payable with one Swamp, Forest, and Island",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "{2/B}{2/G}{2/U} is payable with six generic-only lands",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "{2/B}{2/G}{2/U} is NOT payable with only five generic-only lands",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "auto-pay casts the twobrid creature, tapping one land per colour",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "path": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.MultiManaSourceTest.xml",
+      "sha256": "010b8485fa814ef47058119827d4880e9d3f5de6c31a21b00db5328dc76eeb8f",
+      "attributes": {
+        "name": "com.wingedsheep.engine.scenarios.MultiManaSourceTest",
+        "tests": "7",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-26T16:38:20.901Z",
+        "hostname": "runnervmtr4k5",
+        "time": "0.287"
+      },
+      "cases": [
+        {
+          "name": "Elvish Aberration produces 3 green mana for auto-pay",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "Elvish Aberration + 4 forests can cast a 7-CMC spell",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "auto-pay fails when multi-mana source is not enough",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "4 forests + Elvish Aberration taps Aberration + 2 forests for 5 CMC",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "5 forests + Elvish Aberration taps 5 forests to preserve creature for attacks",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "getAvailableManaCount includes multi-mana production",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "Palladium Myr producing 2 colorless counts correctly",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "path": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.PaidFilterManaSolverTest.xml",
+      "sha256": "66c417bfc31ec92144839ac18c640368f54ea3844632c132e40149dfe9a27297",
+      "attributes": {
+        "name": "com.wingedsheep.engine.scenarios.PaidFilterManaSolverTest",
+        "tests": "14",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-26T16:38:21.289Z",
+        "hostname": "runnervmtr4k5",
+        "time": "0.644"
+      },
+      "cases": [
+        {
+          "name": "an unfunded filter cannot pay {1}",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "an unfunded filter cannot pay {B}",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "two unfunded filters cannot finance one another",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "free colorless mode of a mixed filter remains ordinary mana",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "a real source funds the filter before its colored output is used by a cast",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "excluding either the filter or its only funder removes the colored plan",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "a two-mana filter requires two independently available funding units",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "multi-mana funding returns correct excess for spell payment",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "multi-mana funding returns correct excess for ability payment",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "previous colored excess funding is deducted once for spell payment",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "previous colored excess funding is deducted once for ability payment",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "two filters may share distinct already-funded units without creating a cycle",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "creature-spell-only excess cannot pay a filter's activation cost",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "serialized funded-filter cast replays identical state and ordered events",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "path": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.RestrictedXManaReconciliationTest.xml",
+      "sha256": "c6ab6b9cf22486de98f952e2d9845745ec8bdbb48ad2263c09840b3d05347f9c",
+      "attributes": {
+        "name": "com.wingedsheep.engine.scenarios.RestrictedXManaReconciliationTest",
+        "tests": "4",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-26T16:38:22.237Z",
+        "hostname": "runnervmtr4k5",
+        "time": "0.126"
+      },
+      "cases": [
+        {
+          "name": "an explicit any-color sacrifice source may fund black-only X once",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "an any-color fallback does not convert disallowed floating mana into black X",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "ordinary sources after the explicit fallback retain the restricted X color",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "an excluded sacrifice source contributes neither restricted X nor ordinary generic mana",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "path": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.XSpellFloatingRestrictedManaTest.xml",
+      "sha256": "4107341d29ac38c48eae762df1c3e932e29a19d5e0c34bdcab3f48b60515aa0a",
+      "attributes": {
+        "name": "com.wingedsheep.engine.scenarios.XSpellFloatingRestrictedManaTest",
+        "tests": "6",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-26T16:38:23.229Z",
+        "hostname": "runnervmtr4k5",
+        "time": "0.632"
+      },
+      "cases": [
+        {
+          "name": "maxAffordableX is 10 with untapped sources and {U}{R}{R}{R} floating",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "casting with X=10 via auto-pay succeeds and puts 20 stun counters",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "explicit source selection with floating mana covering part of X succeeds",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "maxAffordableX is still 10 after floating all mana into the pool",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "casting with X=10 entirely from the floating pool succeeds",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "ineligible restricted mana does not inflate maxAffordableX for a creature spell",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "path": "mtg-sets/2000-2002/tests/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.LavaDartScenarioTest.xml",
+      "sha256": "f5b68bb85bc13989c556e9deefc28556ae6faa9e11c1e7554b2bb534e525f1ac",
+      "attributes": {
+        "name": "com.wingedsheep.engine.scenarios.LavaDartScenarioTest",
+        "tests": "2",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-26T16:38:32.808Z",
+        "hostname": "runnervmtr4k5",
+        "time": "10.375"
+      },
+      "cases": [
+        {
+          "name": "cast from hand deals 1 damage to a player",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "flashback sacrifices a Mountain, deals 1 damage, and exiles Lava Dart",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "path": "ai/build/test-results/test/TEST-com.wingedsheep.ai.arena.FrozenBaselineTest.xml",
+      "sha256": "1bf6bf1a134f0e5d32d236b1c924b12b68c6888fa86fc887b9bb04f0a47d466b",
+      "attributes": {
+        "name": "com.wingedsheep.ai.arena.FrozenBaselineTest",
+        "tests": "1",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-26T16:39:00.183Z",
+        "hostname": "runnervmtr4k5",
+        "time": "1.734"
+      },
+      "cases": [
+        {
+          "name": "LEGACY_V0 plays the frozen baseline game exactly as it always has",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "path": "ai/build/test-results/test/TEST-com.wingedsheep.ai.industrialwaste.IndustrialWasteV2ActivatedCheckpointTest.xml",
+      "sha256": "342ef2db55d02e914720f1d3dff9ebfd765c62e08a91e9c8dcd9ebd98f40eaac",
+      "attributes": {
+        "name": "com.wingedsheep.ai.industrialwaste.IndustrialWasteV2ActivatedCheckpointTest",
+        "tests": "7",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-26T16:39:12.448Z",
+        "hostname": "runnervmtr4k5",
+        "time": "0.096"
+      },
+      "cases": [
+        {
+          "name": "Blood Fountain recovery with legal target and enough colorless mana records a colored failure",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "Blood Fountain with no graveyard creature is not a relevant colored recovery failure",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "Blood Fountain recovery payable with a black source is executable",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "Dross Skullbomb recovery with legal target and enough colorless mana records a colored failure",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "Dross Skullbomb with no graveyard creature is not a relevant colored recovery failure",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "Dross Skullbomb recovery payable with a black source is executable",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "tapped Fountain does not become a color failure when its non-mana cost is unavailable",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "path": "ai/build/test-results/test/TEST-com.wingedsheep.ai.industrialwaste.IndustrialWasteAdvisorModuleTest.xml",
+      "sha256": "15dd56d09424e289722457839ef5bb9bd5dd3f9d8c3de82c2fa9b84d954706ff",
+      "attributes": {
+        "name": "com.wingedsheep.ai.industrialwaste.IndustrialWasteAdvisorModuleTest",
+        "tests": "6",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-26T16:39:02.047Z",
+        "hostname": "runnervmtr4k5",
+        "time": "10.312"
+      },
+      "cases": [
+        {
+          "name": "Expedition Map selects the missing Tron piece independent of library order",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "Crop Rotation uses the same missing-piece policy",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "Myr Retriever death trigger returns the other Retriever",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "Ashnod's Altar sacrifices Retriever when the payoff loop is assembled",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "Ashnod's Altar seeds the loop when the second Retriever is in hand",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "policy prefers staging the Retriever loop over passing",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "path": "ai/build/test-results/test/TEST-com.wingedsheep.ai.industrialwaste.IndustrialWasteV2AllocationRunnerTest.xml",
+      "sha256": "30008f40661fd3771a1f8ca5fd0f76327bcd7498ea018262d9d9d926c9bd2151",
+      "attributes": {
+        "name": "com.wingedsheep.ai.industrialwaste.IndustrialWasteV2AllocationRunnerTest",
+        "tests": "4",
+        "skipped": "0",
+        "failures": "1",
+        "errors": "0",
+        "timestamp": "2026-09-26T16:39:12.545Z",
+        "hostname": "runnervmtr4k5",
+        "time": "7.546"
+      },
+      "cases": [
+        {
+          "name": "complete excluded allocation preserves exact actions events checkpoints and replay",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "allocation directory is create-once and a second invocation cannot replace evidence",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "frozen Compact Loop spell-bearing fixture composes the public pilot typed metrics and snapshot replay",
+          "failure": "java.lang.IllegalStateException: Selected action requires explicit mana but no qualified nonconflicting funding action exists\n\tat com.wingedsheep.ai.industrialwaste.IndustrialWasteV2PaymentBinder.choose-iRc4TjU(IndustrialWasteV2PaymentIntent.kt:119)\n\tat com.wingedsheep.ai.industrialwaste.IndustrialWasteV2FullHorizonRunner.run(IndustrialWasteV2FullHorizonRunner.kt:120)\n\tat com.wingedsheep.ai.industrialwaste.IndustrialWasteV2AllocationRunner.runPrepared(IndustrialWasteV2AllocationRunner.kt:200)\n\tat com.wingedsheep.ai.industrialwaste.IndustrialWasteV2AllocationRunner.runExcluded(IndustrialWasteV2AllocationRunner.kt:159)\n\tat com.wingedsheep.ai.industrialwaste.IndustrialWasteV2AllocationRunnerTest$1$3.invokeSuspend(IndustrialWasteV2AllocationRunnerTest.kt:131)\n\tat com.wingedsheep.ai.industrialwaste.IndustrialWasteV2AllocationRunnerTest$1$3.invoke(IndustrialWasteV2AllocationRunnerTest.kt)\n\tat com.wingedsheep.ai.industrialwaste.IndustrialWasteV2AllocationRunnerTest$1$3.invoke(IndustrialWasteV2AllocationRunnerTest.kt)\n\tat io.kotest.core.spec.style.scopes.FunSpecRootScope$test$1.invokeSuspend(FunSpecRootScope.kt:88)\n\tat io.kotest.core.spec.style.scopes.FunSpecRootScope$test$1.invoke(FunSpecRootScope.kt)\n\tat io.kotest.core.spec.style.scopes.FunSpecRootScope$test$1.invoke(FunSpecRootScope.kt)\n\tat io.kotest.engine.test.TestCaseExecutor$execute$base$1.invoke(TestCaseExecutor.kt:118)\n\tat io.kotest.engine.test.TestInvocationInterceptor$runBeforeTestAfter$executeWithBeforeAfter$1.invoke(TestInvocationInterceptor.kt:93)\n\tat io.kotest.engine.test.interceptors.InvocationTimeoutInterceptor$intercept$3.invokeSuspend(InvocationTimeoutInterceptor.kt:49)\n\tat io.kotest.engine.test.interceptors.InvocationTimeoutInterceptor$intercept$3.invoke(InvocationTimeoutInterceptor.kt)\n\tat io.kotest.engine.test.interceptors.InvocationTimeoutInterceptor$intercept$3.invoke(InvocationTimeoutInterceptor.kt)\n\tat kotlinx.coroutines.intrinsics.UndispatchedKt.startUndispatched(Undispatched.kt:66)\n\tat kotlinx.coroutines.intrinsics.UndispatchedKt.startUndispatchedOrReturnIgnoreTimeout(Undispatched.kt:50)\n\tat kotlinx.coroutines.TimeoutKt.setupTimeout(Timeout.kt:233)\n\tat kotlinx.coroutines.TimeoutKt.withTimeoutOrNull(Timeout.kt:159)\n\tat kotlinx.coroutines.TimeoutKt.withTimeoutOrNull-KLykuaI(Timeout.kt:221)\n\tat io.kotest.engine.test.interceptors.TimeoutInterceptorKt.withAppropriateTimeoutOrNull-KLykuaI(TimeoutInterceptor.kt:103)\n\tat io.kotest.engine.test.interceptors.InvocationTimeoutInterceptor.intercept(InvocationTimeoutInterceptor.kt:48)\n\tat io.kotest.engine.test.TestInvocationInterceptor$runBeforeTestAfter$wrappedTest$1$1.invoke(TestInvocationInterceptor.kt:102)\n\tat io.kotest.engine.test.TestInvocationInterceptor.runBeforeTestAfter(TestInvocationInterceptor.kt:105)\n\tat io.kotest.engine.test.TestInvocationInterceptor.access$runBeforeTestAfter(TestInvocationInterceptor.kt:18)\n\tat io.kotest.engine.test.TestInvocationInterceptor$invokeWithRetry$2.invokeSuspend(TestInvocationInterceptor.kt:53)\n\tat io.kotest.engine.test.TestInvocationInterceptor$invokeWithRetry$2.invoke(TestInvocationInterceptor.kt)\n\tat io.kotest.engine.test.TestInvocationInterceptor$invokeWithRetry$2.invoke(TestInvocationInterceptor.kt)\n\tat kotlinx.coroutines.intrinsics.UndispatchedKt.startUndispatched(Undispatched.kt:66)\n\tat kotlinx.coroutines.intrinsics.UndispatchedKt.startUndispatchedOrReturn(Undispatched.kt:43)\n\tat kotlinx.coroutines.CoroutineScopeKt.coroutineScope(CoroutineScope.kt:848)\n\tat io.kotest.engine.test.TestInvocationInterceptor.invokeWithRetry(TestInvocationInterceptor.kt:51)\n\tat io.kotest.engine.test.TestInvocationInterceptor.intercept(TestInvocationInterceptor.kt:33)\n\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\n\tat io.kotest.engine.test.interceptors.MarkOpenTest4jAbortedExceptionsAsSkippedTestInterceptor.intercept(MarkOpenTest4jAbortedExceptionsAsSkippedTestInterceptor.kt:22)\n\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\n\tat io.kotest.engine.test.interceptors.HandleSkippedExceptionsTestInterceptor.intercept(HandleSkippedExceptionsTestInterceptor.kt:15)\n\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\n\tat io.kotest.engine.test.interceptors.TimeoutInterceptor$intercept$3.invokeSuspend(TimeoutInterceptor.kt:61)\n\tat io.kotest.engine.test.interceptors.TimeoutInterceptor$intercept$3.invoke(TimeoutInterceptor.kt)\n\tat io.kotest.engine.test.interceptors.TimeoutInterceptor$intercept$3.invoke(TimeoutInterceptor.kt)\n\tat kotlinx.coroutines.intrinsics.UndispatchedKt.startUndispatched(Undispatched.kt:66)\n\tat kotlinx.coroutines.intrinsics.UndispatchedKt.startUndispatchedOrReturnIgnoreTimeout(Undispatched.kt:50)\n\tat kotlinx.coroutines.TimeoutKt.setupTimeout(Timeout.kt:233)\n\tat kotlinx.coroutines.TimeoutKt.withTimeout(Timeout.kt:29)\n\tat kotlinx.coroutines.TimeoutKt.withTimeout-KLykuaI(Timeout.kt:141)\n\tat io.kotest.engine.test.interceptors.TimeoutInterceptorKt.withAppropriateTimeout-KLykuaI(TimeoutInterceptor.kt:90)\n\tat io.kotest.engine.test.interceptors.TimeoutInterceptor.intercept(TimeoutInterceptor.kt:60)\n\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\n\tat io.kotest.engine.test.interceptors.CoroutineDebugProbeInterceptor.intercept(CoroutineDebugProbeInterceptor.kt:33)\n\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\n\tat io.kotest.engine.test.interceptors.BlockedThreadTimeoutInterceptor.intercept(BlockedThreadTimeoutInterceptor.kt:87)\n\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\n\tat io.kotest.engine.test.interceptors.CoroutineLoggingInterceptor.intercept(CoroutineLoggingInterceptor.kt:38)\n\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\n\tat io.kotest.engine.test.interceptors.SoftAssertInterceptor.intercept(SoftAssertInterceptor.kt:26)\n\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\n\tat io.kotest.engine.test.interceptors.AssertionModeInterceptor.intercept(AssertionModeInterceptor.kt:29)\n\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\n\tat io.kotest.engine.test.interceptors.LifecycleInterceptor.intercept(LifecycleInterceptor.kt:48)\n\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\n\tat io.kotest.engine.test.interceptors.TestCaseExtensionInterceptor$intercept$2.invoke(TestCaseExtensionInterceptor.kt:21)\n\tat io.kotest.engine.test.TestExtensions$intercept$execute$1$1$1.invokeSuspend(TestExtensions.kt:146)\n\tat io.kotest.engine.test.TestExtensions$intercept$execute$1$1$1.invoke(TestExtensions.kt)\n\tat io.kotest.engine.test.TestExtensions$intercept$execute$1$1$1.invoke(TestExtensions.kt)\n\tat com.wingedsheep.engine.support.HardTimeoutWatchdog.intercept(TestHangGuard.kt:69)\n\tat io.kotest.engine.test.TestExtensions$intercept$execute$1$1.invoke(TestExtensions.kt:143)\n\tat io.kotest.engine.test.TestExtensions.intercept(TestExtensions.kt:151)\n\tat io.kotest.engine.test.interceptors.TestCaseExtensionInterceptor.intercept(TestCaseExtensionInterceptor.kt:21)\n\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\n\tat io.kotest.engine.test.interceptors.TestEnabledCheckInterceptor.intercept(TestEnabledCheckInterceptor.kt:41)\n\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\n\tat io.kotest.engine.test.interceptors.CoroutineErrorCollectorInterceptor$intercept$3.invokeSuspend(CoroutineErrorCollectorInterceptor.kt:39)\n\tat io.kotest.engine.test.interceptors.CoroutineErrorCollectorInterceptor$intercept$3.invoke(CoroutineErrorCollectorInterceptor.kt)\n\tat io.kotest.engine.test.interceptors.CoroutineErrorCollectorInterceptor$intercept$3.invoke(CoroutineErrorCollectorInterceptor.kt)\n\tat kotlinx.coroutines.intrinsics.UndispatchedKt.startUndispatched(Undispatched.kt:66)\n\tat kotlinx.coroutines.intrinsics.UndispatchedKt.startUndispatchedOrReturn(Undispatched.kt:43)\n\tat kotlinx.coroutines.BuildersKt__Builders_commonKt.withContext(Builders.common.kt:497)\n\tat kotlinx.coroutines.BuildersKt.withContext(Unknown Source)\n\tat io.kotest.engine.test.interceptors.CoroutineErrorCollectorInterceptor.intercept(CoroutineErrorCollectorInterceptor.kt:38)\n\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\n\tat io.kotest.engine.test.interceptors.CoroutineDispatcherFactoryTestInterceptor.intercept(CoroutineDispatcherFactoryTestInterceptor.kt:41)\n\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\n\tat io.kotest.engine.test.interceptors.SupervisorScopeInterceptor$intercept$2.invokeSuspend(SupervisorScopeInterceptor.kt:23)\n\tat io.kotest.engine.test.interceptors.SupervisorScopeInterceptor$intercept$2.invoke(SupervisorScopeInterceptor.kt)\n\tat io.kotest.engine.test.interceptors.SupervisorScopeInterceptor$intercept$2.invoke(SupervisorScopeInterceptor.kt)\n\tat kotlinx.coroutines.intrinsics.UndispatchedKt.startUndispatched(Undispatched.kt:66)\n\tat kotlinx.coroutines.intrinsics.UndispatchedKt.startUndispatchedOrReturn(Undispatched.kt:43)\n\tat kotlinx.coroutines.SupervisorKt.supervisorScope(Supervisor.kt:105)\n\tat io.kotest.engine.test.interceptors.SupervisorScopeInterceptor.intercept(SupervisorScopeInterceptor.kt:22)\n\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\n\tat io.kotest.engine.test.interceptors.InvocationCountCheckInterceptor.intercept(InvocationCountCheckInterceptor.kt:33)\n\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\n\tat io.kotest.engine.test.interceptors.TestFinishedInterceptor.intercept(TestFinishedInterceptor.kt:23)\n\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\n\tat io.kotest.engine.test.FailFastInterceptor.intercept(FailFastInterceptor.kt:24)\n\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\n\tat io.kotest.engine.test.interceptors.TestNameContextInterceptor$intercept$2.invokeSuspend(TestNameContextInterceptor.kt:21)\n\tat io.kotest.engine.test.interceptors.TestNameContextInterceptor$intercept$2.invoke(TestNameContextInterceptor.kt)\n\tat io.kotest.engine.test.interceptors.TestNameContextInterceptor$intercept$2.invoke(TestNameContextInterceptor.kt)\n\tat kotlinx.coroutines.intrinsics.UndispatchedKt.startUndispatched(Undispatched.kt:66)\n\tat kotlinx.coroutines.intrinsics.UndispatchedKt.startUndispatchedOrReturn(Undispatched.kt:43)\n\tat kotlinx.coroutines.BuildersKt__Builders_commonKt.withContext(Builders.common.kt:497)\n\tat kotlinx.coroutines.BuildersKt.withContext(Unknown Source)\n\tat io.kotest.engine.test.interceptors.TestNameContextInterceptor.intercept(TestNameContextInterceptor.kt:20)\n\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\n\tat io.kotest.engine.test.interceptors.DescriptorPathContextInterceptor$intercept$2.invokeSuspend(DescriptorPathContextInterceptor.kt:21)\n\tat io.kotest.engine.test.interceptors.DescriptorPathContextInterceptor$intercept$2.invoke(DescriptorPathContextInterceptor.kt)\n\tat io.kotest.engine.test.interceptors.DescriptorPathContextInterceptor$intercept$2.invoke(DescriptorPathContextInterceptor.kt)\n\tat kotlinx.coroutines.intrinsics.UndispatchedKt.startUndispatched(Undispatched.kt:66)\n\tat kotlinx.coroutines.intrinsics.UndispatchedKt.startUndispatchedOrReturn(Undispatched.kt:43)\n\tat kotlinx.coroutines.BuildersKt__Builders_commonKt.withContext(Builders.common.kt:497)\n\tat kotlinx.coroutines.BuildersKt.withContext(Unknown Source)\n\tat io.kotest.engine.test.interceptors.DescriptorPathContextInterceptor.intercept(DescriptorPathContextInterceptor.kt:20)\n\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\n\tat io.kotest.engine.test.TestCaseExecutor.execute(TestCaseExecutor.kt:124)\n\tat io.kotest.engine.spec.execution.SingleInstanceSpecExecutor.executeTest(SingleInstanceSpecExecutor.kt:76)\n\tat io.kotest.engine.spec.execution.SingleInstanceSpecExecutor.access$executeTest(SingleInstanceSpecExecutor.kt:26)\n\tat io.kotest.engine.spec.execution.SingleInstanceSpecExecutor$launchRootTests$2$1$1.invokeSuspend(SingleInstanceSpecExecutor.kt:57)\n\tat _COROUTINE._BOUNDARY._(CoroutineDebugging.kt:42)\n\tat kotlinx.coroutines.TimeoutKt.withTimeoutOrNull(Timeout.kt:156)\n\tat io.kotest.engine.test.interceptors.InvocationTimeoutInterceptor.intercept(InvocationTimeoutInterceptor.kt:48)\n\tat io.kotest.engine.test.TestInvocationInterceptor$invokeWithRetry$2.invokeSuspend(TestInvocationInterceptor.kt:53)\n\tat io.kotest.engine.test.TestInvocationInterceptor.invokeWithRetry(TestInvocationInterceptor.kt:51)\n\tat io.kotest.engine.test.TestInvocationInterceptor.intercept(TestInvocationInterceptor.kt:33)\n\tat io.kotest.engine.test.interceptors.MarkOpenTest4jAbortedExceptionsAsSkippedTestInterceptor.intercept(MarkOpenTest4jAbortedExceptionsAsSkippedTestInterceptor.kt:22)\n\tat io.kotest.engine.test.interceptors.HandleSkippedExceptionsTestInterceptor.intercept(HandleSkippedExceptionsTestInterceptor.kt:15)\n\tat io.kotest.engine.test.interceptors.TimeoutInterceptor$intercept$3.invokeSuspend(TimeoutInterceptor.kt:61)\n\tat io.kotest.engine.test.interceptors.TimeoutInterceptor.intercept(TimeoutInterceptor.kt:60)\n\tat io.kotest.engine.test.interceptors.CoroutineDebugProbeInterceptor.intercept(CoroutineDebugProbeInterceptor.kt:33)\n\tat io.kotest.engine.test.interceptors.BlockedThreadTimeoutInterceptor.intercept(BlockedThreadTimeoutInterceptor.kt:87)\n\tat io.kotest.engine.test.interceptors.CoroutineLoggingInterceptor.intercept(CoroutineLoggingInterceptor.kt:38)\n\tat io.kotest.engine.test.interceptors.SoftAssertInterceptor.intercept(SoftAssertInterceptor.kt:26)\n\tat io.kotest.engine.test.interceptors.AssertionModeInterceptor.intercept(AssertionModeInterceptor.kt:29)\n\tat io.kotest.engine.test.interceptors.LifecycleInterceptor.intercept(LifecycleInterceptor.kt:48)\n\tat io.kotest.engine.test.TestExtensions$intercept$execute$1$1$1.invokeSuspend(TestExtensions.kt:146)\n\tat com.wingedsheep.engine.support.HardTimeoutWatchdog.intercept(TestHangGuard.kt:69)\n\tat io.kotest.engine.test.interceptors.TestEnabledCheckInterceptor.intercept(TestEnabledCheckInterceptor.kt:41)\n\tat io.kotest.engine.test.interceptors.CoroutineErrorCollectorInterceptor$intercept$3.invokeSuspend(CoroutineErrorCollectorInterceptor.kt:39)\n\tat io.kotest.engine.test.interceptors.SupervisorScopeInterceptor$intercept$2.invokeSuspend(SupervisorScopeInterceptor.kt:23)\n\tat io.kotest.engine.test.interceptors.TestFinishedInterceptor.intercept(TestFinishedInterceptor.kt:23)\n\tat io.kotest.engine.test.FailFastInterceptor.intercept(FailFastInterceptor.kt:24)\n\tat io.kotest.engine.test.interceptors.TestNameContextInterceptor$intercept$2.invokeSuspend(TestNameContextInterceptor.kt:21)\n\tat io.kotest.engine.test.interceptors.DescriptorPathContextInterceptor$intercept$2.invokeSuspend(DescriptorPathContextInterceptor.kt:21)\n\tat io.kotest.engine.spec.execution.SingleInstanceSpecExecutor.executeTest(SingleInstanceSpecExecutor.kt:76)\n\tat io.kotest.engine.spec.execution.SingleInstanceSpecExecutor$launchRootTests$2$1$1.invokeSuspend(SingleInstanceSpecExecutor.kt:57)\nCaused by: java.lang.IllegalStateException: Selected action requires explicit mana but no qualified nonconflicting funding action exists\n\tat com.wingedsheep.ai.industrialwaste.IndustrialWasteV2PaymentBinder.choose-iRc4TjU(IndustrialWasteV2PaymentIntent.kt:119)\n\tat com.wingedsheep.ai.industrialwaste.IndustrialWasteV2FullHorizonRunner.run(IndustrialWasteV2FullHorizonRunner.kt:120)\n\tat com.wingedsheep.ai.industrialwaste.IndustrialWasteV2AllocationRunner.runPrepared(IndustrialWasteV2AllocationRunner.kt:200)\n\tat com.wingedsheep.ai.industrialwaste.IndustrialWasteV2AllocationRunner.runExcluded(IndustrialWasteV2AllocationRunner.kt:159)\n\tat com.wingedsheep.ai.industrialwaste.IndustrialWasteV2AllocationRunnerTest$1$3.invokeSuspend(IndustrialWasteV2AllocationRunnerTest.kt:131)\n\tat com.wingedsheep.ai.industrialwaste.IndustrialWasteV2AllocationRunnerTest$1$3.invoke(IndustrialWasteV2AllocationRunnerTest.kt)\n\tat com.wingedsheep.ai.industrialwaste.IndustrialWasteV2AllocationRunnerTest$1$3.invoke(IndustrialWasteV2AllocationRunnerTest.kt)\n\tat io.kotest.core.spec.style.scopes.FunSpecRootScope$test$1.invokeSuspend(FunSpecRootScope.kt:88)\n\tat io.kotest.core.spec.style.scopes.FunSpecRootScope$test$1.invoke(FunSpecRootScope.kt)\n\tat io.kotest.core.spec.style.scopes.FunSpecRootScope$test$1.invoke(FunSpecRootScope.kt)\n\tat io.kotest.engine.test.TestCaseExecutor$execute$base$1.invoke(TestCaseExecutor.kt:118)\n\tat io.kotest.engine.test.TestInvocationInterceptor$runBeforeTestAfter$executeWithBeforeAfter$1.invoke(TestInvocationInterceptor.kt:93)\n\tat io.kotest.engine.test.interceptors.InvocationTimeoutInterceptor$intercept$3.invokeSuspend(InvocationTimeoutInterceptor.kt:49)\n\tat io.kotest.engine.test.interceptors.InvocationTimeoutInterceptor$intercept$3.invoke(InvocationTimeoutInterceptor.kt)\n\tat io.kotest.engine.test.interceptors.InvocationTimeoutInterceptor$intercept$3.invoke(InvocationTimeoutInterceptor.kt)\n\tat kotlinx.coroutines.intrinsics.UndispatchedKt.startUndispatched(Undispatched.kt:66)\n\tat kotlinx.coroutines.intrinsics.UndispatchedKt.startUndispatchedOrReturnIgnoreTimeout(Undispatched.kt:50)\n\tat kotlinx.coroutines.TimeoutKt.setupTimeout(Timeout.kt:233)\n\tat kotlinx.coroutines.TimeoutKt.withTimeoutOrNull(Timeout.kt:159)\n\tat kotlinx.coroutines.TimeoutKt.withTimeoutOrNull-KLykuaI(Timeout.kt:221)\n\tat io.kotest.engine.test.interceptors.TimeoutInterceptorKt.withAppropriateTimeoutOrNull-KLykuaI(TimeoutInterceptor.kt:103)\n\tat io.kotest.engine.test.interceptors.InvocationTimeoutInterceptor.intercept(InvocationTimeoutInterceptor.kt:48)\n\tat io.kotest.engine.test.TestInvocationInterceptor$runBeforeTestAfter$wrappedTest$1$1.invoke(TestInvocationInterceptor.kt:102)\n\tat io.kotest.engine.test.TestInvocationInterceptor.runBeforeTestAfter(TestInvocationInterceptor.kt:105)\n\tat io.kotest.engine.test.TestInvocationInterceptor.access$runBeforeTestAfter(TestInvocationInterceptor.kt:18)\n\tat io.kotest.engine.test.TestInvocationInterceptor$invokeWithRetry$2.invokeSuspend(TestInvocationInterceptor.kt:53)\n\tat io.kotest.engine.test.TestInvocationInterceptor$invokeWithRetry$2.invoke(TestInvocationInterceptor.kt)\n\tat io.kotest.engine.test.TestInvocationInterceptor$invokeWithRetry$2.invoke(TestInvocationInterceptor.kt)\n\tat kotlinx.coroutines.intrinsics.UndispatchedKt.startUndispatched(Undispatched.kt:66)\n\tat kotlinx.coroutines.intrinsics.UndispatchedKt.startUndispatchedOrReturn(Undispatched.kt:43)\n\tat kotlinx.coroutines.CoroutineScopeKt.coroutineScope(CoroutineScope.kt:848)\n\tat io.kotest.engine.test.TestInvocationInterceptor.invokeWithRetry(TestInvocationInterceptor.kt:51)\n\tat io.kotest.engine.test.TestInvocationInterceptor.intercept(TestInvocationInterceptor.kt:33)\n\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\n\tat io.kotest.engine.test.interceptors.MarkOpenTest4jAbortedExceptionsAsSkippedTestInterceptor.intercept(MarkOpenTest4jAbortedExceptionsAsSkippedTestInterceptor.kt:22)\n\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\n\tat io.kotest.engine.test.interceptors.HandleSkippedExceptionsTestInterceptor.intercept(HandleSkippedExceptionsTestInterceptor.kt:15)\n\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\n\tat io.kotest.engine.test.interceptors.TimeoutInterceptor$intercept$3.invokeSuspend(TimeoutInterceptor.kt:61)\n\tat io.kotest.engine.test.interceptors.TimeoutInterceptor$intercept$3.invoke(TimeoutInterceptor.kt)\n\tat io.kotest.engine.test.interceptors.TimeoutInterceptor$intercept$3.invoke(TimeoutInterceptor.kt)\n\tat kotlinx.coroutines.intrinsics.UndispatchedKt.startUndispatched(Undispatched.kt:66)\n\tat kotlinx.coroutines.intrinsics.UndispatchedKt.startUndispatchedOrReturnIgnoreTimeout(Undispatched.kt:50)\n\tat kotlinx.coroutines.TimeoutKt.setupTimeout(Timeout.kt:233)\n\tat kotlinx.coroutines.TimeoutKt.withTimeout(Timeout.kt:29)\n\tat kotlinx.coroutines.TimeoutKt.withTimeout-KLykuaI(Timeout.kt:141)\n\tat io.kotest.engine.test.interceptors.TimeoutInterceptorKt.withAppropriateTimeout-KLykuaI(TimeoutInterceptor.kt:90)\n\tat io.kotest.engine.test.interceptors.TimeoutInterceptor.intercept(TimeoutInterceptor.kt:60)\n\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\n\tat io.kotest.engine.test.interceptors.CoroutineDebugProbeInterceptor.intercept(CoroutineDebugProbeInterceptor.kt:33)\n\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\n\tat io.kotest.engine.test.interceptors.BlockedThreadTimeoutInterceptor.intercept(BlockedThreadTimeoutInterceptor.kt:87)\n\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\n\tat io.kotest.engine.test.interceptors.CoroutineLoggingInterceptor.intercept(CoroutineLoggingInterceptor.kt:38)\n\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\n\tat io.kotest.engine.test.interceptors.SoftAssertInterceptor.intercept(SoftAssertInterceptor.kt:26)\n\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\n\tat io.kotest.engine.test.interceptors.AssertionModeInterceptor.intercept(AssertionModeInterceptor.kt:29)\n\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\n\tat io.kotest.engine.test.interceptors.LifecycleInterceptor.intercept(LifecycleInterceptor.kt:48)\n\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\n\tat io.kotest.engine.test.interceptors.TestCaseExtensionInterceptor$intercept$2.invoke(TestCaseExtensionInterceptor.kt:21)\n\tat io.kotest.engine.test.TestExtensions$intercept$execute$1$1$1.invokeSuspend(TestExtensions.kt:146)\n\tat io.kotest.engine.test.TestExtensions$intercept$execute$1$1$1.invoke(TestExtensions.kt)\n\tat io.kotest.engine.test.TestExtensions$intercept$execute$1$1$1.invoke(TestExtensions.kt)\n\tat com.wingedsheep.engine.support.HardTimeoutWatchdog.intercept(TestHangGuard.kt:69)\n\tat io.kotest.engine.test.TestExtensions$intercept$execute$1$1.invoke(TestExtensions.kt:143)\n\tat io.kotest.engine.test.TestExtensions.intercept(TestExtensions.kt:151)\n\tat io.kotest.engine.test.interceptors.TestCaseExtensionInterceptor.intercept(TestCaseExtensionInterceptor.kt:21)\n\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\n\tat io.kotest.engine.test.interceptors.TestEnabledCheckInterceptor.intercept(TestEnabledCheckInterceptor.kt:41)\n\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\n\tat io.kotest.engine.test.interceptors.CoroutineErrorCollectorInterceptor$intercept$3.invokeSuspend(CoroutineErrorCollectorInterceptor.kt:39)\n\tat io.kotest.engine.test.interceptors.CoroutineErrorCollectorInterceptor$intercept$3.invoke(CoroutineErrorCollectorInterceptor.kt)\n\tat io.kotest.engine.test.interceptors.CoroutineErrorCollectorInterceptor$intercept$3.invoke(CoroutineErrorCollectorInterceptor.kt)\n\tat kotlinx.coroutines.intrinsics.UndispatchedKt.startUndispatched(Undispatched.kt:66)\n\tat kotlinx.coroutines.intrinsics.UndispatchedKt.startUndispatchedOrReturn(Undispatched.kt:43)\n\tat kotlinx.coroutines.BuildersKt__Builders_commonKt.withContext(Builders.common.kt:497)\n\tat kotlinx.coroutines.BuildersKt.withContext(Unknown Source)\n\tat io.kotest.engine.test.interceptors.CoroutineErrorCollectorInterceptor.intercept(CoroutineErrorCollectorInterceptor.kt:38)\n\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\n\tat io.kotest.engine.test.interceptors.CoroutineDispatcherFactoryTestInterceptor.intercept(CoroutineDispatcherFactoryTestInterceptor.kt:41)\n\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\n\tat io.kotest.engine.test.interceptors.SupervisorScopeInterceptor$intercept$2.invokeSuspend(SupervisorScopeInterceptor.kt:23)\n\tat io.kotest.engine.test.interceptors.SupervisorScopeInterceptor$intercept$2.invoke(SupervisorScopeInterceptor.kt)\n\tat io.kotest.engine.test.interceptors.SupervisorScopeInterceptor$intercept$2.invoke(SupervisorScopeInterceptor.kt)\n\tat kotlinx.coroutines.intrinsics.UndispatchedKt.startUndispatched(Undispatched.kt:66)\n\tat kotlinx.coroutines.intrinsics.UndispatchedKt.startUndispatchedOrReturn(Undispatched.kt:43)\n\tat kotlinx.coroutines.SupervisorKt.supervisorScope(Supervisor.kt:105)\n\tat io.kotest.engine.test.interceptors.SupervisorScopeInterceptor.intercept(SupervisorScopeInterceptor.kt:22)\n\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\n\tat io.kotest.engine.test.interceptors.InvocationCountCheckInterceptor.intercept(InvocationCountCheckInterceptor.kt:33)\n\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\n\tat io.kotest.engine.test.interceptors.TestFinishedInterceptor.intercept(TestFinishedInterceptor.kt:23)\n\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\n\tat io.kotest.engine.test.FailFastInterceptor.intercept(FailFastInterceptor.kt:24)\n\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\n\tat io.kotest.engine.test.interceptors.TestNameContextInterceptor$intercept$2.invokeSuspend(TestNameContextInterceptor.kt:21)\n\tat io.kotest.engine.test.interceptors.TestNameContextInterceptor$intercept$2.invoke(TestNameContextInterceptor.kt)\n\tat io.kotest.engine.test.interceptors.TestNameContextInterceptor$intercept$2.invoke(TestNameContextInterceptor.kt)\n\tat kotlinx.coroutines.intrinsics.UndispatchedKt.startUndispatched(Undispatched.kt:66)\n\tat kotlinx.coroutines.intrinsics.UndispatchedKt.startUndispatchedOrReturn(Undispatched.kt:43)\n\tat kotlinx.coroutines.BuildersKt__Builders_commonKt.withContext(Builders.common.kt:497)\n\tat kotlinx.coroutines.BuildersKt.withContext(Unknown Source)\n\tat io.kotest.engine.test.interceptors.TestNameContextInterceptor.intercept(TestNameContextInterceptor.kt:20)\n\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\n\tat io.kotest.engine.test.interceptors.DescriptorPathContextInterceptor$intercept$2.invokeSuspend(DescriptorPathContextInterceptor.kt:21)\n\tat io.kotest.engine.test.interceptors.DescriptorPathContextInterceptor$intercept$2.invoke(DescriptorPathContextInterceptor.kt)\n\tat io.kotest.engine.test.interceptors.DescriptorPathContextInterceptor$intercept$2.invoke(DescriptorPathContextInterceptor.kt)\n\tat kotlinx.coroutines.intrinsics.UndispatchedKt.startUndispatched(Undispatched.kt:66)\n\tat kotlinx.coroutines.intrinsics.UndispatchedKt.startUndispatchedOrReturn(Undispatched.kt:43)\n\tat kotlinx.coroutines.BuildersKt__Builders_commonKt.withContext(Builders.common.kt:497)\n\tat kotlinx.coroutines.BuildersKt.withContext(Unknown Source)\n\tat io.kotest.engine.test.interceptors.DescriptorPathContextInterceptor.intercept(DescriptorPathContextInterceptor.kt:20)\n\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\n\tat io.kotest.engine.test.TestCaseExecutor.execute(TestCaseExecutor.kt:124)\n\tat io.kotest.engine.spec.execution.SingleInstanceSpecExecutor.executeTest(SingleInstanceSpecExecutor.kt:76)\n\tat io.kotest.engine.spec.execution.SingleInstanceSpecExecutor.access$executeTest(SingleInstanceSpecExecutor.kt:26)\n\tat io.kotest.engine.spec.execution.SingleInstanceSpecExecutor$launchRootTests$2$1$1.invokeSuspend(SingleInstanceSpecExecutor.kt:57)\n\tat kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)\n\tat kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:100)\n\tat kotlinx.coroutines.EventLoopImplBase.processNextEvent(EventLoop.common.kt:256)\n\tat kotlinx.coroutines.BlockingCoroutine.joinBlocking(Builders.kt:54)\n\tat kotlinx.coroutines.BuildersKt__BuildersKt.runBlockingImpl(Builders.kt:30)\n\tat kotlinx.coroutines.BuildersKt.runBlockingImpl(Unknown Source)\n\tat kotlinx.coroutines.BuildersKt__Builders_concurrentKt.runBlockingK(Builders.concurrent.kt:172)\n\tat kotlinx.coroutines.BuildersKt.runBlockingK(Unknown Source)\n\tat kotlinx.coroutines.BuildersKt__BuildersKt.runBlocking(Builders.kt:22)\n\tat kotlinx.coroutines.BuildersKt.runBlocking(Unknown Source)\n\tat kotlinx.coroutines.BuildersKt__BuildersKt.runBlocking$default(Builders.kt:20)\n\tat kotlinx.coroutines.BuildersKt.runBlocking$default(Unknown Source)\n\tat io.kotest.runner.junit.platform.KotestJunitPlatformTestEngine.execute(KotestJunitPlatformTestEngine.kt:86)\n\tat io.kotest.runner.junit.platform.KotestJunitPlatformTestEngine.execute(KotestJunitPlatformTestEngine.kt:56)\n",
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "official namespace or official allocation id is rejected before any filesystem mutation",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "path": "ai/build/test-results/test/TEST-com.wingedsheep.ai.industrialwaste.IndustrialWasteV2CapabilityRunnerTest.xml",
+      "sha256": "a2b1188b8439c198b90b73618ec3ca2275c4f9dabfffdba4b7382b32997d67bb",
+      "attributes": {
+        "name": "com.wingedsheep.ai.industrialwaste.IndustrialWasteV2CapabilityRunnerTest",
+        "tests": "3",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-26T16:39:20.092Z",
+        "hostname": "runnervmtr4k5",
+        "time": "0.438"
+      },
+      "cases": [
+        {
+          "name": "all four frozen R1 lists complete one measured own turn through the composed real runner",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "composed one-turn capability runner replays identically for all four frozen lists",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "captured one-turn action transcript replays exactly for all four frozen lists",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "path": "ai/build/test-results/test/TEST-com.wingedsheep.ai.industrialwaste.IndustrialWasteV2EventMetricsTest.xml",
+      "sha256": "73439b8117d3760af466b6de3e4aea896d49ce94705baa6ac812979d6eab07ba",
+      "attributes": {
+        "name": "com.wingedsheep.ai.industrialwaste.IndustrialWasteV2EventMetricsTest",
+        "tests": "11",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-26T16:39:20.531Z",
+        "hostname": "runnervmtr4k5",
+        "time": "0.225"
+      },
+      "cases": [
+        {
+          "name": "inventory is not a loop but a real neutral sacrifice return cast and entry is",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "actual Pactdoll lethal is counted only after the engine ends the game",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "Blood Fountain return and recast is recursion without inventing an Altar loop",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "a development action spending loop resources abandons the partial cycle proof",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "Scry and Rumble count only observed copies and distinguish seeing from land access",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "all three controlled real Tron lands establish access and full Tron",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "quiet checkpoint distinguishes colored-payment failure from total-mana shortage",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "quiet checkpoint recognizes an actually executable fixed-cost artifact",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "Foundry future conversion requires real charges token creation and a later legal attack",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "duplicated missing or rejected transitions cannot enter the metric stream",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "replaying the same complete accepted transcript reproduces metric evidence",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "path": "ai/build/test-results/test/TEST-com.wingedsheep.ai.industrialwaste.IndustrialWasteV2ExecutionStatusTest.xml",
+      "sha256": "c351cb756c87548902d823cd1b1782cd9e8717c25f4fdf8fdbbe498d54852bae",
+      "attributes": {
+        "name": "com.wingedsheep.ai.industrialwaste.IndustrialWasteV2ExecutionStatusTest",
+        "tests": "10",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-26T16:39:20.757Z",
+        "hostname": "runnervmtr4k5",
+        "time": "0.973"
+      },
+      "cases": [
+        {
+          "name": "initialization does not count but both players London submissions each count once",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "PLAY and DRAW own eighth turns include end and cleanup decisions before turn-cap status",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "four thousand actual neutral-loop submissions stop without resolving an extra action",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "real concession is terminal with its actual engine winner and reason",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "real SBA settlement of a zero-life setup produces draw and never a synthetic winner",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "rejected action counts once stops exposure and preserves last accepted state",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "throwing executor records a submitted exception without retry or engine winner",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "unresolved observer overrides provisional terminal while preserving actual terminal diagnostics",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "forged terminal and missing turn-event provenance remain unresolved",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "synthetic simultaneous boundary precedence preserves genuine terminal and quarantines faults",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "path": "ai/build/test-results/test/TEST-com.wingedsheep.ai.industrialwaste.IndustrialWasteV2FullHorizonRunnerTest.xml",
+      "sha256": "38b28aa0d73a71f42d134af11954ef612904d45c9230b4d183635ad1dc1b0828",
+      "attributes": {
+        "name": "com.wingedsheep.ai.industrialwaste.IndustrialWasteV2FullHorizonRunnerTest",
+        "tests": "10",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-26T16:39:21.731Z",
+        "hostname": "runnervmtr4k5",
+        "time": "0.747"
+      },
+      "cases": [
+        {
+          "name": "full-horizon capability reaches exact own-turn-eight cap for industrial-waste/control/industrial-waste-v1.0-submitted.dck on the play schedule",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "full-horizon capability reaches exact own-turn-eight cap for industrial-waste/control/industrial-waste-v1.0-submitted.dck on the draw schedule",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "full-horizon capability reaches exact own-turn-eight cap for industrial-waste/v2/candidates/compact-loop.dck on the play schedule",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "full-horizon capability reaches exact own-turn-eight cap for industrial-waste/v2/candidates/compact-loop.dck on the draw schedule",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "full-horizon capability reaches exact own-turn-eight cap for industrial-waste/v2/candidates/recursive-eggs.dck on the play schedule",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "full-horizon capability reaches exact own-turn-eight cap for industrial-waste/v2/candidates/recursive-eggs.dck on the draw schedule",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "full-horizon capability reaches exact own-turn-eight cap for industrial-waste/v2/candidates/lean-tron-hybrid.dck on the play schedule",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "full-horizon capability reaches exact own-turn-eight cap for industrial-waste/v2/candidates/lean-tron-hybrid.dck on the draw schedule",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "full-horizon capability is deterministic for an identical excluded ordering fixture",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "runner refuses the frozen official R1 namespace before submitting an action",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "path": "ai/build/test-results/test/TEST-com.wingedsheep.ai.industrialwaste.IndustrialWasteV2OrderingIntegrationTest.xml",
+      "sha256": "49c47edbe71abf06b0563430d4f2b94a60cbd32e979614ce54236b7efda70b48",
+      "attributes": {
+        "name": "com.wingedsheep.ai.industrialwaste.IndustrialWasteV2OrderingIntegrationTest",
+        "tests": "4",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-26T16:39:22.479Z",
+        "hostname": "runnervmtr4k5",
+        "time": "0.164"
+      },
+      "cases": [
+        {
+          "name": "Expedition Map uses the frozen shuffle through its real continuation with deterministic replay",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "Crop Rotation uses the frozen shuffle through its real continuation with deterministic replay",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "Myr Kinsmith uses the frozen shuffle through its real continuation with deterministic replay",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "the public action policy cannot observe a changed future ordering plan or library order",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "path": "ai/build/test-results/test/TEST-com.wingedsheep.ai.industrialwaste.IndustrialWasteV2PublicActionPolicyTest.xml",
+      "sha256": "3e3a35a5193d93ffba101bd69d746acf90ed6259bd7325a731a43c56f7b440d4",
+      "attributes": {
+        "name": "com.wingedsheep.ai.industrialwaste.IndustrialWasteV2PublicActionPolicyTest",
+        "tests": "13",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-26T16:39:22.802Z",
+        "hostname": "runnervmtr4k5",
+        "time": "0.295"
+      },
+      "cases": [
+        {
+          "name": "public development policy casts an affordable missing Altar through the real engine",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "Star activation pays one mana and chooses an observed hand's black pip",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "Insight pays with Wellspring and preserves live loop hardware",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "public loop actions sacrifice return and recast a Retriever using real generated mana",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "Dross binds an offered graveyard target and pays black recursion mana",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "Foundry loop creates lethal power then wins through the next legal combat",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "passive Forest fixture plays one land and then passes without a second land drop",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "scry and surveil keep an engine card while discarding surplus mana",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "real Candy Trail and Boulder scry continuations keep Altar above a surplus land",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "opening policy has one common keep rule and honors the three-mulligan bound",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "real two-player London mulligans draw seven then bottom three at the forced keep",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "action choice ignores opponent hidden identity and both future library orders",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "explicit regression seed repeats initial state and identities while another seed changes shuffle",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "path": "ai/build/test-results/test/TEST-com.wingedsheep.ai.industrialwaste.IndustrialWasteV2PaymentIntentTest.xml",
+      "sha256": "2c0d690f3a71e66402c905e96c7ee2343b2f88895ab46143fcc489b80e3a044c",
+      "attributes": {
+        "name": "com.wingedsheep.ai.industrialwaste.IndustrialWasteV2PaymentIntentTest",
+        "tests": "8",
+        "skipped": "0",
+        "failures": "1",
+        "errors": "0",
+        "timestamp": "2026-09-26T16:39:22.643Z",
+        "hostname": "runnervmtr4k5",
+        "time": "0.158"
+      },
+      "cases": [
+        {
+          "name": "already automatic payment submits the unchanged selected action without funding",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "Altar funding retains selected Star across death trigger instead of rescoring returned Retriever",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "one Spawn cannot be both spell sacrifice and explicit funding resource",
+          "failure": "org.opentest4j.AssertionFailedError: expected:<true> but was:<false>\n\tat com.wingedsheep.ai.industrialwaste.IndustrialWasteV2PaymentIntentTest$1$3.invokeSuspend(IndustrialWasteV2PaymentIntentTest.kt:122)\n\tat com.wingedsheep.ai.industrialwaste.IndustrialWasteV2PaymentIntentTest$1$3.invoke(IndustrialWasteV2PaymentIntentTest.kt)\n\tat com.wingedsheep.ai.industrialwaste.IndustrialWasteV2PaymentIntentTest$1$3.invoke(IndustrialWasteV2PaymentIntentTest.kt)\n\tat io.kotest.core.spec.style.scopes.FunSpecRootScope$test$1.invokeSuspend(FunSpecRootScope.kt:88)\n\tat io.kotest.core.spec.style.scopes.FunSpecRootScope$test$1.invoke(FunSpecRootScope.kt)\n\tat io.kotest.core.spec.style.scopes.FunSpecRootScope$test$1.invoke(FunSpecRootScope.kt)\n\tat io.kotest.engine.test.TestCaseExecutor$execute$base$1.invoke(TestCaseExecutor.kt:118)\n\tat io.kotest.engine.test.TestInvocationInterceptor$runBeforeTestAfter$executeWithBeforeAfter$1.invoke(TestInvocationInterceptor.kt:93)\n\tat io.kotest.engine.test.interceptors.InvocationTimeoutInterceptor$intercept$3.invokeSuspend(InvocationTimeoutInterceptor.kt:49)\n\tat io.kotest.engine.test.interceptors.InvocationTimeoutInterceptor$intercept$3.invoke(InvocationTimeoutInterceptor.kt)\n\tat io.kotest.engine.test.interceptors.InvocationTimeoutInterceptor$intercept$3.invoke(InvocationTimeoutInterceptor.kt)\n\tat kotlinx.coroutines.intrinsics.UndispatchedKt.startUndispatched(Undispatched.kt:66)\n\tat kotlinx.coroutines.intrinsics.UndispatchedKt.startUndispatchedOrReturnIgnoreTimeout(Undispatched.kt:50)\n\tat kotlinx.coroutines.TimeoutKt.setupTimeout(Timeout.kt:233)\n\tat kotlinx.coroutines.TimeoutKt.withTimeoutOrNull(Timeout.kt:159)\n\tat kotlinx.coroutines.TimeoutKt.withTimeoutOrNull-KLykuaI(Timeout.kt:221)\n\tat io.kotest.engine.test.interceptors.TimeoutInterceptorKt.withAppropriateTimeoutOrNull-KLykuaI(TimeoutInterceptor.kt:103)\n\tat io.kotest.engine.test.interceptors.InvocationTimeoutInterceptor.intercept(InvocationTimeoutInterceptor.kt:48)\n\tat io.kotest.engine.test.TestInvocationInterceptor$runBeforeTestAfter$wrappedTest$1$1.invoke(TestInvocationInterceptor.kt:102)\n\tat io.kotest.engine.test.TestInvocationInterceptor.runBeforeTestAfter(TestInvocationInterceptor.kt:105)\n\tat io.kotest.engine.test.TestInvocationInterceptor.access$runBeforeTestAfter(TestInvocationInterceptor.kt:18)\n\tat io.kotest.engine.test.TestInvocationInterceptor$invokeWithRetry$2.invokeSuspend(TestInvocationInterceptor.kt:53)\n\tat io.kotest.engine.test.TestInvocationInterceptor$invokeWithRetry$2.invoke(TestInvocationInterceptor.kt)\n\tat io.kotest.engine.test.TestInvocationInterceptor$invokeWithRetry$2.invoke(TestInvocationInterceptor.kt)\n\tat kotlinx.coroutines.intrinsics.UndispatchedKt.startUndispatched(Undispatched.kt:66)\n\tat kotlinx.coroutines.intrinsics.UndispatchedKt.startUndispatchedOrReturn(Undispatched.kt:43)\n\tat kotlinx.coroutines.CoroutineScopeKt.coroutineScope(CoroutineScope.kt:848)\n\tat io.kotest.engine.test.TestInvocationInterceptor.invokeWithRetry(TestInvocationInterceptor.kt:51)\n\tat io.kotest.engine.test.TestInvocationInterceptor.intercept(TestInvocationInterceptor.kt:33)\n\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\n\tat io.kotest.engine.test.interceptors.MarkOpenTest4jAbortedExceptionsAsSkippedTestInterceptor.intercept(MarkOpenTest4jAbortedExceptionsAsSkippedTestInterceptor.kt:22)\n\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\n\tat io.kotest.engine.test.interceptors.HandleSkippedExceptionsTestInterceptor.intercept(HandleSkippedExceptionsTestInterceptor.kt:15)\n\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\n\tat io.kotest.engine.test.interceptors.TimeoutInterceptor$intercept$3.invokeSuspend(TimeoutInterceptor.kt:61)\n\tat io.kotest.engine.test.interceptors.TimeoutInterceptor$intercept$3.invoke(TimeoutInterceptor.kt)\n\tat io.kotest.engine.test.interceptors.TimeoutInterceptor$intercept$3.invoke(TimeoutInterceptor.kt)\n\tat kotlinx.coroutines.intrinsics.UndispatchedKt.startUndispatched(Undispatched.kt:66)\n\tat kotlinx.coroutines.intrinsics.UndispatchedKt.startUndispatchedOrReturnIgnoreTimeout(Undispatched.kt:50)\n\tat kotlinx.coroutines.TimeoutKt.setupTimeout(Timeout.kt:233)\n\tat kotlinx.coroutines.TimeoutKt.withTimeout(Timeout.kt:29)\n\tat kotlinx.coroutines.TimeoutKt.withTimeout-KLykuaI(Timeout.kt:141)\n\tat io.kotest.engine.test.interceptors.TimeoutInterceptorKt.withAppropriateTimeout-KLykuaI(TimeoutInterceptor.kt:90)\n\tat io.kotest.engine.test.interceptors.TimeoutInterceptor.intercept(TimeoutInterceptor.kt:60)\n\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\n\tat io.kotest.engine.test.interceptors.CoroutineDebugProbeInterceptor.intercept(CoroutineDebugProbeInterceptor.kt:33)\n\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\n\tat io.kotest.engine.test.interceptors.BlockedThreadTimeoutInterceptor.intercept(BlockedThreadTimeoutInterceptor.kt:87)\n\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\n\tat io.kotest.engine.test.interceptors.CoroutineLoggingInterceptor.intercept(CoroutineLoggingInterceptor.kt:38)\n\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\n\tat io.kotest.engine.test.interceptors.SoftAssertInterceptor.intercept(SoftAssertInterceptor.kt:26)\n\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\n\tat io.kotest.engine.test.interceptors.AssertionModeInterceptor.intercept(AssertionModeInterceptor.kt:29)\n\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\n\tat io.kotest.engine.test.interceptors.LifecycleInterceptor.intercept(LifecycleInterceptor.kt:48)\n\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\n\tat io.kotest.engine.test.interceptors.TestCaseExtensionInterceptor$intercept$2.invoke(TestCaseExtensionInterceptor.kt:21)\n\tat io.kotest.engine.test.TestExtensions$intercept$execute$1$1$1.invokeSuspend(TestExtensions.kt:146)\n\tat io.kotest.engine.test.TestExtensions$intercept$execute$1$1$1.invoke(TestExtensions.kt)\n\tat io.kotest.engine.test.TestExtensions$intercept$execute$1$1$1.invoke(TestExtensions.kt)\n\tat com.wingedsheep.engine.support.HardTimeoutWatchdog.intercept(TestHangGuard.kt:69)\n\tat io.kotest.engine.test.TestExtensions$intercept$execute$1$1.invoke(TestExtensions.kt:143)\n\tat io.kotest.engine.test.TestExtensions.intercept(TestExtensions.kt:151)\n\tat io.kotest.engine.test.interceptors.TestCaseExtensionInterceptor.intercept(TestCaseExtensionInterceptor.kt:21)\n\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\n\tat io.kotest.engine.test.interceptors.TestEnabledCheckInterceptor.intercept(TestEnabledCheckInterceptor.kt:41)\n\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\n\tat io.kotest.engine.test.interceptors.CoroutineErrorCollectorInterceptor$intercept$3.invokeSuspend(CoroutineErrorCollectorInterceptor.kt:39)\n\tat io.kotest.engine.test.interceptors.CoroutineErrorCollectorInterceptor$intercept$3.invoke(CoroutineErrorCollectorInterceptor.kt)\n\tat io.kotest.engine.test.interceptors.CoroutineErrorCollectorInterceptor$intercept$3.invoke(CoroutineErrorCollectorInterceptor.kt)\n\tat kotlinx.coroutines.intrinsics.UndispatchedKt.startUndispatched(Undispatched.kt:66)\n\tat kotlinx.coroutines.intrinsics.UndispatchedKt.startUndispatchedOrReturn(Undispatched.kt:43)\n\tat kotlinx.coroutines.BuildersKt__Builders_commonKt.withContext(Builders.common.kt:497)\n\tat kotlinx.coroutines.BuildersKt.withContext(Unknown Source)\n\tat io.kotest.engine.test.interceptors.CoroutineErrorCollectorInterceptor.intercept(CoroutineErrorCollectorInterceptor.kt:38)\n\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\n\tat io.kotest.engine.test.interceptors.CoroutineDispatcherFactoryTestInterceptor.intercept(CoroutineDispatcherFactoryTestInterceptor.kt:41)\n\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\n\tat io.kotest.engine.test.interceptors.SupervisorScopeInterceptor$intercept$2.invokeSuspend(SupervisorScopeInterceptor.kt:23)\n\tat io.kotest.engine.test.interceptors.SupervisorScopeInterceptor$intercept$2.invoke(SupervisorScopeInterceptor.kt)\n\tat io.kotest.engine.test.interceptors.SupervisorScopeInterceptor$intercept$2.invoke(SupervisorScopeInterceptor.kt)\n\tat kotlinx.coroutines.intrinsics.UndispatchedKt.startUndispatched(Undispatched.kt:66)\n\tat kotlinx.coroutines.intrinsics.UndispatchedKt.startUndispatchedOrReturn(Undispatched.kt:43)\n\tat kotlinx.coroutines.SupervisorKt.supervisorScope(Supervisor.kt:105)\n\tat io.kotest.engine.test.interceptors.SupervisorScopeInterceptor.intercept(SupervisorScopeInterceptor.kt:22)\n\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\n\tat io.kotest.engine.test.interceptors.InvocationCountCheckInterceptor.intercept(InvocationCountCheckInterceptor.kt:33)\n\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\n\tat io.kotest.engine.test.interceptors.TestFinishedInterceptor.intercept(TestFinishedInterceptor.kt:23)\n\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\n\tat io.kotest.engine.test.FailFastInterceptor.intercept(FailFastInterceptor.kt:24)\n\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\n\tat io.kotest.engine.test.interceptors.TestNameContextInterceptor$intercept$2.invokeSuspend(TestNameContextInterceptor.kt:21)\n\tat io.kotest.engine.test.interceptors.TestNameContextInterceptor$intercept$2.invoke(TestNameContextInterceptor.kt)\n\tat io.kotest.engine.test.interceptors.TestNameContextInterceptor$intercept$2.invoke(TestNameContextInterceptor.kt)\n\tat kotlinx.coroutines.intrinsics.UndispatchedKt.startUndispatched(Undispatched.kt:66)\n\tat kotlinx.coroutines.intrinsics.UndispatchedKt.startUndispatchedOrReturn(Undispatched.kt:43)\n\tat kotlinx.coroutines.BuildersKt__Builders_commonKt.withContext(Builders.common.kt:497)\n\tat kotlinx.coroutines.BuildersKt.withContext(Unknown Source)\n\tat io.kotest.engine.test.interceptors.TestNameContextInterceptor.intercept(TestNameContextInterceptor.kt:20)\n\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\n\tat io.kotest.engine.test.interceptors.DescriptorPathContextInterceptor$intercept$2.invokeSuspend(DescriptorPathContextInterceptor.kt:21)\n\tat io.kotest.engine.test.interceptors.DescriptorPathContextInterceptor$intercept$2.invoke(DescriptorPathContextInterceptor.kt)\n\tat io.kotest.engine.test.interceptors.DescriptorPathContextInterceptor$intercept$2.invoke(DescriptorPathContextInterceptor.kt)\n\tat kotlinx.coroutines.intrinsics.UndispatchedKt.startUndispatched(Undispatched.kt:66)\n\tat kotlinx.coroutines.intrinsics.UndispatchedKt.startUndispatchedOrReturn(Undispatched.kt:43)\n\tat kotlinx.coroutines.BuildersKt__Builders_commonKt.withContext(Builders.common.kt:497)\n\tat kotlinx.coroutines.BuildersKt.withContext(Unknown Source)\n\tat io.kotest.engine.test.interceptors.DescriptorPathContextInterceptor.intercept(DescriptorPathContextInterceptor.kt:20)\n\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\n\tat io.kotest.engine.test.TestCaseExecutor.execute(TestCaseExecutor.kt:124)\n\tat io.kotest.engine.spec.execution.SingleInstanceSpecExecutor.executeTest(SingleInstanceSpecExecutor.kt:76)\n\tat io.kotest.engine.spec.execution.SingleInstanceSpecExecutor.access$executeTest(SingleInstanceSpecExecutor.kt:26)\n\tat io.kotest.engine.spec.execution.SingleInstanceSpecExecutor$launchRootTests$2$1$1.invokeSuspend(SingleInstanceSpecExecutor.kt:57)\n\tat kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)\n\tat kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:100)\n\tat kotlinx.coroutines.EventLoopImplBase.processNextEvent(EventLoop.common.kt:256)\n\tat kotlinx.coroutines.BlockingCoroutine.joinBlocking(Builders.kt:54)\n\tat kotlinx.coroutines.BuildersKt__BuildersKt.runBlockingImpl(Builders.kt:30)\n\tat kotlinx.coroutines.BuildersKt.runBlockingImpl(Unknown Source)\n\tat kotlinx.coroutines.BuildersKt__Builders_concurrentKt.runBlockingK(Builders.concurrent.kt:172)\n\tat kotlinx.coroutines.BuildersKt.runBlockingK(Unknown Source)\n\tat kotlinx.coroutines.BuildersKt__BuildersKt.runBlocking(Builders.kt:22)\n\tat kotlinx.coroutines.BuildersKt.runBlocking(Unknown Source)\n\tat kotlinx.coroutines.BuildersKt__BuildersKt.runBlocking$default(Builders.kt:20)\n\tat kotlinx.coroutines.BuildersKt.runBlocking$default(Unknown Source)\n\tat io.kotest.runner.junit.platform.KotestJunitPlatformTestEngine.execute(KotestJunitPlatformTestEngine.kt:86)\n\tat io.kotest.runner.junit.platform.KotestJunitPlatformTestEngine.execute(KotestJunitPlatformTestEngine.kt:56)\n",
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "real Rumble Spawn funds the selected Star through its exact predefined ability",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "Insight explicitly floats its selected Prism before the additional sacrifice",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "an unfunded Prism automatic solution does not authorize a selected generic spell",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "lost selected source invalidates retained intent without selecting a replacement",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "colorless Altar mana alone does not admit black recovery",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "path": "ai/build/test-results/test/TEST-com.wingedsheep.ai.industrialwaste.IndustrialWasteV2QuietCheckpointReplayTest.xml",
+      "sha256": "f9e5f7d800d57fa21af95b5009d901bc4e31846e2ba6f6f6489c019d6337faa8",
+      "attributes": {
+        "name": "com.wingedsheep.ai.industrialwaste.IndustrialWasteV2QuietCheckpointReplayTest",
+        "tests": "11",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-26T16:39:23.098Z",
+        "hostname": "runnervmtr4k5",
+        "time": "4.752"
+      },
+      "cases": [
+        {
+          "name": "snapshot replay certifies every quiet state and the first-per-turn compatibility view on the draw",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "missing the first eligible quiet state cannot pass replay",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "missing a later state from the same own turn cannot hide behind the compatibility view",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "extra quiet observations after the final eligible state are rejected",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "reordered quiet observations are rejected even when every row is intact",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "duplicate action indices cannot certify two observations of one accepted state",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "a well-formed substituted state digest is rejected against the real replayed state",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "altered checkpoint values fail semantic replay despite intact action state and event hashes",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "a valid later same-turn checkpoint cannot replace the first-per-turn compatibility row",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "a real terminal has no quiet priority even when the engine retains its prior main-step fields",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "the final real four-thousandth action preserves its eligible quiet checkpoint before the cap stops execution",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "path": "ai/build/test-results/test/TEST-com.wingedsheep.ai.industrialwaste.IndustrialWasteV2R1OfficialExecutionTest.xml",
+      "sha256": "b69f2adf4cd589cae0dc908a3c412e07126e073cc7009d5304ec9d7f1eace3c6",
+      "attributes": {
+        "name": "com.wingedsheep.ai.industrialwaste.IndustrialWasteV2R1OfficialExecutionTest",
+        "tests": "1",
+        "skipped": "1",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-26T16:39:27.853Z",
+        "hostname": "runnervmtr4k5",
+        "time": "0.007"
+      },
+      "cases": [
+        {
+          "name": "execute the frozen R1 corpus only under independently verified durable authority",
+          "failure": null,
+          "error": null,
+          "skipped": true
+        }
+      ]
+    },
+    {
+      "path": "ai/build/test-results/test/TEST-com.wingedsheep.ai.industrialwaste.IndustrialWasteV2SacrificeCheckpointTest.xml",
+      "sha256": "c801c99664cb5c411306bc561e0da8d3cd4cab7d049a56e2ef09c9d6b61fe048",
+      "attributes": {
+        "name": "com.wingedsheep.ai.industrialwaste.IndustrialWasteV2SacrificeCheckpointTest",
+        "tests": "25",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-26T16:39:27.880Z",
+        "hostname": "runnervmtr4k5",
+        "time": "0.311"
+      },
+      "cases": [
+        {
+          "name": "Eviscerator's Insight omitted for missing black still records the frozen colored failure",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "Eviscerator's Insight without a sacrifice is not misattributed to colored mana",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "Eviscerator's Insight with a sacrifice but only one mana is a total shortfall",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "Eviscerator's Insight ordinary payment witness keeps its sacrifice for the actual cast",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "Fanatical Offering omitted for missing black still records the frozen colored failure",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "Fanatical Offering without a sacrifice is not misattributed to colored mana",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "Fanatical Offering with a sacrifice but only one mana is a total shortfall",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "Fanatical Offering ordinary payment witness keeps its sacrifice for the actual cast",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "Crop Rotation needs a sacrificable land and a real green payment",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "Crop Rotation cannot spend floating green without its additional land sacrifice",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "Crop Rotation can use one Forest for ordinary mana and then sacrifice that tapped Forest",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "Insight flashback missing black is a five-mana graveyard failure and never hand stranding",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "Insight flashback total shortfall never strands a card in hand",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "Insight flashback still needs its ordinary sacrifice even when enumeration omits its metadata",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "Insight flashback with actual ordinary mana and sacrifice is executable",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "Chromatic Star cannot be assumed to supply color and remain the spell's sacrifice",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "repeatable Altar mana proves the generic flashback payment and missing black",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "ordinary spell cannot count two Altars consuming the same creature as four mana",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "ordinary spell cannot treat one Altar as a maximum of one activation",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "recovery activation proves repeated explicit funding without inventing black",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "ordinary positive payment does not become unresolved merely because an Altar also exists",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "real Rumble Spawn cannot pay and remain the additional sacrifice",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "unfunded Prophetic Prism cannot be a positive generic-mana witness",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "two unfunded Prisms cannot establish a circular colored payment witness",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "a genuine basic-land witness remains executable with an unrelated paid filter present",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "path": "ai/build/test-results/test/TEST-com.wingedsheep.ai.industrialwaste.IndustrialWasteV2RegistryAuditTest.xml",
+      "sha256": "ddebb609dfa5318f463f587034678c820d5b8490cf4e70bbdd6d0bf5aa2488d2",
+      "attributes": {
+        "name": "com.wingedsheep.ai.industrialwaste.IndustrialWasteV2RegistryAuditTest",
+        "tests": "1",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-26T16:39:27.863Z",
+        "hostname": "runnervmtr4k5",
+        "time": "0.016"
+      },
+      "cases": [
+        {
+          "name": "all frozen v2 candidates and historical comparator resolve in the compiled catalog",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "path": "ai/build/test-results/test/TEST-com.wingedsheep.ai.industrialwaste.IndustrialWasteV2SelectionAdvisorTest.xml",
+      "sha256": "be1d5e678840b6fbd565bf39ffe85443c22e3aca3106853684cc531646181626",
+      "attributes": {
+        "name": "com.wingedsheep.ai.industrialwaste.IndustrialWasteV2SelectionAdvisorTest",
+        "tests": "9",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-26T16:39:28.192Z",
+        "hostname": "runnervmtr4k5",
+        "time": "0.125"
+      },
+      "cases": [
+        {
+          "name": "Recursive Eggs Rumble fixes black access without inventing Tron in the list",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "collection-shaped Map and Rotation decisions build missing Tron while fixing a visible black need first",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "Tron-capable Stirrings takes the missing third piece when colored access is sufficient",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "one shared Rumble policy selects the missing engine across all four mana architectures",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "Blood Fountain returns both offered Retrievers before a redundant expensive creature",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "Kinsmith takes its optional search and Dross recursion prefers the accessible loop creature",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "real Stirrings Rumble and Kinsmith decisions accept the shared selector responses",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "opponent hidden identities and future library order cannot change an offered choice",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        },
+        {
+          "name": "Stirrings bottom order is deterministic and never selects a nonselectable card",
+          "failure": null,
+          "error": null,
+          "skipped": false
+        }
+      ]
+    }
+  ],
+  "official_allocations_initialized": 0,
+  "comparative_outcomes_exposed": 0,
+  "runtime_accepted": false,
+  "execution_authorized": false,
+  "full_receiving_ci": {
+    "run_id": 36255676989,
+    "conclusion": "failure",
+    "engine_job": 108442354595,
+    "engine_cases": 3646,
+    "engine_failures": 1,
+    "engine_failure": "TapEventEnforcementTest detects raw tap write in detached canonical payment proof.",
+    "content_job": 108442354655,
+    "ai_cases": 787,
+    "ai_failures": 2,
+    "ai_skips": 34,
+    "other_groups": "frontend, scenarios-old, scenarios-2023-24, scenarios-2025-26, tools, server succeeded; backend aggregate failed; coverage skipped.",
+    "adjacent_workflows": {
+      "R0_static": 36255676888,
+      "R1_guard": 36255676936,
+      "Gate9": 36255676939,
+      "Gate10": 36255676938,
+      "v2_card": 36255676901
+    },
+    "adjacent_conclusions": "success"
+  }
+}

@@ -1,0 +1,157 @@
+diff --git a/mtg-sets/src/test/resources/snapshots/cards/ROE.json b/mtg-sets/src/test/resources/snapshots/cards/ROE.json
+index 27afb2ab..e9a7ecd0 100644
+--- a/mtg-sets/src/test/resources/snapshots/cards/ROE.json
++++ b/mtg-sets/src/test/resources/snapshots/cards/ROE.json
+@@ -106,6 +106,85 @@
+     ]
+ }
+ 
++// Ancient Stirrings
++{
++    "name": "Ancient Stirrings",
++    "manaCost": "{G}",
++    "typeLine": "Sorcery",
++    "oracleText": "Look at the top five cards of your library. You may reveal a colorless card from among them and put it into your hand. Then put the rest on the bottom of your library in any order.",
++    "script": {
++        "spellEffect": {
++            "type": "Composite",
++            "effects": [
++                {
++                    "type": "GatherCards",
++                    "source": {
++                        "type": "TopOfLibrary",
++                        "count": {
++                            "type": "Fixed",
++                            "amount": 5
++                        }
++                    },
++                    "storeAs": "looked"
++                },
++                {
++                    "type": "SelectFromCollection",
++                    "from": "looked",
++                    "selection": {
++                        "type": "ChooseUpTo",
++                        "count": {
++                            "type": "Fixed",
++                            "amount": 1
++                        }
++                    },
++                    "filter": {
++                        "cardPredicates": [
++                            "IsColorless"
++                        ]
++                    },
++                    "storeSelected": "kept",
++                    "storeRemainder": "rest",
++                    "prompt": "You may reveal a colorless card and put it into your hand",
++                    "showAllCards": true
++                },
++                {
++                    "type": "MoveCollection",
++                    "from": "kept",
++                    "destination": {
++                        "type": "ToZone",
++                        "zone": "Hand"
++                    },
++                    "revealed": true
++                },
++                {
++                    "type": "MoveCollection",
++                    "from": "rest",
++                    "destination": {
++                        "type": "ToZone",
++                        "zone": "Library",
++                        "placement": "Bottom"
++                    },
++                    "order": "ControllerChooses"
++                }
++            ]
++        }
++    },
++    "metadata": {
++        "collectorNumber": "174",
++        "artist": "Vincent Proce",
++        "imageUri": "https://cards.scryfall.io/normal/front/9/7/97ac2766-a597-4949-882d-c5e61e6dd268.jpg?1783941968",
++        "rulings": [
++            {
++                "date": "2021-03-19",
++                "text": "Objects with no mana cost, including lands that could produce colored mana, are colorless by default."
++            }
++        ]
++    },
++    "colorIdentityOverride": [
++        "GREEN"
++    ]
++}
++
+ // Artisan of Kozilek
+ {
+     "name": "Artisan of Kozilek",
+diff --git a/mtg-sets/src/test/resources/snapshots/cards/TSP.json b/mtg-sets/src/test/resources/snapshots/cards/TSP.json
+index 4953966f..614d9c50 100644
+--- a/mtg-sets/src/test/resources/snapshots/cards/TSP.json
++++ b/mtg-sets/src/test/resources/snapshots/cards/TSP.json
+@@ -555,6 +555,62 @@
+     ]
+ }
+ 
++// Chromatic Star
++{
++    "name": "Chromatic Star",
++    "manaCost": "{1}",
++    "typeLine": "Artifact",
++    "oracleText": "{1}, {T}, Sacrifice this artifact: Add one mana of any color.\nWhen this artifact is put into a graveyard from the battlefield, draw a card.",
++    "script": {
++        "triggeredAbilities": [
++            {
++                "id": "ability_1",
++                "trigger": {
++                    "type": "ZoneChangeEvent",
++                    "from": "Battlefield",
++                    "to": "Graveyard"
++                },
++                "effect": {
++                    "type": "DrawCards",
++                    "count": {
++                        "type": "Fixed",
++                        "amount": 1
++                    }
++                }
++            }
++        ],
++        "activatedAbilities": [
++            {
++                "id": "ability_2",
++                "cost": {
++                    "type": "CostComposite",
++                    "costs": [
++                        {
++                            "type": "CostAtomWrapper",
++                            "atom": {
++                                "type": "AtomMana",
++                                "cost": "{1}"
++                            }
++                        },
++                        "CostTap",
++                        "CostSacrificeSelf"
++                    ]
++                },
++                "effect": "AddManaOfChoice",
++                "timing": "ManaAbility",
++                "isManaAbility": true
++            }
++        ]
++    },
++    "metadata": {
++        "collectorNumber": "251",
++        "artist": "Alex Horley-Orlandelli",
++        "flavorText": "\"This item is not from . . . now. It reflects a sky no longer ours and gleams with hope that does not exist.\"\n—Tavalus, acolyte of Korlis",
++        "imageUri": "https://cards.scryfall.io/normal/front/1/d/1d7a1357-debd-49b0-9fd5-560d5b3f589e.jpg?1783943199"
++    },
++    "colorIdentityOverride": []
++}
++
+ // Chronosavant
+ {
+     "name": "Chronosavant",

@@ -1,0 +1,65 @@
+{
+  "schema": "industrial-waste-v2-r1-allocation-plan-capability-v1",
+  "status": "ACCEPTED_SEED_FREE_EXACT_512_ALLOCATION_PLAN_ONLY",
+  "source_branch": "industrial-waste/v2-structural-redesign",
+  "source_commit": "5b7c0f803c73e9c170b94ecf7bb2b8e4e0221e7b",
+  "predecessor_runtime_binding": "runtime-identity-binding-capability-36225863131.json",
+  "workflow_run_id": 36227140246,
+  "workflow_job_id": 108363215418,
+  "artifact": {
+    "id": 10900454079,
+    "name": "industrial-waste-v2-r1-allocation-plan",
+    "size_in_bytes": 46933,
+    "github_sha256": "45f7632fbcc2943426e4b6e978da6d03b830130f4d3ccac98985d426ccf0d754"
+  },
+  "validation": {
+    "workflow_conclusion": "success",
+    "full_ci_run": 36227144137,
+    "full_ci_conclusion": "success",
+    "execution_guard_run": 36227144157,
+    "execution_guard_conclusion": "success",
+    "r0_freeze_run": 36227144138,
+    "r0_freeze_conclusion": "success",
+    "card_qualification_run": 36227144247,
+    "card_qualification_conclusion": "success",
+    "allocation_plan_tests": "PASS"
+  },
+  "frozen_geometry": {
+    "comparator": "IMMUTABLE_SUBMITTED_V1_0",
+    "candidates": [
+      "COMPACT_LOOP",
+      "RECURSIVE_EGGS",
+      "LEAN_TRON_HYBRID"
+    ],
+    "ordering_rows": 64,
+    "schedules": [
+      "PLAY_SKIP_FIRST_DRAW",
+      "DRAW_TAKE_FIRST_DRAW"
+    ],
+    "allocations_per_deck": 128,
+    "total_allocations": 512,
+    "allocation_id_first": "IW_V2_R1_0001",
+    "allocation_id_last": "IW_V2_R1_0512"
+  },
+  "binding_disposition": {
+    "exact_allocation_plan_frozen": true,
+    "official_r1_corpus_runner_binding_closed": false,
+    "remaining_runtime_bindings": [
+      "official_r1_corpus_runner",
+      "official_r1_artifact_schema_and_completeness_contract",
+      "official_complete_metric_projection"
+    ]
+  },
+  "official_counters": {
+    "allocations_initialized": 0,
+    "actions_submitted": 0,
+    "comparative_outcomes_exposed": 0
+  },
+  "claim_creation_authorized": false,
+  "attempt_journal_creation_authorized": false,
+  "initialization_admitted": false,
+  "execution_authorized": false,
+  "candidate_elimination_authorized": false,
+  "candidate_promotion_authorized": false,
+  "next_gate": "Compose the frozen 512-allocation plan with the real engine initializer and accepted full-horizon runner, plus the artifact/completeness contract and complete metric projection, while still refusing official initialization until a successor runtime-binding receipt closes every prerequisite."
+}

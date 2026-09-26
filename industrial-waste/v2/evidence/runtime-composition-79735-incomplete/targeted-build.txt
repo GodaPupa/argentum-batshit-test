@@ -1,0 +1,273 @@
+scripts/test-class "IndustrialWasteV2PaymentIntentTest" --tests *IndustrialWasteV2SacrificeCheckpointTest --tests *IndustrialWasteV2ActivatedCheckpointTest --tests *IndustrialWasteV2AllocationRunnerTest --tests *IndustrialWasteV2FullHorizonRunnerTest --tests *IndustrialWasteV2EventMetricsTest --offline --no-daemon --max-workers=1 -Pkotlin.compiler.execution.strategy=in-process -PkotlinCompileParallelism=1 -Dorg.gradle.jvmargs=-Xmx4g
+test-class: IndustrialWasteV2PaymentIntentTest -> :ai
+gradle-locked: 'shlock' not found; running ./gradlew unlocked
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/9.6.1/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build 
+Calculating task graph as no cached configuration is available for tasks: :ai:test --tests IndustrialWasteV2PaymentIntentTest --tests *IndustrialWasteV2SacrificeCheckpointTest --tests *IndustrialWasteV2ActivatedCheckpointTest --tests *IndustrialWasteV2AllocationRunnerTest --tests *IndustrialWasteV2FullHorizonRunnerTest --tests *IndustrialWasteV2EventMetricsTest
+> Task :buildSrc:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :buildSrc:generateExternalPluginSpecBuilders UP-TO-DATE
+> Task :buildSrc:extractPrecompiledScriptPluginPlugins UP-TO-DATE
+> Task :buildSrc:compilePluginsBlocks UP-TO-DATE
+> Task :buildSrc:generatePrecompiledScriptPluginAccessors UP-TO-DATE
+> Task :buildSrc:generateScriptPluginAdapters UP-TO-DATE
+> Task :buildSrc:compileKotlin UP-TO-DATE
+> Task :buildSrc:compileJava NO-SOURCE
+> Task :buildSrc:compileGroovy NO-SOURCE
+> Task :buildSrc:pluginDescriptors UP-TO-DATE
+> Task :buildSrc:processResources UP-TO-DATE
+> Task :buildSrc:classes UP-TO-DATE
+> Task :buildSrc:jar UP-TO-DATE
+w: Detected multiple Kotlin daemon sessions at 
+> Task :ai:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :mtg-sdk:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :mtg-sdk:compileKotlin UP-TO-DATE
+> Task :mtg-sdk:compileJava NO-SOURCE
+> Task :rules-engine:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :rules-engine:compileKotlin UP-TO-DATE
+> Task :rules-engine:compileJava NO-SOURCE
+> Task :ai:compileKotlin UP-TO-DATE
+> Task :ai:compileJava NO-SOURCE
+> Task :ai:processResources UP-TO-DATE
+> Task :ai:classes UP-TO-DATE
+> Task :ai:jar UP-TO-DATE
+> Task :mtg-sets:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :mtg-sets:1993-1999:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :mtg-sets:core:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :mtg-sets:core:compileKotlin UP-TO-DATE
+> Task :mtg-sets:core:compileJava NO-SOURCE
+> Task :mtg-sets:1993-1999:compileKotlin UP-TO-DATE
+> Task :mtg-sets:1993-1999:compileJava NO-SOURCE
+> Task :mtg-sets:2000-2002:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :mtg-sets:2000-2002:compileKotlin UP-TO-DATE
+> Task :mtg-sets:2000-2002:compileJava NO-SOURCE
+> Task :mtg-sets:2003-2007:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :mtg-sets:2003-2007:compileKotlin UP-TO-DATE
+> Task :mtg-sets:2003-2007:compileJava NO-SOURCE
+> Task :mtg-sets:2008-2016:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :mtg-sets:2008-2016:compileKotlin UP-TO-DATE
+> Task :mtg-sets:2008-2016:compileJava NO-SOURCE
+> Task :mtg-sets:2017-2022:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :mtg-sets:2017-2022:compileKotlin UP-TO-DATE
+> Task :mtg-sets:2017-2022:compileJava NO-SOURCE
+> Task :mtg-sets:2023:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :mtg-sets:2023:compileKotlin UP-TO-DATE
+> Task :mtg-sets:2023:compileJava NO-SOURCE
+> Task :mtg-sets:2024:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :mtg-sets:2024:compileKotlin UP-TO-DATE
+> Task :mtg-sets:2024:compileJava NO-SOURCE
+> Task :mtg-sets:2025:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :mtg-sets:2025:compileKotlin UP-TO-DATE
+> Task :mtg-sets:2025:compileJava NO-SOURCE
+> Task :mtg-sets:2026:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :mtg-sets:2026:compileKotlin UP-TO-DATE
+> Task :mtg-sets:2026:compileJava NO-SOURCE
+> Task :mtg-sets:compileKotlin UP-TO-DATE
+> Task :mtg-sets:compileJava NO-SOURCE
+> Task :rules-engine:processResources UP-TO-DATE
+> Task :rules-engine:classes UP-TO-DATE
+> Task :rules-engine:jar UP-TO-DATE
+> Task :rules-engine:compileTestFixturesKotlin UP-TO-DATE
+> Task :rules-engine:compileTestFixturesJava NO-SOURCE
+> Task :ai:compileTestKotlin
+> Task :ai:compileTestJava NO-SOURCE
+> Task :ai:processTestResources UP-TO-DATE
+> Task :ai:testClasses UP-TO-DATE
+> Task :mtg-sdk:processResources NO-SOURCE
+> Task :mtg-sdk:classes UP-TO-DATE
+> Task :mtg-sdk:jar UP-TO-DATE
+> Task :mtg-sets:processResources UP-TO-DATE
+> Task :mtg-sets:classes UP-TO-DATE
+> Task :mtg-sets:jar UP-TO-DATE
+> Task :rules-engine:processTestFixturesResources NO-SOURCE
+> Task :rules-engine:testFixturesClasses UP-TO-DATE
+> Task :rules-engine:testFixturesJar UP-TO-DATE
+> Task :mtg-sets:1993-1999:processResources NO-SOURCE
+> Task :mtg-sets:1993-1999:classes UP-TO-DATE
+> Task :mtg-sets:1993-1999:jar UP-TO-DATE
+> Task :mtg-sets:2000-2002:processResources NO-SOURCE
+> Task :mtg-sets:2000-2002:classes UP-TO-DATE
+> Task :mtg-sets:2000-2002:jar UP-TO-DATE
+> Task :mtg-sets:2003-2007:processResources NO-SOURCE
+> Task :mtg-sets:2003-2007:classes UP-TO-DATE
+> Task :mtg-sets:2003-2007:jar UP-TO-DATE
+> Task :mtg-sets:2008-2016:processResources NO-SOURCE
+> Task :mtg-sets:2008-2016:classes UP-TO-DATE
+> Task :mtg-sets:2008-2016:jar UP-TO-DATE
+> Task :mtg-sets:2017-2022:processResources NO-SOURCE
+> Task :mtg-sets:2017-2022:classes UP-TO-DATE
+> Task :mtg-sets:2017-2022:jar UP-TO-DATE
+> Task :mtg-sets:2023:processResources NO-SOURCE
+> Task :mtg-sets:2023:classes UP-TO-DATE
+> Task :mtg-sets:2023:jar UP-TO-DATE
+> Task :mtg-sets:2024:processResources NO-SOURCE
+> Task :mtg-sets:2024:classes UP-TO-DATE
+> Task :mtg-sets:2024:jar UP-TO-DATE
+> Task :mtg-sets:2025:processResources NO-SOURCE
+> Task :mtg-sets:2025:classes UP-TO-DATE
+> Task :mtg-sets:2025:jar UP-TO-DATE
+> Task :mtg-sets:2026:processResources NO-SOURCE
+> Task :mtg-sets:2026:classes UP-TO-DATE
+> Task :mtg-sets:2026:jar UP-TO-DATE
+> Task :mtg-sets:core:processResources UP-TO-DATE
+> Task :mtg-sets:core:classes UP-TO-DATE
+> Task :mtg-sets:core:jar UP-TO-DATE
+> Task :ai:test
+
+IndustrialWasteV2ActivatedCheckpointTest > Blood Fountain recovery with legal target and enough colorless mana records a colored failure PASSED
+
+IndustrialWasteV2ActivatedCheckpointTest > Blood Fountain with no graveyard creature is not a relevant colored recovery failure PASSED
+
+IndustrialWasteV2ActivatedCheckpointTest > Blood Fountain recovery payable with a black source is executable PASSED
+
+IndustrialWasteV2ActivatedCheckpointTest > Dross Skullbomb recovery with legal target and enough colorless mana records a colored failure PASSED
+
+IndustrialWasteV2ActivatedCheckpointTest > Dross Skullbomb with no graveyard creature is not a relevant colored recovery failure PASSED
+
+IndustrialWasteV2ActivatedCheckpointTest > Dross Skullbomb recovery payable with a black source is executable PASSED
+
+IndustrialWasteV2ActivatedCheckpointTest > tapped Fountain does not become a color failure when its non-mana cost is unavailable PASSED
+
+IndustrialWasteV2AllocationRunnerTest > complete excluded allocation preserves exact actions events checkpoints and replay PASSED
+
+IndustrialWasteV2AllocationRunnerTest > allocation directory is create-once and a second invocation cannot replace evidence PASSED
+
+IndustrialWasteV2AllocationRunnerTest > frozen Compact Loop spell-bearing fixture composes the public pilot typed metrics and snapshot replay FAILED
+    org.opentest4j.AssertionFailedError at IndustrialWasteV2AllocationRunnerTest.kt:116
+
+IndustrialWasteV2AllocationRunnerTest > official namespace or official allocation id is rejected before any filesystem mutation PASSED
+
+IndustrialWasteV2EventMetricsTest > inventory is not a loop but a real neutral sacrifice return cast and entry is PASSED
+
+IndustrialWasteV2EventMetricsTest > actual Pactdoll lethal is counted only after the engine ends the game PASSED
+
+IndustrialWasteV2EventMetricsTest > Blood Fountain return and recast is recursion without inventing an Altar loop PASSED
+
+IndustrialWasteV2EventMetricsTest > a development action spending loop resources abandons the partial cycle proof PASSED
+
+IndustrialWasteV2EventMetricsTest > Scry and Rumble count only observed copies and distinguish seeing from land access PASSED
+
+IndustrialWasteV2EventMetricsTest > all three controlled real Tron lands establish access and full Tron PASSED
+
+IndustrialWasteV2EventMetricsTest > quiet checkpoint distinguishes colored-payment failure from total-mana shortage PASSED
+
+IndustrialWasteV2EventMetricsTest > quiet checkpoint recognizes an actually executable fixed-cost artifact PASSED
+
+IndustrialWasteV2EventMetricsTest > Foundry future conversion requires real charges token creation and a later legal attack PASSED
+
+IndustrialWasteV2EventMetricsTest > duplicated missing or rejected transitions cannot enter the metric stream PASSED
+
+IndustrialWasteV2EventMetricsTest > replaying the same complete accepted transcript reproduces metric evidence PASSED
+
+IndustrialWasteV2FullHorizonRunnerTest > full-horizon capability reaches exact own-turn-eight cap for industrial-waste/control/industrial-waste-v1.0-submitted.dck on the play schedule PASSED
+
+IndustrialWasteV2FullHorizonRunnerTest > full-horizon capability reaches exact own-turn-eight cap for industrial-waste/control/industrial-waste-v1.0-submitted.dck on the draw schedule PASSED
+
+IndustrialWasteV2FullHorizonRunnerTest > full-horizon capability reaches exact own-turn-eight cap for industrial-waste/v2/candidates/compact-loop.dck on the play schedule PASSED
+
+IndustrialWasteV2FullHorizonRunnerTest > full-horizon capability reaches exact own-turn-eight cap for industrial-waste/v2/candidates/compact-loop.dck on the draw schedule PASSED
+
+IndustrialWasteV2FullHorizonRunnerTest > full-horizon capability reaches exact own-turn-eight cap for industrial-waste/v2/candidates/recursive-eggs.dck on the play schedule PASSED
+
+IndustrialWasteV2FullHorizonRunnerTest > full-horizon capability reaches exact own-turn-eight cap for industrial-waste/v2/candidates/recursive-eggs.dck on the draw schedule PASSED
+
+IndustrialWasteV2FullHorizonRunnerTest > full-horizon capability reaches exact own-turn-eight cap for industrial-waste/v2/candidates/lean-tron-hybrid.dck on the play schedule PASSED
+
+IndustrialWasteV2FullHorizonRunnerTest > full-horizon capability reaches exact own-turn-eight cap for industrial-waste/v2/candidates/lean-tron-hybrid.dck on the draw schedule PASSED
+
+IndustrialWasteV2FullHorizonRunnerTest > full-horizon capability is deterministic for an identical excluded ordering fixture PASSED
+
+IndustrialWasteV2FullHorizonRunnerTest > runner refuses the frozen official R1 namespace before submitting an action PASSED
+
+IndustrialWasteV2PaymentIntentTest > already automatic payment submits the unchanged selected action without funding PASSED
+
+IndustrialWasteV2PaymentIntentTest > Altar funding retains selected Star across death trigger instead of rescoring returned Retriever PASSED
+
+IndustrialWasteV2PaymentIntentTest > one Spawn cannot be both spell sacrifice and explicit funding resource PASSED
+
+IndustrialWasteV2PaymentIntentTest > real Rumble Spawn funds the selected Star through its exact predefined ability PASSED
+
+IndustrialWasteV2PaymentIntentTest > Insight explicitly floats its selected Prism before the additional sacrifice PASSED
+
+IndustrialWasteV2PaymentIntentTest > an unfunded Prism automatic solution does not authorize a selected generic spell PASSED
+
+IndustrialWasteV2PaymentIntentTest > lost selected source invalidates retained intent without selecting a replacement PASSED
+
+IndustrialWasteV2PaymentIntentTest > colorless Altar mana alone does not admit black recovery PASSED
+
+IndustrialWasteV2SacrificeCheckpointTest > Eviscerator's Insight omitted for missing black still records the frozen colored failure PASSED
+
+IndustrialWasteV2SacrificeCheckpointTest > Eviscerator's Insight without a sacrifice is not misattributed to colored mana PASSED
+
+IndustrialWasteV2SacrificeCheckpointTest > Eviscerator's Insight with a sacrifice but only one mana is a total shortfall PASSED
+
+IndustrialWasteV2SacrificeCheckpointTest > Eviscerator's Insight ordinary payment witness keeps its sacrifice for the actual cast PASSED
+
+IndustrialWasteV2SacrificeCheckpointTest > Fanatical Offering omitted for missing black still records the frozen colored failure PASSED
+
+IndustrialWasteV2SacrificeCheckpointTest > Fanatical Offering without a sacrifice is not misattributed to colored mana PASSED
+
+IndustrialWasteV2SacrificeCheckpointTest > Fanatical Offering with a sacrifice but only one mana is a total shortfall PASSED
+
+IndustrialWasteV2SacrificeCheckpointTest > Fanatical Offering ordinary payment witness keeps its sacrifice for the actual cast PASSED
+
+IndustrialWasteV2SacrificeCheckpointTest > Crop Rotation needs a sacrificable land and a real green payment PASSED
+
+IndustrialWasteV2SacrificeCheckpointTest > Crop Rotation cannot spend floating green without its additional land sacrifice PASSED
+
+IndustrialWasteV2SacrificeCheckpointTest > Crop Rotation can use one Forest for ordinary mana and then sacrifice that tapped Forest PASSED
+
+IndustrialWasteV2SacrificeCheckpointTest > Insight flashback missing black is a five-mana graveyard failure and never hand stranding PASSED
+
+IndustrialWasteV2SacrificeCheckpointTest > Insight flashback total shortfall never strands a card in hand PASSED
+
+IndustrialWasteV2SacrificeCheckpointTest > Insight flashback still needs its ordinary sacrifice even when enumeration omits its metadata PASSED
+
+IndustrialWasteV2SacrificeCheckpointTest > Insight flashback with actual ordinary mana and sacrifice is executable PASSED
+
+IndustrialWasteV2SacrificeCheckpointTest > Chromatic Star cannot be assumed to supply color and remain the spell's sacrifice PASSED
+
+IndustrialWasteV2SacrificeCheckpointTest > repeatable Altar mana is unresolved rather than a false fixed bonus proof PASSED
+
+IndustrialWasteV2SacrificeCheckpointTest > ordinary spell cannot count two Altars consuming the same creature as four mana PASSED
+
+IndustrialWasteV2SacrificeCheckpointTest > ordinary spell cannot treat one Altar as a maximum of one activation PASSED
+
+IndustrialWasteV2SacrificeCheckpointTest > recovery activation with unqualified explicit funding is not an aggregate color proof PASSED
+
+IndustrialWasteV2SacrificeCheckpointTest > ordinary positive payment does not become unresolved merely because an Altar also exists PASSED
+
+IndustrialWasteV2SacrificeCheckpointTest > real Rumble Spawn cannot pay and remain the additional sacrifice PASSED
+
+IndustrialWasteV2SacrificeCheckpointTest > unfunded Prophetic Prism cannot be a positive generic-mana witness PASSED
+
+IndustrialWasteV2SacrificeCheckpointTest > two unfunded Prisms cannot establish a circular colored payment witness PASSED
+
+IndustrialWasteV2SacrificeCheckpointTest > a genuine basic-land witness remains executable with an unrelated paid filter present PASSED
+
+65 tests completed, 1 failed
+
+> Task :ai:test FAILED
+w: Detected multiple Kotlin daemon sessions at 
+Kotlin build report is written to file:///workspace/scratch/dea6a31b4c71/industrial/build/reports/kotlin-build/argentum-engine-build-2026-09-26-23-24-54-0.txt
+
+[Incubating] Problems report is available at: file:///workspace/scratch/dea6a31b4c71/industrial/build/reports/problems/problems-report.html
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':ai:test'.
+> There were failing tests. See the report at: file:///workspace/scratch/dea6a31b4c71/industrial/ai/build/reports/tests/test/index.html
+
+* Try:
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+
+Deprecated Gradle features were used in this build, making it incompatible with Gradle 10.
+
+You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+
+For more on this, please refer to https://docs.gradle.org/9.6.1/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+
+BUILD FAILED in 2m 9s
+46 actionable tasks: 2 executed, 44 up-to-date
+Configuration cache entry stored.
+error: recipe `test-class` failed on line 71 with exit code 1

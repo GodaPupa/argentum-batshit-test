@@ -24,6 +24,8 @@ import com.wingedsheep.engine.state.components.identity.PlayWithFixedAlternative
 import com.wingedsheep.engine.state.components.identity.PlayWithoutPayingCostComponent
 import com.wingedsheep.engine.handlers.PredicateContext
 import com.wingedsheep.engine.legalactions.utils.CostEnumerationUtils
+import com.wingedsheep.engine.legalactions.utils.SelectionCostPresentation
+import com.wingedsheep.engine.legalactions.utils.FixedSacrificePayment
 import com.wingedsheep.engine.legalactions.utils.TargetEnumerationUtils
 import com.wingedsheep.sdk.core.Keyword
 import com.wingedsheep.sdk.core.Subtype
@@ -1312,84 +1314,33 @@ class CastFromZoneEnumerator : ActionEnumerator {
                 state, cardDef, flashback.cost, playerId
             )
             val costString = effectiveCost.toString()
-            val canAfford = context.manaSolver.canPay(state, playerId, effectiveCost, precomputedSources = context.availableManaSources)
+            val canAfford = FixedSacrificePayment.assess(context, cardId, effectiveCost,
+                cardDef.script.additionalCosts + listOfNotNull(flashback.additionalCost))
+                ?: context.manaSolver.canPay(state, playerId, effectiveCost, precomputedSources = context.availableManaSources)
 
-            // Resolve flashback's bundled non-mana cost. This is part of flashback's alternative
-            // cost (CR 702.34a), so the legal action must expose the same picker ordinary casts do;
-            // otherwise the AI sees Lava Dart as affordable but can only submit it without the
-            // required Mountain sacrifice, and the processor quite correctly rejects it.
-            val flashbackAdditionalInfo = when (val extra = flashback.additionalCost) {
-                is AdditionalCost.Behold -> {
-                    val projected = state.projectedState
-                    val predicateContext = PredicateContext(controllerId = playerId)
-                    val battlefieldMatches = projected.getBattlefieldControlledBy(playerId).filter { permId ->
-                        context.predicateEvaluator.matches(state, projected, permId, extra.filter, predicateContext)
-                    }
-                    val handMatches = state.getZone(ZoneKey(playerId, Zone.HAND)).filter { id ->
-                        context.predicateEvaluator.matches(state, state.projectedState, id, extra.filter, predicateContext)
-                    }
-                    AdditionalCostData(
-                        description = extra.description,
-                        costType = "Behold",
-                        validBeholdTargets = battlefieldMatches + handMatches,
-                        beholdCount = extra.count
-                    )
-                }
-                is AdditionalCost.Atom -> when (val atom = extra.atom) {
-                    is CostAtom.Sacrifice -> {
-                        val projected = state.projectedState
-                        val predicateContext = PredicateContext(controllerId = playerId)
-                        val matches = projected.getBattlefieldControlledBy(playerId).filter { permanentId ->
-                            context.predicateEvaluator.matches(
-                                state, projected, permanentId, atom.filter, predicateContext
-                            )
-                        }
-                        AdditionalCostData(
-                            description = extra.description,
-                            costType = "SacrificePermanent",
-                            validSacrificeTargets = matches,
-                            sacrificeCount = atom.count,
-                        )
-                    }
-                    is CostAtom.TapPermanents -> {
-                        val matches = context.costUtils.findAbilityTapTargets(
-                            state = state,
-                            playerId = playerId,
-                            filter = atom.filter,
-                            excludeEntityId = cardId.takeIf { atom.excludeSelf },
-                        )
-                        AdditionalCostData(
-                            description = extra.description,
-                            costType = "TapPermanents",
-                            validTapTargets = matches,
-                            tapCount = atom.count,
-                        )
-                    }
-                    else -> null
-                }
-                else -> null
+            // An alternative cost replaces only the mana cost. Printed mandatory costs still
+            // apply (CR 118.9d), alongside the non-mana part of flashback itself.
+            val costs = flashbackCostPresentation(
+                context, cardId, cardDef.script.additionalCosts, flashback.additionalCost
+            )
+            val flashbackAdditionalInfo = costs.selection
+            val description = if (costs.life == 0) {
+                "Cast ${cardComponent.name} (Flashback)"
+            } else {
+                "Cast ${cardComponent.name} (Flashback, pay ${costs.life} life)"
             }
-            val flashbackPayLife = ((flashback.additionalCost as? AdditionalCost.Atom)?.atom as? CostAtom.PayLife)
-            val canPayAdditional = if (flashbackPayLife != null) {
-                state.lifeTotal(playerId) >= flashbackPayLife.amount
-            } else when (flashbackAdditionalInfo?.costType) {
-                "Behold" -> flashbackAdditionalInfo.validBeholdTargets.size >= flashbackAdditionalInfo.beholdCount
-                "SacrificePermanent" ->
-                    flashbackAdditionalInfo.validSacrificeTargets.size >= flashbackAdditionalInfo.sacrificeCount
-                "TapPermanents" ->
-                    flashbackAdditionalInfo.validTapTargets.size >= flashbackAdditionalInfo.tapCount
-                else -> flashbackAdditionalInfo == null
-            }
+            val canPayAdditional = costs.canPay
 
             if (!canAfford || !canPayAdditional) {
                 result.add(
                     LegalAction(
                         actionType = "CastWithFlashback",
-                        description = "Cast ${cardComponent.name} (Flashback)",
+                        description = description,
                         action = CastSpell(playerId, cardId, useAlternativeCost = true, alternativeCostType = AlternativeCostType.FLASHBACK),
                         affordable = false,
                         manaCostString = costString,
                         additionalCostInfo = flashbackAdditionalInfo,
+                        additionalLifeCost = costs.life,
                         sourceZone = "GRAVEYARD"
                     )
                 )
@@ -1415,7 +1366,7 @@ class CastFromZoneEnumerator : ActionEnumerator {
                     result.add(
                         LegalAction(
                             actionType = "CastWithFlashback",
-                            description = "Cast ${cardComponent.name} (Flashback)",
+                            description = description,
                             action = CastSpell(playerId, cardId, useAlternativeCost = true, alternativeCostType = AlternativeCostType.FLASHBACK),
                             validTargets = firstInfo.validTargets,
                             requiresTargets = true,
@@ -1425,6 +1376,7 @@ class CastFromZoneEnumerator : ActionEnumerator {
                             targetRequirements = if (targetInfos.size > 1) targetInfos else null,
                             manaCostString = costString,
                             additionalCostInfo = flashbackAdditionalInfo,
+                            additionalLifeCost = costs.life,
                             autoTapPreview = autoTapPreview,
                             sourceZone = "GRAVEYARD"
                         )
@@ -1434,16 +1386,84 @@ class CastFromZoneEnumerator : ActionEnumerator {
                 result.add(
                     LegalAction(
                         actionType = "CastWithFlashback",
-                        description = "Cast ${cardComponent.name} (Flashback)",
+                        description = description,
                         action = CastSpell(playerId, cardId, useAlternativeCost = true, alternativeCostType = AlternativeCostType.FLASHBACK),
                         manaCostString = costString,
                         additionalCostInfo = flashbackAdditionalInfo,
+                        additionalLifeCost = costs.life,
                         autoTapPreview = autoTapPreview,
                         sourceZone = "GRAVEYARD"
                     )
                 )
             }
         }
+    }
+
+    private data class FlashbackCostPresentation(
+        val selection: AdditionalCostData?,
+        val life: Int,
+        val canPay: Boolean,
+    )
+
+    /**
+     * Reuse the existing single-picker contract; never choose a payment for the actor. Fixed
+     * life payments need no picker and can accompany it. Multiple selection groups or an
+     * unsupported shape are an explicit capability failure, not an unaffordable/free cast.
+     * In particular, two sacrifice costs cannot share one flat payment list safely.
+     */
+    private fun flashbackCostPresentation(
+        context: EnumerationContext,
+        cardId: EntityId,
+        printedCosts: List<AdditionalCost>,
+        keywordCost: AdditionalCost?,
+    ): FlashbackCostPresentation {
+        var selection: AdditionalCostData? = null
+        var life = 0
+        var canPay = true
+        val descriptions = mutableListOf<String>()
+
+        fun visit(cost: AdditionalCost) {
+            if (cost is AdditionalCost.Composite) {
+                cost.steps.forEach(::visit)
+                return
+            }
+            descriptions.add(cost.description)
+            val atom = (cost as? AdditionalCost.Atom)?.atom
+            if (atom is CostAtom.PayLife) {
+                life = Math.addExact(life, atom.amount)
+                return
+            }
+            val supportedPicker = when {
+                cost is AdditionalCost.Behold -> true
+                atom is CostAtom.Sacrifice -> !atom.distinctNames
+                atom is CostAtom.TapPermanents -> true
+                else -> false
+            }
+            if (!supportedPicker || selection != null) {
+                throw UnsupportedOperationException(
+                    "Flashback additional-cost menu cannot represent all costs for $cardId: " +
+                        (printedCosts + listOfNotNull(keywordCost)).joinToString { it.description }
+                )
+            }
+            val candidates = SelectionCostPresentation.candidates(
+                context.state, context.playerId, cardId, cost,
+                context.costUtils, context.predicateEvaluator,
+            )
+            selection = checkNotNull(SelectionCostPresentation.costData(
+                context.state, context.playerId, cardId, cost, candidates,
+            )).second
+            canPay = canPay && SelectionCostPresentation.canPay(
+                context.state, context.playerId, cardId, cost, candidates,
+            )
+        }
+
+        printedCosts.forEach(::visit)
+        keywordCost?.let(::visit)
+        return FlashbackCostPresentation(
+            selection = selection?.copy(description = descriptions.joinToString(", ")),
+            life = life,
+            canPay = canPay && context.state.lifeTotal(context.playerId) >= life,
+        )
     }
 
     // =========================================================================

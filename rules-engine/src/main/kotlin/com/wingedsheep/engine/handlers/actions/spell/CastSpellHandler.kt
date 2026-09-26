@@ -405,6 +405,13 @@ class CastSpellHandler(
             ?.let { cardDef?.cardFaces?.getOrNull(it)?.typeLine }
             ?: transformedFace?.typeLine
             ?: cardComponent.typeLine
+        // CR 305.1/305.9: a land is played as a special action, even when it has
+        // another card type. Check the chosen spell face so land-primary
+        // Adventures and modal DFC spell faces remain castable. Morph/disguise
+        // already returned above with face-down creature characteristics.
+        if (effectiveTypeLine.isLand) {
+            return "Land cards can only be played as lands"
+        }
         // Sneak (CR 702.190a) grants an instant-speed casting permission during the active
         // player's declare blockers step — bypassing the normal sorcery-speed timing.
         val castingForSneak = action.useAlternativeCost &&
@@ -623,7 +630,10 @@ class CastSpellHandler(
             val escape = cardDef.keywordAbilities.filterIsInstance<KeywordAbility.Escape>().firstOrNull()
             if (escape != null) {
                 val selected = action.additionalCostPayment?.exiledCards.orEmpty()
-                if (action.cardId in selected) return "Escape requires exiling other cards from your graveyard"
+                if (selected.size != selected.distinct().size) {
+                    return "The same card cannot be exiled more than once to pay Escape"
+                }
+                if (action.cardId in selected) return "The escaping card cannot exile itself to pay Escape"
                 val cost = AdditionalCost.Atom(CostAtom.ExileFrom(Zone.GRAVEYARD, count = escape.exileCards))
                 validateAdditionalCosts(state, listOf(cost), action)?.let { return it }
             }

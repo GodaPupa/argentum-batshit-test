@@ -1,0 +1,66 @@
+{
+  "actual_checkout_commit": "ba4779fe834fbb2aa48fcb1e8bd5197d9ba6bf56",
+  "actual_checkout_proof": {
+    "line": "2026-09-25T01:08:33.4064913Z ba4779fe834fbb2aa48fcb1e8bd5197d9ba6bf56",
+    "preceding_command": "/usr/bin/git log -1 --format=%H",
+    "source": "GitHub Actions job 107901525693 checkout log"
+  },
+  "actual_checkout_tree": "c1d1c32146d3156817720d2eb3427a7afcba0d1e",
+  "artifact_id": 10841903096,
+  "artifact_sha256": "8140147dedcf8618e8214a99597ae1a12b4118bbe4e7c3c26d9f148c7a66456a",
+  "compiled_coverage": {
+    "frozen_decks": 4,
+    "gameplay_ready": false,
+    "identities": 34,
+    "unresolved": 0
+  },
+  "compiled_snapshot_audit": "Only addition of Ancient Stirrings and Chromatic Star; no existing serialized card changed. Ancient Stirrings selects IsColorless, preserving normal lands and rejecting Dryad Arbor. Chromatic Star separates immediate mana from its stack-using battlefield-to-graveyard draw trigger.",
+  "evidence_files_sha256": {
+    "industrial-waste/v2/evidence/card-qualification-36080619185/TEST-com.wingedsheep.ai.arena.FrozenBaselineTest.xml": "3ef38fc14348cbe255376e7bb8a6ea04393b65dfd005f839fcc899a8d33e74ef",
+    "industrial-waste/v2/evidence/card-qualification-36080619185/TEST-com.wingedsheep.ai.industrialwaste.IndustrialWasteV2RegistryAuditTest.xml": "4ddf76f904baed83f56f5163c5767235e56b548c773bfc3990d263e776d06274",
+    "industrial-waste/v2/evidence/card-qualification-36080619185/TEST-com.wingedsheep.engine.scenarios.AncientStirringsScenarioTest.xml": "d87439f9960bbd3fb3a3bea3f76e5445383869e27645a78a2717fde3a0725682",
+    "industrial-waste/v2/evidence/card-qualification-36080619185/TEST-com.wingedsheep.engine.scenarios.ChromaticStarScenarioTest.xml": "6c62e2aae2b238b988d8009eeb16305a000b41c0c0488aa5cfba584510d72a93",
+    "industrial-waste/v2/evidence/card-qualification-36080619185/compiled-card-snapshot.diff": "b13f5dc42a2ffcecdaa3f95a0c1017e51f421d732c38c7238a7863c12635e153",
+    "industrial-waste/v2/evidence/card-qualification-36080619185/registry-audit-original.txt": "1023dba19e714c3bf1d723ae782558f4193dacf058172e1add2a6499217ec2e1"
+  },
+  "next_gate": "Dross Skullbomb actual engine qualification, corrected registry receipt; complete exact mechanics, structural pilot, ordering adapter, telemetry, replay, loop certificate and durable exclusive execution binding before R1.",
+  "original_registry_source_head_label": "f5141cd46cc16074f5f91cbfdddbb92a839ddf28",
+  "provenance_limitation": "Original registry receipt used GITHUB_SHA, the synthetic PR merge commit, instead of the checked-out branch commit. Original bytes retained. Checkout log and run metadata establish the actual source independently. Follow-up reads git rev-parse HEAD and asserts the expected PR HEAD. This validation initialized no official program allocation.",
+  "r1_counters": {
+    "comparative_outcomes_exposed": 0,
+    "games_initialized": 0,
+    "matchup_seeds_generated": 0,
+    "submitted_actions": 0
+  },
+  "schema": "iw-v2-seed-free-card-qualification-v1",
+  "snapshot_files_sha256": {
+    "mtg-sets/src/test/resources/snapshots/cards/ROE.json": "623ad0834f5897163027bdbdb17f5220510d27e10f3b1cc6ef6a8f4177a57493",
+    "mtg-sets/src/test/resources/snapshots/cards/TSP.json": "9bb641206833170a3077701c4a41a99d1b871ce7560af6a022e54cb546ad7fd8"
+  },
+  "status": "ACCEPTED_SCENARIOS_AND_COMPILED_IDENTITIES_WITH_EXPLICIT_LEGACY_RECEIPT_LABEL_CORRECTION",
+  "tests": {
+    "AncientStirringsScenarioTest": {
+      "failed": 0,
+      "passed": 3,
+      "skipped": 0
+    },
+    "ChromaticStarScenarioTest": {
+      "failed": 0,
+      "passed": 4,
+      "skipped": 0
+    },
+    "FrozenBaselineTest": {
+      "failed": 0,
+      "passed": 1,
+      "skipped": 0,
+      "unchanged_golden": "47e993c61a57ebbd"
+    },
+    "IndustrialWasteV2RegistryAuditTest": {
+      "failed": 0,
+      "passed": 1,
+      "skipped": 0
+    }
+  },
+  "workflow_job_id": 107901525693,
+  "workflow_run_id": 36080619185
+}

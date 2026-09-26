@@ -1,0 +1,45 @@
+{
+  "schema": "industrial-waste-v2-r1-artifact-contract-acceptance-v1",
+  "status": "ACCEPTED_SEED_FREE_ARTIFACT_AND_COMPLETENESS_CONTRACT_ONLY",
+  "source_branch": "industrial-waste/v2-structural-redesign",
+  "source_commit": "0b92793e6e19ca53c105f08ff26da511f2593853",
+  "workflow_run_id": 36240907615,
+  "workflow_job_id": 108401091279,
+  "artifact": {
+    "id": 10905841460,
+    "name": "industrial-waste-v2-r1-artifact-contract",
+    "size_in_bytes": 1108,
+    "github_sha256": "61ef45cd08a9459b38b1a2788747ed45503e128e8369310b4d61bbabba58383c",
+    "downloaded_zip_sha256": "61ef45cd08a9459b38b1a2788747ed45503e128e8369310b4d61bbabba58383c",
+    "descriptor_sha256": "453e14db2dfd12927ae6296f9568ccc307b43d350a7d34bccdf40a4beb373d87",
+    "archived_descriptor": "industrial-waste/v2/evidence/r1-artifact-contract-36240907615/r1-artifact-contract.json"
+  },
+  "validation": {
+    "workflow_conclusion": "success",
+    "targeted_tests": 7,
+    "failures": 0,
+    "errors": 0,
+    "descriptor_matches_exact_source": true,
+    "full_ci_run": 36240909625,
+    "full_ci_conclusion": "success"
+  },
+  "bindings_closed": [
+    "official_r1_artifact_schema_and_completeness_contract"
+  ],
+  "remaining_runtime_bindings": [
+    "official_r1_corpus_runner",
+    "official_complete_metric_projection"
+  ],
+  "official_counters": {
+    "allocations_initialized": 0,
+    "actions_submitted": 0,
+    "comparative_outcomes_exposed": 0
+  },
+  "claim_creation_authorized": false,
+  "attempt_journal_creation_authorized": false,
+  "initialization_admitted": false,
+  "execution_authorized": false,
+  "candidate_elimination_authorized": false,
+  "candidate_promotion_authorized": false,
+  "next_gate": "Compose and qualify the official corpus runner and complete frozen metrics, then bind exact runtime and durable execution authority before initialization."
+}

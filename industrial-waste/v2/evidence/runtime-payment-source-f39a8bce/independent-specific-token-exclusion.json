@@ -1,0 +1,32 @@
+{
+  "schema": "industrial-waste-v2-specific-token-observer-exclusion-independent-review-v1",
+  "reviewer": "/root/industrial",
+  "role": "non-author of original reachability inventory, frozen decks/protocol, all26 main nonbasic definitions and token support implementations",
+  "reviewed_source": "f39a8bcecaea1baebe3edb1d648ccb9bfbe7173a",
+  "reviewed_tree": "ea1c065402f0ddabc912824da4989bc82a33f630",
+  "original_inventory": "industrial-waste/v2/evidence/quiet-checkpoint-73074-targeted/token-observer-reachability.json",
+  "original_inventory_sha256": "7cd8504534232a8f48c85ea2d14ffc43d237e67ec3a56a7b5386a24bb9f0d448",
+  "decision": "ACCEPT_SPECIFIC_EXCLUSION_ON_EXACT_RECEIVING_DEFINITIONS_ONLY",
+  "source_checks": {
+    "all_four_deck_hashes_match": true,
+    "frozen_protocol_hash_matches": true,
+    "all26_nonbasic_definitions_match_and_read": true,
+    "all6_support_file_hashes_match": true
+  },
+  "findings": [
+    "The four main60 lists plus passive60Forest create only Eldrazi Spawn, Blood, Map, and a vanilla3/3 colorless Golem artifact creature token.",
+    "The three registered tokens have activated abilities only. Golem Foundry literal token effect supplies no keywords/triggered abilities; token executor grants triggered abilities only from supplied nonempty payloads or prowess, neither present.",
+    "No reachable spell or ability copies a permanent/token, grants a triggered ability, or supplies a token creation replacement. Weather the Storm copies only its instant life-gain spell.",
+    "The specific token-already-observing-a-cost-event-then-disappearing-during-postcast-SBA gap cannot arise from this bounded card pool. No pilot avoidance assumption is used."
+  ],
+  "limits": [
+    "This does not qualify global token last-known-information/cost-observer behavior, mana or non-token observers.",
+    "Incoming canonical post-block source is not yet integrated or qualified; every required receiving priority/regression/replay/admission check remains.",
+    "Recheck definitions, support behavior, exact input identities and this exclusion upon any receiving source change."
+  ],
+  "runtime_accepted": false,
+  "execution_authorized": false,
+  "official_allocations_initialized": 0,
+  "outcomes_exposed": 0,
+  "github_review_submitted": false
+}

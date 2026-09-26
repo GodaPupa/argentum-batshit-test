@@ -121,8 +121,9 @@ class MulliganHandler(
         // 2. Shuffle library (clearing any per-card reveals first)
         newState = com.wingedsheep.engine.handlers.effects.library.LibraryRevealUtils
             .clearLibraryReveals(newState, playerId)
-        val (shuffledLibrary, shuffledState) = newState.nextRandom { shuffle(newState.getZone(libraryKey)) }
-        newState = shuffledState.reorderZone(libraryKey, shuffledLibrary)
+        newState = com.wingedsheep.engine.mechanics.library.LibraryOrderingService.shuffle(
+            newState, playerId, com.wingedsheep.engine.mechanics.library.LibraryOrderingCause.MULLIGAN,
+        )
         events.add(LibraryShuffledEvent(playerId, ShuffleCause.MULLIGAN))
 
         // 3. Update mulligan count

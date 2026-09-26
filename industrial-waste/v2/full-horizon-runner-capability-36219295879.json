@@ -1,0 +1,58 @@
+{
+  "schema": "industrial-waste-v2-r1-full-horizon-runner-capability-v1",
+  "status": "ACCEPTED_SEED_FREE_FULL_HORIZON_RUNNER_CAPABILITY_ONLY",
+  "source_commit": "cbcaca11e889fe139a0f98344e4df411de215e6d",
+  "runner_commit": "759ce38c9fe1d1c28cd70914b27b6a34c6813adc",
+  "test_commit": "dd9fa57d86a62c753356737df8ab83ed2d9cf677",
+  "workflow_commit": "cbcaca11e889fe139a0f98344e4df411de215e6d",
+  "workflow_run_id": 36219295879,
+  "workflow_job_id": 108341375399,
+  "artifact": {
+    "id": 10898412126,
+    "name": "industrial-waste-v2-r1-full-horizon-runner",
+    "sha256": "474cef92e1f5d753ed4d4d58b38bbca26ceba12ad572dc9df4e877a97e18d72a",
+    "independent_download_match": true,
+    "junit": {
+      "tests": 10,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "coverage": {
+    "frozen_lists": [
+      "IMMUTABLE_SUBMITTED_V1_0",
+      "COMPACT_LOOP",
+      "RECURSIVE_EGGS",
+      "LEAN_TRON_HYBRID"
+    ],
+    "schedules_per_list": [
+      "PLAY",
+      "DRAW"
+    ],
+    "horizon": "OWN_TURN_8",
+    "quiet_precombat_checkpoints_per_run": 8,
+    "telemetry_composed": true,
+    "checkpoint_mana_composed": true,
+    "action_transcript_captured": true,
+    "deterministic_replay_fixture": true,
+    "official_namespace_refused_before_action": true
+  },
+  "exclusion": {
+    "namespace": "IW_V2_R1_SYNTHETIC_FULL_HORIZON_ONLY",
+    "official_namespace": "IW_V2_R1_ORDERINGS_2026_09_25",
+    "official_corpus_rows_read": 0,
+    "official_allocations_initialized": 0,
+    "official_actions_submitted": 0,
+    "comparative_outcomes_exposed": 0
+  },
+  "authority": {
+    "runtime_binding_complete": false,
+    "official_claim_created": false,
+    "attempt_journal_created": false,
+    "execution_authorized": false,
+    "candidate_elimination_authorized": false,
+    "candidate_promotion_authorized": false
+  },
+  "next_gate": "Bind the accepted runner, metrics, ordering/replay, effective rules/runtime identity, frozen decks/corpus/protocol and artifact contract into one exact runtime-binding receipt before any durable official claim or execution authorization."
+}

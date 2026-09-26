@@ -1,0 +1,71 @@
+{
+  "schema": "industrial-waste-v2-r1-checkpoint-clarification-proposal-v1",
+  "status": "PROPOSED_REQUIRES_INDEPENDENT_REVIEW_NOT_EXECUTION_AUTHORITY",
+  "protocol_id": "IW_V2_R1_ENGINE_STRUCTURAL_2026_09_25",
+  "original_protocol": {
+    "path": "industrial-waste/v2/protocol-v2-r1.json",
+    "git_blob_sha1": "08267f0ae1688ab93bc6ea57b431e6a36acf33ff",
+    "sha256": "fd697b6d56b5a5451f4dc6f9ee4bd20584a705570c6f99861dd64f0086ed95bc",
+    "bytes_modified": false
+  },
+  "missing_definition": "The frozen protocol requires every quiet precombat-main hand observation and ANY qualifying colored-payment failure, but its singular T4 checkpoint wording does not select among multiple eligible quiet states on own turn four. R0 and the accepted component receipts do not supply scientific authority for that missing selection.",
+  "proposal": {
+    "eligible_quiet_state": "A real engine state in which the measured player is active, has priority, is in PRECOMBAT_MAIN, the stack is empty, and no decision is pending. Observe after initialization or the preceding accepted real action has fully returned, before the next action is chosen or submitted. Own turn is the measured player PlayerTurnsTakenComponent.count.",
+    "observation_identity": "Preserve every eligible observed state with accepted-action index and exact serialized-state digest. Re-reading the identical index and state is the same observation; later eligible states on the same own turn remain separate observations.",
+    "hand_labels": "Record the frozen hand-copy classifications at EVERY eligible quiet observation; retain original-copy identity. A first-per-turn view may remain as an explicitly derived compatibility view but cannot replace the complete stream.",
+    "colored_mana_failure": "For a valid allocation, use the logical OR of qualified colored-payment failures across EVERY eligible quiet observation, including later observations on the same own turn. Include all relevant frozen spell and activated-ability surfaces; a graveyard flashback spell can contribute this flag but is not a hand-stranding copy. A complete real resource-aware payment proof is mandatory; an unresolved shape invalidates the attempt and cannot become a negative flag.",
+    "t4_checkpoint": "Select the FIRST eligible quiet measured-player precombat-main state whose measured own-turn counter equals 4. This is before choosing or submitting the next action from that state. Later own-turn-four observations cannot replace or retune this selection.",
+    "total_mana_stranded_at_t4": "At that selected T4 observation, the flag is true exactly when at least one hand copy has the qualified INSUFFICIENT_TOTAL_MANA classification. Graveyard spells and battlefield activations do not contribute hand stranding. If an otherwise valid terminal or cap occurs before any eligible T4 observation, keep T4 absent and the event flag false under the existing valid-cap/no-fabricated-event rule; never fabricate a checkpoint. Technical invalidity preserves null decision metrics under the existing invalid-attempt rule."
+  },
+  "prospective_basis": {
+    "existing_implementation_convention": {
+      "runner_commit": "759ce38c9fe1d1c28cd70914b27b6a34c6813adc",
+      "path": "ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteV2FullHorizonRunner.kt",
+      "behavior": "putIfAbsent(ownTurn) retained the first eligible quiet state per turn. Its accepted component fixtures recorded eight first-per-turn rows."
+    },
+    "limitation": "This implementation convention predates all official R1 outcomes but did not amend or resolve the original protocol. The proposal makes the missing T4 selection explicit prospectively; component acceptance alone is not scientific authority.",
+    "selection_not_outcome_conditioned": true,
+    "hidden_hand_or_future_library_information_used": false,
+    "alternate_t4_timings_evaluated_for_candidate_selection": false,
+    "official_corpus_consumed": false
+  },
+  "unchanged_scope": {
+    "frozen_decks": 4,
+    "corpus_rows": 64,
+    "allocations_per_deck": 128,
+    "total_allocations": 512,
+    "schedules": [
+      "PLAY_SKIP_FIRST_DRAW",
+      "DRAW_TAKE_FIRST_DRAW"
+    ],
+    "own_turn_cap": 8,
+    "submitted_action_cap": 4000,
+    "protocol_fields_unchanged": [
+      "candidate_families",
+      "comparator",
+      "design",
+      "decision_rule",
+      "execution_gates"
+    ],
+    "ordering_bytes_or_seed_authority_changed": false,
+    "pilot_score_or_tie_break_changed": false,
+    "new_metrics_added": false,
+    "stopping_or_promotion_rule_changed": false
+  },
+  "required_before_binding": [
+    "Independent clarification review accepted and immutable publication recorded",
+    "Complete every-quiet observation preservation and semantic replay qualification",
+    "Metric projection qualified against the accepted clarification without later-observation omission",
+    "All original receiving-source, shared capability, combined-source, exact runtime and separate authority gates"
+  ],
+  "current_implementation": "Published ba48 preserves every computed observation, but final projection still uses the legacy first-per-turn view and remains INCOMPLETE. This proposal does not change final projection or mark it accepted.",
+  "official_counters": {
+    "allocations_initialized": 0,
+    "actions_submitted": 0,
+    "comparative_outcomes_exposed": 0
+  },
+  "independent_review_status": "PENDING",
+  "execution_authorized": false,
+  "claim_creation_authorized": false,
+  "initialization_admitted": false
+}

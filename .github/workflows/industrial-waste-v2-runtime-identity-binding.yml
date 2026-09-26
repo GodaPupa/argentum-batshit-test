@@ -1,0 +1,51 @@
+name: Industrial Waste v2 R1 Runtime Identity Binding
+
+on:
+  push:
+    branches:
+      - industrial-waste/v2-structural-redesign
+    paths:
+      - industrial-waste/v2/r1_runtime_identity_binding.py
+      - industrial-waste/v2/test_r1_runtime_identity_binding.py
+      - .github/workflows/industrial-waste-v2-runtime-identity-binding.yml
+
+jobs:
+  bind:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Run fail-closed binding tests
+        run: python3 -m unittest industrial-waste/v2/test_r1_runtime_identity_binding.py -v
+      - name: Emit exact runtime identity artifact
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 industrial-waste/v2/r1_runtime_identity_binding.py \
+            --source-head "$GITHUB_SHA" \
+            --out build/reports/industrial-waste-v2/r1-runtime-identity-binding.json
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          p = Path("build/reports/industrial-waste-v2/r1-runtime-identity-binding.json")
+          r = json.loads(p.read_text())
+          assert r["status"] == "QUALIFIED_SEED_FREE_RUNTIME_IDENTITY_BINDING_ONLY"
+          assert r["remaining_runtime_bindings_after_this_gate"] == [
+              "official_r1_corpus_runner",
+              "official_r1_artifact_schema_and_completeness_contract",
+              "official_complete_metric_projection",
+          ]
+          assert r["official_counters"] == {
+              "allocations_initialized": 0,
+              "actions_submitted": 0,
+              "comparative_outcomes_exposed": 0,
+          }
+          assert r["claim_creation_authorized"] is False
+          assert r["initialization_admitted"] is False
+          assert r["execution_authorized"] is False
+          PY
+      - uses: actions/upload-artifact@v7
+        with:
+          name: industrial-waste-v2-r1-runtime-identity-binding
+          path: build/reports/industrial-waste-v2/r1-runtime-identity-binding.json
+          if-no-files-found: error
+          retention-days: 90

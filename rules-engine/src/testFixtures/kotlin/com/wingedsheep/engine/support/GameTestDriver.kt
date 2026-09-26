@@ -124,17 +124,21 @@ class GameTestDriver {
         deck2: Deck,
         skipMulligans: Boolean = true,
         startingLife: Int = 20,
-        startingPlayer: Int = 0
+        startingPlayer: Int = 0,
+        seed: Long? = null,
+        libraryOrdering1: com.wingedsheep.engine.state.components.player.LibraryOrderingPlan? = null,
+        libraryOrdering2: com.wingedsheep.engine.state.components.player.LibraryOrderingPlan? = null,
     ) {
         val initializer = GameInitializer(cardRegistry)
         val result = initializer.initializeGame(
             GameConfig(
                 players = listOf(
-                    PlayerConfig("Player 1", deck1, startingLife),
-                    PlayerConfig("Player 2", deck2, startingLife)
+                    PlayerConfig("Player 1", deck1, startingLife, libraryOrdering = libraryOrdering1),
+                    PlayerConfig("Player 2", deck2, startingLife, libraryOrdering = libraryOrdering2)
                 ),
                 skipMulligans = skipMulligans,
-                startingPlayerIndex = startingPlayer
+                startingPlayerIndex = startingPlayer,
+                seed = seed,
             )
         )
 
@@ -149,8 +153,8 @@ class GameTestDriver {
     /**
      * Initialize a game with both players using the same deck.
      */
-    fun initMirrorMatch(deck: Deck, skipMulligans: Boolean = true, startingLife: Int = 20, startingPlayer: Int = 0) {
-        initGame(deck, deck, skipMulligans, startingLife, startingPlayer)
+    fun initMirrorMatch(deck: Deck, skipMulligans: Boolean = true, startingLife: Int = 20, startingPlayer: Int = 0, seed: Long? = null) {
+        initGame(deck, deck, skipMulligans, startingLife, startingPlayer, seed)
     }
 
     /**

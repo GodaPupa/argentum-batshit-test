@@ -1,0 +1,111 @@
+{
+  "schema": "iw-v2-regression-fixture-exclusions-v1",
+  "namespace": "IW_V2_REGRESSION_CAPABILITIES_2026_09_25",
+  "purpose": "DETERMINISTIC_REGRESSION_ONLY_NOT_STRUCTURAL_SCREEN_OR_MATCHUP_EVIDENCE",
+  "seeds": [
+    9250925001,
+    9250925002,
+    9250925003,
+    288858457177,
+    345095556942,
+    19790476173660761,
+    5424953345830376520,
+    9250925004,
+    9250925005
+  ],
+  "allowed_for_official_sampling": false,
+  "official_initializations": 0,
+  "exclusion_rule": "Future R1 runtime bindings and any later official seed audit must reject these regression identities and seeds. The R1 ordering corpus retains its separate frozen IW_V2_R1_ORDERINGS_2026_09_25 namespace and is never read by these tests.",
+  "prior_evidence_limit": "Earlier scenario assertions were fixed semantic fixtures; this prospective explicit-seed helper qualification does not retroactively establish full replay qualification for them.",
+  "sources": [
+    {
+      "path": "ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteV2PublicActionPolicyTest.kt",
+      "seeds": [
+        9250925001,
+        9250925002
+      ]
+    },
+    {
+      "path": "mtg-sets/2023/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/CandyTrailScenarioTest.kt",
+      "seeds": [
+        288858457177
+      ]
+    },
+    {
+      "path": "mtg-sets/2024/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/ConduitPylonsScenarioTest.kt",
+      "seeds": [
+        345095556942
+      ]
+    },
+    {
+      "path": "mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/GolemFoundryScenarioTest.kt",
+      "seeds": [
+        19790476173660761
+      ]
+    },
+    {
+      "path": "mtg-sets/2023/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/MyrKinsmithScenarioTest.kt",
+      "seeds": [
+        5424953345830376520
+      ]
+    },
+    {
+      "path": "mtg-sets/2003-2007/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/TreeOfTalesScenarioTest.kt",
+      "seeds": [
+        9250925003
+      ]
+    },
+    {
+      "path": "mtg-sets/2003-2007/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/VaultOfWhispersScenarioTest.kt",
+      "seeds": [
+        9250925003
+      ]
+    },
+    {
+      "path": "mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/DarkmossBridgeScenarioTest.kt",
+      "seeds": [
+        9250925003
+      ]
+    },
+    {
+      "path": "mtg-sets/2025/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/PactdollTerrorScenarioTest.kt",
+      "seeds": [
+        9250925003
+      ]
+    },
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/library/LibraryOrderingServiceTest.kt",
+      "seeds": [
+        9250925004
+      ]
+    },
+    {
+      "path": "ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteV2OrderingIntegrationTest.kt",
+      "seeds": [
+        9250925004
+      ]
+    },
+    {
+      "path": "ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteV2EventMetricsTest.kt",
+      "seeds": [
+        9250925005
+      ],
+      "scope": "Fixed semantic setups; transcript extraction replay does not claim a second complete engine initialization replay."
+    },
+    {
+      "path": "ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteV2ExecutionStatusTest.kt",
+      "seeds": [
+        9250925005
+      ],
+      "scope": "Actual public-state/action status fixtures and synthetic boundary precedence; no official corpus or outcome."
+    }
+  ],
+  "ordering_domains": [
+    "IW_V2_ORDERING_REGRESSION_ONLY",
+    "IW_V2_ORDERING_SEARCH_REGRESSION_ONLY"
+  ],
+  "ordering_rows_excluded_from_official_use": [
+    999,
+    1000
+  ]
+}

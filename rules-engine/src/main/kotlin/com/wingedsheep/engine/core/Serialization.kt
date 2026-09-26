@@ -592,6 +592,7 @@ val engineSerializersModule = SerializersModule {
         subclass(ManaPoolComponent::class)
         subclass(LandDropsComponent::class)
         subclass(MulliganStateComponent::class)
+        subclass(com.wingedsheep.engine.state.components.player.LibraryOrderingComponent::class)
         subclass(PlayerTurnsTakenComponent::class)
         subclass(SkipCombatPhasesComponent::class)
         subclass(SkipDrawStepComponent::class)
