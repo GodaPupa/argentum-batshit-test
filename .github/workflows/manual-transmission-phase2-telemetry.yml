@@ -1,0 +1,53 @@
+name: Manual Transmission Phase 2 Telemetry Component
+
+on:
+  push:
+    branches: [manual-transmission/phase2-cedh]
+    paths:
+      - 'experiments/manual-transmission-phase2/metrics_contract.py'
+      - 'experiments/manual-transmission-phase2/test_metrics_contract.py'
+      - 'experiments/manual-transmission-phase2/telemetry-component-r1.md'
+      - '.github/workflows/manual-transmission-phase2-telemetry.yml'
+  pull_request:
+    paths:
+      - 'experiments/manual-transmission-phase2/metrics_contract.py'
+      - 'experiments/manual-transmission-phase2/test_metrics_contract.py'
+      - 'experiments/manual-transmission-phase2/telemetry-component-r1.md'
+      - '.github/workflows/manual-transmission-phase2-telemetry.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  qualify-telemetry-component:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify frozen Phase 2 boundary
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -Fq 'CAPABILITY_AUDIT_IN_PROGRESS — NOT COMPLETE' experiments/manual-transmission-phase2/README.md
+          grep -Fq '0/36' experiments/manual-transmission-phase2/README.md
+          grep -Fq '0/864' experiments/manual-transmission-phase2/README.md
+      - name: Run deterministic telemetry contract tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          (cd experiments/manual-transmission-phase2 && python -m unittest -v test_metrics_contract.py) 2>&1 | tee telemetry-tests.txt
+      - name: Record exact source provenance
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p telemetry-evidence
+          cp telemetry-tests.txt telemetry-evidence/
+          sha256sum \
+            experiments/manual-transmission-phase2/metrics_contract.py \
+            experiments/manual-transmission-phase2/test_metrics_contract.py \
+            experiments/manual-transmission-phase2/telemetry-component-r1.md \
+            > telemetry-evidence/source-sha256.txt
+          printf '%s\n' "source_sha=$GITHUB_SHA" "official_capability_games=0" "official_primary_games=0" "official_execution_authorized=false" > telemetry-evidence/provenance.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: manual-transmission-phase2-telemetry-component
+          path: telemetry-evidence

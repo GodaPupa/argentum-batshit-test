@@ -1,0 +1,62 @@
+// Spire Garden
+{
+    "name": "Spire Garden",
+    "manaCost": "",
+    "typeLine": "Land",
+    "oracleText": "This land enters tapped unless you have two or more opponents.\n{T}: Add {R} or {G}.",
+    "script": {
+        "activatedAbilities": [
+            {
+                "id": "ability_1",
+                "cost": "CostTap",
+                "effect": {
+                    "type": "AddMana",
+                    "color": "RED"
+                },
+                "timing": "ManaAbility",
+                "isManaAbility": true
+            },
+            {
+                "id": "ability_2",
+                "cost": "CostTap",
+                "effect": {
+                    "type": "AddMana",
+                    "color": "GREEN"
+                },
+                "timing": "ManaAbility",
+                "isManaAbility": true
+            }
+        ],
+        "replacementEffects": [
+            {
+                "type": "EntersTapped",
+                "unlessCondition": {
+                    "type": "Compare",
+                    "left": "PlayerCount",
+                    "operator": "GTE",
+                    "right": {
+                        "type": "Fixed",
+                        "amount": 2
+                    }
+                }
+            }
+        ]
+    },
+    "metadata": {
+        "collectorNumber": "85",
+        "rarity": "RARE",
+        "artist": "Darek Zabrocki",
+        "flavorText": "From thrilling combat to unparalleled vistas, Valor's Reach has it all.",
+        "imageUri": "https://cards.scryfall.io/normal/front/6/4/64943615-7543-4acd-a884-22ece8f0ed3e.jpg?1783934847",
+        "rulings": [
+            {
+                "date": "2018-06-08",
+                "text": "If you began the game with two or more opponents but now only have one opponent left, these lands enter the battlefield tapped."
+            }
+        ]
+    },
+    "colorIdentityOverride": [
+        "GREEN",
+        "RED"
+    ]
+}

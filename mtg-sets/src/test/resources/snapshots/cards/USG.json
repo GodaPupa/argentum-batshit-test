@@ -3322,25 +3322,37 @@
                     "to": "Battlefield"
                 },
                 "effect": {
-                    "type": "ForEach",
-                    "space": "IterationSpace.Targets",
-                    "body": {
-                        "type": "TapUntap",
-                        "target": {
-                            "type": "ContextTarget",
-                            "index": 0
+                    "type": "Composite",
+                    "effects": [
+                        {
+                            "type": "GatherCards",
+                            "source": {
+                                "type": "BattlefieldMatching",
+                                "filter": "land"
+                            },
+                            "storeAs": "drakeLands"
                         },
-                        "tap": false
-                    }
-                },
-                "targetRequirement": {
-                    "type": "TargetObject",
-                    "count": 5,
-                    "optional": true,
-                    "filter": {
-                        "baseFilter": "land"
-                    },
-                    "id": "target"
+                        {
+                            "type": "SelectFromCollection",
+                            "from": "drakeLands",
+                            "selection": {
+                                "type": "ChooseUpTo",
+                                "count": {
+                                    "type": "Fixed",
+                                    "amount": 5
+                                }
+                            },
+                            "filter": "land",
+                            "storeSelected": "drakeUntap",
+                            "prompt": "Choose up to five lands to untap",
+                            "useTargetingUI": true
+                        },
+                        {
+                            "type": "TapUntapCollection",
+                            "collectionName": "drakeUntap",
+                            "tap": false
+                        }
+                    ]
                 }
             }
         ]
@@ -3350,7 +3362,13 @@
         "rarity": "UNCOMMON",
         "artist": "Bob Eggleton",
         "flavorText": "That the Tolarian mists parted for the drakes was warning enough to stay away.",
-        "imageUri": "https://cards.scryfall.io/normal/front/4/9/4951863f-1c16-4d09-ba9a-f57dc3d81a20.jpg"
+        "imageUri": "https://cards.scryfall.io/normal/front/4/9/4951863f-1c16-4d09-ba9a-f57dc3d81a20.jpg?1783946357",
+        "rulings": [
+            {
+                "date": "2022-12-08",
+                "text": "You choose which lands to untap as the triggered ability resolves. They aren't targeted, and they don't have to be lands that you control."
+            }
+        ]
     },
     "colorIdentityOverride": [
         "BLUE"

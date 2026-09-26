@@ -1,0 +1,137 @@
+{
+  "actual_deck_adapter_qualified": false,
+  "baseline_accepted_inventory": "accepted-capability-inventory-r4.json",
+  "baseline_audit": "card-support-batch-r2-audit.json",
+  "baseline_commit": "d5727749aa04a42e6db7035565ed504c3e267abd",
+  "batch": "FOREST_UNTAP_AND_LAND_MANA_R3",
+  "cards": [
+    {
+      "card": "Arbor Elf",
+      "color_identity": [
+        "G"
+      ],
+      "colors": [
+        "G"
+      ],
+      "definition": "mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/wwk/cards/ArborElf.kt",
+      "definition_sha256": "c337bcb1a2dc9b61d3839678c041a9143b205e95aefe91c9fcff9661226235a8",
+      "lookup_url": "https://api.scryfall.com/cards/named?exact=Arbor%20Elf",
+      "mana_cost": "{G}",
+      "oracle_id": "4567a528-75f0-4ea6-b927-3a500caf76ac",
+      "oracle_text": "{T}: Untap target Forest.",
+      "printing": {
+        "collector_number": "95",
+        "released_at": "2010-02-05",
+        "set": "wwk"
+      },
+      "scenario": "mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/ArborElfScenarioTest.kt",
+      "scenario_cases": 8,
+      "scenario_sha256": "0d5268964bdab66d0e7dfe6bfb321d9141b4e58ec54751923c0152ad76056781",
+      "scryfall_id": "6d32a4ed-6b43-4473-91ec-08cd5414f2f0",
+      "source_response_sha256": "fcd11168bd411176354bd58ab7007205bfabfedb8b944c502bb40e170d682708",
+      "source_url": "https://scryfall.com/card/wwk/95/arbor-elf?utm_source=api",
+      "type_line": "Creature \u2014 Elf Druid"
+    },
+    {
+      "card": "Wild Growth",
+      "color_identity": [
+        "G"
+      ],
+      "colors": [
+        "G"
+      ],
+      "definition": "mtg-sets/1993-1999/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/lea/cards/WildGrowth.kt",
+      "definition_sha256": "8678af1c2359de8a3459c665aba849ae2f9893b8e91754e6c2a0de0b304d7b3e",
+      "lookup_url": "https://api.scryfall.com/cards/named?exact=Wild%20Growth",
+      "mana_cost": "{G}",
+      "oracle_id": "706ae742-1807-44b7-a4fa-f2e26f61519a",
+      "oracle_text": "Enchant land\nWhenever enchanted land is tapped for mana, its controller adds an additional {G}.",
+      "printing": {
+        "collector_number": "229",
+        "released_at": "1993-08-05",
+        "set": "lea"
+      },
+      "scenario": "mtg-sets/1993-1999/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/WildGrowthScenarioTest.kt",
+      "scenario_cases": 8,
+      "scenario_sha256": "512d5c9efcc40b3e711aa3ccefcfc24d43d683d4cb4fc651f31eed917e1e2e69",
+      "scryfall_id": "fd896dfa-66c0-4327-8e5b-489bbe350c95",
+      "source_response_sha256": "2c6c1396e18b4f0263d125cec07b83c720c450b1733977e52bcb7ec9937e499f",
+      "source_url": "https://scryfall.com/card/lea/229/wild-growth?utm_source=api",
+      "type_line": "Enchantment \u2014 Aura"
+    },
+    {
+      "card": "Utopia Sprawl",
+      "color_identity": [
+        "G"
+      ],
+      "colors": [
+        "G"
+      ],
+      "definition": "mtg-sets/2003-2007/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/dis/cards/UtopiaSprawl.kt",
+      "definition_sha256": "95ca742a779934f7686e91c4fa79ddd5c21450bc4fa2fab4ea8a272cbbdc02c3",
+      "lookup_url": "https://api.scryfall.com/cards/named?exact=Utopia%20Sprawl",
+      "mana_cost": "{G}",
+      "oracle_id": "00d8efa6-a2d9-4249-8da7-b45173675329",
+      "oracle_text": "Enchant Forest\nAs this Aura enters, choose a color.\nWhenever enchanted Forest is tapped for mana, its controller adds an additional one mana of the chosen color.",
+      "printing": {
+        "collector_number": "99",
+        "released_at": "2006-05-05",
+        "set": "dis"
+      },
+      "scenario": "mtg-sets/2003-2007/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/UtopiaSprawlScenarioTest.kt",
+      "scenario_cases": 8,
+      "scenario_sha256": "e12b87ebb3e2c8d855806f68541f33302a14ae5db23d22bcb3ba4e1394d0c8f7",
+      "scryfall_id": "5047e271-fbf1-402c-9eb9-0806e5988f76",
+      "source_response_sha256": "a6a4111cf9ec8f96f9b9fe9227bdce7055b9a84767e2e048d7b70c1f4a4addb7",
+      "source_url": "https://scryfall.com/card/dis/99/utopia-sprawl?utm_source=api",
+      "type_line": "Enchantment \u2014 Aura"
+    }
+  ],
+  "fixture_seed_policy": "Fixed ScenarioBuilder seeds are deterministic regression fixtures, excluded from official seed registries, samples and allocations. No official vector is generated.",
+  "frozen_hardware_sha256": "2a9f47d2edcfbdb54a9ea15eadc719f85b36f74da9eb682233b85bd56f034da1",
+  "gameplay_authorized": false,
+  "generic_test_batching": {
+    "expected_cases": 56,
+    "preservation": "A single scoped rules-engine test invocation retains all seven XML class suites directly in the uploaded rules-engine directory; no later invocation of that task overwrites it.",
+    "selectors_unchanged": [
+      "CommanderPodCapabilityTest",
+      "CommanderPodTest",
+      "CommanderSetupTest",
+      "CommanderTaxTest",
+      "LeaveTheGameTest",
+      "MultiplayerMulliganTest",
+      "MultiplayerSmokeTest"
+    ]
+  },
+  "official_counters": {
+    "actions": 0,
+    "attempts": 0,
+    "games_initialized": 0,
+    "outcomes": 0,
+    "seeds_generated": 0
+  },
+  "schema": "mt-phase2-exact-card-support-batch-v1",
+  "seed_generation_authorized": false,
+  "shared_mechanics": [
+    "Existing Forest subtype target filter and tap-cost untap effect",
+    "Existing AdditionalManaOnTap triggered mana behavior for manual and automatic payment",
+    "Existing EntersWithChoice COLOR with aura-local persistent choice; original land mana and colors remain unchanged"
+  ],
+  "snapshot_contract": {
+    "allowed_additions": {
+      "dis": [
+        "Utopia Sprawl"
+      ],
+      "lea": [
+        "Wild Growth"
+      ],
+      "wwk": [
+        "Arbor Elf"
+      ]
+    },
+    "allowed_existing_card_changes": [],
+    "reject_unrelated_set_or_card_changes": true
+  },
+  "status": "IMPLEMENTED_PENDING_COMPILED_SCENARIOS_REGISTRY_AND_STRICT_SNAPSHOT_REVIEW",
+  "total_scenario_cases": 24
+}

@@ -1,0 +1,153 @@
+{
+  "schema": "mt-phase2-engine-telemetry-qualification-r1",
+  "status": "QUALIFIED_SCOPED_COMPONENT_NO_GAMEPLAY_ADMISSION",
+  "source_commit": "694d563cd571f857e058c5a40b4bcc638bb7e30d",
+  "source_tree": "a0c04eac924a4120ef0b0511d01fb503de3946a2",
+  "prior_hardware_source": "8f50c5d4fcee177fa6477d75c43e70794d75ddb6",
+  "source_files_sha256": {
+    "gym/src/main/kotlin/com/wingedsheep/gym/manual/PhaseTwoTelemetryAdapter.kt": "b00c3000f2a4177ed2b3878df0cd33e084f2939f8430924b665778420ffdce42",
+    "gym/src/test/kotlin/com/wingedsheep/gym/manual/PhaseTwoTelemetryAdapterTest.kt": "abd82df2e07c827951a6baca4413b9e72e3f05a0335ac19fd14910130b61f3fd",
+    "experiments/manual-transmission-phase2/import_engine_trace.py": "7396f1335f3ee2edc1c64db54f4cf4fd02c6349d5f33dbd9e6416792adde53d1",
+    "experiments/manual-transmission-phase2/metrics_contract.py": "1941de6e8d70be5e344a0d021b66f92ed9b431beb4a71abc86dc3bf4aa8ebee5"
+  },
+  "qualified_scope": [
+    "Real ActionProcessor action/event-to-observation extraction for accepted actions, free mulligans, distinct designated commanders, designated Animar battlefield departures including player departure, authoritative personal turns, eliminations and actual terminal events",
+    "Ordered private initial-state/action/result/state-hash trace and deterministic semantic replay without rerunning initialization",
+    "Rejected actions and engine/collector exceptions preserved as integrity failures with consumed adapter and no retry, loss or replay-completeness fabrication",
+    "Actual Kotlin serialization imported through the independent existing Python 22-metric contract; unqualified strategic metrics remain null with a reason"
+  ],
+  "focused_workflow": {
+    "run_id": 36246345587,
+    "job_id": 108416149990,
+    "conclusion": "success",
+    "artifact_id": 10907198923,
+    "artifact_bytes": 14931,
+    "artifact_sha256": "bd7d500412fbb318ae26d745e4ec15416f8297ff5dd70f5601f72fbda51c00e5",
+    "independently_downloaded_and_hashed": true,
+    "junit_suites": 1,
+    "junit_cases": 10,
+    "junit_failures": 0,
+    "junit_errors": 0,
+    "junit_skipped": 0,
+    "python_contract_cases": 17,
+    "python_import_cases": 7,
+    "python_failures": 0,
+    "python_skipped": 0,
+    "actual_engine_trace_sha256": "012059d9400763f8aaa1909cfb08a2fbfbeef33b0e72e3f30170edea3a048984",
+    "actual_trace_bytes": 444547,
+    "actual_trace_actions": 3,
+    "artifact_members_sha256": {
+      "build/reports/manual-transmission-phase2/engine-telemetry/contract-tests.txt": "d3a842f16cb244f3ab3a5999ed37abb4182392017b915fece6afa06c638dd079",
+      "build/reports/manual-transmission-phase2/engine-telemetry/excluded-fixture-engine-trace.json": "012059d9400763f8aaa1909cfb08a2fbfbeef33b0e72e3f30170edea3a048984",
+      "build/reports/manual-transmission-phase2/engine-telemetry/import-tests.txt": "ae46f821fca179aba7fa4f797434f4cd6e64e0efaa805d2ca557d67f50bb4555",
+      "build/reports/manual-transmission-phase2/engine-telemetry/provenance.txt": "ed32b78e8353d9881673bb87db9f4a23dd27cba974486b6939dada35515e2721",
+      "build/reports/manual-transmission-phase2/engine-telemetry/source-sha256.txt": "49c51b8addbfc65a35f363f2dfccd6ad67f7fe13f59e575c9db3a50ed1938b81",
+      "gym/build/test-results/test/TEST-com.wingedsheep.gym.manual.PhaseTwoTelemetryAdapterTest.xml": "c9196669f932769fcf1e13954c217923ff11502fad0dda7970cab72ed4308eb2"
+    }
+  },
+  "full_receiving_ci": {
+    "run_id": 36246345583,
+    "conclusion": "success",
+    "passed_jobs": {
+      "frontend": 108416216964,
+      "scenarios-old": 108416217087,
+      "scenarios-2025-26": 108416217095,
+      "content": 108416217116,
+      "tools": 108416217153,
+      "engine": 108416217178,
+      "scenarios-2023-24": 108416217197,
+      "server": 108416217239,
+      "backend": 108418354224
+    },
+    "coverage_job": {
+      "id": 108416217617,
+      "conclusion": "skipped",
+      "required_gate": false
+    }
+  },
+  "capability_regression": {
+    "run_id": 36246345590,
+    "conclusion": "success",
+    "engine_artifact_id": 10907199332,
+    "engine_artifact_bytes": 931381,
+    "engine_artifact_sha256": "0cc9651b840c80aff34c08ab9b2e6ca2863f4a9fa34a257f7292eb489883bea7",
+    "independently_downloaded_and_hashed": true,
+    "junit_suites": 34,
+    "junit_cases": 538,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "registry_counts_changed": false
+  },
+  "source_provenance": {
+    "artifact_id": 10907497869,
+    "artifact_bytes": 27649769,
+    "artifact_sha256": "4ad4df1122d6f551679d05cd14d446389787a656b6ef9e2fb4f40573eb6c0d76",
+    "independently_downloaded_and_hashed": true,
+    "nested_source_bundle_sha256": "bfa4cea8533d5f60dc2dfa4d298c31f4de5c2698b906a02190f217116e52742b",
+    "current_source_files_compared_to_git_blobs": 24629,
+    "phase1_files_compared_to_git_blobs": 80,
+    "phase1_commit": "e7d37e2ea0f18dfa8d6b0fff68ef816b59555d2d",
+    "mismatches": 0,
+    "missing_files_within_declared_scope": 0,
+    "unexpected_files": 0,
+    "intentional_current_tree_exclusions": 3306,
+    "archive_scope": "Exact existing bootstrap_audit.py predicate, not a complete repository archive; generated snapshots and workflows are intentionally outside that archive. Exact Git tree and separately hashed adapter sources remain bound.",
+    "rules_archive_sha256": "8d860e451f20f38865b725b42d82feb714c725373dd8f3b32b8652b3eeb070ca",
+    "rules_archive_bytes": 977752,
+    "registry_request_sha256": "09b8617057b9bd42fb6501f993588c9bf769e1f0af0c73426ca963da07d20084"
+  },
+  "independent_reviews": {
+    "source_review": "Ferocity agent independently found and re-reviewed the designated Animar departure and consume-on-exception corrections; later re-reviewed the fresh-initialization guard against GameInitializer. Source review accepted for qualification, not gameplay admission.",
+    "evidence_review": "Root independently downloaded and checked focused ZIP digest, actual XML, complete 17+7 Python transcripts, all four source bindings, excluded trace digest and disabled execution authority; independently fetched exact-head full and capability success.",
+    "no_self_attested_gameplay_admission": true
+  },
+  "preserved_failed_qualification_attempts": [
+    {
+      "source": "7a7cc5958359f8b02a8869cbbc1d1ffcdfd6f957",
+      "run_id": 36244747397,
+      "artifact_id": 10906268922,
+      "classification": "SOURCE_DEFECT_CROSS_MODULE_NULLABLE_SMART_CAST",
+      "result": "Compilation failed before fixtures."
+    },
+    {
+      "source": "586e4115ea58d9abe9cabfae8239ed0f41eb5b39",
+      "run_id": 36244956053,
+      "artifact_id": 10907018050,
+      "classification": "SOURCE_DEFECT_FRESH_INITIAL_STATE_GUARD",
+      "result": "Actual9/9 failures preserved; successor guards actual pre-mulligan turn1 state."
+    },
+    {
+      "source": "ca024f7723138ea4f0e7fbeb5264f3dd234d5d22",
+      "run_id": 36245828702,
+      "artifact_id": 10908065202,
+      "classification": "FIXTURE_DEFECT_UNPAID_CLEANUP_DISCARD",
+      "result": "Actual10 cases,9pass1fail; ordinary first-turn land play fixes fixture with same clock/replay assertions. Passing individual trace independently imported7/7 but did not accept failed suite."
+    }
+  ],
+  "fixture_limitations": [
+    "Fixed synthetic zero-cost vanilla commander and basic-land fixtures are excluded deterministic tests, not printed-card qualification or frozen matchup games.",
+    "Trace raw private state/events are offline evidence only. Actor-information/pilot-view qualification is separate.",
+    "No durable outer attempt journal or executable Cruise/Sport/Race/opponent policy is supplied by this component.",
+    "This does not qualify strategic/causal metric extraction or all reachable multiplayer rules."
+  ],
+  "remaining_capability_admission_blockers": [
+    "Manual15 unresolved identities and opponent/reachable exact mechanics; coverage inventory remains85/100 Manual, not complete semantic qualification.",
+    "Executable lawful Cruise/Sport/Race and required opponent policies, equivalent frozen development budgets and required strategic collectors.",
+    "Qualified canonical post-block priority repair with exact Manual receiving regression/replay/full integration; see post-block-priority-receiver-blocker-r1.json.",
+    "Durable exclusive attempt handling, guarded execution, frozen source/input/pilot/seed provenance and independent protocol admission."
+  ],
+  "hardware_disposition": "KEEP_V07",
+  "hardware_changed": false,
+  "deck_performance_evidence_changed": false,
+  "gameplay_authorized": false,
+  "official_counters": {
+    "seeds_generated": 0,
+    "attempts": 0,
+    "games_initialized": 0,
+    "actions": 0,
+    "outcomes": 0,
+    "capability_games": "0/36",
+    "primary_games": "0/864"
+  }
+}

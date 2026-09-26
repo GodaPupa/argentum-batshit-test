@@ -39,6 +39,12 @@ data class PlayerConfig(
      * Background pairings are Phase 4 territory.
      */
     val commanderCardName: String? = null,
+    /**
+     * Designated commanders for Partner / Background / Friends Forever style Commander decks.
+     * Leave empty for the legacy single-commander API above. Supplying both surfaces is rejected
+     * unless they name the exact same singleton, preventing ambiguous initialization.
+     */
+    val commanderCardNames: List<String> = emptyList(),
 )
 
 /**
@@ -162,19 +168,33 @@ class GameInitializer(
         var state = GameState(format = config.format, attackMode = config.attackMode, rng = GameRng.seeded(resolvedSeed))
         val playerIds = mutableListOf<EntityId>()
 
-        // Validate Commander-format prerequisites up front. Each player must designate a
-        // commander card name. The commander is NOT counted in [Deck.cards] (matches the deck
-        // validator's convention and CR 903.6a) — it's instantiated separately in step 3 below
-        // and routed to Zone.COMMAND.
+        fun commanderNamesFor(playerConfig: PlayerConfig): List<String> {
+            val listed = playerConfig.commanderCardNames.filter { it.isNotBlank() }
+            val legacy = playerConfig.commanderCardName?.takeIf { it.isNotBlank() }
+            if (listed.isNotEmpty() && legacy != null) {
+                require(listed.size == 1 && listed.single() == legacy) {
+                    "Player '${playerConfig.name}' supplied conflicting commanderCardName and commanderCardNames"
+                }
+            }
+            return if (listed.isNotEmpty()) listed else listOfNotNull(legacy)
+        }
+
+        // Validate Commander-format prerequisites up front. Commanders are NOT counted in
+        // [Deck.cards] (the deck validator / CR 903.6a convention); a Partner-style pair therefore
+        // uses a 98-card library. Every designated commander is instantiated separately in step 3.
         if (config.format.usesCommanders) {
             for (playerConfig in config.players) {
-                val name = playerConfig.commanderCardName
-                require(!name.isNullOrBlank()) {
-                    "Commander format requires PlayerConfig.commanderCardName for player '${playerConfig.name}'"
+                val names = commanderNamesFor(playerConfig)
+                require(names.isNotEmpty()) {
+                    "Commander format requires at least one designated commander for player '${playerConfig.name}'"
                 }
-                // Make sure the registry can resolve the commander before we touch any state —
-                // we'd rather fail here than mid-init with a half-built game.
-                cardRegistry.requireCard(name)
+                require(names.distinct().size == names.size) {
+                    "Commander designations must be distinct for player '${playerConfig.name}'"
+                }
+                require(names.size <= 2) {
+                    "Commander initialization currently supports at most two designated commanders per player"
+                }
+                names.forEach(cardRegistry::requireCard)
             }
         }
 
@@ -300,24 +320,25 @@ class GameInitializer(
         }
 
         // 3. Instantiate cards and place in libraries (or command zone for commanders).
-        // Commander setup runs first so a CommanderRegistryComponent is attached to the player
-        // entity before the rest of the deck flows into the library. Phase 1 supports a single
-        // commander per player; CommanderRegistryComponent is a list so Partner / Background
-        // (Phase 4) can append without a schema change.
+        // Commander setup runs first so CommanderRegistryComponent can list every designated
+        // commander. Each commander gets its own CommanderComponent, so tax / damage / zone-choice
+        // provenance remains per physical commander entity.
         for ((index, playerConfig) in config.players.withIndex()) {
             val playerId = playerIds[index]
 
-            val commanderName: String? = when {
-                config.format.usesCommanders -> playerConfig.commanderCardName
-                else -> null
-            }
+            val commanderNames: List<String> =
+                if (config.format.usesCommanders) commanderNamesFor(playerConfig) else emptyList()
             val commanderEntityIds = mutableListOf<EntityId>()
 
-            if (commanderName != null) {
+            for (commanderName in commanderNames) {
                 val cardDef = cardRegistry.requireCard(commanderName)
                 val (cardId, stateWithId) = state.newEntity()
                 state = stateWithId
-                val cardContainer = createCardEntity(cardDef, playerId, playerConfig.deck.commanderPrinting).with(
+                // Deck currently exposes one legacy commander printing pin. Preserve it for the
+                // singleton path; paired commanders are sourced by exact card identity in Phase 2
+                // and intentionally do not guess per-partner printing metadata.
+                val printing = playerConfig.deck.commanderPrinting.takeIf { commanderNames.size == 1 }
+                val cardContainer = createCardEntity(cardDef, playerId, printing).with(
                     com.wingedsheep.engine.state.components.identity.CommanderComponent(ownerId = playerId)
                 )
                 state = state.withEntity(cardId, cardContainer)
