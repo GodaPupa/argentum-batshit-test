@@ -1,8 +1,9 @@
 # Position 1 — Forge of Heroes qualification
 
-Status: implementation prepared; targeted qualification, generated snapshot review,
-independent evidence review, and full receiving-source CI remain pending. This is
-a card and shared-predicate capability gate. It grants no gameplay admission.
+Status: targeted qualification and exact generated-byte review passed at
+`4aae1f9669769649e989735b4170f9bded15bc13`; independent source and artifact reviews
+accepted that component scope. Full receiving-source CI and acceptance remain
+pending. This is a card and shared-predicate capability gate with no gameplay admission.
 
 The source starts from accepted bestow integration
 `4ff03a9109eece49ab871b09c21b9533f66bb726`. The new `StatePredicate.IsCommander`
@@ -46,3 +47,15 @@ qualification. The new SDK spelling has no Assay grammar addition in this scope.
 
 Official counters remain 12 seeds generated, 0 consumed, 0 games initialized,
 0 completed of 12, and 0 outcomes exposed. Hardware remains v0.7 / `KEEP_V07`.
+
+## Targeted evidence checkpoint
+
+Run `36249667143` executed 423 retained cases with zero failures, errors or skips:
+commander predicates 3, projection 36, exact Forge 10, receiving PDH/bootstrap/
+readiness 30, read-only snapshots 340, lint 3 and facade 1. Ordinary generation
+changed only the new C18 record; its exact 4,475 bytes are bound by SHA-256
+`8956f2db1a40917015600b29eece16803fb2c929d669a84661ed5d2cde0ceeaa`.
+The [targeted receipt](evidence/forge-36249667143-targeted/receipt.json) retains
+the complete original artifact and the independent Pest audit. Earlier dependency
+and fixture-precondition failures remain preserved beside it. Publishing this
+golden opens the broad receiving-source gate; it does not close that gate.

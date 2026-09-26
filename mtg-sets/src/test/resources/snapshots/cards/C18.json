@@ -1,0 +1,109 @@
+// Forge of Heroes
+{
+    "name": "Forge of Heroes",
+    "manaCost": "",
+    "typeLine": "Land",
+    "oracleText": "{T}: Add {C}.\n{T}: Choose target commander that entered this turn. Put a +1/+1 counter on it if it's a creature and a loyalty counter on it if it's a planeswalker.",
+    "script": {
+        "activatedAbilities": [
+            {
+                "id": "ability_1",
+                "cost": "CostTap",
+                "effect": {
+                    "type": "AddColorlessMana",
+                    "amount": {
+                        "type": "Fixed",
+                        "amount": 1
+                    }
+                },
+                "timing": "ManaAbility",
+                "isManaAbility": true
+            },
+            {
+                "id": "ability_2",
+                "cost": "CostTap",
+                "effect": {
+                    "type": "Composite",
+                    "effects": [
+                        {
+                            "type": "Gated",
+                            "gate": {
+                                "type": "Gate.WhenCondition",
+                                "condition": {
+                                    "type": "EntityMatches",
+                                    "entity": {
+                                        "type": "ContextTarget",
+                                        "index": 0
+                                    },
+                                    "filter": "creature"
+                                }
+                            },
+                            "then": {
+                                "type": "AddCounters",
+                                "counterType": "+1/+1",
+                                "count": 1,
+                                "target": {
+                                    "type": "BoundVariable",
+                                    "name": "commander that entered this turn"
+                                }
+                            }
+                        },
+                        {
+                            "type": "Gated",
+                            "gate": {
+                                "type": "Gate.WhenCondition",
+                                "condition": {
+                                    "type": "EntityMatches",
+                                    "entity": {
+                                        "type": "ContextTarget",
+                                        "index": 0
+                                    },
+                                    "filter": "planeswalker"
+                                }
+                            },
+                            "then": {
+                                "type": "AddCounters",
+                                "counterType": "loyalty",
+                                "count": 1,
+                                "target": {
+                                    "type": "BoundVariable",
+                                    "name": "commander that entered this turn"
+                                }
+                            }
+                        }
+                    ]
+                },
+                "targetRequirements": [
+                    {
+                        "type": "TargetObject",
+                        "filter": {
+                            "baseFilter": {
+                                "statePredicates": [
+                                    "IsCommander",
+                                    "EnteredThisTurn"
+                                ]
+                            }
+                        },
+                        "id": "commander that entered this turn"
+                    }
+                ]
+            }
+        ]
+    },
+    "metadata": {
+        "collectorNumber": "58",
+        "artist": "Titus Lunter",
+        "flavorText": "History is not delicately woven. It is hammered with fire.",
+        "imageUri": "https://cards.scryfall.io/normal/front/8/2/826ff8c2-8a1d-45f5-a7e2-d8bf826fcadc.jpg?1783934322",
+        "rulings": [
+            {
+                "date": "2018-07-13",
+                "text": "If the target commander is somehow a creature and a planeswalker, most likely because it's Gideon, it receives both kinds of counters."
+            },
+            {
+                "date": "2018-07-13",
+                "text": "If the target commander is somehow neither a creature nor a planeswalker (such as Arixmethes, Slumbering Isle may be), it receives no counters."
+            }
+        ]
+    }
+}
