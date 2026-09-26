@@ -1,0 +1,87 @@
+{
+  "schema": "shared-postblock-combined-receiving-v1",
+  "status": "PROSPECTIVE_RECEIVING_GATE_CORRECTION_REQUIRES_NONAUTHOR_REVIEW_AND_FRESH_ORIGINAL127",
+  "reference_source": "994383d4a9495bcb34d5aae0e69181bcf4c04d45",
+  "reference_tree": "4b8f4d155a37e6b66ab623d344b19cedf435d845",
+  "scope": "Rebind the inherited original127-case postblock receiving gate to the already reviewed combined source. Preserve original donor and fixture authority bytes, original source paths, test files and case geometry. No experimental authority changes.",
+  "original_manifests_sha256": {
+    "lab-coordinator/shared-capabilities/postblock-source-extraction.json": "a24e602e4af03d3baa8bff1a2efe6581b4106b05a27dec9f4c4508cea288863a",
+    "lab-coordinator/shared-capabilities/postblock-fixture-receiving.json": "52ac7b85f1a6e68bdd6ee99f07cdcb3c5692a5322835199e4dd0006eff83c257"
+  },
+  "combined_source_manifest": {
+    "path": "lab-coordinator/shared-capabilities/priority-receiving-sources.json",
+    "sha256": "235cbb5790e59fe7f4d634542b16efcf59ddfb56721a18e948024618e2d4e957",
+    "source_binding_count": 250
+  },
+  "observer_receiving_manifest": {
+    "path": "lab-coordinator/shared-capabilities/cast-observer-receiving.json",
+    "sha256": "d3928a6f14d3c07c8e4a1b649e2cb19fb4365363a7269079b64a48ccb9977b57"
+  },
+  "production_overrides": [
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/combat/CombatDefenders.kt",
+      "original_sha256": "19e46ab82c959375752046940f0dc8e39a34513eac26d687cc835b6bf91622fe",
+      "receiving_sha256": "87543b443ca4f637617f1cbe7613c37f1c577a7754aa272786cf5c0d7be68920"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/PendingTrigger.kt",
+      "original_sha256": "74453950aa12e01761bf88eb12f212453633bdaf07661f5ff3e65268b272f311",
+      "receiving_sha256": "1df77a7df84d006ae7db58a461d28c091d22aeb26b6b880616058e77fd927cff"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/legalactions/enumerators/CombatEnumerator.kt",
+      "original_sha256": "6fe9da8a33999c557eecbf7ca8e64dea4a7e11cd06d5493404f2d7afc36013f8",
+      "receiving_sha256": "806c3e20163072b7b96588c695e6d6913cc39a7c70deec88f1ff31a5bc5e0c1b"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/ZoneTransitionService.kt",
+      "original_sha256": "ef01c78ae24d79e9ff2cba0d90c9d5933c6a0c9ca5f11135e6e6e6fdaf32b005",
+      "receiving_sha256": "0b6b44e9598e10c86222f455c9fe3c6e13d6fdcdc75809bf0d88f343310ac4e7"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/Serialization.kt",
+      "original_sha256": "7a6164084ff2f6b49aa6f90ac4108ccfef86c7184b43e3841cf6482e07186d41",
+      "receiving_sha256": "bcc6321f1ef85416859bff716b1446498a62917208cc7f7a65b4cd39b0333b68"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/ContinuationHandler.kt",
+      "original_sha256": "41e483dccbf19148ea5d266176532b8e3689f56e0193d57e7de1a6bb4ccf30aa",
+      "receiving_sha256": "a8091ebb5e745e48765d38f01f6f21052b98ec4b0f52da34076882bbd90edccc"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/CoreAutoResumerModule.kt",
+      "original_sha256": "685ab54058fc2e25e9b4e1dc352642080623b785781c7b2161a411eaad0360f6",
+      "receiving_sha256": "d191e92ce6bf2c27d33f5ae9f80ff2b7ce8b0d94aa6493887c9739faea9292b3"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/CastPriorityProcessor.kt",
+      "original_sha256": "2a43d4a6cfdf12c06dc7d7a065d424b9b60f28fb214eaa9fa17d585af2c23ff2",
+      "receiving_sha256": "9939278edba7d26c850e4c36199165349f9889a7e92b8507dfaa3d53ae6f9ece"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/GameEvent.kt",
+      "original_sha256": "1c355fc1c7a92606ea24dced8109ff15b1b2c757cb2879d13aaa4c53b57514e2",
+      "receiving_sha256": "e7a8dc304b75af8365d14f8585afb4cb6db2d9e4176e0a29e20eec68af259cb1"
+    }
+  ],
+  "expected_cases": {
+    "engine": 115,
+    "server": 12
+  },
+  "expected_total_cases": 127,
+  "retained_source_bindings": 54,
+  "evidence": {
+    "combined407_publication": "685fc47bdcf24a1398908abe6c248fc9918aab99",
+    "fresh_four_full_ci_supplement_publication": "9bed397f31f6125d79982e07a78f960197c06269",
+    "fresh_four_run": 36271229739,
+    "fresh_four_nonauthor_review_sha256": "1d0b4b88b964e39d898c8ac1101acd6b2afb2b0d71070b7c39dc143c2bf60e0b"
+  },
+  "limitations": [
+    "This descriptor is receiving qualification authority for the same original127 mechanical cases, not a replacement donor contract.",
+    "Actual fresh127 execution and independent artifact review on the corrected source are still required.",
+    "Initial counters with attached-copy replacement, paused token original pre-entry context, complete receiving project runtime and gameplay admission remain separate."
+  ],
+  "official_games": 0,
+  "allocations_consumed": 0,
+  "gameplay_authorized": false
+}
