@@ -1,5 +1,6 @@
 package com.wingedsheep.engine.scenarios
 
+import com.wingedsheep.engine.core.CombatResolutionDecision
 import com.wingedsheep.engine.state.ComponentContainer
 import com.wingedsheep.engine.state.components.battlefield.CountersComponent
 import com.wingedsheep.engine.state.components.battlefield.SummoningSicknessComponent
@@ -9,6 +10,7 @@ import com.wingedsheep.engine.state.components.identity.TokenComponent
 import com.wingedsheep.engine.state.ZoneKey
 import com.wingedsheep.engine.support.GameTestDriver
 import com.wingedsheep.engine.support.TestCards
+import com.wingedsheep.engine.support.chooseTriggerOrderInListedOrder
 import com.wingedsheep.mtg.sets.definitions.vow.cards.SoulcipherBoard
 import com.wingedsheep.sdk.core.Color
 import com.wingedsheep.sdk.core.CounterType
@@ -191,6 +193,11 @@ class SoulcipherBoardScenarioTest : FunSpec({
             opp,
             mapOf(blockerA to listOf(attackerA), blockerB to listOf(attackerB))
         ).error shouldBe null
+        driver.passPriorityUntil(Step.COMBAT_DAMAGE)
+        if (driver.pendingDecision is CombatResolutionDecision) {
+            driver.confirmCombatDamage().error shouldBe null
+        }
+        driver.chooseTriggerOrderInListedOrder() // both creature cards raise an omen-counter trigger
         driver.passPriorityUntil(Step.POSTCOMBAT_MAIN)
 
         withClue("both creature cards did reach my graveyard, so both triggers fired") {

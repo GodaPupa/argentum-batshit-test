@@ -2,6 +2,8 @@ package com.wingedsheep.engine.scenarios
 
 import com.wingedsheep.engine.support.GameTestDriver
 import com.wingedsheep.engine.support.TestCards
+import com.wingedsheep.engine.support.chooseTriggerOrderInListedOrder
+import com.wingedsheep.engine.support.hasPendingTriggerOrder
 import com.wingedsheep.mtg.sets.definitions.eld.cards.LindenTheSteadfastQueen
 import com.wingedsheep.sdk.core.Keyword
 import com.wingedsheep.sdk.core.Step
@@ -56,7 +58,8 @@ class LindenTheSteadfastQueenScenarioTest : FunSpec({
         val me = activePlayer!!
         val opponent = getOpponent(me)
         passPriorityUntil(Step.DECLARE_ATTACKERS)
-        declareAttackers(me, attackers, opponent)
+        declareAttackers(me, attackers, opponent).error shouldBe null
+        if (state.hasPendingTriggerOrder()) chooseTriggerOrderInListedOrder()
         resolveStack()
     }
 

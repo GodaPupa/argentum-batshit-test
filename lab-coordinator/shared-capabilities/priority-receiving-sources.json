@@ -2,7 +2,7 @@
   "schema": "shared-priority-receiving-sources-v1",
   "status": "PROSPECTIVE_RECEIVING_BINDING_INDEPENDENT_REVIEW_AND_RUNTIME_PENDING",
   "base_commit": "1c8bc618e8b3ca0b3b154e2ef3c87ca8ff779698",
-  "source_base": "cbca096e2727120d9b4f33f9529af637adf6f173",
+  "source_base": "b6aef3afede89f2044f26b0af9d5bdd4efe751c6",
   "scope": "DETERMINISTIC_RULES_REGRESSION_ONLY",
   "rules": {
     "source_url": "https://media.wizards.com/2026/downloads/MagicCompRules%2020260925.txt",
@@ -405,9 +405,19 @@
     "game-server/src/test/kotlin/com/wingedsheep/gameserver/session/AiUndoDecisionFreshnessTest.kt": "beb4daa7bfdc998a35b8796c189f39485fe0ef6d726ef0a93c3950bd050e5db4",
     "mtg-sets/1993-1999/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/EnergyFluxScenarioTest.kt": "19678e0e547c4fc4e7938041fdbb6412f60b64afc1a7bdace964e9b52372549d",
     "mtg-sets/1993-1999/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/VodalianWarMachineScenarioTest.kt": "9cb20bbf10661baa3650bc02783d3113578394c210e408901c8222f8be458f63",
-    "mtg-sets/2025/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/DalkovanEncampmentScenarioTest.kt": "9036c52571af5f70f7c3eceef2f5bffeef83e5e0a9baaab60244b0d506c4885d",
+    "mtg-sets/2025/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/DalkovanEncampmentScenarioTest.kt": "6bea74e63c516c647bea6ad3530d44c7a94dd56959465adc3c689f5e0aaf4d3e",
     "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerAbilityResolver.kt": "f66661fa23a54f53dfe43ac140b608d0c63972168193f82ac01e8faf0739e20c",
-    "rules-engine/src/test/kotlin/com/wingedsheep/engine/event/TriggerAbilityResolverTest.kt": "35dcc456ab3185c377033d95ae62d6a135cb602348a328271d5f65d5eed5f0be"
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/event/TriggerAbilityResolverTest.kt": "35dcc456ab3185c377033d95ae62d6a135cb602348a328271d5f65d5eed5f0be",
+    "mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/DaringArchaeologistScenarioTest.kt": "d66b9dd4d3791a5a6e1416568aea41676804b177375897447baa91a4c9bde76b",
+    "mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/ExploitTest.kt": "294eeb0357cfd8b69ea74064e64be596e581c24f057c1e919cae3fbb6521237b",
+    "mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/GrolnokTheOmnivoreScenarioTest.kt": "bc15bbdbed9769a541d842eeb1593567caf63ec3d640aeb58757d8c3e9e3d805",
+    "mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/LaidToRestScenarioTest.kt": "0f17175d9ac278d84d854503661ff7a749ff9133d03505a6d98c66541a575b6f",
+    "mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/LilianaDreadhordeGeneralScenarioTest.kt": "7a8a45e5417cf1508d5f537cfe4dd0026051cba958b40e84dba2de703bea80b9",
+    "mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/LindenTheSteadfastQueenScenarioTest.kt": "997b00448a12d6f252acad432016682dc7026df3c4866f35c474cf1c4fbf95d7",
+    "mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/OliviasAttendantsScenarioTest.kt": "891267d7e6878699395c8b98913bb0d917fd4d492519cf4f79903680e46d0b8c",
+    "mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/PanickedBystanderScenarioTest.kt": "d3500d06e267ab63508b0d51b76d108f78da07bee9cbb1ed43b3b33e7f44854e",
+    "mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/SoulcipherBoardScenarioTest.kt": "252c66924e22b769014c0749a60d21f7e9e4f327a7808c3697d34bb4ab911110",
+    "mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/TrainingTest.kt": "dabff68b14b8f7aaaf2e1026bf30ed3b4b7d88bcf070da5c27062ebfccd02319"
   },
   "changed_previous_bindings": [
     {
@@ -438,9 +448,10 @@
     "Original 27 stage commands, case counts, effective rules bytes, ancestor and source guards remain required. Actual XML and command exits are audited.",
     "An adjacent Energy Flux failure exposed an incomplete static granted-trigger filter. Both discovery paths now use the existing projected PredicateEvaluator; three original Energy Flux cases and one added resolver case qualify the change.",
     "AI software regression expectations follow their existing governance: a raw successor digest after exactly seven priority-pass pair changes, unchanged terminal result, and two diagnosed puzzle fixes. Original raw diagnostics and non-author reviews are retained separately. No experimental policy is changed.",
-    "Vodalian, Dalkovan and server stale-callback fixtures establish their intended boundaries using accepted actual actions; their original cases and behavioral assertions are retained."
+    "Vodalian and server stale-callback fixtures establish intended boundaries using accepted actual actions. The Dalkovan declaration failure remains unresolved; read-only public state clues now preserve its exact failing action and original assertions for diagnosis.",
+    "Ten 2017\u20132022 scenario classes retain all46 cases and effect assertions while explicitly answering simultaneous-trigger ordering and placing targets before may-resolution. Two misleading Daring Archaeologist case names now describe the canonical order. These eleven pinned scenario files are receiving/full-CI cases and are not added to the original27-stage220-case priority count."
   ],
-  "independent_source_review": "PENDING_FOR_THIS_MANIFEST_AND_COLLECTOR",
+  "independent_source_review": "PENDING_FOR_CURRENT_BINDING_ONLY; fixture-source reviews are recorded separately",
   "targeted_receiving_qualification": "PENDING",
   "broad_receiving_integration": "PENDING",
   "official_execution_authorized": false,
@@ -450,10 +461,14 @@
   "outcome_exposure": 0,
   "historical_captured_fixture_bytes_unchanged": true,
   "previous_receiving_binding": {
-    "source_head": "cbca096e2727120d9b4f33f9529af637adf6f173",
-    "manifest_sha256": "4cc1211845923dc3966bd8dcfc1a8ff59d01baf17f2421f946cb65a155b7be0b",
-    "priority_run_id": 36257075249,
-    "broad_ci_run_id": 36257075247,
-    "scope": "Prior receiving attempt remains preserved; no previous source or runtime acceptance is transferred."
+    "source_head": "b6aef3afede89f2044f26b0af9d5bdd4efe751c6",
+    "manifest_sha256": "011e88385cd5df15ab719b7788621898868efe23ba03a1df028c4fe1122f44cf",
+    "priority_run_id": 36258698904,
+    "priority_artifact_id": 10912485034,
+    "priority_actual_cases": 220,
+    "priority_independent_review": "evidence/priority-36258698904/independent-artifact-review.json",
+    "broad_ci_run_id": 36258698921,
+    "broad_ci_result": "FAILED: scenarios-2017-2022 fourteen explicit-choice fixture failures; Dalkovan declaration fixture one failure. Other required groups successful.",
+    "scope": "Prior220 accepted only on its exact source; this successor requires its receiving qualification. No gameplay."
   }
 }

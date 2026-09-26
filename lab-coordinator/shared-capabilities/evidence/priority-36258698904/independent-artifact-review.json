@@ -1,0 +1,247 @@
+{
+  "schema": "shared-priority-non-author-actual-artifact-review-v1",
+  "reviewer": "Izzet agent, non-author of shared source, collector and targeted gate",
+  "reviewed_at": "2026-09-26T17:50:10.187707+00:00",
+  "disposition": "ACCEPT_TARGETED_PRIORITY_RECEIVING_COMPONENT_ONLY",
+  "source_head": "b6aef3afede89f2044f26b0af9d5bdd4efe751c6",
+  "source_tree": "0f95045d7e03b539144ffb9ef2a603c6f035f484",
+  "run_id": 36258698904,
+  "job_id": 108450258143,
+  "live_run_and_job_conclusion": "success",
+  "artifact_id": 10912485034,
+  "artifact_bytes": 330431,
+  "artifact_zip_sha256": "92e3259bda30cd0f293b0a375411085218cb76299070f71ad95ad547b754bf63",
+  "artifact_path": "/workspace/scratch/dcc9d005d11f/attachments/9bcf0741-2864-4b0b-ad87-1ce3a20424d8/shared-priority-b6a-220.zip",
+  "artifact_members": 113,
+  "manifest_sha256": "011e88385cd5df15ab719b7788621898868efe23ba03a1df028c4fe1122f44cf",
+  "source_pins_verified": 186,
+  "original_stages": 27,
+  "actual_cases": 220,
+  "actual_failures": 0,
+  "actual_errors": 0,
+  "actual_skips": 0,
+  "stage_details": [
+    {
+      "stage": "priority",
+      "class": "com.wingedsheep.engine.scenarios.StackResolutionPriorityTest",
+      "cases": 17,
+      "xml_sha256": "ddfce8ce58360ccb618ab0b7d3d02a9730c38845e5e6e130890f6c3e6274855e",
+      "exit_status": 0
+    },
+    {
+      "stage": "stack-war",
+      "class": "com.wingedsheep.engine.scenarios.StackWarTest",
+      "cases": 15,
+      "xml_sha256": "546a35eb4526b423f7e531514d019ea63aef4d7cae3834038da4ffe81cbd8579",
+      "exit_status": 0
+    },
+    {
+      "stage": "continuations",
+      "class": "com.wingedsheep.engine.scenarios.ContinuationSystemTest",
+      "cases": 4,
+      "xml_sha256": "2347722cdd613f78e0793ff06228ffbb3721c130b9e371a85d2b8d23cefac54d",
+      "exit_status": 0
+    },
+    {
+      "stage": "ordinary-cleanup",
+      "class": "com.wingedsheep.engine.scenarios.CleanupHandSizeDiscardDamageRemovalTest",
+      "cases": 2,
+      "xml_sha256": "bf932198f15285855061b58150b48959d5e213212881566ed7bc513e72e767c1",
+      "exit_status": 0
+    },
+    {
+      "stage": "legend-rule",
+      "class": "com.wingedsheep.engine.scenarios.LegendRuleTest",
+      "cases": 4,
+      "xml_sha256": "3e36e65941fac9440ecee483802d428af436fcc4c33f03916a13511a39994d45",
+      "exit_status": 0
+    },
+    {
+      "stage": "leave-game",
+      "class": "com.wingedsheep.engine.multiplayer.LeaveTheGameTest",
+      "cases": 16,
+      "xml_sha256": "c268261ad7c2c5cf02b5fdaa77c1327d8be707fac0d6acf0b6267ecdc63d6010",
+      "exit_status": 0
+    },
+    {
+      "stage": "team-priority",
+      "class": "com.wingedsheep.engine.multiplayer.TwoHeadedGiantTeamPriorityTest",
+      "cases": 12,
+      "xml_sha256": "887156d10a31c00134b7376fe80def0c9f03d3ea01dc01cc0598ea0d18ab3077",
+      "exit_status": 0
+    },
+    {
+      "stage": "flash-permission",
+      "class": "com.wingedsheep.engine.scenarios.ConditionalFlashGrantTest",
+      "cases": 9,
+      "xml_sha256": "c41ab7af52c191683e2abdf27a706a0a6eaea5e64b72a9c23b236e576ce8e7c2",
+      "exit_status": 0
+    },
+    {
+      "stage": "legacy-traces",
+      "class": "com.wingedsheep.engine.state.SuspensionTraceTest",
+      "cases": 5,
+      "xml_sha256": "4b76dfccbbf0f6f8a80647f30dd4046047a685dd03494fa8431b930f5ee5aea6",
+      "exit_status": 0
+    },
+    {
+      "stage": "legacy-serialization",
+      "class": "com.wingedsheep.engine.state.LegacySuspensionMigrationTest",
+      "cases": 19,
+      "xml_sha256": "5d66582e716575d62cafb3276d5bb83ce70969d3ec925ecb0554885be7ea38e4",
+      "exit_status": 0
+    },
+    {
+      "stage": "circle-solace",
+      "class": "com.wingedsheep.engine.scenarios.CircleOfSolaceTest",
+      "cases": 4,
+      "xml_sha256": "eb9c5c8085a0824987b5c0d6ddd5276339fd38230b789a9bf598d76e912307f1",
+      "exit_status": 0
+    },
+    {
+      "stage": "scarecrow",
+      "class": "com.wingedsheep.engine.scenarios.ScarecrowScenarioTest",
+      "cases": 4,
+      "xml_sha256": "e9141a0bb92cf0c06d15287cf46ff31b0564f163a73f3912c2ef16631159d487",
+      "exit_status": 0
+    },
+    {
+      "stage": "abundant-maw",
+      "class": "com.wingedsheep.engine.scenarios.AbundantMawScenarioTest",
+      "cases": 2,
+      "xml_sha256": "dabfdf863c04fa2410135503a2dd7686f3f012688b52549986fe68e75b6c9d69",
+      "exit_status": 0
+    },
+    {
+      "stage": "spell-queller",
+      "class": "com.wingedsheep.engine.scenarios.SpellQuellerScenarioTest",
+      "cases": 4,
+      "xml_sha256": "3e98fa10c19f314a380a1618e7f7957a4421b352ee626a1426b6724229ecf47e",
+      "exit_status": 0
+    },
+    {
+      "stage": "mauler",
+      "class": "com.wingedsheep.engine.scenarios.TaureanMaulerScenarioTest",
+      "cases": 3,
+      "xml_sha256": "a582717296523402939e09a52204533bb12b123ae17751c0be9d15926dc816e3",
+      "exit_status": 0
+    },
+    {
+      "stage": "ai-decision-trace",
+      "class": "com.wingedsheep.ai.engine.DecisionResponderCompletedBranchTest",
+      "cases": 7,
+      "xml_sha256": "7ab359ba2bb69275b1504bf0a4e50d920bbd91fa44b2bc3e5b03d4a6eca019cd",
+      "exit_status": 0
+    },
+    {
+      "stage": "cast-sba",
+      "class": "com.wingedsheep.engine.scenarios.CastPrioritySbaTest",
+      "cases": 12,
+      "xml_sha256": "ae70f17e0df2a11f2e9475f5279a3b57087d97be8f16ddba9f023e6a63860d4a",
+      "exit_status": 0
+    },
+    {
+      "stage": "death-trigger",
+      "class": "com.wingedsheep.engine.scenarios.DeathTriggerTest",
+      "cases": 4,
+      "xml_sha256": "173b87ff1233843da8d885637e5668be84f20f2ff244debb1ed63842f4f8cc39",
+      "exit_status": 0
+    },
+    {
+      "stage": "krarks-thumb",
+      "class": "com.wingedsheep.engine.scenarios.KrarksThumbScenarioTest",
+      "cases": 5,
+      "xml_sha256": "743374f7d20f173f08c11ac04ec1180501af8ff89a35901c9c5245b3cb344120",
+      "exit_status": 0
+    },
+    {
+      "stage": "prismari",
+      "class": "com.wingedsheep.engine.scenarios.PrismariTheInspirationScenarioTest",
+      "cases": 3,
+      "xml_sha256": "e5930d30443a604f9f5080bb5d3a4843c83d3b90dee34013227bb9e647556603",
+      "exit_status": 0
+    },
+    {
+      "stage": "free-cast",
+      "class": "com.wingedsheep.engine.scenarios.GrantNextSpellFreeCastTest",
+      "cases": 8,
+      "xml_sha256": "928a1b0a60371c6b14ec754c904d3d4ab322473560cfa143504d52e1f0773b12",
+      "exit_status": 0
+    },
+    {
+      "stage": "modal-cost",
+      "class": "com.wingedsheep.engine.scenarios.ModalPerModeAdditionalCostTest",
+      "cases": 8,
+      "xml_sha256": "f716aaad96c157bef55ead03edc54e021df7026c55428dfbad0f7bed5f0cbd0d",
+      "exit_status": 0
+    },
+    {
+      "stage": "modal-cost-enumeration",
+      "class": "com.wingedsheep.engine.legalactions.CastSpellEnumeratorModalAdditionalCostTest",
+      "cases": 2,
+      "xml_sha256": "e8399c58ae221e04c9c4bc332127c515cf805003f90d6193a2ba8f9b0df0c0f8",
+      "exit_status": 0
+    },
+    {
+      "stage": "reveal-cost",
+      "class": "com.wingedsheep.engine.scenarios.RevealFromHandAdditionalCostTest",
+      "cases": 10,
+      "xml_sha256": "e24d4ce06defe4372a1a903916cd2dff5404acf53ca00657f976ac5b08b58834",
+      "exit_status": 0
+    },
+    {
+      "stage": "commander-choice",
+      "class": "com.wingedsheep.engine.mechanics.sba.CommanderZoneChoiceCheckTest",
+      "cases": 17,
+      "xml_sha256": "7a5366b909ac45dd47b55da01963d436ce8511a8736b14feec115df625b48ad8",
+      "exit_status": 0
+    },
+    {
+      "stage": "team-loss",
+      "class": "com.wingedsheep.engine.multiplayer.TwoHeadedGiantTeamLossTest",
+      "cases": 10,
+      "xml_sha256": "486550ad501b81e298b9f296a4452f1eb3c5102e9c71df1a1215b332685f024e",
+      "exit_status": 0
+    },
+    {
+      "stage": "team-versus-team",
+      "class": "com.wingedsheep.engine.multiplayer.TeamVsTeamTest",
+      "cases": 14,
+      "xml_sha256": "d9eebd3dadf71b9f93fedce6ac4eb9dee9b6f6364cf6c9d0343c09967d956bd4",
+      "exit_status": 0
+    }
+  ],
+  "original_case_names_match_prior_cbca": true,
+  "historical_resources_unchanged": 80,
+  "preserved_historical_manifests": 3,
+  "rules_sha256": "8d860e451f20f38865b725b42d82feb714c725373dd8f3b32b8652b3eeb070ca",
+  "rules_bytes": 977752,
+  "rules_effective_date": "2026-09-25",
+  "rules_verified_date": "2026-09-26",
+  "fresh_test_executor_launches": 27,
+  "successful_builds": 27,
+  "cached_test_tasks": 0,
+  "job_log_proof_path": "/workspace/scratch/dcc9d005d11f/shared-priority-b6a-220-izzet-log-proof.json",
+  "job_log_proof_sha256": "4b4fcf84ea608110fa28bdc1798dc46180844f012947d181c82aeb744beb2c89",
+  "additional_source_bindings": [
+    "ai/src/test/kotlin/com/wingedsheep/ai/arena/FrozenBaselineTest.kt",
+    "ai/src/test/kotlin/com/wingedsheep/ai/puzzles/PuzzleSuiteTest.kt",
+    "game-server/src/test/kotlin/com/wingedsheep/gameserver/session/AiUndoDecisionFreshnessTest.kt",
+    "mtg-sets/1993-1999/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/EnergyFluxScenarioTest.kt",
+    "mtg-sets/1993-1999/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/VodalianWarMachineScenarioTest.kt",
+    "mtg-sets/2025/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/DalkovanEncampmentScenarioTest.kt",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerAbilityResolver.kt",
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/event/TriggerAbilityResolverTest.kt"
+  ],
+  "limitations": [
+    "The eight additional pinned files are source bindings, not eight newly executed targeted stages; independent source and full-CI qualification remain separate",
+    "Individual PASS lines are absent from this Gradle logging; actual case identities/counts come from complete JUnit XML, corroborated by27 fresh executor launches and successful commands",
+    "Broad receiving CI and every project-specific combined-source compatibility/admission remain unaccepted by this receipt",
+    "No gameplay, pilot, outcome, card-strength or official allocation claim"
+  ],
+  "full_integration_accepted": false,
+  "official_execution_authorized": false,
+  "official_games": 0,
+  "outcomes_exposed": 0,
+  "github_approval_fabricated": false
+}

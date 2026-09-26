@@ -4,6 +4,8 @@ import com.wingedsheep.engine.state.components.battlefield.CountersComponent
 import com.wingedsheep.engine.state.components.identity.CardComponent
 import com.wingedsheep.engine.support.GameTestDriver
 import com.wingedsheep.engine.support.TestCards
+import com.wingedsheep.engine.support.chooseTriggerOrderInListedOrder
+import com.wingedsheep.engine.support.hasPendingTriggerOrder
 import com.wingedsheep.mtg.sets.definitions.vow.cards.CloakedCadet
 import com.wingedsheep.mtg.sets.definitions.vow.cards.GryffRider
 import com.wingedsheep.mtg.sets.definitions.vow.cards.Torens
@@ -64,7 +66,11 @@ class TrainingTest : FunSpec({
     fun GameTestDriver.drainStack(player: EntityId) {
         var guard = 0
         while ((stackSize > 0 || pendingDecision != null) && guard < 20) {
-            if (pendingDecision != null) autoResolveDecision() else bothPass()
+            when {
+                state.hasPendingTriggerOrder() -> chooseTriggerOrderInListedOrder()
+                pendingDecision != null -> autoResolveDecision()
+                else -> bothPass()
+            }
             guard++
         }
     }

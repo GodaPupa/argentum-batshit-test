@@ -4,6 +4,7 @@ import com.wingedsheep.engine.core.ActivateAbility
 import com.wingedsheep.engine.core.SelectManaSourcesDecision
 import com.wingedsheep.engine.state.components.identity.CardComponent
 import com.wingedsheep.engine.support.ScenarioTestBase
+import com.wingedsheep.engine.support.chooseTriggerOrderInListedOrder
 import com.wingedsheep.sdk.core.Keyword
 import com.wingedsheep.sdk.core.Phase
 import com.wingedsheep.sdk.core.Step
@@ -44,6 +45,8 @@ class PanickedBystanderScenarioTest : ScenarioTestBase() {
                 // Kill the fodder: its death → gain 3 life; the Bystander's dies-trigger → gain 1 more.
                 game.castSpell(1, "Lightning Bolt", targetId = fodder).error shouldBe null
                 if (game.getPendingDecision() is SelectManaSourcesDecision) game.submitManaSourcesAutoPay()
+                game.resolveStack()
+                game.chooseTriggerOrderInListedOrder() // the fodder and Bystander both trigger
                 game.resolveStack()
 
                 withClue("gained 3+ life this turn") { game.getLifeTotal(1) shouldBe 24 }
