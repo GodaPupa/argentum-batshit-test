@@ -1,0 +1,92 @@
+{
+  "schema": "manual-world-breaker-routing-artifact-receipt-v1",
+  "scope": "BOUNDED_EXISTING_FIXTURE_ROUTING_ACCEPTANCE_ONLY",
+  "reviewed_at_utc": "2026-09-26T21:28:51.362100+00:00",
+  "source": "83a6b5c9e4318f5247d757b75756ce4ef5825800",
+  "tree": "e1b4e74d9ed4d8412762ae24863b59b79b2dc0be",
+  "receiving_merge": "ffbfaa383eba59ae7c129f651769fdf388caedb4",
+  "receiving_branch": "lab/manual-etb-receiving-20260926",
+  "canonical_phase2_head_unchanged": "6abfb6bb7f3b11bea778b5e0b1040b058bcdcdaf",
+  "raw_capability": {
+    "run": 36271506443,
+    "attempt": 1,
+    "job": 108486223892,
+    "artifact": 10915773548,
+    "cases": 540,
+    "suites": 35,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "fresh_workers": 9
+  },
+  "preceding_evidence_only_source": {
+    "head": "64ddbcf85a3a0a8099b189b4b64a73a834e574c8",
+    "tree": "23bfe49b8c7a6604a080f085711a933f6ee0601e",
+    "receiving_merge": "289287c60a29a1980bdfb59d6d418a96f7c23718",
+    "run": 36271198273,
+    "artifact": 10915477884,
+    "cases": 538,
+    "suites": 34,
+    "world_breaker_cases": 0
+  },
+  "change": "Actual540 cases retain all538 historical identities and add exactly the two existing World Breaker cases. Historical538 never implied World Breaker ran. Engine, card and test source, hardware, pilot policy, protocols and experimental authority are unchanged.",
+  "source_review_sha256": "94619449d36c2aac846666b08f09e068ed394fe1c61bbbe53521066f13bb6e48",
+  "artifact_review_sha256": "c675d96914f925fde1305a42e92e962e106864686062d6a8548ac86bdad9aaa4",
+  "full_ci_run": 36271506441,
+  "full_ci_scope": "All required jobs successful. Seven complete decoded test-job logs retained and actual output audited; no raw full-CI XML artifact is claimed.",
+  "files": {
+    "capability-540-artifact.zip": {
+      "bytes": 938149,
+      "sha256": "a6dd8dc72eeac47363c86f843d1b230dd88cfcfdf09ca017e30604eead99791c"
+    },
+    "capability-540-decoded-job-log.txt.gz": {
+      "bytes": 346341,
+      "sha256": "918ebe9dc59c8a45bf8480fd3f3dcd5093d26b0b39943a098f9abd7dbd064fed"
+    },
+    "full-ci-decoded-test-job-logs.zip": {
+      "bytes": 775444,
+      "sha256": "a62146a9a62b2cabb74e82d43d9ffcb09cade172abd27211cb1a714a53007f8b"
+    },
+    "full-ci-log-audit.json": {
+      "bytes": 2124,
+      "sha256": "14bfcabe7aed7dd72c0270e4bbbc6631acad8ef9c172ef31d371243d66543ec9"
+    },
+    "peer-artifact-review-root.json": {
+      "bytes": 2678,
+      "sha256": "c675d96914f925fde1305a42e92e962e106864686062d6a8548ac86bdad9aaa4"
+    },
+    "precorrection-538-artifact.zip": {
+      "bytes": 936554,
+      "sha256": "e930d16db7cb4537d7d553497dac912dbf02374b8b0b2986b0cc637985166bfe"
+    },
+    "precorrection-538-decoded-job-log.txt.gz": {
+      "bytes": 343229,
+      "sha256": "802f5aa12929f3e1a18ef84568a2ea038c8886042beb30ef82b93e75608a2307"
+    },
+    "raw-capability-audit.json": {
+      "bytes": 104335,
+      "sha256": "a0039d54cb3a135594c0beb5d23759258aa28d1846522a353bead76dfbfd98d3"
+    },
+    "source-binding-subset.zip": {
+      "bytes": 7412,
+      "sha256": "d79053148c6cafbe6f05120a719780e7f1db43a2aa761c32791035616e82e19e"
+    },
+    "trigger-audit.json": {
+      "bytes": 4973,
+      "sha256": "4e57c60fcf162dbbaecc97e3a0671a3e13691d1cb6c1b6f83c56536608cf1460"
+    }
+  },
+  "limitations": [
+    "Source-author raw audit and root non-author bounded artifact review are distinct; neither is a GitHub approval or official-gameplay permit.",
+    "Source subset contains only unchanged World Breaker card/test and corrected workflow/manifest; it is not a full runtime archive.",
+    "No semantic replay or interactive matchup game was performed by this routing work.",
+    "Canonical Phase2 receiving integration, remaining exact card mechanics, lawful pilots/collectors, complete runtime/replay/durable global claim composition and independent capability admission remain open."
+  ],
+  "capability_games_initialized": 0,
+  "primary_games_initialized": 0,
+  "official_allocations_consumed": 0,
+  "official_outcomes_exposed": 0,
+  "deck_changes": 0,
+  "complete_runtime_admission": false,
+  "gameplay_authorized": false
+}

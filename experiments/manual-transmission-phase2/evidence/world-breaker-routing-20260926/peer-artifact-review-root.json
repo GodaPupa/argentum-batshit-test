@@ -1,0 +1,51 @@
+{
+  "schema": "manual-world-breaker-root-nonauthor-artifact-review-v1",
+  "reviewer": "/root",
+  "reviewer_authored_routing_source": false,
+  "decision": "PASS_BOUNDED_ROUTING_AND_RAW_CAPABILITY_RECEIPT",
+  "source": "83a6b5c9e4318f5247d757b75756ce4ef5825800",
+  "tree": "e1b4e74d9ed4d8412762ae24863b59b79b2dc0be",
+  "run_id": 36271506443,
+  "attempt": 1,
+  "artifact_id": 10915773548,
+  "artifact_bytes": 938149,
+  "artifact_sha256": "a6dd8dc72eeac47363c86f843d1b230dd88cfcfdf09ca017e30604eead99791c",
+  "raw_unique_suites": 35,
+  "raw_cases": 540,
+  "failures": 0,
+  "errors": 0,
+  "skips": 0,
+  "retained_historical_case_identities": 538,
+  "added_existing_card_cases": 2,
+  "fresh_test_tasks": [
+    ":gym:test",
+    ":mtg-sets:1993-1999:tests:test",
+    ":mtg-sets:2003-2007:tests:test",
+    ":mtg-sets:2008-2016:tests:test",
+    ":mtg-sets:2017-2022:tests:test",
+    ":mtg-sets:2024:tests:test",
+    ":mtg-sets:2025:tests:test",
+    ":mtg-sets:test",
+    ":rules-engine:test"
+  ],
+  "world_breaker_raw_xml_sha256": "f7e68af0fdfe21cb25af9b04f1b80cd8acaa1ece9b05cae0cadd2c6694a1e464",
+  "source_pins_recomputed_from_immutable_github": {
+    "mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/WorldBreakerScenarioTest.kt": "dc1145cef8b75e3b50b514f353f24f83f7b1a5af8e03281dd5e16cc62ffbde0c",
+    "mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/ogw/cards/WorldBreaker.kt": "adc61a3cd149a896fc94749390e3da99660e87ee2d45cfd2f9a7dfb520ff6df5"
+  },
+  "checks": [
+    "Read both original old538 and new540 ZIPs, verified complete CRC/length/hash and every listed raw XML/case identity.",
+    "All35 new XML files are precisely all34 old suites plus the existing WorldBreaker two-case class; no lost or skipped case.",
+    "Fresh exact9 test-task markers, no required task cache/no-source/skip marker, and successful command output were checked in the complete decoded job log.",
+    "Source/tree match raw bootstrap and actual GitHub run; original card/test bytes and exact raw guard were independently checked.",
+    "Source/hardware/pilot unchanged by routing correction; no official gameplay or entropy."
+  ],
+  "limits": [
+    "Component routing and raw evidence acceptance only; not full Phase2 runtime/pilot/commander admission.",
+    "This record does not independently re-audit all seven full-CI artifacts or all compiled input blobs.",
+    "Actual source/tree and successful guard assertions support checkout identity; no unprovided binary content was inferred.",
+    "Nonauthor agent review is not a GitHub approval or independent gameplay admission."
+  ],
+  "gameplay_authorized": false,
+  "official_initializations": 0
+}
