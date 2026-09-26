@@ -121,3 +121,10 @@ one-argument overload for a null keyword cost and retains the two-argument overl
 keyword cost. Printed-cost entries, runtime code, assertions and the 66-case scope are unchanged.
 The [failed-attempt receipt](evidence/flashback-cost-menu-36249007093/receipt.json) binds the original
 clean source and complete uploaded artifact; no qualification or gameplay result is inferred from it.
+
+The [second attempt, run 36249869762](https://github.com/GodaPupa/argentum-batshit-test/actions/runs/36249869762),
+executed 64 engine cases: 63 passed and the unsupported-cost fixture failed on the capitalization of
+its expected message. The runtime raised the intended `UnsupportedOperationException` with the SDK
+description `Discard a card`. The successor requires that exact description; no runtime behavior or
+exception assertion changes. Lava Dart's step had not run. Its [failed-attempt receipt](evidence/flashback-cost-menu-36249869762/receipt.json)
+preserves the complete artifact and all five XML suites; the 66-case gate remains unpassed.

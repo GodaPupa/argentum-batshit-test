@@ -288,6 +288,6 @@ class FlashbackAdditionalCostEnumerationTest : FunSpec({
         val me = game.activePlayer!!
         val spell = game.putCardInGraveyard(me, "Flashback Menu Study")
         shouldThrow<UnsupportedOperationException> { offer(game, spell) }
-            .message.orEmpty() stringShouldContain "discard"
+            .message.orEmpty() stringShouldContain "Discard a card"
     }
 })

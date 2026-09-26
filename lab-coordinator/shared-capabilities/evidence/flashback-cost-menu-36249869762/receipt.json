@@ -1,0 +1,121 @@
+{
+  "schema": "shared-flashback-cost-menu-failed-attempt-v1",
+  "workflow_run_id": 36249869762,
+  "job_id": 108425764846,
+  "run_attempt": 1,
+  "workflow_url": "https://github.com/GodaPupa/argentum-batshit-test/actions/runs/36249869762",
+  "source_head": "ac7012af0d332e9ce709606e5a50a9b08f56fe5b",
+  "source_tree": "88521a175447c26b56664248fa42c8bd9f5f4852",
+  "status": "FAILED_FIXTURE_ASSERTION",
+  "classification": "FIXTURE_EXPECTED_TEXT_DEFECT",
+  "cause": "The unsupported mandatory-cost fixture expected lowercase discard, but the SDK description is Discard a card. The intended UnsupportedOperationException occurred.",
+  "successor_change": "Require the actual exact SDK description Discard a card. Retain the exception type and all existing assertions; runtime and qualification scope unchanged.",
+  "artifact": {
+    "id": 10909060100,
+    "path": "lab-coordinator/shared-capabilities/evidence/flashback-cost-menu-36249869762/github-actions-artifact-10909060100.zip",
+    "sha256": "33ca186264893c7203119c39537881462cb77022ef1a6cbd8da08453f464dd20",
+    "bytes": 239708,
+    "entries": {
+      "build/reports/shared-flashback-cost-menu/engine.txt": {
+        "bytes": 3442016,
+        "sha256": "6f84fa1d922838811ab18254105ed41ae539deaac7aa65375c9d4f870377c995"
+      },
+      "build/reports/shared-flashback-cost-menu/source-binding.json": {
+        "bytes": 1257,
+        "sha256": "e6a1f54a89644dd46c05666a7cc829971cbcc5c83373ab0b07a916c65f473a12"
+      },
+      "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.legalactions.CastFromZoneEnumeratorTest.xml": {
+        "bytes": 3987,
+        "sha256": "d37a001185b8ef1dda44de8bb518a16e51273e3fb4960acfc1f031c546b92d2c"
+      },
+      "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.legalactions.FlashbackAdditionalCostEnumerationTest.xml": {
+        "bytes": 16310,
+        "sha256": "6dfadf909bbf614764a140c114cf51c6a605e482e7b119f5ccc715af5908ad25"
+      },
+      "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.legalactions.utils.CostEnumerationUtilsTest.xml": {
+        "bytes": 4476,
+        "sha256": "15e621f59decfab07d0e075373c60f11134559e2148f0426e96b2385dfe5d850"
+      },
+      "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.AlternativeCostChoiceScenarioTest.xml": {
+        "bytes": 1120,
+        "sha256": "87b49172042ae47694230fd6ccd5f03d91872899a44177b6722c9990cd0b5f5f"
+      },
+      "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.EscapeTest.xml": {
+        "bytes": 1097,
+        "sha256": "ff3c3a60223d314bcdd89a416c863752e05b8110ebf225f35d8d9279147745e9"
+      }
+    }
+  },
+  "source_binding": {
+    "requested_head": "ac7012af0d332e9ce709606e5a50a9b08f56fe5b",
+    "actual_head": "ac7012af0d332e9ce709606e5a50a9b08f56fe5b",
+    "tree": "88521a175447c26b56664248fa42c8bd9f5f4852",
+    "checkout_status": "",
+    "source_files_sha256": {
+      "rules-engine/src/main/kotlin/com/wingedsheep/engine/legalactions/enumerators/CastFromZoneEnumerator.kt": "da8b049e575d7e8003e0c2c121f1d0aa5a8dd1fc5eda0d4743a8c17799b19828",
+      "rules-engine/src/main/kotlin/com/wingedsheep/engine/legalactions/utils/SelectionCostPresentation.kt": "46a4851b40a36c66ea57c79a594fd431e1ce7317f1a4596dfc92c7a4400b31de",
+      "rules-engine/src/test/kotlin/com/wingedsheep/engine/legalactions/FlashbackAdditionalCostEnumerationTest.kt": "dda1b555c9658fa4c07348e9e7835eaf40cfdfda364021ba7a15577d2f84976b",
+      "mtg-sets/2000-2002/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/jud/cards/LavaDart.kt": "3917e8e693b72d9e40161c8d3aaab2b245992e538375694254866285c260f5fe",
+      "mtg-sets/2000-2002/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/LavaDartScenarioTest.kt": "34b1f17a92ee3cf4073a52b123951cccb438789fc98edd4174601f67096664f8",
+      "lab-coordinator/shared-capabilities/flashback-scope-inventory.json": "798c59f493c720347bcbc6eb64f122c29dd04c57af9cc8b1c255e87fa9fc56db"
+    }
+  },
+  "suites": [
+    {
+      "suite": "com.wingedsheep.engine.legalactions.CastFromZoneEnumeratorTest",
+      "cases": 20,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "xml_sha256": "d37a001185b8ef1dda44de8bb518a16e51273e3fb4960acfc1f031c546b92d2c"
+    },
+    {
+      "suite": "com.wingedsheep.engine.legalactions.FlashbackAdditionalCostEnumerationTest",
+      "cases": 12,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0,
+      "xml_sha256": "6dfadf909bbf614764a140c114cf51c6a605e482e7b119f5ccc715af5908ad25"
+    },
+    {
+      "suite": "com.wingedsheep.engine.legalactions.utils.CostEnumerationUtilsTest",
+      "cases": 23,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "xml_sha256": "15e621f59decfab07d0e075373c60f11134559e2148f0426e96b2385dfe5d850"
+    },
+    {
+      "suite": "com.wingedsheep.engine.scenarios.AlternativeCostChoiceScenarioTest",
+      "cases": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "xml_sha256": "87b49172042ae47694230fd6ccd5f03d91872899a44177b6722c9990cd0b5f5f"
+    },
+    {
+      "suite": "com.wingedsheep.engine.scenarios.EscapeTest",
+      "cases": 5,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "xml_sha256": "ff3c3a60223d314bcdd89a416c863752e05b8110ebf225f35d8d9279147745e9"
+    }
+  ],
+  "failures": [
+    {
+      "case": "an unsupported mandatory cost never falls through as a free flashback",
+      "message": "org.opentest4j.AssertionFailedError: \"Flashback additional-cost menu cannot represent all costs for 30b1149b-604b-4165-a532-a8d272ced4e5: Discard a card\" should include substring \"discard\"\nexpected:<discard> but was:<Flashback additional-cost menu cannot represent all costs for 30b1149b-604b-4165-a532-a8d272ced4e5: Discard a card>"
+    }
+  ],
+  "actual_test_cases": 64,
+  "passed_test_cases": 63,
+  "failed_test_cases": 1,
+  "lava_dart_cases_executed": 0,
+  "targeted_qualification_passed": false,
+  "full_integration_accepted": false,
+  "receiving_insight_qualified": false,
+  "official_allocations_initialized": 0,
+  "official_outcomes_exposed": 0,
+  "gameplay_authorized": false
+}
