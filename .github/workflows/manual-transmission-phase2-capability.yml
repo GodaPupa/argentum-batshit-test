@@ -27,6 +27,8 @@ on:
       - 'mtg-sets/**/scenarios/ParadiseDruidScenarioTest.kt'
       - 'mtg-sets/**/scenarios/PongifyScenarioTest.kt'
       - 'mtg-sets/**/scenarios/RapidHybridizationScenarioTest.kt'
+      - 'mtg-sets/**/cards/RealityShift.kt'
+      - 'mtg-sets/**/scenarios/RealityShiftScenarioTest.kt'
       - 'mtg-sets/**/scenarios/CloudOfFaeriesScenarioTest.kt'
       - 'mtg-sets/**/scenarios/PeregrineDrakeScenarioTest.kt'
       - 'mtg-sets/**/cards/NestInvader.kt'
@@ -121,7 +123,7 @@ jobs:
         run: |
           scripts/gradle-locked :mtg-sets:2003-2007:tests:test --tests "*CoilingOracleScenarioTest" --tests "*KurgadonTest" --tests "*UtopiaSprawlScenarioTest" --tests "*PongifyScenarioTest" \
             :mtg-sets:1993-1999:tests:test --tests "*WildGrowthScenarioTest" --tests "*CloudOfFaeriesScenarioTest" --tests "*PeregrineDrakeScenarioTest" \
-            :mtg-sets:2008-2016:tests:test --tests "*ManualTransmissionLandSpellGuardScenarioTest" --tests "*ArborElfScenarioTest" --tests "*AnimarSoulOfElementsScenarioTest" --tests "*AncestralStatueScenarioTest" --tests "*RapidHybridizationScenarioTest" --tests "*NestInvaderScenarioTest" --tests "*EmrakulsHatcherScenarioTest" --tests "*EyelessWatcherScenarioTest" \
+            :mtg-sets:2008-2016:tests:test --tests "*ManualTransmissionLandSpellGuardScenarioTest" --tests "*ArborElfScenarioTest" --tests "*AnimarSoulOfElementsScenarioTest" --tests "*AncestralStatueScenarioTest" --tests "*RapidHybridizationScenarioTest" --tests "*RealityShiftScenarioTest" --tests "*NestInvaderScenarioTest" --tests "*EmrakulsHatcherScenarioTest" --tests "*EyelessWatcherScenarioTest" \
             :mtg-sets:2017-2022:tests:test --tests "*ParadiseDruidScenarioTest" --tests "*RejuvenatingSpringsScenarioTest" --tests "*TrainingCenterScenarioTest" --tests "*SpireGardenScenarioTest" --tests "*WalkingBallistaScenarioTest" --tests "*WorldBreakerScenarioTest" \
             :mtg-sets:2024:tests:test --tests "*HopeEnderCoatlScenarioTest" --tests "*EldraziRepurposerScenarioTest" --tests "*WrithingChrysalisScenarioTest" \
             :mtg-sets:2025:tests:test --tests "*TownLandSpellAdventureScenarioTest" --info --stacktrace
