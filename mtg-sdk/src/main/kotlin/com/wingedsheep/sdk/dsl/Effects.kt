@@ -4235,6 +4235,15 @@ object Effects {
      * `dynamicMaxCount`) — not duplicated on the effect. Used by Tidal Surge, Choking Tethers,
      * Eddymurk Crab, Icy Blast.
      */
+    /**
+     * Apply one effect independently to every object selected across the current target requirements.
+     *
+     * The supplied effect should address the current iterated object through
+     * [EffectTarget.ContextTarget] index 0, matching [TapEachTarget] and [UntapEachTarget].
+     */
+    fun ForEachTarget(effect: Effect): Effect =
+        com.wingedsheep.sdk.scripting.effects.ForEachTargetEffect(listOf(effect))
+
     fun TapEachTarget(): Effect =
         com.wingedsheep.sdk.scripting.effects.ForEachTargetEffect(
             listOf(TapUntapEffect(EffectTarget.ContextTarget(0), tap = true))
