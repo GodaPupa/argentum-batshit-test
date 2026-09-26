@@ -1,6 +1,6 @@
 # Sphinx's Approach — Stage E card-support audit
 
-Status: IMPLEMENTED_IDENTITIES_PENDING_EXACT_CARD_QUALIFICATION
+Status: EXACT_CARD_COMPONENT_VALIDATED_GAMEPLAY_QUALIFICATION_PENDING
 Evidence class: seedless readiness only
 Official Stage-E games: 0
 Official Stage-E seeds: 0
@@ -13,16 +13,18 @@ atomic action and logical-stack handling. That source does not compile because t
 assignments are not supported by `MetadataBuilder`. The child qualification patch corrects those
 assignments and the atomic effect's missing linter dataflow registration.
 
-The exact-card scenario bank is prepared but unexecuted: 14 Approach scenarios, 4 Snap scenarios,
-3 Goliath Sphinx scenarios. A local attempt failed before compilation from inode exhaustion.
-Remote exact-card, serialization, lint and ordinary snapshot gates are required before support
-acceptance. All reachable interactions remain within qualification scope regardless of pilot choices
-or current engine gaps; no missing interaction is silently excluded.
+The corrected source with reviewed generated goldens is now `dc5e3c7d884766aeb3195fbe6aa43f97fa9a1654`.
+Final focused run `36247008549` passed 14 Approach, 4 Snap and 3 Goliath scenarios, plus generic atomic,
+serialization, linter and snapshot coverage (426 total cases, no failure/error/skip). Ordinary regeneration
+reproduced the three independently reviewed committed records with zero drift. Full receiving CI
+`36247008494` and all inherited triggered workflows passed. Earlier compile/inode failures remain saved.
+These are card-component results, not Stage-E gameplay or pilot acceptance. All reachable interactions
+remain within qualification scope regardless of pilot choices or current engine gaps.
 
 See `CURRENT_STATUS.md` for the complete next-game gate. Historical notes below remain preserved as
 design provenance and cannot grant execution authority.
 
-## Current registry
+## Historical registry audit (superseded by the qualification update above)
 
 Present in the live engine:
 - Tolarian Terror — canonical definition with instant/sorcery graveyard cost reduction and Ward {2}.

@@ -1,13 +1,14 @@
 # Sphinx's Approach — Current status
 
-Status: STAGE_E_CARD_COMPONENT_QUALIFIED_RECEIVING_INTEGRATION_REQUIRED
+Status: STAGE_E_CARD_COMPONENT_VALIDATED_INPUT_IDENTITIES_FROZEN
 Branch: `lab/sphinx-next-gate` (PR #180 into `sphinx-approach/reconstruction-stage-e`)
 
 Reconstructed remote source: `4a97265559e989df937e8c09f9a42d58a4e9d79d`.
 Qualification changes are published on the separate `lab/sphinx-next-gate` branch;
-the qualified source is `1366967e381f850a5ce7363d2eb94d2066c7ffac` (PR #180),
-tested as combined runtime `77de482d3513db5ef3b86fc7a08ed5eddd00ab01`.
-This successor binds its three independently reviewed ordinary generated snapshots.
+the qualified source with reviewed goldens is `dc5e3c7d884766aeb3195fbe6aa43f97fa9a1654` (PR #180),
+tested as combined runtime `e4594b8e1b06a3e3031d223e627a72d79940d13d`, tree
+`dd94dcb00b20b16dff98c8aec1d94e479adc8dfb`. All five triggered validation workflows passed.
+This successor prospectively freezes the four already introduced deck-row inputs without changing any row.
 This record reports progress; it does not supersede frozen protocols or grant gameplay admission.
 
 ## Durable state
@@ -16,8 +17,11 @@ The reconstruction lineage is public. The original unpublished A-D Git/evidence 
 see `RECONSTRUCTION_PROVENANCE.md`.
 
 Historical selections carried forward without rerunning A-D:
-- reconstructed v0.1 identity to be re-frozen prospectively;
-- reconstructed Approach/Tolarian Terror hybrid identity to be re-frozen prospectively.
+- reconstructed v0.1 identity frozen prospectively;
+- reconstructed Approach/Tolarian Terror hybrid identity frozen prospectively.
+
+The unchanged closest no-Approach comparator and Serpico Terror benchmark rows are also bound as
+prospective inputs. Competence and executable pilot qualification remain separate requirements.
 
 ## Live repository leverage
 
@@ -36,21 +40,23 @@ keeping Sphinx seeds, assignments, outcomes, and evidence in a new namespace.
 
 ## Exact next-game blockers
 
-1. Complete full receiving-source CI with the reviewed FRA/ULG/WWK bytes now bound, and the repository's
-   required independent acceptance. Focused card/generation qualification has passed; gameplay has not.
-2. Qualify candidate, closest no-Approach comparator and benchmark pilots on actor-authorized observations,
+1. Qualify candidate, closest no-Approach comparator and benchmark pilots on actor-authorized observations,
    including all reachable card decisions and interactions. The old full-state Terror production driver
    is not an admitted Sphinx pilot. The published Ferocity actor component requires source-LKI and typed
    trigger-order dependencies absent here; its isolated deterministic passes are not receiving acceptance.
-3. Integrate and qualify the canonical post-block-declaration priority repair. Source inspection confirms
+2. Integrate and qualify the canonical post-block-declaration priority repair. Source inspection confirms
    this receiving source retains defender priority after the final triggerless block declaration;
    that window is reachable in these decks and cannot be excluded through pilot behavior.
-4. Prospectively freeze reconstructed deck identities, opponents, equivalent pilot-development budgets,
-   matched-randomness procedure, sample size, endpoints and stopping rules; only then create Stage-E seeds.
+3. Qualify candidate/comparator competence and benchmark execution under equivalent bounded pilot
+   development. Input row hashes alone do not establish either competence or card causality.
+4. Freeze the complete execution contract: opponents/allocations, equivalent pilot-development budgets,
+   exact engine and pilot versions, matched randomness, sample size, endpoints and stopping rules;
+   obtain noncircular admission before creating Stage-E seeds. Repository review protections remain binding.
 
-The two reconstructed 60s, the required prospective closest no-Approach comparator, and the unchanged
-source-backed Serpico Terror 60 have pending row hashes in `STAGE_E_DECK_RECONSTRUCTION.json`.
-These are configuration records, not qualified decks or replacements for the lost A-D bytes.
+The two reconstructed 60s, closest no-Approach comparator and source-backed Serpico Terror 60 now have
+immutable prospective row identities in `STAGE_E_DECK_RECONSTRUCTION.json`. The reconstruction protocol
+binds candidate rows at gate 3 before pilot qualification at gate 4. All four prior row hashes remain
+unchanged. These input identities do not establish qualified pilots or replace the lost A-D bytes.
 
 ## Current validation checkpoint
 
@@ -70,6 +76,12 @@ These are configuration records, not qualified decks or replacements for the los
 - Pre-generation broad CI `36245695999` passed engine, all scenario shards, server and frontend; content
   failed exactly the three uncommitted golden matches. The actual failure log is preserved. Its tools
   job was still running when the receipt was prepared. This run is not a full integration pass.
+- Final-source full CI `36247008494` passed engine, content, every scenario shard, tools, server,
+  frontend and backend aggregation. The final focused run `36247008549` independently executed the
+  same 426-case bank successfully and ordinary regeneration reproduced all three committed snapshots
+  with **zero changed records**. Inherited Monster closure `36247008538`, Spy B `36247008516` and
+  Spy C `36247008627` also passed. Artifact `10908116509` and source-bound audit are preserved under
+  `evidence/remote-36247008549*`; the earlier failed artifacts remain intact.
 - Focused remote run `36244909681` tested combined runtime `e8a7b04f00879b402848a801f3754f01abfc3840`
   (tree `381bb59d683b682559f673d28ce831c9e9670745`) and failed before fixtures: the 2026 scenario
   module lacks the serialization library on its test compile classpath. The successor adds the existing
