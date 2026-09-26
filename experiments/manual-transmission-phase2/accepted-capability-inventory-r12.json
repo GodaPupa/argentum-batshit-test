@@ -1,0 +1,77 @@
+{
+  "schema": "mt-phase2-integrated-capability-requalification-r12",
+  "status": "ACCEPTED_CURRENT_INTEGRATED_SEED_FREE_COMPONENT_EVIDENCE",
+  "source_commit": "8f50c5d4fcee177fa6477d75c43e70794d75ddb6",
+  "predecessor": "accepted-capability-inventory-r11.json",
+  "validated_runs": {
+    "full_ci": 36242362028,
+    "capability_audit": 36242362151,
+    "telemetry_component": 36242362029,
+    "priority_after_resolution": 36242362128,
+    "inherited_spy_b": 36242362153,
+    "inherited_spy_c": 36242362084,
+    "inherited_monster_tron_cascade": 36242362081,
+    "inherited_monster_tron_closure": 36242362116,
+    "inherited_monster_tron_prototype": 36242362102
+  },
+  "audited_engine_artifact": {
+    "id": 10906193693,
+    "name": "manual-transmission-phase2-engine-audit",
+    "size_in_bytes": 931325,
+    "github_sha256": "c932d3c071c94ea63556b40f4894aa2444afb3d97682524a178fd9a2c4384002",
+    "independent_download_sha256": "c932d3c071c94ea63556b40f4894aa2444afb3d97682524a178fd9a2c4384002",
+    "junit_suites": 34,
+    "junit_cases": 538,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "source_audit_artifact": {
+    "id": 10905754862,
+    "name": "manual-transmission-phase2-source-audit",
+    "size_in_bytes": 27629105,
+    "github_sha256": "fd27d29e52a6f7ea830565bda17aff2e60efa93549fe8cc6992865f4f6edbbff",
+    "independent_download_audited_in_this_receipt": false
+  },
+  "newly_accepted_component": {
+    "card": "Reality Shift",
+    "scenario": "RealityShiftScenarioTest",
+    "scenario_cases": 3,
+    "scenario_failures": 0,
+    "qualified_surfaces": [
+      "Exiling an opposing creature manifests the top card of that creature controller's library",
+      "Targeting an owned creature manifests the top card of the same controller's library",
+      "A noncreature top card manifests face down without contributing its printed characteristics"
+    ],
+    "generated_snapshot_commit": "802f24e41d34f451954a61474820543e19c0f7f8",
+    "scope": "Exact source, scenario and strict snapshot evidence only; no deck-performance inference"
+  },
+  "live_registry": {
+    "physical_entries": 800,
+    "resolved_physical_entries": 464,
+    "unresolved_physical_entries": 336,
+    "unresolved_unique_identities": 206,
+    "manual_resolved": 85,
+    "manual_unresolved": 15,
+    "manual_unresolved_identities": [
+      "Gwenna, Eyes of Gaea", "Fblthp, the Lost", "Aether Channeler",
+      "Reckless Bushwhacker", "Amphin Mutineer", "Spellskite", "Malevolent Hermit",
+      "Phyrexian Metamorph", "Glen Elendra Archmage", "Temur Sabertooth",
+      "Purphoros, God of the Forge", "Disciple of Freyalise", "Veil of Summer",
+      "Pact of Negation", "Opal Palace"
+    ],
+    "opponents_resolved_of_100": {
+      "blue-farm": 59, "rogsi": 56, "kinnan": 56, "sisay": 57,
+      "magda": 50, "hashaton": 48, "shorikai": 53
+    },
+    "registry_presence_is_semantic_or_pilot_qualification": false
+  },
+  "hardware_disposition": "KEEP_V07",
+  "hardware_changed": false,
+  "official_counters": {
+    "seeds_generated": 0, "attempts": 0, "games_initialized": 0,
+    "actions": 0, "outcomes": 0, "capability_games": "0/36", "primary_games": "0/864"
+  },
+  "gameplay_authorized": false,
+  "next_gate": "Remaining exact-card/mechanic coverage; executable Cruise/Sport/Race and opponent policies; engine-bound collectors and replay; durable attempt journal; frozen guarded capability authority. No hardware changes."
+}
