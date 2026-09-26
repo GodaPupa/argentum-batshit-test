@@ -1,0 +1,63 @@
+{
+  "schema": "izzet-v09-position1-engine-gap-reconciliation-after-bestow-v1",
+  "status": "ACCEPTED_SEED_FREE_ENGINE_GAP_RECONCILIATION",
+  "source_branch": "mayhem/izzet-bestow-integration",
+  "source_commit": "cdb11150e873a952e6acf03bb7e6b716277951d9",
+  "control_disposition": "KEEP_V07",
+  "deck_changes": false,
+  "predecessor_registry_scope": {
+    "batch": "AO",
+    "accepted_run": 36105991487,
+    "accepted_source_commit": "7428d1a56d95ee5434059773b657cf3a56f937c1",
+    "accepted_snapshot_commit": "8db12e975a74a26c4ad828ac5a28d074dd3d5f0b",
+    "artifact_id": 10851492664,
+    "artifact_sha256": "24b4a1c7def234a284bfb20777463bbf3036d00243ed5dbe2a1cdca4aeec672b",
+    "unresolved_before_bestow_reconciliation": 7,
+    "identities": [
+      "Benevolent Blessing",
+      "Cho-Manno's Blessing",
+      "Forge of Heroes",
+      "Nyxborn Hydra",
+      "Opal Palace",
+      "Snake Umbra",
+      "Vines of Vastwood"
+    ]
+  },
+  "newly_reconciled_identity": {
+    "card": "Nyxborn Hydra",
+    "source": "mtg-sets/2024/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/mh3/cards/NyxbornHydra.kt",
+    "scenario": "mtg-sets/2024/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/NyxbornHydraScenarioTest.kt",
+    "snapshot": "mtg-sets/src/test/resources/snapshots/cards/MH3.json",
+    "bestow_acceptance": "izzet-science/v09-position1-bestow-integration-accepted.json",
+    "bestow_source_commit": "41026a19ae65692f7249f90aab51e3cfb9fa963b",
+    "bestow_full_ci_run": 36222235149,
+    "bestow_full_ci_conclusion": "success",
+    "frozen_baseline_hash_preserved": "47e993c61a57ebbd",
+    "golden_hash_reblessed": false
+  },
+  "remaining_unresolved_count": 6,
+  "remaining_unresolved_identities": [
+    "Benevolent Blessing",
+    "Cho-Manno's Blessing",
+    "Forge of Heroes",
+    "Opal Palace",
+    "Snake Umbra",
+    "Vines of Vastwood"
+  ],
+  "readiness": {
+    "all_izzet_registry_identities_resolved": true,
+    "full_game_readiness_complete": false,
+    "position1_gameplay_authorized": false,
+    "simultaneous_same_source_damage_grouping_guard": "CLOSED",
+    "pdh_specific_semantics_still_require_live_gate_reconciliation": true
+  },
+  "official": {
+    "seeds_generated": 12,
+    "seeds_consumed": 0,
+    "games_initialized": 0,
+    "games_completed": "0/12",
+    "outcomes_exposed": "0/12"
+  },
+  "disposition": "Accept only the finite-queue reduction 7 -> 6 by removing Nyxborn Hydra from the unresolved Veteran identity set. Historical inventories and earlier acceptance receipts remain immutable; no sampled gameplay authority is created.",
+  "next_gate": "Implement and independently qualify one of the six remaining exact Veteran identities or close a separate full-game readiness guard, without changing Izzet Science v0.7."
+}
