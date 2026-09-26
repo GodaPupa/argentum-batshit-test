@@ -60,15 +60,49 @@ jobs:
               'mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/AetherChannelerScenarioTest.kt',
               'rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/layers/EffectApplicator.kt',
               'rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/layers/ProjectionModels.kt',
+              'rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/layers/StateProjector.kt',
+              'rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/stack/StackResolver.kt',
+              'rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/land/PlayLandHandler.kt',
+              'rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/EnterTappedReplacements.kt',
+              'rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/EnterUntappedReplacements.kt',
+              'rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/ZoneTransitionService.kt',
+              'rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/BattlefieldEntry.kt',
+              'rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/PermanentEntryTracker.kt',
+              'rules-engine/src/test/kotlin/com/wingedsheep/engine/mechanics/layers/BattlefieldEntryProjectionTest.kt',
+              'rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/SelfEntersTappedOffStackEntryScenarioTest.kt',
+              'mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/AuthorityOfTheConsulsScenarioTest.kt',
+              'rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/token/CreatePredefinedTokenExecutor.kt',
+              'rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/token/CreateTokenCopyOfChosenPermanentExecutor.kt',
+              'rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/token/CreateTokenCopyOfEquippedCreatureExecutor.kt',
+              'rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/token/CreateTokenCopyOfSourceExecutor.kt',
+              'rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/token/CreateTokenCopyOfTargetExecutor.kt',
+              'rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/token/CreateTokenExecutor.kt',
+              'rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/token/TokenCreationReplacementHelper.kt',
+              'rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/token/TokenFromDefinition.kt',
+              'rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/ConditionEvaluator.kt',
+              'rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/ConditionEvaluationContext.kt',
+              'rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerMatcher.kt',
+              'rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/PredicateEvaluator.kt',
+              'rules-engine/src/test/kotlin/com/wingedsheep/engine/handlers/ProjectionNumericConditionTest.kt',
+              'rules-engine/src/test/kotlin/com/wingedsheep/engine/event/TriggerMatcherIsNontokenTest.kt',
+              'rules-engine/src/test/kotlin/com/wingedsheep/engine/event/TriggerMatcherIsPermanentTest.kt',
+              'rules-engine/src/test/kotlin/com/wingedsheep/engine/event/TriggerMatcherNotSubtypeTest.kt',
               'rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/ability/ActivateAbilityHandler.kt',
               'rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/sba/creature/ControlChangedRemovesFromCombatCheck.kt',
               'rules-engine/src/test/kotlin/com/wingedsheep/engine/hygiene/FloatingEffectSerializationRoundTripTest.kt',
               'game-server/src/test/kotlin/com/wingedsheep/gameserver/session/AiUndoDecisionFreshnessTest.kt',
               'rules-engine/src/testFixtures/kotlin/com/wingedsheep/engine/support/SerializationTestSupport.kt',
               'experiments/manual-transmission-phase2/purphoros-prospective-r1.json',
+              'experiments/manual-transmission-phase2/purphoros-engine-receiving-r1.json',
               'manual-scenarios/cards/p/purphoros-god-of-the-forge.json',
               '.github/workflows/manual-transmission-etb-qualification.yml']
           paths += [str(p) for p in sorted(pathlib.Path('experiments/manual-transmission-phase2/sources/purphoros-r1').glob('*.json'))]
+          receiving = json.loads(pathlib.Path('experiments/manual-transmission-phase2/purphoros-engine-receiving-r1.json').read_text())
+          original_test = pathlib.Path('mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/PurphorosGodOfTheForgeScenarioTest.kt')
+          assert hashlib.sha256(original_test.read_bytes()).hexdigest() == receiving['original_purphoros_test_sha256']
+          for path, bank in receiving['new_generic_fixture_banks'].items():
+              assert hashlib.sha256(pathlib.Path(path).read_bytes()).hexdigest() == bank['sha256'], path
+          assert len(paths) == len(set(paths)), 'Duplicate source pin'
           out = {'source':source,'tree':tree,'accepted_manual_base':base,
               'scope':'EXCLUDED_FIXED_COMPONENT_QUALIFICATION','official_initializations':0,
               'gameplay_authorized':False,'files':{p:hashlib.sha256(pathlib.Path(p).read_bytes()).hexdigest() for p in paths}}
@@ -101,16 +135,16 @@ jobs:
           (out/'source-reverification.json').write_text(json.dumps({'fields':fields,
               'sha256':hashlib.sha256(raw).hexdigest(),'image_http_status':200},indent=2)+'\n')
           PY
-      - name: Qualify static and floating type-effect persistence
+      - name: Qualify type persistence and numeric projection with preserved departure regressions
         shell: bash
         run: |
           set -euo pipefail
-          just test-class FloatingEffectSerializationRoundTripTest --rerun --max-workers=1 -PkotlinCompileParallelism=1 -Pkotlin.compiler.execution.strategy=in-process -Dorg.gradle.jvmargs=-Xmx4g --info --stacktrace 2>&1 | tee build/reports/manual-etb/type-effect-persistence.log
+          just test-class FloatingEffectSerializationRoundTripTest --tests '*ProjectionNumericConditionTest' --tests '*BattlefieldEntryProjectionTest' --tests '*SelfEntersTappedOffStackEntryScenarioTest' --tests '*TriggerMatcherIsNontokenTest' --tests '*TriggerMatcherIsPermanentTest' --tests '*TriggerMatcherNotSubtypeTest' --rerun --max-workers=1 -PkotlinCompileParallelism=1 -Pkotlin.compiler.execution.strategy=in-process -Dorg.gradle.jvmargs=-Xmx4g --info --stacktrace 2>&1 | tee build/reports/manual-etb/type-effect-persistence.log
       - name: Exercise every prospective exact Purphoros case
         shell: bash
         run: |
           set -euo pipefail
-          just test-class PurphorosGodOfTheForgeScenarioTest --rerun --max-workers=1 -PkotlinCompileParallelism=1 -Pkotlin.compiler.execution.strategy=in-process -Dorg.gradle.jvmargs=-Xmx4g --info --stacktrace 2>&1 | tee build/reports/manual-etb/purphoros.log
+          just test-class PurphorosGodOfTheForgeScenarioTest --tests '*AuthorityOfTheConsulsScenarioTest' --rerun --max-workers=1 -PkotlinCompileParallelism=1 -Pkotlin.compiler.execution.strategy=in-process -Dorg.gradle.jvmargs=-Xmx4g --info --stacktrace 2>&1 | tee build/reports/manual-etb/purphoros.log
       - name: Requalify Aether and adjacent modal trigger behavior on the combined source
         shell: bash
         run: |
@@ -164,9 +198,10 @@ jobs:
         run: |
           python3 - <<'PY'
           import hashlib, json, pathlib, xml.etree.ElementTree as ET
-          expected = {'PurphorosGodOfTheForgeScenarioTest':25,'AetherChannelerScenarioTest':10,
-              'CharmingPrinceScenarioTest':2,'CardDefinitionSnapshotTest':340,'CardLintTest':3,
-              'FloatingEffectSerializationRoundTripTest':6}
+          receiving = json.loads(pathlib.Path('experiments/manual-transmission-phase2/purphoros-engine-receiving-r1.json').read_text())
+          expected = receiving['expected_suites']
+          assert receiving['original_purphoros_cases'] == expected['PurphorosGodOfTheForgeScenarioTest'] == 25
+          assert sum(expected.values()) == receiving['expected_total_cases'] == 415
           roots = ['rules-engine','mtg-sets/2008-2016/tests','mtg-sets/2017-2022/tests','mtg-sets']
           seen, rows = set(), []
           for module in roots:

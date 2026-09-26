@@ -1,0 +1,31 @@
+{
+  "reviewer": "Izzet agent /root/izzet, non-author of Manual serializer source, fixtures and artifact",
+  "verdict": "ACCEPT_ACTUAL_SIX_CASE_SERIALIZATION_COMPONENT_ONLY",
+  "source": "4f812ef01799c815e2e6eadb378f17bfe295a910",
+  "tree": "83c1e06406380a3dba8036591d99a05458b5b069",
+  "run": 36260607419,
+  "job": 108455548915,
+  "artifact": 10912630709,
+  "artifact_sha256": "2fa2df4a14d1b4a029faf3335d4636955d8b6f72624a6a590208c144efce4f29",
+  "artifact_bytes": 254115,
+  "source_pins_verified": 17,
+  "xml_sha256": "8ab4e97710353074ad0c27bc546735db10a054eb7bccca0d48e0eb7a6d353cb4",
+  "actual_cases": [
+    "no SerializableModification leaf has a JSON field colliding with the 'type' class discriminator",
+    "no static Modification leaf has a JSON field colliding with the 'type' class discriminator",
+    "a static AddType component round-trips through persistence-shaped JSON",
+    "a static RemoveType component round-trips through persistence-shaped JSON",
+    "an ActiveFloatingEffect carrying AddType round-trips through persistence-shaped JSON",
+    "an ActiveFloatingEffect carrying RemoveType round-trips through persistence-shaped JSON"
+  ],
+  "failures": 0,
+  "errors": 0,
+  "skips": 0,
+  "authenticated_log_observation": "Exact just test-class --rerun command; Gradle Test Executor 1 started and completed tests; BUILD SUCCESSFUL for serialization stage. Live job step succeeded. Overall workflow failed.",
+  "preserved_receiving_result": "Exact Purphoros 25 cases executed: 22 pass, 3 failure. Aether/CharmingPrince/corpus gates missing/skipped; combined receiving not accepted.",
+  "limits": [
+    "Source receipt pins match exact Git tree; XML confirms actual six cases.",
+    "Static Modification AddType and RemoveType use @SerialName(cardType); test source exercises static ComponentContainer and floating effect persistence, plus reflection over sealed leaves.",
+    "No gameplay, no official initialization, no approval of broader pre-entry projection or complete Purphoros source."
+  ]
+}

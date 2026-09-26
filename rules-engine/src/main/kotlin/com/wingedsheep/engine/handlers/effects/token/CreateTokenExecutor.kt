@@ -275,7 +275,7 @@ class CreateTokenExecutor(
             // set tapped state, so resolve it here now the token carries its controller/type.
             newState = EnterTappedReplacements.applyCreatedTokenEntryTap(
                 newState, tokenId, tokenControllerId,
-                definedTapped = effect.tapped, attacking = effect.attacking,
+                definedTapped = effect.tapped, attacking = effect.attacking, beforeEntry = state,
             )
         }
 
