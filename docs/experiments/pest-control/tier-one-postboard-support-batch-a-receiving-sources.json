@@ -1,0 +1,341 @@
+{
+  "schema": "pest-control-tier-one-postboard-support-batch-a-receiving-sources-v1",
+  "verified_date": "2026-09-25",
+  "base_commit": "684f93af469815d3b9636ba1b117ed3bfd6a34fb",
+  "accepted_input": {
+    "run_id": 36070379296,
+    "artifact_id": 10838516145,
+    "zip_sha256": "c0c08f915348a0512dd15a17d2edad1479b3f1d09d59948455fe3c81f94b10b7"
+  },
+  "scope": "SEED_FREE_CARD_SUPPORT_ONLY",
+  "cards": [
+    {
+      "name": "Smash to Smithereens",
+      "definition": "mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/shm/cards/SmashToSmithereens.kt",
+      "scenario": "mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/SmashToSmithereensScenarioTest.kt",
+      "canonical_set": "SHM",
+      "collector_number": "107",
+      "release_date": "2008-05-02",
+      "rarity": "common",
+      "oracle_id": "e0583f29-c344-4b56-b0dc-bef1089a95c7",
+      "scryfall_id": "7eda1524-44dd-4f70-ac21-bac51578860e",
+      "canonical_url": "https://scryfall.com/card/shm/107/smash-to-smithereens",
+      "canonical_api_url": "https://api.scryfall.com/cards/7eda1524-44dd-4f70-ac21-bac51578860e",
+      "canonical_payload_sha256": "24a6e461ce0023106400f684f8f1dea993707b6e753114c463372b545d60d023",
+      "printings_api_url": "https://api.scryfall.com/cards/search?order=released&q=oracleid%3Ae0583f29-c344-4b56-b0dc-bef1089a95c7&unique=prints&dir=asc",
+      "printings_payload_sha256": "dd04c4d3d8172ee006e68f3be0c9a5c5a40a8d04247c3bd10f90d1a734ef69f8",
+      "earliest_real_printing_verified": true,
+      "rulings_api_url": "https://api.scryfall.com/cards/7eda1524-44dd-4f70-ac21-bac51578860e/rulings",
+      "rulings_payload_sha256": "6cf79fa7470123b456e5f311c693a80dcbdaf0c700b3b73494601db0c7a211b5",
+      "oracle_text": "Destroy target artifact. Smash to Smithereens deals 3 damage to that artifact's controller.",
+      "mana_cost": "{1}{R}",
+      "type_line": "Instant",
+      "power": null,
+      "toughness": null,
+      "pauper_legality": "legal",
+      "common_printings": [
+        {
+          "set": "shm",
+          "collector_number": "107",
+          "released_at": "2008-05-02",
+          "scryfall_id": "7eda1524-44dd-4f70-ac21-bac51578860e"
+        },
+        {
+          "set": "mm2",
+          "collector_number": "124",
+          "released_at": "2015-05-22",
+          "scryfall_id": "e2e1c601-5a3d-4819-ab54-2c9acc357d69"
+        },
+        {
+          "set": "ori",
+          "collector_number": "163",
+          "released_at": "2015-07-17",
+          "scryfall_id": "655c489f-bffb-45a4-8e7c-2d1a35220197"
+        },
+        {
+          "set": "plst",
+          "collector_number": "MM2-124",
+          "released_at": "2019-11-07",
+          "scryfall_id": "815dd60c-989b-4ace-9f47-44e3405a0065"
+        }
+      ],
+      "image_uri": "https://cards.scryfall.io/normal/front/7/e/7eda1524-44dd-4f70-ac21-bac51578860e.jpg?1783942745",
+      "image_http_status": 200,
+      "rulings": [
+        {
+          "date": "2015-06-22",
+          "text": "Smash to Smithereens targets only the artifact, not any player. If that artifact becomes an illegal target by the time Smash to Smithereens tries to resolve, Smash to Smithereens won\u2019t resolve and none of its effects will happen. No damage will be dealt."
+        }
+      ]
+    },
+    {
+      "name": "Unexpected Fangs",
+      "definition": "mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/iko/cards/UnexpectedFangs.kt",
+      "scenario": "mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/UnexpectedFangsScenarioTest.kt",
+      "canonical_set": "IKO",
+      "collector_number": "102",
+      "release_date": "2020-04-24",
+      "rarity": "common",
+      "oracle_id": "dfa8415d-2474-46ca-b92f-6e12e3268cf5",
+      "scryfall_id": "aa6494ad-a35e-4b09-8623-7740f3c20b0b",
+      "canonical_url": "https://scryfall.com/card/iko/102/unexpected-fangs",
+      "canonical_api_url": "https://api.scryfall.com/cards/aa6494ad-a35e-4b09-8623-7740f3c20b0b",
+      "canonical_payload_sha256": "df8f01b0cd0117c25ff82968b2fb17db775ff942f07d1183476f258d4f9f1081",
+      "printings_api_url": "https://api.scryfall.com/cards/search?order=released&q=oracleid%3Adfa8415d-2474-46ca-b92f-6e12e3268cf5&unique=prints&dir=asc",
+      "printings_payload_sha256": "0731b2325501009e05b5216b2f1021d6cfcdbfb88e5612f8d2296fefaab8aedb",
+      "earliest_real_printing_verified": true,
+      "rulings_api_url": "https://api.scryfall.com/cards/aa6494ad-a35e-4b09-8623-7740f3c20b0b/rulings",
+      "rulings_payload_sha256": "6959514f6cea4012b6cceb5fe573de3433c3927da3183236a64ab122bc02ef10",
+      "oracle_text": "Put a +1/+1 counter and a lifelink counter on target creature.",
+      "mana_cost": "{1}{B}",
+      "type_line": "Instant",
+      "power": null,
+      "toughness": null,
+      "pauper_legality": "legal",
+      "common_printings": [
+        {
+          "set": "iko",
+          "collector_number": "102",
+          "released_at": "2020-04-24",
+          "scryfall_id": "aa6494ad-a35e-4b09-8623-7740f3c20b0b"
+        },
+        {
+          "set": "plst",
+          "collector_number": "IKO-102",
+          "released_at": "2024-08-02",
+          "scryfall_id": "a4b55911-b429-49c4-a768-2e36a44d6877"
+        }
+      ],
+      "image_uri": "https://cards.scryfall.io/normal/front/a/a/aa6494ad-a35e-4b09-8623-7740f3c20b0b.jpg?1783931057",
+      "image_http_status": 200,
+      "rulings": []
+    },
+    {
+      "name": "Murmuring Mystic",
+      "definition": "mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/grn/cards/MurmuringMystic.kt",
+      "scenario": "mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/MurmuringMysticScenarioTest.kt",
+      "canonical_set": "GRN",
+      "collector_number": "45",
+      "release_date": "2018-10-05",
+      "rarity": "uncommon",
+      "oracle_id": "dcd4da46-5438-4454-8b1b-43ca51bda1f9",
+      "scryfall_id": "5fc6adff-dcb3-456d-a8c2-0e77b784ff89",
+      "canonical_url": "https://scryfall.com/card/grn/45/murmuring-mystic",
+      "canonical_api_url": "https://api.scryfall.com/cards/5fc6adff-dcb3-456d-a8c2-0e77b784ff89",
+      "canonical_payload_sha256": "0995f77008abff75e0c5783351fc1f109a01201365940c5480d3b6f2cf45f498",
+      "printings_api_url": "https://api.scryfall.com/cards/search?order=released&q=oracleid%3Adcd4da46-5438-4454-8b1b-43ca51bda1f9&unique=prints&dir=asc",
+      "printings_payload_sha256": "9810fe5f6d9fa799167d0bda3dda2d684034084d5d97d9b93836b51384b9d4c1",
+      "earliest_real_printing_verified": true,
+      "rulings_api_url": "https://api.scryfall.com/cards/5fc6adff-dcb3-456d-a8c2-0e77b784ff89/rulings",
+      "rulings_payload_sha256": "d65c892660866d943ccec58535ff6c1f55c2680e6efe5919e982954ad4747918",
+      "oracle_text": "Whenever you cast an instant or sorcery spell, create a 1/1 blue Bird Illusion creature token with flying.",
+      "mana_cost": "{3}{U}",
+      "type_line": "Creature \u2014 Human Wizard",
+      "power": "1",
+      "toughness": "5",
+      "pauper_legality": "legal",
+      "common_printings": [
+        {
+          "set": "cmm",
+          "collector_number": "107",
+          "released_at": "2023-08-04",
+          "scryfall_id": "9f19337d-0824-442d-bb67-748a9980e816"
+        },
+        {
+          "set": "otc",
+          "collector_number": "102",
+          "released_at": "2024-04-19",
+          "scryfall_id": "9e68dcc2-bba4-4efa-97bb-3ed892037595"
+        }
+      ],
+      "image_uri": "https://cards.scryfall.io/normal/front/5/f/5fc6adff-dcb3-456d-a8c2-0e77b784ff89.jpg?1783934187",
+      "image_http_status": 200,
+      "rulings": [
+        {
+          "date": "2018-10-05",
+          "text": "Murmuring Mystic's triggered ability resolves before the spell that caused it to trigger. It resolves even if that spell is countered."
+        }
+      ],
+      "reused_behavior": {
+        "repository": "GodaPupa/argentum-batshit-test",
+        "source_path": "mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/grn/cards/MurmuringMystic.kt",
+        "source_sha256": "563440486bd549d3e004dcf1c6b987b1be77b2684804bc528b85f411bc2c52a1",
+        "changes": "Canonical metadata, ruling and token art only; mechanic composition preserved; independent Pest scenarios.",
+        "accepted_source_commit": "b71785b61195039a14bfafbaa75827c978c8a757",
+        "accepted_source_git_blob": "9a9034f02ce9b99d70ae89cb1426da2a74598ef0",
+        "accepted_lineage_document": "izzet-science/v09-position1-engine-batch-d-accepted.md",
+        "accepted_run_id": 35760495294,
+        "accepted_artifact_id": 10709599429,
+        "accepted_artifact_zip_sha256": "ed1706b14f3a9e00c76170597a4c4448bca650958996295025d152eec3d75884",
+        "imported_lineage_commit": "220db289bc5dff34a4f4b0cfcf1c6c140ee44457"
+      },
+      "token": {
+        "canonical_url": "https://scryfall.com/card/tgrn/3/bird-illusion",
+        "set": "tgrn",
+        "collector_number": "3",
+        "scryfall_id": "03c3dc23-d6f2-4209-82e1-a0b936c94231",
+        "image_uri": "https://cards.scryfall.io/normal/front/0/3/03c3dc23-d6f2-4209-82e1-a0b936c94231.jpg?1783934064",
+        "source_api_url": "https://api.scryfall.com/cards/search?q=set%3Atgrn",
+        "source_payload_sha256": "8a4900185b55928a60e81bba63a62e0e13e6fd83ba69a18e0dbdd892594051b2"
+      }
+    },
+    {
+      "name": "Nylea's Disciple",
+      "definition": "mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/ths/cards/NyleasDisciple.kt",
+      "scenario": "mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/NyleasDiscipleScenarioTest.kt",
+      "canonical_set": "THS",
+      "collector_number": "167",
+      "release_date": "2013-09-27",
+      "rarity": "common",
+      "oracle_id": "aaefdb6f-306e-4fdc-9e49-af7a63e70f06",
+      "scryfall_id": "365d716a-1435-48ac-b85f-2cceca1056dd",
+      "canonical_url": "https://scryfall.com/card/ths/167/nyleas-disciple",
+      "canonical_api_url": "https://api.scryfall.com/cards/365d716a-1435-48ac-b85f-2cceca1056dd",
+      "canonical_payload_sha256": "bca88adfdb20db5776c97d0a948f97ea76c0cb3a8d368bbb8afbdc5a2d4ac114",
+      "printings_api_url": "https://api.scryfall.com/cards/search?order=released&q=oracleid%3Aaaefdb6f-306e-4fdc-9e49-af7a63e70f06&unique=prints&dir=asc",
+      "printings_payload_sha256": "8119a428e86eaa651a77a4626b75b8ccfed52f6e0cbf8c5113b697ed38bbc022",
+      "earliest_real_printing_verified": true,
+      "rulings_api_url": "https://api.scryfall.com/cards/365d716a-1435-48ac-b85f-2cceca1056dd/rulings",
+      "rulings_payload_sha256": "76c364a5ba798d4a3df2add1bba89db23451f055c6d232bdf8909cf92ec63f89",
+      "oracle_text": "When this creature enters, you gain life equal to your devotion to green. (Each {G} in the mana costs of permanents you control counts toward your devotion to green.)",
+      "mana_cost": "{2}{G}{G}",
+      "type_line": "Creature \u2014 Centaur Archer",
+      "power": "3",
+      "toughness": "3",
+      "pauper_legality": "legal",
+      "common_printings": [
+        {
+          "set": "ths",
+          "collector_number": "167",
+          "released_at": "2013-09-27",
+          "scryfall_id": "365d716a-1435-48ac-b85f-2cceca1056dd"
+        },
+        {
+          "set": "pio",
+          "collector_number": "301",
+          "released_at": "2024-12-10",
+          "scryfall_id": "af0f9283-cd37-412b-9b1d-f79544939dc8"
+        }
+      ],
+      "image_uri": "https://cards.scryfall.io/normal/front/3/6/365d716a-1435-48ac-b85f-2cceca1056dd.jpg?1783939742",
+      "image_http_status": 200,
+      "rulings": [
+        {
+          "date": "2013-09-15",
+          "text": "Numeric mana symbols ({0}, {1}, and so on) in mana costs of permanents you control don't count toward your devotion to any color."
+        },
+        {
+          "date": "2013-09-15",
+          "text": "Mana symbols in the text boxes of permanents you control don't count toward your devotion to any color."
+        },
+        {
+          "date": "2013-09-15",
+          "text": "Hybrid mana symbols, monocolored hybrid mana symbols, and Phyrexian mana symbols do count toward your devotion to their color(s)."
+        },
+        {
+          "date": "2013-09-15",
+          "text": "If an activated ability or triggered ability has an effect that depends on your devotion to a color, you count the number of mana symbols of that color among the mana costs of permanents you control as the ability resolves. The permanent with that ability will be counted if it's still on the battlefield at that time."
+        }
+      ]
+    }
+  ],
+  "snapshot_additions": {
+    "SHM": [
+      "Smash to Smithereens",
+      "Faerie Macabre"
+    ],
+    "IKO": [
+      "Unexpected Fangs"
+    ],
+    "GRN": [
+      "Murmuring Mystic"
+    ],
+    "THS": [
+      "Nylea's Disciple"
+    ]
+  },
+  "source_files_sha256": {
+    ".github/workflows/pest-control-tier-one-postboard-support-batch-a.yml": "1da307055612deb6dbc72c67f6313a5feef452ffe7c4acfbe9acfeb16336cf0c",
+    "docs/experiments/pest-control/postboard-closure-evidence/remote-36244588321/snapshot-peer-review.json": "900622265087ac82ce363687f74dc8c45f319b1564e4afe5616d562864494b8b",
+    "gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlTierOneMonoBlueTerrorReadiness.kt": "16ff729bf1cce9fcd5a9d3a46233efe73a2ff3f2bb61f105a48054489266fb11",
+    "gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOneMonoBlueTerrorReadinessTest.kt": "0d40cf181af08bceb799e9c5b71278cca528792af87f53e508eb9d9eb28033ee",
+    "gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOnePostboardSupportBatchATest.kt": "68c0676cc90575e23af2bddfb899b8d0fe5ceeedade9936afb5e2792ad4cc24b",
+    "gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOneSpyComboSupportBatchBTest.kt": "39d944c276a2c4fa1b1d60779a94a63128d99b1e14a0e15b0571cf02082d7fb8",
+    "mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/shm/cards/FaerieMacabre.kt": "96ca35a6f118b1130dad4565422bfd863348a26b1dd8f9b1f5ba6c6dcd13e5c6",
+    "mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/shm/cards/SmashToSmithereens.kt": "188486aed285f9274f2d55c2d09a5c758b0744a97376e040e812ba891d65ffd6",
+    "mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/ths/cards/NyleasDisciple.kt": "78ec5846cfaff0bd23c1f94992a3053b042dc5425603df94fa73f4fca0eca321",
+    "mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/FaerieMacabreScenarioTest.kt": "e0326658d1f39d386f3f47fbf7e65e083513bea0a62451f658e49cc58b5ddd5b",
+    "mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/NyleasDiscipleScenarioTest.kt": "fc62d8d6d7e8186d142aef33e742cb26444feb60c6d3ac5132b663ede42c35eb",
+    "mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/SmashToSmithereensScenarioTest.kt": "4b8b9c55ebd02c654b51c1a374f609b80f9d696ac2c232d06ad8a5b657561179",
+    "mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/grn/cards/MurmuringMystic.kt": "bd4d88c1187f5413d5c181def2576fb60044453f97a5e99dfb0c84ba66f4aea1",
+    "mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/iko/cards/UnexpectedFangs.kt": "a3808dd3ed6d3c3428ba1798291f9e5fc9b8f4c720acfd6e129c5c04ecdb73b0",
+    "mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/MurmuringMysticScenarioTest.kt": "b14c970c8868a6d2e8aee58f16b4f3b12f8ea9d819c660984eb91531f1c21d5f",
+    "mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/UnexpectedFangsScenarioTest.kt": "e08a93a3799996625f09a906c7e0fc518d201de745a4f0e1d94f7185d71adb6f",
+    "mtg-sets/src/test/resources/snapshots/cards/GRN.json": "01c0352f5631bb2264af1e9aa42e85279dac483d7093ed7e1b57beff6a5fe5b9",
+    "mtg-sets/src/test/resources/snapshots/cards/IKO.json": "192f313dda525e248ea08273c47ad17c58ddb382e0762652c99121eb8e8df204",
+    "mtg-sets/src/test/resources/snapshots/cards/SHM.json": "bd54ea40b29985e202f1b8622cf5dcef83e71dbde6db6f71007fe954275b3b1b",
+    "mtg-sets/src/test/resources/snapshots/cards/THS.json": "8cd0c2797a4258e42b5ed86d6e1345cc2c0cb69fd70d26ba8256fff5375aaa42"
+  },
+  "official_seeds_generated": 0,
+  "official_games_initialized": 0,
+  "official_actions_submitted": 0,
+  "outcome_exposure": 0,
+  "integration_main_commit": "c6953354b1b799fe4506eb9e44ff25523a132d8e",
+  "independent_spy_batch_b": {
+    "source_commit": "7a3f1429c027925c30ed7c1e329c3879e674574a",
+    "merge_commit": "c6953354b1b799fe4506eb9e44ff25523a132d8e",
+    "newly_supported_sideboard_slots": 3
+  },
+  "integration_spy_batch_c": {
+    "qualified_card_source": "9964764b212233e9c900dad166509906b483ed01",
+    "dedicated_run_id": 36088736003,
+    "artifact_id": 10844463864,
+    "newly_supported_sideboard_slots": 1,
+    "scope": "Current support assertions only; accepted A artifact remains unchanged; exact integration requires fresh CI"
+  },
+  "current_support_successor": {
+    "program": "postboard_support_batch_b",
+    "predecessor_source": "1cf29885757fae24aac05cfe2d1097e5088e5375",
+    "predecessor_manifest_sha256": "7a99a8f4ea94f4eda8cc3e318d5f60e96ab1ef195bf7363adda32d167537a715",
+    "new_registry_identities": [
+      "Pyroblast",
+      "Hydroblast",
+      "Gut Shot"
+    ],
+    "historical_admission_records_changed": false,
+    "integrated_spy_batch_c_merge": "1c8bc618e8b3ca0b3b154e2ef3c87ca8ff779698"
+  },
+  "historical_manifest": {
+    "path": "docs/experiments/pest-control/tier-one-postboard-support-batch-a-sources.json",
+    "sha256": "61ece0601f7f4f216c86792a9bf479d9f60d91fcb10c08ab5fe802e876154ecd",
+    "unchanged": true
+  },
+  "receiving_successor": {
+    "originating_combined_head": "1669cc465bf1530d744f9b5612cf733240154ea3",
+    "status": "PROSPECTIVE_BINDING_RUNTIME_AND_RECEIVING_ACCEPTANCE_PENDING",
+    "changed_historical_bindings": [
+      {
+        "path": "gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOnePostboardSupportBatchATest.kt",
+        "prior_sha256": "dd41dccfc2ca704ba9cb92139450ca634538d971524295ea042c2de085c8ddb8",
+        "candidate_sha256": "68c0676cc90575e23af2bddfb899b8d0fe5ceeedade9936afb5e2792ad4cc24b"
+      },
+      {
+        "path": ".github/workflows/pest-control-tier-one-postboard-support-batch-a.yml",
+        "prior_sha256": "ae0c74da029e89f060ac70d01b5f943a44a4292b0f5a5e9e07f191ef76789719",
+        "candidate_sha256": "1da307055612deb6dbc72c67f6313a5feef452ffe7c4acfbe9acfeb16336cf0c"
+      },
+      {
+        "path": "mtg-sets/src/test/resources/snapshots/cards/SHM.json",
+        "prior_sha256": "6f56256a287a893d95ed66f4919bd12b130907cda83039bdf328ddd006e9bb11",
+        "candidate_sha256": "bd54ea40b29985e202f1b8622cf5dcef83e71dbde6db6f71007fe954275b3b1b"
+      }
+    ],
+    "historical_inventory_test_change": "Inherited test preserves all four Batch A definitions, eleven original slots and frozen identities while permitting qualified successors to reduce the original unresolved queue; separate combined closure gate requires every six-deck gap list empty. This patch does not change the test.",
+    "new_snapshot_record": "Only independently reviewed ordinary Faerie Macabre bytes are added beyond historical Batch A snapshots. Every original record remains byte-identical.",
+    "snapshot_review": "docs/experiments/pest-control/postboard-closure-evidence/remote-36244588321/snapshot-peer-review.json",
+    "stages_retained": 10,
+    "runtime_or_policy_change": false,
+    "official_execution_authorized": false,
+    "failed_run": 36245631609
+  }
+}

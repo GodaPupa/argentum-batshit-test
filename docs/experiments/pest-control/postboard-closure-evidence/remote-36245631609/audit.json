@@ -1,0 +1,19 @@
+{
+  "schema": "pest-postboard-receiving-binding-failure-v1",
+  "candidate_head": "1669cc465bf1530d744f9b5612cf733240154ea3",
+  "github_run_id": 36245631609,
+  "github_job_id": 108414182399,
+  "classification": "STALE_RECEIVING_SOURCE_AND_SNAPSHOT_BINDING",
+  "observed_assertion": "gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOnePostboardSupportBatchATest.kt",
+  "additional_detected_blockers": [
+    "Historical SHM digest predates independently reviewed Faerie addition.",
+    "Historical add-only SHM constraint permits Smash to Smithereens alone; receiving source also has reviewed Faerie record."
+  ],
+  "regressions_executed": false,
+  "artifact_upload": "Failed: binding assertion preceded any provenance file. Decoded complete job log retained with normalized final newline.",
+  "raw_log_sha256": "2a60f40e047252ec2cb9f8a7ed453486b6d81e65a923a4c48a806db70927b820",
+  "compressed_log_sha256": "c0bf502d16ba9b0524be5114e42f201ed81236c90d644b49de0a72d623c41a3e",
+  "resolution": "Separate prospective receiving manifest; preserve historical manifest and all ten original regression stages; qualify existing fixture source and exact reviewed snapshot records without altering production behavior.",
+  "official_games_initialized": 0,
+  "outcome_exposure": 0
+}
