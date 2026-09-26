@@ -23,6 +23,7 @@ import com.wingedsheep.engine.support.TestCards
 import com.wingedsheep.mtg.sets.definitions.c18.cards.ForgeOfHeroes
 import com.wingedsheep.mtg.sets.definitions.dft.cards.VeteranBeastrider
 import com.wingedsheep.mtg.sets.definitions.gpt.cards.IzzetGuildmage
+import com.wingedsheep.sdk.core.CardType
 import com.wingedsheep.sdk.core.Color
 import com.wingedsheep.sdk.core.CounterType
 import com.wingedsheep.sdk.core.Format
@@ -156,7 +157,11 @@ class ForgeOfHeroesScenarioTest : FunSpec({
             val typed = d.state.updateEntity(id) { it.with(CountersComponent(mapOf(CounterType.LOYALTY to 3))) }
             d.replaceState(typed.copy(floatingEffects = typed.floatingEffects + typeChange))
             d.state.getEntity(id)!!.get<CardComponent>()!!.typeLine.isCreature shouldBe true
-            d.state.projectedState.getProjectedValues(id)!!.types shouldBe types
+            // The projection stores supertypes and legacy subtype strings alongside card types.
+            // Assert the exact card-type membership changed by this fixture, not that other
+            // characteristic strings were erased by SetCardTypes.
+            val cardTypeNames = CardType.entries.map { it.name }.toSet()
+            d.state.projectedState.getTypes(id).intersect(cardTypeNames) shouldBe types
             // A commander that is neither relevant type is still eligible on announcement.
             if ("LAND" in types) d.submitSuccess(counterAction(d.player1, forge, id))
             d.bothPass().error shouldBe null

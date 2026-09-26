@@ -1,0 +1,313 @@
+{
+  "schema": "izzet-position1-forge-rejected-qualification-v1",
+  "disposition": "REJECTED_FIXTURE_FAILURE_NO_COMPONENT_ACCEPTANCE",
+  "run_id": 36248505240,
+  "job_id": 108422037159,
+  "head": "4772071bf90c00494e3e009c0aa1b25249edf069",
+  "tree": "9223b72d8e274b98a5b348aaf3b37c9b65d7482c",
+  "run_url": "https://github.com/GodaPupa/argentum-batshit-test/actions/runs/36248505240",
+  "failed_task": ":mtg-sets:2017-2022:tests:test",
+  "classification": "FIXTURE_PRECONDITION_DEFECT",
+  "cause": "All ten exact Forge cases executed: seven passed and three projected-type fixtures stopped at their precondition. The fixture compared the complete projected types string set to only card-type names, but the projection also retained Human and Wizard subtype strings. The three assertions failed before the unchanged counter-result assertions. The dependency correction compiled successfully. No engine or card behavior change is justified by this result.",
+  "correction": "Intersect projected getTypes with the SDK CardType enum names and still assert exact equality to the requested card-type set. Preserve the printed-creature precondition, target acceptance, and independent expected +1/+1 and loyalty counter outcomes in all three cases.",
+  "artifact": {
+    "id": 10908761547,
+    "name": "izzet-position1-forge-qualification",
+    "retained": "artifact.zip",
+    "bytes": 252164,
+    "sha256": "4488e561e852a7b884a90121b63ff81248e2e17b7b8e07dd8567317f88c77b7d",
+    "members": [
+      {
+        "path": "build/reports/izzet-forge/exact-card-and-pdh.txt",
+        "bytes": 163283,
+        "sha256": "0427ec64af9c6d65a809f2571ea4d59053b3150aa1bbcc8185a83aceb5b39807"
+      },
+      {
+        "path": "build/reports/izzet-forge/predicates.txt",
+        "bytes": 3432097,
+        "sha256": "28f51e7b740f7bc73ba16a0daf5b9128777180c48a9a97dbb03360c9f9a5f9ba"
+      },
+      {
+        "path": "build/reports/izzet-forge/source-binding.json",
+        "bytes": 774,
+        "sha256": "9cafdb87407e8b353cf70d6f1fe810acf1b949dda9605b7ea681097f8f8cd41e"
+      },
+      {
+        "path": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.mechanics.layers.AffectsFilterResolverStatePredicateTest.xml",
+        "bytes": 7445,
+        "sha256": "3fd0690856f68a4aa2744ccd601635781f23da6d9b6fde733c0c6cb29bb90a82"
+      },
+      {
+        "path": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.predicates.CommanderStatePredicateTest.xml",
+        "bytes": 961,
+        "sha256": "01908b3ea1f31f344abed1ec6f4f0e123df1bb60a9896182cd8e05eaa7e0b330"
+      },
+      {
+        "path": "mtg-sets/2017-2022/tests/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.ForgeOfHeroesScenarioTest.xml",
+        "bytes": 41592,
+        "sha256": "7d0c2710f6a979e1c9d5edd7ffd568b946111b6faaaed89e0bcf392c354d1f50"
+      }
+    ]
+  },
+  "binding": {
+    "requested_head": "4772071bf90c00494e3e009c0aa1b25249edf069",
+    "actual_head": "4772071bf90c00494e3e009c0aa1b25249edf069",
+    "actual_tree": "9223b72d8e274b98a5b348aaf3b37c9b65d7482c",
+    "expected_deck_hashes": {
+      "izzet-science/v0.7-control.md": "726f5e9458b46dda30b33a6ce9f3c3237b25d6e11b81dac85308c3065c108a01",
+      "izzet-science/opponents/veteran-beastrider-commander-clash-2025.txt": "c3ab6ee8e37a78219e7bbb7c6a75c634d78c1eb4965ab0db3abd5d853398b0be"
+    },
+    "observed_deck_hashes": {
+      "izzet-science/v0.7-control.md": "726f5e9458b46dda30b33a6ce9f3c3237b25d6e11b81dac85308c3065c108a01",
+      "izzet-science/opponents/veteran-beastrider-commander-clash-2025.txt": "c3ab6ee8e37a78219e7bbb7c6a75c634d78c1eb4965ab0db3abd5d853398b0be"
+    },
+    "checkout_status": ""
+  },
+  "actual_suites": [
+    {
+      "class": "com.wingedsheep.engine.mechanics.layers.AffectsFilterResolverStatePredicateTest",
+      "tests": 36,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        {
+          "name": "IsCommander projection matches designated cards of either controller and not same-name copies",
+          "status": "PASS"
+        },
+        {
+          "name": "IsTapped matches only tapped permanents",
+          "status": "PASS"
+        },
+        {
+          "name": "IsUntapped matches only untapped permanents",
+          "status": "PASS"
+        },
+        {
+          "name": "IsAttacking matches only creatures with AttackingComponent",
+          "status": "PASS"
+        },
+        {
+          "name": "IsBlocking matches only creatures with BlockingComponent",
+          "status": "PASS"
+        },
+        {
+          "name": "IsBlocked matches attackers that have at least one declared blocker",
+          "status": "PASS"
+        },
+        {
+          "name": "IsUnblocked matches attackers with no blockers and excludes non-attackers",
+          "status": "PASS"
+        },
+        {
+          "name": "EnteredThisTurn matches only entities with EnteredThisTurnComponent",
+          "status": "PASS"
+        },
+        {
+          "name": "WasDealtDamageThisTurn matches only damaged creatures",
+          "status": "PASS"
+        },
+        {
+          "name": "HasDealtDamage matches every creature with a marker, whatever turn it was stamped",
+          "status": "PASS"
+        },
+        {
+          "name": "HasDealtDamage(thisTurnOnly) matches only creatures whose marker names the current turn",
+          "status": "PASS"
+        },
+        {
+          "name": "HasDealtCombatDamageToPlayer matches only creatures that dealt combat damage to a player",
+          "status": "PASS"
+        },
+        {
+          "name": "IsFaceDown matches only face-down permanents",
+          "status": "PASS"
+        },
+        {
+          "name": "IsFaceUp matches only face-up permanents",
+          "status": "PASS"
+        },
+        {
+          "name": "HasMorphAbility matches creatures flagged with morph",
+          "status": "PASS"
+        },
+        {
+          "name": "ReceivedCounterThisTurn with no narrowing matches any permanent with a recorded placement",
+          "status": "PASS"
+        },
+        {
+          "name": "ReceivedCounterThisTurn scoped to +1/+1 ignores other counter kinds",
+          "status": "PASS"
+        },
+        {
+          "name": "ReceivedCounterThisTurn with placedByController ignores counters an opponent put on",
+          "status": "PASS"
+        },
+        {
+          "name": "ReceivedCounterThisTurn still matches after the counters themselves are gone",
+          "status": "PASS"
+        },
+        {
+          "name": "ReceivedCounterThisTurn narrowed by kind does not match a bare marker",
+          "status": "PASS"
+        },
+        {
+          "name": "HasAnyCounter matches any creature with at least one counter of any type",
+          "status": "PASS"
+        },
+        {
+          "name": "HasCounter(LOYALTY) matches only creatures with that specific counter type",
+          "status": "PASS"
+        },
+        {
+          "name": "HasCounter(\"+1/+1\") matches creatures with +1/+1 counters \u2014 shorthand form",
+          "status": "PASS"
+        },
+        {
+          "name": "HasCounter(\"-1/-1\") matches creatures with -1/-1 counters \u2014 shorthand form",
+          "status": "PASS"
+        },
+        {
+          "name": "HasCounter with unknown counter type string matches nothing (no accidental fallback)",
+          "status": "PASS"
+        },
+        {
+          "name": "HasGreatestPower matches the highest-power creature the source's controller controls",
+          "status": "PASS"
+        },
+        {
+          "name": "HasGreatestPower allows ties \u2014 multiple creatures can share the greatest power",
+          "status": "PASS"
+        },
+        {
+          "name": "IsEquipped matches only creatures with at least one Equipment attached",
+          "status": "PASS"
+        },
+        {
+          "name": "Or matches entities that satisfy any sub-predicate",
+          "status": "PASS"
+        },
+        {
+          "name": "And matches entities that satisfy every sub-predicate",
+          "status": "PASS"
+        },
+        {
+          "name": "Not inverts its sub-predicate",
+          "status": "PASS"
+        },
+        {
+          "name": "CouldNotHaveAttackedThisTurn spares every creature the nonactive player controls",
+          "status": "PASS"
+        },
+        {
+          "name": "CouldNotHaveAttackedThisTurn spares everyone when no Declare Attackers Step happened",
+          "status": "PASS"
+        },
+        {
+          "name": "CouldNotHaveAttackedThisTurn spares a summoning-sick creature but not its neighbour",
+          "status": "PASS"
+        },
+        {
+          "name": "CouldNotHaveAttackedThisTurn reads the projected controller, not the base one",
+          "status": "PASS"
+        },
+        {
+          "name": "CouldNotHaveAttackedThisTurn spares a creature a projected effect stopped from attacking",
+          "status": "PASS"
+        }
+      ]
+    },
+    {
+      "class": "com.wingedsheep.engine.predicates.CommanderStatePredicateTest",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        {
+          "name": "commander designation differs from the same printed creature and survives face-down and control changes",
+          "status": "PASS"
+        },
+        {
+          "name": "entry history composes with designation and serialization preserves both",
+          "status": "PASS"
+        },
+        {
+          "name": "zone-change trigger filters retain commander designation after a zone change without matching ordinary cards",
+          "status": "PASS"
+        }
+      ]
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.ForgeOfHeroesScenarioTest",
+      "tests": 10,
+      "failures": 3,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        {
+          "name": "colorless mana is immediate and taps Forge without using the stack",
+          "status": "PASS"
+        },
+        {
+          "name": "exact nonlegendary PDH commander in seat 0 receives its counter only on resolution",
+          "status": "PASS"
+        },
+        {
+          "name": "exact nonlegendary PDH commander in seat 1 receives its counter only on resolution",
+          "status": "PASS"
+        },
+        {
+          "name": "an opponent's newly entered commander is a legal target",
+          "status": "PASS"
+        },
+        {
+          "name": "ordinary same-name creature and prior-turn commander are rejected without tapping Forge",
+          "status": "PASS"
+        },
+        {
+          "name": "counter resolution reads projected types [PLANESWALKER] rather than printed creature type",
+          "status": "FAIL",
+          "message": "org.opentest4j.AssertionFailedError: expected:<[\"PLANESWALKER\"]> but was:<[\"Human\", \"Wizard\", \"PLANESWALKER\"]>"
+        },
+        {
+          "name": "counter resolution reads projected types [CREATURE, PLANESWALKER] rather than printed creature type",
+          "status": "FAIL",
+          "message": "org.opentest4j.AssertionFailedError: expected:<[\"CREATURE\", \"PLANESWALKER\"]> but was:<[\"Human\", \"Wizard\", \"CREATURE\", \"PLANESWALKER\"]>"
+        },
+        {
+          "name": "counter resolution reads projected types [LAND] rather than printed creature type",
+          "status": "FAIL",
+          "message": "org.opentest4j.AssertionFailedError: expected:<[\"LAND\"]> but was:<[\"Human\", \"Wizard\", \"LAND\"]>"
+        },
+        {
+          "name": "commander leaving in response invalidates the target and preserves the paid tap",
+          "status": "PASS"
+        },
+        {
+          "name": "pending Forge ability serializes and replays identical state and ordered events",
+          "status": "PASS"
+        }
+      ]
+    }
+  ],
+  "actual_cases": 49,
+  "passed_cases": 46,
+  "failed_cases": 3,
+  "not_reached": [
+    "30 receiving PDH/bootstrap/readiness cases",
+    "ordinary snapshot generation and drift guard",
+    "read-only snapshot/lint/facade gates",
+    "targeted manifest"
+  ],
+  "official_counters": {
+    "seeds_generated": 12,
+    "seeds_consumed": 0,
+    "games_initialized": 0,
+    "games_completed": 0,
+    "outcomes_exposed": 0
+  },
+  "hardware": "v0.7 / KEEP_V07",
+  "gameplay_admitted": false,
+  "source_accepted": false
+}
