@@ -7,6 +7,7 @@ on:
       - .github/workflows/shared-paid-filter-mana-qualification.yml
       - rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/mana/ManaSolver.kt
       - rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/PaidFilterManaSolverTest.kt
+      - rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/RestrictedXManaReconciliationTest.kt
 
 permissions:
   contents: read
@@ -41,6 +42,7 @@ jobs:
           paths = [
               'rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/mana/ManaSolver.kt',
               'rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/PaidFilterManaSolverTest.kt',
+              'rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/RestrictedXManaReconciliationTest.kt',
               '.github/workflows/shared-paid-filter-mana-qualification.yml',
           ]
           receipt = {
@@ -50,16 +52,18 @@ jobs:
               'checkout_status': subprocess.check_output(['git', 'status', '--porcelain'], text=True),
               'files': {p: hashlib.sha256(pathlib.Path(p).read_bytes()).hexdigest() for p in paths},
               'base': '9ca83110f5907e66a0c289f8205ed1e24575535c',
+              'reconciled_solver_source': 'd50e66dc12a58e1276b56bdf9ce78daecda51e1a',
           }
           pathlib.Path('build/reports/paid-filter/source-binding.json').write_text(json.dumps(receipt, indent=2)+'\n')
           assert receipt['actual_head'] == receipt['requested_head'], receipt
           assert receipt['checkout_status'] == '', receipt
           PY
-      - name: Execute distinguishing paid-filter regressions first
+      - name: Execute paid-filter and received restricted-X solver regressions first
         shell: bash
         run: |
           set -euo pipefail
           scripts/gradle-locked :rules-engine:test --tests '*PaidFilterManaSolverTest' \
+            --tests '*RestrictedXManaReconciliationTest' \
             --max-workers=1 -PkotlinCompileParallelism=1 \
             -Pkotlin.compiler.execution.strategy=in-process -Dorg.gradle.jvmargs=-Xmx4g \
             --info --stacktrace 2>&1 | tee build/reports/paid-filter/focused.log
@@ -92,7 +96,7 @@ jobs:
           base = pathlib.Path('build/reports/paid-filter')
           roots = {'focused': base/'focused-xml', 'compatibility': pathlib.Path('rules-engine/build/test-results/test')}
           expected = {
-              'focused': ['PaidFilterManaSolverTest'],
+              'focused': ['PaidFilterManaSolverTest', 'RestrictedXManaReconciliationTest'],
               'compatibility': ['MultiManaSourceTest', 'MonocolorHybridManaSolverTest',
                   'DynamicManaAmountAutoTapTest', 'ManaSpendRestrictionAnyAbilityTest',
                   'ManaAbilityActivationTriggerScenarioTest', 'ManaSourceProvenanceScenarioTest',
@@ -108,17 +112,23 @@ jobs:
                   cases = tree.findall('testcase')
                   assert cases, (stage, name, 'zero cases')
                   assert all(all(c.find(k) is None for k in ('failure', 'error', 'skipped')) for c in cases), path
-                  if stage == 'focused': assert len(cases) == 14, len(cases)
+                  if stage == 'focused':
+                      assert len(cases) == {'PaidFilterManaSolverTest': 14,
+                          'RestrictedXManaReconciliationTest': 4}[name], (name, len(cases))
+                  assert len(cases) == int(tree.attrib['tests']), tree.attrib
+                  assert all(int(tree.attrib.get(k, 0)) == 0 for k in ('failures', 'errors', 'skipped')), tree.attrib
                   seen.add(name)
                   suites.append({'stage': stage, 'class': tree.attrib['name'], 'tests': len(cases),
                       'case_names': [c.attrib['name'] for c in cases],
                       'xml_sha256': hashlib.sha256(path.read_bytes()).hexdigest()})
               assert seen == set(expected[stage]), (stage, seen)
+          assert sum(s['tests'] for s in suites) == 52, suites
           receipt = {'schema': 'shared-paid-filter-targeted-qualification-v1',
               'disposition': 'TARGETED_COMPONENT_ONLY_PENDING_FULL_INTEGRATION_AND_INDEPENDENT_AUDIT',
               'binding': json.loads((base/'source-binding.json').read_text()),
               'run_id': os.environ['GITHUB_RUN_ID'], 'suites': suites,
               'complete_resource_feasibility_qualified': False, 'gameplay_admitted': False,
+              'restricted_x_menu_and_payment_consumers_received': False,
               'gameplay_initializations': 0, 'gameplay_outcomes_exposed': 0}
           (base/'targeted-qualification.json').write_text(json.dumps(receipt, indent=2)+'\n')
           PY
