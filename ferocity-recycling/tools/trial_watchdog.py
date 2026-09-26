@@ -12,6 +12,7 @@ import os
 from pathlib import Path
 import platform
 import re
+import resource
 import signal
 import stat
 import subprocess
@@ -19,7 +20,7 @@ import sys
 import time
 from typing import Any
 
-VERSION = "ferocity-watchdog-v1.1"
+VERSION = "ferocity-watchdog-v1.2"
 SOURCE = Path(__file__).resolve()
 RECORD_TYPES = {"HEADER", "INITIALIZED", "INTENT", "RESULT", "FAULT", "END"}
 
@@ -98,6 +99,8 @@ class WatchdogSpec:
     pinned_files: dict[str, str]
     supervisor_sha256: str
     inspection_limit_bytes: int = 32 * 1024 * 1024
+    file_size_limit_bytes: int | None = None
+    minimum_free_bytes: int | None = None
 
     @classmethod
     def parse(cls, value: dict[str, Any]) -> "WatchdogSpec":
@@ -130,6 +133,13 @@ class WatchdogSpec:
                 raise ValueError(f"Invalid finite {label} limit")
         if type(self.inspection_limit_bytes) is not int or not 1 <= self.inspection_limit_bytes <= 128 * 1024 * 1024:
             raise ValueError("Invalid inspection size limit")
+        if (self.file_size_limit_bytes is None) != (self.minimum_free_bytes is None):
+            raise ValueError("File size and free-space limits must be supplied together")
+        if self.file_size_limit_bytes is not None:
+            if type(self.file_size_limit_bytes) is not int or self.file_size_limit_bytes != 128 * 1024 * 1024:
+                raise ValueError("The qualified file-size limit is exactly 128 MiB")
+            if type(self.minimum_free_bytes) is not int or self.minimum_free_bytes != 768 * 1024 * 1024:
+                raise ValueError("The qualified free-space floor is exactly 768 MiB")
         if not isinstance(self.pinned_files, dict) or not self.pinned_files:
             raise ValueError("Exact executable/input pins are required")
         for name, expected in self.pinned_files.items():
@@ -250,6 +260,32 @@ class SupervisorInterrupted(Exception):
     pass
 
 
+def resource_preflight(spec: WatchdogSpec, evidence_directory: Path) -> list[dict[str, Any]]:
+    """Inspect each destination filesystem before launching; this does not reserve free space."""
+    if spec.minimum_free_bytes is None:
+        return []
+    destinations = [evidence_directory]
+    if spec.journal_path is not None:
+        parent = Path(spec.journal_path).parent
+        while not parent.exists():
+            parent = parent.parent
+        destinations.append(parent)
+    facts = []
+    for destination in dict.fromkeys(path.resolve() for path in destinations):
+        fs = os.statvfs(destination)
+        available = fs.f_bavail * fs.f_frsize
+        facts.append({"path": str(destination), "available_bytes": available,
+                      "required_bytes": spec.minimum_free_bytes,
+                      "sufficient": available >= spec.minimum_free_bytes})
+    return facts
+
+
+def apply_child_file_limit(limit: int) -> None:
+    # The supervisor is a single-threaded process. This runs in its owned POSIX child,
+    # before exec; both limits are lowered so the Java process cannot raise its own cap.
+    resource.setrlimit(resource.RLIMIT_FSIZE, (limit, limit))
+
+
 def supervise(spec: WatchdogSpec, output_root: Path) -> dict[str, Any]:
     if os.name != "posix":
         raise RuntimeError("This reviewed watchdog requires POSIX process groups and durable directory writes")
@@ -331,13 +367,21 @@ def supervise(spec: WatchdogSpec, output_root: Path) -> dict[str, Any]:
     try:
         for signum in (signal.SIGTERM, signal.SIGINT):
             previous_handlers[signum] = signal.signal(signum, interrupt)
+        if spec.minimum_free_bytes is not None:
+            facts = resource_preflight(spec, directory)
+            writer.append("RESOURCE_PREFLIGHT", filesystems=facts,
+                          child_file_size_limit_bytes=spec.file_size_limit_bytes)
+            if not facts or any(not row["sufficient"] for row in facts):
+                raise OSError("Insufficient evidence space: 768 MiB free is required before child launch")
         writer.append("LAUNCH_INTENT", argv=list(spec.argv), cwd=spec.cwd)
         with (directory / "stdout.log").open("xb", buffering=0) as stdout, (directory / "stderr.log").open("xb", buffering=0) as stderr:
             force_directory(directory)
             launching = True
             try:
                 child = subprocess.Popen(list(spec.argv), cwd=spec.cwd, stdin=subprocess.DEVNULL,
-                                         stdout=stdout, stderr=stderr, shell=False, start_new_session=True)
+                                         stdout=stdout, stderr=stderr, shell=False, start_new_session=True,
+                                         preexec_fn=(None if spec.file_size_limit_bytes is None else
+                                                     lambda: apply_child_file_limit(spec.file_size_limit_bytes)))
             finally:
                 launching = False
             if deferred_interrupt is not None:

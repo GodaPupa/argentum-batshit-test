@@ -416,6 +416,10 @@ object FerocityDevelopmentSupervisorFixture {
         mustReject("argv", changedSpec(JsonObject(spec + ("argv" to JsonArray(argv)))))
         mustReject("wall", changedSpec(JsonObject(spec + ("wall_seconds" to JsonPrimitive(301)))))
         mustReject("python", JsonObject(claim + ("python_executable_sha256" to JsonPrimitive("f".repeat(64)))))
+        // Additional resource assertions do not replace any of the four original negative checks.
+        mustReject("file-cap", changedSpec(JsonObject(spec + ("file_size_limit_bytes" to JsonPrimitive(FEROCITY_CHILD_FILE_LIMIT_BYTES + 1)))))
+        mustReject("free-space", changedSpec(JsonObject(spec + ("minimum_free_bytes" to JsonPrimitive(FEROCITY_MINIMUM_FREE_BYTES - 1)))))
+        println("FIXED_RESOURCE_HANDSHAKE_PASSED actual_limit=1 rejected=2 gameplay=0")
         verifyDevelopmentSupervisorHandshake(command, context)
         check(!Files.exists(FerocityTrialJournal.journalPath(context.journalRoot, FEROCITY_D2_NAMESPACE, command.allocationId!!)))
         println("FIXED_SUPERVISOR_HANDSHAKE_PASSED valid=1 rejected=4 gameplay=0")
@@ -454,7 +458,7 @@ private fun runFixedDevelopmentSupervisorHandshake(repository: Path, fixture: Fe
     Files.createDirectories(evidenceParent)
     val dir = Files.createTempDirectory(evidenceParent, "supervisor-handshake-").toRealPath()
     val watchdogSource = repository.resolve("ferocity-recycling/tools/trial_watchdog.py")
-    ferocityFileSha256(watchdogSource) shouldBe "3c48f16ac3db1921fe572a9d10c30c22b5665fe0a5fcf66a0bae66d4d6cc233e"
+    ferocityFileSha256(watchdogSource) shouldBe "803a03aae3f63ffb114d9a8b56d4bf108b2f5f71f051057e204220f5f52adb37"
     val watchdog = dir.resolve("watchdog.py")
     Files.copy(watchdogSource, watchdog)
     val python = System.getenv("CODEX_PRIMARY_RUNTIME_PYTHON")?.takeIf { it.isNotBlank() }?.let { Path.of(it).toRealPath() }
@@ -502,6 +506,8 @@ private fun runFixedDevelopmentSupervisorHandshake(repository: Path, fixture: Fe
         put("cwd", dir.toString()); put("wall_seconds", 300); put("term_grace_seconds", 5)
         put("journal_path", FerocityTrialJournal.journalPath(admissionPath(dir, m.journalDirectory), FEROCITY_D2_NAMESPACE, row).toString())
         put("supervisor_sha256", m.watchdog.source.sha256); put("inspection_limit_bytes", 32 * 1024 * 1024)
+        put("file_size_limit_bytes", FEROCITY_CHILD_FILE_LIMIT_BYTES)
+        put("minimum_free_bytes", FEROCITY_MINIMUM_FREE_BYTES)
         put("pinned_files", JsonObject(mapOf(javaPath.toString() to javaSha, admission.toString() to admissionSha,
             ledger.toString() to ledgerSha, bundle.toString() to m.bundle.sha256).mapValues { JsonPrimitive(it.value) }))
     }
@@ -525,6 +531,7 @@ private fun runFixedDevelopmentSupervisorHandshake(repository: Path, fixture: Fe
     val childOutput = Files.readString(claimPath.parent.resolve("stdout.log"))
     check("FIXED_SUPERVISOR_HANDSHAKE_PASSED valid=1 rejected=4 gameplay=0" in childOutput) { childOutput }
     check("FIXED_PROCESS_FACTS_PASSED valid_proc_and_optional_java=1 rejected=8 gameplay=0" in childOutput) { childOutput }
+    check("FIXED_RESOURCE_HANDSHAKE_PASSED actual_limit=1 rejected=2 gameplay=0" in childOutput) { childOutput }
     val result = FerocityJournalCodec.json.parseToJsonElement(Files.readString(supervisorLog).trim()).jsonObject
     result.getValue("returncode").jsonPrimitive.int shouldBe 0
     result.getValue("input_pins_unchanged").jsonPrimitive.boolean shouldBe true

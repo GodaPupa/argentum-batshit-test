@@ -1,0 +1,44 @@
+{
+  "schema": "ferocity-combat-browser-schema-diagnosis-v1",
+  "created_utc": "2026-09-26T14:50:09.486936+00:00",
+  "status": "SOURCE_SCHEMA_DEFECT_VERIFIED_REMOTE_DIAGNOSTIC_ANNOTATION_UNAVAILABLE",
+  "official_source": {
+    "url": "https://docs.github.com/en/actions/reference/workflows-and-actions/contexts#context-availability",
+    "retrieved_date": "2026-09-26",
+    "method": "web open of primary current GitHub documentation",
+    "facts": [
+      "The job-level env key permits github, needs, strategy, matrix, vars, secrets and inputs contexts; runner is excluded.",
+      "Runner context is permitted in individual step env/run expressions; runner operating-system environment variables exist within shell steps."
+    ]
+  },
+  "published_source_sha": "d50e66dc12a58e1276b56bdf9ce78daecda51e1a",
+  "published_workflow_sha256": "27b922b16eac82cc3760a2ee2e32c477a309e038a4e3b4e59f904483cb2c73bf",
+  "actual_remote_run_record_sha256": "3be33ef8a240cd340936c5c5cfb854445eadaeafd2cafbf33ca57b04ba4eafb0",
+  "diagnosis": "Published workflow references runner.temp twice in job-level env, contrary to the documented schema. Remote run36249215930 completed failure with zero jobs. The invalid schema is independently established; exact GitHub validator annotation was unavailable and is not quoted or invented.",
+  "correction": "Remove exactly those two env keys and add one first post-checkout Bash step writing identical RUNNER_TEMP-derived paths to GITHUB_ENV before the source recorder and every provisioning/build/browser step.",
+  "retained": [
+    "Same target-branch PR and workflow_dispatch triggers",
+    "Exact reviewed head checkout and EXPECTED_HEAD",
+    "Same isolated Gradle/browser directory names",
+    "Same four cases and all assertions",
+    "All retries, worker counts, caps, source/runtime guards and failure preservation",
+    "No client, engine, policy, runner, test, config or recorder source change"
+  ],
+  "executed_browser_initializations": 0,
+  "executed_research_games": 0,
+  "static_checks": {
+    "new_shell_fragment_bash_n": 0,
+    "all_other_owned_bytes_unchanged": {
+      "e2e-scenarios/tests/ferocity-recycling/combat-current-rules.spec.ts": true,
+      "e2e-scenarios/ferocity-combat.config.ts": true,
+      "ferocity-recycling/tools/record_combat_browser.py": true,
+      "ferocity-recycling/combat-browser.just": true,
+      "ferocity-recycling/runtime-audits/combat-browser/README.md": true
+    },
+    "no_runner_expression_remains": true
+  },
+  "limits": [
+    "This static repair does not claim a new workflow launch or browser pass.",
+    "The original rejected remote attempt remains evidence; zero jobs means no gameplay/browser samples were consumed."
+  ]
+}

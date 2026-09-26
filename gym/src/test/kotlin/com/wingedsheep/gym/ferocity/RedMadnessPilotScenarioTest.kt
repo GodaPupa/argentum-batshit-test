@@ -188,6 +188,18 @@ class RedMadnessPilotScenarioTest : ScenarioTestBase() {
         test("10 Robbery discards Temper while retaining actual madness mana") {
             val g = fixture(10).withLandsOnBattlefield(1, "Mountain", 3).withCardInHand(1, "Highway Robbery")
                 .withCardInHand(1, "Fiery Temper").withCardInHand(1, "Mountain").build()
+            // This fixed midturn board already used its land drop to develop one of the three
+            // Mountains. Keep the spare Mountain as a real discard alternative, not a new play.
+            g.state = g.state.updateEntity(g.player1Id) {
+                it.with(com.wingedsheep.engine.state.components.player.LandDropsComponent(remaining = 0, maxPerTurn = 1))
+            }
+            g.state.getEntity(g.player1Id)!!.get<com.wingedsheep.engine.state.components.player.LandDropsComponent>()!!.remaining shouldBe 0
+            fullMenu(g.state, g.player1Id, enumerator).none { it.action is PlayLand } shouldBe true
+            g.findCardsInHand(1, "Mountain").size shouldBe 1
+            g.state.projectedState.getBattlefieldControlledBy(g.player1Id).count { id ->
+                g.state.getEntity(id)!!.get<com.wingedsheep.engine.state.components.identity.CardComponent>()!!.name == "Mountain" &&
+                    g.state.getEntity(id)!!.get<com.wingedsheep.engine.state.components.battlefield.TappedComponent>() == null
+            } shouldBe 3
             val temper = g.findCardsInHand(1, "Fiery Temper").single()
             val action = g.proposed(10).shouldBeInstanceOf<CastSpell>()
             g.castName(action) shouldBe "Highway Robbery"
@@ -312,8 +324,32 @@ class RedMadnessPilotScenarioTest : ScenarioTestBase() {
             g.drain(18)
             val input = adapter.build(g.state, g.player1Id, fullMenu(g.state, g.player1Id, enumerator), ActorEpoch("fixed", "case18-after", 0), 1)
             val cards = ActorPublicCards(input)
-            cards.opponentBoard.single { it.name == "Fish" }.tapped shouldBe true
+            val fish = cards.opponentBoard.single { it.hasSubtype("Fish") }
+            fish.name shouldBe "Fish Token"
+            fish.cardDefinitionId shouldBe "token:Fish"
+            fish.isType("CREATURE") shouldBe true
+            g.state.getEntity(fish.entityId)!!.has<com.wingedsheep.engine.state.components.identity.TokenComponent>() shouldBe true
+            fish.ownerId shouldBe g.player2Id
+            fish.controllerId shouldBe g.player2Id
+            fish.colors shouldBe setOf("BLUE")
+            fish.tapped shouldBe true
+            fish.power shouldBe 1
+            fish.toughness shouldBe 1
             cards.card(attacker).power shouldBe 4
+
+            // Continue the same real state so the Gift's actual public identity must pass both
+            // pilots' input boundaries. No extra fixture initialization or invented actor view.
+            g.submitPolicy(18).shouldBeInstanceOf<PassPriority>()
+            g.state.priorityPlayerId shouldBe g.player2Id
+            val opponentInput = adapter.build(g.state, g.player2Id, fullMenu(g.state, g.player2Id, enumerator),
+                ActorEpoch("artifact-policy-v0.1-author-bank", "fixed-Red18-gift-continuation", 0), 26101L)
+            val opponentProposal = ArtifactControlPilot().choose(opponentInput)
+            opponentProposal.inputBindingHash shouldBe opponentInput.bindingHash
+            opponentProposal.nextPolicyRngState shouldBe opponentInput.policyRngState
+            opponentProposal.action.shouldBeInstanceOf<PassPriority>()
+            println("RED18_ARTIFACT_INPUT ${opponentInput.canonicalJson()}")
+            println("RED18_ARTIFACT_PROPOSAL ${json.encodeToString(ActorProposal.serializer(), opponentProposal)}")
+            g.execute(opponentProposal.action).error shouldBe null
         }
         test("19 commit Fireblast's two Mountains for actual available lethal") {
             val g = fixture(19).withLandsOnBattlefield(1, "Mountain", 2).withCardInHand(1, "Fireblast")

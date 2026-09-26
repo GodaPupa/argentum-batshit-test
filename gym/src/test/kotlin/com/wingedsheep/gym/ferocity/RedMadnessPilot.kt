@@ -10,13 +10,13 @@ import com.wingedsheep.sdk.model.EntityId
 import com.wingedsheep.sdk.scripting.AdditionalCostPayment
 
 /**
- * MisterTwin's exact 2026-09-24 Red Madness 60, first-cell policy v0.1.
+ * MisterTwin's exact 2026-09-24 Red Madness 60, first-cell policy v0.2.
  * Pure ActorInput -> ActorProposal. Named priorities are tactical choices, never game outcomes.
  * Card facts and complete source hashes are in policy-development/red-madness-v0.1/card-identity.json.
  */
 class RedMadnessPilot {
     companion object {
-        const val VERSION = "red-madness-v0.1.1"
+        const val VERSION = "red-madness-v0.2"
         val MAIN_NAMES = setOf("Faithless Looting", "Fiery Temper", "Fireblast", "Grab the Prize",
             "Guttersnipe", "Highway Robbery", "Kessig Flamebreather", "Lava Dart", "Lightning Bolt",
             "Mountain", "Sazacap's Brew", "Sneaky Snacker")
@@ -34,7 +34,10 @@ class RedMadnessPilot {
         input.verifyBinding(input.epoch, input.actorId)
         val cards = ActorPublicCards(input)
         require(cards.hand.all { it.name in MAIN_NAMES }) { "Red policy has an unqualified hand card" }
-        require((cards.allBoard + cards.graveyard + input.observation.decisionCards).all { it.name in PUBLIC_POOL }) {
+        require((cards.allBoard + cards.graveyard + input.observation.decisionCards).all {
+            it.name in PUBLIC_POOL || (it.cardDefinitionId == "token:Fish" && it.name == "Fish Token" &&
+                it.isType("CREATURE") && it.hasSubtype("Fish") && !it.faceDown)
+        }) {
             "Red policy encountered a card outside the finite first-cell pool"
         }
         val action = if (input.decision != null) decide(input, cards) else act(input, cards)

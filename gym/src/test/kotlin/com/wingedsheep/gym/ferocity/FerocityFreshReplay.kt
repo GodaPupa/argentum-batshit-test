@@ -71,8 +71,8 @@ internal fun replayFreshFerocity(requestPath: Path, requestSha256: String): Fero
     }
     verifyFerocityClassPath(request.classPath, request.admittedPins)
     val definitions = readFerocityBundle(bundlePath, request.bundleSha256, request.admittedPins)
-    val journal = readFerocityJournal(journalRoot, request.namespace, request.trialId)
-    if (journal.claim.spec.stage != FerocityTrialStage.DETERMINISTIC_FIXTURE) {
+    val originalFiles = captureFerocityReplayFiles(journalRoot, request.namespace, request.trialId)
+    if (originalFiles.claim.spec.stage != FerocityTrialStage.DETERMINISTIC_FIXTURE) {
         require(definitions.bundle.definitionsInRegistrationOrder.none {
             it.origin.kind == FerocityDefinitionOriginKind.DETERMINISTIC_FIXTURE
         }) { "Deterministic fixture definitions cannot be admitted to research samples" }
@@ -87,8 +87,7 @@ internal fun replayFreshFerocity(requestPath: Path, requestSha256: String): Fero
     }
     ferocityReadExactJson(requestPath, requestSha256, FerocityFreshReplayRequest.serializer())
     readFerocityBundle(bundlePath, request.bundleSha256, request.admittedPins)
-    val after = readFerocityJournal(journalRoot, request.namespace, request.trialId)
-    require(after == journal) { "Original journal changed during fresh replay" }
+    originalFiles.verifyUnchanged()
     val receipt = FerocityFreshReplayReceipt(1, ProcessHandle.current().pid(), requestSha256, request.bundleSha256,
         ferocityClassPathDigest(request.classPath), request.admittedPins.sourceCommit, request.admittedPins.sourceTreeSha256,
         System.getProperty("java.runtime.version"), ferocityFileSha256(executable), definitions.bundle.registryBindings,

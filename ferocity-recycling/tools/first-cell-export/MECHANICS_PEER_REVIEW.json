@@ -1,0 +1,45 @@
+{
+  "schema": "ferocity-independent-source-peer/v1",
+  "reviewer": "/root/ferocity_mechanics",
+  "utc": "2026-09-26T11:48:17.461123+00:00",
+  "status": "STATIC_CLEAR_FOR_REVIEWED_FINITE_OFFLINE_EXPORT_PENDING_ACTUAL_COMPILATION_AND_FINAL_PLAN",
+  "author_manifest_sha256": "1b2296324aacb27110d7f9fa7e541be67d38db67b6715b64e6c2416aeb341e64",
+  "files_verified": [
+    {
+      "path": "ferocity-recycling/tools/first-cell-export/FerocityFinitePoolExport.java",
+      "sha256": "81a646d61fc44cc675c562d8a83accfe63588f1cd9fe0940e5a24f8c4d7cec6f"
+    },
+    {
+      "path": "ferocity-recycling/tools/first-cell-export/export_first_cell.py",
+      "sha256": "1bac0bad2c0977a36805398a3dd7872e5f72934c28b74eb1abdf287f5d7fac95"
+    },
+    {
+      "path": "ferocity-recycling/tools/first-cell-export/GETTERS.json",
+      "sha256": "bfdd39f056dc4501c7bd1e54b78d02b778f8aecedc1803a534da47bb2085e39d"
+    },
+    {
+      "path": "ferocity-recycling/tools/first-cell-export/README.md",
+      "sha256": "a1ed3bc1200fb2a0a9824a7d9f751ede0b8596abbab30c29067ae8b42d341336"
+    }
+  ],
+  "getter_sources_verified": 34,
+  "getter_declarations_verified": 36,
+  "deck_union": 33,
+  "findings": [
+    "Read full Java wrapper, Python orchestrator, fixed getter manifest and usage contract; independently match all36 names/getters/packages against current source and all three frozen60card decks.",
+    "Java uses the existing raw CardDefinition capture/restore APIs, exact generated AbilityIds and parentless registry; no TestCards override, corpus registry discovery or card mutation. Predefined token object may initialize other definitions internally, but only declared3 enter the bundle.",
+    "Source commit ancestry, exact compiled map identity/working bytes, getter source membership, loaded CodeSource path, ordered actual classpath and exact JVM executable are checked. Source-file launcher does not add its compiled wrapper to gameplay classpath.",
+    "Output creation is exclusive and durable file writers preserve partial attempts. Existing qualified watchdog provides claim, timeout and process cleanup; no game initializer, pilot action, seed provider or entropy call appears in this exporter.",
+    "Actual bundle and inline descriptor reload precedes the export receipt. Artifact validation pins explicitly use export-plan and no-ledger markers; final development admission and complete replay gates remain mandatory."
+  ],
+  "blocking_findings": [],
+  "conditions": [
+    "Review the actual final plan against complete accepted compiled-source and classpath maps; this wrapper does not independently prove a compiler used those source bytes. In particular, the currently observed SDK loose-class/JAR discrepancy must be resolved before any classpath is called qualified.",
+    "Choose an output directory outside every admitted classpath directory; creating output inside one would mutate that artifact and correctly fail subsequent identity checks.",
+    "The actual Java source-file compilation and export remain unexecuted; Java API source inspection is not an execution pass."
+  ],
+  "reviewer_export_executions": 0,
+  "reviewer_builds": 0,
+  "reviewer_games": 0,
+  "reviewer_code_edits": 0
+}

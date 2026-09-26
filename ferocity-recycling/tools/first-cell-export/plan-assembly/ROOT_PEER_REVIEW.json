@@ -1,0 +1,24 @@
+{
+  "schema": "ferocity-static-root-review-v1",
+  "source_freeze_sha256": "63bc160594ad65d94f99ab7cf80dcca0cc9bc1a67475af0ae12c5c8f3e8ff6a2",
+  "peer_review_sha256": "b0a96683ff54b1898b14d66d7f61e2f56d9a54b4814f0b2e301602a47e58d608",
+  "files_verified": {
+    "assemble_export_plan.py": "4ef5e3b02c4ad8a2caec0c649627c64005072f664ab76c8677e9538173adbb4d",
+    "MATERIAL.template.json": "75382f19ff7c344f3454544d68d8deeb4c2d86c6d9150caa57d844816e76f9a1",
+    "README.md": "800ee723524d5d1516d5f594bd204135839bc3c931c99ab7453cc7673629990e"
+  },
+  "decision": "ACCEPT_OFFLINE_COMPANION_FOR_ACTUAL_MATERIAL_ASSEMBLY",
+  "reviewed": [
+    "Exact original exporter hash before import; calls existing read-only validate, no entropy or Java launch.",
+    "Source/policy/protocol digest shapes match DevelopmentManifest.toPins; material cannot be null.",
+    "Output paths are new, disjoint, outside actual repository and directory classpath entries.",
+    "Actual final worker CP/JVM, published logical source and full source map remain required; no substitute gate data."
+  ],
+  "execution_claims": {
+    "plan_assemblies": 0,
+    "exports": 0,
+    "games": 0
+  },
+  "import_path": "/tmp/ferocity-qualified-build-a63kaiqe/checkout/ferocity-recycling/tools/first-cell-export/plan-assembly",
+  "compiled_source_changes": 0
+}

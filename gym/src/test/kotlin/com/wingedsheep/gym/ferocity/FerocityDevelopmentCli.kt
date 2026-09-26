@@ -155,7 +155,8 @@ internal fun verifyDevelopmentSupervisorHandshake(command: FerocityDevelopmentCo
         claim.getValue("python_executable_sha256").jsonPrimitive.content == m.watchdog.pythonExecutableSha256)
     val spec = claim.getValue("spec").jsonObject
     require(spec.keys == setOf("schema_version", "run_id", "argv", "cwd", "wall_seconds", "term_grace_seconds",
-        "journal_path", "pinned_files", "supervisor_sha256", "inspection_limit_bytes"))
+        "journal_path", "pinned_files", "supervisor_sha256", "inspection_limit_bytes",
+        "file_size_limit_bytes", "minimum_free_bytes"))
     require(spec.getValue("schema_version").jsonPrimitive.int == 1 && spec.getValue("run_id").jsonPrimitive.content == runId)
     require(claim.getValue("spec_sha256").jsonPrimitive.content ==
         FerocityJournalCodec.sha(FerocityJournalCodec.canonical(JsonElement.serializer(), spec))) { "Supervisor claim spec hash differs" }
@@ -163,6 +164,11 @@ internal fun verifyDevelopmentSupervisorHandshake(command: FerocityDevelopmentCo
     require(spec.getValue("cwd").jsonPrimitive.content == expected.repository.toString())
     require(spec.getValue("wall_seconds").jsonPrimitive.double == m.watchdog.wallSeconds.toDouble() &&
         spec.getValue("term_grace_seconds").jsonPrimitive.double == m.watchdog.termGraceSeconds.toDouble())
+    require(spec.getValue("file_size_limit_bytes").jsonPrimitive.long == FEROCITY_CHILD_FILE_LIMIT_BYTES &&
+        spec.getValue("minimum_free_bytes").jsonPrimitive.long == FEROCITY_MINIMUM_FREE_BYTES) {
+        "The exact prospective file and free-space boundaries are required"
+    }
+    verifyFerocityInheritedFileSizeLimit()
     val expectedArgv = listOf(m.source.javaExecutable, "-Xmx2048m", "-cp",
         m.source.classPath.joinToString(java.io.File.pathSeparator) { it.path }, expected.jvmEntrypoint,
         "run-one", expected.repository.toString(), command.admissionPath.toString(), command.admissionSha256,
@@ -204,4 +210,5 @@ internal fun verifyDevelopmentSupervisorHandshake(command: FerocityDevelopmentCo
     val finalProcesses = readFerocitySupervisorProcessFacts()
     validateFerocityJvmProcessFacts(finalProcesses, captureFerocityJvmProcessFacts())
     requireSameFerocitySupervisorProcesses(ownedProcesses, finalProcesses)
+    verifyFerocityInheritedFileSizeLimit()
 }

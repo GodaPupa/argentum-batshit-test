@@ -1,9 +1,9 @@
 {
-  "schema": "ferocity-ci-exact-fixed-selection-v1",
-  "originating_local_source_freeze_sha256": "8cb6896b50bd0a6e6e83bca75a5d010cf68d94b2eb9e3c59f7991857b5ce7f58",
-  "local_selection_sha256": "c90495366f94e86eac81e0472eb817cabba41ae8a9aa184d3d7f5facda65165a",
-  "class_count": 61,
-  "expected_cases": 502,
+  "schema": "ferocity-ci-exact-fixed-selection-v2",
+  "originating_local_source_freeze_sha256": "41283f68392d7792131eff26877a67a5905ca254dbdeee5529da7f8c17094199",
+  "local_selection_origin": "Explicit primary63/508 after reviewed resource05+06, Red02 and priority02 import; existing31 regressions remain separate.",
+  "class_count": 63,
+  "expected_cases": 508,
   "classes": [
     {
       "class": "PostBlockDeclarationPriorityScenarioTest",
@@ -73,7 +73,7 @@
       "module": "gym",
       "expected_count": 14,
       "path": "gym/src/test/kotlin/com/wingedsheep/gym/ferocity/FerocityDevelopmentAdmissionTest.kt",
-      "sha256": "2922a20c957fac06a4f219144504eb55a1d0c5613e4390bd9a13f751c662498a"
+      "sha256": "cc7f470de488e3d9c0562588903bee4da0714760bcf9647e8850d903c3a2bdea"
     },
     {
       "class": "FerocityDiagnosticsTest",
@@ -129,7 +129,7 @@
       "module": "gym",
       "expected_count": 24,
       "path": "gym/src/test/kotlin/com/wingedsheep/gym/ferocity/RedMadnessPilotScenarioTest.kt",
-      "sha256": "d5eec49c7ccf95591b8051e651059c0783fe1bdb5fd35767b4c466ae1b5db890"
+      "sha256": "fd712e765d3f9b670c2397db4c40c95a1daa9230deaf7e33e3460648796d9089"
     },
     {
       "class": "FieryTemperScenarioTest",
@@ -431,8 +431,20 @@
       "expected_count": 10,
       "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/GiftPromisedAtCastTimeTest.kt",
       "sha256": "4ea330eb19580d30bec88c8f739bd44e6314d46b9258dc9f9ca19751d05e0402"
+    },
+    {
+      "class": "FerocityResourceBoundaryTest",
+      "module": "gym",
+      "expected_count": 2,
+      "path": "gym/src/test/kotlin/com/wingedsheep/gym/ferocity/FerocityResourceBoundaryTest.kt",
+      "sha256": "7bf9380a61fec05b06439acc1e7dd35d7d976e4173c814edb1afc88f8aab3d83"
+    },
+    {
+      "class": "FerocityPriorityObservationTest",
+      "module": "gym",
+      "expected_count": 4,
+      "path": "gym/src/test/kotlin/com/wingedsheep/gym/ferocity/FerocityPriorityObservationTest.kt",
+      "sha256": "24a9f26fe443cb5b4fe012ac63f4087edd47ab45f95ff14d7ee9d1484cbf5c32"
     }
-  ],
-  "scope": "Fresh deterministic assertions on each checked-out CI head; repeated fixtures are not independent gameplay evidence.",
-  "research_games": 0
+  ]
 }

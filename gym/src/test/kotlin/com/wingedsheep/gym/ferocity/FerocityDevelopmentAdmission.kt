@@ -147,6 +147,7 @@ internal val firstDeckMainHashes = mapOf(
     FEROCITY_RED_ID to "d3427549613095ae1af366d3a060e94c1eb5be1715337133928c35ed7ecfee94",
 )
 internal val requiredProtocolHashes = mapOf(
+    "ferocity-recycling/protocols/FIRST_CELL_RESOURCE_AMENDMENT.md" to "356f4c06c9c944334f59856e0f336de8510b7b88c29bda9cdbd3c2d9851ba765",
     "ferocity-recycling/protocols/ACTIVE_CONTRACT.json" to "8d0551bb3fc5e4a9492540412fec17284bb8311d3501d0baf014da3969cc15d4",
     "ferocity-recycling/PROTOCOL.md" to "69a4018e9831fbd2d163ee441752d387adc4f8af9354b18f88285f4fe9a01699",
     "ferocity-recycling/protocols/RESEARCH_PROTOCOL.md" to "ab663b6b5f3d4761469bb2a9fcfd73a0bffd74efd9bfdb80b2de94640b59cee5",
@@ -159,7 +160,7 @@ internal val requiredFirstCellMechanics = setOf(
     "mechanic:madness-payment", "mechanic:blood-discard-draw", "mechanic:nda-return-role-death",
     "mechanic:brew-gift-and-targets", "mechanic:inline-fish-provenance", "mechanic:highway-resolution-plot",
     "runtime:actor-observation", "runtime:journal-replay", "runtime:definition-bundle",
-    "runtime:development-admission", "policy:artifact-control", "policy:red-madness",
+    "runtime:development-admission", "runtime:resource-boundary", "policy:artifact-control", "policy:red-madness",
 )
 private val firstCellInlineSourcePaths = mapOf(
     "ferocity/inline-source/GiftDsl.kt" to "mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/dsl/mechanics/GiftDsl.kt",
@@ -533,7 +534,7 @@ private fun verifyDevelopmentWatchdog(root: Path, watchdog: FerocityDevelopmentW
     require(accepted.getValue("source_guard_unchanged").jsonPrimitive.boolean && run.getValue("source_guard_unchanged").jsonPrimitive.boolean)
     require(run.getValue("returncode").jsonPrimitive.int == 0)
     val totals = accepted.getValue("fixed_process_cases").jsonObject
-    require(totals.getValue("executed").jsonPrimitive.int == 9 && totals.getValue("passed").jsonPrimitive.int == 9)
+    require(totals.getValue("executed").jsonPrimitive.int == 13 && totals.getValue("passed").jsonPrimitive.int == 13)
     listOf("failed", "errors", "skipped").forEach { require(totals.getValue(it).jsonPrimitive.int == 0) }
     require(ferocityFileSha256(Path.of(watchdog.pythonExecutable)) == watchdog.pythonExecutableSha256)
 }
@@ -562,10 +563,12 @@ private fun admissionTimestamp(value: String): Instant = runCatching { OffsetDat
 internal val requiredDevelopmentClassCounts = mapOf(
     "FerocityObservationBoundaryTest" to 28, "FerocityStackSourceObservationTest" to 12,
     "FerocityTriggerOrderObservationTest" to 6,
+    "FerocityPriorityObservationTest" to 4,
     "FerocityTrialJournalTest" to 20, "FerocityCardDefinitionBundleTest" to 16,
     "FerocityInlineTokenProvenanceTest" to 12,
     "ArtifactControlPolicyTest" to 24, "RedMadnessPilotScenarioTest" to 24,
     "FerocityDevelopmentAdmissionTest" to 14,
+    "FerocityResourceBoundaryTest" to 2,
 )
 
 internal fun verifyDevelopmentPolicyInputs(root: Path, policies: Map<String, FerocityDevelopmentPolicy>, sourceMap: Map<String, String>) {
