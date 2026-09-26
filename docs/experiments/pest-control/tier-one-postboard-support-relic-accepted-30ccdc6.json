@@ -1,0 +1,57 @@
+{
+  "schema": "pest-postboard-relic-acceptance-v1",
+  "status": "ACCEPTED_SEED_FREE_CARD_AND_COVERAGE_CAPABILITY_ONLY",
+  "source_branch": "pest-control/tier1-postboard-support-relic",
+  "shared_engine_primitive_commits": {
+    "effect_type": "09473bc84bf731055f620d52f127d34d881fc97d",
+    "effects_facade": "07d8c7f8097dc608d26836257db6fb03d36cbbdf",
+    "executor": "55b547a0a87796e2c22ea94fe6670afdd3985611",
+    "executor_registration": "b2b47e83f62b666ee530db25a77a11eee70ebdcd"
+  },
+  "implementation_commit": "4bb881ac99064acdef0c8528c2d74f9e70020591",
+  "scenario_commit": "d2e1e19c53134f23f9e7ecf7e54e30a1e35b3cc0",
+  "workflow_source_commit": "74c32fdf1a7554533069de817dd0046fdfcf526f",
+  "generated_snapshot_commit": "30ccdc64e1f07205563b37e00208030bbc6048c6",
+  "workflow_run_id": 36219756839,
+  "workflow_job_id": 108342652563,
+  "audit": {
+    "workflow_conclusion": "success",
+    "exact_scenarios": "PASS",
+    "scenario_cases": 3,
+    "card_lint": "PASS",
+    "snapshot_regeneration": "PASS",
+    "unrelated_snapshot_drift_guard": "PASS",
+    "only_generated_snapshot": "mtg-sets/src/test/resources/snapshots/cards/ALA.json"
+  },
+  "card": "Relic of Progenitus",
+  "qualified_behavior": [
+    "tap ability targets a player and that targeted player chooses the card exiled from their graveyard on resolution",
+    "second ability pays {1} and exiles Relic itself as a cost",
+    "second ability atomically exiles every player's entire graveyard",
+    "second ability draws one card after the graveyard exile effect",
+    "second ability remains legal with all graveyards empty and still draws a card"
+  ],
+  "queue_after_acceptance": {
+    "remaining_unique_identities": 3,
+    "remaining_sideboard_slots": 4,
+    "identities": {
+      "Kaervek's Torch": 1,
+      "Jack-o'-Lantern": 1,
+      "Faerie Macabre": 2
+    }
+  },
+  "official": {
+    "seeds_generated": 0,
+    "games_initialized": 0,
+    "actions_submitted": 0,
+    "outcomes_exposed": 0,
+    "boarding_plans_frozen": false,
+    "postboard_gameplay_authorized": false
+  },
+  "historical_evidence": {
+    "quarantined_pest_games": 81,
+    "usable_as_clean_tier1_evidence": false
+  },
+  "deck_list_changes": false,
+  "disposition": "Accepted only for exact seed-free postboard support. Continue the remaining three identities; no official gameplay authority is created."
+}

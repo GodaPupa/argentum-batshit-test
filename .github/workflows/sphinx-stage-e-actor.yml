@@ -1,0 +1,71 @@
+name: Sphinx Stage E Actor Receiving
+
+on:
+  push:
+    branches: [lab/sphinx-actor-adapter]
+  pull_request:
+    paths:
+      - .github/workflows/sphinx-stage-e-actor.yml
+      - sphinx-approach/STAGE_E_ACTOR_*.json
+      - sphinx-approach/collect-stage-e-actor.py
+      - gym/src/main/kotlin/com/wingedsheep/gym/actorinput/**
+      - gym/src/main/kotlin/com/wingedsheep/gym/sphinx/**
+      - gym/src/test/kotlin/com/wingedsheep/gym/actorinput/**
+      - gym/src/test/kotlin/com/wingedsheep/gym/sphinx/**
+
+permissions:
+  contents: read
+
+concurrency:
+  group: sphinx-stage-e-actor-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      GRADLE_LOCK_SLOTS: '1'
+      JAVA_TOOL_OPTIONS: -XX:MaxMetaspaceSize=768m
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.sha }}
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: gradle/actions/setup-gradle@v6
+      - uses: extractions/setup-just@f8a3cce218d9f83db3a2ecd90e41ac3de6cdfd9b
+
+      - name: Bind exact clean source and prospective complete banks
+        run: python3 sphinx-approach/collect-stage-e-actor.py bind
+
+      - name: Run all 10 shared plus 20 equal adapter plus 106 preserved checks
+        shell: bash
+        run: |
+          set -uo pipefail
+          set +e
+          just test-class ActorSpellPaymentProjectionTest --tests '*SphinxStageEActorAdapterTest' --tests '*ActorObservationBoundaryTest' --tests '*ActorStackSourceObservationTest' --tests '*ActorTriggerOrderObservationTest' --tests '*ActorPriorityObservationTest' --tests '*SphinxStageEPilotComponentTest' --rerun --max-workers=1 -PkotlinCompileParallelism=1 -Pkotlin.compiler.execution.strategy=in-process -Dorg.gradle.jvmargs=-Xmx4g --info --stacktrace 2>&1 | tee build/reports/sphinx-stage-e-actor/tests.log
+          result=${PIPESTATUS[0]}
+          printf '%s\n' "$result" > build/reports/sphinx-stage-e-actor/test-exit-code.txt
+          exit "$result"
+
+      - name: Audit actual XML and source after execution
+        if: always()
+        run: python3 sphinx-approach/collect-stage-e-actor.py collect
+
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: sphinx-stage-e-actor-${{ github.sha }}
+          if-no-files-found: error
+          path: |
+            build/reports/sphinx-stage-e-actor
+            gym/build/test-results/test/TEST-*.ActorObservationBoundaryTest.xml
+            gym/build/test-results/test/TEST-*.ActorStackSourceObservationTest.xml
+            gym/build/test-results/test/TEST-*.ActorTriggerOrderObservationTest.xml
+            gym/build/test-results/test/TEST-*.ActorPriorityObservationTest.xml
+            gym/build/test-results/test/TEST-*.SphinxStageEPilotComponentTest.xml
+            gym/build/test-results/test/TEST-*.ActorSpellPaymentProjectionTest.xml
+            gym/build/test-results/test/TEST-*.SphinxStageEActorAdapterTest.xml

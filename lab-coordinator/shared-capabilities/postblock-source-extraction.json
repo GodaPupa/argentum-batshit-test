@@ -1,0 +1,692 @@
+{
+  "schema": "shared-postblock-source-extraction-v1",
+  "status": "UNEXECUTED_RECEIVING_COMPONENT",
+  "source_head": "d50e66dc12a58e1276b56bdf9ce78daecda51e1a",
+  "source_tree": "9c3394e67acaa11e847d9994e969de6b068d2b5f",
+  "receiving_base": "7263a5ed391a964e2f7d640e501cdf62442c37c8",
+  "receiving_base_tree": "15c48d3664c12134b6804c1cc091df22d487d61e",
+  "receiving_parents": [
+    "9ca83110f5907e66a0c289f8205ed1e24575535c",
+    "4a363dccf13941ee7a1402063738d98bacc9e3e4"
+  ],
+  "external_source_freeze_sha256": "8cb6896b50bd0a6e6e83bca75a5d010cf68d94b2eb9e3c59f7991857b5ce7f58",
+  "original_run": {
+    "run_id": 36249219082,
+    "url": "https://github.com/GodaPupa/argentum-batshit-test/actions/runs/36249219082",
+    "engine_server_scoped_artifacts": [
+      {
+        "scope": "engine",
+        "artifact_id": 10907769272,
+        "zip_sha256": "923b380f5bda9422178471f50a4f7bfc373cde7e98678a819b9bdf035d0f3bce",
+        "zip_bytes": 2731714,
+        "actual_cases": 234,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "suites": {
+          "com.wingedsheep.engine.handlers.PredicateEvaluatorRecordTest": {
+            "cases": 19,
+            "xml_sha256": "c2e4ea549d3a27409826493f110cd02d7b7ebffc98e87aa6ab9558332f7dd8fe"
+          },
+          "com.wingedsheep.engine.handlers.effects.zones.MoveToZoneEffectExecutorTest": {
+            "cases": 10,
+            "xml_sha256": "c0a2e076119feca4a52dbb0558c273a0b1fd50a0ccf021060495b11ac9a8c555"
+          },
+          "com.wingedsheep.engine.multiplayer.MultiDefenderCombatTest": {
+            "cases": 4,
+            "xml_sha256": "4e11961d26181ec1cb4cda391289e606e462791c0302493d391c738adbd99a24"
+          },
+          "com.wingedsheep.engine.multiplayer.TwoHeadedGiantCombatTest": {
+            "cases": 9,
+            "xml_sha256": "f12a77ce72b67f02e97128a839508e5bea863410fdf5c44ab681fbdb56dcf9a0"
+          },
+          "com.wingedsheep.engine.scenarios.ActivationPriorityScenarioTest": {
+            "cases": 9,
+            "xml_sha256": "5f2f4503d450ccb3e35cba11ea2392882a312b084a0ec795806913d6c456d2e8"
+          },
+          "com.wingedsheep.engine.scenarios.BandingTrampleDrainScenarioTest": {
+            "cases": 1,
+            "xml_sha256": "73ac18ee3e747783a2da8209b5df8dce6e3af877dc1a8f8eada438c532e2b81c"
+          },
+          "com.wingedsheep.engine.scenarios.BatchMayQuestionTest": {
+            "cases": 7,
+            "xml_sha256": "c899fc26fbd4c407f2f2571205ca475c070bd07a309360b29f0374352b426043"
+          },
+          "com.wingedsheep.engine.scenarios.CombatAssignmentCurrentRulesTest": {
+            "cases": 12,
+            "xml_sha256": "15813dc27a15fd8826e2ec3b0743fb334244fba4c8f83d9d6e8c761179e3ed5c"
+          },
+          "com.wingedsheep.engine.scenarios.CombatDamageAssignmentTest": {
+            "cases": 9,
+            "xml_sha256": "50e246696734dcad1647a98ad4f9e5fbe36b5385b429219963d3cfa1a48c6326"
+          },
+          "com.wingedsheep.engine.scenarios.CombatResolutionBoardTest": {
+            "cases": 10,
+            "xml_sha256": "308542ef3b7780a1419993eed084c79b4e54520fee6b0c9a716dd544f2c9e66b"
+          },
+          "com.wingedsheep.engine.scenarios.DamageSourceIdentityScenarioTest": {
+            "cases": 5,
+            "xml_sha256": "cf5067d4b2dc58eaa3c33216d5fe7c9e56ebefe022f956c11789aa906128d82a"
+          },
+          "com.wingedsheep.engine.scenarios.DamageSourceTriggerScenarioTest": {
+            "cases": 6,
+            "xml_sha256": "945bf50a5ca2dcc68e7f5912819e73f8cc8fee06a55212ca85f3c84162600502"
+          },
+          "com.wingedsheep.engine.scenarios.DeclareBlockersPriorityWindowTest": {
+            "cases": 3,
+            "xml_sha256": "1179e4fa5fe8f5c79609f2b6345b05074c9e1b4771937dae5b9a0bb52a14677c"
+          },
+          "com.wingedsheep.engine.scenarios.FerocityOfTheHuntScenarioTest": {
+            "cases": 24,
+            "xml_sha256": "dba8aa7ed666ab9cec1d121e63da55aa0fe1c5c19698554afc6bc030bac984f3"
+          },
+          "com.wingedsheep.engine.scenarios.FerocityPrereleaseDefinitionIdentityTest": {
+            "cases": 1,
+            "xml_sha256": "cfce9f988a677d9e9b45dc7afdb7047dda1aef59e2c1e20eeaf8cbd80fc501eb"
+          },
+          "com.wingedsheep.engine.scenarios.GiftPromisedAtCastTimeTest": {
+            "cases": 10,
+            "xml_sha256": "dd6db66a8b18412df2c782bbd097d5a8a521a7c40696bb5df407632666030156"
+          },
+          "com.wingedsheep.engine.scenarios.GiftSpellResolutionTest": {
+            "cases": 8,
+            "xml_sha256": "8f9a52dccc255fe5c532461a4caad6df4fe38bf3c564c70e665f8548acdbf51f"
+          },
+          "com.wingedsheep.engine.scenarios.ManaAbilityColorChoicePipelineTest": {
+            "cases": 4,
+            "xml_sha256": "067d969f4acadcd9dd2a600ece4e5f837a1cf840e68bda64718d7a86a2a9e25e"
+          },
+          "com.wingedsheep.engine.scenarios.NestedManaPaymentBoundaryScenarioTest": {
+            "cases": 12,
+            "xml_sha256": "9a162add7325c3c36c0d37a33830063858dab56e783374d5042f6d4aba8e51e3"
+          },
+          "com.wingedsheep.engine.scenarios.PaidFlashbackStackExitScenarioTest": {
+            "cases": 30,
+            "xml_sha256": "3f63756d307a3f5d0a139f00ad9a96a25b4727a44a9cc0dbdddb977058f3a354"
+          },
+          "com.wingedsheep.engine.scenarios.PlayerTargetRevalidationScenarioTest": {
+            "cases": 3,
+            "xml_sha256": "65eb2a568a38b045869b1d2eb156701291a58ca34bd58b46b0bd54bf44e5e2c3"
+          },
+          "com.wingedsheep.engine.scenarios.PostBlockDeclarationPriorityScenarioTest": {
+            "cases": 16,
+            "xml_sha256": "0f8165afd1b27a3a5faafdec796c3baa8f5e1350ec4bf1a4b5d1f2222456b51a"
+          },
+          "com.wingedsheep.engine.scenarios.SelfEntersTappedOffStackEntryScenarioTest": {
+            "cases": 11,
+            "xml_sha256": "ca2fcf1d2436b34d2ab9866cc3351fc19c2e994b915d60cfc28c472ebf1284e1"
+          },
+          "com.wingedsheep.engine.scenarios.TargetedDepartedSourceLkiTest": {
+            "cases": 4,
+            "xml_sha256": "0e1e3bc8a11baa59706b5fd83aaef98821e76d12df4a073ebaf3634e9a7823c7"
+          },
+          "com.wingedsheep.engine.scenarios.TriggerOrderingConcessionScenarioTest": {
+            "cases": 1,
+            "xml_sha256": "3f6e15e326c77eb21a271866137c956246ca5299d407c0c6f25cb5c9fc2ea100"
+          },
+          "com.wingedsheep.engine.scenarios.TriggerOrderingScenarioTest": {
+            "cases": 6,
+            "xml_sha256": "0014ebb19ff2cb4a443c22d5fad7919375432ff1dc12b87e3d0a5a7a5b974935"
+          }
+        }
+      },
+      {
+        "scope": "server",
+        "artifact_id": 10908463280,
+        "zip_sha256": "9d824e8a221ebbe4b81d38cd3bb0008224dc99903cf1ba9d5c8e0681cb506db2",
+        "zip_bytes": 2181740,
+        "actual_cases": 12,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "suites": {
+          "com.wingedsheep.gameserver.session.TwoHeadedGiantSessionTest": {
+            "cases": 10,
+            "xml_sha256": "569ec803fb2e55846ad95a750329b797abc653a3594a27125738951df2de7a0b"
+          },
+          "com.wingedsheep.gameserver.session.PostBlockDeclarationSessionTest": {
+            "cases": 2,
+            "xml_sha256": "42160529995eda7eb39796d36ad01fb5fcd64f6edd42beb89c8384a769fa23d2"
+          }
+        }
+      }
+    ],
+    "overall_runtime_accepted": false,
+    "gym_actual_cases": 176,
+    "gym_passed": 174,
+    "gym_failed": [
+      "Red case10",
+      "Red case18"
+    ],
+    "gym_artifact_id": 10908204938,
+    "gym_zip_sha256": "9d65146f87dda70842bcf16ce4cd9415ae2354865795d4b5cbd1ece1ea7d585e"
+  },
+  "production_files": [
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/combat/DeclareBlockersHandler.kt",
+      "source_sha256": "1d32d48dc5861865046f5aa274698534e7fdb6b237d267af86c012b158d6e1d6",
+      "selected_hunks": "all",
+      "group": "postblock_boundary",
+      "receiving_sha256": "1d32d48dc5861865046f5aa274698534e7fdb6b237d267af86c012b158d6e1d6",
+      "base_sha256": "6a2ae1405b552e27dd8a1012928e3e240fa1bcde6abf2fe2877eec930e62c974",
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/decision/SubmitDecisionHandler.kt",
+      "source_sha256": "ec9e7aef1d5a02c228e8614d8a5fb442cd8d7c2fdf397dd681bfb7073ce50614",
+      "selected_hunks": "all",
+      "group": "postblock_boundary",
+      "receiving_sha256": "ec9e7aef1d5a02c228e8614d8a5fb442cd8d7c2fdf397dd681bfb7073ce50614",
+      "base_sha256": "37f1c4d74677e2b965e64c15f14e660a0ff6998700b905496dbb0548f419d7c8",
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/state/GameState.kt",
+      "source_sha256": "56a68883a54a3accef7da0066c3148aa0fc5795174383418922481a4a62c71e2",
+      "selected_hunks": "all",
+      "group": "postblock_boundary",
+      "receiving_sha256": "56a68883a54a3accef7da0066c3148aa0fc5795174383418922481a4a62c71e2",
+      "base_sha256": "027dc178e12668e447eb9cea6f6b8d95305c74683ff135dad41be1b4417b864f",
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/combat/CombatDefenders.kt",
+      "source_sha256": "19e46ab82c959375752046940f0dc8e39a34513eac26d687cc835b6bf91622fe",
+      "selected_hunks": "all",
+      "group": "postblock_boundary",
+      "receiving_sha256": "19e46ab82c959375752046940f0dc8e39a34513eac26d687cc835b6bf91622fe",
+      "base_sha256": "f88d3f4a1ac6abf3dd27005174d076fe13fb8a85fd3ae61683b5d63617792166",
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/combat/BlockDeclarationProcessor.kt",
+      "source_sha256": "47491b790c9b856122140a2049e1defffd5b2f23fbd348f8be90a333ee7f9d4e",
+      "selected_hunks": "all",
+      "group": "postblock_boundary",
+      "receiving_sha256": "47491b790c9b856122140a2049e1defffd5b2f23fbd348f8be90a333ee7f9d4e",
+      "base_sha256": null,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/PendingTrigger.kt",
+      "source_sha256": "74453950aa12e01761bf88eb12f212453633bdaf07661f5ff3e65268b272f311",
+      "selected_hunks": "all",
+      "group": "postblock_boundary",
+      "receiving_sha256": "74453950aa12e01761bf88eb12f212453633bdaf07661f5ff3e65268b272f311",
+      "base_sha256": "b16fe4c27b85db64798ed4e3194bfeda9df0a5fadf122c8a849e108eec67190d",
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerProcessor.kt",
+      "source_sha256": "4203df9bac92685480e694f2ad882d700abe8f78c311e852548138add8fbe5e9",
+      "selected_hunks": "all",
+      "group": "postblock_boundary",
+      "receiving_sha256": "4203df9bac92685480e694f2ad882d700abe8f78c311e852548138add8fbe5e9",
+      "base_sha256": "abddff4eeb294092ce0f3b5b8f840818233dfc706c1d02a4e0864dea14a41832",
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/legalactions/enumerators/CombatEnumerator.kt",
+      "source_sha256": "6fe9da8a33999c557eecbf7ca8e64dea4a7e11cd06d5493404f2d7afc36013f8",
+      "selected_hunks": "all",
+      "group": "postblock_boundary",
+      "receiving_sha256": "6fe9da8a33999c557eecbf7ca8e64dea4a7e11cd06d5493404f2d7afc36013f8",
+      "base_sha256": "e6057516db3c68435a7a0fdb21ee9723764b3a9816f75186f30535a759563d44",
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/mana/ManaPaymentWindow.kt",
+      "source_sha256": "aa66c482d1e65b2d91e74e601461f24a1b3698c8d887e5a915e69db7d0a7dd4f",
+      "selected_hunks": "all",
+      "group": "postblock_boundary",
+      "receiving_sha256": "aa66c482d1e65b2d91e74e601461f24a1b3698c8d887e5a915e69db7d0a7dd4f",
+      "base_sha256": "f7cb7c0c85da1837a68e724f0c8c862282fd977ec1476ec3254e9375edb93c14",
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/special/ConcedeHandler.kt",
+      "source_sha256": "53282467b099ced2d3f31dd758a4de14f1a50f0db3a2c69c3924be2dc07e14fa",
+      "selected_hunks": "all",
+      "group": "postblock_boundary",
+      "receiving_sha256": "53282467b099ced2d3f31dd758a4de14f1a50f0db3a2c69c3924be2dc07e14fa",
+      "base_sha256": "fc1385b34a7a8df604da7bc26a609b8270d3d931b07a214ee47ff55053c462dd",
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/special/SpecialActionsModule.kt",
+      "source_sha256": "5e3423ed680afee620b07c005a58080b2701ab37fd8d3740a4eb28c25ff9dd82",
+      "selected_hunks": "all",
+      "group": "postblock_boundary",
+      "receiving_sha256": "5e3423ed680afee620b07c005a58080b2701ab37fd8d3740a4eb28c25ff9dd82",
+      "base_sha256": "04c7e2cc154d0a200ffb13c1447c66f88175aa40ba2f3638829aad244d61850a",
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/ZoneTransitionService.kt",
+      "source_sha256": "1efe7f3837c17fc7ba01ef3e4d67b7273b7c47eae355826ab92833388bda55ed",
+      "selected_hunks": [
+        0,
+        2,
+        3
+      ],
+      "group": "postblock_boundary",
+      "receiving_sha256": "ef01c78ae24d79e9ff2cba0d90c9d5933c6a0c9ca5f11135e6e6e6fdaf32b005",
+      "base_sha256": "c9681319f137e6dd09f17e4845106f63f66d9fd1590d64dfd036af488e416c4a",
+      "source_bytes_unchanged": false,
+      "three_way_ancestor_sha256": "8638493a9fa4931546282aa562f29c087f96ef25dcc14118edf5cbd3e751ab4b",
+      "receiving_main_sha256": "c9681319f137e6dd09f17e4845106f63f66d9fd1590d64dfd036af488e416c4a",
+      "reconciliation": "Preserves main removal of the obsolete sourceLastKnown fallback. New sourceSnapshot is chosen only after exact ObjectRef departure revalidation; pending source capture is stamped at departure and never from a returned object."
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/TriggerOrderingContinuation.kt",
+      "source_sha256": "660fed148d51fa0736a9cbe225bf0e9d21783a8dbb77e20d4fd95cd47287e910",
+      "selected_hunks": "all",
+      "group": "typed_trigger_order_and_departing_chooser",
+      "receiving_sha256": "660fed148d51fa0736a9cbe225bf0e9d21783a8dbb77e20d4fd95cd47287e910",
+      "base_sha256": null,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/TriggerOrderingResumer.kt",
+      "source_sha256": "851f8690ba812ac033a2c36ffb4235477ec9cc2d0a9862ad7b630611e4035fbb",
+      "selected_hunks": "all",
+      "group": "typed_trigger_order_and_departing_chooser",
+      "receiving_sha256": "851f8690ba812ac033a2c36ffb4235477ec9cc2d0a9862ad7b630611e4035fbb",
+      "base_sha256": null,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/Serialization.kt",
+      "source_sha256": "7a6164084ff2f6b49aa6f90ac4108ccfef86c7184b43e3841cf6482e07186d41",
+      "selected_hunks": "all",
+      "group": "typed_trigger_order_and_departing_chooser",
+      "receiving_sha256": "7a6164084ff2f6b49aa6f90ac4108ccfef86c7184b43e3841cf6482e07186d41",
+      "base_sha256": "9338e05c1615091987127b45ac3fa944a8154832997e069cd572e36e7cefd3ea",
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/ContinuationHandler.kt",
+      "source_sha256": "41e483dccbf19148ea5d266176532b8e3689f56e0193d57e7de1a6bb4ccf30aa",
+      "selected_hunks": "all",
+      "group": "typed_trigger_order_and_departing_chooser",
+      "receiving_sha256": "41e483dccbf19148ea5d266176532b8e3689f56e0193d57e7de1a6bb4ccf30aa",
+      "base_sha256": "53d405a42d0fa5cd1d042cde1c1a8a89f7c4d2240fb003664493261ce7cd22d7",
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/sba/player/PlayerLeavesGameProcessor.kt",
+      "source_sha256": "f029661e089f00df5bf6eedd655a8415dc3649742e1704ff1045255b3d926504",
+      "selected_hunks": "all",
+      "group": "typed_trigger_order_and_departing_chooser",
+      "receiving_sha256": "91baf7d4f817e65ff93ed6e91c054f2328d50caf2be8309c72cd3bbfa57c781c",
+      "base_sha256": "36c20cb35af78d707dc77c8acc6b2835e226c25afd995b45c2fcff409436bacc",
+      "source_bytes_unchanged": false,
+      "comment_only_adaptation": "Replaced inherited two-player-project scope language with receiving-qualification requirement; runtime unchanged."
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/state/components/stack/EntitySnapshot.kt",
+      "source_sha256": "7bf956fc068bcfef7ddacffca0f08372e7ac4e3576f9f0f8ace416e1abaffe46",
+      "selected_hunks": "all",
+      "group": "departure_snapshot_and_actor_replay",
+      "receiving_sha256": "7bf956fc068bcfef7ddacffca0f08372e7ac4e3576f9f0f8ace416e1abaffe46",
+      "base_sha256": "3e15152c672ee4f8caab09904e8b614f6c91942076c13dbb6ed26cbc71b30fc0",
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/state/components/stack/StackComponents.kt",
+      "source_sha256": "bcb373ecbf3eac5b70966552dfb878a8fac752bdf45e3796a320b930b4546e4c",
+      "selected_hunks": [
+        2,
+        3
+      ],
+      "group": "departure_snapshot_and_actor_replay",
+      "receiving_sha256": "a24ee46915d62b7dc36a42bef5e049867360a4f53b97f877c4c304dc0958b224",
+      "base_sha256": "574b098ef63d2e952818e7582bb89248adbfe203cb2568b1cfeb38a64405ae9a",
+      "source_bytes_unchanged": false
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/CoreContinuations.kt",
+      "source_sha256": "fa14c5a3abea93a6cfc6a4c3395105e32fe971691186a250ec9311359087083f",
+      "selected_hunks": "all",
+      "group": "departure_snapshot_and_actor_replay",
+      "receiving_sha256": "fa14c5a3abea93a6cfc6a4c3395105e32fe971691186a250ec9311359087083f",
+      "base_sha256": "aa63036d3ab4169c66f984cec1f42be83e013103d7372e63661300c03d88d935",
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/EffectAndTriggerContinuationResumer.kt",
+      "source_sha256": "6980996cc6cc4481d5f53bc12785724b38a7f9eaa6c986be5692999d691a87c5",
+      "selected_hunks": "all",
+      "group": "departure_snapshot_and_actor_replay",
+      "receiving_sha256": "6980996cc6cc4481d5f53bc12785724b38a7f9eaa6c986be5692999d691a87c5",
+      "base_sha256": "6ac747636aed26170297b29364b3c5300ef7c005b38483c2e0ec58d50e2582da",
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/EffectContext.kt",
+      "source_sha256": "ab14c3d79c6bf842313b948af585642b80b96d40834925af5cfa75fda084c155",
+      "selected_hunks": "all",
+      "group": "departure_snapshot_and_actor_replay",
+      "receiving_sha256": "ab14c3d79c6bf842313b948af585642b80b96d40834925af5cfa75fda084c155",
+      "base_sha256": "6d86756fe821abf75f7fa654ff5458ab768e36e33edd8384dff96bd714fe5902",
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/ability/ActivateAbilityHandler.kt",
+      "source_sha256": "877b979454e98d4ceb2790ebce528323bcd94dbd3fe99646406e256dbdd06d06",
+      "selected_hunks": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        8,
+        9,
+        10,
+        11,
+        12,
+        15
+      ],
+      "group": "departure_snapshot_and_actor_replay",
+      "receiving_sha256": "9ae281988e9ced26d699e776976c8ccd74b7fdb93d0f8509e54c87ccef855aac",
+      "base_sha256": "140f0c6231819e9aea7d089cc06712983b5dcae14097e20083e7374bfd6b09fe",
+      "source_bytes_unchanged": false
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/CoreAutoResumerModule.kt",
+      "source_sha256": "685ab54058fc2e25e9b4e1dc352642080623b785781c7b2161a411eaad0360f6",
+      "selected_hunks": "all",
+      "group": "nested_payment_priority",
+      "receiving_sha256": "685ab54058fc2e25e9b4e1dc352642080623b785781c7b2161a411eaad0360f6",
+      "base_sha256": "b3935dee0a4fcae4ee8d6124df012d27674ad47fa7c73618bb9f39106f627d44",
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/CastPriorityProcessor.kt",
+      "source_sha256": "2a43d4a6cfdf12c06dc7d7a065d424b9b60f28fb214eaa9fa17d585af2c23ff2",
+      "selected_hunks": "all",
+      "group": "nested_payment_priority",
+      "receiving_sha256": "2a43d4a6cfdf12c06dc7d7a065d424b9b60f28fb214eaa9fa17d585af2c23ff2",
+      "base_sha256": "1aec94b051c983deacf4a7a22f6d94aa40336e2d2b158096ed6c2305d20a8d35",
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/DamageUtils.kt",
+      "source_sha256": "bcdb4cdceda875abc2910ef943f416918d77c0488a90c3c8f4beb8a7ccc3c5d5",
+      "selected_hunks": "all",
+      "group": "departed_damage_source_required_by_PB13_PB15",
+      "receiving_sha256": "bcdb4cdceda875abc2910ef943f416918d77c0488a90c3c8f4beb8a7ccc3c5d5",
+      "base_sha256": "c04d4224fc6da08947b397c28728313c557bb7da91680080141ab71aa6171ba0",
+      "source_bytes_unchanged": true,
+      "three_way_ancestor_sha256": "177e3693a87b31ca895a24042f93d2f0c9f2314e2788a1c728d0568ea381d307",
+      "receiving_main_sha256": "c04d4224fc6da08947b397c28728313c557bb7da91680080141ab71aa6171ba0",
+      "reconciliation": "Preserves main removal of the obsolete sourceLastKnown fallback. New sourceSnapshot is chosen only after exact ObjectRef departure revalidation; pending source capture is stamped at departure and never from a returned object."
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/damage/DealDamageExecutor.kt",
+      "source_sha256": "89f23e25b2ef59497c8d24ba945d77c159778765499fdc904c7b595f20fd451a",
+      "selected_hunks": "all",
+      "group": "departed_damage_source_required_by_PB13_PB15",
+      "receiving_sha256": "89f23e25b2ef59497c8d24ba945d77c159778765499fdc904c7b595f20fd451a",
+      "base_sha256": "a64af30ab255610e9dd715554e134d749a99c27f61164f152e4c7520e5726530",
+      "source_bytes_unchanged": true,
+      "three_way_ancestor_sha256": "8b00cffab2ea260bfff5bb6218d70065eabcf742df32e4ad1a2f8ab01a04a6c8",
+      "receiving_main_sha256": "a64af30ab255610e9dd715554e134d749a99c27f61164f152e4c7520e5726530",
+      "reconciliation": "Preserves main removal of the obsolete sourceLastKnown fallback. New sourceSnapshot is chosen only after exact ObjectRef departure revalidation; pending source capture is stamped at departure and never from a returned object."
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/PredicateEvaluator.kt",
+      "source_sha256": "4332fa35b5cb92292cdf66ab967e187b64cc81c7ae53545d2eda8b81a3d84e86",
+      "selected_hunks": "all",
+      "group": "departed_damage_source_required_by_PB13_PB15",
+      "receiving_sha256": "4332fa35b5cb92292cdf66ab967e187b64cc81c7ae53545d2eda8b81a3d84e86",
+      "base_sha256": "ac9604c03754dffdd06e294e30f6a3379a7bfd7129a9ce31abba879576a75496",
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/targeting/PlayerProtectionRules.kt",
+      "source_sha256": "5632a9bbe51e675d21c4ade2ed352ba44a44b3ff9d27b535032ff179ccb8c2c4",
+      "selected_hunks": "all",
+      "group": "departed_damage_source_required_by_PB13_PB15",
+      "receiving_sha256": "5632a9bbe51e675d21c4ade2ed352ba44a44b3ff9d27b535032ff179ccb8c2c4",
+      "base_sha256": "2b807afd0f6f09f986af74c3ee6a042eb598359870877fcef74df7208b20c637",
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "game-server/src/main/kotlin/com/wingedsheep/gameserver/session/GameSession.kt",
+      "source_sha256": "4b19fa5b43175d4c4a089f6efbceb2c1aa560b92f4d5f605d6d66f09707fb2ce",
+      "selected_hunks": "all",
+      "group": "server_declaration_routing",
+      "receiving_sha256": "4b19fa5b43175d4c4a089f6efbceb2c1aa560b92f4d5f605d6d66f09707fb2ce",
+      "base_sha256": "5630221a606efd8da3fdb6d1c8c899f2a6b3c970968a0bfd9337fed8bc269cee",
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/GameEvent.kt",
+      "source_sha256": "08610d88d245744eff66cbe02049b69e308990cf8d32f66628fdde44d09be1b0",
+      "selected_hunks": [
+        0
+      ],
+      "group": "transitive_damage_and_resolution_boundary",
+      "receiving_sha256": "1c355fc1c7a92606ea24dced8109ff15b1b2c757cb2879d13aaa4c53b57514e2",
+      "base_sha256": "bd44f31a78ea0e5bcf42b366922859efc9f34158e77be63304806d9d257de826",
+      "source_bytes_unchanged": false
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerContext.kt",
+      "source_sha256": "17d8bd3576b97ca63ac573427dfc08ebbef14e31ba3ff80de4e369b886932d0c",
+      "selected_hunks": "all",
+      "group": "transitive_damage_and_resolution_boundary",
+      "receiving_sha256": "17d8bd3576b97ca63ac573427dfc08ebbef14e31ba3ff80de4e369b886932d0c",
+      "base_sha256": "49c98c24ef152649ee1b47262d2c437b5e8b7662eb8ce5e757e3bcee3b871bd8",
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/DamageTriggerDetector.kt",
+      "source_sha256": "ce80c20f92b2f089d056d0cc7a89a3ee8e426946eace0fb12a288c5c41455098",
+      "selected_hunks": "all",
+      "group": "transitive_damage_and_resolution_boundary",
+      "receiving_sha256": "ce80c20f92b2f089d056d0cc7a89a3ee8e426946eace0fb12a288c5c41455098",
+      "base_sha256": "6ea3901d337d2f230fa782c0176c0b6b249b3e80ec3a68cff7256c097322d509",
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/AttachmentTriggerDetector.kt",
+      "source_sha256": "e1d373932975ed60717d1a8365b4e614387aa57a585f379d994bb7dea1d77d7e",
+      "selected_hunks": "all",
+      "group": "transitive_damage_and_resolution_boundary",
+      "receiving_sha256": "e1d373932975ed60717d1a8365b4e614387aa57a585f379d994bb7dea1d77d7e",
+      "base_sha256": "9eeadfeb4eea39a546bfb712a7ca733752d5349df8cb1cd310698d8dee5d2e5c",
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerMatcher.kt",
+      "source_sha256": "1401491fe5292ec746fd991fbcd89fe82914d1e07428bdae0487ed0487e0e517",
+      "selected_hunks": "all",
+      "group": "transitive_damage_and_resolution_boundary",
+      "receiving_sha256": "1401491fe5292ec746fd991fbcd89fe82914d1e07428bdae0487ed0487e0e517",
+      "base_sha256": "96f0c1de2469bde3e94db2e5fd0ac3cb7f282558ac1e26d5870b310090395199",
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/priority/PassPriorityHandler.kt",
+      "source_sha256": "4f6538e2782660074c0db08db8125ec4558dd77995c7d1e2fd8b50b59cebec9d",
+      "selected_hunks": "all",
+      "group": "transitive_damage_and_resolution_boundary",
+      "receiving_sha256": "4f6538e2782660074c0db08db8125ec4558dd77995c7d1e2fd8b50b59cebec9d",
+      "base_sha256": "5f866d6773ee6d56c059bf30ff54376e398a1b9f984201eaef4c7301f2d4a6b2",
+      "source_bytes_unchanged": true
+    }
+  ],
+  "test_files": [
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/PostBlockDeclarationPriorityScenarioTest.kt",
+      "class_name": "com.wingedsheep.engine.scenarios.PostBlockDeclarationPriorityScenarioTest",
+      "scope": "engine",
+      "expected_cases": 16,
+      "sha256": "a73890b33b97ba47097fe86a22cf851a75ad8f3843b35f58cf4eb2439c82691d",
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/DeclareBlockersPriorityWindowTest.kt",
+      "class_name": "com.wingedsheep.engine.scenarios.DeclareBlockersPriorityWindowTest",
+      "scope": "engine",
+      "expected_cases": 3,
+      "sha256": "cca06f4c7fa7f9dda5cd5001cbb31ac5e39b7c3b4f588e38ee5c170abba5870d",
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/multiplayer/MultiDefenderCombatTest.kt",
+      "class_name": "com.wingedsheep.engine.multiplayer.MultiDefenderCombatTest",
+      "scope": "engine",
+      "expected_cases": 4,
+      "sha256": "f434f2d0e81aea2040efe499f91c336531a8b347fc16c2f3d6a431df552f8e1d",
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/multiplayer/TwoHeadedGiantCombatTest.kt",
+      "class_name": "com.wingedsheep.engine.multiplayer.TwoHeadedGiantCombatTest",
+      "scope": "engine",
+      "expected_cases": 9,
+      "sha256": "9f5c5205ea4539b5904c3342682510b40aadd4691291c599c8ef6f812a8b9855",
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/ActivationPriorityScenarioTest.kt",
+      "class_name": "com.wingedsheep.engine.scenarios.ActivationPriorityScenarioTest",
+      "scope": "engine",
+      "expected_cases": 9,
+      "sha256": "dcd9af37dabad5f3aa29f9485946f65a1b2d5fd2848eecade5c7fecbabaf30b0",
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/NestedManaPaymentBoundaryScenarioTest.kt",
+      "class_name": "com.wingedsheep.engine.scenarios.NestedManaPaymentBoundaryScenarioTest",
+      "scope": "engine",
+      "expected_cases": 12,
+      "sha256": "d45876c5e64d3be6c6882c4317fbb192913c91b89b540b221eb43d03c96604a6",
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/BatchMayQuestionTest.kt",
+      "class_name": "com.wingedsheep.engine.scenarios.BatchMayQuestionTest",
+      "scope": "engine",
+      "expected_cases": 7,
+      "sha256": "11ef82e18f8d2a02ee83b874fb89d8567f7bc810e69709662ff2fedf9ac5cec4",
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/TriggerOrderingScenarioTest.kt",
+      "class_name": "com.wingedsheep.engine.scenarios.TriggerOrderingScenarioTest",
+      "scope": "engine",
+      "expected_cases": 6,
+      "sha256": "e4d8ce58696a968126bb17d0e9403ff59ff99ce51e1efdba05a3c0ec846bfee5",
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/TriggerOrderingConcessionScenarioTest.kt",
+      "class_name": "com.wingedsheep.engine.scenarios.TriggerOrderingConcessionScenarioTest",
+      "scope": "engine",
+      "expected_cases": 1,
+      "sha256": "b8f72093ef6b966e37616e14dec673bf79f13ffab8bcca7385b67d6134fdd167",
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/DamageSourceIdentityScenarioTest.kt",
+      "class_name": "com.wingedsheep.engine.scenarios.DamageSourceIdentityScenarioTest",
+      "scope": "engine",
+      "expected_cases": 5,
+      "sha256": "0a674ab29cf2d263dcccdec2ee0e599df1418db7fd11767b692cc4d2522da736",
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/DamageSourceTriggerScenarioTest.kt",
+      "class_name": "com.wingedsheep.engine.scenarios.DamageSourceTriggerScenarioTest",
+      "scope": "engine",
+      "expected_cases": 6,
+      "sha256": "f6ffca9fb9a75998ceb0854df4f49847e53d9a61c9d5a2d76ae9c790e3f63c86",
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/TargetedDepartedSourceLkiTest.kt",
+      "class_name": "com.wingedsheep.engine.scenarios.TargetedDepartedSourceLkiTest",
+      "scope": "engine",
+      "expected_cases": 4,
+      "sha256": "25125e95e9029c8f5aaed32897ddaa91bd29d562083af59262b32aec4761c342",
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/handlers/PredicateEvaluatorRecordTest.kt",
+      "class_name": "com.wingedsheep.engine.handlers.PredicateEvaluatorRecordTest",
+      "scope": "engine",
+      "expected_cases": 19,
+      "sha256": "8b17caf224042dccd16fb438133c0eadc00697d9de4350962c49df925eb6adde",
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "game-server/src/test/kotlin/com/wingedsheep/gameserver/session/PostBlockDeclarationSessionTest.kt",
+      "class_name": "com.wingedsheep.gameserver.session.PostBlockDeclarationSessionTest",
+      "scope": "server",
+      "expected_cases": 2,
+      "sha256": "4d996d5d850abcfe0f7a6300fb85d71efe0d68968ac6284031b8a3491c70ae06",
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "game-server/src/test/kotlin/com/wingedsheep/gameserver/session/TwoHeadedGiantSessionTest.kt",
+      "class_name": "com.wingedsheep.gameserver.session.TwoHeadedGiantSessionTest",
+      "scope": "server",
+      "expected_cases": 10,
+      "sha256": "13d3447a79da2e154b6819f8718ff444013235c71e6ed6210c946f2af4aa2604",
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/ManaAbilityColorChoicePipelineTest.kt",
+      "class_name": "com.wingedsheep.engine.scenarios.ManaAbilityColorChoicePipelineTest",
+      "scope": "engine",
+      "expected_cases": 4,
+      "sha256": "a9ae644130670d4ca9d7fca149f8f13d82f4ac83b04ee6788f0e304bd772b28e",
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/handlers/effects/zones/MoveToZoneEffectExecutorTest.kt",
+      "class_name": "com.wingedsheep.engine.handlers.effects.zones.MoveToZoneEffectExecutorTest",
+      "scope": "engine",
+      "expected_cases": 10,
+      "sha256": "c37bbf20129b0a3cb0edd043f0a341b3d8a47abb627d01568a10dc265e0c32f7",
+      "source_bytes_unchanged": true
+    }
+  ],
+  "expected_cases": {
+    "engine": 115,
+    "server": 12
+  },
+  "deliberately_not_imported": [
+    "StackResolver: no needed source-snapshot bridge; only unrelated Gift, paid stack-exit and player-target revalidation deltas.",
+    "ZoneTransitionService paid-stack-exit redirect and spell cleanup hunks.",
+    "StackComponents Gift and paid alternative-cost comments.",
+    "GameEvent Gift comment.",
+    "ActivateAbilityHandler restricted-X spending and xCoverage hunks; these belong to the separate canonical mana reconciliation.",
+    "ManaSolver, X enumerators, CostEnumerationUtils and CastFromZoneEnumerator.",
+    "Actor adapters, actor reflection dependency, pilots, decks, allocations and gameplay.",
+    "Gift SDK/spell behavior, combat damage assignment/UI and other Q3 mechanics."
+  ],
+  "receiving_requirements": [
+    "Execute all 115 engine and 12 server cases on this exact extracted source before accepting targeted qualification.",
+    "Preserve PB13 and PB15 actual deathtouch/lifelink effects after source departure and owner concession.",
+    "Run required broad integration and independently review its artifacts before component acceptance.",
+    "Receiving projects must rebind and qualify every interaction their next game can exercise. This component neither excludes reachable interactions nor grants gameplay admission.",
+    "Actor hasPriority projection remains an externally owned receiving prerequisite; no actor component is claimed here."
+  ],
+  "official_allocations_initialized": 0,
+  "official_outcomes_exposed": 0,
+  "gameplay_authorized": false,
+  "known_unqualified_source_paths": [
+    {
+      "shape": "A captured trigger observes another cost event; its own token source then departs during post-cast SBAs before placement.",
+      "source_trace": "CastPriorityProcessor.settle retains local pending.triggers; ZoneTransitionService stamps pendingBlockTriggers and stacked abilities, not that local batch; TokensInWrongZonesCheck removes the token.",
+      "evidence_status": "READ_ONLY_SOURCE_TRACE_NOT_AN_EXECUTED_FAILURE_OR_FROZEN_DECK_REACHABILITY_FINDING",
+      "receiving_disposition": "Determine reachability from frozen lists/generated objects. If reachable, canonical repair and qualification are mandatory; pilot avoidance does not exclude it."
+    }
+  ]
+}

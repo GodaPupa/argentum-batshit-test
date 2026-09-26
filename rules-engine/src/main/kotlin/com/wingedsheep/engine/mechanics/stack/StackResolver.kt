@@ -3049,6 +3049,17 @@ class StackResolver(
         }
     }
 
+    /**
+     * The current counterability rule, shared by execution and public stack projections.
+     * This is a read-only question; target legality and whether an object is a spell remain
+     * the caller's responsibility. Missing or departed objects have no counterable presence.
+     */
+    fun isSpellCounterable(state: GameState, spellId: EntityId): Boolean {
+        if (spellId !in state.stack) return false
+        val container = state.getEntity(spellId) ?: return false
+        return !container.has<CantBeCounteredComponent>() && !isGrantedCantBeCountered(state, spellId)
+    }
+
     fun counterSpell(state: GameState, spellId: EntityId): ExecutionResult {
         if (spellId !in state.stack) {
             return ExecutionResult.error(state, "Spell not on stack: $spellId")
@@ -3059,13 +3070,7 @@ class StackResolver(
 
         val cardComponent = container.get<CardComponent>()
 
-        // Check if the spell can't be countered (tag component)
-        if (container.has<CantBeCounteredComponent>()) {
-            return ExecutionResult.success(state)
-        }
-
-        // Check if any permanent on the battlefield grants "can't be countered" to this spell
-        if (isGrantedCantBeCountered(state, spellId)) {
+        if (!isSpellCounterable(state, spellId)) {
             return ExecutionResult.success(state)
         }
 
@@ -3150,7 +3155,7 @@ class StackResolver(
 
         val cardComponent = container.get<CardComponent>()
 
-        if (container.has<CantBeCounteredComponent>() || isGrantedCantBeCountered(state, spellId)) {
+        if (!isSpellCounterable(state, spellId)) {
             return ExecutionResult.success(state)
         }
 
@@ -3214,7 +3219,7 @@ class StackResolver(
         val cardComponent = container.get<CardComponent>()
 
         // Check if the spell can't be countered
-        if (container.has<CantBeCounteredComponent>() || isGrantedCantBeCountered(state, spellId)) {
+        if (!isSpellCounterable(state, spellId)) {
             return ExecutionResult.success(state)
         }
 

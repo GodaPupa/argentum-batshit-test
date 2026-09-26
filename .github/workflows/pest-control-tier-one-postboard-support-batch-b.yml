@@ -42,15 +42,27 @@ jobs:
       - name: Bind source and preserve existing definitions
         env:
           EXPECTED_HEAD: ${{ github.event.pull_request.head.sha }}
+          SOURCE_MANIFEST: docs/experiments/pest-control/tier-one-postboard-support-batch-b-shared-receiving-sources.json
         run: |
           python - <<'PY'
           import hashlib, json, os, pathlib, re, subprocess
           root = pathlib.Path('.')
           out = root / 'build/reports/pest-postboard-support-batch-b'
           out.mkdir(parents=True, exist_ok=True)
-          manifest_path = root / 'docs/experiments/pest-control/tier-one-postboard-support-batch-b-sources.json'
+          manifest_path = root / os.environ['SOURCE_MANIFEST']
           manifest = json.loads(manifest_path.read_bytes())
           head = subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip()
+          # Preserve the attempted exact binding even if any assertion rejects this source.
+          (out / 'card-sources.json').write_bytes(manifest_path.read_bytes())
+          (out / 'binding-attempt.json').write_text(json.dumps({
+              'schema': 'pest-postboard-support-batch-b-binding-attempt-v1',
+              'source_head': head, 'expected_head': os.environ['EXPECTED_HEAD'],
+              'source_manifest_sha256': hashlib.sha256(manifest_path.read_bytes()).hexdigest(),
+              'run_id': os.environ['GITHUB_RUN_ID'], 'run_attempt': os.environ['GITHUB_RUN_ATTEMPT'],
+              'status': 'BINDING_ATTEMPT_NOT_ACCEPTANCE',
+              'official_seeds_generated': 0, 'official_games_initialized': 0,
+              'official_actions_submitted': 0, 'outcome_exposure': 0,
+          }, indent=2) + '\n')
           assert head == os.environ['EXPECTED_HEAD']
           subprocess.check_call(['git', 'merge-base', '--is-ancestor', manifest['integrated_postboard_a_commit'], head])
           for path, expected in manifest['source_files_sha256'].items():

@@ -19,7 +19,7 @@ import java.nio.file.Path
 
 /** Registry and frozen identities only; no game constructor, pilot, seed, or action path. */
 class PestControlTierOnePostboardSupportBatchATest : FunSpec({
-    test("four postboard definitions close eleven slots in the unchanged six frozen sideboards") {
+    test("four Batch A definitions remain supported as qualified successors reduce the historical queue") {
         val registry = CardRegistry().apply {
             register(PredefinedTokens.allTokens)
             MtgSetCatalog.all.forEach { set -> register(set.cards); register(set.basicLands) }
@@ -44,7 +44,7 @@ class PestControlTierOnePostboardSupportBatchATest : FunSpec({
         val changedSlots = sideboards.values.sumOf { counts -> counts.filterKeys { it in newCards }.values.sum() }
         changedSlots shouldBe 11
         val remaining = sideboards.mapValues { (_, counts) -> counts.filterKeys { registry.getCard(it) == null } }
-        remaining shouldBe linkedMapOf(
+        val historicalQueueAtAcceptance = linkedMapOf(
             "pest_control" to emptyMap(),
             "mono_red_madness" to linkedMapOf("Relic of Progenitus" to 3),
             "grixis_affinity" to emptyMap(),
@@ -53,6 +53,14 @@ class PestControlTierOnePostboardSupportBatchATest : FunSpec({
             "spy_combo" to linkedMapOf("Jack-o'-Lantern" to 1, "Flaring Pain" to 1,
                 "Faerie Macabre" to 2, "Acorn Harvest" to 1),
         )
+        remaining.forEach { (deck, gaps) ->
+            gaps.forEach { (name, count) ->
+                historicalQueueAtAcceptance.getValue(deck)[name] shouldBe count
+            }
+        }
+        remaining.values.flatMap { it.keys }.toSet().all { name ->
+            historicalQueueAtAcceptance.values.any { name in it }
+        } shouldBe true
         val text = buildString {
             appendLine("schema=pest-control-tier-one-postboard-support-batch-a-v1")
             appendLine("accepted_inventory_artifact=10838516145")
