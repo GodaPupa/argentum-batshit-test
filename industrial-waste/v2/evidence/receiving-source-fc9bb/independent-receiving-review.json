@@ -1,0 +1,67 @@
+{
+  "schema": "industrial-fc9bb-root-independent-combat-token-receiving-review-v1",
+  "reviewer": "/root",
+  "source_author": false,
+  "decision": "ACCEPT_RECEIVING_COMBAT32_AND_TOKEN20_WITH_UNCHANGED_COMPONENT_INPUTS_AT_E5A0",
+  "qualified_source": "fc9bb89144eb7a1097bf08589ea43349db24e16b",
+  "qualified_tree": "5eb6f5eb623eda7c71c3a309ed20e870d48f3a16",
+  "current_successor": "e5a0facd17af60f099463f5ebe3e5e4afbe4bd0d",
+  "current_tree": "6ce05ad36bb6cfaf322a7df66fb5bbc4590b292f",
+  "runs": [
+    36268146569,
+    36268146570
+  ],
+  "attempts": [
+    1,
+    1
+  ],
+  "components": [
+    {
+      "component": "combat",
+      "artifact": 10915076010,
+      "bytes": 239369,
+      "sha256": "2693df11d8e62cdbf38964ef9e8de5679cb1f7cd6e0d0fef2f28251a8a941621",
+      "suites": 4,
+      "cases": 32,
+      "source_pins_independently_fetched_and_rehashed": 32,
+      "manifest_sha256": "679dd7e9237e9a6f32e38a2aed94821cd973cd9502c7e8d2862859195834844c",
+      "fresh_tasks": [
+        ":rules-engine:test"
+      ],
+      "explicit_zero_exit_files": 5
+    },
+    {
+      "component": "token",
+      "artifact": 10914682665,
+      "bytes": 262784,
+      "sha256": "292fc90caac32c9730ee2f071892cd2024efc074cd2812196843a39c3dec5491",
+      "suites": 3,
+      "cases": 20,
+      "source_pins_independently_fetched_and_rehashed": 49,
+      "manifest_sha256": "c55e36ed7db906c92c40ed69fbe797836d9279789b5ac32ea478d95ae9e574c5",
+      "fresh_tasks": [
+        ":mtg-sets:2025:tests:test",
+        ":rules-engine:test"
+      ],
+      "explicit_zero_exit_files": 6
+    }
+  ],
+  "failures": 0,
+  "errors": 0,
+  "skips": 0,
+  "checks": [
+    "Read both complete original ZIPs, checked wholeSHA/CRC, all7XMLs/52 original identities against accepted shared original banks, exact new receiving timestamps and zero failures/errors/skips.",
+    "Read actual explicit exit files and command logs; required engine and2025 tasks executed freshly and each stage/build exited0.",
+    "Independently fetched all68 distinct source files at exactfc9bb and rehashed every32combat/49token binding, plus fetched/rehashed both immutable receiving manifests.",
+    "Fetched actual run metadata and exactfc9bb Git tree, confirming source/attempt1/success and actual XML time windows.",
+    "Fetched complete fc9bb...e5a0 comparison:26 changed files across3commits, none touch any68 bound component inputs or their receiving manifests. These unchanged-input components retain their scoped evidence at currente5a0."
+  ],
+  "limits": [
+    "Only original32combat and20token/event-provenance cases receive bounded component acceptance. Complete R1 source, metric, pilot, durability, runtime/dependency binding, resource envelope and independent execution admission remain separate.",
+    "Explicitly unqualified initial-counter/attached-copy and other shared boundaries must still be proven unreachable in actual R1 card scope or qualified; this review grants no blanket exemption.",
+    "No GitHub approval or gameplay permission is represented; no source/head/claim/fixture/golden change was made.",
+    "Original failedfc9 runtime/card workflow results remain failed; these separate successful component banks do not relabel them."
+  ],
+  "official_allocations": 0,
+  "gameplay_authorized": false
+}
