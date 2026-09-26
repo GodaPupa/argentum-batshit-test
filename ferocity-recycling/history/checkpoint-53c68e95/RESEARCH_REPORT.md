@@ -75,11 +75,3 @@ The preceding support-publication section describes its earlier boundary. The cu
 All18 prototype/comparator lists and the bounded search protocol remain unchanged. Both first-cell pilots now have24 fixed qualification scenarios authored; none has executed at this checkpoint. Static review has corrected draft cost assumptions against actual card definitions before the initial policy freeze. This is policy construction, not evidence that one deck wins more.
 
 The research questions still require real interactive outcomes. No development, evaluation, confirmation or postboard sample has been consumed. A technically successful mechanism or pilot fixture cannot support a Ferocity advantage, competitive win rate, final archetype promotion or tournament claim.
-
-## Evidence checkpoint — 2026-09-26 10:20 UTC
-
-The new current qualification matrix is in `MECHANICAL_QUALIFICATION.md`; the prior baseline/status is preserved under `history/checkpoint-53c68e95/`. The departed-source and nested-payment targeted gates now pass85 complementary fixed cases, and paid-flashback support passes69 complementary cases. These improvements have exposed further broad-suite fixture and runtime defects, whose failures and exact version boundaries remain preserved. The corrected collector15 fresh count is9,872 cases with40 failures; stale695 XML and up-to-date3,696 engine cases are excluded. This correction changes an infrastructure evidence count, not a randomized deck result.
-
-The artifact pilot's first24 cases produced22 passes and two setup failures. Its policy remains unchanged while the fixture issues are repaired. Real Gift testing also exposed missing player shroud/hexproof checks on resolution; that failure is receiving a runtime correction, not relaxed card assertions. The project has not spent any of its720 initial interactive development games or240 refinement games. A small16-game first cell is being made executable under the exact-source admission, journal, replay and watchdog contract.
-
-A, B and C remain unanswered because they require interactive comparisons. No card/package changes, candidate promotion, no-Ferocity handicap, competitive claim or new-archetype label follows from these mechanical results. The published60s remain prototypes. The finite search and the final independent evaluation/confirmation boundaries are unchanged.

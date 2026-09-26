@@ -1,61 +1,66 @@
-# Current status — Ferocity Recycling
+# Ferocity Recycling — current status
 
-Checkpoint cut: 2026-09-26 09:20 UTC. Public source parent: `2e7e78653ed1c7e56fc609b993a79b68ecca33c6`. Isolated review branch: `ferocity-recycling/qualification-review`, [draft PR174](https://github.com/GodaPupa/argentum-batshit-test/pull/174), targeting the preserved research branch/PR173. This publication archives reviewed evidence; it does not promote unqualified source into research gameplay.
+Record cut: **2026-09-26 10:20 UTC**. This is a continuing execution checkpoint, not a final deck verdict. The previously public parent is `53c68e958ae5ca9ab8b4e02613ea819134228ec2`; its runtime is identical to `2e7e7865` and its CI failed. This checkpoint publishes closed source-bound evidence and updates the research record; it does not promote the unqualified local runtime.
 
-## Research outcome and actual gameplay counts
+## Research position and counts
 
-Questions A (strongest Ferocity configuration found), B (Ferocity's contribution), and C (competitive performance) remain unresolved. No configuration has been advanced, rejected or retuned from gameplay. A technical blocker is not a negative deck verdict.
+**A, strongest Ferocity configuration: unresolved. B, improvement over a competent no-Ferocity shell: unresolved. C, competitiveness: unresolved.** No configuration has advanced from development and no final 60/15 is supported yet.
 
-| Stage | Actual completed count |
+| Evidence stage | Actual randomized games / matches |
 |---|---:|
-| Exact opening-inventory lists, no RNG | 18 |
-| Randomized functional or goldfish trials | 0 |
-| Interactive development games | 0 |
-| Frozen evaluation games | 0 |
-| Independent confirmation games | 0 |
-| Postboard matches | 0 |
-| First-cell fixed policy scenarios executed | 0 |
+| Initial development D2 | 0 / 720 games |
+| Bounded refinement D3 | 0 / 240 games |
+| Frozen evaluation E | 0 / 3,000 games |
+| Independent confirmation C | 0 / 3,000 games |
+| Sideboard development | 0 / 300 best-of-three matches |
+| Gated postboard evaluation | 0 / 1,500 best-of-three matches |
 
-Three families, nine Ferocity60s and nine matched no-Ferocity60s remain unchanged at the initial manifest `ef75f5cec859dcc9f765de0feacb7cb7696037f4c7035d4b68b6bdfccee1c87d`. Six exact contemporary60/15 source lists are archived, five in the gauntlet. Ferocity remains verified-text prerelease research, scheduled2026-10-02; no sanctioned result is claimed. Deadly Dispute is excluded. The search/development/refinement/evaluation budgets and concealed future allocations have not changed; random gameplay seeds remain unallocated.
+All nine Ferocity prototypes and nine no-Ferocity alternatives remain unchanged at initial manifest `ef75f5cec859dcc9f765de0feacb7cb7696037f4c7035d4b68b6bdfccee1c87d`. The three declared families, sample ceilings, refinement limit, matchup weights, selection rules and meaningful-improvement thresholds remain unchanged. No randomized gameplay allocation or seed has been created. Fixed seeded rules/policy scenarios are recorded separately and are not matchup samples.
 
-## Newly published deterministic evidence
+Ferocity remains **verified-text prerelease research**, with the archived release date 2026-10-02 and not-legal platform flag at retrieval. Deadly Dispute is excluded. The six archived contemporary competitive 60/15 lists, including the five gauntlet opponents, remain source inputs rather than tournament evidence for this project.
 
-Archives contain original receipts, failed attempts, source boundaries and replay commands. Counts from repeated versions overlap and must not be summed as independent evidence.
+## Newly archived source-specific evidence
 
-| Source-specific scope | Observed result | Interpretation |
+Counts overlap across revisions and must not be summed as independent trials. Every failed attempt and its source boundary is retained.
+
+| Scope | Observed result | Acceptance limit |
 |---|---|---|
-| Public14ec21b8 project qualification | 71/71 fixed cases passed | Exact earlier source only |
-| Public14ec21b8 general CI | All nine required jobs successful;17,212 passing logged test events,52 skipped | Logged events are not asserted to be unique tests |
-| Public2e7e7865 project qualification | Existing71/71; canonical lane30/35, five Witch's Cottage failures | Canonical lane stopped before remaining modules |
-| Public2e7e7865 general new-card cases | 52/58, six failures | Five Cottage optional timing failures plus Insight flashback; overlaps canonical lane |
-| Full LKI source targeted06+07 | 73/73 fixed cases | Same frozen source across complementary scopes |
-| Full LKI source broad08 | 4,379 fresh cases;4,365 pass,14 fail | Runtime nested-payment defect plus historical optional-timing/trace expectations required diagnosis; nine stale XML cases explicitly excluded |
-| Restricted-X successor04 | 18/18 fixed cases | Earlier13-case baseline4 pass/9 fail retained |
-| Actor observationv2.2 successor04 | 28/28 fixed cases | Private-data invariance and closed-schema boundary; earlier27-case17 pass/10 fail retained |
+| LKI nested-payment successor12 | 12/12 fixed cases passed | Exact frozen40 Kotlin source set |
+| LKI original73 regression13 | 73/73 passed | Same frozen source as12:85 complementary targeted cases |
+| LKI full regression14 | 4,998 fresh cases,12 failures | Broad gate failed; later eras were not reached |
+| LKI all-era collector15, corrected freshness | 9,872 fresh cases,40 failures | Eight later eras only; engine3,696 was up-to-date and older695 XML is excluded |
+| Flashback v1.2 targeted04 and regression05 | 35/35 plus34/34 passed | 69 complementary cases; same canonical Insight assertions; broad/integrated gates still required |
+| Integratedv2 first01 | 92/93 passed | Ferocity24, Rats8, definition1, journal20, original observer28 passed; one synthetic stack-source fixture failed |
+| External watchdog successor03 | 9/9 fixed process cases passed | Process supervision only; no engine/gameplay outcome inferred |
+| Public53c68e95 project CI | Existing71/71 lane passed; canonical lane failed5 Cottage cases | Exact public source remains failing |
+| Public53c68e95 general CI | Engine/server/frontend/tool and newest-era jobs passed; older scenarios,2023–24 and snapshots failed | Five Cottage, one paid-flashback Insight, nine expected new-card snapshot changes; overlap project lane |
 
-Publication paths: `evidence/build/published-ci-14ec21b8/`, `published-ci-2e7e7865/`, `local-lki-through-08/publication-parts/`, `restricted-x-publication-through-04/`, and `observer-publication-through-04/`. Each has its own manifest/review. `publication-staging-20260926/` binds35 newly staged files and1,338 recursive archive members, with independent parent credential/private/future-material review. The older14ec archive was reviewed separately. No future evaluation allocation is present.
+The collector15 correction is material: the original collector counted restored historical XML after a task failed before test execution. Both the original receipt and the correction survive in the archive. The accepted fresh count requires actual test-task execution and timestamps within the command window. It does not include stale or up-to-date cases. The successor guard now tests and enforces both conditions.
 
-## Current continuing work after those archive boundaries
+Closed archives: `evidence/build/lki-publication-09-through-15/`, `flashback-publication-through-05/`, `integrated-v2-publication-through-01/`, `watchdog-publication-through-03/`, and `public-ci-53c68e95/`. Manifests preserve exact paths, hashes, original logs/XML, failed runs, source archives and replay instructions. Worker classpaths are explicitly post-execution observations, not an invented prior immutability proof.
 
-All work remains in isolated worktrees with source guards and failed-run preservation. The current local JDK21/just1.58.0/Gradle9.6.1 environment works; heavy builds are serialized under the8GiB memory limit.
+## Work executed after those compact archive boundaries
 
-- Full LKI successor09/10 executed57 fixed cases:45 passed,12 failed before nested payment began because two test definitions omitted their mana-ability flag. Fixture-only successor11 executed12:8 passed,4 failed because a single legal sacrifice is correctly auto-selected. Successor12 adds a second legal choice only in the affected fixture setups; no runtime source changes or weakened assertions. Its next gate is12, then the original73 and required broad regression.
-- Flashback successorv1.2 passed35/35 targeted cases, including unchanged Insight5. It preserves actual paid flashback through every stack exit, including generic stack-to-hand/library movement. Original26-case22 pass/4 fail and compiler-only failures remain preserved. Required existing regressions and combined-source qualification continue.
-- Monarch/initiative source03/04 executed72:67 passed,5 failed. All18 monarch cases passed. The five failures are diagnosed fixture-definition/serialization/setup errors, with corrections separately frozen; these results do not admit the joint source.
-- Actor public LKI observationv3.1 has40 authored cases (preserved28 plus12 new); exact-source projection peer review completed, combined runtime execution pending. Nonbattlefield private-origin generations are omitted. Source snapshots are never passed to pilots.
-- Durable journal/replay has20 authored fixed cases; a real-process external watchdog passed8 fixed fixtures. Its process outcomes are accounting only, with no inferred game result. Static review and joint integration remain required. Exact raw CardDefinitions, including generated ability IDs, must be pinned for fresh-process replay.
-- A shared project-only Ferocity definition preserves the exact qualified DSL and all24 original scenario bodies. Extraction metadata and combined engine qualification remain explicit gates. It is not registered as a released set card.
-- Artifact and exact MisterTwin Red pilots each have the declared24-case D1 bank authored, with no outcomes yet. They use detached actor information and the runner's real setup/decision/action menus. Static peer review corrected initial fixture assumptions before thev0.1 policy freeze. The first intended D2 cell is A3-F4/A3-N0 versus Red; it remains gated.
-- Sazacap's Brew real Gift timing/targets, current combat-damage division, ninjutsu/Hacker and remaining selected-pool support have narrow isolated source/tests. Their presence on disk is not a runtime pass. Source changes and independent reviews are separately versioned.
+These newer local receipts are continuing qualification and await the next reviewed integrated source/evidence publication. Their outcomes are not transferred to a different version.
 
-## Publication and acceptance
+- Integratedv3 executed36 cases: public stack-source observation12/12 passed; artifact-pilot D1 bank22/24 passed. A15 failed before policy input because Fish is an inline token rather than a registry card. A19's fixture passed priority once too often after the original removal resolved. Fixture-only corrections preserve all24 cases, tactical expectations and the unchanged pilot; peer/retest is pending. No outcome-based pilot revision has been spent.
+- Real Sazacap's Brew Gift support executed36 SDK/engine cases successfully. The22 card cases initially did not compile because the test module lacked the serialization dependency. After the explicit dependency boundary,22 ran:20 passed and2 failed. They exposed missing player shroud/hexproof revalidation at resolution. A narrow shared repair and separately bounded additional cases are being prepared; the original assertions remain.
+- Current combat-assignment rules executed32:30 passed and2 retained banding fixtures failed by assigning zero to unrelated blocker edges. The fixture-only successor preserves the engine's full-power defaults, strengthens chooser/full-damage assertions and leaves all runtime bytes/new12 cases unchanged; its32-case gate is pending.
+- Monarch/initiative successor executed72/72 successfully on its isolated exact97-file source (`8053247390b47ef6bebb891180f9fe5e971c148c0cb7b07c5d90003ca5f86092`, receipt `959c5e3a3c02ff4ffafa6b53254c6475bc4ff136e37ac50684be5b1fc3f4fa89`). The prior67/72 and five diagnosed fixture failures remain preserved. Integration with newer engine layers and broader gates remain outstanding.
+- Root's targeted departed-token repair forwards the exact source snapshot through a paused target/distribution continuation. Independent review found no blocker in its three runtime files and four new fixed cases; execution is pending. The original Weapons Manufacturing cases remain unchanged. Historical optional-trigger fixtures are corrected to target-on-placement and optional-effect-on-resolution; unrelated genuine defects are separately classified.
+- Exact CardDefinition archival and fresh-JVM replay have16 frozen tests; the read-only diagnostics collector has12 frozen typed arithmetic fixtures. Both are independently reviewed and entering integratedv4. The original journal20 already passed. Diagnostics explicitly leave incomplete attribution as a gap and never turn a wipe, return or card presence into a causal win claim.
+- Red's initial24 fixed pilot cases are frozen, unexecuted. The first intended interactive cell remains A3-F4 and A3-N0 versus the exact MisterTwin Red list:16 independent D2 games, included within720, four on play/four on draw for each list. The source-bound admission entry point and14 fixed checks are being built; entropy remains gated.
 
-The public support checkpoint2e7e7865 has failed CI described above. This evidence publication preserves that fact and changes no shared engine runtime, deck, policy or seed ledger. New source is coordinated through a separate integrated qualification worktree and applicable review gates. Pest Control, Izzet Science, Manual Transmission, Industrial Waste and Sphinx's Approach inputs and gameplay allocations are untouched.
+## Publication and preservation
 
-Native push previously failed with `fatal: could not read Username for 'https://github.com': terminal prompts disabled`. Authorized publication uses GitHub Git-data operations, exact local/remote tree verification and non-force ref updates. No shared history is rewritten. The commit containing this status is the evidence checkpoint; the prior exact source parent is recorded above to avoid a self-referential commit hash.
+The project continues on isolated worktrees and the project-scoped draft PR174, based on the preserved research branch/PR173. Pest Control, Izzet Science, Manual Transmission, Industrial Waste and Sphinx's Approach inputs, protocols, controls and seed ledgers are untouched. Industrial Waste's gameplay budget is not used.
 
-## Next authorized actions and stopping boundary
+Native push previously failed with `fatal: could not read Username for 'https://github.com': terminal prompts disabled`. Authorized GitHub Git-data publication uses exact tree verification and non-force ref updates. Public53c68e95 CI failure is preserved, including the expected golden-snapshot updates still needed for newly added canonical cards. No approval or shared-history bypass is attempted.
 
-Close the source-specific mechanic gates, freeze and qualify the combined first-cell engine/observation/journal/pilots, verify exact runtime definitions and replay, then allocate and execute the declared small interactive D2 batches. No confirmation/evaluation data may train pilots or alter frozen final candidates. The720 initial D2 ceiling and240 refinement ceiling remain unchanged.
+The local Java21/Gradle9.6.1/just1.58 environment works. Builds are serialized through the repository's `just`/lock workflow because the machine has8GiB. Independent code review, source guards, timestamp-qualified test capture and failed-run retention remain active.
 
-The stopping rule has not been reached. A strongest supported60/15, final primer and postboard claims are not yet justified. There is no final deck verdict and no `FINAL_CONCLUSION.md`. Active jobs are recorded in per-run receipts; execution between responses is claimed only for a real launched job.
+## Next authorized action and stop boundary
+
+Finish the combined first-cell mechanical, observer, inline-token provenance, bundle/replay and pilot gates; review and publish the exact source; then allocate and execute the16-game D2 cell. Continue the remaining predeclared families/opponents within the frozen budgets. Equivalent comparator/pilot development and independent evaluation remain required.
+
+A technical blocker is not a deck verdict. The stopping rule has not been reached. `FINAL_CONCLUSION.md`, a strongest supported60/15, a practical final primer and match-win claims are not yet justified. The record claims continuing execution only while an actual external/local job is launched; it does not imply unattended work between responses.
