@@ -1,0 +1,125 @@
+{
+  "schema": "ferocity-source08-mtgish147-independent-review-v1",
+  "reviewer": "actual /root/manual",
+  "source_author": false,
+  "status": "ACCEPTED_FRESH_EXISTING_147_SOFTWARE_CASES_AND_BOUNDED_PUBLICATION",
+  "source": "3a4f99a7653839506e96d19e6639f58d9e8c5ced",
+  "tree": "56c6b8dd46dc112cdb70db496fd9d0c3e915e8a6",
+  "control": "c0124122528ca66c598cfc27a7d6c3f9bad45af8",
+  "control_tree": "050dc68bdfc8014058773e48bcd4e500c9fa6811",
+  "run_id": 36278648943,
+  "attempt": 1,
+  "job_id": 108506146945,
+  "artifact_id": 10918016982,
+  "bound_files": [
+    {
+      "path": "/workspace/scratch/94f5141e9448/ferocity-takeover/mtgish-fresh-result/original-artifact-10918016982.zip",
+      "bytes": 2317681,
+      "sha256": "d97a0331a0de7f6490684c31a4f3cfed1800dcaff87290edddeea0c73fce691e"
+    },
+    {
+      "path": "/workspace/scratch/94f5141e9448/ferocity-takeover/mtgish-fresh-result/raw-audit.json",
+      "bytes": 15092,
+      "sha256": "9f89b61366a995c32f1b07affb252baba96b212c79a670e462dab1f63ce9fbe2"
+    },
+    {
+      "path": "/workspace/scratch/94f5141e9448/ferocity-takeover/mtgish-fresh-result/README.md",
+      "bytes": 4117,
+      "sha256": "86fe46212ce9abffdbf4f4c7c8a171ed33119a0a3321f6f649833c94ee02d6f2"
+    },
+    {
+      "path": "/workspace/scratch/94f5141e9448/ferocity-takeover/mtgish-fresh-result/audit_original.py",
+      "bytes": 8413,
+      "sha256": "14a9635950a894bfb1b18882b1932c8216418739343d9ca485de88eb14f8baec"
+    },
+    {
+      "path": "/workspace/scratch/94f5141e9448/ferocity-takeover/mtgish-fresh-result/decoded-job-108506146945.log.gz",
+      "bytes": 12541,
+      "sha256": "bc42bfa5ef58d2ff470cf5801357040b698838e13a3bfed675294865bcdd358d"
+    },
+    {
+      "path": "/workspace/scratch/94f5141e9448/ferocity-takeover/mtgish-fresh-result/manual-live-source-control-run.json",
+      "bytes": 22942,
+      "sha256": "66f949ce3c63941bb708a4b2f5297601c52d5d0264feff4a11fb641a22711676"
+    },
+    {
+      "path": "ferocity-takeover/MTGISH_FRESH_CURRENT_STATUS.md",
+      "bytes": 6926,
+      "sha256": "db478849e2b76474ba61320d834cf7a5b55cfaf18c018a1ded34c130f15c22d3"
+    },
+    {
+      "path": "ferocity-takeover/general-ci/root-independent-ci-artifact-review.json",
+      "bytes": 4062,
+      "sha256": "0a5b700c046919f993763fa6db9ced4bc0431d1d8d4aca60d7b49da0c40ccbb0"
+    },
+    {
+      "path": "ferocity-takeover/mtgish-fresh/root-one-use-control-source-review.json",
+      "bytes": 3005,
+      "sha256": "43db085d2434691d3eb692cb9659d9bac32839c86ff313eba17a34b1e5b3f70d"
+    },
+    {
+      "path": "ferocity-takeover/general-ci/original-artifact-10915365754.zip",
+      "bytes": 152034,
+      "sha256": "4a8845ee8b546ec55986d59e6a2c0ecbe3da01568d0dbb3e34a619dd811a1e63"
+    },
+    {
+      "path": "/workspace/scratch/94f5141e9448/ferocity-takeover/mtgish-fresh-result/manual-independent-audit.py",
+      "bytes": 11758,
+      "sha256": "2f9fc26ac3c71154811945006b8c230ca6bee43444c7d3b5406b4be42ad80ba3"
+    }
+  ],
+  "independent_checks": [
+    "Reopened original new ZIP; whole size/SHA256 matches independently fetched live artifact metadata; CRC and all 28 members match author inventory. All three exact control files including hidden workflow retained.",
+    "Independently fetched source/control commit trees, complete three-file control Git tree, live run/job/artifact metadata; every retained control blob recomputed with Git SHA1 and SHA256. Read complete workflow and collector.",
+    "Read original cached source08 artifact10915365754 and all20 mtgish XML; exact case/skip multiplicities equal both immutable freeze and fresh20 XML. No new test identity, missing class or silently changed skip.",
+    "147 actual records:144 pass/3 original data-dependent skips,0 failures/errors/reporting markers. Declared XML counts match actual children; all timestamps within actual command window.",
+    "One actual :mtgish-tooling:test command (two repeated Gradle task headings, one worker), --rerun and --no-build-cache, zero exit, one complete Java21 Gradle worker start/finish pair, BUILD SUCCESSFUL; no required-task cached/up-to-date/no-source/skipped label.",
+    "Before/after input maps byte-identical with22743 valid path/hash entries; all8 dependency hashes agree. Independently checked emitted maps and source/control assertions, not all22743 source bodies.",
+    "Decoded complete job log records both exact checkouts via git log stdout and uploaded ZIP digest; command log and gzip decoded bytes independently hashed.",
+    "Read prospective root control review and earlier root general-CI review. Current supplement satisfies only that named cached147 gap at exact source08; no donor source substitution.",
+    "Read and hash-bound author report, README and final23:20 status. Historical original147 remain described as cached; current147 fresh; token20 stays a subset and disabled CardImageUri Gradle marker counts zero actual cases. Resource attempts remain consumed/stopped and no current calibration authority is granted."
+  ],
+  "results": {
+    "classes": 20,
+    "cases": 147,
+    "passes": 144,
+    "skips": 3,
+    "failures": 0,
+    "errors": 0,
+    "input_bindings": 22743,
+    "unchanged_original_case_and_skip_multiset": true
+  },
+  "skip_identities": [
+    {
+      "class": "com.wingedsheep.tooling.coverage.EmitterSmokeTest",
+      "name": "Portal renders a high rate of whole, well-formed cards"
+    },
+    {
+      "class": "com.wingedsheep.tooling.coverage.dashboard.DashboardTest",
+      "name": "Analyzer classifies a set's cards into a partition that sums to the whole"
+    },
+    {
+      "class": "com.wingedsheep.tooling.coverage.dashboard.DashboardTest",
+      "name": "cross-set index carries the blocked cards behind each ranked capability"
+    }
+  ],
+  "combined_general_ci": {
+    "actual_case_identities": 17709,
+    "passes": 17657,
+    "declared_skips": 52,
+    "non_test_reporting_markers_excluded": 1,
+    "basis": "17513 fresh passes+49 skips from separately attributed root general-CI review, plus this independently verified144+3. This review does not repeat all seven original CI archives. Required token20 are already included.",
+    "distinct_execution_evidence": "Original cached147 XML remain cached historical records; this separate exact-source fresh147 supplement provides software freshness closure."
+  },
+  "publication_disposition": "Bound original ZIP, audit/report/README and exact23:20 CURRENT_STATUS bytes are suitable for reviewed evidence publication with this attributed independent review. Root/Ferocity own publication; no mutation performed here.",
+  "limits": [
+    "No complete runtime, loaded binary equivalence, dedicated gym equivalence, offline card export, policy/protocol closure, resource calibration or capacity acceptance.",
+    "No gameplay permit, entropy, seed/claim allocation, game, outcome, browser retry or GitHub approval.",
+    "Other prior program/source/resource/counter claims in the status are bounded previously reviewed root/agent checkpoints; this is not a fresh independent gameplay or historical-resource audit.",
+    "This review confirms emitted input-map consistency and immutable checkout/control chain; it does not claim independently refetched22743 source bodies."
+  ],
+  "official_games": 0,
+  "allocations_consumed": 0,
+  "outcomes_exposed": 0,
+  "deck_performance_evidence_changed": false
+}
