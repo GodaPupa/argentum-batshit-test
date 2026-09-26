@@ -1,0 +1,114 @@
+name: Pest Control Tier-1 Combined Postboard Support
+
+on:
+  push:
+    branches:
+      - lab/pest-postboard-closure-20260926
+  pull_request:
+    paths:
+      - .github/workflows/pest-control-tier-one-postboard-support-closure.yml
+      - scripts/audit-pest-postboard-support-closure.py
+      - scripts/tests/test_pest_postboard_support_closure.py
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    env:
+      GRADLE_LOCK_SLOTS: '1'
+      PEST_POSTBOARD_SUPPORT_REPORT: ${{ github.workspace }}/build/reports/pest-postboard-closure/inventory.txt
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: gradle/actions/setup-gradle@v6
+      - uses: extractions/setup-just@f8a3cce218d9f83db3a2ecd90e41ac3de6cdfd9b
+        with:
+          just-version: '1.58.0'
+
+      - name: Verify empty-test and wrong-class rejection guards
+        run: python3 -m unittest discover -s scripts/tests -p test_pest_postboard_support_closure.py -v
+
+      - name: Generate exact Faerie Macabre snapshot with unrelated-record guard
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/reports/pest-postboard-closure
+          just rebless-cards | tee build/reports/pest-postboard-closure/snapshot-generation.log
+          python3 - <<'PYTHON'
+          import hashlib, json, pathlib, re, subprocess
+          path = 'mtg-sets/src/test/resources/snapshots/cards/SHM.json'
+          changed = subprocess.check_output(['git', 'diff', '--name-only', 'HEAD'], text=True).splitlines()
+          assert set(changed) <= {path}, f'Unrelated generated/source drift: {changed}'
+          before = subprocess.check_output(['git', 'show', f'HEAD:{path}'], text=True)
+          after = pathlib.Path(path).read_text()
+          def records(raw):
+              headers = list(re.finditer(r'^// (.+)\n', raw, re.M))
+              rows = {}
+              for i, header in enumerate(headers):
+                  name = header.group(1)
+                  assert name not in rows
+                  end = headers[i + 1].start() if i + 1 < len(headers) else len(raw)
+                  rows[name] = json.loads(raw[header.end():end])
+              return rows
+          old, new = records(before), records(after)
+          assert set(new) == set(old) | {'Faerie Macabre'}
+          assert all(new[name] == record for name, record in old.items()), 'Existing SHM record changed'
+          assert new['Faerie Macabre']['name'] == 'Faerie Macabre'
+          report = pathlib.Path('build/reports/pest-postboard-closure')
+          (report / 'generated-SHM.json').write_text(after)
+          (report / 'snapshot-generation.json').write_text(json.dumps({
+              'source_head': subprocess.check_output(['git','rev-parse','HEAD'], text=True).strip(),
+              'snapshot_path': path,
+              'before_sha256': hashlib.sha256(before.encode()).hexdigest(),
+              'after_sha256': hashlib.sha256(after.encode()).hexdigest(),
+              'added_records': sorted(set(new) - set(old)),
+              'changed_existing_records': [],
+              'automatically_committed': False,
+              'acceptance': 'PENDING_INDEPENDENT_REVIEW_AND_FINAL_SOURCE_INTEGRATION'
+          }, indent=2) + '\n')
+          PYTHON
+
+      - name: Run actual child-module scenario classes and strict source hygiene
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/reports/pest-postboard-closure
+          just test-class FaerieMacabreScenarioTest \
+            --tests RelicOfProgenitusScenarioTest --tests SpreadingSeasScenarioTest \
+            :mtg-sets:1993-1999:tests:test --tests KaerveksTorchScenarioTest \
+            :mtg-sets:2017-2022:tests:test --tests JackOLanternScenarioTest \
+            :mtg-sets:2000-2002:tests:test --tests AcornHarvestScenarioTest --tests FlaringPainScenarioTest \
+            :gym:test --tests PestControlTierOnePostboardSupportAuditTest \
+            :mtg-sets:test --tests CardDefinitionSnapshotTest --tests CardLintTest --tests FacadeBoundaryTest \
+            --max-workers=2 --continue \
+            | tee build/reports/pest-postboard-closure/qualification.log
+
+      - name: Require nonzero exact JUnit cases and complete six-deck inventory
+        if: always()
+        run: |
+          python3 scripts/audit-pest-postboard-support-closure.py \
+            --inventory "$PEST_POSTBOARD_SUPPORT_REPORT" \
+            --output build/reports/pest-postboard-closure/evidence.json --hygiene
+
+      - name: Preserve qualification evidence, including failures
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: pest-control-tier-one-postboard-support-closure
+          path: |
+            build/reports/pest-postboard-closure/
+            mtg-sets/*/tests/build/test-results/test/TEST-*.xml
+            mtg-sets/build/test-results/test/TEST-*.xml
+            mtg-sets/build/snapshots-actual/
+            gym/build/test-results/test/TEST-*.xml
+          if-no-files-found: error
+          retention-days: 90

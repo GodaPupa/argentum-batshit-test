@@ -6,6 +6,9 @@ on:
       - pest-control/tier1-postboard-support-faerie-macabre
     paths:
       - .github/workflows/pest-control-tier-one-postboard-faerie-macabre.yml
+      - "**/FaerieMacabre.kt"
+      - "**/FaerieMacabreScenarioTest.kt"
+      - "**/AcornHarvest.kt"
 
 permissions:
   contents: write
@@ -37,7 +40,7 @@ jobs:
           git diff --check
 
       - name: Qualify exact Faerie Macabre behavior
-        run: ./gradlew :mtg-sets:2008-2016:test --tests "*FaerieMacabreScenarioTest"
+        run: ./gradlew :mtg-sets:2008-2016:tests:test --tests "*FaerieMacabreScenarioTest"
 
       - name: Diagnose facade-boundary violations
         shell: bash

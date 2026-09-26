@@ -37,7 +37,7 @@ jobs:
           git diff --check
 
       - name: Qualify exact Spreading Seas behavior
-        run: ./gradlew :mtg-sets:2008-2016:test --tests "*SpreadingSeasScenarioTest"
+        run: ./gradlew :mtg-sets:2008-2016:tests:test --tests "*SpreadingSeasScenarioTest"
 
       - name: Qualify card lint
         run: ./gradlew :mtg-sets:test --tests "*CardLintTest"
