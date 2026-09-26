@@ -1,0 +1,86 @@
+name: Manual Phase 2 Type Loss Diagnostic
+
+on:
+  push:
+    branches: [lab/manual-etb-receiving-20260926]
+    paths:
+      - rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/RemoveCardTypeCapabilityTest.kt
+      - rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/layers/EffectApplicator.kt
+      - rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/sba/creature/ControlChangedRemovesFromCombatCheck.kt
+      - .github/workflows/manual-transmission-type-loss-diagnostic.yml
+
+permissions:
+  contents: read
+
+concurrency:
+  group: manual-phase2-type-loss-diagnostic
+  cancel-in-progress: false
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    env:
+      GRADLE_LOCK_SLOTS: '1'
+      JAVA_TOOL_OPTIONS: -XX:MaxMetaspaceSize=768m
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: gradle/actions/setup-gradle@v6
+      - uses: extractions/setup-just@f8a3cce218d9f83db3a2ecd90e41ac3de6cdfd9b
+      - name: Bind exact source before excluded fixed diagnostic
+        shell: bash
+        run: |
+          mkdir -p build/reports/manual-type-loss
+          python3 - <<'PY'
+          import hashlib, json, os, pathlib, subprocess
+          paths = ['rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/RemoveCardTypeCapabilityTest.kt',
+              'rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/layers/EffectApplicator.kt',
+              'rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/sba/creature/ControlChangedRemovesFromCombatCheck.kt',
+              '.github/workflows/manual-transmission-type-loss-diagnostic.yml']
+          source = subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()
+          tree = subprocess.check_output(['git','rev-parse','HEAD^{tree}'],text=True).strip()
+          status = subprocess.check_output(['git','status','--porcelain'],text=True)
+          assert source == os.environ['GITHUB_SHA'] and not status.strip()
+          receipt = {'source':source,'tree':tree,'scope':'EXCLUDED_FIXED_ENGINE_DIAGNOSTIC',
+              'expected_actual_cases':7,'official_initializations':0,'gameplay_authorized':False,
+              'files':{p:hashlib.sha256(pathlib.Path(p).read_bytes()).hexdigest() for p in paths}}
+          pathlib.Path('build/reports/manual-type-loss/source-binding.json').write_text(json.dumps(receipt,indent=2)+'\n')
+          PY
+      - name: Run seven actual subtype and combat cases
+        shell: bash
+        run: |
+          set -euo pipefail
+          just test-class RemoveCardTypeCapabilityTest --rerun --max-workers=1 -PkotlinCompileParallelism=1 -Pkotlin.compiler.execution.strategy=in-process -Dorg.gradle.jvmargs=-Xmx4g --info --stacktrace 2>&1 | tee build/reports/manual-type-loss/diagnostic.txt
+      - name: Record actual XML verdict without recategorizing failures
+        if: always()
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import hashlib, json, pathlib, xml.etree.ElementTree as ET
+          paths = list(pathlib.Path('rules-engine/build/test-results/test').glob('TEST-*RemoveCardTypeCapabilityTest.xml'))
+          assert len(paths) == 1, paths
+          p = paths[0]
+          cases = ET.parse(p).getroot().findall('testcase')
+          assert len(cases) == 7, len(cases)
+          rows = [{'name':c.attrib['name'],'failure':c.find('failure') is not None,
+              'error':c.find('error') is not None,'skipped':c.find('skipped') is not None} for c in cases]
+          out = {'actual_cases':rows,'xml_sha256':hashlib.sha256(p.read_bytes()).hexdigest(),
+              'scope':'DIAGNOSTIC_ONLY_NOT_GAMEPLAY_EVIDENCE'}
+          pathlib.Path('build/reports/manual-type-loss/actual-cases.json').write_text(json.dumps(out,indent=2)+'\n')
+          assert not any(r['failure'] or r['error'] or r['skipped'] for r in rows), rows
+          PY
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: manual-type-loss-${{ github.sha }}
+          path: |
+            build/reports/manual-type-loss
+            rules-engine/build/test-results/test/TEST-*RemoveCardTypeCapabilityTest.xml
+          retention-days: 30
