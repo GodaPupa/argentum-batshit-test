@@ -1,16 +1,12 @@
 # Current status — Ferocity Recycling
 
-Updated 2026-09-26 UTC. Source base: `d0c78bb4cca79b7402ba65bd62b5cb621230a054`. Research branch: `ferocity-recycling/archetype-research`; reviewed integration branch: `ferocity-recycling/qualification-review`, draft PR #174 targeting research PR #173.
+Checkpoint cut: 2026-09-26 09:20 UTC. Public source parent: `2e7e78653ed1c7e56fc609b993a79b68ecca33c6`. Isolated review branch: `ferocity-recycling/qualification-review`, [draft PR174](https://github.com/GodaPupa/argentum-batshit-test/pull/174), targeting the preserved research branch/PR173. This publication archives reviewed evidence; it does not promote unqualified source into research gameplay.
 
-## Research outcome
+## Research outcome and actual gameplay counts
 
-No interactive performance evidence exists yet. Questions A (best Ferocity configuration found), B (Ferocity's contribution), and C (competitive performance) remain unresolved. No prototype has been promoted or rejected on performance. A technical defect is not a negative deck verdict.
+Questions A (strongest Ferocity configuration found), B (Ferocity's contribution), and C (competitive performance) remain unresolved. No configuration has been advanced, rejected or retuned from gameplay. A technical blocker is not a negative deck verdict.
 
-Three families and nine Ferocity 60s plus nine competent no-Ferocity 60s were frozen before randomized outcomes. The initial manifest remains `ef75f5cec859dcc9f765de0feacb7cb7696037f4c7035d4b68b6bdfccee1c87d`. Six exact source-backed competitive 60/15 lists are archived; five form the declared gauntlet. Ferocity remains verified-text prerelease research on the audit date, with fresh platform/date legality required before sanctioned claims. Deadly Dispute is excluded.
-
-## Actual counts
-
-| Evidence class | Actual count or result |
+| Stage | Actual completed count |
 |---|---:|
 | Exact opening-inventory lists, no RNG | 18 |
 | Randomized functional or goldfish trials | 0 |
@@ -18,38 +14,48 @@ Three families and nine Ferocity 60s plus nine competent no-Ferocity 60s were fr
 | Frozen evaluation games | 0 |
 | Independent confirmation games | 0 |
 | Postboard matches | 0 |
-| Original stable-source mechanical baseline | 41 distinct cases: 38 pass / 3 fail |
-| Extended repair cases executed across separate source scopes | 55 distinct cases: 49 pass / 6 fail |
-| Restricted-X baseline03 | 13 cases: 4 pass / 9 fail |
-| New damage/activation/replay targeted05 | 22 cases: 20 pass / 2 fail |
-| First ten new canonical support cards | 58 cases authored / 0 executed on this integration |
+| First-cell fixed policy scenarios executed | 0 |
 
-The extended repair row is a coverage inventory across separate guarded invocations, not one accepted source-version suite. Two failed cases were fixture-setup defects; a token state-based-action defect and three optional-target timing failures required engine corrections. All failed attempts remain evidence. The newer 22-case damage/activation/replay run completed: 20 passed, with two priority-state assertions failing during mana-choice/payment pauses. Its exact failed evidence is preserved and is being assessed before correction.
+Three families, nine Ferocity60s and nine matched no-Ferocity60s remain unchanged at the initial manifest `ef75f5cec859dcc9f765de0feacb7cb7696037f4c7035d4b68b6bdfccee1c87d`. Six exact contemporary60/15 source lists are archived, five in the gauntlet. Ferocity remains verified-text prerelease research, scheduled2026-10-02; no sanctioned result is claimed. Deadly Dispute is excluded. The search/development/refinement/evaluation budgets and concealed future allocations have not changed; random gameplay seeds remain unallocated.
 
-## Current executable work
+## Newly published deterministic evidence
 
-The real JDK 21 / just 1.58.0 / Gradle 9.6.1 environment works. The local 8 GiB memory limit requires serial heavy builds. Independent frozen support work is assigned to project-scoped GitHub CI runners.
+Archives contain original receipts, failed attempts, source boundaries and replay commands. Counts from repeated versions overlap and must not be summed as independent evidence.
 
-The original baseline's three failures showed lost departed-source deathtouch/lifelink on queued Shaman damage. General CI independently reproduced 38/41 on the original baseline tree. The concurrent worker's smaller repair is preserved in history. A fuller repair adds exact source-object identity, source snapshots, completed-cost state-based actions and deterministic activation routing. Its current core inventory is 63 cases; three Gempalm regression cases additionally require the separately reviewed optional-trigger timing correction. None of that extended source is admitted merely because an earlier tree passed.
+| Source-specific scope | Observed result | Interpretation |
+|---|---|---|
+| Public14ec21b8 project qualification | 71/71 fixed cases passed | Exact earlier source only |
+| Public14ec21b8 general CI | All nine required jobs successful;17,212 passing logged test events,52 skipped | Logged events are not asserted to be unique tests |
+| Public2e7e7865 project qualification | Existing71/71; canonical lane30/35, five Witch's Cottage failures | Canonical lane stopped before remaining modules |
+| Public2e7e7865 general new-card cases | 52/58, six failures | Five Cottage optional timing failures plus Insight flashback; overlaps canonical lane |
+| Full LKI source targeted06+07 | 73/73 fixed cases | Same frozen source across complementary scopes |
+| Full LKI source broad08 | 4,379 fresh cases;4,365 pass,14 fail | Runtime nested-payment defect plus historical optional-timing/trace expectations required diagnosis; nine stale XML cases explicitly excluded |
+| Restricted-X successor04 | 18/18 fixed cases | Earlier13-case baseline4 pass/9 fail retained |
+| Actor observationv2.2 successor04 | 28/28 fixed cases | Private-data invariance and closed-schema boundary; earlier27-case17 pass/10 fail retained |
 
-Restricted-X activation menus now have an executed failing baseline: nine assertions expose wrong affordable ceilings, including black-only Rats-style costs and activation-only restricted mana. A narrow repair is authorized with the same assertions retained.
+Publication paths: `evidence/build/published-ci-14ec21b8/`, `published-ci-2e7e7865/`, `local-lki-through-08/publication-parts/`, `restricted-x-publication-through-04/`, and `observer-publication-through-04/`. Each has its own manifest/review. `publication-staging-20260926/` binds35 newly staged files and1,338 recursive archive members, with independent parent credential/private/future-material review. The older14ec archive was reviewed separately. No future evaluation allocation is present.
 
-Ten canonical support cards, eight required printing rows, ten individual scenario files and their source/author/peer records are frozen for this publication. The legacy private Rats fixture is replaced by the canonical card; all eight cross-card interaction bodies are preserved byte for byte under `RatsSweeperInteractionTest`. The script fans out duplicate class names across modules, so this distinct name also makes the single-module evidence receipt unambiguous. Both the canonical nine-case card suite and eight-case interaction suite must execute on the combined source.
+## Current continuing work after those archive boundaries
 
-The workflow now separates existing engine/support and new canonical-support cases into two independent jobs. This publication does not change any frozen candidate, comparison, opponent, policy, gameplay allocation or seed ledger. Eight Python arithmetic/evidence guard checks and eighteen list/hash checks pass on this integration. A synthetic fixture-name failure during the rename is archived with its correction; no assertion was weakened.
+All work remains in isolated worktrees with source guards and failed-run preservation. The current local JDK21/just1.58.0/Gradle9.6.1 environment works; heavy builds are serialized under the8GiB memory limit.
 
-Actor-only observation, durable replay journals, competent pilots and remaining selected card support are still in development. An independent observation review found that explicit public combat assignments must be added before a blocker-declaration policy can act competently. Monarch, initiative, ninjutsu and ordered graveyard alternative costs are separate scoped work, not assumed support.
+- Full LKI successor09/10 executed57 fixed cases:45 passed,12 failed before nested payment began because two test definitions omitted their mana-ability flag. Fixture-only successor11 executed12:8 passed,4 failed because a single legal sacrifice is correctly auto-selected. Successor12 adds a second legal choice only in the affected fixture setups; no runtime source changes or weakened assertions. Its next gate is12, then the original73 and required broad regression.
+- Flashback successorv1.2 passed35/35 targeted cases, including unchanged Insight5. It preserves actual paid flashback through every stack exit, including generic stack-to-hand/library movement. Original26-case22 pass/4 fail and compiler-only failures remain preserved. Required existing regressions and combined-source qualification continue.
+- Monarch/initiative source03/04 executed72:67 passed,5 failed. All18 monarch cases passed. The five failures are diagnosed fixture-definition/serialization/setup errors, with corrections separately frozen; these results do not admit the joint source.
+- Actor public LKI observationv3.1 has40 authored cases (preserved28 plus12 new); exact-source projection peer review completed, combined runtime execution pending. Nonbattlefield private-origin generations are omitted. Source snapshots are never passed to pilots.
+- Durable journal/replay has20 authored fixed cases; a real-process external watchdog passed8 fixed fixtures. Its process outcomes are accounting only, with no inferred game result. Static review and joint integration remain required. Exact raw CardDefinitions, including generated ability IDs, must be pinned for fresh-process replay.
+- A shared project-only Ferocity definition preserves the exact qualified DSL and all24 original scenario bodies. Extraction metadata and combined engine qualification remain explicit gates. It is not registered as a released set card.
+- Artifact and exact MisterTwin Red pilots each have the declared24-case D1 bank authored, with no outcomes yet. They use detached actor information and the runner's real setup/decision/action menus. Static peer review corrected initial fixture assumptions before thev0.1 policy freeze. The first intended D2 cell is A3-F4/A3-N0 versus Red; it remains gated.
+- Sazacap's Brew real Gift timing/targets, current combat-damage division, ninjutsu/Hacker and remaining selected-pool support have narrow isolated source/tests. Their presence on disk is not a runtime pass. Source changes and independent reviews are separately versioned.
 
-## Verified public checkpoint
+## Publication and acceptance
 
-Before this publication the reviewed branch is at `14ec21b85b5f0aec833202c1caeacafe3919de15`, tree `ae1458ce9e5abb28071e58c56a9ff5affe2a464d`, direct parent `c771be5679cc1e9b25363c95ef50979961ac9f16`, in [draft PR #174](https://github.com/GodaPupa/argentum-batshit-test/pull/174). On 2026-09-26, workflows `36226502281` (project qualification) and `36226502312` (general CI) both reported success. Exact per-case log/artifact inspection is separate. These statuses establish neither interactive qualification nor research completion.
+The public support checkpoint2e7e7865 has failed CI described above. This evidence publication preserves that fact and changes no shared engine runtime, deck, policy or seed ledger. New source is coordinated through a separate integrated qualification worktree and applicable review gates. Pest Control, Izzet Science, Manual Transmission, Industrial Waste and Sphinx's Approach inputs and gameplay allocations are untouched.
 
-The previous runs attached to `230bc4c` (`36225413909`, `36225413890`, `36225412160`) were cancelled; the earlier status text is preserved in `history/status-before-support-publication-20260926.md` and is superseded here. The original installer failures and original baseline failures remain archived.
+Native push previously failed with `fatal: could not read Username for 'https://github.com': terminal prompts disabled`. Authorized publication uses GitHub Git-data operations, exact local/remote tree verification and non-force ref updates. No shared history is rewritten. The commit containing this status is the evidence checkpoint; the prior exact source parent is recorded above to avoid a self-referential commit hash.
 
-Native push failed with `could not read Username for 'https://github.com': terminal prompts disabled`. The authorized GitHub API publishes reviewed trees with exact tree comparison and non-force ref updates. Concurrent initialization and subsequent shared-branch changes through `c771be56` are preserved. All further work is reviewed through the isolated qualification PR; other projects remain unchanged.
+## Next authorized actions and stopping boundary
 
-## Next authorized steps and stopping boundary
+Close the source-specific mechanic gates, freeze and qualify the combined first-cell engine/observation/journal/pilots, verify exact runtime definitions and replay, then allocate and execute the declared small interactive D2 batches. No confirmation/evaluation data may train pilots or alter frozen final candidates. The720 initial D2 ceiling and240 refinement ceiling remain unchanged.
 
-Publish this frozen support integration and inspect its actual CI. Finish exact-source mechanical gates, remaining card support, observation/replay and bounded pilot qualification. Then admit the first declared D2 cell; A3-F4/A3-N0 against Red Madness is eligible only when all its prerequisites pass. The separate Grixis benchmark is not a sixth D2 opponent. The active contract still permits at most 720 initial D2 games and 240 refinement games with no incumbent resampling; no allocation has been consumed.
-
-The program has not reached its stopping rule. No `FINAL_CONCLUSION.md` or tested final 60/15 is justified. External jobs are identified above; execution between responses is claimed only while an actual job is running.
+The stopping rule has not been reached. A strongest supported60/15, final primer and postboard claims are not yet justified. There is no final deck verdict and no `FINAL_CONCLUSION.md`. Active jobs are recorded in per-run receipts; execution between responses is claimed only for a real launched job.

@@ -1,0 +1,80 @@
+{
+  "schema": "ferocity-local-evidence-multiblob-publication-v1",
+  "original_manifest_sha256": "b04fc79099c611a71b834dcf8db5dcf323c163892b397f55b123e5197162dbde",
+  "reason": "Same evidence split into one self-contained ZIP per attempt to avoid a single22MB API blob. Each member retains the original bytes and path. The original combined archive remains local and unchanged.",
+  "files": [
+    {
+      "path": "lki-repair-initial-01.zip",
+      "sha256": "0a658c0ab78f52d5efea8316e96ea997097bd70f0e3eb45a1f32706f2b334d4e",
+      "bytes": 2256614,
+      "scope": "lki-repair-initial-01",
+      "extract_at": "repository root"
+    },
+    {
+      "path": "lki-repair-no-build-cache-02.zip",
+      "sha256": "a5654731338ca300b4b2706e6fb832c96c1a52f781fad05b05245ee2690475f5",
+      "bytes": 2267934,
+      "scope": "lki-repair-no-build-cache-02",
+      "extract_at": "repository root"
+    },
+    {
+      "path": "lki-repair-independent-scope-03.zip",
+      "sha256": "dcdcb2122e59f50b60f57d443d2c313a000913d5a300493ce4895c6a71ffbdc6",
+      "bytes": 2176781,
+      "scope": "lki-repair-independent-scope-03",
+      "extract_at": "repository root"
+    },
+    {
+      "path": "lki-repair-gempalm-scope-04.zip",
+      "sha256": "cb95cd1a0b5150b656482777f725a9ce9079bb03c165b1fbd4890eb1bdb805e5",
+      "bytes": 2176051,
+      "scope": "lki-repair-gempalm-scope-04",
+      "extract_at": "repository root"
+    },
+    {
+      "path": "lki-priority-routing-targeted-05.zip",
+      "sha256": "143148a91bf3156fb426faab4603bb72917ce9a552b04b70a3b060c97c408605",
+      "bytes": 2462849,
+      "scope": "lki-priority-routing-targeted-05",
+      "extract_at": "repository root"
+    },
+    {
+      "path": "lki-priority-optional-targeted-06.zip",
+      "sha256": "3283de4dcbd10ed412c4d4aded4bc5cb81f1b84766841fc8c72951487911d9ac",
+      "bytes": 2465449,
+      "scope": "lki-priority-optional-targeted-06",
+      "extract_at": "repository root"
+    },
+    {
+      "path": "lki-combined-remainder-07.zip",
+      "sha256": "e5975ee3243fc201c048ccade42f372a77b3a0ac462930c94e8cfab579b2fa81",
+      "bytes": 2552272,
+      "scope": "lki-combined-remainder-07",
+      "extract_at": "repository root"
+    },
+    {
+      "path": "lki-full-rules-regression-08.zip",
+      "sha256": "cd4430721caf6fa64c4dc236709175906a21fd27fc2a1b04e2657a65b0293dca",
+      "bytes": 3750109,
+      "scope": "lki-full-rules-regression-08",
+      "extract_at": "repository root"
+    },
+    {
+      "path": "historical-source-boundaries.zip",
+      "sha256": "0f416006b00277c500f01615ee1a184eb9e2eb9b377db8aac4613791d67c4087",
+      "bytes": 1771230
+    },
+    {
+      "path": "review.json",
+      "sha256": "18a21f14318664ec8cef9d0933b43d202912d41dd54ada3372ee62f82864958a",
+      "bytes": 297521
+    },
+    {
+      "path": "README.md",
+      "sha256": "029aa4e4ee9f4c7ef444cfb2e1c065322fce44a74c8212bedb160bc2d3daa193",
+      "bytes": 1661
+    }
+  ],
+  "maximum_file_bytes": 3750109,
+  "complete_evidence": "Extract all eight attempt ZIPs and historical-source-boundaries.zip at repository root. Per-member hashes are in review.json and original source receipts. No reassembly or cross-file binary concatenation is needed."
+}

@@ -67,3 +67,11 @@ The qualification checkpoint at `14ec21b8` preserved all concurrent research his
 The first ten missing canonical support cards are now frozen with 58 authored cases, eight printing rows and archived fresh source verification. Their runtime gates remain pending on this integration. The original eight Rats interaction bodies now use the canonical card and a distinct engine-level class name; their previous fixture pass is not inherited.
 
 Additional deterministic execution has exposed generic faults that could bias deck comparison: wrong restricted-X legal-action ceilings, token cleanup before priority, optional targeted-trigger timing, and insufficient public combat information for a pilot. The source corrections, failed runs and requalification boundaries are explicit. These findings concern the simulation environment; they do not favor or disfavor any architecture. The deck lists and experimental budgets remain frozen, and all development/evaluation/confirmation game counts remain zero.
+
+## Evidence checkpoint — 2026-09-26 09:20 UTC
+
+The preceding support-publication section describes its earlier boundary. The current source-specific results, including failed public CI at2e7e7865, are superseded by `CURRENT_STATUS.md` and the newly published compact evidence archives. Restricted-X18 and actor-observation28 now have passing targeted gates; full LKI targeted73 passed on its earlier exact source, while its subsequent broad4,379-case run exposed14 failures and is not accepted as a green broad gate. Fresh nested-payment fixes and historical fixture corrections are being qualified, with every failed attempt retained.
+
+All18 prototype/comparator lists and the bounded search protocol remain unchanged. Both first-cell pilots now have24 fixed qualification scenarios authored; none has executed at this checkpoint. Static review has corrected draft cost assumptions against actual card definitions before the initial policy freeze. This is policy construction, not evidence that one deck wins more.
+
+The research questions still require real interactive outcomes. No development, evaluation, confirmation or postboard sample has been consumed. A technically successful mechanism or pilot fixture cannot support a Ferocity advantage, competitive win rate, final archetype promotion or tournament claim.
