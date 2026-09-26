@@ -1,0 +1,86 @@
+{
+  "schema": "pest-historical-minimum-exclusion-reconstruction-v1",
+  "status": "READ_ONLY_HISTORICAL_RECONSTRUCTION_NOT_CURRENT_FREEZE_AUTHORITY",
+  "source_head": "5dff2194ea8db3e1cdc91499d647113d0b8eaf59",
+  "artifacts": [
+    {
+      "artifact_id": 10733086089,
+      "zip_sha256": "bbf9f20e834f27f838e37de78c905c213a8917651818367360a8e8a140914961",
+      "members_verified": 5,
+      "internal_checksum_inventory_complete": true
+    },
+    {
+      "artifact_id": 10773131628,
+      "zip_sha256": "4d3a19ef7febacb336911ff1271c14ab83a6ea1f99ed34ae154ae154d6ef5f25",
+      "members_verified": 5,
+      "internal_checksum_inventory_complete": true
+    },
+    {
+      "artifact_id": 10836436268,
+      "zip_sha256": "70b9a665fbb154342e2789c1b6b2c2fd912579431a6ae1f9ab289984d5e7801c",
+      "members_verified": 5,
+      "internal_checksum_inventory_complete": true
+    }
+  ],
+  "prior_exclusion_count": 566,
+  "original_consumed_monster_count": 4,
+  "overlap": 0,
+  "minimum_historical_exclusion_count": 570,
+  "sorted_historical_exclusion_sha256": "70c936391c43533b71698574eb9b58cca123fa8deee472970e1a25478131cf15",
+  "inherited_audit": {
+    "prior_unique_count": 554,
+    "accepted_terror_replication_seed_count": 12,
+    "accepted_terror_replication_vector_sha256": "445542e6cdf9902cc435b4db276a747e6b2200ff4f24ec9ac896b517a44bd34d",
+    "accepted_terror_smoke_artifact_id": 10733086089,
+    "accepted_terror_smoke_archive_sha256": "bbf9f20e834f27f838e37de78c905c213a8917651818367360a8e8a140914961",
+    "accepted_terror_replication_artifact_id": 10773131628,
+    "accepted_terror_replication_archive_sha256": "4d3a19ef7febacb336911ff1271c14ab83a6ea1f99ed34ae154ae154d6ef5f25",
+    "complete_unique_count": 566,
+    "prior_audit": {
+      "legacy": {
+        "counts": {
+          "permanent_registry": 463,
+          "accepted_v2_calibration": 10,
+          "rejected_v2_candidate": 10,
+          "v2_smoke_fixture": 1,
+          "frozen_v2_qualification": 50,
+          "grixis_smoke_vector": 4,
+          "grixis_replication_vector": 12
+        },
+        "complete_unique_count": 550,
+        "pinned_sha256": {
+          "permanent_registry": "fcc09ba4db85c0b157de7301b5506a1c9cd29c1d85ccb3f6482d6cfe9260a246",
+          "accepted_v2_calibration": "41d9cf707fba5548d14040d7e3a4a26bd8f9f5bbacf1b12d7651423dcabaff0a",
+          "v2_qualification_vector": "c38ff24c9b45e36036cab506475bb8283f4e14e211318a7a7e6ab99acef6f497",
+          "construction_closure_doc": "95972162e814daad90aa151121a94dfdd959b5123bd70066aaf37fa46ec8e758",
+          "construction_closure_source": "61e5d0e76052d0bc95b6fa523a356f87d6f595e616dedc6ce2d0c869ba7b3679",
+          "grixis_smoke_provenance": "14d46801735ab9bf49d816161c75415c8072f0274989492105a468e24d00550b",
+          "grixis_replication_provenance": "85f80ad88b64f55c6798f8697c63be875528e82ba894d3c1fd7e5f2a1e199fe5",
+          "grixis_smoke_vector": "99eb94c4ec28f073534c008b367f3384df25abebd29dde0a9574227599cb60eb",
+          "grixis_replication_vector": "5cd8a78fb62a59495d07ed31c4579fab7bafe2bc9c075aa7757a7f67953c75d4",
+          "auto_freeze_authorization": "b7bf1f820ef733a4457b23d0ecf5c987366b6b3697aff1b92de59d22ebbd1201"
+        },
+        "grixis_smoke_artifact_id": 10620940806,
+        "grixis_smoke_artifact_archive_sha256": "88b5e99d7aab2065fb26d51c074478d43310209d45b084d9dcfe552e8c328373",
+        "grixis_replication_artifact_id": 10660335894,
+        "grixis_replication_artifact_archive_sha256": "49597c4a3011464e1d4bb707dfa1b554090054059e0675254524c92fcce8d6fd"
+      },
+      "legacy_unique_count": 550,
+      "accepted_smoke_seed_count": 4,
+      "accepted_smoke_vector_sha256": "ca508c842886fff2af7db1c966fbedbb8ae801796c5043e26b22def056c724ea",
+      "complete_unique_count": 554,
+      "accepted_smoke_artifact_id": 10733086089,
+      "accepted_smoke_artifact_archive_sha256": "bbf9f20e834f27f838e37de78c905c213a8917651818367360a8e8a140914961"
+    }
+  },
+  "original_monster_assignment_cells_and_deck_hashes_verified": true,
+  "production_entropy_calls": 0,
+  "generator_functions_called": false,
+  "claim_refs_created": 0,
+  "official_gameplay_initialized": 0,
+  "limitations": [
+    "This proves the pinned historical minimum, not completeness of all live accepted/rejected/quarantined/pending/claimed vectors at a future freeze.",
+    "Fresh live ref/vector/fixture reconciliation, accepted prospective protocol and separate one-shot freeze authority remain required.",
+    "Original vectors are retired historical identities; this audit creates no new seed assignment or replacement corpus."
+  ]
+}

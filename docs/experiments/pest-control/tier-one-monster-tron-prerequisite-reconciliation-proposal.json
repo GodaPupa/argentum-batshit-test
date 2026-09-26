@@ -1,0 +1,103 @@
+{
+  "schema": "pest-monster-replacement-prerequisite-reconciliation-v1",
+  "status": "PROPOSED_REQUIRES_INDEPENDENT_PROTOCOL_REVIEW_NO_EXECUTION_AUTHORITY",
+  "purpose": "Reconcile the existing bounded replacement proposal with two confirmed reachable receiving-source blockers before replacement machinery or gameplay is admitted.",
+  "original_documents_preserved": {
+    "replacement_proposal": {
+      "path": "docs/experiments/pest-control/tier-one-monster-tron-replacement-smoke-r1-proposal.md",
+      "sha256": "5d920b6216ef82f898a6032a27bd5afdce4ae402ea19091cd367b227d12840e0",
+      "status": "PROPOSED_SEED_FREE_NOT_EXECUTION_AUTHORIZATION"
+    },
+    "governing_stopping_rule": {
+      "path": "docs/experiments/pest-control/tier-one-qualification-stopping-rule.md",
+      "sha256": "eb7097c94d9c1f40e31c738ba6162351034f40a99ec6e53393cabd374eda08be"
+    },
+    "bytes_modified": false,
+    "precedence_if_accepted": "This supplements only the prerequisite descriptions in sections2,3,4 and6 of the original replacement proposal. All other design, evaluation order, execution, rejection and stopping provisions remain unchanged. Neither proposal is accepted merely by publication or a new HEAD."
+  },
+  "confirmed_receiving_source": {
+    "qualified_support_head": "fbbf7207d7f493648dcdb7099b0a88b102e8cd59",
+    "qualified_support_tree": "b33ed8bf21607eab32e8b65cb567f39394f4913d",
+    "accepted_project_merge": "5c2034b1e581fcc9877790f2893f80a38ec11d80",
+    "source_files_sha256": {
+      "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/combat/DeclareBlockersHandler.kt": "6a2ae1405b552e27dd8a1012928e3e240fa1bcde6abf2fe2877eec930e62c974",
+      "gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlTierOneMonsterTronOperationalStack.kt": "af78e3f08b8729f5271ee8ebe2190a89614951dc72183264f9e2987808dabf26"
+    },
+    "post_block_finding": "After the final defender declares blockers, the inherited receiving handler retains that defender's priority instead of returning priority to the active player. Both frozen mains can attack and block; pilot avoidance cannot exclude the interaction.",
+    "actor_boundary_finding": "The inherited operational stack constructs EngineAiPlayerController with gameStateProvider returning environment.state, and passes the authoritative state directly to respondToDecision and chooseAction. The existing information rules require a qualified own/public boundary before this runner can supply admissible gameplay.",
+    "finding_receipt": "docs/experiments/pest-control/tier-one-post-block-priority-blocker.json",
+    "no_gameplay_inference": "These are implementation and evidence-integrity blockers, not losses, negative deck results or terminal experimental conclusions."
+  },
+  "proposed_prerequisite_reconciliation": {
+    "before_seed_free_replacement_machinery": [
+      "Independently accept the original bounded replacement proposal together with this explicit prerequisite reconciliation, recording the exact proposal hashes and separate coordinator disposition.",
+      "Independently qualify the canonical command, post-resolution, post-cast and post-block repairs, retain their distinguishing and mandatory compatibility regressions, and identify the canonical actor capability and its exact accepted source. Preserve the original exact-deck AnyTarget qualification requirement.",
+      "Do not implement a competing Pest shared-engine or information-masking solution. Source compatibility must be reviewed before reusing each accepted canonical component."
+    ],
+    "c2_construction_delta": "The permitted prospective C2 change set remains historical C plus canonical command repair, post-resolution and post-cast repairs, exact-deck AnyTarget requirements and specifically reviewed replacement bindings; it now also expressly requires the canonical post-block priority repair and canonical own/public actor integration. Pin an explicit minimal delta from a224ef0008a2b85e2c2c106df9959678782e765d. No moving-main alias, blanket source-diff exclusion, unrelated Spy/postboard card import, hardware change or strategic pilot retuning is authorized.",
+    "required_c2_receiving_qualification": [
+      "Retain all original command-context, protected-source, calibrated Pest/Monster policy, interaction, replay, receipt authentication, no-clobber, attempt/init/action-journal, failure-preservation and current rules/legality gates.",
+      "Exercise post-block priority through real accepted actions with both an empty block declaration and actual blockers in reachable frozen-deck combat. Verify the active player receives priority after the final declaration, offered responses belong to the correct actor, and the same transitions survive serialization and replay. Retain the canonical component's mandatory compatibility coverage.",
+      "Route both pilots through the accepted canonical actor boundary. Qualify each reachable action and pending-decision surface of the exact frozen60s, including target, mana/payment, library/search/reorder, optional and combat choices that those lists can actually exercise. Do not exclude a reachable interaction because a pilot avoids it or engine support is absent.",
+      "Use distinguishing information fixtures: changes confined to unavailable opponent-hand or future-library information must not alter the actor-visible input or policy choice; information legitimately exposed to that actor and currently offered legal choices must remain usable. Bind the adapter, policy, offered-choice mapping and replay to the exact receiving source.",
+      "The existing frozen strategic profiles remain the intended pilots. Any canonical information-interface correction must be explicit and independently reviewed; failed equivalence or competence checks require prospective disposition rather than covert policy retuning. Freeze any additional bounded receiving fixture inventory before execution and give both pilots equivalent qualification opportunities.",
+      "Run mandatory broader integration at the final C2 acceptance boundary. Green component, card-inventory, broad CI or old gameplay artifacts cannot substitute for exact C2 receiving qualification."
+    ],
+    "existing_component_evidence_scope": {
+      "priority_27_stages_220_cases": "After-resolution and post-cast compatibility at fbbf; distinct from post-block and actor qualification.",
+      "targeting_30_cases": "Exact frozen-deck targeting component at27033cefd4bb717bb7167f315492aad1ce78c853, preserved on separate accepted receipt56ed27fdd42e2d09b09128cc2c9564a05cecf3f1. It is not C2, A2, actor or gameplay acceptance.",
+      "postboard_support": "Registry and card-mechanic component acceptance only; zero missing identities is not proof of every reachable interaction."
+    },
+    "a2_after_c2": "A separate prospectively reviewed A2 must pin an already accepted immutable C2, exact vector/artifact, actor/pilot/engine/rules bindings, authenticated receipts and live ref/claim reconciliation. No self-referential source hash or locally invented acceptance receipt is sufficient.",
+    "original_authority_order_preserved": "Repair plus protocol acceptance; seed-free freeze validation; separate one-shot production-freeze authority and complete draw audit; vector-specific authorization with runner disabled; exact C2 construction acceptance; separate A2 activation acceptance; then one create-only replacement claim and the four declared games. This reconciliation creates none of those authorities."
+  },
+  "exclusion_reconciliation": {
+    "historical_566_plus_retired_original_monster4": 570,
+    "already_declared_additional_postboard_fixture_exclusions": [9250925021, 9250925022, 9250925023],
+    "known_minimum": 573,
+    "known_minimum_sorted_sha256": "d53b37fa50bb85f9fc75fdd236bd49d49a6ebdd22ad7a984fbf237c4d676a099",
+    "evidence": "docs/experiments/pest-control/monster-replacement-prerequisite-evidence/publication.json",
+    "disposition": "The three additional values were already declared excluded by accepted postboard-B source evidence; including them does not allocate or alter a gameplay sample.573 is a verified known minimum, not a completed future freeze manifest. Before any production draw, reconcile and pin all live accepted, rejected, quarantined, pending, claimed and explicitly excluded Pest identities. Missing source, digest/count drift or unexplained overlap blocks the freeze. Preserve the original entire-draw quarantine/fsync, zero/duplicate/exclusion rejection and no-reroll rule.",
+    "live_claim_observation": {
+      "original_ref": "refs/heads/pest-control/official-attempts/monster-tron-smoke-v1",
+      "original_head": "1c2e253ad7f5a7652304f7c9aaafc30e547a481e",
+      "replacement_ref_observed": false,
+      "limitation": "Read-only observation while preparing this proposal, not a future admission check or a claim. Reconcile again at each authority-bearing gate."
+    }
+  },
+  "unchanged_design": {
+    "pest_main_sha256": "7be61a66e2c7654428043d56b411afb4d406f02dfcc4eb7f15a62295d4e906f5",
+    "monster_main_sha256": "79ffc53ac331beafeb1ef4510ce174d01fb2685d963a4c1485f04edbf47c064f",
+    "pest_profile": "AiProfile.PRODUCTION_CANDIDATE_EXPIRING",
+    "monster_profile": "PestMonsterTronPolicy.profile with PestMonsterTronAdvisorModule",
+    "replacement_games": 4,
+    "fixed_order_pest_seat_and_start": [[0,"PLAY"],[0,"DRAW"],[1,"PLAY"],[1,"DRAW"]],
+    "clean_smoke_trigger": "Exactly four independently accepted valid terminal games trigger separate fresh12 replication regardless of wins.",
+    "replication_games": 12,
+    "replication_balance": "6/6 play-draw;6/6 seat;3 per seat by starting-deck cell.",
+    "life": 20,
+    "action_cap": 12000,
+    "turn_cap": 60,
+    "per_turn_action_cap": 500,
+    "process_hours": 5,
+    "workflow_hours": 6,
+    "failure_rule": "Preserve and reject defective or invalid attempts under the existing contract, consume the claim and retire the entire vector; no artificial winner, reroll, salvage or automatic second replacement.",
+    "gauntlet_order": "Closed Red/Grixis/MonoBlue axes remain closed and quarantined for clean Tier1 inference; Monster closes only under its accepted bounded rule, then Spy, with the same five-opponent postboard requirement independently preserved.",
+    "historical_games_quarantined": 81,
+    "original_monster_seeds_retired": 4,
+    "new_deck_or_opponent_scope": false
+  },
+  "current_disposition": {
+    "independent_protocol_review": "PENDING",
+    "coordinator_protocol_acceptance": "PENDING",
+    "canonical_post_block_receiving_qualification": "PENDING",
+    "canonical_actor_receiving_qualification": "PENDING",
+    "c2_created_or_accepted": false,
+    "a2_created_or_accepted": false,
+    "generator_or_production_freeze_authority": false,
+    "claim_creation_authorized": false,
+    "official_execution_authorized": false
+  },
+  "official_counters": {"new_seeds":0,"new_claims":0,"new_games":0,"new_actions":0,"new_outcomes":0},
+  "deck_performance_evidence_changed": false
+}

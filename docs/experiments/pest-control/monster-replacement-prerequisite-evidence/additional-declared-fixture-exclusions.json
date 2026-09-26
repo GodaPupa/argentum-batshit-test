@@ -1,0 +1,29 @@
+{
+  "schema": "pest-prospective-exclusion-completeness-finding-v1",
+  "status": "READ_ONLY_FINDING_PROSPECTIVE_EXCLUSION_DISPOSITION_REQUIRED",
+  "observed_source_head": "fbbf7207d7f493648dcdb7099b0a88b102e8cd59",
+  "observed_source_tree": "b33ed8bf21607eab32e8b65cb567f39394f4913d",
+  "historical_minimum_count": 570,
+  "additional_already_declared_fixture_exclusions": [
+    9250925021,
+    9250925022,
+    9250925023
+  ],
+  "known_minimum_count": 573,
+  "known_minimum_sha256": "d53b37fa50bb85f9fc75fdd236bd49d49a6ebdd22ad7a984fbf237c4d676a099",
+  "source_manifest": "docs/experiments/pest-control/tier-one-postboard-support-batch-b-sources.json",
+  "source_manifest_sha256": "8bbdbc8c165c346a137b230592268daf98c15674f5280f91d8b63c8d2b2c3dbc",
+  "actual_fixture_and_existing_registry_source_sha256": {
+    "mtg-sets/1993-1999/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/PyroblastScenarioTest.kt": "d8904617758207438ebf554cb50335cd6275c579e3cbf29aab30ffab6da5ce74",
+    "mtg-sets/1993-1999/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/HydroblastScenarioTest.kt": "e59b0210d89dfc557bcfa9609272fcd1c95881ca278968cf3b68310388401f8f",
+    "mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/GutShotScenarioTest.kt": "166574ba86ec7bed6c34ae897ab43214db0397d6ac2f1a665162a1295181f3be",
+    "gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlPreboardContract.kt": "2ef7f1a8712dfa7600d7100e96463bac2a86f61969ac91c6a09bf8bda60192d9",
+    "docs/experiments/pest-control/matchup-block-a-seed-registry.csv": "fcc09ba4db85c0b157de7301b5506a1c9cd29c1d85ccb3f6482d6cfe9260a246"
+  },
+  "gate4_fixture_already_in_historical_exclusion": true,
+  "production_entropy_calls": 0,
+  "new_official_seed_assignments": 0,
+  "new_claims": 0,
+  "official_games_initialized": 0,
+  "authority": "No protocol, vector, claim or frozen scope is changed by this finding. A later replacement freeze must prospectively include these existing declared exclusions and still reconcile all live reserved/retired/pending sources;573 is a known minimum, not a proof of global completeness."
+}
