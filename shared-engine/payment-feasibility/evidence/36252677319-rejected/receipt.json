@@ -1,0 +1,67 @@
+{
+  "schema": "shared-payment-feasibility-rejected-attempt-v1",
+  "disposition": "REJECTED_FIXTURE_COMPILATION_NOT_EXECUTED",
+  "source_head": "1a0609f1772a0baad93e0f7acce76dbc68ef9bbe",
+  "source_tree": "b03a7ba608f47e740af7fcc5e8d79af21944201d",
+  "run_id": 36252677319,
+  "job_id": 108433525840,
+  "run_url": "https://github.com/GodaPupa/argentum-batshit-test/actions/runs/36252677319",
+  "binding": {
+    "requested_head": "1a0609f1772a0baad93e0f7acce76dbc68ef9bbe",
+    "actual_head": "1a0609f1772a0baad93e0f7acce76dbc68ef9bbe",
+    "actual_tree": "b03a7ba608f47e740af7fcc5e8d79af21944201d",
+    "checkout_status": "",
+    "expected_files": {
+      "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/mana/ManaPaymentFeasibility.kt": "68ed797fe8032233fddaa3878a3109afcefbfe70db20ea54ca77efced2040bf3",
+      "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/mana/ManaSolver.kt": "8d01d433f402067e29e91e57907d9460408f72e7d35230e3e35cb439b6277daa",
+      "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/ManaPaymentFeasibilityTest.kt": "19a2873e74884e304b1f41b30bb18bfd637be642b87d128f3dce9c8625b9cd0a",
+      "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/PaidFilterManaSolverTest.kt": "5d8590e625f46e98ad6e4eaef4787443dd09dbbe41215f6e8d1ec47ef227ffd9",
+      "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/RestrictedXManaReconciliationTest.kt": "add15adc5eb1f7a5e93243a1f7fcd8a84707a7442fb30a3dbc73b6ef746569c3"
+    },
+    "observed_files": {
+      "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/mana/ManaPaymentFeasibility.kt": "68ed797fe8032233fddaa3878a3109afcefbfe70db20ea54ca77efced2040bf3",
+      "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/mana/ManaSolver.kt": "8d01d433f402067e29e91e57907d9460408f72e7d35230e3e35cb439b6277daa",
+      "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/ManaPaymentFeasibilityTest.kt": "19a2873e74884e304b1f41b30bb18bfd637be642b87d128f3dce9c8625b9cd0a",
+      "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/PaidFilterManaSolverTest.kt": "5d8590e625f46e98ad6e4eaef4787443dd09dbbe41215f6e8d1ec47ef227ffd9",
+      "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/RestrictedXManaReconciliationTest.kt": "add15adc5eb1f7a5e93243a1f7fcd8a84707a7442fb30a3dbc73b6ef746569c3"
+    },
+    "workflow_sha256": "b7dd56855f1fc500a01629787b69c5c051960a9cb4441017bf6918f702800006",
+    "canonical_paid_filter_target_source": "83577deb6176e6febddf4ffe2e7d98b7455453c2"
+  },
+  "artifact": {
+    "id": 10908979728,
+    "name": "shared-payment-feasibility-qualification",
+    "retained": "artifact.zip",
+    "bytes": 231302,
+    "sha256": "481fb7dda6b3cc9400570d82a13341b61e5e2dcea3bbd11ada768b8e6b833ef3",
+    "members": [
+      {
+        "path": "build/reports/payment-feasibility/focused.log",
+        "bytes": 3426814,
+        "sha256": "217553b5918752a607bc44084730d480df30b3178f5812152bb58dc240b9f916"
+      },
+      {
+        "path": "build/reports/payment-feasibility/source-binding.json",
+        "bytes": 2100,
+        "sha256": "538840bc450c0f913d38bebc931ae358791d654a9975204d082f314682b6bcf7"
+      }
+    ]
+  },
+  "classification": "FIXTURE_DEFECT",
+  "failed_stage": ":rules-engine:compileTestKotlin",
+  "compiler_errors": [
+    "e: file:///home/runner/work/argentum-batshit-test/argentum-batshit-test/rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/ManaPaymentFeasibilityTest.kt:91:30 Unresolved reference 'Conditional'."
+  ],
+  "cause": "The new Tron-shaped fixture called nonexistent Effects.Conditional. The real SDK exposes ConditionalEffect(condition, effect, elseEffect), which lowers directly to GatedEffect(Gate.WhenCondition(condition), effect, elseEffect).",
+  "successor_correction": "Import and call the existing ConditionalEffect factory, preserving the exact condition and both production branches. Change only the workflow expected test-source digest alongside the fixture. No production source or expectation changes.",
+  "actual_feasibility_cases": 0,
+  "actual_compatibility_cases": 0,
+  "compatibility_stage": "SKIPPED_AFTER_COMPILATION_FAILURE",
+  "production_compilation_completed": true,
+  "production_component_accepted": false,
+  "canonical_52_evidence_preserved": "../../../paid-filter-mana/evidence/36251196182/receipt.json",
+  "official_games": 0,
+  "official_outcomes": 0,
+  "seeds_consumed": 0,
+  "gameplay_admission": false
+}

@@ -32,6 +32,7 @@ import com.wingedsheep.sdk.scripting.AdditionalCostPayment
 import com.wingedsheep.sdk.scripting.EntersTapped
 import com.wingedsheep.sdk.scripting.GameObjectFilter
 import com.wingedsheep.sdk.scripting.costs.CostAtom
+import com.wingedsheep.sdk.scripting.effects.ConditionalEffect
 import com.wingedsheep.sdk.scripting.values.DynamicAmount
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
@@ -88,7 +89,7 @@ class ManaPaymentFeasibilityTest : FunSpec({
         typeLine = "Land"
         activatedAbility {
             cost = Costs.Tap
-            effect = Effects.Conditional(
+            effect = ConditionalEffect(
                 Conditions.All(*tronNames.filter { it != name }.map {
                     Conditions.YouControl(GameObjectFilter.Land.named(it))
                 }.toTypedArray()),
