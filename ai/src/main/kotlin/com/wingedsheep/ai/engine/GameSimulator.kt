@@ -18,7 +18,7 @@ import com.wingedsheep.sdk.model.EntityId
  * on the same state — no rollback or cleanup needed.
  */
 class GameSimulator(
-    private val cardRegistry: CardRegistry,
+    internal val cardRegistry: CardRegistry,
     private val processor: ActionProcessor = ActionProcessor(EngineServices(cardRegistry), computeUndo = false),
     private val enumerator: LegalActionEnumerator = LegalActionEnumerator.create(cardRegistry),
     /**
@@ -69,6 +69,10 @@ class GameSimulator(
      *  evaluating alternatives) should NOT re-enter the resolver. */
     private var isResolving = false
 
+    /** True only while a simulated continuation is consulting the strategic decision resolver. */
+    internal val isResolvingDecision: Boolean
+        get() = isResolving
+
     /**
      * The constant-time policy used while [isResolving] blocks the strategic resolver.
      *
@@ -103,6 +107,30 @@ class GameSimulator(
     }
 
     /**
+     * Submit one answer and stop before answering the next player decision.
+     *
+     * This is the branch-construction half of [simulateDecision]. A policy evaluating an optional
+     * answer sometimes has to inspect the mandatory choice that accepting it creates (for example,
+     * which one card to discard) before it can price the completed branch. Treating that next choice
+     * as "trivial" or handing it to the rollout fallback would select a branch before the policy had
+     * compared the legal alternatives.
+     *
+     * Automatic engine work and priority passes still run until that choice appears. The method does
+     * not inspect or answer the choice, and the ordinary [simulateDecision] remains the only path that
+     * resolves from a chosen response to the simulator's quiet boundary.
+     */
+    internal fun simulateDecisionToNextChoice(
+        state: GameState,
+        response: DecisionResponse,
+    ): SimulationResult {
+        val pending = state.pendingDecision
+            ?: return SimulationResult.Illegal(state, emptyList(), "No pending decision")
+        val action = SubmitDecision(pending.playerId, response)
+        val result = processor.process(state, action).result
+        return resolveToQuietState(result, stopAtNextDecision = true)
+    }
+
+    /**
      * Get all legal actions for a player.
      */
     fun getLegalActions(state: GameState, playerId: EntityId): List<LegalAction> {
@@ -132,7 +160,10 @@ class GameSimulator(
      * (lands tapped, creature not yet on battlefield), making every spell
      * look worse than passing.
      */
-    private fun resolveToQuietState(result: ExecutionResult): SimulationResult {
+    private fun resolveToQuietState(
+        result: ExecutionResult,
+        stopAtNextDecision: Boolean = false,
+    ): SimulationResult {
         var current = result
         var allEvents = result.events
         var iterations = 0
@@ -152,6 +183,9 @@ class GameSimulator(
             // Auto-resolve trivial decisions; use decisionResolver for non-trivial ones
             if (current.isPaused) {
                 val decision = current.pendingDecision!!
+                if (stopAtNextDecision) {
+                    return SimulationResult.NeedsDecision(current.state, decision, allEvents)
+                }
                 val trivialResponse = trivialResponseFor(decision)
                 if (trivialResponse != null) {
                     if (iterations >= maxAutomaticTransitions) {

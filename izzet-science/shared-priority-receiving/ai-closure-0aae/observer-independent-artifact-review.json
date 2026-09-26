@@ -1,54 +1,10 @@
 {
-  "schema": "izzet-combined-priority-receiving-v1",
-  "status": "PROSPECTIVE_NOT_RUNTIME_ACCEPTED",
-  "scope": "DETERMINISTIC_COMPONENT_RECEIVING_ONLY",
-  "bank": "priority",
-  "accepted_izzet_base": "50eca5fb955013d70ea26c3c6a09efabef4bcff4",
-  "izzet_vines_failed_source": "700b06d319f2bc491ac3112d06e3b495bd49bc64",
-  "canonical_source": "77c7aad0bb2ded2c0372087d94f66ccbde0f7d09",
-  "canonical_runtime_core": "b6aef3afede89f2044f26b0af9d5bdd4efe751c6",
-  "accepted_active_priority": "21e9f2a82ea9d5292054b937456396e00060eb8d",
-  "accepted_postcast": "de864d604215acf402a2c708d6b62ee9b4001a72",
-  "case_bank_sha256": "fbcd17ca4beda7da01a58fed7c627c66dc154bf4955d6b5556b02de9e0a82a97",
-  "preserved_manifests": [
-    {
-      "path": "izzet-science/shared-priority-receiving/authorities/tier-one-postboard-engine-priority-shared-receiving-sources.json",
-      "sha256": "909a6134b7fb3f87abb793051e474febcdf19640a1c6b4e5033f5c37e1fbcfa3",
-      "donor_path": "docs/experiments/pest-control/tier-one-postboard-engine-priority-shared-receiving-sources.json"
-    },
-    {
-      "path": "izzet-science/shared-priority-receiving/authorities/tier-one-postboard-engine-priority-sources.json",
-      "sha256": "dec18c6039d52df801f0ae32d0026f018d307f2fa449ca4a5f28c21b82634850",
-      "donor_path": "docs/experiments/pest-control/tier-one-postboard-engine-priority-sources.json"
-    },
-    {
-      "path": "izzet-science/shared-priority-receiving/authorities/engine-priority-after-resolution-sources.json",
-      "sha256": "c77208379a7d4149fc9ce52212b2725d0663088a5f399780447304e9f0554251",
-      "donor_path": "docs/engine-priority-after-resolution-sources.json"
-    },
-    {
-      "path": "izzet-science/shared-priority-receiving/authorities/audit-10907958672.json",
-      "sha256": "8425e86c1eb0dd4ad28d83301def3861e4a2214edcea08f0185168fe7025cf0d",
-      "donor_path": "docs/experiments/pest-control/postboard-closure-evidence/remote-36247914108/audit-10907958672.json"
-    }
-  ],
-  "rules": {
-    "source_url": "https://media.wizards.com/2026/downloads/MagicCompRules%2020260925.txt",
-    "rules_landing_page": "https://magic.wizards.com/en/rules",
-    "effective_date": "2026-09-25",
-    "sha256": "8d860e451f20f38865b725b42d82feb714c725373dd8f3b32b8652b3eeb070ca",
-    "byte_length": 977752
-  },
-  "frozen_deck_hashes": {
-    "izzet-science/v0.7-control.md": "726f5e9458b46dda30b33a6ce9f3c3237b25d6e11b81dac85308c3065c108a01",
-    "izzet-science/opponents/veteran-beastrider-commander-clash-2025.txt": "c3ab6ee8e37a78219e7bbb7c6a75c634d78c1eb4965ab0db3abd5d853398b0be"
-  },
-  "source_files_sha256": {
+  "reviewer": "non-author agent /root/manual",
+  "source": "0aae3a480870c437b47fef8b8641bde83bb11079",
+  "tree": "9f617df1ed940522a87b6ad46d92212a04adfcd2",
+  "verified_git_source_pins": {
     ".github/workflows/izzet-shared-priority-receiving.yml": "eb040100e02d2c07aacc291cd46011869979045cb9356fe6d4ff8356acdccb35",
     ".github/workflows/izzet-v09-position1-vines-qualification.yml": "46ef6bb3a582542f888e1d66fb903842092155365a2e0ac69ea661b73e5267f7",
-    "ai/src/main/kotlin/com/wingedsheep/ai/engine/DecisionResponder.kt": "a7a444f594bef0477230b39e7c8f822b0148ecb7c0e454fd0cb570433e57347f",
-    "ai/src/main/kotlin/com/wingedsheep/ai/engine/GameSimulator.kt": "e82460f8bf5554dd938355a711fbec5031e61d20638610859067d87752ac418a",
-    "ai/src/main/kotlin/com/wingedsheep/ai/engine/YesNoDecisionStrategy.kt": "8a6b0197a183b9f02d33cce8a710cc30ed298913df1a6b5572e3e3fefedea93e",
     "ai/src/test/kotlin/com/wingedsheep/ai/arena/FrozenBaselineTest.kt": "87978d468ff109f88378607fec34b4ad825ed91671069a62c0f7eb6fb2a60b52",
     "ai/src/test/kotlin/com/wingedsheep/ai/engine/DecisionResponderCompletedBranchTest.kt": "650deed7e9b3b9100ccfa69e73d20d0ee5bf601ed87c240b6d727f74c4b65a57",
     "ai/src/test/kotlin/com/wingedsheep/ai/puzzles/PuzzleSuiteTest.kt": "14ccfcfe749cbbbffb88f0d9e8f748d9707e4ff8cfc352e23f591859824273ec",
@@ -211,7 +167,6 @@
     "mtg-sets/2026/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/PrismariTheInspirationScenarioTest.kt": "bcfff1970fe0c008d33e1c9b2c226226a0e6cd6d1870c19d10842c7a32155eed",
     "mtg-sets/2026/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/RavenhillFlockScenarioTest.kt": "50344b9bd1d8e632116fe8a758d48e6b506472bfd94676a6ef9ffe0efba5f487",
     "mtg-sets/2026/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/WizardsStaffScenarioTest.kt": "4e930e993d4dc3d19d94f28a45d1b931c17374f022e30004064838eccfcefd59",
-    "mtg-sets/src/test/resources/snapshots/cards/ZEN.json": "76020a0e97c24b06b328677534eb341e38a96e32f4ed8c2b07be84d190bb803e",
     "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/ColorAndTypeContinuations.kt": "85282b0545efc80d1ef571b3fe02811504f9963c51f37997b2fbbbaf7e0f355a",
     "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/CoreContinuations.kt": "fa14c5a3abea93a6cfc6a4c3395105e32fe971691186a250ec9311359087083f",
     "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/GameEvent.kt": "d480dc2f2582b9b3b0e8c84ddd0ae938491cc1a4dc4803b1d3c3d6376b0b4393",
@@ -253,7 +208,6 @@
     "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/layers/ActiveFloatingEffect.kt": "eeb6c43efbcfbc36a629942d0cb2f6edbdb9e42f0d47559ce15601f3d2abca07",
     "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/mana/CostCalculator.kt": "8c1b56d66634ffaff8f26432143f9689a5dd103a6bc6643868b8b4411de0307e",
     "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/mana/ManaPaymentWindow.kt": "aa66c482d1e65b2d91e74e601461f24a1b3698c8d887e5a915e69db7d0a7dd4f",
-    "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/mana/OptionalCastAffordability.kt": "5102111629a564fa99e170714c7053bf0b8785b15f350af7447a677608a00c58",
     "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/sba/permanent/EndedDurationExpiryCheck.kt": "2f157afc271c600b9ea5e8e6719891ecca7bf8564302a9ace22df9066ca6982c",
     "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/sba/player/PlayerLeavesGameProcessor.kt": "91baf7d4f817e65ff93ed6e91c054f2328d50caf2be8309c72cd3bbfa57c781c",
     "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/stack/StackResolver.kt": "9eef51c9d7df0c12fd1a5732da1fff90f7b6155e873dfa87a5a090b21d34e2a1",
@@ -415,212 +369,353 @@
     "rules-engine/src/testFixtures/kotlin/com/wingedsheep/engine/support/ScenarioTestBase.kt": "ef59cd04e877e787aa446b3240cb012a9527505d2e1df75e0e3fb82f925f0408",
     "rules-engine/src/testFixtures/kotlin/com/wingedsheep/engine/support/TriggerOrderTestSupport.kt": "c7aba22d7937c395075c00f8710cb072a0ec1e3932a5fe55b441c9b1a7da0f71"
   },
-  "stages": [
-    {
-      "stage": "priority",
-      "class": "com.wingedsheep.engine.scenarios.StackResolutionPriorityTest",
-      "module": "rules-engine",
-      "expected_cases": 17,
-      "test_source": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/StackResolutionPriorityTest.kt"
-    },
-    {
-      "stage": "stack-war",
-      "class": "com.wingedsheep.engine.scenarios.StackWarTest",
-      "module": "rules-engine",
-      "expected_cases": 15,
-      "test_source": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/StackWarTest.kt"
-    },
-    {
-      "stage": "continuations",
-      "class": "com.wingedsheep.engine.scenarios.ContinuationSystemTest",
-      "module": "rules-engine",
-      "expected_cases": 4,
-      "test_source": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/ContinuationSystemTest.kt"
-    },
-    {
-      "stage": "ordinary-cleanup",
-      "class": "com.wingedsheep.engine.scenarios.CleanupHandSizeDiscardDamageRemovalTest",
-      "module": "rules-engine",
-      "expected_cases": 2,
-      "test_source": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/CleanupHandSizeDiscardDamageRemovalTest.kt"
-    },
-    {
-      "stage": "legend-rule",
-      "class": "com.wingedsheep.engine.scenarios.LegendRuleTest",
-      "module": "rules-engine",
-      "expected_cases": 4,
-      "test_source": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/LegendRuleTest.kt"
-    },
-    {
-      "stage": "leave-game",
-      "class": "com.wingedsheep.engine.multiplayer.LeaveTheGameTest",
-      "module": "rules-engine",
-      "expected_cases": 16,
-      "test_source": "rules-engine/src/test/kotlin/com/wingedsheep/engine/multiplayer/LeaveTheGameTest.kt"
-    },
-    {
-      "stage": "team-priority",
-      "class": "com.wingedsheep.engine.multiplayer.TwoHeadedGiantTeamPriorityTest",
-      "module": "rules-engine",
-      "expected_cases": 12,
-      "test_source": "rules-engine/src/test/kotlin/com/wingedsheep/engine/multiplayer/TwoHeadedGiantTeamPriorityTest.kt"
-    },
-    {
-      "stage": "flash-permission",
-      "class": "com.wingedsheep.engine.scenarios.ConditionalFlashGrantTest",
-      "module": "rules-engine",
-      "expected_cases": 9,
-      "test_source": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/ConditionalFlashGrantTest.kt"
-    },
-    {
-      "stage": "legacy-traces",
-      "class": "com.wingedsheep.engine.state.SuspensionTraceTest",
-      "module": "rules-engine",
-      "expected_cases": 5,
-      "test_source": "rules-engine/src/test/kotlin/com/wingedsheep/engine/state/SuspensionTraceTest.kt"
-    },
-    {
-      "stage": "legacy-serialization",
-      "class": "com.wingedsheep.engine.state.LegacySuspensionMigrationTest",
-      "module": "rules-engine",
-      "expected_cases": 19,
-      "test_source": "rules-engine/src/test/kotlin/com/wingedsheep/engine/state/LegacySuspensionMigrationTest.kt"
-    },
-    {
-      "stage": "circle-solace",
-      "class": "com.wingedsheep.engine.scenarios.CircleOfSolaceTest",
-      "module": "mtg-sets/2000-2002/tests",
-      "expected_cases": 4,
-      "test_source": "mtg-sets/2000-2002/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/CircleOfSolaceTest.kt"
-    },
-    {
-      "stage": "scarecrow",
-      "class": "com.wingedsheep.engine.scenarios.ScarecrowScenarioTest",
-      "module": "mtg-sets/1993-1999/tests",
-      "expected_cases": 4,
-      "test_source": "mtg-sets/1993-1999/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/ScarecrowScenarioTest.kt"
-    },
-    {
-      "stage": "abundant-maw",
-      "class": "com.wingedsheep.engine.scenarios.AbundantMawScenarioTest",
-      "module": "mtg-sets/2008-2016/tests",
-      "expected_cases": 2,
-      "test_source": "mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/AbundantMawScenarioTest.kt"
-    },
-    {
-      "stage": "spell-queller",
-      "class": "com.wingedsheep.engine.scenarios.SpellQuellerScenarioTest",
-      "module": "mtg-sets/2008-2016/tests",
-      "expected_cases": 4,
-      "test_source": "mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/SpellQuellerScenarioTest.kt"
-    },
-    {
-      "stage": "mauler",
-      "class": "com.wingedsheep.engine.scenarios.TaureanMaulerScenarioTest",
-      "module": "mtg-sets/2008-2016/tests",
-      "expected_cases": 3,
-      "test_source": "mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/TaureanMaulerScenarioTest.kt"
-    },
-    {
-      "stage": "ai-decision-trace",
-      "class": "com.wingedsheep.ai.engine.DecisionResponderCompletedBranchTest",
-      "module": "ai",
-      "expected_cases": 7,
-      "test_source": "ai/src/test/kotlin/com/wingedsheep/ai/engine/DecisionResponderCompletedBranchTest.kt"
-    },
-    {
-      "stage": "cast-sba",
-      "class": "com.wingedsheep.engine.scenarios.CastPrioritySbaTest",
-      "module": "rules-engine",
-      "expected_cases": 12,
-      "test_source": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/CastPrioritySbaTest.kt"
-    },
-    {
-      "stage": "death-trigger",
-      "class": "com.wingedsheep.engine.scenarios.DeathTriggerTest",
-      "module": "rules-engine",
-      "expected_cases": 4,
-      "test_source": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/DeathTriggerTest.kt"
-    },
-    {
-      "stage": "krarks-thumb",
-      "class": "com.wingedsheep.engine.scenarios.KrarksThumbScenarioTest",
-      "module": "mtg-sets/2003-2007/tests",
-      "expected_cases": 5,
-      "test_source": "mtg-sets/2003-2007/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/KrarksThumbScenarioTest.kt"
-    },
-    {
-      "stage": "prismari",
-      "class": "com.wingedsheep.engine.scenarios.PrismariTheInspirationScenarioTest",
-      "module": "mtg-sets/2026/tests",
-      "expected_cases": 3,
-      "test_source": "mtg-sets/2026/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/PrismariTheInspirationScenarioTest.kt"
-    },
-    {
-      "stage": "free-cast",
-      "class": "com.wingedsheep.engine.scenarios.GrantNextSpellFreeCastTest",
-      "module": "rules-engine",
-      "expected_cases": 8,
-      "test_source": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/GrantNextSpellFreeCastTest.kt"
-    },
-    {
-      "stage": "modal-cost",
-      "class": "com.wingedsheep.engine.scenarios.ModalPerModeAdditionalCostTest",
-      "module": "rules-engine",
-      "expected_cases": 8,
-      "test_source": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/ModalPerModeAdditionalCostTest.kt"
-    },
-    {
-      "stage": "modal-cost-enumeration",
-      "class": "com.wingedsheep.engine.legalactions.CastSpellEnumeratorModalAdditionalCostTest",
-      "module": "rules-engine",
-      "expected_cases": 2,
-      "test_source": "rules-engine/src/test/kotlin/com/wingedsheep/engine/legalactions/CastSpellEnumeratorModalAdditionalCostTest.kt"
-    },
-    {
-      "stage": "reveal-cost",
-      "class": "com.wingedsheep.engine.scenarios.RevealFromHandAdditionalCostTest",
-      "module": "rules-engine",
-      "expected_cases": 10,
-      "test_source": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/RevealFromHandAdditionalCostTest.kt"
-    },
-    {
-      "stage": "commander-choice",
-      "class": "com.wingedsheep.engine.mechanics.sba.CommanderZoneChoiceCheckTest",
-      "module": "rules-engine",
-      "expected_cases": 17,
-      "test_source": "rules-engine/src/test/kotlin/com/wingedsheep/engine/mechanics/sba/CommanderZoneChoiceCheckTest.kt"
-    },
-    {
-      "stage": "team-loss",
-      "class": "com.wingedsheep.engine.multiplayer.TwoHeadedGiantTeamLossTest",
-      "module": "rules-engine",
-      "expected_cases": 10,
-      "test_source": "rules-engine/src/test/kotlin/com/wingedsheep/engine/multiplayer/TwoHeadedGiantTeamLossTest.kt"
-    },
-    {
-      "stage": "team-versus-team",
-      "class": "com.wingedsheep.engine.multiplayer.TeamVsTeamTest",
-      "module": "rules-engine",
-      "expected_cases": 14,
-      "test_source": "rules-engine/src/test/kotlin/com/wingedsheep/engine/multiplayer/TeamVsTeamTest.kt"
-    }
-  ],
-  "excluded_absent_nonruntime_donor_paths": [
-    ".github/workflows/engine-priority-after-resolution.yml",
-    "docs/engine-post-cast-sba-failure-audit-36094276936.json"
-  ],
-  "receiving_limits": [
-    "Canonical source remains subject to its own full CI and source acceptance. This is a receiving qualification attempt, not transferred acceptance.",
-    "Izzet dynamic mana and replicate, bestow lifecycle, entry snapshots, simultaneous damage grouping and Vines targeting remain receiving-specific dependencies.",
-    "Frozen baseline retains Izzets own47e993c61a57ebbd hash until exact same-lineage raw-stream review.",
-    "Vines first two ETB priority failures remain preserved; all21 exact card cases still required.",
-    "The unchanged original ActivationPriorityScenarioTest imports the exact donor FerocityOfTheHuntPrerelease test-only definition. It is received solely as the existing shared bank dependency, never registered in the production corpus or either frozen Izzet deck; no Ferocity gameplay conclusion is transferred.",
-    "Canonical default optional-choice AI closure is deterministic repository compatibility only; no Izzet gameplay responder strategy is selected and accepted Python policies remain unchanged."
-  ],
+  "frozen_deck_hashes": {
+    "izzet-science/v0.7-control.md": "726f5e9458b46dda30b33a6ce9f3c3237b25d6e11b81dac85308c3065c108a01",
+    "izzet-science/opponents/veteran-beastrider-commander-clash-2025.txt": "c3ab6ee8e37a78219e7bbb7c6a75c634d78c1eb4965ab0db3abd5d853398b0be"
+  },
+  "live_proof": {
+    "path": "izzet0aae-manual-independent-live-proof.json",
+    "sha256": "a44483b1d6141e46b1640923978a56cfd53a80aaccbaed2f963494c4f052b5b1"
+  },
+  "github_approval_created": false,
   "gameplay_authorized": false,
   "official_seeds_consumed": 0,
   "official_games_initialized": 0,
-  "outcomes_exposed": 0,
-  "shared_ai_receiving_source": "8dc597494bbff5cf89c65c1a6f1d5605f0517b64"
+  "official_outcomes_exposed": 0,
+  "schema": "izzet0aae-manual-independent-artifact-review-v1",
+  "archive_bytes": 581505,
+  "archive_sha256": "6c228bd4f3d81257f307357dd20b34b565599d28e0270b610e00a3573eeea8e8",
+  "archive_crc_ok": true,
+  "archive_member_hashes": {
+    "actual-case-audit.json": "6357a6b0d822c8f9e4bcbe4a93dbac55946b8cdb2c22b8bae1263cb53edf7646",
+    "commands.txt": "81d02b8683637990055c492925ffbbbdfd8e3b5cd0353e97d9a7dfe2a6bc89d9",
+    "binding-attempt.json": "463dbbaa99c6220614685148d781d258019df07b316dcf21c5be936332c4f6b8",
+    "effective-rules.txt": "8d860e451f20f38865b725b42d82feb714c725373dd8f3b32b8652b3eeb070ca",
+    "source-manifest.json": "2be83f1ff6b7ccb4f476f826fe332ca8262758d55a6d84af7a6b61b38e5212fb",
+    "tests/ActivationPriorityScenarioTest/TEST-com.wingedsheep.engine.scenarios.ActivationPriorityScenarioTest.xml": "51a7c7ccd6296fbb2c455338806a824426fe71e22a76182b76cef78d13b41cda",
+    "source-provenance.json": "b746980c6770e3f1dc7136bc815c693bf8bdd6e54b6bd731b72142ddbc2b8955",
+    "tests/ActivationPriorityScenarioTest/exit-status.txt": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "tests/BatchMayQuestionTest/TEST-com.wingedsheep.engine.scenarios.BatchMayQuestionTest.xml": "e61c662b100f77443719b21af0baf1688957fbd6cbec69e7ca00d035e2d6b054",
+    "tests/BatchMayQuestionTest/exit-status.txt": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "tests/CastObserverSourceLkiTest/TEST-com.wingedsheep.engine.scenarios.CastObserverSourceLkiTest.xml": "95e4bc9ec0cc04fdd560dae93795ecc344761ed230d1c9d914307e63eac7c376",
+    "tests/CastObserverSourceLkiTest/exit-status.txt": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "tests/DamageSourceIdentityScenarioTest/TEST-com.wingedsheep.engine.scenarios.DamageSourceIdentityScenarioTest.xml": "f59517113bc84f384770c6cd65c301a10c89444963419836d44c3029144ec41b",
+    "tests/DamageSourceIdentityScenarioTest/exit-status.txt": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "tests/DamageSourceTriggerScenarioTest/TEST-com.wingedsheep.engine.scenarios.DamageSourceTriggerScenarioTest.xml": "5c6a58ac1b6e7c8896b4dc1c2f162ae7041fdad405958498f29ac2d4eb271122",
+    "tests/DamageSourceTriggerScenarioTest/exit-status.txt": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "tests/DeclareBlockersPriorityWindowTest/TEST-com.wingedsheep.engine.scenarios.DeclareBlockersPriorityWindowTest.xml": "5026c0715bcddc63ce08e256aca671b5dc0829118e5e3b46c40571e39d28870d",
+    "tests/DeclareBlockersPriorityWindowTest/exit-status.txt": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "tests/ManaAbilityColorChoicePipelineTest/TEST-com.wingedsheep.engine.scenarios.ManaAbilityColorChoicePipelineTest.xml": "897369a0053368f3c9175288f78e9fef3c3092ee532634e48fdddc85193ef9ce",
+    "tests/ManaAbilityColorChoicePipelineTest/exit-status.txt": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "tests/MoveToZoneEffectExecutorTest/TEST-com.wingedsheep.engine.handlers.effects.zones.MoveToZoneEffectExecutorTest.xml": "23478207bc085b28c51e0b5ab26ad7144559c64046a85d2301f67b1d15630bab",
+    "tests/MoveToZoneEffectExecutorTest/exit-status.txt": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "tests/MultiDefenderCombatTest/TEST-com.wingedsheep.engine.multiplayer.MultiDefenderCombatTest.xml": "3689d0d1c601c9341da8ea52a6f1edea1610a1685c6e3b93c2ec14b77f47849f",
+    "tests/MultiDefenderCombatTest/exit-status.txt": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "tests/NestedManaPaymentBoundaryScenarioTest/TEST-com.wingedsheep.engine.scenarios.NestedManaPaymentBoundaryScenarioTest.xml": "16cd9927f22d014837a5e6d2250971af56722d33d952d60464c93fa961f3280e",
+    "tests/NestedManaPaymentBoundaryScenarioTest/exit-status.txt": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "tests/PostBlockDeclarationPriorityScenarioTest/TEST-com.wingedsheep.engine.scenarios.PostBlockDeclarationPriorityScenarioTest.xml": "aa2abd91125550b261be1ac026d4e98cbb93c515d7835391bf048a0565e7d182",
+    "tests/PostBlockDeclarationPriorityScenarioTest/exit-status.txt": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "tests/PostBlockDeclarationSessionTest/TEST-com.wingedsheep.gameserver.session.PostBlockDeclarationSessionTest.xml": "b51c7d0fbf98d4b220ee9550dd220583afdca746a18feeb2c69f121cfab659a1",
+    "tests/PostBlockDeclarationSessionTest/exit-status.txt": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "tests/PredicateEvaluatorRecordTest/exit-status.txt": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "tests/TargetedDepartedSourceLkiTest/TEST-com.wingedsheep.engine.scenarios.TargetedDepartedSourceLkiTest.xml": "11d3f370a47878fef50af1bf0358cd46803cb39de20f891aeaf893495e589e61",
+    "tests/TargetedDepartedSourceLkiTest/exit-status.txt": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "tests/PredicateEvaluatorRecordTest/TEST-com.wingedsheep.engine.handlers.PredicateEvaluatorRecordTest.xml": "c560dcdd38fe59048ffdaf59ce976c1151d0959d58d30e0d77a7af6bfb0799d0",
+    "tests/TriggerOrderingConcessionScenarioTest/TEST-com.wingedsheep.engine.scenarios.TriggerOrderingConcessionScenarioTest.xml": "7e85b5c933e15eeaf9bae4e04587232997000f710aefe1c923de3f4c193870ef",
+    "tests/TriggerOrderingConcessionScenarioTest/exit-status.txt": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "tests/TriggerOrderingScenarioTest/exit-status.txt": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "tests/TwoHeadedGiantCombatTest/TEST-com.wingedsheep.engine.multiplayer.TwoHeadedGiantCombatTest.xml": "9e2a848a057e26dbf2e282f395a634fe4fda334253a1147d33318de5a0b58ebc",
+    "tests/TwoHeadedGiantCombatTest/exit-status.txt": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "tests/TwoHeadedGiantSessionTest/TEST-com.wingedsheep.gameserver.session.TwoHeadedGiantSessionTest.xml": "1f156e820005ad70594d7e60d93cfe1c42c4cf0b88862e254dafd01f501cff07",
+    "tests/TriggerOrderingScenarioTest/TEST-com.wingedsheep.engine.scenarios.TriggerOrderingScenarioTest.xml": "2eb26ec2a00a72cf7a22f659bcf1622ae0abb243d6cc1fd2e42df08a94c11a58",
+    "tests/TwoHeadedGiantSessionTest/exit-status.txt": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+  },
+  "actual_unique_cases": 135,
+  "failure": 0,
+  "error": 0,
+  "skipped": 0,
+  "suites": {
+    "com.wingedsheep.engine.scenarios.ActivationPriorityScenarioTest": {
+      "xml_path": "tests/ActivationPriorityScenarioTest/TEST-com.wingedsheep.engine.scenarios.ActivationPriorityScenarioTest.xml",
+      "xml_sha256": "51a7c7ccd6296fbb2c455338806a824426fe71e22a76182b76cef78d13b41cda",
+      "cases": [
+        "nonactive activation removes its sacrificed token before returning priority",
+        "cost and SBA deaths join one APNAP batch above a nonactive player's activation",
+        "SBA death occurs before choosing targets for a cost-triggered ability",
+        "Ferocity's cost-death return waits above the activated ability after Aura cleanup",
+        "paying the last life loses before an activated life gain can resolve",
+        "standalone Spawn mana removes the token before nonactive player receives priority",
+        "standalone Treasure with explicit color settles token cleanup before priority",
+        "Treasure color-choice pause completes its mana effect before SBA and restores activator priority",
+        "Spawn activation inside ward payment does not run SBA until the outer payment completes"
+      ],
+      "timestamp": "2026-09-26T19:19:45.282Z"
+    },
+    "com.wingedsheep.engine.scenarios.BatchMayQuestionTest": {
+      "xml_path": "tests/BatchMayQuestionTest/TEST-com.wingedsheep.engine.scenarios.BatchMayQuestionTest.xml",
+      "xml_sha256": "e61c662b100f77443719b21af0baf1688957fbd6cbec69e7ca00d035e2d6b054",
+      "cases": [
+        "two optional triggers choose targets before either consent decision",
+        "each targeted trigger asks at its own resolution and both may be accepted",
+        "declining both effects still requires both triggers to resolve",
+        "identical triggers retain independent resolution choices",
+        "a single optional trigger chooses its target before offering yes or no",
+        "may does not make a required target optional",
+        "removing the chosen target in response causes a fizzle without a may decision"
+      ],
+      "timestamp": "2026-09-26T19:20:20.485Z"
+    },
+    "com.wingedsheep.engine.scenarios.CastObserverSourceLkiTest": {
+      "xml_path": "tests/CastObserverSourceLkiTest/TEST-com.wingedsheep.engine.scenarios.CastObserverSourceLkiTest.xml",
+      "xml_sha256": "95e4bc9ec0cc04fdd560dae93795ecc344761ed230d1c9d914307e63eac7c376",
+      "cases": [
+        "cast observer keeps its own source history seat 1 player target true survives false",
+        "cast observer keeps its own source history seat 1 player target true survives true",
+        "cast observer keeps its own source history seat 1 player target false survives false",
+        "cast observer keeps its own source history seat 1 player target false survives true",
+        "cast observer keeps its own source history seat 2 player target true survives false",
+        "cast observer keeps its own source history seat 2 player target true survives true",
+        "cast observer keeps its own source history seat 2 player target false survives false",
+        "cast observer keeps its own source history seat 2 player target false survives true"
+      ],
+      "timestamp": "2026-09-26T19:20:20.915Z"
+    },
+    "com.wingedsheep.engine.scenarios.DamageSourceIdentityScenarioTest": {
+      "xml_path": "tests/DamageSourceIdentityScenarioTest/TEST-com.wingedsheep.engine.scenarios.DamageSourceIdentityScenarioTest.xml",
+      "xml_sha256": "f59517113bc84f384770c6cd65c301a10c89444963419836d44c3029144ec41b",
+      "cases": [
+        "a live original source gains effective damage keywords after activation",
+        "a live original source uses its new projected controller and color",
+        "departed source uses final controller color and keywords after serialization; token=false",
+        "departed source uses final controller color and keywords after serialization; token=true",
+        "old damage does not borrow deathtouch or lifelink newly granted to the returned source"
+      ],
+      "timestamp": "2026-09-26T19:20:22.556Z"
+    },
+    "com.wingedsheep.engine.scenarios.DamageSourceTriggerScenarioTest": {
+      "xml_path": "tests/DamageSourceTriggerScenarioTest/TEST-com.wingedsheep.engine.scenarios.DamageSourceTriggerScenarioTest.xml",
+      "xml_sha256": "5c6a58ac1b6e7c8896b4dc1c2f162ae7041fdad405958498f29ac2d4eb271122",
+      "cases": [
+        "a dies trigger retains source damage characteristics before token cleanup; token=false",
+        "a dies trigger retains source damage characteristics before token cleanup; token=true",
+        "a triggered ability already on the stack gains departure LKI when its source later dies",
+        "generic sacrifice cost retains a token source before its ability enters the stack",
+        "missing required source snapshot fails visibly instead of a silent damage result",
+        "old source damage triggers the matching observer but not a returned object's own ability"
+      ],
+      "timestamp": "2026-09-26T19:20:23.475Z"
+    },
+    "com.wingedsheep.engine.scenarios.DeclareBlockersPriorityWindowTest": {
+      "xml_path": "tests/DeclareBlockersPriorityWindowTest/TEST-com.wingedsheep.engine.scenarios.DeclareBlockersPriorityWindowTest.xml",
+      "xml_sha256": "5026c0715bcddc63ce08e256aca671b5dc0829118e5e3b46c40571e39d28870d",
+      "cases": [
+        "active player gets a priority window in declare blockers before combat damage",
+        "attacker's combat trick is an affordable, targetable legal action at the declare-blockers window",
+        "combat trick is detectable in the two-blockers-block-two-attackers board shape"
+      ],
+      "timestamp": "2026-09-26T19:20:24.534Z"
+    },
+    "com.wingedsheep.engine.scenarios.ManaAbilityColorChoicePipelineTest": {
+      "xml_path": "tests/ManaAbilityColorChoicePipelineTest/TEST-com.wingedsheep.engine.scenarios.ManaAbilityColorChoicePipelineTest.xml",
+      "xml_sha256": "897369a0053368f3c9175288f78e9fef3c3092ee532634e48fdddc85193ef9ce",
+      "cases": [
+        "Damping Sphere replaces the two mana with one {C}",
+        "a mirror bonus and its rider both resolve",
+        "an attached 'additional mana on tap' aura fires",
+        "the land-tapped-for-mana event is still emitted"
+      ],
+      "timestamp": "2026-09-26T19:20:26.489Z"
+    },
+    "com.wingedsheep.engine.handlers.effects.zones.MoveToZoneEffectExecutorTest": {
+      "xml_path": "tests/MoveToZoneEffectExecutorTest/TEST-com.wingedsheep.engine.handlers.effects.zones.MoveToZoneEffectExecutorTest.xml",
+      "xml_sha256": "23478207bc085b28c51e0b5ab26ad7144559c64046a85d2301f67b1d15630bab",
+      "cases": [
+        "move from battlefield to graveyard (default)",
+        "move from battlefield to hand (bounce)",
+        "move from battlefield to exile",
+        "move to library top",
+        "move to library bottom",
+        "move to library shuffled emits LibraryShuffledEvent",
+        "move to battlefield tapped",
+        "byDestruction = true destroys the permanent",
+        "byDestruction = true on indestructible creature is a no-op",
+        "battlefield components are cleaned up when leaving battlefield"
+      ],
+      "timestamp": "2026-09-26T19:19:39.098Z"
+    },
+    "com.wingedsheep.engine.multiplayer.MultiDefenderCombatTest": {
+      "xml_path": "tests/MultiDefenderCombatTest/TEST-com.wingedsheep.engine.multiplayer.MultiDefenderCombatTest.xml",
+      "xml_sha256": "3689d0d1c601c9341da8ea52a6f1edea1610a1685c6e3b93c2ec14b77f47849f",
+      "cases": [
+        "CombatDefenders reports the right defending players in APNAP order",
+        "a defender can only block an attacker that is attacking them (CR 509.1b)",
+        "no seat gets a priority window between two defenders' block declarations (CR 802.4)",
+        "both defenders declare blockers (APNAP) and damage lands on the right players"
+      ],
+      "timestamp": "2026-09-26T19:19:42.175Z"
+    },
+    "com.wingedsheep.engine.scenarios.NestedManaPaymentBoundaryScenarioTest": {
+      "xml_path": "tests/NestedManaPaymentBoundaryScenarioTest/TEST-com.wingedsheep.engine.scenarios.NestedManaPaymentBoundaryScenarioTest.xml",
+      "xml_sha256": "16cd9927f22d014837a5e6d2250971af56722d33d952d60464c93fa961f3280e",
+      "cases": [
+        "seat 1 nested sacrifice choice restores the same payment without priority",
+        "seat 1 deferred death target is chosen only after payment and lethal toughness SBA",
+        "seat 1 preselected sacrifice defers its death trigger exactly once",
+        "seat 1 mana color pause preserves cost events and defers the draw",
+        "seat 1 declined outer payment retains the already paid death trigger",
+        "seat 1 illegal interrupt during nested sacrifice is atomic and does not pay a cost",
+        "seat 2 nested sacrifice choice restores the same payment without priority",
+        "seat 2 deferred death target is chosen only after payment and lethal toughness SBA",
+        "seat 2 preselected sacrifice defers its death trigger exactly once",
+        "seat 2 mana color pause preserves cost events and defers the draw",
+        "seat 2 declined outer payment retains the already paid death trigger",
+        "seat 2 illegal interrupt during nested sacrifice is atomic and does not pay a cost"
+      ],
+      "timestamp": "2026-09-26T19:20:28.201Z"
+    },
+    "com.wingedsheep.engine.scenarios.PostBlockDeclarationPriorityScenarioTest": {
+      "xml_path": "tests/PostBlockDeclarationPriorityScenarioTest/TEST-com.wingedsheep.engine.scenarios.PostBlockDeclarationPriorityScenarioTest.xml",
+      "xml_sha256": "aa2abd91125550b261be1ac026d4e98cbb93c515d7835391bf048a0565e7d182",
+      "cases": [
+        "PB01 empty final declaration gives active seat 1 first priority",
+        "PB03 actual blocks give active seat 1 an immediate combat trick",
+        "PB02 empty final declaration gives active seat 2 first priority",
+        "PB04 actual blocks give active seat 2 an immediate combat trick",
+        "PB05 a targeted block trigger preserves active priority across serialized target choice",
+        "PB06 simultaneous block triggers keep ordering and targets before active priority",
+        "PB07 paid block tax restores active priority after a serialized mana selection",
+        "PB08 declining a block tax preserves declaration duty and grants no priority",
+        "PB09 nested block-tax mana pays before SBA and targeted death-trigger placement",
+        "PB10 multiple defenders have only an APNAP declaration baton before active priority",
+        "PB11 first defender's target choice waits until every block declaration is complete",
+        "PB12 multiple defenders' block triggers wait through paid tax then stack in APNAP order",
+        "PB13 a queued block-trigger token retains exact departure LKI through later payment and cleanup",
+        "PB14 a final defender's concession abandons tax but preserves the prior defender's trigger",
+        "PB15 owner concession preserves a remaining controller's queued source LKI without early placement",
+        "PB16 concession during two-player block payment clears the actual waiting batch at game end"
+      ],
+      "timestamp": "2026-09-26T19:20:30.098Z"
+    },
+    "com.wingedsheep.gameserver.session.PostBlockDeclarationSessionTest": {
+      "xml_path": "tests/PostBlockDeclarationSessionTest/TEST-com.wingedsheep.gameserver.session.PostBlockDeclarationSessionTest.xml",
+      "xml_sha256": "b51c7d0fbf98d4b220ee9550dd220583afdca746a18feeb2c69f121cfab659a1",
+      "cases": [
+        "GS-PB01 both defending teammates get their own declaration without ordinary priority",
+        "GS-PB02 block-tax payment exposes only the payer's mana actions before declarations resume"
+      ],
+      "timestamp": "2026-09-26T19:22:57.103Z"
+    },
+    "com.wingedsheep.engine.scenarios.TargetedDepartedSourceLkiTest": {
+      "xml_path": "tests/TargetedDepartedSourceLkiTest/TEST-com.wingedsheep.engine.scenarios.TargetedDepartedSourceLkiTest.xml",
+      "xml_sha256": "11d3f370a47878fef50af1bf0358cd46803cb39de20f891aeaf893495e589e61",
+      "cases": [
+        "departed token target pause preserves full source LKI seat 1 player target true",
+        "departed token target pause preserves full source LKI seat 1 player target false",
+        "departed token target pause preserves full source LKI seat 2 player target true",
+        "departed token target pause preserves full source LKI seat 2 player target false"
+      ],
+      "timestamp": "2026-09-26T19:20:33.909Z"
+    },
+    "com.wingedsheep.engine.handlers.PredicateEvaluatorRecordTest": {
+      "xml_path": "tests/PredicateEvaluatorRecordTest/TEST-com.wingedsheep.engine.handlers.PredicateEvaluatorRecordTest.xml",
+      "xml_sha256": "c560dcdd38fe59048ffdaf59ce976c1151d0959d58d30e0d77a7af6bfb0799d0",
+      "cases": [
+        "empty predicate list matches anything",
+        "face-down cast records never match any non-empty filter",
+        "conjunction (AND) requires every predicate to match",
+        "CardPredicate.Or matches when any inner predicate matches (OR)",
+        "positive type matches",
+        "negation predicates",
+        "token predicates: spells are never tokens",
+        "legendary predicates read the supertype set",
+        "HasColor and NotColor inspect the recorded color set",
+        "Colorless, Monocolored, Multicolored",
+        "HasSubtype / NotSubtype / HasAnyOfSubtypes",
+        "HasBasicLandType treats the landType string as a subtype",
+        "equals / at-most / at-least",
+        "power / toughness predicates all return false",
+        "name / keyword / ability predicates return false",
+        "source-relative and context predicates return false",
+        "And: all sub-predicates must match",
+        "Or: any sub-predicate matches",
+        "Not inverts the wrapped predicate"
+      ],
+      "timestamp": "2026-09-26T19:19:35.803Z"
+    },
+    "com.wingedsheep.engine.scenarios.TriggerOrderingConcessionScenarioTest": {
+      "xml_path": "tests/TriggerOrderingConcessionScenarioTest/TEST-com.wingedsheep.engine.scenarios.TriggerOrderingConcessionScenarioTest.xml",
+      "xml_sha256": "7e85b5c933e15eeaf9bae4e04587232997000f710aefe1c923de3f4c193870ef",
+      "cases": [
+        "a conceding ordering chooser leaves the surviving controller's exact APNAP group and priority recipient intact"
+      ],
+      "timestamp": "2026-09-26T19:20:34.791Z"
+    },
+    "com.wingedsheep.engine.multiplayer.TwoHeadedGiantCombatTest": {
+      "xml_path": "tests/TwoHeadedGiantCombatTest/TEST-com.wingedsheep.engine.multiplayer.TwoHeadedGiantCombatTest.xml",
+      "xml_sha256": "9e2a848a057e26dbf2e282f395a634fe4fda334253a1147d33318de5a0b58ebc",
+      "cases": [
+        "a creature attacks the opposing team, never a teammate (CR 805.10b)",
+        "the combined attack may include creatures controlled by BOTH active-team members (CR 805.10b)",
+        "one declaration is the whole team's \u2014 the teammate may pass and can't add a second wave (CR 805.10b)",
+        "the whole nonactive team defends \u2014 even an un-attacked teammate is a defending player (CR 805.10a)",
+        "a defending creature may block an attacker aimed at its TEAMMATE (CR 805.10d)",
+        "a member of the attacking team cannot declare blockers (CR 805.10a)",
+        "the teammate's attackers survive a state-based-action pass (CR 805.10a / CR 506.4)",
+        "both defenders' blockers survive a state-based-action pass (CR 805.10d / CR 506.4)",
+        "an attacker stolen by the DEFENDING team is still removed from combat (CR 506.4)"
+      ],
+      "timestamp": "2026-09-26T19:19:44.614Z"
+    },
+    "com.wingedsheep.gameserver.session.TwoHeadedGiantSessionTest": {
+      "xml_path": "tests/TwoHeadedGiantSessionTest/TEST-com.wingedsheep.gameserver.session.TwoHeadedGiantSessionTest.xml",
+      "xml_sha256": "1f156e820005ad70594d7e60d93cfe1c42c4cf0b88862e254dafd01f501cff07",
+      "cases": [
+        "seat roster carries each seat's team index, with teammates in adjacent seats (CR 805.1)",
+        "both heads of the surviving team are winners, not just the representative (CR 810.8a)",
+        "a teammate is not an opponent (CR 810): getOpponentIds returns only the other team",
+        "life totals are the shared team total for both teammates, not each raw component",
+        "a player sees their teammate's hand but not an opponent's (CR 810.2)",
+        "the seat roster carries the shared-turn flag, which the client needs to answer \"may I act?\"",
+        "a teammate is offered their OWN actions while their partner holds the baton (CR 805.5)",
+        "a Free-for-All pod stays one seat at a time \u2014 only the baton holder is offered actions",
+        "a revealed card in an opponent's hand still reaches the viewer, count and all",
+        "non-team game is unchanged: no team index, every other seat is an opponent"
+      ],
+      "timestamp": "2026-09-26T19:23:43.379Z"
+    },
+    "com.wingedsheep.engine.scenarios.TriggerOrderingScenarioTest": {
+      "xml_path": "tests/TriggerOrderingScenarioTest/TEST-com.wingedsheep.engine.scenarios.TriggerOrderingScenarioTest.xml",
+      "xml_sha256": "2eb26ec2a00a72cf7a22f659bcf1622ae0abb243d6cc1fd2e42df08a94c11a58",
+      "cases": [
+        "putting life loss below life gain permits surviving at one life",
+        "the other legal ordering resolves life loss first and loses before the gain",
+        "invalid ordering choices fail without altering the game or consuming a trigger",
+        "ordering is preserved through serialization and two separate target decisions",
+        "active and nonactive controllers order their own groups in APNAP placement order",
+        "two copies of a card retain all four source identities and trigger payloads"
+      ],
+      "timestamp": "2026-09-26T19:20:35.348Z"
+    }
+  },
+  "component": "Izzet receiving of original cast-observer135 bank",
+  "verdict": "ACCEPT_TARGETED_OBSERVER135_COMPONENT_ONLY",
+  "run_id": 36265243204,
+  "job_id": 108468555031,
+  "artifact_id": 10913912512,
+  "actual_engine": 123,
+  "actual_server": 12,
+  "rules_byte_source_only": {
+    "source_url": "https://media.wizards.com/2026/downloads/MagicCompRules%2020260925.txt",
+    "rules_landing_page": "https://magic.wizards.com/en/rules",
+    "effective_date": "2026-09-25",
+    "sha256": "8d860e451f20f38865b725b42d82feb714c725373dd8f3b32b8652b3eeb070ca",
+    "byte_length": 977752
+  },
+  "original_135_case_identities_preserved": true,
+  "limitations": [
+    "Parent workflow overall failed in the separate priority220 job; this review accepts only the actual observer135 job.",
+    "Full receiving CI and required priority repair remain unaccepted at this source.",
+    "Rules source bytes are provenance, not whole rules-engine conformance or gameplay evidence.",
+    "No Position1 seed, game, actor, complete pilot or independent gameplay admission is authorized."
+  ]
 }

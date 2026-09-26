@@ -1,0 +1,439 @@
+{
+  "reviewer": "non-author agent /root/manual",
+  "source": "0aae3a480870c437b47fef8b8641bde83bb11079",
+  "targeted_jobs": {
+    "jobs": [
+      {
+        "id": 108468554995,
+        "name": "qualify",
+        "status": "completed",
+        "conclusion": "success",
+        "run_id": 36265243200,
+        "logs_url": null,
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1
+          },
+          {
+            "name": "Run actions/checkout@v6",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2
+          },
+          {
+            "name": "Run actions/setup-java@v5",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3
+          },
+          {
+            "name": "Run gradle/actions/setup-gradle@v6",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4
+          },
+          {
+            "name": "Run extractions/setup-just@f8a3cce218d9f83db3a2ecd90e41ac3de6cdfd9b",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5
+          },
+          {
+            "name": "Bind exact clean source and frozen decks without accessing a gameplay seed",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 6
+          },
+          {
+            "name": "Qualify generic targeting restriction and serialization",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 7
+          },
+          {
+            "name": "Qualify exact Vines reachable behavior and receiving Position-1 guards",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 8
+          },
+          {
+            "name": "Requalify Izzet damage, protection, entry and bestow overlaps",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 9
+          },
+          {
+            "name": "Generate ordinary snapshots and require only the intended Vines record",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 10
+          },
+          {
+            "name": "Verify snapshots without updates and preserve content boundaries",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 11
+          },
+          {
+            "name": "Retain the mandatory read-only authoring probes separately from behavioral evidence",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 12
+          },
+          {
+            "name": "Require actual complete cases and retain component-only disposition",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 13
+          },
+          {
+            "name": "Run actions/upload-artifact@v7",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 14
+          },
+          {
+            "name": "Post Run gradle/actions/setup-gradle@v6",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 26
+          },
+          {
+            "name": "Post Run actions/setup-java@v5",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 27
+          },
+          {
+            "name": "Post Run actions/checkout@v6",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 28
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 29
+          }
+        ]
+      }
+    ]
+  },
+  "observer_jobs": {
+    "jobs": [
+      {
+        "id": 108468554846,
+        "name": "qualify (priority)",
+        "status": "completed",
+        "conclusion": "failure",
+        "run_id": 36265243204,
+        "logs_url": null,
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1
+          },
+          {
+            "name": "Run actions/checkout@v6",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2
+          },
+          {
+            "name": "Run actions/setup-java@v5",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3
+          },
+          {
+            "name": "Run gradle/actions/setup-gradle@v6",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4
+          },
+          {
+            "name": "Run extractions/setup-just@f8a3cce218d9f83db3a2ecd90e41ac3de6cdfd9b",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5
+          },
+          {
+            "name": "Bind the combined source, preserved bank and frozen Izzet inputs",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 6
+          },
+          {
+            "name": "Execute the complete preserved bank on the receiving source",
+            "status": "completed",
+            "conclusion": "failure",
+            "number": 7
+          },
+          {
+            "name": "Audit actual case completeness and final source binding",
+            "status": "completed",
+            "conclusion": "failure",
+            "number": 8
+          },
+          {
+            "name": "Run actions/upload-artifact@v7",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 9
+          },
+          {
+            "name": "Post Run gradle/actions/setup-gradle@v6",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 16
+          },
+          {
+            "name": "Post Run actions/setup-java@v5",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 17
+          },
+          {
+            "name": "Post Run actions/checkout@v6",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 18
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 19
+          }
+        ]
+      },
+      {
+        "id": 108468555031,
+        "name": "qualify (cast-observer)",
+        "status": "completed",
+        "conclusion": "success",
+        "run_id": 36265243204,
+        "logs_url": null,
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1
+          },
+          {
+            "name": "Run actions/checkout@v6",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2
+          },
+          {
+            "name": "Run actions/setup-java@v5",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3
+          },
+          {
+            "name": "Run gradle/actions/setup-gradle@v6",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4
+          },
+          {
+            "name": "Run extractions/setup-just@f8a3cce218d9f83db3a2ecd90e41ac3de6cdfd9b",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5
+          },
+          {
+            "name": "Bind the combined source, preserved bank and frozen Izzet inputs",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 6
+          },
+          {
+            "name": "Execute the complete preserved bank on the receiving source",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 7
+          },
+          {
+            "name": "Audit actual case completeness and final source binding",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 8
+          },
+          {
+            "name": "Run actions/upload-artifact@v7",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 9
+          },
+          {
+            "name": "Post Run gradle/actions/setup-gradle@v6",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 16
+          },
+          {
+            "name": "Post Run actions/setup-java@v5",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 17
+          },
+          {
+            "name": "Post Run actions/checkout@v6",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 18
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 19
+          }
+        ]
+      }
+    ]
+  },
+  "targeted_artifacts": {
+    "artifacts": [
+      {
+        "id": 10913607182,
+        "name": "izzet-position1-vines-qualification",
+        "size_in_bytes": 424042,
+        "url": "https://api.github.com/repos/GodaPupa/argentum-batshit-test/actions/artifacts/10913607182",
+        "archive_download_url": "https://api.github.com/repos/GodaPupa/argentum-batshit-test/actions/artifacts/10913607182/zip",
+        "expired": false,
+        "created_at": "2026-09-26T19:28:17Z",
+        "expires_at": "2026-12-25T19:12:34Z",
+        "updated_at": "2026-09-26T19:28:17Z",
+        "digest": "sha256:9e0d18b4df7923063cbbbba13215107eb8e0387e4097387d943dd1e2867e0270",
+        "workflow_run": {
+          "id": 36265243200,
+          "repository_id": 1361473449,
+          "head_repository_id": 1361473449,
+          "head_branch": "mayhem/izzet-vines-targeting",
+          "head_sha": "0aae3a480870c437b47fef8b8641bde83bb11079"
+        }
+      }
+    ]
+  },
+  "observer_artifacts": {
+    "artifacts": [
+      {
+        "id": 10914447175,
+        "name": "izzet-shared-receiving-priority-0aae3a480870c437b47fef8b8641bde83bb11079",
+        "size_in_bytes": 784185,
+        "url": "https://api.github.com/repos/GodaPupa/argentum-batshit-test/actions/artifacts/10914447175",
+        "archive_download_url": "https://api.github.com/repos/GodaPupa/argentum-batshit-test/actions/artifacts/10914447175/zip",
+        "expired": false,
+        "created_at": "2026-09-26T19:36:03Z",
+        "expires_at": "2026-12-25T19:12:34Z",
+        "updated_at": "2026-09-26T19:36:03Z",
+        "digest": "sha256:14b8991cb788e2a2547c20d9e634e50fe1d836acbc113bfc3c545be8076fec31",
+        "workflow_run": {
+          "id": 36265243204,
+          "repository_id": 1361473449,
+          "head_repository_id": 1361473449,
+          "head_branch": "mayhem/izzet-vines-targeting",
+          "head_sha": "0aae3a480870c437b47fef8b8641bde83bb11079"
+        }
+      },
+      {
+        "id": 10913912512,
+        "name": "izzet-shared-receiving-cast-observer-0aae3a480870c437b47fef8b8641bde83bb11079",
+        "size_in_bytes": 581505,
+        "url": "https://api.github.com/repos/GodaPupa/argentum-batshit-test/actions/artifacts/10913912512",
+        "archive_download_url": "https://api.github.com/repos/GodaPupa/argentum-batshit-test/actions/artifacts/10913912512/zip",
+        "expired": false,
+        "created_at": "2026-09-26T19:23:47Z",
+        "expires_at": "2026-12-25T19:12:34Z",
+        "updated_at": "2026-09-26T19:23:47Z",
+        "digest": "sha256:6c228bd4f3d81257f307357dd20b34b565599d28e0270b610e00a3573eeea8e8",
+        "workflow_run": {
+          "id": 36265243204,
+          "repository_id": 1361473449,
+          "head_repository_id": 1361473449,
+          "head_branch": "mayhem/izzet-vines-targeting",
+          "head_sha": "0aae3a480870c437b47fef8b8641bde83bb11079"
+        }
+      }
+    ]
+  },
+  "log_observations": [
+    {
+      "job_id": 108468554995,
+      "decoded_characters": 5127652,
+      "selected": [
+        "2026-09-26T19:12:41.1765307Z   ref: 0aae3a480870c437b47fef8b8641bde83bb11079",
+        "2026-09-26T19:12:41.4498211Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin 0aae3a480870c437b47fef8b8641bde83bb11079",
+        "2026-09-26T19:12:47.8876819Z 0aae3a480870c437b47fef8b8641bde83bb11079",
+        "2026-09-26T19:12:47.8981530Z [command]/usr/bin/git checkout --progress --force 0aae3a480870c437b47fef8b8641bde83bb11079",
+        "2026-09-26T19:12:49.6093772Z [command]/usr/bin/git log -1 --format=%H",
+        "2026-09-26T19:12:49.6123629Z 0aae3a480870c437b47fef8b8641bde83bb11079",
+        "2026-09-26T19:14:55.6370346Z Gradle Test Executor 1 started executing tests.",
+        "2026-09-26T19:14:59.6368880Z Gradle Test Executor 1 finished executing tests.",
+        "2026-09-26T19:15:00.8306552Z BUILD SUCCESSFUL in 2m 1s",
+        "2026-09-26T19:19:24.2789211Z Gradle Test Executor 2 started executing tests.",
+        "2026-09-26T19:20:22.2745632Z Gradle Test Executor 2 finished executing tests.",
+        "2026-09-26T19:20:23.6804855Z BUILD SUCCESSFUL in 5m 22s",
+        "2026-09-26T19:20:46.5950365Z Gradle Test Executor 3 started executing tests.",
+        "2026-09-26T19:21:11.7923040Z Gradle Test Executor 3 finished executing tests.",
+        "2026-09-26T19:21:11.8948062Z BUILD SUCCESSFUL in 47s",
+        "2026-09-26T19:21:32.5346206Z Gradle Test Executor 4 started executing tests.",
+        "2026-09-26T19:21:52.3378918Z Gradle Test Executor 4 finished executing tests.",
+        "2026-09-26T19:21:52.4326252Z BUILD SUCCESSFUL in 40s",
+        "2026-09-26T19:22:14.1747029Z Gradle Test Executor 5 started executing tests.",
+        "2026-09-26T19:22:35.0766950Z Gradle Test Executor 5 finished executing tests.",
+        "2026-09-26T19:22:35.2630004Z BUILD SUCCESSFUL in 42s",
+        "2026-09-26T19:22:58.7234596Z Gradle Test Executor 6 started executing tests.",
+        "2026-09-26T19:22:59.4224226Z Gradle Test Executor 6 finished executing tests.",
+        "2026-09-26T19:22:59.5251949Z BUILD SUCCESSFUL in 23s",
+        "2026-09-26T19:23:10.1996939Z Gradle Test Executor 7 started executing tests.",
+        "2026-09-26T19:23:28.8997038Z Gradle Test Executor 7 finished executing tests.",
+        "2026-09-26T19:23:28.9685577Z BUILD SUCCESSFUL in 29s",
+        "2026-09-26T19:23:50.9116766Z Gradle Test Executor 8 started executing tests.",
+        "2026-09-26T19:24:08.7117685Z Gradle Test Executor 8 finished executing tests.",
+        "2026-09-26T19:24:08.7893726Z BUILD SUCCESSFUL in 39s",
+        "2026-09-26T19:24:44.5451084Z Gradle Test Executor 9 started executing tests.",
+        "2026-09-26T19:25:06.0441625Z Gradle Test Executor 9 finished executing tests.",
+        "2026-09-26T19:25:06.3526131Z BUILD SUCCESSFUL in 57s",
+        "2026-09-26T19:25:27.5502865Z Gradle Test Executor 10 started executing tests.",
+        "2026-09-26T19:25:45.3503146Z Gradle Test Executor 10 finished executing tests.",
+        "2026-09-26T19:25:45.4524665Z BUILD SUCCESSFUL in 38s",
+        "2026-09-26T19:26:42.2540123Z BUILD SUCCESSFUL in 56s",
+        "2026-09-26T19:26:47.6044811Z Gradle Test Executor 11 started executing tests.",
+        "2026-09-26T19:27:16.6069891Z Gradle Test Executor 11 finished executing tests.",
+        "2026-09-26T19:27:16.7079055Z BUILD SUCCESSFUL in 33s",
+        "2026-09-26T19:28:17.7950836Z     Requested Key : gradle-home-v2|Linux-X64|qualify[48fb175896187b1bdf3cb0257f6fc426]-0aae3a480870c437b47fef8b8641bde83bb11079"
+      ]
+    },
+    {
+      "job_id": 108468555031,
+      "decoded_characters": 3863877,
+      "selected": [
+        "2026-09-26T19:12:40.9533021Z   ref: 0aae3a480870c437b47fef8b8641bde83bb11079",
+        "2026-09-26T19:13:06.7597046Z 0aae3a480870c437b47fef8b8641bde83bb11079",
+        "2026-09-26T19:13:06.7600956Z [command]/usr/bin/git checkout --progress --force 0aae3a480870c437b47fef8b8641bde83bb11079",
+        "2026-09-26T19:13:08.6582503Z [command]/usr/bin/git log -1 --format=%H",
+        "2026-09-26T19:13:08.6610798Z 0aae3a480870c437b47fef8b8641bde83bb11079",
+        "2026-09-26T19:19:31.4082055Z Gradle Test Executor 1 started executing tests.",
+        "2026-09-26T19:20:36.6042443Z Gradle Test Executor 1 finished executing tests.",
+        "2026-09-26T19:20:38.2055780Z BUILD SUCCESSFUL in 7m 20s",
+        "2026-09-26T19:22:53.4383357Z Gradle Test Executor 2 started executing tests.",
+        "2026-09-26T19:23:44.2342058Z Gradle Test Executor 2 finished executing tests.",
+        "2026-09-26T19:23:45.8376573Z BUILD SUCCESSFUL in 3m 6s",
+        "2026-09-26T19:23:46.0169330Z   name: izzet-shared-receiving-cast-observer-0aae3a480870c437b47fef8b8641bde83bb11079",
+        "2026-09-26T19:23:48.2143844Z     Requested Key : gradle-home-v2|Linux-X64|qualify[4e9d45f69ce3ff48f5ea72e42c758c8b]-0aae3a480870c437b47fef8b8641bde83bb11079"
+      ]
+    }
+  ]
+}

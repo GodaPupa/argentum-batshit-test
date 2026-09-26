@@ -46,6 +46,9 @@
   "source_files_sha256": {
     ".github/workflows/izzet-shared-priority-receiving.yml": "eb040100e02d2c07aacc291cd46011869979045cb9356fe6d4ff8356acdccb35",
     ".github/workflows/izzet-v09-position1-vines-qualification.yml": "46ef6bb3a582542f888e1d66fb903842092155365a2e0ac69ea661b73e5267f7",
+    "ai/src/main/kotlin/com/wingedsheep/ai/engine/DecisionResponder.kt": "a7a444f594bef0477230b39e7c8f822b0148ecb7c0e454fd0cb570433e57347f",
+    "ai/src/main/kotlin/com/wingedsheep/ai/engine/GameSimulator.kt": "e82460f8bf5554dd938355a711fbec5031e61d20638610859067d87752ac418a",
+    "ai/src/main/kotlin/com/wingedsheep/ai/engine/YesNoDecisionStrategy.kt": "8a6b0197a183b9f02d33cce8a710cc30ed298913df1a6b5572e3e3fefedea93e",
     "ai/src/test/kotlin/com/wingedsheep/ai/arena/FrozenBaselineTest.kt": "87978d468ff109f88378607fec34b4ad825ed91671069a62c0f7eb6fb2a60b52",
     "ai/src/test/kotlin/com/wingedsheep/ai/engine/DecisionResponderCompletedBranchTest.kt": "650deed7e9b3b9100ccfa69e73d20d0ee5bf601ed87c240b6d727f74c4b65a57",
     "ai/src/test/kotlin/com/wingedsheep/ai/puzzles/PuzzleSuiteTest.kt": "14ccfcfe749cbbbffb88f0d9e8f748d9707e4ff8cfc352e23f591859824273ec",
@@ -208,6 +211,7 @@
     "mtg-sets/2026/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/PrismariTheInspirationScenarioTest.kt": "bcfff1970fe0c008d33e1c9b2c226226a0e6cd6d1870c19d10842c7a32155eed",
     "mtg-sets/2026/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/RavenhillFlockScenarioTest.kt": "50344b9bd1d8e632116fe8a758d48e6b506472bfd94676a6ef9ffe0efba5f487",
     "mtg-sets/2026/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/WizardsStaffScenarioTest.kt": "4e930e993d4dc3d19d94f28a45d1b931c17374f022e30004064838eccfcefd59",
+    "mtg-sets/src/test/resources/snapshots/cards/ZEN.json": "76020a0e97c24b06b328677534eb341e38a96e32f4ed8c2b07be84d190bb803e",
     "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/ColorAndTypeContinuations.kt": "85282b0545efc80d1ef571b3fe02811504f9963c51f37997b2fbbbaf7e0f355a",
     "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/CoreContinuations.kt": "fa14c5a3abea93a6cfc6a4c3395105e32fe971691186a250ec9311359087083f",
     "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/GameEvent.kt": "d480dc2f2582b9b3b0e8c84ddd0ae938491cc1a4dc4803b1d3c3d6376b0b4393",
@@ -249,6 +253,7 @@
     "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/layers/ActiveFloatingEffect.kt": "eeb6c43efbcfbc36a629942d0cb2f6edbdb9e42f0d47559ce15601f3d2abca07",
     "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/mana/CostCalculator.kt": "8c1b56d66634ffaff8f26432143f9689a5dd103a6bc6643868b8b4411de0307e",
     "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/mana/ManaPaymentWindow.kt": "aa66c482d1e65b2d91e74e601461f24a1b3698c8d887e5a915e69db7d0a7dd4f",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/mana/OptionalCastAffordability.kt": "5102111629a564fa99e170714c7053bf0b8785b15f350af7447a677608a00c58",
     "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/sba/permanent/EndedDurationExpiryCheck.kt": "2f157afc271c600b9ea5e8e6719891ecca7bf8564302a9ace22df9066ca6982c",
     "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/sba/player/PlayerLeavesGameProcessor.kt": "91baf7d4f817e65ff93ed6e91c054f2328d50caf2be8309c72cd3bbfa57c781c",
     "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/stack/StackResolver.kt": "9eef51c9d7df0c12fd1a5732da1fff90f7b6155e873dfa87a5a090b21d34e2a1",
@@ -547,10 +552,12 @@
     "Izzet dynamic mana and replicate, bestow lifecycle, entry snapshots, simultaneous damage grouping and Vines targeting remain receiving-specific dependencies.",
     "Frozen baseline retains Izzets own47e993c61a57ebbd hash until exact same-lineage raw-stream review.",
     "Vines first two ETB priority failures remain preserved; all21 exact card cases still required.",
-    "The unchanged original ActivationPriorityScenarioTest imports the exact donor FerocityOfTheHuntPrerelease test-only definition. It is received solely as the existing shared bank dependency, never registered in the production corpus or either frozen Izzet deck; no Ferocity gameplay conclusion is transferred."
+    "The unchanged original ActivationPriorityScenarioTest imports the exact donor FerocityOfTheHuntPrerelease test-only definition. It is received solely as the existing shared bank dependency, never registered in the production corpus or either frozen Izzet deck; no Ferocity gameplay conclusion is transferred.",
+    "Canonical default optional-choice AI closure is deterministic repository compatibility only; no Izzet gameplay responder strategy is selected and accepted Python policies remain unchanged."
   ],
   "gameplay_authorized": false,
   "official_seeds_consumed": 0,
   "official_games_initialized": 0,
-  "outcomes_exposed": 0
+  "outcomes_exposed": 0,
+  "shared_ai_receiving_source": "8dc597494bbff5cf89c65c1a6f1d5605f0517b64"
 }
