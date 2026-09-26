@@ -1,0 +1,142 @@
+{
+  "schema": "izzet973-independent-failure-preservation-review-v1",
+  "reviewer": "actual /root/ferocity",
+  "source_or_control_author": false,
+  "disposition": "PASS_LOSSLESS_FAILURE_PRESERVATION_AND_EXACT_SEVEN_FILE_PUBLICATION_ONLY",
+  "source": {
+    "commit": "8b05f2cecee6e992f7eca6d77695040f32901f40",
+    "tree": "4f91346617cd0d4e29e09ab8405c141883cf1820"
+  },
+  "control": {
+    "commit": "49677903b81afe8b3464f3ccf7fedc60002bdfcb",
+    "tree": "577f2d205e27db472665b4fb59d97125ecbe9154"
+  },
+  "execution": {
+    "run": 36275982231,
+    "attempt": 1,
+    "event": "push",
+    "job": 108498703115,
+    "conclusion": "failure",
+    "artifact": 10918805789,
+    "archive_bytes": 1198221,
+    "archive_sha256": "1a9f82fd580b837ad335b151a7e83b2ad200fb95200e539524d8518e4d479b31"
+  },
+  "bound_publication_files": [
+    {
+      "path": "/workspace/scratch/94f5141e9448/izzet-takeover/shared-receiving/publish/izzet-science/evidence/shared-receiving-973-20260926/README.md",
+      "bytes": 4461,
+      "sha256": "016bc4a4394cf26a2928367da0ad012d5c4e86985806b5d2f50ba9eb0e34ef31"
+    },
+    {
+      "path": "/workspace/scratch/94f5141e9448/izzet-takeover/shared-receiving/publish/izzet-science/evidence/shared-receiving-973-20260926/audit_original_973.py",
+      "bytes": 9168,
+      "sha256": "35082b93791a67ca20bd81f178b653f80de8488775dea0eb4d2094ef75a5b8e8"
+    },
+    {
+      "path": "/workspace/scratch/94f5141e9448/izzet-takeover/shared-receiving/publish/izzet-science/evidence/shared-receiving-973-20260926/completed-github-metadata.json",
+      "bytes": 18702,
+      "sha256": "54521ec9f4d3ec1181a2a6feffa69ebe2060426af8dc67a6340cbd8aaa85ce9b"
+    },
+    {
+      "path": "/workspace/scratch/94f5141e9448/izzet-takeover/shared-receiving/publish/izzet-science/evidence/shared-receiving-973-20260926/git-pin-preservation.json",
+      "bytes": 308,
+      "sha256": "dc90d11fdd8f15471d9f487aeb09c65ed14a18744836c3cd6a20d25c093167b3"
+    },
+    {
+      "path": "/workspace/scratch/94f5141e9448/izzet-takeover/shared-receiving/publish/izzet-science/evidence/shared-receiving-973-20260926/original-973-author-raw-audit.json",
+      "bytes": 644118,
+      "sha256": "88b7aee8af79c1ab356f4f455670be7cd70453195fba0697c8f7766e9978c60a"
+    },
+    {
+      "path": "/workspace/scratch/94f5141e9448/izzet-takeover/shared-receiving/publish/izzet-science/evidence/shared-receiving-973-20260926/original-artifact-10918805789.zip",
+      "bytes": 1198221,
+      "sha256": "1a9f82fd580b837ad335b151a7e83b2ad200fb95200e539524d8518e4d479b31"
+    },
+    {
+      "path": "/workspace/scratch/94f5141e9448/izzet-takeover/shared-receiving/publish/izzet-science/evidence/shared-receiving-973-20260926/receiving-run-live-git-pins.json.gz",
+      "bytes": 926141,
+      "sha256": "b12926246eab9586b6d8dfcf4cc6de53e5b61ec2459c2f730dbacccb33dbbd2e"
+    }
+  ],
+  "review_support": [
+    {
+      "path": "ferocity-takeover/izzet973-review/independent_archive_check.py",
+      "bytes": 10136,
+      "sha256": "96d27e531f84f7eeee9c701186c4af65c38e2b118cb4ddbe6e9e1f3c66ddb2ff"
+    },
+    {
+      "path": "ferocity-takeover/izzet973-review/independent-checks.json",
+      "bytes": 199948,
+      "sha256": "7775bfdacec2e986bf53930ae9fdd7c42d1b1a114991f9f474a9f08429d92e9a"
+    },
+    {
+      "path": "ferocity-takeover/izzet973-review/independently-fetched-source-control.json",
+      "bytes": 68490,
+      "sha256": "88625556037bcb7fe14488fd1070fe904a4615a0da7340ac1e0dcda75a259a12"
+    },
+    {
+      "path": "ferocity-takeover/izzet973-review/independently-fetched-source-bodies.json",
+      "bytes": 186295,
+      "sha256": "b68256b77b5e97e403c3fbb700cb9d80f2b3fe6badb6f8f17fd875107c886841"
+    }
+  ],
+  "independent_raw_result": {
+    "classes": 87,
+    "actual_cases": 973,
+    "passed": 969,
+    "failed": 4,
+    "errors": 0,
+    "skipped": 0,
+    "fresh_worker_pairs": 87,
+    "commands_exit0": 84,
+    "commands_exit1": 3
+  },
+  "independent_checks": [
+    "Fetched live original run, sole job, artifact metadata, source and control commits, untruncated source/control Git trees; original ZIP size and SHA256 match the live artifact digest.",
+    "Read all354 original members, checked every CRC, length and SHA256 against the author inventory; independently parsed all87 XML and all87 command records, exits and complete per-command logs.",
+    "All973 unique class/name pairs exactly match the declared original gate and author case records. Failures including full stack traces remain unchanged. No missing identities, errors, skips, stale XML or substituted result.",
+    "Every class command uses just test-class with --rerun, --no-build-cache and updateSnapshots=false. All87 selected task markers and fresh worker start/finish pairs exist. Exactly84 commands exit0 and3 exit1; every XML timestamp is inside its own actual command window.",
+    "Read complete workflow, collector and gate; all3 retained control Git blobs/SHA256 match independently fetched actual control tree, including hiddenworkflow retention. Original gate authorizations are preserved, not reissued.",
+    "Before/after head, tree, clean status,87 test-source Git blobs and7 authority hashes are identical. All87 test-source blob pins match independently fetched immutable source tree. Independently fetched11 current source bodies (7authority+4specificfixtures), recomputed SHA256 and GitSHA1; all agree.",
+    "The baseline, Arcane and Wall fixture Git blobs are unchanged from the original receiver bff4de45/tree dc13f019. Dalkovan has its explicitly separate changed blob; read its strengthened opposing-defender assertions and confirm the exact current two cases pass.",
+    "Losslessly decompressed all3,738,449 bytes of source/control pin records and verified declared gzip/decoded hashes. Current selected source bindings agree. The preserved control-tree request used commit alias496779; independently requested both that alias and canonicaltree577f: allfive entries identical. Preserve original metadata without rewriting it.",
+    "Read all seven publication files. README and author report accurately label a failed software receiving gate, current hash/endpoint limitations, missing actual Arcane/Wall pending types, consumed attempt, no automatic retry and no runtime/gameplay admission.",
+    "Every class log records the prescribed gradle-locked missing-shlock fallback. Publication correctly does not assert an operating interprocess semaphore."
+  ],
+  "failure_disposition": [
+    {
+      "class": "FrozenBaselineTest",
+      "failures": 1,
+      "observation": "Expected47e993c61a57ebbd, actual634376c1259f8db7; 20turns, winner seat1, life-8/16. Current ZIP contains hash and endpoint, not complete action stream. No acceptance of baseline update."
+    },
+    {
+      "class": "ArcaneDenialScenarioTest",
+      "failures": 1,
+      "passes": 2,
+      "observation": "Next-upkeep fixture reports expected draw-up-to-two decision absent. Actual pending type is not exposed; no replacement decision or repair inferred."
+    },
+    {
+      "class": "MnemonicWallScenarioTest",
+      "failures": 2,
+      "observation": "Both original optional ETB fixtures report No pending YesNoDecision. Actual pending type is not exposed; no replacement decision or repair inferred."
+    },
+    {
+      "class": "DalkovanEncampmentScenarioTest",
+      "failures": 0,
+      "passes": 2,
+      "observation": "Exact current strengthened fixture passes both cases. This is a component observation only."
+    }
+  ],
+  "publication_scope": "Seven exact reviewed inert evidence files plus this attributed review may be preserved. Source/control paths are not edited; branch activation/trigger preflight remains publication owner responsibility. Root owns any integration.",
+  "limits": [
+    "Complete Izzet receiving source remains unaccepted; four regression dispositions and required receiving qualification/fullCI remain outstanding.",
+    "No independent review of the earlier c47 full seven-swap traces was performed here and no earlier trace is credited as this run\u2019s current trace. Prior historical references are attributed only.",
+    "No full-CI pass, whole-runtime admission, source-bound gameplay permit, GitHub approval, new pilot case, entropy allocation or resource calibration authority.",
+    "Preserved official counters/protocol statements are prior bound authority context; this review did not inspect the concealed official seed vector or independently re-audit gameplay ledgers."
+  ],
+  "review_executed_jvm_or_engine": false,
+  "official_games_executed": 0,
+  "seeds_consumed": 0,
+  "deck_or_policy_changes": false,
+  "deck_performance_evidence_changed": false
+}
