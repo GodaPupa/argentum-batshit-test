@@ -1,0 +1,1838 @@
+{
+  "schema": "izzet-c47e-receiving-successor-audit-v1",
+  "disposition": "TARGETED_BANKS_PASS_FULL_RECEIVING_REJECTED",
+  "audit_role": "successor Izzet project agent; no claim to be the original source reviewer or independent gameplay admission authority",
+  "source": "c47e9dbafc1fd582f81be1db04e9f35a09f067b5",
+  "tree": "f92cdeaed8be104d98b1a971347cd9c2f089f779",
+  "accepted_receiving_base": "50eca5fb955013d70ea26c3c6a09efabef4bcff4",
+  "accepted_receiving_base_tree": "bb352ebb432555191e1c4d74673e0e4371651989",
+  "pr": 197,
+  "pr_state_when_audited": "open draft",
+  "targeted_runs": [
+    {
+      "id": 36267835092,
+      "event": "push",
+      "attempt": 1,
+      "conclusion": "success"
+    },
+    {
+      "id": 36267835155,
+      "event": "push",
+      "attempt": 1,
+      "conclusion": "success"
+    }
+  ],
+  "archives": [
+    {
+      "kind": "vines",
+      "artifact_id": 10914736738,
+      "run_id": 36267835092,
+      "original_zip": "vines-original-artifact.zip",
+      "bytes": 422892,
+      "sha256": "0ced407c44928b3f0403f25cd683b6ef9afd8beef7c3bc1405d40866a099b0a3",
+      "members": 55,
+      "stage_count": 11,
+      "actual_cases": 560,
+      "xml_suites": 32,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "suites": [
+        {
+          "xml": "mtg-sdk/build/test-results/test/TEST-com.wingedsheep.sdk.serialization.PreventTargetingSerializationTest.xml",
+          "sha256": "7ba5b6eb49c5fe650269cc5239e7012839938e5bf0f6e19a636dee485654e179",
+          "class": "com.wingedsheep.sdk.serialization.PreventTargetingSerializationTest",
+          "timestamp": "2026-09-26T19:59:29.529Z",
+          "cases": [
+            "targeting restriction round trips with EachOpponent and an explicit duration",
+            "targeting restriction round trips with Each and an explicit duration",
+            "targeting restriction round trips with You and an explicit duration"
+          ],
+          "count": 3
+        },
+        {
+          "xml": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.event.BattlefieldEntrySnapshotTest.xml",
+          "sha256": "0065d764a62b8d7cb210c9aa05941a82e3da0a24dba917c570aef5252584de86",
+          "class": "com.wingedsheep.engine.event.BattlefieldEntrySnapshotTest",
+          "timestamp": "2026-09-26T20:02:58.277Z",
+          "cases": [
+            "child entry is frozen before later pump and enclosing composite cannot refresh it",
+            "whole simultaneous token group and entry counters are applied before every snapshot",
+            "preexisting anthem affects entry before a later pump; printed zero is not substituted",
+            "entry event survives serialization and absent live token still matches captured characteristics",
+            "captured scalar power and toughness filters ignore later state for all supported relations",
+            "later type and color changes do not rewrite positive or negative entry predicates",
+            "unknown entry predicates remain unknown under negation and compound filters",
+            "copied token captures its copied mana value and copy-exception base power",
+            "face-down entry facts mask concealed card data and client event DTO never includes snapshots",
+            "missing transition reference never fabricates an entry snapshot from eventual state",
+            "a prior battlefield visit is not rebound to the object that returned later"
+          ],
+          "count": 11
+        },
+        {
+          "xml": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.handlers.effects.AttachEquipmentObjectIdentityTest.xml",
+          "sha256": "eaa96e399710811aff352beda044f79574e0a294a816f55d17c1612cc75a6ab4",
+          "class": "com.wingedsheep.engine.handlers.effects.AttachEquipmentObjectIdentityTest",
+          "timestamp": "2026-09-26T20:03:25.461Z",
+          "cases": [
+            "attachment source identity remains valid only in its captured battlefield visit: none",
+            "attachment source identity remains valid only in its captured battlefield visit: leave",
+            "attachment source identity remains valid only in its captured battlefield visit: return",
+            "a legacy raw source in another zone cannot acquire battlefield attachments",
+            "iteration Self binding does not replace the originating Equipment",
+            "an unavailable destination is a successful no-op and emits no attachment event"
+          ],
+          "count": 6
+        },
+        {
+          "xml": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.handlers.effects.ExcessDamageSelfReplacementTest.xml",
+          "sha256": "f4d5f3a979699b5e2eae51b2baf0e3c78e0b50ef1b474c02629fe34dc69874cf",
+          "class": "com.wingedsheep.engine.handlers.effects.ExcessDamageSelfReplacementTest",
+          "timestamp": "2026-09-26T20:03:25.871Z",
+          "cases": [
+            "excess damage conserves event amounts, source tracking and lifelink: ordinary",
+            "excess damage conserves event amounts, source tracking and lifelink: prior damage",
+            "excess damage conserves event amounts, source tracking and lifelink: deathtouch",
+            "excess damage conserves event amounts, source tracking and lifelink: wither",
+            "without the excess clause all five damage stays on the creature exactly once",
+            "protection from creatures prevents the creature portion without erasing controller excess",
+            "a finite recipient shield reduces its portion without increasing the already split excess",
+            "ordinary source doubling applies once to each already split portion"
+          ],
+          "count": 8
+        },
+        {
+          "xml": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.hygiene.FloatingEffectSerializationRoundTripTest.xml",
+          "sha256": "80ed5930eb02009eaeabce1e84d034ec0a922bde92a71baf7a93f861895c6964",
+          "class": "com.wingedsheep.engine.hygiene.FloatingEffectSerializationRoundTripTest",
+          "timestamp": "2026-09-26T20:03:27.893Z",
+          "cases": [
+            "no SerializableModification leaf has a JSON field colliding with the 'type' class discriminator",
+            "an ActiveFloatingEffect carrying AddType round-trips through persistence-shaped JSON",
+            "an ActiveFloatingEffect carrying RemoveType round-trips through persistence-shaped JSON"
+          ],
+          "count": 3
+        },
+        {
+          "xml": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.hygiene.SerializationPolymorphicRegistrationTest.xml",
+          "sha256": "a1264ab26d289f3458404c74093c58ee22cd16d54f610e8594f05405fe6c05b2",
+          "class": "com.wingedsheep.engine.hygiene.SerializationPolymorphicRegistrationTest",
+          "timestamp": "2026-09-26T20:03:28.838Z",
+          "cases": [
+            "every sealed GameAction subclass is polymorphically registered",
+            "every sealed GameEvent subclass is polymorphically registered",
+            "every sealed ContinuationFrame subclass is polymorphically registered",
+            "every sealed AutomaticContinuation subclass is polymorphically registered",
+            "every sealed AnswerContinuation subclass is polymorphically registered",
+            "every sealed PendingDecision subclass is polymorphically registered",
+            "every sealed DecisionResponse subclass is polymorphically registered",
+            "every Component implementation is polymorphically registered"
+          ],
+          "count": 8
+        },
+        {
+          "xml": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.legalactions.CastSpellSourceHexproofEnumerationTest.xml",
+          "sha256": "5aeb1563ef3a53c2170d858e59efa659b1e261d0234c6c85b98d599a99a087fa",
+          "class": "com.wingedsheep.engine.legalactions.CastSpellSourceHexproofEnumerationTest",
+          "timestamp": "2026-09-26T20:03:29.906Z",
+          "cases": [
+            "cast enumeration excludes a permanent with hexproof from the spell's color"
+          ],
+          "count": 1
+        },
+        {
+          "xml": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.mechanics.layers.AffectsFilterResolverStatePredicateTest.xml",
+          "sha256": "5d12497775ca136254299697bc5ab1de07c755364677809c542d167b969c7d7f",
+          "class": "com.wingedsheep.engine.mechanics.layers.AffectsFilterResolverStatePredicateTest",
+          "timestamp": "2026-09-26T20:03:30.588Z",
+          "cases": [
+            "IsCommander projection matches designated cards of either controller and not same-name copies",
+            "IsTapped matches only tapped permanents",
+            "IsUntapped matches only untapped permanents",
+            "IsAttacking matches only creatures with AttackingComponent",
+            "IsBlocking matches only creatures with BlockingComponent",
+            "IsBlocked matches attackers that have at least one declared blocker",
+            "IsUnblocked matches attackers with no blockers and excludes non-attackers",
+            "EnteredThisTurn matches only entities with EnteredThisTurnComponent",
+            "WasDealtDamageThisTurn matches only damaged creatures",
+            "HasDealtDamage matches every creature with a marker, whatever turn it was stamped",
+            "HasDealtDamage(thisTurnOnly) matches only creatures whose marker names the current turn",
+            "HasDealtCombatDamageToPlayer matches only creatures that dealt combat damage to a player",
+            "IsFaceDown matches only face-down permanents",
+            "IsFaceUp matches only face-up permanents",
+            "HasMorphAbility matches creatures flagged with morph",
+            "ReceivedCounterThisTurn with no narrowing matches any permanent with a recorded placement",
+            "ReceivedCounterThisTurn scoped to +1/+1 ignores other counter kinds",
+            "ReceivedCounterThisTurn with placedByController ignores counters an opponent put on",
+            "ReceivedCounterThisTurn still matches after the counters themselves are gone",
+            "ReceivedCounterThisTurn narrowed by kind does not match a bare marker",
+            "HasAnyCounter matches any creature with at least one counter of any type",
+            "HasCounter(LOYALTY) matches only creatures with that specific counter type",
+            "HasCounter(\"+1/+1\") matches creatures with +1/+1 counters \u2014 shorthand form",
+            "HasCounter(\"-1/-1\") matches creatures with -1/-1 counters \u2014 shorthand form",
+            "HasCounter with unknown counter type string matches nothing (no accidental fallback)",
+            "HasGreatestPower matches the highest-power creature the source's controller controls",
+            "HasGreatestPower allows ties \u2014 multiple creatures can share the greatest power",
+            "IsEquipped matches only creatures with at least one Equipment attached",
+            "Or matches entities that satisfy any sub-predicate",
+            "And matches entities that satisfy every sub-predicate",
+            "Not inverts its sub-predicate",
+            "CouldNotHaveAttackedThisTurn spares every creature the nonactive player controls",
+            "CouldNotHaveAttackedThisTurn spares everyone when no Declare Attackers Step happened",
+            "CouldNotHaveAttackedThisTurn spares a summoning-sick creature but not its neighbour",
+            "CouldNotHaveAttackedThisTurn reads the projected controller, not the base one",
+            "CouldNotHaveAttackedThisTurn spares a creature a projected effect stopped from attacking"
+          ],
+          "count": 36
+        },
+        {
+          "xml": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.predicates.CommanderStatePredicateTest.xml",
+          "sha256": "a4357de34ae6f8ff9f692ad96612d533a96b9c74ab12e036daffbab476a7a55f",
+          "class": "com.wingedsheep.engine.predicates.CommanderStatePredicateTest",
+          "timestamp": "2026-09-26T20:03:31.202Z",
+          "cases": [
+            "commander designation differs from the same printed creature and survives face-down and control changes",
+            "entry history composes with designation and serialization preserves both",
+            "zone-change trigger filters retain commander designation after a zone change without matching ordinary cards"
+          ],
+          "count": 3
+        },
+        {
+          "xml": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.DamageDealtThisTurnTest.xml",
+          "sha256": "9a40b392cc485d469bd71b52138af15477b91285293cb9a84547620bb835b4bc",
+          "class": "com.wingedsheep.engine.scenarios.DamageDealtThisTurnTest",
+          "timestamp": "2026-09-26T20:03:33.225Z",
+          "cases": [
+            "actual damage accumulates across recipients without mutating the previous state",
+            "changing zones clears the object's damage history",
+            "combat damage contributes to the same total as noncombat damage",
+            "trample counts damage to the blocker and player exactly once"
+          ],
+          "count": 4
+        },
+        {
+          "xml": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.LifelinkTest.xml",
+          "sha256": "c9aacc039cb505a2391ab5deaa8fd6c469300c5275b92c16fc5f5d4252c5be3a",
+          "class": "com.wingedsheep.engine.scenarios.LifelinkTest",
+          "timestamp": "2026-09-26T20:03:34.881Z",
+          "cases": [
+            "lifelink creature gains life for controller when dealing combat damage to player",
+            "lifelink creature gains life when dealing combat damage to blocking creature",
+            "creature without lifelink does not gain life"
+          ],
+          "count": 3
+        },
+        {
+          "xml": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.ModalTriggeredAbilityOnStackTest.xml",
+          "sha256": "fa59e5541759d68fb808a855891533018e21ef3871573bbb12eb0bf55c3368d6",
+          "class": "com.wingedsheep.engine.scenarios.ModalTriggeredAbilityOnStackTest",
+          "timestamp": "2026-09-26T20:03:35.305Z",
+          "cases": [
+            "the mode question is not a resolution-time question",
+            "answering it puts the ability on the stack with the mode baked in, unresolved",
+            "the opponent can read the chosen mode off the stack before responding"
+          ],
+          "count": 3
+        },
+        {
+          "xml": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.PreventTargetingScenarioTest.xml",
+          "sha256": "f32e32267f07caea8b48d9e9e2c56bebf42a8d97e2f10d962d5d1b7a98f9bc00",
+          "class": "com.wingedsheep.engine.scenarios.PreventTargetingScenarioTest",
+          "timestamp": "2026-09-26T20:03:36.317Z",
+          "cases": [
+            "generic permanent target blocks announcement selection and direct enumeration",
+            "generic player target is enforced and visible through state serialization",
+            "parameterized all-player restriction includes its own controller",
+            "unresolved and missing targets produce no restriction and no invented event",
+            "restriction creation event round trips through the engine polymorphic event registry",
+            "source-tapped duration gates both card and player reads before SBA and never revives after pruning",
+            "affected-tapped duration stops immediately and stays ended when the object retaps",
+            "controller-keyed duration uses projected control and expires permanently after control is lost"
+          ],
+          "count": 8
+        },
+        {
+          "xml": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.ReflexiveTriggerFeasibilityTest.xml",
+          "sha256": "fdb54eae1fd220f8a485e9466a4fa9aa031c09cfbf06e1826c4e62b3a89e3a6b",
+          "class": "com.wingedsheep.engine.scenarios.ReflexiveTriggerFeasibilityTest",
+          "timestamp": "2026-09-26T20:03:36.559Z",
+          "cases": [
+            "an empty hand is never asked to discard, and never pays out",
+            "a mandatory discard on an empty hand pays out nothing either",
+            "draw-then-discard is still offered on an empty hand \u2014 the draw supplies the card",
+            "discard two with only one card in hand discards that one and pays out",
+            "a permanent with no counters is never asked to remove a named one",
+            "a permanent with no counters is never asked to remove one of any kind",
+            "one -1/-1 counter is enough to be offered, and paying it earns the payoff",
+            "a named removal is not offered when the permanent is short of the full count",
+            "an any-kind removal takes whichever counter is there and earns the payoff",
+            "a not-yet-stored pipeline target fails open \u2014 the ability is still offered"
+          ],
+          "count": 10
+        },
+        {
+          "xml": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.WitherLifelinkDeathtouchTest.xml",
+          "sha256": "80dd25cf06d81314e1510d9dccff218679209f5112ffeabb1ad356590fd78a22",
+          "class": "com.wingedsheep.engine.scenarios.WitherLifelinkDeathtouchTest",
+          "timestamp": "2026-09-26T20:03:39.539Z",
+          "cases": [
+            "wither + deathtouch destroys the blocker even though only one -1/-1 counter is placed",
+            "wither + lifelink gains life equal to the wither damage dealt",
+            "plain wither (no deathtouch) does not destroy a creature whose toughness stays above zero"
+          ],
+          "count": 3
+        },
+        {
+          "xml": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.triggers.InterveningIfBeforeTargetLegalityTest.xml",
+          "sha256": "2bf5168ea3277d4021f5a0c5d8598857c5ebdfaec74c06a96b34865c9a020875",
+          "class": "com.wingedsheep.engine.triggers.InterveningIfBeforeTargetLegalityTest",
+          "timestamp": "2026-09-26T20:03:40.177Z",
+          "cases": [
+            "both checks fail: CR 608.2a's intervening-if ends the resolution, not CR 608.2b's targets",
+            "control: condition still true, target gone \u2014 CR 608.2b fizzles on targets as before",
+            "control: condition true and target legal \u2014 the ability resolves and deals its damage"
+          ],
+          "count": 3
+        },
+        {
+          "xml": "mtg-sets/2008-2016/tests/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.IntoTheRoilScenarioTest.xml",
+          "sha256": "6d89bf97b2b64172ccb19e092b12bb48d1a02feb3f1061644917c42ff307748b",
+          "class": "com.wingedsheep.engine.scenarios.IntoTheRoilScenarioTest",
+          "timestamp": "2026-09-26T20:03:56.721Z",
+          "cases": [
+            "unkicked: returns target nonland permanent to owner's hand and does not draw",
+            "kicked: returns the permanent and draws a card"
+          ],
+          "count": 2
+        },
+        {
+          "xml": "mtg-sets/2008-2016/tests/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.VinesOfVastwoodScenarioTest.xml",
+          "sha256": "d39e6f42adab8f3daebaa41e8b7068cf2cb8b77e4e51e5129a2fa82eda08e95d",
+          "class": "com.wingedsheep.engine.scenarios.VinesOfVastwoodScenarioTest",
+          "timestamp": "2026-09-26T20:04:11.099Z",
+          "cases": [
+            "unkicked spends one green without a boost and restricts only the caster's opponents",
+            "kicked spends two green and gives plus four plus four",
+            "declared kicker without its second green is rejected atomically",
+            "player and noncreature targets are illegal and do not pay mana",
+            "targeting an opponent's creature prevents that opponent's spells and abilities",
+            "the Vines caster may still target the opposing creature",
+            "Vines in response makes an opponent's already targeted removal fizzle",
+            "Vines in response makes an opponent's activated ability fizzle after its tap cost is paid",
+            "Vines in response makes an opponent's targeted enters ability fizzle",
+            "one restricted target does not fizzle another target or shift its named damage binding",
+            "a partially restricted enters ability preserves the surviving target's original named slot",
+            "Vines drops Fire's illegal damage share without reallocating it to the surviving player target",
+            "removing Vines' target in response leaves no boost or targeting restriction",
+            "control change keeps the original forbidden controller set",
+            "losing all abilities does not remove the rule restriction",
+            "target enumeration hides forbidden choices while nontargeted selection remains available",
+            "nontargeted destruction still reaches a restricted creature",
+            "ordinary cleanup expires both the restriction and kicked boost",
+            "leaving and recasting the same card does not reuse its old object restriction",
+            "serialized pending Vines resolution reproduces exact state events and public badge",
+            "Izzet Guildmage copies a kicked Vines with a new target and retains both paid choices"
+          ],
+          "count": 21
+        },
+        {
+          "xml": "mtg-sets/1993-1999/tests/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.ChoMannosBlessingScenarioTest.xml",
+          "sha256": "6ade63e699f77c6cac4aea9929fc402cedfe8b33062721d04a49d6b234b2aa80",
+          "class": "com.wingedsheep.engine.scenarios.ChoMannosBlessingScenarioTest",
+          "timestamp": "2026-09-26T20:07:19.466Z",
+          "cases": [
+            "chosen-color protection removes another matching Aura but preserves Cho-Manno's Blessing",
+            "definition retains flash for the accepted flash-Aura timing rail"
+          ],
+          "count": 2
+        },
+        {
+          "xml": "mtg-sets/2000-2002/tests/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.PrismaticStrandsScenarioTest.xml",
+          "sha256": "d697937351739b1a60d9e4a1573a5f2ba1cdb8513439ce35e0971da2a4643e3f",
+          "class": "com.wingedsheep.engine.scenarios.PrismaticStrandsScenarioTest",
+          "timestamp": "2026-09-26T20:05:42.156Z",
+          "cases": [
+            "normal resolution protects both players and creatures from actual red spells throughout the turn",
+            "an unchosen source color is not prevented",
+            "actual combat prevents only chosen-color attackers and grants no lifelink for prevented damage",
+            "unpreventable actual combat passes through the chosen-color group shield",
+            "flashback taps a newly entered white creature without mana, persists its choice, and exiles the spell",
+            "flashback rejects missing, green, opposing, noncreature or already tapped payment atomically",
+            "countering a flashback spell exiles it and creates neither color choice nor shield",
+            "the shield expires at turn end and does not stop next-turn red damage"
+          ],
+          "count": 8
+        },
+        {
+          "xml": "mtg-sets/2003-2007/tests/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.SpiritLinkBatchAJScenarioTest.xml",
+          "sha256": "6c77c8121a1f9d283927299801ac4100896b22dfc8354de2df9ff539380c1dfc",
+          "class": "com.wingedsheep.engine.scenarios.SpiritLinkBatchAJScenarioTest",
+          "timestamp": "2026-09-26T20:05:33.456Z",
+          "cases": [
+            "Spirit Link reuses the attached damage to controller life-gain rail exactly"
+          ],
+          "count": 1
+        },
+        {
+          "xml": "mtg-sets/2023/tests/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.GandalfsSanctionScenarioTest.xml",
+          "sha256": "c08c39fd26a2ff9cdc92c519700ebacaa8b4bb27dbea5aedb5cf278642fa84d1",
+          "class": "com.wingedsheep.engine.scenarios.GandalfsSanctionScenarioTest",
+          "timestamp": "2026-09-26T20:06:12.982Z",
+          "cases": [
+            "X = instants/sorceries in graveyard; excess goes to the creature's controller"
+          ],
+          "count": 1
+        },
+        {
+          "xml": "mtg-sets/2024/tests/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.ColossalDreadmaskScenarioTest.xml",
+          "sha256": "9be0380b64e101dbf4666893c10450dbeae4f0f44ad95883d9d7968d805ecdae",
+          "class": "com.wingedsheep.engine.scenarios.ColossalDreadmaskScenarioTest",
+          "timestamp": "2026-09-26T20:06:51.825Z",
+          "cases": [
+            "living weapon attaches before the 0/0 dies, yields a black 6/6 trampler, and ETB sees zero power",
+            "a preexisting anthem makes the entering Germ 1/1 and the zero-power observer does not trigger",
+            "doubled Germ creation lets controller choose either token; only chosen Germ survives",
+            "equip pays 3GG, moves to a controlled creature and leaves the unequipped Germ to die",
+            "removing Equipment in response still creates a Germ but never attaches the graveyard card"
+          ],
+          "count": 5
+        },
+        {
+          "xml": "mtg-sets/2024/tests/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.NyxbornHydraScenarioTest.xml",
+          "sha256": "2e4db3a945e8885291480f94c15adaa38b42a7943e60571655d3615f66018d17",
+          "class": "com.wingedsheep.engine.scenarios.NyxbornHydraScenarioTest",
+          "timestamp": "2026-09-26T20:07:06.672Z",
+          "cases": [
+            "filtered cast prohibition sees the chosen Bestow Aura mode (blocksCreature=true)",
+            "filtered cast prohibition sees the chosen Bestow Aura mode (blocksCreature=false)",
+            "Nyxborn Hydra cast normally for X=3 enters as a 3/4 with three counters",
+            "Nyxborn Hydra bestowed for X=2 is an Aura with two counters and grants the host +2/+2 reach and trample",
+            "bestow target becoming illegal before resolution makes Nyxborn Hydra resolve as a creature",
+            "bestow uses Aura card type for protection checks while being cast",
+            "a bestowed Nyxborn Hydra becomes its normal creature when its host leaves",
+            "bouncing the bestowed Hydra clears its Aura marker counters and attachment before a normal recast",
+            "Bestow has a distinct legal action and rejects payment below its XGG cost",
+            "creature-only mana cannot pay Bestow and cannot inflate its legal X bound",
+            "Counterspell restores Bestow types and removes its marker on the actual stack exit",
+            "Remand restores Bestow types and removes its marker on the actual stack exit",
+            "Dissipate restores Bestow types and removes its marker on the actual stack exit",
+            "Summary Dismissal restores Bestow types and removes its marker on the actual stack exit",
+            "Bestow stack and permanent states round-trip with X targets counters and attachment intact"
+          ],
+          "count": 15
+        },
+        {
+          "xml": "mtg-sets/2017-2022/tests/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.ForgeOfHeroesScenarioTest.xml",
+          "sha256": "d0a4224628b1b4a0824236f260d5ffa0ea7dda0b54a1e99dd2d72ba73b2efadf",
+          "class": "com.wingedsheep.engine.scenarios.ForgeOfHeroesScenarioTest",
+          "timestamp": "2026-09-26T20:05:00.616Z",
+          "cases": [
+            "colorless mana is immediate and taps Forge without using the stack",
+            "exact nonlegendary PDH commander in seat 0 receives its counter only on resolution",
+            "exact nonlegendary PDH commander in seat 1 receives its counter only on resolution",
+            "an opponent's newly entered commander is a legal target",
+            "ordinary same-name creature and prior-turn commander are rejected without tapping Forge",
+            "counter resolution reads projected types [PLANESWALKER] rather than printed creature type",
+            "counter resolution reads projected types [CREATURE, PLANESWALKER] rather than printed creature type",
+            "counter resolution reads projected types [LAND] rather than printed creature type",
+            "commander leaving in response invalidates the target and preserves the paid tap",
+            "pending Forge ability serializes and replays identical state and ordered events"
+          ],
+          "count": 10
+        },
+        {
+          "xml": "mtg-sets/2017-2022/tests/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.RamThroughScenarioTest.xml",
+          "sha256": "ccc5abf3975753957802bc5e2a92d795ec390f09d3895be71b6ae3c35c8cecbe",
+          "class": "com.wingedsheep.engine.scenarios.RamThroughScenarioTest",
+          "timestamp": "2026-09-26T20:05:15.074Z",
+          "cases": [
+            "real spell preserves total damage and creature source attribution; trample=false",
+            "real spell preserves total damage and creature source attribution; trample=true",
+            "marked damage determines excess without rerouting more damage than source power",
+            "power and trample are both read after responses resolve",
+            "one illegal target prevents both creature and excess damage; source illegal=true",
+            "one illegal target prevents both creature and excess damage; source illegal=false",
+            "split excess damage fires Spirit Link once for the combined source event",
+            "only a controlled first creature and an opposing second creature form legal targets"
+          ],
+          "count": 8
+        },
+        {
+          "xml": "gym/build/test-results/test/TEST-com.wingedsheep.gym.IzzetSciencePdhMechanicsQualificationTest.xml",
+          "sha256": "1dd04936c2d7b79b9e2408c80d99cb9db8208f995fc487ed00d5ab76e60a0c37",
+          "class": "com.wingedsheep.gym.IzzetSciencePdhMechanicsQualificationTest",
+          "timestamp": "2026-09-26T20:04:28.105Z",
+          "cases": [
+            "exact nonlegendary commanders initialize in their own command zones at 30 life",
+            "Izzet Guildmage is offered legally, casts for printed cost, and requires two more mana on recast",
+            "Veteran Beastrider is offered legally, casts for printed cost, and requires two more mana on recast",
+            "the actual commander owner can decline command-zone return",
+            "actual Guildmage combat reaches 15 commander damage under the 16 threshold",
+            "actual Guildmage combat reaches 16 commander damage under the 16 threshold",
+            "16 noncombat damage by the actual commander never increments commander combat damage"
+          ],
+          "count": 7
+        },
+        {
+          "xml": "gym/build/test-results/test/TEST-com.wingedsheep.gym.IzzetSciencePosition1BootstrapTest.xml",
+          "sha256": "c902af65c755879a7ef80c4a2dadb5619fb62c9b477bc4c98450cb2061f497b5",
+          "class": "com.wingedsheep.gym.IzzetSciencePosition1BootstrapTest",
+          "timestamp": "2026-09-26T20:04:43.217Z",
+          "cases": [
+            "frozen byte identities and translated lists produce an unseeded unsmoothed PDH config",
+            "play and draw change the starting player without swapping stable deck seats",
+            "changed control or opponent bytes and unknown assignments reject before seed access",
+            "all three unresolved identities block the real initializer without touching its seed supplier",
+            "play fixture reuses the real configuration with exact command zones and deterministic initialization",
+            "draw fixture reuses the real configuration with exact command zones and deterministic initialization",
+            "a charged London mulligan survives serialized state and action replay without automatic decisions"
+          ],
+          "count": 7
+        },
+        {
+          "xml": "gym/build/test-results/test/TEST-com.wingedsheep.gym.IzzetScienceVeteranBeastriderEngineReadinessTest.xml",
+          "sha256": "23af905c7e3309f93c600e9b7f3328c638da50398e54036c3a10243c6f47586a",
+          "class": "com.wingedsheep.gym.IzzetScienceVeteranBeastriderEngineReadinessTest",
+          "timestamp": "2026-09-26T20:04:43.395Z",
+          "cases": [
+            "exact frozen 99-card identities have correct counts",
+            "Boreal Druid resolves with exact colorless mana ability",
+            "Llanowar Visionary resolves as ETB draw mana creature",
+            "Owlbear resolves as trample ETB draw creature",
+            "Murmuring Mystic resolves as instant-sorcery cast token engine",
+            "Goblin Electromancer resolves with generic instant-sorcery cost reduction",
+            "Memory Lapse resolves through counter-to-library-top destination",
+            "Izzet Guildmage resolves with two capped spell-copy abilities",
+            "Echoing Truth resolves as same-name nonland-permanent bounce",
+            "Snap resolves as creature bounce with resolution-time land choice",
+            "Capsize resolves as permanent bounce with buyback",
+            "Frantic Search resolves as draw-discard with resolution-time land choice",
+            "frozen combined Veteran identities resolve their exact printed faces",
+            "freeze exact unresolved engine coverage count and emit identities",
+            "full execution remains fail closed behind unresolved cards and PDH semantics",
+            "readiness consumes no official seed and exposes no outcome"
+          ],
+          "count": 16
+        },
+        {
+          "xml": "mtg-sets/build/test-results/test/TEST-com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest.xml",
+          "sha256": "54db4747a08da42e5b1f491f031da7ee9272e61ff7b2e707421dc12ce2c05d27",
+          "class": "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+          "timestamp": "2026-09-26T20:08:21.950Z",
+          "cases": [
+            "LEA (Limited Edition Alpha): card trees match golden",
+            "LEA (Limited Edition Alpha): cards survive a JSON round-trip",
+            "LEB (Limited Edition Beta): card trees match golden",
+            "LEB (Limited Edition Beta): cards survive a JSON round-trip",
+            "ARN (Arabian Nights): card trees match golden",
+            "ARN (Arabian Nights): cards survive a JSON round-trip",
+            "ATQ (Antiquities): card trees match golden",
+            "ATQ (Antiquities): cards survive a JSON round-trip",
+            "LEG (Legends): card trees match golden",
+            "LEG (Legends): cards survive a JSON round-trip",
+            "DRK (The Dark): card trees match golden",
+            "DRK (The Dark): cards survive a JSON round-trip",
+            "FEM (Fallen Empires): card trees match golden",
+            "FEM (Fallen Empires): cards survive a JSON round-trip",
+            "ICE (Ice Age): card trees match golden",
+            "ICE (Ice Age): cards survive a JSON round-trip",
+            "HML (Homelands): card trees match golden",
+            "HML (Homelands): cards survive a JSON round-trip",
+            "ALL (Alliances): card trees match golden",
+            "ALL (Alliances): cards survive a JSON round-trip",
+            "MIR (Mirage): card trees match golden",
+            "MIR (Mirage): cards survive a JSON round-trip",
+            "VIS (Visions): card trees match golden",
+            "VIS (Visions): cards survive a JSON round-trip",
+            "POR (Portal): card trees match golden",
+            "POR (Portal): cards survive a JSON round-trip",
+            "WTH (Weatherlight): card trees match golden",
+            "WTH (Weatherlight): cards survive a JSON round-trip",
+            "TMP (Tempest): card trees match golden",
+            "TMP (Tempest): cards survive a JSON round-trip",
+            "STH (Stronghold): card trees match golden",
+            "STH (Stronghold): cards survive a JSON round-trip",
+            "EXO (Exodus): card trees match golden",
+            "EXO (Exodus): cards survive a JSON round-trip",
+            "P02 (Portal Second Age): card trees match golden",
+            "P02 (Portal Second Age): cards survive a JSON round-trip",
+            "USG (Urza's Saga): card trees match golden",
+            "USG (Urza's Saga): cards survive a JSON round-trip",
+            "ULG (Urza's Legacy): card trees match golden",
+            "ULG (Urza's Legacy): cards survive a JSON round-trip",
+            "PTK (Portal Three Kingdoms): card trees match golden",
+            "PTK (Portal Three Kingdoms): cards survive a JSON round-trip",
+            "UDS (Urza's Destiny): card trees match golden",
+            "UDS (Urza's Destiny): cards survive a JSON round-trip",
+            "S99 (Starter 1999): card trees match golden",
+            "S99 (Starter 1999): cards survive a JSON round-trip",
+            "MMQ (Mercadian Masques): card trees match golden",
+            "MMQ (Mercadian Masques): cards survive a JSON round-trip",
+            "NEM (Nemesis): card trees match golden",
+            "NEM (Nemesis): cards survive a JSON round-trip",
+            "PCY (Prophecy): card trees match golden",
+            "PCY (Prophecy): cards survive a JSON round-trip",
+            "INV (Invasion): card trees match golden",
+            "INV (Invasion): cards survive a JSON round-trip",
+            "PLS (Planeshift): card trees match golden",
+            "PLS (Planeshift): cards survive a JSON round-trip",
+            "APC (Apocalypse): card trees match golden",
+            "APC (Apocalypse): cards survive a JSON round-trip",
+            "ODY (Odyssey): card trees match golden",
+            "ODY (Odyssey): cards survive a JSON round-trip",
+            "TOR (Torment): card trees match golden",
+            "TOR (Torment): cards survive a JSON round-trip",
+            "JUD (Judgment): card trees match golden",
+            "JUD (Judgment): cards survive a JSON round-trip",
+            "ONS (Onslaught): card trees match golden",
+            "ONS (Onslaught): cards survive a JSON round-trip",
+            "LGN (Legions): card trees match golden",
+            "LGN (Legions): cards survive a JSON round-trip",
+            "SCG (Scourge): card trees match golden",
+            "SCG (Scourge): cards survive a JSON round-trip",
+            "8ED (Eighth Edition): card trees match golden",
+            "8ED (Eighth Edition): cards survive a JSON round-trip",
+            "MRD (Mirrodin): card trees match golden",
+            "MRD (Mirrodin): cards survive a JSON round-trip",
+            "DST (Darksteel): card trees match golden",
+            "DST (Darksteel): cards survive a JSON round-trip",
+            "5DN (Fifth Dawn): card trees match golden",
+            "5DN (Fifth Dawn): cards survive a JSON round-trip",
+            "CHK (Champions of Kamigawa): card trees match golden",
+            "CHK (Champions of Kamigawa): cards survive a JSON round-trip",
+            "BOK (Betrayers of Kamigawa): card trees match golden",
+            "BOK (Betrayers of Kamigawa): cards survive a JSON round-trip",
+            "SOK (Saviors of Kamigawa): card trees match golden",
+            "SOK (Saviors of Kamigawa): cards survive a JSON round-trip",
+            "RAV (Ravnica: City of Guilds): card trees match golden",
+            "RAV (Ravnica: City of Guilds): cards survive a JSON round-trip",
+            "GPT (Guildpact): card trees match golden",
+            "GPT (Guildpact): cards survive a JSON round-trip",
+            "DIS (Dissension): card trees match golden",
+            "DIS (Dissension): cards survive a JSON round-trip",
+            "CSP (Coldsnap): card trees match golden",
+            "CSP (Coldsnap): cards survive a JSON round-trip",
+            "TSP (Time Spiral): card trees match golden",
+            "TSP (Time Spiral): cards survive a JSON round-trip",
+            "PLC (Planar Chaos): card trees match golden",
+            "PLC (Planar Chaos): cards survive a JSON round-trip",
+            "FUT (Future Sight): card trees match golden",
+            "FUT (Future Sight): cards survive a JSON round-trip",
+            "10E (Tenth Edition): card trees match golden",
+            "10E (Tenth Edition): cards survive a JSON round-trip",
+            "LRW (Lorwyn): card trees match golden",
+            "LRW (Lorwyn): cards survive a JSON round-trip",
+            "MOR (Morningtide): card trees match golden",
+            "MOR (Morningtide): cards survive a JSON round-trip",
+            "SHM (Shadowmoor): card trees match golden",
+            "SHM (Shadowmoor): cards survive a JSON round-trip",
+            "EVE (Eventide): card trees match golden",
+            "EVE (Eventide): cards survive a JSON round-trip",
+            "DRB (From the Vault: Dragons): card trees match golden",
+            "DRB (From the Vault: Dragons): cards survive a JSON round-trip",
+            "ALA (Shards of Alara): card trees match golden",
+            "ALA (Shards of Alara): cards survive a JSON round-trip",
+            "CON (Conflux): card trees match golden",
+            "CON (Conflux): cards survive a JSON round-trip",
+            "ARB (Alara Reborn): card trees match golden",
+            "ARB (Alara Reborn): cards survive a JSON round-trip",
+            "M10 (Magic 2010): card trees match golden",
+            "M10 (Magic 2010): cards survive a JSON round-trip",
+            "HOP (Planechase): card trees match golden",
+            "HOP (Planechase): cards survive a JSON round-trip",
+            "ZEN (Zendikar): card trees match golden",
+            "ZEN (Zendikar): cards survive a JSON round-trip",
+            "WWK (Worldwake): card trees match golden",
+            "WWK (Worldwake): cards survive a JSON round-trip",
+            "ROE (Rise of the Eldrazi): card trees match golden",
+            "ROE (Rise of the Eldrazi): cards survive a JSON round-trip",
+            "ARC (Archenemy): card trees match golden",
+            "ARC (Archenemy): cards survive a JSON round-trip",
+            "M11 (Magic 2011): card trees match golden",
+            "M11 (Magic 2011): cards survive a JSON round-trip",
+            "DDF (Duel Decks: Elspeth vs. Tezzeret): card trees match golden",
+            "DDF (Duel Decks: Elspeth vs. Tezzeret): cards survive a JSON round-trip",
+            "SOM (Scars of Mirrodin): card trees match golden",
+            "SOM (Scars of Mirrodin): cards survive a JSON round-trip",
+            "MBS (Mirrodin Besieged): card trees match golden",
+            "MBS (Mirrodin Besieged): cards survive a JSON round-trip",
+            "NPH (New Phyrexia): card trees match golden",
+            "NPH (New Phyrexia): cards survive a JSON round-trip",
+            "CMD (Commander 2011): card trees match golden",
+            "CMD (Commander 2011): cards survive a JSON round-trip",
+            "M12 (Magic 2012): card trees match golden",
+            "M12 (Magic 2012): cards survive a JSON round-trip",
+            "ISD (Innistrad): card trees match golden",
+            "ISD (Innistrad): cards survive a JSON round-trip",
+            "DKA (Dark Ascension): card trees match golden",
+            "DKA (Dark Ascension): cards survive a JSON round-trip",
+            "AVR (Avacyn Restored): card trees match golden",
+            "AVR (Avacyn Restored): cards survive a JSON round-trip",
+            "PC2 (Planechase 2012): card trees match golden",
+            "PC2 (Planechase 2012): cards survive a JSON round-trip",
+            "M13 (Magic 2013): card trees match golden",
+            "M13 (Magic 2013): cards survive a JSON round-trip",
+            "RTR (Return to Ravnica): card trees match golden",
+            "RTR (Return to Ravnica): cards survive a JSON round-trip",
+            "GTC (Gatecrash): card trees match golden",
+            "GTC (Gatecrash): cards survive a JSON round-trip",
+            "DGM (Dragon's Maze): card trees match golden",
+            "DGM (Dragon's Maze): cards survive a JSON round-trip",
+            "M14 (Magic 2014): card trees match golden",
+            "M14 (Magic 2014): cards survive a JSON round-trip",
+            "DDL (Duel Decks: Heroes vs. Monsters): card trees match golden",
+            "DDL (Duel Decks: Heroes vs. Monsters): cards survive a JSON round-trip",
+            "THS (Theros): card trees match golden",
+            "THS (Theros): cards survive a JSON round-trip",
+            "C13 (Commander 2013): card trees match golden",
+            "C13 (Commander 2013): cards survive a JSON round-trip",
+            "BNG (Born of the Gods): card trees match golden",
+            "BNG (Born of the Gods): cards survive a JSON round-trip",
+            "JOU (Journey into Nyx): card trees match golden",
+            "JOU (Journey into Nyx): cards survive a JSON round-trip",
+            "M15 (Magic 2015): card trees match golden",
+            "M15 (Magic 2015): cards survive a JSON round-trip",
+            "KTK (Khans of Tarkir): card trees match golden",
+            "KTK (Khans of Tarkir): cards survive a JSON round-trip",
+            "C14 (Commander 2014): card trees match golden",
+            "C14 (Commander 2014): cards survive a JSON round-trip",
+            "FRF (Fate Reforged): card trees match golden",
+            "FRF (Fate Reforged): cards survive a JSON round-trip",
+            "DTK (Dragons of Tarkir): card trees match golden",
+            "DTK (Dragons of Tarkir): cards survive a JSON round-trip",
+            "ORI (Magic Origins): card trees match golden",
+            "ORI (Magic Origins): cards survive a JSON round-trip",
+            "DDP (Duel Decks: Zendikar vs. Eldrazi): card trees match golden",
+            "DDP (Duel Decks: Zendikar vs. Eldrazi): cards survive a JSON round-trip",
+            "BFZ (Battle for Zendikar): card trees match golden",
+            "BFZ (Battle for Zendikar): cards survive a JSON round-trip",
+            "C15 (Commander 2015): card trees match golden",
+            "C15 (Commander 2015): cards survive a JSON round-trip",
+            "OGW (Oath of the Gatewatch): card trees match golden",
+            "OGW (Oath of the Gatewatch): cards survive a JSON round-trip",
+            "DDQ (Duel Decks: Blessed vs. Cursed): card trees match golden",
+            "DDQ (Duel Decks: Blessed vs. Cursed): cards survive a JSON round-trip",
+            "SOI (Shadows over Innistrad): card trees match golden",
+            "SOI (Shadows over Innistrad): cards survive a JSON round-trip",
+            "EMN (Eldritch Moon): card trees match golden",
+            "EMN (Eldritch Moon): cards survive a JSON round-trip",
+            "KLD (Kaladesh): card trees match golden",
+            "KLD (Kaladesh): cards survive a JSON round-trip",
+            "C16 (Commander 2016): card trees match golden",
+            "C16 (Commander 2016): cards survive a JSON round-trip",
+            "PZ2 (Treasure Chest): card trees match golden",
+            "PZ2 (Treasure Chest): cards survive a JSON round-trip",
+            "AER (Aether Revolt): card trees match golden",
+            "AER (Aether Revolt): cards survive a JSON round-trip",
+            "AKH (Amonkhet): card trees match golden",
+            "AKH (Amonkhet): cards survive a JSON round-trip",
+            "HOU (Hour of Devastation): card trees match golden",
+            "HOU (Hour of Devastation): cards survive a JSON round-trip",
+            "C17 (Commander 2017): card trees match golden",
+            "C17 (Commander 2017): cards survive a JSON round-trip",
+            "XLN (Ixalan): card trees match golden",
+            "XLN (Ixalan): cards survive a JSON round-trip",
+            "RIX (Rivals of Ixalan): card trees match golden",
+            "RIX (Rivals of Ixalan): cards survive a JSON round-trip",
+            "DOM (Dominaria): card trees match golden",
+            "DOM (Dominaria): cards survive a JSON round-trip",
+            "GS1 (Global Series: Jiang Yanggu & Mu Yanling): card trees match golden",
+            "GS1 (Global Series: Jiang Yanggu & Mu Yanling): cards survive a JSON round-trip",
+            "M19 (Core Set 2019): card trees match golden",
+            "M19 (Core Set 2019): cards survive a JSON round-trip",
+            "OANA (Arena New Player Experience Cards): card trees match golden",
+            "OANA (Arena New Player Experience Cards): cards survive a JSON round-trip",
+            "C18 (Commander 2018): card trees match golden",
+            "C18 (Commander 2018): cards survive a JSON round-trip",
+            "GRN (Guilds of Ravnica): card trees match golden",
+            "GRN (Guilds of Ravnica): cards survive a JSON round-trip",
+            "RNA (Ravnica Allegiance): card trees match golden",
+            "RNA (Ravnica Allegiance): cards survive a JSON round-trip",
+            "WAR (War of the Spark): card trees match golden",
+            "WAR (War of the Spark): cards survive a JSON round-trip",
+            "MH1 (Modern Horizons): card trees match golden",
+            "MH1 (Modern Horizons): cards survive a JSON round-trip",
+            "M20 (Core Set 2020): card trees match golden",
+            "M20 (Core Set 2020): cards survive a JSON round-trip",
+            "ELD (Throne of Eldraine): card trees match golden",
+            "ELD (Throne of Eldraine): cards survive a JSON round-trip",
+            "THB (Theros Beyond Death): card trees match golden",
+            "THB (Theros Beyond Death): cards survive a JSON round-trip",
+            "C20 (Commander 2020): card trees match golden",
+            "C20 (Commander 2020): cards survive a JSON round-trip",
+            "IKO (Ikoria: Lair of Behemoths): card trees match golden",
+            "IKO (Ikoria: Lair of Behemoths): cards survive a JSON round-trip",
+            "M21 (Core Set 2021): card trees match golden",
+            "M21 (Core Set 2021): cards survive a JSON round-trip",
+            "JMP (Jumpstart): card trees match golden",
+            "JMP (Jumpstart): cards survive a JSON round-trip",
+            "ANB (Arena Beginner Set): card trees match golden",
+            "ANB (Arena Beginner Set): cards survive a JSON round-trip",
+            "ZNR (Zendikar Rising): card trees match golden",
+            "ZNR (Zendikar Rising): cards survive a JSON round-trip",
+            "CMR (Commander Legends): card trees match golden",
+            "CMR (Commander Legends): cards survive a JSON round-trip",
+            "KHC (Kaldheim Commander): card trees match golden",
+            "KHC (Kaldheim Commander): cards survive a JSON round-trip",
+            "KHM (Kaldheim): card trees match golden",
+            "KHM (Kaldheim): cards survive a JSON round-trip",
+            "STX (Strixhaven: School of Mages): card trees match golden",
+            "STX (Strixhaven: School of Mages): cards survive a JSON round-trip",
+            "MH2 (Modern Horizons 2): card trees match golden",
+            "MH2 (Modern Horizons 2): cards survive a JSON round-trip",
+            "AFR (Adventures in the Forgotten Realms): card trees match golden",
+            "AFR (Adventures in the Forgotten Realms): cards survive a JSON round-trip",
+            "MID (Innistrad: Midnight Hunt): card trees match golden",
+            "MID (Innistrad: Midnight Hunt): cards survive a JSON round-trip",
+            "VOC (Innistrad: Crimson Vow Commander): card trees match golden",
+            "VOC (Innistrad: Crimson Vow Commander): cards survive a JSON round-trip",
+            "VOW (Innistrad: Crimson Vow): card trees match golden",
+            "VOW (Innistrad: Crimson Vow): cards survive a JSON round-trip",
+            "NEO (Kamigawa: Neon Dynasty): card trees match golden",
+            "NEO (Kamigawa: Neon Dynasty): cards survive a JSON round-trip",
+            "NCC (New Capenna Commander): card trees match golden",
+            "NCC (New Capenna Commander): cards survive a JSON round-trip",
+            "SNC (Streets of New Capenna): card trees match golden",
+            "SNC (Streets of New Capenna): cards survive a JSON round-trip",
+            "CLB (Commander Legends: Battle for Baldur's Gate): card trees match golden",
+            "CLB (Commander Legends: Battle for Baldur's Gate): cards survive a JSON round-trip",
+            "DMU (Dominaria United): card trees match golden",
+            "DMU (Dominaria United): cards survive a JSON round-trip",
+            "BRO (The Brothers' War): card trees match golden",
+            "BRO (The Brothers' War): cards survive a JSON round-trip",
+            "J22 (Jumpstart 2022): card trees match golden",
+            "J22 (Jumpstart 2022): cards survive a JSON round-trip",
+            "ONE (Phyrexia: All Will Be One): card trees match golden",
+            "ONE (Phyrexia: All Will Be One): cards survive a JSON round-trip",
+            "MOM (March of the Machine): card trees match golden",
+            "MOM (March of the Machine): cards survive a JSON round-trip",
+            "LTR (The Lord of the Rings: Tales of Middle-earth): card trees match golden",
+            "LTR (The Lord of the Rings: Tales of Middle-earth): cards survive a JSON round-trip",
+            "WOE (Wilds of Eldraine): card trees match golden",
+            "WOE (Wilds of Eldraine): cards survive a JSON round-trip",
+            "LCI (The Lost Caverns of Ixalan): card trees match golden",
+            "LCI (The Lost Caverns of Ixalan): cards survive a JSON round-trip",
+            "MKM (Murders at Karlov Manor): card trees match golden",
+            "MKM (Murders at Karlov Manor): cards survive a JSON round-trip",
+            "BIG (The Big Score): card trees match golden",
+            "BIG (The Big Score): cards survive a JSON round-trip",
+            "OTJ (Outlaws of Thunder Junction): card trees match golden",
+            "OTJ (Outlaws of Thunder Junction): cards survive a JSON round-trip",
+            "MH3 (Modern Horizons 3): card trees match golden",
+            "MH3 (Modern Horizons 3): cards survive a JSON round-trip",
+            "BLB (Bloomburrow): card trees match golden",
+            "BLB (Bloomburrow): cards survive a JSON round-trip",
+            "BLC (Bloomburrow Commander): card trees match golden",
+            "BLC (Bloomburrow Commander): cards survive a JSON round-trip",
+            "DSK (Duskmourn: House of Horror): card trees match golden",
+            "DSK (Duskmourn: House of Horror): cards survive a JSON round-trip",
+            "FDN (Foundations): card trees match golden",
+            "FDN (Foundations): cards survive a JSON round-trip",
+            "J25 (Foundations Jumpstart): card trees match golden",
+            "J25 (Foundations Jumpstart): cards survive a JSON round-trip",
+            "INR (Innistrad Remastered): card trees match golden",
+            "INR (Innistrad Remastered): cards survive a JSON round-trip",
+            "DFT (Aetherdrift): card trees match golden",
+            "DFT (Aetherdrift): cards survive a JSON round-trip",
+            "TDM (Tarkir: Dragonstorm): card trees match golden",
+            "TDM (Tarkir: Dragonstorm): cards survive a JSON round-trip",
+            "FIN (Final Fantasy): card trees match golden",
+            "FIN (Final Fantasy): cards survive a JSON round-trip",
+            "EOE (Edge of Eternities): card trees match golden",
+            "EOE (Edge of Eternities): cards survive a JSON round-trip",
+            "SPM (Marvel's Spider-Man): card trees match golden",
+            "SPM (Marvel's Spider-Man): cards survive a JSON round-trip",
+            "TLA (Avatar: The Last Airbender): card trees match golden",
+            "TLA (Avatar: The Last Airbender): cards survive a JSON round-trip",
+            "TLE (Avatar: The Last Airbender Eternal): card trees match golden",
+            "TLE (Avatar: The Last Airbender Eternal): cards survive a JSON round-trip",
+            "ECL (Lorwyn Eclipsed): card trees match golden",
+            "ECL (Lorwyn Eclipsed): cards survive a JSON round-trip",
+            "TRC (Star Trek Commander): card trees match golden",
+            "TRC (Star Trek Commander): cards survive a JSON round-trip",
+            "TMT (Teenage Mutant Ninja Turtles): card trees match golden",
+            "TMT (Teenage Mutant Ninja Turtles): cards survive a JSON round-trip",
+            "SOS (Secrets of Strixhaven): card trees match golden",
+            "SOS (Secrets of Strixhaven): cards survive a JSON round-trip",
+            "MSC (Marvel Super Heroes Commander): card trees match golden",
+            "MSC (Marvel Super Heroes Commander): cards survive a JSON round-trip",
+            "MSH (Marvel Super Heroes): card trees match golden",
+            "MSH (Marvel Super Heroes): cards survive a JSON round-trip",
+            "HOB (The Hobbit): card trees match golden",
+            "HOB (The Hobbit): cards survive a JSON round-trip"
+          ],
+          "count": 340
+        },
+        {
+          "xml": "mtg-sets/build/test-results/test/TEST-com.wingedsheep.mtg.sets.FacadeBoundaryTest.xml",
+          "sha256": "bca497af0a5f05f9f7be9f1b3543790303de667133d6291e79713aabb4a964af",
+          "class": "com.wingedsheep.mtg.sets.FacadeBoundaryTest",
+          "timestamp": "2026-09-26T20:08:43.369Z",
+          "cases": [
+            "card definitions construct effects/costs via the Effects/Costs facades, not raw types"
+          ],
+          "count": 1
+        },
+        {
+          "xml": "mtg-sets/build/test-results/test/TEST-com.wingedsheep.mtg.sets.CardLintTest.xml",
+          "sha256": "a58b69cecc5b658ab2ffd6fe0eb07d0497e0adfaaf85ac72f0c4c3f0a5ee14cf",
+          "class": "com.wingedsheep.mtg.sets.CardLintTest",
+          "timestamp": "2026-09-26T20:08:41.599Z",
+          "cases": [
+            "every card's pipeline variables, target bindings, and choice slots resolve",
+            "the lint allowlist contains no stale entries",
+            "print lint warnings for review (never fails)"
+          ],
+          "count": 3
+        }
+      ]
+    },
+    {
+      "kind": "cast-observer",
+      "artifact_id": 10915035741,
+      "run_id": 36267835155,
+      "original_zip": "cast-observer-original-artifact.zip",
+      "bytes": 582399,
+      "sha256": "b24d2c7a220ad95388c317ccbb6b3d2e7586701af5435fcdcd52a746a23f6bc5",
+      "members": 42,
+      "stage_count": 18,
+      "actual_cases": 135,
+      "xml_suites": 18,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "suites": [
+        {
+          "xml": "tests/ActivationPriorityScenarioTest/TEST-com.wingedsheep.engine.scenarios.ActivationPriorityScenarioTest.xml",
+          "sha256": "1fddaaa40ac591e1e2cfc232ffcb6baa3dcced4528f2377139b7a85556086a1a",
+          "class": "com.wingedsheep.engine.scenarios.ActivationPriorityScenarioTest",
+          "timestamp": "2026-09-26T20:03:10.152Z",
+          "cases": [
+            "nonactive activation removes its sacrificed token before returning priority",
+            "cost and SBA deaths join one APNAP batch above a nonactive player's activation",
+            "SBA death occurs before choosing targets for a cost-triggered ability",
+            "Ferocity's cost-death return waits above the activated ability after Aura cleanup",
+            "paying the last life loses before an activated life gain can resolve",
+            "standalone Spawn mana removes the token before nonactive player receives priority",
+            "standalone Treasure with explicit color settles token cleanup before priority",
+            "Treasure color-choice pause completes its mana effect before SBA and restores activator priority",
+            "Spawn activation inside ward payment does not run SBA until the outer payment completes"
+          ],
+          "count": 9
+        },
+        {
+          "xml": "tests/BatchMayQuestionTest/TEST-com.wingedsheep.engine.scenarios.BatchMayQuestionTest.xml",
+          "sha256": "cdfde536559ca560a473a530ad897cde0935248f3953b62a17577595fe83fe5e",
+          "class": "com.wingedsheep.engine.scenarios.BatchMayQuestionTest",
+          "timestamp": "2026-09-26T20:03:59.077Z",
+          "cases": [
+            "two optional triggers choose targets before either consent decision",
+            "each targeted trigger asks at its own resolution and both may be accepted",
+            "declining both effects still requires both triggers to resolve",
+            "identical triggers retain independent resolution choices",
+            "a single optional trigger chooses its target before offering yes or no",
+            "may does not make a required target optional",
+            "removing the chosen target in response causes a fizzle without a may decision"
+          ],
+          "count": 7
+        },
+        {
+          "xml": "tests/CastObserverSourceLkiTest/TEST-com.wingedsheep.engine.scenarios.CastObserverSourceLkiTest.xml",
+          "sha256": "bc64c3944ebe74ef4e8f14f9d343dfe4aae72a1eadd7a09a8e356bb92dbb8c17",
+          "class": "com.wingedsheep.engine.scenarios.CastObserverSourceLkiTest",
+          "timestamp": "2026-09-26T20:03:59.447Z",
+          "cases": [
+            "cast observer keeps its own source history seat 1 player target true survives false",
+            "cast observer keeps its own source history seat 1 player target true survives true",
+            "cast observer keeps its own source history seat 1 player target false survives false",
+            "cast observer keeps its own source history seat 1 player target false survives true",
+            "cast observer keeps its own source history seat 2 player target true survives false",
+            "cast observer keeps its own source history seat 2 player target true survives true",
+            "cast observer keeps its own source history seat 2 player target false survives false",
+            "cast observer keeps its own source history seat 2 player target false survives true"
+          ],
+          "count": 8
+        },
+        {
+          "xml": "tests/DamageSourceTriggerScenarioTest/TEST-com.wingedsheep.engine.scenarios.DamageSourceTriggerScenarioTest.xml",
+          "sha256": "e8bd62628bb8b55e579b201d6c9e74bf540f8a01798bf2b34ee1747b94798783",
+          "class": "com.wingedsheep.engine.scenarios.DamageSourceTriggerScenarioTest",
+          "timestamp": "2026-09-26T20:04:01.546Z",
+          "cases": [
+            "a dies trigger retains source damage characteristics before token cleanup; token=false",
+            "a dies trigger retains source damage characteristics before token cleanup; token=true",
+            "a triggered ability already on the stack gains departure LKI when its source later dies",
+            "generic sacrifice cost retains a token source before its ability enters the stack",
+            "missing required source snapshot fails visibly instead of a silent damage result",
+            "old source damage triggers the matching observer but not a returned object's own ability"
+          ],
+          "count": 6
+        },
+        {
+          "xml": "tests/DamageSourceIdentityScenarioTest/TEST-com.wingedsheep.engine.scenarios.DamageSourceIdentityScenarioTest.xml",
+          "sha256": "3b854306ad5602230fa5ce15a5089c9bb163d5b5c8da55eb761bd339fc357c12",
+          "class": "com.wingedsheep.engine.scenarios.DamageSourceIdentityScenarioTest",
+          "timestamp": "2026-09-26T20:04:00.840Z",
+          "cases": [
+            "a live original source gains effective damage keywords after activation",
+            "a live original source uses its new projected controller and color",
+            "departed source uses final controller color and keywords after serialization; token=false",
+            "departed source uses final controller color and keywords after serialization; token=true",
+            "old damage does not borrow deathtouch or lifelink newly granted to the returned source"
+          ],
+          "count": 5
+        },
+        {
+          "xml": "tests/DeclareBlockersPriorityWindowTest/TEST-com.wingedsheep.engine.scenarios.DeclareBlockersPriorityWindowTest.xml",
+          "sha256": "b4db2c5ce7f10e074be6ac6c6393df02a62c7ce2a7d56260d0c7e4d8f4810ce0",
+          "class": "com.wingedsheep.engine.scenarios.DeclareBlockersPriorityWindowTest",
+          "timestamp": "2026-09-26T20:04:02.354Z",
+          "cases": [
+            "active player gets a priority window in declare blockers before combat damage",
+            "attacker's combat trick is an affordable, targetable legal action at the declare-blockers window",
+            "combat trick is detectable in the two-blockers-block-two-attackers board shape"
+          ],
+          "count": 3
+        },
+        {
+          "xml": "tests/ManaAbilityColorChoicePipelineTest/TEST-com.wingedsheep.engine.scenarios.ManaAbilityColorChoicePipelineTest.xml",
+          "sha256": "8d4dab5d766286f86fe0e67b0de83710ed557126ca4275ddd33bc337bb328a44",
+          "class": "com.wingedsheep.engine.scenarios.ManaAbilityColorChoicePipelineTest",
+          "timestamp": "2026-09-26T20:04:03.938Z",
+          "cases": [
+            "Damping Sphere replaces the two mana with one {C}",
+            "a mirror bonus and its rider both resolve",
+            "an attached 'additional mana on tap' aura fires",
+            "the land-tapped-for-mana event is still emitted"
+          ],
+          "count": 4
+        },
+        {
+          "xml": "tests/MoveToZoneEffectExecutorTest/TEST-com.wingedsheep.engine.handlers.effects.zones.MoveToZoneEffectExecutorTest.xml",
+          "sha256": "afaa28b7e2c333c8b2fb4f82b68ae081a5aea495fef70a21bca8c3416ee6c7aa",
+          "class": "com.wingedsheep.engine.handlers.effects.zones.MoveToZoneEffectExecutorTest",
+          "timestamp": "2026-09-26T20:03:05.617Z",
+          "cases": [
+            "move from battlefield to graveyard (default)",
+            "move from battlefield to hand (bounce)",
+            "move from battlefield to exile",
+            "move to library top",
+            "move to library bottom",
+            "move to library shuffled emits LibraryShuffledEvent",
+            "move to battlefield tapped",
+            "byDestruction = true destroys the permanent",
+            "byDestruction = true on indestructible creature is a no-op",
+            "battlefield components are cleaned up when leaving battlefield"
+          ],
+          "count": 10
+        },
+        {
+          "xml": "tests/MultiDefenderCombatTest/TEST-com.wingedsheep.engine.multiplayer.MultiDefenderCombatTest.xml",
+          "sha256": "134b08efb753c1d65b857f63056cf890ae0b9009a13c6ead3c97c405207b34ff",
+          "class": "com.wingedsheep.engine.multiplayer.MultiDefenderCombatTest",
+          "timestamp": "2026-09-26T20:03:07.967Z",
+          "cases": [
+            "CombatDefenders reports the right defending players in APNAP order",
+            "a defender can only block an attacker that is attacking them (CR 509.1b)",
+            "no seat gets a priority window between two defenders' block declarations (CR 802.4)",
+            "both defenders declare blockers (APNAP) and damage lands on the right players"
+          ],
+          "count": 4
+        },
+        {
+          "xml": "tests/NestedManaPaymentBoundaryScenarioTest/TEST-com.wingedsheep.engine.scenarios.NestedManaPaymentBoundaryScenarioTest.xml",
+          "sha256": "ee872311308674fdaa0322ede1a506ea8d4f08766eb2bf611d0e12aa84fad3a9",
+          "class": "com.wingedsheep.engine.scenarios.NestedManaPaymentBoundaryScenarioTest",
+          "timestamp": "2026-09-26T20:04:05.295Z",
+          "cases": [
+            "seat 1 nested sacrifice choice restores the same payment without priority",
+            "seat 1 deferred death target is chosen only after payment and lethal toughness SBA",
+            "seat 1 preselected sacrifice defers its death trigger exactly once",
+            "seat 1 mana color pause preserves cost events and defers the draw",
+            "seat 1 declined outer payment retains the already paid death trigger",
+            "seat 1 illegal interrupt during nested sacrifice is atomic and does not pay a cost",
+            "seat 2 nested sacrifice choice restores the same payment without priority",
+            "seat 2 deferred death target is chosen only after payment and lethal toughness SBA",
+            "seat 2 preselected sacrifice defers its death trigger exactly once",
+            "seat 2 mana color pause preserves cost events and defers the draw",
+            "seat 2 declined outer payment retains the already paid death trigger",
+            "seat 2 illegal interrupt during nested sacrifice is atomic and does not pay a cost"
+          ],
+          "count": 12
+        },
+        {
+          "xml": "tests/PostBlockDeclarationPriorityScenarioTest/TEST-com.wingedsheep.engine.scenarios.PostBlockDeclarationPriorityScenarioTest.xml",
+          "sha256": "a6a3f93b212a6583f1e8decf449a32c25ad8c5c40c2feea9cd526e553c7b4dd7",
+          "class": "com.wingedsheep.engine.scenarios.PostBlockDeclarationPriorityScenarioTest",
+          "timestamp": "2026-09-26T20:04:06.834Z",
+          "cases": [
+            "PB01 empty final declaration gives active seat 1 first priority",
+            "PB03 actual blocks give active seat 1 an immediate combat trick",
+            "PB02 empty final declaration gives active seat 2 first priority",
+            "PB04 actual blocks give active seat 2 an immediate combat trick",
+            "PB05 a targeted block trigger preserves active priority across serialized target choice",
+            "PB06 simultaneous block triggers keep ordering and targets before active priority",
+            "PB07 paid block tax restores active priority after a serialized mana selection",
+            "PB08 declining a block tax preserves declaration duty and grants no priority",
+            "PB09 nested block-tax mana pays before SBA and targeted death-trigger placement",
+            "PB10 multiple defenders have only an APNAP declaration baton before active priority",
+            "PB11 first defender's target choice waits until every block declaration is complete",
+            "PB12 multiple defenders' block triggers wait through paid tax then stack in APNAP order",
+            "PB13 a queued block-trigger token retains exact departure LKI through later payment and cleanup",
+            "PB14 a final defender's concession abandons tax but preserves the prior defender's trigger",
+            "PB15 owner concession preserves a remaining controller's queued source LKI without early placement",
+            "PB16 concession during two-player block payment clears the actual waiting batch at game end"
+          ],
+          "count": 16
+        },
+        {
+          "xml": "tests/PostBlockDeclarationSessionTest/TEST-com.wingedsheep.gameserver.session.PostBlockDeclarationSessionTest.xml",
+          "sha256": "367eb855af6bdff93be07d9c89fa99b584a595d2359c1a55ad8f0d84186bb008",
+          "class": "com.wingedsheep.gameserver.session.PostBlockDeclarationSessionTest",
+          "timestamp": "2026-09-26T20:06:17.134Z",
+          "cases": [
+            "GS-PB01 both defending teammates get their own declaration without ordinary priority",
+            "GS-PB02 block-tax payment exposes only the payer's mana actions before declarations resume"
+          ],
+          "count": 2
+        },
+        {
+          "xml": "tests/PredicateEvaluatorRecordTest/TEST-com.wingedsheep.engine.handlers.PredicateEvaluatorRecordTest.xml",
+          "sha256": "fbe6326eb54f790540361587d15e274eb1f6ec5503d57c51e1dd085db8b5cc60",
+          "class": "com.wingedsheep.engine.handlers.PredicateEvaluatorRecordTest",
+          "timestamp": "2026-09-26T20:03:02.713Z",
+          "cases": [
+            "empty predicate list matches anything",
+            "face-down cast records never match any non-empty filter",
+            "conjunction (AND) requires every predicate to match",
+            "CardPredicate.Or matches when any inner predicate matches (OR)",
+            "positive type matches",
+            "negation predicates",
+            "token predicates: spells are never tokens",
+            "legendary predicates read the supertype set",
+            "HasColor and NotColor inspect the recorded color set",
+            "Colorless, Monocolored, Multicolored",
+            "HasSubtype / NotSubtype / HasAnyOfSubtypes",
+            "HasBasicLandType treats the landType string as a subtype",
+            "equals / at-most / at-least",
+            "power / toughness predicates all return false",
+            "name / keyword / ability predicates return false",
+            "source-relative and context predicates return false",
+            "And: all sub-predicates must match",
+            "Or: any sub-predicate matches",
+            "Not inverts the wrapped predicate"
+          ],
+          "count": 19
+        },
+        {
+          "xml": "tests/TargetedDepartedSourceLkiTest/TEST-com.wingedsheep.engine.scenarios.TargetedDepartedSourceLkiTest.xml",
+          "sha256": "d01a8da945d03458e4656e0a0fab17f939e977a4a84efd0cd654b11ed8388772",
+          "class": "com.wingedsheep.engine.scenarios.TargetedDepartedSourceLkiTest",
+          "timestamp": "2026-09-26T20:04:09.840Z",
+          "cases": [
+            "departed token target pause preserves full source LKI seat 1 player target true",
+            "departed token target pause preserves full source LKI seat 1 player target false",
+            "departed token target pause preserves full source LKI seat 2 player target true",
+            "departed token target pause preserves full source LKI seat 2 player target false"
+          ],
+          "count": 4
+        },
+        {
+          "xml": "tests/TriggerOrderingConcessionScenarioTest/TEST-com.wingedsheep.engine.scenarios.TriggerOrderingConcessionScenarioTest.xml",
+          "sha256": "09cc693dbe3acacd977495b0014db90b21789a848bbf81d1992258bff4446b72",
+          "class": "com.wingedsheep.engine.scenarios.TriggerOrderingConcessionScenarioTest",
+          "timestamp": "2026-09-26T20:04:10.554Z",
+          "cases": [
+            "a conceding ordering chooser leaves the surviving controller's exact APNAP group and priority recipient intact"
+          ],
+          "count": 1
+        },
+        {
+          "xml": "tests/TriggerOrderingScenarioTest/TEST-com.wingedsheep.engine.scenarios.TriggerOrderingScenarioTest.xml",
+          "sha256": "c76a75a258e86a62edd41f1a0d8a2730bb81d14b20af13fca07d8b85ab53151f",
+          "class": "com.wingedsheep.engine.scenarios.TriggerOrderingScenarioTest",
+          "timestamp": "2026-09-26T20:04:11.001Z",
+          "cases": [
+            "putting life loss below life gain permits surviving at one life",
+            "the other legal ordering resolves life loss first and loses before the gain",
+            "invalid ordering choices fail without altering the game or consuming a trigger",
+            "ordering is preserved through serialization and two separate target decisions",
+            "active and nonactive controllers order their own groups in APNAP placement order",
+            "two copies of a card retain all four source identities and trigger payloads"
+          ],
+          "count": 6
+        },
+        {
+          "xml": "tests/TwoHeadedGiantCombatTest/TEST-com.wingedsheep.engine.multiplayer.TwoHeadedGiantCombatTest.xml",
+          "sha256": "dd91e081c71ec58e589885c0832d0318c86d63ab177e05bf503b51ae93ed3bba",
+          "class": "com.wingedsheep.engine.multiplayer.TwoHeadedGiantCombatTest",
+          "timestamp": "2026-09-26T20:03:09.595Z",
+          "cases": [
+            "a creature attacks the opposing team, never a teammate (CR 805.10b)",
+            "the combined attack may include creatures controlled by BOTH active-team members (CR 805.10b)",
+            "one declaration is the whole team's \u2014 the teammate may pass and can't add a second wave (CR 805.10b)",
+            "the whole nonactive team defends \u2014 even an un-attacked teammate is a defending player (CR 805.10a)",
+            "a defending creature may block an attacker aimed at its TEAMMATE (CR 805.10d)",
+            "a member of the attacking team cannot declare blockers (CR 805.10a)",
+            "the teammate's attackers survive a state-based-action pass (CR 805.10a / CR 506.4)",
+            "both defenders' blockers survive a state-based-action pass (CR 805.10d / CR 506.4)",
+            "an attacker stolen by the DEFENDING team is still removed from combat (CR 506.4)"
+          ],
+          "count": 9
+        },
+        {
+          "xml": "tests/TwoHeadedGiantSessionTest/TEST-com.wingedsheep.gameserver.session.TwoHeadedGiantSessionTest.xml",
+          "sha256": "ef3094efdf165ea558dee54dd41599e8328632125922d4f145981a65959a4bc8",
+          "class": "com.wingedsheep.gameserver.session.TwoHeadedGiantSessionTest",
+          "timestamp": "2026-09-26T20:07:30.647Z",
+          "cases": [
+            "seat roster carries each seat's team index, with teammates in adjacent seats (CR 805.1)",
+            "both heads of the surviving team are winners, not just the representative (CR 810.8a)",
+            "a teammate is not an opponent (CR 810): getOpponentIds returns only the other team",
+            "life totals are the shared team total for both teammates, not each raw component",
+            "a player sees their teammate's hand but not an opponent's (CR 810.2)",
+            "the seat roster carries the shared-turn flag, which the client needs to answer \"may I act?\"",
+            "a teammate is offered their OWN actions while their partner holds the baton (CR 805.5)",
+            "a Free-for-All pod stays one seat at a time \u2014 only the baton holder is offered actions",
+            "a revealed card in an opponent's hand still reaches the viewer, count and all",
+            "non-team game is unchanged: no team index, every other seat is an opponent"
+          ],
+          "count": 10
+        }
+      ]
+    },
+    {
+      "kind": "priority",
+      "artifact_id": 10914379670,
+      "run_id": 36267835155,
+      "original_zip": "priority-original-artifact.zip",
+      "bytes": 780357,
+      "sha256": "2743296b18a03dfb42f447d8dce05329ee0677d93cdce0c75ed1794226363e94",
+      "members": 60,
+      "stage_count": 27,
+      "actual_cases": 220,
+      "xml_suites": 27,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "suites": [
+        {
+          "xml": "tests/abundant-maw/TEST-com.wingedsheep.engine.scenarios.AbundantMawScenarioTest.xml",
+          "sha256": "89e745a05d87419dc98794cdc4e590920b79f40561f28eba777681ebe88bcc68",
+          "class": "com.wingedsheep.engine.scenarios.AbundantMawScenarioTest",
+          "timestamp": "2026-09-26T20:12:25.241Z",
+          "cases": [
+            "emerge cast drains the targeted opponent for 3 before the Leech resolves",
+            "the two amounts are independent \u2014 you gain 3 even if the opponent had less to lose"
+          ],
+          "count": 2
+        },
+        {
+          "xml": "tests/ai-decision-trace/TEST-com.wingedsheep.ai.engine.DecisionResponderCompletedBranchTest.xml",
+          "sha256": "37a52f6b7abc03d8f96f8497caf674b784ef7eeb58e7f24d251552d061d5b4ec",
+          "class": "com.wingedsheep.ai.engine.DecisionResponderCompletedBranchTest",
+          "timestamp": "2026-09-26T20:13:54.643Z",
+          "cases": [
+            "exact one singleton auto-completes without a follow-up decision",
+            "exact one empty result can produce a superior if-you-dont branch without a follow-up",
+            "exact one no-candidate no-payoff acceptance is outcome-equivalent to declining",
+            "genuine up-to-one branch chooses a beneficial legal singleton",
+            "genuine up-to-one branch preserves a superior beneficial empty selection",
+            "genuine up-to-one branch declines when harmful singleton and empty equals decline",
+            "genuine up-to-one branch preserves the superior singleton among multiple candidates"
+          ],
+          "count": 7
+        },
+        {
+          "xml": "tests/cast-sba/TEST-com.wingedsheep.engine.scenarios.CastPrioritySbaTest.xml",
+          "sha256": "1e1cdaca93d429ff030f36bcbae4bd8ab94de2c3e83cf86904fd4ee2ec1ab64f",
+          "class": "com.wingedsheep.engine.scenarios.CastPrioritySbaTest",
+          "timestamp": "2026-09-26T20:14:19.051Z",
+          "cases": [
+            "a real Phyrexian life payment settles SBAs before returning priority (life=2)",
+            "a real Phyrexian life payment settles SBAs before returning priority (life=3)",
+            "a caster who paid their last life never receives a cast-trigger target prompt",
+            "cost-sacrifice and subsequent zero-toughness death precede cast-trigger target selection",
+            "a nonactive cast trigger and active player's SBA death trigger form one APNAP batch",
+            "an opposing commander choice preserves the nonactive caster's priority and death trigger (answer)",
+            "an opposing commander choice preserves the nonactive caster's priority and death trigger (owner-leaves)",
+            "an opposing commander choice preserves the nonactive caster's priority and death trigger (third-party-leaves)",
+            "concession ending a game clears a pending commander question and both priority markers",
+            "the creature-type casting continuation cannot bypass the last-life SBA boundary",
+            "a nested modal life payment may recover within the same outer resolution before SBAs",
+            "an unaffordable life payment is rejected atomically and ordinary serialized states gain no field"
+          ],
+          "count": 12
+        },
+        {
+          "xml": "tests/circle-solace/TEST-com.wingedsheep.engine.scenarios.CircleOfSolaceTest.xml",
+          "sha256": "c3f8ca565f270d9e5dc62ae9707af273e88d88fdd1fc6ac4cd45ccbc8a302362",
+          "class": "com.wingedsheep.engine.scenarios.CircleOfSolaceTest",
+          "timestamp": "2026-09-26T20:10:55.260Z",
+          "cases": [
+            "prevents combat damage from creature of chosen type to controller",
+            "does not prevent damage from creature of different type",
+            "shield is consumed after preventing damage once",
+            "multiple activations prevent damage from multiple creatures"
+          ],
+          "count": 4
+        },
+        {
+          "xml": "tests/commander-choice/TEST-com.wingedsheep.engine.mechanics.sba.CommanderZoneChoiceCheckTest.xml",
+          "sha256": "988369c8060427bd64e56af2a0c3624c17656e36ee64be6cd995d81b6e5609da",
+          "class": "com.wingedsheep.engine.mechanics.sba.CommanderZoneChoiceCheckTest",
+          "timestamp": "2026-09-26T20:19:57.009Z",
+          "cases": [
+            "pauses with a YesNoDecision when a commander is in the graveyard",
+            "pauses for a commander in exile, hand, or library too",
+            "does not pause when the commander is in the command zone",
+            "does not pause when the commander is on the battlefield",
+            "does not pause when the asked marker is already attached",
+            "does not pause when alwaysDivertToCommand is enabled",
+            "does not pause when the format is not Commander",
+            "Team vs Team prompts when Commander rules are enabled",
+            "prompt text names both the commander and the source zone",
+            "multiple eligible commanders only produce one prompt per SBA pass",
+            "non-owner commander not asked about by this player's turn slot",
+            "commander with the asked marker is invisible to the SBA \u2014 no events, no pause",
+            "a non-commander legendary with the same name does not trigger the prompt",
+            "commander already on the stack is not prompted (CR 903.9 entry zones only)",
+            "commander entry is later 'forgotten' once the marker is stripped",
+            "a commander that's been registered but has no zone slot is skipped silently",
+            "owner with zero commanders does nothing"
+          ],
+          "count": 17
+        },
+        {
+          "xml": "tests/continuations/TEST-com.wingedsheep.engine.scenarios.ContinuationSystemTest.xml",
+          "sha256": "16b9bd3f4fc4a0774912ffd09c06d32eab7f23d78f2cbab2edfcbb332ffcc5bd",
+          "class": "com.wingedsheep.engine.scenarios.ContinuationSystemTest",
+          "timestamp": "2026-09-26T20:05:55.472Z",
+          "cases": [
+            "discard effect with choice pauses for player decision",
+            "submitting card selection resumes and discards selected cards",
+            "discard all cards when hand size is less than or equal to discard count",
+            "composite effect (draw then discard) handles pause correctly"
+          ],
+          "count": 4
+        },
+        {
+          "xml": "tests/death-trigger/TEST-com.wingedsheep.engine.scenarios.DeathTriggerTest.xml",
+          "sha256": "3d854c59095fffc6335b942bdf5dd956f71f69e26f139efec8ac73bde059c27f",
+          "class": "com.wingedsheep.engine.scenarios.DeathTriggerTest",
+          "timestamp": "2026-09-26T20:15:00.802Z",
+          "cases": [
+            "death trigger fires when creature is destroyed by lethal damage",
+            "filtered ANY-binding death trigger fires when source creature itself dies",
+            "token death trigger fires when token is destroyed by lethal damage",
+            "filtered death trigger fires for creature with toughness boosted by +1/+1 counter"
+          ],
+          "count": 4
+        },
+        {
+          "xml": "tests/flash-permission/TEST-com.wingedsheep.engine.scenarios.ConditionalFlashGrantTest.xml",
+          "sha256": "88e870125d703343ced0cae8d327fafdfdfe59dcfac84e354b0cfcb044507876",
+          "class": "com.wingedsheep.engine.scenarios.ConditionalFlashGrantTest",
+          "timestamp": "2026-09-26T20:08:22.915Z",
+          "cases": [
+            "a gated flash grant offers nothing while its condition is false",
+            "the grant switches on mid-turn the moment its condition becomes true",
+            "with the condition true the spell is both offered and actually castable",
+            "an open gate does not leak flash to spells outside the grant's filter",
+            "the gate reads the granter's controller's board, not the caster's",
+            "an enabler on the caster's side does not open someone else's gate",
+            "a stolen granter grants to its new controller, not to its owner",
+            "a phased-out granter grants nothing (CR 702.26b)",
+            "the permission goes away with the granter even while the condition still holds"
+          ],
+          "count": 9
+        },
+        {
+          "xml": "tests/krarks-thumb/TEST-com.wingedsheep.engine.scenarios.KrarksThumbScenarioTest.xml",
+          "sha256": "b5e8d3b6eefe66484dfa4c902c5718b042b3f75628e280a817f6bbdfa97e6c6e",
+          "class": "com.wingedsheep.engine.scenarios.KrarksThumbScenarioTest",
+          "timestamp": "2026-09-26T20:16:01.104Z",
+          "cases": [
+            "the Thumb turns the Gambit's first coin into two, and asks which one to keep",
+            "keeping the heads coin wins the flip, so the run continues",
+            "keeping the tails coin loses the flip, which ends the run with nothing",
+            "the won-flip tally survives both of the run's pauses and pays out all three tiers",
+            "a second Thumb flips four coins per flip and still leaves exactly one counting"
+          ],
+          "count": 5
+        },
+        {
+          "xml": "tests/free-cast/TEST-com.wingedsheep.engine.scenarios.GrantNextSpellFreeCastTest.xml",
+          "sha256": "3a9fdc0c4371720716873fc9e915c3fafaf20bdd079c03896272750f8960fc86",
+          "class": "com.wingedsheep.engine.scenarios.GrantNextSpellFreeCastTest",
+          "timestamp": "2026-09-26T20:17:13.233Z",
+          "cases": [
+            "the next spell can be cast without paying its mana cost, with the source in the graveyard",
+            "the rider is consumed by the next matching cast even when the free cast isn't taken",
+            "an unused rider is cleared at the start of the next turn",
+            "a creature-only rider ignores a noncreature spell and pays for the next creature spell",
+            "a rider-funded free cast doesn't burn a once-per-turn battlefield permission",
+            "the rider belongs to its controller: the opponent is neither offered it nor spends it",
+            "the enumerated free cast has no X \u2014 a free cast pays no mana cost, so X is 0 (CR 107.3b)",
+            "a free cast still pays a mandatory additional cost (CR 118.9 \u2014 only the mana cost is replaced)"
+          ],
+          "count": 8
+        },
+        {
+          "xml": "tests/leave-game/TEST-com.wingedsheep.engine.multiplayer.LeaveTheGameTest.xml",
+          "sha256": "2b8b09d48d759265568e2ffb34de4f84e5c75d212e62f21c9660ce68d31da1d0",
+          "class": "com.wingedsheep.engine.multiplayer.LeaveTheGameTest",
+          "timestamp": "2026-09-26T20:08:02.855Z",
+          "cases": [
+            "conceding in a four-player pod marks the player left and continues the game",
+            "conceding in a two-player game still ends the game with the other player winning",
+            "the leaver's owned objects leave the game (CR 800.4a)",
+            "a creature the leaver stole reverts to its owner (control effect ends, CR 800.4a)",
+            "a creature the leaver owns but another player controls leaves the game (CR 800.4a)",
+            "the leaver's spells and abilities on the stack cease to exist (CR 800.4a)",
+            "combat continues when the leaver's attacker is removed (its blocker stops blocking it)",
+            "attackers aimed at the leaver are removed from combat; the rest of the attack stands (CR 800.4e)",
+            "a player who has left the game is not a legal attack target (CR 800.4a)",
+            "a resolved spell's effect outlives its caster's departure (CR 611.2c) \u2014 only source-bound durations end (CR 800.4a)",
+            "a departed player's 'until your next turn' effect lasts until that turn would have begun (CR 800.4m)",
+            "priority held by the leaver passes to the next player still in the game (CR 800.4a)",
+            "the active player conceding hands the turn forward without stalling",
+            "conceding while owning the pending decision abandons it instead of deadlocking the table (CR 800.4f\u2013h)",
+            "a pending decision addressed to another player survives the leaver's departure",
+            "the abandoned decision's priority skips an active player who has also left"
+          ],
+          "count": 16
+        },
+        {
+          "xml": "tests/legacy-serialization/TEST-com.wingedsheep.engine.state.LegacySuspensionMigrationTest.xml",
+          "sha256": "13e622d0f6528313d363243de9fe676e65b77d641e4e4200a69de8cd47e1a910",
+          "class": "com.wingedsheep.engine.state.LegacySuspensionMigrationTest",
+          "timestamp": "2026-09-26T20:09:44.429Z",
+          "cases": [
+            "legacy nested-may loads without allocation and resumes the captured response trace",
+            "legacy repeat-while loads without allocation and resumes the captured response trace",
+            "legacy suspended-mana-window loads without allocation and resumes the captured response trace",
+            "legacy free-cast-target loads without allocation and resumes the captured response trace",
+            "default-omitting parent cycling snapshot loads and completes its deferred draw",
+            "legacy active answer still requires its response identity",
+            "legacy mana reopen still requires its saved association identity",
+            "legacy repeat decision becomes an answer carrying an automatic loop",
+            "legacy hidden payment question is paired inside its reopen frame",
+            "legacy combat question is retained once and the duplicate answer shape is removed",
+            "legacy combat answer cannot silently replace a different represented question",
+            "legacy active question with a mismatched top answer fails explicitly",
+            "legacy active question without an answer fails explicitly",
+            "legacy unanswered frame without any represented question fails explicitly",
+            "legacy active question cannot skip automatic work to find an answer",
+            "legacy mana reopen cannot claim a different lower answer",
+            "legacy mana reopen requires its saved question",
+            "legacy repeat with an unknown phase fails explicitly",
+            "legacy migration does not silently ignore unrelated unknown payload fields"
+          ],
+          "count": 19
+        },
+        {
+          "xml": "tests/legacy-traces/TEST-com.wingedsheep.engine.state.SuspensionTraceTest.xml",
+          "sha256": "c4f4045336dc13b6be6cf6b9878021af6d225a241040617f8d3e60ef65caeaba",
+          "class": "com.wingedsheep.engine.state.SuspensionTraceTest",
+          "timestamp": "2026-09-26T20:09:03.672Z",
+          "cases": [
+            "current nested-may suspension reproduces the captured parent response trace",
+            "current repeat-while suspension reproduces the captured parent response trace",
+            "current suspended-mana-window suspension reproduces the captured parent response trace",
+            "current free-cast-target suspension reproduces the captured parent response trace",
+            "current cycling suspension reproduces the captured parent deferred draw and events"
+          ],
+          "count": 5
+        },
+        {
+          "xml": "tests/legend-rule/TEST-com.wingedsheep.engine.scenarios.LegendRuleTest.xml",
+          "sha256": "a2c49b8a12a14e81e17c07555a91adbe52a556c40841e379b055fd8566c7db68",
+          "class": "com.wingedsheep.engine.scenarios.LegendRuleTest",
+          "timestamp": "2026-09-26T20:07:19.132Z",
+          "cases": [
+            "legend rule asks player to choose which legendary to keep",
+            "legend rule lets player keep the older legendary",
+            "legend rule does not trigger for different legendary names",
+            "legend rule only affects the same player"
+          ],
+          "count": 4
+        },
+        {
+          "xml": "tests/mauler/TEST-com.wingedsheep.engine.scenarios.TaureanMaulerScenarioTest.xml",
+          "sha256": "ee86939459ab0c21c31c02b14ad50095aa1d388081177392c6327d6e8c6c9d10",
+          "class": "com.wingedsheep.engine.scenarios.TaureanMaulerScenarioTest",
+          "timestamp": "2026-09-26T20:13:09.735Z",
+          "cases": [
+            "opponent casts a spell: a +1/+1 counter is added (2/2 -> 3/3)",
+            "a second opponent spell grows it again (3/3 -> 4/4)",
+            "your own spell does not trigger it (stays 2/2)"
+          ],
+          "count": 3
+        },
+        {
+          "xml": "tests/modal-cost/TEST-com.wingedsheep.engine.scenarios.ModalPerModeAdditionalCostTest.xml",
+          "sha256": "e412134d0391d68f7d08f37a74848e46a11d5f5b186c571b8fe466c2dbf7b3be",
+          "class": "com.wingedsheep.engine.scenarios.ModalPerModeAdditionalCostTest",
+          "timestamp": "2026-09-26T20:17:55.253Z",
+          "cases": [
+            "H1 \u2014 picking the {1}-cost mode drains one extra colorless from the pool",
+            "H1 \u2014 mode 1 cannot be cast without the additional {1}",
+            "H2 \u2014 mode with SacrificePermanent additional cost forces the creature into the graveyard",
+            "H3 \u2014 Spree-style: choosing two modes stacks their additionalManaCosts",
+            "H3 \u2014 with stacked costs unpayable, cast fails",
+            "Escalate \u2014 the first chosen mode adds no mana cost",
+            "Escalate \u2014 its cost is paid once for each mode beyond the first",
+            "Escalate \u2014 a second mode is illegal when its one escalate payment is unaffordable"
+          ],
+          "count": 8
+        },
+        {
+          "xml": "tests/modal-cost-enumeration/TEST-com.wingedsheep.engine.legalactions.CastSpellEnumeratorModalAdditionalCostTest.xml",
+          "sha256": "4ac419986eda926a334f4063d5da089357f5549fba698d054030d65dff325bb4",
+          "class": "com.wingedsheep.engine.legalactions.CastSpellEnumeratorModalAdditionalCostTest",
+          "timestamp": "2026-09-26T20:18:34.887Z",
+          "cases": [
+            "E3 \u2014 mode with unpayable additionalManaCost is flagged unavailable; others stay available",
+            "E3 \u2014 when enough Islands are in play, the {5}{U} mode becomes available"
+          ],
+          "count": 2
+        },
+        {
+          "xml": "tests/ordinary-cleanup/TEST-com.wingedsheep.engine.scenarios.CleanupHandSizeDiscardDamageRemovalTest.xml",
+          "sha256": "fca11e42ee2ec90119e63e15f0dd412f230b6047c775f3881899d6bf522db8b5",
+          "class": "com.wingedsheep.engine.scenarios.CleanupHandSizeDiscardDamageRemovalTest",
+          "timestamp": "2026-09-26T20:06:37.258Z",
+          "cases": [
+            "deathtouch damage is cleared at cleanup despite a hand-size discard \u2014 creature survives next turn",
+            "ordinary marked damage is removed at cleanup even when a hand-size discard interrupts the step"
+          ],
+          "count": 2
+        },
+        {
+          "xml": "tests/priority/TEST-com.wingedsheep.engine.scenarios.StackResolutionPriorityTest.xml",
+          "sha256": "1eba73b32ef63566988e5906cdb28a3744ecaefd6224e13ef7d6287ddfd2b381",
+          "class": "com.wingedsheep.engine.scenarios.StackResolutionPriorityTest",
+          "timestamp": "2026-09-26T20:04:23.315Z",
+          "cases": [
+            "an opposing Bolt resolves before the active player legally casts Divination",
+            "an opposing activated response returns priority to the active player with another spell still on stack",
+            "resolution-trigger target selection belongs to its controller but priority returns to the active player",
+            "an opposing discard decision survives serialization and cannot seize the next priority window",
+            "an opposing legend-rule decision completes before the active player receives priority",
+            "four-player tax answer from a third seat returns to the active player (pay=false)",
+            "four-player tax answer from a third seat returns to the active player (pay=true)",
+            "a four-player cast-time modal decision retains the caster's priority instead of resetting to active",
+            "a cleanup-window resolution choice restores active priority without advancing or losing another spell",
+            "a nested modal cast completes the outer tail and preserves each trigger batch once (cancel=false)",
+            "a nested modal cast completes the outer tail and preserves each trigger batch once (cancel=true)",
+            "a departed active player is skipped after an opposing spell resolves",
+            "a departing decision owner clears the abandoned resolution boundary",
+            "ending the turn clears the resolution boundary before the next step's priority",
+            "a terminal resolution clears its boundary and grants no further priority",
+            "the false marker is absent from ordinary serialized states even with defaults enabled",
+            "a rejected malformed stack resolution cannot publish a marker or mutate the attempted pass"
+          ],
+          "count": 17
+        },
+        {
+          "xml": "tests/prismari/TEST-com.wingedsheep.engine.scenarios.PrismariTheInspirationScenarioTest.xml",
+          "sha256": "65bf5e6c24fb8bf89ce82a245fcb47657c9d7c2c7242509ab1f74e5eb407e048",
+          "class": "com.wingedsheep.engine.scenarios.PrismariTheInspirationScenarioTest",
+          "timestamp": "2026-09-26T20:16:48.808Z",
+          "cases": [
+            "instant cast with Prismari in play gets a storm trigger with copyCount = spells cast before it",
+            "two Prismaris produce two separate storm triggers (CR 702.40b)",
+            "without Prismari, an instant produces no storm trigger"
+          ],
+          "count": 3
+        },
+        {
+          "xml": "tests/reveal-cost/TEST-com.wingedsheep.engine.scenarios.RevealFromHandAdditionalCostTest.xml",
+          "sha256": "c1530af02173f83191381a27f3c8ca01c8513dbd40d2ee9c1c93044fb3826e49",
+          "class": "com.wingedsheep.engine.scenarios.RevealFromHandAdditionalCostTest",
+          "timestamp": "2026-09-26T20:19:15.870Z",
+          "cases": [
+            "both the reveal path and the pay path are enumerated when the hand has an Elf and mana for either",
+            "CR 701.20b \u2014 the revealed Elf stays in hand and can still be cast afterwards",
+            "the pay path costs {3} more and reveals nothing",
+            "with no Elf in hand only the pay path is offered, and the spell is still castable",
+            "CR 701.4a \u2014 an Elf on the battlefield is not an Elf card in hand and cannot pay the reveal",
+            "a Kindred noncreature Elf card pays it \u2014 the filter is 'an Elf card', not 'an Elf creature card'",
+            "a non-Elf card in hand is rejected as the reveal",
+            "the cost is offered with its own picker when the hand holds a matching card",
+            "the spell is uncastable with nothing to reveal \u2014 a mandatory cost fails closed",
+            "the spell can't pay the cost with itself"
+          ],
+          "count": 10
+        },
+        {
+          "xml": "tests/scarecrow/TEST-com.wingedsheep.engine.scenarios.ScarecrowScenarioTest.xml",
+          "sha256": "686c305e935cedd9e6c6913c918505305c760dd9518dbed40a4bdffa46842dc9",
+          "class": "com.wingedsheep.engine.scenarios.ScarecrowScenarioTest",
+          "timestamp": "2026-09-26T20:11:50.770Z",
+          "cases": [
+            "a flying attacker deals you no combat damage",
+            "a non-flying attacker still hits you for full",
+            "a non-creature source is unaffected",
+            "your own creatures are not protected \u2014 only you"
+          ],
+          "count": 4
+        },
+        {
+          "xml": "tests/spell-queller/TEST-com.wingedsheep.engine.scenarios.SpellQuellerScenarioTest.xml",
+          "sha256": "a4238d6ead5a88604d89bfdc6d7eec1293958fec0df3fb9cb51956e8c1734f90",
+          "class": "com.wingedsheep.engine.scenarios.SpellQuellerScenarioTest",
+          "timestamp": "2026-09-26T20:12:47.607Z",
+          "cases": [
+            "ETB exiles the target spell and links it to the Queller",
+            "when the Queller leaves, the exiled card's owner may cast it for free",
+            "the owner may decline, and the card stays exiled",
+            "a Queller that exiled nothing does nothing when it leaves"
+          ],
+          "count": 4
+        },
+        {
+          "xml": "tests/stack-war/TEST-com.wingedsheep.engine.scenarios.StackWarTest.xml",
+          "sha256": "5f96483208c1903d2514b0e37e2cbb3791c8f97a74917143c10a867f04fb5059",
+          "class": "com.wingedsheep.engine.scenarios.StackWarTest",
+          "timestamp": "2026-09-26T20:05:14.001Z",
+          "cases": [
+            "stack is empty at start of game",
+            "casting a spell puts it on the stack",
+            "priority passes after casting a spell",
+            "passing priority with empty stack advances the game",
+            "cannot cast spell without priority",
+            "passing priority to opponent",
+            "both players passing resolves top of stack",
+            "stack resolution order is LIFO",
+            "instant can be cast in response",
+            "sorcery cannot be cast in response",
+            "countered spell goes to graveyard",
+            "can respond to opponent's spell",
+            "after resolving top of stack, active player gets priority",
+            "spell targeting a spell on the stack",
+            "multiple spells on stack resolve in order"
+          ],
+          "count": 15
+        },
+        {
+          "xml": "tests/team-loss/TEST-com.wingedsheep.engine.multiplayer.TwoHeadedGiantTeamLossTest.xml",
+          "sha256": "e75e106b06f3b262e816fc8f9eaa7b040eceacb316b79992c91d884a4b642be5",
+          "class": "com.wingedsheep.engine.multiplayer.TwoHeadedGiantTeamLossTest",
+          "timestamp": "2026-09-26T20:20:03.178Z",
+          "cases": [
+            "a team at 0 shared life loses; the opposing team wins together (CR 810.8a/c)",
+            "conceding makes the whole team lose (CR 810.8b)",
+            "one teammate decking out loses the team, and the game-end reason is the real cause",
+            "poison is pooled by the team and the team loses at 15, not 10 (CR 810.8d / 810.10)",
+            "a team with 10 combined poison does NOT lose under the 15 threshold",
+            "a can't-lose grant on either teammate protects the whole team (CR 810.8a)",
+            "'you don't lose for having 0 or less life' on either head protects the whole team (CR 810.8a example)",
+            "'you win the game' wins for your whole team and defeats only opposing teams (CR 810.8a)",
+            "the game does not end while both teams still have a player standing",
+            "non-team game is unchanged: a player at 0 loses alone and poison threshold stays 10"
+          ],
+          "count": 10
+        },
+        {
+          "xml": "tests/team-priority/TEST-com.wingedsheep.engine.multiplayer.TwoHeadedGiantTeamPriorityTest.xml",
+          "sha256": "9f9ebd52a2d71a314e41a29a7dfdc5271647cf857ab2afccc6a3951967618090",
+          "class": "com.wingedsheep.engine.multiplayer.TwoHeadedGiantTeamPriorityTest",
+          "timestamp": "2026-09-26T20:08:13.005Z",
+          "cases": [
+            "hasPriority admits the baton holder's whole team, and nobody else (CR 805.5)",
+            "a free-for-all pod is untouched: priority is still one seat",
+            "Team vs. Team takes individual turns (CR 808.4), so priority stays individual too",
+            "a teammate may respond to their partner's spell while it is still on the stack",
+            "an opposing player still cannot act on the active team's priority",
+            "the chain: partner acts at sorcery speed without the baton making a lap (CR 805.5a)",
+            "an out-of-order action re-arms the whole team: every seat still gets its own window",
+            "the baton skips seats that already passed this round",
+            "a teammate who already passed this round can't pass again until someone acts",
+            "nextUnpassedPriorityAfter is plain getNextPlayer while nobody has passed",
+            "a teammate's cast is a real spell of theirs, not of the baton holder",
+            "priorityTeam is empty when nobody holds priority"
+          ],
+          "count": 12
+        },
+        {
+          "xml": "tests/team-versus-team/TEST-com.wingedsheep.engine.multiplayer.TeamVsTeamTest.xml",
+          "sha256": "8de94b8ac7e644cd2eb398b7ba17bf569f91d775e21c4d32d1a97ca269bb785c",
+          "class": "com.wingedsheep.engine.multiplayer.TeamVsTeamTest",
+          "timestamp": "2026-09-26T20:20:42.672Z",
+          "cases": [
+            "a randomly chosen first team starts with the seat left of its midpoint, and turn order wraps the table (CR 808.4)",
+            "each player has their own life total; damaging one teammate doesn't touch the other (CR 808.5)",
+            "teammates have distinct life owners (no canonical pooling)",
+            "a player at 0 life loses ALONE; the teammate plays on and the game continues (CR 104.3b)",
+            "a team loses only once ALL its members are out; the other team wins together (CR 104.2c)",
+            "conceding eliminates only the conceding player; the teammate fights on (no 810.8a propagation)",
+            "a can't-lose grant protects only its controller, not the whole team (CR 808 / normal 104)",
+            "poison is per-player at threshold 10; one poisoned player loses alone",
+            "poison does NOT pool across the team \u2014 8 + 7 = 15 kills no one (each is below 10)",
+            "opponents exclude teammates; teammates are recognised",
+            "turn ownership is individual: only the active player owns the turn; a teammate does not",
+            "each player draws on their own turn; no first-turn draw skip in a 4-player game (CR 103.8c)",
+            "the turn passes to the next individual player, not skipping the whole team",
+            "only the directly-attacked player defends; a teammate is not pulled in as a defender"
+          ],
+          "count": 14
+        }
+      ]
+    }
+  ],
+  "source_binding": {
+    "inherited_pin_count": 365,
+    "new_binding_count": 5,
+    "total": 370,
+    "method": "All 365 independently reviewed predecessor pin values and exact Git blob identities remain unchanged; five newly bound dependency/snapshot files were fetched at the exact current source and their SHA256 and Git blob SHA1 were recomputed. This audit preserves that compositional scope.",
+    "record": "source-comparison.json"
+  },
+  "full_ci": {
+    "run": 36267861794,
+    "event": "pull_request",
+    "attempt": 1,
+    "conclusion": "failure",
+    "tested_merge": "1e0610615788b0386aca9cd76a9d0578b822e3be",
+    "tested_tree": "f92cdeaed8be104d98b1a971347cd9c2f089f779",
+    "artifact_count": 0,
+    "jobs": [
+      {
+        "id": 108475872274,
+        "name": "frontend",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 108475872383,
+        "name": "test (tools)",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 108475872421,
+        "name": "test (content)",
+        "status": "completed",
+        "conclusion": "failure"
+      },
+      {
+        "id": 108475872430,
+        "name": "test (scenarios-2025-26)",
+        "status": "completed",
+        "conclusion": "failure"
+      },
+      {
+        "id": 108475872456,
+        "name": "test (server)",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 108475872472,
+        "name": "test (engine)",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 108475872539,
+        "name": "test (scenarios-2023-24)",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 108475872554,
+        "name": "test (scenarios-old)",
+        "status": "completed",
+        "conclusion": "failure"
+      },
+      {
+        "id": 108475872830,
+        "name": "coverage",
+        "status": "completed",
+        "conclusion": "skipped"
+      },
+      {
+        "id": 108477151101,
+        "name": "backend",
+        "status": "completed",
+        "conclusion": "failure"
+      }
+    ],
+    "complete_failed_test_job_logs": [
+      {
+        "job": 108475872421,
+        "kind": "complete connector-decoded UTF-8 job log; original GitHub ZIP was not supplied",
+        "path": "ci-job-108475872421.txt.gz",
+        "decoded_bytes": 312609,
+        "decoded_sha256": "7c45758e57cf1418aaa3d7c4e1063446cdbf5b3aba781afcd12a4a92509a768a",
+        "gzip_bytes": 68071,
+        "gzip_sha256": "89785d9bff5f8eb0024200005cc468aadf3c71f3fda1dd158c63f597332206a1",
+        "observed_failure_lines": [
+          "2026-09-26T20:03:32.0838113Z FrozenBaselineTest > LEGACY_V0 plays the frozen baseline game exactly as it always has FAILED"
+        ]
+      },
+      {
+        "job": 108475872430,
+        "kind": "complete connector-decoded UTF-8 job log; original GitHub ZIP was not supplied",
+        "path": "ci-job-108475872430.txt.gz",
+        "decoded_bytes": 574919,
+        "decoded_sha256": "f3b74641b3ff57e3c93fb1b0f9cb0f193e1404e7cbe0c7011e1f05da105aa250",
+        "gzip_bytes": 134125,
+        "gzip_sha256": "e57c45b96ca0f4a0c6b81fd24a299f98905228997e50a942f728fc59b53e1c1e",
+        "observed_failure_lines": [
+          "2026-09-26T20:03:42.3894106Z DalkovanEncampmentScenarioTest > Dalkovan Encampment whenever-you-attack token ability > the tokens are sacrificed at the next end step FAILED"
+        ]
+      },
+      {
+        "job": 108475872554,
+        "kind": "complete connector-decoded UTF-8 job log; original GitHub ZIP was not supplied",
+        "path": "ci-job-108475872554.txt.gz",
+        "decoded_bytes": 591361,
+        "decoded_sha256": "f5574da54f72e497bba47d7ac4492fbbbe5ff1afae28434fa88fa7ee37a55000",
+        "gzip_bytes": 133721,
+        "gzip_sha256": "30f5b1ca9217e972d6e9ace9d115ad9f96b6b29498b4d2d2f920099d409bb5f1",
+        "observed_failure_lines": [
+          "2026-09-26T20:03:59.1641526Z ArcaneDenialScenarioTest > on the next turn's upkeep target controller may draw 0 to 2 and Denial caster draws one FAILED",
+          "2026-09-26T20:04:26.8411551Z MnemonicWallScenarioTest > ETB may return a targeted instant from your graveyard FAILED",
+          "2026-09-26T20:04:26.8581738Z MnemonicWallScenarioTest > ETB may be declined without returning the targeted card FAILED"
+        ]
+      }
+    ]
+  },
+  "remaining_receiving_failures": [
+    "FrozenBaselineTest LEGACY_V0 action-stream assertion",
+    "DalkovanEncampmentScenarioTest empty defender declaration error assertion",
+    "ArcaneDenialScenarioTest next-upkeep decision expectation",
+    "MnemonicWallScenarioTest both optional ETB decision expectations"
+  ],
+  "diagnosis_limits": [
+    "No raw XML was uploaded by generic full CI; the retained logs identify five failing cases across four classes but do not reveal the baseline hash or complete assertion clues.",
+    "The four scenario failures across three classes may reflect explicit trigger/order fixture compatibility, but no correction is accepted or claimed without source diagnosis and fresh tests.",
+    "The frozen baseline is unchanged; no donor hash or convenient reblessing is permitted by this audit."
+  ],
+  "historical_limits_preserved": [
+    "Original Vines pre-authoring probe timing gap",
+    "All prior compiler, ancestry, priority and source qualification failures",
+    "No blanket modal partial-target qualification",
+    "No full-pair actor, pilot, replay, runtime or gameplay acceptance"
+  ],
+  "official": {
+    "generated_seeds_latest_record": 12,
+    "consumed_seeds_latest_record": 0,
+    "initialized_games_latest_record": 0,
+    "completed_games_latest_record": 0,
+    "outcomes_exposed_latest_record": 0,
+    "games_executed_in_this_audit": 0,
+    "outcomes_exposed_in_this_audit": 0,
+    "deck_changes": 0,
+    "scope": "Latest accepted bootstrap/Forge and source-bound component receipts remain zero. This audit neither reads the concealed vector nor opens the dormant engine adapter; no experiment outcome was produced."
+  },
+  "admission": {
+    "component_source_accepted": false,
+    "gameplay_permit": false,
+    "positions_2_through_12_authorized": false,
+    "github_approval_claimed": false
+  }
+}
