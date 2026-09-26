@@ -1,0 +1,4248 @@
+{
+  "schema": "sphinx-full-ci-prior-identity-comparisons-v1",
+  "qualified999_original": {
+    "run": 36273602269,
+    "artifact": 10916917146,
+    "sha256": "1894feb1549e9f9a5ede3ff710635772e5f392b7c4a93b8bcdf9a1019ab6da1c",
+    "remote_evidence_commit": "e564979de6357f0cc62efa51695c73955ac485e8"
+  },
+  "qualified999_cases": [
+    [
+      "com.wingedsheep.ai.engine.DecisionResponderCompletedBranchTest",
+      "exact one empty result can produce a superior if-you-dont branch without a follow-up"
+    ],
+    [
+      "com.wingedsheep.ai.engine.DecisionResponderCompletedBranchTest",
+      "exact one no-candidate no-payoff acceptance is outcome-equivalent to declining"
+    ],
+    [
+      "com.wingedsheep.ai.engine.DecisionResponderCompletedBranchTest",
+      "exact one singleton auto-completes without a follow-up decision"
+    ],
+    [
+      "com.wingedsheep.ai.engine.DecisionResponderCompletedBranchTest",
+      "genuine up-to-one branch chooses a beneficial legal singleton"
+    ],
+    [
+      "com.wingedsheep.ai.engine.DecisionResponderCompletedBranchTest",
+      "genuine up-to-one branch declines when harmful singleton and empty equals decline"
+    ],
+    [
+      "com.wingedsheep.ai.engine.DecisionResponderCompletedBranchTest",
+      "genuine up-to-one branch preserves a superior beneficial empty selection"
+    ],
+    [
+      "com.wingedsheep.ai.engine.DecisionResponderCompletedBranchTest",
+      "genuine up-to-one branch preserves the superior singleton among multiple candidates"
+    ],
+    [
+      "com.wingedsheep.engine.event.EntryChoiceEventProvenanceTest",
+      "EP01 a real as-enters token publishes its entry and resolves exactly one self ETB trigger"
+    ],
+    [
+      "com.wingedsheep.engine.event.EntryChoiceEventProvenanceTest",
+      "EP02 entry-time observer survives its automatic-tail removal and the distinct leave trigger is not suppressed"
+    ],
+    [
+      "com.wingedsheep.engine.event.EntryChoiceEventProvenanceTest",
+      "EP03 serialized pending token tail and repeated answers preserve exact entry records, state and two ETB effects"
+    ],
+    [
+      "com.wingedsheep.engine.event.EntryChoiceEventProvenanceTest",
+      "EP04 serialized provenance skips only the marked occurrence and preserves identical unmarked occurrences"
+    ],
+    [
+      "com.wingedsheep.engine.handlers.PredicateEvaluatorRecordTest",
+      "And: all sub-predicates must match"
+    ],
+    [
+      "com.wingedsheep.engine.handlers.PredicateEvaluatorRecordTest",
+      "CardPredicate.Or matches when any inner predicate matches (OR)"
+    ],
+    [
+      "com.wingedsheep.engine.handlers.PredicateEvaluatorRecordTest",
+      "Colorless, Monocolored, Multicolored"
+    ],
+    [
+      "com.wingedsheep.engine.handlers.PredicateEvaluatorRecordTest",
+      "HasBasicLandType treats the landType string as a subtype"
+    ],
+    [
+      "com.wingedsheep.engine.handlers.PredicateEvaluatorRecordTest",
+      "HasColor and NotColor inspect the recorded color set"
+    ],
+    [
+      "com.wingedsheep.engine.handlers.PredicateEvaluatorRecordTest",
+      "HasSubtype / NotSubtype / HasAnyOfSubtypes"
+    ],
+    [
+      "com.wingedsheep.engine.handlers.PredicateEvaluatorRecordTest",
+      "Not inverts the wrapped predicate"
+    ],
+    [
+      "com.wingedsheep.engine.handlers.PredicateEvaluatorRecordTest",
+      "Or: any sub-predicate matches"
+    ],
+    [
+      "com.wingedsheep.engine.handlers.PredicateEvaluatorRecordTest",
+      "conjunction (AND) requires every predicate to match"
+    ],
+    [
+      "com.wingedsheep.engine.handlers.PredicateEvaluatorRecordTest",
+      "empty predicate list matches anything"
+    ],
+    [
+      "com.wingedsheep.engine.handlers.PredicateEvaluatorRecordTest",
+      "equals / at-most / at-least"
+    ],
+    [
+      "com.wingedsheep.engine.handlers.PredicateEvaluatorRecordTest",
+      "face-down cast records never match any non-empty filter"
+    ],
+    [
+      "com.wingedsheep.engine.handlers.PredicateEvaluatorRecordTest",
+      "legendary predicates read the supertype set"
+    ],
+    [
+      "com.wingedsheep.engine.handlers.PredicateEvaluatorRecordTest",
+      "name / keyword / ability predicates return false"
+    ],
+    [
+      "com.wingedsheep.engine.handlers.PredicateEvaluatorRecordTest",
+      "negation predicates"
+    ],
+    [
+      "com.wingedsheep.engine.handlers.PredicateEvaluatorRecordTest",
+      "positive type matches"
+    ],
+    [
+      "com.wingedsheep.engine.handlers.PredicateEvaluatorRecordTest",
+      "power / toughness predicates all return false"
+    ],
+    [
+      "com.wingedsheep.engine.handlers.PredicateEvaluatorRecordTest",
+      "source-relative and context predicates return false"
+    ],
+    [
+      "com.wingedsheep.engine.handlers.PredicateEvaluatorRecordTest",
+      "token predicates: spells are never tokens"
+    ],
+    [
+      "com.wingedsheep.engine.handlers.effects.token.AttackingTokenDefenderChoiceTest",
+      "TD01 land attack trigger creates two tokens attacking the sole opponent, never its controller"
+    ],
+    [
+      "com.wingedsheep.engine.handlers.effects.token.AttackingTokenDefenderChoiceTest",
+      "TD02 multiple opponents require a separate controller choice for every not-yet-created token"
+    ],
+    [
+      "com.wingedsheep.engine.handlers.effects.token.AttackingTokenDefenderChoiceTest",
+      "TD03 public planeswalkers and protected battles are nontargeting defender choices"
+    ],
+    [
+      "com.wingedsheep.engine.handlers.effects.token.AttackingTokenDefenderChoiceTest",
+      "TD04 attack-left and attack-right preserve the legal neighboring seat"
+    ],
+    [
+      "com.wingedsheep.engine.handlers.effects.token.AttackingTokenDefenderChoiceTest",
+      "TD05 recipient fanout suspends once, retains all token collections and does not make nonactive players attack"
+    ],
+    [
+      "com.wingedsheep.engine.handlers.effects.token.AttackingTokenDefenderChoiceTest",
+      "TD06 doubled plain batch freezes four defender choices and four delayed riders across serialization"
+    ],
+    [
+      "com.wingedsheep.engine.handlers.effects.token.AttackingTokenDefenderChoiceTest",
+      "TD07 target-copy batch uses the same once-only count replacement and selected defenders"
+    ],
+    [
+      "com.wingedsheep.engine.handlers.effects.token.AttackingTokenDefenderChoiceTest",
+      "TD08 noncreature target copies enter tapped without attacking or asking for a defender"
+    ],
+    [
+      "com.wingedsheep.engine.handlers.effects.token.AttackingTokenDefenderChoiceTest",
+      "TD09 wrong actor and malformed defender submissions preserve the exact pending state"
+    ],
+    [
+      "com.wingedsheep.engine.handlers.effects.token.AttackingTokenDefenderChoiceTest",
+      "TD10 serialized pending choice and identical answer replay preserve state and events exactly"
+    ],
+    [
+      "com.wingedsheep.engine.handlers.effects.token.AttackingTokenDefenderChoiceTest",
+      "TD11 copy as-enters choices retain chosen defender tail, token collection, entry events and delayed riders"
+    ],
+    [
+      "com.wingedsheep.engine.handlers.effects.token.AttackingTokenDefenderChoiceTest",
+      "TD12 declining token replacement keeps the prepared count and actual recipient across the next choice"
+    ],
+    [
+      "com.wingedsheep.engine.handlers.effects.token.AttackingTokenDefenderChoiceTest",
+      "TD13 accepting replacement preserves attacking state, actual recipient, collection and delayed riders"
+    ],
+    [
+      "com.wingedsheep.engine.handlers.effects.token.AttackingTokenDefenderChoiceTest",
+      "TD14 active teammate chooses its own legal defenders while declaration restrictions do not prevent entry"
+    ],
+    [
+      "com.wingedsheep.engine.handlers.effects.zones.MoveSourceAndExactCardsExecutorTest",
+      "a resolving source popped from visible stack still qualifies through logical STACK identity"
+    ],
+    [
+      "com.wingedsheep.engine.handlers.effects.zones.MoveSourceAndExactCardsExecutorTest",
+      "duplicate exact-count response is fail-closed and moves nothing"
+    ],
+    [
+      "com.wingedsheep.engine.handlers.effects.zones.MoveSourceAndExactCardsExecutorTest",
+      "exact count atomically moves source plus all required cards and emits ordinary zone changes"
+    ],
+    [
+      "com.wingedsheep.engine.handlers.effects.zones.MoveSourceAndExactCardsExecutorTest",
+      "excess candidates requires an exact four-card choice"
+    ],
+    [
+      "com.wingedsheep.engine.handlers.effects.zones.MoveSourceAndExactCardsExecutorTest",
+      "insufficient additional cards moves nothing and publishes no success collection"
+    ],
+    [
+      "com.wingedsheep.engine.handlers.effects.zones.MoveSourceAndExactCardsExecutorTest",
+      "malformed short response is fail-closed and moves nothing"
+    ],
+    [
+      "com.wingedsheep.engine.handlers.effects.zones.MoveSourceAndExactCardsExecutorTest",
+      "selected card leaving the required zone before the response invalidates the whole transaction"
+    ],
+    [
+      "com.wingedsheep.engine.handlers.effects.zones.MoveSourceAndExactCardsExecutorTest",
+      "selected card that no longer matches the filter invalidates the whole transaction"
+    ],
+    [
+      "com.wingedsheep.engine.handlers.effects.zones.MoveSourceAndExactCardsExecutorTest",
+      "source leaving its required zone before the response invalidates the whole transaction"
+    ],
+    [
+      "com.wingedsheep.engine.handlers.effects.zones.MoveSourceAndExactCardsExecutorTest",
+      "successful resumed choice publishes its collection into a pre-pushed gated-action frame"
+    ],
+    [
+      "com.wingedsheep.engine.handlers.effects.zones.MoveToZoneEffectExecutorTest",
+      "battlefield components are cleaned up when leaving battlefield"
+    ],
+    [
+      "com.wingedsheep.engine.handlers.effects.zones.MoveToZoneEffectExecutorTest",
+      "byDestruction = true destroys the permanent"
+    ],
+    [
+      "com.wingedsheep.engine.handlers.effects.zones.MoveToZoneEffectExecutorTest",
+      "byDestruction = true on indestructible creature is a no-op"
+    ],
+    [
+      "com.wingedsheep.engine.handlers.effects.zones.MoveToZoneEffectExecutorTest",
+      "move from battlefield to exile"
+    ],
+    [
+      "com.wingedsheep.engine.handlers.effects.zones.MoveToZoneEffectExecutorTest",
+      "move from battlefield to graveyard (default)"
+    ],
+    [
+      "com.wingedsheep.engine.handlers.effects.zones.MoveToZoneEffectExecutorTest",
+      "move from battlefield to hand (bounce)"
+    ],
+    [
+      "com.wingedsheep.engine.handlers.effects.zones.MoveToZoneEffectExecutorTest",
+      "move to battlefield tapped"
+    ],
+    [
+      "com.wingedsheep.engine.handlers.effects.zones.MoveToZoneEffectExecutorTest",
+      "move to library bottom"
+    ],
+    [
+      "com.wingedsheep.engine.handlers.effects.zones.MoveToZoneEffectExecutorTest",
+      "move to library shuffled emits LibraryShuffledEvent"
+    ],
+    [
+      "com.wingedsheep.engine.handlers.effects.zones.MoveToZoneEffectExecutorTest",
+      "move to library top"
+    ],
+    [
+      "com.wingedsheep.engine.hygiene.SerializationPolymorphicRegistrationTest",
+      "every Component implementation is polymorphically registered"
+    ],
+    [
+      "com.wingedsheep.engine.hygiene.SerializationPolymorphicRegistrationTest",
+      "every sealed AnswerContinuation subclass is polymorphically registered"
+    ],
+    [
+      "com.wingedsheep.engine.hygiene.SerializationPolymorphicRegistrationTest",
+      "every sealed AutomaticContinuation subclass is polymorphically registered"
+    ],
+    [
+      "com.wingedsheep.engine.hygiene.SerializationPolymorphicRegistrationTest",
+      "every sealed ContinuationFrame subclass is polymorphically registered"
+    ],
+    [
+      "com.wingedsheep.engine.hygiene.SerializationPolymorphicRegistrationTest",
+      "every sealed DecisionResponse subclass is polymorphically registered"
+    ],
+    [
+      "com.wingedsheep.engine.hygiene.SerializationPolymorphicRegistrationTest",
+      "every sealed GameAction subclass is polymorphically registered"
+    ],
+    [
+      "com.wingedsheep.engine.hygiene.SerializationPolymorphicRegistrationTest",
+      "every sealed GameEvent subclass is polymorphically registered"
+    ],
+    [
+      "com.wingedsheep.engine.hygiene.SerializationPolymorphicRegistrationTest",
+      "every sealed PendingDecision subclass is polymorphically registered"
+    ],
+    [
+      "com.wingedsheep.engine.legalactions.CastSpellEnumeratorModalAdditionalCostTest",
+      "E3 \u2014 mode with unpayable additionalManaCost is flagged unavailable; others stay available"
+    ],
+    [
+      "com.wingedsheep.engine.legalactions.CastSpellEnumeratorModalAdditionalCostTest",
+      "E3 \u2014 when enough Islands are in play, the {5}{U} mode becomes available"
+    ],
+    [
+      "com.wingedsheep.engine.mechanics.sba.CommanderZoneChoiceCheckTest",
+      "Team vs Team prompts when Commander rules are enabled"
+    ],
+    [
+      "com.wingedsheep.engine.mechanics.sba.CommanderZoneChoiceCheckTest",
+      "a commander that's been registered but has no zone slot is skipped silently"
+    ],
+    [
+      "com.wingedsheep.engine.mechanics.sba.CommanderZoneChoiceCheckTest",
+      "a non-commander legendary with the same name does not trigger the prompt"
+    ],
+    [
+      "com.wingedsheep.engine.mechanics.sba.CommanderZoneChoiceCheckTest",
+      "commander already on the stack is not prompted (CR 903.9 entry zones only)"
+    ],
+    [
+      "com.wingedsheep.engine.mechanics.sba.CommanderZoneChoiceCheckTest",
+      "commander entry is later 'forgotten' once the marker is stripped"
+    ],
+    [
+      "com.wingedsheep.engine.mechanics.sba.CommanderZoneChoiceCheckTest",
+      "commander with the asked marker is invisible to the SBA \u2014 no events, no pause"
+    ],
+    [
+      "com.wingedsheep.engine.mechanics.sba.CommanderZoneChoiceCheckTest",
+      "does not pause when alwaysDivertToCommand is enabled"
+    ],
+    [
+      "com.wingedsheep.engine.mechanics.sba.CommanderZoneChoiceCheckTest",
+      "does not pause when the asked marker is already attached"
+    ],
+    [
+      "com.wingedsheep.engine.mechanics.sba.CommanderZoneChoiceCheckTest",
+      "does not pause when the commander is in the command zone"
+    ],
+    [
+      "com.wingedsheep.engine.mechanics.sba.CommanderZoneChoiceCheckTest",
+      "does not pause when the commander is on the battlefield"
+    ],
+    [
+      "com.wingedsheep.engine.mechanics.sba.CommanderZoneChoiceCheckTest",
+      "does not pause when the format is not Commander"
+    ],
+    [
+      "com.wingedsheep.engine.mechanics.sba.CommanderZoneChoiceCheckTest",
+      "multiple eligible commanders only produce one prompt per SBA pass"
+    ],
+    [
+      "com.wingedsheep.engine.mechanics.sba.CommanderZoneChoiceCheckTest",
+      "non-owner commander not asked about by this player's turn slot"
+    ],
+    [
+      "com.wingedsheep.engine.mechanics.sba.CommanderZoneChoiceCheckTest",
+      "owner with zero commanders does nothing"
+    ],
+    [
+      "com.wingedsheep.engine.mechanics.sba.CommanderZoneChoiceCheckTest",
+      "pauses for a commander in exile, hand, or library too"
+    ],
+    [
+      "com.wingedsheep.engine.mechanics.sba.CommanderZoneChoiceCheckTest",
+      "pauses with a YesNoDecision when a commander is in the graveyard"
+    ],
+    [
+      "com.wingedsheep.engine.mechanics.sba.CommanderZoneChoiceCheckTest",
+      "prompt text names both the commander and the source zone"
+    ],
+    [
+      "com.wingedsheep.engine.multiplayer.LeaveTheGameTest",
+      "a creature the leaver owns but another player controls leaves the game (CR 800.4a)"
+    ],
+    [
+      "com.wingedsheep.engine.multiplayer.LeaveTheGameTest",
+      "a creature the leaver stole reverts to its owner (control effect ends, CR 800.4a)"
+    ],
+    [
+      "com.wingedsheep.engine.multiplayer.LeaveTheGameTest",
+      "a departed player's 'until your next turn' effect lasts until that turn would have begun (CR 800.4m)"
+    ],
+    [
+      "com.wingedsheep.engine.multiplayer.LeaveTheGameTest",
+      "a pending decision addressed to another player survives the leaver's departure"
+    ],
+    [
+      "com.wingedsheep.engine.multiplayer.LeaveTheGameTest",
+      "a player who has left the game is not a legal attack target (CR 800.4a)"
+    ],
+    [
+      "com.wingedsheep.engine.multiplayer.LeaveTheGameTest",
+      "a resolved spell's effect outlives its caster's departure (CR 611.2c) \u2014 only source-bound durations end (CR 800.4a)"
+    ],
+    [
+      "com.wingedsheep.engine.multiplayer.LeaveTheGameTest",
+      "attackers aimed at the leaver are removed from combat; the rest of the attack stands (CR 800.4e)"
+    ],
+    [
+      "com.wingedsheep.engine.multiplayer.LeaveTheGameTest",
+      "combat continues when the leaver's attacker is removed (its blocker stops blocking it)"
+    ],
+    [
+      "com.wingedsheep.engine.multiplayer.LeaveTheGameTest",
+      "conceding in a four-player pod marks the player left and continues the game"
+    ],
+    [
+      "com.wingedsheep.engine.multiplayer.LeaveTheGameTest",
+      "conceding in a two-player game still ends the game with the other player winning"
+    ],
+    [
+      "com.wingedsheep.engine.multiplayer.LeaveTheGameTest",
+      "conceding while owning the pending decision abandons it instead of deadlocking the table (CR 800.4f\u2013h)"
+    ],
+    [
+      "com.wingedsheep.engine.multiplayer.LeaveTheGameTest",
+      "priority held by the leaver passes to the next player still in the game (CR 800.4a)"
+    ],
+    [
+      "com.wingedsheep.engine.multiplayer.LeaveTheGameTest",
+      "the abandoned decision's priority skips an active player who has also left"
+    ],
+    [
+      "com.wingedsheep.engine.multiplayer.LeaveTheGameTest",
+      "the active player conceding hands the turn forward without stalling"
+    ],
+    [
+      "com.wingedsheep.engine.multiplayer.LeaveTheGameTest",
+      "the leaver's owned objects leave the game (CR 800.4a)"
+    ],
+    [
+      "com.wingedsheep.engine.multiplayer.LeaveTheGameTest",
+      "the leaver's spells and abilities on the stack cease to exist (CR 800.4a)"
+    ],
+    [
+      "com.wingedsheep.engine.multiplayer.MultiDefenderCombatTest",
+      "CombatDefenders reports the right defending players in APNAP order"
+    ],
+    [
+      "com.wingedsheep.engine.multiplayer.MultiDefenderCombatTest",
+      "a defender can only block an attacker that is attacking them (CR 509.1b)"
+    ],
+    [
+      "com.wingedsheep.engine.multiplayer.MultiDefenderCombatTest",
+      "both defenders declare blockers (APNAP) and damage lands on the right players"
+    ],
+    [
+      "com.wingedsheep.engine.multiplayer.MultiDefenderCombatTest",
+      "no seat gets a priority window between two defenders' block declarations (CR 802.4)"
+    ],
+    [
+      "com.wingedsheep.engine.multiplayer.TeamVsTeamTest",
+      "a can't-lose grant protects only its controller, not the whole team (CR 808 / normal 104)"
+    ],
+    [
+      "com.wingedsheep.engine.multiplayer.TeamVsTeamTest",
+      "a player at 0 life loses ALONE; the teammate plays on and the game continues (CR 104.3b)"
+    ],
+    [
+      "com.wingedsheep.engine.multiplayer.TeamVsTeamTest",
+      "a randomly chosen first team starts with the seat left of its midpoint, and turn order wraps the table (CR 808.4)"
+    ],
+    [
+      "com.wingedsheep.engine.multiplayer.TeamVsTeamTest",
+      "a team loses only once ALL its members are out; the other team wins together (CR 104.2c)"
+    ],
+    [
+      "com.wingedsheep.engine.multiplayer.TeamVsTeamTest",
+      "conceding eliminates only the conceding player; the teammate fights on (no 810.8a propagation)"
+    ],
+    [
+      "com.wingedsheep.engine.multiplayer.TeamVsTeamTest",
+      "each player draws on their own turn; no first-turn draw skip in a 4-player game (CR 103.8c)"
+    ],
+    [
+      "com.wingedsheep.engine.multiplayer.TeamVsTeamTest",
+      "each player has their own life total; damaging one teammate doesn't touch the other (CR 808.5)"
+    ],
+    [
+      "com.wingedsheep.engine.multiplayer.TeamVsTeamTest",
+      "only the directly-attacked player defends; a teammate is not pulled in as a defender"
+    ],
+    [
+      "com.wingedsheep.engine.multiplayer.TeamVsTeamTest",
+      "opponents exclude teammates; teammates are recognised"
+    ],
+    [
+      "com.wingedsheep.engine.multiplayer.TeamVsTeamTest",
+      "poison does NOT pool across the team \u2014 8 + 7 = 15 kills no one (each is below 10)"
+    ],
+    [
+      "com.wingedsheep.engine.multiplayer.TeamVsTeamTest",
+      "poison is per-player at threshold 10; one poisoned player loses alone"
+    ],
+    [
+      "com.wingedsheep.engine.multiplayer.TeamVsTeamTest",
+      "teammates have distinct life owners (no canonical pooling)"
+    ],
+    [
+      "com.wingedsheep.engine.multiplayer.TeamVsTeamTest",
+      "the turn passes to the next individual player, not skipping the whole team"
+    ],
+    [
+      "com.wingedsheep.engine.multiplayer.TeamVsTeamTest",
+      "turn ownership is individual: only the active player owns the turn; a teammate does not"
+    ],
+    [
+      "com.wingedsheep.engine.multiplayer.TwoHeadedGiantCombatTest",
+      "a creature attacks the opposing team, never a teammate (CR 805.10b)"
+    ],
+    [
+      "com.wingedsheep.engine.multiplayer.TwoHeadedGiantCombatTest",
+      "a defending creature may block an attacker aimed at its TEAMMATE (CR 805.10d)"
+    ],
+    [
+      "com.wingedsheep.engine.multiplayer.TwoHeadedGiantCombatTest",
+      "a member of the attacking team cannot declare blockers (CR 805.10a)"
+    ],
+    [
+      "com.wingedsheep.engine.multiplayer.TwoHeadedGiantCombatTest",
+      "an attacker stolen by the DEFENDING team is still removed from combat (CR 506.4)"
+    ],
+    [
+      "com.wingedsheep.engine.multiplayer.TwoHeadedGiantCombatTest",
+      "both defenders' blockers survive a state-based-action pass (CR 805.10d / CR 506.4)"
+    ],
+    [
+      "com.wingedsheep.engine.multiplayer.TwoHeadedGiantCombatTest",
+      "one declaration is the whole team's \u2014 the teammate may pass and can't add a second wave (CR 805.10b)"
+    ],
+    [
+      "com.wingedsheep.engine.multiplayer.TwoHeadedGiantCombatTest",
+      "the combined attack may include creatures controlled by BOTH active-team members (CR 805.10b)"
+    ],
+    [
+      "com.wingedsheep.engine.multiplayer.TwoHeadedGiantCombatTest",
+      "the teammate's attackers survive a state-based-action pass (CR 805.10a / CR 506.4)"
+    ],
+    [
+      "com.wingedsheep.engine.multiplayer.TwoHeadedGiantCombatTest",
+      "the whole nonactive team defends \u2014 even an un-attacked teammate is a defending player (CR 805.10a)"
+    ],
+    [
+      "com.wingedsheep.engine.multiplayer.TwoHeadedGiantTeamLossTest",
+      "'you don't lose for having 0 or less life' on either head protects the whole team (CR 810.8a example)"
+    ],
+    [
+      "com.wingedsheep.engine.multiplayer.TwoHeadedGiantTeamLossTest",
+      "'you win the game' wins for your whole team and defeats only opposing teams (CR 810.8a)"
+    ],
+    [
+      "com.wingedsheep.engine.multiplayer.TwoHeadedGiantTeamLossTest",
+      "a can't-lose grant on either teammate protects the whole team (CR 810.8a)"
+    ],
+    [
+      "com.wingedsheep.engine.multiplayer.TwoHeadedGiantTeamLossTest",
+      "a team at 0 shared life loses; the opposing team wins together (CR 810.8a/c)"
+    ],
+    [
+      "com.wingedsheep.engine.multiplayer.TwoHeadedGiantTeamLossTest",
+      "a team with 10 combined poison does NOT lose under the 15 threshold"
+    ],
+    [
+      "com.wingedsheep.engine.multiplayer.TwoHeadedGiantTeamLossTest",
+      "conceding makes the whole team lose (CR 810.8b)"
+    ],
+    [
+      "com.wingedsheep.engine.multiplayer.TwoHeadedGiantTeamLossTest",
+      "non-team game is unchanged: a player at 0 loses alone and poison threshold stays 10"
+    ],
+    [
+      "com.wingedsheep.engine.multiplayer.TwoHeadedGiantTeamLossTest",
+      "one teammate decking out loses the team, and the game-end reason is the real cause"
+    ],
+    [
+      "com.wingedsheep.engine.multiplayer.TwoHeadedGiantTeamLossTest",
+      "poison is pooled by the team and the team loses at 15, not 10 (CR 810.8d / 810.10)"
+    ],
+    [
+      "com.wingedsheep.engine.multiplayer.TwoHeadedGiantTeamLossTest",
+      "the game does not end while both teams still have a player standing"
+    ],
+    [
+      "com.wingedsheep.engine.multiplayer.TwoHeadedGiantTeamPriorityTest",
+      "Team vs. Team takes individual turns (CR 808.4), so priority stays individual too"
+    ],
+    [
+      "com.wingedsheep.engine.multiplayer.TwoHeadedGiantTeamPriorityTest",
+      "a free-for-all pod is untouched: priority is still one seat"
+    ],
+    [
+      "com.wingedsheep.engine.multiplayer.TwoHeadedGiantTeamPriorityTest",
+      "a teammate may respond to their partner's spell while it is still on the stack"
+    ],
+    [
+      "com.wingedsheep.engine.multiplayer.TwoHeadedGiantTeamPriorityTest",
+      "a teammate who already passed this round can't pass again until someone acts"
+    ],
+    [
+      "com.wingedsheep.engine.multiplayer.TwoHeadedGiantTeamPriorityTest",
+      "a teammate's cast is a real spell of theirs, not of the baton holder"
+    ],
+    [
+      "com.wingedsheep.engine.multiplayer.TwoHeadedGiantTeamPriorityTest",
+      "an opposing player still cannot act on the active team's priority"
+    ],
+    [
+      "com.wingedsheep.engine.multiplayer.TwoHeadedGiantTeamPriorityTest",
+      "an out-of-order action re-arms the whole team: every seat still gets its own window"
+    ],
+    [
+      "com.wingedsheep.engine.multiplayer.TwoHeadedGiantTeamPriorityTest",
+      "hasPriority admits the baton holder's whole team, and nobody else (CR 805.5)"
+    ],
+    [
+      "com.wingedsheep.engine.multiplayer.TwoHeadedGiantTeamPriorityTest",
+      "nextUnpassedPriorityAfter is plain getNextPlayer while nobody has passed"
+    ],
+    [
+      "com.wingedsheep.engine.multiplayer.TwoHeadedGiantTeamPriorityTest",
+      "priorityTeam is empty when nobody holds priority"
+    ],
+    [
+      "com.wingedsheep.engine.multiplayer.TwoHeadedGiantTeamPriorityTest",
+      "the baton skips seats that already passed this round"
+    ],
+    [
+      "com.wingedsheep.engine.multiplayer.TwoHeadedGiantTeamPriorityTest",
+      "the chain: partner acts at sorcery speed without the baton making a lap (CR 805.5a)"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.AbundantMawScenarioTest",
+      "emerge cast drains the targeted opponent for 3 before the Leech resolves"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.AbundantMawScenarioTest",
+      "the two amounts are independent \u2014 you gain 3 even if the opponent had less to lose"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.ActivationPriorityScenarioTest",
+      "Ferocity's cost-death return waits above the activated ability after Aura cleanup"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.ActivationPriorityScenarioTest",
+      "SBA death occurs before choosing targets for a cost-triggered ability"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.ActivationPriorityScenarioTest",
+      "Spawn activation inside ward payment does not run SBA until the outer payment completes"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.ActivationPriorityScenarioTest",
+      "Treasure color-choice pause completes its mana effect before SBA and restores activator priority"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.ActivationPriorityScenarioTest",
+      "cost and SBA deaths join one APNAP batch above a nonactive player's activation"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.ActivationPriorityScenarioTest",
+      "nonactive activation removes its sacrificed token before returning priority"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.ActivationPriorityScenarioTest",
+      "paying the last life loses before an activated life gain can resolve"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.ActivationPriorityScenarioTest",
+      "standalone Spawn mana removes the token before nonactive player receives priority"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.ActivationPriorityScenarioTest",
+      "standalone Treasure with explicit color settles token cleanup before priority"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.BandingTrampleDrainScenarioTest",
+      "banded trampler may drain its full 2 to the player when a non-trample band-mate covers lethal"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.BatchMayQuestionTest",
+      "a single optional trigger chooses its target before offering yes or no"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.BatchMayQuestionTest",
+      "declining both effects still requires both triggers to resolve"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.BatchMayQuestionTest",
+      "each targeted trigger asks at its own resolution and both may be accepted"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.BatchMayQuestionTest",
+      "identical triggers retain independent resolution choices"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.BatchMayQuestionTest",
+      "may does not make a required target optional"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.BatchMayQuestionTest",
+      "removing the chosen target in response causes a fizzle without a may decision"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.BatchMayQuestionTest",
+      "two optional triggers choose targets before either consent decision"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.CastObserverSourceLkiTest",
+      "cast observer keeps its own source history seat 1 player target false survives false"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.CastObserverSourceLkiTest",
+      "cast observer keeps its own source history seat 1 player target false survives true"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.CastObserverSourceLkiTest",
+      "cast observer keeps its own source history seat 1 player target true survives false"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.CastObserverSourceLkiTest",
+      "cast observer keeps its own source history seat 1 player target true survives true"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.CastObserverSourceLkiTest",
+      "cast observer keeps its own source history seat 2 player target false survives false"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.CastObserverSourceLkiTest",
+      "cast observer keeps its own source history seat 2 player target false survives true"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.CastObserverSourceLkiTest",
+      "cast observer keeps its own source history seat 2 player target true survives false"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.CastObserverSourceLkiTest",
+      "cast observer keeps its own source history seat 2 player target true survives true"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.CastPrioritySbaTest",
+      "a caster who paid their last life never receives a cast-trigger target prompt"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.CastPrioritySbaTest",
+      "a nested modal life payment may recover within the same outer resolution before SBAs"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.CastPrioritySbaTest",
+      "a nonactive cast trigger and active player's SBA death trigger form one APNAP batch"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.CastPrioritySbaTest",
+      "a real Phyrexian life payment settles SBAs before returning priority (life=2)"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.CastPrioritySbaTest",
+      "a real Phyrexian life payment settles SBAs before returning priority (life=3)"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.CastPrioritySbaTest",
+      "an opposing commander choice preserves the nonactive caster's priority and death trigger (answer)"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.CastPrioritySbaTest",
+      "an opposing commander choice preserves the nonactive caster's priority and death trigger (owner-leaves)"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.CastPrioritySbaTest",
+      "an opposing commander choice preserves the nonactive caster's priority and death trigger (third-party-leaves)"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.CastPrioritySbaTest",
+      "an unaffordable life payment is rejected atomically and ordinary serialized states gain no field"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.CastPrioritySbaTest",
+      "concession ending a game clears a pending commander question and both priority markers"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.CastPrioritySbaTest",
+      "cost-sacrifice and subsequent zero-toughness death precede cast-trigger target selection"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.CastPrioritySbaTest",
+      "the creature-type casting continuation cannot bypass the last-life SBA boundary"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.CircleOfSolaceTest",
+      "does not prevent damage from creature of different type"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.CircleOfSolaceTest",
+      "multiple activations prevent damage from multiple creatures"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.CircleOfSolaceTest",
+      "prevents combat damage from creature of chosen type to controller"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.CircleOfSolaceTest",
+      "shield is consumed after preventing damage once"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.CleanupHandSizeDiscardDamageRemovalTest",
+      "deathtouch damage is cleared at cleanup despite a hand-size discard \u2014 creature survives next turn"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.CleanupHandSizeDiscardDamageRemovalTest",
+      "ordinary marked damage is removed at cleanup even when a hand-size discard interrupts the step"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.CombatAssignmentCurrentRulesTest",
+      "a blocked source with no remaining recipients assigns zero and cannot invent targets"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.CombatAssignmentCurrentRulesTest",
+      "all damage may be assigned to one creature even beyond lethal"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.CombatAssignmentCurrentRulesTest",
+      "attacker freely divides four damage as two each among three-toughness blockers"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.CombatAssignmentCurrentRulesTest",
+      "banding changes the chooser while preserving the same free nonlethal division"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.CombatAssignmentCurrentRulesTest",
+      "blocker freely divides four damage as two each among three-toughness attackers"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.CombatAssignmentCurrentRulesTest",
+      "board underassignment overassignment and negative assignments reject atomically"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.CombatAssignmentCurrentRulesTest",
+      "changed nonowned unknown and duplicate edges reject while unchanged full-board echoes remain valid"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.CombatAssignmentCurrentRulesTest",
+      "deathtouch trample assigns one lethal damage per blocker and the remainder to the defender"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.CombatAssignmentCurrentRulesTest",
+      "legacy underassignment overassignment and negative amounts reject atomically"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.CombatAssignmentCurrentRulesTest",
+      "marked and concurrent lethal damage permit trample and preserve the other chooser's plan"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.CombatAssignmentCurrentRulesTest",
+      "serialized legacy assignment accepts a nonlethal split without imposing target order"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.CombatAssignmentCurrentRulesTest",
+      "trample cannot assign to the defender before every blocker has lethal damage"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.CombatDamageAssignmentTest",
+      "Daunting Defender - default assignment accounts for prevention and kills Cleric"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.CombatDamageAssignmentTest",
+      "Daunting Defender - player assigns minimum (toughness only) and Cleric survives"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.CombatDamageAssignmentTest",
+      "auto-resolve uses default assignments for trample"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.CombatDamageAssignmentTest",
+      "deathtouch + trample assigns 1 damage per blocker, rest to player"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.CombatDamageAssignmentTest",
+      "deathtouch 1/1 kills larger creature via 704.5h"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.CombatDamageAssignmentTest",
+      "multiple blockers: board defaults to lethal-first order then drains"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.CombatDamageAssignmentTest",
+      "single blocker without trample - no decision needed, auto-assigned"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.CombatDamageAssignmentTest",
+      "trample creature with custom damage assignment - all to blocker"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.CombatDamageAssignmentTest",
+      "trample creature with single blocker presents a damage board with a drain edge"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.CombatResolutionBoardTest",
+      "banded trampler cannot drain damage to player while the blocker is below band-lethal"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.CombatResolutionBoardTest",
+      "banding attacker: BLOCKER_TO_ATTACKER edges have minimum=0 (lethal-first bypassed)"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.CombatResolutionBoardTest",
+      "banding overassignment: 3-attacker band cooperates to kill two 3/3 blockers"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.CombatResolutionBoardTest",
+      "bipartite crusher between two manually-assigned attackers emits BLOCKER_TO_ATTACKER edges"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.CombatResolutionBoardTest",
+      "non-trample attacker with power < blocker lethal: defaults validate cleanly"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.CombatResolutionBoardTest",
+      "non-trample attacker with single blocker does not emit a resolution decision"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.CombatResolutionBoardTest",
+      "pure bipartite (no trample, no banding) still emits a CombatResolutionDecision"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.CombatResolutionBoardTest",
+      "trample attacker blocked by two creatures emits a CombatResolutionDecision with a drain edge"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.CombatResolutionBoardTest",
+      "two 8/4 tramplers double-blocked: defender concentrates damage and kills one attacker"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.CombatResolutionBoardTest",
+      "two 8/4 tramplers double-blocked: emits two-step CR 510.1c flow with defender second"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.ConditionalFlashGrantTest",
+      "a gated flash grant offers nothing while its condition is false"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.ConditionalFlashGrantTest",
+      "a phased-out granter grants nothing (CR 702.26b)"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.ConditionalFlashGrantTest",
+      "a stolen granter grants to its new controller, not to its owner"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.ConditionalFlashGrantTest",
+      "an enabler on the caster's side does not open someone else's gate"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.ConditionalFlashGrantTest",
+      "an open gate does not leak flash to spells outside the grant's filter"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.ConditionalFlashGrantTest",
+      "the gate reads the granter's controller's board, not the caster's"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.ConditionalFlashGrantTest",
+      "the grant switches on mid-turn the moment its condition becomes true"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.ConditionalFlashGrantTest",
+      "the permission goes away with the granter even while the condition still holds"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.ConditionalFlashGrantTest",
+      "with the condition true the spell is both offered and actually castable"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.ContinuationSystemTest",
+      "composite effect (draw then discard) handles pause correctly"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.ContinuationSystemTest",
+      "discard all cards when hand size is less than or equal to discard count"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.ContinuationSystemTest",
+      "discard effect with choice pauses for player decision"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.ContinuationSystemTest",
+      "submitting card selection resumes and discards selected cards"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.DalkovanEncampmentScenarioTest",
+      "activating the ability then attacking creates two tapped, attacking Warrior tokens"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.DalkovanEncampmentScenarioTest",
+      "the tokens are sacrificed at the next end step"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.DamageSourceIdentityScenarioTest",
+      "a live original source gains effective damage keywords after activation"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.DamageSourceIdentityScenarioTest",
+      "a live original source uses its new projected controller and color"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.DamageSourceIdentityScenarioTest",
+      "departed source uses final controller color and keywords after serialization; token=false"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.DamageSourceIdentityScenarioTest",
+      "departed source uses final controller color and keywords after serialization; token=true"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.DamageSourceIdentityScenarioTest",
+      "old damage does not borrow deathtouch or lifelink newly granted to the returned source"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.DamageSourceTriggerScenarioTest",
+      "a dies trigger retains source damage characteristics before token cleanup; token=false"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.DamageSourceTriggerScenarioTest",
+      "a dies trigger retains source damage characteristics before token cleanup; token=true"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.DamageSourceTriggerScenarioTest",
+      "a triggered ability already on the stack gains departure LKI when its source later dies"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.DamageSourceTriggerScenarioTest",
+      "generic sacrifice cost retains a token source before its ability enters the stack"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.DamageSourceTriggerScenarioTest",
+      "missing required source snapshot fails visibly instead of a silent damage result"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.DamageSourceTriggerScenarioTest",
+      "old source damage triggers the matching observer but not a returned object's own ability"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.DeathTriggerTest",
+      "death trigger fires when creature is destroyed by lethal damage"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.DeathTriggerTest",
+      "filtered ANY-binding death trigger fires when source creature itself dies"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.DeathTriggerTest",
+      "filtered death trigger fires for creature with toughness boosted by +1/+1 counter"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.DeathTriggerTest",
+      "token death trigger fires when token is destroyed by lethal damage"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.DeclareBlockersPriorityWindowTest",
+      "active player gets a priority window in declare blockers before combat damage"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.DeclareBlockersPriorityWindowTest",
+      "attacker's combat trick is an affordable, targetable legal action at the declare-blockers window"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.DeclareBlockersPriorityWindowTest",
+      "combat trick is detectable in the two-blockers-block-two-attackers board shape"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.GoliathSphinxScenarioTest",
+      "a ground creature cannot block Goliath's flying attack"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.GoliathSphinxScenarioTest",
+      "hardcast Goliath enters with summoning sickness"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.GoliathSphinxScenarioTest",
+      "unblocked Goliath deals eight combat damage"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.GrantNextSpellFreeCastTest",
+      "a creature-only rider ignores a noncreature spell and pays for the next creature spell"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.GrantNextSpellFreeCastTest",
+      "a free cast still pays a mandatory additional cost (CR 118.9 \u2014 only the mana cost is replaced)"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.GrantNextSpellFreeCastTest",
+      "a rider-funded free cast doesn't burn a once-per-turn battlefield permission"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.GrantNextSpellFreeCastTest",
+      "an unused rider is cleared at the start of the next turn"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.GrantNextSpellFreeCastTest",
+      "the enumerated free cast has no X \u2014 a free cast pays no mana cost, so X is 0 (CR 107.3b)"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.GrantNextSpellFreeCastTest",
+      "the next spell can be cast without paying its mana cost, with the source in the graveyard"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.GrantNextSpellFreeCastTest",
+      "the rider belongs to its controller: the opponent is neither offered it nor spends it"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.GrantNextSpellFreeCastTest",
+      "the rider is consumed by the next matching cast even when the free cast isn't taken"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.KrarksThumbScenarioTest",
+      "a second Thumb flips four coins per flip and still leaves exactly one counting"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.KrarksThumbScenarioTest",
+      "keeping the heads coin wins the flip, so the run continues"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.KrarksThumbScenarioTest",
+      "keeping the tails coin loses the flip, which ends the run with nothing"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.KrarksThumbScenarioTest",
+      "the Thumb turns the Gambit's first coin into two, and asks which one to keep"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.KrarksThumbScenarioTest",
+      "the won-flip tally survives both of the run's pauses and pays out all three tiers"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.LegendRuleTest",
+      "legend rule asks player to choose which legendary to keep"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.LegendRuleTest",
+      "legend rule does not trigger for different legendary names"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.LegendRuleTest",
+      "legend rule lets player keep the older legendary"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.LegendRuleTest",
+      "legend rule only affects the same player"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.ManaAbilityColorChoicePipelineTest",
+      "Damping Sphere replaces the two mana with one {C}"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.ManaAbilityColorChoicePipelineTest",
+      "a mirror bonus and its rider both resolve"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.ManaAbilityColorChoicePipelineTest",
+      "an attached 'additional mana on tap' aura fires"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.ManaAbilityColorChoicePipelineTest",
+      "the land-tapped-for-mana event is still emitted"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.ModalPerModeAdditionalCostTest",
+      "Escalate \u2014 a second mode is illegal when its one escalate payment is unaffordable"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.ModalPerModeAdditionalCostTest",
+      "Escalate \u2014 its cost is paid once for each mode beyond the first"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.ModalPerModeAdditionalCostTest",
+      "Escalate \u2014 the first chosen mode adds no mana cost"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.ModalPerModeAdditionalCostTest",
+      "H1 \u2014 mode 1 cannot be cast without the additional {1}"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.ModalPerModeAdditionalCostTest",
+      "H1 \u2014 picking the {1}-cost mode drains one extra colorless from the pool"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.ModalPerModeAdditionalCostTest",
+      "H2 \u2014 mode with SacrificePermanent additional cost forces the creature into the graveyard"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.ModalPerModeAdditionalCostTest",
+      "H3 \u2014 Spree-style: choosing two modes stacks their additionalManaCosts"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.ModalPerModeAdditionalCostTest",
+      "H3 \u2014 with stacked costs unpayable, cast fails"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.NestedManaPaymentBoundaryScenarioTest",
+      "seat 1 declined outer payment retains the already paid death trigger"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.NestedManaPaymentBoundaryScenarioTest",
+      "seat 1 deferred death target is chosen only after payment and lethal toughness SBA"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.NestedManaPaymentBoundaryScenarioTest",
+      "seat 1 illegal interrupt during nested sacrifice is atomic and does not pay a cost"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.NestedManaPaymentBoundaryScenarioTest",
+      "seat 1 mana color pause preserves cost events and defers the draw"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.NestedManaPaymentBoundaryScenarioTest",
+      "seat 1 nested sacrifice choice restores the same payment without priority"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.NestedManaPaymentBoundaryScenarioTest",
+      "seat 1 preselected sacrifice defers its death trigger exactly once"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.NestedManaPaymentBoundaryScenarioTest",
+      "seat 2 declined outer payment retains the already paid death trigger"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.NestedManaPaymentBoundaryScenarioTest",
+      "seat 2 deferred death target is chosen only after payment and lethal toughness SBA"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.NestedManaPaymentBoundaryScenarioTest",
+      "seat 2 illegal interrupt during nested sacrifice is atomic and does not pay a cost"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.NestedManaPaymentBoundaryScenarioTest",
+      "seat 2 mana color pause preserves cost events and defers the draw"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.NestedManaPaymentBoundaryScenarioTest",
+      "seat 2 nested sacrifice choice restores the same payment without priority"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.NestedManaPaymentBoundaryScenarioTest",
+      "seat 2 preselected sacrifice defers its death trigger exactly once"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.PostBlockDeclarationPriorityScenarioTest",
+      "PB01 empty final declaration gives active seat 1 first priority"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.PostBlockDeclarationPriorityScenarioTest",
+      "PB02 empty final declaration gives active seat 2 first priority"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.PostBlockDeclarationPriorityScenarioTest",
+      "PB03 actual blocks give active seat 1 an immediate combat trick"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.PostBlockDeclarationPriorityScenarioTest",
+      "PB04 actual blocks give active seat 2 an immediate combat trick"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.PostBlockDeclarationPriorityScenarioTest",
+      "PB05 a targeted block trigger preserves active priority across serialized target choice"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.PostBlockDeclarationPriorityScenarioTest",
+      "PB06 simultaneous block triggers keep ordering and targets before active priority"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.PostBlockDeclarationPriorityScenarioTest",
+      "PB07 paid block tax restores active priority after a serialized mana selection"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.PostBlockDeclarationPriorityScenarioTest",
+      "PB08 declining a block tax preserves declaration duty and grants no priority"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.PostBlockDeclarationPriorityScenarioTest",
+      "PB09 nested block-tax mana pays before SBA and targeted death-trigger placement"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.PostBlockDeclarationPriorityScenarioTest",
+      "PB10 multiple defenders have only an APNAP declaration baton before active priority"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.PostBlockDeclarationPriorityScenarioTest",
+      "PB11 first defender's target choice waits until every block declaration is complete"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.PostBlockDeclarationPriorityScenarioTest",
+      "PB12 multiple defenders' block triggers wait through paid tax then stack in APNAP order"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.PostBlockDeclarationPriorityScenarioTest",
+      "PB13 a queued block-trigger token retains exact departure LKI through later payment and cleanup"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.PostBlockDeclarationPriorityScenarioTest",
+      "PB14 a final defender's concession abandons tax but preserves the prior defender's trigger"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.PostBlockDeclarationPriorityScenarioTest",
+      "PB15 owner concession preserves a remaining controller's queued source LKI without early placement"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.PostBlockDeclarationPriorityScenarioTest",
+      "PB16 concession during two-player block payment clears the actual waiting batch at game end"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.PrismariTheInspirationScenarioTest",
+      "instant cast with Prismari in play gets a storm trigger with copyCount = spells cast before it"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.PrismariTheInspirationScenarioTest",
+      "two Prismaris produce two separate storm triggers (CR 702.40b)"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.PrismariTheInspirationScenarioTest",
+      "without Prismari, an instant produces no storm trigger"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.RevealFromHandAdditionalCostTest",
+      "CR 701.20b \u2014 the revealed Elf stays in hand and can still be cast afterwards"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.RevealFromHandAdditionalCostTest",
+      "CR 701.4a \u2014 an Elf on the battlefield is not an Elf card in hand and cannot pay the reveal"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.RevealFromHandAdditionalCostTest",
+      "a Kindred noncreature Elf card pays it \u2014 the filter is 'an Elf card', not 'an Elf creature card'"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.RevealFromHandAdditionalCostTest",
+      "a non-Elf card in hand is rejected as the reveal"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.RevealFromHandAdditionalCostTest",
+      "both the reveal path and the pay path are enumerated when the hand has an Elf and mana for either"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.RevealFromHandAdditionalCostTest",
+      "the cost is offered with its own picker when the hand holds a matching card"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.RevealFromHandAdditionalCostTest",
+      "the pay path costs {3} more and reveals nothing"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.RevealFromHandAdditionalCostTest",
+      "the spell can't pay the cost with itself"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.RevealFromHandAdditionalCostTest",
+      "the spell is uncastable with nothing to reveal \u2014 a mandatory cost fails closed"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.RevealFromHandAdditionalCostTest",
+      "with no Elf in hand only the pay path is offered, and the spell is still castable"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.ScarecrowScenarioTest",
+      "a flying attacker deals you no combat damage"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.ScarecrowScenarioTest",
+      "a non-creature source is unaffected"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.ScarecrowScenarioTest",
+      "a non-flying attacker still hits you for full"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.ScarecrowScenarioTest",
+      "your own creatures are not protected \u2014 only you"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.SnapScenarioTest",
+      "an illegal sole creature target prevents every effect including the land untap"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.SnapScenarioTest",
+      "bounce resolves before non-target land choice and either player's lands are eligible"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.SnapScenarioTest",
+      "controller can choose one land"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.SnapScenarioTest",
+      "controller can choose zero lands"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.SpellQuellerScenarioTest",
+      "ETB exiles the target spell and links it to the Queller"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.SpellQuellerScenarioTest",
+      "a Queller that exiled nothing does nothing when it leaves"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.SpellQuellerScenarioTest",
+      "the owner may decline, and the card stays exiled"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.SpellQuellerScenarioTest",
+      "when the Queller leaves, the exiled card's owner may cast it for free"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.SphinxsApproachScenarioTest",
+      "Terror reduction immediately reflects the four spells exiled by Approach"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.SphinxsApproachScenarioTest",
+      "countered Approach draws nothing and never starts the optional action"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.SphinxsApproachScenarioTest",
+      "decline leaves all four graveyard copies and normal resolving-spell cleanup"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.SphinxsApproachScenarioTest",
+      "drawing the last Sphinx does not undo a legal exile action or suppress shuffle"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.SphinxsApproachScenarioTest",
+      "five graveyard copies require exactly four and preserve the unselected copy"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.SphinxsApproachScenarioTest",
+      "graveyard removal before resolution makes the optional action unavailable"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.SphinxsApproachScenarioTest",
+      "mandatory draw precedes optional action with no intervening priority"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.SphinxsApproachScenarioTest",
+      "no Sphinx in library still permits exile and successful empty search"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.SphinxsApproachScenarioTest",
+      "only the controller's named graveyard cards qualify"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.SphinxsApproachScenarioTest",
+      "opponent end-step deployment removes sickness on the controller's next turn"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.SphinxsApproachScenarioTest",
+      "search may fail to find an existing Sphinx after the exile action"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.SphinxsApproachScenarioTest",
+      "serialized exact-card continuation replays the same selection and search"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.SphinxsApproachScenarioTest",
+      "successful exact-four action exiles five cards and searches onto battlefield without casting"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.SphinxsApproachScenarioTest",
+      "three graveyard copies cannot count the resolving spell as the fourth"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.StackResolutionPriorityTest",
+      "a cleanup-window resolution choice restores active priority without advancing or losing another spell"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.StackResolutionPriorityTest",
+      "a departed active player is skipped after an opposing spell resolves"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.StackResolutionPriorityTest",
+      "a departing decision owner clears the abandoned resolution boundary"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.StackResolutionPriorityTest",
+      "a four-player cast-time modal decision retains the caster's priority instead of resetting to active"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.StackResolutionPriorityTest",
+      "a nested modal cast completes the outer tail and preserves each trigger batch once (cancel=false)"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.StackResolutionPriorityTest",
+      "a nested modal cast completes the outer tail and preserves each trigger batch once (cancel=true)"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.StackResolutionPriorityTest",
+      "a rejected malformed stack resolution cannot publish a marker or mutate the attempted pass"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.StackResolutionPriorityTest",
+      "a terminal resolution clears its boundary and grants no further priority"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.StackResolutionPriorityTest",
+      "an opposing Bolt resolves before the active player legally casts Divination"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.StackResolutionPriorityTest",
+      "an opposing activated response returns priority to the active player with another spell still on stack"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.StackResolutionPriorityTest",
+      "an opposing discard decision survives serialization and cannot seize the next priority window"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.StackResolutionPriorityTest",
+      "an opposing legend-rule decision completes before the active player receives priority"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.StackResolutionPriorityTest",
+      "ending the turn clears the resolution boundary before the next step's priority"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.StackResolutionPriorityTest",
+      "four-player tax answer from a third seat returns to the active player (pay=false)"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.StackResolutionPriorityTest",
+      "four-player tax answer from a third seat returns to the active player (pay=true)"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.StackResolutionPriorityTest",
+      "resolution-trigger target selection belongs to its controller but priority returns to the active player"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.StackResolutionPriorityTest",
+      "the false marker is absent from ordinary serialized states even with defaults enabled"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.StackWarTest",
+      "after resolving top of stack, active player gets priority"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.StackWarTest",
+      "both players passing resolves top of stack"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.StackWarTest",
+      "can respond to opponent's spell"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.StackWarTest",
+      "cannot cast spell without priority"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.StackWarTest",
+      "casting a spell puts it on the stack"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.StackWarTest",
+      "countered spell goes to graveyard"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.StackWarTest",
+      "instant can be cast in response"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.StackWarTest",
+      "multiple spells on stack resolve in order"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.StackWarTest",
+      "passing priority to opponent"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.StackWarTest",
+      "passing priority with empty stack advances the game"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.StackWarTest",
+      "priority passes after casting a spell"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.StackWarTest",
+      "sorcery cannot be cast in response"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.StackWarTest",
+      "spell targeting a spell on the stack"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.StackWarTest",
+      "stack is empty at start of game"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.StackWarTest",
+      "stack resolution order is LIFO"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.TargetedDepartedSourceLkiTest",
+      "departed token target pause preserves full source LKI seat 1 player target false"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.TargetedDepartedSourceLkiTest",
+      "departed token target pause preserves full source LKI seat 1 player target true"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.TargetedDepartedSourceLkiTest",
+      "departed token target pause preserves full source LKI seat 2 player target false"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.TargetedDepartedSourceLkiTest",
+      "departed token target pause preserves full source LKI seat 2 player target true"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.TaureanMaulerScenarioTest",
+      "a second opponent spell grows it again (3/3 -> 4/4)"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.TaureanMaulerScenarioTest",
+      "opponent casts a spell: a +1/+1 counter is added (2/2 -> 3/3)"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.TaureanMaulerScenarioTest",
+      "your own spell does not trigger it (stays 2/2)"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.TriggerOrderingConcessionScenarioTest",
+      "a conceding ordering chooser leaves the surviving controller's exact APNAP group and priority recipient intact"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.TriggerOrderingScenarioTest",
+      "active and nonactive controllers order their own groups in APNAP placement order"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.TriggerOrderingScenarioTest",
+      "invalid ordering choices fail without altering the game or consuming a trigger"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.TriggerOrderingScenarioTest",
+      "ordering is preserved through serialization and two separate target decisions"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.TriggerOrderingScenarioTest",
+      "putting life loss below life gain permits surviving at one life"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.TriggerOrderingScenarioTest",
+      "the other legal ordering resolves life loss first and loses before the gain"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.TriggerOrderingScenarioTest",
+      "two copies of a card retain all four source identities and trigger payloads"
+    ],
+    [
+      "com.wingedsheep.engine.state.LegacySuspensionMigrationTest",
+      "default-omitting parent cycling snapshot loads and completes its deferred draw"
+    ],
+    [
+      "com.wingedsheep.engine.state.LegacySuspensionMigrationTest",
+      "legacy active answer still requires its response identity"
+    ],
+    [
+      "com.wingedsheep.engine.state.LegacySuspensionMigrationTest",
+      "legacy active question cannot skip automatic work to find an answer"
+    ],
+    [
+      "com.wingedsheep.engine.state.LegacySuspensionMigrationTest",
+      "legacy active question with a mismatched top answer fails explicitly"
+    ],
+    [
+      "com.wingedsheep.engine.state.LegacySuspensionMigrationTest",
+      "legacy active question without an answer fails explicitly"
+    ],
+    [
+      "com.wingedsheep.engine.state.LegacySuspensionMigrationTest",
+      "legacy combat answer cannot silently replace a different represented question"
+    ],
+    [
+      "com.wingedsheep.engine.state.LegacySuspensionMigrationTest",
+      "legacy combat question is retained once and the duplicate answer shape is removed"
+    ],
+    [
+      "com.wingedsheep.engine.state.LegacySuspensionMigrationTest",
+      "legacy free-cast-target loads without allocation and resumes the captured response trace"
+    ],
+    [
+      "com.wingedsheep.engine.state.LegacySuspensionMigrationTest",
+      "legacy hidden payment question is paired inside its reopen frame"
+    ],
+    [
+      "com.wingedsheep.engine.state.LegacySuspensionMigrationTest",
+      "legacy mana reopen cannot claim a different lower answer"
+    ],
+    [
+      "com.wingedsheep.engine.state.LegacySuspensionMigrationTest",
+      "legacy mana reopen requires its saved question"
+    ],
+    [
+      "com.wingedsheep.engine.state.LegacySuspensionMigrationTest",
+      "legacy mana reopen still requires its saved association identity"
+    ],
+    [
+      "com.wingedsheep.engine.state.LegacySuspensionMigrationTest",
+      "legacy migration does not silently ignore unrelated unknown payload fields"
+    ],
+    [
+      "com.wingedsheep.engine.state.LegacySuspensionMigrationTest",
+      "legacy nested-may loads without allocation and resumes the captured response trace"
+    ],
+    [
+      "com.wingedsheep.engine.state.LegacySuspensionMigrationTest",
+      "legacy repeat decision becomes an answer carrying an automatic loop"
+    ],
+    [
+      "com.wingedsheep.engine.state.LegacySuspensionMigrationTest",
+      "legacy repeat with an unknown phase fails explicitly"
+    ],
+    [
+      "com.wingedsheep.engine.state.LegacySuspensionMigrationTest",
+      "legacy repeat-while loads without allocation and resumes the captured response trace"
+    ],
+    [
+      "com.wingedsheep.engine.state.LegacySuspensionMigrationTest",
+      "legacy suspended-mana-window loads without allocation and resumes the captured response trace"
+    ],
+    [
+      "com.wingedsheep.engine.state.LegacySuspensionMigrationTest",
+      "legacy unanswered frame without any represented question fails explicitly"
+    ],
+    [
+      "com.wingedsheep.engine.state.SuspensionTraceTest",
+      "current cycling suspension reproduces the captured parent deferred draw and events"
+    ],
+    [
+      "com.wingedsheep.engine.state.SuspensionTraceTest",
+      "current free-cast-target suspension reproduces the captured parent response trace"
+    ],
+    [
+      "com.wingedsheep.engine.state.SuspensionTraceTest",
+      "current nested-may suspension reproduces the captured parent response trace"
+    ],
+    [
+      "com.wingedsheep.engine.state.SuspensionTraceTest",
+      "current repeat-while suspension reproduces the captured parent response trace"
+    ],
+    [
+      "com.wingedsheep.engine.state.SuspensionTraceTest",
+      "current suspended-mana-window suspension reproduces the captured parent response trace"
+    ],
+    [
+      "com.wingedsheep.gameserver.session.PostBlockDeclarationSessionTest",
+      "GS-PB01 both defending teammates get their own declaration without ordinary priority"
+    ],
+    [
+      "com.wingedsheep.gameserver.session.PostBlockDeclarationSessionTest",
+      "GS-PB02 block-tax payment exposes only the payer's mana actions before declarations resume"
+    ],
+    [
+      "com.wingedsheep.gameserver.session.TwoHeadedGiantSessionTest",
+      "a Free-for-All pod stays one seat at a time \u2014 only the baton holder is offered actions"
+    ],
+    [
+      "com.wingedsheep.gameserver.session.TwoHeadedGiantSessionTest",
+      "a player sees their teammate's hand but not an opponent's (CR 810.2)"
+    ],
+    [
+      "com.wingedsheep.gameserver.session.TwoHeadedGiantSessionTest",
+      "a revealed card in an opponent's hand still reaches the viewer, count and all"
+    ],
+    [
+      "com.wingedsheep.gameserver.session.TwoHeadedGiantSessionTest",
+      "a teammate is not an opponent (CR 810): getOpponentIds returns only the other team"
+    ],
+    [
+      "com.wingedsheep.gameserver.session.TwoHeadedGiantSessionTest",
+      "a teammate is offered their OWN actions while their partner holds the baton (CR 805.5)"
+    ],
+    [
+      "com.wingedsheep.gameserver.session.TwoHeadedGiantSessionTest",
+      "both heads of the surviving team are winners, not just the representative (CR 810.8a)"
+    ],
+    [
+      "com.wingedsheep.gameserver.session.TwoHeadedGiantSessionTest",
+      "life totals are the shared team total for both teammates, not each raw component"
+    ],
+    [
+      "com.wingedsheep.gameserver.session.TwoHeadedGiantSessionTest",
+      "non-team game is unchanged: no team index, every other seat is an opponent"
+    ],
+    [
+      "com.wingedsheep.gameserver.session.TwoHeadedGiantSessionTest",
+      "seat roster carries each seat's team index, with teammates in adjacent seats (CR 805.1)"
+    ],
+    [
+      "com.wingedsheep.gameserver.session.TwoHeadedGiantSessionTest",
+      "the seat roster carries the shared-turn flag, which the client needs to answer \"may I act?\""
+    ],
+    [
+      "com.wingedsheep.gym.actorinput.ActorMulliganEligibilityTest",
+      "MU01 real initializer admits each own setup menu with starting seat 0"
+    ],
+    [
+      "com.wingedsheep.gym.actorinput.ActorMulliganEligibilityTest",
+      "MU01 real initializer admits each own setup menu with starting seat 1"
+    ],
+    [
+      "com.wingedsheep.gym.actorinput.ActorMulliganEligibilityTest",
+      "MU02 real KeepHand retains priority and exposes only the remaining unkept seat starting 0"
+    ],
+    [
+      "com.wingedsheep.gym.actorinput.ActorMulliganEligibilityTest",
+      "MU02 real KeepHand retains priority and exposes only the remaining unkept seat starting 1"
+    ],
+    [
+      "com.wingedsheep.gym.actorinput.ActorMulliganEligibilityTest",
+      "MU03 real redraw and own kept-bottom choice survive serialization starting 0"
+    ],
+    [
+      "com.wingedsheep.gym.actorinput.ActorMulliganEligibilityTest",
+      "MU03 real redraw and own kept-bottom choice survive serialization starting 1"
+    ],
+    [
+      "com.wingedsheep.gym.actorinput.ActorMulliganEligibilityTest",
+      "MU04 prescribed final bottom returns to sole ordinary priority starting 0"
+    ],
+    [
+      "com.wingedsheep.gym.actorinput.ActorMulliganEligibilityTest",
+      "MU04 prescribed final bottom returns to sole ordinary priority starting 1"
+    ],
+    [
+      "com.wingedsheep.gym.actorinput.ActorMulliganEligibilityTest",
+      "MU05 real serialized opening typed question takes precedence over setup and priority starting 0"
+    ],
+    [
+      "com.wingedsheep.gym.actorinput.ActorMulliganEligibilityTest",
+      "MU05 real serialized opening typed question takes precedence over setup and priority starting 1"
+    ],
+    [
+      "com.wingedsheep.gym.actorinput.ActorMulliganEligibilityTest",
+      "MU06 setup input ignores unavailable identities order and authoritative RNG starting 0"
+    ],
+    [
+      "com.wingedsheep.gym.actorinput.ActorMulliganEligibilityTest",
+      "MU06 setup input ignores unavailable identities order and authoritative RNG starting 1"
+    ],
+    [
+      "com.wingedsheep.gym.actorinput.ActorMulliganEligibilityTest",
+      "MU07 four-player free mulligan exposes every remaining seat without scheduling a pilot starting 0"
+    ],
+    [
+      "com.wingedsheep.gym.actorinput.ActorMulliganEligibilityTest",
+      "MU07 four-player free mulligan exposes every remaining seat without scheduling a pilot starting 1"
+    ],
+    [
+      "com.wingedsheep.gym.actorinput.ActorObservationBoundaryTest",
+      "all eighteen current decision variants cross as complete typed questions"
+    ],
+    [
+      "com.wingedsheep.gym.actorinput.ActorObservationBoundaryTest",
+      "authoritative RNG never changes actor payload or supplied policy stream"
+    ],
+    [
+      "com.wingedsheep.gym.actorinput.ActorObservationBoundaryTest",
+      "authorized nonbattlefield power survives power-constrained selection metadata"
+    ],
+    [
+      "com.wingedsheep.gym.actorinput.ActorObservationBoundaryTest",
+      "complete actor input is invariant to both unseen library orders and identities"
+    ],
+    [
+      "com.wingedsheep.gym.actorinput.ActorObservationBoundaryTest",
+      "complete actor input is invariant to unknown opponent hand identities"
+    ],
+    [
+      "com.wingedsheep.gym.actorinput.ActorObservationBoundaryTest",
+      "complete nested target sacrifice discard and mode domains survive detached projection"
+    ],
+    [
+      "com.wingedsheep.gym.actorinput.ActorObservationBoundaryTest",
+      "current own library search reveals options without library order or future draws"
+    ],
+    [
+      "com.wingedsheep.gym.actorinput.ActorObservationBoundaryTest",
+      "drawing a previously hidden card exposes its identity to its owner"
+    ],
+    [
+      "com.wingedsheep.gym.actorinput.ActorObservationBoundaryTest",
+      "empty ordinary menu and terminal state fail rather than inventing a pass or winner"
+    ],
+    [
+      "com.wingedsheep.gym.actorinput.ActorObservationBoundaryTest",
+      "epoch actor menu and policy-state tampering invalidate response binding"
+    ],
+    [
+      "com.wingedsheep.gym.actorinput.ActorObservationBoundaryTest",
+      "hidden exile identity and unrelated entity ID do not enter actor input"
+    ],
+    [
+      "com.wingedsheep.gym.actorinput.ActorObservationBoundaryTest",
+      "inaccessible nested cost reference is rejected instead of removed"
+    ],
+    [
+      "com.wingedsheep.gym.actorinput.ActorObservationBoundaryTest",
+      "known library subset is sorted independently of hidden positions"
+    ],
+    [
+      "com.wingedsheep.gym.actorinput.ActorObservationBoundaryTest",
+      "known opponent card remains visible while its unknown neighbor changes"
+    ],
+    [
+      "com.wingedsheep.gym.actorinput.ActorObservationBoundaryTest",
+      "mulligan public counts do not expose another hand's pending pregame cards"
+    ],
+    [
+      "com.wingedsheep.gym.actorinput.ActorObservationBoundaryTest",
+      "nullable inline references preserve absence and still reject inaccessible present IDs"
+    ],
+    [
+      "com.wingedsheep.gym.actorinput.ActorObservationBoundaryTest",
+      "pending mana payment includes actual mana ability menu and rejects ordinary spells"
+    ],
+    [
+      "com.wingedsheep.gym.actorinput.ActorObservationBoundaryTest",
+      "public discard exposes the former hidden opponent card"
+    ],
+    [
+      "com.wingedsheep.gym.actorinput.ActorObservationBoundaryTest",
+      "public spell X and chosen modes are retained"
+    ],
+    [
+      "com.wingedsheep.gym.actorinput.ActorObservationBoundaryTest",
+      "raw authority objects and continuations are rejected by payload graph audit"
+    ],
+    [
+      "com.wingedsheep.gym.actorinput.ActorObservationBoundaryTest",
+      "raw face-down selection metadata is masked while the public option survives"
+    ],
+    [
+      "com.wingedsheep.gym.actorinput.ActorObservationBoundaryTest",
+      "real pre-block input identifies vigilant attacker and defender with an empty blocker template"
+    ],
+    [
+      "com.wingedsheep.gym.actorinput.ActorObservationBoundaryTest",
+      "reorder decision preserves its authorized top group but omits unseen remainder"
+    ],
+    [
+      "com.wingedsheep.gym.actorinput.ActorObservationBoundaryTest",
+      "target constraints and nonselectable look cards are retained"
+    ],
+    [
+      "com.wingedsheep.gym.actorinput.ActorObservationBoundaryTest",
+      "unauthorized opponent-library cardInfo and extra metadata keys fail visibly"
+    ],
+    [
+      "com.wingedsheep.gym.actorinput.ActorObservationBoundaryTest",
+      "unlisted data types and enum values fail closed instead of using package fallbacks"
+    ],
+    [
+      "com.wingedsheep.gym.actorinput.ActorObservationBoundaryTest",
+      "very large mandatory numeric domain is copied without enumeration or auto-answer"
+    ],
+    [
+      "com.wingedsheep.gym.actorinput.ActorObservationBoundaryTest",
+      "wrong actor is rejected before current private question is projected"
+    ],
+    [
+      "com.wingedsheep.gym.actorinput.ActorPriorityObservationTest",
+      "HP01 ordinary priority and its actual pass agree in direct and actor observations"
+    ],
+    [
+      "com.wingedsheep.gym.actorinput.ActorPriorityObservationTest",
+      "HP02 a real declaration baton has no priority until blockers finish"
+    ],
+    [
+      "com.wingedsheep.gym.actorinput.ActorPriorityObservationTest",
+      "HP03 a serialized real block-tax payment retains its actor without priority"
+    ],
+    [
+      "com.wingedsheep.gym.actorinput.ActorPriorityObservationTest",
+      "HP04 actual shared-team priority is visible on both teammates"
+    ],
+    [
+      "com.wingedsheep.gym.actorinput.ActorSpellPaymentProjectionTest",
+      "SP01 actual ordinary cast exposes current ownership mana value and counterability"
+    ],
+    [
+      "com.wingedsheep.gym.actorinput.ActorSpellPaymentProjectionTest",
+      "SP02 explicit uncounterable marker agrees with canonical counter execution"
+    ],
+    [
+      "com.wingedsheep.gym.actorinput.ActorSpellPaymentProjectionTest",
+      "SP03 concealed counter-grant source identity does not change the actor payload"
+    ],
+    [
+      "com.wingedsheep.gym.actorinput.ActorSpellPaymentProjectionTest",
+      "SP04 actual selected split face publishes its face mana value not combined cost"
+    ],
+    [
+      "com.wingedsheep.gym.actorinput.ActorSpellPaymentProjectionTest",
+      "SP05 an actual face-down cast publishes zero mana value and explicit unknown counterability"
+    ],
+    [
+      "com.wingedsheep.gym.actorinput.ActorSpellPaymentProjectionTest",
+      "SP06 one blue cast projects the same selected taps and reserve as the real payment"
+    ],
+    [
+      "com.wingedsheep.gym.actorinput.ActorSpellPaymentProjectionTest",
+      "SP07 existing floating blue is spent before land taps and actual remaining pool agrees"
+    ],
+    [
+      "com.wingedsheep.gym.actorinput.ActorSpellPaymentProjectionTest",
+      "SP08 generic plus blue payment consumes its full actual basic-blue cost"
+    ],
+    [
+      "com.wingedsheep.gym.actorinput.ActorSpellPaymentProjectionTest",
+      "SP09 the full unaffordable offer is retained with a failed canonical payment"
+    ],
+    [
+      "com.wingedsheep.gym.actorinput.ActorSpellPaymentProjectionTest",
+      "SP10 an out-of-representation mana source is explicit unsupported rather than false reserve"
+    ],
+    [
+      "com.wingedsheep.gym.actorinput.ActorStackSourceObservationTest",
+      "actual hand activation input is invariant to hidden hand and library incarnation permutations"
+    ],
+    [
+      "com.wingedsheep.gym.actorinput.ActorStackSourceObservationTest",
+      "actual own death trigger has the departed source identity and public characteristics"
+    ],
+    [
+      "com.wingedsheep.gym.actorinput.ActorStackSourceObservationTest",
+      "actual sacrificed token source remains public after token entity cleanup"
+    ],
+    [
+      "com.wingedsheep.gym.actorinput.ActorStackSourceObservationTest",
+      "full pending-source input ignores unknown hand library identities order and authoritative RNG"
+    ],
+    [
+      "com.wingedsheep.gym.actorinput.ActorStackSourceObservationTest",
+      "real pending Shaman activation reads current bonuses gained after activation"
+    ],
+    [
+      "com.wingedsheep.gym.actorinput.ActorStackSourceObservationTest",
+      "synthetic absent uncaptured or wrong-entity source origins fail explicitly"
+    ],
+    [
+      "com.wingedsheep.gym.actorinput.ActorStackSourceObservationTest",
+      "synthetic face-down departure summary omits raw identity definition and private attachments"
+    ],
+    [
+      "com.wingedsheep.gym.actorinput.ActorStackSourceObservationTest",
+      "synthetic missing or wrong-incarnation LKI never falls back to the returned creature"
+    ],
+    [
+      "com.wingedsheep.gym.actorinput.ActorStackSourceObservationTest",
+      "synthetic nonbattlefield ability exposes no private origin generation or fabricated characteristics"
+    ],
+    [
+      "com.wingedsheep.gym.actorinput.ActorStackSourceObservationTest",
+      "synthetic partial last-known public fields fail rather than invent values"
+    ],
+    [
+      "com.wingedsheep.gym.actorinput.ActorStackSourceObservationTest",
+      "synthetic stale snapshot cannot override properties of the still-current original"
+    ],
+    [
+      "com.wingedsheep.gym.actorinput.ActorStackSourceObservationTest",
+      "two real queued Shaman activations keep old properties after a same-ID blink return"
+    ],
+    [
+      "com.wingedsheep.gym.actorinput.ActorTriggerOrderObservationTest",
+      "forged controller option preview private source and missing provenance fail without leaking labels"
+    ],
+    [
+      "com.wingedsheep.gym.actorinput.ActorTriggerOrderObservationTest",
+      "real Red simultaneous triggers retain the proved label and selected order seat 1"
+    ],
+    [
+      "com.wingedsheep.gym.actorinput.ActorTriggerOrderObservationTest",
+      "real Red simultaneous triggers retain the proved label and selected order seat 2"
+    ],
+    [
+      "com.wingedsheep.gym.actorinput.ActorTriggerOrderObservationTest",
+      "real ordering question roundtrips and ignores hidden cards library order and authoritative RNG"
+    ],
+    [
+      "com.wingedsheep.gym.actorinput.ActorTriggerOrderObservationTest",
+      "successive real three-trigger choices preserve distinct same-name sources and ordering"
+    ],
+    [
+      "com.wingedsheep.gym.actorinput.ActorTriggerOrderObservationTest",
+      "system-label lookalike without its typed continuation is rejected while unrelated names stay concealed"
+    ],
+    [
+      "com.wingedsheep.gym.sphinx.SphinxStageEActorAdapterTest",
+      "AR1 closest-no-approach-v01 binds current payment and converts the unchanged setup component into a real cast"
+    ],
+    [
+      "com.wingedsheep.gym.sphinx.SphinxStageEActorAdapterTest",
+      "AR1 reconstructed-hybrid binds current payment and converts the unchanged setup component into a real cast"
+    ],
+    [
+      "com.wingedsheep.gym.sphinx.SphinxStageEActorAdapterTest",
+      "AR1 reconstructed-v01 binds current payment and converts the unchanged setup component into a real cast"
+    ],
+    [
+      "com.wingedsheep.gym.sphinx.SphinxStageEActorAdapterTest",
+      "AR1 serpico-terror-benchmark binds current payment and converts the unchanged setup component into a real cast"
+    ],
+    [
+      "com.wingedsheep.gym.sphinx.SphinxStageEActorAdapterTest",
+      "AR2 closest-no-approach-v01 rejects a stale input and respects actual newly spent mana for the next offer"
+    ],
+    [
+      "com.wingedsheep.gym.sphinx.SphinxStageEActorAdapterTest",
+      "AR2 reconstructed-hybrid rejects a stale input and respects actual newly spent mana for the next offer"
+    ],
+    [
+      "com.wingedsheep.gym.sphinx.SphinxStageEActorAdapterTest",
+      "AR2 reconstructed-v01 rejects a stale input and respects actual newly spent mana for the next offer"
+    ],
+    [
+      "com.wingedsheep.gym.sphinx.SphinxStageEActorAdapterTest",
+      "AR2 serpico-terror-benchmark rejects a stale input and respects actual newly spent mana for the next offer"
+    ],
+    [
+      "com.wingedsheep.gym.sphinx.SphinxStageEActorAdapterTest",
+      "AR3 closest-no-approach-v01 converts only the current public opposing spell target and the real counter resolves"
+    ],
+    [
+      "com.wingedsheep.gym.sphinx.SphinxStageEActorAdapterTest",
+      "AR3 reconstructed-hybrid converts only the current public opposing spell target and the real counter resolves"
+    ],
+    [
+      "com.wingedsheep.gym.sphinx.SphinxStageEActorAdapterTest",
+      "AR3 reconstructed-v01 converts only the current public opposing spell target and the real counter resolves"
+    ],
+    [
+      "com.wingedsheep.gym.sphinx.SphinxStageEActorAdapterTest",
+      "AR3 serpico-terror-benchmark converts only the current public opposing spell target and the real counter resolves"
+    ],
+    [
+      "com.wingedsheep.gym.sphinx.SphinxStageEActorAdapterTest",
+      "AR4 closest-no-approach-v01 keeps actor input and proposal invariant to unseen libraries and opponent hand identity"
+    ],
+    [
+      "com.wingedsheep.gym.sphinx.SphinxStageEActorAdapterTest",
+      "AR4 reconstructed-hybrid keeps actor input and proposal invariant to unseen libraries and opponent hand identity"
+    ],
+    [
+      "com.wingedsheep.gym.sphinx.SphinxStageEActorAdapterTest",
+      "AR4 reconstructed-v01 keeps actor input and proposal invariant to unseen libraries and opponent hand identity"
+    ],
+    [
+      "com.wingedsheep.gym.sphinx.SphinxStageEActorAdapterTest",
+      "AR4 serpico-terror-benchmark keeps actor input and proposal invariant to unseen libraries and opponent hand identity"
+    ],
+    [
+      "com.wingedsheep.gym.sphinx.SphinxStageEActorAdapterTest",
+      "AR5 closest-no-approach-v01 leaves other actions and a typed unresolved question explicitly unqualified"
+    ],
+    [
+      "com.wingedsheep.gym.sphinx.SphinxStageEActorAdapterTest",
+      "AR5 reconstructed-hybrid leaves other actions and a typed unresolved question explicitly unqualified"
+    ],
+    [
+      "com.wingedsheep.gym.sphinx.SphinxStageEActorAdapterTest",
+      "AR5 reconstructed-v01 leaves other actions and a typed unresolved question explicitly unqualified"
+    ],
+    [
+      "com.wingedsheep.gym.sphinx.SphinxStageEActorAdapterTest",
+      "AR5 serpico-terror-benchmark leaves other actions and a typed unresolved question explicitly unqualified"
+    ],
+    [
+      "com.wingedsheep.gym.sphinx.SphinxStageEInitializedSeatTest",
+      "IB1 closest-no-approach-v01 seat0 binds the real initialized 60 and rejects every other frozen list"
+    ],
+    [
+      "com.wingedsheep.gym.sphinx.SphinxStageEInitializedSeatTest",
+      "IB1 closest-no-approach-v01 seat1 binds the real initialized 60 and rejects every other frozen list"
+    ],
+    [
+      "com.wingedsheep.gym.sphinx.SphinxStageEInitializedSeatTest",
+      "IB1 reconstructed-hybrid seat0 binds the real initialized 60 and rejects every other frozen list"
+    ],
+    [
+      "com.wingedsheep.gym.sphinx.SphinxStageEInitializedSeatTest",
+      "IB1 reconstructed-hybrid seat1 binds the real initialized 60 and rejects every other frozen list"
+    ],
+    [
+      "com.wingedsheep.gym.sphinx.SphinxStageEInitializedSeatTest",
+      "IB1 reconstructed-v01 seat0 binds the real initialized 60 and rejects every other frozen list"
+    ],
+    [
+      "com.wingedsheep.gym.sphinx.SphinxStageEInitializedSeatTest",
+      "IB1 reconstructed-v01 seat1 binds the real initialized 60 and rejects every other frozen list"
+    ],
+    [
+      "com.wingedsheep.gym.sphinx.SphinxStageEInitializedSeatTest",
+      "IB1 serpico-terror-benchmark seat0 binds the real initialized 60 and rejects every other frozen list"
+    ],
+    [
+      "com.wingedsheep.gym.sphinx.SphinxStageEInitializedSeatTest",
+      "IB1 serpico-terror-benchmark seat1 binds the real initialized 60 and rejects every other frozen list"
+    ],
+    [
+      "com.wingedsheep.gym.sphinx.SphinxStageEInitializedSeatTest",
+      "IB2 closest-no-approach-v01 seat0 binds actor and trial across a real opening action without selecting it"
+    ],
+    [
+      "com.wingedsheep.gym.sphinx.SphinxStageEInitializedSeatTest",
+      "IB2 closest-no-approach-v01 seat1 binds actor and trial across a real opening action without selecting it"
+    ],
+    [
+      "com.wingedsheep.gym.sphinx.SphinxStageEInitializedSeatTest",
+      "IB2 reconstructed-hybrid seat0 binds actor and trial across a real opening action without selecting it"
+    ],
+    [
+      "com.wingedsheep.gym.sphinx.SphinxStageEInitializedSeatTest",
+      "IB2 reconstructed-hybrid seat1 binds actor and trial across a real opening action without selecting it"
+    ],
+    [
+      "com.wingedsheep.gym.sphinx.SphinxStageEInitializedSeatTest",
+      "IB2 reconstructed-v01 seat0 binds actor and trial across a real opening action without selecting it"
+    ],
+    [
+      "com.wingedsheep.gym.sphinx.SphinxStageEInitializedSeatTest",
+      "IB2 reconstructed-v01 seat1 binds actor and trial across a real opening action without selecting it"
+    ],
+    [
+      "com.wingedsheep.gym.sphinx.SphinxStageEInitializedSeatTest",
+      "IB2 serpico-terror-benchmark seat0 binds actor and trial across a real opening action without selecting it"
+    ],
+    [
+      "com.wingedsheep.gym.sphinx.SphinxStageEInitializedSeatTest",
+      "IB2 serpico-terror-benchmark seat1 binds actor and trial across a real opening action without selecting it"
+    ],
+    [
+      "com.wingedsheep.gym.sphinx.SphinxStageEPilotComponentTest",
+      "closest-no-approach-v01/A1 select an offered public opposing stack target"
+    ],
+    [
+      "com.wingedsheep.gym.sphinx.SphinxStageEPilotComponentTest",
+      "closest-no-approach-v01/A2 no offered target means no counter cast"
+    ],
+    [
+      "com.wingedsheep.gym.sphinx.SphinxStageEPilotComponentTest",
+      "closest-no-approach-v01/C1 present resources support the current action"
+    ],
+    [
+      "com.wingedsheep.gym.sphinx.SphinxStageEPilotComponentTest",
+      "closest-no-approach-v01/C2 no credit for a future cleanup discard"
+    ],
+    [
+      "com.wingedsheep.gym.sphinx.SphinxStageEPilotComponentTest",
+      "closest-no-approach-v01/D1 safe self-mill then draw"
+    ],
+    [
+      "com.wingedsheep.gym.sphinx.SphinxStageEPilotComponentTest",
+      "closest-no-approach-v01/D2 stop before an impossible mandatory draw"
+    ],
+    [
+      "com.wingedsheep.gym.sphinx.SphinxStageEPilotComponentTest",
+      "closest-no-approach-v01/H1 typed own-public input round trip preserves the decision"
+    ],
+    [
+      "com.wingedsheep.gym.sphinx.SphinxStageEPilotComponentTest",
+      "closest-no-approach-v01/H2 undeclared hidden hand or future order is rejected"
+    ],
+    [
+      "com.wingedsheep.gym.sphinx.SphinxStageEPilotComponentTest",
+      "closest-no-approach-v01/I1 preserve affordable Counterspell over setup"
+    ],
+    [
+      "com.wingedsheep.gym.sphinx.SphinxStageEPilotComponentTest",
+      "closest-no-approach-v01/I2 use excess mana after reserving Counterspell"
+    ],
+    [
+      "com.wingedsheep.gym.sphinx.SphinxStageEPilotComponentTest",
+      "closest-no-approach-v01/P1 take the legal normal deployment window"
+    ],
+    [
+      "com.wingedsheep.gym.sphinx.SphinxStageEPilotComponentTest",
+      "closest-no-approach-v01/P2 wait outside the normal deployment window"
+    ],
+    [
+      "com.wingedsheep.gym.sphinx.SphinxStageEPilotComponentTest",
+      "closest-no-approach-v01/T1 the fresh higher cost controls the next cast"
+    ],
+    [
+      "com.wingedsheep.gym.sphinx.SphinxStageEPilotComponentTest",
+      "closest-no-approach-v01/T2 stale cheap offer is rejected before selection"
+    ],
+    [
+      "com.wingedsheep.gym.sphinx.SphinxStageEPilotComponentTest",
+      "reconstructed-hybrid/A1 select an offered public opposing stack target"
+    ],
+    [
+      "com.wingedsheep.gym.sphinx.SphinxStageEPilotComponentTest",
+      "reconstructed-hybrid/A2 no offered target means no counter cast"
+    ],
+    [
+      "com.wingedsheep.gym.sphinx.SphinxStageEPilotComponentTest",
+      "reconstructed-hybrid/C1 present resources support the current action"
+    ],
+    [
+      "com.wingedsheep.gym.sphinx.SphinxStageEPilotComponentTest",
+      "reconstructed-hybrid/C2 no credit for a future cleanup discard"
+    ],
+    [
+      "com.wingedsheep.gym.sphinx.SphinxStageEPilotComponentTest",
+      "reconstructed-hybrid/D1 safe self-mill then draw"
+    ],
+    [
+      "com.wingedsheep.gym.sphinx.SphinxStageEPilotComponentTest",
+      "reconstructed-hybrid/D2 stop before an impossible mandatory draw"
+    ],
+    [
+      "com.wingedsheep.gym.sphinx.SphinxStageEPilotComponentTest",
+      "reconstructed-hybrid/H1 typed own-public input round trip preserves the decision"
+    ],
+    [
+      "com.wingedsheep.gym.sphinx.SphinxStageEPilotComponentTest",
+      "reconstructed-hybrid/H2 undeclared hidden hand or future order is rejected"
+    ],
+    [
+      "com.wingedsheep.gym.sphinx.SphinxStageEPilotComponentTest",
+      "reconstructed-hybrid/I1 preserve affordable Counterspell over setup"
+    ],
+    [
+      "com.wingedsheep.gym.sphinx.SphinxStageEPilotComponentTest",
+      "reconstructed-hybrid/I2 use excess mana after reserving Counterspell"
+    ],
+    [
+      "com.wingedsheep.gym.sphinx.SphinxStageEPilotComponentTest",
+      "reconstructed-hybrid/P1 take the legal normal deployment window"
+    ],
+    [
+      "com.wingedsheep.gym.sphinx.SphinxStageEPilotComponentTest",
+      "reconstructed-hybrid/P2 wait outside the normal deployment window"
+    ],
+    [
+      "com.wingedsheep.gym.sphinx.SphinxStageEPilotComponentTest",
+      "reconstructed-hybrid/T1 the fresh higher cost controls the next cast"
+    ],
+    [
+      "com.wingedsheep.gym.sphinx.SphinxStageEPilotComponentTest",
+      "reconstructed-hybrid/T2 stale cheap offer is rejected before selection"
+    ],
+    [
+      "com.wingedsheep.gym.sphinx.SphinxStageEPilotComponentTest",
+      "reconstructed-v01/A1 select an offered public opposing stack target"
+    ],
+    [
+      "com.wingedsheep.gym.sphinx.SphinxStageEPilotComponentTest",
+      "reconstructed-v01/A2 no offered target means no counter cast"
+    ],
+    [
+      "com.wingedsheep.gym.sphinx.SphinxStageEPilotComponentTest",
+      "reconstructed-v01/C1 present resources support the current action"
+    ],
+    [
+      "com.wingedsheep.gym.sphinx.SphinxStageEPilotComponentTest",
+      "reconstructed-v01/C2 no credit for a future cleanup discard"
+    ],
+    [
+      "com.wingedsheep.gym.sphinx.SphinxStageEPilotComponentTest",
+      "reconstructed-v01/D1 safe self-mill then draw"
+    ],
+    [
+      "com.wingedsheep.gym.sphinx.SphinxStageEPilotComponentTest",
+      "reconstructed-v01/D2 stop before an impossible mandatory draw"
+    ],
+    [
+      "com.wingedsheep.gym.sphinx.SphinxStageEPilotComponentTest",
+      "reconstructed-v01/H1 typed own-public input round trip preserves the decision"
+    ],
+    [
+      "com.wingedsheep.gym.sphinx.SphinxStageEPilotComponentTest",
+      "reconstructed-v01/H2 undeclared hidden hand or future order is rejected"
+    ],
+    [
+      "com.wingedsheep.gym.sphinx.SphinxStageEPilotComponentTest",
+      "reconstructed-v01/I1 preserve affordable Counterspell over setup"
+    ],
+    [
+      "com.wingedsheep.gym.sphinx.SphinxStageEPilotComponentTest",
+      "reconstructed-v01/I2 use excess mana after reserving Counterspell"
+    ],
+    [
+      "com.wingedsheep.gym.sphinx.SphinxStageEPilotComponentTest",
+      "reconstructed-v01/P1 take the legal normal deployment window"
+    ],
+    [
+      "com.wingedsheep.gym.sphinx.SphinxStageEPilotComponentTest",
+      "reconstructed-v01/P2 wait outside the normal deployment window"
+    ],
+    [
+      "com.wingedsheep.gym.sphinx.SphinxStageEPilotComponentTest",
+      "reconstructed-v01/T1 the fresh higher cost controls the next cast"
+    ],
+    [
+      "com.wingedsheep.gym.sphinx.SphinxStageEPilotComponentTest",
+      "reconstructed-v01/T2 stale cheap offer is rejected before selection"
+    ],
+    [
+      "com.wingedsheep.gym.sphinx.SphinxStageEPilotComponentTest",
+      "serpico-terror-benchmark/A1 select an offered public opposing stack target"
+    ],
+    [
+      "com.wingedsheep.gym.sphinx.SphinxStageEPilotComponentTest",
+      "serpico-terror-benchmark/A2 no offered target means no counter cast"
+    ],
+    [
+      "com.wingedsheep.gym.sphinx.SphinxStageEPilotComponentTest",
+      "serpico-terror-benchmark/C1 present resources support the current action"
+    ],
+    [
+      "com.wingedsheep.gym.sphinx.SphinxStageEPilotComponentTest",
+      "serpico-terror-benchmark/C2 no credit for a future cleanup discard"
+    ],
+    [
+      "com.wingedsheep.gym.sphinx.SphinxStageEPilotComponentTest",
+      "serpico-terror-benchmark/D1 safe self-mill then draw"
+    ],
+    [
+      "com.wingedsheep.gym.sphinx.SphinxStageEPilotComponentTest",
+      "serpico-terror-benchmark/D2 stop before an impossible mandatory draw"
+    ],
+    [
+      "com.wingedsheep.gym.sphinx.SphinxStageEPilotComponentTest",
+      "serpico-terror-benchmark/H1 typed own-public input round trip preserves the decision"
+    ],
+    [
+      "com.wingedsheep.gym.sphinx.SphinxStageEPilotComponentTest",
+      "serpico-terror-benchmark/H2 undeclared hidden hand or future order is rejected"
+    ],
+    [
+      "com.wingedsheep.gym.sphinx.SphinxStageEPilotComponentTest",
+      "serpico-terror-benchmark/I1 preserve affordable Counterspell over setup"
+    ],
+    [
+      "com.wingedsheep.gym.sphinx.SphinxStageEPilotComponentTest",
+      "serpico-terror-benchmark/I2 use excess mana after reserving Counterspell"
+    ],
+    [
+      "com.wingedsheep.gym.sphinx.SphinxStageEPilotComponentTest",
+      "serpico-terror-benchmark/P1 take the legal normal deployment window"
+    ],
+    [
+      "com.wingedsheep.gym.sphinx.SphinxStageEPilotComponentTest",
+      "serpico-terror-benchmark/P2 wait outside the normal deployment window"
+    ],
+    [
+      "com.wingedsheep.gym.sphinx.SphinxStageEPilotComponentTest",
+      "serpico-terror-benchmark/T1 the fresh higher cost controls the next cast"
+    ],
+    [
+      "com.wingedsheep.gym.sphinx.SphinxStageEPilotComponentTest",
+      "serpico-terror-benchmark/T2 stale cheap offer is rejected before selection"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "10E (Tenth Edition): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "10E (Tenth Edition): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "5DN (Fifth Dawn): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "5DN (Fifth Dawn): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "8ED (Eighth Edition): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "8ED (Eighth Edition): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "AER (Aether Revolt): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "AER (Aether Revolt): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "AFR (Adventures in the Forgotten Realms): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "AFR (Adventures in the Forgotten Realms): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "AKH (Amonkhet): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "AKH (Amonkhet): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "ALA (Shards of Alara): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "ALA (Shards of Alara): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "ALL (Alliances): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "ALL (Alliances): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "ANB (Arena Beginner Set): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "ANB (Arena Beginner Set): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "APC (Apocalypse): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "APC (Apocalypse): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "ARB (Alara Reborn): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "ARB (Alara Reborn): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "ARC (Archenemy): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "ARC (Archenemy): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "ARN (Arabian Nights): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "ARN (Arabian Nights): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "ATQ (Antiquities): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "ATQ (Antiquities): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "AVR (Avacyn Restored): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "AVR (Avacyn Restored): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "BFZ (Battle for Zendikar): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "BFZ (Battle for Zendikar): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "BIG (The Big Score): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "BIG (The Big Score): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "BLB (Bloomburrow): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "BLB (Bloomburrow): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "BLC (Bloomburrow Commander): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "BLC (Bloomburrow Commander): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "BNG (Born of the Gods): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "BNG (Born of the Gods): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "BOK (Betrayers of Kamigawa): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "BOK (Betrayers of Kamigawa): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "BRO (The Brothers' War): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "BRO (The Brothers' War): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "C13 (Commander 2013): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "C13 (Commander 2013): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "C14 (Commander 2014): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "C14 (Commander 2014): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "C15 (Commander 2015): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "C15 (Commander 2015): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "C16 (Commander 2016): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "C16 (Commander 2016): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "C17 (Commander 2017): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "C17 (Commander 2017): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "C20 (Commander 2020): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "C20 (Commander 2020): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "CHK (Champions of Kamigawa): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "CHK (Champions of Kamigawa): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "CLB (Commander Legends: Battle for Baldur's Gate): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "CLB (Commander Legends: Battle for Baldur's Gate): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "CMD (Commander 2011): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "CMD (Commander 2011): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "CMR (Commander Legends): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "CMR (Commander Legends): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "CON (Conflux): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "CON (Conflux): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "CSP (Coldsnap): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "CSP (Coldsnap): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "DDF (Duel Decks: Elspeth vs. Tezzeret): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "DDF (Duel Decks: Elspeth vs. Tezzeret): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "DDL (Duel Decks: Heroes vs. Monsters): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "DDL (Duel Decks: Heroes vs. Monsters): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "DDP (Duel Decks: Zendikar vs. Eldrazi): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "DDP (Duel Decks: Zendikar vs. Eldrazi): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "DDQ (Duel Decks: Blessed vs. Cursed): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "DDQ (Duel Decks: Blessed vs. Cursed): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "DFT (Aetherdrift): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "DFT (Aetherdrift): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "DGM (Dragon's Maze): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "DGM (Dragon's Maze): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "DIS (Dissension): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "DIS (Dissension): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "DKA (Dark Ascension): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "DKA (Dark Ascension): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "DMU (Dominaria United): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "DMU (Dominaria United): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "DOM (Dominaria): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "DOM (Dominaria): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "DRB (From the Vault: Dragons): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "DRB (From the Vault: Dragons): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "DRK (The Dark): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "DRK (The Dark): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "DSK (Duskmourn: House of Horror): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "DSK (Duskmourn: House of Horror): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "DST (Darksteel): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "DST (Darksteel): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "DTK (Dragons of Tarkir): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "DTK (Dragons of Tarkir): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "ECL (Lorwyn Eclipsed): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "ECL (Lorwyn Eclipsed): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "ELD (Throne of Eldraine): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "ELD (Throne of Eldraine): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "EMN (Eldritch Moon): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "EMN (Eldritch Moon): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "EOE (Edge of Eternities): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "EOE (Edge of Eternities): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "EVE (Eventide): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "EVE (Eventide): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "EXO (Exodus): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "EXO (Exodus): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "FDN (Foundations): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "FDN (Foundations): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "FEM (Fallen Empires): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "FEM (Fallen Empires): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "FIN (Final Fantasy): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "FIN (Final Fantasy): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "FRA (Reality Fracture): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "FRA (Reality Fracture): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "FRF (Fate Reforged): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "FRF (Fate Reforged): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "FUT (Future Sight): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "FUT (Future Sight): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "GPT (Guildpact): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "GPT (Guildpact): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "GRN (Guilds of Ravnica): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "GRN (Guilds of Ravnica): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "GS1 (Global Series: Jiang Yanggu & Mu Yanling): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "GS1 (Global Series: Jiang Yanggu & Mu Yanling): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "GTC (Gatecrash): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "GTC (Gatecrash): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "HML (Homelands): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "HML (Homelands): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "HOB (The Hobbit): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "HOB (The Hobbit): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "HOP (Planechase): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "HOP (Planechase): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "HOU (Hour of Devastation): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "HOU (Hour of Devastation): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "ICE (Ice Age): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "ICE (Ice Age): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "IKO (Ikoria: Lair of Behemoths): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "IKO (Ikoria: Lair of Behemoths): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "INR (Innistrad Remastered): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "INR (Innistrad Remastered): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "INV (Invasion): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "INV (Invasion): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "ISD (Innistrad): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "ISD (Innistrad): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "J22 (Jumpstart 2022): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "J22 (Jumpstart 2022): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "JMP (Jumpstart): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "JMP (Jumpstart): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "JOU (Journey into Nyx): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "JOU (Journey into Nyx): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "JUD (Judgment): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "JUD (Judgment): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "KHC (Kaldheim Commander): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "KHC (Kaldheim Commander): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "KHM (Kaldheim): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "KHM (Kaldheim): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "KLD (Kaladesh): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "KLD (Kaladesh): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "KTK (Khans of Tarkir): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "KTK (Khans of Tarkir): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "LCI (The Lost Caverns of Ixalan): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "LCI (The Lost Caverns of Ixalan): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "LEA (Limited Edition Alpha): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "LEA (Limited Edition Alpha): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "LEB (Limited Edition Beta): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "LEB (Limited Edition Beta): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "LEG (Legends): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "LEG (Legends): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "LGN (Legions): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "LGN (Legions): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "LRW (Lorwyn): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "LRW (Lorwyn): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "LTR (The Lord of the Rings: Tales of Middle-earth): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "LTR (The Lord of the Rings: Tales of Middle-earth): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "M10 (Magic 2010): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "M10 (Magic 2010): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "M11 (Magic 2011): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "M11 (Magic 2011): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "M12 (Magic 2012): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "M12 (Magic 2012): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "M13 (Magic 2013): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "M13 (Magic 2013): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "M14 (Magic 2014): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "M14 (Magic 2014): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "M15 (Magic 2015): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "M15 (Magic 2015): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "M19 (Core Set 2019): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "M19 (Core Set 2019): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "M20 (Core Set 2020): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "M20 (Core Set 2020): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "M21 (Core Set 2021): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "M21 (Core Set 2021): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "MBS (Mirrodin Besieged): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "MBS (Mirrodin Besieged): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "MH1 (Modern Horizons): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "MH1 (Modern Horizons): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "MH2 (Modern Horizons 2): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "MH2 (Modern Horizons 2): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "MH3 (Modern Horizons 3): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "MH3 (Modern Horizons 3): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "MID (Innistrad: Midnight Hunt): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "MID (Innistrad: Midnight Hunt): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "MIR (Mirage): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "MIR (Mirage): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "MKM (Murders at Karlov Manor): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "MKM (Murders at Karlov Manor): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "MMQ (Mercadian Masques): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "MMQ (Mercadian Masques): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "MOM (March of the Machine): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "MOM (March of the Machine): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "MOR (Morningtide): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "MOR (Morningtide): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "MRD (Mirrodin): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "MRD (Mirrodin): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "MSC (Marvel Super Heroes Commander): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "MSC (Marvel Super Heroes Commander): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "MSH (Marvel Super Heroes): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "MSH (Marvel Super Heroes): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "NCC (New Capenna Commander): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "NCC (New Capenna Commander): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "NEM (Nemesis): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "NEM (Nemesis): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "NEO (Kamigawa: Neon Dynasty): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "NEO (Kamigawa: Neon Dynasty): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "NPH (New Phyrexia): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "NPH (New Phyrexia): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "OANA (Arena New Player Experience Cards): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "OANA (Arena New Player Experience Cards): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "ODY (Odyssey): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "ODY (Odyssey): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "OGW (Oath of the Gatewatch): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "OGW (Oath of the Gatewatch): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "ONE (Phyrexia: All Will Be One): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "ONE (Phyrexia: All Will Be One): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "ONS (Onslaught): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "ONS (Onslaught): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "ORI (Magic Origins): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "ORI (Magic Origins): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "OTJ (Outlaws of Thunder Junction): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "OTJ (Outlaws of Thunder Junction): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "P02 (Portal Second Age): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "P02 (Portal Second Age): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "PC2 (Planechase 2012): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "PC2 (Planechase 2012): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "PCY (Prophecy): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "PCY (Prophecy): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "PLC (Planar Chaos): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "PLC (Planar Chaos): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "PLS (Planeshift): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "PLS (Planeshift): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "POR (Portal): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "POR (Portal): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "PTK (Portal Three Kingdoms): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "PTK (Portal Three Kingdoms): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "PZ2 (Treasure Chest): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "PZ2 (Treasure Chest): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "RAV (Ravnica: City of Guilds): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "RAV (Ravnica: City of Guilds): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "RIX (Rivals of Ixalan): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "RIX (Rivals of Ixalan): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "RNA (Ravnica Allegiance): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "RNA (Ravnica Allegiance): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "ROE (Rise of the Eldrazi): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "ROE (Rise of the Eldrazi): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "RTR (Return to Ravnica): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "RTR (Return to Ravnica): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "S99 (Starter 1999): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "S99 (Starter 1999): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "SCG (Scourge): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "SCG (Scourge): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "SHM (Shadowmoor): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "SHM (Shadowmoor): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "SNC (Streets of New Capenna): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "SNC (Streets of New Capenna): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "SOI (Shadows over Innistrad): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "SOI (Shadows over Innistrad): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "SOK (Saviors of Kamigawa): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "SOK (Saviors of Kamigawa): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "SOM (Scars of Mirrodin): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "SOM (Scars of Mirrodin): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "SOS (Secrets of Strixhaven): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "SOS (Secrets of Strixhaven): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "SPM (Marvel's Spider-Man): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "SPM (Marvel's Spider-Man): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "STH (Stronghold): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "STH (Stronghold): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "STX (Strixhaven: School of Mages): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "STX (Strixhaven: School of Mages): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "TDM (Tarkir: Dragonstorm): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "TDM (Tarkir: Dragonstorm): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "THB (Theros Beyond Death): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "THB (Theros Beyond Death): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "THS (Theros): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "THS (Theros): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "TLA (Avatar: The Last Airbender): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "TLA (Avatar: The Last Airbender): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "TLE (Avatar: The Last Airbender Eternal): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "TLE (Avatar: The Last Airbender Eternal): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "TMC (Teenage Mutant Ninja Turtles Eternal): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "TMC (Teenage Mutant Ninja Turtles Eternal): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "TMP (Tempest): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "TMP (Tempest): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "TMT (Teenage Mutant Ninja Turtles): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "TMT (Teenage Mutant Ninja Turtles): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "TOR (Torment): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "TOR (Torment): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "TRC (Star Trek Commander): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "TRC (Star Trek Commander): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "TSP (Time Spiral): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "TSP (Time Spiral): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "UDS (Urza's Destiny): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "UDS (Urza's Destiny): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "ULG (Urza's Legacy): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "ULG (Urza's Legacy): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "USG (Urza's Saga): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "USG (Urza's Saga): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "VIS (Visions): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "VIS (Visions): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "VOC (Innistrad: Crimson Vow Commander): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "VOC (Innistrad: Crimson Vow Commander): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "VOW (Innistrad: Crimson Vow): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "VOW (Innistrad: Crimson Vow): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "WAR (War of the Spark): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "WAR (War of the Spark): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "WOE (Wilds of Eldraine): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "WOE (Wilds of Eldraine): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "WTH (Weatherlight): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "WTH (Weatherlight): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "WWK (Worldwake): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "WWK (Worldwake): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "XLN (Ixalan): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "XLN (Ixalan): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "ZEN (Zendikar): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "ZEN (Zendikar): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "ZNR (Zendikar Rising): card trees match golden"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "ZNR (Zendikar Rising): cards survive a JSON round-trip"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardLintTest",
+      "every card's pipeline variables, target bindings, and choice slots resolve"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardLintTest",
+      "print lint warnings for review (never fails)"
+    ],
+    [
+      "com.wingedsheep.mtg.sets.CardLintTest",
+      "the lint allowlist contains no stale entries"
+    ],
+    [
+      "com.wingedsheep.sdk.serialization.CardLinterTest",
+      "It: accepts a KICKED read when a kicker effect is declared"
+    ],
+    [
+      "com.wingedsheep.sdk.serialization.CardLinterTest",
+      "It: accepts a TargetChooser.Opponent target on a triggered ability (Mausoleum Turnkey)"
+    ],
+    [
+      "com.wingedsheep.sdk.serialization.CardLinterTest",
+      "It: accepts a TargetChooser.Opponent target on an activated ability (Cuombajj Witches)"
+    ],
+    [
+      "com.wingedsheep.sdk.serialization.CardLinterTest",
+      "It: accepts a creature's own printed ward, which is the correct fix"
+    ],
+    [
+      "com.wingedsheep.sdk.serialization.CardLinterTest",
+      "It: accepts a lord-style grant with an explicit battlefield-scoped filter"
+    ],
+    [
+      "com.wingedsheep.sdk.serialization.CardLinterTest",
+      "It: accepts a mana ability that looks at the top of the library and puts it back"
+    ],
+    [
+      "com.wingedsheep.sdk.serialization.CardLinterTest",
+      "It: accepts a mana ability whose cost exiles from a graveyard"
+    ],
+    [
+      "com.wingedsheep.sdk.serialization.CardLinterTest",
+      "It: accepts a mana ability with a scry rider"
+    ],
+    [
+      "com.wingedsheep.sdk.serialization.CardLinterTest",
+      "It: accepts a per-slot BoundVariable on a multi-slot requirement"
+    ],
+    [
+      "com.wingedsheep.sdk.serialization.CardLinterTest",
+      "It: accepts a plain tap-for-mana ability flagged as one"
+    ],
+    [
+      "com.wingedsheep.sdk.serialization.CardLinterTest",
+      "It: accepts a well-formed gather \u2192 select \u2192 move pipeline"
+    ],
+    [
+      "com.wingedsheep.sdk.serialization.CardLinterTest",
+      "It: accepts indexed BoundVariable names against the base id"
+    ],
+    [
+      "com.wingedsheep.sdk.serialization.CardLinterTest",
+      "It: accepts the dispatched roles, including EquippedCreature (no facade names it)"
+    ],
+    [
+      "com.wingedsheep.sdk.serialization.CardLinterTest",
+      "It: accepts the same grant on an Aura, where attach scope is the point"
+    ],
+    [
+      "com.wingedsheep.sdk.serialization.CardLinterTest",
+      "It: accepts the same grant on an Equipment"
+    ],
+    [
+      "com.wingedsheep.sdk.serialization.CardLinterTest",
+      "It: accepts the trigger-side choosers on a triggered ability (Quicksilver Fountain)"
+    ],
+    [
+      "com.wingedsheep.sdk.serialization.CardLinterTest",
+      "It: an atomic source-and-exact-cards action publishes its success collection"
+    ],
+    [
+      "com.wingedsheep.sdk.serialization.CardLinterTest",
+      "It: bridges a collection write to its _count numeric read"
+    ],
+    [
+      "com.wingedsheep.sdk.serialization.CardLinterTest",
+      "It: connects cast-time additional-cost stores to the spell effect"
+    ],
+    [
+      "com.wingedsheep.sdk.serialization.CardLinterTest",
+      "It: does not ask an ability disqualified by its cost to be flagged"
+    ],
+    [
+      "com.wingedsheep.sdk.serialization.CardLinterTest",
+      "It: does not flag a creature that transforms into an Aura on its back face"
+    ],
+    [
+      "com.wingedsheep.sdk.serialization.CardLinterTest",
+      "It: does not flag attach scope nested inside an effect that first makes it an Equipment"
+    ],
+    [
+      "com.wingedsheep.sdk.serialization.CardLinterTest",
+      "It: flags a BoundVariable that matches no requirement id"
+    ],
+    [
+      "com.wingedsheep.sdk.serialization.CardLinterTest",
+      "It: flags a TargetChooser.Opponent target on a spell \u2014 the controller would pick it"
+    ],
+    [
+      "com.wingedsheep.sdk.serialization.CardLinterTest",
+      "It: flags a bare BoundVariable on a multi-slot requirement"
+    ],
+    [
+      "com.wingedsheep.sdk.serialization.CardLinterTest",
+      "It: flags a creature whose ward grant kept the default attached-creature filter"
+    ],
+    [
+      "com.wingedsheep.sdk.serialization.CardLinterTest",
+      "It: flags a mana ability that gathers from a library and casts what it found"
+    ],
+    [
+      "com.wingedsheep.sdk.serialization.CardLinterTest",
+      "It: flags a mana ability that is also a loyalty ability"
+    ],
+    [
+      "com.wingedsheep.sdk.serialization.CardLinterTest",
+      "It: flags a mana ability that looks at the top of the library and keeps a card"
+    ],
+    [
+      "com.wingedsheep.sdk.serialization.CardLinterTest",
+      "It: flags a mana ability that mills as part of its effect"
+    ],
+    [
+      "com.wingedsheep.sdk.serialization.CardLinterTest",
+      "It: flags a mana ability that puts a card from hand on top of the library"
+    ],
+    [
+      "com.wingedsheep.sdk.serialization.CardLinterTest",
+      "It: flags a mana ability that requires a target"
+    ],
+    [
+      "com.wingedsheep.sdk.serialization.CardLinterTest",
+      "It: flags a mana ability that searches its library"
+    ],
+    [
+      "com.wingedsheep.sdk.serialization.CardLinterTest",
+      "It: flags a mana ability whose cost exiles from a library"
+    ],
+    [
+      "com.wingedsheep.sdk.serialization.CardLinterTest",
+      "It: flags a mana ability whose cost mills"
+    ],
+    [
+      "com.wingedsheep.sdk.serialization.CardLinterTest",
+      "It: flags a mana ability whose effect draws a card"
+    ],
+    [
+      "com.wingedsheep.sdk.serialization.CardLinterTest",
+      "It: flags a read whose writer lives in a different ability as a warning"
+    ],
+    [
+      "com.wingedsheep.sdk.serialization.CardLinterTest",
+      "It: flags a slot read with no declaration"
+    ],
+    [
+      "com.wingedsheep.sdk.serialization.CardLinterTest",
+      "It: flags a store nothing reads as a warning"
+    ],
+    [
+      "com.wingedsheep.sdk.serialization.CardLinterTest",
+      "It: flags a trigger-side chooser on a spell \u2014 nothing would route it"
+    ],
+    [
+      "com.wingedsheep.sdk.serialization.CardLinterTest",
+      "It: flags a typo'd collection read as an error with a suggestion"
+    ],
+    [
+      "com.wingedsheep.sdk.serialization.CardLinterTest",
+      "It: flags an entity role the ConditionEvaluator doesn't dispatch \u2014 a silent constant false"
+    ],
+    [
+      "com.wingedsheep.sdk.serialization.CardLinterTest",
+      "It: scopes a granted ability's ContextTarget to the granted ability"
+    ],
+    [
+      "com.wingedsheep.sdk.serialization.CardLinterTest",
+      "It: still asks a plain unflagged tap-for-mana ability to be flagged"
+    ]
+  ],
+  "prior_shared_skips": [
+    [
+      "com.wingedsheep.ai.arena.ArenaBenchmark",
+      "arena: gauntlet"
+    ],
+    [
+      "com.wingedsheep.ai.arena.ArenaBenchmark",
+      "arena: head to head"
+    ],
+    [
+      "com.wingedsheep.ai.arena.ArenaBenchmark",
+      "arena: multiplayer pod"
+    ],
+    [
+      "com.wingedsheep.ai.arena.ArenaBudgetScalingTest",
+      "budget scaling: strength is monotone in the decision budget"
+    ],
+    [
+      "com.wingedsheep.ai.engine.AdvisorBenchmark",
+      "advisor benchmark: advised vs generic AI (10 game pairs)"
+    ],
+    [
+      "com.wingedsheep.ai.engine.GameBenchmark",
+      "benchmark: 10 AI-vs-AI games in parallel (random sealed decks)"
+    ],
+    [
+      "com.wingedsheep.ai.engine.RandomActionBenchmark",
+      "benchmark: 10 random-action games in parallel (POR)"
+    ],
+    [
+      "com.wingedsheep.ai.engine.SimulationThroughputBenchmark",
+      "benchmark: simulation throughput over 10 AI games (POR)"
+    ],
+    [
+      "com.wingedsheep.ai.engine.StateCloneBenchmark",
+      "state clone/modify microbenchmark"
+    ],
+    [
+      "com.wingedsheep.ai.puzzles.PuzzleComparisonBenchmark",
+      "puzzles: profile comparison"
+    ],
+    [
+      "com.wingedsheep.ai.training.EclTrainingBenchmark",
+      "collect clean replayable ECL decision games"
+    ],
+    [
+      "com.wingedsheep.gameserver.ai.benchmark.AIBenchmark",
+      "AI benchmark (10 game pairs)"
+    ],
+    [
+      "com.wingedsheep.gameserver.replay.CompactReplaySizeBenchmark",
+      "compact replay size over 10 random games (POR)"
+    ],
+    [
+      "com.wingedsheep.gameserver.replay.ReplayDivergenceReproTest",
+      "a persistent yield set mid-game is captured and reproduced on reconstruction"
+    ],
+    [
+      "com.wingedsheep.gameserver.replay.ReplayDivergenceReproTest",
+      "recorded games reconstruct to the full frame stream (no truncation)"
+    ],
+    [
+      "com.wingedsheep.gym.BatshitEconomicsPreboardSmokeTest",
+      "five seeded preboard Argentum agent self-play games"
+    ],
+    [
+      "com.wingedsheep.gym.PestControlGoldfishTest",
+      "Pest Control v1.0 Goldfish Sample 1 fresh performance sample"
+    ],
+    [
+      "com.wingedsheep.gym.PestControlGoldfishTest",
+      "Pest Control v1.0 Goldfish Sample 1 untouched performance vector"
+    ],
+    [
+      "com.wingedsheep.gym.PestControlGoldfishTest",
+      "Pest Control v1.0 Goldfish Sample 2 Take 2 independent replication"
+    ],
+    [
+      "com.wingedsheep.gym.PestControlGoldfishTest",
+      "Pest Control v1.0 Goldfish Sample 2 Take 3 independent replication"
+    ],
+    [
+      "com.wingedsheep.gym.PestControlGoldfishTest",
+      "Pest Control v1.0 Goldfish Sample 2 Take 4 independent replication"
+    ],
+    [
+      "com.wingedsheep.gym.PestControlGoldfishTest",
+      "Pest Control v1.0 Goldfish Sample 2 Take 5 independent replication"
+    ],
+    [
+      "com.wingedsheep.gym.PestControlGoldfishTest",
+      "Pest Control v1.0 Goldfish Sample 2 Take 6 independent replication"
+    ],
+    [
+      "com.wingedsheep.gym.PestControlGoldfishTest",
+      "Pest Control v1.0 Goldfish Sample 2 Take 7 independent replication"
+    ],
+    [
+      "com.wingedsheep.gym.PestControlGoldfishTest",
+      "Pest Control v1.0 Goldfish Sample 2 Take 8 independent replication"
+    ],
+    [
+      "com.wingedsheep.gym.PestControlGoldfishTest",
+      "Pest Control v1.0 Goldfish Sample 2 independent replication"
+    ],
+    [
+      "com.wingedsheep.gym.PestControlGoldfishTest",
+      "Pest Control v1.0 fresh Goldfish Sample 1"
+    ],
+    [
+      "com.wingedsheep.gym.PestControlGoldfishTest",
+      "Pest Control v1.0 rejected Sample 1 regression replay"
+    ],
+    [
+      "com.wingedsheep.gym.PestControlGoldfishTest",
+      "reproduce rejected Pest Control Game 25 Scion provenance"
+    ],
+    [
+      "com.wingedsheep.gym.PestControlMatchupBlockARunnerTest",
+      "execute frozen Pest Control versus Mono Red Madness Block A exactly once"
+    ],
+    [
+      "com.wingedsheep.gym.PestControlTierOneGrixisComposedValidationTest",
+      "official artifact validates while synthetic shadow executes through complete stack"
+    ],
+    [
+      "com.wingedsheep.gym.PestControlTierOneGrixisDisabledOfficialArtifactLoaderTest",
+      "authorized validation reads exact official bytes without exposing or consuming seeds"
+    ],
+    [
+      "com.wingedsheep.gym.PestControlTierOneGrixisOfficialExecutionRunnerTest",
+      "execute frozen Grixis four-game vector exactly once"
+    ],
+    [
+      "com.wingedsheep.gym.PestControlTierOneGrixisReplicationOfficialArtifactValidationTest",
+      "exact frozen twelve-game replication artifact validates without gameplay"
+    ],
+    [
+      "com.wingedsheep.gym.PestControlTierOneGrixisReplicationOfficialExecutionRunnerTest",
+      "execute frozen Grixis twelve-game replication vector exactly once"
+    ],
+    [
+      "com.wingedsheep.gym.PestControlTierOneGrixisSalvageContinuationOfficialArtifactValidationTest",
+      "exact frozen artifact exposes only untouched Games 2 through 12 to continuation"
+    ],
+    [
+      "com.wingedsheep.gym.PestControlTierOneGrixisSalvageContinuationOfficialExecutionRunnerTest",
+      "execute untouched Grixis Games 2 through 12 exactly once"
+    ],
+    [
+      "com.wingedsheep.gym.PestControlTierOneMonoBlueTerrorComposedValidationTest",
+      "official frozen input validates while synthetic shadow runs through full stack"
+    ],
+    [
+      "com.wingedsheep.gym.PestControlTierOneMonoBlueTerrorOfficialExecutionRunnerTest",
+      "execute frozen Mono-Blue Terror four-game vector exactly once"
+    ],
+    [
+      "com.wingedsheep.gym.PestControlTierOneMonoBlueTerrorReplicationOfficialArtifactValidationTest",
+      "exact frozen twelve-game Terror replication artifact validates without gameplay"
+    ],
+    [
+      "com.wingedsheep.gym.PestControlTierOneMonoBlueTerrorReplicationOfficialExecutionRunnerTest",
+      "execute frozen Mono-Blue Terror twelve-game replication exactly once"
+    ],
+    [
+      "com.wingedsheep.gym.PestControlTierOneMonsterTronOfficialExecutionRunnerTest",
+      "execute the four frozen Monster Tron assignments through the sealed one-shot boundary"
+    ],
+    [
+      "com.wingedsheep.gym.PestControlTierOneMonsterTronOneShotBoundaryTest",
+      "pinned official bytes satisfy sealed binding without initialization"
+    ],
+    [
+      "com.wingedsheep.gym.PestControlV2OfficialExecutionRunnerTest",
+      "validate or execute the frozen V2 official block through the fail-closed coordinator"
+    ],
+    [
+      "com.wingedsheep.gym.PestControlV2OfficialSeedFreezeGeneratorTest",
+      "generate and quarantine exactly ten V2 official seeds without gameplay"
+    ],
+    [
+      "com.wingedsheep.gym.PestControlV2QualificationHarnessValidationTest",
+      "validate exact frozen qualification inputs without initializing a game"
+    ],
+    [
+      "com.wingedsheep.gym.PestControlV2QualificationReconcilerTest",
+      "reconcile both exact qualification shards into one fail-closed block"
+    ],
+    [
+      "com.wingedsheep.gym.PestControlV2QualificationShardRunnerTest",
+      "validate or run one exact qualification shard through the fail-closed coordinator"
+    ],
+    [
+      "com.wingedsheep.gym.PestControlV2QualifyingSmokeTest",
+      "one production Pest versus SoterX game reaches a legitimate audited terminal"
+    ],
+    [
+      "com.wingedsheep.tooling.coverage.EmitterSmokeTest",
+      "Portal renders a high rate of whole, well-formed cards"
+    ],
+    [
+      "com.wingedsheep.tooling.coverage.dashboard.DashboardTest",
+      "Analyzer classifies a set's cards into a partition that sums to the whole"
+    ],
+    [
+      "com.wingedsheep.tooling.coverage.dashboard.DashboardTest",
+      "cross-set index carries the blocked cards behind each ranked capability"
+    ]
+  ],
+  "prior_shared_original_archives": [
+    {
+      "name": "ci-scenarios-2023-24.zip",
+      "sha256": "285b5817df069f32ce449a54b9558065e5e8918dc80e6b9332606ee34d519379"
+    },
+    {
+      "name": "ci-scenarios-2025-26.zip",
+      "sha256": "f206d5718fe4055889b2d344b0b2ad1e85e304a1546569353b4835bdd0d9de97"
+    },
+    {
+      "name": "ci-tools.zip",
+      "sha256": "f34b149bf67b9aa9ccecb08c34d168476c2ca744e53b52e2eff5e182937562dd"
+    },
+    {
+      "name": "ci-engine.zip",
+      "sha256": "249edcf655f74fbca247cf117079f3789c43bfb496b7074c5c3d2b8d922c1a74"
+    },
+    {
+      "name": "ci-server.zip",
+      "sha256": "68f381a597752dc9ca6130007f6f54ad32992fd056a9af5cd77379f5ef51309d"
+    },
+    {
+      "name": "ci-scenarios-old.zip",
+      "sha256": "119ee449bb7ce401f81439ae116a2aeeb1f3fd5670262e4a294f23dce3e1ece3"
+    },
+    {
+      "name": "ci-content.zip",
+      "sha256": "ce758d0920ed1d6adb6ad845b3283f90c08bd82a21920962a1ecd4c74f147e8a"
+    }
+  ],
+  "scope": "Derived identity lists decoded from retained original ZIPs; these are not replacement raw XML or new execution."
+}

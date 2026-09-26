@@ -1,0 +1,755 @@
+{
+  "schema": "sphinx-full-ci-author-raw-audit-v1",
+  "auditor": "/root/sphinx",
+  "auditor_is_control_author": true,
+  "status": "PASS_FRESH_STANDARD_CI_PENDING_INDEPENDENT_RAW_REVIEW",
+  "source": {
+    "head": "a0c5b995c2829c0b4069562b1f1eede8a820dd97",
+    "tree": "1ee5590bacf2f6507fff6487be9d3e20df8b5e40",
+    "status": ""
+  },
+  "control_head": "c13b3c84cb30850beca23620b2de53d7a35f7391",
+  "control_tree": "97785f31fe68efdd50769c3c153c958ba7e3f3c8",
+  "run": 36277074660,
+  "attempt": 1,
+  "groups": [
+    {
+      "group": "tools",
+      "artifact_id": 10918010917,
+      "artifact_bytes": 443596,
+      "artifact_sha256": "41226b2d59c97253082046c7de314a43b05f35889332ba7850f381eb0a05dad2",
+      "zip_members": 176,
+      "crc": "PASS",
+      "commands": [
+        {
+          "command": [
+            "scripts/gradle-locked",
+            ":gym:test",
+            ":gym-server:test",
+            ":gym-trainer:test",
+            ":mtgish-tooling:test",
+            "--rerun-tasks",
+            "--no-build-cache",
+            "--info",
+            "--stacktrace",
+            "--continue",
+            "--max-workers=1",
+            "-PkotlinCompileParallelism=1",
+            "-Pkotlin.compiler.execution.strategy=in-process",
+            "-Dorg.gradle.jvmargs=-Xmx4g"
+          ],
+          "cwd": "source",
+          "started_ns": 1790462810654343175,
+          "owned_process_group": 2260,
+          "exit_status": 0,
+          "finished_ns": 1790463610125379689,
+          "log_sha256": "8168044407624a6913d8001a4122cb6e0fa39f99d186cea09a10134927306866"
+        }
+      ],
+      "modules": [
+        {
+          "task": ":gym:test",
+          "suites": 143,
+          "testcase_records": 650,
+          "skipped": 34
+        },
+        {
+          "task": ":gym-server:test",
+          "suites": 2,
+          "testcase_records": 11,
+          "skipped": 0
+        },
+        {
+          "task": ":gym-trainer:test",
+          "suites": 5,
+          "testcase_records": 23,
+          "skipped": 0
+        },
+        {
+          "task": ":mtgish-tooling:test",
+          "suites": 20,
+          "testcase_records": 147,
+          "skipped": 3
+        }
+      ],
+      "fresh_test_workers": 4,
+      "lock_fallback_observed": true
+    },
+    {
+      "group": "engine",
+      "artifact_id": 10917950528,
+      "artifact_bytes": 859298,
+      "artifact_sha256": "81ef0016d98e19a0d624dcfffc6f8a0ac7822de4357c74d2036a43177cb9ba38",
+      "zip_members": 607,
+      "crc": "PASS",
+      "commands": [
+        {
+          "command": [
+            "scripts/gradle-locked",
+            ":rules-engine:test",
+            "--rerun-tasks",
+            "--no-build-cache",
+            "--info",
+            "--stacktrace",
+            "--continue",
+            "--max-workers=1",
+            "-PkotlinCompileParallelism=1",
+            "-Pkotlin.compiler.execution.strategy=in-process",
+            "-Dorg.gradle.jvmargs=-Xmx4g"
+          ],
+          "cwd": "source",
+          "started_ns": 1790462859713484774,
+          "owned_process_group": 2261,
+          "exit_status": 0,
+          "finished_ns": 1790463258752280061,
+          "log_sha256": "558dcd021a67e090f99687f26f06a061a652ef088d2e69f3dd6d86098ac17cf7"
+        }
+      ],
+      "modules": [
+        {
+          "task": ":rules-engine:test",
+          "suites": 601,
+          "testcase_records": 3735,
+          "skipped": 0
+        }
+      ],
+      "fresh_test_workers": 1,
+      "lock_fallback_observed": true
+    },
+    {
+      "group": "server",
+      "artifact_id": 10917910691,
+      "artifact_bytes": 571328,
+      "artifact_sha256": "84414ec78dccc678f3f5a97c10de0ee1c758426f1385f44965e1d6fa85152c19",
+      "zip_members": 87,
+      "crc": "PASS",
+      "commands": [
+        {
+          "command": [
+            "scripts/gradle-locked",
+            ":game-server:test",
+            "--rerun-tasks",
+            "--no-build-cache",
+            "--info",
+            "--stacktrace",
+            "--continue",
+            "--max-workers=1",
+            "-PkotlinCompileParallelism=1",
+            "-Pkotlin.compiler.execution.strategy=in-process",
+            "-Dorg.gradle.jvmargs=-Xmx4g"
+          ],
+          "cwd": "source",
+          "started_ns": 1790462830413470180,
+          "owned_process_group": 2228,
+          "exit_status": 0,
+          "finished_ns": 1790463294125968551,
+          "log_sha256": "167732b5dad94745f79ca0d468995b32b950bc9cbad7d0a098e78137dbabbf48"
+        }
+      ],
+      "modules": [
+        {
+          "task": ":game-server:test",
+          "suites": 81,
+          "testcase_records": 560,
+          "skipped": 4
+        }
+      ],
+      "fresh_test_workers": 1,
+      "lock_fallback_observed": true
+    },
+    {
+      "group": "scenarios-2023-24",
+      "artifact_id": 10917900890,
+      "artifact_bytes": 1158578,
+      "artifact_sha256": "d7de15e3eab46820070a51f9f5ed255063d07382321f01542d83b3f86fb2420b",
+      "zip_members": 1130,
+      "crc": "PASS",
+      "commands": [
+        {
+          "command": [
+            "scripts/gradle-locked",
+            ":mtg-sets:2023:tests:test",
+            ":mtg-sets:2024:tests:test",
+            "--rerun-tasks",
+            "--no-build-cache",
+            "--info",
+            "--stacktrace",
+            "--continue",
+            "--max-workers=1",
+            "-PkotlinCompileParallelism=1",
+            "-Pkotlin.compiler.execution.strategy=in-process",
+            "-Dorg.gradle.jvmargs=-Xmx4g"
+          ],
+          "cwd": "source",
+          "started_ns": 1790462890316500577,
+          "owned_process_group": 2475,
+          "exit_status": 0,
+          "finished_ns": 1790463390480648652,
+          "log_sha256": "01362816f3e6fabc8fea8b86c97eaba7c5132a2ca500d4e2d2783afbdd334961"
+        }
+      ],
+      "modules": [
+        {
+          "task": ":mtg-sets:2023:tests:test",
+          "suites": 404,
+          "testcase_records": 1283,
+          "skipped": 0
+        },
+        {
+          "task": ":mtg-sets:2024:tests:test",
+          "suites": 720,
+          "testcase_records": 2052,
+          "skipped": 0
+        }
+      ],
+      "fresh_test_workers": 2,
+      "lock_fallback_observed": true
+    },
+    {
+      "group": "scenarios-old",
+      "artifact_id": 10917353341,
+      "artifact_bytes": 1366431,
+      "artifact_sha256": "16f5d727b4803d9aa4d2307694eebe446c32d7a5ccc32b11c59f27634b10f64f",
+      "zip_members": 1413,
+      "crc": "PASS",
+      "commands": [
+        {
+          "command": [
+            "scripts/gradle-locked",
+            ":mtg-sets:1993-1999:tests:test",
+            ":mtg-sets:2000-2002:tests:test",
+            ":mtg-sets:2003-2007:tests:test",
+            ":mtg-sets:2008-2016:tests:test",
+            ":mtg-sets:2017-2022:tests:test",
+            "--rerun-tasks",
+            "--no-build-cache",
+            "--info",
+            "--stacktrace",
+            "--continue",
+            "--max-workers=1",
+            "-PkotlinCompileParallelism=1",
+            "-Pkotlin.compiler.execution.strategy=in-process",
+            "-Dorg.gradle.jvmargs=-Xmx4g"
+          ],
+          "cwd": "source",
+          "started_ns": 1790462785253863731,
+          "owned_process_group": 2367,
+          "exit_status": 0,
+          "finished_ns": 1790463366427033636,
+          "log_sha256": "1b265b26226d6243b872e6cafc9b87f66a872f47286e2bf9c5c65ed572deef15"
+        }
+      ],
+      "modules": [
+        {
+          "task": ":mtg-sets:1993-1999:tests:test",
+          "suites": 249,
+          "testcase_records": 703,
+          "skipped": 0
+        },
+        {
+          "task": ":mtg-sets:2000-2002:tests:test",
+          "suites": 162,
+          "testcase_records": 612,
+          "skipped": 0
+        },
+        {
+          "task": ":mtg-sets:2003-2007:tests:test",
+          "suites": 426,
+          "testcase_records": 1406,
+          "skipped": 0
+        },
+        {
+          "task": ":mtg-sets:2008-2016:tests:test",
+          "suites": 206,
+          "testcase_records": 565,
+          "skipped": 0
+        },
+        {
+          "task": ":mtg-sets:2017-2022:tests:test",
+          "suites": 364,
+          "testcase_records": 1030,
+          "skipped": 0
+        }
+      ],
+      "fresh_test_workers": 5,
+      "lock_fallback_observed": true
+    },
+    {
+      "group": "frontend",
+      "artifact_id": 10917299879,
+      "artifact_bytes": 13113,
+      "artifact_sha256": "b4440948dbef1afc9ae342741365b8ad93ae2689ba67fe16881118c6d02f0331",
+      "zip_members": 10,
+      "crc": "PASS",
+      "commands": [
+        {
+          "command": [
+            "npm",
+            "ci"
+          ],
+          "cwd": "source/web-client",
+          "started_ns": 1790462908789973880,
+          "owned_process_group": 2237,
+          "exit_status": 0,
+          "finished_ns": 1790462913351695711,
+          "log_sha256": "81f5ebcc8c2b6c5b02738f8aef9df4d417dbf93d66fe32067b24f93ebcfcb77b"
+        },
+        {
+          "command": [
+            "npm",
+            "run",
+            "typecheck"
+          ],
+          "cwd": "source/web-client",
+          "started_ns": 1790462913352211038,
+          "owned_process_group": 2263,
+          "exit_status": 0,
+          "finished_ns": 1790462925468720651,
+          "log_sha256": "b464dd0483f6c9090a6b680fe9582ccb8ac827c9035d17da48848f9304b10d72"
+        },
+        {
+          "command": [
+            "npm",
+            "run",
+            "build"
+          ],
+          "cwd": "source/web-client",
+          "started_ns": 1790462925469185694,
+          "owned_process_group": 2283,
+          "exit_status": 0,
+          "finished_ns": 1790462939185385534,
+          "log_sha256": "6adfeeea0bfc635b3149d8f6b05ef3c2a52313790fbf7d60c8934798fa176131"
+        }
+      ],
+      "modules": []
+    },
+    {
+      "group": "scenarios-2025-26",
+      "artifact_id": 10917108919,
+      "artifact_bytes": 1087253,
+      "artifact_sha256": "f1ae0457d8c7c0007ba4c3d7c27a65544d062df30ab4d67cb39756dd59cd35c5",
+      "zip_members": 1050,
+      "crc": "PASS",
+      "commands": [
+        {
+          "command": [
+            "scripts/gradle-locked",
+            ":mtg-sets:2025:tests:test",
+            ":mtg-sets:2026:tests:test",
+            "--rerun-tasks",
+            "--no-build-cache",
+            "--info",
+            "--stacktrace",
+            "--continue",
+            "--max-workers=1",
+            "-PkotlinCompileParallelism=1",
+            "-Pkotlin.compiler.execution.strategy=in-process",
+            "-Dorg.gradle.jvmargs=-Xmx4g"
+          ],
+          "cwd": "source",
+          "started_ns": 1790462770259072110,
+          "owned_process_group": 2385,
+          "exit_status": 0,
+          "finished_ns": 1790463253037560358,
+          "log_sha256": "dc8784ea86adb3c297676cf7eb52216b189dc67819daebf502f1fc0303ec0caa"
+        }
+      ],
+      "modules": [
+        {
+          "task": ":mtg-sets:2025:tests:test",
+          "suites": 591,
+          "testcase_records": 1606,
+          "skipped": 0
+        },
+        {
+          "task": ":mtg-sets:2026:tests:test",
+          "suites": 453,
+          "testcase_records": 1342,
+          "skipped": 0
+        }
+      ],
+      "fresh_test_workers": 2,
+      "lock_fallback_observed": true
+    },
+    {
+      "group": "content",
+      "artifact_id": 10916749837,
+      "artifact_bytes": 444545,
+      "artifact_sha256": "36d286ba0195694be1f87bb1676ac6fe166e5f0de0949617f04e9fbb71ff3acb",
+      "zip_members": 161,
+      "crc": "PASS",
+      "commands": [
+        {
+          "command": [
+            "scripts/gradle-locked",
+            ":mtg-sdk:test",
+            ":mtg-sets:test",
+            ":ai:test",
+            ":mtg-search:test",
+            "--rerun-tasks",
+            "--no-build-cache",
+            "--info",
+            "--stacktrace",
+            "--continue",
+            "--max-workers=1",
+            "-PkotlinCompileParallelism=1",
+            "-Pkotlin.compiler.execution.strategy=in-process",
+            "-Dorg.gradle.jvmargs=-Xmx4g"
+          ],
+          "cwd": "source",
+          "started_ns": 1790462839673580323,
+          "owned_process_group": 2466,
+          "exit_status": 0,
+          "finished_ns": 1790463416581541690,
+          "log_sha256": "94b5eccdf07bd8eaad276f89bf145988d76b38f86122bff18f7b3bfca0e0ecf5"
+        }
+      ],
+      "modules": [
+        {
+          "task": ":mtg-sdk:test",
+          "suites": 50,
+          "testcase_records": 528,
+          "skipped": 0
+        },
+        {
+          "task": ":mtg-sets:test",
+          "suites": 16,
+          "testcase_records": 379,
+          "skipped": 0
+        },
+        {
+          "task": ":ai:test",
+          "suites": 87,
+          "testcase_records": 752,
+          "skipped": 11
+        },
+        {
+          "task": ":mtg-search:test",
+          "suites": 2,
+          "testcase_records": 163,
+          "skipped": 0
+        }
+      ],
+      "fresh_test_workers": 4,
+      "lock_fallback_observed": true
+    }
+  ],
+  "total_modules": 19,
+  "total_suites": 4582,
+  "testcase_records": 17547,
+  "skipped_testcase_records": 52,
+  "passed_testcase_records": 17495,
+  "failures": 0,
+  "errors": 0,
+  "qualified999_identities_also_observed": 999,
+  "skips": [
+    {
+      "module": "gym",
+      "class": "com.wingedsheep.gym.BatshitEconomicsPreboardSmokeTest",
+      "case": "five seeded preboard Argentum agent self-play games"
+    },
+    {
+      "module": "gym",
+      "class": "com.wingedsheep.gym.PestControlGoldfishTest",
+      "case": "reproduce rejected Pest Control Game 25 Scion provenance"
+    },
+    {
+      "module": "gym",
+      "class": "com.wingedsheep.gym.PestControlGoldfishTest",
+      "case": "Pest Control v1.0 rejected Sample 1 regression replay"
+    },
+    {
+      "module": "gym",
+      "class": "com.wingedsheep.gym.PestControlGoldfishTest",
+      "case": "Pest Control v1.0 fresh Goldfish Sample 1"
+    },
+    {
+      "module": "gym",
+      "class": "com.wingedsheep.gym.PestControlGoldfishTest",
+      "case": "Pest Control v1.0 Goldfish Sample 1 fresh performance sample"
+    },
+    {
+      "module": "gym",
+      "class": "com.wingedsheep.gym.PestControlGoldfishTest",
+      "case": "Pest Control v1.0 Goldfish Sample 1 untouched performance vector"
+    },
+    {
+      "module": "gym",
+      "class": "com.wingedsheep.gym.PestControlGoldfishTest",
+      "case": "Pest Control v1.0 Goldfish Sample 2 independent replication"
+    },
+    {
+      "module": "gym",
+      "class": "com.wingedsheep.gym.PestControlGoldfishTest",
+      "case": "Pest Control v1.0 Goldfish Sample 2 Take 2 independent replication"
+    },
+    {
+      "module": "gym",
+      "class": "com.wingedsheep.gym.PestControlGoldfishTest",
+      "case": "Pest Control v1.0 Goldfish Sample 2 Take 3 independent replication"
+    },
+    {
+      "module": "gym",
+      "class": "com.wingedsheep.gym.PestControlGoldfishTest",
+      "case": "Pest Control v1.0 Goldfish Sample 2 Take 4 independent replication"
+    },
+    {
+      "module": "gym",
+      "class": "com.wingedsheep.gym.PestControlGoldfishTest",
+      "case": "Pest Control v1.0 Goldfish Sample 2 Take 5 independent replication"
+    },
+    {
+      "module": "gym",
+      "class": "com.wingedsheep.gym.PestControlGoldfishTest",
+      "case": "Pest Control v1.0 Goldfish Sample 2 Take 6 independent replication"
+    },
+    {
+      "module": "gym",
+      "class": "com.wingedsheep.gym.PestControlGoldfishTest",
+      "case": "Pest Control v1.0 Goldfish Sample 2 Take 7 independent replication"
+    },
+    {
+      "module": "gym",
+      "class": "com.wingedsheep.gym.PestControlGoldfishTest",
+      "case": "Pest Control v1.0 Goldfish Sample 2 Take 8 independent replication"
+    },
+    {
+      "module": "gym",
+      "class": "com.wingedsheep.gym.PestControlMatchupBlockARunnerTest",
+      "case": "execute frozen Pest Control versus Mono Red Madness Block A exactly once"
+    },
+    {
+      "module": "gym",
+      "class": "com.wingedsheep.gym.PestControlTierOneGrixisComposedValidationTest",
+      "case": "official artifact validates while synthetic shadow executes through complete stack"
+    },
+    {
+      "module": "gym",
+      "class": "com.wingedsheep.gym.PestControlTierOneGrixisDisabledOfficialArtifactLoaderTest",
+      "case": "authorized validation reads exact official bytes without exposing or consuming seeds"
+    },
+    {
+      "module": "gym",
+      "class": "com.wingedsheep.gym.PestControlTierOneGrixisOfficialExecutionRunnerTest",
+      "case": "execute frozen Grixis four-game vector exactly once"
+    },
+    {
+      "module": "gym",
+      "class": "com.wingedsheep.gym.PestControlTierOneGrixisReplicationOfficialArtifactValidationTest",
+      "case": "exact frozen twelve-game replication artifact validates without gameplay"
+    },
+    {
+      "module": "gym",
+      "class": "com.wingedsheep.gym.PestControlTierOneGrixisReplicationOfficialExecutionRunnerTest",
+      "case": "execute frozen Grixis twelve-game replication vector exactly once"
+    },
+    {
+      "module": "gym",
+      "class": "com.wingedsheep.gym.PestControlTierOneGrixisSalvageContinuationOfficialArtifactValidationTest",
+      "case": "exact frozen artifact exposes only untouched Games 2 through 12 to continuation"
+    },
+    {
+      "module": "gym",
+      "class": "com.wingedsheep.gym.PestControlTierOneGrixisSalvageContinuationOfficialExecutionRunnerTest",
+      "case": "execute untouched Grixis Games 2 through 12 exactly once"
+    },
+    {
+      "module": "gym",
+      "class": "com.wingedsheep.gym.PestControlTierOneMonoBlueTerrorComposedValidationTest",
+      "case": "official frozen input validates while synthetic shadow runs through full stack"
+    },
+    {
+      "module": "gym",
+      "class": "com.wingedsheep.gym.PestControlTierOneMonoBlueTerrorOfficialExecutionRunnerTest",
+      "case": "execute frozen Mono-Blue Terror four-game vector exactly once"
+    },
+    {
+      "module": "gym",
+      "class": "com.wingedsheep.gym.PestControlTierOneMonoBlueTerrorReplicationOfficialArtifactValidationTest",
+      "case": "exact frozen twelve-game Terror replication artifact validates without gameplay"
+    },
+    {
+      "module": "gym",
+      "class": "com.wingedsheep.gym.PestControlTierOneMonoBlueTerrorReplicationOfficialExecutionRunnerTest",
+      "case": "execute frozen Mono-Blue Terror twelve-game replication exactly once"
+    },
+    {
+      "module": "gym",
+      "class": "com.wingedsheep.gym.PestControlTierOneMonsterTronOfficialExecutionRunnerTest",
+      "case": "execute the four frozen Monster Tron assignments through the sealed one-shot boundary"
+    },
+    {
+      "module": "gym",
+      "class": "com.wingedsheep.gym.PestControlTierOneMonsterTronOneShotBoundaryTest",
+      "case": "pinned official bytes satisfy sealed binding without initialization"
+    },
+    {
+      "module": "gym",
+      "class": "com.wingedsheep.gym.PestControlV2OfficialExecutionRunnerTest",
+      "case": "validate or execute the frozen V2 official block through the fail-closed coordinator"
+    },
+    {
+      "module": "gym",
+      "class": "com.wingedsheep.gym.PestControlV2OfficialSeedFreezeGeneratorTest",
+      "case": "generate and quarantine exactly ten V2 official seeds without gameplay"
+    },
+    {
+      "module": "gym",
+      "class": "com.wingedsheep.gym.PestControlV2QualificationHarnessValidationTest",
+      "case": "validate exact frozen qualification inputs without initializing a game"
+    },
+    {
+      "module": "gym",
+      "class": "com.wingedsheep.gym.PestControlV2QualificationReconcilerTest",
+      "case": "reconcile both exact qualification shards into one fail-closed block"
+    },
+    {
+      "module": "gym",
+      "class": "com.wingedsheep.gym.PestControlV2QualificationShardRunnerTest",
+      "case": "validate or run one exact qualification shard through the fail-closed coordinator"
+    },
+    {
+      "module": "gym",
+      "class": "com.wingedsheep.gym.PestControlV2QualifyingSmokeTest",
+      "case": "one production Pest versus SoterX game reaches a legitimate audited terminal"
+    },
+    {
+      "module": "mtgish-tooling",
+      "class": "com.wingedsheep.tooling.coverage.EmitterSmokeTest",
+      "case": "Portal renders a high rate of whole, well-formed cards"
+    },
+    {
+      "module": "mtgish-tooling",
+      "class": "com.wingedsheep.tooling.coverage.dashboard.DashboardTest",
+      "case": "Analyzer classifies a set's cards into a partition that sums to the whole"
+    },
+    {
+      "module": "mtgish-tooling",
+      "class": "com.wingedsheep.tooling.coverage.dashboard.DashboardTest",
+      "case": "cross-set index carries the blocked cards behind each ranked capability"
+    },
+    {
+      "module": "game-server",
+      "class": "com.wingedsheep.gameserver.ai.benchmark.AIBenchmark",
+      "case": "AI benchmark (10 game pairs)"
+    },
+    {
+      "module": "game-server",
+      "class": "com.wingedsheep.gameserver.replay.CompactReplaySizeBenchmark",
+      "case": "compact replay size over 10 random games (POR)"
+    },
+    {
+      "module": "game-server",
+      "class": "com.wingedsheep.gameserver.replay.ReplayDivergenceReproTest",
+      "case": "recorded games reconstruct to the full frame stream (no truncation)"
+    },
+    {
+      "module": "game-server",
+      "class": "com.wingedsheep.gameserver.replay.ReplayDivergenceReproTest",
+      "case": "a persistent yield set mid-game is captured and reproduced on reconstruction"
+    },
+    {
+      "module": "ai",
+      "class": "com.wingedsheep.ai.arena.ArenaBenchmark",
+      "case": "arena: head to head"
+    },
+    {
+      "module": "ai",
+      "class": "com.wingedsheep.ai.arena.ArenaBenchmark",
+      "case": "arena: multiplayer pod"
+    },
+    {
+      "module": "ai",
+      "class": "com.wingedsheep.ai.arena.ArenaBenchmark",
+      "case": "arena: gauntlet"
+    },
+    {
+      "module": "ai",
+      "class": "com.wingedsheep.ai.arena.ArenaBudgetScalingTest",
+      "case": "budget scaling: strength is monotone in the decision budget"
+    },
+    {
+      "module": "ai",
+      "class": "com.wingedsheep.ai.engine.AdvisorBenchmark",
+      "case": "advisor benchmark: advised vs generic AI (10 game pairs)"
+    },
+    {
+      "module": "ai",
+      "class": "com.wingedsheep.ai.engine.GameBenchmark",
+      "case": "benchmark: 10 AI-vs-AI games in parallel (random sealed decks)"
+    },
+    {
+      "module": "ai",
+      "class": "com.wingedsheep.ai.engine.RandomActionBenchmark",
+      "case": "benchmark: 10 random-action games in parallel (POR)"
+    },
+    {
+      "module": "ai",
+      "class": "com.wingedsheep.ai.engine.SimulationThroughputBenchmark",
+      "case": "benchmark: simulation throughput over 10 AI games (POR)"
+    },
+    {
+      "module": "ai",
+      "class": "com.wingedsheep.ai.engine.StateCloneBenchmark",
+      "case": "state clone/modify microbenchmark"
+    },
+    {
+      "module": "ai",
+      "class": "com.wingedsheep.ai.puzzles.PuzzleComparisonBenchmark",
+      "case": "puzzles: profile comparison"
+    },
+    {
+      "module": "ai",
+      "class": "com.wingedsheep.ai.training.EclTrainingBenchmark",
+      "case": "collect clean replayable ECL decision games"
+    }
+  ],
+  "prior_shared_skip_comparison": {
+    "same52identities": true,
+    "originals": [
+      {
+        "name": "ci-scenarios-2023-24.zip",
+        "sha256": "285b5817df069f32ce449a54b9558065e5e8918dc80e6b9332606ee34d519379"
+      },
+      {
+        "name": "ci-scenarios-2025-26.zip",
+        "sha256": "f206d5718fe4055889b2d344b0b2ad1e85e304a1546569353b4835bdd0d9de97"
+      },
+      {
+        "name": "ci-tools.zip",
+        "sha256": "f34b149bf67b9aa9ccecb08c34d168476c2ca744e53b52e2eff5e182937562dd"
+      },
+      {
+        "name": "ci-engine.zip",
+        "sha256": "249edcf655f74fbca247cf117079f3789c43bfb496b7074c5c3d2b8d922c1a74"
+      },
+      {
+        "name": "ci-server.zip",
+        "sha256": "68f381a597752dc9ca6130007f6f54ad32992fd056a9af5cd77379f5ef51309d"
+      },
+      {
+        "name": "ci-scenarios-old.zip",
+        "sha256": "119ee449bb7ce401f81439ae116a2aeeb1f3fd5670262e4a294f23dce3e1ece3"
+      },
+      {
+        "name": "ci-content.zip",
+        "sha256": "ce758d0920ed1d6adb6ad845b3283f90c08bd82a21920962a1ecd4c74f147e8a"
+      }
+    ]
+  },
+  "limits": [
+    "This is author audit, not independent artifact acceptance or GitHub approval.",
+    "All original standard PR CI groups executed freshly;52 unchanged preexisting disabled/opt-in cases remained skipped and are not passing tests.",
+    "Engine fixtures, including999 bank, are deterministic qualification rather than official games. No experimental seed or outcome claim.",
+    "Full CI and999 receiving bank do not establish whole pilot competence, a prospective StageE allocation freeze, replay/runner/durable admission or gameplay permit.",
+    "Canonical reconstruction integration remains separately governed.",
+    "Canonical gradle-locked route reports absent shlock fallback on isolated one-command runners; no operating shared semaphore is claimed."
+  ],
+  "official_seeds": 0,
+  "official_games": 0,
+  "gameplay_authorized": false,
+  "complete_suite_observations": {
+    "path": "all-suite-observations.json.gz",
+    "sha256": "f49cf4d17c59920bc7caa50ba481c8915c5d50b1e749e6a9fc57e3b98d68940c"
+  }
+}

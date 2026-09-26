@@ -1,0 +1,24 @@
+{
+  "type": "Independent audit reporting-identity diagnosis, not engine test modification",
+  "original_guard_script_sha256": "40090b81f962afce3724b89527f9dddb7f2c798d2d5286392e4dfe32b1b60e14",
+  "initial_guard_failure": "AssertionError: duplicate fullCI case identity needs explicit review",
+  "raw_entries": 17547,
+  "distinct_module_class_name_labels": 17536,
+  "duplicate_labels": 11,
+  "all_expected_occurrences": 2,
+  "source_bindings": [
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/handlers/CostHandlerPayLifeTest.kt",
+      "git_blob_sha1": "d5c162f83a36a54af226ffb8d0cc8946d20694c3"
+    },
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/mechanics/layers/ConditionalControllerGrantsTest.kt",
+      "git_blob_sha1": "7c0849c3c437ec71b3bc8040c6ee3ffd0d7a0b8b"
+    }
+  ],
+  "source_explanation": [
+    "CostHandlerPayLifeTest repeats three label names under AbilityCost and AdditionalCost contexts.",
+    "ConditionalControllerGrantsTest repeats eight grantCases labels under bare and gated grant contexts."
+  ],
+  "disposition": "Retain raw counts and explicit distinction; require only these exact11 duplicate labels with two occurrences; required999 remains unique and fully passed."
+}

@@ -1,0 +1,260 @@
+{
+  "schema": "independent-sphinx-prior-default-skip-comparison-v1",
+  "originals": [
+    {
+      "path": "shared-audit/publish/lab-coordinator/shared-capabilities/evidence/combined-994383-takeover/ci-content.zip",
+      "bytes": 132920,
+      "sha256": "ce758d0920ed1d6adb6ad845b3283f90c08bd82a21920962a1ecd4c74f147e8a",
+      "crc": "PASS"
+    },
+    {
+      "path": "shared-audit/publish/lab-coordinator/shared-capabilities/evidence/combined-994383-takeover/ci-engine.zip",
+      "bytes": 473811,
+      "sha256": "249edcf655f74fbca247cf117079f3789c43bfb496b7074c5c3d2b8d922c1a74",
+      "crc": "PASS"
+    },
+    {
+      "path": "shared-audit/publish/lab-coordinator/shared-capabilities/evidence/combined-994383-takeover/ci-scenarios-2023-24.zip",
+      "bytes": 776740,
+      "sha256": "285b5817df069f32ce449a54b9558065e5e8918dc80e6b9332606ee34d519379",
+      "crc": "PASS"
+    },
+    {
+      "path": "shared-audit/publish/lab-coordinator/shared-capabilities/evidence/combined-994383-takeover/ci-scenarios-2025-26.zip",
+      "bytes": 715461,
+      "sha256": "f206d5718fe4055889b2d344b0b2ad1e85e304a1546569353b4835bdd0d9de97",
+      "crc": "PASS"
+    },
+    {
+      "path": "shared-audit/publish/lab-coordinator/shared-capabilities/evidence/combined-994383-takeover/ci-scenarios-old.zip",
+      "bytes": 963676,
+      "sha256": "119ee449bb7ce401f81439ae116a2aeeb1f3fd5670262e4a294f23dce3e1ece3",
+      "crc": "PASS"
+    },
+    {
+      "path": "shared-audit/publish/lab-coordinator/shared-capabilities/evidence/combined-994383-takeover/ci-server.zip",
+      "bytes": 168300,
+      "sha256": "68f381a597752dc9ca6130007f6f54ad32992fd056a9af5cd77379f5ef51309d",
+      "crc": "PASS"
+    },
+    {
+      "path": "shared-audit/publish/lab-coordinator/shared-capabilities/evidence/combined-994383-takeover/ci-tools.zip",
+      "bytes": 121071,
+      "sha256": "f34b149bf67b9aa9ccecb08c34d168476c2ca744e53b52e2eff5e182937562dd",
+      "crc": "PASS"
+    }
+  ],
+  "old_skipped_records": 52,
+  "new_skipped_records": 52,
+  "exact_class_name_multiset_equal": true,
+  "identities": [
+    [
+      "com.wingedsheep.ai.arena.ArenaBenchmark",
+      "arena: gauntlet"
+    ],
+    [
+      "com.wingedsheep.ai.arena.ArenaBenchmark",
+      "arena: head to head"
+    ],
+    [
+      "com.wingedsheep.ai.arena.ArenaBenchmark",
+      "arena: multiplayer pod"
+    ],
+    [
+      "com.wingedsheep.ai.arena.ArenaBudgetScalingTest",
+      "budget scaling: strength is monotone in the decision budget"
+    ],
+    [
+      "com.wingedsheep.ai.engine.AdvisorBenchmark",
+      "advisor benchmark: advised vs generic AI (10 game pairs)"
+    ],
+    [
+      "com.wingedsheep.ai.engine.GameBenchmark",
+      "benchmark: 10 AI-vs-AI games in parallel (random sealed decks)"
+    ],
+    [
+      "com.wingedsheep.ai.engine.RandomActionBenchmark",
+      "benchmark: 10 random-action games in parallel (POR)"
+    ],
+    [
+      "com.wingedsheep.ai.engine.SimulationThroughputBenchmark",
+      "benchmark: simulation throughput over 10 AI games (POR)"
+    ],
+    [
+      "com.wingedsheep.ai.engine.StateCloneBenchmark",
+      "state clone/modify microbenchmark"
+    ],
+    [
+      "com.wingedsheep.ai.puzzles.PuzzleComparisonBenchmark",
+      "puzzles: profile comparison"
+    ],
+    [
+      "com.wingedsheep.ai.training.EclTrainingBenchmark",
+      "collect clean replayable ECL decision games"
+    ],
+    [
+      "com.wingedsheep.gameserver.ai.benchmark.AIBenchmark",
+      "AI benchmark (10 game pairs)"
+    ],
+    [
+      "com.wingedsheep.gameserver.replay.CompactReplaySizeBenchmark",
+      "compact replay size over 10 random games (POR)"
+    ],
+    [
+      "com.wingedsheep.gameserver.replay.ReplayDivergenceReproTest",
+      "a persistent yield set mid-game is captured and reproduced on reconstruction"
+    ],
+    [
+      "com.wingedsheep.gameserver.replay.ReplayDivergenceReproTest",
+      "recorded games reconstruct to the full frame stream (no truncation)"
+    ],
+    [
+      "com.wingedsheep.gym.BatshitEconomicsPreboardSmokeTest",
+      "five seeded preboard Argentum agent self-play games"
+    ],
+    [
+      "com.wingedsheep.gym.PestControlGoldfishTest",
+      "Pest Control v1.0 Goldfish Sample 1 fresh performance sample"
+    ],
+    [
+      "com.wingedsheep.gym.PestControlGoldfishTest",
+      "Pest Control v1.0 Goldfish Sample 1 untouched performance vector"
+    ],
+    [
+      "com.wingedsheep.gym.PestControlGoldfishTest",
+      "Pest Control v1.0 Goldfish Sample 2 Take 2 independent replication"
+    ],
+    [
+      "com.wingedsheep.gym.PestControlGoldfishTest",
+      "Pest Control v1.0 Goldfish Sample 2 Take 3 independent replication"
+    ],
+    [
+      "com.wingedsheep.gym.PestControlGoldfishTest",
+      "Pest Control v1.0 Goldfish Sample 2 Take 4 independent replication"
+    ],
+    [
+      "com.wingedsheep.gym.PestControlGoldfishTest",
+      "Pest Control v1.0 Goldfish Sample 2 Take 5 independent replication"
+    ],
+    [
+      "com.wingedsheep.gym.PestControlGoldfishTest",
+      "Pest Control v1.0 Goldfish Sample 2 Take 6 independent replication"
+    ],
+    [
+      "com.wingedsheep.gym.PestControlGoldfishTest",
+      "Pest Control v1.0 Goldfish Sample 2 Take 7 independent replication"
+    ],
+    [
+      "com.wingedsheep.gym.PestControlGoldfishTest",
+      "Pest Control v1.0 Goldfish Sample 2 Take 8 independent replication"
+    ],
+    [
+      "com.wingedsheep.gym.PestControlGoldfishTest",
+      "Pest Control v1.0 Goldfish Sample 2 independent replication"
+    ],
+    [
+      "com.wingedsheep.gym.PestControlGoldfishTest",
+      "Pest Control v1.0 fresh Goldfish Sample 1"
+    ],
+    [
+      "com.wingedsheep.gym.PestControlGoldfishTest",
+      "Pest Control v1.0 rejected Sample 1 regression replay"
+    ],
+    [
+      "com.wingedsheep.gym.PestControlGoldfishTest",
+      "reproduce rejected Pest Control Game 25 Scion provenance"
+    ],
+    [
+      "com.wingedsheep.gym.PestControlMatchupBlockARunnerTest",
+      "execute frozen Pest Control versus Mono Red Madness Block A exactly once"
+    ],
+    [
+      "com.wingedsheep.gym.PestControlTierOneGrixisComposedValidationTest",
+      "official artifact validates while synthetic shadow executes through complete stack"
+    ],
+    [
+      "com.wingedsheep.gym.PestControlTierOneGrixisDisabledOfficialArtifactLoaderTest",
+      "authorized validation reads exact official bytes without exposing or consuming seeds"
+    ],
+    [
+      "com.wingedsheep.gym.PestControlTierOneGrixisOfficialExecutionRunnerTest",
+      "execute frozen Grixis four-game vector exactly once"
+    ],
+    [
+      "com.wingedsheep.gym.PestControlTierOneGrixisReplicationOfficialArtifactValidationTest",
+      "exact frozen twelve-game replication artifact validates without gameplay"
+    ],
+    [
+      "com.wingedsheep.gym.PestControlTierOneGrixisReplicationOfficialExecutionRunnerTest",
+      "execute frozen Grixis twelve-game replication vector exactly once"
+    ],
+    [
+      "com.wingedsheep.gym.PestControlTierOneGrixisSalvageContinuationOfficialArtifactValidationTest",
+      "exact frozen artifact exposes only untouched Games 2 through 12 to continuation"
+    ],
+    [
+      "com.wingedsheep.gym.PestControlTierOneGrixisSalvageContinuationOfficialExecutionRunnerTest",
+      "execute untouched Grixis Games 2 through 12 exactly once"
+    ],
+    [
+      "com.wingedsheep.gym.PestControlTierOneMonoBlueTerrorComposedValidationTest",
+      "official frozen input validates while synthetic shadow runs through full stack"
+    ],
+    [
+      "com.wingedsheep.gym.PestControlTierOneMonoBlueTerrorOfficialExecutionRunnerTest",
+      "execute frozen Mono-Blue Terror four-game vector exactly once"
+    ],
+    [
+      "com.wingedsheep.gym.PestControlTierOneMonoBlueTerrorReplicationOfficialArtifactValidationTest",
+      "exact frozen twelve-game Terror replication artifact validates without gameplay"
+    ],
+    [
+      "com.wingedsheep.gym.PestControlTierOneMonoBlueTerrorReplicationOfficialExecutionRunnerTest",
+      "execute frozen Mono-Blue Terror twelve-game replication exactly once"
+    ],
+    [
+      "com.wingedsheep.gym.PestControlTierOneMonsterTronOfficialExecutionRunnerTest",
+      "execute the four frozen Monster Tron assignments through the sealed one-shot boundary"
+    ],
+    [
+      "com.wingedsheep.gym.PestControlTierOneMonsterTronOneShotBoundaryTest",
+      "pinned official bytes satisfy sealed binding without initialization"
+    ],
+    [
+      "com.wingedsheep.gym.PestControlV2OfficialExecutionRunnerTest",
+      "validate or execute the frozen V2 official block through the fail-closed coordinator"
+    ],
+    [
+      "com.wingedsheep.gym.PestControlV2OfficialSeedFreezeGeneratorTest",
+      "generate and quarantine exactly ten V2 official seeds without gameplay"
+    ],
+    [
+      "com.wingedsheep.gym.PestControlV2QualificationHarnessValidationTest",
+      "validate exact frozen qualification inputs without initializing a game"
+    ],
+    [
+      "com.wingedsheep.gym.PestControlV2QualificationReconcilerTest",
+      "reconcile both exact qualification shards into one fail-closed block"
+    ],
+    [
+      "com.wingedsheep.gym.PestControlV2QualificationShardRunnerTest",
+      "validate or run one exact qualification shard through the fail-closed coordinator"
+    ],
+    [
+      "com.wingedsheep.gym.PestControlV2QualifyingSmokeTest",
+      "one production Pest versus SoterX game reaches a legitimate audited terminal"
+    ],
+    [
+      "com.wingedsheep.tooling.coverage.EmitterSmokeTest",
+      "Portal renders a high rate of whole, well-formed cards"
+    ],
+    [
+      "com.wingedsheep.tooling.coverage.dashboard.DashboardTest",
+      "Analyzer classifies a set's cards into a partition that sums to the whole"
+    ],
+    [
+      "com.wingedsheep.tooling.coverage.dashboard.DashboardTest",
+      "cross-set index carries the blocked cards behind each ranked capability"
+    ]
+  ]
+}
