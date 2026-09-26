@@ -39,6 +39,53 @@ jobs:
       - name: Qualify exact Faerie Macabre behavior
         run: ./gradlew :mtg-sets:2008-2016:test --tests "*FaerieMacabreScenarioTest"
 
+      - name: Diagnose facade-boundary violations
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          patterns = [
+              (re.compile(r"\\bCompositeEffect\\s*\\("), "CompositeEffect"),
+              (re.compile(r"\\bMoveToZoneEffect\\s*\\("), "MoveToZoneEffect"),
+              (re.compile(r"\\bForEachInGroupEffect\\s*\\("), "ForEachInGroupEffect"),
+              (re.compile(r"\\bAdditionalCost\\.[A-Z]"), "AdditionalCost"),
+              (re.compile(r"\\bPayCost\\.[A-Z]"), "PayCost"),
+              (re.compile(r"(?<!Conditions\\.)\\bEntityMatches\\s*\\("), "EntityMatches"),
+          ]
+          violations = []
+          for path in Path("mtg-sets").glob("*/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/**/*.kt"):
+              lines = path.read_text().splitlines()
+              in_block = False
+              for number, raw in enumerate(lines, 1):
+                  if raw.lstrip().startswith("import "):
+                      continue
+                  out = []
+                  i = 0
+                  while i < len(raw):
+                      if in_block:
+                          if raw[i:i+2] == "*/":
+                              in_block = False
+                              i += 2
+                          else:
+                              i += 1
+                      elif raw[i:i+2] == "/*":
+                          in_block = True
+                          i += 2
+                      elif raw[i:i+2] == "//":
+                          break
+                      else:
+                          out.append(raw[i])
+                          i += 1
+                  line = "".join(out)
+                  for regex, label in patterns:
+                      if regex.search(line):
+                          violations.append(f"{path}:{number}: {label}: {line.strip()}")
+          print("FACADE_BOUNDARY_DIAGNOSTIC count=", len(violations))
+          for violation in violations:
+              print("FACADE_BOUNDARY_DIAGNOSTIC", violation)
+          PY
+
       - name: Qualify card lint and facade boundary
         run: ./gradlew :mtg-sets:test --tests "*CardLintTest" --tests "*FacadeBoundaryTest"
 
