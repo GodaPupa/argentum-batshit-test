@@ -1,0 +1,76 @@
+name: Shared AI Exact-Source Diagnostics
+
+on:
+  push:
+    branches: [lab/ai-receiving-diagnostics]
+
+permissions:
+  contents: read
+
+jobs:
+  diagnose:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: accepted-main
+            source: 9ca83110f5907e66a0c289f8205ed1e24575535c
+          - name: failed-shared-receiver
+            source: b35d4778dada69476da0f67549be7e70424c18bd
+    name: diagnose (${{ matrix.name }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    env:
+      GRADLE_LOCK_SLOTS: '1'
+      SOURCE_HEAD: ${{ matrix.source }}
+      ARGENTUM_AI_ACTION_TRACE: ${{ github.workspace }}/subject/build/reports/shared-ai-diagnostics/action-stream.txt
+    defaults:
+      run:
+        working-directory: subject
+    steps:
+      - name: Check out the immutable source under diagnosis
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ matrix.source }}
+          path: subject
+      - name: Check out this diagnostic control
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ github.sha }}
+          path: diagnostic-control
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            .github/workflows/shared-ai-receiving-diagnostics.yml
+            lab-coordinator/shared-capabilities/ai-receiving-diagnostics.py
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: gradle/actions/setup-gradle@v6
+      - uses: extractions/setup-just@f8a3cce218d9f83db3a2ecd90e41ac3de6cdfd9b
+        with:
+          just-version: '1.58.0'
+      - name: Bind originals and instrument only the existing action digest
+        run: |
+          python3 ../diagnostic-control/lab-coordinator/shared-capabilities/ai-receiving-diagnostics.py instrument \
+            --source "$SOURCE_HEAD" --report build/reports/shared-ai-diagnostics
+      - name: Reproduce the same five existing cases without changing their expectations
+        run: |
+          set -euo pipefail
+          just test-class FrozenBaselineTest --tests '*PuzzleSuiteTest' --rerun \
+            --max-workers=1 -PkotlinCompileParallelism=1 \
+            -Pkotlin.compiler.execution.strategy=in-process -Dorg.gradle.jvmargs=-Xmx4g \
+            --info --stacktrace 2>&1 | tee build/reports/shared-ai-diagnostics/tests.log
+      - name: Bind raw failure evidence and check that trace bytes match the original digest
+        if: always()
+        run: |
+          python3 ../diagnostic-control/lab-coordinator/shared-capabilities/ai-receiving-diagnostics.py collect \
+            --source "$SOURCE_HEAD" --report build/reports/shared-ai-diagnostics
+      - name: Preserve both source-specific diagnostic attempts
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: shared-ai-diagnostics-${{ matrix.name }}-${{ github.run_id }}
+          path: subject/build/reports/shared-ai-diagnostics/
+          if-no-files-found: error
+          retention-days: 30
