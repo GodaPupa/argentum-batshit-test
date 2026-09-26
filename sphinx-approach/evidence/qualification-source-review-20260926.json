@@ -1,0 +1,55 @@
+{
+  "evidence_class": "independent_assistant_peer_source_review_not_protocol_acceptance",
+  "date": "2026-09-26",
+  "reviewer": "lab coordinator peer /root/ferocity; read-only, no edits or builds",
+  "source_parent": "4a97265559e989df937e8c09f9a42d58a4e9d79d",
+  "disposition": "NO_BLOCKING_FINDING_FOR_PUBLISHING_AND_RUNNING_NARROW_REMOTE_QUALIFICATION",
+  "reviewed_files": [
+    {
+      "path": "mtg-sets/2026/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/fra/cards/SphinxsApproach.kt",
+      "sha256": "ad1646fdca18c253421da690649d649554df6f05df30f48b5aa2c5a36cc24389"
+    },
+    {
+      "path": "mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/serialization/CardLinter.kt",
+      "sha256": "96031d98fa9b1a2f61d9ba9210c5e3b3dc1059afc7436bf07f3f04203cc4a280"
+    },
+    {
+      "path": "mtg-sdk/src/test/kotlin/com/wingedsheep/sdk/serialization/CardLinterTest.kt",
+      "sha256": "6f27812aa7d4967ab91580b62c7696840fe54171ac2719c696905a7bdc52c33c"
+    },
+    {
+      "path": "mtg-sets/2026/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/SphinxsApproachScenarioTest.kt",
+      "sha256": "55225841b91b94ea2288a01b28dfff51d1d41159789f09b7f0706a823abe9f2a"
+    },
+    {
+      "path": "mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/GoliathSphinxScenarioTest.kt",
+      "sha256": "15ae13e6443e87f6592b7c9f9b3464dd96e6ca4e11e2b2ea55ea69eec0ea05f5"
+    },
+    {
+      "path": "mtg-sets/1993-1999/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/SnapScenarioTest.kt",
+      "sha256": "6eed2cc3639ef0cfb9d4cd2b8996ad159072fc5f471bcf39d9185283a51f04a8"
+    },
+    {
+      "path": ".github/workflows/sphinx-stage-e-exact.yml",
+      "sha256": "1a5364d5161178c35495d9c3c06fe9cd89992daf3acb29677a58a99c07457083"
+    },
+    {
+      "path": "sphinx-approach/collect-card-qualification.py",
+      "sha256": "196c7d649360ee5d8fc7de90d5649efe748ac09b2ea4f7790a32bc0da8b077ab"
+    }
+  ],
+  "findings": [
+    "Removed metadata setters do not exist in current MetadataBuilder; gameplay definition unchanged.",
+    "Linter collection writer matches exact serialized type and field, with a consuming regression.",
+    "21 exact-card scenarios distinguish stated atomic, search, counter, continuation, flying, combat-damage, non-target-land and sole-target-invalidation behavior.",
+    "Workflow binds requested source, receiving base, and actual combined source; ordinary generated snapshot collection rejects unrelated drift."
+  ],
+  "limitations": [
+    "No Kotlin test execution or pass is asserted.",
+    "This review authorizes qualification execution only, not gameplay admission.",
+    "Required protocol independent acceptance, combined-source qualification, deck competence, and reachable-interaction closure remain downstream."
+  ],
+  "official_seeds_generated": 0,
+  "official_games_initialized": 0,
+  "official_outcomes_exposed": 0
+}

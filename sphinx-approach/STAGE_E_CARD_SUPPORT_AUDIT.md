@@ -1,9 +1,26 @@
 # Sphinx's Approach — Stage E card-support audit
 
-Status: NARROW_ENGINE_FEATURE_REQUIRED
+Status: IMPLEMENTED_IDENTITIES_PENDING_EXACT_CARD_QUALIFICATION
 Evidence class: seedless readiness only
 Official Stage-E games: 0
 Official Stage-E seeds: 0
+
+## Current qualification update — 2026-09-26
+
+The inventory below is the historical seedless audit, not the current registry result. Source
+`4a97265559e989df937e8c09f9a42d58a4e9d79d` contains Approach, Goliath Sphinx and Snap, with the generic
+atomic action and logical-stack handling. That source does not compile because two Approach metadata
+assignments are not supported by `MetadataBuilder`. The child qualification patch corrects those
+assignments and the atomic effect's missing linter dataflow registration.
+
+The exact-card scenario bank is prepared but unexecuted: 14 Approach scenarios, 4 Snap scenarios,
+3 Goliath Sphinx scenarios. A local attempt failed before compilation from inode exhaustion.
+Remote exact-card, serialization, lint and ordinary snapshot gates are required before support
+acceptance. All reachable interactions remain within qualification scope regardless of pilot choices
+or current engine gaps; no missing interaction is silently excluded.
+
+See `CURRENT_STATUS.md` for the complete next-game gate. Historical notes below remain preserved as
+design provenance and cannot grant execution authority.
 
 ## Current registry
 

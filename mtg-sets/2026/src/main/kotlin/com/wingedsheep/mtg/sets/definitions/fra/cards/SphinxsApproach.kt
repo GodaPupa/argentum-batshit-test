@@ -66,8 +66,6 @@ val SphinxsApproach = card("Sphinx's Approach") {
         rarity = Rarity.COMMON
         collectorNumber = "41"
         artist = "Nathaniel Himawan"
-        scryfallId = "f49be090-c745-40e5-bc1c-605b8d98acdf"
         imageUri = "https://cards.scryfall.io/normal/front/f/4/f49be090-c745-40e5-bc1c-605b8d98acdf.jpg"
-        releaseDate = "2026-10-02"
     }
 }
