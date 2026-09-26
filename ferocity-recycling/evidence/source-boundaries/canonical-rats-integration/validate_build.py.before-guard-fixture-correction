@@ -24,46 +24,8 @@ import xml.etree.ElementTree as ET
 
 ROOT = Path(__file__).resolve().parents[2]
 BASE = "d0c78bb4cca79b7402ba65bd62b5cb621230a054"
-TESTS = {
-    'FerocityOfTheHuntScenarioTest': 'rules-engine',
-    'RatsSweeperInteractionTest': 'rules-engine',
-    'ToxinAnalysisScenarioTest': 'mtg-sets/2024/tests',
-    'KrarkClanShamanScenarioTest': 'mtg-sets/2003-2007/tests',
-    'NotDeadAfterAllScenarioTest': 'mtg-sets/2023/tests',
-    'RefurbishedFamiliarScenarioTest': 'mtg-sets/2024/tests',
-    'MalevolentRumbleScenarioTest': 'mtg-sets/2024/tests',
-    'FanaticalOfferingScenarioTest': 'mtg-sets/2023/tests',
-    'IchorWellspringScenarioTest': 'mtg-sets/2008-2016/tests',
-    'ShamblingGhastScenarioTest': 'mtg-sets/2017-2022/tests',
-    'BloodFountainScenarioTest': 'mtg-sets/2017-2022/tests',
-    'MakeshiftMunitionsScenarioTest': 'mtg-sets/2017-2022/tests',
-    'GrixisAffinityAgentDecisionTest': 'ai',
-    'CryptRatsScenarioTest': 'mtg-sets/1993-1999/tests',
-    'GlintHawkScenarioTest': 'mtg-sets/2008-2016/tests',
-    'KorSkyfisherScenarioTest': 'mtg-sets/2008-2016/tests',
-    'JourneyToNowhereScenarioTest': 'mtg-sets/2008-2016/tests',
-    'WitchsCottageScenarioTest': 'mtg-sets/2017-2022/tests',
-    'BonePickerScenarioTest': 'mtg-sets/2017-2022/tests',
-    'CutDownScenarioTest': 'mtg-sets/2017-2022/tests',
-    'DefileScenarioTest': 'mtg-sets/2017-2022/tests',
-    'EvisceratorsInsightScenarioTest': 'mtg-sets/2024/tests',
-    'DispatchScenarioTest': 'mtg-sets/2008-2016/tests',
-}
-DEFAULT_TESTS = (
-    'FerocityOfTheHuntScenarioTest',
-    'RatsSweeperInteractionTest',
-    'ToxinAnalysisScenarioTest',
-    'KrarkClanShamanScenarioTest',
-    'NotDeadAfterAllScenarioTest',
-    'RefurbishedFamiliarScenarioTest',
-    'MalevolentRumbleScenarioTest',
-    'FanaticalOfferingScenarioTest',
-    'IchorWellspringScenarioTest',
-    'ShamblingGhastScenarioTest',
-    'BloodFountainScenarioTest',
-    'MakeshiftMunitionsScenarioTest',
-    'GrixisAffinityAgentDecisionTest',
-)
+TESTS = {'FerocityOfTheHuntScenarioTest': 'rules-engine', 'RatsSweeperInteractionTest': 'rules-engine', 'ToxinAnalysisScenarioTest': 'mtg-sets/2024/tests', 'KrarkClanShamanScenarioTest': 'mtg-sets/2003-2007/tests', 'NotDeadAfterAllScenarioTest': 'mtg-sets/2023/tests', 'RefurbishedFamiliarScenarioTest': 'mtg-sets/2024/tests', 'MalevolentRumbleScenarioTest': 'mtg-sets/2024/tests', 'FanaticalOfferingScenarioTest': 'mtg-sets/2023/tests', 'IchorWellspringScenarioTest': 'mtg-sets/2008-2016/tests', 'ShamblingGhastScenarioTest': 'mtg-sets/2017-2022/tests', 'BloodFountainScenarioTest': 'mtg-sets/2017-2022/tests', 'MakeshiftMunitionsScenarioTest': 'mtg-sets/2017-2022/tests', 'GrixisAffinityAgentDecisionTest': 'ai', 'CryptRatsScenarioTest': 'mtg-sets/1993-1999/tests', 'GlintHawkScenarioTest': 'mtg-sets/2008-2016/tests', 'KorSkyfisherScenarioTest': 'mtg-sets/2008-2016/tests', 'JourneyToNowhereScenarioTest': 'mtg-sets/2008-2016/tests', 'WitchsCottageScenarioTest': 'mtg-sets/2017-2022/tests', 'BonePickerScenarioTest': 'mtg-sets/2017-2022/tests', 'CutDownScenarioTest': 'mtg-sets/2017-2022/tests', 'DefileScenarioTest': 'mtg-sets/2017-2022/tests', 'EvisceratorsInsightScenarioTest': 'mtg-sets/2024/tests', 'DispatchScenarioTest': 'mtg-sets/2008-2016/tests'}
+DEFAULT_TESTS = ('FerocityOfTheHuntScenarioTest', 'RatsSweeperInteractionTest', 'ToxinAnalysisScenarioTest', 'KrarkClanShamanScenarioTest', 'NotDeadAfterAllScenarioTest', 'RefurbishedFamiliarScenarioTest', 'MalevolentRumbleScenarioTest', 'FanaticalOfferingScenarioTest', 'IchorWellspringScenarioTest', 'ShamblingGhastScenarioTest', 'BloodFountainScenarioTest', 'MakeshiftMunitionsScenarioTest', 'GrixisAffinityAgentDecisionTest')
 BUILD_FILES = (
     "gradle/libs.versions.toml", "gradle/wrapper/gradle-wrapper.properties",
     "gradle/wrapper/gradle-wrapper.jar", "build.gradle.kts", "settings.gradle.kts",

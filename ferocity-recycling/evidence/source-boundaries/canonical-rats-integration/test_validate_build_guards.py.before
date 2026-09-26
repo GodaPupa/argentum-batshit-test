@@ -23,7 +23,7 @@ class BuildEvidenceGuardsTest(unittest.TestCase):
         self.temp = tempfile.TemporaryDirectory()
         self.addCleanup(self.temp.cleanup)
         self.root = Path(self.temp.name)
-        self.test_class = "RatsSweeperInteractionTest"
+        self.test_class = "CryptRatsScenarioTest"
         self.test_source = self.root / "rules-engine/src/test/kotlin" / (self.test_class + ".kt")
         self.test_source.parent.mkdir(parents=True)
         self.test_source.write_text("// Synthetic source for evidence-guard tests only.\n")

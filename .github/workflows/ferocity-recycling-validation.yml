@@ -7,10 +7,39 @@ on:
       - .github/workflows/ferocity-recycling-validation.yml
       - rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/FerocityOfTheHuntScenarioTest.kt
       - rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/CryptRatsScenarioTest.kt
+      - rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/RatsSweeperInteractionTest.kt
       - mtg-sets/2024/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/ToxinAnalysisScenarioTest.kt
       - rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/ZoneTransitionService.kt
       - rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/DamageUtils.kt
       - rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/damage/DealDamageExecutor.kt
+      - mtg-sets/1993-1999/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/vis/cards/CryptRats.kt
+      - mtg-sets/1993-1999/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/CryptRatsScenarioTest.kt
+      - mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/cmd/cards/JourneyToNowhereReprint.kt
+      - mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/ddf/cards/JourneyToNowhereReprint.kt
+      - mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/ddf/cards/KorSkyfisherReprint.kt
+      - mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/nph/cards/Dispatch.kt
+      - mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/som/cards/GlintHawk.kt
+      - mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/zen/cards/JourneyToNowhere.kt
+      - mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/zen/cards/KorSkyfisher.kt
+      - mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/DispatchScenarioTest.kt
+      - mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/GlintHawkScenarioTest.kt
+      - mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/JourneyToNowhereScenarioTest.kt
+      - mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/KorSkyfisherScenarioTest.kt
+      - mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/akh/cards/BonePicker.kt
+      - mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/dmu/cards/CutDown.kt
+      - mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/eld/cards/WitchsCottage.kt
+      - mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/j22/cards/BonePickerReprint.kt
+      - mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/j22/cards/CryptRatsReprint.kt
+      - mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/jmp/cards/BonePickerReprint.kt
+      - mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/mh1/cards/CryptRatsReprint.kt
+      - mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/mh1/cards/Defile.kt
+      - mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/BonePickerScenarioTest.kt
+      - mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/CutDownScenarioTest.kt
+      - mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/DefileScenarioTest.kt
+      - mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/WitchsCottageScenarioTest.kt
+      - mtg-sets/2024/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/mh3/cards/EvisceratorsInsight.kt
+      - mtg-sets/2024/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/EvisceratorsInsightScenarioTest.kt
+      - mtg-sets/2026/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/msc/cards/DispatchReprint.kt
 
 permissions:
   contents: read
@@ -23,6 +52,14 @@ jobs:
   deterministic:
     runs-on: ubuntu-latest
     timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - suite: engine-and-existing-support
+            classes: "FerocityOfTheHuntScenarioTest RatsSweeperInteractionTest ToxinAnalysisScenarioTest KrarkClanShamanScenarioTest NotDeadAfterAllScenarioTest RefurbishedFamiliarScenarioTest MalevolentRumbleScenarioTest FanaticalOfferingScenarioTest IchorWellspringScenarioTest ShamblingGhastScenarioTest BloodFountainScenarioTest MakeshiftMunitionsScenarioTest GrixisAffinityAgentDecisionTest"
+          - suite: canonical-support
+            classes: "CryptRatsScenarioTest GlintHawkScenarioTest KorSkyfisherScenarioTest JourneyToNowhereScenarioTest WitchsCottageScenarioTest BonePickerScenarioTest CutDownScenarioTest DefileScenarioTest EvisceratorsInsightScenarioTest DispatchScenarioTest"
     steps:
       - uses: actions/checkout@v6
         with:
@@ -45,6 +82,7 @@ jobs:
               'runner_arch': os.environ.get('RUNNER_ARCH'),
               'started_at_utc': datetime.datetime.now(datetime.timezone.utc).isoformat(),
               'scope': 'DETERMINISTIC_QUALIFICATION_ONLY',
+              'suite': '${{ matrix.suite }}',
               'interactive_development_games': 0, 'evaluation_games': 0, 'confirmation_games': 0,
           }
           (out / 'setup-provenance.json').write_text(json.dumps(record, indent=2) + '\n')
@@ -95,12 +133,13 @@ jobs:
         run: |
           python ferocity-recycling/tools/validate_build.py \
             --expected-head "$EXPECTED_HEAD" \
+            --classes ${{ matrix.classes }} \
             --out build/reports/ferocity-recycling/qualification
       - name: Preserve qualification evidence even on failure
         if: always()
         uses: actions/upload-artifact@v7
         with:
-          name: ferocity-recycling-deterministic-${{ github.run_id }}-${{ github.run_attempt }}
+          name: ferocity-recycling-${{ matrix.suite }}-${{ github.run_id }}-${{ github.run_attempt }}
           path: build/reports/ferocity-recycling/
           if-no-files-found: error
           retention-days: 90

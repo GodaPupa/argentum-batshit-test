@@ -1,58 +1,55 @@
 # Current status — Ferocity Recycling
 
-Checkpoint advanced, 2026-09-26 UTC. Source base: `d0c78bb4cca79b7402ba65bd62b5cb621230a054`. Branch: `ferocity-recycling/archetype-research`.
+Updated 2026-09-26 UTC. Source base: `d0c78bb4cca79b7402ba65bd62b5cb621230a054`. Research branch: `ferocity-recycling/archetype-research`; reviewed integration branch: `ferocity-recycling/qualification-review`, draft PR #174 targeting research PR #173.
 
-## What is established
+## Research outcome
 
-- Initial live GitHub reconstruction found no existing independent Ferocity project. A concurrent three-file initialization subsequently appeared on the requested branch; its history and protocol are preserved and integrated as described below. Industrial Waste's separate challenger remains separate.
-- Three families are selected before outcomes: artifact/Shaman control (two Rakdos and one Grixis configuration), black/Golgari Rats, and Orzhov Aura recovery/evasive value.
-- Initial allocation frozen: nine Ferocity 60s and nine no-Ferocity 60s with equal development budgets. The reviewed input manifest SHA-256 is `ef75f5cec859dcc9f765de0feacb7cb7696037f4c7035d4b68b6bdfccee1c87d`.
-- Ferocity's exact card record and image have been obtained; card/common-printing admission and platform/date legality are recorded separately in the rules audit.
-- Deadly Dispute is excluded by the current Pauper banned list.
-- Six exact tournament-source 60/15 benchmarks are archived, with official event versus mirror deck-payload provenance identified. Five form the prospective pressure gauntlet.
-- Eight Python tests passed (three exact-inventory arithmetic and five evidence-guard regressions); eighteen lists passed structural/hash/import checks and six malformed-input probes were rejected. The frozen exact opening-inventory screen has executed for all eighteen lists with zero RNG use. These are calculation/integrity checks, not card-mechanics tests.
+No interactive performance evidence exists yet. Questions A (best Ferocity configuration found), B (Ferocity's contribution), and C (competitive performance) remain unresolved. No prototype has been promoted or rejected on performance. A technical defect is not a negative deck verdict.
 
-## Counts
+Three families and nine Ferocity 60s plus nine competent no-Ferocity 60s were frozen before randomized outcomes. The initial manifest remains `ef75f5cec859dcc9f765de0feacb7cb7696037f4c7035d4b68b6bdfccee1c87d`. Six exact source-backed competitive 60/15 lists are archived; five form the declared gauntlet. Ferocity remains verified-text prerelease research on the audit date, with fresh platform/date legality required before sanctioned claims. Deadly Dispute is excluded.
 
-| Evidence class | Actual count |
+## Actual counts
+
+| Evidence class | Actual count or result |
 |---|---:|
-| Randomized functional/goldfish trials | 0 |
+| Exact opening-inventory lists, no RNG | 18 |
+| Randomized functional or goldfish trials | 0 |
 | Interactive development games | 0 |
 | Frozen evaluation games | 0 |
 | Independent confirmation games | 0 |
 | Postboard matches | 0 |
-| Gameplay outcomes exposed | 0 |
-| Distinct stable-source mechanical scenarios | 41 |
-| Stable-source scenarios passed / failed | 38 / 3 |
+| Original stable-source mechanical baseline | 41 distinct cases: 38 pass / 3 fail |
+| Extended repair cases executed across separate source scopes | 55 distinct cases: 49 pass / 6 fail |
+| Restricted-X baseline03 | 13 cases: 4 pass / 9 fail |
+| New damage/activation/replay targeted05 | 22 cases: 20 pass / 2 fail |
+| First ten new canonical support cards | 58 cases authored / 0 executed on this integration |
 
-No deck is promoted, eliminated on performance, or identified as strongest by gameplay evidence.
+The extended repair row is a coverage inventory across separate guarded invocations, not one accepted source-version suite. Two failed cases were fixture-setup defects; a token state-based-action defect and three optional-target timing failures required engine corrections. All failed attempts remain evidence. The newer 22-case damage/activation/replay run completed: 20 passed, with two priority-state assertions failing during mana-choice/payment pauses. Its exact failed evidence is preserved and is being assessed before correction.
 
-## Current work
+## Current executable work
 
-Initial construction and exact arithmetic are complete. Java 21, just 1.58.0 and Gradle 9.6.1 were provisioned with verified archives; SDK, core rules engine, complete canonical card corpus and scenario sources compiled successfully. Stable-source real-engine runs executed Ferocity 24 (22 passed, 2 failed), Rats 8 (8 passed), and Toxin 9 (8 passed, 1 failed), all with zero errors/skips. The three failures confirm lost departed-source deathtouch/lifelink on queued Shaman damage. An earlier 24-case Ferocity attempt failed its source-drift guard and remains debugging evidence; it is not an additional independent sample.
+The real JDK 21 / just 1.58.0 / Gradle 9.6.1 environment works. The local 8 GiB memory limit requires serial heavy builds. Independent frozen support work is assigned to project-scoped GitHub CI runners.
 
-The stable baseline was published at `901729f259d044dfa157f745b8d764cb454922ef`. General CI independently reproduced the same 38/41 selected baseline results on merge commit `02a90c5d9a750ecc24d605f8c101c48cea1b47b9`, whose tree matches the published baseline. Its exact logs and source receipt are archived in `evidence/build/published-baseline-ci-36224994826/`. The project workflow failed earlier because setup-java rejected the four-component version as invalid SemVer. The concurrent worker changed its selector to `21`; this reviewed integration instead uses the exact, verified official Temurin archive that already worked locally. A narrow shared-engine repair is now published on this branch: `ZoneTransitionService` stamps the source's last-known projected snapshot onto an already-pending activated ability when the source actually leaves the battlefield, and `DealDamageExecutor`/`DamageUtils` thread that snapshot into deathtouch/lifelink and controller resolution. This intentionally does not snapshot at activation, preserving the already-passing cases where the live source gains or loses the keyword before its ability resolves. The validation workflow now watches the three repaired source files. Current repair checkpoint: `230bc4cfd756165564009bb1921d70547790b135`; CI run `36225413909` is in progress and deterministic qualification runs `36225413890` / `36225412160` are queued. Full receipts are under `evidence/build/`; exact scope is in `BUILD_AND_ENGINE_AUDIT.md` and `MECHANICAL_QUALIFICATION.md`. Only new project files and uniquely named test/workflow files are in scope. Other projects' frozen inputs and ledgers are unchanged.
+The original baseline's three failures showed lost departed-source deathtouch/lifelink on queued Shaman damage. General CI independently reproduced 38/41 on the original baseline tree. The concurrent worker's smaller repair is preserved in history. A fuller repair adds exact source-object identity, source snapshots, completed-cost state-based actions and deterministic activation routing. Its current core inventory is 63 cases; three Gempalm regression cases additionally require the separately reviewed optional-trigger timing correction. None of that extended source is admitted merely because an earlier tree passed.
 
-## Admission still required
+Restricted-X activation menus now have an executed failing baseline: nine assertions expose wrong affordable ceilings, including black-only Rats-style costs and activation-only restricted mana. A narrow repair is authorized with the same assertions retained.
 
-Passing exact-source mechanical qualification for the published repair, then full candidate/opponent card support, competent bounded pilot development with hidden-information invariance, replay/outcome/seed guard qualification and the pre-outcome stage manifest. A3-F4/A3-N0 against the frozen Red Madness gauntlet opponent is a possible first development cell only after the repair and pilot/admission gates pass. Grixis is a separate benchmark, not an allocated sixth D2 opponent; no undeclared games against it may be counted as D2. No gameplay allocation has been consumed. The program has not reached its stopping rule.
+Ten canonical support cards, eight required printing rows, ten individual scenario files and their source/author/peer records are frozen for this publication. The legacy private Rats fixture is replaced by the canonical card; all eight cross-card interaction bodies are preserved byte for byte under `RatsSweeperInteractionTest`. The script fans out duplicate class names across modules, so this distinct name also makes the single-module evidence receipt unambiguous. Both the canonical nine-case card suite and eight-case interaction suite must execute on the combined source.
 
-This file is updated at publication with the actual validated source and external job identifiers. It is not evidence of execution between chat turns.
+The workflow now separates existing engine/support and new canonical-support cases into two independent jobs. This publication does not change any frozen candidate, comparison, opponent, policy, gameplay allocation or seed ledger. Eight Python arithmetic/evidence guard checks and eighteen list/hash checks pass on this integration. A synthetic fixture-name failure during the rename is archived with its correction; no assertion was weakened.
 
-## Concurrent initialization preserved
+Actor-only observation, durable replay journals, competent pilots and remaining selected card support are still in development. An independent observation review found that explicit public combat assignments must be added before a blocker-declaration policy can act competently. Monarch, initiative, ninjutsu and ordered graveyard alternative costs are separate scoped work, not assumed support.
 
-At publication, the requested remote branch and existing PR #173 were found at `3afd83c8741c5b3d89f231543e951c5f204ca4ef`, created during this local work. Its three initialization files and history are preserved. `protocols/ACTIVE_CONTRACT.json` governs the reconciled search: nine candidates, 720 D2 games maximum, 240 D3 games maximum with no incumbent resampling, and sideboard freeze before E. All randomized counts remain zero. This is continued work on that existing project.
+## Verified public checkpoint
 
-## Verified public checkpoint and CI setup incident
+Before this publication the reviewed branch is at `14ec21b85b5f0aec833202c1caeacafe3919de15`, tree `ae1458ce9e5abb28071e58c56a9ff5affe2a464d`, direct parent `c771be5679cc1e9b25363c95ef50979961ac9f16`, in [draft PR #174](https://github.com/GodaPupa/argentum-batshit-test/pull/174). On 2026-09-26, workflows `36226502281` (project qualification) and `36226502312` (general CI) both reported success. Exact per-case log/artifact inspection is separate. These statuses establish neither interactive qualification nor research completion.
 
-Reviewed source/decks/protocols/raw baseline evidence are public in PR #173 at `901729f259d044dfa157f745b8d764cb454922ef`, tree `8551c4f68e4d997265448160bdd3a5861755725c`. A separate API read verified both that tree and the direct parent `3afd83c8741c5b3d89f231543e951c5f204ca4ef`. Native push failed with `could not read Username for 'https://github.com': terminal prompts disabled`; the connected GitHub API published the identical reviewed tree by non-force ref update. Prior local commits are preserved.
+The previous runs attached to `230bc4c` (`36225413909`, `36225413890`, `36225412160`) were cancelled; the earlier status text is preserved in `history/status-before-support-publication-20260926.md` and is superseded here. The original installer failures and original baseline failures remain archived.
 
-The push launched external CI. Dedicated runs `36224992267` and `36224994898` failed in JDK setup: setup-java rejected the four-component version `21.0.12.1+1` as invalid SemVer. They executed no engine assertions or games. Their exact job logs and provenance are preserved under `evidence/build/ci-setup-semver-incident-01/`. The reviewed workflow correction installs the same SHA-256-verified official Temurin archive that worked locally and retains only the PR trigger to avoid duplicate runs. Its next actual execution must be inspected before claiming the setup repair succeeded remotely.
+Native push failed with `could not read Username for 'https://github.com': terminal prompts disabled`. The authorized GitHub API publishes reviewed trees with exact tree comparison and non-force ref updates. Concurrent initialization and subsequent shared-branch changes through `c771be56` are preserved. All further work is reviewed through the isolated qualification PR; other projects remain unchanged.
 
-The interaction audit in `INTERACTIVE_ENGINE_PLAN.md` defines the remaining actor-only observation, exact-action and replay work. Ten missing support-card definitions and their individual scenarios are being authored in the isolated support worktree; unexecuted definitions are not card-qualification passes. The damage repair remains separate and requires its targeted cases plus the repository's full engine/card-scenario regression gate.
+## Next authorized steps and stopping boundary
 
-## Concurrent repair integration and branch coordination
+Publish this frozen support integration and inspect its actual CI. Finish exact-source mechanical gates, remaining card support, observation/replay and bounded pilot qualification. Then admit the first declared D2 cell; A3-F4/A3-N0 against Red Madness is eligible only when all its prerequisites pass. The separate Grixis benchmark is not a sixth D2 opponent. The active contract still permits at most 720 initial D2 games and 240 refinement games with no incumbent resampling; no allocation has been consumed.
 
-Six further remote commits through `c771be5679cc1e9b25363c95ef50979961ac9f16` published a three-file damage repair and workflow/status changes. Their history and runtime changes are preserved in this integration. Workflow conflict resolution keeps their three runtime watch paths, the exact verified JDK archive, and a single PR trigger. A coordination comment in PR #173 records the overlap.
-
-Further reviewed work is isolated on `ferocity-recycling/qualification-review`, targeting the existing research branch through a project-scoped PR. The extended generic repair remains in its own local worktree pending 55 targeted cases and the full engine/card-scenario gate. Its first attempt failed while Gradle packaged a disappearing cache temporary file; no tests executed and no source hashes changed. The original attempt is preserved. No experimental game has run.
+The program has not reached its stopping rule. No `FINAL_CONCLUSION.md` or tested final 60/15 is justified. External jobs are identified above; execution between responses is claimed only while an actual job is running.

@@ -59,3 +59,11 @@ The three failures demonstrate lost departed-source deathtouch/lifelink on queue
 ## Publication and CI setup evidence
 
 The complete reviewed baseline tree was published at `901729f2` through existing PR #173 with the original initialization as parent; the remote tree was independently matched to local reviewed bytes. Two automatically triggered qualification jobs failed before assertions because the Java setup action rejected the exact version's SemVer notation. Their logs are retained; this adds zero mechanical or gameplay outcomes. The workflow correction uses the same verified official archive as the working local environment and removes duplicate push/PR triggering. A successful installer or green CI alone will not resolve the three deckbuilding questions.
+
+## Support publication and continuing qualification
+
+The qualification checkpoint at `14ec21b8` preserved all concurrent research history and now has two successful workflow statuses (`36226502281`, `36226502312`). This establishes that the pinned Java installer works remotely; exact cases and source scope are recorded separately before acceptance. No randomized game has run.
+
+The first ten missing canonical support cards are now frozen with 58 authored cases, eight printing rows and archived fresh source verification. Their runtime gates remain pending on this integration. The original eight Rats interaction bodies now use the canonical card and a distinct engine-level class name; their previous fixture pass is not inherited.
+
+Additional deterministic execution has exposed generic faults that could bias deck comparison: wrong restricted-X legal-action ceilings, token cleanup before priority, optional targeted-trigger timing, and insufficient public combat information for a pilot. The source corrections, failed runs and requalification boundaries are explicit. These findings concern the simulation environment; they do not favor or disfavor any architecture. The deck lists and experimental budgets remain frozen, and all development/evaluation/confirmation game counts remain zero.
