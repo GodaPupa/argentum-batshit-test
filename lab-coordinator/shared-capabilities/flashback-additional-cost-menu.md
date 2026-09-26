@@ -69,7 +69,7 @@ Minimum source regression gate: this new class, existing `CastFromZoneEnumerator
 `SelectionCostPresentation` consumers, and exact `LavaDartScenarioTest`. Full integration is required
 at shared acceptance. No test result is claimed by this authored record.
 
-Industrial additionally needs its exact existing `EvisceratorsInsightScenarioTest` to traverse the
+Industrial additionally needs its separate exact `EvisceratorsInsightScenarioTest` to traverse the
 actual menu at `{4}{B}`, choose an offered artifact/creature, and submit through the existing executor.
 Main has no Insight definition, so the shared synthetic test cannot certify that receiving card.
 Industrial's separate ordinary-mana/non-mana resource-binding and full-horizon gates remain required.
@@ -113,3 +113,11 @@ is documented in <https://docs.gradle.org/current/userguide/command_line_interfa
 Logs, exact checkout/source hashes, actual XML case names and XML hashes are uploaded even on failure.
 A passing targeted manifest still explicitly withholds full integration, exact Insight receiving
 qualification, and gameplay authorization.
+
+The first targeted attempt, [run 36249007093](https://github.com/GodaPupa/argentum-batshit-test/actions/runs/36249007093),
+failed during test compilation before any cases executed. The inline fixture passed a nullable
+additional cost to the SDK's nonnullable two-argument `flashback` overload. The successor chooses the
+one-argument overload for a null keyword cost and retains the two-argument overload for an actual
+keyword cost. Printed-cost entries, runtime code, assertions and the 66-case scope are unchanged.
+The [failed-attempt receipt](evidence/flashback-cost-menu-36249007093/receipt.json) binds the original
+clean source and complete uploaded artifact; no qualification or gameplay result is inferred from it.

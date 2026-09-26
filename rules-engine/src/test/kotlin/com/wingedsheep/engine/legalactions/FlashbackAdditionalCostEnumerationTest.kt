@@ -47,7 +47,8 @@ class FlashbackAdditionalCostEnumerationTest : FunSpec({
         typeLine = "Instant"
         printed.forEach { additionalCost(it) }
         spell { effect = Effects.GainLife(1) }
-        keywordAbility(KeywordAbility.flashback(flashbackMana, keyword))
+        keywordAbility(if (keyword == null) KeywordAbility.flashback(flashbackMana)
+            else KeywordAbility.flashback(flashbackMana, keyword))
     }
 
     val artifact = card("Flashback Menu Relic") {

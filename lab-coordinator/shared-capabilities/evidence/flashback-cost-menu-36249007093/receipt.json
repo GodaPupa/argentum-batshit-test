@@ -1,0 +1,56 @@
+{
+  "schema": "shared-flashback-cost-menu-failed-attempt-v1",
+  "workflow_run_id": 36249007093,
+  "job_id": 108423405099,
+  "run_attempt": 1,
+  "workflow_url": "https://github.com/GodaPupa/argentum-batshit-test/actions/runs/36249007093",
+  "source_head": "ae97df867e2c22b8c4a42bb0dfee61afb969e17d",
+  "source_tree": "b41b85af87893ff5321a064813c1d4b091611859",
+  "checkout_status": "",
+  "status": "FAILED_BEFORE_TEST_EXECUTION",
+  "classification": "FIXTURE_COMPILE_DEFECT",
+  "failing_task": ":rules-engine:compileTestKotlin",
+  "exact_errors": [
+    "e: file:///home/runner/work/argentum-batshit-test/argentum-batshit-test/rules-engine/src/test/kotlin/com/wingedsheep/engine/legalactions/FlashbackAdditionalCostEnumerationTest.kt:50:64 Argument type mismatch: actual type is 'AdditionalCost?', but 'AdditionalCost' was expected.",
+    "> Task :rules-engine:compileTestKotlin FAILED"
+  ],
+  "cause": "The inline fixture passed nullable AdditionalCost? to KeywordAbility.flashback(String, AdditionalCost); the SDK also provides flashback(String) for no additional cost.",
+  "successor_change": "Choose flashback(String) when keyword is null and flashback(String, AdditionalCost) otherwise. Printed costs remain separate mandatory card script entries. Runtime, scenarios, assertions and the 66-case qualification scope are unchanged.",
+  "artifact": {
+    "id": 10908073423,
+    "path": "lab-coordinator/shared-capabilities/evidence/flashback-cost-menu-36249007093/github-actions-artifact-10908073423.zip",
+    "sha256": "128ac5b4b0adc246deee9cf0cd823ecf83a6ef03b761c59c02e489318478b175",
+    "bytes": 231357,
+    "entries": {
+      "build/reports/shared-flashback-cost-menu/engine.txt": {
+        "bytes": 3426382,
+        "sha256": "d72bef3fbf4236ad0e6631bdd7374bc059e3309614539f119e3db4f822fa3f28"
+      },
+      "build/reports/shared-flashback-cost-menu/source-binding.json": {
+        "bytes": 1257,
+        "sha256": "edeab645bdbb3faea59e62250310f347d28245af021b3896eb0a60bad05308f5"
+      }
+    }
+  },
+  "source_binding": {
+    "requested_head": "ae97df867e2c22b8c4a42bb0dfee61afb969e17d",
+    "actual_head": "ae97df867e2c22b8c4a42bb0dfee61afb969e17d",
+    "tree": "b41b85af87893ff5321a064813c1d4b091611859",
+    "checkout_status": "",
+    "source_files_sha256": {
+      "rules-engine/src/main/kotlin/com/wingedsheep/engine/legalactions/enumerators/CastFromZoneEnumerator.kt": "da8b049e575d7e8003e0c2c121f1d0aa5a8dd1fc5eda0d4743a8c17799b19828",
+      "rules-engine/src/main/kotlin/com/wingedsheep/engine/legalactions/utils/SelectionCostPresentation.kt": "46a4851b40a36c66ea57c79a594fd431e1ce7317f1a4596dfc92c7a4400b31de",
+      "rules-engine/src/test/kotlin/com/wingedsheep/engine/legalactions/FlashbackAdditionalCostEnumerationTest.kt": "64ad91920ffb7aca7750473ab17f195821ea55ffd1559faf2757478a8864b698",
+      "mtg-sets/2000-2002/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/jud/cards/LavaDart.kt": "3917e8e693b72d9e40161c8d3aaab2b245992e538375694254866285c260f5fe",
+      "mtg-sets/2000-2002/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/LavaDartScenarioTest.kt": "34b1f17a92ee3cf4073a52b123951cccb438789fc98edd4174601f67096664f8",
+      "lab-coordinator/shared-capabilities/flashback-scope-inventory.json": "798c59f493c720347bcbc6eb64f122c29dd04c57af9cc8b1c255e87fa9fc56db"
+    }
+  },
+  "actual_test_cases": 0,
+  "targeted_qualification_passed": false,
+  "full_integration_accepted": false,
+  "receiving_insight_qualified": false,
+  "official_allocations_initialized": 0,
+  "official_outcomes_exposed": 0,
+  "gameplay_authorized": false
+}
