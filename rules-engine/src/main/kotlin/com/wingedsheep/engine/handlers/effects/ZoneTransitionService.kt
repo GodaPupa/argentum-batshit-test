@@ -669,9 +669,10 @@ object ZoneTransitionService {
                     grantedActivatedAbilities = newState.grantedActivatedAbilities
                         .filter { it.entityId != entityId }
                 )
+                val beforeBattlefieldEntry = newState
                 newState = newState.addToZone(destZoneKey, entityId)
                 newState = applyBattlefieldEntry(
-                    newState, entityId, cardComponent, destControllerId, options, fromZone
+                    newState, entityId, cardComponent, destControllerId, options, fromZone, beforeBattlefieldEntry
                 )
                 // Prepared is an enters-the-battlefield condition, not a cast-resolution-only
                 // condition. Reanimation, blink, and other direct battlefield entries must create
@@ -1315,7 +1316,8 @@ object ZoneTransitionService {
         cardComponent: CardComponent,
         controllerId: EntityId,
         options: ZoneEntryOptions,
-        fromZone: Zone? = null
+        fromZone: Zone?,
+        beforeEntry: GameState,
     ): GameState {
         val withEntity = state.updateEntity(entityId) { c ->
             var updated = c.with(ControllerComponent(controllerId))
@@ -1421,7 +1423,8 @@ object ZoneTransitionService {
         val entersUntapped = EnterUntappedReplacements.entersUntapped(
             withDayboundEntry,
             entityId,
-            controllerId
+            controllerId,
+            beforeEntry,
         )
         // The entering card's OWN printed "this permanent enters tapped" clause. The cast path
         // (StackResolver) and the land-play path (PlayLandHandler) read it themselves because
@@ -1444,7 +1447,7 @@ object ZoneTransitionService {
             !options.tapped && !entersUntapped &&
                 (
                     selfEntersTapped ||
-                        EnterTappedReplacements.entersTapped(withDayboundEntry, entityId, controllerId)
+                        EnterTappedReplacements.entersTapped(withDayboundEntry, entityId, controllerId, beforeEntry)
                     ) ->
                 withDayboundEntry.updateEntity(entityId) { it.with(TappedComponent) }
             else -> withDayboundEntry

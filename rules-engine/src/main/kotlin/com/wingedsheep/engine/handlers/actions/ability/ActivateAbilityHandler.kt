@@ -684,12 +684,6 @@ class ActivateAbilityHandler(
     }
 
     private fun executeActivation(state: GameState, action: ActivateAbility): ExecutionResult {
-        val abilityEntityId = EntityId.generate()
-        val sourceObject = state.objectRef(action.sourceId)
-        val activationReferences = com.wingedsheep.engine.handlers.ObjectReferenceEnvironment(
-            captured = true, origin = sourceObject, source = sourceObject, resolutionKey = abilityEntityId.value,
-        )
-
         val container = state.getEntity(action.sourceId)
             ?: return ExecutionResult.error(state, "Source not found")
 
@@ -1195,7 +1189,14 @@ class ActivateAbilityHandler(
 
         val executeAbilityContext = buildAbilityPaymentContext(cardComponent, state.projectedState, action.sourceId, ability)
 
-        var currentState = state
+        // Resolution routing is authoritative replay state. Allocate only when activation
+        // reaches payment, and carry the advanced game-local counter rather than a UUID.
+        val (resolutionKey, allocatedState) = state.newRoutingId()
+        val sourceObject = state.objectRef(action.sourceId)
+        val activationReferences = com.wingedsheep.engine.handlers.ObjectReferenceEnvironment(
+            captured = true, origin = sourceObject, source = sourceObject, resolutionKey = resolutionKey,
+        )
+        var currentState = allocatedState
         val events = mutableListOf<GameEvent>()
 
         // Get player's mana pool

@@ -1,0 +1,120 @@
+{
+  "schema": "manual-phase2-attempt-journal-component-receipt-v1",
+  "status": "ACCEPTED_COMPONENT_ONLY",
+  "repository": "GodaPupa/argentum-batshit-test",
+  "pull_request": 188,
+  "source": "a22f07df6521971f69bb04e042b7cafaa070d192",
+  "source_tree": "5a4b1303af09734dfe529020ea6575bbfe8ccfaf",
+  "merged_commit": "dc2c9f0c5b27b5c35e174005abefc92b5770788c",
+  "merge_tree_equals_qualified_source": true,
+  "accepted_project_base": "c6bfd808850d46010e077153f294dd01c7a8450f",
+  "targeted_qualification": {
+    "run_id": 36254534014,
+    "job_id": 108438694223,
+    "artifact_id": 10910104284,
+    "original_artifact": "targeted-artifact.zip",
+    "artifact_bytes": 17710,
+    "artifact_sha256": "c265a58f804d2f552f991839b86da6214e092a8077289d9c84a39af34bd3bd54",
+    "actual_cases": {
+      "kotlin_engine_telemetry": 10,
+      "python_metrics_contract": 17,
+      "python_real_trace_importer": 7,
+      "python_shared_durability": 39,
+      "python_attempt_journal": 17
+    },
+    "total": 90,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "reviews": [
+    {
+      "reviewer": "root coordinator agent",
+      "role": "non-author source reviewer",
+      "verdict": "ACCEPT_FOR_COMPONENT_RECEIVING_QUALIFICATION",
+      "reviewed": "attempt_journal.py, all 17 tests and scope documentation; durable intent before callback, create-only filenames, stable member identity, raw-byte envelope, strict duplicate-key handling, initialization and final-tail binding, technical invalid outcome.",
+      "limitations": "Canonical global claim, actual initializer invoked through callback, semantic state-digest replay, and per-action crash journal remain unqualified."
+    },
+    {
+      "reviewer": "Izzet coordinator agent",
+      "role": "non-author source/artifact reviewer",
+      "verdict": "ACCEPT_TARGETED_COMPONENT_EVIDENCE_ONLY",
+      "evidence": "independent-artifact-review.json",
+      "reviewed": "Exact source and tree, all 11 source-file hashes, complete original ZIP, actual 10 Kotlin XML cases and all 80 Python names independently matched to freshly fetched complete job logs. Real trace importer and attempt-journal bridge ran; synthetic fixture source marker remains excluded."
+    }
+  ],
+  "github_approvals_fabricated": false,
+  "github_reviews_present_at_merge": 0,
+  "full_receiving_ci": {
+    "run_id": 36254534134,
+    "conclusion": "success",
+    "required_jobs": 9,
+    "optional_coverage": "skipped",
+    "evidence": "github-verification.json",
+    "actual_all_suite_counts_audited": false
+  },
+  "capability_regression": {
+    "run_id": 36254534015,
+    "conclusion": "success",
+    "engine_artifact_id": 10910272239,
+    "actual_cases": 538,
+    "suites": 34,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "review_independent": false,
+    "reviewer": "Manual coordinator (component author)",
+    "evidence": "capability-author-audit.json",
+    "original_xml_subset": "capability-xml-subset.zip"
+  },
+  "component_behavior": [
+    "Repository-owned durable intent precedes the initialization callback.",
+    "A local member claim remains consumed after exceptions, invalid traces or write failure; alternate source and policy labels do not create a second local member.",
+    "Each artifact is created once and durably linked by a strict append-only hash chain.",
+    "Private engine trace bytes survive without JSON reordering; final audit reimports the original trace and binds the final files and journal tail.",
+    "Technical failures retain INVALID attempts and do not become deck losses."
+  ],
+  "still_required": [
+    "Canonical repository-wide exclusive claim and canonical evidence location wired into the actual runtime.",
+    "Actual Kotlin initializer invoked through the journal callback, complete actor and opponent policies, and complete strategic metric collectors.",
+    "Semantic replay acceptance, per-action crash journal, full reachable card/opponent coverage, canonical post-block priority receiving qualification.",
+    "Independent capability gameplay admission, then all frozen 36 capability games before primary admission."
+  ],
+  "hardware": "Manual Transmission v0.7",
+  "hardware_disposition": "KEEP_V07",
+  "deck_changes": false,
+  "protocol_changes": false,
+  "official_counters": {
+    "capability_completed": 0,
+    "capability_required": 36,
+    "primary_completed": 0,
+    "primary_required": 864,
+    "official_initializations": 0,
+    "official_outcomes_exposed": 0
+  },
+  "gameplay_authorized": false,
+  "seed_generation_authorized": false,
+  "pilot_budget_consumed": false,
+  "files": {
+    "capability-author-audit.json": {
+      "bytes": 50578,
+      "sha256": "e46ca050e4010ccf231151c244b5cf26efb6d1862b62dc921f658e92f882a663"
+    },
+    "capability-xml-subset.zip": {
+      "bytes": 34451,
+      "sha256": "1fc944ba1d52e587812cacc824c69dcb6b177bb773d199901271ef8a4e7604b3"
+    },
+    "github-verification.json": {
+      "bytes": 16930,
+      "sha256": "5af6889aeeae83e63e94de3d3c50a316070e1ccce7ad2c7bb8087205f39bfe40"
+    },
+    "independent-artifact-review.json": {
+      "bytes": 19702,
+      "sha256": "b0360744ce18d0463e172c05a47c9814fe284b3d091a9714bd922d34193a7c31"
+    },
+    "targeted-artifact.zip": {
+      "bytes": 17710,
+      "sha256": "c265a58f804d2f552f991839b86da6214e092a8077289d9c84a39af34bd3bd54"
+    }
+  }
+}

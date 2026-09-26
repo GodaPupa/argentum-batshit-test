@@ -1,0 +1,30 @@
+{
+  "schema": "non-author-source-review-v1",
+  "reviewer": "Izzet agent (non-author of Manual Purphoros source and fixtures)",
+  "reviewed_at": "2026-09-26T17:33:50.882458+00:00",
+  "source_head": "8418a73feb406a51f3d8099d67565c91b2a18394",
+  "source_tree": "645de4f15f3169d63537f49309ad854829e2bb9e",
+  "disposition": "ACCEPT_FOR_RECEIVING_QUALIFICATION_ONLY",
+  "reviewed_files": {
+    "mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/ths/cards/PurphorosGodOfTheForge.kt": "22d597835ffb1dcda107eaa1acec6a3209ecef034f61c11461aaab7eb01125d0",
+    "mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/PurphorosGodOfTheForgeScenarioTest.kt": "5003070a3a0064691edec48e2eb6ac1f80f68746017722ffda80f2bf5450e181"
+  },
+  "verified": [
+    "Oracle text and canonical THS135 metadata against retained exact JSON",
+    "Canonical ForEachExecutor snapshots the projected group at resolution and binds iteration Self/ObjectRef while preserving source/controller",
+    "23 literal scenario declarations plus three-way boundary loop create 25 prospective cases",
+    "Every submit helper compares replay error, encoded state and ordered events against the actual action",
+    "Authority replacement uses devotion before entry; creature ETB trigger uses devotion including entered own pip",
+    "Control, ability removal, multiplayer/token ETB, source departure, pump group/expiry, target invalidation and combat disappearance have concrete assertions"
+  ],
+  "limitations": [
+    "No exact-card scenarios executed by this reviewer",
+    "Generic seven-case type-loss repair remains a separate receiving component",
+    "Current helper fails closed if receiving engine introduces unresolved trigger ordering; no skipped choices permitted",
+    "Workflow and manual scenario files were untracked and outside this four-file commit review",
+    "Full receiving CI, ordinary snapshot generation, whole card/runtime acceptance and gameplay admission remain separate"
+  ],
+  "runtime_accepted": false,
+  "gameplay_authorized": false,
+  "github_approval_fabricated": false
+}

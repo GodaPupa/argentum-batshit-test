@@ -1079,6 +1079,17 @@ class TriggerMatcher(
             // before the matcher runs, so the generic cardComponent-based path returns false for
             // every predicate inside the composite and the trigger silently misses token deaths.
             fun matchesLkiPredicate(predicate: com.wingedsheep.sdk.scripting.predicates.CardPredicate): Boolean {
+                // An entering permanent is observed after continuous effects apply (CR 603.6a).
+                // Use the canonical projected predicate evaluator for every entering card
+                // predicate, including composite/negative types. Battlefield departures retain
+                // the event's last-known characteristics in the branch below.
+                if (event.toZone == Zone.BATTLEFIELD && projected.getProjectedValues(event.entityId) != null) {
+                    return predicateEvaluator.matches(
+                        state, projected, event.entityId,
+                        GameObjectFilter(cardPredicates = listOf(predicate)),
+                        PredicateContext(sourceId = sourceId, controllerId = controllerId),
+                    )
+                }
                 return when (predicate) {
                     is com.wingedsheep.sdk.scripting.predicates.CardPredicate.IsCreature -> {
                         // For dying creatures: use base state (they're already in graveyard)

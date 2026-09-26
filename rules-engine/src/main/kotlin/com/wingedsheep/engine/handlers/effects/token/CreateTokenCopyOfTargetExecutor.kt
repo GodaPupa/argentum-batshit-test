@@ -237,7 +237,7 @@ class CreateTokenCopyOfTargetExecutor(
             // Consuls / Dauntless Dismantler on an opponent's token copy).
             newState = com.wingedsheep.engine.handlers.effects.EnterTappedReplacements
                 .applyCreatedTokenEntryTap(
-                    newState, tokenId, controllerId, definedTapped = effect.tapped,
+                    newState, tokenId, controllerId, definedTapped = effect.tapped, beforeEntry = state,
                 )
             // Wire the host side of the attachment and announce it, so "becomes attached"
             // triggers (Eriette, the Beguiler) fire for an Aura token the same way they do when

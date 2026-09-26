@@ -242,7 +242,7 @@ object TokenCreationReplacementHelper {
                 // Honor global "[filter] enter tapped" replacements on the added token too.
                 newState = com.wingedsheep.engine.handlers.effects.EnterTappedReplacements
                     .applyCreatedTokenEntryTap(
-                        newState, tokenId, tokenControllerId, definedTapped = tapped,
+                        newState, tokenId, tokenControllerId, definedTapped = tapped, beforeEntry = state,
                     )
 
                 events.add(
@@ -401,7 +401,7 @@ object TokenCreationReplacementHelper {
                 .place(newState, controllerId, tokenId)
             // Honor global "[filter] enter tapped" replacements on the copy too.
             newState = com.wingedsheep.engine.handlers.effects.EnterTappedReplacements
-                .applyCreatedTokenEntryTap(newState, tokenId, controllerId)
+                .applyCreatedTokenEntryTap(newState, tokenId, controllerId, beforeEntry = state)
 
             // Apply the attached permanent's printed enters-with-counters replacement
             // effects (and any global ones from other permanents).

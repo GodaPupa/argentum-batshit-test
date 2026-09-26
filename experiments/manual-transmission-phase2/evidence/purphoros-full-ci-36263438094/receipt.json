@@ -1,0 +1,66 @@
+{
+  "schema": "manual-phase2-purphoros-full-ci-attempt-v1",
+  "status": "FAILED_COMPILE_AND_RECEIVING_SOURCE_BINDING",
+  "run_id": 36263438094,
+  "source": "d022f5df080284e88d8506ab620a1a6327f09fc8",
+  "tree": "8508bb1febce547c07823a72615abd2953a3f20c",
+  "merge_commit": "58a86955c6cff26c61342b71d5c420ba5f419b5b",
+  "full_ci_accepted": false,
+  "primary_failure": {
+    "jobs": [
+      108463479961,
+      108463480043,
+      108463480073
+    ],
+    "reason": "EngineAiPlayerController.kt:466:90 and482:96 omit the now-required beforeEntry parameter. These jobs failed compilation before completing their declared runtime suites.",
+    "correction_source": "a616fc427869800934c85283982f76a68462936c",
+    "correction": "Pass the actual immutable method input state to both land entry preview helpers; no pilot priority, choice, score or fixture change.",
+    "non_author_source_review": "sphinx-ai-callsite-source-review.json"
+  },
+  "parallel_ci_results": "Engine, all three historical scenario groups and frontend succeeded; backend aggregate failed and coverage was skipped. These successes do not make the full run accepted.",
+  "additional_receiving_failure": {
+    "run_id": 36263438199,
+    "job_id": 108463480672,
+    "reason": "Pest postboard-A historical THS snapshot binding permits Nylea's Disciple only. Independently audited ordinary Purphoros addition requires prospective receiving-source disposition, preserving historical manifest bytes and original record bodies.",
+    "expected_THS_sha256": "8cd0c2797a4258e42b5ed86d6e1345cc2c0cb69fd70d26ba8256fff5375aaa42",
+    "actual_THS_sha256": "b5e09edec9ab49c9dd78fdaed7fca40db65fcf1fa36ee61fdabb7555eacd78da",
+    "receiving_disposition": "PENDING_NON_AUTHOR_REVIEW"
+  },
+  "logs": "Complete authenticated decoded job logs retained as deterministic gzip; log-hashes.json records raw UTF-8 and gzip hashes.",
+  "retained_files": {
+    "ci-metadata.json": {
+      "bytes": 1596,
+      "sha256": "50b421164b0d330d368cdce88dcd9620c1539eb97b87ab242edbedc96f464a6b"
+    },
+    "job-108463479961.txt.gz": {
+      "bytes": 36822,
+      "sha256": "80fb2a70fa09576f46070b44ff22ae2dc53deabd1c3cd920a216c78a5f546c41"
+    },
+    "job-108463480043.txt.gz": {
+      "bytes": 12429,
+      "sha256": "cc93aa849dd892f9d31229fc5ccf39e640e36ded0f6749103c3f9eeb0568031c"
+    },
+    "job-108463480073.txt.gz": {
+      "bytes": 19949,
+      "sha256": "bb11c481a6e00925e2fc09dbd2e75bf3ea8c1c239421e34e45712b46f22091e2"
+    },
+    "job-108463480672.txt.gz": {
+      "bytes": 14956,
+      "sha256": "e9e1fef385f9dad51083a12bdbe0d7b4c8890621573cc364dc42146a005fea00"
+    },
+    "log-hashes.json": {
+      "bytes": 1032,
+      "sha256": "8eb5f9c20141a18c0287a0c089e42074313dc38bdbce97973e6fd4f205c718d7"
+    },
+    "sphinx-ai-callsite-source-review.json": {
+      "bytes": 1359,
+      "sha256": "c6296f39203f88eebc2f7b86af1a02fdaf654cc31ff2bc4e7af15c6a800b0230"
+    }
+  },
+  "capability_games": 0,
+  "primary_games": 0,
+  "official_seeds_consumed": 0,
+  "official_initializations": 0,
+  "outcomes_exposed": 0,
+  "gameplay_authorized": false
+}
