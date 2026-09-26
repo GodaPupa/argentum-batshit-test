@@ -1,5 +1,7 @@
 package com.wingedsheep.engine.scenarios
 
+import com.wingedsheep.engine.support.chooseTriggerOrderInListedOrder
+
 import com.wingedsheep.engine.core.CastSpell
 import com.wingedsheep.engine.state.components.identity.RoomComponent
 import com.wingedsheep.engine.state.components.identity.RoomFaceId
@@ -106,6 +108,8 @@ class MirrorRoomFracturedRealmTest : FunSpec({
         d.giveColorlessMana(p1, 2)
         val before = d.getHandSize(p1)
         d.castSpell(p1, creature).isSuccess shouldBe true
+        d.bothPass().error shouldBe null
+        d.chooseTriggerOrderInListedOrder()
         var guard = 0
         while (d.state.stack.isNotEmpty() && guard++ < 20) {
             d.bothPass()

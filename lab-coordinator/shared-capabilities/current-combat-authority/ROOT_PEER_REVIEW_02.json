@@ -1,0 +1,16 @@
+{
+  "schema": "ferocity-static-peer-review-v1",
+  "reviewer": "root",
+  "reviewed_utc": "2026-09-26T10:15:59.031336+00:00",
+  "source_freeze_sha256": "412f5841a1442ebcd395891b95e4ca0b5d84f1f5e3f97cf99bf33aeedbf2d946",
+  "delta_patch_sha256": "9a8fc7a6a2b6a49aff24c9e9b9f7ad30a6613ce11f181b6bcdc6c17259ecacca",
+  "status": "NO_BLOCKING_STATIC_FINDING",
+  "findings": [
+    "Both failing retained fixtures were assigning zero to every non-test edge, including blockers whose damage the active player controls because of banding. Preserving engine edge.amount restores a complete legal submission.",
+    "New checks establish blocker direction, correct chooser and full power3/6. Original trample rejection and final damage/death assertions remain unchanged; no runtime/new12case changes."
+  ],
+  "retained_cases": 32,
+  "reviewer_executions": 0,
+  "random_games": 0,
+  "required_next_gate": "Same32 cases on exact successor02; later combined shared-source regression."
+}

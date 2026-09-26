@@ -1,5 +1,7 @@
 package com.wingedsheep.engine.scenarios
 
+import com.wingedsheep.engine.support.chooseTriggerOrderInListedOrder
+
 import com.wingedsheep.engine.state.ZoneKey
 import com.wingedsheep.engine.support.GameTestDriver
 import com.wingedsheep.engine.support.TestCards
@@ -111,6 +113,7 @@ class RandomEncounterScenarioTest : FunSpec({
 
         // Advance to the end step; the four per-creature delayed triggers fire and resolve.
         driver.passPriorityUntil(Step.END)
+        driver.chooseTriggerOrderInListedOrder()
         repeat(8) {
             if (driver.getPermanents(activePlayer).any { driver.getCardName(it) == "Grizzly Bears" }) {
                 driver.bothPass()

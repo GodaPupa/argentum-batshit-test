@@ -1,5 +1,7 @@
 package com.wingedsheep.engine.scenarios
 
+import com.wingedsheep.engine.support.chooseTriggerOrderInListedOrder
+
 import com.wingedsheep.engine.core.ChooseOptionDecision
 import com.wingedsheep.engine.core.OptionChosenResponse
 import com.wingedsheep.engine.state.components.identity.CardComponent
@@ -72,6 +74,8 @@ class BreechesEagerPillagerScenarioTest : ScenarioTestBase() {
             game.declareAttackers(
                 mapOf("Breeches, Eager Pillager" to 2, "Kitesail Corsair" to 2)
             ).error shouldBe null
+
+            game.chooseTriggerOrderInListedOrder() // Order the two Pirates' triggers before modes.
 
             // First trigger: all three modes are offered; take the Treasure mode.
             val first = game.resolveToModeChoice()

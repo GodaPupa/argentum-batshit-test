@@ -3,6 +3,7 @@ package com.wingedsheep.engine.scenarios
 import com.wingedsheep.engine.core.CastSpell
 import com.wingedsheep.engine.core.ChooseTargetsDecision
 import com.wingedsheep.engine.core.PaymentStrategy
+import com.wingedsheep.engine.core.YesNoDecision
 import com.wingedsheep.engine.support.GameTestDriver
 import com.wingedsheep.engine.support.TestCards
 import com.wingedsheep.sdk.core.Step
@@ -39,7 +40,7 @@ class DaringArchaeologistScenarioTest : FunSpec({
         return d
     }
 
-    /** Cast the Archaeologist over two artifact cards in the graveyard, stopping at its ETB consent. */
+    /** Cast the Archaeologist over two artifacts, stopping at its mandatory ETB target selection. */
     fun GameTestDriver.castOverTwoArtifacts(): Triple<EntityId, EntityId, EntityId> {
         val you = player1
         passPriorityUntil(Step.PRECOMBAT_MAIN)
@@ -54,15 +55,13 @@ class DaringArchaeologistScenarioTest : FunSpec({
                 paymentStrategy = PaymentStrategy.AutoPay,
             ),
         ).isSuccess shouldBe true
-        bothPass() // the creature resolves and its ETB trigger asks whether you want to do this
+        bothPass().error shouldBe null // the creature resolves; select the ETB target before placement
         return Triple(you, golem, myr)
     }
 
-    test("consenting then asks for a target, and the target is mandatory") {
+    test("the mandatory target is selected before consenting to the return on resolution") {
         val d = driver()
         val (you, golem, myr) = d.castOverTwoArtifacts()
-
-        d.submitYesNo(you, true)
 
         val decision = d.pendingDecision.shouldBeInstanceOf<ChooseTargetsDecision>()
         decision.legalTargets[0].shouldNotBeNull() shouldContainAll listOf(golem, myr)
@@ -70,17 +69,26 @@ class DaringArchaeologistScenarioTest : FunSpec({
         // that spelling makes this 0, i.e. "up to one target artifact card".
         decision.targetRequirements.single().minTargets shouldBe 1
 
-        d.submitTargetSelection(you, listOf(golem))
+        d.submitTargetSelection(you, listOf(golem)).error shouldBe null
+        d.bothPass().error shouldBe null
+        d.pendingDecision.shouldBeInstanceOf<YesNoDecision>()
+        d.submitYesNo(you, true).error shouldBe null
         while (d.stackSize > 0) d.bothPass()
 
         d.getHand(you) shouldContain golem
     }
 
-    test("declining asks for no target at all and both cards stay in the graveyard") {
+    test("declining the return keeps both cards in the graveyard after mandatory targeting") {
         val d = driver()
         val (you, golem, myr) = d.castOverTwoArtifacts()
 
-        d.submitYesNo(you, false)
+        val decision = d.pendingDecision.shouldBeInstanceOf<ChooseTargetsDecision>()
+        decision.legalTargets[0].shouldNotBeNull() shouldContainAll listOf(golem, myr)
+        decision.targetRequirements.single().minTargets shouldBe 1
+        d.submitTargetSelection(you, listOf(golem)).error shouldBe null
+        d.bothPass().error shouldBe null
+        d.pendingDecision.shouldBeInstanceOf<YesNoDecision>()
+        d.submitYesNo(you, false).error shouldBe null
         while (d.stackSize > 0) d.bothPass()
 
         d.getGraveyard(you) shouldContainAll listOf(golem, myr)

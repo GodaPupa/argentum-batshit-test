@@ -1,5 +1,8 @@
 package com.wingedsheep.engine.scenarios
 
+import com.wingedsheep.engine.support.chooseTriggerOrderInListedOrder
+import com.wingedsheep.engine.support.hasPendingTriggerOrder
+
 import com.wingedsheep.engine.mechanics.layers.StateProjector
 import com.wingedsheep.engine.state.components.identity.CardComponent
 import com.wingedsheep.engine.state.components.stack.ChosenTarget
@@ -48,6 +51,7 @@ class ArchangelAvacynScenarioTest : FunSpec({
     /** Advance into the next upkeep (the opponent's) and drain whatever triggers there. */
     fun advanceToNextUpkeep(driver: GameTestDriver) {
         driver.passPriorityUntil(Step.UPKEEP, maxPasses = 200)
+        if (driver.state.hasPendingTriggerOrder()) driver.chooseTriggerOrderInListedOrder()
         var guard = 0
         while (guard++ < 20 && driver.state.stack.isNotEmpty()) driver.bothPass()
     }

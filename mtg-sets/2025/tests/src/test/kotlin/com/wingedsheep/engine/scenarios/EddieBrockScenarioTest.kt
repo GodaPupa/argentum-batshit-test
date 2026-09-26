@@ -109,21 +109,22 @@ class EddieBrockScenarioTest : ScenarioTestBase() {
 
                 game.passUntilPhase(Phase.COMBAT, Step.DECLARE_ATTACKERS)
                 game.declareAttackers(mapOf("Venom, Lethal Protector" to 2)).error shouldBe null
-                game.resolveStack()
 
-                // "you may sacrifice another creature" — yes.
-                withClue("attack offers the optional sacrifice") {
-                    (game.getPendingDecision() is YesNoDecision) shouldBe true
-                }
-                game.answerYesNo(true)
-
-                // The sacrifice is a resolution-time choice; Grizzly Bears is the only other creature.
+                // Receiving compatibility for the current definition, which declares this selection
+                // as a target. Its separate non-targeting Oracle discrepancy is not qualified here.
                 val grizzly = game.findPermanent("Grizzly Bears")!!
-                withClue("choosing the creature to sacrifice") {
+                withClue("the current definition chooses its declared target on placement") {
                     (game.getPendingDecision() is ChooseTargetsDecision) shouldBe true
                 }
-                game.selectTargets(listOf(grizzly))
-                if (game.getPendingDecision() == null) game.resolveStack()
+                game.selectTargets(listOf(grizzly)).error shouldBe null
+                game.state.stack.size shouldBe 1
+                game.getPendingDecision() shouldBe null
+                game.resolveStack()
+
+                withClue("resolution offers the optional sacrifice") {
+                    (game.getPendingDecision() is YesNoDecision) shouldBe true
+                }
+                game.answerYesNo(true).error shouldBe null
 
                 // "draw X cards, then you may put a permanent card with mana value X or less ...".
                 withClue("a put-permanent-from-hand prompt is offered") {

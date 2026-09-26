@@ -1,5 +1,7 @@
 package com.wingedsheep.engine.scenarios
 
+import com.wingedsheep.engine.support.chooseTriggerOrderInListedOrder
+
 import com.wingedsheep.engine.core.*
 import com.wingedsheep.engine.state.GameState
 import com.wingedsheep.engine.state.components.identity.CardComponent
@@ -168,6 +170,7 @@ class CastPrioritySbaTest : FunSpec({
         driver.giveMana(caster, Color.BLUE, 1)
         val cast = driver.submit(sacrifice(caster, spell, anthem))
         cast.error shouldBe null
+        driver.chooseTriggerOrderInListedOrder()
         val choice = driver.pendingDecision.shouldBeInstanceOf<ChooseTargetsDecision>()
         choice.legalTargets.values.flatten().contains(dependent) shouldBe false
         choice.legalTargets.values.flatten().contains(anthem) shouldBe false

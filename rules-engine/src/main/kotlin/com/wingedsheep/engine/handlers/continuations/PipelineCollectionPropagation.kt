@@ -72,6 +72,13 @@ fun exposeCollectionsToNextFrame(
         )
 
     return when (val next = state.peekContinuation()) {
+        is com.wingedsheep.engine.core.CreateTokenRecipientsContinuation -> {
+            val (_, popped) = state.popContinuation()
+            popped.pushContinuation(next.copy(
+                createdTokens = next.createdTokens +
+                    collections[com.wingedsheep.sdk.scripting.effects.CREATED_TOKENS].orEmpty(),
+            ))
+        }
         is ForEachContinuation -> {
             var accumulated = next.effectContext.pipeline.storedCollections
             for ((localName, aggregateName) in next.effect.collectCollections) {

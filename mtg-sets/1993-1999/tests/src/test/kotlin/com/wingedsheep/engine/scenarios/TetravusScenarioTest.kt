@@ -9,6 +9,8 @@ import com.wingedsheep.engine.state.components.battlefield.CountersComponent
 import com.wingedsheep.engine.state.components.identity.CardComponent
 import com.wingedsheep.engine.state.components.identity.CreatedByComponent
 import com.wingedsheep.engine.support.GameTestDriver
+import com.wingedsheep.engine.support.chooseTriggerOrderInListedOrder
+import com.wingedsheep.engine.support.hasPendingTriggerOrder
 import com.wingedsheep.engine.support.TestCards
 import com.wingedsheep.mtg.sets.definitions.atq.cards.Tetravus
 import com.wingedsheep.sdk.core.CounterType
@@ -69,6 +71,10 @@ class TetravusScenarioTest : FunSpec({
         }
         guard = 0
         while (state.step == Step.UPKEEP && state.activePlayerId == player1 && guard++ < 40) {
+            if (state.hasPendingTriggerOrder()) {
+                chooseTriggerOrderInListedOrder()
+                continue
+            }
             val d = state.pendingDecision
             when (d) {
                 is YesNoDecision -> {

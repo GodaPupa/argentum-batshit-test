@@ -4,6 +4,7 @@ import com.wingedsheep.engine.core.PlayLand
 import com.wingedsheep.engine.state.components.battlefield.CountersComponent
 import com.wingedsheep.engine.support.GameTestDriver
 import com.wingedsheep.engine.support.TestCards
+import com.wingedsheep.engine.support.chooseTriggerOrderInListedOrder
 import com.wingedsheep.mtg.sets.definitions.jud.cards.MentalNote
 import com.wingedsheep.mtg.sets.definitions.vow.cards.GrolnokTheOmnivore
 import com.wingedsheep.sdk.core.Color
@@ -60,7 +61,9 @@ class GrolnokTheOmnivoreScenarioTest : FunSpec({
 
         d.passPriorityUntil(Step.DECLARE_ATTACKERS)
         d.declareAttackers(me, listOf(grolnok), opponent).isSuccess shouldBe true
-        repeat(6) { d.bothPass() }
+        d.bothPass().error shouldBe null // the mill raises two permanent-card exile triggers
+        d.chooseTriggerOrderInListedOrder()
+        repeat(2) { d.bothPass().error shouldBe null }
 
         withClue("the two permanent cards were exiled; the instant stayed in the graveyard") {
             d.getExileCardNames(me).shouldContainExactlyInAnyOrder("Island", "Centaur Courser")
@@ -109,7 +112,9 @@ class GrolnokTheOmnivoreScenarioTest : FunSpec({
         val note = d.putCardInHand(me, "Mental Note")
         d.giveMana(me, Color.BLUE, 1)
         d.castSpell(me, note).isSuccess shouldBe true
-        repeat(4) { d.bothPass() }
+        d.bothPass().error shouldBe null // both milled lands raise their own exile trigger
+        d.chooseTriggerOrderInListedOrder()
+        repeat(2) { d.bothPass().error shouldBe null }
         croakCounters(d, croaked) shouldBe 1
 
         // A card put into exile without a croak counter is outside the permission's filter.
