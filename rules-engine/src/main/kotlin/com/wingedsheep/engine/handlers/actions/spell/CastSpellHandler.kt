@@ -630,7 +630,10 @@ class CastSpellHandler(
             val escape = cardDef.keywordAbilities.filterIsInstance<KeywordAbility.Escape>().firstOrNull()
             if (escape != null) {
                 val selected = action.additionalCostPayment?.exiledCards.orEmpty()
-                if (action.cardId in selected) return "Escape requires exiling other cards from your graveyard"
+                if (selected.size != selected.distinct().size) {
+                    return "The same card cannot be exiled more than once to pay Escape"
+                }
+                if (action.cardId in selected) return "The escaping card cannot exile itself to pay Escape"
                 val cost = AdditionalCost.Atom(CostAtom.ExileFrom(Zone.GRAVEYARD, count = escape.exileCards))
                 validateAdditionalCosts(state, listOf(cost), action)?.let { return it }
             }

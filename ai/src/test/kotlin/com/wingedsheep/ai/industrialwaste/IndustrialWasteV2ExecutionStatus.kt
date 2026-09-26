@@ -121,6 +121,15 @@ internal class IndustrialWasteV2ExecutionTracker(initial: GameState, private val
         }
     }
 
+    /** A policy/observer failure submits no action and preserves the last accepted engine state. */
+    fun markException(phase: String, failure: Exception) {
+        require(phase.isNotBlank())
+        if (fault == null) {
+            fault = IndustrialWasteV2StopStatus.EXCEPTION
+            diagnostic = "$phase: ${failure::class.qualifiedName}: ${failure.message}\n${failure.stackTraceToString()}"
+        }
+    }
+
     fun snapshot(): IndustrialWasteV2ExecutionStatus {
         val actionCap = submitted >= SUBMITTED_ACTION_CAP
         val turnCap = completedOwnTurns >= OWN_TURN_CAP

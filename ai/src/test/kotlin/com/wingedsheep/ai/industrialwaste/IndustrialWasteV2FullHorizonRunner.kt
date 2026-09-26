@@ -49,6 +49,7 @@ internal class IndustrialWasteV2FullHorizonRunner(
         val eventMetrics: IndustrialWasteV2EventMetrics,
         val checkpoints: List<IndustrialWasteV2CheckpointMana>,
         val actions: List<GameAction>,
+        val finalState: GameState,
     )
 
     fun run(): Result {
@@ -69,7 +70,8 @@ internal class IndustrialWasteV2FullHorizonRunner(
         )
         val checkpoints = linkedMapOf<Int, IndustrialWasteV2CheckpointMana>()
         val actions = mutableListOf<GameAction>()
-        val payments = IndustrialWasteV2PaymentBinder(driver.cardRegistry, paymentIntentRecord)
+        val paymentRecords = mutableListOf<IndustrialWasteV2PaymentIntentRecord>()
+        val payments = IndustrialWasteV2PaymentBinder(driver.cardRegistry, paymentRecords::add)
         var lastObservedActions: Int? = null
         var lastObservedState: GameState? = null
 
@@ -77,17 +79,22 @@ internal class IndustrialWasteV2FullHorizonRunner(
             val state = driver.state
             if (!state.isIndustrialWasteV2QuietCheckpoint(measuredPlayer)) return
             val accepted = tracker.snapshot().acceptedActions
-            if (lastObservedActions == accepted) {
-                check(lastObservedState == state) { "Quiet state changed without an accepted action" }
+            val checkpoint = try {
+                if (lastObservedActions == accepted) {
+                    check(lastObservedState == state) { "Quiet state changed without an accepted action" }
+                    return
+                }
+                IndustrialWasteV2CheckpointManaClassifier.classify(
+                    state = state,
+                    player = measuredPlayer,
+                    originalCopies = ordering.originalCopies,
+                    legalActions = simulator.getLegalActions(state, measuredPlayer),
+                    cardRegistry = driver.cardRegistry,
+                )
+            } catch (failure: Exception) {
+                tracker.markException("Quiet-checkpoint observer", failure)
                 return
             }
-            val checkpoint = IndustrialWasteV2CheckpointManaClassifier.classify(
-                state = state,
-                player = measuredPlayer,
-                originalCopies = ordering.originalCopies,
-                legalActions = simulator.getLegalActions(state, measuredPlayer),
-                cardRegistry = driver.cardRegistry,
-            )
             // Every eligible state is preserved, including the state returned by the final
             // permitted action. A cap stops further actions; it does not erase that observation.
             checkpointObservation(checkpoint, accepted, state)
@@ -106,7 +113,7 @@ internal class IndustrialWasteV2FullHorizonRunner(
             val state = driver.state
 
             val decision = state.pendingDecision
-            val action: GameAction = if (decision != null) {
+            val action: GameAction? = try { if (decision != null) {
                 SubmitDecision(
                     decision.playerId,
                     responder.respond(state, decision, decision.playerId),
@@ -124,7 +131,15 @@ internal class IndustrialWasteV2FullHorizonRunner(
                     }
                     IndustrialWasteV2PublicActionPolicy.choosePassive(state, priority, legal)
                 }
+            } } catch (failure: Exception) {
+                tracker.markException("Action selection", failure)
+                null
             }
+            // All selected payment intent rows are forced before any submission, including when
+            // selection failed. Writer failures are deliberately outside the runtime catch.
+            paymentRecords.forEach(paymentIntentRecord)
+            paymentRecords.clear()
+            if (action == null) break
 
             actions += action
             val before = driver.state
@@ -138,29 +153,34 @@ internal class IndustrialWasteV2FullHorizonRunner(
             if (result != null) afterSubmission(result)
             if (result == null || result.error != null) break
 
-            collector.record(before, action, result)
-            check(tracker.state == driver.state) {
-                "Tracker and real driver state diverged after submission"
+            try {
+                collector.record(before, action, result)
+                check(tracker.state == driver.state) {
+                    "Tracker and real driver state diverged after submission"
+                }
+            } catch (failure: Exception) {
+                tracker.markException("Accepted-transition observer", failure)
+                break
             }
             // This must precede the next RUNNING guard, so an eligible action-cap/terminal
             // state is still classified and an unresolved result can invalidate a provisional cap.
             observeQuietState()
         }
 
-        val status = tracker.snapshot()
         val metrics = collector.snapshot()
-        check(actions.size == status.submittedActions) {
-            "Full-horizon transcript/action counter mismatch: ${actions.size} vs ${status.submittedActions}"
+        if (actions.size != tracker.snapshot().submittedActions) {
+            tracker.markUnresolved("Full-horizon transcript/action counter mismatch")
         }
-        check(metrics.acceptedTransitions == status.acceptedActions) {
-            "Telemetry/action acceptance counts diverged"
+        if (metrics.acceptedTransitions != tracker.snapshot().acceptedActions) {
+            tracker.markUnresolved("Telemetry/action acceptance counts diverged; retain partial raw metrics")
         }
 
         return Result(
-            status = status,
+            status = tracker.snapshot(),
             eventMetrics = metrics,
             checkpoints = checkpoints.values.toList(),
             actions = actions.toList(),
+            finalState = tracker.state,
         )
     }
 }

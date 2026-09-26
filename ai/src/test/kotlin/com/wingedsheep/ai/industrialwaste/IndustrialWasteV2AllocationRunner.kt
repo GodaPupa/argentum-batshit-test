@@ -127,6 +127,20 @@ internal class IndustrialWasteV2AllocationTrace(private val directory: Path) : A
         checkpointChannel.force(true)
     }
 
+    /** Preserve actual stopped runtime data, including a technical failure before another action. */
+    fun stopped(result: IndustrialWasteV2FullHorizonRunner.Result) {
+        check(result.status.status != IndustrialWasteV2StopStatus.RUNNING)
+        write("execution-status.json", CODEC.encodeToString(IndustrialWasteV2ExecutionStatus.serializer(), result.status))
+        write("event-metrics.json", CODEC.encodeToString(IndustrialWasteV2EventMetrics.serializer(), result.eventMetrics))
+        write("checkpoints.json", CODEC.encodeToString(ListSerializer(IndustrialWasteV2CheckpointMana.serializer()), result.checkpoints))
+        write("actions.json", CODEC.encodeToString(ListSerializer(GameAction.serializer()), result.actions))
+        write("final-state.json", CODEC.encodeToString(GameState.serializer(), result.finalState))
+        if (result.status.status in setOf(IndustrialWasteV2StopStatus.EXCEPTION,
+                IndustrialWasteV2StopStatus.REJECTED_ACTION, IndustrialWasteV2StopStatus.UNRESOLVED_TELEMETRY)) {
+            write("failure.txt", result.status.diagnostic ?: "Unresolved real-engine attempt")
+        }
+    }
+
     override fun close() {
         checkpointChannel.close()
         paymentChannel.close()
@@ -198,15 +212,9 @@ internal object IndustrialWasteV2AllocationRunner {
                     checkpointObservation = trace::checkpoint,
                     officialAdmission = admission,
                 ).run()
-                trace.write("execution-status.json", codec.encodeToString(IndustrialWasteV2ExecutionStatus.serializer(), result.status))
-                trace.write("event-metrics.json", codec.encodeToString(IndustrialWasteV2EventMetrics.serializer(), result.eventMetrics))
-                trace.write("checkpoints.json", codec.encodeToString(ListSerializer(IndustrialWasteV2CheckpointMana.serializer()), result.checkpoints))
-                trace.write("actions.json", codec.encodeToString(ListSerializer(GameAction.serializer()), result.actions))
-                trace.write("final-state.json", codec.encodeToString(GameState.serializer(), driver.state))
-                if (result.status.status in setOf(IndustrialWasteV2StopStatus.EXCEPTION,
+                trace.stopped(result)
+                if (result.status.status !in setOf(IndustrialWasteV2StopStatus.EXCEPTION,
                         IndustrialWasteV2StopStatus.REJECTED_ACTION, IndustrialWasteV2StopStatus.UNRESOLVED_TELEMETRY)) {
-                    trace.write("failure.txt", result.status.diagnostic ?: "Unresolved real-engine attempt")
-                } else {
                     val replay = verifyReplay(directory)
                     trace.write("replay.json", codec.encodeToString(IndustrialWasteV2AllocationReplay.serializer(), replay))
                 }

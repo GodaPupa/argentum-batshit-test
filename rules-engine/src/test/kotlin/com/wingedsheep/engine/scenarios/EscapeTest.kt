@@ -135,6 +135,7 @@ class EscapeTest : FunSpec({
         driver.passPriorityUntil(Step.PRECOMBAT_MAIN)
         driver.giveMana(player, Color.BLUE, 1)
         driver.giveColorlessMana(player, 1)
+        val before = driver.state
 
         val result = driver.submit(
             CastSpell(
@@ -149,6 +150,7 @@ class EscapeTest : FunSpec({
 
         result.isSuccess.shouldBeFalse()
         result.error.orEmpty() shouldContain "cannot exile itself"
+        driver.state shouldBe before
     }
 
     test("Escape rejects duplicate exile payment IDs") {
@@ -160,6 +162,7 @@ class EscapeTest : FunSpec({
         driver.passPriorityUntil(Step.PRECOMBAT_MAIN)
         driver.giveMana(player, Color.BLUE, 1)
         driver.giveColorlessMana(player, 1)
+        val before = driver.state
 
         val result = driver.submit(
             CastSpell(
@@ -174,5 +177,6 @@ class EscapeTest : FunSpec({
 
         result.isSuccess.shouldBeFalse()
         result.error.orEmpty() shouldContain "same card cannot be exiled more than once"
+        driver.state shouldBe before
     }
 })
