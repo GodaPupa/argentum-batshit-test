@@ -1,0 +1,720 @@
+{
+  "schema": "ferocity-source08-existing-mtgish147-identities-v1",
+  "source": "3a4f99a7653839506e96d19e6639f58d9e8c5ced",
+  "merge_tree": "56c6b8dd46dc112cdb70db496fd9d0c3e915e8a6",
+  "original_ci_run": 36268324392,
+  "original_artifact": 10915365754,
+  "original_artifact_sha256": "4a8845ee8b546ec55986d59e6a2c0ecbe3da01568d0dbb3e34a619dd811a1e63",
+  "expected_cases": 147,
+  "expected_skips": 3,
+  "rows": [
+    {
+      "module": ":mtgish-tooling:test",
+      "class": "com.wingedsheep.tooling.coverage.AsPermanentEntersCounterTest",
+      "cases": [
+        {
+          "name": "a self-scoped +1/+1 EntersWithACounter renders EntersWithCounters(count = 1, selfOnly = true)",
+          "skipped": false
+        },
+        {
+          "name": "a non-+1/+1 counter kind declines to a scaffold",
+          "skipped": false
+        },
+        {
+          "name": "a group scope (not this permanent) declines to a scaffold",
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "module": ":mtgish-tooling:test",
+      "class": "com.wingedsheep.tooling.coverage.CastTimeCaptureEmitterTest",
+      "cases": [
+        {
+          "name": "Steer Clear renders the cast-time capture form whole (AUTO)",
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "module": ":mtgish-tooling:test",
+      "class": "com.wingedsheep.tooling.coverage.DslTest",
+      "cases": [
+        {
+          "name": "a literal renders verbatim",
+          "skipped": false
+        },
+        {
+          "name": "a no-arg call renders as callee()",
+          "skipped": false
+        },
+        {
+          "name": "positional args join with ', '",
+          "skipped": false
+        },
+        {
+          "name": "a named arg renders as 'name = value'",
+          "skipped": false
+        },
+        {
+          "name": "nested calls render inline (downstream wrapLine handles width)",
+          "skipped": false
+        },
+        {
+          "name": "a chain renders base.method(args).method(args)",
+          "skipped": false
+        },
+        {
+          "name": "an infix joins with the operator, parenthesized when asked",
+          "skipped": false
+        },
+        {
+          "name": "a Composite lays each element at 12 spaces with an 8-space close (matches the old composite())",
+          "skipped": false
+        },
+        {
+          "name": "Raw passes its text through untouched",
+          "skipped": false
+        },
+        {
+          "name": "a block renders `header { body }` with the body one indent level deeper",
+          "skipped": false
+        },
+        {
+          "name": "statements: Eval is bare, Sub nests, RawLine is verbatim (ignoring the block indent)",
+          "skipped": false
+        },
+        {
+          "name": "a HoleLine renders as a greppable TODO comment at the block indent",
+          "skipped": false
+        },
+        {
+          "name": "an irShape annotates the hole when present",
+          "skipped": false
+        },
+        {
+          "name": "holesIn collects every hole reason in document order, recursing into nested blocks",
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "module": ":mtgish-tooling:test",
+      "class": "com.wingedsheep.tooling.coverage.DredgeEmitterTest",
+      "cases": [
+        {
+          "name": "dredge renders its numeric ability rather than a bare keyword",
+          "skipped": false
+        },
+        {
+          "name": "missing or negative dredge amounts decline to scaffolds",
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "module": ":mtgish-tooling:test",
+      "class": "com.wingedsheep.tooling.coverage.EmitterGoldenTest",
+      "cases": [
+        {
+          "name": "10E: emitter output matches the committed golden, card-for-card",
+          "skipped": false
+        },
+        {
+          "name": "CHK: emitter output matches the committed golden, card-for-card",
+          "skipped": false
+        },
+        {
+          "name": "EOE: emitter output matches the committed golden, card-for-card",
+          "skipped": false
+        },
+        {
+          "name": "HOB: emitter output matches the committed golden, card-for-card",
+          "skipped": false
+        },
+        {
+          "name": "INR: emitter output matches the committed golden, card-for-card",
+          "skipped": false
+        },
+        {
+          "name": "ISD: emitter output matches the committed golden, card-for-card",
+          "skipped": false
+        },
+        {
+          "name": "ONS: emitter output matches the committed golden, card-for-card",
+          "skipped": false
+        },
+        {
+          "name": "POR: emitter output matches the committed golden, card-for-card",
+          "skipped": false
+        },
+        {
+          "name": "RAV: emitter output matches the committed golden, card-for-card",
+          "skipped": false
+        },
+        {
+          "name": "SOS: emitter output matches the committed golden, card-for-card",
+          "skipped": false
+        },
+        {
+          "name": "TMP: emitter output matches the committed golden, card-for-card",
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "module": ":mtgish-tooling:test",
+      "class": "com.wingedsheep.tooling.coverage.EmitterPartialTest",
+      "cases": [
+        {
+          "name": "a WHOLE card renders identically in partial mode, with no holes",
+          "skipped": false
+        },
+        {
+          "name": "an injected un-renderable rule holes ONLY that part; the rest still renders",
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "module": ":mtgish-tooling:test",
+      "class": "com.wingedsheep.tooling.coverage.EmitterSmokeTest",
+      "cases": [
+        {
+          "name": "Portal renders a high rate of whole, well-formed cards",
+          "skipped": true
+        }
+      ]
+    },
+    {
+      "module": ":mtgish-tooling:test",
+      "class": "com.wingedsheep.tooling.coverage.IrQueryTest",
+      "cases": [
+        {
+          "name": "argWordsTagged collects each tagged node's word arg in document order",
+          "skipped": false
+        },
+        {
+          "name": "argWordsTagged skips non-word args, mirroring the (\\w+) capture",
+          "skipped": false
+        },
+        {
+          "name": "hasTag matches a discriminator value, not a substring of a longer tag",
+          "skipped": false
+        },
+        {
+          "name": "wordsAtKey / firstColorOf read values at a key, scoping the colour to its clause",
+          "skipped": false
+        },
+        {
+          "name": "hasStringValue matches a string VALUE anywhere, the typed form of a quoted-token blob check",
+          "skipped": false
+        },
+        {
+          "name": "firstArgStringTagged returns the full arg string (a [^\"]+ capture, not just a word)",
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "module": ":mtgish-tooling:test",
+      "class": "com.wingedsheep.tooling.coverage.ProwessEmitterTest",
+      "cases": [
+        {
+          "name": "a printed Prowess keyword renders via prowess(), not a bare keywords(Keyword.PROWESS)",
+          "skipped": false
+        },
+        {
+          "name": "\"other creatures you control have prowess\" declines to a scaffold, not a no-op GrantKeyword",
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "module": ":mtgish-tooling:test",
+      "class": "com.wingedsheep.tooling.coverage.SwitchPowerToughnessEmitterTest",
+      "cases": [
+        {
+          "name": "switch preserves target and end-of-turn duration",
+          "skipped": false
+        },
+        {
+          "name": "unknown duration declines",
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "module": ":mtgish-tooling:test",
+      "class": "com.wingedsheep.tooling.coverage.UpkeepTriggerScopeTest",
+      "cases": [
+        {
+          "name": "the SinglePlayer/You scope maps to Triggers.YourUpkeep",
+          "skipped": false
+        },
+        {
+          "name": "the AnyPlayer scope maps to Triggers.EachUpkeep",
+          "skipped": false
+        },
+        {
+          "name": "the Opponent scope maps to Triggers.EachOpponentUpkeep",
+          "skipped": false
+        },
+        {
+          "name": "the host-relative HostController scope declines to a scaffold, not a named scope",
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "module": ":mtgish-tooling:test",
+      "class": "com.wingedsheep.tooling.coverage.YouTapTriggerEmitterTest",
+      "cases": [
+        {
+          "name": "the You scope maps to Triggers.YouTap with the recovered permanent filter",
+          "skipped": false
+        },
+        {
+          "name": "the IR's IsUntapped clause is dropped \u2014 it would invert the filter at detection time",
+          "skipped": false
+        },
+        {
+          "name": "the filter still renders when the IR omits IsUntapped",
+          "skipped": false
+        },
+        {
+          "name": "a non-You tapper scope declines to a scaffold rather than widening the trigger",
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "module": ":mtgish-tooling:test",
+      "class": "com.wingedsheep.tooling.coverage.bridge.BridgeResolveTest",
+      "cases": [
+        {
+          "name": "a Keyword entry present in the registry resolves ok and contributes the keyword",
+          "skipped": false
+        },
+        {
+          "name": "a Keyword entry absent from the registry is MISSING and blocking, contributing nothing",
+          "skipped": false
+        },
+        {
+          "name": "an unmapped tag whose PascalCase is a Keyword enum member auto-resolves ok",
+          "skipped": false
+        },
+        {
+          "name": "a fully unmapped tag is UNMAPPED and blocking",
+          "skipped": false
+        },
+        {
+          "name": "a composed entry reports its kind, never blocks, and contributes its registry-present primitives",
+          "skipped": false
+        },
+        {
+          "name": "a composed primitive absent from the registry is dropped from the contributed capabilities",
+          "skipped": false
+        },
+        {
+          "name": "an envelope entry reports the ignore kind and never blocks",
+          "skipped": false
+        },
+        {
+          "name": "the disc:value composite key wins over the bare value key",
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "module": ":mtgish-tooling:test",
+      "class": "com.wingedsheep.tooling.coverage.dashboard.DashboardTest",
+      "cases": [
+        {
+          "name": "Analyzer classifies a set's cards into a partition that sums to the whole",
+          "skipped": true
+        },
+        {
+          "name": "cross-set index carries the blocked cards behind each ranked capability",
+          "skipped": true
+        },
+        {
+          "name": "Ansi.fit pads or ellipsis-truncates to an exact visible width",
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "module": ":mtgish-tooling:test",
+      "class": "com.wingedsheep.tooling.coverage.emitter.EffectHandlerTest",
+      "cases": [
+        {
+          "name": "constant 1:1 effects render as their fixed token (a Lit)",
+          "skipped": false
+        },
+        {
+          "name": "mana production maps the produce tag to the Add*Mana facade",
+          "skipped": false
+        },
+        {
+          "name": "a mixed mana pool composites inline (single line, not the multi-line Composite)",
+          "skipped": false
+        },
+        {
+          "name": "an unrecognised action declines (-> SCAFFOLD)",
+          "skipped": false
+        },
+        {
+          "name": "CopySpell(Trigger_ThatSpell) renders 'copy that spell' on a cast trigger (Double Down)",
+          "skipped": false
+        },
+        {
+          "name": "CopySpell with a non-triggering-spell subject declines (-> SCAFFOLD)",
+          "skipped": false
+        },
+        {
+          "name": "SetPT sets base P/T, and the end-of-turn case emits an EXPLICIT Duration.EndOfTurn",
+          "skipped": false
+        },
+        {
+          "name": "SetPT carries a non-default expiration verbatim (for as long as it remains tapped)",
+          "skipped": false
+        },
+        {
+          "name": "the each-permanent SetPT form wraps the set over a group",
+          "skipped": false
+        },
+        {
+          "name": "a SetPT riding an unsupported AddCardtype still scaffolds (no silently-dropped 'becomes an artifact')",
+          "skipped": false
+        },
+        {
+          "name": "'becomes a white Rabbit with base P/T 0/1' renders the atomic BecomeCreature (Metamorphic Blast)",
+          "skipped": false
+        },
+        {
+          "name": "'becomes a Fractal with base P/T each equal to X plus 1' renders dynamic BecomeCreature",
+          "skipped": false
+        },
+        {
+          "name": "the bare under-owner's-control return renders a plain Move to the battlefield",
+          "skipped": false
+        },
+        {
+          "name": "a return with a +1/+1 counter renders the Move then a chained AddCountersEffect (Daydream)",
+          "skipped": false
+        },
+        {
+          "name": "a return with a non-\u00b11/\u00b11 counter kind declines (-> SCAFFOLD) rather than guess the counter",
+          "skipped": false
+        },
+        {
+          "name": "a return entering tapped still declines (the tapped flag would be silently dropped)",
+          "skipped": false
+        },
+        {
+          "name": "ShuffleEachPermanentIntoLibrary renders self + target as two ShuffleIntoLibrary moves",
+          "skipped": false
+        },
+        {
+          "name": "ShuffleEachPermanentIntoLibrary declines a group that isn't self + one bound target",
+          "skipped": false
+        },
+        {
+          "name": "End the Festivities: player-FIRST then permanent, opponent-scoped -> PlayerRef(EachOpponent)",
+          "skipped": false
+        },
+        {
+          "name": "Dry Spell: permanent-FIRST then any-player -> creature group then ForEachPlayerEffect(Player.Each)",
+          "skipped": false
+        },
+        {
+          "name": "a lone EachPlayer(Opponent) recipient renders the single each-opponent deal (no Composite)",
+          "skipped": false
+        },
+        {
+          "name": "a lone EachPlayer(AnyPlayer) recipient renders the single each-player ForEachPlayerEffect",
+          "skipped": false
+        },
+        {
+          "name": "an unmodeled EachPlayer scope declines the whole card (-> SCAFFOLD), never a widened recipient set",
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "module": ":mtgish-tooling:test",
+      "class": "com.wingedsheep.tooling.coverage.emitter.EmitterFormatTest",
+      "cases": [
+        {
+          "name": "short lines are left untouched",
+          "skipped": false
+        },
+        {
+          "name": "a long call wraps its top-level args one per line, with trailing-comma-free last arg",
+          "skipped": false
+        },
+        {
+          "name": "commas inside string literals never trigger a split",
+          "skipped": false
+        },
+        {
+          "name": "comment / KDoc lines are never wrapped",
+          "skipped": false
+        },
+        {
+          "name": "nested over-long args wrap recursively and every emitted line fits the width",
+          "skipped": false
+        },
+        {
+          "name": "subtypeArg uses the typed constant when the SDK names it, else falls back to a string",
+          "skipped": false
+        },
+        {
+          "name": "subtypeCtorArg keeps the argument a Subtype even when the SDK doesn't name it",
+          "skipped": false
+        },
+        {
+          "name": "no emitter source hand-rolls a subtype literal instead of subtypeArg / subtypeCtorArg",
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "module": ":mtgish-tooling:test",
+      "class": "com.wingedsheep.tooling.coverage.emitter.FilterPredicatesTest",
+      "cases": [
+        {
+          "name": "power bounds recover from the scoped PowerIs node",
+          "skipped": false
+        },
+        {
+          "name": "a power range keeps its two bounds distinct (scoped per PowerIs node)",
+          "skipped": false
+        },
+        {
+          "name": "tap / attack state predicates map to their fluent suffixes",
+          "skipped": false
+        },
+        {
+          "name": "nontoken recovers from the IsNonToken marker",
+          "skipped": false
+        },
+        {
+          "name": "power-or-toughness recovers from the Or of equal >= bounds, declining a mismatch or a lone bound",
+          "skipped": false
+        },
+        {
+          "name": "flying recovers as with/without keyword, distinguished by the DoesntHaveAbility marker",
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "module": ":mtgish-tooling:test",
+      "class": "com.wingedsheep.tooling.coverage.emitter.InterveningIfConditionTest",
+      "cases": [
+        {
+          "name": "Packsong Pup: 'another Wolf or Werewolf' lifts the Other(ThisPermanent) clause to excludeSelf",
+          "skipped": false
+        },
+        {
+          "name": "Resistance Squad: 'another Human' lifts the Other(ThatEnteringPermanent) clause to excludeSelf",
+          "skipped": false
+        },
+        {
+          "name": "without an Other(self) clause, 'you control a Spirit' renders WITHOUT excludeSelf (single line)",
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "module": ":mtgish-tooling:test",
+      "class": "com.wingedsheep.tooling.coverage.emitter.PrintingRowTest",
+      "cases": [
+        {
+          "name": "reprint row carries set metadata and points at the canonical set",
+          "skipped": false
+        },
+        {
+          "name": "missing artist / image fields are simply omitted, rarity defaults to COMMON",
+          "skipped": false
+        },
+        {
+          "name": "val name is the PascalCase identifier of multi-word names",
+          "skipped": false
+        },
+        {
+          "name": "rarity mapping covers the Scryfall vocabulary",
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "module": ":mtgish-tooling:test",
+      "class": "com.wingedsheep.tooling.coverage.emitter.TargetRecoveryTest",
+      "cases": [
+        {
+          "name": "creatureFilterDsl composes the plain-creature base with recovered suffixes",
+          "skipped": false
+        },
+        {
+          "name": "creatureFilterDsl distributes an Or of per-subtype creature filters",
+          "skipped": false
+        },
+        {
+          "name": "creatureFilterDsl renders power-or-toughness and suppresses the standalone power bound",
+          "skipped": false
+        },
+        {
+          "name": "gameObjectFilterDsl renders an Or of creature subtypes as withAnyOfSubtypes",
+          "skipped": false
+        },
+        {
+          "name": "gameObjectFilterDsl appends nontoken from the IsNonToken marker",
+          "skipped": false
+        },
+        {
+          "name": "targetExpr renders a nonland permanent target",
+          "skipped": false
+        },
+        {
+          "name": "gameObjectFilterDsl reads the base cardtype and appends the tapped suffix",
+          "skipped": false
+        },
+        {
+          "name": "gameObjectFilterDsl declines a filter with no recoverable base type",
+          "skipped": false
+        },
+        {
+          "name": "targetExpr maps the player / spell / graveyard target shapes",
+          "skipped": false
+        },
+        {
+          "name": "creatureFilterDsl recovers a multi-colour Or as withAnyColor (Escape Routes, Hunting Drake)",
+          "skipped": false
+        },
+        {
+          "name": "creatureFilterDsl declines a source-relative blocking relation (Cromat)",
+          "skipped": false
+        },
+        {
+          "name": "targetExpr restricts a counter to a colour-bound spell (Gainsay)",
+          "skipped": false
+        },
+        {
+          "name": "targetExpr restricts a counter to a noncreature spell (Spell Pierce)",
+          "skipped": false
+        },
+        {
+          "name": "targetExpr declines a spell whose filter is about what it targets, not its type (Confound)",
+          "skipped": false
+        },
+        {
+          "name": "creatureFilterDsl recovers a bare 'another' creature target as TargetFilter.OtherCreature (Rimekin Recluse)",
+          "skipped": false
+        },
+        {
+          "name": "creatureFilterDsl declines an 'another' creature target with an extra predicate (excludeSelf + state not composed)",
+          "skipped": false
+        },
+        {
+          "name": "gameObjectFilterDsl declines a '+1/+1 counters on them' group (Badgermole's trample lord)",
+          "skipped": false
+        },
+        {
+          "name": "gameObjectFilterDsl declines an enchantment subtype (Shrine triggers, The Spirit Oasis)",
+          "skipped": false
+        },
+        {
+          "name": "gameObjectFilterDsl declines a creature-subtype + non-creature-type union (Great Divide Guide)",
+          "skipped": false
+        },
+        {
+          "name": "targetExpr declines a bare permanent target carrying a dropped controller restriction (North Pole Patrol)",
+          "skipped": false
+        },
+        {
+          "name": "targetExpr renders an artifact-subtype target via withSubtype (Turn to Dust, Rustspore Ram)",
+          "skipped": false
+        },
+        {
+          "name": "targetExpr declines a lowest-mana-value permanent target (Culling Scales)",
+          "skipped": false
+        },
+        {
+          "name": "targetExpr declines a noncreature-artifact target (Blinkmoth Well)",
+          "skipped": false
+        },
+        {
+          "name": "landSearchFilterDsl recovers an artifact-card search filter (Fabricate)",
+          "skipped": false
+        },
+        {
+          "name": "creatureFilterDsl renders a negated creature subtype via notSubtype (Sterling Keykeeper)",
+          "skipped": false
+        },
+        {
+          "name": "creatureFilterDsl renders a 'with a stun counter on it' restriction (Floodpits Drowner)",
+          "skipped": false
+        },
+        {
+          "name": "creatureFilterDsl declines a counter restriction whose kind it can't name exactly",
+          "skipped": false
+        },
+        {
+          "name": "creatureFilterDsl renders a 'was dealt damage this turn' restriction (Rooftop Assassin)",
+          "skipped": false
+        },
+        {
+          "name": "creatureFilterDsl renders an active 'dealt damage this turn' restriction (Red Guardian)",
+          "skipped": false
+        },
+        {
+          "name": "creatureFilterDsl declines 'dealt damage this turn' combined with an unrenderable shape",
+          "skipped": false
+        },
+        {
+          "name": "creatureFilterDsl renders a non-outlaw creature via notAnyOfSubtypes (Shoot the Sheriff)",
+          "skipped": false
+        },
+        {
+          "name": "creatureFilterDsl renders 'defending player controls' as opponentControls (Spring Splasher)",
+          "skipped": false
+        },
+        {
+          "name": "gameObjectFilterDsl renders an outlaw filter via withAnyOfSubtypes (Vial Smasher)",
+          "skipped": false
+        },
+        {
+          "name": "gameObjectFilterDsl binds a group controlled by a target player to ContextTarget(0) (Neutralize the Guards)",
+          "skipped": false
+        },
+        {
+          "name": "gameObjectFilterDsl renders 'a player other than you' as opponentControls (Artistic Process)",
+          "skipped": false
+        },
+        {
+          "name": "gameObjectFilterDsl renders the creature+planeswalker union (Splatter Technique's 'each creature and planeswalker')",
+          "skipped": false
+        },
+        {
+          "name": "creatureFilterDsl renders 'target creature you don't control' as opponentControls",
+          "skipped": false
+        },
+        {
+          "name": "creatureFilterDsl still renders the plain 'you control' and 'an opponent controls' scopes",
+          "skipped": false
+        },
+        {
+          "name": "creatureFilterDsl declines a controller scope it cannot render exactly",
+          "skipped": false
+        },
+        {
+          "name": "a non-creature target still declines a trigger's implied-opponent player ref (Dawning Purist)",
+          "skipped": false
+        }
+      ]
+    }
+  ]
+}
