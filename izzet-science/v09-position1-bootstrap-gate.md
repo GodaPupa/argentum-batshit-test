@@ -1,6 +1,6 @@
 # Position 1 — exact real-engine bootstrap
 
-Disposition: `SEED_FREE_BOOTSTRAP_QUALIFICATION_PENDING`
+Disposition: `ACCEPTED_SEED_FREE_BOOTSTRAP_COMPONENT_ONLY`
 
 The accepted Phase-33 adapter still requires a qualified real gameplay engine. This
 change supplies its initialization seam without reading an official seed, loading
@@ -46,3 +46,20 @@ binding to the accepted adapter require qualification before an official game.
 
 Official counters remain 12 generated, 0 consumed, 0 initialized, 0/12 completed,
 and 0/12 outcomes exposed. Deck changes: none.
+
+## Accepted evidence
+
+Source `a31d4eac79bd6eb50a3890e90fe50e68862bf565` and PR-177 combined source
+`2029ab158862b274c710fc17c7e531704fa890d3` share exact tree
+`7287bf827dd611af27ef2b57cdeca0b212e217c9`. CI `36244318267` passed all seven
+test groups and the frontend/backend gates. The complete tools transcript proves
+7 bootstrap, 7 adjacent PDH and 16 readiness cases passed, with no failed case.
+A non-author agent independently fetched and audited the actual remote evidence
+and the governing component requirements. The source-scoped receipt is
+[`v09-position1-bootstrap-ci-audit.json`](v09-position1-bootstrap-ci-audit.json);
+it binds the retained complete decoded transcript and every CI job.
+
+This accepts the bootstrap component only. No full-game guard is removed, no
+GitHub review submission is claimed, and no official execution permit is issued.
+The known post-blocker-declaration priority defect also requires the canonical
+repair and receiving-source qualification before interactive gameplay.
