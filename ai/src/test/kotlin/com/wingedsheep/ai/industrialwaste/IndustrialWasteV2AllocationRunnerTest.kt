@@ -90,7 +90,8 @@ class IndustrialWasteV2AllocationRunnerTest : FunSpec({
             "import importlib.util,json,pathlib; p=pathlib.Path(r'$directory'); " +
                 "s=importlib.util.spec_from_file_location('projection','industrial-waste/v2/r1_metric_projection.py'); " +
                 "m=importlib.util.module_from_spec(s); s.loader.exec_module(m); " +
-                "r=m.project_metrics(*[json.loads((p/f).read_text()) for f in ['execution-status.json','event-metrics.json','checkpoints.json']]); " +
+                "r=m.project_metrics(*[json.loads((p/f).read_text()) for f in ['execution-status.json','event-metrics.json','checkpoints.json']], " +
+                "[json.loads(row) for row in (p/'quiet-checkpoint-observations.jsonl').read_text().splitlines()]); " +
                 "assert r['validity']=='VALID'; assert not any(r[k] for k in m.METRICS)")
             .directory(root.toFile()).redirectErrorStream(true).start()
         val output = process.inputStream.bufferedReader().readText()
@@ -138,7 +139,8 @@ class IndustrialWasteV2AllocationRunnerTest : FunSpec({
             "import importlib.util,json,pathlib; p=pathlib.Path(r'$directory'); " +
                 "s=importlib.util.spec_from_file_location('projection','industrial-waste/v2/r1_metric_projection.py'); " +
                 "m=importlib.util.module_from_spec(s); s.loader.exec_module(m); " +
-                "r=m.project_metrics(*[json.loads((p/f).read_text()) for f in ['execution-status.json','event-metrics.json','checkpoints.json']]); " +
+                "r=m.project_metrics(*[json.loads((p/f).read_text()) for f in ['execution-status.json','event-metrics.json','checkpoints.json']], " +
+                "[json.loads(row) for row in (p/'quiet-checkpoint-observations.jsonl').read_text().splitlines()]); " +
                 "assert r['validity']=='VALID'").directory(root.toFile()).redirectErrorStream(true).start()
         val output = process.inputStream.bufferedReader().readText()
         check(process.waitFor() == 0) { output }

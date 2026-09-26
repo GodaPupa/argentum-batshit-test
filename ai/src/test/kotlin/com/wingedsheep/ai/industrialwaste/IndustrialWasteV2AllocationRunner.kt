@@ -1,9 +1,11 @@
 package com.wingedsheep.ai.industrialwaste
 
+import com.wingedsheep.ai.engine.GameSimulator
 import com.wingedsheep.engine.core.GameAction
 import com.wingedsheep.engine.core.GameEvent
 import com.wingedsheep.engine.core.engineSerializersModule
 import com.wingedsheep.engine.state.GameState
+import com.wingedsheep.engine.state.components.player.LibraryOrderingComponent
 import com.wingedsheep.engine.state.components.player.LibraryOrderingPlan
 import com.wingedsheep.engine.support.GameTestDriver
 import com.wingedsheep.mtg.sets.MtgSetCatalog
@@ -33,6 +35,23 @@ internal data class IndustrialWasteV2AllocationInput(
     val openingOrders: List<List<String>>,
     val startingPlayer: Int,
     val initializerSeed: Long,
+)
+
+/** Exact wire row for every eligible quiet state, including later states on the same own turn. */
+@Serializable
+internal data class IndustrialWasteV2QuietCheckpointObservation(
+    val acceptedActions: Int,
+    val stateSha256: String,
+    val checkpoint: IndustrialWasteV2CheckpointMana,
+)
+
+/** Replay certifies the recorded transitions and observations, never gameplay admission or validity. */
+@Serializable
+internal data class IndustrialWasteV2AllocationReplay(
+    val status: String = "EXACT_ACTION_EVENT_STATE_REPLAY",
+    val actions: Int,
+    val checkpointReplay: String = "EXACT_EVERY_QUIET_CHECKPOINT_REPLAY",
+    val quietCheckpointObservations: Int,
 )
 
 /**
@@ -101,8 +120,8 @@ internal class IndustrialWasteV2AllocationTrace(private val directory: Path) : A
     fun checkpoint(checkpoint: IndustrialWasteV2CheckpointMana, acceptedActions: Int, state: GameState) {
         check(acceptedActions == index) { "Quiet observation/action journal index mismatch" }
         val stateBytes = CODEC.encodeToString(GameState.serializer(), state)
-        val bytes = "{\"acceptedActions\":$acceptedActions,\"stateSha256\":\"${sha256(stateBytes)}\",\"checkpoint\":" +
-            CODEC.encodeToString(IndustrialWasteV2CheckpointMana.serializer(), checkpoint) + "}\n"
+        val bytes = CODEC.encodeToString(IndustrialWasteV2QuietCheckpointObservation.serializer(),
+            IndustrialWasteV2QuietCheckpointObservation(acceptedActions, sha256(stateBytes), checkpoint)) + "\n"
         val buffer = ByteBuffer.wrap(bytes.toByteArray(Charsets.UTF_8))
         while (buffer.hasRemaining()) checkpointChannel.write(buffer)
         checkpointChannel.force(true)
@@ -188,8 +207,8 @@ internal object IndustrialWasteV2AllocationRunner {
                         IndustrialWasteV2StopStatus.REJECTED_ACTION, IndustrialWasteV2StopStatus.UNRESOLVED_TELEMETRY)) {
                     trace.write("failure.txt", result.status.diagnostic ?: "Unresolved real-engine attempt")
                 } else {
-                    val count = verifyReplay(directory)
-                    trace.write("replay.json", "{\"status\":\"EXACT_ACTION_EVENT_STATE_REPLAY\",\"actions\":$count}")
+                    val replay = verifyReplay(directory)
+                    trace.write("replay.json", codec.encodeToString(IndustrialWasteV2AllocationReplay.serializer(), replay))
                 }
                 return result
             } catch (failure: Throwable) {
@@ -200,13 +219,48 @@ internal object IndustrialWasteV2AllocationRunner {
     }
 
     /** Restore the recorded initialization snapshot, never initialize or sample another game. */
-    internal fun verifyReplay(directory: Path): Int {
+    internal fun verifyReplay(directory: Path): IndustrialWasteV2AllocationReplay {
         val codec = IndustrialWasteV2AllocationTrace.CODEC
+        val input = codec.decodeFromString(IndustrialWasteV2AllocationInput.serializer(),
+            Files.readString(directory.resolve("input.json")))
         val replay = GameTestDriver().apply {
             MtgSetCatalog.all.forEach { set -> registerCards(set.cards); registerCards(set.basicLands) }
             registerCards(PredefinedTokens.allTokens)
             replaceState(codec.decodeFromString(GameState.serializer(), Files.readString(directory.resolve("initial-state.json"))))
         }
+        // The snapshot carries the measured seat's real ordering contract. A replay driver was
+        // deliberately never initialized, so its convenience player1/player2 fields are unset.
+        val measuredPlayer = replay.state.turnOrder.single { player ->
+            replay.state.getEntity(player)?.get<LibraryOrderingComponent>()?.plan?.let {
+                it.namespace == input.namespace && it.row == input.row && it.openingOrders == input.openingOrders
+            } == true
+        }
+        val originalCopies = requireNotNull(replay.state.getEntity(measuredPlayer)
+            ?.get<LibraryOrderingComponent>()).originalCopies
+        val simulator = GameSimulator(replay.cardRegistry)
+        val observations = Files.readAllLines(directory.resolve("quiet-checkpoint-observations.jsonl"))
+            .map { codec.decodeFromString(IndustrialWasteV2QuietCheckpointObservation.serializer(), it) }
+        check(observations.all { it.acceptedActions >= 0 }) { "Negative quiet observation index" }
+        check(observations.zipWithNext().all { (left, right) -> left.acceptedActions < right.acceptedActions }) {
+            "Quiet observations must retain their complete strict action order"
+        }
+        var observationIndex = 0
+        val firstPerTurn = linkedMapOf<Int, IndustrialWasteV2CheckpointMana>()
+        fun verifyQuietObservation(state: GameState, acceptedActions: Int) {
+            if (!state.isIndustrialWasteV2QuietCheckpoint(measuredPlayer)) return
+            val recorded = observations.getOrNull(observationIndex++)
+                ?: error("Missing eligible quiet observation after action $acceptedActions")
+            check(recorded.acceptedActions == acceptedActions) { "Quiet observation index does not match actual eligible state" }
+            check(recorded.stateSha256 == IndustrialWasteV2AllocationTrace.sha256(
+                codec.encodeToString(GameState.serializer(), state))) { "Quiet observation state digest mismatch" }
+            val actual = IndustrialWasteV2CheckpointManaClassifier.classify(
+                state = state, player = measuredPlayer, originalCopies = originalCopies,
+                legalActions = simulator.getLegalActions(state, measuredPlayer), cardRegistry = replay.cardRegistry,
+            )
+            check(recorded.checkpoint == actual) { "Quiet checkpoint values differ from exact semantic replay" }
+            firstPerTurn.putIfAbsent(actual.ownTurn, actual)
+        }
+        verifyQuietObservation(replay.state, 0)
         val actions = codec.decodeFromString(ListSerializer(GameAction.serializer()), Files.readString(directory.resolve("actions.json")))
         val transitions = Files.readAllLines(directory.resolve("transitions.jsonl")).map { codec.parseToJsonElement(it).jsonObject }
         check(transitions.size == actions.size * 2) { "Incomplete submitted/returned action journal" }
@@ -225,8 +279,13 @@ internal object IndustrialWasteV2AllocationRunner {
                 IndustrialWasteV2AllocationTrace.sha256(codec.encodeToString(GameState.serializer(), returned.newState)))
             check(recorded.getValue("events") == codec.parseToJsonElement(
                 codec.encodeToString(ListSerializer(GameEvent.serializer()), returned.events)))
+            verifyQuietObservation(returned.newState, index + 1)
         }
         check(codec.encodeToString(GameState.serializer(), replay.state) == Files.readString(directory.resolve("final-state.json")))
-        return actions.size
+        check(observationIndex == observations.size) { "Extra quiet observations without an eligible accepted state" }
+        val compatibility = codec.decodeFromString(ListSerializer(IndustrialWasteV2CheckpointMana.serializer()),
+            Files.readString(directory.resolve("checkpoints.json")))
+        check(compatibility == firstPerTurn.values.toList()) { "Legacy checkpoint view is not the first observation per own turn" }
+        return IndustrialWasteV2AllocationReplay(actions = actions.size, quietCheckpointObservations = observationIndex)
     }
 }

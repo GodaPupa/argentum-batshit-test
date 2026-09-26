@@ -1,11 +1,14 @@
 """Project exact typed R1 telemetry onto the four frozen decision-rule metrics.
 
 No initialization, sampling, policy choice, candidate ranking or execution authority occurs here.
-Inputs are the serialized real-engine status, original-copy event collector and quiet-precombat
-checkpoints. Faults expose no Boolean decision metrics; valid caps with no observed event are false.
+Inputs are the serialized real-engine status, original-copy event collector, derived first-per-turn
+view and complete quiet-observation stream. Faults expose no Boolean decision metrics; valid caps
+with no observed event are false. Completeness and checkpoint semantics require real-engine replay.
 """
 from __future__ import annotations
 
+import json
+import re
 from typing import Any
 
 METRICS = (
@@ -41,6 +44,7 @@ def _invalid(reason: str) -> dict[str, Any]:
 
 def project_metrics(
     status: dict[str, Any], events: dict[str, Any], checkpoints: list[dict[str, Any]],
+    quiet_observations: list[dict[str, Any]],
 ) -> dict[str, Any]:
     """Reject missing/inconsistent telemetry; project only a complete admitted allocation."""
     terminal = status.get("status")
@@ -113,15 +117,29 @@ def project_metrics(
     if any(turn > started for turn in (loop_turn, lethal, future, conversion) if turn is not None):
         raise ValueError("metric event occurs after the allocation stopped")
 
-    if not isinstance(checkpoints, list):
-        raise ValueError("checkpoint ledger must be a list")
+    if not isinstance(checkpoints, list) or not isinstance(quiet_observations, list):
+        raise ValueError("derived checkpoint view and complete quiet-observation stream must be lists")
     indexed: dict[int, dict[str, Any]] = {}
-    for checkpoint in checkpoints:
+    last_action = -1
+    last_turn = 0
+    colored_failure = False
+    for observation in quiet_observations:
+        if not isinstance(observation, dict) or set(observation) != {"acceptedActions", "stateSha256", "checkpoint"}:
+            raise ValueError("quiet observation must bind its action index, exact state digest and checkpoint")
+        action = _integer(observation["acceptedActions"], "observation acceptedActions", 0, accepted)
+        if action <= last_action:
+            raise ValueError("quiet-observation action indices must be unique and strictly increasing")
+        last_action = action
+        digest = observation["stateSha256"]
+        if not isinstance(digest, str) or re.fullmatch(r"[0-9a-f]{64}", digest) is None:
+            raise ValueError("quiet observation lacks an exact serialized-state digest")
+        checkpoint = observation["checkpoint"]
         if not isinstance(checkpoint, dict):
             raise ValueError("checkpoint is not an object")
         turn = _integer(checkpoint.get("ownTurn"), "checkpoint ownTurn", 1, started)
-        if turn in indexed:
-            raise ValueError("duplicate quiet-precombat checkpoint")
+        if turn < last_turn:
+            raise ValueError("quiet observations move backward in own-turn order")
+        last_turn = turn
         if checkpoint.get("activatedAbilityCoverageComplete") is not True:
             raise ValueError("checkpoint omits the frozen relevant activated-ability surface")
         cards = checkpoint.get("cards")
@@ -129,10 +147,12 @@ def project_metrics(
         graveyard_spells = checkpoint.get("relevantGraveyardSpells")
         if not all(isinstance(items, list) for items in (cards, activations, graveyard_spells)):
             raise ValueError("checkpoint needs hand-copy, relevant activation and graveyard-spell ledgers")
+        if any(not isinstance(item, dict) for item in cards + activations + graveyard_spells):
+            raise ValueError("checkpoint card and activation entries must be objects")
         identities: set[str] = set()
         for card in cards + graveyard_spells:
             identity = card.get("originalCopy")
-            if not isinstance(identity, str) or identity in identities:
+            if not isinstance(identity, str) or not identity or identity in identities:
                 raise ValueError("checkpoint hand/graveyard-copy identities are missing or duplicated")
             identities.add(identity)
         statuses = [item.get("status") for item in cards + activations + graveyard_spells]
@@ -149,9 +169,13 @@ def project_metrics(
             raise ValueError("colored failure summary disagrees with hand and activation ledgers")
         if _boolean(checkpoint.get("totalManaStranded"), "totalManaStranded") != stranded:
             raise ValueError("hand-copy stranding summary disagrees with its ledger")
-        indexed[turn] = checkpoint
-    if list(indexed) != sorted(indexed):
-        raise ValueError("quiet-precombat checkpoints are reordered")
+        colored_failure = colored_failure or colored
+        # The accepted prospective clarification selects the first eligible T4 state only.
+        # Later same-turn states remain required observations and can still cause color failure.
+        indexed.setdefault(turn, checkpoint)
+    if json.dumps(checkpoints, sort_keys=True, allow_nan=False) != json.dumps(
+            list(indexed.values()), sort_keys=True, allow_nan=False):
+        raise ValueError("legacy checkpoint view differs from the first observation of each own turn")
     if not set(range(1, completed + 1)).issubset(indexed):
         raise ValueError("a completed own turn is missing its quiet-precombat checkpoint")
 
@@ -159,7 +183,7 @@ def project_metrics(
         "validity": "VALID", "invalid_reason": None,
         "loop_ready_by_t8": loop_turn is not None,
         "conversion_by_t8": conversion is not None,
-        "colored_mana_failure": any(item["coloredManaFailure"] for item in indexed.values()),
+        "colored_mana_failure": colored_failure,
         # A valid early terminal/action cap never fabricates an unvisited T4 checkpoint.
         "total_mana_stranded_at_t4": indexed.get(4, {}).get("totalManaStranded", False),
     }

@@ -102,7 +102,8 @@ class ExecutionAdapterTests(unittest.TestCase):
                 "certifiedFutureConversionTurn": None, "deterministicConversionTurn": None},
             "checkpoints.json": [], "actions.json": [], "initial-state.json": {},
             "initial-events.json": [], "final-state.json": {},
-            "replay.json": {"status": "EXACT_ACTION_EVENT_STATE_REPLAY", "actions": 0}}
+            "replay.json": {"status": "EXACT_ACTION_EVENT_STATE_REPLAY", "actions": 0,
+                "checkpointReplay": "EXACT_EVERY_QUIET_CHECKPOINT_REPLAY", "quietCheckpointObservations": 0}}
         for name, value in values.items():
             (directory / name).write_text(json.dumps(value))
         (directory / "transitions.jsonl").write_text("")
@@ -121,6 +122,72 @@ class ExecutionAdapterTests(unittest.TestCase):
                 with self.assertRaisesRegex(ValueError, "input differs"):
                     runner.complete(HERE.parents[1], output, 1, admitted["tail"])
                 self.assertFalse((directory / "allocation-artifact.json").exists())
+
+    def test_valid_artifact_requires_semantic_quiet_replay_and_exact_count(self):
+        with tempfile.TemporaryDirectory() as raw:
+            output = Path(raw)
+            authority, _, allocation, request, _ = self.fixture(output)
+            directory = self.raw_fixture(output, allocation, request)
+            original = runner.read(directory / "replay.json")
+            for key, value in (("checkpointReplay", None), ("quietCheckpointObservations", None),
+                    ("quietCheckpointObservations", False), ("quietCheckpointObservations", 1)):
+                (directory / "replay.json").write_text(json.dumps({**original, key: value}))
+                with self.subTest(key=key, value=value), self.assertRaisesRegex(ValueError, "semantic quiet-checkpoint replay"):
+                    runner.allocation_artifact(HERE.parents[1], output, authority, allocation, 1)
+
+    def test_quiet_observation_must_bind_the_exact_initial_or_returned_state(self):
+        with tempfile.TemporaryDirectory() as raw:
+            output = Path(raw)
+            authority, _, allocation, request, _ = self.fixture(output)
+            directory = self.raw_fixture(output, allocation, request)
+            checkpoint = {"ownTurn": 1, "cards": [], "relevantActivatedAbilities": [],
+                "relevantGraveyardSpells": [], "activatedAbilityCoverageComplete": True,
+                "coloredManaFailure": False, "totalManaStranded": False, "unresolved": False}
+            status = runner.read(directory / "execution-status.json")
+            status.update(submittedActions=1, acceptedActions=1, ownTurnsStarted=1)
+            (directory / "execution-status.json").write_text(json.dumps(status))
+            events = runner.read(directory / "event-metrics.json")
+            events["acceptedTransitions"] = 1
+            (directory / "event-metrics.json").write_text(json.dumps(events))
+            (directory / "checkpoints.json").write_text(json.dumps([checkpoint]))
+            (directory / "actions.json").write_text('[{"fixture":"no engine submission"}]')
+            (directory / "final-state.json").write_text('{"fixture":"returned state"}')
+            final_digest = runner.sha(directory / "final-state.json")
+            transitions = [{"type": "ACTION_DECLARED", "index": 1, "action": {"fixture": "no engine submission"}},
+                {"type": "ACTION_RETURNED", "index": 1, "events": [], "stateSha256": final_digest, "error": None}]
+            (directory / "transitions.jsonl").write_text("\n".join(json.dumps(row) for row in transitions) + "\n")
+            (directory / "replay.json").write_text(json.dumps({"status": "EXACT_ACTION_EVENT_STATE_REPLAY", "actions": 1,
+                "checkpointReplay": "EXACT_EVERY_QUIET_CHECKPOINT_REPLAY", "quietCheckpointObservations": 1}))
+            for index, digest in ((0, runner.sha(directory / "initial-state.json")), (1, final_digest)):
+                observation = {"acceptedActions": index, "stateSha256": digest, "checkpoint": checkpoint}
+                (directory / "quiet-checkpoint-observations.jsonl").write_text(json.dumps(observation) + "\n")
+                runner.allocation_artifact(HERE.parents[1], output, authority, allocation, 1)
+                observation["stateSha256"] = "f" * 64
+                (directory / "quiet-checkpoint-observations.jsonl").write_text(json.dumps(observation) + "\n")
+                with self.assertRaisesRegex(ValueError, "exact accepted raw state"):
+                    runner.allocation_artifact(HERE.parents[1], output, authority, allocation, 1)
+
+    def test_clarification_requires_exact_reviewed_bytes_and_immutable_publication(self):
+        root = HERE.parents[1]
+        binding = {"path": runner.CLARIFICATION_PATH, "sha256": runner.CLARIFICATION_SHA256,
+            "repository_commit": "1" * 40}
+        api = Mock(spec=runner.GitImmutableReadAPI)
+        def response(method, url):
+            relative = url.split("/contents/", 1)[1].split("?ref=", 1)[0]
+            data = (root / relative).read_bytes()
+            return {"encoding": "base64", "path": relative, "content": base64.b64encode(data).decode()}
+        api.request.side_effect = response
+        runner.verify_checkpoint_clarification(root, {"checkpoint_clarification_acceptance": binding}, api)
+        self.assertEqual(api.request.call_count, 2)
+        for changed in (None, {**binding, "path": "copied-status.json"},
+                {**binding, "sha256": "f" * 64}, {**binding, "repository_commit": "main"}):
+            with self.assertRaises(ValueError):
+                runner.verify_checkpoint_clarification(root, {"checkpoint_clarification_acceptance": changed}, api)
+        api.request.side_effect = None
+        api.request.return_value = {"encoding": "base64", "path": runner.CLARIFICATION_PATH,
+            "content": base64.b64encode(b'{"status":"unpublished copy"}').decode()}
+        with self.assertRaisesRegex(ValueError, "immutable published"):
+            runner.verify_checkpoint_clarification(root, {"checkpoint_clarification_acceptance": binding}, api)
 
     def test_finalized_artifact_tampering_or_journal_mislabeling_is_rejected(self):
         with tempfile.TemporaryDirectory() as raw:

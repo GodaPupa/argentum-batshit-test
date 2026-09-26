@@ -35,6 +35,11 @@ CONSUMPTION_REF = "refs/heads/industrial-waste/official-attempts/v2-r1-attempt-1
 CONSUMPTION_PATH = "industrial-waste/v2/official/execution-consumption.json"
 OUTPUT_RELATIVE = "build/official/industrial-waste-v2-r1-attempt-1"
 GIT_REMOTE = "https://github.com/GodaPupa/argentum-batshit-test.git"
+CLARIFICATION_PATH = "industrial-waste/v2/r1-checkpoint-clarification-acceptance.json"
+CLARIFICATION_SHA256 = "34511344bbdac128964a612ac36cc839c43a431015e3a6d5375aa62b5f25c6cd"
+CLARIFICATION_PROPOSAL_PATH = "industrial-waste/v2/r1-checkpoint-clarification-proposal.json"
+CLARIFICATION_PROPOSAL_SHA256 = "d1200c65d5b4573ff66a92e3159f8c6bdcaaf5887c182c83c144db22156b60c5"
+ORIGINAL_PROTOCOL_SHA256 = "fd697b6d56b5a5451f4dc6f9ee4bd20584a705570c6f99861dd64f0086ed95bc"
 FROZEN_INPUTS = ["industrial-waste/control/industrial-waste-v1.0-submitted.dck",
     "industrial-waste/v2/candidates/compact-loop.dck", "industrial-waste/v2/candidates/recursive-eggs.dck",
     "industrial-waste/v2/candidates/lean-tron-hybrid.dck", "industrial-waste/v2/r0-freeze.json",
@@ -210,6 +215,26 @@ def verify_published_binding(root, binding, api=None):
         raise ValueError("authority bytes differ from the immutable published object")
 
 
+def verify_checkpoint_clarification(root, runtime, api):
+    """The accepted prospective interpretation is a pinned prerequisite, never execution authority."""
+    binding = runtime.get("checkpoint_clarification_acceptance")
+    if (not isinstance(binding, dict) or binding.get("path") != CLARIFICATION_PATH
+            or binding.get("sha256") != CLARIFICATION_SHA256):
+        raise ValueError("runtime must bind the exact independently reviewed checkpoint clarification acceptance")
+    verify_published_binding(root, binding, api)
+    acceptance = read(root / CLARIFICATION_PATH)
+    if (acceptance.get("status") != "ACCEPTED_PROSPECTIVE_CHECKPOINT_CLARIFICATION_ONLY"
+            or acceptance.get("protocol_id") != PROTOCOL_ID):
+        raise ValueError("checkpoint clarification is not the accepted scoped interpretation")
+    proposal = acceptance["proposal"]
+    if (proposal["path"] != CLARIFICATION_PROPOSAL_PATH
+            or proposal["sha256"] != CLARIFICATION_PROPOSAL_SHA256):
+        raise ValueError("accepted checkpoint proposal drift")
+    verify_published_binding(root, proposal, api)
+    if sha(root / "industrial-waste/v2/protocol-v2-r1.json") != ORIGINAL_PROTOCOL_SHA256:
+        raise ValueError("checkpoint clarification cannot modify the frozen original protocol")
+
+
 def validate_authority(root, session, *, require_publication=True):
     if session.get("protocol_id") != PROTOCOL_ID:
         raise ValueError("session protocol drift")
@@ -232,6 +257,7 @@ def validate_authority(root, session, *, require_publication=True):
     authorization_ref = _binding(root, claim, "execution_authorization", AUTHORIZATION_STATUS)
     runtime = read(root / runtime_ref["path"])
     authorization = read(root / authorization_ref["path"])
+    verify_checkpoint_clarification(root, runtime, api)
     qualified_source = runtime.get("source_commit")
     if not isinstance(qualified_source, str) or re.fullmatch(r"[0-9a-f]{40}", qualified_source) is None:
         raise ValueError("qualified runtime source is missing")
@@ -247,12 +273,14 @@ def validate_authority(root, session, *, require_publication=True):
         "industrial-waste/v2/r1_artifact_contract.py", "industrial-waste/v2/r1_decision_rule.py",
         "industrial-waste/v2/r1_allocation_plan.py", "industrial-waste/v2/r1_execution_guard.py",
         "industrial-waste/v2/r1-runtime-composition-contract.json",
+        CLARIFICATION_PATH, CLARIFICATION_PROPOSAL_PATH,
         "tools/evidence_durability.py", "tools/repository_claim.py",
         "industrial-waste/v2/r1_runtime_binding_audit.py", *FROZEN_INPUTS,
         *["ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/" + name + ".kt" for name in (
             "IndustrialWasteV2AllocationRunner", "IndustrialWasteV2FullHorizonRunner",
             "IndustrialWasteV2CheckpointMana", "IndustrialWasteV2R1OfficialExecutionTest",
-            "IndustrialWasteV2PaymentIntent", "IndustrialWasteV2PublicActionPolicy")],
+            "IndustrialWasteV2PaymentIntent", "IndustrialWasteV2PublicActionPolicy",
+            "IndustrialWasteV2QuietCheckpointReplayTest")],
     }
     pins = runtime.get("source_files_sha256")
     if not isinstance(pins, dict) or not required.issubset(pins):
@@ -426,13 +454,19 @@ def allocation_artifact(root, output, authority, allocation, index):
     if not same_json(before, {"allocationId": allocation["allocation_id"], "initialized": False, "official": True}):
         raise ValueError("raw initialization declaration differs from the admitted allocation")
     status = read(directory / "execution-status.json")
+    quiet_observations = [json.loads(line) for line in
+        (directory / "quiet-checkpoint-observations.jsonl").read_text().splitlines()]
     projection = project_metrics(status, read(directory / "event-metrics.json"),
-        json.loads((directory / "checkpoints.json").read_text()))
+        json.loads((directory / "checkpoints.json").read_text()), quiet_observations)
     if projection["validity"] == "VALID":
         replay = read(directory / "replay.json")
         if (replay.get("status") != "EXACT_ACTION_EVENT_STATE_REPLAY"
                 or type(replay.get("actions")) is not int or replay["actions"] != status["acceptedActions"]):
             raise ValueError("exact transcript replay absent")
+        if (replay.get("checkpointReplay") != "EXACT_EVERY_QUIET_CHECKPOINT_REPLAY"
+                or type(replay.get("quietCheckpointObservations")) is not int
+                or replay["quietCheckpointObservations"] != len(quiet_observations)):
+            raise ValueError("complete semantic quiet-checkpoint replay absent")
         actions = json.loads((directory / "actions.json").read_text())
         transitions = [json.loads(line) for line in (directory / "transitions.jsonl").read_text().splitlines()]
         if (not isinstance(actions, list) or len(actions) != replay["actions"]
@@ -440,7 +474,7 @@ def allocation_artifact(root, output, authority, allocation, index):
             raise ValueError("accepted raw action journal is incomplete")
         for offset, action in enumerate(actions):
             declared, returned = transitions[offset * 2:offset * 2 + 2]
-            if (declared != {"type": "ACTION_DECLARED", "index": offset + 1, "action": action}
+            if (not same_json(declared, {"type": "ACTION_DECLARED", "index": offset + 1, "action": action})
                     or returned.get("type") != "ACTION_RETURNED"
                     or type(declared.get("index")) is not int or type(returned.get("index")) is not int
                     or returned["index"] != offset + 1 or returned.get("error", "MISSING") is not None
@@ -450,6 +484,12 @@ def allocation_artifact(root, output, authority, allocation, index):
         terminal_digest = transitions[-1]["stateSha256"] if transitions else sha(directory / "initial-state.json")
         if terminal_digest != sha(directory / "final-state.json"):
             raise ValueError("raw final state differs from the accepted replay transcript")
+        for observation in quiet_observations:
+            accepted_index = observation["acceptedActions"]
+            expected_state_digest = (sha(directory / "initial-state.json") if accepted_index == 0
+                else transitions[accepted_index * 2 - 1]["stateSha256"])
+            if observation["stateSha256"] != expected_state_digest:
+                raise ValueError("quiet observation is not bound to its exact accepted raw state")
     artifact = {"schema": SCHEMA, "protocol_id": PROTOCOL_ID,
         "allocation_id": allocation["allocation_id"], "allocation_index": index,
         "row": allocation["row"], "schedule": allocation["schedule"],
@@ -458,7 +498,8 @@ def allocation_artifact(root, output, authority, allocation, index):
             "runtime_identity_receipt_sha256": authority["runtime_sha256"],
             "runner_binding_sha256": sha(root / "industrial-waste/v2/r1_execute.py"),
             "artifact_contract_sha256": sha(root / "industrial-waste/v2/r1_artifact_contract.py"),
-            "metric_projection_sha256": sha(root / "industrial-waste/v2/r1_metric_projection.py")},
+            "metric_projection_sha256": sha(root / "industrial-waste/v2/r1_metric_projection.py"),
+            "checkpoint_clarification_acceptance_sha256": sha(root / CLARIFICATION_PATH)},
         "execution": {"terminal_status": status["status"], "submitted_actions": status["submittedActions"],
             "accepted_actions": status["acceptedActions"], "own_turns_started": status["ownTurnsStarted"],
             "own_turns_completed": status["ownTurnsCompleted"]},

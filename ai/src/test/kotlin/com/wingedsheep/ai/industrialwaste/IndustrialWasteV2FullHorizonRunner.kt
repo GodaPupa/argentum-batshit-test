@@ -13,6 +13,11 @@ import com.wingedsheep.engine.support.GameTestDriver
 import com.wingedsheep.sdk.core.Step
 import com.wingedsheep.sdk.model.EntityId
 
+/** One shared eligibility predicate for runtime observation and replay of the frozen checkpoint. */
+internal fun GameState.isIndustrialWasteV2QuietCheckpoint(player: EntityId): Boolean =
+    !gameOver && activePlayerId == player && step == Step.PRECOMBAT_MAIN && stack.isEmpty() &&
+        pendingDecision == null && priorityPlayerId == player
+
 /**
  * Complete T1-T8 capability composition for one already-initialized Industrial Waste v2 game.
  *
@@ -65,36 +70,40 @@ internal class IndustrialWasteV2FullHorizonRunner(
         val checkpoints = linkedMapOf<Int, IndustrialWasteV2CheckpointMana>()
         val actions = mutableListOf<GameAction>()
         val payments = IndustrialWasteV2PaymentBinder(driver.cardRegistry, paymentIntentRecord)
+        var lastObservedActions: Int? = null
+        var lastObservedState: GameState? = null
 
+        fun observeQuietState() {
+            val state = driver.state
+            if (!state.isIndustrialWasteV2QuietCheckpoint(measuredPlayer)) return
+            val accepted = tracker.snapshot().acceptedActions
+            if (lastObservedActions == accepted) {
+                check(lastObservedState == state) { "Quiet state changed without an accepted action" }
+                return
+            }
+            val checkpoint = IndustrialWasteV2CheckpointManaClassifier.classify(
+                state = state,
+                player = measuredPlayer,
+                originalCopies = ordering.originalCopies,
+                legalActions = simulator.getLegalActions(state, measuredPlayer),
+                cardRegistry = driver.cardRegistry,
+            )
+            // Every eligible state is preserved, including the state returned by the final
+            // permitted action. A cap stops further actions; it does not erase that observation.
+            checkpointObservation(checkpoint, accepted, state)
+            lastObservedActions = accepted
+            lastObservedState = state
+            checkpoints.putIfAbsent(checkpoint.ownTurn, checkpoint)
+            if (checkpoint.unresolved) {
+                tracker.markUnresolved(
+                    "Quiet-precombat checkpoint ${checkpoint.ownTurn} after $accepted accepted actions contains an unresolved payment shape"
+                )
+            }
+        }
+
+        observeQuietState()
         while (tracker.snapshot().status == IndustrialWasteV2StopStatus.RUNNING) {
             val state = driver.state
-
-            if (
-                state.activePlayerId == measuredPlayer &&
-                state.step == Step.PRECOMBAT_MAIN &&
-                state.stack.isEmpty() &&
-                state.pendingDecision == null &&
-                state.priorityPlayerId == measuredPlayer
-            ) {
-                val legal = simulator.getLegalActions(state, measuredPlayer)
-                val checkpoint = IndustrialWasteV2CheckpointManaClassifier.classify(
-                    state = state,
-                    player = measuredPlayer,
-                    originalCopies = ordering.originalCopies,
-                    legalActions = legal,
-                    cardRegistry = driver.cardRegistry,
-                )
-                // Keep the accepted component's first-per-turn view for compatibility, but
-                // preserve every observed quiet state before it can invalidate the attempt.
-                checkpointObservation(checkpoint, tracker.snapshot().acceptedActions, state)
-                checkpoints.putIfAbsent(checkpoint.ownTurn, checkpoint)
-                if (checkpoint.unresolved) {
-                    tracker.markUnresolved(
-                        "Quiet-precombat checkpoint ${checkpoint.ownTurn} after ${tracker.snapshot().acceptedActions} accepted actions contains an unresolved payment shape"
-                    )
-                    break
-                }
-            }
 
             val decision = state.pendingDecision
             val action: GameAction = if (decision != null) {
@@ -133,6 +142,9 @@ internal class IndustrialWasteV2FullHorizonRunner(
             check(tracker.state == driver.state) {
                 "Tracker and real driver state diverged after submission"
             }
+            // This must precede the next RUNNING guard, so an eligible action-cap/terminal
+            // state is still classified and an unresolved result can invalidate a provisional cap.
+            observeQuietState()
         }
 
         val status = tracker.snapshot()
