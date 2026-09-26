@@ -1,0 +1,141 @@
+name: Shared Finite Payment Feasibility Qualification
+
+on:
+  push:
+    branches: [shared/payment-feasibility-qualification]
+    paths:
+      - .github/workflows/shared-payment-feasibility-qualification.yml
+      - rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/mana/ManaPaymentFeasibility.kt
+      - rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/mana/ManaSolver.kt
+      - rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/ManaPaymentFeasibilityTest.kt
+
+permissions:
+  contents: read
+
+concurrency:
+  group: shared-payment-feasibility-qualification
+  cancel-in-progress: false
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    env:
+      GRADLE_LOCK_SLOTS: '1'
+      JAVA_TOOL_OPTIONS: -XX:MaxMetaspaceSize=768m
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.sha }}
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Retain exact source binding before validation
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/reports/payment-feasibility
+          python3 - <<'PYTHON'
+          import hashlib, json, os, pathlib, subprocess
+          expected = {
+              'rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/mana/ManaPaymentFeasibility.kt': '68ed797fe8032233fddaa3878a3109afcefbfe70db20ea54ca77efced2040bf3',
+              'rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/mana/ManaSolver.kt': '8d01d433f402067e29e91e57907d9460408f72e7d35230e3e35cb439b6277daa',
+              'rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/ManaPaymentFeasibilityTest.kt': '19a2873e74884e304b1f41b30bb18bfd637be642b87d128f3dce9c8625b9cd0a',
+              'rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/PaidFilterManaSolverTest.kt': '5d8590e625f46e98ad6e4eaef4787443dd09dbbe41215f6e8d1ec47ef227ffd9',
+              'rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/RestrictedXManaReconciliationTest.kt': 'add15adc5eb1f7a5e93243a1f7fcd8a84707a7442fb30a3dbc73b6ef746569c3',
+          }
+          observed = {path: hashlib.sha256(pathlib.Path(path).read_bytes()).hexdigest()
+              if pathlib.Path(path).is_file() else None for path in expected}
+          identity = {'requested_head': os.environ['GITHUB_SHA'],
+              'actual_head': subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip(),
+              'actual_tree': subprocess.check_output(['git', 'rev-parse', 'HEAD^{tree}'], text=True).strip(),
+              'checkout_status': subprocess.check_output(['git', 'status', '--porcelain'], text=True),
+              'expected_files': expected, 'observed_files': observed,
+              'workflow_sha256': hashlib.sha256(pathlib.Path('.github/workflows/shared-payment-feasibility-qualification.yml').read_bytes()).hexdigest(),
+              'canonical_paid_filter_target_source': '83577deb6176e6febddf4ffe2e7d98b7455453c2'}
+          pathlib.Path('build/reports/payment-feasibility/source-binding.json').write_text(json.dumps(identity, indent=2) + '\n')
+          assert identity['actual_head'] == identity['requested_head'], identity
+          assert observed == expected, identity
+          assert not identity['checkout_status'].strip(), identity
+          PYTHON
+      - name: Execute finite resource and actual ordered payment regressions first
+        shell: bash
+        run: |
+          set -euo pipefail
+          scripts/gradle-locked :rules-engine:test --tests '*ManaPaymentFeasibilityTest' \
+            --max-workers=1 -PkotlinCompileParallelism=1 \
+            -Pkotlin.compiler.execution.strategy=in-process -Dorg.gradle.jvmargs=-Xmx4g \
+            --info --stacktrace 2>&1 | tee build/reports/payment-feasibility/focused.log
+      - name: Preserve first-stage XML even after a rejected attempt
+        if: always()
+        shell: bash
+        run: |
+          mkdir -p build/reports/payment-feasibility/focused-xml
+          if test -d rules-engine/build/test-results/test; then
+            cp rules-engine/build/test-results/test/TEST-*.xml build/reports/payment-feasibility/focused-xml/ || true
+          fi
+      - name: Preserve the 52 previously qualified canonical payment cases on the same source
+        shell: bash
+        run: |
+          set -euo pipefail
+          scripts/gradle-locked :rules-engine:test \
+            --tests '*PaidFilterManaSolverTest' --tests '*RestrictedXManaReconciliationTest' \
+            --tests '*MultiManaSourceTest' --tests '*MonocolorHybridManaSolverTest' \
+            --tests '*DynamicManaAmountAutoTapTest' --tests '*ManaSpendRestrictionAnyAbilityTest' \
+            --tests '*ManaAbilityActivationTriggerScenarioTest' --tests '*ManaSourceProvenanceScenarioTest' \
+            --tests '*XSpellFloatingRestrictedManaTest' \
+            --max-workers=1 -PkotlinCompileParallelism=1 \
+            -Pkotlin.compiler.execution.strategy=in-process -Dorg.gradle.jvmargs=-Xmx4g \
+            --info --stacktrace 2>&1 | tee build/reports/payment-feasibility/compatibility.log
+      - name: Require exact actual suites and retain component-only disposition
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PYTHON'
+          import hashlib, json, os, pathlib, xml.etree.ElementTree as ET
+          root = pathlib.Path('build/reports/payment-feasibility')
+          expected = {
+              'focused': {'ManaPaymentFeasibilityTest': 21},
+              'compatibility': {'PaidFilterManaSolverTest': 14, 'RestrictedXManaReconciliationTest': 4,
+                  'MultiManaSourceTest': 7, 'MonocolorHybridManaSolverTest': 4,
+                  'DynamicManaAmountAutoTapTest': 6, 'ManaSpendRestrictionAnyAbilityTest': 5,
+                  'ManaAbilityActivationTriggerScenarioTest': 3, 'ManaSourceProvenanceScenarioTest': 3,
+                  'XSpellFloatingRestrictedManaTest': 6},
+          }
+          roots = {'focused': root/'focused-xml', 'compatibility': pathlib.Path('rules-engine/build/test-results/test')}
+          suites = []
+          for stage, directory in roots.items():
+              seen = set()
+              for path in sorted(directory.glob('TEST-*.xml')):
+                  suite = ET.parse(path).getroot()
+                  name = suite.attrib['name'].rsplit('.', 1)[-1]
+                  assert name in expected[stage] and name not in seen, (stage, name)
+                  cases = suite.findall('testcase')
+                  assert len(cases) == int(suite.attrib['tests']) == expected[stage][name], (stage, suite.attrib)
+                  assert all(int(suite.attrib.get(key, 0)) == 0 for key in ['failures', 'errors', 'skipped']), suite.attrib
+                  assert all(case.find(key) is None for case in cases for key in ['failure', 'error', 'skipped'])
+                  names = [case.attrib['name'] for case in cases]
+                  assert len(set(names)) == len(names), names
+                  suites.append({'stage': stage, 'class': suite.attrib['name'], 'tests': len(cases),
+                      'case_names': names, 'xml_sha256': hashlib.sha256(path.read_bytes()).hexdigest()})
+                  seen.add(name)
+              assert seen == set(expected[stage]), (stage, seen)
+          assert sum(suite['tests'] for suite in suites) == 73
+          report = {'schema': 'shared-payment-feasibility-target-v1', 'run_id': os.environ['GITHUB_RUN_ID'],
+              'disposition': 'COMPONENT_TARGET_ONLY_PENDING_INDEPENDENT_AUDIT_FULL_INTEGRATION_AND_RECEIVING_WIRING',
+              'binding': json.loads((root/'source-binding.json').read_text()), 'suites': suites,
+              'actual_cases': 73, 'legal_menu_wired': False, 'pilot_witness_wired': False,
+              'checkpoint_collector_wired': False, 'full_integration': False,
+              'official_gameplay': 0, 'seeds_consumed': 0, 'gameplay_admission': False}
+          (root/'result.json').write_text(json.dumps(report, indent=2) + '\n')
+          PYTHON
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: shared-payment-feasibility-qualification
+          path: |
+            build/reports/payment-feasibility
+            rules-engine/build/test-results/test/*.xml
+          if-no-files-found: warn
