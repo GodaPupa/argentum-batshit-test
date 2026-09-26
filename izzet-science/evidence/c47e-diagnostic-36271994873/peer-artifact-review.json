@@ -1,0 +1,70 @@
+{
+  "schema": "izzet-diagnostic-root-nonauthor-evidence-review-v1",
+  "reviewer": "/root",
+  "reviewer_authored_diagnostic_source": false,
+  "decision": "PASS_FOR_EXACT_DIAGNOSTIC_EVIDENCE_PUBLICATION",
+  "receipt_sha256": "f5fbb44eb3dd585307157d83cb9cc427a8652b6f95a0b844460cc9cf9f97f967",
+  "control_source": "298a4a1ac0586c20c4983c5ee64513e1bee3ed18",
+  "control_tree": "c5b788d5d412735dac0c162ac79f6044b2801827",
+  "run": 36271994873,
+  "attempt": 1,
+  "results": [
+    {
+      "label": "accepted-base",
+      "source": "50eca5fb955013d70ea26c3c6a09efabef4bcff4",
+      "tree": "bb352ebb432555191e1c4d74673e0e4371651989",
+      "artifact_id": 10916376133,
+      "bytes": 264646,
+      "sha256": "28759ae2198dc4efc2a64ae069f4d74408e9667da85222f9c918417be6cc6b74",
+      "members": 13,
+      "tests": 1,
+      "passed": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "source_pins": 2,
+      "details": []
+    },
+    {
+      "label": "candidate",
+      "source": "c47e9dbafc1fd582f81be1db04e9f35a09f067b5",
+      "tree": "f92cdeaed8be104d98b1a971347cd9c2f089f779",
+      "artifact_id": 10916007768,
+      "bytes": 346652,
+      "sha256": "869e0cdd41e5827fbf51e74ed807ba549e4e533f7bc98b2a2395be91c6fb5edf",
+      "members": 32,
+      "tests": 8,
+      "passed": 3,
+      "failures": 5,
+      "errors": 0,
+      "skipped": 0,
+      "source_pins": 6,
+      "details": [
+        "Retained failure explicitly reports tokens attacking player-1 and defenders including player-1; no blocker/sacrifice assertion rewritten."
+      ]
+    }
+  ],
+  "stream_comparison": {
+    "entries_each": 413,
+    "bytes_each": 26613,
+    "changed_entries": 14,
+    "adjacent_postblock_pairs": 7,
+    "all_other_bytes_and_end_equal": true
+  },
+  "checks": [
+    "Original45member bytes/CRC plus both whole ZIP hashes verified independently; no artifact-content inference.",
+    "Eight original source-pin occurrences independently fetched from immutable GitHub and matched archived originals and SHA256.",
+    "Test-runner instrumentation exactly replaces only record(entry) with identical digest update plus Base64 logging; original assertions/goldens untouched.",
+    "All original9 test executions across2sources are retained: acceptedbase1pass;candidate3pass5fail,0skip.",
+    "Decoded both complete baseline inputs independently from rawXML and rehashed; exactbinary streams match published text and frozenbase hash.",
+    "Fresh executor/--rerun/stageexits and completeoriginalcase names checked; candidatefailure preserved asfailure."
+  ],
+  "limits": [
+    "This is a bounded diagnostic/evidence review, not full receiving acceptance or permission to rebless a golden.",
+    "Equal finalstate in one fixture does not prove runtime or pilot equivalence.",
+    "Remaining Arcane Denial/MnemonicWall causes require prospective receiving diagnosis.",
+    "No official matchup games, seed consumption, card/deck/policy changes, GitHub approval or gameplay admission."
+  ],
+  "official_games": 0,
+  "gameplay_authorized": false
+}

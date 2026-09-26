@@ -1,0 +1,49 @@
+{
+  "schema": "izzet-c47e-diagnostic-receiving-audit-v1",
+  "disposition": "DIAGNOSTICS_COMPLETE_FULL_RECEIVING_STILL_REJECTED",
+  "control_source": "298a4a1ac0586c20c4983c5ee64513e1bee3ed18",
+  "control_tree": "c5b788d5d412735dac0c162ac79f6044b2801827",
+  "run_id": 36271994873,
+  "event": "push",
+  "attempt": 1,
+  "run_conclusion": "failure",
+  "source_review": "izzet-science/diagnostics/c47e/peer-source-review.json at control_source; SHA25645c7245870fb04a0985642fd7a10da624df39fb41f384fe8ed46142dbac900bf",
+  "artifacts": {
+    "accepted-base": {
+      "id": 10916376133,
+      "job_id": 108487591473,
+      "file": "accepted-base-original-artifact.zip",
+      "bytes": 264646,
+      "sha256": "28759ae2198dc4efc2a64ae069f4d74408e9667da85222f9c918417be6cc6b74"
+    },
+    "candidate": {
+      "id": 10916007768,
+      "job_id": 108487591334,
+      "file": "candidate-original-artifact.zip",
+      "bytes": 346652,
+      "sha256": "869e0cdd41e5827fbf51e74ed807ba549e4e533f7bc98b2a2395be91c6fb5edf"
+    }
+  },
+  "findings": [
+    "All45 original artifact members across both ZIPs verify against their complete per-file hash manifests and CRCs. All8 source-pin occurrences verify from retained original source bytes; exact reversible test-only instrumentation is checked.",
+    "Base50eca:1 original case freshly executed, passed, unchanged golden47e993c61a57ebbd reproduced. Candidatec47e:8 original cases freshly executed,3pass5fail0skip; each of4 original class invocations retains exit1.",
+    "Both exact413-entry baseline hash inputs are decoded independently from XML and rehashed. Candidate634376c1259f8db7 differs only in14 lines forming7 adjacent post-block priority pass pairs. Full SHA256 values and exact differences are retained.",
+    "Dalkovan raw assertion shows its two Warrior tokens attacking player-1, the active token controller; defenders include both players and nextDefender is player-1. The original attempt to submit player-2 blockers is rejected. This is an observed token-defender defect on this candidate, not a delayed-sacrifice assertion failure.",
+    "ArcaneDenial still throws because the expected draw-up-to-two decision is absent at line95. Both MnemonicWall cases still throw No pending YesNoDecision at lines36/56. These raw failures are preserved; their complete causal corrections are not certified by this audit."
+  ],
+  "limits": [
+    "Source-author artifact audit plus retained raw evidence; requires bounded non-author publication review. Not independent source/runtime/gameplay admission.",
+    "No deck, pilot policy, experimental input, golden, test assertion or source under test was changed. The diagnostic-only checkout instrumentation adds logging after the identical existing digest update.",
+    "These are existing regression fixtures, not Izzet matchup outcomes or official allocations. No concealed vector was read and no Position1 game initialized.",
+    "All source/whole-runtime receiving rejection remains until prospective corrected composition and required acceptance. No duplicate push, dispatch or unchanged rerun is permitted."
+  ],
+  "official_games": 0,
+  "official_outcomes_newly_exposed": 0,
+  "deck_changes": 0,
+  "generated_official_seeds": 12,
+  "consumed_official_seeds": 0,
+  "initialized_official_games": 0,
+  "completed_official_games": 0,
+  "exposed_official_outcomes": 0,
+  "counters_basis": "Latest accepted and candidate durable records; no concealed vector inspection."
+}
