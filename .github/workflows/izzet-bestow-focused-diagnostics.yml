@@ -1,0 +1,57 @@
+name: Izzet Bestow Focused Regression Diagnostics
+
+on:
+  push:
+    branches:
+      - mayhem/izzet-bestow-integration
+    paths:
+      - .github/workflows/izzet-bestow-focused-diagnostics.yml
+
+permissions:
+  contents: read
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: mayhem/izzet-bestow-integration
+          fetch-depth: 0
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Run exact red regressions without masking their XML
+        shell: bash
+        run: |
+          set +e
+          rm -rf build/reports/izzet-bestow-focused
+          mkdir -p build/reports/izzet-bestow-focused
+          failed=0
+          run_one() {
+            local name="$1" class="$2"
+            scripts/test-class "$class" --info --stacktrace
+            local status=$?
+            mkdir -p "build/reports/izzet-bestow-focused/$name"
+            find . -path '*/build/test-results/test/TEST-*.xml' -type f -newermt '5 minutes ago' -print -exec cp '{}' "build/reports/izzet-bestow-focused/$name/" \;
+            printf '%s\n' "$status" > "build/reports/izzet-bestow-focused/$name/exit-status.txt"
+            if [ "$status" -ne 0 ]; then failed=1; fi
+          }
+          run_one facade FacadeBoundaryTest
+          run_one token-art TokenArtCoverageTest
+          run_one frozen-baseline FrozenBaselineTest
+          run_one galvanic-blast GalvanicBlastScenarioTest
+          echo "==== FOCUSED XML ===="
+          find build/reports/izzet-bestow-focused -name 'TEST-*.xml' -type f -print -exec cat '{}' \;
+          exit "$failed"
+      - name: Preserve focused failure evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: izzet-bestow-focused-regressions
+          path: build/reports/izzet-bestow-focused/
+          if-no-files-found: error
+          retention-days: 90
