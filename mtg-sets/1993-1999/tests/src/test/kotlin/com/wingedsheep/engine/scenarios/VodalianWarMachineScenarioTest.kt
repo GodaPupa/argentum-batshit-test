@@ -7,6 +7,7 @@ import com.wingedsheep.engine.mechanics.layers.SerializableModification
 import com.wingedsheep.engine.mechanics.layers.addFloatingEffect
 import com.wingedsheep.sdk.scripting.Duration
 import com.wingedsheep.engine.support.GameTestDriver
+import com.wingedsheep.engine.support.chooseTriggerOrderInListedOrder
 import com.wingedsheep.engine.support.TestCards
 import com.wingedsheep.mtg.sets.definitions.fem.cards.VodalianWarMachine
 import com.wingedsheep.sdk.core.Step
@@ -65,6 +66,7 @@ class VodalianWarMachineScenarioTest : FunSpec({
             )
         )
         driver.bothPass()
+        driver.bothPass()
 
         // Kill it for real — `moveToGraveyard` is a blunt zone move that deliberately skips dies
         // triggers, and the dies trigger is the whole point here. -0/-8 covers the 0/4 Wall plus
@@ -80,6 +82,8 @@ class VodalianWarMachineScenarioTest : FunSpec({
         )
         // Let the engine notice it: passing priority runs state-based actions *and* the trigger
         // detection that follows them, which a direct StateBasedActionChecker call would skip.
+        driver.passPriority(driver.state.priorityPlayerId!!).error shouldBe null
+        driver.chooseTriggerOrderInListedOrder()
         driver.passPriorityUntil(Step.END)
 
         withClue("the War Machine actually died") {

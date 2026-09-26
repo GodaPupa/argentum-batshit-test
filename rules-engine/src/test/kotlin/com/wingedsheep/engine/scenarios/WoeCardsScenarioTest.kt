@@ -1,5 +1,7 @@
 package com.wingedsheep.engine.scenarios
 
+import com.wingedsheep.engine.support.chooseTriggerOrderInListedOrder
+
 import com.wingedsheep.engine.core.ActivateAbility
 import com.wingedsheep.engine.mechanics.layers.StateProjector
 import com.wingedsheep.engine.state.components.battlefield.CountersComponent
@@ -146,6 +148,8 @@ class WoeCardsScenarioTest : ScenarioTestBase() {
                         abilityId = nightmareSacrificeAbility
                     )
                 ).error shouldBe null
+                game.resolveStack()
+                game.chooseTriggerOrderInListedOrder()
                 game.resolveStack()
 
                 withClue("sacrificing the enchantment should feed the Tabby's trigger") {
@@ -430,6 +434,8 @@ class WoeCardsScenarioTest : ScenarioTestBase() {
                     )
                 ).error shouldBe null
                 game.resolveStack()
+                game.chooseTriggerOrderInListedOrder()
+                game.resolveStack()
 
                 withClue("sacrificing the enchantment feeds Wicked Visitor's drain") {
                     game.getLifeTotal(2) shouldBe opponentLife - 1
@@ -456,6 +462,8 @@ class WoeCardsScenarioTest : ScenarioTestBase() {
                         abilityId = nightmareSacrificeAbility
                     )
                 ).error shouldBe null
+                game.resolveStack()
+                game.chooseTriggerOrderInListedOrder()
                 game.resolveStack()
 
                 val bird = game.findPermanent("Bird Token")

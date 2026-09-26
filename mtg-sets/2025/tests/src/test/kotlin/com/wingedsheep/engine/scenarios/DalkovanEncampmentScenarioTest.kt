@@ -1,5 +1,7 @@
 package com.wingedsheep.engine.scenarios
 
+import com.wingedsheep.engine.support.chooseTriggerOrderInListedOrder
+
 import com.wingedsheep.engine.core.ActivateAbility
 import com.wingedsheep.engine.state.components.battlefield.TappedComponent
 import com.wingedsheep.engine.state.components.combat.AttackingComponent
@@ -105,6 +107,9 @@ class DalkovanEncampmentScenarioTest : ScenarioTestBase() {
                     game.findPermanents("Warrior Token").size shouldBe 2
                 }
 
+                game.passUntilPhase(Phase.ENDING, Step.END)
+                game.chooseTriggerOrderInListedOrder()
+                game.resolveStack()
                 game.passUntilPhase(Phase.PRECOMBAT_MAIN, Step.PRECOMBAT_MAIN)
 
                 withClue("Warrior tokens are sacrificed by the next end step") {

@@ -1,5 +1,7 @@
 package com.wingedsheep.engine.scenarios
 
+import com.wingedsheep.engine.support.chooseTriggerOrderInListedOrder
+
 import com.wingedsheep.engine.support.ScenarioTestBase
 import com.wingedsheep.sdk.core.Keyword
 import com.wingedsheep.sdk.core.Phase
@@ -92,6 +94,7 @@ class PushTheLimitScenarioTest : ScenarioTestBase() {
                 game.isOnBattlefield("Guardian Sunmare") shouldBe true
 
                 game.passUntilPhase(Phase.ENDING, Step.END)
+                game.chooseTriggerOrderInListedOrder()
                 game.resolveStack()
 
                 withClue("both returned permanents are sacrificed, not just the first one") {

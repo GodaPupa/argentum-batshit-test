@@ -2,6 +2,7 @@ package com.wingedsheep.engine.scenarios
 
 import com.wingedsheep.engine.core.YesNoDecision
 import com.wingedsheep.engine.support.ScenarioTestBase
+import com.wingedsheep.engine.support.chooseTriggerOrderInListedOrder
 import com.wingedsheep.sdk.core.Phase
 import com.wingedsheep.sdk.core.Step
 import io.kotest.assertions.withClue
@@ -52,6 +53,7 @@ class FastingScenarioTest : ScenarioTestBase() {
 
                 game.passUntilPhase(Phase.BEGINNING, Step.UPKEEP)
                 game.state.activePlayerId shouldBe game.player1Id
+                game.chooseTriggerOrderInListedOrder()
                 game.resolveStack()
 
                 // The optional skip-draw offer.
@@ -94,6 +96,7 @@ class FastingScenarioTest : ScenarioTestBase() {
                     } else {
                         game.toMyNextUpkeep()
                     }
+                    game.chooseTriggerOrderInListedOrder()
                     game.resolveStack()
 
                     val offer = game.state.pendingDecision
@@ -132,6 +135,7 @@ class FastingScenarioTest : ScenarioTestBase() {
 
                 game.passUntilPhase(Phase.BEGINNING, Step.UPKEEP)
                 game.state.activePlayerId shouldBe game.player1Id
+                game.chooseTriggerOrderInListedOrder()
                 game.resolveStack()
                 game.state.pendingDecision.shouldBeInstanceOf<YesNoDecision>()
                 game.answerYesNo(false)

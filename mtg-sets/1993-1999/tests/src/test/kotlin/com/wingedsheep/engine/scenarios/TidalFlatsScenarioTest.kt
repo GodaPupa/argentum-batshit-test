@@ -50,6 +50,9 @@ class TidalFlatsScenarioTest : FunSpec({
         driver.declareAttackers(alice, listOf(attacker), bob)
         driver.passPriorityUntil(Step.DECLARE_BLOCKERS)
         driver.declareBlockers(bob, mapOf(blocker to listOf(attacker)))
+        driver.assertPriority(alice)
+        driver.passPriority(alice).error shouldBe null
+        driver.assertPriority(bob)
 
         driver.giveMana(bob, Color.BLUE, 2)
         driver.submitSuccess(
@@ -80,6 +83,9 @@ class TidalFlatsScenarioTest : FunSpec({
         driver.declareAttackers(alice, listOf(attacker), bob)
         driver.passPriorityUntil(Step.DECLARE_BLOCKERS)
         driver.declareBlockers(bob, mapOf(blocker to listOf(attacker)))
+        driver.assertPriority(alice)
+        driver.passPriority(alice).error shouldBe null
+        driver.assertPriority(bob)
 
         driver.giveMana(bob, Color.BLUE, 2)
         driver.submitSuccess(
@@ -115,6 +121,9 @@ class TidalFlatsScenarioTest : FunSpec({
         driver.declareAttackers(alice, listOf(attacker), bob)
         driver.passPriorityUntil(Step.DECLARE_BLOCKERS)
         driver.declareBlockers(bob, mapOf(blocker to listOf(attacker)))
+        driver.assertPriority(alice)
+        driver.passPriority(alice).error shouldBe null
+        driver.assertPriority(bob)
 
         driver.giveMana(bob, Color.BLUE, 2)
         driver.submitSuccess(

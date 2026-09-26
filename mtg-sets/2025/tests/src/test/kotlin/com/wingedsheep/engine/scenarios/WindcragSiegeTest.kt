@@ -1,4 +1,6 @@
 package com.wingedsheep.engine.scenarios
+
+import com.wingedsheep.engine.support.chooseTriggerOrderInListedOrder
 import com.wingedsheep.engine.state.components.battlefield.ChoiceValue
 import com.wingedsheep.sdk.scripting.ChoiceSlot
 import com.wingedsheep.engine.state.components.battlefield.CastChoicesComponent
@@ -70,6 +72,7 @@ class WindcragSiegeTest : FunSpec({
         driver.passPriorityUntil(Step.DECLARE_ATTACKERS)
         driver.declareAttackers(you, listOf(attacker), opponent)
         // Two copies of Hollowmurk's attack trigger; each asks for its target (the attacker).
+        driver.chooseTriggerOrderInListedOrder()
         resolveAttackTriggers(driver, you, attacker)
 
         driver.state.getEntity(attacker)?.get<CountersComponent>()

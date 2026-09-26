@@ -1,5 +1,7 @@
 package com.wingedsheep.engine.scenarios
 
+import com.wingedsheep.engine.support.chooseTriggerOrderInListedOrder
+
 import com.wingedsheep.engine.core.ActivateAbility
 import com.wingedsheep.engine.core.PlayLand
 import com.wingedsheep.engine.state.components.battlefield.TappedComponent
@@ -99,6 +101,7 @@ class TdmCardsGroupAScenarioTest : ScenarioTestBase() {
                     game.castSpell(1, "Sagu Wildling").error shouldBe null
                 }
                 game.resolveStack() // Sagu Wildling enters
+                game.chooseTriggerOrderInListedOrder()
                 game.resolveStack() // resolve triggers (Sagu's own +3, Bloomvine's +3)
 
                 withClue("Both Dragon ETB triggers gained 3 life each (Sagu's own + Bloomvine's)") {

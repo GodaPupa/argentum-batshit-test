@@ -314,7 +314,7 @@ class PestControlAgentDecisionTest : ScenarioTestBase() {
             val setup = player.chooseAction(game.state).shouldBeInstanceOf<CastSpell>()
             sourceName(game, setup) shouldBe "Blood Researcher"
             game.execute(setup).error shouldBe null
-            game.resolveStack()
+            game.resolveStackWith(player)
 
             val weather = player.chooseAction(game.state).shouldBeInstanceOf<CastSpell>()
             sourceName(game, weather) shouldBe "Weather the Storm"
@@ -920,11 +920,12 @@ class PestControlAgentDecisionTest : ScenarioTestBase() {
                 .build()
             val thrall = game.findPermanent("Carrier Thrall")!!
 
-            val action = ai(game).chooseAction(game.state).shouldBeInstanceOf<CastSpell>()
+            val player = ai(game)
+            val action = player.chooseAction(game.state).shouldBeInstanceOf<CastSpell>()
             sourceName(game, action) shouldBe "Bone Shards"
             action.additionalCostPayment?.sacrificedPermanents shouldBe listOf(thrall)
             game.execute(action).error shouldBe null
-            game.resolveStack()
+            game.resolveStackWith(player)
             (game.findPermanent("Eldrazi Scion") != null).shouldBeTrue()
             game.getLifeTotal(1) shouldBe 22
         }

@@ -63,16 +63,14 @@ class DawningPuristTest : FunSpec({
         // (no first strike creatures, so first strike step is skipped per CR 510.4)
         driver.currentStep shouldBe Step.COMBAT_DAMAGE
 
-        // Step 1: "May destroy?" — answer yes
-        val yesNoDecision = driver.pendingDecision as YesNoDecision
-        driver.submitYesNo(yesNoDecision.playerId, true)
-
-        // Step 2: Choose target enchantment
+        // Choose the target enchantment before the trigger response window.
         val chooseTargets = driver.pendingDecision as ChooseTargetsDecision
         driver.submitTargetSelection(attacker, listOf(enchantment))
 
-        // Trigger goes on stack - resolve it
+        // Resolve the trigger, then decide whether to destroy its target.
         driver.bothPass()
+        val yesNoDecision = driver.pendingDecision as YesNoDecision
+        driver.submitYesNo(yesNoDecision.playerId, true).error shouldBe null
 
         // Enchantment should be destroyed
         driver.findPermanent(defender, "Test Enchantment") shouldBe null
@@ -110,8 +108,9 @@ class DawningPuristTest : FunSpec({
         driver.declareNoBlockers(defender)
         driver.bothPass()
 
-        // Combat damage - trigger fires with MayEffect, decline
-        // (no first strike creatures, so first strike step is skipped per CR 510.4)
+        // Lock a target and allow the response window before declining on resolution.
+        driver.submitTargetSelection(attacker, listOf(driver.findPermanent(defender, "Test Enchantment")!!)).error shouldBe null
+        driver.bothPass()
         val yesNoDecision = driver.pendingDecision as YesNoDecision
         driver.submitYesNo(yesNoDecision.playerId, false)
 

@@ -56,6 +56,9 @@ class BurrentonForgeTenderScenarioTest : FunSpec({
 
     /** Sacrifice the Forge-Tender and pause on the source choice. */
     fun GameTestDriver.sacrificeForgeTender(tender: EntityId) {
+        // The active player receives priority after the blockers declaration.
+        priorityPlayer shouldBe player1
+        passPriority(player1).error shouldBe null
         submit(ActivateAbility(player2, tender, sacAbility)).error shouldBe null
         var guard = 0
         while (guard++ < 10 && state.pendingDecision == null && state.stack.isNotEmpty()) bothPass()
