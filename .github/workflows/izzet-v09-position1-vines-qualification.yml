@@ -54,7 +54,7 @@ jobs:
         run: |
           set -euo pipefail
           just test-class PreventTargetingSerializationTest --rerun --max-workers=1 -PkotlinCompileParallelism=1 -Pkotlin.compiler.execution.strategy=in-process -Dorg.gradle.jvmargs=-Xmx4g --info --stacktrace 2>&1 | tee build/reports/izzet-vines/sdk.txt
-          just test-class PreventTargetingScenarioTest --tests '*FloatingEffectSerializationRoundTripTest' --tests '*SerializationPolymorphicRegistrationTest' --tests '*CastSpellSourceHexproofEnumerationTest' --tests '*CommanderStatePredicateTest' --tests '*AffectsFilterResolverStatePredicateTest' --rerun --max-workers=1 -PkotlinCompileParallelism=1 -Pkotlin.compiler.execution.strategy=in-process -Dorg.gradle.jvmargs=-Xmx4g --info --stacktrace 2>&1 | tee build/reports/izzet-vines/engine.txt
+          just test-class PreventTargetingScenarioTest --tests '*FloatingEffectSerializationRoundTripTest' --tests '*SerializationPolymorphicRegistrationTest' --tests '*CastSpellSourceHexproofEnumerationTest' --tests '*CommanderStatePredicateTest' --tests '*AffectsFilterResolverStatePredicateTest' --tests '*InterveningIfBeforeTargetLegalityTest' --tests '*ReflexiveTriggerFeasibilityTest' --tests '*ModalTriggeredAbilityOnStackTest' --rerun --max-workers=1 -PkotlinCompileParallelism=1 -Pkotlin.compiler.execution.strategy=in-process -Dorg.gradle.jvmargs=-Xmx4g --info --stacktrace 2>&1 | tee build/reports/izzet-vines/engine.txt
 
       - name: Qualify exact Vines reachable behavior and receiving Position-1 guards
         shell: bash
@@ -139,7 +139,10 @@ jobs:
             'CastSpellSourceHexproofEnumerationTest': ('rules-engine', None),
             'CommanderStatePredicateTest': ('rules-engine', 3),
             'AffectsFilterResolverStatePredicateTest': ('rules-engine', 36),
-            'VinesOfVastwoodScenarioTest': ('mtg-sets/2008-2016/tests', 16),
+            'InterveningIfBeforeTargetLegalityTest': ('rules-engine', 3),
+            'ReflexiveTriggerFeasibilityTest': ('rules-engine', 10),
+            'ModalTriggeredAbilityOnStackTest': ('rules-engine', None),
+            'VinesOfVastwoodScenarioTest': ('mtg-sets/2008-2016/tests', 20),
             'IntoTheRoilScenarioTest': ('mtg-sets/2008-2016/tests', 2),
             'ForgeOfHeroesScenarioTest': ('mtg-sets/2017-2022/tests', 10),
             'IzzetSciencePosition1BootstrapTest': ('gym', 7),

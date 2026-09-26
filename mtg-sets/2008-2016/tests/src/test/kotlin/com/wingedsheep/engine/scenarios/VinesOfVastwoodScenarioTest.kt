@@ -1,9 +1,12 @@
 package com.wingedsheep.engine.scenarios
 
 import com.wingedsheep.engine.core.ActivateAbility
+import com.wingedsheep.engine.core.AbilityFizzledEvent
 import com.wingedsheep.engine.core.CastSpell
 import com.wingedsheep.engine.core.ChooseTargetsDecision
+import com.wingedsheep.engine.core.DamageDealtEvent
 import com.wingedsheep.engine.core.PaymentStrategy
+import com.wingedsheep.engine.core.SpellFizzledEvent
 import com.wingedsheep.engine.core.TargetingRestrictionCreatedEvent
 import com.wingedsheep.engine.handlers.PredicateEvaluator
 import com.wingedsheep.engine.handlers.TargetFinder
@@ -23,6 +26,7 @@ import com.wingedsheep.sdk.core.Step
 import com.wingedsheep.sdk.dsl.Costs
 import com.wingedsheep.sdk.dsl.Effects
 import com.wingedsheep.sdk.dsl.Targets
+import com.wingedsheep.sdk.dsl.Triggers
 import com.wingedsheep.sdk.dsl.card
 import com.wingedsheep.sdk.model.Deck
 import com.wingedsheep.sdk.model.EntityId
@@ -63,9 +67,39 @@ class VinesOfVastwoodScenarioTest : FunSpec({
         typeLine = "Instant"
         spell { effect = Effects.DestroyAll(GameObjectFilter.Creature) }
     }
+    val arrivalDamage = card("Fixture Targeted Arrival") {
+        manaCost = "{0}"
+        typeLine = "Artifact"
+        keywords(Keyword.FLASH)
+        triggeredAbility {
+            trigger = Triggers.EntersBattlefield
+            effect = Effects.DealDamage(3, target("creature", Targets.Creature))
+        }
+    }
+    val splitArrival = card("Fixture Split Arrival") {
+        manaCost = "{0}"
+        typeLine = "Artifact"
+        keywords(Keyword.FLASH)
+        triggeredAbility {
+            trigger = Triggers.EntersBattlefield
+            val first = target("first", Targets.Creature)
+            val second = target("second", Targets.Creature)
+            effect = Effects.DealDamage(1, first).then(Effects.DealDamage(2, second))
+        }
+    }
+    val splitDamage = card("Fixture Split Damage") {
+        manaCost = "{0}"
+        typeLine = "Instant"
+        spell {
+            val first = target("first", Targets.Creature)
+            val second = target("second", Targets.Creature)
+            effect = Effects.DealDamage(1, first).then(Effects.DealDamage(2, second))
+        }
+    }
 
     fun game(): GameTestDriver = GameTestDriver().also { d ->
-        d.registerCards(TestCards.all + listOf(VinesOfVastwood, IzzetGuildmage, wand, strip, control, bounce, sweeper))
+        d.registerCards(TestCards.all + listOf(VinesOfVastwood, IzzetGuildmage, wand, strip, control, bounce, sweeper,
+            arrivalDamage, splitArrival, splitDamage))
         d.initMirrorMatch(Deck.of("Forest" to 40), startingPlayer = 0)
         d.passPriorityUntil(Step.PRECOMBAT_MAIN)
     }
@@ -189,6 +223,73 @@ class VinesOfVastwoodScenarioTest : FunSpec({
         resolves(d)
         (creature in d.state.getBattlefield()) shouldBe true
         (bolt in d.getGraveyard(d.player2)) shouldBe true
+        d.events.filterIsInstance<SpellFizzledEvent>().count { it.spellEntityId == bolt } shouldBe 1
+        d.events.filterIsInstance<DamageDealtEvent>().none { it.targetId == creature } shouldBe true
+    }
+
+    test("Vines in response makes an opponent's activated ability fizzle after its tap cost is paid") {
+        val d = game()
+        val creature = d.putCreatureOnBattlefield(d.player1, "Centaur Courser")
+        val artifact = d.putPermanentOnBattlefield(d.player2, wand.name)
+        d.passPriority(d.player1).isSuccess shouldBe true
+        d.submit(ActivateAbility(d.player2, artifact, wand.activatedAbilities.single().id,
+            targets = listOf(ChosenTarget.Permanent(creature)))).isSuccess shouldBe true
+        d.passPriority(d.player2).isSuccess shouldBe true
+        vines(d, d.player1, creature)
+        resolves(d)
+        d.events.filterIsInstance<AbilityFizzledEvent>().count { it.sourceId == artifact } shouldBe 1
+        d.events.filterIsInstance<DamageDealtEvent>().none { it.targetId == creature } shouldBe true
+        d.state.getEntity(artifact)!!.has<com.wingedsheep.engine.state.components.battlefield.TappedComponent>() shouldBe true
+    }
+
+    test("Vines in response makes an opponent's targeted enters ability fizzle") {
+        val d = game()
+        val creature = d.putCreatureOnBattlefield(d.player1, "Centaur Courser")
+        val artifact = d.putCardInHand(d.player2, arrivalDamage.name)
+        d.passPriority(d.player1).isSuccess shouldBe true
+        d.castSpell(d.player2, artifact).isSuccess shouldBe true
+        d.bothPass().isSuccess shouldBe true
+        (d.pendingDecision is ChooseTargetsDecision) shouldBe true
+        d.submitTargetSelection(d.player2, listOf(creature)).isSuccess shouldBe true
+        d.priorityPlayer shouldBe d.player1
+        vines(d, d.player1, creature)
+        resolves(d)
+        (creature in d.state.getBattlefield()) shouldBe true
+        d.events.filterIsInstance<AbilityFizzledEvent>().count { it.sourceId == artifact } shouldBe 1
+        d.events.filterIsInstance<DamageDealtEvent>().none { it.targetId == creature } shouldBe true
+    }
+
+    test("one restricted target does not fizzle another target or shift its named damage binding") {
+        val d = game()
+        val first = d.putCreatureOnBattlefield(d.player1, "Centaur Courser")
+        val second = d.putCreatureOnBattlefield(d.player1, "Centaur Courser")
+        val spell = d.putCardInHand(d.player2, splitDamage.name)
+        d.passPriority(d.player1).isSuccess shouldBe true
+        d.castSpell(d.player2, spell, listOf(first, second)).isSuccess shouldBe true
+        d.passPriority(d.player2).isSuccess shouldBe true
+        vines(d, d.player1, first)
+        resolves(d)
+        d.events.filterIsInstance<DamageDealtEvent>().none { it.targetId == first } shouldBe true
+        d.events.filterIsInstance<DamageDealtEvent>().filter { it.targetId == second }.sumOf { it.amount } shouldBe 2
+        d.events.filterIsInstance<SpellFizzledEvent>().none { it.spellEntityId == spell } shouldBe true
+    }
+
+    test("a partially restricted enters ability preserves the surviving target's original named slot") {
+        val d = game()
+        val first = d.putCreatureOnBattlefield(d.player1, "Centaur Courser")
+        val second = d.putCreatureOnBattlefield(d.player1, "Centaur Courser")
+        val artifact = d.putCardInHand(d.player2, splitArrival.name)
+        d.passPriority(d.player1).isSuccess shouldBe true
+        d.castSpell(d.player2, artifact).isSuccess shouldBe true
+        d.bothPass().isSuccess shouldBe true
+        (d.pendingDecision is ChooseTargetsDecision) shouldBe true
+        d.submitMultiTargetSelection(d.player2, mapOf(0 to listOf(first), 1 to listOf(second))).isSuccess shouldBe true
+        d.priorityPlayer shouldBe d.player1
+        vines(d, d.player1, first)
+        resolves(d)
+        d.events.filterIsInstance<DamageDealtEvent>().none { it.targetId == first } shouldBe true
+        d.events.filterIsInstance<DamageDealtEvent>().filter { it.targetId == second }.sumOf { it.amount } shouldBe 2
+        d.events.filterIsInstance<AbilityFizzledEvent>().none { it.sourceId == artifact } shouldBe true
     }
 
     test("removing Vines' target in response leaves no boost or targeting restriction") {

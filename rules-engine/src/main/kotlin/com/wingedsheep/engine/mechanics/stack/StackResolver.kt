@@ -2711,8 +2711,8 @@ class StackResolver(
 
         // The resolution-time context the two checks below and the effect itself all read: trigger
         // payload, last-known info, captured batch and all. Built up front because CR 608.2a's
-        // intervening-"if" is evaluated against it *before* CR 608.2b touches the targets. The
-        // targets it carries are the stored ones — legality is 608.2b's business, not the context's.
+        // intervening-"if" is evaluated against it *before* CR 608.2b touches the targets.
+        // Execution below replaces the stored targets with their validated, aligned bindings.
         val resolvedTargets2 = targetsComponent?.targets ?: emptyList()
         val targetReqs = targetsComponent?.targetRequirements ?: emptyList()
         val context = EffectContext.forTriggeredAbility(
@@ -2751,6 +2751,7 @@ class StackResolver(
         }
 
         // CR 608.2b — validate targets (including protection check, CR 702.16)
+        var executionContext = context
         val sourceCard = state.getEntity(abilityComponent.sourceId)?.get<CardComponent>()
         val sourceColors = sourceCard?.colors ?: emptySet()
         val sourceSubtypes = sourceCard?.typeLine?.subtypes?.map { it.value }?.toSet() ?: emptySet()
@@ -2780,10 +2781,23 @@ class StackResolver(
                     )
                 )
             }
+            // Preserve every trigger payload and carried pipeline value while removing illegal
+            // targets. Named and positional references must retain their original slots: a dropped
+            // first target cannot consume a later legal target, nor survive in the old named map.
+            val alignedTargets = buildAlignedValidated(targetsComponent.targets, validTargets)
+            val declaredNames = EffectContext.buildNamedTargets(targetReqs, targetsComponent.targets).keys
+            executionContext = context.copy(
+                targets = validTargets,
+                alignedTargets = alignedTargets,
+                pipeline = context.pipeline.copy(
+                    namedTargets = (context.pipeline.namedTargets - declaredNames) +
+                        EffectContext.buildNamedTargets(targetReqs, alignedTargets)
+                )
+            )
         }
 
-        // Execute the effect
-        val effectResult = effectHandler.execute(state, abilityComponent.effect, context)
+        // Execute only against targets that remain legal after the intervening-if check.
+        val effectResult = effectHandler.execute(state, abilityComponent.effect, executionContext)
 
         // If effect is paused awaiting a decision, return paused state
         // The ability entity stays removed (it's off the stack), but the decision must resolve
@@ -3527,6 +3541,9 @@ class StackResolver(
         )
 
         return targets.filterIndexed { index, target ->
+            if (com.wingedsheep.engine.mechanics.targeting.FloatingTargetingRestriction.prevents(
+                    state, target.toEntityId(), controllerId
+                )) return@filterIndexed false
             when (target) {
                 is ChosenTarget.Player -> {
                     // Player is valid if they exist and haven't lost...
