@@ -2,8 +2,10 @@
 
 This adapter implements execution-to-observation extraction for accepted
 actions, eliminations, mulligans, designated commander casts, Animar departures,
-authoritative personal-turn counts and engine terminal events. Qualification is
-pending until the dedicated engine and cross-language fixtures pass. It does not
+authoritative personal-turn counts and engine terminal events. The exact source
+`694d563cd571f857e058c5a40b4bcc638bb7e30d` passed the dedicated engine,
+cross-language and full receiving integration gates, recorded in
+`accepted-engine-telemetry-r1.json`. It does not
 admit actual-deck gameplay or implement Cruise/Sport/Race policies.
 
 `gym/.../manual/PhaseTwoTelemetryAdapter.kt` owns the `ActionProcessor` call. It
@@ -93,3 +95,24 @@ departed-seat clock and exact replay assertions. The failed artifact is retained
 as `10908065202` (16,335 bytes), GitHub SHA-256
 `4725694b6b1359cfa08bb682f13c752f6a46f536b3be9ef5fc4305cde6e539f5`.
 Passing individual cases do not make the failed suite an accepted component.
+
+## Qualified successor component
+
+At source `694d563cd571f857e058c5a40b4bcc638bb7e30d`,
+[focused run 36246345587](https://github.com/GodaPupa/argentum-batshit-test/actions/runs/36246345587)
+passed all ten actual Kotlin extraction/replay fixtures, all seventeen existing
+Python contract cases and all seven importer cases, including the actual exported
+engine trace. No cases were skipped. Independent artifact checks verified the ZIP,
+JUnit, complete transcripts, source hashes and disabled-authority trace.
+[Full CI 36246345583](https://github.com/GodaPupa/argentum-batshit-test/actions/runs/36246345583)
+and [capability regression 36246345590](https://github.com/GodaPupa/argentum-batshit-test/actions/runs/36246345590)
+also passed. The independently downloaded capability artifact has 538 cases in
+34 suites, with no failures, errors or skips. Its scoped source bundle matches
+24,629 current-source and 80 preserved Phase 1 Git blobs without any missing or
+extra files within the declared archive predicate.
+
+This qualifies the adapter component only. The earlier failed attempts above
+remain failed evidence. Printed-card coverage, competent lawful pilots, required
+strategic collectors, the canonical post-block repair, durable outer attempts and
+independent guarded capability admission remain open. No official seed, game,
+action or deck-performance outcome was generated.
