@@ -293,7 +293,15 @@ object TableGameRunner {
                     actionCount++
                     val action = aiFor(priorityPlayer).chooseAction(state)
                     trainingObserver?.action(action)
-                    record("A$actionCount|${seatOf(priorityPlayer)}|${state.step.name}|$action\n")
+                    val canonicalAction = when (action) {
+                        is CastSpell -> action.toString().replace(", declaredCostRepeatCount=null", "")
+                        else -> action.toString()
+                    }
+                    // Preserve the frozen LEGACY_V0 fingerprint across serialization-only additions.
+                    // The multikicker rail adds a null field to CastSpell.toString() even when the
+                    // frozen Portal deck cannot use that mechanic; excluding that default text keeps
+                    // the hash sensitive to real action changes without re-blessing gameplay.
+                    record("A$actionCount|${seatOf(priorityPlayer)}|${state.step.name}|$canonicalAction\n")
                     val r = processor.process(state, action).result
                     val next = if (r.error != null) {
                         val subjectId = when (action) {
