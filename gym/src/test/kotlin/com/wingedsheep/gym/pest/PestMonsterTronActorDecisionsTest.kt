@@ -118,7 +118,12 @@ class PestMonsterTronActorDecisionsTest : ScenarioTestBase() {
             val answer = proposed(before)
             answer.response shouldBe legacy(game.state, "Ancient Stirrings", question)
             name(game.state, selected(answer)) shouldBe "Urza's Tower"
-            before.observation.decisionCards.map { it.name }.toSet() shouldBe
+            // The real look marks this group visible before asking. Canonical projection keeps
+            // those known cards in the ordinary library view; decisionCards adds only identities
+            // that are not already visible under the shared Visibility authority.
+            before.observation.decisionCards shouldBe emptyList()
+            before.observation.zones.filter { it.ownerId == p1 && it.zoneType == Zone.LIBRARY }
+                .flatMap { it.cards }.map { it.name }.toSet() shouldBe
                 setOf("Expedition Map", "Urza's Tower", "Crop Rotation", "Bonder's Ornament", "Bramble Wurm")
             game.execute(answer).error shouldBe null
             game.state.getHand(p1).map { name(game.state, it) } shouldContain "Urza's Tower"

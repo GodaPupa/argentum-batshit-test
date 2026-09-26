@@ -16,7 +16,7 @@ ROOT = Path(__file__).resolve().parents[4]
 PREFIX = "docs/experiments/pest-control/monster-actor-component"
 BANK = f"{PREFIX}/receiving-bank.json"
 FREEZE = f"{PREFIX}/receiving-freeze.json"
-BANK_SHA256 = "b28545f7c40f06f5bb904ed797a05cfde0279e2af0ba84d752066c1f282987c4"
+BANK_SHA256 = "72c73a928016a4be7a53a911c1987316acae26dbb2a0706724e2872b4833cda0"
 REPORT = ROOT / "build/reports/pest-monster-actor-receiving"
 CONTROLS = [BANK, FREEZE, f"{PREFIX}/source-candidate.json",
             f"{PREFIX}/collect-receiving.py", ".github/workflows/pest-monster-actor-receiving.yml",

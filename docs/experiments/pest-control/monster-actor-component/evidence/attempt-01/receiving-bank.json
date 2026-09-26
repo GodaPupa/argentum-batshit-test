@@ -1,6 +1,6 @@
 {
   "schema": "pest-monster-actor-receiving-bank-v1",
-  "status": "FIXED_72_BANK_MC04_OBSERVATION_LOCATION_CORRECTION_PENDING_RETRY",
+  "status": "PROSPECTIVE_SOURCE_AND_BANK_REVIEW_REQUIRED_NO_EXECUTION",
   "source_candidate": "c543648c2eb27ff496b81e3ef3a4ac6d8fb718e7",
   "source_candidate_tree": "4c1c8f1b737118927a35504a862307b198ab3d3d",
   "source_candidate_manifest_sha256": "7b9584dc799404a1569bfc9ce2ae68c403d8016e6c8bfccbd2eff94e867cb968",
@@ -69,7 +69,7 @@
   },
   "correction_rule": "Freeze the complete bank before execution. Preserve every compilation/test attempt and raw evidence. Corrections may repair technical implementation without selecting cases, relaxing expectations or changing the bank. A changed policy choice requires separate prospective disposition; an actor-only correction is not silently accepted as a new frozen strategy.",
   "ordering_compatibility": {
-    "status": "ACTUAL_DIFFERENCE_RECORDED_PROSPECTIVE_DISPOSITION_PENDING",
+    "status": "KNOWN_SOURCE_DIFFERENCE_AWAITING_ACTUAL_DIAGNOSTIC_AND_PROSPECTIVE_DISPOSITION",
     "legacy": "The historical advisor consumes the first matching raw decision option. GatherCardsExecutor and SelectFromCollectionExecutor preserve library collection order; CostEnumerationUtils preserves battlefield order.",
     "canonical": "ActorDecisionProjection sorts SelectCardsDecision and SearchLibraryDecision options by entity ID to avoid disclosing hidden library order.",
     "distinguishing_case": "MC10 uses a real complete-Tron Expedition Map search with intentionally reversed hidden library order, records the two first-choice answers and submits neither. Passing this diagnostic is evidence of the difference, never evidence that the choices are equivalent.",
@@ -115,7 +115,7 @@
     "gym/src/test/kotlin/com/wingedsheep/gym/actorinput/ActorPriorityObservationTest.kt": "30617fec9bf58e0360622e1b6e26c36603ccaeae308819217b73f9b29875dfae",
     "gym/src/test/kotlin/com/wingedsheep/gym/actorinput/ActorStackSourceObservationTest.kt": "ab6962cc61d66971a39d9ec674ee2c442705c17a365671bd8b9a9b0a590cf0af",
     "gym/src/test/kotlin/com/wingedsheep/gym/actorinput/ActorTriggerOrderObservationTest.kt": "01c84c1e963801702696b15187cb3d1c24f2f47367f54c0c9c8c77e05a26a4cb",
-    "gym/src/test/kotlin/com/wingedsheep/gym/pest/PestMonsterTronActorDecisionsTest.kt": "af2fee66e155ea37debe95c6f202fb05e318c3ffa5a16990321250a39ac40fd6",
+    "gym/src/test/kotlin/com/wingedsheep/gym/pest/PestMonsterTronActorDecisionsTest.kt": "80dc519bcb768c5ad0ced4a33ef582a93b098cd7160075961c560e31efbef502",
     "justfile": "70ed255981a941b260b8eeba4acf90abf32956126ef9672f5cf6e0b5840167e3",
     "mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/dsl/LibraryPatterns.kt": "15a4990530c711460c2e16baf1dd05432d17b864e6007f1680aa8b968e83e05e",
     "mtg-sets/1993-1999/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/ulg/cards/CropRotation.kt": "af2416d8d071bb1d50c55a54f68b792789d069e6c19ba2d8707d9431092cbf01",
@@ -132,7 +132,7 @@
     "scripts/gradle-locked": "9e39342ad1826c8baf176f6e7b0c38664aad5a4a88cd6a90252dd619e4b829f1",
     "scripts/test-class": "17b9629bc4e1526107e432fa440208ea66588acdf4855ee50685df03223c5c81"
   },
-  "attempts_executed": 1,
+  "attempts_executed": 0,
   "policy_development_attempts": 0,
   "official_seeds_generated": 0,
   "official_claims_created": 0,
@@ -150,44 +150,5 @@
     "original_bank_sha256": "921e5e9a4e482cfb3afcb96a42da5ac7d6e9c02194273297ff65fc7c3bee39ba",
     "preserved_original_bank": "evidence/prospective-source-review/receiving-bank.json",
     "change": "Document canonical first-option differences explicitly; update only affected comment/source-document hashes. All ten fixture bodies, seven banks, required72 and policy/deck/protocol pins remain unchanged."
-  },
-  "execution_record": {
-    "completed_attempts": 1,
-    "actual_cases_last_attempt": 72,
-    "passed_last_attempt": 71,
-    "failed_last_attempt": 1,
-    "errors_last_attempt": 0,
-    "skipped_last_attempt": 0,
-    "completed_bank_successes": 0,
-    "completed_bank_failures": 1,
-    "run_id": 36262899462,
-    "source": "bafc30bc04a3030a74d8b65423819bf5babb2626",
-    "tree": "30292858285ad49571f5996185cb8454eb12d69b",
-    "raw_archive": "evidence/attempt-01/actual-run-artifact.zip",
-    "raw_archive_sha256": "b8e03a990ae3b9a74cd8c3808d801082faf61cd645fd5565d7057fcfbf022909",
-    "author_audit": "evidence/attempt-01/author-audit.json",
-    "original_bank": "evidence/attempt-01/receiving-bank.json",
-    "original_freeze": "evidence/attempt-01/receiving-freeze.json",
-    "mc10_actual_difference": {
-      "raw_name": "Urza's Tower",
-      "canonical_name": "Urza's Mine",
-      "response_submitted": false,
-      "accepted_as_equivalent": false
-    },
-    "official_games": 0
-  },
-  "fixture_correction": {
-    "reviewed_source": "71d33f9a952c8d78e4861f08b09c3a408b5915e4",
-    "reviewed_tree": "916b8567f7aa787ee1df7f106c6c8786fb0fac3c",
-    "reviewer": "/root",
-    "reviewer_is_non_author": true,
-    "disposition": "ACCEPT_MC04_FIXTURE_ONLY_FOR_SAME_72_RECEIVING_RETRY",
-    "original_bank_sha256": "b28545f7c40f06f5bb904ed797a05cfde0279e2af0ba84d752066c1f282987c4",
-    "old_fixture_sha256": "80dc519bcb768c5ad0ced4a33ef582a93b098cd7160075961c560e31efbef502",
-    "new_fixture_sha256": "af2fee66e155ea37debe95c6f202fb05e318c3ffa5a16990321250a39ac40fd6",
-    "change": "The real Stirrings GatherCards private look is already actor-visible when its selection question is asked. Preserve the exact five-name assertion on the canonical own library zone and require the supplemental decisionCards list to be empty. All inputs, ten case names, 72-case geometry, policy calculations, response equivalence, Tower selection, real submission and remaining reorder assertions are retained.",
-    "qualification_scope_unchanged": true,
-    "all_production_sources_unchanged": true,
-    "policy_order_difference_remains_unaccepted": true
   }
 }

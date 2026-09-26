@@ -1,0 +1,470 @@
+{
+  "schema": "pest-actor72-independent-failure-artifact-review-v1",
+  "reviewer": "/root/manual",
+  "author": "/root/pest",
+  "non_author_agent_review": true,
+  "source": "bafc30bc04a3030a74d8b65423819bf5babb2626",
+  "tree": "30292858285ad49571f5996185cb8454eb12d69b",
+  "run_id": 36262899462,
+  "job_id": 108461970535,
+  "artifact_id": 10913053297,
+  "archive": {
+    "size": 256976,
+    "sha256": "b8e03a990ae3b9a74cd8c3808d801082faf61cd645fd5565d7057fcfbf022909",
+    "members_sha256": {
+      "build/reports/pest-monster-actor-receiving/audit.json": "54e2580fce6b788b21a128fbbfb690e1bda790f044d1213ace0a782614eba3ed",
+      "build/reports/pest-monster-actor-receiving/source-after.json": "0cb58635573638bc6df3d600199bf40557c347c95e1240a7f221a60d87f0ed13",
+      "build/reports/pest-monster-actor-receiving/source-before.json": "0cb58635573638bc6df3d600199bf40557c347c95e1240a7f221a60d87f0ed13",
+      "build/reports/pest-monster-actor-receiving/test-exit-code.txt": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+      "build/reports/pest-monster-actor-receiving/tests.log": "8b01700d5fa52501d039ec806560bd349cea0d221671a28cba8411ba1406bcd0",
+      "ai/build/test-results/test/TEST-com.wingedsheep.ai.arena.PestMonsterTronPolicyAuditTest.xml": "77c02fa4c2bcd4cf37072a7f115158467979bb969b91a6c7bdb9a95f8e9e9a1e",
+      "gym/build/test-results/test/TEST-com.wingedsheep.gym.PestControlTierOneMonsterTronPolicyCalibrationTest.xml": "a8107a237a2087f62cbea3253c68e245a1df042149143c8b4d594542c30b7860",
+      "gym/build/test-results/test/TEST-com.wingedsheep.gym.actorinput.ActorObservationBoundaryTest.xml": "9df49dcdc4c97ac525dc04202215f5701ceb9c905d461a71f7aedc90ee184d4f",
+      "gym/build/test-results/test/TEST-com.wingedsheep.gym.actorinput.ActorPriorityObservationTest.xml": "177e55ec500706fbd447fe06de7fd1d82f43277302e27015c7e39a816fb2bb76",
+      "gym/build/test-results/test/TEST-com.wingedsheep.gym.actorinput.ActorStackSourceObservationTest.xml": "112028416c78c86ba2584c7a812750185b6c6832e9a324645b7e15e27e0bca92",
+      "gym/build/test-results/test/TEST-com.wingedsheep.gym.actorinput.ActorTriggerOrderObservationTest.xml": "931d006df836417b268f5cd5bcf41d6a9e2be9b1310278e206240567e7d98128",
+      "gym/build/test-results/test/TEST-com.wingedsheep.gym.pest.PestMonsterTronActorDecisionsTest.xml": "7ffb36286733562e588465bfd367b520d05a670e4352f7aceeaa79f4b795922f"
+    }
+  },
+  "source_pins": {
+    "ai/src/main/kotlin/com/wingedsheep/ai/engine/AiProfile.kt": "e17daa32352d5a297f92869d5eaea8e777a4ce23249241db2c9f704a8ae0a36a",
+    "ai/src/main/kotlin/com/wingedsheep/ai/engine/PestMonsterTronPolicy.kt": "8cc6db916f50233331c72a9e603c8b887365fc625776d5a429ed9fc6ec63f513",
+    "ai/src/main/kotlin/com/wingedsheep/ai/engine/advisor/modules/PestMonsterTronAdvisorModule.kt": "bdd75d21bc7c8807b11027e78f1a87f84adfefeb28be11e4edcabb66e3c66f17",
+    "ai/src/main/kotlin/com/wingedsheep/ai/engine/advisor/modules/PestMonsterTronPublicPolicy.kt": "74026da5dd1ad93bf29327e5adf4753668426123f97f7fc57e784937c2b3a124",
+    "ai/src/test/kotlin/com/wingedsheep/ai/arena/PestMonsterTronPolicyAuditTest.kt": "6369feeb0ecfdf76a08b7e7960b16431aed8f86250c822eb445813fbdc8fe2f9",
+    "docs/experiments/pest-control/tier-one-qualification-stopping-rule.md": "eb7097c94d9c1f40e31c738ba6162351034f40a99ec6e53393cabd374eda08be",
+    "gym/build.gradle.kts": "2cecbe04b789a073bda42e7b12266bfaf8085280fd6e22619386b26d9d3adf44",
+    "gym/src/main/kotlin/com/wingedsheep/gym/actorinput/ActorActionMenu.kt": "319b92760360183d2ad082f08104aa28c95cf16c7cca3edc80bce0797573639d",
+    "gym/src/main/kotlin/com/wingedsheep/gym/actorinput/ActorChoiceSupport.kt": "6adefd58499c0ec2610f078cd78696f4ba6b33b47c5043093a2e77f392c493a0",
+    "gym/src/main/kotlin/com/wingedsheep/gym/actorinput/ActorDecisionProjection.kt": "aeeac553568cdc30239d5040a2cf784d338e4d9d9f4def45c6eeccece077eb66",
+    "gym/src/main/kotlin/com/wingedsheep/gym/actorinput/ActorInput.kt": "31bc5320ee24e8af512b3babc7908eee0d62aa6e360e4a4582a753562392f907",
+    "gym/src/main/kotlin/com/wingedsheep/gym/actorinput/ActorLegalAction.kt": "aa127db249b75bbb2cfa52c88bc3a4d8a29d6def300200593c29004f31138974",
+    "gym/src/main/kotlin/com/wingedsheep/gym/actorinput/ActorObservation.kt": "860ef853e182bdec3c397bfe069889973cc0f6c8c3756fe65ce32f8ed45c4442",
+    "gym/src/main/kotlin/com/wingedsheep/gym/actorinput/ActorPayloadSchemas.kt": "b20050c28bb0eebd83b8bf8517932f9f66c33d933f26b98432a2a3fcbd90cd96",
+    "gym/src/main/kotlin/com/wingedsheep/gym/actorinput/ActorPublicCards.kt": "186d1f5fc2d3d8be2754ff0a029dd1fdd58348422514fb06ce45690140aea748",
+    "gym/src/main/kotlin/com/wingedsheep/gym/actorinput/ActorQuestionSchemas.kt": "6c9a87f34c3c4a0dd281466556236c11f49f91fde1ab17e7a89d627f05d26a9a",
+    "gym/src/main/kotlin/com/wingedsheep/gym/actorinput/ActorStackSource.kt": "554535f07b8978797153ef051ef21635d6e22f9d9e9981e2a7fc0947bf56663f",
+    "gym/src/main/kotlin/com/wingedsheep/gym/actorinput/ActorTriggerOrderQuestion.kt": "3e9ee1f963b420af764def51e502c654bd4e92df522c97c29287c2c2e2b99da0",
+    "gym/src/main/kotlin/com/wingedsheep/gym/actorinput/ObservationAdapter.kt": "cf73082a0ff188a1f89aff11a6c3a8685b5c88c62a1fff7ea38e367910f6c100",
+    "gym/src/main/kotlin/com/wingedsheep/gym/contract/ObservationBuilder.kt": "7de2a0c1bc4f148727ced99da733cd6eec049a250148c07f26357a4b5a422a7c",
+    "gym/src/main/kotlin/com/wingedsheep/gym/contract/TrainingObservation.kt": "95feb4bd3053572ad1064a1b4e3202152b631e13fbb7b86b93ba4d8087818e84",
+    "gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlPreboardContract.kt": "2ef7f1a8712dfa7600d7100e96463bac2a86f61969ac91c6a09bf8bda60192d9",
+    "gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlTierOneMonsterTronAdmission.kt": "5356f73ff61cafa87f809ab0c20cc2f2f2cf9b8dd50c89761d2d05b5f11b494c",
+    "gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlTierOneMonsterTronPolicyCalibration.kt": "e8f18774487b254c913140724262e607437d60465a3eac7b96650e34f8e11816",
+    "gym/src/main/kotlin/com/wingedsheep/gym/pest/PestMonsterTronActorDecisions.kt": "1be1e07171ddba54536a1453232da2d2f1426241394a0b43018bf94fc738b0db",
+    "gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOneMonsterTronPolicyCalibrationTest.kt": "652c08bd419a5d0a374f2ee5def606cf945ed432f4aa19037cb6e6cc1b4ad28a",
+    "gym/src/test/kotlin/com/wingedsheep/gym/actorinput/ActorObservationBoundaryTest.kt": "b65dfe87c9f88dca6eaa8754c46dc16a6ef76d1266f829c4e1743b3f5fb17f5d",
+    "gym/src/test/kotlin/com/wingedsheep/gym/actorinput/ActorPriorityObservationTest.kt": "30617fec9bf58e0360622e1b6e26c36603ccaeae308819217b73f9b29875dfae",
+    "gym/src/test/kotlin/com/wingedsheep/gym/actorinput/ActorStackSourceObservationTest.kt": "ab6962cc61d66971a39d9ec674ee2c442705c17a365671bd8b9a9b0a590cf0af",
+    "gym/src/test/kotlin/com/wingedsheep/gym/actorinput/ActorTriggerOrderObservationTest.kt": "01c84c1e963801702696b15187cb3d1c24f2f47367f54c0c9c8c77e05a26a4cb",
+    "gym/src/test/kotlin/com/wingedsheep/gym/pest/PestMonsterTronActorDecisionsTest.kt": "80dc519bcb768c5ad0ced4a33ef582a93b098cd7160075961c560e31efbef502",
+    "justfile": "70ed255981a941b260b8eeba4acf90abf32956126ef9672f5cf6e0b5840167e3",
+    "mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/dsl/LibraryPatterns.kt": "15a4990530c711460c2e16baf1dd05432d17b864e6007f1680aa8b968e83e05e",
+    "mtg-sets/1993-1999/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/ulg/cards/CropRotation.kt": "af2416d8d071bb1d50c55a54f68b792789d069e6c19ba2d8707d9431092cbf01",
+    "mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/roe/cards/AncientStirrings.kt": "87914e283b954f4f05a5107529ef302a2e07d5dcf79c2dc9ce759f029440e9a4",
+    "mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/wwk/cards/BojukaBog.kt": "6439e88a9c6bc71901e4b7feb445f039b14f5ea7c9243fa88bcd2070db8fec6e",
+    "mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/zen/cards/ExpeditionMap.kt": "862f38a3f0b940bbd7661c7bb6a2b698a178a86605ba0d36ab4c600dc8a58bb3",
+    "mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/cmr/cards/MaelstromColossus.kt": "d615a30d4253050559f64e3223d3277429f65f8ea4989df44b13e8ea4ca9bbe5",
+    "mtg-sets/2024/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/fdn/cards/ExpeditionMap.kt": "c2f29df17664f3dccc8c7c3f0f84528d64992e40482c2449def8692fbf6ecc79",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/spell/CastSpellHandler.kt": "c0c50de6b7384bbf8e1e890e6aafe6733824e4f9a3c0e1b41fbacc20b9ca5529",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/library/GatherCardsExecutor.kt": "326e46010bce5ad7feab0b19333828db787418ac5e444c7016f27c562c5b18ca",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/library/SelectFromCollectionExecutor.kt": "eb9764c6420b1e2674f5948b4d442249232315177d5179e38cd1e98b6695018c",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/legalactions/utils/CostEnumerationUtils.kt": "9767c8aed284e17a83e8efe04b46cbc5e7f46c01531be353d1d5046aa017a65e",
+    "rules-engine/src/testFixtures/kotlin/com/wingedsheep/engine/support/ScenarioTestBase.kt": "ef59cd04e877e787aa446b3240cb012a9527505d2e1df75e0e3fb82f925f0408",
+    "scripts/gradle-locked": "9e39342ad1826c8baf176f6e7b0c38664aad5a4a88cd6a90252dd619e4b829f1",
+    "scripts/test-class": "17b9629bc4e1526107e432fa440208ea66588acdf4855ee50685df03223c5c81",
+    "docs/experiments/pest-control/monster-actor-component/receiving-bank.json": "b28545f7c40f06f5bb904ed797a05cfde0279e2af0ba84d752066c1f282987c4",
+    "docs/experiments/pest-control/monster-actor-component/receiving-freeze.json": "e837629d1a4508ad70bab0cc6a7d4477a3e273e9bf9378672c85243305c406b8",
+    "docs/experiments/pest-control/monster-actor-component/source-candidate.json": "7b9584dc799404a1569bfc9ce2ae68c403d8016e6c8bfccbd2eff94e867cb968",
+    "docs/experiments/pest-control/monster-actor-component/collect-receiving.py": "61973871c4d4823cb2379108923f02e434d73dfd43e9a30b1a515c09446ed99b",
+    ".github/workflows/pest-monster-actor-receiving.yml": "8bf2f040490f43593b6e55e70fbfec554ff3fb93c2f708f9ad205cefdacc9cf7",
+    "docs/experiments/pest-control/monster-actor-component/evidence/prospective-source-review/source-candidate.json": "2704c99fea964c55452c56e9eba42dbefa1a5658a7841d03a610da12f9e074ee",
+    "docs/experiments/pest-control/monster-actor-component/evidence/prospective-source-review/receiving-bank.json": "921e5e9a4e482cfb3afcb96a42da5ac7d6e9c02194273297ff65fc7c3bee39ba",
+    "docs/experiments/pest-control/monster-actor-component/evidence/prospective-source-review/PestMonsterTronActorDecisions.kt.txt": "160c6fee587e14e1a66952487d01bd918506dd9b7f3ff3d12aa315f5b852ce97"
+  },
+  "source_before_equals_after": true,
+  "actual_distinct_cases": 72,
+  "passes": 71,
+  "failures": 1,
+  "errors": 0,
+  "skipped": 0,
+  "test_exit_status": 1,
+  "suites": [
+    {
+      "class": "com.wingedsheep.ai.arena.PestMonsterTronPolicyAuditTest",
+      "xml_sha256": "77c02fa4c2bcd4cf37072a7f115158467979bb969b91a6c7bdb9a95f8e9e9a1e",
+      "cases": [
+        {
+          "name": "Crop Rotation preserves a live Tron piece then selects the missing piece",
+          "outcomes": []
+        },
+        {
+          "name": "Expedition Map activates and tutors the missing Tron piece",
+          "outcomes": []
+        },
+        {
+          "name": "Ancient Stirrings selection prefers a missing Tron piece over a redundant colorless card",
+          "outcomes": []
+        },
+        {
+          "name": "Bonder's Ornament takes the draw mode with four other mana sources and a low hand",
+          "outcomes": []
+        },
+        {
+          "name": "Bojuka Bog targets the opponent graveyard",
+          "outcomes": []
+        }
+      ]
+    },
+    {
+      "class": "com.wingedsheep.gym.pest.PestMonsterTronActorDecisionsTest",
+      "xml_sha256": "7ffb36286733562e588465bfd367b520d05a670e4352f7aceeaa79f4b795922f",
+      "cases": [
+        {
+          "name": "MC01 actual Expedition Map resolves the unique missing-piece response",
+          "outcomes": []
+        },
+        {
+          "name": "MC02 normal Crop Rotation pays an explicit sacrifice and resolves its actual search",
+          "outcomes": []
+        },
+        {
+          "name": "MC03 real Cascade into Crop Rotation offers and accepts the unique non-Tron sacrifice",
+          "outcomes": []
+        },
+        {
+          "name": "MC04 actual Ancient Stirrings uses the offered authorized group and retains its reorder question",
+          "outcomes": [
+            {
+              "kind": "failure",
+              "attributes": {
+                "message": "org.opentest4j.AssertionFailedError: expected:<[\"Expedition Map\", \"Urza's Tower\", \"Crop Rotation\", \"Bonder's Ornament\", \"Bramble Wurm\"]> but was:<[]>",
+                "type": "org.opentest4j.AssertionFailedError"
+              },
+              "text": "org.opentest4j.AssertionFailedError: expected:<[\"Expedition Map\", \"Urza's Tower\", \"Crop Rotation\", \"Bonder's Ornament\", \"Bramble Wurm\"]> but was:<[]>\n\tat com.wingedsheep.gym.pest.PestMonsterTronActorDecisionsTest$4.invokeSuspend(PestMonsterTronActorDecisionsTest.kt:121)\n\tat com.wingedsheep.gym.pest.PestMonsterTronActorDecisionsTest$4.invoke(PestMonsterTronActorDecisionsTest.kt)\n\tat com.wingedsheep.gym.pest.PestMonsterTronActorDecisionsTest$4.invoke(PestMonsterTronActorDecisionsTest.kt)\n\tat io.kotest.core.spec.style.scopes.FunSpecRootScope$test$1.invokeSuspend(FunSpecRootScope.kt:88)\n\tat io.kotest.core.spec.style.scopes.FunSpecRootScope$test$1.invoke(FunSpecRootScope.kt)\n\tat io.kotest.core.spec.style.scopes.FunSpecRootScope$test$1.invoke(FunSpecRootScope.kt)\n\tat io.kotest.engine.test.TestCaseExecutor$execute$base$1.invoke(TestCaseExecutor.kt:118)\n\tat io.kotest.engine.test.TestInvocationInterceptor$runBeforeTestAfter$executeWithBeforeAfter$1.invoke(TestInvocationInterceptor.kt:93)\n\tat io.kotest.engine.test.interceptors.InvocationTimeoutInterceptor$intercept$3.invokeSuspend(InvocationTimeoutInterceptor.kt:49)\n\tat io.kotest.engine.test.interceptors.InvocationTimeoutInterceptor$intercept$3.invoke(InvocationTimeoutInterceptor.kt)\n\tat io.kotest.engine.test.interceptors.InvocationTimeoutInterceptor$intercept$3.invoke(InvocationTimeoutInterceptor.kt)\n\tat kotlinx.coroutines.intrinsics.UndispatchedKt.startUndispatched(Undispatched.kt:66)\n\tat kotlinx.coroutines.intrinsics.UndispatchedKt.startUndispatchedOrReturnIgnoreTimeout(Undispatched.kt:50)\n\tat kotlinx.coroutines.TimeoutKt.setupTimeout(Timeout.kt:233)\n\tat kotlinx.coroutines.TimeoutKt.withTimeoutOrNull(Timeout.kt:159)\n\tat kotlinx.coroutines.TimeoutKt.withTimeoutOrNull-KLykuaI(Timeout.kt:221)\n\tat io.kotest.engine.test.interceptors.TimeoutInterceptorKt.withAppropriateTimeoutOrNull-KLykuaI(TimeoutInterceptor.kt:103)\n\tat io.kotest.engine.test.interceptors.InvocationTimeoutInterceptor.intercept(InvocationTimeoutInterceptor.kt:48)\n\tat io.kotest.engine.test.TestInvocationInterceptor$runBeforeTestAfter$wrappedTest$1$1.invoke(TestInvocationInterceptor.kt:102)\n\tat io.kotest.engine.test.TestInvocationInterceptor.runBeforeTestAfter(TestInvocationInterceptor.kt:105)\n\tat io.kotest.engine.test.TestInvocationInterceptor.access$runBeforeTestAfter(TestInvocationInterceptor.kt:18)\n\tat io.kotest.engine.test.TestInvocationInterceptor$invokeWithRetry$2.invokeSuspend(TestInvocationInterceptor.kt:53)\n\tat io.kotest.engine.test.TestInvocationInterceptor$invokeWithRetry$2.invoke(TestInvocationInterceptor.kt)\n\tat io.kotest.engine.test.TestInvocationInterceptor$invokeWithRetry$2.invoke(TestInvocationInterceptor.kt)\n\tat kotlinx.coroutines.intrinsics.UndispatchedKt.startUndispatched(Undispatched.kt:66)\n\tat kotlinx.coroutines.intrinsics.UndispatchedKt.startUndispatchedOrReturn(Undispatched.kt:43)\n\tat kotlinx.coroutines.CoroutineScopeKt.coroutineScope(CoroutineScope.kt:848)\n\tat io.kotest.engine.test.TestInvocationInterceptor.invokeWithRetry(TestInvocationInterceptor.kt:51)\n\tat io.kotest.engine.test.TestInvocationInterceptor.intercept(TestInvocationInterceptor.kt:33)\n\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\n\tat io.kotest.engine.test.interceptors.MarkOpenTest4jAbortedExceptionsAsSkippedTestInterceptor.intercept(MarkOpenTest4jAbortedExceptionsAsSkippedTestInterceptor.kt:22)\n\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\n\tat io.kotest.engine.test.interceptors.HandleSkippedExceptionsTestInterceptor.intercept(HandleSkippedExceptionsTestInterceptor.kt:15)\n\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\n\tat io.kotest.engine.test.interceptors.TimeoutInterceptor$intercept$3.invokeSuspend(TimeoutInterceptor.kt:61)\n\tat io.kotest.engine.test.interceptors.TimeoutInterceptor$intercept$3.invoke(TimeoutInterceptor.kt)\n\tat io.kotest.engine.test.interceptors.TimeoutInterceptor$intercept$3.invoke(TimeoutInterceptor.kt)\n\tat kotlinx.coroutines.intrinsics.UndispatchedKt.startUndispatched(Undispatched.kt:66)\n\tat kotlinx.coroutines.intrinsics.UndispatchedKt.startUndispatchedOrReturnIgnoreTimeout(Undispatched.kt:50)\n\tat kotlinx.coroutines.TimeoutKt.setupTimeout(Timeout.kt:233)\n\tat kotlinx.coroutines.TimeoutKt.withTimeout(Timeout.kt:29)\n\tat kotlinx.coroutines.TimeoutKt.withTimeout-KLykuaI(Timeout.kt:141)\n\tat io.kotest.engine.test.interceptors.TimeoutInterceptorKt.withAppropriateTimeout-KLykuaI(TimeoutInterceptor.kt:90)\n\tat io.kotest.engine.test.interceptors.TimeoutInterceptor.intercept(TimeoutInterceptor.kt:60)\n\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\n\tat io.kotest.engine.test.interceptors.CoroutineDebugProbeInterceptor.intercept(CoroutineDebugProbeInterceptor.kt:33)\n\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\n\tat io.kotest.engine.test.interceptors.BlockedThreadTimeoutInterceptor.intercept(BlockedThreadTimeoutInterceptor.kt:87)\n\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\n\tat io.kotest.engine.test.interceptors.CoroutineLoggingInterceptor.intercept(CoroutineLoggingInterceptor.kt:38)\n\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\n\tat io.kotest.engine.test.interceptors.SoftAssertInterceptor.intercept(SoftAssertInterceptor.kt:26)\n\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\n\tat io.kotest.engine.test.interceptors.AssertionModeInterceptor.intercept(AssertionModeInterceptor.kt:29)\n\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\n\tat io.kotest.engine.test.interceptors.LifecycleInterceptor.intercept(LifecycleInterceptor.kt:48)\n\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\n\tat io.kotest.engine.test.interceptors.TestCaseExtensionInterceptor$intercept$2.invoke(TestCaseExtensionInterceptor.kt:21)\n\tat io.kotest.engine.test.TestExtensions.intercept(TestExtensions.kt:151)\n\tat io.kotest.engine.test.interceptors.TestCaseExtensionInterceptor.intercept(TestCaseExtensionInterceptor.kt:21)\n\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\n\tat io.kotest.engine.test.interceptors.TestEnabledCheckInterceptor.intercept(TestEnabledCheckInterceptor.kt:41)\n\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\n\tat io.kotest.engine.test.interceptors.CoroutineErrorCollectorInterceptor$intercept$3.invokeSuspend(CoroutineErrorCollectorInterceptor.kt:39)\n\tat io.kotest.engine.test.interceptors.CoroutineErrorCollectorInterceptor$intercept$3.invoke(CoroutineErrorCollectorInterceptor.kt)\n\tat io.kotest.engine.test.interceptors.CoroutineErrorCollectorInterceptor$intercept$3.invoke(CoroutineErrorCollectorInterceptor.kt)\n\tat kotlinx.coroutines.intrinsics.UndispatchedKt.startUndispatched(Undispatched.kt:66)\n\tat kotlinx.coroutines.intrinsics.UndispatchedKt.startUndispatchedOrReturn(Undispatched.kt:43)\n\tat kotlinx.coroutines.BuildersKt__Builders_commonKt.withContext(Builders.common.kt:497)\n\tat kotlinx.coroutines.BuildersKt.withContext(Unknown Source)\n\tat io.kotest.engine.test.interceptors.CoroutineErrorCollectorInterceptor.intercept(CoroutineErrorCollectorInterceptor.kt:38)\n\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\n\tat io.kotest.engine.test.interceptors.CoroutineDispatcherFactoryTestInterceptor.intercept(CoroutineDispatcherFactoryTestInterceptor.kt:41)\n\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\n\tat io.kotest.engine.test.interceptors.SupervisorScopeInterceptor$intercept$2.invokeSuspend(SupervisorScopeInterceptor.kt:23)\n\tat io.kotest.engine.test.interceptors.SupervisorScopeInterceptor$intercept$2.invoke(SupervisorScopeInterceptor.kt)\n\tat io.kotest.engine.test.interceptors.SupervisorScopeInterceptor$intercept$2.invoke(SupervisorScopeInterceptor.kt)\n\tat kotlinx.coroutines.intrinsics.UndispatchedKt.startUndispatched(Undispatched.kt:66)\n\tat kotlinx.coroutines.intrinsics.UndispatchedKt.startUndispatchedOrReturn(Undispatched.kt:43)\n\tat kotlinx.coroutines.SupervisorKt.supervisorScope(Supervisor.kt:105)\n\tat io.kotest.engine.test.interceptors.SupervisorScopeInterceptor.intercept(SupervisorScopeInterceptor.kt:22)\n\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\n\tat io.kotest.engine.test.interceptors.InvocationCountCheckInterceptor.intercept(InvocationCountCheckInterceptor.kt:33)\n\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\n\tat io.kotest.engine.test.interceptors.TestFinishedInterceptor.intercept(TestFinishedInterceptor.kt:23)\n\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\n\tat io.kotest.engine.test.FailFastInterceptor.intercept(FailFastInterceptor.kt:24)\n\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\n\tat io.kotest.engine.test.interceptors.TestNameContextInterceptor$intercept$2.invokeSuspend(TestNameContextInterceptor.kt:21)\n\tat io.kotest.engine.test.interceptors.TestNameContextInterceptor$intercept$2.invoke(TestNameContextInterceptor.kt)\n\tat io.kotest.engine.test.interceptors.TestNameContextInterceptor$intercept$2.invoke(TestNameContextInterceptor.kt)\n\tat kotlinx.coroutines.intrinsics.UndispatchedKt.startUndispatched(Undispatched.kt:66)\n\tat kotlinx.coroutines.intrinsics.UndispatchedKt.startUndispatchedOrReturn(Undispatched.kt:43)\n\tat kotlinx.coroutines.BuildersKt__Builders_commonKt.withContext(Builders.common.kt:497)\n\tat kotlinx.coroutines.BuildersKt.withContext(Unknown Source)\n\tat io.kotest.engine.test.interceptors.TestNameContextInterceptor.intercept(TestNameContextInterceptor.kt:20)\n\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\n\tat io.kotest.engine.test.interceptors.DescriptorPathContextInterceptor$intercept$2.invokeSuspend(DescriptorPathContextInterceptor.kt:21)\n\tat io.kotest.engine.test.interceptors.DescriptorPathContextInterceptor$intercept$2.invoke(DescriptorPathContextInterceptor.kt)\n\tat io.kotest.engine.test.interceptors.DescriptorPathContextInterceptor$intercept$2.invoke(DescriptorPathContextInterceptor.kt)\n\tat kotlinx.coroutines.intrinsics.UndispatchedKt.startUndispatched(Undispatched.kt:66)\n\tat kotlinx.coroutines.intrinsics.UndispatchedKt.startUndispatchedOrReturn(Undispatched.kt:43)\n\tat kotlinx.coroutines.BuildersKt__Builders_commonKt.withContext(Builders.common.kt:497)\n\tat kotlinx.coroutines.BuildersKt.withContext(Unknown Source)\n\tat io.kotest.engine.test.interceptors.DescriptorPathContextInterceptor.intercept(DescriptorPathContextInterceptor.kt:20)\n\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\n\tat io.kotest.engine.test.TestCaseExecutor.execute(TestCaseExecutor.kt:124)\n\tat io.kotest.engine.spec.execution.SingleInstanceSpecExecutor.executeTest(SingleInstanceSpecExecutor.kt:76)\n\tat io.kotest.engine.spec.execution.SingleInstanceSpecExecutor.access$executeTest(SingleInstanceSpecExecutor.kt:26)\n\tat io.kotest.engine.spec.execution.SingleInstanceSpecExecutor$launchRootTests$2$1$1.invokeSuspend(SingleInstanceSpecExecutor.kt:57)\n\tat kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)\n\tat kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:100)\n\tat kotlinx.coroutines.EventLoopImplBase.processNextEvent(EventLoop.common.kt:256)\n\tat kotlinx.coroutines.BlockingCoroutine.joinBlocking(Builders.kt:54)\n\tat kotlinx.coroutines.BuildersKt__BuildersKt.runBlockingImpl(Builders.kt:30)\n\tat kotlinx.coroutines.BuildersKt.runBlockingImpl(Unknown Source)\n\tat kotlinx.coroutines.BuildersKt__Builders_concurrentKt.runBlockingK(Builders.concurrent.kt:172)\n\tat kotlinx.coroutines.BuildersKt.runBlockingK(Unknown Source)\n\tat kotlinx.coroutines.BuildersKt__BuildersKt.runBlocking(Builders.kt:22)\n\tat kotlinx.coroutines.BuildersKt.runBlocking(Unknown Source)\n\tat kotlinx.coroutines.BuildersKt__BuildersKt.runBlocking$default(Builders.kt:20)\n\tat kotlinx.coroutines.BuildersKt.runBlocking$default(Unknown Source)\n\tat io.kotest.runner.junit.platform.KotestJunitPlatformTestEngine.execute(KotestJunitPlatformTestEngine.kt:86)\n\tat io.kotest.runner.junit.platform.KotestJunitPlatformTestEngine.execute(KotestJunitPlatformTestEngine.kt:56)\n"
+            }
+          ]
+        },
+        {
+          "name": "MC05 actual Bojuka Bog targets and exiles the public opponent graveyard",
+          "outcomes": []
+        },
+        {
+          "name": "MC06 offered Stirrings group without a Tron land preserves the legacy null defer",
+          "outcomes": []
+        },
+        {
+          "name": "MC07 unavailable hand and future-library changes cannot alter Bog input or response",
+          "outcomes": []
+        },
+        {
+          "name": "MC08 a legitimate own-hand Tron piece changes the missing-piece choice",
+          "outcomes": []
+        },
+        {
+          "name": "MC09 stale actor epoch and edited policy-state bindings are rejected before a choice",
+          "outcomes": []
+        },
+        {
+          "name": "MC10 diagnostic raw library fallback order differs from canonical order and remains unaccepted",
+          "outcomes": []
+        }
+      ]
+    },
+    {
+      "class": "com.wingedsheep.gym.PestControlTierOneMonsterTronPolicyCalibrationTest",
+      "xml_sha256": "a8107a237a2087f62cbea3253c68e245a1df042149143c8b4d594542c30b7860",
+      "cases": [
+        {
+          "name": "calibration is bound to the frozen exact-60 identities and consumes no official state",
+          "outcomes": []
+        },
+        {
+          "name": "Expedition Map completes two-piece Tron",
+          "outcomes": []
+        },
+        {
+          "name": "Crop Rotation preserves unique Tron pieces and converts a spare land into the missing piece",
+          "outcomes": []
+        },
+        {
+          "name": "Ancient Stirrings takes the missing Tron piece over generic value",
+          "outcomes": []
+        },
+        {
+          "name": "Bojuka Bog targets the opposing graveyard with the most cards",
+          "outcomes": []
+        },
+        {
+          "name": "free Cascade never shrinks Boulderbranch to Prototype and declines an uncastable hit",
+          "outcomes": []
+        },
+        {
+          "name": "policy acceptance does not open execution on its own",
+          "outcomes": []
+        }
+      ]
+    },
+    {
+      "class": "com.wingedsheep.gym.actorinput.ActorObservationBoundaryTest",
+      "xml_sha256": "9df49dcdc4c97ac525dc04202215f5701ceb9c905d461a71f7aedc90ee184d4f",
+      "cases": [
+        {
+          "name": "nullable inline references preserve absence and still reject inaccessible present IDs",
+          "outcomes": []
+        },
+        {
+          "name": "complete actor input is invariant to unknown opponent hand identities",
+          "outcomes": []
+        },
+        {
+          "name": "complete actor input is invariant to both unseen library orders and identities",
+          "outcomes": []
+        },
+        {
+          "name": "hidden exile identity and unrelated entity ID do not enter actor input",
+          "outcomes": []
+        },
+        {
+          "name": "authoritative RNG never changes actor payload or supplied policy stream",
+          "outcomes": []
+        },
+        {
+          "name": "known opponent card remains visible while its unknown neighbor changes",
+          "outcomes": []
+        },
+        {
+          "name": "known library subset is sorted independently of hidden positions",
+          "outcomes": []
+        },
+        {
+          "name": "drawing a previously hidden card exposes its identity to its owner",
+          "outcomes": []
+        },
+        {
+          "name": "public discard exposes the former hidden opponent card",
+          "outcomes": []
+        },
+        {
+          "name": "wrong actor is rejected before current private question is projected",
+          "outcomes": []
+        },
+        {
+          "name": "current own library search reveals options without library order or future draws",
+          "outcomes": []
+        },
+        {
+          "name": "reorder decision preserves its authorized top group but omits unseen remainder",
+          "outcomes": []
+        },
+        {
+          "name": "raw face-down selection metadata is masked while the public option survives",
+          "outcomes": []
+        },
+        {
+          "name": "unauthorized opponent-library cardInfo and extra metadata keys fail visibly",
+          "outcomes": []
+        },
+        {
+          "name": "complete nested target sacrifice discard and mode domains survive detached projection",
+          "outcomes": []
+        },
+        {
+          "name": "inaccessible nested cost reference is rejected instead of removed",
+          "outcomes": []
+        },
+        {
+          "name": "very large mandatory numeric domain is copied without enumeration or auto-answer",
+          "outcomes": []
+        },
+        {
+          "name": "target constraints and nonselectable look cards are retained",
+          "outcomes": []
+        },
+        {
+          "name": "pending mana payment includes actual mana ability menu and rejects ordinary spells",
+          "outcomes": []
+        },
+        {
+          "name": "mulligan public counts do not expose another hand's pending pregame cards",
+          "outcomes": []
+        },
+        {
+          "name": "public spell X and chosen modes are retained",
+          "outcomes": []
+        },
+        {
+          "name": "epoch actor menu and policy-state tampering invalidate response binding",
+          "outcomes": []
+        },
+        {
+          "name": "empty ordinary menu and terminal state fail rather than inventing a pass or winner",
+          "outcomes": []
+        },
+        {
+          "name": "raw authority objects and continuations are rejected by payload graph audit",
+          "outcomes": []
+        },
+        {
+          "name": "all eighteen current decision variants cross as complete typed questions",
+          "outcomes": []
+        },
+        {
+          "name": "real pre-block input identifies vigilant attacker and defender with an empty blocker template",
+          "outcomes": []
+        },
+        {
+          "name": "authorized nonbattlefield power survives power-constrained selection metadata",
+          "outcomes": []
+        },
+        {
+          "name": "unlisted data types and enum values fail closed instead of using package fallbacks",
+          "outcomes": []
+        }
+      ]
+    },
+    {
+      "class": "com.wingedsheep.gym.actorinput.ActorStackSourceObservationTest",
+      "xml_sha256": "112028416c78c86ba2584c7a812750185b6c6832e9a324645b7e15e27e0bca92",
+      "cases": [
+        {
+          "name": "real pending Shaman activation reads current bonuses gained after activation",
+          "outcomes": []
+        },
+        {
+          "name": "two real queued Shaman activations keep old properties after a same-ID blink return",
+          "outcomes": []
+        },
+        {
+          "name": "actual sacrificed token source remains public after token entity cleanup",
+          "outcomes": []
+        },
+        {
+          "name": "actual own death trigger has the departed source identity and public characteristics",
+          "outcomes": []
+        },
+        {
+          "name": "full pending-source input ignores unknown hand library identities order and authoritative RNG",
+          "outcomes": []
+        },
+        {
+          "name": "synthetic absent uncaptured or wrong-entity source origins fail explicitly",
+          "outcomes": []
+        },
+        {
+          "name": "synthetic missing or wrong-incarnation LKI never falls back to the returned creature",
+          "outcomes": []
+        },
+        {
+          "name": "synthetic partial last-known public fields fail rather than invent values",
+          "outcomes": []
+        },
+        {
+          "name": "synthetic face-down departure summary omits raw identity definition and private attachments",
+          "outcomes": []
+        },
+        {
+          "name": "synthetic nonbattlefield ability exposes no private origin generation or fabricated characteristics",
+          "outcomes": []
+        },
+        {
+          "name": "actual hand activation input is invariant to hidden hand and library incarnation permutations",
+          "outcomes": []
+        },
+        {
+          "name": "synthetic stale snapshot cannot override properties of the still-current original",
+          "outcomes": []
+        }
+      ]
+    },
+    {
+      "class": "com.wingedsheep.gym.actorinput.ActorTriggerOrderObservationTest",
+      "xml_sha256": "931d006df836417b268f5cd5bcf41d6a9e2be9b1310278e206240567e7d98128",
+      "cases": [
+        {
+          "name": "real Red simultaneous triggers retain the proved label and selected order seat 1",
+          "outcomes": []
+        },
+        {
+          "name": "real Red simultaneous triggers retain the proved label and selected order seat 2",
+          "outcomes": []
+        },
+        {
+          "name": "successive real three-trigger choices preserve distinct same-name sources and ordering",
+          "outcomes": []
+        },
+        {
+          "name": "system-label lookalike without its typed continuation is rejected while unrelated names stay concealed",
+          "outcomes": []
+        },
+        {
+          "name": "forged controller option preview private source and missing provenance fail without leaking labels",
+          "outcomes": []
+        },
+        {
+          "name": "real ordering question roundtrips and ignores hidden cards library order and authoritative RNG",
+          "outcomes": []
+        }
+      ]
+    },
+    {
+      "class": "com.wingedsheep.gym.actorinput.ActorPriorityObservationTest",
+      "xml_sha256": "177e55ec500706fbd447fe06de7fd1d82f43277302e27015c7e39a816fb2bb76",
+      "cases": [
+        {
+          "name": "HP01 ordinary priority and its actual pass agree in direct and actor observations",
+          "outcomes": []
+        },
+        {
+          "name": "HP02 a real declaration baton has no priority until blockers finish",
+          "outcomes": []
+        },
+        {
+          "name": "HP03 a serialized real block-tax payment retains its actor without priority",
+          "outcomes": []
+        },
+        {
+          "name": "HP04 actual shared-team priority is visible on both teammates",
+          "outcomes": []
+        }
+      ]
+    }
+  ],
+  "actual_failed_case": {
+    "class": "com.wingedsheep.gym.pest.PestMonsterTronActorDecisionsTest",
+    "name": "MC04 actual Ancient Stirrings uses the offered authorized group and retains its reorder question",
+    "outcomes": [
+      {
+        "kind": "failure",
+        "attributes": {
+          "message": "org.opentest4j.AssertionFailedError: expected:<[\"Expedition Map\", \"Urza's Tower\", \"Crop Rotation\", \"Bonder's Ornament\", \"Bramble Wurm\"]> but was:<[]>",
+          "type": "org.opentest4j.AssertionFailedError"
+        },
+        "text": "org.opentest4j.AssertionFailedError: expected:<[\"Expedition Map\", \"Urza's Tower\", \"Crop Rotation\", \"Bonder's Ornament\", \"Bramble Wurm\"]> but was:<[]>\n\tat com.wingedsheep.gym.pest.PestMonsterTronActorDecisionsTest$4.invokeSuspend(PestMonsterTronActorDecisionsTest.kt:121)\n\tat com.wingedsheep.gym.pest.PestMonsterTronActorDecisionsTest$4.invoke(PestMonsterTronActorDecisionsTest.kt)\n\tat com.wingedsheep.gym.pest.PestMonsterTronActorDecisionsTest$4.invoke(PestMonsterTronActorDecisionsTest.kt)\n\tat io.kotest.core.spec.style.scopes.FunSpecRootScope$test$1.invokeSuspend(FunSpecRootScope.kt:88)\n\tat io.kotest.core.spec.style.scopes.FunSpecRootScope$test$1.invoke(FunSpecRootScope.kt)\n\tat io.kotest.core.spec.style.scopes.FunSpecRootScope$test$1.invoke(FunSpecRootScope.kt)\n\tat io.kotest.engine.test.TestCaseExecutor$execute$base$1.invoke(TestCaseExecutor.kt:118)\n\tat io.kotest.engine.test.TestInvocationInterceptor$runBeforeTestAfter$executeWithBeforeAfter$1.invoke(TestInvocationInterceptor.kt:93)\n\tat io.kotest.engine.test.interceptors.InvocationTimeoutInterceptor$intercept$3.invokeSuspend(InvocationTimeoutInterceptor.kt:49)\n\tat io.kotest.engine.test.interceptors.InvocationTimeoutInterceptor$intercept$3.invoke(InvocationTimeoutInterceptor.kt)\n\tat io.kotest.engine.test.interceptors.InvocationTimeoutInterceptor$intercept$3.invoke(InvocationTimeoutInterceptor.kt)\n\tat kotlinx.coroutines.intrinsics.UndispatchedKt.startUndispatched(Undispatched.kt:66)\n\tat kotlinx.coroutines.intrinsics.UndispatchedKt.startUndispatchedOrReturnIgnoreTimeout(Undispatched.kt:50)\n\tat kotlinx.coroutines.TimeoutKt.setupTimeout(Timeout.kt:233)\n\tat kotlinx.coroutines.TimeoutKt.withTimeoutOrNull(Timeout.kt:159)\n\tat kotlinx.coroutines.TimeoutKt.withTimeoutOrNull-KLykuaI(Timeout.kt:221)\n\tat io.kotest.engine.test.interceptors.TimeoutInterceptorKt.withAppropriateTimeoutOrNull-KLykuaI(TimeoutInterceptor.kt:103)\n\tat io.kotest.engine.test.interceptors.InvocationTimeoutInterceptor.intercept(InvocationTimeoutInterceptor.kt:48)\n\tat io.kotest.engine.test.TestInvocationInterceptor$runBeforeTestAfter$wrappedTest$1$1.invoke(TestInvocationInterceptor.kt:102)\n\tat io.kotest.engine.test.TestInvocationInterceptor.runBeforeTestAfter(TestInvocationInterceptor.kt:105)\n\tat io.kotest.engine.test.TestInvocationInterceptor.access$runBeforeTestAfter(TestInvocationInterceptor.kt:18)\n\tat io.kotest.engine.test.TestInvocationInterceptor$invokeWithRetry$2.invokeSuspend(TestInvocationInterceptor.kt:53)\n\tat io.kotest.engine.test.TestInvocationInterceptor$invokeWithRetry$2.invoke(TestInvocationInterceptor.kt)\n\tat io.kotest.engine.test.TestInvocationInterceptor$invokeWithRetry$2.invoke(TestInvocationInterceptor.kt)\n\tat kotlinx.coroutines.intrinsics.UndispatchedKt.startUndispatched(Undispatched.kt:66)\n\tat kotlinx.coroutines.intrinsics.UndispatchedKt.startUndispatchedOrReturn(Undispatched.kt:43)\n\tat kotlinx.coroutines.CoroutineScopeKt.coroutineScope(CoroutineScope.kt:848)\n\tat io.kotest.engine.test.TestInvocationInterceptor.invokeWithRetry(TestInvocationInterceptor.kt:51)\n\tat io.kotest.engine.test.TestInvocationInterceptor.intercept(TestInvocationInterceptor.kt:33)\n\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\n\tat io.kotest.engine.test.interceptors.MarkOpenTest4jAbortedExceptionsAsSkippedTestInterceptor.intercept(MarkOpenTest4jAbortedExceptionsAsSkippedTestInterceptor.kt:22)\n\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\n\tat io.kotest.engine.test.interceptors.HandleSkippedExceptionsTestInterceptor.intercept(HandleSkippedExceptionsTestInterceptor.kt:15)\n\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\n\tat io.kotest.engine.test.interceptors.TimeoutInterceptor$intercept$3.invokeSuspend(TimeoutInterceptor.kt:61)\n\tat io.kotest.engine.test.interceptors.TimeoutInterceptor$intercept$3.invoke(TimeoutInterceptor.kt)\n\tat io.kotest.engine.test.interceptors.TimeoutInterceptor$intercept$3.invoke(TimeoutInterceptor.kt)\n\tat kotlinx.coroutines.intrinsics.UndispatchedKt.startUndispatched(Undispatched.kt:66)\n\tat kotlinx.coroutines.intrinsics.UndispatchedKt.startUndispatchedOrReturnIgnoreTimeout(Undispatched.kt:50)\n\tat kotlinx.coroutines.TimeoutKt.setupTimeout(Timeout.kt:233)\n\tat kotlinx.coroutines.TimeoutKt.withTimeout(Timeout.kt:29)\n\tat kotlinx.coroutines.TimeoutKt.withTimeout-KLykuaI(Timeout.kt:141)\n\tat io.kotest.engine.test.interceptors.TimeoutInterceptorKt.withAppropriateTimeout-KLykuaI(TimeoutInterceptor.kt:90)\n\tat io.kotest.engine.test.interceptors.TimeoutInterceptor.intercept(TimeoutInterceptor.kt:60)\n\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\n\tat io.kotest.engine.test.interceptors.CoroutineDebugProbeInterceptor.intercept(CoroutineDebugProbeInterceptor.kt:33)\n\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\n\tat io.kotest.engine.test.interceptors.BlockedThreadTimeoutInterceptor.intercept(BlockedThreadTimeoutInterceptor.kt:87)\n\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\n\tat io.kotest.engine.test.interceptors.CoroutineLoggingInterceptor.intercept(CoroutineLoggingInterceptor.kt:38)\n\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\n\tat io.kotest.engine.test.interceptors.SoftAssertInterceptor.intercept(SoftAssertInterceptor.kt:26)\n\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\n\tat io.kotest.engine.test.interceptors.AssertionModeInterceptor.intercept(AssertionModeInterceptor.kt:29)\n\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\n\tat io.kotest.engine.test.interceptors.LifecycleInterceptor.intercept(LifecycleInterceptor.kt:48)\n\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\n\tat io.kotest.engine.test.interceptors.TestCaseExtensionInterceptor$intercept$2.invoke(TestCaseExtensionInterceptor.kt:21)\n\tat io.kotest.engine.test.TestExtensions.intercept(TestExtensions.kt:151)\n\tat io.kotest.engine.test.interceptors.TestCaseExtensionInterceptor.intercept(TestCaseExtensionInterceptor.kt:21)\n\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\n\tat io.kotest.engine.test.interceptors.TestEnabledCheckInterceptor.intercept(TestEnabledCheckInterceptor.kt:41)\n\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\n\tat io.kotest.engine.test.interceptors.CoroutineErrorCollectorInterceptor$intercept$3.invokeSuspend(CoroutineErrorCollectorInterceptor.kt:39)\n\tat io.kotest.engine.test.interceptors.CoroutineErrorCollectorInterceptor$intercept$3.invoke(CoroutineErrorCollectorInterceptor.kt)\n\tat io.kotest.engine.test.interceptors.CoroutineErrorCollectorInterceptor$intercept$3.invoke(CoroutineErrorCollectorInterceptor.kt)\n\tat kotlinx.coroutines.intrinsics.UndispatchedKt.startUndispatched(Undispatched.kt:66)\n\tat kotlinx.coroutines.intrinsics.UndispatchedKt.startUndispatchedOrReturn(Undispatched.kt:43)\n\tat kotlinx.coroutines.BuildersKt__Builders_commonKt.withContext(Builders.common.kt:497)\n\tat kotlinx.coroutines.BuildersKt.withContext(Unknown Source)\n\tat io.kotest.engine.test.interceptors.CoroutineErrorCollectorInterceptor.intercept(CoroutineErrorCollectorInterceptor.kt:38)\n\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\n\tat io.kotest.engine.test.interceptors.CoroutineDispatcherFactoryTestInterceptor.intercept(CoroutineDispatcherFactoryTestInterceptor.kt:41)\n\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\n\tat io.kotest.engine.test.interceptors.SupervisorScopeInterceptor$intercept$2.invokeSuspend(SupervisorScopeInterceptor.kt:23)\n\tat io.kotest.engine.test.interceptors.SupervisorScopeInterceptor$intercept$2.invoke(SupervisorScopeInterceptor.kt)\n\tat io.kotest.engine.test.interceptors.SupervisorScopeInterceptor$intercept$2.invoke(SupervisorScopeInterceptor.kt)\n\tat kotlinx.coroutines.intrinsics.UndispatchedKt.startUndispatched(Undispatched.kt:66)\n\tat kotlinx.coroutines.intrinsics.UndispatchedKt.startUndispatchedOrReturn(Undispatched.kt:43)\n\tat kotlinx.coroutines.SupervisorKt.supervisorScope(Supervisor.kt:105)\n\tat io.kotest.engine.test.interceptors.SupervisorScopeInterceptor.intercept(SupervisorScopeInterceptor.kt:22)\n\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\n\tat io.kotest.engine.test.interceptors.InvocationCountCheckInterceptor.intercept(InvocationCountCheckInterceptor.kt:33)\n\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\n\tat io.kotest.engine.test.interceptors.TestFinishedInterceptor.intercept(TestFinishedInterceptor.kt:23)\n\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\n\tat io.kotest.engine.test.FailFastInterceptor.intercept(FailFastInterceptor.kt:24)\n\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\n\tat io.kotest.engine.test.interceptors.TestNameContextInterceptor$intercept$2.invokeSuspend(TestNameContextInterceptor.kt:21)\n\tat io.kotest.engine.test.interceptors.TestNameContextInterceptor$intercept$2.invoke(TestNameContextInterceptor.kt)\n\tat io.kotest.engine.test.interceptors.TestNameContextInterceptor$intercept$2.invoke(TestNameContextInterceptor.kt)\n\tat kotlinx.coroutines.intrinsics.UndispatchedKt.startUndispatched(Undispatched.kt:66)\n\tat kotlinx.coroutines.intrinsics.UndispatchedKt.startUndispatchedOrReturn(Undispatched.kt:43)\n\tat kotlinx.coroutines.BuildersKt__Builders_commonKt.withContext(Builders.common.kt:497)\n\tat kotlinx.coroutines.BuildersKt.withContext(Unknown Source)\n\tat io.kotest.engine.test.interceptors.TestNameContextInterceptor.intercept(TestNameContextInterceptor.kt:20)\n\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\n\tat io.kotest.engine.test.interceptors.DescriptorPathContextInterceptor$intercept$2.invokeSuspend(DescriptorPathContextInterceptor.kt:21)\n\tat io.kotest.engine.test.interceptors.DescriptorPathContextInterceptor$intercept$2.invoke(DescriptorPathContextInterceptor.kt)\n\tat io.kotest.engine.test.interceptors.DescriptorPathContextInterceptor$intercept$2.invoke(DescriptorPathContextInterceptor.kt)\n\tat kotlinx.coroutines.intrinsics.UndispatchedKt.startUndispatched(Undispatched.kt:66)\n\tat kotlinx.coroutines.intrinsics.UndispatchedKt.startUndispatchedOrReturn(Undispatched.kt:43)\n\tat kotlinx.coroutines.BuildersKt__Builders_commonKt.withContext(Builders.common.kt:497)\n\tat kotlinx.coroutines.BuildersKt.withContext(Unknown Source)\n\tat io.kotest.engine.test.interceptors.DescriptorPathContextInterceptor.intercept(DescriptorPathContextInterceptor.kt:20)\n\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\n\tat io.kotest.engine.test.TestCaseExecutor.execute(TestCaseExecutor.kt:124)\n\tat io.kotest.engine.spec.execution.SingleInstanceSpecExecutor.executeTest(SingleInstanceSpecExecutor.kt:76)\n\tat io.kotest.engine.spec.execution.SingleInstanceSpecExecutor.access$executeTest(SingleInstanceSpecExecutor.kt:26)\n\tat io.kotest.engine.spec.execution.SingleInstanceSpecExecutor$launchRootTests$2$1$1.invokeSuspend(SingleInstanceSpecExecutor.kt:57)\n\tat kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)\n\tat kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:100)\n\tat kotlinx.coroutines.EventLoopImplBase.processNextEvent(EventLoop.common.kt:256)\n\tat kotlinx.coroutines.BlockingCoroutine.joinBlocking(Builders.kt:54)\n\tat kotlinx.coroutines.BuildersKt__BuildersKt.runBlockingImpl(Builders.kt:30)\n\tat kotlinx.coroutines.BuildersKt.runBlockingImpl(Unknown Source)\n\tat kotlinx.coroutines.BuildersKt__Builders_concurrentKt.runBlockingK(Builders.concurrent.kt:172)\n\tat kotlinx.coroutines.BuildersKt.runBlockingK(Unknown Source)\n\tat kotlinx.coroutines.BuildersKt__BuildersKt.runBlocking(Builders.kt:22)\n\tat kotlinx.coroutines.BuildersKt.runBlocking(Unknown Source)\n\tat kotlinx.coroutines.BuildersKt__BuildersKt.runBlocking$default(Builders.kt:20)\n\tat kotlinx.coroutines.BuildersKt.runBlocking$default(Unknown Source)\n\tat io.kotest.runner.junit.platform.KotestJunitPlatformTestEngine.execute(KotestJunitPlatformTestEngine.kt:86)\n\tat io.kotest.runner.junit.platform.KotestJunitPlatformTestEngine.execute(KotestJunitPlatformTestEngine.kt:56)\n"
+      }
+    ]
+  },
+  "MC10": {
+    "raw_name": "Urza's Tower",
+    "canonical_name": "Urza's Mine",
+    "disposition": "REQUIRES_PROSPECTIVE_PROTOCOL_DISPOSITION",
+    "no_response_submitted": true
+  },
+  "fresh_execution": [
+    "Gradle Test Executor 1 started executing tests.",
+    "Gradle Test Executor 1 finished executing tests.",
+    "Gradle Test Executor 2 started executing tests.",
+    "Gradle Test Executor 2 finished executing tests.",
+    "BUILD FAILED in 7m 3s"
+  ],
+  "verdict": "ACCEPT_AS_EXACT_FAILED_ATTEMPT_EVIDENCE_ONLY",
+  "limits": [
+    "One actual MC04 assertion failed: expected the five Stirrings names in supplemental decisionCards, observed an empty list. This artifact does not execute the remainder of MC04 and does not establish whole72 success.",
+    "This review verifies the original failure artifact; source diagnosis/correction and successor qualification remain separate.",
+    "MC10 passing records a difference, not equivalence or authorization of a changed frozen policy.",
+    "No whole pilot, combined runtime, C2/A2, replacement authority or gameplay acceptance. Historical81 remain quarantined."
+  ],
+  "gameplay_authorized": false,
+  "official_games": 0,
+  "outcomes_exposed": 0
+}

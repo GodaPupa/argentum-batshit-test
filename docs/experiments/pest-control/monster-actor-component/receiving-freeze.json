@@ -1,7 +1,7 @@
 {
   "schema": "pest-monster-actor-receiving-freeze-v1",
   "disposition": "ACCEPT_FOR_72_CASE_RECEIVING_DIAGNOSTIC_ONLY",
-  "reviewed_bank_sha256": "b28545f7c40f06f5bb904ed797a05cfde0279e2af0ba84d752066c1f282987c4",
+  "reviewed_bank_sha256": "72c73a928016a4be7a53a911c1987316acae26dbb2a0706724e2872b4833cda0",
   "independent_reviewer": "/root",
   "source_and_bank_review": {
     "source": "c543648c2eb27ff496b81e3ef3a4ac6d8fb718e7",
@@ -14,17 +14,15 @@
     "condition_implemented": "Only the adapter comment and source-candidate scope wording changed. Original source-candidate, bank and adapter bytes are retained under evidence/prospective-source-review. The bank updates only those affected hashes plus explicit correction provenance; no executable adapter line, calculation or test body changed."
   },
   "gate_review": {
-    "status": "ACCEPT_FOR_FIXED_72_CASE_RECEIVING_DIAGNOSTIC_EXECUTION_ONLY",
+    "status": "ACCEPT_FOR_FIXED_72_CASE_CORRECTION_RETRY_ONLY",
     "ready_for_execution": true,
-    "reviewer": "/root/manual",
+    "reviewer": "/root",
     "reviewer_is_non_author": true,
-    "reviewed_source": "af8cb10de819f450af8bdcdf7dc00015b027f2f9",
-    "reviewed_tree": "fe108d2b04cbaff4651d3822f4fa106907038466",
-    "receipt_path": "independent-gate-review.json",
-    "receipt_sha256": "c3e306219664129d1608c74efa956c07a8efc921550a59fcae8e7c33b41ccc5e",
-    "scope": "Exact fixed72 diagnostic execution only; MC10 order difference remains unaccepted. Same source/gate/bank except this receipt and readiness record. Actual runtime artifacts, whole pilot, C2/A2 and gameplay remain separate."
+    "reviewed_source": "a52008df818df124497f9637e1c41cc9aacee6ab",
+    "reviewed_tree": "81f84ff5d328028d14bb7a211660d6ec7ebda2c0",
+    "scope": "Root independently checked all46 source pins, unchanged seven banks/ten names/72criteria, original failed bank/freeze bytes, collector constant-only change and unchanged workflow. Only MC04 fixture pin changed. Accepted exact same72 retry with readiness plus unchanged Manual original-failure review; no actor-choice equivalence, complete pilot or gameplay acceptance."
   },
-  "attempts_executed": 0,
+  "attempts_executed": 1,
   "policy_development_attempts": 0,
   "actor_choice_equivalence_accepted": false,
   "whole_pilot_accepted": false,
@@ -35,5 +33,43 @@
   "official_seeds_generated": 0,
   "official_games": 0,
   "official_outcomes_exposed": 0,
-  "historical_games_quarantined": 81
+  "historical_games_quarantined": 81,
+  "fixture_correction_review": {
+    "reviewed_source": "71d33f9a952c8d78e4861f08b09c3a408b5915e4",
+    "reviewed_tree": "916b8567f7aa787ee1df7f106c6c8786fb0fac3c",
+    "reviewer": "/root",
+    "reviewer_is_non_author": true,
+    "disposition": "ACCEPT_MC04_FIXTURE_ONLY_FOR_SAME_72_RECEIVING_RETRY",
+    "original_bank_sha256": "b28545f7c40f06f5bb904ed797a05cfde0279e2af0ba84d752066c1f282987c4",
+    "old_fixture_sha256": "80dc519bcb768c5ad0ced4a33ef582a93b098cd7160075961c560e31efbef502",
+    "new_fixture_sha256": "af2fee66e155ea37debe95c6f202fb05e318c3ffa5a16990321250a39ac40fd6",
+    "change": "The real Stirrings GatherCards private look is already actor-visible when its selection question is asked. Preserve the exact five-name assertion on the canonical own library zone and require the supplemental decisionCards list to be empty. All inputs, ten case names, 72-case geometry, policy calculations, response equivalence, Tower selection, real submission and remaining reorder assertions are retained.",
+    "qualification_scope_unchanged": true,
+    "all_production_sources_unchanged": true,
+    "policy_order_difference_remains_unaccepted": true
+  },
+  "gate_review_history": [
+    {
+      "status": "ACCEPT_FOR_FIXED_72_CASE_RECEIVING_DIAGNOSTIC_EXECUTION_ONLY",
+      "ready_for_execution": true,
+      "reviewer": "/root/manual",
+      "reviewer_is_non_author": true,
+      "reviewed_source": "af8cb10de819f450af8bdcdf7dc00015b027f2f9",
+      "reviewed_tree": "fe108d2b04cbaff4651d3822f4fa106907038466",
+      "receipt_path": "independent-gate-review.json",
+      "receipt_sha256": "c3e306219664129d1608c74efa956c07a8efc921550a59fcae8e7c33b41ccc5e",
+      "scope": "Exact fixed72 diagnostic execution only; MC10 order difference remains unaccepted. Same source/gate/bank except this receipt and readiness record. Actual runtime artifacts, whole pilot, C2/A2 and gameplay remain separate."
+    }
+  ],
+  "last_attempt_actual_cases": 72,
+  "last_attempt_passed": 71,
+  "last_attempt_failed": 1,
+  "original_attempt_evidence": "evidence/attempt-01",
+  "last_attempt_independent_review": {
+    "reviewer": "/root/manual",
+    "reviewer_is_non_author": true,
+    "path": "evidence/attempt-01/independent-artifact-review.json",
+    "sha256": "121d29bdea4d8d3ae12168e3ac86bd0bb3a0895f1b9e55ba1d43238be762ebaa",
+    "disposition": "ACCEPT_AS_EXACT_FAILED_ATTEMPT_EVIDENCE_ONLY"
+  }
 }
