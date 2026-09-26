@@ -2,6 +2,7 @@ package com.wingedsheep.engine.mechanics.mana
 
 import com.wingedsheep.engine.core.ActivateAbility
 import com.wingedsheep.engine.core.PaymentStrategy
+import com.wingedsheep.engine.core.tap
 import com.wingedsheep.engine.handlers.ConditionEvaluator
 import com.wingedsheep.engine.handlers.EffectContext
 import com.wingedsheep.engine.handlers.PredicateContext
@@ -73,6 +74,8 @@ data class ManaPaymentRequest(
      * a witness returns Unsupported; it can never prove general resource impossibility.
      */
     val selectFundingSacrifice: ((ManaFundingMaterialOptions) -> EntityId?)? = null,
+    /** Optional public-resource execution-policy filter, including an offered mana color choice. */
+    val allowFundingAction: ((ManaFundingActionOptions) -> Boolean)? = null,
 ) {
     init { require(maxSearchStates > 0) }
 }
@@ -82,6 +85,14 @@ data class ManaFundingMaterialOptions(
     val sourceId: EntityId,
     val abilityId: AbilityId,
     val eligibleMaterials: List<EntityId>,
+)
+
+/** Resource facts before this proposed step, computed by the same canonical search. */
+data class ManaFundingActionOptions(
+    val action: ActivateAbility,
+    val pool: ManaPool,
+    val tappedSources: Set<EntityId>,
+    val consumedMaterials: Set<EntityId>,
 )
 
 /** Pool vectors omit fungible provenance tags; actual execution retains those through the handler. */
@@ -157,7 +168,8 @@ class ManaPaymentFeasibility(private val registry: CardRegistry) {
                 } ?: legal.map { listOf(it) }
             }
         }
-        if (finalOptions.isEmpty()) return if (request.selectFundingSacrifice == null)
+        val policyConstrained = request.selectFundingSacrifice != null || request.allowFundingAction != null
+        if (finalOptions.isEmpty()) return if (!policyConstrained)
             ManaPaymentFeasibilityResult.Impossible(0)
         else ManaPaymentFeasibilityResult.Unsupported(setOf("no legal final material in a policy-constrained query"), 0)
         // A fully floated payment needs no activation semantics, even beside an unused capability.
@@ -228,7 +240,9 @@ class ManaPaymentFeasibility(private val registry: CardRegistry) {
                     val payments = genericPayments(pool, mode.cost.generic, canonicalPayment)
                     for (material in materials) {
                         var afterCosts = board
-                        if (mode.cost.taps) afterCosts = afterCosts.updateEntity(mode.source) { it.with(TappedComponent) }
+                        // Canonical tap semantics on this detached proof state; no event is
+                        // submitted or exposed until the caller executes the witnessed action.
+                        if (mode.cost.taps) afterCosts = tap(afterCosts, mode.source).first
                         material.forEach { afterCosts = afterCosts.removeEntity(it) }
                         val outputs = productions(afterCosts, playerId, mode.source, mode.ability.effect, reasons) ?: continue
                         for (paid in payments) for (output in outputs) {
@@ -238,6 +252,8 @@ class ManaPaymentFeasibility(private val registry: CardRegistry) {
                                 costPayment = material.takeIf { it.isNotEmpty() }?.let { AdditionalCostPayment(sacrificedPermanents = it) },
                                 manaColorChoice = output.color,
                                 paymentStrategy = PaymentStrategy.FromPool)
+                            if (request.allowFundingAction?.invoke(ManaFundingActionOptions(
+                                    action, pool, tapped, consumed)) == false) continue
                             val step = ManaFundingStep(action, pool, afterPool)
                             search(afterCosts, afterPool, consumed + material, path + step,
                                 expressible && paid == canonicalPayment)?.let { return it }
@@ -250,7 +266,7 @@ class ManaPaymentFeasibility(private val registry: CardRegistry) {
             search(state, initialPool, emptySet(), emptyList(), true)?.let { return it }
             if (capped) break
         }
-        if (request.selectFundingSacrifice != null) {
+        if (policyConstrained) {
             reasons += "policy-constrained funding search is not an exhaustive resource negative"
         }
         if (capped) reasons += "finite search state limit reached"

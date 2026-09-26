@@ -1,6 +1,7 @@
 package com.wingedsheep.ai.industrialwaste
 
 import com.wingedsheep.engine.core.ActivateAbility
+import com.wingedsheep.engine.core.AlternativeCostType
 import com.wingedsheep.engine.core.CastSpell
 import com.wingedsheep.engine.core.GameAction
 import com.wingedsheep.engine.core.PassPriority
@@ -8,6 +9,9 @@ import com.wingedsheep.engine.legalactions.LegalAction
 import com.wingedsheep.engine.mechanics.mana.IntrinsicManaAbilities
 import com.wingedsheep.engine.mechanics.mana.ManaPool
 import com.wingedsheep.engine.mechanics.mana.ManaSolver
+import com.wingedsheep.engine.mechanics.mana.ManaPaymentFeasibility
+import com.wingedsheep.engine.mechanics.mana.ManaPaymentFeasibilityResult
+import com.wingedsheep.engine.mechanics.mana.ManaPaymentRequest
 import com.wingedsheep.engine.registry.CardRegistry
 import com.wingedsheep.engine.state.GameState
 import com.wingedsheep.engine.state.ObjectRef
@@ -19,6 +23,9 @@ import com.wingedsheep.sdk.core.ManaCost
 import com.wingedsheep.sdk.model.EntityId
 import com.wingedsheep.sdk.scripting.AbilityCost
 import com.wingedsheep.sdk.scripting.ActivatedAbility
+import com.wingedsheep.sdk.scripting.AdditionalCost
+import com.wingedsheep.sdk.scripting.KeywordAbility
+import com.wingedsheep.sdk.scripting.costs.CostAtom
 import com.wingedsheep.sdk.scripting.effects.AddColorlessManaEffect
 import com.wingedsheep.sdk.scripting.effects.AddManaEffect
 import com.wingedsheep.sdk.scripting.effects.AddManaOfChoiceEffect
@@ -53,13 +60,16 @@ internal class IndustrialWasteV2PaymentBinder(
     private val record: (IndustrialWasteV2PaymentIntentRecord) -> Unit = {},
 ) {
     private val solver = ManaSolver(registry)
+    private val feasibility = ManaPaymentFeasibility(registry)
     private var serial = 0
     private var pending: IndustrialWasteV2PaymentIntent? = null
 
     fun choose(state: GameState, player: EntityId, legal: List<LegalAction>): GameAction {
         val retained = pending
         val selected = if (retained == null) {
-            IndustrialWasteV2PublicActionPolicy.chooseBound(state, player, legal)
+            IndustrialWasteV2PublicActionPolicy.chooseBound(state, player, legal) { entry, action ->
+                policyPayable(state, player, entry, action, legal)
+            }
         } else {
             check(retained.reservedObjects.all(state::isCurrentObject)) { "Selected payment intent lost an original object" }
             val entry = legal.firstOrNull { shape(it.action) == shape(retained.selectedAction) && it.manaCostString == retained.manaCost }
@@ -76,6 +86,9 @@ internal class IndustrialWasteV2PaymentBinder(
             entry to retained.selectedAction
         }
         val (entry, action) = selected
+        check(policyPayable(state, player, entry, action, legal)) {
+            "Retained action lost its complete frozen-policy payment witness"
+        }
         val costText = entry.manaCostString ?: return action
         check(!entry.hasXCost) { "Unqualified variable payment shape" }
         val cost = ManaCost.parse(costText)
@@ -108,6 +121,9 @@ internal class IndustrialWasteV2PaymentBinder(
             val fundedPool = fixedOutput(fundingAbility, funding, paidPool) ?: return@mapNotNull null
             var augmented = state.updateEntity(player) { entity -> entity.with(fundedPool.component()) }
             if (hasTap(fundingAbility.cost)) augmented = augmented.updateEntity(funding.sourceId) { it.with(TappedComponent) }
+            // The complete suffix proof sees each already consumed resource as absent.
+            consumed.forEach { augmented = augmented.removeEntity(it) }
+            if (!policyPayable(augmented, player, entry, action, legal)) return@mapNotNull null
             // Funding must help this exact selected cost, including its colored requirement.
             // It never becomes a speculative mana activation or a claim that colorless pays a pip.
             if (!autoPayable(augmented, player, action, cost, consumed) &&
@@ -119,6 +135,94 @@ internal class IndustrialWasteV2PaymentBinder(
             ?: error("Selected action requires explicit mana but no qualified nonconflicting funding action exists")
         record(IndustrialWasteV2PaymentIntentRecord("FUNDING_ACTION", intent, funding))
         return funding
+    }
+
+    /**
+     * A complete fixed-resource proof for the already bound action under the same public material
+     * and color policy. This does not remove anything from the engine menu or checkpoint metric.
+     * Only a complete supported policy-constrained negative can decline a pilot binding; unknown
+     * grammar, a search cap or an invalid policy answer remains a runtime qualification fault.
+     */
+    private fun policyPayable(state: GameState, player: EntityId, entry: LegalAction,
+        action: GameAction, legal: List<LegalAction>): Boolean {
+        val costText = entry.manaCostString ?: return true
+        check(!entry.hasXCost) { "Unqualified variable payment shape" }
+        val cost = ManaCost.parse(costText)
+        if (cost.isEmpty()) return true
+        // The frozen lists have no mana-paid activation with a non-self sacrifice choice.
+        // Altar's creature sacrifice costs zero mana; every paid sacrifice activation is self-only.
+        check(action !is ActivateAbility || materials(action).isEmpty()) {
+            "Unqualified paid activation with a bound non-self sacrifice"
+        }
+        val card = (action as? CastSpell)?.cardId?.let { state.getEntity(it)?.get<CardComponent>() }
+        val definition = card?.let { registry.getCard(it.cardDefinitionId) }
+        val additional = definition?.script?.additionalCosts.orEmpty() +
+            if (action is CastSpell && action.alternativeCostType == AlternativeCostType.FLASHBACK)
+                definition?.keywordAbilities?.filterIsInstance<KeywordAbility.Flashback>()
+                    ?.singleOrNull()?.additionalCost?.let(::listOf).orEmpty()
+            else emptyList()
+        val sacrifice = if (additional.isEmpty()) null else {
+            check(additional.size == 1) { "Unqualified combined additional-cost payment" }
+            ((additional.single() as? AdditionalCost.Atom)?.atom as? CostAtom.Sacrifice)
+                ?: error("Unqualified non-sacrifice additional-cost payment")
+        }
+        check(sacrifice != null || materials(action).isEmpty() || action is ActivateAbility) {
+            "Bound sacrifice has no exact printed cost"
+        }
+        val excluded = targets(action).toSet() + if (action is ActivateAbility) {
+            val selectedAbility = ability(state, action) ?: error("Selected activation lost its definition")
+            if (hasTap(selectedAbility.cost) || sacrificesSelf(selectedAbility.cost)) setOf(action.sourceId)
+            else emptySet()
+        } else emptySet()
+        fun offered(source: EntityId, abilityId: com.wingedsheep.sdk.scripting.AbilityId): LegalAction? =
+            legal.firstOrNull { (it.action as? ActivateAbility)?.let { a ->
+                a.sourceId == source && a.abilityId == abilityId
+            } == true }
+        val request = ManaPaymentRequest(cost, excludedManaEntities = excluded,
+            finalSacrificeCost = sacrifice,
+            boundFinalSacrifices = sacrifice?.let { materials(action) }, costSourceId = source(action),
+            selectFundingSacrifice = { options ->
+                offered(options.sourceId, options.abilityId)?.let { candidate ->
+                    val info = candidate.additionalCostInfo
+                    if (info == null) null else
+                        (IndustrialWasteV2PublicActionPolicy.bind(state, player, candidate.copy(
+                            additionalCostInfo = info.copy(validSacrificeTargets = options.eligibleMaterials)
+                        )) as? ActivateAbility)?.costPayment?.sacrificedPermanents?.singleOrNull()
+                }
+            },
+            allowFundingAction = { options ->
+                // These are canonical proof resource facts, not a second payment simulation.
+                // Once the unchanged automatic planner can pay, its choice of ordinary sources
+                // and colors remains delegated. Only preceding explicit steps use pilot binding.
+                var resources = state.updateEntity(player) { it.with(options.pool.component()) }
+                options.tappedSources.forEach { id ->
+                    resources = resources.updateEntity(id) { it.with(TappedComponent) }
+                }
+                options.consumedMaterials.forEach { resources = resources.removeEntity(it) }
+                val funding = options.action
+                if (autoPayable(resources, player, action, cost)) true else
+                offered(funding.sourceId, funding.abilityId)?.let { candidate ->
+                    val chosen = materials(funding)
+                    val info = candidate.additionalCostInfo
+                    val constrained = if (chosen.isNotEmpty() && info != null)
+                        candidate.copy(additionalCostInfo = info.copy(validSacrificeTargets = chosen))
+                    else candidate
+                    val bound = IndustrialWasteV2PublicActionPolicy.bind(resources, player, constrained) as? ActivateAbility
+                    bound != null && (!candidate.requiresManaColorChoice || bound.manaColorChoice == funding.manaColorChoice)
+                } == true
+            })
+        return when (val result = feasibility.assess(state, player, request)) {
+            is ManaPaymentFeasibilityResult.Payable -> true
+            is ManaPaymentFeasibilityResult.Impossible -> false
+            is ManaPaymentFeasibilityResult.Unsupported -> {
+                val policyOnly = setOf("policy-constrained funding search is not an exhaustive resource negative",
+                    "no legal final material in a policy-constrained query")
+                check(result.reasons.isNotEmpty() && result.reasons.all { it in policyOnly }) {
+                    "Incomplete frozen-policy payment qualification: ${result.reasons}"
+                }
+                false
+            }
+        }
     }
 
     private fun autoPayable(state: GameState, player: EntityId, action: GameAction, cost: ManaCost,

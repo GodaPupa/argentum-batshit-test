@@ -29,9 +29,11 @@ internal object IndustrialWasteV2PublicActionPolicy {
         return chooseBound(state, player, legal).second
     }
 
-    fun chooseBound(state: GameState, player: EntityId, legal: List<LegalAction>): Pair<LegalAction, GameAction> {
+    fun chooseBound(state: GameState, player: EntityId, legal: List<LegalAction>,
+        executableBinding: (LegalAction, GameAction) -> Boolean = { _, _ -> true }): Pair<LegalAction, GameAction> {
         val candidates = legal.filter { it.affordable }.mapNotNull { entry ->
-            bind(state, player, entry)?.let { action -> Triple(score(state, player, entry, action), action, entry) }
+            bind(state, player, entry)?.takeIf { executableBinding(entry, it) }
+                ?.let { action -> Triple(score(state, player, entry, action), action, entry) }
         }
         return candidates.sortedWith(compareByDescending<Triple<Int, GameAction, LegalAction>> { it.first }
             .thenBy { it.second.toString() }).firstOrNull()?.let { it.third to it.second }

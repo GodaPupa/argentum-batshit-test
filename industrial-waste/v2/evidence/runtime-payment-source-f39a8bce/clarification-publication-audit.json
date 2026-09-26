@@ -1,0 +1,29 @@
+{
+  "schema": "industrial-waste-v2-clarification-publication-audit-v1",
+  "reviewer": "/root/industrial",
+  "decision": "ORIGINAL_LOCATOR_VERIFIED_NO_RECONCILIATION_REQUIRED",
+  "proposal_commit": "ddd605cadbe7166f0adcc620c7c9c7b57acbff7a",
+  "proposal_tree": "5df2dd5b15a3beace7bf75a0d393313d146a33d7",
+  "proposal_parent": "ba48c7a30bf1496d00ac1d83d329f53bb564bbb0",
+  "publication_checks": [
+    {
+      "path": "industrial-waste/v2/r1-checkpoint-clarification-proposal.json",
+      "repository_commit": "ddd605cadbe7166f0adcc620c7c9c7b57acbff7a",
+      "sha256": "d1200c65d5b4573ff66a92e3159f8c6bdcaaf5887c182c83c144db22156b60c5",
+      "bytes": 5531,
+      "remote_contents_equal_local_exact_git_and_receiving_bytes": true
+    },
+    {
+      "path": "industrial-waste/v2/r1-checkpoint-clarification-acceptance.json",
+      "repository_commit": "fda8978c8a226abbfd20280b80832f33d5b5457b",
+      "sha256": "34511344bbdac128964a612ac36cc839c43a431015e3a6d5375aa62b5f25c6cd",
+      "bytes": 4118,
+      "remote_contents_equal_local_exact_git_and_receiving_bytes": true
+    }
+  ],
+  "correction": "The initial inference that ddd605 was local-only because absent from current branch refs was incorrect. Exact GitHub commit and contents reads prove publication. No locator replacement or acceptance/protocol/guard change is required.",
+  "scope": "Proof of immutable publication and unchanged accepted bytes only; original independent scientific review and all runtime/execution gates retain their scope.",
+  "runtime_accepted": false,
+  "execution_authorized": false,
+  "official_allocations_initialized": 0
+}

@@ -117,13 +117,15 @@ class IndustrialWasteV2PaymentIntentTest : FunSpec({
         // The frozen Altar sacrifice policy also refuses using Spawn for that separate ability.
         driver.putPermanentOnBattlefield(player, "Ashnod's Altar")
         driver.putCardInHand(player, "Eviscerator's Insight")
-        // The canonical joint menu rejects the impossible cast before the policy binds a
-        // material. The Spawn remains a legal explicit mana ability in the full engine menu.
-        legal(driver, player).filter { it.affordable }.none {
-            (it.action as? CastSpell)?.let { action ->
-                driver.state.getEntity(action.cardId)?.get<CardComponent>()?.name == "Eviscerator's Insight"
-            } == true
-        } shouldBe true
+        // The general engine can sacrifice the Altar instead and use the Spawn's mana.
+        // The frozen pilot binds the Spawn as its final material; that bound payment is impossible.
+        val menu = legal(driver, player)
+        val insight = menu.single { it.affordable && (it.action as? CastSpell)?.let { action ->
+            driver.state.getEntity(action.cardId)?.get<CardComponent>()?.name == "Eviscerator's Insight"
+        } == true }
+        val bound = IndustrialWasteV2PublicActionPolicy.bind(driver.state, player, insight) as CastSpell
+        val selectedMaterial = bound.additionalCostPayment!!.sacrificedPermanents.single()
+        driver.state.getEntity(selectedMaterial)!!.get<CardComponent>()!!.name shouldBe "Eldrazi Spawn"
         val before = driver.state
         IndustrialWasteV2PaymentBinder(driver.cardRegistry).choose(driver.state, player, legal(driver, player))
             .shouldBeInstanceOf<PassPriority>()
@@ -197,6 +199,94 @@ class IndustrialWasteV2PaymentIntentTest : FunSpec({
         IndustrialWasteV2PaymentBinder(driver.cardRegistry).choose(driver.state, player, legal(driver, player))
             .shouldBeInstanceOf<PassPriority>()
         driver.state shouldBe before
+    }
+
+    test("a policy-ineligible second creature never authorizes partial funding for a three-mana spell") {
+        val (driver, player) = fixture()
+        driver.putPermanentOnBattlefield(player, "Ashnod's Altar")
+        driver.putPermanentOnBattlefield(player, "Myr Retriever")
+        driver.putPermanentOnBattlefield(player, "Myr Kinsmith")
+        val extraAltar = driver.putCardInHand(player, "Ashnod's Altar")
+        val menu = legal(driver, player)
+        menu.any { it.affordable && (it.action as? CastSpell)?.cardId == extraAltar } shouldBe true
+        val records = mutableListOf<IndustrialWasteV2PaymentIntentRecord>()
+        val before = driver.state
+        IndustrialWasteV2PaymentBinder(driver.cardRegistry, records::add)
+            .choose(driver.state, player, menu).shouldBeInstanceOf<PassPriority>()
+        driver.state shouldBe before
+        records shouldBe emptyList()
+    }
+
+    test("delegated automatic Prism payment may choose green while explicit policy would choose black") {
+        val (driver, player) = fixture()
+        repeat(2) { driver.putPermanentOnBattlefield(player, "Urza's Mine") }
+        val prism = driver.putPermanentOnBattlefield(player, "Prophetic Prism")
+        val rumble = driver.putCardInHand(player, "Malevolent Rumble")
+        driver.putCardInHand(player, "Eviscerator's Insight")
+        val menu = legal(driver, player)
+        val explicitPrism = menu.single { (it.action as? ActivateAbility)?.sourceId == prism }
+        (IndustrialWasteV2PublicActionPolicy.bind(driver.state, player, explicitPrism) as ActivateAbility)
+            .manaColorChoice shouldBe Color.BLACK
+        val selected = IndustrialWasteV2PublicActionPolicy.choose(driver.state, player, menu)
+            .shouldBeInstanceOf<CastSpell>()
+        selected.cardId shouldBe rumble
+        val records = mutableListOf<IndustrialWasteV2PaymentIntentRecord>()
+        IndustrialWasteV2PaymentBinder(driver.cardRegistry, records::add)
+            .choose(driver.state, player, menu) shouldBe selected
+        records shouldBe emptyList()
+        driver.submit(selected).error shouldBe null
+        driver.state.getEntity(prism)!!.has<TappedComponent>() shouldBe true
+    }
+
+    test("explicit Retriever funding retains delegated automatic green payment at its witnessed suffix") {
+        val (driver, player) = fixture()
+        val altar = driver.putPermanentOnBattlefield(player, "Ashnod's Altar")
+        val material = driver.putPermanentOnBattlefield(player, "Myr Retriever")
+        val prism = driver.putPermanentOnBattlefield(player, "Prophetic Prism")
+        driver.putPermanentOnBattlefield(player, "Urza's Mine")
+        val rumble = driver.putCardInHand(player, "Malevolent Rumble")
+        driver.putCardInHand(player, "Eviscerator's Insight")
+        val selected = IndustrialWasteV2PublicActionPolicy.choose(driver.state, player, legal(driver, player))
+            .shouldBeInstanceOf<CastSpell>()
+        selected.cardId shouldBe rumble
+        val records = mutableListOf<IndustrialWasteV2PaymentIntentRecord>()
+        val binder = IndustrialWasteV2PaymentBinder(driver.cardRegistry, records::add)
+        val funding = binder.choose(driver.state, player, legal(driver, player)).shouldBeInstanceOf<ActivateAbility>()
+        funding.sourceId shouldBe altar
+        funding.costPayment!!.sacrificedPermanents shouldBe listOf(material)
+        driver.submit(funding).error shouldBe null
+        resolve(driver)
+        val explicitPrism = legal(driver, player).single { (it.action as? ActivateAbility)?.sourceId == prism }
+        (IndustrialWasteV2PublicActionPolicy.bind(driver.state, player, explicitPrism) as ActivateAbility)
+            .manaColorChoice shouldBe Color.BLACK
+        binder.choose(driver.state, player, legal(driver, player)) shouldBe selected
+        driver.submit(selected).error shouldBe null
+        driver.state.getEntity(prism)!!.has<TappedComponent>() shouldBe true
+        records.map { it.stage } shouldBe listOf("SELECTED_BEFORE_FUNDING", "FUNDING_ACTION", "SUBMIT_SELECTED_ACTION")
+    }
+
+    test("complete repeated Retriever funding keeps the original three-mana spell and both real payments") {
+        val (driver, player) = fixture()
+        val altar = driver.putPermanentOnBattlefield(player, "Ashnod's Altar")
+        val retrievers = List(2) { driver.putPermanentOnBattlefield(player, "Myr Retriever") }
+        val extraAltar = driver.putCardInHand(player, "Ashnod's Altar")
+        val original = IndustrialWasteV2PublicActionPolicy.choose(driver.state, player, legal(driver, player))
+            .shouldBeInstanceOf<CastSpell>()
+        original.cardId shouldBe extraAltar
+        val records = mutableListOf<IndustrialWasteV2PaymentIntentRecord>()
+        val binder = IndustrialWasteV2PaymentBinder(driver.cardRegistry, records::add)
+        val consumed = mutableListOf<EntityId>()
+        repeat(2) {
+            val funding = binder.choose(driver.state, player, legal(driver, player)).shouldBeInstanceOf<ActivateAbility>()
+            funding.sourceId shouldBe altar
+            consumed += funding.costPayment!!.sacrificedPermanents.single()
+            driver.submit(funding).error shouldBe null
+            resolve(driver)
+        }
+        consumed.toSet() shouldBe retrievers.toSet()
+        binder.choose(driver.state, player, legal(driver, player)) shouldBe original
+        driver.submit(original).error shouldBe null
+        records.map { it.stage } shouldBe listOf("SELECTED_BEFORE_FUNDING", "FUNDING_ACTION", "FUNDING_ACTION", "SUBMIT_SELECTED_ACTION")
     }
 
     test("lost selected source invalidates retained intent without selecting a replacement") {
