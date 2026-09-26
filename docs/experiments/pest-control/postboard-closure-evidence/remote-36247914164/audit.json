@@ -1,0 +1,247 @@
+{
+  "schema": "pest-final-full-ci-source-audit-v1",
+  "run_id": 36247914164,
+  "head_sha": "fbbf7207d7f493648dcdb7099b0a88b102e8cd59",
+  "actual_checkout_commit": "d5912c52ae4633e40e964b000bc5d6bfd5a6031f",
+  "exact_tree": "b33ed8bf21607eab32e8b65cb567f39394f4913d",
+  "merged_project_head": "5c2034b1e581fcc9877790f2893f80a38ec11d80",
+  "all_test_jobs_successful": true,
+  "coverage_job": "skipped by existing workflow condition",
+  "jobs": [
+    {
+      "id": 108420427196,
+      "name": "frontend",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 108420427353,
+      "name": "test (scenarios-old)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 108420427402,
+      "name": "test (engine)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 108420427435,
+      "name": "test (scenarios-2025-26)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 108420427450,
+      "name": "test (server)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 108420427481,
+      "name": "test (content)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 108420427544,
+      "name": "test (tools)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 108420427574,
+      "name": "test (scenarios-2023-24)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 108420427949,
+      "name": "coverage",
+      "status": "completed",
+      "conclusion": "skipped"
+    },
+    {
+      "id": 108422653038,
+      "name": "backend",
+      "status": "completed",
+      "conclusion": "success"
+    }
+  ],
+  "junit_artifacts_available": false,
+  "log_evidence": [
+    {
+      "run_id": 36247914164,
+      "job_id": 108420427544,
+      "checkout_commit": "d5912c52ae4633e40e964b000bc5d6bfd5a6031f",
+      "source_tree": "b33ed8bf21607eab32e8b65cb567f39394f4913d",
+      "log_path": "docs/experiments/pest-control/postboard-closure-evidence/remote-36247914164/job-108420427544.log.gz",
+      "decoded_log_sha256": "a8e04bfdf14f00ecf02a385011c6b536668e62591deeb093a25d6ec1a2d7f326",
+      "gzip_sha256": "6634e2e86426f07e259a97a77144fdde8d0cd9e6f6d4bc17ff2fe2d363481bc0",
+      "log_normalization": "Connector-decoded text preserved with a final newline; no test lines removed.",
+      "named_case_log_counts": {
+        "PASSED": 484,
+        "FAILED": 0,
+        "SKIPPED": 34
+      },
+      "selected_cases": [
+        {
+          "class": "PestControlTierOneMonoBlueTerrorReadinessTest",
+          "name": "provenance-locked Mono-Blue Terror identity is exact without constructing a game",
+          "status": "PASSED"
+        },
+        {
+          "class": "PestControlTierOneMonoBlueTerrorReadinessTest",
+          "name": "current registry resolves both frozen lists without changing historical readiness",
+          "status": "PASSED"
+        },
+        {
+          "class": "PestControlTierOneMonoBlueTerrorReadinessTest",
+          "name": "current support advances explicitly while the historical inventory remains exact",
+          "status": "PASSED"
+        },
+        {
+          "class": "PestControlTierOneMonoBlueTerrorReadinessTest",
+          "name": "current support rejects a missing required sideboard identity: Annul",
+          "status": "PASSED"
+        },
+        {
+          "class": "PestControlTierOneMonoBlueTerrorReadinessTest",
+          "name": "current support rejects a missing required sideboard identity: Murmuring Mystic",
+          "status": "PASSED"
+        },
+        {
+          "class": "PestControlTierOneMonoBlueTerrorReadinessTest",
+          "name": "current support rejects a missing required sideboard identity: Gut Shot",
+          "status": "PASSED"
+        },
+        {
+          "class": "PestControlTierOneMonoBlueTerrorReadinessTest",
+          "name": "current support rejects a missing required sideboard identity: Hydroblast",
+          "status": "PASSED"
+        },
+        {
+          "class": "PestControlTierOneMonoBlueTerrorReadinessTest",
+          "name": "current support rejects a missing required sideboard identity: Spreading Seas",
+          "status": "PASSED"
+        },
+        {
+          "class": "PestControlTierOneMonoBlueTerrorReadinessTest",
+          "name": "readiness is fail-closed and cannot activate execution",
+          "status": "PASSED"
+        },
+        {
+          "class": "PestControlTierOneMonoBlueTerrorReadinessTest",
+          "name": "readiness records zero seeds games and outcome exposure",
+          "status": "PASSED"
+        }
+      ],
+      "junit_artifact_available": false
+    },
+    {
+      "run_id": 36247914164,
+      "job_id": 108420427353,
+      "checkout_commit": "d5912c52ae4633e40e964b000bc5d6bfd5a6031f",
+      "source_tree": "b33ed8bf21607eab32e8b65cb567f39394f4913d",
+      "log_path": "docs/experiments/pest-control/postboard-closure-evidence/remote-36247914164/job-108420427353.log.gz",
+      "decoded_log_sha256": "1db34aa37cf3ca9e6115fa91feeb2082c97c5e36f33483ab705b41ede74d1773",
+      "gzip_sha256": "c4a8d30362e19a8fdc48904be5fc7a2946758ec832d5efdd99a016b585faca91",
+      "log_normalization": "Connector-decoded text preserved with a final newline; no test lines removed.",
+      "named_case_log_counts": {
+        "PASSED": 4309,
+        "FAILED": 0,
+        "SKIPPED": 0
+      },
+      "selected_cases": [
+        {
+          "class": "BoulderbranchGolemPrototypeScenarioTest",
+          "name": "legal actions expose normal and Prototype casts with their own costs",
+          "status": "PASSED"
+        },
+        {
+          "class": "BoulderbranchGolemPrototypeScenarioTest",
+          "name": "Prototype cast is green MV4 3/3 and gains 3 life on entry",
+          "status": "PASSED"
+        },
+        {
+          "class": "BoulderbranchGolemPrototypeScenarioTest",
+          "name": "normal cast stays colorless 6/5 and gains 6 life on entry",
+          "status": "PASSED"
+        },
+        {
+          "class": "BoulderbranchGolemPrototypeScenarioTest",
+          "name": "prototype permanent restores printed characteristics after leaving battlefield",
+          "status": "PASSED"
+        },
+        {
+          "class": "BoulderbranchGolemPrototypeScenarioTest",
+          "name": "countered Prototype spell restores printed characteristics in graveyard",
+          "status": "PASSED"
+        },
+        {
+          "class": "BoulderbranchGolemPrototypeScenarioTest",
+          "name": "hand-constructed Prototype on a card without Prototype fails closed",
+          "status": "PASSED"
+        },
+        {
+          "class": "BoulderbranchGolemPrototypeScenarioTest",
+          "name": "return to hand clears Prototype and normal recast restores ordinary card",
+          "status": "PASSED"
+        },
+        {
+          "class": "MaelstromColossusCascadeScenarioTest",
+          "name": "casting Maelstrom Colossus puts its Cascade trigger on the stack",
+          "status": "PASSED"
+        },
+        {
+          "class": "MaelstromColossusCascadeScenarioTest",
+          "name": "Cascade can cast Boulderbranch Golem normally for free",
+          "status": "PASSED"
+        },
+        {
+          "class": "MaelstromColossusCascadeScenarioTest",
+          "name": "Cascade can cast Boulderbranch Golem as Prototype for free",
+          "status": "PASSED"
+        }
+      ],
+      "junit_artifact_available": false
+    },
+    {
+      "run_id": 36247914071,
+      "job_id": 108420426670,
+      "checkout_commit": "d5912c52ae4633e40e964b000bc5d6bfd5a6031f",
+      "source_tree": "b33ed8bf21607eab32e8b65cb567f39394f4913d",
+      "log_path": "docs/experiments/pest-control/postboard-closure-evidence/remote-36247914071/job-108420426670.log.gz",
+      "decoded_log_sha256": "a1ccc9eda35eea351741989b7b700c89025fb2707e8abf1e64e204473d516412",
+      "gzip_sha256": "2bcfdefc624ed58f86c20455cddf3de5f1bf7795f2e0bbe8096c9dd7d58980c9",
+      "log_normalization": "Connector-decoded text preserved with a final newline; no test lines removed.",
+      "named_case_log_counts": {
+        "PASSED": 0,
+        "FAILED": 0,
+        "SKIPPED": 0
+      },
+      "selected_cases": [],
+      "junit_artifact_available": false
+    },
+    {
+      "run_id": 36247914073,
+      "job_id": 108420426612,
+      "checkout_commit": "d5912c52ae4633e40e964b000bc5d6bfd5a6031f",
+      "source_tree": "b33ed8bf21607eab32e8b65cb567f39394f4913d",
+      "log_path": "docs/experiments/pest-control/postboard-closure-evidence/remote-36247914073/job-108420426612.log.gz",
+      "decoded_log_sha256": "c04f2acca07a8e0c603e8548fe5e92b221f20c6a22559257129395da0c6e85e3",
+      "gzip_sha256": "35a2ed2499f875e834115b710583e14fba80511ee1ddce2ed0025bb923373b9c",
+      "log_normalization": "Connector-decoded text preserved with a final newline; no test lines removed.",
+      "named_case_log_counts": {
+        "PASSED": 0,
+        "FAILED": 0,
+        "SKIPPED": 0
+      },
+      "selected_cases": [],
+      "junit_artifact_available": false
+    }
+  ],
+  "interpretation": "Broad integration validation and source equivalence, not gameplay evidence. Existing disabled official runners remain skipped; skips are not new games.",
+  "official_execution_authorized": false
+}
