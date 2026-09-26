@@ -1,0 +1,62 @@
+{
+  "schema": "industrial-v2-runtime-source-audit-v1",
+  "auditor": "/root/industrial",
+  "role": "source-author raw artifact audit; independent artifact review still required",
+  "source": "289f50bc26df651118df865d233885d8fb83ade6",
+  "tree": "a41b41bb6528ee02136f8654ea195554efdfb905",
+  "run_id": 36260531518,
+  "job_id": 108455342664,
+  "artifact_id": 10911704921,
+  "artifact_bytes": 4594943,
+  "artifact_sha256": "92d42a7664519761ac99236a50d71090d4121d15dbe9eefc72ae3d4bf55849d8",
+  "archive_members": 525,
+  "all_archive_crc_valid": true,
+  "source_pins_verified_against_exact_git": 40,
+  "actual_cases": {
+    "engine": {
+      "tests": 148,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "Lava": {
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "AI": {
+      "tests": 134,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 1
+    }
+  },
+  "python_checks": 72,
+  "failed_cases": [
+    {
+      "suite": "com.wingedsheep.ai.industrialwaste.IndustrialWasteV2PaymentIntentTest",
+      "case": "unassembled Tower funds the bound Prism sacrifice through its canonical conditional output",
+      "failure": "org.opentest4j.AssertionFailedError: expected:<ca654965-3de6-4805-b6b4-6103e4c1067a> but was:<4bdc682a-f94f-4c65-b8e0-d8cb5595ea27>"
+    }
+  ],
+  "deliberate_skips": [
+    {
+      "suite": "com.wingedsheep.ai.industrialwaste.IndustrialWasteV2R1OfficialExecutionTest",
+      "case": "execute the frozen R1 corpus only under independently verified durable authority"
+    }
+  ],
+  "compact_excluded_replay": {
+    "member": "build/reports/industrial-waste-v2/runtime-composition/excluded-traces/iw-v2-spell-trace3319934791234100335/allocation/replay.json",
+    "status": "EXACT_ACTION_EVENT_STATE_REPLAY",
+    "actions": 428,
+    "checkpointReplay": "EXACT_EVERY_QUIET_CHECKPOINT_REPLAY",
+    "quietCheckpointObservations": 60
+  },
+  "diagnosis": "The only failing case assumes the first-created unassembled Tower wins the existing lexical action identity tie. Fixture UUID creation order is unrelated to lexical identity; actual frozen policy selected the smaller second Tower. The assertion fails before any funding rejection. The complete original Compact runtime and exact replay pass on these unchanged production bytes.",
+  "combined_runtime_accepted": false,
+  "independent_artifact_acceptance": false,
+  "execution_authorized": false,
+  "official_allocations_initialized": 0,
+  "comparative_outcomes_exposed": 0
+}

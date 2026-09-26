@@ -205,13 +205,14 @@ class IndustrialWasteV2PaymentIntentTest : FunSpec({
         test("${if (assembled) "assembled" else "unassembled"} Tower funds the bound Prism sacrifice through its canonical conditional output") {
             val (driver, player) = fixture()
             val tower = driver.putPermanentOnBattlefield(player, "Urza's Tower")
+            val towers = mutableListOf(tower)
             if (assembled) {
                 val mine = driver.putPermanentOnBattlefield(player, "Urza's Mine")
                 val plant = driver.putPermanentOnBattlefield(player, "Urza's Power Plant")
                 // Both counterparts are present but already tapped in this excluded fixture.
                 driver.replaceState(driver.state.updateEntity(mine) { it.with(TappedComponent) }
                     .updateEntity(plant) { it.with(TappedComponent) })
-            } else driver.putPermanentOnBattlefield(player, "Urza's Tower")
+            } else towers += driver.putPermanentOnBattlefield(player, "Urza's Tower")
             val prism = driver.putPermanentOnBattlefield(player, "Prophetic Prism")
             val insight = driver.putCardInHand(player, "Eviscerator's Insight")
             val original = IndustrialWasteV2PublicActionPolicy.choose(driver.state, player, legal(driver, player))
@@ -221,7 +222,9 @@ class IndustrialWasteV2PaymentIntentTest : FunSpec({
             val records = mutableListOf<IndustrialWasteV2PaymentIntentRecord>()
             val binder = IndustrialWasteV2PaymentBinder(driver.cardRegistry, records::add)
             val first = binder.choose(driver.state, player, legal(driver, player)).shouldBeInstanceOf<ActivateAbility>()
-            first.sourceId shouldBe tower
+            // Equal Tower actions use the frozen identity tie; fixture creation order does not
+            // order the helper's UUIDs. This still requires the exact preferred legal source.
+            first.sourceId shouldBe towers.minBy { it.value }
             driver.submit(first).error shouldBe null
             driver.state.getEntity(player)!!.get<ManaPoolComponent>()!!.colorless shouldBe if (assembled) 3 else 1
             val second = binder.choose(driver.state, player, legal(driver, player)).shouldBeInstanceOf<ActivateAbility>()
