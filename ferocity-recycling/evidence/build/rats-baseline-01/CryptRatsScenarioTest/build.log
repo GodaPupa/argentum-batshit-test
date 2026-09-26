@@ -1,0 +1,136 @@
+scripts/test-class "CryptRatsScenarioTest" --console=plain --stacktrace --max-workers=2 -PkotlinCompileParallelism=1
+test-class: CryptRatsScenarioTest -> :rules-engine
+gradle-locked: 'shlock' not found; running ./gradlew unlocked
+Starting a Gradle Daemon, 1 incompatible and 1 stopped Daemons could not be reused, use --status for details
+Calculating task graph as no cached configuration is available for tasks: :rules-engine:test --tests CryptRatsScenarioTest
+> Task :buildSrc:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :buildSrc:generateExternalPluginSpecBuilders UP-TO-DATE
+> Task :buildSrc:extractPrecompiledScriptPluginPlugins UP-TO-DATE
+> Task :buildSrc:compilePluginsBlocks UP-TO-DATE
+> Task :buildSrc:generatePrecompiledScriptPluginAccessors UP-TO-DATE
+> Task :buildSrc:generateScriptPluginAdapters UP-TO-DATE
+> Task :buildSrc:compileKotlin UP-TO-DATE
+> Task :buildSrc:compileJava NO-SOURCE
+> Task :buildSrc:compileGroovy NO-SOURCE
+> Task :buildSrc:pluginDescriptors UP-TO-DATE
+> Task :buildSrc:processResources UP-TO-DATE
+> Task :buildSrc:classes UP-TO-DATE
+> Task :buildSrc:jar UP-TO-DATE
+> Task :mtg-sdk:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :rules-engine:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :rules-engine:processResources UP-TO-DATE
+> Task :mtg-sets:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :mtg-sets:1993-1999:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :mtg-sets:core:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :mtg-sets:2000-2002:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :mtg-sets:2003-2007:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :mtg-sets:2008-2016:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :mtg-sets:2017-2022:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :mtg-sets:2023:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :mtg-sets:2024:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :mtg-sets:2025:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :mtg-sets:2026:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :rules-engine:processTestFixturesResources NO-SOURCE
+> Task :mtg-sdk:processResources NO-SOURCE
+> Task :mtg-sets:processResources UP-TO-DATE
+> Task :rules-engine:koverFindJar UP-TO-DATE
+> Task :rules-engine:processTestResources UP-TO-DATE
+> Task :mtg-sets:1993-1999:processResources NO-SOURCE
+> Task :mtg-sets:2000-2002:processResources NO-SOURCE
+> Task :mtg-sets:2003-2007:processResources NO-SOURCE
+> Task :mtg-sets:2008-2016:processResources NO-SOURCE
+> Task :mtg-sets:2017-2022:processResources NO-SOURCE
+> Task :mtg-sets:2023:processResources NO-SOURCE
+> Task :mtg-sets:2024:processResources NO-SOURCE
+> Task :mtg-sets:2025:processResources NO-SOURCE
+> Task :mtg-sets:2026:processResources NO-SOURCE
+> Task :mtg-sets:core:processResources UP-TO-DATE
+> Task :mtg-sdk:compileKotlin UP-TO-DATE
+> Task :mtg-sdk:compileJava NO-SOURCE
+> Task :mtg-sdk:classes UP-TO-DATE
+> Task :mtg-sdk:jar UP-TO-DATE
+> Task :mtg-sets:core:compileKotlin UP-TO-DATE
+> Task :mtg-sets:core:compileJava NO-SOURCE
+> Task :mtg-sets:core:classes UP-TO-DATE
+> Task :mtg-sets:core:jar UP-TO-DATE
+> Task :rules-engine:compileKotlin UP-TO-DATE
+> Task :rules-engine:compileJava NO-SOURCE
+> Task :rules-engine:classes UP-TO-DATE
+> Task :rules-engine:jar UP-TO-DATE
+> Task :mtg-sets:1993-1999:compileKotlin UP-TO-DATE
+> Task :mtg-sets:1993-1999:compileJava NO-SOURCE
+> Task :mtg-sets:1993-1999:classes UP-TO-DATE
+> Task :mtg-sets:1993-1999:jar UP-TO-DATE
+> Task :mtg-sets:2000-2002:compileKotlin UP-TO-DATE
+> Task :mtg-sets:2000-2002:compileJava NO-SOURCE
+> Task :mtg-sets:2000-2002:classes UP-TO-DATE
+> Task :mtg-sets:2000-2002:jar UP-TO-DATE
+> Task :mtg-sets:2003-2007:compileKotlin UP-TO-DATE
+> Task :mtg-sets:2003-2007:compileJava NO-SOURCE
+> Task :mtg-sets:2003-2007:classes UP-TO-DATE
+> Task :mtg-sets:2003-2007:jar UP-TO-DATE
+> Task :mtg-sets:2008-2016:compileKotlin UP-TO-DATE
+> Task :mtg-sets:2008-2016:compileJava NO-SOURCE
+> Task :mtg-sets:2008-2016:classes UP-TO-DATE
+> Task :mtg-sets:2008-2016:jar UP-TO-DATE
+> Task :mtg-sets:2017-2022:compileKotlin UP-TO-DATE
+> Task :mtg-sets:2017-2022:compileJava NO-SOURCE
+> Task :mtg-sets:2017-2022:classes UP-TO-DATE
+> Task :mtg-sets:2017-2022:jar UP-TO-DATE
+> Task :mtg-sets:2023:compileKotlin UP-TO-DATE
+> Task :mtg-sets:2023:compileJava NO-SOURCE
+> Task :mtg-sets:2023:classes UP-TO-DATE
+> Task :mtg-sets:2023:jar UP-TO-DATE
+> Task :mtg-sets:2024:compileKotlin UP-TO-DATE
+> Task :mtg-sets:2024:compileJava NO-SOURCE
+> Task :mtg-sets:2024:classes UP-TO-DATE
+> Task :mtg-sets:2024:jar UP-TO-DATE
+> Task :mtg-sets:2025:compileKotlin UP-TO-DATE
+> Task :mtg-sets:2025:compileJava NO-SOURCE
+> Task :mtg-sets:2025:classes UP-TO-DATE
+> Task :mtg-sets:2025:jar UP-TO-DATE
+> Task :mtg-sets:2026:compileKotlin UP-TO-DATE
+> Task :mtg-sets:2026:compileJava NO-SOURCE
+> Task :mtg-sets:2026:classes UP-TO-DATE
+> Task :mtg-sets:2026:jar UP-TO-DATE
+> Task :mtg-sets:compileKotlin UP-TO-DATE
+> Task :mtg-sets:compileJava NO-SOURCE
+> Task :mtg-sets:classes UP-TO-DATE
+> Task :mtg-sets:jar UP-TO-DATE
+> Task :rules-engine:compileTestFixturesKotlin UP-TO-DATE
+> Task :rules-engine:compileTestFixturesJava NO-SOURCE
+> Task :rules-engine:testFixturesClasses UP-TO-DATE
+> Task :rules-engine:testFixturesJar UP-TO-DATE
+> Task :rules-engine:compileTestKotlin UP-TO-DATE
+> Task :rules-engine:compileTestJava NO-SOURCE
+> Task :rules-engine:testClasses UP-TO-DATE
+> Task :rules-engine:test
+
+CryptRatsScenarioTest > X black mana pays for damage to all creatures including fliers and both players PASSED
+
+CryptRatsScenarioTest > generic-looking X rejects nonblack mana without partial payment PASSED
+
+CryptRatsScenarioTest > X zero is legal and zero damage does not apply deathtouch PASSED
+
+CryptRatsScenarioTest > Ferocity deathtouch sweeps large and flying creatures but grants no lifegain PASSED
+
+CryptRatsScenarioTest > Toxin comparator counts actual lifelink damage to own creatures and both players PASSED
+
+CryptRatsScenarioTest > prevention stops deathtouch and indestructible survives nonzero deathtouch damage PASSED
+
+CryptRatsScenarioTest > returned tapped summoning-sick Rats may immediately pay its ability with fresh black mana PASSED
+
+CryptRatsScenarioTest > two queued pulses can kill the returned Rats before a new action PASSED
+Kotlin build report is written to file:///workspace/scratch/7ef98cd0475e/argentum/build/reports/kotlin-build/argentum-engine-build-2026-09-26-15-32-09-0.txt
+
+[Incubating] Problems report is available at: file:///workspace/scratch/7ef98cd0475e/argentum/build/reports/problems/problems-report.html
+
+Deprecated Gradle features were used in this build, making it incompatible with Gradle 10.
+
+You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+
+For more on this, please refer to https://docs.gradle.org/9.6.1/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+
+BUILD SUCCESSFUL in 1m 8s
+44 actionable tasks: 1 executed, 43 up-to-date
+Configuration cache entry stored.

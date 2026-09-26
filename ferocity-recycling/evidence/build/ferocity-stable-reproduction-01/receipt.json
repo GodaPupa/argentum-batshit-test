@@ -1,0 +1,76 @@
+{
+  "schema": "ferocity-recycling-real-engine-qualification-v1",
+  "started_at_utc": "2026-09-26T06:29:11.264493+00:00",
+  "scope": "DETERMINISTIC_BUILD_CARD_AND_FIXED_POLICY_FIXTURES_ONLY",
+  "interactive_development_games": 0,
+  "evaluation_games": 0,
+  "confirmation_games": 0,
+  "randomized_experimental_seeds": 0,
+  "status": "FAIL",
+  "stages": [
+    {
+      "test_class": "FerocityOfTheHuntScenarioTest",
+      "module": "rules-engine",
+      "started_at_utc": "2026-09-26T06:29:15.198644+00:00",
+      "command": [
+        "just",
+        "test-class",
+        "FerocityOfTheHuntScenarioTest",
+        "--console=plain",
+        "--stacktrace",
+        "--max-workers=2",
+        "-PkotlinCompileParallelism=1"
+      ],
+      "source_path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/FerocityOfTheHuntScenarioTest.kt",
+      "source_sha256": "02bc21147686d223836d6a4a311c7778b354af0c96652322673c26d2dba0fcd1",
+      "status": "FAIL",
+      "exit_status": 1,
+      "finished_at_utc": "2026-09-26T06:30:36.040482+00:00",
+      "test_xml": [
+        {
+          "name": "TEST-com.wingedsheep.engine.scenarios.FerocityOfTheHuntScenarioTest.xml",
+          "sha256": "3a2e4dd221cc565af7678922c3a3e4b197691d12869a76293abf7e60e1c5cf07"
+        }
+      ],
+      "totals": {
+        "tests": 24,
+        "failures": 2,
+        "errors": 0,
+        "skipped": 0
+      },
+      "log_sha256": "3c3209e9d9da97152dca2d40afb929eabe86ca273381ec85647da382b6722735"
+    }
+  ],
+  "source_head": "d0c78bb4cca79b7402ba65bd62b5cb621230a054",
+  "source_tree": "5b0c9c5cfe25e1b5f506d0d5b4a28e2c76d079a3",
+  "tracked_compiled_input_changes": [],
+  "untracked_compiled_inputs_sha256": {
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/CryptRatsScenarioTest.kt": "d81230da46083e50abcf5381c1d5af8912fad447160236176d434467030bf3db",
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/FerocityOfTheHuntScenarioTest.kt": "02bc21147686d223836d6a4a311c7778b354af0c96652322673c26d2dba0fcd1"
+  },
+  "source_is_dirty": true,
+  "compiled_inputs_before_sha256": "b84e5eb5303194750daefee4587f2afbc288ca03d9f7ad2e14010e0c45cdbafe",
+  "base_commit": "d0c78bb4cca79b7402ba65bd62b5cb621230a054",
+  "java_version": "openjdk version \"21.0.12.1\" 2026-08-18 LTS\nOpenJDK Runtime Environment Temurin-21.0.12.1+1 (build 21.0.12.1+1-LTS)\nOpenJDK 64-Bit Server VM Temurin-21.0.12.1+1 (build 21.0.12.1+1-LTS, mixed mode, sharing)",
+  "just_version": "just 1.58.0",
+  "build_file_sha256": {
+    "gradle/libs.versions.toml": "c60de8fc02e2c4d3ff92ef418e3b0bbe9fada040a1c7f6c0656b152d89aa7cad",
+    "gradle/wrapper/gradle-wrapper.properties": "c94d41b634a5e0ff8a2f812023697b1337eebac18e9962610356a1793f72896d",
+    "gradle/wrapper/gradle-wrapper.jar": "497c8c2a7e5031f6aa847f88104aa80a93532ec32ee17bdb8d1d2f67a194a9c7",
+    "build.gradle.kts": "986599d2c2ff91066e01a660a0f95e6c982ddef029171350f944be549730e40c",
+    "settings.gradle.kts": "20bb45f9e99f9cd82df3e8aee01f06bbd116915ae99c4acc0b69a47f4a6a789b",
+    "gradle.properties": "da160ada37e0e77101de57807c5c89091c92a6e5c530f970aeb5d26080aac62f",
+    "buildSrc/src/main/kotlin/kotlin-jvm.gradle.kts": "73887c87ed1cb3c9cfaf3a1e1866099ad9b1e9d5d1b883f505e2ed4e452be864",
+    "justfile": "70ed255981a941b260b8eeba4acf90abf32956126ef9672f5cf6e0b5840167e3",
+    "scripts/test-class": "17b9629bc4e1526107e432fa440208ea66588acdf4855ee50685df03223c5c81",
+    "scripts/gradle-locked": "9e39342ad1826c8baf176f6e7b0c38664aad5a4a88cd6a90252dd619e4b829f1"
+  },
+  "runner_sha256": "ff3bf890378a3afe77d0c08b58676f05f0ffc34929738800d64a4f1856639c19",
+  "failure": {
+    "type": "RuntimeError",
+    "message": "FerocityOfTheHuntScenarioTest did not qualify; preserve logs and diagnose before any successor"
+  },
+  "compiled_inputs_after_sha256": "b84e5eb5303194750daefee4587f2afbc288ca03d9f7ad2e14010e0c45cdbafe",
+  "compiled_inputs_unchanged": true,
+  "finished_at_utc": "2026-09-26T06:30:39.470257+00:00"
+}
