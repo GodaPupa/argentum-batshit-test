@@ -276,7 +276,8 @@ object TokenCreationReplacementHelper {
         tokenCount: Int,
         tokenControllerId: EntityId,
         cardRegistry: CardRegistry? = null,
-        staticAbilityHandler: StaticAbilityHandler? = null
+        staticAbilityHandler: StaticAbilityHandler? = null,
+        preparedCount: Boolean = false,
     ): EffectResult? {
         if (tokenCount <= 0) return null
 
@@ -326,12 +327,18 @@ object TokenCreationReplacementHelper {
                         attachedPermanentId = attachedTo.targetId,
                         originalEffect = effect,
                         tokenCount = tokenCount,
-                        effectContext = context
+                        effectContext = context,
+                        tokenControllerId = tokenControllerId,
+                        preparedCount = preparedCount,
                     )
 
                     return EffectResult.from(newState.suspendForDecision(decision, continuation, emptyList()))
                 } else {
                     // Mandatory replacement — create copies directly
+                    if (preparedCount) return createPreparedReplacementCopies(
+                        newState, attachedTo.targetId, controllerId, tokenCount, effect, context,
+                        cardRegistry, staticAbilityHandler,
+                    )
                     return createAttachedPermanentCopies(
                         newState, attachedTo.targetId, controllerId, tokenCount,
                         cardRegistry, staticAbilityHandler
@@ -340,6 +347,52 @@ object TokenCreationReplacementHelper {
             }
         }
         return null
+    }
+
+    /**
+     * Changing token characteristics does not remove the creating event's tapped/attacking state
+     * or its later exile/sacrifice instruction. Reuse the real copy entry path, including its
+     * defender and as-enters choices, at the already-replaced count. No replacement or count is
+     * applied for a second time when the original yes/no answer resumes here.
+     */
+    internal fun createPreparedReplacementCopies(
+        state: GameState,
+        attachedPermanentId: EntityId,
+        controllerId: EntityId,
+        count: Int,
+        original: Effect,
+        context: EffectContext,
+        cardRegistry: CardRegistry?,
+        staticAbilityHandler: StaticAbilityHandler?,
+    ): EffectResult {
+        val target = com.wingedsheep.sdk.scripting.targets.EffectTarget.SpecificEntity(attachedPermanentId)
+        val copy = when (original) {
+            is com.wingedsheep.sdk.scripting.effects.CreateTokenEffect -> {
+                if (original.initialCounters.isNotEmpty()) return EffectResult.error(
+                    state, "Attached-copy replacement of tokens with initial counters is not qualified",
+                )
+                com.wingedsheep.sdk.scripting.effects.CreateTokenCopyOfTargetEffect(
+                    target = target,
+                    tapped = original.tapped, attacking = original.attacking,
+                    exileAtStep = original.exileAtStep, sacrificeAtStep = original.sacrificeAtStep,
+                    stampCreator = original.stampCreator,
+                )
+            }
+            is com.wingedsheep.sdk.scripting.effects.CreateTokenCopyOfTargetEffect ->
+                com.wingedsheep.sdk.scripting.effects.CreateTokenCopyOfTargetEffect(
+                    target = target,
+                    tapped = original.tapped, attacking = original.attacking,
+                    exileAtStep = original.exileAtStep,
+                    exileUnlessSourceIsRingBearer = original.exileUnlessSourceIsRingBearer,
+                    sacrificeAtStep = original.sacrificeAtStep,
+                    sacrificeOnlyOnControllersTurn = original.sacrificeOnlyOnControllersTurn,
+                    stampCreator = original.stampCreator,
+                )
+            else -> return EffectResult.error(state, "Unsupported prepared attached-copy replacement")
+        }
+        return CreateTokenCopyOfTargetExecutor(
+            staticAbilityHandler = staticAbilityHandler, cardRegistry = cardRegistry,
+        ).createPreparedTokens(state, copy, context, controllerId, count, checkReplacements = false)
     }
 
     /**
@@ -369,6 +422,7 @@ object TokenCreationReplacementHelper {
 
         var newState = state
         val events = mutableListOf<com.wingedsheep.engine.core.GameEvent>()
+        val createdTokens = mutableListOf<EntityId>()
 
         // Same structural cap as CreateTokenExecutor: copies are full entities too.
         val cappedCount = com.wingedsheep.engine.core.GameLimits.cappedTokenCount(count, "token copies")
@@ -376,6 +430,7 @@ object TokenCreationReplacementHelper {
         repeat(cappedCount) {
             val (tokenId, stateWithId) = newState.newEntity()
             newState = stateWithId
+            createdTokens.add(tokenId)
             val tokenCard = attachedCard.copy(ownerId = controllerId)
 
             val components = mutableListOf<Component>(
@@ -436,6 +491,8 @@ object TokenCreationReplacementHelper {
             )
         }
 
-        return EffectResult.success(newState, events)
+        return EffectResult(newState, events, updatedCollections = mapOf(
+            com.wingedsheep.sdk.scripting.effects.CREATED_TOKENS to createdTokens.toList(),
+        ))
     }
 }
