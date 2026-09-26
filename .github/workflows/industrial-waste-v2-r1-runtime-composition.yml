@@ -121,7 +121,7 @@ jobs:
           from pathlib import Path
           files = sorted(Path('ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste').glob('IndustrialWasteV2*.kt'))
           files += list(Path('rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/mana').glob('Mana*kt'))
-          files += [Path(p) for p in ['rules-engine/src/main/kotlin/com/wingedsheep/engine/legalactions/utils/FixedSacrificePayment.kt','rules-engine/src/main/kotlin/com/wingedsheep/engine/legalactions/enumerators/CastSpellEnumerator.kt','rules-engine/src/main/kotlin/com/wingedsheep/engine/legalactions/enumerators/CastFromZoneEnumerator.kt','industrial-waste/v2/r1_execute.py','industrial-waste/v2/r1_metric_projection.py','tools/evidence_durability.py','tools/repository_claim.py']]
+          files += [Path(p) for p in ['rules-engine/src/main/kotlin/com/wingedsheep/engine/legalactions/utils/FixedSacrificePayment.kt','rules-engine/src/main/kotlin/com/wingedsheep/engine/legalactions/enumerators/CastSpellEnumerator.kt','rules-engine/src/main/kotlin/com/wingedsheep/engine/legalactions/enumerators/CastFromZoneEnumerator.kt','rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/ability/ActivateAbilityHandler.kt','game-server/src/test/kotlin/com/wingedsheep/gameserver/session/AiUndoDecisionFreshnessTest.kt','industrial-waste/v2/r1_execute.py','industrial-waste/v2/r1_metric_projection.py','tools/evidence_durability.py','tools/repository_claim.py']]
           receipt = {'status':'QUALIFICATION_OUTPUT_REQUIRES_INDEPENDENT_AUDIT',
               'source_commit':subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),
               'shared_capability_source':'2ec67cd048f89a735655f24d7fa90c81e6664785',
@@ -130,7 +130,7 @@ jobs:
               'execution_authorized':False}
           receipt['source_tree'] = subprocess.check_output(['git','rev-parse','HEAD^{tree}'],text=True).strip()
           receipt['source_status'] = subprocess.check_output(['git','status','--porcelain'],text=True)
-          receipt['received_components'] = {'payment_candidate':'cdd710c951450da9ac14a8ad1646c4e1ae937610','payment_accepted_target_base':'801557005300f059a95adc670b944b82a24addae','flashback':'4aa0f3ee65caa857d1017fa4e522c43cf8946b99','quiet_checkpoint_local_source':'561656acb886392c95df36b2d65f1779fcc69776'}
+          receipt['received_components'] = {'payment_candidate':'cdd710c951450da9ac14a8ad1646c4e1ae937610','payment_accepted_target_base':'801557005300f059a95adc670b944b82a24addae','flashback':'4aa0f3ee65caa857d1017fa4e522c43cf8946b99','quiet_checkpoint_local_source':'561656acb886392c95df36b2d65f1779fcc69776','activation_routing_only':'b6aef3afede89f2044f26b0af9d5bdd4efe751c6'}
           receipt['remaining_gates'] = ['independent combined-source and actual artifact review','canonical post-block receiving integration','full CI and required legacy card regressions','all original exact runtime and admission requirements']
           root = Path('build/reports/industrial-waste-v2/runtime-composition')
           receipt['initial_checkout_status'] = (root/'source-status-before.txt').read_text()

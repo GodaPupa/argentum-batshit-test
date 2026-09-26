@@ -148,6 +148,11 @@ class AiUndoDecisionFreshnessTest : ScenarioTestBase() {
 
                 session.executeUndo(human).shouldBeInstanceOf<GameSession.ActionResult.Success>()
                 session.getStateForTesting() shouldBe checkpoint
+                // A real mana-ability resolution consumes one routing ID. Replay that action
+                // after undo so the replacement question deliberately reuses the old ID;
+                // the interaction epoch must reject the stale, otherwise-valid response.
+                session.executeAction(human, ActivateAbility(human, manaSource, manaAbility))
+                    .shouldBeInstanceOf<GameSession.ActionResult.Success>()
                 val closet = game.findPermanents("Conjurer's Closet").first()
                 val naturalize = game.findCardsInHand(1, "Naturalize").single()
                 session.executeAction(human, CastSpell(human, naturalize, listOf(ChosenTarget.Permanent(closet))))

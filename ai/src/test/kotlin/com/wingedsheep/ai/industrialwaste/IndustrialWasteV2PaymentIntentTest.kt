@@ -201,6 +201,42 @@ class IndustrialWasteV2PaymentIntentTest : FunSpec({
         driver.state shouldBe before
     }
 
+    listOf(false, true).forEach { assembled ->
+        test("${if (assembled) "assembled" else "unassembled"} Tower funds the bound Prism sacrifice through its canonical conditional output") {
+            val (driver, player) = fixture()
+            val tower = driver.putPermanentOnBattlefield(player, "Urza's Tower")
+            if (assembled) {
+                val mine = driver.putPermanentOnBattlefield(player, "Urza's Mine")
+                val plant = driver.putPermanentOnBattlefield(player, "Urza's Power Plant")
+                // Both counterparts are present but already tapped in this excluded fixture.
+                driver.replaceState(driver.state.updateEntity(mine) { it.with(TappedComponent) }
+                    .updateEntity(plant) { it.with(TappedComponent) })
+            } else driver.putPermanentOnBattlefield(player, "Urza's Tower")
+            val prism = driver.putPermanentOnBattlefield(player, "Prophetic Prism")
+            val insight = driver.putCardInHand(player, "Eviscerator's Insight")
+            val original = IndustrialWasteV2PublicActionPolicy.choose(driver.state, player, legal(driver, player))
+                .shouldBeInstanceOf<CastSpell>()
+            original.cardId shouldBe insight
+            original.additionalCostPayment!!.sacrificedPermanents shouldBe listOf(prism)
+            val records = mutableListOf<IndustrialWasteV2PaymentIntentRecord>()
+            val binder = IndustrialWasteV2PaymentBinder(driver.cardRegistry, records::add)
+            val first = binder.choose(driver.state, player, legal(driver, player)).shouldBeInstanceOf<ActivateAbility>()
+            first.sourceId shouldBe tower
+            driver.submit(first).error shouldBe null
+            driver.state.getEntity(player)!!.get<ManaPoolComponent>()!!.colorless shouldBe if (assembled) 3 else 1
+            val second = binder.choose(driver.state, player, legal(driver, player)).shouldBeInstanceOf<ActivateAbility>()
+            second.sourceId shouldBe prism
+            second.manaColorChoice shouldBe Color.BLACK
+            driver.submit(second).error shouldBe null
+            driver.state.getEntity(prism)!!.has<TappedComponent>() shouldBe true
+            binder.choose(driver.state, player, legal(driver, player)) shouldBe original
+            driver.submit(original).error shouldBe null
+            driver.state.getGraveyard(player).contains(prism) shouldBe true
+            driver.state.getEntity(player)!!.get<ManaPoolComponent>()!!.colorless shouldBe if (assembled) 1 else 0
+            records.map { it.stage } shouldBe listOf("SELECTED_BEFORE_FUNDING", "FUNDING_ACTION", "FUNDING_ACTION", "SUBMIT_SELECTED_ACTION")
+        }
+    }
+
     test("a policy-ineligible second creature never authorizes partial funding for a three-mana spell") {
         val (driver, player) = fixture()
         driver.putPermanentOnBattlefield(player, "Ashnod's Altar")

@@ -5,6 +5,7 @@ import com.wingedsheep.engine.core.AlternativeCostType
 import com.wingedsheep.engine.core.CastSpell
 import com.wingedsheep.engine.core.GameAction
 import com.wingedsheep.engine.core.PassPriority
+import com.wingedsheep.engine.core.PaymentStrategy
 import com.wingedsheep.engine.legalactions.LegalAction
 import com.wingedsheep.engine.mechanics.mana.IntrinsicManaAbilities
 import com.wingedsheep.engine.mechanics.mana.ManaPool
@@ -24,12 +25,9 @@ import com.wingedsheep.sdk.model.EntityId
 import com.wingedsheep.sdk.scripting.AbilityCost
 import com.wingedsheep.sdk.scripting.ActivatedAbility
 import com.wingedsheep.sdk.scripting.AdditionalCost
+import com.wingedsheep.sdk.scripting.AdditionalCostPayment
 import com.wingedsheep.sdk.scripting.KeywordAbility
 import com.wingedsheep.sdk.scripting.costs.CostAtom
-import com.wingedsheep.sdk.scripting.effects.AddColorlessManaEffect
-import com.wingedsheep.sdk.scripting.effects.AddManaEffect
-import com.wingedsheep.sdk.scripting.effects.AddManaOfChoiceEffect
-import com.wingedsheep.sdk.scripting.values.DynamicAmount
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -117,13 +115,27 @@ internal class IndustrialWasteV2PaymentBinder(
             if (hasTap(fundingAbility.cost) && action is ActivateAbility && action.sourceId == funding.sourceId &&
                 ability(state, action)?.let { hasTap(it.cost) } == true) return@mapNotNull null
             val fundingCost = offered.manaCostString?.let(ManaCost::parse) ?: ManaCost.ZERO
-            val paidPool = pool.pay(fundingCost) ?: return@mapNotNull null
-            val fundedPool = fixedOutput(fundingAbility, funding, paidPool) ?: return@mapNotNull null
+            if (pool.pay(fundingCost) == null) return@mapNotNull null
+            var witness: ManaPaymentFeasibilityResult.Payable? = null
+            if (!policyPayable(state, player, entry, action, legal,
+                    requiredFirstFunding = { proposed ->
+                        // The canonical witness always spells out self-sacrifice, uses FromPool
+                        // and records a fixed colored source's output color. Those execution
+                        // details do not alter the existing offered action or its pilot choices.
+                        proposed == funding.copy(paymentStrategy = PaymentStrategy.FromPool,
+                            manaColorChoice = if (offered.requiresManaColorChoice) funding.manaColorChoice else proposed.manaColorChoice,
+                            costPayment = if (sacrificesSelf(fundingAbility.cost))
+                                AdditionalCostPayment(sacrificedPermanents = listOf(funding.sourceId)) else funding.costPayment)
+                    },
+                    captureWitness = { witness = it })) return@mapNotNull null
+            val fundedPool = requireNotNull(witness).funding.firstOrNull()?.poolAfter
+                ?: error("Explicit funding proof has no first action")
             var augmented = state.updateEntity(player) { entity -> entity.with(fundedPool.component()) }
             if (hasTap(fundingAbility.cost)) augmented = augmented.updateEntity(funding.sourceId) { it.with(TappedComponent) }
             // The complete suffix proof sees each already consumed resource as absent.
             consumed.forEach { augmented = augmented.removeEntity(it) }
-            if (!policyPayable(augmented, player, entry, action, legal)) return@mapNotNull null
+            // The same canonical witness already certifies this first action and its complete
+            // suffix, including public conditional production such as both Tron branches.
             // Funding must help this exact selected cost, including its colored requirement.
             // It never becomes a speculative mana activation or a claim that colorless pays a pip.
             if (!autoPayable(augmented, player, action, cost, consumed) &&
@@ -144,7 +156,9 @@ internal class IndustrialWasteV2PaymentBinder(
      * grammar, a search cap or an invalid policy answer remains a runtime qualification fault.
      */
     private fun policyPayable(state: GameState, player: EntityId, entry: LegalAction,
-        action: GameAction, legal: List<LegalAction>): Boolean {
+        action: GameAction, legal: List<LegalAction>,
+        requiredFirstFunding: ((ActivateAbility) -> Boolean)? = null,
+        captureWitness: ((ManaPaymentFeasibilityResult.Payable) -> Unit)? = null): Boolean {
         val costText = entry.manaCostString ?: return true
         check(!entry.hasXCost) { "Unqualified variable payment shape" }
         val cost = ManaCost.parse(costText)
@@ -178,6 +192,9 @@ internal class IndustrialWasteV2PaymentBinder(
             legal.firstOrNull { (it.action as? ActivateAbility)?.let { a ->
                 a.sourceId == source && a.abilityId == abilityId
             } == true }
+        val initialTapped = state.getBattlefield().filterTo(hashSetOf()) {
+            state.getEntity(it)?.has<TappedComponent>() == true
+        }
         val request = ManaPaymentRequest(cost, excludedManaEntities = excluded,
             finalSacrificeCost = sacrifice,
             boundFinalSacrifices = sacrifice?.let { materials(action) }, costSourceId = source(action),
@@ -191,6 +208,10 @@ internal class IndustrialWasteV2PaymentBinder(
                 }
             },
             allowFundingAction = { options ->
+                // Every supported activation consumes a tap or sacrifice resource. Equal initial
+                // tapped/consumed sets therefore identify only the first step of this proof.
+                val firstAllowed = requiredFirstFunding == null || options.tappedSources != initialTapped ||
+                    options.consumedMaterials.isNotEmpty() || requiredFirstFunding(options.action)
                 // These are canonical proof resource facts, not a second payment simulation.
                 // Once the unchanged automatic planner can pay, its choice of ordinary sources
                 // and colors remains delegated. Only preceding explicit steps use pilot binding.
@@ -200,7 +221,7 @@ internal class IndustrialWasteV2PaymentBinder(
                 }
                 options.consumedMaterials.forEach { resources = resources.removeEntity(it) }
                 val funding = options.action
-                if (autoPayable(resources, player, action, cost)) true else
+                if (!firstAllowed) false else if (autoPayable(resources, player, action, cost)) true else
                 offered(funding.sourceId, funding.abilityId)?.let { candidate ->
                     val chosen = materials(funding)
                     val info = candidate.additionalCostInfo
@@ -212,7 +233,7 @@ internal class IndustrialWasteV2PaymentBinder(
                 } == true
             })
         return when (val result = feasibility.assess(state, player, request)) {
-            is ManaPaymentFeasibilityResult.Payable -> true
+            is ManaPaymentFeasibilityResult.Payable -> { captureWitness?.invoke(result); true }
             is ManaPaymentFeasibilityResult.Impossible -> false
             is ManaPaymentFeasibilityResult.Unsupported -> {
                 val policyOnly = setOf("policy-constrained funding search is not an exhaustive resource negative",
@@ -246,17 +267,6 @@ internal class IndustrialWasteV2PaymentBinder(
         return registry.getCard(card.cardDefinitionId)?.script?.activatedAbilities?.firstOrNull { it.id == action.abilityId }
             ?: state.grantedActivatedAbilities.firstOrNull { it.entityId == action.sourceId && it.ability.id == action.abilityId }?.ability
             ?: IntrinsicManaAbilities.forEntity(state, state.projectedState, action.sourceId).firstOrNull { it.id == action.abilityId }
-    }
-
-    private fun fixedOutput(ability: ActivatedAbility, action: ActivateAbility, pool: ManaPool): ManaPool? = when (val effect = ability.effect) {
-        is AddColorlessManaEffect -> (effect.amount as? DynamicAmount.Fixed)?.amount
-            ?.takeIf { it > 0 && effect.restriction == null }?.let(pool::addColorless)
-        is AddManaEffect -> (effect.amount as? DynamicAmount.Fixed)?.amount
-            ?.takeIf { it > 0 && effect.restriction == null && effect.riders.isEmpty() }?.let { pool.add(effect.color, it) }
-        is AddManaOfChoiceEffect -> (effect.amount as? DynamicAmount.Fixed)?.amount
-            ?.takeIf { it > 0 && effect.restriction == null && effect.riders.isEmpty() && action.manaColorChoice != null }
-            ?.let { pool.add(requireNotNull(action.manaColorChoice), it) }
-        else -> null
     }
 
     private fun ManaPool.component() = ManaPoolComponent(white, blue, black, red, green, colorless)
