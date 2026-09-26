@@ -1,0 +1,75 @@
+{
+  "evidence_class": "failed_remote_qualification_and_receiving_source_audit",
+  "workflow_run": 36244909681,
+  "job": 108412205298,
+  "artifact_id": 10907003075,
+  "artifact_url": "https://github.com/GodaPupa/argentum-batshit-test/actions/runs/36244909681/artifacts/10907003075",
+  "artifact_sha256": "af83c9058052bf2277be74e56c48a2819e0f1f80b95af50f6a3e02b622db35c1",
+  "job_log_sha256": "f3b0b30052978fe192332ce361f4c29c1a802a83d7717ff4afab4761cdd8ff8f",
+  "source": {
+    "runtime-head": "e8a7b04f00879b402848a801f3754f01abfc3840",
+    "runtime-tree": "381bb59d683b682559f673d28ce831c9e9670745",
+    "requested-source-head": "a315d091a2c212f5fe43ae7d0dac7bfffa9dd530",
+    "receiving-base-head": "4a97265559e989df937e8c09f9a42d58a4e9d79d"
+  },
+  "classification": "TEST_COMPILE_DEPENDENCY_DEFECT",
+  "failed_stage": ":mtg-sets:2026:tests:compileTestKotlin",
+  "diagnosis": "Exact saved-GameState continuation fixture uses Json/SerializersModule/KSerializer; module testCompileClasspath lacks kotlinx-serialization-json. Card definitions compiled; zero targeted fixtures ran and generation was skipped.",
+  "successor": "Add existing pinned libs.kotlinxSerialization as testImplementation in the 2026 scenario module; preserve all 21 scenarios and rerun the same focused qualification.",
+  "fixture_count_executed": 0,
+  "generated_snapshots": false,
+  "post_block_priority_audit": {
+    "evidence_class": "source_inspection_not_runtime_qualification",
+    "source_head": "a315d091a2c212f5fe43ae7d0dac7bfffa9dd530",
+    "status": "REACHABLE_REQUIRED_SHARED_REPAIR",
+    "path_sha256": {
+      "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/combat/DeclareBlockersHandler.kt": "6a2ae1405b552e27dd8a1012928e3e240fa1bcde6abf2fe2877eec930e62c974",
+      "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/combat/CombatDefenders.kt": "f88d3f4a1ac6abf3dd27005174d076fe13fb8a85fd3ae61683b5d63617792166",
+      "rules-engine/src/main/kotlin/com/wingedsheep/engine/state/GameState.kt": "027dc178e12668e447eb9cea6f6b8d95305c74683ff135dad41be1b4417b864f",
+      "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/decision/SubmitDecisionHandler.kt": "37f1c4d74677e2b965e64c15f14e660a0ff6998700b905496dbb0548f419d7c8",
+      "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/mana/ManaPaymentWindow.kt": "f7cb7c0c85da1837a68e724f0c8c862282fd977ec1476ec3254e9375edb93c14",
+      "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/combat/BlockPhaseManager.kt": "643a2403fccddf46b99c44af684dfb97b6ef617fc57021034fc539cc2a2a70e0",
+      "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/ActionProcessor.kt": "971246aa1958d74bc8ed3a37ba2016fbd869f4293052d4b515991fafca948822"
+    },
+    "trace": [
+      "BlockPhaseManager.commitBlockDeclaration stamps blockers and emits events without changing priority.",
+      "DeclareBlockersHandler.handToNextUndeclaredDefender returns state unchanged after the final defender; the triggerless path calls it directly.",
+      "ActionProcessor applies revealed-hand bookkeeping and undo metadata after the handler, with no priority finalizer."
+    ],
+    "cross_project_compatibility": "DeclareBlockersHandler, CombatDefenders and GameState match Ferocity archived failing baseline bytes; SubmitDecisionHandler and ManaPaymentWindow differ, so no runtime evidence or unaccepted external patch is inherited.",
+    "relevance": "Both candidate and opponent can enter ordinary blocked or empty-block combat with instants available. This is a reachable game-state rule obligation irrespective of tactical policy.",
+    "next_action": "Coordinator owns canonical shared repair and receiving-source integration; this project does not fork the repair."
+  },
+  "official_seeds_generated": 0,
+  "official_games_initialized": 0,
+  "official_outcomes_exposed": 0,
+  "successor_source_review": {
+    "evidence_class": "independent_assistant_peer_source_review_not_protocol_acceptance",
+    "reviewer": "lab coordinator peer /root/ferocity; read-only, no edits or builds",
+    "disposition": "ACCEPT_FOR_SAME_QUALIFICATION_RERUN",
+    "findings": [
+      "Existing pinned serialization-json 1.11.0 testImplementation supplies Json and transitive KSerializer/SerializersModule; existing GameState serializer calls require no new compiler plugin.",
+      "Workflow includes the changed module build path.",
+      "Saved job log and artifact hashes match; archive has source identity and compile-failure log only, with no XML or generated snapshots.",
+      "Three baseline-matching engine files and two differing continuation/mana files are distinguished; source inspection is not runtime qualification."
+    ],
+    "reviewed_file_sha256": {
+      "mtg-sets/2026/tests/build.gradle.kts": "24999032d12da028f5fd77694c50c5b417e5604b4ad5b54313044090b0e351df",
+      ".github/workflows/sphinx-stage-e-exact.yml": "31a4243242e415354141afd9ee0cc6ca6b8185d2db4c011b65d3bf233f77e90d"
+    },
+    "limitations": [
+      "No runtime/card/engine acceptance or gameplay admission is implied."
+    ]
+  },
+  "job_log_storage": "remote-36244909681-job.log.gz (gzip decompresses to exact archived log bytes)",
+  "job_log_gzip_sha256": "9d9165a6f89aa896cba3f8dc0e2b98b18ff10ee953a2709f621a7e24b69e70bc",
+  "related_broad_ci_failures": {
+    "run": 36244909644,
+    "scenarios_2025_26_job": 108412205499,
+    "scenarios_2025_26_diagnosis": "Same missing serialization test compile dependency.",
+    "content_job": 108412205446,
+    "content_diagnosis": "CardDefinitionSnapshotTest reports exactly ULG, WWK and FRA golden mismatches. Source snapshots have not yet been ordinarily generated and reviewed. This is not permission to accept unseen deltas.",
+    "content_mtg_sets_cases": 378,
+    "content_mtg_sets_failed": 3
+  }
+}

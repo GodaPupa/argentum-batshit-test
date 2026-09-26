@@ -37,6 +37,7 @@ class SacrificeAndPayContinuationResumer(
     override fun resumers(): List<ContinuationResumer<*>> = listOf(
         resumer(SacrificeContinuation::class, ::resumeSacrifice),
         resumer(ExileMultiZoneContinuation::class, ::resumeExileMultiZone),
+        resumer(MoveSourceAndExactCardsContinuation::class, ::resumeMoveSourceAndExactCards),
         resumer(PayOrSufferContinuation::class, ::resumePayOrSuffer),
         resumer(PayOrSufferManaSelectionContinuation::class, ::resumePayOrSufferManaSelection),
         resumer(PayOrSufferChoiceContinuation::class, ::resumePayOrSufferChoice),
@@ -138,6 +139,31 @@ class SacrificeAndPayContinuationResumer(
         })
     }
 
+    fun resumeMoveSourceAndExactCards(
+        state: GameState,
+        continuation: MoveSourceAndExactCardsContinuation,
+        response: DecisionResponse,
+        checkForMore: CheckForMore
+    ): ExecutionResult {
+        if (response !is CardsSelectedResponse) return ExecutionResult.error(state, "Expected card selection response for atomic zone move")
+        val selected = response.selectedCards
+        val effect = continuation.effect
+        if (selected.size != effect.additionalCount || selected.toSet().size != selected.size) return checkForMore(state, emptyList())
+        if (!com.wingedsheep.engine.handlers.effects.zones.MoveSourceAndExactCardsExecutor.isInRequiredZone(
+                state, continuation.sourceId, continuation.playerId, effect.sourceRequiredZone)) return checkForMore(state, emptyList())
+        val valid = com.wingedsheep.engine.handlers.effects.zones.MoveSourceAndExactCardsExecutor.matchingCandidates(
+            state, continuation.playerId, effect).toSet()
+        if (!selected.all { it in valid }) return checkForMore(state, emptyList())
+        val result = com.wingedsheep.engine.handlers.effects.zones.MoveSourceAndExactCardsExecutor.commit(
+            state, continuation.sourceId, selected, effect)
+        val stateWithCollections = exposeCollectionsToNextFrame(
+            result.state,
+            result.updatedCollections,
+            result.updatedStoredNumbers,
+            result.updatedChosenValues,
+        )
+        return checkForMore(stateWithCollections, result.events.toList())
+    }
     fun resumeExileMultiZone(
         state: GameState,
         continuation: ExileMultiZoneContinuation,

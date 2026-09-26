@@ -258,6 +258,7 @@ val engineSerializersModule = SerializersModule {
         subclass(SacrificeContinuation::class)
         subclass(ChooseOnePerCategoryContinuation::class)
         subclass(ExileMultiZoneContinuation::class)
+        subclass(MoveSourceAndExactCardsContinuation::class)
         subclass(PayOrSufferContinuation::class)
         subclass(PayOrSufferChoiceContinuation::class)
         subclass(AnyPlayerMayPayContinuation::class)

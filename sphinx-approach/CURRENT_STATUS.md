@@ -1,0 +1,116 @@
+# Sphinx's Approach — Current status
+
+Status: STAGE_E_INPUTS_ACCEPTED_PILOT_COMPONENT_56_PASSED_RECEIVING_INTEGRATION_PENDING
+Accepted Stage-E lineage: `sphinx-approach/reconstruction-stage-e` at `000f23f1bcc2b5a1b7b79f1ccc1c86c5b612e529` (normal PR #183 merge).
+Pilot component branch: `lab/sphinx-pilot-components` at `b1663751f553759f5a51fc25a7e2876328525cd7`.
+
+Reconstructed remote source: `4a97265559e989df937e8c09f9a42d58a4e9d79d`.
+Qualification changes are published on the separate `lab/sphinx-next-gate` branch;
+the qualified source with reviewed goldens is `dc5e3c7d884766aeb3195fbe6aa43f97fa9a1654` (PR #180),
+tested as combined runtime `e4594b8e1b06a3e3031d223e627a72d79940d13d`, tree
+`dd94dcb00b20b16dff98c8aec1d94e479adc8dfb`. All five triggered validation workflows passed.
+PR #180 was accepted at merge `a9201dadc01b6948084d78f477895bb3e723fe76`; PR #183 accepted the unchanged four prospective row identities at `000f23f1bcc2b5a1b7b79f1ccc1c86c5b612e529`. Its full CI `36248509584` and exact426-case gate `36248509594` passed. No card row has changed.
+This record reports progress; it does not supersede frozen protocols or grant gameplay admission.
+
+## Durable state
+
+The reconstruction lineage is public. The original unpublished A-D Git/evidence bytes remain unrecovered;
+see `RECONSTRUCTION_PROVENANCE.md`.
+
+Historical selections carried forward without rerunning A-D:
+- reconstructed v0.1 identity frozen prospectively;
+- reconstructed Approach/Tolarian Terror hybrid identity frozen prospectively.
+
+The unchanged closest no-Approach comparator and Serpico Terror benchmark rows are also bound as
+prospective inputs. Competence and executable pilot qualification remain separate requirements.
+
+## Live repository leverage
+
+A complete Mono-Blue Terror preboard 60 and production gameplay infrastructure already exist under the
+Pest Control Tier-1 program. Stage E will reuse validated engine/pilot infrastructure patterns while
+keeping Sphinx seeds, assignments, outcomes, and evidence in a new namespace.
+
+## Counters
+
+- New Stage-E official seeds generated: 0
+- New Stage-E official seeds consumed: 0
+- New Stage-E interactive games initialized: 0
+- New Stage-E outcomes exposed: 0
+- Confirmation games: 0
+- Postboard games: 0
+- Randomized pilot-development games: 0
+- Deterministic policy-component bank executions: 1; 56 actual checks passed (14 per identity), zero failed attempts
+
+## Exact next-game blockers
+
+1. Qualify candidate, closest no-Approach comparator and benchmark pilots on actor-authorized observations,
+   including all reachable card decisions and interactions. The old full-state Terror production driver
+   is not an admitted Sphinx pilot. The published Ferocity actor component requires source-LKI and typed
+   trigger-order dependencies absent here; its isolated deterministic passes are not receiving acceptance.
+2. Integrate and qualify the canonical post-block-declaration priority repair. Source inspection confirms
+   this receiving source retains defender priority after the final triggerless block declaration;
+   that window is reachable in these decks and cannot be excluded through pilot behavior.
+3. Qualify candidate/comparator competence and benchmark execution under equivalent bounded pilot
+   development. Input row hashes alone do not establish either competence or card causality.
+4. Freeze the complete execution contract: opponents/allocations, equivalent pilot-development budgets,
+   exact engine and pilot versions, matched randomness, sample size, endpoints and stopping rules;
+   obtain noncircular admission before creating Stage-E seeds. Repository review protections remain binding.
+
+The two reconstructed 60s, closest no-Approach comparator and source-backed Serpico Terror 60 now have
+immutable prospective row identities in `STAGE_E_DECK_RECONSTRUCTION.json`. The reconstruction protocol
+binds candidate rows at gate 3 before pilot qualification at gate 4. All four prior row hashes remain
+unchanged. These input identities do not establish qualified pilots or replace the lost A-D bytes.
+
+## Current validation checkpoint
+
+- Remote parent CI `36242920611` failed. Inspected engine and content logs both stop at unsupported
+  `MetadataBuilder.scryfallId` and `MetadataBuilder.releaseDate` assignments in SphinxsApproach.kt.
+  The qualification patch removes those two assignments and retains printing provenance in the manifest.
+- The existing atomic effect's `storeMovedAs` field lacked the linter's required collection-writer
+  registration; the patch adds that registration and a distinguishing linter regression.
+- Focused remote run `36245696000` passed on exact combined tree
+  `948bc9b22128665c6f0ebd045b010f7db028716f`: **14 Approach, 4 Snap and 3 Goliath scenarios passed**,
+  plus 10 generic atomic, 8 serialization-registration, 44 SDK linter, 340 snapshot and 3 corpus-lint
+  cases. The archived eight XML files contain 426 passes and zero failures, errors or skips.
+- Ordinary generation added only Approach to FRA, Snap to ULG and Goliath to WWK. Independent peer
+  review verified every previous ULG/WWK record unchanged and the exact three serialized definitions.
+  Artifact `10908205255`, generated bytes and the review receipt are preserved under
+  `evidence/remote-36245696000*`. The generated bytes are bound by this successor; final receiving CI follows.
+- Pre-generation broad CI `36245695999` passed engine, all scenario shards, server and frontend; content
+  failed exactly the three uncommitted golden matches. The actual failure log is preserved. Its tools
+  job was still running when the receipt was prepared. This run is not a full integration pass.
+- Final-source full CI `36247008494` passed engine, content, every scenario shard, tools, server,
+  frontend and backend aggregation. The final focused run `36247008549` independently executed the
+  same 426-case bank successfully and ordinary regeneration reproduced all three committed snapshots
+  with **zero changed records**. Inherited Monster closure `36247008538`, Spy B `36247008516` and
+  Spy C `36247008627` also passed. Artifact `10908116509` and source-bound audit are preserved under
+  `evidence/remote-36247008549*`; the earlier failed artifacts remain intact.
+- Focused remote run `36244909681` tested combined runtime `e8a7b04f00879b402848a801f3754f01abfc3840`
+  (tree `381bb59d683b682559f673d28ce831c9e9670745`) and failed before fixtures: the 2026 scenario
+  module lacks the serialization library on its test compile classpath. The successor adds the existing
+  pinned `libs.kotlinxSerialization` dependency; the saved-state fixture remains intact. Failure artifact
+  `10907003075`, exact log and source bindings are preserved under `evidence/remote-36244909681*`.
+  Broad CI `36244909644` also failed its 2025-26 scenario shard with the same dependency diagnostics.
+- The local combined attempt exited before compilation because the filesystem ran out of inodes.
+  Its failure log and the parent CI engine log are preserved under `evidence/`.
+- `.github/workflows/sphinx-stage-e-exact.yml` runs the focused bank, ordinary snapshot generation,
+  unrelated-drift rejection and generated-byte verification on GitHub. It creates no gameplay allocation.
+
+No new deck-performance evidence, official seed, initialized game, or outcome has been produced.
+
+## Next pilot component
+
+`STAGE_E_PILOT_FIXTURE_BUDGET.json` prospectively fixes 14 deterministic checks for each of the four
+existing identities (56 total), paired across the seven protocol pilot requirements. A source correction
+must rerun the same complete bank for every identity and preserve prior failures. This bank allocates
+no randomized development game and cannot rank decks or establish comparator improvement.
+
+The project-only `SphinxStageEPilotComponent` accepts explicit typed own/public facts and current offers;
+it has no engine-state adapter, initializer, seed access or architecture input. Its fixture bank and
+push-only qualification workflow executed the first complete bank at run `36250097974` on
+`b1663751f553759f5a51fc25a7e2876328525cd7`, tree `0bcc895d937f7e764bee367e65c238f00772d9fd`.
+The raw artifact contains **56 actual passing cases**, with all 14 frozen IDs for each identity and no
+failures, errors or skips. Exact logs, XML and bindings are preserved in
+`evidence/pilot-component-36250097974`. Independent peer audit accepted this component evidence after checking exact GitHub/archive/source/XML
+bytes. Normal receiving integration remains pending. This work does not accept a complete pilot. Canonical actor integration, all reachable choice surfaces, emergency
+combat/deployment lines, replay, the shared priority repair and final execution admission remain required.

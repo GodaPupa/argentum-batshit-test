@@ -1,0 +1,157 @@
+{
+  "evidence_class": "final_receiving_source_card_component_qualification",
+  "status": "ALL_FIVE_TRIGGERED_VALIDATION_WORKFLOWS_PASSED_NO_GAMEPLAY_ADMISSION",
+  "source": {
+    "requested-source-head": "dc5e3c7d884766aeb3195fbe6aa43f97fa9a1654",
+    "runtime-head": "e4594b8e1b06a3e3031d223e627a72d79940d13d",
+    "receiving-base-head": "4a97265559e989df937e8c09f9a42d58a4e9d79d"
+  },
+  "source_tree": "dd94dcb00b20b16dff98c8aec1d94e479adc8dfb",
+  "workflow_run": 36247008549,
+  "job": 108417960336,
+  "artifact_id": 10908116509,
+  "artifact_sha256": "1a2fce52faf6c84e9c13e40d1dbb70dec21cd21560f6f8c9cb087772fcbe3851",
+  "artifact_size_bytes": 46255,
+  "artifact_url": "https://github.com/GodaPupa/argentum-batshit-test/actions/runs/36247008549/artifacts/10908116509",
+  "junit": [
+    {
+      "path": "mtg-sets/2026/tests/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.SphinxsApproachScenarioTest.xml",
+      "sha256": "76d30771b3bcbaad6aaca823714800fdb399c71dafe5572525e3d3db58b886ae",
+      "tests": 14,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "mtg-sets/1993-1999/tests/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.SnapScenarioTest.xml",
+      "sha256": "8fd97241a5e3c0f62bd2404ca0b2164e0a0986c372ff38d643043a920d4a4e67",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "mtg-sets/2008-2016/tests/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.GoliathSphinxScenarioTest.xml",
+      "sha256": "5d78670305f76a0187e4cadc16aaecc397349d87a09a13725f6504783598d671",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "mtg-sdk/build/test-results/test/TEST-com.wingedsheep.sdk.serialization.CardLinterTest.xml",
+      "sha256": "e041a9ca1a8821f8507bbe740790f882091a30ffd93cf67218b0efec0b4bd862",
+      "tests": 44,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.handlers.effects.zones.MoveSourceAndExactCardsExecutorTest.xml",
+      "sha256": "6da461581a40091c65538cc5839e77f80a46d869b39a5fc91682c31dd7c3aa58",
+      "tests": 10,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.hygiene.SerializationPolymorphicRegistrationTest.xml",
+      "sha256": "252151afd16877ddfecebd066ed8442c101172a454d0cb646ded28d060f834f3",
+      "tests": 8,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "mtg-sets/build/test-results/test/TEST-com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest.xml",
+      "sha256": "07596ff7f345ac10470245dee8a5fd80846af0643429bdfd7766cdc6c168cb34",
+      "tests": 340,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "mtg-sets/build/test-results/test/TEST-com.wingedsheep.mtg.sets.CardLintTest.xml",
+      "sha256": "98cf43f5adfc94501f625eb727befd1bb66bdd4ead1813b1f716cd91b85a0b3a",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  ],
+  "total_actual_cases": 426,
+  "generated_snapshots": [
+    {
+      "path": "mtg-sets/src/test/resources/snapshots/cards/FRA.json",
+      "sha256": "0a6ce5111531e20524656906125babb0513419a144c8f1975f370409fd37e130",
+      "changed_cards": []
+    },
+    {
+      "path": "mtg-sets/src/test/resources/snapshots/cards/ULG.json",
+      "sha256": "ac19bf8158788e574d282ae9a021c1b090c67c382286b574d3cce98a1b157cdd",
+      "changed_cards": []
+    },
+    {
+      "path": "mtg-sets/src/test/resources/snapshots/cards/WWK.json",
+      "sha256": "6d81f3c40b5e9a61715cd0b62900c02b8b512187d7bca271726268a1cb9ef69f",
+      "changed_cards": []
+    }
+  ],
+  "generation_disposition": "Ordinary regeneration has zero changed records and exactly reproduces the three committed bytes independently reviewed in remote-36245696000-receipt.json.",
+  "independent_review_predecessor": {
+    "path": "remote-36245696000-receipt.json",
+    "sha256": "171f6641939451cc5f3294d48ef862c860535998ef09ce6053893f15d90d59d2",
+    "scope": "Exact card and engine source unchanged after independent component/source and generated-byte review; this final source adds the reviewed snapshots and evidence only."
+  },
+  "workflow_results": {
+    "CI": {
+      "run": 36247008494,
+      "conclusion": "success",
+      "combined_runtime_from_inspected_job_logs": "e4594b8e1b06a3e3031d223e627a72d79940d13d"
+    },
+    "Sphinx Stage E Exact Card Qualification": {
+      "run": 36247008549,
+      "conclusion": "success"
+    },
+    "Pest Control Tier-1 Monster Tron Support Closure": {
+      "run": 36247008538,
+      "conclusion": "success"
+    },
+    "Pest Control Tier-1 Spy Support Batch B": {
+      "run": 36247008516,
+      "conclusion": "success"
+    },
+    "Pest Control Tier-1 Spy Support Batch C": {
+      "run": 36247008627,
+      "conclusion": "success"
+    }
+  },
+  "no_gameplay_evidence_transferred_from_other_programs": true,
+  "official_seeds_generated": 0,
+  "official_games_initialized": 0,
+  "official_outcomes_exposed": 0,
+  "deck_changes": [],
+  "next_independent_gate": "Prospectively bind the four unchanged already introduced deck-row identities; pilot/actor/priority/execution admission remain separate.",
+  "independent_final_source_and_input_review": {
+    "reviewer": "lab coordinator peer /root/pest; independent read-only source/protocol/artifact review",
+    "disposition": "ACCEPT_NARROW_PROSPECTIVE_INPUT_IDENTITY_FREEZE_AND_FINAL_CARD_COMPONENT_EVIDENCE",
+    "reviewed_receipt_before_this_review_record_sha256": "3435ce4a71d91cb92ffc22a24f5d6d745e4ddb5b9baaf36e54ff97b1473d9dfc",
+    "reviewed_file_sha256": {
+      "sphinx-approach/STAGE_E_DECK_RECONSTRUCTION.json": "209696bb9a8d5a9ae003e282a890fc4b198c1225d07a2c4b63addcdca5b7667b",
+      "sphinx-approach/CURRENT_STATUS.md": "849fc7ca6c0c9c76a6d0e2c5deb51053bfe34e01bb0cfe69f24de95d5d1601dd",
+      "sphinx-approach/STAGE_E_CARD_SUPPORT_AUDIT.md": "4c344f5527a38068a8d23b36d9e29bb2f3727c8d05aab1886b5e412ff1bcd01b"
+    },
+    "findings": [
+      "All four prior deck objects, exact CSV bytes and row hashes are unchanged; each deck contains 60 cards and no architecture was added.",
+      "Controlling protocol binds candidate row identity at gate 3 before pilot qualification at gate 4; protocol/provenance files and hashes are unchanged.",
+      "Lost A-D bytes limitation remains explicit and all pilot/comparator/benchmark/actor/post-block/execution guards remain false.",
+      "Independently fetched final artifact digest, checked preserved ZIP and all eight XML hashes: 426 actual cases with zero failures, errors or skips.",
+      "Requested/receiving/runtime/tree identity agrees; all three regenerated files match independently reviewed committed snapshots byte for byte, with zero changed records.",
+      "Current full CI and three inherited workflow runs are successful; official counters remain zero."
+    ],
+    "limitations": [
+      "Input identity and card/source evidence only.",
+      "No pilot competence, exact actor/replay/legality admission or Stage-E gameplay acceptance."
+    ]
+  }
+}
