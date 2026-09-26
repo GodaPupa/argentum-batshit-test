@@ -1,5 +1,9 @@
 package com.wingedsheep.engine.scenarios
 
+import com.wingedsheep.engine.core.AlternativeCostType
+import com.wingedsheep.engine.core.CastSpell
+import com.wingedsheep.engine.state.components.battlefield.TappedComponent
+import com.wingedsheep.engine.state.components.stack.SpellOnStackComponent
 import com.wingedsheep.engine.support.ScenarioTestBase
 import com.wingedsheep.sdk.core.Phase
 import com.wingedsheep.sdk.core.Step
@@ -38,8 +42,19 @@ class IncreasingDevotionScenarioTest : ScenarioTestBase() {
                 .inPhase(Phase.PRECOMBAT_MAIN, Step.PRECOMBAT_MAIN)
                 .build()
 
-            val cast = game.castSpellFromGraveyard(1, "Increasing Devotion")
+            val spell = game.findCardsInGraveyard(1, "Increasing Devotion").single()
+            val cast = game.execute(CastSpell(
+                playerId = game.player1Id,
+                cardId = spell,
+                useAlternativeCost = true,
+                alternativeCostType = AlternativeCostType.FLASHBACK
+            ))
             withClue("flashback {7}{W}{W} off nine Plains: ${cast.error}") { cast.error shouldBe null }
+            game.state.getEntity(spell)!!.get<SpellOnStackComponent>()!!.alternativeCost shouldBe
+                AlternativeCostType.FLASHBACK
+            game.findAllPermanents("Plains").count {
+                game.state.getEntity(it)!!.has<TappedComponent>()
+            } shouldBe 9
             game.resolveStack()
 
             withClue("Conditions.WasCastFromGraveyard flips the count to ten") {

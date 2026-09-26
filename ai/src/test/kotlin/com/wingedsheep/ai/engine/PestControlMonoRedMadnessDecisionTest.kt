@@ -7,6 +7,9 @@ import com.wingedsheep.engine.core.CastSpell
 import com.wingedsheep.engine.core.CardsDiscardedEvent
 import com.wingedsheep.engine.core.CardsDrawnEvent
 import com.wingedsheep.engine.core.ChooseOptionDecision
+import com.wingedsheep.engine.core.ChooseActionContinuation
+import com.wingedsheep.engine.core.DecisionPhase
+import com.wingedsheep.engine.core.Suspension
 import com.wingedsheep.engine.core.DeclareAttackers
 import com.wingedsheep.engine.core.DeclareBlockers
 import com.wingedsheep.engine.core.DecisionSubmittedEvent
@@ -32,6 +35,7 @@ import com.wingedsheep.sdk.core.Phase
 import com.wingedsheep.sdk.core.Step
 import com.wingedsheep.sdk.model.EntityId
 import com.wingedsheep.sdk.scripting.AdditionalCostPayment
+import com.wingedsheep.sdk.scripting.effects.CompositeEffect
 import io.kotest.assertions.withClue
 import io.kotest.matchers.booleans.shouldBeFalse
 import io.kotest.matchers.booleans.shouldBeTrue
@@ -96,14 +100,23 @@ class PestControlMonoRedMadnessDecisionTest : ScenarioTestBase() {
             game.resolveStack()
 
             val decision = game.state.pendingDecision.shouldBeInstanceOf<ChooseOptionDecision>()
+            decision.context.phase shouldBe DecisionPhase.RESOLUTION
+            decision.context.sourceName shouldBe "Highway Robbery"
+            val suspension = game.state.peekContinuation().shouldBeInstanceOf<Suspension>()
+            suspension.question shouldBe decision
+            val continuation = suspension.answer.shouldBeInstanceOf<ChooseActionContinuation>()
+            continuation.sourceName shouldBe "Highway Robbery"
+            continuation.choices.map { it.label } shouldBe decision.options
             val response = ai(game).respondToDecision(game.state, decision)
                 .shouldBeInstanceOf<OptionChosenResponse>()
 
             withClue(
                 "discarding Lightning Bolt or sacrificing a Mountain draws zero cards and has " +
-                    "no payoff, so Highway Robbery must select the legal Done branch",
+                    "no payoff, so Highway Robbery must select the legal decline branch",
             ) {
-                decision.options[response.optionIndex] shouldBe "Done"
+                decision.options[response.optionIndex] shouldBe "Decline"
+                continuation.choices[response.optionIndex].effect
+                    .shouldBeInstanceOf<CompositeEffect>().effects.isEmpty() shouldBe true
             }
             game.execute(
                 com.wingedsheep.engine.core.SubmitDecision(game.player1Id, response),
@@ -113,6 +126,8 @@ class PestControlMonoRedMadnessDecisionTest : ScenarioTestBase() {
                 game.findCardsInHand(1, "Lightning Bolt").size shouldBe 1
                 game.findPermanents("Mountain").size shouldBe 3
                 game.state.getLibrary(game.player1Id).size shouldBe 0
+                game.state.pendingDecision.shouldBeNull()
+                game.state.stack.isEmpty() shouldBe true
             }
         }
 

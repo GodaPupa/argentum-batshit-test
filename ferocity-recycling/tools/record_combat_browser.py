@@ -12,7 +12,7 @@ import sys
 
 ROOT = Path(__file__).resolve().parents[2]
 OUT = ROOT / 'ferocity-recycling/evidence/browser/combat'
-BANK = ROOT / 'ferocity-recycling/runtime-audits/combat-browser/PRE_EXECUTION_PLAN_07.json'
+BANK = ROOT / 'ferocity-recycling/runtime-audits/combat-browser/PRE_EXECUTION_PLAN_08.json'
 MODULES = ('mtg-sdk/', 'mtg-sets/', 'rules-engine/', 'game-server/', 'ai/', 'mtg-search/',
            'oracle-assay/', 'mtgish-tooling/', 'web-client/', 'e2e-scenarios/', 'buildSrc/', 'gradle/', 'scripts/')
 
@@ -44,6 +44,7 @@ def snapshot():
                  'ferocity-recycling/runtime-audits/combat-browser/PRE_EXECUTION_PLAN_05.json',
                  'ferocity-recycling/runtime-audits/combat-browser/PRE_EXECUTION_PLAN_06.json',
                  'ferocity-recycling/runtime-audits/combat-browser/PRE_EXECUTION_PLAN_07.json',
+                 'ferocity-recycling/runtime-audits/combat-browser/PRE_EXECUTION_PLAN_08.json',
                  '.github/workflows/ferocity-recycling-combat-browser.yml'))]
     return {'head': command(['git', 'rev-parse', 'HEAD']),
             'tracked_status': command(['git', 'status', '--porcelain', '--untracked-files=no']),

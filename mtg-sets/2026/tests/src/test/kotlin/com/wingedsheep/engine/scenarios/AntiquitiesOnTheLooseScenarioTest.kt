@@ -1,11 +1,15 @@
 package com.wingedsheep.engine.scenarios
 
+import com.wingedsheep.engine.core.AlternativeCostType
+import com.wingedsheep.engine.core.CastSpell
 import com.wingedsheep.engine.state.components.battlefield.CountersComponent
+import com.wingedsheep.engine.state.components.battlefield.TappedComponent
+import com.wingedsheep.engine.state.components.stack.SpellOnStackComponent
 import com.wingedsheep.engine.support.ScenarioTestBase
 import com.wingedsheep.sdk.core.CounterType
-import com.wingedsheep.sdk.model.EntityId
 import com.wingedsheep.sdk.core.Phase
 import com.wingedsheep.sdk.core.Step
+import com.wingedsheep.sdk.model.EntityId
 import io.kotest.assertions.withClue
 import io.kotest.matchers.shouldBe
 
@@ -57,7 +61,19 @@ class AntiquitiesOnTheLooseScenarioTest : ScenarioTestBase() {
                     .inPhase(Phase.PRECOMBAT_MAIN, Step.PRECOMBAT_MAIN)
                     .build()
 
-                game.castSpellFromGraveyard(1, "Antiquities on the Loose").error shouldBe null
+                val spell = game.findCardsInGraveyard(1, "Antiquities on the Loose").single()
+                val cast = game.execute(CastSpell(
+                    playerId = game.player1Id,
+                    cardId = spell,
+                    useAlternativeCost = true,
+                    alternativeCostType = AlternativeCostType.FLASHBACK
+                ))
+                cast.error shouldBe null
+                game.state.getEntity(spell)!!.get<SpellOnStackComponent>()!!.alternativeCost shouldBe
+                    AlternativeCostType.FLASHBACK
+                game.findAllPermanents("Plains").count {
+                    game.state.getEntity(it)!!.has<TappedComponent>()
+                } shouldBe 6
                 game.resolveStack()
 
                 val spirits = game.findPermanents("Spirit Token")

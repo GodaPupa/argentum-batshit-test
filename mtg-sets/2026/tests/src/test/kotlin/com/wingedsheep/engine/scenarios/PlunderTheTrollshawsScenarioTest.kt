@@ -1,5 +1,9 @@
 package com.wingedsheep.engine.scenarios
 
+import com.wingedsheep.engine.core.AlternativeCostType
+import com.wingedsheep.engine.core.CastSpell
+import com.wingedsheep.engine.state.components.battlefield.TappedComponent
+import com.wingedsheep.engine.state.components.stack.SpellOnStackComponent
 import com.wingedsheep.engine.support.ScenarioTestBase
 import com.wingedsheep.sdk.core.Phase
 import com.wingedsheep.sdk.core.Step
@@ -61,7 +65,19 @@ class PlunderTheTrollshawsScenarioTest : ScenarioTestBase() {
 
                 val libraryBefore = game.state.getLibrary(game.player1Id).size
 
-                game.castSpellFromGraveyard(1, "Plunder the Trollshaws").error shouldBe null
+                val spell = game.findCardsInGraveyard(1, "Plunder the Trollshaws").single()
+                val cast = game.execute(CastSpell(
+                    playerId = game.player1Id,
+                    cardId = spell,
+                    useAlternativeCost = true,
+                    alternativeCostType = AlternativeCostType.FLASHBACK
+                ))
+                cast.error shouldBe null
+                game.state.getEntity(spell)!!.get<SpellOnStackComponent>()!!.alternativeCost shouldBe
+                    AlternativeCostType.FLASHBACK
+                game.findAllPermanents("Island").count {
+                    game.state.getEntity(it)!!.has<TappedComponent>()
+                } shouldBe 4
                 game.resolveStack()
 
                 withClue("'instead' means two, not one and not three") {

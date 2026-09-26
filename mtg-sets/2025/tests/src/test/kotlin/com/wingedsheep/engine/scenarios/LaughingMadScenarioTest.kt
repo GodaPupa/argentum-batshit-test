@@ -1,6 +1,9 @@
 package com.wingedsheep.engine.scenarios
 
+import com.wingedsheep.engine.core.AlternativeCostType
 import com.wingedsheep.engine.core.CastSpell
+import com.wingedsheep.engine.state.components.battlefield.TappedComponent
+import com.wingedsheep.engine.state.components.stack.SpellOnStackComponent
 import com.wingedsheep.engine.support.ScenarioTestBase
 import com.wingedsheep.sdk.core.Phase
 import com.wingedsheep.sdk.core.Step
@@ -69,15 +72,22 @@ class LaughingMadScenarioTest : ScenarioTestBase() {
             val discard = game.findCardsInHand(1, "Forest").first()
 
             game.execute(
-                // Casting from the graveyard auto-applies the flashback alternative cost; the
-                // discard additional cost still applies ("its flashback cost and any additional costs").
+                // Select and pay flashback explicitly while preserving the discard additional cost.
                 CastSpell(
                     playerId = game.player1Id,
                     cardId = laughingMad,
                     targets = emptyList(),
+                    useAlternativeCost = true,
+                    alternativeCostType = AlternativeCostType.FLASHBACK,
                     additionalCostPayment = AdditionalCostPayment(discardedCards = listOf(discard))
                 )
             ).error shouldBe null
+            game.state.getEntity(laughingMad)!!.get<SpellOnStackComponent>()!!.alternativeCost shouldBe
+                AlternativeCostType.FLASHBACK
+            game.findAllPermanents("Mountain").count {
+                game.state.getEntity(it)!!.has<TappedComponent>()
+            } shouldBe 4
+            game.isInGraveyard(1, "Forest") shouldBe true
 
             game.resolveStack()
 

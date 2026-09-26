@@ -13,9 +13,9 @@ concurrency:
 
 jobs:
   combat-browser:
-    # This bank admits only the next reviewed publication from source06. Later
+    # This bank admits only the next reviewed publication from source07. Later
     # evidence commits and workflow reruns cannot spend another four-case attempt.
-    if: ${{ github.event.before == '667fd916f04dab372a482ffa7d4697e2f42d18e4' && github.run_attempt == '1' }}
+    if: ${{ github.event.before == 'd097c9eff09dd402dfacb644351bfb9d62f35aff' && github.run_attempt == '1' }}
     runs-on: ubuntu-latest
     timeout-minutes: 90
     env:

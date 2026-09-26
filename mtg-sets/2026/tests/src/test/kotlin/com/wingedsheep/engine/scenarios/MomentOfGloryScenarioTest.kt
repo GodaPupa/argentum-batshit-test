@@ -1,5 +1,10 @@
 package com.wingedsheep.engine.scenarios
 
+import com.wingedsheep.engine.core.AlternativeCostType
+import com.wingedsheep.engine.core.CastSpell
+import com.wingedsheep.engine.state.components.battlefield.TappedComponent
+import com.wingedsheep.engine.state.components.stack.ChosenTarget
+import com.wingedsheep.engine.state.components.stack.SpellOnStackComponent
 import com.wingedsheep.engine.support.ScenarioTestBase
 import com.wingedsheep.sdk.core.Phase
 import com.wingedsheep.sdk.core.Step
@@ -62,7 +67,20 @@ class MomentOfGloryScenarioTest : ScenarioTestBase() {
                     .single { game.state.projectedState.getController(it) == game.player2Id }
                 val courser = game.findPermanent("Centaur Courser")!!
 
-                game.castSpellFromGraveyard(1, "Moment of Glory", myBears).error shouldBe null
+                val spell = game.findCardsInGraveyard(1, "Moment of Glory").single()
+                val cast = game.execute(CastSpell(
+                    playerId = game.player1Id,
+                    cardId = spell,
+                    targets = listOf(ChosenTarget.Permanent(myBears)),
+                    useAlternativeCost = true,
+                    alternativeCostType = AlternativeCostType.FLASHBACK
+                ))
+                cast.error shouldBe null
+                game.state.getEntity(spell)!!.get<SpellOnStackComponent>()!!.alternativeCost shouldBe
+                    AlternativeCostType.FLASHBACK
+                game.findAllPermanents("Plains").count {
+                    game.state.getEntity(it)!!.has<TappedComponent>()
+                } shouldBe 5
                 game.resolveStack()
 
                 withClue("the target got exactly one counter — 'each other' excludes it") {
