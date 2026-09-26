@@ -69,13 +69,26 @@ jobs:
           receiving = json.loads(receiving_path.read_text())
           if hashlib.sha256(path.read_bytes()).hexdigest() != receiving['predecessor_capability_sha256']:
               raise SystemExit('Accepted predecessor capability bytes changed')
+          fixture = 'ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteV2ExecutionStatusTest.kt'
           changed = {'ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteV2ExecutionStatus.kt',
-              '.github/workflows/industrial-waste-v2-card-qualification.yml'}
+              '.github/workflows/industrial-waste-v2-card-qualification.yml', fixture}
           if set(receiving['source_sha256']) != changed:
               raise SystemExit('Unexpected receiving status source scope')
           review = pathlib.Path(receiving['independent_source_review']['path'])
           if hashlib.sha256(review.read_bytes()).hexdigest() != receiving['independent_source_review']['sha256']:
               raise SystemExit('Receiving independent source review bytes changed')
+          binding = receiving['frozen_strategy_receiving_binding']
+          fixture_review_path = pathlib.Path(binding['review_path'])
+          if hashlib.sha256(fixture_review_path.read_bytes()).hexdigest() != binding['review_sha256']:
+              raise SystemExit('Frozen-strategy fixture review bytes changed')
+          fixture_review = json.loads(fixture_review_path.read_text())
+          reviewed_manifest_path = pathlib.Path(fixture_review['source_manifest_path'])
+          if hashlib.sha256(reviewed_manifest_path.read_bytes()).hexdigest() != fixture_review['source_manifest_sha256']:
+              raise SystemExit('Reviewed constructor manifest bytes changed')
+          reviewed_manifest = json.loads(reviewed_manifest_path.read_text())
+          fixture_bindings = [row for row in reviewed_manifest['constructor_bindings'] if row['path'] == fixture]
+          if len(fixture_bindings) != 1 or fixture_bindings[0]['before_sha256'] != capability['source_sha256'][fixture] or fixture_bindings[0]['receiving_sha256'] != receiving['source_sha256'][fixture]:
+              raise SystemExit('Status fixture pin differs from the independently reviewed constructor binding')
           for name, digest in capability['source_sha256'].items():
               expected = receiving['source_sha256'].get(name, digest)
               if hashlib.sha256(pathlib.Path(name).read_bytes()).hexdigest() != expected:
