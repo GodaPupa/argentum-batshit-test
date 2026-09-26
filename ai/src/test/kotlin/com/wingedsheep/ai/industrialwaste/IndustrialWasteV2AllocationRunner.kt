@@ -59,7 +59,10 @@ internal data class IndustrialWasteV2AllocationReplay(
  * forced to storage before submission; exact returned events and state are forced after it. A
  * partially written stream remains an invalid preserved attempt, never a retry authority.
  */
-internal class IndustrialWasteV2AllocationTrace(private val directory: Path) : AutoCloseable {
+internal class IndustrialWasteV2AllocationTrace(
+    private val directory: Path,
+    private val preserveExcludedReplayDiagnostics: Boolean = false,
+) : AutoCloseable {
     private val channel: FileChannel
     private val paymentChannel: FileChannel
     private val checkpointChannel: FileChannel
@@ -108,6 +111,7 @@ internal class IndustrialWasteV2AllocationTrace(private val directory: Path) : A
         append("{\"type\":\"ACTION_RETURNED\",\"index\":$index,\"events\":$eventBytes," +
             "\"stateSha256\":\"${sha256(stateBytes)}\",\"error\":" +
             CODEC.encodeToString(kotlinx.serialization.serializer<String?>(), error) + "}")
+        if (preserveExcludedReplayDiagnostics) write("diagnostic-original-state-$index.json", stateBytes)
     }
 
     fun payment(record: IndustrialWasteV2PaymentIntentRecord) {
@@ -164,20 +168,23 @@ internal class IndustrialWasteV2AllocationTrace(private val directory: Path) : A
  * alone is not permission to initialize a corpus member.
  */
 internal object IndustrialWasteV2AllocationRunner {
-    fun runExcluded(input: IndustrialWasteV2AllocationInput, directory: Path): IndustrialWasteV2FullHorizonRunner.Result {
+    fun runExcluded(input: IndustrialWasteV2AllocationInput, directory: Path,
+        preserveReplayDiagnostics: Boolean = false): IndustrialWasteV2FullHorizonRunner.Result {
         require(input.namespace.startsWith("IW_V2_R1_SYNTHETIC_")) {
             "Only an explicitly excluded capability namespace is admitted"
         }
         require(input.namespace != "IW_V2_R1_ORDERINGS_2026_09_25")
         require(input.allocationId.startsWith("SYNTHETIC_")) { "An official allocation id is not admitted" }
-        return runPrepared(input, directory, null)
+        return runPrepared(input, directory, null, preserveReplayDiagnostics)
     }
 
     fun runOfficial(admission: IndustrialWasteV2OfficialAdmission, directory: Path): IndustrialWasteV2FullHorizonRunner.Result =
         runPrepared(admission.input, directory, admission)
 
     private fun runPrepared(input: IndustrialWasteV2AllocationInput, directory: Path,
-        admission: IndustrialWasteV2OfficialAdmission?): IndustrialWasteV2FullHorizonRunner.Result {
+        admission: IndustrialWasteV2OfficialAdmission?,
+        preserveExcludedReplayDiagnostics: Boolean = false): IndustrialWasteV2FullHorizonRunner.Result {
+        require(!preserveExcludedReplayDiagnostics || admission == null)
         require(input.row > 0 && input.startingPlayer in 0..1)
         require(input.deckCards.size == 60)
         require(input.openingOrders.size == 4)
@@ -186,7 +193,7 @@ internal object IndustrialWasteV2AllocationRunner {
         require(input.openingOrders.all { it.size == 60 && it.toSet() == labels })
 
         val codec = IndustrialWasteV2AllocationTrace.CODEC
-        IndustrialWasteV2AllocationTrace(directory).use { trace ->
+        IndustrialWasteV2AllocationTrace(directory, preserveExcludedReplayDiagnostics).use { trace ->
             trace.write("input.json", codec.encodeToString(IndustrialWasteV2AllocationInput.serializer(), input))
             // This durable declaration is written before any real initializer call.
             trace.write("attempt-before-initialization.json",
@@ -215,7 +222,7 @@ internal object IndustrialWasteV2AllocationRunner {
                 trace.stopped(result)
                 if (result.status.status !in setOf(IndustrialWasteV2StopStatus.EXCEPTION,
                         IndustrialWasteV2StopStatus.REJECTED_ACTION, IndustrialWasteV2StopStatus.UNRESOLVED_TELEMETRY)) {
-                    val replay = verifyReplay(directory)
+                    val replay = verifyReplay(directory, if (preserveExcludedReplayDiagnostics) trace::write else null)
                     trace.write("replay.json", codec.encodeToString(IndustrialWasteV2AllocationReplay.serializer(), replay))
                 }
                 return result
@@ -227,7 +234,8 @@ internal object IndustrialWasteV2AllocationRunner {
     }
 
     /** Restore the recorded initialization snapshot, never initialize or sample another game. */
-    internal fun verifyReplay(directory: Path): IndustrialWasteV2AllocationReplay {
+    internal fun verifyReplay(directory: Path,
+        excludedDiagnosticWriter: ((String, String) -> Unit)? = null): IndustrialWasteV2AllocationReplay {
         val codec = IndustrialWasteV2AllocationTrace.CODEC
         val input = codec.decodeFromString(IndustrialWasteV2AllocationInput.serializer(),
             Files.readString(directory.resolve("input.json")))
@@ -283,8 +291,20 @@ internal object IndustrialWasteV2AllocationRunner {
             check(recorded.getValue("type").jsonPrimitive.content == "ACTION_RETURNED")
             check(recorded.getValue("index").jsonPrimitive.int == index + 1)
             check(recorded.getValue("error") == JsonNull) { "An accepted replay cannot carry a recorded error" }
-            check(recorded.getValue("stateSha256").jsonPrimitive.content ==
-                IndustrialWasteV2AllocationTrace.sha256(codec.encodeToString(GameState.serializer(), returned.newState)))
+            val expectedStateSha = recorded.getValue("stateSha256").jsonPrimitive.content
+            val actualStateBytes = codec.encodeToString(GameState.serializer(), returned.newState)
+            val actualStateSha = IndustrialWasteV2AllocationTrace.sha256(actualStateBytes)
+            if (expectedStateSha != actualStateSha) {
+                // Raw excluded diagnostics preserve both actual snapshots; they never normalize,
+                // replace, or excuse the original exact-byte acceptance requirement.
+                excludedDiagnosticWriter?.invoke("diagnostic-replay-state-${index + 1}.json", actualStateBytes)
+                excludedDiagnosticWriter?.invoke("diagnostic-replay-mismatch.json",
+                    "{\"index\":${index + 1},\"expectedStateSha256\":\"$expectedStateSha\"," +
+                        "\"actualStateSha256\":\"$actualStateSha\",\"action\":" +
+                        codec.encodeToString(GameAction.serializer(), action) + ",\"actualEvents\":" +
+                        codec.encodeToString(ListSerializer(GameEvent.serializer()), returned.events) + "}")
+                error("Replay state digest mismatch after action ${index + 1}: expected $expectedStateSha, actual $actualStateSha")
+            }
             check(recorded.getValue("events") == codec.parseToJsonElement(
                 codec.encodeToString(ListSerializer(GameEvent.serializer()), returned.events)))
             verifyQuietObservation(returned.newState, index + 1)

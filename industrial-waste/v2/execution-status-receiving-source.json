@@ -1,0 +1,25 @@
+{
+  "schema": "industrial-v2-status-source-receiving-qualification-v1",
+  "status": "PROSPECTIVE_RECEIVING_SOURCE_PINS_NOT_ACCEPTED_RUNTIME",
+  "predecessor_capability": "industrial-waste/v2/execution-status-capability.json",
+  "predecessor_capability_sha256": "6f6a220f7513c70c828500cbf53449cd2837077ddb6f03ae365415bbbc20a941",
+  "independently_reviewed_status_source": "20bec2d66866c039f8281450b8d3d0585f100f6d",
+  "independent_source_review": {
+    "path": "industrial-waste/v2/evidence/runtime-payment-source-1d656580/independent-source-review.json",
+    "sha256": "de23d469dce1b958deacf01580bdafb1ed267501ff874369552c225bc3f1f62e"
+  },
+  "source_sha256": {
+    "ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteV2ExecutionStatus.kt": "1fd22f8539dd089ef1e10d7b140a6cbc3653b97120df4b61e27a49e1def0a263",
+    ".github/workflows/industrial-waste-v2-card-qualification.yml": "28c925e381704f2ad07df950a1dcec55471c68d807c2cbf90dd241e8041328cd"
+  },
+  "receiving_delta": "Add a typed exception marker for policy/observer failures without submitting an action; preserve existing caps, action counters, stopped-state refusal, first-fault precedence and all10 original status fixtures. Workflow separately binds this prospective source and requires the4 receiving runtime failure fixtures.",
+  "required_actual_receiving_cases": {
+    "IndustrialWasteV2ExecutionStatusTest": 10,
+    "IndustrialWasteV2RuntimeFailureTest": 4
+  },
+  "predecessor_receipt_rewritten": false,
+  "runtime_accepted": false,
+  "execution_authorized": false,
+  "official_allocations_initialized": 0,
+  "comparative_outcomes_exposed": 0
+}

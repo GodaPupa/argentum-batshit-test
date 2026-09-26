@@ -128,7 +128,8 @@ class IndustrialWasteV2AllocationRunnerTest : FunSpec({
         val spellInput = input.copy(allocationId = "SYNTHETIC_COMPACT_SPELL_TRACE", deckCards = deck,
             namespace = "IW_V2_R1_SYNTHETIC_COMPACT_SPELL_TRACE_ONLY", row = 20_002,
             openingOrders = List(4) { ordering }, initializerSeed = 9_250_925_110L)
-        val result = IndustrialWasteV2AllocationRunner.runExcluded(spellInput, directory)
+        val result = IndustrialWasteV2AllocationRunner.runExcluded(spellInput, directory,
+            preserveReplayDiagnostics = true)
         result.status.diagnostic shouldBe null
         (result.status.status in setOf(IndustrialWasteV2StopStatus.TURN_CAP,
             IndustrialWasteV2StopStatus.REAL_TERMINAL, IndustrialWasteV2StopStatus.ACTION_CAP)) shouldBe true
