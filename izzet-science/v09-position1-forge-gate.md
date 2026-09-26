@@ -1,9 +1,10 @@
 # Position 1 — Forge of Heroes qualification
 
-Status: targeted qualification and exact generated-byte review passed at
-`4aae1f9669769649e989735b4170f9bded15bc13`; independent source and artifact reviews
-accepted that component scope. Full receiving-source CI and acceptance remain
-pending. This is a card and shared-predicate capability gate with no gameplay admission.
+Status: the 423-case targeted gate and exact generated-byte review passed at
+`4aae1f9669769649e989735b4170f9bded15bc13`; the strengthened ten-case type-fixture
+successor passed at `2bbcfe579d19510af0067ab90fc691ae0147db67`. Independent source
+and artifact reviews accepted those exact component scopes. Full receiving-source
+CI and acceptance remain pending. This gate does not admit gameplay.
 
 The source starts from accepted bestow integration
 `4ff03a9109eece49ab871b09c21b9533f66bb726`. The new `StatePredicate.IsCommander`
@@ -82,3 +83,10 @@ with `TypeLine.aura()` and preserves only supertypes. That existing pathway does
 not use the synthetic `SetCardTypes` fixture. No policy restriction is introduced.
 The dedicated successor runs only the ten changed exact-card scenarios; full
 receiving-source CI and independent acceptance are still required afterward.
+
+Run `36251978493` then executed all ten exact-card successor cases with no failure,
+error or skip, including all three complete type/subtype preconditions before
+the unchanged counter assertions. The [successor receipt](evidence/forge-36251978493-valid-types/receipt.json)
+retains the raw artifact, exact source/golden/deck bindings and independent Pest
+actual-evidence audit. The general type-change limitation above remains in force;
+this successful successor opens the full receiving integration gate.
