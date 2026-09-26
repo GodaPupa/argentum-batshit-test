@@ -34,6 +34,7 @@ import com.wingedsheep.engine.state.components.identity.PlayWithFixedAlternative
 import com.wingedsheep.engine.state.components.identity.MorphDataComponent
 import com.wingedsheep.engine.state.components.identity.RevealedToComponent
 import com.wingedsheep.engine.state.components.identity.TokenComponent
+import com.wingedsheep.engine.state.components.stack.ActivatedAbilityOnStackComponent
 import com.wingedsheep.engine.state.components.player.CardsDiscardedThisTurnComponent
 import com.wingedsheep.engine.state.components.player.CardsLeftGraveyardThisTurnComponent
 import com.wingedsheep.engine.state.components.player.CardsPutIntoExileThisTurnComponent
@@ -492,6 +493,22 @@ object ZoneTransitionService {
                             } else copy
                         }
                     )
+                }
+
+                // An activated ability is independent of its source once activated (CR 113.7a),
+                // but source characteristics used by its resolving damage still come from the
+                // permanent as it last existed on the battlefield (CR 608.2h). Stamp that LKI at
+                // departure, not at activation: the source may gain or lose deathtouch/lifelink
+                // while the ability is waiting on the stack. Preserve the first departure so a
+                // later return using the same EntityId cannot overwrite the old object's identity.
+                for (stackId in newState.stack) {
+                    val stackEntity = newState.getEntity(stackId) ?: continue
+                    val activated = stackEntity.get<ActivatedAbilityOnStackComponent>() ?: continue
+                    if (activated.sourceId == entityId && activated.lastKnownSourceSnapshot == null) {
+                        newState = newState.updateEntity(stackId) { c ->
+                            c.with(activated.copy(lastKnownSourceSnapshot = lastKnownSnapshot))
+                        }
+                    }
                 }
             }
         }
