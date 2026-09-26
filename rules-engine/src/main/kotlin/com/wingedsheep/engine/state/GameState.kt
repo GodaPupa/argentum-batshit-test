@@ -434,6 +434,10 @@ data class GameState(
     /** Completed ordinary cast: keep its caster and captured triggers through SBA/target choices. */
     @EncodeDefault(EncodeDefault.Mode.NEVER)
     val pendingCastPriority: PendingCastPriority? = null,
+
+    /** Exact triggers waiting until every defender finishes declaring blockers (CR 802.4). */
+    @EncodeDefault(EncodeDefault.Mode.NEVER)
+    val pendingBlockTriggers: List<com.wingedsheep.engine.event.PendingTrigger> = emptyList(),
 ) {
     /**
      * Cached projection of the game state with all continuous effects (Rule 613) applied.
@@ -893,13 +897,18 @@ data class GameState(
      * In a shared-team-turns format the whole of the baton holder's team may act while their team
      * holds priority (CR 805.5). Everywhere else — 1v1, Free-for-All, Commander, Team vs. Team
      * (CR 808.4, individual turns) — [sharedTurnTeam] is the singleton `[playerId]`, so this is
-     * literally `priorityPlayerId == playerId` and no non-2HG game changes behaviour.
+     * `priorityPlayerId == playerId` during an actual priority window. A defender's declaration
+     * routing baton is not such a window; every seat waits until all blockers are declared.
      *
      * Note this is permission, not obligation: [priorityPlayerId] is still one seat, and the
      * auto-pass / AI paths deliberately keep following it so a bot teammate takes its window in
      * baton order instead of racing its human partner for every response.
      */
     fun hasPriority(playerId: EntityId): Boolean {
+        // The raw holder routes the next declaration; it grants no spell/ability/pass window.
+        if (com.wingedsheep.engine.mechanics.combat.CombatDefenders.nextUndeclaredDefender(this) != null) {
+            return false
+        }
         val holder = priorityPlayerId ?: return false
         // Read the team off the *holder*, not off [playerId]: [sharedTurnTeam] drops members who
         // have left the game, so asking the holder is what keeps a departed teammate (CR 800.4a)
@@ -914,7 +923,9 @@ data class GameState(
      * that need to pick an acting seat rather than test one.
      */
     val priorityTeam: List<EntityId>
-        get() = priorityPlayerId?.let { sharedTurnTeam(it) } ?: emptyList()
+        get() = if (com.wingedsheep.engine.mechanics.combat.CombatDefenders.nextUndeclaredDefender(this) != null) {
+            emptyList()
+        } else priorityPlayerId?.let { sharedTurnTeam(it) } ?: emptyList()
 
     /**
      * True when it is [playerId]'s team's turn — i.e. [playerId] is on the active team. The

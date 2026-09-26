@@ -6,7 +6,7 @@ import com.wingedsheep.engine.legalactions.ActionEnumerator
 import com.wingedsheep.engine.legalactions.EnumerationContext
 import com.wingedsheep.engine.legalactions.LegalAction
 import com.wingedsheep.engine.state.components.combat.AttackersDeclaredThisCombatComponent
-import com.wingedsheep.engine.state.components.combat.BlockersDeclaredThisCombatComponent
+import com.wingedsheep.engine.mechanics.combat.CombatDefenders
 import com.wingedsheep.engine.state.components.identity.CardComponent
 import com.wingedsheep.engine.state.components.identity.FaceDownComponent
 import com.wingedsheep.sdk.core.Step
@@ -33,15 +33,8 @@ class CombatEnumerator : ActionEnumerator {
                 ?.get<AttackersDeclaredThisCombatComponent>() != null
             if (!attackersAlreadyDeclared) return true
         }
-        if (state.step == Step.DECLARE_BLOCKERS && !state.isActiveTurnFor(playerId)) {
-            val blockersAlreadyDeclared = state.getEntity(playerId)
-                ?.get<BlockersDeclaredThisCombatComponent>() != null
-            if (!blockersAlreadyDeclared &&
-                com.wingedsheep.engine.mechanics.combat.CombatDefenders.isDefendingPlayer(state, playerId)
-            ) {
-                return true
-            }
-        }
+        // The entire declaration round excludes normal priority actions for every seat.
+        if (CombatDefenders.nextUndeclaredDefender(state) != null) return true
         return false
     }
 
@@ -84,47 +77,41 @@ class CombatEnumerator : ActionEnumerator {
             }
         }
 
-        // Declare blockers — offered only to a defending player (one being attacked).
-        if (state.step == Step.DECLARE_BLOCKERS && !state.isActiveTurnFor(playerId) &&
-            com.wingedsheep.engine.mechanics.combat.CombatDefenders.isDefendingPlayer(state, playerId)
-        ) {
-            val blockersAlreadyDeclared = state.getEntity(playerId)
-                ?.get<BlockersDeclaredThisCombatComponent>() != null
-            if (!blockersAlreadyDeclared) {
-                val validBlockers = context.turnManager.getValidBlockers(state, playerId)
-                val projected = context.projected
-                val blockerMaxBlockCounts = mutableMapOf<com.wingedsheep.sdk.model.EntityId, Int>()
-                for (blockerId in validBlockers) {
-                    val container = state.getEntity(blockerId) ?: continue
-                    val card = container.get<CardComponent>() ?: continue
-                    val isFaceDown = container.has<FaceDownComponent>()
-                    val canBlockAny = if (!isFaceDown) {
-                        // By definition id, not name — `BlockPhaseManager.validateBlocker`, the
-                        // authoritative check, resolves by id. A renamed copy (CR 707.9) of a
-                        // "can block any number of creatures" permanent would otherwise be capped
-                        // at one blocker in the UI while the engine allowed more.
-                        val cardDef = context.cardRegistry.getCard(card.cardDefinitionId)
-                        cardDef?.staticAbilities?.any { it is CanBlockAnyNumber } == true
-                    } else false
-                    if (canBlockAny) {
-                        blockerMaxBlockCounts[blockerId] = Int.MAX_VALUE
-                    } else {
-                        val additionalBlocks = projected.getAdditionalBlockCount(blockerId)
-                        if (additionalBlocks > 0) {
-                            blockerMaxBlockCounts[blockerId] = 1 + additionalBlocks
-                        }
+        // One defending team at a time; a pending tax/cost decision takes precedence.
+        if (CombatDefenders.canDeclareBlockers(state, playerId)) {
+            val validBlockers = context.turnManager.getValidBlockers(state, playerId)
+            val projected = context.projected
+            val blockerMaxBlockCounts = mutableMapOf<com.wingedsheep.sdk.model.EntityId, Int>()
+            for (blockerId in validBlockers) {
+                val container = state.getEntity(blockerId) ?: continue
+                val card = container.get<CardComponent>() ?: continue
+                val isFaceDown = container.has<FaceDownComponent>()
+                val canBlockAny = if (!isFaceDown) {
+                    // By definition id, not name — `BlockPhaseManager.validateBlocker`, the
+                    // authoritative check, resolves by id. A renamed copy (CR 707.9) of a
+                    // "can block any number of creatures" permanent would otherwise be capped
+                    // at one blocker in the UI while the engine allowed more.
+                    val cardDef = context.cardRegistry.getCard(card.cardDefinitionId)
+                    cardDef?.staticAbilities?.any { it is CanBlockAnyNumber } == true
+                } else false
+                if (canBlockAny) {
+                    blockerMaxBlockCounts[blockerId] = Int.MAX_VALUE
+                } else {
+                    val additionalBlocks = projected.getAdditionalBlockCount(blockerId)
+                    if (additionalBlocks > 0) {
+                        blockerMaxBlockCounts[blockerId] = 1 + additionalBlocks
                     }
                 }
-                val mandatoryAssignments = context.turnManager.getMandatoryBlockerAssignments(state, playerId)
-                return listOf(LegalAction(
-                    actionType = "DeclareBlockers",
-                    description = "Declare blockers",
-                    action = DeclareBlockers(playerId, emptyMap()),
-                    validBlockers = validBlockers,
-                    blockerMaxBlockCounts = blockerMaxBlockCounts.ifEmpty { null },
-                    mandatoryBlockerAssignments = mandatoryAssignments.ifEmpty { null }
-                ))
             }
+            val mandatoryAssignments = context.turnManager.getMandatoryBlockerAssignments(state, playerId)
+            return listOf(LegalAction(
+                actionType = "DeclareBlockers",
+                description = "Declare blockers",
+                action = DeclareBlockers(playerId, emptyMap()),
+                validBlockers = validBlockers,
+                blockerMaxBlockCounts = blockerMaxBlockCounts.ifEmpty { null },
+                mandatoryBlockerAssignments = mandatoryAssignments.ifEmpty { null }
+            ))
         }
 
         return emptyList()

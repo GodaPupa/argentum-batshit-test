@@ -309,6 +309,8 @@ data class TriggeredAbilityOnStackComponent(
     val sourceFaceChanges: Int? = null,
     /** Battlefield visit that created this trigger, retained across source zone changes. */
     val sourceBattlefieldTimestamp: Long? = null,
+    /** Source characteristics at its departure, retained independently of any returned object. */
+    val lastKnownSourceSnapshot: EntitySnapshot? = null,
     val objectReferences: com.wingedsheep.engine.handlers.ObjectReferenceEnvironment =
         com.wingedsheep.engine.handlers.ObjectReferenceEnvironment(),
     /**
@@ -356,11 +358,12 @@ data class ActivatedAbilityOnStackComponent(
      */
     val lastKnownSourceCounters: Map<String, Int> = emptyMap(),
     /**
-     * Frozen projected P/T of the source captured before a self-exile / self-sacrifice cost moved
-     * it off the battlefield (CR 113.7a). Mirrors [lastKnownSourceCounters]; read at resolution via
+     * Frozen projected characteristics captured when the source leaves the battlefield
+     * (CR 113.7a), including a self-exile / self-sacrifice cost. Read at resolution via
      * [com.wingedsheep.engine.handlers.EffectContext.lastKnownSourceSnapshot] so an
      * `EntityProperty(Source, Power)` read (Ghitu Fire-Eater / Blazing Bomb's Blow Up) sees the
-     * pre-sacrifice power. Null when the cost did not sacrifice/exile the source.
+     * pre-sacrifice power. Damage also reads departure keywords, colors and controller. Null
+     * while the original source remains on the battlefield; not an activation-time freeze.
      */
     val lastKnownSourceSnapshot: EntitySnapshot? = null,
     /**

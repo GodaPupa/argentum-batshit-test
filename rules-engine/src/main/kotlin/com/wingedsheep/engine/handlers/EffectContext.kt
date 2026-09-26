@@ -208,13 +208,14 @@ data class EffectContext(
      */
     val lastKnownSourceCounters: Map<String, Int> = emptyMap(),
     /**
-     * Frozen projected P/T (and subtypes/supertypes) the source had the moment a self-exile /
-     * self-sacrifice cost moved it off the battlefield (CR 113.7a / 608.2h — "as it last existed
+     * Frozen projected characteristics the source had when it left the battlefield, including
+     * a self-exile / self-sacrifice cost (CR 113.7a / 608.2h — "as it last existed
      * on the battlefield"). Mirrors [lastKnownSourceCounters]. Read by [DynamicAmountEvaluator]
      * when an `EntityProperty(EntityReference.Source, …)` power/toughness read resolves after the
      * source is gone, so "Sacrifice this creature: it deals damage equal to its power" reads the
      * pre-sacrifice power rather than zero (Blazing Bomb's Blow Up, Cinder Shade, Ghitu Fire-Eater).
-     * Null when the cost did not sacrifice/exile the source.
+     * Damage reads the same snapshot for source keywords, colors and controller after departure.
+     * Null while the original source remains present; its characteristics are read live.
      */
     val lastKnownSourceSnapshot: EntitySnapshot? = null,
     /**
@@ -487,7 +488,15 @@ data class EffectContext(
     )
 
     fun authorizeObjectMoves(events: List<com.wingedsheep.engine.core.GameEvent>): EffectContext =
-        copy(objectReferences = objectReferences.authorize(events))
+        copy(
+            objectReferences = objectReferences.authorize(events),
+            // Effects in one resolution may themselves move their source. Retain departure
+            // characteristics before a later sibling returns it or a continuation pauses.
+            lastKnownSourceSnapshot = lastKnownSourceSnapshot ?: events
+                .filterIsInstance<com.wingedsheep.engine.core.ZoneChangeEvent>()
+                .mapNotNull { it.lastKnown }
+                .firstOrNull { it.objectRef != null && it.objectRef == objectReferences.origin },
+        )
 
     fun chosenOpponent(state: GameState): EntityId? =
         pipeline.storedCollections[RESOLUTION_CHOSEN_OPPONENT]?.firstOrNull()
@@ -610,6 +619,7 @@ data class EffectContext(
             abilityIdentity = ability.abilityIdentity,
             sourceFaceChanges = ability.sourceFaceChanges,
             sourceBattlefieldTimestamp = ability.sourceBattlefieldTimestamp,
+            lastKnownSourceSnapshot = ability.lastKnownSourceSnapshot,
             objectReferences = ability.objectReferences,
             targets = targets,
             triggerDamageAmount = ability.triggerDamageAmount,

@@ -149,28 +149,35 @@ object PlayerLeavesGameProcessor {
     }
 
     /**
-     * Abandon a pending decision addressed to [leaver]. The decision is cleared, every
-     * continuation frame is dropped (the frames beneath the one waiting on this decision
-     * belong to the same paused resolution — or to triggers deferred behind it — and none of
-     * them can be resumed without the answer), and priority returns to the active player as
-     * it would after a completed resolution (CR 117.3b). A decision addressed to anyone else
-     * is left alone: the game is still waiting on a player who is still here.
+     * Abandon a pending decision addressed to [leaver]. Its incomplete resolution frames are
+     * discarded; exact automatic pending-trigger batches survive in the existing priority
+     * boundary and filter departed controllers when processed. Priority is held until those
+     * batches are placed, then returns to the retained recipient (CR 117.3b/c). A decision
+     * addressed to another player is left intact. Other multiplayer departure choices are
+     * unchanged by this continuation path and require their own receiving qualification.
      */
     private fun abandonLeaversDecision(state: GameState, leaver: EntityId): GameState {
         val pending = state.pendingDecision ?: return state
         if (pending.playerId != leaver) return state
         val recipient = if (state.stackResolutionPendingPriority) state.activePlayerId
             else state.pendingCastPriority?.playerId ?: state.activePlayerId
+        // Pending queues are automatic continuations: the highest one resumes first. Keep
+        // their original PendingTrigger objects, including completed order choices and LKI.
+        val queued = state.continuationStack
+            .filterIsInstance<com.wingedsheep.engine.core.PendingTriggersContinuation>()
+            .asReversed()
+            .flatMap { frame -> frame.remainingTriggers }
         val castBoundary = state.pendingCastPriority?.takeUnless { state.stackResolutionPendingPriority }?.let {
-            // The departed chooser's unanswered operation is abandoned, but other controllers'
-            // queued cast triggers still belong to the surviving post-cast priority boundary.
-            it.copy(triggers = it.triggers + state.continuationStack
-                .filterIsInstance<com.wingedsheep.engine.core.PendingTriggersContinuation>()
-                .flatMap { frame -> frame.remainingTriggers })
-        }
+            it.copy(triggers = it.triggers + queued)
+        } ?: if (state.stackResolutionPendingPriority && recipient != null && queued.isNotEmpty()) {
+            // The resolving object has finished; only placement was waiting on the leaver.
+            // Resume the same existing SBA/trigger boundary, returning priority to the active
+            // player (redirected if departed), rather than discarding other players' abilities.
+            com.wingedsheep.engine.state.PendingCastPriority(recipient, queued)
+        } else null
         return state
             .copy(continuationStack = emptyList(), stackResolutionPendingPriority = false, pendingCastPriority = castBoundary)
-            .withPriority(if (state.gameOver) null else recipient)
+            .withPriority(if (state.gameOver || castBoundary != null) null else recipient)
     }
 
     /**
