@@ -37,6 +37,7 @@ import com.wingedsheep.engine.state.components.battlefield.DamageDealtThisTurnCo
 import com.wingedsheep.engine.state.components.battlefield.WasDealtDamageThisTurnComponent
 import com.wingedsheep.engine.state.components.battlefield.ReplacementEffectSourceComponent
 import com.wingedsheep.engine.state.components.stack.SpellGrantedKeywordsComponent
+import com.wingedsheep.engine.state.components.stack.EntitySnapshot
 import com.wingedsheep.engine.handlers.effects.damage.OptionalDamageRedirect
 import com.wingedsheep.engine.state.components.stack.SpellOnStackComponent
 import com.wingedsheep.engine.state.components.stack.ChosenTarget
@@ -203,7 +204,8 @@ object DamageUtils {
          * lethal (CR 120.4a) is dealt to that creature's controller instead (Gandalf's Sanction:
          * "Excess damage is dealt to that creature's controller instead.").
          */
-        excessToController: Boolean = false
+        excessToController: Boolean = false,
+        sourceLastKnown: EntitySnapshot? = null
     ): EffectResult {
         if (amount <= 0) return EffectResult.success(state)
 
@@ -221,12 +223,12 @@ object DamageUtils {
                 checkDamageRedirection(state, targetId, amount, sourceId = sourceId)
             }
         if (redirectTargetId != null) {
-            val redirectResult = dealDamageToTarget(redirectState, redirectTargetId, redirectAmount, sourceId, cantBePrevented, isCombatDamage, appliedRedirects)
+            val redirectResult = dealDamageToTarget(redirectState, redirectTargetId, redirectAmount, sourceId, cantBePrevented, isCombatDamage, appliedRedirects, sourceLastKnown = sourceLastKnown)
             val remainingDamage = amount - redirectAmount
             return if (remainingDamage > 0) {
                 // Partial redirection — deal remaining damage to original target
                 val afterRedirect = redirectResult.state
-                val remainingResult = dealDamageToTarget(afterRedirect, targetId, remainingDamage, sourceId, cantBePrevented, isCombatDamage, appliedRedirects)
+                val remainingResult = dealDamageToTarget(afterRedirect, targetId, remainingDamage, sourceId, cantBePrevented, isCombatDamage, appliedRedirects, sourceLastKnown = sourceLastKnown)
                 EffectResult.success(remainingResult.state, redirectResult.events + remainingResult.events)
             } else {
                 redirectResult
@@ -242,7 +244,8 @@ object DamageUtils {
             if (staticRedirectTo != null && staticRedirectSource != null) {
                 return dealDamageToTarget(
                     state, staticRedirectTo, amount, sourceId, cantBePrevented, isCombatDamage,
-                    appliedRedirects + staticRedirectSource
+                    appliedRedirects + staticRedirectSource,
+                    sourceLastKnown = sourceLastKnown
                 )
             }
         }
@@ -470,7 +473,7 @@ object DamageUtils {
                 // dealt damage by this source, so a deathtouch source still marks it for
                 // destruction as an SBA (CR 702.2b / 704.5h) even though nothing is marked as
                 // normal damage. Record the deathtouch flag without marking damage.
-                if (sourceId != null && sourceHasDeathtouch(newState, projected, sourceId)) {
+                if (sourceId != null && sourceHasDeathtouch(newState, projected, sourceId, sourceLastKnown)) {
                     newState = newState.updateEntity(targetId) { container ->
                         val existing = container.get<DamageComponent>()
                         container.with(DamageComponent(
@@ -482,7 +485,7 @@ object DamageUtils {
             } else {
                 val existingDamage = newState.getEntity(targetId)?.get<DamageComponent>()
                 val currentDamage = existingDamage?.amount ?: 0
-                val hasDeathtouch = sourceId != null && sourceHasDeathtouch(newState, projected, sourceId)
+                val hasDeathtouch = sourceId != null && sourceHasDeathtouch(newState, projected, sourceId, sourceLastKnown)
                 // Excess damage (CR 120.4a) — damage in excess of what was needed to be
                 // lethal. With deathtouch, any amount of damage greater than 1 is excess —
                 // lethal collapses to a flat 1 regardless of marked damage (CR 120.4a refs
@@ -600,12 +603,14 @@ object DamageUtils {
         if (sourceId != null) {
             val projected = newState.projectedState
             if (projected.hasKeyword(sourceId, Keyword.LIFELINK.name) ||
-                sourceHasGrantedDamageKeyword(newState, sourceId, Keyword.LIFELINK)
+                sourceHasGrantedDamageKeyword(newState, sourceId, Keyword.LIFELINK) ||
+                sourceLastKnown?.keywords?.contains(Keyword.LIFELINK.name) == true
             ) {
                 val controllerId = projected.getController(sourceId)
                     ?: newState.getEntity(sourceId)?.get<ControllerComponent>()?.playerId
                     // A spell source carries no ControllerComponent; its controller is the caster.
                     ?: newState.getEntity(sourceId)?.get<SpellOnStackComponent>()?.casterId
+                    ?: sourceLastKnown?.controllerId
                 if (controllerId != null) {
                     val (gainedState, gainEvent) = gainLife(newState, controllerId, effectiveAmount)
                     newState = gainedState
@@ -621,7 +626,8 @@ object DamageUtils {
             val excessResult = dealDamageToTarget(
                 newState, targetControllerId, creatureExcessDamage, sourceId,
                 cantBePrevented = cantBePrevented, isCombatDamage = isCombatDamage,
-                appliedRedirects = appliedRedirects, excessToController = false
+                appliedRedirects = appliedRedirects, excessToController = false,
+                sourceLastKnown = sourceLastKnown
             )
             newState = excessResult.state
             events.addAll(excessResult.events)
@@ -802,10 +808,12 @@ object DamageUtils {
     private fun sourceHasDeathtouch(
         state: GameState,
         projected: ProjectedState,
-        sourceId: EntityId
+        sourceId: EntityId,
+        sourceLastKnown: EntitySnapshot? = null
     ): Boolean =
         projected.hasKeyword(sourceId, Keyword.DEATHTOUCH) ||
-            sourceHasGrantedDamageKeyword(state, sourceId, Keyword.DEATHTOUCH)
+            sourceHasGrantedDamageKeyword(state, sourceId, Keyword.DEATHTOUCH) ||
+            sourceLastKnown?.keywords?.contains(Keyword.DEATHTOUCH.name) == true
 
     private fun sourceHasGrantedDamageKeyword(
         state: GameState,

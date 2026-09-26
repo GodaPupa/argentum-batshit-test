@@ -62,7 +62,7 @@ class DealDamageExecutor(
             var newState = readyState
             val events = mutableListOf<EngineGameEvent>()
             for (recipientId in recipients) {
-                val result = dealDamageToTarget(newState, recipientId, amount, sourceId, effect.cantBePrevented)
+                val result = dealDamageToTarget(newState, recipientId, amount, sourceId, effect.cantBePrevented, sourceLastKnown = context.lastKnownSourceSnapshot)
                 newState = result.newState
                 events.addAll(result.events)
             }
@@ -86,7 +86,7 @@ class DealDamageExecutor(
             var newState = readyState
             val events = mutableListOf<EngineGameEvent>()
             for (playerId in playerIds) {
-                val result = dealDamageToTarget(newState, playerId, amount, sourceId, effect.cantBePrevented)
+                val result = dealDamageToTarget(newState, playerId, amount, sourceId, effect.cantBePrevented, sourceLastKnown = context.lastKnownSourceSnapshot)
                 newState = result.newState
                 events.addAll(result.events)
             }
@@ -108,7 +108,8 @@ class DealDamageExecutor(
 
         return dealDamageToTarget(
             readyState, targetId, amount, sourceId, effect.cantBePrevented,
-            excessToController = effect.excessToController
+            excessToController = effect.excessToController,
+            sourceLastKnown = context.lastKnownSourceSnapshot
         )
     }
 

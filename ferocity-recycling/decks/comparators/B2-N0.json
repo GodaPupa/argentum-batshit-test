@@ -1,0 +1,108 @@
+{
+  "family": "B",
+  "version": "0.1",
+  "status": "initial_development_prototype_unqualified",
+  "evidence_class": "verified_text_prerelease_research_pending_mechanical_admission",
+  "sideboard": [],
+  "sideboard_status": "not_yet_developed_or_qualified",
+  "creation_stage": "pre_randomized_development",
+  "source_audit": "sources/card-retrieval-log.json and RULES_LEGALITY_AUDIT.md",
+  "hash_method": "SHA-256 of UTF-8 count-space-cardname-newline, sorted by exact card name",
+  "id": "B2-N0",
+  "name": "Golgari permanent selection — no Ferocity development alternative",
+  "main": [
+    {
+      "name": "Crypt Rats",
+      "count": 3
+    },
+    {
+      "name": "Troll of Khazad-dûm",
+      "count": 3
+    },
+    {
+      "name": "Avenging Hunter",
+      "count": 2
+    },
+    {
+      "name": "Generous Ent",
+      "count": 1
+    },
+    {
+      "name": "Malevolent Rumble",
+      "count": 4
+    },
+    {
+      "name": "Eviscerator's Insight",
+      "count": 4
+    },
+    {
+      "name": "Fanatical Offering",
+      "count": 3
+    },
+    {
+      "name": "Ichor Wellspring",
+      "count": 3
+    },
+    {
+      "name": "Lembas",
+      "count": 3
+    },
+    {
+      "name": "Nihil Spellbomb",
+      "count": 2
+    },
+    {
+      "name": "Campfire",
+      "count": 1
+    },
+    {
+      "name": "Cast Down",
+      "count": 3
+    },
+    {
+      "name": "Snuff Out",
+      "count": 2
+    },
+    {
+      "name": "Cut Down",
+      "count": 2
+    },
+    {
+      "name": "Toxin Analysis",
+      "count": 2
+    },
+    {
+      "name": "Swamp",
+      "count": 10
+    },
+    {
+      "name": "Khalni Garden",
+      "count": 4
+    },
+    {
+      "name": "Jungle Hollow",
+      "count": 4
+    },
+    {
+      "name": "Haunted Mire",
+      "count": 2
+    },
+    {
+      "name": "Forest",
+      "count": 1
+    },
+    {
+      "name": "Blood Fountain",
+      "count": 1
+    }
+  ],
+  "comparison_id": "B2-F2",
+  "comparison_scope": "within_shell_package_substitution",
+  "exact_package_delta_from_candidate": {
+    "Ferocity of the Hunt": -2,
+    "Snuff Out": 1,
+    "Blood Fountain": 1
+  },
+  "design_rationale": "No-Ferocity development alternative with the same sample and policy-training budget. Ferocity-dependent support is removed when its remaining function does not justify it. This initial list is not asserted to be the final best comparator.",
+  "deck_sha256": "4ac5b44f37718f26c7d4046e4b211c9d09dd80d6f0422e2bf57b6d412c1e205d"
+}

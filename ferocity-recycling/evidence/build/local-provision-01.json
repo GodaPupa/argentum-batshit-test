@@ -1,0 +1,10 @@
+{
+  "command": [
+    "apt-get",
+    "update"
+  ],
+  "retrieved_at_utc": "2026-09-26T06:09:36.245463+00:00",
+  "returncode": 100,
+  "stdout": "Reading package lists...\n",
+  "stderr": "E: setgroups 65534 failed - setgroups (1: Operation not permitted)\nE: setegid 65534 failed - setegid (22: Invalid argument)\nE: seteuid 42 failed - seteuid (22: Invalid argument)\nE: setgroups 0 failed - setgroups (1: Operation not permitted)\nrm: cannot remove '/var/cache/apt/archives/partial/*.deb': Permission denied\nW: chown to _apt:root of directory /var/lib/apt/lists/partial failed - SetupAPTPartialDirectory (22: Invalid argument)\nW: chown to _apt:root of directory /var/lib/apt/lists/auxfiles failed - SetupAPTPartialDirectory (22: Invalid argument)\nE: setgroups 65534 failed - setgroups (1: Operation not permitted)\nE: setegid 65534 failed - setegid (22: Invalid argument)\nE: seteuid 42 failed - seteuid (22: Invalid argument)\nE: setgroups 0 failed - setgroups (1: Operation not permitted)\nE: Method gave invalid 400 URI Failure message: Failed to setgroups - setgroups (1: Operation not permitted)\nE: Method https has died unexpectedly!\nE: Sub-process https returned an error code (112)\n"
+}

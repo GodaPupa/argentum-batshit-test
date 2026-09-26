@@ -1,0 +1,78 @@
+{
+  "schema": "ferocity-evidence-validator-review-v1",
+  "recorded_at_utc": "2026-09-26T06:43:56.166017+00:00",
+  "scope": "EVIDENCE_GUARD_UNIT_TESTS_AND_REVIEW_OF_EXISTING_LOGS_ONLY",
+  "synthetic_guard_unit_tests": 5,
+  "synthetic_guard_unit_tests_passed": 5,
+  "guard_test_output": "test_cached_success_xml_cannot_count_as_executed_assertions (test_validate_build_guards.BuildEvidenceGuardsTest.test_cached_success_xml_cannot_count_as_executed_assertions) ... ok\ntest_deleted_tracked_source_rejects_expected_head (test_validate_build_guards.BuildEvidenceGuardsTest.test_deleted_tracked_source_rejects_expected_head) ... ok\ntest_executed_task_and_new_xml_can_pass_the_guard (test_validate_build_guards.BuildEvidenceGuardsTest.test_executed_task_and_new_xml_can_pass_the_guard) ... ok\ntest_final_capture_error_records_failure_instead_of_leaving_running (test_validate_build_guards.BuildEvidenceGuardsTest.test_final_capture_error_records_failure_instead_of_leaving_running) ... ok\ntest_java_kts_resources_and_removed_paths_are_covered (test_validate_build_guards.BuildEvidenceGuardsTest.test_java_kts_resources_and_removed_paths_are_covered) ... ok\n\n----------------------------------------------------------------------\nRan 5 tests in 0.016s\n\nOK\n",
+  "new_gameplay_games": 0,
+  "new_engine_scenarios": 0,
+  "prior_real_execution_review": [
+    {
+      "attempt": "local-engine-bootstrap-03",
+      "test_class": "FerocityOfTheHuntScenarioTest",
+      "observed_task_statuses": [
+        "",
+        "FAILED"
+      ],
+      "actual_test_execution": true,
+      "compiled_inputs_unchanged": false,
+      "totals": {
+        "tests": 24,
+        "failures": 2,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "attempt": "ferocity-stable-reproduction-01",
+      "test_class": "FerocityOfTheHuntScenarioTest",
+      "observed_task_statuses": [
+        "",
+        "FAILED"
+      ],
+      "actual_test_execution": true,
+      "compiled_inputs_unchanged": true,
+      "totals": {
+        "tests": 24,
+        "failures": 2,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "attempt": "rats-baseline-01",
+      "test_class": "CryptRatsScenarioTest",
+      "observed_task_statuses": [
+        ""
+      ],
+      "actual_test_execution": true,
+      "compiled_inputs_unchanged": true,
+      "totals": {
+        "tests": 8,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "attempt": "toxin-baseline-01",
+      "test_class": "ToxinAnalysisScenarioTest",
+      "observed_task_statuses": [
+        "",
+        "FAILED"
+      ],
+      "actual_test_execution": true,
+      "compiled_inputs_unchanged": true,
+      "totals": {
+        "tests": 9,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0
+      }
+    }
+  ],
+  "new_runner_sha256": "e28349e1722b77e0b3033dd032af266b7a68903a28b2a7abaa608eeb47055c43",
+  "new_guard_tests_sha256": "fab5af19c0621bacca8ed9eaa0c4becb31fc302fb41c21f3705ec765b083fc2e",
+  "gradle_rerun_option_verification": "Verified in exact local Gradle9.6.1 gradle-core JAR: TaskOptionsGenerator registers built-in rerun option, setting TaskOutputs.upToDateWhen(Specs.satisfyNone()). Explicit log marker also rejects FROM-CACHE and UP-TO-DATE."
+}

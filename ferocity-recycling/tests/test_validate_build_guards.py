@@ -1,0 +1,123 @@
+"""Evidence-guard unit tests using synthetic XML; these are not engine assertions or games."""
+
+import contextlib
+import importlib.util
+import io
+import json
+from pathlib import Path
+import tempfile
+from types import SimpleNamespace
+import unittest
+from unittest.mock import patch
+
+
+SPEC = importlib.util.spec_from_file_location(
+    "ferocity_build_validation", Path(__file__).resolve().parents[1] / "tools/validate_build.py"
+)
+validation = importlib.util.module_from_spec(SPEC)
+SPEC.loader.exec_module(validation)
+
+
+class BuildEvidenceGuardsTest(unittest.TestCase):
+    def setUp(self):
+        self.temp = tempfile.TemporaryDirectory()
+        self.addCleanup(self.temp.cleanup)
+        self.root = Path(self.temp.name)
+        self.test_class = "CryptRatsScenarioTest"
+        self.test_source = self.root / "rules-engine/src/test/kotlin" / (self.test_class + ".kt")
+        self.test_source.parent.mkdir(parents=True)
+        self.test_source.write_text("// Synthetic source for evidence-guard tests only.\n")
+        (self.root / "gradlew").write_text("synthetic wrapper\n")
+        self.root_patch = patch.object(validation, "ROOT", self.root)
+        self.build_patch = patch.object(validation, "BUILD_FILES", ("gradlew",))
+        self.root_patch.start()
+        self.build_patch.start()
+        self.addCleanup(self.root_patch.stop)
+        self.addCleanup(self.build_patch.stop)
+
+    def invoke(self, task_status="", deleted_source=None, final_capture_failure=False):
+        report = self.root / "evidence"
+        arguments = ["validate_build.py", "--out", str(report), "--classes", self.test_class]
+        if deleted_source:
+            arguments += ["--expected-head", validation.BASE]
+
+        def output(command):
+            if command[:3] == ["git", "diff", "--name-only"]:
+                return deleted_source or ""
+            if command[:3] == ["git", "rev-parse", "HEAD"]:
+                return validation.BASE
+            return ""
+
+        def run(command, **kwargs):
+            self.assertEqual(command[:3], ["just", "test-class", self.test_class])
+            self.assertIn("--rerun", command)
+            kwargs["stdout"].write(
+                "> Task :rules-engine:test" + (" " + task_status if task_status else "") + "\n"
+            )
+            xml = self.root / "rules-engine/build/test-results/test" / ("TEST-synthetic." + self.test_class + ".xml")
+            xml.parent.mkdir(parents=True, exist_ok=True)
+            xml.write_text('<testsuite tests="1" failures="0" errors="0" skipped="0"/>')
+            return SimpleNamespace(returncode=0)
+
+        with contextlib.ExitStack() as stack:
+            stack.enter_context(patch.object(validation.sys, "argv", arguments))
+            stack.enter_context(patch.object(validation, "output", side_effect=output))
+            stack.enter_context(patch.object(validation.shutil, "which", return_value="/synthetic/just"))
+            stack.enter_context(patch.object(validation.subprocess, "run", side_effect=run))
+            stack.enter_context(contextlib.redirect_stdout(io.StringIO()))
+            stack.enter_context(contextlib.redirect_stderr(io.StringIO()))
+            if final_capture_failure:
+                inputs = validation.compiled_inputs([self.test_class])
+                stack.enter_context(patch.object(
+                    validation, "compiled_inputs", side_effect=[inputs, FileNotFoundError("synthetic deletion")]
+                ))
+            status = validation.main()
+        return status, json.loads((report / "receipt.json").read_text())
+
+    def test_cached_success_xml_cannot_count_as_executed_assertions(self):
+        status, receipt = self.invoke(task_status="FROM-CACHE")
+        self.assertEqual(status, 1)
+        self.assertFalse(receipt["stages"][0]["test_task_executed"])
+        self.assertEqual(receipt["status"], "FAIL")
+
+    def test_executed_task_and_new_xml_can_pass_the_guard(self):
+        status, receipt = self.invoke()
+        self.assertEqual(status, 0)
+        self.assertTrue(receipt["stages"][0]["test_task_executed"])
+        self.assertTrue(receipt["compiled_inputs_unchanged"])
+
+    def test_deleted_tracked_source_rejects_expected_head(self):
+        missing = "rules-engine/src/main/kotlin/Deleted.kt"
+        status, receipt = self.invoke(deleted_source=missing)
+        self.assertEqual(status, 1)
+        self.assertTrue(receipt["source_is_dirty"])
+        self.assertEqual(receipt["tracked_compiled_input_changes"], [missing])
+        self.assertEqual(receipt["stages"], [])
+
+    def test_final_capture_error_records_failure_instead_of_leaving_running(self):
+        status, receipt = self.invoke(final_capture_failure=True)
+        self.assertEqual(status, 1)
+        self.assertEqual(receipt["status"], "FAIL")
+        self.assertFalse(receipt["compiled_inputs_unchanged"])
+        self.assertIn("FileNotFoundError", receipt["source_change_failure"])
+        self.assertIn("finished_at_utc", receipt)
+
+    def test_java_kts_resources_and_removed_paths_are_covered(self):
+        names = [
+            "rules-engine/src/main/java/Fixture.java",
+            "rules-engine/src/test/resources/fixture.json",
+            "buildSrc/src/main/kotlin/extra.gradle.kts",
+        ]
+        for name in names:
+            path = self.root / name
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_text("synthetic input\n")
+        inputs = validation.compiled_inputs([self.test_class])
+        for name in names:
+            self.assertIn(name, inputs)
+            (self.root / name).unlink()
+            self.assertTrue(validation.is_compiled_input(name, [self.test_class]))
+
+
+if __name__ == "__main__":
+    unittest.main()
