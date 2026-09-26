@@ -89,7 +89,22 @@ data class ZoneChangeEvent(
      * be interpreted as a snapshot of the eventual trigger-detection state.
      */
     val entrySnapshot: com.wingedsheep.engine.event.BattlefieldEntrySnapshot? = null,
-) : GameEvent
+    /**
+     * This exact entry event has already had its observers captured by the producing resumer.
+     * Keep it in the ordered event/replay stream while later detectors skip only this record,
+     * never an entire mixed result or another structurally identical, unprocessed occurrence.
+     * Default omission preserves historical event bytes that predate this provenance field.
+     */
+    @OptIn(kotlinx.serialization.ExperimentalSerializationApi::class)
+    @kotlinx.serialization.EncodeDefault(kotlinx.serialization.EncodeDefault.Mode.NEVER)
+    val entryTriggersAlreadyProcessed: Boolean = false,
+) : GameEvent {
+    init {
+        require(!entryTriggersAlreadyProcessed || toZone == Zone.BATTLEFIELD) {
+            "Processed entry-trigger provenance requires a battlefield entry event"
+        }
+    }
+}
 
 @Serializable
 enum class ZoneTransitionCause { PRIMARY, REPLACEMENT_ADDITIONAL, DURATION_RETURN }

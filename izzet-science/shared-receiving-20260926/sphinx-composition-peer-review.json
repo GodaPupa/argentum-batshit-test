@@ -1,0 +1,1882 @@
+{
+  "schema": "IZZET_SCOPED_SHARED_RECEIVING_NONAUTHOR_SOURCE_REVIEW_V1",
+  "reviewer": "Actual non-author Sphinx worker /root/sphinx",
+  "reviewed_at_utc": "2026-09-26T22:11:45.150256+00:00",
+  "disposition": "PASS_INERT_SOURCE_PUBLICATION_ONLY",
+  "receiver": {
+    "commit": "bff4de452a6fca076e3c42fe7c2590862c0c234d",
+    "tree": "dc13f019c80656b03523fcc054486b088364b8f3",
+    "runtime_commit": "c47e9dbafc1fd582f81be1db04e9f35a09f067b5",
+    "runtime_tree": "f92cdeaed8be104d98b1a971347cd9c2f089f779",
+    "disposition": "Vines targeted banks pass; complete CI failed and full runtime unaccepted"
+  },
+  "donor": {
+    "commit": "994383d4a9495bcb34d5aae0e69181bcf4c04d45",
+    "tree": "4b8f4d155a37e6b66ab623d344b19cedf435d845",
+    "delta_base": "b35d4778dada69476da0f67549be7e70424c18bd",
+    "acceptance_scope": "Donor component only; receiving-specific composition is not qualified by donor evidence"
+  },
+  "branch": "lab/izzet-shared-receiving-candidate-20260926",
+  "manifest_sha256": "bac1601350f84659e1846840b5c299535ba501e6f3c26aa13363aaf8888b6276",
+  "tree_elements_sha256": "a33d9677d742259930bf50823ddede814db922136640ad3877fb0b240a2f4a7b",
+  "source_changes": [
+    {
+      "path": "mtg-sets/2025/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/DalkovanEncampmentScenarioTest.kt",
+      "sha256": "acb9cd9a32346e5867740305c79f42783f37e5d4202dadf1d7b8b051f60b5532",
+      "git_blob_sha1": "2146572d1cb97370a0c9ab056e219258a1ae0ea6"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/CombatResolution.kt",
+      "sha256": "e52549532d4c8805f8ba90198840b29786d84ff281c1509a2845ae38b6afb90a",
+      "git_blob_sha1": "93f1240a7d64750d888d812e00c0266c934a457d"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/GameEvent.kt",
+      "sha256": "a2907a947929359ed0e39f18da8c17e79830bee3c0d4ec79fb9b860e3e119dbe",
+      "git_blob_sha1": "d020b83de58ad289d7fa23d51a2131a738d2256f"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/ModalAndCloneContinuations.kt",
+      "sha256": "1e87d845aa1f284838bb6bea6cc6281f626e887e21f626fe302fe47eadeffdd4",
+      "git_blob_sha1": "2f5a738be0a6f8ca7379fbdf0ccc3a50d5379dd2"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/PendingDecision.kt",
+      "sha256": "c350956d4a65bc9f2b164450eea8424bc12162aa3aa34a21737931cc8222c0e4",
+      "git_blob_sha1": "16cd51fbfbb0e8778f72e6cee5d7a5fb953c8961"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/Serialization.kt",
+      "sha256": "a502273899308a398346c738fbc5e13e777e508100446ce41e166c04fde30f96",
+      "git_blob_sha1": "3fe1e7aa169e73fb2557ce6b959657743a5bb099"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/TokenContinuations.kt",
+      "sha256": "c1856c5d7165cfe596b09be849faa855d9d7ec5b7bcf3deeb36c8a01bdaf4cd0",
+      "git_blob_sha1": "2d50fb85d0c6c6ef4be5c6806212631821ccd8ba"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerDetector.kt",
+      "sha256": "2ad1bc8875440b177d29d38e1c195cbba26c84537753c9a075c63ccd63f90189",
+      "git_blob_sha1": "37f1e0e038f91634005a3e7ba46e2278828ac701"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/ContinuationHandler.kt",
+      "sha256": "a8091ebb5e745e48765d38f01f6f21052b98ec4b0f52da34076882bbd90edccc",
+      "git_blob_sha1": "4bfbcbaae0eddd1c2064cdc80949e1357298670a"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/decision/DecisionValidators.kt",
+      "sha256": "d2f82ea8237dc6a642005e6a6e12a2148555240a2ed93786a24df02af650d3ee",
+      "git_blob_sha1": "dc1f52c160432bf9fcdf421e60ce46dabd0e4313"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/CombatContinuationResumer.kt",
+      "sha256": "d447fe5fa911f5decad26f7071abb9c51ba4863837cf0ff5a4f25de34ec86951",
+      "git_blob_sha1": "7dac54a45af972aff7abb6678d47593ffe76404e"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/CoreAutoResumerModule.kt",
+      "sha256": "d191e92ce6bf2c27d33f5ae9f80ff2b7ce8b0d94aa6493887c9739faea9292b3",
+      "git_blob_sha1": "f9106cdde9804aab641f66ebd48f1e2bde37c72a"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/ModalAndCloneContinuationResumer.kt",
+      "sha256": "7d546e8c590c9dbc541c50cd43cfd7436354a4b7be6108a882176cb0d3131190",
+      "git_blob_sha1": "d88f826772539e858a9d215f98a5995b62fb5aac"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/ObjectReferencePropagation.kt",
+      "sha256": "44754cc29fd5abe7b850f819811a1a26af25b845396dd3439135172cb0733393",
+      "git_blob_sha1": "8b29ed5e0e786be3583a001e59ed6e8e00743ece"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/PipelineCollectionPropagation.kt",
+      "sha256": "2347f1dc0bcd3c6dbdf7c8753bd5ff892eaf80e5da7041cc8c8aaee42d534278",
+      "git_blob_sha1": "893dba15762c27b0e02f687970e4950be627d05b"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/TokenContinuationResumer.kt",
+      "sha256": "9213e0e9e7e79c10fd49b2162d38e5b31b369ed0c398f33ff6569b3e66f0a773",
+      "git_blob_sha1": "ed6782820b9a255d8ee1482ed16bdeed8fa5151a"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/token/AttackingTokenDefenderChooser.kt",
+      "sha256": "86ad9102ffaeb07333ae2cd18261430d223b945ad0206ef44f2daa8d24057a05",
+      "git_blob_sha1": "f2e8be4f7420fe51b0331b45d5d73c12d1939261"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/token/CreateTokenCopyOfTargetExecutor.kt",
+      "sha256": "21e171a049be9b361df00fd8ddceb4638b82dcd3549a16cfc994e434cdc66f38",
+      "git_blob_sha1": "58372d7ff97baa3ed7b62adb0fb9ff8933e05fbd"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/token/CreateTokenExecutor.kt",
+      "sha256": "73b714ca3613e9b31c1c6d749e2a481a045c9087f0d05b2f18d6dd1abd8dd6d1",
+      "git_blob_sha1": "f6462b2861cd457364f8599438a736a45c52e4d0"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/token/TokenCreationReplacementHelper.kt",
+      "sha256": "cbcd4b4cf9d8a47c38babd9bb2bb4623f7c5cd77be6e4f53b825a9da1062aa1a",
+      "git_blob_sha1": "a63c1e91f360f0500e42928204d49eb9efe424c1"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/legalactions/enumerators/CombatEnumerator.kt",
+      "sha256": "806c3e20163072b7b96588c695e6d6913cc39a7c70deec88f1ff31a5bc5e0c1b",
+      "git_blob_sha1": "15d5642cd0d22baeb5e8b3ccb79e62de563f784a"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/combat/CombatDamageManager.kt",
+      "sha256": "62701029cf66bf0bf419aa10f6ccef1cb19825fb033e283609fa53878f51e15e",
+      "git_blob_sha1": "81a0afc8c59fff64ed94608cd9fd682aa4cdf09a"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/combat/CombatDamageUtils.kt",
+      "sha256": "88c0205e05d03fd753aace27dbdcfd1399aeff3b4d652a6ea85299ecc95c4172",
+      "git_blob_sha1": "a9b30fe2915b38480ee8e48cf57821a29911ce12"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/combat/CombatDefenders.kt",
+      "sha256": "87543b443ca4f637617f1cbe7613c37f1c577a7754aa272786cf5c0d7be68920",
+      "git_blob_sha1": "0d629b2c355ca3c147cfa134fab4631cf2f4c50e"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/combat/DamageCalculator.kt",
+      "sha256": "651f1e507d8fd99c8aa972c1a1b2e45aa04570b39ce84f7e209e0dd5c2909a08",
+      "git_blob_sha1": "dd804fe2f66f42b6e4526d384a8271a3294e3178"
+    },
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/event/EntryChoiceEventProvenanceTest.kt",
+      "sha256": "73c761176e87fdb40add594b7591c508784cadcbc2c47bc247d5b18658f6e44d",
+      "git_blob_sha1": "0250a12ad245eded770bec604dbbfda63f7210e9"
+    },
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/handlers/effects/token/AttackingTokenDefenderChoiceTest.kt",
+      "sha256": "becb1edcc7a08998ca0dab03ebc83b2fb4f484339859e0c771bc7a08851578ee",
+      "git_blob_sha1": "81d2ec00484429e88bb4b2b77fd36ae5c154290e"
+    },
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/BandingTrampleDrainScenarioTest.kt",
+      "sha256": "897184ce5e5b2be1f07abea4c56b7d8167c7d9782c401ad65273404d9ef97140",
+      "git_blob_sha1": "47956ba5921a493643c31ea511a7e6e882920fc0"
+    },
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/CombatAssignmentCurrentRulesTest.kt",
+      "sha256": "8a786f585755bedbc9b84a7ddea0e26d26908b3e6cb51a8a670bc42414177d1e",
+      "git_blob_sha1": "926665bb7fc93be18a90d5fffcc2ae75195ad95f"
+    },
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/CombatResolutionBoardTest.kt",
+      "sha256": "2ec3488cbeac903f5f72a34e7611ed3fe1bba657a67313f4a44b07d20b369bc0",
+      "git_blob_sha1": "1faa4c80d16379477631f94af6beaf15a95fb52a"
+    }
+  ],
+  "independent_checks": [
+    "Fetched complete immutable receiver tree dc13f019 and verified all 30 proposed elements against independently fetched original shared/base trees; 256 donor delta paths have exact receiver/base/shared/candidate bindings.",
+    "Hashed every local candidate file using SHA-256 and Git blob SHA-1; 26 files match exact donor blobs and four are explicitly composed production files.",
+    "Newly fetched original receiver/shared GameEvent, Serialization, TriggerDetector, CombatDamageManager, ZoneTransitionService and Dalkovan sources, verifying content Git hashes against immutable trees.",
+    "Read every composed diff: preserve Izzet entrySnapshot and simultaneous-damage/targeting fields; add shared entryTriggersAlreadyProcessed plus invariant/default serialization; retain Izzet trigger handling and shared complete contextEvents history; add only three missing shared continuation registrations; CombatDamageManager changes are comments only.",
+    "Verified retained ZoneTransitionService already contains the exact new pendingCastPriority last-known-source propagation from the shared delta; receiver-specific bestow placement is preserved. Preexisting receiver-versus-donor prototype differences are not represented as new repairs or certified by this review.",
+    "Dalkovan exact donor transfer adds four lines in the existing two cases asserting opponent defender identity, with no removed assertions, changed names or new case identities. Root prospectively authorized this strengthening.",
+    "All Izzet policies, decks, seed ledgers, card definitions, baseline and historical failures stay unchanged. Six test files are five exact generic donor files plus the explicitly strengthened Dalkovan file; two absent foreign Pest fixtures stay absent.",
+    "Newly fetched and Git-hashed all 111 inherited workflow files and inspected every on section. No push branch pattern matches the proposed inert branch; workflows are unchanged. Proposed branch lookup returned 404 before publication."
+  ],
+  "static_audit_sha256": "6a9d05e6831e3de61ec5c98f6fe4bec97dc02441452739dfb8ec55cb8ebd5585",
+  "trigger_inventory": [
+    {
+      "path": ".github/workflows/argentum-test.yml",
+      "sha": "afae38832e76f886fec8f2a52eab2e6bc2378e9b",
+      "on": {
+        "workflow_dispatch": "",
+        "push": {
+          "branches": [
+            "main"
+          ]
+        }
+      },
+      "push_branch_matches": false
+    },
+    {
+      "path": ".github/workflows/batshit-grixis-affinity-regression-replay.yml",
+      "sha": "b2bcbb3ef01019fafbc5b906b346023b66ff9383",
+      "on": {
+        "push": {
+          "branches": [
+            "main"
+          ],
+          "paths": [
+            ".github/workflows/batshit-grixis-affinity-regression-replay.yml"
+          ]
+        },
+        "workflow_dispatch": ""
+      },
+      "push_branch_matches": false
+    },
+    {
+      "path": ".github/workflows/batshit-grixis-policy-focused.yml",
+      "sha": "5f035d75dc44d36676272624e83268f086d30c2d",
+      "on": {
+        "push": {
+          "branches": [
+            "main"
+          ],
+          "paths": [
+            ".github/workflows/batshit-grixis-policy-focused.yml"
+          ]
+        },
+        "workflow_dispatch": ""
+      },
+      "push_branch_matches": false
+    },
+    {
+      "path": ".github/workflows/batshit-preboard-smoke.yml",
+      "sha": "8674b0659b6b90d3ab27645cdfbdc1d6e0ee61bf",
+      "on": {
+        "workflow_dispatch": "",
+        "push": {
+          "branches": [
+            "smoke/**"
+          ]
+        }
+      },
+      "push_branch_matches": false
+    },
+    {
+      "path": ".github/workflows/ci.yml",
+      "sha": "99b3a3931c4cad5d914e697a748a3f8a39538064",
+      "on": {
+        "push": {
+          "branches": [
+            "main"
+          ]
+        },
+        "pull_request": {
+          "types": [
+            "opened",
+            "synchronize",
+            "reopened"
+          ]
+        }
+      },
+      "push_branch_matches": false
+    },
+    {
+      "path": ".github/workflows/deploy.yml",
+      "sha": "791ef4da0c6d862a3fcb37fca45f838aab4123a9",
+      "on": {
+        "workflow_dispatch": ""
+      },
+      "push_branch_matches": false
+    },
+    {
+      "path": ".github/workflows/e2e-nightly.yml",
+      "sha": "a88257e93782b13f5f49fade7f9efa32e8218902",
+      "on": {
+        "schedule": [
+          {
+            "cron": "0 3 * * *"
+          }
+        ],
+        "workflow_dispatch": ""
+      },
+      "push_branch_matches": false
+    },
+    {
+      "path": ".github/workflows/izzet-afr-snapshot-rebless.yml",
+      "sha": "6bc6016800fd98f7dc6d3ed55481ce7154855dfd",
+      "on": {
+        "push": {
+          "branches": [
+            "mayhem/izzet-science"
+          ],
+          "paths": [
+            ".github/workflows/izzet-afr-snapshot-rebless.yml"
+          ]
+        }
+      },
+      "push_branch_matches": false
+    },
+    {
+      "path": ".github/workflows/izzet-bestow-focused-diagnostics.yml",
+      "sha": "7310003d0f837a7703228c8ccd896871b8e7b28c",
+      "on": {
+        "push": {
+          "branches": [
+            "mayhem/izzet-bestow-integration"
+          ],
+          "paths": [
+            ".github/workflows/izzet-bestow-focused-diagnostics.yml"
+          ]
+        }
+      },
+      "push_branch_matches": false
+    },
+    {
+      "path": ".github/workflows/izzet-bestow-snapshot-sync.yml",
+      "sha": "2d67389ea75c1eebc3073768fac836c3aa3be43b",
+      "on": {
+        "push": {
+          "branches": [
+            "mayhem/izzet-bestow-integration"
+          ],
+          "paths": [
+            ".github/workflows/izzet-bestow-snapshot-sync.yml"
+          ]
+        }
+      },
+      "push_branch_matches": false
+    },
+    {
+      "path": ".github/workflows/izzet-c47e-failure-diagnostic.yml",
+      "sha": "c4bec4ca7ab1325f7fb2ce10f2d09e0bb8da80ab",
+      "on": {
+        "push": {
+          "branches": [
+            "mayhem/izzet-c47e-diagnostic-20260926"
+          ],
+          "paths": [
+            ".github/workflows/izzet-c47e-failure-diagnostic.yml",
+            "izzet-science/diagnostics/c47e/**"
+          ]
+        }
+      },
+      "push_branch_matches": false
+    },
+    {
+      "path": ".github/workflows/izzet-forge-valid-types-qualification.yml",
+      "sha": "e23416968dfa99d814bc0df2f1afed86116373b2",
+      "on": {
+        "push": {
+          "branches": [
+            "mayhem/izzet-forge-valid-types"
+          ],
+          "paths": [
+            ".github/workflows/izzet-forge-valid-types-qualification.yml",
+            "mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/ForgeOfHeroesScenarioTest.kt"
+          ]
+        }
+      },
+      "push_branch_matches": false
+    },
+    {
+      "path": ".github/workflows/izzet-science-validation.yml",
+      "sha": "d9b0f098792d11d997fc3ffdaf7ca2cf92369462",
+      "on": {
+        "workflow_dispatch": ""
+      },
+      "push_branch_matches": false
+    },
+    {
+      "path": ".github/workflows/izzet-shared-priority-receiving.yml",
+      "sha": "7875cb64deb39e6db2745efded5f189750d7bd06",
+      "on": {
+        "push": {
+          "branches": [
+            "mayhem/izzet-vines-targeting"
+          ],
+          "paths": [
+            ".github/workflows/izzet-shared-priority-receiving.yml",
+            "rules-engine/src/**",
+            "game-server/src/**",
+            "ai/src/**",
+            "mtg-sdk/src/**",
+            "mtg-sets/**/src/**",
+            "lab-coordinator/shared-capabilities/collect-priority-receiving.py",
+            "lab-coordinator/shared-capabilities/receiving-case-banks-v1.json",
+            "izzet-science/shared-priority-receiving/**"
+          ]
+        }
+      },
+      "push_branch_matches": false
+    },
+    {
+      "path": ".github/workflows/izzet-snapshot-rebless.yml",
+      "sha": "a00b823ff9d5a5b55981c5e4d14705c80fadc2a6",
+      "on": {
+        "workflow_dispatch": ""
+      },
+      "push_branch_matches": false
+    },
+    {
+      "path": ".github/workflows/izzet-som-snapshot-rebless.yml",
+      "sha": "fcfc4f75a4ab80c4a6c9c7c5a61955cd7b501bd1",
+      "on": {
+        "push": {
+          "branches": [
+            "mayhem/izzet-science"
+          ],
+          "paths": [
+            ".github/workflows/izzet-som-snapshot-rebless.yml"
+          ]
+        }
+      },
+      "push_branch_matches": false
+    },
+    {
+      "path": ".github/workflows/izzet-v03-lethal.yml",
+      "sha": "ed69c0c34350304ad059fa831d583664f5a2fd20",
+      "on": {
+        "workflow_dispatch": ""
+      },
+      "push_branch_matches": false
+    },
+    {
+      "path": ".github/workflows/izzet-v09-phase26-public-state-compiler.yml",
+      "sha": "ad69884e7371f5f1951fd4bbb7ad0d5cffdd7c10",
+      "on": {
+        "pull_request": {
+          "paths": [
+            "izzet-science/sim/public_action_compiler.py",
+            "izzet-science/sim/validate_v09_phase26_public_state_compiler.py",
+            "izzet-science/v09-phase26-public-state-action-compiler-gate.md",
+            ".github/workflows/izzet-v09-phase26-public-state-compiler.yml"
+          ]
+        },
+        "workflow_dispatch": ""
+      },
+      "push_branch_matches": false
+    },
+    {
+      "path": ".github/workflows/izzet-v09-phase27-observed-action-behavior.yml",
+      "sha": "c2d533604fbfb70448dbad48aac2b8a8817c0f9f",
+      "on": {
+        "pull_request": {
+          "paths": [
+            "izzet-science/sim/observed_action_behavior.py",
+            "izzet-science/sim/validate_v09_phase27_observed_action_behavior.py",
+            "izzet-science/v09-phase27-observed-action-behavior-gate.md",
+            "izzet-science/v09-phase26-public-state-action-compiler-accepted.md",
+            ".github/workflows/izzet-v09-phase27-observed-action-behavior.yml"
+          ]
+        },
+        "workflow_dispatch": ""
+      },
+      "push_branch_matches": false
+    },
+    {
+      "path": ".github/workflows/izzet-v09-phase28-public-integration.yml",
+      "sha": "2bd2eaf0d5329648182b68e0db771caa96ec6630",
+      "on": {
+        "pull_request": {
+          "paths": [
+            "izzet-science/sim/public_integration.py",
+            "izzet-science/sim/validate_v09_phase28_public_integration.py",
+            "izzet-science/v09-phase28-public-integration-gate.md",
+            "izzet-science/v09-phase27-observed-action-behavior-accepted.md",
+            ".github/workflows/izzet-v09-phase28-public-integration.yml"
+          ]
+        },
+        "workflow_dispatch": ""
+      },
+      "push_branch_matches": false
+    },
+    {
+      "path": ".github/workflows/izzet-v09-phase29-sampled-pilot-design.yml",
+      "sha": "df5dd4d10ec97dbc9f0d746695176d1f7a912609",
+      "on": {
+        "pull_request": {
+          "paths": [
+            "izzet-science/v09-phase29-sampled-pilot-design-gate.md",
+            "izzet-science/sim/validate_v09_phase29_sampled_pilot_design.py",
+            ".github/workflows/izzet-v09-phase29-sampled-pilot-design.yml"
+          ]
+        },
+        "workflow_dispatch": ""
+      },
+      "push_branch_matches": false
+    },
+    {
+      "path": ".github/workflows/izzet-v09-phase30-runner-construction.yml",
+      "sha": "7434618fe2df23fc4c395aafcf63e2cc9c2b61fb",
+      "on": {
+        "pull_request": {
+          "paths": [
+            "izzet-science/v09-phase30-runner-construction-gate.md",
+            "izzet-science/sim/sampled_pilot_runner.py",
+            "izzet-science/sim/validate_v09_phase30_runner_construction.py",
+            ".github/workflows/izzet-v09-phase30-runner-construction.yml"
+          ]
+        },
+        "workflow_dispatch": ""
+      },
+      "push_branch_matches": false
+    },
+    {
+      "path": ".github/workflows/izzet-v09-phase31-metadata-repair-audit.yml",
+      "sha": "a219891813d793626e1d0b7e7ce9aa63673c68f8",
+      "on": {
+        "pull_request": {
+          "paths": [
+            "izzet-science/v09-phase31-seed-freeze-metadata-repair.md",
+            "izzet-science/seed-registry-v1.json",
+            "izzet-science/sim/sampled_pilot_runner.py",
+            "izzet-science/sim/validate_v09_phase31_metadata_repair.py",
+            ".github/workflows/izzet-v09-phase31-metadata-repair-audit.yml"
+          ]
+        },
+        "workflow_dispatch": ""
+      },
+      "push_branch_matches": false
+    },
+    {
+      "path": ".github/workflows/izzet-v09-phase31-one-time-seed-freeze.yml",
+      "sha": "9dfc0bcd71ad41807b4b0a47ee664779fef67bb7",
+      "on": {
+        "workflow_dispatch": ""
+      },
+      "push_branch_matches": false
+    },
+    {
+      "path": ".github/workflows/izzet-v09-phase31-seed-tooling-static.yml",
+      "sha": "51410d4053edbde759588dced7206f93eee21aa2",
+      "on": {
+        "pull_request": {
+          "paths": [
+            "izzet-science/v09-phase31-seed-vector-freeze-gate.md",
+            "izzet-science/seed-registry-v1.json",
+            "izzet-science/sim/phase31_seed_vector.py",
+            "izzet-science/sim/validate_v09_phase31_seed_tooling.py",
+            ".github/workflows/izzet-v09-phase31-seed-tooling-static.yml"
+          ]
+        },
+        "workflow_dispatch": ""
+      },
+      "push_branch_matches": false
+    },
+    {
+      "path": ".github/workflows/izzet-v09-phase32-execution-readiness.yml",
+      "sha": "7ce482bebd8ea217fa3a82495fd819efeb0e8f49",
+      "on": {
+        "pull_request": {
+          "paths": [
+            "izzet-science/v09-phase32-execution-readiness-gate.md",
+            "izzet-science/v09-phase31-seed-vector-freeze-accepted.md",
+            "izzet-science/sim/phase32_execution_readiness.py",
+            "izzet-science/sim/validate_v09_phase32_execution_readiness.py",
+            ".github/workflows/izzet-v09-phase32-execution-readiness.yml"
+          ]
+        },
+        "workflow_dispatch": ""
+      },
+      "push_branch_matches": false
+    },
+    {
+      "path": ".github/workflows/izzet-v09-phase33-position1-authorization.yml",
+      "sha": "4505bda24600f12716d877ade423b6c7a61305e4",
+      "on": {
+        "pull_request": {
+          "paths": [
+            "izzet-science/v09-phase33-position1-execution-authorization-gate.md",
+            "izzet-science/v09-phase32-execution-readiness-accepted.md",
+            "izzet-science/sim/phase33_position1_authorization.py",
+            "izzet-science/sim/validate_v09_phase33_position1_authorization.py",
+            ".github/workflows/izzet-v09-phase33-position1-authorization.yml"
+          ]
+        },
+        "workflow_dispatch": ""
+      },
+      "push_branch_matches": false
+    },
+    {
+      "path": ".github/workflows/izzet-v09-position1-batch-aa-snapshot-rebless.yml",
+      "sha": "1223dc414cf7a9207e6d264bcecfb7503a975550",
+      "on": {
+        "workflow_dispatch": ""
+      },
+      "push_branch_matches": false
+    },
+    {
+      "path": ".github/workflows/izzet-v09-position1-batch-ab-snapshot-rebless.yml",
+      "sha": "0c51403bf7a4dfe64b49ce69ad27f3992645a7a2",
+      "on": {
+        "workflow_dispatch": ""
+      },
+      "push_branch_matches": false
+    },
+    {
+      "path": ".github/workflows/izzet-v09-position1-batch-ac-snapshot-rebless.yml",
+      "sha": "bfeefbcf41fff7d5bf2ef210cc288f40279e673d",
+      "on": {
+        "push": {
+          "branches": [
+            "mayhem/izzet-science"
+          ],
+          "paths": [
+            ".github/workflows/izzet-v09-position1-batch-ac-snapshot-rebless.yml"
+          ]
+        }
+      },
+      "push_branch_matches": false
+    },
+    {
+      "path": ".github/workflows/izzet-v09-position1-batch-ad-snapshot-rebless.yml",
+      "sha": "71b88e5ecd2c1319efdc00b46396aad5d87431f7",
+      "on": {
+        "push": {
+          "branches": [
+            "mayhem/izzet-science"
+          ],
+          "paths": [
+            ".github/workflows/izzet-v09-position1-batch-ad-snapshot-rebless.yml"
+          ]
+        }
+      },
+      "push_branch_matches": false
+    },
+    {
+      "path": ".github/workflows/izzet-v09-position1-batch-ae-snapshot-rebless.yml",
+      "sha": "6b7dffcead3363475e4126f264bd3859a78f0f02",
+      "on": {
+        "workflow_dispatch": ""
+      },
+      "push_branch_matches": false
+    },
+    {
+      "path": ".github/workflows/izzet-v09-position1-batch-af-snapshot-rebless.yml",
+      "sha": "6c384fee1150c20aa984090fde99ed38d83a01bc",
+      "on": {
+        "workflow_dispatch": ""
+      },
+      "push_branch_matches": false
+    },
+    {
+      "path": ".github/workflows/izzet-v09-position1-batch-ag-snapshot-rebless.yml",
+      "sha": "513bcba818a85a30b9049662e7ce2aa8cfc11fab",
+      "on": {
+        "push": {
+          "branches": [
+            "mayhem/izzet-science"
+          ],
+          "paths": [
+            ".github/workflows/izzet-v09-position1-batch-ag-snapshot-rebless.yml"
+          ]
+        }
+      },
+      "push_branch_matches": false
+    },
+    {
+      "path": ".github/workflows/izzet-v09-position1-batch-ah-snapshot-rebless.yml",
+      "sha": "ace34f75bb53b03e5ba2ab726ee887db545ee865",
+      "on": {
+        "push": {
+          "branches": [
+            "mayhem/izzet-science"
+          ],
+          "paths": [
+            ".github/workflows/izzet-v09-position1-batch-ah-snapshot-rebless.yml"
+          ]
+        }
+      },
+      "push_branch_matches": false
+    },
+    {
+      "path": ".github/workflows/izzet-v09-position1-batch-ai-snapshot-rebless.yml",
+      "sha": "af70dbfbd24c5c5baf405da3cc652bd4f02b9b4d",
+      "on": {
+        "push": {
+          "branches": [
+            "mayhem/izzet-science"
+          ],
+          "paths": [
+            ".github/workflows/izzet-v09-position1-batch-ai-snapshot-rebless.yml"
+          ]
+        }
+      },
+      "push_branch_matches": false
+    },
+    {
+      "path": ".github/workflows/izzet-v09-position1-batch-aj-snapshot-rebless.yml",
+      "sha": "d5554423ad679dde4af3e9af36387da2c46a5503",
+      "on": {
+        "push": {
+          "branches": [
+            "mayhem/izzet-science"
+          ],
+          "paths": [
+            ".github/workflows/izzet-v09-position1-batch-aj-snapshot-rebless.yml",
+            "mtg-sets/2003-2007/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/SpiritLinkBatchAJScenarioTest.kt"
+          ]
+        }
+      },
+      "push_branch_matches": false
+    },
+    {
+      "path": ".github/workflows/izzet-v09-position1-batch-c-snapshot-rebless.yml",
+      "sha": "093f9e57f19336d6f366eff6536cae933571db58",
+      "on": {
+        "push": {
+          "branches": [
+            "mayhem/izzet-science"
+          ],
+          "paths": [
+            ".github/workflows/izzet-v09-position1-batch-c-snapshot-rebless.yml"
+          ]
+        }
+      },
+      "push_branch_matches": false
+    },
+    {
+      "path": ".github/workflows/izzet-v09-position1-batch-d-snapshot-rebless.yml",
+      "sha": "dcb63a4ea402dc8adcd2b0401251fb5337f1fc07",
+      "on": {
+        "push": {
+          "branches": [
+            "mayhem/izzet-science"
+          ],
+          "paths": [
+            ".github/workflows/izzet-v09-position1-batch-d-snapshot-rebless.yml"
+          ]
+        }
+      },
+      "push_branch_matches": false
+    },
+    {
+      "path": ".github/workflows/izzet-v09-position1-batch-e-snapshot-rebless.yml",
+      "sha": "febe75d26b4da85fcb79ce1cacf36f2b81bf82e9",
+      "on": {
+        "push": {
+          "branches": [
+            "mayhem/izzet-science"
+          ],
+          "paths": [
+            ".github/workflows/izzet-v09-position1-batch-e-snapshot-rebless.yml"
+          ]
+        }
+      },
+      "push_branch_matches": false
+    },
+    {
+      "path": ".github/workflows/izzet-v09-position1-batch-f-snapshot-rebless.yml",
+      "sha": "a50623d7e9cd50b3e195767ecf199aa0b2b40067",
+      "on": {
+        "push": {
+          "branches": [
+            "mayhem/izzet-science"
+          ],
+          "paths": [
+            ".github/workflows/izzet-v09-position1-batch-f-snapshot-rebless.yml"
+          ]
+        }
+      },
+      "push_branch_matches": false
+    },
+    {
+      "path": ".github/workflows/izzet-v09-position1-batch-g-snapshot-rebless.yml",
+      "sha": "9d5e29ec37e48762f791bbaddd4c15ab171dec37",
+      "on": {
+        "push": {
+          "branches": [
+            "mayhem/izzet-science"
+          ],
+          "paths": [
+            ".github/workflows/izzet-v09-position1-batch-g-snapshot-rebless.yml"
+          ]
+        }
+      },
+      "push_branch_matches": false
+    },
+    {
+      "path": ".github/workflows/izzet-v09-position1-batch-h-snapshot-rebless.yml",
+      "sha": "385f3b68cea0fa7be7728fc0955e672d7dcb3cf5",
+      "on": {
+        "push": {
+          "branches": [
+            "mayhem/izzet-science"
+          ],
+          "paths": [
+            ".github/workflows/izzet-v09-position1-batch-h-snapshot-rebless.yml"
+          ]
+        }
+      },
+      "push_branch_matches": false
+    },
+    {
+      "path": ".github/workflows/izzet-v09-position1-batch-i-snapshot-rebless.yml",
+      "sha": "db5d8bbd2a03b10ac4966356b9aaf2a2c20978a2",
+      "on": {
+        "push": {
+          "branches": [
+            "mayhem/izzet-science"
+          ],
+          "paths": [
+            ".github/workflows/izzet-v09-position1-batch-i-snapshot-rebless.yml"
+          ]
+        }
+      },
+      "push_branch_matches": false
+    },
+    {
+      "path": ".github/workflows/izzet-v09-position1-batch-j-snapshot-rebless.yml",
+      "sha": "1b5ff3a69e22ea78c84474f92616c6913f58e748",
+      "on": {
+        "push": {
+          "branches": [
+            "mayhem/izzet-science"
+          ],
+          "paths": [
+            ".github/workflows/izzet-v09-position1-batch-j-snapshot-rebless.yml"
+          ]
+        }
+      },
+      "push_branch_matches": false
+    },
+    {
+      "path": ".github/workflows/izzet-v09-position1-batch-k-snapshot-rebless.yml",
+      "sha": "1434e9c7ae2eacf8634fa6617b6849a999940b9d",
+      "on": {
+        "push": {
+          "branches": [
+            "mayhem/izzet-science"
+          ],
+          "paths": [
+            ".github/workflows/izzet-v09-position1-batch-k-snapshot-rebless.yml"
+          ]
+        }
+      },
+      "push_branch_matches": false
+    },
+    {
+      "path": ".github/workflows/izzet-v09-position1-batch-l-snapshot-rebless.yml",
+      "sha": "c1029cdd540435501ae8f219e58529900aed8af9",
+      "on": {
+        "push": {
+          "branches": [
+            "mayhem/izzet-science"
+          ],
+          "paths": [
+            ".github/workflows/izzet-v09-position1-batch-l-snapshot-rebless.yml"
+          ]
+        }
+      },
+      "push_branch_matches": false
+    },
+    {
+      "path": ".github/workflows/izzet-v09-position1-batch-m-snapshot-rebless.yml",
+      "sha": "4129bb3d109f8ef1730e1fef63ec629b115b971a",
+      "on": {
+        "push": {
+          "branches": [
+            "mayhem/izzet-science"
+          ],
+          "paths": [
+            ".github/workflows/izzet-v09-position1-batch-m-snapshot-rebless.yml"
+          ]
+        }
+      },
+      "push_branch_matches": false
+    },
+    {
+      "path": ".github/workflows/izzet-v09-position1-batch-n-snapshot-rebless.yml",
+      "sha": "4a38926a4ad7186cf5eef4606ec79cedd79bac8b",
+      "on": {
+        "push": {
+          "branches": [
+            "mayhem/izzet-science"
+          ],
+          "paths": [
+            ".github/workflows/izzet-v09-position1-batch-n-snapshot-rebless.yml"
+          ]
+        }
+      },
+      "push_branch_matches": false
+    },
+    {
+      "path": ".github/workflows/izzet-v09-position1-batch-o-snapshot-rebless.yml",
+      "sha": "617a10ddc4a82b7b7f2f4c0628cdbc89414ea3ae",
+      "on": {
+        "push": {
+          "branches": [
+            "mayhem/izzet-science"
+          ],
+          "paths": [
+            ".github/workflows/izzet-v09-position1-batch-o-snapshot-rebless.yml"
+          ]
+        }
+      },
+      "push_branch_matches": false
+    },
+    {
+      "path": ".github/workflows/izzet-v09-position1-batch-p-snapshot-rebless.yml",
+      "sha": "65dd5cce5cbb0a9e5c85c3f5a5f184b8171f14ed",
+      "on": {
+        "push": {
+          "branches": [
+            "mayhem/izzet-science"
+          ],
+          "paths": [
+            ".github/workflows/izzet-v09-position1-batch-p-snapshot-rebless.yml"
+          ]
+        }
+      },
+      "push_branch_matches": false
+    },
+    {
+      "path": ".github/workflows/izzet-v09-position1-batch-q-snapshot-rebless.yml",
+      "sha": "51dec2bc449cde802fdd630a9c9015943b2300c1",
+      "on": {
+        "push": {
+          "branches": [
+            "mayhem/izzet-science"
+          ],
+          "paths": [
+            ".github/workflows/izzet-v09-position1-batch-q-snapshot-rebless.yml"
+          ]
+        }
+      },
+      "push_branch_matches": false
+    },
+    {
+      "path": ".github/workflows/izzet-v09-position1-batch-r-snapshot-rebless.yml",
+      "sha": "9c8e35475184eb3231b9dc181ec320c7d9116ec8",
+      "on": {
+        "push": {
+          "branches": [
+            "mayhem/izzet-science"
+          ],
+          "paths": [
+            ".github/workflows/izzet-v09-position1-batch-r-snapshot-rebless.yml"
+          ]
+        }
+      },
+      "push_branch_matches": false
+    },
+    {
+      "path": ".github/workflows/izzet-v09-position1-batch-s-snapshot-rebless.yml",
+      "sha": "d90abf51415baeac3808a819b107940a5811bed3",
+      "on": {
+        "push": {
+          "branches": [
+            "mayhem/izzet-science"
+          ],
+          "paths": [
+            ".github/workflows/izzet-v09-position1-batch-s-snapshot-rebless.yml"
+          ]
+        }
+      },
+      "push_branch_matches": false
+    },
+    {
+      "path": ".github/workflows/izzet-v09-position1-batch-t-snapshot-rebless.yml",
+      "sha": "b9148748a71e245d20900454a9fbdd7f5433d6d3",
+      "on": {
+        "push": {
+          "branches": [
+            "mayhem/izzet-science"
+          ],
+          "paths": [
+            ".github/workflows/izzet-v09-position1-batch-t-snapshot-rebless.yml"
+          ]
+        }
+      },
+      "push_branch_matches": false
+    },
+    {
+      "path": ".github/workflows/izzet-v09-position1-batch-u-snapshot-rebless.yml",
+      "sha": "8c65dcc6a60e3ce2a580fbb47d4e39e673b35bca",
+      "on": {
+        "push": {
+          "branches": [
+            "mayhem/izzet-science"
+          ],
+          "paths": [
+            ".github/workflows/izzet-v09-position1-batch-u-snapshot-rebless.yml"
+          ]
+        }
+      },
+      "push_branch_matches": false
+    },
+    {
+      "path": ".github/workflows/izzet-v09-position1-batch-v-snapshot-rebless.yml",
+      "sha": "4af79044c52ab171992cfb48c2ee166e108e3005",
+      "on": {
+        "push": {
+          "branches": [
+            "mayhem/izzet-science"
+          ],
+          "paths": [
+            ".github/workflows/izzet-v09-position1-batch-v-snapshot-rebless.yml"
+          ]
+        }
+      },
+      "push_branch_matches": false
+    },
+    {
+      "path": ".github/workflows/izzet-v09-position1-batch-w-snapshot-rebless.yml",
+      "sha": "a354ba3890fcd9639f2ae819eacbb8966cdffc1a",
+      "on": {
+        "push": {
+          "branches": [
+            "mayhem/izzet-science"
+          ],
+          "paths": [
+            ".github/workflows/izzet-v09-position1-batch-w-snapshot-rebless.yml"
+          ]
+        }
+      },
+      "push_branch_matches": false
+    },
+    {
+      "path": ".github/workflows/izzet-v09-position1-batch-x-snapshot-rebless.yml",
+      "sha": "601d4efcc21e837b0b8d8e40c10abec4b06907b9",
+      "on": {
+        "push": {
+          "branches": [
+            "mayhem/izzet-science"
+          ],
+          "paths": [
+            ".github/workflows/izzet-v09-position1-batch-x-snapshot-rebless.yml"
+          ]
+        }
+      },
+      "push_branch_matches": false
+    },
+    {
+      "path": ".github/workflows/izzet-v09-position1-batch-y-snapshot-rebless.yml",
+      "sha": "b6064d691ae039e45ed1ad0690787eabd9accf58",
+      "on": {
+        "push": {
+          "branches": [
+            "mayhem/izzet-science"
+          ],
+          "paths": [
+            ".github/workflows/izzet-v09-position1-batch-y-snapshot-rebless.yml"
+          ]
+        }
+      },
+      "push_branch_matches": false
+    },
+    {
+      "path": ".github/workflows/izzet-v09-position1-batch-z-snapshot-rebless.yml",
+      "sha": "67f46662f649035bbbeaec90b7fb1c34165e5ea5",
+      "on": {
+        "workflow_dispatch": ""
+      },
+      "push_branch_matches": false
+    },
+    {
+      "path": ".github/workflows/izzet-v09-position1-cho-manno-qualification.yml",
+      "sha": "1d481e9562faa851102a199e5b4725828a897047",
+      "on": {
+        "push": {
+          "branches": [
+            "mayhem/izzet-bestow-integration"
+          ],
+          "paths": [
+            ".github/workflows/izzet-v09-position1-cho-manno-qualification.yml"
+          ]
+        }
+      },
+      "push_branch_matches": false
+    },
+    {
+      "path": ".github/workflows/izzet-v09-position1-engine-batch-a.yml",
+      "sha": "199102779e2e3ebbde1382a6dc18007adc0904d6",
+      "on": {
+        "pull_request": {
+          "paths": [
+            "mtg-sets/2003-2007/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/csp/cards/BorealDruid.kt",
+            "gym/src/test/kotlin/com/wingedsheep/gym/IzzetScienceVeteranBeastriderEngineReadinessTest.kt",
+            "izzet-science/position1-engine-gap-triage.json",
+            "izzet-science/v09-position1-engine-gap-triage-correction-a.md",
+            "izzet-science/v09-position1-engine-batch-a-gate.md",
+            ".github/workflows/izzet-v09-position1-engine-batch-a.yml"
+          ]
+        },
+        "workflow_dispatch": ""
+      },
+      "push_branch_matches": false
+    },
+    {
+      "path": ".github/workflows/izzet-v09-position1-engine-batch-aa.yml",
+      "sha": "d93266257ca26bd9c5d73e065d3c3b5dccee05f6",
+      "on": {
+        "push": {
+          "branches": [
+            "mayhem/izzet-science"
+          ],
+          "paths": [
+            ".github/workflows/izzet-v09-position1-engine-batch-aa.yml"
+          ]
+        }
+      },
+      "push_branch_matches": false
+    },
+    {
+      "path": ".github/workflows/izzet-v09-position1-engine-batch-ab.yml",
+      "sha": "870c68013829efb1ad5266e3ef9e21ecc4573c48",
+      "on": {
+        "push": {
+          "branches": [
+            "mayhem/izzet-science"
+          ],
+          "paths": [
+            ".github/workflows/izzet-v09-position1-engine-batch-ab.yml"
+          ]
+        }
+      },
+      "push_branch_matches": false
+    },
+    {
+      "path": ".github/workflows/izzet-v09-position1-engine-batch-ac.yml",
+      "sha": "cc3467aced57baffce83a319c1b45b928886a07b",
+      "on": {
+        "push": {
+          "branches": [
+            "mayhem/izzet-science"
+          ],
+          "paths": [
+            ".github/workflows/izzet-v09-position1-engine-batch-ac.yml"
+          ]
+        }
+      },
+      "push_branch_matches": false
+    },
+    {
+      "path": ".github/workflows/izzet-v09-position1-engine-batch-ad.yml",
+      "sha": "0a4bc612f9b387a2d67361e544dec4dd0bd7e8b3",
+      "on": {
+        "push": {
+          "branches": [
+            "mayhem/izzet-science"
+          ],
+          "paths": [
+            ".github/workflows/izzet-v09-position1-engine-batch-ad.yml"
+          ]
+        }
+      },
+      "push_branch_matches": false
+    },
+    {
+      "path": ".github/workflows/izzet-v09-position1-engine-batch-ae.yml",
+      "sha": "eec896969733012e6c867b0e2bef627a1164d1a6",
+      "on": {
+        "push": {
+          "branches": [
+            "mayhem/izzet-science"
+          ],
+          "paths": [
+            ".github/workflows/izzet-v09-position1-engine-batch-ae.yml"
+          ]
+        }
+      },
+      "push_branch_matches": false
+    },
+    {
+      "path": ".github/workflows/izzet-v09-position1-engine-batch-af.yml",
+      "sha": "93ee2bc1f5164978f3c6307b308c8e1988d95144",
+      "on": {
+        "push": {
+          "branches": [
+            "mayhem/izzet-science"
+          ],
+          "paths": [
+            ".github/workflows/izzet-v09-position1-engine-batch-af.yml"
+          ]
+        }
+      },
+      "push_branch_matches": false
+    },
+    {
+      "path": ".github/workflows/izzet-v09-position1-engine-batch-ag.yml",
+      "sha": "de1fe943165e3bb260554d7cecdafc37860cb41b",
+      "on": {
+        "push": {
+          "branches": [
+            "mayhem/izzet-science"
+          ],
+          "paths": [
+            ".github/workflows/izzet-v09-position1-engine-batch-ag.yml"
+          ]
+        }
+      },
+      "push_branch_matches": false
+    },
+    {
+      "path": ".github/workflows/izzet-v09-position1-engine-batch-ah.yml",
+      "sha": "a098cf4be3a54bd05d3d3d14c643d53a698833e0",
+      "on": {
+        "push": {
+          "branches": [
+            "mayhem/izzet-science"
+          ],
+          "paths": [
+            ".github/workflows/izzet-v09-position1-engine-batch-ah.yml"
+          ]
+        }
+      },
+      "push_branch_matches": false
+    },
+    {
+      "path": ".github/workflows/izzet-v09-position1-engine-batch-ai.yml",
+      "sha": "e7537c909888456dd5d904019affb9af5ad0697e",
+      "on": {
+        "push": {
+          "branches": [
+            "mayhem/izzet-science"
+          ],
+          "paths": [
+            ".github/workflows/izzet-v09-position1-engine-batch-ai.yml"
+          ]
+        }
+      },
+      "push_branch_matches": false
+    },
+    {
+      "path": ".github/workflows/izzet-v09-position1-engine-batch-aj.yml",
+      "sha": "1eb3f365b070fa9b01797799f5c7e52e9d6a87e3",
+      "on": {
+        "push": {
+          "branches": [
+            "mayhem/izzet-science"
+          ],
+          "paths": [
+            ".github/workflows/izzet-v09-position1-engine-batch-aj.yml"
+          ]
+        }
+      },
+      "push_branch_matches": false
+    },
+    {
+      "path": ".github/workflows/izzet-v09-position1-engine-batch-ak.yml",
+      "sha": "3f4da269ae8de1bde3908fbca7ca39ba467f4ad9",
+      "on": {
+        "push": {
+          "branches": [
+            "mayhem/izzet-science"
+          ],
+          "paths": [
+            ".github/workflows/izzet-v09-position1-engine-batch-ak.yml",
+            "mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/m20/cards/BrightwoodTracker.kt",
+            "mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/mh2/cards/DeepwoodDenizen.kt",
+            "mtg-sets/2024/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/j25/**",
+            "mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/BrightwoodTrackerScenarioTest.kt",
+            "mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/DeepwoodDenizenScenarioTest.kt",
+            "mtg-sets/2024/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/ShardlessOutlanderScenarioTest.kt"
+          ]
+        }
+      },
+      "push_branch_matches": false
+    },
+    {
+      "path": ".github/workflows/izzet-v09-position1-engine-batch-al.yml",
+      "sha": "2ba7aa5bdaea3b7e4a96bf4921967d15cc38bef5",
+      "on": {
+        "push": {
+          "branches": [
+            "mayhem/izzet-science"
+          ],
+          "paths": [
+            ".github/workflows/izzet-v09-position1-engine-batch-al.yml",
+            "mtg-sets/2003-2007/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/tsp/cards/TemporalIsolation.kt",
+            "mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/clb/cards/GuardianNaga.kt",
+            "mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/emn/cards/UlvenwaldCaptive.kt",
+            "mtg-sets/2003-2007/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/TemporalIsolationScenarioTest.kt",
+            "mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/GuardianNagaScenarioTest.kt",
+            "mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/UlvenwaldCaptiveScenarioTest.kt"
+          ]
+        }
+      },
+      "push_branch_matches": false
+    },
+    {
+      "path": ".github/workflows/izzet-v09-position1-engine-batch-am.yml",
+      "sha": "f28108c9b4e50906226a597a090a5bb4e59f9d3b",
+      "on": {
+        "push": {
+          "branches": [
+            "mayhem/izzet-science"
+          ],
+          "paths": [
+            ".github/workflows/izzet-v09-position1-engine-batch-am.yml",
+            "mtg-sets/2023/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/mom/cards/CosmicHunger.kt",
+            "mtg-sets/2023/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/CosmicHungerScenarioTest.kt",
+            "gym/src/test/kotlin/com/wingedsheep/gym/IzzetSciencePdhMechanicsQualificationTest.kt",
+            "mtg-sdk/src/test/kotlin/com/wingedsheep/sdk/serialization/CardTypePredicateSerializationTest.kt",
+            "rules-engine/src/test/kotlin/com/wingedsheep/engine/predicates/FixedCardTypePredicateTest.kt",
+            "mtgish-tooling/src/test/kotlin/com/wingedsheep/tooling/coverage/emitter/BattleCardPredicateEmitterTest.kt"
+          ]
+        }
+      },
+      "push_branch_matches": false
+    },
+    {
+      "path": ".github/workflows/izzet-v09-position1-engine-batch-an.yml",
+      "sha": "f15a9a536575ac15d9ab1a55ac78105d123f845a",
+      "on": {
+        "push": {
+          "branches": [
+            "mayhem/izzet-science"
+          ],
+          "paths": [
+            ".github/workflows/izzet-v09-position1-engine-batch-an.yml",
+            "mtg-sets/2024/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/mh3/cards/ColossalDreadmask.kt",
+            "mtg-sets/2024/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/ColossalDreadmaskScenarioTest.kt",
+            "rules-engine/src/test/kotlin/com/wingedsheep/engine/event/BattlefieldEntrySnapshotTest.kt",
+            "rules-engine/src/test/kotlin/com/wingedsheep/engine/handlers/effects/AttachEquipmentObjectIdentityTest.kt"
+          ]
+        }
+      },
+      "push_branch_matches": false
+    },
+    {
+      "path": ".github/workflows/izzet-v09-position1-engine-batch-ao.yml",
+      "sha": "35e4bf08054607804b3d8ac3c97205bf3e578a38",
+      "on": {
+        "push": {
+          "branches": [
+            "mayhem/izzet-science"
+          ],
+          "paths": [
+            ".github/workflows/izzet-v09-position1-engine-batch-ao.yml",
+            "mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/iko/cards/RamThrough.kt",
+            "mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/RamThroughScenarioTest.kt",
+            "mtg-sets/2000-2002/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/jud/cards/PrismaticStrands.kt",
+            "mtg-sets/2000-2002/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/PrismaticStrandsScenarioTest.kt",
+            "rules-engine/src/test/kotlin/com/wingedsheep/engine/mechanics/stack/FlashbackCounterDestinationTest.kt",
+            "rules-engine/src/test/kotlin/com/wingedsheep/engine/handlers/effects/ExcessDamageSelfReplacementTest.kt",
+            "rules-engine/src/test/kotlin/com/wingedsheep/engine/handlers/effects/SourceGroupDamagePreventionTest.kt"
+          ]
+        }
+      },
+      "push_branch_matches": false
+    },
+    {
+      "path": ".github/workflows/izzet-v09-position1-engine-batch-b.yml",
+      "sha": "61cad0c830b7b28d7c61984bb512c64433769a96",
+      "on": {
+        "pull_request": {
+          "paths": [
+            "mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/m21/cards/LlanowarVisionary.kt",
+            "gym/src/test/kotlin/com/wingedsheep/gym/IzzetScienceVeteranBeastriderEngineReadinessTest.kt",
+            "izzet-science/v09-position1-engine-batch-b-gate.md",
+            ".github/workflows/izzet-v09-position1-engine-batch-b.yml"
+          ]
+        },
+        "workflow_dispatch": ""
+      },
+      "push_branch_matches": false
+    },
+    {
+      "path": ".github/workflows/izzet-v09-position1-engine-batch-c.yml",
+      "sha": "318897d12ccc3ee2c2d4f943265952f480daf92d",
+      "on": {
+        "push": {
+          "branches": [
+            "mayhem/izzet-science"
+          ],
+          "paths": [
+            ".github/workflows/izzet-v09-position1-engine-batch-c.yml",
+            "mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/m13/cards/Archaeomancer.kt",
+            "mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/roe/cards/MnemonicWall.kt",
+            "mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/ArchaeomancerScenarioTest.kt",
+            "mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/MnemonicWallScenarioTest.kt",
+            "mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/afr/cards/Owlbear.kt"
+          ]
+        }
+      },
+      "push_branch_matches": false
+    },
+    {
+      "path": ".github/workflows/izzet-v09-position1-engine-batch-d.yml",
+      "sha": "374a795132d65a9e60a6c14128231d1421e016fe",
+      "on": {
+        "push": {
+          "branches": [
+            "mayhem/izzet-science"
+          ],
+          "paths": [
+            ".github/workflows/izzet-v09-position1-engine-batch-d.yml"
+          ]
+        }
+      },
+      "push_branch_matches": false
+    },
+    {
+      "path": ".github/workflows/izzet-v09-position1-engine-batch-e.yml",
+      "sha": "085841e04fc0ecb138c5d3f63ee2d018bc77cc61",
+      "on": {
+        "push": {
+          "branches": [
+            "mayhem/izzet-science"
+          ],
+          "paths": [
+            ".github/workflows/izzet-v09-position1-engine-batch-e.yml"
+          ]
+        }
+      },
+      "push_branch_matches": false
+    },
+    {
+      "path": ".github/workflows/izzet-v09-position1-engine-batch-f.yml",
+      "sha": "68558dd3e1f065679d7874e04583c7beca2bc78a",
+      "on": {
+        "push": {
+          "branches": [
+            "mayhem/izzet-science"
+          ],
+          "paths": [
+            ".github/workflows/izzet-v09-position1-engine-batch-f.yml"
+          ]
+        }
+      },
+      "push_branch_matches": false
+    },
+    {
+      "path": ".github/workflows/izzet-v09-position1-engine-batch-g.yml",
+      "sha": "74d1027080579c05aa751318b2e1cc35f3497b5c",
+      "on": {
+        "push": {
+          "branches": [
+            "mayhem/izzet-science"
+          ],
+          "paths": [
+            ".github/workflows/izzet-v09-position1-engine-batch-g.yml"
+          ]
+        }
+      },
+      "push_branch_matches": false
+    },
+    {
+      "path": ".github/workflows/izzet-v09-position1-engine-batch-h.yml",
+      "sha": "79e0fe608375cd4247744dbf4a25a1844230445c",
+      "on": {
+        "push": {
+          "branches": [
+            "mayhem/izzet-science"
+          ],
+          "paths": [
+            ".github/workflows/izzet-v09-position1-engine-batch-h.yml"
+          ]
+        }
+      },
+      "push_branch_matches": false
+    },
+    {
+      "path": ".github/workflows/izzet-v09-position1-engine-batch-i.yml",
+      "sha": "c0e0d791b20f92f3f1246dd5b47d9527d185693b",
+      "on": {
+        "push": {
+          "branches": [
+            "mayhem/izzet-science"
+          ],
+          "paths": [
+            ".github/workflows/izzet-v09-position1-engine-batch-i.yml"
+          ]
+        }
+      },
+      "push_branch_matches": false
+    },
+    {
+      "path": ".github/workflows/izzet-v09-position1-engine-batch-j.yml",
+      "sha": "7cb73f009043c425f660e5cafe3617a9253dd503",
+      "on": {
+        "push": {
+          "branches": [
+            "mayhem/izzet-science"
+          ],
+          "paths": [
+            ".github/workflows/izzet-v09-position1-engine-batch-j.yml"
+          ]
+        }
+      },
+      "push_branch_matches": false
+    },
+    {
+      "path": ".github/workflows/izzet-v09-position1-engine-batch-k.yml",
+      "sha": "450bab73c9398be2079bd2a878dd8f484c4505bb",
+      "on": {
+        "push": {
+          "branches": [
+            "mayhem/izzet-science"
+          ],
+          "paths": [
+            ".github/workflows/izzet-v09-position1-engine-batch-k.yml"
+          ]
+        }
+      },
+      "push_branch_matches": false
+    },
+    {
+      "path": ".github/workflows/izzet-v09-position1-engine-batch-l.yml",
+      "sha": "fbcc07a736088411446cdb94c0e524bb678ca9d7",
+      "on": {
+        "push": {
+          "branches": [
+            "mayhem/izzet-science"
+          ],
+          "paths": [
+            ".github/workflows/izzet-v09-position1-engine-batch-l.yml"
+          ]
+        }
+      },
+      "push_branch_matches": false
+    },
+    {
+      "path": ".github/workflows/izzet-v09-position1-engine-batch-m.yml",
+      "sha": "1ccfe21fd43c841bc69c4d0ae1becee686b78075",
+      "on": {
+        "push": {
+          "branches": [
+            "mayhem/izzet-science"
+          ],
+          "paths": [
+            ".github/workflows/izzet-v09-position1-engine-batch-m.yml"
+          ]
+        }
+      },
+      "push_branch_matches": false
+    },
+    {
+      "path": ".github/workflows/izzet-v09-position1-engine-batch-n.yml",
+      "sha": "f51ddf5ac25ff274f55c08a3ac68f91832db5acd",
+      "on": {
+        "push": {
+          "branches": [
+            "mayhem/izzet-science"
+          ],
+          "paths": [
+            ".github/workflows/izzet-v09-position1-engine-batch-n.yml"
+          ]
+        }
+      },
+      "push_branch_matches": false
+    },
+    {
+      "path": ".github/workflows/izzet-v09-position1-engine-batch-o.yml",
+      "sha": "fa3343726a8a33db2f31796b81d1d057e3524330",
+      "on": {
+        "push": {
+          "branches": [
+            "mayhem/izzet-science"
+          ],
+          "paths": [
+            ".github/workflows/izzet-v09-position1-engine-batch-o.yml"
+          ]
+        }
+      },
+      "push_branch_matches": false
+    },
+    {
+      "path": ".github/workflows/izzet-v09-position1-engine-batch-p.yml",
+      "sha": "1c1f5f3462db4a563a05f0795297a4afa87b1c97",
+      "on": {
+        "push": {
+          "branches": [
+            "mayhem/izzet-science"
+          ],
+          "paths": [
+            ".github/workflows/izzet-v09-position1-engine-batch-p.yml"
+          ]
+        }
+      },
+      "push_branch_matches": false
+    },
+    {
+      "path": ".github/workflows/izzet-v09-position1-engine-batch-q.yml",
+      "sha": "0be2ed6ac9a7e01e380c26274479c633d32f5e5a",
+      "on": {
+        "push": {
+          "branches": [
+            "mayhem/izzet-science"
+          ],
+          "paths": [
+            ".github/workflows/izzet-v09-position1-engine-batch-q.yml"
+          ]
+        }
+      },
+      "push_branch_matches": false
+    },
+    {
+      "path": ".github/workflows/izzet-v09-position1-engine-batch-r.yml",
+      "sha": "05d4fcc10403df8709d57e0f0489577120916cf6",
+      "on": {
+        "push": {
+          "branches": [
+            "mayhem/izzet-science"
+          ],
+          "paths": [
+            ".github/workflows/izzet-v09-position1-engine-batch-r.yml"
+          ]
+        }
+      },
+      "push_branch_matches": false
+    },
+    {
+      "path": ".github/workflows/izzet-v09-position1-engine-batch-s.yml",
+      "sha": "6c0c4794b8c1cb31dc777ab26ad00f2cca250187",
+      "on": {
+        "push": {
+          "branches": [
+            "mayhem/izzet-science"
+          ],
+          "paths": [
+            ".github/workflows/izzet-v09-position1-engine-batch-s.yml"
+          ]
+        }
+      },
+      "push_branch_matches": false
+    },
+    {
+      "path": ".github/workflows/izzet-v09-position1-engine-batch-t.yml",
+      "sha": "ed77f839d0428b6bbeda5af98d76a975cbac1c59",
+      "on": {
+        "push": {
+          "branches": [
+            "mayhem/izzet-science"
+          ],
+          "paths": [
+            ".github/workflows/izzet-v09-position1-engine-batch-t.yml"
+          ]
+        }
+      },
+      "push_branch_matches": false
+    },
+    {
+      "path": ".github/workflows/izzet-v09-position1-engine-batch-u.yml",
+      "sha": "19f11197e77ad8db5196d99960af95e4d78de49f",
+      "on": {
+        "push": {
+          "branches": [
+            "mayhem/izzet-science"
+          ],
+          "paths": [
+            ".github/workflows/izzet-v09-position1-engine-batch-u.yml"
+          ]
+        }
+      },
+      "push_branch_matches": false
+    },
+    {
+      "path": ".github/workflows/izzet-v09-position1-engine-batch-v.yml",
+      "sha": "927e9d75e918a2d848aaf0f028dec2703ab57e8a",
+      "on": {
+        "push": {
+          "branches": [
+            "mayhem/izzet-science"
+          ],
+          "paths": [
+            ".github/workflows/izzet-v09-position1-engine-batch-v.yml"
+          ]
+        }
+      },
+      "push_branch_matches": false
+    },
+    {
+      "path": ".github/workflows/izzet-v09-position1-engine-batch-w.yml",
+      "sha": "8c816229ff460501d0a0cf296dfc02e5e0a214c7",
+      "on": {
+        "push": {
+          "branches": [
+            "mayhem/izzet-science"
+          ],
+          "paths": [
+            ".github/workflows/izzet-v09-position1-engine-batch-w.yml"
+          ]
+        }
+      },
+      "push_branch_matches": false
+    },
+    {
+      "path": ".github/workflows/izzet-v09-position1-engine-batch-x.yml",
+      "sha": "6c3b5d878fb9c9cdb78f62774329fc7aa80eae24",
+      "on": {
+        "push": {
+          "branches": [
+            "mayhem/izzet-science"
+          ],
+          "paths": [
+            ".github/workflows/izzet-v09-position1-engine-batch-x.yml"
+          ]
+        }
+      },
+      "push_branch_matches": false
+    },
+    {
+      "path": ".github/workflows/izzet-v09-position1-engine-batch-y.yml",
+      "sha": "b9df00ef8be91b830ab778663e0409f209923878",
+      "on": {
+        "push": {
+          "branches": [
+            "mayhem/izzet-science"
+          ],
+          "paths": [
+            ".github/workflows/izzet-v09-position1-engine-batch-y.yml"
+          ]
+        }
+      },
+      "push_branch_matches": false
+    },
+    {
+      "path": ".github/workflows/izzet-v09-position1-engine-batch-z.yml",
+      "sha": "f31a6efc8448a30c33614ef25de6e0174497a264",
+      "on": {
+        "push": {
+          "branches": [
+            "mayhem/izzet-science"
+          ],
+          "paths": [
+            ".github/workflows/izzet-v09-position1-engine-batch-z.yml"
+          ]
+        }
+      },
+      "push_branch_matches": false
+    },
+    {
+      "path": ".github/workflows/izzet-v09-position1-engine-gap-inventory.yml",
+      "sha": "4c57026383a1b8d838de13ec1a671a3faf74d5fe",
+      "on": {
+        "pull_request": {
+          "paths": [
+            "izzet-science/position1-engine-gap-inventory.json",
+            "izzet-science/v09-position1-engine-gap-triage-gate.md",
+            "izzet-science/sim/validate_v09_position1_engine_gap_inventory.py",
+            ".github/workflows/izzet-v09-position1-engine-gap-inventory.yml"
+          ]
+        },
+        "workflow_dispatch": ""
+      },
+      "push_branch_matches": false
+    },
+    {
+      "path": ".github/workflows/izzet-v09-position1-engine-gap-triage.yml",
+      "sha": "00d8323add052af1d6059796ef96ae6ca428b125",
+      "on": {
+        "pull_request": {
+          "paths": [
+            "izzet-science/position1-engine-gap-inventory.json",
+            "izzet-science/position1-engine-gap-triage.json",
+            "izzet-science/v09-position1-engine-gap-triage-gate.md",
+            "izzet-science/sim/validate_v09_position1_engine_gap_triage.py",
+            ".github/workflows/izzet-v09-position1-engine-gap-triage.yml"
+          ]
+        },
+        "workflow_dispatch": ""
+      },
+      "push_branch_matches": false
+    },
+    {
+      "path": ".github/workflows/izzet-v09-position1-execution-adapter.yml",
+      "sha": "1366773538445a0a4ad2d587bf3e3c5a70b9e60b",
+      "on": {
+        "pull_request": {
+          "paths": [
+            "izzet-science/v09-position1-execution-adapter-gate.md",
+            "izzet-science/sim/phase33_position1_execution_adapter.py",
+            "izzet-science/sim/validate_v09_position1_execution_adapter.py",
+            ".github/workflows/izzet-v09-position1-execution-adapter.yml"
+          ]
+        },
+        "workflow_dispatch": ""
+      },
+      "push_branch_matches": false
+    },
+    {
+      "path": ".github/workflows/izzet-v09-position1-forge-qualification.yml",
+      "sha": "fbf002c5d3383c13f850ad6e570614c41328e446",
+      "on": {
+        "push": {
+          "branches": [
+            "mayhem/izzet-forge-commander"
+          ],
+          "paths": [
+            ".github/workflows/izzet-v09-position1-forge-qualification.yml",
+            "mtg-sdk/src/main/kotlin/**",
+            "rules-engine/src/**",
+            "mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/c18/**",
+            "mtg-sets/2017-2022/tests/build.gradle.kts",
+            "mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/ForgeOfHeroesScenarioTest.kt",
+            "gym/src/test/kotlin/com/wingedsheep/gym/IzzetScience*Test.kt"
+          ]
+        }
+      },
+      "push_branch_matches": false
+    },
+    {
+      "path": ".github/workflows/izzet-v09-position1-real-engine-coverage.yml",
+      "sha": "93f68dee37e9159a1a993636603efe4c3ba06b6d",
+      "on": {
+        "push": {
+          "branches": [
+            "mayhem/izzet-science"
+          ]
+        },
+        "pull_request": {
+          "paths": [
+            "gym/src/main/kotlin/com/wingedsheep/gym/matchup/IzzetScienceVeteranBeastriderEngineReadiness.kt",
+            "gym/src/test/kotlin/com/wingedsheep/gym/IzzetScienceVeteranBeastriderEngineReadinessTest.kt",
+            "izzet-science/v09-position1-real-engine-coverage-gate.md",
+            ".github/workflows/izzet-v09-position1-real-engine-coverage.yml",
+            "mtg-sets/1993-1999/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/mmq/cards/ChoMannosBlessing.kt",
+            "mtg-sets/1993-1999/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/ChoMannosBlessingScenarioTest.kt",
+            "mtg-sets/src/test/resources/snapshots/cards/MMQ.json",
+            "mtg-sets/2024/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/mh3/cards/NyxbornHydra.kt",
+            "mtg-sets/2024/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/NyxbornHydraScenarioTest.kt",
+            "mtg-sets/src/test/resources/snapshots/cards/MH3.json"
+          ]
+        },
+        "workflow_dispatch": ""
+      },
+      "push_branch_matches": false
+    },
+    {
+      "path": ".github/workflows/izzet-v09-position1-simultaneous-damage.yml",
+      "sha": "25751f32384a5ded3bcfd7981c9cbc9d3ecbb5b0",
+      "on": {
+        "push": {
+          "branches": [
+            "mayhem/izzet-science"
+          ],
+          "paths": [
+            ".github/workflows/izzet-v09-position1-simultaneous-damage.yml",
+            "izzet-science/v09-position1-simultaneous-damage-gate.md",
+            "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/GameEvent.kt",
+            "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/DamageUtils.kt",
+            "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/AttachmentTriggerDetector.kt",
+            "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerDetector.kt",
+            "mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/RamThroughScenarioTest.kt"
+          ]
+        }
+      },
+      "push_branch_matches": false
+    },
+    {
+      "path": ".github/workflows/izzet-v09-position1-vines-qualification.yml",
+      "sha": "2a130014b3b217469cc85260be0d46a2fafdbd71",
+      "on": {
+        "push": {
+          "branches": [
+            "mayhem/izzet-vines-targeting"
+          ]
+        }
+      },
+      "push_branch_matches": false
+    },
+    {
+      "path": ".github/workflows/izzet-v09-post-rebless-requalification.yml",
+      "sha": "9fb05bece7c936fd86b19278c36ada17670a0ca3",
+      "on": {
+        "push": {
+          "branches": [
+            "mayhem/izzet-science"
+          ],
+          "paths": [
+            ".github/workflows/izzet-v09-post-rebless-requalification.yml",
+            "mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/som/cards/GalvanicBlast.kt",
+            "mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/GalvanicBlastScenarioTest.kt",
+            "mtg-sets/src/test/resources/snapshots/cards/SOM.json"
+          ]
+        }
+      },
+      "push_branch_matches": false
+    }
+  ],
+  "allowed_next_action": "Create the exact new inert branch from the reviewed receiver with these 30 elements plus the immutable composition manifest and this review. Keep ready_for_execution=false. Verify final tree and no triggered runs after publication.",
+  "limitations": [
+    "No JVM execution or compilation performed by this reviewer.",
+    "No PR creation, workflow dispatch, receiving-bank execution or changed gate is covered by this review.",
+    "No full-runtime, pilot, source-bound gameplay admission, GitHub approval or experimental conclusion.",
+    "Original failed Izzet baseline, Arcane Denial, Mnemonic Wall and diagnostic evidence remain preserved and unresolved; receiving source requires its separately reviewed gate and fresh full CI."
+  ],
+  "gameplay_initializations_by_review": 0,
+  "errors": []
+}

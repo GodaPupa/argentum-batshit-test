@@ -1,0 +1,2519 @@
+{
+  "schema": "IZZET_SHARED_RECEIVING_COMPOSITION_PROPOSAL_V1",
+  "status": "INERT_SOURCE_CANDIDATE_REQUIRES_RECEIVING_QUALIFICATION",
+  "ready_for_execution": false,
+  "branch": "lab/izzet-shared-receiving-candidate-20260926",
+  "receiver": {
+    "commit": "bff4de452a6fca076e3c42fe7c2590862c0c234d",
+    "tree": "dc13f019c80656b03523fcc054486b088364b8f3",
+    "runtime_commit": "c47e9dbafc1fd582f81be1db04e9f35a09f067b5",
+    "runtime_tree": "f92cdeaed8be104d98b1a971347cd9c2f089f779",
+    "disposition": "Vines targeted banks pass; complete CI failed and full runtime unaccepted"
+  },
+  "shared": {
+    "commit": "994383d4a9495bcb34d5aae0e69181bcf4c04d45",
+    "tree": "4b8f4d155a37e6b66ab623d344b19cedf435d845",
+    "delta_base": "b35d4778dada69476da0f67549be7e70424c18bd",
+    "acceptance_scope": "Donor component only; receiving-specific composition is not qualified by donor evidence"
+  },
+  "method": "Scoped transfer of all changed generic production and rules-engine test files in the accepted shared delta, plus separately declared strengthening of existing two Dalkovan cases. Preserve receiver-specific repairs and all receiver card definitions, pilots, protocols, decks, golden bytes and existing assertions. This is not a wholesale divergent-history merge.",
+  "source_changes": [
+    {
+      "path": "mtg-sets/2025/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/DalkovanEncampmentScenarioTest.kt",
+      "sha256": "acb9cd9a32346e5867740305c79f42783f37e5d4202dadf1d7b8b051f60b5532",
+      "git_blob_sha1": "2146572d1cb97370a0c9ab056e219258a1ae0ea6"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/CombatResolution.kt",
+      "sha256": "e52549532d4c8805f8ba90198840b29786d84ff281c1509a2845ae38b6afb90a",
+      "git_blob_sha1": "93f1240a7d64750d888d812e00c0266c934a457d"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/GameEvent.kt",
+      "sha256": "a2907a947929359ed0e39f18da8c17e79830bee3c0d4ec79fb9b860e3e119dbe",
+      "git_blob_sha1": "d020b83de58ad289d7fa23d51a2131a738d2256f"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/ModalAndCloneContinuations.kt",
+      "sha256": "1e87d845aa1f284838bb6bea6cc6281f626e887e21f626fe302fe47eadeffdd4",
+      "git_blob_sha1": "2f5a738be0a6f8ca7379fbdf0ccc3a50d5379dd2"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/PendingDecision.kt",
+      "sha256": "c350956d4a65bc9f2b164450eea8424bc12162aa3aa34a21737931cc8222c0e4",
+      "git_blob_sha1": "16cd51fbfbb0e8778f72e6cee5d7a5fb953c8961"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/Serialization.kt",
+      "sha256": "a502273899308a398346c738fbc5e13e777e508100446ce41e166c04fde30f96",
+      "git_blob_sha1": "3fe1e7aa169e73fb2557ce6b959657743a5bb099"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/TokenContinuations.kt",
+      "sha256": "c1856c5d7165cfe596b09be849faa855d9d7ec5b7bcf3deeb36c8a01bdaf4cd0",
+      "git_blob_sha1": "2d50fb85d0c6c6ef4be5c6806212631821ccd8ba"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerDetector.kt",
+      "sha256": "2ad1bc8875440b177d29d38e1c195cbba26c84537753c9a075c63ccd63f90189",
+      "git_blob_sha1": "37f1e0e038f91634005a3e7ba46e2278828ac701"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/ContinuationHandler.kt",
+      "sha256": "a8091ebb5e745e48765d38f01f6f21052b98ec4b0f52da34076882bbd90edccc",
+      "git_blob_sha1": "4bfbcbaae0eddd1c2064cdc80949e1357298670a"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/decision/DecisionValidators.kt",
+      "sha256": "d2f82ea8237dc6a642005e6a6e12a2148555240a2ed93786a24df02af650d3ee",
+      "git_blob_sha1": "dc1f52c160432bf9fcdf421e60ce46dabd0e4313"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/CombatContinuationResumer.kt",
+      "sha256": "d447fe5fa911f5decad26f7071abb9c51ba4863837cf0ff5a4f25de34ec86951",
+      "git_blob_sha1": "7dac54a45af972aff7abb6678d47593ffe76404e"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/CoreAutoResumerModule.kt",
+      "sha256": "d191e92ce6bf2c27d33f5ae9f80ff2b7ce8b0d94aa6493887c9739faea9292b3",
+      "git_blob_sha1": "f9106cdde9804aab641f66ebd48f1e2bde37c72a"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/ModalAndCloneContinuationResumer.kt",
+      "sha256": "7d546e8c590c9dbc541c50cd43cfd7436354a4b7be6108a882176cb0d3131190",
+      "git_blob_sha1": "d88f826772539e858a9d215f98a5995b62fb5aac"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/ObjectReferencePropagation.kt",
+      "sha256": "44754cc29fd5abe7b850f819811a1a26af25b845396dd3439135172cb0733393",
+      "git_blob_sha1": "8b29ed5e0e786be3583a001e59ed6e8e00743ece"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/PipelineCollectionPropagation.kt",
+      "sha256": "2347f1dc0bcd3c6dbdf7c8753bd5ff892eaf80e5da7041cc8c8aaee42d534278",
+      "git_blob_sha1": "893dba15762c27b0e02f687970e4950be627d05b"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/TokenContinuationResumer.kt",
+      "sha256": "9213e0e9e7e79c10fd49b2162d38e5b31b369ed0c398f33ff6569b3e66f0a773",
+      "git_blob_sha1": "ed6782820b9a255d8ee1482ed16bdeed8fa5151a"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/token/AttackingTokenDefenderChooser.kt",
+      "sha256": "86ad9102ffaeb07333ae2cd18261430d223b945ad0206ef44f2daa8d24057a05",
+      "git_blob_sha1": "f2e8be4f7420fe51b0331b45d5d73c12d1939261"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/token/CreateTokenCopyOfTargetExecutor.kt",
+      "sha256": "21e171a049be9b361df00fd8ddceb4638b82dcd3549a16cfc994e434cdc66f38",
+      "git_blob_sha1": "58372d7ff97baa3ed7b62adb0fb9ff8933e05fbd"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/token/CreateTokenExecutor.kt",
+      "sha256": "73b714ca3613e9b31c1c6d749e2a481a045c9087f0d05b2f18d6dd1abd8dd6d1",
+      "git_blob_sha1": "f6462b2861cd457364f8599438a736a45c52e4d0"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/token/TokenCreationReplacementHelper.kt",
+      "sha256": "cbcd4b4cf9d8a47c38babd9bb2bb4623f7c5cd77be6e4f53b825a9da1062aa1a",
+      "git_blob_sha1": "a63c1e91f360f0500e42928204d49eb9efe424c1"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/legalactions/enumerators/CombatEnumerator.kt",
+      "sha256": "806c3e20163072b7b96588c695e6d6913cc39a7c70deec88f1ff31a5bc5e0c1b",
+      "git_blob_sha1": "15d5642cd0d22baeb5e8b3ccb79e62de563f784a"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/combat/CombatDamageManager.kt",
+      "sha256": "62701029cf66bf0bf419aa10f6ccef1cb19825fb033e283609fa53878f51e15e",
+      "git_blob_sha1": "81a0afc8c59fff64ed94608cd9fd682aa4cdf09a"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/combat/CombatDamageUtils.kt",
+      "sha256": "88c0205e05d03fd753aace27dbdcfd1399aeff3b4d652a6ea85299ecc95c4172",
+      "git_blob_sha1": "a9b30fe2915b38480ee8e48cf57821a29911ce12"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/combat/CombatDefenders.kt",
+      "sha256": "87543b443ca4f637617f1cbe7613c37f1c577a7754aa272786cf5c0d7be68920",
+      "git_blob_sha1": "0d629b2c355ca3c147cfa134fab4631cf2f4c50e"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/combat/DamageCalculator.kt",
+      "sha256": "651f1e507d8fd99c8aa972c1a1b2e45aa04570b39ce84f7e209e0dd5c2909a08",
+      "git_blob_sha1": "dd804fe2f66f42b6e4526d384a8271a3294e3178"
+    },
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/event/EntryChoiceEventProvenanceTest.kt",
+      "sha256": "73c761176e87fdb40add594b7591c508784cadcbc2c47bc247d5b18658f6e44d",
+      "git_blob_sha1": "0250a12ad245eded770bec604dbbfda63f7210e9"
+    },
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/handlers/effects/token/AttackingTokenDefenderChoiceTest.kt",
+      "sha256": "becb1edcc7a08998ca0dab03ebc83b2fb4f484339859e0c771bc7a08851578ee",
+      "git_blob_sha1": "81d2ec00484429e88bb4b2b77fd36ae5c154290e"
+    },
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/BandingTrampleDrainScenarioTest.kt",
+      "sha256": "897184ce5e5b2be1f07abea4c56b7d8167c7d9782c401ad65273404d9ef97140",
+      "git_blob_sha1": "47956ba5921a493643c31ea511a7e6e882920fc0"
+    },
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/CombatAssignmentCurrentRulesTest.kt",
+      "sha256": "8a786f585755bedbc9b84a7ddea0e26d26908b3e6cb51a8a670bc42414177d1e",
+      "git_blob_sha1": "926665bb7fc93be18a90d5fffcc2ae75195ad95f"
+    },
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/CombatResolutionBoardTest.kt",
+      "sha256": "2ec3488cbeac903f5f72a34e7611ed3fe1bba657a67313f4a44b07d20b369bc0",
+      "git_blob_sha1": "1faa4c80d16379477631f94af6beaf15a95fb52a"
+    }
+  ],
+  "counts": {
+    "changed_files": 30,
+    "exact_donor_transfers": 26,
+    "composed_production_files": 4,
+    "production_files": 24,
+    "test_files": 6,
+    "donor_delta_paths_classified": 256
+  },
+  "scope_dispositions": [
+    {
+      "path": ".github/workflows/attacking-token-defender-qualification.yml",
+      "shared": "110b8157b83edd04121611ea635f2da35661fcff",
+      "base": null,
+      "receiver": null,
+      "classification": "unchanged-donor-base",
+      "disposition": "retain-receiver-workflow-or-external-evidence-state",
+      "candidate": null
+    },
+    {
+      "path": ".github/workflows/ci.yml",
+      "shared": "dbf5723efa463b87c94c1a1ea23c08d641c13e3a",
+      "base": "47528ccc81d1b9a42ae4958d9cacc0f96d0fcbe7",
+      "receiver": "99b3a3931c4cad5d914e697a748a3f8a39538064",
+      "classification": "receiver-divergent",
+      "disposition": "retain-receiver-workflow-or-external-evidence-state",
+      "candidate": "99b3a3931c4cad5d914e697a748a3f8a39538064"
+    },
+    {
+      "path": ".github/workflows/engine-priority-after-resolution.yml",
+      "shared": "23de6ee2260e1761002d6b4b1c8f4e3fcc6c47a3",
+      "base": "cfce171ae11091629ad31feda373428e46dae66d",
+      "receiver": null,
+      "classification": "donor-new-receiver-absent",
+      "disposition": "retain-receiver-workflow-or-external-evidence-state",
+      "candidate": null
+    },
+    {
+      "path": ".github/workflows/shared-cast-observer-source-qualification.yml",
+      "shared": "3a87421538be64be3feb37c01a61f5664089b5d9",
+      "base": null,
+      "receiver": null,
+      "classification": "unchanged-donor-base",
+      "disposition": "retain-receiver-workflow-or-external-evidence-state",
+      "candidate": null
+    },
+    {
+      "path": ".github/workflows/shared-current-combat-qualification.yml",
+      "shared": "c7f35a30f53e6161c36d176e99ba1f9f2d902c43",
+      "base": null,
+      "receiver": null,
+      "classification": "unchanged-donor-base",
+      "disposition": "retain-receiver-workflow-or-external-evidence-state",
+      "candidate": null
+    },
+    {
+      "path": "ai/src/test/kotlin/com/wingedsheep/ai/arena/FrozenBaselineTest.kt",
+      "shared": "f5ebdd18148cddcb3a5d0cc6b4ae2bfc5aba2ef4",
+      "base": "7dd4efb35da5b8ede1833a25549cd9346e7c172b",
+      "receiver": "bfeb52503c604549b7625fa02a486a0f85cfdbef",
+      "classification": "receiver-divergent",
+      "disposition": "retain-receiver-existing-source-and-assertions",
+      "candidate": "bfeb52503c604549b7625fa02a486a0f85cfdbef"
+    },
+    {
+      "path": "ai/src/test/kotlin/com/wingedsheep/ai/engine/PestControlAgentDecisionTest.kt",
+      "shared": "e4cd250e5a639beaf46ef1842c2cd89aca6345e0",
+      "base": "890902d112f794baea9c29e877113e344af37119",
+      "receiver": null,
+      "classification": "donor-new-receiver-absent",
+      "disposition": "foreign-project-fixture-not-added-existing-receiver-unchanged",
+      "candidate": null
+    },
+    {
+      "path": "ai/src/test/kotlin/com/wingedsheep/ai/puzzles/PuzzleSuiteTest.kt",
+      "shared": "62727f675cd5dfba876a1cf447715bfefe5c0129",
+      "base": "1b3db88502a08b146cb2fad3a52ea5a8b87c4cc8",
+      "receiver": "62727f675cd5dfba876a1cf447715bfefe5c0129",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "62727f675cd5dfba876a1cf447715bfefe5c0129"
+    },
+    {
+      "path": "game-server/src/test/kotlin/com/wingedsheep/gameserver/session/AiUndoDecisionFreshnessTest.kt",
+      "shared": "b097c3044f649afdee3450eeccde88173905a0e8",
+      "base": "0369198be2fbeddf5fbb9b622218adb0fd8cf283",
+      "receiver": "b097c3044f649afdee3450eeccde88173905a0e8",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "b097c3044f649afdee3450eeccde88173905a0e8"
+    },
+    {
+      "path": "lab-coordinator/shared-capabilities/attacking-token-defender-budget.json",
+      "shared": "3f60b297bee67845208f346a6ca6db1f7803da82",
+      "base": null,
+      "receiver": null,
+      "classification": "unchanged-donor-base",
+      "disposition": "retain-receiver-workflow-or-external-evidence-state",
+      "candidate": null
+    },
+    {
+      "path": "lab-coordinator/shared-capabilities/attacking-token-defender-receiving.json",
+      "shared": "24fcfc9e21cc55eeac1bf4e608a47fe7c227c165",
+      "base": null,
+      "receiver": null,
+      "classification": "unchanged-donor-base",
+      "disposition": "retain-receiver-workflow-or-external-evidence-state",
+      "candidate": null
+    },
+    {
+      "path": "lab-coordinator/shared-capabilities/cast-observer-receiving.json",
+      "shared": "f530ea834d69469c33d35229ef335812407abe49",
+      "base": null,
+      "receiver": null,
+      "classification": "unchanged-donor-base",
+      "disposition": "retain-receiver-workflow-or-external-evidence-state",
+      "candidate": null
+    },
+    {
+      "path": "lab-coordinator/shared-capabilities/collect-priority-receiving.py",
+      "shared": "ac5f0cc91072196dd79c52784924f44e5d2f8234",
+      "base": null,
+      "receiver": "ac5f0cc91072196dd79c52784924f44e5d2f8234",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "ac5f0cc91072196dd79c52784924f44e5d2f8234"
+    },
+    {
+      "path": "lab-coordinator/shared-capabilities/current-combat-authority/CURRENT_COMBAT_SOURCE_PROVENANCE.json",
+      "shared": "b3888cdc505b88130a06a0d3dcf410760bc2ddbe",
+      "base": null,
+      "receiver": null,
+      "classification": "unchanged-donor-base",
+      "disposition": "retain-receiver-workflow-or-external-evidence-state",
+      "candidate": null
+    },
+    {
+      "path": "lab-coordinator/shared-capabilities/current-combat-authority/DEATHTOUCH_SCOPE_AMENDMENT.json",
+      "shared": "84a1c52b795bdb9ccd36dfa60e8d7b32338d8ff5",
+      "base": null,
+      "receiver": null,
+      "classification": "unchanged-donor-base",
+      "disposition": "retain-receiver-workflow-or-external-evidence-state",
+      "candidate": null
+    },
+    {
+      "path": "lab-coordinator/shared-capabilities/current-combat-authority/PEER_REVIEW.json",
+      "shared": "5148af816dd3a8500bded948a4fd4bedac4490d3",
+      "base": null,
+      "receiver": null,
+      "classification": "unchanged-donor-base",
+      "disposition": "retain-receiver-workflow-or-external-evidence-state",
+      "candidate": null
+    },
+    {
+      "path": "lab-coordinator/shared-capabilities/current-combat-authority/REPAIR_PLAN.md",
+      "shared": "070f8b4f83d950ce1d422c6a8b2f82b34002e70d",
+      "base": null,
+      "receiver": null,
+      "classification": "unchanged-donor-base",
+      "disposition": "retain-receiver-workflow-or-external-evidence-state",
+      "candidate": null
+    },
+    {
+      "path": "lab-coordinator/shared-capabilities/current-combat-authority/ROOT_PEER_REVIEW_02.json",
+      "shared": "4482442813d44a2ef4daeecfd44fb11b1b4c6006",
+      "base": null,
+      "receiver": null,
+      "classification": "unchanged-donor-base",
+      "disposition": "retain-receiver-workflow-or-external-evidence-state",
+      "candidate": null
+    },
+    {
+      "path": "lab-coordinator/shared-capabilities/current-combat-authority/RULES_EXCERPT.txt",
+      "shared": "12281730fb2c1a4cfe13066b26bcc46c4d74cdce",
+      "base": null,
+      "receiver": null,
+      "classification": "unchanged-donor-base",
+      "disposition": "retain-receiver-workflow-or-external-evidence-state",
+      "candidate": null
+    },
+    {
+      "path": "lab-coordinator/shared-capabilities/current-combat-authority/SOURCE_FREEZE_02.json",
+      "shared": "5294b0733ea29ef470da98f2f39b924aa9fb5b40",
+      "base": null,
+      "receiver": null,
+      "classification": "unchanged-donor-base",
+      "disposition": "retain-receiver-workflow-or-external-evidence-state",
+      "candidate": null
+    },
+    {
+      "path": "lab-coordinator/shared-capabilities/current-combat-authority/retained-fixture-non-author-review.json",
+      "shared": "32fc20682cae190195d29b72dd0c2f4fe988ae18",
+      "base": null,
+      "receiver": null,
+      "classification": "unchanged-donor-base",
+      "disposition": "retain-receiver-workflow-or-external-evidence-state",
+      "candidate": null
+    },
+    {
+      "path": "lab-coordinator/shared-capabilities/current-combat-receiving.json",
+      "shared": "bb3246061aee837ff37ead67fd903bca268b021e",
+      "base": null,
+      "receiver": null,
+      "classification": "unchanged-donor-base",
+      "disposition": "retain-receiver-workflow-or-external-evidence-state",
+      "candidate": null
+    },
+    {
+      "path": "lab-coordinator/shared-capabilities/entry-choice-event-provenance-budget.json",
+      "shared": "741d6c0244023947a0b277ba9a63bb540c52461d",
+      "base": null,
+      "receiver": null,
+      "classification": "unchanged-donor-base",
+      "disposition": "retain-receiver-workflow-or-external-evidence-state",
+      "candidate": null
+    },
+    {
+      "path": "lab-coordinator/shared-capabilities/evidence/ai-regression-36256592910/accepted-main-action-stream.txt",
+      "shared": "a7e108403856dd15e7c1e2e864b1a8a6140851e5",
+      "base": null,
+      "receiver": null,
+      "classification": "unchanged-donor-base",
+      "disposition": "retain-receiver-workflow-or-external-evidence-state",
+      "candidate": null
+    },
+    {
+      "path": "lab-coordinator/shared-capabilities/evidence/ai-regression-36256592910/accepted-main.zip",
+      "shared": "7b2845c03bbbe933ade174e2e7474a30118e0628",
+      "base": null,
+      "receiver": null,
+      "classification": "unchanged-donor-base",
+      "disposition": "retain-receiver-workflow-or-external-evidence-state",
+      "candidate": null
+    },
+    {
+      "path": "lab-coordinator/shared-capabilities/evidence/ai-regression-36256592910/failed-shared-receiver-action-stream.txt",
+      "shared": "5a1d9d8e968a12aad7b3664dfdf25a13e500d15e",
+      "base": null,
+      "receiver": null,
+      "classification": "unchanged-donor-base",
+      "disposition": "retain-receiver-workflow-or-external-evidence-state",
+      "candidate": null
+    },
+    {
+      "path": "lab-coordinator/shared-capabilities/evidence/ai-regression-36256592910/failed-shared-receiver.zip",
+      "shared": "1aee23343a8ddb78ce71d494cc3e90f3b4768119",
+      "base": null,
+      "receiver": null,
+      "classification": "unchanged-donor-base",
+      "disposition": "retain-receiver-workflow-or-external-evidence-state",
+      "candidate": null
+    },
+    {
+      "path": "lab-coordinator/shared-capabilities/evidence/ai-regression-36256592910/independent-diagnostic-review.json",
+      "shared": "904aee7cffd6b38c47ad9965fe9ba03530ea9528",
+      "base": null,
+      "receiver": null,
+      "classification": "unchanged-donor-base",
+      "disposition": "retain-receiver-workflow-or-external-evidence-state",
+      "candidate": null
+    },
+    {
+      "path": "lab-coordinator/shared-capabilities/evidence/ai-regression-36256592910/independent-source-review.json",
+      "shared": "bfe8768448a40af48738d372c0d102bef8acbe9b",
+      "base": null,
+      "receiver": null,
+      "classification": "unchanged-donor-base",
+      "disposition": "retain-receiver-workflow-or-external-evidence-state",
+      "candidate": null
+    },
+    {
+      "path": "lab-coordinator/shared-capabilities/evidence/ai-regression-36256592910/receipt.json",
+      "shared": "c6964d1e453965f73461a450f1444b9d4c4c5ad9",
+      "base": null,
+      "receiver": null,
+      "classification": "unchanged-donor-base",
+      "disposition": "retain-receiver-workflow-or-external-evidence-state",
+      "candidate": null
+    },
+    {
+      "path": "lab-coordinator/shared-capabilities/evidence/ai-regression-36256592910/source-comparison.json",
+      "shared": "516060f854bc9016d6e9b0b45ffaf7cc2172554b",
+      "base": null,
+      "receiver": null,
+      "classification": "unchanged-donor-base",
+      "disposition": "retain-receiver-workflow-or-external-evidence-state",
+      "candidate": null
+    },
+    {
+      "path": "lab-coordinator/shared-capabilities/evidence/ai-regression-36256592910/strict-pair-comparison.json",
+      "shared": "64052635f643c36d4057bf1b967a1112eb3294b1",
+      "base": null,
+      "receiver": null,
+      "classification": "unchanged-donor-base",
+      "disposition": "retain-receiver-workflow-or-external-evidence-state",
+      "candidate": null
+    },
+    {
+      "path": "lab-coordinator/shared-capabilities/evidence/ai-regression-36256592910/verify-pair-comparison.py",
+      "shared": "2355fb0b270c80ebd87eb5b6d940e0c55ecbd288",
+      "base": null,
+      "receiver": null,
+      "classification": "unchanged-donor-base",
+      "disposition": "retain-receiver-workflow-or-external-evidence-state",
+      "candidate": null
+    },
+    {
+      "path": "lab-coordinator/shared-capabilities/evidence/attacking-token-defender-attempt-01/author-audit.json",
+      "shared": "74525488727c34f53aa4a168029eddec3285bd7a",
+      "base": null,
+      "receiver": null,
+      "classification": "unchanged-donor-base",
+      "disposition": "retain-receiver-workflow-or-external-evidence-state",
+      "candidate": null
+    },
+    {
+      "path": "lab-coordinator/shared-capabilities/evidence/attacking-token-defender-attempt-01/frozen-budget.json",
+      "shared": "5ac275f923cdbb854b050725ac504aa2c2b9e100",
+      "base": null,
+      "receiver": null,
+      "classification": "unchanged-donor-base",
+      "disposition": "retain-receiver-workflow-or-external-evidence-state",
+      "candidate": null
+    },
+    {
+      "path": "lab-coordinator/shared-capabilities/evidence/attacking-token-defender-attempt-01/frozen-receiving-manifest.json",
+      "shared": "fd7cf5cda923bfa9319cabaf37d25f7ecc14b92f",
+      "base": null,
+      "receiver": null,
+      "classification": "unchanged-donor-base",
+      "disposition": "retain-receiver-workflow-or-external-evidence-state",
+      "candidate": null
+    },
+    {
+      "path": "lab-coordinator/shared-capabilities/evidence/attacking-token-defender-attempt-01/raw-artifact.zip",
+      "shared": "9004e5d85e68dff2bbd4550bf3d9cbd61b9ecf4c",
+      "base": null,
+      "receiver": null,
+      "classification": "unchanged-donor-base",
+      "disposition": "retain-receiver-workflow-or-external-evidence-state",
+      "candidate": null
+    },
+    {
+      "path": "lab-coordinator/shared-capabilities/evidence/attacking-token-defender-attempt-02/author-audit.json",
+      "shared": "b251f8a3b91e576c31c80bbd5865469c908d499b",
+      "base": null,
+      "receiver": null,
+      "classification": "unchanged-donor-base",
+      "disposition": "retain-receiver-workflow-or-external-evidence-state",
+      "candidate": null
+    },
+    {
+      "path": "lab-coordinator/shared-capabilities/evidence/attacking-token-defender-attempt-02/frozen-budget.json",
+      "shared": "0ce6e2b47480171ba991c9b56b65cd5a4e2f86dc",
+      "base": null,
+      "receiver": null,
+      "classification": "unchanged-donor-base",
+      "disposition": "retain-receiver-workflow-or-external-evidence-state",
+      "candidate": null
+    },
+    {
+      "path": "lab-coordinator/shared-capabilities/evidence/attacking-token-defender-attempt-02/frozen-receiving-manifest.json",
+      "shared": "2e9dc3eeb59cbec5aeee5f0e9bcf6a0bd1d25b01",
+      "base": null,
+      "receiver": null,
+      "classification": "unchanged-donor-base",
+      "disposition": "retain-receiver-workflow-or-external-evidence-state",
+      "candidate": null
+    },
+    {
+      "path": "lab-coordinator/shared-capabilities/evidence/attacking-token-defender-attempt-02/raw-artifact.zip",
+      "shared": "a108e4cba2737436df41ea37d143a4a23d772fa0",
+      "base": null,
+      "receiver": null,
+      "classification": "unchanged-donor-base",
+      "disposition": "retain-receiver-workflow-or-external-evidence-state",
+      "candidate": null
+    },
+    {
+      "path": "lab-coordinator/shared-capabilities/evidence/cast-observer-36257072193/independent-artifact-review.json",
+      "shared": "ee02f3af1984dec53045ee20e1a4bbeae9f8fb58",
+      "base": null,
+      "receiver": null,
+      "classification": "unchanged-donor-base",
+      "disposition": "retain-receiver-workflow-or-external-evidence-state",
+      "candidate": null
+    },
+    {
+      "path": "lab-coordinator/shared-capabilities/evidence/cast-observer-36257072193/qualification.zip",
+      "shared": "aed83676371de17f2ffc4c588660d1e0952a2e4d",
+      "base": null,
+      "receiver": null,
+      "classification": "unchanged-donor-base",
+      "disposition": "retain-receiver-workflow-or-external-evidence-state",
+      "candidate": null
+    },
+    {
+      "path": "lab-coordinator/shared-capabilities/evidence/cast-observer-36258696556/independent-artifact-review.json",
+      "shared": "48a3499631b760b640424d653945ad65f6feb744",
+      "base": null,
+      "receiver": null,
+      "classification": "unchanged-donor-base",
+      "disposition": "retain-receiver-workflow-or-external-evidence-state",
+      "candidate": null
+    },
+    {
+      "path": "lab-coordinator/shared-capabilities/evidence/cast-observer-36258696556/qualification.zip",
+      "shared": "6f84358674d4d5f7d10f11ba541282e1492b32ae",
+      "base": null,
+      "receiver": null,
+      "classification": "unchanged-donor-base",
+      "disposition": "retain-receiver-workflow-or-external-evidence-state",
+      "candidate": null
+    },
+    {
+      "path": "lab-coordinator/shared-capabilities/evidence/combined-548/cast-observer/independent-artifact-review.json",
+      "shared": "9efaa77bd23fc67d3f08f09e545d73bd960f54c0",
+      "base": null,
+      "receiver": null,
+      "classification": "unchanged-donor-base",
+      "disposition": "retain-receiver-workflow-or-external-evidence-state",
+      "candidate": null
+    },
+    {
+      "path": "lab-coordinator/shared-capabilities/evidence/combined-548/cast-observer/qualification.zip",
+      "shared": "ea3e6a56551bc920fb8f4b8a249e5d2c52047249",
+      "base": null,
+      "receiver": null,
+      "classification": "unchanged-donor-base",
+      "disposition": "retain-receiver-workflow-or-external-evidence-state",
+      "candidate": null
+    },
+    {
+      "path": "lab-coordinator/shared-capabilities/evidence/combined-548/current-combat/independent-artifact-review.json",
+      "shared": "78bc406c0ed6a30da05db9825a0d41f845560bfa",
+      "base": null,
+      "receiver": null,
+      "classification": "unchanged-donor-base",
+      "disposition": "retain-receiver-workflow-or-external-evidence-state",
+      "candidate": null
+    },
+    {
+      "path": "lab-coordinator/shared-capabilities/evidence/combined-548/current-combat/qualification.zip",
+      "shared": "d41e62a61f92139e01ec2cf82020458b663a5f91",
+      "base": null,
+      "receiver": null,
+      "classification": "unchanged-donor-base",
+      "disposition": "retain-receiver-workflow-or-external-evidence-state",
+      "candidate": null
+    },
+    {
+      "path": "lab-coordinator/shared-capabilities/evidence/combined-548/priority/independent-artifact-review.json",
+      "shared": "93ef5270b4aebb1c4872afd5986fbecd67390756",
+      "base": null,
+      "receiver": null,
+      "classification": "unchanged-donor-base",
+      "disposition": "retain-receiver-workflow-or-external-evidence-state",
+      "candidate": null
+    },
+    {
+      "path": "lab-coordinator/shared-capabilities/evidence/combined-548/priority/qualification.zip",
+      "shared": "5f9331ba286515a4983c9d710455993fe665d441",
+      "base": null,
+      "receiver": null,
+      "classification": "unchanged-donor-base",
+      "disposition": "retain-receiver-workflow-or-external-evidence-state",
+      "candidate": null
+    },
+    {
+      "path": "lab-coordinator/shared-capabilities/evidence/combined-548/token/qualification.zip",
+      "shared": "7f906450c0607ba9ac837f821fe6604c0953b280",
+      "base": null,
+      "receiver": null,
+      "classification": "unchanged-donor-base",
+      "disposition": "retain-receiver-workflow-or-external-evidence-state",
+      "candidate": null
+    },
+    {
+      "path": "lab-coordinator/shared-capabilities/evidence/combined-source-review/pest-shared-composition-binding-check.json",
+      "shared": "de03c06c14910335c20c2c99fa30b9710a5a8f22",
+      "base": null,
+      "receiver": null,
+      "classification": "unchanged-donor-base",
+      "disposition": "retain-receiver-workflow-or-external-evidence-state",
+      "candidate": null
+    },
+    {
+      "path": "lab-coordinator/shared-capabilities/evidence/combined-source-review/pest-source-gate-review.json",
+      "shared": "1944bb1d8fe9c83246aeb93fa838405801ddca95",
+      "base": null,
+      "receiver": null,
+      "classification": "unchanged-donor-base",
+      "disposition": "retain-receiver-workflow-or-external-evidence-state",
+      "candidate": null
+    },
+    {
+      "path": "lab-coordinator/shared-capabilities/evidence/combined-source-review/pest-syntax-followup-review.json",
+      "shared": "828519488e7d747823fce21a6d9def00dfd52c9a",
+      "base": null,
+      "receiver": null,
+      "classification": "unchanged-donor-base",
+      "disposition": "retain-receiver-workflow-or-external-evidence-state",
+      "candidate": null
+    },
+    {
+      "path": "lab-coordinator/shared-capabilities/evidence/current-combat-36263357221/independent-artifact-review.json",
+      "shared": "28e3a050dde2ac7125c71396939fa448895d5332",
+      "base": null,
+      "receiver": null,
+      "classification": "unchanged-donor-base",
+      "disposition": "retain-receiver-workflow-or-external-evidence-state",
+      "candidate": null
+    },
+    {
+      "path": "lab-coordinator/shared-capabilities/evidence/current-combat-36263357221/independent-source-review.json",
+      "shared": "326c2e2ffab0df94f64fa8b50671f7a950b1d26b",
+      "base": null,
+      "receiver": null,
+      "classification": "unchanged-donor-base",
+      "disposition": "retain-receiver-workflow-or-external-evidence-state",
+      "candidate": null
+    },
+    {
+      "path": "lab-coordinator/shared-capabilities/evidence/current-combat-36263357221/qualification.zip",
+      "shared": "332d1971f3a23cc2004f128712e70bef80e4e37c",
+      "base": null,
+      "receiver": null,
+      "classification": "unchanged-donor-base",
+      "disposition": "retain-receiver-workflow-or-external-evidence-state",
+      "candidate": null
+    },
+    {
+      "path": "lab-coordinator/shared-capabilities/evidence/entry-provenance-source-review/pest-four-bank-followup-review.json",
+      "shared": "0363ebdf08458432f1740942d2c03b5fb4418e9a",
+      "base": null,
+      "receiver": null,
+      "classification": "unchanged-donor-base",
+      "disposition": "retain-receiver-workflow-or-external-evidence-state",
+      "candidate": null
+    },
+    {
+      "path": "lab-coordinator/shared-capabilities/evidence/entry-provenance-source-review/pest-four-bank-source-review.json",
+      "shared": "e83fdea9ef0ca653da6d7ae88562bd2f43e210a2",
+      "base": null,
+      "receiver": null,
+      "classification": "unchanged-donor-base",
+      "disposition": "retain-receiver-workflow-or-external-evidence-state",
+      "candidate": null
+    },
+    {
+      "path": "lab-coordinator/shared-capabilities/evidence/entry-provenance-source-review/root-source-gate-review.json",
+      "shared": "c049f1779e6d1c7871c462d32de913d28b674d17",
+      "base": null,
+      "receiver": null,
+      "classification": "unchanged-donor-base",
+      "disposition": "retain-receiver-workflow-or-external-evidence-state",
+      "candidate": null
+    },
+    {
+      "path": "lab-coordinator/shared-capabilities/evidence/priority-36257075249/independent-artifact-review.json",
+      "shared": "532e36efc224c44119609ba9b112235723420952",
+      "base": null,
+      "receiver": null,
+      "classification": "unchanged-donor-base",
+      "disposition": "retain-receiver-workflow-or-external-evidence-state",
+      "candidate": null
+    },
+    {
+      "path": "lab-coordinator/shared-capabilities/evidence/priority-36257075249/qualification.zip",
+      "shared": "be771b34b5bf4b8898dabe3d3e865a6582284f9e",
+      "base": null,
+      "receiver": null,
+      "classification": "unchanged-donor-base",
+      "disposition": "retain-receiver-workflow-or-external-evidence-state",
+      "candidate": null
+    },
+    {
+      "path": "lab-coordinator/shared-capabilities/evidence/priority-36257075249/successor-independent-binding-review.json",
+      "shared": "c7c0e6a2780eccb9fe382e43d0938dbc40c3a923",
+      "base": null,
+      "receiver": null,
+      "classification": "unchanged-donor-base",
+      "disposition": "retain-receiver-workflow-or-external-evidence-state",
+      "candidate": null
+    },
+    {
+      "path": "lab-coordinator/shared-capabilities/evidence/priority-36258698904/independent-artifact-review.json",
+      "shared": "6352372c57cce08e05fa5feccc79689dc4cd0cad",
+      "base": null,
+      "receiver": null,
+      "classification": "unchanged-donor-base",
+      "disposition": "retain-receiver-workflow-or-external-evidence-state",
+      "candidate": null
+    },
+    {
+      "path": "lab-coordinator/shared-capabilities/evidence/priority-36258698904/shared-priority-original.zip",
+      "shared": "5e73975ba13fb3489ff4a397e00839a427f67a5a",
+      "base": null,
+      "receiver": null,
+      "classification": "unchanged-donor-base",
+      "disposition": "retain-receiver-workflow-or-external-evidence-state",
+      "candidate": null
+    },
+    {
+      "path": "lab-coordinator/shared-capabilities/evidence/priority-36258698904/successor-independent-binding-review.json",
+      "shared": "c5bb400ac82b8a184225c4d13f681975d509929e",
+      "base": null,
+      "receiver": null,
+      "classification": "unchanged-donor-base",
+      "disposition": "retain-receiver-workflow-or-external-evidence-state",
+      "candidate": null
+    },
+    {
+      "path": "lab-coordinator/shared-capabilities/evidence/priority-36260783768/independent-artifact-review.json",
+      "shared": "3537c819479ee6beb293bd4f9b9610bb24556540",
+      "base": null,
+      "receiver": null,
+      "classification": "unchanged-donor-base",
+      "disposition": "retain-receiver-workflow-or-external-evidence-state",
+      "candidate": null
+    },
+    {
+      "path": "lab-coordinator/shared-capabilities/evidence/priority-36260783768/qualification.zip",
+      "shared": "c659e73452838e20de608ec84dfee3a830322341",
+      "base": null,
+      "receiver": null,
+      "classification": "unchanged-donor-base",
+      "disposition": "retain-receiver-workflow-or-external-evidence-state",
+      "candidate": null
+    },
+    {
+      "path": "lab-coordinator/shared-capabilities/evidence/receiving-2017-36260783776/independent-artifact-review.json",
+      "shared": "1359102fd7171512e380fcfa15728cd5562e8472",
+      "base": null,
+      "receiver": null,
+      "classification": "unchanged-donor-base",
+      "disposition": "retain-receiver-workflow-or-external-evidence-state",
+      "candidate": null
+    },
+    {
+      "path": "lab-coordinator/shared-capabilities/evidence/receiving-2017-36260783776/qualification.zip",
+      "shared": "9659f8eac19a01ca1e806a105d275409e3d95a86",
+      "base": null,
+      "receiver": null,
+      "classification": "unchanged-donor-base",
+      "disposition": "retain-receiver-workflow-or-external-evidence-state",
+      "candidate": null
+    },
+    {
+      "path": "lab-coordinator/shared-capabilities/evidence/token-defender-source-review/ferocity-bank-source-review.json",
+      "shared": "e94ee0818737aedd28a63670786779e059faebe8",
+      "base": null,
+      "receiver": null,
+      "classification": "unchanged-donor-base",
+      "disposition": "retain-receiver-workflow-or-external-evidence-state",
+      "candidate": null
+    },
+    {
+      "path": "lab-coordinator/shared-capabilities/evidence/token-defender-source-review/manual-continuation-source-review.json",
+      "shared": "b3d4abff9d39feebd4e2ad16d63681cabc1b5513",
+      "base": null,
+      "receiver": null,
+      "classification": "unchanged-donor-base",
+      "disposition": "retain-receiver-workflow-or-external-evidence-state",
+      "candidate": null
+    },
+    {
+      "path": "lab-coordinator/shared-capabilities/evidence/token-defender-source-review/root-source-gate-review.json",
+      "shared": "6f52bdb4bc5a208bdd412ef055aa2648918abf12",
+      "base": null,
+      "receiver": null,
+      "classification": "unchanged-donor-base",
+      "disposition": "retain-receiver-workflow-or-external-evidence-state",
+      "candidate": null
+    },
+    {
+      "path": "lab-coordinator/shared-capabilities/priority-receiving-sources.json",
+      "shared": "33e87ab133ada09508edc780f45151f8c9b7b82d",
+      "base": null,
+      "receiver": null,
+      "classification": "unchanged-donor-base",
+      "disposition": "retain-receiver-workflow-or-external-evidence-state",
+      "candidate": null
+    },
+    {
+      "path": "lab-coordinator/shared-capabilities/receiving-2017-fixture-review.json",
+      "shared": "3a2f625a20e2c99cbca46102f18d8f14040551e8",
+      "base": null,
+      "receiver": null,
+      "classification": "unchanged-donor-base",
+      "disposition": "retain-receiver-workflow-or-external-evidence-state",
+      "candidate": null
+    },
+    {
+      "path": "lab-coordinator/shared-capabilities/receiving-case-banks-v1.json",
+      "shared": "edf52441ebf2f89c6752cfa3887f2cdc685c570b",
+      "base": null,
+      "receiver": "edf52441ebf2f89c6752cfa3887f2cdc685c570b",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "edf52441ebf2f89c6752cfa3887f2cdc685c570b"
+    },
+    {
+      "path": "lab-coordinator/shared-capabilities/receiving-collector-independent-source-review.json",
+      "shared": "a81e63bb8325794b68cb0289c77e9c0449eae70d",
+      "base": null,
+      "receiver": "a81e63bb8325794b68cb0289c77e9c0449eae70d",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "a81e63bb8325794b68cb0289c77e9c0449eae70d"
+    },
+    {
+      "path": "lab-coordinator/shared-capabilities/receiving-source-followup-review.json",
+      "shared": "f97e1764a94a597cdf5fd2a210e2c74132aad79d",
+      "base": null,
+      "receiver": null,
+      "classification": "unchanged-donor-base",
+      "disposition": "retain-receiver-workflow-or-external-evidence-state",
+      "candidate": null
+    },
+    {
+      "path": "mtg-sets/1993-1999/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/EnergyFluxScenarioTest.kt",
+      "shared": "3c8b7fddbec74f48160cfb524811ea62108acc41",
+      "base": "72cf81cf3b210edbf67cdb4fa395407ea9aa79b1",
+      "receiver": "3c8b7fddbec74f48160cfb524811ea62108acc41",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "3c8b7fddbec74f48160cfb524811ea62108acc41"
+    },
+    {
+      "path": "mtg-sets/1993-1999/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/FarrelsMantleScenarioTest.kt",
+      "shared": "af3399e2e753b8c67633906b5f6b89f9316ffac1",
+      "base": "efce5b41bc6551e04e35fb18d45e90f464040dac",
+      "receiver": "af3399e2e753b8c67633906b5f6b89f9316ffac1",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "af3399e2e753b8c67633906b5f6b89f9316ffac1"
+    },
+    {
+      "path": "mtg-sets/1993-1999/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/FarrelsZealotScenarioTest.kt",
+      "shared": "bf6a98017e05d46a64c952f4a04990957b68ae39",
+      "base": "2ef6f8f49d8cc8ea3092064ac1472bc8d19a062b",
+      "receiver": "bf6a98017e05d46a64c952f4a04990957b68ae39",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "bf6a98017e05d46a64c952f4a04990957b68ae39"
+    },
+    {
+      "path": "mtg-sets/1993-1999/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/FastingScenarioTest.kt",
+      "shared": "4790c4c7da1ffd23758849da0a16277fc1050bf1",
+      "base": "286cf25672f6463c09e79e3cdec3be3b364daab3",
+      "receiver": "4790c4c7da1ffd23758849da0a16277fc1050bf1",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "4790c4c7da1ffd23758849da0a16277fc1050bf1"
+    },
+    {
+      "path": "mtg-sets/1993-1999/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/GravediggerTest.kt",
+      "shared": "430c4f61b37998a967e0998f7ae47ddc69f311da",
+      "base": "259757c883f26da59ee4fa54d6a44a49b0fab13e",
+      "receiver": "430c4f61b37998a967e0998f7ae47ddc69f311da",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "430c4f61b37998a967e0998f7ae47ddc69f311da"
+    },
+    {
+      "path": "mtg-sets/1993-1999/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/HeroismScenarioTest.kt",
+      "shared": "f3e4e9284c92eca4e8e12168be3cc7407fac9e15",
+      "base": "f04f4038a9d8e171616b649c63d91fd40ceacaa9",
+      "receiver": "f3e4e9284c92eca4e8e12168be3cc7407fac9e15",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "f3e4e9284c92eca4e8e12168be3cc7407fac9e15"
+    },
+    {
+      "path": "mtg-sets/1993-1999/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/NafsAspScenarioTest.kt",
+      "shared": "4201bd4863089c3e22b7b903974580d6814731ff",
+      "base": "caf85d69e7d6f29d35e3a21515193e6a6e67548c",
+      "receiver": "4201bd4863089c3e22b7b903974580d6814731ff",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "4201bd4863089c3e22b7b903974580d6814731ff"
+    },
+    {
+      "path": "mtg-sets/1993-1999/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/NecriteScenarioTest.kt",
+      "shared": "afd3756f949e2fb7e89ab88bf4cdb738b36bb27d",
+      "base": "c92143840721dee27dd7e7d9d443e5d4525868af",
+      "receiver": "afd3756f949e2fb7e89ab88bf4cdb738b36bb27d",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "afd3756f949e2fb7e89ab88bf4cdb738b36bb27d"
+    },
+    {
+      "path": "mtg-sets/1993-1999/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/SerpentAssassinTest.kt",
+      "shared": "084f3ac082658621626b4d644e441d83d9e24ecf",
+      "base": "bece497f67c38e50f0b9db6acb0c549c25d6660b",
+      "receiver": "084f3ac082658621626b4d644e441d83d9e24ecf",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "084f3ac082658621626b4d644e441d83d9e24ecf"
+    },
+    {
+      "path": "mtg-sets/1993-1999/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/SorrowsPathScenarioTest.kt",
+      "shared": "b278f063f803473ad150b75a2c034076e3a30cd5",
+      "base": "7a2f871c4d1dd7518a8a6f8c21762e1562779a78",
+      "receiver": "b278f063f803473ad150b75a2c034076e3a30cd5",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "b278f063f803473ad150b75a2c034076e3a30cd5"
+    },
+    {
+      "path": "mtg-sets/1993-1999/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/TetravusScenarioTest.kt",
+      "shared": "f9c719b4e85674811059efe62b65ab195fb3d5b1",
+      "base": "31b550fe0e007fbba2c5c7790e70333da4215244",
+      "receiver": "f9c719b4e85674811059efe62b65ab195fb3d5b1",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "f9c719b4e85674811059efe62b65ab195fb3d5b1"
+    },
+    {
+      "path": "mtg-sets/1993-1999/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/TidalFlatsScenarioTest.kt",
+      "shared": "fe82cf60a786b6155d3b735ffadf1e2bcd4effef",
+      "base": "56af4c134e1c0b12ba8637c65b33fe8149061638",
+      "receiver": "fe82cf60a786b6155d3b735ffadf1e2bcd4effef",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "fe82cf60a786b6155d3b735ffadf1e2bcd4effef"
+    },
+    {
+      "path": "mtg-sets/1993-1999/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/VodalianWarMachineScenarioTest.kt",
+      "shared": "b43ffa742dc0fc08ef850d977b49de15d83aabf8",
+      "base": "a30a62005800862c66f30db1da9c43a942d25d95",
+      "receiver": "b43ffa742dc0fc08ef850d977b49de15d83aabf8",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "b43ffa742dc0fc08ef850d977b49de15d83aabf8"
+    },
+    {
+      "path": "mtg-sets/2000-2002/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/AphettoVultureTest.kt",
+      "shared": "839cab50bb5f89bd3c735974a4f515bb181b0324",
+      "base": "e0d1f7a5a803063449448033d3b1af7f0d44b2b1",
+      "receiver": "839cab50bb5f89bd3c735974a4f515bb181b0324",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "839cab50bb5f89bd3c735974a4f515bb181b0324"
+    },
+    {
+      "path": "mtg-sets/2000-2002/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/DawningPuristTest.kt",
+      "shared": "4cd45408d39967fdb3818996454536de15e74040",
+      "base": "ba20818b20f7c6b976b9ade608a3033756a1e189",
+      "receiver": "4cd45408d39967fdb3818996454536de15e74040",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "4cd45408d39967fdb3818996454536de15e74040"
+    },
+    {
+      "path": "mtg-sets/2000-2002/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/OversoldCemeteryTest.kt",
+      "shared": "cba8966062796173c6250542c160d6e2fdf089d8",
+      "base": "64b64dcd9562c2a9f0de8650d8c6a0bd185bf4c5",
+      "receiver": "cba8966062796173c6250542c160d6e2fdf089d8",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "cba8966062796173c6250542c160d6e2fdf089d8"
+    },
+    {
+      "path": "mtg-sets/2000-2002/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/RiptideEntrancerTest.kt",
+      "shared": "a9de167cb27fc692fd3d576f9ebe3848de087c71",
+      "base": "ee23334a9c033652001340b15ad3aea6023756d2",
+      "receiver": "a9de167cb27fc692fd3d576f9ebe3848de087c71",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "a9de167cb27fc692fd3d576f9ebe3848de087c71"
+    },
+    {
+      "path": "mtg-sets/2003-2007/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/BladewingTheRisenTest.kt",
+      "shared": "19764911e80ba84502a40b8d55e95d85f9423b58",
+      "base": "94a7ef39642876872044ddfa73ed1e619771e0f1",
+      "receiver": "19764911e80ba84502a40b8d55e95d85f9423b58",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "19764911e80ba84502a40b8d55e95d85f9423b58"
+    },
+    {
+      "path": "mtg-sets/2003-2007/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/BurrentonForgeTenderScenarioTest.kt",
+      "shared": "1345b3213a97ab19451bbd1ccf48c163b64912ed",
+      "base": "65a50f95c8d4071f9e8e5aeda5888d020b383e6d",
+      "receiver": "1345b3213a97ab19451bbd1ccf48c163b64912ed",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "1345b3213a97ab19451bbd1ccf48c163b64912ed"
+    },
+    {
+      "path": "mtg-sets/2003-2007/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/CircuDimirLobotomistScenarioTest.kt",
+      "shared": "37e108a07e6d957819db6d499596524ff6b2dc53",
+      "base": "e524062dc9546d83bc4297b19c2f966edef21648",
+      "receiver": "37e108a07e6d957819db6d499596524ff6b2dc53",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "37e108a07e6d957819db6d499596524ff6b2dc53"
+    },
+    {
+      "path": "mtg-sets/2003-2007/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/EternalWitnessScenarioTest.kt",
+      "shared": "bd6e2eafcd875fec24c9ae6bab84a2a80577a544",
+      "base": "80a149580ec0230fac692edb9955fa48ee67b747",
+      "receiver": "bd6e2eafcd875fec24c9ae6bab84a2a80577a544",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "bd6e2eafcd875fec24c9ae6bab84a2a80577a544"
+    },
+    {
+      "path": "mtg-sets/2003-2007/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/GlarewielderScenarioTest.kt",
+      "shared": "c99ec3f28bd37fc7c4562b6e0a5b3508c911ca12",
+      "base": "05b07f6c2b0c8c4020f49d8d541ca83893d78c7c",
+      "receiver": "c99ec3f28bd37fc7c4562b6e0a5b3508c911ca12",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "c99ec3f28bd37fc7c4562b6e0a5b3508c911ca12"
+    },
+    {
+      "path": "mtg-sets/2003-2007/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/HoofprintsOfTheStagScenarioTest.kt",
+      "shared": "9986f4f95811d3a024771f9d8bb43dd7a98052b3",
+      "base": "48c23ffe52eb90629bd6db02643f70cfdf00b075",
+      "receiver": "9986f4f95811d3a024771f9d8bb43dd7a98052b3",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "9986f4f95811d3a024771f9d8bb43dd7a98052b3"
+    },
+    {
+      "path": "mtg-sets/2003-2007/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/LightningCoilsScenarioTest.kt",
+      "shared": "c444ce80ca6530dc1f6fbb007fd2681cb2667dce",
+      "base": "56f6f89c3781cadd4569063b71145b88de571954",
+      "receiver": "c444ce80ca6530dc1f6fbb007fd2681cb2667dce",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "c444ce80ca6530dc1f6fbb007fd2681cb2667dce"
+    },
+    {
+      "path": "mtg-sets/2003-2007/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/MindsEyeScenarioTest.kt",
+      "shared": "3e3911bb11d2fa2803a6588345ce59ae501ea80d",
+      "base": "9d3c14e324e80917c21f4378dfbf085ce7491e5b",
+      "receiver": "3e3911bb11d2fa2803a6588345ce59ae501ea80d",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "3e3911bb11d2fa2803a6588345ce59ae501ea80d"
+    },
+    {
+      "path": "mtg-sets/2003-2007/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/PsychogenicProbeScenarioTest.kt",
+      "shared": "5f9fc6163db640ee6cc4e2d4908b08fcae3e1c7f",
+      "base": "b7af2f701db4dac957d0d3f91eadba0327b95be3",
+      "receiver": "5f9fc6163db640ee6cc4e2d4908b08fcae3e1c7f",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "5f9fc6163db640ee6cc4e2d4908b08fcae3e1c7f"
+    },
+    {
+      "path": "mtg-sets/2003-2007/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/StormMultipleInstancesTest.kt",
+      "shared": "f40efa423645e002fe18e31998b7a1cb196c0868",
+      "base": "2e4955bc87bb8e3aa57141f51788eed547c426ad",
+      "receiver": "f40efa423645e002fe18e31998b7a1cb196c0868",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "f40efa423645e002fe18e31998b7a1cb196c0868"
+    },
+    {
+      "path": "mtg-sets/2003-2007/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/StormStackOrderTest.kt",
+      "shared": "adbebc815bfc1d97ba044f9338331c82c019cffc",
+      "base": "45f3e2d88c2b08fbc172abe74cbf1f3612b843c8",
+      "receiver": "adbebc815bfc1d97ba044f9338331c82c019cffc",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "adbebc815bfc1d97ba044f9338331c82c019cffc"
+    },
+    {
+      "path": "mtg-sets/2003-2007/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/TrygonPredatorScenarioTest.kt",
+      "shared": "8cccdb232ec55c1e844cdb33bbf0924ac1f708d0",
+      "base": "c75b19eb9591e96cd8eae819398aacc4285bb55e",
+      "receiver": "8cccdb232ec55c1e844cdb33bbf0924ac1f708d0",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "8cccdb232ec55c1e844cdb33bbf0924ac1f708d0"
+    },
+    {
+      "path": "mtg-sets/2003-2007/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/VulturousZombieScenarioTest.kt",
+      "shared": "db36c69d96c3e94a151ab5b495f56f3a2e9de04e",
+      "base": "9824d978a732e1fdb14b0f65493a4f2da6504502",
+      "receiver": "db36c69d96c3e94a151ab5b495f56f3a2e9de04e",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "db36c69d96c3e94a151ab5b495f56f3a2e9de04e"
+    },
+    {
+      "path": "mtg-sets/2003-2007/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/WoebearerScenarioTest.kt",
+      "shared": "ed9a36e9972117ed25a742fb0f7eea9fc8c82f0d",
+      "base": "019204f5fd833e82d0e09b98d282f57c2dc5f8a1",
+      "receiver": "ed9a36e9972117ed25a742fb0f7eea9fc8c82f0d",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "ed9a36e9972117ed25a742fb0f7eea9fc8c82f0d"
+    },
+    {
+      "path": "mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/ArchangelAvacynScenarioTest.kt",
+      "shared": "35561540fbf9cb99b9495cddac6c3508a1b89048",
+      "base": "46e448535dacd2d86676dd2c850b85bc5b449514",
+      "receiver": "35561540fbf9cb99b9495cddac6c3508a1b89048",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "35561540fbf9cb99b9495cddac6c3508a1b89048"
+    },
+    {
+      "path": "mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/BrunaTheFadingLightScenarioTest.kt",
+      "shared": "29f832912b17d1e38500ae0f391913340bb037ab",
+      "base": "4bf28dc770b4314a98cf58aa51025780c26c0acc",
+      "receiver": "29f832912b17d1e38500ae0f391913340bb037ab",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "29f832912b17d1e38500ae0f391913340bb037ab"
+    },
+    {
+      "path": "mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/CaptainOfTheMistsScenarioTest.kt",
+      "shared": "8f48084f7f6b61dbfb4bd561313cb724f27c657f",
+      "base": "dc36924ae7bfafd3d4fc5724440aa802a2b1eb0b",
+      "receiver": "8f48084f7f6b61dbfb4bd561313cb724f27c657f",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "8f48084f7f6b61dbfb4bd561313cb724f27c657f"
+    },
+    {
+      "path": "mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/EerieInterludeScenarioTest.kt",
+      "shared": "257ae9234df050a6116f55dd3efe8189a001e39e",
+      "base": "60aa7a8b65d8ae0099e1a215b649d43439e8cfc1",
+      "receiver": "257ae9234df050a6116f55dd3efe8189a001e39e",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "257ae9234df050a6116f55dd3efe8189a001e39e"
+    },
+    {
+      "path": "mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/SeraphSanctuaryScenarioTest.kt",
+      "shared": "931d145587f68ee9539c20775f5d02665747ffc0",
+      "base": "4a6010e8480fdcdcf15ae9c7288aa8144a5468ad",
+      "receiver": "931d145587f68ee9539c20775f5d02665747ffc0",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "931d145587f68ee9539c20775f5d02665747ffc0"
+    },
+    {
+      "path": "mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/DaringArchaeologistScenarioTest.kt",
+      "shared": "627014d77be513234ef6c03dbef9878c21d0efc8",
+      "base": "f20605794659d5dae25ce20a3e28759edfad9832",
+      "receiver": "627014d77be513234ef6c03dbef9878c21d0efc8",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "627014d77be513234ef6c03dbef9878c21d0efc8"
+    },
+    {
+      "path": "mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/ExploitTest.kt",
+      "shared": "cdcf7d93c6cee13e143a3fe97d7c4ef88d892ebe",
+      "base": "217f61711f9a692bd5cc210ffcbcb96cc07dd737",
+      "receiver": "cdcf7d93c6cee13e143a3fe97d7c4ef88d892ebe",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "cdcf7d93c6cee13e143a3fe97d7c4ef88d892ebe"
+    },
+    {
+      "path": "mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/GrolnokTheOmnivoreScenarioTest.kt",
+      "shared": "ae309a8a9cf12f70a5e36f8707bc7537bea2e78d",
+      "base": "b9decd6a68925feac21d1fe3e58567168647438f",
+      "receiver": "ae309a8a9cf12f70a5e36f8707bc7537bea2e78d",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "ae309a8a9cf12f70a5e36f8707bc7537bea2e78d"
+    },
+    {
+      "path": "mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/LaidToRestScenarioTest.kt",
+      "shared": "534a81bcda3ffef08097fe6a99815c1a3fb19f81",
+      "base": "552dbb4dd33c92390b2abb3dc7c38c66685bfe4c",
+      "receiver": "534a81bcda3ffef08097fe6a99815c1a3fb19f81",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "534a81bcda3ffef08097fe6a99815c1a3fb19f81"
+    },
+    {
+      "path": "mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/LilianaDreadhordeGeneralScenarioTest.kt",
+      "shared": "38ad8c7c4c4f60d7f99eb65651cbc0fb9afc0367",
+      "base": "0d8b0c656cad94fcbe8846fb594309ebd1e5ce09",
+      "receiver": "38ad8c7c4c4f60d7f99eb65651cbc0fb9afc0367",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "38ad8c7c4c4f60d7f99eb65651cbc0fb9afc0367"
+    },
+    {
+      "path": "mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/LindenTheSteadfastQueenScenarioTest.kt",
+      "shared": "43e6791327ecac1802c608fd4077908b4ed8e034",
+      "base": "611b730c8dee329a107bf06025531f92be3f24c3",
+      "receiver": "43e6791327ecac1802c608fd4077908b4ed8e034",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "43e6791327ecac1802c608fd4077908b4ed8e034"
+    },
+    {
+      "path": "mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/OliviasAttendantsScenarioTest.kt",
+      "shared": "648c5cc57b8b4e3e29230b5bea460a0d024a266d",
+      "base": "d8f986e25d33cfbce248bad1fff8cdebe1afef09",
+      "receiver": "648c5cc57b8b4e3e29230b5bea460a0d024a266d",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "648c5cc57b8b4e3e29230b5bea460a0d024a266d"
+    },
+    {
+      "path": "mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/PanickedBystanderScenarioTest.kt",
+      "shared": "657d032a9f613ed138bca6be0a8438c0402c4c94",
+      "base": "d814bd50d971e5057aced98fb1a19eb2506d6b52",
+      "receiver": "657d032a9f613ed138bca6be0a8438c0402c4c94",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "657d032a9f613ed138bca6be0a8438c0402c4c94"
+    },
+    {
+      "path": "mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/SoulcipherBoardScenarioTest.kt",
+      "shared": "290873ad2caa71f97ba154638375b91545c95506",
+      "base": "0893c842bc247f9366a6a934750b945535d710dd",
+      "receiver": "290873ad2caa71f97ba154638375b91545c95506",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "290873ad2caa71f97ba154638375b91545c95506"
+    },
+    {
+      "path": "mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/TrainingTest.kt",
+      "shared": "a3601632df0043a472ed98f00cf0d78140c29e6f",
+      "base": "b2ee436eae9b129df81eefa5f531a55a455e1a12",
+      "receiver": "a3601632df0043a472ed98f00cf0d78140c29e6f",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "a3601632df0043a472ed98f00cf0d78140c29e6f"
+    },
+    {
+      "path": "mtg-sets/2023/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/AshiokWickedManipulatorScenarioTest.kt",
+      "shared": "cff137078c7f2c22a176db07ababcbf53254657e",
+      "base": "94356ebb7863cea50ec6e281bbbddd910be8b48f",
+      "receiver": "cff137078c7f2c22a176db07ababcbf53254657e",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "cff137078c7f2c22a176db07ababcbf53254657e"
+    },
+    {
+      "path": "mtg-sets/2023/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/BreechesEagerPillagerScenarioTest.kt",
+      "shared": "ef8f7c20f33b32f71dc5d604e60f7ed3e2c51ad2",
+      "base": "7915ca3c7d5b82eac27491fa9ff78e5f16a16c12",
+      "receiver": "ef8f7c20f33b32f71dc5d604e60f7ed3e2c51ad2",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "ef8f7c20f33b32f71dc5d604e60f7ed3e2c51ad2"
+    },
+    {
+      "path": "mtg-sets/2023/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/DireFlailScenarioTest.kt",
+      "shared": "60ea87d796fe40b62c419a6866e81e44d3059eaa",
+      "base": "4e0d1d907c6f6314f7adf9107a2790d1c5dbbe1f",
+      "receiver": "60ea87d796fe40b62c419a6866e81e44d3059eaa",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "60ea87d796fe40b62c419a6866e81e44d3059eaa"
+    },
+    {
+      "path": "mtg-sets/2023/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/ExperimentalConfectionerScenarioTest.kt",
+      "shared": "3fb07b698cf00ca167fd2573ebb0f6a80ffa7b07",
+      "base": "5b5df01a69ecf148666036d9ea721a7ab5a7f8df",
+      "receiver": "3fb07b698cf00ca167fd2573ebb0f6a80ffa7b07",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "3fb07b698cf00ca167fd2573ebb0f6a80ffa7b07"
+    },
+    {
+      "path": "mtg-sets/2023/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/GandalfTheWhiteTest.kt",
+      "shared": "14c82f7deb08506d822c2e0547afe291ee1f4774",
+      "base": "7213ff40581d1213e462805290179009581d8e9c",
+      "receiver": "14c82f7deb08506d822c2e0547afe291ee1f4774",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "14c82f7deb08506d822c2e0547afe291ee1f4774"
+    },
+    {
+      "path": "mtg-sets/2023/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/IntiSeneschalOfTheSunScenarioTest.kt",
+      "shared": "e807bcd1e62cfa691365e0ea194cb65399e4f224",
+      "base": "e9e49821c9e83e77cc29642711b6ed7911db543c",
+      "receiver": "e807bcd1e62cfa691365e0ea194cb65399e4f224",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "e807bcd1e62cfa691365e0ea194cb65399e4f224"
+    },
+    {
+      "path": "mtg-sets/2023/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/InvertedIcebergScenarioTest.kt",
+      "shared": "fcc4635b03f6f167277953972c6f8f33e8a63052",
+      "base": "9fdf0c16b8b4d196150772a27043acfbaf5e8865",
+      "receiver": "fcc4635b03f6f167277953972c6f8f33e8a63052",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "fcc4635b03f6f167277953972c6f8f33e8a63052"
+    },
+    {
+      "path": "mtg-sets/2023/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/OrcishBowmastersTest.kt",
+      "shared": "655dcafa2f44c749a41915be62fd86ef6c3ed6a6",
+      "base": "b1dd3c0ee0c3192359c78c561b190cd1df0cffbe",
+      "receiver": "655dcafa2f44c749a41915be62fd86ef6c3ed6a6",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "655dcafa2f44c749a41915be62fd86ef6c3ed6a6"
+    },
+    {
+      "path": "mtg-sets/2023/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/PreacherOfTheSchismScenarioTest.kt",
+      "shared": "18455b9039c36639c9b1d5762efdd906fa2969a2",
+      "base": "be0d39c0e432de7eb0e07bd8eed13e59891cb454",
+      "receiver": "18455b9039c36639c9b1d5762efdd906fa2969a2",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "18455b9039c36639c9b1d5762efdd906fa2969a2"
+    },
+    {
+      "path": "mtg-sets/2023/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/RoamingThroneScenarioTest.kt",
+      "shared": "c1b418fa866993bc53796ac091c4c3ce68160ab7",
+      "base": "c2301bdb23ae205f98e222b6c3dd2cfa69e30e02",
+      "receiver": "c1b418fa866993bc53796ac091c4c3ce68160ab7",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "c1b418fa866993bc53796ac091c4c3ce68160ab7"
+    },
+    {
+      "path": "mtg-sets/2023/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/StarvingRevenantScenarioTest.kt",
+      "shared": "3ff674178a33f409f807625f444bb1fb3721e1fb",
+      "base": "e283505cdc7f8994aa40116ff111f59a43fbb901",
+      "receiver": "3ff674178a33f409f807625f444bb1fb3721e1fb",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "3ff674178a33f409f807625f444bb1fb3721e1fb"
+    },
+    {
+      "path": "mtg-sets/2023/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/VirtueOfKnowledgeScenarioTest.kt",
+      "shared": "04f8a5ca5e414449b75e4a221c35aef76479b851",
+      "base": "49c9b658f58f248e4cd1eb9fcc5e27082df60830",
+      "receiver": "04f8a5ca5e414449b75e4a221c35aef76479b851",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "04f8a5ca5e414449b75e4a221c35aef76479b851"
+    },
+    {
+      "path": "mtg-sets/2023/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/WizardsRocketsXChoiceScenarioTest.kt",
+      "shared": "0e92ff4a37ef863eae6608f9150c7743f6995dc9",
+      "base": "882fa1e9dc54b173c0e69a284065b3f28d01b478",
+      "receiver": "0e92ff4a37ef863eae6608f9150c7743f6995dc9",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "0e92ff4a37ef863eae6608f9150c7743f6995dc9"
+    },
+    {
+      "path": "mtg-sets/2023/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/YouCannotPassScenarioTest.kt",
+      "shared": "e90b430a64bef064022ddbc9323defdc4260e551",
+      "base": "9eac3e761ab963a8069a58290d7b607fb817f35c",
+      "receiver": "e90b430a64bef064022ddbc9323defdc4260e551",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "e90b430a64bef064022ddbc9323defdc4260e551"
+    },
+    {
+      "path": "mtg-sets/2024/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/AffectionateIndrikScenarioTest.kt",
+      "shared": "d84e51d50b180ab1407ab38792a8f3a817ae0478",
+      "base": "2e29b24651682820efaac997fc1db3b485d8dbc9",
+      "receiver": "d84e51d50b180ab1407ab38792a8f3a817ae0478",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "d84e51d50b180ab1407ab38792a8f3a817ae0478"
+    },
+    {
+      "path": "mtg-sets/2024/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/AnnieJoinsUpTest.kt",
+      "shared": "e19f6a1325a75f98b52b27cc75716c7acc38683d",
+      "base": "1b85f7fddb477bf275db3c220d7e242ed95969d4",
+      "receiver": "e19f6a1325a75f98b52b27cc75716c7acc38683d",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "e19f6a1325a75f98b52b27cc75716c7acc38683d"
+    },
+    {
+      "path": "mtg-sets/2024/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/ArcboundCondorScenarioTest.kt",
+      "shared": "343e8e35153357ea9ca5ea7af54ed723e1c3f12b",
+      "base": "46b0880880d506c18bc5844a433d5b7fd1814f74",
+      "receiver": "343e8e35153357ea9ca5ea7af54ed723e1c3f12b",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "343e8e35153357ea9ca5ea7af54ed723e1c3f12b"
+    },
+    {
+      "path": "mtg-sets/2024/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/BriaRiptideRogueScenarioTest.kt",
+      "shared": "daad4428a4e9b15908320807078eb3c1392f9aba",
+      "base": "bc20bcfb50394b157ef2c138ed63cad625fd01c9",
+      "receiver": "daad4428a4e9b15908320807078eb3c1392f9aba",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "daad4428a4e9b15908320807078eb3c1392f9aba"
+    },
+    {
+      "path": "mtg-sets/2024/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/CalamityGallopingInfernoScenarioTest.kt",
+      "shared": "9e0aaa8aacdf7d5e8cba2e946245436e239efa34",
+      "base": "502ebf23ba8d5dcf4ac05959073a087d766b52fd",
+      "receiver": "9e0aaa8aacdf7d5e8cba2e946245436e239efa34",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "9e0aaa8aacdf7d5e8cba2e946245436e239efa34"
+    },
+    {
+      "path": "mtg-sets/2024/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/ConnectingTheDotsScenarioTest.kt",
+      "shared": "c225fa1a34b0bf1a9bc83666f47f6323aac35bc5",
+      "base": "7df87ca3f2523ec23aae06c9684e71756bebeba2",
+      "receiver": "c225fa1a34b0bf1a9bc83666f47f6323aac35bc5",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "c225fa1a34b0bf1a9bc83666f47f6323aac35bc5"
+    },
+    {
+      "path": "mtg-sets/2024/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/CrimeNovelistScenarioTest.kt",
+      "shared": "0cf22376d15e3439b7a0b7b2e8b6065c2933ae2a",
+      "base": "2325b1f963b01c7dc861e433f9e13ed02861efbf",
+      "receiver": "0cf22376d15e3439b7a0b7b2e8b6065c2933ae2a",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "0cf22376d15e3439b7a0b7b2e8b6065c2933ae2a"
+    },
+    {
+      "path": "mtg-sets/2024/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/EsotericDuplicatorScenarioTest.kt",
+      "shared": "65f6f95e00c2bd25078f15da9303c8e311743d7f",
+      "base": "9e58268a75417cfcbfde5036412494880da2c7ec",
+      "receiver": "65f6f95e00c2bd25078f15da9303c8e311743d7f",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "65f6f95e00c2bd25078f15da9303c8e311743d7f"
+    },
+    {
+      "path": "mtg-sets/2024/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/InsidiousFungusScenarioTest.kt",
+      "shared": "e923acf31891aeab38c0b2b98c5bea808dedc590",
+      "base": "cb36e92411d766279c6614a83d32d340307b4312",
+      "receiver": "e923acf31891aeab38c0b2b98c5bea808dedc590",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "e923acf31891aeab38c0b2b98c5bea808dedc590"
+    },
+    {
+      "path": "mtg-sets/2024/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/InsidiousRootsScenarioTest.kt",
+      "shared": "6fa84dca9257f77b7cef9ddbb87011ce26c347da",
+      "base": "66c783f7374c594627cf9478a50a3ca6586942c2",
+      "receiver": "6fa84dca9257f77b7cef9ddbb87011ce26c347da",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "6fa84dca9257f77b7cef9ddbb87011ce26c347da"
+    },
+    {
+      "path": "mtg-sets/2024/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/LassoedByTheLawScenarioTest.kt",
+      "shared": "67be54370133a190311e75deaa6e9b3ec24c0ca3",
+      "base": "a4ee78b2fb440f65bb1d67dd3b9cfee7542e1d22",
+      "receiver": "67be54370133a190311e75deaa6e9b3ec24c0ca3",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "67be54370133a190311e75deaa6e9b3ec24c0ca3"
+    },
+    {
+      "path": "mtg-sets/2024/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/LilahUndefeatedSlickshotScenarioTest.kt",
+      "shared": "efc839262578cae8ebf0b0fdc325c3afae6d9196",
+      "base": "661bbd87ee4aaf05bd899b267fd35967cb2ffde5",
+      "receiver": "efc839262578cae8ebf0b0fdc325c3afae6d9196",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "efc839262578cae8ebf0b0fdc325c3afae6d9196"
+    },
+    {
+      "path": "mtg-sets/2024/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/ManifoldMouseValiantTest.kt",
+      "shared": "ab9ac018a7ad30b252396000ceb54bd42e464888",
+      "base": "24bbda87d9edf7051e9a35c0c955045890068854",
+      "receiver": "ab9ac018a7ad30b252396000ceb54bd42e464888",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "ab9ac018a7ad30b252396000ceb54bd42e464888"
+    },
+    {
+      "path": "mtg-sets/2024/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/MirrorRoomFracturedRealmTest.kt",
+      "shared": "e070650568551c7bdd4e4567fe752361b003c154",
+      "base": "47b20fec3ab2ea037dac8af09d0fc844412be41c",
+      "receiver": "e070650568551c7bdd4e4567fe752361b003c154",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "e070650568551c7bdd4e4567fe752361b003c154"
+    },
+    {
+      "path": "mtg-sets/2024/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/MistwaySpyScenarioTest.kt",
+      "shared": "92706cecda8ece4f244d1b0866a542c1a0c66736",
+      "base": "66e27126fab94062db06876fbfa0d982d1d8e6c5",
+      "receiver": "92706cecda8ece4f244d1b0866a542c1a0c66736",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "92706cecda8ece4f244d1b0866a542c1a0c66736"
+    },
+    {
+      "path": "mtg-sets/2024/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/PerimeterEnforcerScenarioTest.kt",
+      "shared": "7a15ffad34c2179e91db83f62f549d5ce45332f3",
+      "base": "0faaf717528ce2553609118d9d5b21ab19b3483e",
+      "receiver": "7a15ffad34c2179e91db83f62f549d5ce45332f3",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "7a15ffad34c2179e91db83f62f549d5ce45332f3"
+    },
+    {
+      "path": "mtg-sets/2024/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/QuilledGreatwurmScenarioTest.kt",
+      "shared": "1a5c09a9641194b5e5fa02959e86eea2e78995ef",
+      "base": "e0da680713acafc287798019411ecb6d45dd9596",
+      "receiver": "1a5c09a9641194b5e5fa02959e86eea2e78995ef",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "1a5c09a9641194b5e5fa02959e86eea2e78995ef"
+    },
+    {
+      "path": "mtg-sets/2024/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/StormsplitterTest.kt",
+      "shared": "0e2d17bc7f66a2b295b013cc6114d427785d78d4",
+      "base": "97e72e9c87e76ad1942dce9d8736a2306f42159d",
+      "receiver": "0e2d17bc7f66a2b295b013cc6114d427785d78d4",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "0e2d17bc7f66a2b295b013cc6114d427785d78d4"
+    },
+    {
+      "path": "mtg-sets/2024/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/TinybonesBaubleBurglarScenarioTest.kt",
+      "shared": "5d8fea4986a1ceed03ef31a6049c9d6f9c5323bb",
+      "base": "cedef9bdcdf1456bd5cf0f240ed864f98e701177",
+      "receiver": "5d8fea4986a1ceed03ef31a6049c9d6f9c5323bb",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "5d8fea4986a1ceed03ef31a6049c9d6f9c5323bb"
+    },
+    {
+      "path": "mtg-sets/2024/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/VengefulTrackerScenarioTest.kt",
+      "shared": "273f987b0e3e46a7dd1c7986f571ea360e13b1a1",
+      "base": "9d429c5fa0da2051ed2b579e8b10c6b871a518c8",
+      "receiver": "273f987b0e3e46a7dd1c7986f571ea360e13b1a1",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "273f987b0e3e46a7dd1c7986f571ea360e13b1a1"
+    },
+    {
+      "path": "mtg-sets/2025/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/BeatrixLoyalGeneralScenarioTest.kt",
+      "shared": "dd4399c0c83bc6388216192669f584bfda62ef13",
+      "base": "e134002de85a0ff4ad8936cf04a9caa20c3d7488",
+      "receiver": "dd4399c0c83bc6388216192669f584bfda62ef13",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "dd4399c0c83bc6388216192669f584bfda62ef13"
+    },
+    {
+      "path": "mtg-sets/2025/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/CloudMidgarMercenaryScenarioTest.kt",
+      "shared": "5c754a3bc7f82aac589481fc15e0b65629aa4c22",
+      "base": "87ac163d84c6472511e802c6e7c7fbb41a45cff9",
+      "receiver": "5c754a3bc7f82aac589481fc15e0b65629aa4c22",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "5c754a3bc7f82aac589481fc15e0b65629aa4c22"
+    },
+    {
+      "path": "mtg-sets/2025/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/DalkovanEncampmentScenarioTest.kt",
+      "shared": "2146572d1cb97370a0c9ab056e219258a1ae0ea6",
+      "base": "8f14d74e5a57d83a35f6a10623eeadfda2092948",
+      "receiver": "16753367befd4e8458156d747f42a4affba9298d",
+      "classification": "receiver-divergent",
+      "disposition": "prospective-strengthening-exact-shared-Dalkovan-assertions",
+      "candidate": "2146572d1cb97370a0c9ab056e219258a1ae0ea6"
+    },
+    {
+      "path": "mtg-sets/2025/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/EddieBrockScenarioTest.kt",
+      "shared": "5d6675c3fd19adbdafb61d5caca03249c16f9b33",
+      "base": "779e52745cdb285bdc6ed341821c6f6ae277a1e5",
+      "receiver": "5d6675c3fd19adbdafb61d5caca03249c16f9b33",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "5d6675c3fd19adbdafb61d5caca03249c16f9b33"
+    },
+    {
+      "path": "mtg-sets/2025/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/FirebendingScenarioTest.kt",
+      "shared": "3fb7be2ea0c4ce11a5b356df51b996662345cb53",
+      "base": "ed2ccf508bae5e0f5270e35e625d520748f210b8",
+      "receiver": "3fb7be2ea0c4ce11a5b356df51b996662345cb53",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "3fb7be2ea0c4ce11a5b356df51b996662345cb53"
+    },
+    {
+      "path": "mtg-sets/2025/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/GogoMasterOfMimicryScenarioTest.kt",
+      "shared": "61989306de419cbb705773264af3f3adac99d060",
+      "base": "d65986f1fc0495242c8e8159d13415cdbabf65ad",
+      "receiver": "61989306de419cbb705773264af3f3adac99d060",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "61989306de419cbb705773264af3f3adac99d060"
+    },
+    {
+      "path": "mtg-sets/2025/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/HideOnTheCeilingTest.kt",
+      "shared": "7637ec92bb0593acd3959314ac03dd0231b53287",
+      "base": "e256f060661480a1434b6480f2c4eb1b7d1f65b9",
+      "receiver": "7637ec92bb0593acd3959314ac03dd0231b53287",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "7637ec92bb0593acd3959314ac03dd0231b53287"
+    },
+    {
+      "path": "mtg-sets/2025/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/IrohTeaMasterScenarioTest.kt",
+      "shared": "3e67a2bbd3ecfd7215e7d11dc6d4f8dc321b3a6f",
+      "base": "9a41e3df871258d9ba534326f767b8fe2c89d2a3",
+      "receiver": "3e67a2bbd3ecfd7215e7d11dc6d4f8dc321b3a6f",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "3e67a2bbd3ecfd7215e7d11dc6d4f8dc321b3a6f"
+    },
+    {
+      "path": "mtg-sets/2025/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/LadyOctopusInspiredInventorScenarioTest.kt",
+      "shared": "36cab19fbb890e53aac9548da08a78c8102a4d48",
+      "base": "3aa1d17e65cf733425bef7fc033dfb1e16a3ec04",
+      "receiver": "36cab19fbb890e53aac9548da08a78c8102a4d48",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "36cab19fbb890e53aac9548da08a78c8102a4d48"
+    },
+    {
+      "path": "mtg-sets/2025/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/MagitekScytheScenarioTest.kt",
+      "shared": "87747341758fa364cdb9c635006a41c4517802bc",
+      "base": "2d8a1b99d4fbd0eb373aed617148637ed80b33e7",
+      "receiver": "87747341758fa364cdb9c635006a41c4517802bc",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "87747341758fa364cdb9c635006a41c4517802bc"
+    },
+    {
+      "path": "mtg-sets/2025/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/MagmakinArtilleristScenarioTest.kt",
+      "shared": "b680a0255bcd786c51ec3485970ee7f678de2bf4",
+      "base": "525f556c4c3c8288f05248281ab4f50855c11e67",
+      "receiver": "b680a0255bcd786c51ec3485970ee7f678de2bf4",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "b680a0255bcd786c51ec3485970ee7f678de2bf4"
+    },
+    {
+      "path": "mtg-sets/2025/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/MaraudingMakoScenarioTest.kt",
+      "shared": "38d39c72f2517814c3faa842eb1c5d175a8b9f5d",
+      "base": "9def390a4791594d1de4fe2154fa65e1f753bfb8",
+      "receiver": "38d39c72f2517814c3faa842eb1c5d175a8b9f5d",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "38d39c72f2517814c3faa842eb1c5d175a8b9f5d"
+    },
+    {
+      "path": "mtg-sets/2025/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/MobilizeTest.kt",
+      "shared": "1606b464b36f4a6b12a2934e4a618ba377e6fdec",
+      "base": "0e30d28b6468da629ace4ff1c8ac9a1c22ef47d3",
+      "receiver": "1606b464b36f4a6b12a2934e4a618ba377e6fdec",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "1606b464b36f4a6b12a2934e4a618ba377e6fdec"
+    },
+    {
+      "path": "mtg-sets/2025/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/PiratePeddlersTest.kt",
+      "shared": "e230c343146968daee617caf64308a08ccfedaab",
+      "base": "d3aa858538c0c4a7b9597a1fb09f6ea247b13f6c",
+      "receiver": "e230c343146968daee617caf64308a08ccfedaab",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "e230c343146968daee617caf64308a08ccfedaab"
+    },
+    {
+      "path": "mtg-sets/2025/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/PushTheLimitScenarioTest.kt",
+      "shared": "e3338d978b4a2974e5046e0d2bdb297b93cbc0f3",
+      "base": "b0a67a306404119b503229fa02af8f0cda950e59",
+      "receiver": "e3338d978b4a2974e5046e0d2bdb297b93cbc0f3",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "e3338d978b4a2974e5046e0d2bdb297b93cbc0f3"
+    },
+    {
+      "path": "mtg-sets/2025/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/RandomEncounterScenarioTest.kt",
+      "shared": "58aa7069ccd677cac70ebf5f1547b47cfa5ec2ff",
+      "base": "21360ea4fcf970fc6546d4c05a15bd6edc80c474",
+      "receiver": "58aa7069ccd677cac70ebf5f1547b47cfa5ec2ff",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "58aa7069ccd677cac70ebf5f1547b47cfa5ec2ff"
+    },
+    {
+      "path": "mtg-sets/2025/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/SaltRoadSkirmishScenarioTest.kt",
+      "shared": "45078c1175a23a19408e3739f33c5c1a994927d9",
+      "base": "2951df3c9addade88a0db7d1f17d14627a602f3b",
+      "receiver": "45078c1175a23a19408e3739f33c5c1a994927d9",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "45078c1175a23a19408e3739f33c5c1a994927d9"
+    },
+    {
+      "path": "mtg-sets/2025/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/SecludedStarforgeTest.kt",
+      "shared": "12f601faf7bcd5614c31f27c7ca90a42c465a58f",
+      "base": "19d1353f4f8369c387ef56701b28d15b7758f789",
+      "receiver": "12f601faf7bcd5614c31f27c7ca90a42c465a58f",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "12f601faf7bcd5614c31f27c7ca90a42c465a58f"
+    },
+    {
+      "path": "mtg-sets/2025/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/ShadowOfTheGoblinScenarioTest.kt",
+      "shared": "09dca388de30754298b929fcf07a71c998287324",
+      "base": "45d72863cc23976f9f06cb3f04aa704fc1b35437",
+      "receiver": "09dca388de30754298b929fcf07a71c998287324",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "09dca388de30754298b929fcf07a71c998287324"
+    },
+    {
+      "path": "mtg-sets/2025/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/TheMasamuneScenarioTest.kt",
+      "shared": "2a072fde3b1d5ff858d3cc5dd65ce907a8b26117",
+      "base": "dd9998834deebde4ba75c04fe32b38db98a3621e",
+      "receiver": "2a072fde3b1d5ff858d3cc5dd65ce907a8b26117",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "2a072fde3b1d5ff858d3cc5dd65ce907a8b26117"
+    },
+    {
+      "path": "mtg-sets/2025/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/TheWaterCrystalScenarioTest.kt",
+      "shared": "80e3c88a3584052161c14d65ab59c4dd5c3dfb1f",
+      "base": "6e7bd9cc4b6aaf1d620a462bcd95e5648f22d14b",
+      "receiver": "80e3c88a3584052161c14d65ab59c4dd5c3dfb1f",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "80e3c88a3584052161c14d65ab59c4dd5c3dfb1f"
+    },
+    {
+      "path": "mtg-sets/2025/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/UltrosObnoxiousOctopusScenarioTest.kt",
+      "shared": "e8406f15662b9b848c790e5f2dd239bc4d2585c3",
+      "base": "ee5f1e87bf27134c60987feac80312f5993c8be5",
+      "receiver": "e8406f15662b9b848c790e5f2dd239bc4d2585c3",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "e8406f15662b9b848c790e5f2dd239bc4d2585c3"
+    },
+    {
+      "path": "mtg-sets/2025/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/WeaponsManufacturingScenarioTest.kt",
+      "shared": "4795bb75e4bc439fc3ff323bb1521a6ca9ac6249",
+      "base": "3351d3e85f74c1897e2023575ff9cd34b3fc9dd2",
+      "receiver": "4795bb75e4bc439fc3ff323bb1521a6ca9ac6249",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "4795bb75e4bc439fc3ff323bb1521a6ca9ac6249"
+    },
+    {
+      "path": "mtg-sets/2025/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/WindcragSiegeTest.kt",
+      "shared": "1c310909aa56a316bd63e1795641e74183415f40",
+      "base": "024fa3b9d50d3a5d6284d02c0280b0e352799c92",
+      "receiver": "1c310909aa56a316bd63e1795641e74183415f40",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "1c310909aa56a316bd63e1795641e74183415f40"
+    },
+    {
+      "path": "mtg-sets/2025/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/ZhaoRuthlessAdmiralScenarioTest.kt",
+      "shared": "bfb7ba4e43e80d506964a189bf4bc6b82ead99a7",
+      "base": "67d0fe04822f94a573e88741599f0fe2d384dba5",
+      "receiver": "bfb7ba4e43e80d506964a189bf4bc6b82ead99a7",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "bfb7ba4e43e80d506964a189bf4bc6b82ead99a7"
+    },
+    {
+      "path": "mtg-sets/2026/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/BelladonnaTookScenarioTest.kt",
+      "shared": "8db1c9a4490b9631c19c64a30056064a46b186ea",
+      "base": "3d1af9be31ce1d32921ed3b2de6ceb33dd921c04",
+      "receiver": "8db1c9a4490b9631c19c64a30056064a46b186ea",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "8db1c9a4490b9631c19c64a30056064a46b186ea"
+    },
+    {
+      "path": "mtg-sets/2026/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/BifurMelodicRiderScenarioTest.kt",
+      "shared": "a7b8757521313af76291528935d1b775f8480d84",
+      "base": "192785daf40840a7469dc126f684334224cb07de",
+      "receiver": "a7b8757521313af76291528935d1b775f8480d84",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "a7b8757521313af76291528935d1b775f8480d84"
+    },
+    {
+      "path": "mtg-sets/2026/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/CelebrateTheMountainKingScenarioTest.kt",
+      "shared": "d19dd7bd747de0ee1ad02bb5f13a6ec903923405",
+      "base": "c59b6c4741f7c0e591e6a41eefc836432a3c432f",
+      "receiver": "d19dd7bd747de0ee1ad02bb5f13a6ec903923405",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "d19dd7bd747de0ee1ad02bb5f13a6ec903923405"
+    },
+    {
+      "path": "mtg-sets/2026/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/ElrondMoonReaderScenarioTest.kt",
+      "shared": "ad05448dfecd16e4c986afafdb48a2dd2bded28f",
+      "base": "d55b01c83e3f8fee8fa96b53fa142943fea9d3af",
+      "receiver": "ad05448dfecd16e4c986afafdb48a2dd2bded28f",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "ad05448dfecd16e4c986afafdb48a2dd2bded28f"
+    },
+    {
+      "path": "mtg-sets/2026/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/GoblinGlasswrightScenarioTest.kt",
+      "shared": "2e70ed5a259ae8870d29532eca8c08429284c626",
+      "base": "c31df95da4e5add5cb5c9153c890f4f51b483e8f",
+      "receiver": "2e70ed5a259ae8870d29532eca8c08429284c626",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "2e70ed5a259ae8870d29532eca8c08429284c626"
+    },
+    {
+      "path": "mtg-sets/2026/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/JenniferWaltersScenarioTest.kt",
+      "shared": "f95c00a154b69bb75d14522373701cbd1964e704",
+      "base": "2c7d58571f40cbc497f1d963f2d27085803bd558",
+      "receiver": "f95c00a154b69bb75d14522373701cbd1964e704",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "f95c00a154b69bb75d14522373701cbd1964e704"
+    },
+    {
+      "path": "mtg-sets/2026/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/MaralenFaeAscendantScenarioTest.kt",
+      "shared": "24283eb63164869d16ad8446863e32506e99ae0a",
+      "base": "54af24a5e55732185bee7b499492546406417642",
+      "receiver": "24283eb63164869d16ad8446863e32506e99ae0a",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "24283eb63164869d16ad8446863e32506e99ae0a"
+    },
+    {
+      "path": "mtg-sets/2026/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/MorningtidesLightScenarioTest.kt",
+      "shared": "2e88b4991e0d540d3516c08de48877271d5fe878",
+      "base": "1681e3b723669a16d3838ae9aa0baab93dcfecf0",
+      "receiver": "2e88b4991e0d540d3516c08de48877271d5fe878",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "2e88b4991e0d540d3516c08de48877271d5fe878"
+    },
+    {
+      "path": "mtg-sets/2026/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/PestControlLifegainEngineScenarioTest.kt",
+      "shared": "eacfee0f43f42ba4f9ac3a58d7bdb4abcc2ae1d9",
+      "base": "8f2b127ac664e2411112c1a18822c5b403cbfcd3",
+      "receiver": null,
+      "classification": "donor-new-receiver-absent",
+      "disposition": "foreign-project-fixture-not-added-existing-receiver-unchanged",
+      "candidate": null
+    },
+    {
+      "path": "mtg-sets/2026/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/PrismariTheInspirationScenarioTest.kt",
+      "shared": "625b8f0c14ce51e15b0e19b5f88248b8666b3646",
+      "base": "df1287f1195234ef7231e51d7878dba4cc0dfc25",
+      "receiver": "625b8f0c14ce51e15b0e19b5f88248b8666b3646",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "625b8f0c14ce51e15b0e19b5f88248b8666b3646"
+    },
+    {
+      "path": "mtg-sets/2026/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/RavenhillFlockScenarioTest.kt",
+      "shared": "8cd3a07707068018d9d3db5428f72a3945bce465",
+      "base": "56d5ee5d1a563648b485066c88068dfd543f526e",
+      "receiver": "8cd3a07707068018d9d3db5428f72a3945bce465",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "8cd3a07707068018d9d3db5428f72a3945bce465"
+    },
+    {
+      "path": "mtg-sets/2026/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/WizardsStaffScenarioTest.kt",
+      "shared": "21d1c1c164c8fb6f5830957189681740dc0ac8a6",
+      "base": "86aff74599b2f27c90f51df835a1f81ff981c980",
+      "receiver": "21d1c1c164c8fb6f5830957189681740dc0ac8a6",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "21d1c1c164c8fb6f5830957189681740dc0ac8a6"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/CombatResolution.kt",
+      "shared": "93f1240a7d64750d888d812e00c0266c934a457d",
+      "base": "f9528b20d4a09a94751ab247fe3349951a896dc0",
+      "receiver": "f9528b20d4a09a94751ab247fe3349951a896dc0",
+      "classification": "unchanged-donor-base",
+      "disposition": "exact-shared-source-transfer",
+      "candidate": "93f1240a7d64750d888d812e00c0266c934a457d"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/GameEvent.kt",
+      "shared": "ea6d49651cac814fd59fadca4169e9d8a5100f0f",
+      "base": "933f47f3100514b8f9c70b27c2a571ae8e7b6ca6",
+      "receiver": "323e742572eca0e781ba6365904d472a9a47e9ea",
+      "classification": "receiver-divergent",
+      "disposition": "compose-preserving-Izzet-repair",
+      "candidate": "d020b83de58ad289d7fa23d51a2131a738d2256f"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/ModalAndCloneContinuations.kt",
+      "shared": "2f5a738be0a6f8ca7379fbdf0ccc3a50d5379dd2",
+      "base": "1b4d973b8a58a918664d3e6601a820e0b09f92cb",
+      "receiver": "1b4d973b8a58a918664d3e6601a820e0b09f92cb",
+      "classification": "unchanged-donor-base",
+      "disposition": "exact-shared-source-transfer",
+      "candidate": "2f5a738be0a6f8ca7379fbdf0ccc3a50d5379dd2"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/PendingDecision.kt",
+      "shared": "16cd51fbfbb0e8778f72e6cee5d7a5fb953c8961",
+      "base": "efa31af801d6fcd2407104096aed2254a653f85d",
+      "receiver": "efa31af801d6fcd2407104096aed2254a653f85d",
+      "classification": "unchanged-donor-base",
+      "disposition": "exact-shared-source-transfer",
+      "candidate": "16cd51fbfbb0e8778f72e6cee5d7a5fb953c8961"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/Serialization.kt",
+      "shared": "e335725e8a3c7065c73a40f1b108aa24a271d55b",
+      "base": "6873412e01201ff8dff890525904b792f77ea7c4",
+      "receiver": "960bb62e30f7a157247cd89e34dc729ead6ce25c",
+      "classification": "receiver-divergent",
+      "disposition": "compose-preserving-Izzet-repair",
+      "candidate": "3fe1e7aa169e73fb2557ce6b959657743a5bb099"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/TokenContinuations.kt",
+      "shared": "2d50fb85d0c6c6ef4be5c6806212631821ccd8ba",
+      "base": "a2e7f91abd3269d96a78d1f9c470f4427f2d1ed8",
+      "receiver": "a2e7f91abd3269d96a78d1f9c470f4427f2d1ed8",
+      "classification": "unchanged-donor-base",
+      "disposition": "exact-shared-source-transfer",
+      "candidate": "2d50fb85d0c6c6ef4be5c6806212631821ccd8ba"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/PendingTrigger.kt",
+      "shared": "753f13ee21d62be2df57c8b4f5e71d460d0b664c",
+      "base": "aa256dd8da68090545869e8dfaece698ac6f010d",
+      "receiver": "753f13ee21d62be2df57c8b4f5e71d460d0b664c",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "753f13ee21d62be2df57c8b4f5e71d460d0b664c"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerAbilityResolver.kt",
+      "shared": "f268afcb1a218e9c44e8f2ab339baef10044500f",
+      "base": "c30722b1c3d4bc02e68c839ea072b4e4d0de0ad2",
+      "receiver": "f268afcb1a218e9c44e8f2ab339baef10044500f",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "f268afcb1a218e9c44e8f2ab339baef10044500f"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerDetector.kt",
+      "shared": "c0e8a696db522403095d0162fea486cb175b3f99",
+      "base": "8840f1f8351d01529ee7779f4846d549dbc808c0",
+      "receiver": "9bd61b8dd62fdad7ccb35737653bd9a064fe80ee",
+      "classification": "receiver-divergent",
+      "disposition": "compose-preserving-Izzet-repair",
+      "candidate": "37f1e0e038f91634005a3e7ba46e2278828ac701"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/ContinuationHandler.kt",
+      "shared": "4bfbcbaae0eddd1c2064cdc80949e1357298670a",
+      "base": "7fa8a706a1d596782bd6138f18020b6fddbc03aa",
+      "receiver": "7fa8a706a1d596782bd6138f18020b6fddbc03aa",
+      "classification": "unchanged-donor-base",
+      "disposition": "exact-shared-source-transfer",
+      "candidate": "4bfbcbaae0eddd1c2064cdc80949e1357298670a"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/decision/DecisionValidators.kt",
+      "shared": "dc1f52c160432bf9fcdf421e60ce46dabd0e4313",
+      "base": "4c96c0b94b924725b8c971697bb2b71967702e21",
+      "receiver": "4c96c0b94b924725b8c971697bb2b71967702e21",
+      "classification": "unchanged-donor-base",
+      "disposition": "exact-shared-source-transfer",
+      "candidate": "dc1f52c160432bf9fcdf421e60ce46dabd0e4313"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/CombatContinuationResumer.kt",
+      "shared": "7dac54a45af972aff7abb6678d47593ffe76404e",
+      "base": "8d004df359169937720ad68133144ea3a7f547a9",
+      "receiver": "8d004df359169937720ad68133144ea3a7f547a9",
+      "classification": "unchanged-donor-base",
+      "disposition": "exact-shared-source-transfer",
+      "candidate": "7dac54a45af972aff7abb6678d47593ffe76404e"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/CoreAutoResumerModule.kt",
+      "shared": "f9106cdde9804aab641f66ebd48f1e2bde37c72a",
+      "base": "fef6a773e9a417d19b9157e0ac0ca3ab16e9160d",
+      "receiver": "fef6a773e9a417d19b9157e0ac0ca3ab16e9160d",
+      "classification": "unchanged-donor-base",
+      "disposition": "exact-shared-source-transfer",
+      "candidate": "f9106cdde9804aab641f66ebd48f1e2bde37c72a"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/ModalAndCloneContinuationResumer.kt",
+      "shared": "d88f826772539e858a9d215f98a5995b62fb5aac",
+      "base": "b3c452103a367dd25bf44167d0c28c2456d77720",
+      "receiver": "b3c452103a367dd25bf44167d0c28c2456d77720",
+      "classification": "unchanged-donor-base",
+      "disposition": "exact-shared-source-transfer",
+      "candidate": "d88f826772539e858a9d215f98a5995b62fb5aac"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/ObjectReferencePropagation.kt",
+      "shared": "8b29ed5e0e786be3583a001e59ed6e8e00743ece",
+      "base": "4d50b6c24609d2c2a1e5cde7e89d047deeb5fc7c",
+      "receiver": "4d50b6c24609d2c2a1e5cde7e89d047deeb5fc7c",
+      "classification": "unchanged-donor-base",
+      "disposition": "exact-shared-source-transfer",
+      "candidate": "8b29ed5e0e786be3583a001e59ed6e8e00743ece"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/PipelineCollectionPropagation.kt",
+      "shared": "893dba15762c27b0e02f687970e4950be627d05b",
+      "base": "91bd8416d954ba8ed8a7ed870c4a37c63de223d9",
+      "receiver": "91bd8416d954ba8ed8a7ed870c4a37c63de223d9",
+      "classification": "unchanged-donor-base",
+      "disposition": "exact-shared-source-transfer",
+      "candidate": "893dba15762c27b0e02f687970e4950be627d05b"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/TokenContinuationResumer.kt",
+      "shared": "ed6782820b9a255d8ee1482ed16bdeed8fa5151a",
+      "base": "5292de7e56953bad41674df9f0da5039d235fff3",
+      "receiver": "5292de7e56953bad41674df9f0da5039d235fff3",
+      "classification": "unchanged-donor-base",
+      "disposition": "exact-shared-source-transfer",
+      "candidate": "ed6782820b9a255d8ee1482ed16bdeed8fa5151a"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/ZoneTransitionService.kt",
+      "shared": "74e15dcfe02319d5fa61e3bed52df0c0b1a43426",
+      "base": "309ff569bf626a7e7c7dcf9b71180aa0bc01ef89",
+      "receiver": "ffccbf9ad3283adb5424a27fb9f12b07a0d0be65",
+      "classification": "receiver-divergent",
+      "disposition": "retain-receiver-existing-source-and-assertions",
+      "candidate": "ffccbf9ad3283adb5424a27fb9f12b07a0d0be65"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/token/AttackingTokenDefenderChooser.kt",
+      "shared": "f2e8be4f7420fe51b0331b45d5d73c12d1939261",
+      "base": null,
+      "receiver": null,
+      "classification": "unchanged-donor-base",
+      "disposition": "exact-shared-source-transfer",
+      "candidate": "f2e8be4f7420fe51b0331b45d5d73c12d1939261"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/token/CreateTokenCopyOfTargetExecutor.kt",
+      "shared": "58372d7ff97baa3ed7b62adb0fb9ff8933e05fbd",
+      "base": "b8d8cd6b5057a7c5c5689057a4113b109d53ca9a",
+      "receiver": "b8d8cd6b5057a7c5c5689057a4113b109d53ca9a",
+      "classification": "unchanged-donor-base",
+      "disposition": "exact-shared-source-transfer",
+      "candidate": "58372d7ff97baa3ed7b62adb0fb9ff8933e05fbd"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/token/CreateTokenExecutor.kt",
+      "shared": "f6462b2861cd457364f8599438a736a45c52e4d0",
+      "base": "046f2e76c6e8837ae7cb3c4da9394b1a85e432e5",
+      "receiver": "046f2e76c6e8837ae7cb3c4da9394b1a85e432e5",
+      "classification": "unchanged-donor-base",
+      "disposition": "exact-shared-source-transfer",
+      "candidate": "f6462b2861cd457364f8599438a736a45c52e4d0"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/token/TokenCreationReplacementHelper.kt",
+      "shared": "a63c1e91f360f0500e42928204d49eb9efe424c1",
+      "base": "36e6781ecbaa599f1485e72e577deeb417f60478",
+      "receiver": "36e6781ecbaa599f1485e72e577deeb417f60478",
+      "classification": "unchanged-donor-base",
+      "disposition": "exact-shared-source-transfer",
+      "candidate": "a63c1e91f360f0500e42928204d49eb9efe424c1"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/legalactions/enumerators/CombatEnumerator.kt",
+      "shared": "15d5642cd0d22baeb5e8b3ccb79e62de563f784a",
+      "base": "4b293dbcf93868c2ffc177de14f6a835867b9f05",
+      "receiver": "4b293dbcf93868c2ffc177de14f6a835867b9f05",
+      "classification": "unchanged-donor-base",
+      "disposition": "exact-shared-source-transfer",
+      "candidate": "15d5642cd0d22baeb5e8b3ccb79e62de563f784a"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/CastPriorityProcessor.kt",
+      "shared": "ae82f39ef1ebbd462d65c47ce4b0939d2338b7dc",
+      "base": "b7e8e4c5e8395c7cd3e8ec34b0da4369a90e4eae",
+      "receiver": "ae82f39ef1ebbd462d65c47ce4b0939d2338b7dc",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "ae82f39ef1ebbd462d65c47ce4b0939d2338b7dc"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/combat/CombatDamageManager.kt",
+      "shared": "40425b8faa8d74b33aa16feda9fa198bc5f7841c",
+      "base": "c57afc6171f595bc9aac2ba14a87c76981075a82",
+      "receiver": "d4a3d3d2de44005eab1db85afa9ae2bbd10a5a17",
+      "classification": "receiver-divergent",
+      "disposition": "compose-preserving-Izzet-repair",
+      "candidate": "81a0afc8c59fff64ed94608cd9fd682aa4cdf09a"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/combat/CombatDamageUtils.kt",
+      "shared": "a9b30fe2915b38480ee8e48cf57821a29911ce12",
+      "base": "86a55c8e62f17d5058e5a8ee0bc6fd82432a561e",
+      "receiver": "86a55c8e62f17d5058e5a8ee0bc6fd82432a561e",
+      "classification": "unchanged-donor-base",
+      "disposition": "exact-shared-source-transfer",
+      "candidate": "a9b30fe2915b38480ee8e48cf57821a29911ce12"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/combat/CombatDefenders.kt",
+      "shared": "0d629b2c355ca3c147cfa134fab4631cf2f4c50e",
+      "base": "2b7356fffcd1e038f99d353e8e18a3c7ac86dd10",
+      "receiver": "2b7356fffcd1e038f99d353e8e18a3c7ac86dd10",
+      "classification": "unchanged-donor-base",
+      "disposition": "exact-shared-source-transfer",
+      "candidate": "0d629b2c355ca3c147cfa134fab4631cf2f4c50e"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/combat/DamageCalculator.kt",
+      "shared": "dd804fe2f66f42b6e4526d384a8271a3294e3178",
+      "base": "cf7ade663968fe94c736b03d99eb5280cce55726",
+      "receiver": "cf7ade663968fe94c736b03d99eb5280cce55726",
+      "classification": "unchanged-donor-base",
+      "disposition": "exact-shared-source-transfer",
+      "candidate": "dd804fe2f66f42b6e4526d384a8271a3294e3178"
+    },
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/event/EntryChoiceEventProvenanceTest.kt",
+      "shared": "0250a12ad245eded770bec604dbbfda63f7210e9",
+      "base": null,
+      "receiver": null,
+      "classification": "unchanged-donor-base",
+      "disposition": "exact-shared-source-transfer",
+      "candidate": "0250a12ad245eded770bec604dbbfda63f7210e9"
+    },
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/event/TriggerAbilityResolverTest.kt",
+      "shared": "e28b407c5b5f995d8b79385671ca2c640a6eab1d",
+      "base": "22a43c6fbc46a91935ce1c7f224092d720c5fb76",
+      "receiver": "e28b407c5b5f995d8b79385671ca2c640a6eab1d",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "e28b407c5b5f995d8b79385671ca2c640a6eab1d"
+    },
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/handlers/effects/token/AttackingTokenDefenderChoiceTest.kt",
+      "shared": "81d2ec00484429e88bb4b2b77fd36ae5c154290e",
+      "base": null,
+      "receiver": null,
+      "classification": "unchanged-donor-base",
+      "disposition": "exact-shared-source-transfer",
+      "candidate": "81d2ec00484429e88bb4b2b77fd36ae5c154290e"
+    },
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/AbilityIdentityTest.kt",
+      "shared": "633cd2f734fdabfea0186a8299c81d0031a931e5",
+      "base": "727652f06e0a98fa8dc9a196b4c19eec388488bc",
+      "receiver": "633cd2f734fdabfea0186a8299c81d0031a931e5",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "633cd2f734fdabfea0186a8299c81d0031a931e5"
+    },
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/AshlingRimeboundConvokeScenarioTest.kt",
+      "shared": "ab30597210b5fd1a681603343a38982c1048d1ef",
+      "base": "583e8a920fd07c2e9e198323aa83b83a8e0e1b3c",
+      "receiver": "ab30597210b5fd1a681603343a38982c1048d1ef",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "ab30597210b5fd1a681603343a38982c1048d1ef"
+    },
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/BandingTrampleDrainScenarioTest.kt",
+      "shared": "47956ba5921a493643c31ea511a7e6e882920fc0",
+      "base": "7740968897604a6c5b90cdde082520dfd0383424",
+      "receiver": "7740968897604a6c5b90cdde082520dfd0383424",
+      "classification": "unchanged-donor-base",
+      "disposition": "exact-shared-source-transfer",
+      "candidate": "47956ba5921a493643c31ea511a7e6e882920fc0"
+    },
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/CastObserverSourceLkiTest.kt",
+      "shared": "4ab06b24ea7f57f317cefa8864f74e3de365f0d7",
+      "base": null,
+      "receiver": "4ab06b24ea7f57f317cefa8864f74e3de365f0d7",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "4ab06b24ea7f57f317cefa8864f74e3de365f0d7"
+    },
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/CastPrioritySbaTest.kt",
+      "shared": "25ee93595c45718683cef81f9eca9b2ad037b61c",
+      "base": "1b7f07b6ce1d5a94795c889ea3b6d21d88ed4518",
+      "receiver": "25ee93595c45718683cef81f9eca9b2ad037b61c",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "25ee93595c45718683cef81f9eca9b2ad037b61c"
+    },
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/ChampionKeywordTest.kt",
+      "shared": "072c8e33a1d3d0e47f9b83c81cbb1e63dfc097ab",
+      "base": "140551da24d0f41909d01663ba9bad7a5d265a62",
+      "receiver": "072c8e33a1d3d0e47f9b83c81cbb1e63dfc097ab",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "072c8e33a1d3d0e47f9b83c81cbb1e63dfc097ab"
+    },
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/CombatAssignmentCurrentRulesTest.kt",
+      "shared": "926665bb7fc93be18a90d5fffcc2ae75195ad95f",
+      "base": null,
+      "receiver": null,
+      "classification": "unchanged-donor-base",
+      "disposition": "exact-shared-source-transfer",
+      "candidate": "926665bb7fc93be18a90d5fffcc2ae75195ad95f"
+    },
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/CombatResolutionBoardTest.kt",
+      "shared": "1faa4c80d16379477631f94af6beaf15a95fb52a",
+      "base": "9680a35ebdee585fb4c894b833266e7938173d03",
+      "receiver": "9680a35ebdee585fb4c894b833266e7938173d03",
+      "classification": "unchanged-donor-base",
+      "disposition": "exact-shared-source-transfer",
+      "candidate": "1faa4c80d16379477631f94af6beaf15a95fb52a"
+    },
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/DelayedIterationObjectIdentityTest.kt",
+      "shared": "2980b44f19102071543cb1e4de928333cce09ed6",
+      "base": "62e4731e28242f30616e227bf426a76810b68dfa",
+      "receiver": "2980b44f19102071543cb1e4de928333cce09ed6",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "2980b44f19102071543cb1e4de928333cce09ed6"
+    },
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/EffectOncePerTurnTest.kt",
+      "shared": "977d7facbfa52d945db01ea4c18414c579c7169e",
+      "base": "a1443d1870c1a9c8b14db908c801333fe625ea95",
+      "receiver": "977d7facbfa52d945db01ea4c18414c579c7169e",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "977d7facbfa52d945db01ea4c18414c579c7169e"
+    },
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/EnnisAndZaffaiScenarioTest.kt",
+      "shared": "1d91a2c5ca1d126b698af2094c64184140d136b4",
+      "base": "7a208b415203268107e215367f3beefd51ff059a",
+      "receiver": "1d91a2c5ca1d126b698af2094c64184140d136b4",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "1d91a2c5ca1d126b698af2094c64184140d136b4"
+    },
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/FabricateScenarioTest.kt",
+      "shared": "acbc6e222e5354f6d97ddd61e76a3d42e050b0a4",
+      "base": "b5f0bed157eb0e54c8ebdaff6bf1c7366a13c292",
+      "receiver": "acbc6e222e5354f6d97ddd61e76a3d42e050b0a4",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "acbc6e222e5354f6d97ddd61e76a3d42e050b0a4"
+    },
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/FlankingCombatTest.kt",
+      "shared": "ff90f663920d33121712c69bc3964096e003c965",
+      "base": "9467fc14dfee166d698f74ae9a96474c7b6d1c0a",
+      "receiver": "ff90f663920d33121712c69bc3964096e003c965",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "ff90f663920d33121712c69bc3964096e003c965"
+    },
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/GiftPromisedAtCastTimeTest.kt",
+      "shared": "77e1667bc48499e4a6c02a866306e3ca59388eb9",
+      "base": "d3b5b5c8797ba1d6a732ac512d982ad218df8f9c",
+      "receiver": "77e1667bc48499e4a6c02a866306e3ca59388eb9",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "77e1667bc48499e4a6c02a866306e3ca59388eb9"
+    },
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/GravediggerCombatDeathTest.kt",
+      "shared": "53c0e1889bb881ff715fedebe1b3660e5a8e37da",
+      "base": "8c7d564ec5ec6bb8075a8e29b58d5173a2a03f7b",
+      "receiver": "53c0e1889bb881ff715fedebe1b3660e5a8e37da",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "53c0e1889bb881ff715fedebe1b3660e5a8e37da"
+    },
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/LeaOracleFidelityFixesScenarioTest.kt",
+      "shared": "184415c81a9ed8d99839f27450e952060cfa3d96",
+      "base": "c1a7e4522da81387be8db94fde407291671843ad",
+      "receiver": "184415c81a9ed8d99839f27450e952060cfa3d96",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "184415c81a9ed8d99839f27450e952060cfa3d96"
+    },
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/LinkedExileSourceInstanceTest.kt",
+      "shared": "f46f685e195ee0801f898eba8201325ad6c51746",
+      "base": "7174132527186e8443c166683491a0152ede1ec1",
+      "receiver": "f46f685e195ee0801f898eba8201325ad6c51746",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "f46f685e195ee0801f898eba8201325ad6c51746"
+    },
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/LookBackTriggerTest.kt",
+      "shared": "c15340bb22127175f6a58df9cbc02fad1b7841f9",
+      "base": "1498b4cb4948eb51ce1468d65a8186115cc03ef0",
+      "receiver": "c15340bb22127175f6a58df9cbc02fad1b7841f9",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "c15340bb22127175f6a58df9cbc02fad1b7841f9"
+    },
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/MirkwoodBatsTokenCreationTest.kt",
+      "shared": "79ccffd454ee77c602bf6aa83a207dea255210c5",
+      "base": "28295780ced7422cf9f39b0ab885b4a6f5dc39f2",
+      "receiver": "79ccffd454ee77c602bf6aa83a207dea255210c5",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "79ccffd454ee77c602bf6aa83a207dea255210c5"
+    },
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/PausedSpellTriggerFinalizationTest.kt",
+      "shared": "c570ec24dd7a7e4170f64ab84e5c5e4dab3ec764",
+      "base": "b6f423fa1735bca201dcf22410fd02c9cb8a75e7",
+      "receiver": "c570ec24dd7a7e4170f64ab84e5c5e4dab3ec764",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "c570ec24dd7a7e4170f64ab84e5c5e4dab3ec764"
+    },
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/RenownKeywordTest.kt",
+      "shared": "ae2ac9d9f3eb644fd34980019008c64a8e4695a7",
+      "base": "f3990d83d3dcb35da654a46396410b66f60a5dca",
+      "receiver": "ae2ac9d9f3eb644fd34980019008c64a8e4695a7",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "ae2ac9d9f3eb644fd34980019008c64a8e4695a7"
+    },
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/ScryTriggerScenarioTest.kt",
+      "shared": "ec2c0367115110013bd1cc516edcd953385e74a5",
+      "base": "e94f28c04fa6b7aac5e525ee236042789fa691cb",
+      "receiver": "ec2c0367115110013bd1cc516edcd953385e74a5",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "ec2c0367115110013bd1cc516edcd953385e74a5"
+    },
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/SurveilTriggerScenarioTest.kt",
+      "shared": "98513c97af70be1069d002ea0ab6fb0318b522f1",
+      "base": "7e112391ab1eaa816b77a8678e96fb9cdfe1eae2",
+      "receiver": "98513c97af70be1069d002ea0ab6fb0318b522f1",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "98513c97af70be1069d002ea0ab6fb0318b522f1"
+    },
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/TdmCardsGroupAScenarioTest.kt",
+      "shared": "5c38b13da98564c24c567652818deea7f4944057",
+      "base": "5ebd62eaf8a0a870a619848b8e31e4dacff805bd",
+      "receiver": "5c38b13da98564c24c567652818deea7f4944057",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "5c38b13da98564c24c567652818deea7f4944057"
+    },
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/WoeCardsScenarioTest.kt",
+      "shared": "8ccba54b48a0cdd0ba0d4f3eaab0181c67d6d875",
+      "base": "f0a7b86c68d6a50be33e56b3143013f413d2fe33",
+      "receiver": "8ccba54b48a0cdd0ba0d4f3eaab0181c67d6d875",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "8ccba54b48a0cdd0ba0d4f3eaab0181c67d6d875"
+    },
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/state/CapturedFreeCastTraceExpectations.kt",
+      "shared": "8e2183fdf9d7f18986cb7316493f59a9ba0d74d3",
+      "base": null,
+      "receiver": "8e2183fdf9d7f18986cb7316493f59a9ba0d74d3",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "8e2183fdf9d7f18986cb7316493f59a9ba0d74d3"
+    },
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/state/LegacySuspensionMigrationTest.kt",
+      "shared": "cdc9fcbc7dbd5dc74fe70f1f1b9b51f575229b2c",
+      "base": "60e793a312ef727b751520c8ac85fce4f4533702",
+      "receiver": "cdc9fcbc7dbd5dc74fe70f1f1b9b51f575229b2c",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "cdc9fcbc7dbd5dc74fe70f1f1b9b51f575229b2c"
+    },
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/state/SuspensionTraceTest.kt",
+      "shared": "d70c2e748373adf73ee0198850a75c45cd25e0ce",
+      "base": "b010f5caa958bc2e28e7ff16ccc5afb8049cf173",
+      "receiver": "d70c2e748373adf73ee0198850a75c45cd25e0ce",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "d70c2e748373adf73ee0198850a75c45cd25e0ce"
+    },
+    {
+      "path": "rules-engine/src/testFixtures/kotlin/com/wingedsheep/engine/support/TriggerOrderTestSupport.kt",
+      "shared": "4516ca436797f9107774d671f0b93378d7b44b79",
+      "base": null,
+      "receiver": "4516ca436797f9107774d671f0b93378d7b44b79",
+      "classification": "already-identical",
+      "disposition": "retain-already-identical-receiver",
+      "candidate": "4516ca436797f9107774d671f0b93378d7b44b79"
+    }
+  ],
+  "preserved_overlap": {
+    "GameEvent": "Preserve entrySnapshot and add shared entryTriggersAlreadyProcessed with shared invariant/default omission.",
+    "TriggerDetector": "Preserve Izzet snapshot/event context; skip only already-processed entry events as shared.",
+    "Serialization": "Preserve Izzet registrations; add three exact shared continuation registrations.",
+    "CombatDamageManager": "Only shared explanatory comments differ from receiving implementation.",
+    "ZoneTransitionService": "Byte-identical to c47; preserve qualified entry snapshot capture.",
+    "DalkovanEncampmentScenarioTest": "Prospectively adopt exact shared test source: only four added lines assert each attacking token has opponent defenderId in both existing cases. All prior assertions, setup and names retained. Root authorized this software assertion strengthening before execution; no pilot/tactical/golden amendment and no new case."
+  },
+  "not_transferred": [
+    "Foreign workflow triggers and shared historical evidence remain at pinned donor; they are not receiving execution permission.",
+    "Pest-only agent/card fixtures absent from the receiver remain absent; no existing test is deleted and none of the declared 407 shared bank cases is removed.",
+    "Shared FrozenBaseline expectation changes are not transplanted. Dalkovan stronger defender assertions are explicitly transferred prospectively, not represented as byte-identical to the older c47 fixture."
+  ],
+  "next_gates": [
+    "Independent exact source/publication review and inert checkpoint.",
+    "Separately reviewed one-use source-bound receiving gate: original priority220, observer135, combat32, token20, and original Izzet Vines560 case sets; deduplicate only after exact case-identity intersection audit, preserving original stage order.",
+    "Fresh full required CI with all existing Izzet fixtures, original FrozenBaseline assertion and original Arcane Denial/Mnemonic Wall tests retained; those failures remain unresolved until actual evidence and proper prospective disposition. Dalkovan exact shared strengthened assertions require fresh receiving results.",
+    "Independent receiving artifact/source review before any component acceptance; exact full-pair/pilot/replay/durability/Position1 admission remains separate."
+  ],
+  "counter_disposition": {
+    "generated_official_vector": 12,
+    "consumed": 0,
+    "initialized": 0,
+    "completed": 0,
+    "exposed": 0,
+    "source": "Existing source-bound Position1 ledgers unchanged; no vector access or official runner invocation by this composition."
+  },
+  "validation_limits": [
+    "Local byte/Git-object binding and static merge inspection only; no local JVM/Gradle execution.",
+    "No baseline correction, tactical policy amendment, or full runtime/gameplay acceptance.",
+    "Existing diagnostic run36271994873 and original failures are preserved; no duplicate diagnostic invocation."
+  ],
+  "review": null
+}
